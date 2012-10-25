@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- WARNING: Eclipse auto-generated file.
+              Any modifications will be overwritten.
+              To include a user specific buildfile here, simply create one in the same
+              directory with the processing instruction <?eclipse.ant.import?>
+              as the first entry and export the buildfile again. -->
+<project basedir="." default="build" name="rodatools">
+    <property environment="env"/>
+    <property name="ECLIPSE_HOME" value="../../../Apps/eclipse-modeling-3.7.2"/>
+    <property name="debuglevel" value="source,lines,vars"/>
+    <property name="target" value="1.6"/>
+    <property name="source" value="1.6"/>
+    <path id="Postgresql-9-JDBC.userclasspath">
+        <pathelement location="../libraries/postgresql-jdbc/postgresql-9.1-903.jdbc4.jar"/>
+    </path>
+    <path id="JAXB-RI-2.2.6.userclasspath">
+        <pathelement location="../libraries/jaxb-ri-2.2.6/lib/jaxb-api.jar"/>
+        <pathelement location="../libraries/jaxb-ri-2.2.6/lib/jaxb-api-doc.zip"/>
+        <pathelement location="../libraries/jaxb-ri-2.2.6/lib/jaxb-api-src.zip"/>
+        <pathelement location="../libraries/jaxb-ri-2.2.6/lib/jaxb-impl.jar"/>
+        <pathelement location="../libraries/jaxb-ri-2.2.6/lib/jaxb-impl.src.zip"/>
+        <pathelement location="../libraries/jaxb-ri-2.2.6/lib/jaxb-impl-javadoc.jar"/>
+        <pathelement location="../libraries/jaxb-ri-2.2.6/lib/jaxb-xjc.jar"/>
+        <pathelement location="../libraries/jaxb-ri-2.2.6/lib/jaxb-xjc.src.zip"/>
+        <pathelement location="../libraries/jaxb-ri-2.2.6/lib/jaxb-xjc-javadoc.jar"/>
+    </path>
+    <path id="Hibernate.userclasspath">
+        <pathelement location="../libraries/hibernate-release-4.1.7.Final/lib/required/antlr-2.7.7.jar"/>
+        <pathelement location="../libraries/hibernate-release-4.1.7.Final/lib/required/dom4j-1.6.1.jar"/>
+        <pathelement location="../libraries/hibernate-release-4.1.7.Final/lib/required/hibernate-commons-annotations-4.0.1.Final.jar"/>
+        <pathelement location="../libraries/hibernate-release-4.1.7.Final/lib/required/hibernate-core-4.1.7.Final.jar"/>
+        <pathelement location="../libraries/hibernate-release-4.1.7.Final/lib/required/hibernate-jpa-2.0-api-1.0.1.Final.jar"/>
+        <pathelement location="../libraries/hibernate-release-4.1.7.Final/lib/required/javassist-3.15.0-GA.jar"/>
+        <pathelement location="../libraries/hibernate-release-4.1.7.Final/lib/required/jboss-logging-3.1.0.GA.jar"/>
+        <pathelement location="../libraries/hibernate-release-4.1.7.Final/lib/required/jboss-transaction-api_1.1_spec-1.0.0.Final.jar"/>
+    </path>
+    <path id="rodatools.classpath">
+        <pathelement location="build/classes"/>
+        <pathelement location="lib/javassist.jar"/>
+        <path refid="Postgresql-9-JDBC.userclasspath"/>
+        <path refid="JAXB-RI-2.2.6.userclasspath"/>
+        <path refid="Hibernate.userclasspath"/>
+    </path>
+    <target name="init">
+        <mkdir dir="build/classes"/>
+        <copy includeemptydirs="false" todir="build/classes">
+            <fileset dir="src">
+                <exclude name="**/*.uad"/>
+                <exclude name="**/*.ucd"/>
+                <exclude name="**/*.uld"/>
+                <exclude name="**/*.upd"/>
+                <exclude name="**/*.udd"/>
+                <exclude name="**/*.uod"/>
+                <exclude name="**/*.usd"/>
+                <exclude name="**/*.utd"/>
+                <exclude name="**/*.uud"/>
+                <exclude name="**/*.odd"/>
+                <exclude name="**/*.ead"/>
+                <exclude name="**/*.ecd"/>
+                <exclude name="**/*.eld"/>
+                <exclude name="**/*.epd"/>
+                <exclude name="**/*.edd"/>
+                <exclude name="**/*.eod"/>
+                <exclude name="**/*.esd"/>
+                <exclude name="**/*.etd"/>
+                <exclude name="**/*.eud"/>
+                <exclude name="**/*.urd"/>
+                <exclude name="**/*.uml"/>
+                <exclude name="**/*.ecore"/>
+                <exclude name="**/*.ucls"/>
+                <exclude name="**/*.useq"/>
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+    <target name="clean">
+        <delete dir="build/classes"/>
+    </target>
+    <target depends="clean" name="cleanall"/>
+    <target depends="build-subprojects,build-project" name="build"/>
+    <target name="build-subprojects"/>
+    <target depends="init" name="build-project">
+        <echo message="${ant.project.name}: ${ant.file}"/>
+        <javac debug="true" debuglevel="${debuglevel}" destdir="build/classes" source="${source}" target="${target}">
+            <src path="src"/>
+            <classpath refid="rodatools.classpath"/>
+        </javac>
+    </target>
+    <target description="Build all projects which reference this project. Useful to propagate changes." name="build-refprojects"/>
+    <target description="copy Eclipse compiler jars to ant lib directory" name="init-eclipse-compiler">
+        <copy todir="${ant.library.dir}">
+            <fileset dir="${ECLIPSE_HOME}/plugins" includes="org.eclipse.jdt.core_*.jar"/>
+        </copy>
+        <unzip dest="${ant.library.dir}">
+            <patternset includes="jdtCompilerAdapter.jar"/>
+            <fileset dir="${ECLIPSE_HOME}/plugins" includes="org.eclipse.jdt.core_*.jar"/>
+        </unzip>
+    </target>
+    <target description="compile project with Eclipse compiler" name="build-eclipse-compiler">
+        <property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter"/>
+        <antcall target="build"/>
+    </target>
+</project>

@@ -1,0 +1,205 @@
+package dbext;
+
+import java.io.Serializable;
+import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
+import ddi122.CodeBook;
+
+/**
+ * The persistent class for the org database table.
+ * 
+ */
+@Entity
+@Table(name = "org")
+public class Org implements Serializable {
+	private static final long serialVersionUID = 1L;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@Column(unique = true, nullable = false)
+	private Integer id;
+
+	@Column(nullable = false, length = 100)
+	private String fullname;
+
+	@Column(nullable = false, length = 100)
+	private String name;
+
+	// bi-directional many-to-one association to Email
+	@OneToMany(mappedBy = "org")
+	private List<Email> emails;
+
+	// bi-directional many-to-one association to InstanceOrg
+	@OneToMany(mappedBy = "org")
+	private List<InstanceOrg> instanceOrgs;
+
+	// TODO commented-out by Cosmin; links the two Java Packages...
+	// bi-directional many-to-one association to CodeBook
+	@OneToMany(mappedBy = "org")
+	private List<CodeBook> Codebook;
+
+	public List<CodeBook> getCodebook() {
+		return Codebook;
+	}
+
+	public void setCodebook(List<CodeBook> codebook) {
+		Codebook = codebook;
+	}
+
+	// bi-directional many-to-one association to Internet
+	@OneToMany(mappedBy = "org")
+	private List<Internet> internets;
+
+	// bi-directional many-to-one association to OrgPrefix
+	@ManyToOne
+	@JoinColumn(name = "org_prefix_id", nullable = false)
+	private OrgPrefix orgPrefix;
+
+	// bi-directional many-to-one association to OrgSufix
+	@ManyToOne
+	@JoinColumn(name = "org_sufix_id", nullable = false)
+	private OrgSufix orgSufix;
+
+	// bi-directional one-to-one association to OrgAddress
+	@OneToOne(mappedBy = "org")
+	private OrgAddress orgAddress;
+
+	// bi-directional many-to-one association to OrgRelation
+	@OneToMany(mappedBy = "org1")
+	private List<OrgRelation> orgRelations1;
+
+	// bi-directional many-to-one association to OrgRelation
+	@OneToMany(mappedBy = "org2")
+	private List<OrgRelation> orgRelations2;
+
+	// bi-directional many-to-one association to PersonOrg
+	@OneToMany(mappedBy = "org")
+	private List<PersonOrg> personOrgs;
+
+	// bi-directional many-to-one association to StudyOrg
+	@OneToMany(mappedBy = "org")
+	private List<StudyOrg> studyOrgs;
+
+	public Org() {
+	}
+
+	public Integer getId() {
+		return this.id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public String getFullname() {
+		return this.fullname;
+	}
+
+	public void setFullname(String fullname) {
+		this.fullname = fullname;
+	}
+
+	public String getName() {
+		return this.name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public List<Email> getEmails() {
+		return this.emails;
+	}
+
+	public void setEmails(List<Email> emails) {
+		this.emails = emails;
+	}
+
+	public List<InstanceOrg> getInstanceOrgs() {
+		return this.instanceOrgs;
+	}
+
+	public void setInstanceOrgs(List<InstanceOrg> instanceOrgs) {
+		this.instanceOrgs = instanceOrgs;
+	}
+
+	public List<Internet> getInternets() {
+		return this.internets;
+	}
+
+	public void setInternets(List<Internet> internets) {
+		this.internets = internets;
+	}
+
+	public OrgPrefix getOrgPrefix() {
+		return this.orgPrefix;
+	}
+
+	public void setOrgPrefix(OrgPrefix orgPrefix) {
+		this.orgPrefix = orgPrefix;
+	}
+
+	public OrgSufix getOrgSufix() {
+		return this.orgSufix;
+	}
+
+	public void setOrgSufix(OrgSufix orgSufix) {
+		this.orgSufix = orgSufix;
+	}
+
+	public OrgAddress getOrgAddress() {
+		return this.orgAddress;
+	}
+
+	public void setOrgAddress(OrgAddress orgAddress) {
+		this.orgAddress = orgAddress;
+	}
+
+	public List<OrgRelation> getOrgRelations1() {
+		return this.orgRelations1;
+	}
+
+	public void setOrgRelations1(List<OrgRelation> orgRelations1) {
+		this.orgRelations1 = orgRelations1;
+	}
+
+	public List<OrgRelation> getOrgRelations2() {
+		return this.orgRelations2;
+	}
+
+	public void setOrgRelations2(List<OrgRelation> orgRelations2) {
+		this.orgRelations2 = orgRelations2;
+	}
+
+	public List<PersonOrg> getPersonOrgs() {
+		return this.personOrgs;
+	}
+
+	public void setPersonOrgs(List<PersonOrg> personOrgs) {
+		this.personOrgs = personOrgs;
+	}
+
+	public List<StudyOrg> getStudyOrgs() {
+		return this.studyOrgs;
+	}
+
+	public void setStudyOrgs(List<StudyOrg> studyOrgs) {
+		this.studyOrgs = studyOrgs;
+	}
+	/*
+	 * public List<CodeBook> getCodebook() { return Codebook; }
+	 * 
+	 * public void setCodebook(List<CodeBook> codebook) { Codebook = codebook; }
+	 */
+}

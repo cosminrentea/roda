@@ -1,0 +1,33 @@
++ de schimbat pentru campurile/coloanele "content" tipul, din "bytea" in "text"
+
++ validare output XML cu DDI-1.2.2
+
+campuri pentru auditare propuse de Sorin:
+added_at, notnull
+added_by, notnull
+last_modified
+last_modified_by
+
++ Exista solutii alternative, cu triggers, specifice Postgresql, pentru auditare ?
+In Postgresql, psql:
+create extension dblink;
+create extension hstore;
+create language plperl;
+create language plperlu;
+
++ de modificat relatiile many-to-many in one-to-many
+
+de identificat care sunt campurile goale (null peste tot) din tabele
+(am facut un script in folderul "sql", care trebuie rulat dupa VACUUM)
+
+de facut commit in SVN la rodatools, fara folderul "data"
+
+de pus in DBext primary keys, auto-numbers, nullable
+
+de legat cele 2 BD: ddi si DBext
+
+de creat documentatie (tabele, coloane, FK)
+
+de creat script Ant de compilare + rulare teste
+
+de configurat build-ul in Hudson

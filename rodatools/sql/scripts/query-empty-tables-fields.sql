@@ -6,4 +6,4 @@ VACUUM FULL;
 select distinct tablename from pg_stats where schemaname='public' order by tablename;
 
 -- shows all the fields that contain NO DATA = only NULLs (null ratio = 1)
-select distinct tablename, attname from pg_stats where schemaname='public' AND null_frac=1 order by tablename, attname;
+select distinct tablename, attname from pg_stats where schemaname='public' AND null_frac=1.0 order by tablename, attname;

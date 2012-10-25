@@ -20,9 +20,11 @@ create language plperlu;
 de identificat care sunt campurile goale (null peste tot) din tabele
 (am facut un script in folderul "sql", care trebuie rulat dupa VACUUM)
 
-de facut commit in SVN la rodatools, fara folderul "data"
++ de facut commit in SVN la rodatools, fara folderul "data"
 
 de pus in DBext primary keys, auto-numbers, nullable
+
+de generat clase JPA in rodaext (DB + project), pornind de la schema din dbwrench
 
 de legat cele 2 BD: ddi si DBext
 

@@ -24,11 +24,15 @@ de identificat care sunt campurile goale (null peste tot) din tabele
 
 de pus in DBext primary keys, auto-numbers, nullable
 
-de generat clase JPA in rodaext (DB + project), pornind de la schema din dbwrench
++ de generat clase JPA in rodaext (DB + project), pornind de la schema din dbwrench
 
-de legat cele 2 BD: ddi si DBext
+de legat coerent si complet la nivelul claselor Java cele 2 BD: ddi si dbext
 
 de creat documentatie (tabele, coloane, FK)
+
+de creat unit-tests pentru rodatools
+
+de creat teste de integrare pentru rodatools
 
 de creat script Ant de compilare + rulare teste
 

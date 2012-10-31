@@ -1,0 +1,475 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Db flnm="roda_grails" nm="roda_grails" ver="1.3.4">
+  <VerLbl/>
+  <VerNotes/>
+  <DefTblOpts/>
+  <DocFolder>/home/cosmin/Apps/dbwrench2-projects</DocFolder>
+  <Sch Cm="standard public schema" nm="public">
+    <Tbl UsSo="1" nm="acl_class">
+      <TblOpts>WITHOUT OIDS</TblOpts>
+      <Pk ClNs="id" nm="acl_class_pkey"/>
+      <Cl au="0" df="" nm="id" nu="0">
+        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="class" nu="0">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
+      </Cl>
+      <UniqueConstraints/>
+      <SchTrHis/>
+    </Tbl>
+    <Tbl UsSo="1" nm="acl_entry">
+      <TblOpts>WITHOUT OIDS</TblOpts>
+      <Pk ClNs="id" nm="acl_entry_pkey"/>
+      <Cl au="0" df="" nm="id" nu="0">
+        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="ace_order" nu="0">
+        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="acl_object_identity" nu="0">
+        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="audit_failure" nu="0">
+        <DT arr="0" ds="Boolean" en="" id="16" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="audit_success" nu="0">
+        <DT arr="0" ds="Boolean" en="" id="16" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="granting" nu="0">
+        <DT arr="0" ds="Boolean" en="" id="16" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="mask" nu="0">
+        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="sid" nu="0">
+        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Fk deAc="3" nm="fk5302d47d8fdb88d5" prLkCl="id" upAc="3">
+        <PrTb mn="0" nm="acl_sid" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="acl_entry" oe="0" sch="public" zr="1"/>
+        <ClPr cdCl="sid" prCl="id"/>
+      </Fk>
+      <Fk deAc="3" nm="fk5302d47db0d9dc4d" prLkCl="id" upAc="3">
+        <PrTb mn="0" nm="acl_object_identity" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="acl_entry" oe="0" sch="public" zr="1"/>
+        <ClPr cdCl="acl_object_identity" prCl="id"/>
+      </Fk>
+      <UniqueConstraints>
+        <UnCon nm="acl_entry_acl_object_identity_ace_order_key">
+          <ClNs>acl_object_identity, ace_order</ClNs>
+        </UnCon>
+      </UniqueConstraints>
+      <SchTrHis/>
+    </Tbl>
+    <Tbl UsSo="1" nm="acl_object_identity">
+      <TblOpts>WITHOUT OIDS</TblOpts>
+      <Pk ClNs="id" nm="acl_object_identity_pkey"/>
+      <Cl au="0" df="" nm="id" nu="0">
+        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="object_id_class" nu="0">
+        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="entries_inheriting" nu="0">
+        <DT arr="0" ds="Boolean" en="" id="16" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="object_id_identity" nu="0">
+        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="owner_sid" nu="1">
+        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="parent_object" nu="1">
+        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Fk deAc="3" nm="fk2a2bb00970422cc5" prLkCl="id" upAc="3">
+        <PrTb mn="0" nm="acl_class" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="acl_object_identity" oe="0" sch="public" zr="1"/>
+        <ClPr cdCl="object_id_class" prCl="id"/>
+      </Fk>
+      <Fk deAc="3" nm="fk2a2bb00990ec1949" prLkCl="id" upAc="3">
+        <PrTb mn="0" nm="acl_sid" oe="1" sch="public" zr="1"/>
+        <CdTb mn="1" nm="acl_object_identity" oe="0" sch="public" zr="1"/>
+        <ClPr cdCl="owner_sid" prCl="id"/>
+      </Fk>
+      <Fk deAc="3" nm="fk2a2bb009a50290b8" prLkCl="id" upAc="3">
+        <PrTb mn="0" nm="acl_object_identity" oe="1" sch="public" zr="1"/>
+        <CdTb mn="1" nm="acl_object_identity" oe="0" sch="public" zr="1"/>
+        <ClPr cdCl="parent_object" prCl="id"/>
+      </Fk>
+      <UniqueConstraints>
+        <UnCon nm="acl_object_identity_object_id_class_object_id_identity_key">
+          <ClNs>object_id_class, object_id_identity</ClNs>
+        </UnCon>
+      </UniqueConstraints>
+      <SchTrHis/>
+    </Tbl>
+    <Tbl UsSo="1" nm="acl_sid">
+      <TblOpts>WITHOUT OIDS</TblOpts>
+      <Pk ClNs="id" nm="acl_sid_pkey"/>
+      <Cl au="0" df="" nm="id" nu="0">
+        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="principal" nu="0">
+        <DT arr="0" ds="Boolean" en="" id="16" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="sid" nu="0">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
+      </Cl>
+      <UniqueConstraints>
+        <UnCon nm="acl_sid_sid_principal_key">
+          <ClNs>sid, principal</ClNs>
+        </UnCon>
+      </UniqueConstraints>
+      <SchTrHis/>
+    </Tbl>
+    <Tbl UsSo="1" nm="author">
+      <TblOpts>WITHOUT OIDS</TblOpts>
+      <Pk ClNs="id" nm="author_pkey"/>
+      <Cl au="0" df="" nm="id" nu="0">
+        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="version" nu="0">
+        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="age" nu="0">
+        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="name" nu="0">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
+      </Cl>
+      <UniqueConstraints/>
+      <SchTrHis/>
+    </Tbl>
+    <Tbl UsSo="1" nm="base_element_type">
+      <TblOpts>WITHOUT OIDS</TblOpts>
+      <Pk ClNs="index" nm="base_element_type_pkey"/>
+      <Cl au="0" df="" nm="index" nu="0">
+        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="ddi_codebook_urn" nu="1">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="ddi_lifecycle_urn" nu="1">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="element_version" nu="1">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="element_version_date" nu="1">
+        <DT arr="0" ds="TimeStamp" en="" id="93" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="id" nu="1">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="lang" nu="1">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="source" nu="1">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="xml_lang" nu="1">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
+      </Cl>
+      <UniqueConstraints/>
+      <SchTrHis/>
+    </Tbl>
+    <Tbl UsSo="1" nm="book">
+      <TblOpts>WITHOUT OIDS</TblOpts>
+      <Pk ClNs="index" nm="book_pkey"/>
+      <Cl au="0" df="" nm="index" nu="0">
+        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="author" nu="1">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="title" nu="1">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
+      </Cl>
+      <UniqueConstraints/>
+      <SchTrHis/>
+    </Tbl>
+    <Tbl UsSo="1" nm="codebook">
+      <TblOpts>WITHOUT OIDS</TblOpts>
+      <Pk ClNs="id" nm="codebook_pkey"/>
+      <Cl au="0" df="" nm="id" nu="0">
+        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="version" nu="0">
+        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="name" nu="0">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="version_no" nu="0">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
+      </Cl>
+      <UniqueConstraints>
+        <UnCon nm="codebook_name_key">
+          <ClNs>name</ClNs>
+        </UnCon>
+      </UniqueConstraints>
+      <SchTrHis/>
+    </Tbl>
+    <Tbl UsSo="1" nm="keywords">
+      <TblOpts>WITHOUT OIDS</TblOpts>
+      <Cl au="0" df="" nm="id_book" nu="0">
+        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="keyword" nu="1">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Fk deAc="3" nm="fk230903cae77dce4e" prLkCl="index" upAc="3">
+        <PrTb mn="0" nm="book" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="keywords" oe="0" sch="public" zr="1"/>
+        <ClPr cdCl="id_book" prCl="index"/>
+      </Fk>
+      <UniqueConstraints/>
+      <SchTrHis/>
+    </Tbl>
+    <Tbl UsSo="1" nm="project">
+      <TblOpts>WITHOUT OIDS</TblOpts>
+      <Pk ClNs="id" nm="project_pkey"/>
+      <Cl au="0" df="" nm="id" nu="0">
+        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="version" nu="0">
+        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="billing_type" nu="0">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="12" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="description" nu="0">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="due_date" nu="0">
+        <DT arr="0" ds="TimeStamp" en="" id="93" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="name" nu="0">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="owner_id" nu="0">
+        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Fk deAc="3" nm="fked904b191d1b6891" prLkCl="id" upAc="3">
+        <PrTb mn="0" nm="codebook" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="project" oe="0" sch="public" zr="1"/>
+        <ClPr cdCl="owner_id" prCl="id"/>
+      </Fk>
+      <UniqueConstraints>
+        <UnCon nm="project_name_key">
+          <ClNs>name</ClNs>
+        </UnCon>
+      </UniqueConstraints>
+      <SchTrHis/>
+    </Tbl>
+    <Tbl UsSo="1" nm="registration_code">
+      <TblOpts>WITHOUT OIDS</TblOpts>
+      <Pk ClNs="id" nm="registration_code_pkey"/>
+      <Cl au="0" df="" nm="id" nu="0">
+        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="date_created" nu="0">
+        <DT arr="0" ds="TimeStamp" en="" id="93" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="token" nu="0">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="username" nu="0">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
+      </Cl>
+      <UniqueConstraints/>
+      <SchTrHis/>
+    </Tbl>
+    <Tbl UsSo="1" nm="roles">
+      <TblOpts>WITHOUT OIDS</TblOpts>
+      <Pk ClNs="id" nm="roles_pkey"/>
+      <Cl au="0" df="" nm="id" nu="0">
+        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="version" nu="0">
+        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="authority" nu="0">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
+      </Cl>
+      <UniqueConstraints>
+        <UnCon nm="roles_authority_key">
+          <ClNs>authority</ClNs>
+        </UnCon>
+      </UniqueConstraints>
+      <SchTrHis/>
+    </Tbl>
+    <Tbl UsSo="1" nm="specificElements">
+      <TblOpts>WITHOUT OIDS</TblOpts>
+      <Cl au="0" df="" nm="refs" nu="0">
+        <DT arr="0" ds="Char" en="" id="1" ln="255" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="authorizedCodeValue" nu="1">
+        <DT arr="0" ds="Char" en="" id="1" ln="255" sc="null" sg="1" un="0"/>
+      </Cl>
+      <UniqueConstraints/>
+      <SchTrHis/>
+    </Tbl>
+    <Tbl UsSo="1" nm="task">
+      <TblOpts>WITHOUT OIDS</TblOpts>
+      <Pk ClNs="id" nm="task_pkey"/>
+      <Cl au="0" df="" nm="id" nu="0">
+        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="version" nu="0">
+        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="description" nu="0">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="due_date" nu="0">
+        <DT arr="0" ds="TimeStamp" en="" id="93" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="project_id" nu="0">
+        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Fk deAc="3" nm="fk3635851cb6fc86" prLkCl="id" upAc="3">
+        <PrTb mn="0" nm="project" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="task" oe="0" sch="public" zr="1"/>
+        <ClPr cdCl="project_id" prCl="id"/>
+      </Fk>
+      <UniqueConstraints/>
+      <SchTrHis/>
+    </Tbl>
+    <Tbl UsSo="1" nm="usage">
+      <TblOpts>WITHOUT OIDS</TblOpts>
+      <Cl au="0" df="" nm="selector" nu="0">
+        <DT arr="0" ds="Char" en="" id="1" ln="255" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="attribute" nu="1">
+        <DT arr="0" ds="Char" en="" id="1" ln="255" sc="null" sg="1" un="0"/>
+      </Cl>
+      <UniqueConstraints/>
+      <SchTrHis/>
+    </Tbl>
+    <Tbl UsSo="1" nm="users">
+      <TblOpts>WITHOUT OIDS</TblOpts>
+      <Pk ClNs="id" nm="users_pkey"/>
+      <Cl au="0" df="" nm="id" nu="0">
+        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="version" nu="0">
+        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="account_expired" nu="0">
+        <DT arr="0" ds="Boolean" en="" id="16" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="account_locked" nu="0">
+        <DT arr="0" ds="Boolean" en="" id="16" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="enabled" nu="0">
+        <DT arr="0" ds="Boolean" en="" id="16" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="password" nu="0">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="password_expired" nu="0">
+        <DT arr="0" ds="Boolean" en="" id="16" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="username" nu="0">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
+      </Cl>
+      <UniqueConstraints>
+        <UnCon nm="users_username_key">
+          <ClNs>username</ClNs>
+        </UnCon>
+      </UniqueConstraints>
+      <SchTrHis/>
+    </Tbl>
+    <Tbl UsSo="1" nm="users_roles">
+      <TblOpts>WITHOUT OIDS</TblOpts>
+      <Pk ClNs="role_id, user_id" nm="users_roles_pkey"/>
+      <Cl au="0" df="" nm="role_id" nu="0">
+        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="user_id" nu="0">
+        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Fk deAc="3" nm="fk5873918666ecf094" prLkCl="id" upAc="3">
+        <PrTb mn="0" nm="roles" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="users_roles" oe="0" sch="public" zr="1"/>
+        <ClPr cdCl="role_id" prCl="id"/>
+      </Fk>
+      <Fk deAc="3" nm="fk58739186c17b474" prLkCl="id" upAc="3">
+        <PrTb mn="0" nm="users" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="users_roles" oe="0" sch="public" zr="1"/>
+        <ClPr cdCl="user_id" prCl="id"/>
+      </Fk>
+      <UniqueConstraints/>
+      <SchTrHis/>
+    </Tbl>
+    <Seq incr="1" nm="hibernate_sequence"/>
+    <CustomTypes/>
+  </Sch>
+  <Dgm nm="diagramA">
+    <RnCf FtSz="9" lkStgy="OffsetDirect" zm="1.0">
+      <VbCfg>
+        <Fg ky="Auto Number" vl="0"/>
+        <Fg ky="Check" vl="0"/>
+        <Fg ky="Comment" vl="0"/>
+        <Fg ky="Data Type" vl="1"/>
+        <Fg ky="Default" vl="0"/>
+        <Fg ky="ENUM Values" vl="0"/>
+        <Fg ky="Length" vl="1"/>
+        <Fg ky="Name" vl="1"/>
+        <Fg ky="Nullable" vl="0"/>
+        <Fg ky="Schema Name" vl="0"/>
+        <Fg ky="Signed" vl="0"/>
+      </VbCfg>
+    </RnCf>
+    <DiaProps>
+      <Show AllCols="1" FkCols="1" FkNms="1" PkCols="1"/>
+      <ErNotation>DbwErNotation</ErNotation>
+      <svg path=""/>
+    </DiaProps>
+    <TbGl bkCl="ffccccff" sch="public" tbl="acl_class" x="66" y="50"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="acl_entry" x="696" y="50"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="acl_object_identity" x="365" y="50"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="acl_sid" x="50" y="108"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="author" x="1005" y="50"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="base_element_type" x="1306" y="50"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="registration_code" x="1629" y="50"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="roles" x="50" y="334"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="specificElements" x="1005" y="178"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="usage" x="1306" y="178"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="users" x="636" y="334"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="users_roles" x="367" y="334"/>
+    <FkGl bkCl="ff000000" nm="public.acl_entry.fk5302d47d8fdb88d5"/>
+    <FkGl bkCl="ff000000" nm="public.acl_entry.fk5302d47db0d9dc4d"/>
+    <FkGl bkCl="ff000000" nm="public.acl_object_identity.fk2a2bb00970422cc5"/>
+    <FkGl bkCl="ff000000" nm="public.acl_object_identity.fk2a2bb00990ec1949"/>
+    <FkGl bkCl="ff000000" nm="public.acl_object_identity.fk2a2bb009a50290b8"/>
+    <FkGl bkCl="ff000000" nm="public.users_roles.fk5873918666ecf094"/>
+    <FkGl bkCl="ff000000" nm="public.users_roles.fk58739186c17b474"/>
+    <Notes/>
+    <Zones/>
+  </Dgm>
+  <RnmMgr NxRnmId="1"/>
+  <DbDocOptionMgr>
+    <BasicOptionMgr>
+      <Name>db.doc.option.mgr</Name>
+      <BoolOpt lbl="Diagrams" nm="doc.diagrams" on="1" spl="0"/>
+      <BoolOpt lbl="Foreign Keys" nm="doc.fks" on="1" spl="0"/>
+      <BoolOpt lbl="Indexes" nm="doc.indexes" on="1" spl="0"/>
+      <BoolOpt lbl="Overwrite CSS File" nm="doc.overwrite.css" on="1" spl="0"/>
+      <BoolOpt lbl="Procedures" nm="doc.procs" on="1" spl="0"/>
+      <BoolOpt lbl="Schemas" nm="doc.schemas" on="1" spl="0"/>
+      <BoolOpt lbl="Sequences" nm="doc.sequences" on="1" spl="0"/>
+      <BoolOpt lbl="Tables" nm="doc.tables" on="1" spl="0"/>
+      <BoolOpt lbl="Triggers" nm="doc.triggers" on="1" spl="0"/>
+      <BoolOpt lbl="Views" nm="doc.views" on="1" spl="0"/>
+    </BasicOptionMgr>
+  </DbDocOptionMgr>
+  <OpenEditors>
+    <OpenEditor ClsNm="Diagram" fqn="null.diagramA" selected="1"/>
+  </OpenEditors>
+  <TreePaths>
+    <TreePath/>
+  </TreePaths>
+</Db>

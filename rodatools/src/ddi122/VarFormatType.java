@@ -99,7 +99,7 @@ import org.hibernate.annotations.Type;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "varFormatType", propOrder = { "content" })
 @Entity
-@Table(name="VariableFormat")
+@Table(name = "VariableFormat")
 public class VarFormatType {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -122,32 +122,39 @@ public class VarFormatType {
 	// })
 	@XmlMixed
 	@ElementCollection
-	@Type(type="text") protected List<String> content;
+	@Type(type = "text")
+	protected List<String> content;
 	@XmlAttribute(name = "ID")
 	@XmlJavaTypeAdapter(CollapsedStringAdapter.class)
 	@XmlID
 	@XmlSchemaType(name = "ID")
 	protected String id;
-	@XmlAttribute(name = "xml-lang")
-	@XmlJavaTypeAdapter(CollapsedStringAdapter.class)
-	@XmlSchemaType(name = "NMTOKEN")
-	protected String xmlLang;
-	@XmlAttribute
-	@XmlJavaTypeAdapter(CollapsedStringAdapter.class)
-	protected String source;
+
+	// @XmlAttribute(name = "xml-lang")
+	// @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
+	// @XmlSchemaType(name = "NMTOKEN")
+	// protected String xmlLang;
+	// @XmlAttribute
+	// @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
+	// protected String source;
+
 	@XmlAttribute
 	@XmlJavaTypeAdapter(CollapsedStringAdapter.class)
 	protected String type;
+
 	@XmlAttribute
 	protected String formatname;
+
 	@XmlAttribute
 	@XmlJavaTypeAdapter(CollapsedStringAdapter.class)
 	protected String schema;
+
 	@XmlAttribute
 	@XmlJavaTypeAdapter(CollapsedStringAdapter.class)
 	protected String category;
-	@XmlAttribute(name = "URI")
-	protected String uri;
+
+	// @XmlAttribute(name = "URI")
+	// protected String uri;
 
 	/**
 	 * Gets the value of the content property.
@@ -199,52 +206,6 @@ public class VarFormatType {
 	 */
 	public void setID(String value) {
 		this.id = value;
-	}
-
-	/**
-	 * Gets the value of the xmlLang property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getXmlLang() {
-		return xmlLang;
-	}
-
-	/**
-	 * Sets the value of the xmlLang property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setXmlLang(String value) {
-		this.xmlLang = value;
-	}
-
-	/**
-	 * Gets the value of the source property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getSource() {
-		if (source == null) {
-			return null;
-		} else {
-			return source;
-		}
-	}
-
-	/**
-	 * Sets the value of the source property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setSource(String value) {
-		this.source = value;
 	}
 
 	/**
@@ -341,27 +302,6 @@ public class VarFormatType {
 	 */
 	public void setCategory(String value) {
 		this.category = value;
-	}
-
-	/**
-	 * Gets the value of the uri property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getURI() {
-		return uri;
-	}
-
-	/**
-	 * Sets the value of the uri property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setURI(String value) {
-		this.uri = value;
 	}
 
 }

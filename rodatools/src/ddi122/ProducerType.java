@@ -87,7 +87,7 @@ public class ProducerType {
 	}
 
 	@ManyToOne
-	@JoinColumn(name = "prodstmttype_id")
+	@JoinColumn(name = "ProductionStatement_id")
 	@XmlTransient
 	private ProdStmtType prodstmttype;
 
@@ -114,19 +114,23 @@ public class ProducerType {
 	@XmlID
 	@XmlSchemaType(name = "ID")
 	protected String id;
-	@XmlAttribute(name = "xml-lang")
-	@XmlJavaTypeAdapter(CollapsedStringAdapter.class)
-	@XmlSchemaType(name = "NMTOKEN")
-	protected String xmlLang;
-	@XmlAttribute
-	@XmlJavaTypeAdapter(CollapsedStringAdapter.class)
-	protected String source;
+
+	// @XmlAttribute(name = "xml-lang")
+	// @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
+	// @XmlSchemaType(name = "NMTOKEN")
+	// protected String xmlLang;
+	// @XmlAttribute
+	// @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
+	// protected String source;
+
 	@XmlAttribute
 	protected String abbr;
+
 	@XmlAttribute
 	protected String affiliation;
-	@XmlAttribute
-	protected String role;
+
+	// @XmlAttribute
+	// protected String role;
 
 	/**
 	 * Gets the value of the content property.
@@ -181,52 +185,6 @@ public class ProducerType {
 	}
 
 	/**
-	 * Gets the value of the xmlLang property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getXmlLang() {
-		return xmlLang;
-	}
-
-	/**
-	 * Sets the value of the xmlLang property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setXmlLang(String value) {
-		this.xmlLang = value;
-	}
-
-	/**
-	 * Gets the value of the source property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getSource() {
-		if (source == null) {
-			return null;
-		} else {
-			return source;
-		}
-	}
-
-	/**
-	 * Sets the value of the source property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setSource(String value) {
-		this.source = value;
-	}
-
-	/**
 	 * Gets the value of the abbr property.
 	 * 
 	 * @return possible object is {@link String }
@@ -266,27 +224,6 @@ public class ProducerType {
 	 */
 	public void setAffiliation(String value) {
 		this.affiliation = value;
-	}
-
-	/**
-	 * Gets the value of the role property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getRole() {
-		return role;
-	}
-
-	/**
-	 * Sets the value of the role property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setRole(String value) {
-		this.role = value;
 	}
 
 }

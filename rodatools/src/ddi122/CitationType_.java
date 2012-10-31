@@ -5,7 +5,7 @@ import javax.persistence.metamodel.ListAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
-@Generated(value="Dali", date="2012-10-25T03:11:55.012+0300")
+@Generated(value="Dali", date="2012-10-26T11:35:48.863+0300")
 @StaticMetamodel(CitationType.class)
 public class CitationType_ {
 	public static volatile SingularAttribute<CitationType, Long> id_;
@@ -20,7 +20,4 @@ public class CitationType_ {
 	public static volatile SingularAttribute<CitationType, BiblCitType> biblCit;
 	public static volatile ListAttribute<CitationType, HoldingsType> holdings;
 	public static volatile SingularAttribute<CitationType, String> id;
-	public static volatile SingularAttribute<CitationType, String> xmlLang;
-	public static volatile SingularAttribute<CitationType, String> source;
-	public static volatile SingularAttribute<CitationType, String> marcuri;
 }

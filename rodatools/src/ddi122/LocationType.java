@@ -77,7 +77,7 @@ public class LocationType {
 	}
 
 	@ManyToOne
-	@JoinColumn(name = "vartype_id")
+	@JoinColumn(name = "VariableDDI_id")
 	@XmlTransient
 	private VarType vartype;
 
@@ -94,17 +94,21 @@ public class LocationType {
 	@XmlID
 	@XmlSchemaType(name = "ID")
 	protected String id;
-	@XmlAttribute(name = "xml-lang")
-	@XmlJavaTypeAdapter(CollapsedStringAdapter.class)
-	@XmlSchemaType(name = "NMTOKEN")
-	protected String xmlLang;
-	@XmlAttribute
-	@XmlJavaTypeAdapter(CollapsedStringAdapter.class)
-	protected String source;
-	@XmlAttribute(name = "StartPos")
-	protected String startPos;
-	@XmlAttribute(name = "EndPos")
-	protected String endPos;
+
+	// @XmlAttribute(name = "xml-lang")
+	// @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
+	// @XmlSchemaType(name = "NMTOKEN")
+	// protected String xmlLang;
+	// @XmlAttribute
+	// @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
+	// protected String source;
+
+	// @XmlAttribute(name = "StartPos")
+	// protected String startPos;
+	//
+	// @XmlAttribute(name = "EndPos")
+	// protected String endPos;
+
 	@XmlAttribute
 	protected String width;
 	@XmlAttribute(name = "RecSegNo")
@@ -135,94 +139,6 @@ public class LocationType {
 	 */
 	public void setID(String value) {
 		this.id = value;
-	}
-
-	/**
-	 * Gets the value of the xmlLang property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getXmlLang() {
-		return xmlLang;
-	}
-
-	/**
-	 * Sets the value of the xmlLang property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setXmlLang(String value) {
-		this.xmlLang = value;
-	}
-
-	/**
-	 * Gets the value of the source property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getSource() {
-		if (source == null) {
-			return null;
-		} else {
-			return source;
-		}
-	}
-
-	/**
-	 * Sets the value of the source property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setSource(String value) {
-		this.source = value;
-	}
-
-	/**
-	 * Gets the value of the startPos property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getStartPos() {
-		return startPos;
-	}
-
-	/**
-	 * Sets the value of the startPos property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setStartPos(String value) {
-		this.startPos = value;
-	}
-
-	/**
-	 * Gets the value of the endPos property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getEndPos() {
-		return endPos;
-	}
-
-	/**
-	 * Sets the value of the endPos property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setEndPos(String value) {
-		this.endPos = value;
 	}
 
 	/**

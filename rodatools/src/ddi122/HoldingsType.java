@@ -88,7 +88,7 @@ public class HoldingsType {
 	}
 
 	@ManyToOne
-	@JoinColumn(name = "citationtype_id")
+	@JoinColumn(name = "Citation_id")
 	@XmlTransient
 	private CitationType citationtype;
 
@@ -101,7 +101,7 @@ public class HoldingsType {
 	}
 
 	@ManyToOne
-	@JoinColumn(name = "docsrctype_id")
+	@JoinColumn(name = "DocumentationSource_id")
 	@XmlTransient
 	private DocSrcType docsrctype;
 
@@ -127,21 +127,26 @@ public class HoldingsType {
 	@XmlID
 	@XmlSchemaType(name = "ID")
 	protected String id;
-	@XmlAttribute(name = "xml-lang")
-	@XmlJavaTypeAdapter(CollapsedStringAdapter.class)
-	@XmlSchemaType(name = "NMTOKEN")
-	protected String xmlLang;
-	@XmlAttribute
-	@XmlJavaTypeAdapter(CollapsedStringAdapter.class)
-	protected String source;
-	@XmlAttribute
-	protected String location;
-	@XmlAttribute
-	protected String callno;
+
+	// @XmlAttribute(name = "xml-lang")
+	// @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
+	// @XmlSchemaType(name = "NMTOKEN")
+	// protected String xmlLang;
+	// @XmlAttribute
+	// @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
+	// protected String source;
+
+	// @XmlAttribute
+	// protected String location;
+
+	// @XmlAttribute
+	// protected String callno;
+
 	@XmlAttribute(name = "URI")
 	protected String uri;
-	@XmlAttribute
-	protected String media;
+
+	// @XmlAttribute
+	// protected String media;
 
 	/**
 	 * Gets the value of the content property.
@@ -196,94 +201,6 @@ public class HoldingsType {
 	}
 
 	/**
-	 * Gets the value of the xmlLang property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getXmlLang() {
-		return xmlLang;
-	}
-
-	/**
-	 * Sets the value of the xmlLang property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setXmlLang(String value) {
-		this.xmlLang = value;
-	}
-
-	/**
-	 * Gets the value of the source property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getSource() {
-		if (source == null) {
-			return null;
-		} else {
-			return source;
-		}
-	}
-
-	/**
-	 * Sets the value of the source property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setSource(String value) {
-		this.source = value;
-	}
-
-	/**
-	 * Gets the value of the location property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getLocation() {
-		return location;
-	}
-
-	/**
-	 * Sets the value of the location property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setLocation(String value) {
-		this.location = value;
-	}
-
-	/**
-	 * Gets the value of the callno property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getCallno() {
-		return callno;
-	}
-
-	/**
-	 * Sets the value of the callno property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setCallno(String value) {
-		this.callno = value;
-	}
-
-	/**
 	 * Gets the value of the uri property.
 	 * 
 	 * @return possible object is {@link String }
@@ -302,27 +219,6 @@ public class HoldingsType {
 	 */
 	public void setURI(String value) {
 		this.uri = value;
-	}
-
-	/**
-	 * Gets the value of the media property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getMedia() {
-		return media;
-	}
-
-	/**
-	 * Sets the value of the media property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setMedia(String value) {
-		this.media = value;
 	}
 
 }

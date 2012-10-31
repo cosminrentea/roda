@@ -92,7 +92,7 @@ public class CitationType {
 	}
 
 	@ManyToOne
-	@JoinColumn(name = "stdydscrtype_id")
+	@JoinColumn(name = "StudyDescription_id")
 	@XmlTransient
 	private StdyDscrType stdydscrtype;
 
@@ -105,7 +105,7 @@ public class CitationType {
 	}
 
 	@ManyToOne
-	@JoinColumn(name = "relmattype_id")
+	@JoinColumn(name = "RelatedMaterials_id")
 	@XmlTransient
 	private RelMatType relmattype;
 
@@ -147,15 +147,18 @@ public class CitationType {
 	@XmlID
 	@XmlSchemaType(name = "ID")
 	protected String id;
-	@XmlAttribute(name = "xml-lang")
-	@XmlJavaTypeAdapter(CollapsedStringAdapter.class)
-	@XmlSchemaType(name = "NMTOKEN")
-	protected String xmlLang;
-	@XmlAttribute
-	@XmlJavaTypeAdapter(CollapsedStringAdapter.class)
-	protected String source;
-	@XmlAttribute(name = "MARCURI")
-	protected String marcuri;
+
+	// @XmlAttribute(name = "xml-lang")
+	// @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
+	// @XmlSchemaType(name = "NMTOKEN")
+	// protected String xmlLang;
+
+	// @XmlAttribute
+	// @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
+	// protected String source;
+
+	// @XmlAttribute(name = "MARCURI")
+	// protected String marcuri;
 
 	/**
 	 * Gets the value of the titlStmt property.
@@ -362,83 +365,6 @@ public class CitationType {
 	 */
 	public void setID(String value) {
 		this.id = value;
-	}
-
-	/**
-	 * Gets the value of the xmlLang property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getXmlLang() {
-		return xmlLang;
-	}
-
-	/**
-	 * Sets the value of the xmlLang property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setXmlLang(String value) {
-		this.xmlLang = value;
-	}
-
-	/**
-	 * Gets the value of the source property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getSource() {
-		if (source == null) {
-			return null;
-		} else {
-			return source;
-		}
-	}
-
-	/**
-	 * Sets the value of the source property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setSource(String value) {
-		this.source = value;
-	}
-
-	/**
-	 * Gets the value of the marcuri property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getMARCURI() {
-		return marcuri;
-	}
-
-	/**
-	 * Sets the value of the marcuri property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setMARCURI(String value) {
-		this.marcuri = value;
-	}
-
-	@Override
-	public String toString() {
-		return "CitationType [id_=" + id_ + ", titlStmt=" + titlStmt
-				+ ", rspStmt=" + rspStmt + ", prodStmt=" + prodStmt
-				+ ", distStmt=" + distStmt + ", serStmt=" + serStmt
-				+ ", verStmt=" + verStmt + ", biblCit=" + biblCit
-				+ ", holdings=" + holdings + ", id=" + id + ", xmlLang="
-				+ xmlLang + ", source=" + source + ", marcuri=" + marcuri + "]";
 	}
 
 }

@@ -114,7 +114,7 @@ public class CatgryType {
 	}
 
 	@ManyToOne
-	@JoinColumn(name = "vartype_id")
+	@JoinColumn(name = "VariableDDI_id")
 	@XmlTransient
 	private VarType vartype;
 
@@ -148,32 +148,40 @@ public class CatgryType {
 	@XmlID
 	@XmlSchemaType(name = "ID")
 	protected String id;
-	@XmlAttribute(name = "xml-lang")
-	@XmlJavaTypeAdapter(CollapsedStringAdapter.class)
-	@XmlSchemaType(name = "NMTOKEN")
-	protected String xmlLang;
-	@XmlAttribute
-	@XmlJavaTypeAdapter(CollapsedStringAdapter.class)
-	protected String source;
+
+	// @XmlAttribute(name = "xml-lang")
+	// @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
+	// @XmlSchemaType(name = "NMTOKEN")
+	// protected String xmlLang;
+	//
+	// @XmlAttribute
+	// @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
+	// protected String source;
+
 	@XmlAttribute
 	@XmlJavaTypeAdapter(CollapsedStringAdapter.class)
 	protected String missing;
-	@XmlAttribute
-	protected String missType;
-	@XmlAttribute
-	protected String country;
+
+	// @XmlAttribute
+	// protected String missType;
+	//
+	// @XmlAttribute
+	// protected String country;
+
 	@XmlAttribute
 	// TODO Cosmin commented IDREF annot.
 	// @XmlIDREF
 	@XmlSchemaType(name = "IDREFS")
 	@ElementCollection
 	protected List<String> sdatrefs;
-	@XmlAttribute
-	@XmlJavaTypeAdapter(CollapsedStringAdapter.class)
-	protected String other;
-	@XmlAttribute
-	@XmlJavaTypeAdapter(CollapsedStringAdapter.class)
-	protected String total;
+
+	// @XmlAttribute
+	// @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
+	// protected String other;
+	//
+	// @XmlAttribute
+	// @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
+	// protected String total;
 
 	/**
 	 * Gets the value of the catValu property.
@@ -336,52 +344,6 @@ public class CatgryType {
 	}
 
 	/**
-	 * Gets the value of the xmlLang property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getXmlLang() {
-		return xmlLang;
-	}
-
-	/**
-	 * Sets the value of the xmlLang property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setXmlLang(String value) {
-		this.xmlLang = value;
-	}
-
-	/**
-	 * Gets the value of the source property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getSource() {
-		if (source == null) {
-			return null;
-		} else {
-			return source;
-		}
-	}
-
-	/**
-	 * Sets the value of the source property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setSource(String value) {
-		this.source = value;
-	}
-
-	/**
 	 * Gets the value of the missing property.
 	 * 
 	 * @return possible object is {@link String }
@@ -404,48 +366,6 @@ public class CatgryType {
 	 */
 	public void setMissing(String value) {
 		this.missing = value;
-	}
-
-	/**
-	 * Gets the value of the missType property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getMissType() {
-		return missType;
-	}
-
-	/**
-	 * Sets the value of the missType property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setMissType(String value) {
-		this.missType = value;
-	}
-
-	/**
-	 * Gets the value of the country property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getCountry() {
-		return country;
-	}
-
-	/**
-	 * Sets the value of the country property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setCountry(String value) {
-		this.country = value;
 	}
 
 	/**
@@ -475,56 +395,6 @@ public class CatgryType {
 			sdatrefs = new ArrayList<String>();
 		}
 		return this.sdatrefs;
-	}
-
-	/**
-	 * Gets the value of the other property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getOther() {
-		if (other == null) {
-			return "N";
-		} else {
-			return other;
-		}
-	}
-
-	/**
-	 * Sets the value of the other property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setOther(String value) {
-		this.other = value;
-	}
-
-	/**
-	 * Gets the value of the total property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getTotal() {
-		if (total == null) {
-			return "N";
-		} else {
-			return total;
-		}
-	}
-
-	/**
-	 * Sets the value of the total property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setTotal(String value) {
-		this.total = value;
 	}
 
 }

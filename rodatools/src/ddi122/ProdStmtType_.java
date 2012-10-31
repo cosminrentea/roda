@@ -5,7 +5,7 @@ import javax.persistence.metamodel.ListAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
-@Generated(value="Dali", date="2012-10-17T18:17:42.735+0300")
+@Generated(value="Dali", date="2012-10-26T11:57:58.746+0300")
 @StaticMetamodel(ProdStmtType.class)
 public class ProdStmtType_ {
 	public static volatile SingularAttribute<ProdStmtType, Long> id_;
@@ -17,6 +17,4 @@ public class ProdStmtType_ {
 	public static volatile ListAttribute<ProdStmtType, FundAgType> fundAg;
 	public static volatile ListAttribute<ProdStmtType, GrantNoType> grantNo;
 	public static volatile SingularAttribute<ProdStmtType, String> id;
-	public static volatile SingularAttribute<ProdStmtType, String> xmlLang;
-	public static volatile SingularAttribute<ProdStmtType, String> source;
 }

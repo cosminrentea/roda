@@ -81,7 +81,7 @@ public class ItemType {
 	}
 
 	@ManyToOne
-	@JoinColumn(name = "valrngtype_id")
+	@JoinColumn(name = "ValueRange_id")
 	@XmlTransient
 	private ValrngType valrngtype;
 
@@ -94,7 +94,7 @@ public class ItemType {
 	}
 
 	@ManyToOne
-	@JoinColumn(name = "invalrngtype_id")
+	@JoinColumn(name = "InvalidValueRange_id")
 	@XmlTransient
 	private InvalrngType invalrngtype;
 
@@ -111,13 +111,16 @@ public class ItemType {
 	@XmlID
 	@XmlSchemaType(name = "ID")
 	protected String id;
-	@XmlAttribute(name = "xml-lang")
-	@XmlJavaTypeAdapter(CollapsedStringAdapter.class)
-	@XmlSchemaType(name = "NMTOKEN")
-	protected String xmlLang;
-	@XmlAttribute
-	@XmlJavaTypeAdapter(CollapsedStringAdapter.class)
-	protected String source;
+
+	// @XmlAttribute(name = "xml-lang")
+	// @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
+	// @XmlSchemaType(name = "NMTOKEN")
+	// protected String xmlLang;
+	//
+	// @XmlAttribute
+	// @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
+	// protected String source;
+
 	@XmlAttribute(name = "UNITS")
 	@XmlJavaTypeAdapter(CollapsedStringAdapter.class)
 	protected String units;
@@ -143,52 +146,6 @@ public class ItemType {
 	 */
 	public void setID(String value) {
 		this.id = value;
-	}
-
-	/**
-	 * Gets the value of the xmlLang property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getXmlLang() {
-		return xmlLang;
-	}
-
-	/**
-	 * Sets the value of the xmlLang property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setXmlLang(String value) {
-		this.xmlLang = value;
-	}
-
-	/**
-	 * Gets the value of the source property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getSource() {
-		if (source == null) {
-			return null;
-		} else {
-			return source;
-		}
-	}
-
-	/**
-	 * Sets the value of the source property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setSource(String value) {
-		this.source = value;
 	}
 
 	/**

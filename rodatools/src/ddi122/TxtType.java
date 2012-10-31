@@ -87,7 +87,7 @@ public class TxtType {
 	}
 
 	@ManyToOne
-	@JoinColumn(name = "vartype_id")
+	@JoinColumn(name = "variableDDI_id")
 	@XmlTransient
 	private VarType vartype;
 
@@ -100,7 +100,7 @@ public class TxtType {
 	}
 
 	@ManyToOne
-	@JoinColumn(name = "category_id")
+	@JoinColumn(name = "Category_id")
 	@XmlTransient
 	private CatgryType category;
 
@@ -124,20 +124,23 @@ public class TxtType {
 	@ElementCollection
 	@Type(type = "text")
 	protected List<String> content;
+
 	@XmlAttribute(name = "ID")
 	@XmlJavaTypeAdapter(CollapsedStringAdapter.class)
 	@XmlID
 	@XmlSchemaType(name = "ID")
 	protected String id;
-	@XmlAttribute(name = "xml-lang")
-	@XmlJavaTypeAdapter(CollapsedStringAdapter.class)
-	@XmlSchemaType(name = "NMTOKEN")
-	protected String xmlLang;
-	@XmlAttribute
-	@XmlJavaTypeAdapter(CollapsedStringAdapter.class)
-	protected String source;
-	@XmlAttribute
-	protected String level;
+
+	// @XmlAttribute(name = "xml-lang")
+	// @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
+	// @XmlSchemaType(name = "NMTOKEN")
+	// protected String xmlLang;
+	// @XmlAttribute
+	// @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
+	// protected String source;
+
+	// @XmlAttribute
+	// protected String level;
 
 	@XmlAttribute
 	// TODO Cosmin commented IDREF annot.
@@ -200,73 +203,6 @@ public class TxtType {
 	}
 
 	/**
-	 * Gets the value of the xmlLang property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getXmlLang() {
-		return xmlLang;
-	}
-
-	/**
-	 * Sets the value of the xmlLang property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setXmlLang(String value) {
-		this.xmlLang = value;
-	}
-
-	/**
-	 * Gets the value of the source property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getSource() {
-		if (source == null) {
-			return null;
-		} else {
-			return source;
-		}
-	}
-
-	/**
-	 * Sets the value of the source property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setSource(String value) {
-		this.source = value;
-	}
-
-	/**
-	 * Gets the value of the level property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getLevel() {
-		return level;
-	}
-
-	/**
-	 * Sets the value of the level property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setLevel(String value) {
-		this.level = value;
-	}
-
-	/**
 	 * Gets the value of the sdatrefs property.
 	 * 
 	 * <p>
@@ -293,13 +229,6 @@ public class TxtType {
 			sdatrefs = new ArrayList<String>();
 		}
 		return this.sdatrefs;
-	}
-
-	@Override
-	public String toString() {
-		return "TxtType [id_=" + id_ + ", content=" + content + ", id=" + id
-				+ ", xmlLang=" + xmlLang + ", source=" + source + ", level="
-				+ level + ", sdatrefs=" + sdatrefs + "]";
 	}
 
 }

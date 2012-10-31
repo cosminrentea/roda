@@ -136,7 +136,7 @@ public class VarType {
 	}
 
 	@ManyToOne
-	@JoinColumn(name = "datadscrtype_id")
+	@JoinColumn(name = "VariableDescription_id")
 	@XmlTransient
 	private DataDscrType datadscrtype;
 
@@ -186,13 +186,15 @@ public class VarType {
 	@XmlID
 	@XmlSchemaType(name = "ID")
 	protected String id;
-	@XmlAttribute(name = "xml-lang")
-	@XmlJavaTypeAdapter(CollapsedStringAdapter.class)
-	@XmlSchemaType(name = "NMTOKEN")
-	protected String xmlLang;
-	@XmlAttribute
-	@XmlJavaTypeAdapter(CollapsedStringAdapter.class)
-	protected String source;
+
+	// @XmlAttribute(name = "xml-lang")
+	// @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
+	// @XmlSchemaType(name = "NMTOKEN")
+	// protected String xmlLang;
+	// @XmlAttribute
+	// @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
+	// protected String source;
+
 	@XmlAttribute(required = true)
 	protected String name;
 	@XmlAttribute
@@ -225,15 +227,19 @@ public class VarType {
 	@ElementCollection
 	protected List<String> files;
 
-	@XmlAttribute
-	protected String vendor;
+	// @XmlAttribute
+	// protected String vendor;
+
 	@XmlAttribute
 	protected String dcml;
+
 	@XmlAttribute
 	@XmlJavaTypeAdapter(CollapsedStringAdapter.class)
 	protected String intrvl;
-	@XmlAttribute
-	protected String rectype;
+
+	// @XmlAttribute
+	// protected String rectype;
+
 	@XmlAttribute
 	// TODO Cosmin commented IDREF annot.
 	// @XmlIDREF
@@ -599,52 +605,6 @@ public class VarType {
 	}
 
 	/**
-	 * Gets the value of the xmlLang property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getXmlLang() {
-		return xmlLang;
-	}
-
-	/**
-	 * Sets the value of the xmlLang property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setXmlLang(String value) {
-		this.xmlLang = value;
-	}
-
-	/**
-	 * Gets the value of the source property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getSource() {
-		if (source == null) {
-			return null;
-		} else {
-			return source;
-		}
-	}
-
-	/**
-	 * Sets the value of the source property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setSource(String value) {
-		this.source = value;
-	}
-
-	/**
 	 * Gets the value of the name property.
 	 * 
 	 * @return possible object is {@link String }
@@ -807,27 +767,6 @@ public class VarType {
 	// }
 
 	/**
-	 * Gets the value of the vendor property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getVendor() {
-		return vendor;
-	}
-
-	/**
-	 * Sets the value of the vendor property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setVendor(String value) {
-		this.vendor = value;
-	}
-
-	/**
 	 * Gets the value of the dcml property.
 	 * 
 	 * @return possible object is {@link String }
@@ -871,27 +810,6 @@ public class VarType {
 	 */
 	public void setIntrvl(String value) {
 		this.intrvl = value;
-	}
-
-	/**
-	 * Gets the value of the rectype property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getRectype() {
-		return rectype;
-	}
-
-	/**
-	 * Sets the value of the rectype property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setRectype(String value) {
-		this.rectype = value;
 	}
 
 	/**

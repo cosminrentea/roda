@@ -26,9 +26,16 @@ de pus in DBext primary keys, auto-numbers, nullable
 
 + de generat clase JPA in rodaext (DB + project), pornind de la schema din dbwrench
 
+de eliminat field-uri din pachetul Java:
+source
+xml-lang (mai putin la Codebook)
++vendor
+
 de legat coerent si complet la nivelul claselor Java cele 2 BD: ddi si dbext
 
 de creat documentatie (tabele, coloane, FK)
+
+de testat exportul din baza de date in DDI-uri
 
 de creat unit-tests pentru rodatools
 
@@ -37,3 +44,35 @@ de creat teste de integrare pentru rodatools
 de creat script Ant de compilare + rulare teste
 
 de configurat build-ul in Hudson
+
+
+RAPORT
+------
+
+Baza de date
+----
+Structura, Relatii
+Obiectele principale
+Relatia cu DDI
+Auditarea
+Versionare
+
+
+Aplicatie
+-----
+Users
+Autentificare
+ACL
+Interfata de administrare
+Interfata publica
+
+Asigurarea calitatii
+----
+Metodologia
+Testarea unitatilor
+Testarea de integrare
+Testarea performantelor
+
+Proiectarea modelului
+----
+Diagrame UML

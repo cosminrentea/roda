@@ -79,7 +79,7 @@ public class VerStmtType {
 	}
 
 	@ManyToOne
-	@JoinColumn(name = "vartype_id")
+	@JoinColumn(name = "variableDDI_id")
 	@XmlTransient
 	private VarType vartype;
 
@@ -92,7 +92,7 @@ public class VerStmtType {
 	}
 
 	@ManyToOne
-	@JoinColumn(name = "citationtype_id")
+	@JoinColumn(name = "Citation_id")
 	@XmlTransient
 	private CitationType citationtype;
 
@@ -105,7 +105,7 @@ public class VerStmtType {
 	}
 
 	@ManyToOne
-	@JoinColumn(name = "docsrctype_id")
+	@JoinColumn(name = "DocumentationSource_id")
 	@XmlTransient
 	private DocSrcType docsrctype;
 
@@ -128,13 +128,14 @@ public class VerStmtType {
 	@XmlID
 	@XmlSchemaType(name = "ID")
 	protected String id;
-	@XmlAttribute(name = "xml-lang")
-	@XmlJavaTypeAdapter(CollapsedStringAdapter.class)
-	@XmlSchemaType(name = "NMTOKEN")
-	protected String xmlLang;
-	@XmlAttribute
-	@XmlJavaTypeAdapter(CollapsedStringAdapter.class)
-	protected String source;
+
+	// @XmlAttribute(name = "xml-lang")
+	// @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
+	// @XmlSchemaType(name = "NMTOKEN")
+	// protected String xmlLang;
+	// @XmlAttribute
+	// @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
+	// protected String source;
 
 	/**
 	 * Gets the value of the version property.
@@ -197,52 +198,6 @@ public class VerStmtType {
 	 */
 	public void setID(String value) {
 		this.id = value;
-	}
-
-	/**
-	 * Gets the value of the xmlLang property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getXmlLang() {
-		return xmlLang;
-	}
-
-	/**
-	 * Sets the value of the xmlLang property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setXmlLang(String value) {
-		this.xmlLang = value;
-	}
-
-	/**
-	 * Gets the value of the source property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getSource() {
-		if (source == null) {
-			return null;
-		} else {
-			return source;
-		}
-	}
-
-	/**
-	 * Sets the value of the source property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setSource(String value) {
-		this.source = value;
 	}
 
 }

@@ -101,7 +101,7 @@ public class OtherMatType {
 	}
 
 	@ManyToOne
-	@JoinColumn(name = "codebook_id")
+	@JoinColumn(name = "Codebook_id")
 	@XmlTransient
 	private CodeBook codebook;
 
@@ -117,7 +117,7 @@ public class OtherMatType {
 	protected List<OtherMatType> otherMat;
 
 	@ManyToOne
-	@JoinColumn(name = "othermattype_id")
+	@JoinColumn(name = "OtherStudyRelatedMaterials_id")
 	@XmlTransient
 	private OtherMatType othermattype;
 
@@ -143,13 +143,16 @@ public class OtherMatType {
 	@XmlID
 	@XmlSchemaType(name = "ID")
 	protected String id;
-	@XmlAttribute(name = "xml-lang")
-	@XmlJavaTypeAdapter(CollapsedStringAdapter.class)
-	@XmlSchemaType(name = "NMTOKEN")
-	protected String xmlLang;
-	@XmlAttribute
-	@XmlJavaTypeAdapter(CollapsedStringAdapter.class)
-	protected String source;
+
+	// @XmlAttribute(name = "xml-lang")
+	// @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
+	// @XmlSchemaType(name = "NMTOKEN")
+	// protected String xmlLang;
+	//
+	// @XmlAttribute
+	// @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
+	// protected String source;
+
 	@XmlAttribute
 	protected String type;
 	@XmlAttribute(required = true)
@@ -281,52 +284,6 @@ public class OtherMatType {
 	}
 
 	/**
-	 * Gets the value of the xmlLang property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getXmlLang() {
-		return xmlLang;
-	}
-
-	/**
-	 * Sets the value of the xmlLang property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setXmlLang(String value) {
-		this.xmlLang = value;
-	}
-
-	/**
-	 * Gets the value of the source property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getSource() {
-		if (source == null) {
-			return null;
-		} else {
-			return source;
-		}
-	}
-
-	/**
-	 * Sets the value of the source property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setSource(String value) {
-		this.source = value;
-	}
-
-	/**
 	 * Gets the value of the type property.
 	 * 
 	 * @return possible object is {@link String }
@@ -387,14 +344,6 @@ public class OtherMatType {
 	 */
 	public void setURI(String value) {
 		this.uri = value;
-	}
-
-	@Override
-	public String toString() {
-		return "OtherMatType [id_=" + id_ + ", otherMat=" + otherMat
-				+ ", labl=" + labl + ", txt=" + txt + ", citation=" + citation
-				+ ", id=" + id + ", xmlLang=" + xmlLang + ", source=" + source
-				+ ", type=" + type + ", level=" + level + ", uri=" + uri + "]";
 	}
 
 }

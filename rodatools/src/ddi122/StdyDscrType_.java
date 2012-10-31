@@ -5,7 +5,7 @@ import javax.persistence.metamodel.ListAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
-@Generated(value="Dali", date="2012-10-25T03:11:55.676+0300")
+@Generated(value="Dali", date="2012-10-26T12:02:13.884+0300")
 @StaticMetamodel(StdyDscrType.class)
 public class StdyDscrType_ {
 	public static volatile SingularAttribute<StdyDscrType, Long> id_;
@@ -16,7 +16,5 @@ public class StdyDscrType_ {
 	public static volatile ListAttribute<StdyDscrType, DataAccsType> dataAccs;
 	public static volatile ListAttribute<StdyDscrType, OthrStdyMatType> othrStdyMat;
 	public static volatile SingularAttribute<StdyDscrType, String> id;
-	public static volatile SingularAttribute<StdyDscrType, String> xmlLang;
-	public static volatile SingularAttribute<StdyDscrType, String> source;
 	public static volatile ListAttribute<StdyDscrType, String> access;
 }

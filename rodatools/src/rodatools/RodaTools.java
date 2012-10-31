@@ -265,7 +265,8 @@ public class RodaTools {
 
 		spssFile.exportData(new File(outputFilename), fileFormatInfo);
 
-		// spssFile.dumpDDI2();
+		// TODO check
+		spssFile.dumpMetadata();
 	}
 
 	private void exportAllFromDb() throws JAXBException, IOException,

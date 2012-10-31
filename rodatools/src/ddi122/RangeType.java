@@ -84,7 +84,7 @@ public class RangeType {
 	}
 
 	@ManyToOne
-	@JoinColumn(name = "valrngtype_id")
+	@JoinColumn(name = "ValueRange_id")
 	@XmlTransient
 	private ValrngType valrngtype;
 
@@ -97,7 +97,7 @@ public class RangeType {
 	}
 
 	@ManyToOne
-	@JoinColumn(name = "invalrngtype_id")
+	@JoinColumn(name = "InvalidValueRange_id")
 	@XmlTransient
 	private InvalrngType invalrngtype;
 
@@ -114,24 +114,31 @@ public class RangeType {
 	@XmlID
 	@XmlSchemaType(name = "ID")
 	protected String id;
-	@XmlAttribute(name = "xml-lang")
-	@XmlJavaTypeAdapter(CollapsedStringAdapter.class)
-	@XmlSchemaType(name = "NMTOKEN")
-	protected String xmlLang;
-	@XmlAttribute
-	@XmlJavaTypeAdapter(CollapsedStringAdapter.class)
-	protected String source;
+
+	// @XmlAttribute(name = "xml-lang")
+	// @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
+	// @XmlSchemaType(name = "NMTOKEN")
+	// protected String xmlLang;
+	//
+	// @XmlAttribute
+	// @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
+	// protected String source;
+
 	@XmlAttribute(name = "UNITS")
 	@XmlJavaTypeAdapter(CollapsedStringAdapter.class)
 	protected String units;
+
 	@XmlAttribute
 	protected String min;
-	@XmlAttribute
-	protected String minExclusive;
+
+	// @XmlAttribute
+	// protected String minExclusive;
+
 	@XmlAttribute
 	protected String max;
-	@XmlAttribute
-	protected String maxExclusive;
+
+	// @XmlAttribute
+	// protected String maxExclusive;
 
 	/**
 	 * Gets the value of the id property.
@@ -152,52 +159,6 @@ public class RangeType {
 	 */
 	public void setID(String value) {
 		this.id = value;
-	}
-
-	/**
-	 * Gets the value of the xmlLang property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getXmlLang() {
-		return xmlLang;
-	}
-
-	/**
-	 * Sets the value of the xmlLang property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setXmlLang(String value) {
-		this.xmlLang = value;
-	}
-
-	/**
-	 * Gets the value of the source property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getSource() {
-		if (source == null) {
-			return null;
-		} else {
-			return source;
-		}
-	}
-
-	/**
-	 * Sets the value of the source property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setSource(String value) {
-		this.source = value;
 	}
 
 	/**
@@ -247,27 +208,6 @@ public class RangeType {
 	}
 
 	/**
-	 * Gets the value of the minExclusive property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getMinExclusive() {
-		return minExclusive;
-	}
-
-	/**
-	 * Sets the value of the minExclusive property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setMinExclusive(String value) {
-		this.minExclusive = value;
-	}
-
-	/**
 	 * Gets the value of the max property.
 	 * 
 	 * @return possible object is {@link String }
@@ -286,27 +226,6 @@ public class RangeType {
 	 */
 	public void setMax(String value) {
 		this.max = value;
-	}
-
-	/**
-	 * Gets the value of the maxExclusive property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getMaxExclusive() {
-		return maxExclusive;
-	}
-
-	/**
-	 * Sets the value of the maxExclusive property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setMaxExclusive(String value) {
-		this.maxExclusive = value;
 	}
 
 }

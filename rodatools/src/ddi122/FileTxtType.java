@@ -93,16 +93,16 @@ public class FileTxtType {
 	}
 
 	@ManyToOne
-	@JoinColumn(name = "filetxttype_id")
+	@JoinColumn(name = "DataFilesDescription_id")
 	@XmlTransient
-	private CatgryType filetxttype;
+	private FileDscrType filedscrtype;
 
-	public CatgryType getFiletxttype() {
-		return filetxttype;
+	public FileDscrType getFiledscrtype() {
+		return filedscrtype;
 	}
 
-	public void setFiletxttype(CatgryType filetxttype) {
-		this.filetxttype = filetxttype;
+	public void setFiledscrtype(FileDscrType filedscrtype) {
+		this.filedscrtype = filedscrtype;
 	}
 
 	@OneToOne(cascade = { CascadeType.ALL })
@@ -126,14 +126,14 @@ public class FileTxtType {
 	@XmlSchemaType(name = "ID")
 	protected String id;
 
-	@XmlAttribute(name = "xml-lang")
-	@XmlJavaTypeAdapter(CollapsedStringAdapter.class)
-	@XmlSchemaType(name = "NMTOKEN")
-	protected String xmlLang;
-
-	@XmlAttribute
-	@XmlJavaTypeAdapter(CollapsedStringAdapter.class)
-	protected String source;
+	// @XmlAttribute(name = "xml-lang")
+	// @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
+	// @XmlSchemaType(name = "NMTOKEN")
+	// protected String xmlLang;
+	//
+	// @XmlAttribute
+	// @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
+	// protected String source;
 
 	/**
 	 * Gets the value of the fileName property.
@@ -268,52 +268,6 @@ public class FileTxtType {
 	 */
 	public void setID(String value) {
 		this.id = value;
-	}
-
-	/**
-	 * Gets the value of the xmlLang property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getXmlLang() {
-		return xmlLang;
-	}
-
-	/**
-	 * Sets the value of the xmlLang property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setXmlLang(String value) {
-		this.xmlLang = value;
-	}
-
-	/**
-	 * Gets the value of the source property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getSource() {
-		if (source == null) {
-			return null;
-		} else {
-			return source;
-		}
-	}
-
-	/**
-	 * Sets the value of the source property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setSource(String value) {
-		this.source = value;
 	}
 
 }

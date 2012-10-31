@@ -5,7 +5,7 @@ import javax.persistence.metamodel.ListAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
-@Generated(value="Dali", date="2012-10-25T03:11:55.689+0300")
+@Generated(value="Dali", date="2012-10-26T12:02:41.009+0300")
 @StaticMetamodel(SumDscrType.class)
 public class SumDscrType_ {
 	public static volatile SingularAttribute<SumDscrType, Long> id_;
@@ -18,6 +18,4 @@ public class SumDscrType_ {
 	public static volatile ListAttribute<SumDscrType, AnlyUnitType> anlyUnit;
 	public static volatile ListAttribute<SumDscrType, UniverseType> universe;
 	public static volatile SingularAttribute<SumDscrType, String> id;
-	public static volatile SingularAttribute<SumDscrType, String> xmlLang;
-	public static volatile SingularAttribute<SumDscrType, String> source;
 }

@@ -3,6 +3,7 @@ package rodatools;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.FilenameFilter;
 import java.io.IOException;
@@ -34,6 +35,7 @@ import org.opendatafoundation.data.spss.SPSSFileException;
 import org.xml.sax.SAXException;
 
 import ddi122.CodeBook;
+import ddi122.FileTxtType;
 
 public class RodaTools {
 
@@ -43,7 +45,7 @@ public class RodaTools {
 	private static final String rodaNesstar = "data/roda-nesstar/";
 	private static final String rodaNesstarDbOutput = "data/roda-db-export/";
 	private static final String jaxbContextPath = "ddi122";
-	private static final String jpaPersistenceUnitName = "ddi122-jpa";
+	private static final String jpaPersistenceUnitName = "roda-jpa";
 
 	/**
 	 * @param args
@@ -263,10 +265,11 @@ public class RodaTools {
 		fileFormatInfo.format = FileFormatInfo.Format.ASCII;
 		fileFormatInfo.asciiFormat = ASCIIFormat.DELIMITED;
 
-		spssFile.exportData(new File(outputFilename), fileFormatInfo);
-
-		// TODO check
+		// debug info
 		spssFile.dumpMetadata();
+		spssFile.dumpData();
+
+		spssFile.exportData(new File(outputFilename), fileFormatInfo);
 	}
 
 	private void exportAllFromDb() throws JAXBException, IOException,
@@ -277,7 +280,7 @@ public class RodaTools {
 		// we just want to use the available data
 		HashMap<String, Object> properties = new HashMap<String, Object>();
 		properties.put("eclipselink.ddl-generation", "none");
-		// TODO add logging level control
+		// TODO Cosmin: add logging level control
 
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory(
 				jpaPersistenceUnitName, properties);
@@ -354,7 +357,7 @@ public class RodaTools {
 			properties.put("eclipselink.ddl-generation",
 					"drop-and-create-tables");
 			properties.put("hibernate.hbm2ddl.auto", "create");
-			// TODO add logging level control
+			// TODO Cosmin: add logging level control
 
 			emf = Persistence.createEntityManagerFactory(
 					jpaPersistenceUnitName, properties);
@@ -423,7 +426,7 @@ public class RodaTools {
 		// hibernate
 		properties.put("hibernate.hbm2ddl.auto", "update");
 
-		// TODO add logging level control
+		// TODO Cosmin: add logging level control
 
 		emf = Persistence.createEntityManagerFactory(jpaPersistenceUnitName,
 				properties);
@@ -441,12 +444,54 @@ public class RodaTools {
 		// optional
 		System.gc();
 
-		// // get the CodeBook which was saved in database
-		// Query query = em.createQuery("select c from CodeBook c");
-		// CodeBook result = (CodeBook) query.getResultList().get(0);
-		//
-		// // save the CodeBook as XML
-		// marshaller.marshal(result, new File(rodaNesstarDb+filename));
+		em.getTransaction().begin();
+
+		Query query = em.createQuery("select f from FileTxtType f");
+
+		em.getTransaction().commit();
+
+		// iterate over results
+		for (FileTxtType f : (List<FileTxtType>) query.getResultList()) {
+
+			String datafilename = f.getFileName().getContent().get(0);
+			System.err.println(datafilename);
+
+			if (datafilename != null && datafilename.endsWith(".sav")) {
+				try {
+
+					// TODO eliminate hard-coding
+					SPSSFile sf = new SPSSFile("data/roda-nesstar/"
+							+ datafilename);
+					sf.loadMetadata();
+					sf.loadData();
+
+					// verbose logging
+					// sf.dumpMetadata();
+
+					sf.dumpData();
+
+					f.setSpssfile(sf);
+
+					em.getTransaction().begin();
+					em.persist(f);
+					em.getTransaction().commit();
+
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (SPSSFileException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+
+			// optional gentle suggestion :)
+			System.gc();
+		}
+
 		em.close();
 		emf.close();
 

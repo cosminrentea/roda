@@ -33,46 +33,60 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Entity;
+import javax.persistence.Transient;
+
 /**
  * SPSS Record Type 7 - Generic type 7 record (for unknown subtypes)
  * 
  * @author Pascal Heus (pheus@opendatafoundation.org)
  */
+@Entity
 public class SPSSRecordType7 extends SPSSAbstractRecordType {
-    int     recordTypeCode;
-    int     recordSubtypeCode;
-    int     dataElementLength;
-    int     numberOfDataElements;
-    List<byte[]> dataElement;
-    
-    public void read(SPSSFile is) throws IOException, SPSSFileException {
-        // position in file
-        fileLocation = is.getFilePointer();
 
-        // record type
-        recordTypeCode = is.readSPSSInt();
-        if(recordTypeCode!=7) throw new SPSSFileException("Error reading variableRecord: bad record type ["+recordTypeCode+"]. Expecting Record Type 7.");
-        // subtype
-        recordSubtypeCode = is.readSPSSInt();
-        // data elements
-        dataElementLength = is.readSPSSInt();
-        numberOfDataElements = is.readSPSSInt();
-        dataElement = new ArrayList<byte[]>();
-        byte[] data = new byte[dataElementLength];
-        for(int i=0; i<numberOfDataElements; i++) {
-            is.read(data);
-            dataElement.add(data);
-        }
-    }
+	int recordTypeCode;
 
-    public String toString() {
-        String str="";
-        str += "\nRECORD TYPE 7 - GENERIC";
-        str += "\nLocation        : "+fileLocation;
-        str += "\nRecord Type     : "+recordTypeCode;
-        str += "\nRecord Subtype  : "+recordSubtypeCode;
-        str += "\nData elements   : "+numberOfDataElements;
-        str += "\nElement length  : "+dataElementLength;
-        return(str);
-    }
+	int recordSubtypeCode;
+
+	int dataElementLength;
+
+	int numberOfDataElements;
+
+	// TODO Cosmin
+	@Transient
+	List<byte[]> dataElement;
+
+	public void read(SPSSFile is) throws IOException, SPSSFileException {
+		// position in file
+		fileLocation = is.getFilePointer();
+
+		// record type
+		recordTypeCode = is.readSPSSInt();
+		if (recordTypeCode != 7)
+			throw new SPSSFileException(
+					"Error reading variableRecord: bad record type ["
+							+ recordTypeCode + "]. Expecting Record Type 7.");
+		// subtype
+		recordSubtypeCode = is.readSPSSInt();
+		// data elements
+		dataElementLength = is.readSPSSInt();
+		numberOfDataElements = is.readSPSSInt();
+		dataElement = new ArrayList<byte[]>();
+		byte[] data = new byte[dataElementLength];
+		for (int i = 0; i < numberOfDataElements; i++) {
+			is.read(data);
+			dataElement.add(data);
+		}
+	}
+
+	public String toString() {
+		String str = "";
+		str += "\nRECORD TYPE 7 - GENERIC";
+		str += "\nLocation        : " + fileLocation;
+		str += "\nRecord Type     : " + recordTypeCode;
+		str += "\nRecord Subtype  : " + recordSubtypeCode;
+		str += "\nData elements   : " + numberOfDataElements;
+		str += "\nElement length  : " + dataElementLength;
+		return (str);
+	}
 }

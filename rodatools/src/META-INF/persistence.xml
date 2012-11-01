@@ -2,7 +2,25 @@
 <persistence version="2.0"
 	xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
-	<persistence-unit name="ddi122-jpa" transaction-type="RESOURCE_LOCAL">
+	<persistence-unit name="roda-jpa" transaction-type="RESOURCE_LOCAL">
+		<class>org.opendatafoundation.data.spss.VariableDisplayParams</class>
+		<class>org.opendatafoundation.data.spss.SPSSVariableCategory</class>
+		<class>org.opendatafoundation.data.spss.SPSSVariable</class>
+		<class>org.opendatafoundation.data.spss.SPSSRecordType7Subtype5</class>
+		<class>org.opendatafoundation.data.spss.SPSSRecordType7Subtype4</class>
+		<class>org.opendatafoundation.data.spss.SPSSRecordType7Subtype3</class>
+		<class>org.opendatafoundation.data.spss.SPSSRecordType7Subtype13</class>
+		<class>org.opendatafoundation.data.spss.SPSSRecordType7Subtype11</class>
+		<class>org.opendatafoundation.data.spss.SPSSRecordType7</class>
+		<class>org.opendatafoundation.data.spss.SPSSRecordType6</class>
+		<class>org.opendatafoundation.data.spss.SPSSRecordType4</class>
+		<class>org.opendatafoundation.data.spss.SPSSRecordType3</class>
+		<class>org.opendatafoundation.data.spss.SPSSRecordType2</class>
+		<class>org.opendatafoundation.data.spss.SPSSRecordType1</class>
+		<class>org.opendatafoundation.data.spss.SPSSFile</class>
+		<class>org.opendatafoundation.data.spss.SPSSDataRecordVariableValue</class>
+		<class>org.opendatafoundation.data.spss.SPSSDataRecord</class>
+		<class>org.opendatafoundation.data.spss.SPSSAbstractRecordType</class>
 		<class>ddi122.WeightType</class>
 		<class>ddi122.VersionType</class>
 		<class>ddi122.VerStmtType</class>
@@ -215,7 +233,7 @@
 			<property name="hibernate.connection.username" value="roda"/>
 			<property name="hibernate.connection.password" value="roda"/>
 			<property name="hibernate.default_schema" value="public"/>
-			<property name="hibernate.show_sql" value="true"/>
+			<property name="hibernate.show_sql" value="false"/>
 			<property name="hibernate.format_sql" value="true"/>
 			
 		</properties>

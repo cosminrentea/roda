@@ -1,5 +1,11 @@
 package org.opendatafoundation.data.spss;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.xml.bind.annotation.XmlTransient;
+
 /*
  * Author(s): Pascal Heus (pheus@opendatafoundation.org)
  *  
@@ -31,13 +37,33 @@ package org.opendatafoundation.data.spss;
 
 /**
  * A class to capture variable category and missing values metadata
- *  
+ * 
  */
+@Entity
 public class SPSSVariableCategory {
-    public double value= Double.NaN; //< A numeric value
-    public String strValue="";       //< A string value
-    public String label="";             //< The category label
-    boolean isMissing = false;       //< Indicates if this should be treated as a missing value
-    long freq=0;                     // The category frequency (not implemented)
-    long wgtFreq=0;                  // The category weighted frequency (not implemented)
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@XmlTransient
+	private long id_;
+
+	public long getId_() {
+		return id_;
+	}
+
+	public void setId_(long id_) {
+		this.id_ = id_;
+	}
+
+	protected double value = Double.NaN; // < A numeric value
+
+	protected String strValue = ""; // < A string value
+
+	protected String label = ""; // < The category label
+
+	boolean isMissing = false; // < Indicates if this should be treated as a
+								// missing value
+	long freq = 0; // The category frequency (not implemented)
+
+	long wgtFreq = 0; // The category weighted frequency (not implemented)
 }

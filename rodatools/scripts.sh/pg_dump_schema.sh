@@ -1,1 +1,1 @@
-pg_dump -f roda-schema-50codebooks.sql -n public -s -U roda roda
+pg_dump -f ../sql/schema/roda-schema-all-codebooks.sql -n public -s -U roda roda

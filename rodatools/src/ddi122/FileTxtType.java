@@ -30,6 +30,8 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import org.opendatafoundation.data.spss.SPSSFile;
+
 /**
  * <p>
  * Java class for fileTxtType complex type.
@@ -77,7 +79,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 @XmlType(name = "fileTxtType", propOrder = { "fileName", "dimensns",
 		"fileType", "software", "verStmt" })
 @Entity
-@Table(name = "FileByFileDescription")
+@Table(name = "DataFileDescription")
 public class FileTxtType {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -90,6 +92,18 @@ public class FileTxtType {
 
 	public void setId_(long id_) {
 		this.id_ = id_;
+	}
+
+	@XmlTransient
+	@OneToOne(cascade = { CascadeType.ALL })
+	private SPSSFile spssfile;
+
+	public SPSSFile getSpssfile() {
+		return spssfile;
+	}
+
+	public void setSpssfile(SPSSFile spssfile) {
+		this.spssfile = spssfile;
 	}
 
 	@ManyToOne

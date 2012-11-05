@@ -393,6 +393,9 @@ public class RodaTools {
 	private void importOneToDb(String jdbcUrl, String username,
 			String userpassword, String fname) throws JAXBException,
 			IOException, SAXException {
+
+		boolean importSpss = false;
+
 		EntityManagerFactory emf;
 		EntityManager em;
 
@@ -444,52 +447,55 @@ public class RodaTools {
 		// optional
 		System.gc();
 
-		em.getTransaction().begin();
+		if (importSpss) {
 
-		Query query = em.createQuery("select f from FileTxtType f");
+			em.getTransaction().begin();
 
-		em.getTransaction().commit();
+			Query query = em.createQuery("select f from FileTxtType f");
 
-		// iterate over results
-		for (FileTxtType f : (List<FileTxtType>) query.getResultList()) {
+			em.getTransaction().commit();
 
-			String datafilename = f.getFileName().getContent().get(0);
-			System.err.println(datafilename);
+			// iterate over results
+			for (FileTxtType f : (List<FileTxtType>) query.getResultList()) {
 
-			if (datafilename != null && datafilename.endsWith(".sav")) {
-				try {
+				String datafilename = f.getFileName().getContent();
+				System.err.println(datafilename);
 
-					// TODO eliminate hard-coding
-					SPSSFile sf = new SPSSFile("data/roda-nesstar/"
-							+ datafilename);
-					sf.loadMetadata();
-					sf.loadData();
+				if (datafilename != null && datafilename.endsWith(".sav")) {
+					try {
 
-					// verbose logging
-					// sf.dumpMetadata();
+						// TODO eliminate hard-coding
+						SPSSFile sf = new SPSSFile("data/roda-nesstar/"
+								+ datafilename);
+						sf.loadMetadata();
+						sf.loadData();
 
-					sf.dumpData();
+						// verbose logging
+						// sf.dumpMetadata();
 
-					f.setSpssfile(sf);
+						sf.dumpData();
 
-					em.getTransaction().begin();
-					em.persist(f);
-					em.getTransaction().commit();
+						f.setSpssfile(sf);
 
-				} catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (SPSSFileException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+						em.getTransaction().begin();
+						em.persist(f);
+						em.getTransaction().commit();
+
+					} catch (FileNotFoundException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (SPSSFileException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
-			}
 
-			// optional gentle suggestion :)
-			System.gc();
+				// optional gentle suggestion :)
+				System.gc();
+			}
 		}
 
 		em.close();

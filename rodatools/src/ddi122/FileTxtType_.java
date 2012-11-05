@@ -4,9 +4,10 @@ import javax.annotation.Generated;
 import javax.persistence.metamodel.ListAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
+
 import org.opendatafoundation.data.spss.SPSSFile;
 
-@Generated(value="Dali", date="2012-11-01T15:27:09.561+0200")
+@Generated(value="Dali", date="2012-11-04T14:47:19.809+0200")
 @StaticMetamodel(FileTxtType.class)
 public class FileTxtType_ {
 	public static volatile SingularAttribute<FileTxtType, Long> id_;

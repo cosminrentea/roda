@@ -7,14 +7,9 @@
 
 package ddi122;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.annotation.XmlElementDecl;
 import javax.xml.bind.annotation.XmlRegistry;
-import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.namespace.QName;
 
 /**
@@ -28,21 +23,9 @@ import javax.xml.namespace.QName;
  * methods for each of these are provided in this class.
  * 
  */
+
 @XmlRegistry
-@Entity
 public class ObjectFactory {
-	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
-	@XmlTransient
-	private long id_;
-
-	public long getId_() {
-		return id_;
-	}
-
-	public void setId_(long id_) {
-		this.id_ = id_;
-	}
 
 	private final static QName _FileQntyTypeLink_QNAME = new QName(
 			"http://www.icpsr.umich.edu/DDI", "Link");

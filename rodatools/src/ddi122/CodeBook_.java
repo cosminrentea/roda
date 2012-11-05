@@ -1,12 +1,13 @@
 package ddi122;
 
-import dbext.Org;
 import javax.annotation.Generated;
 import javax.persistence.metamodel.ListAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
-@Generated(value="Dali", date="2012-10-26T11:36:42.667+0300")
+import dbext.Org;
+
+@Generated(value="Dali", date="2012-11-04T14:47:19.752+0200")
 @StaticMetamodel(CodeBook.class)
 public class CodeBook_ {
 	public static volatile SingularAttribute<CodeBook, Long> id_;

@@ -30,7 +30,10 @@ package org.opendatafoundation.data.spss;
  */
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 
 /**
@@ -42,8 +45,11 @@ import javax.persistence.Entity;
 public class SPSSRecordType6 extends SPSSAbstractRecordType {
 
 	int recordTypeCode;
+
 	int numberOfLines;
-	String[] line;
+
+	@ElementCollection
+	List<String> line;
 
 	public void read(SPSSFile is) throws IOException, SPSSFileException {
 		// position in file
@@ -58,9 +64,9 @@ public class SPSSRecordType6 extends SPSSAbstractRecordType {
 		// number of variables
 		numberOfLines = is.readSPSSInt();
 		// read the lines
-		line = new String[numberOfLines];
+		line = new ArrayList<String>();
 		for (int i = 0; i < numberOfLines; i++) {
-			line[i] = is.readSPSSString(80);
+			line.add(is.readSPSSString(80));
 		}
 	}
 
@@ -70,8 +76,8 @@ public class SPSSRecordType6 extends SPSSAbstractRecordType {
 		str += "\nLocation        : " + fileLocation;
 		str += "\nRecord Type     : " + recordTypeCode;
 		str += "\nNumber of lines : " + numberOfLines;
-		for (int i = 0; i < numberOfLines; i++) {
-			str += line[i] + "\n";
+		for (int i = 0; i < line.size(); i++) {
+			str += line.get(i) + "\n";
 		}
 		return (str);
 	}

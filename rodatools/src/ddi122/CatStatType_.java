@@ -5,12 +5,12 @@ import javax.persistence.metamodel.ListAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
-@Generated(value="Dali", date="2012-10-26T12:23:02.675+0300")
+@Generated(value="Dali", date="2012-11-04T14:36:08.719+0200")
 @StaticMetamodel(CatStatType.class)
 public class CatStatType_ {
 	public static volatile SingularAttribute<CatStatType, Long> id_;
 	public static volatile SingularAttribute<CatStatType, CatgryType> category;
-	public static volatile ListAttribute<CatStatType, String> content;
+	public static volatile SingularAttribute<CatStatType, String> content;
 	public static volatile SingularAttribute<CatStatType, String> id;
 	public static volatile SingularAttribute<CatStatType, String> type;
 	public static volatile ListAttribute<CatStatType, String> methrefs;

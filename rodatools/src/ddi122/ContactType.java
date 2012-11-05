@@ -7,10 +7,7 @@
 
 package ddi122;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.persistence.ElementCollection;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -18,19 +15,16 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.xml.bind.JAXBElement;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlID;
-import javax.xml.bind.annotation.XmlMixed;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.XmlValue;
 import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
-import org.hibernate.annotations.Type;
 
 /**
  * <p>
@@ -69,7 +63,7 @@ import org.hibernate.annotations.Type;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "contactType", propOrder = { "content" })
+@XmlType(name = "contactType")
 @Entity
 @Table(name = "ContactPerson")
 public class ContactType {
@@ -118,10 +112,10 @@ public class ContactType {
 	// @XmlElementRef(name = "Link", namespace =
 	// "http://www.icpsr.umich.edu/DDI", type = JAXBElement.class)
 	// })
-	@XmlMixed
-	@ElementCollection
-	@Type(type = "text")
-	protected List<String> content;
+	@Column(columnDefinition = "text")
+	@XmlJavaTypeAdapter(CollapsedStringAdapter.class)
+	@XmlValue
+	protected String content;
 	@XmlAttribute(name = "ID")
 	@XmlJavaTypeAdapter(CollapsedStringAdapter.class)
 	@XmlID
@@ -142,37 +136,6 @@ public class ContactType {
 	protected String uri;
 	@XmlAttribute
 	protected String email;
-
-	/**
-	 * Gets the value of the content property.
-	 * 
-	 * <p>
-	 * This accessor method returns a reference to the live List, not a
-	 * snapshot. Therefore any modification you make to the returned List will
-	 * be present inside the JAXB object. This is why there is not a
-	 * <CODE>set</CODE> method for the content property.
-	 * 
-	 * <p>
-	 * For example, to add a new item, do as follows:
-	 * 
-	 * <pre>
-	 * getContent().add(newItem);
-	 * </pre>
-	 * 
-	 * 
-	 * <p>
-	 * Objects of the following type(s) are allowed in the List
-	 * {@link JAXBElement }{@code <}{@link ExtLinkType }{@code >} {@link String }
-	 * {@link JAXBElement }{@code <}{@link LinkType }{@code >}
-	 * 
-	 * 
-	 */
-	public List<String> getContent() {
-		if (content == null) {
-			content = new ArrayList<String>();
-		}
-		return this.content;
-	}
 
 	/**
 	 * Gets the value of the id property.

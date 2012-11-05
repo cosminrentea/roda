@@ -265,6 +265,9 @@ $$
       <Cl au="0" df="" nm="id_" nu="0">
         <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
+      <Cl au="0" df="" nm="content" nu="1">
+        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
       <Cl au="0" df="" nm="date" nu="1">
         <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
       </Cl>
@@ -282,27 +285,14 @@ $$
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
-    <Tbl UsSo="1" nm="abstracttype_content">
-      <TblOpts>WITHOUT OIDS</TblOpts>
-      <Cl au="0" df="" nm="abstracttype_id_" nu="0">
-        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="content" nu="1">
-        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Fk deAc="3" nm="fk5bd8e5d683a39363" prLkCl="id_" upAc="3">
-        <PrTb mn="0" nm="abstract" oe="1" sch="public" zr="0"/>
-        <CdTb mn="1" nm="abstracttype_content" oe="0" sch="public" zr="1"/>
-        <ClPr cdCl="abstracttype_id_" prCl="id_"/>
-      </Fk>
-      <UniqueConstraints/>
-      <SchTrHis/>
-    </Tbl>
     <Tbl UsSo="1" nm="accessplace">
       <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id_" nm="accessplace_pkey"/>
       <Cl au="0" df="" nm="id_" nu="0">
         <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="content" nu="1">
+        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
       <Cl au="0" df="" nm="id" nu="1">
         <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
@@ -317,22 +307,6 @@ $$
         <PrTb mn="0" nm="datasetavailability" oe="1" sch="public" zr="1"/>
         <CdTb mn="1" nm="accessplace" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="datasetavailability_id" prCl="id_"/>
-      </Fk>
-      <UniqueConstraints/>
-      <SchTrHis/>
-    </Tbl>
-    <Tbl UsSo="1" nm="accsplactype_content">
-      <TblOpts>WITHOUT OIDS</TblOpts>
-      <Cl au="0" df="" nm="accsplactype_id_" nu="0">
-        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="content" nu="1">
-        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Fk deAc="3" nm="fkdc5a5f04981e069f" prLkCl="id_" upAc="3">
-        <PrTb mn="0" nm="accessplace" oe="1" sch="public" zr="0"/>
-        <CdTb mn="1" nm="accsplactype_content" oe="0" sch="public" zr="1"/>
-        <ClPr cdCl="accsplactype_id_" prCl="id_"/>
       </Fk>
       <UniqueConstraints/>
       <SchTrHis/>
@@ -386,6 +360,9 @@ $$
       <Cl au="0" df="" nm="id_" nu="0">
         <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
+      <Cl au="0" df="" nm="content" nu="1">
+        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
       <Cl au="0" df="" nm="id" nu="1">
         <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
       </Cl>
@@ -396,38 +373,6 @@ $$
         <PrTb mn="0" nm="titlestatement" oe="1" sch="public" zr="1"/>
         <CdTb mn="1" nm="alternativetitle" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="titlestatement_id" prCl="id_"/>
-      </Fk>
-      <UniqueConstraints/>
-      <SchTrHis/>
-    </Tbl>
-    <Tbl UsSo="1" nm="alttitltype_content">
-      <TblOpts>WITHOUT OIDS</TblOpts>
-      <Cl au="0" df="" nm="alttitltype_id_" nu="0">
-        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="content" nu="1">
-        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Fk deAc="3" nm="fk9433306ac5a608df" prLkCl="id_" upAc="3">
-        <PrTb mn="0" nm="alternativetitle" oe="1" sch="public" zr="0"/>
-        <CdTb mn="1" nm="alttitltype_content" oe="0" sch="public" zr="1"/>
-        <ClPr cdCl="alttitltype_id_" prCl="id_"/>
-      </Fk>
-      <UniqueConstraints/>
-      <SchTrHis/>
-    </Tbl>
-    <Tbl UsSo="1" nm="anlyunittype_content">
-      <TblOpts>WITHOUT OIDS</TblOpts>
-      <Cl au="0" df="" nm="anlyunittype_id_" nu="0">
-        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="content" nu="1">
-        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Fk deAc="3" nm="fk80fa9ed2bd4e4b3b" prLkCl="id_" upAc="3">
-        <PrTb mn="0" nm="unitofanalysis" oe="1" sch="public" zr="0"/>
-        <CdTb mn="1" nm="anlyunittype_content" oe="0" sch="public" zr="1"/>
-        <ClPr cdCl="anlyunittype_id_" prCl="id_"/>
       </Fk>
       <UniqueConstraints/>
       <SchTrHis/>
@@ -468,6 +413,9 @@ $$
       <Cl au="0" df="" nm="id_" nu="0">
         <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
+      <Cl au="0" df="" nm="content" nu="1">
+        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
       <Cl au="0" df="" nm="id" nu="1">
         <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
       </Cl>
@@ -500,22 +448,6 @@ $$
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
-    <Tbl UsSo="1" nm="authentytype_content">
-      <TblOpts>WITHOUT OIDS</TblOpts>
-      <Cl au="0" df="" nm="authentytype_id_" nu="0">
-        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="content" nu="1">
-        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Fk deAc="3" nm="fk2de38a6ac4e6c66b" prLkCl="id_" upAc="3">
-        <PrTb mn="0" nm="authoringentity" oe="1" sch="public" zr="0"/>
-        <CdTb mn="1" nm="authentytype_content" oe="0" sch="public" zr="1"/>
-        <ClPr cdCl="authentytype_id_" prCl="id_"/>
-      </Fk>
-      <UniqueConstraints/>
-      <SchTrHis/>
-    </Tbl>
     <Tbl UsSo="1" nm="authoringentity">
       <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id_" nm="authoringentity_pkey"/>
@@ -524,6 +456,9 @@ $$
       </Cl>
       <Cl au="0" df="" nm="affiliation" nu="1">
         <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="content" nu="1">
+        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
       <Cl au="0" df="" nm="id" nu="1">
         <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
@@ -539,27 +474,14 @@ $$
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
-    <Tbl UsSo="1" nm="biblcittype_content">
-      <TblOpts>WITHOUT OIDS</TblOpts>
-      <Cl au="0" df="" nm="biblcittype_id_" nu="0">
-        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="content" nu="1">
-        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Fk deAc="3" nm="fkf6e1e1313897492d" prLkCl="id_" upAc="3">
-        <PrTb mn="0" nm="bibliographiccitation" oe="1" sch="public" zr="0"/>
-        <CdTb mn="1" nm="biblcittype_content" oe="0" sch="public" zr="1"/>
-        <ClPr cdCl="biblcittype_id_" prCl="id_"/>
-      </Fk>
-      <UniqueConstraints/>
-      <SchTrHis/>
-    </Tbl>
     <Tbl UsSo="1" nm="bibliographiccitation">
       <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id_" nm="bibliographiccitation_pkey"/>
       <Cl au="0" df="" nm="id_" nu="0">
         <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="content" nu="1">
+        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
       <Cl au="0" df="" nm="format" nu="1">
         <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
@@ -567,22 +489,6 @@ $$
       <Cl au="0" df="" nm="id" nu="1">
         <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
       </Cl>
-      <UniqueConstraints/>
-      <SchTrHis/>
-    </Tbl>
-    <Tbl UsSo="1" nm="caseqntytype_content">
-      <TblOpts>WITHOUT OIDS</TblOpts>
-      <Cl au="0" df="" nm="caseqntytype_id_" nu="0">
-        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="content" nu="1">
-        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Fk deAc="3" nm="fkc81e7e66cccfc863" prLkCl="id_" upAc="3">
-        <PrTb mn="0" nm="numberofcases" oe="1" sch="public" zr="0"/>
-        <CdTb mn="1" nm="caseqntytype_content" oe="0" sch="public" zr="1"/>
-        <ClPr cdCl="caseqntytype_id_" prCl="id_"/>
-      </Fk>
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
@@ -733,6 +639,9 @@ $$
       <Cl au="0" df="" nm="id_" nu="0">
         <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
+      <Cl au="0" df="" nm="content" nu="1">
+        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
       <Cl au="0" df="" nm="id" nu="1">
         <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
       </Cl>
@@ -756,6 +665,9 @@ $$
       <Cl au="0" df="" nm="id_" nu="0">
         <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
+      <Cl au="0" df="" nm="content" nu="1">
+        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
       <Cl au="0" df="" nm="id" nu="1">
         <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
       </Cl>
@@ -774,22 +686,6 @@ $$
         <PrTb mn="0" nm="category" oe="1" sch="public" zr="0"/>
         <CdTb mn="1" nm="catgrytype_sdatrefs" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="catgrytype_id_" prCl="id_"/>
-      </Fk>
-      <UniqueConstraints/>
-      <SchTrHis/>
-    </Tbl>
-    <Tbl UsSo="1" nm="catstattype_content">
-      <TblOpts>WITHOUT OIDS</TblOpts>
-      <Cl au="0" df="" nm="catstattype_id_" nu="0">
-        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="content" nu="1">
-        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Fk deAc="3" nm="fk68c12cbec50df87" prLkCl="id_" upAc="3">
-        <PrTb mn="0" nm="categorystatistic" oe="1" sch="public" zr="0"/>
-        <CdTb mn="1" nm="catstattype_content" oe="0" sch="public" zr="1"/>
-        <ClPr cdCl="catstattype_id_" prCl="id_"/>
       </Fk>
       <UniqueConstraints/>
       <SchTrHis/>
@@ -854,22 +750,6 @@ $$
         <PrTb mn="0" nm="categorystatistic" oe="1" sch="public" zr="0"/>
         <CdTb mn="1" nm="catstattype_wgtvar" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="catstattype_id_" prCl="id_"/>
-      </Fk>
-      <UniqueConstraints/>
-      <SchTrHis/>
-    </Tbl>
-    <Tbl UsSo="1" nm="catvalutype_content">
-      <TblOpts>WITHOUT OIDS</TblOpts>
-      <Cl au="0" df="" nm="catvalutype_id_" nu="0">
-        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="content" nu="1">
-        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Fk deAc="3" nm="fk53893de87395dc7" prLkCl="id_" upAc="3">
-        <PrTb mn="0" nm="categoryvalue" oe="1" sch="public" zr="0"/>
-        <CdTb mn="1" nm="catvalutype_content" oe="0" sch="public" zr="1"/>
-        <ClPr cdCl="catvalutype_id_" prCl="id_"/>
       </Fk>
       <UniqueConstraints/>
       <SchTrHis/>
@@ -956,25 +836,12 @@ $$
       <Cl au="0" df="" nm="id_" nu="0">
         <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
-      <Cl au="0" df="" nm="id" nu="1">
-        <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
-      </Cl>
-      <UniqueConstraints/>
-      <SchTrHis/>
-    </Tbl>
-    <Tbl UsSo="1" nm="citreqtype_content">
-      <TblOpts>WITHOUT OIDS</TblOpts>
-      <Cl au="0" df="" nm="citreqtype_id_" nu="0">
-        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
       <Cl au="0" df="" nm="content" nu="1">
         <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
-      <Fk deAc="3" nm="fkf55c1da4a4b1819f" prLkCl="id_" upAc="3">
-        <PrTb mn="0" nm="citationrequirement" oe="1" sch="public" zr="0"/>
-        <CdTb mn="1" nm="citreqtype_content" oe="0" sch="public" zr="1"/>
-        <ClPr cdCl="citreqtype_id_" prCl="id_"/>
-      </Fk>
+      <Cl au="0" df="" nm="id" nu="1">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
+      </Cl>
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
@@ -1223,38 +1090,6 @@ $$
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
-    <Tbl UsSo="1" nm="colldatetype_content">
-      <TblOpts>WITHOUT OIDS</TblOpts>
-      <Cl au="0" df="" nm="colldatetype_id_" nu="0">
-        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="content" nu="1">
-        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Fk deAc="3" nm="fk354e8e6e137db473" prLkCl="id_" upAc="3">
-        <PrTb mn="0" nm="dateofcollection" oe="1" sch="public" zr="0"/>
-        <CdTb mn="1" nm="colldatetype_content" oe="0" sch="public" zr="1"/>
-        <ClPr cdCl="colldatetype_id_" prCl="id_"/>
-      </Fk>
-      <UniqueConstraints/>
-      <SchTrHis/>
-    </Tbl>
-    <Tbl UsSo="1" nm="collmodetype_content">
-      <TblOpts>WITHOUT OIDS</TblOpts>
-      <Cl au="0" df="" nm="collmodetype_id_" nu="0">
-        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="content" nu="1">
-        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Fk deAc="3" nm="fkef9290e3a8db80dd" prLkCl="id_" upAc="3">
-        <PrTb mn="0" nm="modeofdatacollection" oe="1" sch="public" zr="0"/>
-        <CdTb mn="1" nm="collmodetype_content" oe="0" sch="public" zr="1"/>
-        <ClPr cdCl="collmodetype_id_" prCl="id_"/>
-      </Fk>
-      <UniqueConstraints/>
-      <SchTrHis/>
-    </Tbl>
     <Tbl UsSo="1" nm="concept">
       <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id" nm="concept_pkey"/>
@@ -1303,6 +1138,9 @@ $$
       <Cl au="0" df="" nm="affiliation" nu="1">
         <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
       </Cl>
+      <Cl au="0" df="" nm="content" nu="1">
+        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
       <Cl au="0" df="" nm="email" nu="1">
         <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
       </Cl>
@@ -1331,47 +1169,18 @@ $$
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
-    <Tbl UsSo="1" nm="contacttype_content">
-      <TblOpts>WITHOUT OIDS</TblOpts>
-      <Cl au="0" df="" nm="contacttype_id_" nu="0">
-        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="content" nu="1">
-        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Fk deAc="3" nm="fk7100a094f6eac53" prLkCl="id_" upAc="3">
-        <PrTb mn="0" nm="contactperson" oe="1" sch="public" zr="0"/>
-        <CdTb mn="1" nm="contacttype_content" oe="0" sch="public" zr="1"/>
-        <ClPr cdCl="contacttype_id_" prCl="id_"/>
-      </Fk>
-      <UniqueConstraints/>
-      <SchTrHis/>
-    </Tbl>
     <Tbl UsSo="1" nm="copyright">
       <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id_" nm="copyright_pkey"/>
       <Cl au="0" df="" nm="id_" nu="0">
         <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
-      <Cl au="0" df="" nm="id" nu="1">
-        <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
-      </Cl>
-      <UniqueConstraints/>
-      <SchTrHis/>
-    </Tbl>
-    <Tbl UsSo="1" nm="copyrighttype_content">
-      <TblOpts>WITHOUT OIDS</TblOpts>
-      <Cl au="0" df="" nm="copyrighttype_id_" nu="0">
-        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
       <Cl au="0" df="" nm="content" nu="1">
         <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
-      <Fk deAc="3" nm="fk16b735bbaf6acaa1" prLkCl="id_" upAc="3">
-        <PrTb mn="0" nm="copyright" oe="1" sch="public" zr="0"/>
-        <CdTb mn="1" nm="copyrighttype_content" oe="0" sch="public" zr="1"/>
-        <ClPr cdCl="copyrighttype_id_" prCl="id_"/>
-      </Fk>
+      <Cl au="0" df="" nm="id" nu="1">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
+      </Cl>
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
@@ -1395,6 +1204,9 @@ $$
       </Cl>
       <Cl au="0" df="" nm="abbr" nu="1">
         <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="content" nu="1">
+        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
       <Cl au="0" df="" nm="id" nu="1">
         <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
@@ -1495,6 +1307,9 @@ $$
       <Cl au="0" df="" nm="affiliation" nu="1">
         <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
       </Cl>
+      <Cl au="0" df="" nm="content" nu="1">
+        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
       <Cl au="0" df="" nm="id" nu="1">
         <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
       </Cl>
@@ -1509,18 +1324,62 @@ $$
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
-    <Tbl UsSo="1" nm="datacollectortype_content">
+    <Tbl UsSo="1" nm="datafiledescription">
       <TblOpts>WITHOUT OIDS</TblOpts>
-      <Cl au="0" df="" nm="datacollectortype_id_" nu="0">
+      <Pk ClNs="id_" nm="datafiledescription_pkey"/>
+      <Cl au="0" df="" nm="id_" nu="0">
         <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
-      <Cl au="0" df="" nm="content" nu="1">
-        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
+      <Cl au="0" df="" nm="id" nu="1">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
       </Cl>
-      <Fk deAc="3" nm="fk935953f7dbc28439" prLkCl="id_" upAc="3">
-        <PrTb mn="0" nm="datacollector" oe="1" sch="public" zr="0"/>
-        <CdTb mn="1" nm="datacollectortype_content" oe="0" sch="public" zr="1"/>
-        <ClPr cdCl="datacollectortype_id_" prCl="id_"/>
+      <Cl au="0" df="" nm="dimensns_id_" nu="1">
+        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="filename_id_" nu="1">
+        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="filetype_id_" nu="1">
+        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="datafilesdescription_id" nu="1">
+        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="spssfile_id_" nu="1">
+        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="verstmt_id_" nu="1">
+        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Fk deAc="3" nm="fkfcb937b6175019a1" prLkCl="id_" upAc="3">
+        <PrTb mn="0" nm="spssfile" oe="1" sch="public" zr="1"/>
+        <CdTb mn="1" nm="datafiledescription" oe="0" sch="public" zr="1"/>
+        <ClPr cdCl="spssfile_id_" prCl="id_"/>
+      </Fk>
+      <Fk deAc="3" nm="fkfcb937b62aa87465" prLkCl="id_" upAc="3">
+        <PrTb mn="0" nm="datafilesdescription" oe="1" sch="public" zr="1"/>
+        <CdTb mn="1" nm="datafiledescription" oe="0" sch="public" zr="1"/>
+        <ClPr cdCl="datafilesdescription_id" prCl="id_"/>
+      </Fk>
+      <Fk deAc="3" nm="fkfcb937b6320fc513" prLkCl="id_" upAc="3">
+        <PrTb mn="0" nm="filename" oe="1" sch="public" zr="1"/>
+        <CdTb mn="1" nm="datafiledescription" oe="0" sch="public" zr="1"/>
+        <ClPr cdCl="filename_id_" prCl="id_"/>
+      </Fk>
+      <Fk deAc="3" nm="fkfcb937b6570c46cf" prLkCl="id_" upAc="3">
+        <PrTb mn="0" nm="versionstatement" oe="1" sch="public" zr="1"/>
+        <CdTb mn="1" nm="datafiledescription" oe="0" sch="public" zr="1"/>
+        <ClPr cdCl="verstmt_id_" prCl="id_"/>
+      </Fk>
+      <Fk deAc="3" nm="fkfcb937b66060f71" prLkCl="id_" upAc="3">
+        <PrTb mn="0" nm="typeoffile" oe="1" sch="public" zr="1"/>
+        <CdTb mn="1" nm="datafiledescription" oe="0" sch="public" zr="1"/>
+        <ClPr cdCl="filetype_id_" prCl="id_"/>
+      </Fk>
+      <Fk deAc="3" nm="fkfcb937b66d564633" prLkCl="id_" upAc="3">
+        <PrTb mn="0" nm="filedimensions" oe="1" sch="public" zr="1"/>
+        <CdTb mn="1" nm="datafiledescription" oe="0" sch="public" zr="1"/>
+        <ClPr cdCl="dimensns_id_" prCl="id_"/>
       </Fk>
       <UniqueConstraints/>
       <SchTrHis/>
@@ -1594,6 +1453,9 @@ $$
       <Cl au="0" df="" nm="id_" nu="0">
         <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
+      <Cl au="0" df="" nm="content" nu="1">
+        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
       <Cl au="0" df="" nm="cycle" nu="1">
         <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
       </Cl>
@@ -1623,6 +1485,9 @@ $$
       <Cl au="0" df="" nm="id_" nu="0">
         <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
+      <Cl au="0" df="" nm="content" nu="1">
+        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
       <Cl au="0" df="" nm="date" nu="1">
         <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
       </Cl>
@@ -1645,6 +1510,9 @@ $$
       <Pk ClNs="id_" nm="dateofproduction_pkey"/>
       <Cl au="0" df="" nm="id_" nu="0">
         <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="content" nu="1">
+        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
       <Cl au="0" df="" nm="date" nu="1">
         <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
@@ -1709,22 +1577,6 @@ $$
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
-    <Tbl UsSo="1" nm="depdatetype_content">
-      <TblOpts>WITHOUT OIDS</TblOpts>
-      <Cl au="0" df="" nm="depdatetype_id_" nu="0">
-        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="content" nu="1">
-        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Fk deAc="3" nm="fkecff515155efad2d" prLkCl="id_" upAc="3">
-        <PrTb mn="0" nm="dateofdeposit" oe="1" sch="public" zr="0"/>
-        <CdTb mn="1" nm="depdatetype_content" oe="0" sch="public" zr="1"/>
-        <ClPr cdCl="depdatetype_id_" prCl="id_"/>
-      </Fk>
-      <UniqueConstraints/>
-      <SchTrHis/>
-    </Tbl>
     <Tbl UsSo="1" nm="depositor">
       <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id_" nm="depositor_pkey"/>
@@ -1733,6 +1585,9 @@ $$
       </Cl>
       <Cl au="0" df="" nm="abbr" nu="1">
         <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="content" nu="1">
+        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
       <Cl au="0" df="" nm="id" nu="1">
         <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
@@ -1754,41 +1609,12 @@ $$
       <Cl au="0" df="" nm="id_" nu="0">
         <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
+      <Cl au="0" df="" nm="content" nu="1">
+        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
       <Cl au="0" df="" nm="id" nu="1">
         <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
       </Cl>
-      <UniqueConstraints/>
-      <SchTrHis/>
-    </Tbl>
-    <Tbl UsSo="1" nm="depositrtype_content">
-      <TblOpts>WITHOUT OIDS</TblOpts>
-      <Cl au="0" df="" nm="depositrtype_id_" nu="0">
-        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="content" nu="1">
-        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Fk deAc="3" nm="fk6dd81848e67b9347" prLkCl="id_" upAc="3">
-        <PrTb mn="0" nm="depositor" oe="1" sch="public" zr="0"/>
-        <CdTb mn="1" nm="depositrtype_content" oe="0" sch="public" zr="1"/>
-        <ClPr cdCl="depositrtype_id_" prCl="id_"/>
-      </Fk>
-      <UniqueConstraints/>
-      <SchTrHis/>
-    </Tbl>
-    <Tbl UsSo="1" nm="deposreqtype_content">
-      <TblOpts>WITHOUT OIDS</TblOpts>
-      <Cl au="0" df="" nm="deposreqtype_id_" nu="0">
-        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="content" nu="1">
-        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Fk deAc="3" nm="fk309fb59f639db095" prLkCl="id_" upAc="3">
-        <PrTb mn="0" nm="depositrequirement" oe="1" sch="public" zr="0"/>
-        <CdTb mn="1" nm="deposreqtype_content" oe="0" sch="public" zr="1"/>
-        <ClPr cdCl="deposreqtype_id_" prCl="id_"/>
-      </Fk>
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
@@ -1797,6 +1623,9 @@ $$
       <Pk ClNs="id_" nm="descriptivetext_pkey"/>
       <Cl au="0" df="" nm="id_" nu="0">
         <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="content" nu="1">
+        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
       <Cl au="0" df="" nm="id" nu="1">
         <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
@@ -1826,41 +1655,12 @@ $$
       <Cl au="0" df="" nm="id_" nu="0">
         <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
+      <Cl au="0" df="" nm="content" nu="1">
+        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
       <Cl au="0" df="" nm="id" nu="1">
         <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
       </Cl>
-      <UniqueConstraints/>
-      <SchTrHis/>
-    </Tbl>
-    <Tbl UsSo="1" nm="disclaimertype_content">
-      <TblOpts>WITHOUT OIDS</TblOpts>
-      <Cl au="0" df="" nm="disclaimertype_id_" nu="0">
-        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="content" nu="1">
-        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Fk deAc="3" nm="fk1fa675cfac7c9f55" prLkCl="id_" upAc="3">
-        <PrTb mn="0" nm="disclaimer" oe="1" sch="public" zr="0"/>
-        <CdTb mn="1" nm="disclaimertype_content" oe="0" sch="public" zr="1"/>
-        <ClPr cdCl="disclaimertype_id_" prCl="id_"/>
-      </Fk>
-      <UniqueConstraints/>
-      <SchTrHis/>
-    </Tbl>
-    <Tbl UsSo="1" nm="distrbtrtype_content">
-      <TblOpts>WITHOUT OIDS</TblOpts>
-      <Cl au="0" df="" nm="distrbtrtype_id_" nu="0">
-        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="content" nu="1">
-        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Fk deAc="3" nm="fk2ef6d608bdb7aec7" prLkCl="id_" upAc="3">
-        <PrTb mn="0" nm="distributor" oe="1" sch="public" zr="0"/>
-        <CdTb mn="1" nm="distrbtrtype_content" oe="0" sch="public" zr="1"/>
-        <ClPr cdCl="distrbtrtype_id_" prCl="id_"/>
-      </Fk>
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
@@ -1875,6 +1675,9 @@ $$
       </Cl>
       <Cl au="0" df="" nm="affiliation" nu="1">
         <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="content" nu="1">
+        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
       <Cl au="0" df="" nm="id" nu="1">
         <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
@@ -2120,58 +1923,6 @@ $$
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
-    <Tbl UsSo="1" nm="filebyfiledescription">
-      <TblOpts>WITHOUT OIDS</TblOpts>
-      <Pk ClNs="id_" nm="filebyfiledescription_pkey"/>
-      <Cl au="0" df="" nm="id_" nu="0">
-        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="id" nu="1">
-        <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="dimensns_id_" nu="1">
-        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="filename_id_" nu="1">
-        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="filetype_id_" nu="1">
-        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="datafilesdescription_id" nu="1">
-        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="verstmt_id_" nu="1">
-        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Fk deAc="3" nm="fk953854d2aa87465" prLkCl="id_" upAc="3">
-        <PrTb mn="0" nm="datafilesdescription" oe="1" sch="public" zr="1"/>
-        <CdTb mn="1" nm="filebyfiledescription" oe="0" sch="public" zr="1"/>
-        <ClPr cdCl="datafilesdescription_id" prCl="id_"/>
-      </Fk>
-      <Fk deAc="3" nm="fk953854d320fc513" prLkCl="id_" upAc="3">
-        <PrTb mn="0" nm="filename" oe="1" sch="public" zr="1"/>
-        <CdTb mn="1" nm="filebyfiledescription" oe="0" sch="public" zr="1"/>
-        <ClPr cdCl="filename_id_" prCl="id_"/>
-      </Fk>
-      <Fk deAc="3" nm="fk953854d570c46cf" prLkCl="id_" upAc="3">
-        <PrTb mn="0" nm="versionstatement" oe="1" sch="public" zr="1"/>
-        <CdTb mn="1" nm="filebyfiledescription" oe="0" sch="public" zr="1"/>
-        <ClPr cdCl="verstmt_id_" prCl="id_"/>
-      </Fk>
-      <Fk deAc="3" nm="fk953854d6060f71" prLkCl="id_" upAc="3">
-        <PrTb mn="0" nm="typeoffile" oe="1" sch="public" zr="1"/>
-        <CdTb mn="1" nm="filebyfiledescription" oe="0" sch="public" zr="1"/>
-        <ClPr cdCl="filetype_id_" prCl="id_"/>
-      </Fk>
-      <Fk deAc="3" nm="fk953854d6d564633" prLkCl="id_" upAc="3">
-        <PrTb mn="0" nm="filedimensions" oe="1" sch="public" zr="1"/>
-        <CdTb mn="1" nm="filebyfiledescription" oe="0" sch="public" zr="1"/>
-        <ClPr cdCl="dimensns_id_" prCl="id_"/>
-      </Fk>
-      <UniqueConstraints/>
-      <SchTrHis/>
-    </Tbl>
     <Tbl UsSo="1" nm="filedimensions">
       <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id_" nm="filedimensions_pkey"/>
@@ -2254,41 +2005,12 @@ $$
       <Cl au="0" df="" nm="id_" nu="0">
         <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
+      <Cl au="0" df="" nm="content" nu="1">
+        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
       <Cl au="0" df="" nm="id" nu="1">
         <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
       </Cl>
-      <UniqueConstraints/>
-      <SchTrHis/>
-    </Tbl>
-    <Tbl UsSo="1" nm="filenametype_content">
-      <TblOpts>WITHOUT OIDS</TblOpts>
-      <Cl au="0" df="" nm="filenametype_id_" nu="0">
-        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="content" nu="1">
-        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Fk deAc="3" nm="fk8832dc5b451b8bcd" prLkCl="id_" upAc="3">
-        <PrTb mn="0" nm="filename" oe="1" sch="public" zr="0"/>
-        <CdTb mn="1" nm="filenametype_content" oe="0" sch="public" zr="1"/>
-        <ClPr cdCl="filenametype_id_" prCl="id_"/>
-      </Fk>
-      <UniqueConstraints/>
-      <SchTrHis/>
-    </Tbl>
-    <Tbl UsSo="1" nm="filetypetype_content">
-      <TblOpts>WITHOUT OIDS</TblOpts>
-      <Cl au="0" df="" nm="filetypetype_id_" nu="0">
-        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="content" nu="1">
-        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Fk deAc="3" nm="fke3c9628aaf8da6ab" prLkCl="id_" upAc="3">
-        <PrTb mn="0" nm="typeoffile" oe="1" sch="public" zr="0"/>
-        <CdTb mn="1" nm="filetypetype_content" oe="0" sch="public" zr="1"/>
-        <ClPr cdCl="filetypetype_id_" prCl="id_"/>
-      </Fk>
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
@@ -2338,33 +2060,6 @@ $$
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
-    <Tbl UsSo="1" nm="form_selection_var">
-      <TblOpts>WITHOUT OIDS</TblOpts>
-      <Pk ClNs="id" nm="form_selection_var_pkey"/>
-      <Cl au="0" df="" nm="id" nu="0">
-        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="instance_id" nu="1">
-        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="ordering" nu="0">
-        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="variable_id" nu="0">
-        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="item_id" nu="0">
-        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Fk deAc="3" nm="fk106ff9b9a0a26ff5" prLkCl="item_id" upAc="3">
-        <PrTb mn="0" nm="selection_variable_item" oe="1" sch="public" zr="0"/>
-        <CdTb mn="1" nm="form_selection_var" oe="0" sch="public" zr="1"/>
-        <ClPr cdCl="variable_id" prCl="item_id"/>
-        <ClPr cdCl="item_id" prCl="selection_variable_id"/>
-      </Fk>
-      <UniqueConstraints/>
-      <SchTrHis/>
-    </Tbl>
     <Tbl UsSo="1" nm="frequency">
       <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id" nm="frequency_pkey"/>
@@ -2377,22 +2072,6 @@ $$
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
-    <Tbl UsSo="1" nm="fundagtype_content">
-      <TblOpts>WITHOUT OIDS</TblOpts>
-      <Cl au="0" df="" nm="fundagtype_id_" nu="0">
-        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="content" nu="1">
-        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Fk deAc="3" nm="fkfebbd5ff64f0ae95" prLkCl="id_" upAc="3">
-        <PrTb mn="0" nm="fundingagency" oe="1" sch="public" zr="0"/>
-        <CdTb mn="1" nm="fundagtype_content" oe="0" sch="public" zr="1"/>
-        <ClPr cdCl="fundagtype_id_" prCl="id_"/>
-      </Fk>
-      <UniqueConstraints/>
-      <SchTrHis/>
-    </Tbl>
     <Tbl UsSo="1" nm="fundingagency">
       <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id_" nm="fundingagency_pkey"/>
@@ -2401,6 +2080,9 @@ $$
       </Cl>
       <Cl au="0" df="" nm="abbr" nu="1">
         <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="content" nu="1">
+        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
       <Cl au="0" df="" nm="id" nu="1">
         <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
@@ -2457,27 +2139,14 @@ $$
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
-    <Tbl UsSo="1" nm="geogcovertype_content">
-      <TblOpts>WITHOUT OIDS</TblOpts>
-      <Cl au="0" df="" nm="geogcovertype_id_" nu="0">
-        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="content" nu="1">
-        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Fk deAc="3" nm="fkd853a515c5703075" prLkCl="id_" upAc="3">
-        <PrTb mn="0" nm="geographicalcoverage" oe="1" sch="public" zr="0"/>
-        <CdTb mn="1" nm="geogcovertype_content" oe="0" sch="public" zr="1"/>
-        <ClPr cdCl="geogcovertype_id_" prCl="id_"/>
-      </Fk>
-      <UniqueConstraints/>
-      <SchTrHis/>
-    </Tbl>
     <Tbl UsSo="1" nm="geographicalcoverage">
       <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id_" nm="geographicalcoverage_pkey"/>
       <Cl au="0" df="" nm="id_" nu="0">
         <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="content" nu="1">
+        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
       <Cl au="0" df="" nm="id" nu="1">
         <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
@@ -2499,6 +2168,9 @@ $$
       <Cl au="0" df="" nm="id_" nu="0">
         <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
+      <Cl au="0" df="" nm="content" nu="1">
+        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
       <Cl au="0" df="" nm="id" nu="1">
         <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
       </Cl>
@@ -2513,38 +2185,6 @@ $$
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
-    <Tbl UsSo="1" nm="geogunittype_content">
-      <TblOpts>WITHOUT OIDS</TblOpts>
-      <Cl au="0" df="" nm="geogunittype_id_" nu="0">
-        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="content" nu="1">
-        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Fk deAc="3" nm="fk558c3f8e2091c6b3" prLkCl="id_" upAc="3">
-        <PrTb mn="0" nm="geographicunit" oe="1" sch="public" zr="0"/>
-        <CdTb mn="1" nm="geogunittype_content" oe="0" sch="public" zr="1"/>
-        <ClPr cdCl="geogunittype_id_" prCl="id_"/>
-      </Fk>
-      <UniqueConstraints/>
-      <SchTrHis/>
-    </Tbl>
-    <Tbl UsSo="1" nm="grantnotype_content">
-      <TblOpts>WITHOUT OIDS</TblOpts>
-      <Cl au="0" df="" nm="grantnotype_id_" nu="0">
-        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="content" nu="1">
-        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Fk deAc="3" nm="fkedc8cf17b180c6d" prLkCl="id_" upAc="3">
-        <PrTb mn="0" nm="grantnumber" oe="1" sch="public" zr="0"/>
-        <CdTb mn="1" nm="grantnotype_content" oe="0" sch="public" zr="1"/>
-        <ClPr cdCl="grantnotype_id_" prCl="id_"/>
-      </Fk>
-      <UniqueConstraints/>
-      <SchTrHis/>
-    </Tbl>
     <Tbl UsSo="1" nm="grantnumber">
       <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id_" nm="grantnumber_pkey"/>
@@ -2553,6 +2193,9 @@ $$
       </Cl>
       <Cl au="0" df="" nm="agency" nu="1">
         <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="content" nu="1">
+        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
       <Cl au="0" df="" nm="id" nu="1">
         <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
@@ -2576,6 +2219,9 @@ $$
       <Pk ClNs="id_" nm="holdings_pkey"/>
       <Cl au="0" df="" nm="id_" nu="0">
         <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="content" nu="1">
+        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
       <Cl au="0" df="" nm="id" nu="1">
         <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
@@ -2602,27 +2248,14 @@ $$
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
-    <Tbl UsSo="1" nm="holdingstype_content">
-      <TblOpts>WITHOUT OIDS</TblOpts>
-      <Cl au="0" df="" nm="holdingstype_id_" nu="0">
-        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="content" nu="1">
-        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Fk deAc="3" nm="fkf34962c4937f023f" prLkCl="id_" upAc="3">
-        <PrTb mn="0" nm="holdings" oe="1" sch="public" zr="0"/>
-        <CdTb mn="1" nm="holdingstype_content" oe="0" sch="public" zr="1"/>
-        <ClPr cdCl="holdingstype_id_" prCl="id_"/>
-      </Fk>
-      <UniqueConstraints/>
-      <SchTrHis/>
-    </Tbl>
     <Tbl UsSo="1" nm="identificationnumber">
       <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id_" nm="identificationnumber_pkey"/>
       <Cl au="0" df="" nm="id_" nu="0">
         <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="content" nu="1">
+        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
       <Cl au="0" df="" nm="id" nu="1">
         <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
@@ -2637,22 +2270,6 @@ $$
         <PrTb mn="0" nm="titlestatement" oe="1" sch="public" zr="1"/>
         <CdTb mn="1" nm="identificationnumber" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="titlestatement_id" prCl="id_"/>
-      </Fk>
-      <UniqueConstraints/>
-      <SchTrHis/>
-    </Tbl>
-    <Tbl UsSo="1" nm="idnotype_content">
-      <TblOpts>WITHOUT OIDS</TblOpts>
-      <Cl au="0" df="" nm="idnotype_id_" nu="0">
-        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="content" nu="1">
-        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Fk deAc="3" nm="fk780ea2d0b243d357" prLkCl="id_" upAc="3">
-        <PrTb mn="0" nm="identificationnumber" oe="1" sch="public" zr="0"/>
-        <CdTb mn="1" nm="idnotype_content" oe="0" sch="public" zr="1"/>
-        <ClPr cdCl="idnotype_id_" prCl="id_"/>
       </Fk>
       <UniqueConstraints/>
       <SchTrHis/>
@@ -2977,6 +2594,9 @@ $$
       <Cl au="0" df="" nm="id_" nu="0">
         <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
+      <Cl au="0" df="" nm="content" nu="1">
+        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
       <Cl au="0" df="" nm="id" nu="1">
         <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
       </Cl>
@@ -2997,27 +2617,14 @@ $$
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
-    <Tbl UsSo="1" nm="keywordtype_content">
-      <TblOpts>WITHOUT OIDS</TblOpts>
-      <Cl au="0" df="" nm="keywordtype_id_" nu="0">
-        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="content" nu="1">
-        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Fk deAc="3" nm="fk8a7134dd4308ba65" prLkCl="id_" upAc="3">
-        <PrTb mn="0" nm="keyword" oe="1" sch="public" zr="0"/>
-        <CdTb mn="1" nm="keywordtype_content" oe="0" sch="public" zr="1"/>
-        <ClPr cdCl="keywordtype_id_" prCl="id_"/>
-      </Fk>
-      <UniqueConstraints/>
-      <SchTrHis/>
-    </Tbl>
     <Tbl UsSo="1" nm="label">
       <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id_" nm="label_pkey"/>
       <Cl au="0" df="" nm="id_" nu="0">
         <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="content" nu="1">
+        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
       <Cl au="0" df="" nm="id" nu="1">
         <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
@@ -3049,27 +2656,14 @@ $$
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
-    <Tbl UsSo="1" nm="labltype_content">
-      <TblOpts>WITHOUT OIDS</TblOpts>
-      <Cl au="0" df="" nm="labltype_id_" nu="0">
-        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="content" nu="1">
-        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Fk deAc="3" nm="fk2469f2b3321af39d" prLkCl="id_" upAc="3">
-        <PrTb mn="0" nm="label" oe="1" sch="public" zr="0"/>
-        <CdTb mn="1" nm="labltype_content" oe="0" sch="public" zr="1"/>
-        <ClPr cdCl="labltype_id_" prCl="id_"/>
-      </Fk>
-      <UniqueConstraints/>
-      <SchTrHis/>
-    </Tbl>
     <Tbl UsSo="1" nm="literalquestion">
       <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id_" nm="literalquestion_pkey"/>
       <Cl au="0" df="" nm="id_" nu="0">
         <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="content" nu="1">
+        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
       <Cl au="0" df="" nm="id" nu="1">
         <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
@@ -3166,6 +2760,9 @@ $$
       <Cl au="0" df="" nm="id_" nu="0">
         <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
+      <Cl au="0" df="" nm="content" nu="1">
+        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
       <Cl au="0" df="" nm="id" nu="1">
         <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
       </Cl>
@@ -3180,27 +2777,14 @@ $$
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
-    <Tbl UsSo="1" nm="nationtype_content">
-      <TblOpts>WITHOUT OIDS</TblOpts>
-      <Cl au="0" df="" nm="nationtype_id_" nu="0">
-        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="content" nu="1">
-        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Fk deAc="3" nm="fkfc293d7b25c1b3ad" prLkCl="id_" upAc="3">
-        <PrTb mn="0" nm="countryddi" oe="1" sch="public" zr="0"/>
-        <CdTb mn="1" nm="nationtype_content" oe="0" sch="public" zr="1"/>
-        <ClPr cdCl="nationtype_id_" prCl="id_"/>
-      </Fk>
-      <UniqueConstraints/>
-      <SchTrHis/>
-    </Tbl>
     <Tbl UsSo="1" nm="numberofcases">
       <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id_" nm="numberofcases_pkey"/>
       <Cl au="0" df="" nm="id_" nu="0">
         <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="content" nu="1">
+        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
       <Cl au="0" df="" nm="id" nu="1">
         <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
@@ -3222,6 +2806,9 @@ $$
       <Cl au="0" df="" nm="id_" nu="0">
         <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
+      <Cl au="0" df="" nm="content" nu="1">
+        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
       <Cl au="0" df="" nm="id" nu="1">
         <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
       </Cl>
@@ -3233,15 +2820,6 @@ $$
         <CdTb mn="1" nm="numberofvariablesperrecord" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="filedimensions_id" prCl="id_"/>
       </Fk>
-      <UniqueConstraints/>
-      <SchTrHis/>
-    </Tbl>
-    <Tbl UsSo="1" nm="objectfactory">
-      <TblOpts>WITHOUT OIDS</TblOpts>
-      <Pk ClNs="id_" nm="objectfactory_pkey"/>
-      <Cl au="0" df="" nm="id_" nu="0">
-        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
@@ -3399,22 +2977,6 @@ $$
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
-    <Tbl UsSo="1" nm="origarchtype_content">
-      <TblOpts>WITHOUT OIDS</TblOpts>
-      <Cl au="0" df="" nm="origarchtype_id_" nu="0">
-        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="content" nu="1">
-        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Fk deAc="3" nm="fkb787e86b3d633bed" prLkCl="id_" upAc="3">
-        <PrTb mn="0" nm="archivewherestudywasoriginallystored" oe="1" sch="public" zr="0"/>
-        <CdTb mn="1" nm="origarchtype_content" oe="0" sch="public" zr="1"/>
-        <ClPr cdCl="origarchtype_id_" prCl="id_"/>
-      </Fk>
-      <UniqueConstraints/>
-      <SchTrHis/>
-    </Tbl>
     <Tbl UsSo="1" nm="other_statistics">
       <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id" nm="other_statistics_pkey"/>
@@ -3557,6 +3119,9 @@ $$
       <Cl au="0" df="" nm="id_" nu="0">
         <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
+      <Cl au="0" df="" nm="content" nu="1">
+        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
       <Cl au="0" df="" nm="id" nu="1">
         <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
       </Cl>
@@ -3577,6 +3142,9 @@ $$
       <Cl au="0" df="" nm="id_" nu="0">
         <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
+      <Cl au="0" df="" nm="content" nu="1">
+        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
       <Cl au="0" df="" nm="id" nu="1">
         <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
       </Cl>
@@ -3587,22 +3155,6 @@ $$
         <PrTb mn="0" nm="titlestatement" oe="1" sch="public" zr="1"/>
         <CdTb mn="1" nm="paralleltitle" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="titlestatement_id" prCl="id_"/>
-      </Fk>
-      <UniqueConstraints/>
-      <SchTrHis/>
-    </Tbl>
-    <Tbl UsSo="1" nm="partitltype_content">
-      <TblOpts>WITHOUT OIDS</TblOpts>
-      <Cl au="0" df="" nm="partitltype_id_" nu="0">
-        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="content" nu="1">
-        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Fk deAc="3" nm="fk8d96776289a94acf" prLkCl="id_" upAc="3">
-        <PrTb mn="0" nm="paralleltitle" oe="1" sch="public" zr="0"/>
-        <CdTb mn="1" nm="partitltype_content" oe="0" sch="public" zr="1"/>
-        <ClPr cdCl="partitltype_id_" prCl="id_"/>
       </Fk>
       <UniqueConstraints/>
       <SchTrHis/>
@@ -3737,6 +3289,9 @@ $$
       <Cl au="0" df="" nm="id_" nu="0">
         <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
+      <Cl au="0" df="" nm="content" nu="1">
+        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
       <Cl au="0" df="" nm="id" nu="1">
         <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
       </Cl>
@@ -3763,38 +3318,6 @@ $$
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
-    <Tbl UsSo="1" nm="proddatetype_content">
-      <TblOpts>WITHOUT OIDS</TblOpts>
-      <Cl au="0" df="" nm="proddatetype_id_" nu="0">
-        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="content" nu="1">
-        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Fk deAc="3" nm="fk29ec4cd92465b9c9" prLkCl="id_" upAc="3">
-        <PrTb mn="0" nm="dateofproduction" oe="1" sch="public" zr="0"/>
-        <CdTb mn="1" nm="proddatetype_content" oe="0" sch="public" zr="1"/>
-        <ClPr cdCl="proddatetype_id_" prCl="id_"/>
-      </Fk>
-      <UniqueConstraints/>
-      <SchTrHis/>
-    </Tbl>
-    <Tbl UsSo="1" nm="prodplactype_content">
-      <TblOpts>WITHOUT OIDS</TblOpts>
-      <Cl au="0" df="" nm="prodplactype_id_" nu="0">
-        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="content" nu="1">
-        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Fk deAc="3" nm="fkf8b44049a07b48a9" prLkCl="id_" upAc="3">
-        <PrTb mn="0" nm="placeofproduction" oe="1" sch="public" zr="0"/>
-        <CdTb mn="1" nm="prodplactype_content" oe="0" sch="public" zr="1"/>
-        <ClPr cdCl="prodplactype_id_" prCl="id_"/>
-      </Fk>
-      <UniqueConstraints/>
-      <SchTrHis/>
-    </Tbl>
     <Tbl UsSo="1" nm="producertype">
       <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id_" nm="producertype_pkey"/>
@@ -3807,6 +3330,9 @@ $$
       <Cl au="0" df="" nm="affiliation" nu="1">
         <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
       </Cl>
+      <Cl au="0" df="" nm="content" nu="1">
+        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
       <Cl au="0" df="" nm="id" nu="1">
         <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
       </Cl>
@@ -3817,22 +3343,6 @@ $$
         <PrTb mn="0" nm="productionstatement" oe="1" sch="public" zr="1"/>
         <CdTb mn="1" nm="producertype" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="productionstatement_id" prCl="id_"/>
-      </Fk>
-      <UniqueConstraints/>
-      <SchTrHis/>
-    </Tbl>
-    <Tbl UsSo="1" nm="producertype_content">
-      <TblOpts>WITHOUT OIDS</TblOpts>
-      <Cl au="0" df="" nm="producertype_id_" nu="0">
-        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="content" nu="1">
-        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Fk deAc="3" nm="fkeb371d463b2baa43" prLkCl="id_" upAc="3">
-        <PrTb mn="0" nm="producertype" oe="1" sch="public" zr="0"/>
-        <CdTb mn="1" nm="producertype_content" oe="0" sch="public" zr="1"/>
-        <ClPr cdCl="producertype_id_" prCl="id_"/>
       </Fk>
       <UniqueConstraints/>
       <SchTrHis/>
@@ -3853,38 +3363,6 @@ $$
         <PrTb mn="0" nm="copyright" oe="1" sch="public" zr="1"/>
         <CdTb mn="1" nm="productionstatement" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="copyright_id_" prCl="id_"/>
-      </Fk>
-      <UniqueConstraints/>
-      <SchTrHis/>
-    </Tbl>
-    <Tbl UsSo="1" nm="ptype_content">
-      <TblOpts>WITHOUT OIDS</TblOpts>
-      <Cl au="0" df="" nm="ptype_id_" nu="0">
-        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="content" nu="1">
-        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Fk deAc="3" nm="fk93bcece465996873" prLkCl="id_" upAc="3">
-        <PrTb mn="0" nm="paragraph" oe="1" sch="public" zr="0"/>
-        <CdTb mn="1" nm="ptype_content" oe="0" sch="public" zr="1"/>
-        <ClPr cdCl="ptype_id_" prCl="id_"/>
-      </Fk>
-      <UniqueConstraints/>
-      <SchTrHis/>
-    </Tbl>
-    <Tbl UsSo="1" nm="qstnlittype_content">
-      <TblOpts>WITHOUT OIDS</TblOpts>
-      <Cl au="0" df="" nm="qstnlittype_id_" nu="0">
-        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="content" nu="1">
-        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Fk deAc="3" nm="fk495c84cfbcaf8d69" prLkCl="id_" upAc="3">
-        <PrTb mn="0" nm="literalquestion" oe="1" sch="public" zr="0"/>
-        <CdTb mn="1" nm="qstnlittype_content" oe="0" sch="public" zr="1"/>
-        <ClPr cdCl="qstnlittype_id_" prCl="id_"/>
       </Fk>
       <UniqueConstraints/>
       <SchTrHis/>
@@ -3960,27 +3438,6 @@ $$
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
-    <Tbl UsSo="1" nm="rangeofinvaliddatavalues">
-      <TblOpts>WITHOUT OIDS</TblOpts>
-      <Pk ClNs="id_" nm="rangeofinvaliddatavalues_pkey"/>
-      <Cl au="0" df="" nm="id_" nu="0">
-        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="id" nu="1">
-        <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="source" nu="1">
-        <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="xmllang" nu="1">
-        <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="vartype_id" nu="1">
-        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <UniqueConstraints/>
-      <SchTrHis/>
-    </Tbl>
     <Tbl UsSo="1" nm="relatedmaterials">
       <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id_" nm="relatedmaterials_pkey"/>
@@ -4013,22 +3470,6 @@ $$
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
-    <Tbl UsSo="1" nm="resinstrutype_content">
-      <TblOpts>WITHOUT OIDS</TblOpts>
-      <Cl au="0" df="" nm="resinstrutype_id_" nu="0">
-        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="content" nu="1">
-        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Fk deAc="3" nm="fk335c76bde7357385" prLkCl="id_" upAc="3">
-        <PrTb mn="0" nm="typeofresearchinstrument" oe="1" sch="public" zr="0"/>
-        <CdTb mn="1" nm="resinstrutype_content" oe="0" sch="public" zr="1"/>
-        <ClPr cdCl="resinstrutype_id_" prCl="id_"/>
-      </Fk>
-      <UniqueConstraints/>
-      <SchTrHis/>
-    </Tbl>
     <Tbl UsSo="1" nm="responsibilitystatement">
       <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id_" nm="responsibilitystatement_pkey"/>
@@ -4056,26 +3497,14 @@ $$
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
-    <Tbl UsSo="1" nm="roledb">
-      <TblOpts>WITHOUT OIDS</TblOpts>
-      <Pk ClNs="id" nm="roledb_pkey"/>
-      <Cl au="0" df="" nm="id" nu="0">
-        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="description" nu="0">
-        <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="name" nu="0">
-        <DT arr="0" ds="VarChar" en="" id="12" ln="150" sc="null" sg="1" un="0"/>
-      </Cl>
-      <UniqueConstraints/>
-      <SchTrHis/>
-    </Tbl>
     <Tbl UsSo="1" nm="samplingprocedure">
       <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id_" nm="samplingprocedure_pkey"/>
       <Cl au="0" df="" nm="id_" nu="0">
         <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="content" nu="1">
+        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
       <Cl au="0" df="" nm="id" nu="1">
         <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
@@ -4087,22 +3516,6 @@ $$
         <PrTb mn="0" nm="datacollectionmethodology" oe="1" sch="public" zr="1"/>
         <CdTb mn="1" nm="samplingprocedure" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="datacollectionmethodology_id" prCl="id_"/>
-      </Fk>
-      <UniqueConstraints/>
-      <SchTrHis/>
-    </Tbl>
-    <Tbl UsSo="1" nm="sampproctype_content">
-      <TblOpts>WITHOUT OIDS</TblOpts>
-      <Cl au="0" df="" nm="sampproctype_id_" nu="0">
-        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="content" nu="1">
-        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Fk deAc="3" nm="fkbb616d9b25388e4d" prLkCl="id_" upAc="3">
-        <PrTb mn="0" nm="samplingprocedure" oe="1" sch="public" zr="0"/>
-        <CdTb mn="1" nm="sampproctype_content" oe="0" sch="public" zr="1"/>
-        <ClPr cdCl="sampproctype_id_" prCl="id_"/>
       </Fk>
       <UniqueConstraints/>
       <SchTrHis/>
@@ -4193,34 +3606,6 @@ $$
       </UniqueConstraints>
       <SchTrHis/>
     </Tbl>
-    <Tbl UsSo="1" nm="selection_variable_item">
-      <TblOpts>WITHOUT OIDS</TblOpts>
-      <Pk ClNs="item_id, selection_variable_id" nm="selection_variable_item_pkey"/>
-      <Cl au="0" df="" nm="item_id" nu="0">
-        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="selection_variable_id" nu="0">
-        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="instance_id" nu="1">
-        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="ordering" nu="0">
-        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="frequency_id" nu="0">
-        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <UniqueConstraints>
-        <UnCon nm="selection_variable_item_item_id_key">
-          <ClNs>item_id</ClNs>
-        </UnCon>
-        <UnCon nm="selection_variable_item_selection_variable_id_key">
-          <ClNs>selection_variable_id</ClNs>
-        </UnCon>
-      </UniqueConstraints>
-      <SchTrHis/>
-    </Tbl>
     <Tbl UsSo="1" nm="sequence">
       <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="seq_name" nm="sequence_pkey"/>
@@ -4238,6 +3623,9 @@ $$
       <Pk ClNs="id_" nm="seriesinformation_pkey"/>
       <Cl au="0" df="" nm="id_" nu="0">
         <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="content" nu="1">
+        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
       <Cl au="0" df="" nm="id" nu="1">
         <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
@@ -4261,6 +3649,9 @@ $$
       </Cl>
       <Cl au="0" df="" nm="abbr" nu="1">
         <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="content" nu="1">
+        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
       <Cl au="0" df="" nm="id" nu="1">
         <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
@@ -4288,38 +3679,6 @@ $$
       <Cl au="0" df="" nm="uri" nu="1">
         <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
       </Cl>
-      <UniqueConstraints/>
-      <SchTrHis/>
-    </Tbl>
-    <Tbl UsSo="1" nm="serinfotype_content">
-      <TblOpts>WITHOUT OIDS</TblOpts>
-      <Cl au="0" df="" nm="serinfotype_id_" nu="0">
-        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="content" nu="1">
-        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Fk deAc="3" nm="fk8a49bca21d3db54f" prLkCl="id_" upAc="3">
-        <PrTb mn="0" nm="seriesinformation" oe="1" sch="public" zr="0"/>
-        <CdTb mn="1" nm="serinfotype_content" oe="0" sch="public" zr="1"/>
-        <ClPr cdCl="serinfotype_id_" prCl="id_"/>
-      </Fk>
-      <UniqueConstraints/>
-      <SchTrHis/>
-    </Tbl>
-    <Tbl UsSo="1" nm="sernametype_content">
-      <TblOpts>WITHOUT OIDS</TblOpts>
-      <Cl au="0" df="" nm="sernametype_id_" nu="0">
-        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="content" nu="1">
-        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Fk deAc="3" nm="fk3df0eefffa887d89" prLkCl="id_" upAc="3">
-        <PrTb mn="0" nm="seriesname" oe="1" sch="public" zr="0"/>
-        <CdTb mn="1" nm="sernametype_content" oe="0" sch="public" zr="1"/>
-        <ClPr cdCl="sernametype_id_" prCl="id_"/>
-      </Fk>
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
@@ -4403,27 +3762,14 @@ $$
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
-    <Tbl UsSo="1" nm="softwaretype_content">
-      <TblOpts>WITHOUT OIDS</TblOpts>
-      <Cl au="0" df="" nm="softwaretype_id_" nu="0">
-        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="content" nu="1">
-        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Fk deAc="3" nm="fkc5a337db1114d6ed" prLkCl="id_" upAc="3">
-        <PrTb mn="0" nm="softwareusedinproduction" oe="1" sch="public" zr="0"/>
-        <CdTb mn="1" nm="softwaretype_content" oe="0" sch="public" zr="1"/>
-        <ClPr cdCl="softwaretype_id_" prCl="id_"/>
-      </Fk>
-      <UniqueConstraints/>
-      <SchTrHis/>
-    </Tbl>
     <Tbl UsSo="1" nm="softwareusedinproduction">
       <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id_" nm="softwareusedinproduction_pkey"/>
       <Cl au="0" df="" nm="id_" nu="0">
         <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="content" nu="1">
+        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
       <Cl au="0" df="" nm="date" nu="1">
         <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
@@ -4441,7 +3787,7 @@ $$
         <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
       <Fk deAc="3" nm="fkba4998021da66040" prLkCl="id_" upAc="3">
-        <PrTb mn="0" nm="filebyfiledescription" oe="1" sch="public" zr="1"/>
+        <PrTb mn="0" nm="datafiledescription" oe="1" sch="public" zr="1"/>
         <CdTb mn="1" nm="softwareusedinproduction" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="softwareusedinproduction_id" prCl="id_"/>
       </Fk>
@@ -4484,6 +3830,9 @@ $$
       <Cl au="0" df="" nm="id_" nu="0">
         <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
+      <Cl au="0" df="" nm="content" nu="1">
+        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
       <Cl au="0" df="" nm="formno" nu="1">
         <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
       </Cl>
@@ -4499,22 +3848,6 @@ $$
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
-    <Tbl UsSo="1" nm="specpermtype_content">
-      <TblOpts>WITHOUT OIDS</TblOpts>
-      <Cl au="0" df="" nm="specpermtype_id_" nu="0">
-        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="content" nu="1">
-        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Fk deAc="3" nm="fkf1c1097f3b057c15" prLkCl="id_" upAc="3">
-        <PrTb mn="0" nm="specialpermissions" oe="1" sch="public" zr="0"/>
-        <CdTb mn="1" nm="specpermtype_content" oe="0" sch="public" zr="1"/>
-        <ClPr cdCl="specpermtype_id_" prCl="id_"/>
-      </Fk>
-      <UniqueConstraints/>
-      <SchTrHis/>
-    </Tbl>
     <Tbl UsSo="1" nm="spssabstractrecordtype">
       <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id_" nm="spssabstractrecordtype_pkey"/>
@@ -4524,6 +3857,46 @@ $$
       <Cl au="0" df="" nm="filelocation" nu="0">
         <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
+      <UniqueConstraints/>
+      <SchTrHis/>
+    </Tbl>
+    <Tbl UsSo="1" nm="spssdatarecord">
+      <TblOpts>WITHOUT OIDS</TblOpts>
+      <Pk ClNs="id_" nm="spssdatarecord_pkey"/>
+      <Cl au="0" df="" nm="id_" nu="0">
+        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="recordindex" nu="1">
+        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <UniqueConstraints/>
+      <SchTrHis/>
+    </Tbl>
+    <Tbl UsSo="1" nm="spssdatarecordvariablevalue">
+      <TblOpts>WITHOUT OIDS</TblOpts>
+      <Pk ClNs="id_" nm="spssdatarecordvariablevalue_pkey"/>
+      <Cl au="0" df="" nm="id_" nu="0">
+        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="value" nu="1">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="datarecord_id_" nu="1">
+        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="variable_id_" nu="1">
+        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Fk deAc="3" nm="fkc10693d4457aba4" prLkCl="id_" upAc="3">
+        <PrTb mn="0" nm="spssvariable" oe="1" sch="public" zr="1"/>
+        <CdTb mn="1" nm="spssdatarecordvariablevalue" oe="0" sch="public" zr="1"/>
+        <ClPr cdCl="variable_id_" prCl="id_"/>
+      </Fk>
+      <Fk deAc="3" nm="fkc10693d759a2e82" prLkCl="id_" upAc="3">
+        <PrTb mn="0" nm="spssdatarecord" oe="1" sch="public" zr="1"/>
+        <CdTb mn="1" nm="spssdatarecordvariablevalue" oe="0" sch="public" zr="1"/>
+        <ClPr cdCl="datarecord_id_" prCl="id_"/>
+      </Fk>
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
@@ -4596,6 +3969,31 @@ $$
         <ClPr cdCl="integerinformationrecord_id_" prCl="id_"/>
       </Fk>
       <UniqueConstraints/>
+      <SchTrHis/>
+    </Tbl>
+    <Tbl UsSo="1" nm="spssfile_spssdatarecordvariablevalue">
+      <TblOpts>WITHOUT OIDS</TblOpts>
+      <Cl au="0" df="" nm="spssfile_id_" nu="0">
+        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="values_id_" nu="0">
+        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Fk deAc="3" nm="fk42250a97175019a1" prLkCl="id_" upAc="3">
+        <PrTb mn="0" nm="spssfile" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="spssfile_spssdatarecordvariablevalue" oe="0" sch="public" zr="1"/>
+        <ClPr cdCl="spssfile_id_" prCl="id_"/>
+      </Fk>
+      <Fk deAc="3" nm="fk42250a97d8c6bbda" prLkCl="id_" upAc="3">
+        <PrTb mn="0" nm="spssdatarecordvariablevalue" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="spssfile_spssdatarecordvariablevalue" oe="0" sch="public" zr="1"/>
+        <ClPr cdCl="values_id_" prCl="id_"/>
+      </Fk>
+      <UniqueConstraints>
+        <UnCon nm="spssfile_spssdatarecordvariablevalue_values_id__key">
+          <ClNs>values_id_</ClNs>
+        </UnCon>
+      </UniqueConstraints>
       <SchTrHis/>
     </Tbl>
     <Tbl UsSo="1" nm="spssfile_spssvariable">
@@ -4792,9 +4190,6 @@ $$
     <Tbl UsSo="1" nm="spssrecordtype6">
       <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id_" nm="spssrecordtype6_pkey"/>
-      <Cl au="0" df="" nm="line" nu="1">
-        <DT arr="0" ds="Bytea" en="" id="760" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
       <Cl au="0" df="" nm="numberoflines" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
@@ -4808,6 +4203,22 @@ $$
         <PrTb mn="0" nm="spssabstractrecordtype" oe="1" sch="public" zr="0"/>
         <CdTb mn="1" nm="spssrecordtype6" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="id_" prCl="id_"/>
+      </Fk>
+      <UniqueConstraints/>
+      <SchTrHis/>
+    </Tbl>
+    <Tbl UsSo="1" nm="spssrecordtype6_line">
+      <TblOpts>WITHOUT OIDS</TblOpts>
+      <Cl au="0" df="" nm="spssrecordtype6_id_" nu="0">
+        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="line" nu="1">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Fk deAc="3" nm="fk3ec448e526b89a17" prLkCl="id_" upAc="3">
+        <PrTb mn="0" nm="spssrecordtype6" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="spssrecordtype6_line" oe="0" sch="public" zr="1"/>
+        <ClPr cdCl="spssrecordtype6_id_" prCl="id_"/>
       </Fk>
       <UniqueConstraints/>
       <SchTrHis/>
@@ -5501,6 +4912,9 @@ $$
       <Cl au="0" df="" nm="id_" nu="0">
         <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
+      <Cl au="0" df="" nm="content" nu="1">
+        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
       <Cl au="0" df="" nm="id" nu="1">
         <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
       </Cl>
@@ -5514,22 +4928,6 @@ $$
         <PrTb mn="0" nm="variableddi" oe="1" sch="public" zr="1"/>
         <CdTb mn="1" nm="summarystatistics" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="variableddi_id" prCl="id_"/>
-      </Fk>
-      <UniqueConstraints/>
-      <SchTrHis/>
-    </Tbl>
-    <Tbl UsSo="1" nm="sumstattype_content">
-      <TblOpts>WITHOUT OIDS</TblOpts>
-      <Cl au="0" df="" nm="sumstattype_id_" nu="0">
-        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="content" nu="1">
-        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Fk deAc="3" nm="fk6a27e1331fef0ff1" prLkCl="id_" upAc="3">
-        <PrTb mn="0" nm="summarystatistics" oe="1" sch="public" zr="0"/>
-        <CdTb mn="1" nm="sumstattype_content" oe="0" sch="public" zr="1"/>
-        <ClPr cdCl="sumstattype_id_" prCl="id_"/>
       </Fk>
       <UniqueConstraints/>
       <SchTrHis/>
@@ -5572,6 +4970,9 @@ $$
       <Cl au="0" df="" nm="id_" nu="0">
         <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
+      <Cl au="0" df="" nm="content" nu="1">
+        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
       <Cl au="0" df="" nm="id" nu="1">
         <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
       </Cl>
@@ -5589,27 +4990,14 @@ $$
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
-    <Tbl UsSo="1" nm="timemethtype_content">
-      <TblOpts>WITHOUT OIDS</TblOpts>
-      <Cl au="0" df="" nm="timemethtype_id_" nu="0">
-        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="content" nu="1">
-        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Fk deAc="3" nm="fk7613d9adb787171" prLkCl="id_" upAc="3">
-        <PrTb mn="0" nm="timemethod" oe="1" sch="public" zr="0"/>
-        <CdTb mn="1" nm="timemethtype_content" oe="0" sch="public" zr="1"/>
-        <ClPr cdCl="timemethtype_id_" prCl="id_"/>
-      </Fk>
-      <UniqueConstraints/>
-      <SchTrHis/>
-    </Tbl>
     <Tbl UsSo="1" nm="timeperiodcovered">
       <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id_" nm="timeperiodcovered_pkey"/>
       <Cl au="0" df="" nm="id_" nu="0">
         <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="content" nu="1">
+        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
       <Cl au="0" df="" nm="cycle" nu="1">
         <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
@@ -5634,27 +5022,14 @@ $$
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
-    <Tbl UsSo="1" nm="timeprdtype_content">
-      <TblOpts>WITHOUT OIDS</TblOpts>
-      <Cl au="0" df="" nm="timeprdtype_id_" nu="0">
-        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="content" nu="1">
-        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Fk deAc="3" nm="fk51ec4d8933bde5dd" prLkCl="id_" upAc="3">
-        <PrTb mn="0" nm="timeperiodcovered" oe="1" sch="public" zr="0"/>
-        <CdTb mn="1" nm="timeprdtype_content" oe="0" sch="public" zr="1"/>
-        <ClPr cdCl="timeprdtype_id_" prCl="id_"/>
-      </Fk>
-      <UniqueConstraints/>
-      <SchTrHis/>
-    </Tbl>
     <Tbl UsSo="1" nm="title">
       <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id_" nm="title_pkey"/>
       <Cl au="0" df="" nm="id_" nu="0">
         <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="content" nu="1">
+        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
       <Cl au="0" df="" nm="id" nu="1">
         <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
@@ -5682,43 +5057,14 @@ $$
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
-    <Tbl UsSo="1" nm="titltype_content">
-      <TblOpts>WITHOUT OIDS</TblOpts>
-      <Cl au="0" df="" nm="titltype_id_" nu="0">
-        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="content" nu="1">
-        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Fk deAc="3" nm="fke16c60e148ea24f9" prLkCl="id_" upAc="3">
-        <PrTb mn="0" nm="title" oe="1" sch="public" zr="0"/>
-        <CdTb mn="1" nm="titltype_content" oe="0" sch="public" zr="1"/>
-        <ClPr cdCl="titltype_id_" prCl="id_"/>
-      </Fk>
-      <UniqueConstraints/>
-      <SchTrHis/>
-    </Tbl>
-    <Tbl UsSo="1" nm="topcclastype_content">
-      <TblOpts>WITHOUT OIDS</TblOpts>
-      <Cl au="0" df="" nm="topcclastype_id_" nu="0">
-        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="content" nu="1">
-        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Fk deAc="3" nm="fk15ec9c5d675c7ed1" prLkCl="id_" upAc="3">
-        <PrTb mn="0" nm="topicclasification" oe="1" sch="public" zr="0"/>
-        <CdTb mn="1" nm="topcclastype_content" oe="0" sch="public" zr="1"/>
-        <ClPr cdCl="topcclastype_id_" prCl="id_"/>
-      </Fk>
-      <UniqueConstraints/>
-      <SchTrHis/>
-    </Tbl>
     <Tbl UsSo="1" nm="topicclasification">
       <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id_" nm="topicclasification_pkey"/>
       <Cl au="0" df="" nm="id_" nu="0">
         <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="content" nu="1">
+        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
       <Cl au="0" df="" nm="id" nu="1">
         <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
@@ -5736,22 +5082,6 @@ $$
         <PrTb mn="0" nm="subjectinformation" oe="1" sch="public" zr="1"/>
         <CdTb mn="1" nm="topicclasification" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="subjectinformation_id" prCl="id_"/>
-      </Fk>
-      <UniqueConstraints/>
-      <SchTrHis/>
-    </Tbl>
-    <Tbl UsSo="1" nm="txttype_content">
-      <TblOpts>WITHOUT OIDS</TblOpts>
-      <Cl au="0" df="" nm="txttype_id_" nu="0">
-        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="content" nu="1">
-        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Fk deAc="3" nm="fk7a1f36e493414df3" prLkCl="id_" upAc="3">
-        <PrTb mn="0" nm="descriptivetext" oe="1" sch="public" zr="0"/>
-        <CdTb mn="1" nm="txttype_content" oe="0" sch="public" zr="1"/>
-        <ClPr cdCl="txttype_id_" prCl="id_"/>
       </Fk>
       <UniqueConstraints/>
       <SchTrHis/>
@@ -5781,6 +5111,9 @@ $$
       <Cl au="0" df="" nm="charset" nu="1">
         <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
       </Cl>
+      <Cl au="0" df="" nm="content" nu="1">
+        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
       <Cl au="0" df="" nm="id" nu="1">
         <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
       </Cl>
@@ -5792,6 +5125,9 @@ $$
       <Pk ClNs="id_" nm="typeofresearchinstrument_pkey"/>
       <Cl au="0" df="" nm="id_" nu="0">
         <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="content" nu="1">
+        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
       <Cl au="0" df="" nm="id" nu="1">
         <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
@@ -5831,6 +5167,9 @@ $$
       <Cl au="0" df="" nm="id_" nu="0">
         <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
+      <Cl au="0" df="" nm="content" nu="1">
+        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
       <Cl au="0" df="" nm="id" nu="1">
         <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
       </Cl>
@@ -5857,6 +5196,9 @@ $$
       <Cl au="0" df="" nm="clusion" nu="1">
         <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
       </Cl>
+      <Cl au="0" df="" nm="content" nu="1">
+        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
       <Cl au="0" df="" nm="id" nu="1">
         <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
       </Cl>
@@ -5878,22 +5220,6 @@ $$
         <PrTb mn="0" nm="variableddi" oe="1" sch="public" zr="1"/>
         <CdTb mn="1" nm="universe" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="variableddi_id" prCl="id_"/>
-      </Fk>
-      <UniqueConstraints/>
-      <SchTrHis/>
-    </Tbl>
-    <Tbl UsSo="1" nm="universetype_content">
-      <TblOpts>WITHOUT OIDS</TblOpts>
-      <Cl au="0" df="" nm="universetype_id_" nu="0">
-        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="content" nu="1">
-        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Fk deAc="3" nm="fkb3742379105ab29" prLkCl="id_" upAc="3">
-        <PrTb mn="0" nm="universe" oe="1" sch="public" zr="0"/>
-        <CdTb mn="1" nm="universetype_content" oe="0" sch="public" zr="1"/>
-        <ClPr cdCl="universetype_id_" prCl="id_"/>
       </Fk>
       <UniqueConstraints/>
       <SchTrHis/>
@@ -6047,39 +5373,6 @@ $$
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
-    <Tbl UsSo="1" nm="userdb">
-      <TblOpts>WITHOUT OIDS</TblOpts>
-      <Pk ClNs="id" nm="userdb_pkey"/>
-      <Cl au="0" df="" nm="id" nu="0">
-        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="credential_provider" nu="0">
-        <DT arr="0" ds="VarChar" en="" id="12" ln="20" sc="null" sg="1" un="0"/>
-      </Cl>
-      <UniqueConstraints/>
-      <SchTrHis/>
-    </Tbl>
-    <Tbl UsSo="1" nm="userdb_roledb">
-      <TblOpts>WITHOUT OIDS</TblOpts>
-      <Cl au="0" df="" nm="user_id" nu="0">
-        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="role_id" nu="0">
-        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Fk deAc="3" nm="fk16d3f6ea430b723" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="userdb" oe="1" sch="public" zr="0"/>
-        <CdTb mn="1" nm="userdb_roledb" oe="0" sch="public" zr="1"/>
-        <ClPr cdCl="user_id" prCl="id"/>
-      </Fk>
-      <Fk deAc="3" nm="fk16d3f6ea59b37483" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="roledb" oe="1" sch="public" zr="0"/>
-        <CdTb mn="1" nm="userdb_roledb" oe="0" sch="public" zr="1"/>
-        <ClPr cdCl="role_id" prCl="id"/>
-      </Fk>
-      <UniqueConstraints/>
-      <SchTrHis/>
-    </Tbl>
     <Tbl UsSo="1" nm="users">
       <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id" nm="users_pkey"/>
@@ -6223,49 +5516,6 @@ $$
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
-    <Tbl UsSo="1" nm="varformattype_content">
-      <TblOpts>WITHOUT OIDS</TblOpts>
-      <Cl au="0" df="" nm="varformattype_id_" nu="0">
-        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="content" nu="1">
-        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Fk deAc="3" nm="fkb7b399727217e06f" prLkCl="id_" upAc="3">
-        <PrTb mn="0" nm="variableformat" oe="1" sch="public" zr="0"/>
-        <CdTb mn="1" nm="varformattype_content" oe="0" sch="public" zr="1"/>
-        <ClPr cdCl="varformattype_id_" prCl="id_"/>
-      </Fk>
-      <UniqueConstraints/>
-      <SchTrHis/>
-    </Tbl>
-    <Tbl UsSo="1" nm="variable">
-      <TblOpts>WITHOUT OIDS</TblOpts>
-      <Pk ClNs="id" nm="variable_pkey"/>
-      <Cl au="0" df="" nm="id" nu="0">
-        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="label" nu="0">
-        <DT arr="0" ds="VarChar" en="" id="12" ln="200" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="operator_instructions" nu="0">
-        <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="ordering" nu="0">
-        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="response_type" nu="0">
-        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="type" nu="0">
-        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="instance_id" nu="1">
-        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <UniqueConstraints/>
-      <SchTrHis/>
-    </Tbl>
     <Tbl UsSo="1" nm="variable_group">
       <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id" nm="variable_group_pkey"/>
@@ -6384,6 +5634,9 @@ $$
       <Cl au="0" df="" nm="category" nu="1">
         <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
       </Cl>
+      <Cl au="0" df="" nm="content" nu="1">
+        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
       <Cl au="0" df="" nm="formatname" nu="1">
         <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
       </Cl>
@@ -6396,22 +5649,6 @@ $$
       <Cl au="0" df="" nm="type" nu="1">
         <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
       </Cl>
-      <UniqueConstraints/>
-      <SchTrHis/>
-    </Tbl>
-    <Tbl UsSo="1" nm="varqntytype_content">
-      <TblOpts>WITHOUT OIDS</TblOpts>
-      <Cl au="0" df="" nm="varqntytype_id_" nu="0">
-        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="content" nu="1">
-        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Fk deAc="3" nm="fk98cf901d4c98fcc5" prLkCl="id_" upAc="3">
-        <PrTb mn="0" nm="numberofvariablesperrecord" oe="1" sch="public" zr="0"/>
-        <CdTb mn="1" nm="varqntytype_content" oe="0" sch="public" zr="1"/>
-        <ClPr cdCl="varqntytype_id_" prCl="id_"/>
-      </Fk>
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
@@ -6527,27 +5764,14 @@ $$
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
-    <Tbl UsSo="1" nm="verresptype_content">
-      <TblOpts>WITHOUT OIDS</TblOpts>
-      <Cl au="0" df="" nm="verresptype_id_" nu="0">
-        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="content" nu="1">
-        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Fk deAc="3" nm="fk1f793607cfc15799" prLkCl="id_" upAc="3">
-        <PrTb mn="0" nm="versionresponsibilitystatement" oe="1" sch="public" zr="0"/>
-        <CdTb mn="1" nm="verresptype_content" oe="0" sch="public" zr="1"/>
-        <ClPr cdCl="verresptype_id_" prCl="id_"/>
-      </Fk>
-      <UniqueConstraints/>
-      <SchTrHis/>
-    </Tbl>
     <Tbl UsSo="1" nm="version">
       <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id_" nm="version_pkey"/>
       <Cl au="0" df="" nm="id_" nu="0">
         <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="content" nu="1">
+        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
       <Cl au="0" df="" nm="date" nu="1">
         <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
@@ -6569,6 +5793,9 @@ $$
       </Cl>
       <Cl au="0" df="" nm="affiliation" nu="1">
         <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="content" nu="1">
+        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
       <Cl au="0" df="" nm="id" nu="1">
         <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
@@ -6628,27 +5855,14 @@ $$
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
-    <Tbl UsSo="1" nm="versiontype_content">
-      <TblOpts>WITHOUT OIDS</TblOpts>
-      <Cl au="0" df="" nm="versiontype_id_" nu="0">
-        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="content" nu="1">
-        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Fk deAc="3" nm="fk3637454c620749c3" prLkCl="id_" upAc="3">
-        <PrTb mn="0" nm="version" oe="1" sch="public" zr="0"/>
-        <CdTb mn="1" nm="versiontype_content" oe="0" sch="public" zr="1"/>
-        <ClPr cdCl="versiontype_id_" prCl="id_"/>
-      </Fk>
-      <UniqueConstraints/>
-      <SchTrHis/>
-    </Tbl>
     <Tbl UsSo="1" nm="weight">
       <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id_" nm="weight_pkey"/>
       <Cl au="0" df="" nm="id_" nu="0">
         <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="content" nu="1">
+        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
       <Cl au="0" df="" nm="id" nu="1">
         <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
@@ -6660,22 +5874,6 @@ $$
         <PrTb mn="0" nm="datacollectionmethodology" oe="1" sch="public" zr="1"/>
         <CdTb mn="1" nm="weight" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="datacollectionmethodology_id" prCl="id_"/>
-      </Fk>
-      <UniqueConstraints/>
-      <SchTrHis/>
-    </Tbl>
-    <Tbl UsSo="1" nm="weighttype_content">
-      <TblOpts>WITHOUT OIDS</TblOpts>
-      <Cl au="0" df="" nm="weighttype_id_" nu="0">
-        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="content" nu="1">
-        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Fk deAc="3" nm="fk2cf7ef2c1956d88f" prLkCl="id_" upAc="3">
-        <PrTb mn="0" nm="weight" oe="1" sch="public" zr="0"/>
-        <CdTb mn="1" nm="weighttype_content" oe="0" sch="public" zr="1"/>
-        <ClPr cdCl="weighttype_id_" prCl="id_"/>
       </Fk>
       <UniqueConstraints/>
       <SchTrHis/>
@@ -7463,7 +6661,7 @@ $$'$libdir/hstore', 'hstore_from_text'$$
     <CustomTypes/>
   </Sch>
   <Dgm nm="diagramA">
-    <RnCf FtSz="9" lkStgy="OffsetDirect" zm="0.5">
+    <RnCf FtSz="9" lkStgy="OffsetDirect" zm="0.75">
       <VbCfg>
         <Fg ky="Auto Number" vl="0"/>
         <Fg ky="Check" vl="0"/>
@@ -7483,305 +6681,238 @@ $$'$libdir/hstore', 'hstore_from_text'$$
       <ErNotation>DbwErNotation</ErNotation>
       <svg path=""/>
     </DiaProps>
-    <TbGl bkCl="ffccccff" sch="audit" tbl="logged_actions" x="5597" y="50"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="abstract" x="4637" y="1572"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="abstracttype_content" x="5014" y="1572"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="accessplace" x="672" y="2911"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="accsplactype_content" x="354" y="2911"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="address" x="1320" y="5119"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="alternativetitle" x="1421" y="3771"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="alttitltype_content" x="1114" y="3771"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="anlyunittype_content" x="4677" y="1479"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="answer" x="985" y="6645"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="archivewherestudywasoriginallystored" x="738" y="3004"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="auth_data" x="1488" y="8607"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="authentytype_content" x="1085" y="2114"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="authoringentity" x="1408" y="2114"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="biblcittype_content" x="1493" y="928"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="bibliographiccitation" x="1801" y="928"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="caseqntytype_content" x="1127" y="246"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="catalog" x="757" y="5964"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="catalog_acl" x="464" y="5964"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="catalog_study" x="1058" y="5964"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="category" x="3518" y="153"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="category_category" x="3866" y="458"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="categorystatistic" x="3876" y="153"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="categoryvalue" x="3856" y="589"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="catgrytype_sdatrefs" x="3856" y="531"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="catstattype_content" x="4243" y="153"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="catstattype_methrefs" x="4233" y="211"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="catstattype_sdatrefs" x="4223" y="269"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="catstattype_weight" x="4213" y="327"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="catstattype_wgtvar" x="4203" y="385"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="catvalutype_content" x="4139" y="589"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="citation" x="2104" y="732"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="citationrequirement" x="756" y="2589"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="citreqtype_content" x="450" y="2589"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="city" x="999" y="5119"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="cms_files" x="373" y="9544"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="cms_folders" x="50" y="9544"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="cms_layout" x="373" y="8979"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="cms_layout_group" x="50" y="8979"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="cms_page" x="718" y="8979"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="cms_page_content" x="1039" y="8979"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="cms_snippet" x="373" y="9687"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="cms_snippet_group" x="50" y="9687"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="codebook" x="2353" y="5119"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="colldatetype_content" x="4707" y="1170"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="collmodetype_content" x="210" y="3263"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="concept" x="50" y="9451"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="concept_variable" x="373" y="9451"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="contactperson" x="1412" y="1104"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="contacttype_content" x="1097" y="1104"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="copyright" x="1485" y="1918"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="copyrighttype_content" x="1161" y="1918"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="country" x="1025" y="5202"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="countryddi" x="4311" y="1077"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="Data" x="5965" y="50"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="dataaccess" x="1388" y="2589"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="datacollectionmethodology" x="980" y="3077"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="datacollector" x="586" y="3160"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="datacollectortype_content" x="243" y="3160"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="datafilesdescription" x="1757" y="485"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="datasetavailability" x="1050" y="2911"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="dateofcollection" x="4301" y="1170"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="dateofdeposit" x="1422" y="1227"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="dateofproduction" x="1349" y="1516"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="demo_scope" x="988" y="6997"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="demo_slices" x="679" y="6997"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="depdatetype_content" x="1104" y="1227"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="depositor" x="1402" y="1011"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="depositrequirement" x="756" y="2662"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="depositrtype_content" x="1084" y="1011"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="deposreqtype_content" x="434" y="2662"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="descriptivetext" x="3508" y="662"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="disclaimer" x="756" y="2735"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="disclaimertype_content" x="429" y="2735"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="distrbtrtype_content" x="1117" y="1320"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="distributor" x="1432" y="1320"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="distributorstatement" x="1821" y="1011"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="document_type" x="340" y="6479"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="documentationsource" x="2083" y="4103"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="documentdescription" x="1774" y="835"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="documents" x="635" y="6381"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="documents_acl" x="330" y="6381"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="edited_variable" x="402" y="8788"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="emails" x="1640" y="5275"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="filebyfiledescription" x="2087" y="50"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="filedimensions" x="1804" y="163"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="filedscrtype_access" x="1378" y="485"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="filedscrtype_methrefs" x="1388" y="543"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="filedscrtype_pubrefs" x="1398" y="601"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="filedscrtype_sdatrefs" x="1408" y="659"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="filename" x="1804" y="329"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="filenametype_content" x="1483" y="329"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="filetypetype_content" x="1465" y="402"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="form_edited_number_var" x="50" y="8788"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="form_edited_text_var" x="708" y="8788"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="form_selection_var" x="395" y="9338"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="frequency" x="5597" y="258"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="fundagtype_content" x="1047" y="1609"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="fundingagency" x="1359" y="1609"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="geo_scope" x="350" y="6997"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="geo_slices" x="50" y="6997"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="geogcovertype_content" x="4697" y="1283"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="geographicalcoverage" x="4291" y="1283"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="geographicunit" x="4321" y="994"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="geogunittype_content" x="4727" y="994"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="grantnotype_content" x="1053" y="1712"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="grantnumber" x="1369" y="1712"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="holdings" x="1704" y="732"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="holdingstype_content" x="1386" y="732"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="identificationnumber" x="1431" y="3854"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="idnotype_content" x="1133" y="3854"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="instance" x="1311" y="6381"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="instance_acl" x="993" y="6713"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="instance_descr" x="976" y="6821"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="instance_documents" x="968" y="6381"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="instance_org" x="1649" y="6381"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="instance_org_assoc" x="1293" y="7193"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="instance_person" x="1007" y="5368"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="instance_person_assoc" x="651" y="5368"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="instance_var_group" x="5965" y="258"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="internet" x="1645" y="7276"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="invalidvaluerange" x="2542" y="4422"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="item" x="6281" y="258"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="keyword" x="4920" y="1768"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="keywordtype_content" x="5299" y="1768"/>
+    <TbGl bkCl="ffccccff" sch="audit" tbl="logged_actions" x="4457" y="50"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="abstract" x="1344" y="6957"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="accessplace" x="672" y="4923"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="address" x="1320" y="7561"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="alternativetitle" x="1421" y="5758"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="answer" x="985" y="9087"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="archivewherestudywasoriginallystored" x="738" y="5011"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="auth_data" x="1488" y="10414"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="authoringentity" x="1418" y="4239"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="bibliographiccitation" x="1797" y="2925"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="catalog" x="757" y="8406"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="catalog_acl" x="464" y="8406"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="catalog_study" x="1058" y="8406"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="category" x="2502" y="50"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="category_category" x="2194" y="297"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="categorystatistic" x="2155" y="50"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="categoryvalue" x="2195" y="428"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="catgrytype_sdatrefs" x="2158" y="370"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="catstattype_methrefs" x="1776" y="50"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="catstattype_sdatrefs" x="1786" y="108"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="catstattype_weight" x="1796" y="166"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="catstattype_wgtvar" x="1806" y="224"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="citation" x="2104" y="2719"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="citationrequirement" x="732" y="4606"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="city" x="999" y="7561"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="cms_files" x="373" y="11145"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="cms_folders" x="50" y="11145"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="cms_layout" x="373" y="10786"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="cms_layout_group" x="50" y="10786"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="cms_page" x="718" y="10786"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="cms_page_content" x="1039" y="10786"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="cms_snippet" x="373" y="11288"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="cms_snippet_group" x="50" y="11288"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="codebook" x="2353" y="7561"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="concept" x="50" y="11052"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="concept_variable" x="373" y="11052"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="contactperson" x="1402" y="3018"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="copyright" x="1461" y="3910"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="country" x="1025" y="7644"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="countryddi" x="1631" y="6409"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="Data" x="4825" y="50"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="dataaccess" x="1388" y="4606"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="datacollectionmethodology" x="980" y="5094"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="datacollector" x="576" y="5094"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="datafiledescription" x="2087" y="511"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="datafilesdescription" x="1757" y="951"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="datasetavailability" x="1050" y="4923"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="dateofcollection" x="1641" y="6497"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="dateofdeposit" x="1412" y="3151"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="dateofproduction" x="1339" y="3450"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="demo_scope" x="988" y="9439"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="demo_slices" x="679" y="9439"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="depositor" x="1422" y="3239"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="depositrequirement" x="732" y="4674"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="descriptivetext" x="3508" y="163"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="disclaimer" x="732" y="4742"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="distributor" x="1432" y="3327"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="distributorstatement" x="1821" y="3018"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="document_type" x="340" y="8921"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="documentationsource" x="2083" y="6085"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="documentdescription" x="1774" y="2832"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="documents" x="635" y="8823"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="documents_acl" x="330" y="8823"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="edited_variable" x="402" y="10595"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="emails" x="1640" y="7717"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="filedimensions" x="1804" y="634"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="filedscrtype_access" x="1378" y="951"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="filedscrtype_methrefs" x="1388" y="1009"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="filedscrtype_pubrefs" x="1398" y="1067"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="filedscrtype_sdatrefs" x="1408" y="1125"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="filename" x="1780" y="805"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="form_edited_number_var" x="50" y="10595"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="form_edited_text_var" x="708" y="10595"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="frequency" x="4457" y="258"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="fundingagency" x="1349" y="3538"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="geo_scope" x="350" y="9439"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="geo_slices" x="50" y="9439"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="geographicalcoverage" x="1651" y="6605"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="geographicunit" x="1661" y="6683"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="grantnumber" x="1359" y="3636"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="holdings" x="1704" y="2719"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="identificationnumber" x="1431" y="5836"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="instance" x="1311" y="8823"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="instance_acl" x="993" y="9155"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="instance_descr" x="976" y="9263"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="instance_documents" x="968" y="8823"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="instance_org" x="1649" y="8823"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="instance_org_assoc" x="1293" y="9635"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="instance_person" x="1007" y="7810"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="instance_person_assoc" x="651" y="7810"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="instance_var_group" x="4825" y="258"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="internet" x="1645" y="9718"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="invalidvaluerange" x="3478" y="379"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="item" x="5084" y="258"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="keyword" x="1049" y="7045"/>
     <TbGl bkCl="ffccccff" sch="public" tbl="label" x="3528" y="50"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="labltype_content" x="3949" y="50"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="literalquestion" x="3816" y="1871"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="location" x="2582" y="4857"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="methodology" x="944" y="6899"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="methodologyandprocessing" x="1398" y="3077"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="modeofdatacollection" x="531" y="3263"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="nationtype_content" x="4717" y="1077"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="numberofcases" x="1449" y="246"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="numberofvariablesperrecord" x="1439" y="163"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="objectfactory" x="6570" y="258"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="org" x="2018" y="5119"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="org_address" x="1648" y="5119"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="org_prefix" x="1695" y="7605"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="org_relation_type" x="1346" y="7389"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="org_relations" x="1635" y="7389"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="org_sufix" x="1695" y="7673"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="origarchtype_content" x="421" y="3004"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="other_statistics" x="698" y="8866"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="otheridentificationacknowledgements" x="1347" y="2207"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="otherstudydescriptionmaterials" x="1378" y="2506"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="otherstudyrelatedmaterials" x="3866" y="662"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="paragraph" x="873" y="2207"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="paralleltitle" x="1441" y="3947"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="partitltype_content" x="1132" y="3947"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="person" x="1327" y="5275"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="person_address" x="997" y="5275"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="person_org" x="1713" y="7502"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="person_role" x="1418" y="7502"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="placeofproduction" x="1339" y="1433"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="prefix" x="1032" y="5642"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="proddatetype_content" x="1027" y="1516"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="prodplactype_content" x="1020" y="1433"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="producertype" x="1379" y="1815"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="producertype_content" x="1059" y="1815"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="productionstatement" x="1768" y="1433"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="ptype_content" x="590" y="2207"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="qstnlittype_content" x="4152" y="1871"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="qstnlittype_sdatrefs" x="4142" y="1929"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="qstntype_sdatrefs" x="3806" y="2002"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="qstntype_var" x="3796" y="2060"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="question" x="3458" y="1871"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="rangeofinvaliddatavalues" x="5597" y="326"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="relatedmaterials" x="1664" y="1991"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="resinstrutype_content" x="240" y="3522"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="responsibilitystatement" x="1821" y="2114"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="role" x="1783" y="8524"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="roledb" x="684" y="9122"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="samplingprocedure" x="541" y="3346"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="sampproctype_content" x="217" y="3346"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="Selected_Answers" x="6281" y="50"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="selection_variable" x="5965" y="326"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="selection_variable_card" x="658" y="6552"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="selection_variable_item" x="50" y="9338"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="sequence" x="6281" y="326"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="seriesinformation" x="1456" y="2423"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="seriesname" x="1446" y="2330"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="seriesstatement" x="1821" y="2330"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="serinfotype_content" x="1144" y="2423"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="sernametype_content" x="1127" y="2330"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="setting" x="373" y="9215"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="setting_group" x="50" y="9215"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="setting_values" x="6570" y="326"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="skip" x="5597" y="414"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="softwaretype_content" x="1350" y="50"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="softwareusedinproduction" x="1673" y="50"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="sourcesstatement" x="607" y="3615"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="specialpermissions" x="730" y="2808"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="specpermtype_content" x="406" y="2808"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="spssabstractrecordtype" x="1571" y="7766"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="spssfile" x="2335" y="7766"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="spssfile_spssvariable" x="2775" y="7766"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="spssrecordtype1" x="1961" y="7766"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="spssrecordtype2" x="1091" y="7766"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="spssrecordtype3" x="1941" y="7939"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="spssrecordtype4" x="1229" y="8368"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="spssrecordtype6" x="1931" y="8022"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="spssrecordtype7" x="1861" y="8411"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="spssrecordtype7subtype11" x="1155" y="8019"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="spssrecordtype7subtype11_variabledisplayparams" x="768" y="8019"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="spssrecordtype7subtype13" x="1136" y="8122"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="spssrecordtype7subtype3" x="1901" y="8115"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="spssrecordtype7subtype4" x="1185" y="8235"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="spssrecordtype7subtype5" x="1881" y="8298"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="spssvariable" x="720" y="7766"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="spssvariable_spssvariablecategory" x="363" y="7766"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="spssvariablecategory" x="50" y="7766"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="stdydscrtype_access" x="1420" y="3698"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="studiu_person_asoc" x="677" y="5559"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="study" x="1369" y="5891"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="study_acl" x="1073" y="6087"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="study_descr" x="1058" y="6195"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="study_documents" x="1036" y="5891"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="study_org" x="1674" y="5773"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="study_org_acl" x="1368" y="5773"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="study_org_asoc" x="1323" y="6288"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="study_person" x="1028" y="5451"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="study_person_acl" x="705" y="5451"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="studydescription" x="1774" y="2506"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="studyinfoandscope" x="4271" y="1572"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="subjectinformation" x="4637" y="1665"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="suffix" x="1038" y="5700"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="summarydatadescription" x="3894" y="994"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="summarystatistics" x="2572" y="4668"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="sumstattype_content" x="2234" y="4668"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="sumstattype_weight" x="2209" y="4726"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="sumstattype_wgtvar" x="2219" y="4784"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="timemethod" x="551" y="3429"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="timemethtype_content" x="225" y="3429"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="timeperiodcovered" x="4281" y="1366"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="timeprdtype_content" x="4687" y="1366"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="title" x="1516" y="4030"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="titlestatement" x="1799" y="3771"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="titltype_content" x="1223" y="4030"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="topcclastype_content" x="5309" y="1665"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="topicclasification" x="4930" y="1665"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="txttype_content" x="3856" y="805"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="txttype_sdatrefs" x="3846" y="863"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="typeoffile" x="1782" y="402"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="typeofresearchinstrument" x="561" y="3522"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="unit_analysis" x="988" y="7110"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="unitofanalysis" x="4271" y="1479"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="universe" x="3488" y="936"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="universetype_content" x="3894" y="936"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="user_auth_log" x="728" y="8637"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="user_messages" x="1468" y="8695"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="user_role" x="1508" y="8524"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="user_setting_value" x="733" y="8524"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="user_settings" x="373" y="8524"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="user_settings_group" x="50" y="8524"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="userdb" x="50" y="9122"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="userdb_roledb" x="409" y="9122"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="users" x="1109" y="8524"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="usestatement" x="1039" y="2589"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="valueitem" x="2171" y="4422"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="valuerange" x="2519" y="4535"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="varformattype_content" x="3698" y="2365"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="variable" x="5965" y="414"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="variable_group" x="6281" y="414"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="Variable_Sequences" x="6570" y="50"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="literalquestion" x="3816" y="625"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="location" x="3438" y="849"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="methodology" x="944" y="9341"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="methodologyandprocessing" x="1398" y="5094"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="modeofdatacollection" x="521" y="5192"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="numberofcases" x="1439" y="634"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="numberofvariablesperrecord" x="1449" y="712"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="org" x="2018" y="7561"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="org_address" x="1648" y="7561"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="org_prefix" x="1695" y="10047"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="org_relation_type" x="1346" y="9831"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="org_relations" x="1635" y="9831"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="org_sufix" x="1695" y="10115"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="other_statistics" x="698" y="10673"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="otheridentificationacknowledgements" x="1337" y="4116"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="otherstudydescriptionmaterials" x="1378" y="4523"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="otherstudyrelatedmaterials" x="3856" y="163"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="paragraph" x="863" y="4116"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="paralleltitle" x="1441" y="5924"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="person" x="1327" y="7717"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="person_address" x="997" y="7717"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="person_org" x="1713" y="9944"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="person_role" x="1418" y="9944"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="placeofproduction" x="1369" y="3734"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="prefix" x="1032" y="8084"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="producertype" x="1379" y="3812"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="productionstatement" x="1768" y="3450"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="qstnlittype_sdatrefs" x="4142" y="625"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="qstntype_sdatrefs" x="3806" y="718"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="qstntype_var" x="3796" y="776"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="question" x="3458" y="625"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="relatedmaterials" x="1664" y="3993"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="responsibilitystatement" x="1821" y="4116"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="role" x="1783" y="10331"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="samplingprocedure" x="531" y="5270"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="Selected_Answers" x="5084" y="50"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="selection_variable" x="5376" y="258"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="selection_variable_card" x="658" y="8994"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="sequence" x="4457" y="346"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="seriesinformation" x="1446" y="4342"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="seriesname" x="1456" y="4420"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="seriesstatement" x="1821" y="4342"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="setting" x="373" y="10929"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="setting_group" x="50" y="10929"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="setting_values" x="4825" y="346"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="skip" x="5084" y="346"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="softwareusedinproduction" x="1673" y="511"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="sourcesstatement" x="607" y="5602"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="specialpermissions" x="730" y="4810"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="spssabstractrecordtype" x="972" y="2322"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="spssdatarecord" x="702" y="1657"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="spssdatarecordvariablevalue" x="999" y="1657"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="spssfile" x="1647" y="1198"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="spssfile_spssdatarecordvariablevalue" x="1342" y="1657"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="spssfile_spssvariable" x="1313" y="1198"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="spssrecordtype1" x="1273" y="1966"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="spssrecordtype2" x="552" y="1404"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="spssrecordtype3" x="626" y="1321"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="spssrecordtype4" x="630" y="2322"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="spssrecordtype6" x="1331" y="1750"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="spssrecordtype6_line" x="961" y="1750"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="spssrecordtype7" x="616" y="2400"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="spssrecordtype7subtype11" x="1291" y="2503"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="spssrecordtype7subtype11_variabledisplayparams" x="904" y="2503"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="spssrecordtype7subtype13" x="1262" y="2322"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="spssrecordtype7subtype3" x="1287" y="2139"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="spssrecordtype7subtype4" x="1291" y="1833"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="spssrecordtype7subtype5" x="1262" y="2606"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="spssvariable" x="942" y="1198"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="spssvariable_spssvariablecategory" x="585" y="1198"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="spssvariablecategory" x="272" y="1198"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="stdydscrtype_access" x="1420" y="5685"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="studiu_person_asoc" x="677" y="8001"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="study" x="1369" y="8333"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="study_acl" x="1073" y="8529"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="study_descr" x="1058" y="8637"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="study_documents" x="1036" y="8333"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="study_org" x="1674" y="8215"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="study_org_acl" x="1368" y="8215"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="study_org_asoc" x="1323" y="8730"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="study_person" x="1028" y="7893"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="study_person_acl" x="705" y="7893"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="studydescription" x="1774" y="4523"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="studyinfoandscope" x="1721" y="6957"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="subjectinformation" x="1438" y="7045"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="suffix" x="1038" y="8142"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="summarydatadescription" x="2087" y="6409"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="summarystatistics" x="2572" y="7256"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="sumstattype_weight" x="2209" y="7256"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="sumstattype_wgtvar" x="2219" y="7314"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="timemethod" x="541" y="5348"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="timeperiodcovered" x="1671" y="6761"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="title" x="1492" y="6002"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="titlestatement" x="1799" y="5758"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="topicclasification" x="1059" y="7143"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="txttype_sdatrefs" x="3846" y="306"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="typeoffile" x="1780" y="873"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="typeofresearchinstrument" x="551" y="5436"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="unit_analysis" x="988" y="9552"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="unitofanalysis" x="1681" y="6869"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="universe" x="2464" y="6409"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="user_auth_log" x="728" y="10444"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="user_messages" x="1468" y="10502"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="user_role" x="1508" y="10331"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="user_setting_value" x="733" y="10331"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="user_settings" x="373" y="10331"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="user_settings_group" x="50" y="10331"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="users" x="1109" y="10331"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="usestatement" x="1039" y="4606"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="valueitem" x="3816" y="379"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="valuerange" x="3468" y="492"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="variable_group" x="5376" y="346"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="Variable_Sequences" x="5376" y="50"/>
     <TbGl bkCl="ffccccff" sch="public" tbl="variableddi" x="2990" y="50"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="variabledescription" x="2660" y="5119"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="variabledisplayparams" x="479" y="8019"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="variableformat" x="3368" y="2365"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="varqntytype_content" x="1123" y="163"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="vartype_access" x="2602" y="4945"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="vartype_files" x="3418" y="2133"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="vartype_methrefs" x="3408" y="2191"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="vartype_pubrefs" x="3398" y="2249"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="vartype_sdatrefs" x="2642" y="5003"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="vartype_weight" x="3378" y="2307"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="vartype_wgtvar" x="2662" y="5061"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="verresptype_content" x="1837" y="4246"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="version" x="2179" y="4329"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="versionresponsibilitystatement" x="2151" y="4246"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="versionstatement" x="2470" y="50"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="versiontype_content" x="1866" y="4329"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="weight" x="511" y="3077"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="weighttype_content" x="199" y="3077"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="variabledescription" x="2660" y="7561"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="variabledisplayparams" x="615" y="2503"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="variableformat" x="2660" y="10198"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="vartype_access" x="3428" y="937"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="vartype_files" x="2612" y="7387"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="vartype_methrefs" x="2622" y="7445"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="vartype_pubrefs" x="2632" y="7503"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="vartype_sdatrefs" x="3388" y="995"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="vartype_weight" x="3378" y="1053"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="vartype_wgtvar" x="3368" y="1111"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="version" x="2163" y="6306"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="versionresponsibilitystatement" x="2151" y="6228"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="versionstatement" x="2470" y="511"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="weight" x="561" y="5524"/>
     <FkGl bkCl="ff000000" nm="public.abstract.fk6b24544219ddbfea"/>
-    <FkGl bkCl="ff000000" nm="public.abstracttype_content.fk5bd8e5d683a39363"/>
     <FkGl bkCl="ff000000" nm="public.accessplace.fk250999e326043c34"/>
-    <FkGl bkCl="ff000000" nm="public.accsplactype_content.fkdc5a5f04981e069f"/>
     <FkGl bkCl="ff000000" nm="public.address.fkbb979bf496fa9bcf"/>
     <FkGl bkCl="ff000000" nm="public.address.fkbb979bf4ee107425"/>
     <FkGl bkCl="ff000000" nm="public.alternativetitle.fk75a712cb3131c8d8"/>
-    <FkGl bkCl="ff000000" nm="public.alttitltype_content.fk9433306ac5a608df"/>
-    <FkGl bkCl="ff000000" nm="public.anlyunittype_content.fk80fa9ed2bd4e4b3b"/>
     <FkGl bkCl="ff000000" nm="public.answer.fkabca3fbe5a4f8e65"/>
     <FkGl bkCl="ff000000" nm="public.auth_data.fk570c13e1b682d825"/>
-    <FkGl bkCl="ff000000" nm="public.authentytype_content.fk2de38a6ac4e6c66b"/>
     <FkGl bkCl="ff000000" nm="public.authoringentity.fkcdf2991ae3ce7624"/>
-    <FkGl bkCl="ff000000" nm="public.biblcittype_content.fkf6e1e1313897492d"/>
-    <FkGl bkCl="ff000000" nm="public.caseqntytype_content.fkc81e7e66cccfc863"/>
     <FkGl bkCl="ff000000" nm="public.catalog_acl.fkc3fc53643dd928ef"/>
     <FkGl bkCl="ff000000" nm="public.catalog_study.fkb73a9a233dd928ef"/>
     <FkGl bkCl="ff000000" nm="public.catalog_study.fkb73a9a2399747c2f"/>
@@ -7791,12 +6922,10 @@ $$'$libdir/hstore', 'hstore_from_text'$$
     <FkGl bkCl="ff000000" nm="public.category_category.fk8635931fe7c080bb"/>
     <FkGl bkCl="ff000000" nm="public.categorystatistic.fk7557d9d229fc58d4"/>
     <FkGl bkCl="ff000000" nm="public.catgrytype_sdatrefs.fkd3a77351a002f64f"/>
-    <FkGl bkCl="ff000000" nm="public.catstattype_content.fk68c12cbec50df87"/>
     <FkGl bkCl="ff000000" nm="public.catstattype_methrefs.fkb6cb9aa7c50df87"/>
     <FkGl bkCl="ff000000" nm="public.catstattype_sdatrefs.fkd16972dfc50df87"/>
     <FkGl bkCl="ff000000" nm="public.catstattype_weight.fk2d34ad93c50df87"/>
     <FkGl bkCl="ff000000" nm="public.catstattype_wgtvar.fk2d559bfec50df87"/>
-    <FkGl bkCl="ff000000" nm="public.catvalutype_content.fk53893de87395dc7"/>
     <FkGl bkCl="ff000000" nm="public.citation.fkaddc6f0716dd5427"/>
     <FkGl bkCl="ff000000" nm="public.citation.fkaddc6f0754724cef"/>
     <FkGl bkCl="ff000000" nm="public.citation.fkaddc6f076d58bb5b"/>
@@ -7805,7 +6934,6 @@ $$'$libdir/hstore', 'hstore_from_text'$$
     <FkGl bkCl="ff000000" nm="public.citation.fkaddc6f07c9e11d73"/>
     <FkGl bkCl="ff000000" nm="public.citation.fkaddc6f07d86aabc0"/>
     <FkGl bkCl="ff000000" nm="public.citation.fkaddc6f07d9b01649"/>
-    <FkGl bkCl="ff000000" nm="public.citreqtype_content.fkf55c1da4a4b1819f"/>
     <FkGl bkCl="ff000000" nm="public.city.fk2e996b96fa9bcf"/>
     <FkGl bkCl="ff000000" nm="public.cms_files.fkfcaec401bcfbe38"/>
     <FkGl bkCl="ff000000" nm="public.cms_layout.fka2fc22e06cface21"/>
@@ -7813,19 +6941,20 @@ $$'$libdir/hstore', 'hstore_from_text'$$
     <FkGl bkCl="ff000000" nm="public.cms_page_content.fkcd4945ffd04047dc"/>
     <FkGl bkCl="ff000000" nm="public.cms_snippet.fk4421c0274dc264fd"/>
     <FkGl bkCl="ff000000" nm="public.codebook.fkd0248e7624e2e38f"/>
-    <FkGl bkCl="ff000000" nm="public.colldatetype_content.fk354e8e6e137db473"/>
-    <FkGl bkCl="ff000000" nm="public.collmodetype_content.fkef9290e3a8db80dd"/>
     <FkGl bkCl="ff000000" nm="public.concept_variable.fk14d9be735fced28f"/>
     <FkGl bkCl="ff000000" nm="public.contactperson.fk4e7b437591110e0"/>
     <FkGl bkCl="ff000000" nm="public.contactperson.fk4e7b4375ac25d355"/>
-    <FkGl bkCl="ff000000" nm="public.contacttype_content.fk7100a094f6eac53"/>
-    <FkGl bkCl="ff000000" nm="public.copyrighttype_content.fk16b735bbaf6acaa1"/>
     <FkGl bkCl="ff000000" nm="public.countryddi.fk3a2c5c9373ba9a2b"/>
     <FkGl bkCl="ff000000" nm="public.dataaccess.fka34185ce6d58bb5b"/>
     <FkGl bkCl="ff000000" nm="public.datacollectionmethodology.fked2ee33b4f0afd94"/>
     <FkGl bkCl="ff000000" nm="public.datacollectionmethodology.fked2ee33b736d3149"/>
     <FkGl bkCl="ff000000" nm="public.datacollector.fk34482be331303ba8"/>
-    <FkGl bkCl="ff000000" nm="public.datacollectortype_content.fk935953f7dbc28439"/>
+    <FkGl bkCl="ff000000" nm="public.datafiledescription.fkfcb937b6175019a1"/>
+    <FkGl bkCl="ff000000" nm="public.datafiledescription.fkfcb937b62aa87465"/>
+    <FkGl bkCl="ff000000" nm="public.datafiledescription.fkfcb937b6320fc513"/>
+    <FkGl bkCl="ff000000" nm="public.datafiledescription.fkfcb937b6570c46cf"/>
+    <FkGl bkCl="ff000000" nm="public.datafiledescription.fkfcb937b66060f71"/>
+    <FkGl bkCl="ff000000" nm="public.datafiledescription.fkfcb937b66d564633"/>
     <FkGl bkCl="ff000000" nm="public.datafilesdescription.fk7493e4ef4b31abc0"/>
     <FkGl bkCl="ff000000" nm="public.datasetavailability.fkf4a4a9b323e3fd33"/>
     <FkGl bkCl="ff000000" nm="public.datasetavailability.fkf4a4a9b3606a1848"/>
@@ -7834,14 +6963,9 @@ $$'$libdir/hstore', 'hstore_from_text'$$
     <FkGl bkCl="ff000000" nm="public.dateofproduction.fkfb532cde7bac1363"/>
     <FkGl bkCl="ff000000" nm="public.demo_slices.fk21e59efd3820cc8f"/>
     <FkGl bkCl="ff000000" nm="public.demo_slices.fk21e59efdce007a62"/>
-    <FkGl bkCl="ff000000" nm="public.depdatetype_content.fkecff515155efad2d"/>
     <FkGl bkCl="ff000000" nm="public.depositor.fk46ae14e191110e0"/>
-    <FkGl bkCl="ff000000" nm="public.depositrtype_content.fk6dd81848e67b9347"/>
-    <FkGl bkCl="ff000000" nm="public.deposreqtype_content.fk309fb59f639db095"/>
     <FkGl bkCl="ff000000" nm="public.descriptivetext.fkac8aff929fc58d4"/>
     <FkGl bkCl="ff000000" nm="public.descriptivetext.fkac8aff983e7a348"/>
-    <FkGl bkCl="ff000000" nm="public.disclaimertype_content.fk1fa675cfac7c9f55"/>
-    <FkGl bkCl="ff000000" nm="public.distrbtrtype_content.fk2ef6d608bdb7aec7"/>
     <FkGl bkCl="ff000000" nm="public.distributor.fkb2f43fc791110e0"/>
     <FkGl bkCl="ff000000" nm="public.documentationsource.fkc31c8b5516dd5427"/>
     <FkGl bkCl="ff000000" nm="public.documentationsource.fkc31c8b5554724cef"/>
@@ -7856,34 +6980,20 @@ $$'$libdir/hstore', 'hstore_from_text'$$
     <FkGl bkCl="ff000000" nm="public.documents_acl.fk5f91de83812f8a5"/>
     <FkGl bkCl="ff000000" nm="public.emails.fkb2872857ad67954f"/>
     <FkGl bkCl="ff000000" nm="public.emails.fkb2872857d78a11d7"/>
-    <FkGl bkCl="ff000000" nm="public.filebyfiledescription.fk953854d2aa87465"/>
-    <FkGl bkCl="ff000000" nm="public.filebyfiledescription.fk953854d320fc513"/>
-    <FkGl bkCl="ff000000" nm="public.filebyfiledescription.fk953854d570c46cf"/>
-    <FkGl bkCl="ff000000" nm="public.filebyfiledescription.fk953854d6060f71"/>
-    <FkGl bkCl="ff000000" nm="public.filebyfiledescription.fk953854d6d564633"/>
     <FkGl bkCl="ff000000" nm="public.filedscrtype_access.fk5973b4af5e604b3"/>
     <FkGl bkCl="ff000000" nm="public.filedscrtype_methrefs.fk30dfe2d75e604b3"/>
     <FkGl bkCl="ff000000" nm="public.filedscrtype_pubrefs.fkd2f30d25e604b3"/>
     <FkGl bkCl="ff000000" nm="public.filedscrtype_sdatrefs.fk4b7dbb0f5e604b3"/>
-    <FkGl bkCl="ff000000" nm="public.filenametype_content.fk8832dc5b451b8bcd"/>
-    <FkGl bkCl="ff000000" nm="public.filetypetype_content.fke3c9628aaf8da6ab"/>
     <FkGl bkCl="ff000000" nm="public.form_edited_number_var.fk2171844c2b58b80e"/>
     <FkGl bkCl="ff000000" nm="public.form_edited_text_var.fkba66f02b58b80e"/>
-    <FkGl bkCl="ff000000" nm="public.form_selection_var.fk106ff9b9a0a26ff5"/>
-    <FkGl bkCl="ff000000" nm="public.fundagtype_content.fkfebbd5ff64f0ae95"/>
     <FkGl bkCl="ff000000" nm="public.fundingagency.fk5656c1e27bac1363"/>
     <FkGl bkCl="ff000000" nm="public.geo_slices.fk3eff35cf98b8db85"/>
-    <FkGl bkCl="ff000000" nm="public.geogcovertype_content.fkd853a515c5703075"/>
     <FkGl bkCl="ff000000" nm="public.geographicalcoverage.fkef2cd0a73ba9a2b"/>
     <FkGl bkCl="ff000000" nm="public.geographicunit.fk9bb57cbb73ba9a2b"/>
-    <FkGl bkCl="ff000000" nm="public.geogunittype_content.fk558c3f8e2091c6b3"/>
-    <FkGl bkCl="ff000000" nm="public.grantnotype_content.fkedc8cf17b180c6d"/>
     <FkGl bkCl="ff000000" nm="public.grantnumber.fk68e1eb657bac1363"/>
     <FkGl bkCl="ff000000" nm="public.holdings.fke5264630682516da"/>
     <FkGl bkCl="ff000000" nm="public.holdings.fke526463085356d51"/>
-    <FkGl bkCl="ff000000" nm="public.holdingstype_content.fkf34962c4937f023f"/>
     <FkGl bkCl="ff000000" nm="public.identificationnumber.fkb47433773131c8d8"/>
-    <FkGl bkCl="ff000000" nm="public.idnotype_content.fk780ea2d0b243d357"/>
     <FkGl bkCl="ff000000" nm="public.instance.fk211694953820cc8f"/>
     <FkGl bkCl="ff000000" nm="public.instance.fk2116949592b498cb"/>
     <FkGl bkCl="ff000000" nm="public.instance.fk2116949599747c2f"/>
@@ -7901,17 +7011,14 @@ $$'$libdir/hstore', 'hstore_from_text'$$
     <FkGl bkCl="ff000000" nm="public.internet.fk21ffc7413688cd25"/>
     <FkGl bkCl="ff000000" nm="public.invalidvaluerange.fkcda03b8383e7a348"/>
     <FkGl bkCl="ff000000" nm="public.keyword.fk32adb5c97acb005a"/>
-    <FkGl bkCl="ff000000" nm="public.keywordtype_content.fk8a7134dd4308ba65"/>
     <FkGl bkCl="ff000000" nm="public.label.fk45c8ed417380290"/>
     <FkGl bkCl="ff000000" nm="public.label.fk45c8ed429fc58d4"/>
     <FkGl bkCl="ff000000" nm="public.label.fk45c8ed483e7a348"/>
-    <FkGl bkCl="ff000000" nm="public.labltype_content.fk2469f2b3321af39d"/>
     <FkGl bkCl="ff000000" nm="public.literalquestion.fk96775995b7b38330"/>
     <FkGl bkCl="ff000000" nm="public.location.fk752a03d583e7a348"/>
     <FkGl bkCl="ff000000" nm="public.methodology.fkc99d8a635a4f8e65"/>
     <FkGl bkCl="ff000000" nm="public.methodologyandprocessing.fk7bb166c76d58bb5b"/>
     <FkGl bkCl="ff000000" nm="public.modeofdatacollection.fk32bbcf8234788cf5"/>
-    <FkGl bkCl="ff000000" nm="public.nationtype_content.fkfc293d7b25c1b3ad"/>
     <FkGl bkCl="ff000000" nm="public.numberofcases.fkdfd854034c1eedf8"/>
     <FkGl bkCl="ff000000" nm="public.numberofvariablesperrecord.fkbfbea7574c1eedf8"/>
     <FkGl bkCl="ff000000" nm="public.org.fk1aee482756c1c"/>
@@ -7921,7 +7028,6 @@ $$'$libdir/hstore', 'hstore_from_text'$$
     <FkGl bkCl="ff000000" nm="public.org_relations.fk66bba25c5995be27"/>
     <FkGl bkCl="ff000000" nm="public.org_relations.fk66bba25caf40ab9d"/>
     <FkGl bkCl="ff000000" nm="public.org_relations.fk66bba25caf411ffc"/>
-    <FkGl bkCl="ff000000" nm="public.origarchtype_content.fkb787e86b3d633bed"/>
     <FkGl bkCl="ff000000" nm="public.other_statistics.fk9cd7db22b58b80e"/>
     <FkGl bkCl="ff000000" nm="public.otheridentificationacknowledgements.fka153757c4c0fa35"/>
     <FkGl bkCl="ff000000" nm="public.otheridentificationacknowledgements.fka153757e3ce7624"/>
@@ -7932,7 +7038,6 @@ $$'$libdir/hstore', 'hstore_from_text'$$
     <FkGl bkCl="ff000000" nm="public.otherstudyrelatedmaterials.fk9dbb5b1ad741f2b3"/>
     <FkGl bkCl="ff000000" nm="public.paragraph.fkeba1e94ec4c0fa35"/>
     <FkGl bkCl="ff000000" nm="public.paralleltitle.fk4cbce0713131c8d8"/>
-    <FkGl bkCl="ff000000" nm="public.partitltype_content.fk8d96776289a94acf"/>
     <FkGl bkCl="ff000000" nm="public.person.fkc4e39b55b7792805"/>
     <FkGl bkCl="ff000000" nm="public.person.fkc4e39b55e6197ba5"/>
     <FkGl bkCl="ff000000" nm="public.person_address.fk23f8b90a3688cd25"/>
@@ -7941,33 +7046,24 @@ $$'$libdir/hstore', 'hstore_from_text'$$
     <FkGl bkCl="ff000000" nm="public.person_org.fk2878c6fa3688cd25"/>
     <FkGl bkCl="ff000000" nm="public.person_org.fk2878c6fa9bd24cfa"/>
     <FkGl bkCl="ff000000" nm="public.placeofproduction.fk6f78d4777bac1363"/>
-    <FkGl bkCl="ff000000" nm="public.proddatetype_content.fk29ec4cd92465b9c9"/>
-    <FkGl bkCl="ff000000" nm="public.prodplactype_content.fkf8b44049a07b48a9"/>
     <FkGl bkCl="ff000000" nm="public.producertype.fk2da90e0c7bac1363"/>
-    <FkGl bkCl="ff000000" nm="public.producertype_content.fkeb371d463b2baa43"/>
     <FkGl bkCl="ff000000" nm="public.productionstatement.fkc00e096e2d5e3e7"/>
-    <FkGl bkCl="ff000000" nm="public.ptype_content.fk93bcece465996873"/>
-    <FkGl bkCl="ff000000" nm="public.qstnlittype_content.fk495c84cfbcaf8d69"/>
     <FkGl bkCl="ff000000" nm="public.qstnlittype_sdatrefs.fk4391ceebcaf8d69"/>
     <FkGl bkCl="ff000000" nm="public.qstntype_sdatrefs.fkf95670d4c40757"/>
     <FkGl bkCl="ff000000" nm="public.qstntype_var.fk943050fe4c40757"/>
     <FkGl bkCl="ff000000" nm="public.question.fkbe5ca00683e7a348"/>
     <FkGl bkCl="ff000000" nm="public.relatedmaterials.fka4f588617181fec0"/>
-    <FkGl bkCl="ff000000" nm="public.resinstrutype_content.fk335c76bde7357385"/>
     <FkGl bkCl="ff000000" nm="public.samplingprocedure.fkf3ec068c34788cf5"/>
-    <FkGl bkCl="ff000000" nm="public.sampproctype_content.fkbb616d9b25388e4d"/>
     <FkGl bkCl="ff000000" nm="public.selection_variable_card.fk569b2d802cd503ee"/>
     <FkGl bkCl="ff000000" nm="public.seriesinformation.fk348b7e15bc14321e"/>
     <FkGl bkCl="ff000000" nm="public.seriesname.fk5a56b5c2bc14321e"/>
-    <FkGl bkCl="ff000000" nm="public.serinfotype_content.fk8a49bca21d3db54f"/>
-    <FkGl bkCl="ff000000" nm="public.sernametype_content.fk3df0eefffa887d89"/>
     <FkGl bkCl="ff000000" nm="public.setting.fk765f0e50dd07592a"/>
-    <FkGl bkCl="ff000000" nm="public.softwaretype_content.fkc5a337db1114d6ed"/>
     <FkGl bkCl="ff000000" nm="public.softwareusedinproduction.fkba4998021da66040"/>
     <FkGl bkCl="ff000000" nm="public.softwareusedinproduction.fkba4998027bac1363"/>
     <FkGl bkCl="ff000000" nm="public.softwareusedinproduction.fkba499802fc770f1f"/>
     <FkGl bkCl="ff000000" nm="public.sourcesstatement.fkf938a0b747c1514f"/>
-    <FkGl bkCl="ff000000" nm="public.specpermtype_content.fkf1c1097f3b057c15"/>
+    <FkGl bkCl="ff000000" nm="public.spssdatarecordvariablevalue.fkc10693d4457aba4"/>
+    <FkGl bkCl="ff000000" nm="public.spssdatarecordvariablevalue.fkc10693d759a2e82"/>
     <FkGl bkCl="ff000000" nm="public.spssfile.fkc849549932384f5d"/>
     <FkGl bkCl="ff000000" nm="public.spssfile.fkc84954996694c234"/>
     <FkGl bkCl="ff000000" nm="public.spssfile.fkc84954996cb39ed7"/>
@@ -7975,6 +7071,8 @@ $$'$libdir/hstore', 'hstore_from_text'$$
     <FkGl bkCl="ff000000" nm="public.spssfile.fkc8495499ac272c95"/>
     <FkGl bkCl="ff000000" nm="public.spssfile.fkc8495499b5e36e65"/>
     <FkGl bkCl="ff000000" nm="public.spssfile.fkc8495499d4b390c2"/>
+    <FkGl bkCl="ff000000" nm="public.spssfile_spssdatarecordvariablevalue.fk42250a97175019a1"/>
+    <FkGl bkCl="ff000000" nm="public.spssfile_spssdatarecordvariablevalue.fk42250a97d8c6bbda"/>
     <FkGl bkCl="ff000000" nm="public.spssfile_spssvariable.fk21b70ff175019a1"/>
     <FkGl bkCl="ff000000" nm="public.spssfile_spssvariable.fk21b70ff624cb888"/>
     <FkGl bkCl="ff000000" nm="public.spssrecordtype1.fk3bdddca916ef5198"/>
@@ -7983,6 +7081,7 @@ $$'$libdir/hstore', 'hstore_from_text'$$
     <FkGl bkCl="ff000000" nm="public.spssrecordtype3.fk3bdddcab16ef5198"/>
     <FkGl bkCl="ff000000" nm="public.spssrecordtype4.fk3bdddcac16ef5198"/>
     <FkGl bkCl="ff000000" nm="public.spssrecordtype6.fk3bdddcae16ef5198"/>
+    <FkGl bkCl="ff000000" nm="public.spssrecordtype6_line.fk3ec448e526b89a17"/>
     <FkGl bkCl="ff000000" nm="public.spssrecordtype7.fk3bdddcaf16ef5198"/>
     <FkGl bkCl="ff000000" nm="public.spssrecordtype7subtype11.fk8139d52b16ef5198"/>
     <FkGl bkCl="ff000000" nm="public.spssrecordtype7subtype11_variabledisplayparams.fk693b8f98131c41c5"/>
@@ -8013,24 +7112,17 @@ $$'$libdir/hstore', 'hstore_from_text'$$
     <FkGl bkCl="ff000000" nm="public.studyinfoandscope.fkfa5ed9d46d58bb5b"/>
     <FkGl bkCl="ff000000" nm="public.summarydatadescription.fk334698c19ddbfea"/>
     <FkGl bkCl="ff000000" nm="public.summarystatistics.fk4aa09d4983e7a348"/>
-    <FkGl bkCl="ff000000" nm="public.sumstattype_content.fk6a27e1331fef0ff1"/>
     <FkGl bkCl="ff000000" nm="public.sumstattype_weight.fk989b167e1fef0ff1"/>
     <FkGl bkCl="ff000000" nm="public.sumstattype_wgtvar.fk98bc04e91fef0ff1"/>
     <FkGl bkCl="ff000000" nm="public.timemethod.fk9b0ade2e34788cf5"/>
-    <FkGl bkCl="ff000000" nm="public.timemethtype_content.fk7613d9adb787171"/>
     <FkGl bkCl="ff000000" nm="public.timeperiodcovered.fke77877a873ba9a2b"/>
-    <FkGl bkCl="ff000000" nm="public.timeprdtype_content.fk51ec4d8933bde5dd"/>
     <FkGl bkCl="ff000000" nm="public.titlestatement.fk99a11617354a213f"/>
-    <FkGl bkCl="ff000000" nm="public.titltype_content.fke16c60e148ea24f9"/>
-    <FkGl bkCl="ff000000" nm="public.topcclastype_content.fk15ec9c5d675c7ed1"/>
     <FkGl bkCl="ff000000" nm="public.topicclasification.fkc4b0cd947acb005a"/>
-    <FkGl bkCl="ff000000" nm="public.txttype_content.fk7a1f36e493414df3"/>
     <FkGl bkCl="ff000000" nm="public.txttype_sdatrefs.fkebccad7993414df3"/>
     <FkGl bkCl="ff000000" nm="public.typeofresearchinstrument.fk9f76a49334788cf5"/>
     <FkGl bkCl="ff000000" nm="public.unitofanalysis.fk57274a9773ba9a2b"/>
     <FkGl bkCl="ff000000" nm="public.universe.fkf28cae6573ba9a2b"/>
     <FkGl bkCl="ff000000" nm="public.universe.fkf28cae6583e7a348"/>
-    <FkGl bkCl="ff000000" nm="public.universetype_content.fkb3742379105ab29"/>
     <FkGl bkCl="ff000000" nm="public.user_auth_log.fk5866f621b682d825"/>
     <FkGl bkCl="ff000000" nm="public.user_messages.fke7785b40b682d825"/>
     <FkGl bkCl="ff000000" nm="public.user_role.fk143bf46a11581445"/>
@@ -8038,8 +7130,6 @@ $$'$libdir/hstore', 'hstore_from_text'$$
     <FkGl bkCl="ff000000" nm="public.user_setting_value.fka1a2c54eb682d825"/>
     <FkGl bkCl="ff000000" nm="public.user_setting_value.fka1a2c54ebc2705b8"/>
     <FkGl bkCl="ff000000" nm="public.user_settings.fk588616177409ad76"/>
-    <FkGl bkCl="ff000000" nm="public.userdb_roledb.fk16d3f6ea430b723"/>
-    <FkGl bkCl="ff000000" nm="public.userdb_roledb.fk16d3f6ea59b37483"/>
     <FkGl bkCl="ff000000" nm="public.usestatement.fkccdb1fc8606a1848"/>
     <FkGl bkCl="ff000000" nm="public.usestatement.fkccdb1fc86c8fc29b"/>
     <FkGl bkCl="ff000000" nm="public.usestatement.fkccdb1fc89eba2765"/>
@@ -8050,11 +7140,9 @@ $$'$libdir/hstore', 'hstore_from_text'$$
     <FkGl bkCl="ff000000" nm="public.valuerange.fkefdcd26c83e7a348"/>
     <FkGl bkCl="ff000000" nm="public.valuerange.fkefdcd26ca8cc7a06"/>
     <FkGl bkCl="ff000000" nm="public.valuerange.fkefdcd26ccda41138"/>
-    <FkGl bkCl="ff000000" nm="public.varformattype_content.fkb7b399727217e06f"/>
     <FkGl bkCl="ff000000" nm="public.variableddi.fkef14fbad317a1d35"/>
     <FkGl bkCl="ff000000" nm="public.variableddi.fkef14fbada4217fc2"/>
     <FkGl bkCl="ff000000" nm="public.variabledescription.fk2b02fbc04b31abc0"/>
-    <FkGl bkCl="ff000000" nm="public.varqntytype_content.fk98cf901d4c98fcc5"/>
     <FkGl bkCl="ff000000" nm="public.vartype_access.fk2562ec82e4597ce1"/>
     <FkGl bkCl="ff000000" nm="public.vartype_files.fk8de12799e4597ce1"/>
     <FkGl bkCl="ff000000" nm="public.vartype_methrefs.fkbde071eae4597ce1"/>
@@ -8062,15 +7150,12 @@ $$'$libdir/hstore', 'hstore_from_text'$$
     <FkGl bkCl="ff000000" nm="public.vartype_sdatrefs.fkd87e4a22e4597ce1"/>
     <FkGl bkCl="ff000000" nm="public.vartype_weight.fk4b0c7996e4597ce1"/>
     <FkGl bkCl="ff000000" nm="public.vartype_wgtvar.fk4b2d6801e4597ce1"/>
-    <FkGl bkCl="ff000000" nm="public.verresptype_content.fk1f793607cfc15799"/>
     <FkGl bkCl="ff000000" nm="public.versionstatement.fk9def6397682516da"/>
     <FkGl bkCl="ff000000" nm="public.versionstatement.fk9def6397685866df"/>
     <FkGl bkCl="ff000000" nm="public.versionstatement.fk9def639783e7a348"/>
     <FkGl bkCl="ff000000" nm="public.versionstatement.fk9def639785356d51"/>
     <FkGl bkCl="ff000000" nm="public.versionstatement.fk9def6397cd931389"/>
-    <FkGl bkCl="ff000000" nm="public.versiontype_content.fk3637454c620749c3"/>
     <FkGl bkCl="ff000000" nm="public.weight.fk9a362e9834788cf5"/>
-    <FkGl bkCl="ff000000" nm="public.weighttype_content.fk2cf7ef2c1956d88f"/>
     <Notes/>
     <Zones/>
   </Dgm>

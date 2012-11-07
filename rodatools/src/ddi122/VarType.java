@@ -230,8 +230,8 @@ public class VarType {
 	// @XmlAttribute
 	// protected String vendor;
 
-	@XmlAttribute
-	protected String dcml;
+	// @XmlAttribute
+	// protected String dcml;
 
 	@XmlAttribute
 	@XmlJavaTypeAdapter(CollapsedStringAdapter.class)
@@ -765,27 +765,6 @@ public class VarType {
 	// }
 	// return this.files;
 	// }
-
-	/**
-	 * Gets the value of the dcml property.
-	 * 
-	 * @return possible object is {@link String }
-	 * 
-	 */
-	public String getDcml() {
-		return dcml;
-	}
-
-	/**
-	 * Sets the value of the dcml property.
-	 * 
-	 * @param value
-	 *            allowed object is {@link String }
-	 * 
-	 */
-	public void setDcml(String value) {
-		this.dcml = value;
-	}
 
 	/**
 	 * Gets the value of the intrvl property.

@@ -5,7 +5,7 @@ import javax.persistence.metamodel.ListAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
-@Generated(value="Dali", date="2012-10-26T12:40:15.693+0300")
+@Generated(value="Dali", date="2012-11-07T14:24:27.298+0200")
 @StaticMetamodel(VarType.class)
 public class VarType_ {
 	public static volatile SingularAttribute<VarType, Long> id_;
@@ -27,7 +27,6 @@ public class VarType_ {
 	public static volatile ListAttribute<VarType, String> wgtVar;
 	public static volatile ListAttribute<VarType, String> weight;
 	public static volatile ListAttribute<VarType, String> files;
-	public static volatile SingularAttribute<VarType, String> dcml;
 	public static volatile SingularAttribute<VarType, String> intrvl;
 	public static volatile ListAttribute<VarType, String> sdatrefs;
 	public static volatile ListAttribute<VarType, String> methrefs;

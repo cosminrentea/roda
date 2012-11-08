@@ -35,7 +35,11 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * SPSS Record Type 7 Subtype 11 - Variable display parameters
@@ -44,6 +48,19 @@ import javax.persistence.OneToMany;
  */
 @Entity
 public class SPSSRecordType7Subtype11 extends SPSSAbstractRecordType {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@XmlTransient
+	private long id_;
+
+	public long getId_() {
+		return id_;
+	}
+
+	public void setId_(long id_) {
+		this.id_ = id_;
+	}
 
 	// type 7
 	int recordTypeCode;

@@ -33,7 +33,11 @@ import java.io.IOException;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.OneToOne;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * SPSS Record Type 2 - Variable information
@@ -42,6 +46,20 @@ import javax.persistence.OneToOne;
  */
 @Entity
 public class SPSSRecordType2 extends SPSSAbstractRecordType {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@XmlTransient
+	private long id_;
+
+	public long getId_() {
+		return id_;
+	}
+
+	public void setId_(long id_) {
+		this.id_ = id_;
+	}
+
 	int recordTypeCode;
 	int variableTypeCode;
 	int hasLabel;

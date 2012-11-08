@@ -15,7 +15,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -32,6 +32,7 @@ import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import dbext.Org;
+import elsst.ElsstTerm;
 
 /**
  * <p>
@@ -91,10 +92,13 @@ public class CodeBook {
 	}
 
 	// links the two Java Packages
-	@ManyToOne
-	@JoinColumn(name = "org_id")
 	@XmlTransient
+	@ManyToOne
 	private Org org;
+
+	@XmlTransient
+	@ManyToMany
+	private List<ElsstTerm> elsstTerm;
 
 	@OneToMany(cascade = { CascadeType.ALL }, mappedBy = "codebook")
 	protected List<DocDscrType> docDscr;
@@ -347,11 +351,13 @@ public class CodeBook {
 		this.version = value;
 	}
 
-	/*
-	 * public Org getOrg() { return org; }
-	 * 
-	 * public void setOrg(Org org) { this.org = org; }
-	 */
+	public List<ElsstTerm> getElsstTerm() {
+		return elsstTerm;
+	}
+
+	public void setElsstTerm(List<ElsstTerm> elsstTerm) {
+		this.elsstTerm = elsstTerm;
+	}
 
 	public Org getOrg() {
 		return org;
@@ -360,4 +366,5 @@ public class CodeBook {
 	public void setOrg(Org org) {
 		this.org = org;
 	}
+
 }

@@ -35,6 +35,10 @@ import java.util.List;
 
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * SPSS Record Type 6 - Document record
@@ -43,6 +47,19 @@ import javax.persistence.Entity;
  */
 @Entity
 public class SPSSRecordType6 extends SPSSAbstractRecordType {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@XmlTransient
+	private long id_;
+
+	public long getId_() {
+		return id_;
+	}
+
+	public void setId_(long id_) {
+		this.id_ = id_;
+	}
 
 	int recordTypeCode;
 

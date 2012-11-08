@@ -26,6 +26,8 @@ create language plperlu;
 
 + de eliminat field-uri din pachetul Java: source, xml-lang (mai putin la Codebook), vendor
 
+SVN post-commit email notification
+
 de pus in DBext primary keys, auto-numbers, nullable
 
 de eliminat erorile de validare ale fisierelor din folderul "xsd"

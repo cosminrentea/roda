@@ -20,7 +20,6 @@
 		<class>org.opendatafoundation.data.spss.SPSSFile</class>
 		<class>org.opendatafoundation.data.spss.SPSSDataRecordVariableValue</class>
 		<class>org.opendatafoundation.data.spss.SPSSDataRecord</class>
-		<class>org.opendatafoundation.data.spss.SPSSAbstractRecordType</class>
 		<class>ddi122.WeightType</class>
 		<class>ddi122.VersionType</class>
 		<class>ddi122.VerStmtType</class>
@@ -211,6 +210,8 @@
 		<class>dbext.AnswerPK</class>
 		<class>dbext.Answer</class>
 		<class>dbext.Address</class>
+		<class>elsst.ElsstTerm</class>
+		<class>elsst.ElsstLanguage</class>
 
 		<exclude-unlisted-classes>false</exclude-unlisted-classes>
 

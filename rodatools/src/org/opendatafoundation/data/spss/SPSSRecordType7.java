@@ -34,7 +34,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.Transient;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * SPSS Record Type 7 - Generic type 7 record (for unknown subtypes)
@@ -43,6 +47,19 @@ import javax.persistence.Transient;
  */
 @Entity
 public class SPSSRecordType7 extends SPSSAbstractRecordType {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@XmlTransient
+	private long id_;
+
+	public long getId_() {
+		return id_;
+	}
+
+	public void setId_(long id_) {
+		this.id_ = id_;
+	}
 
 	int recordTypeCode;
 

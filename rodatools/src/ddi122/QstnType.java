@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -151,21 +150,21 @@ public class QstnType {
 	// protected Object qstn;
 
 	@XmlAttribute
-	// TODO Cosmin commented IDREF annot.
-	// @XmlIDREF
-	@XmlSchemaType(name = "IDREFS")
-	@ElementCollection
-	protected List<String> var;
-
-	@XmlAttribute
 	protected String seqNo;
 
-	@XmlAttribute
-	// TODO Cosmin commented IDREF annot.
-	// @XmlIDREF
-	@XmlSchemaType(name = "IDREFS")
-	@ElementCollection
-	protected List<String> sdatrefs;
+	// @XmlAttribute
+	// // TODO Cosmin commented IDREF annot.
+	// // @XmlIDREF
+	// @XmlSchemaType(name = "IDREFS")
+	// @ElementCollection
+	// protected List<String> var;
+	//
+	// @XmlAttribute
+	// // TODO Cosmin commented IDREF annot.
+	// // @XmlIDREF
+	// @XmlSchemaType(name = "IDREFS")
+	// @ElementCollection
+	// protected List<String> sdatrefs;
 
 	/**
 	 * Gets the value of the content property.
@@ -232,8 +231,6 @@ public class QstnType {
 		this.id = value;
 	}
 
-	
-
 	/**
 	 * Gets the value of the qstn property.
 	 * 
@@ -256,35 +253,6 @@ public class QstnType {
 	// }
 
 	/**
-	 * Gets the value of the var property.
-	 * 
-	 * <p>
-	 * This accessor method returns a reference to the live List, not a
-	 * snapshot. Therefore any modification you make to the returned List will
-	 * be present inside the JAXB object. This is why there is not a
-	 * <CODE>set</CODE> method for the var property.
-	 * 
-	 * <p>
-	 * For example, to add a new item, do as follows:
-	 * 
-	 * <pre>
-	 * getVar().add(newItem);
-	 * </pre>
-	 * 
-	 * 
-	 * <p>
-	 * Objects of the following type(s) are allowed in the List {@link Object }
-	 * 
-	 * 
-	 */
-	public List<String> getVar() {
-		if (var == null) {
-			var = new ArrayList<String>();
-		}
-		return this.var;
-	}
-
-	/**
 	 * Gets the value of the seqNo property.
 	 * 
 	 * @return possible object is {@link String }
@@ -303,35 +271,6 @@ public class QstnType {
 	 */
 	public void setSeqNo(String value) {
 		this.seqNo = value;
-	}
-
-	/**
-	 * Gets the value of the sdatrefs property.
-	 * 
-	 * <p>
-	 * This accessor method returns a reference to the live List, not a
-	 * snapshot. Therefore any modification you make to the returned List will
-	 * be present inside the JAXB object. This is why there is not a
-	 * <CODE>set</CODE> method for the sdatrefs property.
-	 * 
-	 * <p>
-	 * For example, to add a new item, do as follows:
-	 * 
-	 * <pre>
-	 * getSdatrefs().add(newItem);
-	 * </pre>
-	 * 
-	 * 
-	 * <p>
-	 * Objects of the following type(s) are allowed in the List {@link Object }
-	 * 
-	 * 
-	 */
-	public List<String> getSdatrefs() {
-		if (sdatrefs == null) {
-			sdatrefs = new ArrayList<String>();
-		}
-		return this.sdatrefs;
 	}
 
 }

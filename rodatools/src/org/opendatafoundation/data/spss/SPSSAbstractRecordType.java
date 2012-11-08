@@ -31,35 +31,14 @@ package org.opendatafoundation.data.spss;
 
 import java.io.IOException;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.xml.bind.annotation.XmlTransient;
-
 /**
  * Abstract call for metadata Record types
  * 
  * @author Pascal Heus (pheus@opendatafoundation.org)
  */
-@Entity
-@Inheritance(strategy = InheritanceType.JOINED)
+// @Entity
+// @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class SPSSAbstractRecordType {
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
-	@XmlTransient
-	private long id_;
-
-	public long getId_() {
-		return id_;
-	}
-
-	public void setId_(long id_) {
-		this.id_ = id_;
-	}
 
 	long fileLocation;
 

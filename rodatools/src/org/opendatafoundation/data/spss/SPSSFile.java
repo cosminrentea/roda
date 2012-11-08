@@ -264,17 +264,17 @@ public class SPSSFile extends RandomAccessFile {
 
 	// < Turn logging on/off
 	@Transient
-	Boolean logFlag = true;
+	private Boolean logFlag = true;
 
 	// < Optional logfile. If null, log messages are
 	// sent
 	// to the console
 	@Transient
-	protected File logFile;
+	private File logFile;
 
 	// < logfile writer
 	@Transient
-	Writer logWriter;
+	private Writer logWriter;
 
 	@Transient
 	private long start; // < Used for timing operations
@@ -286,9 +286,10 @@ public class SPSSFile extends RandomAccessFile {
 	@Transient
 	protected File file; // < the SPSS File object
 
-	String uniqueID; // < a unique identifier for this file. If null, the
-						// getUniqueID() function will initialize this value
-						// using the java.util.UUID.randomUUID()
+	private String uniqueID; // < a unique identifier for this file. If null,
+								// the
+	// getUniqueID() function will initialize this value
+	// using the java.util.UUID.randomUUID()
 	boolean isBigEndian = false; // < Indicates file "endianness" for number
 									// storage. Intel processor produced files
 									// are little-endian (default).

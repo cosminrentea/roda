@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -131,12 +130,12 @@ public class StdyDscrType {
 	// @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
 	// protected String source;
 
-	@XmlAttribute
-	// TODO Cosmin commented IDREF annot.
-	// @XmlIDREF
-	@XmlSchemaType(name = "IDREFS")
-	@ElementCollection
-	protected List<String> access;
+	// @XmlAttribute
+	// // TODO Cosmin commented IDREF annot.
+	// // @XmlIDREF
+	// @XmlSchemaType(name = "IDREFS")
+	// @ElementCollection
+	// protected List<String> access;
 
 	/**
 	 * Gets the value of the citation property.
@@ -307,35 +306,6 @@ public class StdyDscrType {
 	 */
 	public void setID(String value) {
 		this.id = value;
-	}
-
-	/**
-	 * Gets the value of the access property.
-	 * 
-	 * <p>
-	 * This accessor method returns a reference to the live List, not a
-	 * snapshot. Therefore any modification you make to the returned List will
-	 * be present inside the JAXB object. This is why there is not a
-	 * <CODE>set</CODE> method for the access property.
-	 * 
-	 * <p>
-	 * For example, to add a new item, do as follows:
-	 * 
-	 * <pre>
-	 * getAccess().add(newItem);
-	 * </pre>
-	 * 
-	 * 
-	 * <p>
-	 * Objects of the following type(s) are allowed in the List {@link Object }
-	 * 
-	 * 
-	 */
-	public List<String> getAccess() {
-		if (access == null) {
-			access = new ArrayList<String>();
-		}
-		return this.access;
 	}
 
 }

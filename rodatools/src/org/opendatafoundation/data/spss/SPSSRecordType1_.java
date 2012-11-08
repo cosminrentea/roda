@@ -4,9 +4,9 @@ import javax.annotation.Generated;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
-@Generated(value="Dali", date="2012-10-31T13:39:58.887+0200")
+@Generated(value="Dali", date="2012-11-07T16:23:49.382+0200")
 @StaticMetamodel(SPSSRecordType1.class)
-public class SPSSRecordType1_ extends SPSSAbstractRecordType_ {
+public class SPSSRecordType1_ {
 	public static volatile SingularAttribute<SPSSRecordType1, String> recordTypeCode;
 	public static volatile SingularAttribute<SPSSRecordType1, String> productIdentification;
 	public static volatile SingularAttribute<SPSSRecordType1, Integer> layoutCode;
@@ -18,4 +18,5 @@ public class SPSSRecordType1_ extends SPSSAbstractRecordType_ {
 	public static volatile SingularAttribute<SPSSRecordType1, String> creationDate;
 	public static volatile SingularAttribute<SPSSRecordType1, String> creationTime;
 	public static volatile SingularAttribute<SPSSRecordType1, String> fileLabel;
+	public static volatile SingularAttribute<SPSSRecordType1, Long> id_;
 }

@@ -47,9 +47,15 @@ public class RodaTools {
 	private static final String jaxbContextPath = "ddi122";
 	private static final String jpaPersistenceUnitName = "roda-jpa";
 
-	/**
-	 * @param args
-	 */
+	private boolean executionTimeMeasurement;
+	private long startTime;
+	private long endTime;
+
+	public RodaTools(boolean executionTimeMeasurement) {
+		super();
+		this.executionTimeMeasurement = executionTimeMeasurement;
+	}
+
 	public static void main(String[] args) throws SAXException, IOException {
 
 		// TODO better validation
@@ -58,117 +64,61 @@ public class RodaTools {
 			System.exit(1);
 		}
 
-		long startTime = System.nanoTime();
+		RodaTools rt = new RodaTools(true);
 
-		RodaTools rt = new RodaTools();
+		if (rt.executionTimeMeasurement) {
+			rt.startTime = System.nanoTime();
+		}
 
 		// TODO use Apache Commons CLI, http://commons.apache.org/cli/
 
 		try {
 			if ("-i1".compareTo(args[0]) == 0) {
-				rt.importOneToDb(args[1], args[2], args[3], args[4]);
-			} else if ("-e".compareTo(args[0]) == 0) {
-				rt.exportAllFromDb();
+				rt.importOneToDb(args[1], args[2], args[3], args[4], false);
 			} else if ("-i".compareTo(args[0]) == 0) {
 				rt.importAllToDb(args[1], args[2], args[3]);
+			} else if ("-e".compareTo(args[0]) == 0) {
+				rt.exportAllFromDb();
 			} else if ("-g".compareTo(args[0]) == 0) {
 				rt.generateSchema(new Ddi122SchemaOutputResolver());
-			} else if ("-v2".compareTo(args[0]) == 0) {
-
-				File file = new File(args[1]);
-
-				// select only XML files in the directory
-				String[] filenames = file.list(new FilenameFilter() {
-					@Override
-					public boolean accept(File f, String s) {
-						if (s.toUpperCase().endsWith(".XML"))
-							return true;
-						return false;
-					}
-				});
-
-				if (filenames == null) {
-					rt.validateDdi25(args[1]);
-				} else {
-					for (String xmlFilename : filenames) {
-						rt.validateDdi25(args[1] + "/" + xmlFilename);
-					}
-				}
 			} else if ("-v1".compareTo(args[0]) == 0) {
-				File file = new File(args[1]);
-
-				// select only XML files in the directory
-				String[] filenames = file.list(new FilenameFilter() {
-					@Override
-					public boolean accept(File f, String s) {
-						if (s.toUpperCase().endsWith(".XML"))
-							return true;
-						return false;
-					}
-				});
-
-				if (filenames == null) {
-					rt.validateDdi122(args[1]);
-				} else {
-					for (String xmlFilename : filenames) {
-						rt.validateDdi122(args[1] + "/" + xmlFilename);
-					}
+				for (String xmlFilename : getAllFilenames(args[1], ".XML")) {
+					rt.validateDdi122(xmlFilename);
+				}
+			} else if ("-v2".compareTo(args[0]) == 0) {
+				for (String xmlFilename : getAllFilenames(args[1], ".XML")) {
+					rt.validateDdi25(xmlFilename);
 				}
 			} else if ("-c".compareTo(args[0]) == 0) {
-				File file = new File(args[1]);
-
-				// select only XML files in the directory
-				String[] filenames = file.list(new FilenameFilter() {
-					@Override
-					public boolean accept(File f, String s) {
-						if (s.toUpperCase().endsWith(".XML"))
-							return true;
-						return false;
-					}
-				});
-
-				if (filenames == null) {
-					rt.convertNesstarToDdi25(args[1], args[2]);
-				} else {
-					for (String filename : filenames) {
-						rt.convertNesstarToDdi25(args[1] + "/" + filename,
-								args[2] + "/" + filename);
-					}
+				String[] filenames = getAllFilenames(args[1], ".XML");
+				int i;
+				for (i = 0; i < filenames.length; i++) {
+					rt.convertNesstarToDdi25(args[1] + "/" + filenames[i],
+							args[2] + "/" + filenames[i]);
 				}
 			} else if ("-s".compareTo(args[0]) == 0) {
-				File file = new File(args[1]);
-
-				// select only XML files in the directory
-				String[] filenames = file.list(new FilenameFilter() {
-					@Override
-					public boolean accept(File f, String s) {
-						if (s.toUpperCase().endsWith(".SAV"))
-							return true;
-						return false;
-					}
-				});
-
-				if (filenames == null) {
-					rt.convertSpssToAsciiDelimited(args[1], args[2]);
-				} else {
-					for (String filename : filenames) {
-						rt.convertSpssToAsciiDelimited(
-								args[1] + "/" + filename, args[2] + "/"
-										+ filename);
-					}
+				String[] filenames = getAllFilenames(args[1], ".SAV");
+				int i;
+				for (i = 0; i < filenames.length; i++) {
+					rt.convertSpssToAsciiDelimited(
+							args[1] + "/" + filenames[i], args[2] + "/"
+									+ filenames[i]);
 				}
 			} else {
 				usage();
 			}
 		} catch (Exception e) {
-			usage();
-			System.out.println(e.getMessage());
+			System.err.println(e.getMessage());
 			e.printStackTrace();
 		}
 
-		long duration = System.nanoTime() - startTime;
-		System.out.println("Duration: " + (duration / 1000000000) + "."
-				+ (duration % 1000000000) / 1000000 + " s ");
+		if (rt.executionTimeMeasurement) {
+			rt.endTime = System.nanoTime();
+			System.err.println("Duration: "
+					+ ((rt.endTime - rt.startTime) / 1000000000) + "."
+					+ ((rt.endTime - rt.startTime) % 1000000000) / 1000000
+					+ " s ");
+		}
 	}
 
 	private static void usage() {
@@ -189,6 +139,17 @@ public class RodaTools {
 				.println("\t\t parameter 2: [converted XML file] | [converted XML dir]");
 	}
 
+	private static String[] getAllFilenames(String filename, String extension) {
+		File file = new File(filename);
+		String[] filenames = file.list(new RodaFilenameFilter(extension));
+		if (filenames == null) {
+			// filename is not a folder, but a regular file
+			filenames = new String[1];
+			filenames[0] = filename;
+		}
+		return filenames;
+	}
+
 	private void validateDdi25(String filename) throws SAXException,
 			IOException {
 
@@ -202,8 +163,8 @@ public class RodaTools {
 			validatorDdi25.validate(source);
 			System.out.println(file.getAbsolutePath() + " : VALID");
 		} catch (SAXException e) {
-			System.out.println(file.getAbsolutePath() + " : NOT VALID because");
-			System.out.println(e.getMessage());
+			System.err.println(file.getAbsolutePath() + " : NOT VALID because");
+			System.err.println(e.getMessage());
 		}
 	}
 
@@ -220,8 +181,8 @@ public class RodaTools {
 			validatorDdi122.validate(source);
 			System.out.println(file.getAbsolutePath() + " : VALID");
 		} catch (SAXException e) {
-			System.out.println(file.getAbsolutePath() + " : NOT VALID because");
-			System.out.println(e.getMessage());
+			System.err.println(file.getAbsolutePath() + " : NOT VALID because");
+			System.err.println(e.getMessage());
 		}
 	}
 
@@ -391,10 +352,8 @@ public class RodaTools {
 	}
 
 	private void importOneToDb(String jdbcUrl, String username,
-			String userpassword, String fname) throws JAXBException,
-			IOException, SAXException {
-
-		boolean importSpss = false;
+			String userpassword, String fname, boolean importSpss)
+			throws JAXBException, IOException, SAXException {
 
 		EntityManagerFactory emf;
 		EntityManager em;

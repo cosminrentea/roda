@@ -36,7 +36,11 @@ import java.util.Map;
 import java.util.StringTokenizer;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.Transient;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * SPSS Record Type 7 Subtype 13 - Long variable names
@@ -45,6 +49,19 @@ import javax.persistence.Transient;
  */
 @Entity
 public class SPSSRecordType7Subtype13 extends SPSSAbstractRecordType {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@XmlTransient
+	private long id_;
+
+	public long getId_() {
+		return id_;
+	}
+
+	public void setId_(long id_) {
+		this.id_ = id_;
+	}
 
 	// type 7
 	int recordTypeCode;

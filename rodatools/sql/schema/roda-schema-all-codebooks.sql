@@ -287,66 +287,6 @@ CREATE TABLE categoryvalue (
 ALTER TABLE public.categoryvalue OWNER TO roda;
 
 --
--- Name: catgrytype_sdatrefs; Type: TABLE; Schema: public; Owner: roda; Tablespace: 
---
-
-CREATE TABLE catgrytype_sdatrefs (
-    catgrytype_id_ bigint NOT NULL,
-    sdatrefs character varying(255)
-);
-
-
-ALTER TABLE public.catgrytype_sdatrefs OWNER TO roda;
-
---
--- Name: catstattype_methrefs; Type: TABLE; Schema: public; Owner: roda; Tablespace: 
---
-
-CREATE TABLE catstattype_methrefs (
-    catstattype_id_ bigint NOT NULL,
-    methrefs character varying(255)
-);
-
-
-ALTER TABLE public.catstattype_methrefs OWNER TO roda;
-
---
--- Name: catstattype_sdatrefs; Type: TABLE; Schema: public; Owner: roda; Tablespace: 
---
-
-CREATE TABLE catstattype_sdatrefs (
-    catstattype_id_ bigint NOT NULL,
-    sdatrefs character varying(255)
-);
-
-
-ALTER TABLE public.catstattype_sdatrefs OWNER TO roda;
-
---
--- Name: catstattype_weight; Type: TABLE; Schema: public; Owner: roda; Tablespace: 
---
-
-CREATE TABLE catstattype_weight (
-    catstattype_id_ bigint NOT NULL,
-    weight character varying(255)
-);
-
-
-ALTER TABLE public.catstattype_weight OWNER TO roda;
-
---
--- Name: catstattype_wgtvar; Type: TABLE; Schema: public; Owner: roda; Tablespace: 
---
-
-CREATE TABLE catstattype_wgtvar (
-    catstattype_id_ bigint NOT NULL,
-    wgtvar character varying(255)
-);
-
-
-ALTER TABLE public.catstattype_wgtvar OWNER TO roda;
-
---
 -- Name: citation; Type: TABLE; Schema: public; Owner: roda; Tablespace: 
 --
 
@@ -528,6 +468,18 @@ CREATE TABLE codebook (
 
 
 ALTER TABLE public.codebook OWNER TO roda;
+
+--
+-- Name: codebook_elsstterm; Type: TABLE; Schema: public; Owner: roda; Tablespace: 
+--
+
+CREATE TABLE codebook_elsstterm (
+    codebook_id_ bigint NOT NULL,
+    elsstterm_id_ bigint NOT NULL
+);
+
+
+ALTER TABLE public.codebook_elsstterm OWNER TO roda;
 
 --
 -- Name: concept; Type: TABLE; Schema: public; Owner: roda; Tablespace: 
@@ -957,6 +909,58 @@ CREATE TABLE edited_variable (
 ALTER TABLE public.edited_variable OWNER TO roda;
 
 --
+-- Name: elsstlanguage; Type: TABLE; Schema: public; Owner: roda; Tablespace: 
+--
+
+CREATE TABLE elsstlanguage (
+    id_ bigint NOT NULL,
+    languagename text
+);
+
+
+ALTER TABLE public.elsstlanguage OWNER TO roda;
+
+--
+-- Name: elsstterm; Type: TABLE; Schema: public; Owner: roda; Tablespace: 
+--
+
+CREATE TABLE elsstterm (
+    id_ bigint NOT NULL,
+    name text,
+    scopenote text,
+    broaderterm_id_ bigint,
+    preferredterm_id_ bigint
+);
+
+
+ALTER TABLE public.elsstterm OWNER TO roda;
+
+--
+-- Name: elsstterm_related; Type: TABLE; Schema: public; Owner: roda; Tablespace: 
+--
+
+CREATE TABLE elsstterm_related (
+    elsstterm_id_ bigint NOT NULL,
+    relatedterm_id_ bigint NOT NULL
+);
+
+
+ALTER TABLE public.elsstterm_related OWNER TO roda;
+
+--
+-- Name: elsstterm_translated; Type: TABLE; Schema: public; Owner: roda; Tablespace: 
+--
+
+CREATE TABLE elsstterm_translated (
+    elsstterm_id_ bigint NOT NULL,
+    translatedterm_id_ bigint NOT NULL,
+    translatedterm_key bigint NOT NULL
+);
+
+
+ALTER TABLE public.elsstterm_translated OWNER TO roda;
+
+--
 -- Name: emails; Type: TABLE; Schema: public; Owner: roda; Tablespace: 
 --
 
@@ -982,54 +986,6 @@ CREATE TABLE filedimensions (
 
 
 ALTER TABLE public.filedimensions OWNER TO roda;
-
---
--- Name: filedscrtype_access; Type: TABLE; Schema: public; Owner: roda; Tablespace: 
---
-
-CREATE TABLE filedscrtype_access (
-    filedscrtype_id_ bigint NOT NULL,
-    access character varying(255)
-);
-
-
-ALTER TABLE public.filedscrtype_access OWNER TO roda;
-
---
--- Name: filedscrtype_methrefs; Type: TABLE; Schema: public; Owner: roda; Tablespace: 
---
-
-CREATE TABLE filedscrtype_methrefs (
-    filedscrtype_id_ bigint NOT NULL,
-    methrefs character varying(255)
-);
-
-
-ALTER TABLE public.filedscrtype_methrefs OWNER TO roda;
-
---
--- Name: filedscrtype_pubrefs; Type: TABLE; Schema: public; Owner: roda; Tablespace: 
---
-
-CREATE TABLE filedscrtype_pubrefs (
-    filedscrtype_id_ bigint NOT NULL,
-    pubrefs character varying(255)
-);
-
-
-ALTER TABLE public.filedscrtype_pubrefs OWNER TO roda;
-
---
--- Name: filedscrtype_sdatrefs; Type: TABLE; Schema: public; Owner: roda; Tablespace: 
---
-
-CREATE TABLE filedscrtype_sdatrefs (
-    filedscrtype_id_ bigint NOT NULL,
-    sdatrefs character varying(255)
-);
-
-
-ALTER TABLE public.filedscrtype_sdatrefs OWNER TO roda;
 
 --
 -- Name: filename; Type: TABLE; Schema: public; Owner: roda; Tablespace: 
@@ -1802,42 +1758,6 @@ CREATE TABLE productionstatement (
 ALTER TABLE public.productionstatement OWNER TO roda;
 
 --
--- Name: qstnlittype_sdatrefs; Type: TABLE; Schema: public; Owner: roda; Tablespace: 
---
-
-CREATE TABLE qstnlittype_sdatrefs (
-    qstnlittype_id_ bigint NOT NULL,
-    sdatrefs character varying(255)
-);
-
-
-ALTER TABLE public.qstnlittype_sdatrefs OWNER TO roda;
-
---
--- Name: qstntype_sdatrefs; Type: TABLE; Schema: public; Owner: roda; Tablespace: 
---
-
-CREATE TABLE qstntype_sdatrefs (
-    qstntype_id_ bigint NOT NULL,
-    sdatrefs character varying(255)
-);
-
-
-ALTER TABLE public.qstntype_sdatrefs OWNER TO roda;
-
---
--- Name: qstntype_var; Type: TABLE; Schema: public; Owner: roda; Tablespace: 
---
-
-CREATE TABLE qstntype_var (
-    qstntype_id_ bigint NOT NULL,
-    var character varying(255)
-);
-
-
-ALTER TABLE public.qstntype_var OWNER TO roda;
-
---
 -- Name: question; Type: TABLE; Schema: public; Owner: roda; Tablespace: 
 --
 
@@ -2094,18 +2014,6 @@ CREATE TABLE specialpermissions (
 ALTER TABLE public.specialpermissions OWNER TO roda;
 
 --
--- Name: spssabstractrecordtype; Type: TABLE; Schema: public; Owner: roda; Tablespace: 
---
-
-CREATE TABLE spssabstractrecordtype (
-    id_ bigint NOT NULL,
-    filelocation bigint NOT NULL
-);
-
-
-ALTER TABLE public.spssabstractrecordtype OWNER TO roda;
-
---
 -- Name: spssdatarecord; Type: TABLE; Schema: public; Owner: roda; Tablespace: 
 --
 
@@ -2181,6 +2089,7 @@ ALTER TABLE public.spssfile_spssvariable OWNER TO roda;
 --
 
 CREATE TABLE spssrecordtype1 (
+    id_ bigint NOT NULL,
     obsperobservation integer NOT NULL,
     compressionbias double precision NOT NULL,
     compressionswitch integer NOT NULL,
@@ -2191,8 +2100,7 @@ CREATE TABLE spssrecordtype1 (
     numberofcases integer NOT NULL,
     productidentification character varying(255),
     recordtypecode character varying(255),
-    weightvariableindex integer NOT NULL,
-    id_ bigint NOT NULL
+    weightvariableindex integer NOT NULL
 );
 
 
@@ -2203,6 +2111,7 @@ ALTER TABLE public.spssrecordtype1 OWNER TO roda;
 --
 
 CREATE TABLE spssrecordtype2 (
+    id_ bigint NOT NULL,
     haslabel integer NOT NULL,
     label character varying(255),
     labellength integer NOT NULL,
@@ -2221,7 +2130,6 @@ CREATE TABLE spssrecordtype2 (
     writeformattype integer NOT NULL,
     writeformatwidth integer NOT NULL,
     writeformatzero integer NOT NULL,
-    id_ bigint NOT NULL,
     valuelabelset_id_ bigint
 );
 
@@ -2233,9 +2141,9 @@ ALTER TABLE public.spssrecordtype2 OWNER TO roda;
 --
 
 CREATE TABLE spssrecordtype3 (
+    id_ bigint NOT NULL,
     numberoflabels integer NOT NULL,
-    recordtypecode integer NOT NULL,
-    id_ bigint NOT NULL
+    recordtypecode integer NOT NULL
 );
 
 
@@ -2246,10 +2154,10 @@ ALTER TABLE public.spssrecordtype3 OWNER TO roda;
 --
 
 CREATE TABLE spssrecordtype4 (
+    id_ bigint NOT NULL,
     numberofvariables integer NOT NULL,
     recordtypecode integer NOT NULL,
-    variableindex bytea,
-    id_ bigint NOT NULL
+    variableindex bytea
 );
 
 
@@ -2260,9 +2168,9 @@ ALTER TABLE public.spssrecordtype4 OWNER TO roda;
 --
 
 CREATE TABLE spssrecordtype6 (
+    id_ bigint NOT NULL,
     numberoflines integer NOT NULL,
-    recordtypecode integer NOT NULL,
-    id_ bigint NOT NULL
+    recordtypecode integer NOT NULL
 );
 
 
@@ -2285,11 +2193,11 @@ ALTER TABLE public.spssrecordtype6_line OWNER TO roda;
 --
 
 CREATE TABLE spssrecordtype7 (
+    id_ bigint NOT NULL,
     dataelementlength integer NOT NULL,
     numberofdataelements integer NOT NULL,
     recordsubtypecode integer NOT NULL,
-    recordtypecode integer NOT NULL,
-    id_ bigint NOT NULL
+    recordtypecode integer NOT NULL
 );
 
 
@@ -2300,11 +2208,11 @@ ALTER TABLE public.spssrecordtype7 OWNER TO roda;
 --
 
 CREATE TABLE spssrecordtype7subtype11 (
+    id_ bigint NOT NULL,
     dataelementlength integer NOT NULL,
     numberofdataelements integer NOT NULL,
     recordsubtypecode integer NOT NULL,
-    recordtypecode integer NOT NULL,
-    id_ bigint NOT NULL
+    recordtypecode integer NOT NULL
 );
 
 
@@ -2327,12 +2235,12 @@ ALTER TABLE public.spssrecordtype7subtype11_variabledisplayparams OWNER TO roda;
 --
 
 CREATE TABLE spssrecordtype7subtype13 (
+    id_ bigint NOT NULL,
     dataelementlength integer NOT NULL,
     longnamesstr character varying(255),
     numberofdataelements integer NOT NULL,
     recordsubtypecode integer NOT NULL,
-    recordtypecode integer NOT NULL,
-    id_ bigint NOT NULL
+    recordtypecode integer NOT NULL
 );
 
 
@@ -2343,6 +2251,7 @@ ALTER TABLE public.spssrecordtype7subtype13 OWNER TO roda;
 --
 
 CREATE TABLE spssrecordtype7subtype3 (
+    id_ bigint NOT NULL,
     characterrepresentation integer NOT NULL,
     compressionscheme integer NOT NULL,
     dataelementlength integer NOT NULL,
@@ -2354,8 +2263,7 @@ CREATE TABLE spssrecordtype7subtype3 (
     recordtypecode integer NOT NULL,
     releasemajor integer NOT NULL,
     releaseminor integer NOT NULL,
-    releasespecial integer NOT NULL,
-    id_ bigint NOT NULL
+    releasespecial integer NOT NULL
 );
 
 
@@ -2366,14 +2274,14 @@ ALTER TABLE public.spssrecordtype7subtype3 OWNER TO roda;
 --
 
 CREATE TABLE spssrecordtype7subtype4 (
+    id_ bigint NOT NULL,
     dataelementlength integer NOT NULL,
     highest double precision NOT NULL,
     lowest double precision NOT NULL,
     numberofdataelements integer NOT NULL,
     recordsubtypecode integer NOT NULL,
     recordtypecode integer NOT NULL,
-    sysmiss double precision NOT NULL,
-    id_ bigint NOT NULL
+    sysmiss double precision NOT NULL
 );
 
 
@@ -2384,12 +2292,12 @@ ALTER TABLE public.spssrecordtype7subtype4 OWNER TO roda;
 --
 
 CREATE TABLE spssrecordtype7subtype5 (
+    id_ bigint NOT NULL,
     dataelementlength integer NOT NULL,
     numberofdataelements integer NOT NULL,
     recordsubtypecode integer NOT NULL,
     recordtypecode integer NOT NULL,
-    variablesets character varying(255),
-    id_ bigint NOT NULL
+    variablesets character varying(255)
 );
 
 
@@ -2444,18 +2352,6 @@ CREATE TABLE spssvariablecategory (
 
 
 ALTER TABLE public.spssvariablecategory OWNER TO roda;
-
---
--- Name: stdydscrtype_access; Type: TABLE; Schema: public; Owner: roda; Tablespace: 
---
-
-CREATE TABLE stdydscrtype_access (
-    stdydscrtype_id_ bigint NOT NULL,
-    access character varying(255)
-);
-
-
-ALTER TABLE public.stdydscrtype_access OWNER TO roda;
 
 --
 -- Name: studiu_person_asoc; Type: TABLE; Schema: public; Owner: roda; Tablespace: 
@@ -2681,30 +2577,6 @@ CREATE TABLE summarystatistics (
 
 
 ALTER TABLE public.summarystatistics OWNER TO roda;
-
---
--- Name: sumstattype_weight; Type: TABLE; Schema: public; Owner: roda; Tablespace: 
---
-
-CREATE TABLE sumstattype_weight (
-    sumstattype_id_ bigint NOT NULL,
-    weight character varying(255)
-);
-
-
-ALTER TABLE public.sumstattype_weight OWNER TO roda;
-
---
--- Name: sumstattype_wgtvar; Type: TABLE; Schema: public; Owner: roda; Tablespace: 
---
-
-CREATE TABLE sumstattype_wgtvar (
-    sumstattype_id_ bigint NOT NULL,
-    wgtvar character varying(255)
-);
-
-
-ALTER TABLE public.sumstattype_wgtvar OWNER TO roda;
 
 --
 -- Name: timemethod; Type: TABLE; Schema: public; Owner: roda; Tablespace: 
@@ -3031,7 +2903,6 @@ ALTER TABLE public.variable_group OWNER TO roda;
 
 CREATE TABLE variableddi (
     id_ bigint NOT NULL,
-    dcml character varying(255),
     id character varying(255),
     intrvl character varying(255),
     name character varying(255),
@@ -3042,6 +2913,18 @@ CREATE TABLE variableddi (
 
 
 ALTER TABLE public.variableddi OWNER TO roda;
+
+--
+-- Name: variableddi_elsstterm; Type: TABLE; Schema: public; Owner: roda; Tablespace: 
+--
+
+CREATE TABLE variableddi_elsstterm (
+    variableddi_id_ bigint NOT NULL,
+    elsstterm_id_ bigint NOT NULL
+);
+
+
+ALTER TABLE public.variableddi_elsstterm OWNER TO roda;
 
 --
 -- Name: variabledescription; Type: TABLE; Schema: public; Owner: roda; Tablespace: 
@@ -3088,18 +2971,6 @@ CREATE TABLE variableformat (
 ALTER TABLE public.variableformat OWNER TO roda;
 
 --
--- Name: vartype_access; Type: TABLE; Schema: public; Owner: roda; Tablespace: 
---
-
-CREATE TABLE vartype_access (
-    vartype_id_ bigint NOT NULL,
-    access character varying(255)
-);
-
-
-ALTER TABLE public.vartype_access OWNER TO roda;
-
---
 -- Name: vartype_files; Type: TABLE; Schema: public; Owner: roda; Tablespace: 
 --
 
@@ -3110,66 +2981,6 @@ CREATE TABLE vartype_files (
 
 
 ALTER TABLE public.vartype_files OWNER TO roda;
-
---
--- Name: vartype_methrefs; Type: TABLE; Schema: public; Owner: roda; Tablespace: 
---
-
-CREATE TABLE vartype_methrefs (
-    vartype_id_ bigint NOT NULL,
-    methrefs character varying(255)
-);
-
-
-ALTER TABLE public.vartype_methrefs OWNER TO roda;
-
---
--- Name: vartype_pubrefs; Type: TABLE; Schema: public; Owner: roda; Tablespace: 
---
-
-CREATE TABLE vartype_pubrefs (
-    vartype_id_ bigint NOT NULL,
-    pubrefs character varying(255)
-);
-
-
-ALTER TABLE public.vartype_pubrefs OWNER TO roda;
-
---
--- Name: vartype_sdatrefs; Type: TABLE; Schema: public; Owner: roda; Tablespace: 
---
-
-CREATE TABLE vartype_sdatrefs (
-    vartype_id_ bigint NOT NULL,
-    sdatrefs character varying(255)
-);
-
-
-ALTER TABLE public.vartype_sdatrefs OWNER TO roda;
-
---
--- Name: vartype_weight; Type: TABLE; Schema: public; Owner: roda; Tablespace: 
---
-
-CREATE TABLE vartype_weight (
-    vartype_id_ bigint NOT NULL,
-    weight character varying(255)
-);
-
-
-ALTER TABLE public.vartype_weight OWNER TO roda;
-
---
--- Name: vartype_wgtvar; Type: TABLE; Schema: public; Owner: roda; Tablespace: 
---
-
-CREATE TABLE vartype_wgtvar (
-    vartype_id_ bigint NOT NULL,
-    wgtvar character varying(255)
-);
-
-
-ALTER TABLE public.vartype_wgtvar OWNER TO roda;
 
 --
 -- Name: version; Type: TABLE; Schema: public; Owner: roda; Tablespace: 
@@ -3829,6 +3640,30 @@ ALTER TABLE ONLY documents
 
 ALTER TABLE ONLY edited_variable
     ADD CONSTRAINT edited_variable_pkey PRIMARY KEY (variable_id);
+
+
+--
+-- Name: elsstlanguage_pkey; Type: CONSTRAINT; Schema: public; Owner: roda; Tablespace: 
+--
+
+ALTER TABLE ONLY elsstlanguage
+    ADD CONSTRAINT elsstlanguage_pkey PRIMARY KEY (id_);
+
+
+--
+-- Name: elsstterm_pkey; Type: CONSTRAINT; Schema: public; Owner: roda; Tablespace: 
+--
+
+ALTER TABLE ONLY elsstterm
+    ADD CONSTRAINT elsstterm_pkey PRIMARY KEY (id_);
+
+
+--
+-- Name: elsstterm_translated_pkey; Type: CONSTRAINT; Schema: public; Owner: roda; Tablespace: 
+--
+
+ALTER TABLE ONLY elsstterm_translated
+    ADD CONSTRAINT elsstterm_translated_pkey PRIMARY KEY (elsstterm_id_, translatedterm_key);
 
 
 --
@@ -4568,14 +4403,6 @@ ALTER TABLE ONLY specialpermissions
 
 
 --
--- Name: spssabstractrecordtype_pkey; Type: CONSTRAINT; Schema: public; Owner: roda; Tablespace: 
---
-
-ALTER TABLE ONLY spssabstractrecordtype
-    ADD CONSTRAINT spssabstractrecordtype_pkey PRIMARY KEY (id_);
-
-
---
 -- Name: spssdatarecord_pkey; Type: CONSTRAINT; Schema: public; Owner: roda; Tablespace: 
 --
 
@@ -5240,14 +5067,6 @@ ALTER TABLE ONLY accessplace
 
 
 --
--- Name: fk2562ec82e4597ce1; Type: FK CONSTRAINT; Schema: public; Owner: roda
---
-
-ALTER TABLE ONLY vartype_access
-    ADD CONSTRAINT fk2562ec82e4597ce1 FOREIGN KEY (vartype_id_) REFERENCES variableddi(id_);
-
-
---
 -- Name: fk26dd49991110e0; Type: FK CONSTRAINT; Schema: public; Owner: roda
 --
 
@@ -5296,22 +5115,6 @@ ALTER TABLE ONLY dateofcollection
 
 
 --
--- Name: fk2d34ad93c50df87; Type: FK CONSTRAINT; Schema: public; Owner: roda
---
-
-ALTER TABLE ONLY catstattype_weight
-    ADD CONSTRAINT fk2d34ad93c50df87 FOREIGN KEY (catstattype_id_) REFERENCES categorystatistic(id_);
-
-
---
--- Name: fk2d559bfec50df87; Type: FK CONSTRAINT; Schema: public; Owner: roda
---
-
-ALTER TABLE ONLY catstattype_wgtvar
-    ADD CONSTRAINT fk2d559bfec50df87 FOREIGN KEY (catstattype_id_) REFERENCES categorystatistic(id_);
-
-
---
 -- Name: fk2da90e0c7bac1363; Type: FK CONSTRAINT; Schema: public; Owner: roda
 --
 
@@ -5320,19 +5123,27 @@ ALTER TABLE ONLY producertype
 
 
 --
+-- Name: fk2e07f7c531f8ded4; Type: FK CONSTRAINT; Schema: public; Owner: roda
+--
+
+ALTER TABLE ONLY elsstterm_related
+    ADD CONSTRAINT fk2e07f7c531f8ded4 FOREIGN KEY (relatedterm_id_) REFERENCES elsstterm(id_);
+
+
+--
+-- Name: fk2e07f7c5ec365cb6; Type: FK CONSTRAINT; Schema: public; Owner: roda
+--
+
+ALTER TABLE ONLY elsstterm_related
+    ADD CONSTRAINT fk2e07f7c5ec365cb6 FOREIGN KEY (elsstterm_id_) REFERENCES elsstterm(id_);
+
+
+--
 -- Name: fk2e996b96fa9bcf; Type: FK CONSTRAINT; Schema: public; Owner: roda
 --
 
 ALTER TABLE ONLY city
     ADD CONSTRAINT fk2e996b96fa9bcf FOREIGN KEY (country_id) REFERENCES country(id);
-
-
---
--- Name: fk30dfe2d75e604b3; Type: FK CONSTRAINT; Schema: public; Owner: roda
---
-
-ALTER TABLE ONLY filedscrtype_methrefs
-    ADD CONSTRAINT fk30dfe2d75e604b3 FOREIGN KEY (filedscrtype_id_) REFERENCES datafilesdescription(id_);
 
 
 --
@@ -5392,59 +5203,11 @@ ALTER TABLE ONLY countryddi
 
 
 --
--- Name: fk3bdddca916ef5198; Type: FK CONSTRAINT; Schema: public; Owner: roda
---
-
-ALTER TABLE ONLY spssrecordtype1
-    ADD CONSTRAINT fk3bdddca916ef5198 FOREIGN KEY (id_) REFERENCES spssabstractrecordtype(id_);
-
-
---
--- Name: fk3bdddcaa16ef5198; Type: FK CONSTRAINT; Schema: public; Owner: roda
---
-
-ALTER TABLE ONLY spssrecordtype2
-    ADD CONSTRAINT fk3bdddcaa16ef5198 FOREIGN KEY (id_) REFERENCES spssabstractrecordtype(id_);
-
-
---
 -- Name: fk3bdddcaa81a8d605; Type: FK CONSTRAINT; Schema: public; Owner: roda
 --
 
 ALTER TABLE ONLY spssrecordtype2
     ADD CONSTRAINT fk3bdddcaa81a8d605 FOREIGN KEY (valuelabelset_id_) REFERENCES spssrecordtype3(id_);
-
-
---
--- Name: fk3bdddcab16ef5198; Type: FK CONSTRAINT; Schema: public; Owner: roda
---
-
-ALTER TABLE ONLY spssrecordtype3
-    ADD CONSTRAINT fk3bdddcab16ef5198 FOREIGN KEY (id_) REFERENCES spssabstractrecordtype(id_);
-
-
---
--- Name: fk3bdddcac16ef5198; Type: FK CONSTRAINT; Schema: public; Owner: roda
---
-
-ALTER TABLE ONLY spssrecordtype4
-    ADD CONSTRAINT fk3bdddcac16ef5198 FOREIGN KEY (id_) REFERENCES spssabstractrecordtype(id_);
-
-
---
--- Name: fk3bdddcae16ef5198; Type: FK CONSTRAINT; Schema: public; Owner: roda
---
-
-ALTER TABLE ONLY spssrecordtype6
-    ADD CONSTRAINT fk3bdddcae16ef5198 FOREIGN KEY (id_) REFERENCES spssabstractrecordtype(id_);
-
-
---
--- Name: fk3bdddcaf16ef5198; Type: FK CONSTRAINT; Schema: public; Owner: roda
---
-
-ALTER TABLE ONLY spssrecordtype7
-    ADD CONSTRAINT fk3bdddcaf16ef5198 FOREIGN KEY (id_) REFERENCES spssabstractrecordtype(id_);
 
 
 --
@@ -5477,14 +5240,6 @@ ALTER TABLE ONLY spssfile_spssdatarecordvariablevalue
 
 ALTER TABLE ONLY spssfile_spssdatarecordvariablevalue
     ADD CONSTRAINT fk42250a97d8c6bbda FOREIGN KEY (values_id_) REFERENCES spssdatarecordvariablevalue(id_);
-
-
---
--- Name: fk4391ceebcaf8d69; Type: FK CONSTRAINT; Schema: public; Owner: roda
---
-
-ALTER TABLE ONLY qstnlittype_sdatrefs
-    ADD CONSTRAINT fk4391ceebcaf8d69 FOREIGN KEY (qstnlittype_id_) REFERENCES literalquestion(id_);
 
 
 --
@@ -5576,30 +5331,6 @@ ALTER TABLE ONLY summarystatistics
 
 
 --
--- Name: fk4b0c7996e4597ce1; Type: FK CONSTRAINT; Schema: public; Owner: roda
---
-
-ALTER TABLE ONLY vartype_weight
-    ADD CONSTRAINT fk4b0c7996e4597ce1 FOREIGN KEY (vartype_id_) REFERENCES variableddi(id_);
-
-
---
--- Name: fk4b2d6801e4597ce1; Type: FK CONSTRAINT; Schema: public; Owner: roda
---
-
-ALTER TABLE ONLY vartype_wgtvar
-    ADD CONSTRAINT fk4b2d6801e4597ce1 FOREIGN KEY (vartype_id_) REFERENCES variableddi(id_);
-
-
---
--- Name: fk4b7dbb0f5e604b3; Type: FK CONSTRAINT; Schema: public; Owner: roda
---
-
-ALTER TABLE ONLY filedscrtype_sdatrefs
-    ADD CONSTRAINT fk4b7dbb0f5e604b3 FOREIGN KEY (filedscrtype_id_) REFERENCES datafilesdescription(id_);
-
-
---
 -- Name: fk4cbce0713131c8d8; Type: FK CONSTRAINT; Schema: public; Owner: roda
 --
 
@@ -5680,11 +5411,19 @@ ALTER TABLE ONLY unitofanalysis
 
 
 --
--- Name: fk5775c835a6f04627; Type: FK CONSTRAINT; Schema: public; Owner: roda
+-- Name: fk57a525f91465992a; Type: FK CONSTRAINT; Schema: public; Owner: roda
 --
 
-ALTER TABLE ONLY stdydscrtype_access
-    ADD CONSTRAINT fk5775c835a6f04627 FOREIGN KEY (stdydscrtype_id_) REFERENCES studydescription(id_);
+ALTER TABLE ONLY elsstterm
+    ADD CONSTRAINT fk57a525f91465992a FOREIGN KEY (preferredterm_id_) REFERENCES elsstterm(id_);
+
+
+--
+-- Name: fk57a525f9a5817158; Type: FK CONSTRAINT; Schema: public; Owner: roda
+--
+
+ALTER TABLE ONLY elsstterm
+    ADD CONSTRAINT fk57a525f9a5817158 FOREIGN KEY (broaderterm_id_) REFERENCES elsstterm(id_);
 
 
 --
@@ -5704,11 +5443,27 @@ ALTER TABLE ONLY user_settings
 
 
 --
--- Name: fk5973b4af5e604b3; Type: FK CONSTRAINT; Schema: public; Owner: roda
+-- Name: fk58f8fefc79f8a126; Type: FK CONSTRAINT; Schema: public; Owner: roda
 --
 
-ALTER TABLE ONLY filedscrtype_access
-    ADD CONSTRAINT fk5973b4af5e604b3 FOREIGN KEY (filedscrtype_id_) REFERENCES datafilesdescription(id_);
+ALTER TABLE ONLY elsstterm_translated
+    ADD CONSTRAINT fk58f8fefc79f8a126 FOREIGN KEY (translatedterm_key) REFERENCES elsstlanguage(id_);
+
+
+--
+-- Name: fk58f8fefc9ab0a07f; Type: FK CONSTRAINT; Schema: public; Owner: roda
+--
+
+ALTER TABLE ONLY elsstterm_translated
+    ADD CONSTRAINT fk58f8fefc9ab0a07f FOREIGN KEY (translatedterm_id_) REFERENCES elsstterm(id_);
+
+
+--
+-- Name: fk58f8fefcec365cb6; Type: FK CONSTRAINT; Schema: public; Owner: roda
+--
+
+ALTER TABLE ONLY elsstterm_translated
+    ADD CONSTRAINT fk58f8fefcec365cb6 FOREIGN KEY (elsstterm_id_) REFERENCES elsstterm(id_);
 
 
 --
@@ -5816,6 +5571,22 @@ ALTER TABLE ONLY category
 
 
 --
+-- Name: fk6e9b9370cc896157; Type: FK CONSTRAINT; Schema: public; Owner: roda
+--
+
+ALTER TABLE ONLY codebook_elsstterm
+    ADD CONSTRAINT fk6e9b9370cc896157 FOREIGN KEY (codebook_id_) REFERENCES codebook(id_);
+
+
+--
+-- Name: fk6e9b9370ec365cb6; Type: FK CONSTRAINT; Schema: public; Owner: roda
+--
+
+ALTER TABLE ONLY codebook_elsstterm
+    ADD CONSTRAINT fk6e9b9370ec365cb6 FOREIGN KEY (elsstterm_id_) REFERENCES elsstterm(id_);
+
+
+--
 -- Name: fk6f78d4777bac1363; Type: FK CONSTRAINT; Schema: public; Owner: roda
 --
 
@@ -5912,22 +5683,6 @@ ALTER TABLE ONLY study_person_acl
 
 
 --
--- Name: fk8139d52b16ef5198; Type: FK CONSTRAINT; Schema: public; Owner: roda
---
-
-ALTER TABLE ONLY spssrecordtype7subtype11
-    ADD CONSTRAINT fk8139d52b16ef5198 FOREIGN KEY (id_) REFERENCES spssabstractrecordtype(id_);
-
-
---
--- Name: fk8139d52d16ef5198; Type: FK CONSTRAINT; Schema: public; Owner: roda
---
-
-ALTER TABLE ONLY spssrecordtype7subtype13
-    ADD CONSTRAINT fk8139d52d16ef5198 FOREIGN KEY (id_) REFERENCES spssabstractrecordtype(id_);
-
-
---
 -- Name: fk8635931f98b10015; Type: FK CONSTRAINT; Schema: public; Owner: roda
 --
 
@@ -5992,35 +5747,11 @@ ALTER TABLE ONLY study_descr
 
 
 --
--- Name: fk943050fe4c40757; Type: FK CONSTRAINT; Schema: public; Owner: roda
---
-
-ALTER TABLE ONLY qstntype_var
-    ADD CONSTRAINT fk943050fe4c40757 FOREIGN KEY (qstntype_id_) REFERENCES question(id_);
-
-
---
 -- Name: fk96775995b7b38330; Type: FK CONSTRAINT; Schema: public; Owner: roda
 --
 
 ALTER TABLE ONLY literalquestion
     ADD CONSTRAINT fk96775995b7b38330 FOREIGN KEY (question_id) REFERENCES question(id_);
-
-
---
--- Name: fk989b167e1fef0ff1; Type: FK CONSTRAINT; Schema: public; Owner: roda
---
-
-ALTER TABLE ONLY sumstattype_weight
-    ADD CONSTRAINT fk989b167e1fef0ff1 FOREIGN KEY (sumstattype_id_) REFERENCES summarystatistics(id_);
-
-
---
--- Name: fk98bc04e91fef0ff1; Type: FK CONSTRAINT; Schema: public; Owner: roda
---
-
-ALTER TABLE ONLY sumstattype_wgtvar
-    ADD CONSTRAINT fk98bc04e91fef0ff1 FOREIGN KEY (sumstattype_id_) REFERENCES summarystatistics(id_);
 
 
 --
@@ -6344,14 +6075,6 @@ ALTER TABLE ONLY identificationnumber
 
 
 --
--- Name: fkb6cb9aa7c50df87; Type: FK CONSTRAINT; Schema: public; Owner: roda
---
-
-ALTER TABLE ONLY catstattype_methrefs
-    ADD CONSTRAINT fkb6cb9aa7c50df87 FOREIGN KEY (catstattype_id_) REFERENCES categorystatistic(id_);
-
-
---
 -- Name: fkb73a9a233dd928ef; Type: FK CONSTRAINT; Schema: public; Owner: roda
 --
 
@@ -6416,27 +6139,11 @@ ALTER TABLE ONLY address
 
 
 --
--- Name: fkbde071eae4597ce1; Type: FK CONSTRAINT; Schema: public; Owner: roda
---
-
-ALTER TABLE ONLY vartype_methrefs
-    ADD CONSTRAINT fkbde071eae4597ce1 FOREIGN KEY (vartype_id_) REFERENCES variableddi(id_);
-
-
---
 -- Name: fkbe5ca00683e7a348; Type: FK CONSTRAINT; Schema: public; Owner: roda
 --
 
 ALTER TABLE ONLY question
     ADD CONSTRAINT fkbe5ca00683e7a348 FOREIGN KEY (variableddi_id) REFERENCES variableddi(id_);
-
-
---
--- Name: fkbf26f35fe4597ce1; Type: FK CONSTRAINT; Schema: public; Owner: roda
---
-
-ALTER TABLE ONLY vartype_pubrefs
-    ADD CONSTRAINT fkbf26f35fe4597ce1 FOREIGN KEY (vartype_id_) REFERENCES variableddi(id_);
 
 
 --
@@ -6469,30 +6176,6 @@ ALTER TABLE ONLY spssdatarecordvariablevalue
 
 ALTER TABLE ONLY spssdatarecordvariablevalue
     ADD CONSTRAINT fkc10693d759a2e82 FOREIGN KEY (datarecord_id_) REFERENCES spssdatarecord(id_);
-
-
---
--- Name: fkc21aa3c816ef5198; Type: FK CONSTRAINT; Schema: public; Owner: roda
---
-
-ALTER TABLE ONLY spssrecordtype7subtype3
-    ADD CONSTRAINT fkc21aa3c816ef5198 FOREIGN KEY (id_) REFERENCES spssabstractrecordtype(id_);
-
-
---
--- Name: fkc21aa3c916ef5198; Type: FK CONSTRAINT; Schema: public; Owner: roda
---
-
-ALTER TABLE ONLY spssrecordtype7subtype4
-    ADD CONSTRAINT fkc21aa3c916ef5198 FOREIGN KEY (id_) REFERENCES spssabstractrecordtype(id_);
-
-
---
--- Name: fkc21aa3ca16ef5198; Type: FK CONSTRAINT; Schema: public; Owner: roda
---
-
-ALTER TABLE ONLY spssrecordtype7subtype5
-    ADD CONSTRAINT fkc21aa3ca16ef5198 FOREIGN KEY (id_) REFERENCES spssabstractrecordtype(id_);
 
 
 --
@@ -6720,30 +6403,6 @@ ALTER TABLE ONLY codebook
 
 
 --
--- Name: fkd16972dfc50df87; Type: FK CONSTRAINT; Schema: public; Owner: roda
---
-
-ALTER TABLE ONLY catstattype_sdatrefs
-    ADD CONSTRAINT fkd16972dfc50df87 FOREIGN KEY (catstattype_id_) REFERENCES categorystatistic(id_);
-
-
---
--- Name: fkd2f30d25e604b3; Type: FK CONSTRAINT; Schema: public; Owner: roda
---
-
-ALTER TABLE ONLY filedscrtype_pubrefs
-    ADD CONSTRAINT fkd2f30d25e604b3 FOREIGN KEY (filedscrtype_id_) REFERENCES datafilesdescription(id_);
-
-
---
--- Name: fkd3a77351a002f64f; Type: FK CONSTRAINT; Schema: public; Owner: roda
---
-
-ALTER TABLE ONLY catgrytype_sdatrefs
-    ADD CONSTRAINT fkd3a77351a002f64f FOREIGN KEY (catgrytype_id_) REFERENCES category(id_);
-
-
---
 -- Name: fkd40ce9e05a4f8e65; Type: FK CONSTRAINT; Schema: public; Owner: roda
 --
 
@@ -6773,14 +6432,6 @@ ALTER TABLE ONLY instance_org
 
 ALTER TABLE ONLY instance_org
     ADD CONSTRAINT fkd40d203ab2c30327 FOREIGN KEY (assoc_type_id) REFERENCES instance_org_assoc(id);
-
-
---
--- Name: fkd87e4a22e4597ce1; Type: FK CONSTRAINT; Schema: public; Owner: roda
---
-
-ALTER TABLE ONLY vartype_sdatrefs
-    ADD CONSTRAINT fkd87e4a22e4597ce1 FOREIGN KEY (vartype_id_) REFERENCES variableddi(id_);
 
 
 --
@@ -6976,14 +6627,6 @@ ALTER TABLE ONLY sourcesstatement
 
 
 --
--- Name: fkf95670d4c40757; Type: FK CONSTRAINT; Schema: public; Owner: roda
---
-
-ALTER TABLE ONLY qstntype_sdatrefs
-    ADD CONSTRAINT fkf95670d4c40757 FOREIGN KEY (qstntype_id_) REFERENCES question(id_);
-
-
---
 -- Name: fkfa5ed9d43384f031; Type: FK CONSTRAINT; Schema: public; Owner: roda
 --
 
@@ -7101,6 +6744,22 @@ ALTER TABLE ONLY instance_documents
 
 ALTER TABLE ONLY instance_documents
     ADD CONSTRAINT fkfd87eb8e812f8a5 FOREIGN KEY (document_id) REFERENCES documents(id);
+
+
+--
+-- Name: fkfeca27e75517bed; Type: FK CONSTRAINT; Schema: public; Owner: roda
+--
+
+ALTER TABLE ONLY variableddi_elsstterm
+    ADD CONSTRAINT fkfeca27e75517bed FOREIGN KEY (variableddi_id_) REFERENCES variableddi(id_);
+
+
+--
+-- Name: fkfeca27e7ec365cb6; Type: FK CONSTRAINT; Schema: public; Owner: roda
+--
+
+ALTER TABLE ONLY variableddi_elsstterm
+    ADD CONSTRAINT fkfeca27e7ec365cb6 FOREIGN KEY (elsstterm_id_) REFERENCES elsstterm(id_);
 
 
 --

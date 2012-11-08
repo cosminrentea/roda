@@ -1,11 +1,12 @@
 package ddi122;
 
+import elsst.ElsstTerm;
 import javax.annotation.Generated;
 import javax.persistence.metamodel.ListAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
-@Generated(value="Dali", date="2012-11-07T14:24:27.298+0200")
+@Generated(value="Dali", date="2012-11-07T17:58:29.824+0200")
 @StaticMetamodel(VarType.class)
 public class VarType_ {
 	public static volatile SingularAttribute<VarType, Long> id_;
@@ -24,12 +25,7 @@ public class VarType_ {
 	public static volatile SingularAttribute<VarType, String> id;
 	public static volatile SingularAttribute<VarType, String> name;
 	public static volatile SingularAttribute<VarType, String> wgt;
-	public static volatile ListAttribute<VarType, String> wgtVar;
-	public static volatile ListAttribute<VarType, String> weight;
-	public static volatile ListAttribute<VarType, String> files;
 	public static volatile SingularAttribute<VarType, String> intrvl;
-	public static volatile ListAttribute<VarType, String> sdatrefs;
-	public static volatile ListAttribute<VarType, String> methrefs;
-	public static volatile ListAttribute<VarType, String> pubrefs;
-	public static volatile ListAttribute<VarType, String> access;
+	public static volatile ListAttribute<VarType, String> files;
+	public static volatile ListAttribute<VarType, ElsstTerm> elsstTerm;
 }

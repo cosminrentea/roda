@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -120,33 +119,33 @@ public class FileDscrType {
 	@XmlAttribute(name = "URI")
 	protected String uri;
 
-	@XmlAttribute
-	// TODO Cosmin commented IDREF annot.
-	// @XmlIDREF
-	@XmlSchemaType(name = "IDREFS")
-	@ElementCollection
-	protected List<String> sdatrefs;
-
-	@XmlAttribute
-	// TODO Cosmin commented IDREF annot.
-	// @XmlIDREF
-	@XmlSchemaType(name = "IDREFS")
-	@ElementCollection
-	protected List<String> methrefs;
-
-	@XmlAttribute
-	// TODO Cosmin commented IDREF annot.
-	// @XmlIDREF
-	@XmlSchemaType(name = "IDREFS")
-	@ElementCollection
-	protected List<String> pubrefs;
-
-	@XmlAttribute
-	// TODO Cosmin commented IDREF annot.
-	// @XmlIDREF
-	@XmlSchemaType(name = "IDREFS")
-	@ElementCollection
-	protected List<String> access;
+	// @XmlAttribute
+	// // TODO Cosmin commented IDREF annot.
+	// // @XmlIDREF
+	// @XmlSchemaType(name = "IDREFS")
+	// @ElementCollection
+	// protected List<String> sdatrefs;
+	//
+	// @XmlAttribute
+	// // TODO Cosmin commented IDREF annot.
+	// // @XmlIDREF
+	// @XmlSchemaType(name = "IDREFS")
+	// @ElementCollection
+	// protected List<String> methrefs;
+	//
+	// @XmlAttribute
+	// // TODO Cosmin commented IDREF annot.
+	// // @XmlIDREF
+	// @XmlSchemaType(name = "IDREFS")
+	// @ElementCollection
+	// protected List<String> pubrefs;
+	//
+	// @XmlAttribute
+	// // TODO Cosmin commented IDREF annot.
+	// // @XmlIDREF
+	// @XmlSchemaType(name = "IDREFS")
+	// @ElementCollection
+	// protected List<String> access;
 
 	/**
 	 * Gets the value of the fileTxt property.
@@ -218,122 +217,6 @@ public class FileDscrType {
 	 */
 	public void setURI(String value) {
 		this.uri = value;
-	}
-
-	/**
-	 * Gets the value of the sdatrefs property.
-	 * 
-	 * <p>
-	 * This accessor method returns a reference to the live List, not a
-	 * snapshot. Therefore any modification you make to the returned List will
-	 * be present inside the JAXB object. This is why there is not a
-	 * <CODE>set</CODE> method for the sdatrefs property.
-	 * 
-	 * <p>
-	 * For example, to add a new item, do as follows:
-	 * 
-	 * <pre>
-	 * getSdatrefs().add(newItem);
-	 * </pre>
-	 * 
-	 * 
-	 * <p>
-	 * Objects of the following type(s) are allowed in the List {@link Object }
-	 * 
-	 * 
-	 */
-	public List<String> getSdatrefs() {
-		if (sdatrefs == null) {
-			sdatrefs = new ArrayList<String>();
-		}
-		return this.sdatrefs;
-	}
-
-	/**
-	 * Gets the value of the methrefs property.
-	 * 
-	 * <p>
-	 * This accessor method returns a reference to the live List, not a
-	 * snapshot. Therefore any modification you make to the returned List will
-	 * be present inside the JAXB object. This is why there is not a
-	 * <CODE>set</CODE> method for the methrefs property.
-	 * 
-	 * <p>
-	 * For example, to add a new item, do as follows:
-	 * 
-	 * <pre>
-	 * getMethrefs().add(newItem);
-	 * </pre>
-	 * 
-	 * 
-	 * <p>
-	 * Objects of the following type(s) are allowed in the List {@link Object }
-	 * 
-	 * 
-	 */
-	public List<String> getMethrefs() {
-		if (methrefs == null) {
-			methrefs = new ArrayList<String>();
-		}
-		return this.methrefs;
-	}
-
-	/**
-	 * Gets the value of the pubrefs property.
-	 * 
-	 * <p>
-	 * This accessor method returns a reference to the live List, not a
-	 * snapshot. Therefore any modification you make to the returned List will
-	 * be present inside the JAXB object. This is why there is not a
-	 * <CODE>set</CODE> method for the pubrefs property.
-	 * 
-	 * <p>
-	 * For example, to add a new item, do as follows:
-	 * 
-	 * <pre>
-	 * getPubrefs().add(newItem);
-	 * </pre>
-	 * 
-	 * 
-	 * <p>
-	 * Objects of the following type(s) are allowed in the List {@link Object }
-	 * 
-	 * 
-	 */
-	public List<String> getPubrefs() {
-		if (pubrefs == null) {
-			pubrefs = new ArrayList<String>();
-		}
-		return this.pubrefs;
-	}
-
-	/**
-	 * Gets the value of the access property.
-	 * 
-	 * <p>
-	 * This accessor method returns a reference to the live List, not a
-	 * snapshot. Therefore any modification you make to the returned List will
-	 * be present inside the JAXB object. This is why there is not a
-	 * <CODE>set</CODE> method for the access property.
-	 * 
-	 * <p>
-	 * For example, to add a new item, do as follows:
-	 * 
-	 * <pre>
-	 * getAccess().add(newItem);
-	 * </pre>
-	 * 
-	 * 
-	 * <p>
-	 * Objects of the following type(s) are allowed in the List {@link Object }
-	 * 
-	 * 
-	 */
-	public List<String> getAccess() {
-		if (access == null) {
-			access = new ArrayList<String>();
-		}
-		return this.access;
 	}
 
 }

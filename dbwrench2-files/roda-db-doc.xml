@@ -439,6 +439,21 @@
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
+    <Tbl UsSo="1" nm="collection_model_type">
+      <Cm>Tabel ce contine tipurile modelelor de colectare a datelor</Cm>
+      <TblOpts/>
+      <Pk ClNs="id" nm="pkcollection_model_type"/>
+      <Cl au="0" df="" nm="id" nu="0">
+        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Codul tipului modelului de colectare a datelor</Cm>
+      </Cl>
+      <Cl au="0" df="" nm="name" nu="0">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="200" sc="null" sg="1" un="0"/>
+        <Cm>Denumirea tipului metodei de colectare a datelor</Cm>
+      </Cl>
+      <UniqueConstraints/>
+      <SchTrHis/>
+    </Tbl>
     <Tbl UsSo="1" nm="concept">
       <Cm>Tabel ce stocheaza conceptele definite </Cm>
       <TblOpts/>
@@ -464,7 +479,7 @@
       <Pk ClNs="concept_id, variable_id" nm="pkconcept_variable"/>
       <Cl au="0" df="" nm="concept_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
-        <Cm>Identificatorul conceptului</Cm>
+        <Cm>Identificatorul conceptului la care se refera variabila identificata prin atributul variable_id</Cm>
       </Cl>
       <Cl au="0" df="" nm="variable_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
@@ -790,6 +805,7 @@
       <SchTrHis/>
     </Tbl>
     <Tbl UsSo="1" nm="frequency">
+      <Cm>Tabel ce stocheaza frecventele asociate elementelor de raspuns din cadrul variabilelor</Cm>
       <TblOpts/>
       <Pk ClNs="instance_id, variable_id, item_id" nm="pkfrequency"/>
       <Cl au="0" df="" nm="instance_id" nu="0">
@@ -888,6 +904,10 @@
       <Cl au="0" df="" nm="unit_analysis_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul unitatii de analiza specifice instantei (refera atributul id al tabelului unit_analysis)</Cm>
+      </Cl>
+      <Cl au="0" df="" nm="version" nu="0">
+        <DT arr="0" ds="SmallInt" en="" id="5" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Versiunea instantei</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_instance_demo_scope" prLkCl="id" upAc="3">
         <PrTb mn="0" nm="demo_scope" oe="1" sch="schemaA" zr="0"/>
@@ -1186,6 +1206,31 @@
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
+    <Tbl UsSo="1" nm="meth_coll_type">
+      <Cm>Tabel ce stocheaza tipurile modelelor de colectare a datelor utilizate in cadrul unei instante</Cm>
+      <TblOpts/>
+      <Pk ClNs="instance_id, coll_mod_id" nm="pkmeth_coll_type"/>
+      <Cl au="0" df="" nm="instance_id" nu="0">
+        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Codul instantei pentru care se asociaza un model de colectare a datelor</Cm>
+      </Cl>
+      <Cl au="0" df="" nm="coll_mod_id" nu="0">
+        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Codul tipului de model de colectare a datelor asociat instantei identificate prin atributul instance_id</Cm>
+      </Cl>
+      <Fk deAc="3" nm="fk_meth_coll_type_collection_model_type" prLkCl="id" upAc="3">
+        <PrTb mn="0" nm="collection_model_type" oe="1" sch="schemaA" zr="0"/>
+        <CdTb mn="1" nm="meth_coll_type" oe="0" sch="schemaA" zr="1"/>
+        <ClPr cdCl="coll_mod_id" prCl="id"/>
+      </Fk>
+      <Fk deAc="3" nm="fk_meth_coll_type_methodology" prLkCl="instance_id" upAc="3">
+        <PrTb mn="0" nm="methodology" oe="1" sch="schemaA" zr="0"/>
+        <CdTb mn="1" nm="meth_coll_type" oe="0" sch="schemaA" zr="1"/>
+        <ClPr cdCl="instance_id" prCl="instance_id"/>
+      </Fk>
+      <UniqueConstraints/>
+      <SchTrHis/>
+    </Tbl>
     <Tbl UsSo="1" nm="methodology">
       <Cm>Tabel care stocheaza informatii aditionale instantei, legate de metodologie</Cm>
       <TblOpts/>
@@ -1194,25 +1239,30 @@
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul instantei pentru care sunt stocate informatii legate de metodologie</Cm>
       </Cl>
-      <Cl au="0" df="" nm="time_method" nu="0">
-        <DT arr="0" ds="VarChar" en="" id="12" ln="200" sc="null" sg="1" un="0"/>
-        <Cm>Metoda referitoare la timp</Cm>
+      <Cl au="0" df="" nm="time_meth_id" nu="0">
+        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Metoda temporala</Cm>
       </Cl>
       <Cl au="0" df="" nm="sampling_procedure" nu="0">
-        <DT arr="0" ds="VarChar" en="" id="12" ln="200" sc="null" sg="1" un="0"/>
+        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Procedura de esantionare a instantei</Cm>
-      </Cl>
-      <Cl au="0" df="" nm="mode_collection" nu="0">
-        <DT arr="0" ds="VarChar" en="" id="12" ln="200" sc="null" sg="1" un="0"/>
-        <Cm>Modul de colectare a datelor instantei</Cm>
       </Cl>
       <Cl au="0" df="" nm="weighting" nu="0">
         <DT arr="0" ds="VarChar" en="" id="12" ln="200" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="research_instrument" nu="0">
+        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Denumirea instrumentului de cercetare utilizat</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_methodology_instance" prLkCl="id" upAc="3">
         <PrTb mn="0" nm="instance" oe="1" sch="schemaA" zr="0"/>
         <CdTb mn="1" nm="methodology" oe="0" sch="schemaA" zr="1"/>
         <ClPr cdCl="instance_id" prCl="id"/>
+      </Fk>
+      <Fk deAc="3" nm="fk_methodology_time_meth_type" prLkCl="id" upAc="3">
+        <PrTb mn="0" nm="time_meth_type" oe="1" sch="schemaA" zr="0"/>
+        <CdTb mn="1" nm="methodology" oe="0" sch="schemaA" zr="1"/>
+        <ClPr cdCl="time_meth_id" prCl="id"/>
       </Fk>
       <UniqueConstraints/>
       <SchTrHis/>
@@ -1681,19 +1731,24 @@
       <SchTrHis/>
     </Tbl>
     <Tbl UsSo="1" nm="selection_variable">
+      <Cm>Tabel ce contine informatii despre variabilele de selectie din instante</Cm>
       <TblOpts/>
       <Pk ClNs="instance_id, variable_id" nm="pkselection_variable"/>
       <Cl au="0" df="" nm="instance_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Codul instantei</Cm>
       </Cl>
       <Cl au="0" df="" nm="variable_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Codul unei variabile de selectie din cadrul instantei identificate prin instance_id</Cm>
       </Cl>
       <Cl au="0" df="" nm="min_count" nu="0">
         <DT arr="0" ds="SmallInt" en="" id="5" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Numarul minim de selectii asteptate ca raspuns</Cm>
       </Cl>
       <Cl au="0" df="" nm="max_count" nu="0">
         <DT arr="0" ds="SmallInt" en="" id="5" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Numarul maxim de selectii asteptate ca raspuns</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_selection_variable_variable" prLkCl="instance_id" upAc="3">
         <PrTb mn="0" nm="variable" oe="1" sch="schemaA" zr="0"/>
@@ -1705,19 +1760,24 @@
       <SchTrHis/>
     </Tbl>
     <Tbl UsSo="1" nm="selection_variable_card">
+      <Cm>Tabel ce stocheaza cartonasele de raspuns asociate anumitor variabile</Cm>
       <TblOpts/>
       <Pk ClNs="variable_id, item_id, instance_id" nm="pkselection_variable_card"/>
       <Cl au="0" df="" nm="instance_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Codul instantei ce contine variabile care au cartonase de raspuns</Cm>
       </Cl>
       <Cl au="0" df="" nm="variable_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Codul variabilei careia ii sunt asociate cartonase de raspuns in instanta identificata prin atributul instance_id</Cm>
       </Cl>
       <Cl au="0" df="" nm="item_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Codul elementului de raspuns din cadrul variabilei referite prin atributul variable_id, pentru care se furnizeaza un cartonas de raspuns</Cm>
       </Cl>
       <Cl au="0" df="" nm="response_card" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Codul documentului ce constituie cartonasul de raspuns pentru elementul referit prin atributul item_id corespunzator variabilei identificate prin variable_id (impreuna cu atributul instance_id, refera atributele instance_id si document_id din tabelul instance_documents)</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_selection_variable_card_instance_documents" prLkCl="document_id" upAc="3">
         <PrTb mn="0" nm="instance_documents" oe="1" sch="schemaA" zr="0"/>
@@ -1740,15 +1800,19 @@
       <Pk ClNs="variable_id, item_id, instance_id" nm="pkselection_variable_item"/>
       <Cl au="0" df="" nm="instance_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Codul instantei</Cm>
       </Cl>
       <Cl au="0" df="" nm="variable_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Codul unei variabile ce apare in cadrul instantei identificate prin atributul instance_id</Cm>
       </Cl>
       <Cl au="0" df="" nm="item_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Codul unui item de raspuns pentru variabila referita prin atributul variable_id</Cm>
       </Cl>
       <Cl au="0" df="" nm="order" nu="0">
         <DT arr="0" ds="SmallInt" en="" id="5" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Numarul de ordine al item-ului referit prin atributul item_id in cadrul variabilei identificate prin atributul variable_id</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_selection_variable_item_item" prLkCl="id" upAc="3">
         <PrTb mn="0" nm="item" oe="1" sch="schemaA" zr="0"/>
@@ -1870,28 +1934,35 @@
       <SchTrHis/>
     </Tbl>
     <Tbl UsSo="1" nm="source_contact_method">
+      <Cm>Tabel ce contine metodele prin care persoana de contact al unui posibil furnizor de studii poate fi contactata</Cm>
       <TblOpts/>
       <Pk ClNs="id" nm="pksource_contact_method"/>
       <Cl au="0" df="" nm="id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Codul metodei de contact</Cm>
       </Cl>
       <Cl au="0" df="" nm="name" nu="0">
         <DT arr="0" ds="VarChar" en="" id="12" ln="150" sc="null" sg="1" un="0"/>
+        <Cm>Denumirea metodei de contact (telefon, email etc.)</Cm>
       </Cl>
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
     <Tbl UsSo="1" nm="source_contacts">
+      <Cm>Datele de contact ale unei surse </Cm>
       <TblOpts/>
       <Pk ClNs="id" nm="pksource_contacts"/>
       <Cl au="0" df="" nm="id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Codul contactului</Cm>
       </Cl>
       <Cl au="0" df="" nm="person_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Codul persoanei (refera atributul id din tabelul person)</Cm>
       </Cl>
       <Cl au="0" df="" nm="contact_date" nu="0">
         <DT arr="0" ds="DateTime" en="" id="700" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Data la care persoana identificata prin atributul person_id a fost contactata</Cm>
       </Cl>
       <Cl au="0" df="" nm="contact_synopsis" nu="0">
         <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
@@ -1901,6 +1972,7 @@
       </Cl>
       <Cl au="0" df="" nm="contact_method" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Metoda prin care persoana a fost contactata (refera atributul id din tabelul source_contact_method)</Cm>
       </Cl>
       <Cl au="0" df="" nm="org_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
@@ -1945,14 +2017,16 @@
       <SchTrHis/>
     </Tbl>
     <Tbl UsSo="1" nm="sources">
-      <Cm>Sursele de studii pentru partea de colectare</Cm>
+      <Cm>Tabel ce stocheaza sursele de studii pentru partea de colectare</Cm>
       <TblOpts/>
       <Pk ClNs="org_id" nm="pksources"/>
       <Cl au="0" df="" nm="org_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Codul organizatiei care reprezinta o sursa a studiilor colectate</Cm>
       </Cl>
       <Cl au="0" df="" nm="stype" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Codul tipului sursei (refera atributul id din tabelul sourcetype)</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_sources_sourcetype" prLkCl="id" upAc="3">
         <PrTb mn="0" nm="sourcetype" oe="1" sch="schemaA" zr="0"/>
@@ -1986,16 +2060,20 @@
       <SchTrHis/>
     </Tbl>
     <Tbl UsSo="1" nm="sourcetype">
+      <Cm>Tabel ce contine tipurile de surse </Cm>
       <TblOpts/>
       <Pk ClNs="id" nm="pksourcetype"/>
       <Cl au="0" df="" nm="id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Codul sursei</Cm>
       </Cl>
       <Cl au="0" df="" nm="name" nu="0">
         <DT arr="0" ds="VarChar" en="" id="12" ln="150" sc="null" sg="1" un="0"/>
+        <Cm>Numele sursei</Cm>
       </Cl>
-      <Cl au="0" df="" nm="description" nu="0">
+      <Cl au="0" df="" nm="description" nu="1">
         <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Descrierea sursei</Cm>
       </Cl>
       <UniqueConstraints/>
       <SchTrHis/>
@@ -2034,6 +2112,10 @@
       <Cl au="0" df="" nm="dateend" nu="0">
         <DT arr="0" ds="DateTime" en="" id="700" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Data de final a studiului</Cm>
+      </Cl>
+      <Cl au="0" df="" nm="grant_number" nu="0">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="100" sc="null" sg="1" un="0"/>
+        <Cm>Numarul proiectului care a finantat studiul</Cm>
       </Cl>
       <UniqueConstraints/>
       <SchTrHis/>
@@ -2077,10 +2159,6 @@
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul studiului (refera atributul id din tabelul study)</Cm>
       </Cl>
-      <Cl au="0" df="" nm="title" nu="0">
-        <DT arr="0" ds="VarChar" en="" id="12" ln="250" sc="null" sg="1" un="0"/>
-        <Cm>Titlul studiului </Cm>
-      </Cl>
       <Cl au="0" df="" nm="abstract" nu="0">
         <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Rezumatul studiului</Cm>
@@ -2094,13 +2172,16 @@
       <SchTrHis/>
     </Tbl>
     <Tbl UsSo="1" nm="study_documents">
-      <Cm>many-to-many intre studiu si documente</Cm>
+      <Cm>Tabel ce implementeaza relatia many-to-many intre studiu si documente</Cm>
       <TblOpts/>
+      <Pk ClNs="study_id, document_id" nm="pkstudy_documents"/>
       <Cl au="0" df="" nm="study_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Codul studiului pentru care este stocat documentul specificat prin atributul document_id (refera atributul id din tabelul study)</Cm>
       </Cl>
       <Cl au="0" df="" nm="document_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Codul unui document care este asociat studiului identificat prin atributul study_id (refera atributul id din tabelul documents)</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_study_documents_documents" prLkCl="id" upAc="3">
         <PrTb mn="0" nm="documents" oe="1" sch="schemaA" zr="0"/>
@@ -2204,7 +2285,7 @@
       </Cl>
       <Cl au="0" df="" nm="assoc_name" nu="0">
         <DT arr="0" ds="VarChar" en="" id="12" ln="100" sc="null" sg="1" un="0"/>
-        <Cm>Denumirea unei asocieri care poate exista intre un studiu si o organizatie </Cm>
+        <Cm>Denumirea unei asocieri care poate exista intre un studiu si o organizatie (producator, finantator etc.)</Cm>
       </Cl>
       <Cl au="0" df="" nm="assoc_description" nu="1">
         <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
@@ -2307,6 +2388,72 @@
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
+    <Tbl UsSo="1" nm="time_meth_type">
+      <Cm>Tabel ce contine tipurile de metode temporale</Cm>
+      <TblOpts/>
+      <Pk ClNs="id" nm="pktime_meth_type"/>
+      <Cl au="0" df="" nm="id" nu="0">
+        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Codul tipului de metoda temporala</Cm>
+      </Cl>
+      <Cl au="0" df="" nm="name" nu="0">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="200" sc="null" sg="1" un="0"/>
+        <Cm>Denumirea tipului de metoda temporala (longitudinal, serie temporala, cross section etc.)</Cm>
+      </Cl>
+      <UniqueConstraints/>
+      <SchTrHis/>
+    </Tbl>
+    <Tbl UsSo="1" nm="title">
+      <Cm>Tabel ce stocheaza informatii despre titlurile studiilor din baza de date</Cm>
+      <TblOpts/>
+      <Pk ClNs="id" nm="pktitle"/>
+      <Cl au="0" df="" nm="id" nu="0">
+        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Codul titlului</Cm>
+      </Cl>
+      <Cl au="0" df="" nm="content" nu="0">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="250" sc="null" sg="1" un="0"/>
+        <Cm>Textul titlului</Cm>
+      </Cl>
+      <Cl au="0" df="" nm="limba" nu="0">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="30" sc="null" sg="1" un="0"/>
+        <Cm>Limba in care este furnizat titlul identificat prin atributul id</Cm>
+      </Cl>
+      <Cl au="0" df="" nm="title_type_id" nu="0">
+        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Tipul titlului (refera atributul id din tabelul table_type)</Cm>
+      </Cl>
+      <Cl au="0" df="" nm="study_id" nu="0">
+        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Codul studiului caruia ii corespunde titlul (refera atributul id din tabelul study)</Cm>
+      </Cl>
+      <Fk deAc="3" nm="fk_title_study" prLkCl="id" upAc="3">
+        <PrTb mn="0" nm="study" oe="1" sch="schemaA" zr="0"/>
+        <CdTb mn="1" nm="title" oe="0" sch="schemaA" zr="1"/>
+        <ClPr cdCl="study_id" prCl="id"/>
+      </Fk>
+      <Fk deAc="3" nm="fk_title_title_type" prLkCl="id" upAc="3">
+        <PrTb mn="0" nm="title_type" oe="1" sch="schemaA" zr="0"/>
+        <CdTb mn="1" nm="title" oe="0" sch="schemaA" zr="1"/>
+        <ClPr cdCl="title_type_id" prCl="id"/>
+      </Fk>
+      <UniqueConstraints/>
+      <SchTrHis/>
+    </Tbl>
+    <Tbl UsSo="1" nm="title_type">
+      <TblOpts/>
+      <Pk ClNs="id" nm="pktitle_type"/>
+      <Cl au="0" df="" nm="id" nu="0">
+        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Codul tipului titlului</Cm>
+      </Cl>
+      <Cl au="0" df="" nm="name" nu="0">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="50" sc="null" sg="1" un="0"/>
+        <Cm>Denumirea tipului titlului (principal, paralel, alternativ)</Cm>
+      </Cl>
+      <UniqueConstraints/>
+      <SchTrHis/>
+    </Tbl>
     <Tbl UsSo="1" nm="unit_analysis">
       <Cm>Tabel care stocheaza unitatea de analiza (individ, gospodarie, etc)</Cm>
       <TblOpts/>
@@ -2317,7 +2464,7 @@
       </Cl>
       <Cl au="0" df="" nm="name" nu="0">
         <DT arr="0" ds="VarChar" en="" id="12" ln="100" sc="null" sg="1" un="0"/>
-        <Cm>Denumirea unitatii de analiza</Cm>
+        <Cm>Denumirea unitatii de analiza (individ, familie, organizatie, gospodarie etc.)</Cm>
       </Cl>
       <Cl au="0" df="" nm="description" nu="1">
         <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
@@ -2551,10 +2698,20 @@
         <DT arr="0" ds="VarChar" en="" id="12" ln="300" sc="null" sg="1" un="0"/>
         <Cm>Text care informeaza operatorul ce chestioneaza asupra unor actiuni pe care trebuie sa le faca atunci cand ajunge la variabila aceasta</Cm>
       </Cl>
+      <Cl au="0" df="" nm="file_id" nu="0">
+        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Fisierul din care provine variabila (impreuna cu instance_id, refera atributele instance_id, document_id din tabelul instance_documents)</Cm>
+      </Cl>
       <Fk deAc="3" nm="fk_formsSelectionVar_selection_variable_item" prLkCl="id" upAc="3">
         <PrTb mn="0" nm="instance" oe="1" sch="schemaA" zr="0"/>
         <CdTb mn="1" nm="variable" oe="0" sch="schemaA" zr="1"/>
         <ClPr cdCl="instance_id" prCl="id"/>
+      </Fk>
+      <Fk deAc="3" nm="fk_variable_instance_documents" prLkCl="instance_id" upAc="3">
+        <PrTb mn="0" nm="instance_documents" oe="1" sch="schemaA" zr="0"/>
+        <CdTb mn="1" nm="variable" oe="0" sch="schemaA" zr="1"/>
+        <ClPr cdCl="instance_id" prCl="instance_id"/>
+        <ClPr cdCl="file_id" prCl="document_id"/>
       </Fk>
       <Idx clu="0" nm="Variables_QuestionnaireId_Order_Idx" unq="1">
         <ClNs>instance_id, order</ClNs>
@@ -2600,7 +2757,7 @@
       <ErNotation>DbwErNotation</ErNotation>
       <svg path=""/>
     </DiaProps>
-    <TbGl bkCl="ffffccff" sch="schemaA" tbl="org" x="483" y="759"/>
+    <TbGl bkCl="ffffccff" sch="schemaA" tbl="org" x="490" y="831"/>
     <TbGl bkCl="ffffccff" sch="schemaA" tbl="person" x="941" y="241"/>
     <TbGl bkCl="ffffccff" sch="schemaA" tbl="prefix" x="731" y="47"/>
     <TbGl bkCl="ffffccff" sch="schemaA" tbl="suffix" x="941" y="42"/>
@@ -2614,13 +2771,13 @@
     <TbGl bkCl="ffffffe6" sch="schemaA" tbl="instance" x="2164" y="537"/>
     <TbGl bkCl="ffffffe6" sch="schemaA" tbl="study_org" x="1266" y="594"/>
     <TbGl bkCl="ffffffe6" sch="schemaA" tbl="study_person" x="1248" y="385"/>
-    <TbGl bkCl="ffffffe6" sch="schemaA" tbl="study_descr" x="1851" y="597"/>
+    <TbGl bkCl="ffffffe6" sch="schemaA" tbl="study_descr" x="1699" y="612"/>
     <TbGl bkCl="ffffffe6" sch="schemaA" tbl="study_org_assoc" x="1561" y="692"/>
     <TbGl bkCl="ffffffe6" sch="schemaA" tbl="studiu_person_asoc" x="1634" y="371"/>
     <TbGl bkCl="ffffffe6" sch="schemaA" tbl="instance_person" x="1997" y="19"/>
-    <TbGl bkCl="ffffffe6" sch="schemaA" tbl="instance_org" x="2068" y="791"/>
+    <TbGl bkCl="ffffffe6" sch="schemaA" tbl="instance_org" x="2061" y="887"/>
     <TbGl bkCl="ffffffe6" sch="schemaA" tbl="instance_person_assoc" x="1866" y="142"/>
-    <TbGl bkCl="ffffffe6" sch="schemaA" tbl="instance_org_assoc" x="1900" y="706"/>
+    <TbGl bkCl="ffffffe6" sch="schemaA" tbl="instance_org_assoc" x="1944" y="775"/>
     <TbGl bkCl="ffffffe6" sch="schemaA" tbl="instance_descr" x="2572" y="635"/>
     <TbGl bkCl="ffffffe6" sch="schemaA" tbl="geo_scope" x="2964" y="554"/>
     <TbGl bkCl="ffffffe6" sch="schemaA" tbl="demo_scope" x="2642" y="387"/>
@@ -2678,23 +2835,28 @@
     <TbGl bkCl="ff9999ff" sch="schemaA" tbl="form_edited_number_var" x="3826" y="16"/>
     <TbGl bkCl="ff9999ff" sch="schemaA" tbl="form_edited_text_var" x="3536" y="21"/>
     <TbGl bkCl="ff9999ff" sch="schemaA" tbl="skip" x="4041" y="342"/>
-    <TbGl bkCl="ffccccff" sch="schemaA" tbl="item" x="4740" y="309"/>
+    <TbGl bkCl="ffccccff" sch="schemaA" tbl="item" x="4740" y="308"/>
     <TbGl bkCl="ffccccff" sch="schemaA" tbl="selection_variable_card" x="4185" y="518"/>
     <TbGl bkCl="ffccccff" sch="schemaA" tbl="selection_variable" x="3952" y="155"/>
     <TbGl bkCl="ffccccff" sch="schemaA" tbl="variable_group" x="4036" y="445"/>
-    <TbGl bkCl="ffccccff" sch="schemaA" tbl="instance_var_group" x="3698" y="516"/>
+    <TbGl bkCl="ffccccff" sch="schemaA" tbl="instance_var_group" x="3699" y="516"/>
     <TbGl bkCl="ffccccff" sch="schemaA" tbl="frequency" x="4644" y="83"/>
     <TbGl bkCl="ffccccff" sch="schemaA" tbl="other_statistics" x="3220" y="178"/>
     <TbGl bkCl="ffccccff" sch="schemaA" tbl="region" x="48" y="153"/>
     <TbGl bkCl="ffccccff" sch="schemaA" tbl="region_type" x="54" y="19"/>
     <TbGl bkCl="ffccccff" sch="schemaA" tbl="region_city" x="274" y="41"/>
-    <TbGl bkCl="ffccccff" sch="schemaA" tbl="sources" x="69" y="988"/>
-    <TbGl bkCl="ffccccff" sch="schemaA" tbl="sourcestudy" x="364" y="918"/>
-    <TbGl bkCl="ffccccff" sch="schemaA" tbl="sourcetype" x="47" y="1143"/>
+    <TbGl bkCl="ffccccff" sch="schemaA" tbl="sources" x="68" y="988"/>
+    <TbGl bkCl="ffccccff" sch="schemaA" tbl="sourcestudy" x="365" y="920"/>
+    <TbGl bkCl="ffccccff" sch="schemaA" tbl="sourcetype" x="46" y="1143"/>
     <TbGl bkCl="ffccccff" sch="schemaA" tbl="source_contacts" x="320" y="1129"/>
     <TbGl bkCl="ffccccff" sch="schemaA" tbl="source_type_history" x="403" y="1031"/>
     <TbGl bkCl="ffccccff" sch="schemaA" tbl="source_contact_method" x="729" y="1192"/>
     <TbGl bkCl="ffccccff" sch="schemaA" tbl="audit" x="1215" y="102"/>
+    <TbGl bkCl="ffccccff" sch="schemaA" tbl="title" x="1927" y="576"/>
+    <TbGl bkCl="ffccccff" sch="schemaA" tbl="title_type" x="2008" y="698"/>
+    <TbGl bkCl="ffccccff" sch="schemaA" tbl="time_meth_type" x="2727" y="97"/>
+    <TbGl bkCl="ffccccff" sch="schemaA" tbl="collection_model_type" x="3031" y="96"/>
+    <TbGl bkCl="ffccccff" sch="schemaA" tbl="meth_coll_type" x="3017" y="229"/>
     <FkGl bkCl="ff000000" nm="schemaA.address.fk_address_city"/>
     <FkGl bkCl="ff000000" nm="schemaA.address.fk_address_country"/>
     <FkGl bkCl="ff000000" nm="schemaA.audit.fk_audit_users"/>
@@ -2739,7 +2901,10 @@
     <FkGl bkCl="ff000000" nm="schemaA.instance_var_group.fk_instance_var_group_variable_group"/>
     <FkGl bkCl="ff000000" nm="schemaA.internet.fk_internet_org"/>
     <FkGl bkCl="ff000000" nm="schemaA.internet.fk_internet_person"/>
+    <FkGl bkCl="ff000000" nm="schemaA.meth_coll_type.fk_meth_coll_type_collection_model_type"/>
+    <FkGl bkCl="ff000000" nm="schemaA.meth_coll_type.fk_meth_coll_type_methodology"/>
     <FkGl bkCl="ff000000" nm="schemaA.methodology.fk_methodology_instance"/>
+    <FkGl bkCl="ff000000" nm="schemaA.methodology.fk_methodology_time_meth_type"/>
     <FkGl bkCl="ff000000" nm="schemaA.org.fk_org_org_prefix"/>
     <FkGl bkCl="ff000000" nm="schemaA.org.fk_org_org_sufix"/>
     <FkGl bkCl="ff000000" nm="schemaA.org_address.fk_org_address_address"/>
@@ -2788,6 +2953,8 @@
     <FkGl bkCl="ff000000" nm="schemaA.study_person.fk_study_person_studiu_person_asoc"/>
     <FkGl bkCl="ff000000" nm="schemaA.study_person.fk_study_person_study"/>
     <FkGl bkCl="ff000000" nm="schemaA.study_person_acl.fk_study_person_acl_study_person"/>
+    <FkGl bkCl="ff000000" nm="schemaA.title.fk_title_study"/>
+    <FkGl bkCl="ff000000" nm="schemaA.title.fk_title_title_type"/>
     <FkGl bkCl="ff000000" nm="schemaA.user_auth_log.fk_user_auth_log_users"/>
     <FkGl bkCl="ff000000" nm="schemaA.user_messages.fk_user_messages_users"/>
     <FkGl bkCl="ff000000" nm="schemaA.user_role.fk_user_role_role"/>
@@ -2797,10 +2964,11 @@
     <FkGl bkCl="ff000000" nm="schemaA.user_settings.fk_user_settings_user_settings_group"/>
     <FkGl bkCl="ff000000" nm="schemaA.value.fk_value_item"/>
     <FkGl bkCl="ff000000" nm="schemaA.variable.fk_formsSelectionVar_selection_variable_item"/>
+    <FkGl bkCl="ff000000" nm="schemaA.variable.fk_variable_instance_documents"/>
     <Notes/>
     <Zones/>
   </Dgm>
-  <RnmMgr NxRnmId="170">
+  <RnmMgr NxRnmId="173">
     <RnmCh ObjCls="Table" ParCls="Schema" ParNme="schemaA" SupCls="" SupNme="">
       <Rnm id="1" nNm="person" oNm="Persoane"/>
     </RnmCh>
@@ -3250,6 +3418,10 @@
     <RnmCh ObjCls="Column" ParCls="Table" ParNme="study_org_assoc" SupCls="Schema" SupNme="schemaA">
       <Rnm id="169" nNm="assoc_description" oNm="asoc_description"/>
     </RnmCh>
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="methodology" SupCls="Schema" SupNme="schemaA">
+      <Rnm id="172" nNm="time_meth_id" oNm="time_method_id"/>
+      <Rnm id="170" nNm="time_method_id" oNm="time_method"/>
+    </RnmCh>
   </RnmMgr>
   <DbDocOptionMgr>
     <BasicOptionMgr>
@@ -3273,7 +3445,7 @@
     <TreePath/>
     <TreePath>/Schemas (1)</TreePath>
     <TreePath>/Schemas (1)/schemaA</TreePath>
-    <TreePath>/Schemas (1)/schemaA/Tables (95)</TreePath>
+    <TreePath>/Schemas (1)/schemaA/Tables (100)</TreePath>
     <TreePath>/Diagrams (1)</TreePath>
   </TreePaths>
 </Db>

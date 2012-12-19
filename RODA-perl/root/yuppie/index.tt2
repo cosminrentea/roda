@@ -1,0 +1,15 @@
+[%INCLUDE 'common/header.tt2'%]
+
+[%today.ymd%] [%today.hms%]
+
+  <br><br>
+  
+[%message%]  
+  
+<br><br>
+
+  <a href="[% c.uri_for('/logout') %]">logout</a>
+
+
+
+[%INCLUDE 'common/footer.tt2'%]

@@ -1,0 +1,36 @@
+[%INCLUDE 'common/header.tt2'%]
+
+  
+<div id="loginwrapper">
+<div id="logincenter">    
+
+<img src="/static/sigla_v.gif" border="0" style="margin-left:20px; margin-top:20px;" >
+    <form method="post" action="[% c.uri_for('/login') %]">
+      <table class="logintable">
+        <tr>
+          <td>Nume utilizator:</td>
+          <td><input type="text" name="username" size="20" /></td>
+        </tr>
+        <tr>
+          <td>Parola:</td>
+          <td><input type="password" name="password" size="20" /></td>
+        </tr>
+        <tr>
+          <td colspan="2"><input type="submit" name="submit" value="Autentificare" /></td>
+        </tr>
+      </table>
+    </form>
+    
+       <p>
+    [% IF c.user_exists %]
+        Nota: Autentificarea e corecta: '[% c.user.username %]'.
+         <a href="[% c.uri_for('/logout') %]">logout</a> aici.
+    [% ELSE %]
+Autentificare necesara
+    [% END %]
+    </p>
+ </div></div>   
+    
+    
+    
+    [%INCLUDE 'common/footer.tt2'%]

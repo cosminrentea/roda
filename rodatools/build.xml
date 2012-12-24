@@ -127,4 +127,11 @@
             <classpath refid="rodatools.classpath"/>
         </java>
     </target>
+    <target name="RodaTools-Help">
+        <java classname="rodatools.RodaTools" failonerror="true" fork="yes">
+            <jvmarg line="-Xms1024m -Xmx1024m"/>
+        	<arg line="xxx" />
+            <classpath refid="rodatools.classpath"/>
+        </java>
+    </target>
 </project>

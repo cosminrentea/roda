@@ -4,9 +4,10 @@ import javax.annotation.Generated;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
-@Generated(value="Dali", date="2012-11-07T16:28:13.891+0200")
+@Generated(value="Dali", date="2012-11-08T15:51:29.917+0200")
 @StaticMetamodel(SPSSRecordType7Subtype3.class)
 public class SPSSRecordType7Subtype3_ {
+	public static volatile SingularAttribute<SPSSRecordType7Subtype3, Long> id_;
 	public static volatile SingularAttribute<SPSSRecordType7Subtype3, Integer> recordTypeCode;
 	public static volatile SingularAttribute<SPSSRecordType7Subtype3, Integer> recordSubtypeCode;
 	public static volatile SingularAttribute<SPSSRecordType7Subtype3, Integer> dataElementLength;
@@ -19,5 +20,4 @@ public class SPSSRecordType7Subtype3_ {
 	public static volatile SingularAttribute<SPSSRecordType7Subtype3, Integer> compressionScheme;
 	public static volatile SingularAttribute<SPSSRecordType7Subtype3, Integer> endianness;
 	public static volatile SingularAttribute<SPSSRecordType7Subtype3, Integer> characterRepresentation;
-	public static volatile SingularAttribute<SPSSRecordType7Subtype3, Long> id_;
 }

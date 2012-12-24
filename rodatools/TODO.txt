@@ -46,34 +46,3 @@ de creat script Ant de compilare + rulare teste
 
 de configurat build-ul in Hudson
 
-
-CUPRINS RAPORT
-------
-
-Baza de date
-----
-Structura, Relatii
-Obiectele principale
-Relatia cu DDI
-Auditare
-Versionare
-
-Aplicatie
------
-MVC
-Users, Roles
-Metode de Autentificare
-Autorizare. ACL
-Interfata de administrare
-Interfata publica
-
-Asigurarea calitatii
-----
-Metodologia
-Testarea unitatilor
-Testarea de integrare
-Testarea performantelor
-
-Proiectarea modelului
-----
-Diagrame UML: clase, componente, deployment, use-case

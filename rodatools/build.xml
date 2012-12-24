@@ -6,37 +6,37 @@
               as the first entry and export the buildfile again. -->
 <project basedir="." default="build" name="rodatools">
     <property environment="env"/>
-    <property name="ECLIPSE_HOME" value="../../../Apps/eclipse-modeling-3.7.2"/>
+    <property name="ECLIPSE_HOME" value="/home/cosmin/Apps/eclipse-modeling-3.7.2"/>
     <property name="debuglevel" value="source,lines,vars"/>
     <property name="target" value="1.6"/>
     <property name="source" value="1.6"/>
     <path id="Postgresql-9-JDBC.userclasspath">
-        <pathelement location="../libraries/postgresql-jdbc/postgresql-9.1-903.jdbc4.jar"/>
+        <pathelement location="/home/cosmin/Documents/workspace-eclipse/libraries/postgresql-jdbc/postgresql-9.1-903.jdbc4.jar"/>
     </path>
     <path id="JAXB-RI-2.2.6.userclasspath">
-        <pathelement location="../libraries/jaxb-ri-2.2.6/lib/jaxb-api.jar"/>
-        <pathelement location="../libraries/jaxb-ri-2.2.6/lib/jaxb-api-doc.zip"/>
-        <pathelement location="../libraries/jaxb-ri-2.2.6/lib/jaxb-api-src.zip"/>
-        <pathelement location="../libraries/jaxb-ri-2.2.6/lib/jaxb-impl.jar"/>
-        <pathelement location="../libraries/jaxb-ri-2.2.6/lib/jaxb-impl.src.zip"/>
-        <pathelement location="../libraries/jaxb-ri-2.2.6/lib/jaxb-impl-javadoc.jar"/>
-        <pathelement location="../libraries/jaxb-ri-2.2.6/lib/jaxb-xjc.jar"/>
-        <pathelement location="../libraries/jaxb-ri-2.2.6/lib/jaxb-xjc.src.zip"/>
-        <pathelement location="../libraries/jaxb-ri-2.2.6/lib/jaxb-xjc-javadoc.jar"/>
+        <pathelement location="/home/cosmin/Documents/workspace-eclipse/libraries/jaxb-ri-2.2.6/lib/jaxb-api.jar"/>
+        <pathelement location="/home/cosmin/Documents/workspace-eclipse/libraries/jaxb-ri-2.2.6/lib/jaxb-api-doc.zip"/>
+        <pathelement location="/home/cosmin/Documents/workspace-eclipse/libraries/jaxb-ri-2.2.6/lib/jaxb-api-src.zip"/>
+        <pathelement location="/home/cosmin/Documents/workspace-eclipse/libraries/jaxb-ri-2.2.6/lib/jaxb-impl.jar"/>
+        <pathelement location="/home/cosmin/Documents/workspace-eclipse/libraries/jaxb-ri-2.2.6/lib/jaxb-impl.src.zip"/>
+        <pathelement location="/home/cosmin/Documents/workspace-eclipse/libraries/jaxb-ri-2.2.6/lib/jaxb-impl-javadoc.jar"/>
+        <pathelement location="/home/cosmin/Documents/workspace-eclipse/libraries/jaxb-ri-2.2.6/lib/jaxb-xjc.jar"/>
+        <pathelement location="/home/cosmin/Documents/workspace-eclipse/libraries/jaxb-ri-2.2.6/lib/jaxb-xjc.src.zip"/>
+        <pathelement location="/home/cosmin/Documents/workspace-eclipse/libraries/jaxb-ri-2.2.6/lib/jaxb-xjc-javadoc.jar"/>
     </path>
     <path id="Hibernate.userclasspath">
-        <pathelement location="../libraries/hibernate-release-4.1.7.Final/lib/required/antlr-2.7.7.jar"/>
-        <pathelement location="../libraries/hibernate-release-4.1.7.Final/lib/required/dom4j-1.6.1.jar"/>
-        <pathelement location="../libraries/hibernate-release-4.1.7.Final/lib/required/hibernate-commons-annotations-4.0.1.Final.jar"/>
-        <pathelement location="../libraries/hibernate-release-4.1.7.Final/lib/required/hibernate-core-4.1.7.Final.jar"/>
-        <pathelement location="../libraries/hibernate-release-4.1.7.Final/lib/required/hibernate-jpa-2.0-api-1.0.1.Final.jar"/>
-        <pathelement location="../libraries/hibernate-release-4.1.7.Final/lib/required/javassist-3.15.0-GA.jar"/>
-        <pathelement location="../libraries/hibernate-release-4.1.7.Final/lib/required/jboss-logging-3.1.0.GA.jar"/>
-        <pathelement location="../libraries/hibernate-release-4.1.7.Final/lib/required/jboss-transaction-api_1.1_spec-1.0.0.Final.jar"/>
+        <pathelement location="/home/cosmin/Documents/workspace-eclipse/libraries/hibernate-release-4.1.7.Final/lib/required/antlr-2.7.7.jar"/>
+        <pathelement location="/home/cosmin/Documents/workspace-eclipse/libraries/hibernate-release-4.1.7.Final/lib/required/dom4j-1.6.1.jar"/>
+        <pathelement location="/home/cosmin/Documents/workspace-eclipse/libraries/hibernate-release-4.1.7.Final/lib/required/hibernate-commons-annotations-4.0.1.Final.jar"/>
+        <pathelement location="/home/cosmin/Documents/workspace-eclipse/libraries/hibernate-release-4.1.7.Final/lib/required/hibernate-core-4.1.7.Final.jar"/>
+        <pathelement location="/home/cosmin/Documents/workspace-eclipse/libraries/hibernate-release-4.1.7.Final/lib/required/hibernate-jpa-2.0-api-1.0.1.Final.jar"/>
+        <pathelement location="/home/cosmin/Documents/workspace-eclipse/libraries/hibernate-release-4.1.7.Final/lib/required/javassist-3.15.0-GA.jar"/>
+        <pathelement location="/home/cosmin/Documents/workspace-eclipse/libraries/hibernate-release-4.1.7.Final/lib/required/jboss-logging-3.1.0.GA.jar"/>
+        <pathelement location="/home/cosmin/Documents/workspace-eclipse/libraries/hibernate-release-4.1.7.Final/lib/required/jboss-transaction-api_1.1_spec-1.0.0.Final.jar"/>
+        <pathelement location="/home/cosmin/Documents/workspace-eclipse/libraries/hibernate-release-4.1.7.Final/lib/jpa/hibernate-entitymanager-4.1.7.Final.jar"/>
     </path>
     <path id="rodatools.classpath">
         <pathelement location="build/classes"/>
-        <pathelement location="lib/javassist.jar"/>
         <path refid="Postgresql-9-JDBC.userclasspath"/>
         <path refid="JAXB-RI-2.2.6.userclasspath"/>
         <path refid="Hibernate.userclasspath"/>
@@ -99,5 +99,32 @@
     <target description="compile project with Eclipse compiler" name="build-eclipse-compiler">
         <property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter"/>
         <antcall target="build"/>
+    </target>
+    <target name="RodaTools-Import-One-Extern">
+        <java classname="rodatools.RodaTools" failonerror="true" fork="yes">
+            <arg line="-i1 jdbc:postgresql://fisiere.dyndns.org/roda roda RodaAdor data/roda-nesstar/080_F1.xml"/>
+            <classpath refid="rodatools.classpath"/>
+        </java>
+    </target>
+    <target name="RodaTools-Convert-SPSS">
+        <java classname="rodatools.RodaTools" failonerror="true" fork="yes">
+            <jvmarg line="-Xms1024m -Xmx1024m"/>
+            <arg line="-s data/roda-ddi25/080.sav data/roda-ddi25/080.csv"/>
+            <classpath refid="rodatools.classpath"/>
+        </java>
+    </target>
+    <target name="RodaTools-Import-One-Local">
+        <java classname="rodatools.RodaTools" failonerror="true" fork="yes">
+            <jvmarg line="-Xms1024m -Xmx1024m"/>
+            <arg line="-i1 jdbc:postgresql://localhost/roda roda roda data/roda-nesstar/080_F1.xml"/>
+            <classpath refid="rodatools.classpath"/>
+        </java>
+    </target>
+    <target name="RodaTools-Import-ALL-Local">
+        <java classname="rodatools.RodaTools" failonerror="true" fork="yes">
+            <jvmarg line="-Xms1024m -Xmx1024m"/>
+            <arg line="-i jdbc:postgresql://localhost/roda roda roda"/>
+            <classpath refid="rodatools.classpath"/>
+        </java>
     </target>
 </project>

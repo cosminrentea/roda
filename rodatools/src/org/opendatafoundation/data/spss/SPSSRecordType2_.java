@@ -4,9 +4,10 @@ import javax.annotation.Generated;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
-@Generated(value="Dali", date="2012-11-07T16:24:12.209+0200")
+@Generated(value="Dali", date="2012-11-08T15:51:29.687+0200")
 @StaticMetamodel(SPSSRecordType2.class)
 public class SPSSRecordType2_ {
+	public static volatile SingularAttribute<SPSSRecordType2, Long> id_;
 	public static volatile SingularAttribute<SPSSRecordType2, Integer> recordTypeCode;
 	public static volatile SingularAttribute<SPSSRecordType2, Integer> variableTypeCode;
 	public static volatile SingularAttribute<SPSSRecordType2, Integer> hasLabel;
@@ -26,5 +27,4 @@ public class SPSSRecordType2_ {
 	public static volatile SingularAttribute<SPSSRecordType2, String> label;
 	public static volatile SingularAttribute<SPSSRecordType2, Byte> missingValue;
 	public static volatile SingularAttribute<SPSSRecordType2, SPSSRecordType3> valueLabelSet;
-	public static volatile SingularAttribute<SPSSRecordType2, Long> id_;
 }

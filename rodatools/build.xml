@@ -109,7 +109,7 @@
     <target name="RodaTools-Convert-SPSS">
         <java classname="rodatools.RodaTools" failonerror="true" fork="yes">
             <jvmarg line="-Xms1024m -Xmx1024m"/>
-            <arg line="-s data/roda-ddi25/080.sav data/roda-ddi25/080.csv"/>
+            <arg line="-s data/roda-spss/080.sav data/roda-spss/080.csv"/>
             <classpath refid="rodatools.classpath"/>
         </java>
     </target>

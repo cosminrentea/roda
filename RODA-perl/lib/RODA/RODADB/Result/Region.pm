@@ -65,13 +65,24 @@ Numele regiunii
 
 Tipul regiunii (refera atributul id din tabelul region_type)
 
+=head2 region_code
+
+  data_type: 'varchar'
+  is_nullable: 1
+  size: 20
+
+=head2 rcode_name
+
+  data_type: 'varchar'
+  is_nullable: 1
+  size: 20
+
 =head2 country_id
 
-  data_type: 'integer'
+  data_type: 'char'
   is_foreign_key: 1
   is_nullable: 0
-
-Codul tarii corespunzatoare regiunii (refera atributul id din tabelul country)
+  size: 2
 
 =cut
 
@@ -82,8 +93,12 @@ __PACKAGE__->add_columns(
   { data_type => "varchar", is_nullable => 0, size => 150 },
   "rtype_id",
   { data_type => "integer", is_foreign_key => 1, is_nullable => 0 },
+  "region_code",
+  { data_type => "varchar", is_nullable => 1, size => 20 },
+  "rcode_name",
+  { data_type => "varchar", is_nullable => 1, size => 20 },
   "country_id",
-  { data_type => "integer", is_foreign_key => 1, is_nullable => 0 },
+  { data_type => "char", is_foreign_key => 1, is_nullable => 0, size => 2 },
 );
 
 =head1 PRIMARY KEY
@@ -146,8 +161,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07012 @ 2012-12-19 19:21:26
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:64lz8c7zLKKtyyANOmLh9A
+# Created by DBIx::Class::Schema::Loader v0.07012 @ 2013-01-03 00:25:46
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:HQUmkyDRapwimxR4CfSZkw
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

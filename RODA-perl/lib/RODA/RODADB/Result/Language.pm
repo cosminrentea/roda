@@ -61,7 +61,7 @@ Denumirea unei limbi
 
 __PACKAGE__->add_columns(
   "id",
-  { data_type => "integer", is_nullable => 0 },
+  { data_type => "char", is_nullable => 0, size => 2 },
   "nume",
   { data_type => "varchar", is_nullable => 0, size => 50 },
 );

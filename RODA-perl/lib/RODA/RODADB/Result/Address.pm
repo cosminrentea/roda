@@ -49,21 +49,11 @@ __PACKAGE__->table("address");
 
 Codul adresei retinute
 
-=head2 country_id
-
-  data_type: 'integer'
-  is_foreign_key: 1
-  is_nullable: 0
-
-Codul tarii corespunzatoare adresei (refera atributul id din tabelul country)
-
 =head2 city_id
 
   data_type: 'integer'
   is_foreign_key: 1
   is_nullable: 0
-
-Codul orasului corespunzator adresei (refera atributul id din tabelul city)
 
 =head2 address1
 
@@ -71,7 +61,7 @@ Codul orasului corespunzator adresei (refera atributul id din tabelul city)
   is_nullable: 0
   size: 250
 
-Prima linie continand detaliile adresei (de exemplu, strada, numar, bloc, scara, apartament)
+Codul orasului corespunzator adresei (refera atributul id din tabelul city)
 
 =head2 address2
 
@@ -79,7 +69,7 @@ Prima linie continand detaliile adresei (de exemplu, strada, numar, bloc, scara,
   is_nullable: 0
   size: 250
 
-A doua linie continand detaliile adresei
+Prima linie continand detaliile adresei (de exemplu, strada, numar, bloc, scara, apartament)
 
 =head2 sector
 
@@ -87,7 +77,7 @@ A doua linie continand detaliile adresei
   is_nullable: 0
   size: 50
 
-Sectorul corespunzator adresei
+A doua linie continand detaliile adresei
 
 =head2 postal_code
 
@@ -95,19 +85,28 @@ Sectorul corespunzator adresei
   is_nullable: 0
   size: 50
 
-Codul postal al adresei
+Sectorul corespunzator adresei
 
 =head2 entity_type
 
   data_type: 'integer'
   is_nullable: 0
 
-Tipul entitatii care detine adresa respectiva (persoana, organizatie etc.)
+Codul postal al adresei
 
 =head2 entity_id
 
   data_type: 'integer'
   is_nullable: 0
+
+Tipul entitatii care detine adresa respectiva (persoana, organizatie etc.)
+
+=head2 country_id
+
+  data_type: 'char'
+  is_foreign_key: 1
+  is_nullable: 1
+  size: 2
 
 Codul entitatii care detine adresa respectiva 
 
@@ -116,8 +115,6 @@ Codul entitatii care detine adresa respectiva
 __PACKAGE__->add_columns(
   "id",
   { data_type => "integer", is_nullable => 0 },
-  "country_id",
-  { data_type => "integer", is_foreign_key => 1, is_nullable => 0 },
   "city_id",
   { data_type => "integer", is_foreign_key => 1, is_nullable => 0 },
   "address1",
@@ -132,6 +129,8 @@ __PACKAGE__->add_columns(
   { data_type => "integer", is_nullable => 0 },
   "entity_id",
   { data_type => "integer", is_nullable => 0 },
+  "country_id",
+  { data_type => "char", is_foreign_key => 1, is_nullable => 1, size => 2 },
 );
 
 =head1 PRIMARY KEY
@@ -175,7 +174,12 @@ __PACKAGE__->belongs_to(
   "country",
   "RODA::RODADB::Result::Country",
   { id => "country_id" },
-  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
+  {
+    is_deferrable => 1,
+    join_type     => "LEFT",
+    on_delete     => "CASCADE",
+    on_update     => "CASCADE",
+  },
 );
 
 =head2 org_addresses
@@ -209,8 +213,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07012 @ 2012-12-19 19:21:26
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:JNnC9DeLdNJO/zhOPrrcPg
+# Created by DBIx::Class::Schema::Loader v0.07012 @ 2013-01-03 00:25:45
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:e1ZKJj+ymiTvLiekONKsGg
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

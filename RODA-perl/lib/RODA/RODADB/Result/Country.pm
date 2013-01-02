@@ -38,13 +38,6 @@ __PACKAGE__->table("country");
 
 =head1 ACCESSORS
 
-=head2 id
-
-  data_type: 'integer'
-  is_nullable: 0
-
-Codul tarii
-
 =head2 name
 
   data_type: 'varchar'
@@ -53,13 +46,27 @@ Codul tarii
 
 Numele tarii
 
+=head2 alpha3
+
+  data_type: 'char'
+  is_nullable: 0
+  size: 3
+
+=head2 id
+
+  data_type: 'char'
+  is_nullable: 0
+  size: 2
+
 =cut
 
 __PACKAGE__->add_columns(
-  "id",
-  { data_type => "integer", is_nullable => 0 },
   "name",
   { data_type => "varchar", is_nullable => 0, size => 100 },
+  "alpha3",
+  { data_type => "char", is_nullable => 0, size => 3 },
+  "id",
+  { data_type => "char", is_nullable => 0, size => 2 },
 );
 
 =head1 PRIMARY KEY
@@ -122,8 +129,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07012 @ 2012-12-19 19:21:26
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:7DCqtUzb1kGIcp/SP1i0Iw
+# Created by DBIx::Class::Schema::Loader v0.07012 @ 2013-01-03 00:25:45
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:WF5tt6QyQcT1YAK+oOtNQQ
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

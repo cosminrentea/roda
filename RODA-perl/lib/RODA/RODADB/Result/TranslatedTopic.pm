@@ -69,7 +69,7 @@ Traducerea topic-ului referit prin atributul topic_id in limba identificata prin
 
 __PACKAGE__->add_columns(
   "language_id",
-  { data_type => "integer", is_foreign_key => 1, is_nullable => 0 },
+  { data_type => "char", is_foreign_key => 1, is_nullable => 0, size => 2 },
   "topic_id",
   { data_type => "integer", is_foreign_key => 1, is_nullable => 0 },
   "translation",

@@ -42,20 +42,11 @@ __PACKAGE__->table("region");
 
 =head1 ACCESSORS
 
-=head2 id
-
-  data_type: 'integer'
-  is_nullable: 0
-
-Identificatorul regiunii
-
 =head2 name
 
   data_type: 'varchar'
   is_nullable: 0
   size: 150
-
-Numele regiunii
 
 =head2 rtype_id
 
@@ -63,13 +54,15 @@ Numele regiunii
   is_foreign_key: 1
   is_nullable: 0
 
-Tipul regiunii (refera atributul id din tabelul region_type)
+Numele regiunii
 
 =head2 region_code
 
   data_type: 'varchar'
   is_nullable: 1
   size: 20
+
+Tipul regiunii (refera atributul id din tabelul region_type)
 
 =head2 rcode_name
 
@@ -84,11 +77,16 @@ Tipul regiunii (refera atributul id din tabelul region_type)
   is_nullable: 0
   size: 2
 
+=head2 id
+
+  data_type: 'integer'
+  is_auto_increment: 1
+  is_nullable: 0
+  sequence: 'region_id_seq'
+
 =cut
 
 __PACKAGE__->add_columns(
-  "id",
-  { data_type => "integer", is_nullable => 0 },
   "name",
   { data_type => "varchar", is_nullable => 0, size => 150 },
   "rtype_id",
@@ -99,6 +97,13 @@ __PACKAGE__->add_columns(
   { data_type => "varchar", is_nullable => 1, size => 20 },
   "country_id",
   { data_type => "char", is_foreign_key => 1, is_nullable => 0, size => 2 },
+  "id",
+  {
+    data_type         => "integer",
+    is_auto_increment => 1,
+    is_nullable       => 0,
+    sequence          => "region_id_seq",
+  },
 );
 
 =head1 PRIMARY KEY
@@ -161,8 +166,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07012 @ 2013-01-03 00:25:46
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:HQUmkyDRapwimxR4CfSZkw
+# Created by DBIx::Class::Schema::Loader v0.07012 @ 2013-01-03 15:58:59
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:w5Av1TuWUotI6f8cgQuZ/Q
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

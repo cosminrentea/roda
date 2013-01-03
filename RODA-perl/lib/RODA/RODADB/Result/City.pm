@@ -55,11 +55,10 @@ Numele orasului
 
 =head2 country_id
 
-  data_type: 'integer'
+  data_type: 'char'
   is_foreign_key: 1
-  is_nullable: 0
-
-Codul tarii in care se afla orasul (refera atributul id al tabelului country)
+  is_nullable: 1
+  size: 2
 
 =cut
 
@@ -69,7 +68,7 @@ __PACKAGE__->add_columns(
   "name",
   { data_type => "varchar", is_nullable => 0, size => 100 },
   "country_id",
-  { data_type => "integer", is_foreign_key => 1, is_nullable => 0 },
+  { data_type => "char", is_foreign_key => 1, is_nullable => 1, size => 2 },
 );
 
 =head1 PRIMARY KEY
@@ -113,7 +112,12 @@ __PACKAGE__->belongs_to(
   "country",
   "RODA::RODADB::Result::Country",
   { id => "country_id" },
-  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
+  {
+    is_deferrable => 1,
+    join_type     => "LEFT",
+    on_delete     => "CASCADE",
+    on_update     => "CASCADE",
+  },
 );
 
 =head2 region_cities
@@ -132,8 +136,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07012 @ 2012-12-19 19:21:26
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:W2F6EhWP52Q0+qs5I93tLQ
+# Created by DBIx::Class::Schema::Loader v0.07012 @ 2013-01-03 00:25:45
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:+AONkQZpc0Io/TSHBjYa3g
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

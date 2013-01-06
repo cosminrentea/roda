@@ -38,20 +38,11 @@ __PACKAGE__->table("city");
 
 =head1 ACCESSORS
 
-=head2 id
-
-  data_type: 'integer'
-  is_nullable: 0
-
-Codul orasului
-
 =head2 name
 
   data_type: 'varchar'
   is_nullable: 0
   size: 100
-
-Numele orasului
 
 =head2 country_id
 
@@ -60,15 +51,77 @@ Numele orasului
   is_nullable: 1
   size: 2
 
+Numele orasului
+
+=head2 city_code
+
+  data_type: 'varchar'
+  is_nullable: 1
+  size: 50
+
+=head2 ccode_name
+
+  data_type: 'varchar'
+  is_nullable: 1
+  size: 50
+
+=head2 prefix
+
+  data_type: 'varchar'
+  is_nullable: 1
+  size: 50
+
+=head2 city_type
+
+  data_type: 'varchar'
+  is_nullable: 1
+  size: 50
+
+=head2 ctype_system
+
+  data_type: 'varchar'
+  is_nullable: 1
+  size: 20
+
+=head2 city_code_sup
+
+  data_type: 'varchar'
+  is_nullable: 1
+  size: 20
+
+=head2 id
+
+  data_type: 'integer'
+  is_auto_increment: 1
+  is_nullable: 0
+  sequence: 'city_id_seq'
+
 =cut
 
 __PACKAGE__->add_columns(
-  "id",
-  { data_type => "integer", is_nullable => 0 },
   "name",
   { data_type => "varchar", is_nullable => 0, size => 100 },
   "country_id",
   { data_type => "char", is_foreign_key => 1, is_nullable => 1, size => 2 },
+  "city_code",
+  { data_type => "varchar", is_nullable => 1, size => 50 },
+  "ccode_name",
+  { data_type => "varchar", is_nullable => 1, size => 50 },
+  "prefix",
+  { data_type => "varchar", is_nullable => 1, size => 50 },
+  "city_type",
+  { data_type => "varchar", is_nullable => 1, size => 50 },
+  "ctype_system",
+  { data_type => "varchar", is_nullable => 1, size => 20 },
+  "city_code_sup",
+  { data_type => "varchar", is_nullable => 1, size => 20 },
+  "id",
+  {
+    data_type         => "integer",
+    is_auto_increment => 1,
+    is_nullable       => 0,
+    sequence          => "city_id_seq",
+  },
 );
 
 =head1 PRIMARY KEY
@@ -136,10 +189,45 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07012 @ 2013-01-03 00:25:45
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:+AONkQZpc0Io/TSHBjYa3g
+# Created by DBIx::Class::Schema::Loader v0.07012 @ 2013-01-06 02:26:05
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:VZkVJH1oDtwoQo3lbQEh3A
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
+
+sub attach_region {
+     my ( $self, %params ) = @_;
+     #nu acceptam decat regiuni existente aici, vedem mai incolo ce facem cu inserarea chestiilor noi
+     #ne trebuie asa: name, country_id sau country_name, region_type_id sau region_type_name
+     #daca nu avem astea, nu inseram
+
+     my $guard = $self->result_source->schema()->txn_scope_guard;
+
+     my $rtrs = $self->result_source->schema()->resultset('Region')->checkregion(
+                                                                  name             => $params{name},
+                                                                  region_type_name => $params{region_type_name},
+                                                                  country_id     =>  $params{country_id},
+      );
+
+      if ($rtrs) { 
+        #acu trebuie sa inseram asocierea
+
+
+         $self->result_source->schema()->resultset('RegionCity')->find_or_create({
+          region_id => $rtrs->id,
+          city_id => $self->id,
+         },
+         {
+          key => 'primary',
+         }
+         );
+      }
+        $guard->commit;
+}
+
+
+
+
+
 __PACKAGE__->meta->make_immutable;
 1;

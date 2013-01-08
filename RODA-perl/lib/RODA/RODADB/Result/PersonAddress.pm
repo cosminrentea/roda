@@ -82,7 +82,7 @@ __PACKAGE__->add_columns(
   "datestart",
   { data_type => "timestamp", is_nullable => 0 },
   "dateend",
-  { data_type => "timestamp", is_nullable => 0 },
+  { data_type => "timestamp", is_nullable => 1 },
 );
 
 =head1 PRIMARY KEY
@@ -99,7 +99,7 @@ __PACKAGE__->add_columns(
 
 =cut
 
-__PACKAGE__->set_primary_key("person_id", "address_id", "datestart");
+__PACKAGE__->set_primary_key("person_id", "address_id");
 
 =head1 RELATIONS
 

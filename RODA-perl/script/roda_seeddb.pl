@@ -27,6 +27,26 @@ if ( -f "$FindBin::Bin/../csv/language.csv" ) {
 } else {
     print "Language file not found .... $FindBin::Bin/../csv/language.csv\n";
 }
+
+print "Prefixe";
+
+if ( -f "$FindBin::Bin/../csv/prefixe.csv" ) {
+    my $prefcsv = Text::CSV::Auto->new("$FindBin::Bin/../csv/prefixe.csv");
+    my $rows    = $prefcsv->slurp();
+    foreach my $row (@$rows) {
+        try {
+            my $pref = $schema->resultset('Prefix')->checkprefix( id => $row->{id}, name => $row->{nume} );
+            print "DB: ID: " . $pref->id . " -> Nume:" . $pref->name . "\n";
+        }
+        catch {
+            print "Eroare: la import prefix $_\n";
+        };
+    }
+} else {
+    print "Prefix file not found .... $FindBin::Bin/../csv/prefixe.csv\n";
+}
+
+
 print "Country\n";
 
 #country

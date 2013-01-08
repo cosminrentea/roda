@@ -12,7 +12,7 @@ RODA::RODADB::Result::Person - Tabel unic pentru toate persoanele, oriunde ar fi
 
 use strict;
 use warnings;
-
+use Email::Valid;
 use Moose;
 use MooseX::NonMoose;
 use MooseX::MarkAsMethods autoclean => 1;
@@ -38,20 +38,11 @@ __PACKAGE__->table("person");
 
 =head1 ACCESSORS
 
-=head2 id
-
-  data_type: 'integer'
-  is_nullable: 0
-
-Codul persoanei
-
 =head2 fname
 
   data_type: 'varchar'
   is_nullable: 0
   size: 100
-
-Prenumele persoanei
 
 =head2 mname
 
@@ -59,7 +50,7 @@ Prenumele persoanei
   is_nullable: 1
   size: 100
 
-Numele din mijloc al persoanei
+Prenumele persoanei
 
 =head2 lname
 
@@ -67,29 +58,34 @@ Numele din mijloc al persoanei
   is_nullable: 0
   size: 100
 
-Numele de familie al persoanei
+Numele din mijloc al persoanei
 
 =head2 prefix_id
 
   data_type: 'integer'
-  is_foreign_key: 1
   is_nullable: 1
 
-Codul prefixului corespunzator persoanei (refera atributul id din tabelul prefix)
+Numele de familie al persoanei
 
 =head2 suffix_id
 
   data_type: 'integer'
-  is_foreign_key: 1
   is_nullable: 1
+
+Codul prefixului corespunzator persoanei (refera atributul id din tabelul prefix)
+
+=head2 id
+
+  data_type: 'integer'
+  is_auto_increment: 1
+  is_nullable: 0
+  sequence: 'person_id_seq'
 
 Codul sufixului
 
 =cut
 
 __PACKAGE__->add_columns(
-  "id",
-  { data_type => "integer", is_nullable => 0 },
   "fname",
   { data_type => "varchar", is_nullable => 0, size => 100 },
   "mname",
@@ -97,9 +93,16 @@ __PACKAGE__->add_columns(
   "lname",
   { data_type => "varchar", is_nullable => 0, size => 100 },
   "prefix_id",
-  { data_type => "integer", is_foreign_key => 1, is_nullable => 1 },
+  { data_type => "integer", is_nullable => 1 },
   "suffix_id",
-  { data_type => "integer", is_foreign_key => 1, is_nullable => 1 },
+  { data_type => "integer", is_nullable => 1 },
+  "id",
+  {
+    data_type         => "integer",
+    is_auto_increment => 1,
+    is_nullable       => 0,
+    sequence          => "person_id_seq",
+  },
 );
 
 =head1 PRIMARY KEY
@@ -115,51 +118,6 @@ __PACKAGE__->add_columns(
 __PACKAGE__->set_primary_key("id");
 
 =head1 RELATIONS
-
-=head2 emails
-
-Type: has_many
-
-Related object: L<RODA::RODADB::Result::Email>
-
-=cut
-
-__PACKAGE__->has_many(
-  "emails",
-  "RODA::RODADB::Result::Email",
-  { "foreign.entity_id" => "self.id" },
-  { cascade_copy => 0, cascade_delete => 0 },
-);
-
-=head2 instance_people
-
-Type: has_many
-
-Related object: L<RODA::RODADB::Result::InstancePerson>
-
-=cut
-
-__PACKAGE__->has_many(
-  "instance_people",
-  "RODA::RODADB::Result::InstancePerson",
-  { "foreign.person_id" => "self.id" },
-  { cascade_copy => 0, cascade_delete => 0 },
-);
-
-=head2 internets
-
-Type: has_many
-
-Related object: L<RODA::RODADB::Result::Internet>
-
-=cut
-
-__PACKAGE__->has_many(
-  "internets",
-  "RODA::RODADB::Result::Internet",
-  { "foreign.entity_id" => "self.id" },
-  { cascade_copy => 0, cascade_delete => 0 },
-);
 
 =head2 person_addresses
 
@@ -206,26 +164,6 @@ __PACKAGE__->has_many(
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
-=head2 prefix
-
-Type: belongs_to
-
-Related object: L<RODA::RODADB::Result::Prefix>
-
-=cut
-
-__PACKAGE__->belongs_to(
-  "prefix",
-  "RODA::RODADB::Result::Prefix",
-  { id => "prefix_id" },
-  {
-    is_deferrable => 1,
-    join_type     => "LEFT",
-    on_delete     => "CASCADE",
-    on_update     => "CASCADE",
-  },
-);
-
 =head2 source_contacts
 
 Type: has_many
@@ -256,31 +194,57 @@ __PACKAGE__->has_many(
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
-=head2 suffix
 
-Type: belongs_to
-
-Related object: L<RODA::RODADB::Result::Suffix>
-
-=cut
-
-__PACKAGE__->belongs_to(
-  "suffix",
-  "RODA::RODADB::Result::Suffix",
-  { id => "suffix_id" },
-  {
-    is_deferrable => 1,
-    join_type     => "LEFT",
-    on_delete     => "CASCADE",
-    on_update     => "CASCADE",
-  },
-);
-
-
-# Created by DBIx::Class::Schema::Loader v0.07012 @ 2012-12-19 19:21:26
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:m3dmF0cF8U+70SSWuDsSoA
+# Created by DBIx::Class::Schema::Loader v0.07012 @ 2013-01-08 22:32:48
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:5tpPYjePPpyW8AiDIVGRnA
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
 __PACKAGE__->meta->make_immutable;
+
+__PACKAGE__->has_many( "emails", "RODA::RODADB::Result::Email", { "foreign.entity_id" => "self.id" }, { where => { "me.entity_type" => "1" } } );
+
+
+sub attach_addresses {
+     my ( $self, %params ) = @_;
+     foreach my $address (@{$params{addresses}}) {
+         my $guard = $self->result_source->schema()->txn_scope_guard;
+         my $addressrs = $self->result_source->schema()->resultset('Address')->checkaddress(%$address);
+         #acum trebuie sa inseram si in many-to-many
+               if ($addressrs) { 
+        #acu trebuie sa inseram asocierea
+         $self->result_source->schema()->resultset('PersonAddress')->find_or_create({
+          address_id => $addressrs->id,
+          person_id => $self->id,
+         },
+         {
+          key => 'primary',
+         }
+         );
+      }
+        $guard->commit; 
+     }
+}
+
+sub attach_emails {
+     my ( $self, %params ) = @_;
+
+#aici ar trebui sa verificam emailul
+
+        foreach my $emails (@{$params{emails}}) { 
+        if (Email::Valid->address($emails->{email})) {
+     
+            my $emailrs = $self->result_source->schema()->resultset('Email')->create({email => $emails->{email},
+                                                                                                                                            ismain => $emails->{ismain},
+                                                                                                                                            entity_type => '1',
+                                                                                                                                            entity_id => $self->id,
+            });
+        } else {
+         die 'Invalid Email';
+        }
+        }
+}
+
+
+
 1;

@@ -42,13 +42,6 @@ __PACKAGE__->table("address");
 
 =head1 ACCESSORS
 
-=head2 id
-
-  data_type: 'integer'
-  is_nullable: 0
-
-Codul adresei retinute
-
 =head2 city_id
 
   data_type: 'integer'
@@ -61,23 +54,21 @@ Codul adresei retinute
   is_nullable: 0
   size: 250
 
-Codul orasului corespunzator adresei (refera atributul id din tabelul city)
-
 =head2 address2
 
   data_type: 'varchar'
   is_nullable: 0
   size: 250
 
-Prima linie continand detaliile adresei (de exemplu, strada, numar, bloc, scara, apartament)
+Codul orasului corespunzator adresei (refera atributul id din tabelul city)
 
-=head2 sector
+=head2 subdiv_code
 
   data_type: 'varchar'
   is_nullable: 0
   size: 50
 
-A doua linie continand detaliile adresei
+Prima linie continand detaliile adresei (de exemplu, strada, numar, bloc, scara, apartament)
 
 =head2 postal_code
 
@@ -85,21 +76,7 @@ A doua linie continand detaliile adresei
   is_nullable: 0
   size: 50
 
-Sectorul corespunzator adresei
-
-=head2 entity_type
-
-  data_type: 'integer'
-  is_nullable: 0
-
-Codul postal al adresei
-
-=head2 entity_id
-
-  data_type: 'integer'
-  is_nullable: 0
-
-Tipul entitatii care detine adresa respectiva (persoana, organizatie etc.)
+A doua linie continand detaliile adresei
 
 =head2 country_id
 
@@ -108,29 +85,47 @@ Tipul entitatii care detine adresa respectiva (persoana, organizatie etc.)
   is_nullable: 1
   size: 2
 
-Codul entitatii care detine adresa respectiva 
+Sectorul corespunzator adresei
+
+=head2 subdiv_name
+
+  data_type: 'varchar'
+  is_nullable: 1
+  size: 3
+
+Codul postal al adresei
+
+=head2 id
+
+  data_type: 'integer'
+  is_auto_increment: 1
+  is_nullable: 0
+  sequence: 'address_id_seq'
 
 =cut
 
 __PACKAGE__->add_columns(
-  "id",
-  { data_type => "integer", is_nullable => 0 },
   "city_id",
   { data_type => "integer", is_foreign_key => 1, is_nullable => 0 },
   "address1",
   { data_type => "varchar", is_nullable => 0, size => 250 },
   "address2",
   { data_type => "varchar", is_nullable => 0, size => 250 },
-  "sector",
+  "subdiv_code",
   { data_type => "varchar", is_nullable => 0, size => 50 },
   "postal_code",
   { data_type => "varchar", is_nullable => 0, size => 50 },
-  "entity_type",
-  { data_type => "integer", is_nullable => 0 },
-  "entity_id",
-  { data_type => "integer", is_nullable => 0 },
   "country_id",
   { data_type => "char", is_foreign_key => 1, is_nullable => 1, size => 2 },
+  "subdiv_name",
+  { data_type => "varchar", is_nullable => 1, size => 20 },
+  "id",
+  {
+    data_type         => "integer",
+    is_auto_increment => 1,
+    is_nullable       => 0,
+    sequence          => "address_id_seq",
+  },
 );
 
 =head1 PRIMARY KEY
@@ -213,8 +208,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07012 @ 2013-01-03 00:25:45
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:e1ZKJj+ymiTvLiekONKsGg
+# Created by DBIx::Class::Schema::Loader v0.07012 @ 2013-01-08 23:03:06
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:GEBhPA7a9ERAFYXNKoBZtA
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

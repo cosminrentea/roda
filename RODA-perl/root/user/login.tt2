@@ -4,7 +4,7 @@
 <div id="loginwrapper">
 <div id="logincenter">    
 
-<img src="/static/sigla_v.gif" border="0" style="margin-left:20px; margin-top:20px;" >
+
     <form method="post" action="[% c.uri_for('/login') %]">
       <table class="logintable">
         <tr>

@@ -23,6 +23,28 @@ sub checkcity {
         return $cityrs if ($cityrs);
     }
 
+if ($params{name} && $params{name} ne '' 
+            && (    $params{country_name} && $params{country_name} ne ''
+              || $params{country_id} && $params{country_id} ne '' )
+    ) {
+    my $countryid;
+        if ( $params{country_name} && $params{country_name} ne '' ) {
+            my $countryrs = $self->result_source->schema()->resultset('Country')->checkcountry( name => lc( $params{country_name} ) );
+            if ($countryrs) {
+                $countryid = $countryrs->id;
+            } else {
+                die "Nu am putut expanda tara $params{country_name}";
+            }
+        } else {
+            $countryid = $params{country_id};
+        }
+      my $cityrs = $self->search({country_id => $countryid, name => lc($params{name})});
+      if ($cityrs->count == 1) {
+          return $cityrs->single;
+      } 
+    }
+
+
     #la insert, trebuie sa verificam ca avem urmatoarele (obligatoriu)
     # nume
     # country_id sau contry_name
@@ -64,6 +86,7 @@ sub checkcity {
                                          city_code_sup => $city_code_sup,
                                          city_type     => $city_type,
                                          ctype_system  => $city_type_system,
+                                         country_id => $params{country_id},
                                        }
         );
         $guard->commit;

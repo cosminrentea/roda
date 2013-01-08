@@ -38,57 +38,61 @@ __PACKAGE__->table("emails");
 
 =head1 ACCESSORS
 
-=head2 id
-
-  data_type: 'integer'
-  is_nullable: 0
-
-Codul adresei de email in tabel
-
 =head2 email
 
   data_type: 'varchar'
   is_nullable: 0
   size: 200
 
-Sirul de caractere reprezentand adresa de email
-
 =head2 entity_type
 
   data_type: 'integer'
-  is_foreign_key: 1
   is_nullable: 0
 
-Tipul entitatii careia ii apartine adresa de email
+Sirul de caractere reprezentand adresa de email
 
 =head2 entity_id
 
   data_type: 'integer'
-  is_foreign_key: 1
   is_nullable: 0
 
-Codul entitatii careia ii apartine adresa de email
+Tipul entitatii careia ii apartine adresa de email
 
 =head2 ismain
 
   data_type: 'boolean'
+  default_value: false
   is_nullable: 0
+
+Codul entitatii careia ii apartine adresa de email
+
+=head2 id
+
+  data_type: 'integer'
+  is_auto_increment: 1
+  is_nullable: 0
+  sequence: 'emails_id_seq'
 
 Atribut boolean care specifica daca adresa de email este cea principala a entitatii respective
 
 =cut
 
 __PACKAGE__->add_columns(
-  "id",
-  { data_type => "integer", is_nullable => 0 },
   "email",
   { data_type => "varchar", is_nullable => 0, size => 200 },
   "entity_type",
-  { data_type => "integer", is_foreign_key => 1, is_nullable => 0 },
+  { data_type => "integer", is_nullable => 0 },
   "entity_id",
-  { data_type => "integer", is_foreign_key => 1, is_nullable => 0 },
+  { data_type => "integer", is_nullable => 0 },
   "ismain",
-  { data_type => "boolean", is_nullable => 0 },
+  { data_type => "boolean", is_nullable => 1 },
+  "id",
+  {
+    data_type         => "integer",
+    is_auto_increment => 1,
+    is_nullable       => 0,
+    sequence          => "emails_id_seq",
+  },
 );
 
 =head1 PRIMARY KEY
@@ -103,41 +107,9 @@ __PACKAGE__->add_columns(
 
 __PACKAGE__->set_primary_key("id");
 
-=head1 RELATIONS
 
-=head2 entity
-
-Type: belongs_to
-
-Related object: L<RODA::RODADB::Result::Person>
-
-=cut
-
-__PACKAGE__->belongs_to(
-  "entity",
-  "RODA::RODADB::Result::Person",
-  { id => "entity_id" },
-  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
-);
-
-=head2 entity_type
-
-Type: belongs_to
-
-Related object: L<RODA::RODADB::Result::Org>
-
-=cut
-
-__PACKAGE__->belongs_to(
-  "entity_type",
-  "RODA::RODADB::Result::Org",
-  { id => "entity_type" },
-  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
-);
-
-
-# Created by DBIx::Class::Schema::Loader v0.07012 @ 2012-12-19 19:21:26
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:bmlgup77wMy1rFjxVoEXIA
+# Created by DBIx::Class::Schema::Loader v0.07012 @ 2013-01-09 00:12:10
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:n3OjCY/h5KE8sFYxofEB2g
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

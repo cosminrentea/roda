@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Db flnm="roda-db-doc-cosmin" nm="RODA" ver="1.3.4">
+<Db flnm="roda-db-doc" nm="RODA" ver="1.3.4">
   <VerLbl/>
   <VerNotes/>
   <DefTblOpts/>
   <DocFolder>C:\Users\user\Desktop\db\doc_bd</DocFolder>
-  <Sch Cm="" nm="schemaA">
+  <Sch Cm="" nm="public">
     <Tbl UsSo="1" nm="address">
       <Cm>Tabel unic pentru toate adresele care se gasesc in baza de date</Cm>
       <TblOpts/>
@@ -46,13 +46,13 @@
         <Cm>Codul entitatii care detine adresa respectiva </Cm>
       </Cl>
       <Fk deAc="3" nm="fk_address_city" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="city" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="address" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="city" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="address" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="city_id" prCl="id"/>
       </Fk>
       <Fk deAc="3" nm="fk_address_country" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="country" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="address" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="country" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="address" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="country_id" prCl="id"/>
       </Fk>
       <UniqueConstraints/>
@@ -87,17 +87,17 @@
         <Cm>Numarul versiunii liniei in tabelul din care face parte</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_audit_users" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="users" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="audit" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="user" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="audit" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="user_id" prCl="id"/>
       </Fk>
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
-    <Tbl UsSo="1" nm="audit_fields">
+    <Tbl UsSo="1" nm="audit_field">
       <Cm>Tabel ce inregistreaza informatiile de audit la nivelul unei linii, stocand modificarile aduse asupra valorilor campurilor sale</Cm>
       <TblOpts/>
-      <Pk ClNs="audit_id, id" nm="pkaudit_fields"/>
+      <Pk ClNs="audit_id, id" nm="pkaudit_field"/>
       <Cl au="0" df="" nm="audit_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul informatiei de audit (refera atributul id din tabelul audit)</Cm>
@@ -119,8 +119,8 @@
         <Cm>Valoarea veche a coloanei column_name</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_audit_fields_audit" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="audit" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="audit_fields" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="audit" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="audit_field" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="audit_id" prCl="id"/>
       </Fk>
       <UniqueConstraints/>
@@ -147,8 +147,8 @@
         <Cm>Valoarea coloanei column_name pe linia pentru care este inregistrata o informatie de audit</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_audit_row_id_audit" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="audit" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="audit_row_id" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="audit" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="audit_row_id" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="audit_id" prCl="id"/>
       </Fk>
       <UniqueConstraints/>
@@ -175,8 +175,8 @@
         <Cm>Valoarea campului specificat prin atributul field_name pentru utilizatorul referit prin atributul user_id</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_auth_data_users" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="users" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="auth_data" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="user" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="auth_data" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="user_id" prCl="id"/>
       </Fk>
       <UniqueConstraints/>
@@ -207,13 +207,13 @@
         <Cm>Data si timpul cand a fost adaugat catalogul respectiv</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_catalog_catalog" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="catalog" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="catalog" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="catalog" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="catalog" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="parent" prCl="id"/>
       </Fk>
       <Fk deAc="3" nm="fk_catalog_users" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="users" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="catalog" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="user" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="catalog" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="owner" prCl="id"/>
       </Fk>
       <UniqueConstraints/>
@@ -252,8 +252,8 @@
         <Cm>Atribut boolean, a carui valoare este true daca drepturile pot fi modificate; altfel, valoarea atributului este false</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_catalog_acl_catalog" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="catalog" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="catalog_acl" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="catalog" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="catalog_acl" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="catalog_id" prCl="id"/>
       </Fk>
       <UniqueConstraints/>
@@ -276,18 +276,18 @@
         <Cm>Codul utilizatorului care a introdus studiul specificat prin atributul study_id in catalogul identificat prin atributul catalog_id</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_catalog_study_catalog" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="catalog" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="catalog_study" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="catalog" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="catalog_study" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="catalog_id" prCl="id"/>
       </Fk>
       <Fk deAc="3" nm="fk_catalog_study_study" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="study" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="catalog_study" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="study" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="catalog_study" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="study_id" prCl="id"/>
       </Fk>
       <Fk deAc="3" nm="fk_catalog_study_users" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="users" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="catalog_study" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="user" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="catalog_study" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="added_by" prCl="id"/>
       </Fk>
       <UniqueConstraints/>
@@ -310,17 +310,17 @@
         <Cm>Codul tarii in care se afla orasul (refera atributul id al tabelului country)</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_city_country" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="country" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="city" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="country" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="city" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="country_id" prCl="id"/>
       </Fk>
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
-    <Tbl UsSo="1" nm="cms_files">
+    <Tbl UsSo="1" nm="cms_file">
       <Cm>Tabel ce stocheaza informatii despre fisierele din sistemul CMS al aplicatiei</Cm>
       <TblOpts/>
-      <Pk ClNs="id" nm="pkcms_files"/>
+      <Pk ClNs="id" nm="pkcms_file"/>
       <Cl au="0" df="" nm="id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul unui fisier din sistemul CMS al aplicatiei</Cm>
@@ -354,23 +354,23 @@
         <Cm>Dimensiunea unui fisier din sistemul CMS al aplicatiei, exprimata in bytes</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_cms_files_cms_folders" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="cms_folders" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="cms_files" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="cms_folder" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="cms_file" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="folder_id" prCl="id"/>
       </Fk>
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
-    <Tbl UsSo="1" nm="cms_folders">
+    <Tbl UsSo="1" nm="cms_folder">
       <Cm>Tabel pentru stocarea informatiilor despre folder-ele din sistemul CMS al aplicatiei</Cm>
       <TblOpts/>
-      <Pk ClNs="id" nm="pkcms_folders"/>
+      <Pk ClNs="id" nm="pkcms_folder"/>
       <Cl au="1" df="" nm="id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul unui folder din sistemul cms al aplicatiei</Cm>
       </Cl>
       <Cl au="0" df="" nm="name" nu="0">
-        <DT arr="0" ds="VarChar" en="" id="12" ln="150" sc="null" sg="1" un="0"/>
+        <DT arr="0" ds="VarChar" en="" id="12" ln="200" sc="null" sg="1" un="0"/>
         <Cm>Denumirea unui folder din sistemul CMS al aplicatiei</Cm>
       </Cl>
       <Cl au="0" df="" nm="parent" nu="0">
@@ -382,8 +382,8 @@
         <Cm>Descrierea unui folder din sistemul CMS al aplicatiei</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_cms_folders_cms_folders" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="cms_folders" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="cms_folders" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="cms_folder" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="cms_folder" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="parent" prCl="id"/>
       </Fk>
       <UniqueConstraints/>
@@ -410,8 +410,8 @@
         <Cm>Continutul unui layout pentru o pagina de CMS</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_cms_layout_cms_layout_group" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="cms_layout_group" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="cms_layout" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="cms_layout_group" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="cms_layout" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="layout_group" prCl="id"/>
       </Fk>
       <UniqueConstraints/>
@@ -449,7 +449,7 @@
         <Cm>Codul unei pagini din sistemul CMS</Cm>
       </Cl>
       <Cl au="0" df="" nm="name" nu="0">
-        <DT arr="0" ds="VarChar" en="" id="12" ln="150" sc="null" sg="1" un="0"/>
+        <DT arr="0" ds="VarChar" en="" id="12" ln="200" sc="null" sg="1" un="0"/>
         <Cm>Denumirea unei pagini din sistemul CMS</Cm>
       </Cl>
       <Cl au="0" df="" nm="layout" nu="0">
@@ -477,13 +477,13 @@
         <Cm>URL-ul paginii din sistemul CMS</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_cms_page_cms_layout" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="cms_layout" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="cms_page" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="cms_layout" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="cms_page" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="layout" prCl="id"/>
       </Fk>
       <Fk deAc="3" nm="fk_cms_page_users" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="users" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="cms_page" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="user" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="cms_page" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="owner" prCl="id"/>
       </Fk>
       <UniqueConstraints/>
@@ -518,8 +518,8 @@
         <Cm>Numarul de ordine al continutului curent in cadrul paginii</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_cms_page_content_cms_page" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="cms_page" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="cms_page_content" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="cms_page" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="cms_page_content" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="page" prCl="id"/>
       </Fk>
       <UniqueConstraints/>
@@ -534,7 +534,7 @@
         <Cm>Codul unui snippet (fragment de cod) utilizat in aplicatie</Cm>
       </Cl>
       <Cl au="0" df="" nm="name" nu="0">
-        <DT arr="0" ds="VarChar" en="" id="12" ln="150" sc="null" sg="1" un="0"/>
+        <DT arr="0" ds="VarChar" en="" id="12" ln="200" sc="null" sg="1" un="0"/>
         <Cm>Denumirea unui snippet utilizat in aplicatie</Cm>
       </Cl>
       <Cl au="0" df="" nm="snippet_group" nu="0">
@@ -546,8 +546,8 @@
         <Cm>Continutul snippet-ului curent</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_cms_snippet_cms_snippet_group" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="cms_snippet_group" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="cms_snippet" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="cms_snippet_group" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="cms_snippet" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="snippet_group" prCl="id"/>
       </Fk>
       <UniqueConstraints/>
@@ -562,7 +562,7 @@
         <Cm>Codul unui grup de snippet-uri din sistemul CMS al aplicatiei</Cm>
       </Cl>
       <Cl au="0" df="" nm="name" nu="0">
-        <DT arr="0" ds="VarChar" en="" id="12" ln="150" sc="null" sg="1" un="0"/>
+        <DT arr="0" ds="VarChar" en="" id="12" ln="200" sc="null" sg="1" un="0"/>
         <Cm>Denumirea unui grup de snippet-uri din sistemul CMS al aplicatiei</Cm>
       </Cl>
       <Cl au="0" df="" nm="parent" nu="0">
@@ -574,8 +574,8 @@
         <Cm>Descrierea grupului de snippet-uri </Cm>
       </Cl>
       <Fk deAc="3" nm="fk_cms_snippet_group_cms_snippet_group" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="cms_snippet_group" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="cms_snippet_group" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="cms_snippet_group" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="cms_snippet_group" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="parent" prCl="id"/>
       </Fk>
       <UniqueConstraints/>
@@ -628,13 +628,13 @@
         <Cm>Codul variabilei din instanta instance_id careia ii este asociat conceptul identificat prin atributul concept_id</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_concept_variable_variable" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="variable" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="concept_variable" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="variable" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="concept_variable" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="variable_id" prCl="id"/>
       </Fk>
       <Fk deAc="3" nm="fk_Concept_Variables_Concepts" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="concept" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="concept_variable" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="concept" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="concept_variable" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="concept_id" prCl="id"/>
       </Fk>
       <UniqueConstraints/>
@@ -664,17 +664,17 @@
         <Cm>Codul unei variabile de tip editat, in cadrul instantei identificate prin atributul instance_id </Cm>
       </Cl>
       <Fk deAc="3" nm="fk_custom_variable_variable" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="variable" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="0" nm="edited_variable" oe="1" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="variable" oe="1" sch="public" zr="0"/>
+        <CdTb mn="0" nm="edited_variable" oe="1" sch="public" zr="1"/>
         <ClPr cdCl="variable_id" prCl="id"/>
       </Fk>
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
-    <Tbl UsSo="1" nm="emails">
+    <Tbl UsSo="1" nm="email">
       <Cm>Tabel unic pentru toate adresele de e-mail din baza de date</Cm>
       <TblOpts/>
-      <Pk ClNs="id" nm="pkemails"/>
+      <Pk ClNs="id" nm="pkemail"/>
       <Cl au="1" df="" nm="id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="0" un="0"/>
         <Cm>Codul adresei de email in tabel</Cm>
@@ -696,13 +696,13 @@
         <Cm>Atribut boolean care specifica daca adresa de email este cea principala a entitatii respective</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_emails_org" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="org" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="emails" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="org" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="email" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="org_id" prCl="id"/>
       </Fk>
       <Fk deAc="3" nm="fk_emails_person" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="person" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="emails" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="person" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="email" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="person_id" prCl="id"/>
       </Fk>
       <UniqueConstraints/>
@@ -737,8 +737,8 @@
         <Cm>Dimensiunea fisierului (specificata in bytes)</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_documents_document_types" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="filetype" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="file" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="filetype" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="file" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="filetype_id" prCl="id"/>
       </Fk>
       <UniqueConstraints/>
@@ -773,8 +773,8 @@
         <Cm>Atribut boolean, ce va avea valoarea true daca exista dreptul de stergere; altfel, valoarea atributului va fi false</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_documents_acl_documents" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="file" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="file_acl" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="file" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="file_acl" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="document_id" prCl="id"/>
       </Fk>
       <UniqueConstraints/>
@@ -817,8 +817,8 @@
         <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
       <Fk deAc="3" nm="fk_form_instance" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="instance" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="form" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="instance" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="form" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="instance_id" prCl="id"/>
       </Fk>
       <Idx clu="0" nm="form_instance_id_Idx" unq="1">
@@ -844,13 +844,13 @@
         <Cm>Valoarea numerica furnizata ca raspuns pentru variabila referita prin atributul variable_id din cadrul instantei identificate prin atributul instance_id, asociata formularului specificat prin atributul form_id  </Cm>
       </Cl>
       <Fk deAc="3" nm="fk_form_custom_number_var_custom_variable" prLkCl="variable_id" upAc="3">
-        <PrTb mn="0" nm="edited_variable" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="form_edited_number_var" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="edited_variable" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="form_edited_number_var" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="variable_id" prCl="variable_id"/>
       </Fk>
       <Fk deAc="3" nm="fk_form_edited_number_var_form" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="form" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="form_edited_number_var" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="form" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="form_edited_number_var" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="form_id" prCl="id"/>
       </Fk>
       <UniqueConstraints/>
@@ -873,13 +873,13 @@
         <Cm>Raspunsul furnizat pentru variabila identificata prin atributul variable_id in cadrul instantei referite prin instance_id, pe formularul identificat prin atributul form_id</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_form_custom_text_var_custom_variable" prLkCl="variable_id" upAc="3">
-        <PrTb mn="0" nm="edited_variable" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="form_edited_text_var" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="edited_variable" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="form_edited_text_var" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="variable_id" prCl="variable_id"/>
       </Fk>
       <Fk deAc="3" nm="fk_form_edited_text_var_form" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="form" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="form_edited_text_var" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="form" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="form_edited_text_var" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="form_id" prCl="id"/>
       </Fk>
       <UniqueConstraints/>
@@ -906,13 +906,13 @@
         <Cm>Numarul de ordine al elementului corespunzator variabilei in cadrul raspunsului (relevant pentru raspunsuri care accepta o selectie multipla, in care ordinea este importanta)</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_form_selection_var_form" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="form" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="form_selection_var" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="form" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="form_selection_var" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="form_id" prCl="id"/>
       </Fk>
       <Fk deAc="3" nm="fk_form_selection_var_selection_variable_item" prLkCl="variable_id" upAc="3">
-        <PrTb mn="0" nm="selection_variable_item" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="form_selection_var" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="selection_variable_item" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="form_selection_var" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="variable_id" prCl="variable_id"/>
         <ClPr cdCl="item_id" prCl="item_id"/>
       </Fk>
@@ -936,8 +936,8 @@
         <Cm>Valoarea frecventei</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_frequency_selection_variable" prLkCl="variable_id" upAc="3">
-        <PrTb mn="0" nm="selection_variable_item" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="0" nm="frequency" oe="1" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="selection_variable_item" oe="1" sch="public" zr="0"/>
+        <CdTb mn="0" nm="frequency" oe="1" sch="public" zr="1"/>
         <ClPr cdCl="variable_id" prCl="variable_id"/>
         <ClPr cdCl="item_id" prCl="item_id"/>
       </Fk>
@@ -969,17 +969,17 @@
         <Cm>Codul unitatii de analiza specifice instantei (refera atributul id al tabelului unit_analysis)</Cm>
       </Cl>
       <Cl au="0" df="" nm="version" nu="0">
-        <DT arr="0" ds="SmallInt" en="" id="5" ln="null" sc="null" sg="1" un="0"/>
+        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Versiunea instantei</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_instance_study" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="study" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="instance" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="study" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="instance" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="study_id" prCl="id"/>
       </Fk>
       <Fk deAc="3" nm="fk_instance_unit_analysis" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="unit_analysis" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="instance" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="unit_analysis" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="instance" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="unit_analysis_id" prCl="id"/>
       </Fk>
       <UniqueConstraints/>
@@ -1018,8 +1018,8 @@
         <Cm>Atribut boolean, a carui valoare este true daca drepturile pot fi modificate; altfel, valoarea atributului este false</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_instance_acl_instance" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="instance" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="instance_acl" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="instance" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="instance_acl" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="instance_id" prCl="id"/>
       </Fk>
       <UniqueConstraints/>
@@ -1042,8 +1042,8 @@
         <Cm>Rezumatul instantei</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_instance_descr_instance" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="instance" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="0" nm="instance_descr" oe="1" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="instance" oe="1" sch="public" zr="0"/>
+        <CdTb mn="0" nm="instance_descr" oe="1" sch="public" zr="1"/>
         <ClPr cdCl="instance_id" prCl="id"/>
       </Fk>
       <UniqueConstraints/>
@@ -1062,13 +1062,13 @@
         <Cm>Codul documentului asociat instantei specificate prin atributul instance_id (refera atributul id al tabelului documents)</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_instance_documents_documents" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="file" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="instance_documents" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="file" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="instance_documents" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="document_id" prCl="id"/>
       </Fk>
       <Fk deAc="3" nm="fk_instance_documents_instance" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="instance" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="instance_documents" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="instance" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="instance_documents" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="instance_id" prCl="id"/>
       </Fk>
       <UniqueConstraints/>
@@ -1095,13 +1095,13 @@
         <Cm>Utilizatorul care a adaugat asocierea dintre o instanta si un cuvant cheie</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_instance_keyword_instance" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="instance" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="instance_keyword" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="instance" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="instance_keyword" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="instance_id" prCl="id"/>
       </Fk>
       <Fk deAc="3" nm="fk_instance_keyword_keyword" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="keyword" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="instance_keyword" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="keyword" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="instance_keyword" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="keyword_id" prCl="id"/>
       </Fk>
       <UniqueConstraints/>
@@ -1132,18 +1132,18 @@
         <Cm>Modalitatea de citare in cadrul instantei identificate prin atributul instance_id realizate de catre organizatia referita prin atributul org_id</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_instance_org_instance" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="instance" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="instance_org" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="instance" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="instance_org" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="instance_id" prCl="id"/>
       </Fk>
       <Fk deAc="3" nm="fk_instance_org_instance_org_assoc" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="instance_org_assoc" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="instance_org" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="instance_org_assoc" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="instance_org" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="assoc_type_id" prCl="id"/>
       </Fk>
       <Fk deAc="3" nm="fk_instance_org_org" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="org" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="instance_org" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="org" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="instance_org" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="org_id" prCl="id"/>
       </Fk>
       <UniqueConstraints/>
@@ -1185,18 +1185,18 @@
         <Cm>Codul tipului de asociere care exista intre instanta specificata prin atributul instance_id si persoana identificata prin atributul person_id (refera atributul id al tabelului instance_person_assoc)</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_instance_person_instance" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="instance" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="instance_person" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="instance" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="instance_person" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="instance_id" prCl="id"/>
       </Fk>
       <Fk deAc="3" nm="fk_instance_person_instance_person_assoc" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="instance_person_assoc" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="instance_person" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="instance_person_assoc" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="instance_person" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="assoc_type_id" prCl="id"/>
       </Fk>
       <Fk deAc="3" nm="fk_instance_person_person" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="person" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="instance_person" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="person" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="instance_person" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="person_id" prCl="id"/>
       </Fk>
       <UniqueConstraints/>
@@ -1234,13 +1234,13 @@
         <Cm>Codul topic-ului care este asociat instantei specificate prin atributul instance_id (refera atributul id din tabelul topic)</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_instance_topic_instance" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="instance" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="instance_topic" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="instance" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="instance_topic" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="instance_id" prCl="id"/>
       </Fk>
       <Fk deAc="3" nm="fk_instance_topic_topic" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="topic" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="instance_topic" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="topic" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="instance_topic" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="topic_id" prCl="id"/>
       </Fk>
       <UniqueConstraints/>
@@ -1271,13 +1271,13 @@
         <Cm>Sir de caractere reprezentand id-ul contului respectiv in reteaua din care face parte</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_internet_org" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="org" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="internet" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="org" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="internet" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="entity_id" prCl="id"/>
       </Fk>
       <Fk deAc="3" nm="fk_internet_person" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="person" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="internet" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="person" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="internet" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="entity_id" prCl="id"/>
       </Fk>
       <UniqueConstraints/>
@@ -1307,7 +1307,7 @@
         <Cm>Codul cuvantului cheie</Cm>
       </Cl>
       <Cl au="0" df="" nm="name" nu="0">
-        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Cuvantul cheie</Cm>
       </Cl>
       <UniqueConstraints/>
@@ -1341,13 +1341,13 @@
         <Cm>Codul tipului de model de colectare a datelor asociat instantei identificate prin atributul instance_id</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_meth_coll_type_collection_model_type" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="collection_model_type" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="meth_coll_type" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="collection_model_type" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="meth_coll_type" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="coll_mod_id" prCl="id"/>
       </Fk>
       <Fk deAc="3" nm="fk_meth_coll_type_methodology" prLkCl="instance_id" upAc="3">
-        <PrTb mn="0" nm="methodology" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="meth_coll_type" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="methodology" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="meth_coll_type" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="instance_id" prCl="instance_id"/>
       </Fk>
       <UniqueConstraints/>
@@ -1382,13 +1382,13 @@
         <Cm>Domeniul geografic si demografic corespunzator instantei referite prin atributul instance_id</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_methodology_instance" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="instance" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="methodology" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="instance" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="methodology" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="instance_id" prCl="id"/>
       </Fk>
       <Fk deAc="3" nm="fk_methodology_time_meth_type" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="time_meth_type" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="methodology" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="time_meth_type" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="methodology" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="time_meth_id" prCl="id"/>
       </Fk>
       <UniqueConstraints/>
@@ -1423,33 +1423,10 @@
         <Cm>Atribut boolean, a carui valoare este true daca stirea este vizibila</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_news_users" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="users" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="news" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="user" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="news" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="added_by" prCl="id"/>
       </Fk>
-      <UniqueConstraints/>
-      <SchTrHis/>
-    </Tbl>
-    <Tbl UsSo="1" nm="note">
-      <Cm>Tabel ce stocheaza note referitoare la entitatile din baza de date</Cm>
-      <TblOpts/>
-      <Pk ClNs="id" nm="pknote"/>
-      <Cl au="0" df="" nm="id" nu="0">
-        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
-        <Cm>Codul notei</Cm>
-      </Cl>
-      <Cl au="0" df="" nm="entity_type" nu="0">
-        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
-        <Cm>Tipul entitatii (persoana, organizatie, studiu, instanta) la care se refera nota</Cm>
-      </Cl>
-      <Cl au="0" df="" nm="entity_id" nu="0">
-        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
-        <Cm>Codul entitatii la care se refera nota (valoarea atributului id din tabelul corespunzator entitatii)</Cm>
-      </Cl>
-      <Cl au="0" df="" nm="content" nu="0">
-        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
-        <Cm>Continutul notei</Cm>
-      </Cl>
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
@@ -1478,13 +1455,13 @@
         <Cm>Codul sufixului organizatiei (refera atributul id din tabelul org_sufix)</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_org_org_prefix" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="org_prefix" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="org" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="org_prefix" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="org" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="org_prefix_id" prCl="id"/>
       </Fk>
       <Fk deAc="3" nm="fk_org_org_sufix" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="org_sufix" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="org" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="org_sufix" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="org" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="org_sufix_id" prCl="id"/>
       </Fk>
       <UniqueConstraints/>
@@ -1511,13 +1488,13 @@
         <Cm>Data pana la care adresa organizatiei referite prin org_id a fost cea identificata prin address_id</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_org_address_address" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="address" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="org_address" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="address" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="org_address" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="address_id" prCl="id"/>
       </Fk>
       <Fk deAc="3" nm="fk_org_address_org" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="org" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="org_address" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="org" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="org_address" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="org_id" prCl="id"/>
       </Fk>
       <UniqueConstraints/>
@@ -1586,18 +1563,18 @@
         <Cm>Detaliile relatiei demarate la datestart intre organizatiile specificate prin org_1_id si org_2_id</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_org_2_relations_org" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="org" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="org_relations" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="org" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="org_relations" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="org_2_id" prCl="id"/>
       </Fk>
       <Fk deAc="3" nm="fk_org_relations_org" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="org" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="org_relations" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="org" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="org_relations" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="org_1_id" prCl="id"/>
       </Fk>
       <Fk deAc="3" nm="fk_org_relations_org_relation_type" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="org_relation_type" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="org_relations" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="org_relation_type" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="org_relations" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="org_relation_type_id" prCl="id"/>
       </Fk>
       <UniqueConstraints/>
@@ -1622,10 +1599,10 @@
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
-    <Tbl UsSo="1" nm="other_statistics">
+    <Tbl UsSo="1" nm="other_statistic">
       <Cm>Tabel ce contine statistici specifice variabilelor editate</Cm>
       <TblOpts/>
-      <Pk ClNs="variable_id" nm="pkother_statistics"/>
+      <Pk ClNs="variable_id" nm="pkother_statistic"/>
       <Cl au="0" df="" nm="variable_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul variabilei pentru care sunt stocate statistici</Cm>
@@ -1639,8 +1616,8 @@
         <Cm>Valoarea statisticii</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_other_statistics_edited_variable" prLkCl="variable_id" upAc="3">
-        <PrTb mn="0" nm="edited_variable" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="other_statistics" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="edited_variable" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="other_statistic" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="variable_id" prCl="variable_id"/>
       </Fk>
       <UniqueConstraints/>
@@ -1675,13 +1652,13 @@
         <Cm>Codul sufixului</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_person_prefix" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="prefix" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="person" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="prefix" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="person" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="prefix_id" prCl="id"/>
       </Fk>
       <Fk deAc="3" nm="fk_person_suffix" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="suffix" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="person" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="suffix" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="person" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="suffix_id" prCl="id"/>
       </Fk>
       <UniqueConstraints/>
@@ -1708,13 +1685,13 @@
         <Cm>Data pana la care persoana identificata prin atributul person_id a avut adresa referita prin atributul address_id</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_person_address_address" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="address" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="person_address" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="address" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="person_address" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="address_id" prCl="id"/>
       </Fk>
       <Fk deAc="3" nm="fk_person_address_person" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="person" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="person_address" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="person" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="person_address" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="person_id" prCl="id"/>
       </Fk>
       <UniqueConstraints/>
@@ -1761,18 +1738,18 @@
         <Cm>Momentul de timp al ultimei actualizari a atributului status</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_person_links_person" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="person" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="person_links" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="person" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="person_links" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="person_id" prCl="id"/>
       </Fk>
       <Fk deAc="3" nm="fk_person_links_users" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="users" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="person_links" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="user" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="person_links" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="user_id" prCl="id"/>
       </Fk>
       <Fk deAc="3" nm="fk_person_links_users2" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="users" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="person_links" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="user" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="person_links" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="status_by" prCl="id"/>
       </Fk>
       <UniqueConstraints/>
@@ -1803,18 +1780,18 @@
         <Cm>Data de final a apartenentei persoanei la organizatie</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_person_org_org" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="org" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="person_org" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="org" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="person_org" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="org_id" prCl="id"/>
       </Fk>
       <Fk deAc="3" nm="fk_person_org_person" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="person" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="person_org" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="person" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="person_org" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="person_id" prCl="id"/>
       </Fk>
       <Fk deAc="3" nm="fk_person_org_person_role" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="person_role" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="person_org" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="person_role" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="person_org" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="role_id" prCl="id"/>
       </Fk>
       <UniqueConstraints/>
@@ -1871,13 +1848,13 @@
         <Cm>Codul tarii corespunzatoare regiunii (refera atributul id din tabelul country)</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_region_country" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="country" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="region" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="country" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="region" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="country_id" prCl="id"/>
       </Fk>
       <Fk deAc="3" nm="fk_region_region_type" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="regiontype" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="region" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="regiontype" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="region" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="regiontype_id" prCl="id"/>
       </Fk>
       <UniqueConstraints/>
@@ -1896,13 +1873,13 @@
         <Cm>Codul orasului asociat regiunii</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_region_city_city" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="city" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="region_city" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="city" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="region_city" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="city_id" prCl="id"/>
       </Fk>
       <Fk deAc="3" nm="fk_region_city_region" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="region" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="region_city" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="region" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="region_city" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="region_id" prCl="id"/>
       </Fk>
       <UniqueConstraints/>
@@ -1963,18 +1940,18 @@
         <Cm>Unitatea scalei respective</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_scale_item" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="item" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="0" nm="scale" oe="1" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="item" oe="1" sch="public" zr="0"/>
+        <CdTb mn="0" nm="scale" oe="1" sch="public" zr="1"/>
         <ClPr cdCl="item_id" prCl="id"/>
       </Fk>
       <Fk deAc="3" nm="fk_scale_max_value" prLkCl="item_id" upAc="3">
-        <PrTb mn="0" nm="value" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="scale" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="value" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="scale" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="maxValue_id" prCl="item_id"/>
       </Fk>
       <Fk deAc="3" nm="fk_scale_min_value" prLkCl="item_id" upAc="3">
-        <PrTb mn="0" nm="value" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="scale" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="value" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="scale" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="minValue_id" prCl="item_id"/>
       </Fk>
       <UniqueConstraints/>
@@ -1997,8 +1974,8 @@
         <Cm>Numarul maxim de selectii asteptate ca raspuns</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_selection_variable_variable" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="variable" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="0" nm="selection_variable" oe="1" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="variable" oe="1" sch="public" zr="0"/>
+        <CdTb mn="0" nm="selection_variable" oe="1" sch="public" zr="1"/>
         <ClPr cdCl="variable_id" prCl="id"/>
       </Fk>
       <UniqueConstraints/>
@@ -2024,18 +2001,18 @@
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
       <Fk deAc="3" nm="fk_selection_variable_item_documents" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="file" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="selection_variable_item" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="file" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="selection_variable_item" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="response_card_file_id" prCl="id"/>
       </Fk>
       <Fk deAc="3" nm="fk_selection_variable_item_item" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="item" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="selection_variable_item" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="item" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="selection_variable_item" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="item_id" prCl="id"/>
       </Fk>
       <Fk deAc="3" nm="fk_selection_variable_item_selection_variable" prLkCl="variable_id" upAc="3">
-        <PrTb mn="0" nm="selection_variable" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="selection_variable_item" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="selection_variable" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="selection_variable_item" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="variable_id" prCl="variable_id"/>
       </Fk>
       <Idx clu="0" nm="selection_variable_item_order_Idx" unq="1">
@@ -2073,8 +2050,8 @@
         <Cm>Valoarea implicita a setarii</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_setting_setting_group" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="setting_group" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="setting" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="setting_group" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="setting" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="setting_group" prCl="id"/>
       </Fk>
       <UniqueConstraints/>
@@ -2101,17 +2078,17 @@
         <Cm>Descrierea grupului de setari ale aplicatiei</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_setting_group_setting_group" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="setting_group" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="setting_group" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="setting_group" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="setting_group" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="parent" prCl="id"/>
       </Fk>
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
-    <Tbl UsSo="1" nm="setting_values">
+    <Tbl UsSo="1" nm="setting_value">
       <Cm>Tabel care contine valorile setarilor aplicatiei</Cm>
       <TblOpts/>
-      <Pk ClNs="setting_id" nm="pksetting_values"/>
+      <Pk ClNs="setting_id" nm="pksetting_value"/>
       <Cl au="0" df="" nm="setting_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul setarii a carei valoare este inregistrata (refera atributul id din tabelul setting)</Cm>
@@ -2121,8 +2098,8 @@
         <Cm>Valoarea setarii referite prin atributul setting_id</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_setting_values_setting" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="setting" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="setting_values" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="setting" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="setting_value" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="setting_id" prCl="id"/>
       </Fk>
       <UniqueConstraints/>
@@ -2149,22 +2126,22 @@
         <Cm>Identificatorul variabilei la care se va face salt</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_skip_next_variable" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="variable" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="skip" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="variable" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="skip" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="next_variable_id" prCl="id"/>
       </Fk>
       <Fk deAc="3" nm="fk_skip_variable" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="variable" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="skip" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="variable" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="skip" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="variable_id" prCl="id"/>
       </Fk>
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
-    <Tbl UsSo="1" nm="sources">
+    <Tbl UsSo="1" nm="source">
       <Cm>Tabel ce stocheaza sursele (organizatiile) care pot oferi studii pentru partea de colectare</Cm>
       <TblOpts/>
-      <Pk ClNs="org_id" nm="pksources"/>
+      <Pk ClNs="org_id" nm="pksource"/>
       <Cl au="0" df="" nm="org_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul organizatiei care reprezinta o sursa a studiilor colectate</Cm>
@@ -2174,13 +2151,13 @@
         <Cm>Codul tipului sursei (refera atributul id din tabelul sourcetype)</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_sources_org" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="org" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="sources" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="org" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="source" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="org_id" prCl="id"/>
       </Fk>
       <Fk deAc="3" nm="fk_sources_sourcetype" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="sourcetype" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="sources" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="sourcetype" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="source" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="sourcetype_id" prCl="id"/>
       </Fk>
       <UniqueConstraints/>
@@ -2211,13 +2188,13 @@
         <Cm>Tipul sursei unui studiu</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_sourcestudy_sources" prLkCl="org_id" upAc="3">
-        <PrTb mn="0" nm="sources" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="sourcestudy" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="source" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="sourcestudy" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="org_id" prCl="org_id"/>
       </Fk>
       <Fk deAc="3" nm="fk_sourcestudy_sourcestudy_type" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="sourcestudy_type" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="sourcestudy" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="sourcestudy_type" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="sourcestudy" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="type" prCl="id"/>
       </Fk>
       <UniqueConstraints/>
@@ -2271,13 +2248,13 @@
         <Cm>Codul studiului care poate fi furnizat de catre o sursa</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_sourcestudy_type_history_sourcestudy" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="sourcestudy" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="sourcestudy_type_history" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="sourcestudy" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="sourcestudy_type_history" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="sourcesstudy_id" prCl="id"/>
       </Fk>
       <Fk deAc="3" nm="fk_sourcestudy_type_history_sourcestudy_type" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="sourcestudy_type" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="sourcestudy_type_history" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="sourcestudy_type" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="sourcestudy_type_history" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="sourcestudy_type_id" prCl="id"/>
       </Fk>
       <UniqueConstraints/>
@@ -2331,13 +2308,13 @@
         <Cm>Codul utilizatorului care a adaugat informatia referitoare la istoricul unei surse</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_source_type_history_sources" prLkCl="org_id" upAc="3">
-        <PrTb mn="0" nm="sources" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="sourcetype_history" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="source" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="sourcetype_history" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="org_id" prCl="org_id"/>
       </Fk>
       <Fk deAc="3" nm="fk_source_type_history_sourcetype" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="sourcetype" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="sourcetype_history" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="sourcetype" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="sourcetype_history" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="sourcetype_id" prCl="id"/>
       </Fk>
       <UniqueConstraints/>
@@ -2399,8 +2376,8 @@
         <Cm>Atribut boolean, a carui valoare este true daca drepturile pot fi modificate; altfel, valoarea atributului este false</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_study_acl_study" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="study" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="study_acl" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="study" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="study_acl" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="study_id" prCl="id"/>
       </Fk>
       <UniqueConstraints/>
@@ -2419,33 +2396,33 @@
         <Cm>Rezumatul studiului</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_study_descr_study" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="study" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="study_descr" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="study" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="study_descr" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="study_id" prCl="id"/>
       </Fk>
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
-    <Tbl UsSo="1" nm="study_documents">
+    <Tbl UsSo="1" nm="study_file">
       <Cm>Tabel ce contine asocierile dintre studii si documente (implementeaza relatia many-to-many intre tabelele study si documents)</Cm>
       <TblOpts/>
-      <Pk ClNs="study_id, document_id" nm="pkstudy_documents"/>
+      <Pk ClNs="study_id, file_id" nm="pkstudy_file"/>
       <Cl au="0" df="" nm="study_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul studiului pentru care este stocat documentul specificat prin atributul document_id (refera atributul id din tabelul study)</Cm>
       </Cl>
-      <Cl au="0" df="" nm="document_id" nu="0">
+      <Cl au="0" df="" nm="file_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul unui document care este asociat studiului identificat prin atributul study_id (refera atributul id din tabelul documents)</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_study_documents_documents" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="file" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="study_documents" oe="0" sch="schemaA" zr="1"/>
-        <ClPr cdCl="document_id" prCl="id"/>
+        <PrTb mn="0" nm="file" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="study_file" oe="0" sch="public" zr="1"/>
+        <ClPr cdCl="file_id" prCl="id"/>
       </Fk>
       <Fk deAc="3" nm="fk_study_documents_study" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="study" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="study_documents" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="study" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="study_file" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="study_id" prCl="id"/>
       </Fk>
       <UniqueConstraints/>
@@ -2472,13 +2449,13 @@
         <Cm>Utilizatorul care a adaugat asocierea dintre un studiu si un cuvant cheie</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_study_keyword_keyword" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="keyword" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="study_keyword" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="keyword" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="study_keyword" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="keyword_id" prCl="id"/>
       </Fk>
       <Fk deAc="3" nm="fk_study_keyword_study" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="study" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="study_keyword" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="study" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="study_keyword" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="study_id" prCl="id"/>
       </Fk>
       <UniqueConstraints/>
@@ -2501,7 +2478,7 @@
         <Cm>Codul studiului care se afla in relatia specificata prin atributul assoctype_id cu organizatia identificata prin org_id (refera atributul id al tabelului study)</Cm>
       </Cl>
       <Cl au="0" df="" nm="assoctype_id" nu="0">
-        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul tipului de asociere existent intre studiul identificat prin study_id si organizatia referita prin org_id (refera atributul id din tabelul study_org_assoc)</Cm>
       </Cl>
       <Cl au="0" df="" nm="citation" nu="0">
@@ -2509,18 +2486,18 @@
         <Cm>Modalitatea de citare in cadrul studiului identificat prin atributul study_id realizat de catre organizatia referita prin atributul org_id</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_studiu_org_org" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="org" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="study_org" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="org" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="study_org" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="org_id" prCl="id"/>
       </Fk>
       <Fk deAc="3" nm="fk_studiu_org_studiu_org_asoc" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="study_org_assoc" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="study_org" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="study_org_assoc" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="study_org" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="assoctype_id" prCl="id"/>
       </Fk>
       <Fk deAc="3" nm="fk_studiu_org_study" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="study" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="study_org" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="study" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="study_org" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="study_id" prCl="id"/>
       </Fk>
       <UniqueConstraints/>
@@ -2559,8 +2536,8 @@
         <Cm>Atribut boolean, a carui valoare este true daca drepturile pot fi modificate; altfel, valoarea atributului este false</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_study_org_acl_study_org" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="study_org" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="study_org_acl" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="study_org" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="study_org_acl" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="study_org_id" prCl="id"/>
       </Fk>
       <UniqueConstraints/>
@@ -2610,18 +2587,18 @@
         <Cm>Codul tipului de asociere existent intre persoana identificata prin atributul person_id si studiul referit prin atributul study_id</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_study_person_person" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="person" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="study_person" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="person" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="study_person" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="person_id" prCl="id"/>
       </Fk>
       <Fk deAc="3" nm="fk_study_person_studiu_person_asoc" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="study_person_asoc" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="study_person" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="study_person_assoc" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="study_person" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="asoctype_id" prCl="id"/>
       </Fk>
       <Fk deAc="3" nm="fk_study_person_study" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="study" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="study_person" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="study" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="study_person" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="study_id" prCl="id"/>
       </Fk>
       <UniqueConstraints/>
@@ -2660,17 +2637,17 @@
         <Cm>Atribut boolean, a carui valoare este true daca drepturile pot fi modificate; altfel, valoarea atributului este false</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_study_person_acl_study_person" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="study_person" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="study_person_acl" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="study_person" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="study_person_acl" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="study_person_id" prCl="id"/>
       </Fk>
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
-    <Tbl UsSo="1" nm="study_person_asoc">
+    <Tbl UsSo="1" nm="study_person_assoc">
       <Cm>Tabel ce contine tipurile de asocieri care pot exista intre studiu si persoane</Cm>
       <TblOpts/>
-      <Pk ClNs="id" nm="pkstudy_person_asoc"/>
+      <Pk ClNs="id" nm="pkstudy_person_assoc"/>
       <Cl au="0" df="" nm="id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul unei asocieri care poate exista intre un studiu si o persoana</Cm>
@@ -2699,13 +2676,13 @@
         <Cm>Codul unui topic asociat studiului identificat prin atributul study_id</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_study_topic_study" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="study" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="study_topic" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="study" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="study_topic" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="study_id" prCl="id"/>
       </Fk>
       <Fk deAc="3" nm="fk_study_topic_topic" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="topic" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="study_topic" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="topic" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="study_topic" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="topic_id" prCl="id"/>
       </Fk>
       <UniqueConstraints/>
@@ -2746,7 +2723,7 @@
       <TblOpts/>
       <Pk ClNs="id" nm="pktitle"/>
       <Cl au="0" df="" nm="id" nu="0">
-        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul titlului</Cm>
       </Cl>
       <Cl au="0" df="" nm="content" nu="0">
@@ -2766,13 +2743,13 @@
         <Cm>Codul studiului caruia ii corespunde titlul (refera atributul id din tabelul study)</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_title_study" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="study" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="title" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="study" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="title" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="study_id" prCl="id"/>
       </Fk>
       <Fk deAc="3" nm="fk_title_title_type" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="title_type" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="title" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="title_type" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="title" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="title_type_id" prCl="id"/>
       </Fk>
       <UniqueConstraints/>
@@ -2833,17 +2810,17 @@
         <Cm>Codul topic-ului pentru care exista o traducere in limba identificata prin atributul language_id (refera atributul id din tabelul topic)</Cm>
       </Cl>
       <Cl au="0" df="" nm="translation" nu="0">
-        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Traducerea topic-ului referit prin atributul topic_id in limba identificata prin atributul language_id</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_translated_topic_language" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="language" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="translated_topic" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="language" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="translated_topic" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="language_id" prCl="id"/>
       </Fk>
       <Fk deAc="3" nm="fk_translated_topic_topic" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="topic" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="translated_topic" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="topic" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="translated_topic" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="topic_id" prCl="id"/>
       </Fk>
       <UniqueConstraints/>
@@ -2864,6 +2841,21 @@
       <Cl au="0" df="" nm="description" nu="1">
         <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Descrierea unitatii de analiza</Cm>
+      </Cl>
+      <UniqueConstraints/>
+      <SchTrHis/>
+    </Tbl>
+    <Tbl UsSo="1" nm="user">
+      <Cm>Tabel ce contine utilizatorii aplicatiei</Cm>
+      <TblOpts/>
+      <Pk ClNs="id" nm="pkuser"/>
+      <Cl au="0" df="" nm="id" nu="0">
+        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Codul utilizatorului aplicatiei</Cm>
+      </Cl>
+      <Cl au="0" df="" nm="credential_provider" nu="0">
+        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Furnizorul de informatii de acces pentru utilizatorul respectiv</Cm>
       </Cl>
       <UniqueConstraints/>
       <SchTrHis/>
@@ -2897,17 +2889,17 @@
         <Cm>Mesajul de eroare aparut </Cm>
       </Cl>
       <Fk deAc="3" nm="fk_user_auth_log_users" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="users" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="user_auth_log" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="user" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="user_auth_log" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="user_id" prCl="id"/>
       </Fk>
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
-    <Tbl UsSo="1" nm="user_messages">
+    <Tbl UsSo="1" nm="user_message">
       <Cm>Tabel care stocheaza mesajele trimise catre utilizatori</Cm>
       <TblOpts/>
-      <Pk ClNs="id" nm="pkuser_messages"/>
+      <Pk ClNs="id" nm="pkuser_message"/>
       <Cl au="1" df="" nm="id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul mesajului trimis de catre utilizatorul referit prin atributul user_id</Cm>
@@ -2925,8 +2917,8 @@
         <Cm>Codul utilizatorului caruia ii este transmis mesajul (refera atributul id din tabelul users)</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_user_messages_users" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="users" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="user_messages" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="user" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="user_message" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="user_id" prCl="id"/>
       </Fk>
       <UniqueConstraints/>
@@ -2953,8 +2945,8 @@
         <Cm>Adresa de email a utilizatorului</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_user_profile_users" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="users" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="user_profile" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="user" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="user_profile" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="user_id" prCl="id"/>
       </Fk>
       <UniqueConstraints/>
@@ -2973,51 +2965,22 @@
         <Cm>Codul role-ului corespunzator utilizatorului referit prin user_id</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_user_role_role" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="role" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="user_role" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="role" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="user_role" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="role_id" prCl="id"/>
       </Fk>
       <Fk deAc="3" nm="fk_user_role_users" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="users" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="user_role" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="user" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="user_role" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="user_id" prCl="id"/>
       </Fk>
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
-    <Tbl UsSo="1" nm="user_setting_value">
-      <Cm>Tabel care stocheaza valorile setarilor utilizatorului</Cm>
-      <TblOpts/>
-      <Pk ClNs="user_setting_id, user_id" nm="pkuser_setting_value"/>
-      <Cl au="0" df="" nm="user_setting_id" nu="0">
-        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
-        <Cm>Codul setarii corespunzatoare unui utilizator (refera atributul id al tabelului user_settings)</Cm>
-      </Cl>
-      <Cl au="0" df="" nm="user_id" nu="0">
-        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
-        <Cm>Codul utilizatorului caruia ii apartine setarea (refera atributul id al tabelului users)</Cm>
-      </Cl>
-      <Cl au="0" df="" nm="value" nu="0">
-        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
-        <Cm>Valoarea setarii respective</Cm>
-      </Cl>
-      <Fk deAc="3" nm="fk_user_setting_value_user_settings" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="user_settings" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="user_setting_value" oe="0" sch="schemaA" zr="1"/>
-        <ClPr cdCl="user_setting_id" prCl="id"/>
-      </Fk>
-      <Fk deAc="3" nm="fk_user_setting_value_users" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="users" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="user_setting_value" oe="0" sch="schemaA" zr="1"/>
-        <ClPr cdCl="user_id" prCl="id"/>
-      </Fk>
-      <UniqueConstraints/>
-      <SchTrHis/>
-    </Tbl>
-    <Tbl UsSo="1" nm="user_settings">
+    <Tbl UsSo="1" nm="user_setting">
       <Cm>Tabel care stocheaza setarile pentru utilizatori</Cm>
       <TblOpts/>
-      <Pk ClNs="id" nm="pkuser_settings"/>
+      <Pk ClNs="id" nm="pkuser_setting"/>
       <Cl au="0" df="" nm="id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul unei setari asociate utilizatorilor</Cm>
@@ -3043,17 +3006,17 @@
         <Cm>Valoarea implicita a setarii</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_user_settings_user_settings_group" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="user_settings_group" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="user_settings" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="user_setting_group" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="user_setting" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="setting_group" prCl="id"/>
       </Fk>
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
-    <Tbl UsSo="1" nm="user_settings_group">
+    <Tbl UsSo="1" nm="user_setting_group">
       <Cm>Tabel care stocheaza grupurile de setari pentru utilizatori</Cm>
       <TblOpts/>
-      <Pk ClNs="id" nm="pkuser_settings_group"/>
+      <Pk ClNs="id" nm="pkuser_setting_group"/>
       <Cl au="1" df="" nm="id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul grupului de setari</Cm>
@@ -3069,18 +3032,32 @@
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
-    <Tbl UsSo="1" nm="users">
-      <Cm>Tabel ce contine utilizatorii aplicatiei</Cm>
+    <Tbl UsSo="1" nm="user_setting_value">
+      <Cm>Tabel care stocheaza valorile setarilor utilizatorului</Cm>
       <TblOpts/>
-      <Pk ClNs="id" nm="pkusers"/>
-      <Cl au="0" df="" nm="id" nu="0">
+      <Pk ClNs="user_setting_id, user_id" nm="pkuser_setting_value"/>
+      <Cl au="0" df="" nm="user_setting_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
-        <Cm>Codul utilizatorului aplicatiei</Cm>
+        <Cm>Codul setarii corespunzatoare unui utilizator (refera atributul id al tabelului user_settings)</Cm>
       </Cl>
-      <Cl au="0" df="" nm="credential_provider" nu="0">
+      <Cl au="0" df="" nm="user_id" nu="0">
+        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Codul utilizatorului caruia ii apartine setarea (refera atributul id al tabelului users)</Cm>
+      </Cl>
+      <Cl au="0" df="" nm="value" nu="0">
         <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
-        <Cm>Furnizorul de informatii de acces pentru utilizatorul respectiv</Cm>
+        <Cm>Valoarea setarii respective</Cm>
       </Cl>
+      <Fk deAc="3" nm="fk_user_setting_value_user_settings" prLkCl="id" upAc="3">
+        <PrTb mn="0" nm="user_setting" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="user_setting_value" oe="0" sch="public" zr="1"/>
+        <ClPr cdCl="user_setting_id" prCl="id"/>
+      </Fk>
+      <Fk deAc="3" nm="fk_user_setting_value_users" prLkCl="id" upAc="3">
+        <PrTb mn="0" nm="user" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="user_setting_value" oe="0" sch="public" zr="1"/>
+        <ClPr cdCl="user_id" prCl="id"/>
+      </Fk>
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
@@ -3097,8 +3074,8 @@
         <Cm>Valoarea asociata elementului referit prin atributul item_id</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_value_item" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="item" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="0" nm="value" oe="1" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="item" oe="1" sch="public" zr="0"/>
+        <CdTb mn="0" nm="value" oe="1" sch="public" zr="1"/>
         <ClPr cdCl="item_id" prCl="id"/>
       </Fk>
       <UniqueConstraints/>
@@ -3152,13 +3129,13 @@
         <Cm>Fisierul din care provine variabila</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_formsSelectionVar_selection_variable_item" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="instance" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="variable" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="instance" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="variable" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="instance_id" prCl="id"/>
       </Fk>
       <Fk deAc="3" nm="fk_variable_documents" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="file" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="variable" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="file" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="variable" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="file_id" prCl="id"/>
       </Fk>
       <Idx clu="0" nm="Variables_QuestionnaireId_Order_Idx" unq="1">
@@ -3180,13 +3157,13 @@
         <Cm>Codul grupului caruia ii apartine variabila variable_id din instanta instance_id</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_instance_var_group_variable" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="variable" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="variable_vargroup" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="variable" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="variable_vargroup" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="variable_id" prCl="id"/>
       </Fk>
       <Fk deAc="3" nm="fk_instance_var_group_variable_group" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="vargroup" oe="1" sch="schemaA" zr="0"/>
-        <CdTb mn="1" nm="variable_vargroup" oe="0" sch="schemaA" zr="1"/>
+        <PrTb mn="0" nm="vargroup" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="variable_vargroup" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="vargroup_id" prCl="id"/>
       </Fk>
       <UniqueConstraints/>
@@ -3194,8 +3171,8 @@
     </Tbl>
     <CustomTypes/>
   </Sch>
-  <Dgm nm="diagramA">
-    <RnCf FtSz="9" lkStgy="OffsetDirect" zm="1.0">
+  <Dgm nm="diagram">
+    <RnCf FtSz="10" lkStgy="OffsetDirect" zm="1.0">
       <VbCfg>
         <Fg ky="Auto Number" vl="0"/>
         <Fg ky="Check" vl="0"/>
@@ -3205,259 +3182,259 @@
         <Fg ky="ENUM Values" vl="0"/>
         <Fg ky="Length" vl="1"/>
         <Fg ky="Name" vl="1"/>
-        <Fg ky="Nullable" vl="0"/>
+        <Fg ky="Nullable" vl="1"/>
         <Fg ky="Schema Name" vl="0"/>
         <Fg ky="Signed" vl="0"/>
       </VbCfg>
     </RnCf>
     <DiaProps>
-      <Show AllCols="1" FkCols="1" FkNms="1" PkCols="1"/>
+      <Show AllCols="1" FkCols="1" FkNms="0" PkCols="1"/>
       <ErNotation>DbwErNotation</ErNotation>
       <svg path=""/>
     </DiaProps>
-    <TbGl bkCl="ffffccff" sch="schemaA" tbl="org" x="1148" y="794"/>
-    <TbGl bkCl="ffffccff" sch="schemaA" tbl="person" x="1389" y="384"/>
-    <TbGl bkCl="ffffccff" sch="schemaA" tbl="prefix" x="1340" y="260"/>
-    <TbGl bkCl="ffffccff" sch="schemaA" tbl="suffix" x="1543" y="261"/>
-    <TbGl bkCl="ffffccff" sch="schemaA" tbl="emails" x="833" y="639"/>
-    <TbGl bkCl="ffffccff" sch="schemaA" tbl="address" x="824" y="242"/>
-    <TbGl bkCl="ffffccff" sch="schemaA" tbl="person_org" x="1143" y="629"/>
-    <TbGl bkCl="ffffccff" sch="schemaA" tbl="internet" x="1357" y="626"/>
-    <TbGl bkCl="ffccccff" sch="schemaA" tbl="city" x="460" y="148"/>
-    <TbGl bkCl="ffccccff" sch="schemaA" tbl="country" x="214" y="261"/>
-    <TbGl bkCl="ffffffcc" sch="schemaA" tbl="study" x="2468" y="485"/>
-    <TbGl bkCl="ffffffe6" sch="schemaA" tbl="instance" x="3062" y="522"/>
-    <TbGl bkCl="ffffffe6" sch="schemaA" tbl="study_org" x="1820" y="767"/>
-    <TbGl bkCl="ffffffe6" sch="schemaA" tbl="study_person" x="1911" y="376"/>
-    <TbGl bkCl="ffffffe6" sch="schemaA" tbl="study_descr" x="2345" y="644"/>
-    <TbGl bkCl="ffffffe6" sch="schemaA" tbl="study_org_assoc" x="2278" y="748"/>
-    <TbGl bkCl="ffffffe6" sch="schemaA" tbl="study_person_asoc" x="1814" y="228"/>
-    <TbGl bkCl="ffffffe6" sch="schemaA" tbl="instance_person" x="2862" y="424"/>
-    <TbGl bkCl="ffffffe6" sch="schemaA" tbl="instance_org" x="2942" y="850"/>
-    <TbGl bkCl="ffffffe6" sch="schemaA" tbl="instance_person_assoc" x="2850" y="613"/>
-    <TbGl bkCl="ffffffe6" sch="schemaA" tbl="instance_org_assoc" x="2846" y="713"/>
-    <TbGl bkCl="ffffffe6" sch="schemaA" tbl="instance_descr" x="3364" y="606"/>
-    <TbGl bkCl="ffffccff" sch="schemaA" tbl="methodology" x="3301" y="230"/>
-    <TbGl bkCl="ffffcc99" sch="schemaA" tbl="file" x="3003" y="1154"/>
-    <TbGl bkCl="ffffffe6" sch="schemaA" tbl="instance_documents" x="3132" y="777"/>
-    <TbGl bkCl="ffffffe6" sch="schemaA" tbl="study_documents" x="2469" y="863"/>
-    <TbGl bkCl="ffffcc99" sch="schemaA" tbl="filetype" x="3361" y="1179"/>
-    <TbGl bkCl="ffffccff" sch="schemaA" tbl="org_prefix" x="801" y="774"/>
-    <TbGl bkCl="ffffccff" sch="schemaA" tbl="org_sufix" x="800" y="848"/>
-    <TbGl bkCl="ffffccff" sch="schemaA" tbl="org_relations" x="1127" y="935"/>
-    <TbGl bkCl="ffffccff" sch="schemaA" tbl="org_relation_type" x="1159" y="1075"/>
-    <TbGl bkCl="ffffccff" sch="schemaA" tbl="org_address" x="837" y="470"/>
-    <TbGl bkCl="ffffccff" sch="schemaA" tbl="person_address" x="1136" y="255"/>
-    <TbGl bkCl="ffffffe6" sch="schemaA" tbl="unit_analysis" x="3377" y="405"/>
-    <TbGl bkCl="ffffccff" sch="schemaA" tbl="person_role" x="1136" y="413"/>
-    <TbGl bkCl="ffcc99ff" sch="schemaA" tbl="file_acl" x="3007" y="1331"/>
-    <TbGl bkCl="ffcc99ff" sch="schemaA" tbl="study_acl" x="2410" y="330"/>
-    <TbGl bkCl="ffcc99ff" sch="schemaA" tbl="instance_acl" x="3125" y="312"/>
-    <TbGl bkCl="ffcc99ff" sch="schemaA" tbl="study_org_acl" x="1852" y="951"/>
-    <TbGl bkCl="ffcc99ff" sch="schemaA" tbl="study_person_acl" x="2093" y="227"/>
-    <TbGl bkCl="ffffffcc" sch="schemaA" tbl="catalog" x="1826" y="483"/>
-    <TbGl bkCl="ffffffcc" sch="schemaA" tbl="catalog_study" x="2138" y="489"/>
-    <TbGl bkCl="ffcc99ff" sch="schemaA" tbl="catalog_acl" x="1813" y="652"/>
-    <TbGl bkCl="ffccffcc" sch="schemaA" tbl="users" x="2095" y="1253"/>
-    <TbGl bkCl="ffccffcc" sch="schemaA" tbl="auth_data" x="2249" y="1115"/>
-    <TbGl bkCl="ffccffcc" sch="schemaA" tbl="user_auth_log" x="2510" y="1295"/>
-    <TbGl bkCl="ffccffcc" sch="schemaA" tbl="role" x="2102" y="1534"/>
-    <TbGl bkCl="ffccffcc" sch="schemaA" tbl="user_role" x="2122" y="1411"/>
-    <TbGl bkCl="ffff3333" sch="schemaA" tbl="cms_files" x="4641" y="1263"/>
-    <TbGl bkCl="ffff3333" sch="schemaA" tbl="cms_folders" x="4308" y="1319"/>
-    <TbGl bkCl="ffff3333" sch="schemaA" tbl="cms_page" x="4307" y="1197"/>
-    <TbGl bkCl="ffff3333" sch="schemaA" tbl="cms_layout" x="4296" y="985"/>
-    <TbGl bkCl="ffff3333" sch="schemaA" tbl="cms_layout_group" x="3964" y="984"/>
-    <TbGl bkCl="ffff3333" sch="schemaA" tbl="cms_snippet" x="4003" y="1432"/>
-    <TbGl bkCl="ffff3333" sch="schemaA" tbl="cms_snippet_group" x="4462" y="1427"/>
-    <TbGl bkCl="ffff6666" sch="schemaA" tbl="cms_page_content" x="4639" y="1095"/>
-    <TbGl bkCl="ffcccc00" sch="schemaA" tbl="setting_group" x="4986" y="1383"/>
-    <TbGl bkCl="ffcccc00" sch="schemaA" tbl="setting" x="4971" y="1149"/>
-    <TbGl bkCl="ffcccc00" sch="schemaA" tbl="setting_values" x="4998" y="988"/>
-    <TbGl bkCl="ffccffcc" sch="schemaA" tbl="user_messages" x="1920" y="1411"/>
-    <TbGl bkCl="ffccffcc" sch="schemaA" tbl="user_settings_group" x="2550" y="1412"/>
-    <TbGl bkCl="ffccffcc" sch="schemaA" tbl="user_settings" x="2411" y="1522"/>
-    <TbGl bkCl="ffccffcc" sch="schemaA" tbl="user_setting_value" x="2328" y="1410"/>
-    <TbGl bkCl="ff9999ff" sch="schemaA" tbl="variable" x="4258" y="370"/>
-    <TbGl bkCl="ff9999ff" sch="schemaA" tbl="selection_variable_item" x="4741" y="328"/>
-    <TbGl bkCl="ff9999ff" sch="schemaA" tbl="value" x="4952" y="456"/>
-    <TbGl bkCl="ff9999ff" sch="schemaA" tbl="scale" x="5040" y="599"/>
-    <TbGl bkCl="ff9999ff" sch="schemaA" tbl="edited_variable" x="4296" y="214"/>
-    <TbGl bkCl="ff9999ff" sch="schemaA" tbl="concept" x="3894" y="353"/>
-    <TbGl bkCl="ff9999ff" sch="schemaA" tbl="concept_variable" x="3901" y="557"/>
-    <TbGl bkCl="ffccffcc" sch="schemaA" tbl="form_selection_var" x="4720" y="65"/>
-    <TbGl bkCl="ffccffcc" sch="schemaA" tbl="form_edited_number_var" x="4434" y="57"/>
-    <TbGl bkCl="ffccffcc" sch="schemaA" tbl="form_edited_text_var" x="4205" y="35"/>
-    <TbGl bkCl="ff9999ff" sch="schemaA" tbl="skip" x="4662" y="479"/>
-    <TbGl bkCl="ff9999ff" sch="schemaA" tbl="item" x="5053" y="358"/>
-    <TbGl bkCl="ff9999ff" sch="schemaA" tbl="selection_variable" x="4519" y="210"/>
-    <TbGl bkCl="ff9999ff" sch="schemaA" tbl="vargroup" x="4695" y="671"/>
-    <TbGl bkCl="ff9999ff" sch="schemaA" tbl="variable_vargroup" x="4365" y="673"/>
-    <TbGl bkCl="ff9999ff" sch="schemaA" tbl="frequency" x="5041" y="180"/>
-    <TbGl bkCl="ffccccff" sch="schemaA" tbl="other_statistics" x="3885" y="251"/>
-    <TbGl bkCl="ffccccff" sch="schemaA" tbl="region" x="48" y="153"/>
-    <TbGl bkCl="ffccccff" sch="schemaA" tbl="regiontype" x="56" y="47"/>
-    <TbGl bkCl="ffccccff" sch="schemaA" tbl="region_city" x="290" y="52"/>
-    <TbGl bkCl="ffccffcc" sch="schemaA" tbl="sources" x="238" y="823"/>
-    <TbGl bkCl="ffccffcc" sch="schemaA" tbl="sourcestudy" x="229" y="672"/>
-    <TbGl bkCl="ffccffcc" sch="schemaA" tbl="sourcetype" x="378" y="936"/>
-    <TbGl bkCl="ffccffcc" sch="schemaA" tbl="sourcetype_history" x="54" y="929"/>
-    <TbGl bkCl="ffccccff" sch="schemaA" tbl="audit" x="1311" y="1245"/>
-    <TbGl bkCl="ffffffcc" sch="schemaA" tbl="title" x="2567" y="579"/>
-    <TbGl bkCl="ffffffcc" sch="schemaA" tbl="title_type" x="2620" y="698"/>
-    <TbGl bkCl="ffffccff" sch="schemaA" tbl="time_meth_type" x="3339" y="97"/>
-    <TbGl bkCl="ffffccff" sch="schemaA" tbl="collection_model_type" x="3575" y="16"/>
-    <TbGl bkCl="ffffccff" sch="schemaA" tbl="meth_coll_type" x="3553" y="100"/>
-    <TbGl bkCl="ffccccff" sch="schemaA" tbl="topic" x="2537" y="45"/>
-    <TbGl bkCl="ffccccff" sch="schemaA" tbl="language" x="1845" y="51"/>
-    <TbGl bkCl="ffccccff" sch="schemaA" tbl="translated_topic" x="2163" y="48"/>
-    <TbGl bkCl="ffffffe6" sch="schemaA" tbl="instance_topic" x="2992" y="72"/>
-    <TbGl bkCl="ffccccff" sch="schemaA" tbl="audit_row_id" x="980" y="1249"/>
-    <TbGl bkCl="ffccccff" sch="schemaA" tbl="audit_fields" x="1313" y="1410"/>
-    <TbGl bkCl="ffccffcc" sch="schemaA" tbl="sourcestudy_type" x="371" y="523"/>
-    <TbGl bkCl="ffccffcc" sch="schemaA" tbl="sourcestudy_type_history" x="48" y="518"/>
-    <TbGl bkCl="ffffffcc" sch="schemaA" tbl="study_topic" x="2629" y="332"/>
-    <TbGl bkCl="ffccccff" sch="schemaA" tbl="keyword" x="2366" y="110"/>
-    <TbGl bkCl="ffffffcc" sch="schemaA" tbl="study_keyword" x="2520" y="240"/>
-    <TbGl bkCl="ffffffe6" sch="schemaA" tbl="instance_keyword" x="2882" y="238"/>
-    <TbGl bkCl="ffccffff" sch="schemaA" tbl="person_links" x="1806" y="1128"/>
-    <TbGl bkCl="ffccffff" sch="schemaA" tbl="user_profile" x="2564" y="1122"/>
-    <TbGl bkCl="ffff3333" sch="schemaA" tbl="news" x="3984" y="1184"/>
-    <TbGl bkCl="ffccccff" sch="schemaA" tbl="form" x="3892" y="45"/>
-    <FkGl bkCl="ff000000" nm="schemaA.address.fk_address_city"/>
-    <FkGl bkCl="ff000000" nm="schemaA.address.fk_address_country"/>
-    <FkGl bkCl="ff000000" nm="schemaA.audit.fk_audit_users"/>
-    <FkGl bkCl="ff000000" nm="schemaA.audit_fields.fk_audit_fields_audit"/>
-    <FkGl bkCl="ff000000" nm="schemaA.audit_row_id.fk_audit_row_id_audit"/>
-    <FkGl bkCl="ff000000" nm="schemaA.auth_data.fk_auth_data_users"/>
-    <FkGl bkCl="ff000000" nm="schemaA.catalog.fk_catalog_catalog"/>
-    <FkGl bkCl="ff000000" nm="schemaA.catalog.fk_catalog_users"/>
-    <FkGl bkCl="ff000000" nm="schemaA.catalog_acl.fk_catalog_acl_catalog"/>
-    <FkGl bkCl="ff000000" nm="schemaA.catalog_study.fk_catalog_study_catalog"/>
-    <FkGl bkCl="ff000000" nm="schemaA.catalog_study.fk_catalog_study_study"/>
-    <FkGl bkCl="ff000000" nm="schemaA.catalog_study.fk_catalog_study_users"/>
-    <FkGl bkCl="ff000000" nm="schemaA.city.fk_city_country"/>
-    <FkGl bkCl="ff000000" nm="schemaA.cms_files.fk_cms_files_cms_folders"/>
-    <FkGl bkCl="ff000000" nm="schemaA.cms_folders.fk_cms_folders_cms_folders"/>
-    <FkGl bkCl="ff000000" nm="schemaA.cms_layout.fk_cms_layout_cms_layout_group"/>
-    <FkGl bkCl="ff000000" nm="schemaA.cms_page.fk_cms_page_cms_layout"/>
-    <FkGl bkCl="ff000000" nm="schemaA.cms_page.fk_cms_page_users"/>
-    <FkGl bkCl="ff000000" nm="schemaA.cms_page_content.fk_cms_page_content_cms_page"/>
-    <FkGl bkCl="ff000000" nm="schemaA.cms_snippet.fk_cms_snippet_cms_snippet_group"/>
-    <FkGl bkCl="ff000000" nm="schemaA.cms_snippet_group.fk_cms_snippet_group_cms_snippet_group"/>
-    <FkGl bkCl="ff000000" nm="schemaA.concept_variable.fk_concept_variable_variable"/>
-    <FkGl bkCl="ff000000" nm="schemaA.concept_variable.fk_Concept_Variables_Concepts"/>
-    <FkGl bkCl="ff000000" nm="schemaA.edited_variable.fk_custom_variable_variable"/>
-    <FkGl bkCl="ff000000" nm="schemaA.emails.fk_emails_org"/>
-    <FkGl bkCl="ff000000" nm="schemaA.emails.fk_emails_person"/>
-    <FkGl bkCl="ff000000" nm="schemaA.file.fk_documents_document_types"/>
-    <FkGl bkCl="ff000000" nm="schemaA.file_acl.fk_documents_acl_documents"/>
-    <FkGl bkCl="ff000000" nm="schemaA.form.fk_form_instance"/>
-    <FkGl bkCl="ff000000" nm="schemaA.form_edited_number_var.fk_form_custom_number_var_custom_variable"/>
-    <FkGl bkCl="ff000000" nm="schemaA.form_edited_number_var.fk_form_edited_number_var_form"/>
-    <FkGl bkCl="ff000000" nm="schemaA.form_edited_text_var.fk_form_custom_text_var_custom_variable"/>
-    <FkGl bkCl="ff000000" nm="schemaA.form_edited_text_var.fk_form_edited_text_var_form"/>
-    <FkGl bkCl="ff000000" nm="schemaA.form_selection_var.fk_form_selection_var_form"/>
-    <FkGl bkCl="ff000000" nm="schemaA.form_selection_var.fk_form_selection_var_selection_variable_item"/>
-    <FkGl bkCl="ff000000" nm="schemaA.frequency.fk_frequency_selection_variable"/>
-    <FkGl bkCl="ff000000" nm="schemaA.instance.fk_instance_study"/>
-    <FkGl bkCl="ff000000" nm="schemaA.instance.fk_instance_unit_analysis"/>
-    <FkGl bkCl="ff000000" nm="schemaA.instance_acl.fk_instance_acl_instance"/>
-    <FkGl bkCl="ff000000" nm="schemaA.instance_descr.fk_instance_descr_instance"/>
-    <FkGl bkCl="ff000000" nm="schemaA.instance_documents.fk_instance_documents_documents"/>
-    <FkGl bkCl="ff000000" nm="schemaA.instance_documents.fk_instance_documents_instance"/>
-    <FkGl bkCl="ff000000" nm="schemaA.instance_keyword.fk_instance_keyword_instance"/>
-    <FkGl bkCl="ff000000" nm="schemaA.instance_keyword.fk_instance_keyword_keyword"/>
-    <FkGl bkCl="ff000000" nm="schemaA.instance_org.fk_instance_org_instance"/>
-    <FkGl bkCl="ff000000" nm="schemaA.instance_org.fk_instance_org_instance_org_assoc"/>
-    <FkGl bkCl="ff000000" nm="schemaA.instance_org.fk_instance_org_org"/>
-    <FkGl bkCl="ff000000" nm="schemaA.instance_person.fk_instance_person_instance"/>
-    <FkGl bkCl="ff000000" nm="schemaA.instance_person.fk_instance_person_instance_person_assoc"/>
-    <FkGl bkCl="ff000000" nm="schemaA.instance_person.fk_instance_person_person"/>
-    <FkGl bkCl="ff000000" nm="schemaA.instance_topic.fk_instance_topic_instance"/>
-    <FkGl bkCl="ff000000" nm="schemaA.instance_topic.fk_instance_topic_topic"/>
-    <FkGl bkCl="ff000000" nm="schemaA.internet.fk_internet_org"/>
-    <FkGl bkCl="ff000000" nm="schemaA.internet.fk_internet_person"/>
-    <FkGl bkCl="ff000000" nm="schemaA.meth_coll_type.fk_meth_coll_type_collection_model_type"/>
-    <FkGl bkCl="ff000000" nm="schemaA.meth_coll_type.fk_meth_coll_type_methodology"/>
-    <FkGl bkCl="ff000000" nm="schemaA.methodology.fk_methodology_instance"/>
-    <FkGl bkCl="ff000000" nm="schemaA.methodology.fk_methodology_time_meth_type"/>
-    <FkGl bkCl="ff000000" nm="schemaA.news.fk_news_users"/>
-    <FkGl bkCl="ff000000" nm="schemaA.org.fk_org_org_prefix"/>
-    <FkGl bkCl="ff000000" nm="schemaA.org.fk_org_org_sufix"/>
-    <FkGl bkCl="ff000000" nm="schemaA.org_address.fk_org_address_address"/>
-    <FkGl bkCl="ff000000" nm="schemaA.org_address.fk_org_address_org"/>
-    <FkGl bkCl="ff000000" nm="schemaA.org_relations.fk_org_2_relations_org"/>
-    <FkGl bkCl="ff000000" nm="schemaA.org_relations.fk_org_relations_org"/>
-    <FkGl bkCl="ff000000" nm="schemaA.org_relations.fk_org_relations_org_relation_type"/>
-    <FkGl bkCl="ff000000" nm="schemaA.other_statistics.fk_other_statistics_edited_variable"/>
-    <FkGl bkCl="ff000000" nm="schemaA.person.fk_person_prefix"/>
-    <FkGl bkCl="ff000000" nm="schemaA.person.fk_person_suffix"/>
-    <FkGl bkCl="ff000000" nm="schemaA.person_address.fk_person_address_address"/>
-    <FkGl bkCl="ff000000" nm="schemaA.person_address.fk_person_address_person"/>
-    <FkGl bkCl="ff000000" nm="schemaA.person_links.fk_person_links_person"/>
-    <FkGl bkCl="ff000000" nm="schemaA.person_links.fk_person_links_users"/>
-    <FkGl bkCl="ff000000" nm="schemaA.person_links.fk_person_links_users2"/>
-    <FkGl bkCl="ff000000" nm="schemaA.person_org.fk_person_org_org"/>
-    <FkGl bkCl="ff000000" nm="schemaA.person_org.fk_person_org_person"/>
-    <FkGl bkCl="ff000000" nm="schemaA.person_org.fk_person_org_person_role"/>
-    <FkGl bkCl="ff000000" nm="schemaA.region.fk_region_country"/>
-    <FkGl bkCl="ff000000" nm="schemaA.region.fk_region_region_type"/>
-    <FkGl bkCl="ff000000" nm="schemaA.region_city.fk_region_city_city"/>
-    <FkGl bkCl="ff000000" nm="schemaA.region_city.fk_region_city_region"/>
-    <FkGl bkCl="ff000000" nm="schemaA.scale.fk_scale_item"/>
-    <FkGl bkCl="ff000000" nm="schemaA.scale.fk_scale_max_value"/>
-    <FkGl bkCl="ff000000" nm="schemaA.scale.fk_scale_min_value"/>
-    <FkGl bkCl="ff000000" nm="schemaA.selection_variable.fk_selection_variable_variable"/>
-    <FkGl bkCl="ff000000" nm="schemaA.selection_variable_item.fk_selection_variable_item_documents"/>
-    <FkGl bkCl="ff000000" nm="schemaA.selection_variable_item.fk_selection_variable_item_item"/>
-    <FkGl bkCl="ff000000" nm="schemaA.selection_variable_item.fk_selection_variable_item_selection_variable"/>
-    <FkGl bkCl="ff000000" nm="schemaA.setting.fk_setting_setting_group"/>
-    <FkGl bkCl="ff000000" nm="schemaA.setting_group.fk_setting_group_setting_group"/>
-    <FkGl bkCl="ff000000" nm="schemaA.setting_values.fk_setting_values_setting"/>
-    <FkGl bkCl="ff000000" nm="schemaA.skip.fk_skip_next_variable"/>
-    <FkGl bkCl="ff000000" nm="schemaA.skip.fk_skip_variable"/>
-    <FkGl bkCl="ff000000" nm="schemaA.sources.fk_sources_org"/>
-    <FkGl bkCl="ff000000" nm="schemaA.sources.fk_sources_sourcetype"/>
-    <FkGl bkCl="ff000000" nm="schemaA.sourcestudy.fk_sourcestudy_sources"/>
-    <FkGl bkCl="ff000000" nm="schemaA.sourcestudy.fk_sourcestudy_sourcestudy_type"/>
-    <FkGl bkCl="ff000000" nm="schemaA.sourcestudy_type_history.fk_sourcestudy_type_history_sourcestudy"/>
-    <FkGl bkCl="ff000000" nm="schemaA.sourcestudy_type_history.fk_sourcestudy_type_history_sourcestudy_type"/>
-    <FkGl bkCl="ff000000" nm="schemaA.sourcetype_history.fk_source_type_history_sources"/>
-    <FkGl bkCl="ff000000" nm="schemaA.sourcetype_history.fk_source_type_history_sourcetype"/>
-    <FkGl bkCl="ff000000" nm="schemaA.study_acl.fk_study_acl_study"/>
-    <FkGl bkCl="ff000000" nm="schemaA.study_descr.fk_study_descr_study"/>
-    <FkGl bkCl="ff000000" nm="schemaA.study_documents.fk_study_documents_documents"/>
-    <FkGl bkCl="ff000000" nm="schemaA.study_documents.fk_study_documents_study"/>
-    <FkGl bkCl="ff000000" nm="schemaA.study_keyword.fk_study_keyword_keyword"/>
-    <FkGl bkCl="ff000000" nm="schemaA.study_keyword.fk_study_keyword_study"/>
-    <FkGl bkCl="ff000000" nm="schemaA.study_org.fk_studiu_org_org"/>
-    <FkGl bkCl="ff000000" nm="schemaA.study_org.fk_studiu_org_studiu_org_asoc"/>
-    <FkGl bkCl="ff000000" nm="schemaA.study_org.fk_studiu_org_study"/>
-    <FkGl bkCl="ff000000" nm="schemaA.study_org_acl.fk_study_org_acl_study_org"/>
-    <FkGl bkCl="ff000000" nm="schemaA.study_person.fk_study_person_person"/>
-    <FkGl bkCl="ff000000" nm="schemaA.study_person.fk_study_person_studiu_person_asoc"/>
-    <FkGl bkCl="ff000000" nm="schemaA.study_person.fk_study_person_study"/>
-    <FkGl bkCl="ff000000" nm="schemaA.study_person_acl.fk_study_person_acl_study_person"/>
-    <FkGl bkCl="ff000000" nm="schemaA.study_topic.fk_study_topic_study"/>
-    <FkGl bkCl="ff000000" nm="schemaA.study_topic.fk_study_topic_topic"/>
-    <FkGl bkCl="ff000000" nm="schemaA.title.fk_title_study"/>
-    <FkGl bkCl="ff000000" nm="schemaA.title.fk_title_title_type"/>
-    <FkGl bkCl="ff000000" nm="schemaA.translated_topic.fk_translated_topic_language"/>
-    <FkGl bkCl="ff000000" nm="schemaA.translated_topic.fk_translated_topic_topic"/>
-    <FkGl bkCl="ff000000" nm="schemaA.user_auth_log.fk_user_auth_log_users"/>
-    <FkGl bkCl="ff000000" nm="schemaA.user_messages.fk_user_messages_users"/>
-    <FkGl bkCl="ff000000" nm="schemaA.user_profile.fk_user_profile_users"/>
-    <FkGl bkCl="ff000000" nm="schemaA.user_role.fk_user_role_role"/>
-    <FkGl bkCl="ff000000" nm="schemaA.user_role.fk_user_role_users"/>
-    <FkGl bkCl="ff000000" nm="schemaA.user_setting_value.fk_user_setting_value_user_settings"/>
-    <FkGl bkCl="ff000000" nm="schemaA.user_setting_value.fk_user_setting_value_users"/>
-    <FkGl bkCl="ff000000" nm="schemaA.user_settings.fk_user_settings_user_settings_group"/>
-    <FkGl bkCl="ff000000" nm="schemaA.value.fk_value_item"/>
-    <FkGl bkCl="ff000000" nm="schemaA.variable.fk_formsSelectionVar_selection_variable_item"/>
-    <FkGl bkCl="ff000000" nm="schemaA.variable.fk_variable_documents"/>
-    <FkGl bkCl="ff000000" nm="schemaA.variable_vargroup.fk_instance_var_group_variable"/>
-    <FkGl bkCl="ff000000" nm="schemaA.variable_vargroup.fk_instance_var_group_variable_group"/>
+    <TbGl bkCl="ffffccff" sch="public" tbl="org" x="1148" y="794"/>
+    <TbGl bkCl="ffffccff" sch="public" tbl="person" x="1389" y="384"/>
+    <TbGl bkCl="ffffccff" sch="public" tbl="prefix" x="1340" y="260"/>
+    <TbGl bkCl="ffffccff" sch="public" tbl="suffix" x="1543" y="261"/>
+    <TbGl bkCl="ffffccff" sch="public" tbl="email" x="833" y="639"/>
+    <TbGl bkCl="ffffccff" sch="public" tbl="address" x="824" y="242"/>
+    <TbGl bkCl="ffffccff" sch="public" tbl="person_org" x="1143" y="629"/>
+    <TbGl bkCl="ffffccff" sch="public" tbl="internet" x="1357" y="626"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="city" x="460" y="148"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="country" x="214" y="261"/>
+    <TbGl bkCl="ffffffcc" sch="public" tbl="study" x="2468" y="485"/>
+    <TbGl bkCl="ffffffe6" sch="public" tbl="instance" x="3062" y="522"/>
+    <TbGl bkCl="ffffffe6" sch="public" tbl="study_org" x="1820" y="767"/>
+    <TbGl bkCl="ffffffe6" sch="public" tbl="study_person" x="1911" y="376"/>
+    <TbGl bkCl="ffffffe6" sch="public" tbl="study_descr" x="2345" y="644"/>
+    <TbGl bkCl="ffffffe6" sch="public" tbl="study_org_assoc" x="2278" y="748"/>
+    <TbGl bkCl="ffffffe6" sch="public" tbl="study_person_assoc" x="1814" y="228"/>
+    <TbGl bkCl="ffffffe6" sch="public" tbl="instance_person" x="2862" y="424"/>
+    <TbGl bkCl="ffffffe6" sch="public" tbl="instance_org" x="2942" y="850"/>
+    <TbGl bkCl="ffffffe6" sch="public" tbl="instance_person_assoc" x="2843" y="634"/>
+    <TbGl bkCl="ffffffe6" sch="public" tbl="instance_org_assoc" x="2846" y="713"/>
+    <TbGl bkCl="ffffffe6" sch="public" tbl="instance_descr" x="3364" y="606"/>
+    <TbGl bkCl="ffffccff" sch="public" tbl="methodology" x="3301" y="230"/>
+    <TbGl bkCl="ffffcc99" sch="public" tbl="file" x="3003" y="1154"/>
+    <TbGl bkCl="ffffffe6" sch="public" tbl="instance_documents" x="3132" y="777"/>
+    <TbGl bkCl="ffffffe6" sch="public" tbl="study_file" x="2469" y="863"/>
+    <TbGl bkCl="ffffcc99" sch="public" tbl="filetype" x="3361" y="1179"/>
+    <TbGl bkCl="ffffccff" sch="public" tbl="org_prefix" x="801" y="774"/>
+    <TbGl bkCl="ffffccff" sch="public" tbl="org_sufix" x="800" y="848"/>
+    <TbGl bkCl="ffffccff" sch="public" tbl="org_relations" x="1127" y="935"/>
+    <TbGl bkCl="ffffccff" sch="public" tbl="org_relation_type" x="1159" y="1075"/>
+    <TbGl bkCl="ffffccff" sch="public" tbl="org_address" x="837" y="470"/>
+    <TbGl bkCl="ffffccff" sch="public" tbl="person_address" x="1136" y="255"/>
+    <TbGl bkCl="ffffffe6" sch="public" tbl="unit_analysis" x="3377" y="405"/>
+    <TbGl bkCl="ffffccff" sch="public" tbl="person_role" x="1136" y="413"/>
+    <TbGl bkCl="ffcc99ff" sch="public" tbl="file_acl" x="3007" y="1331"/>
+    <TbGl bkCl="ffcc99ff" sch="public" tbl="study_acl" x="2410" y="330"/>
+    <TbGl bkCl="ffcc99ff" sch="public" tbl="instance_acl" x="3125" y="312"/>
+    <TbGl bkCl="ffcc99ff" sch="public" tbl="study_org_acl" x="1852" y="951"/>
+    <TbGl bkCl="ffcc99ff" sch="public" tbl="study_person_acl" x="2093" y="227"/>
+    <TbGl bkCl="ffffffcc" sch="public" tbl="catalog" x="1826" y="483"/>
+    <TbGl bkCl="ffffffcc" sch="public" tbl="catalog_study" x="2138" y="489"/>
+    <TbGl bkCl="ffcc99ff" sch="public" tbl="catalog_acl" x="1813" y="652"/>
+    <TbGl bkCl="ffccffcc" sch="public" tbl="user" x="2095" y="1253"/>
+    <TbGl bkCl="ffccffcc" sch="public" tbl="auth_data" x="2249" y="1115"/>
+    <TbGl bkCl="ffccffcc" sch="public" tbl="user_auth_log" x="2510" y="1295"/>
+    <TbGl bkCl="ffccffcc" sch="public" tbl="role" x="2102" y="1534"/>
+    <TbGl bkCl="ffccffcc" sch="public" tbl="user_role" x="2122" y="1411"/>
+    <TbGl bkCl="ffff3333" sch="public" tbl="cms_file" x="4641" y="1263"/>
+    <TbGl bkCl="ffff3333" sch="public" tbl="cms_folder" x="4308" y="1319"/>
+    <TbGl bkCl="ffff3333" sch="public" tbl="cms_page" x="4307" y="1197"/>
+    <TbGl bkCl="ffff3333" sch="public" tbl="cms_layout" x="4296" y="985"/>
+    <TbGl bkCl="ffff3333" sch="public" tbl="cms_layout_group" x="3964" y="984"/>
+    <TbGl bkCl="ffff3333" sch="public" tbl="cms_snippet" x="4003" y="1432"/>
+    <TbGl bkCl="ffff3333" sch="public" tbl="cms_snippet_group" x="4462" y="1427"/>
+    <TbGl bkCl="ffff6666" sch="public" tbl="cms_page_content" x="4639" y="1095"/>
+    <TbGl bkCl="ffcccc00" sch="public" tbl="setting_group" x="4986" y="1383"/>
+    <TbGl bkCl="ffcccc00" sch="public" tbl="setting" x="4971" y="1149"/>
+    <TbGl bkCl="ffcccc00" sch="public" tbl="setting_value" x="4998" y="988"/>
+    <TbGl bkCl="ffccffcc" sch="public" tbl="user_message" x="1920" y="1411"/>
+    <TbGl bkCl="ffccffcc" sch="public" tbl="user_setting_group" x="2550" y="1412"/>
+    <TbGl bkCl="ffccffcc" sch="public" tbl="user_setting" x="2411" y="1522"/>
+    <TbGl bkCl="ffccffcc" sch="public" tbl="user_setting_value" x="2328" y="1410"/>
+    <TbGl bkCl="ff9999ff" sch="public" tbl="variable" x="4258" y="370"/>
+    <TbGl bkCl="ff9999ff" sch="public" tbl="selection_variable_item" x="4741" y="328"/>
+    <TbGl bkCl="ff9999ff" sch="public" tbl="value" x="4952" y="456"/>
+    <TbGl bkCl="ff9999ff" sch="public" tbl="scale" x="5040" y="599"/>
+    <TbGl bkCl="ff9999ff" sch="public" tbl="edited_variable" x="4296" y="214"/>
+    <TbGl bkCl="ff9999ff" sch="public" tbl="concept" x="3894" y="353"/>
+    <TbGl bkCl="ff9999ff" sch="public" tbl="concept_variable" x="3901" y="557"/>
+    <TbGl bkCl="ffccffcc" sch="public" tbl="form_selection_var" x="4720" y="65"/>
+    <TbGl bkCl="ffccffcc" sch="public" tbl="form_edited_number_var" x="4434" y="57"/>
+    <TbGl bkCl="ffccffcc" sch="public" tbl="form_edited_text_var" x="4205" y="35"/>
+    <TbGl bkCl="ff9999ff" sch="public" tbl="skip" x="4662" y="479"/>
+    <TbGl bkCl="ff9999ff" sch="public" tbl="item" x="5053" y="358"/>
+    <TbGl bkCl="ff9999ff" sch="public" tbl="selection_variable" x="4519" y="210"/>
+    <TbGl bkCl="ff9999ff" sch="public" tbl="vargroup" x="4695" y="671"/>
+    <TbGl bkCl="ff9999ff" sch="public" tbl="variable_vargroup" x="4365" y="673"/>
+    <TbGl bkCl="ff9999ff" sch="public" tbl="frequency" x="5041" y="180"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="other_statistic" x="3885" y="251"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="region" x="48" y="153"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="regiontype" x="56" y="47"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="region_city" x="290" y="52"/>
+    <TbGl bkCl="ffccffcc" sch="public" tbl="source" x="238" y="823"/>
+    <TbGl bkCl="ffccffcc" sch="public" tbl="sourcestudy" x="229" y="672"/>
+    <TbGl bkCl="ffccffcc" sch="public" tbl="sourcetype" x="378" y="936"/>
+    <TbGl bkCl="ffccffcc" sch="public" tbl="sourcetype_history" x="54" y="929"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="audit" x="1311" y="1245"/>
+    <TbGl bkCl="ffffffcc" sch="public" tbl="title" x="2567" y="579"/>
+    <TbGl bkCl="ffffffcc" sch="public" tbl="title_type" x="2620" y="698"/>
+    <TbGl bkCl="ffffccff" sch="public" tbl="time_meth_type" x="3339" y="97"/>
+    <TbGl bkCl="ffffccff" sch="public" tbl="collection_model_type" x="3575" y="16"/>
+    <TbGl bkCl="ffffccff" sch="public" tbl="meth_coll_type" x="3553" y="100"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="topic" x="2537" y="45"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="language" x="1845" y="51"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="translated_topic" x="2163" y="48"/>
+    <TbGl bkCl="ffffffe6" sch="public" tbl="instance_topic" x="2992" y="72"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="audit_row_id" x="980" y="1249"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="audit_field" x="1313" y="1410"/>
+    <TbGl bkCl="ffccffcc" sch="public" tbl="sourcestudy_type" x="371" y="523"/>
+    <TbGl bkCl="ffccffcc" sch="public" tbl="sourcestudy_type_history" x="48" y="518"/>
+    <TbGl bkCl="ffffffcc" sch="public" tbl="study_topic" x="2629" y="332"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="keyword" x="2366" y="110"/>
+    <TbGl bkCl="ffffffcc" sch="public" tbl="study_keyword" x="2520" y="240"/>
+    <TbGl bkCl="ffffffe6" sch="public" tbl="instance_keyword" x="2882" y="238"/>
+    <TbGl bkCl="ffccffff" sch="public" tbl="person_links" x="1806" y="1128"/>
+    <TbGl bkCl="ffccffff" sch="public" tbl="user_profile" x="2564" y="1122"/>
+    <TbGl bkCl="ffff3333" sch="public" tbl="news" x="3984" y="1184"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="form" x="3892" y="45"/>
+    <FkGl bkCl="ff000000" nm="public.address.fk_address_city"/>
+    <FkGl bkCl="ff000000" nm="public.address.fk_address_country"/>
+    <FkGl bkCl="ff000000" nm="public.audit.fk_audit_users"/>
+    <FkGl bkCl="ff000000" nm="public.audit_field.fk_audit_fields_audit"/>
+    <FkGl bkCl="ff000000" nm="public.audit_row_id.fk_audit_row_id_audit"/>
+    <FkGl bkCl="ff000000" nm="public.auth_data.fk_auth_data_users"/>
+    <FkGl bkCl="ff000000" nm="public.catalog.fk_catalog_catalog"/>
+    <FkGl bkCl="ff000000" nm="public.catalog.fk_catalog_users"/>
+    <FkGl bkCl="ff000000" nm="public.catalog_acl.fk_catalog_acl_catalog"/>
+    <FkGl bkCl="ff000000" nm="public.catalog_study.fk_catalog_study_catalog"/>
+    <FkGl bkCl="ff000000" nm="public.catalog_study.fk_catalog_study_study"/>
+    <FkGl bkCl="ff000000" nm="public.catalog_study.fk_catalog_study_users"/>
+    <FkGl bkCl="ff000000" nm="public.city.fk_city_country"/>
+    <FkGl bkCl="ff000000" nm="public.cms_file.fk_cms_files_cms_folders"/>
+    <FkGl bkCl="ff000000" nm="public.cms_folder.fk_cms_folders_cms_folders"/>
+    <FkGl bkCl="ff000000" nm="public.cms_layout.fk_cms_layout_cms_layout_group"/>
+    <FkGl bkCl="ff000000" nm="public.cms_page.fk_cms_page_cms_layout"/>
+    <FkGl bkCl="ff000000" nm="public.cms_page.fk_cms_page_users"/>
+    <FkGl bkCl="ff000000" nm="public.cms_page_content.fk_cms_page_content_cms_page"/>
+    <FkGl bkCl="ff000000" nm="public.cms_snippet.fk_cms_snippet_cms_snippet_group"/>
+    <FkGl bkCl="ff000000" nm="public.cms_snippet_group.fk_cms_snippet_group_cms_snippet_group"/>
+    <FkGl bkCl="ff000000" nm="public.concept_variable.fk_concept_variable_variable"/>
+    <FkGl bkCl="ff000000" nm="public.concept_variable.fk_Concept_Variables_Concepts"/>
+    <FkGl bkCl="ff000000" nm="public.edited_variable.fk_custom_variable_variable"/>
+    <FkGl bkCl="ff000000" nm="public.email.fk_emails_org"/>
+    <FkGl bkCl="ff000000" nm="public.email.fk_emails_person"/>
+    <FkGl bkCl="ff000000" nm="public.file.fk_documents_document_types"/>
+    <FkGl bkCl="ff000000" nm="public.file_acl.fk_documents_acl_documents"/>
+    <FkGl bkCl="ff000000" nm="public.form.fk_form_instance"/>
+    <FkGl bkCl="ff000000" nm="public.form_edited_number_var.fk_form_custom_number_var_custom_variable"/>
+    <FkGl bkCl="ff000000" nm="public.form_edited_number_var.fk_form_edited_number_var_form"/>
+    <FkGl bkCl="ff000000" nm="public.form_edited_text_var.fk_form_custom_text_var_custom_variable"/>
+    <FkGl bkCl="ff000000" nm="public.form_edited_text_var.fk_form_edited_text_var_form"/>
+    <FkGl bkCl="ff000000" nm="public.form_selection_var.fk_form_selection_var_form"/>
+    <FkGl bkCl="ff000000" nm="public.form_selection_var.fk_form_selection_var_selection_variable_item"/>
+    <FkGl bkCl="ff000000" nm="public.frequency.fk_frequency_selection_variable"/>
+    <FkGl bkCl="ff000000" nm="public.instance.fk_instance_study"/>
+    <FkGl bkCl="ff000000" nm="public.instance.fk_instance_unit_analysis"/>
+    <FkGl bkCl="ff000000" nm="public.instance_acl.fk_instance_acl_instance"/>
+    <FkGl bkCl="ff000000" nm="public.instance_descr.fk_instance_descr_instance"/>
+    <FkGl bkCl="ff000000" nm="public.instance_documents.fk_instance_documents_documents"/>
+    <FkGl bkCl="ff000000" nm="public.instance_documents.fk_instance_documents_instance"/>
+    <FkGl bkCl="ff000000" nm="public.instance_keyword.fk_instance_keyword_instance"/>
+    <FkGl bkCl="ff000000" nm="public.instance_keyword.fk_instance_keyword_keyword"/>
+    <FkGl bkCl="ff000000" nm="public.instance_org.fk_instance_org_instance"/>
+    <FkGl bkCl="ff000000" nm="public.instance_org.fk_instance_org_instance_org_assoc"/>
+    <FkGl bkCl="ff000000" nm="public.instance_org.fk_instance_org_org"/>
+    <FkGl bkCl="ff000000" nm="public.instance_person.fk_instance_person_instance"/>
+    <FkGl bkCl="ff000000" nm="public.instance_person.fk_instance_person_instance_person_assoc"/>
+    <FkGl bkCl="ff000000" nm="public.instance_person.fk_instance_person_person"/>
+    <FkGl bkCl="ff000000" nm="public.instance_topic.fk_instance_topic_instance"/>
+    <FkGl bkCl="ff000000" nm="public.instance_topic.fk_instance_topic_topic"/>
+    <FkGl bkCl="ff000000" nm="public.internet.fk_internet_org"/>
+    <FkGl bkCl="ff000000" nm="public.internet.fk_internet_person"/>
+    <FkGl bkCl="ff000000" nm="public.meth_coll_type.fk_meth_coll_type_collection_model_type"/>
+    <FkGl bkCl="ff000000" nm="public.meth_coll_type.fk_meth_coll_type_methodology"/>
+    <FkGl bkCl="ff000000" nm="public.methodology.fk_methodology_instance"/>
+    <FkGl bkCl="ff000000" nm="public.methodology.fk_methodology_time_meth_type"/>
+    <FkGl bkCl="ff000000" nm="public.news.fk_news_users"/>
+    <FkGl bkCl="ff000000" nm="public.org.fk_org_org_prefix"/>
+    <FkGl bkCl="ff000000" nm="public.org.fk_org_org_sufix"/>
+    <FkGl bkCl="ff000000" nm="public.org_address.fk_org_address_address"/>
+    <FkGl bkCl="ff000000" nm="public.org_address.fk_org_address_org"/>
+    <FkGl bkCl="ff000000" nm="public.org_relations.fk_org_2_relations_org"/>
+    <FkGl bkCl="ff000000" nm="public.org_relations.fk_org_relations_org"/>
+    <FkGl bkCl="ff000000" nm="public.org_relations.fk_org_relations_org_relation_type"/>
+    <FkGl bkCl="ff000000" nm="public.other_statistic.fk_other_statistics_edited_variable"/>
+    <FkGl bkCl="ff000000" nm="public.person.fk_person_prefix"/>
+    <FkGl bkCl="ff000000" nm="public.person.fk_person_suffix"/>
+    <FkGl bkCl="ff000000" nm="public.person_address.fk_person_address_address"/>
+    <FkGl bkCl="ff000000" nm="public.person_address.fk_person_address_person"/>
+    <FkGl bkCl="ff000000" nm="public.person_links.fk_person_links_person"/>
+    <FkGl bkCl="ff000000" nm="public.person_links.fk_person_links_users"/>
+    <FkGl bkCl="ff000000" nm="public.person_links.fk_person_links_users2"/>
+    <FkGl bkCl="ff000000" nm="public.person_org.fk_person_org_org"/>
+    <FkGl bkCl="ff000000" nm="public.person_org.fk_person_org_person"/>
+    <FkGl bkCl="ff000000" nm="public.person_org.fk_person_org_person_role"/>
+    <FkGl bkCl="ff000000" nm="public.region.fk_region_country"/>
+    <FkGl bkCl="ff000000" nm="public.region.fk_region_region_type"/>
+    <FkGl bkCl="ff000000" nm="public.region_city.fk_region_city_city"/>
+    <FkGl bkCl="ff000000" nm="public.region_city.fk_region_city_region"/>
+    <FkGl bkCl="ff000000" nm="public.scale.fk_scale_item"/>
+    <FkGl bkCl="ff000000" nm="public.scale.fk_scale_max_value"/>
+    <FkGl bkCl="ff000000" nm="public.scale.fk_scale_min_value"/>
+    <FkGl bkCl="ff000000" nm="public.selection_variable.fk_selection_variable_variable"/>
+    <FkGl bkCl="ff000000" nm="public.selection_variable_item.fk_selection_variable_item_documents"/>
+    <FkGl bkCl="ff000000" nm="public.selection_variable_item.fk_selection_variable_item_item"/>
+    <FkGl bkCl="ff000000" nm="public.selection_variable_item.fk_selection_variable_item_selection_variable"/>
+    <FkGl bkCl="ff000000" nm="public.setting.fk_setting_setting_group"/>
+    <FkGl bkCl="ff000000" nm="public.setting_group.fk_setting_group_setting_group"/>
+    <FkGl bkCl="ff000000" nm="public.setting_value.fk_setting_values_setting"/>
+    <FkGl bkCl="ff000000" nm="public.skip.fk_skip_next_variable"/>
+    <FkGl bkCl="ff000000" nm="public.skip.fk_skip_variable"/>
+    <FkGl bkCl="ff000000" nm="public.source.fk_sources_org"/>
+    <FkGl bkCl="ff000000" nm="public.source.fk_sources_sourcetype"/>
+    <FkGl bkCl="ff000000" nm="public.sourcestudy.fk_sourcestudy_sources"/>
+    <FkGl bkCl="ff000000" nm="public.sourcestudy.fk_sourcestudy_sourcestudy_type"/>
+    <FkGl bkCl="ff000000" nm="public.sourcestudy_type_history.fk_sourcestudy_type_history_sourcestudy"/>
+    <FkGl bkCl="ff000000" nm="public.sourcestudy_type_history.fk_sourcestudy_type_history_sourcestudy_type"/>
+    <FkGl bkCl="ff000000" nm="public.sourcetype_history.fk_source_type_history_sources"/>
+    <FkGl bkCl="ff000000" nm="public.sourcetype_history.fk_source_type_history_sourcetype"/>
+    <FkGl bkCl="ff000000" nm="public.study_acl.fk_study_acl_study"/>
+    <FkGl bkCl="ff000000" nm="public.study_descr.fk_study_descr_study"/>
+    <FkGl bkCl="ff000000" nm="public.study_file.fk_study_documents_documents"/>
+    <FkGl bkCl="ff000000" nm="public.study_file.fk_study_documents_study"/>
+    <FkGl bkCl="ff000000" nm="public.study_keyword.fk_study_keyword_keyword"/>
+    <FkGl bkCl="ff000000" nm="public.study_keyword.fk_study_keyword_study"/>
+    <FkGl bkCl="ff000000" nm="public.study_org.fk_studiu_org_org"/>
+    <FkGl bkCl="ff000000" nm="public.study_org.fk_studiu_org_studiu_org_asoc"/>
+    <FkGl bkCl="ff000000" nm="public.study_org.fk_studiu_org_study"/>
+    <FkGl bkCl="ff000000" nm="public.study_org_acl.fk_study_org_acl_study_org"/>
+    <FkGl bkCl="ff000000" nm="public.study_person.fk_study_person_person"/>
+    <FkGl bkCl="ff000000" nm="public.study_person.fk_study_person_studiu_person_asoc"/>
+    <FkGl bkCl="ff000000" nm="public.study_person.fk_study_person_study"/>
+    <FkGl bkCl="ff000000" nm="public.study_person_acl.fk_study_person_acl_study_person"/>
+    <FkGl bkCl="ff000000" nm="public.study_topic.fk_study_topic_study"/>
+    <FkGl bkCl="ff000000" nm="public.study_topic.fk_study_topic_topic"/>
+    <FkGl bkCl="ff000000" nm="public.title.fk_title_study"/>
+    <FkGl bkCl="ff000000" nm="public.title.fk_title_title_type"/>
+    <FkGl bkCl="ff000000" nm="public.translated_topic.fk_translated_topic_language"/>
+    <FkGl bkCl="ff000000" nm="public.translated_topic.fk_translated_topic_topic"/>
+    <FkGl bkCl="ff000000" nm="public.user_auth_log.fk_user_auth_log_users"/>
+    <FkGl bkCl="ff000000" nm="public.user_message.fk_user_messages_users"/>
+    <FkGl bkCl="ff000000" nm="public.user_profile.fk_user_profile_users"/>
+    <FkGl bkCl="ff000000" nm="public.user_role.fk_user_role_role"/>
+    <FkGl bkCl="ff000000" nm="public.user_role.fk_user_role_users"/>
+    <FkGl bkCl="ff000000" nm="public.user_setting.fk_user_settings_user_settings_group"/>
+    <FkGl bkCl="ff000000" nm="public.user_setting_value.fk_user_setting_value_user_settings"/>
+    <FkGl bkCl="ff000000" nm="public.user_setting_value.fk_user_setting_value_users"/>
+    <FkGl bkCl="ff000000" nm="public.value.fk_value_item"/>
+    <FkGl bkCl="ff000000" nm="public.variable.fk_formsSelectionVar_selection_variable_item"/>
+    <FkGl bkCl="ff000000" nm="public.variable.fk_variable_documents"/>
+    <FkGl bkCl="ff000000" nm="public.variable_vargroup.fk_instance_var_group_variable"/>
+    <FkGl bkCl="ff000000" nm="public.variable_vargroup.fk_instance_var_group_variable_group"/>
     <Notes/>
     <Zones>
       <Zone bkCl="ffece9d8" h="657" nm="1" w="317" x="25" y="16"/>
@@ -3475,20 +3452,20 @@
       <Zone bkCl="ffece9d8" h="1046" nm="9" w="118" x="3869" y="18"/>
     </Zones>
   </Dgm>
-  <RnmMgr NxRnmId="210">
-    <RnmCh ObjCls="Table" ParCls="Schema" ParNme="schemaA" SupCls="" SupNme="">
+  <RnmMgr NxRnmId="227">
+    <RnmCh ObjCls="Table" ParCls="Schema" ParNme="public" SupCls="" SupNme="">
       <Rnm id="1" nNm="person" oNm="Persoane"/>
     </RnmCh>
-    <RnmCh ObjCls="Table" ParCls="Schema" ParNme="schemaA" SupCls="" SupNme="">
+    <RnmCh ObjCls="Table" ParCls="Schema" ParNme="public" SupCls="" SupNme="">
       <Rnm id="2" nNm="person_hist" oNm="Persoane_hist"/>
     </RnmCh>
-    <RnmCh ObjCls="Table" ParCls="Schema" ParNme="schemaA" SupCls="" SupNme="">
+    <RnmCh ObjCls="Table" ParCls="Schema" ParNme="public" SupCls="" SupNme="">
       <Rnm id="3" nNm="org" oNm="Organizatii"/>
     </RnmCh>
-    <RnmCh ObjCls="Table" ParCls="Schema" ParNme="schemaA" SupCls="" SupNme="">
+    <RnmCh ObjCls="Table" ParCls="Schema" ParNme="public" SupCls="" SupNme="">
       <Rnm id="4" nNm="suffix" oNm="sufix"/>
     </RnmCh>
-    <RnmCh ObjCls="Column" ParCls="Table" ParNme="emails" SupCls="Schema" SupNme="schemaA">
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="email" SupCls="Schema" SupNme="schemaA">
       <Rnm id="6" nNm="ismain" oNm="main"/>
       <Rnm id="5" nNm="main" oNm="primary"/>
     </RnmCh>
@@ -3501,7 +3478,7 @@
     <RnmCh ObjCls="Column" ParCls="Table" ParNme="contract_org" SupCls="Schema" SupNme="schemaA">
       <Rnm id="9" nNm="org_id" oNm="org_internal_id"/>
     </RnmCh>
-    <RnmCh ObjCls="Table" ParCls="Schema" ParNme="schemaA" SupCls="" SupNme="">
+    <RnmCh ObjCls="Table" ParCls="Schema" ParNme="public" SupCls="" SupNme="">
       <Rnm id="10" nNm="service_delivery" oNm="delivery"/>
     </RnmCh>
     <RnmCh ObjCls="Column" ParCls="Table" ParNme="service_delivery" SupCls="Schema" SupNme="schemaA">
@@ -3510,7 +3487,7 @@
     <RnmCh ObjCls="Column" ParCls="Table" ParNme="contract_log" SupCls="Schema" SupNme="schemaA">
       <Rnm id="12" nNm="msg_type" oNm="msgtype"/>
     </RnmCh>
-    <RnmCh ObjCls="Table" ParCls="Schema" ParNme="schemaA" SupCls="" SupNme="">
+    <RnmCh ObjCls="Table" ParCls="Schema" ParNme="public" SupCls="" SupNme="">
       <Rnm id="13" nNm="contract_log" oNm="contract_history"/>
     </RnmCh>
     <RnmCh ObjCls="Column" ParCls="Table" ParNme="person_hist" SupCls="Schema" SupNme="schemaA">
@@ -3525,10 +3502,10 @@
     <RnmCh ObjCls="Column" ParCls="Table" ParNme="contract_org" SupCls="Schema" SupNme="schemaA">
       <Rnm id="17" nNm="org_role_id" oNm="org_rel"/>
     </RnmCh>
-    <RnmCh ObjCls="Table" ParCls="Schema" ParNme="schemaA" SupCls="" SupNme="">
+    <RnmCh ObjCls="Table" ParCls="Schema" ParNme="public" SupCls="" SupNme="">
       <Rnm id="18" nNm="contract_org_person_role" oNm="contact_org_person_role"/>
     </RnmCh>
-    <RnmCh ObjCls="Table" ParCls="Schema" ParNme="schemaA" SupCls="" SupNme="">
+    <RnmCh ObjCls="Table" ParCls="Schema" ParNme="public" SupCls="" SupNme="">
       <Rnm id="19" nNm="actor_type" oNm="actor_types"/>
     </RnmCh>
     <RnmCh ObjCls="Column" ParCls="Table" ParNme="contract_service_actor" SupCls="Schema" SupNme="schemaA">
@@ -3541,13 +3518,13 @@
       <Rnm id="23" nNm="study_id" oNm="studiy_id"/>
       <Rnm id="22" nNm="studiy_id" oNm="studiu_id"/>
     </RnmCh>
-    <RnmCh ObjCls="Table" ParCls="Schema" ParNme="schemaA" SupCls="" SupNme="">
+    <RnmCh ObjCls="Table" ParCls="Schema" ParNme="public" SupCls="" SupNme="">
       <Rnm id="24" nNm="study" oNm="studiu"/>
     </RnmCh>
-    <RnmCh ObjCls="Table" ParCls="Schema" ParNme="schemaA" SupCls="" SupNme="">
+    <RnmCh ObjCls="Table" ParCls="Schema" ParNme="public" SupCls="" SupNme="">
       <Rnm id="25" nNm="instance" oNm="instanta"/>
     </RnmCh>
-    <RnmCh ObjCls="Table" ParCls="Schema" ParNme="schemaA" SupCls="" SupNme="">
+    <RnmCh ObjCls="Table" ParCls="Schema" ParNme="public" SupCls="" SupNme="">
       <Rnm id="26" nNm="study_person" oNm="studiu_person"/>
     </RnmCh>
     <RnmCh ObjCls="Column" ParCls="Table" ParNme="instance" SupCls="Schema" SupNme="schemaA">
@@ -3562,7 +3539,7 @@
       <Rnm id="32" nNm="assoc_type_id" oNm="assoc_type"/>
       <Rnm id="30" nNm="assoc_type" oNm="assoc_description"/>
     </RnmCh>
-    <RnmCh ObjCls="Table" ParCls="Schema" ParNme="schemaA" SupCls="" SupNme="">
+    <RnmCh ObjCls="Table" ParCls="Schema" ParNme="public" SupCls="" SupNme="">
       <Rnm id="33" nNm="geo_scope" oNm="geoscope"/>
     </RnmCh>
     <RnmCh ObjCls="Column" ParCls="Table" ParNme="instance" SupCls="Schema" SupNme="schemaA">
@@ -3575,7 +3552,7 @@
       <Rnm id="208" nNm="filetype_id" oNm="type_id"/>
       <Rnm id="36" nNm="type_id" oNm="type"/>
     </RnmCh>
-    <RnmCh ObjCls="Table" ParCls="Schema" ParNme="schemaA" SupCls="" SupNme="">
+    <RnmCh ObjCls="Table" ParCls="Schema" ParNme="public" SupCls="" SupNme="">
       <Rnm id="209" nNm="filetype" oNm="file_type"/>
       <Rnm id="194" nNm="file_type" oNm="document_type"/>
       <Rnm id="37" nNm="document_type" oNm="document_types"/>
@@ -3589,11 +3566,11 @@
     <RnmCh ObjCls="Column" ParCls="Table" ParNme="person_org" SupCls="Schema" SupNme="schemaA">
       <Rnm id="40" nNm="role_id" oNm="role"/>
     </RnmCh>
-    <RnmCh ObjCls="Table" ParCls="Schema" ParNme="schemaA" SupCls="" SupNme="">
+    <RnmCh ObjCls="Table" ParCls="Schema" ParNme="public" SupCls="" SupNme="">
       <Rnm id="167" nNm="study_org_assoc" oNm="study_org_asoc"/>
       <Rnm id="41" nNm="study_org_asoc" oNm="studiu_org_asoc"/>
     </RnmCh>
-    <RnmCh ObjCls="Table" ParCls="Schema" ParNme="schemaA" SupCls="" SupNme="">
+    <RnmCh ObjCls="Table" ParCls="Schema" ParNme="public" SupCls="" SupNme="">
       <Rnm id="42" nNm="study_org" oNm="studiu_org"/>
     </RnmCh>
     <RnmCh ObjCls="Column" ParCls="Table" ParNme="study_org_acl" SupCls="Schema" SupNme="schemaA">
@@ -3605,19 +3582,19 @@
     <RnmCh ObjCls="Column" ParCls="Table" ParNme="auth_data" SupCls="Schema" SupNme="schemaA">
       <Rnm id="45" nNm="user_id" oNm="user_is"/>
     </RnmCh>
-    <RnmCh ObjCls="Column" ParCls="Table" ParNme="users" SupCls="Schema" SupNme="schemaA">
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="user" SupCls="Schema" SupNme="schemaA">
       <Rnm id="46" nNm="id" oNm="users_id"/>
     </RnmCh>
     <RnmCh ObjCls="Column" ParCls="Table" ParNme="role" SupCls="Schema" SupNme="schemaA">
       <Rnm id="47" nNm="id" oNm="role_id"/>
     </RnmCh>
-    <RnmCh ObjCls="Column" ParCls="Table" ParNme="cms_folders" SupCls="Schema" SupNme="schemaA">
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="cms_folder" SupCls="Schema" SupNme="schemaA">
       <Rnm id="48" nNm="id" oNm="cms_folders_id"/>
     </RnmCh>
-    <RnmCh ObjCls="Column" ParCls="Table" ParNme="cms_files" SupCls="Schema" SupNme="schemaA">
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="cms_file" SupCls="Schema" SupNme="schemaA">
       <Rnm id="49" nNm="id" oNm="cms_files_id"/>
     </RnmCh>
-    <RnmCh ObjCls="Column" ParCls="Table" ParNme="cms_files" SupCls="Schema" SupNme="schemaA">
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="cms_file" SupCls="Schema" SupNme="schemaA">
       <Rnm id="50" nNm="filename" oNm="name"/>
     </RnmCh>
     <RnmCh ObjCls="Column" ParCls="Table" ParNme="cms_page" SupCls="Schema" SupNme="schemaA">
@@ -3657,27 +3634,27 @@
     <RnmCh ObjCls="Column" ParCls="Table" ParNme="setting" SupCls="Schema" SupNme="schemaA">
       <Rnm id="62" nNm="setting_group" oNm="group"/>
     </RnmCh>
-    <RnmCh ObjCls="Column" ParCls="Table" ParNme="setting_values" SupCls="Schema" SupNme="schemaA">
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="setting_value" SupCls="Schema" SupNme="schemaA">
       <Rnm id="65" nNm="setting_id" oNm="id"/>
       <Rnm id="63" nNm="id" oNm="setting_values_id"/>
     </RnmCh>
-    <RnmCh ObjCls="Column" ParCls="Table" ParNme="setting_values" SupCls="Schema" SupNme="schemaA">
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="setting_value" SupCls="Schema" SupNme="schemaA">
       <Rnm id="64" nNm="value" oNm="name"/>
     </RnmCh>
-    <RnmCh ObjCls="Column" ParCls="Table" ParNme="user_messages" SupCls="Schema" SupNme="schemaA">
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="user_message" SupCls="Schema" SupNme="schemaA">
       <Rnm id="66" nNm="id" oNm="user_messages_id"/>
     </RnmCh>
-    <RnmCh ObjCls="Column" ParCls="Table" ParNme="user_messages" SupCls="Schema" SupNme="schemaA">
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="user_message" SupCls="Schema" SupNme="schemaA">
       <Rnm id="67" nNm="message" oNm="name"/>
     </RnmCh>
-    <RnmCh ObjCls="Column" ParCls="Table" ParNme="user_settings_group" SupCls="Schema" SupNme="schemaA">
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="user_setting_group" SupCls="Schema" SupNme="schemaA">
       <Rnm id="68" nNm="id" oNm="user_settings_group_id"/>
     </RnmCh>
     <RnmCh ObjCls="Column" ParCls="Table" ParNme="user_setting_value" SupCls="Schema" SupNme="schemaA">
       <Rnm id="70" nNm="user_setting_id" oNm="id"/>
       <Rnm id="69" nNm="id" oNm="user_setting_value_id"/>
     </RnmCh>
-    <RnmCh ObjCls="Column" ParCls="Table" ParNme="user_settings" SupCls="Schema" SupNme="schemaA">
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="user_setting" SupCls="Schema" SupNme="schemaA">
       <Rnm id="71" nNm="id" oNm="user_settings_id"/>
     </RnmCh>
     <RnmCh ObjCls="Column" ParCls="Table" ParNme="user_setting_value" SupCls="Schema" SupNme="schemaA">
@@ -3693,10 +3670,10 @@
     <RnmCh ObjCls="Column" ParCls="Table" ParNme="demo_slices" SupCls="Schema" SupNme="schemaA">
       <Rnm id="75" nNm="age_max" oNm="age_high"/>
     </RnmCh>
-    <RnmCh ObjCls="Table" ParCls="Schema" ParNme="schemaA" SupCls="" SupNme="">
+    <RnmCh ObjCls="Table" ParCls="Schema" ParNme="public" SupCls="" SupNme="">
       <Rnm id="76" nNm="answer" oNm="Responses"/>
     </RnmCh>
-    <RnmCh ObjCls="Table" ParCls="Schema" ParNme="schemaA" SupCls="" SupNme="">
+    <RnmCh ObjCls="Table" ParCls="Schema" ParNme="public" SupCls="" SupNme="">
       <Rnm id="146" nNm="form_edited_text_var" oNm="form_custom_text_var"/>
       <Rnm id="139" nNm="form_custom_text_var" oNm="forms_custom_text_var"/>
       <Rnm id="123" nNm="forms_custom_text_var" oNm="formsCustomTextVar"/>
@@ -3706,19 +3683,19 @@
       <Rnm id="78" nNm="filledFormsNominalVars" oNm="FilledFormsNominalVar"/>
       <Rnm id="77" nNm="FilledFormsNominalVar" oNm="FilledFormsNominalVars"/>
     </RnmCh>
-    <RnmCh ObjCls="Table" ParCls="Schema" ParNme="schemaA" SupCls="" SupNme="">
+    <RnmCh ObjCls="Table" ParCls="Schema" ParNme="public" SupCls="" SupNme="">
       <Rnm id="145" nNm="edited_variable" oNm="custom_variable"/>
       <Rnm id="83" nNm="custom_variable" oNm="custom_variables"/>
       <Rnm id="80" nNm="custom_variables" oNm="EditedValues"/>
     </RnmCh>
-    <RnmCh ObjCls="Table" ParCls="Schema" ParNme="schemaA" SupCls="" SupNme="">
+    <RnmCh ObjCls="Table" ParCls="Schema" ParNme="public" SupCls="" SupNme="">
       <Rnm id="88" nNm="selection_variable_item" oNm="selection_variable"/>
       <Rnm id="81" nNm="selection_variable" oNm="SelectedValues"/>
     </RnmCh>
-    <RnmCh ObjCls="Table" ParCls="Schema" ParNme="schemaA" SupCls="" SupNme="">
+    <RnmCh ObjCls="Table" ParCls="Schema" ParNme="public" SupCls="" SupNme="">
       <Rnm id="82" nNm="variable" oNm="Variables"/>
     </RnmCh>
-    <RnmCh ObjCls="Table" ParCls="Schema" ParNme="schemaA" SupCls="" SupNme="">
+    <RnmCh ObjCls="Table" ParCls="Schema" ParNme="public" SupCls="" SupNme="">
       <Rnm id="84" nNm="skip" oNm="Skips"/>
     </RnmCh>
     <RnmCh ObjCls="Column" ParCls="Table" ParNme="selection_variable_item" SupCls="Schema" SupNme="schemaA">
@@ -3728,13 +3705,13 @@
     <RnmCh ObjCls="Column" ParCls="Table" ParNme="selection_variable_item" SupCls="Schema" SupNme="schemaA">
       <Rnm id="86" nNm="id" oNm="Id"/>
     </RnmCh>
-    <RnmCh ObjCls="Table" ParCls="Schema" ParNme="schemaA" SupCls="" SupNme="">
+    <RnmCh ObjCls="Table" ParCls="Schema" ParNme="public" SupCls="" SupNme="">
       <Rnm id="87" nNm="selection_variable_item" oNm="selection_variable_items"/>
     </RnmCh>
-    <RnmCh ObjCls="Table" ParCls="Schema" ParNme="schemaA" SupCls="" SupNme="">
+    <RnmCh ObjCls="Table" ParCls="Schema" ParNme="public" SupCls="" SupNme="">
       <Rnm id="89" nNm="value" oNm="SelectionValues"/>
     </RnmCh>
-    <RnmCh ObjCls="Table" ParCls="Schema" ParNme="schemaA" SupCls="" SupNme="">
+    <RnmCh ObjCls="Table" ParCls="Schema" ParNme="public" SupCls="" SupNme="">
       <Rnm id="91" nNm="scale" oNm="interval"/>
       <Rnm id="90" nNm="interval" oNm="ScaleValues"/>
     </RnmCh>
@@ -3757,7 +3734,7 @@
       <Rnm id="190" nNm="maxValue_id" oNm="maxValueId"/>
       <Rnm id="96" nNm="maxValueId" oNm="maxValue"/>
     </RnmCh>
-    <RnmCh ObjCls="Table" ParCls="Schema" ParNme="schemaA" SupCls="" SupNme="">
+    <RnmCh ObjCls="Table" ParCls="Schema" ParNme="public" SupCls="" SupNme="">
       <Rnm id="147" nNm="form_edited_number_var" oNm="form_custom_number_var"/>
       <Rnm id="140" nNm="form_custom_number_var" oNm="forms_custom_number_var"/>
       <Rnm id="137" nNm="forms_custom_number_var" oNm="formsCustomNumberVar"/>
@@ -3767,7 +3744,7 @@
       <Rnm id="135" nNm="item_id" oNm="itemId"/>
       <Rnm id="100" nNm="itemId" oNm="ValueId"/>
     </RnmCh>
-    <RnmCh ObjCls="Table" ParCls="Schema" ParNme="schemaA" SupCls="" SupNme="">
+    <RnmCh ObjCls="Table" ParCls="Schema" ParNme="public" SupCls="" SupNme="">
       <Rnm id="141" nNm="form_selection_var" oNm="forms_selection_var"/>
       <Rnm id="138" nNm="forms_selection_var" oNm="formsSelectionVar"/>
       <Rnm id="101" nNm="formsSelectionVar" oNm="FilledFormsSelectedVars"/>
@@ -3784,10 +3761,10 @@
     <RnmCh ObjCls="Column" ParCls="Table" ParNme="skip" SupCls="Schema" SupNme="schemaA">
       <Rnm id="105" nNm="next_variable_id" oNm="NextVariableId"/>
     </RnmCh>
-    <RnmCh ObjCls="Table" ParCls="Schema" ParNme="schemaA" SupCls="" SupNme="">
+    <RnmCh ObjCls="Table" ParCls="Schema" ParNme="public" SupCls="" SupNme="">
       <Rnm id="106" nNm="concept_variable" oNm="Concept_Variables"/>
     </RnmCh>
-    <RnmCh ObjCls="Table" ParCls="Schema" ParNme="schemaA" SupCls="" SupNme="">
+    <RnmCh ObjCls="Table" ParCls="Schema" ParNme="public" SupCls="" SupNme="">
       <Rnm id="107" nNm="concept" oNm="Concepts"/>
     </RnmCh>
     <RnmCh ObjCls="Column" ParCls="Table" ParNme="concept_variable" SupCls="Schema" SupNme="schemaA">
@@ -3889,7 +3866,7 @@
       <Rnm id="166" nNm="city_id" oNm="city"/>
       <Rnm id="151" nNm="city" oNm="name"/>
     </RnmCh>
-    <RnmCh ObjCls="Column" ParCls="Table" ParNme="sources" SupCls="Schema" SupNme="schemaA">
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="source" SupCls="Schema" SupNme="schemaA">
       <Rnm id="152" nNm="org_id" oNm="sources_id"/>
     </RnmCh>
     <RnmCh ObjCls="Column" ParCls="Table" ParNme="sourcestudy" SupCls="Schema" SupNme="schemaA">
@@ -3910,7 +3887,7 @@
     <RnmCh ObjCls="Column" ParCls="Table" ParNme="sourcetype_history" SupCls="Schema" SupNme="schemaA">
       <Rnm id="158" nNm="id" oNm="source_history_id"/>
     </RnmCh>
-    <RnmCh ObjCls="Table" ParCls="Schema" ParNme="schemaA" SupCls="" SupNme="">
+    <RnmCh ObjCls="Table" ParCls="Schema" ParNme="public" SupCls="" SupNme="">
       <Rnm id="207" nNm="sourcetype_history" oNm="source_type_history"/>
       <Rnm id="159" nNm="source_type_history" oNm="source_history"/>
     </RnmCh>
@@ -3920,7 +3897,7 @@
     <RnmCh ObjCls="Column" ParCls="Table" ParNme="source_contact_method" SupCls="Schema" SupNme="schemaA">
       <Rnm id="161" nNm="id" oNm="source_contact_type_id"/>
     </RnmCh>
-    <RnmCh ObjCls="Table" ParCls="Schema" ParNme="schemaA" SupCls="" SupNme="">
+    <RnmCh ObjCls="Table" ParCls="Schema" ParNme="public" SupCls="" SupNme="">
       <Rnm id="162" nNm="source_contact_method" oNm="source_contact_type"/>
     </RnmCh>
     <RnmCh ObjCls="Column" ParCls="Table" ParNme="region" SupCls="Schema" SupNme="schemaA">
@@ -3944,7 +3921,8 @@
       <Rnm id="174" nNm="left_topic" oNm="referred_topic"/>
       <Rnm id="173" nNm="referred_topic" oNm="left_topic"/>
     </RnmCh>
-    <RnmCh ObjCls="Table" ParCls="Schema" ParNme="schemaA" SupCls="" SupNme="">
+    <RnmCh ObjCls="Table" ParCls="Schema" ParNme="public" SupCls="" SupNme="">
+      <Rnm id="217" nNm="study_person_assoc" oNm="study_person_asoc"/>
       <Rnm id="175" nNm="study_person_asoc" oNm="studiu_person_asoc"/>
     </RnmCh>
     <RnmCh ObjCls="Column" ParCls="Table" ParNme="person_links" SupCls="Schema" SupNme="schemaA">
@@ -3963,11 +3941,11 @@
       <Rnm id="192" nNm="file_id" oNm="document_id"/>
       <Rnm id="182" nNm="document_id" oNm="file_id"/>
     </RnmCh>
-    <RnmCh ObjCls="Table" ParCls="Schema" ParNme="schemaA" SupCls="" SupNme="">
+    <RnmCh ObjCls="Table" ParCls="Schema" ParNme="public" SupCls="" SupNme="">
       <Rnm id="202" nNm="variable_vargroup" oNm="instance_variable_vargroup"/>
       <Rnm id="183" nNm="instance_variable_vargroup" oNm="instance_var_group"/>
     </RnmCh>
-    <RnmCh ObjCls="Table" ParCls="Schema" ParNme="schemaA" SupCls="" SupNme="">
+    <RnmCh ObjCls="Table" ParCls="Schema" ParNme="public" SupCls="" SupNme="">
       <Rnm id="185" nNm="vargroup" oNm="varigroup"/>
       <Rnm id="184" nNm="varigroup" oNm="variable_group"/>
     </RnmCh>
@@ -3977,11 +3955,11 @@
     <RnmCh ObjCls="Column" ParCls="Table" ParNme="scale" SupCls="Schema" SupNme="schemaA">
       <Rnm id="191" nNm="units" oNm="Units"/>
     </RnmCh>
-    <RnmCh ObjCls="Table" ParCls="Schema" ParNme="schemaA" SupCls="" SupNme="">
+    <RnmCh ObjCls="Table" ParCls="Schema" ParNme="public" SupCls="" SupNme="">
       <Rnm id="196" nNm="file" oNm="files"/>
       <Rnm id="193" nNm="files" oNm="documents"/>
     </RnmCh>
-    <RnmCh ObjCls="Table" ParCls="Schema" ParNme="schemaA" SupCls="" SupNme="">
+    <RnmCh ObjCls="Table" ParCls="Schema" ParNme="public" SupCls="" SupNme="">
       <Rnm id="197" nNm="file_acl" oNm="files_acl"/>
       <Rnm id="195" nNm="files_acl" oNm="documents_acl"/>
     </RnmCh>
@@ -3994,17 +3972,61 @@
     <RnmCh ObjCls="Column" ParCls="Table" ParNme="topic" SupCls="Schema" SupNme="schemaA">
       <Rnm id="200" nNm="description" oNm="descriere"/>
     </RnmCh>
-    <RnmCh ObjCls="Column" ParCls="Table" ParNme="sources" SupCls="Schema" SupNme="schemaA">
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="source" SupCls="Schema" SupNme="schemaA">
       <Rnm id="201" nNm="sourcetype_id" oNm="stype"/>
     </RnmCh>
-    <RnmCh ObjCls="Column" ParCls="Table" ParNme="emails" SupCls="Schema" SupNme="schemaA">
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="email" SupCls="Schema" SupNme="schemaA">
       <Rnm id="203" nNm="org_id" oNm="entity_type"/>
     </RnmCh>
-    <RnmCh ObjCls="Column" ParCls="Table" ParNme="emails" SupCls="Schema" SupNme="schemaA">
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="email" SupCls="Schema" SupNme="schemaA">
       <Rnm id="204" nNm="person_id" oNm="entity_id"/>
     </RnmCh>
-    <RnmCh ObjCls="Table" ParCls="Schema" ParNme="schemaA" SupCls="" SupNme="">
+    <RnmCh ObjCls="Table" ParCls="Schema" ParNme="public" SupCls="" SupNme="">
       <Rnm id="206" nNm="regiontype" oNm="region_type"/>
+    </RnmCh>
+    <RnmCh ObjCls="Table" ParCls="Schema" ParNme="public" SupCls="" SupNme="">
+      <Rnm id="210" nNm="audit_field" oNm="audit_fields"/>
+    </RnmCh>
+    <RnmCh ObjCls="Table" ParCls="Schema" ParNme="public" SupCls="" SupNme="">
+      <Rnm id="211" nNm="cms_file" oNm="cms_files"/>
+    </RnmCh>
+    <RnmCh ObjCls="Table" ParCls="Schema" ParNme="public" SupCls="" SupNme="">
+      <Rnm id="212" nNm="cms_folder" oNm="cms_folders"/>
+    </RnmCh>
+    <RnmCh ObjCls="Table" ParCls="Schema" ParNme="public" SupCls="" SupNme="">
+      <Rnm id="213" nNm="email" oNm="emails"/>
+    </RnmCh>
+    <RnmCh ObjCls="Table" ParCls="Schema" ParNme="public" SupCls="" SupNme="">
+      <Rnm id="214" nNm="other_statistic" oNm="other_statistics"/>
+    </RnmCh>
+    <RnmCh ObjCls="Table" ParCls="Schema" ParNme="public" SupCls="" SupNme="">
+      <Rnm id="215" nNm="setting_value" oNm="setting_values"/>
+    </RnmCh>
+    <RnmCh ObjCls="Table" ParCls="Schema" ParNme="public" SupCls="" SupNme="">
+      <Rnm id="216" nNm="source" oNm="sources"/>
+    </RnmCh>
+    <RnmCh ObjCls="Table" ParCls="Schema" ParNme="public" SupCls="" SupNme="">
+      <Rnm id="218" nNm="user_message" oNm="user_messages"/>
+    </RnmCh>
+    <RnmCh ObjCls="Table" ParCls="Schema" ParNme="public" SupCls="" SupNme="">
+      <Rnm id="219" nNm="user_setting" oNm="user_settings"/>
+    </RnmCh>
+    <RnmCh ObjCls="Table" ParCls="Schema" ParNme="public" SupCls="" SupNme="">
+      <Rnm id="220" nNm="user_setting_group" oNm="user_settings_group"/>
+    </RnmCh>
+    <RnmCh ObjCls="Table" ParCls="Schema" ParNme="public" SupCls="" SupNme="">
+      <Rnm id="221" nNm="user" oNm="users"/>
+    </RnmCh>
+    <RnmCh ObjCls="Table" ParCls="Schema" ParNme="public" SupCls="" SupNme="">
+      <Rnm id="222" nNm="study_file" oNm="study_documents"/>
+    </RnmCh>
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="study_file" SupCls="Schema" SupNme="schemaA">
+      <Rnm id="223" nNm="file_id" oNm="document_id"/>
+    </RnmCh>
+    <RnmCh ObjCls="Schema" ParCls="Database" ParNme="RODA" SupCls="" SupNme="">
+      <Rnm id="226" nNm="public" oNm="schemaA"/>
+      <Rnm id="225" nNm="schemaA" oNm="public"/>
+      <Rnm id="224" nNm="public" oNm="schemaA"/>
     </RnmCh>
   </RnmMgr>
   <DbDocOptionMgr>
@@ -4023,17 +4045,13 @@
     </BasicOptionMgr>
   </DbDocOptionMgr>
   <OpenEditors>
-    <OpenEditor ClsNm="Diagram" fqn="null.diagramA" selected="1"/>
+    <OpenEditor ClsNm="Diagram" fqn="null.diagram" selected="1"/>
   </OpenEditors>
   <TreePaths>
     <TreePath/>
     <TreePath>/Schemas (1)</TreePath>
-    <TreePath>/Schemas (1)/schemaA</TreePath>
-    <TreePath>/Schemas (1)/schemaA/Tables (110)</TreePath>
-    <TreePath>/Schemas (1)/schemaA/Tables (110)/item</TreePath>
-    <TreePath>/Schemas (1)/schemaA/Tables (110)/item/Columns (2)</TreePath>
-    <TreePath>/Schemas (1)/schemaA/Tables (110)/other_statistics</TreePath>
-    <TreePath>/Schemas (1)/schemaA/Tables (110)/topic</TreePath>
+    <TreePath>/Schemas (1)/public</TreePath>
+    <TreePath>/Schemas (1)/public/Tables (109)</TreePath>
     <TreePath>/Diagrams (1)</TreePath>
   </TreePaths>
 </Db>

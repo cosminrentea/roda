@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:show id="ps_ro_roda_CmsSnippet" object="${cmssnippet}" path="/cmssnippets" z="UrOixjHplgQeeyg+RStCQBJLg6U=">
+        <field:display field="snippetGroup" id="s_ro_roda_CmsSnippet_snippetGroup" object="${cmssnippet}" z="APzSTBWZw8Xrlf6Dtm4nj2BMBEc="/>
+        <field:display field="name" id="s_ro_roda_CmsSnippet_name" object="${cmssnippet}" z="vKkbYY4HMx7PXQYH0tSxKCvc/pY="/>
+        <field:display field="snippetContent" id="s_ro_roda_CmsSnippet_snippetContent" object="${cmssnippet}" z="ukj6enAvWu1ih2JLgC14FIJ/c3A="/>
+    </page:show>
+</div>

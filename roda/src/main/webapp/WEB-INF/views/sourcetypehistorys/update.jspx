@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <form:update id="fu_ro_roda_SourcetypeHistory" modelAttribute="sourcetypeHistory" path="/sourcetypehistorys" versionField="none" z="IY6uHipZh8Vwls9NA468Z9I2DJY=">
+        <field:select field="orgId" id="c_ro_roda_SourcetypeHistory_orgId" itemValue="orgId" items="${sources}" path="/sources" z="KGmdQvHoX3pKK1yvwyDFEk0qHWI="/>
+        <field:select field="sourcetypeId" id="c_ro_roda_SourcetypeHistory_sourcetypeId" itemValue="id" items="${sourcetypes}" path="/sourcetypes" z="QWsuLMX0fnWNseG1wrhwRSvt/wM="/>
+        <field:datetime dateTimePattern="${sourcetypeHistory_datestart_date_format}" field="datestart" id="c_ro_roda_SourcetypeHistory_datestart" required="true" z="tEoCeXEtHZ8hIXckmeOndBp/k+o="/>
+        <field:datetime dateTimePattern="${sourcetypeHistory_dateend_date_format}" field="dateend" id="c_ro_roda_SourcetypeHistory_dateend" z="9+pdFxPiawtjxhmLSYsYyTaBsc8="/>
+        <field:input field="addedBy" id="c_ro_roda_SourcetypeHistory_addedBy" required="true" validationMessageCode="field_invalid_integer" z="1ax0VZ5JuaaCCfqBTXbQ3EqS4Uk="/>
+    </form:update>
+</div>

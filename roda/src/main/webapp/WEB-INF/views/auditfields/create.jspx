@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:spring="http://www.springframework.org/tags" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <form:create compositePkField="id" id="fc_ro_roda_AuditField" modelAttribute="auditField" path="/auditfields" render="${empty dependencies}" z="QE1zgFgDNlwGItkqo/Ixu+ozDtg=">
+        <field:input disableFormBinding="true" field="id.auditId" id="c_ro_roda_AuditField_id_auditId" required="true" validationMessageCode="field_invalid_integer" z="T3ZvDC1a3tKJshsF6F14ULtzMxI="/>
+        <field:input disableFormBinding="true" field="id.id" id="c_ro_roda_AuditField_id_id" required="true" validationMessageCode="field_invalid_integer" z="OsB96vGIi53W5fDRqEZTnaRtals="/>
+        <field:input field="columnName" id="c_ro_roda_AuditField_columnName" required="true" z="H69a6hQ4dYf4f9BfEYXxfSxAnyA="/>
+        <field:input field="newValue" id="c_ro_roda_AuditField_newValue" required="true" z="CvwKY3wuvfYQedOkgykJqm1LNGs="/>
+        <field:input field="oldValue" id="c_ro_roda_AuditField_oldValue" required="true" z="/jF57w9OTVi0Klq+5gsC5O3QV/s="/>
+    </form:create>
+    <form:dependency dependencies="${dependencies}" id="d_ro_roda_AuditField" render="${not empty dependencies}" z="mYlV0DckagPl8u4/C4Vft3DDiXs="/>
+</div>

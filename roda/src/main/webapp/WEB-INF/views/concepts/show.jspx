@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:show id="ps_ro_roda_Concept" object="${concept}" path="/concepts" z="+Sz94Y7ADLZfQHxP49x/gXYm5dY=">
+        <field:display field="variables" id="s_ro_roda_Concept_variables" object="${concept}" z="Yfg6JwLwJDgODyCrM1AfeXRB8cY="/>
+        <field:display field="name" id="s_ro_roda_Concept_name" object="${concept}" z="v+6UbvlzF36QFRS+DZYFEd+0It8="/>
+        <field:display field="description" id="s_ro_roda_Concept_description" object="${concept}" z="B3YmQ1TMFCkn0fCsFtiqgUu0uqo="/>
+    </page:show>
+</div>

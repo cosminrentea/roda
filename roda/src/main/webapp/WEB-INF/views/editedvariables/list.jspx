@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:list id="pl_ro_roda_EditedVariable" items="${editedvariables}" z="571eKlP2oIuvYlJ21qecwa/pexc=">
+        <table:table data="${editedvariables}" id="l_ro_roda_EditedVariable" path="/editedvariables" typeIdFieldName="variableId" z="Ml0C82kczgZwzekyBQn7PgEvLPc=">
+            <table:column id="c_ro_roda_EditedVariable_variable" property="variable" z="HGVXI8wEgdZa4bb04P+XrGNLzz8="/>
+            <table:column id="c_ro_roda_EditedVariable_otherStatistic" property="otherStatistic" z="c3V9ElUCSmRBTabdO1KB4L3fHPU="/>
+        </table:table>
+    </page:list>
+</div>

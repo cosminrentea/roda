@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:show id="ps_ro_roda_StudyOrg" object="${studyorg}" path="/studyorgs" z="HF7RbHQI/xUy1jTMhc4Y/umU2qM=">
+        <field:display field="orgId" id="s_ro_roda_StudyOrg_orgId" object="${studyorg}" z="ZQITN8b9S/dcPFoS6iyRrTL5yPA="/>
+        <field:display field="studyId" id="s_ro_roda_StudyOrg_studyId" object="${studyorg}" z="s1atmmrAgg2WHxEO6dMSZaYy9RI="/>
+        <field:display field="assoctypeId" id="s_ro_roda_StudyOrg_assoctypeId" object="${studyorg}" z="Lyzi+oo8y16MXbSByzMm4d9nzIo="/>
+        <field:display field="citation" id="s_ro_roda_StudyOrg_citation" object="${studyorg}" z="faaTeRD9UILP2eAZFUPbQnjsFR8="/>
+    </page:show>
+</div>

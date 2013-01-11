@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <form:update id="fu_ro_roda_Methodology" idField="instanceId" modelAttribute="methodology" path="/methodologys" versionField="none" z="WUvms4FXC2w+wl0hWOXm+ALB+Mo=">
+        <field:select field="collectionModelTypes" id="c_ro_roda_Methodology_collectionModelTypes" itemValue="id" items="${collectionmodeltypes}" multiple="true" path="/collectionmodeltypes" z="Xe1Qa2FqQeLOhUjlsSMCY1psZCM="/>
+        <field:select field="instance" id="c_ro_roda_Methodology_instance" itemValue="id" items="${instances}" path="/instances" z="7hl4OTe3FIfeV3s7TPsvpPe19TI="/>
+        <field:select field="timeMethId" id="c_ro_roda_Methodology_timeMethId" itemValue="id" items="${timemethtypes}" path="/timemethtypes" z="a4bYY7txtLgQNb9pmVpcpLFcF4c="/>
+        <field:input field="samplingProcedure" id="c_ro_roda_Methodology_samplingProcedure" required="true" z="iHMWDRNsHDe/FUFm2nhS4QADZRg="/>
+        <field:input field="weighting" id="c_ro_roda_Methodology_weighting" required="true" z="PYesozZZ62nluFNQM9Tzv2fc+yQ="/>
+        <field:input field="researchInstrument" id="c_ro_roda_Methodology_researchInstrument" required="true" z="iWDHeZIy2iM0XPfv/Lw4gqpw2DQ="/>
+        <field:input field="scope" id="c_ro_roda_Methodology_scope" required="true" z="BRGiVaUXSMg93ffTdh8jdMIbeos="/>
+    </form:update>
+</div>

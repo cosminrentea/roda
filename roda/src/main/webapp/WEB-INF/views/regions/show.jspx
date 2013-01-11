@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:show id="ps_ro_roda_Region" object="${region}" path="/regions" z="ycbHFm0V8OO155fts5i0AFwNVKg=">
+        <field:display field="cities" id="s_ro_roda_Region_cities" object="${region}" z="pBnM+tI8UowEC2oQg4ET/IOL5fE="/>
+        <field:display field="countryId" id="s_ro_roda_Region_countryId" object="${region}" z="6dwVnNzlnilVxJRLiAUKds3lp9c="/>
+        <field:display field="regiontypeId" id="s_ro_roda_Region_regiontypeId" object="${region}" z="z5P1MsSvgm/EJDh1WSQZn3TszWQ="/>
+        <field:display field="name" id="s_ro_roda_Region_name" object="${region}" z="C5SG7SuBorItlvFScpF0S6HZG4s="/>
+    </page:show>
+</div>

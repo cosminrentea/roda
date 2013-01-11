@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:show id="ps_ro_roda_StudyPersonAcl" object="${studypersonacl}" path="/studypersonacls" z="aFFYiURQGqMGQ3DbY6c4ug1TO34=">
+        <field:display field="studyPersonId" id="s_ro_roda_StudyPersonAcl_studyPersonId" object="${studypersonacl}" z="57d+RGi+ESOPG+iMvGwa/ASFsAw="/>
+        <field:display field="read" id="s_ro_roda_StudyPersonAcl_read" object="${studypersonacl}" z="P4tHo2uJJOG423UD3LzILQqjLaA="/>
+        <field:display field="update" id="s_ro_roda_StudyPersonAcl_update" object="${studypersonacl}" z="JjIs+5NvOFGZGn8Mbsr6d/gicD0="/>
+        <field:display field="delete" id="s_ro_roda_StudyPersonAcl_delete" object="${studypersonacl}" z="5ffSAPHXaSSgQYwjtGmHCc3zGZE="/>
+        <field:display field="modacl" id="s_ro_roda_StudyPersonAcl_modacl" object="${studypersonacl}" z="TEdLDW5wbJB761Xia56g4j53Na0="/>
+    </page:show>
+</div>

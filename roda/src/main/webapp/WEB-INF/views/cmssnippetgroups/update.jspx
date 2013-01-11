@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <form:update id="fu_ro_roda_CmsSnippetGroup" modelAttribute="cmsSnippetGroup" path="/cmssnippetgroups" versionField="none" z="WPDDH/2zMhXXLeu5N4m75wM5jRs=">
+        <field:simple field="cmsSnippets" id="c_ro_roda_CmsSnippetGroup_cmsSnippets" messageCode="entity_reference_not_managed" messageCodeAttribute="Cms Snippet" z="L751DqzIvwu5EvaAYOSF4YCOFQM="/>
+        <field:simple field="cmsSnippetGroups" id="c_ro_roda_CmsSnippetGroup_cmsSnippetGroups" messageCode="entity_reference_not_managed" messageCodeAttribute="Cms Snippet Group" z="4gzjToyIUJn79/J/pXj+NallUJI="/>
+        <field:select field="parent" id="c_ro_roda_CmsSnippetGroup_parent" itemValue="id" items="${cmssnippetgroups}" path="/cmssnippetgroups" z="cb6VloyxAFw6SEI2gGL8n6Z00zo="/>
+        <field:input field="name" id="c_ro_roda_CmsSnippetGroup_name" required="true" z="b/MkTgWMu7js6unKRNEoDwxPmy4="/>
+        <field:input field="description" id="c_ro_roda_CmsSnippetGroup_description" z="Xzd3aEYG2MZUH4rjdkzJK8LjQfk="/>
+    </form:update>
+</div>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:show id="ps_ro_roda_UserSetting" object="${usersetting}" path="/usersettings" z="/hs2CCZUjGzYSi4t2ZERlp2IzLQ=">
+        <field:display field="settingGroup" id="s_ro_roda_UserSetting_settingGroup" object="${usersetting}" z="CBDIFIqK+fCJDgieulij5+K08CM="/>
+        <field:display field="name" id="s_ro_roda_UserSetting_name" object="${usersetting}" z="w4zRFC9Iybua+9hojjU549aPCQM="/>
+        <field:display field="description" id="s_ro_roda_UserSetting_description" object="${usersetting}" z="fqpbHlzGc+BDXV5P4i+iBX/99y4="/>
+        <field:display field="predefinedValues" id="s_ro_roda_UserSetting_predefinedValues" object="${usersetting}" z="7m6WSNhJUs7ApPTzHQ4hB0dZUVA="/>
+        <field:display field="defaultValue" id="s_ro_roda_UserSetting_defaultValue" object="${usersetting}" z="SiwJv6UCg0q60pkMrtRVA0XYjbQ="/>
+    </page:show>
+</div>

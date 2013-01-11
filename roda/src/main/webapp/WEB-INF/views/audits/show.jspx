@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:show id="ps_ro_roda_Audit" object="${audit}" path="/audits" z="fF50Q/x8Tmn5q35MHmpb972+MEQ=">
+        <field:display field="userId" id="s_ro_roda_Audit_userId" object="${audit}" z="EhY9QEgG7aG+sY+YY4g3OXkc2oo="/>
+        <field:display date="true" dateTimePattern="${audit_time_date_format}" field="time" id="s_ro_roda_Audit_time" object="${audit}" z="fH/vyqgCWkVWolBzaGe4OLyFqao="/>
+        <field:display field="operationType" id="s_ro_roda_Audit_operationType" object="${audit}" z="C5jX+H/lyaMpq8dBzBd/UF2yVG8="/>
+        <field:display field="tableName" id="s_ro_roda_Audit_tableName" object="${audit}" z="xTqKhTGEmsF7mz2pV26HzB9eYRY="/>
+        <field:display field="versionNumber" id="s_ro_roda_Audit_versionNumber" object="${audit}" z="Jq396LmcHCGBbXxzG1UnW7q6LnY="/>
+    </page:show>
+</div>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:list id="pl_ro_roda_SourcestudyTypeHistory" items="${sourcestudytypehistorys}" z="XVdM3okc8yQMNv8UuaHvvQaKCmQ=">
+        <table:table data="${sourcestudytypehistorys}" id="l_ro_roda_SourcestudyTypeHistory" path="/sourcestudytypehistorys" z="XfQSy/wNfO7AoY1OprLIMC2o0Rc=">
+            <table:column id="c_ro_roda_SourcestudyTypeHistory_sourcesstudyId" property="sourcesstudyId" z="kjKrnLT+ZCS8ECC8I9wEvVrTc8w="/>
+            <table:column id="c_ro_roda_SourcestudyTypeHistory_sourcestudyTypeId" property="sourcestudyTypeId" z="aGsj+9Wc2GMctDAFq+t3FwHpgPo="/>
+            <table:column date="true" dateTimePattern="${sourcestudyTypeHistory_datestart_date_format}" id="c_ro_roda_SourcestudyTypeHistory_datestart" property="datestart" z="ou4YolS2XQml04EKMkVb7W1K1ho="/>
+            <table:column date="true" dateTimePattern="${sourcestudyTypeHistory_dateend_date_format}" id="c_ro_roda_SourcestudyTypeHistory_dateend" property="dateend" z="ngvy4jWhb5HnzRncgfSIkgJ99IA="/>
+            <table:column id="c_ro_roda_SourcestudyTypeHistory_addedBy" property="addedBy" z="I1rvBMJ1JBgNlmuAtvvr9rJDYH0="/>
+        </table:table>
+    </page:list>
+</div>

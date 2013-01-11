@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <form:update id="fu_ro_roda_News" modelAttribute="news" path="/news" versionField="none" z="DN8AOyqZAyuszunWqrTsBxjPvaQ=">
+        <field:select field="addedBy" id="c_ro_roda_News_addedBy" itemValue="id" items="${users}" path="/users" z="/wtcrUCLz2uCi1TMAtAQLWZ/zD4="/>
+        <field:input field="title" id="c_ro_roda_News_title" required="true" z="XpA3lV+MZwWM4lp3kQhXttttDXs="/>
+        <field:input field="content" id="c_ro_roda_News_content" z="jzKVyDi7hVdv8hot8ku2ChmOqr8="/>
+        <field:datetime dateTimePattern="${news_added_date_format}" field="added" id="c_ro_roda_News_added" required="true" z="M3Vz3bQ3tceXnqxGrBSwi6er1TQ="/>
+        <field:checkbox field="visible" id="c_ro_roda_News_visible" z="BQYre02cqgPuJS/F7MKwFUF5gro="/>
+    </form:update>
+</div>

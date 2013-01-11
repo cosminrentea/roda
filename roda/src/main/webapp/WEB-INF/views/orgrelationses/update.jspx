@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <form:update id="fu_ro_roda_OrgRelations" modelAttribute="orgRelations" path="/orgrelationses" versionField="none" z="eC7qgOWUItMfhvDrITkHYtoC/8o=">
+        <field:select field="orgRelationTypeId" id="c_ro_roda_OrgRelations_orgRelationTypeId" itemValue="id" items="${orgrelationtypes}" path="/orgrelationtypes" z="We7TuQywH3i6YuJOpoV8aSqvidM="/>
+        <field:datetime dateTimePattern="${orgRelations_dateend_date_format}" field="dateend" id="c_ro_roda_OrgRelations_dateend" required="true" z="mKqJwLW9E7dfVq/xNryezHWk2Ng="/>
+        <field:input field="details" id="c_ro_roda_OrgRelations_details" required="true" z="Znci/78uUT5tbdif5ZPaJOW+AbA="/>
+    </form:update>
+</div>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:list id="pl_ro_roda_UserAuthLog" items="${userauthlogs}" z="4xyR0kTcUTKfu+XfPD6a6lDzg6o=">
+        <table:table data="${userauthlogs}" id="l_ro_roda_UserAuthLog" path="/userauthlogs" z="s5vDiN0/J8JhslB3wFpd5nFrAnY=">
+            <table:column id="c_ro_roda_UserAuthLog_userId" property="userId" z="wipa+W9XGEz2lSsPV5iFEVAT2MA="/>
+            <table:column id="c_ro_roda_UserAuthLog_action" property="action" z="Vy+sxhFbnmrNMP96XX4Bv9g0fhU="/>
+            <table:column id="c_ro_roda_UserAuthLog_credentialProvider" property="credentialProvider" z="zd/N+Z7ud9wn6dppl15YUmyFen4="/>
+            <table:column id="c_ro_roda_UserAuthLog_credentialIdentifier" property="credentialIdentifier" z="u2G5LrrlGWp+YJWfsyedIfEp+pE="/>
+            <table:column id="c_ro_roda_UserAuthLog_errorMessage" property="errorMessage" z="+yDdqWzvf5zuuFgJK3INaPP56A4="/>
+        </table:table>
+    </page:list>
+</div>

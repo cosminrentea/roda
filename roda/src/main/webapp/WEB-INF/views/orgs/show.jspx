@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:show id="ps_ro_roda_Org" object="${org}" path="/orgs" z="XqpZ4bt9VIyJCAgXzdYWtmIWCdY=">
+        <field:display field="source" id="s_ro_roda_Org_source" object="${org}" z="oeY5xnPANKR65n/GsElWyjNYWtc="/>
+        <field:display field="orgPrefixId" id="s_ro_roda_Org_orgPrefixId" object="${org}" z="oEYlXIIZTC1hPVQ5D8R/mhxq514="/>
+        <field:display field="orgSufixId" id="s_ro_roda_Org_orgSufixId" object="${org}" z="pCM0v/uqQTTPllmom/r2zKJIb04="/>
+        <field:display field="name" id="s_ro_roda_Org_name" object="${org}" z="l5qhhVXYCs3yxs1CDb6Pju8NaFE="/>
+        <field:display field="fullname" id="s_ro_roda_Org_fullname" object="${org}" z="p3GSKSy9TCwH0+H9dqZFRLCLaek="/>
+    </page:show>
+</div>

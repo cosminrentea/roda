@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:show id="ps_ro_roda_PersonLinks" object="${personlinks}" path="/personlinkses" z="WcqLAgry7wqkEE9AhyEhA1rJB0g=">
+        <field:display field="personId" id="s_ro_roda_PersonLinks_personId" object="${personlinks}" z="K88jrb1cUm8fGmS0nrtMN4f1H5g="/>
+        <field:display field="userId" id="s_ro_roda_PersonLinks_userId" object="${personlinks}" z="9A7mvZjZh+q1C6SKeVwVoQ3KtUs="/>
+        <field:display field="statusBy" id="s_ro_roda_PersonLinks_statusBy" object="${personlinks}" z="ZuM+MdMYmeJFNw9Mzv0T8sz47Ys="/>
+        <field:display field="simscore" id="s_ro_roda_PersonLinks_simscore" object="${personlinks}" z="C4oX+pzLdEtYcUvBCT35DQqTaBw="/>
+        <field:display field="namescore" id="s_ro_roda_PersonLinks_namescore" object="${personlinks}" z="IQdOpmA7GvEP0UuLWw19tpwvkgo="/>
+        <field:display field="emailscore" id="s_ro_roda_PersonLinks_emailscore" object="${personlinks}" z="7qNL///rvwQE2IGokkW8tSgbrmc="/>
+        <field:display field="status" id="s_ro_roda_PersonLinks_status" object="${personlinks}" z="zBuGDcFY3blNmJqdLv8Uyx1Oynk="/>
+        <field:display date="true" dateTimePattern="${personLinks_statustime_date_format}" field="statusTime" id="s_ro_roda_PersonLinks_statusTime" object="${personlinks}" z="BMWsYOzbGrFZDRn7gCdwww6uA84="/>
+    </page:show>
+</div>

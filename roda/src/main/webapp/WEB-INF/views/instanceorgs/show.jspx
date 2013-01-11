@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:show id="ps_ro_roda_InstanceOrg" object="${instanceorg}" path="/instanceorgs" z="aKYKc6H9PYhwXo19DO6hzoCy7yQ=">
+        <field:display field="instanceId" id="s_ro_roda_InstanceOrg_instanceId" object="${instanceorg}" z="kc56RLPGVtOViE3qwK22MptM0j0="/>
+        <field:display field="assocTypeId" id="s_ro_roda_InstanceOrg_assocTypeId" object="${instanceorg}" z="iEOZIdqiT04L17c2xUui3ShwjVA="/>
+        <field:display field="orgId" id="s_ro_roda_InstanceOrg_orgId" object="${instanceorg}" z="bo3zAzUWYFAXbYfShVsMBlfYSh0="/>
+        <field:display field="assocDetails" id="s_ro_roda_InstanceOrg_assocDetails" object="${instanceorg}" z="1sInnbduCOnIBwY6AQXV/pcHNSk="/>
+        <field:display field="citation" id="s_ro_roda_InstanceOrg_citation" object="${instanceorg}" z="LoLB0LKUk2Q/u4CUvMeB01b0ljY="/>
+    </page:show>
+</div>

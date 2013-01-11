@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <form:update id="fu_ro_roda_Study" modelAttribute="study" path="/studys" versionField="none" z="TbKJWsSdT9dtsDYAQn9Fo1ESCns=">
+        <field:select field="topics" id="c_ro_roda_Study_topics" itemValue="id" items="${topics}" multiple="true" path="/topics" z="Ai4MIggZsO2iajGZANBNrYOz/2E="/>
+        <field:select field="files1" id="c_ro_roda_Study_files1" itemValue="id" items="${files}" multiple="true" path="/files" z="I/nGt1vUD7szMOBhVD5dW/X/Jyo="/>
+        <field:select field="studyDescr" id="c_ro_roda_Study_studyDescr" itemValue="studyId" items="${studydescrs}" path="/studydescrs" z="rFMuKkjn6W4ValNzkmTAQyHj0Wc="/>
+        <field:simple field="catalogStudies" id="c_ro_roda_Study_catalogStudies" messageCode="entity_reference_not_managed" messageCodeAttribute="Catalog Study" z="t98T3JWGb4n//antHIGi8LD/VTM="/>
+        <field:simple field="instances" id="c_ro_roda_Study_instances" messageCode="entity_reference_not_managed" messageCodeAttribute="Instance" z="IZH5mV3SaiqKz4Em5Z6q+fGyGpg="/>
+        <field:simple field="studyAcls" id="c_ro_roda_Study_studyAcls" messageCode="entity_reference_not_managed" messageCodeAttribute="Study Acl" z="4f4/o4JF4TpSUGOvXKqulqIn+Ws="/>
+        <field:simple field="studyKeywords" id="c_ro_roda_Study_studyKeywords" messageCode="entity_reference_not_managed" messageCodeAttribute="Study Keyword" z="4A+KNTbVMoqbYXOMdJOgD01lzo0="/>
+        <field:simple field="studyOrgs" id="c_ro_roda_Study_studyOrgs" messageCode="entity_reference_not_managed" messageCodeAttribute="Study Org" z="qlJmFx5c52DCK9C5P7sHyNPb31Y="/>
+        <field:simple field="studypeople" id="c_ro_roda_Study_studypeople" messageCode="entity_reference_not_managed" messageCodeAttribute="Study Person" z="XjMh1nywVJ4oKeELW117i7TxWyc="/>
+        <field:simple field="titles" id="c_ro_roda_Study_titles" messageCode="entity_reference_not_managed" messageCodeAttribute="Title" z="xpT5NJTiDZXM9D64rWPcxGMPI6c="/>
+        <field:datetime dateTimePattern="${study_datestart_date_format}" field="datestart" id="c_ro_roda_Study_datestart" required="true" z="mFYwCOb3eIlBcwFjuRLkSCh8drc="/>
+        <field:datetime dateTimePattern="${study_dateend_date_format}" field="dateend" id="c_ro_roda_Study_dateend" required="true" z="Mv8XUokmeUahlVQbsh6rzq8ep4U="/>
+        <field:input field="grantNumber" id="c_ro_roda_Study_grantNumber" required="true" z="WUJ7lLhNtrY53hVY+3zF0KhFobg="/>
+    </form:update>
+</div>

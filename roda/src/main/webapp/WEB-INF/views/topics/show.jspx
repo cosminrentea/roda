@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:show id="ps_ro_roda_Topic" object="${topic}" path="/topics" z="ZzVgZwFAVu6SLMIXQcWVMT2wlDY=">
+        <field:display field="instances" id="s_ro_roda_Topic_instances" object="${topic}" z="KpQzogLaemVt4uUE0U/OvRgyI2s="/>
+        <field:display field="studies" id="s_ro_roda_Topic_studies" object="${topic}" z="YUFQHgNPP+Y1baIvrJBsCU6VwfA="/>
+        <field:display field="name" id="s_ro_roda_Topic_name" object="${topic}" z="YHMhCcz+FitFTNYbCRBUKcMwe7Y="/>
+        <field:display field="description" id="s_ro_roda_Topic_description" object="${topic}" z="5/GziJZ6cjMBeei6FbhgASIjb1M="/>
+        <field:display field="leftTopic" id="s_ro_roda_Topic_leftTopic" object="${topic}" z="5ydlz5xJbcS6ysRHUGNow55wIdk="/>
+        <field:display field="rightTopic" id="s_ro_roda_Topic_rightTopic" object="${topic}" z="7q1WGRpI+ketQOmi5svVIuph2gE="/>
+    </page:show>
+</div>

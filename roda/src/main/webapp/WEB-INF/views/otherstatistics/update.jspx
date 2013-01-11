@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <form:update id="fu_ro_roda_OtherStatistic" idField="variableId" modelAttribute="otherStatistic" path="/otherstatistics" versionField="none" z="jGsyEqQjUdStX+RHJ3xXFpFU/Ws=">
+        <field:select field="editedVariable" id="c_ro_roda_OtherStatistic_editedVariable" itemValue="variableId" items="${editedvariables}" path="/editedvariables" z="SZDFNR8SRKGx27YN+NwZ6zDo13c="/>
+        <field:input field="statisticName" id="c_ro_roda_OtherStatistic_statisticName" required="true" z="jWZzGhMYik3DQSphzuY5xA1w5fw="/>
+        <field:input field="statisticValue" id="c_ro_roda_OtherStatistic_statisticValue" required="true" validationMessageCode="field_invalid_number" z="tw24rbo1Nzbhs26ln6Y/bzy3p2g="/>
+    </form:update>
+</div>

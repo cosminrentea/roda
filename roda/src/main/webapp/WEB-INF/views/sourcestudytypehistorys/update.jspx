@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <form:update id="fu_ro_roda_SourcestudyTypeHistory" modelAttribute="sourcestudyTypeHistory" path="/sourcestudytypehistorys" versionField="none" z="dnyk4qguYl8l8gDf69fW5lB+yiQ=">
+        <field:select field="sourcesstudyId" id="c_ro_roda_SourcestudyTypeHistory_sourcesstudyId" itemValue="id" items="${sourcestudys}" path="/sourcestudys" z="M9Qfa3V/tqCNdCPu9IbEFMYmwnw="/>
+        <field:select field="sourcestudyTypeId" id="c_ro_roda_SourcestudyTypeHistory_sourcestudyTypeId" itemValue="id" items="${sourcestudytypes}" path="/sourcestudytypes" z="yM5EeK0PNwJ2pVjAkGCgGzBK0uI="/>
+        <field:datetime dateTimePattern="${sourcestudyTypeHistory_datestart_date_format}" field="datestart" id="c_ro_roda_SourcestudyTypeHistory_datestart" required="true" z="ZKjJ4fxzfpIrLEj/pOT2x9av5j0="/>
+        <field:datetime dateTimePattern="${sourcestudyTypeHistory_dateend_date_format}" field="dateend" id="c_ro_roda_SourcestudyTypeHistory_dateend" required="true" z="cTcFWcnGX2xfo9BZWqtj0mwMcX8="/>
+        <field:input field="addedBy" id="c_ro_roda_SourcestudyTypeHistory_addedBy" required="true" validationMessageCode="field_invalid_integer" z="vjueHpMYXggASIw9Xvr+QvT70vI="/>
+    </form:update>
+</div>

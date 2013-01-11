@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <form:update id="fu_ro_roda_Item" modelAttribute="item" path="/items" versionField="none" z="AX5ijqj+OycRfjNaD8BM+83Wxs4=">
+        <field:select field="scale" id="c_ro_roda_Item_scale" itemValue="itemId" items="${scales}" path="/scales" z="x2FC/uMAg1GZgFzk2pNVy8zySqU="/>
+        <field:select field="value" id="c_ro_roda_Item_value" itemValue="itemId" items="${values}" path="/values" z="vWyXwMizhKC32HOoKfe8hLTAOj8="/>
+        <field:simple field="selectionVariableItems" id="c_ro_roda_Item_selectionVariableItems" messageCode="entity_reference_not_managed" messageCodeAttribute="Selection Variable Item" z="dIN+4EO1y93u73K1/t2Yv32hlNQ="/>
+        <field:input field="name" id="c_ro_roda_Item_name" required="true" z="vna1GlnWPXdVeeBvX9pTX2jGBFY="/>
+    </form:update>
+</div>

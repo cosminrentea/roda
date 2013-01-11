@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <form:update id="fu_ro_roda_TitleType" modelAttribute="titleType" path="/titletypes" versionField="none" z="nYNaMhcDdSurXsuK3+DX2V7bko0=">
+        <field:simple field="titles" id="c_ro_roda_TitleType_titles" messageCode="entity_reference_not_managed" messageCodeAttribute="Title" z="E3c8LyJZATD07PFCOdRcbRQzLnE="/>
+        <field:input field="name" id="c_ro_roda_TitleType_name" required="true" z="2BrZZaY5C5PaMTDRKf/mh8t21Qo="/>
+    </form:update>
+</div>

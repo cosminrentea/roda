@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:list id="pl_ro_roda_PersonLinks" items="${personlinkses}" z="zVHItMD7dr/9//WYImsRIUC+OUc=">
+        <table:table data="${personlinkses}" id="l_ro_roda_PersonLinks" path="/personlinkses" z="bWtyvYwcatvRwVhW8OGXGSvkNdo=">
+            <table:column id="c_ro_roda_PersonLinks_personId" property="personId" z="lqOlSyDck2gAbKLOQGpksNkcI8E="/>
+            <table:column id="c_ro_roda_PersonLinks_userId" property="userId" z="hf6IivojLmAqDIxEEOjxDFCvW5E="/>
+            <table:column id="c_ro_roda_PersonLinks_statusBy" property="statusBy" z="kCskjoCjT4HMVENcs516uu8dwTo="/>
+            <table:column id="c_ro_roda_PersonLinks_simscore" property="simscore" z="ZAKK2YRU83Lh1YK+zVzNvstKBno="/>
+            <table:column id="c_ro_roda_PersonLinks_namescore" property="namescore" z="aS3kMsi0kjHRaawLSfkLZwGz5s4="/>
+            <table:column id="c_ro_roda_PersonLinks_emailscore" property="emailscore" z="1G26yuZaYUANUBCSbxnwS2fDPYs="/>
+        </table:table>
+    </page:list>
+</div>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:show id="ps_ro_roda_News" object="${news}" path="/news" z="3An3FYt66K8yn6FZnMiWYic52L0=">
+        <field:display field="addedBy" id="s_ro_roda_News_addedBy" object="${news}" z="gIVdQ94TnWw4d+PymWfV/uhFbfk="/>
+        <field:display field="title" id="s_ro_roda_News_title" object="${news}" z="8kw9vqpLta01VePYDd2MnwgCG2A="/>
+        <field:display field="content" id="s_ro_roda_News_content" object="${news}" z="EaG9c3JygdRv3pmrV8zcW/mOf/Q="/>
+        <field:display date="true" dateTimePattern="${news_added_date_format}" field="added" id="s_ro_roda_News_added" object="${news}" z="X4pVCqDCkzJVWMqhF7fctVQOFx0="/>
+        <field:display field="visible" id="s_ro_roda_News_visible" object="${news}" z="Fb4GzAdSAkiXdbJAprd9GT1wUvQ="/>
+    </page:show>
+</div>

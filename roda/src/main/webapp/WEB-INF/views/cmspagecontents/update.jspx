@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <form:update id="fu_ro_roda_CmsPageContent" modelAttribute="cmsPageContent" path="/cmspagecontents" versionField="none" z="KkLRbHUaA+T7nLJVIDyLD8K/4io=">
+        <field:select field="page" id="c_ro_roda_CmsPageContent_page" itemValue="id" items="${cmspages}" path="/cmspages" z="hxC8hrNX5GgXezZhkTZR9/jGqSU="/>
+        <field:input field="name" id="c_ro_roda_CmsPageContent_name" required="true" z="JO0aNNBTt+e8Tt6+vLwSSnLQk4E="/>
+        <field:input field="contentTitle" id="c_ro_roda_CmsPageContent_contentTitle" required="true" z="+AOals2LsDGTNCXpxX1gBxU9ZiI="/>
+        <field:input field="contentText" id="c_ro_roda_CmsPageContent_contentText" z="CpCuHDRragPpMEFlQP8GXwiZGts="/>
+        <field:input field="seqnumber" id="c_ro_roda_CmsPageContent_seqnumber" required="true" validationMessageCode="field_invalid_integer" z="p/9BB2o7eNaHWsijGbKzO8ruUV0="/>
+    </form:update>
+</div>

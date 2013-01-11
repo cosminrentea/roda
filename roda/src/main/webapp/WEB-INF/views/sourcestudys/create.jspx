@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:spring="http://www.springframework.org/tags" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <form:create id="fc_ro_roda_Sourcestudy" modelAttribute="sourcestudy" path="/sourcestudys" render="${empty dependencies}" z="OdBnByLZVkEcgQ8bh5h15EfYzP8=">
+        <field:simple field="sourcestudyTypeHistories" id="c_ro_roda_Sourcestudy_sourcestudyTypeHistories" messageCode="entity_reference_not_managed" messageCodeAttribute="Sourcestudy Type History" z="dowz7dh1epV/zQE4F4Q2oZb/RLo="/>
+        <field:select field="orgId" id="c_ro_roda_Sourcestudy_orgId" itemValue="orgId" items="${sources}" path="/sources" z="d/tCzhJ4WgHwLgfHSAKGBQ/k454="/>
+        <field:select field="type" id="c_ro_roda_Sourcestudy_type" itemValue="id" items="${sourcestudytypes}" path="/sourcestudytypes" z="w4nHyiBaVtbcOWGm9bTcH9p/Z+I="/>
+        <field:input field="name" id="c_ro_roda_Sourcestudy_name" required="true" z="Gxx66erpu0u1jw/s2n64+tzi6ls="/>
+        <field:input field="details" id="c_ro_roda_Sourcestudy_details" required="true" z="f+vu8/T3kxEpK2ALBViLZiI+TbM="/>
+    </form:create>
+    <form:dependency dependencies="${dependencies}" id="d_ro_roda_Sourcestudy" render="${not empty dependencies}" z="NVc8Y5sqhBmroSMs8btXV7c+cwo="/>
+</div>

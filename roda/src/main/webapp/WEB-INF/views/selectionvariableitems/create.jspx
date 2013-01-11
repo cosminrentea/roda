@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:spring="http://www.springframework.org/tags" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <form:create compositePkField="id" id="fc_ro_roda_SelectionVariableItem" modelAttribute="selectionVariableItem" path="/selectionvariableitems" render="${empty dependencies}" z="RiT0PjT3YqYb+tmaYZLz+8liK5Y=">
+        <field:input disableFormBinding="true" field="id.variableId" id="c_ro_roda_SelectionVariableItem_id_variableId" required="true" validationMessageCode="field_invalid_integer" z="oqsqRKowkAAt1O0urxnHs9fdKdo="/>
+        <field:input disableFormBinding="true" field="id.itemId" id="c_ro_roda_SelectionVariableItem_id_itemId" required="true" validationMessageCode="field_invalid_integer" z="MTJUJfedn6J8up0Imsd03ul/SXE="/>
+        <field:select field="frequency" id="c_ro_roda_SelectionVariableItem_frequency" itemValue="id" items="${frequencys}" path="/frequencys" z="BTH9IvCg9KNLYS/eOcPFapFlzsI="/>
+        <field:simple field="formSelectionVars" id="c_ro_roda_SelectionVariableItem_formSelectionVars" messageCode="entity_reference_not_managed" messageCodeAttribute="Form Selection Var" z="1Z3vLWK34sJunmFHGeOtxt6A7uQ="/>
+        <field:select field="responseCardFileId" id="c_ro_roda_SelectionVariableItem_responseCardFileId" itemValue="id" items="${files}" path="/files" z="z5k126rA+kWlwPaw4lZcnj709hk="/>
+        <field:input field="order" id="c_ro_roda_SelectionVariableItem_order" required="true" validationMessageCode="field_invalid_integer" z="krYlVI/O0mHM/IH2HmYns9WTVyQ="/>
+    </form:create>
+    <form:dependency dependencies="${dependencies}" id="d_ro_roda_SelectionVariableItem" render="${not empty dependencies}" z="leHv1nX+uQJZM72CmKrJM4uBjL0="/>
+</div>

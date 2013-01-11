@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <form:update id="fu_ro_roda_CmsLayoutGroup" modelAttribute="cmsLayoutGroup" path="/cmslayoutgroups" versionField="none" z="M7/pV2u8KEH8+WTfYCNiXb1PkDI=">
+        <field:simple field="cmsLayouts" id="c_ro_roda_CmsLayoutGroup_cmsLayouts" messageCode="entity_reference_not_managed" messageCodeAttribute="Cms Layout" z="Q9UWuucPpgOfpPeeY+vD8+X4qZg="/>
+        <field:input field="name" id="c_ro_roda_CmsLayoutGroup_name" required="true" z="j1zVlQUsDeIZyMSoK0v2eQsE7ao="/>
+        <field:input field="parent" id="c_ro_roda_CmsLayoutGroup_parent" required="true" validationMessageCode="field_invalid_integer" z="844bYQ3xDeDKBl0D8wnL42jduuI="/>
+        <field:input field="description" id="c_ro_roda_CmsLayoutGroup_description" z="JBhmks3sD0kDllXO+hxJJehWq2k="/>
+    </form:update>
+</div>

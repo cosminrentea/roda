@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:show id="ps_ro_roda_Study" object="${study}" path="/studys" z="r5HW+Sx2A0CzWT9etUved5S1LFY=">
+        <field:display field="topics" id="s_ro_roda_Study_topics" object="${study}" z="yjsaNT1zBZzjkJ2jDJcbYupzb00="/>
+        <field:display field="files1" id="s_ro_roda_Study_files1" object="${study}" z="XEK0Lz8uJY4NjT5dh0lO98eMMNQ="/>
+        <field:display field="studyDescr" id="s_ro_roda_Study_studyDescr" object="${study}" z="dmxp9be/YsIhgF2q6div/t5Vxag="/>
+        <field:display date="true" dateTimePattern="${study_datestart_date_format}" field="datestart" id="s_ro_roda_Study_datestart" object="${study}" z="nj+obu49Ra7hJlOKIUAcsg4DhmU="/>
+        <field:display date="true" dateTimePattern="${study_dateend_date_format}" field="dateend" id="s_ro_roda_Study_dateend" object="${study}" z="oJZf8sGAZb43dY6wurh1UmmR5rs="/>
+        <field:display field="grantNumber" id="s_ro_roda_Study_grantNumber" object="${study}" z="Gc3Q38H9LGyENsQmFOwwhRXIUaA="/>
+    </page:show>
+</div>

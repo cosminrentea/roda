@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:show id="ps_ro_roda_UserAuthLog" object="${userauthlog}" path="/userauthlogs" z="oA6CZmItS8dmiND6dQnnTAEA6h4=">
+        <field:display field="userId" id="s_ro_roda_UserAuthLog_userId" object="${userauthlog}" z="RPuDN2vfvUyYsTJv99JncvADQew="/>
+        <field:display field="action" id="s_ro_roda_UserAuthLog_action" object="${userauthlog}" z="US5q3rKP/PH0zptwRx/M4b6V1Ns="/>
+        <field:display field="credentialProvider" id="s_ro_roda_UserAuthLog_credentialProvider" object="${userauthlog}" z="7pbZ2AxZDiG6ANF+0oUZywTVlio="/>
+        <field:display field="credentialIdentifier" id="s_ro_roda_UserAuthLog_credentialIdentifier" object="${userauthlog}" z="OqKF4lVIZWQPQVLk1mPE2iotD4Y="/>
+        <field:display field="errorMessage" id="s_ro_roda_UserAuthLog_errorMessage" object="${userauthlog}" z="K/v7UwrzycbWgBKXsIPEEGrZWxU="/>
+    </page:show>
+</div>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:show id="ps_ro_roda_OrgRelations" object="${orgrelations}" path="/orgrelationses" z="pOHpAH1II87mckupnk29zEDfhAY=">
+        <field:display field="org2Id" id="s_ro_roda_OrgRelations_org2Id" object="${orgrelations}" z="ErQAcf/n03tOuoJuP8CytV8sirw="/>
+        <field:display field="org1Id" id="s_ro_roda_OrgRelations_org1Id" object="${orgrelations}" z="Fl//xscDFAkLih4DFaC1/eQFHFg="/>
+        <field:display field="orgRelationTypeId" id="s_ro_roda_OrgRelations_orgRelationTypeId" object="${orgrelations}" z="/umnOGvW5sNhPP5OGx74fBlHrRU="/>
+        <field:display date="true" dateTimePattern="${orgRelations_dateend_date_format}" field="dateend" id="s_ro_roda_OrgRelations_dateend" object="${orgrelations}" z="W/b4/v3cZddO02fIOlBaI4yt204="/>
+        <field:display field="details" id="s_ro_roda_OrgRelations_details" object="${orgrelations}" z="6+nZZb+lmdLl3da4vufjcTuh90g="/>
+    </page:show>
+</div>

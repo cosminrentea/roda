@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:list id="pl_ro_roda_StudyPersonAcl" items="${studypersonacls}" z="IOyQd6j6zE4ni0+wWlBQpeVTyng=">
+        <table:table data="${studypersonacls}" id="l_ro_roda_StudyPersonAcl" path="/studypersonacls" z="1B6Iu9yF/UpYKIF+3ayDLLn9pa8=">
+            <table:column id="c_ro_roda_StudyPersonAcl_studyPersonId" property="studyPersonId" z="E25X+VFwOwKdW0LnlPUC9+oXB4E="/>
+            <table:column id="c_ro_roda_StudyPersonAcl_read" property="read" z="4bXSYFgyBkaCac5Fo+OHgDdlcCQ="/>
+            <table:column id="c_ro_roda_StudyPersonAcl_update" property="update" z="t7M5qDlpV5Rq2BfyNjLUPmHk6RQ="/>
+            <table:column id="c_ro_roda_StudyPersonAcl_delete" property="delete" z="cQJ6GiS/+haQcLubvYYgmas78zk="/>
+            <table:column id="c_ro_roda_StudyPersonAcl_modacl" property="modacl" z="SSTeXVOn36gWG8OydKv39ijE2zU="/>
+        </table:table>
+    </page:list>
+</div>

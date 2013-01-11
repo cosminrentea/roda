@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:list id="pl_ro_roda_StudyOrgAcl" items="${studyorgacls}" z="Ta9w74opq09Dq96I0YSOSCudmQE=">
+        <table:table data="${studyorgacls}" id="l_ro_roda_StudyOrgAcl" path="/studyorgacls" z="9Iuvj5dKi7+MfAmKNuFRSh9ph4w=">
+            <table:column id="c_ro_roda_StudyOrgAcl_studyOrgId" property="studyOrgId" z="KmfkhbDCcbC0viv8jB9o5fw61nI="/>
+            <table:column id="c_ro_roda_StudyOrgAcl_read" property="read" z="DxuhnkePhjXYECQ82x6Zz32qVTo="/>
+            <table:column id="c_ro_roda_StudyOrgAcl_update" property="update" z="jT7DLLOv8D420FgeFhT1G5Hp0s0="/>
+            <table:column id="c_ro_roda_StudyOrgAcl_delete" property="delete" z="OZAi7wFZjIeLfSLMjI10QtTwyIU="/>
+            <table:column id="c_ro_roda_StudyOrgAcl_modacl" property="modacl" z="RLzgm5GliQWbRyS4Qde4aiD6BPE="/>
+        </table:table>
+    </page:list>
+</div>

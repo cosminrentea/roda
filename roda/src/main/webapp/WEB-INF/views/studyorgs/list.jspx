@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:list id="pl_ro_roda_StudyOrg" items="${studyorgs}" z="iXF123Dqr0SV7IdMsO7Dt6fnUsE=">
+        <table:table data="${studyorgs}" id="l_ro_roda_StudyOrg" path="/studyorgs" z="UO42uXK91QGkWk4oH2LfCHqWkfU=">
+            <table:column id="c_ro_roda_StudyOrg_orgId" property="orgId" z="m5KrFP9sTXYD4yaUo4s78mXmtYM="/>
+            <table:column id="c_ro_roda_StudyOrg_studyId" property="studyId" z="xrOz3XvRwpMCNyAsB7AKc5A5F5s="/>
+            <table:column id="c_ro_roda_StudyOrg_assoctypeId" property="assoctypeId" z="6Jgj0vTdGfET3jHnC/Adk4agoYY="/>
+            <table:column id="c_ro_roda_StudyOrg_citation" property="citation" z="DCiJbqFk09KiUv+eNpgSkLD6jBk="/>
+        </table:table>
+    </page:list>
+</div>

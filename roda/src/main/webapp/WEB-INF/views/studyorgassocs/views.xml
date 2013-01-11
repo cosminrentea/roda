@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN" "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+<tiles-definitions>
+    <definition extends="default" name="studyorgassocs/list">
+        <put-attribute name="body" value="/WEB-INF/views/studyorgassocs/list.jspx"/>
+    </definition>
+<definition extends="default" name="studyorgassocs/show">
+        <put-attribute name="body" value="/WEB-INF/views/studyorgassocs/show.jspx"/>
+    </definition>
+<definition extends="default" name="studyorgassocs/create">
+        <put-attribute name="body" value="/WEB-INF/views/studyorgassocs/create.jspx"/>
+    </definition>
+<definition extends="default" name="studyorgassocs/update">
+        <put-attribute name="body" value="/WEB-INF/views/studyorgassocs/update.jspx"/>
+    </definition>
+</tiles-definitions>

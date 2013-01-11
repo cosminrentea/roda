@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:show id="ps_ro_roda_SourcestudyTypeHistory" object="${sourcestudytypehistory}" path="/sourcestudytypehistorys" z="0MFsRpEN4oiVQzH1NVEyV7Thz10=">
+        <field:display field="sourcesstudyId" id="s_ro_roda_SourcestudyTypeHistory_sourcesstudyId" object="${sourcestudytypehistory}" z="+Gb8Tg0Or4NBlY+FkPuVcu7vUb0="/>
+        <field:display field="sourcestudyTypeId" id="s_ro_roda_SourcestudyTypeHistory_sourcestudyTypeId" object="${sourcestudytypehistory}" z="ChOZaMOaMdNQR2SQInNI3Bg2jgA="/>
+        <field:display date="true" dateTimePattern="${sourcestudyTypeHistory_datestart_date_format}" field="datestart" id="s_ro_roda_SourcestudyTypeHistory_datestart" object="${sourcestudytypehistory}" z="mnfq88aYSdSaACU4s34d2Qz04fY="/>
+        <field:display date="true" dateTimePattern="${sourcestudyTypeHistory_dateend_date_format}" field="dateend" id="s_ro_roda_SourcestudyTypeHistory_dateend" object="${sourcestudytypehistory}" z="ZnAyeY2m7xMr0ka1ALcdKwwd3cs="/>
+        <field:display field="addedBy" id="s_ro_roda_SourcestudyTypeHistory_addedBy" object="${sourcestudytypehistory}" z="Fo9W+D6RmKlzs4YJiiAJJroUHdg="/>
+    </page:show>
+</div>

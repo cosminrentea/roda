@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:list id="pl_ro_roda_Frequency" items="${frequencys}" z="D1oELqqLlN4KsdNVOFfdvzsLxNQ=">
+        <table:table data="${frequencys}" id="l_ro_roda_Frequency" path="/frequencys" z="mhVhTL8koexrv+ik0l0bMdh5GYw=">
+            <table:column id="c_ro_roda_Frequency_selectionVariableItem" property="selectionVariableItem" z="uuQDXgDFmiQ+0d3O3aFDK2N/KXY="/>
+            <table:column id="c_ro_roda_Frequency_value" property="value" z="XMzJIg0MEmM1XLGAFS2cvX5VP0k="/>
+        </table:table>
+    </page:list>
+</div>

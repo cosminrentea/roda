@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <form:update id="fu_ro_roda_SettingGroup" modelAttribute="settingGroup" path="/settinggroups" versionField="none" z="KpI3jcaFQ1hhiCK+dRu2P2Bb3Rw=">
+        <field:simple field="settings" id="c_ro_roda_SettingGroup_settings" messageCode="entity_reference_not_managed" messageCodeAttribute="Setting" z="5NIjN4H4vsumOTaP+KHF4PT7bSk="/>
+        <field:simple field="settingGroups" id="c_ro_roda_SettingGroup_settingGroups" messageCode="entity_reference_not_managed" messageCodeAttribute="Setting Group" z="sEvucXHLtN/fLqUkUK1Xdpwajkg="/>
+        <field:select field="parent" id="c_ro_roda_SettingGroup_parent" itemValue="id" items="${settinggroups}" path="/settinggroups" z="YWGNRyCGgp4IFaHmz+Z6mllEWf0="/>
+        <field:input field="name" id="c_ro_roda_SettingGroup_name" required="true" z="J2ne/z1kxinTTIA/MuceEwI9pcU="/>
+        <field:input field="description" id="c_ro_roda_SettingGroup_description" z="p/e3et5k87L6Iv88H8yzLbfYR6M="/>
+    </form:update>
+</div>

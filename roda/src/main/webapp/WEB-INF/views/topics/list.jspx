@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:list id="pl_ro_roda_Topic" items="${topics}" z="nZFbz5VKw19UpmSnHpiUK9pxUww=">
+        <table:table data="${topics}" id="l_ro_roda_Topic" path="/topics" z="93UaqoEefNJi8ewWAPK7qnM+gtE=">
+            <table:column id="c_ro_roda_Topic_instances" property="instances" z="PXikhRfdWaRWnQH8sJMALpTc8mU="/>
+            <table:column id="c_ro_roda_Topic_studies" property="studies" z="WarEDq2pORKfjJOgO/5qJIsk9Ds="/>
+            <table:column id="c_ro_roda_Topic_name" property="name" z="pNVvsYi0yZNyPGV50flTK9uoi2c="/>
+            <table:column id="c_ro_roda_Topic_description" property="description" z="O+qpDymz76jIzpACG5yZT1mjz1Q="/>
+            <table:column id="c_ro_roda_Topic_leftTopic" property="leftTopic" z="y6J+FiUIuWYO8cFxAQW3k7NG9iM="/>
+        </table:table>
+    </page:list>
+</div>

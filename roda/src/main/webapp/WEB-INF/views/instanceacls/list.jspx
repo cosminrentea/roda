@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:list id="pl_ro_roda_InstanceAcl" items="${instanceacls}" z="nr03vSjvmpn/2Omzboo8qLCNFXY=">
+        <table:table data="${instanceacls}" id="l_ro_roda_InstanceAcl" path="/instanceacls" z="J225tlPI9kGjZlhIKavmgBq6c6w=">
+            <table:column id="c_ro_roda_InstanceAcl_instanceId" property="instanceId" z="tQAgl1nbJl4mhAMH65veNM4TuXs="/>
+            <table:column id="c_ro_roda_InstanceAcl_read" property="read" z="R0QYUTiKNhKIFrg7+0leDc7+DRI="/>
+            <table:column id="c_ro_roda_InstanceAcl_update" property="update" z="mupLQ2Ew3aoVKxLSU2yKTsPsu0g="/>
+            <table:column id="c_ro_roda_InstanceAcl_delete" property="delete" z="mirF+PrpIIPaFKv1bgSSuDsDDSw="/>
+            <table:column id="c_ro_roda_InstanceAcl_modacl" property="modacl" z="gF+sL+HFMjISCS38BupMtg5SWFg="/>
+        </table:table>
+    </page:list>
+</div>

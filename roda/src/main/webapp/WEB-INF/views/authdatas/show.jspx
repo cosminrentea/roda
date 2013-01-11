@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:show id="ps_ro_roda_AuthData" object="${authdata}" path="/authdatas" z="mchnaYiT2uCBDv+Lw+uGEAJDxpw=">
+        <field:display field="user" id="s_ro_roda_AuthData_user" object="${authdata}" z="c4uv0irODJviiVNQcWFYWQNGuOg="/>
+        <field:display field="credentialProvider" id="s_ro_roda_AuthData_credentialProvider" object="${authdata}" z="mOBmlu3e/e2vCNWIYn1aW9JBDEI="/>
+        <field:display field="fieldName" id="s_ro_roda_AuthData_fieldName" object="${authdata}" z="xZH8ZhqqqnSq81b/qz45K/aAUt4="/>
+        <field:display field="fieldValue" id="s_ro_roda_AuthData_fieldValue" object="${authdata}" z="6+OZkQxZAz5Bv9dGndsnh7lFNkk="/>
+    </page:show>
+</div>

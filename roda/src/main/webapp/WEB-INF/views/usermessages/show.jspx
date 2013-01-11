@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:show id="ps_ro_roda_UserMessage" object="${usermessage}" path="/usermessages" z="lSFiHlX/0SBWwbHIUOzAZtZGdfc=">
+        <field:display field="userId" id="s_ro_roda_UserMessage_userId" object="${usermessage}" z="xlusgvtyw1wAn2cBupd1qPI5mBw="/>
+        <field:display field="message" id="s_ro_roda_UserMessage_message" object="${usermessage}" z="XXc8SXibzuRLczeuwJCkuGD3yoc="/>
+        <field:display field="to" id="s_ro_roda_UserMessage_to" object="${usermessage}" z="gM9QVYG9lOJn/RPBM0bolmD3LlU="/>
+    </page:show>
+</div>

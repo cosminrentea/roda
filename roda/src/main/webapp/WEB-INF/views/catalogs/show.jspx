@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:show id="ps_ro_roda_Catalog" object="${catalog}" path="/catalogs" z="zOQt3lRsaEHwfzUwbv92zSkTEY0=">
+        <field:display field="parent" id="s_ro_roda_Catalog_parent" object="${catalog}" z="AtDhgxfgDDBcC9b7Cc6145hlqfM="/>
+        <field:display field="owner" id="s_ro_roda_Catalog_owner" object="${catalog}" z="Akj04KflAwiWu7QQiFMoGW2udQw="/>
+        <field:display field="name" id="s_ro_roda_Catalog_name" object="${catalog}" z="j5CM2gy0jPn0/ViKTm5acgFDHC4="/>
+        <field:display date="true" dateTimePattern="${catalog_added_date_format}" field="added" id="s_ro_roda_Catalog_added" object="${catalog}" z="+X9MvZleM71vGIVOarRBIQfKMu0="/>
+    </page:show>
+</div>

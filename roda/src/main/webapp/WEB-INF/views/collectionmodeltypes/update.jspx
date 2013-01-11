@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <form:update id="fu_ro_roda_CollectionModelType" modelAttribute="collectionModelType" path="/collectionmodeltypes" versionField="none" z="3j4XcYydVNtgb84S7jDybROLgzo=">
+        <field:select field="methodologies" id="c_ro_roda_CollectionModelType_methodologies" itemValue="instanceId" items="${methodologys}" multiple="true" path="/methodologys" z="lxJolvUXBnM2UE2MFU6MgUrC+ew="/>
+        <field:input field="name" id="c_ro_roda_CollectionModelType_name" required="true" z="OVJxZESBQx6ELVbqhlb4eFY8vH0="/>
+    </form:update>
+</div>

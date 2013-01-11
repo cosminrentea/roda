@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:show id="ps_ro_roda_OtherStatistic" object="${otherstatistic}" path="/otherstatistics" z="dHjSE2YTVLP+FbiCIBZnCckKulc=">
+        <field:display field="editedVariable" id="s_ro_roda_OtherStatistic_editedVariable" object="${otherstatistic}" z="Gv6/DNEa+/CLfVUJXl5mF48Nxug="/>
+        <field:display field="statisticName" id="s_ro_roda_OtherStatistic_statisticName" object="${otherstatistic}" z="QEhPcM6DqD5tJ1XZUc0M6zBp1+A="/>
+        <field:display field="statisticValue" id="s_ro_roda_OtherStatistic_statisticValue" object="${otherstatistic}" z="bXnIBEKV3VWGW4Iqwu77Fx/3tNg="/>
+    </page:show>
+</div>

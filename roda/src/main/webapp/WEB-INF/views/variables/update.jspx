@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <form:update id="fu_ro_roda_Variable" modelAttribute="variable" path="/variables" versionField="none" z="SkpaAHcHMIPqD+uMe1OLUkREFkk=">
+        <field:select field="concepts" id="c_ro_roda_Variable_concepts" itemValue="id" items="${concepts}" multiple="true" path="/concepts" z="aYnDZOEPbxbNjgJCbGN8xtj8otc="/>
+        <field:select field="vargroups" id="c_ro_roda_Variable_vargroups" itemValue="id" items="${vargroups}" multiple="true" path="/vargroups" z="ihKekiq+7nFi2oP9o+hdtsXww8E="/>
+        <field:select field="editedVariable" id="c_ro_roda_Variable_editedVariable" itemValue="variableId" items="${editedvariables}" path="/editedvariables" z="7++A//UvQZb8wsLNY9y4xoR7qeM="/>
+        <field:select field="selectionVariable" id="c_ro_roda_Variable_selectionVariable" itemValue="variableId" items="${selectionvariables}" path="/selectionvariables" z="piClk1nsdyp4nhkvY+RxdF9DX+s="/>
+        <field:simple field="skips" id="c_ro_roda_Variable_skips" messageCode="entity_reference_not_managed" messageCodeAttribute="Skip" z="Q6irMRbF1p5OE1ZpXTbvq0PXiJ8="/>
+        <field:simple field="skips1" id="c_ro_roda_Variable_skips1" messageCode="entity_reference_not_managed" messageCodeAttribute="Skip" z="bMOmTDFMbMZqf76wat6BCNmNbXs="/>
+        <field:select field="fileId" id="c_ro_roda_Variable_fileId" itemValue="id" items="${files}" path="/files" z="HCKfSreExp3r0IuG11FKTtBIDcg="/>
+        <field:select field="instanceId" id="c_ro_roda_Variable_instanceId" itemValue="id" items="${instances}" path="/instances" z="Eyx75pEauFUULeeSycOsGL0h8l8="/>
+        <field:input field="label" id="c_ro_roda_Variable_label" required="true" z="Fqk0zcsTzaPQ6/sElz9JEFpaqh8="/>
+        <field:input field="type" id="c_ro_roda_Variable_type" required="true" validationMessageCode="field_invalid_integer" z="hRvzVC4ShC8cJphnxUheNfj46ms="/>
+        <field:input field="order" id="c_ro_roda_Variable_order" required="true" validationMessageCode="field_invalid_integer" z="4Xp1AMcXSNfCMUBYFsnODCSIbeE="/>
+        <field:input field="operatorInstructions" id="c_ro_roda_Variable_operatorInstructions" z="JBYiS/xvUxpKRpoQcNxCzB0mrzU="/>
+    </form:update>
+</div>

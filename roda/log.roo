@@ -1,0 +1,140 @@
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log opened at 2013-01-07 00:35:55
+project --topLevelPackage ro.roda --projectName roda --java 6 --packaging JAR
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log closed at 2013-01-07 00:36:13
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log opened at 2013-01-07 00:36:58
+addon search postgres
+osgi obr url add --url http://spring-roo-repository.springsource.org/repository.xml
+osgi obr start --bundleSymbolicName org.springframework.roo.wrapping.postgresql-jdbc3
+osgi obr url remove --url http://spring-roo-repository.springsource.org/repository.xml
+addon install id 1
+jpa setup --database POSTGRES --provider HIBERNATE
+// [failed] database reverse engineer --includeNonPortableAttributes --schema public --testAutomatically
+// [failed] database reverse engineer --includeNonPortableAttributes --schema public --testAutomatically
+hint
+// [failed] database reverse engineer --includeNonPortableAttributes --schema public --testAutomatically
+// [failed] database reverse engineer --includeNonPortableAttributes --schema public --testAutomatically
+hint
+! clear
+// [failed] database reverse engineer --includeNonPortableAttributes --schema public --testAutomatically
+// [failed] database reverse engineer --schema public  --includeNonPortableAttributes --testAutomatically
+database reverse engineer --schema public  --includeNonPortableAttributes --testAutomatically
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log closed at 2013-01-07 01:20:56
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log opened at 2013-01-07 01:22:47
+database reverse engineer --schema public  --includeNonPortableAttributes --testAutomatically
+perform package
+database reverse engineer --schema public  --includeNonPortableAttributes --testAutomatically
+web mvc setup
+web mvc install language --code de 
+security setup
+solr setup
+solr all
+database reverse engineer --schema public  --includeNonPortableAttributes --testAutomatically
+! ls
+! cd src
+database reverse engineer  --includeNonPortableAttributes --testAutomatically  --schema public
+database reverse engineer  --includeNonPortableAttributes --testAutomatically  --schema public
+database reverse engineer  --includeNonPortableAttributes --testAutomatically  --schema public
+web mvc all --package ~.web
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log opened at 2013-01-08 14:38:35
+solr all
+web mvc all --package ~.web
+// [failed] perform package
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log closed at 2013-01-08 14:55:45
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log opened at 2013-01-08 14:57:14
+// [failed] perform package
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log closed at 2013-01-08 15:06:32
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log opened at 2013-01-08 15:12:53
+perform package
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log closed at 2013-01-08 15:23:29
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log opened at 2013-01-08 15:26:07
+web mvc all --package ~.web
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log closed at 2013-01-08 19:22:06
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log opened at 2013-01-08 20:03:55
+perform package
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log closed at 2013-01-08 21:02:48
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log opened at 2013-01-08 21:26:38
+osgi obr url add --url http://spring-roo-repository.springsource.org/repository.xml
+osgi obr start --bundleSymbolicName org.springframework.roo.addon.cloud.foundry
+osgi obr url remove --url http://spring-roo-repository.springsource.org/repository.xml
+addon install id 1
+cloud foundry login 
+cloud foundry list apps 
+cloud foundry unbind service --appName roda-roo --serviceName roda-postgres
+cloud foundry list apps 
+cloud foundry stop app --appName roda-roo
+cloud foundry list apps 
+cloud foundry list services
+cloud foundry info 
+cloud foundry delete app --appName roda-roo
+cloud foundry deploy --appName roda --path target/roda-0.1.0.BUILD-SNAPSHOT.war
+cloud foundry list services
+cloud foundry bind service --appName roda --serviceName roda-postgres
+cloud foundry start app --appName roda
+cloud foundry update app memory --appName roda
+hint cloud foundry map 
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log closed at 2013-01-08 21:59:13
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log opened at 2013-01-08 21:59:58
+database reverse engineer --schema public --includeNonPortableAttributes --testAutomatically
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log closed at 2013-01-08 22:09:07
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log opened at 2013-01-08 22:11:08
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log closed at 2013-01-08 22:12:28
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log opened at 2013-01-08 22:15:22
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log opened at 2013-01-08 22:20:24
+web mvc all --package ~.web
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log closed at 2013-01-08 22:58:59
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log opened at 2013-01-08 22:59:21
+database reverse engineer --schema public --includeNonPortableAttributes --testAutomatically
+perform package
+database reverse engineer --schema public --testAutomatically
+database reverse engineer --schema public --includeNonPortableAttributes --testAutomatically
+web mvc all --package ~.web
+database reverse engineer --schema public --includeNonPortableAttributes --testAutomatically
+database reverse engineer --schema public --includeNonPortableAttributes --testAutomatically
+database reverse engineer --schema public --includeNonPortableAttributes --testAutomatically
+database reverse engineer --schema public --includeNonPortableAttributes --testAutomatically
+database reverse engineer --schema public --includeNonPortableAttributes --testAutomatically
+web mvc all --package ~.web 
+perform package
+web mvc all --package ~.web 
+web mvc all --package ~.web 
+web mvc finder all
+web mvc setup 
+web mvc finder all
+web mvc all --package ~.web 
+web mvc all --package ~.web 
+perform eclipse
+web mvc all --package ~.web 
+web mvc all --package ~.web 
+web mvc finder all
+web mvc all --package ~.web 
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log closed at 2013-01-09 01:55:23
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log opened at 2013-01-09 01:55:42
+help
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log closed at 2013-01-09 02:12:40
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log opened at 2013-01-09 02:12:49
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log opened at 2013-01-09 02:20:08
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log closed at 2013-01-09 02:23:41
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log opened at 2013-01-09 02:25:29
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log opened at 2013-01-09 02:31:32
+poll status
+poll now
+perform package
+perform package
+web mvc language --code en
+web mvc language --code de
+web mvc language --code en
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log closed at 2013-01-09 02:55:54
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log opened at 2013-01-09 02:56:03
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log closed at 2013-01-09 03:07:47
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log opened at 2013-01-09 03:08:56
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log closed at 2013-01-09 03:14:51
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log opened at 2013-01-09 03:15:24
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log closed at 2013-01-09 03:17:35
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log opened at 2013-01-10 20:29:45
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log closed at 2013-01-10 20:39:59
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log opened at 2013-01-10 23:10:15
+selenium test --controller ~.web.RegiontypeController 
+selenium test --controller ~.web.RegionController
+selenium test --controller ~.web.CountryController
+selenium test --controller ~.web.CityController
+web mvc finder all 

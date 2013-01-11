@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:list id="pl_ro_roda_UserSetting" items="${usersettings}" z="G+Qt0DXllIZQtd/7384QwUH+w74=">
+        <table:table data="${usersettings}" id="l_ro_roda_UserSetting" path="/usersettings" z="4VK8DJSpcH6/dbxMQ2/O6jVfTzw=">
+            <table:column id="c_ro_roda_UserSetting_settingGroup" property="settingGroup" z="QQNzsAGX+BC3M/JyP9T6WWjzHSU="/>
+            <table:column id="c_ro_roda_UserSetting_name" property="name" z="4/LxXqVGjrB8ttv3c6hk7x1k2FA="/>
+            <table:column id="c_ro_roda_UserSetting_description" property="description" z="0xsSYormQWyZVd4y9m7mvD1QBVA="/>
+            <table:column id="c_ro_roda_UserSetting_predefinedValues" property="predefinedValues" z="9E9doGKT++2qZqlPCCbcOi332Bc="/>
+            <table:column id="c_ro_roda_UserSetting_defaultValue" property="defaultValue" z="BqrrqBsGbVM3uwJpZb1qpAVl+74="/>
+        </table:table>
+    </page:list>
+</div>

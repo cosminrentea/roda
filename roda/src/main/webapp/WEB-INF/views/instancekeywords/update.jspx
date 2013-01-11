@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <form:update id="fu_ro_roda_InstanceKeyword" modelAttribute="instanceKeyword" path="/instancekeywords" versionField="none" z="HNeLCjn4j901wOSY/P9Hr6bwm7U=">
+        <field:datetime dateTimePattern="${instanceKeyword_added_date_format}" field="added" id="c_ro_roda_InstanceKeyword_added" required="true" z="sWuVaWgh0yeCEfXcqt/jx21DiGE="/>
+        <field:input field="addedBy" id="c_ro_roda_InstanceKeyword_addedBy" required="true" validationMessageCode="field_invalid_integer" z="zLok9jdyHPixkx1iLdI3eRp1EtI="/>
+    </form:update>
+</div>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:show id="ps_ro_roda_Methodology" object="${methodology}" path="/methodologys" z="7a/Ic+GVkbXGQWAIn25dbws4T9U=">
+        <field:display field="collectionModelTypes" id="s_ro_roda_Methodology_collectionModelTypes" object="${methodology}" z="SzajxdcVhFL9T4fHS1wxo1xoq1c="/>
+        <field:display field="instance" id="s_ro_roda_Methodology_instance" object="${methodology}" z="wwou71q8RnJIAzkVadQW0Ub8WBc="/>
+        <field:display field="timeMethId" id="s_ro_roda_Methodology_timeMethId" object="${methodology}" z="25GKr8ETBFmGmaCebAwSPz3nKu4="/>
+        <field:display field="samplingProcedure" id="s_ro_roda_Methodology_samplingProcedure" object="${methodology}" z="wk9VLi3ye5miZgw5FgNY0BtNxYM="/>
+        <field:display field="weighting" id="s_ro_roda_Methodology_weighting" object="${methodology}" z="iraPTth6VB+AVkHSzfnifCNyiHY="/>
+        <field:display field="researchInstrument" id="s_ro_roda_Methodology_researchInstrument" object="${methodology}" z="kUoY0fCUlyoMdbTNoek41EwCFqo="/>
+        <field:display field="scope" id="s_ro_roda_Methodology_scope" object="${methodology}" z="78jHmDaKYtQWY3r1BGKluagTIso="/>
+    </page:show>
+</div>

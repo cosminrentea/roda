@@ -235,9 +235,9 @@ sub attach_emails {
         if (Email::Valid->address($emails->{email})) {
      
             my $emailrs = $self->result_source->schema()->resultset('Email')->create({email => $emails->{email},
-                                                                                                                                            ismain => $emails->{ismain},
-                                                                                                                                            entity_type => '1',
-                                                                                                                                            entity_id => $self->id,
+                                                                                      ismain => $emails->{ismain},
+                                                                                      entity_type => '1',
+                                                                                      entity_id => $self->id,
             });
         } else {
          die 'Invalid Email';
@@ -245,6 +245,27 @@ sub attach_emails {
         }
 }
 
+sub attach_phones {
+     my ( $self, %params ) = @_;
+        foreach my $phones (@{$params{phones}}) { 
+            my $phoners = $self->result_source->schema()->resultset('Phone')->create({phone => $phones->{phone},
+            																		  phone_type => $phones->{phone_type},		
+                                                                                      ismain => $phones->{ismain},
+                                                                                      entity_type => '1',
+                                                                                      entity_id => $self->id,
+            });
+        }
+}
 
+sub attach_internets {
+     my ( $self, %params ) = @_;
+        foreach my $internets (@{$params{internets}}) { 
+            my $internetrs = $self->result_source->schema()->resultset('Internet')->create({internet => $internets->{internet},
+            																				internet_type => $internets->{internet_type},	
+                                                                                            entity_type => '1',
+                                                                                            entity_id => $self->id,
+            });
+        }
+}
 
 1;

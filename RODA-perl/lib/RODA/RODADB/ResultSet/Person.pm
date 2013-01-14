@@ -58,8 +58,8 @@ sub checkperson {
                     }
 
                     $personrs->attach_emails(emails => $params{emails} );
-#                    $personrs->attach_phones( phones => $params{phones} );
-#                    $personrs->attach_internets(internets => $params{internets} );
+                    $personrs->attach_phones( phones => $params{phones} );
+                    $personrs->attach_internets(internets => $params{internets} );
                 }
                
                 $guard->commit;

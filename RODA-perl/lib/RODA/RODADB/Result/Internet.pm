@@ -64,14 +64,15 @@ Tipul entitatii careia ii apartine acest contact
 
 Codul entitatii careia ii apartine acest contact
 
-=head2 internet_type_id
+=head2 internet_type
 
-  data_type: 'integer'
+  data_type: 'varchar'
   is_nullable: 0
+  size: 50
 
 Tipul contului 
 
-=head2 content
+=head2 internet
 
   data_type: 'varchar'
   is_nullable: 0
@@ -88,9 +89,9 @@ __PACKAGE__->add_columns(
   { data_type => "integer", is_nullable => 0 },
   "entity_id",
   { data_type => "integer", is_foreign_key => 1, is_nullable => 0 },
-  "internet_type_id",
-  { data_type => "integer", is_nullable => 0 },
-  "content",
+  "internet_type",
+  { data_type => "varchar", is_nullable => 0, size => 50 },
+  "internet",
   { data_type => "varchar", is_nullable => 0, size => 250 },
 );
 

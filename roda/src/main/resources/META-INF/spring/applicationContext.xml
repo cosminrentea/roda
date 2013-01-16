@@ -70,4 +70,7 @@
     </bean>
     <task:annotation-driven executor="asyncExecutor" mode="aspectj"/>
     <task:executor id="asyncExecutor" pool-size="${executor.poolSize}"/>
+    <bean class="org.apache.solr.client.solrj.impl.CommonsHttpSolrServer" id="solrServer">
+        <constructor-arg value="${solr.serverUrl}"/>
+    </bean>
 </beans>

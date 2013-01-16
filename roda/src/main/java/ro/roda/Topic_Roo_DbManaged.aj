@@ -32,6 +32,7 @@ privileged aspect Topic_Roo_DbManaged {
     private String Topic.description;
     
     @Column(name = "left_topic", columnDefinition = "int4")
+    @NotNull
     private Integer Topic.leftTopic;
     
     @Column(name = "right_topic", columnDefinition = "int4")

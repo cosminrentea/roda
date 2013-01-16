@@ -16,6 +16,7 @@ import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.Instance;
 import ro.roda.InstanceDescr;
+import ro.roda.Language;
 import ro.roda.web.InstanceDescrController;
 
 privileged aspect InstanceDescrController_Roo_Controller {
@@ -88,6 +89,7 @@ privileged aspect InstanceDescrController_Roo_Controller {
     void InstanceDescrController.populateEditForm(Model uiModel, InstanceDescr instanceDescr) {
         uiModel.addAttribute("instanceDescr", instanceDescr);
         uiModel.addAttribute("instances", Instance.findAllInstances());
+        uiModel.addAttribute("languages", Language.findAllLanguages());
     }
     
     String InstanceDescrController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

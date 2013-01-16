@@ -8,7 +8,7 @@
         <field:simple field="translatedTopics" id="c_ro_roda_Topic_translatedTopics" messageCode="entity_reference_not_managed" messageCodeAttribute="Translated Topic" z="ZvjG4ZDBVUL4gXNgZ+6a0itFGdY="/>
         <field:input field="name" id="c_ro_roda_Topic_name" required="true" z="Zp4rheXWC8QA5x/nW0Fvip/3W8M="/>
         <field:input field="description" id="c_ro_roda_Topic_description" z="6llveY8uESMXr63D2khuhI3ezgY="/>
-        <field:input field="leftTopic" id="c_ro_roda_Topic_leftTopic" validationMessageCode="field_invalid_integer" z="nQQefgpIy4CdxWbDWlHBnPvlQaI="/>
+        <field:input field="leftTopic" id="c_ro_roda_Topic_leftTopic" required="true" validationMessageCode="field_invalid_integer" z="dQMnrOByk/+UrMoe+t3C6Navf8Q="/>
         <field:input field="rightTopic" id="c_ro_roda_Topic_rightTopic" required="true" validationMessageCode="field_invalid_integer" z="edoIJOPh8b0qcgAQhEgEGXkfIV8="/>
     </form:update>
 </div>

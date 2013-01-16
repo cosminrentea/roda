@@ -9,7 +9,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
 import org.springframework.format.annotation.DateTimeFormat;
 import ro.roda.Org;
 import ro.roda.Person;
@@ -27,11 +26,10 @@ privileged aspect PersonOrg_Roo_DbManaged {
     private Person PersonOrg.personId;
     
     @ManyToOne
-    @JoinColumn(name = "role_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "role_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     private PersonRole PersonOrg.roleId;
     
     @Column(name = "dateend", columnDefinition = "timestamp")
-    @NotNull
     @Temporal(TemporalType.TIMESTAMP)
     @DateTimeFormat(style = "M-")
     private Date PersonOrg.dateend;

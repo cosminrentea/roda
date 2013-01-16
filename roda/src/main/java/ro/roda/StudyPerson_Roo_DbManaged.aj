@@ -27,8 +27,8 @@ privileged aspect StudyPerson_Roo_DbManaged {
     private Study StudyPerson.studyId;
     
     @ManyToOne
-    @JoinColumn(name = "asoctype_id", referencedColumnName = "id", nullable = false)
-    private StudyPersonAssoc StudyPerson.asoctypeId;
+    @JoinColumn(name = "assoctype_id", referencedColumnName = "id", nullable = false)
+    private StudyPersonAssoc StudyPerson.assoctypeId;
     
     public Set<StudyPersonAcl> StudyPerson.getStudyPersonAcls() {
         return studyPersonAcls;
@@ -54,12 +54,12 @@ privileged aspect StudyPerson_Roo_DbManaged {
         this.studyId = studyId;
     }
     
-    public StudyPersonAssoc StudyPerson.getAsoctypeId() {
-        return asoctypeId;
+    public StudyPersonAssoc StudyPerson.getAssoctypeId() {
+        return assoctypeId;
     }
     
-    public void StudyPerson.setAsoctypeId(StudyPersonAssoc asoctypeId) {
-        this.asoctypeId = asoctypeId;
+    public void StudyPerson.setAssoctypeId(StudyPersonAssoc assoctypeId) {
+        this.assoctypeId = assoctypeId;
     }
     
 }

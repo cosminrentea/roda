@@ -4,6 +4,6 @@
     <jsp:output omit-xml-declaration="yes"/>
     <form:update id="fu_ro_roda_FormSelectionVar" modelAttribute="formSelectionVar" path="/formselectionvars" versionField="none" z="oCeiJPSM3VV1AUPoduM+qTcronc=">
         <field:select field="selectionVariableItem" id="c_ro_roda_FormSelectionVar_selectionVariableItem" itemValue="id" items="${selectionvariableitems}" path="/selectionvariableitems" z="frB1lVaoOeub8kNLCh9YgyOx3Ts="/>
-        <field:input field="order" id="c_ro_roda_FormSelectionVar_order" validationMessageCode="field_invalid_integer" z="aaNQCP/OiXRz+vwXBJ3/OqcVDqM="/>
+        <field:input field="orderOfItemsInResponse" id="c_ro_roda_FormSelectionVar_orderOfItemsInResponse" validationMessageCode="field_invalid_integer" z="N8ABuJhCaZuLQSNLcZVQJoB8PDc="/>
     </form:update>
 </div>

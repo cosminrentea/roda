@@ -138,3 +138,41 @@ selenium test --controller ~.web.RegionController
 selenium test --controller ~.web.CountryController
 selenium test --controller ~.web.CityController
 web mvc finder all 
+// [failed] test integration --entity ro.roda
+// [failed] test integration --entity ~.CountryController
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log closed at 2013-01-11 14:08:35
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log opened at 2013-01-11 14:09:09
+perform test
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log closed at 2013-01-14 14:24:52
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log opened at 2013-01-14 14:28:19
+perform package
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log closed at 2013-01-14 14:59:36
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log opened at 2013-01-14 15:08:39
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log closed at 2013-01-14 15:12:56
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log opened at 2013-01-14 15:13:16
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log closed at 2013-01-14 15:14:06
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log opened at 2013-01-15 12:18:46
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log closed at 2013-01-15 12:25:53
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log opened at 2013-01-15 12:26:09
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log closed at 2013-01-15 12:35:12
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log opened at 2013-01-15 12:39:12
+help
+solr setup
+solr all
+perform package
+database reverse engineer --schema public  --includeNonPortableAttributes
+selenium test --controller ~.web.CountryController
+database reverse engineer --schema public  --includeNonPortableAttributes
+database reverse engineer --schema public  --includeNonPortableAttributes
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log opened at 2013-01-15 22:02:39
+database reverse engineer --schema public  --includeNonPortableAttributes
+selenium test --controller ~.web.LanguageController
+selenium test --controller ~.web.AddressController
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log closed at 2013-01-15 23:54:16
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log opened at 2013-01-16 00:12:17
+database reverse engineer --schema public  --includeNonPortableAttributes
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log closed at 2013-01-16 00:24:56
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log opened at 2013-01-16 00:27:26
+web mvc all --package ~.web
+web mvc all --package ~.web
+web mvc all --package ~.web

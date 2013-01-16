@@ -5,6 +5,6 @@
     <page:show id="ps_ro_roda_FormSelectionVar" object="${formselectionvar}" path="/formselectionvars" z="3Sg6oZO0ab3iWMID5Hc7QckCbVM=">
         <field:display field="formId" id="s_ro_roda_FormSelectionVar_formId" object="${formselectionvar}" z="ZI5kQgqJEp5oC5volWRaNGmlM1k="/>
         <field:display field="selectionVariableItem" id="s_ro_roda_FormSelectionVar_selectionVariableItem" object="${formselectionvar}" z="DeGqhL4u4Kpqk8GNSbYEv9QKrRk="/>
-        <field:display field="order" id="s_ro_roda_FormSelectionVar_order" object="${formselectionvar}" z="hMFRu1A+4VB3EmhX75VJBphW6Y4="/>
+        <field:display field="orderOfItemsInResponse" id="s_ro_roda_FormSelectionVar_orderOfItemsInResponse" object="${formselectionvar}" z="OJbUYMIYXMqoKr65Hi3c+eLgYo8="/>
     </page:show>
 </div>

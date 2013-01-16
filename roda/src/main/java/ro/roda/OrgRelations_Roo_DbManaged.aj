@@ -26,11 +26,10 @@ privileged aspect OrgRelations_Roo_DbManaged {
     private Org OrgRelations.org1Id;
     
     @ManyToOne
-    @JoinColumn(name = "org_relation_type_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "org_relation_type_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     private OrgRelationType OrgRelations.orgRelationTypeId;
     
     @Column(name = "dateend", columnDefinition = "timestamp")
-    @NotNull
     @Temporal(TemporalType.TIMESTAMP)
     @DateTimeFormat(style = "M-")
     private Date OrgRelations.dateend;

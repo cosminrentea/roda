@@ -5,16 +5,22 @@ package ro.roda;
 
 import javax.persistence.Column;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 import ro.roda.Instance;
 import ro.roda.InstanceDescr;
+import ro.roda.Language;
 
 privileged aspect InstanceDescr_Roo_DbManaged {
     
     @OneToOne
     @JoinColumn(name = "instance_id", nullable = false, insertable = false, updatable = false)
     private Instance InstanceDescr.instance;
+    
+    @ManyToOne
+    @JoinColumn(name = "language_id", referencedColumnName = "id", nullable = false)
+    private Language InstanceDescr.languageId;
     
     @Column(name = "title", columnDefinition = "text")
     @NotNull
@@ -29,6 +35,14 @@ privileged aspect InstanceDescr_Roo_DbManaged {
     
     public void InstanceDescr.setInstance(Instance instance) {
         this.instance = instance;
+    }
+    
+    public Language InstanceDescr.getLanguageId() {
+        return languageId;
+    }
+    
+    public void InstanceDescr.setLanguageId(Language languageId) {
+        this.languageId = languageId;
     }
     
     public String InstanceDescr.getTitle() {

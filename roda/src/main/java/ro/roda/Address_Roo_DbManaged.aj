@@ -47,14 +47,6 @@ privileged aspect Address_Roo_DbManaged {
     @NotNull
     private String Address.postalCode;
     
-    @Column(name = "entity_type", columnDefinition = "int4")
-    @NotNull
-    private Integer Address.entityType;
-    
-    @Column(name = "entity_id", columnDefinition = "int4")
-    @NotNull
-    private Integer Address.entityId;
-    
     public Set<OrgAddress> Address.getOrgAddresses() {
         return orgAddresses;
     }
@@ -117,22 +109,6 @@ privileged aspect Address_Roo_DbManaged {
     
     public void Address.setPostalCode(String postalCode) {
         this.postalCode = postalCode;
-    }
-    
-    public Integer Address.getEntityType() {
-        return entityType;
-    }
-    
-    public void Address.setEntityType(Integer entityType) {
-        this.entityType = entityType;
-    }
-    
-    public Integer Address.getEntityId() {
-        return entityId;
-    }
-    
-    public void Address.setEntityId(Integer entityId) {
-        this.entityId = entityId;
     }
     
 }

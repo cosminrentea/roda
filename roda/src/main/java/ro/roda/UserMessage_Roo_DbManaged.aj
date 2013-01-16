@@ -13,23 +13,31 @@ import ro.roda.UserMessage;
 privileged aspect UserMessage_Roo_DbManaged {
     
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
-    private User UserMessage.userId;
+    @JoinColumn(name = "to_user_id", referencedColumnName = "id", nullable = false)
+    private User UserMessage.toUserId;
+    
+    @ManyToOne
+    @JoinColumn(name = "from_user_id", referencedColumnName = "id", nullable = false)
+    private User UserMessage.fromUserId;
     
     @Column(name = "message", columnDefinition = "text")
     @NotNull
     private String UserMessage.message;
     
-    @Column(name = "to", columnDefinition = "int4")
-    @NotNull
-    private Integer UserMessage.to;
-    
-    public User UserMessage.getUserId() {
-        return userId;
+    public User UserMessage.getToUserId() {
+        return toUserId;
     }
     
-    public void UserMessage.setUserId(User userId) {
-        this.userId = userId;
+    public void UserMessage.setToUserId(User toUserId) {
+        this.toUserId = toUserId;
+    }
+    
+    public User UserMessage.getFromUserId() {
+        return fromUserId;
+    }
+    
+    public void UserMessage.setFromUserId(User fromUserId) {
+        this.fromUserId = fromUserId;
     }
     
     public String UserMessage.getMessage() {
@@ -38,14 +46,6 @@ privileged aspect UserMessage_Roo_DbManaged {
     
     public void UserMessage.setMessage(String message) {
         this.message = message;
-    }
-    
-    public Integer UserMessage.getTo() {
-        return to;
-    }
-    
-    public void UserMessage.setTo(Integer to) {
-        this.to = to;
     }
     
 }

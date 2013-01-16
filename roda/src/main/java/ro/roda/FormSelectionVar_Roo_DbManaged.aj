@@ -21,8 +21,8 @@ privileged aspect FormSelectionVar_Roo_DbManaged {
     @JoinColumns({ @JoinColumn(name = "variable_id", referencedColumnName = "variable_id", nullable = false, insertable = false, updatable = false), @JoinColumn(name = "item_id", referencedColumnName = "item_id", nullable = false, insertable = false, updatable = false) })
     private SelectionVariableItem FormSelectionVar.selectionVariableItem;
     
-    @Column(name = "order", columnDefinition = "int4")
-    private Integer FormSelectionVar.order;
+    @Column(name = "order_of_items_in_response", columnDefinition = "int4")
+    private Integer FormSelectionVar.orderOfItemsInResponse;
     
     public Form FormSelectionVar.getFormId() {
         return formId;
@@ -40,12 +40,12 @@ privileged aspect FormSelectionVar_Roo_DbManaged {
         this.selectionVariableItem = selectionVariableItem;
     }
     
-    public Integer FormSelectionVar.getOrder() {
-        return order;
+    public Integer FormSelectionVar.getOrderOfItemsInResponse() {
+        return orderOfItemsInResponse;
     }
     
-    public void FormSelectionVar.setOrder(Integer order) {
-        this.order = order;
+    public void FormSelectionVar.setOrderOfItemsInResponse(Integer orderOfItemsInResponse) {
+        this.orderOfItemsInResponse = orderOfItemsInResponse;
     }
     
 }

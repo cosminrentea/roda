@@ -3,7 +3,6 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <form:update id="fu_ro_roda_PersonOrg" modelAttribute="personOrg" path="/personorgs" versionField="none" z="Py0eBEpjyjcqj/xMZxfnblltz3Q=">
-        <field:select field="roleId" id="c_ro_roda_PersonOrg_roleId" itemValue="id" items="${personroles}" path="/personroles" z="VCIQmFcrs3a0vTwuyHLAOJhzkb0="/>
-        <field:datetime dateTimePattern="${personOrg_dateend_date_format}" field="dateend" id="c_ro_roda_PersonOrg_dateend" required="true" z="J2I+SU5U593KIi4IVdzuf6j9pmc="/>
+        <field:datetime dateTimePattern="${personOrg_dateend_date_format}" field="dateend" id="c_ro_roda_PersonOrg_dateend" z="jMvinhBCRnapht6FjyCRb0gt61U="/>
     </form:update>
 </div>

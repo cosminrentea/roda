@@ -6,6 +6,6 @@
         <field:simple field="studyPersonAcls" id="c_ro_roda_StudyPerson_studyPersonAcls" messageCode="entity_reference_not_managed" messageCodeAttribute="Study Person Acl" z="t4fO+zaFAHc6IHeFGueYsW6kOqA="/>
         <field:select field="personId" id="c_ro_roda_StudyPerson_personId" itemValue="id" items="${people}" path="/people" z="hYgRETDYhPxHAPyZJHajAQ3z2zA="/>
         <field:select field="studyId" id="c_ro_roda_StudyPerson_studyId" itemValue="id" items="${studys}" path="/studys" z="vB4NQTg+swHOB5lht1M6HI5LxxM="/>
-        <field:select field="asoctypeId" id="c_ro_roda_StudyPerson_asoctypeId" itemValue="id" items="${studypersonassocs}" path="/studypersonassocs" z="khf49niWaGoA6krZo93vC74h1c0="/>
+        <field:select field="assoctypeId" id="c_ro_roda_StudyPerson_assoctypeId" itemValue="id" items="${studypersonassocs}" path="/studypersonassocs" z="VdyUDdnR7VzIXOrSVA7TuMywJPg="/>
     </form:update>
 </div>

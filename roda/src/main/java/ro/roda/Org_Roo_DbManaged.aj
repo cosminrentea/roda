@@ -52,11 +52,11 @@ privileged aspect Org_Roo_DbManaged {
     private Set<StudyOrg> Org.studyOrgs;
     
     @ManyToOne
-    @JoinColumn(name = "org_prefix_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "org_prefix_id", referencedColumnName = "id")
     private OrgPrefix Org.orgPrefixId;
     
     @ManyToOne
-    @JoinColumn(name = "org_sufix_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "org_sufix_id", referencedColumnName = "id")
     private OrgSufix Org.orgSufixId;
     
     @Column(name = "name", columnDefinition = "varchar", length = 100)

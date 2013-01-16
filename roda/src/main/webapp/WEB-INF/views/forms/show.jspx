@@ -5,7 +5,8 @@
     <page:show id="ps_ro_roda_Form" object="${form}" path="/forms" z="wQ9WPRll+lYxY6A6fWJfLM1UuAw=">
         <field:display field="instanceId" id="s_ro_roda_Form_instanceId" object="${form}" z="Kh2afo5PuwPJ/ovAjQyU+mbBUTI="/>
         <field:display field="orderInInstance" id="s_ro_roda_Form_orderInInstance" object="${form}" z="jYbowBeg2mO0nG/sSN4HLe9oeJc="/>
-        <field:display field="operatorName" id="s_ro_roda_Form_operatorName" object="${form}" z="FJkI3easU3TIu9E1egi1gQKnoJA="/>
         <field:display field="operatorNotes" id="s_ro_roda_Form_operatorNotes" object="${form}" z="E6Zg9j49H/TwEBduJ2bwyISGf3s="/>
+        <field:display field="operatorId" id="s_ro_roda_Form_operatorId" object="${form}" z="FyrjP4b8DsKIp3y+2S0KIhRdmE4="/>
+        <field:display date="true" dateTimePattern="${form_filldate_date_format}" field="fillDate" id="s_ro_roda_Form_fillDate" object="${form}" z="LtRtr52aKOFATfR0fbNwB+FPJ3I="/>
     </page:show>
 </div>

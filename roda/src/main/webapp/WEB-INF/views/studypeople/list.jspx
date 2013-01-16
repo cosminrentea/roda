@@ -6,7 +6,7 @@
         <table:table data="${studypeople}" id="l_ro_roda_StudyPerson" path="/studypeople" z="xnitYEbjOwyt1cAkDC+5pbdTWuc=">
             <table:column id="c_ro_roda_StudyPerson_personId" property="personId" z="Fno0gEbHO0x1PZNfq6o2tCaZrz4="/>
             <table:column id="c_ro_roda_StudyPerson_studyId" property="studyId" z="1hxKTdScwmqTFS5IoNKh6yg7AC4="/>
-            <table:column id="c_ro_roda_StudyPerson_asoctypeId" property="asoctypeId" z="84vF7xV0h8NSNkLYvHtxP5aENMs="/>
+            <table:column id="c_ro_roda_StudyPerson_assoctypeId" property="assoctypeId" z="nnn5vYyVhckSoU1Qu0xvWIaKXjY="/>
         </table:table>
     </page:list>
 </div>

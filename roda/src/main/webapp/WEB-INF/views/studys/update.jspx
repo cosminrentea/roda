@@ -15,6 +15,6 @@
         <field:simple field="titles" id="c_ro_roda_Study_titles" messageCode="entity_reference_not_managed" messageCodeAttribute="Title" z="xpT5NJTiDZXM9D64rWPcxGMPI6c="/>
         <field:datetime dateTimePattern="${study_datestart_date_format}" field="datestart" id="c_ro_roda_Study_datestart" required="true" z="mFYwCOb3eIlBcwFjuRLkSCh8drc="/>
         <field:datetime dateTimePattern="${study_dateend_date_format}" field="dateend" id="c_ro_roda_Study_dateend" required="true" z="Mv8XUokmeUahlVQbsh6rzq8ep4U="/>
-        <field:input field="grantNumber" id="c_ro_roda_Study_grantNumber" required="true" z="WUJ7lLhNtrY53hVY+3zF0KhFobg="/>
+        <field:input field="grantDetails" id="c_ro_roda_Study_grantDetails" required="true" z="o/rDyCD621HSmDQfKDUBcmkJj7k="/>
     </form:update>
 </div>

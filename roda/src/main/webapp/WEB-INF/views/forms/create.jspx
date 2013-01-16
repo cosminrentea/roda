@@ -8,8 +8,9 @@
         <field:simple field="formSelectionVars" id="c_ro_roda_Form_formSelectionVars" messageCode="entity_reference_not_managed" messageCodeAttribute="Form Selection Var" z="VZmlYto3fyed2Q4MDk3LQlDiCAY="/>
         <field:select field="instanceId" id="c_ro_roda_Form_instanceId" itemValue="id" items="${instances}" path="/instances" z="NC+XXMvb7V6outuy4Dg9aqlFHE4="/>
         <field:input field="orderInInstance" id="c_ro_roda_Form_orderInInstance" required="true" validationMessageCode="field_invalid_integer" z="DOe9gx8LNpkN8Tvp8KFHb2yHOHk="/>
-        <field:input field="operatorName" id="c_ro_roda_Form_operatorName" required="true" z="gMIsscbsIwhfPIbA3JA/y+eJws0="/>
-        <field:input field="operatorNotes" id="c_ro_roda_Form_operatorNotes" required="true" z="en449fOLkLTz3O1tjGKv29Z5NV8="/>
+        <field:input field="operatorNotes" id="c_ro_roda_Form_operatorNotes" z="ezO7WA19dlHr4iwr9oHsLLTFO5U="/>
+        <field:input field="operatorId" id="c_ro_roda_Form_operatorId" required="true" validationMessageCode="field_invalid_integer" z="6kWQ7rDbS4z4q74FvZrFdMvPJIY="/>
+        <field:datetime dateTimePattern="${form_filldate_date_format}" field="fillDate" id="c_ro_roda_Form_fillDate" required="true" z="uoLm6ht79MlFI78g3GNm7S8toAk="/>
     </form:create>
     <form:dependency dependencies="${dependencies}" id="d_ro_roda_Form" render="${not empty dependencies}" z="4rkmg22xjkD4qmBXymTw12GWALk="/>
 </div>

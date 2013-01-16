@@ -7,7 +7,7 @@
         <field:input disableFormBinding="true" field="id.variableId" id="c_ro_roda_FormSelectionVar_id_variableId" required="true" validationMessageCode="field_invalid_integer" z="jftMQ5PvRENTUtWVIgrV8ogAAYk="/>
         <field:input disableFormBinding="true" field="id.itemId" id="c_ro_roda_FormSelectionVar_id_itemId" required="true" validationMessageCode="field_invalid_integer" z="NDZewjnc+6h1So4Tgb2cGCzzC+8="/>
         <field:select field="selectionVariableItem" id="c_ro_roda_FormSelectionVar_selectionVariableItem" itemValue="id" items="${selectionvariableitems}" path="/selectionvariableitems" z="frB1lVaoOeub8kNLCh9YgyOx3Ts="/>
-        <field:input field="order" id="c_ro_roda_FormSelectionVar_order" validationMessageCode="field_invalid_integer" z="aaNQCP/OiXRz+vwXBJ3/OqcVDqM="/>
+        <field:input field="orderOfItemsInResponse" id="c_ro_roda_FormSelectionVar_orderOfItemsInResponse" validationMessageCode="field_invalid_integer" z="N8ABuJhCaZuLQSNLcZVQJoB8PDc="/>
     </form:create>
     <form:dependency dependencies="${dependencies}" id="d_ro_roda_FormSelectionVar" render="${not empty dependencies}" z="OMMvaEvpQlcgBJAysW8khHupfu4="/>
 </div>

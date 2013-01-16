@@ -13,7 +13,7 @@
         <field:select field="instanceId" id="c_ro_roda_Variable_instanceId" itemValue="id" items="${instances}" path="/instances" z="Eyx75pEauFUULeeSycOsGL0h8l8="/>
         <field:input field="label" id="c_ro_roda_Variable_label" required="true" z="Fqk0zcsTzaPQ6/sElz9JEFpaqh8="/>
         <field:input field="type" id="c_ro_roda_Variable_type" required="true" validationMessageCode="field_invalid_integer" z="hRvzVC4ShC8cJphnxUheNfj46ms="/>
-        <field:input field="order" id="c_ro_roda_Variable_order" required="true" validationMessageCode="field_invalid_integer" z="4Xp1AMcXSNfCMUBYFsnODCSIbeE="/>
         <field:input field="operatorInstructions" id="c_ro_roda_Variable_operatorInstructions" z="JBYiS/xvUxpKRpoQcNxCzB0mrzU="/>
+        <field:input field="orderInInstance" id="c_ro_roda_Variable_orderInInstance" required="true" validationMessageCode="field_invalid_integer" z="uHB4fv2XXFKK4DYoO2DsUqDM+Us="/>
     </form:update>
 </div>

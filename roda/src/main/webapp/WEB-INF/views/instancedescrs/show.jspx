@@ -6,5 +6,6 @@
         <field:display field="instance" id="s_ro_roda_InstanceDescr_instance" object="${instancedescr}" z="5+uZMIIgqfGxUaScZXt2xBA9MzA="/>
         <field:display field="title" id="s_ro_roda_InstanceDescr_title" object="${instancedescr}" z="4mLW/H2Mo0k/KbRmuISIzRJfcZY="/>
         <field:display field="abstract1" id="s_ro_roda_InstanceDescr_abstract1" object="${instancedescr}" z="KyffAUIFzbKCz9Z0U0LtoQNUGwM="/>
+        <field:display field="languageId" id="s_ro_roda_InstanceDescr_languageId" object="${instancedescr}" z="x0OhgZwgl8IIG+pcUFXCnu0p3eE="/>
     </page:show>
 </div>

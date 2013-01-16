@@ -72,9 +72,9 @@ privileged aspect Study_Roo_DbManaged {
     @DateTimeFormat(style = "M-")
     private Date Study.dateend;
     
-    @Column(name = "grant_number", columnDefinition = "varchar", length = 100)
+    @Column(name = "grant_details", columnDefinition = "text")
     @NotNull
-    private String Study.grantNumber;
+    private String Study.grantDetails;
     
     public Set<Topic> Study.getTopics() {
         return topics;
@@ -172,12 +172,12 @@ privileged aspect Study_Roo_DbManaged {
         this.dateend = dateend;
     }
     
-    public String Study.getGrantNumber() {
-        return grantNumber;
+    public String Study.getGrantDetails() {
+        return grantDetails;
     }
     
-    public void Study.setGrantNumber(String grantNumber) {
-        this.grantNumber = grantNumber;
+    public void Study.setGrantDetails(String grantDetails) {
+        this.grantDetails = grantDetails;
     }
     
 }

@@ -17,5 +17,6 @@
         <field:simple field="userMessages" id="c_ro_roda_User_userMessages" messageCode="entity_reference_not_managed" messageCodeAttribute="User Message" z="bpsc54ZDpCt7nKBRUtZwxrX22l8="/>
         <field:simple field="userSettingValues" id="c_ro_roda_User_userSettingValues" messageCode="entity_reference_not_managed" messageCodeAttribute="User Setting Value" z="HNcMsF9Y30BXwfbkau697eCtSXA="/>
         <field:input field="credentialProvider" id="c_ro_roda_User_credentialProvider" required="true" z="zCZ53O2F3qaH4Di5CXdyUqSJPXs="/>
+        <field:simple field="userMessages1" id="c_ro_roda_User_userMessages1" messageCode="entity_reference_not_managed" messageCodeAttribute="User Message" z="flChrcFAX+U3NDr3GlIeQEtJ/So="/>
     </form:update>
 </div>

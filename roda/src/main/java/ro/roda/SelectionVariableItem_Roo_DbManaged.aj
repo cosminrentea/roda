@@ -37,9 +37,9 @@ privileged aspect SelectionVariableItem_Roo_DbManaged {
     @JoinColumn(name = "variable_id", referencedColumnName = "variable_id", nullable = false, insertable = false, updatable = false)
     private SelectionVariable SelectionVariableItem.variableId;
     
-    @Column(name = "order", columnDefinition = "int4")
+    @Column(name = "order_of_item_in_variable", columnDefinition = "int4", unique = true)
     @NotNull
-    private Integer SelectionVariableItem.order;
+    private Integer SelectionVariableItem.orderOfItemInVariable;
     
     public Frequency SelectionVariableItem.getFrequency() {
         return frequency;
@@ -81,12 +81,12 @@ privileged aspect SelectionVariableItem_Roo_DbManaged {
         this.variableId = variableId;
     }
     
-    public Integer SelectionVariableItem.getOrder() {
-        return order;
+    public Integer SelectionVariableItem.getOrderOfItemInVariable() {
+        return orderOfItemInVariable;
     }
     
-    public void SelectionVariableItem.setOrder(Integer order) {
-        this.order = order;
+    public void SelectionVariableItem.setOrderOfItemInVariable(Integer orderOfItemInVariable) {
+        this.orderOfItemInVariable = orderOfItemInVariable;
     }
     
 }

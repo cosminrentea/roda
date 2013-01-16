@@ -21,15 +21,19 @@ privileged aspect PersonOrgPK_Roo_Identifier {
     @Column(name = "org_id", columnDefinition = "int4", nullable = false)
     private Integer PersonOrgPK.orgId;
     
+    @Column(name = "role_id", columnDefinition = "int4", nullable = false)
+    private Integer PersonOrgPK.roleId;
+    
     @Column(name = "datestart", columnDefinition = "timestamp", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     @DateTimeFormat(style = "M-")
     private Date PersonOrgPK.datestart;
     
-    public PersonOrgPK.new(Integer personId, Integer orgId, Date datestart) {
+    public PersonOrgPK.new(Integer personId, Integer orgId, Integer roleId, Date datestart) {
         super();
         this.personId = personId;
         this.orgId = orgId;
+        this.roleId = roleId;
         this.datestart = datestart;
     }
 
@@ -43,6 +47,10 @@ privileged aspect PersonOrgPK_Roo_Identifier {
     
     public Integer PersonOrgPK.getOrgId() {
         return orgId;
+    }
+    
+    public Integer PersonOrgPK.getRoleId() {
+        return roleId;
     }
     
     public Date PersonOrgPK.getDatestart() {

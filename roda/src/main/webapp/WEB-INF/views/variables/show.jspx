@@ -11,7 +11,7 @@
         <field:display field="instanceId" id="s_ro_roda_Variable_instanceId" object="${variable}" z="XXQohEpl7zUY1uxj96pfE2fh438="/>
         <field:display field="label" id="s_ro_roda_Variable_label" object="${variable}" z="9XX43pZhp3kp/AzXrjbvDOrNwlU="/>
         <field:display field="type" id="s_ro_roda_Variable_type" object="${variable}" z="UzfM96wR4DyUL8sNYjX2yJ8zQBE="/>
-        <field:display field="order" id="s_ro_roda_Variable_order" object="${variable}" z="88tqCj5AfNcgz7wM70XsjCxGKvA="/>
         <field:display field="operatorInstructions" id="s_ro_roda_Variable_operatorInstructions" object="${variable}" z="VAAGaP9ZUB6yGWoXi5xo48r9Md4="/>
+        <field:display field="orderInInstance" id="s_ro_roda_Variable_orderInInstance" object="${variable}" z="6nZKdZRZjs7yrONoGiDy9REyFBI="/>
     </page:show>
 </div>

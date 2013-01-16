@@ -8,7 +8,7 @@
             <table:column id="c_ro_roda_SelectionVariableItem_responseCardFileId" property="responseCardFileId" z="pBQWEZX+4GK4XL4cLVtmc0uGnAc="/>
             <table:column id="c_ro_roda_SelectionVariableItem_itemId" property="itemId" z="SZEmwo6D2WwvVZxu1SpuPGgsMB8="/>
             <table:column id="c_ro_roda_SelectionVariableItem_variableId" property="variableId" z="Q0eZSof2949OXM5trH5mXem1XIY="/>
-            <table:column id="c_ro_roda_SelectionVariableItem_order" property="order" z="yP5jDwNBbGgs9RGDLAuAr8xhZjU="/>
+            <table:column id="c_ro_roda_SelectionVariableItem_orderOfItemInVariable" property="orderOfItemInVariable" z="TB6cTUzXUMjHI5dDCdJdH1Ps5bg="/>
         </table:table>
     </page:list>
 </div>

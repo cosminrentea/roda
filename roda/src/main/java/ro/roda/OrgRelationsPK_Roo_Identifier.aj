@@ -26,11 +26,15 @@ privileged aspect OrgRelationsPK_Roo_Identifier {
     @DateTimeFormat(style = "M-")
     private Date OrgRelationsPK.datestart;
     
-    public OrgRelationsPK.new(Integer org1Id, Integer org2Id, Date datestart) {
+    @Column(name = "org_relation_type_id", columnDefinition = "int4", nullable = false)
+    private Integer OrgRelationsPK.orgRelationTypeId;
+    
+    public OrgRelationsPK.new(Integer org1Id, Integer org2Id, Date datestart, Integer orgRelationTypeId) {
         super();
         this.org1Id = org1Id;
         this.org2Id = org2Id;
         this.datestart = datestart;
+        this.orgRelationTypeId = orgRelationTypeId;
     }
 
     private OrgRelationsPK.new() {
@@ -47,6 +51,10 @@ privileged aspect OrgRelationsPK_Roo_Identifier {
     
     public Date OrgRelationsPK.getDatestart() {
         return datestart;
+    }
+    
+    public Integer OrgRelationsPK.getOrgRelationTypeId() {
+        return orgRelationTypeId;
     }
     
 }

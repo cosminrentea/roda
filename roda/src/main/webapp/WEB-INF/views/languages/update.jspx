@@ -5,5 +5,6 @@
     <form:update id="fu_ro_roda_Language" modelAttribute="language" path="/languages" versionField="none" z="+8tHljhi7lx29QqcxLUGn++/Ieg=">
         <field:simple field="translatedTopics" id="c_ro_roda_Language_translatedTopics" messageCode="entity_reference_not_managed" messageCodeAttribute="Translated Topic" z="brmSbfNS+i7arqOGbeQAorEI5M8="/>
         <field:input field="name" id="c_ro_roda_Language_name" required="true" z="4FMYFmiosJFNZ5Tl4rNrAxxSO18="/>
+        <field:simple field="instanceDescrs" id="c_ro_roda_Language_instanceDescrs" messageCode="entity_reference_not_managed" messageCodeAttribute="Instance Descr" z="FTCBjiWrardx25IVTMeMNb/7cOk="/>
     </form:update>
 </div>

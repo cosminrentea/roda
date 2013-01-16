@@ -9,7 +9,5 @@
         <field:display field="address2" id="s_ro_roda_Address_address2" object="${address}" z="p7G2AhtbDgQwHAaJEKmDpWPzGd0="/>
         <field:display field="sector" id="s_ro_roda_Address_sector" object="${address}" z="oUuPQd2PXD+lakF3NPhK0xveVks="/>
         <field:display field="postalCode" id="s_ro_roda_Address_postalCode" object="${address}" z="NBQiOANW0fhr4JRNIGV326HHHXQ="/>
-        <field:display field="entityType" id="s_ro_roda_Address_entityType" object="${address}" z="FZSBAl61aRj05+gEjOBRqutJSyQ="/>
-        <field:display field="entityId" id="s_ro_roda_Address_entityId" object="${address}" z="YkZdzI2o98t/+om1Udw6QhyY3dU="/>
     </page:show>
 </div>

@@ -56,9 +56,9 @@ privileged aspect Variable_Roo_DbManaged {
     @NotNull
     private Short Variable.type;
     
-    @Column(name = "order", columnDefinition = "int4")
+    @Column(name = "order_in_instance", columnDefinition = "int4", unique = true)
     @NotNull
-    private Integer Variable.order;
+    private Integer Variable.orderInInstance;
     
     @Column(name = "operator_instructions", columnDefinition = "text")
     private String Variable.operatorInstructions;
@@ -143,12 +143,12 @@ privileged aspect Variable_Roo_DbManaged {
         this.type = type;
     }
     
-    public Integer Variable.getOrder() {
-        return order;
+    public Integer Variable.getOrderInInstance() {
+        return orderInInstance;
     }
     
-    public void Variable.setOrder(Integer order) {
-        this.order = order;
+    public void Variable.setOrderInInstance(Integer orderInInstance) {
+        this.orderInInstance = orderInInstance;
     }
     
     public String Variable.getOperatorInstructions() {

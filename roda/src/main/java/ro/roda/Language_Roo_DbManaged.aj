@@ -7,10 +7,14 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
+import ro.roda.InstanceDescr;
 import ro.roda.Language;
 import ro.roda.TranslatedTopic;
 
 privileged aspect Language_Roo_DbManaged {
+    
+    @OneToMany(mappedBy = "languageId")
+    private Set<InstanceDescr> Language.instanceDescrs;
     
     @OneToMany(mappedBy = "languageId")
     private Set<TranslatedTopic> Language.translatedTopics;
@@ -18,6 +22,14 @@ privileged aspect Language_Roo_DbManaged {
     @Column(name = "name", columnDefinition = "varchar", length = 50)
     @NotNull
     private String Language.name;
+    
+    public Set<InstanceDescr> Language.getInstanceDescrs() {
+        return instanceDescrs;
+    }
+    
+    public void Language.setInstanceDescrs(Set<InstanceDescr> instanceDescrs) {
+        this.instanceDescrs = instanceDescrs;
+    }
     
     public Set<TranslatedTopic> Language.getTranslatedTopics() {
         return translatedTopics;

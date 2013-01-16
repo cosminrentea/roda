@@ -7,6 +7,6 @@
         <field:display field="responseCardFileId" id="s_ro_roda_SelectionVariableItem_responseCardFileId" object="${selectionvariableitem}" z="byZD+aSXBJdaHvvCymYJIRZCmOU="/>
         <field:display field="itemId" id="s_ro_roda_SelectionVariableItem_itemId" object="${selectionvariableitem}" z="1CsF6Yjhg3MJcf7YgQe43reTaHg="/>
         <field:display field="variableId" id="s_ro_roda_SelectionVariableItem_variableId" object="${selectionvariableitem}" z="Pa2OhsFSg57zLIuyntpBoW59sL4="/>
-        <field:display field="order" id="s_ro_roda_SelectionVariableItem_order" object="${selectionvariableitem}" z="tT1STASxgyI2Z74YLRQtdpPfa1w="/>
+        <field:display field="orderOfItemInVariable" id="s_ro_roda_SelectionVariableItem_orderOfItemInVariable" object="${selectionvariableitem}" z="D96JBuy9WW1KIZLGwi2UYdcP7qA="/>
     </page:show>
 </div>

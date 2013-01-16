@@ -5,6 +5,6 @@
     <page:show id="ps_ro_roda_StudyPerson" object="${studyperson}" path="/studypeople" z="2fJPgNcj9o2wdQe5gdAJAkbs4NE=">
         <field:display field="personId" id="s_ro_roda_StudyPerson_personId" object="${studyperson}" z="2Pc7JrEXcCWy98cUw3y8Z6xkxWg="/>
         <field:display field="studyId" id="s_ro_roda_StudyPerson_studyId" object="${studyperson}" z="Ls5A0JuActRHVr8Qd/hHBI4EmMs="/>
-        <field:display field="asoctypeId" id="s_ro_roda_StudyPerson_asoctypeId" object="${studyperson}" z="3FSX1TWuPMWCfpr+eNZY7s++q0o="/>
+        <field:display field="assoctypeId" id="s_ro_roda_StudyPerson_assoctypeId" object="${studyperson}" z="BT9u0OoyqCqLx25hbL6B9I2lw8Q="/>
     </page:show>
 </div>

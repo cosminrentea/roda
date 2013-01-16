@@ -12,7 +12,7 @@ import ro.roda.StudyPersonAssoc;
 
 privileged aspect StudyPersonAssoc_Roo_DbManaged {
     
-    @OneToMany(mappedBy = "asoctypeId")
+    @OneToMany(mappedBy = "assoctypeId")
     private Set<StudyPerson> StudyPersonAssoc.studypeople;
     
     @Column(name = "asoc_name", columnDefinition = "varchar", length = 100)

@@ -58,8 +58,11 @@ privileged aspect User_Roo_DbManaged {
     @OneToMany(mappedBy = "userId")
     private Set<UserAuthLog> User.userAuthLogs;
     
-    @OneToMany(mappedBy = "userId")
+    @OneToMany(mappedBy = "toUserId")
     private Set<UserMessage> User.userMessages;
+    
+    @OneToMany(mappedBy = "fromUserId")
+    private Set<UserMessage> User.userMessages1;
     
     @OneToMany(mappedBy = "userId")
     private Set<UserSettingValue> User.userSettingValues;
@@ -162,6 +165,14 @@ privileged aspect User_Roo_DbManaged {
     
     public void User.setUserMessages(Set<UserMessage> userMessages) {
         this.userMessages = userMessages;
+    }
+    
+    public Set<UserMessage> User.getUserMessages1() {
+        return userMessages1;
+    }
+    
+    public void User.setUserMessages1(Set<UserMessage> userMessages1) {
+        this.userMessages1 = userMessages1;
     }
     
     public Set<UserSettingValue> User.getUserSettingValues() {

@@ -7,6 +7,7 @@
             <table:column id="c_ro_roda_InstanceDescr_instance" property="instance" z="8AijEM4xu3cTA2CHTiBqs/dV4UE="/>
             <table:column id="c_ro_roda_InstanceDescr_title" property="title" z="1a8Y6/EFEbYSHE9M0ubTUQOrUzE="/>
             <table:column id="c_ro_roda_InstanceDescr_abstract1" property="abstract1" z="xgjCXvwe5EPNX12vkPw6APsq4S8="/>
+            <table:column id="c_ro_roda_InstanceDescr_languageId" property="languageId" z="MCdVcux21ZbLS5e7nkrdl/jnobA="/>
         </table:table>
     </page:list>
 </div>

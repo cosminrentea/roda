@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
+import ro.roda.InstanceDescr;
 import ro.roda.Language;
 import ro.roda.TranslatedTopic;
 import ro.roda.web.LanguageController;
@@ -87,6 +88,7 @@ privileged aspect LanguageController_Roo_Controller {
     
     void LanguageController.populateEditForm(Model uiModel, Language language) {
         uiModel.addAttribute("language", language);
+        uiModel.addAttribute("instancedescrs", InstanceDescr.findAllInstanceDescrs());
         uiModel.addAttribute("translatedtopics", TranslatedTopic.findAllTranslatedTopics());
     }
     

@@ -9,7 +9,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
 import org.springframework.format.annotation.DateTimeFormat;
 import ro.roda.Address;
 import ro.roda.Person;
@@ -26,7 +25,6 @@ privileged aspect PersonAddress_Roo_DbManaged {
     private Person PersonAddress.personId;
     
     @Column(name = "dateend", columnDefinition = "timestamp")
-    @NotNull
     @Temporal(TemporalType.TIMESTAMP)
     @DateTimeFormat(style = "M-")
     private Date PersonAddress.dateend;

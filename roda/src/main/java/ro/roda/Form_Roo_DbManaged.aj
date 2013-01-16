@@ -3,12 +3,16 @@
 
 package ro.roda;
 
+import java.util.Date;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
+import org.springframework.format.annotation.DateTimeFormat;
 import ro.roda.Form;
 import ro.roda.FormEditedNumberVar;
 import ro.roda.FormEditedTextVar;
@@ -34,13 +38,18 @@ privileged aspect Form_Roo_DbManaged {
     @NotNull
     private Integer Form.orderInInstance;
     
-    @Column(name = "operator_name", columnDefinition = "text")
+    @Column(name = "operator_id", columnDefinition = "int4")
     @NotNull
-    private String Form.operatorName;
+    private Integer Form.operatorId;
     
     @Column(name = "operator_notes", columnDefinition = "text")
-    @NotNull
     private String Form.operatorNotes;
+    
+    @Column(name = "fill_date", columnDefinition = "date")
+    @NotNull
+    @Temporal(TemporalType.DATE)
+    @DateTimeFormat(style = "M-")
+    private Date Form.fillDate;
     
     public Set<FormEditedNumberVar> Form.getFormEditedNumberVars() {
         return formEditedNumberVars;
@@ -82,12 +91,12 @@ privileged aspect Form_Roo_DbManaged {
         this.orderInInstance = orderInInstance;
     }
     
-    public String Form.getOperatorName() {
-        return operatorName;
+    public Integer Form.getOperatorId() {
+        return operatorId;
     }
     
-    public void Form.setOperatorName(String operatorName) {
-        this.operatorName = operatorName;
+    public void Form.setOperatorId(Integer operatorId) {
+        this.operatorId = operatorId;
     }
     
     public String Form.getOperatorNotes() {
@@ -96,6 +105,14 @@ privileged aspect Form_Roo_DbManaged {
     
     public void Form.setOperatorNotes(String operatorNotes) {
         this.operatorNotes = operatorNotes;
+    }
+    
+    public Date Form.getFillDate() {
+        return fillDate;
+    }
+    
+    public void Form.setFillDate(Date fillDate) {
+        this.fillDate = fillDate;
     }
     
 }

@@ -6,6 +6,7 @@
         <field:select field="instance" id="c_ro_roda_InstanceDescr_instance" itemValue="id" items="${instances}" path="/instances" z="K7IQ2ocHmXhJVi2MVJDBqGO/1wY="/>
         <field:input field="title" id="c_ro_roda_InstanceDescr_title" required="true" z="Q1og7NhIIDRCeMlzpC3PUw2j7PE="/>
         <field:input field="abstract1" id="c_ro_roda_InstanceDescr_abstract1" z="uyajAOL9EzNdpz4x7F1ytClPSbc="/>
+        <field:select field="languageId" id="c_ro_roda_InstanceDescr_languageId" itemValue="id" items="${languages}" path="/languages" z="m2jFzs1ANBr6zccsmyMFdJv72PY="/>
     </form:create>
     <form:dependency dependencies="${dependencies}" id="d_ro_roda_InstanceDescr" render="${not empty dependencies}" z="kcHGcVT73q0cBmnUVeI2ZmdRU5g="/>
 </div>

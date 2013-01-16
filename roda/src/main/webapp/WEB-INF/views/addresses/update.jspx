@@ -11,7 +11,5 @@
         <field:input field="address2" id="c_ro_roda_Address_address2" required="true" z="R0A4+ODCQHvRurF9S1Y1ac3r+As="/>
         <field:input field="sector" id="c_ro_roda_Address_sector" required="true" z="MhNGdgbcqnpYsctTj7vypsG5FXU="/>
         <field:input field="postalCode" id="c_ro_roda_Address_postalCode" required="true" z="oUN5qv8MSgARMwyBiqf/smVDE8s="/>
-        <field:input field="entityType" id="c_ro_roda_Address_entityType" required="true" validationMessageCode="field_invalid_integer" z="2+ls/W2CP+uc9wuniPtuCVQN/NY="/>
-        <field:input field="entityId" id="c_ro_roda_Address_entityId" required="true" validationMessageCode="field_invalid_integer" z="FlwDS6ds3chloSwmyVy0infW8Qo="/>
     </form:update>
 </div>

@@ -1,17 +1,19 @@
-#!/bin/sh
+#!/bin/bash
 
-# set filename
+source database.properties
+
+# set filename, if no parameter is given use the default
 if [ -z $1 ]
 then
-    FILENAME=roda-db-doc.sql
+    SCRIPTNAME=${RODA_DEFAULT_SCRIPT}
 else
-    FILENAME=$1
+    SCRIPTNAME=$1
 fi
 
 # replace ID types -> SERIALs
-perl -p -i -e "s/ID INTEGER NOT NULL/id SERIAL/gi;s/ID BIGINT NOT NULL/id BIGSERIAL/gi" $FILENAME
-# cat $1 | sed 's/ID INTEGER NOT NULL/id SERIAL/gI' |  sed 's/ID BIGINT NOT NULL/id BIGSERIAL/gI'  >$2
+perl -p -i -e "s/ID INTEGER NOT NULL/id SERIAL/gi;s/ID BIGINT NOT NULL/id BIGSERIAL/gi" ${SCRIPTNAME}
 
-psql -f $FILENAME roda roda
+# run script
+psql -f ${SCRIPTNAME} -h ${RODA_HOST} ${RODA_DB} ${RODA_USER}
 
 

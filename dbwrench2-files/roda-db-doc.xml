@@ -1,14 +1,13 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<Db flnm="roda-db-doc" nm="RODA" ver="1.3.4">
+<?xml version="1.0" encoding="UTF-8"?><Db flnm="roda-db-doc" nm="RODA" ver="1.3.4">
   <VerLbl/>
   <VerNotes/>
   <DefTblOpts/>
   <DocFolder>C:\Users\user\Desktop\db\doc_bd</DocFolder>
-  <Sch Cm="" nm="public">
+  <Sch Cm="standard public schema" nm="public">
     <Tbl UsSo="1" nm="acl_class">
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id" nm="pkacl_class"/>
-      <Cl au="1" df="" nm="id" nu="0">
+      <Cl au="0" df="nextval('acl_class_id_seq'::regclass)" nm="id" nu="0">
         <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
       <Cl au="0" df="" nm="class" nu="0">
@@ -21,9 +20,9 @@
       <SchTrHis/>
     </Tbl>
     <Tbl UsSo="1" nm="acl_entry">
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id" nm="pkacl_entry"/>
-      <Cl au="1" df="" nm="id" nu="0">
+      <Cl au="0" df="nextval('acl_entry_id_seq'::regclass)" nm="id" nu="0">
         <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
       <Cl au="0" df="" nm="acl_object_identity" nu="0">
@@ -32,7 +31,7 @@
       <Cl au="0" df="" nm="ace_order" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
-      <Cl au="0" df="" nm="sid" nu="0">
+      <Cl au="0" df="nextval('acl_entry_sid_seq'::regclass)" nm="sid" nu="0">
         <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
       <Cl au="0" df="" nm="mask" nu="0">
@@ -64,9 +63,9 @@
       <SchTrHis/>
     </Tbl>
     <Tbl UsSo="1" nm="acl_object_identity">
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id" nm="pkacl_object_identity"/>
-      <Cl au="1" df="" nm="id" nu="0">
+      <Cl au="0" df="nextval('acl_object_identity_id_seq'::regclass)" nm="id" nu="0">
         <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
       <Cl au="0" df="" nm="object_id_class" nu="0">
@@ -78,7 +77,7 @@
       <Cl au="0" df="" nm="parent_object" nu="0">
         <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
-      <Cl au="0" df="" nm="owner_sid" nu="0">
+      <Cl au="0" df="nextval('acl_object_identity_owner_sid_seq'::regclass)" nm="owner_sid" nu="0">
         <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
       <Cl au="0" df="" nm="entries_inheriting" nu="0">
@@ -106,9 +105,9 @@
       <SchTrHis/>
     </Tbl>
     <Tbl UsSo="1" nm="acl_sid">
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id" nm="pkacl_sid"/>
-      <Cl au="1" df="" nm="id" nu="0">
+      <Cl au="0" df="nextval('acl_sid_id_seq'::regclass)" nm="id" nu="0">
         <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
       <Cl au="0" df="" nm="principal" nu="0">
@@ -125,14 +124,14 @@
     </Tbl>
     <Tbl UsSo="1" nm="address">
       <Cm>Tabel unic pentru toate adresele care se gasesc in baza de date</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id" nm="pkaddress"/>
-      <Cl au="1" df="" nm="id" nu="0">
+      <Cl au="0" df="nextval('address_id_seq'::regclass)" nm="id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul adresei retinute</Cm>
       </Cl>
       <Cl au="0" df="" nm="country_id" nu="0">
-        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+        <DT arr="0" ds="Char" en="" id="1" ln="2" sc="null" sg="1" un="0"/>
         <Cm>Codul tarii corespunzatoare adresei (refera atributul id din tabelul country)</Cm>
       </Cl>
       <Cl au="0" df="" nm="city_id" nu="0">
@@ -167,9 +166,9 @@
     </Tbl>
     <Tbl UsSo="1" nm="audit">
       <Cm>Tabel ce stocheaza informatiile referitoare la auditul bazei de date</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id" nm="pkaudit"/>
-      <Cl au="0" df="" nm="id" nu="0">
+      <Cl au="0" df="nextval('audit_id_seq'::regclass)" nm="id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul informatiei de audit</Cm>
       </Cl>
@@ -185,7 +184,7 @@
         <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Numele tabelului asupra caruia a avut loc operatia</Cm>
       </Cl>
-      <Cl au="0" df="" nm="user_id" nu="0">
+      <Cl au="0" df="nextval('audit_user_id_seq'::regclass)" nm="user_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul utilizatorului care a efectuat operatia (refera atributul id din tabelul users)</Cm>
       </Cl>
@@ -203,13 +202,13 @@
     </Tbl>
     <Tbl UsSo="1" nm="audit_field">
       <Cm>Tabel ce inregistreaza informatiile de audit la nivelul unei linii, stocand modificarile aduse asupra valorilor campurilor sale</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="audit_id, id" nm="pkaudit_field"/>
-      <Cl au="0" df="" nm="audit_id" nu="0">
+      <Cl au="0" df="nextval('audit_field_audit_id_seq'::regclass)" nm="audit_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul informatiei de audit (refera atributul id din tabelul audit)</Cm>
       </Cl>
-      <Cl au="0" df="" nm="id" nu="0">
+      <Cl au="0" df="nextval('audit_field_id_seq'::regclass)" nm="id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul coloanei in cadrul informatiei de audit</Cm>
       </Cl>
@@ -235,13 +234,13 @@
     </Tbl>
     <Tbl UsSo="1" nm="audit_row_id">
       <Cm>Tabel ce stocheaza valorile identificatorilor liniilor pentru care sunt retinute informatii de audit</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id, audit_id" nm="pkaudit_row_id"/>
-      <Cl au="0" df="" nm="audit_id" nu="0">
+      <Cl au="0" df="nextval('audit_row_id_audit_id_seq'::regclass)" nm="audit_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul informatiei de audit (refera atributul id din tabelul audit)</Cm>
       </Cl>
-      <Cl au="0" df="" nm="id" nu="0">
+      <Cl au="0" df="nextval('audit_row_id_id_seq'::regclass)" nm="id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul coloanei care face parte din cheia primara a tabelului, in cadrul acestei informatii de audit</Cm>
       </Cl>
@@ -263,9 +262,9 @@
     </Tbl>
     <Tbl UsSo="1" nm="auth_data">
       <Cm>Tabel ce stocheaza datele de autentificare ale utilizatorilor</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="user_id" nm="pkauth_data"/>
-      <Cl au="0" df="" nm="user_id" nu="0">
+      <Cl au="0" df="nextval('auth_data_user_id_seq'::regclass)" nm="user_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul utilizatorului (refera atributul id al tabelului users)</Cm>
       </Cl>
@@ -291,9 +290,9 @@
     </Tbl>
     <Tbl UsSo="1" nm="catalog">
       <Cm>Tabel ce stocheaza informatii despre cataloagele de studii</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id" nm="pkcatalog"/>
-      <Cl au="0" df="" nm="id" nu="0">
+      <Cl au="0" df="nextval('catalog_id_seq'::regclass)" nm="id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul catalogului</Cm>
       </Cl>
@@ -310,7 +309,7 @@
         <Cm>Codul utilizatorului care poseda catalogul (refera atributul id din tabelul users)</Cm>
       </Cl>
       <Cl au="0" df="" nm="added" nu="0">
-        <DT arr="0" ds="DateTime" en="" id="700" ln="null" sc="null" sg="1" un="0"/>
+        <DT arr="0" ds="TimeStamp" en="" id="93" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Data si timpul cand a fost adaugat catalogul respectiv</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_catalog_catalog" prLkCl="id" upAc="3">
@@ -328,13 +327,13 @@
     </Tbl>
     <Tbl UsSo="1" nm="catalog_acl">
       <Cm>Tabel ce stocheaza drepturile de acces asupra unui catalog</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="catalog_id, aro_id, aro_type" nm="pkcatalog_acl"/>
-      <Cl au="0" df="" nm="catalog_id" nu="0">
+      <Cl au="0" df="nextval('catalog_acl_catalog_id_seq'::regclass)" nm="catalog_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul catalogului (refera atributul id din tabelul catalog)</Cm>
       </Cl>
-      <Cl au="0" df="" nm="aro_id" nu="0">
+      <Cl au="0" df="nextval('catalog_acl_aro_id_seq'::regclass)" nm="aro_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul unui obiect care solicita acces</Cm>
       </Cl>
@@ -368,18 +367,18 @@
     </Tbl>
     <Tbl UsSo="1" nm="catalog_study">
       <Cm>Tabel ce contine asocierile dintre cataloage si studii (implementeaza relatia many-to-many intre catalog si study)</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="catalog_id, study_id" nm="pkcatalog_study"/>
-      <Cl au="0" df="" nm="catalog_id" nu="0">
+      <Cl au="0" df="nextval('catalog_study_catalog_id_seq'::regclass)" nm="catalog_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul unui catalog din care face parte studiul referit prin atributul study_id (refera atributul id din tabelul catalog)</Cm>
       </Cl>
-      <Cl au="0" df="" nm="study_id" nu="0">
+      <Cl au="0" df="nextval('catalog_study_study_id_seq'::regclass)" nm="study_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul studiului asociat catalogului referit prin atributul catalog_id (refera atributul id din tabelul study)</Cm>
       </Cl>
       <Cl au="0" df="" nm="added" nu="0">
-        <DT arr="0" ds="DateTime" en="" id="700" ln="null" sc="null" sg="1" un="0"/>
+        <DT arr="0" ds="TimeStamp" en="" id="93" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
       <Fk deAc="3" nm="fk_catalog_study_catalog" prLkCl="id" upAc="3">
         <PrTb mn="0" nm="catalog" oe="1" sch="public" zr="0"/>
@@ -396,9 +395,9 @@
     </Tbl>
     <Tbl UsSo="1" nm="city">
       <Cm>Tabel unic pentru toate referintele la orase</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id" nm="pkcity"/>
-      <Cl au="1" df="" nm="id" nu="0">
+      <Cl au="0" df="nextval('city_id_seq'::regclass)" nm="id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul orasului</Cm>
       </Cl>
@@ -438,9 +437,9 @@
     </Tbl>
     <Tbl UsSo="1" nm="cms_file">
       <Cm>Tabel ce stocheaza informatii despre fisierele din sistemul CMS al aplicatiei</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id" nm="pkcms_file"/>
-      <Cl au="0" df="" nm="id" nu="0">
+      <Cl au="0" df="nextval('cms_file_id_seq'::regclass)" nm="id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul unui fisier din sistemul CMS al aplicatiei</Cm>
       </Cl>
@@ -452,7 +451,7 @@
         <DT arr="0" ds="VarChar" en="" id="12" ln="50" sc="null" sg="1" un="0"/>
         <Cm>Eticheta (alias-ul) unui fisier din sistemul CMS al aplicatiei</Cm>
       </Cl>
-      <Cl au="0" df="" nm="folder_id" nu="0">
+      <Cl au="0" df="nextval('cms_file_folder_id_seq'::regclass)" nm="folder_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul folder-ului din care face parte fisierul curent (refera atributul id din tabelul folder)</Cm>
       </Cl>
@@ -482,9 +481,9 @@
     </Tbl>
     <Tbl UsSo="1" nm="cms_folder">
       <Cm>Tabel pentru stocarea informatiilor despre folder-ele din sistemul CMS al aplicatiei</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id" nm="pkcms_folder"/>
-      <Cl au="1" df="" nm="id" nu="0">
+      <Cl au="0" df="nextval('cms_folder_id_seq'::regclass)" nm="id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul unui folder din sistemul cms al aplicatiei</Cm>
       </Cl>
@@ -510,9 +509,9 @@
     </Tbl>
     <Tbl UsSo="1" nm="cms_layout">
       <Cm>Tabel care stocheaza layout-uri pentru paginile din sistemul CMS al aplicatiei</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id" nm="pkcms_layout"/>
-      <Cl au="0" df="" nm="id" nu="0">
+      <Cl au="0" df="nextval('cms_layout_id_seq'::regclass)" nm="id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul unui layout pentru o pagina de CMS </Cm>
       </Cl>
@@ -538,9 +537,9 @@
     </Tbl>
     <Tbl UsSo="1" nm="cms_layout_group">
       <Cm>Tabel ce stocheaza grupurile pentru layout-uri</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id" nm="pkcms_layout_group"/>
-      <Cl au="0" df="" nm="id" nu="0">
+      <Cl au="0" df="nextval('cms_layout_group_id_seq'::regclass)" nm="id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul unui grup de layout-uri</Cm>
       </Cl>
@@ -561,9 +560,9 @@
     </Tbl>
     <Tbl UsSo="1" nm="cms_page">
       <Cm>Tabel care stocheaza paginile din sistemul CMS al aplicatiei</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id" nm="pkcms_page"/>
-      <Cl au="0" df="" nm="id" nu="0">
+      <Cl au="0" df="nextval('cms_page_id_seq'::regclass)" nm="id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul unei pagini din sistemul CMS</Cm>
       </Cl>
@@ -610,9 +609,9 @@
     </Tbl>
     <Tbl UsSo="1" nm="cms_page_content">
       <Cm>Tabel pentru stocarea continutului paginilor din aplicatie</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id" nm="pkcms_page_content"/>
-      <Cl au="0" df="" nm="id" nu="0">
+      <Cl au="0" df="nextval('cms_page_content_id_seq'::regclass)" nm="id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul unei pagini de tip content din aplicatie</Cm>
       </Cl>
@@ -646,9 +645,9 @@
     </Tbl>
     <Tbl UsSo="1" nm="cms_snippet">
       <Cm>Tabel care stocheaza snippeturile (fragmentele de cod) folosite in aplicatie</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id" nm="pkcms_snippet"/>
-      <Cl au="0" df="" nm="id" nu="0">
+      <Cl au="0" df="nextval('cms_snippet_id_seq'::regclass)" nm="id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul unui snippet (fragment de cod) utilizat in aplicatie</Cm>
       </Cl>
@@ -674,9 +673,9 @@
     </Tbl>
     <Tbl UsSo="1" nm="cms_snippet_group">
       <Cm>Tabel care stocheaza grupuri de snippeturi utilizate in aplicatie</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id" nm="pkcms_snippet_group"/>
-      <Cl au="0" df="" nm="id" nu="0">
+      <Cl au="0" df="nextval('cms_snippet_group_id_seq'::regclass)" nm="id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul unui grup de snippet-uri din sistemul CMS al aplicatiei</Cm>
       </Cl>
@@ -702,9 +701,9 @@
     </Tbl>
     <Tbl UsSo="1" nm="collection_model_type">
       <Cm>Tabel ce contine tipurile modelelor de colectare a datelor</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id" nm="pkcollection_model_type"/>
-      <Cl au="0" df="" nm="id" nu="0">
+      <Cl au="0" df="nextval('collection_model_type_id_seq'::regclass)" nm="id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul tipului modelului de colectare a datelor</Cm>
       </Cl>
@@ -717,9 +716,9 @@
     </Tbl>
     <Tbl UsSo="1" nm="concept">
       <Cm>Tabel ce stocheaza conceptele definite </Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id" nm="pkconcept"/>
-      <Cl au="1" df="" nm="id" nu="0">
+      <Cl au="0" df="nextval('concept_id_seq'::regclass)" nm="id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul conceptului</Cm>
       </Cl>
@@ -736,13 +735,13 @@
     </Tbl>
     <Tbl UsSo="1" nm="concept_variable">
       <Cm>Tabel ce asociaza variabilelor o multime de concepte (implementeaza relatia many-to-many intre tabelele variable si concept)</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="concept_id, variable_id" nm="pkconcept_variable"/>
-      <Cl au="0" df="" nm="concept_id" nu="0">
+      <Cl au="0" df="nextval('concept_variable_concept_id_seq'::regclass)" nm="concept_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul conceptului la care se refera variabila identificata prin atributul variable_id, din cadrul instantei instance_id (refera atributul id din tabelul concept)</Cm>
       </Cl>
-      <Cl au="0" df="" nm="variable_id" nu="0">
+      <Cl au="0" df="nextval('concept_variable_variable_id_seq'::regclass)" nm="variable_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul variabilei din instanta instance_id careia ii este asociat conceptul identificat prin atributul concept_id</Cm>
       </Cl>
@@ -761,7 +760,7 @@
     </Tbl>
     <Tbl UsSo="1" nm="country">
       <Cm>Tabel unic pentru toate referintele la tari</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id" nm="pkcountry"/>
       <Cl au="0" df="" nm="id" nu="0">
         <DT arr="0" ds="Char" en="" id="1" ln="2" sc="null" sg="1" un="0"/>
@@ -777,26 +776,89 @@
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
+    <Tbl UsSo="1" nm="document">
+      <Cm>Tabel ce contine documentele asociate oricarei entitati din baza de date</Cm>
+      <TblOpts>WITHOUT OIDS</TblOpts>
+      <Pk ClNs="id" nm="pkdocuments"/>
+      <Cl au="0" df="" nm="id" nu="0">
+        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Codul documentului</Cm>
+      </Cl>
+      <Cl au="0" df="" nm="title" nu="0">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="250" sc="null" sg="1" un="0"/>
+        <Cm>Titlul documentului</Cm>
+      </Cl>
+      <Cl au="0" df="" nm="description" nu="1">
+        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Descrierea documentului</Cm>
+      </Cl>
+      <Cl au="0" df="" nm="type_id" nu="0">
+        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Codul tipului documentului (refera atributul id al tabelului document_type)</Cm>
+      </Cl>
+      <Cl au="0" df="" nm="filename" nu="0">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="200" sc="null" sg="1" un="0"/>
+        <Cm>Numele fisierului asociat documentului</Cm>
+      </Cl>
+      <Cl au="0" df="" nm="mimetype" nu="0">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="50" sc="null" sg="1" un="0"/>
+        <Cm>Tipul mime al fisierului</Cm>
+      </Cl>
+      <Cl au="0" df="" nm="filesize" nu="0">
+        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Dimensiunea fisierului (specificata in kilobytes)</Cm>
+      </Cl>
+      <Fk deAc="3" nm="fk_documents_document_types" prLkCl="id" upAc="3">
+        <PrTb mn="0" nm="document_type" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="document" oe="0" sch="public" zr="1"/>
+        <ClPr cdCl="type_id" prCl="id"/>
+      </Fk>
+      <UniqueConstraints/>
+      <SchTrHis/>
+    </Tbl>
+    <Tbl UsSo="1" nm="document_type">
+      <Cm>Tabel ce contine tipurile de documente</Cm>
+      <TblOpts>WITHOUT OIDS</TblOpts>
+      <Pk ClNs="id" nm="pkdocument_type"/>
+      <Cl au="0" df="" nm="id" nu="0">
+        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Codul tipului de document</Cm>
+      </Cl>
+      <Cl au="0" df="" nm="name" nu="0">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="100" sc="null" sg="1" un="0"/>
+        <Cm>Denumirea tipului de document</Cm>
+      </Cl>
+      <UniqueConstraints/>
+      <SchTrHis/>
+    </Tbl>
     <Tbl UsSo="1" nm="email">
       <Cm>Tabel unic pentru toate adresele de e-mail din baza de date</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id" nm="pkemail"/>
-      <Cl au="1" df="" nm="id" nu="0">
+      <Cl au="0" df="nextval('email_id_seq'::regclass)" nm="id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul adresei de email in tabel</Cm>
       </Cl>
       <Cl au="0" df="" nm="email" nu="0">
         <DT arr="0" ds="VarChar" en="" id="12" ln="200" sc="null" sg="1" un="0"/>
-        <Cm>Sirul de caractere reprezentand adresa de email</Cm>
+      </Cl>
+      <Cl au="0" df="" nm="entity_id" nu="0">
+        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="entity_type" nu="0">
+        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="ismain" nu="1">
+        <DT arr="0" ds="Boolean" en="" id="16" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
     <Tbl UsSo="1" nm="file">
       <Cm>Tabel ce contine documentele asociate oricarei entitati din baza de date (studiu sau instanta)</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id" nm="pkfile"/>
-      <Cl au="0" df="" nm="id" nu="0">
+      <Cl au="0" df="nextval('file_id_seq'::regclass)" nm="id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul documentului</Cm>
       </Cl>
@@ -830,13 +892,13 @@
     </Tbl>
     <Tbl UsSo="1" nm="file_acl">
       <Cm>Tabel ce contine drepturile de acces asupra documentelor</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="document_id, aro_id, aro_type" nm="pkfile_acl"/>
-      <Cl au="0" df="" nm="document_id" nu="0">
+      <Cl au="0" df="nextval('file_acl_document_id_seq'::regclass)" nm="document_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul documentului asupra caruia sunt definite drepturi de acces</Cm>
       </Cl>
-      <Cl au="0" df="" nm="aro_id" nu="0">
+      <Cl au="0" df="nextval('file_acl_aro_id_seq'::regclass)" nm="aro_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul obiectului care solicita drepturi de acces</Cm>
       </Cl>
@@ -866,9 +928,9 @@
     </Tbl>
     <Tbl UsSo="1" nm="filetype">
       <Cm>Tabel ce contine tipurile de documente ale caror informatii sunt retinute in baza de date</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id" nm="pkfiletype"/>
-      <Cl au="0" df="" nm="id" nu="0">
+      <Cl au="0" df="nextval('filetype_id_seq'::regclass)" nm="id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul tipului de document</Cm>
       </Cl>
@@ -883,18 +945,18 @@
       <SchTrHis/>
     </Tbl>
     <Tbl UsSo="1" nm="form">
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id" nm="pkform"/>
-      <Cl au="1" df="" nm="id" nu="0">
+      <Cl au="0" df="nextval('form_id_seq'::regclass)" nm="id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
-      <Cl au="0" df="" nm="instance_id" nu="0">
+      <Cl au="0" df="nextval('form_instance_id_seq'::regclass)" nm="instance_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
       <Cl au="0" df="" nm="order_in_instance" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
-      <Cl au="0" df="" nm="operator_id" nu="0">
+      <Cl au="0" df="nextval('form_operator_id_seq'::regclass)" nm="operator_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
       <Cl au="0" df="" nm="operator_notes" nu="1">
@@ -916,18 +978,18 @@
     </Tbl>
     <Tbl UsSo="1" nm="form_edited_number_var">
       <Cm>Tabel ce inregistreaza raspunsurile numerice ale variabilelor de tip editat</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="variable_id, form_id" nm="pkform_edited_number_var"/>
-      <Cl au="0" df="" nm="form_id" nu="0">
+      <Cl au="0" df="nextval('form_edited_number_var_form_id_seq'::regclass)" nm="form_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul formularului completat in cadrul instantei identificate prin atributul instance_id</Cm>
       </Cl>
-      <Cl au="0" df="" nm="variable_id" nu="0">
+      <Cl au="0" df="nextval('form_edited_number_var_variable_id_seq'::regclass)" nm="variable_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul unei variabile editate de tip numeric in cadrul instantei identificate prin atributul instance_id</Cm>
       </Cl>
       <Cl au="0" df="" nm="value" nu="0">
-        <DT arr="0" ds="Decimal" en="" id="3" ln="10" sc="2" sg="1" un="0"/>
+        <DT arr="0" ds="Numeric" en="" id="2" ln="10" sc="2" sg="1" un="0"/>
         <Cm>Valoarea numerica furnizata ca raspuns pentru variabila referita prin atributul variable_id din cadrul instantei identificate prin atributul instance_id, asociata formularului specificat prin atributul form_id  </Cm>
       </Cl>
       <Fk deAc="3" nm="fk_form_custom_number_var_custom_variable" prLkCl="id" upAc="3">
@@ -945,13 +1007,13 @@
     </Tbl>
     <Tbl UsSo="1" nm="form_edited_text_var">
       <Cm>Tabel ce inregistreaza raspunsurile text ale variabilelor de tip editat</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="variable_id, form_id" nm="pkform_edited_text_var"/>
-      <Cl au="0" df="" nm="variable_id" nu="0">
+      <Cl au="0" df="nextval('form_edited_text_var_variable_id_seq'::regclass)" nm="variable_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul unei variabile editate de tip text corespunzatoare instantei identificate prin atributul instance_id</Cm>
       </Cl>
-      <Cl au="0" df="" nm="form_id" nu="0">
+      <Cl au="0" df="nextval('form_edited_text_var_form_id_seq'::regclass)" nm="form_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul formularului completat in cadrul instantei identificate prin atributul instance_id</Cm>
       </Cl>
@@ -974,17 +1036,17 @@
     </Tbl>
     <Tbl UsSo="1" nm="form_selection_var">
       <Cm>Tabel ce inregistreaza raspunsurile la variabilele de selectie (pentru care exista optiuni de raspuns) </Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="form_id, variable_id, item_id" nm="pkform_selection_var"/>
-      <Cl au="0" df="" nm="form_id" nu="0">
+      <Cl au="0" df="nextval('form_selection_var_form_id_seq'::regclass)" nm="form_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul unui formular completat in cadrul instantei identificate prin atributul instance_id</Cm>
       </Cl>
-      <Cl au="0" df="" nm="variable_id" nu="0">
+      <Cl au="0" df="nextval('form_selection_var_variable_id_seq'::regclass)" nm="variable_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul unei variabile din cadrul instantei identificate prin atributul instance_id</Cm>
       </Cl>
-      <Cl au="0" df="" nm="item_id" nu="0">
+      <Cl au="0" df="nextval('form_selection_var_item_id_seq'::regclass)" nm="item_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Identificatorul elementului selectat ca raspuns pentru variabila identificata prin atributul variable_id din instanta referita prin atributul instance_id, asociat formularului specificat prin atributul form_id</Cm>
       </Cl>
@@ -1008,13 +1070,13 @@
     </Tbl>
     <Tbl UsSo="1" nm="frequency">
       <Cm>Tabel ce stocheaza frecventele asociate elementelor de raspuns din cadrul variabilelor de selectie</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="variable_id, item_id" nm="pkfrequency"/>
-      <Cl au="0" df="" nm="variable_id" nu="0">
+      <Cl au="0" df="nextval('frequency_variable_id_seq'::regclass)" nm="variable_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Identificatorul variabilei</Cm>
       </Cl>
-      <Cl au="0" df="" nm="item_id" nu="0">
+      <Cl au="0" df="nextval('frequency_item_id_seq'::regclass)" nm="item_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Item-ul din cadrul variabilei pentru care este furnizata valoarea frecventei</Cm>
       </Cl>
@@ -1033,25 +1095,25 @@
     </Tbl>
     <Tbl UsSo="1" nm="instance">
       <Cm>Tabel ce contine informatiile principale ale instantelor</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id" nm="pkinstance"/>
-      <Cl au="0" df="" nm="id" nu="0">
+      <Cl au="0" df="nextval('instance_id_seq'::regclass)" nm="id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul instantei</Cm>
       </Cl>
-      <Cl au="0" df="" nm="study_id" nu="0">
+      <Cl au="0" df="nextval('instance_study_id_seq'::regclass)" nm="study_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul studiului caruia ii apartine instanta (refera atributul id al tabelului study)</Cm>
       </Cl>
       <Cl au="0" df="" nm="datestart" nu="1">
-        <DT arr="0" ds="DateTime" en="" id="700" ln="null" sc="null" sg="1" un="0"/>
+        <DT arr="0" ds="TimeStamp" en="" id="93" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Data de inceput a instantei</Cm>
       </Cl>
       <Cl au="0" df="" nm="dateend" nu="1">
-        <DT arr="0" ds="DateTime" en="" id="700" ln="null" sc="null" sg="1" un="0"/>
+        <DT arr="0" ds="TimeStamp" en="" id="93" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Data de incheiere a instantei</Cm>
       </Cl>
-      <Cl au="0" df="" nm="unit_analysis_id" nu="0">
+      <Cl au="0" df="nextval('instance_unit_analysis_id_seq'::regclass)" nm="unit_analysis_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul unitatii de analiza specifice instantei (refera atributul id al tabelului unit_analysis)</Cm>
       </Cl>
@@ -1074,13 +1136,13 @@
     </Tbl>
     <Tbl UsSo="1" nm="instance_acl">
       <Cm>Tabel ce contine listele pentru controlul accesului la nivel de instanta</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="instance_id, aro_id, aro_type" nm="pkinstance_acl"/>
-      <Cl au="0" df="" nm="instance_id" nu="0">
+      <Cl au="0" df="nextval('instance_acl_instance_id_seq'::regclass)" nm="instance_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul instantei asupra careia vor fi definite drepturi de acces </Cm>
       </Cl>
-      <Cl au="0" df="" nm="aro_id" nu="0">
+      <Cl au="0" df="nextval('instance_acl_aro_id_seq'::regclass)" nm="aro_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul unui obiect care solicita drepturi de acces</Cm>
       </Cl>
@@ -1114,9 +1176,9 @@
     </Tbl>
     <Tbl UsSo="1" nm="instance_descr">
       <Cm>Tabel ce contine elementele descriptive ale instantelor</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="instance_id" nm="pkinstance_descr"/>
-      <Cl au="0" df="" nm="instance_id" nu="0">
+      <Cl au="0" df="nextval('instance_descr_instance_id_seq'::regclass)" nm="instance_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul instantei pentru care sunt furnizate elemente descriptive</Cm>
       </Cl>
@@ -1146,13 +1208,13 @@
     </Tbl>
     <Tbl UsSo="1" nm="instance_documents">
       <Cm>Tabel ce contine asocierile dintre instante si documente (implementeaza relatia many-to-many intre tabelele instance si documents)</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="instance_id, document_id" nm="pkinstance_documents"/>
-      <Cl au="0" df="" nm="instance_id" nu="0">
+      <Cl au="0" df="nextval('instance_documents_instance_id_seq'::regclass)" nm="instance_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul instantei care contine documentul specificat prin atributul document_id (refera atributul id al tabelului instance)</Cm>
       </Cl>
-      <Cl au="0" df="" nm="document_id" nu="0">
+      <Cl au="0" df="nextval('instance_documents_document_id_seq'::regclass)" nm="document_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul documentului asociat instantei specificate prin atributul instance_id (refera atributul id al tabelului documents)</Cm>
       </Cl>
@@ -1171,13 +1233,13 @@
     </Tbl>
     <Tbl UsSo="1" nm="instance_keyword">
       <Cm>Tabel ce stocheaza asocierile dintre cuvinte cheie si instante (implementeaza relatia many-to-many intre tabelele instance si keyword)</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="instance_id, keyword_id" nm="pkinstance_keyword"/>
-      <Cl au="0" df="" nm="instance_id" nu="0">
+      <Cl au="0" df="nextval('instance_keyword_instance_id_seq'::regclass)" nm="instance_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul instantei careia ii este asociat cuvantul cheie referit prin atributul keyword_id</Cm>
       </Cl>
-      <Cl au="0" df="" nm="keyword_id" nu="0">
+      <Cl au="0" df="nextval('instance_keyword_keyword_id_seq'::regclass)" nm="keyword_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul unui cuvant cheie asociat instantei identificate prin atributul instance_id</Cm>
       </Cl>
@@ -1204,17 +1266,17 @@
     </Tbl>
     <Tbl UsSo="1" nm="instance_org">
       <Cm>Tabel ce contine asocierile dintre instante si organizatii (implementeaza relatia many-to-many intre tabelele instance si org)</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="org_id, instance_id" nm="pkinstance_org"/>
-      <Cl au="0" df="" nm="org_id" nu="0">
+      <Cl au="0" df="nextval('instance_org_org_id_seq'::regclass)" nm="org_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul organizatiei care se afla in relatia specificata prin atributul assoc_type_id cu instanta identificata prin atributul instance_id (refera atributul id al tabelului org)</Cm>
       </Cl>
-      <Cl au="0" df="" nm="instance_id" nu="0">
+      <Cl au="0" df="nextval('instance_org_instance_id_seq'::regclass)" nm="instance_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul instantei care se afla in relatia specificata prin atributul assoc_type_id cu organizatia identificata prin atributul org_id (refera atributul id al tabelului instance)</Cm>
       </Cl>
-      <Cl au="0" df="" nm="assoc_type_id" nu="0">
+      <Cl au="0" df="nextval('instance_org_assoc_type_id_seq'::regclass)" nm="assoc_type_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul tipului de asociere corespunzator relatiei dintre organizatia identificata prin atributul org_id si instanta specificata prin atributul instance_id (refera atributul id al tabelului instance_org_assoc)</Cm>
       </Cl>
@@ -1246,9 +1308,9 @@
     </Tbl>
     <Tbl UsSo="1" nm="instance_org_assoc">
       <Cm>Tabel ce contine tipurile de asociere care pot exista intre o instanta si organizatie</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id" nm="pkinstance_org_assoc"/>
-      <Cl au="0" df="" nm="id" nu="0">
+      <Cl au="0" df="nextval('instance_org_assoc_id_seq'::regclass)" nm="id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul unui tip de asociere care poate exista intre o instanta si o organizatie</Cm>
       </Cl>
@@ -1265,17 +1327,17 @@
     </Tbl>
     <Tbl UsSo="1" nm="instance_person">
       <Cm>Tabel care stocheaza asocierile intre instante si persoane (implementeaza relatia many-to-many intre tabelele person si instance)</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="person_id, instance_id" nm="pkinstance_person"/>
-      <Cl au="0" df="" nm="person_id" nu="0">
+      <Cl au="0" df="nextval('instance_person_person_id_seq'::regclass)" nm="person_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul persoanei aflate in relatia specificata prin atributul assoc_type_id cu instanta identificata prin atributul instance_id (refera atributul id al tabelului person)</Cm>
       </Cl>
-      <Cl au="0" df="" nm="instance_id" nu="0">
+      <Cl au="0" df="nextval('instance_person_instance_id_seq'::regclass)" nm="instance_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul instantei care se afla in relatia specificata prin atributul assoc_type_id cu instanta identificata prin atributul instance_id (refera atributul id al tabelului instance)</Cm>
       </Cl>
-      <Cl au="0" df="" nm="assoc_type_id" nu="0">
+      <Cl au="0" df="nextval('instance_person_assoc_type_id_seq'::regclass)" nm="assoc_type_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul tipului de asociere care exista intre instanta specificata prin atributul instance_id si persoana identificata prin atributul person_id (refera atributul id al tabelului instance_person_assoc)</Cm>
       </Cl>
@@ -1299,9 +1361,9 @@
     </Tbl>
     <Tbl UsSo="1" nm="instance_person_assoc">
       <Cm>Tabel ce contine tipurile de asociere intre instanta si persoana</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id" nm="pkinstance_person_assoc"/>
-      <Cl au="0" df="" nm="id" nu="0">
+      <Cl au="0" df="nextval('instance_person_assoc_id_seq'::regclass)" nm="id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul unui tip de asociere care poate exista intre persoane si instante</Cm>
       </Cl>
@@ -1318,13 +1380,13 @@
     </Tbl>
     <Tbl UsSo="1" nm="instance_topic">
       <Cm>Tabel ce stocheaza asocierile dintre instante si topic-uri (implementeaza relatia many-to-many intre aceste tabele)</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="instance_id, topic_id" nm="pkinstance_topic"/>
-      <Cl au="0" df="" nm="instance_id" nu="0">
+      <Cl au="0" df="nextval('instance_topic_instance_id_seq'::regclass)" nm="instance_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul unei instante careia i se asociaza topic-ul specificat prin atributul topic_id (refera atributul id din tabelul instance)</Cm>
       </Cl>
-      <Cl au="0" df="" nm="topic_id" nu="0">
+      <Cl au="0" df="nextval('instance_topic_topic_id_seq'::regclass)" nm="topic_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul topic-ului care este asociat instantei specificate prin atributul instance_id (refera atributul id din tabelul topic)</Cm>
       </Cl>
@@ -1343,28 +1405,36 @@
     </Tbl>
     <Tbl UsSo="1" nm="internet">
       <Cm>Tabel ce contine toate conturile de pe retelele sociale de pe internet (facebook, twitter, im  si altele)</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id" nm="pkinternet"/>
-      <Cl au="0" df="" nm="id" nu="0">
+      <Cl au="0" df="nextval('internet_id_seq'::regclass)" nm="id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul contului pe internet al unui contact</Cm>
       </Cl>
-      <Cl au="0" df="" nm="internet_type" nu="0">
+      <Cl au="0" df="" nm="internet_type" nu="1">
         <DT arr="0" ds="VarChar" en="" id="12" ln="50" sc="null" sg="1" un="0"/>
         <Cm>Tipul contului </Cm>
       </Cl>
       <Cl au="0" df="" nm="internet" nu="0">
         <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
-        <Cm>Sir de caractere reprezentand id-ul contului respectiv in reteaua din care face parte</Cm>
+      </Cl>
+      <Cl au="0" df="" nm="entity_id" nu="0">
+        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="entity_type" nu="0">
+        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="ismain" nu="1">
+        <DT arr="0" ds="Boolean" en="" id="16" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
     <Tbl UsSo="1" nm="item">
       <Cm>Tabel ce stocheaza elementele (item-urile) variabilelor de selectie din baza de date</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id" nm="pkitem"/>
-      <Cl au="1" df="" nm="id" nu="0">
+      <Cl au="0" df="nextval('item_id_seq'::regclass)" nm="id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Identificatorul item-ului</Cm>
       </Cl>
@@ -1377,9 +1447,9 @@
     </Tbl>
     <Tbl UsSo="1" nm="keyword">
       <Cm>Tabel ce contine cuvintele cheie ale studiilor si instantelor din baza de date</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id" nm="pkkeyword"/>
-      <Cl au="0" df="" nm="id" nu="0">
+      <Cl au="0" df="nextval('keyword_id_seq'::regclass)" nm="id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul cuvantului cheie</Cm>
       </Cl>
@@ -1392,7 +1462,7 @@
     </Tbl>
     <Tbl UsSo="1" nm="lang">
       <Cm>Tabel ce contine limbile utilizate pentru unii termeni din baza de date</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id" nm="pklang"/>
       <Cl au="0" df="" nm="id" nu="0">
         <DT arr="0" ds="Char" en="" id="1" ln="2" sc="null" sg="1" un="0"/>
@@ -1407,13 +1477,13 @@
     </Tbl>
     <Tbl UsSo="1" nm="meth_coll_type">
       <Cm>Tabel ce stocheaza tipurile modelelor de colectare a datelor utilizate in cadrul unei instante</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="instance_id, collection_model_id" nm="pkmeth_coll_type"/>
-      <Cl au="0" df="" nm="instance_id" nu="0">
+      <Cl au="0" df="nextval('meth_coll_type_instance_id_seq'::regclass)" nm="instance_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul instantei pentru care se asociaza un model de colectare a datelor</Cm>
       </Cl>
-      <Cl au="0" df="" nm="collection_model_id" nu="0">
+      <Cl au="0" df="nextval('meth_coll_type_collection_model_id_seq'::regclass)" nm="collection_model_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul tipului de model de colectare a datelor asociat instantei identificate prin atributul instance_id</Cm>
       </Cl>
@@ -1432,13 +1502,13 @@
     </Tbl>
     <Tbl UsSo="1" nm="methodology">
       <Cm>Tabel care stocheaza informatii aditionale ale instantei, legate de metodologie</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="instance_id" nm="pkmethodology"/>
-      <Cl au="0" df="" nm="instance_id" nu="0">
+      <Cl au="0" df="nextval('methodology_instance_id_seq'::regclass)" nm="instance_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul instantei pentru care sunt stocate informatii legate de metodologie</Cm>
       </Cl>
-      <Cl au="0" df="" nm="time_meth_id" nu="0">
+      <Cl au="0" df="nextval('methodology_time_meth_id_seq'::regclass)" nm="time_meth_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Metoda temporala</Cm>
       </Cl>
@@ -1473,9 +1543,9 @@
     </Tbl>
     <Tbl UsSo="1" nm="news">
       <Cm>Tabel ce stocheaza stirile ce vor aparea in interfata aplicatiei</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id" nm="pknews"/>
-      <Cl au="0" df="" nm="id" nu="0">
+      <Cl au="0" df="nextval('news_id_seq'::regclass)" nm="id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul stirii</Cm>
       </Cl>
@@ -1509,9 +1579,9 @@
     </Tbl>
     <Tbl UsSo="1" nm="org">
       <Cm>Tabel ce contine toate organizatiile din baza de date</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id" nm="pkorg"/>
-      <Cl au="0" df="" nm="id" nu="0">
+      <Cl au="0" df="nextval('org_id_seq'::regclass)" nm="id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul organizatiei</Cm>
       </Cl>
@@ -1546,22 +1616,22 @@
     </Tbl>
     <Tbl UsSo="1" nm="org_address">
       <Cm>Tabel ce contine asocierile dintre organizatii si adrese (implementeaza relatia many-to-many intre tabelele org si adresa)</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="org_id, address_id" nm="pkorg_address"/>
-      <Cl au="0" df="" nm="org_id" nu="0">
+      <Cl au="0" df="nextval('org_address_org_id_seq'::regclass)" nm="org_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul organizatiei care detine o adresa identificata prin atributul address_id (refera atributul id din tabelul org) </Cm>
       </Cl>
-      <Cl au="0" df="" nm="address_id" nu="0">
+      <Cl au="0" df="nextval('org_address_address_id_seq'::regclass)" nm="address_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul adresei detinute de organizatia specificata prin atributul org_id (refera atributul id din tabelul org)</Cm>
       </Cl>
       <Cl au="0" df="" nm="datestart" nu="1">
-        <DT arr="0" ds="DateTime" en="" id="700" ln="null" sc="null" sg="1" un="0"/>
+        <DT arr="0" ds="TimeStamp" en="" id="93" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Data incepand de la care adresa organizatiei referite prin atributul org_id a devenit cea identificata prin atributul address_id</Cm>
       </Cl>
       <Cl au="0" df="" nm="dateend" nu="1">
-        <DT arr="0" ds="DateTime" en="" id="700" ln="null" sc="null" sg="1" un="0"/>
+        <DT arr="0" ds="TimeStamp" en="" id="93" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Data pana la care adresa organizatiei referite prin org_id a fost cea identificata prin address_id</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_org_address_address" prLkCl="id" upAc="3">
@@ -1578,12 +1648,12 @@
       <SchTrHis/>
     </Tbl>
     <Tbl UsSo="1" nm="org_email">
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="org_id, email_id" nm="pkorg_email"/>
-      <Cl au="0" df="" nm="org_id" nu="0">
+      <Cl au="0" df="nextval('org_email_org_id_seq'::regclass)" nm="org_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
-      <Cl au="0" df="" nm="email_id" nu="0">
+      <Cl au="0" df="nextval('org_email_email_id_seq'::regclass)" nm="email_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
       <Cl au="0" df="" nm="is_main" nu="0">
@@ -1603,12 +1673,12 @@
       <SchTrHis/>
     </Tbl>
     <Tbl UsSo="1" nm="org_internet">
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="org_id, internet_id" nm="pkorg_internet"/>
-      <Cl au="0" df="" nm="org_id" nu="0">
+      <Cl au="0" df="nextval('org_internet_org_id_seq'::regclass)" nm="org_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
-      <Cl au="0" df="" nm="internet_id" nu="0">
+      <Cl au="0" df="nextval('org_internet_internet_id_seq'::regclass)" nm="internet_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
       <Fk deAc="3" nm="fk_org_internet_internet" prLkCl="id" upAc="3">
@@ -1625,12 +1695,12 @@
       <SchTrHis/>
     </Tbl>
     <Tbl UsSo="1" nm="org_phone">
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="org_id, phone_id" nm="pkorg_phone"/>
-      <Cl au="0" df="" nm="org_id" nu="0">
+      <Cl au="0" df="nextval('org_phone_org_id_seq'::regclass)" nm="org_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
-      <Cl au="0" df="" nm="phone_id" nu="0">
+      <Cl au="0" df="nextval('org_phone_phone_id_seq'::regclass)" nm="phone_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
       <Fk deAc="3" nm="fk_org_phone_org" prLkCl="id" upAc="3">
@@ -1648,9 +1718,9 @@
     </Tbl>
     <Tbl UsSo="1" nm="org_prefix">
       <Cm>Tabel ce contine prefixele organizatiilor </Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id" nm="pkorg_prefix"/>
-      <Cl au="1" df="" nm="id" nu="0">
+      <Cl au="0" df="nextval('org_prefix_id_seq'::regclass)" nm="id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul prefixului de organizatie</Cm>
       </Cl>
@@ -1667,9 +1737,9 @@
     </Tbl>
     <Tbl UsSo="1" nm="org_relation_type">
       <Cm>Tabel ce contine tipurile relatiilor care pot exista intre organizatii</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id" nm="pkorg_relation_type"/>
-      <Cl au="1" df="" nm="id" nu="0">
+      <Cl au="0" df="nextval('org_relation_type_id_seq'::regclass)" nm="id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul tipului relatiei intre organizatii</Cm>
       </Cl>
@@ -1682,25 +1752,25 @@
     </Tbl>
     <Tbl UsSo="1" nm="org_relations">
       <Cm>Tabel ce stocheaza relatiile dintre organizatii (filiala, subsidiare, holding)</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="org_1_id, org_2_id, org_relation_type_id" nm="pkorg_relations"/>
-      <Cl au="0" df="" nm="org_1_id" nu="0">
+      <Cl au="0" df="nextval('org_relations_org_1_id_seq'::regclass)" nm="org_1_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul primei organizatii implicate in relatie</Cm>
       </Cl>
-      <Cl au="0" df="" nm="org_2_id" nu="0">
+      <Cl au="0" df="nextval('org_relations_org_2_id_seq'::regclass)" nm="org_2_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul celei de-a doua organizatii implicate in relatie</Cm>
       </Cl>
       <Cl au="0" df="" nm="datestart" nu="1">
-        <DT arr="0" ds="DateTime" en="" id="700" ln="null" sc="null" sg="1" un="0"/>
+        <DT arr="0" ds="TimeStamp" en="" id="93" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Data de inceput a relatiei specificate prin tipul org_relation_type_id intre organizatiile specificate prin org_1_id si org_2_id</Cm>
       </Cl>
       <Cl au="0" df="" nm="dateend" nu="1">
-        <DT arr="0" ds="DateTime" en="" id="700" ln="null" sc="null" sg="1" un="0"/>
+        <DT arr="0" ds="TimeStamp" en="" id="93" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Data de final a relatiei specificate prin tipul org_relation_type intre organizatiile specificate prin org_1_id si org_2_id</Cm>
       </Cl>
-      <Cl au="0" df="" nm="org_relation_type_id" nu="0">
+      <Cl au="0" df="nextval('org_relations_org_relation_type_id_seq'::regclass)" nm="org_relation_type_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul tipului relatiei demarate la datestart intre organizatiile specificate prin org_1_id si org_2_id </Cm>
       </Cl>
@@ -1728,9 +1798,9 @@
     </Tbl>
     <Tbl UsSo="1" nm="org_sufix">
       <Cm>Tabel ce contine sufixele organizatiilor</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id" nm="pkorg_sufix"/>
-      <Cl au="1" df="" nm="id" nu="0">
+      <Cl au="0" df="nextval('org_sufix_id_seq'::regclass)" nm="id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul sufixului de organizatie</Cm>
       </Cl>
@@ -1747,9 +1817,9 @@
     </Tbl>
     <Tbl UsSo="1" nm="other_statistic">
       <Cm>Tabel ce contine statistici specifice variabilelor editate</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="variable_id" nm="pkother_statistic"/>
-      <Cl au="0" df="" nm="variable_id" nu="0">
+      <Cl au="0" df="nextval('other_statistic_variable_id_seq'::regclass)" nm="variable_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul variabilei pentru care sunt stocate statistici</Cm>
       </Cl>
@@ -1774,9 +1844,9 @@
     </Tbl>
     <Tbl UsSo="1" nm="person">
       <Cm>Tabel unic pentru toate persoanele din baza de date</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id" nm="pkperson"/>
-      <Cl au="1" df="" nm="id" nu="0">
+      <Cl au="0" df="nextval('person_id_seq'::regclass)" nm="id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul persoanei</Cm>
       </Cl>
@@ -1815,22 +1885,22 @@
     </Tbl>
     <Tbl UsSo="1" nm="person_address">
       <Cm>Tabel ce contine asocierile intre persoane si adrese (implementeaza relatia many-to-many intre tabelele address si person)</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="person_id, address_id" nm="pkperson_address"/>
-      <Cl au="0" df="" nm="person_id" nu="0">
+      <Cl au="0" df="nextval('person_address_person_id_seq'::regclass)" nm="person_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul persoanei pentru care este stocata o asociere cu adresa referita prin atributul address_id (refera atributul id din tabelul person)</Cm>
       </Cl>
-      <Cl au="0" df="" nm="address_id" nu="0">
+      <Cl au="0" df="nextval('person_address_address_id_seq'::regclass)" nm="address_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul adresei care este asociata persoanei identificate prin atributul person_id (refera atributul id din tabelul address)</Cm>
       </Cl>
       <Cl au="0" df="" nm="datestart" nu="1">
-        <DT arr="0" ds="DateTime" en="" id="700" ln="null" sc="null" sg="1" un="0"/>
+        <DT arr="0" ds="TimeStamp" en="" id="93" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Data incepand de la care persoana identificata prin atributul person_id a avut adresa referita prin atributul address_id</Cm>
       </Cl>
       <Cl au="0" df="" nm="dateend" nu="1">
-        <DT arr="0" ds="DateTime" en="" id="700" ln="null" sc="null" sg="1" un="0"/>
+        <DT arr="0" ds="TimeStamp" en="" id="93" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Data pana la care persoana identificata prin atributul person_id a avut adresa referita prin atributul address_id</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_person_address_address" prLkCl="id" upAc="3">
@@ -1847,12 +1917,12 @@
       <SchTrHis/>
     </Tbl>
     <Tbl UsSo="1" nm="person_email">
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="person_id, email_id" nm="pkperson_email"/>
-      <Cl au="0" df="" nm="person_id" nu="0">
+      <Cl au="0" df="nextval('person_email_person_id_seq'::regclass)" nm="person_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
-      <Cl au="0" df="" nm="email_id" nu="0">
+      <Cl au="0" df="nextval('person_email_email_id_seq'::regclass)" nm="email_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
       <Cl au="0" df="" nm="is_main" nu="0">
@@ -1872,12 +1942,12 @@
       <SchTrHis/>
     </Tbl>
     <Tbl UsSo="1" nm="person_internet">
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="person_id, internet_id" nm="pkperson_internet"/>
-      <Cl au="0" df="" nm="person_id" nu="0">
+      <Cl au="0" df="nextval('person_internet_person_id_seq'::regclass)" nm="person_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
-      <Cl au="0" df="" nm="internet_id" nu="0">
+      <Cl au="0" df="nextval('person_internet_internet_id_seq'::regclass)" nm="internet_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
       <Fk deAc="3" nm="fk_person_internet_internet" prLkCl="id" upAc="3">
@@ -1895,30 +1965,30 @@
     </Tbl>
     <Tbl UsSo="1" nm="person_links">
       <Cm>Tabel ce stocheaza relatiile dintre persoane si utilizatorii aplicatiei </Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id" nm="pkperson_links"/>
-      <Cl au="0" df="" nm="id" nu="0">
+      <Cl au="0" df="nextval('person_links_id_seq'::regclass)" nm="id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul relatiei intre persoana referita prin atributul person_id si utilizatorul identificat prin user_id</Cm>
       </Cl>
-      <Cl au="0" df="" nm="person_id" nu="0">
+      <Cl au="0" df="nextval('person_links_person_id_seq'::regclass)" nm="person_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul persoanei (refera atributul id din tabelul person)</Cm>
       </Cl>
-      <Cl au="0" df="" nm="user_id" nu="0">
+      <Cl au="0" df="nextval('person_links_user_id_seq'::regclass)" nm="user_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul utilizatorului (refera atributul id din tabelul user)</Cm>
       </Cl>
       <Cl au="0" df="" nm="simscore" nu="0">
-        <DT arr="0" ds="Decimal" en="" id="3" ln="10" sc="2" sg="1" un="0"/>
+        <DT arr="0" ds="Numeric" en="" id="2" ln="10" sc="2" sg="1" un="0"/>
         <Cm>Scorul general de similaritate intre persoana si utilizator (determinat pentru a stabili automat relatia intre persoana si utilizator)</Cm>
       </Cl>
       <Cl au="0" df="" nm="namescore" nu="0">
-        <DT arr="0" ds="Decimal" en="" id="3" ln="10" sc="2" sg="1" un="0"/>
+        <DT arr="0" ds="Numeric" en="" id="2" ln="10" sc="2" sg="1" un="0"/>
         <Cm>Scorul de similaritate bazat pe numele persoanei si al utilizatorului (determinat pentru a stabili automat relatia intre persoana si utilizator)</Cm>
       </Cl>
       <Cl au="0" df="" nm="emailscore" nu="0">
-        <DT arr="0" ds="Decimal" en="" id="3" ln="10" sc="2" sg="1" un="0"/>
+        <DT arr="0" ds="Numeric" en="" id="2" ln="10" sc="2" sg="1" un="0"/>
         <Cm>Scorul de similaritate bazat pe adresa de email (determinat pentru a stabili automat relatia intre persoana si utilizator)</Cm>
       </Cl>
       <Cl au="0" df="" nm="status" nu="0">
@@ -1930,7 +2000,7 @@
         <Cm>Codul utilizatorului care a actualizat campul status (refera atributul id din tabelul user)</Cm>
       </Cl>
       <Cl au="0" df="" nm="status_time" nu="0">
-        <DT arr="0" ds="DateTime" en="" id="700" ln="null" sc="null" sg="1" un="0"/>
+        <DT arr="0" ds="TimeStamp" en="" id="93" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Momentul de timp al ultimei actualizari a atributului status</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_person_links_person" prLkCl="id" upAc="3">
@@ -1953,26 +2023,26 @@
     </Tbl>
     <Tbl UsSo="1" nm="person_org">
       <Cm>Tabel ce stocheaza asocierile dintre persoane si organizatii (implementeaza relatia many-to-many intre tabelele person si org)</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="person_id, org_id, role_id" nm="pkperson_org"/>
-      <Cl au="0" df="" nm="person_id" nu="0">
+      <Cl au="0" df="nextval('person_org_person_id_seq'::regclass)" nm="person_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Identificatorul persoanei care lucreaza in organizatie</Cm>
       </Cl>
-      <Cl au="0" df="" nm="org_id" nu="0">
+      <Cl au="0" df="nextval('person_org_org_id_seq'::regclass)" nm="org_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Idetificatorul organizatiei</Cm>
       </Cl>
-      <Cl au="0" df="" nm="role_id" nu="1">
+      <Cl au="0" df="" nm="role_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Identificatorul rolului detinut de persoana in cadrul organizatiei (refera atributul id al tabelului person_role)</Cm>
       </Cl>
       <Cl au="0" df="" nm="datestart" nu="1">
-        <DT arr="0" ds="DateTime" en="" id="700" ln="null" sc="null" sg="1" un="0"/>
+        <DT arr="0" ds="TimeStamp" en="" id="93" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Data de inceput a apartenentei persoanei la organizatie</Cm>
       </Cl>
       <Cl au="0" df="" nm="dateend" nu="1">
-        <DT arr="0" ds="DateTime" en="" id="700" ln="null" sc="null" sg="1" un="0"/>
+        <DT arr="0" ds="TimeStamp" en="" id="93" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Data de final a apartenentei persoanei la organizatie</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_person_org_org" prLkCl="id" upAc="3">
@@ -1994,12 +2064,12 @@
       <SchTrHis/>
     </Tbl>
     <Tbl UsSo="1" nm="person_phone">
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="person_id, phone_id" nm="pkperson_phone"/>
-      <Cl au="0" df="" nm="person_id" nu="0">
+      <Cl au="0" df="nextval('person_phone_person_id_seq'::regclass)" nm="person_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
-      <Cl au="0" df="" nm="phone_id" nu="0">
+      <Cl au="0" df="nextval('person_phone_phone_id_seq'::regclass)" nm="phone_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
       <Fk deAc="3" nm="fk_person_phone_person" prLkCl="id" upAc="3">
@@ -2017,9 +2087,9 @@
     </Tbl>
     <Tbl UsSo="1" nm="person_role">
       <Cm>Tabel care contine rolurile pe care le pot detine persoanele in cadrul organizatiilor</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id" nm="pkperson_role"/>
-      <Cl au="1" df="" nm="id" nu="0">
+      <Cl au="0" df="nextval('person_role_id_seq'::regclass)" nm="id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul rolului</Cm>
       </Cl>
@@ -2031,26 +2101,35 @@
       <SchTrHis/>
     </Tbl>
     <Tbl UsSo="1" nm="phone">
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id" nm="pkphone"/>
-      <Cl au="1" df="" nm="id" nu="0">
+      <Cl au="0" df="nextval('phone_id_seq'::regclass)" nm="id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
       <Cl au="0" df="" nm="phone" nu="0">
         <DT arr="0" ds="VarChar" en="" id="12" ln="30" sc="null" sg="1" un="0"/>
       </Cl>
-      <Cl au="0" df="" nm="phone_type" nu="0">
+      <Cl au="0" df="" nm="phone_type" nu="1">
         <DT arr="0" ds="VarChar" en="" id="12" ln="50" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="entity_id" nu="0">
+        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="entity_type" nu="0">
+        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="ismain" nu="1">
+        <DT arr="0" ds="Boolean" en="" id="16" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
     <Tbl UsSo="1" nm="prefix">
       <Cm>Tabel ce contine prefixele corespunzatoare formulelor de adresare catre persoane</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id" nm="pkprefix"/>
-      <Cl au="1" df="" nm="id" nu="0">
-        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="0" un="0"/>
+      <Cl au="0" df="nextval('prefix_id_seq'::regclass)" nm="id" nu="0">
+        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul prefixului pentru persoane</Cm>
       </Cl>
       <Cl au="0" df="" nm="name" nu="0">
@@ -2062,9 +2141,9 @@
     </Tbl>
     <Tbl UsSo="1" nm="region">
       <Cm>Tabel care contine regiunile corespunzatoare tarilor referite in model</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id" nm="pkregion"/>
-      <Cl au="1" df="" nm="id" nu="0">
+      <Cl au="0" df="nextval('region_id_seq'::regclass)" nm="id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Identificatorul regiunii</Cm>
       </Cl>
@@ -2101,13 +2180,13 @@
     </Tbl>
     <Tbl UsSo="1" nm="region_city">
       <Cm>Tabel ce contine asocierile sintre orase si regiuni </Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="region_id, city_id" nm="pkregion_city"/>
-      <Cl au="0" df="" nm="region_id" nu="0">
+      <Cl au="0" df="nextval('region_city_region_id_seq'::regclass)" nm="region_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul regiunii din care face parte un oras</Cm>
       </Cl>
-      <Cl au="0" df="" nm="city_id" nu="0">
+      <Cl au="0" df="nextval('region_city_city_id_seq'::regclass)" nm="city_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul orasului asociat regiunii</Cm>
       </Cl>
@@ -2126,9 +2205,9 @@
     </Tbl>
     <Tbl UsSo="1" nm="regiontype">
       <Cm>Tabel ce contine tipurile regiunilor corespunzatoare studiilor efectuate</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id" nm="pkregiontype"/>
-      <Cl au="1" df="" nm="id" nu="0">
+      <Cl au="0" df="nextval('regiontype_id_seq'::regclass)" nm="id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Identificatorul tipului de regiune</Cm>
       </Cl>
@@ -2141,9 +2220,9 @@
     </Tbl>
     <Tbl UsSo="1" nm="role">
       <Cm>Tabel care stocheaza role-urile care pot fi asociate utilizatorilor aplicatiei</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id" nm="pkrole"/>
-      <Cl au="0" df="" nm="id" nu="0">
+      <Cl au="0" df="nextval('role_id_seq'::regclass)" nm="id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul unui role al aplicatiei </Cm>
       </Cl>
@@ -2160,9 +2239,9 @@
     </Tbl>
     <Tbl UsSo="1" nm="scale">
       <Cm>Tabel ce stocheaza elementele de tip scala ale variabilelor de selectie</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="item_id" nm="pkscale"/>
-      <Cl au="0" df="" nm="item_id" nu="0">
+      <Cl au="0" df="nextval('scale_item_id_seq'::regclass)" nm="item_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul item-ului</Cm>
       </Cl>
@@ -2198,9 +2277,9 @@
     </Tbl>
     <Tbl UsSo="1" nm="selection_variable">
       <Cm>Tabel ce contine informatii despre variabilele de selectie din instante</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="variable_id" nm="pkselection_variable"/>
-      <Cl au="0" df="" nm="variable_id" nu="0">
+      <Cl au="0" df="nextval('selection_variable_variable_id_seq'::regclass)" nm="variable_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul unei variabile de selectie din cadrul instantei identificate prin instance_id</Cm>
       </Cl>
@@ -2222,13 +2301,13 @@
     </Tbl>
     <Tbl UsSo="1" nm="selection_variable_item">
       <Cm>Tabel ce contine elementele variabilelor de selectie din cadrul unei instante</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="variable_id, item_id" nm="pkselection_variable_item"/>
-      <Cl au="0" df="" nm="variable_id" nu="0">
+      <Cl au="0" df="nextval('selection_variable_item_variable_id_seq'::regclass)" nm="variable_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul unei variabile ce apare in cadrul instantei identificate prin atributul instance_id</Cm>
       </Cl>
-      <Cl au="0" df="" nm="item_id" nu="0">
+      <Cl au="0" df="nextval('selection_variable_item_item_id_seq'::regclass)" nm="item_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul unui item de raspuns pentru variabila referita prin atributul variable_id</Cm>
       </Cl>
@@ -2262,9 +2341,9 @@
     </Tbl>
     <Tbl UsSo="1" nm="setting">
       <Cm>Tabel care contine setarile aplicatiei</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id" nm="pksetting"/>
-      <Cl au="0" df="" nm="id" nu="0">
+      <Cl au="0" df="nextval('setting_id_seq'::regclass)" nm="id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul unei setari a aplicatiei</Cm>
       </Cl>
@@ -2298,9 +2377,9 @@
     </Tbl>
     <Tbl UsSo="1" nm="setting_group">
       <Cm>Tabel care stocheaza grupurile de setari ale aplicatiei</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id" nm="pksetting_group"/>
-      <Cl au="0" df="" nm="id" nu="0">
+      <Cl au="0" df="nextval('setting_group_id_seq'::regclass)" nm="id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul unui grup de setari ale aplicatiei</Cm>
       </Cl>
@@ -2326,9 +2405,9 @@
     </Tbl>
     <Tbl UsSo="1" nm="setting_value">
       <Cm>Tabel care contine valorile setarilor aplicatiei</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="setting_id" nm="pksetting_value"/>
-      <Cl au="0" df="" nm="setting_id" nu="0">
+      <Cl au="0" df="nextval('setting_value_setting_id_seq'::regclass)" nm="setting_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul setarii a carei valoare este inregistrata (refera atributul id din tabelul setting)</Cm>
       </Cl>
@@ -2346,13 +2425,13 @@
     </Tbl>
     <Tbl UsSo="1" nm="skip">
       <Cm>Tabel ce contine salturile care pot avea loc de la o variabila la alta</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id" nm="pkskip"/>
-      <Cl au="0" df="" nm="variable_id" nu="0">
+      <Cl au="0" df="nextval('skip_variable_id_seq'::regclass)" nm="variable_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Identificatorul variabilei</Cm>
       </Cl>
-      <Cl au="1" df="" nm="id" nu="0">
+      <Cl au="0" df="nextval('skip_id_seq'::regclass)" nm="id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Identificatorul saltului, corespunzator variabilei referite prin atributul variable_id din cadrul instantei identificate prin atributul instance_id </Cm>
       </Cl>
@@ -2360,7 +2439,7 @@
         <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Conditia specificata ca text, care in urma evaluarii va confirma saltul</Cm>
       </Cl>
-      <Cl au="0" df="" nm="next_variable_id" nu="0">
+      <Cl au="0" df="nextval('skip_next_variable_id_seq'::regclass)" nm="next_variable_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Identificatorul variabilei la care se va face salt</Cm>
       </Cl>
@@ -2379,13 +2458,13 @@
     </Tbl>
     <Tbl UsSo="1" nm="source">
       <Cm>Tabel ce stocheaza sursele (organizatiile) care pot oferi studii pentru partea de colectare</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="org_id" nm="pksource"/>
-      <Cl au="0" df="" nm="org_id" nu="0">
+      <Cl au="0" df="nextval('source_org_id_seq'::regclass)" nm="org_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul organizatiei care reprezinta o sursa a studiilor colectate</Cm>
       </Cl>
-      <Cl au="0" df="" nm="sourcetype_id" nu="0">
+      <Cl au="0" df="nextval('source_sourcetype_id_seq'::regclass)" nm="sourcetype_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul tipului sursei (refera atributul id din tabelul sourcetype)</Cm>
       </Cl>
@@ -2402,11 +2481,100 @@
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
+    <Tbl UsSo="1" nm="source_contact_method">
+      <Cm>Tabel ce contine metodele prin care persoana de contact al unui posibil furnizor de studii poate fi contactata</Cm>
+      <TblOpts>WITHOUT OIDS</TblOpts>
+      <Pk ClNs="id" nm="pksource_contact_method"/>
+      <Cl au="0" df="" nm="id" nu="0">
+        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Codul metodei de contact</Cm>
+      </Cl>
+      <Cl au="0" df="" nm="name" nu="0">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="150" sc="null" sg="1" un="0"/>
+        <Cm>Denumirea metodei de contact (telefon, email etc.)</Cm>
+      </Cl>
+      <UniqueConstraints/>
+      <SchTrHis/>
+    </Tbl>
+    <Tbl UsSo="1" nm="source_contacts">
+      <Cm>Datele de contact ale unei surse </Cm>
+      <TblOpts>WITHOUT OIDS</TblOpts>
+      <Pk ClNs="id" nm="pksource_contacts"/>
+      <Cl au="0" df="" nm="id" nu="0">
+        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Codul contactului</Cm>
+      </Cl>
+      <Cl au="0" df="" nm="person_id" nu="0">
+        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Codul persoanei (refera atributul id din tabelul person)</Cm>
+      </Cl>
+      <Cl au="0" df="" nm="contact_date" nu="0">
+        <DT arr="0" ds="TimeStamp" en="" id="93" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Data la care persoana identificata prin atributul person_id a fost contactata</Cm>
+      </Cl>
+      <Cl au="0" df="" nm="contact_synopsis" nu="0">
+        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="followup" nu="0">
+        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="contact_method" nu="0">
+        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Metoda prin care persoana a fost contactata (refera atributul id din tabelul source_contact_method)</Cm>
+      </Cl>
+      <Cl au="0" df="" nm="org_id" nu="0">
+        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Codul organizatiei careia ii aunt asociate informatiile de contact (refera atributul org_id din tabelul sources)</Cm>
+      </Cl>
+      <Fk deAc="3" nm="fk_source_contacts_source_contact_method" prLkCl="id" upAc="3">
+        <PrTb mn="0" nm="source_contact_method" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="source_contacts" oe="0" sch="public" zr="1"/>
+        <ClPr cdCl="contact_method" prCl="id"/>
+      </Fk>
+      <Fk deAc="3" nm="fk_source_contacts_sources" prLkCl="org_id" upAc="3">
+        <PrTb mn="0" nm="source" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="source_contacts" oe="0" sch="public" zr="1"/>
+        <ClPr cdCl="org_id" prCl="org_id"/>
+      </Fk>
+      <Fk deAc="3" nm="source_contacts_person_id_fkey" prLkCl="id" upAc="3">
+        <PrTb mn="0" nm="person" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="source_contacts" oe="0" sch="public" zr="1"/>
+        <ClPr cdCl="person_id" prCl="id"/>
+      </Fk>
+      <UniqueConstraints/>
+      <SchTrHis/>
+    </Tbl>
+    <Tbl UsSo="1" nm="source_type_history">
+      <TblOpts>WITHOUT OIDS</TblOpts>
+      <Pk ClNs="id" nm="pksource_type_history"/>
+      <Cl au="0" df="" nm="id" nu="0">
+        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="datestart" nu="0">
+        <DT arr="0" ds="TimeStamp" en="" id="93" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="dateend" nu="0">
+        <DT arr="0" ds="TimeStamp" en="" id="93" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="added_by" nu="0">
+        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="org_id" nu="0">
+        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Fk deAc="3" nm="fk_source_type_history_sources" prLkCl="org_id" upAc="3">
+        <PrTb mn="0" nm="source" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="source_type_history" oe="0" sch="public" zr="1"/>
+        <ClPr cdCl="org_id" prCl="org_id"/>
+      </Fk>
+      <UniqueConstraints/>
+      <SchTrHis/>
+    </Tbl>
     <Tbl UsSo="1" nm="sourcestudy">
       <Cm>Tabel ce stocheaza informatii despre studiile pe care le poate furniza o organizatie </Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id" nm="pksourcestudy"/>
-      <Cl au="0" df="" nm="id" nu="0">
+      <Cl au="0" df="nextval('sourcestudy_id_seq'::regclass)" nm="id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul studiului pe care il poate furniza o organizatie</Cm>
       </Cl>
@@ -2418,7 +2586,7 @@
         <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Detalii asupra studiului care poate fi furnizat</Cm>
       </Cl>
-      <Cl au="0" df="" nm="org_id" nu="0">
+      <Cl au="0" df="nextval('sourcestudy_org_id_seq'::regclass)" nm="org_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul organizatiei care poate pune la dispozitie studiul respectiv (refera atributul org_id din tabelul sources)</Cm>
       </Cl>
@@ -2441,9 +2609,9 @@
     </Tbl>
     <Tbl UsSo="1" nm="sourcestudy_type">
       <Cm>Tabel ce stocheaza tipul (starea) studiilor pe care le poate furniza o organizatie</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id" nm="pksourcestudy_type"/>
-      <Cl au="0" df="" nm="id" nu="0">
+      <Cl au="0" df="nextval('sourcestudy_type_id_seq'::regclass)" nm="id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codului tipului (starii) unui studiu care poate fi furnizat de catre o sursa</Cm>
       </Cl>
@@ -2460,21 +2628,21 @@
     </Tbl>
     <Tbl UsSo="1" nm="sourcestudy_type_history">
       <Cm>Tabel ce stocheaza istoricul tipului (starii) surselor studiilor</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id" nm="pksourcestudy_type_history"/>
-      <Cl au="0" df="" nm="id" nu="0">
+      <Cl au="0" df="nextval('sourcestudy_type_history_id_seq'::regclass)" nm="id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul liniei referitoare la istoricul unui studiu care poate fi furnizat de catre o sursa</Cm>
       </Cl>
       <Cl au="0" df="" nm="datestart" nu="0">
-        <DT arr="0" ds="DateTime" en="" id="700" ln="null" sc="null" sg="1" un="0"/>
+        <DT arr="0" ds="TimeStamp" en="" id="93" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Data de inceput</Cm>
       </Cl>
       <Cl au="0" df="" nm="dateend" nu="0">
-        <DT arr="0" ds="DateTime" en="" id="700" ln="null" sc="null" sg="1" un="0"/>
+        <DT arr="0" ds="TimeStamp" en="" id="93" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Data de final</Cm>
       </Cl>
-      <Cl au="0" df="" nm="sourcestudy_type_id" nu="0">
+      <Cl au="0" df="nextval('sourcestudy_type_history_sourcestudy_type_id_seq'::regclass)" nm="sourcestudy_type_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul tipului (starii) studiului respectiv intre datele datestart si dateend</Cm>
       </Cl>
@@ -2482,7 +2650,7 @@
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul utilizatorului care a adaugat informatia referitoare la istoricul unui studiu</Cm>
       </Cl>
-      <Cl au="0" df="" nm="sourcesstudy_id" nu="0">
+      <Cl au="0" df="nextval('sourcestudy_type_history_sourcesstudy_id_seq'::regclass)" nm="sourcesstudy_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul studiului care poate fi furnizat de catre o sursa</Cm>
       </Cl>
@@ -2501,9 +2669,9 @@
     </Tbl>
     <Tbl UsSo="1" nm="sourcetype">
       <Cm>Tabel ce contine tipurile de surse </Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id" nm="pksourcetype"/>
-      <Cl au="1" df="" nm="id" nu="0">
+      <Cl au="0" df="nextval('sourcetype_id_seq'::regclass)" nm="id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul sursei</Cm>
       </Cl>
@@ -2520,25 +2688,25 @@
     </Tbl>
     <Tbl UsSo="1" nm="sourcetype_history">
       <Cm>Tabel ce stocheaza istoricul tipului surselor</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id" nm="pksourcetype_history"/>
-      <Cl au="0" df="" nm="id" nu="0">
+      <Cl au="0" df="nextval('sourcetype_history_id_seq'::regclass)" nm="id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul liniei referitoare la istoricul surselor</Cm>
       </Cl>
       <Cl au="0" df="" nm="datestart" nu="0">
-        <DT arr="0" ds="DateTime" en="" id="700" ln="null" sc="null" sg="1" un="0"/>
+        <DT arr="0" ds="TimeStamp" en="" id="93" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Data de inceput a starii unei surse</Cm>
       </Cl>
       <Cl au="0" df="" nm="dateend" nu="1">
-        <DT arr="0" ds="DateTime" en="" id="700" ln="null" sc="null" sg="1" un="0"/>
+        <DT arr="0" ds="TimeStamp" en="" id="93" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Data de final a starii unei surse</Cm>
       </Cl>
-      <Cl au="0" df="" nm="org_id" nu="0">
+      <Cl au="0" df="nextval('sourcetype_history_org_id_seq'::regclass)" nm="org_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul organizatiei (sursei)careia ii corespunde o stare intre cele doua date calendaristice</Cm>
       </Cl>
-      <Cl au="0" df="" nm="sourcetype_id" nu="0">
+      <Cl au="0" df="nextval('sourcetype_history_sourcetype_id_seq'::regclass)" nm="sourcetype_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul tipului sursei dintre cele doua date</Cm>
       </Cl>
@@ -2561,18 +2729,18 @@
     </Tbl>
     <Tbl UsSo="1" nm="study">
       <Cm>Tabel care stocheaza studiile desfasurate, ale caror informatii sunt prezente in baza de date </Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id" nm="pkstudy"/>
-      <Cl au="0" df="" nm="id" nu="0">
+      <Cl au="0" df="nextval('study_id_seq'::regclass)" nm="id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul studiului</Cm>
       </Cl>
       <Cl au="0" df="" nm="datestart" nu="1">
-        <DT arr="0" ds="DateTime" en="" id="700" ln="null" sc="null" sg="1" un="0"/>
+        <DT arr="0" ds="TimeStamp" en="" id="93" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Data de inceput a studiului</Cm>
       </Cl>
       <Cl au="0" df="" nm="dateend" nu="1">
-        <DT arr="0" ds="DateTime" en="" id="700" ln="null" sc="null" sg="1" un="0"/>
+        <DT arr="0" ds="TimeStamp" en="" id="93" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Data de final a studiului</Cm>
       </Cl>
       <Cl au="0" df="" nm="grant_details" nu="0">
@@ -2584,13 +2752,13 @@
     </Tbl>
     <Tbl UsSo="1" nm="study_acl">
       <Cm>Tabel ce contine listele pentru controlul accesului la nivel de studiu</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="study_id, aro_id, aro_type" nm="pkstudy_acl"/>
-      <Cl au="0" df="" nm="study_id" nu="0">
+      <Cl au="0" df="nextval('study_acl_study_id_seq'::regclass)" nm="study_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul studiului ce va detine drepturi de acces pentru obiectul identificat prin atributul aro_id</Cm>
       </Cl>
-      <Cl au="0" df="" nm="aro_id" nu="0">
+      <Cl au="0" df="nextval('study_acl_aro_id_seq'::regclass)" nm="aro_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul unui obiect care solicita drepturi </Cm>
       </Cl>
@@ -2624,9 +2792,9 @@
     </Tbl>
     <Tbl UsSo="1" nm="study_descr">
       <Cm>Tabel ce stocheaza informatii despre titlurile studiilor din baza de date</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id" nm="pkstudy_descr"/>
-      <Cl au="0" df="" nm="id" nu="0">
+      <Cl au="0" df="nextval('study_descr_id_seq'::regclass)" nm="id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul titlului</Cm>
       </Cl>
@@ -2638,11 +2806,11 @@
         <DT arr="0" ds="Char" en="" id="1" ln="2" sc="null" sg="1" un="0"/>
         <Cm>Limba in care este furnizat titlul identificat prin atributul id</Cm>
       </Cl>
-      <Cl au="0" df="" nm="title_type_id" nu="0">
+      <Cl au="0" df="nextval('study_descr_title_type_id_seq'::regclass)" nm="title_type_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Tipul titlului (refera atributul id din tabelul table_type)</Cm>
       </Cl>
-      <Cl au="0" df="" nm="study_id" nu="0">
+      <Cl au="0" df="nextval('study_descr_study_id_seq'::regclass)" nm="study_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul studiului caruia ii corespunde titlul (refera atributul id din tabelul study)</Cm>
       </Cl>
@@ -2667,15 +2835,40 @@
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
-    <Tbl UsSo="1" nm="study_file">
-      <Cm>Tabel ce contine asocierile dintre studii si documente (implementeaza relatia many-to-many intre tabelele study si documents)</Cm>
-      <TblOpts/>
-      <Pk ClNs="study_id, file_id" nm="pkstudy_file"/>
+    <Tbl UsSo="1" nm="study_documents">
+      <Cm>Tabel ce implementeaza relatia many-to-many intre studiu si documente</Cm>
+      <TblOpts>WITHOUT OIDS</TblOpts>
+      <Pk ClNs="study_id, document_id" nm="pkstudy_documents"/>
       <Cl au="0" df="" nm="study_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul studiului pentru care este stocat documentul specificat prin atributul document_id (refera atributul id din tabelul study)</Cm>
       </Cl>
-      <Cl au="0" df="" nm="file_id" nu="0">
+      <Cl au="0" df="" nm="document_id" nu="0">
+        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Codul unui document care este asociat studiului identificat prin atributul study_id (refera atributul id din tabelul documents)</Cm>
+      </Cl>
+      <Fk deAc="3" nm="fk_study_documents_documents" prLkCl="id" upAc="3">
+        <PrTb mn="0" nm="document" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="study_documents" oe="0" sch="public" zr="1"/>
+        <ClPr cdCl="document_id" prCl="id"/>
+      </Fk>
+      <Fk deAc="3" nm="fk_study_documents_study" prLkCl="id" upAc="3">
+        <PrTb mn="0" nm="study" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="study_documents" oe="0" sch="public" zr="1"/>
+        <ClPr cdCl="study_id" prCl="id"/>
+      </Fk>
+      <UniqueConstraints/>
+      <SchTrHis/>
+    </Tbl>
+    <Tbl UsSo="1" nm="study_file">
+      <Cm>Tabel ce contine asocierile dintre studii si documente (implementeaza relatia many-to-many intre tabelele study si documents)</Cm>
+      <TblOpts>WITHOUT OIDS</TblOpts>
+      <Pk ClNs="study_id, file_id" nm="pkstudy_file"/>
+      <Cl au="0" df="nextval('study_file_study_id_seq'::regclass)" nm="study_id" nu="0">
+        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Codul studiului pentru care este stocat documentul specificat prin atributul document_id (refera atributul id din tabelul study)</Cm>
+      </Cl>
+      <Cl au="0" df="nextval('study_file_file_id_seq'::regclass)" nm="file_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul unui document care este asociat studiului identificat prin atributul study_id (refera atributul id din tabelul documents)</Cm>
       </Cl>
@@ -2694,13 +2887,13 @@
     </Tbl>
     <Tbl UsSo="1" nm="study_keyword">
       <Cm>Tabel ce stocheaza asocierile dintre studii si cuvintele cheie (implementeaza relatia many-to-many intre tabelele study si keyword)</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="study_id, keyword_id" nm="pkstudy_keyword"/>
-      <Cl au="0" df="" nm="study_id" nu="0">
+      <Cl au="0" df="nextval('study_keyword_study_id_seq'::regclass)" nm="study_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul studiului caruia ii este asociat cuvantul cheie referit prin atributul keyword_id</Cm>
       </Cl>
-      <Cl au="0" df="" nm="keyword_id" nu="0">
+      <Cl au="0" df="nextval('study_keyword_keyword_id_seq'::regclass)" nm="keyword_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Cuvantul cheie asociat studiului identificat prin atributul study_id</Cm>
       </Cl>
@@ -2727,21 +2920,21 @@
     </Tbl>
     <Tbl UsSo="1" nm="study_org">
       <Cm>Tabel ce stocheaza toate organizatiile care au legatura cu studiul: finantator, realizator, arhivar, etc. ( implementeaza relatia many-to-many intre studiu si organizatie)</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id" nm="pkstudy_org"/>
-      <Cl au="0" df="" nm="id" nu="0">
+      <Cl au="0" df="nextval('study_org_id_seq'::regclass)" nm="id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul asocierii dintre o organizatie si un studiu</Cm>
       </Cl>
-      <Cl au="0" df="" nm="org_id" nu="0">
+      <Cl au="0" df="nextval('study_org_org_id_seq'::regclass)" nm="org_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul organizatiei care se afla in relatia specificata prin atributul assoctype_id cu studiul identificat prin study_id (refera atributul id al tabelului org)</Cm>
       </Cl>
-      <Cl au="0" df="" nm="study_id" nu="0">
+      <Cl au="0" df="nextval('study_org_study_id_seq'::regclass)" nm="study_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul studiului care se afla in relatia specificata prin atributul assoctype_id cu organizatia identificata prin org_id (refera atributul id al tabelului study)</Cm>
       </Cl>
-      <Cl au="0" df="" nm="assoctype_id" nu="0">
+      <Cl au="0" df="nextval('study_org_assoctype_id_seq'::regclass)" nm="assoctype_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul tipului de asociere existent intre studiul identificat prin study_id si organizatia referita prin org_id (refera atributul id din tabelul study_org_assoc)</Cm>
       </Cl>
@@ -2769,13 +2962,13 @@
     </Tbl>
     <Tbl UsSo="1" nm="study_org_acl">
       <Cm>Tabel ce contine drepturile de acces asupra asocierilor dintre organizatii si studii</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="study_org_id, aro_id, aro_type" nm="pkstudy_org_acl"/>
-      <Cl au="0" df="" nm="study_org_id" nu="0">
+      <Cl au="0" df="nextval('study_org_acl_study_org_id_seq'::regclass)" nm="study_org_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul asocierii dintre o organizatie si un studiu (refera atributul id din tabelul study_org)</Cm>
       </Cl>
-      <Cl au="0" df="" nm="aro_id" nu="0">
+      <Cl au="0" df="nextval('study_org_acl_aro_id_seq'::regclass)" nm="aro_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul unui obiect care solicita drepturi de acces</Cm>
       </Cl>
@@ -2809,9 +3002,9 @@
     </Tbl>
     <Tbl UsSo="1" nm="study_org_assoc">
       <Cm>Tabel ce contine tipurile de asociere dintre studiu si organizatie (finantare, realizare etc.)</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id" nm="pkstudy_org_assoc"/>
-      <Cl au="0" df="" nm="id" nu="0">
+      <Cl au="0" df="nextval('study_org_assoc_id_seq'::regclass)" nm="id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul unei asocieri care poate exista intre un studiu si o organizatie</Cm>
       </Cl>
@@ -2828,21 +3021,21 @@
     </Tbl>
     <Tbl UsSo="1" nm="study_person">
       <Cm>Tabel ce contine asocierile dintre intre studiu si persoane: realizare, proiectare chestionar etc. (implementeaza relatia many-to-many intre tabelele person si study)</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id" nm="pkstudy_person"/>
-      <Cl au="0" df="" nm="id" nu="0">
+      <Cl au="0" df="nextval('study_person_id_seq'::regclass)" nm="id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul asocierii intre o persoana si un studiu</Cm>
       </Cl>
-      <Cl au="0" df="" nm="person_id" nu="0">
+      <Cl au="0" df="nextval('study_person_person_id_seq'::regclass)" nm="person_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul persoanei care este in relatia specificata prin atributul asoctype_id cu studiul referit prin atributul study_id (refera atributul id din tabelul person)</Cm>
       </Cl>
-      <Cl au="0" df="" nm="study_id" nu="0">
+      <Cl au="0" df="nextval('study_person_study_id_seq'::regclass)" nm="study_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul studiului aflat in relatia identificata prin asoctype_id cu persoana referita prin atributul person_id (refera atributul id din tabelul study)</Cm>
       </Cl>
-      <Cl au="0" df="" nm="assoctype_id" nu="0">
+      <Cl au="0" df="nextval('study_person_assoctype_id_seq'::regclass)" nm="assoctype_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul tipului de asociere existent intre persoana identificata prin atributul person_id si studiul referit prin atributul study_id</Cm>
       </Cl>
@@ -2866,13 +3059,13 @@
     </Tbl>
     <Tbl UsSo="1" nm="study_person_acl">
       <Cm>Tabel ce contine drepturile de acces asupra asocierilor dintre persoanelor si studii</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="study_person_id, aro_id, aro_type" nm="pkstudy_person_acl"/>
-      <Cl au="0" df="" nm="study_person_id" nu="0">
+      <Cl au="0" df="nextval('study_person_acl_study_person_id_seq'::regclass)" nm="study_person_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul unei asocieri intre un studiu si o persoana (refera atributul id din tabelul study_person)</Cm>
       </Cl>
-      <Cl au="0" df="" nm="aro_id" nu="0">
+      <Cl au="0" df="nextval('study_person_acl_aro_id_seq'::regclass)" nm="aro_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul unui obiect care solicita drepturi de acces</Cm>
       </Cl>
@@ -2904,11 +3097,30 @@
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
+    <Tbl UsSo="1" nm="study_person_asoc">
+      <Cm>Tabel ce contine tipurile de asocieri intre studiu si persoane</Cm>
+      <TblOpts>WITHOUT OIDS</TblOpts>
+      <Pk ClNs="id" nm="pkstudy_person_asoc"/>
+      <Cl au="0" df="" nm="id" nu="0">
+        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Codul unei asocieri care poate exista intre un studiu si o persoana</Cm>
+      </Cl>
+      <Cl au="0" df="" nm="asoc_name" nu="0">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="100" sc="null" sg="1" un="0"/>
+        <Cm>Numele unei asocieri care poate exista intre un studiu si o persoana</Cm>
+      </Cl>
+      <Cl au="0" df="" nm="asoc_description" nu="1">
+        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Descrierea asocierii</Cm>
+      </Cl>
+      <UniqueConstraints/>
+      <SchTrHis/>
+    </Tbl>
     <Tbl UsSo="1" nm="study_person_assoc">
       <Cm>Tabel ce contine tipurile de asocieri care pot exista intre studiu si persoane</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id" nm="pkstudy_person_assoc"/>
-      <Cl au="0" df="" nm="id" nu="0">
+      <Cl au="0" df="nextval('study_person_assoc_id_seq'::regclass)" nm="id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul unei asocieri care poate exista intre un studiu si o persoana</Cm>
       </Cl>
@@ -2925,13 +3137,13 @@
     </Tbl>
     <Tbl UsSo="1" nm="study_topic">
       <Cm>Tabel ce stocheaza asocierile dintre studii si topic-uri (implementeaza relatia many-to-many intre tabelele study si topic)</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="study_id, topic_id" nm="pkstudy_topic"/>
-      <Cl au="0" df="" nm="study_id" nu="0">
+      <Cl au="0" df="nextval('study_topic_study_id_seq'::regclass)" nm="study_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul studiului caruia ii este asociat topic-ul referit prin atributul topic_id</Cm>
       </Cl>
-      <Cl au="0" df="" nm="topic_id" nu="0">
+      <Cl au="0" df="nextval('study_topic_topic_id_seq'::regclass)" nm="topic_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul unui topic asociat studiului identificat prin atributul study_id</Cm>
       </Cl>
@@ -2950,9 +3162,9 @@
     </Tbl>
     <Tbl UsSo="1" nm="suffix">
       <Cm>Tabel ce contine sufixele care pot fi adaugate numelor persoanelor</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id" nm="pksuffix"/>
-      <Cl au="1" df="" nm="id" nu="0">
+      <Cl au="0" df="nextval('suffix_id_seq'::regclass)" nm="id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul sufixului</Cm>
       </Cl>
@@ -2965,9 +3177,9 @@
     </Tbl>
     <Tbl UsSo="1" nm="time_meth_type">
       <Cm>Tabel ce contine tipurile de metode temporale</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id" nm="pktime_meth_type"/>
-      <Cl au="0" df="" nm="id" nu="0">
+      <Cl au="0" df="nextval('time_meth_type_id_seq'::regclass)" nm="id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul tipului de metoda temporala</Cm>
       </Cl>
@@ -2980,9 +3192,9 @@
     </Tbl>
     <Tbl UsSo="1" nm="title_type">
       <Cm>Tabel ce stocheaza tipurile titlurilor din baza de date</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id" nm="pktitle_type"/>
-      <Cl au="0" df="" nm="id" nu="0">
+      <Cl au="0" df="nextval('title_type_id_seq'::regclass)" nm="id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul tipului titlului</Cm>
       </Cl>
@@ -2995,9 +3207,9 @@
     </Tbl>
     <Tbl UsSo="1" nm="topic">
       <Cm>Tabel ce contine topic-urile ce pot fi asociate unei instante sau unui studiu</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id" nm="pktopic"/>
-      <Cl au="0" df="" nm="id" nu="0">
+      <Cl au="0" df="nextval('topic_id_seq'::regclass)" nm="id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul unui topic ce poate fi asociat unui studiu sau unei instante </Cm>
       </Cl>
@@ -3022,13 +3234,13 @@
     </Tbl>
     <Tbl UsSo="1" nm="translated_topic">
       <Cm>Tabel ce contine traducerile anumitor topic-uri din baza de date (implementeaza relatia many-to-many intre tabelele topic si language)</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="lang_id, topic_id" nm="pktranslated_topic"/>
       <Cl au="0" df="" nm="lang_id" nu="0">
         <DT arr="0" ds="Char" en="" id="1" ln="2" sc="null" sg="1" un="0"/>
         <Cm>Codul limbii in care este tradus topic-ul referit prin atributul topic_id (refera atributul id din tabelul language)</Cm>
       </Cl>
-      <Cl au="0" df="" nm="topic_id" nu="0">
+      <Cl au="0" df="nextval('translated_topic_topic_id_seq'::regclass)" nm="topic_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul topic-ului pentru care exista o traducere in limba identificata prin atributul language_id (refera atributul id din tabelul topic)</Cm>
       </Cl>
@@ -3051,9 +3263,9 @@
     </Tbl>
     <Tbl UsSo="1" nm="unit_analysis">
       <Cm>Tabel care stocheaza tipurile de unitati de analiza (individ, gospodarie, etc) ale instantelor</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id" nm="pkunit_analysis"/>
-      <Cl au="0" df="" nm="id" nu="0">
+      <Cl au="0" df="nextval('unit_analysis_id_seq'::regclass)" nm="id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul unitatii de analiza</Cm>
       </Cl>
@@ -3070,9 +3282,9 @@
     </Tbl>
     <Tbl UsSo="1" nm="user">
       <Cm>Tabel ce contine utilizatorii aplicatiei</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id" nm="pkuser"/>
-      <Cl au="0" df="" nm="id" nu="0">
+      <Cl au="0" df="nextval('user_id_seq'::regclass)" nm="id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul utilizatorului aplicatiei</Cm>
       </Cl>
@@ -3085,9 +3297,9 @@
     </Tbl>
     <Tbl UsSo="1" nm="user_auth_log">
       <Cm>Tabel ce stocheaza log-ul corespunzator procesului de autentificare a utilizatorilor</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="user_id, timestamp" nm="pkuser_auth_log"/>
-      <Cl au="0" df="" nm="user_id" nu="0">
+      <Cl au="0" df="nextval('user_auth_log_user_id_seq'::regclass)" nm="user_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul utilizatorului care a incercat sa se autentifice</Cm>
       </Cl>
@@ -3121,9 +3333,9 @@
     </Tbl>
     <Tbl UsSo="1" nm="user_message">
       <Cm>Tabel care stocheaza mesajele trimise catre utilizatori</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id" nm="pkuser_message"/>
-      <Cl au="1" df="" nm="id" nu="0">
+      <Cl au="0" df="nextval('user_message_id_seq'::regclass)" nm="id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul mesajului trimis de catre utilizatorul referit prin atributul user_id</Cm>
       </Cl>
@@ -3131,11 +3343,11 @@
         <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Textul mesajului trimis de catre utilizatorul referit prin atributul user_id</Cm>
       </Cl>
-      <Cl au="0" df="" nm="from_user_id" nu="0">
+      <Cl au="0" df="nextval('user_message_from_user_id_seq'::regclass)" nm="from_user_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul utilizatorului care transmite mesajul (refera atributul id din tabelul users)</Cm>
       </Cl>
-      <Cl au="0" df="" nm="to_user_id" nu="0">
+      <Cl au="0" df="nextval('user_message_to_user_id_seq'::regclass)" nm="to_user_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul utilizatorului caruia ii este transmis mesajul (refera atributul id din tabelul users)</Cm>
       </Cl>
@@ -3154,9 +3366,9 @@
     </Tbl>
     <Tbl UsSo="1" nm="user_profile">
       <Cm>Tabel ce stocheaza profilurile utilizatorilor aplicatiei</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="user_id" nm="pkuser_profile"/>
-      <Cl au="0" df="" nm="user_id" nu="0">
+      <Cl au="0" df="nextval('user_profile_user_id_seq'::regclass)" nm="user_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul utilizatorului</Cm>
       </Cl>
@@ -3182,13 +3394,13 @@
     </Tbl>
     <Tbl UsSo="1" nm="user_role">
       <Cm>Tabel ce stocheaza asocierile dintre utilizatori si role-uri</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="role_id, user_id" nm="pkuser_role"/>
-      <Cl au="0" df="" nm="user_id" nu="0">
+      <Cl au="0" df="nextval('user_role_user_id_seq'::regclass)" nm="user_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul utilizatorului asociat role-ului referit prin atributul role_id</Cm>
       </Cl>
-      <Cl au="0" df="" nm="role_id" nu="0">
+      <Cl au="0" df="nextval('user_role_role_id_seq'::regclass)" nm="role_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul role-ului corespunzator utilizatorului referit prin user_id</Cm>
       </Cl>
@@ -3207,9 +3419,9 @@
     </Tbl>
     <Tbl UsSo="1" nm="user_setting">
       <Cm>Tabel care stocheaza setarile pentru utilizatori</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id" nm="pkuser_setting"/>
-      <Cl au="0" df="" nm="id" nu="0">
+      <Cl au="0" df="nextval('user_setting_id_seq'::regclass)" nm="id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul unei setari asociate utilizatorilor</Cm>
       </Cl>
@@ -3243,9 +3455,9 @@
     </Tbl>
     <Tbl UsSo="1" nm="user_setting_group">
       <Cm>Tabel care stocheaza grupurile de setari pentru utilizatori</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id" nm="pkuser_setting_group"/>
-      <Cl au="1" df="" nm="id" nu="0">
+      <Cl au="0" df="nextval('user_setting_group_id_seq'::regclass)" nm="id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul grupului de setari</Cm>
       </Cl>
@@ -3262,13 +3474,13 @@
     </Tbl>
     <Tbl UsSo="1" nm="user_setting_value">
       <Cm>Tabel care stocheaza valorile setarilor utilizatorului</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="user_setting_id, user_id" nm="pkuser_setting_value"/>
-      <Cl au="0" df="" nm="user_setting_id" nu="0">
+      <Cl au="0" df="nextval('user_setting_value_user_setting_id_seq'::regclass)" nm="user_setting_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul setarii corespunzatoare unui utilizator (refera atributul id al tabelului user_settings)</Cm>
       </Cl>
-      <Cl au="0" df="" nm="user_id" nu="0">
+      <Cl au="0" df="nextval('user_setting_value_user_id_seq'::regclass)" nm="user_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul utilizatorului caruia ii apartine setarea (refera atributul id al tabelului users)</Cm>
       </Cl>
@@ -3291,15 +3503,14 @@
     </Tbl>
     <Tbl UsSo="1" nm="value">
       <Cm>Tabel ce stocheaza valorile posibile ale item-urilor variabilelor de selectie</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="item_id" nm="pkvalue"/>
-      <Cl au="0" df="" nm="item_id" nu="0">
+      <Cl au="0" df="nextval('value_item_id_seq'::regclass)" nm="item_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul elementului unei variabile de selectie</Cm>
       </Cl>
       <Cl au="0" df="" nm="value" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
-        <Cm>Valoarea asociata elementului referit prin atributul item_id</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_value_item" prLkCl="id" upAc="3">
         <PrTb mn="0" nm="item" oe="1" sch="public" zr="0"/>
@@ -3311,9 +3522,9 @@
     </Tbl>
     <Tbl UsSo="1" nm="vargroup">
       <Cm>Tabel pentru definirea gruparilor de variabile (pentru o organizare mai buna a lor)</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id" nm="pkvargroup"/>
-      <Cl au="1" df="" nm="id" nu="0">
+      <Cl au="0" df="nextval('vargroup_id_seq'::regclass)" nm="id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Identificatorul</Cm>
       </Cl>
@@ -3326,13 +3537,13 @@
     </Tbl>
     <Tbl UsSo="1" nm="variable">
       <Cm>Tabel care stocheaza variabilele din cadrul instantelor</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id" nm="pkvariable"/>
-      <Cl au="0" df="" nm="instance_id" nu="0">
+      <Cl au="0" df="nextval('variable_instance_id_seq'::regclass)" nm="instance_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul instantei in care este definita variabila</Cm>
       </Cl>
-      <Cl au="1" df="" nm="id" nu="0">
+      <Cl au="0" df="nextval('variable_id_seq'::regclass)" nm="id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul variabilei in cadrul instantei</Cm>
       </Cl>
@@ -3381,15 +3592,30 @@
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
+    <Tbl UsSo="1" nm="variable_group">
+      <Cm>Tabel pentru definirea gruparilor de variabile (pentru o organizare mai buna a lor)</Cm>
+      <TblOpts>WITHOUT OIDS</TblOpts>
+      <Pk ClNs="id" nm="pkvariable_group"/>
+      <Cl au="0" df="" nm="id" nu="0">
+        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Identificatorul</Cm>
+      </Cl>
+      <Cl au="0" df="" nm="name" nu="0">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="100" sc="null" sg="1" un="0"/>
+        <Cm>Denumirea grupului</Cm>
+      </Cl>
+      <UniqueConstraints/>
+      <SchTrHis/>
+    </Tbl>
     <Tbl UsSo="1" nm="variable_vargroup">
       <Cm>Tabel ce asociaza variabile unor grupuri in cadrul instantelor</Cm>
-      <TblOpts/>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="vargroup_id, variable_id" nm="pkvariable_vargroup"/>
-      <Cl au="0" df="" nm="variable_id" nu="0">
+      <Cl au="0" df="nextval('variable_vargroup_variable_id_seq'::regclass)" nm="variable_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul variabilei in cadrul instantei instance_id</Cm>
       </Cl>
-      <Cl au="0" df="" nm="vargroup_id" nu="0">
+      <Cl au="0" df="nextval('variable_vargroup_vargroup_id_seq'::regclass)" nm="vargroup_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul grupului caruia ii apartine variabila variable_id din instanta instance_id</Cm>
       </Cl>
@@ -3406,10 +3632,201 @@
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
+    <Seq incr="1" nm="acl_class_id_seq"/>
+    <Seq incr="1" nm="acl_entry_id_seq"/>
+    <Seq incr="1" nm="acl_entry_sid_seq"/>
+    <Seq incr="1" nm="acl_object_identity_id_seq"/>
+    <Seq incr="1" nm="acl_object_identity_owner_sid_seq"/>
+    <Seq incr="1" nm="acl_sid_id_seq"/>
+    <Seq incr="1" nm="address_city_id_seq"/>
+    <Seq incr="1" nm="address_country_id_seq"/>
+    <Seq incr="1" nm="address_id_seq"/>
+    <Seq incr="1" nm="audit_field_audit_id_seq"/>
+    <Seq incr="1" nm="audit_field_id_seq"/>
+    <Seq incr="1" nm="audit_id_seq"/>
+    <Seq incr="1" nm="audit_row_id_audit_id_seq"/>
+    <Seq incr="1" nm="audit_row_id_id_seq"/>
+    <Seq incr="1" nm="audit_user_id_seq"/>
+    <Seq incr="1" nm="auth_data_user_id_seq"/>
+    <Seq incr="1" nm="catalog_acl_aro_id_seq"/>
+    <Seq incr="1" nm="catalog_acl_catalog_id_seq"/>
+    <Seq incr="1" nm="catalog_id_seq"/>
+    <Seq incr="1" nm="catalog_study_catalog_id_seq"/>
+    <Seq incr="1" nm="catalog_study_study_id_seq"/>
+    <Seq incr="1" nm="city_id_seq"/>
+    <Seq incr="1" nm="cms_file_folder_id_seq"/>
+    <Seq incr="1" nm="cms_file_id_seq"/>
+    <Seq incr="1" nm="cms_folder_id_seq"/>
+    <Seq incr="1" nm="cms_layout_group_id_seq"/>
+    <Seq incr="1" nm="cms_layout_id_seq"/>
+    <Seq incr="1" nm="cms_page_content_id_seq"/>
+    <Seq incr="1" nm="cms_page_id_seq"/>
+    <Seq incr="1" nm="cms_snippet_group_id_seq"/>
+    <Seq incr="1" nm="cms_snippet_id_seq"/>
+    <Seq incr="1" nm="collection_model_type_id_seq"/>
+    <Seq incr="1" nm="concept_id_seq"/>
+    <Seq incr="1" nm="concept_variable_concept_id_seq"/>
+    <Seq incr="1" nm="concept_variable_variable_id_seq"/>
+    <Seq incr="1" nm="email_id_seq"/>
+    <Seq incr="1" nm="file_acl_aro_id_seq"/>
+    <Seq incr="1" nm="file_acl_document_id_seq"/>
+    <Seq incr="1" nm="file_id_seq"/>
+    <Seq incr="1" nm="filetype_id_seq"/>
+    <Seq incr="1" nm="form_edited_number_var_form_id_seq"/>
+    <Seq incr="1" nm="form_edited_number_var_variable_id_seq"/>
+    <Seq incr="1" nm="form_edited_text_var_form_id_seq"/>
+    <Seq incr="1" nm="form_edited_text_var_variable_id_seq"/>
+    <Seq incr="1" nm="form_id_seq"/>
+    <Seq incr="1" nm="form_instance_id_seq"/>
+    <Seq incr="1" nm="form_operator_id_seq"/>
+    <Seq incr="1" nm="form_selection_var_form_id_seq"/>
+    <Seq incr="1" nm="form_selection_var_item_id_seq"/>
+    <Seq incr="1" nm="form_selection_var_variable_id_seq"/>
+    <Seq incr="1" nm="frequency_item_id_seq"/>
+    <Seq incr="1" nm="frequency_variable_id_seq"/>
+    <Seq incr="1" nm="instance_acl_aro_id_seq"/>
+    <Seq incr="1" nm="instance_acl_instance_id_seq"/>
+    <Seq incr="1" nm="instance_descr_instance_id_seq"/>
+    <Seq incr="1" nm="instance_documents_document_id_seq"/>
+    <Seq incr="1" nm="instance_documents_instance_id_seq"/>
+    <Seq incr="1" nm="instance_id_seq"/>
+    <Seq incr="1" nm="instance_keyword_instance_id_seq"/>
+    <Seq incr="1" nm="instance_keyword_keyword_id_seq"/>
+    <Seq incr="1" nm="instance_org_assoc_id_seq"/>
+    <Seq incr="1" nm="instance_org_assoc_type_id_seq"/>
+    <Seq incr="1" nm="instance_org_instance_id_seq"/>
+    <Seq incr="1" nm="instance_org_org_id_seq"/>
+    <Seq incr="1" nm="instance_person_assoc_id_seq"/>
+    <Seq incr="1" nm="instance_person_assoc_type_id_seq"/>
+    <Seq incr="1" nm="instance_person_instance_id_seq"/>
+    <Seq incr="1" nm="instance_person_person_id_seq"/>
+    <Seq incr="1" nm="instance_study_id_seq"/>
+    <Seq incr="1" nm="instance_topic_instance_id_seq"/>
+    <Seq incr="1" nm="instance_topic_topic_id_seq"/>
+    <Seq incr="1" nm="instance_unit_analysis_id_seq"/>
+    <Seq incr="1" nm="internet_id_seq"/>
+    <Seq incr="1" nm="item_id_seq"/>
+    <Seq incr="1" nm="keyword_id_seq"/>
+    <Seq incr="1" nm="meth_coll_type_collection_model_id_seq"/>
+    <Seq incr="1" nm="meth_coll_type_instance_id_seq"/>
+    <Seq incr="1" nm="methodology_instance_id_seq"/>
+    <Seq incr="1" nm="methodology_time_meth_id_seq"/>
+    <Seq incr="1" nm="news_id_seq"/>
+    <Seq incr="1" nm="org_address_address_id_seq"/>
+    <Seq incr="1" nm="org_address_org_id_seq"/>
+    <Seq incr="1" nm="org_email_email_id_seq"/>
+    <Seq incr="1" nm="org_email_org_id_seq"/>
+    <Seq incr="1" nm="org_id_seq"/>
+    <Seq incr="1" nm="org_internet_internet_id_seq"/>
+    <Seq incr="1" nm="org_internet_org_id_seq"/>
+    <Seq incr="1" nm="org_phone_org_id_seq"/>
+    <Seq incr="1" nm="org_phone_phone_id_seq"/>
+    <Seq incr="1" nm="org_prefix_id_seq"/>
+    <Seq incr="1" nm="org_relation_type_id_seq"/>
+    <Seq incr="1" nm="org_relations_org_1_id_seq"/>
+    <Seq incr="1" nm="org_relations_org_2_id_seq"/>
+    <Seq incr="1" nm="org_relations_org_relation_type_id_seq"/>
+    <Seq incr="1" nm="org_sufix_id_seq"/>
+    <Seq incr="1" nm="other_statistic_variable_id_seq"/>
+    <Seq incr="1" nm="person_address_address_id_seq"/>
+    <Seq incr="1" nm="person_address_person_id_seq"/>
+    <Seq incr="1" nm="person_email_email_id_seq"/>
+    <Seq incr="1" nm="person_email_person_id_seq"/>
+    <Seq incr="1" nm="person_id_seq"/>
+    <Seq incr="1" nm="person_internet_internet_id_seq"/>
+    <Seq incr="1" nm="person_internet_person_id_seq"/>
+    <Seq incr="1" nm="person_links_id_seq"/>
+    <Seq incr="1" nm="person_links_person_id_seq"/>
+    <Seq incr="1" nm="person_links_user_id_seq"/>
+    <Seq incr="1" nm="person_org_org_id_seq"/>
+    <Seq incr="1" nm="person_org_person_id_seq"/>
+    <Seq incr="1" nm="person_phone_person_id_seq"/>
+    <Seq incr="1" nm="person_phone_phone_id_seq"/>
+    <Seq incr="1" nm="person_role_id_seq"/>
+    <Seq incr="1" nm="phone_id_seq"/>
+    <Seq incr="1" nm="prefix_id_seq"/>
+    <Seq incr="1" nm="region_city_city_id_seq"/>
+    <Seq incr="1" nm="region_city_region_id_seq"/>
+    <Seq incr="1" nm="region_id_seq"/>
+    <Seq incr="1" nm="region_regiontype_id_seq"/>
+    <Seq incr="1" nm="regiontype_id_seq"/>
+    <Seq incr="1" nm="role_id_seq"/>
+    <Seq incr="1" nm="scale_item_id_seq"/>
+    <Seq incr="1" nm="selection_variable_item_item_id_seq"/>
+    <Seq incr="1" nm="selection_variable_item_variable_id_seq"/>
+    <Seq incr="1" nm="selection_variable_variable_id_seq"/>
+    <Seq incr="1" nm="setting_group_id_seq"/>
+    <Seq incr="1" nm="setting_id_seq"/>
+    <Seq incr="1" nm="setting_value_setting_id_seq"/>
+    <Seq incr="1" nm="skip_id_seq"/>
+    <Seq incr="1" nm="skip_next_variable_id_seq"/>
+    <Seq incr="1" nm="skip_variable_id_seq"/>
+    <Seq incr="1" nm="source_org_id_seq"/>
+    <Seq incr="1" nm="source_sourcetype_id_seq"/>
+    <Seq incr="1" nm="sourcestudy_id_seq"/>
+    <Seq incr="1" nm="sourcestudy_org_id_seq"/>
+    <Seq incr="1" nm="sourcestudy_type_history_id_seq"/>
+    <Seq incr="1" nm="sourcestudy_type_history_sourcesstudy_id_seq"/>
+    <Seq incr="1" nm="sourcestudy_type_history_sourcestudy_type_id_seq"/>
+    <Seq incr="1" nm="sourcestudy_type_id_seq"/>
+    <Seq incr="1" nm="sourcetype_history_id_seq"/>
+    <Seq incr="1" nm="sourcetype_history_org_id_seq"/>
+    <Seq incr="1" nm="sourcetype_history_sourcetype_id_seq"/>
+    <Seq incr="1" nm="sourcetype_id_seq"/>
+    <Seq incr="1" nm="study_acl_aro_id_seq"/>
+    <Seq incr="1" nm="study_acl_study_id_seq"/>
+    <Seq incr="1" nm="study_descr_id_seq"/>
+    <Seq incr="1" nm="study_descr_study_id_seq"/>
+    <Seq incr="1" nm="study_descr_title_type_id_seq"/>
+    <Seq incr="1" nm="study_file_file_id_seq"/>
+    <Seq incr="1" nm="study_file_study_id_seq"/>
+    <Seq incr="1" nm="study_id_seq"/>
+    <Seq incr="1" nm="study_keyword_keyword_id_seq"/>
+    <Seq incr="1" nm="study_keyword_study_id_seq"/>
+    <Seq incr="1" nm="study_org_acl_aro_id_seq"/>
+    <Seq incr="1" nm="study_org_acl_study_org_id_seq"/>
+    <Seq incr="1" nm="study_org_assoc_id_seq"/>
+    <Seq incr="1" nm="study_org_assoctype_id_seq"/>
+    <Seq incr="1" nm="study_org_id_seq"/>
+    <Seq incr="1" nm="study_org_org_id_seq"/>
+    <Seq incr="1" nm="study_org_study_id_seq"/>
+    <Seq incr="1" nm="study_person_acl_aro_id_seq"/>
+    <Seq incr="1" nm="study_person_acl_study_person_id_seq"/>
+    <Seq incr="1" nm="study_person_assoc_id_seq"/>
+    <Seq incr="1" nm="study_person_assoctype_id_seq"/>
+    <Seq incr="1" nm="study_person_id_seq"/>
+    <Seq incr="1" nm="study_person_person_id_seq"/>
+    <Seq incr="1" nm="study_person_study_id_seq"/>
+    <Seq incr="1" nm="study_topic_study_id_seq"/>
+    <Seq incr="1" nm="study_topic_topic_id_seq"/>
+    <Seq incr="1" nm="suffix_id_seq"/>
+    <Seq incr="1" nm="time_meth_type_id_seq"/>
+    <Seq incr="1" nm="title_type_id_seq"/>
+    <Seq incr="1" nm="topic_id_seq"/>
+    <Seq incr="1" nm="translated_topic_topic_id_seq"/>
+    <Seq incr="1" nm="unit_analysis_id_seq"/>
+    <Seq incr="1" nm="user_auth_log_user_id_seq"/>
+    <Seq incr="1" nm="user_id_seq"/>
+    <Seq incr="1" nm="user_message_from_user_id_seq"/>
+    <Seq incr="1" nm="user_message_id_seq"/>
+    <Seq incr="1" nm="user_message_to_user_id_seq"/>
+    <Seq incr="1" nm="user_profile_user_id_seq"/>
+    <Seq incr="1" nm="user_role_role_id_seq"/>
+    <Seq incr="1" nm="user_role_user_id_seq"/>
+    <Seq incr="1" nm="user_setting_group_id_seq"/>
+    <Seq incr="1" nm="user_setting_id_seq"/>
+    <Seq incr="1" nm="user_setting_value_user_id_seq"/>
+    <Seq incr="1" nm="user_setting_value_user_setting_id_seq"/>
+    <Seq incr="1" nm="value_item_id_seq"/>
+    <Seq incr="1" nm="vargroup_id_seq"/>
+    <Seq incr="1" nm="variable_id_seq"/>
+    <Seq incr="1" nm="variable_instance_id_seq"/>
+    <Seq incr="1" nm="variable_vargroup_vargroup_id_seq"/>
+    <Seq incr="1" nm="variable_vargroup_variable_id_seq"/>
     <CustomTypes/>
   </Sch>
   <Dgm nm="diagram">
-    <RnCf ClkAct="true" FtSz="10" lkStgy="OffsetDirect" zm="1.0">
+    <RnCf ClkAct="true" FtSz="10" lkStgy="OffsetDirect" zm="0.5">
       <VbCfg>
         <Fg ky="Auto Number" vl="0"/>
         <Fg ky="Check" vl="0"/>
@@ -4385,15 +4802,14 @@
     </BasicOptionMgr>
   </DbDocOptionMgr>
   <OpenEditors>
-    <OpenEditor ClsNm="Diagram" fqn="null.diagram" selected="1"/>
+    <OpenEditor ClsNm="Diagram" fqn="null.diagram" selected="0"/>
   </OpenEditors>
   <TreePaths>
     <TreePath/>
     <TreePath>/Schemas (1)</TreePath>
     <TreePath>/Schemas (1)/public</TreePath>
-    <TreePath>/Schemas (1)/public/Tables (118)</TreePath>
-    <TreePath>/Schemas (1)/public/Procedures (0)</TreePath>
-    <TreePath>/Schemas (1)/public/Sequences (0)</TreePath>
+    <TreePath>/Schemas (1)/public/Tables (126)</TreePath>
+    <TreePath>/Schemas (1)/public/Sequences (191)</TreePath>
     <TreePath>/Diagrams (1)</TreePath>
   </TreePaths>
 </Db>

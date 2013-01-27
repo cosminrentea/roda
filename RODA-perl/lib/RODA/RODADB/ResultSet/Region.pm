@@ -121,7 +121,7 @@ sub checkregion {
             $countryid = $params{country_id};
         }
         if ( $params{region_type_name} && $params{region_type_name} ne '' ) {
-            my $regtypers = $self->result_source->schema()->resultset('RegionType')->search( { name => lc( $params{region_type_name} ) } )->single;
+            my $regtypers = $self->result_source->schema()->resultset('Regiontype')->search( { name => lc( $params{region_type_name} ) } )->single;
             if ($regtypers) {
                 $regtypeid = $regtypers->id;
             } else {
@@ -146,8 +146,8 @@ sub checkregion {
                                       {
                                         name        => lc( $params{name} ),
                                         region_code => $region_code,
-                                        rcode_name  => $region_code_name,
-                                        rtype_id    => $regtypeid,
+                                        region_code_name  => $region_code_name,
+                                        regiontype_id    => $regtypeid,
                                         country_id  => $countryid,
                                       }
         );

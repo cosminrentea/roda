@@ -38,20 +38,31 @@ __PACKAGE__->table("city");
 
 =head1 ACCESSORS
 
+=head2 id
+
+  data_type: 'integer'
+  is_auto_increment: 1
+  is_nullable: 0
+  sequence: 'city_id_seq'
+
+Codul orasului
+
 =head2 name
 
   data_type: 'varchar'
   is_nullable: 0
   size: 100
 
+Numele orasului
+
 =head2 country_id
 
   data_type: 'char'
   is_foreign_key: 1
-  is_nullable: 1
+  is_nullable: 0
   size: 2
 
-Numele orasului
+Codul tarii in care se afla orasul (refera atributul id al tabelului country)
 
 =head2 city_code
 
@@ -59,11 +70,17 @@ Numele orasului
   is_nullable: 1
   size: 50
 
-=head2 ccode_name
+=head2 city_code_name
 
   data_type: 'varchar'
   is_nullable: 1
-  size: 50
+  size: 100
+
+=head2 city_code_sup
+
+  data_type: 'varchar'
+  is_nullable: 1
+  size: 100
 
 =head2 prefix
 
@@ -77,44 +94,15 @@ Numele orasului
   is_nullable: 1
   size: 50
 
-=head2 ctype_system
+=head2 city_type_system
 
   data_type: 'varchar'
   is_nullable: 1
-  size: 20
-
-=head2 city_code_sup
-
-  data_type: 'varchar'
-  is_nullable: 1
-  size: 20
-
-=head2 id
-
-  data_type: 'integer'
-  is_auto_increment: 1
-  is_nullable: 0
-  sequence: 'city_id_seq'
+  size: 50
 
 =cut
 
 __PACKAGE__->add_columns(
-  "name",
-  { data_type => "varchar", is_nullable => 0, size => 100 },
-  "country_id",
-  { data_type => "char", is_foreign_key => 1, is_nullable => 1, size => 2 },
-  "city_code",
-  { data_type => "varchar", is_nullable => 1, size => 50 },
-  "ccode_name",
-  { data_type => "varchar", is_nullable => 1, size => 50 },
-  "prefix",
-  { data_type => "varchar", is_nullable => 1, size => 50 },
-  "city_type",
-  { data_type => "varchar", is_nullable => 1, size => 50 },
-  "ctype_system",
-  { data_type => "varchar", is_nullable => 1, size => 20 },
-  "city_code_sup",
-  { data_type => "varchar", is_nullable => 1, size => 20 },
   "id",
   {
     data_type         => "integer",
@@ -122,6 +110,22 @@ __PACKAGE__->add_columns(
     is_nullable       => 0,
     sequence          => "city_id_seq",
   },
+  "name",
+  { data_type => "varchar", is_nullable => 0, size => 100 },
+  "country_id",
+  { data_type => "char", is_foreign_key => 1, is_nullable => 0, size => 2 },
+  "city_code",
+  { data_type => "varchar", is_nullable => 1, size => 50 },
+  "city_code_name",
+  { data_type => "varchar", is_nullable => 1, size => 100 },
+  "city_code_sup",
+  { data_type => "varchar", is_nullable => 1, size => 100 },
+  "prefix",
+  { data_type => "varchar", is_nullable => 1, size => 50 },
+  "city_type",
+  { data_type => "varchar", is_nullable => 1, size => 50 },
+  "city_type_system",
+  { data_type => "varchar", is_nullable => 1, size => 50 },
 );
 
 =head1 PRIMARY KEY
@@ -165,12 +169,7 @@ __PACKAGE__->belongs_to(
   "country",
   "RODA::RODADB::Result::Country",
   { id => "country_id" },
-  {
-    is_deferrable => 1,
-    join_type     => "LEFT",
-    on_delete     => "CASCADE",
-    on_update     => "CASCADE",
-  },
+  { is_deferrable => 0, on_delete => "NO ACTION", on_update => "NO ACTION" },
 );
 
 =head2 region_cities
@@ -188,9 +187,19 @@ __PACKAGE__->has_many(
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
+=head2 regions
 
-# Created by DBIx::Class::Schema::Loader v0.07012 @ 2013-01-06 02:26:05
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:VZkVJH1oDtwoQo3lbQEh3A
+Type: many_to_many
+
+Composing rels: L</region_cities> -> region
+
+=cut
+
+__PACKAGE__->many_to_many("regions", "region_cities", "region");
+
+
+# Created by DBIx::Class::Schema::Loader v0.07033 @ 2013-01-27 16:35:03
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:26TTyydW92crtBnCJirBOw
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

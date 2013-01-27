@@ -202,7 +202,7 @@ __PACKAGE__->has_many(
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
 __PACKAGE__->meta->make_immutable;
 
-__PACKAGE__->has_many( "emails", "RODA::RODADB::Result::Email", { "foreign.entity_id" => "self.id" }, { where => { "me.entity_type" => "1" } } );
+__PACKAGE__->has_many( "emails", "RODA::RODADB::Result::Email", { "foreign.entity_id" => "self.id" }, { where => { "emails.entity_type" => "1" } } );
 
 
 sub attach_addresses {

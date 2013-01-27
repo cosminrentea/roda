@@ -8,7 +8,8 @@ use Text::CSV::Auto;
 use Encode qw(decode);
 use Data::Dumper;
 use Try::Tiny;
-my $schema = RODA::RODADB->connect( 'dbi:Pg:dbname=roda;host=193.228.153.170', 'roda2012', '2012roda', { pg_enable_utf8 => 1 } );
+my $schema = RODA::RODADB->connect( 'dbi:Pg:dbname=roda-devel;host=193.228.153.170', 'roda2012', '2012roda', { pg_enable_utf8 => 1 } );
+
 $schema->storage->debug(1);
 
 my %moi = (fname => 'Sorin',

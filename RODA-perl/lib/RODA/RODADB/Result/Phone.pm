@@ -6,7 +6,7 @@ package RODA::RODADB::Result::Phone;
 
 =head1 NAME
 
-RODA::RODADB::Result::Phone - Tabel ce contine toate numerele de telefon ale entitatilor din baza de date
+RODA::RODADB::Result::Phone
 
 =cut
 
@@ -30,75 +30,68 @@ extends 'DBIx::Class::Core';
 
 __PACKAGE__->load_components("InflateColumn::DateTime");
 
-=head1 TABLE: C<phones>
+=head1 TABLE: C<phone>
 
 =cut
 
-__PACKAGE__->table("phones");
+__PACKAGE__->table("phone");
 
 =head1 ACCESSORS
 
 =head2 id
 
   data_type: 'integer'
+  is_auto_increment: 1
   is_nullable: 0
-
-Codul numarului de telefon in tabel
+  sequence: 'phone_id_seq'
 
 =head2 phone
 
   data_type: 'varchar'
   is_nullable: 0
-  size: 50
-
-Sirul de caractere reprezentand numarul de telefon
+  size: 30
 
 =head2 phone_type
 
   data_type: 'varchar'
-  is_nullable: 0
-  size: 30
-  
-Tipul numarului de telefon  
-  
-=head2 entity_type
-
-  data_type: 'integer'
-  is_foreign_key: 1
-  is_nullable: 0
-
-Tipul entitatii careia ii este asociat numarul de telefon specificat prin atributul phone
+  is_nullable: 1
+  size: 50
 
 =head2 entity_id
 
   data_type: 'integer'
-  is_foreign_key: 1
   is_nullable: 0
 
-Codul entitatii careia ii  ii este asociat numarul de telefon specificat prin atributul phone
+=head2 entity_type
+
+  data_type: 'integer'
+  is_nullable: 0
 
 =head2 ismain
 
   data_type: 'boolean'
-  is_nullable: 0
-
-Atribut boolean ce precizeaza daca numarul de telefon este cel principal al entitatii referite prin atributul entity_id
+  is_nullable: 1
 
 =cut
 
 __PACKAGE__->add_columns(
   "id",
-  { data_type => "integer", is_nullable => 0 },
+  {
+    data_type         => "integer",
+    is_auto_increment => 1,
+    is_nullable       => 0,
+    sequence          => "phone_id_seq",
+  },
   "phone",
-  { data_type => "varchar", is_nullable => 0, size => 50 },
-  "phone_type",
   { data_type => "varchar", is_nullable => 0, size => 30 },
-  "entity_type",
-  { data_type => "integer", is_foreign_key => 1, is_nullable => 0 },
+  "phone_type",
+  { data_type => "varchar", is_nullable => 1, size => 50 },
   "entity_id",
-  { data_type => "integer", is_foreign_key => 1, is_nullable => 0 },
+  { data_type => "integer", is_nullable => 0 },
+  "entity_type",
+  { data_type => "integer", is_nullable => 0 },
   "ismain",
-  { data_type => "boolean", is_nullable => 0 },
+  { data_type => "boolean", is_nullable => 1 },
 );
 
 =head1 PRIMARY KEY
@@ -115,39 +108,59 @@ __PACKAGE__->set_primary_key("id");
 
 =head1 RELATIONS
 
-=head2 entity
+=head2 org_phones
 
-Type: belongs_to
+Type: has_many
 
-Related object: L<RODA::RODADB::Result::Person>
-
-=cut
-
-__PACKAGE__->belongs_to(
-  "entity",
-  "RODA::RODADB::Result::Person",
-  { id => "entity_id" },
-  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
-);
-
-=head2 entity_type
-
-Type: belongs_to
-
-Related object: L<RODA::RODADB::Result::Org>
+Related object: L<RODA::RODADB::Result::OrgPhone>
 
 =cut
 
-__PACKAGE__->belongs_to(
-  "entity_type",
-  "RODA::RODADB::Result::Org",
-  { id => "entity_type" },
-  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
+__PACKAGE__->has_many(
+  "org_phones",
+  "RODA::RODADB::Result::OrgPhone",
+  { "foreign.phone_id" => "self.id" },
+  { cascade_copy => 0, cascade_delete => 0 },
 );
 
+=head2 person_phones
 
-# Created by DBIx::Class::Schema::Loader v0.07012 @ 2012-12-19 19:21:26
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:bmlgup77wMy1rFjxVoEXIA
+Type: has_many
+
+Related object: L<RODA::RODADB::Result::PersonPhone>
+
+=cut
+
+__PACKAGE__->has_many(
+  "person_phones",
+  "RODA::RODADB::Result::PersonPhone",
+  { "foreign.phone_id" => "self.id" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
+=head2 orgs
+
+Type: many_to_many
+
+Composing rels: L</org_phones> -> org
+
+=cut
+
+__PACKAGE__->many_to_many("orgs", "org_phones", "org");
+
+=head2 people
+
+Type: many_to_many
+
+Composing rels: L</person_phones> -> person
+
+=cut
+
+__PACKAGE__->many_to_many("people", "person_phones", "person");
+
+
+# Created by DBIx::Class::Schema::Loader v0.07033 @ 2013-01-27 19:43:20
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:AmBleXZpOxRfLpEH9CXTNg
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

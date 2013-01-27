@@ -34,7 +34,7 @@ __PACKAGE__->load_components("InflateColumn::DateTime");
 
 =cut
 
-__PACKAGE__->table("emails");
+__PACKAGE__->table("email");
 
 =head1 ACCESSORS
 

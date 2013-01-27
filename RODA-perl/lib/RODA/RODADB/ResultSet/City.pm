@@ -13,11 +13,11 @@ sub checkcity {
     if ( $params{id} && $params{id} ne '' ) {
         return $self->find( { id => $params{id}, } );
     }
-    if ( $params{city_code} && $params{city_code} ne '' && $params{ccode_name} && $params{ccode_name} ne '' ) {
+    if ( $params{city_code} && $params{city_code} ne '' && $params{city_code_name} && $params{city_code_name} ne '' ) {
         my $cityrs = $self->find(
                                   {
                                     city_code  => lc( $params{city_code} ),
-                                    ccode_name => lc( $params{ccode_name} ),
+                                    city_code_name => lc( $params{city_code_name} ),
                                   }
         );
         return $cityrs if ($cityrs);
@@ -61,18 +61,18 @@ if ($params{name} && $params{name} ne ''
         my $city_code;
         my $city_code_name;
         my $city_code_sup;
-        if ( $params{ccode_name} && $params{ccode_name} ne '' && $params{city_code} && $params{city_code} ne '' ) {
+        if ( $params{city_code_name} && $params{city_code_name} ne '' && $params{city_code} && $params{city_code} ne '' ) {
             $city_code      = lc( $params{city_code} );
-            $city_code_name = lc( $params{ccode_name} );
+            $city_code_name = lc( $params{city_code_name} );
             $city_code_sup  = lc( $params{city_code_sup} );
         } else {
             warn "Orasul $params{name} va fi inserat fara coduri: city_code = $params{city_code}, ccode_name = $params{ccode_name}";
         }
         my $city_type;
         my $city_type_system;
-        if ( $params{city_type} && $params{city_type} ne '' && $params{ctype_system} && $params{ctype_system} ne '' ) {
+        if ( $params{city_type} && $params{city_type} ne '' && $params{city_type_system} && $params{city_type_system} ne '' ) {
             $city_type        = lc( $params{city_type} );
-            $city_type_system = lc( $params{ctype_system} );
+            $city_type_system = lc( $params{city_type_system} );
         } else {
             warn "Orasul $params{name} va fi inserat fara coduri: city_type = $params{city_type}, city_type_system = $params{city_type_system}";
         }
@@ -82,10 +82,10 @@ if ($params{name} && $params{name} ne ''
                                          name          => lc( $params{name} ),
                                          city_code     => $city_code,
                                          prefix        => lc( $params{prefix} ),
-                                         ccode_name    => $city_code_name,
+                                         city_code_name    => $city_code_name,
                                          city_code_sup => $city_code_sup,
                                          city_type     => $city_type,
-                                         ctype_system  => $city_type_system,
+                                         city_type_system  => $city_type_system,
                                          country_id => $params{country_id},
                                        }
         );

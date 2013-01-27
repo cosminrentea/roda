@@ -42,33 +42,30 @@ __PACKAGE__->table("region");
 
 =head1 ACCESSORS
 
+=head2 id
+
+  data_type: 'integer'
+  is_auto_increment: 1
+  is_nullable: 0
+  sequence: 'region_id_seq'
+
+Identificatorul regiunii
+
 =head2 name
 
   data_type: 'varchar'
   is_nullable: 0
-  size: 150
+  size: 100
 
-=head2 rtype_id
+Numele regiunii
+
+=head2 regiontype_id
 
   data_type: 'integer'
   is_foreign_key: 1
   is_nullable: 0
 
-Numele regiunii
-
-=head2 region_code
-
-  data_type: 'varchar'
-  is_nullable: 1
-  size: 20
-
 Tipul regiunii (refera atributul id din tabelul region_type)
-
-=head2 rcode_name
-
-  data_type: 'varchar'
-  is_nullable: 1
-  size: 20
 
 =head2 country_id
 
@@ -77,26 +74,23 @@ Tipul regiunii (refera atributul id din tabelul region_type)
   is_nullable: 0
   size: 2
 
-=head2 id
+Codul tarii corespunzatoare regiunii (refera atributul id din tabelul country)
 
-  data_type: 'integer'
-  is_auto_increment: 1
-  is_nullable: 0
-  sequence: 'region_id_seq'
+=head2 region_code
+
+  data_type: 'varchar'
+  is_nullable: 1
+  size: 50
+
+=head2 region_code_name
+
+  data_type: 'varchar'
+  is_nullable: 1
+  size: 50
 
 =cut
 
 __PACKAGE__->add_columns(
-  "name",
-  { data_type => "varchar", is_nullable => 0, size => 150 },
-  "rtype_id",
-  { data_type => "integer", is_foreign_key => 1, is_nullable => 0 },
-  "region_code",
-  { data_type => "varchar", is_nullable => 1, size => 20 },
-  "rcode_name",
-  { data_type => "varchar", is_nullable => 1, size => 20 },
-  "country_id",
-  { data_type => "char", is_foreign_key => 1, is_nullable => 0, size => 2 },
   "id",
   {
     data_type         => "integer",
@@ -104,6 +98,16 @@ __PACKAGE__->add_columns(
     is_nullable       => 0,
     sequence          => "region_id_seq",
   },
+  "name",
+  { data_type => "varchar", is_nullable => 0, size => 100 },
+  "regiontype_id",
+  { data_type => "integer", is_foreign_key => 1, is_nullable => 0 },
+  "country_id",
+  { data_type => "char", is_foreign_key => 1, is_nullable => 0, size => 2 },
+  "region_code",
+  { data_type => "varchar", is_nullable => 1, size => 50 },
+  "region_code_name",
+  { data_type => "varchar", is_nullable => 1, size => 50 },
 );
 
 =head1 PRIMARY KEY
@@ -132,7 +136,7 @@ __PACKAGE__->belongs_to(
   "country",
   "RODA::RODADB::Result::Country",
   { id => "country_id" },
-  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
+  { is_deferrable => 0, on_delete => "NO ACTION", on_update => "NO ACTION" },
 );
 
 =head2 region_cities
@@ -150,24 +154,34 @@ __PACKAGE__->has_many(
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
-=head2 rtype
+=head2 regiontype
 
 Type: belongs_to
 
-Related object: L<RODA::RODADB::Result::RegionType>
+Related object: L<RODA::RODADB::Result::Regiontype>
 
 =cut
 
 __PACKAGE__->belongs_to(
-  "rtype",
-  "RODA::RODADB::Result::RegionType",
-  { id => "rtype_id" },
-  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
+  "regiontype",
+  "RODA::RODADB::Result::Regiontype",
+  { id => "regiontype_id" },
+  { is_deferrable => 0, on_delete => "NO ACTION", on_update => "NO ACTION" },
 );
 
+=head2 cities
 
-# Created by DBIx::Class::Schema::Loader v0.07012 @ 2013-01-03 15:58:59
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:w5Av1TuWUotI6f8cgQuZ/Q
+Type: many_to_many
+
+Composing rels: L</region_cities> -> city
+
+=cut
+
+__PACKAGE__->many_to_many("cities", "region_cities", "city");
+
+
+# Created by DBIx::Class::Schema::Loader v0.07033 @ 2013-01-27 18:13:08
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:kS387MEP6S2Jpsk0dB/RNw
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

@@ -8,7 +8,9 @@ use Text::CSV::Auto;
 use Encode qw(decode);
 use Data::Dumper;
 use Try::Tiny;
-my $schema = RODA::RODADB->connect( 'dbi:Pg:dbname=roda;host=193.228.153.170', 'roda2012', '2012roda', { pg_enable_utf8 => 1 } );
+
+my $schema = RODA::RODADB->connect( 'dbi:Pg:dbname=roda-devel;host=193.228.153.170', 'roda2012', '2012roda', { pg_enable_utf8 => 1 } );
+
 print "Language\n";
 
 #language
@@ -17,8 +19,8 @@ if ( -f "$FindBin::Bin/../csv/language.csv" ) {
     my $rows    = $langcsv->slurp();
     foreach my $row (@$rows) {
         try {
-            my $lng = $schema->resultset('Language')->checklanguage( id => $row->{id}, nume => $row->{nume} );
-            print "DB: ID: " . $lng->id . " -> Nume:" . $lng->nume . "\n";
+            my $lng = $schema->resultset('Lang')->checklanguage( id => $row->{id}, nume => $row->{nume} );
+            print "DB: ID: " . $lng->id . " -> Nume:" . $lng->name . "\n";
         }
         catch {
             print "Eroare: la import language $_\n";
@@ -75,7 +77,7 @@ if ( -f "$FindBin::Bin/../csv/region_type.csv" ) {
     my $rows  = $rtcsv->slurp();
     foreach my $row (@$rows) {
         try {
-            my $rtrs = $schema->resultset('RegionType')->find_or_create( name => lc( $row->{name} ) );
+            my $rtrs = $schema->resultset('Regiontype')->find_or_create( name => lc( $row->{name} ) );
             if ($rtrs) {
                 print "DB: ID: " . $rtrs->id . " -> Nume:" . $rtrs->name . "\n";
             }
@@ -187,10 +189,10 @@ if ( -f "$FindBin::Bin/../csv/orase_ro_rr.csv" ) {
                                                                 name          => trim( lc( $row->{nume} ) ),
                                                                 country_id    => 'ro',
                                                                 city_code     => $row->{cod},
-                                                                ccode_name    => $row->{cod_name},
+                                                                city_code_name    => $row->{cod_name},
                                                                 prefix        => $row->{prefix},
                                                                 city_type     => trim( $row->{tip} ),
-                                                                ctype_system  => $row->{cod_name},
+                                                                city_type_system  => $row->{cod_name},
                                                                 city_code_sup => $row->{sirsup},
             );
             if ($cityrs) {

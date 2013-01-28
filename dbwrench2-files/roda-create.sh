@@ -11,7 +11,7 @@ else
 fi
 
 # replace ID types -> SERIALs
-perl -p -i -e "s/ID INTEGER NOT NULL/id SERIAL/gi;s/ID BIGINT NOT NULL/id BIGSERIAL/gi" ${SCRIPTNAME}
+perl -p -i -e "s/^[[:space:]]+ID INTEGER NOT NULL,/id SERIAL,/gi;s/^[[:space:]]+ID BIGINT NOT NULL,/id BIGSERIAL,/gi" ${SCRIPTNAME}
 
 # run script
 psql -f ${SCRIPTNAME} -h ${RODA_HOST} ${RODA_DB} ${RODA_USER}

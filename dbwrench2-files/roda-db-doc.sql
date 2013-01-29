@@ -1,389 +1,3 @@
-/************ Add: Sequences ***************/
-
-CREATE SEQUENCE acl_class_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE acl_entry_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE acl_entry_sid_seq INCREMENT BY 1;
-
-CREATE SEQUENCE acl_object_identity_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE acl_object_identity_owner_sid_seq INCREMENT BY 1;
-
-CREATE SEQUENCE acl_sid_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE address_city_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE address_country_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE address_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE audit_field_audit_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE audit_field_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE audit_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE audit_row_id_audit_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE audit_row_id_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE audit_user_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE auth_data_user_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE catalog_acl_aro_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE catalog_acl_catalog_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE catalog_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE catalog_study_catalog_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE catalog_study_study_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE city_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE cms_file_folder_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE cms_file_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE cms_folder_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE cms_layout_group_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE cms_layout_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE cms_page_content_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE cms_page_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE cms_snippet_group_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE cms_snippet_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE collection_model_type_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE concept_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE concept_variable_concept_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE concept_variable_variable_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE email_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE file_acl_aro_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE file_acl_document_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE file_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE filetype_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE form_edited_number_var_form_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE form_edited_number_var_variable_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE form_edited_text_var_form_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE form_edited_text_var_variable_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE form_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE form_instance_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE form_operator_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE form_selection_var_form_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE form_selection_var_item_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE form_selection_var_variable_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE frequency_item_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE frequency_variable_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE instance_acl_aro_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE instance_acl_instance_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE instance_descr_instance_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE instance_documents_document_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE instance_documents_instance_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE instance_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE instance_keyword_instance_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE instance_keyword_keyword_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE instance_org_assoc_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE instance_org_assoc_type_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE instance_org_instance_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE instance_org_org_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE instance_person_assoc_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE instance_person_assoc_type_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE instance_person_instance_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE instance_person_person_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE instance_study_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE instance_topic_instance_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE instance_topic_topic_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE instance_unit_analysis_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE internet_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE item_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE keyword_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE meth_coll_type_collection_model_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE meth_coll_type_instance_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE methodology_instance_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE methodology_time_meth_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE news_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE org_address_address_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE org_address_org_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE org_email_email_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE org_email_org_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE org_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE org_internet_internet_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE org_internet_org_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE org_phone_org_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE org_phone_phone_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE org_prefix_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE org_relation_type_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE org_relations_org_1_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE org_relations_org_2_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE org_relations_org_relation_type_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE org_sufix_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE other_statistic_variable_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE person_address_address_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE person_address_person_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE person_email_email_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE person_email_person_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE person_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE person_internet_internet_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE person_internet_person_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE person_links_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE person_links_person_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE person_links_user_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE person_org_org_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE person_org_person_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE person_phone_person_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE person_phone_phone_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE person_role_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE phone_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE prefix_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE region_city_city_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE region_city_region_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE region_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE region_regiontype_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE regiontype_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE role_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE scale_item_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE selection_variable_item_item_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE selection_variable_item_variable_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE selection_variable_variable_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE setting_group_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE setting_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE setting_value_setting_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE skip_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE skip_next_variable_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE skip_variable_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE source_org_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE source_sourcetype_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE sourcestudy_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE sourcestudy_org_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE sourcestudy_type_history_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE sourcestudy_type_history_sourcesstudy_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE sourcestudy_type_history_sourcestudy_type_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE sourcestudy_type_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE sourcetype_history_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE sourcetype_history_org_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE sourcetype_history_sourcetype_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE sourcetype_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE study_acl_aro_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE study_acl_study_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE study_descr_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE study_descr_study_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE study_descr_title_type_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE study_file_file_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE study_file_study_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE study_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE study_keyword_keyword_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE study_keyword_study_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE study_org_acl_aro_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE study_org_acl_study_org_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE study_org_assoc_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE study_org_assoctype_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE study_org_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE study_org_org_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE study_org_study_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE study_person_acl_aro_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE study_person_acl_study_person_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE study_person_assoc_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE study_person_assoctype_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE study_person_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE study_person_person_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE study_person_study_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE study_topic_study_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE study_topic_topic_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE suffix_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE time_meth_type_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE title_type_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE topic_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE translated_topic_topic_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE unit_analysis_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE user_auth_log_user_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE user_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE user_message_from_user_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE user_message_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE user_message_to_user_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE user_profile_user_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE user_role_role_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE user_role_user_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE user_setting_group_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE user_setting_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE user_setting_value_user_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE user_setting_value_user_setting_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE value_item_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE vargroup_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE variable_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE variable_instance_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE variable_vargroup_vargroup_id_seq INCREMENT BY 1;
-
-CREATE SEQUENCE variable_vargroup_variable_id_seq INCREMENT BY 1;
-
-
-
 /************ Update: Tables ***************/
 
 /******************** Add Table: acl_class ************************/
@@ -391,7 +5,7 @@ CREATE SEQUENCE variable_vargroup_variable_id_seq INCREMENT BY 1;
 /* Build Table Structure */
 CREATE TABLE acl_class
 (
-	id BIGINT DEFAULT nextval('acl_class_id_seq'::regclass) NOT NULL,
+id BIGSERIAL,
 	class TEXT NOT NULL
 ) WITHOUT OIDS;
 
@@ -408,10 +22,10 @@ CREATE UNIQUE INDEX "acl_class_class_Idx" ON acl_class (class);
 /* Build Table Structure */
 CREATE TABLE acl_entry
 (
-	id BIGINT DEFAULT nextval('acl_entry_id_seq'::regclass) NOT NULL,
+id BIGSERIAL,
 	acl_object_identity BIGINT NOT NULL,
 	ace_order INTEGER NOT NULL,
-	sid BIGINT DEFAULT nextval('acl_entry_sid_seq'::regclass) NOT NULL,
+	sid BIGINT NOT NULL,
 	mask INTEGER NOT NULL,
 	granting BOOL NOT NULL,
 	audit_success BOOL NOT NULL,
@@ -431,11 +45,11 @@ CREATE INDEX "acl_entry_acl_object_identity_Idx" ON acl_entry (acl_object_identi
 /* Build Table Structure */
 CREATE TABLE acl_object_identity
 (
-	id BIGINT DEFAULT nextval('acl_object_identity_id_seq'::regclass) NOT NULL,
+id BIGSERIAL,
 	object_id_class BIGINT NOT NULL,
 	object_id_identity BIGINT NOT NULL,
 	parent_object BIGINT NOT NULL,
-	owner_sid BIGINT DEFAULT nextval('acl_object_identity_owner_sid_seq'::regclass) NOT NULL,
+	owner_sid BIGINT NOT NULL,
 	entries_inheriting BOOL NOT NULL
 ) WITHOUT OIDS;
 
@@ -452,7 +66,7 @@ CREATE UNIQUE INDEX "acl_object_identity_object_id_class_Idx" ON acl_object_iden
 /* Build Table Structure */
 CREATE TABLE acl_sid
 (
-	id BIGINT DEFAULT nextval('acl_sid_id_seq'::regclass) NOT NULL,
+id BIGSERIAL,
 	principal BOOL NOT NULL,
 	sid TEXT NOT NULL
 ) WITHOUT OIDS;
@@ -470,11 +84,11 @@ CREATE UNIQUE INDEX "acl_sid_principal_Idx" ON acl_sid (principal, sid);
 /* Build Table Structure */
 CREATE TABLE address
 (
-	id INTEGER DEFAULT nextval('address_id_seq'::regclass) NOT NULL,
+id SERIAL,
 	country_id CHAR(2) NOT NULL,
 	city_id INTEGER NOT NULL,
 	address1 TEXT NOT NULL,
-	address2 TEXT NOT NULL,
+	address2 TEXT NULL,
 	subdiv_name VARCHAR(200) NULL,
 	subdiv_code VARCHAR(50) NULL,
 	postal_code VARCHAR(30) NULL
@@ -491,11 +105,13 @@ COMMENT ON COLUMN address.country_id IS 'Codul tarii corespunzatoare adresei (re
 
 COMMENT ON COLUMN address.city_id IS 'Codul orasului corespunzator adresei (refera atributul id din tabelul city)';
 
-COMMENT ON COLUMN address.address1 IS 'Prima adresa, detaliata (strada, numar, bloc, scara, apartament)';
+COMMENT ON COLUMN address.address1 IS 'Adresa detaliata (strada, numar, bloc, scara, apartament)';
 
-COMMENT ON COLUMN address.address2 IS 'A doua adresa, detaliata';
+COMMENT ON COLUMN address.address2 IS 'Detalii despre adresa (intefon, sala etc.)';
 
-COMMENT ON COLUMN address.subdiv_name IS 'Sectorul corespunzator adresei';
+COMMENT ON COLUMN address.subdiv_name IS 'Subdiviziunea/Sectorul corespunzator adresei';
+
+COMMENT ON COLUMN address.postal_code IS 'Codul Postal';
 
 COMMENT ON TABLE address IS 'Tabel unic pentru toate adresele care se gasesc in baza de date';
 
@@ -505,11 +121,11 @@ COMMENT ON TABLE address IS 'Tabel unic pentru toate adresele care se gasesc in 
 /* Build Table Structure */
 CREATE TABLE audit
 (
-	id INTEGER DEFAULT nextval('audit_id_seq'::regclass) NOT NULL,
+id SERIAL,
 	"time" TIMESTAMP NOT NULL,
 	"operationType" SMALLINT NOT NULL,
 	"tableName" TEXT NOT NULL,
-	user_id INTEGER DEFAULT nextval('audit_user_id_seq'::regclass) NOT NULL,
+	user_id INTEGER NOT NULL,
 	version_number INTEGER NOT NULL
 ) WITHOUT OIDS;
 
@@ -538,11 +154,11 @@ COMMENT ON TABLE audit IS 'Tabel ce stocheaza informatiile referitoare la auditu
 /* Build Table Structure */
 CREATE TABLE audit_field
 (
-	audit_id INTEGER DEFAULT nextval('audit_field_audit_id_seq'::regclass) NOT NULL,
-	id INTEGER DEFAULT nextval('audit_field_id_seq'::regclass) NOT NULL,
+	audit_id INTEGER NOT NULL,
+id SERIAL,
 	column_name TEXT NOT NULL,
-	new_value TEXT NOT NULL,
-	old_value TEXT NOT NULL
+	new_value TEXT NULL,
+	old_value TEXT NULL
 ) WITHOUT OIDS;
 
 /* Add Primary Key */
@@ -568,10 +184,10 @@ COMMENT ON TABLE audit_field IS 'Tabel ce inregistreaza informatiile de audit la
 /* Build Table Structure */
 CREATE TABLE audit_row_id
 (
-	audit_id INTEGER DEFAULT nextval('audit_row_id_audit_id_seq'::regclass) NOT NULL,
-	id INTEGER DEFAULT nextval('audit_row_id_id_seq'::regclass) NOT NULL,
+	audit_id INTEGER NOT NULL,
+id SERIAL,
 	column_name TEXT NOT NULL,
-	column_value INTEGER NOT NULL
+	column_value INTEGER NULL
 ) WITHOUT OIDS;
 
 /* Add Primary Key */
@@ -595,7 +211,7 @@ COMMENT ON TABLE audit_row_id IS 'Tabel ce stocheaza valorile identificatorilor 
 /* Build Table Structure */
 CREATE TABLE auth_data
 (
-	user_id INTEGER DEFAULT nextval('auth_data_user_id_seq'::regclass) NOT NULL,
+	user_id INTEGER NOT NULL,
 	credential_provider TEXT NOT NULL,
 	field_name TEXT NOT NULL,
 	field_value TEXT NOT NULL
@@ -622,9 +238,9 @@ COMMENT ON TABLE auth_data IS 'Tabel ce stocheaza datele de autentificare ale ut
 /* Build Table Structure */
 CREATE TABLE catalog
 (
-	id INTEGER DEFAULT nextval('catalog_id_seq'::regclass) NOT NULL,
+id SERIAL,
 	name VARCHAR(200) NOT NULL,
-	parent INTEGER NOT NULL,
+	parent INTEGER NULL,
 	owner INTEGER NOT NULL,
 	added TIMESTAMP NOT NULL
 ) WITHOUT OIDS;
@@ -652,8 +268,8 @@ COMMENT ON TABLE catalog IS 'Tabel ce stocheaza informatii despre cataloagele de
 /* Build Table Structure */
 CREATE TABLE catalog_acl
 (
-	catalog_id INTEGER DEFAULT nextval('catalog_acl_catalog_id_seq'::regclass) NOT NULL,
-	aro_id INTEGER DEFAULT nextval('catalog_acl_aro_id_seq'::regclass) NOT NULL,
+	catalog_id INTEGER NOT NULL,
+	aro_id INTEGER NOT NULL,
 	aro_type INTEGER NOT NULL,
 	read BOOL NULL,
 	"update" BOOL NULL,
@@ -688,8 +304,8 @@ COMMENT ON TABLE catalog_acl IS 'Tabel ce stocheaza drepturile de acces asupra u
 /* Build Table Structure */
 CREATE TABLE catalog_study
 (
-	catalog_id INTEGER DEFAULT nextval('catalog_study_catalog_id_seq'::regclass) NOT NULL,
-	study_id INTEGER DEFAULT nextval('catalog_study_study_id_seq'::regclass) NOT NULL,
+	catalog_id INTEGER NOT NULL,
+	study_id INTEGER NOT NULL,
 	added TIMESTAMP NOT NULL
 ) WITHOUT OIDS;
 
@@ -710,7 +326,7 @@ COMMENT ON TABLE catalog_study IS 'Tabel ce contine asocierile dintre cataloage 
 /* Build Table Structure */
 CREATE TABLE city
 (
-	id INTEGER DEFAULT nextval('city_id_seq'::regclass) NOT NULL,
+id SERIAL,
 	name VARCHAR(100) NOT NULL,
 	country_id CHAR(2) NOT NULL,
 	city_code VARCHAR(50) NULL,
@@ -740,10 +356,10 @@ COMMENT ON TABLE city IS 'Tabel unic pentru toate referintele la orase';
 /* Build Table Structure */
 CREATE TABLE cms_file
 (
-	id INTEGER DEFAULT nextval('cms_file_id_seq'::regclass) NOT NULL,
+id SERIAL,
 	filename VARCHAR(200) NOT NULL,
 	label VARCHAR(50) NOT NULL,
-	folder_id INTEGER DEFAULT nextval('cms_file_folder_id_seq'::regclass) NOT NULL,
+	folder_id INTEGER NOT NULL,
 	md5 VARCHAR(32) NOT NULL,
 	mimegroup VARCHAR(50) NOT NULL,
 	mimesubgroup VARCHAR(50) NOT NULL,
@@ -779,7 +395,7 @@ COMMENT ON TABLE cms_file IS 'Tabel ce stocheaza informatii despre fisierele din
 /* Build Table Structure */
 CREATE TABLE cms_folder
 (
-	id INTEGER DEFAULT nextval('cms_folder_id_seq'::regclass) NOT NULL,
+id SERIAL,
 	name VARCHAR(200) NOT NULL,
 	parent INTEGER NOT NULL,
 	description TEXT NULL
@@ -806,7 +422,7 @@ COMMENT ON TABLE cms_folder IS 'Tabel pentru stocarea informatiilor despre folde
 /* Build Table Structure */
 CREATE TABLE cms_layout
 (
-	id INTEGER DEFAULT nextval('cms_layout_id_seq'::regclass) NOT NULL,
+id SERIAL,
 	name VARCHAR(150) NULL,
 	layout_group INTEGER NOT NULL,
 	layout_content TEXT NOT NULL
@@ -833,7 +449,7 @@ COMMENT ON TABLE cms_layout IS 'Tabel care stocheaza layout-uri pentru paginile 
 /* Build Table Structure */
 CREATE TABLE cms_layout_group
 (
-	id INTEGER DEFAULT nextval('cms_layout_group_id_seq'::regclass) NOT NULL,
+id SERIAL,
 	name VARCHAR(150) NOT NULL,
 	parent INTEGER NOT NULL,
 	description TEXT NULL
@@ -860,7 +476,7 @@ COMMENT ON TABLE cms_layout_group IS 'Tabel ce stocheaza grupurile pentru layout
 /* Build Table Structure */
 CREATE TABLE cms_page
 (
-	id INTEGER DEFAULT nextval('cms_page_id_seq'::regclass) NOT NULL,
+id SERIAL,
 	name VARCHAR(200) NOT NULL,
 	layout INTEGER NOT NULL,
 	page_type INTEGER NOT NULL,
@@ -899,7 +515,7 @@ COMMENT ON TABLE cms_page IS 'Tabel care stocheaza paginile din sistemul CMS al 
 /* Build Table Structure */
 CREATE TABLE cms_page_content
 (
-	id INTEGER DEFAULT nextval('cms_page_content_id_seq'::regclass) NOT NULL,
+id SERIAL,
 	name VARCHAR(150) NOT NULL,
 	page INTEGER NULL,
 	content_title VARCHAR(250) NOT NULL,
@@ -932,7 +548,7 @@ COMMENT ON TABLE cms_page_content IS 'Tabel pentru stocarea continutului paginil
 /* Build Table Structure */
 CREATE TABLE cms_snippet
 (
-	id INTEGER DEFAULT nextval('cms_snippet_id_seq'::regclass) NOT NULL,
+id SERIAL,
 	name VARCHAR(200) NOT NULL,
 	snippet_group INTEGER NOT NULL,
 	snippet_content TEXT NOT NULL
@@ -959,7 +575,7 @@ COMMENT ON TABLE cms_snippet IS 'Tabel care stocheaza snippeturile (fragmentele 
 /* Build Table Structure */
 CREATE TABLE cms_snippet_group
 (
-	id INTEGER DEFAULT nextval('cms_snippet_group_id_seq'::regclass) NOT NULL,
+id SERIAL,
 	name VARCHAR(200) NOT NULL,
 	parent INTEGER NOT NULL,
 	description TEXT NULL
@@ -986,8 +602,9 @@ COMMENT ON TABLE cms_snippet_group IS 'Tabel care stocheaza grupuri de snippetur
 /* Build Table Structure */
 CREATE TABLE collection_model_type
 (
-	id INTEGER DEFAULT nextval('collection_model_type_id_seq'::regclass) NOT NULL,
-	name TEXT NOT NULL
+id SERIAL,
+	name TEXT NOT NULL,
+	description TEXT NULL
 ) WITHOUT OIDS;
 
 /* Add Primary Key */
@@ -1007,7 +624,7 @@ COMMENT ON TABLE collection_model_type IS 'Tabel ce contine tipurile modelelor d
 /* Build Table Structure */
 CREATE TABLE concept
 (
-	id INTEGER DEFAULT nextval('concept_id_seq'::regclass) NOT NULL,
+id SERIAL,
 	name VARCHAR(100) NOT NULL,
 	description TEXT NULL
 ) WITHOUT OIDS;
@@ -1031,8 +648,8 @@ COMMENT ON TABLE concept IS 'Tabel ce stocheaza conceptele definite ';
 /* Build Table Structure */
 CREATE TABLE concept_variable
 (
-	concept_id INTEGER DEFAULT nextval('concept_variable_concept_id_seq'::regclass) NOT NULL,
-	variable_id INTEGER DEFAULT nextval('concept_variable_variable_id_seq'::regclass) NOT NULL
+	concept_id INTEGER NOT NULL,
+	variable_id BIGINT NOT NULL
 ) WITHOUT OIDS;
 
 /* Add Primary Key */
@@ -1068,62 +685,8 @@ COMMENT ON COLUMN country.name IS 'Numele tarii';
 
 COMMENT ON TABLE country IS 'Tabel unic pentru toate referintele la tari';
 
-
-/******************** Add Table: document ************************/
-
-/* Build Table Structure */
-CREATE TABLE document
-(
-	id INTEGER NOT NULL,
-	title VARCHAR(250) NOT NULL,
-	description TEXT NULL,
-	type_id INTEGER NOT NULL,
-	filename VARCHAR(200) NOT NULL,
-	mimetype VARCHAR(50) NOT NULL,
-	filesize INTEGER NOT NULL
-) WITHOUT OIDS;
-
-/* Add Primary Key */
-ALTER TABLE document ADD CONSTRAINT pkdocuments
-	PRIMARY KEY (id);
-
-/* Add Comments */
-COMMENT ON COLUMN document.id IS 'Codul documentului';
-
-COMMENT ON COLUMN document.title IS 'Titlul documentului';
-
-COMMENT ON COLUMN document.description IS 'Descrierea documentului';
-
-COMMENT ON COLUMN document.type_id IS 'Codul tipului documentului (refera atributul id al tabelului document_type)';
-
-COMMENT ON COLUMN document.filename IS 'Numele fisierului asociat documentului';
-
-COMMENT ON COLUMN document.mimetype IS 'Tipul mime al fisierului';
-
-COMMENT ON COLUMN document.filesize IS 'Dimensiunea fisierului (specificata in kilobytes)';
-
-COMMENT ON TABLE document IS 'Tabel ce contine documentele asociate oricarei entitati din baza de date';
-
-
-/******************** Add Table: document_type ************************/
-
-/* Build Table Structure */
-CREATE TABLE document_type
-(
-	id INTEGER NOT NULL,
-	name VARCHAR(100) NOT NULL
-) WITHOUT OIDS;
-
-/* Add Primary Key */
-ALTER TABLE document_type ADD CONSTRAINT pkdocument_type
-	PRIMARY KEY (id);
-
-/* Add Comments */
-COMMENT ON COLUMN document_type.id IS 'Codul tipului de document';
-
-COMMENT ON COLUMN document_type.name IS 'Denumirea tipului de document';
-
-COMMENT ON TABLE document_type IS 'Tabel ce contine tipurile de documente';
+/* Add Indexes */
+CREATE UNIQUE INDEX "country_alpha3_Idx" ON country (alpha3);
 
 
 /******************** Add Table: email ************************/
@@ -1131,11 +694,8 @@ COMMENT ON TABLE document_type IS 'Tabel ce contine tipurile de documente';
 /* Build Table Structure */
 CREATE TABLE email
 (
-	id INTEGER DEFAULT nextval('email_id_seq'::regclass) NOT NULL,
-	email VARCHAR(200) NOT NULL,
-	entity_id INTEGER NOT NULL,
-	entity_type INTEGER NOT NULL,
-	ismain BOOL NULL
+id SERIAL,
+	email VARCHAR(200) NOT NULL
 ) WITHOUT OIDS;
 
 /* Add Primary Key */
@@ -1153,12 +713,12 @@ COMMENT ON TABLE email IS 'Tabel unic pentru toate adresele de e-mail din baza d
 /* Build Table Structure */
 CREATE TABLE file
 (
-	id INTEGER DEFAULT nextval('file_id_seq'::regclass) NOT NULL,
+id SERIAL,
 	title TEXT NOT NULL,
 	description TEXT NULL,
 	filetype_id INTEGER NULL,
-	filename TEXT NOT NULL,
-	filesize INTEGER NOT NULL
+	name TEXT NOT NULL,
+	size BIGINT NOT NULL
 ) WITHOUT OIDS;
 
 /* Add Primary Key */
@@ -1174,9 +734,9 @@ COMMENT ON COLUMN file.description IS 'Descrierea documentului';
 
 COMMENT ON COLUMN file.filetype_id IS 'Codul tipului documentului (refera atributul id al tabelului document_type)';
 
-COMMENT ON COLUMN file.filename IS 'Numele fisierului asociat documentului';
+COMMENT ON COLUMN file.name IS 'Numele fisierului asociat documentului';
 
-COMMENT ON COLUMN file.filesize IS 'Dimensiunea fisierului (specificata in bytes)';
+COMMENT ON COLUMN file.size IS 'Dimensiunea fisierului (specificata in bytes)';
 
 COMMENT ON TABLE file IS 'Tabel ce contine documentele asociate oricarei entitati din baza de date (studiu sau instanta)';
 
@@ -1186,8 +746,8 @@ COMMENT ON TABLE file IS 'Tabel ce contine documentele asociate oricarei entitat
 /* Build Table Structure */
 CREATE TABLE file_acl
 (
-	document_id INTEGER DEFAULT nextval('file_acl_document_id_seq'::regclass) NOT NULL,
-	aro_id INTEGER DEFAULT nextval('file_acl_aro_id_seq'::regclass) NOT NULL,
+	document_id INTEGER NOT NULL,
+	aro_id INTEGER NOT NULL,
 	aro_type INTEGER NOT NULL,
 	read BOOL NOT NULL,
 	"update" BOOL NOT NULL,
@@ -1214,26 +774,19 @@ COMMENT ON COLUMN file_acl."delete" IS 'Atribut boolean, ce va avea valoarea tru
 COMMENT ON TABLE file_acl IS 'Tabel ce contine drepturile de acces asupra documentelor';
 
 
-/******************** Add Table: filetype ************************/
+/******************** Add Table: file_property_name_value ************************/
 
 /* Build Table Structure */
-CREATE TABLE filetype
+CREATE TABLE file_property_name_value
 (
-	id INTEGER DEFAULT nextval('filetype_id_seq'::regclass) NOT NULL,
-	name VARCHAR(100) NOT NULL,
-	mimetype VARCHAR(100) NOT NULL
-) WITHOUT OIDS;
+	property_name_id INTEGER NOT NULL,
+	property_value_id INTEGER NOT NULL,
+	file_id INTEGER NOT NULL
+);
 
 /* Add Primary Key */
-ALTER TABLE filetype ADD CONSTRAINT pkfiletype
-	PRIMARY KEY (id);
-
-/* Add Comments */
-COMMENT ON COLUMN filetype.id IS 'Codul tipului de document';
-
-COMMENT ON COLUMN filetype.name IS 'Denumirea tipului de document';
-
-COMMENT ON TABLE filetype IS 'Tabel ce contine tipurile de documente ale caror informatii sunt retinute in baza de date';
+ALTER TABLE file_property_name_value ADD CONSTRAINT pkfile_property_name_value
+	PRIMARY KEY (property_name_id, property_value_id, file_id);
 
 
 /******************** Add Table: form ************************/
@@ -1241,12 +794,12 @@ COMMENT ON TABLE filetype IS 'Tabel ce contine tipurile de documente ale caror i
 /* Build Table Structure */
 CREATE TABLE form
 (
-	id INTEGER DEFAULT nextval('form_id_seq'::regclass) NOT NULL,
-	instance_id INTEGER DEFAULT nextval('form_instance_id_seq'::regclass) NOT NULL,
+id BIGSERIAL,
+	instance_id INTEGER NOT NULL,
 	order_in_instance INTEGER NOT NULL,
-	operator_id INTEGER DEFAULT nextval('form_operator_id_seq'::regclass) NOT NULL,
+	operator_id INTEGER NULL,
 	operator_notes TEXT NULL,
-	fill_date DATE NOT NULL
+	fill_time TIMESTAMP NULL
 ) WITHOUT OIDS;
 
 /* Add Primary Key */
@@ -1262,8 +815,8 @@ CREATE UNIQUE INDEX "form_instance_id_Idx" ON form (instance_id, order_in_instan
 /* Build Table Structure */
 CREATE TABLE form_edited_number_var
 (
-	form_id INTEGER DEFAULT nextval('form_edited_number_var_form_id_seq'::regclass) NOT NULL,
-	variable_id INTEGER DEFAULT nextval('form_edited_number_var_variable_id_seq'::regclass) NOT NULL,
+	form_id BIGINT NOT NULL,
+	variable_id BIGINT NOT NULL,
 	value NUMERIC(10, 2) NOT NULL
 ) WITHOUT OIDS;
 
@@ -1286,8 +839,8 @@ COMMENT ON TABLE form_edited_number_var IS 'Tabel ce inregistreaza raspunsurile 
 /* Build Table Structure */
 CREATE TABLE form_edited_text_var
 (
-	variable_id INTEGER DEFAULT nextval('form_edited_text_var_variable_id_seq'::regclass) NOT NULL,
-	form_id INTEGER DEFAULT nextval('form_edited_text_var_form_id_seq'::regclass) NOT NULL,
+	variable_id BIGINT NOT NULL,
+	form_id BIGINT NOT NULL,
 	text TEXT NOT NULL
 ) WITHOUT OIDS;
 
@@ -1310,9 +863,9 @@ COMMENT ON TABLE form_edited_text_var IS 'Tabel ce inregistreaza raspunsurile te
 /* Build Table Structure */
 CREATE TABLE form_selection_var
 (
-	form_id INTEGER DEFAULT nextval('form_selection_var_form_id_seq'::regclass) NOT NULL,
-	variable_id INTEGER DEFAULT nextval('form_selection_var_variable_id_seq'::regclass) NOT NULL,
-	item_id INTEGER DEFAULT nextval('form_selection_var_item_id_seq'::regclass) NOT NULL,
+	form_id BIGINT NOT NULL,
+	variable_id BIGINT NOT NULL,
+	item_id BIGINT NOT NULL,
 	order_of_items_in_response INTEGER NULL
 ) WITHOUT OIDS;
 
@@ -1332,41 +885,23 @@ COMMENT ON COLUMN form_selection_var.order_of_items_in_response IS 'Numarul de o
 COMMENT ON TABLE form_selection_var IS 'Tabel ce inregistreaza raspunsurile la variabilele de selectie (pentru care exista optiuni de raspuns) ';
 
 
-/******************** Add Table: frequency ************************/
-
-/* Build Table Structure */
-CREATE TABLE frequency
-(
-	variable_id INTEGER DEFAULT nextval('frequency_variable_id_seq'::regclass) NOT NULL,
-	item_id INTEGER DEFAULT nextval('frequency_item_id_seq'::regclass) NOT NULL,
-	value REAL NOT NULL
-) WITHOUT OIDS;
-
-/* Add Primary Key */
-ALTER TABLE frequency ADD CONSTRAINT pkfrequency
-	PRIMARY KEY (variable_id, item_id);
-
-/* Add Comments */
-COMMENT ON COLUMN frequency.variable_id IS 'Identificatorul variabilei';
-
-COMMENT ON COLUMN frequency.item_id IS 'Item-ul din cadrul variabilei pentru care este furnizata valoarea frecventei';
-
-COMMENT ON COLUMN frequency.value IS 'Valoarea frecventei';
-
-COMMENT ON TABLE frequency IS 'Tabel ce stocheaza frecventele asociate elementelor de raspuns din cadrul variabilelor de selectie';
-
-
 /******************** Add Table: instance ************************/
 
 /* Build Table Structure */
 CREATE TABLE instance
 (
-	id INTEGER DEFAULT nextval('instance_id_seq'::regclass) NOT NULL,
-	study_id INTEGER DEFAULT nextval('instance_study_id_seq'::regclass) NOT NULL,
+id SERIAL,
+	study_id INTEGER NOT NULL,
 	datestart TIMESTAMP NULL,
 	dateend TIMESTAMP NULL,
-	unit_analysis_id INTEGER DEFAULT nextval('instance_unit_analysis_id_seq'::regclass) NOT NULL,
-	version INTEGER NOT NULL
+	unit_analysis_id INTEGER NOT NULL,
+	version INTEGER NOT NULL,
+	insertion_status INTEGER NOT NULL,
+	is_raw_data BOOL NOT NULL,
+	is_raw_metadata BOOL NOT NULL,
+	added_by INTEGER NOT NULL,
+	added TIMESTAMP NOT NULL,
+	time_meth_id INTEGER NOT NULL
 ) WITHOUT OIDS;
 
 /* Add Primary Key */
@@ -1386,6 +921,12 @@ COMMENT ON COLUMN instance.unit_analysis_id IS 'Codul unitatii de analiza specif
 
 COMMENT ON COLUMN instance.version IS 'Versiunea instantei';
 
+COMMENT ON COLUMN instance.insertion_status IS 'Pasul din wizard-ul de introducere a metadatelor - din moment ce introducerea se face prin wizard, fiecare pas trebuie comis in baza de dat; pana la finalizarea introducerii intregii instante e nevoie sa stim ca ele au fost partial introduse.';
+
+COMMENT ON COLUMN instance.is_raw_data IS 'daca datele sunt in forma digitizata (YES) sau in forma de fisiere procesabile/editabile (NO)';
+
+COMMENT ON COLUMN instance.is_raw_metadata IS 'daca metadatele sunt in forma digitizata (YES) sau in forma de fisiere procesabile/editabile (NO)';
+
 COMMENT ON TABLE instance IS 'Tabel ce contine informatiile principale ale instantelor';
 
 
@@ -1394,8 +935,8 @@ COMMENT ON TABLE instance IS 'Tabel ce contine informatiile principale ale insta
 /* Build Table Structure */
 CREATE TABLE instance_acl
 (
-	instance_id INTEGER DEFAULT nextval('instance_acl_instance_id_seq'::regclass) NOT NULL,
-	aro_id INTEGER DEFAULT nextval('instance_acl_aro_id_seq'::regclass) NOT NULL,
+	instance_id INTEGER NOT NULL,
+	aro_id INTEGER NOT NULL,
 	aro_type INTEGER NOT NULL,
 	read BOOL NULL,
 	"update" BOOL NULL,
@@ -1430,22 +971,24 @@ COMMENT ON TABLE instance_acl IS 'Tabel ce contine listele pentru controlul acce
 /* Build Table Structure */
 CREATE TABLE instance_descr
 (
-	instance_id INTEGER DEFAULT nextval('instance_descr_instance_id_seq'::regclass) NOT NULL,
-	title TEXT NOT NULL,
+	instance_id INTEGER NOT NULL,
+	lang_id CHAR(2) NOT NULL,
+	weighting TEXT NULL,
+	research_instrument TEXT NULL,
+	scope TEXT NULL,
+	universe TEXT NULL,
 	abstract TEXT NULL,
-	lang_id CHAR(2) NOT NULL
+	title TEXT NOT NULL
 ) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE instance_descr ADD CONSTRAINT pkinstance_descr
-	PRIMARY KEY (instance_id);
+	PRIMARY KEY (instance_id, lang_id);
 
 /* Add Comments */
 COMMENT ON COLUMN instance_descr.instance_id IS 'Codul instantei pentru care sunt furnizate elemente descriptive';
 
 COMMENT ON COLUMN instance_descr.title IS 'Titlul instantei';
-
-COMMENT ON COLUMN instance_descr.abstract IS 'Rezumatul instantei';
 
 COMMENT ON TABLE instance_descr IS 'Tabel ce contine elementele descriptive ale instantelor';
 
@@ -1455,8 +998,8 @@ COMMENT ON TABLE instance_descr IS 'Tabel ce contine elementele descriptive ale 
 /* Build Table Structure */
 CREATE TABLE instance_documents
 (
-	instance_id INTEGER DEFAULT nextval('instance_documents_instance_id_seq'::regclass) NOT NULL,
-	document_id INTEGER DEFAULT nextval('instance_documents_document_id_seq'::regclass) NOT NULL
+	instance_id INTEGER NOT NULL,
+	document_id INTEGER NOT NULL
 ) WITHOUT OIDS;
 
 /* Add Primary Key */
@@ -1476,15 +1019,15 @@ COMMENT ON TABLE instance_documents IS 'Tabel ce contine asocierile dintre insta
 /* Build Table Structure */
 CREATE TABLE instance_keyword
 (
-	instance_id INTEGER DEFAULT nextval('instance_keyword_instance_id_seq'::regclass) NOT NULL,
-	keyword_id INTEGER DEFAULT nextval('instance_keyword_keyword_id_seq'::regclass) NOT NULL,
+	instance_id INTEGER NOT NULL,
+	keyword_id INTEGER NOT NULL,
 	added TIMESTAMP NOT NULL,
 	added_by INTEGER NOT NULL
 ) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE instance_keyword ADD CONSTRAINT pkinstance_keyword
-	PRIMARY KEY (instance_id, keyword_id);
+	PRIMARY KEY (instance_id, keyword_id, added_by);
 
 /* Add Comments */
 COMMENT ON COLUMN instance_keyword.instance_id IS 'Codul instantei careia ii este asociat cuvantul cheie referit prin atributul keyword_id';
@@ -1503,16 +1046,16 @@ COMMENT ON TABLE instance_keyword IS 'Tabel ce stocheaza asocierile dintre cuvin
 /* Build Table Structure */
 CREATE TABLE instance_org
 (
-	org_id INTEGER DEFAULT nextval('instance_org_org_id_seq'::regclass) NOT NULL,
-	instance_id INTEGER DEFAULT nextval('instance_org_instance_id_seq'::regclass) NOT NULL,
-	assoc_type_id INTEGER DEFAULT nextval('instance_org_assoc_type_id_seq'::regclass) NOT NULL,
+	org_id INTEGER NOT NULL,
+	instance_id INTEGER NOT NULL,
+	assoc_type_id INTEGER NOT NULL,
 	assoc_details TEXT NULL,
-	citation TEXT NOT NULL
+	citation TEXT NULL
 ) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE instance_org ADD CONSTRAINT pkinstance_org
-	PRIMARY KEY (org_id, instance_id);
+	PRIMARY KEY (org_id, instance_id, assoc_type_id);
 
 /* Add Comments */
 COMMENT ON COLUMN instance_org.org_id IS 'Codul organizatiei care se afla in relatia specificata prin atributul assoc_type_id cu instanta identificata prin atributul instance_id (refera atributul id al tabelului org)';
@@ -1533,7 +1076,7 @@ COMMENT ON TABLE instance_org IS 'Tabel ce contine asocierile dintre instante si
 /* Build Table Structure */
 CREATE TABLE instance_org_assoc
 (
-	id INTEGER DEFAULT nextval('instance_org_assoc_id_seq'::regclass) NOT NULL,
+id SERIAL,
 	assoc_name VARCHAR(100) NOT NULL,
 	assoc_description TEXT NULL
 ) WITHOUT OIDS;
@@ -1557,14 +1100,15 @@ COMMENT ON TABLE instance_org_assoc IS 'Tabel ce contine tipurile de asociere ca
 /* Build Table Structure */
 CREATE TABLE instance_person
 (
-	person_id INTEGER DEFAULT nextval('instance_person_person_id_seq'::regclass) NOT NULL,
-	instance_id INTEGER DEFAULT nextval('instance_person_instance_id_seq'::regclass) NOT NULL,
-	assoc_type_id INTEGER DEFAULT nextval('instance_person_assoc_type_id_seq'::regclass) NOT NULL
+	person_id INTEGER NOT NULL,
+	instance_id INTEGER NOT NULL,
+	assoc_type_id INTEGER NOT NULL,
+	assoc_details TEXT NULL
 ) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE instance_person ADD CONSTRAINT pkinstance_person
-	PRIMARY KEY (person_id, instance_id);
+	PRIMARY KEY (person_id, instance_id, assoc_type_id);
 
 /* Add Comments */
 COMMENT ON COLUMN instance_person.person_id IS 'Codul persoanei aflate in relatia specificata prin atributul assoc_type_id cu instanta identificata prin atributul instance_id (refera atributul id al tabelului person)';
@@ -1581,7 +1125,7 @@ COMMENT ON TABLE instance_person IS 'Tabel care stocheaza asocierile intre insta
 /* Build Table Structure */
 CREATE TABLE instance_person_assoc
 (
-	id INTEGER DEFAULT nextval('instance_person_assoc_id_seq'::regclass) NOT NULL,
+id SERIAL,
 	assoc_name VARCHAR(100) NOT NULL,
 	assoc_description TEXT NULL
 ) WITHOUT OIDS;
@@ -1600,13 +1144,27 @@ COMMENT ON COLUMN instance_person_assoc.assoc_description IS 'Descrierea tipului
 COMMENT ON TABLE instance_person_assoc IS 'Tabel ce contine tipurile de asociere intre instanta si persoana';
 
 
+/******************** Add Table: instance_sampling_procedure ************************/
+
+/* Build Table Structure */
+CREATE TABLE instance_sampling_procedure
+(
+	instance_id INTEGER NOT NULL,
+	sampling_procedure_id INTEGER NOT NULL
+);
+
+/* Add Primary Key */
+ALTER TABLE instance_sampling_procedure ADD CONSTRAINT pkinstance_sampling_procedure
+	PRIMARY KEY (instance_id, sampling_procedure_id);
+
+
 /******************** Add Table: instance_topic ************************/
 
 /* Build Table Structure */
 CREATE TABLE instance_topic
 (
-	instance_id INTEGER DEFAULT nextval('instance_topic_instance_id_seq'::regclass) NOT NULL,
-	topic_id INTEGER DEFAULT nextval('instance_topic_topic_id_seq'::regclass) NOT NULL
+	instance_id INTEGER NOT NULL,
+	topic_id INTEGER NOT NULL
 ) WITHOUT OIDS;
 
 /* Add Primary Key */
@@ -1626,12 +1184,9 @@ COMMENT ON TABLE instance_topic IS 'Tabel ce stocheaza asocierile dintre instant
 /* Build Table Structure */
 CREATE TABLE internet
 (
-	id INTEGER DEFAULT nextval('internet_id_seq'::regclass) NOT NULL,
+id SERIAL,
 	internet_type VARCHAR(50) NULL,
-	internet TEXT NOT NULL,
-	entity_id INTEGER NOT NULL,
-	entity_type INTEGER NOT NULL,
-	ismain BOOL NULL
+	internet TEXT NOT NULL
 ) WITHOUT OIDS;
 
 /* Add Primary Key */
@@ -1651,7 +1206,7 @@ COMMENT ON TABLE internet IS 'Tabel ce contine toate conturile de pe retelele so
 /* Build Table Structure */
 CREATE TABLE item
 (
-	id INTEGER DEFAULT nextval('item_id_seq'::regclass) NOT NULL,
+id BIGSERIAL,
 	name VARCHAR(100) NOT NULL
 ) WITHOUT OIDS;
 
@@ -1672,7 +1227,7 @@ COMMENT ON TABLE item IS 'Tabel ce stocheaza elementele (item-urile) variabilelo
 /* Build Table Structure */
 CREATE TABLE keyword
 (
-	id INTEGER DEFAULT nextval('keyword_id_seq'::regclass) NOT NULL,
+id SERIAL,
 	name TEXT NOT NULL
 ) WITHOUT OIDS;
 
@@ -1714,8 +1269,8 @@ COMMENT ON TABLE lang IS 'Tabel ce contine limbile utilizate pentru unii termeni
 /* Build Table Structure */
 CREATE TABLE meth_coll_type
 (
-	instance_id INTEGER DEFAULT nextval('meth_coll_type_instance_id_seq'::regclass) NOT NULL,
-	collection_model_id INTEGER DEFAULT nextval('meth_coll_type_collection_model_id_seq'::regclass) NOT NULL
+	instance_id INTEGER NOT NULL,
+	collection_model_id INTEGER NOT NULL
 ) WITHOUT OIDS;
 
 /* Add Primary Key */
@@ -1730,45 +1285,12 @@ COMMENT ON COLUMN meth_coll_type.collection_model_id IS 'Codul tipului de model 
 COMMENT ON TABLE meth_coll_type IS 'Tabel ce stocheaza tipurile modelelor de colectare a datelor utilizate in cadrul unei instante';
 
 
-/******************** Add Table: methodology ************************/
-
-/* Build Table Structure */
-CREATE TABLE methodology
-(
-	instance_id INTEGER DEFAULT nextval('methodology_instance_id_seq'::regclass) NOT NULL,
-	time_meth_id INTEGER DEFAULT nextval('methodology_time_meth_id_seq'::regclass) NOT NULL,
-	sampling_procedure TEXT NOT NULL,
-	weighting TEXT NOT NULL,
-	research_instrument TEXT NOT NULL,
-	scope TEXT NOT NULL
-) WITHOUT OIDS;
-
-/* Add Primary Key */
-ALTER TABLE methodology ADD CONSTRAINT pkmethodology
-	PRIMARY KEY (instance_id);
-
-/* Add Comments */
-COMMENT ON COLUMN methodology.instance_id IS 'Codul instantei pentru care sunt stocate informatii legate de metodologie';
-
-COMMENT ON COLUMN methodology.time_meth_id IS 'Metoda temporala';
-
-COMMENT ON COLUMN methodology.sampling_procedure IS 'Procedura de esantionare a instantei';
-
-COMMENT ON COLUMN methodology.weighting IS 'Metoda de ponderare a variabilelor';
-
-COMMENT ON COLUMN methodology.research_instrument IS 'Denumirea instrumentului de cercetare utilizat';
-
-COMMENT ON COLUMN methodology.scope IS 'Domeniul geografic si demografic corespunzator instantei referite prin atributul instance_id';
-
-COMMENT ON TABLE methodology IS 'Tabel care stocheaza informatii aditionale ale instantei, legate de metodologie';
-
-
 /******************** Add Table: news ************************/
 
 /* Build Table Structure */
 CREATE TABLE news
 (
-	id INTEGER DEFAULT nextval('news_id_seq'::regclass) NOT NULL,
+id SERIAL,
 	title VARCHAR(200) NOT NULL,
 	content TEXT NULL,
 	added TIMESTAMP NOT NULL,
@@ -1801,7 +1323,7 @@ COMMENT ON TABLE news IS 'Tabel ce stocheaza stirile ce vor aparea in interfata 
 /* Build Table Structure */
 CREATE TABLE org
 (
-	id INTEGER DEFAULT nextval('org_id_seq'::regclass) NOT NULL,
+id SERIAL,
 	name VARCHAR(100) NOT NULL,
 	org_prefix_id INTEGER NULL,
 	fullname VARCHAR(100) NOT NULL,
@@ -1831,8 +1353,8 @@ COMMENT ON TABLE org IS 'Tabel ce contine toate organizatiile din baza de date';
 /* Build Table Structure */
 CREATE TABLE org_address
 (
-	org_id INTEGER DEFAULT nextval('org_address_org_id_seq'::regclass) NOT NULL,
-	address_id INTEGER DEFAULT nextval('org_address_address_id_seq'::regclass) NOT NULL,
+	org_id INTEGER NOT NULL,
+	address_id INTEGER NOT NULL,
 	datestart TIMESTAMP NULL,
 	dateend TIMESTAMP NULL
 ) WITHOUT OIDS;
@@ -1858,8 +1380,8 @@ COMMENT ON TABLE org_address IS 'Tabel ce contine asocierile dintre organizatii 
 /* Build Table Structure */
 CREATE TABLE org_email
 (
-	org_id INTEGER DEFAULT nextval('org_email_org_id_seq'::regclass) NOT NULL,
-	email_id INTEGER DEFAULT nextval('org_email_email_id_seq'::regclass) NOT NULL,
+	org_id INTEGER NOT NULL,
+	email_id INTEGER NOT NULL,
 	is_main BOOL NOT NULL
 ) WITHOUT OIDS;
 
@@ -1873,8 +1395,9 @@ ALTER TABLE org_email ADD CONSTRAINT pkorg_email
 /* Build Table Structure */
 CREATE TABLE org_internet
 (
-	org_id INTEGER DEFAULT nextval('org_internet_org_id_seq'::regclass) NOT NULL,
-	internet_id INTEGER DEFAULT nextval('org_internet_internet_id_seq'::regclass) NOT NULL
+	org_id INTEGER NOT NULL,
+	internet_id INTEGER NOT NULL,
+	is_main BOOL NOT NULL
 ) WITHOUT OIDS;
 
 /* Add Primary Key */
@@ -1887,8 +1410,9 @@ ALTER TABLE org_internet ADD CONSTRAINT pkorg_internet
 /* Build Table Structure */
 CREATE TABLE org_phone
 (
-	org_id INTEGER DEFAULT nextval('org_phone_org_id_seq'::regclass) NOT NULL,
-	phone_id INTEGER DEFAULT nextval('org_phone_phone_id_seq'::regclass) NOT NULL
+	org_id INTEGER NOT NULL,
+	phone_id INTEGER NOT NULL,
+	is_main BOOL NOT NULL
 ) WITHOUT OIDS;
 
 /* Add Primary Key */
@@ -1901,7 +1425,7 @@ ALTER TABLE org_phone ADD CONSTRAINT pkorg_phone
 /* Build Table Structure */
 CREATE TABLE org_prefix
 (
-	id INTEGER DEFAULT nextval('org_prefix_id_seq'::regclass) NOT NULL,
+id SERIAL,
 	name VARCHAR(100) NOT NULL,
 	description TEXT NULL
 ) WITHOUT OIDS;
@@ -1925,7 +1449,7 @@ COMMENT ON TABLE org_prefix IS 'Tabel ce contine prefixele organizatiilor ';
 /* Build Table Structure */
 CREATE TABLE org_relation_type
 (
-	id INTEGER DEFAULT nextval('org_relation_type_id_seq'::regclass) NOT NULL,
+id SERIAL,
 	name VARCHAR(100) NOT NULL
 ) WITHOUT OIDS;
 
@@ -1946,11 +1470,11 @@ COMMENT ON TABLE org_relation_type IS 'Tabel ce contine tipurile relatiilor care
 /* Build Table Structure */
 CREATE TABLE org_relations
 (
-	org_1_id INTEGER DEFAULT nextval('org_relations_org_1_id_seq'::regclass) NOT NULL,
-	org_2_id INTEGER DEFAULT nextval('org_relations_org_2_id_seq'::regclass) NOT NULL,
+	org_1_id INTEGER NOT NULL,
+	org_2_id INTEGER NOT NULL,
 	datestart TIMESTAMP NULL,
 	dateend TIMESTAMP NULL,
-	org_relation_type_id INTEGER DEFAULT nextval('org_relations_org_relation_type_id_seq'::regclass) NOT NULL,
+	org_relation_type_id INTEGER NOT NULL,
 	details TEXT NOT NULL
 ) WITHOUT OIDS;
 
@@ -1979,7 +1503,7 @@ COMMENT ON TABLE org_relations IS 'Tabel ce stocheaza relatiile dintre organizat
 /* Build Table Structure */
 CREATE TABLE org_sufix
 (
-	id INTEGER DEFAULT nextval('org_sufix_id_seq'::regclass) NOT NULL,
+id SERIAL,
 	name VARCHAR(100) NOT NULL,
 	description TEXT NULL
 ) WITHOUT OIDS;
@@ -2003,7 +1527,7 @@ COMMENT ON TABLE org_sufix IS 'Tabel ce contine sufixele organizatiilor';
 /* Build Table Structure */
 CREATE TABLE other_statistic
 (
-	variable_id INTEGER DEFAULT nextval('other_statistic_variable_id_seq'::regclass) NOT NULL,
+	variable_id BIGINT NOT NULL,
 	name VARCHAR(100) NOT NULL,
 	value REAL NOT NULL,
 	description TEXT NULL
@@ -2028,7 +1552,7 @@ COMMENT ON TABLE other_statistic IS 'Tabel ce contine statistici specifice varia
 /* Build Table Structure */
 CREATE TABLE person
 (
-	id INTEGER DEFAULT nextval('person_id_seq'::regclass) NOT NULL,
+id SERIAL,
 	fname VARCHAR(100) NOT NULL,
 	mname VARCHAR(100) NULL,
 	lname VARCHAR(100) NOT NULL,
@@ -2061,8 +1585,8 @@ COMMENT ON TABLE person IS 'Tabel unic pentru toate persoanele din baza de date'
 /* Build Table Structure */
 CREATE TABLE person_address
 (
-	person_id INTEGER DEFAULT nextval('person_address_person_id_seq'::regclass) NOT NULL,
-	address_id INTEGER DEFAULT nextval('person_address_address_id_seq'::regclass) NOT NULL,
+	person_id INTEGER NOT NULL,
+	address_id INTEGER NOT NULL,
 	datestart TIMESTAMP NULL,
 	dateend TIMESTAMP NULL
 ) WITHOUT OIDS;
@@ -2088,8 +1612,8 @@ COMMENT ON TABLE person_address IS 'Tabel ce contine asocierile intre persoane s
 /* Build Table Structure */
 CREATE TABLE person_email
 (
-	person_id INTEGER DEFAULT nextval('person_email_person_id_seq'::regclass) NOT NULL,
-	email_id INTEGER DEFAULT nextval('person_email_email_id_seq'::regclass) NOT NULL,
+	person_id INTEGER NOT NULL,
+	email_id INTEGER NOT NULL,
 	is_main BOOL NOT NULL
 ) WITHOUT OIDS;
 
@@ -2103,8 +1627,9 @@ ALTER TABLE person_email ADD CONSTRAINT pkperson_email
 /* Build Table Structure */
 CREATE TABLE person_internet
 (
-	person_id INTEGER DEFAULT nextval('person_internet_person_id_seq'::regclass) NOT NULL,
-	internet_id INTEGER DEFAULT nextval('person_internet_internet_id_seq'::regclass) NOT NULL
+	person_id INTEGER NOT NULL,
+	internet_id INTEGER NOT NULL,
+	is_main BOOL NOT NULL
 ) WITHOUT OIDS;
 
 /* Add Primary Key */
@@ -2117,9 +1642,9 @@ ALTER TABLE person_internet ADD CONSTRAINT pkperson_internet
 /* Build Table Structure */
 CREATE TABLE person_links
 (
-	id INTEGER DEFAULT nextval('person_links_id_seq'::regclass) NOT NULL,
-	person_id INTEGER DEFAULT nextval('person_links_person_id_seq'::regclass) NOT NULL,
-	user_id INTEGER DEFAULT nextval('person_links_user_id_seq'::regclass) NOT NULL,
+id SERIAL,
+	person_id INTEGER NOT NULL,
+	user_id INTEGER NOT NULL,
 	simscore NUMERIC(10, 2) NOT NULL,
 	namescore NUMERIC(10, 2) NOT NULL,
 	emailscore NUMERIC(10, 2) NOT NULL,
@@ -2159,8 +1684,8 @@ COMMENT ON TABLE person_links IS 'Tabel ce stocheaza relatiile dintre persoane s
 /* Build Table Structure */
 CREATE TABLE person_org
 (
-	person_id INTEGER DEFAULT nextval('person_org_person_id_seq'::regclass) NOT NULL,
-	org_id INTEGER DEFAULT nextval('person_org_org_id_seq'::regclass) NOT NULL,
+	person_id INTEGER NOT NULL,
+	org_id INTEGER NOT NULL,
 	role_id INTEGER NOT NULL,
 	datestart TIMESTAMP NULL,
 	dateend TIMESTAMP NULL
@@ -2189,8 +1714,9 @@ COMMENT ON TABLE person_org IS 'Tabel ce stocheaza asocierile dintre persoane si
 /* Build Table Structure */
 CREATE TABLE person_phone
 (
-	person_id INTEGER DEFAULT nextval('person_phone_person_id_seq'::regclass) NOT NULL,
-	phone_id INTEGER DEFAULT nextval('person_phone_phone_id_seq'::regclass) NOT NULL
+	person_id INTEGER NOT NULL,
+	phone_id INTEGER NOT NULL,
+	is_main BOOL NOT NULL
 ) WITHOUT OIDS;
 
 /* Add Primary Key */
@@ -2203,7 +1729,7 @@ ALTER TABLE person_phone ADD CONSTRAINT pkperson_phone
 /* Build Table Structure */
 CREATE TABLE person_role
 (
-	id INTEGER DEFAULT nextval('person_role_id_seq'::regclass) NOT NULL,
+id SERIAL,
 	name TEXT NOT NULL
 ) WITHOUT OIDS;
 
@@ -2224,12 +1750,9 @@ COMMENT ON TABLE person_role IS 'Tabel care contine rolurile pe care le pot deti
 /* Build Table Structure */
 CREATE TABLE phone
 (
-	id INTEGER DEFAULT nextval('phone_id_seq'::regclass) NOT NULL,
+id SERIAL,
 	phone VARCHAR(30) NOT NULL,
-	phone_type VARCHAR(50) NULL,
-	entity_id INTEGER NOT NULL,
-	entity_type INTEGER NOT NULL,
-	ismain BOOL NULL
+	phone_type VARCHAR(50) NULL
 ) WITHOUT OIDS;
 
 /* Add Primary Key */
@@ -2242,7 +1765,7 @@ ALTER TABLE phone ADD CONSTRAINT pkphone
 /* Build Table Structure */
 CREATE TABLE prefix
 (
-	id INTEGER DEFAULT nextval('prefix_id_seq'::regclass) NOT NULL,
+id SERIAL,
 	name VARCHAR(50) NOT NULL
 ) WITHOUT OIDS;
 
@@ -2258,12 +1781,40 @@ COMMENT ON COLUMN prefix.name IS 'Denumirea prefixului care poate fi utilizat pe
 COMMENT ON TABLE prefix IS 'Tabel ce contine prefixele corespunzatoare formulelor de adresare catre persoane';
 
 
+/******************** Add Table: property_name ************************/
+
+/* Build Table Structure */
+CREATE TABLE property_name
+(
+id SERIAL,
+	name TEXT NOT NULL
+);
+
+/* Add Primary Key */
+ALTER TABLE property_name ADD CONSTRAINT pkproperty_name
+	PRIMARY KEY (id);
+
+
+/******************** Add Table: property_value ************************/
+
+/* Build Table Structure */
+CREATE TABLE property_value
+(
+id SERIAL,
+	value TEXT NULL
+);
+
+/* Add Primary Key */
+ALTER TABLE property_value ADD CONSTRAINT pkproperty_value
+	PRIMARY KEY (id);
+
+
 /******************** Add Table: region ************************/
 
 /* Build Table Structure */
 CREATE TABLE region
 (
-	id INTEGER DEFAULT nextval('region_id_seq'::regclass) NOT NULL,
+id SERIAL,
 	name VARCHAR(100) NOT NULL,
 	regiontype_id INTEGER NOT NULL,
 	country_id CHAR(2) NOT NULL,
@@ -2292,8 +1843,8 @@ COMMENT ON TABLE region IS 'Tabel care contine regiunile corespunzatoare tarilor
 /* Build Table Structure */
 CREATE TABLE region_city
 (
-	region_id INTEGER DEFAULT nextval('region_city_region_id_seq'::regclass) NOT NULL,
-	city_id INTEGER DEFAULT nextval('region_city_city_id_seq'::regclass) NOT NULL
+	region_id INTEGER NOT NULL,
+	city_id INTEGER NOT NULL
 ) WITHOUT OIDS;
 
 /* Add Primary Key */
@@ -2313,7 +1864,7 @@ COMMENT ON TABLE region_city IS 'Tabel ce contine asocierile sintre orase si reg
 /* Build Table Structure */
 CREATE TABLE regiontype
 (
-	id INTEGER DEFAULT nextval('regiontype_id_seq'::regclass) NOT NULL,
+id SERIAL,
 	name VARCHAR(150) NOT NULL
 ) WITHOUT OIDS;
 
@@ -2334,7 +1885,7 @@ COMMENT ON TABLE regiontype IS 'Tabel ce contine tipurile regiunilor corespunzat
 /* Build Table Structure */
 CREATE TABLE "role"
 (
-	id INTEGER DEFAULT nextval('role_id_seq'::regclass) NOT NULL,
+id SERIAL,
 	name VARCHAR(100) NOT NULL,
 	description TEXT NULL
 ) WITHOUT OIDS;
@@ -2353,12 +1904,27 @@ COMMENT ON COLUMN "role".description IS 'Descrierea role-ului';
 COMMENT ON TABLE "role" IS 'Tabel care stocheaza role-urile care pot fi asociate utilizatorilor aplicatiei';
 
 
+/******************** Add Table: sampling_procedure ************************/
+
+/* Build Table Structure */
+CREATE TABLE sampling_procedure
+(
+id SERIAL,
+	name TEXT NOT NULL,
+	description TEXT NULL
+);
+
+/* Add Primary Key */
+ALTER TABLE sampling_procedure ADD CONSTRAINT pksampling_procedure
+	PRIMARY KEY (id);
+
+
 /******************** Add Table: scale ************************/
 
 /* Build Table Structure */
 CREATE TABLE scale
 (
-	item_id INTEGER DEFAULT nextval('scale_item_id_seq'::regclass) NOT NULL,
+	item_id BIGINT NOT NULL,
 	"minValue_id" INTEGER NOT NULL,
 	"maxValue_id" INTEGER NOT NULL,
 	units SMALLINT NOT NULL
@@ -2385,7 +1951,7 @@ COMMENT ON TABLE scale IS 'Tabel ce stocheaza elementele de tip scala ale variab
 /* Build Table Structure */
 CREATE TABLE selection_variable
 (
-	variable_id INTEGER DEFAULT nextval('selection_variable_variable_id_seq'::regclass) NOT NULL,
+	variable_id BIGINT NOT NULL,
 	min_count SMALLINT NOT NULL,
 	max_count SMALLINT NOT NULL
 ) WITHOUT OIDS;
@@ -2409,10 +1975,11 @@ COMMENT ON TABLE selection_variable IS 'Tabel ce contine informatii despre varia
 /* Build Table Structure */
 CREATE TABLE selection_variable_item
 (
-	variable_id INTEGER DEFAULT nextval('selection_variable_item_variable_id_seq'::regclass) NOT NULL,
-	item_id INTEGER DEFAULT nextval('selection_variable_item_item_id_seq'::regclass) NOT NULL,
+	variable_id BIGINT NOT NULL,
+	item_id BIGINT NOT NULL,
 	order_of_item_in_variable INTEGER NOT NULL,
-	response_card_file_id INTEGER NULL
+	response_card_file_id INTEGER NULL,
+	frequency_value REAL NULL
 ) WITHOUT OIDS;
 
 /* Add Primary Key */
@@ -2437,7 +2004,7 @@ CREATE UNIQUE INDEX "selection_variable_item_order_Idx" ON selection_variable_it
 /* Build Table Structure */
 CREATE TABLE setting
 (
-	id INTEGER DEFAULT nextval('setting_id_seq'::regclass) NOT NULL,
+id SERIAL,
 	name VARCHAR(150) NOT NULL,
 	setting_group INTEGER NOT NULL,
 	description TEXT NULL,
@@ -2470,7 +2037,7 @@ COMMENT ON TABLE setting IS 'Tabel care contine setarile aplicatiei';
 /* Build Table Structure */
 CREATE TABLE setting_group
 (
-	id INTEGER DEFAULT nextval('setting_group_id_seq'::regclass) NOT NULL,
+id SERIAL,
 	name VARCHAR(150) NOT NULL,
 	parent INTEGER NOT NULL,
 	description TEXT NULL
@@ -2497,7 +2064,7 @@ COMMENT ON TABLE setting_group IS 'Tabel care stocheaza grupurile de setari ale 
 /* Build Table Structure */
 CREATE TABLE setting_value
 (
-	setting_id INTEGER DEFAULT nextval('setting_value_setting_id_seq'::regclass) NOT NULL,
+	setting_id INTEGER NOT NULL,
 	value TEXT NOT NULL
 ) WITHOUT OIDS;
 
@@ -2518,10 +2085,10 @@ COMMENT ON TABLE setting_value IS 'Tabel care contine valorile setarilor aplicat
 /* Build Table Structure */
 CREATE TABLE skip
 (
-	variable_id INTEGER DEFAULT nextval('skip_variable_id_seq'::regclass) NOT NULL,
-	id INTEGER DEFAULT nextval('skip_id_seq'::regclass) NOT NULL,
+	variable_id BIGINT NOT NULL,
+id SERIAL,
 	condition TEXT NOT NULL,
-	next_variable_id INTEGER DEFAULT nextval('skip_next_variable_id_seq'::regclass) NOT NULL
+	next_variable_id INTEGER NOT NULL
 ) WITHOUT OIDS;
 
 /* Add Primary Key */
@@ -2545,8 +2112,8 @@ COMMENT ON TABLE skip IS 'Tabel ce contine salturile care pot avea loc de la o v
 /* Build Table Structure */
 CREATE TABLE source
 (
-	org_id INTEGER DEFAULT nextval('source_org_id_seq'::regclass) NOT NULL,
-	sourcetype_id INTEGER DEFAULT nextval('source_sourcetype_id_seq'::regclass) NOT NULL
+	org_id INTEGER NOT NULL,
+	sourcetype_id INTEGER NOT NULL
 ) WITHOUT OIDS;
 
 /* Add Primary Key */
@@ -2566,7 +2133,7 @@ COMMENT ON TABLE source IS 'Tabel ce stocheaza sursele (organizatiile) care pot 
 /* Build Table Structure */
 CREATE TABLE source_contact_method
 (
-	id INTEGER NOT NULL,
+id SERIAL,
 	name VARCHAR(150) NOT NULL
 ) WITHOUT OIDS;
 
@@ -2587,7 +2154,7 @@ COMMENT ON TABLE source_contact_method IS 'Tabel ce contine metodele prin care p
 /* Build Table Structure */
 CREATE TABLE source_contacts
 (
-	id INTEGER NOT NULL,
+id SERIAL,
 	person_id INTEGER NOT NULL,
 	contact_date TIMESTAMP NOT NULL,
 	contact_synopsis TEXT NOT NULL,
@@ -2619,7 +2186,7 @@ COMMENT ON TABLE source_contacts IS 'Datele de contact ale unei surse ';
 /* Build Table Structure */
 CREATE TABLE source_type_history
 (
-	id INTEGER NOT NULL,
+id SERIAL,
 	datestart TIMESTAMP NOT NULL,
 	dateend TIMESTAMP NOT NULL,
 	added_by INTEGER NOT NULL,
@@ -2636,10 +2203,10 @@ ALTER TABLE source_type_history ADD CONSTRAINT pksource_type_history
 /* Build Table Structure */
 CREATE TABLE sourcestudy
 (
-	id INTEGER DEFAULT nextval('sourcestudy_id_seq'::regclass) NOT NULL,
+id SERIAL,
 	name VARCHAR(150) NOT NULL,
-	details TEXT NOT NULL,
-	org_id INTEGER DEFAULT nextval('sourcestudy_org_id_seq'::regclass) NOT NULL,
+	details TEXT NULL,
+	org_id INTEGER NOT NULL,
 	type INTEGER NOT NULL
 ) WITHOUT OIDS;
 
@@ -2666,7 +2233,7 @@ COMMENT ON TABLE sourcestudy IS 'Tabel ce stocheaza informatii despre studiile p
 /* Build Table Structure */
 CREATE TABLE sourcestudy_type
 (
-	id INTEGER DEFAULT nextval('sourcestudy_type_id_seq'::regclass) NOT NULL,
+id SERIAL,
 	name VARCHAR(150) NOT NULL,
 	description TEXT NULL
 ) WITHOUT OIDS;
@@ -2690,12 +2257,12 @@ COMMENT ON TABLE sourcestudy_type IS 'Tabel ce stocheaza tipul (starea) studiilo
 /* Build Table Structure */
 CREATE TABLE sourcestudy_type_history
 (
-	id INTEGER DEFAULT nextval('sourcestudy_type_history_id_seq'::regclass) NOT NULL,
-	datestart TIMESTAMP NOT NULL,
-	dateend TIMESTAMP NOT NULL,
-	sourcestudy_type_id INTEGER DEFAULT nextval('sourcestudy_type_history_sourcestudy_type_id_seq'::regclass) NOT NULL,
-	"addedBy" INTEGER NOT NULL,
-	sourcesstudy_id INTEGER DEFAULT nextval('sourcestudy_type_history_sourcesstudy_id_seq'::regclass) NOT NULL
+id SERIAL,
+	datestart TIMESTAMP NULL,
+	dateend TIMESTAMP NULL,
+	sourcestudy_type_id INTEGER NOT NULL,
+	added_by INTEGER NOT NULL,
+	sourcesstudy_id INTEGER NOT NULL
 ) WITHOUT OIDS;
 
 /* Add Primary Key */
@@ -2711,7 +2278,7 @@ COMMENT ON COLUMN sourcestudy_type_history.dateend IS 'Data de final';
 
 COMMENT ON COLUMN sourcestudy_type_history.sourcestudy_type_id IS 'Codul tipului (starii) studiului respectiv intre datele datestart si dateend';
 
-COMMENT ON COLUMN sourcestudy_type_history."addedBy" IS 'Codul utilizatorului care a adaugat informatia referitoare la istoricul unui studiu';
+COMMENT ON COLUMN sourcestudy_type_history.added_by IS 'Codul utilizatorului care a adaugat informatia referitoare la istoricul unui studiu';
 
 COMMENT ON COLUMN sourcestudy_type_history.sourcesstudy_id IS 'Codul studiului care poate fi furnizat de catre o sursa';
 
@@ -2723,7 +2290,7 @@ COMMENT ON TABLE sourcestudy_type_history IS 'Tabel ce stocheaza istoricul tipul
 /* Build Table Structure */
 CREATE TABLE sourcetype
 (
-	id INTEGER DEFAULT nextval('sourcetype_id_seq'::regclass) NOT NULL,
+id SERIAL,
 	name VARCHAR(150) NOT NULL,
 	description TEXT NULL
 ) WITHOUT OIDS;
@@ -2747,11 +2314,11 @@ COMMENT ON TABLE sourcetype IS 'Tabel ce contine tipurile de surse ';
 /* Build Table Structure */
 CREATE TABLE sourcetype_history
 (
-	id INTEGER DEFAULT nextval('sourcetype_history_id_seq'::regclass) NOT NULL,
-	datestart TIMESTAMP NOT NULL,
+id SERIAL,
+	datestart TIMESTAMP NULL,
 	dateend TIMESTAMP NULL,
-	org_id INTEGER DEFAULT nextval('sourcetype_history_org_id_seq'::regclass) NOT NULL,
-	sourcetype_id INTEGER DEFAULT nextval('sourcetype_history_sourcetype_id_seq'::regclass) NOT NULL,
+	org_id INTEGER NOT NULL,
+	sourcetype_id INTEGER NOT NULL,
 	added_by INTEGER NOT NULL
 ) WITHOUT OIDS;
 
@@ -2780,10 +2347,14 @@ COMMENT ON TABLE sourcetype_history IS 'Tabel ce stocheaza istoricul tipului sur
 /* Build Table Structure */
 CREATE TABLE study
 (
-	id INTEGER DEFAULT nextval('study_id_seq'::regclass) NOT NULL,
+id SERIAL,
 	datestart TIMESTAMP NULL,
 	dateend TIMESTAMP NULL,
-	grant_details TEXT NOT NULL
+	insertion_status INTEGER NOT NULL,
+	added_by INTEGER NOT NULL,
+	added TIMESTAMP NOT NULL,
+	can_digitize BOOL NOT NULL,
+	can_use_anonymous BOOL NOT NULL
 ) WITHOUT OIDS;
 
 /* Add Primary Key */
@@ -2797,7 +2368,7 @@ COMMENT ON COLUMN study.datestart IS 'Data de inceput a studiului';
 
 COMMENT ON COLUMN study.dateend IS 'Data de final a studiului';
 
-COMMENT ON COLUMN study.grant_details IS 'Detalii despre proiectul care a finantat studiul';
+COMMENT ON COLUMN study.insertion_status IS 'Pasul din wizard-ul de introducere a metadatelor - din moment ce introducerea se face prin wizard, fiecare pas trebuie comis in baza de date; pana la finalizarea introducerii intregului studiu e nevoie sa stim ca ele au fost partial introduse.';
 
 COMMENT ON TABLE study IS 'Tabel care stocheaza studiile desfasurate, ale caror informatii sunt prezente in baza de date ';
 
@@ -2807,8 +2378,8 @@ COMMENT ON TABLE study IS 'Tabel care stocheaza studiile desfasurate, ale caror 
 /* Build Table Structure */
 CREATE TABLE study_acl
 (
-	study_id INTEGER DEFAULT nextval('study_acl_study_id_seq'::regclass) NOT NULL,
-	aro_id INTEGER DEFAULT nextval('study_acl_aro_id_seq'::regclass) NOT NULL,
+	study_id INTEGER NOT NULL,
+	aro_id INTEGER NOT NULL,
 	aro_type INTEGER NOT NULL,
 	read BOOL NULL,
 	"update" BOOL NULL,
@@ -2843,23 +2414,19 @@ COMMENT ON TABLE study_acl IS 'Tabel ce contine listele pentru controlul accesul
 /* Build Table Structure */
 CREATE TABLE study_descr
 (
-	id INTEGER DEFAULT nextval('study_descr_id_seq'::regclass) NOT NULL,
-	title VARCHAR(300) NOT NULL,
 	lang_id CHAR(2) NOT NULL,
-	title_type_id INTEGER DEFAULT nextval('study_descr_title_type_id_seq'::regclass) NOT NULL,
-	study_id INTEGER DEFAULT nextval('study_descr_study_id_seq'::regclass) NOT NULL,
-	abstract TEXT NULL
+	title_type_id INTEGER NOT NULL,
+	study_id INTEGER NOT NULL,
+	abstract TEXT NULL,
+	grant_details TEXT NULL,
+	title VARCHAR(300) NOT NULL
 ) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE study_descr ADD CONSTRAINT pkstudy_descr
-	PRIMARY KEY (id);
+	PRIMARY KEY (study_id, lang_id);
 
 /* Add Comments */
-COMMENT ON COLUMN study_descr.id IS 'Codul titlului';
-
-COMMENT ON COLUMN study_descr.title IS 'Textul titlului';
-
 COMMENT ON COLUMN study_descr.lang_id IS 'Limba in care este furnizat titlul identificat prin atributul id';
 
 COMMENT ON COLUMN study_descr.title_type_id IS 'Tipul titlului (refera atributul id din tabelul table_type)';
@@ -2895,8 +2462,8 @@ COMMENT ON TABLE study_documents IS 'Tabel ce implementeaza relatia many-to-many
 /* Build Table Structure */
 CREATE TABLE study_file
 (
-	study_id INTEGER DEFAULT nextval('study_file_study_id_seq'::regclass) NOT NULL,
-	file_id INTEGER DEFAULT nextval('study_file_file_id_seq'::regclass) NOT NULL
+	study_id INTEGER NOT NULL,
+	file_id INTEGER NOT NULL
 ) WITHOUT OIDS;
 
 /* Add Primary Key */
@@ -2916,15 +2483,15 @@ COMMENT ON TABLE study_file IS 'Tabel ce contine asocierile dintre studii si doc
 /* Build Table Structure */
 CREATE TABLE study_keyword
 (
-	study_id INTEGER DEFAULT nextval('study_keyword_study_id_seq'::regclass) NOT NULL,
-	keyword_id INTEGER DEFAULT nextval('study_keyword_keyword_id_seq'::regclass) NOT NULL,
+	study_id INTEGER NOT NULL,
+	keyword_id INTEGER NOT NULL,
 	added TIMESTAMP NOT NULL,
 	added_by INTEGER NOT NULL
 ) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE study_keyword ADD CONSTRAINT pkstudy_keyword
-	PRIMARY KEY (study_id, keyword_id);
+	PRIMARY KEY (study_id, keyword_id, added_by);
 
 /* Add Comments */
 COMMENT ON COLUMN study_keyword.study_id IS 'Codul studiului caruia ii este asociat cuvantul cheie referit prin atributul keyword_id';
@@ -2943,20 +2510,18 @@ COMMENT ON TABLE study_keyword IS 'Tabel ce stocheaza asocierile dintre studii s
 /* Build Table Structure */
 CREATE TABLE study_org
 (
-	id INTEGER DEFAULT nextval('study_org_id_seq'::regclass) NOT NULL,
-	org_id INTEGER DEFAULT nextval('study_org_org_id_seq'::regclass) NOT NULL,
-	study_id INTEGER DEFAULT nextval('study_org_study_id_seq'::regclass) NOT NULL,
-	assoctype_id INTEGER DEFAULT nextval('study_org_assoctype_id_seq'::regclass) NOT NULL,
-	citation TEXT NOT NULL
+	org_id INTEGER NOT NULL,
+	study_id INTEGER NOT NULL,
+	assoctype_id INTEGER NOT NULL,
+	citation TEXT NULL,
+	assoc_details TEXT NULL
 ) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE study_org ADD CONSTRAINT pkstudy_org
-	PRIMARY KEY (id);
+	PRIMARY KEY (org_id, study_id, assoctype_id);
 
 /* Add Comments */
-COMMENT ON COLUMN study_org.id IS 'Codul asocierii dintre o organizatie si un studiu';
-
 COMMENT ON COLUMN study_org.org_id IS 'Codul organizatiei care se afla in relatia specificata prin atributul assoctype_id cu studiul identificat prin study_id (refera atributul id al tabelului org)';
 
 COMMENT ON COLUMN study_org.study_id IS 'Codul studiului care se afla in relatia specificata prin atributul assoctype_id cu organizatia identificata prin org_id (refera atributul id al tabelului study)';
@@ -2968,48 +2533,12 @@ COMMENT ON COLUMN study_org.citation IS 'Modalitatea de citare in cadrul studiul
 COMMENT ON TABLE study_org IS 'Tabel ce stocheaza toate organizatiile care au legatura cu studiul: finantator, realizator, arhivar, etc. ( implementeaza relatia many-to-many intre studiu si organizatie)';
 
 
-/******************** Add Table: study_org_acl ************************/
-
-/* Build Table Structure */
-CREATE TABLE study_org_acl
-(
-	study_org_id INTEGER DEFAULT nextval('study_org_acl_study_org_id_seq'::regclass) NOT NULL,
-	aro_id INTEGER DEFAULT nextval('study_org_acl_aro_id_seq'::regclass) NOT NULL,
-	aro_type INTEGER NOT NULL,
-	read BOOL NULL,
-	"update" BOOL NULL,
-	"delete" BOOL NULL,
-	modacl BOOL NULL
-) WITHOUT OIDS;
-
-/* Add Primary Key */
-ALTER TABLE study_org_acl ADD CONSTRAINT pkstudy_org_acl
-	PRIMARY KEY (study_org_id, aro_id, aro_type);
-
-/* Add Comments */
-COMMENT ON COLUMN study_org_acl.study_org_id IS 'Codul asocierii dintre o organizatie si un studiu (refera atributul id din tabelul study_org)';
-
-COMMENT ON COLUMN study_org_acl.aro_id IS 'Codul unui obiect care solicita drepturi de acces';
-
-COMMENT ON COLUMN study_org_acl.aro_type IS 'Tipul unui obiect care solicita drepturi de acces';
-
-COMMENT ON COLUMN study_org_acl.read IS 'Atribut boolean, a carui valoare este true daca exista drept de citire; false, altfel';
-
-COMMENT ON COLUMN study_org_acl."update" IS 'Atribut boolean, a carui valoare este true daca exista drept de modificare; false, altfel';
-
-COMMENT ON COLUMN study_org_acl."delete" IS 'Atribut boolean, a carui valoare este true daca exista drept de stergere; false, altfel';
-
-COMMENT ON COLUMN study_org_acl.modacl IS 'Atribut boolean, a carui valoare este true daca drepturile pot fi modificate; altfel, valoarea atributului este false';
-
-COMMENT ON TABLE study_org_acl IS 'Tabel ce contine drepturile de acces asupra asocierilor dintre organizatii si studii';
-
-
 /******************** Add Table: study_org_assoc ************************/
 
 /* Build Table Structure */
 CREATE TABLE study_org_assoc
 (
-	id INTEGER DEFAULT nextval('study_org_assoc_id_seq'::regclass) NOT NULL,
+id SERIAL,
 	assoc_name VARCHAR(100) NOT NULL,
 	assoc_description TEXT NULL
 ) WITHOUT OIDS;
@@ -3033,19 +2562,17 @@ COMMENT ON TABLE study_org_assoc IS 'Tabel ce contine tipurile de asociere dintr
 /* Build Table Structure */
 CREATE TABLE study_person
 (
-	id INTEGER DEFAULT nextval('study_person_id_seq'::regclass) NOT NULL,
-	person_id INTEGER DEFAULT nextval('study_person_person_id_seq'::regclass) NOT NULL,
-	study_id INTEGER DEFAULT nextval('study_person_study_id_seq'::regclass) NOT NULL,
-	assoctype_id INTEGER DEFAULT nextval('study_person_assoctype_id_seq'::regclass) NOT NULL
+	person_id INTEGER NOT NULL,
+	study_id INTEGER NOT NULL,
+	assoctype_id INTEGER NOT NULL,
+	assoc_details TEXT NULL
 ) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE study_person ADD CONSTRAINT pkstudy_person
-	PRIMARY KEY (id);
+	PRIMARY KEY (person_id, study_id, assoctype_id);
 
 /* Add Comments */
-COMMENT ON COLUMN study_person.id IS 'Codul asocierii intre o persoana si un studiu';
-
 COMMENT ON COLUMN study_person.person_id IS 'Codul persoanei care este in relatia specificata prin atributul asoctype_id cu studiul referit prin atributul study_id (refera atributul id din tabelul person)';
 
 COMMENT ON COLUMN study_person.study_id IS 'Codul studiului aflat in relatia identificata prin asoctype_id cu persoana referita prin atributul person_id (refera atributul id din tabelul study)';
@@ -3055,48 +2582,12 @@ COMMENT ON COLUMN study_person.assoctype_id IS 'Codul tipului de asociere existe
 COMMENT ON TABLE study_person IS 'Tabel ce contine asocierile dintre intre studiu si persoane: realizare, proiectare chestionar etc. (implementeaza relatia many-to-many intre tabelele person si study)';
 
 
-/******************** Add Table: study_person_acl ************************/
-
-/* Build Table Structure */
-CREATE TABLE study_person_acl
-(
-	study_person_id INTEGER DEFAULT nextval('study_person_acl_study_person_id_seq'::regclass) NOT NULL,
-	aro_id INTEGER DEFAULT nextval('study_person_acl_aro_id_seq'::regclass) NOT NULL,
-	aro_type INTEGER NOT NULL,
-	read BOOL NULL,
-	"update" BOOL NULL,
-	"delete" BOOL NULL,
-	modacl BOOL NULL
-) WITHOUT OIDS;
-
-/* Add Primary Key */
-ALTER TABLE study_person_acl ADD CONSTRAINT pkstudy_person_acl
-	PRIMARY KEY (study_person_id, aro_id, aro_type);
-
-/* Add Comments */
-COMMENT ON COLUMN study_person_acl.study_person_id IS 'Codul unei asocieri intre un studiu si o persoana (refera atributul id din tabelul study_person)';
-
-COMMENT ON COLUMN study_person_acl.aro_id IS 'Codul unui obiect care solicita drepturi de acces';
-
-COMMENT ON COLUMN study_person_acl.aro_type IS 'Tipul unui obiect care solicita drepturi de acces';
-
-COMMENT ON COLUMN study_person_acl.read IS 'Atribut boolean, a carui valoare este true daca exista drept de citire; altfel, valoarea atributului este false';
-
-COMMENT ON COLUMN study_person_acl."update" IS 'Atribut boolean, a carui valoare este true daca exista drept de modificare; altfel, valoarea atributului este false';
-
-COMMENT ON COLUMN study_person_acl."delete" IS 'Atribut boolean, a carui valoare este true daca exista drept de stergere; altfel, valoarea atributului este false';
-
-COMMENT ON COLUMN study_person_acl.modacl IS 'Atribut boolean, a carui valoare este true daca drepturile pot fi modificate; altfel, valoarea atributului este false';
-
-COMMENT ON TABLE study_person_acl IS 'Tabel ce contine drepturile de acces asupra asocierilor dintre persoanelor si studii';
-
-
 /******************** Add Table: study_person_asoc ************************/
 
 /* Build Table Structure */
 CREATE TABLE study_person_asoc
 (
-	id INTEGER NOT NULL,
+id SERIAL,
 	asoc_name VARCHAR(100) NOT NULL,
 	asoc_description TEXT NULL
 ) WITHOUT OIDS;
@@ -3120,7 +2611,7 @@ COMMENT ON TABLE study_person_asoc IS 'Tabel ce contine tipurile de asocieri int
 /* Build Table Structure */
 CREATE TABLE study_person_assoc
 (
-	id INTEGER DEFAULT nextval('study_person_assoc_id_seq'::regclass) NOT NULL,
+id SERIAL,
 	asoc_name VARCHAR(100) NOT NULL,
 	asoc_description TEXT NULL
 ) WITHOUT OIDS;
@@ -3144,8 +2635,8 @@ COMMENT ON TABLE study_person_assoc IS 'Tabel ce contine tipurile de asocieri ca
 /* Build Table Structure */
 CREATE TABLE study_topic
 (
-	study_id INTEGER DEFAULT nextval('study_topic_study_id_seq'::regclass) NOT NULL,
-	topic_id INTEGER DEFAULT nextval('study_topic_topic_id_seq'::regclass) NOT NULL
+	study_id INTEGER NOT NULL,
+	topic_id INTEGER NOT NULL
 ) WITHOUT OIDS;
 
 /* Add Primary Key */
@@ -3165,7 +2656,7 @@ COMMENT ON TABLE study_topic IS 'Tabel ce stocheaza asocierile dintre studii si 
 /* Build Table Structure */
 CREATE TABLE suffix
 (
-	id INTEGER DEFAULT nextval('suffix_id_seq'::regclass) NOT NULL,
+id SERIAL,
 	name VARCHAR(50) NOT NULL
 ) WITHOUT OIDS;
 
@@ -3186,8 +2677,9 @@ COMMENT ON TABLE suffix IS 'Tabel ce contine sufixele care pot fi adaugate numel
 /* Build Table Structure */
 CREATE TABLE time_meth_type
 (
-	id INTEGER DEFAULT nextval('time_meth_type_id_seq'::regclass) NOT NULL,
-	name TEXT NOT NULL
+id SERIAL,
+	name VARCHAR(100) NOT NULL,
+	description TEXT NULL
 ) WITHOUT OIDS;
 
 /* Add Primary Key */
@@ -3207,7 +2699,7 @@ COMMENT ON TABLE time_meth_type IS 'Tabel ce contine tipurile de metode temporal
 /* Build Table Structure */
 CREATE TABLE title_type
 (
-	id INTEGER DEFAULT nextval('title_type_id_seq'::regclass) NOT NULL,
+id SERIAL,
 	name VARCHAR(50) NOT NULL
 ) WITHOUT OIDS;
 
@@ -3228,11 +2720,11 @@ COMMENT ON TABLE title_type IS 'Tabel ce stocheaza tipurile titlurilor din baza 
 /* Build Table Structure */
 CREATE TABLE topic
 (
-	id INTEGER DEFAULT nextval('topic_id_seq'::regclass) NOT NULL,
+id SERIAL,
 	name VARCHAR(100) NOT NULL,
 	description TEXT NULL,
-	left_topic INTEGER NULL,
-	right_topic INTEGER NULL
+	parent_topic_id INTEGER NULL,
+	preferred_synonym_topic_id INTEGER NULL
 ) WITHOUT OIDS;
 
 /* Add Primary Key */
@@ -3246,9 +2738,7 @@ COMMENT ON COLUMN topic.name IS 'Numele unui topic ce poate fi asociat unui stud
 
 COMMENT ON COLUMN topic.description IS 'Descrierea topic-ului ce poate fi asociat unui studiu sau unei instante';
 
-COMMENT ON COLUMN topic.left_topic IS 'Codul topic-ului din stanga, in ierarhia arorescenta creata pentru a mentine legaturile cu topic-urile referite ';
-
-COMMENT ON COLUMN topic.right_topic IS 'Codul topic-ului din dreapta, in ierarhia arorescenta creata pentru a mentine legaturile cu topic-urile referite ';
+COMMENT ON COLUMN topic.parent_topic_id IS 'Codul topic-ului din dreapta, in ierarhia arorescenta creata pentru a mentine legaturile cu topic-urile referite ';
 
 COMMENT ON TABLE topic IS 'Tabel ce contine topic-urile ce pot fi asociate unei instante sau unui studiu';
 
@@ -3259,7 +2749,7 @@ COMMENT ON TABLE topic IS 'Tabel ce contine topic-urile ce pot fi asociate unei 
 CREATE TABLE translated_topic
 (
 	lang_id CHAR(2) NOT NULL,
-	topic_id INTEGER DEFAULT nextval('translated_topic_topic_id_seq'::regclass) NOT NULL,
+	topic_id INTEGER NOT NULL,
 	translation TEXT NOT NULL
 ) WITHOUT OIDS;
 
@@ -3282,8 +2772,8 @@ COMMENT ON TABLE translated_topic IS 'Tabel ce contine traducerile anumitor topi
 /* Build Table Structure */
 CREATE TABLE unit_analysis
 (
-	id INTEGER DEFAULT nextval('unit_analysis_id_seq'::regclass) NOT NULL,
-	name TEXT NOT NULL,
+id SERIAL,
+	name VARCHAR(100) NOT NULL,
 	description TEXT NULL
 ) WITHOUT OIDS;
 
@@ -3306,7 +2796,7 @@ COMMENT ON TABLE unit_analysis IS 'Tabel care stocheaza tipurile de unitati de a
 /* Build Table Structure */
 CREATE TABLE "user"
 (
-	id INTEGER DEFAULT nextval('user_id_seq'::regclass) NOT NULL,
+id SERIAL,
 	credential_provider TEXT NOT NULL
 ) WITHOUT OIDS;
 
@@ -3327,7 +2817,7 @@ COMMENT ON TABLE "user" IS 'Tabel ce contine utilizatorii aplicatiei';
 /* Build Table Structure */
 CREATE TABLE user_auth_log
 (
-	user_id INTEGER DEFAULT nextval('user_auth_log_user_id_seq'::regclass) NOT NULL,
+	user_id INTEGER NOT NULL,
 	"timestamp" TIMESTAMP NOT NULL,
 	"action" VARCHAR(30) NOT NULL,
 	credential_provider TEXT NOT NULL,
@@ -3360,10 +2850,10 @@ COMMENT ON TABLE user_auth_log IS 'Tabel ce stocheaza log-ul corespunzator proce
 /* Build Table Structure */
 CREATE TABLE user_message
 (
-	id INTEGER DEFAULT nextval('user_message_id_seq'::regclass) NOT NULL,
+id SERIAL,
 	message TEXT NOT NULL,
-	from_user_id INTEGER DEFAULT nextval('user_message_from_user_id_seq'::regclass) NOT NULL,
-	to_user_id INTEGER DEFAULT nextval('user_message_to_user_id_seq'::regclass) NOT NULL
+	from_user_id INTEGER NOT NULL,
+	to_user_id INTEGER NOT NULL
 ) WITHOUT OIDS;
 
 /* Add Primary Key */
@@ -3387,7 +2877,7 @@ COMMENT ON TABLE user_message IS 'Tabel care stocheaza mesajele trimise catre ut
 /* Build Table Structure */
 CREATE TABLE user_profile
 (
-	user_id INTEGER DEFAULT nextval('user_profile_user_id_seq'::regclass) NOT NULL,
+	user_id INTEGER NOT NULL,
 	f_name VARCHAR(100) NOT NULL,
 	l_name VARCHAR(100) NOT NULL,
 	email VARCHAR(200) NOT NULL
@@ -3414,8 +2904,8 @@ COMMENT ON TABLE user_profile IS 'Tabel ce stocheaza profilurile utilizatorilor 
 /* Build Table Structure */
 CREATE TABLE user_role
 (
-	user_id INTEGER DEFAULT nextval('user_role_user_id_seq'::regclass) NOT NULL,
-	role_id INTEGER DEFAULT nextval('user_role_role_id_seq'::regclass) NOT NULL
+	user_id INTEGER NOT NULL,
+	role_id INTEGER NOT NULL
 ) WITHOUT OIDS;
 
 /* Add Primary Key */
@@ -3435,7 +2925,7 @@ COMMENT ON TABLE user_role IS 'Tabel ce stocheaza asocierile dintre utilizatori 
 /* Build Table Structure */
 CREATE TABLE user_setting
 (
-	id INTEGER DEFAULT nextval('user_setting_id_seq'::regclass) NOT NULL,
+id SERIAL,
 	name TEXT NOT NULL,
 	setting_group INTEGER NOT NULL,
 	description TEXT NULL,
@@ -3468,7 +2958,7 @@ COMMENT ON TABLE user_setting IS 'Tabel care stocheaza setarile pentru utilizato
 /* Build Table Structure */
 CREATE TABLE user_setting_group
 (
-	id INTEGER DEFAULT nextval('user_setting_group_id_seq'::regclass) NOT NULL,
+id SERIAL,
 	name VARCHAR(100) NOT NULL,
 	description TEXT NULL
 ) WITHOUT OIDS;
@@ -3492,8 +2982,8 @@ COMMENT ON TABLE user_setting_group IS 'Tabel care stocheaza grupurile de setari
 /* Build Table Structure */
 CREATE TABLE user_setting_value
 (
-	user_setting_id INTEGER DEFAULT nextval('user_setting_value_user_setting_id_seq'::regclass) NOT NULL,
-	user_id INTEGER DEFAULT nextval('user_setting_value_user_id_seq'::regclass) NOT NULL,
+	user_setting_id INTEGER NOT NULL,
+	user_id INTEGER NOT NULL,
 	value TEXT NOT NULL
 ) WITHOUT OIDS;
 
@@ -3516,7 +3006,7 @@ COMMENT ON TABLE user_setting_value IS 'Tabel care stocheaza valorile setarilor 
 /* Build Table Structure */
 CREATE TABLE value
 (
-	item_id INTEGER DEFAULT nextval('value_item_id_seq'::regclass) NOT NULL,
+	item_id BIGINT NOT NULL,
 	value INTEGER NOT NULL
 ) WITHOUT OIDS;
 
@@ -3535,7 +3025,7 @@ COMMENT ON TABLE value IS 'Tabel ce stocheaza valorile posibile ale item-urilor 
 /* Build Table Structure */
 CREATE TABLE vargroup
 (
-	id INTEGER DEFAULT nextval('vargroup_id_seq'::regclass) NOT NULL,
+id SERIAL,
 	name TEXT NOT NULL
 ) WITHOUT OIDS;
 
@@ -3556,8 +3046,8 @@ COMMENT ON TABLE vargroup IS 'Tabel pentru definirea gruparilor de variabile (pe
 /* Build Table Structure */
 CREATE TABLE variable
 (
-	instance_id INTEGER DEFAULT nextval('variable_instance_id_seq'::regclass) NOT NULL,
-	id INTEGER DEFAULT nextval('variable_id_seq'::regclass) NOT NULL,
+	instance_id INTEGER NOT NULL,
+id BIGSERIAL,
 	label TEXT NOT NULL,
 	type SMALLINT NOT NULL,
 	order_in_instance INTEGER NOT NULL,
@@ -3598,7 +3088,7 @@ CREATE UNIQUE INDEX "Variables_QuestionnaireId_Order_Idx" ON variable (instance_
 /* Build Table Structure */
 CREATE TABLE variable_group
 (
-	id INTEGER NOT NULL,
+id SERIAL,
 	name VARCHAR(100) NOT NULL
 ) WITHOUT OIDS;
 
@@ -3619,8 +3109,8 @@ COMMENT ON TABLE variable_group IS 'Tabel pentru definirea gruparilor de variabi
 /* Build Table Structure */
 CREATE TABLE variable_vargroup
 (
-	variable_id INTEGER DEFAULT nextval('variable_vargroup_variable_id_seq'::regclass) NOT NULL,
-	vargroup_id INTEGER DEFAULT nextval('variable_vargroup_vargroup_id_seq'::regclass) NOT NULL
+	variable_id BIGINT NOT NULL,
+	vargroup_id INTEGER NOT NULL
 ) WITHOUT OIDS;
 
 /* Add Primary Key */
@@ -4002,14 +3492,29 @@ ALTER TABLE file_acl ADD CONSTRAINT fk_documents_acl_documents
 	FOREIGN KEY (document_id) REFERENCES file (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
-/* Add Foreign Key: fk_documents_document_types */
-ALTER TABLE file ADD CONSTRAINT fk_documents_document_types
-	FOREIGN KEY (filetype_id) REFERENCES filetype (id)
+/* Add Foreign Key: fk_file_property_name_value_file */
+ALTER TABLE file_property_name_value ADD CONSTRAINT fk_file_property_name_value_file
+	FOREIGN KEY (file_id) REFERENCES file (id)
+	ON UPDATE NO ACTION ON DELETE NO ACTION;
+
+/* Add Foreign Key: fk_file_property_name_value_property_name */
+ALTER TABLE file_property_name_value ADD CONSTRAINT fk_file_property_name_value_property_name
+	FOREIGN KEY (property_name_id) REFERENCES property_name (id)
+	ON UPDATE NO ACTION ON DELETE NO ACTION;
+
+/* Add Foreign Key: fk_file_property_name_value_property_value */
+ALTER TABLE file_property_name_value ADD CONSTRAINT fk_file_property_name_value_property_value
+	FOREIGN KEY (property_value_id) REFERENCES property_value (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 /* Add Foreign Key: fk_form_instance */
 ALTER TABLE form ADD CONSTRAINT fk_form_instance
 	FOREIGN KEY (instance_id) REFERENCES instance (id)
+	ON UPDATE NO ACTION ON DELETE NO ACTION;
+
+/* Add Foreign Key: fk_form_person */
+ALTER TABLE form ADD CONSTRAINT fk_form_person
+	FOREIGN KEY (operator_id) REFERENCES person (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 /* Add Foreign Key: fk_form_custom_number_var_custom_variable */
@@ -4042,19 +3547,24 @@ ALTER TABLE form_selection_var ADD CONSTRAINT fk_form_selection_var_selection_va
 	FOREIGN KEY (variable_id, item_id) REFERENCES selection_variable_item (variable_id, item_id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
-/* Add Foreign Key: fk_frequency_selection_variable */
-ALTER TABLE frequency ADD CONSTRAINT fk_frequency_selection_variable
-	FOREIGN KEY (variable_id, item_id) REFERENCES selection_variable_item (variable_id, item_id)
-	ON UPDATE NO ACTION ON DELETE NO ACTION;
-
 /* Add Foreign Key: fk_instance_study */
 ALTER TABLE instance ADD CONSTRAINT fk_instance_study
 	FOREIGN KEY (study_id) REFERENCES study (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
+/* Add Foreign Key: fk_instance_time_meth_type */
+ALTER TABLE instance ADD CONSTRAINT fk_instance_time_meth_type
+	FOREIGN KEY (time_meth_id) REFERENCES time_meth_type (id)
+	ON UPDATE NO ACTION ON DELETE NO ACTION;
+
 /* Add Foreign Key: fk_instance_unit_analysis */
 ALTER TABLE instance ADD CONSTRAINT fk_instance_unit_analysis
 	FOREIGN KEY (unit_analysis_id) REFERENCES unit_analysis (id)
+	ON UPDATE NO ACTION ON DELETE NO ACTION;
+
+/* Add Foreign Key: fk_instance_user */
+ALTER TABLE instance ADD CONSTRAINT fk_instance_user
+	FOREIGN KEY (added_by) REFERENCES "user" (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 /* Add Foreign Key: fk_instance_acl_instance */
@@ -4092,6 +3602,11 @@ ALTER TABLE instance_keyword ADD CONSTRAINT fk_instance_keyword_keyword
 	FOREIGN KEY (keyword_id) REFERENCES keyword (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
+/* Add Foreign Key: fk_instance_keyword_user */
+ALTER TABLE instance_keyword ADD CONSTRAINT fk_instance_keyword_user
+	FOREIGN KEY (added_by) REFERENCES "user" (id)
+	ON UPDATE NO ACTION ON DELETE NO ACTION;
+
 /* Add Foreign Key: fk_instance_org_instance */
 ALTER TABLE instance_org ADD CONSTRAINT fk_instance_org_instance
 	FOREIGN KEY (instance_id) REFERENCES instance (id)
@@ -4122,6 +3637,16 @@ ALTER TABLE instance_person ADD CONSTRAINT fk_instance_person_person
 	FOREIGN KEY (person_id) REFERENCES person (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
+/* Add Foreign Key: fk_instance_sampling_procedure_instance */
+ALTER TABLE instance_sampling_procedure ADD CONSTRAINT fk_instance_sampling_procedure_instance
+	FOREIGN KEY (instance_id) REFERENCES instance (id)
+	ON UPDATE NO ACTION ON DELETE NO ACTION;
+
+/* Add Foreign Key: fk_instance_sampling_procedure_sampling_procedure */
+ALTER TABLE instance_sampling_procedure ADD CONSTRAINT fk_instance_sampling_procedure_sampling_procedure
+	FOREIGN KEY (sampling_procedure_id) REFERENCES sampling_procedure (id)
+	ON UPDATE NO ACTION ON DELETE NO ACTION;
+
 /* Add Foreign Key: fk_instance_topic_instance */
 ALTER TABLE instance_topic ADD CONSTRAINT fk_instance_topic_instance
 	FOREIGN KEY (instance_id) REFERENCES instance (id)
@@ -4137,19 +3662,9 @@ ALTER TABLE meth_coll_type ADD CONSTRAINT fk_meth_coll_type_collection_model_typ
 	FOREIGN KEY (collection_model_id) REFERENCES collection_model_type (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
-/* Add Foreign Key: fk_meth_coll_type_methodology */
-ALTER TABLE meth_coll_type ADD CONSTRAINT fk_meth_coll_type_methodology
-	FOREIGN KEY (instance_id) REFERENCES methodology (instance_id)
-	ON UPDATE NO ACTION ON DELETE NO ACTION;
-
-/* Add Foreign Key: fk_methodology_instance */
-ALTER TABLE methodology ADD CONSTRAINT fk_methodology_instance
+/* Add Foreign Key: fk_meth_coll_type_instance */
+ALTER TABLE meth_coll_type ADD CONSTRAINT fk_meth_coll_type_instance
 	FOREIGN KEY (instance_id) REFERENCES instance (id)
-	ON UPDATE NO ACTION ON DELETE NO ACTION;
-
-/* Add Foreign Key: fk_methodology_time_meth_type */
-ALTER TABLE methodology ADD CONSTRAINT fk_methodology_time_meth_type
-	FOREIGN KEY (time_meth_id) REFERENCES time_meth_type (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 /* Add Foreign Key: fk_news_users */
@@ -4432,6 +3947,11 @@ ALTER TABLE sourcestudy_type_history ADD CONSTRAINT fk_sourcestudy_type_history_
 	FOREIGN KEY (sourcestudy_type_id) REFERENCES sourcestudy_type (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
+/* Add Foreign Key: fk_sourcestudy_type_history_user */
+ALTER TABLE sourcestudy_type_history ADD CONSTRAINT fk_sourcestudy_type_history_user
+	FOREIGN KEY (added_by) REFERENCES "user" (id)
+	ON UPDATE NO ACTION ON DELETE NO ACTION;
+
 /* Add Foreign Key: fk_source_type_history_sources */
 ALTER TABLE sourcetype_history ADD CONSTRAINT fk_source_type_history_sources
 	FOREIGN KEY (org_id) REFERENCES source (org_id)
@@ -4440,6 +3960,16 @@ ALTER TABLE sourcetype_history ADD CONSTRAINT fk_source_type_history_sources
 /* Add Foreign Key: fk_source_type_history_sourcetype */
 ALTER TABLE sourcetype_history ADD CONSTRAINT fk_source_type_history_sourcetype
 	FOREIGN KEY (sourcetype_id) REFERENCES sourcetype (id)
+	ON UPDATE NO ACTION ON DELETE NO ACTION;
+
+/* Add Foreign Key: fk_sourcetype_history_user */
+ALTER TABLE sourcetype_history ADD CONSTRAINT fk_sourcetype_history_user
+	FOREIGN KEY (added_by) REFERENCES "user" (id)
+	ON UPDATE NO ACTION ON DELETE NO ACTION;
+
+/* Add Foreign Key: fk_study_user */
+ALTER TABLE study ADD CONSTRAINT fk_study_user
+	FOREIGN KEY (added_by) REFERENCES "user" (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 /* Add Foreign Key: fk_study_acl_study */
@@ -4482,6 +4012,11 @@ ALTER TABLE study_keyword ADD CONSTRAINT fk_study_keyword_study
 	FOREIGN KEY (study_id) REFERENCES study (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
+/* Add Foreign Key: fk_study_keyword_user */
+ALTER TABLE study_keyword ADD CONSTRAINT fk_study_keyword_user
+	FOREIGN KEY (added_by) REFERENCES "user" (id)
+	ON UPDATE NO ACTION ON DELETE NO ACTION;
+
 /* Add Foreign Key: fk_studiu_org_org */
 ALTER TABLE study_org ADD CONSTRAINT fk_studiu_org_org
 	FOREIGN KEY (org_id) REFERENCES org (id)
@@ -4495,11 +4030,6 @@ ALTER TABLE study_org ADD CONSTRAINT fk_studiu_org_studiu_org_asoc
 /* Add Foreign Key: fk_studiu_org_study */
 ALTER TABLE study_org ADD CONSTRAINT fk_studiu_org_study
 	FOREIGN KEY (study_id) REFERENCES study (id)
-	ON UPDATE NO ACTION ON DELETE NO ACTION;
-
-/* Add Foreign Key: fk_study_org_acl_study_org */
-ALTER TABLE study_org_acl ADD CONSTRAINT fk_study_org_acl_study_org
-	FOREIGN KEY (study_org_id) REFERENCES study_org (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 /* Add Foreign Key: fk_study_person_person */
@@ -4517,11 +4047,6 @@ ALTER TABLE study_person ADD CONSTRAINT fk_study_person_study
 	FOREIGN KEY (study_id) REFERENCES study (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
-/* Add Foreign Key: fk_study_person_acl_study_person */
-ALTER TABLE study_person_acl ADD CONSTRAINT fk_study_person_acl_study_person
-	FOREIGN KEY (study_person_id) REFERENCES study_person (id)
-	ON UPDATE NO ACTION ON DELETE NO ACTION;
-
 /* Add Foreign Key: fk_study_topic_study */
 ALTER TABLE study_topic ADD CONSTRAINT fk_study_topic_study
 	FOREIGN KEY (study_id) REFERENCES study (id)
@@ -4530,6 +4055,16 @@ ALTER TABLE study_topic ADD CONSTRAINT fk_study_topic_study
 /* Add Foreign Key: fk_study_topic_topic */
 ALTER TABLE study_topic ADD CONSTRAINT fk_study_topic_topic
 	FOREIGN KEY (topic_id) REFERENCES topic (id)
+	ON UPDATE NO ACTION ON DELETE NO ACTION;
+
+/* Add Foreign Key: fk_topic_topic_parent */
+ALTER TABLE topic ADD CONSTRAINT fk_topic_topic_parent
+	FOREIGN KEY (parent_topic_id) REFERENCES topic (id)
+	ON UPDATE NO ACTION ON DELETE NO ACTION;
+
+/* Add Foreign Key: fk_topic_topic_preferred */
+ALTER TABLE topic ADD CONSTRAINT fk_topic_topic_preferred
+	FOREIGN KEY (preferred_synonym_topic_id) REFERENCES topic (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 /* Add Foreign Key: fk_translated_topic_lang */

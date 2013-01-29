@@ -1,7 +1,386 @@
-/************ Update: Schemas ***************/
+/************ Add: Sequences ***************/
 
-COMMENT ON SCHEMA public IS NULL;
+CREATE SEQUENCE acl_class_id_seq INCREMENT BY 1;
 
+CREATE SEQUENCE acl_entry_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE acl_entry_sid_seq INCREMENT BY 1;
+
+CREATE SEQUENCE acl_object_identity_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE acl_object_identity_owner_sid_seq INCREMENT BY 1;
+
+CREATE SEQUENCE acl_sid_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE address_city_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE address_country_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE address_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE audit_field_audit_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE audit_field_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE audit_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE audit_row_id_audit_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE audit_row_id_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE audit_user_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE auth_data_user_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE catalog_acl_aro_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE catalog_acl_catalog_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE catalog_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE catalog_study_catalog_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE catalog_study_study_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE city_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE cms_file_folder_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE cms_file_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE cms_folder_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE cms_layout_group_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE cms_layout_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE cms_page_content_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE cms_page_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE cms_snippet_group_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE cms_snippet_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE collection_model_type_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE concept_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE concept_variable_concept_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE concept_variable_variable_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE email_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE file_acl_aro_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE file_acl_document_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE file_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE filetype_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE form_edited_number_var_form_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE form_edited_number_var_variable_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE form_edited_text_var_form_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE form_edited_text_var_variable_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE form_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE form_instance_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE form_operator_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE form_selection_var_form_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE form_selection_var_item_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE form_selection_var_variable_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE frequency_item_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE frequency_variable_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE instance_acl_aro_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE instance_acl_instance_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE instance_descr_instance_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE instance_documents_document_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE instance_documents_instance_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE instance_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE instance_keyword_instance_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE instance_keyword_keyword_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE instance_org_assoc_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE instance_org_assoc_type_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE instance_org_instance_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE instance_org_org_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE instance_person_assoc_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE instance_person_assoc_type_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE instance_person_instance_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE instance_person_person_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE instance_study_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE instance_topic_instance_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE instance_topic_topic_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE instance_unit_analysis_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE internet_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE item_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE keyword_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE meth_coll_type_collection_model_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE meth_coll_type_instance_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE methodology_instance_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE methodology_time_meth_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE news_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE org_address_address_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE org_address_org_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE org_email_email_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE org_email_org_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE org_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE org_internet_internet_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE org_internet_org_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE org_phone_org_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE org_phone_phone_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE org_prefix_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE org_relation_type_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE org_relations_org_1_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE org_relations_org_2_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE org_relations_org_relation_type_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE org_sufix_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE other_statistic_variable_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE person_address_address_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE person_address_person_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE person_email_email_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE person_email_person_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE person_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE person_internet_internet_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE person_internet_person_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE person_links_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE person_links_person_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE person_links_user_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE person_org_org_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE person_org_person_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE person_phone_person_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE person_phone_phone_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE person_role_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE phone_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE prefix_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE region_city_city_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE region_city_region_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE region_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE region_regiontype_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE regiontype_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE role_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE scale_item_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE selection_variable_item_item_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE selection_variable_item_variable_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE selection_variable_variable_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE setting_group_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE setting_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE setting_value_setting_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE skip_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE skip_next_variable_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE skip_variable_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE source_org_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE source_sourcetype_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE sourcestudy_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE sourcestudy_org_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE sourcestudy_type_history_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE sourcestudy_type_history_sourcesstudy_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE sourcestudy_type_history_sourcestudy_type_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE sourcestudy_type_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE sourcetype_history_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE sourcetype_history_org_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE sourcetype_history_sourcetype_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE sourcetype_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE study_acl_aro_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE study_acl_study_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE study_descr_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE study_descr_study_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE study_descr_title_type_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE study_file_file_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE study_file_study_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE study_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE study_keyword_keyword_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE study_keyword_study_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE study_org_acl_aro_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE study_org_acl_study_org_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE study_org_assoc_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE study_org_assoctype_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE study_org_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE study_org_org_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE study_org_study_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE study_person_acl_aro_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE study_person_acl_study_person_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE study_person_assoc_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE study_person_assoctype_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE study_person_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE study_person_person_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE study_person_study_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE study_topic_study_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE study_topic_topic_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE suffix_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE time_meth_type_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE title_type_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE topic_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE translated_topic_topic_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE unit_analysis_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE user_auth_log_user_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE user_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE user_message_from_user_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE user_message_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE user_message_to_user_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE user_profile_user_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE user_role_role_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE user_role_user_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE user_setting_group_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE user_setting_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE user_setting_value_user_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE user_setting_value_user_setting_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE value_item_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE vargroup_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE variable_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE variable_instance_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE variable_vargroup_vargroup_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE variable_vargroup_variable_id_seq INCREMENT BY 1;
 
 
 
@@ -12,9 +391,9 @@ COMMENT ON SCHEMA public IS NULL;
 /* Build Table Structure */
 CREATE TABLE acl_class
 (
-	id BIGSERIAL,
+	id BIGINT DEFAULT nextval('acl_class_id_seq'::regclass) NOT NULL,
 	class TEXT NOT NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE acl_class ADD CONSTRAINT pkacl_class
@@ -29,15 +408,15 @@ CREATE UNIQUE INDEX "acl_class_class_Idx" ON acl_class (class);
 /* Build Table Structure */
 CREATE TABLE acl_entry
 (
-	id BIGSERIAL,
+	id BIGINT DEFAULT nextval('acl_entry_id_seq'::regclass) NOT NULL,
 	acl_object_identity BIGINT NOT NULL,
 	ace_order INTEGER NOT NULL,
-	sid BIGSERIAL,
+	sid BIGINT DEFAULT nextval('acl_entry_sid_seq'::regclass) NOT NULL,
 	mask INTEGER NOT NULL,
 	granting BOOL NOT NULL,
 	audit_success BOOL NOT NULL,
 	audit_failure BOOL NOT NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE acl_entry ADD CONSTRAINT pkacl_entry
@@ -52,13 +431,13 @@ CREATE INDEX "acl_entry_acl_object_identity_Idx" ON acl_entry (acl_object_identi
 /* Build Table Structure */
 CREATE TABLE acl_object_identity
 (
-	id BIGSERIAL,
+	id BIGINT DEFAULT nextval('acl_object_identity_id_seq'::regclass) NOT NULL,
 	object_id_class BIGINT NOT NULL,
 	object_id_identity BIGINT NOT NULL,
 	parent_object BIGINT NOT NULL,
-	owner_sid BIGSERIAL,
+	owner_sid BIGINT DEFAULT nextval('acl_object_identity_owner_sid_seq'::regclass) NOT NULL,
 	entries_inheriting BOOL NOT NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE acl_object_identity ADD CONSTRAINT pkacl_object_identity
@@ -73,10 +452,10 @@ CREATE UNIQUE INDEX "acl_object_identity_object_id_class_Idx" ON acl_object_iden
 /* Build Table Structure */
 CREATE TABLE acl_sid
 (
-	id BIGSERIAL,
+	id BIGINT DEFAULT nextval('acl_sid_id_seq'::regclass) NOT NULL,
 	principal BOOL NOT NULL,
 	sid TEXT NOT NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE acl_sid ADD CONSTRAINT pkacl_sid
@@ -91,15 +470,15 @@ CREATE UNIQUE INDEX "acl_sid_principal_Idx" ON acl_sid (principal, sid);
 /* Build Table Structure */
 CREATE TABLE address
 (
-	id SERIAL,
-	country_id SERIAL,
-	city_id SERIAL,
+	id INTEGER DEFAULT nextval('address_id_seq'::regclass) NOT NULL,
+	country_id CHAR(2) NOT NULL,
+	city_id INTEGER NOT NULL,
 	address1 TEXT NOT NULL,
 	address2 TEXT NOT NULL,
 	subdiv_name VARCHAR(200) NULL,
 	subdiv_code VARCHAR(50) NULL,
 	postal_code VARCHAR(30) NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE address ADD CONSTRAINT pkaddress
@@ -126,13 +505,13 @@ COMMENT ON TABLE address IS 'Tabel unic pentru toate adresele care se gasesc in 
 /* Build Table Structure */
 CREATE TABLE audit
 (
-	id SERIAL,
+	id INTEGER DEFAULT nextval('audit_id_seq'::regclass) NOT NULL,
 	"time" TIMESTAMP NOT NULL,
 	"operationType" SMALLINT NOT NULL,
 	"tableName" TEXT NOT NULL,
-	user_id SERIAL,
+	user_id INTEGER DEFAULT nextval('audit_user_id_seq'::regclass) NOT NULL,
 	version_number INTEGER NOT NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE audit ADD CONSTRAINT pkaudit
@@ -159,12 +538,12 @@ COMMENT ON TABLE audit IS 'Tabel ce stocheaza informatiile referitoare la auditu
 /* Build Table Structure */
 CREATE TABLE audit_field
 (
-	audit_id SERIAL,
-	id SERIAL,
+	audit_id INTEGER DEFAULT nextval('audit_field_audit_id_seq'::regclass) NOT NULL,
+	id INTEGER DEFAULT nextval('audit_field_id_seq'::regclass) NOT NULL,
 	column_name TEXT NOT NULL,
 	new_value TEXT NOT NULL,
 	old_value TEXT NOT NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE audit_field ADD CONSTRAINT pkaudit_field
@@ -189,11 +568,11 @@ COMMENT ON TABLE audit_field IS 'Tabel ce inregistreaza informatiile de audit la
 /* Build Table Structure */
 CREATE TABLE audit_row_id
 (
-	audit_id SERIAL,
-	id SERIAL,
+	audit_id INTEGER DEFAULT nextval('audit_row_id_audit_id_seq'::regclass) NOT NULL,
+	id INTEGER DEFAULT nextval('audit_row_id_id_seq'::regclass) NOT NULL,
 	column_name TEXT NOT NULL,
 	column_value INTEGER NOT NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE audit_row_id ADD CONSTRAINT pkaudit_row_id
@@ -216,11 +595,11 @@ COMMENT ON TABLE audit_row_id IS 'Tabel ce stocheaza valorile identificatorilor 
 /* Build Table Structure */
 CREATE TABLE auth_data
 (
-	user_id SERIAL,
+	user_id INTEGER DEFAULT nextval('auth_data_user_id_seq'::regclass) NOT NULL,
 	credential_provider TEXT NOT NULL,
 	field_name TEXT NOT NULL,
 	field_value TEXT NOT NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE auth_data ADD CONSTRAINT pkauth_data
@@ -243,12 +622,12 @@ COMMENT ON TABLE auth_data IS 'Tabel ce stocheaza datele de autentificare ale ut
 /* Build Table Structure */
 CREATE TABLE catalog
 (
-	id SERIAL,
+	id INTEGER DEFAULT nextval('catalog_id_seq'::regclass) NOT NULL,
 	name VARCHAR(200) NOT NULL,
 	parent INTEGER NOT NULL,
 	owner INTEGER NOT NULL,
 	added TIMESTAMP NOT NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE catalog ADD CONSTRAINT pkcatalog
@@ -273,14 +652,14 @@ COMMENT ON TABLE catalog IS 'Tabel ce stocheaza informatii despre cataloagele de
 /* Build Table Structure */
 CREATE TABLE catalog_acl
 (
-	catalog_id SERIAL,
-	aro_id SERIAL,
+	catalog_id INTEGER DEFAULT nextval('catalog_acl_catalog_id_seq'::regclass) NOT NULL,
+	aro_id INTEGER DEFAULT nextval('catalog_acl_aro_id_seq'::regclass) NOT NULL,
 	aro_type INTEGER NOT NULL,
 	read BOOL NULL,
 	"update" BOOL NULL,
 	"delete" BOOL NULL,
 	modacl BOOL NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE catalog_acl ADD CONSTRAINT pkcatalog_acl
@@ -309,10 +688,10 @@ COMMENT ON TABLE catalog_acl IS 'Tabel ce stocheaza drepturile de acces asupra u
 /* Build Table Structure */
 CREATE TABLE catalog_study
 (
-	catalog_id SERIAL,
-	study_id SERIAL,
+	catalog_id INTEGER DEFAULT nextval('catalog_study_catalog_id_seq'::regclass) NOT NULL,
+	study_id INTEGER DEFAULT nextval('catalog_study_study_id_seq'::regclass) NOT NULL,
 	added TIMESTAMP NOT NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE catalog_study ADD CONSTRAINT pkcatalog_study
@@ -331,7 +710,7 @@ COMMENT ON TABLE catalog_study IS 'Tabel ce contine asocierile dintre cataloage 
 /* Build Table Structure */
 CREATE TABLE city
 (
-	id SERIAL,
+	id INTEGER DEFAULT nextval('city_id_seq'::regclass) NOT NULL,
 	name VARCHAR(100) NOT NULL,
 	country_id CHAR(2) NOT NULL,
 	city_code VARCHAR(50) NULL,
@@ -340,7 +719,7 @@ CREATE TABLE city
 	prefix VARCHAR(50) NULL,
 	city_type VARCHAR(50) NULL,
 	city_type_system VARCHAR(50) NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE city ADD CONSTRAINT pkcity
@@ -361,15 +740,15 @@ COMMENT ON TABLE city IS 'Tabel unic pentru toate referintele la orase';
 /* Build Table Structure */
 CREATE TABLE cms_file
 (
-	id SERIAL,
+	id INTEGER DEFAULT nextval('cms_file_id_seq'::regclass) NOT NULL,
 	filename VARCHAR(200) NOT NULL,
 	label VARCHAR(50) NOT NULL,
-	folder_id SERIAL,
+	folder_id INTEGER DEFAULT nextval('cms_file_folder_id_seq'::regclass) NOT NULL,
 	md5 VARCHAR(32) NOT NULL,
 	mimegroup VARCHAR(50) NOT NULL,
 	mimesubgroup VARCHAR(50) NOT NULL,
 	filesize INTEGER NOT NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE cms_file ADD CONSTRAINT pkcms_file
@@ -400,11 +779,11 @@ COMMENT ON TABLE cms_file IS 'Tabel ce stocheaza informatii despre fisierele din
 /* Build Table Structure */
 CREATE TABLE cms_folder
 (
-	id SERIAL,
+	id INTEGER DEFAULT nextval('cms_folder_id_seq'::regclass) NOT NULL,
 	name VARCHAR(200) NOT NULL,
 	parent INTEGER NOT NULL,
 	description TEXT NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE cms_folder ADD CONSTRAINT pkcms_folder
@@ -427,11 +806,11 @@ COMMENT ON TABLE cms_folder IS 'Tabel pentru stocarea informatiilor despre folde
 /* Build Table Structure */
 CREATE TABLE cms_layout
 (
-	id SERIAL,
+	id INTEGER DEFAULT nextval('cms_layout_id_seq'::regclass) NOT NULL,
 	name VARCHAR(150) NULL,
 	layout_group INTEGER NOT NULL,
 	layout_content TEXT NOT NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE cms_layout ADD CONSTRAINT pkcms_layout
@@ -454,11 +833,11 @@ COMMENT ON TABLE cms_layout IS 'Tabel care stocheaza layout-uri pentru paginile 
 /* Build Table Structure */
 CREATE TABLE cms_layout_group
 (
-	id SERIAL,
+	id INTEGER DEFAULT nextval('cms_layout_group_id_seq'::regclass) NOT NULL,
 	name VARCHAR(150) NOT NULL,
 	parent INTEGER NOT NULL,
 	description TEXT NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE cms_layout_group ADD CONSTRAINT pkcms_layout_group
@@ -481,7 +860,7 @@ COMMENT ON TABLE cms_layout_group IS 'Tabel ce stocheaza grupurile pentru layout
 /* Build Table Structure */
 CREATE TABLE cms_page
 (
-	id SERIAL,
+	id INTEGER DEFAULT nextval('cms_page_id_seq'::regclass) NOT NULL,
 	name VARCHAR(200) NOT NULL,
 	layout INTEGER NOT NULL,
 	page_type INTEGER NOT NULL,
@@ -489,7 +868,7 @@ CREATE TABLE cms_page
 	navigable BOOL DEFAULT 'true' NOT NULL,
 	owner INTEGER NOT NULL,
 	url VARCHAR(200) NOT NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE cms_page ADD CONSTRAINT pkcms_page
@@ -520,13 +899,13 @@ COMMENT ON TABLE cms_page IS 'Tabel care stocheaza paginile din sistemul CMS al 
 /* Build Table Structure */
 CREATE TABLE cms_page_content
 (
-	id SERIAL,
+	id INTEGER DEFAULT nextval('cms_page_content_id_seq'::regclass) NOT NULL,
 	name VARCHAR(150) NOT NULL,
 	page INTEGER NULL,
 	content_title VARCHAR(250) NOT NULL,
 	content_text TEXT NULL,
 	seqnumber INTEGER NOT NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE cms_page_content ADD CONSTRAINT pkcms_page_content
@@ -553,11 +932,11 @@ COMMENT ON TABLE cms_page_content IS 'Tabel pentru stocarea continutului paginil
 /* Build Table Structure */
 CREATE TABLE cms_snippet
 (
-	id SERIAL,
+	id INTEGER DEFAULT nextval('cms_snippet_id_seq'::regclass) NOT NULL,
 	name VARCHAR(200) NOT NULL,
 	snippet_group INTEGER NOT NULL,
 	snippet_content TEXT NOT NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE cms_snippet ADD CONSTRAINT pkcms_snippet
@@ -580,11 +959,11 @@ COMMENT ON TABLE cms_snippet IS 'Tabel care stocheaza snippeturile (fragmentele 
 /* Build Table Structure */
 CREATE TABLE cms_snippet_group
 (
-	id SERIAL,
+	id INTEGER DEFAULT nextval('cms_snippet_group_id_seq'::regclass) NOT NULL,
 	name VARCHAR(200) NOT NULL,
 	parent INTEGER NOT NULL,
 	description TEXT NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE cms_snippet_group ADD CONSTRAINT pkcms_snippet_group
@@ -607,9 +986,9 @@ COMMENT ON TABLE cms_snippet_group IS 'Tabel care stocheaza grupuri de snippetur
 /* Build Table Structure */
 CREATE TABLE collection_model_type
 (
-	id SERIAL,
+	id INTEGER DEFAULT nextval('collection_model_type_id_seq'::regclass) NOT NULL,
 	name TEXT NOT NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE collection_model_type ADD CONSTRAINT pkcollection_model_type
@@ -628,10 +1007,10 @@ COMMENT ON TABLE collection_model_type IS 'Tabel ce contine tipurile modelelor d
 /* Build Table Structure */
 CREATE TABLE concept
 (
-	id SERIAL,
+	id INTEGER DEFAULT nextval('concept_id_seq'::regclass) NOT NULL,
 	name VARCHAR(100) NOT NULL,
 	description TEXT NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE concept ADD CONSTRAINT pkconcept
@@ -652,9 +1031,9 @@ COMMENT ON TABLE concept IS 'Tabel ce stocheaza conceptele definite ';
 /* Build Table Structure */
 CREATE TABLE concept_variable
 (
-	concept_id SERIAL,
-	variable_id SERIAL
-);
+	concept_id INTEGER DEFAULT nextval('concept_variable_concept_id_seq'::regclass) NOT NULL,
+	variable_id INTEGER DEFAULT nextval('concept_variable_variable_id_seq'::regclass) NOT NULL
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE concept_variable ADD CONSTRAINT pkconcept_variable
@@ -676,7 +1055,7 @@ CREATE TABLE country
 	id CHAR(2) NOT NULL,
 	name VARCHAR(100) NOT NULL,
 	alpha3 CHAR(3) NOT NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE country ADD CONSTRAINT pkcountry
@@ -690,14 +1069,74 @@ COMMENT ON COLUMN country.name IS 'Numele tarii';
 COMMENT ON TABLE country IS 'Tabel unic pentru toate referintele la tari';
 
 
+/******************** Add Table: document ************************/
+
+/* Build Table Structure */
+CREATE TABLE document
+(
+	id INTEGER NOT NULL,
+	title VARCHAR(250) NOT NULL,
+	description TEXT NULL,
+	type_id INTEGER NOT NULL,
+	filename VARCHAR(200) NOT NULL,
+	mimetype VARCHAR(50) NOT NULL,
+	filesize INTEGER NOT NULL
+) WITHOUT OIDS;
+
+/* Add Primary Key */
+ALTER TABLE document ADD CONSTRAINT pkdocuments
+	PRIMARY KEY (id);
+
+/* Add Comments */
+COMMENT ON COLUMN document.id IS 'Codul documentului';
+
+COMMENT ON COLUMN document.title IS 'Titlul documentului';
+
+COMMENT ON COLUMN document.description IS 'Descrierea documentului';
+
+COMMENT ON COLUMN document.type_id IS 'Codul tipului documentului (refera atributul id al tabelului document_type)';
+
+COMMENT ON COLUMN document.filename IS 'Numele fisierului asociat documentului';
+
+COMMENT ON COLUMN document.mimetype IS 'Tipul mime al fisierului';
+
+COMMENT ON COLUMN document.filesize IS 'Dimensiunea fisierului (specificata in kilobytes)';
+
+COMMENT ON TABLE document IS 'Tabel ce contine documentele asociate oricarei entitati din baza de date';
+
+
+/******************** Add Table: document_type ************************/
+
+/* Build Table Structure */
+CREATE TABLE document_type
+(
+	id INTEGER NOT NULL,
+	name VARCHAR(100) NOT NULL
+) WITHOUT OIDS;
+
+/* Add Primary Key */
+ALTER TABLE document_type ADD CONSTRAINT pkdocument_type
+	PRIMARY KEY (id);
+
+/* Add Comments */
+COMMENT ON COLUMN document_type.id IS 'Codul tipului de document';
+
+COMMENT ON COLUMN document_type.name IS 'Denumirea tipului de document';
+
+COMMENT ON TABLE document_type IS 'Tabel ce contine tipurile de documente';
+
+
 /******************** Add Table: email ************************/
 
 /* Build Table Structure */
 CREATE TABLE email
 (
-	id SERIAL,
-	email VARCHAR(200) NOT NULL
-);
+	id INTEGER DEFAULT nextval('email_id_seq'::regclass) NOT NULL,
+	email VARCHAR(200) NOT NULL,
+	entity_id INTEGER NOT NULL,
+	entity_type INTEGER NOT NULL,
+	ismain BOOL NULL
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE email ADD CONSTRAINT pkemail
@@ -714,13 +1153,13 @@ COMMENT ON TABLE email IS 'Tabel unic pentru toate adresele de e-mail din baza d
 /* Build Table Structure */
 CREATE TABLE file
 (
-	id SERIAL,
+	id INTEGER DEFAULT nextval('file_id_seq'::regclass) NOT NULL,
 	title TEXT NOT NULL,
 	description TEXT NULL,
 	filetype_id INTEGER NULL,
 	filename TEXT NOT NULL,
 	filesize INTEGER NOT NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE file ADD CONSTRAINT pkfile
@@ -747,13 +1186,13 @@ COMMENT ON TABLE file IS 'Tabel ce contine documentele asociate oricarei entitat
 /* Build Table Structure */
 CREATE TABLE file_acl
 (
-	document_id SERIAL,
-	aro_id SERIAL,
+	document_id INTEGER DEFAULT nextval('file_acl_document_id_seq'::regclass) NOT NULL,
+	aro_id INTEGER DEFAULT nextval('file_acl_aro_id_seq'::regclass) NOT NULL,
 	aro_type INTEGER NOT NULL,
 	read BOOL NOT NULL,
 	"update" BOOL NOT NULL,
 	"delete" BOOL NOT NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE file_acl ADD CONSTRAINT pkfile_acl
@@ -780,10 +1219,10 @@ COMMENT ON TABLE file_acl IS 'Tabel ce contine drepturile de acces asupra docume
 /* Build Table Structure */
 CREATE TABLE filetype
 (
-	id SERIAL,
+	id INTEGER DEFAULT nextval('filetype_id_seq'::regclass) NOT NULL,
 	name VARCHAR(100) NOT NULL,
 	mimetype VARCHAR(100) NOT NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE filetype ADD CONSTRAINT pkfiletype
@@ -802,13 +1241,13 @@ COMMENT ON TABLE filetype IS 'Tabel ce contine tipurile de documente ale caror i
 /* Build Table Structure */
 CREATE TABLE form
 (
-	id SERIAL,
-	instance_id SERIAL,
+	id INTEGER DEFAULT nextval('form_id_seq'::regclass) NOT NULL,
+	instance_id INTEGER DEFAULT nextval('form_instance_id_seq'::regclass) NOT NULL,
 	order_in_instance INTEGER NOT NULL,
-	operator_id SERIAL,
+	operator_id INTEGER DEFAULT nextval('form_operator_id_seq'::regclass) NOT NULL,
 	operator_notes TEXT NULL,
 	fill_date DATE NOT NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE form ADD CONSTRAINT pkform
@@ -823,10 +1262,10 @@ CREATE UNIQUE INDEX "form_instance_id_Idx" ON form (instance_id, order_in_instan
 /* Build Table Structure */
 CREATE TABLE form_edited_number_var
 (
-	form_id SERIAL,
-	variable_id SERIAL,
-	value DECIMAL(10, 2) NOT NULL
-);
+	form_id INTEGER DEFAULT nextval('form_edited_number_var_form_id_seq'::regclass) NOT NULL,
+	variable_id INTEGER DEFAULT nextval('form_edited_number_var_variable_id_seq'::regclass) NOT NULL,
+	value NUMERIC(10, 2) NOT NULL
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE form_edited_number_var ADD CONSTRAINT pkform_edited_number_var
@@ -847,10 +1286,10 @@ COMMENT ON TABLE form_edited_number_var IS 'Tabel ce inregistreaza raspunsurile 
 /* Build Table Structure */
 CREATE TABLE form_edited_text_var
 (
-	variable_id SERIAL,
-	form_id SERIAL,
+	variable_id INTEGER DEFAULT nextval('form_edited_text_var_variable_id_seq'::regclass) NOT NULL,
+	form_id INTEGER DEFAULT nextval('form_edited_text_var_form_id_seq'::regclass) NOT NULL,
 	text TEXT NOT NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE form_edited_text_var ADD CONSTRAINT pkform_edited_text_var
@@ -871,11 +1310,11 @@ COMMENT ON TABLE form_edited_text_var IS 'Tabel ce inregistreaza raspunsurile te
 /* Build Table Structure */
 CREATE TABLE form_selection_var
 (
-	form_id SERIAL,
-	variable_id SERIAL,
-	item_id SERIAL,
+	form_id INTEGER DEFAULT nextval('form_selection_var_form_id_seq'::regclass) NOT NULL,
+	variable_id INTEGER DEFAULT nextval('form_selection_var_variable_id_seq'::regclass) NOT NULL,
+	item_id INTEGER DEFAULT nextval('form_selection_var_item_id_seq'::regclass) NOT NULL,
 	order_of_items_in_response INTEGER NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE form_selection_var ADD CONSTRAINT pkform_selection_var
@@ -898,10 +1337,10 @@ COMMENT ON TABLE form_selection_var IS 'Tabel ce inregistreaza raspunsurile la v
 /* Build Table Structure */
 CREATE TABLE frequency
 (
-	variable_id SERIAL,
-	item_id SERIAL,
+	variable_id INTEGER DEFAULT nextval('frequency_variable_id_seq'::regclass) NOT NULL,
+	item_id INTEGER DEFAULT nextval('frequency_item_id_seq'::regclass) NOT NULL,
 	value REAL NOT NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE frequency ADD CONSTRAINT pkfrequency
@@ -922,13 +1361,13 @@ COMMENT ON TABLE frequency IS 'Tabel ce stocheaza frecventele asociate elementel
 /* Build Table Structure */
 CREATE TABLE instance
 (
-	id SERIAL,
-	study_id SERIAL,
+	id INTEGER DEFAULT nextval('instance_id_seq'::regclass) NOT NULL,
+	study_id INTEGER DEFAULT nextval('instance_study_id_seq'::regclass) NOT NULL,
 	datestart TIMESTAMP NULL,
 	dateend TIMESTAMP NULL,
-	unit_analysis_id SERIAL,
+	unit_analysis_id INTEGER DEFAULT nextval('instance_unit_analysis_id_seq'::regclass) NOT NULL,
 	version INTEGER NOT NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE instance ADD CONSTRAINT pkinstance
@@ -955,14 +1394,14 @@ COMMENT ON TABLE instance IS 'Tabel ce contine informatiile principale ale insta
 /* Build Table Structure */
 CREATE TABLE instance_acl
 (
-	instance_id SERIAL,
-	aro_id SERIAL,
+	instance_id INTEGER DEFAULT nextval('instance_acl_instance_id_seq'::regclass) NOT NULL,
+	aro_id INTEGER DEFAULT nextval('instance_acl_aro_id_seq'::regclass) NOT NULL,
 	aro_type INTEGER NOT NULL,
 	read BOOL NULL,
 	"update" BOOL NULL,
 	"delete" BOOL NULL,
 	modacl BOOL NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE instance_acl ADD CONSTRAINT pkinstance_acl
@@ -991,11 +1430,11 @@ COMMENT ON TABLE instance_acl IS 'Tabel ce contine listele pentru controlul acce
 /* Build Table Structure */
 CREATE TABLE instance_descr
 (
-	instance_id SERIAL,
+	instance_id INTEGER DEFAULT nextval('instance_descr_instance_id_seq'::regclass) NOT NULL,
 	title TEXT NOT NULL,
 	abstract TEXT NULL,
 	lang_id CHAR(2) NOT NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE instance_descr ADD CONSTRAINT pkinstance_descr
@@ -1016,9 +1455,9 @@ COMMENT ON TABLE instance_descr IS 'Tabel ce contine elementele descriptive ale 
 /* Build Table Structure */
 CREATE TABLE instance_documents
 (
-	instance_id SERIAL,
-	document_id SERIAL
-);
+	instance_id INTEGER DEFAULT nextval('instance_documents_instance_id_seq'::regclass) NOT NULL,
+	document_id INTEGER DEFAULT nextval('instance_documents_document_id_seq'::regclass) NOT NULL
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE instance_documents ADD CONSTRAINT pkinstance_documents
@@ -1037,11 +1476,11 @@ COMMENT ON TABLE instance_documents IS 'Tabel ce contine asocierile dintre insta
 /* Build Table Structure */
 CREATE TABLE instance_keyword
 (
-	instance_id SERIAL,
-	keyword_id SERIAL,
+	instance_id INTEGER DEFAULT nextval('instance_keyword_instance_id_seq'::regclass) NOT NULL,
+	keyword_id INTEGER DEFAULT nextval('instance_keyword_keyword_id_seq'::regclass) NOT NULL,
 	added TIMESTAMP NOT NULL,
 	added_by INTEGER NOT NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE instance_keyword ADD CONSTRAINT pkinstance_keyword
@@ -1064,12 +1503,12 @@ COMMENT ON TABLE instance_keyword IS 'Tabel ce stocheaza asocierile dintre cuvin
 /* Build Table Structure */
 CREATE TABLE instance_org
 (
-	org_id SERIAL,
-	instance_id SERIAL,
-	assoc_type_id SERIAL,
+	org_id INTEGER DEFAULT nextval('instance_org_org_id_seq'::regclass) NOT NULL,
+	instance_id INTEGER DEFAULT nextval('instance_org_instance_id_seq'::regclass) NOT NULL,
+	assoc_type_id INTEGER DEFAULT nextval('instance_org_assoc_type_id_seq'::regclass) NOT NULL,
 	assoc_details TEXT NULL,
 	citation TEXT NOT NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE instance_org ADD CONSTRAINT pkinstance_org
@@ -1094,10 +1533,10 @@ COMMENT ON TABLE instance_org IS 'Tabel ce contine asocierile dintre instante si
 /* Build Table Structure */
 CREATE TABLE instance_org_assoc
 (
-	id SERIAL,
+	id INTEGER DEFAULT nextval('instance_org_assoc_id_seq'::regclass) NOT NULL,
 	assoc_name VARCHAR(100) NOT NULL,
 	assoc_description TEXT NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE instance_org_assoc ADD CONSTRAINT pkinstance_org_assoc
@@ -1118,10 +1557,10 @@ COMMENT ON TABLE instance_org_assoc IS 'Tabel ce contine tipurile de asociere ca
 /* Build Table Structure */
 CREATE TABLE instance_person
 (
-	person_id SERIAL,
-	instance_id SERIAL,
-	assoc_type_id SERIAL
-);
+	person_id INTEGER DEFAULT nextval('instance_person_person_id_seq'::regclass) NOT NULL,
+	instance_id INTEGER DEFAULT nextval('instance_person_instance_id_seq'::regclass) NOT NULL,
+	assoc_type_id INTEGER DEFAULT nextval('instance_person_assoc_type_id_seq'::regclass) NOT NULL
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE instance_person ADD CONSTRAINT pkinstance_person
@@ -1142,10 +1581,10 @@ COMMENT ON TABLE instance_person IS 'Tabel care stocheaza asocierile intre insta
 /* Build Table Structure */
 CREATE TABLE instance_person_assoc
 (
-	id SERIAL,
+	id INTEGER DEFAULT nextval('instance_person_assoc_id_seq'::regclass) NOT NULL,
 	assoc_name VARCHAR(100) NOT NULL,
 	assoc_description TEXT NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE instance_person_assoc ADD CONSTRAINT pkinstance_person_assoc
@@ -1166,9 +1605,9 @@ COMMENT ON TABLE instance_person_assoc IS 'Tabel ce contine tipurile de asociere
 /* Build Table Structure */
 CREATE TABLE instance_topic
 (
-	instance_id SERIAL,
-	topic_id SERIAL
-);
+	instance_id INTEGER DEFAULT nextval('instance_topic_instance_id_seq'::regclass) NOT NULL,
+	topic_id INTEGER DEFAULT nextval('instance_topic_topic_id_seq'::regclass) NOT NULL
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE instance_topic ADD CONSTRAINT pkinstance_topic
@@ -1187,10 +1626,13 @@ COMMENT ON TABLE instance_topic IS 'Tabel ce stocheaza asocierile dintre instant
 /* Build Table Structure */
 CREATE TABLE internet
 (
-	id SERIAL,
-	internet_type VARCHAR(50) NOT NULL,
-	internet TEXT NOT NULL
-);
+	id INTEGER DEFAULT nextval('internet_id_seq'::regclass) NOT NULL,
+	internet_type VARCHAR(50) NULL,
+	internet TEXT NOT NULL,
+	entity_id INTEGER NOT NULL,
+	entity_type INTEGER NOT NULL,
+	ismain BOOL NULL
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE internet ADD CONSTRAINT pkinternet
@@ -1209,9 +1651,9 @@ COMMENT ON TABLE internet IS 'Tabel ce contine toate conturile de pe retelele so
 /* Build Table Structure */
 CREATE TABLE item
 (
-	id SERIAL,
+	id INTEGER DEFAULT nextval('item_id_seq'::regclass) NOT NULL,
 	name VARCHAR(100) NOT NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE item ADD CONSTRAINT pkitem
@@ -1230,9 +1672,9 @@ COMMENT ON TABLE item IS 'Tabel ce stocheaza elementele (item-urile) variabilelo
 /* Build Table Structure */
 CREATE TABLE keyword
 (
-	id SERIAL,
+	id INTEGER DEFAULT nextval('keyword_id_seq'::regclass) NOT NULL,
 	name TEXT NOT NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE keyword ADD CONSTRAINT pkkeyword
@@ -1253,7 +1695,7 @@ CREATE TABLE lang
 (
 	id CHAR(2) NOT NULL,
 	name VARCHAR(50) NOT NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE lang ADD CONSTRAINT pklang
@@ -1272,9 +1714,9 @@ COMMENT ON TABLE lang IS 'Tabel ce contine limbile utilizate pentru unii termeni
 /* Build Table Structure */
 CREATE TABLE meth_coll_type
 (
-	instance_id SERIAL,
-	collection_model_id SERIAL
-);
+	instance_id INTEGER DEFAULT nextval('meth_coll_type_instance_id_seq'::regclass) NOT NULL,
+	collection_model_id INTEGER DEFAULT nextval('meth_coll_type_collection_model_id_seq'::regclass) NOT NULL
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE meth_coll_type ADD CONSTRAINT pkmeth_coll_type
@@ -1293,13 +1735,13 @@ COMMENT ON TABLE meth_coll_type IS 'Tabel ce stocheaza tipurile modelelor de col
 /* Build Table Structure */
 CREATE TABLE methodology
 (
-	instance_id SERIAL,
-	time_meth_id SERIAL,
+	instance_id INTEGER DEFAULT nextval('methodology_instance_id_seq'::regclass) NOT NULL,
+	time_meth_id INTEGER DEFAULT nextval('methodology_time_meth_id_seq'::regclass) NOT NULL,
 	sampling_procedure TEXT NOT NULL,
 	weighting TEXT NOT NULL,
 	research_instrument TEXT NOT NULL,
 	scope TEXT NOT NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE methodology ADD CONSTRAINT pkmethodology
@@ -1326,13 +1768,13 @@ COMMENT ON TABLE methodology IS 'Tabel care stocheaza informatii aditionale ale 
 /* Build Table Structure */
 CREATE TABLE news
 (
-	id SERIAL,
+	id INTEGER DEFAULT nextval('news_id_seq'::regclass) NOT NULL,
 	title VARCHAR(200) NOT NULL,
 	content TEXT NULL,
 	added TIMESTAMP NOT NULL,
 	added_by INTEGER NOT NULL,
 	visible BOOL NOT NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE news ADD CONSTRAINT pknews
@@ -1359,12 +1801,12 @@ COMMENT ON TABLE news IS 'Tabel ce stocheaza stirile ce vor aparea in interfata 
 /* Build Table Structure */
 CREATE TABLE org
 (
-	id SERIAL,
+	id INTEGER DEFAULT nextval('org_id_seq'::regclass) NOT NULL,
 	name VARCHAR(100) NOT NULL,
 	org_prefix_id INTEGER NULL,
 	fullname VARCHAR(100) NOT NULL,
 	org_sufix_id INTEGER NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE org ADD CONSTRAINT pkorg
@@ -1389,11 +1831,11 @@ COMMENT ON TABLE org IS 'Tabel ce contine toate organizatiile din baza de date';
 /* Build Table Structure */
 CREATE TABLE org_address
 (
-	org_id SERIAL,
-	address_id SERIAL,
+	org_id INTEGER DEFAULT nextval('org_address_org_id_seq'::regclass) NOT NULL,
+	address_id INTEGER DEFAULT nextval('org_address_address_id_seq'::regclass) NOT NULL,
 	datestart TIMESTAMP NULL,
 	dateend TIMESTAMP NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE org_address ADD CONSTRAINT pkorg_address
@@ -1416,10 +1858,10 @@ COMMENT ON TABLE org_address IS 'Tabel ce contine asocierile dintre organizatii 
 /* Build Table Structure */
 CREATE TABLE org_email
 (
-	org_id SERIAL,
-	email_id SERIAL,
+	org_id INTEGER DEFAULT nextval('org_email_org_id_seq'::regclass) NOT NULL,
+	email_id INTEGER DEFAULT nextval('org_email_email_id_seq'::regclass) NOT NULL,
 	is_main BOOL NOT NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE org_email ADD CONSTRAINT pkorg_email
@@ -1431,9 +1873,9 @@ ALTER TABLE org_email ADD CONSTRAINT pkorg_email
 /* Build Table Structure */
 CREATE TABLE org_internet
 (
-	org_id SERIAL,
-	internet_id SERIAL
-);
+	org_id INTEGER DEFAULT nextval('org_internet_org_id_seq'::regclass) NOT NULL,
+	internet_id INTEGER DEFAULT nextval('org_internet_internet_id_seq'::regclass) NOT NULL
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE org_internet ADD CONSTRAINT pkorg_internet
@@ -1445,9 +1887,9 @@ ALTER TABLE org_internet ADD CONSTRAINT pkorg_internet
 /* Build Table Structure */
 CREATE TABLE org_phone
 (
-	org_id SERIAL,
-	phone_id SERIAL
-);
+	org_id INTEGER DEFAULT nextval('org_phone_org_id_seq'::regclass) NOT NULL,
+	phone_id INTEGER DEFAULT nextval('org_phone_phone_id_seq'::regclass) NOT NULL
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE org_phone ADD CONSTRAINT pkorg_phone
@@ -1459,10 +1901,10 @@ ALTER TABLE org_phone ADD CONSTRAINT pkorg_phone
 /* Build Table Structure */
 CREATE TABLE org_prefix
 (
-	id SERIAL,
+	id INTEGER DEFAULT nextval('org_prefix_id_seq'::regclass) NOT NULL,
 	name VARCHAR(100) NOT NULL,
 	description TEXT NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE org_prefix ADD CONSTRAINT pkorg_prefix
@@ -1483,9 +1925,9 @@ COMMENT ON TABLE org_prefix IS 'Tabel ce contine prefixele organizatiilor ';
 /* Build Table Structure */
 CREATE TABLE org_relation_type
 (
-	id SERIAL,
+	id INTEGER DEFAULT nextval('org_relation_type_id_seq'::regclass) NOT NULL,
 	name VARCHAR(100) NOT NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE org_relation_type ADD CONSTRAINT pkorg_relation_type
@@ -1504,13 +1946,13 @@ COMMENT ON TABLE org_relation_type IS 'Tabel ce contine tipurile relatiilor care
 /* Build Table Structure */
 CREATE TABLE org_relations
 (
-	org_1_id SERIAL,
-	org_2_id SERIAL,
+	org_1_id INTEGER DEFAULT nextval('org_relations_org_1_id_seq'::regclass) NOT NULL,
+	org_2_id INTEGER DEFAULT nextval('org_relations_org_2_id_seq'::regclass) NOT NULL,
 	datestart TIMESTAMP NULL,
 	dateend TIMESTAMP NULL,
-	org_relation_type_id SERIAL,
+	org_relation_type_id INTEGER DEFAULT nextval('org_relations_org_relation_type_id_seq'::regclass) NOT NULL,
 	details TEXT NOT NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE org_relations ADD CONSTRAINT pkorg_relations
@@ -1537,10 +1979,10 @@ COMMENT ON TABLE org_relations IS 'Tabel ce stocheaza relatiile dintre organizat
 /* Build Table Structure */
 CREATE TABLE org_sufix
 (
-	id SERIAL,
+	id INTEGER DEFAULT nextval('org_sufix_id_seq'::regclass) NOT NULL,
 	name VARCHAR(100) NOT NULL,
 	description TEXT NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE org_sufix ADD CONSTRAINT pkorg_sufix
@@ -1561,11 +2003,11 @@ COMMENT ON TABLE org_sufix IS 'Tabel ce contine sufixele organizatiilor';
 /* Build Table Structure */
 CREATE TABLE other_statistic
 (
-	variable_id SERIAL,
+	variable_id INTEGER DEFAULT nextval('other_statistic_variable_id_seq'::regclass) NOT NULL,
 	name VARCHAR(100) NOT NULL,
 	value REAL NOT NULL,
 	description TEXT NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE other_statistic ADD CONSTRAINT pkother_statistic
@@ -1586,13 +2028,13 @@ COMMENT ON TABLE other_statistic IS 'Tabel ce contine statistici specifice varia
 /* Build Table Structure */
 CREATE TABLE person
 (
-	id SERIAL,
+	id INTEGER DEFAULT nextval('person_id_seq'::regclass) NOT NULL,
 	fname VARCHAR(100) NOT NULL,
 	mname VARCHAR(100) NULL,
 	lname VARCHAR(100) NOT NULL,
 	prefix_id INTEGER NULL,
 	suffix_id INTEGER NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE person ADD CONSTRAINT pkperson
@@ -1619,11 +2061,11 @@ COMMENT ON TABLE person IS 'Tabel unic pentru toate persoanele din baza de date'
 /* Build Table Structure */
 CREATE TABLE person_address
 (
-	person_id SERIAL,
-	address_id SERIAL,
+	person_id INTEGER DEFAULT nextval('person_address_person_id_seq'::regclass) NOT NULL,
+	address_id INTEGER DEFAULT nextval('person_address_address_id_seq'::regclass) NOT NULL,
 	datestart TIMESTAMP NULL,
 	dateend TIMESTAMP NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE person_address ADD CONSTRAINT pkperson_address
@@ -1646,10 +2088,10 @@ COMMENT ON TABLE person_address IS 'Tabel ce contine asocierile intre persoane s
 /* Build Table Structure */
 CREATE TABLE person_email
 (
-	person_id SERIAL,
-	email_id SERIAL,
+	person_id INTEGER DEFAULT nextval('person_email_person_id_seq'::regclass) NOT NULL,
+	email_id INTEGER DEFAULT nextval('person_email_email_id_seq'::regclass) NOT NULL,
 	is_main BOOL NOT NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE person_email ADD CONSTRAINT pkperson_email
@@ -1661,9 +2103,9 @@ ALTER TABLE person_email ADD CONSTRAINT pkperson_email
 /* Build Table Structure */
 CREATE TABLE person_internet
 (
-	person_id SERIAL,
-	internet_id SERIAL
-);
+	person_id INTEGER DEFAULT nextval('person_internet_person_id_seq'::regclass) NOT NULL,
+	internet_id INTEGER DEFAULT nextval('person_internet_internet_id_seq'::regclass) NOT NULL
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE person_internet ADD CONSTRAINT pkperson_internet
@@ -1675,16 +2117,16 @@ ALTER TABLE person_internet ADD CONSTRAINT pkperson_internet
 /* Build Table Structure */
 CREATE TABLE person_links
 (
-	id SERIAL,
-	person_id SERIAL,
-	user_id SERIAL,
-	simscore DECIMAL(10, 2) NOT NULL,
-	namescore DECIMAL(10, 2) NOT NULL,
-	emailscore DECIMAL(10, 2) NOT NULL,
+	id INTEGER DEFAULT nextval('person_links_id_seq'::regclass) NOT NULL,
+	person_id INTEGER DEFAULT nextval('person_links_person_id_seq'::regclass) NOT NULL,
+	user_id INTEGER DEFAULT nextval('person_links_user_id_seq'::regclass) NOT NULL,
+	simscore NUMERIC(10, 2) NOT NULL,
+	namescore NUMERIC(10, 2) NOT NULL,
+	emailscore NUMERIC(10, 2) NOT NULL,
 	status INTEGER NOT NULL,
 	status_by INTEGER NOT NULL,
 	status_time TIMESTAMP NOT NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE person_links ADD CONSTRAINT pkperson_links
@@ -1717,12 +2159,12 @@ COMMENT ON TABLE person_links IS 'Tabel ce stocheaza relatiile dintre persoane s
 /* Build Table Structure */
 CREATE TABLE person_org
 (
-	person_id SERIAL,
-	org_id SERIAL,
-	role_id INTEGER NULL,
+	person_id INTEGER DEFAULT nextval('person_org_person_id_seq'::regclass) NOT NULL,
+	org_id INTEGER DEFAULT nextval('person_org_org_id_seq'::regclass) NOT NULL,
+	role_id INTEGER NOT NULL,
 	datestart TIMESTAMP NULL,
 	dateend TIMESTAMP NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE person_org ADD CONSTRAINT pkperson_org
@@ -1747,9 +2189,9 @@ COMMENT ON TABLE person_org IS 'Tabel ce stocheaza asocierile dintre persoane si
 /* Build Table Structure */
 CREATE TABLE person_phone
 (
-	person_id SERIAL,
-	phone_id SERIAL
-);
+	person_id INTEGER DEFAULT nextval('person_phone_person_id_seq'::regclass) NOT NULL,
+	phone_id INTEGER DEFAULT nextval('person_phone_phone_id_seq'::regclass) NOT NULL
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE person_phone ADD CONSTRAINT pkperson_phone
@@ -1761,9 +2203,9 @@ ALTER TABLE person_phone ADD CONSTRAINT pkperson_phone
 /* Build Table Structure */
 CREATE TABLE person_role
 (
-	id SERIAL,
+	id INTEGER DEFAULT nextval('person_role_id_seq'::regclass) NOT NULL,
 	name TEXT NOT NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE person_role ADD CONSTRAINT pkperson_role
@@ -1782,10 +2224,13 @@ COMMENT ON TABLE person_role IS 'Tabel care contine rolurile pe care le pot deti
 /* Build Table Structure */
 CREATE TABLE phone
 (
-	id SERIAL,
+	id INTEGER DEFAULT nextval('phone_id_seq'::regclass) NOT NULL,
 	phone VARCHAR(30) NOT NULL,
-	phone_type VARCHAR(50) NOT NULL
-);
+	phone_type VARCHAR(50) NULL,
+	entity_id INTEGER NOT NULL,
+	entity_type INTEGER NOT NULL,
+	ismain BOOL NULL
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE phone ADD CONSTRAINT pkphone
@@ -1797,9 +2242,9 @@ ALTER TABLE phone ADD CONSTRAINT pkphone
 /* Build Table Structure */
 CREATE TABLE prefix
 (
-	id SERIAL,
+	id INTEGER DEFAULT nextval('prefix_id_seq'::regclass) NOT NULL,
 	name VARCHAR(50) NOT NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE prefix ADD CONSTRAINT pkprefix
@@ -1818,13 +2263,13 @@ COMMENT ON TABLE prefix IS 'Tabel ce contine prefixele corespunzatoare formulelo
 /* Build Table Structure */
 CREATE TABLE region
 (
-	id SERIAL,
+	id INTEGER DEFAULT nextval('region_id_seq'::regclass) NOT NULL,
 	name VARCHAR(100) NOT NULL,
-	regiontype_id SERIAL,
+	regiontype_id INTEGER NOT NULL,
 	country_id CHAR(2) NOT NULL,
 	region_code VARCHAR(50) NULL,
 	region_code_name VARCHAR(50) NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE region ADD CONSTRAINT pkregion
@@ -1847,9 +2292,9 @@ COMMENT ON TABLE region IS 'Tabel care contine regiunile corespunzatoare tarilor
 /* Build Table Structure */
 CREATE TABLE region_city
 (
-	region_id SERIAL,
-	city_id SERIAL
-);
+	region_id INTEGER DEFAULT nextval('region_city_region_id_seq'::regclass) NOT NULL,
+	city_id INTEGER DEFAULT nextval('region_city_city_id_seq'::regclass) NOT NULL
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE region_city ADD CONSTRAINT pkregion_city
@@ -1868,9 +2313,9 @@ COMMENT ON TABLE region_city IS 'Tabel ce contine asocierile sintre orase si reg
 /* Build Table Structure */
 CREATE TABLE regiontype
 (
-	id SERIAL,
+	id INTEGER DEFAULT nextval('regiontype_id_seq'::regclass) NOT NULL,
 	name VARCHAR(150) NOT NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE regiontype ADD CONSTRAINT pkregiontype
@@ -1889,10 +2334,10 @@ COMMENT ON TABLE regiontype IS 'Tabel ce contine tipurile regiunilor corespunzat
 /* Build Table Structure */
 CREATE TABLE "role"
 (
-	id SERIAL,
+	id INTEGER DEFAULT nextval('role_id_seq'::regclass) NOT NULL,
 	name VARCHAR(100) NOT NULL,
 	description TEXT NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE "role" ADD CONSTRAINT pkrole
@@ -1913,11 +2358,11 @@ COMMENT ON TABLE "role" IS 'Tabel care stocheaza role-urile care pot fi asociate
 /* Build Table Structure */
 CREATE TABLE scale
 (
-	item_id SERIAL,
+	item_id INTEGER DEFAULT nextval('scale_item_id_seq'::regclass) NOT NULL,
 	"minValue_id" INTEGER NOT NULL,
 	"maxValue_id" INTEGER NOT NULL,
 	units SMALLINT NOT NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE scale ADD CONSTRAINT pkscale
@@ -1940,10 +2385,10 @@ COMMENT ON TABLE scale IS 'Tabel ce stocheaza elementele de tip scala ale variab
 /* Build Table Structure */
 CREATE TABLE selection_variable
 (
-	variable_id SERIAL,
+	variable_id INTEGER DEFAULT nextval('selection_variable_variable_id_seq'::regclass) NOT NULL,
 	min_count SMALLINT NOT NULL,
 	max_count SMALLINT NOT NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE selection_variable ADD CONSTRAINT pkselection_variable
@@ -1964,11 +2409,11 @@ COMMENT ON TABLE selection_variable IS 'Tabel ce contine informatii despre varia
 /* Build Table Structure */
 CREATE TABLE selection_variable_item
 (
-	variable_id SERIAL,
-	item_id SERIAL,
+	variable_id INTEGER DEFAULT nextval('selection_variable_item_variable_id_seq'::regclass) NOT NULL,
+	item_id INTEGER DEFAULT nextval('selection_variable_item_item_id_seq'::regclass) NOT NULL,
 	order_of_item_in_variable INTEGER NOT NULL,
 	response_card_file_id INTEGER NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE selection_variable_item ADD CONSTRAINT pkselection_variable_item
@@ -1992,13 +2437,13 @@ CREATE UNIQUE INDEX "selection_variable_item_order_Idx" ON selection_variable_it
 /* Build Table Structure */
 CREATE TABLE setting
 (
-	id SERIAL,
+	id INTEGER DEFAULT nextval('setting_id_seq'::regclass) NOT NULL,
 	name VARCHAR(150) NOT NULL,
 	setting_group INTEGER NOT NULL,
 	description TEXT NULL,
 	predefined_values TEXT NOT NULL,
 	default_value TEXT NOT NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE setting ADD CONSTRAINT pksetting
@@ -2025,11 +2470,11 @@ COMMENT ON TABLE setting IS 'Tabel care contine setarile aplicatiei';
 /* Build Table Structure */
 CREATE TABLE setting_group
 (
-	id SERIAL,
+	id INTEGER DEFAULT nextval('setting_group_id_seq'::regclass) NOT NULL,
 	name VARCHAR(150) NOT NULL,
 	parent INTEGER NOT NULL,
 	description TEXT NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE setting_group ADD CONSTRAINT pksetting_group
@@ -2052,9 +2497,9 @@ COMMENT ON TABLE setting_group IS 'Tabel care stocheaza grupurile de setari ale 
 /* Build Table Structure */
 CREATE TABLE setting_value
 (
-	setting_id SERIAL,
+	setting_id INTEGER DEFAULT nextval('setting_value_setting_id_seq'::regclass) NOT NULL,
 	value TEXT NOT NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE setting_value ADD CONSTRAINT pksetting_value
@@ -2073,11 +2518,11 @@ COMMENT ON TABLE setting_value IS 'Tabel care contine valorile setarilor aplicat
 /* Build Table Structure */
 CREATE TABLE skip
 (
-	variable_id SERIAL,
-	id SERIAL,
+	variable_id INTEGER DEFAULT nextval('skip_variable_id_seq'::regclass) NOT NULL,
+	id INTEGER DEFAULT nextval('skip_id_seq'::regclass) NOT NULL,
 	condition TEXT NOT NULL,
-	next_variable_id SERIAL
-);
+	next_variable_id INTEGER DEFAULT nextval('skip_next_variable_id_seq'::regclass) NOT NULL
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE skip ADD CONSTRAINT pkskip
@@ -2100,9 +2545,9 @@ COMMENT ON TABLE skip IS 'Tabel ce contine salturile care pot avea loc de la o v
 /* Build Table Structure */
 CREATE TABLE source
 (
-	org_id SERIAL,
-	sourcetype_id SERIAL
-);
+	org_id INTEGER DEFAULT nextval('source_org_id_seq'::regclass) NOT NULL,
+	sourcetype_id INTEGER DEFAULT nextval('source_sourcetype_id_seq'::regclass) NOT NULL
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE source ADD CONSTRAINT pksource
@@ -2116,17 +2561,87 @@ COMMENT ON COLUMN source.sourcetype_id IS 'Codul tipului sursei (refera atributu
 COMMENT ON TABLE source IS 'Tabel ce stocheaza sursele (organizatiile) care pot oferi studii pentru partea de colectare';
 
 
+/******************** Add Table: source_contact_method ************************/
+
+/* Build Table Structure */
+CREATE TABLE source_contact_method
+(
+	id INTEGER NOT NULL,
+	name VARCHAR(150) NOT NULL
+) WITHOUT OIDS;
+
+/* Add Primary Key */
+ALTER TABLE source_contact_method ADD CONSTRAINT pksource_contact_method
+	PRIMARY KEY (id);
+
+/* Add Comments */
+COMMENT ON COLUMN source_contact_method.id IS 'Codul metodei de contact';
+
+COMMENT ON COLUMN source_contact_method.name IS 'Denumirea metodei de contact (telefon, email etc.)';
+
+COMMENT ON TABLE source_contact_method IS 'Tabel ce contine metodele prin care persoana de contact al unui posibil furnizor de studii poate fi contactata';
+
+
+/******************** Add Table: source_contacts ************************/
+
+/* Build Table Structure */
+CREATE TABLE source_contacts
+(
+	id INTEGER NOT NULL,
+	person_id INTEGER NOT NULL,
+	contact_date TIMESTAMP NOT NULL,
+	contact_synopsis TEXT NOT NULL,
+	followup INTEGER NOT NULL,
+	contact_method INTEGER NOT NULL,
+	org_id INTEGER NOT NULL
+) WITHOUT OIDS;
+
+/* Add Primary Key */
+ALTER TABLE source_contacts ADD CONSTRAINT pksource_contacts
+	PRIMARY KEY (id);
+
+/* Add Comments */
+COMMENT ON COLUMN source_contacts.id IS 'Codul contactului';
+
+COMMENT ON COLUMN source_contacts.person_id IS 'Codul persoanei (refera atributul id din tabelul person)';
+
+COMMENT ON COLUMN source_contacts.contact_date IS 'Data la care persoana identificata prin atributul person_id a fost contactata';
+
+COMMENT ON COLUMN source_contacts.contact_method IS 'Metoda prin care persoana a fost contactata (refera atributul id din tabelul source_contact_method)';
+
+COMMENT ON COLUMN source_contacts.org_id IS 'Codul organizatiei careia ii aunt asociate informatiile de contact (refera atributul org_id din tabelul sources)';
+
+COMMENT ON TABLE source_contacts IS 'Datele de contact ale unei surse ';
+
+
+/******************** Add Table: source_type_history ************************/
+
+/* Build Table Structure */
+CREATE TABLE source_type_history
+(
+	id INTEGER NOT NULL,
+	datestart TIMESTAMP NOT NULL,
+	dateend TIMESTAMP NOT NULL,
+	added_by INTEGER NOT NULL,
+	org_id INTEGER NOT NULL
+) WITHOUT OIDS;
+
+/* Add Primary Key */
+ALTER TABLE source_type_history ADD CONSTRAINT pksource_type_history
+	PRIMARY KEY (id);
+
+
 /******************** Add Table: sourcestudy ************************/
 
 /* Build Table Structure */
 CREATE TABLE sourcestudy
 (
-	id SERIAL,
+	id INTEGER DEFAULT nextval('sourcestudy_id_seq'::regclass) NOT NULL,
 	name VARCHAR(150) NOT NULL,
 	details TEXT NOT NULL,
-	org_id SERIAL,
+	org_id INTEGER DEFAULT nextval('sourcestudy_org_id_seq'::regclass) NOT NULL,
 	type INTEGER NOT NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE sourcestudy ADD CONSTRAINT pksourcestudy
@@ -2151,10 +2666,10 @@ COMMENT ON TABLE sourcestudy IS 'Tabel ce stocheaza informatii despre studiile p
 /* Build Table Structure */
 CREATE TABLE sourcestudy_type
 (
-	id SERIAL,
+	id INTEGER DEFAULT nextval('sourcestudy_type_id_seq'::regclass) NOT NULL,
 	name VARCHAR(150) NOT NULL,
 	description TEXT NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE sourcestudy_type ADD CONSTRAINT pksourcestudy_type
@@ -2175,13 +2690,13 @@ COMMENT ON TABLE sourcestudy_type IS 'Tabel ce stocheaza tipul (starea) studiilo
 /* Build Table Structure */
 CREATE TABLE sourcestudy_type_history
 (
-	id SERIAL,
+	id INTEGER DEFAULT nextval('sourcestudy_type_history_id_seq'::regclass) NOT NULL,
 	datestart TIMESTAMP NOT NULL,
 	dateend TIMESTAMP NOT NULL,
-	sourcestudy_type_id SERIAL,
+	sourcestudy_type_id INTEGER DEFAULT nextval('sourcestudy_type_history_sourcestudy_type_id_seq'::regclass) NOT NULL,
 	"addedBy" INTEGER NOT NULL,
-	sourcesstudy_id SERIAL
-);
+	sourcesstudy_id INTEGER DEFAULT nextval('sourcestudy_type_history_sourcesstudy_id_seq'::regclass) NOT NULL
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE sourcestudy_type_history ADD CONSTRAINT pksourcestudy_type_history
@@ -2208,10 +2723,10 @@ COMMENT ON TABLE sourcestudy_type_history IS 'Tabel ce stocheaza istoricul tipul
 /* Build Table Structure */
 CREATE TABLE sourcetype
 (
-	id SERIAL,
+	id INTEGER DEFAULT nextval('sourcetype_id_seq'::regclass) NOT NULL,
 	name VARCHAR(150) NOT NULL,
 	description TEXT NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE sourcetype ADD CONSTRAINT pksourcetype
@@ -2232,13 +2747,13 @@ COMMENT ON TABLE sourcetype IS 'Tabel ce contine tipurile de surse ';
 /* Build Table Structure */
 CREATE TABLE sourcetype_history
 (
-	id SERIAL,
+	id INTEGER DEFAULT nextval('sourcetype_history_id_seq'::regclass) NOT NULL,
 	datestart TIMESTAMP NOT NULL,
 	dateend TIMESTAMP NULL,
-	org_id SERIAL,
-	sourcetype_id SERIAL,
+	org_id INTEGER DEFAULT nextval('sourcetype_history_org_id_seq'::regclass) NOT NULL,
+	sourcetype_id INTEGER DEFAULT nextval('sourcetype_history_sourcetype_id_seq'::regclass) NOT NULL,
 	added_by INTEGER NOT NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE sourcetype_history ADD CONSTRAINT pksourcetype_history
@@ -2265,11 +2780,11 @@ COMMENT ON TABLE sourcetype_history IS 'Tabel ce stocheaza istoricul tipului sur
 /* Build Table Structure */
 CREATE TABLE study
 (
-	id SERIAL,
+	id INTEGER DEFAULT nextval('study_id_seq'::regclass) NOT NULL,
 	datestart TIMESTAMP NULL,
 	dateend TIMESTAMP NULL,
 	grant_details TEXT NOT NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE study ADD CONSTRAINT pkstudy
@@ -2292,14 +2807,14 @@ COMMENT ON TABLE study IS 'Tabel care stocheaza studiile desfasurate, ale caror 
 /* Build Table Structure */
 CREATE TABLE study_acl
 (
-	study_id SERIAL,
-	aro_id SERIAL,
+	study_id INTEGER DEFAULT nextval('study_acl_study_id_seq'::regclass) NOT NULL,
+	aro_id INTEGER DEFAULT nextval('study_acl_aro_id_seq'::regclass) NOT NULL,
 	aro_type INTEGER NOT NULL,
 	read BOOL NULL,
 	"update" BOOL NULL,
 	"delete" BOOL NULL,
 	modacl BOOL NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE study_acl ADD CONSTRAINT pkstudy_acl
@@ -2328,13 +2843,13 @@ COMMENT ON TABLE study_acl IS 'Tabel ce contine listele pentru controlul accesul
 /* Build Table Structure */
 CREATE TABLE study_descr
 (
-	id SERIAL,
+	id INTEGER DEFAULT nextval('study_descr_id_seq'::regclass) NOT NULL,
 	title VARCHAR(300) NOT NULL,
 	lang_id CHAR(2) NOT NULL,
-	title_type_id SERIAL,
-	study_id SERIAL,
+	title_type_id INTEGER DEFAULT nextval('study_descr_title_type_id_seq'::regclass) NOT NULL,
+	study_id INTEGER DEFAULT nextval('study_descr_study_id_seq'::regclass) NOT NULL,
 	abstract TEXT NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE study_descr ADD CONSTRAINT pkstudy_descr
@@ -2354,14 +2869,35 @@ COMMENT ON COLUMN study_descr.study_id IS 'Codul studiului caruia ii corespunde 
 COMMENT ON TABLE study_descr IS 'Tabel ce stocheaza informatii despre titlurile studiilor din baza de date';
 
 
+/******************** Add Table: study_documents ************************/
+
+/* Build Table Structure */
+CREATE TABLE study_documents
+(
+	study_id INTEGER NOT NULL,
+	document_id INTEGER NOT NULL
+) WITHOUT OIDS;
+
+/* Add Primary Key */
+ALTER TABLE study_documents ADD CONSTRAINT pkstudy_documents
+	PRIMARY KEY (study_id, document_id);
+
+/* Add Comments */
+COMMENT ON COLUMN study_documents.study_id IS 'Codul studiului pentru care este stocat documentul specificat prin atributul document_id (refera atributul id din tabelul study)';
+
+COMMENT ON COLUMN study_documents.document_id IS 'Codul unui document care este asociat studiului identificat prin atributul study_id (refera atributul id din tabelul documents)';
+
+COMMENT ON TABLE study_documents IS 'Tabel ce implementeaza relatia many-to-many intre studiu si documente';
+
+
 /******************** Add Table: study_file ************************/
 
 /* Build Table Structure */
 CREATE TABLE study_file
 (
-	study_id SERIAL,
-	file_id SERIAL
-);
+	study_id INTEGER DEFAULT nextval('study_file_study_id_seq'::regclass) NOT NULL,
+	file_id INTEGER DEFAULT nextval('study_file_file_id_seq'::regclass) NOT NULL
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE study_file ADD CONSTRAINT pkstudy_file
@@ -2380,11 +2916,11 @@ COMMENT ON TABLE study_file IS 'Tabel ce contine asocierile dintre studii si doc
 /* Build Table Structure */
 CREATE TABLE study_keyword
 (
-	study_id SERIAL,
-	keyword_id SERIAL,
+	study_id INTEGER DEFAULT nextval('study_keyword_study_id_seq'::regclass) NOT NULL,
+	keyword_id INTEGER DEFAULT nextval('study_keyword_keyword_id_seq'::regclass) NOT NULL,
 	added TIMESTAMP NOT NULL,
 	added_by INTEGER NOT NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE study_keyword ADD CONSTRAINT pkstudy_keyword
@@ -2407,12 +2943,12 @@ COMMENT ON TABLE study_keyword IS 'Tabel ce stocheaza asocierile dintre studii s
 /* Build Table Structure */
 CREATE TABLE study_org
 (
-	id SERIAL,
-	org_id SERIAL,
-	study_id SERIAL,
-	assoctype_id SERIAL,
+	id INTEGER DEFAULT nextval('study_org_id_seq'::regclass) NOT NULL,
+	org_id INTEGER DEFAULT nextval('study_org_org_id_seq'::regclass) NOT NULL,
+	study_id INTEGER DEFAULT nextval('study_org_study_id_seq'::regclass) NOT NULL,
+	assoctype_id INTEGER DEFAULT nextval('study_org_assoctype_id_seq'::regclass) NOT NULL,
 	citation TEXT NOT NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE study_org ADD CONSTRAINT pkstudy_org
@@ -2437,14 +2973,14 @@ COMMENT ON TABLE study_org IS 'Tabel ce stocheaza toate organizatiile care au le
 /* Build Table Structure */
 CREATE TABLE study_org_acl
 (
-	study_org_id SERIAL,
-	aro_id SERIAL,
+	study_org_id INTEGER DEFAULT nextval('study_org_acl_study_org_id_seq'::regclass) NOT NULL,
+	aro_id INTEGER DEFAULT nextval('study_org_acl_aro_id_seq'::regclass) NOT NULL,
 	aro_type INTEGER NOT NULL,
 	read BOOL NULL,
 	"update" BOOL NULL,
 	"delete" BOOL NULL,
 	modacl BOOL NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE study_org_acl ADD CONSTRAINT pkstudy_org_acl
@@ -2473,10 +3009,10 @@ COMMENT ON TABLE study_org_acl IS 'Tabel ce contine drepturile de acces asupra a
 /* Build Table Structure */
 CREATE TABLE study_org_assoc
 (
-	id SERIAL,
+	id INTEGER DEFAULT nextval('study_org_assoc_id_seq'::regclass) NOT NULL,
 	assoc_name VARCHAR(100) NOT NULL,
 	assoc_description TEXT NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE study_org_assoc ADD CONSTRAINT pkstudy_org_assoc
@@ -2497,11 +3033,11 @@ COMMENT ON TABLE study_org_assoc IS 'Tabel ce contine tipurile de asociere dintr
 /* Build Table Structure */
 CREATE TABLE study_person
 (
-	id SERIAL,
-	person_id SERIAL,
-	study_id SERIAL,
-	assoctype_id SERIAL
-);
+	id INTEGER DEFAULT nextval('study_person_id_seq'::regclass) NOT NULL,
+	person_id INTEGER DEFAULT nextval('study_person_person_id_seq'::regclass) NOT NULL,
+	study_id INTEGER DEFAULT nextval('study_person_study_id_seq'::regclass) NOT NULL,
+	assoctype_id INTEGER DEFAULT nextval('study_person_assoctype_id_seq'::regclass) NOT NULL
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE study_person ADD CONSTRAINT pkstudy_person
@@ -2524,14 +3060,14 @@ COMMENT ON TABLE study_person IS 'Tabel ce contine asocierile dintre intre studi
 /* Build Table Structure */
 CREATE TABLE study_person_acl
 (
-	study_person_id SERIAL,
-	aro_id SERIAL,
+	study_person_id INTEGER DEFAULT nextval('study_person_acl_study_person_id_seq'::regclass) NOT NULL,
+	aro_id INTEGER DEFAULT nextval('study_person_acl_aro_id_seq'::regclass) NOT NULL,
 	aro_type INTEGER NOT NULL,
 	read BOOL NULL,
 	"update" BOOL NULL,
 	"delete" BOOL NULL,
 	modacl BOOL NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE study_person_acl ADD CONSTRAINT pkstudy_person_acl
@@ -2555,15 +3091,39 @@ COMMENT ON COLUMN study_person_acl.modacl IS 'Atribut boolean, a carui valoare e
 COMMENT ON TABLE study_person_acl IS 'Tabel ce contine drepturile de acces asupra asocierilor dintre persoanelor si studii';
 
 
+/******************** Add Table: study_person_asoc ************************/
+
+/* Build Table Structure */
+CREATE TABLE study_person_asoc
+(
+	id INTEGER NOT NULL,
+	asoc_name VARCHAR(100) NOT NULL,
+	asoc_description TEXT NULL
+) WITHOUT OIDS;
+
+/* Add Primary Key */
+ALTER TABLE study_person_asoc ADD CONSTRAINT pkstudy_person_asoc
+	PRIMARY KEY (id);
+
+/* Add Comments */
+COMMENT ON COLUMN study_person_asoc.id IS 'Codul unei asocieri care poate exista intre un studiu si o persoana';
+
+COMMENT ON COLUMN study_person_asoc.asoc_name IS 'Numele unei asocieri care poate exista intre un studiu si o persoana';
+
+COMMENT ON COLUMN study_person_asoc.asoc_description IS 'Descrierea asocierii';
+
+COMMENT ON TABLE study_person_asoc IS 'Tabel ce contine tipurile de asocieri intre studiu si persoane';
+
+
 /******************** Add Table: study_person_assoc ************************/
 
 /* Build Table Structure */
 CREATE TABLE study_person_assoc
 (
-	id SERIAL,
+	id INTEGER DEFAULT nextval('study_person_assoc_id_seq'::regclass) NOT NULL,
 	asoc_name VARCHAR(100) NOT NULL,
 	asoc_description TEXT NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE study_person_assoc ADD CONSTRAINT pkstudy_person_assoc
@@ -2584,9 +3144,9 @@ COMMENT ON TABLE study_person_assoc IS 'Tabel ce contine tipurile de asocieri ca
 /* Build Table Structure */
 CREATE TABLE study_topic
 (
-	study_id SERIAL,
-	topic_id SERIAL
-);
+	study_id INTEGER DEFAULT nextval('study_topic_study_id_seq'::regclass) NOT NULL,
+	topic_id INTEGER DEFAULT nextval('study_topic_topic_id_seq'::regclass) NOT NULL
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE study_topic ADD CONSTRAINT pkstudy_topic
@@ -2605,9 +3165,9 @@ COMMENT ON TABLE study_topic IS 'Tabel ce stocheaza asocierile dintre studii si 
 /* Build Table Structure */
 CREATE TABLE suffix
 (
-	id SERIAL,
+	id INTEGER DEFAULT nextval('suffix_id_seq'::regclass) NOT NULL,
 	name VARCHAR(50) NOT NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE suffix ADD CONSTRAINT pksuffix
@@ -2626,9 +3186,9 @@ COMMENT ON TABLE suffix IS 'Tabel ce contine sufixele care pot fi adaugate numel
 /* Build Table Structure */
 CREATE TABLE time_meth_type
 (
-	id SERIAL,
+	id INTEGER DEFAULT nextval('time_meth_type_id_seq'::regclass) NOT NULL,
 	name TEXT NOT NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE time_meth_type ADD CONSTRAINT pktime_meth_type
@@ -2647,9 +3207,9 @@ COMMENT ON TABLE time_meth_type IS 'Tabel ce contine tipurile de metode temporal
 /* Build Table Structure */
 CREATE TABLE title_type
 (
-	id SERIAL,
+	id INTEGER DEFAULT nextval('title_type_id_seq'::regclass) NOT NULL,
 	name VARCHAR(50) NOT NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE title_type ADD CONSTRAINT pktitle_type
@@ -2668,12 +3228,12 @@ COMMENT ON TABLE title_type IS 'Tabel ce stocheaza tipurile titlurilor din baza 
 /* Build Table Structure */
 CREATE TABLE topic
 (
-	id SERIAL,
+	id INTEGER DEFAULT nextval('topic_id_seq'::regclass) NOT NULL,
 	name VARCHAR(100) NOT NULL,
 	description TEXT NULL,
 	left_topic INTEGER NULL,
 	right_topic INTEGER NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE topic ADD CONSTRAINT pktopic
@@ -2699,9 +3259,9 @@ COMMENT ON TABLE topic IS 'Tabel ce contine topic-urile ce pot fi asociate unei 
 CREATE TABLE translated_topic
 (
 	lang_id CHAR(2) NOT NULL,
-	topic_id SERIAL,
+	topic_id INTEGER DEFAULT nextval('translated_topic_topic_id_seq'::regclass) NOT NULL,
 	translation TEXT NOT NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE translated_topic ADD CONSTRAINT pktranslated_topic
@@ -2722,10 +3282,10 @@ COMMENT ON TABLE translated_topic IS 'Tabel ce contine traducerile anumitor topi
 /* Build Table Structure */
 CREATE TABLE unit_analysis
 (
-	id SERIAL,
+	id INTEGER DEFAULT nextval('unit_analysis_id_seq'::regclass) NOT NULL,
 	name TEXT NOT NULL,
 	description TEXT NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE unit_analysis ADD CONSTRAINT pkunit_analysis
@@ -2746,9 +3306,9 @@ COMMENT ON TABLE unit_analysis IS 'Tabel care stocheaza tipurile de unitati de a
 /* Build Table Structure */
 CREATE TABLE "user"
 (
-	id SERIAL,
+	id INTEGER DEFAULT nextval('user_id_seq'::regclass) NOT NULL,
 	credential_provider TEXT NOT NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE "user" ADD CONSTRAINT pkuser
@@ -2767,13 +3327,13 @@ COMMENT ON TABLE "user" IS 'Tabel ce contine utilizatorii aplicatiei';
 /* Build Table Structure */
 CREATE TABLE user_auth_log
 (
-	user_id SERIAL,
+	user_id INTEGER DEFAULT nextval('user_auth_log_user_id_seq'::regclass) NOT NULL,
 	"timestamp" TIMESTAMP NOT NULL,
 	"action" VARCHAR(30) NOT NULL,
 	credential_provider TEXT NOT NULL,
 	credential_identifier TEXT NOT NULL,
 	error_message TEXT NOT NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE user_auth_log ADD CONSTRAINT pkuser_auth_log
@@ -2800,11 +3360,11 @@ COMMENT ON TABLE user_auth_log IS 'Tabel ce stocheaza log-ul corespunzator proce
 /* Build Table Structure */
 CREATE TABLE user_message
 (
-	id SERIAL,
+	id INTEGER DEFAULT nextval('user_message_id_seq'::regclass) NOT NULL,
 	message TEXT NOT NULL,
-	from_user_id SERIAL,
-	to_user_id SERIAL
-);
+	from_user_id INTEGER DEFAULT nextval('user_message_from_user_id_seq'::regclass) NOT NULL,
+	to_user_id INTEGER DEFAULT nextval('user_message_to_user_id_seq'::regclass) NOT NULL
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE user_message ADD CONSTRAINT pkuser_message
@@ -2827,11 +3387,11 @@ COMMENT ON TABLE user_message IS 'Tabel care stocheaza mesajele trimise catre ut
 /* Build Table Structure */
 CREATE TABLE user_profile
 (
-	user_id SERIAL,
+	user_id INTEGER DEFAULT nextval('user_profile_user_id_seq'::regclass) NOT NULL,
 	f_name VARCHAR(100) NOT NULL,
 	l_name VARCHAR(100) NOT NULL,
 	email VARCHAR(200) NOT NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE user_profile ADD CONSTRAINT pkuser_profile
@@ -2854,9 +3414,9 @@ COMMENT ON TABLE user_profile IS 'Tabel ce stocheaza profilurile utilizatorilor 
 /* Build Table Structure */
 CREATE TABLE user_role
 (
-	user_id SERIAL,
-	role_id SERIAL
-);
+	user_id INTEGER DEFAULT nextval('user_role_user_id_seq'::regclass) NOT NULL,
+	role_id INTEGER DEFAULT nextval('user_role_role_id_seq'::regclass) NOT NULL
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE user_role ADD CONSTRAINT pkuser_role
@@ -2875,13 +3435,13 @@ COMMENT ON TABLE user_role IS 'Tabel ce stocheaza asocierile dintre utilizatori 
 /* Build Table Structure */
 CREATE TABLE user_setting
 (
-	id SERIAL,
+	id INTEGER DEFAULT nextval('user_setting_id_seq'::regclass) NOT NULL,
 	name TEXT NOT NULL,
 	setting_group INTEGER NOT NULL,
 	description TEXT NULL,
 	predefined_values TEXT NULL,
 	default_value TEXT NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE user_setting ADD CONSTRAINT pkuser_setting
@@ -2908,10 +3468,10 @@ COMMENT ON TABLE user_setting IS 'Tabel care stocheaza setarile pentru utilizato
 /* Build Table Structure */
 CREATE TABLE user_setting_group
 (
-	id SERIAL,
+	id INTEGER DEFAULT nextval('user_setting_group_id_seq'::regclass) NOT NULL,
 	name VARCHAR(100) NOT NULL,
 	description TEXT NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE user_setting_group ADD CONSTRAINT pkuser_setting_group
@@ -2932,10 +3492,10 @@ COMMENT ON TABLE user_setting_group IS 'Tabel care stocheaza grupurile de setari
 /* Build Table Structure */
 CREATE TABLE user_setting_value
 (
-	user_setting_id SERIAL,
-	user_id SERIAL,
+	user_setting_id INTEGER DEFAULT nextval('user_setting_value_user_setting_id_seq'::regclass) NOT NULL,
+	user_id INTEGER DEFAULT nextval('user_setting_value_user_id_seq'::regclass) NOT NULL,
 	value TEXT NOT NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE user_setting_value ADD CONSTRAINT pkuser_setting_value
@@ -2956,9 +3516,9 @@ COMMENT ON TABLE user_setting_value IS 'Tabel care stocheaza valorile setarilor 
 /* Build Table Structure */
 CREATE TABLE value
 (
-	item_id SERIAL,
+	item_id INTEGER DEFAULT nextval('value_item_id_seq'::regclass) NOT NULL,
 	value INTEGER NOT NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE value ADD CONSTRAINT pkvalue
@@ -2975,9 +3535,9 @@ COMMENT ON TABLE value IS 'Tabel ce stocheaza valorile posibile ale item-urilor 
 /* Build Table Structure */
 CREATE TABLE vargroup
 (
-	id SERIAL,
+	id INTEGER DEFAULT nextval('vargroup_id_seq'::regclass) NOT NULL,
 	name TEXT NOT NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE vargroup ADD CONSTRAINT pkvargroup
@@ -2996,8 +3556,8 @@ COMMENT ON TABLE vargroup IS 'Tabel pentru definirea gruparilor de variabile (pe
 /* Build Table Structure */
 CREATE TABLE variable
 (
-	instance_id SERIAL,
-	id SERIAL,
+	instance_id INTEGER DEFAULT nextval('variable_instance_id_seq'::regclass) NOT NULL,
+	id INTEGER DEFAULT nextval('variable_id_seq'::regclass) NOT NULL,
 	label TEXT NOT NULL,
 	type SMALLINT NOT NULL,
 	order_in_instance INTEGER NOT NULL,
@@ -3006,7 +3566,7 @@ CREATE TABLE variable
 	type_edited_text BOOL NOT NULL,
 	type_edited_number BOOL NOT NULL,
 	type_selection BOOL NOT NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE variable ADD CONSTRAINT pkvariable
@@ -3033,14 +3593,35 @@ COMMENT ON TABLE variable IS 'Tabel care stocheaza variabilele din cadrul instan
 CREATE UNIQUE INDEX "Variables_QuestionnaireId_Order_Idx" ON variable (instance_id, order_in_instance);
 
 
+/******************** Add Table: variable_group ************************/
+
+/* Build Table Structure */
+CREATE TABLE variable_group
+(
+	id INTEGER NOT NULL,
+	name VARCHAR(100) NOT NULL
+) WITHOUT OIDS;
+
+/* Add Primary Key */
+ALTER TABLE variable_group ADD CONSTRAINT pkvariable_group
+	PRIMARY KEY (id);
+
+/* Add Comments */
+COMMENT ON COLUMN variable_group.id IS 'Identificatorul';
+
+COMMENT ON COLUMN variable_group.name IS 'Denumirea grupului';
+
+COMMENT ON TABLE variable_group IS 'Tabel pentru definirea gruparilor de variabile (pentru o organizare mai buna a lor)';
+
+
 /******************** Add Table: variable_vargroup ************************/
 
 /* Build Table Structure */
 CREATE TABLE variable_vargroup
 (
-	variable_id SERIAL,
-	vargroup_id SERIAL
-);
+	variable_id INTEGER DEFAULT nextval('variable_vargroup_variable_id_seq'::regclass) NOT NULL,
+	vargroup_id INTEGER DEFAULT nextval('variable_vargroup_vargroup_id_seq'::regclass) NOT NULL
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE variable_vargroup ADD CONSTRAINT pkvariable_vargroup
@@ -3416,14 +3997,14 @@ ALTER TABLE concept_variable ADD CONSTRAINT fk_concept_variable_variable
 	FOREIGN KEY (variable_id) REFERENCES variable (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
-/* Add Foreign Key: fk_documents_document_types */
-ALTER TABLE file ADD CONSTRAINT fk_documents_document_types
-	FOREIGN KEY (filetype_id) REFERENCES filetype (id)
-	ON UPDATE NO ACTION ON DELETE NO ACTION;
-
 /* Add Foreign Key: fk_documents_acl_documents */
 ALTER TABLE file_acl ADD CONSTRAINT fk_documents_acl_documents
 	FOREIGN KEY (document_id) REFERENCES file (id)
+	ON UPDATE NO ACTION ON DELETE NO ACTION;
+
+/* Add Foreign Key: fk_documents_document_types */
+ALTER TABLE file ADD CONSTRAINT fk_documents_document_types
+	FOREIGN KEY (filetype_id) REFERENCES filetype (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 /* Add Foreign Key: fk_form_instance */
@@ -3814,6 +4395,21 @@ ALTER TABLE source ADD CONSTRAINT fk_sources_org
 /* Add Foreign Key: fk_sources_sourcetype */
 ALTER TABLE source ADD CONSTRAINT fk_sources_sourcetype
 	FOREIGN KEY (sourcetype_id) REFERENCES sourcetype (id)
+	ON UPDATE NO ACTION ON DELETE NO ACTION;
+
+/* Add Foreign Key: fk_source_contacts_source_contact_method */
+ALTER TABLE source_contacts ADD CONSTRAINT fk_source_contacts_source_contact_method
+	FOREIGN KEY (contact_method) REFERENCES source_contact_method (id)
+	ON UPDATE NO ACTION ON DELETE NO ACTION;
+
+/* Add Foreign Key: fk_source_contacts_sources */
+ALTER TABLE source_contacts ADD CONSTRAINT fk_source_contacts_sources
+	FOREIGN KEY (org_id) REFERENCES source (org_id)
+	ON UPDATE NO ACTION ON DELETE NO ACTION;
+
+/* Add Foreign Key: source_contacts_person_id_fkey */
+ALTER TABLE source_contacts ADD CONSTRAINT source_contacts_person_id_fkey
+	FOREIGN KEY (person_id) REFERENCES person (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 /* Add Foreign Key: fk_sourcestudy_sources */

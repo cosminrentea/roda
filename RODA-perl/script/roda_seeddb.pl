@@ -8,8 +8,16 @@ use Text::CSV::Auto;
 use Encode qw(decode);
 use Data::Dumper;
 use Try::Tiny;
+use Config::Properties;
 
-my $schema = RODA::RODADB->connect( 'dbi:Pg:dbname=roda-devel;host=193.228.153.170', 'roda2012', '2012roda', { pg_enable_utf8 => 1 } );
+open my $fh, '<', 'database.properties'
+    or die "Unable to open database.properties file";
+
+my $prop = Config::Properties->new();
+$prop->load($fh);
+
+my $schema = RODA::RODADB->connect($prop->getProperty('roda_dbname_host'),$prop->getProperty('roda_user'),$prop->getProperty('roda_password'), { pg_enable_utf8 => 1 } );
+$schema->storage->debug(1);
 
 print "Language\n";
 
@@ -89,6 +97,7 @@ if ( -f "$FindBin::Bin/../csv/region_type.csv" ) {
 } else {
     print "Nu gasesc fisierul $FindBin::Bin/../csv/region_type.csv";
 }
+
 print "Regions\n";
 
 #fisierul region_types are id in el degeaba pentru ca altfel idiotul de Text::CSV nu isi da seama ca e csv

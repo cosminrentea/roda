@@ -49,21 +49,6 @@ __PACKAGE__->table("internet");
 
 Codul contactului respectiv la internet
 
-=head2 entity_type
-
-  data_type: 'integer'
-  is_nullable: 0
-
-Tipul entitatii careia ii apartine acest contact
-
-=head2 entity_id
-
-  data_type: 'integer'
-  is_foreign_key: 1
-  is_nullable: 0
-
-Codul entitatii careia ii apartine acest contact
-
 =head2 internet_type
 
   data_type: 'varchar'
@@ -84,11 +69,12 @@ Sir de caractere reprezentand id-ul contului respectiv pe retea
 
 __PACKAGE__->add_columns(
   "id",
-  { data_type => "integer", is_nullable => 0 },
-  "entity_type",
-  { data_type => "integer", is_nullable => 0 },
-  "entity_id",
-  { data_type => "integer", is_foreign_key => 1, is_nullable => 0 },
+  {
+    data_type         => "integer",
+    is_auto_increment => 1,
+    is_nullable       => 0,
+    sequence          => "internet_id_seq",
+  },
   "internet_type",
   { data_type => "varchar", is_nullable => 0, size => 50 },
   "internet",
@@ -107,37 +93,58 @@ __PACKAGE__->add_columns(
 
 __PACKAGE__->set_primary_key("id");
 
+
 =head1 RELATIONS
 
-=head2 entity
+=head2 org_internets
 
-Type: belongs_to
+Type: has_many
 
-Related object: L<RODA::RODADB::Result::Person>
-
-=cut
-
-__PACKAGE__->belongs_to(
-  "entity",
-  "RODA::RODADB::Result::Person",
-  { id => "entity_id" },
-  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
-);
-
-=head2 entity_2
-
-Type: belongs_to
-
-Related object: L<RODA::RODADB::Result::Org>
+Related object: L<RODA::RODADB::Result::OrgInternet>
 
 =cut
 
-__PACKAGE__->belongs_to(
-  "entity_2",
-  "RODA::RODADB::Result::Org",
-  { id => "entity_id" },
-  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
+__PACKAGE__->has_many(
+  "org_emails",
+  "RODA::RODADB::Result::OrgInternet",
+  { "foreign.internet_id" => "self.id" },
+  { cascade_copy => 0, cascade_delete => 0 },
 );
+
+=head2 person_internets
+
+Type: has_many
+
+Related object: L<RODA::RODADB::Result::PersonInternet>
+
+=cut
+
+__PACKAGE__->has_many(
+  "person_internets",
+  "RODA::RODADB::Result::PersonInternet",
+  { "foreign.internet_id" => "self.id" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
+=head2 orgs
+
+Type: many_to_many
+
+Composing rels: L</org_internets> -> org
+
+=cut
+
+__PACKAGE__->many_to_many("orgs", "org_internets", "org");
+
+=head2 people
+
+Type: many_to_many
+
+Composing rels: L</person_internets> -> person
+
+=cut
+
+__PACKAGE__->many_to_many("people", "person_internets", "person");
 
 
 # Created by DBIx::Class::Schema::Loader v0.07012 @ 2012-12-19 19:21:26

@@ -44,27 +44,7 @@ __PACKAGE__->table("email");
   is_nullable: 0
   size: 200
 
-=head2 entity_type
-
-  data_type: 'integer'
-  is_nullable: 0
-
 Sirul de caractere reprezentand adresa de email
-
-=head2 entity_id
-
-  data_type: 'integer'
-  is_nullable: 0
-
-Tipul entitatii careia ii apartine adresa de email
-
-=head2 ismain
-
-  data_type: 'boolean'
-  default_value: false
-  is_nullable: 0
-
-Codul entitatii careia ii apartine adresa de email
 
 =head2 id
 
@@ -73,19 +53,13 @@ Codul entitatii careia ii apartine adresa de email
   is_nullable: 0
   sequence: 'emails_id_seq'
 
-Atribut boolean care specifica daca adresa de email este cea principala a entitatii respective
+Codul adresei de email
 
 =cut
 
 __PACKAGE__->add_columns(
   "email",
   { data_type => "varchar", is_nullable => 0, size => 200 },
-  "entity_type",
-  { data_type => "integer", is_nullable => 0 },
-  "entity_id",
-  { data_type => "integer", is_nullable => 0 },
-  "ismain",
-  { data_type => "boolean", is_nullable => 1 },
   "id",
   {
     data_type         => "integer",
@@ -106,6 +80,38 @@ __PACKAGE__->add_columns(
 =cut
 
 __PACKAGE__->set_primary_key("id");
+
+=head1 RELATIONS
+
+=head2 org_emails
+
+Type: has_many
+
+Related object: L<RODA::RODADB::Result::OrgEmail>
+
+=cut
+
+__PACKAGE__->has_many(
+  "org_emails",
+  "RODA::RODADB::Result::OrgEmail",
+  { "foreign.email_id" => "self.id" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
+=head2 person_emails
+
+Type: has_many
+
+Related object: L<RODA::RODADB::Result::PersonEmail>
+
+=cut
+
+__PACKAGE__->has_many(
+  "person_emails",
+  "RODA::RODADB::Result::PersonEmail",
+  { "foreign.email_id" => "self.id" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
 
 
 # Created by DBIx::Class::Schema::Loader v0.07012 @ 2013-01-09 00:12:10

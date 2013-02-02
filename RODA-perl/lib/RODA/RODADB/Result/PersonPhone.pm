@@ -41,18 +41,19 @@ __PACKAGE__->table("person_phone");
 =head2 person_id
 
   data_type: 'integer'
-  is_auto_increment: 1
   is_foreign_key: 1
   is_nullable: 0
-  sequence: 'person_phone_person_id_seq'
 
 =head2 phone_id
 
   data_type: 'integer'
-  is_auto_increment: 1
   is_foreign_key: 1
   is_nullable: 0
-  sequence: 'person_phone_phone_id_seq'
+
+=head2 is_main
+
+  data_type: 'boolean'
+  is_nullable: 0
 
 =cut
 
@@ -60,19 +61,17 @@ __PACKAGE__->add_columns(
   "person_id",
   {
     data_type         => "integer",
-    is_auto_increment => 1,
     is_foreign_key    => 1,
     is_nullable       => 0,
-    sequence          => "person_phone_person_id_seq",
   },
   "phone_id",
   {
     data_type         => "integer",
-    is_auto_increment => 1,
     is_foreign_key    => 1,
     is_nullable       => 0,
-    sequence          => "person_phone_phone_id_seq",
   },
+  "is_main",
+  { data_type => "boolean", is_nullable => 0, default_value => 0 },
 );
 
 =head1 PRIMARY KEY
@@ -103,7 +102,7 @@ __PACKAGE__->belongs_to(
   "person",
   "RODA::RODADB::Result::Person",
   { id => "person_id" },
-  { is_deferrable => 0, on_delete => "NO ACTION", on_update => "NO ACTION" },
+  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
 );
 
 =head2 phone
@@ -118,7 +117,7 @@ __PACKAGE__->belongs_to(
   "phone",
   "RODA::RODADB::Result::Phone",
   { id => "phone_id" },
-  { is_deferrable => 0, on_delete => "NO ACTION", on_update => "NO ACTION" },
+  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
 );
 
 

@@ -35,34 +35,42 @@ sub checkperson {
     # Sa vedem mai intai prefixele si sufixele
     my $insertpers;
     if ( $params{prefix} && $params{prefix} ne '' ) {
-        my $prefixrs = $self->result_source->schema()->resultset('Prefix')->search( { 'upper(me.name)' => $params{prefix} } )->first;
+        my $prefixrs = $self->result_source->schema()->resultset('Prefix')->search( { 'upper(me.name)' => uc($params{prefix}) } )->first;
         if ($prefixrs) {
-            $insertpers->{prefix} = $prefixrs->id;
+            $insertpers->{prefix_id} = $prefixrs->id;
         }
     }
     if ( $params{sufix} && $params{sufix} ne '' ) {
-        my $suffixrs = $self->result_source->schema()->resultset('Suffix')->search( { 'upper(me.name)' => $params{suffix} } )->first;
+        my $suffixrs = $self->result_source->schema()->resultset('Suffix')->search( { 'upper(me.name)' => uc($params{sufix}) } )->first;
         if ($suffixrs) {
-            $insertpers->{suffix} = $suffixrs->id;
+            $insertpers->{suffix_id} = $suffixrs->id;
         }
     }
     $insertpers->{fname} = ucfirst( $params{fname});
-          $insertpers->{lname} = ucfirst( $params{lname});
-              $insertpers->{mname} = ucfirst($params{mname});
-                  my $guard    = $self->result_source->schema()->txn_scope_guard;
-                  my $personrs = $self->create($insertpers);
-                  if ($personrs) {
+    $insertpers->{lname} = ucfirst( $params{lname});
+    $insertpers->{mname} = ucfirst($params{mname});
+    my $guard    = $self->result_source->schema()->txn_scope_guard;
+    my $personrs = $self->create($insertpers);
+    if ($personrs) {
+    	
+    	if (@{$params{addresses}} > 0) {
+        	$personrs->attach_addresses( addresses=>$params{addresses} );
+        }
 
-                    if (@{$params{addresses}} > 0) {
-                            $personrs->attach_addresses( addresses=>$params{addresses} );
-                    }
-
-                    $personrs->attach_emails(emails => $params{emails} );
-                    $personrs->attach_phones( phones => $params{phones} );
-                    $personrs->attach_internets(internets => $params{internets} );
-                }
+		if (@{$params{emails}} > 0) {
+        	$personrs->attach_emails(emails => $params{emails} );
+		}
+		
+		if (@{$params{phones}} > 0) {
+        	$personrs->attach_phones( phones => $params{phones} );
+		}
+		
+		if (@{$params{internets}} > 0) {
+        	$personrs->attach_internets(internets => $params{internets} );
+		}
+     }
                
-                $guard->commit;
-                  return $personrs;
-            }
-            1;
+     $guard->commit;
+     return $personrs;
+   }
+    1;

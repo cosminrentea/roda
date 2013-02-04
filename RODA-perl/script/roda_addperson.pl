@@ -8,7 +8,15 @@ use Text::CSV::Auto;
 use Encode qw(decode);
 use Data::Dumper;
 use Try::Tiny;
-my $schema = RODA::RODADB->connect( 'dbi:Pg:dbname=roda-devel;host=193.228.153.170', 'roda2012', '2012roda', { pg_enable_utf8 => 1 } );
+use Config::Properties;
+
+open my $fh, '<', 'database.properties'
+    or die "Unable to open database.properties file";
+
+my $prop = Config::Properties->new();
+$prop->load($fh);
+
+my $schema = RODA::RODADB->connect($prop->getProperty('roda_dbname_host'),$prop->getProperty('roda_user'),$prop->getProperty('roda_password'), { pg_enable_utf8 => 1 } );
 
 $schema->storage->debug(1);
 
@@ -33,7 +41,7 @@ my %moi = (fname => 'Sorin',
                                            postal_code => '030693',
                      }],
                      emails => [{email=>'sorin@contentlogic.ro', ismain => '1'},{email => 'sorin@greencore.ro'},{email => 'sorin@mediaimage.ro'}],
-                     phones => [{phone => '0740236005', phone_type => 'mobile'},{phone => '0216535817', phone_type => 'home'}],
+                     phones => [{phone => '0740236005', phone_type => 'mobile', ismain => '1'},{phone => '0216535817', phone_type => 'home'}],
                      internets => [{internet_type => 'blog', internet=>'http://sorin.greencore.ro'},{internet_type => '500px', internet => 'http://500px.com/sorinmilu'},{internet_type => 'facebook', internet => 'http://www.facebook.com/sorin.milutinovici'}],                       
 );
 

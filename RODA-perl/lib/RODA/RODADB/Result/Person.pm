@@ -134,6 +134,36 @@ __PACKAGE__->has_many(
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
+=head2 person_emails
+
+Type: has_many
+
+Related object: L<RODA::RODADB::Result::PersonEmail>
+
+=cut
+
+__PACKAGE__->has_many(
+  "person_emails",
+  "RODA::RODADB::Result::PersonEmail",
+  { "foreign.person_id" => "self.id" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
+=head2 person_internets
+
+Type: has_many
+
+Related object: L<RODA::RODADB::Result::PersonInternet>
+
+=cut
+
+__PACKAGE__->has_many(
+  "person_internets",
+  "RODA::RODADB::Result::PersonInternet",
+  { "foreign.person_id" => "self.id" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
 =head2 person_links
 
 Type: has_many
@@ -202,8 +232,6 @@ __PACKAGE__->has_many(
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
 __PACKAGE__->meta->make_immutable;
 
-__PACKAGE__->has_many( "emails", "RODA::RODADB::Result::Email", { "foreign.entity_id" => "self.id" }, { where => { "emails.entity_type" => "1" } } );
-
 
 sub attach_addresses {
      my ( $self, %params ) = @_;
@@ -211,60 +239,100 @@ sub attach_addresses {
          my $guard = $self->result_source->schema()->txn_scope_guard;
          my $addressrs = $self->result_source->schema()->resultset('Address')->checkaddress(%$address);
          #acum trebuie sa inseram si in many-to-many
-               if ($addressrs) { 
-        #acu trebuie sa inseram asocierea
-         $self->result_source->schema()->resultset('PersonAddress')->find_or_create({
-          address_id => $addressrs->id,
-          person_id => $self->id,
-         },
-         {
-          key => 'primary',
-         }
-         );
-      }
+         if ($addressrs) { 
+        		#acu trebuie sa inseram asocierea
+         		$self->result_source->schema()->resultset('PersonAddress')->find_or_create({
+          																					address_id => $addressrs->id,
+          																					person_id => $self->id,
+         																					},
+         																					{
+         		 																			key => 'primary',
+         																					});
+      	}
         $guard->commit; 
      }
 }
 
 sub attach_emails {
      my ( $self, %params ) = @_;
-
-#aici ar trebui sa verificam emailul
-
-        foreach my $emails (@{$params{emails}}) { 
-        if (Email::Valid->address($emails->{email})) {
-     
-            my $emailrs = $self->result_source->schema()->resultset('Email')->create({email => $emails->{email},
-                                                                                      ismain => $emails->{ismain},
-                                                                                      entity_type => '1',
-                                                                                      entity_id => $self->id,
-            });
+     #aici ar trebui sa verificam emailul
+     foreach my $email (@{$params{emails}}) { 
+        if (Email::Valid->address($email->{email})) {
+			my $guard = $self->result_source->schema()->txn_scope_guard;
+        	my $emailrs = $self->result_source->schema()->resultset('Email')->checkemail(%$email);   
+			my $ismain;
+			if (!$email->{ismain}) {
+				$ismain = '0';
+			} else {
+				$ismain = $email->{ismain};
+			}
+			
+            if ($emailrs) { 
+         		$self->result_source->schema()->resultset('PersonEmail')->find_or_create({
+          																				  email_id => $emailrs->id,
+          																				  person_id => $self->id,
+          																				  is_main => $ismain,
+         																				 },
+         																				 {
+         		 																		  key => 'primary',
+         																				 });
+      		}
+      		$guard->commit; 	
         } else {
-         die 'Invalid Email';
+         	die 'Invalid Email';
         }
-        }
+     }
 }
 
 sub attach_phones {
      my ( $self, %params ) = @_;
-        foreach my $phones (@{$params{phones}}) { 
-            my $phoners = $self->result_source->schema()->resultset('Phone')->create({phone => $phones->{phone},
-            																		  phone_type => $phones->{phone_type},		
-                                                                                      ismain => $phones->{ismain},
-                                                                                      entity_type => '1',
-                                                                                      entity_id => $self->id,
-            });
+     foreach my $phone (@{$params{phones}}) { 
+     	my $guard = $self->result_source->schema()->txn_scope_guard;
+        my $phoners = $self->result_source->schema()->resultset('Phone')->checkphone(%$phone);  
+        my $ismain;
+		if (!$phone->{ismain}) {
+			$ismain = '0';
+		} else {
+			$ismain = $phone->{ismain};
+		}
+			   
+        if ($phoners) { 
+        	$self->result_source->schema()->resultset('PersonPhone')->find_or_create({
+          																			  phone_id => $phoners->id,
+          																			  person_id => $self->id,
+          																			  is_main => $ismain,
+         																			 },
+         																			 {
+         		 																	  key => 'primary',
+         																			 });
+      		}
+      		$guard->commit; 	
         }
 }
 
 sub attach_internets {
      my ( $self, %params ) = @_;
-        foreach my $internets (@{$params{internets}}) { 
-            my $internetrs = $self->result_source->schema()->resultset('Internet')->create({internet => $internets->{internet},
-            																				internet_type => $internets->{internet_type},	
-                                                                                            entity_type => '1',
-                                                                                            entity_id => $self->id,
-            });
+     foreach my $internet (@{$params{internets}}) { 
+     	my $guard = $self->result_source->schema()->txn_scope_guard;
+        my $internetrs = $self->result_source->schema()->resultset('Internet')->checkinternet(%$internet);
+        my $ismain;
+        if (!$internet->{ismain}) {
+			$ismain = '0';
+		} else {
+			$ismain = $internet->{ismain};
+		}
+             
+        if ($internetrs) { 
+        	$self->result_source->schema()->resultset('PersonInternet')->find_or_create({
+          																			     internet_id => $internetrs->id,
+          																			     person_id => $self->id,
+          																			     is_main => $ismain,
+         																			    },
+         																			    {
+         		 																	     key => 'primary',
+         																			    });
+      		}
+      		$guard->commit; 	           
         }
 }
 

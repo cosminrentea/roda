@@ -14,6 +14,6 @@ fi
 perl -p -i -e "s/^[[:space:]]+ID INTEGER NOT NULL/id SERIAL/gi;s/^[[:space:]]+ID BIGINT NOT NULL/id BIGSERIAL/gi" ${SCRIPTNAME}
 
 # run script
-psql -f ${SCRIPTNAME} -h ${RODA_HOST} ${RODA_DB} ${RODA_USER}
+psql -a -f ${SCRIPTNAME} -h ${RODA_HOST} ${RODA_DB} ${RODA_USER}
 
 

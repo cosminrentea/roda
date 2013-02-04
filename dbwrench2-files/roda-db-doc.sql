@@ -13,6 +13,9 @@ id BIGSERIAL,
 ALTER TABLE acl_class ADD CONSTRAINT pkacl_class
 	PRIMARY KEY (id);
 
+/* Add Comments */
+COMMENT ON TABLE acl_class IS 'Tabel folosit de Spring Security pentru ACL. Uniquely identify any domain object class in the system. The only columns are the ID and the Java class name. Thus, there is a single row for each unique Class we wish to store ACL permissions for.';
+
 /* Add Indexes */
 CREATE UNIQUE INDEX "acl_class_class_Idx" ON acl_class (class);
 
@@ -36,6 +39,9 @@ id BIGSERIAL,
 ALTER TABLE acl_entry ADD CONSTRAINT pkacl_entry
 	PRIMARY KEY (id);
 
+/* Add Comments */
+COMMENT ON TABLE acl_entry IS 'Tabel folosit de Spring Security pentru ACL. Stores the individual permissions assigned to each recipient. Columns include a foreign key to the ACL_OBJECT_IDENTITY, the recipient (ie a foreign key to ACL_SID), whether we''ll be auditing or not, and the integer bit mask that represents the actual permission being granted or denied. We have a single row for every recipient that receives a permission to work with a domain object.';
+
 /* Add Indexes */
 CREATE INDEX "acl_entry_acl_object_identity_Idx" ON acl_entry (acl_object_identity, ace_order);
 
@@ -57,6 +63,9 @@ id BIGSERIAL,
 ALTER TABLE acl_object_identity ADD CONSTRAINT pkacl_object_identity
 	PRIMARY KEY (id);
 
+/* Add Comments */
+COMMENT ON TABLE acl_object_identity IS 'Tabel folosit de Spring Security pentru ACL. Stores information for each unique domain object instance in the system. Columns include the ID, a foreign key to the ACL_CLASS table, a unique identifier so we know which ACL_CLASS instance we''re providing information for, the parent, a foreign key to the ACL_SID table to represent the owner of the domain object instance, and whether we allow ACL entries to inherit from any parent ACL. We have a single row for every domain object instance we''re storing ACL permissions for.  ';
+
 /* Add Indexes */
 CREATE UNIQUE INDEX "acl_object_identity_object_id_class_Idx" ON acl_object_identity (object_id_class, object_id_identity);
 
@@ -74,6 +83,9 @@ id BIGSERIAL,
 /* Add Primary Key */
 ALTER TABLE acl_sid ADD CONSTRAINT pkacl_sid
 	PRIMARY KEY (id);
+
+/* Add Comments */
+COMMENT ON TABLE acl_sid IS 'Tabel folosit de Spring Security pentru ACL. Uniquely identify any principal or authority in the system ("SID" stands for "security identity"). The only columns are the ID, a textual representation of the SID, and a flag to indicate whether the textual representation refers to a principal name or a GrantedAuthority. Thus, there is a single row for each unique principal or GrantedAuthority. When used in the context of receiving a permission, a SID is generally called a "recipient".';
 
 /* Add Indexes */
 CREATE UNIQUE INDEX "acl_sid_principal_Idx" ON acl_sid (principal, sid);
@@ -357,13 +369,10 @@ COMMENT ON TABLE city IS 'Tabel unic pentru toate referintele la orase';
 CREATE TABLE cms_file
 (
 id SERIAL,
-	filename VARCHAR(200) NOT NULL,
-	label VARCHAR(50) NOT NULL,
-	folder_id INTEGER NOT NULL,
-	md5 VARCHAR(32) NOT NULL,
-	mimegroup VARCHAR(50) NOT NULL,
-	mimesubgroup VARCHAR(50) NOT NULL,
-	filesize INTEGER NOT NULL
+	filename TEXT NOT NULL,
+	label VARCHAR(100) NOT NULL,
+	cms_folder_id INTEGER NULL,
+	filesize BIGINT NOT NULL
 ) WITHOUT OIDS;
 
 /* Add Primary Key */
@@ -377,17 +386,29 @@ COMMENT ON COLUMN cms_file.filename IS 'Numele unui fisier din sistemul CMS al a
 
 COMMENT ON COLUMN cms_file.label IS 'Eticheta (alias-ul) unui fisier din sistemul CMS al aplicatiei';
 
-COMMENT ON COLUMN cms_file.folder_id IS 'Codul folder-ului din care face parte fisierul curent (refera atributul id din tabelul folder)';
-
-COMMENT ON COLUMN cms_file.md5 IS 'Valoarea md5 asociata unui fisier din sistemul CMS al aplicatiei';
-
-COMMENT ON COLUMN cms_file.mimegroup IS 'Grupul MIME asociat unui fisier din sistemul CMS al aplicatiei';
-
-COMMENT ON COLUMN cms_file.mimesubgroup IS 'Subgrupul MIME asociat unui fisier din sistemul CMS al aplicatiei';
+COMMENT ON COLUMN cms_file.cms_folder_id IS 'Codul folder-ului din care face parte fisierul curent (refera atributul id din tabelul cms_folder)';
 
 COMMENT ON COLUMN cms_file.filesize IS 'Dimensiunea unui fisier din sistemul CMS al aplicatiei, exprimata in bytes';
 
 COMMENT ON TABLE cms_file IS 'Tabel ce stocheaza informatii despre fisierele din sistemul CMS al aplicatiei';
+
+
+/******************** Add Table: cms_file_property_name_value ************************/
+
+/* Build Table Structure */
+CREATE TABLE cms_file_property_name_value
+(
+	cms_file_id INTEGER NOT NULL,
+	property_name_id INTEGER NOT NULL,
+	property_value_id INTEGER NOT NULL
+) WITHOUT OIDS;
+
+/* Add Primary Key */
+ALTER TABLE cms_file_property_name_value ADD CONSTRAINT pkcms_file_property_name_value
+	PRIMARY KEY (cms_file_id, property_name_id, property_value_id);
+
+/* Add Comments */
+COMMENT ON TABLE cms_file_property_name_value IS 'Tabel ce pastreaza asocierile intre CMS_File si proprietatile fisierului respectiv (name+value)';
 
 
 /******************** Add Table: cms_folder ************************/
@@ -396,8 +417,8 @@ COMMENT ON TABLE cms_file IS 'Tabel ce stocheaza informatii despre fisierele din
 CREATE TABLE cms_folder
 (
 id SERIAL,
-	name VARCHAR(200) NOT NULL,
-	parent INTEGER NOT NULL,
+	name TEXT NOT NULL,
+	parent_id INTEGER NULL,
 	description TEXT NULL
 ) WITHOUT OIDS;
 
@@ -410,7 +431,7 @@ COMMENT ON COLUMN cms_folder.id IS 'Codul unui folder din sistemul cms al aplica
 
 COMMENT ON COLUMN cms_folder.name IS 'Denumirea unui folder din sistemul CMS al aplicatiei';
 
-COMMENT ON COLUMN cms_folder.parent IS 'Codul folder-ului parinte al folder-ului curent (refera atributul id din acelasi tabel)';
+COMMENT ON COLUMN cms_folder.parent_id IS 'Codul folder-ului parinte al folder-ului curent (refera atributul id din acelasi tabel)';
 
 COMMENT ON COLUMN cms_folder.description IS 'Descrierea unui folder din sistemul CMS al aplicatiei';
 
@@ -423,8 +444,8 @@ COMMENT ON TABLE cms_folder IS 'Tabel pentru stocarea informatiilor despre folde
 CREATE TABLE cms_layout
 (
 id SERIAL,
-	name VARCHAR(150) NULL,
-	layout_group INTEGER NOT NULL,
+	name VARCHAR(200) NOT NULL,
+	cms_layout_group_id INTEGER NULL,
 	layout_content TEXT NOT NULL
 ) WITHOUT OIDS;
 
@@ -437,7 +458,7 @@ COMMENT ON COLUMN cms_layout.id IS 'Codul unui layout pentru o pagina de CMS ';
 
 COMMENT ON COLUMN cms_layout.name IS 'Denumirea unui layout pentru o pagina de CMS';
 
-COMMENT ON COLUMN cms_layout.layout_group IS 'Codul grupului din care face parte un layout de CMS (refera atributul id din tabelul cms_layout_group)';
+COMMENT ON COLUMN cms_layout.cms_layout_group_id IS 'Codul grupului din care face parte un layout de CMS (refera atributul id din tabelul cms_layout_group)';
 
 COMMENT ON COLUMN cms_layout.layout_content IS 'Continutul unui layout pentru o pagina de CMS';
 
@@ -450,8 +471,8 @@ COMMENT ON TABLE cms_layout IS 'Tabel care stocheaza layout-uri pentru paginile 
 CREATE TABLE cms_layout_group
 (
 id SERIAL,
-	name VARCHAR(150) NOT NULL,
-	parent INTEGER NOT NULL,
+	name VARCHAR(200) NOT NULL,
+	parent_id INTEGER NULL,
 	description TEXT NULL
 ) WITHOUT OIDS;
 
@@ -464,7 +485,7 @@ COMMENT ON COLUMN cms_layout_group.id IS 'Codul unui grup de layout-uri';
 
 COMMENT ON COLUMN cms_layout_group.name IS 'Denumirea unui grup de layout-uri';
 
-COMMENT ON COLUMN cms_layout_group.parent IS 'Codul parintelui unui grup de layout-uri (refera atributul id din tabelul curent))';
+COMMENT ON COLUMN cms_layout_group.parent_id IS 'Codul parintelui unui grup de layout-uri (refera atributul id din tabelul curent))';
 
 COMMENT ON COLUMN cms_layout_group.description IS 'Descrierea unui grup de layout-uri';
 
@@ -477,13 +498,13 @@ COMMENT ON TABLE cms_layout_group IS 'Tabel ce stocheaza grupurile pentru layout
 CREATE TABLE cms_page
 (
 id SERIAL,
-	name VARCHAR(200) NOT NULL,
-	layout INTEGER NOT NULL,
-	page_type INTEGER NOT NULL,
+	name TEXT NOT NULL,
+	cms_layout_id INTEGER NOT NULL,
+	cms_page_type_id INTEGER NOT NULL,
 	visible BOOL DEFAULT 'true' NOT NULL,
 	navigable BOOL DEFAULT 'true' NOT NULL,
-	owner INTEGER NOT NULL,
-	url VARCHAR(200) NOT NULL
+	owner_id INTEGER NOT NULL,
+	url TEXT NOT NULL
 ) WITHOUT OIDS;
 
 /* Add Primary Key */
@@ -495,15 +516,15 @@ COMMENT ON COLUMN cms_page.id IS 'Codul unei pagini din sistemul CMS';
 
 COMMENT ON COLUMN cms_page.name IS 'Denumirea unei pagini din sistemul CMS';
 
-COMMENT ON COLUMN cms_page.layout IS 'Codul layout-ului corespunzator paginii din sistemul CMS (refera atributul id din tabelul cms_layout)';
+COMMENT ON COLUMN cms_page.cms_layout_id IS 'Codul layout-ului corespunzator paginii din sistemul CMS (refera atributul id din tabelul cms_layout)';
 
-COMMENT ON COLUMN cms_page.page_type IS 'Codul tipului unei pagini din sistemul CMS';
+COMMENT ON COLUMN cms_page.cms_page_type_id IS 'Codul tipului unei pagini din sistemul CMS';
 
 COMMENT ON COLUMN cms_page.visible IS 'Atribut a carui valoare este true daca pagina din sistemul CMS este vizibila (valoarea implicita a acestui atribut este true)';
 
 COMMENT ON COLUMN cms_page.navigable IS 'Atribut a carui valoare este true daca pagina din sistemul CMS este navigabila (valoarea implicita a acestui atribut este true)';
 
-COMMENT ON COLUMN cms_page.owner IS 'Codul utilizatorului care detine pagina din sistemul CMS (refera atributul id din tabelul users)';
+COMMENT ON COLUMN cms_page.owner_id IS 'Codul utilizatorului care detine pagina din sistemul CMS (refera atributul id din tabelul users)';
 
 COMMENT ON COLUMN cms_page.url IS 'URL-ul paginii din sistemul CMS';
 
@@ -516,11 +537,11 @@ COMMENT ON TABLE cms_page IS 'Tabel care stocheaza paginile din sistemul CMS al 
 CREATE TABLE cms_page_content
 (
 id SERIAL,
-	name VARCHAR(150) NOT NULL,
-	page INTEGER NULL,
+	name VARCHAR(200) NOT NULL,
+	cms_page_id INTEGER NOT NULL,
 	content_title VARCHAR(250) NOT NULL,
 	content_text TEXT NULL,
-	seqnumber INTEGER NOT NULL
+	order_in_page INTEGER NOT NULL
 ) WITHOUT OIDS;
 
 /* Add Primary Key */
@@ -532,15 +553,36 @@ COMMENT ON COLUMN cms_page_content.id IS 'Codul unei pagini de tip content din a
 
 COMMENT ON COLUMN cms_page_content.name IS 'Denumirea continutului';
 
-COMMENT ON COLUMN cms_page_content.page IS 'Codul paginii in sistemul CMS al aplicatiei (refera atributul id din tabelul page)';
+COMMENT ON COLUMN cms_page_content.cms_page_id IS 'Codul paginii in sistemul CMS al aplicatiei (refera atributul id din tabelul page)';
 
 COMMENT ON COLUMN cms_page_content.content_title IS 'Titlul continutului';
 
 COMMENT ON COLUMN cms_page_content.content_text IS 'Textul continutului';
 
-COMMENT ON COLUMN cms_page_content.seqnumber IS 'Numarul de ordine al continutului curent in cadrul paginii';
+COMMENT ON COLUMN cms_page_content.order_in_page IS 'Numarul de ordine al continutului curent in cadrul paginii';
 
 COMMENT ON TABLE cms_page_content IS 'Tabel pentru stocarea continutului paginilor din aplicatie';
+
+/* Add Indexes */
+CREATE UNIQUE INDEX "cms_page_content_seqnumber_Idx" ON cms_page_content (order_in_page);
+
+
+/******************** Add Table: cms_page_type ************************/
+
+/* Build Table Structure */
+CREATE TABLE cms_page_type
+(
+id SERIAL,
+	name VARCHAR(200) NOT NULL,
+	description TEXT NULL
+) WITHOUT OIDS;
+
+/* Add Primary Key */
+ALTER TABLE cms_page_type ADD CONSTRAINT pkcms_page_type
+	PRIMARY KEY (id);
+
+/* Add Comments */
+COMMENT ON TABLE cms_page_type IS 'Tabel pentru tipurile de CMS_Page';
 
 
 /******************** Add Table: cms_snippet ************************/
@@ -550,7 +592,7 @@ CREATE TABLE cms_snippet
 (
 id SERIAL,
 	name VARCHAR(200) NOT NULL,
-	snippet_group INTEGER NOT NULL,
+	cms_snippet_group_id INTEGER NULL,
 	snippet_content TEXT NOT NULL
 ) WITHOUT OIDS;
 
@@ -563,7 +605,7 @@ COMMENT ON COLUMN cms_snippet.id IS 'Codul unui snippet (fragment de cod) utiliz
 
 COMMENT ON COLUMN cms_snippet.name IS 'Denumirea unui snippet utilizat in aplicatie';
 
-COMMENT ON COLUMN cms_snippet.snippet_group IS 'Grupul din care face parte snippet-ul curent (refera atributul id al tabelului cms_snippet_group)';
+COMMENT ON COLUMN cms_snippet.cms_snippet_group_id IS 'Grupul din care face parte snippet-ul curent (refera atributul id al tabelului cms_snippet_group)';
 
 COMMENT ON COLUMN cms_snippet.snippet_content IS 'Continutul snippet-ului curent';
 
@@ -577,7 +619,7 @@ CREATE TABLE cms_snippet_group
 (
 id SERIAL,
 	name VARCHAR(200) NOT NULL,
-	parent INTEGER NOT NULL,
+	parent_id INTEGER NULL,
 	description TEXT NULL
 ) WITHOUT OIDS;
 
@@ -590,7 +632,7 @@ COMMENT ON COLUMN cms_snippet_group.id IS 'Codul unui grup de snippet-uri din si
 
 COMMENT ON COLUMN cms_snippet_group.name IS 'Denumirea unui grup de snippet-uri din sistemul CMS al aplicatiei';
 
-COMMENT ON COLUMN cms_snippet_group.parent IS 'Codul grupului de snippet-uri care este parintele grupului curent (refera atributul id din acelasi tabel)';
+COMMENT ON COLUMN cms_snippet_group.parent_id IS 'Codul grupului de snippet-uri care este parintele grupului curent (refera atributul id din acelasi tabel)';
 
 COMMENT ON COLUMN cms_snippet_group.description IS 'Descrierea grupului de snippet-uri ';
 
@@ -624,7 +666,7 @@ COMMENT ON TABLE collection_model_type IS 'Tabel ce contine tipurile modelelor d
 /* Build Table Structure */
 CREATE TABLE concept
 (
-id SERIAL,
+id BIGSERIAL,
 	name VARCHAR(100) NOT NULL,
 	description TEXT NULL
 ) WITHOUT OIDS;
@@ -648,7 +690,7 @@ COMMENT ON TABLE concept IS 'Tabel ce stocheaza conceptele definite ';
 /* Build Table Structure */
 CREATE TABLE concept_variable
 (
-	concept_id INTEGER NOT NULL,
+	concept_id BIGINT NOT NULL,
 	variable_id BIGINT NOT NULL
 ) WITHOUT OIDS;
 
@@ -687,6 +729,8 @@ COMMENT ON TABLE country IS 'Tabel unic pentru toate referintele la tari';
 
 /* Add Indexes */
 CREATE UNIQUE INDEX "country_alpha3_Idx" ON country (alpha3);
+
+CREATE UNIQUE INDEX "country_name_Idx" ON country (name);
 
 
 /******************** Add Table: email ************************/
@@ -782,11 +826,14 @@ CREATE TABLE file_property_name_value
 	property_name_id INTEGER NOT NULL,
 	property_value_id INTEGER NOT NULL,
 	file_id INTEGER NOT NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE file_property_name_value ADD CONSTRAINT pkfile_property_name_value
 	PRIMARY KEY (property_name_id, property_value_id, file_id);
+
+/* Add Comments */
+COMMENT ON TABLE file_property_name_value IS 'Tabel ce pastreaza asocierile intre un "File" (din tabelul respectiv) si proprietatile fisierului respectiv (name+value)';
 
 
 /******************** Add Table: form ************************/
@@ -805,6 +852,9 @@ id BIGSERIAL,
 /* Add Primary Key */
 ALTER TABLE form ADD CONSTRAINT pkform
 	PRIMARY KEY (id);
+
+/* Add Comments */
+COMMENT ON TABLE form IS 'Tabel pentru informatiile legate de un chestionarele aplicate (un rand reprezinta o anumita fisa completata pe teren cu raspunsuri)';
 
 /* Add Indexes */
 CREATE UNIQUE INDEX "form_instance_id_Idx" ON form (instance_id, order_in_instance);
@@ -897,8 +947,8 @@ id SERIAL,
 	unit_analysis_id INTEGER NOT NULL,
 	version INTEGER NOT NULL,
 	insertion_status INTEGER NOT NULL,
-	is_raw_data BOOL NOT NULL,
-	is_raw_metadata BOOL NOT NULL,
+	raw_data BOOL NOT NULL,
+	raw_metadata BOOL NOT NULL,
 	added_by INTEGER NOT NULL,
 	added TIMESTAMP NOT NULL,
 	time_meth_id INTEGER NOT NULL
@@ -923,9 +973,9 @@ COMMENT ON COLUMN instance.version IS 'Versiunea instantei';
 
 COMMENT ON COLUMN instance.insertion_status IS 'Pasul din wizard-ul de introducere a metadatelor - din moment ce introducerea se face prin wizard, fiecare pas trebuie comis in baza de dat; pana la finalizarea introducerii intregii instante e nevoie sa stim ca ele au fost partial introduse.';
 
-COMMENT ON COLUMN instance.is_raw_data IS 'daca datele sunt in forma digitizata (YES) sau in forma de fisiere procesabile/editabile (NO)';
+COMMENT ON COLUMN instance.raw_data IS 'daca datele sunt in forma digitizata (YES) sau in forma de fisiere procesabile/editabile (NO)';
 
-COMMENT ON COLUMN instance.is_raw_metadata IS 'daca metadatele sunt in forma digitizata (YES) sau in forma de fisiere procesabile/editabile (NO)';
+COMMENT ON COLUMN instance.raw_metadata IS 'daca metadatele sunt in forma digitizata (YES) sau in forma de fisiere procesabile/editabile (NO)';
 
 COMMENT ON TABLE instance IS 'Tabel ce contine informatiile principale ale instantelor';
 
@@ -1151,11 +1201,14 @@ CREATE TABLE instance_sampling_procedure
 (
 	instance_id INTEGER NOT NULL,
 	sampling_procedure_id INTEGER NOT NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE instance_sampling_procedure ADD CONSTRAINT pkinstance_sampling_procedure
 	PRIMARY KEY (instance_id, sampling_procedure_id);
+
+/* Add Comments */
+COMMENT ON TABLE instance_sampling_procedure IS 'Tabel pentru reprezentarea relatiilor NxM intre o anumita "Instance" si o anumita "Sampling_Procedure"';
 
 
 /******************** Add Table: instance_topic ************************/
@@ -1263,6 +1316,9 @@ COMMENT ON COLUMN lang.name IS 'Denumirea unei limbi';
 
 COMMENT ON TABLE lang IS 'Tabel ce contine limbile utilizate pentru unii termeni din baza de date';
 
+/* Add Indexes */
+CREATE UNIQUE INDEX "lang_name_Idx" ON lang (name);
+
 
 /******************** Add Table: meth_coll_type ************************/
 
@@ -1291,11 +1347,11 @@ COMMENT ON TABLE meth_coll_type IS 'Tabel ce stocheaza tipurile modelelor de col
 CREATE TABLE news
 (
 id SERIAL,
-	title VARCHAR(200) NOT NULL,
-	content TEXT NULL,
-	added TIMESTAMP NOT NULL,
 	added_by INTEGER NOT NULL,
-	visible BOOL NOT NULL
+	added TIMESTAMP NOT NULL,
+	visible BOOL NOT NULL,
+	title TEXT NOT NULL,
+	content TEXT NULL
 ) WITHOUT OIDS;
 
 /* Add Primary Key */
@@ -1305,15 +1361,15 @@ ALTER TABLE news ADD CONSTRAINT pknews
 /* Add Comments */
 COMMENT ON COLUMN news.id IS 'Codul stirii';
 
-COMMENT ON COLUMN news.title IS 'Titlul stirii';
-
-COMMENT ON COLUMN news.content IS 'Continutul stirii';
+COMMENT ON COLUMN news.added_by IS 'Codul utilizatorului care a introdus stirea';
 
 COMMENT ON COLUMN news.added IS 'Momentul de timp la care stirea a fost adaugata';
 
-COMMENT ON COLUMN news.added_by IS 'Codul utilizatorului care a introdus stirea';
-
 COMMENT ON COLUMN news.visible IS 'Atribut boolean, a carui valoare este true daca stirea este vizibila';
+
+COMMENT ON COLUMN news.title IS 'Titlul stirii';
+
+COMMENT ON COLUMN news.content IS 'Continutul stirii';
 
 COMMENT ON TABLE news IS 'Tabel ce stocheaza stirile ce vor aparea in interfata aplicatiei';
 
@@ -1382,12 +1438,15 @@ CREATE TABLE org_email
 (
 	org_id INTEGER NOT NULL,
 	email_id INTEGER NOT NULL,
-	is_main BOOL NOT NULL
+	main BOOL NOT NULL
 ) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE org_email ADD CONSTRAINT pkorg_email
 	PRIMARY KEY (org_id, email_id);
+
+/* Add Comments */
+COMMENT ON TABLE org_email IS 'Tabel de legatura pentru relatia de tip NxM intre "Org" si "Email"';
 
 
 /******************** Add Table: org_internet ************************/
@@ -1397,12 +1456,15 @@ CREATE TABLE org_internet
 (
 	org_id INTEGER NOT NULL,
 	internet_id INTEGER NOT NULL,
-	is_main BOOL NOT NULL
+	main BOOL NOT NULL
 ) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE org_internet ADD CONSTRAINT pkorg_internet
 	PRIMARY KEY (org_id, internet_id);
+
+/* Add Comments */
+COMMENT ON TABLE org_internet IS 'Tabel de legatura pentru relatia de tip NxM intre "Org" si "Internet"';
 
 
 /******************** Add Table: org_phone ************************/
@@ -1412,12 +1474,15 @@ CREATE TABLE org_phone
 (
 	org_id INTEGER NOT NULL,
 	phone_id INTEGER NOT NULL,
-	is_main BOOL NOT NULL
+	main BOOL NOT NULL
 ) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE org_phone ADD CONSTRAINT pkorg_phone
 	PRIMARY KEY (org_id, phone_id);
+
+/* Add Comments */
+COMMENT ON TABLE org_phone IS 'Tabel de legatura pentru relatia de tip NxM intre "Org" si "Phone"';
 
 
 /******************** Add Table: org_prefix ************************/
@@ -1530,12 +1595,13 @@ CREATE TABLE other_statistic
 	variable_id BIGINT NOT NULL,
 	name VARCHAR(100) NOT NULL,
 	value REAL NOT NULL,
-	description TEXT NULL
+	description TEXT NULL,
+id BIGSERIAL
 ) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE other_statistic ADD CONSTRAINT pkother_statistic
-	PRIMARY KEY (variable_id);
+	PRIMARY KEY (id);
 
 /* Add Comments */
 COMMENT ON COLUMN other_statistic.variable_id IS 'Codul variabilei pentru care sunt stocate statistici';
@@ -1614,12 +1680,15 @@ CREATE TABLE person_email
 (
 	person_id INTEGER NOT NULL,
 	email_id INTEGER NOT NULL,
-	is_main BOOL NOT NULL
+	main BOOL NOT NULL
 ) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE person_email ADD CONSTRAINT pkperson_email
 	PRIMARY KEY (person_id, email_id);
+
+/* Add Comments */
+COMMENT ON TABLE person_email IS 'Tabel de legatura pentru relatia de tip NxM intre "Person" si "Email"';
 
 
 /******************** Add Table: person_internet ************************/
@@ -1629,12 +1698,15 @@ CREATE TABLE person_internet
 (
 	person_id INTEGER NOT NULL,
 	internet_id INTEGER NOT NULL,
-	is_main BOOL NOT NULL
+	main BOOL NOT NULL
 ) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE person_internet ADD CONSTRAINT pkperson_internet
 	PRIMARY KEY (person_id, internet_id);
+
+/* Add Comments */
+COMMENT ON TABLE person_internet IS 'Tabel de legatura pentru relatia de tip NxM intre "Person" si "Internet"';
 
 
 /******************** Add Table: person_links ************************/
@@ -1716,12 +1788,15 @@ CREATE TABLE person_phone
 (
 	person_id INTEGER NOT NULL,
 	phone_id INTEGER NOT NULL,
-	is_main BOOL NOT NULL
+	main BOOL NOT NULL
 ) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE person_phone ADD CONSTRAINT pkperson_phone
 	PRIMARY KEY (person_id, phone_id);
+
+/* Add Comments */
+COMMENT ON TABLE person_phone IS 'Tabel de legatura pentru relatia de tip NxM intre "Person" si "Phone"';
 
 
 /******************** Add Table: person_role ************************/
@@ -1759,6 +1834,9 @@ id SERIAL,
 ALTER TABLE phone ADD CONSTRAINT pkphone
 	PRIMARY KEY (id);
 
+/* Add Comments */
+COMMENT ON TABLE phone IS 'Tabel unic ce pastreaza Telefoane';
+
 
 /******************** Add Table: prefix ************************/
 
@@ -1787,12 +1865,16 @@ COMMENT ON TABLE prefix IS 'Tabel ce contine prefixele corespunzatoare formulelo
 CREATE TABLE property_name
 (
 id SERIAL,
-	name TEXT NOT NULL
-);
+	name TEXT NOT NULL,
+	description TEXT NULL
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE property_name ADD CONSTRAINT pkproperty_name
 	PRIMARY KEY (id);
+
+/* Add Comments */
+COMMENT ON TABLE property_name IS 'Tabel folosit pentru Proprietati (stocheaza numele acestora)';
 
 
 /******************** Add Table: property_value ************************/
@@ -1802,11 +1884,14 @@ CREATE TABLE property_value
 (
 id SERIAL,
 	value TEXT NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE property_value ADD CONSTRAINT pkproperty_value
 	PRIMARY KEY (id);
+
+/* Add Comments */
+COMMENT ON TABLE property_value IS 'Tabel folosit pentru Proprietati (stocheaza valorile acestora)';
 
 
 /******************** Add Table: region ************************/
@@ -1912,11 +1997,14 @@ CREATE TABLE sampling_procedure
 id SERIAL,
 	name TEXT NOT NULL,
 	description TEXT NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE sampling_procedure ADD CONSTRAINT pksampling_procedure
 	PRIMARY KEY (id);
+
+/* Add Comments */
+COMMENT ON TABLE sampling_procedure IS 'Tabel pentru procedurile de esantionare. (cf. DDI Codebook:) The type of sample and sample design used to select the survey respondents to represent the population. These may include one or more of the following: no sampling (total universe); quota sample; simple random sample; one-stage stratified or systematic random sample; one-stage cluster sample; multi-stage stratified random sample; quasi-random (e.g. random walk) sample; purposive selection/case studies; volunteer sample; convenience sample. ';
 
 
 /******************** Add Table: scale ************************/
@@ -1925,8 +2013,8 @@ ALTER TABLE sampling_procedure ADD CONSTRAINT pksampling_procedure
 CREATE TABLE scale
 (
 	item_id BIGINT NOT NULL,
-	"minValue_id" INTEGER NOT NULL,
-	"maxValue_id" INTEGER NOT NULL,
+	"minValue_id" BIGINT NOT NULL,
+	"maxValue_id" BIGINT NOT NULL,
 	units SMALLINT NOT NULL
 ) WITHOUT OIDS;
 
@@ -2086,9 +2174,9 @@ COMMENT ON TABLE setting_value IS 'Tabel care contine valorile setarilor aplicat
 CREATE TABLE skip
 (
 	variable_id BIGINT NOT NULL,
-id SERIAL,
+id BIGSERIAL,
 	condition TEXT NOT NULL,
-	next_variable_id INTEGER NOT NULL
+	next_variable_id BIGINT NOT NULL
 ) WITHOUT OIDS;
 
 /* Add Primary Key */
@@ -2157,10 +2245,10 @@ CREATE TABLE source_contacts
 id SERIAL,
 	person_id INTEGER NOT NULL,
 	contact_date TIMESTAMP NOT NULL,
-	contact_synopsis TEXT NOT NULL,
+	synopsis TEXT NOT NULL,
 	followup INTEGER NOT NULL,
-	contact_method INTEGER NOT NULL,
-	org_id INTEGER NOT NULL
+	source_contact_method_id INTEGER NOT NULL,
+	source_id INTEGER NOT NULL
 ) WITHOUT OIDS;
 
 /* Add Primary Key */
@@ -2174,28 +2262,11 @@ COMMENT ON COLUMN source_contacts.person_id IS 'Codul persoanei (refera atributu
 
 COMMENT ON COLUMN source_contacts.contact_date IS 'Data la care persoana identificata prin atributul person_id a fost contactata';
 
-COMMENT ON COLUMN source_contacts.contact_method IS 'Metoda prin care persoana a fost contactata (refera atributul id din tabelul source_contact_method)';
+COMMENT ON COLUMN source_contacts.source_contact_method_id IS 'Metoda prin care persoana a fost contactata (refera atributul id din tabelul source_contact_method)';
 
-COMMENT ON COLUMN source_contacts.org_id IS 'Codul organizatiei careia ii aunt asociate informatiile de contact (refera atributul org_id din tabelul sources)';
+COMMENT ON COLUMN source_contacts.source_id IS 'Codul organizatiei careia ii aunt asociate informatiile de contact (refera atributul org_id din tabelul sources)';
 
 COMMENT ON TABLE source_contacts IS 'Datele de contact ale unei surse ';
-
-
-/******************** Add Table: source_type_history ************************/
-
-/* Build Table Structure */
-CREATE TABLE source_type_history
-(
-id SERIAL,
-	datestart TIMESTAMP NOT NULL,
-	dateend TIMESTAMP NOT NULL,
-	added_by INTEGER NOT NULL,
-	org_id INTEGER NOT NULL
-) WITHOUT OIDS;
-
-/* Add Primary Key */
-ALTER TABLE source_type_history ADD CONSTRAINT pksource_type_history
-	PRIMARY KEY (id);
 
 
 /******************** Add Table: sourcestudy ************************/
@@ -3025,7 +3096,7 @@ COMMENT ON TABLE value IS 'Tabel ce stocheaza valorile posibile ale item-urilor 
 /* Build Table Structure */
 CREATE TABLE vargroup
 (
-id SERIAL,
+id BIGSERIAL,
 	name TEXT NOT NULL
 ) WITHOUT OIDS;
 
@@ -3083,34 +3154,13 @@ COMMENT ON TABLE variable IS 'Tabel care stocheaza variabilele din cadrul instan
 CREATE UNIQUE INDEX "Variables_QuestionnaireId_Order_Idx" ON variable (instance_id, order_in_instance);
 
 
-/******************** Add Table: variable_group ************************/
-
-/* Build Table Structure */
-CREATE TABLE variable_group
-(
-id SERIAL,
-	name VARCHAR(100) NOT NULL
-) WITHOUT OIDS;
-
-/* Add Primary Key */
-ALTER TABLE variable_group ADD CONSTRAINT pkvariable_group
-	PRIMARY KEY (id);
-
-/* Add Comments */
-COMMENT ON COLUMN variable_group.id IS 'Identificatorul';
-
-COMMENT ON COLUMN variable_group.name IS 'Denumirea grupului';
-
-COMMENT ON TABLE variable_group IS 'Tabel pentru definirea gruparilor de variabile (pentru o organizare mai buna a lor)';
-
-
 /******************** Add Table: variable_vargroup ************************/
 
 /* Build Table Structure */
 CREATE TABLE variable_vargroup
 (
 	variable_id BIGINT NOT NULL,
-	vargroup_id INTEGER NOT NULL
+	vargroup_id BIGINT NOT NULL
 ) WITHOUT OIDS;
 
 /* Add Primary Key */
@@ -3439,42 +3489,67 @@ ALTER TABLE city ADD CONSTRAINT fk_city_country
 
 /* Add Foreign Key: fk_cms_files_cms_folders */
 ALTER TABLE cms_file ADD CONSTRAINT fk_cms_files_cms_folders
-	FOREIGN KEY (folder_id) REFERENCES cms_folder (id)
+	FOREIGN KEY (cms_folder_id) REFERENCES cms_folder (id)
+	ON UPDATE NO ACTION ON DELETE NO ACTION;
+
+/* Add Foreign Key: fk_cms_file_property_name_value_cms_file */
+ALTER TABLE cms_file_property_name_value ADD CONSTRAINT fk_cms_file_property_name_value_cms_file
+	FOREIGN KEY (cms_file_id) REFERENCES cms_file (id)
+	ON UPDATE NO ACTION ON DELETE NO ACTION;
+
+/* Add Foreign Key: fk_cms_file_property_name_value_property_name */
+ALTER TABLE cms_file_property_name_value ADD CONSTRAINT fk_cms_file_property_name_value_property_name
+	FOREIGN KEY (property_name_id) REFERENCES property_name (id)
+	ON UPDATE NO ACTION ON DELETE NO ACTION;
+
+/* Add Foreign Key: fk_cms_file_property_name_value_property_value */
+ALTER TABLE cms_file_property_name_value ADD CONSTRAINT fk_cms_file_property_name_value_property_value
+	FOREIGN KEY (property_value_id) REFERENCES property_value (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 /* Add Foreign Key: fk_cms_folders_cms_folders */
 ALTER TABLE cms_folder ADD CONSTRAINT fk_cms_folders_cms_folders
-	FOREIGN KEY (parent) REFERENCES cms_folder (id)
+	FOREIGN KEY (parent_id) REFERENCES cms_folder (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 /* Add Foreign Key: fk_cms_layout_cms_layout_group */
 ALTER TABLE cms_layout ADD CONSTRAINT fk_cms_layout_cms_layout_group
-	FOREIGN KEY (layout_group) REFERENCES cms_layout_group (id)
+	FOREIGN KEY (cms_layout_group_id) REFERENCES cms_layout_group (id)
+	ON UPDATE NO ACTION ON DELETE NO ACTION;
+
+/* Add Foreign Key: fk_cms_layout_group_cms_layout_group */
+ALTER TABLE cms_layout_group ADD CONSTRAINT fk_cms_layout_group_cms_layout_group
+	FOREIGN KEY (parent_id) REFERENCES cms_layout_group (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 /* Add Foreign Key: fk_cms_page_cms_layout */
 ALTER TABLE cms_page ADD CONSTRAINT fk_cms_page_cms_layout
-	FOREIGN KEY (layout) REFERENCES cms_layout (id)
+	FOREIGN KEY (cms_layout_id) REFERENCES cms_layout (id)
+	ON UPDATE NO ACTION ON DELETE NO ACTION;
+
+/* Add Foreign Key: fk_cms_page_cms_page_type */
+ALTER TABLE cms_page ADD CONSTRAINT fk_cms_page_cms_page_type
+	FOREIGN KEY (cms_page_type_id) REFERENCES cms_page_type (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 /* Add Foreign Key: fk_cms_page_users */
 ALTER TABLE cms_page ADD CONSTRAINT fk_cms_page_users
-	FOREIGN KEY (owner) REFERENCES "user" (id)
+	FOREIGN KEY (owner_id) REFERENCES "user" (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 /* Add Foreign Key: fk_cms_page_content_cms_page */
 ALTER TABLE cms_page_content ADD CONSTRAINT fk_cms_page_content_cms_page
-	FOREIGN KEY (page) REFERENCES cms_page (id)
+	FOREIGN KEY (cms_page_id) REFERENCES cms_page (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 /* Add Foreign Key: fk_cms_snippet_cms_snippet_group */
 ALTER TABLE cms_snippet ADD CONSTRAINT fk_cms_snippet_cms_snippet_group
-	FOREIGN KEY (snippet_group) REFERENCES cms_snippet_group (id)
+	FOREIGN KEY (cms_snippet_group_id) REFERENCES cms_snippet_group (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 /* Add Foreign Key: fk_cms_snippet_group_cms_snippet_group */
 ALTER TABLE cms_snippet_group ADD CONSTRAINT fk_cms_snippet_group_cms_snippet_group
-	FOREIGN KEY (parent) REFERENCES cms_snippet_group (id)
+	FOREIGN KEY (parent_id) REFERENCES cms_snippet_group (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 /* Add Foreign Key: fk_Concept_Variables_Concepts */
@@ -3912,19 +3987,19 @@ ALTER TABLE source ADD CONSTRAINT fk_sources_sourcetype
 	FOREIGN KEY (sourcetype_id) REFERENCES sourcetype (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
+/* Add Foreign Key: fk_source_contacts_person */
+ALTER TABLE source_contacts ADD CONSTRAINT fk_source_contacts_person
+	FOREIGN KEY (person_id) REFERENCES person (id)
+	ON UPDATE NO ACTION ON DELETE NO ACTION;
+
 /* Add Foreign Key: fk_source_contacts_source_contact_method */
 ALTER TABLE source_contacts ADD CONSTRAINT fk_source_contacts_source_contact_method
-	FOREIGN KEY (contact_method) REFERENCES source_contact_method (id)
+	FOREIGN KEY (source_contact_method_id) REFERENCES source_contact_method (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 /* Add Foreign Key: fk_source_contacts_sources */
 ALTER TABLE source_contacts ADD CONSTRAINT fk_source_contacts_sources
-	FOREIGN KEY (org_id) REFERENCES source (org_id)
-	ON UPDATE NO ACTION ON DELETE NO ACTION;
-
-/* Add Foreign Key: source_contacts_person_id_fkey */
-ALTER TABLE source_contacts ADD CONSTRAINT source_contacts_person_id_fkey
-	FOREIGN KEY (person_id) REFERENCES person (id)
+	FOREIGN KEY (source_id) REFERENCES source (org_id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 /* Add Foreign Key: fk_sourcestudy_sources */

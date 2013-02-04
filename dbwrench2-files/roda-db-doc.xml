@@ -6,6 +6,7 @@
   <DocFolder>C:\Users\user\Desktop\db\doc_bd</DocFolder>
   <Sch Cm="standard public schema" nm="public">
     <Tbl UsSo="1" nm="acl_class">
+      <Cm>Tabel folosit de Spring Security pentru ACL. Uniquely identify any domain object class in the system. The only columns are the ID and the Java class name. Thus, there is a single row for each unique Class we wish to store ACL permissions for.</Cm>
       <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id" nm="pkacl_class"/>
       <Cl au="0" df="" nm="id" nu="0">
@@ -21,6 +22,7 @@
       <SchTrHis/>
     </Tbl>
     <Tbl UsSo="1" nm="acl_entry">
+      <Cm>Tabel folosit de Spring Security pentru ACL. Stores the individual permissions assigned to each recipient. Columns include a foreign key to the ACL_OBJECT_IDENTITY, the recipient (ie a foreign key to ACL_SID), whether we'll be auditing or not, and the integer bit mask that represents the actual permission being granted or denied. We have a single row for every recipient that receives a permission to work with a domain object.</Cm>
       <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id" nm="pkacl_entry"/>
       <Cl au="0" df="" nm="id" nu="0">
@@ -64,6 +66,7 @@
       <SchTrHis/>
     </Tbl>
     <Tbl UsSo="1" nm="acl_object_identity">
+      <Cm>Tabel folosit de Spring Security pentru ACL. Stores information for each unique domain object instance in the system. Columns include the ID, a foreign key to the ACL_CLASS table, a unique identifier so we know which ACL_CLASS instance we're providing information for, the parent, a foreign key to the ACL_SID table to represent the owner of the domain object instance, and whether we allow ACL entries to inherit from any parent ACL. We have a single row for every domain object instance we're storing ACL permissions for.  </Cm>
       <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id" nm="pkacl_object_identity"/>
       <Cl au="0" df="" nm="id" nu="0">
@@ -106,6 +109,7 @@
       <SchTrHis/>
     </Tbl>
     <Tbl UsSo="1" nm="acl_sid">
+      <Cm>Tabel folosit de Spring Security pentru ACL. Uniquely identify any principal or authority in the system ("SID" stands for "security identity"). The only columns are the ID, a textual representation of the SID, and a flag to indicate whether the textual representation refers to a principal name or a GrantedAuthority. Thus, there is a single row for each unique principal or GrantedAuthority. When used in the context of receiving a permission, a SID is generally called a "recipient".</Cm>
       <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id" nm="pkacl_sid"/>
       <Cl au="0" df="" nm="id" nu="0">
@@ -446,37 +450,56 @@
         <Cm>Codul unui fisier din sistemul CMS al aplicatiei</Cm>
       </Cl>
       <Cl au="0" df="" nm="filename" nu="0">
-        <DT arr="0" ds="VarChar" en="" id="12" ln="200" sc="null" sg="1" un="0"/>
+        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Numele unui fisier din sistemul CMS al aplicatiei</Cm>
       </Cl>
       <Cl au="0" df="" nm="label" nu="0">
-        <DT arr="0" ds="VarChar" en="" id="12" ln="50" sc="null" sg="1" un="0"/>
+        <DT arr="0" ds="VarChar" en="" id="12" ln="100" sc="null" sg="1" un="0"/>
         <Cm>Eticheta (alias-ul) unui fisier din sistemul CMS al aplicatiei</Cm>
       </Cl>
-      <Cl au="0" df="" nm="folder_id" nu="0">
+      <Cl au="0" df="" nm="cms_folder_id" nu="1">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
-        <Cm>Codul folder-ului din care face parte fisierul curent (refera atributul id din tabelul folder)</Cm>
-      </Cl>
-      <Cl au="0" df="" nm="md5" nu="0">
-        <DT arr="0" ds="VarChar" en="" id="12" ln="32" sc="null" sg="1" un="0"/>
-        <Cm>Valoarea md5 asociata unui fisier din sistemul CMS al aplicatiei</Cm>
-      </Cl>
-      <Cl au="0" df="" nm="mimegroup" nu="0">
-        <DT arr="0" ds="VarChar" en="" id="12" ln="50" sc="null" sg="1" un="0"/>
-        <Cm>Grupul MIME asociat unui fisier din sistemul CMS al aplicatiei</Cm>
-      </Cl>
-      <Cl au="0" df="" nm="mimesubgroup" nu="0">
-        <DT arr="0" ds="VarChar" en="" id="12" ln="50" sc="null" sg="1" un="0"/>
-        <Cm>Subgrupul MIME asociat unui fisier din sistemul CMS al aplicatiei</Cm>
+        <Cm>Codul folder-ului din care face parte fisierul curent (refera atributul id din tabelul cms_folder)</Cm>
       </Cl>
       <Cl au="0" df="" nm="filesize" nu="0">
-        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Dimensiunea unui fisier din sistemul CMS al aplicatiei, exprimata in bytes</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_cms_files_cms_folders" prLkCl="id" upAc="3">
         <PrTb mn="0" nm="cms_folder" oe="1" sch="public" zr="0"/>
         <CdTb mn="1" nm="cms_file" oe="0" sch="public" zr="1"/>
-        <ClPr cdCl="folder_id" prCl="id"/>
+        <ClPr cdCl="cms_folder_id" prCl="id"/>
+      </Fk>
+      <UniqueConstraints/>
+      <SchTrHis/>
+    </Tbl>
+    <Tbl UsSo="1" nm="cms_file_property_name_value">
+      <Cm>Tabel ce pastreaza asocierile intre CMS_File si proprietatile fisierului respectiv (name+value)</Cm>
+      <TblOpts>WITHOUT OIDS</TblOpts>
+      <Pk ClNs="cms_file_id, property_name_id, property_value_id" nm="pkcms_file_property_name_value"/>
+      <Cl au="0" df="" nm="cms_file_id" nu="0">
+        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="property_name_id" nu="0">
+        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="property_value_id" nu="0">
+        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Fk deAc="3" nm="fk_cms_file_property_name_value_cms_file" prLkCl="id" upAc="3">
+        <PrTb mn="0" nm="cms_file" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="cms_file_property_name_value" oe="0" sch="public" zr="1"/>
+        <ClPr cdCl="cms_file_id" prCl="id"/>
+      </Fk>
+      <Fk deAc="3" nm="fk_cms_file_property_name_value_property_name" prLkCl="id" upAc="3">
+        <PrTb mn="0" nm="property_name" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="cms_file_property_name_value" oe="0" sch="public" zr="1"/>
+        <ClPr cdCl="property_name_id" prCl="id"/>
+      </Fk>
+      <Fk deAc="3" nm="fk_cms_file_property_name_value_property_value" prLkCl="id" upAc="3">
+        <PrTb mn="0" nm="property_value" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="cms_file_property_name_value" oe="0" sch="public" zr="1"/>
+        <ClPr cdCl="property_value_id" prCl="id"/>
       </Fk>
       <UniqueConstraints/>
       <SchTrHis/>
@@ -490,10 +513,10 @@
         <Cm>Codul unui folder din sistemul cms al aplicatiei</Cm>
       </Cl>
       <Cl au="0" df="" nm="name" nu="0">
-        <DT arr="0" ds="VarChar" en="" id="12" ln="200" sc="null" sg="1" un="0"/>
+        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Denumirea unui folder din sistemul CMS al aplicatiei</Cm>
       </Cl>
-      <Cl au="0" df="" nm="parent" nu="0">
+      <Cl au="0" df="" nm="parent_id" nu="1">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul folder-ului parinte al folder-ului curent (refera atributul id din acelasi tabel)</Cm>
       </Cl>
@@ -504,7 +527,7 @@
       <Fk deAc="3" nm="fk_cms_folders_cms_folders" prLkCl="id" upAc="3">
         <PrTb mn="0" nm="cms_folder" oe="1" sch="public" zr="0"/>
         <CdTb mn="1" nm="cms_folder" oe="0" sch="public" zr="1"/>
-        <ClPr cdCl="parent" prCl="id"/>
+        <ClPr cdCl="parent_id" prCl="id"/>
       </Fk>
       <UniqueConstraints/>
       <SchTrHis/>
@@ -517,11 +540,11 @@
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul unui layout pentru o pagina de CMS </Cm>
       </Cl>
-      <Cl au="0" df="" nm="name" nu="1">
-        <DT arr="0" ds="VarChar" en="" id="12" ln="150" sc="null" sg="1" un="0"/>
+      <Cl au="0" df="" nm="name" nu="0">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="200" sc="null" sg="1" un="0"/>
         <Cm>Denumirea unui layout pentru o pagina de CMS</Cm>
       </Cl>
-      <Cl au="0" df="" nm="layout_group" nu="0">
+      <Cl au="0" df="" nm="cms_layout_group_id" nu="1">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul grupului din care face parte un layout de CMS (refera atributul id din tabelul cms_layout_group)</Cm>
       </Cl>
@@ -532,7 +555,7 @@
       <Fk deAc="3" nm="fk_cms_layout_cms_layout_group" prLkCl="id" upAc="3">
         <PrTb mn="0" nm="cms_layout_group" oe="1" sch="public" zr="0"/>
         <CdTb mn="1" nm="cms_layout" oe="0" sch="public" zr="1"/>
-        <ClPr cdCl="layout_group" prCl="id"/>
+        <ClPr cdCl="cms_layout_group_id" prCl="id"/>
       </Fk>
       <UniqueConstraints/>
       <SchTrHis/>
@@ -546,10 +569,10 @@
         <Cm>Codul unui grup de layout-uri</Cm>
       </Cl>
       <Cl au="0" df="" nm="name" nu="0">
-        <DT arr="0" ds="VarChar" en="" id="12" ln="150" sc="null" sg="1" un="0"/>
+        <DT arr="0" ds="VarChar" en="" id="12" ln="200" sc="null" sg="1" un="0"/>
         <Cm>Denumirea unui grup de layout-uri</Cm>
       </Cl>
-      <Cl au="0" df="" nm="parent" nu="0">
+      <Cl au="0" df="" nm="parent_id" nu="1">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul parintelui unui grup de layout-uri (refera atributul id din tabelul curent))</Cm>
       </Cl>
@@ -557,6 +580,11 @@
         <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Descrierea unui grup de layout-uri</Cm>
       </Cl>
+      <Fk deAc="3" nm="fk_cms_layout_group_cms_layout_group" prLkCl="id" upAc="3">
+        <PrTb mn="0" nm="cms_layout_group" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="cms_layout_group" oe="0" sch="public" zr="1"/>
+        <ClPr cdCl="parent_id" prCl="id"/>
+      </Fk>
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
@@ -569,14 +597,14 @@
         <Cm>Codul unei pagini din sistemul CMS</Cm>
       </Cl>
       <Cl au="0" df="" nm="name" nu="0">
-        <DT arr="0" ds="VarChar" en="" id="12" ln="200" sc="null" sg="1" un="0"/>
+        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Denumirea unei pagini din sistemul CMS</Cm>
       </Cl>
-      <Cl au="0" df="" nm="layout" nu="0">
+      <Cl au="0" df="" nm="cms_layout_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul layout-ului corespunzator paginii din sistemul CMS (refera atributul id din tabelul cms_layout)</Cm>
       </Cl>
-      <Cl au="0" df="" nm="page_type" nu="0">
+      <Cl au="0" df="" nm="cms_page_type_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul tipului unei pagini din sistemul CMS</Cm>
       </Cl>
@@ -588,23 +616,28 @@
         <DT arr="0" ds="Boolean" en="" id="16" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Atribut a carui valoare este true daca pagina din sistemul CMS este navigabila (valoarea implicita a acestui atribut este true)</Cm>
       </Cl>
-      <Cl au="0" df="" nm="owner" nu="0">
+      <Cl au="0" df="" nm="owner_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul utilizatorului care detine pagina din sistemul CMS (refera atributul id din tabelul users)</Cm>
       </Cl>
       <Cl au="0" df="" nm="url" nu="0">
-        <DT arr="0" ds="VarChar" en="" id="12" ln="200" sc="null" sg="1" un="0"/>
+        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
         <Cm>URL-ul paginii din sistemul CMS</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_cms_page_cms_layout" prLkCl="id" upAc="3">
         <PrTb mn="0" nm="cms_layout" oe="1" sch="public" zr="0"/>
         <CdTb mn="1" nm="cms_page" oe="0" sch="public" zr="1"/>
-        <ClPr cdCl="layout" prCl="id"/>
+        <ClPr cdCl="cms_layout_id" prCl="id"/>
+      </Fk>
+      <Fk deAc="3" nm="fk_cms_page_cms_page_type" prLkCl="id" upAc="3">
+        <PrTb mn="0" nm="cms_page_type" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="cms_page" oe="0" sch="public" zr="1"/>
+        <ClPr cdCl="cms_page_type_id" prCl="id"/>
       </Fk>
       <Fk deAc="3" nm="fk_cms_page_users" prLkCl="id" upAc="3">
         <PrTb mn="0" nm="user" oe="1" sch="public" zr="0"/>
         <CdTb mn="1" nm="cms_page" oe="0" sch="public" zr="1"/>
-        <ClPr cdCl="owner" prCl="id"/>
+        <ClPr cdCl="owner_id" prCl="id"/>
       </Fk>
       <UniqueConstraints/>
       <SchTrHis/>
@@ -618,10 +651,10 @@
         <Cm>Codul unei pagini de tip content din aplicatie</Cm>
       </Cl>
       <Cl au="0" df="" nm="name" nu="0">
-        <DT arr="0" ds="VarChar" en="" id="12" ln="150" sc="null" sg="1" un="0"/>
+        <DT arr="0" ds="VarChar" en="" id="12" ln="200" sc="null" sg="1" un="0"/>
         <Cm>Denumirea continutului</Cm>
       </Cl>
-      <Cl au="0" df="" nm="page" nu="1">
+      <Cl au="0" df="" nm="cms_page_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul paginii in sistemul CMS al aplicatiei (refera atributul id din tabelul page)</Cm>
       </Cl>
@@ -633,15 +666,34 @@
         <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Textul continutului</Cm>
       </Cl>
-      <Cl au="0" df="" nm="seqnumber" nu="0">
+      <Cl au="0" df="" nm="order_in_page" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Numarul de ordine al continutului curent in cadrul paginii</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_cms_page_content_cms_page" prLkCl="id" upAc="3">
         <PrTb mn="0" nm="cms_page" oe="1" sch="public" zr="0"/>
         <CdTb mn="1" nm="cms_page_content" oe="0" sch="public" zr="1"/>
-        <ClPr cdCl="page" prCl="id"/>
+        <ClPr cdCl="cms_page_id" prCl="id"/>
       </Fk>
+      <Idx clu="0" nm="cms_page_content_seqnumber_Idx" unq="1">
+        <ClNs>order_in_page</ClNs>
+      </Idx>
+      <UniqueConstraints/>
+      <SchTrHis/>
+    </Tbl>
+    <Tbl UsSo="1" nm="cms_page_type">
+      <Cm>Tabel pentru tipurile de CMS_Page</Cm>
+      <TblOpts>WITHOUT OIDS</TblOpts>
+      <Pk ClNs="id" nm="pkcms_page_type"/>
+      <Cl au="0" df="" nm="id" nu="0">
+        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="name" nu="0">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="200" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="description" nu="1">
+        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
@@ -657,7 +709,7 @@
         <DT arr="0" ds="VarChar" en="" id="12" ln="200" sc="null" sg="1" un="0"/>
         <Cm>Denumirea unui snippet utilizat in aplicatie</Cm>
       </Cl>
-      <Cl au="0" df="" nm="snippet_group" nu="0">
+      <Cl au="0" df="" nm="cms_snippet_group_id" nu="1">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Grupul din care face parte snippet-ul curent (refera atributul id al tabelului cms_snippet_group)</Cm>
       </Cl>
@@ -668,7 +720,7 @@
       <Fk deAc="3" nm="fk_cms_snippet_cms_snippet_group" prLkCl="id" upAc="3">
         <PrTb mn="0" nm="cms_snippet_group" oe="1" sch="public" zr="0"/>
         <CdTb mn="1" nm="cms_snippet" oe="0" sch="public" zr="1"/>
-        <ClPr cdCl="snippet_group" prCl="id"/>
+        <ClPr cdCl="cms_snippet_group_id" prCl="id"/>
       </Fk>
       <UniqueConstraints/>
       <SchTrHis/>
@@ -685,7 +737,7 @@
         <DT arr="0" ds="VarChar" en="" id="12" ln="200" sc="null" sg="1" un="0"/>
         <Cm>Denumirea unui grup de snippet-uri din sistemul CMS al aplicatiei</Cm>
       </Cl>
-      <Cl au="0" df="" nm="parent" nu="0">
+      <Cl au="0" df="" nm="parent_id" nu="1">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul grupului de snippet-uri care este parintele grupului curent (refera atributul id din acelasi tabel)</Cm>
       </Cl>
@@ -696,7 +748,7 @@
       <Fk deAc="3" nm="fk_cms_snippet_group_cms_snippet_group" prLkCl="id" upAc="3">
         <PrTb mn="0" nm="cms_snippet_group" oe="1" sch="public" zr="0"/>
         <CdTb mn="1" nm="cms_snippet_group" oe="0" sch="public" zr="1"/>
-        <ClPr cdCl="parent" prCl="id"/>
+        <ClPr cdCl="parent_id" prCl="id"/>
       </Fk>
       <UniqueConstraints/>
       <SchTrHis/>
@@ -724,7 +776,7 @@
       <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id" nm="pkconcept"/>
       <Cl au="0" df="" nm="id" nu="0">
-        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul conceptului</Cm>
       </Cl>
       <Cl au="0" df="" nm="name" nu="0">
@@ -743,7 +795,7 @@
       <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="concept_id, variable_id" nm="pkconcept_variable"/>
       <Cl au="0" df="" nm="concept_id" nu="0">
-        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul conceptului la care se refera variabila identificata prin atributul variable_id, din cadrul instantei instance_id (refera atributul id din tabelul concept)</Cm>
       </Cl>
       <Cl au="0" df="" nm="variable_id" nu="0">
@@ -780,6 +832,9 @@
       </Cl>
       <Idx clu="0" nm="country_alpha3_Idx" unq="1">
         <ClNs>alpha3</ClNs>
+      </Idx>
+      <Idx clu="0" nm="country_name_Idx" unq="1">
+        <ClNs>name</ClNs>
       </Idx>
       <UniqueConstraints/>
       <SchTrHis/>
@@ -866,7 +921,8 @@
       <SchTrHis/>
     </Tbl>
     <Tbl UsSo="1" nm="file_property_name_value">
-      <TblOpts/>
+      <Cm>Tabel ce pastreaza asocierile intre un "File" (din tabelul respectiv) si proprietatile fisierului respectiv (name+value)</Cm>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="property_name_id, property_value_id, file_id" nm="pkfile_property_name_value"/>
       <Cl au="0" df="" nm="property_name_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
@@ -896,6 +952,7 @@
       <SchTrHis/>
     </Tbl>
     <Tbl UsSo="1" nm="form">
+      <Cm>Tabel pentru informatiile legate de un chestionarele aplicate (un rand reprezinta o anumita fisa completata pe teren cu raspunsuri)</Cm>
       <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id" nm="pkform"/>
       <Cl au="0" df="" nm="id" nu="0">
@@ -1056,11 +1113,11 @@
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Pasul din wizard-ul de introducere a metadatelor - din moment ce introducerea se face prin wizard, fiecare pas trebuie comis in baza de dat; pana la finalizarea introducerii intregii instante e nevoie sa stim ca ele au fost partial introduse.</Cm>
       </Cl>
-      <Cl au="0" df="" nm="is_raw_data" nu="0">
+      <Cl au="0" df="" nm="raw_data" nu="0">
         <DT arr="0" ds="Boolean" en="" id="16" ln="null" sc="null" sg="1" un="0"/>
         <Cm>daca datele sunt in forma digitizata (YES) sau in forma de fisiere procesabile/editabile (NO)</Cm>
       </Cl>
-      <Cl au="0" df="" nm="is_raw_metadata" nu="0">
+      <Cl au="0" df="" nm="raw_metadata" nu="0">
         <DT arr="0" ds="Boolean" en="" id="16" ln="null" sc="null" sg="1" un="0"/>
         <Cm>daca metadatele sunt in forma digitizata (YES) sau in forma de fisiere procesabile/editabile (NO)</Cm>
       </Cl>
@@ -1360,7 +1417,8 @@
       <SchTrHis/>
     </Tbl>
     <Tbl UsSo="1" nm="instance_sampling_procedure">
-      <TblOpts/>
+      <Cm>Tabel pentru reprezentarea relatiilor NxM intre o anumita "Instance" si o anumita "Sampling_Procedure"</Cm>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="instance_id, sampling_procedure_id" nm="pkinstance_sampling_procedure"/>
       <Cl au="0" df="" nm="instance_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
@@ -1466,6 +1524,9 @@
         <DT arr="0" ds="VarChar" en="" id="12" ln="50" sc="null" sg="1" un="0"/>
         <Cm>Denumirea unei limbi</Cm>
       </Cl>
+      <Idx clu="0" nm="lang_name_Idx" unq="1">
+        <ClNs>name</ClNs>
+      </Idx>
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
@@ -1502,25 +1563,25 @@
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul stirii</Cm>
       </Cl>
-      <Cl au="0" df="" nm="title" nu="0">
-        <DT arr="0" ds="VarChar" en="" id="12" ln="200" sc="null" sg="1" un="0"/>
-        <Cm>Titlul stirii</Cm>
-      </Cl>
-      <Cl au="0" df="" nm="content" nu="1">
-        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
-        <Cm>Continutul stirii</Cm>
+      <Cl au="0" df="" nm="added_by" nu="0">
+        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Codul utilizatorului care a introdus stirea</Cm>
       </Cl>
       <Cl au="0" df="" nm="added" nu="0">
         <DT arr="0" ds="TimeStamp" en="" id="93" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Momentul de timp la care stirea a fost adaugata</Cm>
       </Cl>
-      <Cl au="0" df="" nm="added_by" nu="0">
-        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
-        <Cm>Codul utilizatorului care a introdus stirea</Cm>
-      </Cl>
       <Cl au="0" df="" nm="visible" nu="0">
         <DT arr="0" ds="Boolean" en="" id="16" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Atribut boolean, a carui valoare este true daca stirea este vizibila</Cm>
+      </Cl>
+      <Cl au="0" df="" nm="title" nu="0">
+        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Titlul stirii</Cm>
+      </Cl>
+      <Cl au="0" df="" nm="content" nu="1">
+        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Continutul stirii</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_news_users" prLkCl="id" upAc="3">
         <PrTb mn="0" nm="user" oe="1" sch="public" zr="0"/>
@@ -1601,6 +1662,7 @@
       <SchTrHis/>
     </Tbl>
     <Tbl UsSo="1" nm="org_email">
+      <Cm>Tabel de legatura pentru relatia de tip NxM intre "Org" si "Email"</Cm>
       <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="org_id, email_id" nm="pkorg_email"/>
       <Cl au="0" df="" nm="org_id" nu="0">
@@ -1609,7 +1671,7 @@
       <Cl au="0" df="" nm="email_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
-      <Cl au="0" df="" nm="is_main" nu="0">
+      <Cl au="0" df="" nm="main" nu="0">
         <DT arr="0" ds="Boolean" en="" id="16" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
       <Fk deAc="3" nm="fk_org_email_email" prLkCl="id" upAc="3">
@@ -1626,6 +1688,7 @@
       <SchTrHis/>
     </Tbl>
     <Tbl UsSo="1" nm="org_internet">
+      <Cm>Tabel de legatura pentru relatia de tip NxM intre "Org" si "Internet"</Cm>
       <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="org_id, internet_id" nm="pkorg_internet"/>
       <Cl au="0" df="" nm="org_id" nu="0">
@@ -1634,7 +1697,7 @@
       <Cl au="0" df="" nm="internet_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
-      <Cl au="0" df="" nm="is_main" nu="0">
+      <Cl au="0" df="" nm="main" nu="0">
         <DT arr="0" ds="Boolean" en="" id="16" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
       <Fk deAc="3" nm="fk_org_internet_internet" prLkCl="id" upAc="3">
@@ -1651,6 +1714,7 @@
       <SchTrHis/>
     </Tbl>
     <Tbl UsSo="1" nm="org_phone">
+      <Cm>Tabel de legatura pentru relatia de tip NxM intre "Org" si "Phone"</Cm>
       <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="org_id, phone_id" nm="pkorg_phone"/>
       <Cl au="0" df="" nm="org_id" nu="0">
@@ -1659,7 +1723,7 @@
       <Cl au="0" df="" nm="phone_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
-      <Cl au="0" df="" nm="is_main" nu="0">
+      <Cl au="0" df="" nm="main" nu="0">
         <DT arr="0" ds="Boolean" en="" id="16" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
       <Fk deAc="3" nm="fk_org_phone_org" prLkCl="id" upAc="3">
@@ -1777,7 +1841,7 @@
     <Tbl UsSo="1" nm="other_statistic">
       <Cm>Tabel ce contine statistici specifice variabilelor editate</Cm>
       <TblOpts>WITHOUT OIDS</TblOpts>
-      <Pk ClNs="variable_id" nm="pkother_statistic"/>
+      <Pk ClNs="id" nm="pkother_statistic"/>
       <Cl au="0" df="" nm="variable_id" nu="0">
         <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul variabilei pentru care sunt stocate statistici</Cm>
@@ -1792,6 +1856,9 @@
       </Cl>
       <Cl au="0" df="" nm="description" nu="1">
         <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="id" nu="0">
+        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
       <Fk deAc="3" nm="fk_other_statistic_variable" prLkCl="id" upAc="3">
         <PrTb mn="0" nm="variable" oe="1" sch="public" zr="0"/>
@@ -1876,6 +1943,7 @@
       <SchTrHis/>
     </Tbl>
     <Tbl UsSo="1" nm="person_email">
+      <Cm>Tabel de legatura pentru relatia de tip NxM intre "Person" si "Email"</Cm>
       <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="person_id, email_id" nm="pkperson_email"/>
       <Cl au="0" df="" nm="person_id" nu="0">
@@ -1884,7 +1952,7 @@
       <Cl au="0" df="" nm="email_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
-      <Cl au="0" df="" nm="is_main" nu="0">
+      <Cl au="0" df="" nm="main" nu="0">
         <DT arr="0" ds="Boolean" en="" id="16" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
       <Fk deAc="3" nm="fk_person_email_email" prLkCl="id" upAc="3">
@@ -1901,6 +1969,7 @@
       <SchTrHis/>
     </Tbl>
     <Tbl UsSo="1" nm="person_internet">
+      <Cm>Tabel de legatura pentru relatia de tip NxM intre "Person" si "Internet"</Cm>
       <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="person_id, internet_id" nm="pkperson_internet"/>
       <Cl au="0" df="" nm="person_id" nu="0">
@@ -1909,7 +1978,7 @@
       <Cl au="0" df="" nm="internet_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
-      <Cl au="0" df="" nm="is_main" nu="0">
+      <Cl au="0" df="" nm="main" nu="0">
         <DT arr="0" ds="Boolean" en="" id="16" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
       <Fk deAc="3" nm="fk_person_internet_internet" prLkCl="id" upAc="3">
@@ -2026,6 +2095,7 @@
       <SchTrHis/>
     </Tbl>
     <Tbl UsSo="1" nm="person_phone">
+      <Cm>Tabel de legatura pentru relatia de tip NxM intre "Person" si "Phone"</Cm>
       <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="person_id, phone_id" nm="pkperson_phone"/>
       <Cl au="0" df="" nm="person_id" nu="0">
@@ -2034,7 +2104,7 @@
       <Cl au="0" df="" nm="phone_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
-      <Cl au="0" df="" nm="is_main" nu="0">
+      <Cl au="0" df="" nm="main" nu="0">
         <DT arr="0" ds="Boolean" en="" id="16" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
       <Fk deAc="3" nm="fk_person_phone_person" prLkCl="id" upAc="3">
@@ -2066,6 +2136,7 @@
       <SchTrHis/>
     </Tbl>
     <Tbl UsSo="1" nm="phone">
+      <Cm>Tabel unic ce pastreaza Telefoane</Cm>
       <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id" nm="pkphone"/>
       <Cl au="0" df="" nm="id" nu="0">
@@ -2096,7 +2167,8 @@
       <SchTrHis/>
     </Tbl>
     <Tbl UsSo="1" nm="property_name">
-      <TblOpts/>
+      <Cm>Tabel folosit pentru Proprietati (stocheaza numele acestora)</Cm>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id" nm="pkproperty_name"/>
       <Cl au="0" df="" nm="id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
@@ -2104,11 +2176,15 @@
       <Cl au="0" df="" nm="name" nu="0">
         <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
+      <Cl au="0" df="" nm="description" nu="1">
+        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
     <Tbl UsSo="1" nm="property_value">
-      <TblOpts/>
+      <Cm>Tabel folosit pentru Proprietati (stocheaza valorile acestora)</Cm>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id" nm="pkproperty_value"/>
       <Cl au="0" df="" nm="id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
@@ -2218,7 +2294,8 @@
       <SchTrHis/>
     </Tbl>
     <Tbl UsSo="1" nm="sampling_procedure">
-      <TblOpts/>
+      <Cm>Tabel pentru procedurile de esantionare. (cf. DDI Codebook:) The type of sample and sample design used to select the survey respondents to represent the population. These may include one or more of the following: no sampling (total universe); quota sample; simple random sample; one-stage stratified or systematic random sample; one-stage cluster sample; multi-stage stratified random sample; quasi-random (e.g. random walk) sample; purposive selection/case studies; volunteer sample; convenience sample. </Cm>
+      <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id" nm="pksampling_procedure"/>
       <Cl au="0" df="" nm="id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
@@ -2241,11 +2318,11 @@
         <Cm>Codul item-ului</Cm>
       </Cl>
       <Cl au="0" df="" nm="minValue_id" nu="0">
-        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul valorii minime (refera atributul itemId din tabelul value) </Cm>
       </Cl>
       <Cl au="0" df="" nm="maxValue_id" nu="0">
-        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul valorii maxime (refera atributul itemId din tabelul value) </Cm>
       </Cl>
       <Cl au="0" df="" nm="units" nu="0">
@@ -2430,7 +2507,7 @@
         <Cm>Identificatorul variabilei</Cm>
       </Cl>
       <Cl au="0" df="" nm="id" nu="0">
-        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Identificatorul saltului, corespunzator variabilei referite prin atributul variable_id din cadrul instantei identificate prin atributul instance_id </Cm>
       </Cl>
       <Cl au="0" df="" nm="condition" nu="0">
@@ -2438,7 +2515,7 @@
         <Cm>Conditia specificata ca text, care in urma evaluarii va confirma saltul</Cm>
       </Cl>
       <Cl au="0" df="" nm="next_variable_id" nu="0">
-        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Identificatorul variabilei la care se va face salt</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_skip_next_variable" prLkCl="id" upAc="3">
@@ -2510,60 +2587,34 @@
         <DT arr="0" ds="TimeStamp" en="" id="93" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Data la care persoana identificata prin atributul person_id a fost contactata</Cm>
       </Cl>
-      <Cl au="0" df="" nm="contact_synopsis" nu="0">
+      <Cl au="0" df="" nm="synopsis" nu="0">
         <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
       <Cl au="0" df="" nm="followup" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
-      <Cl au="0" df="" nm="contact_method" nu="0">
+      <Cl au="0" df="" nm="source_contact_method_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Metoda prin care persoana a fost contactata (refera atributul id din tabelul source_contact_method)</Cm>
       </Cl>
-      <Cl au="0" df="" nm="org_id" nu="0">
+      <Cl au="0" df="" nm="source_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul organizatiei careia ii aunt asociate informatiile de contact (refera atributul org_id din tabelul sources)</Cm>
       </Cl>
-      <Fk deAc="3" nm="fk_source_contacts_source_contact_method" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="source_contact_method" oe="1" sch="public" zr="0"/>
-        <CdTb mn="1" nm="source_contacts" oe="0" sch="public" zr="1"/>
-        <ClPr cdCl="contact_method" prCl="id"/>
-      </Fk>
-      <Fk deAc="3" nm="fk_source_contacts_sources" prLkCl="org_id" upAc="3">
-        <PrTb mn="0" nm="source" oe="1" sch="public" zr="0"/>
-        <CdTb mn="1" nm="source_contacts" oe="0" sch="public" zr="1"/>
-        <ClPr cdCl="org_id" prCl="org_id"/>
-      </Fk>
-      <Fk deAc="3" nm="source_contacts_person_id_fkey" prLkCl="id" upAc="3">
+      <Fk deAc="3" nm="fk_source_contacts_person" prLkCl="id" upAc="3">
         <PrTb mn="0" nm="person" oe="1" sch="public" zr="0"/>
         <CdTb mn="1" nm="source_contacts" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="person_id" prCl="id"/>
       </Fk>
-      <UniqueConstraints/>
-      <SchTrHis/>
-    </Tbl>
-    <Tbl UsSo="1" nm="source_type_history">
-      <TblOpts>WITHOUT OIDS</TblOpts>
-      <Pk ClNs="id" nm="pksource_type_history"/>
-      <Cl au="0" df="" nm="id" nu="0">
-        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="datestart" nu="0">
-        <DT arr="0" ds="TimeStamp" en="" id="93" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="dateend" nu="0">
-        <DT arr="0" ds="TimeStamp" en="" id="93" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="added_by" nu="0">
-        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Cl au="0" df="" nm="org_id" nu="0">
-        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
-      </Cl>
-      <Fk deAc="3" nm="fk_source_type_history_sources" prLkCl="org_id" upAc="3">
+      <Fk deAc="3" nm="fk_source_contacts_source_contact_method" prLkCl="id" upAc="3">
+        <PrTb mn="0" nm="source_contact_method" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="source_contacts" oe="0" sch="public" zr="1"/>
+        <ClPr cdCl="source_contact_method_id" prCl="id"/>
+      </Fk>
+      <Fk deAc="3" nm="fk_source_contacts_sources" prLkCl="org_id" upAc="3">
         <PrTb mn="0" nm="source" oe="1" sch="public" zr="0"/>
-        <CdTb mn="1" nm="source_type_history" oe="0" sch="public" zr="1"/>
-        <ClPr cdCl="org_id" prCl="org_id"/>
+        <CdTb mn="1" nm="source_contacts" oe="0" sch="public" zr="1"/>
+        <ClPr cdCl="source_id" prCl="org_id"/>
       </Fk>
       <UniqueConstraints/>
       <SchTrHis/>
@@ -3478,7 +3529,7 @@
       <TblOpts>WITHOUT OIDS</TblOpts>
       <Pk ClNs="id" nm="pkvargroup"/>
       <Cl au="0" df="" nm="id" nu="0">
-        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Identificatorul</Cm>
       </Cl>
       <Cl au="0" df="" nm="name" nu="0">
@@ -3545,21 +3596,6 @@
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
-    <Tbl UsSo="1" nm="variable_group">
-      <Cm>Tabel pentru definirea gruparilor de variabile (pentru o organizare mai buna a lor)</Cm>
-      <TblOpts>WITHOUT OIDS</TblOpts>
-      <Pk ClNs="id" nm="pkvariable_group"/>
-      <Cl au="0" df="" nm="id" nu="0">
-        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
-        <Cm>Identificatorul</Cm>
-      </Cl>
-      <Cl au="0" df="" nm="name" nu="0">
-        <DT arr="0" ds="VarChar" en="" id="12" ln="100" sc="null" sg="1" un="0"/>
-        <Cm>Denumirea grupului</Cm>
-      </Cl>
-      <UniqueConstraints/>
-      <SchTrHis/>
-    </Tbl>
     <Tbl UsSo="1" nm="variable_vargroup">
       <Cm>Tabel ce asociaza variabile unor grupuri in cadrul instantelor</Cm>
       <TblOpts>WITHOUT OIDS</TblOpts>
@@ -3569,7 +3605,7 @@
         <Cm>Codul variabilei in cadrul instantei instance_id</Cm>
       </Cl>
       <Cl au="0" df="" nm="vargroup_id" nu="0">
-        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul grupului caruia ii apartine variabila variable_id din instanta instance_id</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_instance_var_group_variable" prLkCl="id" upAc="3">
@@ -3628,8 +3664,8 @@
     <TbGl bkCl="ffffffe6" sch="public" tbl="instance_org" x="2961" y="834"/>
     <TbGl bkCl="ffffffe6" sch="public" tbl="instance_person_assoc" x="2865" y="596"/>
     <TbGl bkCl="ffffffe6" sch="public" tbl="instance_org_assoc" x="2849" y="732"/>
-    <TbGl bkCl="ffffffe6" sch="public" tbl="instance_descr" x="3127" y="214"/>
-    <TbGl bkCl="ffffcc99" sch="public" tbl="file" x="3025" y="1207"/>
+    <TbGl bkCl="ffffffe6" sch="public" tbl="instance_descr" x="3117" y="218"/>
+    <TbGl bkCl="ffffcc99" sch="public" tbl="file" x="3259" y="1243"/>
     <TbGl bkCl="ffffffe6" sch="public" tbl="instance_documents" x="3170" y="776"/>
     <TbGl bkCl="ffffffe6" sch="public" tbl="study_file" x="2428" y="932"/>
     <TbGl bkCl="ffffccff" sch="public" tbl="org_prefix" x="813" y="1008"/>
@@ -3640,7 +3676,7 @@
     <TbGl bkCl="ffffccff" sch="public" tbl="person_address" x="774" y="338"/>
     <TbGl bkCl="ffffffe6" sch="public" tbl="unit_analysis" x="3615" y="352"/>
     <TbGl bkCl="ffffccff" sch="public" tbl="person_role" x="1080" y="377"/>
-    <TbGl bkCl="ffcc99ff" sch="public" tbl="file_acl" x="3007" y="1331"/>
+    <TbGl bkCl="ffcc99ff" sch="public" tbl="file_acl" x="3242" y="1420"/>
     <TbGl bkCl="ffcc99ff" sch="public" tbl="study_acl" x="2168" y="719"/>
     <TbGl bkCl="ffcc99ff" sch="public" tbl="instance_acl" x="3451" y="709"/>
     <TbGl bkCl="ffffffcc" sch="public" tbl="catalog" x="1826" y="483"/>
@@ -3651,17 +3687,17 @@
     <TbGl bkCl="ffccffcc" sch="public" tbl="user_auth_log" x="2510" y="1295"/>
     <TbGl bkCl="ffccffcc" sch="public" tbl="role" x="2102" y="1534"/>
     <TbGl bkCl="ffccffcc" sch="public" tbl="user_role" x="2122" y="1411"/>
-    <TbGl bkCl="ffff3333" sch="public" tbl="cms_file" x="4641" y="1263"/>
-    <TbGl bkCl="ffff3333" sch="public" tbl="cms_folder" x="4308" y="1330"/>
-    <TbGl bkCl="ffff3333" sch="public" tbl="cms_page" x="4303" y="1095"/>
-    <TbGl bkCl="ffff3333" sch="public" tbl="cms_layout" x="4296" y="985"/>
-    <TbGl bkCl="ffff3333" sch="public" tbl="cms_layout_group" x="3964" y="984"/>
-    <TbGl bkCl="ffff3333" sch="public" tbl="cms_snippet" x="4003" y="1432"/>
-    <TbGl bkCl="ffff3333" sch="public" tbl="cms_snippet_group" x="4462" y="1427"/>
-    <TbGl bkCl="ffff6666" sch="public" tbl="cms_page_content" x="4639" y="1095"/>
-    <TbGl bkCl="ffcccc00" sch="public" tbl="setting_group" x="4986" y="1383"/>
-    <TbGl bkCl="ffcccc00" sch="public" tbl="setting" x="4971" y="1149"/>
-    <TbGl bkCl="ffcccc00" sch="public" tbl="setting_value" x="4998" y="988"/>
+    <TbGl bkCl="ffff3333" sch="public" tbl="cms_file" x="4749" y="1397"/>
+    <TbGl bkCl="ffff3333" sch="public" tbl="cms_folder" x="4407" y="1388"/>
+    <TbGl bkCl="ffff3333" sch="public" tbl="cms_page" x="4403" y="1104"/>
+    <TbGl bkCl="ffff3333" sch="public" tbl="cms_layout" x="4397" y="993"/>
+    <TbGl bkCl="ffff3333" sch="public" tbl="cms_layout_group" x="4083" y="993"/>
+    <TbGl bkCl="ffff3333" sch="public" tbl="cms_snippet" x="4704" y="1266"/>
+    <TbGl bkCl="ffff3333" sch="public" tbl="cms_snippet_group" x="4399" y="1262"/>
+    <TbGl bkCl="ffff6666" sch="public" tbl="cms_page_content" x="4748" y="1113"/>
+    <TbGl bkCl="ffcccc00" sch="public" tbl="setting_group" x="1858" y="1711"/>
+    <TbGl bkCl="ffcccc00" sch="public" tbl="setting" x="2188" y="1707"/>
+    <TbGl bkCl="ffcccc00" sch="public" tbl="setting_value" x="2562" y="1710"/>
     <TbGl bkCl="ffccffcc" sch="public" tbl="user_message" x="1846" y="1409"/>
     <TbGl bkCl="ffccffcc" sch="public" tbl="user_setting_group" x="2550" y="1412"/>
     <TbGl bkCl="ffccffcc" sch="public" tbl="user_setting" x="2411" y="1522"/>
@@ -3675,45 +3711,45 @@
     <TbGl bkCl="ffccffcc" sch="public" tbl="form_selection_var" x="4701" y="57"/>
     <TbGl bkCl="ffccffcc" sch="public" tbl="form_edited_number_var" x="4417" y="101"/>
     <TbGl bkCl="ffccffcc" sch="public" tbl="form_edited_text_var" x="4246" y="22"/>
-    <TbGl bkCl="ff9999ff" sch="public" tbl="skip" x="4317" y="392"/>
+    <TbGl bkCl="ff9999ff" sch="public" tbl="skip" x="4297" y="391"/>
     <TbGl bkCl="ff9999ff" sch="public" tbl="item" x="4987" y="218"/>
     <TbGl bkCl="ff9999ff" sch="public" tbl="selection_variable" x="4538" y="226"/>
     <TbGl bkCl="ff9999ff" sch="public" tbl="vargroup" x="4181" y="741"/>
     <TbGl bkCl="ff9999ff" sch="public" tbl="variable_vargroup" x="4173" y="619"/>
-    <TbGl bkCl="ff9999ff" sch="public" tbl="other_statistic" x="4317" y="476"/>
+    <TbGl bkCl="ff9999ff" sch="public" tbl="other_statistic" x="4296" y="476"/>
     <TbGl bkCl="ffccccff" sch="public" tbl="region" x="48" y="153"/>
     <TbGl bkCl="ffccccff" sch="public" tbl="regiontype" x="56" y="47"/>
     <TbGl bkCl="ffccccff" sch="public" tbl="region_city" x="356" y="43"/>
     <TbGl bkCl="ffccffcc" sch="public" tbl="source" x="238" y="823"/>
     <TbGl bkCl="ffccffcc" sch="public" tbl="sourcestudy" x="229" y="672"/>
-    <TbGl bkCl="ffccffcc" sch="public" tbl="sourcetype" x="378" y="936"/>
+    <TbGl bkCl="ffccffcc" sch="public" tbl="sourcetype" x="411" y="935"/>
     <TbGl bkCl="ffccffcc" sch="public" tbl="sourcetype_history" x="54" y="929"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="audit" x="1311" y="1245"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="audit" x="1404" y="1363"/>
     <TbGl bkCl="ffffffcc" sch="public" tbl="study_descr" x="2573" y="696"/>
     <TbGl bkCl="ffffffcc" sch="public" tbl="title_type" x="2589" y="845"/>
     <TbGl bkCl="ffffffe6" sch="public" tbl="time_meth_type" x="3594" y="145"/>
-    <TbGl bkCl="ffffffe6" sch="public" tbl="collection_model_type" x="3482" y="44"/>
+    <TbGl bkCl="ffffffe6" sch="public" tbl="collection_model_type" x="3488" y="43"/>
     <TbGl bkCl="ffffffe6" sch="public" tbl="meth_coll_type" x="3407" y="253"/>
     <TbGl bkCl="ffccccff" sch="public" tbl="topic" x="2050" y="83"/>
     <TbGl bkCl="ffccccff" sch="public" tbl="lang" x="2634" y="28"/>
     <TbGl bkCl="ffccccff" sch="public" tbl="translated_topic" x="1802" y="35"/>
     <TbGl bkCl="ffffffe6" sch="public" tbl="instance_topic" x="2877" y="55"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="audit_row_id" x="980" y="1249"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="audit_field" x="1313" y="1410"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="audit_row_id" x="1073" y="1367"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="audit_field" x="1406" y="1528"/>
     <TbGl bkCl="ffccffcc" sch="public" tbl="sourcestudy_type" x="371" y="523"/>
     <TbGl bkCl="ffccffcc" sch="public" tbl="sourcestudy_type_history" x="48" y="518"/>
     <TbGl bkCl="ffffffcc" sch="public" tbl="study_topic" x="2229" y="255"/>
     <TbGl bkCl="ffccccff" sch="public" tbl="keyword" x="2406" y="118"/>
     <TbGl bkCl="ffffffcc" sch="public" tbl="study_keyword" x="2462" y="257"/>
-    <TbGl bkCl="ffffffe6" sch="public" tbl="instance_keyword" x="2897" y="264"/>
+    <TbGl bkCl="ffffffe6" sch="public" tbl="instance_keyword" x="2877" y="274"/>
     <TbGl bkCl="ffccffff" sch="public" tbl="person_links" x="1841" y="1101"/>
     <TbGl bkCl="ffccffff" sch="public" tbl="user_profile" x="2564" y="1122"/>
-    <TbGl bkCl="ffff3333" sch="public" tbl="news" x="3984" y="1184"/>
+    <TbGl bkCl="ffff3333" sch="public" tbl="news" x="4109" y="1387"/>
     <TbGl bkCl="ffccffcc" sch="public" tbl="form" x="3878" y="34"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="acl_sid" x="431" y="1102"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="acl_class" x="111" y="1106"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="acl_object_identity" x="66" y="1241"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="acl_entry" x="396" y="1393"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="acl_sid" x="443" y="1378"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="acl_class" x="123" y="1382"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="acl_object_identity" x="78" y="1517"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="acl_entry" x="408" y="1669"/>
     <TbGl bkCl="ffffccff" sch="public" tbl="phone" x="1271" y="573"/>
     <TbGl bkCl="ffffccff" sch="public" tbl="org_email" x="1039" y="718"/>
     <TbGl bkCl="ffffccff" sch="public" tbl="person_email" x="1140" y="471"/>
@@ -3721,11 +3757,15 @@
     <TbGl bkCl="ffffccff" sch="public" tbl="person_phone" x="1350" y="425"/>
     <TbGl bkCl="ffffccff" sch="public" tbl="org_internet" x="1553" y="712"/>
     <TbGl bkCl="ffffccff" sch="public" tbl="person_internet" x="1561" y="415"/>
-    <TbGl bkCl="ffffffe6" sch="public" tbl="sampling_procedure" x="3259" y="43"/>
+    <TbGl bkCl="ffffffe6" sch="public" tbl="sampling_procedure" x="3273" y="45"/>
     <TbGl bkCl="ffffffe6" sch="public" tbl="instance_sampling_procedure" x="3282" y="145"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="property_name" x="3269" y="1422"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="property_value" x="3540" y="1420"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="file_property_name_value" x="3376" y="1289"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="property_name" x="3485" y="1436"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="property_value" x="3756" y="1514"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="file_property_name_value" x="3616" y="1287"/>
+    <TbGl bkCl="ffff3333" sch="public" tbl="cms_file_property_name_value" x="4745" y="1548"/>
+    <TbGl bkCl="ffff3333" sch="public" tbl="cms_page_type" x="4084" y="1103"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="source_contact_method" x="62" y="1085"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="source_contacts" x="302" y="1069"/>
     <FkGl bkCl="ff000000" nm="public.acl_entry.fk_acl_entry_acl_object_identity"/>
     <FkGl bkCl="ff000000" nm="public.acl_entry.fk_acl_entry_acl_sid"/>
     <FkGl bkCl="ff000000" nm="public.acl_object_identity.fk_acl_object_identity_acl_class"/>
@@ -3743,9 +3783,14 @@
     <FkGl bkCl="ff000000" nm="public.catalog_study.fk_catalog_study_study"/>
     <FkGl bkCl="ff000000" nm="public.city.fk_city_country"/>
     <FkGl bkCl="ff000000" nm="public.cms_file.fk_cms_files_cms_folders"/>
+    <FkGl bkCl="ff000000" nm="public.cms_file_property_name_value.fk_cms_file_property_name_value_cms_file"/>
+    <FkGl bkCl="ff000000" nm="public.cms_file_property_name_value.fk_cms_file_property_name_value_property_name"/>
+    <FkGl bkCl="ff000000" nm="public.cms_file_property_name_value.fk_cms_file_property_name_value_property_value"/>
     <FkGl bkCl="ff000000" nm="public.cms_folder.fk_cms_folders_cms_folders"/>
     <FkGl bkCl="ff000000" nm="public.cms_layout.fk_cms_layout_cms_layout_group"/>
+    <FkGl bkCl="ff000000" nm="public.cms_layout_group.fk_cms_layout_group_cms_layout_group"/>
     <FkGl bkCl="ff000000" nm="public.cms_page.fk_cms_page_cms_layout"/>
+    <FkGl bkCl="ff000000" nm="public.cms_page.fk_cms_page_cms_page_type"/>
     <FkGl bkCl="ff000000" nm="public.cms_page.fk_cms_page_users"/>
     <FkGl bkCl="ff000000" nm="public.cms_page_content.fk_cms_page_content_cms_page"/>
     <FkGl bkCl="ff000000" nm="public.cms_snippet.fk_cms_snippet_cms_snippet_group"/>
@@ -3837,6 +3882,9 @@
     <FkGl bkCl="ff000000" nm="public.skip.fk_skip_variable"/>
     <FkGl bkCl="ff000000" nm="public.source.fk_sources_org"/>
     <FkGl bkCl="ff000000" nm="public.source.fk_sources_sourcetype"/>
+    <FkGl bkCl="ff000000" nm="public.source_contacts.fk_source_contacts_person"/>
+    <FkGl bkCl="ff000000" nm="public.source_contacts.fk_source_contacts_source_contact_method"/>
+    <FkGl bkCl="ff000000" nm="public.source_contacts.fk_source_contacts_sources"/>
     <FkGl bkCl="ff000000" nm="public.sourcestudy.fk_sourcestudy_sources"/>
     <FkGl bkCl="ff000000" nm="public.sourcestudy.fk_sourcestudy_sourcestudy_type"/>
     <FkGl bkCl="ff000000" nm="public.sourcestudy_type_history.fk_sourcestudy_type_history_sourcestudy"/>
@@ -3883,23 +3931,23 @@
     <FkGl bkCl="ff000000" nm="public.variable_vargroup.fk_instance_var_group_variable_group"/>
     <Notes/>
     <Zones>
-      <Zone bkCl="ffece9d8" h="662" nm="1" w="390" x="34" y="16"/>
-      <Zone bkCl="ffece9d8" h="652" nm="10" w="276" x="941" y="1230"/>
-      <Zone bkCl="ffece9d8" h="1001" nm="11" w="572" x="1810" y="1060"/>
-      <Zone bkCl="ffece9d8" h="978" nm="13" w="578" x="3916" y="942"/>
-      <Zone bkCl="ffece9d8" h="313" nm="14" w="509" x="4947" y="961"/>
-      <Zone bkCl="ffece9d8" h="1059" nm="2" w="1000" x="728" y="208"/>
-      <Zone bkCl="ffece9d8" h="740" nm="3" w="431" x="2990" y="1177"/>
-      <Zone bkCl="ffece9d8" h="805" nm="4" w="177" x="1794" y="10"/>
-      <Zone bkCl="ffece9d8" h="1028" nm="5" w="804" x="1794" y="202"/>
-      <Zone bkCl="ffece9d8" h="1012" nm="6" w="936" x="2843" y="3"/>
-      <Zone bkCl="ffece9d8" h="587" nm="7" w="563" x="38" y="477"/>
-      <Zone bkCl="ffece9d8" h="1456" nm="8" w="623" x="3873" y="181"/>
-      <Zone bkCl="ffece9d8" h="1188" nm="9" w="170" x="3867" y="0"/>
-      <Zone bkCl="ffece9d8" h="622" nm="ACL" w="451" x="37" y="1071"/>
+      <Zone bkCl="ffece9d8" h="622" nm="ACL" w="451" x="49" y="1347"/>
+      <Zone bkCl="ffece9d8" h="1009" nm="App Settings" w="236" x="1811" y="1659"/>
+      <Zone bkCl="ffece9d8" h="652" nm="Audit" w="276" x="1034" y="1348"/>
+      <Zone bkCl="ffece9d8" h="996" nm="CMS" w="758" x="4034" y="956"/>
+      <Zone bkCl="ffece9d8" h="644" nm="Codebook Sources" w="741" x="25" y="475"/>
+      <Zone bkCl="ffece9d8" h="740" nm="Files + Properties" w="431" x="3217" y="1193"/>
+      <Zone bkCl="ffece9d8" h="1188" nm="Forms + Answers" w="170" x="3867" y="0"/>
+      <Zone bkCl="ffece9d8" h="662" nm="Geography" w="390" x="34" y="16"/>
+      <Zone bkCl="ffece9d8" h="1012" nm="Instance" w="936" x="2843" y="3"/>
+      <Zone bkCl="ffece9d8" h="1059" nm="Org + Person" w="1000" x="722" y="211"/>
+      <Zone bkCl="ffece9d8" h="1028" nm="Studies + Catalogs" w="804" x="1794" y="202"/>
+      <Zone bkCl="ffece9d8" h="805" nm="Topics + Keywords" w="177" x="1794" y="10"/>
+      <Zone bkCl="ffece9d8" h="1001" nm="User Data" w="572" x="1810" y="1060"/>
+      <Zone bkCl="ffece9d8" h="1456" nm="Variables" w="623" x="3873" y="181"/>
     </Zones>
   </Dgm>
-  <RnmMgr NxRnmId="266">
+  <RnmMgr NxRnmId="296">
     <RnmCh ObjCls="Table" ParCls="Schema" ParNme="public" SupCls="" SupNme="">
       <Rnm id="1" nNm="person" oNm="Persoane"/>
     </RnmCh>
@@ -4577,6 +4625,86 @@
     <RnmCh ObjCls="Table" ParCls="Schema" ParNme="public" SupCls="" SupNme="">
       <Rnm id="265" nNm="file_property_name_value" oNm="property_name_value"/>
     </RnmCh>
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="instance" SupCls="Schema" SupNme="public">
+      <Rnm id="266" nNm="raw_data" oNm="is_raw_data"/>
+    </RnmCh>
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="instance" SupCls="Schema" SupNme="public">
+      <Rnm id="267" nNm="raw_metadata" oNm="is_raw_metadata"/>
+    </RnmCh>
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="person_phone" SupCls="Schema" SupNme="public">
+      <Rnm id="268" nNm="main" oNm="is_main"/>
+    </RnmCh>
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="person_email" SupCls="Schema" SupNme="public">
+      <Rnm id="269" nNm="main" oNm="is_main"/>
+    </RnmCh>
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="person_internet" SupCls="Schema" SupNme="public">
+      <Rnm id="270" nNm="main" oNm="is_main"/>
+    </RnmCh>
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="org_internet" SupCls="Schema" SupNme="public">
+      <Rnm id="271" nNm="main" oNm="is_main"/>
+    </RnmCh>
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="org_phone" SupCls="Schema" SupNme="public">
+      <Rnm id="272" nNm="main" oNm="is_main"/>
+    </RnmCh>
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="org_email" SupCls="Schema" SupNme="public">
+      <Rnm id="273" nNm="main" oNm="is_main"/>
+    </RnmCh>
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="cms_page_content" SupCls="Schema" SupNme="public">
+      <Rnm id="276" nNm="order_in_page" oNm="order"/>
+      <Rnm id="275" nNm="order" oNm="order_number"/>
+      <Rnm id="274" nNm="order_number" oNm="seqnumber"/>
+    </RnmCh>
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="cms_page" SupCls="Schema" SupNme="public">
+      <Rnm id="277" nNm="cms_layout_id" oNm="layout"/>
+    </RnmCh>
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="cms_page_content" SupCls="Schema" SupNme="public">
+      <Rnm id="278" nNm="cms_page_id" oNm="page"/>
+    </RnmCh>
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="cms_page_content" SupCls="Schema" SupNme="public">
+      <Rnm id="280" nNm="content_title" oNm="title"/>
+      <Rnm id="279" nNm="title" oNm="content_title"/>
+    </RnmCh>
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="cms_layout" SupCls="Schema" SupNme="public">
+      <Rnm id="281" nNm="cms_layout_group_id" oNm="layout_group"/>
+    </RnmCh>
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="cms_layout_group" SupCls="Schema" SupNme="public">
+      <Rnm id="282" nNm="parent_id" oNm="parent"/>
+    </RnmCh>
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="cms_page" SupCls="Schema" SupNme="public">
+      <Rnm id="283" nNm="owner_id" oNm="owner"/>
+    </RnmCh>
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="cms_file" SupCls="Schema" SupNme="public">
+      <Rnm id="284" nNm="cms_folder_id" oNm="folder_id"/>
+    </RnmCh>
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="cms_folder" SupCls="Schema" SupNme="public">
+      <Rnm id="285" nNm="parent_id" oNm="parent"/>
+    </RnmCh>
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="cms_snippet_group" SupCls="Schema" SupNme="public">
+      <Rnm id="286" nNm="parent_id" oNm="parent"/>
+    </RnmCh>
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="cms_snippet" SupCls="Schema" SupNme="public">
+      <Rnm id="287" nNm="cms_snippet_group_id" oNm="snippet_group"/>
+    </RnmCh>
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="cms_file_property_name_value" SupCls="Schema" SupNme="public">
+      <Rnm id="288" nNm="cms_file_id" oNm="id"/>
+    </RnmCh>
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="cms_file_property_name_value" SupCls="Schema" SupNme="public">
+      <Rnm id="289" nNm="property_name_id" oNm="property_value_id"/>
+    </RnmCh>
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="cms_page" SupCls="Schema" SupNme="public">
+      <Rnm id="291" nNm="cms_page_type_id" oNm="page_type_id"/>
+      <Rnm id="290" nNm="page_type_id" oNm="page_type"/>
+    </RnmCh>
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="source_contacts" SupCls="Schema" SupNme="public">
+      <Rnm id="293" nNm="source_contact_method_id" oNm="contact_method_id"/>
+      <Rnm id="292" nNm="contact_method_id" oNm="contact_method"/>
+    </RnmCh>
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="source_contacts" SupCls="Schema" SupNme="public">
+      <Rnm id="294" nNm="synopsis" oNm="contact_synopsis"/>
+    </RnmCh>
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="source_contacts" SupCls="Schema" SupNme="public">
+      <Rnm id="295" nNm="source_id" oNm="org_id"/>
+    </RnmCh>
   </RnmMgr>
   <DbDocOptionMgr>
     <BasicOptionMgr>
@@ -4600,7 +4728,7 @@
     <TreePath/>
     <TreePath>/Schemas (1)</TreePath>
     <TreePath>/Schemas (1)/public</TreePath>
-    <TreePath>/Schemas (1)/public/Tables (124)</TreePath>
     <TreePath>/Diagrams (1)</TreePath>
+    <TreePath>/Diagrams (1)/diagram</TreePath>
   </TreePaths>
 </Db>

@@ -68,7 +68,7 @@ Data incepand de la care adresa organizatiei referite prin atributul org_id a de
 =head2 dateend
 
   data_type: 'timestamp'
-  is_nullable: 0
+  is_nullable: 1
 
 Data pana la care adresa organizatiei referite prin org_id a fost cea identificata prin address_id
 
@@ -82,7 +82,7 @@ __PACKAGE__->add_columns(
   "datestart",
   { data_type => "timestamp", is_nullable => 0 },
   "dateend",
-  { data_type => "timestamp", is_nullable => 0 },
+  { data_type => "timestamp", is_nullable => 1 },
 );
 
 =head1 PRIMARY KEY
@@ -93,13 +93,11 @@ __PACKAGE__->add_columns(
 
 =item * L</address_id>
 
-=item * L</datestart>
-
 =back
 
 =cut
 
-__PACKAGE__->set_primary_key("org_id", "address_id", "datestart");
+__PACKAGE__->set_primary_key("org_id", "address_id");
 
 =head1 RELATIONS
 

@@ -65,18 +65,14 @@ __PACKAGE__->add_columns(
   "org_id",
   {
     data_type         => "integer",
-    is_auto_increment => 1,
     is_foreign_key    => 1,
     is_nullable       => 0,
-    sequence          => "org_email_org_id_seq",
   },
   "email_id",
   {
     data_type         => "integer",
-    is_auto_increment => 1,
     is_foreign_key    => 1,
     is_nullable       => 0,
-    sequence          => "org_email_email_id_seq",
   },
   "is_main",
   { data_type => "boolean", is_nullable => 0 },
@@ -110,7 +106,7 @@ __PACKAGE__->belongs_to(
   "email",
   "RODA::RODADB::Result::Email",
   { id => "email_id" },
-  { is_deferrable => 0, on_delete => "NO ACTION", on_update => "NO ACTION" },
+  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
 );
 
 =head2 org
@@ -125,7 +121,7 @@ __PACKAGE__->belongs_to(
   "org",
   "RODA::RODADB::Result::Org",
   { id => "org_id" },
-  { is_deferrable => 0, on_delete => "NO ACTION", on_update => "NO ACTION" },
+  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
 );
 
 

@@ -54,25 +54,28 @@ __PACKAGE__->table("org_phone");
   is_nullable: 0
   sequence: 'org_phone_phone_id_seq'
 
+=head2 is_main
+
+  data_type: 'boolean'
+  is_nullable: 0
+
 =cut
 
 __PACKAGE__->add_columns(
   "org_id",
   {
     data_type         => "integer",
-    is_auto_increment => 1,
     is_foreign_key    => 1,
     is_nullable       => 0,
-    sequence          => "org_phone_org_id_seq",
   },
   "phone_id",
   {
     data_type         => "integer",
-    is_auto_increment => 1,
     is_foreign_key    => 1,
     is_nullable       => 0,
-    sequence          => "org_phone_phone_id_seq",
   },
+  "is_main",
+  { data_type => "boolean", is_nullable => 0 },
 );
 
 =head1 PRIMARY KEY
@@ -103,7 +106,7 @@ __PACKAGE__->belongs_to(
   "org",
   "RODA::RODADB::Result::Org",
   { id => "org_id" },
-  { is_deferrable => 0, on_delete => "NO ACTION", on_update => "NO ACTION" },
+  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
 );
 
 =head2 phone
@@ -118,7 +121,7 @@ __PACKAGE__->belongs_to(
   "phone",
   "RODA::RODADB::Result::Phone",
   { id => "phone_id" },
-  { is_deferrable => 0, on_delete => "NO ACTION", on_update => "NO ACTION" },
+  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
 );
 
 

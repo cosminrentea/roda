@@ -64,7 +64,7 @@ Codul prefixului organizatiei (refera atributul id din tabelul org_prefix)
 =head2 fullname
 
   data_type: 'varchar'
-  is_nullable: 0
+  is_nullable: 1
   size: 100
 
 Denumirea completa a organizatiei 
@@ -73,7 +73,7 @@ Denumirea completa a organizatiei
 
   data_type: 'integer'
   is_foreign_key: 1
-  is_nullable: 0
+  is_nullable: 1
 
 Codul sufixului organizatiei (refera atributul id din tabelul org_sufix)
 
@@ -81,15 +81,20 @@ Codul sufixului organizatiei (refera atributul id din tabelul org_sufix)
 
 __PACKAGE__->add_columns(
   "id",
-  { data_type => "integer", is_nullable => 0 },
+  {
+    data_type         => "integer",
+    is_auto_increment => 1,
+    is_nullable       => 0,
+    sequence          => "org_id_seq",
+  },
   "name",
   { data_type => "varchar", is_nullable => 0, size => 100 },
   "org_prefix_id",
-  { data_type => "integer", is_foreign_key => 1, is_nullable => 0 },
+  { data_type => "integer", is_foreign_key => 1, is_nullable => 1 },
   "fullname",
   { data_type => "varchar", is_nullable => 0, size => 100 },
   "org_sufix_id",
-  { data_type => "integer", is_foreign_key => 1, is_nullable => 0 },
+  { data_type => "integer", is_foreign_key => 1, is_nullable => 1 },
 );
 
 =head1 PRIMARY KEY
@@ -110,14 +115,44 @@ __PACKAGE__->set_primary_key("id");
 
 Type: has_many
 
-Related object: L<RODA::RODADB::Result::Email>
+Related object: L<RODA::RODADB::Result::OrgEmail>
 
 =cut
 
 __PACKAGE__->has_many(
   "emails",
-  "RODA::RODADB::Result::Email",
-  { "foreign.entity_type" => "self.id" },
+  "RODA::RODADB::Result::OrgEmail",
+  { "foreign.org_id" => "self.id" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
+=head2 phones
+
+Type: has_many
+
+Related object: L<RODA::RODADB::Result::OrgPhone>
+
+=cut
+
+__PACKAGE__->has_many(
+  "phones",
+  "RODA::RODADB::Result::OrgPhone",
+  { "foreign.org_id" => "self.id" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
+=head2 internets
+
+Type: has_many
+
+Related object: L<RODA::RODADB::Result::OrgInternet>
+
+=cut
+
+__PACKAGE__->has_many(
+  "phones",
+  "RODA::RODADB::Result::OrgInternet",
+  { "foreign.org_id" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
@@ -136,20 +171,7 @@ __PACKAGE__->has_many(
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
-=head2 internets
 
-Type: has_many
-
-Related object: L<RODA::RODADB::Result::Internet>
-
-=cut
-
-__PACKAGE__->has_many(
-  "internets",
-  "RODA::RODADB::Result::Internet",
-  { "foreign.entity_id" => "self.id" },
-  { cascade_copy => 0, cascade_delete => 0 },
-);
 
 =head2 org_addresses
 
@@ -278,4 +300,108 @@ __PACKAGE__->has_many(
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
 __PACKAGE__->meta->make_immutable;
+
+sub attach_addresses {
+     my ( $self, %params ) = @_;
+     foreach my $address (@{$params{addresses}}) {
+         my $guard = $self->result_source->schema()->txn_scope_guard;
+         my $addressrs = $self->result_source->schema()->resultset('Address')->checkaddress(%$address);
+         #acum trebuie sa inseram si in many-to-many
+         if ($addressrs) { 
+        	#acu trebuie sa inseram asocierea
+         	$self->result_source->schema()->resultset('OrgAddress')->find_or_create({
+          	address_id => $addressrs->id,
+          	org_id => $self->id,
+         },
+         {
+          key => 'primary',
+         }
+         );
+      }
+        $guard->commit; 
+     }
+}
+
+sub attach_emails {
+     my ( $self, %params ) = @_;
+     foreach my $email (@{$params{emails}}) { 
+        if (Email::Valid->address($email->{email})) {
+			my $guard = $self->result_source->schema()->txn_scope_guard;
+        	my $emailrs = $self->result_source->schema()->resultset('Email')->checkemail(%$email);   
+			my $ismain;
+			if (!$email->{ismain}) {
+				$ismain = '0';
+			} else {
+				$ismain = $email->{ismain};
+			}
+			
+            if ($emailrs) { 
+         		$self->result_source->schema()->resultset('OrgEmail')->find_or_create({
+          																				  email_id => $emailrs->id,
+          																				  org_id => $self->id,
+          																				  is_main => $ismain,
+         																				 },
+         																				 {
+         		 																		  key => 'primary',
+         																				 });
+      		}
+      		$guard->commit; 	
+        } else {
+         	die 'Invalid Email';
+        }
+     }
+}
+
+sub attach_phones {
+     my ( $self, %params ) = @_;
+     foreach my $phone (@{$params{phones}}) { 
+     	my $guard = $self->result_source->schema()->txn_scope_guard;
+        my $phoners = $self->result_source->schema()->resultset('Phone')->checkphone(%$phone);  
+        my $ismain;
+		if (!$phone->{ismain}) {
+			$ismain = '0';
+		} else {
+			$ismain = $phone->{ismain};
+		}
+			   
+        if ($phoners) { 
+        	$self->result_source->schema()->resultset('OrgPhone')->find_or_create({
+          																			  phone_id => $phoners->id,
+          																			  org_id => $self->id,
+          																			  is_main => $ismain,
+         																			 },
+         																			 {
+         		 																	  key => 'primary',
+         																			 });
+      		}
+      		$guard->commit; 	
+        }
+}
+
+sub attach_internets {
+     my ( $self, %params ) = @_;
+     foreach my $internet (@{$params{internets}}) { 
+     	my $guard = $self->result_source->schema()->txn_scope_guard;
+        my $internetrs = $self->result_source->schema()->resultset('Internet')->checkinternet(%$internet);
+        my $ismain;
+        if (!$internet->{ismain}) {
+			$ismain = '0';
+		} else {
+			$ismain = $internet->{ismain};
+		}
+             
+        if ($internetrs) { 
+        	$self->result_source->schema()->resultset('OrgInternet')->find_or_create({
+          																			     internet_id => $internetrs->id,
+          																			     org_id => $self->id,
+          																			     is_main => $ismain,
+         																			    },
+         																			    {
+         		 																	     key => 'primary',
+         																			    });
+      		}
+      		$guard->commit; 	           
+        }
+}
+
 1;

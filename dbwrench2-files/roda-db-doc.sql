@@ -3175,8 +3175,6 @@ COMMENT ON COLUMN variable_vargroup.vargroup_id IS 'Codul grupului caruia ii apa
 COMMENT ON TABLE variable_vargroup IS 'Tabel ce asociaza variabile unor grupuri in cadrul instantelor';
 
 
-
-
 /************ Update: Procedures ***************/
 
 DROP FUNCTION public.akeys(hstore);
@@ -4221,3 +4219,4 @@ ALTER TABLE variable_vargroup ADD CONSTRAINT fk_instance_var_group_variable
 ALTER TABLE variable_vargroup ADD CONSTRAINT fk_instance_var_group_variable_group
 	FOREIGN KEY (vargroup_id) REFERENCES vargroup (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
+

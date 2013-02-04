@@ -22,6 +22,7 @@ sub checkphone {
         my $newphoners = $self->create(
                                       {
                                         phone => $params{phone},
+                                        phone_type => $params{phone_type},
                                       }
         );
         $guard->commit;

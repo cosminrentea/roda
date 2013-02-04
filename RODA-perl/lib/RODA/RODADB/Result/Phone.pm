@@ -6,7 +6,7 @@ package RODA::RODADB::Result::Phone;
 
 =head1 NAME
 
-RODA::RODADB::Result::Phone
+RODA::RODADB::Result::Phone - Tabel ce contine toate numerele de telefon ale entitatilor din baza de date
 
 =cut
 
@@ -45,32 +45,31 @@ __PACKAGE__->table("phone");
   is_nullable: 0
   sequence: 'phone_id_seq'
 
+Codul numarului de telefon in tabel
+
 =head2 phone
 
   data_type: 'varchar'
   is_nullable: 0
   size: 30
 
+Sirul de caractere reprezentand numarul de telefon
+
 =head2 phone_type
 
   data_type: 'varchar'
   is_nullable: 1
   size: 50
-
-=head2 entity_id
-
-  data_type: 'integer'
-  is_nullable: 0
-
-=head2 entity_type
-
-  data_type: 'integer'
-  is_nullable: 0
+  
+Tipul numarului de telefon  
+  
 
 =head2 ismain
 
   data_type: 'boolean'
   is_nullable: 1
+
+Atribut boolean ce precizeaza daca numarul de telefon este cel principal al entitatii referite prin atributul entity_id
 
 =cut
 
@@ -86,12 +85,6 @@ __PACKAGE__->add_columns(
   { data_type => "varchar", is_nullable => 0, size => 30 },
   "phone_type",
   { data_type => "varchar", is_nullable => 1, size => 50 },
-  "entity_id",
-  { data_type => "integer", is_nullable => 0 },
-  "entity_type",
-  { data_type => "integer", is_nullable => 0 },
-  "ismain",
-  { data_type => "boolean", is_nullable => 1 },
 );
 
 =head1 PRIMARY KEY

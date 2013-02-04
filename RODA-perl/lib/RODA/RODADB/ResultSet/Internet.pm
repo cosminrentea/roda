@@ -22,6 +22,7 @@ sub checkinternet {
         my $newinternetrs = $self->create(
                                       {
                                         internet => $params{internet},
+                                        internet_type => $params{internet_type},
                                       }
         );
         $guard->commit;

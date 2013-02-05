@@ -77,6 +77,7 @@ if ( -f "$FindBin::Bin/../csv/country.csv" ) {
 } else {
     print "Nu gasesc fisierul $FindBin::Bin/../csv/country.csv";
 }
+
 print "Region types\n";
 
 #fisierul region_types are id in el degeaba pentru ca altfel idiotul de Text::CSV nu isi da seama ca e csv
@@ -126,6 +127,8 @@ if ( -f "$FindBin::Bin/../csv/region.csv" ) {
 }
 
 #city
+print "City\n";
+
 if ( -f "$FindBin::Bin/../csv/orase_ro_rr.csv" ) {
     my $rgcsv = Text::CSV::Auto->new("$FindBin::Bin/../csv/orase_ro_rr.csv");
     my $rows  = $rgcsv->slurp();
@@ -216,7 +219,7 @@ if ( -f "$FindBin::Bin/../csv/orase_ro_rr.csv" ) {
                 $cityrs->attach_region(
                                         name             => $row->{judet},
                                         country_id       => 'ro',
-                                        region_type_name => 'judeţ'
+                                        region_type_name => 'județ'
                 );
             }
         }

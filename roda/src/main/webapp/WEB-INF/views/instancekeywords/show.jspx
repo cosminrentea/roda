@@ -5,7 +5,7 @@
     <page:show id="ps_ro_roda_InstanceKeyword" object="${instancekeyword}" path="/instancekeywords" z="R2SEmdZqxLVOMl6efhQeulNQU60=">
         <field:display field="instanceId" id="s_ro_roda_InstanceKeyword_instanceId" object="${instancekeyword}" z="vzy4ZDgaXrF+Ws+aaUjuvZtX5Vg="/>
         <field:display field="keywordId" id="s_ro_roda_InstanceKeyword_keywordId" object="${instancekeyword}" z="4qxUExTPA42hpKe2fngsFpsIrFE="/>
-        <field:display date="true" dateTimePattern="${instanceKeyword_added_date_format}" field="added" id="s_ro_roda_InstanceKeyword_added" object="${instancekeyword}" z="1c45TMTDAmUE81Qo6M3Xzk3XXt4="/>
         <field:display field="addedBy" id="s_ro_roda_InstanceKeyword_addedBy" object="${instancekeyword}" z="BLwQkPgcn8Uwm/BhnaFaGb8EciU="/>
+        <field:display date="true" dateTimePattern="${instanceKeyword_added_date_format}" field="added" id="s_ro_roda_InstanceKeyword_added" object="${instancekeyword}" z="1c45TMTDAmUE81Qo6M3Xzk3XXt4="/>
     </page:show>
 </div>

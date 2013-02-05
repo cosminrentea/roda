@@ -6,13 +6,14 @@
         <field:select field="instances" id="c_ro_roda_File_instances" itemValue="id" items="${instances}" multiple="true" path="/instances" z="mQljWkoHdV6e8tX4rneEi0bUjhY="/>
         <field:select field="studies1" id="c_ro_roda_File_studies1" itemValue="id" items="${studys}" multiple="true" path="/studys" z="/iDHy3tPoc6+Me6vpA7D2z5VWKM="/>
         <field:simple field="fileAcls" id="c_ro_roda_File_fileAcls" messageCode="entity_reference_not_managed" messageCodeAttribute="File Acl" z="CIUF880+S7gdjeXnpdur7W0nS5M="/>
+        <field:simple field="filePropertyNameValues" id="c_ro_roda_File_filePropertyNameValues" messageCode="entity_reference_not_managed" messageCodeAttribute="File Property Name Value" z="AL8L5+LkzZcMvTSkNoECasmkETM="/>
         <field:simple field="selectionVariableItems" id="c_ro_roda_File_selectionVariableItems" messageCode="entity_reference_not_managed" messageCodeAttribute="Selection Variable Item" z="LX2GyIwhdKx4AVCzO+WGEMIU+Ys="/>
         <field:simple field="variables" id="c_ro_roda_File_variables" messageCode="entity_reference_not_managed" messageCodeAttribute="Variable" z="TrvJg239MrVh6s5VwDfqO9EJgxs="/>
-        <field:select field="filetypeId" id="c_ro_roda_File_filetypeId" itemValue="id" items="${filetypes}" path="/filetypes" z="nsGOj9L2Oj56VC+fGnK7wBOo0H0="/>
         <field:input field="title" id="c_ro_roda_File_title" required="true" z="z7oxea5PqdvxfDWEbdML9ule98o="/>
         <field:input field="description" id="c_ro_roda_File_description" z="AwBZjYqKdLTwfUEJH5Q5Rq4tbyM="/>
-        <field:input field="filename" id="c_ro_roda_File_filename" required="true" z="juQk29NlzmT/kxscpxqCgYBSbB4="/>
-        <field:input field="filesize" id="c_ro_roda_File_filesize" required="true" validationMessageCode="field_invalid_integer" z="yMM8CYMYWI1guZ6QTc5cY7rXq5Y="/>
+        <field:input field="filetypeId" id="c_ro_roda_File_filetypeId" validationMessageCode="field_invalid_integer" z="z6+yRTbmq9BOq0dJfh7xi3G8OEw="/>
+        <field:input field="name" id="c_ro_roda_File_name" required="true" z="mxIi++2S76GPJRr92odxnhL3Xh0="/>
+        <field:input field="size" id="c_ro_roda_File_size" required="true" validationMessageCode="field_invalid_integer" z="gnC0HziNbvr5IDzE2zOcQm0oThI="/>
     </form:create>
     <form:dependency dependencies="${dependencies}" id="d_ro_roda_File" render="${not empty dependencies}" z="i0HirPGkYVgTwPYFwPdFLk2fwK0="/>
 </div>

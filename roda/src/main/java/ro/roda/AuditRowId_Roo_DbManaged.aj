@@ -21,7 +21,6 @@ privileged aspect AuditRowId_Roo_DbManaged {
     private String AuditRowId.columnName;
     
     @Column(name = "column_value", columnDefinition = "int4")
-    @NotNull
     private Integer AuditRowId.columnValue;
     
     public Audit AuditRowId.getAuditId() {

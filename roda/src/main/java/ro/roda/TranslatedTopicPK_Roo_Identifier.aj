@@ -11,15 +11,15 @@ privileged aspect TranslatedTopicPK_Roo_Identifier {
     
     declare @type: TranslatedTopicPK: @Embeddable;
     
-    @Column(name = "language_id", columnDefinition = "int4", nullable = false)
-    private Integer TranslatedTopicPK.languageId;
+    @Column(name = "lang_id", columnDefinition = "bpchar", nullable = false, length = 2)
+    private String TranslatedTopicPK.langId;
     
     @Column(name = "topic_id", columnDefinition = "int4", nullable = false)
     private Integer TranslatedTopicPK.topicId;
     
-    public TranslatedTopicPK.new(Integer languageId, Integer topicId) {
+    public TranslatedTopicPK.new(String langId, Integer topicId) {
         super();
-        this.languageId = languageId;
+        this.langId = langId;
         this.topicId = topicId;
     }
 
@@ -27,8 +27,8 @@ privileged aspect TranslatedTopicPK_Roo_Identifier {
         super();
     }
 
-    public Integer TranslatedTopicPK.getLanguageId() {
-        return languageId;
+    public String TranslatedTopicPK.getLangId() {
+        return langId;
     }
     
     public Integer TranslatedTopicPK.getTopicId() {

@@ -12,9 +12,11 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 import ro.roda.Concept;
-import ro.roda.EditedVariable;
 import ro.roda.File;
+import ro.roda.FormEditedNumberVar;
+import ro.roda.FormEditedTextVar;
 import ro.roda.Instance;
+import ro.roda.OtherStatistic;
 import ro.roda.SelectionVariable;
 import ro.roda.Skip;
 import ro.roda.Vargroup;
@@ -29,10 +31,16 @@ privileged aspect Variable_Roo_DbManaged {
     private Set<Vargroup> Variable.vargroups;
     
     @OneToOne(mappedBy = "variable")
-    private EditedVariable Variable.editedVariable;
-    
-    @OneToOne(mappedBy = "variable")
     private SelectionVariable Variable.selectionVariable;
+    
+    @OneToMany(mappedBy = "variableId")
+    private Set<FormEditedNumberVar> Variable.formEditedNumberVars;
+    
+    @OneToMany(mappedBy = "variableId")
+    private Set<FormEditedTextVar> Variable.formEditedTextVars;
+    
+    @OneToMany(mappedBy = "variableId")
+    private Set<OtherStatistic> Variable.otherStatistics;
     
     @OneToMany(mappedBy = "nextVariableId")
     private Set<Skip> Variable.skips;
@@ -63,6 +71,18 @@ privileged aspect Variable_Roo_DbManaged {
     @Column(name = "operator_instructions", columnDefinition = "text")
     private String Variable.operatorInstructions;
     
+    @Column(name = "type_edited_text", columnDefinition = "bool")
+    @NotNull
+    private boolean Variable.typeEditedText;
+    
+    @Column(name = "type_edited_number", columnDefinition = "bool")
+    @NotNull
+    private boolean Variable.typeEditedNumber;
+    
+    @Column(name = "type_selection", columnDefinition = "bool")
+    @NotNull
+    private boolean Variable.typeSelection;
+    
     public Set<Concept> Variable.getConcepts() {
         return concepts;
     }
@@ -79,20 +99,36 @@ privileged aspect Variable_Roo_DbManaged {
         this.vargroups = vargroups;
     }
     
-    public EditedVariable Variable.getEditedVariable() {
-        return editedVariable;
-    }
-    
-    public void Variable.setEditedVariable(EditedVariable editedVariable) {
-        this.editedVariable = editedVariable;
-    }
-    
     public SelectionVariable Variable.getSelectionVariable() {
         return selectionVariable;
     }
     
     public void Variable.setSelectionVariable(SelectionVariable selectionVariable) {
         this.selectionVariable = selectionVariable;
+    }
+    
+    public Set<FormEditedNumberVar> Variable.getFormEditedNumberVars() {
+        return formEditedNumberVars;
+    }
+    
+    public void Variable.setFormEditedNumberVars(Set<FormEditedNumberVar> formEditedNumberVars) {
+        this.formEditedNumberVars = formEditedNumberVars;
+    }
+    
+    public Set<FormEditedTextVar> Variable.getFormEditedTextVars() {
+        return formEditedTextVars;
+    }
+    
+    public void Variable.setFormEditedTextVars(Set<FormEditedTextVar> formEditedTextVars) {
+        this.formEditedTextVars = formEditedTextVars;
+    }
+    
+    public Set<OtherStatistic> Variable.getOtherStatistics() {
+        return otherStatistics;
+    }
+    
+    public void Variable.setOtherStatistics(Set<OtherStatistic> otherStatistics) {
+        this.otherStatistics = otherStatistics;
     }
     
     public Set<Skip> Variable.getSkips() {
@@ -157,6 +193,30 @@ privileged aspect Variable_Roo_DbManaged {
     
     public void Variable.setOperatorInstructions(String operatorInstructions) {
         this.operatorInstructions = operatorInstructions;
+    }
+    
+    public boolean Variable.isTypeEditedText() {
+        return typeEditedText;
+    }
+    
+    public void Variable.setTypeEditedText(boolean typeEditedText) {
+        this.typeEditedText = typeEditedText;
+    }
+    
+    public boolean Variable.isTypeEditedNumber() {
+        return typeEditedNumber;
+    }
+    
+    public void Variable.setTypeEditedNumber(boolean typeEditedNumber) {
+        this.typeEditedNumber = typeEditedNumber;
+    }
+    
+    public boolean Variable.isTypeSelection() {
+        return typeSelection;
+    }
+    
+    public void Variable.setTypeSelection(boolean typeSelection) {
+        this.typeSelection = typeSelection;
     }
     
 }

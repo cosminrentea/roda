@@ -8,6 +8,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.springframework.transaction.annotation.Transactional;
 import ro.roda.StudyOrg;
+import ro.roda.StudyOrgPK;
 
 privileged aspect StudyOrg_Roo_Jpa_ActiveRecord {
     
@@ -28,7 +29,7 @@ privileged aspect StudyOrg_Roo_Jpa_ActiveRecord {
         return entityManager().createQuery("SELECT o FROM StudyOrg o", StudyOrg.class).getResultList();
     }
     
-    public static StudyOrg StudyOrg.findStudyOrg(Integer id) {
+    public static StudyOrg StudyOrg.findStudyOrg(StudyOrgPK id) {
         if (id == null) return null;
         return entityManager().find(StudyOrg.class, id);
     }

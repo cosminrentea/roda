@@ -21,11 +21,9 @@ privileged aspect AuditField_Roo_DbManaged {
     private String AuditField.columnName;
     
     @Column(name = "new_value", columnDefinition = "text")
-    @NotNull
     private String AuditField.newValue;
     
     @Column(name = "old_value", columnDefinition = "text")
-    @NotNull
     private String AuditField.oldValue;
     
     public Audit AuditField.getAuditId() {

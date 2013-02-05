@@ -3,9 +3,13 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <page:list id="pl_ro_roda_StudyDescr" items="${studydescrs}" z="9pfHKCFaGbg3ZqmCwrmrH4j7HeA=">
-        <table:table data="${studydescrs}" id="l_ro_roda_StudyDescr" path="/studydescrs" typeIdFieldName="studyId" z="ZfkUzJMl3PWG7KBI+HR0vNB1vxg=">
-            <table:column id="c_ro_roda_StudyDescr_study" property="study" z="+zlG5PKZVzY3ayKeR2LLAm1IXMA="/>
+        <table:table data="${studydescrs}" id="l_ro_roda_StudyDescr" path="/studydescrs" z="0BeYITNLKefAdnOAVNPcsJN+Chg=">
+            <table:column id="c_ro_roda_StudyDescr_langId" property="langId" z="SrB+1xhcLbAQGCQVqhge5HtYUH8="/>
+            <table:column id="c_ro_roda_StudyDescr_studyId" property="studyId" z="PtBRcpFeh5wjHDPWtg0AXJtML38="/>
+            <table:column id="c_ro_roda_StudyDescr_titleTypeId" property="titleTypeId" z="EB3KGP1zwBm1vUQOmkBHkAHc8cU="/>
             <table:column id="c_ro_roda_StudyDescr_abstract1" property="abstract1" z="MRrZZuiNXD5ZpaINkWsN1velJDY="/>
+            <table:column id="c_ro_roda_StudyDescr_grantDetails" property="grantDetails" z="7F77bC8mjPT44b7TsxRtI+QEV1U="/>
+            <table:column id="c_ro_roda_StudyDescr_title" property="title" z="tdd0CZpVGKDeObdXAMyriQtg2xk="/>
         </table:table>
     </page:list>
 </div>

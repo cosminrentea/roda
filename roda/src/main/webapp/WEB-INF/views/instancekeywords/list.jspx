@@ -6,8 +6,8 @@
         <table:table data="${instancekeywords}" id="l_ro_roda_InstanceKeyword" path="/instancekeywords" z="VTiZB/BWIwVa/E1XpGwpEEtJIQY=">
             <table:column id="c_ro_roda_InstanceKeyword_instanceId" property="instanceId" z="G8AL4xDzG4rz+k9irogOblahhU0="/>
             <table:column id="c_ro_roda_InstanceKeyword_keywordId" property="keywordId" z="o86N/xqIMmaG21+tN/Fngxn9a4g="/>
-            <table:column date="true" dateTimePattern="${instanceKeyword_added_date_format}" id="c_ro_roda_InstanceKeyword_added" property="added" z="k0rXaF3L4OhuMInE6mmt3vuSmAU="/>
             <table:column id="c_ro_roda_InstanceKeyword_addedBy" property="addedBy" z="yzDJsuAYS1CoZUAVSYDHHiGb6cg="/>
+            <table:column date="true" dateTimePattern="${instanceKeyword_added_date_format}" id="c_ro_roda_InstanceKeyword_added" property="added" z="k0rXaF3L4OhuMInE6mmt3vuSmAU="/>
         </table:table>
     </page:list>
 </div>

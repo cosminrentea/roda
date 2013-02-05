@@ -2,11 +2,11 @@
 <div xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:spring="http://www.springframework.org/tags" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <form:create id="fc_ro_roda_StudyPerson" modelAttribute="studyPerson" path="/studypeople" render="${empty dependencies}" z="tfNdjb9tcz+d2Bz6cdC2k7bYBTI=">
-        <field:simple field="studyPersonAcls" id="c_ro_roda_StudyPerson_studyPersonAcls" messageCode="entity_reference_not_managed" messageCodeAttribute="Study Person Acl" z="t4fO+zaFAHc6IHeFGueYsW6kOqA="/>
-        <field:select field="personId" id="c_ro_roda_StudyPerson_personId" itemValue="id" items="${people}" path="/people" z="hYgRETDYhPxHAPyZJHajAQ3z2zA="/>
-        <field:select field="studyId" id="c_ro_roda_StudyPerson_studyId" itemValue="id" items="${studys}" path="/studys" z="vB4NQTg+swHOB5lht1M6HI5LxxM="/>
-        <field:select field="assoctypeId" id="c_ro_roda_StudyPerson_assoctypeId" itemValue="id" items="${studypersonassocs}" path="/studypersonassocs" z="VdyUDdnR7VzIXOrSVA7TuMywJPg="/>
+    <form:create compositePkField="id" id="fc_ro_roda_StudyPerson" modelAttribute="studyPerson" path="/studypeople" render="${empty dependencies}" z="O1RPPNzhyr1+pCjCP9WakG8Enjo=">
+        <field:input disableFormBinding="true" field="id.personId" id="c_ro_roda_StudyPerson_id_personId" required="true" validationMessageCode="field_invalid_integer" z="PnKthOBtsNChB5T6HbnstZOpd7o="/>
+        <field:input disableFormBinding="true" field="id.studyId" id="c_ro_roda_StudyPerson_id_studyId" required="true" validationMessageCode="field_invalid_integer" z="Lb0ZDI9Ai4PcGXIlQ2GyxxO+uU0="/>
+        <field:input disableFormBinding="true" field="id.assoctypeId" id="c_ro_roda_StudyPerson_id_assoctypeId" required="true" validationMessageCode="field_invalid_integer" z="kNmw9d2QC5kKjPbjza49yGnhS7I="/>
+        <field:input field="assocDetails" id="c_ro_roda_StudyPerson_assocDetails" z="hhfBht/FPFVjTaEguk2imgh2bjU="/>
     </form:create>
     <form:dependency dependencies="${dependencies}" id="d_ro_roda_StudyPerson" render="${not empty dependencies}" z="pfYKNO3UKJz4qcotusEgA2QYP0M="/>
 </div>

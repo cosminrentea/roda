@@ -4,7 +4,7 @@
     <jsp:output omit-xml-declaration="yes"/>
     <page:list id="pl_ro_roda_CmsLayout" items="${cmslayouts}" z="E2lTBUFfzkI+x3H/BEaKmjyDElY=">
         <table:table data="${cmslayouts}" id="l_ro_roda_CmsLayout" path="/cmslayouts" z="g1fdLameMkOsKmlQNjh+xwVcvus=">
-            <table:column id="c_ro_roda_CmsLayout_layoutGroup" property="layoutGroup" z="9TQWyFdWcwOrePKhWT8AuVy9FVY="/>
+            <table:column id="c_ro_roda_CmsLayout_cmsLayoutGroupId" property="cmsLayoutGroupId" z="saJh8/5OEGvBn3Ez/zZmitAkdHQ="/>
             <table:column id="c_ro_roda_CmsLayout_name" property="name" z="sgWUaiyPoBAlkGfN/1OZXjn7WlY="/>
             <table:column id="c_ro_roda_CmsLayout_layoutContent" property="layoutContent" z="Q0FUK5otO9zwrpbpIwiSYIHQtv8="/>
         </table:table>

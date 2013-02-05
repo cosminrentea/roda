@@ -4,5 +4,6 @@
     <jsp:output omit-xml-declaration="yes"/>
     <page:show id="ps_ro_roda_TimeMethType" object="${timemethtype}" path="/timemethtypes" z="IEczonjOfFWxwMfnfeCjqVKvdZ8=">
         <field:display field="name" id="s_ro_roda_TimeMethType_name" object="${timemethtype}" z="eD94f7pWZYVmkkdDPXzU0sglsf0="/>
+        <field:display field="description" id="s_ro_roda_TimeMethType_description" object="${timemethtype}" z="gcHUqDZiWlDO37DB+zk7IC1ytTI="/>
     </page:show>
 </div>

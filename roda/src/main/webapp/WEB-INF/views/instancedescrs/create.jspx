@@ -2,11 +2,15 @@
 <div xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:spring="http://www.springframework.org/tags" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <form:create id="fc_ro_roda_InstanceDescr" modelAttribute="instanceDescr" path="/instancedescrs" render="${empty dependencies}" z="XDUnAfLfx7ZgQFBrltcNpAvnonM=">
-        <field:select field="instance" id="c_ro_roda_InstanceDescr_instance" itemValue="id" items="${instances}" path="/instances" z="K7IQ2ocHmXhJVi2MVJDBqGO/1wY="/>
-        <field:input field="title" id="c_ro_roda_InstanceDescr_title" required="true" z="Q1og7NhIIDRCeMlzpC3PUw2j7PE="/>
+    <form:create compositePkField="id" id="fc_ro_roda_InstanceDescr" modelAttribute="instanceDescr" path="/instancedescrs" render="${empty dependencies}" z="gGdWXUcsizYV1+5gVTKuAbeeUhE=">
+        <field:input disableFormBinding="true" field="id.instanceId" id="c_ro_roda_InstanceDescr_id_instanceId" required="true" validationMessageCode="field_invalid_integer" z="NZjN12Q7Y6EuS20aSBs437x1Elc="/>
+        <field:input disableFormBinding="true" field="id.langId" id="c_ro_roda_InstanceDescr_id_langId" required="true" z="HMjjPkIr3lfm95JkdexJocc1rBM="/>
+        <field:input field="weighting" id="c_ro_roda_InstanceDescr_weighting" z="cjX6PAz5MDGaS9q/z0SJGiAUT14="/>
+        <field:input field="researchInstrument" id="c_ro_roda_InstanceDescr_researchInstrument" z="KOxbQL8xL4LArxBDyej0EXSw+94="/>
+        <field:input field="scope" id="c_ro_roda_InstanceDescr_scope" z="JfuhFE6A6mMSsXg5kI9reoLc1Nw="/>
+        <field:input field="universe" id="c_ro_roda_InstanceDescr_universe" z="fm5U6ofYJPLGLmJZpF1dNVL3Q4A="/>
         <field:input field="abstract1" id="c_ro_roda_InstanceDescr_abstract1" z="uyajAOL9EzNdpz4x7F1ytClPSbc="/>
-        <field:select field="languageId" id="c_ro_roda_InstanceDescr_languageId" itemValue="id" items="${languages}" path="/languages" z="m2jFzs1ANBr6zccsmyMFdJv72PY="/>
+        <field:input field="title" id="c_ro_roda_InstanceDescr_title" required="true" z="Q1og7NhIIDRCeMlzpC3PUw2j7PE="/>
     </form:create>
     <form:dependency dependencies="${dependencies}" id="d_ro_roda_InstanceDescr" render="${not empty dependencies}" z="kcHGcVT73q0cBmnUVeI2ZmdRU5g="/>
 </div>

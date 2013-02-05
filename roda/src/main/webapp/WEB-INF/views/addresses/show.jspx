@@ -7,7 +7,8 @@
         <field:display field="countryId" id="s_ro_roda_Address_countryId" object="${address}" z="yxZ35ysyvwux2d8pb1Ou2kuXOkg="/>
         <field:display field="address1" id="s_ro_roda_Address_address1" object="${address}" z="48V7nOtIyz0JgE4iHzvyDeslybM="/>
         <field:display field="address2" id="s_ro_roda_Address_address2" object="${address}" z="p7G2AhtbDgQwHAaJEKmDpWPzGd0="/>
-        <field:display field="sector" id="s_ro_roda_Address_sector" object="${address}" z="oUuPQd2PXD+lakF3NPhK0xveVks="/>
+        <field:display field="subdivName" id="s_ro_roda_Address_subdivName" object="${address}" z="oUYpWJQ1W5cdfLyaGxCLfFy1imQ="/>
+        <field:display field="subdivCode" id="s_ro_roda_Address_subdivCode" object="${address}" z="LJvalCbhKNjoFrMf9PTRyBFwUkA="/>
         <field:display field="postalCode" id="s_ro_roda_Address_postalCode" object="${address}" z="NBQiOANW0fhr4JRNIGV326HHHXQ="/>
     </page:show>
 </div>

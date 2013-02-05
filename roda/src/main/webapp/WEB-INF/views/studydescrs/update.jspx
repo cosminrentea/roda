@@ -2,8 +2,10 @@
 <div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <form:update id="fu_ro_roda_StudyDescr" idField="studyId" modelAttribute="studyDescr" path="/studydescrs" versionField="none" z="n1WykBAS6wvVKdt15dZNnjI3xQs=">
-        <field:select field="study" id="c_ro_roda_StudyDescr_study" itemValue="id" items="${studys}" path="/studys" z="MtSKif7oBc7mfl6Rw9Hq7g7ibt4="/>
-        <field:input field="abstract1" id="c_ro_roda_StudyDescr_abstract1" required="true" z="l6N6QCrmTL7OMuVlFvQmfI1Bljw="/>
+    <form:update id="fu_ro_roda_StudyDescr" modelAttribute="studyDescr" path="/studydescrs" versionField="none" z="eD90j+VPhiTpSaIonCkrP9ofWI8=">
+        <field:select field="titleTypeId" id="c_ro_roda_StudyDescr_titleTypeId" itemValue="id" items="${titletypes}" path="/titletypes" z="A96sN9w6ikldwJEmYDVWVYY1aG8="/>
+        <field:input field="abstract1" id="c_ro_roda_StudyDescr_abstract1" z="bjD2nnCd/LBiZJFbF5uHiU0FtKs="/>
+        <field:input field="grantDetails" id="c_ro_roda_StudyDescr_grantDetails" z="/5g6Fn+6kvlUK4z6kPqLQdkcTdQ="/>
+        <field:input field="title" id="c_ro_roda_StudyDescr_title" required="true" z="MGds2FE7V1Uaz0WElqZZ6GR4GEM="/>
     </form:update>
 </div>

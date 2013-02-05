@@ -3,40 +3,30 @@
 
 package ro.roda;
 
-import java.util.Set;
+import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import ro.roda.Person;
 import ro.roda.Study;
 import ro.roda.StudyPerson;
-import ro.roda.StudyPersonAcl;
 import ro.roda.StudyPersonAssoc;
 
 privileged aspect StudyPerson_Roo_DbManaged {
     
-    @OneToMany(mappedBy = "studyPersonId")
-    private Set<StudyPersonAcl> StudyPerson.studyPersonAcls;
-    
     @ManyToOne
-    @JoinColumn(name = "person_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "person_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     private Person StudyPerson.personId;
     
     @ManyToOne
-    @JoinColumn(name = "study_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "study_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     private Study StudyPerson.studyId;
     
     @ManyToOne
-    @JoinColumn(name = "assoctype_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "assoctype_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     private StudyPersonAssoc StudyPerson.assoctypeId;
     
-    public Set<StudyPersonAcl> StudyPerson.getStudyPersonAcls() {
-        return studyPersonAcls;
-    }
-    
-    public void StudyPerson.setStudyPersonAcls(Set<StudyPersonAcl> studyPersonAcls) {
-        this.studyPersonAcls = studyPersonAcls;
-    }
+    @Column(name = "assoc_details", columnDefinition = "text")
+    private String StudyPerson.assocDetails;
     
     public Person StudyPerson.getPersonId() {
         return personId;
@@ -60,6 +50,14 @@ privileged aspect StudyPerson_Roo_DbManaged {
     
     public void StudyPerson.setAssoctypeId(StudyPersonAssoc assoctypeId) {
         this.assoctypeId = assoctypeId;
+    }
+    
+    public String StudyPerson.getAssocDetails() {
+        return assocDetails;
+    }
+    
+    public void StudyPerson.setAssocDetails(String assocDetails) {
+        this.assocDetails = assocDetails;
     }
     
 }

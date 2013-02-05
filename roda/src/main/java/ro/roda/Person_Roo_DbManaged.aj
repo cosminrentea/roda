@@ -9,36 +9,48 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
-import ro.roda.Email;
+import ro.roda.Form;
 import ro.roda.InstancePerson;
-import ro.roda.Internet;
 import ro.roda.Person;
 import ro.roda.PersonAddress;
+import ro.roda.PersonEmail;
+import ro.roda.PersonInternet;
 import ro.roda.PersonLinks;
 import ro.roda.PersonOrg;
+import ro.roda.PersonPhone;
 import ro.roda.Prefix;
+import ro.roda.SourceContacts;
 import ro.roda.StudyPerson;
 import ro.roda.Suffix;
 
 privileged aspect Person_Roo_DbManaged {
     
-    @OneToMany(mappedBy = "personId")
-    private Set<Email> Person.emails;
+    @OneToMany(mappedBy = "operatorId")
+    private Set<Form> Person.forms;
     
     @OneToMany(mappedBy = "personId")
     private Set<InstancePerson> Person.instancepeople;
     
-    @OneToMany(mappedBy = "entityId")
-    private Set<Internet> Person.internets;
-    
     @OneToMany(mappedBy = "personId")
     private Set<PersonAddress> Person.personAddresses;
+    
+    @OneToMany(mappedBy = "personId")
+    private Set<PersonEmail> Person.personEmails;
+    
+    @OneToMany(mappedBy = "personId")
+    private Set<PersonInternet> Person.personInternets;
     
     @OneToMany(mappedBy = "personId")
     private Set<PersonLinks> Person.personLinkss;
     
     @OneToMany(mappedBy = "personId")
     private Set<PersonOrg> Person.personOrgs;
+    
+    @OneToMany(mappedBy = "personId")
+    private Set<PersonPhone> Person.personPhones;
+    
+    @OneToMany(mappedBy = "personId")
+    private Set<SourceContacts> Person.sourceContactss;
     
     @OneToMany(mappedBy = "personId")
     private Set<StudyPerson> Person.studypeople;
@@ -62,12 +74,12 @@ privileged aspect Person_Roo_DbManaged {
     @NotNull
     private String Person.lname;
     
-    public Set<Email> Person.getEmails() {
-        return emails;
+    public Set<Form> Person.getForms() {
+        return forms;
     }
     
-    public void Person.setEmails(Set<Email> emails) {
-        this.emails = emails;
+    public void Person.setForms(Set<Form> forms) {
+        this.forms = forms;
     }
     
     public Set<InstancePerson> Person.getInstancepeople() {
@@ -78,20 +90,28 @@ privileged aspect Person_Roo_DbManaged {
         this.instancepeople = instancepeople;
     }
     
-    public Set<Internet> Person.getInternets() {
-        return internets;
-    }
-    
-    public void Person.setInternets(Set<Internet> internets) {
-        this.internets = internets;
-    }
-    
     public Set<PersonAddress> Person.getPersonAddresses() {
         return personAddresses;
     }
     
     public void Person.setPersonAddresses(Set<PersonAddress> personAddresses) {
         this.personAddresses = personAddresses;
+    }
+    
+    public Set<PersonEmail> Person.getPersonEmails() {
+        return personEmails;
+    }
+    
+    public void Person.setPersonEmails(Set<PersonEmail> personEmails) {
+        this.personEmails = personEmails;
+    }
+    
+    public Set<PersonInternet> Person.getPersonInternets() {
+        return personInternets;
+    }
+    
+    public void Person.setPersonInternets(Set<PersonInternet> personInternets) {
+        this.personInternets = personInternets;
     }
     
     public Set<PersonLinks> Person.getPersonLinkss() {
@@ -108,6 +128,22 @@ privileged aspect Person_Roo_DbManaged {
     
     public void Person.setPersonOrgs(Set<PersonOrg> personOrgs) {
         this.personOrgs = personOrgs;
+    }
+    
+    public Set<PersonPhone> Person.getPersonPhones() {
+        return personPhones;
+    }
+    
+    public void Person.setPersonPhones(Set<PersonPhone> personPhones) {
+        this.personPhones = personPhones;
+    }
+    
+    public Set<SourceContacts> Person.getSourceContactss() {
+        return sourceContactss;
+    }
+    
+    public void Person.setSourceContactss(Set<SourceContacts> sourceContactss) {
+        this.sourceContactss = sourceContactss;
     }
     
     public Set<StudyPerson> Person.getStudypeople() {

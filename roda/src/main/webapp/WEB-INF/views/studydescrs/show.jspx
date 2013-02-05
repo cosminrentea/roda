@@ -3,7 +3,11 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <page:show id="ps_ro_roda_StudyDescr" object="${studydescr}" path="/studydescrs" z="6vsR84gshm5DmUspi7vEZ/C0CEg=">
-        <field:display field="study" id="s_ro_roda_StudyDescr_study" object="${studydescr}" z="7ptmIogOTO4GmRPpLQH7zWcxams="/>
+        <field:display field="langId" id="s_ro_roda_StudyDescr_langId" object="${studydescr}" z="KXCCZvt0PJ+nkshdzwLc0ENMkeY="/>
+        <field:display field="studyId" id="s_ro_roda_StudyDescr_studyId" object="${studydescr}" z="L87cUT3F9dyPUf+T6E+SW04x9UU="/>
+        <field:display field="titleTypeId" id="s_ro_roda_StudyDescr_titleTypeId" object="${studydescr}" z="1U4T06N9z0rGa2zy18LCLC5JXbc="/>
         <field:display field="abstract1" id="s_ro_roda_StudyDescr_abstract1" object="${studydescr}" z="BBqun8yarMK/P0ArNAmFC3jXoGM="/>
+        <field:display field="grantDetails" id="s_ro_roda_StudyDescr_grantDetails" object="${studydescr}" z="5wc2jN3TuD30WQbHNlMHD0utIT0="/>
+        <field:display field="title" id="s_ro_roda_StudyDescr_title" object="${studydescr}" z="6BVWjgPP9QJ7la78gbhiMU502lw="/>
     </page:show>
 </div>

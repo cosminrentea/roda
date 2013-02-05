@@ -176,3 +176,132 @@ database reverse engineer --schema public  --includeNonPortableAttributes
 web mvc all --package ~.web
 web mvc all --package ~.web
 web mvc all --package ~.web
+help finder
+hint finder
+hint
+addon upgrade available 
+json all
+web mvc json all
+finder list --class ~.Address 
+finder list --class ~.Country
+finder list --class ~.City
+finder list --class ~.City --filter Like
+finder add findCitysByNameLike
+finder list --class ~.Country
+finder add findCountrysByNameLike
+web mvc finder all 
+perform package
+database reverse engineer --schema public --includeNonPortableAttributes --testAutomatically 
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log opened at 2013-01-19 15:54:20
+// [failed] test integration --entity ro.roda
+test integration --entity ~.Country
+database reverse engineer --schema public --includeNonPortableAttributes --testAutomatically 
+test integration
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log closed at 2013-01-19 16:27:14
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log opened at 2013-01-19 16:27:25
+database reverse engineer --schema public --includeNonPortableAttributes --testAutomatically 
+finder list --class ~.Region
+finder add findRegionsByNameLike
+finder list --class ~.Regiontype
+finder list --class ~.Regiontype
+finder add findRegiontypesByNameLike
+web mvc finder all
+! mvn test
+hint
+hint focus
+help focus
+system properties
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log closed at 2013-01-19 23:47:23
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log opened at 2013-01-19 23:47:37
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log opened at 2013-01-19 23:57:52
+perform test
+test integration --entity ~.Region
+test integration --entity ~.Regiontype
+test integration --entity ~.City
+test integration --entity ~.Address
+// [failed] test integration --entity ~.Language
+// [failed] test integration --entity ~.Language
+backup
+database reverse engineer --schema public --includeNonPortableAttributes --testAutomatically 
+// [failed] test integration 
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log closed at 2013-01-23 22:53:09
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log opened at 2013-01-23 22:53:27
+test integration --entity ~.Person
+test integration --entity ~.Prefix
+test integration --entity ~.Suffix
+test integration --entity ~.OrgRelationType
+test integration --entity ~.Org
+test integration --entity ~.OrgAddress
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log closed at 2013-01-27 12:46:27
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log opened at 2013-01-29 18:44:15
+database reverse engineer --schema public --includeNonPortableAttributes --testAutomatically 
+database reverse engineer --schema public --includeNonPortableAttributes --testAutomatically 
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log opened at 2013-01-29 19:54:16
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log opened at 2013-01-30 18:12:51
+database reverse engineer --schema public --includeNonPortableAttributes --testAutomatically 
+test integration --entity ~.CmsFile
+test integration --entity ~.CmsFolder
+test integration --entity ~.CmsLayout
+test integration --entity ~.CmsLayoutGroup
+test integration --entity ~.CmsPage
+test integration --entity ~.CmsPageContent
+test integration --entity ~.CmsSnippet
+test integration --entity ~.CmsSnippetGroup
+help
+focus --class ~.Person
+finder list
+finder list --depth 3
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log closed at 2013-01-30 19:12:19
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log opened at 2013-01-30 19:12:37
+finder list --class ~.Person
+finder list --class ~.Person --depth 2
+finder add findPeopleByFnameEqualsAndMnameEqualsAndLnameEquals
+finder list
+finder add findPeopleByPersonPhones
+test integration --entity ~.Email
+database reverse engineer --schema public --testAutomatically --includeNonPortableAttributes 
+database reverse engineer --schema public --testAutomatically --includeNonPortableAttributes 
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log opened at 2013-01-31 00:55:31
+finder list --class ~.CmsFolder
+finder add findCmsFoldersByNameEquals
+database reverse engineer --schema public --testAutomatically --includeNonPortableAttributes 
+database reverse engineer --schema public --testAutomatically --includeNonPortableAttributes 
+database reverse engineer --schema public --testAutomatically --includeNonPortableAttributes 
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log closed at 2013-01-31 13:56:45
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log opened at 2013-01-31 14:01:18
+database reverse engineer --schema public --testAutomatically --includeNonPortableAttributes 
+database reverse engineer --schema public --testAutomatically --includeNonPortableAttributes 
+finder add --class ~.CmsFolder findCmsFoldersByNameEquals
+finder list --class ~.City
+finder add findCitysByNameLike
+web mvc finder all 
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log closed at 2013-01-31 15:19:18
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log opened at 2013-01-31 15:24:29
+hint
+web mvc all --package web
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log closed at 2013-01-31 16:19:05
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log opened at 2013-01-31 16:21:10
+web mvc finder all 
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log closed at 2013-01-31 17:15:33
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log opened at 2013-01-31 17:16:21
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log closed at 2013-01-31 17:17:33
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log opened at 2013-01-31 17:19:43
+web mvc all --package ~.web
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log closed at 2013-02-02 23:33:51
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log opened at 2013-02-04 14:33:51
+// [failed] database reverse engineer --schema public --testAutomatically --includeNonPortableAttributes 
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log closed at 2013-02-04 17:49:08
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log opened at 2013-02-04 17:49:26
+// [failed] database reverse engineer --schema public --testAutomatically --includeNonPortableAttributes 
+backup
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log closed at 2013-02-04 19:53:04
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log opened at 2013-02-04 19:58:41
+database reverse engineer --schema public --testAutomatically --includeNonPortableAttributes 
+web mvc all --package ~.web
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log closed at 2013-02-04 23:08:01
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log opened at 2013-02-04 23:12:44
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log closed at 2013-02-05 00:12:37
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log opened at 2013-02-05 00:21:54
+database reverse engineer --schema public --testAutomatically --includeNonPortableAttributes 
+web mvc finder all
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log closed at 2013-02-05 13:15:11

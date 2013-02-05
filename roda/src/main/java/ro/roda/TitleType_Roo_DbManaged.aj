@@ -7,24 +7,24 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
-import ro.roda.Title;
+import ro.roda.StudyDescr;
 import ro.roda.TitleType;
 
 privileged aspect TitleType_Roo_DbManaged {
     
     @OneToMany(mappedBy = "titleTypeId")
-    private Set<Title> TitleType.titles;
+    private Set<StudyDescr> TitleType.studyDescrs;
     
     @Column(name = "name", columnDefinition = "varchar", length = 50)
     @NotNull
     private String TitleType.name;
     
-    public Set<Title> TitleType.getTitles() {
-        return titles;
+    public Set<StudyDescr> TitleType.getStudyDescrs() {
+        return studyDescrs;
     }
     
-    public void TitleType.setTitles(Set<Title> titles) {
-        this.titles = titles;
+    public void TitleType.setStudyDescrs(Set<StudyDescr> studyDescrs) {
+        this.studyDescrs = studyDescrs;
     }
     
     public String TitleType.getName() {

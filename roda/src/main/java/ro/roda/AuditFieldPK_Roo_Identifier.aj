@@ -14,7 +14,7 @@ privileged aspect AuditFieldPK_Roo_Identifier {
     @Column(name = "audit_id", columnDefinition = "int4", nullable = false)
     private Integer AuditFieldPK.auditId;
     
-    @Column(name = "id", columnDefinition = "int4", nullable = false)
+    @Column(name = "id", columnDefinition = "serial", nullable = false)
     private Integer AuditFieldPK.id;
     
     public AuditFieldPK.new(Integer auditId, Integer id) {

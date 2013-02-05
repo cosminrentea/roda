@@ -91,6 +91,7 @@ privileged aspect TopicController_Roo_Controller {
         uiModel.addAttribute("topic", topic);
         uiModel.addAttribute("instances", Instance.findAllInstances());
         uiModel.addAttribute("studys", Study.findAllStudys());
+        uiModel.addAttribute("topics", Topic.findAllTopics());
         uiModel.addAttribute("translatedtopics", TranslatedTopic.findAllTranslatedTopics());
     }
     

@@ -3,8 +3,8 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <page:show id="ps_ro_roda_UserMessage" object="${usermessage}" path="/usermessages" z="lSFiHlX/0SBWwbHIUOzAZtZGdfc=">
-        <field:display field="message" id="s_ro_roda_UserMessage_message" object="${usermessage}" z="XXc8SXibzuRLczeuwJCkuGD3yoc="/>
         <field:display field="toUserId" id="s_ro_roda_UserMessage_toUserId" object="${usermessage}" z="pocjDmoeqxqS5+sTjOBo2wBegFE="/>
         <field:display field="fromUserId" id="s_ro_roda_UserMessage_fromUserId" object="${usermessage}" z="2xaB6Sb3uNlktN21BD4K8l4MoJU="/>
+        <field:display field="message" id="s_ro_roda_UserMessage_message" object="${usermessage}" z="XXc8SXibzuRLczeuwJCkuGD3yoc="/>
     </page:show>
 </div>

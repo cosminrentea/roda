@@ -5,6 +5,6 @@
     <page:show id="ps_ro_roda_CatalogStudy" object="${catalogstudy}" path="/catalogstudys" z="vbjuRGRGPZQzAVkep0R/mEuK5wY=">
         <field:display field="catalogId" id="s_ro_roda_CatalogStudy_catalogId" object="${catalogstudy}" z="IYyVKE6XlKjeV3MHEYTDTXPexkw="/>
         <field:display field="studyId" id="s_ro_roda_CatalogStudy_studyId" object="${catalogstudy}" z="glP49UuLylbMyGLQQ/RbrkpiWog="/>
-        <field:display field="addedBy" id="s_ro_roda_CatalogStudy_addedBy" object="${catalogstudy}" z="JIQczYkkma2PQL/p3fo5ChcZ0/E="/>
+        <field:display date="true" dateTimePattern="${catalogStudy_added_date_format}" field="added" id="s_ro_roda_CatalogStudy_added" object="${catalogstudy}" z="V3CtF8OBSGALHhI5wo+792LFUsk="/>
     </page:show>
 </div>

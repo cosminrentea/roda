@@ -5,7 +5,7 @@
     <form:create compositePkField="id" id="fc_ro_roda_OrgAddress" modelAttribute="orgAddress" path="/orgaddresses" render="${empty dependencies}" z="hiTBcyw8QEHHdVGCRhCInn8oT4Q=">
         <field:input disableFormBinding="true" field="id.orgId" id="c_ro_roda_OrgAddress_id_orgId" required="true" validationMessageCode="field_invalid_integer" z="bYEEFKbZZNUC4hToD49xxq2Eeqw="/>
         <field:input disableFormBinding="true" field="id.addressId" id="c_ro_roda_OrgAddress_id_addressId" required="true" validationMessageCode="field_invalid_integer" z="6QmO0pTONBqB5xUoMzgUwTovePQ="/>
-        <field:datetime dateTimePattern="${orgAddress_id.datestart_date_format}" disableFormBinding="true" field="id.datestart" id="c_ro_roda_OrgAddress_id_datestart" required="true" z="ZANRKV39iZQHW/yjdeI3EE+mIsg="/>
+        <field:datetime dateTimePattern="${orgAddress_datestart_date_format}" field="datestart" id="c_ro_roda_OrgAddress_datestart" z="cvHpGBZfnY60xKYPn/P958/rNp0="/>
         <field:datetime dateTimePattern="${orgAddress_dateend_date_format}" field="dateend" id="c_ro_roda_OrgAddress_dateend" z="F4WLPD1tpgQedt2zxvrApsDazlU="/>
     </form:create>
     <form:dependency dependencies="${dependencies}" id="d_ro_roda_OrgAddress" render="${not empty dependencies}" z="DdRBA1rY11QS6w1tY6NhJKnVVpA="/>

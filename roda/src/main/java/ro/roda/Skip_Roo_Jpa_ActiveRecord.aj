@@ -28,7 +28,7 @@ privileged aspect Skip_Roo_Jpa_ActiveRecord {
         return entityManager().createQuery("SELECT o FROM Skip o", Skip.class).getResultList();
     }
     
-    public static Skip Skip.findSkip(Integer id) {
+    public static Skip Skip.findSkip(Long id) {
         if (id == null) return null;
         return entityManager().find(Skip.class, id);
     }

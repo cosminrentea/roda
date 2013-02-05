@@ -7,6 +7,8 @@
         <field:select field="countryId" id="c_ro_roda_Region_countryId" itemValue="id" items="${countrys}" path="/countrys" z="hqhkKnqhx5Cv7xq2mXoR89G5t4U="/>
         <field:select field="regiontypeId" id="c_ro_roda_Region_regiontypeId" itemValue="id" items="${regiontypes}" path="/regiontypes" z="drW2X5NBXbv942j2WmIfPZ76Dos="/>
         <field:input field="name" id="c_ro_roda_Region_name" required="true" z="OVOXrYUGyKgitZYapF4J3OqhsQA="/>
+        <field:input field="regionCode" id="c_ro_roda_Region_regionCode" z="iCn//qnQMP2Y7gfgYKgouXN5YPE="/>
+        <field:input field="regionCodeName" id="c_ro_roda_Region_regionCodeName" z="SHY4SjRg+Oiav8MooKV1m4crUQ8="/>
     </form:create>
     <form:dependency dependencies="${dependencies}" id="d_ro_roda_Region" render="${not empty dependencies}" z="eIr9n7hZj1A2m8RIy8PYOujmQ2M="/>
 </div>

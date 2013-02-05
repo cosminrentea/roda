@@ -14,6 +14,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import ro.roda.Keyword;
 import ro.roda.Study;
 import ro.roda.StudyKeyword;
+import ro.roda.User;
 
 privileged aspect StudyKeyword_Roo_DbManaged {
     
@@ -25,15 +26,15 @@ privileged aspect StudyKeyword_Roo_DbManaged {
     @JoinColumn(name = "study_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     private Study StudyKeyword.studyId;
     
+    @ManyToOne
+    @JoinColumn(name = "added_by", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+    private User StudyKeyword.addedBy;
+    
     @Column(name = "added", columnDefinition = "timestamp")
     @NotNull
     @Temporal(TemporalType.TIMESTAMP)
     @DateTimeFormat(style = "M-")
     private Date StudyKeyword.added;
-    
-    @Column(name = "added_by", columnDefinition = "int4")
-    @NotNull
-    private Integer StudyKeyword.addedBy;
     
     public Keyword StudyKeyword.getKeywordId() {
         return keywordId;
@@ -51,20 +52,20 @@ privileged aspect StudyKeyword_Roo_DbManaged {
         this.studyId = studyId;
     }
     
+    public User StudyKeyword.getAddedBy() {
+        return addedBy;
+    }
+    
+    public void StudyKeyword.setAddedBy(User addedBy) {
+        this.addedBy = addedBy;
+    }
+    
     public Date StudyKeyword.getAdded() {
         return added;
     }
     
     public void StudyKeyword.setAdded(Date added) {
         this.added = added;
-    }
-    
-    public Integer StudyKeyword.getAddedBy() {
-        return addedBy;
-    }
-    
-    public void StudyKeyword.setAddedBy(Integer addedBy) {
-        this.addedBy = addedBy;
     }
     
 }

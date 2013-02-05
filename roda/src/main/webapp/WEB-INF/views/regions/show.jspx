@@ -7,5 +7,7 @@
         <field:display field="countryId" id="s_ro_roda_Region_countryId" object="${region}" z="6dwVnNzlnilVxJRLiAUKds3lp9c="/>
         <field:display field="regiontypeId" id="s_ro_roda_Region_regiontypeId" object="${region}" z="z5P1MsSvgm/EJDh1WSQZn3TszWQ="/>
         <field:display field="name" id="s_ro_roda_Region_name" object="${region}" z="C5SG7SuBorItlvFScpF0S6HZG4s="/>
+        <field:display field="regionCode" id="s_ro_roda_Region_regionCode" object="${region}" z="oGHWtVhco+tS2l8o9LpJ+olO/AU="/>
+        <field:display field="regionCodeName" id="s_ro_roda_Region_regionCodeName" object="${region}" z="1Z5Bo0S67bLe/3fzyPmnFz3qUBs="/>
     </page:show>
 </div>

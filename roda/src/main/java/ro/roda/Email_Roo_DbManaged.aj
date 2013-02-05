@@ -3,46 +3,40 @@
 
 package ro.roda;
 
+import java.util.Set;
 import javax.persistence.Column;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import ro.roda.Email;
-import ro.roda.Org;
-import ro.roda.Person;
+import ro.roda.OrgEmail;
+import ro.roda.PersonEmail;
 
 privileged aspect Email_Roo_DbManaged {
     
-    @ManyToOne
-    @JoinColumn(name = "org_id", referencedColumnName = "id", nullable = false)
-    private Org Email.orgId;
+    @OneToMany(mappedBy = "emailId")
+    private Set<OrgEmail> Email.orgEmails;
     
-    @ManyToOne
-    @JoinColumn(name = "person_id", referencedColumnName = "id", nullable = false)
-    private Person Email.personId;
+    @OneToMany(mappedBy = "emailId")
+    private Set<PersonEmail> Email.personEmails;
     
     @Column(name = "email", columnDefinition = "varchar", length = 200)
     @NotNull
     private String Email.email;
     
-    @Column(name = "ismain", columnDefinition = "bool")
-    @NotNull
-    private boolean Email.ismain;
-    
-    public Org Email.getOrgId() {
-        return orgId;
+    public Set<OrgEmail> Email.getOrgEmails() {
+        return orgEmails;
     }
     
-    public void Email.setOrgId(Org orgId) {
-        this.orgId = orgId;
+    public void Email.setOrgEmails(Set<OrgEmail> orgEmails) {
+        this.orgEmails = orgEmails;
     }
     
-    public Person Email.getPersonId() {
-        return personId;
+    public Set<PersonEmail> Email.getPersonEmails() {
+        return personEmails;
     }
     
-    public void Email.setPersonId(Person personId) {
-        this.personId = personId;
+    public void Email.setPersonEmails(Set<PersonEmail> personEmails) {
+        this.personEmails = personEmails;
     }
     
     public String Email.getEmail() {
@@ -51,14 +45,6 @@ privileged aspect Email_Roo_DbManaged {
     
     public void Email.setEmail(String email) {
         this.email = email;
-    }
-    
-    public boolean Email.isIsmain() {
-        return ismain;
-    }
-    
-    public void Email.setIsmain(boolean ismain) {
-        this.ismain = ismain;
     }
     
 }

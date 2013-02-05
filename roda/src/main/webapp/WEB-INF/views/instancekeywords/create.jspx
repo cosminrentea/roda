@@ -5,8 +5,8 @@
     <form:create compositePkField="id" id="fc_ro_roda_InstanceKeyword" modelAttribute="instanceKeyword" path="/instancekeywords" render="${empty dependencies}" z="Nipasyploqvm6r8/gLuurKyU1B4=">
         <field:input disableFormBinding="true" field="id.instanceId" id="c_ro_roda_InstanceKeyword_id_instanceId" required="true" validationMessageCode="field_invalid_integer" z="mknjYLU7khZ4cT0IrHVe79OJL+U="/>
         <field:input disableFormBinding="true" field="id.keywordId" id="c_ro_roda_InstanceKeyword_id_keywordId" required="true" validationMessageCode="field_invalid_integer" z="eNbcsOyWd68o0glKCzYYUsp23Jk="/>
+        <field:input disableFormBinding="true" field="id.addedBy" id="c_ro_roda_InstanceKeyword_id_addedBy" required="true" validationMessageCode="field_invalid_integer" z="NBXzfJKwCpaQg7aDiVvSeL15hXc="/>
         <field:datetime dateTimePattern="${instanceKeyword_added_date_format}" field="added" id="c_ro_roda_InstanceKeyword_added" required="true" z="sWuVaWgh0yeCEfXcqt/jx21DiGE="/>
-        <field:input field="addedBy" id="c_ro_roda_InstanceKeyword_addedBy" required="true" validationMessageCode="field_invalid_integer" z="zLok9jdyHPixkx1iLdI3eRp1EtI="/>
     </form:create>
     <form:dependency dependencies="${dependencies}" id="d_ro_roda_InstanceKeyword" render="${not empty dependencies}" z="ujh61LjwQkYlz99rbaXpPDYXVT0="/>
 </div>

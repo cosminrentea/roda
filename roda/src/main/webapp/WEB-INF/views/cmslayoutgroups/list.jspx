@@ -4,8 +4,8 @@
     <jsp:output omit-xml-declaration="yes"/>
     <page:list id="pl_ro_roda_CmsLayoutGroup" items="${cmslayoutgroups}" z="4xcz1AVG0ydtcwy6srsvTl+hqFM=">
         <table:table data="${cmslayoutgroups}" id="l_ro_roda_CmsLayoutGroup" path="/cmslayoutgroups" z="pLDtcLw86gpX81zc8ZPs80vXQtI=">
+            <table:column id="c_ro_roda_CmsLayoutGroup_parentId" property="parentId" z="j3xQGUNt71ECXBorBKUh52RzOmo="/>
             <table:column id="c_ro_roda_CmsLayoutGroup_name" property="name" z="wmuIQFNfppb16UAP7XJjkBEl8JI="/>
-            <table:column id="c_ro_roda_CmsLayoutGroup_parent" property="parent" z="XdeSPNf8/wVHYKEUWqVTyMkc6us="/>
             <table:column id="c_ro_roda_CmsLayoutGroup_description" property="description" z="Xe6OQ6XGj/IbizThSxQBcDuxcjA="/>
         </table:table>
     </page:list>

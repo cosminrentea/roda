@@ -7,24 +7,27 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
-import ro.roda.Methodology;
+import ro.roda.Instance;
 import ro.roda.TimeMethType;
 
 privileged aspect TimeMethType_Roo_DbManaged {
     
     @OneToMany(mappedBy = "timeMethId")
-    private Set<Methodology> TimeMethType.methodologies;
+    private Set<Instance> TimeMethType.instances;
     
-    @Column(name = "name", columnDefinition = "text")
+    @Column(name = "name", columnDefinition = "varchar", length = 100)
     @NotNull
     private String TimeMethType.name;
     
-    public Set<Methodology> TimeMethType.getMethodologies() {
-        return methodologies;
+    @Column(name = "description", columnDefinition = "text")
+    private String TimeMethType.description;
+    
+    public Set<Instance> TimeMethType.getInstances() {
+        return instances;
     }
     
-    public void TimeMethType.setMethodologies(Set<Methodology> methodologies) {
-        this.methodologies = methodologies;
+    public void TimeMethType.setInstances(Set<Instance> instances) {
+        this.instances = instances;
     }
     
     public String TimeMethType.getName() {
@@ -33,6 +36,14 @@ privileged aspect TimeMethType_Roo_DbManaged {
     
     public void TimeMethType.setName(String name) {
         this.name = name;
+    }
+    
+    public String TimeMethType.getDescription() {
+        return description;
+    }
+    
+    public void TimeMethType.setDescription(String description) {
+        this.description = description;
     }
     
 }

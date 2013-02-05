@@ -9,11 +9,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
 import org.springframework.format.annotation.DateTimeFormat;
 import ro.roda.Sourcestudy;
 import ro.roda.SourcestudyType;
 import ro.roda.SourcestudyTypeHistory;
+import ro.roda.User;
 
 privileged aspect SourcestudyTypeHistory_Roo_DbManaged {
     
@@ -25,21 +25,19 @@ privileged aspect SourcestudyTypeHistory_Roo_DbManaged {
     @JoinColumn(name = "sourcestudy_type_id", referencedColumnName = "id", nullable = false)
     private SourcestudyType SourcestudyTypeHistory.sourcestudyTypeId;
     
+    @ManyToOne
+    @JoinColumn(name = "added_by", referencedColumnName = "id", nullable = false)
+    private User SourcestudyTypeHistory.addedBy;
+    
     @Column(name = "datestart", columnDefinition = "timestamp")
-    @NotNull
     @Temporal(TemporalType.TIMESTAMP)
     @DateTimeFormat(style = "M-")
     private Date SourcestudyTypeHistory.datestart;
     
     @Column(name = "dateend", columnDefinition = "timestamp")
-    @NotNull
     @Temporal(TemporalType.TIMESTAMP)
     @DateTimeFormat(style = "M-")
     private Date SourcestudyTypeHistory.dateend;
-    
-    @Column(name = "addedBy", columnDefinition = "int4")
-    @NotNull
-    private Integer SourcestudyTypeHistory.addedBy;
     
     public Sourcestudy SourcestudyTypeHistory.getSourcesstudyId() {
         return sourcesstudyId;
@@ -57,6 +55,14 @@ privileged aspect SourcestudyTypeHistory_Roo_DbManaged {
         this.sourcestudyTypeId = sourcestudyTypeId;
     }
     
+    public User SourcestudyTypeHistory.getAddedBy() {
+        return addedBy;
+    }
+    
+    public void SourcestudyTypeHistory.setAddedBy(User addedBy) {
+        this.addedBy = addedBy;
+    }
+    
     public Date SourcestudyTypeHistory.getDatestart() {
         return datestart;
     }
@@ -71,14 +77,6 @@ privileged aspect SourcestudyTypeHistory_Roo_DbManaged {
     
     public void SourcestudyTypeHistory.setDateend(Date dateend) {
         this.dateend = dateend;
-    }
-    
-    public Integer SourcestudyTypeHistory.getAddedBy() {
-        return addedBy;
-    }
-    
-    public void SourcestudyTypeHistory.setAddedBy(Integer addedBy) {
-        this.addedBy = addedBy;
     }
     
 }

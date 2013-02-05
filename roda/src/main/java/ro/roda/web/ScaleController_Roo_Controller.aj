@@ -39,7 +39,7 @@ privileged aspect ScaleController_Roo_Controller {
     }
     
     @RequestMapping(value = "/{itemId}", produces = "text/html")
-    public String ScaleController.show(@PathVariable("itemId") Integer itemId, Model uiModel) {
+    public String ScaleController.show(@PathVariable("itemId") Long itemId, Model uiModel) {
         uiModel.addAttribute("scale", Scale.findScale(itemId));
         uiModel.addAttribute("itemId", itemId);
         return "scales/show";
@@ -71,13 +71,13 @@ privileged aspect ScaleController_Roo_Controller {
     }
     
     @RequestMapping(value = "/{itemId}", params = "form", produces = "text/html")
-    public String ScaleController.updateForm(@PathVariable("itemId") Integer itemId, Model uiModel) {
+    public String ScaleController.updateForm(@PathVariable("itemId") Long itemId, Model uiModel) {
         populateEditForm(uiModel, Scale.findScale(itemId));
         return "scales/update";
     }
     
     @RequestMapping(value = "/{itemId}", method = RequestMethod.DELETE, produces = "text/html")
-    public String ScaleController.delete(@PathVariable("itemId") Integer itemId, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
+    public String ScaleController.delete(@PathVariable("itemId") Long itemId, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
         Scale scale = Scale.findScale(itemId);
         scale.remove();
         uiModel.asMap().clear();

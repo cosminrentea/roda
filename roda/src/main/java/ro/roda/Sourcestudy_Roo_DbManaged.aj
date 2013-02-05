@@ -32,7 +32,6 @@ privileged aspect Sourcestudy_Roo_DbManaged {
     private String Sourcestudy.name;
     
     @Column(name = "details", columnDefinition = "text")
-    @NotNull
     private String Sourcestudy.details;
     
     public Set<SourcestudyTypeHistory> Sourcestudy.getSourcestudyTypeHistories() {

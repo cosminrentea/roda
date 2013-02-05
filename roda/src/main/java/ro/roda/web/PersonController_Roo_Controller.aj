@@ -14,14 +14,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.Email;
+import ro.roda.Form;
 import ro.roda.InstancePerson;
-import ro.roda.Internet;
 import ro.roda.Person;
 import ro.roda.PersonAddress;
+import ro.roda.PersonEmail;
+import ro.roda.PersonInternet;
 import ro.roda.PersonLinks;
 import ro.roda.PersonOrg;
+import ro.roda.PersonPhone;
 import ro.roda.Prefix;
+import ro.roda.SourceContacts;
 import ro.roda.StudyPerson;
 import ro.roda.Suffix;
 import ro.roda.web.PersonController;
@@ -95,13 +98,16 @@ privileged aspect PersonController_Roo_Controller {
     
     void PersonController.populateEditForm(Model uiModel, Person person) {
         uiModel.addAttribute("person", person);
-        uiModel.addAttribute("emails", Email.findAllEmails());
+        uiModel.addAttribute("forms", Form.findAllForms());
         uiModel.addAttribute("instancepeople", InstancePerson.findAllInstancepeople());
-        uiModel.addAttribute("internets", Internet.findAllInternets());
         uiModel.addAttribute("personaddresses", PersonAddress.findAllPersonAddresses());
+        uiModel.addAttribute("personemails", PersonEmail.findAllPersonEmails());
+        uiModel.addAttribute("personinternets", PersonInternet.findAllPersonInternets());
         uiModel.addAttribute("personlinkses", PersonLinks.findAllPersonLinkses());
         uiModel.addAttribute("personorgs", PersonOrg.findAllPersonOrgs());
+        uiModel.addAttribute("personphones", PersonPhone.findAllPersonPhones());
         uiModel.addAttribute("prefixes", Prefix.findAllPrefixes());
+        uiModel.addAttribute("sourcecontactses", SourceContacts.findAllSourceContactses());
         uiModel.addAttribute("studypeople", StudyPerson.findAllStudypeople());
         uiModel.addAttribute("suffixes", Suffix.findAllSuffixes());
     }

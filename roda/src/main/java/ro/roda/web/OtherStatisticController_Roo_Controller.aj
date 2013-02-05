@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.EditedVariable;
 import ro.roda.OtherStatistic;
+import ro.roda.Variable;
 import ro.roda.web.OtherStatisticController;
 
 privileged aspect OtherStatisticController_Roo_Controller {
@@ -28,7 +28,7 @@ privileged aspect OtherStatisticController_Roo_Controller {
         }
         uiModel.asMap().clear();
         otherStatistic.persist();
-        return "redirect:/otherstatistics/" + encodeUrlPathSegment(otherStatistic.getVariableId().toString(), httpServletRequest);
+        return "redirect:/otherstatistics/" + encodeUrlPathSegment(otherStatistic.getId().toString(), httpServletRequest);
     }
     
     @RequestMapping(params = "form", produces = "text/html")
@@ -37,10 +37,10 @@ privileged aspect OtherStatisticController_Roo_Controller {
         return "otherstatistics/create";
     }
     
-    @RequestMapping(value = "/{variableId}", produces = "text/html")
-    public String OtherStatisticController.show(@PathVariable("variableId") Integer variableId, Model uiModel) {
-        uiModel.addAttribute("otherstatistic", OtherStatistic.findOtherStatistic(variableId));
-        uiModel.addAttribute("itemId", variableId);
+    @RequestMapping(value = "/{id}", produces = "text/html")
+    public String OtherStatisticController.show(@PathVariable("id") Long id, Model uiModel) {
+        uiModel.addAttribute("otherstatistic", OtherStatistic.findOtherStatistic(id));
+        uiModel.addAttribute("itemId", id);
         return "otherstatistics/show";
     }
     
@@ -66,18 +66,18 @@ privileged aspect OtherStatisticController_Roo_Controller {
         }
         uiModel.asMap().clear();
         otherStatistic.merge();
-        return "redirect:/otherstatistics/" + encodeUrlPathSegment(otherStatistic.getVariableId().toString(), httpServletRequest);
+        return "redirect:/otherstatistics/" + encodeUrlPathSegment(otherStatistic.getId().toString(), httpServletRequest);
     }
     
-    @RequestMapping(value = "/{variableId}", params = "form", produces = "text/html")
-    public String OtherStatisticController.updateForm(@PathVariable("variableId") Integer variableId, Model uiModel) {
-        populateEditForm(uiModel, OtherStatistic.findOtherStatistic(variableId));
+    @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
+    public String OtherStatisticController.updateForm(@PathVariable("id") Long id, Model uiModel) {
+        populateEditForm(uiModel, OtherStatistic.findOtherStatistic(id));
         return "otherstatistics/update";
     }
     
-    @RequestMapping(value = "/{variableId}", method = RequestMethod.DELETE, produces = "text/html")
-    public String OtherStatisticController.delete(@PathVariable("variableId") Integer variableId, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        OtherStatistic otherStatistic = OtherStatistic.findOtherStatistic(variableId);
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
+    public String OtherStatisticController.delete(@PathVariable("id") Long id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
+        OtherStatistic otherStatistic = OtherStatistic.findOtherStatistic(id);
         otherStatistic.remove();
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
@@ -87,7 +87,7 @@ privileged aspect OtherStatisticController_Roo_Controller {
     
     void OtherStatisticController.populateEditForm(Model uiModel, OtherStatistic otherStatistic) {
         uiModel.addAttribute("otherStatistic", otherStatistic);
-        uiModel.addAttribute("editedvariables", EditedVariable.findAllEditedVariables());
+        uiModel.addAttribute("variables", Variable.findAllVariables());
     }
     
     String OtherStatisticController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

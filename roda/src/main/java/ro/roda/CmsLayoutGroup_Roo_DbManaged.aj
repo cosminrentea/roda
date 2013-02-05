@@ -5,6 +5,8 @@ package ro.roda;
 
 import java.util.Set;
 import javax.persistence.Column;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import ro.roda.CmsLayout;
@@ -12,16 +14,19 @@ import ro.roda.CmsLayoutGroup;
 
 privileged aspect CmsLayoutGroup_Roo_DbManaged {
     
-    @OneToMany(mappedBy = "layoutGroup")
+    @OneToMany(mappedBy = "cmsLayoutGroupId")
     private Set<CmsLayout> CmsLayoutGroup.cmsLayouts;
     
-    @Column(name = "name", columnDefinition = "varchar", length = 150)
+    @OneToMany(mappedBy = "parentId")
+    private Set<CmsLayoutGroup> CmsLayoutGroup.cmsLayoutGroups;
+    
+    @ManyToOne
+    @JoinColumn(name = "parent_id", referencedColumnName = "id", insertable = false, updatable = false)
+    private CmsLayoutGroup CmsLayoutGroup.parentId;
+    
+    @Column(name = "name", columnDefinition = "varchar", length = 200)
     @NotNull
     private String CmsLayoutGroup.name;
-    
-    @Column(name = "parent", columnDefinition = "int4")
-    @NotNull
-    private Integer CmsLayoutGroup.parent;
     
     @Column(name = "description", columnDefinition = "text")
     private String CmsLayoutGroup.description;
@@ -34,20 +39,28 @@ privileged aspect CmsLayoutGroup_Roo_DbManaged {
         this.cmsLayouts = cmsLayouts;
     }
     
+    public Set<CmsLayoutGroup> CmsLayoutGroup.getCmsLayoutGroups() {
+        return cmsLayoutGroups;
+    }
+    
+    public void CmsLayoutGroup.setCmsLayoutGroups(Set<CmsLayoutGroup> cmsLayoutGroups) {
+        this.cmsLayoutGroups = cmsLayoutGroups;
+    }
+    
+    public CmsLayoutGroup CmsLayoutGroup.getParentId() {
+        return parentId;
+    }
+    
+    public void CmsLayoutGroup.setParentId(CmsLayoutGroup parentId) {
+        this.parentId = parentId;
+    }
+    
     public String CmsLayoutGroup.getName() {
         return name;
     }
     
     public void CmsLayoutGroup.setName(String name) {
         this.name = name;
-    }
-    
-    public Integer CmsLayoutGroup.getParent() {
-        return parent;
-    }
-    
-    public void CmsLayoutGroup.setParent(Integer parent) {
-        this.parent = parent;
     }
     
     public String CmsLayoutGroup.getDescription() {

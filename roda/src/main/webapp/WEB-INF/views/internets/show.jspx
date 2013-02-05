@@ -3,9 +3,7 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <page:show id="ps_ro_roda_Internet" object="${internet}" path="/internets" z="4vY4SpIeIrRPteYlwCQWMIgUBxg=">
-        <field:display field="entityId" id="s_ro_roda_Internet_entityId" object="${internet}" z="GkE+l2PW5kgVFpFfgVfDTIIvQtE="/>
-        <field:display field="entityType" id="s_ro_roda_Internet_entityType" object="${internet}" z="/hy+GYRIaymgeONlMcnAQBQ58ZM="/>
-        <field:display field="internetTypeId" id="s_ro_roda_Internet_internetTypeId" object="${internet}" z="rUQdLMLRG8xrCeEKXKiCtrIMbQU="/>
-        <field:display field="content" id="s_ro_roda_Internet_content" object="${internet}" z="cCJMe0aLWQnHoF+V3mysjS6YrN4="/>
+        <field:display field="internetType" id="s_ro_roda_Internet_internetType" object="${internet}" z="NNyG7oXu0/4isDZHcZu5p2oSntw="/>
+        <field:display field="internet" id="s_ro_roda_Internet_internet" object="${internet}" z="PXc+DPmOyfrNnZ6ABY6ySrIVe4U="/>
     </page:show>
 </div>

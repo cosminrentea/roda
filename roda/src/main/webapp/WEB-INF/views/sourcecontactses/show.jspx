@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:show id="ps_ro_roda_SourceContacts" object="${sourcecontacts}" path="/sourcecontactses" z="S+bsXwzb28znxl/6N/nwZurKc94=">
+        <field:display field="personId" id="s_ro_roda_SourceContacts_personId" object="${sourcecontacts}" z="BpJSaOAJeZtHO8T29cOFe0yxs7Y="/>
+        <field:display field="sourceId" id="s_ro_roda_SourceContacts_sourceId" object="${sourcecontacts}" z="sYAk7B7k5+pNACiXrhwJ7vXGl7A="/>
+        <field:display field="sourceContactMethodId" id="s_ro_roda_SourceContacts_sourceContactMethodId" object="${sourcecontacts}" z="23oAJDIqz7BEHDXoDfOzOgO+CdY="/>
+        <field:display date="true" dateTimePattern="${sourceContacts_contactdate_date_format}" field="contactDate" id="s_ro_roda_SourceContacts_contactDate" object="${sourcecontacts}" z="a9z4Tt9vn0whDTrk+1KUxAF1UFk="/>
+        <field:display field="synopsis" id="s_ro_roda_SourceContacts_synopsis" object="${sourcecontacts}" z="PKoQnTHss0hObEFbjfvIxmzS1ro="/>
+        <field:display field="followup" id="s_ro_roda_SourceContacts_followup" object="${sourcecontacts}" z="OZHl9q9Yq+iCtQHyAW1iqOMMxoM="/>
+    </page:show>
+</div>

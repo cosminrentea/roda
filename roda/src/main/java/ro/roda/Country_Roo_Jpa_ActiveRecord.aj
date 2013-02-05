@@ -28,8 +28,8 @@ privileged aspect Country_Roo_Jpa_ActiveRecord {
         return entityManager().createQuery("SELECT o FROM Country o", Country.class).getResultList();
     }
     
-    public static Country Country.findCountry(Integer id) {
-        if (id == null) return null;
+    public static Country Country.findCountry(String id) {
+        if (id == null || id.length() == 0) return null;
         return entityManager().find(Country.class, id);
     }
     

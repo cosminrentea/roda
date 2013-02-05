@@ -6,5 +6,11 @@
         <field:display field="regions" id="s_ro_roda_City_regions" object="${city}" z="oFodDCC0eLqOnA/32kPilfAYKN8="/>
         <field:display field="countryId" id="s_ro_roda_City_countryId" object="${city}" z="MMZv5TCIZbBj444OFtf/4KdyTqM="/>
         <field:display field="name" id="s_ro_roda_City_name" object="${city}" z="D98iGmeIRkK8eT47PxrZIlqGooY="/>
+        <field:display field="cityCode" id="s_ro_roda_City_cityCode" object="${city}" z="lednVRdj71cyz821pLCXW6RB/lk="/>
+        <field:display field="cityCodeName" id="s_ro_roda_City_cityCodeName" object="${city}" z="T4G7GbW2oXjymBk0Pi3kCZ5uD6I="/>
+        <field:display field="cityCodeSup" id="s_ro_roda_City_cityCodeSup" object="${city}" z="dxWhkxrkQpM9rX5NkoIBkrAzrBY="/>
+        <field:display field="prefix" id="s_ro_roda_City_prefix" object="${city}" z="8tSCTa0Le10ICHUs8KxmI6mf8Gk="/>
+        <field:display field="cityType" id="s_ro_roda_City_cityType" object="${city}" z="Ft6XEJlPkxU023ts3CVctXSwTbE="/>
+        <field:display field="cityTypeSystem" id="s_ro_roda_City_cityTypeSystem" object="${city}" z="bIywNKQWG44BHom+u554/a+DSBY="/>
     </page:show>
 </div>

@@ -8,6 +8,8 @@
             <table:column id="c_ro_roda_Region_countryId" property="countryId" z="QubgJ5GbcB05HnhIls42+ZvQze4="/>
             <table:column id="c_ro_roda_Region_regiontypeId" property="regiontypeId" z="+FxOuzels/qn4tO5wfrScCxcGMU="/>
             <table:column id="c_ro_roda_Region_name" property="name" z="pScy+TEL7BIk3ebMN+0TcXd/wVs="/>
+            <table:column id="c_ro_roda_Region_regionCode" property="regionCode" z="MYbSnx853rZ4T3Vo3Nd9sFGf8OM="/>
+            <table:column id="c_ro_roda_Region_regionCodeName" property="regionCodeName" z="ThGYv5yaSz761miA3pnTSc9K7og="/>
         </table:table>
     </page:list>
 </div>

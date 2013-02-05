@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.Title;
+import ro.roda.StudyDescr;
 import ro.roda.TitleType;
 import ro.roda.web.TitleTypeController;
 
@@ -87,7 +87,7 @@ privileged aspect TitleTypeController_Roo_Controller {
     
     void TitleTypeController.populateEditForm(Model uiModel, TitleType titleType) {
         uiModel.addAttribute("titleType", titleType);
-        uiModel.addAttribute("titles", Title.findAllTitles());
+        uiModel.addAttribute("studydescrs", StudyDescr.findAllStudyDescrs());
     }
     
     String TitleTypeController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

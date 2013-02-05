@@ -38,7 +38,7 @@ privileged aspect VargroupController_Roo_Controller {
     }
     
     @RequestMapping(value = "/{id}", produces = "text/html")
-    public String VargroupController.show(@PathVariable("id") Integer id, Model uiModel) {
+    public String VargroupController.show(@PathVariable("id") Long id, Model uiModel) {
         uiModel.addAttribute("vargroup", Vargroup.findVargroup(id));
         uiModel.addAttribute("itemId", id);
         return "vargroups/show";
@@ -70,13 +70,13 @@ privileged aspect VargroupController_Roo_Controller {
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
-    public String VargroupController.updateForm(@PathVariable("id") Integer id, Model uiModel) {
+    public String VargroupController.updateForm(@PathVariable("id") Long id, Model uiModel) {
         populateEditForm(uiModel, Vargroup.findVargroup(id));
         return "vargroups/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
-    public String VargroupController.delete(@PathVariable("id") Integer id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
+    public String VargroupController.delete(@PathVariable("id") Long id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
         Vargroup vargroup = Vargroup.findVargroup(id);
         vargroup.remove();
         uiModel.asMap().clear();

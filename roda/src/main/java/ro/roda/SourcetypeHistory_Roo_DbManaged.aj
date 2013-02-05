@@ -9,11 +9,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
 import org.springframework.format.annotation.DateTimeFormat;
 import ro.roda.Source;
 import ro.roda.Sourcetype;
 import ro.roda.SourcetypeHistory;
+import ro.roda.User;
 
 privileged aspect SourcetypeHistory_Roo_DbManaged {
     
@@ -25,8 +25,11 @@ privileged aspect SourcetypeHistory_Roo_DbManaged {
     @JoinColumn(name = "sourcetype_id", referencedColumnName = "id", nullable = false)
     private Sourcetype SourcetypeHistory.sourcetypeId;
     
+    @ManyToOne
+    @JoinColumn(name = "added_by", referencedColumnName = "id", nullable = false)
+    private User SourcetypeHistory.addedBy;
+    
     @Column(name = "datestart", columnDefinition = "timestamp")
-    @NotNull
     @Temporal(TemporalType.TIMESTAMP)
     @DateTimeFormat(style = "M-")
     private Date SourcetypeHistory.datestart;
@@ -35,10 +38,6 @@ privileged aspect SourcetypeHistory_Roo_DbManaged {
     @Temporal(TemporalType.TIMESTAMP)
     @DateTimeFormat(style = "M-")
     private Date SourcetypeHistory.dateend;
-    
-    @Column(name = "added_by", columnDefinition = "int4")
-    @NotNull
-    private Integer SourcetypeHistory.addedBy;
     
     public Source SourcetypeHistory.getOrgId() {
         return orgId;
@@ -56,6 +55,14 @@ privileged aspect SourcetypeHistory_Roo_DbManaged {
         this.sourcetypeId = sourcetypeId;
     }
     
+    public User SourcetypeHistory.getAddedBy() {
+        return addedBy;
+    }
+    
+    public void SourcetypeHistory.setAddedBy(User addedBy) {
+        this.addedBy = addedBy;
+    }
+    
     public Date SourcetypeHistory.getDatestart() {
         return datestart;
     }
@@ -70,14 +77,6 @@ privileged aspect SourcetypeHistory_Roo_DbManaged {
     
     public void SourcetypeHistory.setDateend(Date dateend) {
         this.dateend = dateend;
-    }
-    
-    public Integer SourcetypeHistory.getAddedBy() {
-        return addedBy;
-    }
-    
-    public void SourcetypeHistory.setAddedBy(Integer addedBy) {
-        this.addedBy = addedBy;
     }
     
 }

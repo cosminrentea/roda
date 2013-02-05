@@ -19,14 +19,14 @@ privileged aspect Vargroup_Roo_Jpa_Entity {
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", columnDefinition = "int4")
-    private Integer Vargroup.id;
+    @Column(name = "id", columnDefinition = "bigserial")
+    private Long Vargroup.id;
     
-    public Integer Vargroup.getId() {
+    public Long Vargroup.getId() {
         return this.id;
     }
     
-    public void Vargroup.setId(Integer id) {
+    public void Vargroup.setId(Long id) {
         this.id = id;
     }
     

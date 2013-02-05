@@ -7,5 +7,6 @@
         <field:display field="studyId" id="s_ro_roda_StudyOrg_studyId" object="${studyorg}" z="s1atmmrAgg2WHxEO6dMSZaYy9RI="/>
         <field:display field="assoctypeId" id="s_ro_roda_StudyOrg_assoctypeId" object="${studyorg}" z="Lyzi+oo8y16MXbSByzMm4d9nzIo="/>
         <field:display field="citation" id="s_ro_roda_StudyOrg_citation" object="${studyorg}" z="faaTeRD9UILP2eAZFUPbQnjsFR8="/>
+        <field:display field="assocDetails" id="s_ro_roda_StudyOrg_assocDetails" object="${studyorg}" z="Kw4Jyqx6eMAen1b1UnMBLH4TGhU="/>
     </page:show>
 </div>

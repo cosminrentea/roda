@@ -28,7 +28,7 @@ privileged aspect Variable_Roo_Jpa_ActiveRecord {
         return entityManager().createQuery("SELECT o FROM Variable o", Variable.class).getResultList();
     }
     
-    public static Variable Variable.findVariable(Integer id) {
+    public static Variable Variable.findVariable(Long id) {
         if (id == null) return null;
         return entityManager().find(Variable.class, id);
     }

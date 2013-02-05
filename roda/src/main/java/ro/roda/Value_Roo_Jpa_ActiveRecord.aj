@@ -28,7 +28,7 @@ privileged aspect Value_Roo_Jpa_ActiveRecord {
         return entityManager().createQuery("SELECT o FROM Value o", Value.class).getResultList();
     }
     
-    public static Value Value.findValue(Integer itemId) {
+    public static Value Value.findValue(Long itemId) {
         if (itemId == null) return null;
         return entityManager().find(Value.class, itemId);
     }

@@ -30,14 +30,14 @@ privileged aspect Catalog_Roo_DbManaged {
     private Set<CatalogStudy> Catalog.catalogStudies;
     
     @ManyToOne
-    @JoinColumn(name = "parent", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+    @JoinColumn(name = "parent", referencedColumnName = "id", insertable = false, updatable = false)
     private Catalog Catalog.parent;
     
     @ManyToOne
     @JoinColumn(name = "owner", referencedColumnName = "id", nullable = false)
     private User Catalog.owner;
     
-    @Column(name = "name", columnDefinition = "varchar", length = 150)
+    @Column(name = "name", columnDefinition = "varchar", length = 200)
     @NotNull
     private String Catalog.name;
     

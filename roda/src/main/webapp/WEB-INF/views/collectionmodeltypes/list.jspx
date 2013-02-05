@@ -4,8 +4,9 @@
     <jsp:output omit-xml-declaration="yes"/>
     <page:list id="pl_ro_roda_CollectionModelType" items="${collectionmodeltypes}" z="C2rl9oLGeamQRB27OFZ3RpASLT4=">
         <table:table data="${collectionmodeltypes}" id="l_ro_roda_CollectionModelType" path="/collectionmodeltypes" z="MQ1RXe6FEB33r8gINjA4f2Bmhjw=">
-            <table:column id="c_ro_roda_CollectionModelType_methodologies" property="methodologies" z="j3gSVX9UYCbgCORacuc1OooSUUY="/>
+            <table:column id="c_ro_roda_CollectionModelType_instances" property="instances" z="C7wU7NSazcAinKZ0dmGzCuM8QrU="/>
             <table:column id="c_ro_roda_CollectionModelType_name" property="name" z="8b5ntGCzdfrOOfVjXylAznE7oJs="/>
+            <table:column id="c_ro_roda_CollectionModelType_description" property="description" z="t94OXlRxUsrAkTfMLrcx53aekBw="/>
         </table:table>
     </page:list>
 </div>

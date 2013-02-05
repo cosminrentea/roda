@@ -8,6 +8,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.springframework.transaction.annotation.Transactional;
 import ro.roda.InstanceDescr;
+import ro.roda.InstanceDescrPK;
 
 privileged aspect InstanceDescr_Roo_Jpa_ActiveRecord {
     
@@ -28,9 +29,9 @@ privileged aspect InstanceDescr_Roo_Jpa_ActiveRecord {
         return entityManager().createQuery("SELECT o FROM InstanceDescr o", InstanceDescr.class).getResultList();
     }
     
-    public static InstanceDescr InstanceDescr.findInstanceDescr(Integer instanceId) {
-        if (instanceId == null) return null;
-        return entityManager().find(InstanceDescr.class, instanceId);
+    public static InstanceDescr InstanceDescr.findInstanceDescr(InstanceDescrPK id) {
+        if (id == null) return null;
+        return entityManager().find(InstanceDescr.class, id);
     }
     
     public static List<InstanceDescr> InstanceDescr.findInstanceDescrEntries(int firstResult, int maxResults) {
@@ -49,7 +50,7 @@ privileged aspect InstanceDescr_Roo_Jpa_ActiveRecord {
         if (this.entityManager.contains(this)) {
             this.entityManager.remove(this);
         } else {
-            InstanceDescr attached = InstanceDescr.findInstanceDescr(this.instanceId);
+            InstanceDescr attached = InstanceDescr.findInstanceDescr(this.id);
             this.entityManager.remove(attached);
         }
     }

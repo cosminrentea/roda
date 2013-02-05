@@ -14,15 +14,15 @@ import ro.roda.CmsSnippetGroup;
 
 privileged aspect CmsSnippetGroup_Roo_DbManaged {
     
-    @OneToMany(mappedBy = "snippetGroup")
+    @OneToMany(mappedBy = "cmsSnippetGroupId")
     private Set<CmsSnippet> CmsSnippetGroup.cmsSnippets;
     
-    @OneToMany(mappedBy = "parent")
+    @OneToMany(mappedBy = "parentId")
     private Set<CmsSnippetGroup> CmsSnippetGroup.cmsSnippetGroups;
     
     @ManyToOne
-    @JoinColumn(name = "parent", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
-    private CmsSnippetGroup CmsSnippetGroup.parent;
+    @JoinColumn(name = "parent_id", referencedColumnName = "id", insertable = false, updatable = false)
+    private CmsSnippetGroup CmsSnippetGroup.parentId;
     
     @Column(name = "name", columnDefinition = "varchar", length = 200)
     @NotNull
@@ -47,12 +47,12 @@ privileged aspect CmsSnippetGroup_Roo_DbManaged {
         this.cmsSnippetGroups = cmsSnippetGroups;
     }
     
-    public CmsSnippetGroup CmsSnippetGroup.getParent() {
-        return parent;
+    public CmsSnippetGroup CmsSnippetGroup.getParentId() {
+        return parentId;
     }
     
-    public void CmsSnippetGroup.setParent(CmsSnippetGroup parent) {
-        this.parent = parent;
+    public void CmsSnippetGroup.setParentId(CmsSnippetGroup parentId) {
+        this.parentId = parentId;
     }
     
     public String CmsSnippetGroup.getName() {

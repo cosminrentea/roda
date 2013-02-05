@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.CmsFile;
+import ro.roda.CmsFilePropertyNameValue;
 import ro.roda.CmsFolder;
 import ro.roda.web.CmsFileController;
 
@@ -87,6 +88,7 @@ privileged aspect CmsFileController_Roo_Controller {
     
     void CmsFileController.populateEditForm(Model uiModel, CmsFile cmsFile) {
         uiModel.addAttribute("cmsFile", cmsFile);
+        uiModel.addAttribute("cmsfilepropertynamevalues", CmsFilePropertyNameValue.findAllCmsFilePropertyNameValues());
         uiModel.addAttribute("cmsfolders", CmsFolder.findAllCmsFolders());
     }
     

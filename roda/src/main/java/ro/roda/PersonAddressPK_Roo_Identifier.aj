@@ -3,12 +3,8 @@
 
 package ro.roda;
 
-import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import org.springframework.format.annotation.DateTimeFormat;
 import ro.roda.PersonAddressPK;
 
 privileged aspect PersonAddressPK_Roo_Identifier {
@@ -21,16 +17,10 @@ privileged aspect PersonAddressPK_Roo_Identifier {
     @Column(name = "address_id", columnDefinition = "int4", nullable = false)
     private Integer PersonAddressPK.addressId;
     
-    @Column(name = "datestart", columnDefinition = "timestamp", nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    @DateTimeFormat(style = "M-")
-    private Date PersonAddressPK.datestart;
-    
-    public PersonAddressPK.new(Integer personId, Integer addressId, Date datestart) {
+    public PersonAddressPK.new(Integer personId, Integer addressId) {
         super();
         this.personId = personId;
         this.addressId = addressId;
-        this.datestart = datestart;
     }
 
     private PersonAddressPK.new() {
@@ -43,10 +33,6 @@ privileged aspect PersonAddressPK_Roo_Identifier {
     
     public Integer PersonAddressPK.getAddressId() {
         return addressId;
-    }
-    
-    public Date PersonAddressPK.getDatestart() {
-        return datestart;
     }
     
 }

@@ -48,16 +48,9 @@ privileged aspect CmsFile_Roo_SolrSearch {
         for (CmsFile cmsFile : cmsfiles) {
             SolrInputDocument sid = new SolrInputDocument();
             sid.addField("id", "cmsfile_" + cmsFile.getId());
-            sid.addField("cmsFile.folderid_t", cmsFile.getFolderId());
-            sid.addField("cmsFile.filename_s", cmsFile.getFilename());
-            sid.addField("cmsFile.label_s", cmsFile.getLabel());
-            sid.addField("cmsFile.md5_s", cmsFile.getMd5());
-            sid.addField("cmsFile.mimegroup_s", cmsFile.getMimegroup());
-            sid.addField("cmsFile.mimesubgroup_s", cmsFile.getMimesubgroup());
-            sid.addField("cmsFile.filesize_i", cmsFile.getFilesize());
             sid.addField("cmsFile.id_i", cmsFile.getId());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("cmsfile_solrsummary_t", new StringBuilder().append(cmsFile.getFolderId()).append(" ").append(cmsFile.getFilename()).append(" ").append(cmsFile.getLabel()).append(" ").append(cmsFile.getMd5()).append(" ").append(cmsFile.getMimegroup()).append(" ").append(cmsFile.getMimesubgroup()).append(" ").append(cmsFile.getFilesize()).append(" ").append(cmsFile.getId()));
+            sid.addField("cmsfile_solrsummary_t", new StringBuilder().append(cmsFile.getId()));
             documents.add(sid);
         }
         try {

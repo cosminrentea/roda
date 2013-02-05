@@ -18,6 +18,7 @@ import ro.roda.FormEditedNumberVar;
 import ro.roda.FormEditedTextVar;
 import ro.roda.FormSelectionVar;
 import ro.roda.Instance;
+import ro.roda.Person;
 
 privileged aspect Form_Roo_DbManaged {
     
@@ -34,22 +35,21 @@ privileged aspect Form_Roo_DbManaged {
     @JoinColumn(name = "instance_id", referencedColumnName = "id", nullable = false)
     private Instance Form.instanceId;
     
+    @ManyToOne
+    @JoinColumn(name = "operator_id", referencedColumnName = "id")
+    private Person Form.operatorId;
+    
     @Column(name = "order_in_instance", columnDefinition = "int4", unique = true)
     @NotNull
     private Integer Form.orderInInstance;
     
-    @Column(name = "operator_id", columnDefinition = "int4")
-    @NotNull
-    private Integer Form.operatorId;
-    
     @Column(name = "operator_notes", columnDefinition = "text")
     private String Form.operatorNotes;
     
-    @Column(name = "fill_date", columnDefinition = "date")
-    @NotNull
-    @Temporal(TemporalType.DATE)
+    @Column(name = "fill_time", columnDefinition = "timestamp")
+    @Temporal(TemporalType.TIMESTAMP)
     @DateTimeFormat(style = "M-")
-    private Date Form.fillDate;
+    private Date Form.fillTime;
     
     public Set<FormEditedNumberVar> Form.getFormEditedNumberVars() {
         return formEditedNumberVars;
@@ -83,20 +83,20 @@ privileged aspect Form_Roo_DbManaged {
         this.instanceId = instanceId;
     }
     
+    public Person Form.getOperatorId() {
+        return operatorId;
+    }
+    
+    public void Form.setOperatorId(Person operatorId) {
+        this.operatorId = operatorId;
+    }
+    
     public Integer Form.getOrderInInstance() {
         return orderInInstance;
     }
     
     public void Form.setOrderInInstance(Integer orderInInstance) {
         this.orderInInstance = orderInInstance;
-    }
-    
-    public Integer Form.getOperatorId() {
-        return operatorId;
-    }
-    
-    public void Form.setOperatorId(Integer operatorId) {
-        this.operatorId = operatorId;
     }
     
     public String Form.getOperatorNotes() {
@@ -107,12 +107,12 @@ privileged aspect Form_Roo_DbManaged {
         this.operatorNotes = operatorNotes;
     }
     
-    public Date Form.getFillDate() {
-        return fillDate;
+    public Date Form.getFillTime() {
+        return fillTime;
     }
     
-    public void Form.setFillDate(Date fillDate) {
-        this.fillDate = fillDate;
+    public void Form.setFillTime(Date fillTime) {
+        this.fillTime = fillTime;
     }
     
 }

@@ -38,7 +38,7 @@ privileged aspect ConceptController_Roo_Controller {
     }
     
     @RequestMapping(value = "/{id}", produces = "text/html")
-    public String ConceptController.show(@PathVariable("id") Integer id, Model uiModel) {
+    public String ConceptController.show(@PathVariable("id") Long id, Model uiModel) {
         uiModel.addAttribute("concept", Concept.findConcept(id));
         uiModel.addAttribute("itemId", id);
         return "concepts/show";
@@ -70,13 +70,13 @@ privileged aspect ConceptController_Roo_Controller {
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
-    public String ConceptController.updateForm(@PathVariable("id") Integer id, Model uiModel) {
+    public String ConceptController.updateForm(@PathVariable("id") Long id, Model uiModel) {
         populateEditForm(uiModel, Concept.findConcept(id));
         return "concepts/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
-    public String ConceptController.delete(@PathVariable("id") Integer id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
+    public String ConceptController.delete(@PathVariable("id") Long id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
         Concept concept = Concept.findConcept(id);
         concept.remove();
         uiModel.asMap().clear();

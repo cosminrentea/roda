@@ -12,11 +12,16 @@ import javax.validation.constraints.NotNull;
 import ro.roda.Audit;
 import ro.roda.AuthData;
 import ro.roda.Catalog;
-import ro.roda.CatalogStudy;
 import ro.roda.CmsPage;
+import ro.roda.Instance;
+import ro.roda.InstanceKeyword;
 import ro.roda.News;
 import ro.roda.PersonLinks;
 import ro.roda.Role;
+import ro.roda.SourcestudyTypeHistory;
+import ro.roda.SourcetypeHistory;
+import ro.roda.Study;
+import ro.roda.StudyKeyword;
 import ro.roda.User;
 import ro.roda.UserAuthLog;
 import ro.roda.UserMessage;
@@ -40,11 +45,14 @@ privileged aspect User_Roo_DbManaged {
     @OneToMany(mappedBy = "owner")
     private Set<Catalog> User.catalogs;
     
-    @OneToMany(mappedBy = "addedBy")
-    private Set<CatalogStudy> User.catalogStudies;
-    
-    @OneToMany(mappedBy = "owner")
+    @OneToMany(mappedBy = "ownerId")
     private Set<CmsPage> User.cmsPages;
+    
+    @OneToMany(mappedBy = "addedBy")
+    private Set<Instance> User.instances;
+    
+    @OneToMany(mappedBy = "addedBy")
+    private Set<InstanceKeyword> User.instanceKeywords;
     
     @OneToMany(mappedBy = "addedBy")
     private Set<News> User.news;
@@ -54,6 +62,18 @@ privileged aspect User_Roo_DbManaged {
     
     @OneToMany(mappedBy = "statusBy")
     private Set<PersonLinks> User.personLinkss1;
+    
+    @OneToMany(mappedBy = "addedBy")
+    private Set<SourcestudyTypeHistory> User.sourcestudyTypeHistories;
+    
+    @OneToMany(mappedBy = "addedBy")
+    private Set<SourcetypeHistory> User.sourcetypeHistories;
+    
+    @OneToMany(mappedBy = "addedBy")
+    private Set<Study> User.studies;
+    
+    @OneToMany(mappedBy = "addedBy")
+    private Set<StudyKeyword> User.studyKeywords;
     
     @OneToMany(mappedBy = "userId")
     private Set<UserAuthLog> User.userAuthLogs;
@@ -111,20 +131,28 @@ privileged aspect User_Roo_DbManaged {
         this.catalogs = catalogs;
     }
     
-    public Set<CatalogStudy> User.getCatalogStudies() {
-        return catalogStudies;
-    }
-    
-    public void User.setCatalogStudies(Set<CatalogStudy> catalogStudies) {
-        this.catalogStudies = catalogStudies;
-    }
-    
     public Set<CmsPage> User.getCmsPages() {
         return cmsPages;
     }
     
     public void User.setCmsPages(Set<CmsPage> cmsPages) {
         this.cmsPages = cmsPages;
+    }
+    
+    public Set<Instance> User.getInstances() {
+        return instances;
+    }
+    
+    public void User.setInstances(Set<Instance> instances) {
+        this.instances = instances;
+    }
+    
+    public Set<InstanceKeyword> User.getInstanceKeywords() {
+        return instanceKeywords;
+    }
+    
+    public void User.setInstanceKeywords(Set<InstanceKeyword> instanceKeywords) {
+        this.instanceKeywords = instanceKeywords;
     }
     
     public Set<News> User.getNews() {
@@ -149,6 +177,38 @@ privileged aspect User_Roo_DbManaged {
     
     public void User.setPersonLinkss1(Set<PersonLinks> personLinkss1) {
         this.personLinkss1 = personLinkss1;
+    }
+    
+    public Set<SourcestudyTypeHistory> User.getSourcestudyTypeHistories() {
+        return sourcestudyTypeHistories;
+    }
+    
+    public void User.setSourcestudyTypeHistories(Set<SourcestudyTypeHistory> sourcestudyTypeHistories) {
+        this.sourcestudyTypeHistories = sourcestudyTypeHistories;
+    }
+    
+    public Set<SourcetypeHistory> User.getSourcetypeHistories() {
+        return sourcetypeHistories;
+    }
+    
+    public void User.setSourcetypeHistories(Set<SourcetypeHistory> sourcetypeHistories) {
+        this.sourcetypeHistories = sourcetypeHistories;
+    }
+    
+    public Set<Study> User.getStudies() {
+        return studies;
+    }
+    
+    public void User.setStudies(Set<Study> studies) {
+        this.studies = studies;
+    }
+    
+    public Set<StudyKeyword> User.getStudyKeywords() {
+        return studyKeywords;
+    }
+    
+    public void User.setStudyKeywords(Set<StudyKeyword> studyKeywords) {
+        this.studyKeywords = studyKeywords;
     }
     
     public Set<UserAuthLog> User.getUserAuthLogs() {

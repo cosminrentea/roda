@@ -5,6 +5,5 @@
     <page:show id="ps_ro_roda_StudyOrgAssoc" object="${studyorgassoc}" path="/studyorgassocs" z="1kaAonF+kA20Xt5UEzs31W0kekU=">
         <field:display field="assocName" id="s_ro_roda_StudyOrgAssoc_assocName" object="${studyorgassoc}" z="pjQ8XnFUfQL+M58yKwJr4wyJJ4Q="/>
         <field:display field="assocDescription" id="s_ro_roda_StudyOrgAssoc_assocDescription" object="${studyorgassoc}" z="i7KtY/mRulyhNyAIE+hg0JXX/jw="/>
-        <field:display field="assocDetails" id="s_ro_roda_StudyOrgAssoc_assocDetails" object="${studyorgassoc}" z="ZNgSmfwAcGN1NEuRjUmkqb32q/E="/>
     </page:show>
 </div>

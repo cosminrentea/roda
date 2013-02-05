@@ -28,7 +28,7 @@ privileged aspect Form_Roo_Jpa_ActiveRecord {
         return entityManager().createQuery("SELECT o FROM Form o", Form.class).getResultList();
     }
     
-    public static Form Form.findForm(Integer id) {
+    public static Form Form.findForm(Long id) {
         if (id == null) return null;
         return entityManager().find(Form.class, id);
     }

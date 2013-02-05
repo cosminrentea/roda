@@ -7,31 +7,23 @@ import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
-import ro.roda.EditedVariable;
 import ro.roda.Form;
 import ro.roda.FormEditedTextVar;
+import ro.roda.Variable;
 
 privileged aspect FormEditedTextVar_Roo_DbManaged {
-    
-    @ManyToOne
-    @JoinColumn(name = "variable_id", referencedColumnName = "variable_id", nullable = false, insertable = false, updatable = false)
-    private EditedVariable FormEditedTextVar.variableId;
     
     @ManyToOne
     @JoinColumn(name = "form_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     private Form FormEditedTextVar.formId;
     
+    @ManyToOne
+    @JoinColumn(name = "variable_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+    private Variable FormEditedTextVar.variableId;
+    
     @Column(name = "text", columnDefinition = "text")
     @NotNull
     private String FormEditedTextVar.text;
-    
-    public EditedVariable FormEditedTextVar.getVariableId() {
-        return variableId;
-    }
-    
-    public void FormEditedTextVar.setVariableId(EditedVariable variableId) {
-        this.variableId = variableId;
-    }
     
     public Form FormEditedTextVar.getFormId() {
         return formId;
@@ -39,6 +31,14 @@ privileged aspect FormEditedTextVar_Roo_DbManaged {
     
     public void FormEditedTextVar.setFormId(Form formId) {
         this.formId = formId;
+    }
+    
+    public Variable FormEditedTextVar.getVariableId() {
+        return variableId;
+    }
+    
+    public void FormEditedTextVar.setVariableId(Variable variableId) {
+        this.variableId = variableId;
     }
     
     public String FormEditedTextVar.getText() {

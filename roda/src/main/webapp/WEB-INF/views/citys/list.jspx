@@ -7,6 +7,8 @@
             <table:column id="c_ro_roda_City_regions" property="regions" z="275CVWYnAW23W/ZU9A4viA9y4qE="/>
             <table:column id="c_ro_roda_City_countryId" property="countryId" z="JnDvjR5Zq3ap/b/oLc4Lhgt8dyU="/>
             <table:column id="c_ro_roda_City_name" property="name" z="r4/QqYz7Ro+v9qBZEw1Shmahf18="/>
+            <table:column id="c_ro_roda_City_cityCode" property="cityCode" z="SXP+hh10qzd98skzCcJ1NWl5B0g="/>
+            <table:column id="c_ro_roda_City_cityCodeName" property="cityCodeName" z="G/+Bt1acJ0an3SOQ1iMeCe7kW2o="/>
         </table:table>
     </page:list>
 </div>

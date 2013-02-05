@@ -8,6 +8,7 @@
             <table:column id="c_ro_roda_StudyOrg_studyId" property="studyId" z="xrOz3XvRwpMCNyAsB7AKc5A5F5s="/>
             <table:column id="c_ro_roda_StudyOrg_assoctypeId" property="assoctypeId" z="6Jgj0vTdGfET3jHnC/Adk4agoYY="/>
             <table:column id="c_ro_roda_StudyOrg_citation" property="citation" z="DCiJbqFk09KiUv+eNpgSkLD6jBk="/>
+            <table:column id="c_ro_roda_StudyOrg_assocDetails" property="assocDetails" z="AhhDmar2e4TCyzz0cFDy+E1iHR0="/>
         </table:table>
     </page:list>
 </div>

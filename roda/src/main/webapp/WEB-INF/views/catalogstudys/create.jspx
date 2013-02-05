@@ -5,7 +5,7 @@
     <form:create compositePkField="id" id="fc_ro_roda_CatalogStudy" modelAttribute="catalogStudy" path="/catalogstudys" render="${empty dependencies}" z="k5lCqOGQ6mqjemdW5agUsoeZc50=">
         <field:input disableFormBinding="true" field="id.catalogId" id="c_ro_roda_CatalogStudy_id_catalogId" required="true" validationMessageCode="field_invalid_integer" z="i+7lH2ChsD9fFPO9cD9vAQOiNj4="/>
         <field:input disableFormBinding="true" field="id.studyId" id="c_ro_roda_CatalogStudy_id_studyId" required="true" validationMessageCode="field_invalid_integer" z="yF/9hcxPuR7iOMp+j1Et7V1jQao="/>
-        <field:select field="addedBy" id="c_ro_roda_CatalogStudy_addedBy" itemValue="id" items="${users}" path="/users" z="g9LbTYAfAQ3JziHjNTS4kr0YIxI="/>
+        <field:datetime dateTimePattern="${catalogStudy_added_date_format}" field="added" id="c_ro_roda_CatalogStudy_added" required="true" z="1/Am3KhWNjjePf9c9XbEC7NwCfE="/>
     </form:create>
     <form:dependency dependencies="${dependencies}" id="d_ro_roda_CatalogStudy" render="${not empty dependencies}" z="hV+q6T457V7M7f+X15V+GuwUMYo="/>
 </div>

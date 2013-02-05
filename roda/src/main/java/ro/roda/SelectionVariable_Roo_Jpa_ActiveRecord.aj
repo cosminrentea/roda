@@ -28,7 +28,7 @@ privileged aspect SelectionVariable_Roo_Jpa_ActiveRecord {
         return entityManager().createQuery("SELECT o FROM SelectionVariable o", SelectionVariable.class).getResultList();
     }
     
-    public static SelectionVariable SelectionVariable.findSelectionVariable(Integer variableId) {
+    public static SelectionVariable SelectionVariable.findSelectionVariable(Long variableId) {
         if (variableId == null) return null;
         return entityManager().find(SelectionVariable.class, variableId);
     }

@@ -17,10 +17,14 @@ privileged aspect InstanceOrgPK_Roo_Identifier {
     @Column(name = "instance_id", columnDefinition = "int4", nullable = false)
     private Integer InstanceOrgPK.instanceId;
     
-    public InstanceOrgPK.new(Integer orgId, Integer instanceId) {
+    @Column(name = "assoc_type_id", columnDefinition = "int4", nullable = false)
+    private Integer InstanceOrgPK.assocTypeId;
+    
+    public InstanceOrgPK.new(Integer orgId, Integer instanceId, Integer assocTypeId) {
         super();
         this.orgId = orgId;
         this.instanceId = instanceId;
+        this.assocTypeId = assocTypeId;
     }
 
     private InstanceOrgPK.new() {
@@ -33,6 +37,10 @@ privileged aspect InstanceOrgPK_Roo_Identifier {
     
     public Integer InstanceOrgPK.getInstanceId() {
         return instanceId;
+    }
+    
+    public Integer InstanceOrgPK.getAssocTypeId() {
+        return assocTypeId;
     }
     
 }

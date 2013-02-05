@@ -11,11 +11,11 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import org.springframework.format.annotation.DateTimeFormat;
+import ro.roda.CollectionModelType;
 import ro.roda.File;
 import ro.roda.Form;
 import ro.roda.Instance;
@@ -24,32 +24,38 @@ import ro.roda.InstanceDescr;
 import ro.roda.InstanceKeyword;
 import ro.roda.InstanceOrg;
 import ro.roda.InstancePerson;
-import ro.roda.Methodology;
+import ro.roda.SamplingProcedure;
 import ro.roda.Study;
+import ro.roda.TimeMethType;
 import ro.roda.Topic;
 import ro.roda.UnitAnalysis;
+import ro.roda.User;
 import ro.roda.Variable;
 
 privileged aspect Instance_Roo_DbManaged {
     
     @ManyToMany
+    @JoinTable(name = "instance_sampling_procedure", joinColumns = { @JoinColumn(name = "instance_id", nullable = false) }, inverseJoinColumns = { @JoinColumn(name = "sampling_procedure_id", nullable = false) })
+    private Set<SamplingProcedure> Instance.samplingProcedures;
+    
+    @ManyToMany
     @JoinTable(name = "instance_topic", joinColumns = { @JoinColumn(name = "instance_id", nullable = false) }, inverseJoinColumns = { @JoinColumn(name = "topic_id", nullable = false) })
-    private Set<Topic> Instance.topics;
+    private Set<Topic> Instance.topics1;
     
     @ManyToMany(mappedBy = "instances")
     private Set<File> Instance.files;
     
-    @OneToOne(mappedBy = "instance")
-    private InstanceDescr Instance.instanceDescr;
-    
-    @OneToOne(mappedBy = "instance")
-    private Methodology Instance.methodology;
+    @ManyToMany(mappedBy = "instances")
+    private Set<CollectionModelType> Instance.collectionModelTypes;
     
     @OneToMany(mappedBy = "instanceId")
     private Set<Form> Instance.forms;
     
     @OneToMany(mappedBy = "instanceId")
     private Set<InstanceAcl> Instance.instanceAcls;
+    
+    @OneToMany(mappedBy = "instanceId")
+    private Set<InstanceDescr> Instance.instanceDescrs;
     
     @OneToMany(mappedBy = "instanceId")
     private Set<InstanceKeyword> Instance.instanceKeywords;
@@ -68,27 +74,59 @@ privileged aspect Instance_Roo_DbManaged {
     private Study Instance.studyId;
     
     @ManyToOne
+    @JoinColumn(name = "time_meth_id", referencedColumnName = "id", nullable = false)
+    private TimeMethType Instance.timeMethId;
+    
+    @ManyToOne
     @JoinColumn(name = "unit_analysis_id", referencedColumnName = "id", nullable = false)
     private UnitAnalysis Instance.unitAnalysisId;
     
+    @ManyToOne
+    @JoinColumn(name = "added_by", referencedColumnName = "id", nullable = false)
+    private User Instance.addedBy;
+    
     @Column(name = "datestart", columnDefinition = "timestamp")
-    @NotNull
     @Temporal(TemporalType.TIMESTAMP)
     @DateTimeFormat(style = "M-")
     private Date Instance.datestart;
     
     @Column(name = "dateend", columnDefinition = "timestamp")
-    @NotNull
     @Temporal(TemporalType.TIMESTAMP)
     @DateTimeFormat(style = "M-")
     private Date Instance.dateend;
     
-    public Set<Topic> Instance.getTopics() {
-        return topics;
+    @Column(name = "insertion_status", columnDefinition = "int4")
+    @NotNull
+    private Integer Instance.insertionStatus;
+    
+    @Column(name = "raw_data", columnDefinition = "bool")
+    @NotNull
+    private boolean Instance.rawData;
+    
+    @Column(name = "raw_metadata", columnDefinition = "bool")
+    @NotNull
+    private boolean Instance.rawMetadata;
+    
+    @Column(name = "added", columnDefinition = "timestamp")
+    @NotNull
+    @Temporal(TemporalType.TIMESTAMP)
+    @DateTimeFormat(style = "M-")
+    private Date Instance.added;
+    
+    public Set<SamplingProcedure> Instance.getSamplingProcedures() {
+        return samplingProcedures;
     }
     
-    public void Instance.setTopics(Set<Topic> topics) {
-        this.topics = topics;
+    public void Instance.setSamplingProcedures(Set<SamplingProcedure> samplingProcedures) {
+        this.samplingProcedures = samplingProcedures;
+    }
+    
+    public Set<Topic> Instance.getTopics1() {
+        return topics1;
+    }
+    
+    public void Instance.setTopics1(Set<Topic> topics1) {
+        this.topics1 = topics1;
     }
     
     public Set<File> Instance.getFiles() {
@@ -99,20 +137,12 @@ privileged aspect Instance_Roo_DbManaged {
         this.files = files;
     }
     
-    public InstanceDescr Instance.getInstanceDescr() {
-        return instanceDescr;
+    public Set<CollectionModelType> Instance.getCollectionModelTypes() {
+        return collectionModelTypes;
     }
     
-    public void Instance.setInstanceDescr(InstanceDescr instanceDescr) {
-        this.instanceDescr = instanceDescr;
-    }
-    
-    public Methodology Instance.getMethodology() {
-        return methodology;
-    }
-    
-    public void Instance.setMethodology(Methodology methodology) {
-        this.methodology = methodology;
+    public void Instance.setCollectionModelTypes(Set<CollectionModelType> collectionModelTypes) {
+        this.collectionModelTypes = collectionModelTypes;
     }
     
     public Set<Form> Instance.getForms() {
@@ -129,6 +159,14 @@ privileged aspect Instance_Roo_DbManaged {
     
     public void Instance.setInstanceAcls(Set<InstanceAcl> instanceAcls) {
         this.instanceAcls = instanceAcls;
+    }
+    
+    public Set<InstanceDescr> Instance.getInstanceDescrs() {
+        return instanceDescrs;
+    }
+    
+    public void Instance.setInstanceDescrs(Set<InstanceDescr> instanceDescrs) {
+        this.instanceDescrs = instanceDescrs;
     }
     
     public Set<InstanceKeyword> Instance.getInstanceKeywords() {
@@ -171,12 +209,28 @@ privileged aspect Instance_Roo_DbManaged {
         this.studyId = studyId;
     }
     
+    public TimeMethType Instance.getTimeMethId() {
+        return timeMethId;
+    }
+    
+    public void Instance.setTimeMethId(TimeMethType timeMethId) {
+        this.timeMethId = timeMethId;
+    }
+    
     public UnitAnalysis Instance.getUnitAnalysisId() {
         return unitAnalysisId;
     }
     
     public void Instance.setUnitAnalysisId(UnitAnalysis unitAnalysisId) {
         this.unitAnalysisId = unitAnalysisId;
+    }
+    
+    public User Instance.getAddedBy() {
+        return addedBy;
+    }
+    
+    public void Instance.setAddedBy(User addedBy) {
+        this.addedBy = addedBy;
     }
     
     public Date Instance.getDatestart() {
@@ -193,6 +247,38 @@ privileged aspect Instance_Roo_DbManaged {
     
     public void Instance.setDateend(Date dateend) {
         this.dateend = dateend;
+    }
+    
+    public Integer Instance.getInsertionStatus() {
+        return insertionStatus;
+    }
+    
+    public void Instance.setInsertionStatus(Integer insertionStatus) {
+        this.insertionStatus = insertionStatus;
+    }
+    
+    public boolean Instance.isRawData() {
+        return rawData;
+    }
+    
+    public void Instance.setRawData(boolean rawData) {
+        this.rawData = rawData;
+    }
+    
+    public boolean Instance.isRawMetadata() {
+        return rawMetadata;
+    }
+    
+    public void Instance.setRawMetadata(boolean rawMetadata) {
+        this.rawMetadata = rawMetadata;
+    }
+    
+    public Date Instance.getAdded() {
+        return added;
+    }
+    
+    public void Instance.setAdded(Date added) {
+        this.added = added;
     }
     
 }

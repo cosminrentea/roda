@@ -3,11 +3,13 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <page:list id="pl_ro_roda_InstanceDescr" items="${instancedescrs}" z="QkGmzkVmqnk8KN2riZsifPcHRyg=">
-        <table:table data="${instancedescrs}" id="l_ro_roda_InstanceDescr" path="/instancedescrs" typeIdFieldName="instanceId" z="v5kuRmSaUThO+1qFS4oppIMucJc=">
-            <table:column id="c_ro_roda_InstanceDescr_instance" property="instance" z="8AijEM4xu3cTA2CHTiBqs/dV4UE="/>
-            <table:column id="c_ro_roda_InstanceDescr_title" property="title" z="1a8Y6/EFEbYSHE9M0ubTUQOrUzE="/>
-            <table:column id="c_ro_roda_InstanceDescr_abstract1" property="abstract1" z="xgjCXvwe5EPNX12vkPw6APsq4S8="/>
-            <table:column id="c_ro_roda_InstanceDescr_languageId" property="languageId" z="MCdVcux21ZbLS5e7nkrdl/jnobA="/>
+        <table:table data="${instancedescrs}" id="l_ro_roda_InstanceDescr" path="/instancedescrs" z="dHpUQctLVh5x8IPNViEGh9j4ZXA=">
+            <table:column id="c_ro_roda_InstanceDescr_instanceId" property="instanceId" z="HUXxkgpV3H1hIiF4NEWxJJ1bol4="/>
+            <table:column id="c_ro_roda_InstanceDescr_langId" property="langId" z="OvNstuRqBrT5dRYHqU+L6PMYDyo="/>
+            <table:column id="c_ro_roda_InstanceDescr_weighting" property="weighting" z="sgIWGs7aMtUppRIsrpSGR/ZNBf0="/>
+            <table:column id="c_ro_roda_InstanceDescr_researchInstrument" property="researchInstrument" z="MPV9EFroQeGZhSiPq0xzDHdGMg0="/>
+            <table:column id="c_ro_roda_InstanceDescr_scope" property="scope" z="menF2yCkSBzdgDELItD3FQi6Vkg="/>
+            <table:column id="c_ro_roda_InstanceDescr_universe" property="universe" z="UlH27ClBr0v145pDpa+edDhZ+Wk="/>
         </table:table>
     </page:list>
 </div>

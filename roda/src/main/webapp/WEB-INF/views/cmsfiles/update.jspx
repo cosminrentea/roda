@@ -3,12 +3,10 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <form:update id="fu_ro_roda_CmsFile" modelAttribute="cmsFile" path="/cmsfiles" versionField="none" z="bAh5xKQ7OxVgNiHewKaOL4Lf0qw=">
-        <field:select field="folderId" id="c_ro_roda_CmsFile_folderId" itemValue="id" items="${cmsfolders}" path="/cmsfolders" z="ra0X/jrSVwOAqSLOVTVnsXfH4S4="/>
+        <field:simple field="cmsFilePropertyNameValues" id="c_ro_roda_CmsFile_cmsFilePropertyNameValues" messageCode="entity_reference_not_managed" messageCodeAttribute="Cms File Property Name Value" z="FTGIUm8w09D81OLvAOP8DoivnRY="/>
+        <field:select field="cmsFolderId" id="c_ro_roda_CmsFile_cmsFolderId" itemValue="id" items="${cmsfolders}" path="/cmsfolders" z="og4mBEj15XSpXn2R+4lCCtGLBoM="/>
         <field:input field="filename" id="c_ro_roda_CmsFile_filename" required="true" z="24r/a2LZ0BEqTzw2o4l1OxiiUM0="/>
         <field:input field="label" id="c_ro_roda_CmsFile_label" required="true" z="Si+88FrVoit9XaGLANtYR3B5tgo="/>
-        <field:input field="md5" id="c_ro_roda_CmsFile_md5" required="true" z="dTpZ70qHwgO9dREVnPWw4OeQQ+U="/>
-        <field:input field="mimegroup" id="c_ro_roda_CmsFile_mimegroup" required="true" z="wUX46eLoKHxPS/tmuPjxaxPs0Xw="/>
-        <field:input field="mimesubgroup" id="c_ro_roda_CmsFile_mimesubgroup" required="true" z="aVnPqz59jyjReqU7BsA+t6LqPl8="/>
         <field:input field="filesize" id="c_ro_roda_CmsFile_filesize" required="true" validationMessageCode="field_invalid_integer" z="NMWvjhDLT+CLMna88fb0nzQ5K70="/>
     </form:update>
 </div>

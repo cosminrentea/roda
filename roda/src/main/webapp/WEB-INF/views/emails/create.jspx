@@ -3,10 +3,9 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <form:create id="fc_ro_roda_Email" modelAttribute="email" path="/emails" render="${empty dependencies}" z="Tl/eZEvyFtsiZYc8WXz2sjFCvvQ=">
-        <field:select field="orgId" id="c_ro_roda_Email_orgId" itemValue="id" items="${orgs}" path="/orgs" z="g0Rtcb4olpN9/iYW5u5FI490fBY="/>
-        <field:select field="personId" id="c_ro_roda_Email_personId" itemValue="id" items="${people}" path="/people" z="fYJmS8evdQSZGPmgwH7wuEhJDsg="/>
+        <field:simple field="orgEmails" id="c_ro_roda_Email_orgEmails" messageCode="entity_reference_not_managed" messageCodeAttribute="Org Email" z="jt4OYydIliZ+jrBl7QV7CHzJp9E="/>
+        <field:simple field="personEmails" id="c_ro_roda_Email_personEmails" messageCode="entity_reference_not_managed" messageCodeAttribute="Person Email" z="axlbaIsSpafVowtN9AbnLEGeQ/o="/>
         <field:input field="email" id="c_ro_roda_Email_email" required="true" validationMessageCode="field_invalid_email" z="Aw+pr98+Nlhy6szZ1dCuN8fKYUs="/>
-        <field:checkbox field="ismain" id="c_ro_roda_Email_ismain" z="g0d8Tm8AfZScV+kX1xId7oWasV4="/>
     </form:create>
     <form:dependency dependencies="${dependencies}" id="d_ro_roda_Email" render="${not empty dependencies}" z="Wugbi3A2srLn0cfnLSKDcvcJoHU="/>
 </div>

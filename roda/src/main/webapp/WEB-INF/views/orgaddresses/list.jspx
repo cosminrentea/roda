@@ -6,6 +6,7 @@
         <table:table data="${orgaddresses}" id="l_ro_roda_OrgAddress" path="/orgaddresses" z="DWKkCqQKq25B/v0LpVxe0i0CfCA=">
             <table:column id="c_ro_roda_OrgAddress_addressId" property="addressId" z="7nsLzFMqduHQFUZxMiGOSVvk2SA="/>
             <table:column id="c_ro_roda_OrgAddress_orgId" property="orgId" z="XmX98nA54eAFGE1SDhqj08s20dY="/>
+            <table:column date="true" dateTimePattern="${orgAddress_datestart_date_format}" id="c_ro_roda_OrgAddress_datestart" property="datestart" z="lmc/908uiEQ/YwTEL5BdC5+LbY0="/>
             <table:column date="true" dateTimePattern="${orgAddress_dateend_date_format}" id="c_ro_roda_OrgAddress_dateend" property="dateend" z="UJ9o5icPBLY75Z7kqaZ/7cxBUSo="/>
         </table:table>
     </page:list>

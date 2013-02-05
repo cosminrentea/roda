@@ -22,9 +22,6 @@ privileged aspect StudyOrgAssoc_Roo_DbManaged {
     @Column(name = "assoc_description", columnDefinition = "text")
     private String StudyOrgAssoc.assocDescription;
     
-    @Column(name = "assoc_details", columnDefinition = "text")
-    private String StudyOrgAssoc.assocDetails;
-    
     public Set<StudyOrg> StudyOrgAssoc.getStudyOrgs() {
         return studyOrgs;
     }
@@ -47,14 +44,6 @@ privileged aspect StudyOrgAssoc_Roo_DbManaged {
     
     public void StudyOrgAssoc.setAssocDescription(String assocDescription) {
         this.assocDescription = assocDescription;
-    }
-    
-    public String StudyOrgAssoc.getAssocDetails() {
-        return assocDetails;
-    }
-    
-    public void StudyOrgAssoc.setAssocDetails(String assocDetails) {
-        this.assocDetails = assocDetails;
     }
     
 }

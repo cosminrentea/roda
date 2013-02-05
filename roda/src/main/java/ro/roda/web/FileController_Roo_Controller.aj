@@ -16,7 +16,7 @@ import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.File;
 import ro.roda.FileAcl;
-import ro.roda.Filetype;
+import ro.roda.FilePropertyNameValue;
 import ro.roda.Instance;
 import ro.roda.SelectionVariableItem;
 import ro.roda.Study;
@@ -93,7 +93,7 @@ privileged aspect FileController_Roo_Controller {
     void FileController.populateEditForm(Model uiModel, File file) {
         uiModel.addAttribute("file", file);
         uiModel.addAttribute("fileacls", FileAcl.findAllFileAcls());
-        uiModel.addAttribute("filetypes", Filetype.findAllFiletypes());
+        uiModel.addAttribute("filepropertynamevalues", FilePropertyNameValue.findAllFilePropertyNameValues());
         uiModel.addAttribute("instances", Instance.findAllInstances());
         uiModel.addAttribute("selectionvariableitems", SelectionVariableItem.findAllSelectionVariableItems());
         uiModel.addAttribute("studys", Study.findAllStudys());

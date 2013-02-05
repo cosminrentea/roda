@@ -31,6 +31,12 @@ privileged aspect Region_Roo_DbManaged {
     @NotNull
     private String Region.name;
     
+    @Column(name = "region_code", columnDefinition = "varchar", length = 50)
+    private String Region.regionCode;
+    
+    @Column(name = "region_code_name", columnDefinition = "varchar", length = 50)
+    private String Region.regionCodeName;
+    
     public Set<City> Region.getCities() {
         return cities;
     }
@@ -61,6 +67,22 @@ privileged aspect Region_Roo_DbManaged {
     
     public void Region.setName(String name) {
         this.name = name;
+    }
+    
+    public String Region.getRegionCode() {
+        return regionCode;
+    }
+    
+    public void Region.setRegionCode(String regionCode) {
+        this.regionCode = regionCode;
+    }
+    
+    public String Region.getRegionCodeName() {
+        return regionCodeName;
+    }
+    
+    public void Region.setRegionCodeName(String regionCodeName) {
+        this.regionCodeName = regionCodeName;
     }
     
 }

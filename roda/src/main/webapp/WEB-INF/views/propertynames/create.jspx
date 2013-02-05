@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:spring="http://www.springframework.org/tags" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <form:create id="fc_ro_roda_PropertyName" modelAttribute="propertyName" path="/propertynames" render="${empty dependencies}" z="/Ee/CYRbzx6v537Ws/hsVgsq4So=">
+        <field:simple field="cmsFilePropertyNameValues" id="c_ro_roda_PropertyName_cmsFilePropertyNameValues" messageCode="entity_reference_not_managed" messageCodeAttribute="Cms File Property Name Value" z="UYHFx0qXdTCfFU4sFVuxB+8exT4="/>
+        <field:simple field="filePropertyNameValues" id="c_ro_roda_PropertyName_filePropertyNameValues" messageCode="entity_reference_not_managed" messageCodeAttribute="File Property Name Value" z="qIJZepBU11/4WjbbSkadmMrs0/4="/>
+        <field:input field="name" id="c_ro_roda_PropertyName_name" required="true" z="d51fp5eZ6507YapdChDS/0USv7s="/>
+        <field:input field="description" id="c_ro_roda_PropertyName_description" z="8H6rv4lj5J/ebOJDZPhCRvyLi98="/>
+    </form:create>
+    <form:dependency dependencies="${dependencies}" id="d_ro_roda_PropertyName" render="${not empty dependencies}" z="x+8yX/ocxjfQkAKLHGouNdgI7b4="/>
+</div>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:show id="ps_ro_roda_CmsFilePropertyNameValue" object="${cmsfilepropertynamevalue}" path="/cmsfilepropertynamevalues" z="DTEb3xxqkDzQTjki73MLkKnGr0I=">
+        <field:display field="cmsFileId" id="s_ro_roda_CmsFilePropertyNameValue_cmsFileId" object="${cmsfilepropertynamevalue}" z="C5q9ogVODXWaAgQxvBhH6nuoPy0="/>
+        <field:display field="propertyNameId" id="s_ro_roda_CmsFilePropertyNameValue_propertyNameId" object="${cmsfilepropertynamevalue}" z="Seib295hJz8y7d9tCtXHAABiCX0="/>
+        <field:display field="propertyValueId" id="s_ro_roda_CmsFilePropertyNameValue_propertyValueId" object="${cmsfilepropertynamevalue}" z="1/fAaAZOyz+EI4p5p3KX2FQkH34="/>
+    </page:show>
+</div>

@@ -5,6 +5,7 @@
     <page:list id="pl_ro_roda_TimeMethType" items="${timemethtypes}" z="qBIeMMspFca4RJIV/4KagytrNzY=">
         <table:table data="${timemethtypes}" id="l_ro_roda_TimeMethType" path="/timemethtypes" z="eR3OAqCmJzM52Fj7e1jDRqlb9Lc=">
             <table:column id="c_ro_roda_TimeMethType_name" property="name" z="5uPIhFQxXQnIpqh92PGJQZ7dWbM="/>
+            <table:column id="c_ro_roda_TimeMethType_description" property="description" z="kJYwkcUmGf+yArbR8uh9cUo2sgw="/>
         </table:table>
     </page:list>
 </div>

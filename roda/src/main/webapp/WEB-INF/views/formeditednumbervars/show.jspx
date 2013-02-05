@@ -3,8 +3,8 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <page:show id="ps_ro_roda_FormEditedNumberVar" object="${formeditednumbervar}" path="/formeditednumbervars" z="gUOqQ8grkxFZCUb2nQ4AZl77lvc=">
-        <field:display field="variableId" id="s_ro_roda_FormEditedNumberVar_variableId" object="${formeditednumbervar}" z="+CelGtA/BLCzF3QqQvtMDU1KXzM="/>
         <field:display field="formId" id="s_ro_roda_FormEditedNumberVar_formId" object="${formeditednumbervar}" z="/GXn9a1krmO8tJMSVrTHcc8FdcM="/>
+        <field:display field="variableId" id="s_ro_roda_FormEditedNumberVar_variableId" object="${formeditednumbervar}" z="+CelGtA/BLCzF3QqQvtMDU1KXzM="/>
         <field:display field="value" id="s_ro_roda_FormEditedNumberVar_value" object="${formeditednumbervar}" z="PgL9jFcQiawVI1gnxK3Mj6bNe+s="/>
     </page:show>
 </div>

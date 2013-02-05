@@ -19,14 +19,14 @@ privileged aspect Form_Roo_Jpa_Entity {
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", columnDefinition = "int4")
-    private Integer Form.id;
+    @Column(name = "id", columnDefinition = "bigserial")
+    private Long Form.id;
     
-    public Integer Form.getId() {
+    public Long Form.getId() {
         return this.id;
     }
     
-    public void Form.setId(Integer id) {
+    public void Form.setId(Long id) {
         this.id = id;
     }
     

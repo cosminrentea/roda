@@ -7,15 +7,15 @@ import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
-import ro.roda.Language;
+import ro.roda.Lang;
 import ro.roda.Topic;
 import ro.roda.TranslatedTopic;
 
 privileged aspect TranslatedTopic_Roo_DbManaged {
     
     @ManyToOne
-    @JoinColumn(name = "language_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
-    private Language TranslatedTopic.languageId;
+    @JoinColumn(name = "lang_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+    private Lang TranslatedTopic.langId;
     
     @ManyToOne
     @JoinColumn(name = "topic_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
@@ -25,12 +25,12 @@ privileged aspect TranslatedTopic_Roo_DbManaged {
     @NotNull
     private String TranslatedTopic.translation;
     
-    public Language TranslatedTopic.getLanguageId() {
-        return languageId;
+    public Lang TranslatedTopic.getLangId() {
+        return langId;
     }
     
-    public void TranslatedTopic.setLanguageId(Language languageId) {
-        this.languageId = languageId;
+    public void TranslatedTopic.setLangId(Lang langId) {
+        this.langId = langId;
     }
     
     public Topic TranslatedTopic.getTopicId() {

@@ -4,10 +4,11 @@
     <jsp:output omit-xml-declaration="yes"/>
     <form:create id="fc_ro_roda_Org" modelAttribute="org" path="/orgs" render="${empty dependencies}" z="Fdx6dMuh/diKIZy9nt7Zqcp3X6c=">
         <field:select field="source" id="c_ro_roda_Org_source" itemValue="orgId" items="${sources}" path="/sources" z="HnuxVn6ypXp98veddDoXYhPp1Vg="/>
-        <field:simple field="emails" id="c_ro_roda_Org_emails" messageCode="entity_reference_not_managed" messageCodeAttribute="Email" z="XgGKFRP1p69hAQLwZ94CS+4me4U="/>
         <field:simple field="instanceOrgs" id="c_ro_roda_Org_instanceOrgs" messageCode="entity_reference_not_managed" messageCodeAttribute="Instance Org" z="iIGM/4jRhPoqsNQG2IahYGfQsi0="/>
-        <field:simple field="internets" id="c_ro_roda_Org_internets" messageCode="entity_reference_not_managed" messageCodeAttribute="Internet" z="i6UO5g+vxIMT8oV5nEgRwmB/9ok="/>
         <field:simple field="orgAddresses" id="c_ro_roda_Org_orgAddresses" messageCode="entity_reference_not_managed" messageCodeAttribute="Org Address" z="CJXiiW8G862yINCEdBIYbLTu5Ko="/>
+        <field:simple field="orgEmails" id="c_ro_roda_Org_orgEmails" messageCode="entity_reference_not_managed" messageCodeAttribute="Org Email" z="Bff2cXImTQVAk1/adlsvTA36bzc="/>
+        <field:simple field="orgInternets" id="c_ro_roda_Org_orgInternets" messageCode="entity_reference_not_managed" messageCodeAttribute="Org Internet" z="QMV6MnvsOR9xtdnpZhPVotA4dNk="/>
+        <field:simple field="orgPhones" id="c_ro_roda_Org_orgPhones" messageCode="entity_reference_not_managed" messageCodeAttribute="Org Phone" z="PAJ879s5miyGV/x3lerVGfuofyI="/>
         <field:simple field="orgRelationss" id="c_ro_roda_Org_orgRelationss" messageCode="entity_reference_not_managed" messageCodeAttribute="Org Relations" z="73xfoffdxULOO+0O5i9AWz/HXxM="/>
         <field:simple field="orgRelationss1" id="c_ro_roda_Org_orgRelationss1" messageCode="entity_reference_not_managed" messageCodeAttribute="Org Relations" z="8QF2dcNLDUaAlMNNaH+gYRQEWzs="/>
         <field:simple field="personOrgs" id="c_ro_roda_Org_personOrgs" messageCode="entity_reference_not_managed" messageCodeAttribute="Person Org" z="+3ibaVpa5/QevUODntU2BR/K50U="/>

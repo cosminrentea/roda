@@ -19,15 +19,15 @@ privileged aspect OtherStatistic_Roo_Jpa_Entity {
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "variable_id", columnDefinition = "int4")
-    private Integer OtherStatistic.variableId;
+    @Column(name = "id", columnDefinition = "bigserial")
+    private Long OtherStatistic.id;
     
-    public Integer OtherStatistic.getVariableId() {
-        return this.variableId;
+    public Long OtherStatistic.getId() {
+        return this.id;
     }
     
-    public void OtherStatistic.setVariableId(Integer id) {
-        this.variableId = id;
+    public void OtherStatistic.setId(Long id) {
+        this.id = id;
     }
     
 }

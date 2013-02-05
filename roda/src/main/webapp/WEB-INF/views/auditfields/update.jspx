@@ -4,7 +4,7 @@
     <jsp:output omit-xml-declaration="yes"/>
     <form:update id="fu_ro_roda_AuditField" modelAttribute="auditField" path="/auditfields" versionField="none" z="MkJFpSY80oa6XFsEzrYE4WV0KwQ=">
         <field:input field="columnName" id="c_ro_roda_AuditField_columnName" required="true" z="H69a6hQ4dYf4f9BfEYXxfSxAnyA="/>
-        <field:input field="newValue" id="c_ro_roda_AuditField_newValue" required="true" z="CvwKY3wuvfYQedOkgykJqm1LNGs="/>
-        <field:input field="oldValue" id="c_ro_roda_AuditField_oldValue" required="true" z="/jF57w9OTVi0Klq+5gsC5O3QV/s="/>
+        <field:input field="newValue" id="c_ro_roda_AuditField_newValue" z="3PY3tFIqt+OnprsrBrOlIi4KgaY="/>
+        <field:input field="oldValue" id="c_ro_roda_AuditField_oldValue" z="eZ+XWcWgTfbF/OsdV1mVfnB3Fb8="/>
     </form:update>
 </div>

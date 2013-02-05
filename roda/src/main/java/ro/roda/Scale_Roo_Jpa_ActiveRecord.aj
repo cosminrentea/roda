@@ -28,7 +28,7 @@ privileged aspect Scale_Roo_Jpa_ActiveRecord {
         return entityManager().createQuery("SELECT o FROM Scale o", Scale.class).getResultList();
     }
     
-    public static Scale Scale.findScale(Integer itemId) {
+    public static Scale Scale.findScale(Long itemId) {
         if (itemId == null) return null;
         return entityManager().find(Scale.class, itemId);
     }

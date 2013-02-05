@@ -8,31 +8,23 @@ import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
-import ro.roda.EditedVariable;
 import ro.roda.Form;
 import ro.roda.FormEditedNumberVar;
+import ro.roda.Variable;
 
 privileged aspect FormEditedNumberVar_Roo_DbManaged {
-    
-    @ManyToOne
-    @JoinColumn(name = "variable_id", referencedColumnName = "variable_id", nullable = false, insertable = false, updatable = false)
-    private EditedVariable FormEditedNumberVar.variableId;
     
     @ManyToOne
     @JoinColumn(name = "form_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     private Form FormEditedNumberVar.formId;
     
+    @ManyToOne
+    @JoinColumn(name = "variable_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+    private Variable FormEditedNumberVar.variableId;
+    
     @Column(name = "value", columnDefinition = "numeric", precision = 10, scale = 2)
     @NotNull
     private BigDecimal FormEditedNumberVar.value;
-    
-    public EditedVariable FormEditedNumberVar.getVariableId() {
-        return variableId;
-    }
-    
-    public void FormEditedNumberVar.setVariableId(EditedVariable variableId) {
-        this.variableId = variableId;
-    }
     
     public Form FormEditedNumberVar.getFormId() {
         return formId;
@@ -40,6 +32,14 @@ privileged aspect FormEditedNumberVar_Roo_DbManaged {
     
     public void FormEditedNumberVar.setFormId(Form formId) {
         this.formId = formId;
+    }
+    
+    public Variable FormEditedNumberVar.getVariableId() {
+        return variableId;
+    }
+    
+    public void FormEditedNumberVar.setVariableId(Variable variableId) {
+        this.variableId = variableId;
     }
     
     public BigDecimal FormEditedNumberVar.getValue() {

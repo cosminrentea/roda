@@ -3,46 +3,33 @@
 
 package ro.roda;
 
-import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.validation.constraints.NotNull;
 import ro.roda.Org;
 import ro.roda.Study;
 import ro.roda.StudyOrg;
-import ro.roda.StudyOrgAcl;
 import ro.roda.StudyOrgAssoc;
 
 privileged aspect StudyOrg_Roo_DbManaged {
     
-    @OneToMany(mappedBy = "studyOrgId")
-    private Set<StudyOrgAcl> StudyOrg.studyOrgAcls;
-    
     @ManyToOne
-    @JoinColumn(name = "org_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "org_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     private Org StudyOrg.orgId;
     
     @ManyToOne
-    @JoinColumn(name = "study_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "study_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     private Study StudyOrg.studyId;
     
     @ManyToOne
-    @JoinColumn(name = "assoctype_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "assoctype_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     private StudyOrgAssoc StudyOrg.assoctypeId;
     
     @Column(name = "citation", columnDefinition = "text")
-    @NotNull
     private String StudyOrg.citation;
     
-    public Set<StudyOrgAcl> StudyOrg.getStudyOrgAcls() {
-        return studyOrgAcls;
-    }
-    
-    public void StudyOrg.setStudyOrgAcls(Set<StudyOrgAcl> studyOrgAcls) {
-        this.studyOrgAcls = studyOrgAcls;
-    }
+    @Column(name = "assoc_details", columnDefinition = "text")
+    private String StudyOrg.assocDetails;
     
     public Org StudyOrg.getOrgId() {
         return orgId;
@@ -74,6 +61,14 @@ privileged aspect StudyOrg_Roo_DbManaged {
     
     public void StudyOrg.setCitation(String citation) {
         this.citation = citation;
+    }
+    
+    public String StudyOrg.getAssocDetails() {
+        return assocDetails;
+    }
+    
+    public void StudyOrg.setAssocDetails(String assocDetails) {
+        this.assocDetails = assocDetails;
     }
     
 }

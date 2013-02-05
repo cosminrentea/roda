@@ -28,7 +28,7 @@ privileged aspect Vargroup_Roo_Jpa_ActiveRecord {
         return entityManager().createQuery("SELECT o FROM Vargroup o", Vargroup.class).getResultList();
     }
     
-    public static Vargroup Vargroup.findVargroup(Integer id) {
+    public static Vargroup Vargroup.findVargroup(Long id) {
         if (id == null) return null;
         return entityManager().find(Vargroup.class, id);
     }

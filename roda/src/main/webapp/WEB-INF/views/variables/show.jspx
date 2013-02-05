@@ -5,13 +5,15 @@
     <page:show id="ps_ro_roda_Variable" object="${variable}" path="/variables" z="Rpj6HymyHoU9h5tr/xlHXfoH5ho=">
         <field:display field="concepts" id="s_ro_roda_Variable_concepts" object="${variable}" z="rKeQzKeH0gxZ8/VrTktTr8BaDxE="/>
         <field:display field="vargroups" id="s_ro_roda_Variable_vargroups" object="${variable}" z="dhzMHwVajTIEL/+kBCSLd17Gybk="/>
-        <field:display field="editedVariable" id="s_ro_roda_Variable_editedVariable" object="${variable}" z="D9JCvhUKTR99aEY4UYK4V8BSSIk="/>
         <field:display field="selectionVariable" id="s_ro_roda_Variable_selectionVariable" object="${variable}" z="RjoPgFsekmIEuw8EzfnAJEgVwsg="/>
         <field:display field="fileId" id="s_ro_roda_Variable_fileId" object="${variable}" z="t1e5DgmRDgrouD3HdWvHcOV9blU="/>
         <field:display field="instanceId" id="s_ro_roda_Variable_instanceId" object="${variable}" z="XXQohEpl7zUY1uxj96pfE2fh438="/>
         <field:display field="label" id="s_ro_roda_Variable_label" object="${variable}" z="9XX43pZhp3kp/AzXrjbvDOrNwlU="/>
         <field:display field="type" id="s_ro_roda_Variable_type" object="${variable}" z="UzfM96wR4DyUL8sNYjX2yJ8zQBE="/>
-        <field:display field="operatorInstructions" id="s_ro_roda_Variable_operatorInstructions" object="${variable}" z="VAAGaP9ZUB6yGWoXi5xo48r9Md4="/>
         <field:display field="orderInInstance" id="s_ro_roda_Variable_orderInInstance" object="${variable}" z="6nZKdZRZjs7yrONoGiDy9REyFBI="/>
+        <field:display field="operatorInstructions" id="s_ro_roda_Variable_operatorInstructions" object="${variable}" z="VAAGaP9ZUB6yGWoXi5xo48r9Md4="/>
+        <field:display field="typeEditedText" id="s_ro_roda_Variable_typeEditedText" object="${variable}" z="ebGg4lyldCJJo7UMlsKvZtGYJyw="/>
+        <field:display field="typeEditedNumber" id="s_ro_roda_Variable_typeEditedNumber" object="${variable}" z="vb1FxMQd2qiOeoDPPwppbbDIg48="/>
+        <field:display field="typeSelection" id="s_ro_roda_Variable_typeSelection" object="${variable}" z="8CjZ1uCiT95v2Fd7tOQovgVhPrw="/>
     </page:show>
 </div>

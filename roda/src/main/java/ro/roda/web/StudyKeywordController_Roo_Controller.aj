@@ -22,6 +22,7 @@ import ro.roda.Keyword;
 import ro.roda.Study;
 import ro.roda.StudyKeyword;
 import ro.roda.StudyKeywordPK;
+import ro.roda.User;
 import ro.roda.web.StudyKeywordController;
 
 privileged aspect StudyKeywordController_Roo_Controller {
@@ -110,6 +111,7 @@ privileged aspect StudyKeywordController_Roo_Controller {
         addDateTimeFormatPatterns(uiModel);
         uiModel.addAttribute("keywords", Keyword.findAllKeywords());
         uiModel.addAttribute("studys", Study.findAllStudys());
+        uiModel.addAttribute("users", User.findAllUsers());
     }
     
     String StudyKeywordController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

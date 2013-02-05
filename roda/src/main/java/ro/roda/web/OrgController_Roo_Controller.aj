@@ -14,11 +14,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.Email;
 import ro.roda.InstanceOrg;
-import ro.roda.Internet;
 import ro.roda.Org;
 import ro.roda.OrgAddress;
+import ro.roda.OrgEmail;
+import ro.roda.OrgInternet;
+import ro.roda.OrgPhone;
 import ro.roda.OrgPrefix;
 import ro.roda.OrgRelations;
 import ro.roda.OrgSufix;
@@ -96,10 +97,11 @@ privileged aspect OrgController_Roo_Controller {
     
     void OrgController.populateEditForm(Model uiModel, Org org) {
         uiModel.addAttribute("org", org);
-        uiModel.addAttribute("emails", Email.findAllEmails());
         uiModel.addAttribute("instanceorgs", InstanceOrg.findAllInstanceOrgs());
-        uiModel.addAttribute("internets", Internet.findAllInternets());
         uiModel.addAttribute("orgaddresses", OrgAddress.findAllOrgAddresses());
+        uiModel.addAttribute("orgemails", OrgEmail.findAllOrgEmails());
+        uiModel.addAttribute("orginternets", OrgInternet.findAllOrgInternets());
+        uiModel.addAttribute("orgphones", OrgPhone.findAllOrgPhones());
         uiModel.addAttribute("orgprefixes", OrgPrefix.findAllOrgPrefixes());
         uiModel.addAttribute("orgrelationses", OrgRelations.findAllOrgRelationses());
         uiModel.addAttribute("orgsufixes", OrgSufix.findAllOrgSufixes());

@@ -22,6 +22,7 @@ import ro.roda.Instance;
 import ro.roda.InstanceKeyword;
 import ro.roda.InstanceKeywordPK;
 import ro.roda.Keyword;
+import ro.roda.User;
 import ro.roda.web.InstanceKeywordController;
 
 privileged aspect InstanceKeywordController_Roo_Controller {
@@ -110,6 +111,7 @@ privileged aspect InstanceKeywordController_Roo_Controller {
         addDateTimeFormatPatterns(uiModel);
         uiModel.addAttribute("instances", Instance.findAllInstances());
         uiModel.addAttribute("keywords", Keyword.findAllKeywords());
+        uiModel.addAttribute("users", User.findAllUsers());
     }
     
     String InstanceKeywordController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

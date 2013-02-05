@@ -18,7 +18,6 @@ import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.File;
 import ro.roda.FormSelectionVar;
-import ro.roda.Frequency;
 import ro.roda.Item;
 import ro.roda.SelectionVariable;
 import ro.roda.SelectionVariableItem;
@@ -104,7 +103,6 @@ privileged aspect SelectionVariableItemController_Roo_Controller {
         uiModel.addAttribute("selectionVariableItem", selectionVariableItem);
         uiModel.addAttribute("files", File.findAllFiles());
         uiModel.addAttribute("formselectionvars", FormSelectionVar.findAllFormSelectionVars());
-        uiModel.addAttribute("frequencys", Frequency.findAllFrequencys());
         uiModel.addAttribute("items", Item.findAllItems());
         uiModel.addAttribute("selectionvariables", SelectionVariable.findAllSelectionVariables());
     }

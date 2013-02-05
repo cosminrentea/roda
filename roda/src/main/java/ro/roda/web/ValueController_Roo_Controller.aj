@@ -39,7 +39,7 @@ privileged aspect ValueController_Roo_Controller {
     }
     
     @RequestMapping(value = "/{itemId}", produces = "text/html")
-    public String ValueController.show(@PathVariable("itemId") Integer itemId, Model uiModel) {
+    public String ValueController.show(@PathVariable("itemId") Long itemId, Model uiModel) {
         uiModel.addAttribute("value", Value.findValue(itemId));
         uiModel.addAttribute("itemId", itemId);
         return "values/show";
@@ -71,13 +71,13 @@ privileged aspect ValueController_Roo_Controller {
     }
     
     @RequestMapping(value = "/{itemId}", params = "form", produces = "text/html")
-    public String ValueController.updateForm(@PathVariable("itemId") Integer itemId, Model uiModel) {
+    public String ValueController.updateForm(@PathVariable("itemId") Long itemId, Model uiModel) {
         populateEditForm(uiModel, Value.findValue(itemId));
         return "values/update";
     }
     
     @RequestMapping(value = "/{itemId}", method = RequestMethod.DELETE, produces = "text/html")
-    public String ValueController.delete(@PathVariable("itemId") Integer itemId, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
+    public String ValueController.delete(@PathVariable("itemId") Long itemId, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
         Value value = Value.findValue(itemId);
         value.remove();
         uiModel.asMap().clear();

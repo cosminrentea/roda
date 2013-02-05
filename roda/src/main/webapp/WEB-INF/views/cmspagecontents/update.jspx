@@ -3,10 +3,10 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <form:update id="fu_ro_roda_CmsPageContent" modelAttribute="cmsPageContent" path="/cmspagecontents" versionField="none" z="KkLRbHUaA+T7nLJVIDyLD8K/4io=">
-        <field:select field="page" id="c_ro_roda_CmsPageContent_page" itemValue="id" items="${cmspages}" path="/cmspages" z="hxC8hrNX5GgXezZhkTZR9/jGqSU="/>
+        <field:select field="cmsPageId" id="c_ro_roda_CmsPageContent_cmsPageId" itemValue="id" items="${cmspages}" path="/cmspages" z="RjLS+lyZTMB4WRt6awYdzR4XvLs="/>
         <field:input field="name" id="c_ro_roda_CmsPageContent_name" required="true" z="JO0aNNBTt+e8Tt6+vLwSSnLQk4E="/>
         <field:input field="contentTitle" id="c_ro_roda_CmsPageContent_contentTitle" required="true" z="+AOals2LsDGTNCXpxX1gBxU9ZiI="/>
         <field:input field="contentText" id="c_ro_roda_CmsPageContent_contentText" z="CpCuHDRragPpMEFlQP8GXwiZGts="/>
-        <field:input field="seqnumber" id="c_ro_roda_CmsPageContent_seqnumber" required="true" validationMessageCode="field_invalid_integer" z="p/9BB2o7eNaHWsijGbKzO8ruUV0="/>
+        <field:input field="orderInPage" id="c_ro_roda_CmsPageContent_orderInPage" required="true" validationMessageCode="field_invalid_integer" z="Y0rYUnLJGLalJKI2QyZCVTLJCNM="/>
     </form:update>
 </div>

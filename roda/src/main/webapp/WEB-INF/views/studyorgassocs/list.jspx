@@ -6,7 +6,6 @@
         <table:table data="${studyorgassocs}" id="l_ro_roda_StudyOrgAssoc" path="/studyorgassocs" z="9AaTuLVeOi7G816RrHHfTedXtUc=">
             <table:column id="c_ro_roda_StudyOrgAssoc_assocName" property="assocName" z="RXfRsK+0yQmHjNtfUen2cRVQI8s="/>
             <table:column id="c_ro_roda_StudyOrgAssoc_assocDescription" property="assocDescription" z="Y7MEsWsJAh6SZgRGVCXDAqxrV/s="/>
-            <table:column id="c_ro_roda_StudyOrgAssoc_assocDetails" property="assocDetails" z="qjIjMgi92oLuvip8VJxe+uBXPjA="/>
         </table:table>
     </page:list>
 </div>

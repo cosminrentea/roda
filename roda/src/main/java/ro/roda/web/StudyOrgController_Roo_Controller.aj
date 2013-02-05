@@ -6,6 +6,8 @@ package ro.roda.web;
 import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,12 +19,20 @@ import org.springframework.web.util.WebUtils;
 import ro.roda.Org;
 import ro.roda.Study;
 import ro.roda.StudyOrg;
-import ro.roda.StudyOrgAcl;
 import ro.roda.StudyOrgAssoc;
+import ro.roda.StudyOrgPK;
 import ro.roda.web.StudyOrgController;
 
 privileged aspect StudyOrgController_Roo_Controller {
     
+    private ConversionService StudyOrgController.conversionService;
+    
+    @Autowired
+    public StudyOrgController.new(ConversionService conversionService) {
+        super();
+        this.conversionService = conversionService;
+    }
+
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String StudyOrgController.create(@Valid StudyOrg studyOrg, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
         if (bindingResult.hasErrors()) {
@@ -31,7 +41,7 @@ privileged aspect StudyOrgController_Roo_Controller {
         }
         uiModel.asMap().clear();
         studyOrg.persist();
-        return "redirect:/studyorgs/" + encodeUrlPathSegment(studyOrg.getId().toString(), httpServletRequest);
+        return "redirect:/studyorgs/" + encodeUrlPathSegment(conversionService.convert(studyOrg.getId(), String.class), httpServletRequest);
     }
     
     @RequestMapping(params = "form", produces = "text/html")
@@ -41,9 +51,9 @@ privileged aspect StudyOrgController_Roo_Controller {
     }
     
     @RequestMapping(value = "/{id}", produces = "text/html")
-    public String StudyOrgController.show(@PathVariable("id") Integer id, Model uiModel) {
+    public String StudyOrgController.show(@PathVariable("id") StudyOrgPK id, Model uiModel) {
         uiModel.addAttribute("studyorg", StudyOrg.findStudyOrg(id));
-        uiModel.addAttribute("itemId", id);
+        uiModel.addAttribute("itemId", conversionService.convert(id, String.class));
         return "studyorgs/show";
     }
     
@@ -69,17 +79,17 @@ privileged aspect StudyOrgController_Roo_Controller {
         }
         uiModel.asMap().clear();
         studyOrg.merge();
-        return "redirect:/studyorgs/" + encodeUrlPathSegment(studyOrg.getId().toString(), httpServletRequest);
+        return "redirect:/studyorgs/" + encodeUrlPathSegment(conversionService.convert(studyOrg.getId(), String.class), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
-    public String StudyOrgController.updateForm(@PathVariable("id") Integer id, Model uiModel) {
+    public String StudyOrgController.updateForm(@PathVariable("id") StudyOrgPK id, Model uiModel) {
         populateEditForm(uiModel, StudyOrg.findStudyOrg(id));
         return "studyorgs/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
-    public String StudyOrgController.delete(@PathVariable("id") Integer id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
+    public String StudyOrgController.delete(@PathVariable("id") StudyOrgPK id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
         StudyOrg studyOrg = StudyOrg.findStudyOrg(id);
         studyOrg.remove();
         uiModel.asMap().clear();
@@ -92,7 +102,6 @@ privileged aspect StudyOrgController_Roo_Controller {
         uiModel.addAttribute("studyOrg", studyOrg);
         uiModel.addAttribute("orgs", Org.findAllOrgs());
         uiModel.addAttribute("studys", Study.findAllStudys());
-        uiModel.addAttribute("studyorgacls", StudyOrgAcl.findAllStudyOrgAcls());
         uiModel.addAttribute("studyorgassocs", StudyOrgAssoc.findAllStudyOrgAssocs());
     }
     

@@ -6,11 +6,12 @@
         <field:simple field="orgAddresses" id="c_ro_roda_Address_orgAddresses" messageCode="entity_reference_not_managed" messageCodeAttribute="Org Address" z="R2tYNjajzGk5IAwYWT6/iIYCtG0="/>
         <field:simple field="personAddresses" id="c_ro_roda_Address_personAddresses" messageCode="entity_reference_not_managed" messageCodeAttribute="Person Address" z="y/88h7glSFNBC9Za5HAj3gRTUyo="/>
         <field:select field="cityId" id="c_ro_roda_Address_cityId" itemValue="id" items="${citys}" path="/citys" z="ibaTQBBHTbYrgQhjS4sYtIV+2jU="/>
-        <field:select field="countryId" id="c_ro_roda_Address_countryId" itemValue="id" items="${countrys}" path="/countrys" z="M+0jSHiACYfjQQH6s3cceVCrw/Q="/>
+        <field:input field="countryId" id="c_ro_roda_Address_countryId" required="true" z="pj+3Ud6YumH+JtbZ8sUPHaOup+g="/>
         <field:input field="address1" id="c_ro_roda_Address_address1" required="true" z="bn0bvrZXGZF+FDChUBoEw9KXrco="/>
-        <field:input field="address2" id="c_ro_roda_Address_address2" required="true" z="R0A4+ODCQHvRurF9S1Y1ac3r+As="/>
-        <field:input field="sector" id="c_ro_roda_Address_sector" required="true" z="MhNGdgbcqnpYsctTj7vypsG5FXU="/>
-        <field:input field="postalCode" id="c_ro_roda_Address_postalCode" required="true" z="oUN5qv8MSgARMwyBiqf/smVDE8s="/>
+        <field:input field="address2" id="c_ro_roda_Address_address2" z="Op+1eHcO87aFagsuKwJxoxbvbXE="/>
+        <field:input field="subdivName" id="c_ro_roda_Address_subdivName" z="ufiI+QROD6dYXGDvtJ23jXdbPOA="/>
+        <field:input field="subdivCode" id="c_ro_roda_Address_subdivCode" z="qgEHV+w7Ozr44kFWOzaoLAcsZDI="/>
+        <field:input field="postalCode" id="c_ro_roda_Address_postalCode" z="n9Dda9o+/ssJ4CCXunti5LvhRBc="/>
     </form:create>
     <form:dependency dependencies="${dependencies}" id="d_ro_roda_Address" render="${not empty dependencies}" z="CdJCvA+f5YV3A+3baEtYxnitMok="/>
 </div>

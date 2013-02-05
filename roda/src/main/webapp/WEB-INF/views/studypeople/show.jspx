@@ -6,5 +6,6 @@
         <field:display field="personId" id="s_ro_roda_StudyPerson_personId" object="${studyperson}" z="2Pc7JrEXcCWy98cUw3y8Z6xkxWg="/>
         <field:display field="studyId" id="s_ro_roda_StudyPerson_studyId" object="${studyperson}" z="Ls5A0JuActRHVr8Qd/hHBI4EmMs="/>
         <field:display field="assoctypeId" id="s_ro_roda_StudyPerson_assoctypeId" object="${studyperson}" z="BT9u0OoyqCqLx25hbL6B9I2lw8Q="/>
+        <field:display field="assocDetails" id="s_ro_roda_StudyPerson_assocDetails" object="${studyperson}" z="JC8jOIs+IT6B8HGT5/iI1JYxA0k="/>
     </page:show>
 </div>

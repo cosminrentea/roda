@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN" "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+<tiles-definitions>
+    <definition extends="default" name="sourcecontactmethods/list">
+        <put-attribute name="body" value="/WEB-INF/views/sourcecontactmethods/list.jspx"/>
+    </definition>
+<definition extends="default" name="sourcecontactmethods/show">
+        <put-attribute name="body" value="/WEB-INF/views/sourcecontactmethods/show.jspx"/>
+    </definition>
+<definition extends="default" name="sourcecontactmethods/create">
+        <put-attribute name="body" value="/WEB-INF/views/sourcecontactmethods/create.jspx"/>
+    </definition>
+<definition extends="default" name="sourcecontactmethods/update">
+        <put-attribute name="body" value="/WEB-INF/views/sourcecontactmethods/update.jspx"/>
+    </definition>
+</tiles-definitions>

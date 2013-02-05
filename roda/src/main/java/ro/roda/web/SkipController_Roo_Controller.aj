@@ -38,7 +38,7 @@ privileged aspect SkipController_Roo_Controller {
     }
     
     @RequestMapping(value = "/{id}", produces = "text/html")
-    public String SkipController.show(@PathVariable("id") Integer id, Model uiModel) {
+    public String SkipController.show(@PathVariable("id") Long id, Model uiModel) {
         uiModel.addAttribute("skip", Skip.findSkip(id));
         uiModel.addAttribute("itemId", id);
         return "skips/show";
@@ -70,13 +70,13 @@ privileged aspect SkipController_Roo_Controller {
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
-    public String SkipController.updateForm(@PathVariable("id") Integer id, Model uiModel) {
+    public String SkipController.updateForm(@PathVariable("id") Long id, Model uiModel) {
         populateEditForm(uiModel, Skip.findSkip(id));
         return "skips/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
-    public String SkipController.delete(@PathVariable("id") Integer id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
+    public String SkipController.delete(@PathVariable("id") Long id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
         Skip skip = Skip.findSkip(id);
         skip.remove();
         uiModel.asMap().clear();

@@ -8,19 +8,14 @@ import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 import ro.roda.File;
 import ro.roda.FormSelectionVar;
-import ro.roda.Frequency;
 import ro.roda.Item;
 import ro.roda.SelectionVariable;
 import ro.roda.SelectionVariableItem;
 
 privileged aspect SelectionVariableItem_Roo_DbManaged {
-    
-    @OneToOne(mappedBy = "selectionVariableItem")
-    private Frequency SelectionVariableItem.frequency;
     
     @OneToMany(mappedBy = "selectionVariableItem")
     private Set<FormSelectionVar> SelectionVariableItem.formSelectionVars;
@@ -41,13 +36,8 @@ privileged aspect SelectionVariableItem_Roo_DbManaged {
     @NotNull
     private Integer SelectionVariableItem.orderOfItemInVariable;
     
-    public Frequency SelectionVariableItem.getFrequency() {
-        return frequency;
-    }
-    
-    public void SelectionVariableItem.setFrequency(Frequency frequency) {
-        this.frequency = frequency;
-    }
+    @Column(name = "frequency_value", columnDefinition = "float4", precision = 8, scale = 8)
+    private Float SelectionVariableItem.frequencyValue;
     
     public Set<FormSelectionVar> SelectionVariableItem.getFormSelectionVars() {
         return formSelectionVars;
@@ -87,6 +77,14 @@ privileged aspect SelectionVariableItem_Roo_DbManaged {
     
     public void SelectionVariableItem.setOrderOfItemInVariable(Integer orderOfItemInVariable) {
         this.orderOfItemInVariable = orderOfItemInVariable;
+    }
+    
+    public Float SelectionVariableItem.getFrequencyValue() {
+        return frequencyValue;
+    }
+    
+    public void SelectionVariableItem.setFrequencyValue(Float frequencyValue) {
+        this.frequencyValue = frequencyValue;
     }
     
 }

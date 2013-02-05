@@ -3,61 +3,59 @@
 
 package ro.roda;
 
+import java.util.Set;
 import javax.persistence.Column;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import ro.roda.Internet;
-import ro.roda.Person;
+import ro.roda.OrgInternet;
+import ro.roda.PersonInternet;
 
 privileged aspect Internet_Roo_DbManaged {
     
-    @ManyToOne
-    @JoinColumn(name = "entity_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
-    private Person Internet.entityId;
+    @OneToMany(mappedBy = "internetId")
+    private Set<OrgInternet> Internet.orgInternets;
     
-    @Column(name = "entity_type", columnDefinition = "int4")
+    @OneToMany(mappedBy = "internetId")
+    private Set<PersonInternet> Internet.personInternets;
+    
+    @Column(name = "internet_type", columnDefinition = "varchar", length = 50)
+    private String Internet.internetType;
+    
+    @Column(name = "internet", columnDefinition = "text")
     @NotNull
-    private Integer Internet.entityType;
+    private String Internet.internet;
     
-    @Column(name = "internet_type_id", columnDefinition = "int4")
-    @NotNull
-    private Integer Internet.internetTypeId;
-    
-    @Column(name = "content", columnDefinition = "text")
-    @NotNull
-    private String Internet.content;
-    
-    public Person Internet.getEntityId() {
-        return entityId;
+    public Set<OrgInternet> Internet.getOrgInternets() {
+        return orgInternets;
     }
     
-    public void Internet.setEntityId(Person entityId) {
-        this.entityId = entityId;
+    public void Internet.setOrgInternets(Set<OrgInternet> orgInternets) {
+        this.orgInternets = orgInternets;
     }
     
-    public Integer Internet.getEntityType() {
-        return entityType;
+    public Set<PersonInternet> Internet.getPersonInternets() {
+        return personInternets;
     }
     
-    public void Internet.setEntityType(Integer entityType) {
-        this.entityType = entityType;
+    public void Internet.setPersonInternets(Set<PersonInternet> personInternets) {
+        this.personInternets = personInternets;
     }
     
-    public Integer Internet.getInternetTypeId() {
-        return internetTypeId;
+    public String Internet.getInternetType() {
+        return internetType;
     }
     
-    public void Internet.setInternetTypeId(Integer internetTypeId) {
-        this.internetTypeId = internetTypeId;
+    public void Internet.setInternetType(String internetType) {
+        this.internetType = internetType;
     }
     
-    public String Internet.getContent() {
-        return content;
+    public String Internet.getInternet() {
+        return internet;
     }
     
-    public void Internet.setContent(String content) {
-        this.content = content;
+    public void Internet.setInternet(String internet) {
+        this.internet = internet;
     }
     
 }

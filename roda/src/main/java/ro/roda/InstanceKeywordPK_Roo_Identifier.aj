@@ -17,10 +17,14 @@ privileged aspect InstanceKeywordPK_Roo_Identifier {
     @Column(name = "keyword_id", columnDefinition = "int4", nullable = false)
     private Integer InstanceKeywordPK.keywordId;
     
-    public InstanceKeywordPK.new(Integer instanceId, Integer keywordId) {
+    @Column(name = "added_by", columnDefinition = "int4", nullable = false)
+    private Integer InstanceKeywordPK.addedBy;
+    
+    public InstanceKeywordPK.new(Integer instanceId, Integer keywordId, Integer addedBy) {
         super();
         this.instanceId = instanceId;
         this.keywordId = keywordId;
+        this.addedBy = addedBy;
     }
 
     private InstanceKeywordPK.new() {
@@ -33,6 +37,10 @@ privileged aspect InstanceKeywordPK_Roo_Identifier {
     
     public Integer InstanceKeywordPK.getKeywordId() {
         return keywordId;
+    }
+    
+    public Integer InstanceKeywordPK.getAddedBy() {
+        return addedBy;
     }
     
 }

@@ -4,10 +4,10 @@
     <jsp:output omit-xml-declaration="yes"/>
     <form:create id="fc_ro_roda_News" modelAttribute="news" path="/news" render="${empty dependencies}" z="/H/wyPomjzlku6L8J1D1jeRlqJ0=">
         <field:select field="addedBy" id="c_ro_roda_News_addedBy" itemValue="id" items="${users}" path="/users" z="/wtcrUCLz2uCi1TMAtAQLWZ/zD4="/>
-        <field:input field="title" id="c_ro_roda_News_title" required="true" z="XpA3lV+MZwWM4lp3kQhXttttDXs="/>
-        <field:input field="content" id="c_ro_roda_News_content" z="jzKVyDi7hVdv8hot8ku2ChmOqr8="/>
         <field:datetime dateTimePattern="${news_added_date_format}" field="added" id="c_ro_roda_News_added" required="true" z="M3Vz3bQ3tceXnqxGrBSwi6er1TQ="/>
         <field:checkbox field="visible" id="c_ro_roda_News_visible" z="BQYre02cqgPuJS/F7MKwFUF5gro="/>
+        <field:input field="title" id="c_ro_roda_News_title" required="true" z="XpA3lV+MZwWM4lp3kQhXttttDXs="/>
+        <field:input field="content" id="c_ro_roda_News_content" z="jzKVyDi7hVdv8hot8ku2ChmOqr8="/>
     </form:create>
     <form:dependency dependencies="${dependencies}" id="d_ro_roda_News" render="${not empty dependencies}" z="hq03bebuCjeZVY1uLiJAADHg5RM="/>
 </div>

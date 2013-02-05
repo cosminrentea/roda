@@ -3,10 +3,10 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <page:show id="ps_ro_roda_CmsPageContent" object="${cmspagecontent}" path="/cmspagecontents" z="dz6AH3iWTaCVt2g4oBFf5+fBg/A=">
-        <field:display field="page" id="s_ro_roda_CmsPageContent_page" object="${cmspagecontent}" z="So+dJC2JgjVY23C7qEi/FZkHMS4="/>
+        <field:display field="cmsPageId" id="s_ro_roda_CmsPageContent_cmsPageId" object="${cmspagecontent}" z="iSUiwoNBQMNFsbx/emq9tJRYtGw="/>
         <field:display field="name" id="s_ro_roda_CmsPageContent_name" object="${cmspagecontent}" z="z65tCzmednIn9Z9RJE3v8UUnxgc="/>
         <field:display field="contentTitle" id="s_ro_roda_CmsPageContent_contentTitle" object="${cmspagecontent}" z="6wuWEN4V9HauYtqKycscXferWaI="/>
         <field:display field="contentText" id="s_ro_roda_CmsPageContent_contentText" object="${cmspagecontent}" z="rd7fwncxuF75poDLzJCS0SI3Ntc="/>
-        <field:display field="seqnumber" id="s_ro_roda_CmsPageContent_seqnumber" object="${cmspagecontent}" z="tB7caBQgRTsgh0sWECCrs3DpEqI="/>
+        <field:display field="orderInPage" id="s_ro_roda_CmsPageContent_orderInPage" object="${cmspagecontent}" z="yp+2imA1s6rvXT4FdPjF0IVdXRs="/>
     </page:show>
 </div>

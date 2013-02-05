@@ -3,12 +3,8 @@
 
 package ro.roda;
 
-import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import org.springframework.format.annotation.DateTimeFormat;
 import ro.roda.OrgRelationsPK;
 
 privileged aspect OrgRelationsPK_Roo_Identifier {
@@ -21,19 +17,13 @@ privileged aspect OrgRelationsPK_Roo_Identifier {
     @Column(name = "org_2_id", columnDefinition = "int4", nullable = false)
     private Integer OrgRelationsPK.org2Id;
     
-    @Column(name = "datestart", columnDefinition = "timestamp", nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    @DateTimeFormat(style = "M-")
-    private Date OrgRelationsPK.datestart;
-    
     @Column(name = "org_relation_type_id", columnDefinition = "int4", nullable = false)
     private Integer OrgRelationsPK.orgRelationTypeId;
     
-    public OrgRelationsPK.new(Integer org1Id, Integer org2Id, Date datestart, Integer orgRelationTypeId) {
+    public OrgRelationsPK.new(Integer org1Id, Integer org2Id, Integer orgRelationTypeId) {
         super();
         this.org1Id = org1Id;
         this.org2Id = org2Id;
-        this.datestart = datestart;
         this.orgRelationTypeId = orgRelationTypeId;
     }
 
@@ -47,10 +37,6 @@ privileged aspect OrgRelationsPK_Roo_Identifier {
     
     public Integer OrgRelationsPK.getOrg2Id() {
         return org2Id;
-    }
-    
-    public Date OrgRelationsPK.getDatestart() {
-        return datestart;
     }
     
     public Integer OrgRelationsPK.getOrgRelationTypeId() {

@@ -3,10 +3,10 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <page:show id="ps_ro_roda_CmsPage" object="${cmspage}" path="/cmspages" z="8L8ucMsxIi1DEDEGmL74UfQWuAE=">
-        <field:display field="layout" id="s_ro_roda_CmsPage_layout" object="${cmspage}" z="rdk5KcDFlbK1MhZycLZsxZsoUII="/>
-        <field:display field="owner" id="s_ro_roda_CmsPage_owner" object="${cmspage}" z="Hi8MTEhGephqYteIuiw/tTRvcI4="/>
+        <field:display field="cmsLayoutId" id="s_ro_roda_CmsPage_cmsLayoutId" object="${cmspage}" z="M5gejQmCJFO9yPPXHzIdOEWOlNo="/>
+        <field:display field="cmsPageTypeId" id="s_ro_roda_CmsPage_cmsPageTypeId" object="${cmspage}" z="acs0ZunHhvmcJ8TQuqRJAzzf5vw="/>
+        <field:display field="ownerId" id="s_ro_roda_CmsPage_ownerId" object="${cmspage}" z="5Z18GsCRymzzDgCOLSu/G2PbhoE="/>
         <field:display field="name" id="s_ro_roda_CmsPage_name" object="${cmspage}" z="ZQCBLrcu3nC0n40+wQ1l4/XTpWc="/>
-        <field:display field="pageType" id="s_ro_roda_CmsPage_pageType" object="${cmspage}" z="wy4IFLkAcaV6QKHxsGaAj76Phu8="/>
         <field:display field="visible" id="s_ro_roda_CmsPage_visible" object="${cmspage}" z="NDnESLWqTiHBc9BmJz/5CF4WffE="/>
         <field:display field="navigable" id="s_ro_roda_CmsPage_navigable" object="${cmspage}" z="G7PYZf5n9xsAvAr60+X3TqbfBOs="/>
         <field:display field="url" id="s_ro_roda_CmsPage_url" object="${cmspage}" z="ZWR0T5ryLj3i410G4VAlgJfxdmg="/>

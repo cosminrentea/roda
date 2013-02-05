@@ -3,10 +3,10 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <form:create id="fc_ro_roda_Internet" modelAttribute="internet" path="/internets" render="${empty dependencies}" z="oQDKWQE6g33DlIjd4ZUP80hz+FU=">
-        <field:select field="entityId" id="c_ro_roda_Internet_entityId" itemValue="id" items="${people}" path="/people" z="ckRvhWjxkNzHWkR7hOSo83scfXg="/>
-        <field:input field="entityType" id="c_ro_roda_Internet_entityType" required="true" validationMessageCode="field_invalid_integer" z="kzBeLlGd7FjHfmo8X32XKtm3pRs="/>
-        <field:input field="internetTypeId" id="c_ro_roda_Internet_internetTypeId" required="true" validationMessageCode="field_invalid_integer" z="Ief7T/zTNXWq959si+rv5EaT9tU="/>
-        <field:input field="content" id="c_ro_roda_Internet_content" required="true" z="Z9KRtkHBlmjp1CyEuyjZaZT2/jQ="/>
+        <field:simple field="orgInternets" id="c_ro_roda_Internet_orgInternets" messageCode="entity_reference_not_managed" messageCodeAttribute="Org Internet" z="bP4Z158e83BmOuNvuiBfH5dyDXg="/>
+        <field:simple field="personInternets" id="c_ro_roda_Internet_personInternets" messageCode="entity_reference_not_managed" messageCodeAttribute="Person Internet" z="F+EmEtESS6NYPYiEK3AepPWhakQ="/>
+        <field:input field="internetType" id="c_ro_roda_Internet_internetType" z="3U6WFtl5wjUt5CByiOLIG8vVOCA="/>
+        <field:input field="internet" id="c_ro_roda_Internet_internet" required="true" z="ovlVxN5sBA5cY590tZiQGLTwxwA="/>
     </form:create>
     <form:dependency dependencies="${dependencies}" id="d_ro_roda_Internet" render="${not empty dependencies}" z="z0C7CxTpOb8P99HIelrafIM4rUY="/>
 </div>

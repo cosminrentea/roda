@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
+import ro.roda.CollectionModelType;
 import ro.roda.File;
 import ro.roda.Form;
 import ro.roda.Instance;
@@ -24,10 +25,12 @@ import ro.roda.InstanceDescr;
 import ro.roda.InstanceKeyword;
 import ro.roda.InstanceOrg;
 import ro.roda.InstancePerson;
-import ro.roda.Methodology;
+import ro.roda.SamplingProcedure;
 import ro.roda.Study;
+import ro.roda.TimeMethType;
 import ro.roda.Topic;
 import ro.roda.UnitAnalysis;
+import ro.roda.User;
 import ro.roda.Variable;
 import ro.roda.web.InstanceController;
 
@@ -103,11 +106,13 @@ privileged aspect InstanceController_Roo_Controller {
     void InstanceController.addDateTimeFormatPatterns(Model uiModel) {
         uiModel.addAttribute("instance_datestart_date_format", DateTimeFormat.patternForStyle("M-", LocaleContextHolder.getLocale()));
         uiModel.addAttribute("instance_dateend_date_format", DateTimeFormat.patternForStyle("M-", LocaleContextHolder.getLocale()));
+        uiModel.addAttribute("instance_added_date_format", DateTimeFormat.patternForStyle("M-", LocaleContextHolder.getLocale()));
     }
     
     void InstanceController.populateEditForm(Model uiModel, Instance instance) {
         uiModel.addAttribute("instance", instance);
         addDateTimeFormatPatterns(uiModel);
+        uiModel.addAttribute("collectionmodeltypes", CollectionModelType.findAllCollectionModelTypes());
         uiModel.addAttribute("files", File.findAllFiles());
         uiModel.addAttribute("forms", Form.findAllForms());
         uiModel.addAttribute("instanceacls", InstanceAcl.findAllInstanceAcls());
@@ -115,10 +120,12 @@ privileged aspect InstanceController_Roo_Controller {
         uiModel.addAttribute("instancekeywords", InstanceKeyword.findAllInstanceKeywords());
         uiModel.addAttribute("instanceorgs", InstanceOrg.findAllInstanceOrgs());
         uiModel.addAttribute("instancepeople", InstancePerson.findAllInstancepeople());
-        uiModel.addAttribute("methodologys", Methodology.findAllMethodologys());
+        uiModel.addAttribute("samplingprocedures", SamplingProcedure.findAllSamplingProcedures());
         uiModel.addAttribute("studys", Study.findAllStudys());
+        uiModel.addAttribute("timemethtypes", TimeMethType.findAllTimeMethTypes());
         uiModel.addAttribute("topics", Topic.findAllTopics());
         uiModel.addAttribute("unitanalyses", UnitAnalysis.findAllUnitAnalyses());
+        uiModel.addAttribute("users", User.findAllUsers());
         uiModel.addAttribute("variables", Variable.findAllVariables());
     }
     

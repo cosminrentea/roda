@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.CollectionModelType;
-import ro.roda.Methodology;
+import ro.roda.Instance;
 import ro.roda.web.CollectionModelTypeController;
 
 privileged aspect CollectionModelTypeController_Roo_Controller {
@@ -87,7 +87,7 @@ privileged aspect CollectionModelTypeController_Roo_Controller {
     
     void CollectionModelTypeController.populateEditForm(Model uiModel, CollectionModelType collectionModelType) {
         uiModel.addAttribute("collectionModelType", collectionModelType);
-        uiModel.addAttribute("methodologys", Methodology.findAllMethodologys());
+        uiModel.addAttribute("instances", Instance.findAllInstances());
     }
     
     String CollectionModelTypeController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

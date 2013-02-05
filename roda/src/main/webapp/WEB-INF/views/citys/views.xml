@@ -13,4 +13,7 @@
 <definition extends="default" name="citys/update">
         <put-attribute name="body" value="/WEB-INF/views/citys/update.jspx"/>
     </definition>
+<definition extends="default" name="citys/findCitysByNameLike">
+        <put-attribute name="body" value="/WEB-INF/views/citys/findCitysByNameLike.jspx"/>
+    </definition>
 </tiles-definitions>

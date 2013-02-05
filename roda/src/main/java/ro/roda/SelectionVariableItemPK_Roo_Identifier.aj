@@ -11,13 +11,13 @@ privileged aspect SelectionVariableItemPK_Roo_Identifier {
     
     declare @type: SelectionVariableItemPK: @Embeddable;
     
-    @Column(name = "variable_id", columnDefinition = "int4", nullable = false)
-    private Integer SelectionVariableItemPK.variableId;
+    @Column(name = "variable_id", columnDefinition = "int8", nullable = false)
+    private Long SelectionVariableItemPK.variableId;
     
-    @Column(name = "item_id", columnDefinition = "int4", nullable = false)
-    private Integer SelectionVariableItemPK.itemId;
+    @Column(name = "item_id", columnDefinition = "int8", nullable = false)
+    private Long SelectionVariableItemPK.itemId;
     
-    public SelectionVariableItemPK.new(Integer variableId, Integer itemId) {
+    public SelectionVariableItemPK.new(Long variableId, Long itemId) {
         super();
         this.variableId = variableId;
         this.itemId = itemId;
@@ -27,11 +27,11 @@ privileged aspect SelectionVariableItemPK_Roo_Identifier {
         super();
     }
 
-    public Integer SelectionVariableItemPK.getVariableId() {
+    public Long SelectionVariableItemPK.getVariableId() {
         return variableId;
     }
     
-    public Integer SelectionVariableItemPK.getItemId() {
+    public Long SelectionVariableItemPK.getItemId() {
         return itemId;
     }
     

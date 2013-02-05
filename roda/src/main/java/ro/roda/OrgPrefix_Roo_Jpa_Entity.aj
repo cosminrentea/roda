@@ -19,7 +19,7 @@ privileged aspect OrgPrefix_Roo_Jpa_Entity {
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", columnDefinition = "int4")
+    @Column(name = "id", columnDefinition = "serial")
     private Integer OrgPrefix.id;
     
     public Integer OrgPrefix.getId() {

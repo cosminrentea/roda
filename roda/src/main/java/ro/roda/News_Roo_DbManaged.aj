@@ -20,13 +20,6 @@ privileged aspect News_Roo_DbManaged {
     @JoinColumn(name = "added_by", referencedColumnName = "id", nullable = false)
     private User News.addedBy;
     
-    @Column(name = "title", columnDefinition = "varchar", length = 200)
-    @NotNull
-    private String News.title;
-    
-    @Column(name = "content", columnDefinition = "text")
-    private String News.content;
-    
     @Column(name = "added", columnDefinition = "timestamp")
     @NotNull
     @Temporal(TemporalType.TIMESTAMP)
@@ -37,28 +30,19 @@ privileged aspect News_Roo_DbManaged {
     @NotNull
     private boolean News.visible;
     
+    @Column(name = "title", columnDefinition = "text")
+    @NotNull
+    private String News.title;
+    
+    @Column(name = "content", columnDefinition = "text")
+    private String News.content;
+    
     public User News.getAddedBy() {
         return addedBy;
     }
     
     public void News.setAddedBy(User addedBy) {
         this.addedBy = addedBy;
-    }
-    
-    public String News.getTitle() {
-        return title;
-    }
-    
-    public void News.setTitle(String title) {
-        this.title = title;
-    }
-    
-    public String News.getContent() {
-        return content;
-    }
-    
-    public void News.setContent(String content) {
-        this.content = content;
     }
     
     public Date News.getAdded() {
@@ -75,6 +59,22 @@ privileged aspect News_Roo_DbManaged {
     
     public void News.setVisible(boolean visible) {
         this.visible = visible;
+    }
+    
+    public String News.getTitle() {
+        return title;
+    }
+    
+    public void News.setTitle(String title) {
+        this.title = title;
+    }
+    
+    public String News.getContent() {
+        return content;
+    }
+    
+    public void News.setContent(String content) {
+        this.content = content;
     }
     
 }

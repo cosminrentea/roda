@@ -4,9 +4,9 @@
     <jsp:output omit-xml-declaration="yes"/>
     <page:list id="pl_ro_roda_UserMessage" items="${usermessages}" z="RxumToDB64Iz/mMiXtKd5CijvL8=">
         <table:table data="${usermessages}" id="l_ro_roda_UserMessage" path="/usermessages" z="e21B3dC/XOPJsYr7km2cjlTUbO0=">
-            <table:column id="c_ro_roda_UserMessage_message" property="message" z="xDuauPuwZOLOexa8gYkFE6yOasU="/>
             <table:column id="c_ro_roda_UserMessage_toUserId" property="toUserId" z="2BSEeQqzm/hbKfAb1McwbMRR4DM="/>
             <table:column id="c_ro_roda_UserMessage_fromUserId" property="fromUserId" z="N3J/A5CR0D+qmNTIc8fOJG6vlms="/>
+            <table:column id="c_ro_roda_UserMessage_message" property="message" z="xDuauPuwZOLOexa8gYkFE6yOasU="/>
         </table:table>
     </page:list>
 </div>

@@ -15,7 +15,7 @@ privileged aspect UnitAnalysis_Roo_DbManaged {
     @OneToMany(mappedBy = "unitAnalysisId")
     private Set<Instance> UnitAnalysis.instances;
     
-    @Column(name = "name", columnDefinition = "text")
+    @Column(name = "name", columnDefinition = "varchar", length = 100)
     @NotNull
     private String UnitAnalysis.name;
     

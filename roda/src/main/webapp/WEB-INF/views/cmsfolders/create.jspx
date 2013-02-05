@@ -5,7 +5,7 @@
     <form:create id="fc_ro_roda_CmsFolder" modelAttribute="cmsFolder" path="/cmsfolders" render="${empty dependencies}" z="acnOqb2mwXRR4UknGHh9rLFCrEU=">
         <field:simple field="cmsFiles" id="c_ro_roda_CmsFolder_cmsFiles" messageCode="entity_reference_not_managed" messageCodeAttribute="Cms File" z="7FHs7s9izXGmNgI9IFbyhSoq/KU="/>
         <field:simple field="cmsFolders" id="c_ro_roda_CmsFolder_cmsFolders" messageCode="entity_reference_not_managed" messageCodeAttribute="Cms Folder" z="uQiEHT16CdGi+FihDRRcPBDVbP0="/>
-        <field:select field="parent" id="c_ro_roda_CmsFolder_parent" itemValue="id" items="${cmsfolders}" path="/cmsfolders" z="HbEFO1w8PROu0A/of2u6EWrWdRM="/>
+        <field:select field="parentId" id="c_ro_roda_CmsFolder_parentId" itemValue="id" items="${cmsfolders}" path="/cmsfolders" z="cdu3hJ+RgLd6PtvxndQHdUXae+g="/>
         <field:input field="name" id="c_ro_roda_CmsFolder_name" required="true" z="ABGBkJjbp5rr8OfAoB4upzA0/94="/>
         <field:input field="description" id="c_ro_roda_CmsFolder_description" z="GPPxom6YqSaicaNNSnYhZnu/zDo="/>
     </form:create>

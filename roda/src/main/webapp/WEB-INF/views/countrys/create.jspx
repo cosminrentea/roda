@@ -3,10 +3,10 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <form:create id="fc_ro_roda_Country" modelAttribute="country" path="/countrys" render="${empty dependencies}" z="y62wz8cfI+AZhwbCBdJfzdYZ9Zw=">
-        <field:simple field="addresses" id="c_ro_roda_Country_addresses" messageCode="entity_reference_not_managed" messageCodeAttribute="Address" z="v4mLDYfuu/exlTw1c0+A16djEw8="/>
         <field:simple field="cities" id="c_ro_roda_Country_cities" messageCode="entity_reference_not_managed" messageCodeAttribute="City" z="p0tqdNGUKBxkf3j3HCkumlgcNRE="/>
         <field:simple field="regions" id="c_ro_roda_Country_regions" messageCode="entity_reference_not_managed" messageCodeAttribute="Region" z="Z853lxVmBFQ0sHopH+tlVdoLTe8="/>
         <field:input field="name" id="c_ro_roda_Country_name" required="true" z="dDrx8ZW8wB2Mnkv6nhAvgzh27tM="/>
+        <field:input field="alpha3" id="c_ro_roda_Country_alpha3" required="true" z="39b/izZlGe8pkP30HBY6er0hSSw="/>
     </form:create>
     <form:dependency dependencies="${dependencies}" id="d_ro_roda_Country" render="${not empty dependencies}" z="rFoCaBo4egfdf8N1trRvy9S8cOc="/>
 </div>

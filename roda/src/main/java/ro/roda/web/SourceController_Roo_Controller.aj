@@ -16,6 +16,7 @@ import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.Org;
 import ro.roda.Source;
+import ro.roda.SourceContacts;
 import ro.roda.Sourcestudy;
 import ro.roda.Sourcetype;
 import ro.roda.SourcetypeHistory;
@@ -91,6 +92,7 @@ privileged aspect SourceController_Roo_Controller {
     void SourceController.populateEditForm(Model uiModel, Source source) {
         uiModel.addAttribute("source", source);
         uiModel.addAttribute("orgs", Org.findAllOrgs());
+        uiModel.addAttribute("sourcecontactses", SourceContacts.findAllSourceContactses());
         uiModel.addAttribute("sourcestudys", Sourcestudy.findAllSourcestudys());
         uiModel.addAttribute("sourcetypes", Sourcetype.findAllSourcetypes());
         uiModel.addAttribute("sourcetypehistorys", SourcetypeHistory.findAllSourcetypeHistorys());

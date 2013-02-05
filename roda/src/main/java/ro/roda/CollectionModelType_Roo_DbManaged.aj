@@ -10,24 +10,27 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.validation.constraints.NotNull;
 import ro.roda.CollectionModelType;
-import ro.roda.Methodology;
+import ro.roda.Instance;
 
 privileged aspect CollectionModelType_Roo_DbManaged {
     
     @ManyToMany
-    @JoinTable(name = "meth_coll_type", joinColumns = { @JoinColumn(name = "coll_mod_id", nullable = false) }, inverseJoinColumns = { @JoinColumn(name = "instance_id", nullable = false) })
-    private Set<Methodology> CollectionModelType.methodologies;
+    @JoinTable(name = "meth_coll_type", joinColumns = { @JoinColumn(name = "collection_model_id", nullable = false) }, inverseJoinColumns = { @JoinColumn(name = "instance_id", nullable = false) })
+    private Set<Instance> CollectionModelType.instances;
     
     @Column(name = "name", columnDefinition = "text")
     @NotNull
     private String CollectionModelType.name;
     
-    public Set<Methodology> CollectionModelType.getMethodologies() {
-        return methodologies;
+    @Column(name = "description", columnDefinition = "text")
+    private String CollectionModelType.description;
+    
+    public Set<Instance> CollectionModelType.getInstances() {
+        return instances;
     }
     
-    public void CollectionModelType.setMethodologies(Set<Methodology> methodologies) {
-        this.methodologies = methodologies;
+    public void CollectionModelType.setInstances(Set<Instance> instances) {
+        this.instances = instances;
     }
     
     public String CollectionModelType.getName() {
@@ -36,6 +39,14 @@ privileged aspect CollectionModelType_Roo_DbManaged {
     
     public void CollectionModelType.setName(String name) {
         this.name = name;
+    }
+    
+    public String CollectionModelType.getDescription() {
+        return description;
+    }
+    
+    public void CollectionModelType.setDescription(String description) {
+        this.description = description;
     }
     
 }

@@ -5,9 +5,9 @@
     <form:create id="fc_ro_roda_SourcestudyTypeHistory" modelAttribute="sourcestudyTypeHistory" path="/sourcestudytypehistorys" render="${empty dependencies}" z="CPk+Ka3ZTV26LHEzb8ssGZ6Nm8c=">
         <field:select field="sourcesstudyId" id="c_ro_roda_SourcestudyTypeHistory_sourcesstudyId" itemValue="id" items="${sourcestudys}" path="/sourcestudys" z="M9Qfa3V/tqCNdCPu9IbEFMYmwnw="/>
         <field:select field="sourcestudyTypeId" id="c_ro_roda_SourcestudyTypeHistory_sourcestudyTypeId" itemValue="id" items="${sourcestudytypes}" path="/sourcestudytypes" z="yM5EeK0PNwJ2pVjAkGCgGzBK0uI="/>
-        <field:datetime dateTimePattern="${sourcestudyTypeHistory_datestart_date_format}" field="datestart" id="c_ro_roda_SourcestudyTypeHistory_datestart" required="true" z="ZKjJ4fxzfpIrLEj/pOT2x9av5j0="/>
-        <field:datetime dateTimePattern="${sourcestudyTypeHistory_dateend_date_format}" field="dateend" id="c_ro_roda_SourcestudyTypeHistory_dateend" required="true" z="cTcFWcnGX2xfo9BZWqtj0mwMcX8="/>
-        <field:input field="addedBy" id="c_ro_roda_SourcestudyTypeHistory_addedBy" required="true" validationMessageCode="field_invalid_integer" z="vjueHpMYXggASIw9Xvr+QvT70vI="/>
+        <field:select field="addedBy" id="c_ro_roda_SourcestudyTypeHistory_addedBy" itemValue="id" items="${users}" path="/users" z="Ikna/1lVehAvPHyskCtY4/4Gmrg="/>
+        <field:datetime dateTimePattern="${sourcestudyTypeHistory_datestart_date_format}" field="datestart" id="c_ro_roda_SourcestudyTypeHistory_datestart" z="4HhTjaUgkIv1fP2Opt3cNU3N0/I="/>
+        <field:datetime dateTimePattern="${sourcestudyTypeHistory_dateend_date_format}" field="dateend" id="c_ro_roda_SourcestudyTypeHistory_dateend" z="XpDvpWpLG3ILEY7cQpG63Ws651U="/>
     </form:create>
     <form:dependency dependencies="${dependencies}" id="d_ro_roda_SourcestudyTypeHistory" render="${not empty dependencies}" z="M6v3s937UxAIY91DSYz7Pbxnp1o="/>
 </div>

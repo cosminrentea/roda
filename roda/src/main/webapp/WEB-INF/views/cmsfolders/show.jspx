@@ -3,7 +3,7 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <page:show id="ps_ro_roda_CmsFolder" object="${cmsfolder}" path="/cmsfolders" z="FUwhK5Fn0t4f4NvUZoKdtzDkxVo=">
-        <field:display field="parent" id="s_ro_roda_CmsFolder_parent" object="${cmsfolder}" z="TSP3bxihfq4Uq6jX7WjPHuYg+I4="/>
+        <field:display field="parentId" id="s_ro_roda_CmsFolder_parentId" object="${cmsfolder}" z="xUbzBy7RzhEvkvvwVMbTO9dpucc="/>
         <field:display field="name" id="s_ro_roda_CmsFolder_name" object="${cmsfolder}" z="9Zski3F6Drc10IOF0Oti2Su64CU="/>
         <field:display field="description" id="s_ro_roda_CmsFolder_description" object="${cmsfolder}" z="e7HrLn4BENgZ26fhx5LtrO6FMbE="/>
     </page:show>

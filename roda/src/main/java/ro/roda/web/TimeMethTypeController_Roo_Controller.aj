@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.Methodology;
+import ro.roda.Instance;
 import ro.roda.TimeMethType;
 import ro.roda.web.TimeMethTypeController;
 
@@ -87,7 +87,7 @@ privileged aspect TimeMethTypeController_Roo_Controller {
     
     void TimeMethTypeController.populateEditForm(Model uiModel, TimeMethType timeMethType) {
         uiModel.addAttribute("timeMethType", timeMethType);
-        uiModel.addAttribute("methodologys", Methodology.findAllMethodologys());
+        uiModel.addAttribute("instances", Instance.findAllInstances());
     }
     
     String TimeMethTypeController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

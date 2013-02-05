@@ -4,10 +4,10 @@
     <jsp:output omit-xml-declaration="yes"/>
     <page:list id="pl_ro_roda_Instance" items="${instances}" z="HfFqTD+JNqiTgw6zyFFfxcKVRtk=">
         <table:table data="${instances}" id="l_ro_roda_Instance" path="/instances" z="6My1n64xBWIXxDbOIn1InrGzTZY=">
-            <table:column id="c_ro_roda_Instance_topics" property="topics" z="vRMI0IIlGNZ1gJOM2xzMEqEZGRA="/>
+            <table:column id="c_ro_roda_Instance_samplingProcedures" property="samplingProcedures" z="yAjmKyb7iqQEsOjDSZ/zBOHNQGY="/>
+            <table:column id="c_ro_roda_Instance_topics1" property="topics1" z="+TFI0XWpKxRYzPNugNj49pO3xZs="/>
             <table:column id="c_ro_roda_Instance_files" property="files" z="2+Tn9urq47R9S72VSKIvfxB/rPQ="/>
-            <table:column id="c_ro_roda_Instance_instanceDescr" property="instanceDescr" z="NPWwTnhInwJzH28EAAfk/0ZDVHM="/>
-            <table:column id="c_ro_roda_Instance_methodology" property="methodology" z="nt/RH6zX2BuzeadZ5EZhDY1gYJg="/>
+            <table:column id="c_ro_roda_Instance_collectionModelTypes" property="collectionModelTypes" z="cIQk1F7WCRmPzSX72I8wGyTcxpo="/>
         </table:table>
     </page:list>
 </div>

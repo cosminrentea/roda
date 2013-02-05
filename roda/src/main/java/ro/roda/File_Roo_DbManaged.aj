@@ -8,12 +8,11 @@ import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import ro.roda.File;
 import ro.roda.FileAcl;
-import ro.roda.Filetype;
+import ro.roda.FilePropertyNameValue;
 import ro.roda.Instance;
 import ro.roda.SelectionVariableItem;
 import ro.roda.Study;
@@ -32,15 +31,14 @@ privileged aspect File_Roo_DbManaged {
     @OneToMany(mappedBy = "documentId")
     private Set<FileAcl> File.fileAcls;
     
+    @OneToMany(mappedBy = "fileId")
+    private Set<FilePropertyNameValue> File.filePropertyNameValues;
+    
     @OneToMany(mappedBy = "responseCardFileId")
     private Set<SelectionVariableItem> File.selectionVariableItems;
     
     @OneToMany(mappedBy = "fileId")
     private Set<Variable> File.variables;
-    
-    @ManyToOne
-    @JoinColumn(name = "filetype_id", referencedColumnName = "id")
-    private Filetype File.filetypeId;
     
     @Column(name = "title", columnDefinition = "text")
     @NotNull
@@ -49,13 +47,16 @@ privileged aspect File_Roo_DbManaged {
     @Column(name = "description", columnDefinition = "text")
     private String File.description;
     
-    @Column(name = "filename", columnDefinition = "text")
-    @NotNull
-    private String File.filename;
+    @Column(name = "filetype_id", columnDefinition = "int4")
+    private Integer File.filetypeId;
     
-    @Column(name = "filesize", columnDefinition = "int4")
+    @Column(name = "name", columnDefinition = "text")
     @NotNull
-    private Integer File.filesize;
+    private String File.name;
+    
+    @Column(name = "size", columnDefinition = "int8")
+    @NotNull
+    private Long File.size;
     
     public Set<Instance> File.getInstances() {
         return instances;
@@ -81,6 +82,14 @@ privileged aspect File_Roo_DbManaged {
         this.fileAcls = fileAcls;
     }
     
+    public Set<FilePropertyNameValue> File.getFilePropertyNameValues() {
+        return filePropertyNameValues;
+    }
+    
+    public void File.setFilePropertyNameValues(Set<FilePropertyNameValue> filePropertyNameValues) {
+        this.filePropertyNameValues = filePropertyNameValues;
+    }
+    
     public Set<SelectionVariableItem> File.getSelectionVariableItems() {
         return selectionVariableItems;
     }
@@ -95,14 +104,6 @@ privileged aspect File_Roo_DbManaged {
     
     public void File.setVariables(Set<Variable> variables) {
         this.variables = variables;
-    }
-    
-    public Filetype File.getFiletypeId() {
-        return filetypeId;
-    }
-    
-    public void File.setFiletypeId(Filetype filetypeId) {
-        this.filetypeId = filetypeId;
     }
     
     public String File.getTitle() {
@@ -121,20 +122,28 @@ privileged aspect File_Roo_DbManaged {
         this.description = description;
     }
     
-    public String File.getFilename() {
-        return filename;
+    public Integer File.getFiletypeId() {
+        return filetypeId;
     }
     
-    public void File.setFilename(String filename) {
-        this.filename = filename;
+    public void File.setFiletypeId(Integer filetypeId) {
+        this.filetypeId = filetypeId;
     }
     
-    public Integer File.getFilesize() {
-        return filesize;
+    public String File.getName() {
+        return name;
     }
     
-    public void File.setFilesize(Integer filesize) {
-        this.filesize = filesize;
+    public void File.setName(String name) {
+        this.name = name;
+    }
+    
+    public Long File.getSize() {
+        return size;
+    }
+    
+    public void File.setSize(Long size) {
+        this.size = size;
     }
     
 }

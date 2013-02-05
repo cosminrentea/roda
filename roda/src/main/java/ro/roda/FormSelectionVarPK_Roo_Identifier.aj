@@ -11,16 +11,16 @@ privileged aspect FormSelectionVarPK_Roo_Identifier {
     
     declare @type: FormSelectionVarPK: @Embeddable;
     
-    @Column(name = "form_id", columnDefinition = "int4", nullable = false)
-    private Integer FormSelectionVarPK.formId;
+    @Column(name = "form_id", columnDefinition = "int8", nullable = false)
+    private Long FormSelectionVarPK.formId;
     
-    @Column(name = "variable_id", columnDefinition = "int4", nullable = false)
-    private Integer FormSelectionVarPK.variableId;
+    @Column(name = "variable_id", columnDefinition = "int8", nullable = false)
+    private Long FormSelectionVarPK.variableId;
     
-    @Column(name = "item_id", columnDefinition = "int4", nullable = false)
-    private Integer FormSelectionVarPK.itemId;
+    @Column(name = "item_id", columnDefinition = "int8", nullable = false)
+    private Long FormSelectionVarPK.itemId;
     
-    public FormSelectionVarPK.new(Integer formId, Integer variableId, Integer itemId) {
+    public FormSelectionVarPK.new(Long formId, Long variableId, Long itemId) {
         super();
         this.formId = formId;
         this.variableId = variableId;
@@ -31,15 +31,15 @@ privileged aspect FormSelectionVarPK_Roo_Identifier {
         super();
     }
 
-    public Integer FormSelectionVarPK.getFormId() {
+    public Long FormSelectionVarPK.getFormId() {
         return formId;
     }
     
-    public Integer FormSelectionVarPK.getVariableId() {
+    public Long FormSelectionVarPK.getVariableId() {
         return variableId;
     }
     
-    public Integer FormSelectionVarPK.getItemId() {
+    public Long FormSelectionVarPK.getItemId() {
         return itemId;
     }
     

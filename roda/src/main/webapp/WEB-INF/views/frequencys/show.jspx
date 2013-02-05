@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
-    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
-    <jsp:output omit-xml-declaration="yes"/>
-    <page:show id="ps_ro_roda_Frequency" object="${frequency}" path="/frequencys" z="muDa9UGEpuf9sKQX1EdET7zUWKQ=">
-        <field:display field="selectionVariableItem" id="s_ro_roda_Frequency_selectionVariableItem" object="${frequency}" z="8UFFZLikep0xkUC7hHbfaAaXv/s="/>
-        <field:display field="value" id="s_ro_roda_Frequency_value" object="${frequency}" z="5oTcD+jSEj93OuDcMzlOBIaU99E="/>
-    </page:show>
-</div>

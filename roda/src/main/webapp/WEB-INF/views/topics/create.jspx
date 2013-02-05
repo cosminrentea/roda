@@ -3,13 +3,15 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <form:create id="fc_ro_roda_Topic" modelAttribute="topic" path="/topics" render="${empty dependencies}" z="LMQZA51Atv+oYiwiANWOwqNp3H4=">
-        <field:select field="instances" id="c_ro_roda_Topic_instances" itemValue="id" items="${instances}" multiple="true" path="/instances" z="VBQO6l/Cnykmnx0VMs8YafDWtQA="/>
+        <field:select field="instances1" id="c_ro_roda_Topic_instances1" itemValue="id" items="${instances}" multiple="true" path="/instances" z="SLTXKXc1YLb6tgFpeDZ9I5H9LAI="/>
         <field:select field="studies" id="c_ro_roda_Topic_studies" itemValue="id" items="${studys}" multiple="true" path="/studys" z="U3a57ZZc6UPyvi4SDrb/HSQerxA="/>
+        <field:simple field="topics" id="c_ro_roda_Topic_topics" messageCode="entity_reference_not_managed" messageCodeAttribute="Topic" z="w+aQgQ4d/m9snlLdxMF5Jnpu9S4="/>
+        <field:simple field="topics1" id="c_ro_roda_Topic_topics1" messageCode="entity_reference_not_managed" messageCodeAttribute="Topic" z="HkKEmxFse7BnBR8O2aYT+GSlXv4="/>
         <field:simple field="translatedTopics" id="c_ro_roda_Topic_translatedTopics" messageCode="entity_reference_not_managed" messageCodeAttribute="Translated Topic" z="ZvjG4ZDBVUL4gXNgZ+6a0itFGdY="/>
+        <field:select field="parentTopicId" id="c_ro_roda_Topic_parentTopicId" itemValue="id" items="${topics}" path="/topics" z="cYLorue7g3jK6j7ZwFS4n0zU3FU="/>
+        <field:select field="preferredSynonymTopicId" id="c_ro_roda_Topic_preferredSynonymTopicId" itemValue="id" items="${topics}" path="/topics" z="g2+EeOkheXdK5jbSI+TdqMSS2qc="/>
         <field:input field="name" id="c_ro_roda_Topic_name" required="true" z="Zp4rheXWC8QA5x/nW0Fvip/3W8M="/>
         <field:input field="description" id="c_ro_roda_Topic_description" z="6llveY8uESMXr63D2khuhI3ezgY="/>
-        <field:input field="leftTopic" id="c_ro_roda_Topic_leftTopic" required="true" validationMessageCode="field_invalid_integer" z="dQMnrOByk/+UrMoe+t3C6Navf8Q="/>
-        <field:input field="rightTopic" id="c_ro_roda_Topic_rightTopic" required="true" validationMessageCode="field_invalid_integer" z="edoIJOPh8b0qcgAQhEgEGXkfIV8="/>
     </form:create>
     <form:dependency dependencies="${dependencies}" id="d_ro_roda_Topic" render="${not empty dependencies}" z="nNIBbdtAxG/VRoWYEsXEgj1yO7s="/>
 </div>

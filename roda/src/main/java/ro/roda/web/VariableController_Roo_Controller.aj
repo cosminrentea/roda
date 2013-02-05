@@ -15,9 +15,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.Concept;
-import ro.roda.EditedVariable;
 import ro.roda.File;
+import ro.roda.FormEditedNumberVar;
+import ro.roda.FormEditedTextVar;
 import ro.roda.Instance;
+import ro.roda.OtherStatistic;
 import ro.roda.SelectionVariable;
 import ro.roda.Skip;
 import ro.roda.Vargroup;
@@ -44,7 +46,7 @@ privileged aspect VariableController_Roo_Controller {
     }
     
     @RequestMapping(value = "/{id}", produces = "text/html")
-    public String VariableController.show(@PathVariable("id") Integer id, Model uiModel) {
+    public String VariableController.show(@PathVariable("id") Long id, Model uiModel) {
         uiModel.addAttribute("variable", Variable.findVariable(id));
         uiModel.addAttribute("itemId", id);
         return "variables/show";
@@ -76,13 +78,13 @@ privileged aspect VariableController_Roo_Controller {
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
-    public String VariableController.updateForm(@PathVariable("id") Integer id, Model uiModel) {
+    public String VariableController.updateForm(@PathVariable("id") Long id, Model uiModel) {
         populateEditForm(uiModel, Variable.findVariable(id));
         return "variables/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
-    public String VariableController.delete(@PathVariable("id") Integer id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
+    public String VariableController.delete(@PathVariable("id") Long id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
         Variable variable = Variable.findVariable(id);
         variable.remove();
         uiModel.asMap().clear();
@@ -94,9 +96,11 @@ privileged aspect VariableController_Roo_Controller {
     void VariableController.populateEditForm(Model uiModel, Variable variable) {
         uiModel.addAttribute("variable", variable);
         uiModel.addAttribute("concepts", Concept.findAllConcepts());
-        uiModel.addAttribute("editedvariables", EditedVariable.findAllEditedVariables());
         uiModel.addAttribute("files", File.findAllFiles());
+        uiModel.addAttribute("formeditednumbervars", FormEditedNumberVar.findAllFormEditedNumberVars());
+        uiModel.addAttribute("formeditedtextvars", FormEditedTextVar.findAllFormEditedTextVars());
         uiModel.addAttribute("instances", Instance.findAllInstances());
+        uiModel.addAttribute("otherstatistics", OtherStatistic.findAllOtherStatistics());
         uiModel.addAttribute("selectionvariables", SelectionVariable.findAllSelectionVariables());
         uiModel.addAttribute("skips", Skip.findAllSkips());
         uiModel.addAttribute("vargroups", Vargroup.findAllVargroups());

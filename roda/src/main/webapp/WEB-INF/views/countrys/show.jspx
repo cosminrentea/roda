@@ -4,5 +4,6 @@
     <jsp:output omit-xml-declaration="yes"/>
     <page:show id="ps_ro_roda_Country" object="${country}" path="/countrys" z="7qq/AShwDruhod137jSw4hTdW+c=">
         <field:display field="name" id="s_ro_roda_Country_name" object="${country}" z="ox3vhA13w8gE2RGm1QhcXyxkRBE="/>
+        <field:display field="alpha3" id="s_ro_roda_Country_alpha3" object="${country}" z="72GTcFtCJbMQLQ6npl/UmcHlUAY="/>
     </page:show>
 </div>

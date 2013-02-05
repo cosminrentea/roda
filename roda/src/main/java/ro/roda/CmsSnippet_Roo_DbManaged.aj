@@ -13,8 +13,8 @@ import ro.roda.CmsSnippetGroup;
 privileged aspect CmsSnippet_Roo_DbManaged {
     
     @ManyToOne
-    @JoinColumn(name = "snippet_group", referencedColumnName = "id", nullable = false)
-    private CmsSnippetGroup CmsSnippet.snippetGroup;
+    @JoinColumn(name = "cms_snippet_group_id", referencedColumnName = "id")
+    private CmsSnippetGroup CmsSnippet.cmsSnippetGroupId;
     
     @Column(name = "name", columnDefinition = "varchar", length = 200)
     @NotNull
@@ -24,12 +24,12 @@ privileged aspect CmsSnippet_Roo_DbManaged {
     @NotNull
     private String CmsSnippet.snippetContent;
     
-    public CmsSnippetGroup CmsSnippet.getSnippetGroup() {
-        return snippetGroup;
+    public CmsSnippetGroup CmsSnippet.getCmsSnippetGroupId() {
+        return cmsSnippetGroupId;
     }
     
-    public void CmsSnippet.setSnippetGroup(CmsSnippetGroup snippetGroup) {
-        this.snippetGroup = snippetGroup;
+    public void CmsSnippet.setCmsSnippetGroupId(CmsSnippetGroup cmsSnippetGroupId) {
+        this.cmsSnippetGroupId = cmsSnippetGroupId;
     }
     
     public String CmsSnippet.getName() {

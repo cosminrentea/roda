@@ -11,7 +11,6 @@ import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import ro.roda.Address;
 import ro.roda.City;
-import ro.roda.Country;
 import ro.roda.OrgAddress;
 import ro.roda.PersonAddress;
 
@@ -27,24 +26,24 @@ privileged aspect Address_Roo_DbManaged {
     @JoinColumn(name = "city_id", referencedColumnName = "id", nullable = false)
     private City Address.cityId;
     
-    @ManyToOne
-    @JoinColumn(name = "country_id", referencedColumnName = "id", nullable = false)
-    private Country Address.countryId;
+    @Column(name = "country_id", columnDefinition = "bpchar", length = 2)
+    @NotNull
+    private String Address.countryId;
     
     @Column(name = "address1", columnDefinition = "text")
     @NotNull
     private String Address.address1;
     
     @Column(name = "address2", columnDefinition = "text")
-    @NotNull
     private String Address.address2;
     
-    @Column(name = "sector", columnDefinition = "varchar", length = 50)
-    @NotNull
-    private String Address.sector;
+    @Column(name = "subdiv_name", columnDefinition = "varchar", length = 200)
+    private String Address.subdivName;
     
-    @Column(name = "postal_code", columnDefinition = "varchar", length = 50)
-    @NotNull
+    @Column(name = "subdiv_code", columnDefinition = "varchar", length = 50)
+    private String Address.subdivCode;
+    
+    @Column(name = "postal_code", columnDefinition = "varchar", length = 30)
     private String Address.postalCode;
     
     public Set<OrgAddress> Address.getOrgAddresses() {
@@ -71,11 +70,11 @@ privileged aspect Address_Roo_DbManaged {
         this.cityId = cityId;
     }
     
-    public Country Address.getCountryId() {
+    public String Address.getCountryId() {
         return countryId;
     }
     
-    public void Address.setCountryId(Country countryId) {
+    public void Address.setCountryId(String countryId) {
         this.countryId = countryId;
     }
     
@@ -95,12 +94,20 @@ privileged aspect Address_Roo_DbManaged {
         this.address2 = address2;
     }
     
-    public String Address.getSector() {
-        return sector;
+    public String Address.getSubdivName() {
+        return subdivName;
     }
     
-    public void Address.setSector(String sector) {
-        this.sector = sector;
+    public void Address.setSubdivName(String subdivName) {
+        this.subdivName = subdivName;
+    }
+    
+    public String Address.getSubdivCode() {
+        return subdivCode;
+    }
+    
+    public void Address.setSubdivCode(String subdivCode) {
+        this.subdivCode = subdivCode;
     }
     
     public String Address.getPostalCode() {

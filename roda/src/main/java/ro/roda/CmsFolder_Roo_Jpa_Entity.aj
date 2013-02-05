@@ -19,7 +19,7 @@ privileged aspect CmsFolder_Roo_Jpa_Entity {
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", columnDefinition = "int4")
+    @Column(name = "id", columnDefinition = "serial")
     private Integer CmsFolder.id;
     
     public Integer CmsFolder.getId() {

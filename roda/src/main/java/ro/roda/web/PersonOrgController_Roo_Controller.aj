@@ -103,6 +103,7 @@ privileged aspect PersonOrgController_Roo_Controller {
     }
     
     void PersonOrgController.addDateTimeFormatPatterns(Model uiModel) {
+        uiModel.addAttribute("personOrg_datestart_date_format", DateTimeFormat.patternForStyle("M-", LocaleContextHolder.getLocale()));
         uiModel.addAttribute("personOrg_dateend_date_format", DateTimeFormat.patternForStyle("M-", LocaleContextHolder.getLocale()));
     }
     

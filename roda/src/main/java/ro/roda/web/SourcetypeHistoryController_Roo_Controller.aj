@@ -19,6 +19,7 @@ import org.springframework.web.util.WebUtils;
 import ro.roda.Source;
 import ro.roda.Sourcetype;
 import ro.roda.SourcetypeHistory;
+import ro.roda.User;
 import ro.roda.web.SourcetypeHistoryController;
 
 privileged aspect SourcetypeHistoryController_Roo_Controller {
@@ -100,6 +101,7 @@ privileged aspect SourcetypeHistoryController_Roo_Controller {
         addDateTimeFormatPatterns(uiModel);
         uiModel.addAttribute("sources", Source.findAllSources());
         uiModel.addAttribute("sourcetypes", Sourcetype.findAllSourcetypes());
+        uiModel.addAttribute("users", User.findAllUsers());
     }
     
     String SourcetypeHistoryController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

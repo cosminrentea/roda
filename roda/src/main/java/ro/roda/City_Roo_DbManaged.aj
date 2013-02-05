@@ -33,6 +33,24 @@ privileged aspect City_Roo_DbManaged {
     @NotNull
     private String City.name;
     
+    @Column(name = "city_code", columnDefinition = "varchar", length = 50)
+    private String City.cityCode;
+    
+    @Column(name = "city_code_name", columnDefinition = "varchar", length = 100)
+    private String City.cityCodeName;
+    
+    @Column(name = "city_code_sup", columnDefinition = "varchar", length = 100)
+    private String City.cityCodeSup;
+    
+    @Column(name = "prefix", columnDefinition = "varchar", length = 50)
+    private String City.prefix;
+    
+    @Column(name = "city_type", columnDefinition = "varchar", length = 50)
+    private String City.cityType;
+    
+    @Column(name = "city_type_system", columnDefinition = "varchar", length = 50)
+    private String City.cityTypeSystem;
+    
     public Set<Region> City.getRegions() {
         return regions;
     }
@@ -63,6 +81,54 @@ privileged aspect City_Roo_DbManaged {
     
     public void City.setName(String name) {
         this.name = name;
+    }
+    
+    public String City.getCityCode() {
+        return cityCode;
+    }
+    
+    public void City.setCityCode(String cityCode) {
+        this.cityCode = cityCode;
+    }
+    
+    public String City.getCityCodeName() {
+        return cityCodeName;
+    }
+    
+    public void City.setCityCodeName(String cityCodeName) {
+        this.cityCodeName = cityCodeName;
+    }
+    
+    public String City.getCityCodeSup() {
+        return cityCodeSup;
+    }
+    
+    public void City.setCityCodeSup(String cityCodeSup) {
+        this.cityCodeSup = cityCodeSup;
+    }
+    
+    public String City.getPrefix() {
+        return prefix;
+    }
+    
+    public void City.setPrefix(String prefix) {
+        this.prefix = prefix;
+    }
+    
+    public String City.getCityType() {
+        return cityType;
+    }
+    
+    public void City.setCityType(String cityType) {
+        this.cityType = cityType;
+    }
+    
+    public String City.getCityTypeSystem() {
+        return cityTypeSystem;
+    }
+    
+    public void City.setCityTypeSystem(String cityTypeSystem) {
+        this.cityTypeSystem = cityTypeSystem;
     }
     
 }

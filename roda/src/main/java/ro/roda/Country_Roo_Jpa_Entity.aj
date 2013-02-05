@@ -19,14 +19,14 @@ privileged aspect Country_Roo_Jpa_Entity {
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", columnDefinition = "int4")
-    private Integer Country.id;
+    @Column(name = "id", columnDefinition = "bpchar", length = 2)
+    private String Country.id;
     
-    public Integer Country.getId() {
+    public String Country.getId() {
         return this.id;
     }
     
-    public void Country.setId(Integer id) {
+    public void Country.setId(String id) {
         this.id = id;
     }
     

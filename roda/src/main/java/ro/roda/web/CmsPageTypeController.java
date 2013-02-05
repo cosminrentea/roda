@@ -1,0 +1,12 @@
+package ro.roda.web;
+
+import org.springframework.roo.addon.web.mvc.controller.scaffold.RooWebScaffold;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import ro.roda.CmsPageType;
+
+@RequestMapping("/cmspagetypes")
+@Controller
+@RooWebScaffold(path = "cmspagetypes", formBackingObject = CmsPageType.class)
+public class CmsPageTypeController {
+}

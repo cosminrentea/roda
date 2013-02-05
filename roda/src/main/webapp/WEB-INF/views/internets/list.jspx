@@ -4,10 +4,8 @@
     <jsp:output omit-xml-declaration="yes"/>
     <page:list id="pl_ro_roda_Internet" items="${internets}" z="indhYJQ1wOKSwT4XtBzwITPNwXU=">
         <table:table data="${internets}" id="l_ro_roda_Internet" path="/internets" z="sHbWke9rS00MWioaXC3e17A3w6M=">
-            <table:column id="c_ro_roda_Internet_entityId" property="entityId" z="0cD54mF1i2VOY/KN/PGtOXvunK0="/>
-            <table:column id="c_ro_roda_Internet_entityType" property="entityType" z="5nc/aEWcSqSM/5eRYRDJ2kTNPzg="/>
-            <table:column id="c_ro_roda_Internet_internetTypeId" property="internetTypeId" z="jrWULa8Ln323CYDjFIruWNL8GqM="/>
-            <table:column id="c_ro_roda_Internet_content" property="content" z="hSsOoqCce+R/352n5E0Wvop6xZo="/>
+            <table:column id="c_ro_roda_Internet_internetType" property="internetType" z="WrHeumDldjw/3rVJKZhu0BP1Wtc="/>
+            <table:column id="c_ro_roda_Internet_internet" property="internet" z="hxtvnkLjEkrwhoDcgar1JXyQovs="/>
         </table:table>
     </page:list>
 </div>

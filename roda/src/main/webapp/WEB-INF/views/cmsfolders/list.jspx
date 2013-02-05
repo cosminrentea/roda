@@ -4,7 +4,7 @@
     <jsp:output omit-xml-declaration="yes"/>
     <page:list id="pl_ro_roda_CmsFolder" items="${cmsfolders}" z="k5B4LEK9Qbk3/PwiecPDdVOSJSI=">
         <table:table data="${cmsfolders}" id="l_ro_roda_CmsFolder" path="/cmsfolders" z="trtfBrsBidQ/Khw0s/z+HzsKuT4=">
-            <table:column id="c_ro_roda_CmsFolder_parent" property="parent" z="Oy0rGq+MS25PfifFGBadkoI0uK8="/>
+            <table:column id="c_ro_roda_CmsFolder_parentId" property="parentId" z="Q7m0fUIXMqU4KKo4ZgkDRU8SNzA="/>
             <table:column id="c_ro_roda_CmsFolder_name" property="name" z="wHjgkk/LTIndGIW+7tb8HDH/1M8="/>
             <table:column id="c_ro_roda_CmsFolder_description" property="description" z="G/ha8TwaPZQa2WdFKtgSR3CfUGA="/>
         </table:table>

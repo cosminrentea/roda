@@ -5,47 +5,58 @@ package ro.roda;
 
 import javax.persistence.Column;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
-import ro.roda.EditedVariable;
 import ro.roda.OtherStatistic;
+import ro.roda.Variable;
 
 privileged aspect OtherStatistic_Roo_DbManaged {
     
-    @OneToOne
-    @JoinColumn(name = "variable_id", nullable = false, insertable = false, updatable = false)
-    private EditedVariable OtherStatistic.editedVariable;
+    @ManyToOne
+    @JoinColumn(name = "variable_id", referencedColumnName = "id", nullable = false)
+    private Variable OtherStatistic.variableId;
     
-    @Column(name = "statistic_name", columnDefinition = "varchar", length = 100)
+    @Column(name = "name", columnDefinition = "varchar", length = 100)
     @NotNull
-    private String OtherStatistic.statisticName;
+    private String OtherStatistic.name;
     
-    @Column(name = "statistic_value", columnDefinition = "float4", precision = 8, scale = 8)
+    @Column(name = "value", columnDefinition = "float4", precision = 8, scale = 8)
     @NotNull
-    private Float OtherStatistic.statisticValue;
+    private Float OtherStatistic.value;
     
-    public EditedVariable OtherStatistic.getEditedVariable() {
-        return editedVariable;
+    @Column(name = "description", columnDefinition = "text")
+    private String OtherStatistic.description;
+    
+    public Variable OtherStatistic.getVariableId() {
+        return variableId;
     }
     
-    public void OtherStatistic.setEditedVariable(EditedVariable editedVariable) {
-        this.editedVariable = editedVariable;
+    public void OtherStatistic.setVariableId(Variable variableId) {
+        this.variableId = variableId;
     }
     
-    public String OtherStatistic.getStatisticName() {
-        return statisticName;
+    public String OtherStatistic.getName() {
+        return name;
     }
     
-    public void OtherStatistic.setStatisticName(String statisticName) {
-        this.statisticName = statisticName;
+    public void OtherStatistic.setName(String name) {
+        this.name = name;
     }
     
-    public Float OtherStatistic.getStatisticValue() {
-        return statisticValue;
+    public Float OtherStatistic.getValue() {
+        return value;
     }
     
-    public void OtherStatistic.setStatisticValue(Float statisticValue) {
-        this.statisticValue = statisticValue;
+    public void OtherStatistic.setValue(Float value) {
+        this.value = value;
+    }
+    
+    public String OtherStatistic.getDescription() {
+        return description;
+    }
+    
+    public void OtherStatistic.setDescription(String description) {
+        this.description = description;
     }
     
 }

@@ -6,7 +6,6 @@ package ro.roda;
 import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.validation.constraints.NotNull;
 import ro.roda.Instance;
 import ro.roda.InstanceOrg;
 import ro.roda.InstanceOrgAssoc;
@@ -19,7 +18,7 @@ privileged aspect InstanceOrg_Roo_DbManaged {
     private Instance InstanceOrg.instanceId;
     
     @ManyToOne
-    @JoinColumn(name = "assoc_type_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "assoc_type_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     private InstanceOrgAssoc InstanceOrg.assocTypeId;
     
     @ManyToOne
@@ -30,7 +29,6 @@ privileged aspect InstanceOrg_Roo_DbManaged {
     private String InstanceOrg.assocDetails;
     
     @Column(name = "citation", columnDefinition = "text")
-    @NotNull
     private String InstanceOrg.citation;
     
     public Instance InstanceOrg.getInstanceId() {

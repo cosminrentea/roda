@@ -7,7 +7,6 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
-import ro.roda.Address;
 import ro.roda.City;
 import ro.roda.Country;
 import ro.roda.Region;
@@ -15,25 +14,18 @@ import ro.roda.Region;
 privileged aspect Country_Roo_DbManaged {
     
     @OneToMany(mappedBy = "countryId")
-    private Set<Address> Country.addresses;
-    
-    @OneToMany(mappedBy = "countryId")
     private Set<City> Country.cities;
     
     @OneToMany(mappedBy = "countryId")
     private Set<Region> Country.regions;
     
-    @Column(name = "name", columnDefinition = "varchar", length = 100)
+    @Column(name = "name", columnDefinition = "varchar", length = 100, unique = true)
     @NotNull
     private String Country.name;
     
-    public Set<Address> Country.getAddresses() {
-        return addresses;
-    }
-    
-    public void Country.setAddresses(Set<Address> addresses) {
-        this.addresses = addresses;
-    }
+    @Column(name = "alpha3", columnDefinition = "bpchar", length = 3, unique = true)
+    @NotNull
+    private String Country.alpha3;
     
     public Set<City> Country.getCities() {
         return cities;
@@ -57,6 +49,14 @@ privileged aspect Country_Roo_DbManaged {
     
     public void Country.setName(String name) {
         this.name = name;
+    }
+    
+    public String Country.getAlpha3() {
+        return alpha3;
+    }
+    
+    public void Country.setAlpha3(String alpha3) {
+        this.alpha3 = alpha3;
     }
     
 }

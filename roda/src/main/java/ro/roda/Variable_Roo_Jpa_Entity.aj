@@ -19,14 +19,14 @@ privileged aspect Variable_Roo_Jpa_Entity {
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", columnDefinition = "int4")
-    private Integer Variable.id;
+    @Column(name = "id", columnDefinition = "bigserial")
+    private Long Variable.id;
     
-    public Integer Variable.getId() {
+    public Long Variable.getId() {
         return this.id;
     }
     
-    public void Variable.setId(Integer id) {
+    public void Variable.setId(Long id) {
         this.id = id;
     }
     

@@ -7,5 +7,11 @@
         <field:simple field="addresses" id="c_ro_roda_City_addresses" messageCode="entity_reference_not_managed" messageCodeAttribute="Address" z="PMDBO6veRJ28tOe2287fsn/Y8uU="/>
         <field:select field="countryId" id="c_ro_roda_City_countryId" itemValue="id" items="${countrys}" path="/countrys" z="Ybtfe0oshTY67U9Qiegif+9t6gE="/>
         <field:input field="name" id="c_ro_roda_City_name" required="true" z="DcHmFpcYCdYkfDMfPpqL8PVcbso="/>
+        <field:input field="cityCode" id="c_ro_roda_City_cityCode" z="2auh4jj5DxeFSaomJrh/YuS7eJo="/>
+        <field:input field="cityCodeName" id="c_ro_roda_City_cityCodeName" z="CUzz54ueg+SkBnb+mAmSABu0o4s="/>
+        <field:input field="cityCodeSup" id="c_ro_roda_City_cityCodeSup" z="blbn7elhlum9H9TBj5wO21l6FC0="/>
+        <field:input field="prefix" id="c_ro_roda_City_prefix" z="vcLJtWP8mLOcJ0WL+zbHQgLk1tM="/>
+        <field:input field="cityType" id="c_ro_roda_City_cityType" z="KVtrUhTnMtfuI4TNwzlTId6CNDQ="/>
+        <field:input field="cityTypeSystem" id="c_ro_roda_City_cityTypeSystem" z="rjcwjQIf+uusfnf1u/YpnrgE+s0="/>
     </form:update>
 </div>

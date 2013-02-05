@@ -3,7 +3,7 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <page:show id="ps_ro_roda_CmsSnippet" object="${cmssnippet}" path="/cmssnippets" z="UrOixjHplgQeeyg+RStCQBJLg6U=">
-        <field:display field="snippetGroup" id="s_ro_roda_CmsSnippet_snippetGroup" object="${cmssnippet}" z="APzSTBWZw8Xrlf6Dtm4nj2BMBEc="/>
+        <field:display field="cmsSnippetGroupId" id="s_ro_roda_CmsSnippet_cmsSnippetGroupId" object="${cmssnippet}" z="fq7N95mYdkwStTHbGzJ3va6a3y8="/>
         <field:display field="name" id="s_ro_roda_CmsSnippet_name" object="${cmssnippet}" z="vKkbYY4HMx7PXQYH0tSxKCvc/pY="/>
         <field:display field="snippetContent" id="s_ro_roda_CmsSnippet_snippetContent" object="${cmssnippet}" z="ukj6enAvWu1ih2JLgC14FIJ/c3A="/>
     </page:show>

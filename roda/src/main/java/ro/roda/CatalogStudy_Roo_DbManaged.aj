@@ -3,12 +3,17 @@
 
 package ro.roda;
 
+import java.util.Date;
+import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+import org.springframework.format.annotation.DateTimeFormat;
 import ro.roda.Catalog;
 import ro.roda.CatalogStudy;
 import ro.roda.Study;
-import ro.roda.User;
 
 privileged aspect CatalogStudy_Roo_DbManaged {
     
@@ -20,9 +25,11 @@ privileged aspect CatalogStudy_Roo_DbManaged {
     @JoinColumn(name = "study_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     private Study CatalogStudy.studyId;
     
-    @ManyToOne
-    @JoinColumn(name = "added_by", referencedColumnName = "id", nullable = false)
-    private User CatalogStudy.addedBy;
+    @Column(name = "added", columnDefinition = "timestamp")
+    @NotNull
+    @Temporal(TemporalType.TIMESTAMP)
+    @DateTimeFormat(style = "M-")
+    private Date CatalogStudy.added;
     
     public Catalog CatalogStudy.getCatalogId() {
         return catalogId;
@@ -40,12 +47,12 @@ privileged aspect CatalogStudy_Roo_DbManaged {
         this.studyId = studyId;
     }
     
-    public User CatalogStudy.getAddedBy() {
-        return addedBy;
+    public Date CatalogStudy.getAdded() {
+        return added;
     }
     
-    public void CatalogStudy.setAddedBy(User addedBy) {
-        this.addedBy = addedBy;
+    public void CatalogStudy.setAdded(Date added) {
+        this.added = added;
     }
     
 }

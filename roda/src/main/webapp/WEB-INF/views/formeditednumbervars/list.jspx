@@ -4,8 +4,8 @@
     <jsp:output omit-xml-declaration="yes"/>
     <page:list id="pl_ro_roda_FormEditedNumberVar" items="${formeditednumbervars}" z="8Md/eHtIe8JBw+GS0Zj+p8A9BZ0=">
         <table:table data="${formeditednumbervars}" id="l_ro_roda_FormEditedNumberVar" path="/formeditednumbervars" z="Xucar/XvtRpnkvKVMRhfW7iqoO0=">
-            <table:column id="c_ro_roda_FormEditedNumberVar_variableId" property="variableId" z="lsCnp+O2Are5kNyI7KSFdwfovFM="/>
             <table:column id="c_ro_roda_FormEditedNumberVar_formId" property="formId" z="RPQQhphe5tL8Ga5wdu5K3YPEaR4="/>
+            <table:column id="c_ro_roda_FormEditedNumberVar_variableId" property="variableId" z="lsCnp+O2Are5kNyI7KSFdwfovFM="/>
             <table:column id="c_ro_roda_FormEditedNumberVar_value" property="value" z="/hcE41lnDUEukdrag27bDA3cPSI="/>
         </table:table>
     </page:list>

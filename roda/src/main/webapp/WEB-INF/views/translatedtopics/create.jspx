@@ -3,7 +3,7 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <form:create compositePkField="id" id="fc_ro_roda_TranslatedTopic" modelAttribute="translatedTopic" path="/translatedtopics" render="${empty dependencies}" z="BhuBytkNFdB7JNyep1N2+ReMKT4=">
-        <field:input disableFormBinding="true" field="id.languageId" id="c_ro_roda_TranslatedTopic_id_languageId" required="true" validationMessageCode="field_invalid_integer" z="Io3gY3qRZiw57mmaVU/V6d9OThs="/>
+        <field:input disableFormBinding="true" field="id.langId" id="c_ro_roda_TranslatedTopic_id_langId" required="true" z="dvLgMnvc7l0wnXyOaefeksmIjYU="/>
         <field:input disableFormBinding="true" field="id.topicId" id="c_ro_roda_TranslatedTopic_id_topicId" required="true" validationMessageCode="field_invalid_integer" z="OxdyjKv7kQ5xNlgi/jL5miYiSic="/>
         <field:input field="translation" id="c_ro_roda_TranslatedTopic_translation" required="true" z="UaFKBDoMasOtbgX4YVvb9X5KQxs="/>
     </form:create>

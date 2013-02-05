@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:spring="http://www.springframework.org/tags" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <form:create compositePkField="id" id="fc_ro_roda_CmsFilePropertyNameValue" modelAttribute="cmsFilePropertyNameValue" path="/cmsfilepropertynamevalues" render="${empty dependencies}" z="4Sxzy/RkiIiTYkoLjMw88t4JnrQ=">
+        <field:input disableFormBinding="true" field="id.cmsFileId" id="c_ro_roda_CmsFilePropertyNameValue_id_cmsFileId" required="true" validationMessageCode="field_invalid_integer" z="ddPm79ULO6lPJKgOUtwECxYULc4="/>
+        <field:input disableFormBinding="true" field="id.propertyNameId" id="c_ro_roda_CmsFilePropertyNameValue_id_propertyNameId" required="true" validationMessageCode="field_invalid_integer" z="wimKXgfqnuFhkOcjn/nDIEfUSf0="/>
+        <field:input disableFormBinding="true" field="id.propertyValueId" id="c_ro_roda_CmsFilePropertyNameValue_id_propertyValueId" required="true" validationMessageCode="field_invalid_integer" z="2AUxTEah+YU7LLuVR1MoX8wx2NM="/>
+    </form:create>
+    <form:dependency dependencies="${dependencies}" id="d_ro_roda_CmsFilePropertyNameValue" render="${not empty dependencies}" z="tfKvmcvDw5G5ArwT0x0O8aVGn3k="/>
+</div>

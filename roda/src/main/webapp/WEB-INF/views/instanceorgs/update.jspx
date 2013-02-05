@@ -3,8 +3,7 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <form:update id="fu_ro_roda_InstanceOrg" modelAttribute="instanceOrg" path="/instanceorgs" versionField="none" z="5YBlXhZe2yZ/3nxixfCitZq2iFg=">
-        <field:select field="assocTypeId" id="c_ro_roda_InstanceOrg_assocTypeId" itemValue="id" items="${instanceorgassocs}" path="/instanceorgassocs" z="/8NIh4zXET1x0y51WeZCL2bghb0="/>
         <field:input field="assocDetails" id="c_ro_roda_InstanceOrg_assocDetails" z="V2MMyH8W0zCQd9I5carHtNXK+nk="/>
-        <field:input field="citation" id="c_ro_roda_InstanceOrg_citation" required="true" z="mEpNcd6Ik0NK63JIQKC2qPgvkzY="/>
+        <field:input field="citation" id="c_ro_roda_InstanceOrg_citation" z="InK9p/SSWcu9SC/Nu7MTaYb5mvg="/>
     </form:update>
 </div>

@@ -6,6 +6,5 @@
         <field:simple field="studyOrgs" id="c_ro_roda_StudyOrgAssoc_studyOrgs" messageCode="entity_reference_not_managed" messageCodeAttribute="Study Org" z="rWzjalB40BWbaNmsaoM8F2+PdVQ="/>
         <field:input field="assocName" id="c_ro_roda_StudyOrgAssoc_assocName" required="true" z="DX3MPkjDeW7u54150m+uAtlAigQ="/>
         <field:input field="assocDescription" id="c_ro_roda_StudyOrgAssoc_assocDescription" z="p+j2fuS8bwEq4B64Yz4DxN3o2U4="/>
-        <field:input field="assocDetails" id="c_ro_roda_StudyOrgAssoc_assocDetails" z="e9xjKcMGxYqsQOUaNZ90NEy9Fi0="/>
     </form:update>
 </div>

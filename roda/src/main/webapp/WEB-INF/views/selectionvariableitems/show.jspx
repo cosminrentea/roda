@@ -3,10 +3,10 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <page:show id="ps_ro_roda_SelectionVariableItem" object="${selectionvariableitem}" path="/selectionvariableitems" z="+7dCYxuPoJQyEzJdk98blGzuKfI=">
-        <field:display field="frequency" id="s_ro_roda_SelectionVariableItem_frequency" object="${selectionvariableitem}" z="FFtObDo3gLFn1K2oTC+a6u5dcSk="/>
         <field:display field="responseCardFileId" id="s_ro_roda_SelectionVariableItem_responseCardFileId" object="${selectionvariableitem}" z="byZD+aSXBJdaHvvCymYJIRZCmOU="/>
         <field:display field="itemId" id="s_ro_roda_SelectionVariableItem_itemId" object="${selectionvariableitem}" z="1CsF6Yjhg3MJcf7YgQe43reTaHg="/>
         <field:display field="variableId" id="s_ro_roda_SelectionVariableItem_variableId" object="${selectionvariableitem}" z="Pa2OhsFSg57zLIuyntpBoW59sL4="/>
         <field:display field="orderOfItemInVariable" id="s_ro_roda_SelectionVariableItem_orderOfItemInVariable" object="${selectionvariableitem}" z="D96JBuy9WW1KIZLGwi2UYdcP7qA="/>
+        <field:display field="frequencyValue" id="s_ro_roda_SelectionVariableItem_frequencyValue" object="${selectionvariableitem}" z="sRqtfzNPGWsV9PEXIR+LoDyk5LU="/>
     </page:show>
 </div>

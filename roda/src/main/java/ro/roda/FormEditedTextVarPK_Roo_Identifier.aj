@@ -11,13 +11,13 @@ privileged aspect FormEditedTextVarPK_Roo_Identifier {
     
     declare @type: FormEditedTextVarPK: @Embeddable;
     
-    @Column(name = "variable_id", columnDefinition = "int4", nullable = false)
-    private Integer FormEditedTextVarPK.variableId;
+    @Column(name = "variable_id", columnDefinition = "int8", nullable = false)
+    private Long FormEditedTextVarPK.variableId;
     
-    @Column(name = "form_id", columnDefinition = "int4", nullable = false)
-    private Integer FormEditedTextVarPK.formId;
+    @Column(name = "form_id", columnDefinition = "int8", nullable = false)
+    private Long FormEditedTextVarPK.formId;
     
-    public FormEditedTextVarPK.new(Integer variableId, Integer formId) {
+    public FormEditedTextVarPK.new(Long variableId, Long formId) {
         super();
         this.variableId = variableId;
         this.formId = formId;
@@ -27,11 +27,11 @@ privileged aspect FormEditedTextVarPK_Roo_Identifier {
         super();
     }
 
-    public Integer FormEditedTextVarPK.getVariableId() {
+    public Long FormEditedTextVarPK.getVariableId() {
         return variableId;
     }
     
-    public Integer FormEditedTextVarPK.getFormId() {
+    public Long FormEditedTextVarPK.getFormId() {
         return formId;
     }
     

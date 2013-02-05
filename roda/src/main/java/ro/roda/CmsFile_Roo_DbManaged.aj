@@ -3,49 +3,51 @@
 
 package ro.roda;
 
+import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import ro.roda.CmsFile;
+import ro.roda.CmsFilePropertyNameValue;
 import ro.roda.CmsFolder;
 
 privileged aspect CmsFile_Roo_DbManaged {
     
-    @ManyToOne
-    @JoinColumn(name = "folder_id", referencedColumnName = "id", nullable = false)
-    private CmsFolder CmsFile.folderId;
+    @OneToMany(mappedBy = "cmsFileId")
+    private Set<CmsFilePropertyNameValue> CmsFile.cmsFilePropertyNameValues;
     
-    @Column(name = "filename", columnDefinition = "varchar", length = 200)
+    @ManyToOne
+    @JoinColumn(name = "cms_folder_id", referencedColumnName = "id")
+    private CmsFolder CmsFile.cmsFolderId;
+    
+    @Column(name = "filename")
     @NotNull
     private String CmsFile.filename;
     
-    @Column(name = "label", columnDefinition = "varchar", length = 50)
+    @Column(name = "label", length = 100)
     @NotNull
     private String CmsFile.label;
     
-    @Column(name = "md5", columnDefinition = "varchar", length = 32)
+    @Column(name = "filesize")
     @NotNull
-    private String CmsFile.md5;
+    private Long CmsFile.filesize;
     
-    @Column(name = "mimegroup", columnDefinition = "varchar", length = 50)
-    @NotNull
-    private String CmsFile.mimegroup;
-    
-    @Column(name = "mimesubgroup", columnDefinition = "varchar", length = 50)
-    @NotNull
-    private String CmsFile.mimesubgroup;
-    
-    @Column(name = "filesize", columnDefinition = "int4")
-    @NotNull
-    private Integer CmsFile.filesize;
-    
-    public CmsFolder CmsFile.getFolderId() {
-        return folderId;
+    public Set<CmsFilePropertyNameValue> CmsFile.getCmsFilePropertyNameValues() {
+        return cmsFilePropertyNameValues;
     }
     
-    public void CmsFile.setFolderId(CmsFolder folderId) {
-        this.folderId = folderId;
+    public void CmsFile.setCmsFilePropertyNameValues(Set<CmsFilePropertyNameValue> cmsFilePropertyNameValues) {
+        this.cmsFilePropertyNameValues = cmsFilePropertyNameValues;
+    }
+    
+    public CmsFolder CmsFile.getCmsFolderId() {
+        return cmsFolderId;
+    }
+    
+    public void CmsFile.setCmsFolderId(CmsFolder cmsFolderId) {
+        this.cmsFolderId = cmsFolderId;
     }
     
     public String CmsFile.getFilename() {
@@ -64,35 +66,11 @@ privileged aspect CmsFile_Roo_DbManaged {
         this.label = label;
     }
     
-    public String CmsFile.getMd5() {
-        return md5;
-    }
-    
-    public void CmsFile.setMd5(String md5) {
-        this.md5 = md5;
-    }
-    
-    public String CmsFile.getMimegroup() {
-        return mimegroup;
-    }
-    
-    public void CmsFile.setMimegroup(String mimegroup) {
-        this.mimegroup = mimegroup;
-    }
-    
-    public String CmsFile.getMimesubgroup() {
-        return mimesubgroup;
-    }
-    
-    public void CmsFile.setMimesubgroup(String mimesubgroup) {
-        this.mimesubgroup = mimesubgroup;
-    }
-    
-    public Integer CmsFile.getFilesize() {
+    public Long CmsFile.getFilesize() {
         return filesize;
     }
     
-    public void CmsFile.setFilesize(Integer filesize) {
+    public void CmsFile.setFilesize(Long filesize) {
         this.filesize = filesize;
     }
     

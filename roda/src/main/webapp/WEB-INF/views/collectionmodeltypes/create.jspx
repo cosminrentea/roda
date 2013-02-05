@@ -3,8 +3,9 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <form:create id="fc_ro_roda_CollectionModelType" modelAttribute="collectionModelType" path="/collectionmodeltypes" render="${empty dependencies}" z="X2Bn0s76VynoWBfGiU3z/9jLeMg=">
-        <field:select field="methodologies" id="c_ro_roda_CollectionModelType_methodologies" itemValue="instanceId" items="${methodologys}" multiple="true" path="/methodologys" z="lxJolvUXBnM2UE2MFU6MgUrC+ew="/>
+        <field:select field="instances" id="c_ro_roda_CollectionModelType_instances" itemValue="id" items="${instances}" multiple="true" path="/instances" z="MXNBhZInudQdWDcsTnXEuuzdO/A="/>
         <field:input field="name" id="c_ro_roda_CollectionModelType_name" required="true" z="OVJxZESBQx6ELVbqhlb4eFY8vH0="/>
+        <field:input field="description" id="c_ro_roda_CollectionModelType_description" z="giDIJCszT92fWcMalH7OMm8OC4c="/>
     </form:create>
     <form:dependency dependencies="${dependencies}" id="d_ro_roda_CollectionModelType" render="${not empty dependencies}" z="/VUrF0oKhOjNK3sZdx0zu1Z1W/A="/>
 </div>

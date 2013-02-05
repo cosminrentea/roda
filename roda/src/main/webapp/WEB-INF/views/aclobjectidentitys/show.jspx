@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:show id="ps_ro_roda_AclObjectIdentity" object="${aclobjectidentity}" path="/aclobjectidentitys" z="uCbbTM3XO8qBwMwn3/aO/FBPBNg=">
+        <field:display field="objectIdClass" id="s_ro_roda_AclObjectIdentity_objectIdClass" object="${aclobjectidentity}" z="Vq9dZNZj2RwSAIvkGaHrz2kMMPI="/>
+        <field:display field="parentObject" id="s_ro_roda_AclObjectIdentity_parentObject" object="${aclobjectidentity}" z="imyPzX7wH87BfjfWlF7WW+CLVYw="/>
+        <field:display field="ownerSid" id="s_ro_roda_AclObjectIdentity_ownerSid" object="${aclobjectidentity}" z="Nx34SIgU+QSwTrRVP7RvRw6WjoI="/>
+        <field:display field="objectIdIdentity" id="s_ro_roda_AclObjectIdentity_objectIdIdentity" object="${aclobjectidentity}" z="Tgf0FMIoa5meYfNT6X0C1GmXU3I="/>
+        <field:display field="entriesInheriting" id="s_ro_roda_AclObjectIdentity_entriesInheriting" object="${aclobjectidentity}" z="MFUYeDwSYNArDn8NVizg4HvhmL8="/>
+    </page:show>
+</div>

@@ -19,14 +19,14 @@ privileged aspect Value_Roo_Jpa_Entity {
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "item_id", columnDefinition = "int4")
-    private Integer Value.itemId;
+    @Column(name = "item_id", columnDefinition = "int8")
+    private Long Value.itemId;
     
-    public Integer Value.getItemId() {
+    public Long Value.getItemId() {
         return this.itemId;
     }
     
-    public void Value.setItemId(Integer id) {
+    public void Value.setItemId(Long id) {
         this.itemId = id;
     }
     

@@ -88,6 +88,7 @@ privileged aspect CmsLayoutGroupController_Roo_Controller {
     void CmsLayoutGroupController.populateEditForm(Model uiModel, CmsLayoutGroup cmsLayoutGroup) {
         uiModel.addAttribute("cmsLayoutGroup", cmsLayoutGroup);
         uiModel.addAttribute("cmslayouts", CmsLayout.findAllCmsLayouts());
+        uiModel.addAttribute("cmslayoutgroups", CmsLayoutGroup.findAllCmsLayoutGroups());
     }
     
     String CmsLayoutGroupController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

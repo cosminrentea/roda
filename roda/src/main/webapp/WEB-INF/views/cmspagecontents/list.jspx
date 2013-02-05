@@ -4,11 +4,11 @@
     <jsp:output omit-xml-declaration="yes"/>
     <page:list id="pl_ro_roda_CmsPageContent" items="${cmspagecontents}" z="rEpUzsLVM/ROeKuHRen3n0pJtaE=">
         <table:table data="${cmspagecontents}" id="l_ro_roda_CmsPageContent" path="/cmspagecontents" z="lENFR5O9VfAToQz00pozuixVFtI=">
-            <table:column id="c_ro_roda_CmsPageContent_page" property="page" z="tE+sUtg3xQ3jRca3BssFx3NpXec="/>
+            <table:column id="c_ro_roda_CmsPageContent_cmsPageId" property="cmsPageId" z="YgdWeCG/eqaP7JtogK5vXfw/Itk="/>
             <table:column id="c_ro_roda_CmsPageContent_name" property="name" z="Bci1awnG+8/oeFRvDmPSSb9dfkk="/>
             <table:column id="c_ro_roda_CmsPageContent_contentTitle" property="contentTitle" z="fEmt+jpvT6xEjCfu6CCuiS9lXmg="/>
             <table:column id="c_ro_roda_CmsPageContent_contentText" property="contentText" z="rd8Cqt+8qWTUZOJupX17yiHjG8E="/>
-            <table:column id="c_ro_roda_CmsPageContent_seqnumber" property="seqnumber" z="04TLfBg3iWaEwVXSF7UDgAOIm+g="/>
+            <table:column id="c_ro_roda_CmsPageContent_orderInPage" property="orderInPage" z="1lwa0K1wpoO07Pt3jTbigOFk0ok="/>
         </table:table>
     </page:list>
 </div>

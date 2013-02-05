@@ -19,14 +19,14 @@ privileged aspect Scale_Roo_Jpa_Entity {
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "item_id", columnDefinition = "int4")
-    private Integer Scale.itemId;
+    @Column(name = "item_id", columnDefinition = "int8")
+    private Long Scale.itemId;
     
-    public Integer Scale.getItemId() {
+    public Long Scale.getItemId() {
         return this.itemId;
     }
     
-    public void Scale.setItemId(Integer id) {
+    public void Scale.setItemId(Long id) {
         this.itemId = id;
     }
     

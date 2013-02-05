@@ -3,8 +3,8 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <page:show id="ps_ro_roda_CmsLayoutGroup" object="${cmslayoutgroup}" path="/cmslayoutgroups" z="AHabWjdBLkS6G4X7GUHWRvbXeeU=">
+        <field:display field="parentId" id="s_ro_roda_CmsLayoutGroup_parentId" object="${cmslayoutgroup}" z="gyRKz8fWUI0sE1RVG6fqBrgCDJU="/>
         <field:display field="name" id="s_ro_roda_CmsLayoutGroup_name" object="${cmslayoutgroup}" z="EAXJQ/EXMbiapAIgYx+r9z9zByI="/>
-        <field:display field="parent" id="s_ro_roda_CmsLayoutGroup_parent" object="${cmslayoutgroup}" z="Wv7sYQN/bMWp9HkXVWJIgXVMkYU="/>
         <field:display field="description" id="s_ro_roda_CmsLayoutGroup_description" object="${cmslayoutgroup}" z="CvkPqqvzYfSxLIAc9Yv86Gp98ko="/>
     </page:show>
 </div>

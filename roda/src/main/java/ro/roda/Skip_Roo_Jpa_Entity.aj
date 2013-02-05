@@ -19,14 +19,14 @@ privileged aspect Skip_Roo_Jpa_Entity {
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", columnDefinition = "int4")
-    private Integer Skip.id;
+    @Column(name = "id", columnDefinition = "bigserial")
+    private Long Skip.id;
     
-    public Integer Skip.getId() {
+    public Long Skip.getId() {
         return this.id;
     }
     
-    public void Skip.setId(Integer id) {
+    public void Skip.setId(Long id) {
         this.id = id;
     }
     

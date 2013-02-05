@@ -6,7 +6,6 @@
         <table:table data="${variables}" id="l_ro_roda_Variable" path="/variables" z="YWgCTtw2OauGtA0gwOAPXSU1iOM=">
             <table:column id="c_ro_roda_Variable_concepts" property="concepts" z="HeBcPQgAj4AD4zvJPwhR2SJqQ5A="/>
             <table:column id="c_ro_roda_Variable_vargroups" property="vargroups" z="AJGwxCEi4RwEoB5VdA5AZyQf86Q="/>
-            <table:column id="c_ro_roda_Variable_editedVariable" property="editedVariable" z="4GpEOoUHVpBxDkd4Eb3dyE0bxdM="/>
             <table:column id="c_ro_roda_Variable_selectionVariable" property="selectionVariable" z="ztH7Oe0Hz2T9pxKFZZEv9f+n7Ek="/>
         </table:table>
     </page:list>

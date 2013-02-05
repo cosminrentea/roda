@@ -21,6 +21,7 @@ import ro.roda.FormEditedNumberVar;
 import ro.roda.FormEditedTextVar;
 import ro.roda.FormSelectionVar;
 import ro.roda.Instance;
+import ro.roda.Person;
 import ro.roda.web.FormController;
 
 privileged aspect FormController_Roo_Controller {
@@ -43,7 +44,7 @@ privileged aspect FormController_Roo_Controller {
     }
     
     @RequestMapping(value = "/{id}", produces = "text/html")
-    public String FormController.show(@PathVariable("id") Integer id, Model uiModel) {
+    public String FormController.show(@PathVariable("id") Long id, Model uiModel) {
         addDateTimeFormatPatterns(uiModel);
         uiModel.addAttribute("form", Form.findForm(id));
         uiModel.addAttribute("itemId", id);
@@ -77,13 +78,13 @@ privileged aspect FormController_Roo_Controller {
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
-    public String FormController.updateForm(@PathVariable("id") Integer id, Model uiModel) {
+    public String FormController.updateForm(@PathVariable("id") Long id, Model uiModel) {
         populateEditForm(uiModel, Form.findForm(id));
         return "forms/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
-    public String FormController.delete(@PathVariable("id") Integer id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
+    public String FormController.delete(@PathVariable("id") Long id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
         Form form = Form.findForm(id);
         form.remove();
         uiModel.asMap().clear();
@@ -93,7 +94,7 @@ privileged aspect FormController_Roo_Controller {
     }
     
     void FormController.addDateTimeFormatPatterns(Model uiModel) {
-        uiModel.addAttribute("form_filldate_date_format", DateTimeFormat.patternForStyle("M-", LocaleContextHolder.getLocale()));
+        uiModel.addAttribute("form_filltime_date_format", DateTimeFormat.patternForStyle("M-", LocaleContextHolder.getLocale()));
     }
     
     void FormController.populateEditForm(Model uiModel, Form form) {
@@ -103,6 +104,7 @@ privileged aspect FormController_Roo_Controller {
         uiModel.addAttribute("formeditedtextvars", FormEditedTextVar.findAllFormEditedTextVars());
         uiModel.addAttribute("formselectionvars", FormSelectionVar.findAllFormSelectionVars());
         uiModel.addAttribute("instances", Instance.findAllInstances());
+        uiModel.addAttribute("people", Person.findAllPeople());
     }
     
     String FormController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

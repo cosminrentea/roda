@@ -6,51 +6,86 @@ package ro.roda;
 import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 import ro.roda.Instance;
 import ro.roda.InstanceDescr;
-import ro.roda.Language;
+import ro.roda.Lang;
 
 privileged aspect InstanceDescr_Roo_DbManaged {
     
-    @OneToOne
-    @JoinColumn(name = "instance_id", nullable = false, insertable = false, updatable = false)
-    private Instance InstanceDescr.instance;
+    @ManyToOne
+    @JoinColumn(name = "instance_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+    private Instance InstanceDescr.instanceId;
     
     @ManyToOne
-    @JoinColumn(name = "language_id", referencedColumnName = "id", nullable = false)
-    private Language InstanceDescr.languageId;
+    @JoinColumn(name = "lang_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+    private Lang InstanceDescr.langId;
+    
+    @Column(name = "weighting", columnDefinition = "text")
+    private String InstanceDescr.weighting;
+    
+    @Column(name = "research_instrument", columnDefinition = "text")
+    private String InstanceDescr.researchInstrument;
+    
+    @Column(name = "scope", columnDefinition = "text")
+    private String InstanceDescr.scope;
+    
+    @Column(name = "universe", columnDefinition = "text")
+    private String InstanceDescr.universe;
+    
+    @Column(name = "abstract", columnDefinition = "text")
+    private String InstanceDescr.abstract1;
     
     @Column(name = "title", columnDefinition = "text")
     @NotNull
     private String InstanceDescr.title;
     
-    @Column(name = "abstract", columnDefinition = "text")
-    private String InstanceDescr.abstract1;
-    
-    public Instance InstanceDescr.getInstance() {
-        return instance;
+    public Instance InstanceDescr.getInstanceId() {
+        return instanceId;
     }
     
-    public void InstanceDescr.setInstance(Instance instance) {
-        this.instance = instance;
+    public void InstanceDescr.setInstanceId(Instance instanceId) {
+        this.instanceId = instanceId;
     }
     
-    public Language InstanceDescr.getLanguageId() {
-        return languageId;
+    public Lang InstanceDescr.getLangId() {
+        return langId;
     }
     
-    public void InstanceDescr.setLanguageId(Language languageId) {
-        this.languageId = languageId;
+    public void InstanceDescr.setLangId(Lang langId) {
+        this.langId = langId;
     }
     
-    public String InstanceDescr.getTitle() {
-        return title;
+    public String InstanceDescr.getWeighting() {
+        return weighting;
     }
     
-    public void InstanceDescr.setTitle(String title) {
-        this.title = title;
+    public void InstanceDescr.setWeighting(String weighting) {
+        this.weighting = weighting;
+    }
+    
+    public String InstanceDescr.getResearchInstrument() {
+        return researchInstrument;
+    }
+    
+    public void InstanceDescr.setResearchInstrument(String researchInstrument) {
+        this.researchInstrument = researchInstrument;
+    }
+    
+    public String InstanceDescr.getScope() {
+        return scope;
+    }
+    
+    public void InstanceDescr.setScope(String scope) {
+        this.scope = scope;
+    }
+    
+    public String InstanceDescr.getUniverse() {
+        return universe;
+    }
+    
+    public void InstanceDescr.setUniverse(String universe) {
+        this.universe = universe;
     }
     
     public String InstanceDescr.getAbstract1() {
@@ -59,6 +94,14 @@ privileged aspect InstanceDescr_Roo_DbManaged {
     
     public void InstanceDescr.setAbstract1(String abstract1) {
         this.abstract1 = abstract1;
+    }
+    
+    public String InstanceDescr.getTitle() {
+        return title;
+    }
+    
+    public void InstanceDescr.setTitle(String title) {
+        this.title = title;
     }
     
 }

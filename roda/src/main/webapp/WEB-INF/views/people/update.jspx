@@ -3,12 +3,15 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <form:update id="fu_ro_roda_Person" modelAttribute="person" path="/people" versionField="none" z="3eSTrbzEGv7h4/JwVh+4Y4YhXy4=">
-        <field:simple field="emails" id="c_ro_roda_Person_emails" messageCode="entity_reference_not_managed" messageCodeAttribute="Email" z="j22rguU2v4LBHvBAGEA21q3fa1s="/>
+        <field:simple field="forms" id="c_ro_roda_Person_forms" messageCode="entity_reference_not_managed" messageCodeAttribute="Form" z="awFI8qozxuhbwGlMzrfBguwVHPI="/>
         <field:simple field="instancepeople" id="c_ro_roda_Person_instancepeople" messageCode="entity_reference_not_managed" messageCodeAttribute="Instance Person" z="pUPHjOYstzPg44cVw/URYauooDM="/>
-        <field:simple field="internets" id="c_ro_roda_Person_internets" messageCode="entity_reference_not_managed" messageCodeAttribute="Internet" z="ZPMQv3Gt0xy30gsNdOl6gEQbGsA="/>
         <field:simple field="personAddresses" id="c_ro_roda_Person_personAddresses" messageCode="entity_reference_not_managed" messageCodeAttribute="Person Address" z="I1P6pDOeX+aBsYWLaMpvwsg3qes="/>
+        <field:simple field="personEmails" id="c_ro_roda_Person_personEmails" messageCode="entity_reference_not_managed" messageCodeAttribute="Person Email" z="p/hhykxvt3fw+OmSxAyW3Lx5nMo="/>
+        <field:simple field="personInternets" id="c_ro_roda_Person_personInternets" messageCode="entity_reference_not_managed" messageCodeAttribute="Person Internet" z="2blzgSptDz3x94/+rd6j+5ZC4G4="/>
         <field:simple field="personLinkss" id="c_ro_roda_Person_personLinkss" messageCode="entity_reference_not_managed" messageCodeAttribute="Person Links" z="ibhnw83ZNqGKf8vF0aBbRwfhDeI="/>
         <field:simple field="personOrgs" id="c_ro_roda_Person_personOrgs" messageCode="entity_reference_not_managed" messageCodeAttribute="Person Org" z="3rGNrpFf8fc6P1CavA6uBJCM8qc="/>
+        <field:simple field="personPhones" id="c_ro_roda_Person_personPhones" messageCode="entity_reference_not_managed" messageCodeAttribute="Person Phone" z="Oblx0jfxJBFsSozBOjRCZXOxWuA="/>
+        <field:simple field="sourceContactss" id="c_ro_roda_Person_sourceContactss" messageCode="entity_reference_not_managed" messageCodeAttribute="Source Contacts" z="K3leJSvISAp4iRUgTqdxuNo1ttY="/>
         <field:simple field="studypeople" id="c_ro_roda_Person_studypeople" messageCode="entity_reference_not_managed" messageCodeAttribute="Study Person" z="6DnWKD4KNC+8yqtv3Q6FMOSmGL0="/>
         <field:select field="prefixId" id="c_ro_roda_Person_prefixId" itemValue="id" items="${prefixes}" path="/prefixes" z="HPQIbPUAtaZGxHToVCXXopmOwT8="/>
         <field:select field="suffixId" id="c_ro_roda_Person_suffixId" itemValue="id" items="${suffixes}" path="/suffixes" z="RCn0WUap3bLTAC5i21Qjd36+qcs="/>

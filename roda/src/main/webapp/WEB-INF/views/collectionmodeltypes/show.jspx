@@ -3,7 +3,8 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <page:show id="ps_ro_roda_CollectionModelType" object="${collectionmodeltype}" path="/collectionmodeltypes" z="01qcEw1HYiGemJMpYpmBFqU734U=">
-        <field:display field="methodologies" id="s_ro_roda_CollectionModelType_methodologies" object="${collectionmodeltype}" z="UXKuZ9lfiTnaI68SI7COfTKFi/g="/>
+        <field:display field="instances" id="s_ro_roda_CollectionModelType_instances" object="${collectionmodeltype}" z="gc9xpz+UDAQiHULqfWzU26Z/83U="/>
         <field:display field="name" id="s_ro_roda_CollectionModelType_name" object="${collectionmodeltype}" z="D44eg1FVUgbmkQrWEIazATr/TVo="/>
+        <field:display field="description" id="s_ro_roda_CollectionModelType_description" object="${collectionmodeltype}" z="CP+W2FwCzzMZCWez24qZ3pWJhys="/>
     </page:show>
 </div>

@@ -3,13 +3,19 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <page:show id="ps_ro_roda_Instance" object="${instance}" path="/instances" z="35ENceB//ytvXQ0GoOqPX1+Vnvg=">
-        <field:display field="topics" id="s_ro_roda_Instance_topics" object="${instance}" z="BMh5CDOXJhlwng99x4cdqPNIltc="/>
+        <field:display field="samplingProcedures" id="s_ro_roda_Instance_samplingProcedures" object="${instance}" z="IOYB+PXSURh14tE23zxyrFUgp1U="/>
+        <field:display field="topics1" id="s_ro_roda_Instance_topics1" object="${instance}" z="IMNer7kiMUCQeqPYb8YCP3S7Ric="/>
         <field:display field="files" id="s_ro_roda_Instance_files" object="${instance}" z="aQdHagKDiLqM0DnmY7/qxWrr9PU="/>
-        <field:display field="instanceDescr" id="s_ro_roda_Instance_instanceDescr" object="${instance}" z="miS+jY1qCp3e0BuNJUjHpS18GV4="/>
-        <field:display field="methodology" id="s_ro_roda_Instance_methodology" object="${instance}" z="46PmLM2PTKFRMDuorh/iyV8w82s="/>
+        <field:display field="collectionModelTypes" id="s_ro_roda_Instance_collectionModelTypes" object="${instance}" z="fIekD80QJRqduzK4U5E/MG9rEc4="/>
         <field:display field="studyId" id="s_ro_roda_Instance_studyId" object="${instance}" z="sH5QxS6AedVv5WH1+8UZAUJtTBY="/>
+        <field:display field="timeMethId" id="s_ro_roda_Instance_timeMethId" object="${instance}" z="SAfRF/Mj267qyF+khU7jVmuzjSU="/>
         <field:display field="unitAnalysisId" id="s_ro_roda_Instance_unitAnalysisId" object="${instance}" z="ioVka87c6wv++t6mgZe3pW8Mlq8="/>
+        <field:display field="addedBy" id="s_ro_roda_Instance_addedBy" object="${instance}" z="7QLNre9f53X+Z60FQxm+lyv+gIM="/>
         <field:display date="true" dateTimePattern="${instance_datestart_date_format}" field="datestart" id="s_ro_roda_Instance_datestart" object="${instance}" z="zsng7RtodRMpmv9FjUBS8ri6I7E="/>
         <field:display date="true" dateTimePattern="${instance_dateend_date_format}" field="dateend" id="s_ro_roda_Instance_dateend" object="${instance}" z="q/t87yajoG77xbTcFdGnfG0cJE4="/>
+        <field:display field="insertionStatus" id="s_ro_roda_Instance_insertionStatus" object="${instance}" z="d4jCWU/ViucxCQyzEr0k8P0GL/0="/>
+        <field:display field="rawData" id="s_ro_roda_Instance_rawData" object="${instance}" z="wd5jfnqGVa8moKGpvPgk4S4l6LE="/>
+        <field:display field="rawMetadata" id="s_ro_roda_Instance_rawMetadata" object="${instance}" z="DYs3tCuFREzGzIdAtUYNo2o8D5k="/>
+        <field:display date="true" dateTimePattern="${instance_added_date_format}" field="added" id="s_ro_roda_Instance_added" object="${instance}" z="FLOfnq5EXybXR7yg+apKJsF20Tw="/>
     </page:show>
 </div>

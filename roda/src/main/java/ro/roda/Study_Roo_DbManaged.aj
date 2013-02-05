@@ -9,8 +9,8 @@ import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
@@ -24,8 +24,8 @@ import ro.roda.StudyDescr;
 import ro.roda.StudyKeyword;
 import ro.roda.StudyOrg;
 import ro.roda.StudyPerson;
-import ro.roda.Title;
 import ro.roda.Topic;
+import ro.roda.User;
 
 privileged aspect Study_Roo_DbManaged {
     
@@ -35,9 +35,6 @@ privileged aspect Study_Roo_DbManaged {
     
     @ManyToMany(mappedBy = "studies1")
     private Set<File> Study.files1;
-    
-    @OneToOne(mappedBy = "study")
-    private StudyDescr Study.studyDescr;
     
     @OneToMany(mappedBy = "studyId")
     private Set<CatalogStudy> Study.catalogStudies;
@@ -49,6 +46,9 @@ privileged aspect Study_Roo_DbManaged {
     private Set<StudyAcl> Study.studyAcls;
     
     @OneToMany(mappedBy = "studyId")
+    private Set<StudyDescr> Study.studyDescrs;
+    
+    @OneToMany(mappedBy = "studyId")
     private Set<StudyKeyword> Study.studyKeywords;
     
     @OneToMany(mappedBy = "studyId")
@@ -57,24 +57,37 @@ privileged aspect Study_Roo_DbManaged {
     @OneToMany(mappedBy = "studyId")
     private Set<StudyPerson> Study.studypeople;
     
-    @OneToMany(mappedBy = "studyId")
-    private Set<Title> Study.titles;
+    @ManyToOne
+    @JoinColumn(name = "added_by", referencedColumnName = "id", nullable = false)
+    private User Study.addedBy;
     
     @Column(name = "datestart", columnDefinition = "timestamp")
-    @NotNull
     @Temporal(TemporalType.TIMESTAMP)
     @DateTimeFormat(style = "M-")
     private Date Study.datestart;
     
     @Column(name = "dateend", columnDefinition = "timestamp")
-    @NotNull
     @Temporal(TemporalType.TIMESTAMP)
     @DateTimeFormat(style = "M-")
     private Date Study.dateend;
     
-    @Column(name = "grant_details", columnDefinition = "text")
+    @Column(name = "insertion_status", columnDefinition = "int4")
     @NotNull
-    private String Study.grantDetails;
+    private Integer Study.insertionStatus;
+    
+    @Column(name = "added", columnDefinition = "timestamp")
+    @NotNull
+    @Temporal(TemporalType.TIMESTAMP)
+    @DateTimeFormat(style = "M-")
+    private Date Study.added;
+    
+    @Column(name = "can_digitize", columnDefinition = "bool")
+    @NotNull
+    private boolean Study.canDigitize;
+    
+    @Column(name = "can_use_anonymous", columnDefinition = "bool")
+    @NotNull
+    private boolean Study.canUseAnonymous;
     
     public Set<Topic> Study.getTopics() {
         return topics;
@@ -90,14 +103,6 @@ privileged aspect Study_Roo_DbManaged {
     
     public void Study.setFiles1(Set<File> files1) {
         this.files1 = files1;
-    }
-    
-    public StudyDescr Study.getStudyDescr() {
-        return studyDescr;
-    }
-    
-    public void Study.setStudyDescr(StudyDescr studyDescr) {
-        this.studyDescr = studyDescr;
     }
     
     public Set<CatalogStudy> Study.getCatalogStudies() {
@@ -124,6 +129,14 @@ privileged aspect Study_Roo_DbManaged {
         this.studyAcls = studyAcls;
     }
     
+    public Set<StudyDescr> Study.getStudyDescrs() {
+        return studyDescrs;
+    }
+    
+    public void Study.setStudyDescrs(Set<StudyDescr> studyDescrs) {
+        this.studyDescrs = studyDescrs;
+    }
+    
     public Set<StudyKeyword> Study.getStudyKeywords() {
         return studyKeywords;
     }
@@ -148,12 +161,12 @@ privileged aspect Study_Roo_DbManaged {
         this.studypeople = studypeople;
     }
     
-    public Set<Title> Study.getTitles() {
-        return titles;
+    public User Study.getAddedBy() {
+        return addedBy;
     }
     
-    public void Study.setTitles(Set<Title> titles) {
-        this.titles = titles;
+    public void Study.setAddedBy(User addedBy) {
+        this.addedBy = addedBy;
     }
     
     public Date Study.getDatestart() {
@@ -172,12 +185,36 @@ privileged aspect Study_Roo_DbManaged {
         this.dateend = dateend;
     }
     
-    public String Study.getGrantDetails() {
-        return grantDetails;
+    public Integer Study.getInsertionStatus() {
+        return insertionStatus;
     }
     
-    public void Study.setGrantDetails(String grantDetails) {
-        this.grantDetails = grantDetails;
+    public void Study.setInsertionStatus(Integer insertionStatus) {
+        this.insertionStatus = insertionStatus;
+    }
+    
+    public Date Study.getAdded() {
+        return added;
+    }
+    
+    public void Study.setAdded(Date added) {
+        this.added = added;
+    }
+    
+    public boolean Study.isCanDigitize() {
+        return canDigitize;
+    }
+    
+    public void Study.setCanDigitize(boolean canDigitize) {
+        this.canDigitize = canDigitize;
+    }
+    
+    public boolean Study.isCanUseAnonymous() {
+        return canUseAnonymous;
+    }
+    
+    public void Study.setCanUseAnonymous(boolean canUseAnonymous) {
+        this.canUseAnonymous = canUseAnonymous;
     }
     
 }

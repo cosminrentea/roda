@@ -14,6 +14,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import ro.roda.Instance;
 import ro.roda.InstanceKeyword;
 import ro.roda.Keyword;
+import ro.roda.User;
 
 privileged aspect InstanceKeyword_Roo_DbManaged {
     
@@ -25,15 +26,15 @@ privileged aspect InstanceKeyword_Roo_DbManaged {
     @JoinColumn(name = "keyword_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     private Keyword InstanceKeyword.keywordId;
     
+    @ManyToOne
+    @JoinColumn(name = "added_by", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+    private User InstanceKeyword.addedBy;
+    
     @Column(name = "added", columnDefinition = "timestamp")
     @NotNull
     @Temporal(TemporalType.TIMESTAMP)
     @DateTimeFormat(style = "M-")
     private Date InstanceKeyword.added;
-    
-    @Column(name = "added_by", columnDefinition = "int4")
-    @NotNull
-    private Integer InstanceKeyword.addedBy;
     
     public Instance InstanceKeyword.getInstanceId() {
         return instanceId;
@@ -51,20 +52,20 @@ privileged aspect InstanceKeyword_Roo_DbManaged {
         this.keywordId = keywordId;
     }
     
+    public User InstanceKeyword.getAddedBy() {
+        return addedBy;
+    }
+    
+    public void InstanceKeyword.setAddedBy(User addedBy) {
+        this.addedBy = addedBy;
+    }
+    
     public Date InstanceKeyword.getAdded() {
         return added;
     }
     
     public void InstanceKeyword.setAdded(Date added) {
         this.added = added;
-    }
-    
-    public Integer InstanceKeyword.getAddedBy() {
-        return addedBy;
-    }
-    
-    public void InstanceKeyword.setAddedBy(Integer addedBy) {
-        this.addedBy = addedBy;
     }
     
 }

@@ -29,6 +29,11 @@ privileged aspect PersonOrg_Roo_DbManaged {
     @JoinColumn(name = "role_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     private PersonRole PersonOrg.roleId;
     
+    @Column(name = "datestart", columnDefinition = "timestamp")
+    @Temporal(TemporalType.TIMESTAMP)
+    @DateTimeFormat(style = "M-")
+    private Date PersonOrg.datestart;
+    
     @Column(name = "dateend", columnDefinition = "timestamp")
     @Temporal(TemporalType.TIMESTAMP)
     @DateTimeFormat(style = "M-")
@@ -56,6 +61,14 @@ privileged aspect PersonOrg_Roo_DbManaged {
     
     public void PersonOrg.setRoleId(PersonRole roleId) {
         this.roleId = roleId;
+    }
+    
+    public Date PersonOrg.getDatestart() {
+        return datestart;
+    }
+    
+    public void PersonOrg.setDatestart(Date datestart) {
+        this.datestart = datestart;
     }
     
     public Date PersonOrg.getDateend() {

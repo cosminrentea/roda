@@ -28,7 +28,7 @@ privileged aspect Item_Roo_Jpa_ActiveRecord {
         return entityManager().createQuery("SELECT o FROM Item o", Item.class).getResultList();
     }
     
-    public static Item Item.findItem(Integer id) {
+    public static Item Item.findItem(Long id) {
         if (id == null) return null;
         return entityManager().find(Item.class, id);
     }

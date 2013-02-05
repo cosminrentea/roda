@@ -12,28 +12,29 @@ import javax.validation.constraints.NotNull;
 import ro.roda.CmsLayout;
 import ro.roda.CmsPage;
 import ro.roda.CmsPageContent;
+import ro.roda.CmsPageType;
 import ro.roda.User;
 
 privileged aspect CmsPage_Roo_DbManaged {
     
-    @OneToMany(mappedBy = "page")
+    @OneToMany(mappedBy = "cmsPageId")
     private Set<CmsPageContent> CmsPage.cmsPageContents;
     
     @ManyToOne
-    @JoinColumn(name = "layout", referencedColumnName = "id", nullable = false)
-    private CmsLayout CmsPage.layout;
+    @JoinColumn(name = "cms_layout_id", referencedColumnName = "id", nullable = false)
+    private CmsLayout CmsPage.cmsLayoutId;
     
     @ManyToOne
-    @JoinColumn(name = "owner", referencedColumnName = "id", nullable = false)
-    private User CmsPage.owner;
+    @JoinColumn(name = "cms_page_type_id", referencedColumnName = "id", nullable = false)
+    private CmsPageType CmsPage.cmsPageTypeId;
     
-    @Column(name = "name", columnDefinition = "varchar", length = 200)
+    @ManyToOne
+    @JoinColumn(name = "owner_id", referencedColumnName = "id", nullable = false)
+    private User CmsPage.ownerId;
+    
+    @Column(name = "name", columnDefinition = "text")
     @NotNull
     private String CmsPage.name;
-    
-    @Column(name = "page_type", columnDefinition = "int4")
-    @NotNull
-    private Integer CmsPage.pageType;
     
     @Column(name = "visible", columnDefinition = "bool")
     @NotNull
@@ -43,7 +44,7 @@ privileged aspect CmsPage_Roo_DbManaged {
     @NotNull
     private boolean CmsPage.navigable;
     
-    @Column(name = "url", columnDefinition = "varchar", length = 200)
+    @Column(name = "url", columnDefinition = "text")
     @NotNull
     private String CmsPage.url;
     
@@ -55,20 +56,28 @@ privileged aspect CmsPage_Roo_DbManaged {
         this.cmsPageContents = cmsPageContents;
     }
     
-    public CmsLayout CmsPage.getLayout() {
-        return layout;
+    public CmsLayout CmsPage.getCmsLayoutId() {
+        return cmsLayoutId;
     }
     
-    public void CmsPage.setLayout(CmsLayout layout) {
-        this.layout = layout;
+    public void CmsPage.setCmsLayoutId(CmsLayout cmsLayoutId) {
+        this.cmsLayoutId = cmsLayoutId;
     }
     
-    public User CmsPage.getOwner() {
-        return owner;
+    public CmsPageType CmsPage.getCmsPageTypeId() {
+        return cmsPageTypeId;
     }
     
-    public void CmsPage.setOwner(User owner) {
-        this.owner = owner;
+    public void CmsPage.setCmsPageTypeId(CmsPageType cmsPageTypeId) {
+        this.cmsPageTypeId = cmsPageTypeId;
+    }
+    
+    public User CmsPage.getOwnerId() {
+        return ownerId;
+    }
+    
+    public void CmsPage.setOwnerId(User ownerId) {
+        this.ownerId = ownerId;
     }
     
     public String CmsPage.getName() {
@@ -77,14 +86,6 @@ privileged aspect CmsPage_Roo_DbManaged {
     
     public void CmsPage.setName(String name) {
         this.name = name;
-    }
-    
-    public Integer CmsPage.getPageType() {
-        return pageType;
-    }
-    
-    public void CmsPage.setPageType(Integer pageType) {
-        this.pageType = pageType;
     }
     
     public boolean CmsPage.isVisible() {

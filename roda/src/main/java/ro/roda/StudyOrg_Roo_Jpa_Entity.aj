@@ -3,13 +3,11 @@
 
 package ro.roda;
 
-import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.Table;
 import ro.roda.StudyOrg;
+import ro.roda.StudyOrgPK;
 
 privileged aspect StudyOrg_Roo_Jpa_Entity {
     
@@ -17,16 +15,14 @@ privileged aspect StudyOrg_Roo_Jpa_Entity {
     
     declare @type: StudyOrg: @Table(schema = "public", name = "study_org");
     
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", columnDefinition = "int4")
-    private Integer StudyOrg.id;
+    @EmbeddedId
+    private StudyOrgPK StudyOrg.id;
     
-    public Integer StudyOrg.getId() {
+    public StudyOrgPK StudyOrg.getId() {
         return this.id;
     }
     
-    public void StudyOrg.setId(Integer id) {
+    public void StudyOrg.setId(StudyOrgPK id) {
         this.id = id;
     }
     

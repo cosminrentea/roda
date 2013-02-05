@@ -4,8 +4,8 @@
     <jsp:output omit-xml-declaration="yes"/>
     <form:create id="fc_ro_roda_CmsLayout" modelAttribute="cmsLayout" path="/cmslayouts" render="${empty dependencies}" z="JdqKuNWUzr+jisFkcV6LXr/4K2Q=">
         <field:simple field="cmsPages" id="c_ro_roda_CmsLayout_cmsPages" messageCode="entity_reference_not_managed" messageCodeAttribute="Cms Page" z="wwJ9871BuNLlRKffSZ0CjlbhCsA="/>
-        <field:select field="layoutGroup" id="c_ro_roda_CmsLayout_layoutGroup" itemValue="id" items="${cmslayoutgroups}" path="/cmslayoutgroups" z="lVdz8zvH299q9r9x0KV8kl6uMjI="/>
-        <field:input field="name" id="c_ro_roda_CmsLayout_name" z="SILcNmJIk4EW4H6IxWO5RfiDX40="/>
+        <field:select field="cmsLayoutGroupId" id="c_ro_roda_CmsLayout_cmsLayoutGroupId" itemValue="id" items="${cmslayoutgroups}" path="/cmslayoutgroups" z="4tP6FRQBseZkJQ8GORVH410VL9M="/>
+        <field:input field="name" id="c_ro_roda_CmsLayout_name" required="true" z="mnnLBLPM6WYGI2APRoUTJPm0s8Q="/>
         <field:input field="layoutContent" id="c_ro_roda_CmsLayout_layoutContent" required="true" z="y5FTgA9fA3dyY7TWUB2dj+OeYq8="/>
     </form:create>
     <form:dependency dependencies="${dependencies}" id="d_ro_roda_CmsLayout" render="${not empty dependencies}" z="bTU/4kuoef2MBorlP6eTC1IiPQw="/>

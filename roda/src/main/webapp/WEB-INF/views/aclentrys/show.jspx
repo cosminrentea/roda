@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:show id="ps_ro_roda_AclEntry" object="${aclentry}" path="/aclentrys" z="siMu/vpcRWxQw4hS1hxYp9/gD3M=">
+        <field:display field="aclObjectIdentity" id="s_ro_roda_AclEntry_aclObjectIdentity" object="${aclentry}" z="ehfD4soPuOezM5Pa1Fe0fdcquKM="/>
+        <field:display field="sid" id="s_ro_roda_AclEntry_sid" object="${aclentry}" z="Uyn+sJKGRpexPHaq5h376AXylMU="/>
+        <field:display field="aceOrder" id="s_ro_roda_AclEntry_aceOrder" object="${aclentry}" z="KUpSRwcUd0Pl5HB57wHvDfVK8OE="/>
+        <field:display field="mask" id="s_ro_roda_AclEntry_mask" object="${aclentry}" z="TRF1Ve6R3cBX3SIjknoBfzNFZ64="/>
+        <field:display field="granting" id="s_ro_roda_AclEntry_granting" object="${aclentry}" z="50shV7S5JarJqjK2K9G3VE715y4="/>
+        <field:display field="auditSuccess" id="s_ro_roda_AclEntry_auditSuccess" object="${aclentry}" z="gFPLMhEw9V+WUuaauTMjFotn9RI="/>
+        <field:display field="auditFailure" id="s_ro_roda_AclEntry_auditFailure" object="${aclentry}" z="IGc3icXT8e836xWM7OFmL9Uk0OI="/>
+    </page:show>
+</div>

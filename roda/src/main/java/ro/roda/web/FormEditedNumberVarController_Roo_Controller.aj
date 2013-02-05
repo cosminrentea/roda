@@ -16,10 +16,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.EditedVariable;
 import ro.roda.Form;
 import ro.roda.FormEditedNumberVar;
 import ro.roda.FormEditedNumberVarPK;
+import ro.roda.Variable;
 import ro.roda.web.FormEditedNumberVarController;
 
 privileged aspect FormEditedNumberVarController_Roo_Controller {
@@ -99,8 +99,8 @@ privileged aspect FormEditedNumberVarController_Roo_Controller {
     
     void FormEditedNumberVarController.populateEditForm(Model uiModel, FormEditedNumberVar formEditedNumberVar) {
         uiModel.addAttribute("formEditedNumberVar", formEditedNumberVar);
-        uiModel.addAttribute("editedvariables", EditedVariable.findAllEditedVariables());
         uiModel.addAttribute("forms", Form.findAllForms());
+        uiModel.addAttribute("variables", Variable.findAllVariables());
     }
     
     String FormEditedNumberVarController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

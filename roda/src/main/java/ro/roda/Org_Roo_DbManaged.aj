@@ -10,11 +10,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
-import ro.roda.Email;
 import ro.roda.InstanceOrg;
-import ro.roda.Internet;
 import ro.roda.Org;
 import ro.roda.OrgAddress;
+import ro.roda.OrgEmail;
+import ro.roda.OrgInternet;
+import ro.roda.OrgPhone;
 import ro.roda.OrgPrefix;
 import ro.roda.OrgRelations;
 import ro.roda.OrgSufix;
@@ -28,16 +29,19 @@ privileged aspect Org_Roo_DbManaged {
     private Source Org.source;
     
     @OneToMany(mappedBy = "orgId")
-    private Set<Email> Org.emails;
-    
-    @OneToMany(mappedBy = "orgId")
     private Set<InstanceOrg> Org.instanceOrgs;
-    
-    @OneToMany(mappedBy = "entityId")
-    private Set<Internet> Org.internets;
     
     @OneToMany(mappedBy = "orgId")
     private Set<OrgAddress> Org.orgAddresses;
+    
+    @OneToMany(mappedBy = "orgId")
+    private Set<OrgEmail> Org.orgEmails;
+    
+    @OneToMany(mappedBy = "orgId")
+    private Set<OrgInternet> Org.orgInternets;
+    
+    @OneToMany(mappedBy = "orgId")
+    private Set<OrgPhone> Org.orgPhones;
     
     @OneToMany(mappedBy = "org2Id")
     private Set<OrgRelations> Org.orgRelationss;
@@ -75,14 +79,6 @@ privileged aspect Org_Roo_DbManaged {
         this.source = source;
     }
     
-    public Set<Email> Org.getEmails() {
-        return emails;
-    }
-    
-    public void Org.setEmails(Set<Email> emails) {
-        this.emails = emails;
-    }
-    
     public Set<InstanceOrg> Org.getInstanceOrgs() {
         return instanceOrgs;
     }
@@ -91,20 +87,36 @@ privileged aspect Org_Roo_DbManaged {
         this.instanceOrgs = instanceOrgs;
     }
     
-    public Set<Internet> Org.getInternets() {
-        return internets;
-    }
-    
-    public void Org.setInternets(Set<Internet> internets) {
-        this.internets = internets;
-    }
-    
     public Set<OrgAddress> Org.getOrgAddresses() {
         return orgAddresses;
     }
     
     public void Org.setOrgAddresses(Set<OrgAddress> orgAddresses) {
         this.orgAddresses = orgAddresses;
+    }
+    
+    public Set<OrgEmail> Org.getOrgEmails() {
+        return orgEmails;
+    }
+    
+    public void Org.setOrgEmails(Set<OrgEmail> orgEmails) {
+        this.orgEmails = orgEmails;
+    }
+    
+    public Set<OrgInternet> Org.getOrgInternets() {
+        return orgInternets;
+    }
+    
+    public void Org.setOrgInternets(Set<OrgInternet> orgInternets) {
+        this.orgInternets = orgInternets;
+    }
+    
+    public Set<OrgPhone> Org.getOrgPhones() {
+        return orgPhones;
+    }
+    
+    public void Org.setOrgPhones(Set<OrgPhone> orgPhones) {
+        this.orgPhones = orgPhones;
     }
     
     public Set<OrgRelations> Org.getOrgRelationss() {

@@ -25,8 +25,8 @@ import ro.roda.StudyDescr;
 import ro.roda.StudyKeyword;
 import ro.roda.StudyOrg;
 import ro.roda.StudyPerson;
-import ro.roda.Title;
 import ro.roda.Topic;
+import ro.roda.User;
 import ro.roda.web.StudyController;
 
 privileged aspect StudyController_Roo_Controller {
@@ -101,6 +101,7 @@ privileged aspect StudyController_Roo_Controller {
     void StudyController.addDateTimeFormatPatterns(Model uiModel) {
         uiModel.addAttribute("study_datestart_date_format", DateTimeFormat.patternForStyle("M-", LocaleContextHolder.getLocale()));
         uiModel.addAttribute("study_dateend_date_format", DateTimeFormat.patternForStyle("M-", LocaleContextHolder.getLocale()));
+        uiModel.addAttribute("study_added_date_format", DateTimeFormat.patternForStyle("M-", LocaleContextHolder.getLocale()));
     }
     
     void StudyController.populateEditForm(Model uiModel, Study study) {
@@ -114,8 +115,8 @@ privileged aspect StudyController_Roo_Controller {
         uiModel.addAttribute("studykeywords", StudyKeyword.findAllStudyKeywords());
         uiModel.addAttribute("studyorgs", StudyOrg.findAllStudyOrgs());
         uiModel.addAttribute("studypeople", StudyPerson.findAllStudypeople());
-        uiModel.addAttribute("titles", Title.findAllTitles());
         uiModel.addAttribute("topics", Topic.findAllTopics());
+        uiModel.addAttribute("users", User.findAllUsers());
     }
     
     String StudyController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

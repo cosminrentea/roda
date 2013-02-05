@@ -17,6 +17,7 @@ import org.springframework.web.util.WebUtils;
 import ro.roda.CmsLayout;
 import ro.roda.CmsPage;
 import ro.roda.CmsPageContent;
+import ro.roda.CmsPageType;
 import ro.roda.User;
 import ro.roda.web.CmsPageController;
 
@@ -91,6 +92,7 @@ privileged aspect CmsPageController_Roo_Controller {
         uiModel.addAttribute("cmsPage", cmsPage);
         uiModel.addAttribute("cmslayouts", CmsLayout.findAllCmsLayouts());
         uiModel.addAttribute("cmspagecontents", CmsPageContent.findAllCmsPageContents());
+        uiModel.addAttribute("cmspagetypes", CmsPageType.findAllCmsPageTypes());
         uiModel.addAttribute("users", User.findAllUsers());
     }
     

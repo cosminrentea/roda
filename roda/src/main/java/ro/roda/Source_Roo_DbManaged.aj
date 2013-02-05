@@ -10,6 +10,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import ro.roda.Org;
 import ro.roda.Source;
+import ro.roda.SourceContacts;
 import ro.roda.Sourcestudy;
 import ro.roda.Sourcetype;
 import ro.roda.SourcetypeHistory;
@@ -19,6 +20,9 @@ privileged aspect Source_Roo_DbManaged {
     @OneToOne
     @JoinColumn(name = "org_id", nullable = false, insertable = false, updatable = false)
     private Org Source.org;
+    
+    @OneToMany(mappedBy = "sourceId")
+    private Set<SourceContacts> Source.sourceContactss;
     
     @OneToMany(mappedBy = "orgId")
     private Set<Sourcestudy> Source.sourcestudies;
@@ -36,6 +40,14 @@ privileged aspect Source_Roo_DbManaged {
     
     public void Source.setOrg(Org org) {
         this.org = org;
+    }
+    
+    public Set<SourceContacts> Source.getSourceContactss() {
+        return sourceContactss;
+    }
+    
+    public void Source.setSourceContactss(Set<SourceContacts> sourceContactss) {
+        this.sourceContactss = sourceContactss;
     }
     
     public Set<Sourcestudy> Source.getSourcestudies() {

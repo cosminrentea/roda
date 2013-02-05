@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.Email;
-import ro.roda.Org;
-import ro.roda.Person;
+import ro.roda.OrgEmail;
+import ro.roda.PersonEmail;
 import ro.roda.web.EmailController;
 
 privileged aspect EmailController_Roo_Controller {
@@ -88,8 +88,8 @@ privileged aspect EmailController_Roo_Controller {
     
     void EmailController.populateEditForm(Model uiModel, Email email) {
         uiModel.addAttribute("email", email);
-        uiModel.addAttribute("orgs", Org.findAllOrgs());
-        uiModel.addAttribute("people", Person.findAllPeople());
+        uiModel.addAttribute("orgemails", OrgEmail.findAllOrgEmails());
+        uiModel.addAttribute("personemails", PersonEmail.findAllPersonEmails());
     }
     
     String EmailController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

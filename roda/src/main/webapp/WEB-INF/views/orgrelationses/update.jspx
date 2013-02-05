@@ -3,6 +3,7 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <form:update id="fu_ro_roda_OrgRelations" modelAttribute="orgRelations" path="/orgrelationses" versionField="none" z="eC7qgOWUItMfhvDrITkHYtoC/8o=">
+        <field:datetime dateTimePattern="${orgRelations_datestart_date_format}" field="datestart" id="c_ro_roda_OrgRelations_datestart" z="DyqWb8KV+aFmGSBEc2SyfTuNbzo="/>
         <field:datetime dateTimePattern="${orgRelations_dateend_date_format}" field="dateend" id="c_ro_roda_OrgRelations_dateend" z="teNBZDnG9+28p574X/Sc4MxcJfU="/>
         <field:input field="details" id="c_ro_roda_OrgRelations_details" required="true" z="Znci/78uUT5tbdif5ZPaJOW+AbA="/>
     </form:update>

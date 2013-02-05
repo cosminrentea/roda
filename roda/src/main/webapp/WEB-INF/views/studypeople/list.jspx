@@ -7,6 +7,7 @@
             <table:column id="c_ro_roda_StudyPerson_personId" property="personId" z="Fno0gEbHO0x1PZNfq6o2tCaZrz4="/>
             <table:column id="c_ro_roda_StudyPerson_studyId" property="studyId" z="1hxKTdScwmqTFS5IoNKh6yg7AC4="/>
             <table:column id="c_ro_roda_StudyPerson_assoctypeId" property="assoctypeId" z="nnn5vYyVhckSoU1Qu0xvWIaKXjY="/>
+            <table:column id="c_ro_roda_StudyPerson_assocDetails" property="assocDetails" z="pLOkcAD1igR0Z4YWIUZzlXVXYzw="/>
         </table:table>
     </page:list>
 </div>

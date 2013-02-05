@@ -19,6 +19,7 @@ import org.springframework.web.util.WebUtils;
 import ro.roda.Sourcestudy;
 import ro.roda.SourcestudyType;
 import ro.roda.SourcestudyTypeHistory;
+import ro.roda.User;
 import ro.roda.web.SourcestudyTypeHistoryController;
 
 privileged aspect SourcestudyTypeHistoryController_Roo_Controller {
@@ -100,6 +101,7 @@ privileged aspect SourcestudyTypeHistoryController_Roo_Controller {
         addDateTimeFormatPatterns(uiModel);
         uiModel.addAttribute("sourcestudys", Sourcestudy.findAllSourcestudys());
         uiModel.addAttribute("sourcestudytypes", SourcestudyType.findAllSourcestudyTypes());
+        uiModel.addAttribute("users", User.findAllUsers());
     }
     
     String SourcestudyTypeHistoryController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

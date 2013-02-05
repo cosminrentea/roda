@@ -15,7 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.Internet;
-import ro.roda.Person;
+import ro.roda.OrgInternet;
+import ro.roda.PersonInternet;
 import ro.roda.web.InternetController;
 
 privileged aspect InternetController_Roo_Controller {
@@ -87,7 +88,8 @@ privileged aspect InternetController_Roo_Controller {
     
     void InternetController.populateEditForm(Model uiModel, Internet internet) {
         uiModel.addAttribute("internet", internet);
-        uiModel.addAttribute("people", Person.findAllPeople());
+        uiModel.addAttribute("orginternets", OrgInternet.findAllOrgInternets());
+        uiModel.addAttribute("personinternets", PersonInternet.findAllPersonInternets());
     }
     
     String InternetController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

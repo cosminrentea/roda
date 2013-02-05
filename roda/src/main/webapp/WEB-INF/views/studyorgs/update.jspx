@@ -3,10 +3,7 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <form:update id="fu_ro_roda_StudyOrg" modelAttribute="studyOrg" path="/studyorgs" versionField="none" z="V8O++uCTiiRd1kZYiTkx+v3sYWM=">
-        <field:simple field="studyOrgAcls" id="c_ro_roda_StudyOrg_studyOrgAcls" messageCode="entity_reference_not_managed" messageCodeAttribute="Study Org Acl" z="oaosGVvTLLLdOKW299PIpC0KvIc="/>
-        <field:select field="orgId" id="c_ro_roda_StudyOrg_orgId" itemValue="id" items="${orgs}" path="/orgs" z="+fzUexKthm+oS8RAXosmmoUj7pM="/>
-        <field:select field="studyId" id="c_ro_roda_StudyOrg_studyId" itemValue="id" items="${studys}" path="/studys" z="1X3ud+uxMHaOhl56XRl4cJvHUF8="/>
-        <field:select field="assoctypeId" id="c_ro_roda_StudyOrg_assoctypeId" itemValue="id" items="${studyorgassocs}" path="/studyorgassocs" z="sBSUqN4BtS2jid50d+NGfVm7prA="/>
-        <field:input field="citation" id="c_ro_roda_StudyOrg_citation" required="true" z="QeAft2IWYgJsa6AC+XujMO57dtA="/>
+        <field:input field="citation" id="c_ro_roda_StudyOrg_citation" z="qniy2BsSwgcLz+/ukEcPYVk/0LU="/>
+        <field:input field="assocDetails" id="c_ro_roda_StudyOrg_assocDetails" z="EA5rLwSn4A8Ozs6dWvXoRuzpLAA="/>
     </form:update>
 </div>

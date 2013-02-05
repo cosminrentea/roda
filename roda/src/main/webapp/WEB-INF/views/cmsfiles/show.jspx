@@ -3,12 +3,9 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <page:show id="ps_ro_roda_CmsFile" object="${cmsfile}" path="/cmsfiles" z="PbyJ4RCJJpZoslAYZxNTuAXyhRI=">
-        <field:display field="folderId" id="s_ro_roda_CmsFile_folderId" object="${cmsfile}" z="Vw4JNzT/kPixHZU5A6UZpH5KeHc="/>
+        <field:display field="cmsFolderId" id="s_ro_roda_CmsFile_cmsFolderId" object="${cmsfile}" z="PPgUXOnxQB8Zkb6S7IDEnExPwvA="/>
         <field:display field="filename" id="s_ro_roda_CmsFile_filename" object="${cmsfile}" z="8EXzJ919gARFWRQXzQDVSJwsT3Y="/>
         <field:display field="label" id="s_ro_roda_CmsFile_label" object="${cmsfile}" z="iY12EFM/qxDCmbb6Yx0SeKJmIjE="/>
-        <field:display field="md5" id="s_ro_roda_CmsFile_md5" object="${cmsfile}" z="jbv0/UfxHY25VD9pKBb4vHhcMTY="/>
-        <field:display field="mimegroup" id="s_ro_roda_CmsFile_mimegroup" object="${cmsfile}" z="Sj1SBuyReeLHAg/TseYiXUL4DT4="/>
-        <field:display field="mimesubgroup" id="s_ro_roda_CmsFile_mimesubgroup" object="${cmsfile}" z="PD54XUgcMC6Y9vrPZ0gDINkmcbk="/>
         <field:display field="filesize" id="s_ro_roda_CmsFile_filesize" object="${cmsfile}" z="14k5RrcyeRNGNaPRuRgnkcm5Pg0="/>
     </page:show>
 </div>

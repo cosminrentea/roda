@@ -28,9 +28,9 @@ privileged aspect OtherStatistic_Roo_Jpa_ActiveRecord {
         return entityManager().createQuery("SELECT o FROM OtherStatistic o", OtherStatistic.class).getResultList();
     }
     
-    public static OtherStatistic OtherStatistic.findOtherStatistic(Integer variableId) {
-        if (variableId == null) return null;
-        return entityManager().find(OtherStatistic.class, variableId);
+    public static OtherStatistic OtherStatistic.findOtherStatistic(Long id) {
+        if (id == null) return null;
+        return entityManager().find(OtherStatistic.class, id);
     }
     
     public static List<OtherStatistic> OtherStatistic.findOtherStatisticEntries(int firstResult, int maxResults) {
@@ -49,7 +49,7 @@ privileged aspect OtherStatistic_Roo_Jpa_ActiveRecord {
         if (this.entityManager.contains(this)) {
             this.entityManager.remove(this);
         } else {
-            OtherStatistic attached = OtherStatistic.findOtherStatistic(this.variableId);
+            OtherStatistic attached = OtherStatistic.findOtherStatistic(this.id);
             this.entityManager.remove(attached);
         }
     }

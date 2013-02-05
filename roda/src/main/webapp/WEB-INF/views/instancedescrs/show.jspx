@@ -3,9 +3,13 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <page:show id="ps_ro_roda_InstanceDescr" object="${instancedescr}" path="/instancedescrs" z="pa71Zw+rf7TuQP0NWeZkLVTW5cQ=">
-        <field:display field="instance" id="s_ro_roda_InstanceDescr_instance" object="${instancedescr}" z="5+uZMIIgqfGxUaScZXt2xBA9MzA="/>
-        <field:display field="title" id="s_ro_roda_InstanceDescr_title" object="${instancedescr}" z="4mLW/H2Mo0k/KbRmuISIzRJfcZY="/>
+        <field:display field="instanceId" id="s_ro_roda_InstanceDescr_instanceId" object="${instancedescr}" z="b6psk93ginS/JWODgi206WaNvws="/>
+        <field:display field="langId" id="s_ro_roda_InstanceDescr_langId" object="${instancedescr}" z="9fbhG64i3pPK3xhwxjA9WSLp8Jo="/>
+        <field:display field="weighting" id="s_ro_roda_InstanceDescr_weighting" object="${instancedescr}" z="m3G02sto277xLqeh4zE4AbYFL8o="/>
+        <field:display field="researchInstrument" id="s_ro_roda_InstanceDescr_researchInstrument" object="${instancedescr}" z="PGWlrdyMJYIjqWZVR1Y9KeFAQyA="/>
+        <field:display field="scope" id="s_ro_roda_InstanceDescr_scope" object="${instancedescr}" z="sgCCQYVj+MoqbDIscVFWz5Yretw="/>
+        <field:display field="universe" id="s_ro_roda_InstanceDescr_universe" object="${instancedescr}" z="LntqiKstOXn+uL1rCoEW+LXhH6k="/>
         <field:display field="abstract1" id="s_ro_roda_InstanceDescr_abstract1" object="${instancedescr}" z="KyffAUIFzbKCz9Z0U0LtoQNUGwM="/>
-        <field:display field="languageId" id="s_ro_roda_InstanceDescr_languageId" object="${instancedescr}" z="x0OhgZwgl8IIG+pcUFXCnu0p3eE="/>
+        <field:display field="title" id="s_ro_roda_InstanceDescr_title" object="${instancedescr}" z="4mLW/H2Mo0k/KbRmuISIzRJfcZY="/>
     </page:show>
 </div>

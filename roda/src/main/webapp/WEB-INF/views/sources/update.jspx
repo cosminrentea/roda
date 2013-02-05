@@ -4,6 +4,7 @@
     <jsp:output omit-xml-declaration="yes"/>
     <form:update id="fu_ro_roda_Source" idField="orgId" modelAttribute="source" path="/sources" versionField="none" z="TtZ5RHFr3ByaNXEh3nO7MzQv3no=">
         <field:select field="org" id="c_ro_roda_Source_org" itemValue="id" items="${orgs}" path="/orgs" z="KKnkerNVAO36hMBDEVDwZBKkrUQ="/>
+        <field:simple field="sourceContactss" id="c_ro_roda_Source_sourceContactss" messageCode="entity_reference_not_managed" messageCodeAttribute="Source Contacts" z="mp9M5KdzkgOVucw5GpfKLU0uSCs="/>
         <field:simple field="sourcestudies" id="c_ro_roda_Source_sourcestudies" messageCode="entity_reference_not_managed" messageCodeAttribute="Sourcestudy" z="1pNVEiCNuZmEcam1m1KzvQ20XX0="/>
         <field:simple field="sourcetypeHistories" id="c_ro_roda_Source_sourcetypeHistories" messageCode="entity_reference_not_managed" messageCodeAttribute="Sourcetype History" z="QCaqrJnRzowdk+dxwYQS/lyiKqo="/>
         <field:select field="sourcetypeId" id="c_ro_roda_Source_sourcetypeId" itemValue="id" items="${sourcetypes}" path="/sourcetypes" z="qF2Mp6KOtbj/E7GEeMsHYMadGSc="/>

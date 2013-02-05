@@ -5,8 +5,8 @@
     <page:list id="pl_ro_roda_Form" items="${forms}" z="2DJDnUqwlGh3wVV5nflsygIdNN8=">
         <table:table data="${forms}" id="l_ro_roda_Form" path="/forms" z="fhS9zDugGRzkD7cxpHseF0l01jE=">
             <table:column id="c_ro_roda_Form_instanceId" property="instanceId" z="GqqsXXXsZibUoheH98NTzjjujaE="/>
-            <table:column id="c_ro_roda_Form_orderInInstance" property="orderInInstance" z="LNzfeGrVY3KJTHJamUSPBw4ZsrU="/>
             <table:column id="c_ro_roda_Form_operatorId" property="operatorId" z="YB+rdCH8ZYS07jHM/FfhFaMdUeU="/>
+            <table:column id="c_ro_roda_Form_orderInInstance" property="orderInInstance" z="LNzfeGrVY3KJTHJamUSPBw4ZsrU="/>
         </table:table>
     </page:list>
 </div>

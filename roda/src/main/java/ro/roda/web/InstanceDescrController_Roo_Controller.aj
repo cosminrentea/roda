@@ -6,6 +6,8 @@ package ro.roda.web;
 import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,11 +18,20 @@ import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.Instance;
 import ro.roda.InstanceDescr;
-import ro.roda.Language;
+import ro.roda.InstanceDescrPK;
+import ro.roda.Lang;
 import ro.roda.web.InstanceDescrController;
 
 privileged aspect InstanceDescrController_Roo_Controller {
     
+    private ConversionService InstanceDescrController.conversionService;
+    
+    @Autowired
+    public InstanceDescrController.new(ConversionService conversionService) {
+        super();
+        this.conversionService = conversionService;
+    }
+
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String InstanceDescrController.create(@Valid InstanceDescr instanceDescr, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
         if (bindingResult.hasErrors()) {
@@ -29,7 +40,7 @@ privileged aspect InstanceDescrController_Roo_Controller {
         }
         uiModel.asMap().clear();
         instanceDescr.persist();
-        return "redirect:/instancedescrs/" + encodeUrlPathSegment(instanceDescr.getInstanceId().toString(), httpServletRequest);
+        return "redirect:/instancedescrs/" + encodeUrlPathSegment(conversionService.convert(instanceDescr.getId(), String.class), httpServletRequest);
     }
     
     @RequestMapping(params = "form", produces = "text/html")
@@ -38,10 +49,10 @@ privileged aspect InstanceDescrController_Roo_Controller {
         return "instancedescrs/create";
     }
     
-    @RequestMapping(value = "/{instanceId}", produces = "text/html")
-    public String InstanceDescrController.show(@PathVariable("instanceId") Integer instanceId, Model uiModel) {
-        uiModel.addAttribute("instancedescr", InstanceDescr.findInstanceDescr(instanceId));
-        uiModel.addAttribute("itemId", instanceId);
+    @RequestMapping(value = "/{id}", produces = "text/html")
+    public String InstanceDescrController.show(@PathVariable("id") InstanceDescrPK id, Model uiModel) {
+        uiModel.addAttribute("instancedescr", InstanceDescr.findInstanceDescr(id));
+        uiModel.addAttribute("itemId", conversionService.convert(id, String.class));
         return "instancedescrs/show";
     }
     
@@ -67,18 +78,18 @@ privileged aspect InstanceDescrController_Roo_Controller {
         }
         uiModel.asMap().clear();
         instanceDescr.merge();
-        return "redirect:/instancedescrs/" + encodeUrlPathSegment(instanceDescr.getInstanceId().toString(), httpServletRequest);
+        return "redirect:/instancedescrs/" + encodeUrlPathSegment(conversionService.convert(instanceDescr.getId(), String.class), httpServletRequest);
     }
     
-    @RequestMapping(value = "/{instanceId}", params = "form", produces = "text/html")
-    public String InstanceDescrController.updateForm(@PathVariable("instanceId") Integer instanceId, Model uiModel) {
-        populateEditForm(uiModel, InstanceDescr.findInstanceDescr(instanceId));
+    @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
+    public String InstanceDescrController.updateForm(@PathVariable("id") InstanceDescrPK id, Model uiModel) {
+        populateEditForm(uiModel, InstanceDescr.findInstanceDescr(id));
         return "instancedescrs/update";
     }
     
-    @RequestMapping(value = "/{instanceId}", method = RequestMethod.DELETE, produces = "text/html")
-    public String InstanceDescrController.delete(@PathVariable("instanceId") Integer instanceId, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        InstanceDescr instanceDescr = InstanceDescr.findInstanceDescr(instanceId);
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
+    public String InstanceDescrController.delete(@PathVariable("id") InstanceDescrPK id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
+        InstanceDescr instanceDescr = InstanceDescr.findInstanceDescr(id);
         instanceDescr.remove();
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
@@ -89,7 +100,7 @@ privileged aspect InstanceDescrController_Roo_Controller {
     void InstanceDescrController.populateEditForm(Model uiModel, InstanceDescr instanceDescr) {
         uiModel.addAttribute("instanceDescr", instanceDescr);
         uiModel.addAttribute("instances", Instance.findAllInstances());
-        uiModel.addAttribute("languages", Language.findAllLanguages());
+        uiModel.addAttribute("langs", Lang.findAllLangs());
     }
     
     String InstanceDescrController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

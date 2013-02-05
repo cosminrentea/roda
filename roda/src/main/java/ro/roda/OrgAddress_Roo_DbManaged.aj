@@ -24,6 +24,11 @@ privileged aspect OrgAddress_Roo_DbManaged {
     @JoinColumn(name = "org_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     private Org OrgAddress.orgId;
     
+    @Column(name = "datestart", columnDefinition = "timestamp")
+    @Temporal(TemporalType.TIMESTAMP)
+    @DateTimeFormat(style = "M-")
+    private Date OrgAddress.datestart;
+    
     @Column(name = "dateend", columnDefinition = "timestamp")
     @Temporal(TemporalType.TIMESTAMP)
     @DateTimeFormat(style = "M-")
@@ -43,6 +48,14 @@ privileged aspect OrgAddress_Roo_DbManaged {
     
     public void OrgAddress.setOrgId(Org orgId) {
         this.orgId = orgId;
+    }
+    
+    public Date OrgAddress.getDatestart() {
+        return datestart;
+    }
+    
+    public void OrgAddress.setDatestart(Date datestart) {
+        this.datestart = datestart;
     }
     
     public Date OrgAddress.getDateend() {

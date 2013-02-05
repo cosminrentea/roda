@@ -40,7 +40,7 @@ privileged aspect ItemController_Roo_Controller {
     }
     
     @RequestMapping(value = "/{id}", produces = "text/html")
-    public String ItemController.show(@PathVariable("id") Integer id, Model uiModel) {
+    public String ItemController.show(@PathVariable("id") Long id, Model uiModel) {
         uiModel.addAttribute("item", Item.findItem(id));
         uiModel.addAttribute("itemId", id);
         return "items/show";
@@ -72,13 +72,13 @@ privileged aspect ItemController_Roo_Controller {
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
-    public String ItemController.updateForm(@PathVariable("id") Integer id, Model uiModel) {
+    public String ItemController.updateForm(@PathVariable("id") Long id, Model uiModel) {
         populateEditForm(uiModel, Item.findItem(id));
         return "items/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
-    public String ItemController.delete(@PathVariable("id") Integer id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
+    public String ItemController.delete(@PathVariable("id") Long id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
         Item item = Item.findItem(id);
         item.remove();
         uiModel.asMap().clear();

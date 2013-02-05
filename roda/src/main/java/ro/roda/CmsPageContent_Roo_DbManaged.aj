@@ -13,10 +13,10 @@ import ro.roda.CmsPageContent;
 privileged aspect CmsPageContent_Roo_DbManaged {
     
     @ManyToOne
-    @JoinColumn(name = "page", referencedColumnName = "id")
-    private CmsPage CmsPageContent.page;
+    @JoinColumn(name = "cms_page_id", referencedColumnName = "id", nullable = false)
+    private CmsPage CmsPageContent.cmsPageId;
     
-    @Column(name = "name", columnDefinition = "varchar", length = 150)
+    @Column(name = "name", columnDefinition = "varchar", length = 200)
     @NotNull
     private String CmsPageContent.name;
     
@@ -27,16 +27,16 @@ privileged aspect CmsPageContent_Roo_DbManaged {
     @Column(name = "content_text", columnDefinition = "text")
     private String CmsPageContent.contentText;
     
-    @Column(name = "seqnumber", columnDefinition = "int4")
+    @Column(name = "order_in_page", columnDefinition = "int4", unique = true)
     @NotNull
-    private Integer CmsPageContent.seqnumber;
+    private Integer CmsPageContent.orderInPage;
     
-    public CmsPage CmsPageContent.getPage() {
-        return page;
+    public CmsPage CmsPageContent.getCmsPageId() {
+        return cmsPageId;
     }
     
-    public void CmsPageContent.setPage(CmsPage page) {
-        this.page = page;
+    public void CmsPageContent.setCmsPageId(CmsPage cmsPageId) {
+        this.cmsPageId = cmsPageId;
     }
     
     public String CmsPageContent.getName() {
@@ -63,12 +63,12 @@ privileged aspect CmsPageContent_Roo_DbManaged {
         this.contentText = contentText;
     }
     
-    public Integer CmsPageContent.getSeqnumber() {
-        return seqnumber;
+    public Integer CmsPageContent.getOrderInPage() {
+        return orderInPage;
     }
     
-    public void CmsPageContent.setSeqnumber(Integer seqnumber) {
-        this.seqnumber = seqnumber;
+    public void CmsPageContent.setOrderInPage(Integer orderInPage) {
+        this.orderInPage = orderInPage;
     }
     
 }

@@ -5,10 +5,10 @@
     <form:create compositePkField="id" id="fc_ro_roda_SelectionVariableItem" modelAttribute="selectionVariableItem" path="/selectionvariableitems" render="${empty dependencies}" z="RiT0PjT3YqYb+tmaYZLz+8liK5Y=">
         <field:input disableFormBinding="true" field="id.variableId" id="c_ro_roda_SelectionVariableItem_id_variableId" required="true" validationMessageCode="field_invalid_integer" z="oqsqRKowkAAt1O0urxnHs9fdKdo="/>
         <field:input disableFormBinding="true" field="id.itemId" id="c_ro_roda_SelectionVariableItem_id_itemId" required="true" validationMessageCode="field_invalid_integer" z="MTJUJfedn6J8up0Imsd03ul/SXE="/>
-        <field:select field="frequency" id="c_ro_roda_SelectionVariableItem_frequency" itemValue="id" items="${frequencys}" path="/frequencys" z="BTH9IvCg9KNLYS/eOcPFapFlzsI="/>
         <field:simple field="formSelectionVars" id="c_ro_roda_SelectionVariableItem_formSelectionVars" messageCode="entity_reference_not_managed" messageCodeAttribute="Form Selection Var" z="1Z3vLWK34sJunmFHGeOtxt6A7uQ="/>
         <field:select field="responseCardFileId" id="c_ro_roda_SelectionVariableItem_responseCardFileId" itemValue="id" items="${files}" path="/files" z="z5k126rA+kWlwPaw4lZcnj709hk="/>
         <field:input field="orderOfItemInVariable" id="c_ro_roda_SelectionVariableItem_orderOfItemInVariable" required="true" validationMessageCode="field_invalid_integer" z="5SseGmjRMJiRpnkYK8oENNfKE+I="/>
+        <field:input field="frequencyValue" id="c_ro_roda_SelectionVariableItem_frequencyValue" validationMessageCode="field_invalid_number" z="1qd4ywI9buJPTnKMsumDGQ4PbMM="/>
     </form:create>
     <form:dependency dependencies="${dependencies}" id="d_ro_roda_SelectionVariableItem" render="${not empty dependencies}" z="leHv1nX+uQJZM72CmKrJM4uBjL0="/>
 </div>

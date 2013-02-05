@@ -4,6 +4,5 @@
     <jsp:output omit-xml-declaration="yes"/>
     <form:update id="fu_ro_roda_StudyKeyword" modelAttribute="studyKeyword" path="/studykeywords" versionField="none" z="bGLqtr5NcDIo61n41xSXNLxWyx4=">
         <field:datetime dateTimePattern="${studyKeyword_added_date_format}" field="added" id="c_ro_roda_StudyKeyword_added" required="true" z="L8hO8iS2rXpqJj8M+X7tQ4HGIow="/>
-        <field:input field="addedBy" id="c_ro_roda_StudyKeyword_addedBy" required="true" validationMessageCode="field_invalid_integer" z="NQIAHZLB7n5RLZmFxqQKtOctSXQ="/>
     </form:update>
 </div>

@@ -6,7 +6,6 @@
         <table:table data="${studys}" id="l_ro_roda_Study" path="/studys" z="rEQhCiPqBh/Mv2kdqLest6jrWOE=">
             <table:column id="c_ro_roda_Study_topics" property="topics" z="974evIqdSgs4ETfZSTUewDVbzYM="/>
             <table:column id="c_ro_roda_Study_files1" property="files1" z="GwAywVGD6z1iR5F4Bs0R1ezwtrE="/>
-            <table:column id="c_ro_roda_Study_studyDescr" property="studyDescr" z="RLzDIDpQgH82d3+gZI9Y8j7FD1w="/>
         </table:table>
     </page:list>
 </div>

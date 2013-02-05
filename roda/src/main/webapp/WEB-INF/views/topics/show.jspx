@@ -3,11 +3,11 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <page:show id="ps_ro_roda_Topic" object="${topic}" path="/topics" z="ZzVgZwFAVu6SLMIXQcWVMT2wlDY=">
-        <field:display field="instances" id="s_ro_roda_Topic_instances" object="${topic}" z="KpQzogLaemVt4uUE0U/OvRgyI2s="/>
+        <field:display field="instances1" id="s_ro_roda_Topic_instances1" object="${topic}" z="RsVXAxs6Y88YAYutmvWDjv/aTYU="/>
         <field:display field="studies" id="s_ro_roda_Topic_studies" object="${topic}" z="YUFQHgNPP+Y1baIvrJBsCU6VwfA="/>
+        <field:display field="parentTopicId" id="s_ro_roda_Topic_parentTopicId" object="${topic}" z="mGMGlNslX0we1GCJ64r4jiHLks0="/>
+        <field:display field="preferredSynonymTopicId" id="s_ro_roda_Topic_preferredSynonymTopicId" object="${topic}" z="bp9q2x9tRO9NZBFsaV7IblxTx9U="/>
         <field:display field="name" id="s_ro_roda_Topic_name" object="${topic}" z="YHMhCcz+FitFTNYbCRBUKcMwe7Y="/>
         <field:display field="description" id="s_ro_roda_Topic_description" object="${topic}" z="5/GziJZ6cjMBeei6FbhgASIjb1M="/>
-        <field:display field="leftTopic" id="s_ro_roda_Topic_leftTopic" object="${topic}" z="5ydlz5xJbcS6ysRHUGNow55wIdk="/>
-        <field:display field="rightTopic" id="s_ro_roda_Topic_rightTopic" object="${topic}" z="7q1WGRpI+ketQOmi5svVIuph2gE="/>
     </page:show>
 </div>

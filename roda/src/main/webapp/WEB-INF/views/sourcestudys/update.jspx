@@ -7,6 +7,6 @@
         <field:select field="orgId" id="c_ro_roda_Sourcestudy_orgId" itemValue="orgId" items="${sources}" path="/sources" z="d/tCzhJ4WgHwLgfHSAKGBQ/k454="/>
         <field:select field="type" id="c_ro_roda_Sourcestudy_type" itemValue="id" items="${sourcestudytypes}" path="/sourcestudytypes" z="w4nHyiBaVtbcOWGm9bTcH9p/Z+I="/>
         <field:input field="name" id="c_ro_roda_Sourcestudy_name" required="true" z="Gxx66erpu0u1jw/s2n64+tzi6ls="/>
-        <field:input field="details" id="c_ro_roda_Sourcestudy_details" required="true" z="f+vu8/T3kxEpK2ALBViLZiI+TbM="/>
+        <field:input field="details" id="c_ro_roda_Sourcestudy_details" z="1iRg4d60/eKE1laQmyDUu9HfxAw="/>
     </form:update>
 </div>

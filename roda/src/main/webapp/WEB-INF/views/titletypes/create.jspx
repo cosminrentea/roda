@@ -3,7 +3,7 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <form:create id="fc_ro_roda_TitleType" modelAttribute="titleType" path="/titletypes" render="${empty dependencies}" z="TbKxYq8lcOQftBM+i7hjbbojnrM=">
-        <field:simple field="titles" id="c_ro_roda_TitleType_titles" messageCode="entity_reference_not_managed" messageCodeAttribute="Title" z="E3c8LyJZATD07PFCOdRcbRQzLnE="/>
+        <field:simple field="studyDescrs" id="c_ro_roda_TitleType_studyDescrs" messageCode="entity_reference_not_managed" messageCodeAttribute="Study Descr" z="usixxI4CeCrefZb5MHINqry+1Aw="/>
         <field:input field="name" id="c_ro_roda_TitleType_name" required="true" z="2BrZZaY5C5PaMTDRKf/mh8t21Qo="/>
     </form:create>
     <form:dependency dependencies="${dependencies}" id="d_ro_roda_TitleType" render="${not empty dependencies}" z="H0IEU5sjDt9kot3uLLywO1neOqc="/>

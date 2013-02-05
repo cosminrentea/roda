@@ -15,14 +15,15 @@ import ro.roda.CmsPage;
 
 privileged aspect CmsLayout_Roo_DbManaged {
     
-    @OneToMany(mappedBy = "layout")
+    @OneToMany(mappedBy = "cmsLayoutId")
     private Set<CmsPage> CmsLayout.cmsPages;
     
     @ManyToOne
-    @JoinColumn(name = "layout_group", referencedColumnName = "id", nullable = false)
-    private CmsLayoutGroup CmsLayout.layoutGroup;
+    @JoinColumn(name = "cms_layout_group_id", referencedColumnName = "id")
+    private CmsLayoutGroup CmsLayout.cmsLayoutGroupId;
     
-    @Column(name = "name", columnDefinition = "varchar", length = 150)
+    @Column(name = "name", columnDefinition = "varchar", length = 200)
+    @NotNull
     private String CmsLayout.name;
     
     @Column(name = "layout_content", columnDefinition = "text")
@@ -37,12 +38,12 @@ privileged aspect CmsLayout_Roo_DbManaged {
         this.cmsPages = cmsPages;
     }
     
-    public CmsLayoutGroup CmsLayout.getLayoutGroup() {
-        return layoutGroup;
+    public CmsLayoutGroup CmsLayout.getCmsLayoutGroupId() {
+        return cmsLayoutGroupId;
     }
     
-    public void CmsLayout.setLayoutGroup(CmsLayoutGroup layoutGroup) {
-        this.layoutGroup = layoutGroup;
+    public void CmsLayout.setCmsLayoutGroupId(CmsLayoutGroup cmsLayoutGroupId) {
+        this.cmsLayoutGroupId = cmsLayoutGroupId;
     }
     
     public String CmsLayout.getName() {

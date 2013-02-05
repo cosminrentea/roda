@@ -5,7 +5,8 @@
     <form:create compositePkField="id" id="fc_ro_roda_InstancePerson" modelAttribute="instancePerson" path="/instancepeople" render="${empty dependencies}" z="5ICJtD2qDDGbBfutTpjhzWz+bpg=">
         <field:input disableFormBinding="true" field="id.personId" id="c_ro_roda_InstancePerson_id_personId" required="true" validationMessageCode="field_invalid_integer" z="5muhhTUq04uGvFTjNvyAxewRPHw="/>
         <field:input disableFormBinding="true" field="id.instanceId" id="c_ro_roda_InstancePerson_id_instanceId" required="true" validationMessageCode="field_invalid_integer" z="XizvbTKg3hEwEGolNWFeA2hKNsE="/>
-        <field:select field="assocTypeId" id="c_ro_roda_InstancePerson_assocTypeId" itemValue="id" items="${instancepersonassocs}" path="/instancepersonassocs" z="TQia7juU+nzId8rFHTLFU318eXc="/>
+        <field:input disableFormBinding="true" field="id.assocTypeId" id="c_ro_roda_InstancePerson_id_assocTypeId" required="true" validationMessageCode="field_invalid_integer" z="b2R8XWm0MNsQMQNKmVgz2syyguA="/>
+        <field:input field="assocDetails" id="c_ro_roda_InstancePerson_assocDetails" z="JJ8/RtR8AEldJtl4VW4xcwp89r4="/>
     </form:create>
     <form:dependency dependencies="${dependencies}" id="d_ro_roda_InstancePerson" render="${not empty dependencies}" z="FvWFzSaNIkQQxclp4mhASrQ2u58="/>
 </div>

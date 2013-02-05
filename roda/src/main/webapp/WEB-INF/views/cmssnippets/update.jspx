@@ -3,7 +3,7 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <form:update id="fu_ro_roda_CmsSnippet" modelAttribute="cmsSnippet" path="/cmssnippets" versionField="none" z="bbEtHynNtB9miF5sOJs6idQ6Eqw=">
-        <field:select field="snippetGroup" id="c_ro_roda_CmsSnippet_snippetGroup" itemValue="id" items="${cmssnippetgroups}" path="/cmssnippetgroups" z="OeD7oCXUKOQywVtySQlUkNwHF/E="/>
+        <field:select field="cmsSnippetGroupId" id="c_ro_roda_CmsSnippet_cmsSnippetGroupId" itemValue="id" items="${cmssnippetgroups}" path="/cmssnippetgroups" z="D1VpNwBTu79IPzXZ3Gz4EMOOEq0="/>
         <field:input field="name" id="c_ro_roda_CmsSnippet_name" required="true" z="irGwtgTUDoPSdh5AGMrIAHb9jRs="/>
         <field:input field="snippetContent" id="c_ro_roda_CmsSnippet_snippetContent" required="true" z="fSnGVjIfo2hHnWCnbF79rVwQdSc="/>
     </form:update>

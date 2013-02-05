@@ -3,6 +3,7 @@
 
 package ro.roda;
 
+import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import ro.roda.Instance;
@@ -17,12 +18,15 @@ privileged aspect InstancePerson_Roo_DbManaged {
     private Instance InstancePerson.instanceId;
     
     @ManyToOne
-    @JoinColumn(name = "assoc_type_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "assoc_type_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     private InstancePersonAssoc InstancePerson.assocTypeId;
     
     @ManyToOne
     @JoinColumn(name = "person_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     private Person InstancePerson.personId;
+    
+    @Column(name = "assoc_details", columnDefinition = "text")
+    private String InstancePerson.assocDetails;
     
     public Instance InstancePerson.getInstanceId() {
         return instanceId;
@@ -46,6 +50,14 @@ privileged aspect InstancePerson_Roo_DbManaged {
     
     public void InstancePerson.setPersonId(Person personId) {
         this.personId = personId;
+    }
+    
+    public String InstancePerson.getAssocDetails() {
+        return assocDetails;
+    }
+    
+    public void InstancePerson.setAssocDetails(String assocDetails) {
+        this.assocDetails = assocDetails;
     }
     
 }

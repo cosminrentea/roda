@@ -5,6 +5,7 @@
     <page:list id="pl_ro_roda_Country" items="${countrys}" z="VLYqwrxwGpWwDiJpjbd0CMcsav0=">
         <table:table data="${countrys}" id="l_ro_roda_Country" path="/countrys" z="8fSEJ+NAzgHBZtv3JxkPCosG1To=">
             <table:column id="c_ro_roda_Country_name" property="name" z="OEclzeMlapEisY+9WwZsE8SAWcc="/>
+            <table:column id="c_ro_roda_Country_alpha3" property="alpha3" z="STMyUbBjCOPvw872oW/6I903aHY="/>
         </table:table>
     </page:list>
 </div>

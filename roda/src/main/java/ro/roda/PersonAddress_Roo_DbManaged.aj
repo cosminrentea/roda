@@ -24,6 +24,11 @@ privileged aspect PersonAddress_Roo_DbManaged {
     @JoinColumn(name = "person_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     private Person PersonAddress.personId;
     
+    @Column(name = "datestart", columnDefinition = "timestamp")
+    @Temporal(TemporalType.TIMESTAMP)
+    @DateTimeFormat(style = "M-")
+    private Date PersonAddress.datestart;
+    
     @Column(name = "dateend", columnDefinition = "timestamp")
     @Temporal(TemporalType.TIMESTAMP)
     @DateTimeFormat(style = "M-")
@@ -43,6 +48,14 @@ privileged aspect PersonAddress_Roo_DbManaged {
     
     public void PersonAddress.setPersonId(Person personId) {
         this.personId = personId;
+    }
+    
+    public Date PersonAddress.getDatestart() {
+        return datestart;
+    }
+    
+    public void PersonAddress.setDatestart(Date datestart) {
+        this.datestart = datestart;
     }
     
     public Date PersonAddress.getDateend() {

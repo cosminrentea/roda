@@ -14,17 +14,17 @@ import ro.roda.CmsFolder;
 
 privileged aspect CmsFolder_Roo_DbManaged {
     
-    @OneToMany(mappedBy = "folderId")
+    @OneToMany(mappedBy = "cmsFolderId")
     private Set<CmsFile> CmsFolder.cmsFiles;
     
-    @OneToMany(mappedBy = "parent")
+    @OneToMany(mappedBy = "parentId")
     private Set<CmsFolder> CmsFolder.cmsFolders;
     
     @ManyToOne
-    @JoinColumn(name = "parent", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
-    private CmsFolder CmsFolder.parent;
+    @JoinColumn(name = "parent_id", referencedColumnName = "id", insertable = false, updatable = false)
+    private CmsFolder CmsFolder.parentId;
     
-    @Column(name = "name", columnDefinition = "varchar", length = 200)
+    @Column(name = "name", columnDefinition = "text")
     @NotNull
     private String CmsFolder.name;
     
@@ -47,12 +47,12 @@ privileged aspect CmsFolder_Roo_DbManaged {
         this.cmsFolders = cmsFolders;
     }
     
-    public CmsFolder CmsFolder.getParent() {
-        return parent;
+    public CmsFolder CmsFolder.getParentId() {
+        return parentId;
     }
     
-    public void CmsFolder.setParent(CmsFolder parent) {
-        this.parent = parent;
+    public void CmsFolder.setParentId(CmsFolder parentId) {
+        this.parentId = parentId;
     }
     
     public String CmsFolder.getName() {

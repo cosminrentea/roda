@@ -6,7 +6,9 @@ package ro.roda.web;
 import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -20,7 +22,6 @@ import ro.roda.Catalog;
 import ro.roda.CatalogStudy;
 import ro.roda.CatalogStudyPK;
 import ro.roda.Study;
-import ro.roda.User;
 import ro.roda.web.CatalogStudyController;
 
 privileged aspect CatalogStudyController_Roo_Controller {
@@ -52,6 +53,7 @@ privileged aspect CatalogStudyController_Roo_Controller {
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String CatalogStudyController.show(@PathVariable("id") CatalogStudyPK id, Model uiModel) {
+        addDateTimeFormatPatterns(uiModel);
         uiModel.addAttribute("catalogstudy", CatalogStudy.findCatalogStudy(id));
         uiModel.addAttribute("itemId", conversionService.convert(id, String.class));
         return "catalogstudys/show";
@@ -68,6 +70,7 @@ privileged aspect CatalogStudyController_Roo_Controller {
         } else {
             uiModel.addAttribute("catalogstudys", CatalogStudy.findAllCatalogStudys());
         }
+        addDateTimeFormatPatterns(uiModel);
         return "catalogstudys/list";
     }
     
@@ -98,11 +101,15 @@ privileged aspect CatalogStudyController_Roo_Controller {
         return "redirect:/catalogstudys";
     }
     
+    void CatalogStudyController.addDateTimeFormatPatterns(Model uiModel) {
+        uiModel.addAttribute("catalogStudy_added_date_format", DateTimeFormat.patternForStyle("M-", LocaleContextHolder.getLocale()));
+    }
+    
     void CatalogStudyController.populateEditForm(Model uiModel, CatalogStudy catalogStudy) {
         uiModel.addAttribute("catalogStudy", catalogStudy);
+        addDateTimeFormatPatterns(uiModel);
         uiModel.addAttribute("catalogs", Catalog.findAllCatalogs());
         uiModel.addAttribute("studys", Study.findAllStudys());
-        uiModel.addAttribute("users", User.findAllUsers());
     }
     
     String CatalogStudyController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

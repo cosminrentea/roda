@@ -16,7 +16,6 @@ import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.Address;
 import ro.roda.City;
-import ro.roda.Country;
 import ro.roda.OrgAddress;
 import ro.roda.PersonAddress;
 import ro.roda.web.AddressController;
@@ -91,7 +90,6 @@ privileged aspect AddressController_Roo_Controller {
     void AddressController.populateEditForm(Model uiModel, Address address) {
         uiModel.addAttribute("address", address);
         uiModel.addAttribute("citys", City.findAllCitys());
-        uiModel.addAttribute("countrys", Country.findAllCountrys());
         uiModel.addAttribute("orgaddresses", OrgAddress.findAllOrgAddresses());
         uiModel.addAttribute("personaddresses", PersonAddress.findAllPersonAddresses());
     }

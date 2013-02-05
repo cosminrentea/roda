@@ -39,7 +39,7 @@ privileged aspect SelectionVariableController_Roo_Controller {
     }
     
     @RequestMapping(value = "/{variableId}", produces = "text/html")
-    public String SelectionVariableController.show(@PathVariable("variableId") Integer variableId, Model uiModel) {
+    public String SelectionVariableController.show(@PathVariable("variableId") Long variableId, Model uiModel) {
         uiModel.addAttribute("selectionvariable", SelectionVariable.findSelectionVariable(variableId));
         uiModel.addAttribute("itemId", variableId);
         return "selectionvariables/show";
@@ -71,13 +71,13 @@ privileged aspect SelectionVariableController_Roo_Controller {
     }
     
     @RequestMapping(value = "/{variableId}", params = "form", produces = "text/html")
-    public String SelectionVariableController.updateForm(@PathVariable("variableId") Integer variableId, Model uiModel) {
+    public String SelectionVariableController.updateForm(@PathVariable("variableId") Long variableId, Model uiModel) {
         populateEditForm(uiModel, SelectionVariable.findSelectionVariable(variableId));
         return "selectionvariables/update";
     }
     
     @RequestMapping(value = "/{variableId}", method = RequestMethod.DELETE, produces = "text/html")
-    public String SelectionVariableController.delete(@PathVariable("variableId") Integer variableId, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
+    public String SelectionVariableController.delete(@PathVariable("variableId") Long variableId, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
         SelectionVariable selectionVariable = SelectionVariable.findSelectionVariable(variableId);
         selectionVariable.remove();
         uiModel.asMap().clear();

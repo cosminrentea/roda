@@ -371,8 +371,8 @@ CREATE TABLE cms_file
 id SERIAL,
 	filename TEXT NOT NULL,
 	label VARCHAR(100) NOT NULL,
-	cms_folder_id INTEGER NULL,
-	filesize BIGINT NOT NULL
+	cms_folder_id INTEGER NOT NULL,
+	filesize BIGINT NULL
 ) WITHOUT OIDS;
 
 /* Add Primary Key */
@@ -760,9 +760,9 @@ CREATE TABLE file
 id SERIAL,
 	title TEXT NOT NULL,
 	description TEXT NULL,
-	filetype_id INTEGER NULL,
+	filetype_id INTEGER NOT NULL,
 	name TEXT NOT NULL,
-	size BIGINT NOT NULL
+	size BIGINT NULL
 ) WITHOUT OIDS;
 
 /* Add Primary Key */
@@ -3175,231 +3175,6 @@ COMMENT ON COLUMN variable_vargroup.vargroup_id IS 'Codul grupului caruia ii apa
 COMMENT ON TABLE variable_vargroup IS 'Tabel ce asociaza variabile unor grupuri in cadrul instantelor';
 
 
-/************ Update: Procedures ***************/
-
-DROP FUNCTION public.akeys(hstore);
-
-DROP FUNCTION public.armor(bytea);
-
-DROP FUNCTION public.avals(hstore);
-
-DROP FUNCTION public.crypt(text, text);
-
-DROP FUNCTION public.dblink(text);
-
-DROP FUNCTION public.dblink(text, boolean);
-
-DROP FUNCTION public.dblink(text, text);
-
-DROP FUNCTION public.dblink(text, text, boolean);
-
-DROP FUNCTION public.dblink_build_sql_delete(text, int2vector, integer, text[]);
-
-DROP FUNCTION public.dblink_build_sql_insert(text, int2vector, integer, text[], text[]);
-
-DROP FUNCTION public.dblink_build_sql_update(text, int2vector, integer, text[], text[]);
-
-DROP FUNCTION public.dblink_cancel_query(text);
-
-DROP FUNCTION public.dblink_close(text);
-
-DROP FUNCTION public.dblink_close(text, boolean);
-
-DROP FUNCTION public.dblink_close(text, text);
-
-DROP FUNCTION public.dblink_close(text, text, boolean);
-
-DROP FUNCTION public.dblink_connect(text);
-
-DROP FUNCTION public.dblink_connect(text, text);
-
-DROP FUNCTION public.dblink_connect_u(text);
-
-DROP FUNCTION public.dblink_connect_u(text, text);
-
-DROP FUNCTION public.dblink_current_query();
-
-DROP FUNCTION public.dblink_disconnect();
-
-DROP FUNCTION public.dblink_disconnect(text);
-
-DROP FUNCTION public.dblink_error_message(text);
-
-DROP FUNCTION public.dblink_exec(text);
-
-DROP FUNCTION public.dblink_exec(text, boolean);
-
-DROP FUNCTION public.dblink_exec(text, text);
-
-DROP FUNCTION public.dblink_exec(text, text, boolean);
-
-DROP FUNCTION public.dblink_fetch(text, integer);
-
-DROP FUNCTION public.dblink_fetch(text, integer, boolean);
-
-DROP FUNCTION public.dblink_fetch(text, text, integer);
-
-DROP FUNCTION public.dblink_fetch(text, text, integer, boolean);
-
-DROP FUNCTION public.dblink_get_connections();
-
-DROP FUNCTION "public"."dblink_get_notify"(OUT notify_name text, OUT be_pid integer, OUT extra text);
-
-DROP FUNCTION "public"."dblink_get_notify"(IN conname text, OUT notify_name text, OUT be_pid integer, OUT extra text);
-
-DROP FUNCTION public.dblink_get_pkey(text);
-
-DROP FUNCTION public.dblink_get_result(text);
-
-DROP FUNCTION public.dblink_get_result(text, boolean);
-
-DROP FUNCTION public.dblink_is_busy(text);
-
-DROP FUNCTION public.dblink_open(text, text);
-
-DROP FUNCTION public.dblink_open(text, text, boolean);
-
-DROP FUNCTION public.dblink_open(text, text, text);
-
-DROP FUNCTION public.dblink_open(text, text, text, boolean);
-
-DROP FUNCTION public.dblink_send_query(text, text);
-
-DROP FUNCTION public.dearmor(text);
-
-DROP FUNCTION public.decrypt(bytea, bytea, text);
-
-DROP FUNCTION public.decrypt_iv(bytea, bytea, bytea, text);
-
-DROP FUNCTION public.defined(hstore, text);
-
-DROP FUNCTION public.delete(hstore, hstore);
-
-DROP FUNCTION public.delete(hstore, text);
-
-DROP FUNCTION public.delete(hstore, text[]);
-
-DROP FUNCTION public.digest(bytea, text);
-
-DROP FUNCTION public.digest(text, text);
-
-DROP FUNCTION "public"."each"(IN hs hstore, OUT key text, OUT value text);
-
-DROP FUNCTION public.encrypt(bytea, bytea, text);
-
-DROP FUNCTION public.encrypt_iv(bytea, bytea, bytea, text);
-
-DROP FUNCTION public.exist(hstore, text);
-
-DROP FUNCTION public.exists_all(hstore, text[]);
-
-DROP FUNCTION public.exists_any(hstore, text[]);
-
-DROP FUNCTION public.fetchval(hstore, text);
-
-DROP FUNCTION public.gen_random_bytes(integer);
-
-DROP FUNCTION public.gen_salt(text);
-
-DROP FUNCTION public.gen_salt(text, integer);
-
-DROP FUNCTION public.ghstore_compress(internal);
-
-DROP FUNCTION public.ghstore_consistent(internal, internal, integer, oid, internal);
-
-DROP FUNCTION public.ghstore_decompress(internal);
-
-DROP FUNCTION public.ghstore_in(cstring);
-
-DROP FUNCTION public.ghstore_out(ghstore);
-
-DROP FUNCTION public.ghstore_penalty(internal, internal, internal);
-
-DROP FUNCTION public.ghstore_picksplit(internal, internal);
-
-DROP FUNCTION public.ghstore_same(internal, internal, internal);
-
-DROP FUNCTION public.ghstore_union(internal, internal);
-
-DROP FUNCTION public.gin_consistent_hstore(internal, smallint, internal, integer, internal, internal);
-
-DROP FUNCTION public.gin_extract_hstore(internal, internal);
-
-DROP FUNCTION public.gin_extract_hstore_query(internal, internal, smallint, internal, internal);
-
-DROP FUNCTION public.hmac(bytea, bytea, text);
-
-DROP FUNCTION public.hmac(text, text, text);
-
-DROP FUNCTION public.hs_concat(hstore, hstore);
-
-DROP FUNCTION public.hs_contained(hstore, hstore);
-
-DROP FUNCTION public.hs_contains(hstore, hstore);
-
-DROP FUNCTION public.hstore(record);
-
-DROP FUNCTION public.hstore(text, text);
-
-DROP FUNCTION public.hstore(text[]);
-
-DROP FUNCTION public.hstore(text[], text[]);
-
-DROP FUNCTION public.hstore_cmp(hstore, hstore);
-
-DROP FUNCTION public.hstore_eq(hstore, hstore);
-
-DROP FUNCTION public.hstore_ge(hstore, hstore);
-
-DROP FUNCTION public.hstore_gt(hstore, hstore);
-
-DROP FUNCTION public.hstore_hash(hstore);
-
-DROP FUNCTION public.hstore_in(cstring);
-
-DROP FUNCTION public.hstore_le(hstore, hstore);
-
-DROP FUNCTION public.hstore_lt(hstore, hstore);
-
-DROP FUNCTION public.hstore_ne(hstore, hstore);
-
-DROP FUNCTION public.hstore_out(hstore);
-
-DROP FUNCTION public.hstore_recv(internal);
-
-DROP FUNCTION public.hstore_send(hstore);
-
-DROP FUNCTION public.hstore_to_array(hstore);
-
-DROP FUNCTION public.hstore_to_matrix(hstore);
-
-DROP FUNCTION public.hstore_version_diag(hstore);
-
-DROP FUNCTION public.insert_username();
-
-DROP FUNCTION public.isdefined(hstore, text);
-
-DROP FUNCTION public.isexists(hstore, text);
-
-DROP FUNCTION public.moddatetime();
-
-DROP FUNCTION public.populate_record(anyelement, hstore);
-
-DROP FUNCTION public.skeys(hstore);
-
-DROP FUNCTION public.slice(hstore, text[]);
-
-DROP FUNCTION public.slice_array(hstore, text[]);
-
-DROP FUNCTION public.svals(hstore);
-
-DROP FUNCTION public.tconvert(text, text);
-
-
-/* Remove Schemas */
-
-DROP SCHEMA audit CASCADE;
-
 
 
 
@@ -4219,4 +3994,3 @@ ALTER TABLE variable_vargroup ADD CONSTRAINT fk_instance_var_group_variable
 ALTER TABLE variable_vargroup ADD CONSTRAINT fk_instance_var_group_variable_group
 	FOREIGN KEY (vargroup_id) REFERENCES vargroup (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
-

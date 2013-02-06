@@ -1,0 +1,41 @@
+cod,nume,cod_name,tip,sirsup,regiune,judet
+1017,municipiul alba iulia,siruta,1,10,7,1
+403,municipiul bucureşti,siruta,40,1,8,40
+1026,alba iulia,siruta,9,1017,7,1
+1035,bãrãbanţ,siruta,10,1017,7,1
+1044,miceşti,siruta,10,1017,7,1
+1053,oarda,siruta,10,1017,7,1
+1062,pâclişa,siruta,10,1017,7,1
+34752,sãrãţel,siruta,23,34690,6,6
+34761,valea mãgheruşului,siruta,23,34690,6,6
+34770,şieu-odorhei,siruta,3,65,6,6
+34789,şieu-odorhei,siruta,22,34770,6,6
+34798,agrişu de jos,siruta,23,34770,6,6
+34805,agrişu de sus,siruta,23,34770,6,6
+34814,bretea,siruta,23,34770,6,6
+34823,coasta,siruta,23,34770,6,6
+34832,cristur-şieu,siruta,23,34770,6,6
+34841,şirioara,siruta,23,34770,6,6
+34850,şieuţ,siruta,3,65,6,6
+34869,şieuţ,siruta,22,34850,6,6
+34878,lunca,siruta,23,34850,6,6
+34887,ruştior,siruta,23,34850,6,6
+34896,sebiş,siruta,23,34850,6,6
+34903,şintereag,siruta,3,65,6,6
+34912,şintereag,siruta,22,34903,6,6
+34921,blãjenii de jos,siruta,23,34903,6,6
+34930,blãjenii de sus,siruta,23,34903,6,6
+34949,caila,siruta,23,34903,6,6
+34958,cociu,siruta,23,34903,6,6
+34967,şieu-sfântu,siruta,23,34903,6,6
+73362,moţãţei garã,siruta,23,73335,4,16
+73371,murgaşi,siruta,3,163,4,16
+73380,balota de jos,siruta,22,73371,4,16
+73399,balota de sus,siruta,23,73371,4,16
+73406,buşteni,siruta,23,73371,4,16
+73415,gaia,siruta,23,73371,4,16
+73424,murgaşi,siruta,23,73371,4,16
+123852,pârâul fagului,siruta,23,123790,1,27
+123843,petru vodã,siruta,23,123790,1,27
+123861,poiana largului,siruta,23,123790,1,27
+123870,roşeni,siruta,23,123 790,1,27

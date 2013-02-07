@@ -18,6 +18,7 @@ $prop->load($fh);
 
 my $schema = RODA::RODADB->connect($prop->getProperty('roda_dbname_host'),$prop->getProperty('roda_user'),$prop->getProperty('roda_password'), { pg_enable_utf8 => 1 } );
 $schema->storage->debug(1);
+$schema->storage->debugfh(IO::File->new('roda_seeddb.log', 'w'));
 
 print "Language\n";
 

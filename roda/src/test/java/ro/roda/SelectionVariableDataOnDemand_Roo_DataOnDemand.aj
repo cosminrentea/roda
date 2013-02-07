@@ -10,10 +10,11 @@ import java.util.List;
 import java.util.Random;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ro.roda.SelectionVariable;
 import ro.roda.SelectionVariableDataOnDemand;
-import ro.roda.Variable;
+import ro.roda.VariableDataOnDemand;
 
 privileged aspect SelectionVariableDataOnDemand_Roo_DataOnDemand {
     
@@ -23,11 +24,13 @@ privileged aspect SelectionVariableDataOnDemand_Roo_DataOnDemand {
     
     private List<SelectionVariable> SelectionVariableDataOnDemand.data;
     
+    @Autowired
+    private VariableDataOnDemand SelectionVariableDataOnDemand.variableDataOnDemand;
+    
     public SelectionVariable SelectionVariableDataOnDemand.getNewTransientSelectionVariable(int index) {
         SelectionVariable obj = new SelectionVariable();
         setMaxCount(obj, index);
         setMinCount(obj, index);
-        setVariable(obj, index);
         return obj;
     }
     
@@ -39,11 +42,6 @@ privileged aspect SelectionVariableDataOnDemand_Roo_DataOnDemand {
     public void SelectionVariableDataOnDemand.setMinCount(SelectionVariable obj, int index) {
         Short minCount = new Integer(index).shortValue();
         obj.setMinCount(minCount);
-    }
-    
-    public void SelectionVariableDataOnDemand.setVariable(SelectionVariable obj, int index) {
-        Variable variable = null;
-        obj.setVariable(variable);
     }
     
     public SelectionVariable SelectionVariableDataOnDemand.getSpecificSelectionVariable(int index) {

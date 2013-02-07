@@ -48,6 +48,7 @@ privileged aspect File_Roo_DbManaged {
     private String File.description;
     
     @Column(name = "filetype_id", columnDefinition = "int4")
+    @NotNull
     private Integer File.filetypeId;
     
     @Column(name = "name", columnDefinition = "text")
@@ -55,7 +56,6 @@ privileged aspect File_Roo_DbManaged {
     private String File.name;
     
     @Column(name = "size", columnDefinition = "int8")
-    @NotNull
     private Long File.size;
     
     public Set<Instance> File.getInstances() {

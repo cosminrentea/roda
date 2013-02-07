@@ -7,6 +7,6 @@
         <field:select field="cmsFolderId" id="c_ro_roda_CmsFile_cmsFolderId" itemValue="id" items="${cmsfolders}" path="/cmsfolders" z="og4mBEj15XSpXn2R+4lCCtGLBoM="/>
         <field:input field="filename" id="c_ro_roda_CmsFile_filename" required="true" z="24r/a2LZ0BEqTzw2o4l1OxiiUM0="/>
         <field:input field="label" id="c_ro_roda_CmsFile_label" required="true" z="Si+88FrVoit9XaGLANtYR3B5tgo="/>
-        <field:input field="filesize" id="c_ro_roda_CmsFile_filesize" required="true" validationMessageCode="field_invalid_integer" z="NMWvjhDLT+CLMna88fb0nzQ5K70="/>
+        <field:input field="filesize" id="c_ro_roda_CmsFile_filesize" validationMessageCode="field_invalid_integer" z="vjgzkfq0bYGMO+sZbDA0Ossa6oY="/>
     </form:update>
 </div>

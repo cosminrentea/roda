@@ -14,10 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.Address;
 import ro.roda.City;
-import ro.roda.Country;
-import ro.roda.Region;
 import ro.roda.web.CityController;
 
 privileged aspect CityController_Roo_Controller {
@@ -89,9 +86,6 @@ privileged aspect CityController_Roo_Controller {
     
     void CityController.populateEditForm(Model uiModel, City city) {
         uiModel.addAttribute("city", city);
-        uiModel.addAttribute("addresses", Address.findAllAddresses());
-        uiModel.addAttribute("countrys", Country.findAllCountrys());
-        uiModel.addAttribute("regions", Region.findAllRegions());
     }
     
     String CityController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

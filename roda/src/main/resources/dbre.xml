@@ -314,8 +314,8 @@
         <column description="Codul unui fisier din sistemul CMS al aplicatiei" name="id" primaryKey="true" required="true" scale="0" size="10" type="4,serial"/>
         <column description="Numele unui fisier din sistemul CMS al aplicatiei" name="filename" primaryKey="false" required="true" scale="0" size="2147483647" type="12,text"/>
         <column description="Eticheta (alias-ul) unui fisier din sistemul CMS al aplicatiei" name="label" primaryKey="false" required="true" scale="0" size="100" type="12,varchar"/>
-        <column description="Codul folder-ului din care face parte fisierul curent (refera atributul id din tabelul cms_folder)" name="cms_folder_id" primaryKey="false" required="false" scale="0" size="10" type="4,int4"/>
-        <column description="Dimensiunea unui fisier din sistemul CMS al aplicatiei, exprimata in bytes" name="filesize" primaryKey="false" required="true" scale="0" size="19" type="-5,int8"/>
+        <column description="Codul folder-ului din care face parte fisierul curent (refera atributul id din tabelul cms_folder)" name="cms_folder_id" primaryKey="false" required="true" scale="0" size="10" type="4,int4"/>
+        <column description="Dimensiunea unui fisier din sistemul CMS al aplicatiei, exprimata in bytes" name="filesize" primaryKey="false" required="false" scale="0" size="19" type="-5,int8"/>
         <foreign-key foreignTable="cms_folder" name="fk_cms_files_cms_folders" onDelete="none" onUpdate="none">
             <option key="foreignSchemaName" value="public"/>
             <option key="exported" value="false"/>
@@ -614,9 +614,9 @@
         <column description="Codul documentului" name="id" primaryKey="true" required="true" scale="0" size="10" type="4,serial"/>
         <column description="Titlul documentului" name="title" primaryKey="false" required="true" scale="0" size="2147483647" type="12,text"/>
         <column description="Descrierea documentului" name="description" primaryKey="false" required="false" scale="0" size="2147483647" type="12,text"/>
-        <column description="Codul tipului documentului (refera atributul id al tabelului document_type)" name="filetype_id" primaryKey="false" required="false" scale="0" size="10" type="4,int4"/>
+        <column description="Codul tipului documentului (refera atributul id al tabelului document_type)" name="filetype_id" primaryKey="false" required="true" scale="0" size="10" type="4,int4"/>
         <column description="Numele fisierului asociat documentului" name="name" primaryKey="false" required="true" scale="0" size="2147483647" type="12,text"/>
-        <column description="Dimensiunea fisierului (specificata in bytes)" name="size" primaryKey="false" required="true" scale="0" size="19" type="-5,int8"/>
+        <column description="Dimensiunea fisierului (specificata in bytes)" name="size" primaryKey="false" required="false" scale="0" size="19" type="-5,int8"/>
         <foreign-key foreignTable="file_acl" name="fk_documents_acl_documents" onDelete="none" onUpdate="none">
             <option key="foreignSchemaName" value="public"/>
             <option key="exported" value="true"/>

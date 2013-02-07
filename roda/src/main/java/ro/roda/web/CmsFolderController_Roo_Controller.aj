@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.CmsFile;
 import ro.roda.CmsFolder;
 import ro.roda.web.CmsFolderController;
 
@@ -87,8 +86,6 @@ privileged aspect CmsFolderController_Roo_Controller {
     
     void CmsFolderController.populateEditForm(Model uiModel, CmsFolder cmsFolder) {
         uiModel.addAttribute("cmsFolder", cmsFolder);
-        uiModel.addAttribute("cmsfiles", CmsFile.findAllCmsFiles());
-        uiModel.addAttribute("cmsfolders", CmsFolder.findAllCmsFolders());
     }
     
     String CmsFolderController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

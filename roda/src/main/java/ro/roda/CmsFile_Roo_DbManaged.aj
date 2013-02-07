@@ -19,19 +19,18 @@ privileged aspect CmsFile_Roo_DbManaged {
     private Set<CmsFilePropertyNameValue> CmsFile.cmsFilePropertyNameValues;
     
     @ManyToOne
-    @JoinColumn(name = "cms_folder_id", referencedColumnName = "id")
+    @JoinColumn(name = "cms_folder_id", referencedColumnName = "id", nullable = false)
     private CmsFolder CmsFile.cmsFolderId;
     
-    @Column(name = "filename")
+    @Column(name = "filename", columnDefinition = "text")
     @NotNull
     private String CmsFile.filename;
     
-    @Column(name = "label", length = 100)
+    @Column(name = "label", columnDefinition = "varchar", length = 100)
     @NotNull
     private String CmsFile.label;
     
-    @Column(name = "filesize")
-    @NotNull
+    @Column(name = "filesize", columnDefinition = "int8")
     private Long CmsFile.filesize;
     
     public Set<CmsFilePropertyNameValue> CmsFile.getCmsFilePropertyNameValues() {

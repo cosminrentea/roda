@@ -11,9 +11,9 @@
         <field:simple field="variables" id="c_ro_roda_File_variables" messageCode="entity_reference_not_managed" messageCodeAttribute="Variable" z="TrvJg239MrVh6s5VwDfqO9EJgxs="/>
         <field:input field="title" id="c_ro_roda_File_title" required="true" z="z7oxea5PqdvxfDWEbdML9ule98o="/>
         <field:input field="description" id="c_ro_roda_File_description" z="AwBZjYqKdLTwfUEJH5Q5Rq4tbyM="/>
-        <field:input field="filetypeId" id="c_ro_roda_File_filetypeId" validationMessageCode="field_invalid_integer" z="z6+yRTbmq9BOq0dJfh7xi3G8OEw="/>
+        <field:input field="filetypeId" id="c_ro_roda_File_filetypeId" required="true" validationMessageCode="field_invalid_integer" z="NNLT+yni/EBuBk3kjr8aHd41Qok="/>
         <field:input field="name" id="c_ro_roda_File_name" required="true" z="mxIi++2S76GPJRr92odxnhL3Xh0="/>
-        <field:input field="size" id="c_ro_roda_File_size" required="true" validationMessageCode="field_invalid_integer" z="gnC0HziNbvr5IDzE2zOcQm0oThI="/>
+        <field:input field="size" id="c_ro_roda_File_size" validationMessageCode="field_invalid_integer" z="Y1CkKjeQZMyTC2xrwuztYhrkQ5I="/>
     </form:create>
     <form:dependency dependencies="${dependencies}" id="d_ro_roda_File" render="${not empty dependencies}" z="i0HirPGkYVgTwPYFwPdFLk2fwK0="/>
 </div>

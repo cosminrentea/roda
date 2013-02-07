@@ -4,7 +4,7 @@
     
     <display-name>roda</display-name>
     
-    <description>Roo generated roda application</description>
+    <description>Roo-supported RODA web application</description>
 
     
     <!-- Enable escaping of form submission contents -->

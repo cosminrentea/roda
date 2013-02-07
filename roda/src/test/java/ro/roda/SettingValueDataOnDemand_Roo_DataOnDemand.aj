@@ -10,8 +10,9 @@ import java.util.List;
 import java.util.Random;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import ro.roda.Setting;
+import ro.roda.SettingDataOnDemand;
 import ro.roda.SettingValue;
 import ro.roda.SettingValueDataOnDemand;
 
@@ -23,16 +24,13 @@ privileged aspect SettingValueDataOnDemand_Roo_DataOnDemand {
     
     private List<SettingValue> SettingValueDataOnDemand.data;
     
+    @Autowired
+    private SettingDataOnDemand SettingValueDataOnDemand.settingDataOnDemand;
+    
     public SettingValue SettingValueDataOnDemand.getNewTransientSettingValue(int index) {
         SettingValue obj = new SettingValue();
-        setSetting(obj, index);
         setValue(obj, index);
         return obj;
-    }
-    
-    public void SettingValueDataOnDemand.setSetting(SettingValue obj, int index) {
-        Setting setting = null;
-        obj.setSetting(setting);
     }
     
     public void SettingValueDataOnDemand.setValue(SettingValue obj, int index) {

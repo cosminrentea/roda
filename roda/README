@@ -1,0 +1,74 @@
+1. Instalarea IDE si a proiectului
+
+1.1. Descarcati Spring Tool Suite (STS) de aici:
+http://www.springsource.org/downloads/sts-ggts
+
+Alegeti versiunea bazata pe Eclipse 3.8.2 !!!
+Pe website, sectiunea este:
+"Milestone Version - Spring Tool Suite 3.2.0.M2 - based on Eclipse Juno 3.8.2"
+
+1.2. Instalati STS, eventual din linia de comanda, cu optiunile default: Next -> ... -> Finish
+
+1.3. Modificati in STS.ini (in folder-ul radacina al STS):
+linia care incepe cu -Xmx => -Xmx1536m
+linia care incepe cu -XX:MaxPermSize =>  -XX:MaxPermSize=256m
+
+1.4. Deschideti STS, eventual din linia de comanda, in folder-ul radacina al instalarii STS:
+./STS &
+
+1.5. Din Dashboard (Help -> Dashboard), in tab-ul "Extensions" (jos in view) bifati si instalati "Subclipse" din lista. 
+Restartati STS.
+
+1.5.1. (optional) Instalati in STS IDE-ul pentru Perl, prin meniu Help -> Install New Software:
+Perl EPIC - http://e-p-i-c.sf.net/updates
+
+1.6. Configurati repository-ul SVN, URL=svn://fisiere.dyndns.org/roda 
+Faceti Checkout al proiectului (modulul "roda" din repository).
+
+1.6.1. (optional) Fisierele dbWrench si scripturile asociate
+Faceti Checkout al proiectului (modulul "dbwrench2-files" din repository).
+
+1.6.2. (optional) Proiectul Perl, pentru scripturile din folderul "scripts"
+Faceti Checkout al proiectului (modulul "RODA-perl" din repository).
+
+
+2. Configurarea locala a proiectului
+
+2.1. Conexiunea la baza de date trebuie configurata in
+src/main/resources/META-INF/spring/database.properties
+
+2.2. Hibernate (de ex. modul de lucru: update / create / validate):
+src/main/resources/META-INF/persistence.xml
+
+2.3. Logging-ul:
+src/main/resources/log4j.properties
+
+2.4. Conexiunea cu SOLR:
+src/main/resources/META-INF/spring/solr.properties
+
+2.5. Spring (Beans, properties etc.):
+src/main/resources/META-INF/spring/applicationContext.xml
+
+2.6. Spring Security:
+src/main/resources/META-INF/spring/applicationContext-security.xml
+
+2.7. Procesele de build (Maven):
+/pom.xml
+(aici se poate schimba: portul folosit de Tomcat la rularea aplicatiei; rularea sau nu a testelor etc.)
+
+
+3. Compilarea proiectului
+
+In STS, deschideti din meniu: Window -> Open View -> Roo Shell.
+Click pe buton "Open Roo shell" in view, bifati proiectul si apasati OK.
+Tastati in Roo shell, atunci cand devine disponibila:
+perform package
+
+
+4. Rularea locala a proiectului
+
+Din linia de comanda (nu din STS), in radacina proiectului:
+mvn tomcat:run
+
+Daca portul local 8080 era liber, proiectul e disponibil la URL-ul:
+http://localhost:8080/roda

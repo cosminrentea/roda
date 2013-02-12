@@ -32,7 +32,7 @@ extends 'DBIx::Class::Core';
 
 =cut
 
-__PACKAGE__->load_components("InflateColumn::DateTime");
+__PACKAGE__->load_components(qw( Tree::AdjacencyList ));
 
 =head1 TABLE: C<cms_folder>
 
@@ -91,6 +91,9 @@ __PACKAGE__->add_columns(
   { data_type => "text", is_nullable => 1 },
 );
 
+
+
+
 =head1 PRIMARY KEY
 
 =over 4
@@ -102,6 +105,8 @@ __PACKAGE__->add_columns(
 =cut
 
 __PACKAGE__->set_primary_key("id");
+__PACKAGE__->parent_column('parent_id');
+#__PACKAGE__->repair_tree( 1 );
 
 =head1 RELATIONS
 
@@ -143,17 +148,17 @@ Related object: L<RODA::RODADB::Result::CmsFolder>
 
 =cut
 
-__PACKAGE__->belongs_to(
-  "parent",
-  "RODA::RODADB::Result::CmsFolder",
-  { id => "parent_id" },
-  {
-    is_deferrable => 0,
-    join_type     => "LEFT",
-    on_delete     => "NO ACTION",
-    on_update     => "NO ACTION",
-  },
-);
+#__PACKAGE__->belongs_to(
+#  "parent",
+#  "RODA::RODADB::Result::CmsFolder",
+#  { id => "parent_id" },
+#  {
+#    is_deferrable => 0,
+#    join_type     => "LEFT",
+#    on_delete     => "NO ACTION",
+#    on_update     => "NO ACTION",
+#  },
+#);
 
 
 # Created by DBIx::Class::Schema::Loader v0.07033 @ 2013-02-05 11:04:03
@@ -161,5 +166,6 @@ __PACKAGE__->belongs_to(
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
+
 __PACKAGE__->meta->make_immutable;
 1;

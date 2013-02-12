@@ -28,7 +28,7 @@ extends 'DBIx::Class::Core';
 
 =cut
 
-__PACKAGE__->load_components("InflateColumn::DateTime");
+__PACKAGE__->load_components("Tree::AdjacencyList::Ordered", "InflateColumn::DateTime");
 
 =head1 TABLE: C<catalog>
 
@@ -90,12 +90,19 @@ __PACKAGE__->add_columns(
   },
   "name",
   { data_type => "varchar", is_nullable => 0, size => 200 },
-  "parent",
+  "parent_id",
   { data_type => "integer", is_foreign_key => 1, is_nullable => 1 },
   "owner",
   { data_type => "integer", is_foreign_key => 1, is_nullable => 0 },
   "added",
   { data_type => "timestamp", is_nullable => 0 },
+    "description",
+  { data_type => "text", is_nullable => 1 },
+    "sequencenr",
+  {
+    data_type         => "integer",
+    is_nullable       => 2,
+  },
 );
 
 =head1 PRIMARY KEY
@@ -109,6 +116,10 @@ __PACKAGE__->add_columns(
 =cut
 
 __PACKAGE__->set_primary_key("id");
+
+__PACKAGE__->position_column('sequencenr');
+__PACKAGE__->parent_column('parent_id');
+
 
 =head1 RELATIONS
 
@@ -180,17 +191,17 @@ Related object: L<RODA::RODADB::Result::Catalog>
 
 =cut
 
-__PACKAGE__->belongs_to(
-  "parent",
-  "RODA::RODADB::Result::Catalog",
-  { id => "parent" },
-  {
-    is_deferrable => 0,
-    join_type     => "LEFT",
-    on_delete     => "NO ACTION",
-    on_update     => "NO ACTION",
-  },
-);
+#__PACKAGE__->belongs_to(
+#  "parent",
+#  "RODA::RODADB::Result::Catalog",
+#  { id => "parent" },
+#  {
+#    is_deferrable => 0,
+#    join_type     => "LEFT",
+#    on_delete     => "NO ACTION",
+#    on_update     => "NO ACTION",
+#  },
+#);
 
 
 # Created by DBIx::Class::Schema::Loader v0.07033 @ 2013-02-05 11:04:03

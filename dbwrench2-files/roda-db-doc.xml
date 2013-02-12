@@ -198,7 +198,7 @@
         <Cm>Numarul versiunii liniei in tabelul din care face parte</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_audit_users" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="user" oe="1" sch="public" zr="0"/>
+        <PrTb mn="0" nm="rodauser" oe="1" sch="public" zr="0"/>
         <CdTb mn="1" nm="audit" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="user_id" prCl="id"/>
       </Fk>
@@ -286,7 +286,7 @@
         <Cm>Valoarea campului specificat prin atributul field_name pentru utilizatorul referit prin atributul user_id</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_auth_data_users" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="user" oe="1" sch="public" zr="0"/>
+        <PrTb mn="0" nm="rodauser" oe="1" sch="public" zr="0"/>
         <CdTb mn="1" nm="auth_data" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="user_id" prCl="id"/>
       </Fk>
@@ -305,7 +305,7 @@
         <DT arr="0" ds="VarChar" en="" id="12" ln="200" sc="null" sg="1" un="0"/>
         <Cm>Denumirea catalogului</Cm>
       </Cl>
-      <Cl au="0" df="" nm="parent" nu="1">
+      <Cl au="0" df="0" nm="parent_id" nu="1">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul catalogului din care face parte catalogul curent (refera atributul id al tabelului catalog)</Cm>
       </Cl>
@@ -313,17 +313,20 @@
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul utilizatorului care poseda catalogul (refera atributul id din tabelul users)</Cm>
       </Cl>
-      <Cl au="0" df="" nm="added" nu="0">
+      <Cl au="0" df="now()" nm="added" nu="0">
         <DT arr="0" ds="TimeStamp" en="" id="93" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Data si timpul cand a fost adaugat catalogul respectiv</Cm>
       </Cl>
-      <Fk deAc="3" nm="fk_catalog_catalog" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="catalog" oe="1" sch="public" zr="0"/>
-        <CdTb mn="1" nm="catalog" oe="0" sch="public" zr="1"/>
-        <ClPr cdCl="parent" prCl="id"/>
-      </Fk>
+      <Cl au="0" df="" nm="sequencenr" nu="1">
+        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Coloana care permite ordonarea elementelor subordonate aceluiasi parinte</Cm>
+      </Cl>
+      <Cl au="0" df="" nm="description" nu="1">
+        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Descrierea catalogului</Cm>
+      </Cl>
       <Fk deAc="3" nm="fk_catalog_users" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="user" oe="1" sch="public" zr="0"/>
+        <PrTb mn="0" nm="rodauser" oe="1" sch="public" zr="0"/>
         <CdTb mn="1" nm="catalog" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="owner" prCl="id"/>
       </Fk>
@@ -515,7 +518,7 @@
         <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Denumirea unui folder din sistemul CMS al aplicatiei</Cm>
       </Cl>
-      <Cl au="0" df="" nm="parent_id" nu="1">
+      <Cl au="0" df="0" nm="parent_id" nu="1">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul folder-ului parinte al folder-ului curent (refera atributul id din acelasi tabel)</Cm>
       </Cl>
@@ -523,11 +526,6 @@
         <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Descrierea unui folder din sistemul CMS al aplicatiei</Cm>
       </Cl>
-      <Fk deAc="3" nm="fk_cms_folders_cms_folders" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="cms_folder" oe="1" sch="public" zr="0"/>
-        <CdTb mn="1" nm="cms_folder" oe="0" sch="public" zr="1"/>
-        <ClPr cdCl="parent_id" prCl="id"/>
-      </Fk>
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
@@ -579,11 +577,6 @@
         <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Descrierea unui grup de layout-uri</Cm>
       </Cl>
-      <Fk deAc="3" nm="fk_cms_layout_group_cms_layout_group" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="cms_layout_group" oe="1" sch="public" zr="0"/>
-        <CdTb mn="1" nm="cms_layout_group" oe="0" sch="public" zr="1"/>
-        <ClPr cdCl="parent_id" prCl="id"/>
-      </Fk>
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
@@ -634,7 +627,7 @@
         <ClPr cdCl="cms_page_type_id" prCl="id"/>
       </Fk>
       <Fk deAc="3" nm="fk_cms_page_users" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="user" oe="1" sch="public" zr="0"/>
+        <PrTb mn="0" nm="rodauser" oe="1" sch="public" zr="0"/>
         <CdTb mn="1" nm="cms_page" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="owner_id" prCl="id"/>
       </Fk>
@@ -744,11 +737,6 @@
         <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Descrierea grupului de snippet-uri </Cm>
       </Cl>
-      <Fk deAc="3" nm="fk_cms_snippet_group_cms_snippet_group" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="cms_snippet_group" oe="1" sch="public" zr="0"/>
-        <CdTb mn="1" nm="cms_snippet_group" oe="0" sch="public" zr="1"/>
-        <ClPr cdCl="parent_id" prCl="id"/>
-      </Fk>
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
@@ -1145,7 +1133,7 @@
         <ClPr cdCl="unit_analysis_id" prCl="id"/>
       </Fk>
       <Fk deAc="3" nm="fk_instance_user" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="user" oe="1" sch="public" zr="0"/>
+        <PrTb mn="0" nm="rodauser" oe="1" sch="public" zr="0"/>
         <CdTb mn="1" nm="instance" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="added_by" prCl="id"/>
       </Fk>
@@ -1291,7 +1279,7 @@
         <ClPr cdCl="keyword_id" prCl="id"/>
       </Fk>
       <Fk deAc="3" nm="fk_instance_keyword_user" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="user" oe="1" sch="public" zr="0"/>
+        <PrTb mn="0" nm="rodauser" oe="1" sch="public" zr="0"/>
         <CdTb mn="1" nm="instance_keyword" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="added_by" prCl="id"/>
       </Fk>
@@ -1583,7 +1571,7 @@
         <Cm>Continutul stirii</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_news_users" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="user" oe="1" sch="public" zr="0"/>
+        <PrTb mn="0" nm="rodauser" oe="1" sch="public" zr="0"/>
         <CdTb mn="1" nm="news" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="added_by" prCl="id"/>
       </Fk>
@@ -2039,12 +2027,12 @@
         <ClPr cdCl="person_id" prCl="id"/>
       </Fk>
       <Fk deAc="3" nm="fk_person_links_users" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="user" oe="1" sch="public" zr="0"/>
+        <PrTb mn="0" nm="rodauser" oe="1" sch="public" zr="0"/>
         <CdTb mn="1" nm="person_links" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="user_id" prCl="id"/>
       </Fk>
       <Fk deAc="3" nm="fk_person_links_users2" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="user" oe="1" sch="public" zr="0"/>
+        <PrTb mn="0" nm="rodauser" oe="1" sch="public" zr="0"/>
         <CdTb mn="1" nm="person_links" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="status_by" prCl="id"/>
       </Fk>
@@ -2269,6 +2257,21 @@
       <Cl au="0" df="" nm="name" nu="0">
         <DT arr="0" ds="VarChar" en="" id="12" ln="150" sc="null" sg="1" un="0"/>
         <Cm>Denumirea tipului de regiune</Cm>
+      </Cl>
+      <UniqueConstraints/>
+      <SchTrHis/>
+    </Tbl>
+    <Tbl UsSo="1" nm="rodauser">
+      <Cm>Tabel ce contine utilizatorii aplicatiei</Cm>
+      <TblOpts>WITHOUT OIDS</TblOpts>
+      <Pk ClNs="id" nm="pkrodauser"/>
+      <Cl au="0" df="" nm="id" nu="0">
+        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Codul utilizatorului aplicatiei</Cm>
+      </Cl>
+      <Cl au="0" df="" nm="credential_provider" nu="0">
+        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Furnizorul de informatii de acces pentru utilizatorul respectiv</Cm>
       </Cl>
       <UniqueConstraints/>
       <SchTrHis/>
@@ -2713,7 +2716,7 @@
         <ClPr cdCl="sourcestudy_type_id" prCl="id"/>
       </Fk>
       <Fk deAc="3" nm="fk_sourcestudy_type_history_user" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="user" oe="1" sch="public" zr="0"/>
+        <PrTb mn="0" nm="rodauser" oe="1" sch="public" zr="0"/>
         <CdTb mn="1" nm="sourcestudy_type_history" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="added_by" prCl="id"/>
       </Fk>
@@ -2778,7 +2781,7 @@
         <ClPr cdCl="sourcetype_id" prCl="id"/>
       </Fk>
       <Fk deAc="3" nm="fk_sourcetype_history_user" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="user" oe="1" sch="public" zr="0"/>
+        <PrTb mn="0" nm="rodauser" oe="1" sch="public" zr="0"/>
         <CdTb mn="1" nm="sourcetype_history" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="added_by" prCl="id"/>
       </Fk>
@@ -2818,7 +2821,7 @@
         <DT arr="0" ds="Boolean" en="" id="16" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
       <Fk deAc="3" nm="fk_study_user" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="user" oe="1" sch="public" zr="0"/>
+        <PrTb mn="0" nm="rodauser" oe="1" sch="public" zr="0"/>
         <CdTb mn="1" nm="study" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="added_by" prCl="id"/>
       </Fk>
@@ -2984,7 +2987,7 @@
         <ClPr cdCl="study_id" prCl="id"/>
       </Fk>
       <Fk deAc="3" nm="fk_study_keyword_user" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="user" oe="1" sch="public" zr="0"/>
+        <PrTb mn="0" nm="rodauser" oe="1" sch="public" zr="0"/>
         <CdTb mn="1" nm="study_keyword" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="added_by" prCl="id"/>
       </Fk>
@@ -3283,21 +3286,6 @@
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
-    <Tbl UsSo="1" nm="user">
-      <Cm>Tabel ce contine utilizatorii aplicatiei</Cm>
-      <TblOpts>WITHOUT OIDS</TblOpts>
-      <Pk ClNs="id" nm="pkuser"/>
-      <Cl au="0" df="" nm="id" nu="0">
-        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
-        <Cm>Codul utilizatorului aplicatiei</Cm>
-      </Cl>
-      <Cl au="0" df="" nm="credential_provider" nu="0">
-        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
-        <Cm>Furnizorul de informatii de acces pentru utilizatorul respectiv</Cm>
-      </Cl>
-      <UniqueConstraints/>
-      <SchTrHis/>
-    </Tbl>
     <Tbl UsSo="1" nm="user_auth_log">
       <Cm>Tabel ce stocheaza log-ul corespunzator procesului de autentificare a utilizatorilor</Cm>
       <TblOpts>WITHOUT OIDS</TblOpts>
@@ -3327,7 +3315,7 @@
         <Cm>Mesajul de eroare aparut </Cm>
       </Cl>
       <Fk deAc="3" nm="fk_user_auth_log_users" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="user" oe="1" sch="public" zr="0"/>
+        <PrTb mn="0" nm="rodauser" oe="1" sch="public" zr="0"/>
         <CdTb mn="1" nm="user_auth_log" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="user_id" prCl="id"/>
       </Fk>
@@ -3355,12 +3343,12 @@
         <Cm>Codul utilizatorului caruia ii este transmis mesajul (refera atributul id din tabelul users)</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_user_message_user" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="user" oe="1" sch="public" zr="0"/>
+        <PrTb mn="0" nm="rodauser" oe="1" sch="public" zr="0"/>
         <CdTb mn="1" nm="user_message" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="to_user_id" prCl="id"/>
       </Fk>
       <Fk deAc="3" nm="fk_user_messages_users" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="user" oe="1" sch="public" zr="0"/>
+        <PrTb mn="0" nm="rodauser" oe="1" sch="public" zr="0"/>
         <CdTb mn="1" nm="user_message" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="from_user_id" prCl="id"/>
       </Fk>
@@ -3388,7 +3376,7 @@
         <Cm>Adresa de email a utilizatorului</Cm>
       </Cl>
       <Fk deAc="3" nm="fk_user_profile_users" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="user" oe="1" sch="public" zr="0"/>
+        <PrTb mn="0" nm="rodauser" oe="1" sch="public" zr="0"/>
         <CdTb mn="1" nm="user_profile" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="user_id" prCl="id"/>
       </Fk>
@@ -3413,7 +3401,7 @@
         <ClPr cdCl="role_id" prCl="id"/>
       </Fk>
       <Fk deAc="3" nm="fk_user_role_users" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="user" oe="1" sch="public" zr="0"/>
+        <PrTb mn="0" nm="rodauser" oe="1" sch="public" zr="0"/>
         <CdTb mn="1" nm="user_role" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="user_id" prCl="id"/>
       </Fk>
@@ -3497,7 +3485,7 @@
         <ClPr cdCl="user_setting_id" prCl="id"/>
       </Fk>
       <Fk deAc="3" nm="fk_user_setting_value_users" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="user" oe="1" sch="public" zr="0"/>
+        <PrTb mn="0" nm="rodauser" oe="1" sch="public" zr="0"/>
         <CdTb mn="1" nm="user_setting_value" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="user_id" prCl="id"/>
       </Fk>
@@ -3681,7 +3669,7 @@
     <TbGl bkCl="ffffffcc" sch="public" tbl="catalog" x="1826" y="483"/>
     <TbGl bkCl="ffffffcc" sch="public" tbl="catalog_study" x="2087" y="525"/>
     <TbGl bkCl="ffcc99ff" sch="public" tbl="catalog_acl" x="1827" y="622"/>
-    <TbGl bkCl="ffccffcc" sch="public" tbl="user" x="2095" y="1253"/>
+    <TbGl bkCl="ffccffcc" sch="public" tbl="rodauser" x="2095" y="1253"/>
     <TbGl bkCl="ffccffcc" sch="public" tbl="auth_data" x="2249" y="1115"/>
     <TbGl bkCl="ffccffcc" sch="public" tbl="user_auth_log" x="2510" y="1295"/>
     <TbGl bkCl="ffccffcc" sch="public" tbl="role" x="2102" y="1534"/>
@@ -3775,7 +3763,6 @@
     <FkGl bkCl="ff000000" nm="public.audit_field.fk_audit_fields_audit"/>
     <FkGl bkCl="ff000000" nm="public.audit_row_id.fk_audit_row_id_audit"/>
     <FkGl bkCl="ff000000" nm="public.auth_data.fk_auth_data_users"/>
-    <FkGl bkCl="ff000000" nm="public.catalog.fk_catalog_catalog"/>
     <FkGl bkCl="ff000000" nm="public.catalog.fk_catalog_users"/>
     <FkGl bkCl="ff000000" nm="public.catalog_acl.fk_catalog_acl_catalog"/>
     <FkGl bkCl="ff000000" nm="public.catalog_study.fk_catalog_study_catalog"/>
@@ -3785,15 +3772,12 @@
     <FkGl bkCl="ff000000" nm="public.cms_file_property_name_value.fk_cms_file_property_name_value_cms_file"/>
     <FkGl bkCl="ff000000" nm="public.cms_file_property_name_value.fk_cms_file_property_name_value_property_name"/>
     <FkGl bkCl="ff000000" nm="public.cms_file_property_name_value.fk_cms_file_property_name_value_property_value"/>
-    <FkGl bkCl="ff000000" nm="public.cms_folder.fk_cms_folders_cms_folders"/>
     <FkGl bkCl="ff000000" nm="public.cms_layout.fk_cms_layout_cms_layout_group"/>
-    <FkGl bkCl="ff000000" nm="public.cms_layout_group.fk_cms_layout_group_cms_layout_group"/>
     <FkGl bkCl="ff000000" nm="public.cms_page.fk_cms_page_cms_layout"/>
     <FkGl bkCl="ff000000" nm="public.cms_page.fk_cms_page_cms_page_type"/>
     <FkGl bkCl="ff000000" nm="public.cms_page.fk_cms_page_users"/>
     <FkGl bkCl="ff000000" nm="public.cms_page_content.fk_cms_page_content_cms_page"/>
     <FkGl bkCl="ff000000" nm="public.cms_snippet.fk_cms_snippet_cms_snippet_group"/>
-    <FkGl bkCl="ff000000" nm="public.cms_snippet_group.fk_cms_snippet_group_cms_snippet_group"/>
     <FkGl bkCl="ff000000" nm="public.concept_variable.fk_concept_variable_variable"/>
     <FkGl bkCl="ff000000" nm="public.concept_variable.fk_Concept_Variables_Concepts"/>
     <FkGl bkCl="ff000000" nm="public.file_acl.fk_documents_acl_documents"/>
@@ -3933,7 +3917,7 @@
       <Zone bkCl="ffece9d8" h="622" nm="ACL" w="451" x="49" y="1347"/>
       <Zone bkCl="ffece9d8" h="1009" nm="App Settings" w="236" x="1811" y="1659"/>
       <Zone bkCl="ffece9d8" h="652" nm="Audit" w="276" x="1034" y="1348"/>
-      <Zone bkCl="ffece9d8" h="996" nm="CMS" w="758" x="4034" y="956"/>
+      <Zone bkCl="ffece9d8" h="996" nm="CMS" w="758" x="4033" y="956"/>
       <Zone bkCl="ffece9d8" h="644" nm="Codebook Sources" w="741" x="25" y="475"/>
       <Zone bkCl="ffece9d8" h="740" nm="Files + Properties" w="431" x="3217" y="1193"/>
       <Zone bkCl="ffece9d8" h="1188" nm="Forms + Answers" w="170" x="3867" y="0"/>
@@ -3946,7 +3930,7 @@
       <Zone bkCl="ffece9d8" h="1456" nm="Variables" w="623" x="3873" y="181"/>
     </Zones>
   </Dgm>
-  <RnmMgr NxRnmId="296">
+  <RnmMgr NxRnmId="299">
     <RnmCh ObjCls="Table" ParCls="Schema" ParNme="public" SupCls="" SupNme="">
       <Rnm id="1" nNm="person" oNm="Persoane"/>
     </RnmCh>
@@ -4076,7 +4060,7 @@
     <RnmCh ObjCls="Column" ParCls="Table" ParNme="auth_data" SupCls="Schema" SupNme="schemaA">
       <Rnm id="45" nNm="user_id" oNm="user_is"/>
     </RnmCh>
-    <RnmCh ObjCls="Column" ParCls="Table" ParNme="user" SupCls="Schema" SupNme="schemaA">
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="rodauser" SupCls="Schema" SupNme="schemaA">
       <Rnm id="46" nNm="id" oNm="users_id"/>
     </RnmCh>
     <RnmCh ObjCls="Column" ParCls="Table" ParNme="role" SupCls="Schema" SupNme="schemaA">
@@ -4509,6 +4493,7 @@
       <Rnm id="220" nNm="user_setting_group" oNm="user_settings_group"/>
     </RnmCh>
     <RnmCh ObjCls="Table" ParCls="Schema" ParNme="public" SupCls="" SupNme="">
+      <Rnm id="298" nNm="rodauser" oNm="user"/>
       <Rnm id="221" nNm="user" oNm="users"/>
     </RnmCh>
     <RnmCh ObjCls="Table" ParCls="Schema" ParNme="public" SupCls="" SupNme="">
@@ -4704,6 +4689,12 @@
     <RnmCh ObjCls="Column" ParCls="Table" ParNme="source_contacts" SupCls="Schema" SupNme="public">
       <Rnm id="295" nNm="source_id" oNm="org_id"/>
     </RnmCh>
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="catalog" SupCls="Schema" SupNme="public">
+      <Rnm id="296" nNm="parent_id" oNm="parent"/>
+    </RnmCh>
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="catalog" SupCls="Schema" SupNme="public">
+      <Rnm id="297" nNm="sequencenr" oNm="sequence"/>
+    </RnmCh>
   </RnmMgr>
   <DbDocOptionMgr>
     <BasicOptionMgr>
@@ -4721,13 +4712,15 @@
     </BasicOptionMgr>
   </DbDocOptionMgr>
   <OpenEditors>
-    <OpenEditor ClsNm="Diagram" fqn="null.diagram" selected="1"/>
+    <OpenEditor ClsNm="Diagram" fqn="null.diagram" selected="0"/>
   </OpenEditors>
   <TreePaths>
     <TreePath/>
     <TreePath>/Schemas (1)</TreePath>
     <TreePath>/Schemas (1)/public</TreePath>
     <TreePath>/Schemas (1)/public/Tables (124)</TreePath>
+    <TreePath>/Schemas (1)/public/Tables (124)/cms_folder</TreePath>
+    <TreePath>/Schemas (1)/public/Tables (124)/cms_folder/Foreign Keys (0)</TreePath>
     <TreePath>/Diagrams (1)</TreePath>
     <TreePath>/Diagrams (1)/diagram</TreePath>
   </TreePaths>

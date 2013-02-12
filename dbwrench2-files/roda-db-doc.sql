@@ -252,9 +252,11 @@ CREATE TABLE catalog
 (
 id SERIAL,
 	name VARCHAR(200) NOT NULL,
-	parent INTEGER NULL,
+	parent_id INTEGER DEFAULT 0 NULL,
 	owner INTEGER NOT NULL,
-	added TIMESTAMP NOT NULL
+	added TIMESTAMP DEFAULT now() NOT NULL,
+	sequencenr INTEGER NULL,
+	description TEXT NULL
 ) WITHOUT OIDS;
 
 /* Add Primary Key */
@@ -266,11 +268,15 @@ COMMENT ON COLUMN catalog.id IS 'Codul catalogului';
 
 COMMENT ON COLUMN catalog.name IS 'Denumirea catalogului';
 
-COMMENT ON COLUMN catalog.parent IS 'Codul catalogului din care face parte catalogul curent (refera atributul id al tabelului catalog)';
+COMMENT ON COLUMN catalog.parent_id IS 'Codul catalogului din care face parte catalogul curent (refera atributul id al tabelului catalog)';
 
 COMMENT ON COLUMN catalog.owner IS 'Codul utilizatorului care poseda catalogul (refera atributul id din tabelul users)';
 
 COMMENT ON COLUMN catalog.added IS 'Data si timpul cand a fost adaugat catalogul respectiv';
+
+COMMENT ON COLUMN catalog.sequencenr IS 'Coloana care permite ordonarea elementelor subordonate aceluiasi parinte';
+
+COMMENT ON COLUMN catalog.description IS 'Descrierea catalogului';
 
 COMMENT ON TABLE catalog IS 'Tabel ce stocheaza informatii despre cataloagele de studii';
 
@@ -418,7 +424,7 @@ CREATE TABLE cms_folder
 (
 id SERIAL,
 	name TEXT NOT NULL,
-	parent_id INTEGER NULL,
+	parent_id INTEGER DEFAULT 0 NULL,
 	description TEXT NULL
 ) WITHOUT OIDS;
 
@@ -1965,6 +1971,27 @@ COMMENT ON COLUMN regiontype.name IS 'Denumirea tipului de regiune';
 COMMENT ON TABLE regiontype IS 'Tabel ce contine tipurile regiunilor corespunzatoare studiilor efectuate';
 
 
+/******************** Add Table: rodauser ************************/
+
+/* Build Table Structure */
+CREATE TABLE rodauser
+(
+id SERIAL,
+	credential_provider TEXT NOT NULL
+) WITHOUT OIDS;
+
+/* Add Primary Key */
+ALTER TABLE rodauser ADD CONSTRAINT pkrodauser
+	PRIMARY KEY (id);
+
+/* Add Comments */
+COMMENT ON COLUMN rodauser.id IS 'Codul utilizatorului aplicatiei';
+
+COMMENT ON COLUMN rodauser.credential_provider IS 'Furnizorul de informatii de acces pentru utilizatorul respectiv';
+
+COMMENT ON TABLE rodauser IS 'Tabel ce contine utilizatorii aplicatiei';
+
+
 /******************** Add Table: "role" ************************/
 
 /* Build Table Structure */
@@ -2862,27 +2889,6 @@ COMMENT ON COLUMN unit_analysis.description IS 'Descrierea unitatii de analiza';
 COMMENT ON TABLE unit_analysis IS 'Tabel care stocheaza tipurile de unitati de analiza (individ, gospodarie, etc) ale instantelor';
 
 
-/******************** Add Table: "user" ************************/
-
-/* Build Table Structure */
-CREATE TABLE "user"
-(
-id SERIAL,
-	credential_provider TEXT NOT NULL
-) WITHOUT OIDS;
-
-/* Add Primary Key */
-ALTER TABLE "user" ADD CONSTRAINT pkuser
-	PRIMARY KEY (id);
-
-/* Add Comments */
-COMMENT ON COLUMN "user".id IS 'Codul utilizatorului aplicatiei';
-
-COMMENT ON COLUMN "user".credential_provider IS 'Furnizorul de informatii de acces pentru utilizatorul respectiv';
-
-COMMENT ON TABLE "user" IS 'Tabel ce contine utilizatorii aplicatiei';
-
-
 /******************** Add Table: user_auth_log ************************/
 
 /* Build Table Structure */
@@ -3212,7 +3218,7 @@ ALTER TABLE address ADD CONSTRAINT fk_address_city
 
 /* Add Foreign Key: fk_audit_users */
 ALTER TABLE audit ADD CONSTRAINT fk_audit_users
-	FOREIGN KEY (user_id) REFERENCES "user" (id)
+	FOREIGN KEY (user_id) REFERENCES rodauser (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 /* Add Foreign Key: fk_audit_fields_audit */
@@ -3227,17 +3233,12 @@ ALTER TABLE audit_row_id ADD CONSTRAINT fk_audit_row_id_audit
 
 /* Add Foreign Key: fk_auth_data_users */
 ALTER TABLE auth_data ADD CONSTRAINT fk_auth_data_users
-	FOREIGN KEY (user_id) REFERENCES "user" (id)
-	ON UPDATE NO ACTION ON DELETE NO ACTION;
-
-/* Add Foreign Key: fk_catalog_catalog */
-ALTER TABLE catalog ADD CONSTRAINT fk_catalog_catalog
-	FOREIGN KEY (parent) REFERENCES catalog (id)
+	FOREIGN KEY (user_id) REFERENCES rodauser (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 /* Add Foreign Key: fk_catalog_users */
 ALTER TABLE catalog ADD CONSTRAINT fk_catalog_users
-	FOREIGN KEY (owner) REFERENCES "user" (id)
+	FOREIGN KEY (owner) REFERENCES rodauser (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 /* Add Foreign Key: fk_catalog_acl_catalog */
@@ -3280,19 +3281,9 @@ ALTER TABLE cms_file_property_name_value ADD CONSTRAINT fk_cms_file_property_nam
 	FOREIGN KEY (property_value_id) REFERENCES property_value (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
-/* Add Foreign Key: fk_cms_folders_cms_folders */
-ALTER TABLE cms_folder ADD CONSTRAINT fk_cms_folders_cms_folders
-	FOREIGN KEY (parent_id) REFERENCES cms_folder (id)
-	ON UPDATE NO ACTION ON DELETE NO ACTION;
-
 /* Add Foreign Key: fk_cms_layout_cms_layout_group */
 ALTER TABLE cms_layout ADD CONSTRAINT fk_cms_layout_cms_layout_group
 	FOREIGN KEY (cms_layout_group_id) REFERENCES cms_layout_group (id)
-	ON UPDATE NO ACTION ON DELETE NO ACTION;
-
-/* Add Foreign Key: fk_cms_layout_group_cms_layout_group */
-ALTER TABLE cms_layout_group ADD CONSTRAINT fk_cms_layout_group_cms_layout_group
-	FOREIGN KEY (parent_id) REFERENCES cms_layout_group (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 /* Add Foreign Key: fk_cms_page_cms_layout */
@@ -3307,7 +3298,7 @@ ALTER TABLE cms_page ADD CONSTRAINT fk_cms_page_cms_page_type
 
 /* Add Foreign Key: fk_cms_page_users */
 ALTER TABLE cms_page ADD CONSTRAINT fk_cms_page_users
-	FOREIGN KEY (owner_id) REFERENCES "user" (id)
+	FOREIGN KEY (owner_id) REFERENCES rodauser (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 /* Add Foreign Key: fk_cms_page_content_cms_page */
@@ -3318,11 +3309,6 @@ ALTER TABLE cms_page_content ADD CONSTRAINT fk_cms_page_content_cms_page
 /* Add Foreign Key: fk_cms_snippet_cms_snippet_group */
 ALTER TABLE cms_snippet ADD CONSTRAINT fk_cms_snippet_cms_snippet_group
 	FOREIGN KEY (cms_snippet_group_id) REFERENCES cms_snippet_group (id)
-	ON UPDATE NO ACTION ON DELETE NO ACTION;
-
-/* Add Foreign Key: fk_cms_snippet_group_cms_snippet_group */
-ALTER TABLE cms_snippet_group ADD CONSTRAINT fk_cms_snippet_group_cms_snippet_group
-	FOREIGN KEY (parent_id) REFERENCES cms_snippet_group (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 /* Add Foreign Key: fk_Concept_Variables_Concepts */
@@ -3412,7 +3398,7 @@ ALTER TABLE instance ADD CONSTRAINT fk_instance_unit_analysis
 
 /* Add Foreign Key: fk_instance_user */
 ALTER TABLE instance ADD CONSTRAINT fk_instance_user
-	FOREIGN KEY (added_by) REFERENCES "user" (id)
+	FOREIGN KEY (added_by) REFERENCES rodauser (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 /* Add Foreign Key: fk_instance_acl_instance */
@@ -3452,7 +3438,7 @@ ALTER TABLE instance_keyword ADD CONSTRAINT fk_instance_keyword_keyword
 
 /* Add Foreign Key: fk_instance_keyword_user */
 ALTER TABLE instance_keyword ADD CONSTRAINT fk_instance_keyword_user
-	FOREIGN KEY (added_by) REFERENCES "user" (id)
+	FOREIGN KEY (added_by) REFERENCES rodauser (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 /* Add Foreign Key: fk_instance_org_instance */
@@ -3517,7 +3503,7 @@ ALTER TABLE meth_coll_type ADD CONSTRAINT fk_meth_coll_type_instance
 
 /* Add Foreign Key: fk_news_users */
 ALTER TABLE news ADD CONSTRAINT fk_news_users
-	FOREIGN KEY (added_by) REFERENCES "user" (id)
+	FOREIGN KEY (added_by) REFERENCES rodauser (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 /* Add Foreign Key: fk_org_org_prefix */
@@ -3637,12 +3623,12 @@ ALTER TABLE person_links ADD CONSTRAINT fk_person_links_person
 
 /* Add Foreign Key: fk_person_links_users */
 ALTER TABLE person_links ADD CONSTRAINT fk_person_links_users
-	FOREIGN KEY (user_id) REFERENCES "user" (id)
+	FOREIGN KEY (user_id) REFERENCES rodauser (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 /* Add Foreign Key: fk_person_links_users2 */
 ALTER TABLE person_links ADD CONSTRAINT fk_person_links_users2
-	FOREIGN KEY (status_by) REFERENCES "user" (id)
+	FOREIGN KEY (status_by) REFERENCES rodauser (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 /* Add Foreign Key: fk_person_org_org */
@@ -3797,7 +3783,7 @@ ALTER TABLE sourcestudy_type_history ADD CONSTRAINT fk_sourcestudy_type_history_
 
 /* Add Foreign Key: fk_sourcestudy_type_history_user */
 ALTER TABLE sourcestudy_type_history ADD CONSTRAINT fk_sourcestudy_type_history_user
-	FOREIGN KEY (added_by) REFERENCES "user" (id)
+	FOREIGN KEY (added_by) REFERENCES rodauser (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 /* Add Foreign Key: fk_source_type_history_sources */
@@ -3812,12 +3798,12 @@ ALTER TABLE sourcetype_history ADD CONSTRAINT fk_source_type_history_sourcetype
 
 /* Add Foreign Key: fk_sourcetype_history_user */
 ALTER TABLE sourcetype_history ADD CONSTRAINT fk_sourcetype_history_user
-	FOREIGN KEY (added_by) REFERENCES "user" (id)
+	FOREIGN KEY (added_by) REFERENCES rodauser (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 /* Add Foreign Key: fk_study_user */
 ALTER TABLE study ADD CONSTRAINT fk_study_user
-	FOREIGN KEY (added_by) REFERENCES "user" (id)
+	FOREIGN KEY (added_by) REFERENCES rodauser (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 /* Add Foreign Key: fk_study_acl_study */
@@ -3862,7 +3848,7 @@ ALTER TABLE study_keyword ADD CONSTRAINT fk_study_keyword_study
 
 /* Add Foreign Key: fk_study_keyword_user */
 ALTER TABLE study_keyword ADD CONSTRAINT fk_study_keyword_user
-	FOREIGN KEY (added_by) REFERENCES "user" (id)
+	FOREIGN KEY (added_by) REFERENCES rodauser (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 /* Add Foreign Key: fk_studiu_org_org */
@@ -3927,22 +3913,22 @@ ALTER TABLE translated_topic ADD CONSTRAINT fk_translated_topic_topic
 
 /* Add Foreign Key: fk_user_auth_log_users */
 ALTER TABLE user_auth_log ADD CONSTRAINT fk_user_auth_log_users
-	FOREIGN KEY (user_id) REFERENCES "user" (id)
+	FOREIGN KEY (user_id) REFERENCES rodauser (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 /* Add Foreign Key: fk_user_message_user */
 ALTER TABLE user_message ADD CONSTRAINT fk_user_message_user
-	FOREIGN KEY (to_user_id) REFERENCES "user" (id)
+	FOREIGN KEY (to_user_id) REFERENCES rodauser (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 /* Add Foreign Key: fk_user_messages_users */
 ALTER TABLE user_message ADD CONSTRAINT fk_user_messages_users
-	FOREIGN KEY (from_user_id) REFERENCES "user" (id)
+	FOREIGN KEY (from_user_id) REFERENCES rodauser (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 /* Add Foreign Key: fk_user_profile_users */
 ALTER TABLE user_profile ADD CONSTRAINT fk_user_profile_users
-	FOREIGN KEY (user_id) REFERENCES "user" (id)
+	FOREIGN KEY (user_id) REFERENCES rodauser (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 /* Add Foreign Key: fk_user_role_role */
@@ -3952,7 +3938,7 @@ ALTER TABLE user_role ADD CONSTRAINT fk_user_role_role
 
 /* Add Foreign Key: fk_user_role_users */
 ALTER TABLE user_role ADD CONSTRAINT fk_user_role_users
-	FOREIGN KEY (user_id) REFERENCES "user" (id)
+	FOREIGN KEY (user_id) REFERENCES rodauser (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 /* Add Foreign Key: fk_user_settings_user_settings_group */
@@ -3967,7 +3953,7 @@ ALTER TABLE user_setting_value ADD CONSTRAINT fk_user_setting_value_user_setting
 
 /* Add Foreign Key: fk_user_setting_value_users */
 ALTER TABLE user_setting_value ADD CONSTRAINT fk_user_setting_value_users
-	FOREIGN KEY (user_id) REFERENCES "user" (id)
+	FOREIGN KEY (user_id) REFERENCES rodauser (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 /* Add Foreign Key: fk_value_item */

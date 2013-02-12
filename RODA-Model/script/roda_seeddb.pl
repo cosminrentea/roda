@@ -239,7 +239,7 @@ if ( -f $csvdir->file('orase_ro_rr.csv' )->stringify) {
 
 print "CMS root folder\n";
 
-#language
+#root folder pentru cms_folder
 if ( -f $csvdir->file('cms_folder.csv' )->stringify) {
     my $cmsfcsv = Text::CSV::Auto->new($csvdir->file('cms_folder.csv' )->stringify);
     my $rows    = $cmsfcsv->slurp();
@@ -255,4 +255,33 @@ if ( -f $csvdir->file('cms_folder.csv' )->stringify) {
 } else {
     print "cms folder file not found .... ".$csvdir->file('cms_folder.csv')->stringify."\n";
 }
+
+#user pentru alte alea
+if ( -f $csvdir->file('user.csv' )->stringify) {
+    my $usercsv = Text::CSV::Auto->new($csvdir->file('user.csv' )->stringify);
+    my $rows    = $usercsv->slurp();
+    foreach my $row (@$rows) {
+        try {
+            my $user = $roda->dbschema->resultset('RodaUser')->create( { credential_provider => $row->{credential_provider} });
+            print "DB: ID: " . $user->id . " -> Credential Provider:" . $user->credential_provider . "\n";
+        }
+        catch {
+            print "Eroare: la import user $_\n";
+        };
+    }
+} else {
+    print "user file not found .... ".$csvdir->file('user.csv')->stringify."\n";
+}
+
+
+
+
+
+
+
+
+
+
+
+
 

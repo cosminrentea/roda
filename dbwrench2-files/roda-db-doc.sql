@@ -1,3 +1,161 @@
+/************ Add: Sequences ***************/
+
+CREATE SEQUENCE acl_class_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE acl_entry_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE acl_object_identity_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE acl_sid_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE address_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE audit_field_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE audit_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE audit_log_action_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE audit_log_change_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE audit_log_changeset_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE audit_log_field_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE audit_log_table_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE audit_row_id_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE catalog_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE city_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE cms_file_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE cms_folder_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE cms_layout_group_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE cms_layout_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE cms_page_content_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE cms_page_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE cms_page_type_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE cms_snippet_group_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE cms_snippet_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE collection_model_type_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE concept_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE email_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE file_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE form_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE instance_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE instance_org_assoc_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE instance_person_assoc_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE internet_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE item_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE keyword_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE news_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE org_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE org_prefix_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE org_relation_type_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE org_sufix_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE other_statistic_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE person_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE person_links_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE person_role_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE phone_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE prefix_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE property_name_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE property_value_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE region_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE regiontype_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE rodauser_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE role_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE sampling_procedure_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE setting_group_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE setting_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE skip_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE source_contact_method_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE source_contacts_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE sourcestudy_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE sourcestudy_type_history_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE sourcestudy_type_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE sourcetype_history_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE sourcetype_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE study_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE study_org_assoc_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE study_person_asoc_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE study_person_assoc_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE suffix_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE time_meth_type_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE title_type_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE topic_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE unit_analysis_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE user_message_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE user_setting_group_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE user_setting_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE vargroup_id_seq INCREMENT BY 1;
+
+CREATE SEQUENCE variable_id_seq INCREMENT BY 1;
+
+
+
 /************ Update: Tables ***************/
 
 /******************** Add Table: acl_class ************************/
@@ -128,94 +286,103 @@ COMMENT ON COLUMN address.postal_code IS 'Codul Postal';
 COMMENT ON TABLE address IS 'Tabel unic pentru toate adresele care se gasesc in baza de date';
 
 
-/******************** Add Table: audit ************************/
+/******************** Add Table: audit_log_action ************************/
 
 /* Build Table Structure */
-CREATE TABLE audit
+CREATE TABLE audit_log_action
 (
-id SERIAL,
-	"time" TIMESTAMP NOT NULL,
-	"operationType" SMALLINT NOT NULL,
-	"tableName" TEXT NOT NULL,
-	user_id INTEGER NOT NULL,
-	version_number INTEGER NOT NULL
+	id INTEGER DEFAULT nextval('audit_log_action_id_seq'::regclass) NOT NULL,
+	changeset INTEGER NOT NULL,
+	audited_table INTEGER NOT NULL,
+	audited_row VARCHAR(50) NULL,
+	type VARCHAR(10) NOT NULL
 ) WITHOUT OIDS;
 
 /* Add Primary Key */
-ALTER TABLE audit ADD CONSTRAINT pkaudit
+ALTER TABLE audit_log_action ADD CONSTRAINT audit_log_action_pkey
 	PRIMARY KEY (id);
 
-/* Add Comments */
-COMMENT ON COLUMN audit.id IS 'Codul informatiei de audit';
+/* Add Indexes */
+CREATE INDEX audit_log_action_idx_audited_table ON audit_log_action (audited_table);
 
-COMMENT ON COLUMN audit."time" IS 'Timpul la care a avut loc operatia';
-
-COMMENT ON COLUMN audit."operationType" IS 'Tipul operatiei (inserare, actualizare, stergere)';
-
-COMMENT ON COLUMN audit."tableName" IS 'Numele tabelului asupra caruia a avut loc operatia';
-
-COMMENT ON COLUMN audit.user_id IS 'Codul utilizatorului care a efectuat operatia (refera atributul id din tabelul users)';
-
-COMMENT ON COLUMN audit.version_number IS 'Numarul versiunii liniei in tabelul din care face parte';
-
-COMMENT ON TABLE audit IS 'Tabel ce stocheaza informatiile referitoare la auditul bazei de date';
+CREATE INDEX audit_log_action_idx_changeset ON audit_log_action (changeset);
 
 
-/******************** Add Table: audit_field ************************/
+/******************** Add Table: audit_log_change ************************/
 
 /* Build Table Structure */
-CREATE TABLE audit_field
+CREATE TABLE audit_log_change
 (
-	audit_id INTEGER NOT NULL,
-id SERIAL,
-	column_name TEXT NOT NULL,
-	new_value TEXT NULL,
-	old_value TEXT NULL
+	id INTEGER DEFAULT nextval('audit_log_change_id_seq'::regclass) NOT NULL,
+	"action" INTEGER NOT NULL,
+	field INTEGER NOT NULL,
+	old_value VARCHAR(255) NULL,
+	new_value VARCHAR(255) NULL
 ) WITHOUT OIDS;
 
 /* Add Primary Key */
-ALTER TABLE audit_field ADD CONSTRAINT pkaudit_field
-	PRIMARY KEY (audit_id, id);
+ALTER TABLE audit_log_change ADD CONSTRAINT audit_log_change_pkey
+	PRIMARY KEY (id);
 
-/* Add Comments */
-COMMENT ON COLUMN audit_field.audit_id IS 'Codul informatiei de audit (refera atributul id din tabelul audit)';
+/* Add Indexes */
+CREATE INDEX audit_log_change_idx_action ON audit_log_change ("action");
 
-COMMENT ON COLUMN audit_field.id IS 'Codul coloanei in cadrul informatiei de audit';
-
-COMMENT ON COLUMN audit_field.column_name IS 'Numele coloanei a carei valoare a fost modificata';
-
-COMMENT ON COLUMN audit_field.new_value IS 'Valoarea noua a coloanei column_name';
-
-COMMENT ON COLUMN audit_field.old_value IS 'Valoarea veche a coloanei column_name';
-
-COMMENT ON TABLE audit_field IS 'Tabel ce inregistreaza informatiile de audit la nivelul unei linii, stocand modificarile aduse asupra valorilor campurilor sale';
+CREATE INDEX audit_log_change_idx_field ON audit_log_change (field);
 
 
-/******************** Add Table: audit_row_id ************************/
+/******************** Add Table: audit_log_changeset ************************/
 
 /* Build Table Structure */
-CREATE TABLE audit_row_id
+CREATE TABLE audit_log_changeset
 (
-	audit_id INTEGER NOT NULL,
-id SERIAL,
-	column_name TEXT NOT NULL,
-	column_value INTEGER NULL
+	id INTEGER DEFAULT nextval('audit_log_changeset_id_seq'::regclass) NOT NULL,
+	description VARCHAR(255) NULL,
+	"timestamp" TIMESTAMP DEFAULT now() NOT NULL,
+	rodauser INTEGER NOT NULL
 ) WITHOUT OIDS;
 
 /* Add Primary Key */
-ALTER TABLE audit_row_id ADD CONSTRAINT pkaudit_row_id
-	PRIMARY KEY (id, audit_id);
+ALTER TABLE audit_log_changeset ADD CONSTRAINT audit_log_changeset_pkey
+	PRIMARY KEY (id);
 
-/* Add Comments */
-COMMENT ON COLUMN audit_row_id.audit_id IS 'Codul informatiei de audit (refera atributul id din tabelul audit)';
+/* Add Indexes */
+CREATE INDEX audit_log_changeset_idx_rodauser ON audit_log_changeset (rodauser);
 
-COMMENT ON COLUMN audit_row_id.id IS 'Codul coloanei care face parte din cheia primara a tabelului, in cadrul acestei informatii de audit';
 
-COMMENT ON COLUMN audit_row_id.column_name IS 'Numele coloanei care face parte din identificatorul (cheia primara) a tabelului asupra caruia are loc o operatie LMD';
+/******************** Add Table: audit_log_field ************************/
 
-COMMENT ON COLUMN audit_row_id.column_value IS 'Valoarea coloanei column_name pe linia pentru care este inregistrata o informatie de audit';
+/* Build Table Structure */
+CREATE TABLE audit_log_field
+(
+	id INTEGER DEFAULT nextval('audit_log_field_id_seq'::regclass) NOT NULL,
+	audited_table INTEGER NOT NULL,
+	name VARCHAR(40) NOT NULL
+) WITHOUT OIDS;
 
-COMMENT ON TABLE audit_row_id IS 'Tabel ce stocheaza valorile identificatorilor liniilor pentru care sunt retinute informatii de audit';
+/* Add Primary Key */
+ALTER TABLE audit_log_field ADD CONSTRAINT audit_log_field_pkey
+	PRIMARY KEY (id);
+
+/* Add Indexes */
+CREATE INDEX audit_log_field_idx_audited_table ON audit_log_field (audited_table);
+
+
+/******************** Add Table: audit_log_table ************************/
+
+/* Build Table Structure */
+CREATE TABLE audit_log_table
+(
+	id INTEGER DEFAULT nextval('audit_log_table_id_seq'::regclass) NOT NULL,
+	name VARCHAR(40) NOT NULL
+) WITHOUT OIDS;
+
+/* Add Primary Key */
+ALTER TABLE audit_log_table ADD CONSTRAINT audit_log_table_pkey
+	PRIMARY KEY (id);
+
+/* Add Unique Constraints */
+ALTER TABLE audit_log_table
+	ADD CONSTRAINT audit_log_table_name UNIQUE (name);
 
 
 /******************** Add Table: auth_data ************************/
@@ -3216,20 +3383,35 @@ ALTER TABLE address ADD CONSTRAINT fk_address_city
 	FOREIGN KEY (city_id) REFERENCES city (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
-/* Add Foreign Key: fk_audit_users */
-ALTER TABLE audit ADD CONSTRAINT fk_audit_users
-	FOREIGN KEY (user_id) REFERENCES rodauser (id)
+/* Add Foreign Key: audit_log_action_fk_audited_table */
+ALTER TABLE audit_log_action ADD CONSTRAINT audit_log_action_fk_audited_table
+	FOREIGN KEY (audited_table) REFERENCES audit_log_table (id)
+	ON UPDATE CASCADE ON DELETE CASCADE;
+
+/* Add Foreign Key: audit_log_action_fk_changeset */
+ALTER TABLE audit_log_action ADD CONSTRAINT audit_log_action_fk_changeset
+	FOREIGN KEY (changeset) REFERENCES audit_log_changeset (id)
+	ON UPDATE CASCADE ON DELETE CASCADE;
+
+/* Add Foreign Key: audit_log_change_fk_action */
+ALTER TABLE audit_log_change ADD CONSTRAINT audit_log_change_fk_action
+	FOREIGN KEY ("action") REFERENCES audit_log_action (id)
+	ON UPDATE CASCADE ON DELETE CASCADE;
+
+/* Add Foreign Key: audit_log_change_fk_field */
+ALTER TABLE audit_log_change ADD CONSTRAINT audit_log_change_fk_field
+	FOREIGN KEY (field) REFERENCES audit_log_field (id)
+	ON UPDATE CASCADE ON DELETE CASCADE;
+
+/* Add Foreign Key: fk_audit_log_changeset_rodauser */
+ALTER TABLE audit_log_changeset ADD CONSTRAINT fk_audit_log_changeset_rodauser
+	FOREIGN KEY (rodauser) REFERENCES rodauser (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
-/* Add Foreign Key: fk_audit_fields_audit */
-ALTER TABLE audit_field ADD CONSTRAINT fk_audit_fields_audit
-	FOREIGN KEY (audit_id) REFERENCES audit (id)
-	ON UPDATE NO ACTION ON DELETE NO ACTION;
-
-/* Add Foreign Key: fk_audit_row_id_audit */
-ALTER TABLE audit_row_id ADD CONSTRAINT fk_audit_row_id_audit
-	FOREIGN KEY (audit_id) REFERENCES audit (id)
-	ON UPDATE NO ACTION ON DELETE NO ACTION;
+/* Add Foreign Key: audit_log_field_fk_audited_table */
+ALTER TABLE audit_log_field ADD CONSTRAINT audit_log_field_fk_audited_table
+	FOREIGN KEY (audited_table) REFERENCES audit_log_table (id)
+	ON UPDATE CASCADE ON DELETE CASCADE;
 
 /* Add Foreign Key: fk_auth_data_users */
 ALTER TABLE auth_data ADD CONSTRAINT fk_auth_data_users

@@ -18,10 +18,12 @@ print "Project directory: " . $projectdir . "\n\n";
 my $configdir = $projectdir->subdir('config');
 my $config     = file($configdir, 'rodaconfig.ini');
 
-my $roda = RODA->new( configfile => $config->stringify, test => '1');
+my $roda = RODA->new( configfile => $config->stringify, test => '1', userid=>'1');
 
 
 #$schema->storage->debug(1);
+
+my $transaction = sub {
 
 my %moi = (fname => 'Sorin',
                      mname => 'Petru',
@@ -47,11 +49,17 @@ my %moi = (fname => 'Sorin',
                      phones => [{phone => '0740236005', phone_type => 'mobile'},{phone => '0216535817', phone_type => 'home'}],
                      internets => [{internet_type => 'blog', internet=>'http://sorin.greencore.ro'},{internet_type => '500px', internet => 'http://500px.com/sorinmilu'},{internet_type => 'facebook', internet => 'http://www.facebook.com/sorin.milutinovici'}],                       
 );
+my $person = $roda->dbschema->resultset('Person')->checkperson( %moi );
+return $person;
+};
 
-        try {
-            my $person = $roda->dbschema->resultset('Person')->checkperson( %moi );
-            print "DB: ID: " . $person->id . " -> Prenume:" . $person->fname . " -> Nume:" . $person->lname . "\n";
-        }
-        catch {
-            print "Eroare: la adaugarea persoanei $_\n";
-        };
+my $person;
+  try {
+    $person = $roda->dbschema->txn_do($transaction, {description => 'Infigere persoana in baza de date'});
+  } catch {
+    my $error = shift;
+    die "s-a intamplat ceva oribil: ".$error;
+  };
+
+       
+ print "DB: ID: " . $person->id . " -> Prenume:" . $person->fname . " -> Nume:" . $person->lname . "\n";

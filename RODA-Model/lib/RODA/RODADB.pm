@@ -17,8 +17,6 @@ $VERSION = eval $VERSION;
 
 extends 'DBIx::Class::Schema';
 
-__PACKAGE__->load_components(qw/Schema::AuditLog/);
-
 with 'RODA::Components::DBIC::DBConfig';
 
 
@@ -49,6 +47,7 @@ has 'test' => ( is => 'rw', isa => 'Str', default=>'0');
 has 'userid'   => ( is => 'rw', isa => 'Maybe[Int]', trigger => \&set_user_id, );
 has 'user'     => ( is => 'rw', isa => 'Maybe[RODA::RODADB::Result::RodaUser]' );
 
+__PACKAGE__->load_components(qw/+RODA::Components::DBIC::DBAuditSchema/);
 
 __PACKAGE__->load_namespaces(                                                                                                                      
     result_namespace => 'Result',                                                                                                                  

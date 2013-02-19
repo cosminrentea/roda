@@ -6,13 +6,22 @@ use RODA::FileStore;
 use Data::Dumper;
 use MooseX::MarkAsMethods autoclean => 1;
 
+
+
+
+
+
 our $VERSION = "0.001";
 $VERSION = eval $VERSION;
 
 
 extends 'DBIx::Class::Schema';
 
+__PACKAGE__->load_components(qw/Schema::AuditLog/);
+
 with 'RODA::Components::DBIC::DBConfig';
+
+
 
 =head1 NUME
 
@@ -37,6 +46,9 @@ has 'configfile' => ( is => 'rw', isa => 'Str' );
 has 'rootconfig' => ( is => 'rw', isa => 'Maybe[RODA::Config]'  );
 has 'filestore' => ( is => 'ro', isa => 'Maybe[RODA::FileStore]', builder => '_build_filestore', lazy => 1 );
 has 'test' => ( is => 'rw', isa => 'Str', default=>'0');
+has 'userid'   => ( is => 'rw', isa => 'Maybe[Int]', trigger => \&set_user_id, );
+has 'user'     => ( is => 'rw', isa => 'Maybe[RODA::RODADB::Result::RodaUser]' );
+
 
 __PACKAGE__->load_namespaces(                                                                                                                      
     result_namespace => 'Result',                                                                                                                  
@@ -46,6 +58,25 @@ __PACKAGE__->load_namespaces(
 =head1 METODE
 
 =cut
+
+=head2 set_user_id
+
+Trigger care se executa la setarea userid-ului. Incarca clasa RodaUser si o ataseaza accesorului user astfel incat toate
+componentele schemei vor avea la dispozitie un user id
+
+=cut
+
+sub set_user_id {
+    my $self     = shift;
+    my $userid = shift;
+
+    my $userrs   = $self->resultset('RodaUser')->find( $userid  );
+    if ( $userrs ) {
+        $self->user($userrs);
+    } else  {
+        confess 'User Id not found: ' . $userid . "\n";
+    } 
+}
 
 =head2 build_filestore 
 

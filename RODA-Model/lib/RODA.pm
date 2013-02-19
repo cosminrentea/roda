@@ -36,9 +36,25 @@ has 'rootconfig' => ( is => 'ro', isa => 'RODA::Config', builder => '_build_root
 has 'dbschema' => ( is => 'ro', isa => 'RODA::RODADB', builder => '_build_db_schema', lazy => 1 );
 has 'debugsql' => (is => 'rw', isa=>'Bool', default=>'0');
 has 'test' => ( is => 'ro', isa => 'Str', default=>'0');
+has 'userid'   => ( is => 'rw', isa => 'Maybe[Int]', trigger => \&propagate_user_id, );
 
 =head1 METODE
 =cut
+
+
+=head 2 propagate_user_id
+
+trigger care se executa la setarea userid-ului 
+
+=cut
+
+sub propagate_user_id {
+     my $self     = shift;
+     my $userid = shift;
+     $self->dbschema->userid($userid);
+}
+
+
 
 =head 2 _build_root_config
 
@@ -96,7 +112,7 @@ sub _build_db_schema {
      return $sc;
   } else {
    
-     my $sc = RODA::RODADB->connect( $self->rootconfig->test_database_dsn, $self->rootconfig->test_database_username, $self->rootconfig->test_database_password, { pg_enable_utf8 => 1 } );
+     my $sc = RODA::RODADB->connect( $self->rootconfig->test_database_dsn, $self->rootconfig->test_database_username, $self->rootconfig->test_database_password, { pg_enable_utf8 => 1} );
      $sc->configfile($self->configfile);
      $sc->rootconfig($self->rootconfig);     
      $sc->storage->debug($self->debugsql);

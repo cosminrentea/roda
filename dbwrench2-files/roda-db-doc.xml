@@ -169,100 +169,143 @@
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
-    <Tbl UsSo="1" nm="audit">
-      <Cm>Tabel ce stocheaza informatiile referitoare la auditul bazei de date</Cm>
+    <Tbl UsSo="1" nm="audit_log_action">
       <TblOpts>WITHOUT OIDS</TblOpts>
-      <Pk ClNs="id" nm="pkaudit"/>
-      <Cl au="0" df="" nm="id" nu="0">
+      <Pk ClNs="id" nm="audit_log_action_pkey"/>
+      <Cl au="0" df="nextval('audit_log_action_id_seq'::regclass)" nm="id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
-        <Cm>Codul informatiei de audit</Cm>
       </Cl>
-      <Cl au="0" df="" nm="time" nu="0">
-        <DT arr="0" ds="TimeStamp" en="" id="93" ln="null" sc="null" sg="1" un="0"/>
-        <Cm>Timpul la care a avut loc operatia</Cm>
-      </Cl>
-      <Cl au="0" df="" nm="operationType" nu="0">
-        <DT arr="0" ds="SmallInt" en="" id="5" ln="null" sc="null" sg="1" un="0"/>
-        <Cm>Tipul operatiei (inserare, actualizare, stergere)</Cm>
-      </Cl>
-      <Cl au="0" df="" nm="tableName" nu="0">
-        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
-        <Cm>Numele tabelului asupra caruia a avut loc operatia</Cm>
-      </Cl>
-      <Cl au="0" df="" nm="user_id" nu="0">
+      <Cl au="0" df="" nm="changeset" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
-        <Cm>Codul utilizatorului care a efectuat operatia (refera atributul id din tabelul users)</Cm>
       </Cl>
-      <Cl au="0" df="" nm="version_number" nu="0">
+      <Cl au="0" df="" nm="audited_table" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
-        <Cm>Numarul versiunii liniei in tabelul din care face parte</Cm>
       </Cl>
-      <Fk deAc="3" nm="fk_audit_users" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="rodauser" oe="1" sch="public" zr="0"/>
-        <CdTb mn="1" nm="audit" oe="0" sch="public" zr="1"/>
-        <ClPr cdCl="user_id" prCl="id"/>
+      <Cl au="0" df="" nm="audited_row" nu="1">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="50" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="type" nu="0">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="10" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Fk deAc="0" nm="audit_log_action_fk_audited_table" prLkCl="id" upAc="0">
+        <PrTb mn="0" nm="audit_log_table" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="audit_log_action" oe="0" sch="public" zr="1"/>
+        <ClPr cdCl="audited_table" prCl="id"/>
       </Fk>
+      <Fk deAc="0" nm="audit_log_action_fk_changeset" prLkCl="id" upAc="0">
+        <PrTb mn="0" nm="audit_log_changeset" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="audit_log_action" oe="0" sch="public" zr="1"/>
+        <ClPr cdCl="changeset" prCl="id"/>
+      </Fk>
+      <Idx clu="0" nm="audit_log_action_idx_audited_table" unq="0">
+        <ClNs>audited_table</ClNs>
+      </Idx>
+      <Idx clu="0" nm="audit_log_action_idx_changeset" unq="0">
+        <ClNs>changeset</ClNs>
+      </Idx>
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
-    <Tbl UsSo="1" nm="audit_field">
-      <Cm>Tabel ce inregistreaza informatiile de audit la nivelul unei linii, stocand modificarile aduse asupra valorilor campurilor sale</Cm>
+    <Tbl UsSo="1" nm="audit_log_change">
       <TblOpts>WITHOUT OIDS</TblOpts>
-      <Pk ClNs="audit_id, id" nm="pkaudit_field"/>
-      <Cl au="0" df="" nm="audit_id" nu="0">
+      <Pk ClNs="id" nm="audit_log_change_pkey"/>
+      <Cl au="0" df="nextval('audit_log_change_id_seq'::regclass)" nm="id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
-        <Cm>Codul informatiei de audit (refera atributul id din tabelul audit)</Cm>
       </Cl>
-      <Cl au="0" df="" nm="id" nu="0">
+      <Cl au="0" df="" nm="action" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
-        <Cm>Codul coloanei in cadrul informatiei de audit</Cm>
       </Cl>
-      <Cl au="0" df="" nm="column_name" nu="0">
-        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
-        <Cm>Numele coloanei a carei valoare a fost modificata</Cm>
-      </Cl>
-      <Cl au="0" df="" nm="new_value" nu="1">
-        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
-        <Cm>Valoarea noua a coloanei column_name</Cm>
+      <Cl au="0" df="" nm="field" nu="0">
+        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
       <Cl au="0" df="" nm="old_value" nu="1">
-        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
-        <Cm>Valoarea veche a coloanei column_name</Cm>
+        <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
       </Cl>
-      <Fk deAc="3" nm="fk_audit_fields_audit" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="audit" oe="1" sch="public" zr="0"/>
-        <CdTb mn="1" nm="audit_field" oe="0" sch="public" zr="1"/>
-        <ClPr cdCl="audit_id" prCl="id"/>
+      <Cl au="0" df="" nm="new_value" nu="1">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Fk deAc="0" nm="audit_log_change_fk_action" prLkCl="id" upAc="0">
+        <PrTb mn="0" nm="audit_log_action" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="audit_log_change" oe="0" sch="public" zr="1"/>
+        <ClPr cdCl="action" prCl="id"/>
       </Fk>
+      <Fk deAc="0" nm="audit_log_change_fk_field" prLkCl="id" upAc="0">
+        <PrTb mn="0" nm="audit_log_field" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="audit_log_change" oe="0" sch="public" zr="1"/>
+        <ClPr cdCl="field" prCl="id"/>
+      </Fk>
+      <Idx clu="0" nm="audit_log_change_idx_action" unq="0">
+        <ClNs>action</ClNs>
+      </Idx>
+      <Idx clu="0" nm="audit_log_change_idx_field" unq="0">
+        <ClNs>field</ClNs>
+      </Idx>
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
-    <Tbl UsSo="1" nm="audit_row_id">
-      <Cm>Tabel ce stocheaza valorile identificatorilor liniilor pentru care sunt retinute informatii de audit</Cm>
+    <Tbl UsSo="1" nm="audit_log_changeset">
       <TblOpts>WITHOUT OIDS</TblOpts>
-      <Pk ClNs="id, audit_id" nm="pkaudit_row_id"/>
-      <Cl au="0" df="" nm="audit_id" nu="0">
+      <Pk ClNs="id" nm="audit_log_changeset_pkey"/>
+      <Cl au="0" df="nextval('audit_log_changeset_id_seq'::regclass)" nm="id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
-        <Cm>Codul informatiei de audit (refera atributul id din tabelul audit)</Cm>
       </Cl>
-      <Cl au="0" df="" nm="id" nu="0">
+      <Cl au="0" df="" nm="description" nu="1">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="255" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="now()" nm="timestamp" nu="0">
+        <DT arr="0" ds="TimeStamp" en="" id="93" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="rodauser" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
-        <Cm>Codul coloanei care face parte din cheia primara a tabelului, in cadrul acestei informatii de audit</Cm>
       </Cl>
-      <Cl au="0" df="" nm="column_name" nu="0">
-        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
-        <Cm>Numele coloanei care face parte din identificatorul (cheia primara) a tabelului asupra caruia are loc o operatie LMD</Cm>
-      </Cl>
-      <Cl au="0" df="" nm="column_value" nu="1">
-        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
-        <Cm>Valoarea coloanei column_name pe linia pentru care este inregistrata o informatie de audit</Cm>
-      </Cl>
-      <Fk deAc="3" nm="fk_audit_row_id_audit" prLkCl="id" upAc="3">
-        <PrTb mn="0" nm="audit" oe="1" sch="public" zr="0"/>
-        <CdTb mn="1" nm="audit_row_id" oe="0" sch="public" zr="1"/>
-        <ClPr cdCl="audit_id" prCl="id"/>
+      <Fk deAc="3" nm="fk_audit_log_changeset_rodauser" prLkCl="id" upAc="3">
+        <PrTb mn="0" nm="rodauser" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="audit_log_changeset" oe="0" sch="public" zr="1"/>
+        <ClPr cdCl="rodauser" prCl="id"/>
       </Fk>
+      <Idx clu="0" nm="audit_log_changeset_idx_rodauser" unq="0">
+        <ClNs>rodauser</ClNs>
+      </Idx>
       <UniqueConstraints/>
+      <SchTrHis/>
+    </Tbl>
+    <Tbl UsSo="1" nm="audit_log_field">
+      <TblOpts>WITHOUT OIDS</TblOpts>
+      <Pk ClNs="id" nm="audit_log_field_pkey"/>
+      <Cl au="0" df="nextval('audit_log_field_id_seq'::regclass)" nm="id" nu="0">
+        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="audited_table" nu="0">
+        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="name" nu="0">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="40" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Fk deAc="0" nm="audit_log_field_fk_audited_table" prLkCl="id" upAc="0">
+        <PrTb mn="0" nm="audit_log_table" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="audit_log_field" oe="0" sch="public" zr="1"/>
+        <ClPr cdCl="audited_table" prCl="id"/>
+      </Fk>
+      <Idx clu="0" nm="audit_log_field_idx_audited_table" unq="0">
+        <ClNs>audited_table</ClNs>
+      </Idx>
+      <UniqueConstraints/>
+      <SchTrHis/>
+    </Tbl>
+    <Tbl UsSo="1" nm="audit_log_table">
+      <TblOpts>WITHOUT OIDS</TblOpts>
+      <Pk ClNs="id" nm="audit_log_table_pkey"/>
+      <Cl au="0" df="nextval('audit_log_table_id_seq'::regclass)" nm="id" nu="0">
+        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="name" nu="0">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="40" sc="null" sg="1" un="0"/>
+      </Cl>
+      <UniqueConstraints>
+        <UnCon nm="audit_log_table_name">
+          <ClNs>name</ClNs>
+        </UnCon>
+      </UniqueConstraints>
       <SchTrHis/>
     </Tbl>
     <Tbl UsSo="1" nm="auth_data">
@@ -3608,6 +3651,83 @@
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
+    <Seq incr="1" nm="acl_class_id_seq"/>
+    <Seq incr="1" nm="acl_entry_id_seq"/>
+    <Seq incr="1" nm="acl_object_identity_id_seq"/>
+    <Seq incr="1" nm="acl_sid_id_seq"/>
+    <Seq incr="1" nm="address_id_seq"/>
+    <Seq incr="1" nm="audit_field_id_seq"/>
+    <Seq incr="1" nm="audit_id_seq"/>
+    <Seq incr="1" nm="audit_log_action_id_seq"/>
+    <Seq incr="1" nm="audit_log_change_id_seq"/>
+    <Seq incr="1" nm="audit_log_changeset_id_seq"/>
+    <Seq incr="1" nm="audit_log_field_id_seq"/>
+    <Seq incr="1" nm="audit_log_table_id_seq"/>
+    <Seq incr="1" nm="audit_row_id_id_seq"/>
+    <Seq incr="1" nm="catalog_id_seq"/>
+    <Seq incr="1" nm="city_id_seq"/>
+    <Seq incr="1" nm="cms_file_id_seq"/>
+    <Seq incr="1" nm="cms_folder_id_seq"/>
+    <Seq incr="1" nm="cms_layout_group_id_seq"/>
+    <Seq incr="1" nm="cms_layout_id_seq"/>
+    <Seq incr="1" nm="cms_page_content_id_seq"/>
+    <Seq incr="1" nm="cms_page_id_seq"/>
+    <Seq incr="1" nm="cms_page_type_id_seq"/>
+    <Seq incr="1" nm="cms_snippet_group_id_seq"/>
+    <Seq incr="1" nm="cms_snippet_id_seq"/>
+    <Seq incr="1" nm="collection_model_type_id_seq"/>
+    <Seq incr="1" nm="concept_id_seq"/>
+    <Seq incr="1" nm="email_id_seq"/>
+    <Seq incr="1" nm="file_id_seq"/>
+    <Seq incr="1" nm="form_id_seq"/>
+    <Seq incr="1" nm="instance_id_seq"/>
+    <Seq incr="1" nm="instance_org_assoc_id_seq"/>
+    <Seq incr="1" nm="instance_person_assoc_id_seq"/>
+    <Seq incr="1" nm="internet_id_seq"/>
+    <Seq incr="1" nm="item_id_seq"/>
+    <Seq incr="1" nm="keyword_id_seq"/>
+    <Seq incr="1" nm="news_id_seq"/>
+    <Seq incr="1" nm="org_id_seq"/>
+    <Seq incr="1" nm="org_prefix_id_seq"/>
+    <Seq incr="1" nm="org_relation_type_id_seq"/>
+    <Seq incr="1" nm="org_sufix_id_seq"/>
+    <Seq incr="1" nm="other_statistic_id_seq"/>
+    <Seq incr="1" nm="person_id_seq"/>
+    <Seq incr="1" nm="person_links_id_seq"/>
+    <Seq incr="1" nm="person_role_id_seq"/>
+    <Seq incr="1" nm="phone_id_seq"/>
+    <Seq incr="1" nm="prefix_id_seq"/>
+    <Seq incr="1" nm="property_name_id_seq"/>
+    <Seq incr="1" nm="property_value_id_seq"/>
+    <Seq incr="1" nm="region_id_seq"/>
+    <Seq incr="1" nm="regiontype_id_seq"/>
+    <Seq incr="1" nm="rodauser_id_seq"/>
+    <Seq incr="1" nm="role_id_seq"/>
+    <Seq incr="1" nm="sampling_procedure_id_seq"/>
+    <Seq incr="1" nm="setting_group_id_seq"/>
+    <Seq incr="1" nm="setting_id_seq"/>
+    <Seq incr="1" nm="skip_id_seq"/>
+    <Seq incr="1" nm="source_contact_method_id_seq"/>
+    <Seq incr="1" nm="source_contacts_id_seq"/>
+    <Seq incr="1" nm="sourcestudy_id_seq"/>
+    <Seq incr="1" nm="sourcestudy_type_history_id_seq"/>
+    <Seq incr="1" nm="sourcestudy_type_id_seq"/>
+    <Seq incr="1" nm="sourcetype_history_id_seq"/>
+    <Seq incr="1" nm="sourcetype_id_seq"/>
+    <Seq incr="1" nm="study_id_seq"/>
+    <Seq incr="1" nm="study_org_assoc_id_seq"/>
+    <Seq incr="1" nm="study_person_asoc_id_seq"/>
+    <Seq incr="1" nm="study_person_assoc_id_seq"/>
+    <Seq incr="1" nm="suffix_id_seq"/>
+    <Seq incr="1" nm="time_meth_type_id_seq"/>
+    <Seq incr="1" nm="title_type_id_seq"/>
+    <Seq incr="1" nm="topic_id_seq"/>
+    <Seq incr="1" nm="unit_analysis_id_seq"/>
+    <Seq incr="1" nm="user_message_id_seq"/>
+    <Seq incr="1" nm="user_setting_group_id_seq"/>
+    <Seq incr="1" nm="user_setting_id_seq"/>
+    <Seq incr="1" nm="vargroup_id_seq"/>
+    <Seq incr="1" nm="variable_id_seq"/>
     <CustomTypes/>
   </Sch>
   <Dgm nm="diagram">
@@ -3711,7 +3831,6 @@
     <TbGl bkCl="ffccffcc" sch="public" tbl="sourcestudy" x="229" y="672"/>
     <TbGl bkCl="ffccffcc" sch="public" tbl="sourcetype" x="411" y="935"/>
     <TbGl bkCl="ffccffcc" sch="public" tbl="sourcetype_history" x="54" y="929"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="audit" x="1404" y="1363"/>
     <TbGl bkCl="ffffffcc" sch="public" tbl="study_descr" x="2573" y="696"/>
     <TbGl bkCl="ffffffcc" sch="public" tbl="title_type" x="2589" y="845"/>
     <TbGl bkCl="ffffffe6" sch="public" tbl="time_meth_type" x="3594" y="145"/>
@@ -3721,8 +3840,6 @@
     <TbGl bkCl="ffccccff" sch="public" tbl="lang" x="2634" y="28"/>
     <TbGl bkCl="ffccccff" sch="public" tbl="translated_topic" x="1802" y="35"/>
     <TbGl bkCl="ffffffe6" sch="public" tbl="instance_topic" x="2877" y="55"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="audit_row_id" x="1073" y="1367"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="audit_field" x="1406" y="1528"/>
     <TbGl bkCl="ffccffcc" sch="public" tbl="sourcestudy_type" x="371" y="523"/>
     <TbGl bkCl="ffccffcc" sch="public" tbl="sourcestudy_type_history" x="48" y="518"/>
     <TbGl bkCl="ffffffcc" sch="public" tbl="study_topic" x="2229" y="255"/>
@@ -3753,15 +3870,23 @@
     <TbGl bkCl="ffff3333" sch="public" tbl="cms_page_type" x="4084" y="1103"/>
     <TbGl bkCl="ffccccff" sch="public" tbl="source_contact_method" x="62" y="1085"/>
     <TbGl bkCl="ffccccff" sch="public" tbl="source_contacts" x="302" y="1069"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="audit_log_changeset" x="1430" y="1383"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="audit_log_table" x="1438" y="1563"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="audit_log_field" x="1421" y="1651"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="audit_log_action" x="1090" y="1421"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="audit_log_change" x="1093" y="1643"/>
     <FkGl bkCl="ff000000" nm="public.acl_entry.fk_acl_entry_acl_object_identity"/>
     <FkGl bkCl="ff000000" nm="public.acl_entry.fk_acl_entry_acl_sid"/>
     <FkGl bkCl="ff000000" nm="public.acl_object_identity.fk_acl_object_identity_acl_class"/>
     <FkGl bkCl="ff000000" nm="public.acl_object_identity.fk_acl_object_identity_acl_object_identity"/>
     <FkGl bkCl="ff000000" nm="public.acl_object_identity.fk_acl_object_identity_acl_sid"/>
     <FkGl bkCl="ff000000" nm="public.address.fk_address_city"/>
-    <FkGl bkCl="ff000000" nm="public.audit.fk_audit_users"/>
-    <FkGl bkCl="ff000000" nm="public.audit_field.fk_audit_fields_audit"/>
-    <FkGl bkCl="ff000000" nm="public.audit_row_id.fk_audit_row_id_audit"/>
+    <FkGl bkCl="ff000000" nm="public.audit_log_action.audit_log_action_fk_audited_table"/>
+    <FkGl bkCl="ff000000" nm="public.audit_log_action.audit_log_action_fk_changeset"/>
+    <FkGl bkCl="ff000000" nm="public.audit_log_change.audit_log_change_fk_action"/>
+    <FkGl bkCl="ff000000" nm="public.audit_log_change.audit_log_change_fk_field"/>
+    <FkGl bkCl="ff000000" nm="public.audit_log_changeset.fk_audit_log_changeset_rodauser"/>
+    <FkGl bkCl="ff000000" nm="public.audit_log_field.audit_log_field_fk_audited_table"/>
     <FkGl bkCl="ff000000" nm="public.auth_data.fk_auth_data_users"/>
     <FkGl bkCl="ff000000" nm="public.catalog.fk_catalog_users"/>
     <FkGl bkCl="ff000000" nm="public.catalog_acl.fk_catalog_acl_catalog"/>
@@ -3916,7 +4041,7 @@
     <Zones>
       <Zone bkCl="ffece9d8" h="622" nm="ACL" w="451" x="49" y="1347"/>
       <Zone bkCl="ffece9d8" h="1009" nm="App Settings" w="236" x="1811" y="1659"/>
-      <Zone bkCl="ffece9d8" h="652" nm="Audit" w="276" x="1034" y="1348"/>
+      <Zone bkCl="ffece9d8" h="652" nm="Audit" w="423" x="1034" y="1348"/>
       <Zone bkCl="ffece9d8" h="996" nm="CMS" w="758" x="4033" y="956"/>
       <Zone bkCl="ffece9d8" h="644" nm="Codebook Sources" w="741" x="25" y="475"/>
       <Zone bkCl="ffece9d8" h="740" nm="Files + Properties" w="431" x="3217" y="1193"/>
@@ -4712,15 +4837,15 @@
     </BasicOptionMgr>
   </DbDocOptionMgr>
   <OpenEditors>
-    <OpenEditor ClsNm="Diagram" fqn="null.diagram" selected="0"/>
+    <OpenEditor ClsNm="Diagram" fqn="null.diagram" selected="1"/>
   </OpenEditors>
   <TreePaths>
     <TreePath/>
     <TreePath>/Schemas (1)</TreePath>
     <TreePath>/Schemas (1)/public</TreePath>
-    <TreePath>/Schemas (1)/public/Tables (124)</TreePath>
-    <TreePath>/Schemas (1)/public/Tables (124)/cms_folder</TreePath>
-    <TreePath>/Schemas (1)/public/Tables (124)/cms_folder/Foreign Keys (0)</TreePath>
+    <TreePath>/Schemas (1)/public/Tables (126)</TreePath>
+    <TreePath>/Schemas (1)/public/Tables (126)/audit_log_changeset</TreePath>
+    <TreePath>/Schemas (1)/public/Tables (126)/audit_log_changeset/Indexes (1)</TreePath>
     <TreePath>/Diagrams (1)</TreePath>
     <TreePath>/Diagrams (1)/diagram</TreePath>
   </TreePaths>

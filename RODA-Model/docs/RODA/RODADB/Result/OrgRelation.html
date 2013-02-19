@@ -1,0 +1,180 @@
+<HTML>
+<HEAD>
+<TITLE>RODA::RODADB::Result::OrgRelation</TITLE>
+</HEAD>
+<BODY BGCOLOR="#ffffff" TEXT="#000000">
+<UL>
+<LI><A HREF="#NAME">NAME
+
+</A><LI><A HREF="#DESCRIPTION">DESCRIPTION
+
+</A><LI><A HREF="#COMPONENTS%20LOADED">COMPONENTS LOADED
+
+</A><LI><A HREF="#TABLE%3a%20org_relations">TABLE: <CODE>org_relations</CODE>
+
+</A><LI><A HREF="#ACCESSORS">ACCESSORS
+
+</A><UL>
+<LI><A HREF="#org_1_id">org_1_id
+
+</A><LI><A HREF="#org_2_id">org_2_id
+
+</A><LI><A HREF="#datestart">datestart
+
+</A><LI><A HREF="#dateend">dateend
+
+</A><LI><A HREF="#org_relation_type_id">org_relation_type_id
+
+</A><LI><A HREF="#details">details
+
+</A></UL>
+<LI><A HREF="#PRIMARY%20KEY">PRIMARY KEY
+
+</A><LI><A HREF="#RELATIONS">RELATIONS
+
+</A><UL>
+<LI><A HREF="#org_1">org_1
+
+</A><LI><A HREF="#org_2">org_2
+
+</A><LI><A HREF="#org_relation_type">org_relation_type
+
+</A></UL>
+</UL>
+<HR>
+<H1><A NAME="NAME">NAME
+
+</A></H1>
+
+<P>RODA::RODADB::Result::OrgRelation
+
+</P><H1><A NAME="DESCRIPTION">DESCRIPTION
+
+</A></H1>
+
+<P>Tabel ce stocheaza relatiile dintre organizatii (filiala, subsidiare, holding)
+
+</P><H1><A NAME="COMPONENTS%20LOADED">COMPONENTS LOADED
+
+</A></H1>
+<DL><DT><A NAME="*%20DBIx%3a%3aClass%3a%3aInflateColumn%3a%3aDateTime">* <A HREF="../../../DBIx/Class/InflateColumn/DateTime.html">DBIx::Class::InflateColumn::DateTime</A>
+
+</A></DT>
+<DD>
+</DD>
+</DL>
+<H1><A NAME="TABLE%3a%20org_relations">TABLE: <CODE>org_relations</CODE>
+
+</A></H1>
+<H1><A NAME="ACCESSORS">ACCESSORS
+
+</A></H1>
+<H2><A NAME="org_1_id">org_1_id
+
+</A></H2>
+
+<PRE>  data_type: 'integer'
+  is_foreign_key: 1
+  is_nullable: 0</PRE>
+
+<P>Codul primei organizatii implicate in relatie
+
+</P><H2><A NAME="org_2_id">org_2_id
+
+</A></H2>
+
+<PRE>  data_type: 'integer'
+  is_foreign_key: 1
+  is_nullable: 0</PRE>
+
+<P>Codul celei de-a doua organizatii implicate in relatie
+
+</P><H2><A NAME="datestart">datestart
+
+</A></H2>
+
+<PRE>  data_type: 'timestamp'
+  is_nullable: 1</PRE>
+
+<P>Data de inceput a relatiei specificate prin tipul org_relation_type_id intre organizatiile specificate prin org_1_id si org_2_id
+
+</P><H2><A NAME="dateend">dateend
+
+</A></H2>
+
+<PRE>  data_type: 'timestamp'
+  is_nullable: 1</PRE>
+
+<P>Data de final a relatiei specificate prin tipul org_relation_type intre organizatiile specificate prin org_1_id si org_2_id
+
+</P><H2><A NAME="org_relation_type_id">org_relation_type_id
+
+</A></H2>
+
+<PRE>  data_type: 'integer'
+  is_foreign_key: 1
+  is_nullable: 0</PRE>
+
+<P>Codul tipului relatiei demarate la datestart intre organizatiile specificate prin org_1_id si org_2_id 
+
+</P><H2><A NAME="details">details
+
+</A></H2>
+
+<PRE>  data_type: 'text'
+  is_nullable: 0</PRE>
+
+<P>Detaliile relatiei demarate la datestart intre organizatiile specificate prin org_1_id si org_2_id
+
+</P><H1><A NAME="PRIMARY%20KEY">PRIMARY KEY
+
+</A></H1>
+<DL><DT><A NAME="*%20%2forg_1_id">* <A HREF="#org_1_id">/org_1_id</A>
+
+</A></DT>
+<DD>
+</DD>
+<DT><A NAME="*%20%2forg_2_id">* <A HREF="#org_2_id">/org_2_id</A>
+
+</A></DT>
+<DD>
+</DD>
+<DT><A NAME="*%20%2forg_relation_type_id">* <A HREF="#org_relation_type_id">/org_relation_type_id</A>
+
+</A></DT>
+<DD>
+</DD>
+</DL>
+<H1><A NAME="RELATIONS">RELATIONS
+
+</A></H1>
+<H2><A NAME="org_1">org_1
+
+</A></H2>
+
+<P>Type: belongs_to
+
+</P>
+<P>Related object: <A HREF="../../../RODA/RODADB/Result/Org.html">RODA::RODADB::Result::Org</A>
+
+</P><H2><A NAME="org_2">org_2
+
+</A></H2>
+
+<P>Type: belongs_to
+
+</P>
+<P>Related object: <A HREF="../../../RODA/RODADB/Result/Org.html">RODA::RODADB::Result::Org</A>
+
+</P><H2><A NAME="org_relation_type">org_relation_type
+
+</A></H2>
+
+<P>Type: belongs_to
+
+</P>
+<P>Related object: <A HREF="../../../RODA/RODADB/Result/OrgRelationType.html">RODA::RODADB::Result::OrgRelationType</A>
+
+</P>
+</BODY>
+</HTML>

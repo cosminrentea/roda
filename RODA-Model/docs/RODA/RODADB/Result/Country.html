@@ -1,0 +1,144 @@
+<HTML>
+<HEAD>
+<TITLE>RODA::RODADB::Result::Country</TITLE>
+</HEAD>
+<BODY BGCOLOR="#ffffff" TEXT="#000000">
+<UL>
+<LI><A HREF="#NAME">NAME
+
+</A><LI><A HREF="#COMPONENTS%20LOADED">COMPONENTS LOADED
+
+</A><LI><A HREF="#TABLE%3a%20country">TABLE: <CODE>country</CODE>
+
+</A><LI><A HREF="#ACCESSORS">ACCESSORS
+
+</A><UL>
+<LI><A HREF="#id">id
+
+</A><LI><A HREF="#name">name
+
+</A><LI><A HREF="#alpha3">alpha3
+
+</A></UL>
+<LI><A HREF="#PRIMARY%20KEY">PRIMARY KEY
+
+</A><LI><A HREF="#UNIQUE%20CONSTRAINTS">UNIQUE CONSTRAINTS
+
+</A><UL>
+<LI><A HREF="#country_alpha3_Idx"><CODE>country_alpha3_Idx</CODE>
+
+</A><LI><A HREF="#country_name_Idx"><CODE>country_name_Idx</CODE>
+
+</A></UL>
+<LI><A HREF="#RELATIONS">RELATIONS
+
+</A><UL>
+<LI><A HREF="#cities">cities
+
+</A><LI><A HREF="#regions">regions
+
+</A></UL>
+</UL>
+<HR>
+<H1><A NAME="NAME">NAME
+
+</A></H1>
+
+<P>RODA::RODADB::Result::Country - Tabel unic pentru toate referintele la tari
+
+</P><H1><A NAME="COMPONENTS%20LOADED">COMPONENTS LOADED
+
+</A></H1>
+<DL><DT><A NAME="*%20DBIx%3a%3aClass%3a%3aInflateColumn%3a%3aDateTime">* <A HREF="../../../DBIx/Class/InflateColumn/DateTime.html">DBIx::Class::InflateColumn::DateTime</A>
+
+</A></DT>
+<DD>
+</DD>
+</DL>
+<H1><A NAME="TABLE%3a%20country">TABLE: <CODE>country</CODE>
+
+</A></H1>
+<H1><A NAME="ACCESSORS">ACCESSORS
+
+</A></H1>
+<H2><A NAME="id">id
+
+</A></H2>
+
+<PRE>  data_type: 'char'
+  is_nullable: 0
+  size: 2</PRE>
+
+<P>Codul tarii
+
+</P><H2><A NAME="name">name
+
+</A></H2>
+
+<PRE>  data_type: 'varchar'
+  is_nullable: 0
+  size: 100</PRE>
+
+<P>Numele tarii
+
+</P><H2><A NAME="alpha3">alpha3
+
+</A></H2>
+
+<PRE>  data_type: 'char'
+  is_nullable: 0
+  size: 3</PRE>
+<H1><A NAME="PRIMARY%20KEY">PRIMARY KEY
+
+</A></H1>
+<DL><DT><A NAME="*%20%2fid">* <A HREF="#id">/id</A>
+
+</A></DT>
+<DD>
+</DD>
+</DL>
+<H1><A NAME="UNIQUE%20CONSTRAINTS">UNIQUE CONSTRAINTS
+
+</A></H1>
+<H2><A NAME="country_alpha3_Idx"><CODE>country_alpha3_Idx</CODE>
+
+</A></H2>
+<DL><DT><A NAME="*%20%2falpha3">* <A HREF="#alpha3">/alpha3</A>
+
+</A></DT>
+<DD>
+</DD>
+</DL>
+<H2><A NAME="country_name_Idx"><CODE>country_name_Idx</CODE>
+
+</A></H2>
+<DL><DT><A NAME="*%20%2fname">* <A HREF="#name">/name</A>
+
+</A></DT>
+<DD>
+</DD>
+</DL>
+<H1><A NAME="RELATIONS">RELATIONS
+
+</A></H1>
+<H2><A NAME="cities">cities
+
+</A></H2>
+
+<P>Type: has_many
+
+</P>
+<P>Related object: <A HREF="../../../RODA/RODADB/Result/City.html">RODA::RODADB::Result::City</A>
+
+</P><H2><A NAME="regions">regions
+
+</A></H2>
+
+<P>Type: has_many
+
+</P>
+<P>Related object: <A HREF="../../../RODA/RODADB/Result/Region.html">RODA::RODADB::Result::Region</A>
+
+</P>
+</BODY>
+</HTML>

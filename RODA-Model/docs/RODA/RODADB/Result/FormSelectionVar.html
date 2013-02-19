@@ -1,0 +1,147 @@
+<HTML>
+<HEAD>
+<TITLE>RODA::RODADB::Result::FormSelectionVar</TITLE>
+</HEAD>
+<BODY BGCOLOR="#ffffff" TEXT="#000000">
+<UL>
+<LI><A HREF="#NAME">NAME
+
+</A><LI><A HREF="#DESCRIPTION">DESCRIPTION
+
+</A><LI><A HREF="#COMPONENTS%20LOADED">COMPONENTS LOADED
+
+</A><LI><A HREF="#TABLE%3a%20form_selection_var">TABLE: <CODE>form_selection_var</CODE>
+
+</A><LI><A HREF="#ACCESSORS">ACCESSORS
+
+</A><UL>
+<LI><A HREF="#form_id">form_id
+
+</A><LI><A HREF="#variable_id">variable_id
+
+</A><LI><A HREF="#item_id">item_id
+
+</A><LI><A HREF="#order_of_items_in_response">order_of_items_in_response
+
+</A></UL>
+<LI><A HREF="#PRIMARY%20KEY">PRIMARY KEY
+
+</A><LI><A HREF="#RELATIONS">RELATIONS
+
+</A><UL>
+<LI><A HREF="#form">form
+
+</A><LI><A HREF="#selection_variable_item">selection_variable_item
+
+</A></UL>
+</UL>
+<HR>
+<H1><A NAME="NAME">NAME
+
+</A></H1>
+
+<P>RODA::RODADB::Result::FormSelectionVar
+
+</P><H1><A NAME="DESCRIPTION">DESCRIPTION
+
+</A></H1>
+
+<P>Tabel ce inregistreaza raspunsurile la variabilele de selectie (pentru care exista optiuni de raspuns) 
+
+</P><H1><A NAME="COMPONENTS%20LOADED">COMPONENTS LOADED
+
+</A></H1>
+<DL><DT><A NAME="*%20DBIx%3a%3aClass%3a%3aInflateColumn%3a%3aDateTime">* <A HREF="../../../DBIx/Class/InflateColumn/DateTime.html">DBIx::Class::InflateColumn::DateTime</A>
+
+</A></DT>
+<DD>
+</DD>
+</DL>
+<H1><A NAME="TABLE%3a%20form_selection_var">TABLE: <CODE>form_selection_var</CODE>
+
+</A></H1>
+<H1><A NAME="ACCESSORS">ACCESSORS
+
+</A></H1>
+<H2><A NAME="form_id">form_id
+
+</A></H2>
+
+<PRE>  data_type: 'bigint'
+  is_foreign_key: 1
+  is_nullable: 0</PRE>
+
+<P>Codul unui formular completat in cadrul instantei identificate prin atributul instance_id
+
+</P><H2><A NAME="variable_id">variable_id
+
+</A></H2>
+
+<PRE>  data_type: 'bigint'
+  is_foreign_key: 1
+  is_nullable: 0</PRE>
+
+<P>Codul unei variabile din cadrul instantei identificate prin atributul instance_id
+
+</P><H2><A NAME="item_id">item_id
+
+</A></H2>
+
+<PRE>  data_type: 'bigint'
+  is_foreign_key: 1
+  is_nullable: 0</PRE>
+
+<P>Identificatorul elementului selectat ca raspuns pentru variabila identificata prin atributul variable_id din instanta referita prin atributul instance_id, asociat formularului specificat prin atributul form_id
+
+</P><H2><A NAME="order_of_items_in_response">order_of_items_in_response
+
+</A></H2>
+
+<PRE>  data_type: 'integer'
+  is_nullable: 1</PRE>
+
+<P>Numarul de ordine al elementului corespunzator variabilei in cadrul raspunsului (relevant pentru raspunsuri care accepta o selectie multipla, in care ordinea este importanta)
+
+</P><H1><A NAME="PRIMARY%20KEY">PRIMARY KEY
+
+</A></H1>
+<DL><DT><A NAME="*%20%2fform_id">* <A HREF="#form_id">/form_id</A>
+
+</A></DT>
+<DD>
+</DD>
+<DT><A NAME="*%20%2fvariable_id">* <A HREF="#variable_id">/variable_id</A>
+
+</A></DT>
+<DD>
+</DD>
+<DT><A NAME="*%20%2fitem_id">* <A HREF="#item_id">/item_id</A>
+
+</A></DT>
+<DD>
+</DD>
+</DL>
+<H1><A NAME="RELATIONS">RELATIONS
+
+</A></H1>
+<H2><A NAME="form">form
+
+</A></H2>
+
+<P>Type: belongs_to
+
+</P>
+<P>Related object: <A HREF="../../../RODA/RODADB/Result/Form.html">RODA::RODADB::Result::Form</A>
+
+</P><H2><A NAME="selection_variable_item">selection_variable_item
+
+</A></H2>
+
+<P>Type: belongs_to
+
+</P>
+<P>Related object: <A HREF="../../../RODA/RODADB/Result/SelectionVariableItem.html">RODA::RODADB::Result::SelectionVariableItem</A>
+
+</P>
+</BODY>
+</HTML>

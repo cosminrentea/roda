@@ -1,0 +1,108 @@
+<HTML>
+<HEAD>
+<TITLE>RODA::RODADB::Result::PropertyValue</TITLE>
+</HEAD>
+<BODY BGCOLOR="#ffffff" TEXT="#000000">
+<UL>
+<LI><A HREF="#NAME">NAME
+
+</A><LI><A HREF="#DESCRIPTION">DESCRIPTION
+
+</A><LI><A HREF="#COMPONENTS%20LOADED">COMPONENTS LOADED
+
+</A><LI><A HREF="#TABLE%3a%20property_value">TABLE: <CODE>property_value</CODE>
+
+</A><LI><A HREF="#ACCESSORS">ACCESSORS
+
+</A><UL>
+<LI><A HREF="#id">id
+
+</A><LI><A HREF="#value">value
+
+</A></UL>
+<LI><A HREF="#PRIMARY%20KEY">PRIMARY KEY
+
+</A><LI><A HREF="#RELATIONS">RELATIONS
+
+</A><UL>
+<LI><A HREF="#cms_file_property_name_values">cms_file_property_name_values
+
+</A><LI><A HREF="#file_property_name_values">file_property_name_values
+
+</A></UL>
+</UL>
+<HR>
+<H1><A NAME="NAME">NAME
+
+</A></H1>
+
+<P>RODA::RODADB::Result::PropertyValue
+
+</P><H1><A NAME="DESCRIPTION">DESCRIPTION
+
+</A></H1>
+
+<P>Tabel folosit pentru Proprietati (stocheaza valorile acestora)
+
+</P><H1><A NAME="COMPONENTS%20LOADED">COMPONENTS LOADED
+
+</A></H1>
+<DL><DT><A NAME="*%20DBIx%3a%3aClass%3a%3aInflateColumn%3a%3aDateTime">* <A HREF="../../../DBIx/Class/InflateColumn/DateTime.html">DBIx::Class::InflateColumn::DateTime</A>
+
+</A></DT>
+<DD>
+</DD>
+</DL>
+<H1><A NAME="TABLE%3a%20property_value">TABLE: <CODE>property_value</CODE>
+
+</A></H1>
+<H1><A NAME="ACCESSORS">ACCESSORS
+
+</A></H1>
+<H2><A NAME="id">id
+
+</A></H2>
+
+<PRE>  data_type: 'integer'
+  is_auto_increment: 1
+  is_nullable: 0
+  sequence: 'property_value_id_seq'</PRE>
+<H2><A NAME="value">value
+
+</A></H2>
+
+<PRE>  data_type: 'text'
+  is_nullable: 1</PRE>
+<H1><A NAME="PRIMARY%20KEY">PRIMARY KEY
+
+</A></H1>
+<DL><DT><A NAME="*%20%2fid">* <A HREF="#id">/id</A>
+
+</A></DT>
+<DD>
+</DD>
+</DL>
+<H1><A NAME="RELATIONS">RELATIONS
+
+</A></H1>
+<H2><A NAME="cms_file_property_name_values">cms_file_property_name_values
+
+</A></H2>
+
+<P>Type: has_many
+
+</P>
+<P>Related object: <A HREF="../../../RODA/RODADB/Result/CmsFilePropertyNameValue.html">RODA::RODADB::Result::CmsFilePropertyNameValue</A>
+
+</P><H2><A NAME="file_property_name_values">file_property_name_values
+
+</A></H2>
+
+<P>Type: has_many
+
+</P>
+<P>Related object: <A HREF="../../../RODA/RODADB/Result/FilePropertyNameValue.html">RODA::RODADB::Result::FilePropertyNameValue</A>
+
+</P>
+</BODY>
+</HTML>

@@ -1,0 +1,118 @@
+<HTML>
+<HEAD>
+<TITLE>RODA::RODADB::Result::Sourcetype</TITLE>
+</HEAD>
+<BODY BGCOLOR="#ffffff" TEXT="#000000">
+<UL>
+<LI><A HREF="#NAME">NAME
+
+</A><LI><A HREF="#COMPONENTS%20LOADED">COMPONENTS LOADED
+
+</A><LI><A HREF="#TABLE%3a%20sourcetype">TABLE: <CODE>sourcetype</CODE>
+
+</A><LI><A HREF="#ACCESSORS">ACCESSORS
+
+</A><UL>
+<LI><A HREF="#id">id
+
+</A><LI><A HREF="#name">name
+
+</A><LI><A HREF="#description">description
+
+</A></UL>
+<LI><A HREF="#PRIMARY%20KEY">PRIMARY KEY
+
+</A><LI><A HREF="#RELATIONS">RELATIONS
+
+</A><UL>
+<LI><A HREF="#sources">sources
+
+</A><LI><A HREF="#sourcetype_histories">sourcetype_histories
+
+</A></UL>
+</UL>
+<HR>
+<H1><A NAME="NAME">NAME
+
+</A></H1>
+
+<P>RODA::RODADB::Result::Sourcetype - Tabel ce contine tipurile de surse 
+
+</P><H1><A NAME="COMPONENTS%20LOADED">COMPONENTS LOADED
+
+</A></H1>
+<DL><DT><A NAME="*%20DBIx%3a%3aClass%3a%3aInflateColumn%3a%3aDateTime">* <A HREF="../../../DBIx/Class/InflateColumn/DateTime.html">DBIx::Class::InflateColumn::DateTime</A>
+
+</A></DT>
+<DD>
+</DD>
+</DL>
+<H1><A NAME="TABLE%3a%20sourcetype">TABLE: <CODE>sourcetype</CODE>
+
+</A></H1>
+<H1><A NAME="ACCESSORS">ACCESSORS
+
+</A></H1>
+<H2><A NAME="id">id
+
+</A></H2>
+
+<PRE>  data_type: 'integer'
+  is_auto_increment: 1
+  is_nullable: 0
+  sequence: 'sourcetype_id_seq'</PRE>
+
+<P>Codul sursei
+
+</P><H2><A NAME="name">name
+
+</A></H2>
+
+<PRE>  data_type: 'varchar'
+  is_nullable: 0
+  size: 150</PRE>
+
+<P>Denumirea tipului sursei (a starii in care se afla sursa: in curs de prospectare, de recuperare a datelor, contactata etc.)
+
+</P><H2><A NAME="description">description
+
+</A></H2>
+
+<PRE>  data_type: 'text'
+  is_nullable: 1</PRE>
+
+<P>Descrierea tipului sursei
+
+</P><H1><A NAME="PRIMARY%20KEY">PRIMARY KEY
+
+</A></H1>
+<DL><DT><A NAME="*%20%2fid">* <A HREF="#id">/id</A>
+
+</A></DT>
+<DD>
+</DD>
+</DL>
+<H1><A NAME="RELATIONS">RELATIONS
+
+</A></H1>
+<H2><A NAME="sources">sources
+
+</A></H2>
+
+<P>Type: has_many
+
+</P>
+<P>Related object: <A HREF="../../../RODA/RODADB/Result/Source.html">RODA::RODADB::Result::Source</A>
+
+</P><H2><A NAME="sourcetype_histories">sourcetype_histories
+
+</A></H2>
+
+<P>Type: has_many
+
+</P>
+<P>Related object: <A HREF="../../../RODA/RODADB/Result/SourcetypeHistory.html">RODA::RODADB::Result::SourcetypeHistory</A>
+
+</P>
+</BODY>
+</HTML>

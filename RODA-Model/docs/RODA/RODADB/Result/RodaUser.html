@@ -1,0 +1,304 @@
+<HTML>
+<HEAD>
+<TITLE>RODA::RODADB::Result::User</TITLE>
+</HEAD>
+<BODY BGCOLOR="#ffffff" TEXT="#000000">
+<UL>
+<LI><A HREF="#NAME">NAME
+
+</A><LI><A HREF="#COMPONENTS%20LOADED">COMPONENTS LOADED
+
+</A><LI><A HREF="#TABLE%3a%20user">TABLE: <CODE>user</CODE>
+
+</A><LI><A HREF="#ACCESSORS">ACCESSORS
+
+</A><UL>
+<LI><A HREF="#id">id
+
+</A><LI><A HREF="#credential_provider">credential_provider
+
+</A></UL>
+<LI><A HREF="#PRIMARY%20KEY">PRIMARY KEY
+
+</A><LI><A HREF="#RELATIONS">RELATIONS
+
+</A><UL>
+<LI><A HREF="#audits">audits
+
+</A><LI><A HREF="#auth_data">auth_data
+
+</A><LI><A HREF="#catalogs">catalogs
+
+</A><LI><A HREF="#cms_pages">cms_pages
+
+</A><LI><A HREF="#instance_keywords">instance_keywords
+
+</A><LI><A HREF="#instances">instances
+
+</A><LI><A HREF="#news">news
+
+</A><LI><A HREF="#person_links_statuses_by">person_links_statuses_by
+
+</A><LI><A HREF="#person_links_users">person_links_users
+
+</A><LI><A HREF="#sourcestudy_type_histories">sourcestudy_type_histories
+
+</A><LI><A HREF="#sourcetype_histories">sourcetype_histories
+
+</A><LI><A HREF="#studies">studies
+
+</A><LI><A HREF="#study_keywords">study_keywords
+
+</A><LI><A HREF="#user_auth_logs">user_auth_logs
+
+</A><LI><A HREF="#user_message_to_users">user_message_to_users
+
+</A><LI><A HREF="#user_messages_from_user">user_messages_from_user
+
+</A><LI><A HREF="#user_profile">user_profile
+
+</A><LI><A HREF="#user_roles">user_roles
+
+</A><LI><A HREF="#user_setting_values">user_setting_values
+
+</A><LI><A HREF="#roles">roles
+
+</A></UL>
+</UL>
+<HR>
+<H1><A NAME="NAME">NAME
+
+</A></H1>
+
+<P>RODA::RODADB::Result::User - Tabel ce contine utilizatorii aplicatiei
+
+</P><H1><A NAME="COMPONENTS%20LOADED">COMPONENTS LOADED
+
+</A></H1>
+<DL><DT><A NAME="*%20DBIx%3a%3aClass%3a%3aInflateColumn%3a%3aDateTime">* <A HREF="../../../DBIx/Class/InflateColumn/DateTime.html">DBIx::Class::InflateColumn::DateTime</A>
+
+</A></DT>
+<DD>
+</DD>
+</DL>
+<H1><A NAME="TABLE%3a%20user">TABLE: <CODE>user</CODE>
+
+</A></H1>
+<H1><A NAME="ACCESSORS">ACCESSORS
+
+</A></H1>
+<H2><A NAME="id">id
+
+</A></H2>
+
+<PRE>  data_type: 'integer'
+  is_auto_increment: 1
+  is_nullable: 0
+  sequence: 'user_id_seq'</PRE>
+
+<P>Codul utilizatorului aplicatiei
+
+</P><H2><A NAME="credential_provider">credential_provider
+
+</A></H2>
+
+<PRE>  data_type: 'text'
+  is_nullable: 0</PRE>
+
+<P>Furnizorul de informatii de acces pentru utilizatorul respectiv
+
+</P><H1><A NAME="PRIMARY%20KEY">PRIMARY KEY
+
+</A></H1>
+<DL><DT><A NAME="*%20%2fid">* <A HREF="#id">/id</A>
+
+</A></DT>
+<DD>
+</DD>
+</DL>
+<H1><A NAME="RELATIONS">RELATIONS
+
+</A></H1>
+<H2><A NAME="audits">audits
+
+</A></H2>
+
+<P>Type: has_many
+
+</P>
+<P>Related object: <A HREF="../../../RODA/RODADB/Result/Audit.html">RODA::RODADB::Result::Audit</A>
+
+</P><H2><A NAME="auth_data">auth_data
+
+</A></H2>
+
+<P>Type: might_have
+
+</P>
+<P>Related object: <A HREF="../../../RODA/RODADB/Result/AuthData.html">RODA::RODADB::Result::AuthData</A>
+
+</P><H2><A NAME="catalogs">catalogs
+
+</A></H2>
+
+<P>Type: has_many
+
+</P>
+<P>Related object: <A HREF="../../../RODA/RODADB/Result/Catalog.html">RODA::RODADB::Result::Catalog</A>
+
+</P><H2><A NAME="cms_pages">cms_pages
+
+</A></H2>
+
+<P>Type: has_many
+
+</P>
+<P>Related object: <A HREF="../../../RODA/RODADB/Result/CmsPage.html">RODA::RODADB::Result::CmsPage</A>
+
+</P><H2><A NAME="instance_keywords">instance_keywords
+
+</A></H2>
+
+<P>Type: has_many
+
+</P>
+<P>Related object: <A HREF="../../../RODA/RODADB/Result/InstanceKeyword.html">RODA::RODADB::Result::InstanceKeyword</A>
+
+</P><H2><A NAME="instances">instances
+
+</A></H2>
+
+<P>Type: has_many
+
+</P>
+<P>Related object: <A HREF="../../../RODA/RODADB/Result/Instance.html">RODA::RODADB::Result::Instance</A>
+
+</P><H2><A NAME="news">news
+
+</A></H2>
+
+<P>Type: has_many
+
+</P>
+<P>Related object: <A HREF="../../../RODA/RODADB/Result/News.html">RODA::RODADB::Result::News</A>
+
+</P><H2><A NAME="person_links_statuses_by">person_links_statuses_by
+
+</A></H2>
+
+<P>Type: has_many
+
+</P>
+<P>Related object: <A HREF="../../../RODA/RODADB/Result/PersonLink.html">RODA::RODADB::Result::PersonLink</A>
+
+</P><H2><A NAME="person_links_users">person_links_users
+
+</A></H2>
+
+<P>Type: has_many
+
+</P>
+<P>Related object: <A HREF="../../../RODA/RODADB/Result/PersonLink.html">RODA::RODADB::Result::PersonLink</A>
+
+</P><H2><A NAME="sourcestudy_type_histories">sourcestudy_type_histories
+
+</A></H2>
+
+<P>Type: has_many
+
+</P>
+<P>Related object: <A HREF="../../../RODA/RODADB/Result/SourcestudyTypeHistory.html">RODA::RODADB::Result::SourcestudyTypeHistory</A>
+
+</P><H2><A NAME="sourcetype_histories">sourcetype_histories
+
+</A></H2>
+
+<P>Type: has_many
+
+</P>
+<P>Related object: <A HREF="../../../RODA/RODADB/Result/SourcetypeHistory.html">RODA::RODADB::Result::SourcetypeHistory</A>
+
+</P><H2><A NAME="studies">studies
+
+</A></H2>
+
+<P>Type: has_many
+
+</P>
+<P>Related object: <A HREF="../../../RODA/RODADB/Result/Study.html">RODA::RODADB::Result::Study</A>
+
+</P><H2><A NAME="study_keywords">study_keywords
+
+</A></H2>
+
+<P>Type: has_many
+
+</P>
+<P>Related object: <A HREF="../../../RODA/RODADB/Result/StudyKeyword.html">RODA::RODADB::Result::StudyKeyword</A>
+
+</P><H2><A NAME="user_auth_logs">user_auth_logs
+
+</A></H2>
+
+<P>Type: has_many
+
+</P>
+<P>Related object: <A HREF="../../../RODA/RODADB/Result/UserAuthLog.html">RODA::RODADB::Result::UserAuthLog</A>
+
+</P><H2><A NAME="user_message_to_users">user_message_to_users
+
+</A></H2>
+
+<P>Type: has_many
+
+</P>
+<P>Related object: <A HREF="../../../RODA/RODADB/Result/UserMessage.html">RODA::RODADB::Result::UserMessage</A>
+
+</P><H2><A NAME="user_messages_from_user">user_messages_from_user
+
+</A></H2>
+
+<P>Type: has_many
+
+</P>
+<P>Related object: <A HREF="../../../RODA/RODADB/Result/UserMessage.html">RODA::RODADB::Result::UserMessage</A>
+
+</P><H2><A NAME="user_profile">user_profile
+
+</A></H2>
+
+<P>Type: might_have
+
+</P>
+<P>Related object: <A HREF="../../../RODA/RODADB/Result/UserProfile.html">RODA::RODADB::Result::UserProfile</A>
+
+</P><H2><A NAME="user_roles">user_roles
+
+</A></H2>
+
+<P>Type: has_many
+
+</P>
+<P>Related object: <A HREF="../../../RODA/RODADB/Result/UserRole.html">RODA::RODADB::Result::UserRole</A>
+
+</P><H2><A NAME="user_setting_values">user_setting_values
+
+</A></H2>
+
+<P>Type: has_many
+
+</P>
+<P>Related object: <A HREF="../../../RODA/RODADB/Result/UserSettingValue.html">RODA::RODADB::Result::UserSettingValue</A>
+
+</P><H2><A NAME="roles">roles
+
+</A></H2>
+
+<P>Type: many_to_many
+
+</P>
+<P>Composing rels: <A HREF="#user_roles">/user_roles</A> -&gt; role
+
+</P>
+</BODY>
+</HTML>

@@ -1,0 +1,138 @@
+<HTML>
+<HEAD>
+<TITLE>RODA::RODADB::Result::FilePropertyNameValue</TITLE>
+</HEAD>
+<BODY BGCOLOR="#ffffff" TEXT="#000000">
+<UL>
+<LI><A HREF="#NAME">NAME
+
+</A><LI><A HREF="#DESCRIPTION">DESCRIPTION
+
+</A><LI><A HREF="#COMPONENTS%20LOADED">COMPONENTS LOADED
+
+</A><LI><A HREF="#TABLE%3a%20file_property_name_value">TABLE: <CODE>file_property_name_value</CODE>
+
+</A><LI><A HREF="#ACCESSORS">ACCESSORS
+
+</A><UL>
+<LI><A HREF="#property_name_id">property_name_id
+
+</A><LI><A HREF="#property_value_id">property_value_id
+
+</A><LI><A HREF="#file_id">file_id
+
+</A></UL>
+<LI><A HREF="#PRIMARY%20KEY">PRIMARY KEY
+
+</A><LI><A HREF="#RELATIONS">RELATIONS
+
+</A><UL>
+<LI><A HREF="#file">file
+
+</A><LI><A HREF="#property_name">property_name
+
+</A><LI><A HREF="#property_value">property_value
+
+</A></UL>
+</UL>
+<HR>
+<H1><A NAME="NAME">NAME
+
+</A></H1>
+
+<P>RODA::RODADB::Result::FilePropertyNameValue
+
+</P><H1><A NAME="DESCRIPTION">DESCRIPTION
+
+</A></H1>
+
+<P>Tabel ce pastreaza asocierile intre un &quot;File&quot; (din tabelul respectiv) si proprietatile fisierului respectiv (name+value)
+
+</P><H1><A NAME="COMPONENTS%20LOADED">COMPONENTS LOADED
+
+</A></H1>
+<DL><DT><A NAME="*%20DBIx%3a%3aClass%3a%3aInflateColumn%3a%3aDateTime">* <A HREF="../../../DBIx/Class/InflateColumn/DateTime.html">DBIx::Class::InflateColumn::DateTime</A>
+
+</A></DT>
+<DD>
+</DD>
+</DL>
+<H1><A NAME="TABLE%3a%20file_property_name_value">TABLE: <CODE>file_property_name_value</CODE>
+
+</A></H1>
+<H1><A NAME="ACCESSORS">ACCESSORS
+
+</A></H1>
+<H2><A NAME="property_name_id">property_name_id
+
+</A></H2>
+
+<PRE>  data_type: 'integer'
+  is_foreign_key: 1
+  is_nullable: 0</PRE>
+<H2><A NAME="property_value_id">property_value_id
+
+</A></H2>
+
+<PRE>  data_type: 'integer'
+  is_foreign_key: 1
+  is_nullable: 0</PRE>
+<H2><A NAME="file_id">file_id
+
+</A></H2>
+
+<PRE>  data_type: 'integer'
+  is_foreign_key: 1
+  is_nullable: 0</PRE>
+<H1><A NAME="PRIMARY%20KEY">PRIMARY KEY
+
+</A></H1>
+<DL><DT><A NAME="*%20%2fproperty_name_id">* <A HREF="#property_name_id">/property_name_id</A>
+
+</A></DT>
+<DD>
+</DD>
+<DT><A NAME="*%20%2fproperty_value_id">* <A HREF="#property_value_id">/property_value_id</A>
+
+</A></DT>
+<DD>
+</DD>
+<DT><A NAME="*%20%2ffile_id">* <A HREF="#file_id">/file_id</A>
+
+</A></DT>
+<DD>
+</DD>
+</DL>
+<H1><A NAME="RELATIONS">RELATIONS
+
+</A></H1>
+<H2><A NAME="file">file
+
+</A></H2>
+
+<P>Type: belongs_to
+
+</P>
+<P>Related object: <A HREF="../../../RODA/RODADB/Result/File.html">RODA::RODADB::Result::File</A>
+
+</P><H2><A NAME="property_name">property_name
+
+</A></H2>
+
+<P>Type: belongs_to
+
+</P>
+<P>Related object: <A HREF="../../../RODA/RODADB/Result/PropertyName.html">RODA::RODADB::Result::PropertyName</A>
+
+</P><H2><A NAME="property_value">property_value
+
+</A></H2>
+
+<P>Type: belongs_to
+
+</P>
+<P>Related object: <A HREF="../../../RODA/RODADB/Result/PropertyValue.html">RODA::RODADB::Result::PropertyValue</A>
+
+</P>
+</BODY>
+</HTML>

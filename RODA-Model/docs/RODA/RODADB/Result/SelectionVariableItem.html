@@ -1,0 +1,192 @@
+<HTML>
+<HEAD>
+<TITLE>RODA::RODADB::Result::SelectionVariableItem</TITLE>
+</HEAD>
+<BODY BGCOLOR="#ffffff" TEXT="#000000">
+<UL>
+<LI><A HREF="#NAME">NAME
+
+</A><LI><A HREF="#DESCRIPTION">DESCRIPTION
+
+</A><LI><A HREF="#COMPONENTS%20LOADED">COMPONENTS LOADED
+
+</A><LI><A HREF="#TABLE%3a%20selection_variable_item">TABLE: <CODE>selection_variable_item</CODE>
+
+</A><LI><A HREF="#ACCESSORS">ACCESSORS
+
+</A><UL>
+<LI><A HREF="#variable_id">variable_id
+
+</A><LI><A HREF="#item_id">item_id
+
+</A><LI><A HREF="#order_of_item_in_variable">order_of_item_in_variable
+
+</A><LI><A HREF="#response_card_file_id">response_card_file_id
+
+</A><LI><A HREF="#frequency_value">frequency_value
+
+</A></UL>
+<LI><A HREF="#PRIMARY%20KEY">PRIMARY KEY
+
+</A><LI><A HREF="#UNIQUE%20CONSTRAINTS">UNIQUE CONSTRAINTS
+
+</A><UL>
+<LI><A HREF="#selection_variable_item_order_Idx"><CODE>selection_variable_item_order_Idx</CODE>
+
+</A></UL>
+<LI><A HREF="#RELATIONS">RELATIONS
+
+</A><UL>
+<LI><A HREF="#form_selection_vars">form_selection_vars
+
+</A><LI><A HREF="#item">item
+
+</A><LI><A HREF="#response_card_file">response_card_file
+
+</A><LI><A HREF="#variable">variable
+
+</A></UL>
+</UL>
+<HR>
+<H1><A NAME="NAME">NAME
+
+</A></H1>
+
+<P>RODA::RODADB::Result::SelectionVariableItem
+
+</P><H1><A NAME="DESCRIPTION">DESCRIPTION
+
+</A></H1>
+
+<P>Tabel ce contine elementele variabilelor de selectie din cadrul unei instante
+
+</P><H1><A NAME="COMPONENTS%20LOADED">COMPONENTS LOADED
+
+</A></H1>
+<DL><DT><A NAME="*%20DBIx%3a%3aClass%3a%3aInflateColumn%3a%3aDateTime">* <A HREF="../../../DBIx/Class/InflateColumn/DateTime.html">DBIx::Class::InflateColumn::DateTime</A>
+
+</A></DT>
+<DD>
+</DD>
+</DL>
+<H1><A NAME="TABLE%3a%20selection_variable_item">TABLE: <CODE>selection_variable_item</CODE>
+
+</A></H1>
+<H1><A NAME="ACCESSORS">ACCESSORS
+
+</A></H1>
+<H2><A NAME="variable_id">variable_id
+
+</A></H2>
+
+<PRE>  data_type: 'bigint'
+  is_foreign_key: 1
+  is_nullable: 0</PRE>
+
+<P>Codul unei variabile ce apare in cadrul instantei identificate prin atributul instance_id
+
+</P><H2><A NAME="item_id">item_id
+
+</A></H2>
+
+<PRE>  data_type: 'bigint'
+  is_foreign_key: 1
+  is_nullable: 0</PRE>
+
+<P>Codul unui item de raspuns pentru variabila referita prin atributul variable_id
+
+</P><H2><A NAME="order_of_item_in_variable">order_of_item_in_variable
+
+</A></H2>
+
+<PRE>  data_type: 'integer'
+  is_nullable: 0</PRE>
+
+<P>Numarul de ordine al item-ului referit prin atributul item_id in cadrul variabilei identificate prin atributul variable_id
+
+</P><H2><A NAME="response_card_file_id">response_card_file_id
+
+</A></H2>
+
+<PRE>  data_type: 'integer'
+  is_foreign_key: 1
+  is_nullable: 1</PRE>
+<H2><A NAME="frequency_value">frequency_value
+
+</A></H2>
+
+<PRE>  data_type: 'real'
+  is_nullable: 1</PRE>
+<H1><A NAME="PRIMARY%20KEY">PRIMARY KEY
+
+</A></H1>
+<DL><DT><A NAME="*%20%2fvariable_id">* <A HREF="#variable_id">/variable_id</A>
+
+</A></DT>
+<DD>
+</DD>
+<DT><A NAME="*%20%2fitem_id">* <A HREF="#item_id">/item_id</A>
+
+</A></DT>
+<DD>
+</DD>
+</DL>
+<H1><A NAME="UNIQUE%20CONSTRAINTS">UNIQUE CONSTRAINTS
+
+</A></H1>
+<H2><A NAME="selection_variable_item_order_Idx"><CODE>selection_variable_item_order_Idx</CODE>
+
+</A></H2>
+<DL><DT><A NAME="*%20%2forder_of_item_in_variable">* <A HREF="#order_of_item_in_variable">/order_of_item_in_variable</A>
+
+</A></DT>
+<DD>
+</DD>
+<DT><A NAME="*%20%2fvariable_id">* <A HREF="#variable_id">/variable_id</A>
+
+</A></DT>
+<DD>
+</DD>
+</DL>
+<H1><A NAME="RELATIONS">RELATIONS
+
+</A></H1>
+<H2><A NAME="form_selection_vars">form_selection_vars
+
+</A></H2>
+
+<P>Type: has_many
+
+</P>
+<P>Related object: <A HREF="../../../RODA/RODADB/Result/FormSelectionVar.html">RODA::RODADB::Result::FormSelectionVar</A>
+
+</P><H2><A NAME="item">item
+
+</A></H2>
+
+<P>Type: belongs_to
+
+</P>
+<P>Related object: <A HREF="../../../RODA/RODADB/Result/Item.html">RODA::RODADB::Result::Item</A>
+
+</P><H2><A NAME="response_card_file">response_card_file
+
+</A></H2>
+
+<P>Type: belongs_to
+
+</P>
+<P>Related object: <A HREF="../../../RODA/RODADB/Result/File.html">RODA::RODADB::Result::File</A>
+
+</P><H2><A NAME="variable">variable
+
+</A></H2>
+
+<P>Type: belongs_to
+
+</P>
+<P>Related object: <A HREF="../../../RODA/RODADB/Result/SelectionVariable.html">RODA::RODADB::Result::SelectionVariable</A>
+
+</P>
+</BODY>
+</HTML>

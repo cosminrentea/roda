@@ -1,0 +1,175 @@
+<HTML>
+<HEAD>
+<TITLE>RODA::RODADB::Result::Catalog</TITLE>
+</HEAD>
+<BODY BGCOLOR="#ffffff" TEXT="#000000">
+<UL>
+<LI><A HREF="#NAME">NAME
+
+</A><LI><A HREF="#COMPONENTS%20LOADED">COMPONENTS LOADED
+
+</A><LI><A HREF="#TABLE%3a%20catalog">TABLE: <CODE>catalog</CODE>
+
+</A><LI><A HREF="#ACCESSORS">ACCESSORS
+
+</A><UL>
+<LI><A HREF="#id">id
+
+</A><LI><A HREF="#name">name
+
+</A><LI><A HREF="#parent">parent
+
+</A><LI><A HREF="#owner">owner
+
+</A><LI><A HREF="#added">added
+
+</A></UL>
+<LI><A HREF="#PRIMARY%20KEY">PRIMARY KEY
+
+</A><LI><A HREF="#RELATIONS">RELATIONS
+
+</A><UL>
+<LI><A HREF="#catalog_acls">catalog_acls
+
+</A><LI><A HREF="#catalog_studies">catalog_studies
+
+</A><LI><A HREF="#catalogs">catalogs
+
+</A><LI><A HREF="#owner">owner
+
+</A><LI><A HREF="#parent">parent
+
+</A></UL>
+</UL>
+<HR>
+<H1><A NAME="NAME">NAME
+
+</A></H1>
+
+<P>RODA::RODADB::Result::Catalog - Tabel ce stocheaza informatii despre cataloagele de studii
+
+</P><H1><A NAME="COMPONENTS%20LOADED">COMPONENTS LOADED
+
+</A></H1>
+<DL><DT><A NAME="*%20DBIx%3a%3aClass%3a%3aInflateColumn%3a%3aDateTime">* <A HREF="../../../DBIx/Class/InflateColumn/DateTime.html">DBIx::Class::InflateColumn::DateTime</A>
+
+</A></DT>
+<DD>
+</DD>
+</DL>
+<H1><A NAME="TABLE%3a%20catalog">TABLE: <CODE>catalog</CODE>
+
+</A></H1>
+<H1><A NAME="ACCESSORS">ACCESSORS
+
+</A></H1>
+<H2><A NAME="id">id
+
+</A></H2>
+
+<PRE>  data_type: 'integer'
+  is_auto_increment: 1
+  is_nullable: 0
+  sequence: 'catalog_id_seq'</PRE>
+
+<P>Codul catalogului
+
+</P><H2><A NAME="name">name
+
+</A></H2>
+
+<PRE>  data_type: 'varchar'
+  is_nullable: 0
+  size: 200</PRE>
+
+<P>Denumirea catalogului
+
+</P><H2><A NAME="parent">parent
+
+</A></H2>
+
+<PRE>  data_type: 'integer'
+  is_foreign_key: 1
+  is_nullable: 1</PRE>
+
+<P>Codul catalogului din care face parte catalogul curent (refera atributul id al tabelului catalog)
+
+</P><H2><A NAME="owner">owner
+
+</A></H2>
+
+<PRE>  data_type: 'integer'
+  is_foreign_key: 1
+  is_nullable: 0</PRE>
+
+<P>Codul utilizatorului care poseda catalogul (refera atributul id din tabelul users)
+
+</P><H2><A NAME="added">added
+
+</A></H2>
+
+<PRE>  data_type: 'timestamp'
+  is_nullable: 0</PRE>
+
+<P>Data si timpul cand a fost adaugat catalogul respectiv
+
+</P><H1><A NAME="PRIMARY%20KEY">PRIMARY KEY
+
+</A></H1>
+<DL><DT><A NAME="*%20%2fid">* <A HREF="#id">/id</A>
+
+</A></DT>
+<DD>
+</DD>
+</DL>
+<H1><A NAME="RELATIONS">RELATIONS
+
+</A></H1>
+<H2><A NAME="catalog_acls">catalog_acls
+
+</A></H2>
+
+<P>Type: has_many
+
+</P>
+<P>Related object: <A HREF="../../../RODA/RODADB/Result/CatalogAcl.html">RODA::RODADB::Result::CatalogAcl</A>
+
+</P><H2><A NAME="catalog_studies">catalog_studies
+
+</A></H2>
+
+<P>Type: has_many
+
+</P>
+<P>Related object: <A HREF="../../../RODA/RODADB/Result/CatalogStudy.html">RODA::RODADB::Result::CatalogStudy</A>
+
+</P><H2><A NAME="catalogs">catalogs
+
+</A></H2>
+
+<P>Type: has_many
+
+</P>
+<P>Related object: <A HREF="../../../RODA/RODADB/Result/Catalog.html">RODA::RODADB::Result::Catalog</A>
+
+</P><H2><A NAME="owner">owner
+
+</A></H2>
+
+<P>Type: belongs_to
+
+</P>
+<P>Related object: <A HREF="../../../RODA/RODADB/Result/User.html">RODA::RODADB::Result::User</A>
+
+</P><H2><A NAME="parent">parent
+
+</A></H2>
+
+<P>Type: belongs_to
+
+</P>
+<P>Related object: <A HREF="../../../RODA/RODADB/Result/Catalog.html">RODA::RODADB::Result::Catalog</A>
+
+</P>
+</BODY>
+</HTML>

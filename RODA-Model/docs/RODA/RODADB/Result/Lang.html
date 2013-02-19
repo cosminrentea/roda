@@ -1,0 +1,143 @@
+<HTML>
+<HEAD>
+<TITLE>RODA::RODADB::Result::Lang</TITLE>
+</HEAD>
+<BODY BGCOLOR="#ffffff" TEXT="#000000">
+<UL>
+<LI><A HREF="#NAME">NAME
+
+</A><LI><A HREF="#DESCRIPTION">DESCRIPTION
+
+</A><LI><A HREF="#COMPONENTS%20LOADED">COMPONENTS LOADED
+
+</A><LI><A HREF="#TABLE%3a%20lang">TABLE: <CODE>lang</CODE>
+
+</A><LI><A HREF="#ACCESSORS">ACCESSORS
+
+</A><UL>
+<LI><A HREF="#id">id
+
+</A><LI><A HREF="#name">name
+
+</A></UL>
+<LI><A HREF="#PRIMARY%20KEY">PRIMARY KEY
+
+</A><LI><A HREF="#UNIQUE%20CONSTRAINTS">UNIQUE CONSTRAINTS
+
+</A><UL>
+<LI><A HREF="#lang_name_Idx"><CODE>lang_name_Idx</CODE>
+
+</A></UL>
+<LI><A HREF="#RELATIONS">RELATIONS
+
+</A><UL>
+<LI><A HREF="#instance_descrs">instance_descrs
+
+</A><LI><A HREF="#study_descrs">study_descrs
+
+</A><LI><A HREF="#translated_topics">translated_topics
+
+</A></UL>
+</UL>
+<HR>
+<H1><A NAME="NAME">NAME
+
+</A></H1>
+
+<P>RODA::RODADB::Result::Lang
+
+</P><H1><A NAME="DESCRIPTION">DESCRIPTION
+
+</A></H1>
+
+<P>Tabel ce contine limbile utilizate pentru unii termeni din baza de date
+
+</P><H1><A NAME="COMPONENTS%20LOADED">COMPONENTS LOADED
+
+</A></H1>
+<DL><DT><A NAME="*%20DBIx%3a%3aClass%3a%3aInflateColumn%3a%3aDateTime">* <A HREF="../../../DBIx/Class/InflateColumn/DateTime.html">DBIx::Class::InflateColumn::DateTime</A>
+
+</A></DT>
+<DD>
+</DD>
+</DL>
+<H1><A NAME="TABLE%3a%20lang">TABLE: <CODE>lang</CODE>
+
+</A></H1>
+<H1><A NAME="ACCESSORS">ACCESSORS
+
+</A></H1>
+<H2><A NAME="id">id
+
+</A></H2>
+
+<PRE>  data_type: 'char'
+  is_nullable: 0
+  size: 2</PRE>
+
+<P>Codul unei limbi ce poate fi utilizata pentru un termen din baza de date
+
+</P><H2><A NAME="name">name
+
+</A></H2>
+
+<PRE>  data_type: 'varchar'
+  is_nullable: 0
+  size: 50</PRE>
+
+<P>Denumirea unei limbi
+
+</P><H1><A NAME="PRIMARY%20KEY">PRIMARY KEY
+
+</A></H1>
+<DL><DT><A NAME="*%20%2fid">* <A HREF="#id">/id</A>
+
+</A></DT>
+<DD>
+</DD>
+</DL>
+<H1><A NAME="UNIQUE%20CONSTRAINTS">UNIQUE CONSTRAINTS
+
+</A></H1>
+<H2><A NAME="lang_name_Idx"><CODE>lang_name_Idx</CODE>
+
+</A></H2>
+<DL><DT><A NAME="*%20%2fname">* <A HREF="#name">/name</A>
+
+</A></DT>
+<DD>
+</DD>
+</DL>
+<H1><A NAME="RELATIONS">RELATIONS
+
+</A></H1>
+<H2><A NAME="instance_descrs">instance_descrs
+
+</A></H2>
+
+<P>Type: has_many
+
+</P>
+<P>Related object: <A HREF="../../../RODA/RODADB/Result/InstanceDescr.html">RODA::RODADB::Result::InstanceDescr</A>
+
+</P><H2><A NAME="study_descrs">study_descrs
+
+</A></H2>
+
+<P>Type: has_many
+
+</P>
+<P>Related object: <A HREF="../../../RODA/RODADB/Result/StudyDescr.html">RODA::RODADB::Result::StudyDescr</A>
+
+</P><H2><A NAME="translated_topics">translated_topics
+
+</A></H2>
+
+<P>Type: has_many
+
+</P>
+<P>Related object: <A HREF="../../../RODA/RODADB/Result/TranslatedTopic.html">RODA::RODADB::Result::TranslatedTopic</A>
+
+</P>
+</BODY>
+</HTML>

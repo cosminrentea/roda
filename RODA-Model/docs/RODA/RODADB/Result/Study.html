@@ -1,0 +1,279 @@
+<HTML>
+<HEAD>
+<TITLE>RODA::RODADB::Result::Study</TITLE>
+</HEAD>
+<BODY BGCOLOR="#ffffff" TEXT="#000000">
+<UL>
+<LI><A HREF="#NAME">NAME
+
+</A><LI><A HREF="#DESCRIPTION">DESCRIPTION
+
+</A><LI><A HREF="#COMPONENTS%20LOADED">COMPONENTS LOADED
+
+</A><LI><A HREF="#TABLE%3a%20study">TABLE: <CODE>study</CODE>
+
+</A><LI><A HREF="#ACCESSORS">ACCESSORS
+
+</A><UL>
+<LI><A HREF="#id">id
+
+</A><LI><A HREF="#datestart">datestart
+
+</A><LI><A HREF="#dateend">dateend
+
+</A><LI><A HREF="#insertion_status">insertion_status
+
+</A><LI><A HREF="#added_by">added_by
+
+</A><LI><A HREF="#added">added
+
+</A><LI><A HREF="#can_digitize">can_digitize
+
+</A><LI><A HREF="#can_use_anonymous">can_use_anonymous
+
+</A></UL>
+<LI><A HREF="#PRIMARY%20KEY">PRIMARY KEY
+
+</A><LI><A HREF="#RELATIONS">RELATIONS
+
+</A><UL>
+<LI><A HREF="#added_by">added_by
+
+</A><LI><A HREF="#catalog_studies">catalog_studies
+
+</A><LI><A HREF="#instances">instances
+
+</A><LI><A HREF="#study_acls">study_acls
+
+</A><LI><A HREF="#study_descrs">study_descrs
+
+</A><LI><A HREF="#study_files">study_files
+
+</A><LI><A HREF="#study_keywords">study_keywords
+
+</A><LI><A HREF="#study_orgs">study_orgs
+
+</A><LI><A HREF="#study_people">study_people
+
+</A><LI><A HREF="#study_topics">study_topics
+
+</A><LI><A HREF="#files">files
+
+</A><LI><A HREF="#topics">topics
+
+</A></UL>
+</UL>
+<HR>
+<H1><A NAME="NAME">NAME
+
+</A></H1>
+
+<P>RODA::RODADB::Result::Study
+
+</P><H1><A NAME="DESCRIPTION">DESCRIPTION
+
+</A></H1>
+
+<P>Tabel care stocheaza studiile desfasurate, ale caror informatii sunt prezente in baza de date 
+
+</P><H1><A NAME="COMPONENTS%20LOADED">COMPONENTS LOADED
+
+</A></H1>
+<DL><DT><A NAME="*%20DBIx%3a%3aClass%3a%3aInflateColumn%3a%3aDateTime">* <A HREF="../../../DBIx/Class/InflateColumn/DateTime.html">DBIx::Class::InflateColumn::DateTime</A>
+
+</A></DT>
+<DD>
+</DD>
+</DL>
+<H1><A NAME="TABLE%3a%20study">TABLE: <CODE>study</CODE>
+
+</A></H1>
+<H1><A NAME="ACCESSORS">ACCESSORS
+
+</A></H1>
+<H2><A NAME="id">id
+
+</A></H2>
+
+<PRE>  data_type: 'integer'
+  is_auto_increment: 1
+  is_nullable: 0
+  sequence: 'study_id_seq'</PRE>
+
+<P>Codul studiului
+
+</P><H2><A NAME="datestart">datestart
+
+</A></H2>
+
+<PRE>  data_type: 'timestamp'
+  is_nullable: 1</PRE>
+
+<P>Data de inceput a studiului
+
+</P><H2><A NAME="dateend">dateend
+
+</A></H2>
+
+<PRE>  data_type: 'timestamp'
+  is_nullable: 1</PRE>
+
+<P>Data de final a studiului
+
+</P><H2><A NAME="insertion_status">insertion_status
+
+</A></H2>
+
+<PRE>  data_type: 'integer'
+  is_nullable: 0</PRE>
+
+<P>Pasul din wizard-ul de introducere a metadatelor - din moment ce introducerea se face prin wizard, fiecare pas trebuie comis in baza de date; pana la finalizarea introducerii intregului studiu e nevoie sa stim ca ele au fost partial introduse.
+
+</P><H2><A NAME="added_by">added_by
+
+</A></H2>
+
+<PRE>  data_type: 'integer'
+  is_foreign_key: 1
+  is_nullable: 0</PRE>
+<H2><A NAME="added">added
+
+</A></H2>
+
+<PRE>  data_type: 'timestamp'
+  is_nullable: 0</PRE>
+<H2><A NAME="can_digitize">can_digitize
+
+</A></H2>
+
+<PRE>  data_type: 'boolean'
+  is_nullable: 0</PRE>
+<H2><A NAME="can_use_anonymous">can_use_anonymous
+
+</A></H2>
+
+<PRE>  data_type: 'boolean'
+  is_nullable: 0</PRE>
+<H1><A NAME="PRIMARY%20KEY">PRIMARY KEY
+
+</A></H1>
+<DL><DT><A NAME="*%20%2fid">* <A HREF="#id">/id</A>
+
+</A></DT>
+<DD>
+</DD>
+</DL>
+<H1><A NAME="RELATIONS">RELATIONS
+
+</A></H1>
+<H2><A NAME="added_by">added_by
+
+</A></H2>
+
+<P>Type: belongs_to
+
+</P>
+<P>Related object: <A HREF="../../../RODA/RODADB/Result/User.html">RODA::RODADB::Result::User</A>
+
+</P><H2><A NAME="catalog_studies">catalog_studies
+
+</A></H2>
+
+<P>Type: has_many
+
+</P>
+<P>Related object: <A HREF="../../../RODA/RODADB/Result/CatalogStudy.html">RODA::RODADB::Result::CatalogStudy</A>
+
+</P><H2><A NAME="instances">instances
+
+</A></H2>
+
+<P>Type: has_many
+
+</P>
+<P>Related object: <A HREF="../../../RODA/RODADB/Result/Instance.html">RODA::RODADB::Result::Instance</A>
+
+</P><H2><A NAME="study_acls">study_acls
+
+</A></H2>
+
+<P>Type: has_many
+
+</P>
+<P>Related object: <A HREF="../../../RODA/RODADB/Result/StudyAcl.html">RODA::RODADB::Result::StudyAcl</A>
+
+</P><H2><A NAME="study_descrs">study_descrs
+
+</A></H2>
+
+<P>Type: has_many
+
+</P>
+<P>Related object: <A HREF="../../../RODA/RODADB/Result/StudyDescr.html">RODA::RODADB::Result::StudyDescr</A>
+
+</P><H2><A NAME="study_files">study_files
+
+</A></H2>
+
+<P>Type: has_many
+
+</P>
+<P>Related object: <A HREF="../../../RODA/RODADB/Result/StudyFile.html">RODA::RODADB::Result::StudyFile</A>
+
+</P><H2><A NAME="study_keywords">study_keywords
+
+</A></H2>
+
+<P>Type: has_many
+
+</P>
+<P>Related object: <A HREF="../../../RODA/RODADB/Result/StudyKeyword.html">RODA::RODADB::Result::StudyKeyword</A>
+
+</P><H2><A NAME="study_orgs">study_orgs
+
+</A></H2>
+
+<P>Type: has_many
+
+</P>
+<P>Related object: <A HREF="../../../RODA/RODADB/Result/StudyOrg.html">RODA::RODADB::Result::StudyOrg</A>
+
+</P><H2><A NAME="study_people">study_people
+
+</A></H2>
+
+<P>Type: has_many
+
+</P>
+<P>Related object: <A HREF="../../../RODA/RODADB/Result/StudyPerson.html">RODA::RODADB::Result::StudyPerson</A>
+
+</P><H2><A NAME="study_topics">study_topics
+
+</A></H2>
+
+<P>Type: has_many
+
+</P>
+<P>Related object: <A HREF="../../../RODA/RODADB/Result/StudyTopic.html">RODA::RODADB::Result::StudyTopic</A>
+
+</P><H2><A NAME="files">files
+
+</A></H2>
+
+<P>Type: many_to_many
+
+</P>
+<P>Composing rels: <A HREF="#study_files">/study_files</A> -&gt; file
+
+</P><H2><A NAME="topics">topics
+
+</A></H2>
+
+<P>Type: many_to_many
+
+</P>
+<P>Composing rels: <A HREF="#study_topics">/study_topics</A> -&gt; topic
+
+</P>
+</BODY>
+</HTML>

@@ -1,0 +1,160 @@
+<HTML>
+<HEAD>
+<TITLE>RODA::RODADB::Result::CmsPageContent</TITLE>
+</HEAD>
+<BODY BGCOLOR="#ffffff" TEXT="#000000">
+<UL>
+<LI><A HREF="#NAME">NAME
+
+</A><LI><A HREF="#COMPONENTS%20LOADED">COMPONENTS LOADED
+
+</A><LI><A HREF="#TABLE%3a%20cms_page_content">TABLE: <CODE>cms_page_content</CODE>
+
+</A><LI><A HREF="#ACCESSORS">ACCESSORS
+
+</A><UL>
+<LI><A HREF="#id">id
+
+</A><LI><A HREF="#name">name
+
+</A><LI><A HREF="#cms_page_id">cms_page_id
+
+</A><LI><A HREF="#content_title">content_title
+
+</A><LI><A HREF="#content_text">content_text
+
+</A><LI><A HREF="#order_in_page">order_in_page
+
+</A></UL>
+<LI><A HREF="#PRIMARY%20KEY">PRIMARY KEY
+
+</A><LI><A HREF="#UNIQUE%20CONSTRAINTS">UNIQUE CONSTRAINTS
+
+</A><UL>
+<LI><A HREF="#cms_page_content_seqnumber_Idx"><CODE>cms_page_content_seqnumber_Idx</CODE>
+
+</A></UL>
+<LI><A HREF="#RELATIONS">RELATIONS
+
+</A><UL>
+<LI><A HREF="#cms_page">cms_page
+
+</A></UL>
+</UL>
+<HR>
+<H1><A NAME="NAME">NAME
+
+</A></H1>
+
+<P>RODA::RODADB::Result::CmsPageContent - Tabel pentru stocarea continutului paginilor din aplicatie
+
+</P><H1><A NAME="COMPONENTS%20LOADED">COMPONENTS LOADED
+
+</A></H1>
+<DL><DT><A NAME="*%20DBIx%3a%3aClass%3a%3aInflateColumn%3a%3aDateTime">* <A HREF="../../../DBIx/Class/InflateColumn/DateTime.html">DBIx::Class::InflateColumn::DateTime</A>
+
+</A></DT>
+<DD>
+</DD>
+</DL>
+<H1><A NAME="TABLE%3a%20cms_page_content">TABLE: <CODE>cms_page_content</CODE>
+
+</A></H1>
+<H1><A NAME="ACCESSORS">ACCESSORS
+
+</A></H1>
+<H2><A NAME="id">id
+
+</A></H2>
+
+<PRE>  data_type: 'integer'
+  is_auto_increment: 1
+  is_nullable: 0
+  sequence: 'cms_page_content_id_seq'</PRE>
+
+<P>Codul unei pagini de tip content din aplicatie
+
+</P><H2><A NAME="name">name
+
+</A></H2>
+
+<PRE>  data_type: 'varchar'
+  is_nullable: 0
+  size: 200</PRE>
+
+<P>Denumirea continutului
+
+</P><H2><A NAME="cms_page_id">cms_page_id
+
+</A></H2>
+
+<PRE>  data_type: 'integer'
+  is_foreign_key: 1
+  is_nullable: 0</PRE>
+
+<P>Codul paginii in sistemul CMS al aplicatiei (refera atributul id din tabelul page)
+
+</P><H2><A NAME="content_title">content_title
+
+</A></H2>
+
+<PRE>  data_type: 'varchar'
+  is_nullable: 0
+  size: 250</PRE>
+
+<P>Titlul continutului
+
+</P><H2><A NAME="content_text">content_text
+
+</A></H2>
+
+<PRE>  data_type: 'text'
+  is_nullable: 1</PRE>
+
+<P>Textul continutului
+
+</P><H2><A NAME="order_in_page">order_in_page
+
+</A></H2>
+
+<PRE>  data_type: 'integer'
+  is_nullable: 0</PRE>
+
+<P>Numarul de ordine al continutului curent in cadrul paginii
+
+</P><H1><A NAME="PRIMARY%20KEY">PRIMARY KEY
+
+</A></H1>
+<DL><DT><A NAME="*%20%2fid">* <A HREF="#id">/id</A>
+
+</A></DT>
+<DD>
+</DD>
+</DL>
+<H1><A NAME="UNIQUE%20CONSTRAINTS">UNIQUE CONSTRAINTS
+
+</A></H1>
+<H2><A NAME="cms_page_content_seqnumber_Idx"><CODE>cms_page_content_seqnumber_Idx</CODE>
+
+</A></H2>
+<DL><DT><A NAME="*%20%2forder_in_page">* <A HREF="#order_in_page">/order_in_page</A>
+
+</A></DT>
+<DD>
+</DD>
+</DL>
+<H1><A NAME="RELATIONS">RELATIONS
+
+</A></H1>
+<H2><A NAME="cms_page">cms_page
+
+</A></H2>
+
+<P>Type: belongs_to
+
+</P>
+<P>Related object: <A HREF="../../../RODA/RODADB/Result/CmsPage.html">RODA::RODADB::Result::CmsPage</A>
+
+</P>
+</BODY>
+</HTML>

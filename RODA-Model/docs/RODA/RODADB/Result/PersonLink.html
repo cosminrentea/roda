@@ -1,0 +1,208 @@
+<HTML>
+<HEAD>
+<TITLE>RODA::RODADB::Result::PersonLink</TITLE>
+</HEAD>
+<BODY BGCOLOR="#ffffff" TEXT="#000000">
+<UL>
+<LI><A HREF="#NAME">NAME
+
+</A><LI><A HREF="#DESCRIPTION">DESCRIPTION
+
+</A><LI><A HREF="#COMPONENTS%20LOADED">COMPONENTS LOADED
+
+</A><LI><A HREF="#TABLE%3a%20person_links">TABLE: <CODE>person_links</CODE>
+
+</A><LI><A HREF="#ACCESSORS">ACCESSORS
+
+</A><UL>
+<LI><A HREF="#id">id
+
+</A><LI><A HREF="#person_id">person_id
+
+</A><LI><A HREF="#user_id">user_id
+
+</A><LI><A HREF="#simscore">simscore
+
+</A><LI><A HREF="#namescore">namescore
+
+</A><LI><A HREF="#emailscore">emailscore
+
+</A><LI><A HREF="#status">status
+
+</A><LI><A HREF="#status_by">status_by
+
+</A><LI><A HREF="#status_time">status_time
+
+</A></UL>
+<LI><A HREF="#PRIMARY%20KEY">PRIMARY KEY
+
+</A><LI><A HREF="#RELATIONS">RELATIONS
+
+</A><UL>
+<LI><A HREF="#person">person
+
+</A><LI><A HREF="#status_by">status_by
+
+</A><LI><A HREF="#user">user
+
+</A></UL>
+</UL>
+<HR>
+<H1><A NAME="NAME">NAME
+
+</A></H1>
+
+<P>RODA::RODADB::Result::PersonLink
+
+</P><H1><A NAME="DESCRIPTION">DESCRIPTION
+
+</A></H1>
+
+<P>Tabel ce stocheaza relatiile dintre persoane si utilizatorii aplicatiei 
+
+</P><H1><A NAME="COMPONENTS%20LOADED">COMPONENTS LOADED
+
+</A></H1>
+<DL><DT><A NAME="*%20DBIx%3a%3aClass%3a%3aInflateColumn%3a%3aDateTime">* <A HREF="../../../DBIx/Class/InflateColumn/DateTime.html">DBIx::Class::InflateColumn::DateTime</A>
+
+</A></DT>
+<DD>
+</DD>
+</DL>
+<H1><A NAME="TABLE%3a%20person_links">TABLE: <CODE>person_links</CODE>
+
+</A></H1>
+<H1><A NAME="ACCESSORS">ACCESSORS
+
+</A></H1>
+<H2><A NAME="id">id
+
+</A></H2>
+
+<PRE>  data_type: 'integer'
+  is_auto_increment: 1
+  is_nullable: 0
+  sequence: 'person_links_id_seq'</PRE>
+
+<P>Codul relatiei intre persoana referita prin atributul person_id si utilizatorul identificat prin user_id
+
+</P><H2><A NAME="person_id">person_id
+
+</A></H2>
+
+<PRE>  data_type: 'integer'
+  is_foreign_key: 1
+  is_nullable: 0</PRE>
+
+<P>Codul persoanei (refera atributul id din tabelul person)
+
+</P><H2><A NAME="user_id">user_id
+
+</A></H2>
+
+<PRE>  data_type: 'integer'
+  is_foreign_key: 1
+  is_nullable: 0</PRE>
+
+<P>Codul utilizatorului (refera atributul id din tabelul user)
+
+</P><H2><A NAME="simscore">simscore
+
+</A></H2>
+
+<PRE>  data_type: 'numeric'
+  is_nullable: 0
+  size: [10,2]</PRE>
+
+<P>Scorul general de similaritate intre persoana si utilizator (determinat pentru a stabili automat relatia intre persoana si utilizator)
+
+</P><H2><A NAME="namescore">namescore
+
+</A></H2>
+
+<PRE>  data_type: 'numeric'
+  is_nullable: 0
+  size: [10,2]</PRE>
+
+<P>Scorul de similaritate bazat pe numele persoanei si al utilizatorului (determinat pentru a stabili automat relatia intre persoana si utilizator)
+
+</P><H2><A NAME="emailscore">emailscore
+
+</A></H2>
+
+<PRE>  data_type: 'numeric'
+  is_nullable: 0
+  size: [10,2]</PRE>
+
+<P>Scorul de similaritate bazat pe adresa de email (determinat pentru a stabili automat relatia intre persoana si utilizator)
+
+</P><H2><A NAME="status">status
+
+</A></H2>
+
+<PRE>  data_type: 'integer'
+  is_nullable: 0</PRE>
+
+<P>Starea deciziei existentei unei legaturi intre intre persoana si utilizator (confirmat, infirmat, in asteptare)
+
+</P><H2><A NAME="status_by">status_by
+
+</A></H2>
+
+<PRE>  data_type: 'integer'
+  is_foreign_key: 1
+  is_nullable: 0</PRE>
+
+<P>Codul utilizatorului care a actualizat campul status (refera atributul id din tabelul user)
+
+</P><H2><A NAME="status_time">status_time
+
+</A></H2>
+
+<PRE>  data_type: 'timestamp'
+  is_nullable: 0</PRE>
+
+<P>Momentul de timp al ultimei actualizari a atributului status
+
+</P><H1><A NAME="PRIMARY%20KEY">PRIMARY KEY
+
+</A></H1>
+<DL><DT><A NAME="*%20%2fid">* <A HREF="#id">/id</A>
+
+</A></DT>
+<DD>
+</DD>
+</DL>
+<H1><A NAME="RELATIONS">RELATIONS
+
+</A></H1>
+<H2><A NAME="person">person
+
+</A></H2>
+
+<P>Type: belongs_to
+
+</P>
+<P>Related object: <A HREF="../../../RODA/RODADB/Result/Person.html">RODA::RODADB::Result::Person</A>
+
+</P><H2><A NAME="status_by">status_by
+
+</A></H2>
+
+<P>Type: belongs_to
+
+</P>
+<P>Related object: <A HREF="../../../RODA/RODADB/Result/User.html">RODA::RODADB::Result::User</A>
+
+</P><H2><A NAME="user">user
+
+</A></H2>
+
+<P>Type: belongs_to
+
+</P>
+<P>Related object: <A HREF="../../../RODA/RODADB/Result/User.html">RODA::RODADB::Result::User</A>
+
+</P>
+</BODY>
+</HTML>

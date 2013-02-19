@@ -1,0 +1,169 @@
+<HTML>
+<HEAD>
+<TITLE>RODA::RODADB::Result::SourceContact</TITLE>
+</HEAD>
+<BODY BGCOLOR="#ffffff" TEXT="#000000">
+<UL>
+<LI><A HREF="#NAME">NAME
+
+</A><LI><A HREF="#COMPONENTS%20LOADED">COMPONENTS LOADED
+
+</A><LI><A HREF="#TABLE%3a%20source_contacts">TABLE: <CODE>source_contacts</CODE>
+
+</A><LI><A HREF="#ACCESSORS">ACCESSORS
+
+</A><UL>
+<LI><A HREF="#id">id
+
+</A><LI><A HREF="#person_id">person_id
+
+</A><LI><A HREF="#contact_date">contact_date
+
+</A><LI><A HREF="#synopsis">synopsis
+
+</A><LI><A HREF="#followup">followup
+
+</A><LI><A HREF="#source_contact_method_id">source_contact_method_id
+
+</A><LI><A HREF="#source_id">source_id
+
+</A></UL>
+<LI><A HREF="#PRIMARY%20KEY">PRIMARY KEY
+
+</A><LI><A HREF="#RELATIONS">RELATIONS
+
+</A><UL>
+<LI><A HREF="#person">person
+
+</A><LI><A HREF="#source">source
+
+</A><LI><A HREF="#source_contact_method">source_contact_method
+
+</A></UL>
+</UL>
+<HR>
+<H1><A NAME="NAME">NAME
+
+</A></H1>
+
+<P>RODA::RODADB::Result::SourceContact - Datele de contact ale unei surse 
+
+</P><H1><A NAME="COMPONENTS%20LOADED">COMPONENTS LOADED
+
+</A></H1>
+<DL><DT><A NAME="*%20DBIx%3a%3aClass%3a%3aInflateColumn%3a%3aDateTime">* <A HREF="../../../DBIx/Class/InflateColumn/DateTime.html">DBIx::Class::InflateColumn::DateTime</A>
+
+</A></DT>
+<DD>
+</DD>
+</DL>
+<H1><A NAME="TABLE%3a%20source_contacts">TABLE: <CODE>source_contacts</CODE>
+
+</A></H1>
+<H1><A NAME="ACCESSORS">ACCESSORS
+
+</A></H1>
+<H2><A NAME="id">id
+
+</A></H2>
+
+<PRE>  data_type: 'integer'
+  is_auto_increment: 1
+  is_nullable: 0
+  sequence: 'source_contacts_id_seq'</PRE>
+
+<P>Codul contactului
+
+</P><H2><A NAME="person_id">person_id
+
+</A></H2>
+
+<PRE>  data_type: 'integer'
+  is_foreign_key: 1
+  is_nullable: 0</PRE>
+
+<P>Codul persoanei (refera atributul id din tabelul person)
+
+</P><H2><A NAME="contact_date">contact_date
+
+</A></H2>
+
+<PRE>  data_type: 'timestamp'
+  is_nullable: 0</PRE>
+
+<P>Data la care persoana identificata prin atributul person_id a fost contactata
+
+</P><H2><A NAME="synopsis">synopsis
+
+</A></H2>
+
+<PRE>  data_type: 'text'
+  is_nullable: 0</PRE>
+<H2><A NAME="followup">followup
+
+</A></H2>
+
+<PRE>  data_type: 'integer'
+  is_nullable: 0</PRE>
+<H2><A NAME="source_contact_method_id">source_contact_method_id
+
+</A></H2>
+
+<PRE>  data_type: 'integer'
+  is_foreign_key: 1
+  is_nullable: 0</PRE>
+
+<P>Metoda prin care persoana a fost contactata (refera atributul id din tabelul source_contact_method)
+
+</P><H2><A NAME="source_id">source_id
+
+</A></H2>
+
+<PRE>  data_type: 'integer'
+  is_foreign_key: 1
+  is_nullable: 0</PRE>
+
+<P>Codul organizatiei careia ii aunt asociate informatiile de contact (refera atributul org_id din tabelul sources)
+
+</P><H1><A NAME="PRIMARY%20KEY">PRIMARY KEY
+
+</A></H1>
+<DL><DT><A NAME="*%20%2fid">* <A HREF="#id">/id</A>
+
+</A></DT>
+<DD>
+</DD>
+</DL>
+<H1><A NAME="RELATIONS">RELATIONS
+
+</A></H1>
+<H2><A NAME="person">person
+
+</A></H2>
+
+<P>Type: belongs_to
+
+</P>
+<P>Related object: <A HREF="../../../RODA/RODADB/Result/Person.html">RODA::RODADB::Result::Person</A>
+
+</P><H2><A NAME="source">source
+
+</A></H2>
+
+<P>Type: belongs_to
+
+</P>
+<P>Related object: <A HREF="../../../RODA/RODADB/Result/Source.html">RODA::RODADB::Result::Source</A>
+
+</P><H2><A NAME="source_contact_method">source_contact_method
+
+</A></H2>
+
+<P>Type: belongs_to
+
+</P>
+<P>Related object: <A HREF="../../../RODA/RODADB/Result/SourceContactMethod.html">RODA::RODADB::Result::SourceContactMethod</A>
+
+</P>
+</BODY>
+</HTML>

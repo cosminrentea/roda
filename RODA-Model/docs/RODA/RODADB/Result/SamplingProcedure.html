@@ -1,0 +1,116 @@
+<HTML>
+<HEAD>
+<TITLE>RODA::RODADB::Result::SamplingProcedure</TITLE>
+</HEAD>
+<BODY BGCOLOR="#ffffff" TEXT="#000000">
+<UL>
+<LI><A HREF="#NAME">NAME
+
+</A><LI><A HREF="#DESCRIPTION">DESCRIPTION
+
+</A><LI><A HREF="#COMPONENTS%20LOADED">COMPONENTS LOADED
+
+</A><LI><A HREF="#TABLE%3a%20sampling_procedure">TABLE: <CODE>sampling_procedure</CODE>
+
+</A><LI><A HREF="#ACCESSORS">ACCESSORS
+
+</A><UL>
+<LI><A HREF="#id">id
+
+</A><LI><A HREF="#name">name
+
+</A><LI><A HREF="#description">description
+
+</A></UL>
+<LI><A HREF="#PRIMARY%20KEY">PRIMARY KEY
+
+</A><LI><A HREF="#RELATIONS">RELATIONS
+
+</A><UL>
+<LI><A HREF="#instance_sampling_procedures">instance_sampling_procedures
+
+</A><LI><A HREF="#instances">instances
+
+</A></UL>
+</UL>
+<HR>
+<H1><A NAME="NAME">NAME
+
+</A></H1>
+
+<P>RODA::RODADB::Result::SamplingProcedure
+
+</P><H1><A NAME="DESCRIPTION">DESCRIPTION
+
+</A></H1>
+
+<P>Tabel pentru procedurile de esantionare. (cf. DDI Codebook:) The type of sample and sample design used to select the survey respondents to represent the population. These may include one or more of the following: no sampling (total universe); quota sample; simple random sample; one-stage stratified or systematic random sample; one-stage cluster sample; multi-stage stratified random sample; quasi-random (e.g. random walk) sample; purposive selection/case studies; volunteer sample; convenience sample. 
+
+</P><H1><A NAME="COMPONENTS%20LOADED">COMPONENTS LOADED
+
+</A></H1>
+<DL><DT><A NAME="*%20DBIx%3a%3aClass%3a%3aInflateColumn%3a%3aDateTime">* <A HREF="../../../DBIx/Class/InflateColumn/DateTime.html">DBIx::Class::InflateColumn::DateTime</A>
+
+</A></DT>
+<DD>
+</DD>
+</DL>
+<H1><A NAME="TABLE%3a%20sampling_procedure">TABLE: <CODE>sampling_procedure</CODE>
+
+</A></H1>
+<H1><A NAME="ACCESSORS">ACCESSORS
+
+</A></H1>
+<H2><A NAME="id">id
+
+</A></H2>
+
+<PRE>  data_type: 'integer'
+  is_auto_increment: 1
+  is_nullable: 0
+  sequence: 'sampling_procedure_id_seq'</PRE>
+<H2><A NAME="name">name
+
+</A></H2>
+
+<PRE>  data_type: 'text'
+  is_nullable: 0</PRE>
+<H2><A NAME="description">description
+
+</A></H2>
+
+<PRE>  data_type: 'text'
+  is_nullable: 1</PRE>
+<H1><A NAME="PRIMARY%20KEY">PRIMARY KEY
+
+</A></H1>
+<DL><DT><A NAME="*%20%2fid">* <A HREF="#id">/id</A>
+
+</A></DT>
+<DD>
+</DD>
+</DL>
+<H1><A NAME="RELATIONS">RELATIONS
+
+</A></H1>
+<H2><A NAME="instance_sampling_procedures">instance_sampling_procedures
+
+</A></H2>
+
+<P>Type: has_many
+
+</P>
+<P>Related object: <A HREF="../../../RODA/RODADB/Result/InstanceSamplingProcedure.html">RODA::RODADB::Result::InstanceSamplingProcedure</A>
+
+</P><H2><A NAME="instances">instances
+
+</A></H2>
+
+<P>Type: many_to_many
+
+</P>
+<P>Composing rels: <A HREF="#instance_sampling_procedures">/instance_sampling_procedures</A> -&gt; instance
+
+</P>
+</BODY>
+</HTML>

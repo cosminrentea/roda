@@ -1,0 +1,127 @@
+<HTML>
+<HEAD>
+<TITLE>RODA::RODADB::Result::CatalogStudy</TITLE>
+</HEAD>
+<BODY BGCOLOR="#ffffff" TEXT="#000000">
+<UL>
+<LI><A HREF="#NAME">NAME
+
+</A><LI><A HREF="#DESCRIPTION">DESCRIPTION
+
+</A><LI><A HREF="#COMPONENTS%20LOADED">COMPONENTS LOADED
+
+</A><LI><A HREF="#TABLE%3a%20catalog_study">TABLE: <CODE>catalog_study</CODE>
+
+</A><LI><A HREF="#ACCESSORS">ACCESSORS
+
+</A><UL>
+<LI><A HREF="#catalog_id">catalog_id
+
+</A><LI><A HREF="#study_id">study_id
+
+</A><LI><A HREF="#added">added
+
+</A></UL>
+<LI><A HREF="#PRIMARY%20KEY">PRIMARY KEY
+
+</A><LI><A HREF="#RELATIONS">RELATIONS
+
+</A><UL>
+<LI><A HREF="#catalog">catalog
+
+</A><LI><A HREF="#study">study
+
+</A></UL>
+</UL>
+<HR>
+<H1><A NAME="NAME">NAME
+
+</A></H1>
+
+<P>RODA::RODADB::Result::CatalogStudy
+
+</P><H1><A NAME="DESCRIPTION">DESCRIPTION
+
+</A></H1>
+
+<P>Tabel ce contine asocierile dintre cataloage si studii (implementeaza relatia many-to-many intre catalog si study)
+
+</P><H1><A NAME="COMPONENTS%20LOADED">COMPONENTS LOADED
+
+</A></H1>
+<DL><DT><A NAME="*%20DBIx%3a%3aClass%3a%3aInflateColumn%3a%3aDateTime">* <A HREF="../../../DBIx/Class/InflateColumn/DateTime.html">DBIx::Class::InflateColumn::DateTime</A>
+
+</A></DT>
+<DD>
+</DD>
+</DL>
+<H1><A NAME="TABLE%3a%20catalog_study">TABLE: <CODE>catalog_study</CODE>
+
+</A></H1>
+<H1><A NAME="ACCESSORS">ACCESSORS
+
+</A></H1>
+<H2><A NAME="catalog_id">catalog_id
+
+</A></H2>
+
+<PRE>  data_type: 'integer'
+  is_foreign_key: 1
+  is_nullable: 0</PRE>
+
+<P>Codul unui catalog din care face parte studiul referit prin atributul study_id (refera atributul id din tabelul catalog)
+
+</P><H2><A NAME="study_id">study_id
+
+</A></H2>
+
+<PRE>  data_type: 'integer'
+  is_foreign_key: 1
+  is_nullable: 0</PRE>
+
+<P>Codul studiului asociat catalogului referit prin atributul catalog_id (refera atributul id din tabelul study)
+
+</P><H2><A NAME="added">added
+
+</A></H2>
+
+<PRE>  data_type: 'timestamp'
+  is_nullable: 0</PRE>
+<H1><A NAME="PRIMARY%20KEY">PRIMARY KEY
+
+</A></H1>
+<DL><DT><A NAME="*%20%2fcatalog_id">* <A HREF="#catalog_id">/catalog_id</A>
+
+</A></DT>
+<DD>
+</DD>
+<DT><A NAME="*%20%2fstudy_id">* <A HREF="#study_id">/study_id</A>
+
+</A></DT>
+<DD>
+</DD>
+</DL>
+<H1><A NAME="RELATIONS">RELATIONS
+
+</A></H1>
+<H2><A NAME="catalog">catalog
+
+</A></H2>
+
+<P>Type: belongs_to
+
+</P>
+<P>Related object: <A HREF="../../../RODA/RODADB/Result/Catalog.html">RODA::RODADB::Result::Catalog</A>
+
+</P><H2><A NAME="study">study
+
+</A></H2>
+
+<P>Type: belongs_to
+
+</P>
+<P>Related object: <A HREF="../../../RODA/RODADB/Result/Study.html">RODA::RODADB::Result::Study</A>
+
+</P>
+</BODY>
+</HTML>

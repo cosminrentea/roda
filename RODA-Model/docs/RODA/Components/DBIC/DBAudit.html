@@ -1,0 +1,151 @@
+<HTML>
+<HEAD>
+<TITLE>RODA::Components::DBIC::DBAudit;</TITLE>
+</HEAD>
+<BODY BGCOLOR="#ffffff" TEXT="#000000">
+<UL>
+<LI><A HREF="#NAME">NAME
+
+</A><LI><A HREF="#"></A><LI><A HREF="#INCARCARE">INCARCARE
+
+</A><LI><A HREF="#FUNCTIONARE">FUNCTIONARE
+
+</A><LI><A HREF="#METHODS">METHODS
+
+</A><UL>
+<LI><A HREF="#insert">insert
+
+</A><LI><A HREF="#update">update
+
+</A><LI><A HREF="#audit_log">audit_log
+
+</A><LI><A HREF="#delete">delete
+
+</A><LI><A HREF="#setup">setup
+
+</A><LI><A HREF="#store%20changes">store changes
+
+</A><LI><A HREF="#_force_audit">_force_audit
+
+</A><LI><A HREF="#_do_audit">_do_audit
+
+</A><LI><A HREF="#_do_modify_audit_value">_do_modify_audit_value
+
+</A><LI><A HREF="#_modify_audit_value">_modify_audit_value
+
+</A></UL>
+</UL>
+<HR>
+<H1><A NAME="NAME">NAME
+
+</A></H1>
+
+<P>RODA::Components::DBIC::DBAudit;
+
+</P><H1><A NAME=""></A></H1>
+
+<P>version 0.01
+
+</P><H1><A NAME="INCARCARE">INCARCARE
+
+</A></H1>
+
+<P>In clasa result a tabelului cu pricina: 
+
+</P>
+<P>__PACKAGE__-&gt;load_components(qw/+RODA::Components::DBIC::DBAudit/);
+
+</P>
+<P>Nu functioneaza pe tabelele cu chei multiple. Inca. 
+
+
+</P><H1><A NAME="FUNCTIONARE">FUNCTIONARE
+
+</A></H1>
+
+<P>Pachetul injecteaza propriile metode in clasa asociata tabelelor. 
+In timpul rularii metodelor de modificare a datelor, capteaza solicitarile de insert, update
+delete si propaga inserarea datelor in tabelele de audit, folosind metodele adaugate la schema. 
+
+</P><H1><A NAME="METHODS">METHODS
+
+</A></H1>
+<H2><A NAME="insert">insert
+
+</A></H2>
+
+<P>Incarca metoda insert, prin apelarea metodei private _action_setup si apoi _store_changes
+
+</P><H2><A NAME="update">update
+
+</A></H2>
+
+<P>Incarca metoda update
+
+</P><H2><A NAME="audit_log">audit_log
+
+</A></H2>
+
+<P>Adauga metoda audit_log unui rand de tabel. Metoda este una de convenienta pentru get_changes, paseaza mai departe orice parametru, mai putin table si id pe care le seteaza automat la cele curente
+
+</P>
+<PRE>   my $person = $roda-&gt;dbschema-&gt;resultset('Person')-&gt;find('8');
+ 
+   my $chg = $person-&gt;audit_log;
+
+   my @ch = $chg-&gt;all;
+
+   foreach my $cc (@ch) {
+      print $cc-&gt;action-&gt;changeset-&gt;timestamp-&gt;datetime.&quot; - &quot;.$cc-&gt;action-&gt;type.&quot; - &quot;.$cc-&gt;field-&gt;name .&quot; - &quot;.$cc-&gt;new_value .&quot;\n&quot;;
+   }
+
+</PRE>
+<H2><A NAME="delete">delete
+
+</A></H2>
+
+<P>Incarca metoda delete, similara cu insert, apeleaza _action_setup si apoi _store_changes
+
+</P><H2><A NAME="setup">setup
+
+</A></H2>
+
+<P>apeleaza metoda audit_log_create_action injectata in schema de RODA::Components::DBIC::DBAuditSchema si creeaza actiunea
+audit_log_create_action va creea changesetul daca e nevoie sau il va refolosi pe cel existent
+
+</P><H2><A NAME="store%20changes">store changes
+
+</A></H2>
+
+<P>construieste intrarile in tabel care corespund tuturor modificarilor coloanelor. Acestea sunt stocate in tabelul audit_log_change.
+Se apeleaza dupa setarea unei actiuni si verifica prezenta campurilor in tabelul audit_log_fields  
+
+</P><H2><A NAME="_force_audit">_force_audit
+
+</A></H2>
+
+<P>Returneaza 0 sau 1 daca in coloana curenta a fost setat parametrul force_audit_log_column care determina inserarea coloanei in tabelele de audit chiar
+in cazul unui update care nu i-a atins valoarea.
+
+</P><H2><A NAME="_do_audit">_do_audit
+
+</A></H2>
+
+<P>Determina daca coloana curenta trebuie introdusa in tabelele de audit. Ia in calcul atat force_audit cat si eventualitatea in care
+a fost setat parametrul audit_log_column =0 la definirea coloanei
+
+</P><H2><A NAME="_do_modify_audit_value">_do_modify_audit_value
+
+</A></H2>
+
+<P>Determina daca e nevoie sa ruleze un cod pentru modificarea valorii coloanei inainte de auditare
+
+</P><H2><A NAME="_modify_audit_value">_modify_audit_value
+
+</A></H2>
+
+<P>Incearca modificarea valorii coloanei, prin rularea codului specificat in aces scop la definirea coloanei
+
+</P>
+</BODY>
+</HTML>

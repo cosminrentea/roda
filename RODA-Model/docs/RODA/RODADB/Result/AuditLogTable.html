@@ -1,0 +1,119 @@
+<HTML>
+<HEAD>
+<TITLE>RODA::RODADB::Result::AuditLogTable</TITLE>
+</HEAD>
+<BODY BGCOLOR="#ffffff" TEXT="#000000">
+<UL>
+<LI><A HREF="#NAME">NAME
+
+</A><LI><A HREF="#COMPONENTS%20LOADED">COMPONENTS LOADED
+
+</A><LI><A HREF="#TABLE%3a%20audit_log_table">TABLE: <CODE>audit_log_table</CODE>
+
+</A><LI><A HREF="#ACCESSORS">ACCESSORS
+
+</A><UL>
+<LI><A HREF="#id">id
+
+</A><LI><A HREF="#name">name
+
+</A></UL>
+<LI><A HREF="#PRIMARY%20KEY">PRIMARY KEY
+
+</A><LI><A HREF="#UNIQUE%20CONSTRAINTS">UNIQUE CONSTRAINTS
+
+</A><UL>
+<LI><A HREF="#audit_log_table_name"><CODE>audit_log_table_name</CODE>
+
+</A></UL>
+<LI><A HREF="#RELATIONS">RELATIONS
+
+</A><UL>
+<LI><A HREF="#audit_log_actions">audit_log_actions
+
+</A><LI><A HREF="#audit_log_fields">audit_log_fields
+
+</A></UL>
+</UL>
+<HR>
+<H1><A NAME="NAME">NAME
+
+</A></H1>
+
+<P>RODA::RODADB::Result::AuditLogTable
+
+</P><H1><A NAME="COMPONENTS%20LOADED">COMPONENTS LOADED
+
+</A></H1>
+<DL><DT><A NAME="*%20DBIx%3a%3aClass%3a%3aInflateColumn%3a%3aDateTime">* <A HREF="../../../DBIx/Class/InflateColumn/DateTime.html">DBIx::Class::InflateColumn::DateTime</A>
+
+</A></DT>
+<DD>
+</DD>
+</DL>
+<H1><A NAME="TABLE%3a%20audit_log_table">TABLE: <CODE>audit_log_table</CODE>
+
+</A></H1>
+<H1><A NAME="ACCESSORS">ACCESSORS
+
+</A></H1>
+<H2><A NAME="id">id
+
+</A></H2>
+
+<PRE>  data_type: 'integer'
+  is_auto_increment: 1
+  is_nullable: 0
+  sequence: 'audit_log_table_id_seq'</PRE>
+<H2><A NAME="name">name
+
+</A></H2>
+
+<PRE>  data_type: 'varchar'
+  is_nullable: 0
+  size: 40</PRE>
+<H1><A NAME="PRIMARY%20KEY">PRIMARY KEY
+
+</A></H1>
+<DL><DT><A NAME="*%20%2fid">* <A HREF="#id">/id</A>
+
+</A></DT>
+<DD>
+</DD>
+</DL>
+<H1><A NAME="UNIQUE%20CONSTRAINTS">UNIQUE CONSTRAINTS
+
+</A></H1>
+<H2><A NAME="audit_log_table_name"><CODE>audit_log_table_name</CODE>
+
+</A></H2>
+<DL><DT><A NAME="*%20%2fname">* <A HREF="#name">/name</A>
+
+</A></DT>
+<DD>
+</DD>
+</DL>
+<H1><A NAME="RELATIONS">RELATIONS
+
+</A></H1>
+<H2><A NAME="audit_log_actions">audit_log_actions
+
+</A></H2>
+
+<P>Type: has_many
+
+</P>
+<P>Related object: <A HREF="../../../RODA/RODADB/Result/AuditLogAction.html">RODA::RODADB::Result::AuditLogAction</A>
+
+</P><H2><A NAME="audit_log_fields">audit_log_fields
+
+</A></H2>
+
+<P>Type: has_many
+
+</P>
+<P>Related object: <A HREF="../../../RODA/RODADB/Result/AuditLogField.html">RODA::RODADB::Result::AuditLogField</A>
+
+</P>
+</BODY>
+</HTML>

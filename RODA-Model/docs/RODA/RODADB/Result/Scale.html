@@ -1,0 +1,148 @@
+<HTML>
+<HEAD>
+<TITLE>RODA::RODADB::Result::Scale</TITLE>
+</HEAD>
+<BODY BGCOLOR="#ffffff" TEXT="#000000">
+<UL>
+<LI><A HREF="#NAME">NAME
+
+</A><LI><A HREF="#DESCRIPTION">DESCRIPTION
+
+</A><LI><A HREF="#COMPONENTS%20LOADED">COMPONENTS LOADED
+
+</A><LI><A HREF="#TABLE%3a%20scale">TABLE: <CODE>scale</CODE>
+
+</A><LI><A HREF="#ACCESSORS">ACCESSORS
+
+</A><UL>
+<LI><A HREF="#item_id">item_id
+
+</A><LI><A HREF="#minvalue_id">minvalue_id
+
+</A><LI><A HREF="#maxvalue_id">maxvalue_id
+
+</A><LI><A HREF="#units">units
+
+</A></UL>
+<LI><A HREF="#PRIMARY%20KEY">PRIMARY KEY
+
+</A><LI><A HREF="#RELATIONS">RELATIONS
+
+</A><UL>
+<LI><A HREF="#item">item
+
+</A><LI><A HREF="#maxvalue">maxvalue
+
+</A><LI><A HREF="#minvalue">minvalue
+
+</A></UL>
+</UL>
+<HR>
+<H1><A NAME="NAME">NAME
+
+</A></H1>
+
+<P>RODA::RODADB::Result::Scale
+
+</P><H1><A NAME="DESCRIPTION">DESCRIPTION
+
+</A></H1>
+
+<P>Tabel ce stocheaza elementele de tip scala ale variabilelor de selectie
+
+</P><H1><A NAME="COMPONENTS%20LOADED">COMPONENTS LOADED
+
+</A></H1>
+<DL><DT><A NAME="*%20DBIx%3a%3aClass%3a%3aInflateColumn%3a%3aDateTime">* <A HREF="../../../DBIx/Class/InflateColumn/DateTime.html">DBIx::Class::InflateColumn::DateTime</A>
+
+</A></DT>
+<DD>
+</DD>
+</DL>
+<H1><A NAME="TABLE%3a%20scale">TABLE: <CODE>scale</CODE>
+
+</A></H1>
+<H1><A NAME="ACCESSORS">ACCESSORS
+
+</A></H1>
+<H2><A NAME="item_id">item_id
+
+</A></H2>
+
+<PRE>  data_type: 'bigint'
+  is_foreign_key: 1
+  is_nullable: 0</PRE>
+
+<P>Codul item-ului
+
+</P><H2><A NAME="minvalue_id">minvalue_id
+
+</A></H2>
+
+<PRE>  data_type: 'bigint'
+  is_foreign_key: 1
+  is_nullable: 0</PRE>
+
+<P>Codul valorii minime (refera atributul itemId din tabelul value) 
+
+</P><H2><A NAME="maxvalue_id">maxvalue_id
+
+</A></H2>
+
+<PRE>  data_type: 'bigint'
+  is_foreign_key: 1
+  is_nullable: 0</PRE>
+
+<P>Codul valorii maxime (refera atributul itemId din tabelul value) 
+
+</P><H2><A NAME="units">units
+
+</A></H2>
+
+<PRE>  data_type: 'smallint'
+  is_nullable: 0</PRE>
+
+<P>Unitatea scalei respective
+
+</P><H1><A NAME="PRIMARY%20KEY">PRIMARY KEY
+
+</A></H1>
+<DL><DT><A NAME="*%20%2fitem_id">* <A HREF="#item_id">/item_id</A>
+
+</A></DT>
+<DD>
+</DD>
+</DL>
+<H1><A NAME="RELATIONS">RELATIONS
+
+</A></H1>
+<H2><A NAME="item">item
+
+</A></H2>
+
+<P>Type: belongs_to
+
+</P>
+<P>Related object: <A HREF="../../../RODA/RODADB/Result/Item.html">RODA::RODADB::Result::Item</A>
+
+</P><H2><A NAME="maxvalue">maxvalue
+
+</A></H2>
+
+<P>Type: belongs_to
+
+</P>
+<P>Related object: <A HREF="../../../RODA/RODADB/Result/Value.html">RODA::RODADB::Result::Value</A>
+
+</P><H2><A NAME="minvalue">minvalue
+
+</A></H2>
+
+<P>Type: belongs_to
+
+</P>
+<P>Related object: <A HREF="../../../RODA/RODADB/Result/Value.html">RODA::RODADB::Result::Value</A>
+
+</P>
+</BODY>
+</HTML>

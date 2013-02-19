@@ -7,6 +7,7 @@ Se foloseste implicit schema numita “public” din baza de date indicata.
 
 ----
 A. Pentru modificari la schema:
+----
 
 1. Se editeaza in dbWrench toate modificarile necesare, in fisierul “roda-db-doc.xml” (de pe SVN).
 
@@ -26,6 +27,7 @@ Save to File => salvat cu numele "roda-db-doc.sql", in folder-ul “dbwrench2-fi
 
 ----
 B. Pentru update local, dupa modificari facute de catre altcineva la schema dbWrench
+----
 
 1. SVN update, pentru a obtine noul script SQL = roda-db-doc.sql
 
@@ -36,7 +38,7 @@ B. Pentru update local, dupa modificari facute de catre altcineva la schema dbWr
 
 ----
 Note.
-
+----
 - Scripturile folosesc deocamdata doar shell-ul (bash), Perl si psql.
 - Fisierul “database.properties” nu trebuie sa fie commit-uit pe SVN (ramane local).
 - Scriptul “roda-drop.sh” sterge toate tabelele si apoi toate secventele din BD.

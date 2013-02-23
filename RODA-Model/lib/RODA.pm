@@ -35,6 +35,7 @@ has 'configfile' => ( is => 'ro', isa => 'Str',          builder => '_guess_conf
 has 'rootconfig' => ( is => 'ro', isa => 'RODA::Config', builder => '_build_root_config', lazy => 1 );
 has 'dbschema' => ( is => 'ro', isa => 'RODA::RODADB', builder => '_build_db_schema', lazy => 1 );
 has 'debugsql' => (is => 'rw', isa=>'Bool', default=>'0');
+has 'debugsqlfile' => (is => 'ro', isa=>'Str', default=>'0');
 has 'test' => ( is => 'ro', isa => 'Str', default=>'0');
 has 'userid'   => ( is => 'rw', isa => 'Maybe[Int]', trigger => \&propagate_user_id, );
 
@@ -102,25 +103,26 @@ Ataseaza informatiile suplimentare despre configurare instantei ORM-ului
 
 
 sub _build_db_schema {
-  my $self = shift;
-  unless ($self->test > 0) {
-   
-     my $sc = RODA::RODADB->connect( $self->rootconfig->database_dsn, $self->rootconfig->database_username, $self->rootconfig->database_password, { pg_enable_utf8 => 1 } );
-     $sc->configfile($self->configfile);
-     $sc->rootconfig($self->rootconfig);     
-     $sc->storage->debug($self->debugsql);
-     return $sc;
-  } else {
-   
-     my $sc = RODA::RODADB->connect( $self->rootconfig->test_database_dsn, $self->rootconfig->test_database_username, $self->rootconfig->test_database_password, { pg_enable_utf8 => 1} );
-     $sc->configfile($self->configfile);
-     $sc->rootconfig($self->rootconfig);     
-     $sc->storage->debug($self->debugsql);
-     $sc->test($self->test);
-     return $sc;
-   
-  }
+    my $self = shift;
+    my $sc;
 
+    print Dumper(\$self);
+
+    if ( $self->test ) {
+        $sc = RODA::RODADB->connect( $self->rootconfig->test_database_dsn, $self->rootconfig->test_database_username, $self->rootconfig->test_database_password, { pg_enable_utf8 => 1} );
+		$sc->test($self->test);
+    } else {
+		$sc = RODA::RODADB->connect( $self->rootconfig->database_dsn, $self->rootconfig->database_username, $self->rootconfig->database_password, { pg_enable_utf8 => 1 } );
+    }
+
+    $sc->configfile($self->configfile);
+    $sc->rootconfig($self->rootconfig);
+    $sc->storage->debug($self->debugsql);
+    if ( $self->debugsql ) {
+		$sc->storage->debugfh(IO::File->new($self->debugsqlfile, 'w'));
+    }
+
+    return $sc;
 }
 
 __PACKAGE__->meta()->make_immutable();

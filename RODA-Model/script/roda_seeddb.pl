@@ -10,6 +10,48 @@ use Encode qw(decode);
 use Data::Dumper;
 use Try::Tiny;
 use Path::Class;
+use Getopt::Long;
+
+
+my $opt_debugsql = 0;
+my $opt_log_file="roda_seeddb.log";
+my $opt_gensql = 0;
+my $opt_sql_file="roda_seeddb.sql";
+my $opt_real = 0;
+
+$options = GetOptions (
+"debugsql" => \$opt_debugsql,
+"logfile:s" => \$opt_log_file,
+"gensql" => \$opt_gensql,
+"sqlfile:s" => \$opt_sql_file,
+"real"   => \$opt_real
+);
+
+
+if ( $opt_gensql ) {
+
+	# Post-process SQL trace
+	open (my $rh, "<:encoding(UTF-8)", $opt_log_file) or die "cannot open: $!";
+	open (my $wh, ">:encoding(UTF-8)", $opt_sql_file) or die "cannot open: $!";
+
+	while(<$rh>) {
+    	chomp;
+	    ($query, $paramstring) = split(/:/);
+	    if ( $paramstring ) {
+			@params = split(/,/,$paramstring);
+			foreach my $p (@params) {
+			    $query =~ s/\?/$p/;
+			}
+    	}
+    	print $wh "$query".";"."\n";
+	}
+
+	close($rh);
+	close($wh);
+
+	exit(0);
+}
+
 
 
 my $scriptdir  = dir($FindBin::Bin);
@@ -21,15 +63,10 @@ my $config     = file($configdir, 'rodaconfig.ini');
 
 my $csvdir = $projectdir->subdir('csv');
 
-my $roda = RODA->new( configfile => $config->stringify, test => '1');
+# Use Real DB or Test DB? debug or quiet ?
+my $roda = RODA->new( configfile => $config->stringify, test => (! $opt_real), debugsql => $opt_debugsql, debugsqlfile => $opt_log_file );
 
 
-
-
-
-
-
-#my $schema = RODA::RODADB->connect( 'dbi:Pg:dbname=roda-devel;host=193.228.153.170', 'roda2012', '2012roda', { pg_enable_utf8 => 1 } );
 
 print "Language\n";
 
@@ -50,7 +87,7 @@ if ( -f $csvdir->file('language.csv' )->stringify) {
     print "Language file not found .... ".$csvdir->file('language.csv')->stringify."\n";
 }
 
-print "Prefixe";
+print "Prefixe\n";
 
 if ( -f $csvdir->file('prefixe.csv' )->stringify) {
     my $prefcsv = Text::CSV::Auto->new($csvdir->file('prefixe.csv')->stringify);
@@ -109,8 +146,8 @@ if ( -f $csvdir->file('region_type.csv')->stringify ) {
 } else {
     print "Nu gasesc fisierul ... ". $csvdir->file('region_type.csv')->stringify."\n";
 }
-print "Regions\n";
 
+print "Regions\n";
 #fisierul region_types are id in el degeaba pentru ca altfel idiotul de Text::CSV nu isi da seama ca e csv
 if ( -f $csvdir->file('region.csv')->stringify ) {
     my $rgcsv = Text::CSV::Auto->new($csvdir->file('region.csv')->stringify);
@@ -137,6 +174,7 @@ if ( -f $csvdir->file('region.csv')->stringify ) {
 }
 
 #city
+print "City\n";
 if ( -f $csvdir->file('orase_ro_rr.csv' )->stringify) {
     my $rgcsv = Text::CSV::Auto->new($csvdir->file('orase_ro_rr.csv')->stringify);
     my $rows  = $rgcsv->slurp();
@@ -237,9 +275,9 @@ if ( -f $csvdir->file('orase_ro_rr.csv' )->stringify) {
     }
 }
 
-print "CMS root folder\n";
 
 #root folder pentru cms_folder
+print "CMS root folder\n";
 if ( -f $csvdir->file('cms_folder.csv' )->stringify) {
     my $cmsfcsv = Text::CSV::Auto->new($csvdir->file('cms_folder.csv' )->stringify);
     my $rows    = $cmsfcsv->slurp();
@@ -256,7 +294,9 @@ if ( -f $csvdir->file('cms_folder.csv' )->stringify) {
     print "cms folder file not found .... ".$csvdir->file('cms_folder.csv')->stringify."\n";
 }
 
+
 #user pentru alte alea
+print "User\n";
 if ( -f $csvdir->file('user.csv' )->stringify) {
     my $usercsv = Text::CSV::Auto->new($csvdir->file('user.csv' )->stringify);
     my $rows    = $usercsv->slurp();
@@ -272,16 +312,4 @@ if ( -f $csvdir->file('user.csv' )->stringify) {
 } else {
     print "user file not found .... ".$csvdir->file('user.csv')->stringify."\n";
 }
-
-
-
-
-
-
-
-
-
-
-
-
 

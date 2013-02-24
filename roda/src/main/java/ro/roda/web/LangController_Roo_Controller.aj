@@ -6,6 +6,7 @@ package ro.roda.web;
 import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,13 +15,26 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.InstanceDescr;
 import ro.roda.Lang;
-import ro.roda.StudyDescr;
-import ro.roda.TranslatedTopic;
+import ro.roda.service.InstanceDescrService;
+import ro.roda.service.LangService;
+import ro.roda.service.StudyDescrService;
+import ro.roda.service.TranslatedTopicService;
 import ro.roda.web.LangController;
 
 privileged aspect LangController_Roo_Controller {
+    
+    @Autowired
+    LangService LangController.langService;
+    
+    @Autowired
+    InstanceDescrService LangController.instanceDescrService;
+    
+    @Autowired
+    StudyDescrService LangController.studyDescrService;
+    
+    @Autowired
+    TranslatedTopicService LangController.translatedTopicService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String LangController.create(@Valid Lang lang, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -29,7 +43,7 @@ privileged aspect LangController_Roo_Controller {
             return "langs/create";
         }
         uiModel.asMap().clear();
-        lang.persist();
+        langService.saveLang(lang);
         return "redirect:/langs/" + encodeUrlPathSegment(lang.getId().toString(), httpServletRequest);
     }
     
@@ -41,7 +55,7 @@ privileged aspect LangController_Roo_Controller {
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String LangController.show(@PathVariable("id") String id, Model uiModel) {
-        uiModel.addAttribute("lang", Lang.findLang(id));
+        uiModel.addAttribute("lang", langService.findLang(id));
         uiModel.addAttribute("itemId", id);
         return "langs/show";
     }
@@ -51,11 +65,11 @@ privileged aspect LangController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("langs", Lang.findLangEntries(firstResult, sizeNo));
-            float nrOfPages = (float) Lang.countLangs() / sizeNo;
+            uiModel.addAttribute("langs", langService.findLangEntries(firstResult, sizeNo));
+            float nrOfPages = (float) langService.countAllLangs() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("langs", Lang.findAllLangs());
+            uiModel.addAttribute("langs", langService.findAllLangs());
         }
         return "langs/list";
     }
@@ -67,20 +81,20 @@ privileged aspect LangController_Roo_Controller {
             return "langs/update";
         }
         uiModel.asMap().clear();
-        lang.merge();
+        langService.updateLang(lang);
         return "redirect:/langs/" + encodeUrlPathSegment(lang.getId().toString(), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String LangController.updateForm(@PathVariable("id") String id, Model uiModel) {
-        populateEditForm(uiModel, Lang.findLang(id));
+        populateEditForm(uiModel, langService.findLang(id));
         return "langs/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
     public String LangController.delete(@PathVariable("id") String id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        Lang lang = Lang.findLang(id);
-        lang.remove();
+        Lang lang = langService.findLang(id);
+        langService.deleteLang(lang);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
@@ -89,9 +103,9 @@ privileged aspect LangController_Roo_Controller {
     
     void LangController.populateEditForm(Model uiModel, Lang lang) {
         uiModel.addAttribute("lang", lang);
-        uiModel.addAttribute("instancedescrs", InstanceDescr.findAllInstanceDescrs());
-        uiModel.addAttribute("studydescrs", StudyDescr.findAllStudyDescrs());
-        uiModel.addAttribute("translatedtopics", TranslatedTopic.findAllTranslatedTopics());
+        uiModel.addAttribute("instancedescrs", instanceDescrService.findAllInstanceDescrs());
+        uiModel.addAttribute("studydescrs", studyDescrService.findAllStudyDescrs());
+        uiModel.addAttribute("translatedtopics", translatedTopicService.findAllTranslatedTopics());
     }
     
     String LangController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

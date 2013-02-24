@@ -6,7 +6,6 @@ package ro.roda;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
@@ -15,11 +14,14 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import ro.roda.Catalog;
 import ro.roda.CatalogDataOnDemand;
 import ro.roda.CatalogStudy;
 import ro.roda.CatalogStudyDataOnDemand;
 import ro.roda.CatalogStudyPK;
+import ro.roda.Study;
 import ro.roda.StudyDataOnDemand;
+import ro.roda.service.CatalogStudyService;
 
 privileged aspect CatalogStudyDataOnDemand_Roo_DataOnDemand {
     
@@ -30,15 +32,20 @@ privileged aspect CatalogStudyDataOnDemand_Roo_DataOnDemand {
     private List<CatalogStudy> CatalogStudyDataOnDemand.data;
     
     @Autowired
-    private CatalogDataOnDemand CatalogStudyDataOnDemand.catalogDataOnDemand;
+    CatalogDataOnDemand CatalogStudyDataOnDemand.catalogDataOnDemand;
     
     @Autowired
-    private StudyDataOnDemand CatalogStudyDataOnDemand.studyDataOnDemand;
+    StudyDataOnDemand CatalogStudyDataOnDemand.studyDataOnDemand;
+    
+    @Autowired
+    CatalogStudyService CatalogStudyDataOnDemand.catalogStudyService;
     
     public CatalogStudy CatalogStudyDataOnDemand.getNewTransientCatalogStudy(int index) {
         CatalogStudy obj = new CatalogStudy();
         setEmbeddedIdClass(obj, index);
         setAdded(obj, index);
+        setCatalogId(obj, index);
+        setStudyId(obj, index);
         return obj;
     }
     
@@ -51,8 +58,18 @@ privileged aspect CatalogStudyDataOnDemand_Roo_DataOnDemand {
     }
     
     public void CatalogStudyDataOnDemand.setAdded(CatalogStudy obj, int index) {
-        Date added = new GregorianCalendar(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH), Calendar.getInstance().get(Calendar.HOUR_OF_DAY), Calendar.getInstance().get(Calendar.MINUTE), Calendar.getInstance().get(Calendar.SECOND) + new Double(Math.random() * 1000).intValue()).getTime();
+        Calendar added = Calendar.getInstance();
         obj.setAdded(added);
+    }
+    
+    public void CatalogStudyDataOnDemand.setCatalogId(CatalogStudy obj, int index) {
+        Catalog catalogId = catalogDataOnDemand.getRandomCatalog();
+        obj.setCatalogId(catalogId);
+    }
+    
+    public void CatalogStudyDataOnDemand.setStudyId(CatalogStudy obj, int index) {
+        Study studyId = studyDataOnDemand.getRandomStudy();
+        obj.setStudyId(studyId);
     }
     
     public CatalogStudy CatalogStudyDataOnDemand.getSpecificCatalogStudy(int index) {
@@ -65,14 +82,14 @@ privileged aspect CatalogStudyDataOnDemand_Roo_DataOnDemand {
         }
         CatalogStudy obj = data.get(index);
         CatalogStudyPK id = obj.getId();
-        return CatalogStudy.findCatalogStudy(id);
+        return catalogStudyService.findCatalogStudy(id);
     }
     
     public CatalogStudy CatalogStudyDataOnDemand.getRandomCatalogStudy() {
         init();
         CatalogStudy obj = data.get(rnd.nextInt(data.size()));
         CatalogStudyPK id = obj.getId();
-        return CatalogStudy.findCatalogStudy(id);
+        return catalogStudyService.findCatalogStudy(id);
     }
     
     public boolean CatalogStudyDataOnDemand.modifyCatalogStudy(CatalogStudy obj) {
@@ -82,7 +99,7 @@ privileged aspect CatalogStudyDataOnDemand_Roo_DataOnDemand {
     public void CatalogStudyDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = CatalogStudy.findCatalogStudyEntries(from, to);
+        data = catalogStudyService.findCatalogStudyEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'CatalogStudy' illegally returned null");
         }
@@ -94,7 +111,7 @@ privileged aspect CatalogStudyDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             CatalogStudy obj = getNewTransientCatalogStudy(i);
             try {
-                obj.persist();
+                catalogStudyService.saveCatalogStudy(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

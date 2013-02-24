@@ -6,7 +6,6 @@ package ro.roda;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
@@ -15,12 +14,16 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import ro.roda.Keyword;
 import ro.roda.KeywordDataOnDemand;
+import ro.roda.Rodauser;
+import ro.roda.RodauserDataOnDemand;
+import ro.roda.Study;
 import ro.roda.StudyDataOnDemand;
 import ro.roda.StudyKeyword;
 import ro.roda.StudyKeywordDataOnDemand;
 import ro.roda.StudyKeywordPK;
-import ro.roda.UserDataOnDemand;
+import ro.roda.service.StudyKeywordService;
 
 privileged aspect StudyKeywordDataOnDemand_Roo_DataOnDemand {
     
@@ -31,18 +34,24 @@ privileged aspect StudyKeywordDataOnDemand_Roo_DataOnDemand {
     private List<StudyKeyword> StudyKeywordDataOnDemand.data;
     
     @Autowired
-    private UserDataOnDemand StudyKeywordDataOnDemand.userDataOnDemand;
+    RodauserDataOnDemand StudyKeywordDataOnDemand.rodauserDataOnDemand;
     
     @Autowired
-    private KeywordDataOnDemand StudyKeywordDataOnDemand.keywordDataOnDemand;
+    KeywordDataOnDemand StudyKeywordDataOnDemand.keywordDataOnDemand;
     
     @Autowired
-    private StudyDataOnDemand StudyKeywordDataOnDemand.studyDataOnDemand;
+    StudyDataOnDemand StudyKeywordDataOnDemand.studyDataOnDemand;
+    
+    @Autowired
+    StudyKeywordService StudyKeywordDataOnDemand.studyKeywordService;
     
     public StudyKeyword StudyKeywordDataOnDemand.getNewTransientStudyKeyword(int index) {
         StudyKeyword obj = new StudyKeyword();
         setEmbeddedIdClass(obj, index);
         setAdded(obj, index);
+        setAddedBy(obj, index);
+        setKeywordId(obj, index);
+        setStudyId(obj, index);
         return obj;
     }
     
@@ -56,8 +65,23 @@ privileged aspect StudyKeywordDataOnDemand_Roo_DataOnDemand {
     }
     
     public void StudyKeywordDataOnDemand.setAdded(StudyKeyword obj, int index) {
-        Date added = new GregorianCalendar(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH), Calendar.getInstance().get(Calendar.HOUR_OF_DAY), Calendar.getInstance().get(Calendar.MINUTE), Calendar.getInstance().get(Calendar.SECOND) + new Double(Math.random() * 1000).intValue()).getTime();
+        Calendar added = Calendar.getInstance();
         obj.setAdded(added);
+    }
+    
+    public void StudyKeywordDataOnDemand.setAddedBy(StudyKeyword obj, int index) {
+        Rodauser addedBy = rodauserDataOnDemand.getRandomRodauser();
+        obj.setAddedBy(addedBy);
+    }
+    
+    public void StudyKeywordDataOnDemand.setKeywordId(StudyKeyword obj, int index) {
+        Keyword keywordId = keywordDataOnDemand.getRandomKeyword();
+        obj.setKeywordId(keywordId);
+    }
+    
+    public void StudyKeywordDataOnDemand.setStudyId(StudyKeyword obj, int index) {
+        Study studyId = studyDataOnDemand.getRandomStudy();
+        obj.setStudyId(studyId);
     }
     
     public StudyKeyword StudyKeywordDataOnDemand.getSpecificStudyKeyword(int index) {
@@ -70,14 +94,14 @@ privileged aspect StudyKeywordDataOnDemand_Roo_DataOnDemand {
         }
         StudyKeyword obj = data.get(index);
         StudyKeywordPK id = obj.getId();
-        return StudyKeyword.findStudyKeyword(id);
+        return studyKeywordService.findStudyKeyword(id);
     }
     
     public StudyKeyword StudyKeywordDataOnDemand.getRandomStudyKeyword() {
         init();
         StudyKeyword obj = data.get(rnd.nextInt(data.size()));
         StudyKeywordPK id = obj.getId();
-        return StudyKeyword.findStudyKeyword(id);
+        return studyKeywordService.findStudyKeyword(id);
     }
     
     public boolean StudyKeywordDataOnDemand.modifyStudyKeyword(StudyKeyword obj) {
@@ -87,7 +111,7 @@ privileged aspect StudyKeywordDataOnDemand_Roo_DataOnDemand {
     public void StudyKeywordDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = StudyKeyword.findStudyKeywordEntries(from, to);
+        data = studyKeywordService.findStudyKeywordEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'StudyKeyword' illegally returned null");
         }
@@ -99,7 +123,7 @@ privileged aspect StudyKeywordDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             StudyKeyword obj = getNewTransientStudyKeyword(i);
             try {
-                obj.persist();
+                studyKeywordService.saveStudyKeyword(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

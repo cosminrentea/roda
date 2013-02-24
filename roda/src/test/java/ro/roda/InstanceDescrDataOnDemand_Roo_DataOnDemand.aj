@@ -12,11 +12,14 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import ro.roda.Instance;
 import ro.roda.InstanceDataOnDemand;
 import ro.roda.InstanceDescr;
 import ro.roda.InstanceDescrDataOnDemand;
 import ro.roda.InstanceDescrPK;
+import ro.roda.Lang;
 import ro.roda.LangDataOnDemand;
+import ro.roda.service.InstanceDescrService;
 
 privileged aspect InstanceDescrDataOnDemand_Roo_DataOnDemand {
     
@@ -27,15 +30,20 @@ privileged aspect InstanceDescrDataOnDemand_Roo_DataOnDemand {
     private List<InstanceDescr> InstanceDescrDataOnDemand.data;
     
     @Autowired
-    private InstanceDataOnDemand InstanceDescrDataOnDemand.instanceDataOnDemand;
+    InstanceDataOnDemand InstanceDescrDataOnDemand.instanceDataOnDemand;
     
     @Autowired
-    private LangDataOnDemand InstanceDescrDataOnDemand.langDataOnDemand;
+    LangDataOnDemand InstanceDescrDataOnDemand.langDataOnDemand;
+    
+    @Autowired
+    InstanceDescrService InstanceDescrDataOnDemand.instanceDescrService;
     
     public InstanceDescr InstanceDescrDataOnDemand.getNewTransientInstanceDescr(int index) {
         InstanceDescr obj = new InstanceDescr();
         setEmbeddedIdClass(obj, index);
         setAbstract1(obj, index);
+        setInstanceId(obj, index);
+        setLangId(obj, index);
         setResearchInstrument(obj, index);
         setScope(obj, index);
         setTitle(obj, index);
@@ -58,6 +66,16 @@ privileged aspect InstanceDescrDataOnDemand_Roo_DataOnDemand {
     public void InstanceDescrDataOnDemand.setAbstract1(InstanceDescr obj, int index) {
         String abstract1 = "abstract1_" + index;
         obj.setAbstract1(abstract1);
+    }
+    
+    public void InstanceDescrDataOnDemand.setInstanceId(InstanceDescr obj, int index) {
+        Instance instanceId = instanceDataOnDemand.getRandomInstance();
+        obj.setInstanceId(instanceId);
+    }
+    
+    public void InstanceDescrDataOnDemand.setLangId(InstanceDescr obj, int index) {
+        Lang langId = langDataOnDemand.getRandomLang();
+        obj.setLangId(langId);
     }
     
     public void InstanceDescrDataOnDemand.setResearchInstrument(InstanceDescr obj, int index) {
@@ -95,14 +113,14 @@ privileged aspect InstanceDescrDataOnDemand_Roo_DataOnDemand {
         }
         InstanceDescr obj = data.get(index);
         InstanceDescrPK id = obj.getId();
-        return InstanceDescr.findInstanceDescr(id);
+        return instanceDescrService.findInstanceDescr(id);
     }
     
     public InstanceDescr InstanceDescrDataOnDemand.getRandomInstanceDescr() {
         init();
         InstanceDescr obj = data.get(rnd.nextInt(data.size()));
         InstanceDescrPK id = obj.getId();
-        return InstanceDescr.findInstanceDescr(id);
+        return instanceDescrService.findInstanceDescr(id);
     }
     
     public boolean InstanceDescrDataOnDemand.modifyInstanceDescr(InstanceDescr obj) {
@@ -112,7 +130,7 @@ privileged aspect InstanceDescrDataOnDemand_Roo_DataOnDemand {
     public void InstanceDescrDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = InstanceDescr.findInstanceDescrEntries(from, to);
+        data = instanceDescrService.findInstanceDescrEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'InstanceDescr' illegally returned null");
         }
@@ -124,7 +142,7 @@ privileged aspect InstanceDescrDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             InstanceDescr obj = getNewTransientInstanceDescr(i);
             try {
-                obj.persist();
+                instanceDescrService.saveInstanceDescr(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

@@ -11,10 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.FilePropertyNameValue;
 import ro.roda.FilePropertyNameValueDataOnDemand;
 import ro.roda.FilePropertyNameValueIntegrationTest;
 import ro.roda.FilePropertyNameValuePK;
+import ro.roda.service.FilePropertyNameValueService;
 
 privileged aspect FilePropertyNameValueIntegrationTest_Roo_IntegrationTest {
     
@@ -25,12 +25,15 @@ privileged aspect FilePropertyNameValueIntegrationTest_Roo_IntegrationTest {
     declare @type: FilePropertyNameValueIntegrationTest: @Transactional;
     
     @Autowired
-    private FilePropertyNameValueDataOnDemand FilePropertyNameValueIntegrationTest.dod;
+    FilePropertyNameValueDataOnDemand FilePropertyNameValueIntegrationTest.dod;
+    
+    @Autowired
+    FilePropertyNameValueService FilePropertyNameValueIntegrationTest.filePropertyNameValueService;
     
     @Test
-    public void FilePropertyNameValueIntegrationTest.testCountFilePropertyNameValues() {
+    public void FilePropertyNameValueIntegrationTest.testCountAllFilePropertyNameValues() {
         Assert.assertNotNull("Data on demand for 'FilePropertyNameValue' failed to initialize correctly", dod.getRandomFilePropertyNameValue());
-        long count = FilePropertyNameValue.countFilePropertyNameValues();
+        long count = filePropertyNameValueService.countAllFilePropertyNameValues();
         Assert.assertTrue("Counter for 'FilePropertyNameValue' incorrectly reported there were no entries", count > 0);
     }
     
@@ -40,7 +43,7 @@ privileged aspect FilePropertyNameValueIntegrationTest_Roo_IntegrationTest {
         Assert.assertNotNull("Data on demand for 'FilePropertyNameValue' failed to initialize correctly", obj);
         FilePropertyNameValuePK id = obj.getId();
         Assert.assertNotNull("Data on demand for 'FilePropertyNameValue' failed to provide an identifier", id);
-        obj = FilePropertyNameValue.findFilePropertyNameValue(id);
+        obj = filePropertyNameValueService.findFilePropertyNameValue(id);
         Assert.assertNotNull("Find method for 'FilePropertyNameValue' illegally returned null for id '" + id + "'", obj);
         Assert.assertEquals("Find method for 'FilePropertyNameValue' returned the incorrect identifier", id, obj.getId());
     }
@@ -48,9 +51,9 @@ privileged aspect FilePropertyNameValueIntegrationTest_Roo_IntegrationTest {
     @Test
     public void FilePropertyNameValueIntegrationTest.testFindAllFilePropertyNameValues() {
         Assert.assertNotNull("Data on demand for 'FilePropertyNameValue' failed to initialize correctly", dod.getRandomFilePropertyNameValue());
-        long count = FilePropertyNameValue.countFilePropertyNameValues();
+        long count = filePropertyNameValueService.countAllFilePropertyNameValues();
         Assert.assertTrue("Too expensive to perform a find all test for 'FilePropertyNameValue', as there are " + count + " entries; set the findAllMaximum to exceed this value or set findAll=false on the integration test annotation to disable the test", count < 250);
-        List<FilePropertyNameValue> result = FilePropertyNameValue.findAllFilePropertyNameValues();
+        List<FilePropertyNameValue> result = filePropertyNameValueService.findAllFilePropertyNameValues();
         Assert.assertNotNull("Find all method for 'FilePropertyNameValue' illegally returned null", result);
         Assert.assertTrue("Find all method for 'FilePropertyNameValue' failed to return any data", result.size() > 0);
     }
@@ -58,35 +61,35 @@ privileged aspect FilePropertyNameValueIntegrationTest_Roo_IntegrationTest {
     @Test
     public void FilePropertyNameValueIntegrationTest.testFindFilePropertyNameValueEntries() {
         Assert.assertNotNull("Data on demand for 'FilePropertyNameValue' failed to initialize correctly", dod.getRandomFilePropertyNameValue());
-        long count = FilePropertyNameValue.countFilePropertyNameValues();
+        long count = filePropertyNameValueService.countAllFilePropertyNameValues();
         if (count > 20) count = 20;
         int firstResult = 0;
         int maxResults = (int) count;
-        List<FilePropertyNameValue> result = FilePropertyNameValue.findFilePropertyNameValueEntries(firstResult, maxResults);
+        List<FilePropertyNameValue> result = filePropertyNameValueService.findFilePropertyNameValueEntries(firstResult, maxResults);
         Assert.assertNotNull("Find entries method for 'FilePropertyNameValue' illegally returned null", result);
         Assert.assertEquals("Find entries method for 'FilePropertyNameValue' returned an incorrect number of entries", count, result.size());
     }
     
     @Test
-    public void FilePropertyNameValueIntegrationTest.testPersist() {
+    public void FilePropertyNameValueIntegrationTest.testSaveFilePropertyNameValue() {
         Assert.assertNotNull("Data on demand for 'FilePropertyNameValue' failed to initialize correctly", dod.getRandomFilePropertyNameValue());
         FilePropertyNameValue obj = dod.getNewTransientFilePropertyNameValue(Integer.MAX_VALUE);
         Assert.assertNotNull("Data on demand for 'FilePropertyNameValue' failed to provide a new transient entity", obj);
-        obj.persist();
+        filePropertyNameValueService.saveFilePropertyNameValue(obj);
         obj.flush();
         Assert.assertNotNull("Expected 'FilePropertyNameValue' identifier to no longer be null", obj.getId());
     }
     
     @Test
-    public void FilePropertyNameValueIntegrationTest.testRemove() {
+    public void FilePropertyNameValueIntegrationTest.testDeleteFilePropertyNameValue() {
         FilePropertyNameValue obj = dod.getRandomFilePropertyNameValue();
         Assert.assertNotNull("Data on demand for 'FilePropertyNameValue' failed to initialize correctly", obj);
         FilePropertyNameValuePK id = obj.getId();
         Assert.assertNotNull("Data on demand for 'FilePropertyNameValue' failed to provide an identifier", id);
-        obj = FilePropertyNameValue.findFilePropertyNameValue(id);
-        obj.remove();
+        obj = filePropertyNameValueService.findFilePropertyNameValue(id);
+        filePropertyNameValueService.deleteFilePropertyNameValue(obj);
         obj.flush();
-        Assert.assertNull("Failed to remove 'FilePropertyNameValue' with identifier '" + id + "'", FilePropertyNameValue.findFilePropertyNameValue(id));
+        Assert.assertNull("Failed to remove 'FilePropertyNameValue' with identifier '" + id + "'", filePropertyNameValueService.findFilePropertyNameValue(id));
     }
     
 }

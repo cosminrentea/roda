@@ -6,6 +6,7 @@ package ro.roda.web;
 import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,11 +15,18 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.Person;
 import ro.roda.Prefix;
+import ro.roda.service.PersonService;
+import ro.roda.service.PrefixService;
 import ro.roda.web.PrefixController;
 
 privileged aspect PrefixController_Roo_Controller {
+    
+    @Autowired
+    PrefixService PrefixController.prefixService;
+    
+    @Autowired
+    PersonService PrefixController.personService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String PrefixController.create(@Valid Prefix prefix, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -27,7 +35,7 @@ privileged aspect PrefixController_Roo_Controller {
             return "prefixes/create";
         }
         uiModel.asMap().clear();
-        prefix.persist();
+        prefixService.savePrefix(prefix);
         return "redirect:/prefixes/" + encodeUrlPathSegment(prefix.getId().toString(), httpServletRequest);
     }
     
@@ -39,7 +47,7 @@ privileged aspect PrefixController_Roo_Controller {
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String PrefixController.show(@PathVariable("id") Integer id, Model uiModel) {
-        uiModel.addAttribute("prefix", Prefix.findPrefix(id));
+        uiModel.addAttribute("prefix", prefixService.findPrefix(id));
         uiModel.addAttribute("itemId", id);
         return "prefixes/show";
     }
@@ -49,11 +57,11 @@ privileged aspect PrefixController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("prefixes", Prefix.findPrefixEntries(firstResult, sizeNo));
-            float nrOfPages = (float) Prefix.countPrefixes() / sizeNo;
+            uiModel.addAttribute("prefixes", prefixService.findPrefixEntries(firstResult, sizeNo));
+            float nrOfPages = (float) prefixService.countAllPrefixes() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("prefixes", Prefix.findAllPrefixes());
+            uiModel.addAttribute("prefixes", prefixService.findAllPrefixes());
         }
         return "prefixes/list";
     }
@@ -65,20 +73,20 @@ privileged aspect PrefixController_Roo_Controller {
             return "prefixes/update";
         }
         uiModel.asMap().clear();
-        prefix.merge();
+        prefixService.updatePrefix(prefix);
         return "redirect:/prefixes/" + encodeUrlPathSegment(prefix.getId().toString(), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String PrefixController.updateForm(@PathVariable("id") Integer id, Model uiModel) {
-        populateEditForm(uiModel, Prefix.findPrefix(id));
+        populateEditForm(uiModel, prefixService.findPrefix(id));
         return "prefixes/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
     public String PrefixController.delete(@PathVariable("id") Integer id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        Prefix prefix = Prefix.findPrefix(id);
-        prefix.remove();
+        Prefix prefix = prefixService.findPrefix(id);
+        prefixService.deletePrefix(prefix);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
@@ -87,7 +95,7 @@ privileged aspect PrefixController_Roo_Controller {
     
     void PrefixController.populateEditForm(Model uiModel, Prefix prefix) {
         uiModel.addAttribute("prefix", prefix);
-        uiModel.addAttribute("people", Person.findAllPeople());
+        uiModel.addAttribute("people", personService.findAllPeople());
     }
     
     String PrefixController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

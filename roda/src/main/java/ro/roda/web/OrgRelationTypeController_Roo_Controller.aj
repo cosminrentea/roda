@@ -6,6 +6,7 @@ package ro.roda.web;
 import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,10 +16,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.OrgRelationType;
-import ro.roda.OrgRelations;
+import ro.roda.service.OrgRelationTypeService;
+import ro.roda.service.OrgRelationsService;
 import ro.roda.web.OrgRelationTypeController;
 
 privileged aspect OrgRelationTypeController_Roo_Controller {
+    
+    @Autowired
+    OrgRelationTypeService OrgRelationTypeController.orgRelationTypeService;
+    
+    @Autowired
+    OrgRelationsService OrgRelationTypeController.orgRelationsService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String OrgRelationTypeController.create(@Valid OrgRelationType orgRelationType, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -27,7 +35,7 @@ privileged aspect OrgRelationTypeController_Roo_Controller {
             return "orgrelationtypes/create";
         }
         uiModel.asMap().clear();
-        orgRelationType.persist();
+        orgRelationTypeService.saveOrgRelationType(orgRelationType);
         return "redirect:/orgrelationtypes/" + encodeUrlPathSegment(orgRelationType.getId().toString(), httpServletRequest);
     }
     
@@ -39,7 +47,7 @@ privileged aspect OrgRelationTypeController_Roo_Controller {
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String OrgRelationTypeController.show(@PathVariable("id") Integer id, Model uiModel) {
-        uiModel.addAttribute("orgrelationtype", OrgRelationType.findOrgRelationType(id));
+        uiModel.addAttribute("orgrelationtype", orgRelationTypeService.findOrgRelationType(id));
         uiModel.addAttribute("itemId", id);
         return "orgrelationtypes/show";
     }
@@ -49,11 +57,11 @@ privileged aspect OrgRelationTypeController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("orgrelationtypes", OrgRelationType.findOrgRelationTypeEntries(firstResult, sizeNo));
-            float nrOfPages = (float) OrgRelationType.countOrgRelationTypes() / sizeNo;
+            uiModel.addAttribute("orgrelationtypes", orgRelationTypeService.findOrgRelationTypeEntries(firstResult, sizeNo));
+            float nrOfPages = (float) orgRelationTypeService.countAllOrgRelationTypes() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("orgrelationtypes", OrgRelationType.findAllOrgRelationTypes());
+            uiModel.addAttribute("orgrelationtypes", orgRelationTypeService.findAllOrgRelationTypes());
         }
         return "orgrelationtypes/list";
     }
@@ -65,20 +73,20 @@ privileged aspect OrgRelationTypeController_Roo_Controller {
             return "orgrelationtypes/update";
         }
         uiModel.asMap().clear();
-        orgRelationType.merge();
+        orgRelationTypeService.updateOrgRelationType(orgRelationType);
         return "redirect:/orgrelationtypes/" + encodeUrlPathSegment(orgRelationType.getId().toString(), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String OrgRelationTypeController.updateForm(@PathVariable("id") Integer id, Model uiModel) {
-        populateEditForm(uiModel, OrgRelationType.findOrgRelationType(id));
+        populateEditForm(uiModel, orgRelationTypeService.findOrgRelationType(id));
         return "orgrelationtypes/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
     public String OrgRelationTypeController.delete(@PathVariable("id") Integer id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        OrgRelationType orgRelationType = OrgRelationType.findOrgRelationType(id);
-        orgRelationType.remove();
+        OrgRelationType orgRelationType = orgRelationTypeService.findOrgRelationType(id);
+        orgRelationTypeService.deleteOrgRelationType(orgRelationType);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
@@ -87,7 +95,7 @@ privileged aspect OrgRelationTypeController_Roo_Controller {
     
     void OrgRelationTypeController.populateEditForm(Model uiModel, OrgRelationType orgRelationType) {
         uiModel.addAttribute("orgRelationType", orgRelationType);
-        uiModel.addAttribute("orgrelationses", OrgRelations.findAllOrgRelationses());
+        uiModel.addAttribute("orgrelationses", orgRelationsService.findAllOrgRelationses());
     }
     
     String OrgRelationTypeController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

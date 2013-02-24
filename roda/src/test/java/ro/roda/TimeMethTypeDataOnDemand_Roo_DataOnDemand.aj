@@ -10,9 +10,11 @@ import java.util.List;
 import java.util.Random;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ro.roda.TimeMethType;
 import ro.roda.TimeMethTypeDataOnDemand;
+import ro.roda.service.TimeMethTypeService;
 
 privileged aspect TimeMethTypeDataOnDemand_Roo_DataOnDemand {
     
@@ -21,6 +23,9 @@ privileged aspect TimeMethTypeDataOnDemand_Roo_DataOnDemand {
     private Random TimeMethTypeDataOnDemand.rnd = new SecureRandom();
     
     private List<TimeMethType> TimeMethTypeDataOnDemand.data;
+    
+    @Autowired
+    TimeMethTypeService TimeMethTypeDataOnDemand.timeMethTypeService;
     
     public TimeMethType TimeMethTypeDataOnDemand.getNewTransientTimeMethType(int index) {
         TimeMethType obj = new TimeMethType();
@@ -52,14 +57,14 @@ privileged aspect TimeMethTypeDataOnDemand_Roo_DataOnDemand {
         }
         TimeMethType obj = data.get(index);
         Integer id = obj.getId();
-        return TimeMethType.findTimeMethType(id);
+        return timeMethTypeService.findTimeMethType(id);
     }
     
     public TimeMethType TimeMethTypeDataOnDemand.getRandomTimeMethType() {
         init();
         TimeMethType obj = data.get(rnd.nextInt(data.size()));
         Integer id = obj.getId();
-        return TimeMethType.findTimeMethType(id);
+        return timeMethTypeService.findTimeMethType(id);
     }
     
     public boolean TimeMethTypeDataOnDemand.modifyTimeMethType(TimeMethType obj) {
@@ -69,7 +74,7 @@ privileged aspect TimeMethTypeDataOnDemand_Roo_DataOnDemand {
     public void TimeMethTypeDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = TimeMethType.findTimeMethTypeEntries(from, to);
+        data = timeMethTypeService.findTimeMethTypeEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'TimeMethType' illegally returned null");
         }
@@ -81,7 +86,7 @@ privileged aspect TimeMethTypeDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             TimeMethType obj = getNewTransientTimeMethType(i);
             try {
-                obj.persist();
+                timeMethTypeService.saveTimeMethType(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

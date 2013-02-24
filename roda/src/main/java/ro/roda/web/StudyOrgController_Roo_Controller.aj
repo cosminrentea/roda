@@ -16,16 +16,29 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.Org;
-import ro.roda.Study;
 import ro.roda.StudyOrg;
-import ro.roda.StudyOrgAssoc;
 import ro.roda.StudyOrgPK;
+import ro.roda.service.OrgService;
+import ro.roda.service.StudyOrgAssocService;
+import ro.roda.service.StudyOrgService;
+import ro.roda.service.StudyService;
 import ro.roda.web.StudyOrgController;
 
 privileged aspect StudyOrgController_Roo_Controller {
     
     private ConversionService StudyOrgController.conversionService;
+    
+    @Autowired
+    StudyOrgService StudyOrgController.studyOrgService;
+    
+    @Autowired
+    OrgService StudyOrgController.orgService;
+    
+    @Autowired
+    StudyService StudyOrgController.studyService;
+    
+    @Autowired
+    StudyOrgAssocService StudyOrgController.studyOrgAssocService;
     
     @Autowired
     public StudyOrgController.new(ConversionService conversionService) {
@@ -40,7 +53,7 @@ privileged aspect StudyOrgController_Roo_Controller {
             return "studyorgs/create";
         }
         uiModel.asMap().clear();
-        studyOrg.persist();
+        studyOrgService.saveStudyOrg(studyOrg);
         return "redirect:/studyorgs/" + encodeUrlPathSegment(conversionService.convert(studyOrg.getId(), String.class), httpServletRequest);
     }
     
@@ -52,7 +65,7 @@ privileged aspect StudyOrgController_Roo_Controller {
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String StudyOrgController.show(@PathVariable("id") StudyOrgPK id, Model uiModel) {
-        uiModel.addAttribute("studyorg", StudyOrg.findStudyOrg(id));
+        uiModel.addAttribute("studyorg", studyOrgService.findStudyOrg(id));
         uiModel.addAttribute("itemId", conversionService.convert(id, String.class));
         return "studyorgs/show";
     }
@@ -62,11 +75,11 @@ privileged aspect StudyOrgController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("studyorgs", StudyOrg.findStudyOrgEntries(firstResult, sizeNo));
-            float nrOfPages = (float) StudyOrg.countStudyOrgs() / sizeNo;
+            uiModel.addAttribute("studyorgs", studyOrgService.findStudyOrgEntries(firstResult, sizeNo));
+            float nrOfPages = (float) studyOrgService.countAllStudyOrgs() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("studyorgs", StudyOrg.findAllStudyOrgs());
+            uiModel.addAttribute("studyorgs", studyOrgService.findAllStudyOrgs());
         }
         return "studyorgs/list";
     }
@@ -78,20 +91,20 @@ privileged aspect StudyOrgController_Roo_Controller {
             return "studyorgs/update";
         }
         uiModel.asMap().clear();
-        studyOrg.merge();
+        studyOrgService.updateStudyOrg(studyOrg);
         return "redirect:/studyorgs/" + encodeUrlPathSegment(conversionService.convert(studyOrg.getId(), String.class), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String StudyOrgController.updateForm(@PathVariable("id") StudyOrgPK id, Model uiModel) {
-        populateEditForm(uiModel, StudyOrg.findStudyOrg(id));
+        populateEditForm(uiModel, studyOrgService.findStudyOrg(id));
         return "studyorgs/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
     public String StudyOrgController.delete(@PathVariable("id") StudyOrgPK id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        StudyOrg studyOrg = StudyOrg.findStudyOrg(id);
-        studyOrg.remove();
+        StudyOrg studyOrg = studyOrgService.findStudyOrg(id);
+        studyOrgService.deleteStudyOrg(studyOrg);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
@@ -100,9 +113,9 @@ privileged aspect StudyOrgController_Roo_Controller {
     
     void StudyOrgController.populateEditForm(Model uiModel, StudyOrg studyOrg) {
         uiModel.addAttribute("studyOrg", studyOrg);
-        uiModel.addAttribute("orgs", Org.findAllOrgs());
-        uiModel.addAttribute("studys", Study.findAllStudys());
-        uiModel.addAttribute("studyorgassocs", StudyOrgAssoc.findAllStudyOrgAssocs());
+        uiModel.addAttribute("orgs", orgService.findAllOrgs());
+        uiModel.addAttribute("studys", studyService.findAllStudys());
+        uiModel.addAttribute("studyorgassocs", studyOrgAssocService.findAllStudyOrgAssocs());
     }
     
     String StudyOrgController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

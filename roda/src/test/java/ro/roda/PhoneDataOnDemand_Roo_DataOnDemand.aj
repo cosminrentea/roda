@@ -10,9 +10,11 @@ import java.util.List;
 import java.util.Random;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ro.roda.Phone;
 import ro.roda.PhoneDataOnDemand;
+import ro.roda.service.PhoneService;
 
 privileged aspect PhoneDataOnDemand_Roo_DataOnDemand {
     
@@ -21,6 +23,9 @@ privileged aspect PhoneDataOnDemand_Roo_DataOnDemand {
     private Random PhoneDataOnDemand.rnd = new SecureRandom();
     
     private List<Phone> PhoneDataOnDemand.data;
+    
+    @Autowired
+    PhoneService PhoneDataOnDemand.phoneService;
     
     public Phone PhoneDataOnDemand.getNewTransientPhone(int index) {
         Phone obj = new Phone();
@@ -55,14 +60,14 @@ privileged aspect PhoneDataOnDemand_Roo_DataOnDemand {
         }
         Phone obj = data.get(index);
         Integer id = obj.getId();
-        return Phone.findPhone(id);
+        return phoneService.findPhone(id);
     }
     
     public Phone PhoneDataOnDemand.getRandomPhone() {
         init();
         Phone obj = data.get(rnd.nextInt(data.size()));
         Integer id = obj.getId();
-        return Phone.findPhone(id);
+        return phoneService.findPhone(id);
     }
     
     public boolean PhoneDataOnDemand.modifyPhone(Phone obj) {
@@ -72,7 +77,7 @@ privileged aspect PhoneDataOnDemand_Roo_DataOnDemand {
     public void PhoneDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = Phone.findPhoneEntries(from, to);
+        data = phoneService.findPhoneEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'Phone' illegally returned null");
         }
@@ -84,7 +89,7 @@ privileged aspect PhoneDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             Phone obj = getNewTransientPhone(i);
             try {
-                obj.persist();
+                phoneService.savePhone(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

@@ -12,12 +12,16 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import ro.roda.Instance;
 import ro.roda.InstanceDataOnDemand;
 import ro.roda.InstancePerson;
+import ro.roda.InstancePersonAssoc;
 import ro.roda.InstancePersonAssocDataOnDemand;
 import ro.roda.InstancePersonDataOnDemand;
 import ro.roda.InstancePersonPK;
+import ro.roda.Person;
 import ro.roda.PersonDataOnDemand;
+import ro.roda.service.InstancePersonService;
 
 privileged aspect InstancePersonDataOnDemand_Roo_DataOnDemand {
     
@@ -28,18 +32,24 @@ privileged aspect InstancePersonDataOnDemand_Roo_DataOnDemand {
     private List<InstancePerson> InstancePersonDataOnDemand.data;
     
     @Autowired
-    private InstancePersonAssocDataOnDemand InstancePersonDataOnDemand.instancePersonAssocDataOnDemand;
+    InstancePersonAssocDataOnDemand InstancePersonDataOnDemand.instancePersonAssocDataOnDemand;
     
     @Autowired
-    private InstanceDataOnDemand InstancePersonDataOnDemand.instanceDataOnDemand;
+    InstanceDataOnDemand InstancePersonDataOnDemand.instanceDataOnDemand;
     
     @Autowired
-    private PersonDataOnDemand InstancePersonDataOnDemand.personDataOnDemand;
+    PersonDataOnDemand InstancePersonDataOnDemand.personDataOnDemand;
+    
+    @Autowired
+    InstancePersonService InstancePersonDataOnDemand.instancePersonService;
     
     public InstancePerson InstancePersonDataOnDemand.getNewTransientInstancePerson(int index) {
         InstancePerson obj = new InstancePerson();
         setEmbeddedIdClass(obj, index);
         setAssocDetails(obj, index);
+        setAssocTypeId(obj, index);
+        setInstanceId(obj, index);
+        setPersonId(obj, index);
         return obj;
     }
     
@@ -57,6 +67,21 @@ privileged aspect InstancePersonDataOnDemand_Roo_DataOnDemand {
         obj.setAssocDetails(assocDetails);
     }
     
+    public void InstancePersonDataOnDemand.setAssocTypeId(InstancePerson obj, int index) {
+        InstancePersonAssoc assocTypeId = instancePersonAssocDataOnDemand.getRandomInstancePersonAssoc();
+        obj.setAssocTypeId(assocTypeId);
+    }
+    
+    public void InstancePersonDataOnDemand.setInstanceId(InstancePerson obj, int index) {
+        Instance instanceId = instanceDataOnDemand.getRandomInstance();
+        obj.setInstanceId(instanceId);
+    }
+    
+    public void InstancePersonDataOnDemand.setPersonId(InstancePerson obj, int index) {
+        Person personId = personDataOnDemand.getRandomPerson();
+        obj.setPersonId(personId);
+    }
+    
     public InstancePerson InstancePersonDataOnDemand.getSpecificInstancePerson(int index) {
         init();
         if (index < 0) {
@@ -67,14 +92,14 @@ privileged aspect InstancePersonDataOnDemand_Roo_DataOnDemand {
         }
         InstancePerson obj = data.get(index);
         InstancePersonPK id = obj.getId();
-        return InstancePerson.findInstancePerson(id);
+        return instancePersonService.findInstancePerson(id);
     }
     
     public InstancePerson InstancePersonDataOnDemand.getRandomInstancePerson() {
         init();
         InstancePerson obj = data.get(rnd.nextInt(data.size()));
         InstancePersonPK id = obj.getId();
-        return InstancePerson.findInstancePerson(id);
+        return instancePersonService.findInstancePerson(id);
     }
     
     public boolean InstancePersonDataOnDemand.modifyInstancePerson(InstancePerson obj) {
@@ -84,7 +109,7 @@ privileged aspect InstancePersonDataOnDemand_Roo_DataOnDemand {
     public void InstancePersonDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = InstancePerson.findInstancePersonEntries(from, to);
+        data = instancePersonService.findInstancePersonEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'InstancePerson' illegally returned null");
         }
@@ -96,7 +121,7 @@ privileged aspect InstancePersonDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             InstancePerson obj = getNewTransientInstancePerson(i);
             try {
-                obj.persist();
+                instancePersonService.saveInstancePerson(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

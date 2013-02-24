@@ -16,15 +16,25 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.Form;
 import ro.roda.FormEditedNumberVar;
 import ro.roda.FormEditedNumberVarPK;
-import ro.roda.Variable;
+import ro.roda.service.FormEditedNumberVarService;
+import ro.roda.service.FormService;
+import ro.roda.service.VariableService;
 import ro.roda.web.FormEditedNumberVarController;
 
 privileged aspect FormEditedNumberVarController_Roo_Controller {
     
     private ConversionService FormEditedNumberVarController.conversionService;
+    
+    @Autowired
+    FormEditedNumberVarService FormEditedNumberVarController.formEditedNumberVarService;
+    
+    @Autowired
+    FormService FormEditedNumberVarController.formService;
+    
+    @Autowired
+    VariableService FormEditedNumberVarController.variableService;
     
     @Autowired
     public FormEditedNumberVarController.new(ConversionService conversionService) {
@@ -39,7 +49,7 @@ privileged aspect FormEditedNumberVarController_Roo_Controller {
             return "formeditednumbervars/create";
         }
         uiModel.asMap().clear();
-        formEditedNumberVar.persist();
+        formEditedNumberVarService.saveFormEditedNumberVar(formEditedNumberVar);
         return "redirect:/formeditednumbervars/" + encodeUrlPathSegment(conversionService.convert(formEditedNumberVar.getId(), String.class), httpServletRequest);
     }
     
@@ -51,7 +61,7 @@ privileged aspect FormEditedNumberVarController_Roo_Controller {
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String FormEditedNumberVarController.show(@PathVariable("id") FormEditedNumberVarPK id, Model uiModel) {
-        uiModel.addAttribute("formeditednumbervar", FormEditedNumberVar.findFormEditedNumberVar(id));
+        uiModel.addAttribute("formeditednumbervar", formEditedNumberVarService.findFormEditedNumberVar(id));
         uiModel.addAttribute("itemId", conversionService.convert(id, String.class));
         return "formeditednumbervars/show";
     }
@@ -61,11 +71,11 @@ privileged aspect FormEditedNumberVarController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("formeditednumbervars", FormEditedNumberVar.findFormEditedNumberVarEntries(firstResult, sizeNo));
-            float nrOfPages = (float) FormEditedNumberVar.countFormEditedNumberVars() / sizeNo;
+            uiModel.addAttribute("formeditednumbervars", formEditedNumberVarService.findFormEditedNumberVarEntries(firstResult, sizeNo));
+            float nrOfPages = (float) formEditedNumberVarService.countAllFormEditedNumberVars() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("formeditednumbervars", FormEditedNumberVar.findAllFormEditedNumberVars());
+            uiModel.addAttribute("formeditednumbervars", formEditedNumberVarService.findAllFormEditedNumberVars());
         }
         return "formeditednumbervars/list";
     }
@@ -77,20 +87,20 @@ privileged aspect FormEditedNumberVarController_Roo_Controller {
             return "formeditednumbervars/update";
         }
         uiModel.asMap().clear();
-        formEditedNumberVar.merge();
+        formEditedNumberVarService.updateFormEditedNumberVar(formEditedNumberVar);
         return "redirect:/formeditednumbervars/" + encodeUrlPathSegment(conversionService.convert(formEditedNumberVar.getId(), String.class), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String FormEditedNumberVarController.updateForm(@PathVariable("id") FormEditedNumberVarPK id, Model uiModel) {
-        populateEditForm(uiModel, FormEditedNumberVar.findFormEditedNumberVar(id));
+        populateEditForm(uiModel, formEditedNumberVarService.findFormEditedNumberVar(id));
         return "formeditednumbervars/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
     public String FormEditedNumberVarController.delete(@PathVariable("id") FormEditedNumberVarPK id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        FormEditedNumberVar formEditedNumberVar = FormEditedNumberVar.findFormEditedNumberVar(id);
-        formEditedNumberVar.remove();
+        FormEditedNumberVar formEditedNumberVar = formEditedNumberVarService.findFormEditedNumberVar(id);
+        formEditedNumberVarService.deleteFormEditedNumberVar(formEditedNumberVar);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
@@ -99,8 +109,8 @@ privileged aspect FormEditedNumberVarController_Roo_Controller {
     
     void FormEditedNumberVarController.populateEditForm(Model uiModel, FormEditedNumberVar formEditedNumberVar) {
         uiModel.addAttribute("formEditedNumberVar", formEditedNumberVar);
-        uiModel.addAttribute("forms", Form.findAllForms());
-        uiModel.addAttribute("variables", Variable.findAllVariables());
+        uiModel.addAttribute("forms", formService.findAllForms());
+        uiModel.addAttribute("variables", variableService.findAllVariables());
     }
     
     String FormEditedNumberVarController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

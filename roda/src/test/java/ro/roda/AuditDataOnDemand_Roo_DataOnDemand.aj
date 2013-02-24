@@ -5,9 +5,6 @@ package ro.roda;
 
 import java.security.SecureRandom;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
@@ -17,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ro.roda.Audit;
 import ro.roda.AuditDataOnDemand;
-import ro.roda.UserDataOnDemand;
+import ro.roda.service.AuditService;
 
 privileged aspect AuditDataOnDemand_Roo_DataOnDemand {
     
@@ -28,35 +25,11 @@ privileged aspect AuditDataOnDemand_Roo_DataOnDemand {
     private List<Audit> AuditDataOnDemand.data;
     
     @Autowired
-    private UserDataOnDemand AuditDataOnDemand.userDataOnDemand;
+    AuditService AuditDataOnDemand.auditService;
     
     public Audit AuditDataOnDemand.getNewTransientAudit(int index) {
         Audit obj = new Audit();
-        setOperationType(obj, index);
-        setTableName(obj, index);
-        setTime(obj, index);
-        setVersionNumber(obj, index);
         return obj;
-    }
-    
-    public void AuditDataOnDemand.setOperationType(Audit obj, int index) {
-        Short operationType = new Integer(index).shortValue();
-        obj.setOperationType(operationType);
-    }
-    
-    public void AuditDataOnDemand.setTableName(Audit obj, int index) {
-        String tableName = "tableName_" + index;
-        obj.setTableName(tableName);
-    }
-    
-    public void AuditDataOnDemand.setTime(Audit obj, int index) {
-        Date time = new GregorianCalendar(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH), Calendar.getInstance().get(Calendar.HOUR_OF_DAY), Calendar.getInstance().get(Calendar.MINUTE), Calendar.getInstance().get(Calendar.SECOND) + new Double(Math.random() * 1000).intValue()).getTime();
-        obj.setTime(time);
-    }
-    
-    public void AuditDataOnDemand.setVersionNumber(Audit obj, int index) {
-        Integer versionNumber = new Integer(index);
-        obj.setVersionNumber(versionNumber);
     }
     
     public Audit AuditDataOnDemand.getSpecificAudit(int index) {
@@ -68,15 +41,15 @@ privileged aspect AuditDataOnDemand_Roo_DataOnDemand {
             index = data.size() - 1;
         }
         Audit obj = data.get(index);
-        Integer id = obj.getId();
-        return Audit.findAudit(id);
+        Long id = obj.getId();
+        return auditService.findAudit(id);
     }
     
     public Audit AuditDataOnDemand.getRandomAudit() {
         init();
         Audit obj = data.get(rnd.nextInt(data.size()));
-        Integer id = obj.getId();
-        return Audit.findAudit(id);
+        Long id = obj.getId();
+        return auditService.findAudit(id);
     }
     
     public boolean AuditDataOnDemand.modifyAudit(Audit obj) {
@@ -86,7 +59,7 @@ privileged aspect AuditDataOnDemand_Roo_DataOnDemand {
     public void AuditDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = Audit.findAuditEntries(from, to);
+        data = auditService.findAuditEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'Audit' illegally returned null");
         }
@@ -98,7 +71,7 @@ privileged aspect AuditDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             Audit obj = getNewTransientAudit(i);
             try {
-                obj.persist();
+                auditService.saveAudit(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

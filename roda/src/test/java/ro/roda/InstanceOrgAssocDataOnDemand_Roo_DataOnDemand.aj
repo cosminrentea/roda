@@ -10,9 +10,11 @@ import java.util.List;
 import java.util.Random;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ro.roda.InstanceOrgAssoc;
 import ro.roda.InstanceOrgAssocDataOnDemand;
+import ro.roda.service.InstanceOrgAssocService;
 
 privileged aspect InstanceOrgAssocDataOnDemand_Roo_DataOnDemand {
     
@@ -21,6 +23,9 @@ privileged aspect InstanceOrgAssocDataOnDemand_Roo_DataOnDemand {
     private Random InstanceOrgAssocDataOnDemand.rnd = new SecureRandom();
     
     private List<InstanceOrgAssoc> InstanceOrgAssocDataOnDemand.data;
+    
+    @Autowired
+    InstanceOrgAssocService InstanceOrgAssocDataOnDemand.instanceOrgAssocService;
     
     public InstanceOrgAssoc InstanceOrgAssocDataOnDemand.getNewTransientInstanceOrgAssoc(int index) {
         InstanceOrgAssoc obj = new InstanceOrgAssoc();
@@ -52,14 +57,14 @@ privileged aspect InstanceOrgAssocDataOnDemand_Roo_DataOnDemand {
         }
         InstanceOrgAssoc obj = data.get(index);
         Integer id = obj.getId();
-        return InstanceOrgAssoc.findInstanceOrgAssoc(id);
+        return instanceOrgAssocService.findInstanceOrgAssoc(id);
     }
     
     public InstanceOrgAssoc InstanceOrgAssocDataOnDemand.getRandomInstanceOrgAssoc() {
         init();
         InstanceOrgAssoc obj = data.get(rnd.nextInt(data.size()));
         Integer id = obj.getId();
-        return InstanceOrgAssoc.findInstanceOrgAssoc(id);
+        return instanceOrgAssocService.findInstanceOrgAssoc(id);
     }
     
     public boolean InstanceOrgAssocDataOnDemand.modifyInstanceOrgAssoc(InstanceOrgAssoc obj) {
@@ -69,7 +74,7 @@ privileged aspect InstanceOrgAssocDataOnDemand_Roo_DataOnDemand {
     public void InstanceOrgAssocDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = InstanceOrgAssoc.findInstanceOrgAssocEntries(from, to);
+        data = instanceOrgAssocService.findInstanceOrgAssocEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'InstanceOrgAssoc' illegally returned null");
         }
@@ -81,7 +86,7 @@ privileged aspect InstanceOrgAssocDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             InstanceOrgAssoc obj = getNewTransientInstanceOrgAssoc(i);
             try {
-                obj.persist();
+                instanceOrgAssocService.saveInstanceOrgAssoc(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

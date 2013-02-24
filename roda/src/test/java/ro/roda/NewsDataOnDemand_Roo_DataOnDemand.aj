@@ -6,7 +6,6 @@ package ro.roda;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
@@ -17,7 +16,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ro.roda.News;
 import ro.roda.NewsDataOnDemand;
-import ro.roda.UserDataOnDemand;
+import ro.roda.Rodauser;
+import ro.roda.RodauserDataOnDemand;
+import ro.roda.service.NewsService;
 
 privileged aspect NewsDataOnDemand_Roo_DataOnDemand {
     
@@ -28,11 +29,15 @@ privileged aspect NewsDataOnDemand_Roo_DataOnDemand {
     private List<News> NewsDataOnDemand.data;
     
     @Autowired
-    private UserDataOnDemand NewsDataOnDemand.userDataOnDemand;
+    RodauserDataOnDemand NewsDataOnDemand.rodauserDataOnDemand;
+    
+    @Autowired
+    NewsService NewsDataOnDemand.newsService;
     
     public News NewsDataOnDemand.getNewTransientNews(int index) {
         News obj = new News();
         setAdded(obj, index);
+        setAddedBy(obj, index);
         setContent(obj, index);
         setTitle(obj, index);
         setVisible(obj, index);
@@ -40,8 +45,13 @@ privileged aspect NewsDataOnDemand_Roo_DataOnDemand {
     }
     
     public void NewsDataOnDemand.setAdded(News obj, int index) {
-        Date added = new GregorianCalendar(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH), Calendar.getInstance().get(Calendar.HOUR_OF_DAY), Calendar.getInstance().get(Calendar.MINUTE), Calendar.getInstance().get(Calendar.SECOND) + new Double(Math.random() * 1000).intValue()).getTime();
+        Calendar added = Calendar.getInstance();
         obj.setAdded(added);
+    }
+    
+    public void NewsDataOnDemand.setAddedBy(News obj, int index) {
+        Rodauser addedBy = rodauserDataOnDemand.getRandomRodauser();
+        obj.setAddedBy(addedBy);
     }
     
     public void NewsDataOnDemand.setContent(News obj, int index) {
@@ -69,14 +79,14 @@ privileged aspect NewsDataOnDemand_Roo_DataOnDemand {
         }
         News obj = data.get(index);
         Integer id = obj.getId();
-        return News.findNews(id);
+        return newsService.findNews(id);
     }
     
     public News NewsDataOnDemand.getRandomNews() {
         init();
         News obj = data.get(rnd.nextInt(data.size()));
         Integer id = obj.getId();
-        return News.findNews(id);
+        return newsService.findNews(id);
     }
     
     public boolean NewsDataOnDemand.modifyNews(News obj) {
@@ -86,7 +96,7 @@ privileged aspect NewsDataOnDemand_Roo_DataOnDemand {
     public void NewsDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = News.findNewsEntries(from, to);
+        data = newsService.findNewsEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'News' illegally returned null");
         }
@@ -98,7 +108,7 @@ privileged aspect NewsDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             News obj = getNewTransientNews(i);
             try {
-                obj.persist();
+                newsService.saveNews(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

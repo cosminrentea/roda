@@ -11,9 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.SourcestudyType;
 import ro.roda.SourcestudyTypeDataOnDemand;
 import ro.roda.SourcestudyTypeIntegrationTest;
+import ro.roda.service.SourcestudyTypeService;
 
 privileged aspect SourcestudyTypeIntegrationTest_Roo_IntegrationTest {
     
@@ -24,12 +24,15 @@ privileged aspect SourcestudyTypeIntegrationTest_Roo_IntegrationTest {
     declare @type: SourcestudyTypeIntegrationTest: @Transactional;
     
     @Autowired
-    private SourcestudyTypeDataOnDemand SourcestudyTypeIntegrationTest.dod;
+    SourcestudyTypeDataOnDemand SourcestudyTypeIntegrationTest.dod;
+    
+    @Autowired
+    SourcestudyTypeService SourcestudyTypeIntegrationTest.sourcestudyTypeService;
     
     @Test
-    public void SourcestudyTypeIntegrationTest.testCountSourcestudyTypes() {
+    public void SourcestudyTypeIntegrationTest.testCountAllSourcestudyTypes() {
         Assert.assertNotNull("Data on demand for 'SourcestudyType' failed to initialize correctly", dod.getRandomSourcestudyType());
-        long count = SourcestudyType.countSourcestudyTypes();
+        long count = sourcestudyTypeService.countAllSourcestudyTypes();
         Assert.assertTrue("Counter for 'SourcestudyType' incorrectly reported there were no entries", count > 0);
     }
     
@@ -39,7 +42,7 @@ privileged aspect SourcestudyTypeIntegrationTest_Roo_IntegrationTest {
         Assert.assertNotNull("Data on demand for 'SourcestudyType' failed to initialize correctly", obj);
         Integer id = obj.getId();
         Assert.assertNotNull("Data on demand for 'SourcestudyType' failed to provide an identifier", id);
-        obj = SourcestudyType.findSourcestudyType(id);
+        obj = sourcestudyTypeService.findSourcestudyType(id);
         Assert.assertNotNull("Find method for 'SourcestudyType' illegally returned null for id '" + id + "'", obj);
         Assert.assertEquals("Find method for 'SourcestudyType' returned the incorrect identifier", id, obj.getId());
     }
@@ -47,9 +50,9 @@ privileged aspect SourcestudyTypeIntegrationTest_Roo_IntegrationTest {
     @Test
     public void SourcestudyTypeIntegrationTest.testFindAllSourcestudyTypes() {
         Assert.assertNotNull("Data on demand for 'SourcestudyType' failed to initialize correctly", dod.getRandomSourcestudyType());
-        long count = SourcestudyType.countSourcestudyTypes();
+        long count = sourcestudyTypeService.countAllSourcestudyTypes();
         Assert.assertTrue("Too expensive to perform a find all test for 'SourcestudyType', as there are " + count + " entries; set the findAllMaximum to exceed this value or set findAll=false on the integration test annotation to disable the test", count < 250);
-        List<SourcestudyType> result = SourcestudyType.findAllSourcestudyTypes();
+        List<SourcestudyType> result = sourcestudyTypeService.findAllSourcestudyTypes();
         Assert.assertNotNull("Find all method for 'SourcestudyType' illegally returned null", result);
         Assert.assertTrue("Find all method for 'SourcestudyType' failed to return any data", result.size() > 0);
     }
@@ -57,36 +60,36 @@ privileged aspect SourcestudyTypeIntegrationTest_Roo_IntegrationTest {
     @Test
     public void SourcestudyTypeIntegrationTest.testFindSourcestudyTypeEntries() {
         Assert.assertNotNull("Data on demand for 'SourcestudyType' failed to initialize correctly", dod.getRandomSourcestudyType());
-        long count = SourcestudyType.countSourcestudyTypes();
+        long count = sourcestudyTypeService.countAllSourcestudyTypes();
         if (count > 20) count = 20;
         int firstResult = 0;
         int maxResults = (int) count;
-        List<SourcestudyType> result = SourcestudyType.findSourcestudyTypeEntries(firstResult, maxResults);
+        List<SourcestudyType> result = sourcestudyTypeService.findSourcestudyTypeEntries(firstResult, maxResults);
         Assert.assertNotNull("Find entries method for 'SourcestudyType' illegally returned null", result);
         Assert.assertEquals("Find entries method for 'SourcestudyType' returned an incorrect number of entries", count, result.size());
     }
     
     @Test
-    public void SourcestudyTypeIntegrationTest.testPersist() {
+    public void SourcestudyTypeIntegrationTest.testSaveSourcestudyType() {
         Assert.assertNotNull("Data on demand for 'SourcestudyType' failed to initialize correctly", dod.getRandomSourcestudyType());
         SourcestudyType obj = dod.getNewTransientSourcestudyType(Integer.MAX_VALUE);
         Assert.assertNotNull("Data on demand for 'SourcestudyType' failed to provide a new transient entity", obj);
         Assert.assertNull("Expected 'SourcestudyType' identifier to be null", obj.getId());
-        obj.persist();
+        sourcestudyTypeService.saveSourcestudyType(obj);
         obj.flush();
         Assert.assertNotNull("Expected 'SourcestudyType' identifier to no longer be null", obj.getId());
     }
     
     @Test
-    public void SourcestudyTypeIntegrationTest.testRemove() {
+    public void SourcestudyTypeIntegrationTest.testDeleteSourcestudyType() {
         SourcestudyType obj = dod.getRandomSourcestudyType();
         Assert.assertNotNull("Data on demand for 'SourcestudyType' failed to initialize correctly", obj);
         Integer id = obj.getId();
         Assert.assertNotNull("Data on demand for 'SourcestudyType' failed to provide an identifier", id);
-        obj = SourcestudyType.findSourcestudyType(id);
-        obj.remove();
+        obj = sourcestudyTypeService.findSourcestudyType(id);
+        sourcestudyTypeService.deleteSourcestudyType(obj);
         obj.flush();
-        Assert.assertNull("Failed to remove 'SourcestudyType' with identifier '" + id + "'", SourcestudyType.findSourcestudyType(id));
+        Assert.assertNull("Failed to remove 'SourcestudyType' with identifier '" + id + "'", sourcestudyTypeService.findSourcestudyType(id));
     }
     
 }

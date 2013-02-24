@@ -6,8 +6,6 @@
         <field:input disableFormBinding="true" field="id.personId" id="c_ro_roda_PersonOrg_id_personId" required="true" validationMessageCode="field_invalid_integer" z="AelU1eAhHVOV3C5i2a0MGDqyPEs="/>
         <field:input disableFormBinding="true" field="id.orgId" id="c_ro_roda_PersonOrg_id_orgId" required="true" validationMessageCode="field_invalid_integer" z="20MiuW5OW9ykGrsF4fLxCZ4ay2s="/>
         <field:input disableFormBinding="true" field="id.roleId" id="c_ro_roda_PersonOrg_id_roleId" required="true" validationMessageCode="field_invalid_integer" z="UD+Vmt3qJY3lqXYNR/Jn1Rmx1BA="/>
-        <field:datetime dateTimePattern="${personOrg_datestart_date_format}" field="datestart" id="c_ro_roda_PersonOrg_datestart" z="SLPppXBgrbB70WmqLoy2whxeL1w="/>
-        <field:datetime dateTimePattern="${personOrg_dateend_date_format}" field="dateend" id="c_ro_roda_PersonOrg_dateend" z="jMvinhBCRnapht6FjyCRb0gt61U="/>
     </form:create>
     <form:dependency dependencies="${dependencies}" id="d_ro_roda_PersonOrg" render="${not empty dependencies}" z="puaPKy9DdwqKaj+ZmKW6cDIukao="/>
 </div>

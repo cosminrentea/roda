@@ -6,6 +6,7 @@ package ro.roda.web;
 import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,22 +15,62 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.Form;
-import ro.roda.InstancePerson;
 import ro.roda.Person;
-import ro.roda.PersonAddress;
-import ro.roda.PersonEmail;
-import ro.roda.PersonInternet;
-import ro.roda.PersonLinks;
-import ro.roda.PersonOrg;
-import ro.roda.PersonPhone;
-import ro.roda.Prefix;
-import ro.roda.SourceContacts;
-import ro.roda.StudyPerson;
-import ro.roda.Suffix;
+import ro.roda.service.FormService;
+import ro.roda.service.InstancePersonService;
+import ro.roda.service.PersonAddressService;
+import ro.roda.service.PersonEmailService;
+import ro.roda.service.PersonInternetService;
+import ro.roda.service.PersonLinksService;
+import ro.roda.service.PersonOrgService;
+import ro.roda.service.PersonPhoneService;
+import ro.roda.service.PersonService;
+import ro.roda.service.PrefixService;
+import ro.roda.service.SourceContactsService;
+import ro.roda.service.StudyPersonService;
+import ro.roda.service.SuffixService;
 import ro.roda.web.PersonController;
 
 privileged aspect PersonController_Roo_Controller {
+    
+    @Autowired
+    PersonService PersonController.personService;
+    
+    @Autowired
+    FormService PersonController.formService;
+    
+    @Autowired
+    InstancePersonService PersonController.instancePersonService;
+    
+    @Autowired
+    PersonAddressService PersonController.personAddressService;
+    
+    @Autowired
+    PersonEmailService PersonController.personEmailService;
+    
+    @Autowired
+    PersonInternetService PersonController.personInternetService;
+    
+    @Autowired
+    PersonLinksService PersonController.personLinksService;
+    
+    @Autowired
+    PersonOrgService PersonController.personOrgService;
+    
+    @Autowired
+    PersonPhoneService PersonController.personPhoneService;
+    
+    @Autowired
+    PrefixService PersonController.prefixService;
+    
+    @Autowired
+    SourceContactsService PersonController.sourceContactsService;
+    
+    @Autowired
+    StudyPersonService PersonController.studyPersonService;
+    
+    @Autowired
+    SuffixService PersonController.suffixService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String PersonController.create(@Valid Person person, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -38,7 +79,7 @@ privileged aspect PersonController_Roo_Controller {
             return "people/create";
         }
         uiModel.asMap().clear();
-        person.persist();
+        personService.savePerson(person);
         return "redirect:/people/" + encodeUrlPathSegment(person.getId().toString(), httpServletRequest);
     }
     
@@ -50,7 +91,7 @@ privileged aspect PersonController_Roo_Controller {
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String PersonController.show(@PathVariable("id") Integer id, Model uiModel) {
-        uiModel.addAttribute("person", Person.findPerson(id));
+        uiModel.addAttribute("person", personService.findPerson(id));
         uiModel.addAttribute("itemId", id);
         return "people/show";
     }
@@ -60,11 +101,11 @@ privileged aspect PersonController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("people", Person.findPersonEntries(firstResult, sizeNo));
-            float nrOfPages = (float) Person.countPeople() / sizeNo;
+            uiModel.addAttribute("people", personService.findPersonEntries(firstResult, sizeNo));
+            float nrOfPages = (float) personService.countAllPeople() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("people", Person.findAllPeople());
+            uiModel.addAttribute("people", personService.findAllPeople());
         }
         return "people/list";
     }
@@ -76,20 +117,20 @@ privileged aspect PersonController_Roo_Controller {
             return "people/update";
         }
         uiModel.asMap().clear();
-        person.merge();
+        personService.updatePerson(person);
         return "redirect:/people/" + encodeUrlPathSegment(person.getId().toString(), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String PersonController.updateForm(@PathVariable("id") Integer id, Model uiModel) {
-        populateEditForm(uiModel, Person.findPerson(id));
+        populateEditForm(uiModel, personService.findPerson(id));
         return "people/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
     public String PersonController.delete(@PathVariable("id") Integer id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        Person person = Person.findPerson(id);
-        person.remove();
+        Person person = personService.findPerson(id);
+        personService.deletePerson(person);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
@@ -98,18 +139,18 @@ privileged aspect PersonController_Roo_Controller {
     
     void PersonController.populateEditForm(Model uiModel, Person person) {
         uiModel.addAttribute("person", person);
-        uiModel.addAttribute("forms", Form.findAllForms());
-        uiModel.addAttribute("instancepeople", InstancePerson.findAllInstancepeople());
-        uiModel.addAttribute("personaddresses", PersonAddress.findAllPersonAddresses());
-        uiModel.addAttribute("personemails", PersonEmail.findAllPersonEmails());
-        uiModel.addAttribute("personinternets", PersonInternet.findAllPersonInternets());
-        uiModel.addAttribute("personlinkses", PersonLinks.findAllPersonLinkses());
-        uiModel.addAttribute("personorgs", PersonOrg.findAllPersonOrgs());
-        uiModel.addAttribute("personphones", PersonPhone.findAllPersonPhones());
-        uiModel.addAttribute("prefixes", Prefix.findAllPrefixes());
-        uiModel.addAttribute("sourcecontactses", SourceContacts.findAllSourceContactses());
-        uiModel.addAttribute("studypeople", StudyPerson.findAllStudypeople());
-        uiModel.addAttribute("suffixes", Suffix.findAllSuffixes());
+        uiModel.addAttribute("forms", formService.findAllForms());
+        uiModel.addAttribute("instancepeople", instancePersonService.findAllInstancepeople());
+        uiModel.addAttribute("personaddresses", personAddressService.findAllPersonAddresses());
+        uiModel.addAttribute("personemails", personEmailService.findAllPersonEmails());
+        uiModel.addAttribute("personinternets", personInternetService.findAllPersonInternets());
+        uiModel.addAttribute("personlinkses", personLinksService.findAllPersonLinkses());
+        uiModel.addAttribute("personorgs", personOrgService.findAllPersonOrgs());
+        uiModel.addAttribute("personphones", personPhoneService.findAllPersonPhones());
+        uiModel.addAttribute("prefixes", prefixService.findAllPrefixes());
+        uiModel.addAttribute("sourcecontactses", sourceContactsService.findAllSourceContactses());
+        uiModel.addAttribute("studypeople", studyPersonService.findAllStudypeople());
+        uiModel.addAttribute("suffixes", suffixService.findAllSuffixes());
     }
     
     String PersonController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

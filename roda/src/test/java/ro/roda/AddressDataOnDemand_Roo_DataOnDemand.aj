@@ -14,7 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ro.roda.Address;
 import ro.roda.AddressDataOnDemand;
+import ro.roda.City;
 import ro.roda.CityDataOnDemand;
+import ro.roda.service.AddressService;
 
 privileged aspect AddressDataOnDemand_Roo_DataOnDemand {
     
@@ -25,12 +27,16 @@ privileged aspect AddressDataOnDemand_Roo_DataOnDemand {
     private List<Address> AddressDataOnDemand.data;
     
     @Autowired
-    private CityDataOnDemand AddressDataOnDemand.cityDataOnDemand;
+    CityDataOnDemand AddressDataOnDemand.cityDataOnDemand;
+    
+    @Autowired
+    AddressService AddressDataOnDemand.addressService;
     
     public Address AddressDataOnDemand.getNewTransientAddress(int index) {
         Address obj = new Address();
         setAddress1(obj, index);
         setAddress2(obj, index);
+        setCityId(obj, index);
         setCountryId(obj, index);
         setPostalCode(obj, index);
         setSubdivCode(obj, index);
@@ -46,6 +52,11 @@ privileged aspect AddressDataOnDemand_Roo_DataOnDemand {
     public void AddressDataOnDemand.setAddress2(Address obj, int index) {
         String address2 = "address2_" + index;
         obj.setAddress2(address2);
+    }
+    
+    public void AddressDataOnDemand.setCityId(Address obj, int index) {
+        City cityId = cityDataOnDemand.getRandomCity();
+        obj.setCityId(cityId);
     }
     
     public void AddressDataOnDemand.setCountryId(Address obj, int index) {
@@ -90,14 +101,14 @@ privileged aspect AddressDataOnDemand_Roo_DataOnDemand {
         }
         Address obj = data.get(index);
         Integer id = obj.getId();
-        return Address.findAddress(id);
+        return addressService.findAddress(id);
     }
     
     public Address AddressDataOnDemand.getRandomAddress() {
         init();
         Address obj = data.get(rnd.nextInt(data.size()));
         Integer id = obj.getId();
-        return Address.findAddress(id);
+        return addressService.findAddress(id);
     }
     
     public boolean AddressDataOnDemand.modifyAddress(Address obj) {
@@ -107,7 +118,7 @@ privileged aspect AddressDataOnDemand_Roo_DataOnDemand {
     public void AddressDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = Address.findAddressEntries(from, to);
+        data = addressService.findAddressEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'Address' illegally returned null");
         }
@@ -119,7 +130,7 @@ privileged aspect AddressDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             Address obj = getNewTransientAddress(i);
             try {
-                obj.persist();
+                addressService.saveAddress(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

@@ -6,7 +6,6 @@ package ro.roda;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
@@ -15,12 +14,16 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import ro.roda.Instance;
 import ro.roda.InstanceDataOnDemand;
 import ro.roda.InstanceKeyword;
 import ro.roda.InstanceKeywordDataOnDemand;
 import ro.roda.InstanceKeywordPK;
+import ro.roda.Keyword;
 import ro.roda.KeywordDataOnDemand;
-import ro.roda.UserDataOnDemand;
+import ro.roda.Rodauser;
+import ro.roda.RodauserDataOnDemand;
+import ro.roda.service.InstanceKeywordService;
 
 privileged aspect InstanceKeywordDataOnDemand_Roo_DataOnDemand {
     
@@ -31,18 +34,24 @@ privileged aspect InstanceKeywordDataOnDemand_Roo_DataOnDemand {
     private List<InstanceKeyword> InstanceKeywordDataOnDemand.data;
     
     @Autowired
-    private UserDataOnDemand InstanceKeywordDataOnDemand.userDataOnDemand;
+    RodauserDataOnDemand InstanceKeywordDataOnDemand.rodauserDataOnDemand;
     
     @Autowired
-    private InstanceDataOnDemand InstanceKeywordDataOnDemand.instanceDataOnDemand;
+    InstanceDataOnDemand InstanceKeywordDataOnDemand.instanceDataOnDemand;
     
     @Autowired
-    private KeywordDataOnDemand InstanceKeywordDataOnDemand.keywordDataOnDemand;
+    KeywordDataOnDemand InstanceKeywordDataOnDemand.keywordDataOnDemand;
+    
+    @Autowired
+    InstanceKeywordService InstanceKeywordDataOnDemand.instanceKeywordService;
     
     public InstanceKeyword InstanceKeywordDataOnDemand.getNewTransientInstanceKeyword(int index) {
         InstanceKeyword obj = new InstanceKeyword();
         setEmbeddedIdClass(obj, index);
         setAdded(obj, index);
+        setAddedBy(obj, index);
+        setInstanceId(obj, index);
+        setKeywordId(obj, index);
         return obj;
     }
     
@@ -56,8 +65,23 @@ privileged aspect InstanceKeywordDataOnDemand_Roo_DataOnDemand {
     }
     
     public void InstanceKeywordDataOnDemand.setAdded(InstanceKeyword obj, int index) {
-        Date added = new GregorianCalendar(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH), Calendar.getInstance().get(Calendar.HOUR_OF_DAY), Calendar.getInstance().get(Calendar.MINUTE), Calendar.getInstance().get(Calendar.SECOND) + new Double(Math.random() * 1000).intValue()).getTime();
+        Calendar added = Calendar.getInstance();
         obj.setAdded(added);
+    }
+    
+    public void InstanceKeywordDataOnDemand.setAddedBy(InstanceKeyword obj, int index) {
+        Rodauser addedBy = rodauserDataOnDemand.getRandomRodauser();
+        obj.setAddedBy(addedBy);
+    }
+    
+    public void InstanceKeywordDataOnDemand.setInstanceId(InstanceKeyword obj, int index) {
+        Instance instanceId = instanceDataOnDemand.getRandomInstance();
+        obj.setInstanceId(instanceId);
+    }
+    
+    public void InstanceKeywordDataOnDemand.setKeywordId(InstanceKeyword obj, int index) {
+        Keyword keywordId = keywordDataOnDemand.getRandomKeyword();
+        obj.setKeywordId(keywordId);
     }
     
     public InstanceKeyword InstanceKeywordDataOnDemand.getSpecificInstanceKeyword(int index) {
@@ -70,14 +94,14 @@ privileged aspect InstanceKeywordDataOnDemand_Roo_DataOnDemand {
         }
         InstanceKeyword obj = data.get(index);
         InstanceKeywordPK id = obj.getId();
-        return InstanceKeyword.findInstanceKeyword(id);
+        return instanceKeywordService.findInstanceKeyword(id);
     }
     
     public InstanceKeyword InstanceKeywordDataOnDemand.getRandomInstanceKeyword() {
         init();
         InstanceKeyword obj = data.get(rnd.nextInt(data.size()));
         InstanceKeywordPK id = obj.getId();
-        return InstanceKeyword.findInstanceKeyword(id);
+        return instanceKeywordService.findInstanceKeyword(id);
     }
     
     public boolean InstanceKeywordDataOnDemand.modifyInstanceKeyword(InstanceKeyword obj) {
@@ -87,7 +111,7 @@ privileged aspect InstanceKeywordDataOnDemand_Roo_DataOnDemand {
     public void InstanceKeywordDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = InstanceKeyword.findInstanceKeywordEntries(from, to);
+        data = instanceKeywordService.findInstanceKeywordEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'InstanceKeyword' illegally returned null");
         }
@@ -99,7 +123,7 @@ privileged aspect InstanceKeywordDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             InstanceKeyword obj = getNewTransientInstanceKeyword(i);
             try {
-                obj.persist();
+                instanceKeywordService.saveInstanceKeyword(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

@@ -14,8 +14,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ro.roda.AclEntry;
 import ro.roda.AclEntryDataOnDemand;
+import ro.roda.AclObjectIdentity;
 import ro.roda.AclObjectIdentityDataOnDemand;
+import ro.roda.AclSid;
 import ro.roda.AclSidDataOnDemand;
+import ro.roda.service.AclEntryService;
 
 privileged aspect AclEntryDataOnDemand_Roo_DataOnDemand {
     
@@ -26,24 +29,34 @@ privileged aspect AclEntryDataOnDemand_Roo_DataOnDemand {
     private List<AclEntry> AclEntryDataOnDemand.data;
     
     @Autowired
-    private AclObjectIdentityDataOnDemand AclEntryDataOnDemand.aclObjectIdentityDataOnDemand;
+    AclObjectIdentityDataOnDemand AclEntryDataOnDemand.aclObjectIdentityDataOnDemand;
     
     @Autowired
-    private AclSidDataOnDemand AclEntryDataOnDemand.aclSidDataOnDemand;
+    AclSidDataOnDemand AclEntryDataOnDemand.aclSidDataOnDemand;
+    
+    @Autowired
+    AclEntryService AclEntryDataOnDemand.aclEntryService;
     
     public AclEntry AclEntryDataOnDemand.getNewTransientAclEntry(int index) {
         AclEntry obj = new AclEntry();
         setAceOrder(obj, index);
+        setAclObjectIdentity(obj, index);
         setAuditFailure(obj, index);
         setAuditSuccess(obj, index);
         setGranting(obj, index);
         setMask(obj, index);
+        setSid(obj, index);
         return obj;
     }
     
     public void AclEntryDataOnDemand.setAceOrder(AclEntry obj, int index) {
         Integer aceOrder = new Integer(index);
         obj.setAceOrder(aceOrder);
+    }
+    
+    public void AclEntryDataOnDemand.setAclObjectIdentity(AclEntry obj, int index) {
+        AclObjectIdentity aclObjectIdentity = aclObjectIdentityDataOnDemand.getRandomAclObjectIdentity();
+        obj.setAclObjectIdentity(aclObjectIdentity);
     }
     
     public void AclEntryDataOnDemand.setAuditFailure(AclEntry obj, int index) {
@@ -66,6 +79,11 @@ privileged aspect AclEntryDataOnDemand_Roo_DataOnDemand {
         obj.setMask(mask);
     }
     
+    public void AclEntryDataOnDemand.setSid(AclEntry obj, int index) {
+        AclSid sid = aclSidDataOnDemand.getRandomAclSid();
+        obj.setSid(sid);
+    }
+    
     public AclEntry AclEntryDataOnDemand.getSpecificAclEntry(int index) {
         init();
         if (index < 0) {
@@ -76,14 +94,14 @@ privileged aspect AclEntryDataOnDemand_Roo_DataOnDemand {
         }
         AclEntry obj = data.get(index);
         Long id = obj.getId();
-        return AclEntry.findAclEntry(id);
+        return aclEntryService.findAclEntry(id);
     }
     
     public AclEntry AclEntryDataOnDemand.getRandomAclEntry() {
         init();
         AclEntry obj = data.get(rnd.nextInt(data.size()));
         Long id = obj.getId();
-        return AclEntry.findAclEntry(id);
+        return aclEntryService.findAclEntry(id);
     }
     
     public boolean AclEntryDataOnDemand.modifyAclEntry(AclEntry obj) {
@@ -93,7 +111,7 @@ privileged aspect AclEntryDataOnDemand_Roo_DataOnDemand {
     public void AclEntryDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = AclEntry.findAclEntryEntries(from, to);
+        data = aclEntryService.findAclEntryEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'AclEntry' illegally returned null");
         }
@@ -105,7 +123,7 @@ privileged aspect AclEntryDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             AclEntry obj = getNewTransientAclEntry(i);
             try {
-                obj.persist();
+                aclEntryService.saveAclEntry(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

@@ -6,7 +6,6 @@ package ro.roda;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
@@ -15,11 +14,14 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import ro.roda.Address;
 import ro.roda.AddressDataOnDemand;
+import ro.roda.Person;
 import ro.roda.PersonAddress;
 import ro.roda.PersonAddressDataOnDemand;
 import ro.roda.PersonAddressPK;
 import ro.roda.PersonDataOnDemand;
+import ro.roda.service.PersonAddressService;
 
 privileged aspect PersonAddressDataOnDemand_Roo_DataOnDemand {
     
@@ -30,16 +32,21 @@ privileged aspect PersonAddressDataOnDemand_Roo_DataOnDemand {
     private List<PersonAddress> PersonAddressDataOnDemand.data;
     
     @Autowired
-    private AddressDataOnDemand PersonAddressDataOnDemand.addressDataOnDemand;
+    AddressDataOnDemand PersonAddressDataOnDemand.addressDataOnDemand;
     
     @Autowired
-    private PersonDataOnDemand PersonAddressDataOnDemand.personDataOnDemand;
+    PersonDataOnDemand PersonAddressDataOnDemand.personDataOnDemand;
+    
+    @Autowired
+    PersonAddressService PersonAddressDataOnDemand.personAddressService;
     
     public PersonAddress PersonAddressDataOnDemand.getNewTransientPersonAddress(int index) {
         PersonAddress obj = new PersonAddress();
         setEmbeddedIdClass(obj, index);
+        setAddressId(obj, index);
         setDateend(obj, index);
         setDatestart(obj, index);
+        setPersonId(obj, index);
         return obj;
     }
     
@@ -51,14 +58,24 @@ privileged aspect PersonAddressDataOnDemand_Roo_DataOnDemand {
         obj.setId(embeddedIdClass);
     }
     
+    public void PersonAddressDataOnDemand.setAddressId(PersonAddress obj, int index) {
+        Address addressId = addressDataOnDemand.getRandomAddress();
+        obj.setAddressId(addressId);
+    }
+    
     public void PersonAddressDataOnDemand.setDateend(PersonAddress obj, int index) {
-        Date dateend = new GregorianCalendar(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH), Calendar.getInstance().get(Calendar.HOUR_OF_DAY), Calendar.getInstance().get(Calendar.MINUTE), Calendar.getInstance().get(Calendar.SECOND) + new Double(Math.random() * 1000).intValue()).getTime();
+        Calendar dateend = Calendar.getInstance();
         obj.setDateend(dateend);
     }
     
     public void PersonAddressDataOnDemand.setDatestart(PersonAddress obj, int index) {
-        Date datestart = new GregorianCalendar(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH), Calendar.getInstance().get(Calendar.HOUR_OF_DAY), Calendar.getInstance().get(Calendar.MINUTE), Calendar.getInstance().get(Calendar.SECOND) + new Double(Math.random() * 1000).intValue()).getTime();
+        Calendar datestart = Calendar.getInstance();
         obj.setDatestart(datestart);
+    }
+    
+    public void PersonAddressDataOnDemand.setPersonId(PersonAddress obj, int index) {
+        Person personId = personDataOnDemand.getRandomPerson();
+        obj.setPersonId(personId);
     }
     
     public PersonAddress PersonAddressDataOnDemand.getSpecificPersonAddress(int index) {
@@ -71,14 +88,14 @@ privileged aspect PersonAddressDataOnDemand_Roo_DataOnDemand {
         }
         PersonAddress obj = data.get(index);
         PersonAddressPK id = obj.getId();
-        return PersonAddress.findPersonAddress(id);
+        return personAddressService.findPersonAddress(id);
     }
     
     public PersonAddress PersonAddressDataOnDemand.getRandomPersonAddress() {
         init();
         PersonAddress obj = data.get(rnd.nextInt(data.size()));
         PersonAddressPK id = obj.getId();
-        return PersonAddress.findPersonAddress(id);
+        return personAddressService.findPersonAddress(id);
     }
     
     public boolean PersonAddressDataOnDemand.modifyPersonAddress(PersonAddress obj) {
@@ -88,7 +105,7 @@ privileged aspect PersonAddressDataOnDemand_Roo_DataOnDemand {
     public void PersonAddressDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = PersonAddress.findPersonAddressEntries(from, to);
+        data = personAddressService.findPersonAddressEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'PersonAddress' illegally returned null");
         }
@@ -100,7 +117,7 @@ privileged aspect PersonAddressDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             PersonAddress obj = getNewTransientPersonAddress(i);
             try {
-                obj.persist();
+                personAddressService.savePersonAddress(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

@@ -10,9 +10,11 @@ import java.util.List;
 import java.util.Random;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ro.roda.Prefix;
 import ro.roda.PrefixDataOnDemand;
+import ro.roda.service.PrefixService;
 
 privileged aspect PrefixDataOnDemand_Roo_DataOnDemand {
     
@@ -21,6 +23,9 @@ privileged aspect PrefixDataOnDemand_Roo_DataOnDemand {
     private Random PrefixDataOnDemand.rnd = new SecureRandom();
     
     private List<Prefix> PrefixDataOnDemand.data;
+    
+    @Autowired
+    PrefixService PrefixDataOnDemand.prefixService;
     
     public Prefix PrefixDataOnDemand.getNewTransientPrefix(int index) {
         Prefix obj = new Prefix();
@@ -46,14 +51,14 @@ privileged aspect PrefixDataOnDemand_Roo_DataOnDemand {
         }
         Prefix obj = data.get(index);
         Integer id = obj.getId();
-        return Prefix.findPrefix(id);
+        return prefixService.findPrefix(id);
     }
     
     public Prefix PrefixDataOnDemand.getRandomPrefix() {
         init();
         Prefix obj = data.get(rnd.nextInt(data.size()));
         Integer id = obj.getId();
-        return Prefix.findPrefix(id);
+        return prefixService.findPrefix(id);
     }
     
     public boolean PrefixDataOnDemand.modifyPrefix(Prefix obj) {
@@ -63,7 +68,7 @@ privileged aspect PrefixDataOnDemand_Roo_DataOnDemand {
     public void PrefixDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = Prefix.findPrefixEntries(from, to);
+        data = prefixService.findPrefixEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'Prefix' illegally returned null");
         }
@@ -75,7 +80,7 @@ privileged aspect PrefixDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             Prefix obj = getNewTransientPrefix(i);
             try {
-                obj.persist();
+                prefixService.savePrefix(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

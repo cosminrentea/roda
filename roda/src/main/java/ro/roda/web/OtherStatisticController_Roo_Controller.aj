@@ -6,6 +6,7 @@ package ro.roda.web;
 import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,10 +16,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.OtherStatistic;
-import ro.roda.Variable;
+import ro.roda.service.OtherStatisticService;
+import ro.roda.service.VariableService;
 import ro.roda.web.OtherStatisticController;
 
 privileged aspect OtherStatisticController_Roo_Controller {
+    
+    @Autowired
+    OtherStatisticService OtherStatisticController.otherStatisticService;
+    
+    @Autowired
+    VariableService OtherStatisticController.variableService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String OtherStatisticController.create(@Valid OtherStatistic otherStatistic, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -27,7 +35,7 @@ privileged aspect OtherStatisticController_Roo_Controller {
             return "otherstatistics/create";
         }
         uiModel.asMap().clear();
-        otherStatistic.persist();
+        otherStatisticService.saveOtherStatistic(otherStatistic);
         return "redirect:/otherstatistics/" + encodeUrlPathSegment(otherStatistic.getId().toString(), httpServletRequest);
     }
     
@@ -39,7 +47,7 @@ privileged aspect OtherStatisticController_Roo_Controller {
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String OtherStatisticController.show(@PathVariable("id") Long id, Model uiModel) {
-        uiModel.addAttribute("otherstatistic", OtherStatistic.findOtherStatistic(id));
+        uiModel.addAttribute("otherstatistic", otherStatisticService.findOtherStatistic(id));
         uiModel.addAttribute("itemId", id);
         return "otherstatistics/show";
     }
@@ -49,11 +57,11 @@ privileged aspect OtherStatisticController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("otherstatistics", OtherStatistic.findOtherStatisticEntries(firstResult, sizeNo));
-            float nrOfPages = (float) OtherStatistic.countOtherStatistics() / sizeNo;
+            uiModel.addAttribute("otherstatistics", otherStatisticService.findOtherStatisticEntries(firstResult, sizeNo));
+            float nrOfPages = (float) otherStatisticService.countAllOtherStatistics() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("otherstatistics", OtherStatistic.findAllOtherStatistics());
+            uiModel.addAttribute("otherstatistics", otherStatisticService.findAllOtherStatistics());
         }
         return "otherstatistics/list";
     }
@@ -65,20 +73,20 @@ privileged aspect OtherStatisticController_Roo_Controller {
             return "otherstatistics/update";
         }
         uiModel.asMap().clear();
-        otherStatistic.merge();
+        otherStatisticService.updateOtherStatistic(otherStatistic);
         return "redirect:/otherstatistics/" + encodeUrlPathSegment(otherStatistic.getId().toString(), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String OtherStatisticController.updateForm(@PathVariable("id") Long id, Model uiModel) {
-        populateEditForm(uiModel, OtherStatistic.findOtherStatistic(id));
+        populateEditForm(uiModel, otherStatisticService.findOtherStatistic(id));
         return "otherstatistics/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
     public String OtherStatisticController.delete(@PathVariable("id") Long id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        OtherStatistic otherStatistic = OtherStatistic.findOtherStatistic(id);
-        otherStatistic.remove();
+        OtherStatistic otherStatistic = otherStatisticService.findOtherStatistic(id);
+        otherStatisticService.deleteOtherStatistic(otherStatistic);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
@@ -87,7 +95,7 @@ privileged aspect OtherStatisticController_Roo_Controller {
     
     void OtherStatisticController.populateEditForm(Model uiModel, OtherStatistic otherStatistic) {
         uiModel.addAttribute("otherStatistic", otherStatistic);
-        uiModel.addAttribute("variables", Variable.findAllVariables());
+        uiModel.addAttribute("variables", variableService.findAllVariables());
     }
     
     String OtherStatisticController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

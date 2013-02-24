@@ -11,9 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.InstanceOrgAssoc;
 import ro.roda.InstanceOrgAssocDataOnDemand;
 import ro.roda.InstanceOrgAssocIntegrationTest;
+import ro.roda.service.InstanceOrgAssocService;
 
 privileged aspect InstanceOrgAssocIntegrationTest_Roo_IntegrationTest {
     
@@ -24,12 +24,15 @@ privileged aspect InstanceOrgAssocIntegrationTest_Roo_IntegrationTest {
     declare @type: InstanceOrgAssocIntegrationTest: @Transactional;
     
     @Autowired
-    private InstanceOrgAssocDataOnDemand InstanceOrgAssocIntegrationTest.dod;
+    InstanceOrgAssocDataOnDemand InstanceOrgAssocIntegrationTest.dod;
+    
+    @Autowired
+    InstanceOrgAssocService InstanceOrgAssocIntegrationTest.instanceOrgAssocService;
     
     @Test
-    public void InstanceOrgAssocIntegrationTest.testCountInstanceOrgAssocs() {
+    public void InstanceOrgAssocIntegrationTest.testCountAllInstanceOrgAssocs() {
         Assert.assertNotNull("Data on demand for 'InstanceOrgAssoc' failed to initialize correctly", dod.getRandomInstanceOrgAssoc());
-        long count = InstanceOrgAssoc.countInstanceOrgAssocs();
+        long count = instanceOrgAssocService.countAllInstanceOrgAssocs();
         Assert.assertTrue("Counter for 'InstanceOrgAssoc' incorrectly reported there were no entries", count > 0);
     }
     
@@ -39,7 +42,7 @@ privileged aspect InstanceOrgAssocIntegrationTest_Roo_IntegrationTest {
         Assert.assertNotNull("Data on demand for 'InstanceOrgAssoc' failed to initialize correctly", obj);
         Integer id = obj.getId();
         Assert.assertNotNull("Data on demand for 'InstanceOrgAssoc' failed to provide an identifier", id);
-        obj = InstanceOrgAssoc.findInstanceOrgAssoc(id);
+        obj = instanceOrgAssocService.findInstanceOrgAssoc(id);
         Assert.assertNotNull("Find method for 'InstanceOrgAssoc' illegally returned null for id '" + id + "'", obj);
         Assert.assertEquals("Find method for 'InstanceOrgAssoc' returned the incorrect identifier", id, obj.getId());
     }
@@ -47,9 +50,9 @@ privileged aspect InstanceOrgAssocIntegrationTest_Roo_IntegrationTest {
     @Test
     public void InstanceOrgAssocIntegrationTest.testFindAllInstanceOrgAssocs() {
         Assert.assertNotNull("Data on demand for 'InstanceOrgAssoc' failed to initialize correctly", dod.getRandomInstanceOrgAssoc());
-        long count = InstanceOrgAssoc.countInstanceOrgAssocs();
+        long count = instanceOrgAssocService.countAllInstanceOrgAssocs();
         Assert.assertTrue("Too expensive to perform a find all test for 'InstanceOrgAssoc', as there are " + count + " entries; set the findAllMaximum to exceed this value or set findAll=false on the integration test annotation to disable the test", count < 250);
-        List<InstanceOrgAssoc> result = InstanceOrgAssoc.findAllInstanceOrgAssocs();
+        List<InstanceOrgAssoc> result = instanceOrgAssocService.findAllInstanceOrgAssocs();
         Assert.assertNotNull("Find all method for 'InstanceOrgAssoc' illegally returned null", result);
         Assert.assertTrue("Find all method for 'InstanceOrgAssoc' failed to return any data", result.size() > 0);
     }
@@ -57,36 +60,36 @@ privileged aspect InstanceOrgAssocIntegrationTest_Roo_IntegrationTest {
     @Test
     public void InstanceOrgAssocIntegrationTest.testFindInstanceOrgAssocEntries() {
         Assert.assertNotNull("Data on demand for 'InstanceOrgAssoc' failed to initialize correctly", dod.getRandomInstanceOrgAssoc());
-        long count = InstanceOrgAssoc.countInstanceOrgAssocs();
+        long count = instanceOrgAssocService.countAllInstanceOrgAssocs();
         if (count > 20) count = 20;
         int firstResult = 0;
         int maxResults = (int) count;
-        List<InstanceOrgAssoc> result = InstanceOrgAssoc.findInstanceOrgAssocEntries(firstResult, maxResults);
+        List<InstanceOrgAssoc> result = instanceOrgAssocService.findInstanceOrgAssocEntries(firstResult, maxResults);
         Assert.assertNotNull("Find entries method for 'InstanceOrgAssoc' illegally returned null", result);
         Assert.assertEquals("Find entries method for 'InstanceOrgAssoc' returned an incorrect number of entries", count, result.size());
     }
     
     @Test
-    public void InstanceOrgAssocIntegrationTest.testPersist() {
+    public void InstanceOrgAssocIntegrationTest.testSaveInstanceOrgAssoc() {
         Assert.assertNotNull("Data on demand for 'InstanceOrgAssoc' failed to initialize correctly", dod.getRandomInstanceOrgAssoc());
         InstanceOrgAssoc obj = dod.getNewTransientInstanceOrgAssoc(Integer.MAX_VALUE);
         Assert.assertNotNull("Data on demand for 'InstanceOrgAssoc' failed to provide a new transient entity", obj);
         Assert.assertNull("Expected 'InstanceOrgAssoc' identifier to be null", obj.getId());
-        obj.persist();
+        instanceOrgAssocService.saveInstanceOrgAssoc(obj);
         obj.flush();
         Assert.assertNotNull("Expected 'InstanceOrgAssoc' identifier to no longer be null", obj.getId());
     }
     
     @Test
-    public void InstanceOrgAssocIntegrationTest.testRemove() {
+    public void InstanceOrgAssocIntegrationTest.testDeleteInstanceOrgAssoc() {
         InstanceOrgAssoc obj = dod.getRandomInstanceOrgAssoc();
         Assert.assertNotNull("Data on demand for 'InstanceOrgAssoc' failed to initialize correctly", obj);
         Integer id = obj.getId();
         Assert.assertNotNull("Data on demand for 'InstanceOrgAssoc' failed to provide an identifier", id);
-        obj = InstanceOrgAssoc.findInstanceOrgAssoc(id);
-        obj.remove();
+        obj = instanceOrgAssocService.findInstanceOrgAssoc(id);
+        instanceOrgAssocService.deleteInstanceOrgAssoc(obj);
         obj.flush();
-        Assert.assertNull("Failed to remove 'InstanceOrgAssoc' with identifier '" + id + "'", InstanceOrgAssoc.findInstanceOrgAssoc(id));
+        Assert.assertNull("Failed to remove 'InstanceOrgAssoc' with identifier '" + id + "'", instanceOrgAssocService.findInstanceOrgAssoc(id));
     }
     
 }

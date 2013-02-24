@@ -3,7 +3,7 @@
 
 package ro.roda;
 
-import java.util.Date;
+import java.util.Calendar;
 import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -31,13 +31,13 @@ privileged aspect PersonOrg_Roo_DbManaged {
     
     @Column(name = "datestart", columnDefinition = "timestamp")
     @Temporal(TemporalType.TIMESTAMP)
-    @DateTimeFormat(style = "M-")
-    private Date PersonOrg.datestart;
+    @DateTimeFormat(style = "MM")
+    private Calendar PersonOrg.datestart;
     
     @Column(name = "dateend", columnDefinition = "timestamp")
     @Temporal(TemporalType.TIMESTAMP)
-    @DateTimeFormat(style = "M-")
-    private Date PersonOrg.dateend;
+    @DateTimeFormat(style = "MM")
+    private Calendar PersonOrg.dateend;
     
     public Org PersonOrg.getOrgId() {
         return orgId;
@@ -63,19 +63,19 @@ privileged aspect PersonOrg_Roo_DbManaged {
         this.roleId = roleId;
     }
     
-    public Date PersonOrg.getDatestart() {
+    public Calendar PersonOrg.getDatestart() {
         return datestart;
     }
     
-    public void PersonOrg.setDatestart(Date datestart) {
+    public void PersonOrg.setDatestart(Calendar datestart) {
         this.datestart = datestart;
     }
     
-    public Date PersonOrg.getDateend() {
+    public Calendar PersonOrg.getDateend() {
         return dateend;
     }
     
-    public void PersonOrg.setDateend(Date dateend) {
+    public void PersonOrg.setDateend(Calendar dateend) {
         this.dateend = dateend;
     }
     

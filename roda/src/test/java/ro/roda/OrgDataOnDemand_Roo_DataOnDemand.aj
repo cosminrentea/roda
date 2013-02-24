@@ -17,6 +17,7 @@ import ro.roda.OrgDataOnDemand;
 import ro.roda.OrgPrefixDataOnDemand;
 import ro.roda.OrgSufixDataOnDemand;
 import ro.roda.SourceDataOnDemand;
+import ro.roda.service.OrgService;
 
 privileged aspect OrgDataOnDemand_Roo_DataOnDemand {
     
@@ -27,13 +28,16 @@ privileged aspect OrgDataOnDemand_Roo_DataOnDemand {
     private List<Org> OrgDataOnDemand.data;
     
     @Autowired
-    private OrgPrefixDataOnDemand OrgDataOnDemand.orgPrefixDataOnDemand;
+    OrgPrefixDataOnDemand OrgDataOnDemand.orgPrefixDataOnDemand;
     
     @Autowired
-    private OrgSufixDataOnDemand OrgDataOnDemand.orgSufixDataOnDemand;
+    OrgSufixDataOnDemand OrgDataOnDemand.orgSufixDataOnDemand;
     
     @Autowired
-    private SourceDataOnDemand OrgDataOnDemand.sourceDataOnDemand;
+    SourceDataOnDemand OrgDataOnDemand.sourceDataOnDemand;
+    
+    @Autowired
+    OrgService OrgDataOnDemand.orgService;
     
     public Org OrgDataOnDemand.getNewTransientOrg(int index) {
         Org obj = new Org();
@@ -68,14 +72,14 @@ privileged aspect OrgDataOnDemand_Roo_DataOnDemand {
         }
         Org obj = data.get(index);
         Integer id = obj.getId();
-        return Org.findOrg(id);
+        return orgService.findOrg(id);
     }
     
     public Org OrgDataOnDemand.getRandomOrg() {
         init();
         Org obj = data.get(rnd.nextInt(data.size()));
         Integer id = obj.getId();
-        return Org.findOrg(id);
+        return orgService.findOrg(id);
     }
     
     public boolean OrgDataOnDemand.modifyOrg(Org obj) {
@@ -85,7 +89,7 @@ privileged aspect OrgDataOnDemand_Roo_DataOnDemand {
     public void OrgDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = Org.findOrgEntries(from, to);
+        data = orgService.findOrgEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'Org' illegally returned null");
         }
@@ -97,7 +101,7 @@ privileged aspect OrgDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             Org obj = getNewTransientOrg(i);
             try {
-                obj.persist();
+                orgService.saveOrg(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

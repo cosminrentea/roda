@@ -6,6 +6,7 @@ package ro.roda.web;
 import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,11 +15,18 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.Org;
 import ro.roda.OrgPrefix;
+import ro.roda.service.OrgPrefixService;
+import ro.roda.service.OrgService;
 import ro.roda.web.OrgPrefixController;
 
 privileged aspect OrgPrefixController_Roo_Controller {
+    
+    @Autowired
+    OrgPrefixService OrgPrefixController.orgPrefixService;
+    
+    @Autowired
+    OrgService OrgPrefixController.orgService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String OrgPrefixController.create(@Valid OrgPrefix orgPrefix, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -27,7 +35,7 @@ privileged aspect OrgPrefixController_Roo_Controller {
             return "orgprefixes/create";
         }
         uiModel.asMap().clear();
-        orgPrefix.persist();
+        orgPrefixService.saveOrgPrefix(orgPrefix);
         return "redirect:/orgprefixes/" + encodeUrlPathSegment(orgPrefix.getId().toString(), httpServletRequest);
     }
     
@@ -39,7 +47,7 @@ privileged aspect OrgPrefixController_Roo_Controller {
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String OrgPrefixController.show(@PathVariable("id") Integer id, Model uiModel) {
-        uiModel.addAttribute("orgprefix", OrgPrefix.findOrgPrefix(id));
+        uiModel.addAttribute("orgprefix", orgPrefixService.findOrgPrefix(id));
         uiModel.addAttribute("itemId", id);
         return "orgprefixes/show";
     }
@@ -49,11 +57,11 @@ privileged aspect OrgPrefixController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("orgprefixes", OrgPrefix.findOrgPrefixEntries(firstResult, sizeNo));
-            float nrOfPages = (float) OrgPrefix.countOrgPrefixes() / sizeNo;
+            uiModel.addAttribute("orgprefixes", orgPrefixService.findOrgPrefixEntries(firstResult, sizeNo));
+            float nrOfPages = (float) orgPrefixService.countAllOrgPrefixes() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("orgprefixes", OrgPrefix.findAllOrgPrefixes());
+            uiModel.addAttribute("orgprefixes", orgPrefixService.findAllOrgPrefixes());
         }
         return "orgprefixes/list";
     }
@@ -65,20 +73,20 @@ privileged aspect OrgPrefixController_Roo_Controller {
             return "orgprefixes/update";
         }
         uiModel.asMap().clear();
-        orgPrefix.merge();
+        orgPrefixService.updateOrgPrefix(orgPrefix);
         return "redirect:/orgprefixes/" + encodeUrlPathSegment(orgPrefix.getId().toString(), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String OrgPrefixController.updateForm(@PathVariable("id") Integer id, Model uiModel) {
-        populateEditForm(uiModel, OrgPrefix.findOrgPrefix(id));
+        populateEditForm(uiModel, orgPrefixService.findOrgPrefix(id));
         return "orgprefixes/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
     public String OrgPrefixController.delete(@PathVariable("id") Integer id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        OrgPrefix orgPrefix = OrgPrefix.findOrgPrefix(id);
-        orgPrefix.remove();
+        OrgPrefix orgPrefix = orgPrefixService.findOrgPrefix(id);
+        orgPrefixService.deleteOrgPrefix(orgPrefix);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
@@ -87,7 +95,7 @@ privileged aspect OrgPrefixController_Roo_Controller {
     
     void OrgPrefixController.populateEditForm(Model uiModel, OrgPrefix orgPrefix) {
         uiModel.addAttribute("orgPrefix", orgPrefix);
-        uiModel.addAttribute("orgs", Org.findAllOrgs());
+        uiModel.addAttribute("orgs", orgService.findAllOrgs());
     }
     
     String OrgPrefixController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

@@ -11,15 +11,11 @@ privileged aspect AuditRowIdPK_Roo_Identifier {
     
     declare @type: AuditRowIdPK: @Embeddable;
     
-    @Column(name = "audit_id", columnDefinition = "int4", nullable = false)
-    private Integer AuditRowIdPK.auditId;
+    @Column(name = "id", nullable = false)
+    private Long AuditRowIdPK.id;
     
-    @Column(name = "id", columnDefinition = "serial", nullable = false)
-    private Integer AuditRowIdPK.id;
-    
-    public AuditRowIdPK.new(Integer auditId, Integer id) {
+    public AuditRowIdPK.new(Long id) {
         super();
-        this.auditId = auditId;
         this.id = id;
     }
 
@@ -27,11 +23,7 @@ privileged aspect AuditRowIdPK_Roo_Identifier {
         super();
     }
 
-    public Integer AuditRowIdPK.getAuditId() {
-        return auditId;
-    }
-    
-    public Integer AuditRowIdPK.getId() {
+    public Long AuditRowIdPK.getId() {
         return id;
     }
     

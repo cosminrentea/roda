@@ -11,9 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.Regiontype;
 import ro.roda.RegiontypeDataOnDemand;
 import ro.roda.RegiontypeIntegrationTest;
+import ro.roda.service.RegiontypeService;
 
 privileged aspect RegiontypeIntegrationTest_Roo_IntegrationTest {
     
@@ -24,12 +24,15 @@ privileged aspect RegiontypeIntegrationTest_Roo_IntegrationTest {
     declare @type: RegiontypeIntegrationTest: @Transactional;
     
     @Autowired
-    private RegiontypeDataOnDemand RegiontypeIntegrationTest.dod;
+    RegiontypeDataOnDemand RegiontypeIntegrationTest.dod;
+    
+    @Autowired
+    RegiontypeService RegiontypeIntegrationTest.regiontypeService;
     
     @Test
-    public void RegiontypeIntegrationTest.testCountRegiontypes() {
+    public void RegiontypeIntegrationTest.testCountAllRegiontypes() {
         Assert.assertNotNull("Data on demand for 'Regiontype' failed to initialize correctly", dod.getRandomRegiontype());
-        long count = Regiontype.countRegiontypes();
+        long count = regiontypeService.countAllRegiontypes();
         Assert.assertTrue("Counter for 'Regiontype' incorrectly reported there were no entries", count > 0);
     }
     
@@ -39,7 +42,7 @@ privileged aspect RegiontypeIntegrationTest_Roo_IntegrationTest {
         Assert.assertNotNull("Data on demand for 'Regiontype' failed to initialize correctly", obj);
         Integer id = obj.getId();
         Assert.assertNotNull("Data on demand for 'Regiontype' failed to provide an identifier", id);
-        obj = Regiontype.findRegiontype(id);
+        obj = regiontypeService.findRegiontype(id);
         Assert.assertNotNull("Find method for 'Regiontype' illegally returned null for id '" + id + "'", obj);
         Assert.assertEquals("Find method for 'Regiontype' returned the incorrect identifier", id, obj.getId());
     }
@@ -47,9 +50,9 @@ privileged aspect RegiontypeIntegrationTest_Roo_IntegrationTest {
     @Test
     public void RegiontypeIntegrationTest.testFindAllRegiontypes() {
         Assert.assertNotNull("Data on demand for 'Regiontype' failed to initialize correctly", dod.getRandomRegiontype());
-        long count = Regiontype.countRegiontypes();
+        long count = regiontypeService.countAllRegiontypes();
         Assert.assertTrue("Too expensive to perform a find all test for 'Regiontype', as there are " + count + " entries; set the findAllMaximum to exceed this value or set findAll=false on the integration test annotation to disable the test", count < 250);
-        List<Regiontype> result = Regiontype.findAllRegiontypes();
+        List<Regiontype> result = regiontypeService.findAllRegiontypes();
         Assert.assertNotNull("Find all method for 'Regiontype' illegally returned null", result);
         Assert.assertTrue("Find all method for 'Regiontype' failed to return any data", result.size() > 0);
     }
@@ -57,36 +60,36 @@ privileged aspect RegiontypeIntegrationTest_Roo_IntegrationTest {
     @Test
     public void RegiontypeIntegrationTest.testFindRegiontypeEntries() {
         Assert.assertNotNull("Data on demand for 'Regiontype' failed to initialize correctly", dod.getRandomRegiontype());
-        long count = Regiontype.countRegiontypes();
+        long count = regiontypeService.countAllRegiontypes();
         if (count > 20) count = 20;
         int firstResult = 0;
         int maxResults = (int) count;
-        List<Regiontype> result = Regiontype.findRegiontypeEntries(firstResult, maxResults);
+        List<Regiontype> result = regiontypeService.findRegiontypeEntries(firstResult, maxResults);
         Assert.assertNotNull("Find entries method for 'Regiontype' illegally returned null", result);
         Assert.assertEquals("Find entries method for 'Regiontype' returned an incorrect number of entries", count, result.size());
     }
     
     @Test
-    public void RegiontypeIntegrationTest.testPersist() {
+    public void RegiontypeIntegrationTest.testSaveRegiontype() {
         Assert.assertNotNull("Data on demand for 'Regiontype' failed to initialize correctly", dod.getRandomRegiontype());
         Regiontype obj = dod.getNewTransientRegiontype(Integer.MAX_VALUE);
         Assert.assertNotNull("Data on demand for 'Regiontype' failed to provide a new transient entity", obj);
         Assert.assertNull("Expected 'Regiontype' identifier to be null", obj.getId());
-        obj.persist();
+        regiontypeService.saveRegiontype(obj);
         obj.flush();
         Assert.assertNotNull("Expected 'Regiontype' identifier to no longer be null", obj.getId());
     }
     
     @Test
-    public void RegiontypeIntegrationTest.testRemove() {
+    public void RegiontypeIntegrationTest.testDeleteRegiontype() {
         Regiontype obj = dod.getRandomRegiontype();
         Assert.assertNotNull("Data on demand for 'Regiontype' failed to initialize correctly", obj);
         Integer id = obj.getId();
         Assert.assertNotNull("Data on demand for 'Regiontype' failed to provide an identifier", id);
-        obj = Regiontype.findRegiontype(id);
-        obj.remove();
+        obj = regiontypeService.findRegiontype(id);
+        regiontypeService.deleteRegiontype(obj);
         obj.flush();
-        Assert.assertNull("Failed to remove 'Regiontype' with identifier '" + id + "'", Regiontype.findRegiontype(id));
+        Assert.assertNull("Failed to remove 'Regiontype' with identifier '" + id + "'", regiontypeService.findRegiontype(id));
     }
     
 }

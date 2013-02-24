@@ -6,6 +6,7 @@ package ro.roda.web;
 import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,11 +16,21 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.Internet;
-import ro.roda.OrgInternet;
-import ro.roda.PersonInternet;
+import ro.roda.service.InternetService;
+import ro.roda.service.OrgInternetService;
+import ro.roda.service.PersonInternetService;
 import ro.roda.web.InternetController;
 
 privileged aspect InternetController_Roo_Controller {
+    
+    @Autowired
+    InternetService InternetController.internetService;
+    
+    @Autowired
+    OrgInternetService InternetController.orgInternetService;
+    
+    @Autowired
+    PersonInternetService InternetController.personInternetService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String InternetController.create(@Valid Internet internet, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -28,7 +39,7 @@ privileged aspect InternetController_Roo_Controller {
             return "internets/create";
         }
         uiModel.asMap().clear();
-        internet.persist();
+        internetService.saveInternet(internet);
         return "redirect:/internets/" + encodeUrlPathSegment(internet.getId().toString(), httpServletRequest);
     }
     
@@ -40,7 +51,7 @@ privileged aspect InternetController_Roo_Controller {
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String InternetController.show(@PathVariable("id") Integer id, Model uiModel) {
-        uiModel.addAttribute("internet", Internet.findInternet(id));
+        uiModel.addAttribute("internet", internetService.findInternet(id));
         uiModel.addAttribute("itemId", id);
         return "internets/show";
     }
@@ -50,11 +61,11 @@ privileged aspect InternetController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("internets", Internet.findInternetEntries(firstResult, sizeNo));
-            float nrOfPages = (float) Internet.countInternets() / sizeNo;
+            uiModel.addAttribute("internets", internetService.findInternetEntries(firstResult, sizeNo));
+            float nrOfPages = (float) internetService.countAllInternets() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("internets", Internet.findAllInternets());
+            uiModel.addAttribute("internets", internetService.findAllInternets());
         }
         return "internets/list";
     }
@@ -66,20 +77,20 @@ privileged aspect InternetController_Roo_Controller {
             return "internets/update";
         }
         uiModel.asMap().clear();
-        internet.merge();
+        internetService.updateInternet(internet);
         return "redirect:/internets/" + encodeUrlPathSegment(internet.getId().toString(), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String InternetController.updateForm(@PathVariable("id") Integer id, Model uiModel) {
-        populateEditForm(uiModel, Internet.findInternet(id));
+        populateEditForm(uiModel, internetService.findInternet(id));
         return "internets/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
     public String InternetController.delete(@PathVariable("id") Integer id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        Internet internet = Internet.findInternet(id);
-        internet.remove();
+        Internet internet = internetService.findInternet(id);
+        internetService.deleteInternet(internet);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
@@ -88,8 +99,8 @@ privileged aspect InternetController_Roo_Controller {
     
     void InternetController.populateEditForm(Model uiModel, Internet internet) {
         uiModel.addAttribute("internet", internet);
-        uiModel.addAttribute("orginternets", OrgInternet.findAllOrgInternets());
-        uiModel.addAttribute("personinternets", PersonInternet.findAllPersonInternets());
+        uiModel.addAttribute("orginternets", orgInternetService.findAllOrgInternets());
+        uiModel.addAttribute("personinternets", personInternetService.findAllPersonInternets());
     }
     
     String InternetController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

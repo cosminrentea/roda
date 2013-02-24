@@ -11,9 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.Sourcestudy;
 import ro.roda.SourcestudyDataOnDemand;
 import ro.roda.SourcestudyIntegrationTest;
+import ro.roda.service.SourcestudyService;
 
 privileged aspect SourcestudyIntegrationTest_Roo_IntegrationTest {
     
@@ -24,12 +24,15 @@ privileged aspect SourcestudyIntegrationTest_Roo_IntegrationTest {
     declare @type: SourcestudyIntegrationTest: @Transactional;
     
     @Autowired
-    private SourcestudyDataOnDemand SourcestudyIntegrationTest.dod;
+    SourcestudyDataOnDemand SourcestudyIntegrationTest.dod;
+    
+    @Autowired
+    SourcestudyService SourcestudyIntegrationTest.sourcestudyService;
     
     @Test
-    public void SourcestudyIntegrationTest.testCountSourcestudys() {
+    public void SourcestudyIntegrationTest.testCountAllSourcestudys() {
         Assert.assertNotNull("Data on demand for 'Sourcestudy' failed to initialize correctly", dod.getRandomSourcestudy());
-        long count = Sourcestudy.countSourcestudys();
+        long count = sourcestudyService.countAllSourcestudys();
         Assert.assertTrue("Counter for 'Sourcestudy' incorrectly reported there were no entries", count > 0);
     }
     
@@ -39,7 +42,7 @@ privileged aspect SourcestudyIntegrationTest_Roo_IntegrationTest {
         Assert.assertNotNull("Data on demand for 'Sourcestudy' failed to initialize correctly", obj);
         Integer id = obj.getId();
         Assert.assertNotNull("Data on demand for 'Sourcestudy' failed to provide an identifier", id);
-        obj = Sourcestudy.findSourcestudy(id);
+        obj = sourcestudyService.findSourcestudy(id);
         Assert.assertNotNull("Find method for 'Sourcestudy' illegally returned null for id '" + id + "'", obj);
         Assert.assertEquals("Find method for 'Sourcestudy' returned the incorrect identifier", id, obj.getId());
     }
@@ -47,9 +50,9 @@ privileged aspect SourcestudyIntegrationTest_Roo_IntegrationTest {
     @Test
     public void SourcestudyIntegrationTest.testFindAllSourcestudys() {
         Assert.assertNotNull("Data on demand for 'Sourcestudy' failed to initialize correctly", dod.getRandomSourcestudy());
-        long count = Sourcestudy.countSourcestudys();
+        long count = sourcestudyService.countAllSourcestudys();
         Assert.assertTrue("Too expensive to perform a find all test for 'Sourcestudy', as there are " + count + " entries; set the findAllMaximum to exceed this value or set findAll=false on the integration test annotation to disable the test", count < 250);
-        List<Sourcestudy> result = Sourcestudy.findAllSourcestudys();
+        List<Sourcestudy> result = sourcestudyService.findAllSourcestudys();
         Assert.assertNotNull("Find all method for 'Sourcestudy' illegally returned null", result);
         Assert.assertTrue("Find all method for 'Sourcestudy' failed to return any data", result.size() > 0);
     }
@@ -57,36 +60,36 @@ privileged aspect SourcestudyIntegrationTest_Roo_IntegrationTest {
     @Test
     public void SourcestudyIntegrationTest.testFindSourcestudyEntries() {
         Assert.assertNotNull("Data on demand for 'Sourcestudy' failed to initialize correctly", dod.getRandomSourcestudy());
-        long count = Sourcestudy.countSourcestudys();
+        long count = sourcestudyService.countAllSourcestudys();
         if (count > 20) count = 20;
         int firstResult = 0;
         int maxResults = (int) count;
-        List<Sourcestudy> result = Sourcestudy.findSourcestudyEntries(firstResult, maxResults);
+        List<Sourcestudy> result = sourcestudyService.findSourcestudyEntries(firstResult, maxResults);
         Assert.assertNotNull("Find entries method for 'Sourcestudy' illegally returned null", result);
         Assert.assertEquals("Find entries method for 'Sourcestudy' returned an incorrect number of entries", count, result.size());
     }
     
     @Test
-    public void SourcestudyIntegrationTest.testPersist() {
+    public void SourcestudyIntegrationTest.testSaveSourcestudy() {
         Assert.assertNotNull("Data on demand for 'Sourcestudy' failed to initialize correctly", dod.getRandomSourcestudy());
         Sourcestudy obj = dod.getNewTransientSourcestudy(Integer.MAX_VALUE);
         Assert.assertNotNull("Data on demand for 'Sourcestudy' failed to provide a new transient entity", obj);
         Assert.assertNull("Expected 'Sourcestudy' identifier to be null", obj.getId());
-        obj.persist();
+        sourcestudyService.saveSourcestudy(obj);
         obj.flush();
         Assert.assertNotNull("Expected 'Sourcestudy' identifier to no longer be null", obj.getId());
     }
     
     @Test
-    public void SourcestudyIntegrationTest.testRemove() {
+    public void SourcestudyIntegrationTest.testDeleteSourcestudy() {
         Sourcestudy obj = dod.getRandomSourcestudy();
         Assert.assertNotNull("Data on demand for 'Sourcestudy' failed to initialize correctly", obj);
         Integer id = obj.getId();
         Assert.assertNotNull("Data on demand for 'Sourcestudy' failed to provide an identifier", id);
-        obj = Sourcestudy.findSourcestudy(id);
-        obj.remove();
+        obj = sourcestudyService.findSourcestudy(id);
+        sourcestudyService.deleteSourcestudy(obj);
         obj.flush();
-        Assert.assertNull("Failed to remove 'Sourcestudy' with identifier '" + id + "'", Sourcestudy.findSourcestudy(id));
+        Assert.assertNull("Failed to remove 'Sourcestudy' with identifier '" + id + "'", sourcestudyService.findSourcestudy(id));
     }
     
 }

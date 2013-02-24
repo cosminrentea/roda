@@ -4,8 +4,8 @@
     <jsp:output omit-xml-declaration="yes"/>
     <form:create id="fc_ro_roda_PersonLinks" modelAttribute="personLinks" path="/personlinkses" render="${empty dependencies}" z="YBzleiXRAuU05/YM0nvcej1JuSs=">
         <field:select field="personId" id="c_ro_roda_PersonLinks_personId" itemValue="id" items="${people}" path="/people" z="YpWcMyxjRRj2/Bgu2xIBuQbRfFU="/>
-        <field:select field="userId" id="c_ro_roda_PersonLinks_userId" itemValue="id" items="${users}" path="/users" z="QCxKahIOyeolEmBPaC0Cg9RhwYM="/>
-        <field:select field="statusBy" id="c_ro_roda_PersonLinks_statusBy" itemValue="id" items="${users}" path="/users" z="Fb3K6BEwTZySfy4WPYVGMqchaP4="/>
+        <field:select field="userId" id="c_ro_roda_PersonLinks_userId" itemValue="id" items="${rodausers}" path="/rodausers" z="FDsufL1ku7VxVTl9PE5mBNUa8Y0="/>
+        <field:select field="statusBy" id="c_ro_roda_PersonLinks_statusBy" itemValue="id" items="${rodausers}" path="/rodausers" z="W0WLU6jiCqj6f6eCIkVzzpeC7fA="/>
         <field:input field="simscore" id="c_ro_roda_PersonLinks_simscore" required="true" validationMessageCode="field_invalid_number" z="S+0TRa4tYM+da/OqqBpVrc0fbS8="/>
         <field:input field="namescore" id="c_ro_roda_PersonLinks_namescore" required="true" validationMessageCode="field_invalid_number" z="30uLpTmjj3LBhtKA2dqebTSIaxs="/>
         <field:input field="emailscore" id="c_ro_roda_PersonLinks_emailscore" required="true" validationMessageCode="field_invalid_number" z="hRmTcCL+CYOzt1KSwcvxcdXRfN8="/>

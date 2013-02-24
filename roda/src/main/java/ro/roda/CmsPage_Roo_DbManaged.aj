@@ -13,7 +13,7 @@ import ro.roda.CmsLayout;
 import ro.roda.CmsPage;
 import ro.roda.CmsPageContent;
 import ro.roda.CmsPageType;
-import ro.roda.User;
+import ro.roda.Rodauser;
 
 privileged aspect CmsPage_Roo_DbManaged {
     
@@ -30,7 +30,7 @@ privileged aspect CmsPage_Roo_DbManaged {
     
     @ManyToOne
     @JoinColumn(name = "owner_id", referencedColumnName = "id", nullable = false)
-    private User CmsPage.ownerId;
+    private Rodauser CmsPage.ownerId;
     
     @Column(name = "name", columnDefinition = "text")
     @NotNull
@@ -72,11 +72,11 @@ privileged aspect CmsPage_Roo_DbManaged {
         this.cmsPageTypeId = cmsPageTypeId;
     }
     
-    public User CmsPage.getOwnerId() {
+    public Rodauser CmsPage.getOwnerId() {
         return ownerId;
     }
     
-    public void CmsPage.setOwnerId(User ownerId) {
+    public void CmsPage.setOwnerId(Rodauser ownerId) {
         this.ownerId = ownerId;
     }
     

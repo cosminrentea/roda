@@ -16,16 +16,29 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.Person;
-import ro.roda.Study;
 import ro.roda.StudyPerson;
-import ro.roda.StudyPersonAssoc;
 import ro.roda.StudyPersonPK;
+import ro.roda.service.PersonService;
+import ro.roda.service.StudyPersonAssocService;
+import ro.roda.service.StudyPersonService;
+import ro.roda.service.StudyService;
 import ro.roda.web.StudyPersonController;
 
 privileged aspect StudyPersonController_Roo_Controller {
     
     private ConversionService StudyPersonController.conversionService;
+    
+    @Autowired
+    StudyPersonService StudyPersonController.studyPersonService;
+    
+    @Autowired
+    PersonService StudyPersonController.personService;
+    
+    @Autowired
+    StudyService StudyPersonController.studyService;
+    
+    @Autowired
+    StudyPersonAssocService StudyPersonController.studyPersonAssocService;
     
     @Autowired
     public StudyPersonController.new(ConversionService conversionService) {
@@ -40,7 +53,7 @@ privileged aspect StudyPersonController_Roo_Controller {
             return "studypeople/create";
         }
         uiModel.asMap().clear();
-        studyPerson.persist();
+        studyPersonService.saveStudyPerson(studyPerson);
         return "redirect:/studypeople/" + encodeUrlPathSegment(conversionService.convert(studyPerson.getId(), String.class), httpServletRequest);
     }
     
@@ -52,7 +65,7 @@ privileged aspect StudyPersonController_Roo_Controller {
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String StudyPersonController.show(@PathVariable("id") StudyPersonPK id, Model uiModel) {
-        uiModel.addAttribute("studyperson", StudyPerson.findStudyPerson(id));
+        uiModel.addAttribute("studyperson", studyPersonService.findStudyPerson(id));
         uiModel.addAttribute("itemId", conversionService.convert(id, String.class));
         return "studypeople/show";
     }
@@ -62,11 +75,11 @@ privileged aspect StudyPersonController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("studypeople", StudyPerson.findStudyPersonEntries(firstResult, sizeNo));
-            float nrOfPages = (float) StudyPerson.countStudypeople() / sizeNo;
+            uiModel.addAttribute("studypeople", studyPersonService.findStudyPersonEntries(firstResult, sizeNo));
+            float nrOfPages = (float) studyPersonService.countAllStudypeople() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("studypeople", StudyPerson.findAllStudypeople());
+            uiModel.addAttribute("studypeople", studyPersonService.findAllStudypeople());
         }
         return "studypeople/list";
     }
@@ -78,20 +91,20 @@ privileged aspect StudyPersonController_Roo_Controller {
             return "studypeople/update";
         }
         uiModel.asMap().clear();
-        studyPerson.merge();
+        studyPersonService.updateStudyPerson(studyPerson);
         return "redirect:/studypeople/" + encodeUrlPathSegment(conversionService.convert(studyPerson.getId(), String.class), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String StudyPersonController.updateForm(@PathVariable("id") StudyPersonPK id, Model uiModel) {
-        populateEditForm(uiModel, StudyPerson.findStudyPerson(id));
+        populateEditForm(uiModel, studyPersonService.findStudyPerson(id));
         return "studypeople/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
     public String StudyPersonController.delete(@PathVariable("id") StudyPersonPK id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        StudyPerson studyPerson = StudyPerson.findStudyPerson(id);
-        studyPerson.remove();
+        StudyPerson studyPerson = studyPersonService.findStudyPerson(id);
+        studyPersonService.deleteStudyPerson(studyPerson);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
@@ -100,9 +113,9 @@ privileged aspect StudyPersonController_Roo_Controller {
     
     void StudyPersonController.populateEditForm(Model uiModel, StudyPerson studyPerson) {
         uiModel.addAttribute("studyPerson", studyPerson);
-        uiModel.addAttribute("people", Person.findAllPeople());
-        uiModel.addAttribute("studys", Study.findAllStudys());
-        uiModel.addAttribute("studypersonassocs", StudyPersonAssoc.findAllStudyPersonAssocs());
+        uiModel.addAttribute("people", personService.findAllPeople());
+        uiModel.addAttribute("studys", studyService.findAllStudys());
+        uiModel.addAttribute("studypersonassocs", studyPersonAssocService.findAllStudyPersonAssocs());
     }
     
     String StudyPersonController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

@@ -6,6 +6,7 @@ package ro.roda.web;
 import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,10 +16,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.Vargroup;
-import ro.roda.Variable;
+import ro.roda.service.VargroupService;
+import ro.roda.service.VariableService;
 import ro.roda.web.VargroupController;
 
 privileged aspect VargroupController_Roo_Controller {
+    
+    @Autowired
+    VargroupService VargroupController.vargroupService;
+    
+    @Autowired
+    VariableService VargroupController.variableService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String VargroupController.create(@Valid Vargroup vargroup, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -27,7 +35,7 @@ privileged aspect VargroupController_Roo_Controller {
             return "vargroups/create";
         }
         uiModel.asMap().clear();
-        vargroup.persist();
+        vargroupService.saveVargroup(vargroup);
         return "redirect:/vargroups/" + encodeUrlPathSegment(vargroup.getId().toString(), httpServletRequest);
     }
     
@@ -39,7 +47,7 @@ privileged aspect VargroupController_Roo_Controller {
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String VargroupController.show(@PathVariable("id") Long id, Model uiModel) {
-        uiModel.addAttribute("vargroup", Vargroup.findVargroup(id));
+        uiModel.addAttribute("vargroup", vargroupService.findVargroup(id));
         uiModel.addAttribute("itemId", id);
         return "vargroups/show";
     }
@@ -49,11 +57,11 @@ privileged aspect VargroupController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("vargroups", Vargroup.findVargroupEntries(firstResult, sizeNo));
-            float nrOfPages = (float) Vargroup.countVargroups() / sizeNo;
+            uiModel.addAttribute("vargroups", vargroupService.findVargroupEntries(firstResult, sizeNo));
+            float nrOfPages = (float) vargroupService.countAllVargroups() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("vargroups", Vargroup.findAllVargroups());
+            uiModel.addAttribute("vargroups", vargroupService.findAllVargroups());
         }
         return "vargroups/list";
     }
@@ -65,20 +73,20 @@ privileged aspect VargroupController_Roo_Controller {
             return "vargroups/update";
         }
         uiModel.asMap().clear();
-        vargroup.merge();
+        vargroupService.updateVargroup(vargroup);
         return "redirect:/vargroups/" + encodeUrlPathSegment(vargroup.getId().toString(), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String VargroupController.updateForm(@PathVariable("id") Long id, Model uiModel) {
-        populateEditForm(uiModel, Vargroup.findVargroup(id));
+        populateEditForm(uiModel, vargroupService.findVargroup(id));
         return "vargroups/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
     public String VargroupController.delete(@PathVariable("id") Long id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        Vargroup vargroup = Vargroup.findVargroup(id);
-        vargroup.remove();
+        Vargroup vargroup = vargroupService.findVargroup(id);
+        vargroupService.deleteVargroup(vargroup);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
@@ -87,7 +95,7 @@ privileged aspect VargroupController_Roo_Controller {
     
     void VargroupController.populateEditForm(Model uiModel, Vargroup vargroup) {
         uiModel.addAttribute("vargroup", vargroup);
-        uiModel.addAttribute("variables", Variable.findAllVariables());
+        uiModel.addAttribute("variables", variableService.findAllVariables());
     }
     
     String VargroupController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

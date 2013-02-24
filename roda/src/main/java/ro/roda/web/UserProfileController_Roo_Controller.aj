@@ -6,6 +6,7 @@ package ro.roda.web;
 import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,11 +15,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.User;
+import ro.roda.Rodauser;
 import ro.roda.UserProfile;
+import ro.roda.service.UserProfileService;
 import ro.roda.web.UserProfileController;
 
 privileged aspect UserProfileController_Roo_Controller {
+    
+    @Autowired
+    UserProfileService UserProfileController.userProfileService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String UserProfileController.create(@Valid UserProfile userProfile, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -27,7 +32,7 @@ privileged aspect UserProfileController_Roo_Controller {
             return "userprofiles/create";
         }
         uiModel.asMap().clear();
-        userProfile.persist();
+        userProfileService.saveUserProfile(userProfile);
         return "redirect:/userprofiles/" + encodeUrlPathSegment(userProfile.getUserId().toString(), httpServletRequest);
     }
     
@@ -39,7 +44,7 @@ privileged aspect UserProfileController_Roo_Controller {
     
     @RequestMapping(value = "/{userId}", produces = "text/html")
     public String UserProfileController.show(@PathVariable("userId") Integer userId, Model uiModel) {
-        uiModel.addAttribute("userprofile", UserProfile.findUserProfile(userId));
+        uiModel.addAttribute("userprofile", userProfileService.findUserProfile(userId));
         uiModel.addAttribute("itemId", userId);
         return "userprofiles/show";
     }
@@ -49,11 +54,11 @@ privileged aspect UserProfileController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("userprofiles", UserProfile.findUserProfileEntries(firstResult, sizeNo));
-            float nrOfPages = (float) UserProfile.countUserProfiles() / sizeNo;
+            uiModel.addAttribute("userprofiles", userProfileService.findUserProfileEntries(firstResult, sizeNo));
+            float nrOfPages = (float) userProfileService.countAllUserProfiles() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("userprofiles", UserProfile.findAllUserProfiles());
+            uiModel.addAttribute("userprofiles", userProfileService.findAllUserProfiles());
         }
         return "userprofiles/list";
     }
@@ -65,20 +70,20 @@ privileged aspect UserProfileController_Roo_Controller {
             return "userprofiles/update";
         }
         uiModel.asMap().clear();
-        userProfile.merge();
+        userProfileService.updateUserProfile(userProfile);
         return "redirect:/userprofiles/" + encodeUrlPathSegment(userProfile.getUserId().toString(), httpServletRequest);
     }
     
     @RequestMapping(value = "/{userId}", params = "form", produces = "text/html")
     public String UserProfileController.updateForm(@PathVariable("userId") Integer userId, Model uiModel) {
-        populateEditForm(uiModel, UserProfile.findUserProfile(userId));
+        populateEditForm(uiModel, userProfileService.findUserProfile(userId));
         return "userprofiles/update";
     }
     
     @RequestMapping(value = "/{userId}", method = RequestMethod.DELETE, produces = "text/html")
     public String UserProfileController.delete(@PathVariable("userId") Integer userId, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        UserProfile userProfile = UserProfile.findUserProfile(userId);
-        userProfile.remove();
+        UserProfile userProfile = userProfileService.findUserProfile(userId);
+        userProfileService.deleteUserProfile(userProfile);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
@@ -87,7 +92,7 @@ privileged aspect UserProfileController_Roo_Controller {
     
     void UserProfileController.populateEditForm(Model uiModel, UserProfile userProfile) {
         uiModel.addAttribute("userProfile", userProfile);
-        uiModel.addAttribute("users", User.findAllUsers());
+        uiModel.addAttribute("rodausers", Rodauser.findAllRodausers());
     }
     
     String UserProfileController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

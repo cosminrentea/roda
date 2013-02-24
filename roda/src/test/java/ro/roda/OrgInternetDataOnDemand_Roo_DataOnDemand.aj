@@ -12,11 +12,14 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import ro.roda.Internet;
 import ro.roda.InternetDataOnDemand;
+import ro.roda.Org;
 import ro.roda.OrgDataOnDemand;
 import ro.roda.OrgInternet;
 import ro.roda.OrgInternetDataOnDemand;
 import ro.roda.OrgInternetPK;
+import ro.roda.service.OrgInternetService;
 
 privileged aspect OrgInternetDataOnDemand_Roo_DataOnDemand {
     
@@ -27,15 +30,20 @@ privileged aspect OrgInternetDataOnDemand_Roo_DataOnDemand {
     private List<OrgInternet> OrgInternetDataOnDemand.data;
     
     @Autowired
-    private InternetDataOnDemand OrgInternetDataOnDemand.internetDataOnDemand;
+    InternetDataOnDemand OrgInternetDataOnDemand.internetDataOnDemand;
     
     @Autowired
-    private OrgDataOnDemand OrgInternetDataOnDemand.orgDataOnDemand;
+    OrgDataOnDemand OrgInternetDataOnDemand.orgDataOnDemand;
+    
+    @Autowired
+    OrgInternetService OrgInternetDataOnDemand.orgInternetService;
     
     public OrgInternet OrgInternetDataOnDemand.getNewTransientOrgInternet(int index) {
         OrgInternet obj = new OrgInternet();
         setEmbeddedIdClass(obj, index);
+        setInternetId(obj, index);
         setMain(obj, index);
+        setOrgId(obj, index);
         return obj;
     }
     
@@ -47,9 +55,19 @@ privileged aspect OrgInternetDataOnDemand_Roo_DataOnDemand {
         obj.setId(embeddedIdClass);
     }
     
+    public void OrgInternetDataOnDemand.setInternetId(OrgInternet obj, int index) {
+        Internet internetId = internetDataOnDemand.getRandomInternet();
+        obj.setInternetId(internetId);
+    }
+    
     public void OrgInternetDataOnDemand.setMain(OrgInternet obj, int index) {
         Boolean main = true;
         obj.setMain(main);
+    }
+    
+    public void OrgInternetDataOnDemand.setOrgId(OrgInternet obj, int index) {
+        Org orgId = orgDataOnDemand.getRandomOrg();
+        obj.setOrgId(orgId);
     }
     
     public OrgInternet OrgInternetDataOnDemand.getSpecificOrgInternet(int index) {
@@ -62,14 +80,14 @@ privileged aspect OrgInternetDataOnDemand_Roo_DataOnDemand {
         }
         OrgInternet obj = data.get(index);
         OrgInternetPK id = obj.getId();
-        return OrgInternet.findOrgInternet(id);
+        return orgInternetService.findOrgInternet(id);
     }
     
     public OrgInternet OrgInternetDataOnDemand.getRandomOrgInternet() {
         init();
         OrgInternet obj = data.get(rnd.nextInt(data.size()));
         OrgInternetPK id = obj.getId();
-        return OrgInternet.findOrgInternet(id);
+        return orgInternetService.findOrgInternet(id);
     }
     
     public boolean OrgInternetDataOnDemand.modifyOrgInternet(OrgInternet obj) {
@@ -79,7 +97,7 @@ privileged aspect OrgInternetDataOnDemand_Roo_DataOnDemand {
     public void OrgInternetDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = OrgInternet.findOrgInternetEntries(from, to);
+        data = orgInternetService.findOrgInternetEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'OrgInternet' illegally returned null");
         }
@@ -91,7 +109,7 @@ privileged aspect OrgInternetDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             OrgInternet obj = getNewTransientOrgInternet(i);
             try {
-                obj.persist();
+                orgInternetService.saveOrgInternet(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

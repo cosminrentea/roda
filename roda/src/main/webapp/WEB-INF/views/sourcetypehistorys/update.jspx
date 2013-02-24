@@ -5,7 +5,7 @@
     <form:update id="fu_ro_roda_SourcetypeHistory" modelAttribute="sourcetypeHistory" path="/sourcetypehistorys" versionField="none" z="IY6uHipZh8Vwls9NA468Z9I2DJY=">
         <field:select field="orgId" id="c_ro_roda_SourcetypeHistory_orgId" itemValue="orgId" items="${sources}" path="/sources" z="KGmdQvHoX3pKK1yvwyDFEk0qHWI="/>
         <field:select field="sourcetypeId" id="c_ro_roda_SourcetypeHistory_sourcetypeId" itemValue="id" items="${sourcetypes}" path="/sourcetypes" z="QWsuLMX0fnWNseG1wrhwRSvt/wM="/>
-        <field:select field="addedBy" id="c_ro_roda_SourcetypeHistory_addedBy" itemValue="id" items="${users}" path="/users" z="o7Tg3DYOwOOYdBWgRW5i5Zcc2xg="/>
+        <field:select field="addedBy" id="c_ro_roda_SourcetypeHistory_addedBy" itemValue="id" items="${rodausers}" path="/rodausers" z="TmIR3g8QTvZhzOS36PDJ5ZXkE5o="/>
         <field:datetime dateTimePattern="${sourcetypeHistory_datestart_date_format}" field="datestart" id="c_ro_roda_SourcetypeHistory_datestart" z="zVmemgt2+OD2zINJegyxjs3wgWE="/>
         <field:datetime dateTimePattern="${sourcetypeHistory_dateend_date_format}" field="dateend" id="c_ro_roda_SourcetypeHistory_dateend" z="9+pdFxPiawtjxhmLSYsYyTaBsc8="/>
     </form:update>

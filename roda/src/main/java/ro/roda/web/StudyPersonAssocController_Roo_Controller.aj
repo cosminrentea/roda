@@ -6,6 +6,7 @@ package ro.roda.web;
 import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,11 +15,18 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.StudyPerson;
 import ro.roda.StudyPersonAssoc;
+import ro.roda.service.StudyPersonAssocService;
+import ro.roda.service.StudyPersonService;
 import ro.roda.web.StudyPersonAssocController;
 
 privileged aspect StudyPersonAssocController_Roo_Controller {
+    
+    @Autowired
+    StudyPersonAssocService StudyPersonAssocController.studyPersonAssocService;
+    
+    @Autowired
+    StudyPersonService StudyPersonAssocController.studyPersonService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String StudyPersonAssocController.create(@Valid StudyPersonAssoc studyPersonAssoc, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -27,7 +35,7 @@ privileged aspect StudyPersonAssocController_Roo_Controller {
             return "studypersonassocs/create";
         }
         uiModel.asMap().clear();
-        studyPersonAssoc.persist();
+        studyPersonAssocService.saveStudyPersonAssoc(studyPersonAssoc);
         return "redirect:/studypersonassocs/" + encodeUrlPathSegment(studyPersonAssoc.getId().toString(), httpServletRequest);
     }
     
@@ -39,7 +47,7 @@ privileged aspect StudyPersonAssocController_Roo_Controller {
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String StudyPersonAssocController.show(@PathVariable("id") Integer id, Model uiModel) {
-        uiModel.addAttribute("studypersonassoc", StudyPersonAssoc.findStudyPersonAssoc(id));
+        uiModel.addAttribute("studypersonassoc", studyPersonAssocService.findStudyPersonAssoc(id));
         uiModel.addAttribute("itemId", id);
         return "studypersonassocs/show";
     }
@@ -49,11 +57,11 @@ privileged aspect StudyPersonAssocController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("studypersonassocs", StudyPersonAssoc.findStudyPersonAssocEntries(firstResult, sizeNo));
-            float nrOfPages = (float) StudyPersonAssoc.countStudyPersonAssocs() / sizeNo;
+            uiModel.addAttribute("studypersonassocs", studyPersonAssocService.findStudyPersonAssocEntries(firstResult, sizeNo));
+            float nrOfPages = (float) studyPersonAssocService.countAllStudyPersonAssocs() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("studypersonassocs", StudyPersonAssoc.findAllStudyPersonAssocs());
+            uiModel.addAttribute("studypersonassocs", studyPersonAssocService.findAllStudyPersonAssocs());
         }
         return "studypersonassocs/list";
     }
@@ -65,20 +73,20 @@ privileged aspect StudyPersonAssocController_Roo_Controller {
             return "studypersonassocs/update";
         }
         uiModel.asMap().clear();
-        studyPersonAssoc.merge();
+        studyPersonAssocService.updateStudyPersonAssoc(studyPersonAssoc);
         return "redirect:/studypersonassocs/" + encodeUrlPathSegment(studyPersonAssoc.getId().toString(), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String StudyPersonAssocController.updateForm(@PathVariable("id") Integer id, Model uiModel) {
-        populateEditForm(uiModel, StudyPersonAssoc.findStudyPersonAssoc(id));
+        populateEditForm(uiModel, studyPersonAssocService.findStudyPersonAssoc(id));
         return "studypersonassocs/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
     public String StudyPersonAssocController.delete(@PathVariable("id") Integer id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        StudyPersonAssoc studyPersonAssoc = StudyPersonAssoc.findStudyPersonAssoc(id);
-        studyPersonAssoc.remove();
+        StudyPersonAssoc studyPersonAssoc = studyPersonAssocService.findStudyPersonAssoc(id);
+        studyPersonAssocService.deleteStudyPersonAssoc(studyPersonAssoc);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
@@ -87,7 +95,7 @@ privileged aspect StudyPersonAssocController_Roo_Controller {
     
     void StudyPersonAssocController.populateEditForm(Model uiModel, StudyPersonAssoc studyPersonAssoc) {
         uiModel.addAttribute("studyPersonAssoc", studyPersonAssoc);
-        uiModel.addAttribute("studypeople", StudyPerson.findAllStudypeople());
+        uiModel.addAttribute("studypeople", studyPersonService.findAllStudypeople());
     }
     
     String StudyPersonAssocController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

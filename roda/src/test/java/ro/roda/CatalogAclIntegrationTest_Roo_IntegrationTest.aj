@@ -11,10 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.CatalogAcl;
 import ro.roda.CatalogAclDataOnDemand;
 import ro.roda.CatalogAclIntegrationTest;
 import ro.roda.CatalogAclPK;
+import ro.roda.service.CatalogAclService;
 
 privileged aspect CatalogAclIntegrationTest_Roo_IntegrationTest {
     
@@ -25,12 +25,15 @@ privileged aspect CatalogAclIntegrationTest_Roo_IntegrationTest {
     declare @type: CatalogAclIntegrationTest: @Transactional;
     
     @Autowired
-    private CatalogAclDataOnDemand CatalogAclIntegrationTest.dod;
+    CatalogAclDataOnDemand CatalogAclIntegrationTest.dod;
+    
+    @Autowired
+    CatalogAclService CatalogAclIntegrationTest.catalogAclService;
     
     @Test
-    public void CatalogAclIntegrationTest.testCountCatalogAcls() {
+    public void CatalogAclIntegrationTest.testCountAllCatalogAcls() {
         Assert.assertNotNull("Data on demand for 'CatalogAcl' failed to initialize correctly", dod.getRandomCatalogAcl());
-        long count = CatalogAcl.countCatalogAcls();
+        long count = catalogAclService.countAllCatalogAcls();
         Assert.assertTrue("Counter for 'CatalogAcl' incorrectly reported there were no entries", count > 0);
     }
     
@@ -40,7 +43,7 @@ privileged aspect CatalogAclIntegrationTest_Roo_IntegrationTest {
         Assert.assertNotNull("Data on demand for 'CatalogAcl' failed to initialize correctly", obj);
         CatalogAclPK id = obj.getId();
         Assert.assertNotNull("Data on demand for 'CatalogAcl' failed to provide an identifier", id);
-        obj = CatalogAcl.findCatalogAcl(id);
+        obj = catalogAclService.findCatalogAcl(id);
         Assert.assertNotNull("Find method for 'CatalogAcl' illegally returned null for id '" + id + "'", obj);
         Assert.assertEquals("Find method for 'CatalogAcl' returned the incorrect identifier", id, obj.getId());
     }
@@ -48,9 +51,9 @@ privileged aspect CatalogAclIntegrationTest_Roo_IntegrationTest {
     @Test
     public void CatalogAclIntegrationTest.testFindAllCatalogAcls() {
         Assert.assertNotNull("Data on demand for 'CatalogAcl' failed to initialize correctly", dod.getRandomCatalogAcl());
-        long count = CatalogAcl.countCatalogAcls();
+        long count = catalogAclService.countAllCatalogAcls();
         Assert.assertTrue("Too expensive to perform a find all test for 'CatalogAcl', as there are " + count + " entries; set the findAllMaximum to exceed this value or set findAll=false on the integration test annotation to disable the test", count < 250);
-        List<CatalogAcl> result = CatalogAcl.findAllCatalogAcls();
+        List<CatalogAcl> result = catalogAclService.findAllCatalogAcls();
         Assert.assertNotNull("Find all method for 'CatalogAcl' illegally returned null", result);
         Assert.assertTrue("Find all method for 'CatalogAcl' failed to return any data", result.size() > 0);
     }
@@ -58,35 +61,35 @@ privileged aspect CatalogAclIntegrationTest_Roo_IntegrationTest {
     @Test
     public void CatalogAclIntegrationTest.testFindCatalogAclEntries() {
         Assert.assertNotNull("Data on demand for 'CatalogAcl' failed to initialize correctly", dod.getRandomCatalogAcl());
-        long count = CatalogAcl.countCatalogAcls();
+        long count = catalogAclService.countAllCatalogAcls();
         if (count > 20) count = 20;
         int firstResult = 0;
         int maxResults = (int) count;
-        List<CatalogAcl> result = CatalogAcl.findCatalogAclEntries(firstResult, maxResults);
+        List<CatalogAcl> result = catalogAclService.findCatalogAclEntries(firstResult, maxResults);
         Assert.assertNotNull("Find entries method for 'CatalogAcl' illegally returned null", result);
         Assert.assertEquals("Find entries method for 'CatalogAcl' returned an incorrect number of entries", count, result.size());
     }
     
     @Test
-    public void CatalogAclIntegrationTest.testPersist() {
+    public void CatalogAclIntegrationTest.testSaveCatalogAcl() {
         Assert.assertNotNull("Data on demand for 'CatalogAcl' failed to initialize correctly", dod.getRandomCatalogAcl());
         CatalogAcl obj = dod.getNewTransientCatalogAcl(Integer.MAX_VALUE);
         Assert.assertNotNull("Data on demand for 'CatalogAcl' failed to provide a new transient entity", obj);
-        obj.persist();
+        catalogAclService.saveCatalogAcl(obj);
         obj.flush();
         Assert.assertNotNull("Expected 'CatalogAcl' identifier to no longer be null", obj.getId());
     }
     
     @Test
-    public void CatalogAclIntegrationTest.testRemove() {
+    public void CatalogAclIntegrationTest.testDeleteCatalogAcl() {
         CatalogAcl obj = dod.getRandomCatalogAcl();
         Assert.assertNotNull("Data on demand for 'CatalogAcl' failed to initialize correctly", obj);
         CatalogAclPK id = obj.getId();
         Assert.assertNotNull("Data on demand for 'CatalogAcl' failed to provide an identifier", id);
-        obj = CatalogAcl.findCatalogAcl(id);
-        obj.remove();
+        obj = catalogAclService.findCatalogAcl(id);
+        catalogAclService.deleteCatalogAcl(obj);
         obj.flush();
-        Assert.assertNull("Failed to remove 'CatalogAcl' with identifier '" + id + "'", CatalogAcl.findCatalogAcl(id));
+        Assert.assertNull("Failed to remove 'CatalogAcl' with identifier '" + id + "'", catalogAclService.findCatalogAcl(id));
     }
     
 }

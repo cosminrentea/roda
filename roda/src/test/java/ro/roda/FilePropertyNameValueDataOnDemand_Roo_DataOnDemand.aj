@@ -12,12 +12,16 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import ro.roda.File;
 import ro.roda.FileDataOnDemand;
 import ro.roda.FilePropertyNameValue;
 import ro.roda.FilePropertyNameValueDataOnDemand;
 import ro.roda.FilePropertyNameValuePK;
+import ro.roda.PropertyName;
 import ro.roda.PropertyNameDataOnDemand;
+import ro.roda.PropertyValue;
 import ro.roda.PropertyValueDataOnDemand;
+import ro.roda.service.FilePropertyNameValueService;
 
 privileged aspect FilePropertyNameValueDataOnDemand_Roo_DataOnDemand {
     
@@ -28,17 +32,23 @@ privileged aspect FilePropertyNameValueDataOnDemand_Roo_DataOnDemand {
     private List<FilePropertyNameValue> FilePropertyNameValueDataOnDemand.data;
     
     @Autowired
-    private FileDataOnDemand FilePropertyNameValueDataOnDemand.fileDataOnDemand;
+    FileDataOnDemand FilePropertyNameValueDataOnDemand.fileDataOnDemand;
     
     @Autowired
-    private PropertyNameDataOnDemand FilePropertyNameValueDataOnDemand.propertyNameDataOnDemand;
+    PropertyNameDataOnDemand FilePropertyNameValueDataOnDemand.propertyNameDataOnDemand;
     
     @Autowired
-    private PropertyValueDataOnDemand FilePropertyNameValueDataOnDemand.propertyValueDataOnDemand;
+    PropertyValueDataOnDemand FilePropertyNameValueDataOnDemand.propertyValueDataOnDemand;
+    
+    @Autowired
+    FilePropertyNameValueService FilePropertyNameValueDataOnDemand.filePropertyNameValueService;
     
     public FilePropertyNameValue FilePropertyNameValueDataOnDemand.getNewTransientFilePropertyNameValue(int index) {
         FilePropertyNameValue obj = new FilePropertyNameValue();
         setEmbeddedIdClass(obj, index);
+        setFileId(obj, index);
+        setPropertyNameId(obj, index);
+        setPropertyValueId(obj, index);
         return obj;
     }
     
@@ -51,6 +61,21 @@ privileged aspect FilePropertyNameValueDataOnDemand_Roo_DataOnDemand {
         obj.setId(embeddedIdClass);
     }
     
+    public void FilePropertyNameValueDataOnDemand.setFileId(FilePropertyNameValue obj, int index) {
+        File fileId = fileDataOnDemand.getRandomFile();
+        obj.setFileId(fileId);
+    }
+    
+    public void FilePropertyNameValueDataOnDemand.setPropertyNameId(FilePropertyNameValue obj, int index) {
+        PropertyName propertyNameId = propertyNameDataOnDemand.getRandomPropertyName();
+        obj.setPropertyNameId(propertyNameId);
+    }
+    
+    public void FilePropertyNameValueDataOnDemand.setPropertyValueId(FilePropertyNameValue obj, int index) {
+        PropertyValue propertyValueId = propertyValueDataOnDemand.getRandomPropertyValue();
+        obj.setPropertyValueId(propertyValueId);
+    }
+    
     public FilePropertyNameValue FilePropertyNameValueDataOnDemand.getSpecificFilePropertyNameValue(int index) {
         init();
         if (index < 0) {
@@ -61,14 +86,14 @@ privileged aspect FilePropertyNameValueDataOnDemand_Roo_DataOnDemand {
         }
         FilePropertyNameValue obj = data.get(index);
         FilePropertyNameValuePK id = obj.getId();
-        return FilePropertyNameValue.findFilePropertyNameValue(id);
+        return filePropertyNameValueService.findFilePropertyNameValue(id);
     }
     
     public FilePropertyNameValue FilePropertyNameValueDataOnDemand.getRandomFilePropertyNameValue() {
         init();
         FilePropertyNameValue obj = data.get(rnd.nextInt(data.size()));
         FilePropertyNameValuePK id = obj.getId();
-        return FilePropertyNameValue.findFilePropertyNameValue(id);
+        return filePropertyNameValueService.findFilePropertyNameValue(id);
     }
     
     public boolean FilePropertyNameValueDataOnDemand.modifyFilePropertyNameValue(FilePropertyNameValue obj) {
@@ -78,7 +103,7 @@ privileged aspect FilePropertyNameValueDataOnDemand_Roo_DataOnDemand {
     public void FilePropertyNameValueDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = FilePropertyNameValue.findFilePropertyNameValueEntries(from, to);
+        data = filePropertyNameValueService.findFilePropertyNameValueEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'FilePropertyNameValue' illegally returned null");
         }
@@ -90,7 +115,7 @@ privileged aspect FilePropertyNameValueDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             FilePropertyNameValue obj = getNewTransientFilePropertyNameValue(i);
             try {
-                obj.persist();
+                filePropertyNameValueService.saveFilePropertyNameValue(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

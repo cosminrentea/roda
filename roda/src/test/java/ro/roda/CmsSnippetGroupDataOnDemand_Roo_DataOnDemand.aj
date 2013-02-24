@@ -10,9 +10,11 @@ import java.util.List;
 import java.util.Random;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ro.roda.CmsSnippetGroup;
 import ro.roda.CmsSnippetGroupDataOnDemand;
+import ro.roda.service.CmsSnippetGroupService;
 
 privileged aspect CmsSnippetGroupDataOnDemand_Roo_DataOnDemand {
     
@@ -21,6 +23,9 @@ privileged aspect CmsSnippetGroupDataOnDemand_Roo_DataOnDemand {
     private Random CmsSnippetGroupDataOnDemand.rnd = new SecureRandom();
     
     private List<CmsSnippetGroup> CmsSnippetGroupDataOnDemand.data;
+    
+    @Autowired
+    CmsSnippetGroupService CmsSnippetGroupDataOnDemand.cmsSnippetGroupService;
     
     public CmsSnippetGroup CmsSnippetGroupDataOnDemand.getNewTransientCmsSnippetGroup(int index) {
         CmsSnippetGroup obj = new CmsSnippetGroup();
@@ -44,7 +49,7 @@ privileged aspect CmsSnippetGroupDataOnDemand_Roo_DataOnDemand {
     }
     
     public void CmsSnippetGroupDataOnDemand.setParentId(CmsSnippetGroup obj, int index) {
-        CmsSnippetGroup parentId = obj;
+        Integer parentId = new Integer(index);
         obj.setParentId(parentId);
     }
     
@@ -58,14 +63,14 @@ privileged aspect CmsSnippetGroupDataOnDemand_Roo_DataOnDemand {
         }
         CmsSnippetGroup obj = data.get(index);
         Integer id = obj.getId();
-        return CmsSnippetGroup.findCmsSnippetGroup(id);
+        return cmsSnippetGroupService.findCmsSnippetGroup(id);
     }
     
     public CmsSnippetGroup CmsSnippetGroupDataOnDemand.getRandomCmsSnippetGroup() {
         init();
         CmsSnippetGroup obj = data.get(rnd.nextInt(data.size()));
         Integer id = obj.getId();
-        return CmsSnippetGroup.findCmsSnippetGroup(id);
+        return cmsSnippetGroupService.findCmsSnippetGroup(id);
     }
     
     public boolean CmsSnippetGroupDataOnDemand.modifyCmsSnippetGroup(CmsSnippetGroup obj) {
@@ -75,7 +80,7 @@ privileged aspect CmsSnippetGroupDataOnDemand_Roo_DataOnDemand {
     public void CmsSnippetGroupDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = CmsSnippetGroup.findCmsSnippetGroupEntries(from, to);
+        data = cmsSnippetGroupService.findCmsSnippetGroupEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'CmsSnippetGroup' illegally returned null");
         }
@@ -87,7 +92,7 @@ privileged aspect CmsSnippetGroupDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             CmsSnippetGroup obj = getNewTransientCmsSnippetGroup(i);
             try {
-                obj.persist();
+                cmsSnippetGroupService.saveCmsSnippetGroup(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

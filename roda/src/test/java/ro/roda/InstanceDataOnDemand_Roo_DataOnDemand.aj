@@ -6,7 +6,6 @@ package ro.roda;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
@@ -17,10 +16,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ro.roda.Instance;
 import ro.roda.InstanceDataOnDemand;
+import ro.roda.Rodauser;
+import ro.roda.RodauserDataOnDemand;
+import ro.roda.Study;
 import ro.roda.StudyDataOnDemand;
+import ro.roda.TimeMethType;
 import ro.roda.TimeMethTypeDataOnDemand;
+import ro.roda.UnitAnalysis;
 import ro.roda.UnitAnalysisDataOnDemand;
-import ro.roda.UserDataOnDemand;
+import ro.roda.service.InstanceService;
 
 privileged aspect InstanceDataOnDemand_Roo_DataOnDemand {
     
@@ -31,40 +35,52 @@ privileged aspect InstanceDataOnDemand_Roo_DataOnDemand {
     private List<Instance> InstanceDataOnDemand.data;
     
     @Autowired
-    private UserDataOnDemand InstanceDataOnDemand.userDataOnDemand;
+    RodauserDataOnDemand InstanceDataOnDemand.rodauserDataOnDemand;
     
     @Autowired
-    private StudyDataOnDemand InstanceDataOnDemand.studyDataOnDemand;
+    StudyDataOnDemand InstanceDataOnDemand.studyDataOnDemand;
     
     @Autowired
-    private TimeMethTypeDataOnDemand InstanceDataOnDemand.timeMethTypeDataOnDemand;
+    TimeMethTypeDataOnDemand InstanceDataOnDemand.timeMethTypeDataOnDemand;
     
     @Autowired
-    private UnitAnalysisDataOnDemand InstanceDataOnDemand.unitAnalysisDataOnDemand;
+    UnitAnalysisDataOnDemand InstanceDataOnDemand.unitAnalysisDataOnDemand;
+    
+    @Autowired
+    InstanceService InstanceDataOnDemand.instanceService;
     
     public Instance InstanceDataOnDemand.getNewTransientInstance(int index) {
         Instance obj = new Instance();
         setAdded(obj, index);
+        setAddedBy(obj, index);
         setDateend(obj, index);
         setDatestart(obj, index);
         setInsertionStatus(obj, index);
         setRawData(obj, index);
         setRawMetadata(obj, index);
+        setStudyId(obj, index);
+        setTimeMethId(obj, index);
+        setUnitAnalysisId(obj, index);
         return obj;
     }
     
     public void InstanceDataOnDemand.setAdded(Instance obj, int index) {
-        Date added = new GregorianCalendar(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH), Calendar.getInstance().get(Calendar.HOUR_OF_DAY), Calendar.getInstance().get(Calendar.MINUTE), Calendar.getInstance().get(Calendar.SECOND) + new Double(Math.random() * 1000).intValue()).getTime();
+        Calendar added = Calendar.getInstance();
         obj.setAdded(added);
     }
     
+    public void InstanceDataOnDemand.setAddedBy(Instance obj, int index) {
+        Rodauser addedBy = rodauserDataOnDemand.getRandomRodauser();
+        obj.setAddedBy(addedBy);
+    }
+    
     public void InstanceDataOnDemand.setDateend(Instance obj, int index) {
-        Date dateend = new GregorianCalendar(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH), Calendar.getInstance().get(Calendar.HOUR_OF_DAY), Calendar.getInstance().get(Calendar.MINUTE), Calendar.getInstance().get(Calendar.SECOND) + new Double(Math.random() * 1000).intValue()).getTime();
+        Calendar dateend = Calendar.getInstance();
         obj.setDateend(dateend);
     }
     
     public void InstanceDataOnDemand.setDatestart(Instance obj, int index) {
-        Date datestart = new GregorianCalendar(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH), Calendar.getInstance().get(Calendar.HOUR_OF_DAY), Calendar.getInstance().get(Calendar.MINUTE), Calendar.getInstance().get(Calendar.SECOND) + new Double(Math.random() * 1000).intValue()).getTime();
+        Calendar datestart = Calendar.getInstance();
         obj.setDatestart(datestart);
     }
     
@@ -83,6 +99,21 @@ privileged aspect InstanceDataOnDemand_Roo_DataOnDemand {
         obj.setRawMetadata(rawMetadata);
     }
     
+    public void InstanceDataOnDemand.setStudyId(Instance obj, int index) {
+        Study studyId = studyDataOnDemand.getRandomStudy();
+        obj.setStudyId(studyId);
+    }
+    
+    public void InstanceDataOnDemand.setTimeMethId(Instance obj, int index) {
+        TimeMethType timeMethId = timeMethTypeDataOnDemand.getRandomTimeMethType();
+        obj.setTimeMethId(timeMethId);
+    }
+    
+    public void InstanceDataOnDemand.setUnitAnalysisId(Instance obj, int index) {
+        UnitAnalysis unitAnalysisId = unitAnalysisDataOnDemand.getRandomUnitAnalysis();
+        obj.setUnitAnalysisId(unitAnalysisId);
+    }
+    
     public Instance InstanceDataOnDemand.getSpecificInstance(int index) {
         init();
         if (index < 0) {
@@ -93,14 +124,14 @@ privileged aspect InstanceDataOnDemand_Roo_DataOnDemand {
         }
         Instance obj = data.get(index);
         Integer id = obj.getId();
-        return Instance.findInstance(id);
+        return instanceService.findInstance(id);
     }
     
     public Instance InstanceDataOnDemand.getRandomInstance() {
         init();
         Instance obj = data.get(rnd.nextInt(data.size()));
         Integer id = obj.getId();
-        return Instance.findInstance(id);
+        return instanceService.findInstance(id);
     }
     
     public boolean InstanceDataOnDemand.modifyInstance(Instance obj) {
@@ -110,7 +141,7 @@ privileged aspect InstanceDataOnDemand_Roo_DataOnDemand {
     public void InstanceDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = Instance.findInstanceEntries(from, to);
+        data = instanceService.findInstanceEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'Instance' illegally returned null");
         }
@@ -122,7 +153,7 @@ privileged aspect InstanceDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             Instance obj = getNewTransientInstance(i);
             try {
-                obj.persist();
+                instanceService.saveInstance(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

@@ -10,7 +10,7 @@ import ro.roda.UserProfile;
 privileged aspect UserProfile_Roo_ToString {
     
     public String UserProfile.toString() {
-        return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+        return new ReflectionToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE).setExcludeFieldNames("user", "rodauser").toString();
     }
     
 }

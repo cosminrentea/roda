@@ -28,7 +28,7 @@ privileged aspect Audit_Roo_Jpa_ActiveRecord {
         return entityManager().createQuery("SELECT o FROM Audit o", Audit.class).getResultList();
     }
     
-    public static Audit Audit.findAudit(Integer id) {
+    public static Audit Audit.findAudit(Long id) {
         if (id == null) return null;
         return entityManager().find(Audit.class, id);
     }

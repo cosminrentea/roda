@@ -18,16 +18,26 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.Instance;
 import ro.roda.InstanceKeyword;
 import ro.roda.InstanceKeywordPK;
-import ro.roda.Keyword;
-import ro.roda.User;
+import ro.roda.Rodauser;
+import ro.roda.service.InstanceKeywordService;
+import ro.roda.service.InstanceService;
+import ro.roda.service.KeywordService;
 import ro.roda.web.InstanceKeywordController;
 
 privileged aspect InstanceKeywordController_Roo_Controller {
     
     private ConversionService InstanceKeywordController.conversionService;
+    
+    @Autowired
+    InstanceKeywordService InstanceKeywordController.instanceKeywordService;
+    
+    @Autowired
+    InstanceService InstanceKeywordController.instanceService;
+    
+    @Autowired
+    KeywordService InstanceKeywordController.keywordService;
     
     @Autowired
     public InstanceKeywordController.new(ConversionService conversionService) {
@@ -42,7 +52,7 @@ privileged aspect InstanceKeywordController_Roo_Controller {
             return "instancekeywords/create";
         }
         uiModel.asMap().clear();
-        instanceKeyword.persist();
+        instanceKeywordService.saveInstanceKeyword(instanceKeyword);
         return "redirect:/instancekeywords/" + encodeUrlPathSegment(conversionService.convert(instanceKeyword.getId(), String.class), httpServletRequest);
     }
     
@@ -55,7 +65,7 @@ privileged aspect InstanceKeywordController_Roo_Controller {
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String InstanceKeywordController.show(@PathVariable("id") InstanceKeywordPK id, Model uiModel) {
         addDateTimeFormatPatterns(uiModel);
-        uiModel.addAttribute("instancekeyword", InstanceKeyword.findInstanceKeyword(id));
+        uiModel.addAttribute("instancekeyword", instanceKeywordService.findInstanceKeyword(id));
         uiModel.addAttribute("itemId", conversionService.convert(id, String.class));
         return "instancekeywords/show";
     }
@@ -65,11 +75,11 @@ privileged aspect InstanceKeywordController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("instancekeywords", InstanceKeyword.findInstanceKeywordEntries(firstResult, sizeNo));
-            float nrOfPages = (float) InstanceKeyword.countInstanceKeywords() / sizeNo;
+            uiModel.addAttribute("instancekeywords", instanceKeywordService.findInstanceKeywordEntries(firstResult, sizeNo));
+            float nrOfPages = (float) instanceKeywordService.countAllInstanceKeywords() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("instancekeywords", InstanceKeyword.findAllInstanceKeywords());
+            uiModel.addAttribute("instancekeywords", instanceKeywordService.findAllInstanceKeywords());
         }
         addDateTimeFormatPatterns(uiModel);
         return "instancekeywords/list";
@@ -82,20 +92,20 @@ privileged aspect InstanceKeywordController_Roo_Controller {
             return "instancekeywords/update";
         }
         uiModel.asMap().clear();
-        instanceKeyword.merge();
+        instanceKeywordService.updateInstanceKeyword(instanceKeyword);
         return "redirect:/instancekeywords/" + encodeUrlPathSegment(conversionService.convert(instanceKeyword.getId(), String.class), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String InstanceKeywordController.updateForm(@PathVariable("id") InstanceKeywordPK id, Model uiModel) {
-        populateEditForm(uiModel, InstanceKeyword.findInstanceKeyword(id));
+        populateEditForm(uiModel, instanceKeywordService.findInstanceKeyword(id));
         return "instancekeywords/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
     public String InstanceKeywordController.delete(@PathVariable("id") InstanceKeywordPK id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        InstanceKeyword instanceKeyword = InstanceKeyword.findInstanceKeyword(id);
-        instanceKeyword.remove();
+        InstanceKeyword instanceKeyword = instanceKeywordService.findInstanceKeyword(id);
+        instanceKeywordService.deleteInstanceKeyword(instanceKeyword);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
@@ -103,15 +113,15 @@ privileged aspect InstanceKeywordController_Roo_Controller {
     }
     
     void InstanceKeywordController.addDateTimeFormatPatterns(Model uiModel) {
-        uiModel.addAttribute("instanceKeyword_added_date_format", DateTimeFormat.patternForStyle("M-", LocaleContextHolder.getLocale()));
+        uiModel.addAttribute("instanceKeyword_added_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
     }
     
     void InstanceKeywordController.populateEditForm(Model uiModel, InstanceKeyword instanceKeyword) {
         uiModel.addAttribute("instanceKeyword", instanceKeyword);
         addDateTimeFormatPatterns(uiModel);
-        uiModel.addAttribute("instances", Instance.findAllInstances());
-        uiModel.addAttribute("keywords", Keyword.findAllKeywords());
-        uiModel.addAttribute("users", User.findAllUsers());
+        uiModel.addAttribute("instances", instanceService.findAllInstances());
+        uiModel.addAttribute("keywords", keywordService.findAllKeywords());
+        uiModel.addAttribute("rodausers", Rodauser.findAllRodausers());
     }
     
     String InstanceKeywordController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

@@ -11,10 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.StudyOrg;
 import ro.roda.StudyOrgDataOnDemand;
 import ro.roda.StudyOrgIntegrationTest;
 import ro.roda.StudyOrgPK;
+import ro.roda.service.StudyOrgService;
 
 privileged aspect StudyOrgIntegrationTest_Roo_IntegrationTest {
     
@@ -25,12 +25,15 @@ privileged aspect StudyOrgIntegrationTest_Roo_IntegrationTest {
     declare @type: StudyOrgIntegrationTest: @Transactional;
     
     @Autowired
-    private StudyOrgDataOnDemand StudyOrgIntegrationTest.dod;
+    StudyOrgDataOnDemand StudyOrgIntegrationTest.dod;
+    
+    @Autowired
+    StudyOrgService StudyOrgIntegrationTest.studyOrgService;
     
     @Test
-    public void StudyOrgIntegrationTest.testCountStudyOrgs() {
+    public void StudyOrgIntegrationTest.testCountAllStudyOrgs() {
         Assert.assertNotNull("Data on demand for 'StudyOrg' failed to initialize correctly", dod.getRandomStudyOrg());
-        long count = StudyOrg.countStudyOrgs();
+        long count = studyOrgService.countAllStudyOrgs();
         Assert.assertTrue("Counter for 'StudyOrg' incorrectly reported there were no entries", count > 0);
     }
     
@@ -40,7 +43,7 @@ privileged aspect StudyOrgIntegrationTest_Roo_IntegrationTest {
         Assert.assertNotNull("Data on demand for 'StudyOrg' failed to initialize correctly", obj);
         StudyOrgPK id = obj.getId();
         Assert.assertNotNull("Data on demand for 'StudyOrg' failed to provide an identifier", id);
-        obj = StudyOrg.findStudyOrg(id);
+        obj = studyOrgService.findStudyOrg(id);
         Assert.assertNotNull("Find method for 'StudyOrg' illegally returned null for id '" + id + "'", obj);
         Assert.assertEquals("Find method for 'StudyOrg' returned the incorrect identifier", id, obj.getId());
     }
@@ -48,9 +51,9 @@ privileged aspect StudyOrgIntegrationTest_Roo_IntegrationTest {
     @Test
     public void StudyOrgIntegrationTest.testFindAllStudyOrgs() {
         Assert.assertNotNull("Data on demand for 'StudyOrg' failed to initialize correctly", dod.getRandomStudyOrg());
-        long count = StudyOrg.countStudyOrgs();
+        long count = studyOrgService.countAllStudyOrgs();
         Assert.assertTrue("Too expensive to perform a find all test for 'StudyOrg', as there are " + count + " entries; set the findAllMaximum to exceed this value or set findAll=false on the integration test annotation to disable the test", count < 250);
-        List<StudyOrg> result = StudyOrg.findAllStudyOrgs();
+        List<StudyOrg> result = studyOrgService.findAllStudyOrgs();
         Assert.assertNotNull("Find all method for 'StudyOrg' illegally returned null", result);
         Assert.assertTrue("Find all method for 'StudyOrg' failed to return any data", result.size() > 0);
     }
@@ -58,35 +61,35 @@ privileged aspect StudyOrgIntegrationTest_Roo_IntegrationTest {
     @Test
     public void StudyOrgIntegrationTest.testFindStudyOrgEntries() {
         Assert.assertNotNull("Data on demand for 'StudyOrg' failed to initialize correctly", dod.getRandomStudyOrg());
-        long count = StudyOrg.countStudyOrgs();
+        long count = studyOrgService.countAllStudyOrgs();
         if (count > 20) count = 20;
         int firstResult = 0;
         int maxResults = (int) count;
-        List<StudyOrg> result = StudyOrg.findStudyOrgEntries(firstResult, maxResults);
+        List<StudyOrg> result = studyOrgService.findStudyOrgEntries(firstResult, maxResults);
         Assert.assertNotNull("Find entries method for 'StudyOrg' illegally returned null", result);
         Assert.assertEquals("Find entries method for 'StudyOrg' returned an incorrect number of entries", count, result.size());
     }
     
     @Test
-    public void StudyOrgIntegrationTest.testPersist() {
+    public void StudyOrgIntegrationTest.testSaveStudyOrg() {
         Assert.assertNotNull("Data on demand for 'StudyOrg' failed to initialize correctly", dod.getRandomStudyOrg());
         StudyOrg obj = dod.getNewTransientStudyOrg(Integer.MAX_VALUE);
         Assert.assertNotNull("Data on demand for 'StudyOrg' failed to provide a new transient entity", obj);
-        obj.persist();
+        studyOrgService.saveStudyOrg(obj);
         obj.flush();
         Assert.assertNotNull("Expected 'StudyOrg' identifier to no longer be null", obj.getId());
     }
     
     @Test
-    public void StudyOrgIntegrationTest.testRemove() {
+    public void StudyOrgIntegrationTest.testDeleteStudyOrg() {
         StudyOrg obj = dod.getRandomStudyOrg();
         Assert.assertNotNull("Data on demand for 'StudyOrg' failed to initialize correctly", obj);
         StudyOrgPK id = obj.getId();
         Assert.assertNotNull("Data on demand for 'StudyOrg' failed to provide an identifier", id);
-        obj = StudyOrg.findStudyOrg(id);
-        obj.remove();
+        obj = studyOrgService.findStudyOrg(id);
+        studyOrgService.deleteStudyOrg(obj);
         obj.flush();
-        Assert.assertNull("Failed to remove 'StudyOrg' with identifier '" + id + "'", StudyOrg.findStudyOrg(id));
+        Assert.assertNull("Failed to remove 'StudyOrg' with identifier '" + id + "'", studyOrgService.findStudyOrg(id));
     }
     
 }

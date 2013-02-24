@@ -6,6 +6,7 @@ package ro.roda.web;
 import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,11 +16,21 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.AclEntry;
-import ro.roda.AclObjectIdentity;
-import ro.roda.AclSid;
+import ro.roda.service.AclEntryService;
+import ro.roda.service.AclObjectIdentityService;
+import ro.roda.service.AclSidService;
 import ro.roda.web.AclEntryController;
 
 privileged aspect AclEntryController_Roo_Controller {
+    
+    @Autowired
+    AclEntryService AclEntryController.aclEntryService;
+    
+    @Autowired
+    AclObjectIdentityService AclEntryController.aclObjectIdentityService;
+    
+    @Autowired
+    AclSidService AclEntryController.aclSidService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String AclEntryController.create(@Valid AclEntry aclEntry, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -28,7 +39,7 @@ privileged aspect AclEntryController_Roo_Controller {
             return "aclentrys/create";
         }
         uiModel.asMap().clear();
-        aclEntry.persist();
+        aclEntryService.saveAclEntry(aclEntry);
         return "redirect:/aclentrys/" + encodeUrlPathSegment(aclEntry.getId().toString(), httpServletRequest);
     }
     
@@ -40,7 +51,7 @@ privileged aspect AclEntryController_Roo_Controller {
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String AclEntryController.show(@PathVariable("id") Long id, Model uiModel) {
-        uiModel.addAttribute("aclentry", AclEntry.findAclEntry(id));
+        uiModel.addAttribute("aclentry", aclEntryService.findAclEntry(id));
         uiModel.addAttribute("itemId", id);
         return "aclentrys/show";
     }
@@ -50,11 +61,11 @@ privileged aspect AclEntryController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("aclentrys", AclEntry.findAclEntryEntries(firstResult, sizeNo));
-            float nrOfPages = (float) AclEntry.countAclEntrys() / sizeNo;
+            uiModel.addAttribute("aclentrys", aclEntryService.findAclEntryEntries(firstResult, sizeNo));
+            float nrOfPages = (float) aclEntryService.countAllAclEntrys() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("aclentrys", AclEntry.findAllAclEntrys());
+            uiModel.addAttribute("aclentrys", aclEntryService.findAllAclEntrys());
         }
         return "aclentrys/list";
     }
@@ -66,20 +77,20 @@ privileged aspect AclEntryController_Roo_Controller {
             return "aclentrys/update";
         }
         uiModel.asMap().clear();
-        aclEntry.merge();
+        aclEntryService.updateAclEntry(aclEntry);
         return "redirect:/aclentrys/" + encodeUrlPathSegment(aclEntry.getId().toString(), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String AclEntryController.updateForm(@PathVariable("id") Long id, Model uiModel) {
-        populateEditForm(uiModel, AclEntry.findAclEntry(id));
+        populateEditForm(uiModel, aclEntryService.findAclEntry(id));
         return "aclentrys/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
     public String AclEntryController.delete(@PathVariable("id") Long id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        AclEntry aclEntry = AclEntry.findAclEntry(id);
-        aclEntry.remove();
+        AclEntry aclEntry = aclEntryService.findAclEntry(id);
+        aclEntryService.deleteAclEntry(aclEntry);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
@@ -88,8 +99,8 @@ privileged aspect AclEntryController_Roo_Controller {
     
     void AclEntryController.populateEditForm(Model uiModel, AclEntry aclEntry) {
         uiModel.addAttribute("aclEntry", aclEntry);
-        uiModel.addAttribute("aclobjectidentitys", AclObjectIdentity.findAllAclObjectIdentitys());
-        uiModel.addAttribute("aclsids", AclSid.findAllAclSids());
+        uiModel.addAttribute("aclobjectidentitys", aclObjectIdentityService.findAllAclObjectIdentitys());
+        uiModel.addAttribute("aclsids", aclSidService.findAllAclSids());
     }
     
     String AclEntryController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

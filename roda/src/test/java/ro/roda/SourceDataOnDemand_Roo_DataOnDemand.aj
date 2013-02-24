@@ -12,10 +12,13 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import ro.roda.Org;
 import ro.roda.OrgDataOnDemand;
 import ro.roda.Source;
 import ro.roda.SourceDataOnDemand;
+import ro.roda.Sourcetype;
 import ro.roda.SourcetypeDataOnDemand;
+import ro.roda.service.SourceService;
 
 privileged aspect SourceDataOnDemand_Roo_DataOnDemand {
     
@@ -26,14 +29,29 @@ privileged aspect SourceDataOnDemand_Roo_DataOnDemand {
     private List<Source> SourceDataOnDemand.data;
     
     @Autowired
-    private OrgDataOnDemand SourceDataOnDemand.orgDataOnDemand;
+    OrgDataOnDemand SourceDataOnDemand.orgDataOnDemand;
     
     @Autowired
-    private SourcetypeDataOnDemand SourceDataOnDemand.sourcetypeDataOnDemand;
+    SourcetypeDataOnDemand SourceDataOnDemand.sourcetypeDataOnDemand;
+    
+    @Autowired
+    SourceService SourceDataOnDemand.sourceService;
     
     public Source SourceDataOnDemand.getNewTransientSource(int index) {
         Source obj = new Source();
+        setOrg(obj, index);
+        setSourcetypeId(obj, index);
         return obj;
+    }
+    
+    public void SourceDataOnDemand.setOrg(Source obj, int index) {
+        Org org = orgDataOnDemand.getSpecificOrg(index);
+        obj.setOrg(org);
+    }
+    
+    public void SourceDataOnDemand.setSourcetypeId(Source obj, int index) {
+        Sourcetype sourcetypeId = sourcetypeDataOnDemand.getRandomSourcetype();
+        obj.setSourcetypeId(sourcetypeId);
     }
     
     public Source SourceDataOnDemand.getSpecificSource(int index) {
@@ -46,14 +64,14 @@ privileged aspect SourceDataOnDemand_Roo_DataOnDemand {
         }
         Source obj = data.get(index);
         Integer id = obj.getOrgId();
-        return Source.findSource(id);
+        return sourceService.findSource(id);
     }
     
     public Source SourceDataOnDemand.getRandomSource() {
         init();
         Source obj = data.get(rnd.nextInt(data.size()));
         Integer id = obj.getOrgId();
-        return Source.findSource(id);
+        return sourceService.findSource(id);
     }
     
     public boolean SourceDataOnDemand.modifySource(Source obj) {
@@ -63,7 +81,7 @@ privileged aspect SourceDataOnDemand_Roo_DataOnDemand {
     public void SourceDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = Source.findSourceEntries(from, to);
+        data = sourceService.findSourceEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'Source' illegally returned null");
         }
@@ -75,7 +93,7 @@ privileged aspect SourceDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             Source obj = getNewTransientSource(i);
             try {
-                obj.persist();
+                sourceService.saveSource(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

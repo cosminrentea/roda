@@ -3,7 +3,7 @@
 
 package ro.roda;
 
-import java.util.Date;
+import java.util.Calendar;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.JoinColumn;
@@ -16,12 +16,9 @@ import org.springframework.format.annotation.DateTimeFormat;
 import ro.roda.Catalog;
 import ro.roda.CatalogAcl;
 import ro.roda.CatalogStudy;
-import ro.roda.User;
+import ro.roda.Rodauser;
 
 privileged aspect Catalog_Roo_DbManaged {
-    
-    @OneToMany(mappedBy = "parent")
-    private Set<Catalog> Catalog.catalogs;
     
     @OneToMany(mappedBy = "catalogId")
     private Set<CatalogAcl> Catalog.catalogAcls;
@@ -30,30 +27,27 @@ privileged aspect Catalog_Roo_DbManaged {
     private Set<CatalogStudy> Catalog.catalogStudies;
     
     @ManyToOne
-    @JoinColumn(name = "parent", referencedColumnName = "id", insertable = false, updatable = false)
-    private Catalog Catalog.parent;
-    
-    @ManyToOne
     @JoinColumn(name = "owner", referencedColumnName = "id", nullable = false)
-    private User Catalog.owner;
+    private Rodauser Catalog.owner;
     
     @Column(name = "name", columnDefinition = "varchar", length = 200)
     @NotNull
     private String Catalog.name;
     
+    @Column(name = "parent_id", columnDefinition = "int4")
+    private Integer Catalog.parentId;
+    
     @Column(name = "added", columnDefinition = "timestamp")
     @NotNull
     @Temporal(TemporalType.TIMESTAMP)
-    @DateTimeFormat(style = "M-")
-    private Date Catalog.added;
+    @DateTimeFormat(style = "MM")
+    private Calendar Catalog.added;
     
-    public Set<Catalog> Catalog.getCatalogs() {
-        return catalogs;
-    }
+    @Column(name = "sequencenr", columnDefinition = "int4")
+    private Integer Catalog.sequencenr;
     
-    public void Catalog.setCatalogs(Set<Catalog> catalogs) {
-        this.catalogs = catalogs;
-    }
+    @Column(name = "description", columnDefinition = "text")
+    private String Catalog.description;
     
     public Set<CatalogAcl> Catalog.getCatalogAcls() {
         return catalogAcls;
@@ -71,19 +65,11 @@ privileged aspect Catalog_Roo_DbManaged {
         this.catalogStudies = catalogStudies;
     }
     
-    public Catalog Catalog.getParent() {
-        return parent;
-    }
-    
-    public void Catalog.setParent(Catalog parent) {
-        this.parent = parent;
-    }
-    
-    public User Catalog.getOwner() {
+    public Rodauser Catalog.getOwner() {
         return owner;
     }
     
-    public void Catalog.setOwner(User owner) {
+    public void Catalog.setOwner(Rodauser owner) {
         this.owner = owner;
     }
     
@@ -95,12 +81,36 @@ privileged aspect Catalog_Roo_DbManaged {
         this.name = name;
     }
     
-    public Date Catalog.getAdded() {
+    public Integer Catalog.getParentId() {
+        return parentId;
+    }
+    
+    public void Catalog.setParentId(Integer parentId) {
+        this.parentId = parentId;
+    }
+    
+    public Calendar Catalog.getAdded() {
         return added;
     }
     
-    public void Catalog.setAdded(Date added) {
+    public void Catalog.setAdded(Calendar added) {
         this.added = added;
+    }
+    
+    public Integer Catalog.getSequencenr() {
+        return sequencenr;
+    }
+    
+    public void Catalog.setSequencenr(Integer sequencenr) {
+        this.sequencenr = sequencenr;
+    }
+    
+    public String Catalog.getDescription() {
+        return description;
+    }
+    
+    public void Catalog.setDescription(String description) {
+        this.description = description;
     }
     
 }

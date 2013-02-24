@@ -6,6 +6,7 @@ package ro.roda.web;
 import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,10 +16,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.Skip;
-import ro.roda.Variable;
+import ro.roda.service.SkipService;
+import ro.roda.service.VariableService;
 import ro.roda.web.SkipController;
 
 privileged aspect SkipController_Roo_Controller {
+    
+    @Autowired
+    SkipService SkipController.skipService;
+    
+    @Autowired
+    VariableService SkipController.variableService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String SkipController.create(@Valid Skip skip, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -27,7 +35,7 @@ privileged aspect SkipController_Roo_Controller {
             return "skips/create";
         }
         uiModel.asMap().clear();
-        skip.persist();
+        skipService.saveSkip(skip);
         return "redirect:/skips/" + encodeUrlPathSegment(skip.getId().toString(), httpServletRequest);
     }
     
@@ -39,7 +47,7 @@ privileged aspect SkipController_Roo_Controller {
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String SkipController.show(@PathVariable("id") Long id, Model uiModel) {
-        uiModel.addAttribute("skip", Skip.findSkip(id));
+        uiModel.addAttribute("skip", skipService.findSkip(id));
         uiModel.addAttribute("itemId", id);
         return "skips/show";
     }
@@ -49,11 +57,11 @@ privileged aspect SkipController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("skips", Skip.findSkipEntries(firstResult, sizeNo));
-            float nrOfPages = (float) Skip.countSkips() / sizeNo;
+            uiModel.addAttribute("skips", skipService.findSkipEntries(firstResult, sizeNo));
+            float nrOfPages = (float) skipService.countAllSkips() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("skips", Skip.findAllSkips());
+            uiModel.addAttribute("skips", skipService.findAllSkips());
         }
         return "skips/list";
     }
@@ -65,20 +73,20 @@ privileged aspect SkipController_Roo_Controller {
             return "skips/update";
         }
         uiModel.asMap().clear();
-        skip.merge();
+        skipService.updateSkip(skip);
         return "redirect:/skips/" + encodeUrlPathSegment(skip.getId().toString(), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String SkipController.updateForm(@PathVariable("id") Long id, Model uiModel) {
-        populateEditForm(uiModel, Skip.findSkip(id));
+        populateEditForm(uiModel, skipService.findSkip(id));
         return "skips/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
     public String SkipController.delete(@PathVariable("id") Long id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        Skip skip = Skip.findSkip(id);
-        skip.remove();
+        Skip skip = skipService.findSkip(id);
+        skipService.deleteSkip(skip);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
@@ -87,7 +95,7 @@ privileged aspect SkipController_Roo_Controller {
     
     void SkipController.populateEditForm(Model uiModel, Skip skip) {
         uiModel.addAttribute("skip", skip);
-        uiModel.addAttribute("variables", Variable.findAllVariables());
+        uiModel.addAttribute("variables", variableService.findAllVariables());
     }
     
     String SkipController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

@@ -7,6 +7,7 @@ import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.joda.time.format.DateTimeFormat;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -17,12 +18,22 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.Catalog;
-import ro.roda.CatalogAcl;
-import ro.roda.CatalogStudy;
-import ro.roda.User;
+import ro.roda.Rodauser;
+import ro.roda.service.CatalogAclService;
+import ro.roda.service.CatalogService;
+import ro.roda.service.CatalogStudyService;
 import ro.roda.web.CatalogController;
 
 privileged aspect CatalogController_Roo_Controller {
+    
+    @Autowired
+    CatalogService CatalogController.catalogService;
+    
+    @Autowired
+    CatalogAclService CatalogController.catalogAclService;
+    
+    @Autowired
+    CatalogStudyService CatalogController.catalogStudyService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String CatalogController.create(@Valid Catalog catalog, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -31,7 +42,7 @@ privileged aspect CatalogController_Roo_Controller {
             return "catalogs/create";
         }
         uiModel.asMap().clear();
-        catalog.persist();
+        catalogService.saveCatalog(catalog);
         return "redirect:/catalogs/" + encodeUrlPathSegment(catalog.getId().toString(), httpServletRequest);
     }
     
@@ -44,7 +55,7 @@ privileged aspect CatalogController_Roo_Controller {
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String CatalogController.show(@PathVariable("id") Integer id, Model uiModel) {
         addDateTimeFormatPatterns(uiModel);
-        uiModel.addAttribute("catalog", Catalog.findCatalog(id));
+        uiModel.addAttribute("catalog", catalogService.findCatalog(id));
         uiModel.addAttribute("itemId", id);
         return "catalogs/show";
     }
@@ -54,11 +65,11 @@ privileged aspect CatalogController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("catalogs", Catalog.findCatalogEntries(firstResult, sizeNo));
-            float nrOfPages = (float) Catalog.countCatalogs() / sizeNo;
+            uiModel.addAttribute("catalogs", catalogService.findCatalogEntries(firstResult, sizeNo));
+            float nrOfPages = (float) catalogService.countAllCatalogs() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("catalogs", Catalog.findAllCatalogs());
+            uiModel.addAttribute("catalogs", catalogService.findAllCatalogs());
         }
         addDateTimeFormatPatterns(uiModel);
         return "catalogs/list";
@@ -71,20 +82,20 @@ privileged aspect CatalogController_Roo_Controller {
             return "catalogs/update";
         }
         uiModel.asMap().clear();
-        catalog.merge();
+        catalogService.updateCatalog(catalog);
         return "redirect:/catalogs/" + encodeUrlPathSegment(catalog.getId().toString(), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String CatalogController.updateForm(@PathVariable("id") Integer id, Model uiModel) {
-        populateEditForm(uiModel, Catalog.findCatalog(id));
+        populateEditForm(uiModel, catalogService.findCatalog(id));
         return "catalogs/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
     public String CatalogController.delete(@PathVariable("id") Integer id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        Catalog catalog = Catalog.findCatalog(id);
-        catalog.remove();
+        Catalog catalog = catalogService.findCatalog(id);
+        catalogService.deleteCatalog(catalog);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
@@ -92,16 +103,15 @@ privileged aspect CatalogController_Roo_Controller {
     }
     
     void CatalogController.addDateTimeFormatPatterns(Model uiModel) {
-        uiModel.addAttribute("catalog_added_date_format", DateTimeFormat.patternForStyle("M-", LocaleContextHolder.getLocale()));
+        uiModel.addAttribute("catalog_added_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
     }
     
     void CatalogController.populateEditForm(Model uiModel, Catalog catalog) {
         uiModel.addAttribute("catalog", catalog);
         addDateTimeFormatPatterns(uiModel);
-        uiModel.addAttribute("catalogs", Catalog.findAllCatalogs());
-        uiModel.addAttribute("catalogacls", CatalogAcl.findAllCatalogAcls());
-        uiModel.addAttribute("catalogstudys", CatalogStudy.findAllCatalogStudys());
-        uiModel.addAttribute("users", User.findAllUsers());
+        uiModel.addAttribute("catalogacls", catalogAclService.findAllCatalogAcls());
+        uiModel.addAttribute("catalogstudys", catalogStudyService.findAllCatalogStudys());
+        uiModel.addAttribute("rodausers", Rodauser.findAllRodausers());
     }
     
     String CatalogController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

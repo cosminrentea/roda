@@ -16,15 +16,25 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.Internet;
-import ro.roda.Person;
 import ro.roda.PersonInternet;
 import ro.roda.PersonInternetPK;
+import ro.roda.service.InternetService;
+import ro.roda.service.PersonInternetService;
+import ro.roda.service.PersonService;
 import ro.roda.web.PersonInternetController;
 
 privileged aspect PersonInternetController_Roo_Controller {
     
     private ConversionService PersonInternetController.conversionService;
+    
+    @Autowired
+    PersonInternetService PersonInternetController.personInternetService;
+    
+    @Autowired
+    InternetService PersonInternetController.internetService;
+    
+    @Autowired
+    PersonService PersonInternetController.personService;
     
     @Autowired
     public PersonInternetController.new(ConversionService conversionService) {
@@ -39,7 +49,7 @@ privileged aspect PersonInternetController_Roo_Controller {
             return "personinternets/create";
         }
         uiModel.asMap().clear();
-        personInternet.persist();
+        personInternetService.savePersonInternet(personInternet);
         return "redirect:/personinternets/" + encodeUrlPathSegment(conversionService.convert(personInternet.getId(), String.class), httpServletRequest);
     }
     
@@ -51,7 +61,7 @@ privileged aspect PersonInternetController_Roo_Controller {
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String PersonInternetController.show(@PathVariable("id") PersonInternetPK id, Model uiModel) {
-        uiModel.addAttribute("personinternet", PersonInternet.findPersonInternet(id));
+        uiModel.addAttribute("personinternet", personInternetService.findPersonInternet(id));
         uiModel.addAttribute("itemId", conversionService.convert(id, String.class));
         return "personinternets/show";
     }
@@ -61,11 +71,11 @@ privileged aspect PersonInternetController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("personinternets", PersonInternet.findPersonInternetEntries(firstResult, sizeNo));
-            float nrOfPages = (float) PersonInternet.countPersonInternets() / sizeNo;
+            uiModel.addAttribute("personinternets", personInternetService.findPersonInternetEntries(firstResult, sizeNo));
+            float nrOfPages = (float) personInternetService.countAllPersonInternets() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("personinternets", PersonInternet.findAllPersonInternets());
+            uiModel.addAttribute("personinternets", personInternetService.findAllPersonInternets());
         }
         return "personinternets/list";
     }
@@ -77,20 +87,20 @@ privileged aspect PersonInternetController_Roo_Controller {
             return "personinternets/update";
         }
         uiModel.asMap().clear();
-        personInternet.merge();
+        personInternetService.updatePersonInternet(personInternet);
         return "redirect:/personinternets/" + encodeUrlPathSegment(conversionService.convert(personInternet.getId(), String.class), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String PersonInternetController.updateForm(@PathVariable("id") PersonInternetPK id, Model uiModel) {
-        populateEditForm(uiModel, PersonInternet.findPersonInternet(id));
+        populateEditForm(uiModel, personInternetService.findPersonInternet(id));
         return "personinternets/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
     public String PersonInternetController.delete(@PathVariable("id") PersonInternetPK id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        PersonInternet personInternet = PersonInternet.findPersonInternet(id);
-        personInternet.remove();
+        PersonInternet personInternet = personInternetService.findPersonInternet(id);
+        personInternetService.deletePersonInternet(personInternet);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
@@ -99,8 +109,8 @@ privileged aspect PersonInternetController_Roo_Controller {
     
     void PersonInternetController.populateEditForm(Model uiModel, PersonInternet personInternet) {
         uiModel.addAttribute("personInternet", personInternet);
-        uiModel.addAttribute("internets", Internet.findAllInternets());
-        uiModel.addAttribute("people", Person.findAllPeople());
+        uiModel.addAttribute("internets", internetService.findAllInternets());
+        uiModel.addAttribute("people", personService.findAllPeople());
     }
     
     String PersonInternetController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

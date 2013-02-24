@@ -16,15 +16,25 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.Email;
-import ro.roda.Person;
 import ro.roda.PersonEmail;
 import ro.roda.PersonEmailPK;
+import ro.roda.service.EmailService;
+import ro.roda.service.PersonEmailService;
+import ro.roda.service.PersonService;
 import ro.roda.web.PersonEmailController;
 
 privileged aspect PersonEmailController_Roo_Controller {
     
     private ConversionService PersonEmailController.conversionService;
+    
+    @Autowired
+    PersonEmailService PersonEmailController.personEmailService;
+    
+    @Autowired
+    EmailService PersonEmailController.emailService;
+    
+    @Autowired
+    PersonService PersonEmailController.personService;
     
     @Autowired
     public PersonEmailController.new(ConversionService conversionService) {
@@ -39,7 +49,7 @@ privileged aspect PersonEmailController_Roo_Controller {
             return "personemails/create";
         }
         uiModel.asMap().clear();
-        personEmail.persist();
+        personEmailService.savePersonEmail(personEmail);
         return "redirect:/personemails/" + encodeUrlPathSegment(conversionService.convert(personEmail.getId(), String.class), httpServletRequest);
     }
     
@@ -51,7 +61,7 @@ privileged aspect PersonEmailController_Roo_Controller {
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String PersonEmailController.show(@PathVariable("id") PersonEmailPK id, Model uiModel) {
-        uiModel.addAttribute("personemail", PersonEmail.findPersonEmail(id));
+        uiModel.addAttribute("personemail", personEmailService.findPersonEmail(id));
         uiModel.addAttribute("itemId", conversionService.convert(id, String.class));
         return "personemails/show";
     }
@@ -61,11 +71,11 @@ privileged aspect PersonEmailController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("personemails", PersonEmail.findPersonEmailEntries(firstResult, sizeNo));
-            float nrOfPages = (float) PersonEmail.countPersonEmails() / sizeNo;
+            uiModel.addAttribute("personemails", personEmailService.findPersonEmailEntries(firstResult, sizeNo));
+            float nrOfPages = (float) personEmailService.countAllPersonEmails() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("personemails", PersonEmail.findAllPersonEmails());
+            uiModel.addAttribute("personemails", personEmailService.findAllPersonEmails());
         }
         return "personemails/list";
     }
@@ -77,20 +87,20 @@ privileged aspect PersonEmailController_Roo_Controller {
             return "personemails/update";
         }
         uiModel.asMap().clear();
-        personEmail.merge();
+        personEmailService.updatePersonEmail(personEmail);
         return "redirect:/personemails/" + encodeUrlPathSegment(conversionService.convert(personEmail.getId(), String.class), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String PersonEmailController.updateForm(@PathVariable("id") PersonEmailPK id, Model uiModel) {
-        populateEditForm(uiModel, PersonEmail.findPersonEmail(id));
+        populateEditForm(uiModel, personEmailService.findPersonEmail(id));
         return "personemails/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
     public String PersonEmailController.delete(@PathVariable("id") PersonEmailPK id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        PersonEmail personEmail = PersonEmail.findPersonEmail(id);
-        personEmail.remove();
+        PersonEmail personEmail = personEmailService.findPersonEmail(id);
+        personEmailService.deletePersonEmail(personEmail);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
@@ -99,8 +109,8 @@ privileged aspect PersonEmailController_Roo_Controller {
     
     void PersonEmailController.populateEditForm(Model uiModel, PersonEmail personEmail) {
         uiModel.addAttribute("personEmail", personEmail);
-        uiModel.addAttribute("emails", Email.findAllEmails());
-        uiModel.addAttribute("people", Person.findAllPeople());
+        uiModel.addAttribute("emails", emailService.findAllEmails());
+        uiModel.addAttribute("people", personService.findAllPeople());
     }
     
     String PersonEmailController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

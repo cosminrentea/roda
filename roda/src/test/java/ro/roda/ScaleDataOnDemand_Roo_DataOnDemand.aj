@@ -12,10 +12,13 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import ro.roda.Item;
 import ro.roda.ItemDataOnDemand;
 import ro.roda.Scale;
 import ro.roda.ScaleDataOnDemand;
+import ro.roda.Value;
 import ro.roda.ValueDataOnDemand;
+import ro.roda.service.ScaleService;
 
 privileged aspect ScaleDataOnDemand_Roo_DataOnDemand {
     
@@ -26,15 +29,36 @@ privileged aspect ScaleDataOnDemand_Roo_DataOnDemand {
     private List<Scale> ScaleDataOnDemand.data;
     
     @Autowired
-    private ItemDataOnDemand ScaleDataOnDemand.itemDataOnDemand;
+    ItemDataOnDemand ScaleDataOnDemand.itemDataOnDemand;
     
     @Autowired
-    private ValueDataOnDemand ScaleDataOnDemand.valueDataOnDemand;
+    ValueDataOnDemand ScaleDataOnDemand.valueDataOnDemand;
+    
+    @Autowired
+    ScaleService ScaleDataOnDemand.scaleService;
     
     public Scale ScaleDataOnDemand.getNewTransientScale(int index) {
         Scale obj = new Scale();
+        setItem(obj, index);
+        setMaxValueId(obj, index);
+        setMinValueId(obj, index);
         setUnits(obj, index);
         return obj;
+    }
+    
+    public void ScaleDataOnDemand.setItem(Scale obj, int index) {
+        Item item = itemDataOnDemand.getSpecificItem(index);
+        obj.setItem(item);
+    }
+    
+    public void ScaleDataOnDemand.setMaxValueId(Scale obj, int index) {
+        Value maxValueId = valueDataOnDemand.getRandomValue();
+        obj.setMaxValueId(maxValueId);
+    }
+    
+    public void ScaleDataOnDemand.setMinValueId(Scale obj, int index) {
+        Value minValueId = valueDataOnDemand.getRandomValue();
+        obj.setMinValueId(minValueId);
     }
     
     public void ScaleDataOnDemand.setUnits(Scale obj, int index) {
@@ -52,14 +76,14 @@ privileged aspect ScaleDataOnDemand_Roo_DataOnDemand {
         }
         Scale obj = data.get(index);
         Long id = obj.getItemId();
-        return Scale.findScale(id);
+        return scaleService.findScale(id);
     }
     
     public Scale ScaleDataOnDemand.getRandomScale() {
         init();
         Scale obj = data.get(rnd.nextInt(data.size()));
         Long id = obj.getItemId();
-        return Scale.findScale(id);
+        return scaleService.findScale(id);
     }
     
     public boolean ScaleDataOnDemand.modifyScale(Scale obj) {
@@ -69,7 +93,7 @@ privileged aspect ScaleDataOnDemand_Roo_DataOnDemand {
     public void ScaleDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = Scale.findScaleEntries(from, to);
+        data = scaleService.findScaleEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'Scale' illegally returned null");
         }
@@ -81,7 +105,7 @@ privileged aspect ScaleDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             Scale obj = getNewTransientScale(i);
             try {
-                obj.persist();
+                scaleService.saveScale(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

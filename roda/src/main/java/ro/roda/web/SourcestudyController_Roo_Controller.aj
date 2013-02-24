@@ -6,6 +6,7 @@ package ro.roda.web;
 import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,13 +15,26 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.Source;
 import ro.roda.Sourcestudy;
-import ro.roda.SourcestudyType;
-import ro.roda.SourcestudyTypeHistory;
+import ro.roda.service.SourceService;
+import ro.roda.service.SourcestudyService;
+import ro.roda.service.SourcestudyTypeHistoryService;
+import ro.roda.service.SourcestudyTypeService;
 import ro.roda.web.SourcestudyController;
 
 privileged aspect SourcestudyController_Roo_Controller {
+    
+    @Autowired
+    SourcestudyService SourcestudyController.sourcestudyService;
+    
+    @Autowired
+    SourceService SourcestudyController.sourceService;
+    
+    @Autowired
+    SourcestudyTypeService SourcestudyController.sourcestudyTypeService;
+    
+    @Autowired
+    SourcestudyTypeHistoryService SourcestudyController.sourcestudyTypeHistoryService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String SourcestudyController.create(@Valid Sourcestudy sourcestudy, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -29,7 +43,7 @@ privileged aspect SourcestudyController_Roo_Controller {
             return "sourcestudys/create";
         }
         uiModel.asMap().clear();
-        sourcestudy.persist();
+        sourcestudyService.saveSourcestudy(sourcestudy);
         return "redirect:/sourcestudys/" + encodeUrlPathSegment(sourcestudy.getId().toString(), httpServletRequest);
     }
     
@@ -41,7 +55,7 @@ privileged aspect SourcestudyController_Roo_Controller {
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String SourcestudyController.show(@PathVariable("id") Integer id, Model uiModel) {
-        uiModel.addAttribute("sourcestudy", Sourcestudy.findSourcestudy(id));
+        uiModel.addAttribute("sourcestudy", sourcestudyService.findSourcestudy(id));
         uiModel.addAttribute("itemId", id);
         return "sourcestudys/show";
     }
@@ -51,11 +65,11 @@ privileged aspect SourcestudyController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("sourcestudys", Sourcestudy.findSourcestudyEntries(firstResult, sizeNo));
-            float nrOfPages = (float) Sourcestudy.countSourcestudys() / sizeNo;
+            uiModel.addAttribute("sourcestudys", sourcestudyService.findSourcestudyEntries(firstResult, sizeNo));
+            float nrOfPages = (float) sourcestudyService.countAllSourcestudys() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("sourcestudys", Sourcestudy.findAllSourcestudys());
+            uiModel.addAttribute("sourcestudys", sourcestudyService.findAllSourcestudys());
         }
         return "sourcestudys/list";
     }
@@ -67,20 +81,20 @@ privileged aspect SourcestudyController_Roo_Controller {
             return "sourcestudys/update";
         }
         uiModel.asMap().clear();
-        sourcestudy.merge();
+        sourcestudyService.updateSourcestudy(sourcestudy);
         return "redirect:/sourcestudys/" + encodeUrlPathSegment(sourcestudy.getId().toString(), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String SourcestudyController.updateForm(@PathVariable("id") Integer id, Model uiModel) {
-        populateEditForm(uiModel, Sourcestudy.findSourcestudy(id));
+        populateEditForm(uiModel, sourcestudyService.findSourcestudy(id));
         return "sourcestudys/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
     public String SourcestudyController.delete(@PathVariable("id") Integer id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        Sourcestudy sourcestudy = Sourcestudy.findSourcestudy(id);
-        sourcestudy.remove();
+        Sourcestudy sourcestudy = sourcestudyService.findSourcestudy(id);
+        sourcestudyService.deleteSourcestudy(sourcestudy);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
@@ -89,9 +103,9 @@ privileged aspect SourcestudyController_Roo_Controller {
     
     void SourcestudyController.populateEditForm(Model uiModel, Sourcestudy sourcestudy) {
         uiModel.addAttribute("sourcestudy", sourcestudy);
-        uiModel.addAttribute("sources", Source.findAllSources());
-        uiModel.addAttribute("sourcestudytypes", SourcestudyType.findAllSourcestudyTypes());
-        uiModel.addAttribute("sourcestudytypehistorys", SourcestudyTypeHistory.findAllSourcestudyTypeHistorys());
+        uiModel.addAttribute("sources", sourceService.findAllSources());
+        uiModel.addAttribute("sourcestudytypes", sourcestudyTypeService.findAllSourcestudyTypes());
+        uiModel.addAttribute("sourcestudytypehistorys", sourcestudyTypeHistoryService.findAllSourcestudyTypeHistorys());
     }
     
     String SourcestudyController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

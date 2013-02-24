@@ -17,7 +17,7 @@
         <field:select field="studyId" id="c_ro_roda_Instance_studyId" itemValue="id" items="${studys}" path="/studys" z="OcwJjetG1fTzXMdF6xY3XC8PvNA="/>
         <field:select field="timeMethId" id="c_ro_roda_Instance_timeMethId" itemValue="id" items="${timemethtypes}" path="/timemethtypes" z="qx2/Cqvf8MqqK7oC5jfPKCLP2nk="/>
         <field:select field="unitAnalysisId" id="c_ro_roda_Instance_unitAnalysisId" itemValue="id" items="${unitanalyses}" path="/unitanalyses" z="wqmfyLn78tlRRHB/0CLz3d7q4tI="/>
-        <field:select field="addedBy" id="c_ro_roda_Instance_addedBy" itemValue="id" items="${users}" path="/users" z="yYCUWaerp3FIM1G/0lXsekNx6fs="/>
+        <field:select field="addedBy" id="c_ro_roda_Instance_addedBy" itemValue="id" items="${rodausers}" path="/rodausers" z="0kSlMXrjp5dZ+lPiiZwwjcl5zVY="/>
         <field:datetime dateTimePattern="${instance_datestart_date_format}" field="datestart" id="c_ro_roda_Instance_datestart" z="Qbz4Iq4sLPrkUeISY/HP0Yvxuus="/>
         <field:datetime dateTimePattern="${instance_dateend_date_format}" field="dateend" id="c_ro_roda_Instance_dateend" z="Vn9jjKHymE/frnsUpIJGeqVooIE="/>
         <field:input field="insertionStatus" id="c_ro_roda_Instance_insertionStatus" required="true" validationMessageCode="field_invalid_integer" z="h1U3p7CfbUpdcleSk42zY81namU="/>

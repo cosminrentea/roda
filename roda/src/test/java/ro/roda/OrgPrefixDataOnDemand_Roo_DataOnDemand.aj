@@ -10,9 +10,11 @@ import java.util.List;
 import java.util.Random;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ro.roda.OrgPrefix;
 import ro.roda.OrgPrefixDataOnDemand;
+import ro.roda.service.OrgPrefixService;
 
 privileged aspect OrgPrefixDataOnDemand_Roo_DataOnDemand {
     
@@ -21,6 +23,9 @@ privileged aspect OrgPrefixDataOnDemand_Roo_DataOnDemand {
     private Random OrgPrefixDataOnDemand.rnd = new SecureRandom();
     
     private List<OrgPrefix> OrgPrefixDataOnDemand.data;
+    
+    @Autowired
+    OrgPrefixService OrgPrefixDataOnDemand.orgPrefixService;
     
     public OrgPrefix OrgPrefixDataOnDemand.getNewTransientOrgPrefix(int index) {
         OrgPrefix obj = new OrgPrefix();
@@ -52,14 +57,14 @@ privileged aspect OrgPrefixDataOnDemand_Roo_DataOnDemand {
         }
         OrgPrefix obj = data.get(index);
         Integer id = obj.getId();
-        return OrgPrefix.findOrgPrefix(id);
+        return orgPrefixService.findOrgPrefix(id);
     }
     
     public OrgPrefix OrgPrefixDataOnDemand.getRandomOrgPrefix() {
         init();
         OrgPrefix obj = data.get(rnd.nextInt(data.size()));
         Integer id = obj.getId();
-        return OrgPrefix.findOrgPrefix(id);
+        return orgPrefixService.findOrgPrefix(id);
     }
     
     public boolean OrgPrefixDataOnDemand.modifyOrgPrefix(OrgPrefix obj) {
@@ -69,7 +74,7 @@ privileged aspect OrgPrefixDataOnDemand_Roo_DataOnDemand {
     public void OrgPrefixDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = OrgPrefix.findOrgPrefixEntries(from, to);
+        data = orgPrefixService.findOrgPrefixEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'OrgPrefix' illegally returned null");
         }
@@ -81,7 +86,7 @@ privileged aspect OrgPrefixDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             OrgPrefix obj = getNewTransientOrgPrefix(i);
             try {
-                obj.persist();
+                orgPrefixService.saveOrgPrefix(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

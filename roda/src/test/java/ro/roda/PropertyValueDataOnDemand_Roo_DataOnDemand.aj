@@ -10,9 +10,11 @@ import java.util.List;
 import java.util.Random;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ro.roda.PropertyValue;
 import ro.roda.PropertyValueDataOnDemand;
+import ro.roda.service.PropertyValueService;
 
 privileged aspect PropertyValueDataOnDemand_Roo_DataOnDemand {
     
@@ -21,6 +23,9 @@ privileged aspect PropertyValueDataOnDemand_Roo_DataOnDemand {
     private Random PropertyValueDataOnDemand.rnd = new SecureRandom();
     
     private List<PropertyValue> PropertyValueDataOnDemand.data;
+    
+    @Autowired
+    PropertyValueService PropertyValueDataOnDemand.propertyValueService;
     
     public PropertyValue PropertyValueDataOnDemand.getNewTransientPropertyValue(int index) {
         PropertyValue obj = new PropertyValue();
@@ -43,14 +48,14 @@ privileged aspect PropertyValueDataOnDemand_Roo_DataOnDemand {
         }
         PropertyValue obj = data.get(index);
         Integer id = obj.getId();
-        return PropertyValue.findPropertyValue(id);
+        return propertyValueService.findPropertyValue(id);
     }
     
     public PropertyValue PropertyValueDataOnDemand.getRandomPropertyValue() {
         init();
         PropertyValue obj = data.get(rnd.nextInt(data.size()));
         Integer id = obj.getId();
-        return PropertyValue.findPropertyValue(id);
+        return propertyValueService.findPropertyValue(id);
     }
     
     public boolean PropertyValueDataOnDemand.modifyPropertyValue(PropertyValue obj) {
@@ -60,7 +65,7 @@ privileged aspect PropertyValueDataOnDemand_Roo_DataOnDemand {
     public void PropertyValueDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = PropertyValue.findPropertyValueEntries(from, to);
+        data = propertyValueService.findPropertyValueEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'PropertyValue' illegally returned null");
         }
@@ -72,7 +77,7 @@ privileged aspect PropertyValueDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             PropertyValue obj = getNewTransientPropertyValue(i);
             try {
-                obj.persist();
+                propertyValueService.savePropertyValue(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

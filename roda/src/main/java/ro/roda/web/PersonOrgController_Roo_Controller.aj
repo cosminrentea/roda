@@ -6,9 +6,7 @@ package ro.roda.web;
 import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -18,16 +16,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.Org;
-import ro.roda.Person;
 import ro.roda.PersonOrg;
 import ro.roda.PersonOrgPK;
-import ro.roda.PersonRole;
+import ro.roda.service.PersonOrgService;
 import ro.roda.web.PersonOrgController;
 
 privileged aspect PersonOrgController_Roo_Controller {
     
     private ConversionService PersonOrgController.conversionService;
+    
+    @Autowired
+    PersonOrgService PersonOrgController.personOrgService;
     
     @Autowired
     public PersonOrgController.new(ConversionService conversionService) {
@@ -42,7 +41,7 @@ privileged aspect PersonOrgController_Roo_Controller {
             return "personorgs/create";
         }
         uiModel.asMap().clear();
-        personOrg.persist();
+        personOrgService.savePersonOrg(personOrg);
         return "redirect:/personorgs/" + encodeUrlPathSegment(conversionService.convert(personOrg.getId(), String.class), httpServletRequest);
     }
     
@@ -54,8 +53,7 @@ privileged aspect PersonOrgController_Roo_Controller {
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String PersonOrgController.show(@PathVariable("id") PersonOrgPK id, Model uiModel) {
-        addDateTimeFormatPatterns(uiModel);
-        uiModel.addAttribute("personorg", PersonOrg.findPersonOrg(id));
+        uiModel.addAttribute("personorg", personOrgService.findPersonOrg(id));
         uiModel.addAttribute("itemId", conversionService.convert(id, String.class));
         return "personorgs/show";
     }
@@ -65,13 +63,12 @@ privileged aspect PersonOrgController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("personorgs", PersonOrg.findPersonOrgEntries(firstResult, sizeNo));
-            float nrOfPages = (float) PersonOrg.countPersonOrgs() / sizeNo;
+            uiModel.addAttribute("personorgs", personOrgService.findPersonOrgEntries(firstResult, sizeNo));
+            float nrOfPages = (float) personOrgService.countAllPersonOrgs() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("personorgs", PersonOrg.findAllPersonOrgs());
+            uiModel.addAttribute("personorgs", personOrgService.findAllPersonOrgs());
         }
-        addDateTimeFormatPatterns(uiModel);
         return "personorgs/list";
     }
     
@@ -82,37 +79,28 @@ privileged aspect PersonOrgController_Roo_Controller {
             return "personorgs/update";
         }
         uiModel.asMap().clear();
-        personOrg.merge();
+        personOrgService.updatePersonOrg(personOrg);
         return "redirect:/personorgs/" + encodeUrlPathSegment(conversionService.convert(personOrg.getId(), String.class), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String PersonOrgController.updateForm(@PathVariable("id") PersonOrgPK id, Model uiModel) {
-        populateEditForm(uiModel, PersonOrg.findPersonOrg(id));
+        populateEditForm(uiModel, personOrgService.findPersonOrg(id));
         return "personorgs/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
     public String PersonOrgController.delete(@PathVariable("id") PersonOrgPK id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        PersonOrg personOrg = PersonOrg.findPersonOrg(id);
-        personOrg.remove();
+        PersonOrg personOrg = personOrgService.findPersonOrg(id);
+        personOrgService.deletePersonOrg(personOrg);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
         return "redirect:/personorgs";
     }
     
-    void PersonOrgController.addDateTimeFormatPatterns(Model uiModel) {
-        uiModel.addAttribute("personOrg_datestart_date_format", DateTimeFormat.patternForStyle("M-", LocaleContextHolder.getLocale()));
-        uiModel.addAttribute("personOrg_dateend_date_format", DateTimeFormat.patternForStyle("M-", LocaleContextHolder.getLocale()));
-    }
-    
     void PersonOrgController.populateEditForm(Model uiModel, PersonOrg personOrg) {
         uiModel.addAttribute("personOrg", personOrg);
-        addDateTimeFormatPatterns(uiModel);
-        uiModel.addAttribute("orgs", Org.findAllOrgs());
-        uiModel.addAttribute("people", Person.findAllPeople());
-        uiModel.addAttribute("personroles", PersonRole.findAllPersonRoles());
     }
     
     String PersonOrgController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

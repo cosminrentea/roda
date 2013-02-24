@@ -11,9 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.UserSettingGroup;
 import ro.roda.UserSettingGroupDataOnDemand;
 import ro.roda.UserSettingGroupIntegrationTest;
+import ro.roda.service.UserSettingGroupService;
 
 privileged aspect UserSettingGroupIntegrationTest_Roo_IntegrationTest {
     
@@ -24,12 +24,15 @@ privileged aspect UserSettingGroupIntegrationTest_Roo_IntegrationTest {
     declare @type: UserSettingGroupIntegrationTest: @Transactional;
     
     @Autowired
-    private UserSettingGroupDataOnDemand UserSettingGroupIntegrationTest.dod;
+    UserSettingGroupDataOnDemand UserSettingGroupIntegrationTest.dod;
+    
+    @Autowired
+    UserSettingGroupService UserSettingGroupIntegrationTest.userSettingGroupService;
     
     @Test
-    public void UserSettingGroupIntegrationTest.testCountUserSettingGroups() {
+    public void UserSettingGroupIntegrationTest.testCountAllUserSettingGroups() {
         Assert.assertNotNull("Data on demand for 'UserSettingGroup' failed to initialize correctly", dod.getRandomUserSettingGroup());
-        long count = UserSettingGroup.countUserSettingGroups();
+        long count = userSettingGroupService.countAllUserSettingGroups();
         Assert.assertTrue("Counter for 'UserSettingGroup' incorrectly reported there were no entries", count > 0);
     }
     
@@ -39,7 +42,7 @@ privileged aspect UserSettingGroupIntegrationTest_Roo_IntegrationTest {
         Assert.assertNotNull("Data on demand for 'UserSettingGroup' failed to initialize correctly", obj);
         Integer id = obj.getId();
         Assert.assertNotNull("Data on demand for 'UserSettingGroup' failed to provide an identifier", id);
-        obj = UserSettingGroup.findUserSettingGroup(id);
+        obj = userSettingGroupService.findUserSettingGroup(id);
         Assert.assertNotNull("Find method for 'UserSettingGroup' illegally returned null for id '" + id + "'", obj);
         Assert.assertEquals("Find method for 'UserSettingGroup' returned the incorrect identifier", id, obj.getId());
     }
@@ -47,9 +50,9 @@ privileged aspect UserSettingGroupIntegrationTest_Roo_IntegrationTest {
     @Test
     public void UserSettingGroupIntegrationTest.testFindAllUserSettingGroups() {
         Assert.assertNotNull("Data on demand for 'UserSettingGroup' failed to initialize correctly", dod.getRandomUserSettingGroup());
-        long count = UserSettingGroup.countUserSettingGroups();
+        long count = userSettingGroupService.countAllUserSettingGroups();
         Assert.assertTrue("Too expensive to perform a find all test for 'UserSettingGroup', as there are " + count + " entries; set the findAllMaximum to exceed this value or set findAll=false on the integration test annotation to disable the test", count < 250);
-        List<UserSettingGroup> result = UserSettingGroup.findAllUserSettingGroups();
+        List<UserSettingGroup> result = userSettingGroupService.findAllUserSettingGroups();
         Assert.assertNotNull("Find all method for 'UserSettingGroup' illegally returned null", result);
         Assert.assertTrue("Find all method for 'UserSettingGroup' failed to return any data", result.size() > 0);
     }
@@ -57,36 +60,36 @@ privileged aspect UserSettingGroupIntegrationTest_Roo_IntegrationTest {
     @Test
     public void UserSettingGroupIntegrationTest.testFindUserSettingGroupEntries() {
         Assert.assertNotNull("Data on demand for 'UserSettingGroup' failed to initialize correctly", dod.getRandomUserSettingGroup());
-        long count = UserSettingGroup.countUserSettingGroups();
+        long count = userSettingGroupService.countAllUserSettingGroups();
         if (count > 20) count = 20;
         int firstResult = 0;
         int maxResults = (int) count;
-        List<UserSettingGroup> result = UserSettingGroup.findUserSettingGroupEntries(firstResult, maxResults);
+        List<UserSettingGroup> result = userSettingGroupService.findUserSettingGroupEntries(firstResult, maxResults);
         Assert.assertNotNull("Find entries method for 'UserSettingGroup' illegally returned null", result);
         Assert.assertEquals("Find entries method for 'UserSettingGroup' returned an incorrect number of entries", count, result.size());
     }
     
     @Test
-    public void UserSettingGroupIntegrationTest.testPersist() {
+    public void UserSettingGroupIntegrationTest.testSaveUserSettingGroup() {
         Assert.assertNotNull("Data on demand for 'UserSettingGroup' failed to initialize correctly", dod.getRandomUserSettingGroup());
         UserSettingGroup obj = dod.getNewTransientUserSettingGroup(Integer.MAX_VALUE);
         Assert.assertNotNull("Data on demand for 'UserSettingGroup' failed to provide a new transient entity", obj);
         Assert.assertNull("Expected 'UserSettingGroup' identifier to be null", obj.getId());
-        obj.persist();
+        userSettingGroupService.saveUserSettingGroup(obj);
         obj.flush();
         Assert.assertNotNull("Expected 'UserSettingGroup' identifier to no longer be null", obj.getId());
     }
     
     @Test
-    public void UserSettingGroupIntegrationTest.testRemove() {
+    public void UserSettingGroupIntegrationTest.testDeleteUserSettingGroup() {
         UserSettingGroup obj = dod.getRandomUserSettingGroup();
         Assert.assertNotNull("Data on demand for 'UserSettingGroup' failed to initialize correctly", obj);
         Integer id = obj.getId();
         Assert.assertNotNull("Data on demand for 'UserSettingGroup' failed to provide an identifier", id);
-        obj = UserSettingGroup.findUserSettingGroup(id);
-        obj.remove();
+        obj = userSettingGroupService.findUserSettingGroup(id);
+        userSettingGroupService.deleteUserSettingGroup(obj);
         obj.flush();
-        Assert.assertNull("Failed to remove 'UserSettingGroup' with identifier '" + id + "'", UserSettingGroup.findUserSettingGroup(id));
+        Assert.assertNull("Failed to remove 'UserSettingGroup' with identifier '" + id + "'", userSettingGroupService.findUserSettingGroup(id));
     }
     
 }

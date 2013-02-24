@@ -11,9 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.Region;
 import ro.roda.RegionDataOnDemand;
 import ro.roda.RegionIntegrationTest;
+import ro.roda.service.RegionService;
 
 privileged aspect RegionIntegrationTest_Roo_IntegrationTest {
     
@@ -24,12 +24,15 @@ privileged aspect RegionIntegrationTest_Roo_IntegrationTest {
     declare @type: RegionIntegrationTest: @Transactional;
     
     @Autowired
-    private RegionDataOnDemand RegionIntegrationTest.dod;
+    RegionDataOnDemand RegionIntegrationTest.dod;
+    
+    @Autowired
+    RegionService RegionIntegrationTest.regionService;
     
     @Test
-    public void RegionIntegrationTest.testCountRegions() {
+    public void RegionIntegrationTest.testCountAllRegions() {
         Assert.assertNotNull("Data on demand for 'Region' failed to initialize correctly", dod.getRandomRegion());
-        long count = Region.countRegions();
+        long count = regionService.countAllRegions();
         Assert.assertTrue("Counter for 'Region' incorrectly reported there were no entries", count > 0);
     }
     
@@ -39,7 +42,7 @@ privileged aspect RegionIntegrationTest_Roo_IntegrationTest {
         Assert.assertNotNull("Data on demand for 'Region' failed to initialize correctly", obj);
         Integer id = obj.getId();
         Assert.assertNotNull("Data on demand for 'Region' failed to provide an identifier", id);
-        obj = Region.findRegion(id);
+        obj = regionService.findRegion(id);
         Assert.assertNotNull("Find method for 'Region' illegally returned null for id '" + id + "'", obj);
         Assert.assertEquals("Find method for 'Region' returned the incorrect identifier", id, obj.getId());
     }
@@ -47,9 +50,9 @@ privileged aspect RegionIntegrationTest_Roo_IntegrationTest {
     @Test
     public void RegionIntegrationTest.testFindAllRegions() {
         Assert.assertNotNull("Data on demand for 'Region' failed to initialize correctly", dod.getRandomRegion());
-        long count = Region.countRegions();
+        long count = regionService.countAllRegions();
         Assert.assertTrue("Too expensive to perform a find all test for 'Region', as there are " + count + " entries; set the findAllMaximum to exceed this value or set findAll=false on the integration test annotation to disable the test", count < 250);
-        List<Region> result = Region.findAllRegions();
+        List<Region> result = regionService.findAllRegions();
         Assert.assertNotNull("Find all method for 'Region' illegally returned null", result);
         Assert.assertTrue("Find all method for 'Region' failed to return any data", result.size() > 0);
     }
@@ -57,36 +60,36 @@ privileged aspect RegionIntegrationTest_Roo_IntegrationTest {
     @Test
     public void RegionIntegrationTest.testFindRegionEntries() {
         Assert.assertNotNull("Data on demand for 'Region' failed to initialize correctly", dod.getRandomRegion());
-        long count = Region.countRegions();
+        long count = regionService.countAllRegions();
         if (count > 20) count = 20;
         int firstResult = 0;
         int maxResults = (int) count;
-        List<Region> result = Region.findRegionEntries(firstResult, maxResults);
+        List<Region> result = regionService.findRegionEntries(firstResult, maxResults);
         Assert.assertNotNull("Find entries method for 'Region' illegally returned null", result);
         Assert.assertEquals("Find entries method for 'Region' returned an incorrect number of entries", count, result.size());
     }
     
     @Test
-    public void RegionIntegrationTest.testPersist() {
+    public void RegionIntegrationTest.testSaveRegion() {
         Assert.assertNotNull("Data on demand for 'Region' failed to initialize correctly", dod.getRandomRegion());
         Region obj = dod.getNewTransientRegion(Integer.MAX_VALUE);
         Assert.assertNotNull("Data on demand for 'Region' failed to provide a new transient entity", obj);
         Assert.assertNull("Expected 'Region' identifier to be null", obj.getId());
-        obj.persist();
+        regionService.saveRegion(obj);
         obj.flush();
         Assert.assertNotNull("Expected 'Region' identifier to no longer be null", obj.getId());
     }
     
     @Test
-    public void RegionIntegrationTest.testRemove() {
+    public void RegionIntegrationTest.testDeleteRegion() {
         Region obj = dod.getRandomRegion();
         Assert.assertNotNull("Data on demand for 'Region' failed to initialize correctly", obj);
         Integer id = obj.getId();
         Assert.assertNotNull("Data on demand for 'Region' failed to provide an identifier", id);
-        obj = Region.findRegion(id);
-        obj.remove();
+        obj = regionService.findRegion(id);
+        regionService.deleteRegion(obj);
         obj.flush();
-        Assert.assertNull("Failed to remove 'Region' with identifier '" + id + "'", Region.findRegion(id));
+        Assert.assertNull("Failed to remove 'Region' with identifier '" + id + "'", regionService.findRegion(id));
     }
     
 }

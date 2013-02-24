@@ -16,15 +16,25 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.Lang;
-import ro.roda.Topic;
 import ro.roda.TranslatedTopic;
 import ro.roda.TranslatedTopicPK;
+import ro.roda.service.LangService;
+import ro.roda.service.TopicService;
+import ro.roda.service.TranslatedTopicService;
 import ro.roda.web.TranslatedTopicController;
 
 privileged aspect TranslatedTopicController_Roo_Controller {
     
     private ConversionService TranslatedTopicController.conversionService;
+    
+    @Autowired
+    TranslatedTopicService TranslatedTopicController.translatedTopicService;
+    
+    @Autowired
+    LangService TranslatedTopicController.langService;
+    
+    @Autowired
+    TopicService TranslatedTopicController.topicService;
     
     @Autowired
     public TranslatedTopicController.new(ConversionService conversionService) {
@@ -39,7 +49,7 @@ privileged aspect TranslatedTopicController_Roo_Controller {
             return "translatedtopics/create";
         }
         uiModel.asMap().clear();
-        translatedTopic.persist();
+        translatedTopicService.saveTranslatedTopic(translatedTopic);
         return "redirect:/translatedtopics/" + encodeUrlPathSegment(conversionService.convert(translatedTopic.getId(), String.class), httpServletRequest);
     }
     
@@ -51,7 +61,7 @@ privileged aspect TranslatedTopicController_Roo_Controller {
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String TranslatedTopicController.show(@PathVariable("id") TranslatedTopicPK id, Model uiModel) {
-        uiModel.addAttribute("translatedtopic", TranslatedTopic.findTranslatedTopic(id));
+        uiModel.addAttribute("translatedtopic", translatedTopicService.findTranslatedTopic(id));
         uiModel.addAttribute("itemId", conversionService.convert(id, String.class));
         return "translatedtopics/show";
     }
@@ -61,11 +71,11 @@ privileged aspect TranslatedTopicController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("translatedtopics", TranslatedTopic.findTranslatedTopicEntries(firstResult, sizeNo));
-            float nrOfPages = (float) TranslatedTopic.countTranslatedTopics() / sizeNo;
+            uiModel.addAttribute("translatedtopics", translatedTopicService.findTranslatedTopicEntries(firstResult, sizeNo));
+            float nrOfPages = (float) translatedTopicService.countAllTranslatedTopics() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("translatedtopics", TranslatedTopic.findAllTranslatedTopics());
+            uiModel.addAttribute("translatedtopics", translatedTopicService.findAllTranslatedTopics());
         }
         return "translatedtopics/list";
     }
@@ -77,20 +87,20 @@ privileged aspect TranslatedTopicController_Roo_Controller {
             return "translatedtopics/update";
         }
         uiModel.asMap().clear();
-        translatedTopic.merge();
+        translatedTopicService.updateTranslatedTopic(translatedTopic);
         return "redirect:/translatedtopics/" + encodeUrlPathSegment(conversionService.convert(translatedTopic.getId(), String.class), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String TranslatedTopicController.updateForm(@PathVariable("id") TranslatedTopicPK id, Model uiModel) {
-        populateEditForm(uiModel, TranslatedTopic.findTranslatedTopic(id));
+        populateEditForm(uiModel, translatedTopicService.findTranslatedTopic(id));
         return "translatedtopics/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
     public String TranslatedTopicController.delete(@PathVariable("id") TranslatedTopicPK id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        TranslatedTopic translatedTopic = TranslatedTopic.findTranslatedTopic(id);
-        translatedTopic.remove();
+        TranslatedTopic translatedTopic = translatedTopicService.findTranslatedTopic(id);
+        translatedTopicService.deleteTranslatedTopic(translatedTopic);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
@@ -99,8 +109,8 @@ privileged aspect TranslatedTopicController_Roo_Controller {
     
     void TranslatedTopicController.populateEditForm(Model uiModel, TranslatedTopic translatedTopic) {
         uiModel.addAttribute("translatedTopic", translatedTopic);
-        uiModel.addAttribute("langs", Lang.findAllLangs());
-        uiModel.addAttribute("topics", Topic.findAllTopics());
+        uiModel.addAttribute("langs", langService.findAllLangs());
+        uiModel.addAttribute("topics", topicService.findAllTopics());
     }
     
     String TranslatedTopicController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

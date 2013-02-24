@@ -6,7 +6,6 @@ package ro.roda;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
@@ -15,11 +14,14 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import ro.roda.Org;
 import ro.roda.OrgDataOnDemand;
+import ro.roda.OrgRelationType;
 import ro.roda.OrgRelationTypeDataOnDemand;
 import ro.roda.OrgRelations;
 import ro.roda.OrgRelationsDataOnDemand;
 import ro.roda.OrgRelationsPK;
+import ro.roda.service.OrgRelationsService;
 
 privileged aspect OrgRelationsDataOnDemand_Roo_DataOnDemand {
     
@@ -30,10 +32,13 @@ privileged aspect OrgRelationsDataOnDemand_Roo_DataOnDemand {
     private List<OrgRelations> OrgRelationsDataOnDemand.data;
     
     @Autowired
-    private OrgDataOnDemand OrgRelationsDataOnDemand.orgDataOnDemand;
+    OrgDataOnDemand OrgRelationsDataOnDemand.orgDataOnDemand;
     
     @Autowired
-    private OrgRelationTypeDataOnDemand OrgRelationsDataOnDemand.orgRelationTypeDataOnDemand;
+    OrgRelationTypeDataOnDemand OrgRelationsDataOnDemand.orgRelationTypeDataOnDemand;
+    
+    @Autowired
+    OrgRelationsService OrgRelationsDataOnDemand.orgRelationsService;
     
     public OrgRelations OrgRelationsDataOnDemand.getNewTransientOrgRelations(int index) {
         OrgRelations obj = new OrgRelations();
@@ -41,6 +46,9 @@ privileged aspect OrgRelationsDataOnDemand_Roo_DataOnDemand {
         setDateend(obj, index);
         setDatestart(obj, index);
         setDetails(obj, index);
+        setOrg1Id(obj, index);
+        setOrg2Id(obj, index);
+        setOrgRelationTypeId(obj, index);
         return obj;
     }
     
@@ -54,18 +62,33 @@ privileged aspect OrgRelationsDataOnDemand_Roo_DataOnDemand {
     }
     
     public void OrgRelationsDataOnDemand.setDateend(OrgRelations obj, int index) {
-        Date dateend = new GregorianCalendar(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH), Calendar.getInstance().get(Calendar.HOUR_OF_DAY), Calendar.getInstance().get(Calendar.MINUTE), Calendar.getInstance().get(Calendar.SECOND) + new Double(Math.random() * 1000).intValue()).getTime();
+        Calendar dateend = Calendar.getInstance();
         obj.setDateend(dateend);
     }
     
     public void OrgRelationsDataOnDemand.setDatestart(OrgRelations obj, int index) {
-        Date datestart = new GregorianCalendar(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH), Calendar.getInstance().get(Calendar.HOUR_OF_DAY), Calendar.getInstance().get(Calendar.MINUTE), Calendar.getInstance().get(Calendar.SECOND) + new Double(Math.random() * 1000).intValue()).getTime();
+        Calendar datestart = Calendar.getInstance();
         obj.setDatestart(datestart);
     }
     
     public void OrgRelationsDataOnDemand.setDetails(OrgRelations obj, int index) {
         String details = "details_" + index;
         obj.setDetails(details);
+    }
+    
+    public void OrgRelationsDataOnDemand.setOrg1Id(OrgRelations obj, int index) {
+        Org org1Id = orgDataOnDemand.getRandomOrg();
+        obj.setOrg1Id(org1Id);
+    }
+    
+    public void OrgRelationsDataOnDemand.setOrg2Id(OrgRelations obj, int index) {
+        Org org2Id = orgDataOnDemand.getRandomOrg();
+        obj.setOrg2Id(org2Id);
+    }
+    
+    public void OrgRelationsDataOnDemand.setOrgRelationTypeId(OrgRelations obj, int index) {
+        OrgRelationType orgRelationTypeId = orgRelationTypeDataOnDemand.getRandomOrgRelationType();
+        obj.setOrgRelationTypeId(orgRelationTypeId);
     }
     
     public OrgRelations OrgRelationsDataOnDemand.getSpecificOrgRelations(int index) {
@@ -78,14 +101,14 @@ privileged aspect OrgRelationsDataOnDemand_Roo_DataOnDemand {
         }
         OrgRelations obj = data.get(index);
         OrgRelationsPK id = obj.getId();
-        return OrgRelations.findOrgRelations(id);
+        return orgRelationsService.findOrgRelations(id);
     }
     
     public OrgRelations OrgRelationsDataOnDemand.getRandomOrgRelations() {
         init();
         OrgRelations obj = data.get(rnd.nextInt(data.size()));
         OrgRelationsPK id = obj.getId();
-        return OrgRelations.findOrgRelations(id);
+        return orgRelationsService.findOrgRelations(id);
     }
     
     public boolean OrgRelationsDataOnDemand.modifyOrgRelations(OrgRelations obj) {
@@ -95,7 +118,7 @@ privileged aspect OrgRelationsDataOnDemand_Roo_DataOnDemand {
     public void OrgRelationsDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = OrgRelations.findOrgRelationsEntries(from, to);
+        data = orgRelationsService.findOrgRelationsEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'OrgRelations' illegally returned null");
         }
@@ -107,7 +130,7 @@ privileged aspect OrgRelationsDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             OrgRelations obj = getNewTransientOrgRelations(i);
             try {
-                obj.persist();
+                orgRelationsService.saveOrgRelations(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

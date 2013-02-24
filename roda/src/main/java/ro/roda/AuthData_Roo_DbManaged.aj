@@ -8,13 +8,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 import ro.roda.AuthData;
-import ro.roda.User;
+import ro.roda.Rodauser;
 
 privileged aspect AuthData_Roo_DbManaged {
     
     @OneToOne
     @JoinColumn(name = "user_id", nullable = false, insertable = false, updatable = false)
-    private User AuthData.user;
+    private Rodauser AuthData.rodauser;
     
     @Column(name = "credential_provider", columnDefinition = "text")
     @NotNull
@@ -28,12 +28,12 @@ privileged aspect AuthData_Roo_DbManaged {
     @NotNull
     private String AuthData.fieldValue;
     
-    public User AuthData.getUser() {
-        return user;
+    public Rodauser AuthData.getRodauser() {
+        return rodauser;
     }
     
-    public void AuthData.setUser(User user) {
-        this.user = user;
+    public void AuthData.setRodauser(Rodauser rodauser) {
+        this.rodauser = rodauser;
     }
     
     public String AuthData.getCredentialProvider() {

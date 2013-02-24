@@ -6,6 +6,7 @@ package ro.roda.web;
 import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,12 +15,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.Item;
 import ro.roda.Scale;
-import ro.roda.Value;
+import ro.roda.service.ScaleService;
 import ro.roda.web.ScaleController;
 
 privileged aspect ScaleController_Roo_Controller {
+    
+    @Autowired
+    ScaleService ScaleController.scaleService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String ScaleController.create(@Valid Scale scale, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -28,7 +31,7 @@ privileged aspect ScaleController_Roo_Controller {
             return "scales/create";
         }
         uiModel.asMap().clear();
-        scale.persist();
+        scaleService.saveScale(scale);
         return "redirect:/scales/" + encodeUrlPathSegment(scale.getItemId().toString(), httpServletRequest);
     }
     
@@ -40,7 +43,7 @@ privileged aspect ScaleController_Roo_Controller {
     
     @RequestMapping(value = "/{itemId}", produces = "text/html")
     public String ScaleController.show(@PathVariable("itemId") Long itemId, Model uiModel) {
-        uiModel.addAttribute("scale", Scale.findScale(itemId));
+        uiModel.addAttribute("scale", scaleService.findScale(itemId));
         uiModel.addAttribute("itemId", itemId);
         return "scales/show";
     }
@@ -50,11 +53,11 @@ privileged aspect ScaleController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("scales", Scale.findScaleEntries(firstResult, sizeNo));
-            float nrOfPages = (float) Scale.countScales() / sizeNo;
+            uiModel.addAttribute("scales", scaleService.findScaleEntries(firstResult, sizeNo));
+            float nrOfPages = (float) scaleService.countAllScales() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("scales", Scale.findAllScales());
+            uiModel.addAttribute("scales", scaleService.findAllScales());
         }
         return "scales/list";
     }
@@ -66,20 +69,20 @@ privileged aspect ScaleController_Roo_Controller {
             return "scales/update";
         }
         uiModel.asMap().clear();
-        scale.merge();
+        scaleService.updateScale(scale);
         return "redirect:/scales/" + encodeUrlPathSegment(scale.getItemId().toString(), httpServletRequest);
     }
     
     @RequestMapping(value = "/{itemId}", params = "form", produces = "text/html")
     public String ScaleController.updateForm(@PathVariable("itemId") Long itemId, Model uiModel) {
-        populateEditForm(uiModel, Scale.findScale(itemId));
+        populateEditForm(uiModel, scaleService.findScale(itemId));
         return "scales/update";
     }
     
     @RequestMapping(value = "/{itemId}", method = RequestMethod.DELETE, produces = "text/html")
     public String ScaleController.delete(@PathVariable("itemId") Long itemId, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        Scale scale = Scale.findScale(itemId);
-        scale.remove();
+        Scale scale = scaleService.findScale(itemId);
+        scaleService.deleteScale(scale);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
@@ -88,8 +91,6 @@ privileged aspect ScaleController_Roo_Controller {
     
     void ScaleController.populateEditForm(Model uiModel, Scale scale) {
         uiModel.addAttribute("scale", scale);
-        uiModel.addAttribute("items", Item.findAllItems());
-        uiModel.addAttribute("values", Value.findAllValues());
     }
     
     String ScaleController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

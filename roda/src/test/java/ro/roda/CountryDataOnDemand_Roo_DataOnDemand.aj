@@ -10,9 +10,11 @@ import java.util.List;
 import java.util.Random;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ro.roda.Country;
 import ro.roda.CountryDataOnDemand;
+import ro.roda.service.CountryService;
 
 privileged aspect CountryDataOnDemand_Roo_DataOnDemand {
     
@@ -21,6 +23,9 @@ privileged aspect CountryDataOnDemand_Roo_DataOnDemand {
     private Random CountryDataOnDemand.rnd = new SecureRandom();
     
     private List<Country> CountryDataOnDemand.data;
+    
+    @Autowired
+    CountryService CountryDataOnDemand.countryService;
     
     public Country CountryDataOnDemand.getNewTransientCountry(int index) {
         Country obj = new Country();
@@ -55,14 +60,14 @@ privileged aspect CountryDataOnDemand_Roo_DataOnDemand {
         }
         Country obj = data.get(index);
         String id = obj.getId();
-        return Country.findCountry(id);
+        return countryService.findCountry(id);
     }
     
     public Country CountryDataOnDemand.getRandomCountry() {
         init();
         Country obj = data.get(rnd.nextInt(data.size()));
         String id = obj.getId();
-        return Country.findCountry(id);
+        return countryService.findCountry(id);
     }
     
     public boolean CountryDataOnDemand.modifyCountry(Country obj) {
@@ -72,7 +77,7 @@ privileged aspect CountryDataOnDemand_Roo_DataOnDemand {
     public void CountryDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = Country.findCountryEntries(from, to);
+        data = countryService.findCountryEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'Country' illegally returned null");
         }
@@ -84,7 +89,7 @@ privileged aspect CountryDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             Country obj = getNewTransientCountry(i);
             try {
-                obj.persist();
+                countryService.saveCountry(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

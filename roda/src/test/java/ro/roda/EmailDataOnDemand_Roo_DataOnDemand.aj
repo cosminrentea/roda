@@ -10,9 +10,11 @@ import java.util.List;
 import java.util.Random;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ro.roda.Email;
 import ro.roda.EmailDataOnDemand;
+import ro.roda.service.EmailService;
 
 privileged aspect EmailDataOnDemand_Roo_DataOnDemand {
     
@@ -21,6 +23,9 @@ privileged aspect EmailDataOnDemand_Roo_DataOnDemand {
     private Random EmailDataOnDemand.rnd = new SecureRandom();
     
     private List<Email> EmailDataOnDemand.data;
+    
+    @Autowired
+    EmailService EmailDataOnDemand.emailService;
     
     public Email EmailDataOnDemand.getNewTransientEmail(int index) {
         Email obj = new Email();
@@ -46,14 +51,14 @@ privileged aspect EmailDataOnDemand_Roo_DataOnDemand {
         }
         Email obj = data.get(index);
         Integer id = obj.getId();
-        return Email.findEmail(id);
+        return emailService.findEmail(id);
     }
     
     public Email EmailDataOnDemand.getRandomEmail() {
         init();
         Email obj = data.get(rnd.nextInt(data.size()));
         Integer id = obj.getId();
-        return Email.findEmail(id);
+        return emailService.findEmail(id);
     }
     
     public boolean EmailDataOnDemand.modifyEmail(Email obj) {
@@ -63,7 +68,7 @@ privileged aspect EmailDataOnDemand_Roo_DataOnDemand {
     public void EmailDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = Email.findEmailEntries(from, to);
+        data = emailService.findEmailEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'Email' illegally returned null");
         }
@@ -75,7 +80,7 @@ privileged aspect EmailDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             Email obj = getNewTransientEmail(i);
             try {
-                obj.persist();
+                emailService.saveEmail(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

@@ -11,10 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.AuditField;
 import ro.roda.AuditFieldDataOnDemand;
 import ro.roda.AuditFieldIntegrationTest;
 import ro.roda.AuditFieldPK;
+import ro.roda.service.AuditFieldService;
 
 privileged aspect AuditFieldIntegrationTest_Roo_IntegrationTest {
     
@@ -25,12 +25,15 @@ privileged aspect AuditFieldIntegrationTest_Roo_IntegrationTest {
     declare @type: AuditFieldIntegrationTest: @Transactional;
     
     @Autowired
-    private AuditFieldDataOnDemand AuditFieldIntegrationTest.dod;
+    AuditFieldDataOnDemand AuditFieldIntegrationTest.dod;
+    
+    @Autowired
+    AuditFieldService AuditFieldIntegrationTest.auditFieldService;
     
     @Test
-    public void AuditFieldIntegrationTest.testCountAuditFields() {
+    public void AuditFieldIntegrationTest.testCountAllAuditFields() {
         Assert.assertNotNull("Data on demand for 'AuditField' failed to initialize correctly", dod.getRandomAuditField());
-        long count = AuditField.countAuditFields();
+        long count = auditFieldService.countAllAuditFields();
         Assert.assertTrue("Counter for 'AuditField' incorrectly reported there were no entries", count > 0);
     }
     
@@ -40,7 +43,7 @@ privileged aspect AuditFieldIntegrationTest_Roo_IntegrationTest {
         Assert.assertNotNull("Data on demand for 'AuditField' failed to initialize correctly", obj);
         AuditFieldPK id = obj.getId();
         Assert.assertNotNull("Data on demand for 'AuditField' failed to provide an identifier", id);
-        obj = AuditField.findAuditField(id);
+        obj = auditFieldService.findAuditField(id);
         Assert.assertNotNull("Find method for 'AuditField' illegally returned null for id '" + id + "'", obj);
         Assert.assertEquals("Find method for 'AuditField' returned the incorrect identifier", id, obj.getId());
     }
@@ -48,9 +51,9 @@ privileged aspect AuditFieldIntegrationTest_Roo_IntegrationTest {
     @Test
     public void AuditFieldIntegrationTest.testFindAllAuditFields() {
         Assert.assertNotNull("Data on demand for 'AuditField' failed to initialize correctly", dod.getRandomAuditField());
-        long count = AuditField.countAuditFields();
+        long count = auditFieldService.countAllAuditFields();
         Assert.assertTrue("Too expensive to perform a find all test for 'AuditField', as there are " + count + " entries; set the findAllMaximum to exceed this value or set findAll=false on the integration test annotation to disable the test", count < 250);
-        List<AuditField> result = AuditField.findAllAuditFields();
+        List<AuditField> result = auditFieldService.findAllAuditFields();
         Assert.assertNotNull("Find all method for 'AuditField' illegally returned null", result);
         Assert.assertTrue("Find all method for 'AuditField' failed to return any data", result.size() > 0);
     }
@@ -58,35 +61,35 @@ privileged aspect AuditFieldIntegrationTest_Roo_IntegrationTest {
     @Test
     public void AuditFieldIntegrationTest.testFindAuditFieldEntries() {
         Assert.assertNotNull("Data on demand for 'AuditField' failed to initialize correctly", dod.getRandomAuditField());
-        long count = AuditField.countAuditFields();
+        long count = auditFieldService.countAllAuditFields();
         if (count > 20) count = 20;
         int firstResult = 0;
         int maxResults = (int) count;
-        List<AuditField> result = AuditField.findAuditFieldEntries(firstResult, maxResults);
+        List<AuditField> result = auditFieldService.findAuditFieldEntries(firstResult, maxResults);
         Assert.assertNotNull("Find entries method for 'AuditField' illegally returned null", result);
         Assert.assertEquals("Find entries method for 'AuditField' returned an incorrect number of entries", count, result.size());
     }
     
     @Test
-    public void AuditFieldIntegrationTest.testPersist() {
+    public void AuditFieldIntegrationTest.testSaveAuditField() {
         Assert.assertNotNull("Data on demand for 'AuditField' failed to initialize correctly", dod.getRandomAuditField());
         AuditField obj = dod.getNewTransientAuditField(Integer.MAX_VALUE);
         Assert.assertNotNull("Data on demand for 'AuditField' failed to provide a new transient entity", obj);
-        obj.persist();
+        auditFieldService.saveAuditField(obj);
         obj.flush();
         Assert.assertNotNull("Expected 'AuditField' identifier to no longer be null", obj.getId());
     }
     
     @Test
-    public void AuditFieldIntegrationTest.testRemove() {
+    public void AuditFieldIntegrationTest.testDeleteAuditField() {
         AuditField obj = dod.getRandomAuditField();
         Assert.assertNotNull("Data on demand for 'AuditField' failed to initialize correctly", obj);
         AuditFieldPK id = obj.getId();
         Assert.assertNotNull("Data on demand for 'AuditField' failed to provide an identifier", id);
-        obj = AuditField.findAuditField(id);
-        obj.remove();
+        obj = auditFieldService.findAuditField(id);
+        auditFieldService.deleteAuditField(obj);
         obj.flush();
-        Assert.assertNull("Failed to remove 'AuditField' with identifier '" + id + "'", AuditField.findAuditField(id));
+        Assert.assertNull("Failed to remove 'AuditField' with identifier '" + id + "'", auditFieldService.findAuditField(id));
     }
     
 }

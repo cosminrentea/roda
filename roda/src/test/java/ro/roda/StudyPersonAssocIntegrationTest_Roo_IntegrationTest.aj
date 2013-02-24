@@ -11,9 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.StudyPersonAssoc;
 import ro.roda.StudyPersonAssocDataOnDemand;
 import ro.roda.StudyPersonAssocIntegrationTest;
+import ro.roda.service.StudyPersonAssocService;
 
 privileged aspect StudyPersonAssocIntegrationTest_Roo_IntegrationTest {
     
@@ -24,12 +24,15 @@ privileged aspect StudyPersonAssocIntegrationTest_Roo_IntegrationTest {
     declare @type: StudyPersonAssocIntegrationTest: @Transactional;
     
     @Autowired
-    private StudyPersonAssocDataOnDemand StudyPersonAssocIntegrationTest.dod;
+    StudyPersonAssocDataOnDemand StudyPersonAssocIntegrationTest.dod;
+    
+    @Autowired
+    StudyPersonAssocService StudyPersonAssocIntegrationTest.studyPersonAssocService;
     
     @Test
-    public void StudyPersonAssocIntegrationTest.testCountStudyPersonAssocs() {
+    public void StudyPersonAssocIntegrationTest.testCountAllStudyPersonAssocs() {
         Assert.assertNotNull("Data on demand for 'StudyPersonAssoc' failed to initialize correctly", dod.getRandomStudyPersonAssoc());
-        long count = StudyPersonAssoc.countStudyPersonAssocs();
+        long count = studyPersonAssocService.countAllStudyPersonAssocs();
         Assert.assertTrue("Counter for 'StudyPersonAssoc' incorrectly reported there were no entries", count > 0);
     }
     
@@ -39,7 +42,7 @@ privileged aspect StudyPersonAssocIntegrationTest_Roo_IntegrationTest {
         Assert.assertNotNull("Data on demand for 'StudyPersonAssoc' failed to initialize correctly", obj);
         Integer id = obj.getId();
         Assert.assertNotNull("Data on demand for 'StudyPersonAssoc' failed to provide an identifier", id);
-        obj = StudyPersonAssoc.findStudyPersonAssoc(id);
+        obj = studyPersonAssocService.findStudyPersonAssoc(id);
         Assert.assertNotNull("Find method for 'StudyPersonAssoc' illegally returned null for id '" + id + "'", obj);
         Assert.assertEquals("Find method for 'StudyPersonAssoc' returned the incorrect identifier", id, obj.getId());
     }
@@ -47,9 +50,9 @@ privileged aspect StudyPersonAssocIntegrationTest_Roo_IntegrationTest {
     @Test
     public void StudyPersonAssocIntegrationTest.testFindAllStudyPersonAssocs() {
         Assert.assertNotNull("Data on demand for 'StudyPersonAssoc' failed to initialize correctly", dod.getRandomStudyPersonAssoc());
-        long count = StudyPersonAssoc.countStudyPersonAssocs();
+        long count = studyPersonAssocService.countAllStudyPersonAssocs();
         Assert.assertTrue("Too expensive to perform a find all test for 'StudyPersonAssoc', as there are " + count + " entries; set the findAllMaximum to exceed this value or set findAll=false on the integration test annotation to disable the test", count < 250);
-        List<StudyPersonAssoc> result = StudyPersonAssoc.findAllStudyPersonAssocs();
+        List<StudyPersonAssoc> result = studyPersonAssocService.findAllStudyPersonAssocs();
         Assert.assertNotNull("Find all method for 'StudyPersonAssoc' illegally returned null", result);
         Assert.assertTrue("Find all method for 'StudyPersonAssoc' failed to return any data", result.size() > 0);
     }
@@ -57,36 +60,36 @@ privileged aspect StudyPersonAssocIntegrationTest_Roo_IntegrationTest {
     @Test
     public void StudyPersonAssocIntegrationTest.testFindStudyPersonAssocEntries() {
         Assert.assertNotNull("Data on demand for 'StudyPersonAssoc' failed to initialize correctly", dod.getRandomStudyPersonAssoc());
-        long count = StudyPersonAssoc.countStudyPersonAssocs();
+        long count = studyPersonAssocService.countAllStudyPersonAssocs();
         if (count > 20) count = 20;
         int firstResult = 0;
         int maxResults = (int) count;
-        List<StudyPersonAssoc> result = StudyPersonAssoc.findStudyPersonAssocEntries(firstResult, maxResults);
+        List<StudyPersonAssoc> result = studyPersonAssocService.findStudyPersonAssocEntries(firstResult, maxResults);
         Assert.assertNotNull("Find entries method for 'StudyPersonAssoc' illegally returned null", result);
         Assert.assertEquals("Find entries method for 'StudyPersonAssoc' returned an incorrect number of entries", count, result.size());
     }
     
     @Test
-    public void StudyPersonAssocIntegrationTest.testPersist() {
+    public void StudyPersonAssocIntegrationTest.testSaveStudyPersonAssoc() {
         Assert.assertNotNull("Data on demand for 'StudyPersonAssoc' failed to initialize correctly", dod.getRandomStudyPersonAssoc());
         StudyPersonAssoc obj = dod.getNewTransientStudyPersonAssoc(Integer.MAX_VALUE);
         Assert.assertNotNull("Data on demand for 'StudyPersonAssoc' failed to provide a new transient entity", obj);
         Assert.assertNull("Expected 'StudyPersonAssoc' identifier to be null", obj.getId());
-        obj.persist();
+        studyPersonAssocService.saveStudyPersonAssoc(obj);
         obj.flush();
         Assert.assertNotNull("Expected 'StudyPersonAssoc' identifier to no longer be null", obj.getId());
     }
     
     @Test
-    public void StudyPersonAssocIntegrationTest.testRemove() {
+    public void StudyPersonAssocIntegrationTest.testDeleteStudyPersonAssoc() {
         StudyPersonAssoc obj = dod.getRandomStudyPersonAssoc();
         Assert.assertNotNull("Data on demand for 'StudyPersonAssoc' failed to initialize correctly", obj);
         Integer id = obj.getId();
         Assert.assertNotNull("Data on demand for 'StudyPersonAssoc' failed to provide an identifier", id);
-        obj = StudyPersonAssoc.findStudyPersonAssoc(id);
-        obj.remove();
+        obj = studyPersonAssocService.findStudyPersonAssoc(id);
+        studyPersonAssocService.deleteStudyPersonAssoc(obj);
         obj.flush();
-        Assert.assertNull("Failed to remove 'StudyPersonAssoc' with identifier '" + id + "'", StudyPersonAssoc.findStudyPersonAssoc(id));
+        Assert.assertNull("Failed to remove 'StudyPersonAssoc' with identifier '" + id + "'", studyPersonAssocService.findStudyPersonAssoc(id));
     }
     
 }

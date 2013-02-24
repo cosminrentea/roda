@@ -3,10 +3,10 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <form:create id="fc_ro_roda_UserProfile" modelAttribute="userProfile" path="/userprofiles" render="${empty dependencies}" z="UKCLIm0UItDoxLCy+SVDXGaM6Lg=">
-        <field:select field="user" id="c_ro_roda_UserProfile_user" itemValue="id" items="${users}" path="/users" z="3zf/lBGdFCuH86Zcjm6+b9x+0wU="/>
         <field:input field="fName" id="c_ro_roda_UserProfile_fName" required="true" z="sTKrpL8ghXDDHLgNOQLBlMv8fIM="/>
         <field:input field="lName" id="c_ro_roda_UserProfile_lName" required="true" z="FtlJYq27o0I8xOUaQIjjhMuRmbA="/>
         <field:input field="email" id="c_ro_roda_UserProfile_email" required="true" validationMessageCode="field_invalid_email" z="GKFg104ES4mBoUdGx8ZbqrDdguQ="/>
+        <field:select field="rodauser" id="c_ro_roda_UserProfile_rodauser" itemValue="id" items="${rodausers}" path="/rodausers" z="p9YHAKV/0WHRzE22F3qXx/ccxDI="/>
     </form:create>
     <form:dependency dependencies="${dependencies}" id="d_ro_roda_UserProfile" render="${not empty dependencies}" z="Jcr+fKCykDqS3CoXuQr5/dcDuf4="/>
 </div>

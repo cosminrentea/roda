@@ -6,7 +6,6 @@ package ro.roda;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
@@ -17,8 +16,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ro.roda.Form;
 import ro.roda.FormDataOnDemand;
+import ro.roda.Instance;
 import ro.roda.InstanceDataOnDemand;
 import ro.roda.PersonDataOnDemand;
+import ro.roda.service.FormService;
 
 privileged aspect FormDataOnDemand_Roo_DataOnDemand {
     
@@ -29,22 +30,31 @@ privileged aspect FormDataOnDemand_Roo_DataOnDemand {
     private List<Form> FormDataOnDemand.data;
     
     @Autowired
-    private InstanceDataOnDemand FormDataOnDemand.instanceDataOnDemand;
+    InstanceDataOnDemand FormDataOnDemand.instanceDataOnDemand;
     
     @Autowired
-    private PersonDataOnDemand FormDataOnDemand.personDataOnDemand;
+    PersonDataOnDemand FormDataOnDemand.personDataOnDemand;
+    
+    @Autowired
+    FormService FormDataOnDemand.formService;
     
     public Form FormDataOnDemand.getNewTransientForm(int index) {
         Form obj = new Form();
         setFillTime(obj, index);
+        setInstanceId(obj, index);
         setOperatorNotes(obj, index);
         setOrderInInstance(obj, index);
         return obj;
     }
     
     public void FormDataOnDemand.setFillTime(Form obj, int index) {
-        Date fillTime = new GregorianCalendar(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH), Calendar.getInstance().get(Calendar.HOUR_OF_DAY), Calendar.getInstance().get(Calendar.MINUTE), Calendar.getInstance().get(Calendar.SECOND) + new Double(Math.random() * 1000).intValue()).getTime();
+        Calendar fillTime = Calendar.getInstance();
         obj.setFillTime(fillTime);
+    }
+    
+    public void FormDataOnDemand.setInstanceId(Form obj, int index) {
+        Instance instanceId = instanceDataOnDemand.getRandomInstance();
+        obj.setInstanceId(instanceId);
     }
     
     public void FormDataOnDemand.setOperatorNotes(Form obj, int index) {
@@ -67,14 +77,14 @@ privileged aspect FormDataOnDemand_Roo_DataOnDemand {
         }
         Form obj = data.get(index);
         Long id = obj.getId();
-        return Form.findForm(id);
+        return formService.findForm(id);
     }
     
     public Form FormDataOnDemand.getRandomForm() {
         init();
         Form obj = data.get(rnd.nextInt(data.size()));
         Long id = obj.getId();
-        return Form.findForm(id);
+        return formService.findForm(id);
     }
     
     public boolean FormDataOnDemand.modifyForm(Form obj) {
@@ -84,7 +94,7 @@ privileged aspect FormDataOnDemand_Roo_DataOnDemand {
     public void FormDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = Form.findFormEntries(from, to);
+        data = formService.findFormEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'Form' illegally returned null");
         }
@@ -96,7 +106,7 @@ privileged aspect FormDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             Form obj = getNewTransientForm(i);
             try {
-                obj.persist();
+                formService.saveForm(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

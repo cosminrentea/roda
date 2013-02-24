@@ -6,6 +6,7 @@ package ro.roda.web;
 import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,10 +16,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.CmsSnippet;
-import ro.roda.CmsSnippetGroup;
+import ro.roda.service.CmsSnippetService;
 import ro.roda.web.CmsSnippetController;
 
 privileged aspect CmsSnippetController_Roo_Controller {
+    
+    @Autowired
+    CmsSnippetService CmsSnippetController.cmsSnippetService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String CmsSnippetController.create(@Valid CmsSnippet cmsSnippet, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -27,7 +31,7 @@ privileged aspect CmsSnippetController_Roo_Controller {
             return "cmssnippets/create";
         }
         uiModel.asMap().clear();
-        cmsSnippet.persist();
+        cmsSnippetService.saveCmsSnippet(cmsSnippet);
         return "redirect:/cmssnippets/" + encodeUrlPathSegment(cmsSnippet.getId().toString(), httpServletRequest);
     }
     
@@ -39,7 +43,7 @@ privileged aspect CmsSnippetController_Roo_Controller {
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String CmsSnippetController.show(@PathVariable("id") Integer id, Model uiModel) {
-        uiModel.addAttribute("cmssnippet", CmsSnippet.findCmsSnippet(id));
+        uiModel.addAttribute("cmssnippet", cmsSnippetService.findCmsSnippet(id));
         uiModel.addAttribute("itemId", id);
         return "cmssnippets/show";
     }
@@ -49,11 +53,11 @@ privileged aspect CmsSnippetController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("cmssnippets", CmsSnippet.findCmsSnippetEntries(firstResult, sizeNo));
-            float nrOfPages = (float) CmsSnippet.countCmsSnippets() / sizeNo;
+            uiModel.addAttribute("cmssnippets", cmsSnippetService.findCmsSnippetEntries(firstResult, sizeNo));
+            float nrOfPages = (float) cmsSnippetService.countAllCmsSnippets() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("cmssnippets", CmsSnippet.findAllCmsSnippets());
+            uiModel.addAttribute("cmssnippets", cmsSnippetService.findAllCmsSnippets());
         }
         return "cmssnippets/list";
     }
@@ -65,20 +69,20 @@ privileged aspect CmsSnippetController_Roo_Controller {
             return "cmssnippets/update";
         }
         uiModel.asMap().clear();
-        cmsSnippet.merge();
+        cmsSnippetService.updateCmsSnippet(cmsSnippet);
         return "redirect:/cmssnippets/" + encodeUrlPathSegment(cmsSnippet.getId().toString(), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String CmsSnippetController.updateForm(@PathVariable("id") Integer id, Model uiModel) {
-        populateEditForm(uiModel, CmsSnippet.findCmsSnippet(id));
+        populateEditForm(uiModel, cmsSnippetService.findCmsSnippet(id));
         return "cmssnippets/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
     public String CmsSnippetController.delete(@PathVariable("id") Integer id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        CmsSnippet cmsSnippet = CmsSnippet.findCmsSnippet(id);
-        cmsSnippet.remove();
+        CmsSnippet cmsSnippet = cmsSnippetService.findCmsSnippet(id);
+        cmsSnippetService.deleteCmsSnippet(cmsSnippet);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
@@ -87,7 +91,6 @@ privileged aspect CmsSnippetController_Roo_Controller {
     
     void CmsSnippetController.populateEditForm(Model uiModel, CmsSnippet cmsSnippet) {
         uiModel.addAttribute("cmsSnippet", cmsSnippet);
-        uiModel.addAttribute("cmssnippetgroups", CmsSnippetGroup.findAllCmsSnippetGroups());
     }
     
     String CmsSnippetController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

@@ -11,9 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.SourcestudyTypeHistory;
 import ro.roda.SourcestudyTypeHistoryDataOnDemand;
 import ro.roda.SourcestudyTypeHistoryIntegrationTest;
+import ro.roda.service.SourcestudyTypeHistoryService;
 
 privileged aspect SourcestudyTypeHistoryIntegrationTest_Roo_IntegrationTest {
     
@@ -24,12 +24,15 @@ privileged aspect SourcestudyTypeHistoryIntegrationTest_Roo_IntegrationTest {
     declare @type: SourcestudyTypeHistoryIntegrationTest: @Transactional;
     
     @Autowired
-    private SourcestudyTypeHistoryDataOnDemand SourcestudyTypeHistoryIntegrationTest.dod;
+    SourcestudyTypeHistoryDataOnDemand SourcestudyTypeHistoryIntegrationTest.dod;
+    
+    @Autowired
+    SourcestudyTypeHistoryService SourcestudyTypeHistoryIntegrationTest.sourcestudyTypeHistoryService;
     
     @Test
-    public void SourcestudyTypeHistoryIntegrationTest.testCountSourcestudyTypeHistorys() {
+    public void SourcestudyTypeHistoryIntegrationTest.testCountAllSourcestudyTypeHistorys() {
         Assert.assertNotNull("Data on demand for 'SourcestudyTypeHistory' failed to initialize correctly", dod.getRandomSourcestudyTypeHistory());
-        long count = SourcestudyTypeHistory.countSourcestudyTypeHistorys();
+        long count = sourcestudyTypeHistoryService.countAllSourcestudyTypeHistorys();
         Assert.assertTrue("Counter for 'SourcestudyTypeHistory' incorrectly reported there were no entries", count > 0);
     }
     
@@ -39,7 +42,7 @@ privileged aspect SourcestudyTypeHistoryIntegrationTest_Roo_IntegrationTest {
         Assert.assertNotNull("Data on demand for 'SourcestudyTypeHistory' failed to initialize correctly", obj);
         Integer id = obj.getId();
         Assert.assertNotNull("Data on demand for 'SourcestudyTypeHistory' failed to provide an identifier", id);
-        obj = SourcestudyTypeHistory.findSourcestudyTypeHistory(id);
+        obj = sourcestudyTypeHistoryService.findSourcestudyTypeHistory(id);
         Assert.assertNotNull("Find method for 'SourcestudyTypeHistory' illegally returned null for id '" + id + "'", obj);
         Assert.assertEquals("Find method for 'SourcestudyTypeHistory' returned the incorrect identifier", id, obj.getId());
     }
@@ -47,9 +50,9 @@ privileged aspect SourcestudyTypeHistoryIntegrationTest_Roo_IntegrationTest {
     @Test
     public void SourcestudyTypeHistoryIntegrationTest.testFindAllSourcestudyTypeHistorys() {
         Assert.assertNotNull("Data on demand for 'SourcestudyTypeHistory' failed to initialize correctly", dod.getRandomSourcestudyTypeHistory());
-        long count = SourcestudyTypeHistory.countSourcestudyTypeHistorys();
+        long count = sourcestudyTypeHistoryService.countAllSourcestudyTypeHistorys();
         Assert.assertTrue("Too expensive to perform a find all test for 'SourcestudyTypeHistory', as there are " + count + " entries; set the findAllMaximum to exceed this value or set findAll=false on the integration test annotation to disable the test", count < 250);
-        List<SourcestudyTypeHistory> result = SourcestudyTypeHistory.findAllSourcestudyTypeHistorys();
+        List<SourcestudyTypeHistory> result = sourcestudyTypeHistoryService.findAllSourcestudyTypeHistorys();
         Assert.assertNotNull("Find all method for 'SourcestudyTypeHistory' illegally returned null", result);
         Assert.assertTrue("Find all method for 'SourcestudyTypeHistory' failed to return any data", result.size() > 0);
     }
@@ -57,36 +60,36 @@ privileged aspect SourcestudyTypeHistoryIntegrationTest_Roo_IntegrationTest {
     @Test
     public void SourcestudyTypeHistoryIntegrationTest.testFindSourcestudyTypeHistoryEntries() {
         Assert.assertNotNull("Data on demand for 'SourcestudyTypeHistory' failed to initialize correctly", dod.getRandomSourcestudyTypeHistory());
-        long count = SourcestudyTypeHistory.countSourcestudyTypeHistorys();
+        long count = sourcestudyTypeHistoryService.countAllSourcestudyTypeHistorys();
         if (count > 20) count = 20;
         int firstResult = 0;
         int maxResults = (int) count;
-        List<SourcestudyTypeHistory> result = SourcestudyTypeHistory.findSourcestudyTypeHistoryEntries(firstResult, maxResults);
+        List<SourcestudyTypeHistory> result = sourcestudyTypeHistoryService.findSourcestudyTypeHistoryEntries(firstResult, maxResults);
         Assert.assertNotNull("Find entries method for 'SourcestudyTypeHistory' illegally returned null", result);
         Assert.assertEquals("Find entries method for 'SourcestudyTypeHistory' returned an incorrect number of entries", count, result.size());
     }
     
     @Test
-    public void SourcestudyTypeHistoryIntegrationTest.testPersist() {
+    public void SourcestudyTypeHistoryIntegrationTest.testSaveSourcestudyTypeHistory() {
         Assert.assertNotNull("Data on demand for 'SourcestudyTypeHistory' failed to initialize correctly", dod.getRandomSourcestudyTypeHistory());
         SourcestudyTypeHistory obj = dod.getNewTransientSourcestudyTypeHistory(Integer.MAX_VALUE);
         Assert.assertNotNull("Data on demand for 'SourcestudyTypeHistory' failed to provide a new transient entity", obj);
         Assert.assertNull("Expected 'SourcestudyTypeHistory' identifier to be null", obj.getId());
-        obj.persist();
+        sourcestudyTypeHistoryService.saveSourcestudyTypeHistory(obj);
         obj.flush();
         Assert.assertNotNull("Expected 'SourcestudyTypeHistory' identifier to no longer be null", obj.getId());
     }
     
     @Test
-    public void SourcestudyTypeHistoryIntegrationTest.testRemove() {
+    public void SourcestudyTypeHistoryIntegrationTest.testDeleteSourcestudyTypeHistory() {
         SourcestudyTypeHistory obj = dod.getRandomSourcestudyTypeHistory();
         Assert.assertNotNull("Data on demand for 'SourcestudyTypeHistory' failed to initialize correctly", obj);
         Integer id = obj.getId();
         Assert.assertNotNull("Data on demand for 'SourcestudyTypeHistory' failed to provide an identifier", id);
-        obj = SourcestudyTypeHistory.findSourcestudyTypeHistory(id);
-        obj.remove();
+        obj = sourcestudyTypeHistoryService.findSourcestudyTypeHistory(id);
+        sourcestudyTypeHistoryService.deleteSourcestudyTypeHistory(obj);
         obj.flush();
-        Assert.assertNull("Failed to remove 'SourcestudyTypeHistory' with identifier '" + id + "'", SourcestudyTypeHistory.findSourcestudyTypeHistory(id));
+        Assert.assertNull("Failed to remove 'SourcestudyTypeHistory' with identifier '" + id + "'", sourcestudyTypeHistoryService.findSourcestudyTypeHistory(id));
     }
     
 }

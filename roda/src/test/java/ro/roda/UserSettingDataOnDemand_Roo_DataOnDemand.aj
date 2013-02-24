@@ -14,7 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ro.roda.UserSetting;
 import ro.roda.UserSettingDataOnDemand;
+import ro.roda.UserSettingGroup;
 import ro.roda.UserSettingGroupDataOnDemand;
+import ro.roda.service.UserSettingService;
 
 privileged aspect UserSettingDataOnDemand_Roo_DataOnDemand {
     
@@ -25,7 +27,10 @@ privileged aspect UserSettingDataOnDemand_Roo_DataOnDemand {
     private List<UserSetting> UserSettingDataOnDemand.data;
     
     @Autowired
-    private UserSettingGroupDataOnDemand UserSettingDataOnDemand.userSettingGroupDataOnDemand;
+    UserSettingGroupDataOnDemand UserSettingDataOnDemand.userSettingGroupDataOnDemand;
+    
+    @Autowired
+    UserSettingService UserSettingDataOnDemand.userSettingService;
     
     public UserSetting UserSettingDataOnDemand.getNewTransientUserSetting(int index) {
         UserSetting obj = new UserSetting();
@@ -33,6 +38,7 @@ privileged aspect UserSettingDataOnDemand_Roo_DataOnDemand {
         setDescription(obj, index);
         setName(obj, index);
         setPredefinedValues(obj, index);
+        setSettingGroup(obj, index);
         return obj;
     }
     
@@ -56,6 +62,11 @@ privileged aspect UserSettingDataOnDemand_Roo_DataOnDemand {
         obj.setPredefinedValues(predefinedValues);
     }
     
+    public void UserSettingDataOnDemand.setSettingGroup(UserSetting obj, int index) {
+        UserSettingGroup settingGroup = userSettingGroupDataOnDemand.getRandomUserSettingGroup();
+        obj.setSettingGroup(settingGroup);
+    }
+    
     public UserSetting UserSettingDataOnDemand.getSpecificUserSetting(int index) {
         init();
         if (index < 0) {
@@ -66,14 +77,14 @@ privileged aspect UserSettingDataOnDemand_Roo_DataOnDemand {
         }
         UserSetting obj = data.get(index);
         Integer id = obj.getId();
-        return UserSetting.findUserSetting(id);
+        return userSettingService.findUserSetting(id);
     }
     
     public UserSetting UserSettingDataOnDemand.getRandomUserSetting() {
         init();
         UserSetting obj = data.get(rnd.nextInt(data.size()));
         Integer id = obj.getId();
-        return UserSetting.findUserSetting(id);
+        return userSettingService.findUserSetting(id);
     }
     
     public boolean UserSettingDataOnDemand.modifyUserSetting(UserSetting obj) {
@@ -83,7 +94,7 @@ privileged aspect UserSettingDataOnDemand_Roo_DataOnDemand {
     public void UserSettingDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = UserSetting.findUserSettingEntries(from, to);
+        data = userSettingService.findUserSettingEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'UserSetting' illegally returned null");
         }
@@ -95,7 +106,7 @@ privileged aspect UserSettingDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             UserSetting obj = getNewTransientUserSetting(i);
             try {
-                obj.persist();
+                userSettingService.saveUserSetting(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

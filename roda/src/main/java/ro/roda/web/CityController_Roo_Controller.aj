@@ -6,6 +6,7 @@ package ro.roda.web;
 import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,9 +16,25 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.City;
+import ro.roda.service.AddressService;
+import ro.roda.service.CityService;
+import ro.roda.service.CountryService;
+import ro.roda.service.RegionService;
 import ro.roda.web.CityController;
 
 privileged aspect CityController_Roo_Controller {
+    
+    @Autowired
+    CityService CityController.cityService;
+    
+    @Autowired
+    AddressService CityController.addressService;
+    
+    @Autowired
+    CountryService CityController.countryService;
+    
+    @Autowired
+    RegionService CityController.regionService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String CityController.create(@Valid City city, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -26,7 +43,7 @@ privileged aspect CityController_Roo_Controller {
             return "citys/create";
         }
         uiModel.asMap().clear();
-        city.persist();
+        cityService.saveCity(city);
         return "redirect:/citys/" + encodeUrlPathSegment(city.getId().toString(), httpServletRequest);
     }
     
@@ -38,7 +55,7 @@ privileged aspect CityController_Roo_Controller {
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String CityController.show(@PathVariable("id") Integer id, Model uiModel) {
-        uiModel.addAttribute("city", City.findCity(id));
+        uiModel.addAttribute("city", cityService.findCity(id));
         uiModel.addAttribute("itemId", id);
         return "citys/show";
     }
@@ -48,11 +65,11 @@ privileged aspect CityController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("citys", City.findCityEntries(firstResult, sizeNo));
-            float nrOfPages = (float) City.countCitys() / sizeNo;
+            uiModel.addAttribute("citys", cityService.findCityEntries(firstResult, sizeNo));
+            float nrOfPages = (float) cityService.countAllCitys() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("citys", City.findAllCitys());
+            uiModel.addAttribute("citys", cityService.findAllCitys());
         }
         return "citys/list";
     }
@@ -64,20 +81,20 @@ privileged aspect CityController_Roo_Controller {
             return "citys/update";
         }
         uiModel.asMap().clear();
-        city.merge();
+        cityService.updateCity(city);
         return "redirect:/citys/" + encodeUrlPathSegment(city.getId().toString(), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String CityController.updateForm(@PathVariable("id") Integer id, Model uiModel) {
-        populateEditForm(uiModel, City.findCity(id));
+        populateEditForm(uiModel, cityService.findCity(id));
         return "citys/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
     public String CityController.delete(@PathVariable("id") Integer id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        City city = City.findCity(id);
-        city.remove();
+        City city = cityService.findCity(id);
+        cityService.deleteCity(city);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
@@ -86,6 +103,9 @@ privileged aspect CityController_Roo_Controller {
     
     void CityController.populateEditForm(Model uiModel, City city) {
         uiModel.addAttribute("city", city);
+        uiModel.addAttribute("addresses", addressService.findAllAddresses());
+        uiModel.addAttribute("countrys", countryService.findAllCountrys());
+        uiModel.addAttribute("regions", regionService.findAllRegions());
     }
     
     String CityController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

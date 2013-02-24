@@ -11,10 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.CmsFilePropertyNameValue;
 import ro.roda.CmsFilePropertyNameValueDataOnDemand;
 import ro.roda.CmsFilePropertyNameValueIntegrationTest;
 import ro.roda.CmsFilePropertyNameValuePK;
+import ro.roda.service.CmsFilePropertyNameValueService;
 
 privileged aspect CmsFilePropertyNameValueIntegrationTest_Roo_IntegrationTest {
     
@@ -25,12 +25,15 @@ privileged aspect CmsFilePropertyNameValueIntegrationTest_Roo_IntegrationTest {
     declare @type: CmsFilePropertyNameValueIntegrationTest: @Transactional;
     
     @Autowired
-    private CmsFilePropertyNameValueDataOnDemand CmsFilePropertyNameValueIntegrationTest.dod;
+    CmsFilePropertyNameValueDataOnDemand CmsFilePropertyNameValueIntegrationTest.dod;
+    
+    @Autowired
+    CmsFilePropertyNameValueService CmsFilePropertyNameValueIntegrationTest.cmsFilePropertyNameValueService;
     
     @Test
-    public void CmsFilePropertyNameValueIntegrationTest.testCountCmsFilePropertyNameValues() {
+    public void CmsFilePropertyNameValueIntegrationTest.testCountAllCmsFilePropertyNameValues() {
         Assert.assertNotNull("Data on demand for 'CmsFilePropertyNameValue' failed to initialize correctly", dod.getRandomCmsFilePropertyNameValue());
-        long count = CmsFilePropertyNameValue.countCmsFilePropertyNameValues();
+        long count = cmsFilePropertyNameValueService.countAllCmsFilePropertyNameValues();
         Assert.assertTrue("Counter for 'CmsFilePropertyNameValue' incorrectly reported there were no entries", count > 0);
     }
     
@@ -40,7 +43,7 @@ privileged aspect CmsFilePropertyNameValueIntegrationTest_Roo_IntegrationTest {
         Assert.assertNotNull("Data on demand for 'CmsFilePropertyNameValue' failed to initialize correctly", obj);
         CmsFilePropertyNameValuePK id = obj.getId();
         Assert.assertNotNull("Data on demand for 'CmsFilePropertyNameValue' failed to provide an identifier", id);
-        obj = CmsFilePropertyNameValue.findCmsFilePropertyNameValue(id);
+        obj = cmsFilePropertyNameValueService.findCmsFilePropertyNameValue(id);
         Assert.assertNotNull("Find method for 'CmsFilePropertyNameValue' illegally returned null for id '" + id + "'", obj);
         Assert.assertEquals("Find method for 'CmsFilePropertyNameValue' returned the incorrect identifier", id, obj.getId());
     }
@@ -48,9 +51,9 @@ privileged aspect CmsFilePropertyNameValueIntegrationTest_Roo_IntegrationTest {
     @Test
     public void CmsFilePropertyNameValueIntegrationTest.testFindAllCmsFilePropertyNameValues() {
         Assert.assertNotNull("Data on demand for 'CmsFilePropertyNameValue' failed to initialize correctly", dod.getRandomCmsFilePropertyNameValue());
-        long count = CmsFilePropertyNameValue.countCmsFilePropertyNameValues();
+        long count = cmsFilePropertyNameValueService.countAllCmsFilePropertyNameValues();
         Assert.assertTrue("Too expensive to perform a find all test for 'CmsFilePropertyNameValue', as there are " + count + " entries; set the findAllMaximum to exceed this value or set findAll=false on the integration test annotation to disable the test", count < 250);
-        List<CmsFilePropertyNameValue> result = CmsFilePropertyNameValue.findAllCmsFilePropertyNameValues();
+        List<CmsFilePropertyNameValue> result = cmsFilePropertyNameValueService.findAllCmsFilePropertyNameValues();
         Assert.assertNotNull("Find all method for 'CmsFilePropertyNameValue' illegally returned null", result);
         Assert.assertTrue("Find all method for 'CmsFilePropertyNameValue' failed to return any data", result.size() > 0);
     }
@@ -58,35 +61,35 @@ privileged aspect CmsFilePropertyNameValueIntegrationTest_Roo_IntegrationTest {
     @Test
     public void CmsFilePropertyNameValueIntegrationTest.testFindCmsFilePropertyNameValueEntries() {
         Assert.assertNotNull("Data on demand for 'CmsFilePropertyNameValue' failed to initialize correctly", dod.getRandomCmsFilePropertyNameValue());
-        long count = CmsFilePropertyNameValue.countCmsFilePropertyNameValues();
+        long count = cmsFilePropertyNameValueService.countAllCmsFilePropertyNameValues();
         if (count > 20) count = 20;
         int firstResult = 0;
         int maxResults = (int) count;
-        List<CmsFilePropertyNameValue> result = CmsFilePropertyNameValue.findCmsFilePropertyNameValueEntries(firstResult, maxResults);
+        List<CmsFilePropertyNameValue> result = cmsFilePropertyNameValueService.findCmsFilePropertyNameValueEntries(firstResult, maxResults);
         Assert.assertNotNull("Find entries method for 'CmsFilePropertyNameValue' illegally returned null", result);
         Assert.assertEquals("Find entries method for 'CmsFilePropertyNameValue' returned an incorrect number of entries", count, result.size());
     }
     
     @Test
-    public void CmsFilePropertyNameValueIntegrationTest.testPersist() {
+    public void CmsFilePropertyNameValueIntegrationTest.testSaveCmsFilePropertyNameValue() {
         Assert.assertNotNull("Data on demand for 'CmsFilePropertyNameValue' failed to initialize correctly", dod.getRandomCmsFilePropertyNameValue());
         CmsFilePropertyNameValue obj = dod.getNewTransientCmsFilePropertyNameValue(Integer.MAX_VALUE);
         Assert.assertNotNull("Data on demand for 'CmsFilePropertyNameValue' failed to provide a new transient entity", obj);
-        obj.persist();
+        cmsFilePropertyNameValueService.saveCmsFilePropertyNameValue(obj);
         obj.flush();
         Assert.assertNotNull("Expected 'CmsFilePropertyNameValue' identifier to no longer be null", obj.getId());
     }
     
     @Test
-    public void CmsFilePropertyNameValueIntegrationTest.testRemove() {
+    public void CmsFilePropertyNameValueIntegrationTest.testDeleteCmsFilePropertyNameValue() {
         CmsFilePropertyNameValue obj = dod.getRandomCmsFilePropertyNameValue();
         Assert.assertNotNull("Data on demand for 'CmsFilePropertyNameValue' failed to initialize correctly", obj);
         CmsFilePropertyNameValuePK id = obj.getId();
         Assert.assertNotNull("Data on demand for 'CmsFilePropertyNameValue' failed to provide an identifier", id);
-        obj = CmsFilePropertyNameValue.findCmsFilePropertyNameValue(id);
-        obj.remove();
+        obj = cmsFilePropertyNameValueService.findCmsFilePropertyNameValue(id);
+        cmsFilePropertyNameValueService.deleteCmsFilePropertyNameValue(obj);
         obj.flush();
-        Assert.assertNull("Failed to remove 'CmsFilePropertyNameValue' with identifier '" + id + "'", CmsFilePropertyNameValue.findCmsFilePropertyNameValue(id));
+        Assert.assertNull("Failed to remove 'CmsFilePropertyNameValue' with identifier '" + id + "'", cmsFilePropertyNameValueService.findCmsFilePropertyNameValue(id));
     }
     
 }

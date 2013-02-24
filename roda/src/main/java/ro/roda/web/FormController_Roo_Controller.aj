@@ -7,6 +7,7 @@ import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.joda.time.format.DateTimeFormat;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -17,14 +18,33 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.Form;
-import ro.roda.FormEditedNumberVar;
-import ro.roda.FormEditedTextVar;
-import ro.roda.FormSelectionVar;
-import ro.roda.Instance;
-import ro.roda.Person;
+import ro.roda.service.FormEditedNumberVarService;
+import ro.roda.service.FormEditedTextVarService;
+import ro.roda.service.FormSelectionVarService;
+import ro.roda.service.FormService;
+import ro.roda.service.InstanceService;
+import ro.roda.service.PersonService;
 import ro.roda.web.FormController;
 
 privileged aspect FormController_Roo_Controller {
+    
+    @Autowired
+    FormService FormController.formService;
+    
+    @Autowired
+    FormEditedNumberVarService FormController.formEditedNumberVarService;
+    
+    @Autowired
+    FormEditedTextVarService FormController.formEditedTextVarService;
+    
+    @Autowired
+    FormSelectionVarService FormController.formSelectionVarService;
+    
+    @Autowired
+    InstanceService FormController.instanceService;
+    
+    @Autowired
+    PersonService FormController.personService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String FormController.create(@Valid Form form, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -33,7 +53,7 @@ privileged aspect FormController_Roo_Controller {
             return "forms/create";
         }
         uiModel.asMap().clear();
-        form.persist();
+        formService.saveForm(form);
         return "redirect:/forms/" + encodeUrlPathSegment(form.getId().toString(), httpServletRequest);
     }
     
@@ -46,7 +66,7 @@ privileged aspect FormController_Roo_Controller {
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String FormController.show(@PathVariable("id") Long id, Model uiModel) {
         addDateTimeFormatPatterns(uiModel);
-        uiModel.addAttribute("form", Form.findForm(id));
+        uiModel.addAttribute("form", formService.findForm(id));
         uiModel.addAttribute("itemId", id);
         return "forms/show";
     }
@@ -56,11 +76,11 @@ privileged aspect FormController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("forms", Form.findFormEntries(firstResult, sizeNo));
-            float nrOfPages = (float) Form.countForms() / sizeNo;
+            uiModel.addAttribute("forms", formService.findFormEntries(firstResult, sizeNo));
+            float nrOfPages = (float) formService.countAllForms() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("forms", Form.findAllForms());
+            uiModel.addAttribute("forms", formService.findAllForms());
         }
         addDateTimeFormatPatterns(uiModel);
         return "forms/list";
@@ -73,20 +93,20 @@ privileged aspect FormController_Roo_Controller {
             return "forms/update";
         }
         uiModel.asMap().clear();
-        form.merge();
+        formService.updateForm(form);
         return "redirect:/forms/" + encodeUrlPathSegment(form.getId().toString(), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String FormController.updateForm(@PathVariable("id") Long id, Model uiModel) {
-        populateEditForm(uiModel, Form.findForm(id));
+        populateEditForm(uiModel, formService.findForm(id));
         return "forms/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
     public String FormController.delete(@PathVariable("id") Long id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        Form form = Form.findForm(id);
-        form.remove();
+        Form form = formService.findForm(id);
+        formService.deleteForm(form);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
@@ -94,17 +114,17 @@ privileged aspect FormController_Roo_Controller {
     }
     
     void FormController.addDateTimeFormatPatterns(Model uiModel) {
-        uiModel.addAttribute("form_filltime_date_format", DateTimeFormat.patternForStyle("M-", LocaleContextHolder.getLocale()));
+        uiModel.addAttribute("form_filltime_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
     }
     
     void FormController.populateEditForm(Model uiModel, Form form) {
         uiModel.addAttribute("form", form);
         addDateTimeFormatPatterns(uiModel);
-        uiModel.addAttribute("formeditednumbervars", FormEditedNumberVar.findAllFormEditedNumberVars());
-        uiModel.addAttribute("formeditedtextvars", FormEditedTextVar.findAllFormEditedTextVars());
-        uiModel.addAttribute("formselectionvars", FormSelectionVar.findAllFormSelectionVars());
-        uiModel.addAttribute("instances", Instance.findAllInstances());
-        uiModel.addAttribute("people", Person.findAllPeople());
+        uiModel.addAttribute("formeditednumbervars", formEditedNumberVarService.findAllFormEditedNumberVars());
+        uiModel.addAttribute("formeditedtextvars", formEditedTextVarService.findAllFormEditedTextVars());
+        uiModel.addAttribute("formselectionvars", formSelectionVarService.findAllFormSelectionVars());
+        uiModel.addAttribute("instances", instanceService.findAllInstances());
+        uiModel.addAttribute("people", personService.findAllPeople());
     }
     
     String FormController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

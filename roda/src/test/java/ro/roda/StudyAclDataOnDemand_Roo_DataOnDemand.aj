@@ -12,10 +12,12 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import ro.roda.Study;
 import ro.roda.StudyAcl;
 import ro.roda.StudyAclDataOnDemand;
 import ro.roda.StudyAclPK;
 import ro.roda.StudyDataOnDemand;
+import ro.roda.service.StudyAclService;
 
 privileged aspect StudyAclDataOnDemand_Roo_DataOnDemand {
     
@@ -26,7 +28,10 @@ privileged aspect StudyAclDataOnDemand_Roo_DataOnDemand {
     private List<StudyAcl> StudyAclDataOnDemand.data;
     
     @Autowired
-    private StudyDataOnDemand StudyAclDataOnDemand.studyDataOnDemand;
+    StudyDataOnDemand StudyAclDataOnDemand.studyDataOnDemand;
+    
+    @Autowired
+    StudyAclService StudyAclDataOnDemand.studyAclService;
     
     public StudyAcl StudyAclDataOnDemand.getNewTransientStudyAcl(int index) {
         StudyAcl obj = new StudyAcl();
@@ -34,6 +39,7 @@ privileged aspect StudyAclDataOnDemand_Roo_DataOnDemand {
         setDelete(obj, index);
         setModacl(obj, index);
         setRead(obj, index);
+        setStudyId(obj, index);
         setUpdate(obj, index);
         return obj;
     }
@@ -62,6 +68,11 @@ privileged aspect StudyAclDataOnDemand_Roo_DataOnDemand {
         obj.setRead(read);
     }
     
+    public void StudyAclDataOnDemand.setStudyId(StudyAcl obj, int index) {
+        Study studyId = studyDataOnDemand.getRandomStudy();
+        obj.setStudyId(studyId);
+    }
+    
     public void StudyAclDataOnDemand.setUpdate(StudyAcl obj, int index) {
         Boolean update = Boolean.TRUE;
         obj.setUpdate(update);
@@ -77,14 +88,14 @@ privileged aspect StudyAclDataOnDemand_Roo_DataOnDemand {
         }
         StudyAcl obj = data.get(index);
         StudyAclPK id = obj.getId();
-        return StudyAcl.findStudyAcl(id);
+        return studyAclService.findStudyAcl(id);
     }
     
     public StudyAcl StudyAclDataOnDemand.getRandomStudyAcl() {
         init();
         StudyAcl obj = data.get(rnd.nextInt(data.size()));
         StudyAclPK id = obj.getId();
-        return StudyAcl.findStudyAcl(id);
+        return studyAclService.findStudyAcl(id);
     }
     
     public boolean StudyAclDataOnDemand.modifyStudyAcl(StudyAcl obj) {
@@ -94,7 +105,7 @@ privileged aspect StudyAclDataOnDemand_Roo_DataOnDemand {
     public void StudyAclDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = StudyAcl.findStudyAclEntries(from, to);
+        data = studyAclService.findStudyAclEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'StudyAcl' illegally returned null");
         }
@@ -106,7 +117,7 @@ privileged aspect StudyAclDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             StudyAcl obj = getNewTransientStudyAcl(i);
             try {
-                obj.persist();
+                studyAclService.saveStudyAcl(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

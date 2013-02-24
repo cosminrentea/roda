@@ -11,9 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.CmsPageType;
 import ro.roda.CmsPageTypeDataOnDemand;
 import ro.roda.CmsPageTypeIntegrationTest;
+import ro.roda.service.CmsPageTypeService;
 
 privileged aspect CmsPageTypeIntegrationTest_Roo_IntegrationTest {
     
@@ -24,12 +24,15 @@ privileged aspect CmsPageTypeIntegrationTest_Roo_IntegrationTest {
     declare @type: CmsPageTypeIntegrationTest: @Transactional;
     
     @Autowired
-    private CmsPageTypeDataOnDemand CmsPageTypeIntegrationTest.dod;
+    CmsPageTypeDataOnDemand CmsPageTypeIntegrationTest.dod;
+    
+    @Autowired
+    CmsPageTypeService CmsPageTypeIntegrationTest.cmsPageTypeService;
     
     @Test
-    public void CmsPageTypeIntegrationTest.testCountCmsPageTypes() {
+    public void CmsPageTypeIntegrationTest.testCountAllCmsPageTypes() {
         Assert.assertNotNull("Data on demand for 'CmsPageType' failed to initialize correctly", dod.getRandomCmsPageType());
-        long count = CmsPageType.countCmsPageTypes();
+        long count = cmsPageTypeService.countAllCmsPageTypes();
         Assert.assertTrue("Counter for 'CmsPageType' incorrectly reported there were no entries", count > 0);
     }
     
@@ -39,7 +42,7 @@ privileged aspect CmsPageTypeIntegrationTest_Roo_IntegrationTest {
         Assert.assertNotNull("Data on demand for 'CmsPageType' failed to initialize correctly", obj);
         Integer id = obj.getId();
         Assert.assertNotNull("Data on demand for 'CmsPageType' failed to provide an identifier", id);
-        obj = CmsPageType.findCmsPageType(id);
+        obj = cmsPageTypeService.findCmsPageType(id);
         Assert.assertNotNull("Find method for 'CmsPageType' illegally returned null for id '" + id + "'", obj);
         Assert.assertEquals("Find method for 'CmsPageType' returned the incorrect identifier", id, obj.getId());
     }
@@ -47,9 +50,9 @@ privileged aspect CmsPageTypeIntegrationTest_Roo_IntegrationTest {
     @Test
     public void CmsPageTypeIntegrationTest.testFindAllCmsPageTypes() {
         Assert.assertNotNull("Data on demand for 'CmsPageType' failed to initialize correctly", dod.getRandomCmsPageType());
-        long count = CmsPageType.countCmsPageTypes();
+        long count = cmsPageTypeService.countAllCmsPageTypes();
         Assert.assertTrue("Too expensive to perform a find all test for 'CmsPageType', as there are " + count + " entries; set the findAllMaximum to exceed this value or set findAll=false on the integration test annotation to disable the test", count < 250);
-        List<CmsPageType> result = CmsPageType.findAllCmsPageTypes();
+        List<CmsPageType> result = cmsPageTypeService.findAllCmsPageTypes();
         Assert.assertNotNull("Find all method for 'CmsPageType' illegally returned null", result);
         Assert.assertTrue("Find all method for 'CmsPageType' failed to return any data", result.size() > 0);
     }
@@ -57,36 +60,36 @@ privileged aspect CmsPageTypeIntegrationTest_Roo_IntegrationTest {
     @Test
     public void CmsPageTypeIntegrationTest.testFindCmsPageTypeEntries() {
         Assert.assertNotNull("Data on demand for 'CmsPageType' failed to initialize correctly", dod.getRandomCmsPageType());
-        long count = CmsPageType.countCmsPageTypes();
+        long count = cmsPageTypeService.countAllCmsPageTypes();
         if (count > 20) count = 20;
         int firstResult = 0;
         int maxResults = (int) count;
-        List<CmsPageType> result = CmsPageType.findCmsPageTypeEntries(firstResult, maxResults);
+        List<CmsPageType> result = cmsPageTypeService.findCmsPageTypeEntries(firstResult, maxResults);
         Assert.assertNotNull("Find entries method for 'CmsPageType' illegally returned null", result);
         Assert.assertEquals("Find entries method for 'CmsPageType' returned an incorrect number of entries", count, result.size());
     }
     
     @Test
-    public void CmsPageTypeIntegrationTest.testPersist() {
+    public void CmsPageTypeIntegrationTest.testSaveCmsPageType() {
         Assert.assertNotNull("Data on demand for 'CmsPageType' failed to initialize correctly", dod.getRandomCmsPageType());
         CmsPageType obj = dod.getNewTransientCmsPageType(Integer.MAX_VALUE);
         Assert.assertNotNull("Data on demand for 'CmsPageType' failed to provide a new transient entity", obj);
         Assert.assertNull("Expected 'CmsPageType' identifier to be null", obj.getId());
-        obj.persist();
+        cmsPageTypeService.saveCmsPageType(obj);
         obj.flush();
         Assert.assertNotNull("Expected 'CmsPageType' identifier to no longer be null", obj.getId());
     }
     
     @Test
-    public void CmsPageTypeIntegrationTest.testRemove() {
+    public void CmsPageTypeIntegrationTest.testDeleteCmsPageType() {
         CmsPageType obj = dod.getRandomCmsPageType();
         Assert.assertNotNull("Data on demand for 'CmsPageType' failed to initialize correctly", obj);
         Integer id = obj.getId();
         Assert.assertNotNull("Data on demand for 'CmsPageType' failed to provide an identifier", id);
-        obj = CmsPageType.findCmsPageType(id);
-        obj.remove();
+        obj = cmsPageTypeService.findCmsPageType(id);
+        cmsPageTypeService.deleteCmsPageType(obj);
         obj.flush();
-        Assert.assertNull("Failed to remove 'CmsPageType' with identifier '" + id + "'", CmsPageType.findCmsPageType(id));
+        Assert.assertNull("Failed to remove 'CmsPageType' with identifier '" + id + "'", cmsPageTypeService.findCmsPageType(id));
     }
     
 }

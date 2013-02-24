@@ -11,9 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.OrgSufix;
 import ro.roda.OrgSufixDataOnDemand;
 import ro.roda.OrgSufixIntegrationTest;
+import ro.roda.service.OrgSufixService;
 
 privileged aspect OrgSufixIntegrationTest_Roo_IntegrationTest {
     
@@ -24,12 +24,15 @@ privileged aspect OrgSufixIntegrationTest_Roo_IntegrationTest {
     declare @type: OrgSufixIntegrationTest: @Transactional;
     
     @Autowired
-    private OrgSufixDataOnDemand OrgSufixIntegrationTest.dod;
+    OrgSufixDataOnDemand OrgSufixIntegrationTest.dod;
+    
+    @Autowired
+    OrgSufixService OrgSufixIntegrationTest.orgSufixService;
     
     @Test
-    public void OrgSufixIntegrationTest.testCountOrgSufixes() {
+    public void OrgSufixIntegrationTest.testCountAllOrgSufixes() {
         Assert.assertNotNull("Data on demand for 'OrgSufix' failed to initialize correctly", dod.getRandomOrgSufix());
-        long count = OrgSufix.countOrgSufixes();
+        long count = orgSufixService.countAllOrgSufixes();
         Assert.assertTrue("Counter for 'OrgSufix' incorrectly reported there were no entries", count > 0);
     }
     
@@ -39,7 +42,7 @@ privileged aspect OrgSufixIntegrationTest_Roo_IntegrationTest {
         Assert.assertNotNull("Data on demand for 'OrgSufix' failed to initialize correctly", obj);
         Integer id = obj.getId();
         Assert.assertNotNull("Data on demand for 'OrgSufix' failed to provide an identifier", id);
-        obj = OrgSufix.findOrgSufix(id);
+        obj = orgSufixService.findOrgSufix(id);
         Assert.assertNotNull("Find method for 'OrgSufix' illegally returned null for id '" + id + "'", obj);
         Assert.assertEquals("Find method for 'OrgSufix' returned the incorrect identifier", id, obj.getId());
     }
@@ -47,9 +50,9 @@ privileged aspect OrgSufixIntegrationTest_Roo_IntegrationTest {
     @Test
     public void OrgSufixIntegrationTest.testFindAllOrgSufixes() {
         Assert.assertNotNull("Data on demand for 'OrgSufix' failed to initialize correctly", dod.getRandomOrgSufix());
-        long count = OrgSufix.countOrgSufixes();
+        long count = orgSufixService.countAllOrgSufixes();
         Assert.assertTrue("Too expensive to perform a find all test for 'OrgSufix', as there are " + count + " entries; set the findAllMaximum to exceed this value or set findAll=false on the integration test annotation to disable the test", count < 250);
-        List<OrgSufix> result = OrgSufix.findAllOrgSufixes();
+        List<OrgSufix> result = orgSufixService.findAllOrgSufixes();
         Assert.assertNotNull("Find all method for 'OrgSufix' illegally returned null", result);
         Assert.assertTrue("Find all method for 'OrgSufix' failed to return any data", result.size() > 0);
     }
@@ -57,36 +60,36 @@ privileged aspect OrgSufixIntegrationTest_Roo_IntegrationTest {
     @Test
     public void OrgSufixIntegrationTest.testFindOrgSufixEntries() {
         Assert.assertNotNull("Data on demand for 'OrgSufix' failed to initialize correctly", dod.getRandomOrgSufix());
-        long count = OrgSufix.countOrgSufixes();
+        long count = orgSufixService.countAllOrgSufixes();
         if (count > 20) count = 20;
         int firstResult = 0;
         int maxResults = (int) count;
-        List<OrgSufix> result = OrgSufix.findOrgSufixEntries(firstResult, maxResults);
+        List<OrgSufix> result = orgSufixService.findOrgSufixEntries(firstResult, maxResults);
         Assert.assertNotNull("Find entries method for 'OrgSufix' illegally returned null", result);
         Assert.assertEquals("Find entries method for 'OrgSufix' returned an incorrect number of entries", count, result.size());
     }
     
     @Test
-    public void OrgSufixIntegrationTest.testPersist() {
+    public void OrgSufixIntegrationTest.testSaveOrgSufix() {
         Assert.assertNotNull("Data on demand for 'OrgSufix' failed to initialize correctly", dod.getRandomOrgSufix());
         OrgSufix obj = dod.getNewTransientOrgSufix(Integer.MAX_VALUE);
         Assert.assertNotNull("Data on demand for 'OrgSufix' failed to provide a new transient entity", obj);
         Assert.assertNull("Expected 'OrgSufix' identifier to be null", obj.getId());
-        obj.persist();
+        orgSufixService.saveOrgSufix(obj);
         obj.flush();
         Assert.assertNotNull("Expected 'OrgSufix' identifier to no longer be null", obj.getId());
     }
     
     @Test
-    public void OrgSufixIntegrationTest.testRemove() {
+    public void OrgSufixIntegrationTest.testDeleteOrgSufix() {
         OrgSufix obj = dod.getRandomOrgSufix();
         Assert.assertNotNull("Data on demand for 'OrgSufix' failed to initialize correctly", obj);
         Integer id = obj.getId();
         Assert.assertNotNull("Data on demand for 'OrgSufix' failed to provide an identifier", id);
-        obj = OrgSufix.findOrgSufix(id);
-        obj.remove();
+        obj = orgSufixService.findOrgSufix(id);
+        orgSufixService.deleteOrgSufix(obj);
         obj.flush();
-        Assert.assertNull("Failed to remove 'OrgSufix' with identifier '" + id + "'", OrgSufix.findOrgSufix(id));
+        Assert.assertNull("Failed to remove 'OrgSufix' with identifier '" + id + "'", orgSufixService.findOrgSufix(id));
     }
     
 }

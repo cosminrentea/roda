@@ -18,15 +18,25 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.Address;
-import ro.roda.Person;
 import ro.roda.PersonAddress;
 import ro.roda.PersonAddressPK;
+import ro.roda.service.AddressService;
+import ro.roda.service.PersonAddressService;
+import ro.roda.service.PersonService;
 import ro.roda.web.PersonAddressController;
 
 privileged aspect PersonAddressController_Roo_Controller {
     
     private ConversionService PersonAddressController.conversionService;
+    
+    @Autowired
+    PersonAddressService PersonAddressController.personAddressService;
+    
+    @Autowired
+    AddressService PersonAddressController.addressService;
+    
+    @Autowired
+    PersonService PersonAddressController.personService;
     
     @Autowired
     public PersonAddressController.new(ConversionService conversionService) {
@@ -41,7 +51,7 @@ privileged aspect PersonAddressController_Roo_Controller {
             return "personaddresses/create";
         }
         uiModel.asMap().clear();
-        personAddress.persist();
+        personAddressService.savePersonAddress(personAddress);
         return "redirect:/personaddresses/" + encodeUrlPathSegment(conversionService.convert(personAddress.getId(), String.class), httpServletRequest);
     }
     
@@ -54,7 +64,7 @@ privileged aspect PersonAddressController_Roo_Controller {
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String PersonAddressController.show(@PathVariable("id") PersonAddressPK id, Model uiModel) {
         addDateTimeFormatPatterns(uiModel);
-        uiModel.addAttribute("personaddress", PersonAddress.findPersonAddress(id));
+        uiModel.addAttribute("personaddress", personAddressService.findPersonAddress(id));
         uiModel.addAttribute("itemId", conversionService.convert(id, String.class));
         return "personaddresses/show";
     }
@@ -64,11 +74,11 @@ privileged aspect PersonAddressController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("personaddresses", PersonAddress.findPersonAddressEntries(firstResult, sizeNo));
-            float nrOfPages = (float) PersonAddress.countPersonAddresses() / sizeNo;
+            uiModel.addAttribute("personaddresses", personAddressService.findPersonAddressEntries(firstResult, sizeNo));
+            float nrOfPages = (float) personAddressService.countAllPersonAddresses() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("personaddresses", PersonAddress.findAllPersonAddresses());
+            uiModel.addAttribute("personaddresses", personAddressService.findAllPersonAddresses());
         }
         addDateTimeFormatPatterns(uiModel);
         return "personaddresses/list";
@@ -81,20 +91,20 @@ privileged aspect PersonAddressController_Roo_Controller {
             return "personaddresses/update";
         }
         uiModel.asMap().clear();
-        personAddress.merge();
+        personAddressService.updatePersonAddress(personAddress);
         return "redirect:/personaddresses/" + encodeUrlPathSegment(conversionService.convert(personAddress.getId(), String.class), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String PersonAddressController.updateForm(@PathVariable("id") PersonAddressPK id, Model uiModel) {
-        populateEditForm(uiModel, PersonAddress.findPersonAddress(id));
+        populateEditForm(uiModel, personAddressService.findPersonAddress(id));
         return "personaddresses/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
     public String PersonAddressController.delete(@PathVariable("id") PersonAddressPK id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        PersonAddress personAddress = PersonAddress.findPersonAddress(id);
-        personAddress.remove();
+        PersonAddress personAddress = personAddressService.findPersonAddress(id);
+        personAddressService.deletePersonAddress(personAddress);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
@@ -102,15 +112,15 @@ privileged aspect PersonAddressController_Roo_Controller {
     }
     
     void PersonAddressController.addDateTimeFormatPatterns(Model uiModel) {
-        uiModel.addAttribute("personAddress_datestart_date_format", DateTimeFormat.patternForStyle("M-", LocaleContextHolder.getLocale()));
-        uiModel.addAttribute("personAddress_dateend_date_format", DateTimeFormat.patternForStyle("M-", LocaleContextHolder.getLocale()));
+        uiModel.addAttribute("personAddress_datestart_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
+        uiModel.addAttribute("personAddress_dateend_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
     }
     
     void PersonAddressController.populateEditForm(Model uiModel, PersonAddress personAddress) {
         uiModel.addAttribute("personAddress", personAddress);
         addDateTimeFormatPatterns(uiModel);
-        uiModel.addAttribute("addresses", Address.findAllAddresses());
-        uiModel.addAttribute("people", Person.findAllPeople());
+        uiModel.addAttribute("addresses", addressService.findAllAddresses());
+        uiModel.addAttribute("people", personService.findAllPeople());
     }
     
     String PersonAddressController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

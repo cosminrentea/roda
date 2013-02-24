@@ -11,10 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.UserSettingValue;
 import ro.roda.UserSettingValueDataOnDemand;
 import ro.roda.UserSettingValueIntegrationTest;
 import ro.roda.UserSettingValuePK;
+import ro.roda.service.UserSettingValueService;
 
 privileged aspect UserSettingValueIntegrationTest_Roo_IntegrationTest {
     
@@ -25,12 +25,15 @@ privileged aspect UserSettingValueIntegrationTest_Roo_IntegrationTest {
     declare @type: UserSettingValueIntegrationTest: @Transactional;
     
     @Autowired
-    private UserSettingValueDataOnDemand UserSettingValueIntegrationTest.dod;
+    UserSettingValueDataOnDemand UserSettingValueIntegrationTest.dod;
+    
+    @Autowired
+    UserSettingValueService UserSettingValueIntegrationTest.userSettingValueService;
     
     @Test
-    public void UserSettingValueIntegrationTest.testCountUserSettingValues() {
+    public void UserSettingValueIntegrationTest.testCountAllUserSettingValues() {
         Assert.assertNotNull("Data on demand for 'UserSettingValue' failed to initialize correctly", dod.getRandomUserSettingValue());
-        long count = UserSettingValue.countUserSettingValues();
+        long count = userSettingValueService.countAllUserSettingValues();
         Assert.assertTrue("Counter for 'UserSettingValue' incorrectly reported there were no entries", count > 0);
     }
     
@@ -40,7 +43,7 @@ privileged aspect UserSettingValueIntegrationTest_Roo_IntegrationTest {
         Assert.assertNotNull("Data on demand for 'UserSettingValue' failed to initialize correctly", obj);
         UserSettingValuePK id = obj.getId();
         Assert.assertNotNull("Data on demand for 'UserSettingValue' failed to provide an identifier", id);
-        obj = UserSettingValue.findUserSettingValue(id);
+        obj = userSettingValueService.findUserSettingValue(id);
         Assert.assertNotNull("Find method for 'UserSettingValue' illegally returned null for id '" + id + "'", obj);
         Assert.assertEquals("Find method for 'UserSettingValue' returned the incorrect identifier", id, obj.getId());
     }
@@ -48,9 +51,9 @@ privileged aspect UserSettingValueIntegrationTest_Roo_IntegrationTest {
     @Test
     public void UserSettingValueIntegrationTest.testFindAllUserSettingValues() {
         Assert.assertNotNull("Data on demand for 'UserSettingValue' failed to initialize correctly", dod.getRandomUserSettingValue());
-        long count = UserSettingValue.countUserSettingValues();
+        long count = userSettingValueService.countAllUserSettingValues();
         Assert.assertTrue("Too expensive to perform a find all test for 'UserSettingValue', as there are " + count + " entries; set the findAllMaximum to exceed this value or set findAll=false on the integration test annotation to disable the test", count < 250);
-        List<UserSettingValue> result = UserSettingValue.findAllUserSettingValues();
+        List<UserSettingValue> result = userSettingValueService.findAllUserSettingValues();
         Assert.assertNotNull("Find all method for 'UserSettingValue' illegally returned null", result);
         Assert.assertTrue("Find all method for 'UserSettingValue' failed to return any data", result.size() > 0);
     }
@@ -58,35 +61,35 @@ privileged aspect UserSettingValueIntegrationTest_Roo_IntegrationTest {
     @Test
     public void UserSettingValueIntegrationTest.testFindUserSettingValueEntries() {
         Assert.assertNotNull("Data on demand for 'UserSettingValue' failed to initialize correctly", dod.getRandomUserSettingValue());
-        long count = UserSettingValue.countUserSettingValues();
+        long count = userSettingValueService.countAllUserSettingValues();
         if (count > 20) count = 20;
         int firstResult = 0;
         int maxResults = (int) count;
-        List<UserSettingValue> result = UserSettingValue.findUserSettingValueEntries(firstResult, maxResults);
+        List<UserSettingValue> result = userSettingValueService.findUserSettingValueEntries(firstResult, maxResults);
         Assert.assertNotNull("Find entries method for 'UserSettingValue' illegally returned null", result);
         Assert.assertEquals("Find entries method for 'UserSettingValue' returned an incorrect number of entries", count, result.size());
     }
     
     @Test
-    public void UserSettingValueIntegrationTest.testPersist() {
+    public void UserSettingValueIntegrationTest.testSaveUserSettingValue() {
         Assert.assertNotNull("Data on demand for 'UserSettingValue' failed to initialize correctly", dod.getRandomUserSettingValue());
         UserSettingValue obj = dod.getNewTransientUserSettingValue(Integer.MAX_VALUE);
         Assert.assertNotNull("Data on demand for 'UserSettingValue' failed to provide a new transient entity", obj);
-        obj.persist();
+        userSettingValueService.saveUserSettingValue(obj);
         obj.flush();
         Assert.assertNotNull("Expected 'UserSettingValue' identifier to no longer be null", obj.getId());
     }
     
     @Test
-    public void UserSettingValueIntegrationTest.testRemove() {
+    public void UserSettingValueIntegrationTest.testDeleteUserSettingValue() {
         UserSettingValue obj = dod.getRandomUserSettingValue();
         Assert.assertNotNull("Data on demand for 'UserSettingValue' failed to initialize correctly", obj);
         UserSettingValuePK id = obj.getId();
         Assert.assertNotNull("Data on demand for 'UserSettingValue' failed to provide an identifier", id);
-        obj = UserSettingValue.findUserSettingValue(id);
-        obj.remove();
+        obj = userSettingValueService.findUserSettingValue(id);
+        userSettingValueService.deleteUserSettingValue(obj);
         obj.flush();
-        Assert.assertNull("Failed to remove 'UserSettingValue' with identifier '" + id + "'", UserSettingValue.findUserSettingValue(id));
+        Assert.assertNull("Failed to remove 'UserSettingValue' with identifier '" + id + "'", userSettingValueService.findUserSettingValue(id));
     }
     
 }

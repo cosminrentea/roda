@@ -10,9 +10,11 @@ import java.util.List;
 import java.util.Random;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ro.roda.UnitAnalysis;
 import ro.roda.UnitAnalysisDataOnDemand;
+import ro.roda.service.UnitAnalysisService;
 
 privileged aspect UnitAnalysisDataOnDemand_Roo_DataOnDemand {
     
@@ -21,6 +23,9 @@ privileged aspect UnitAnalysisDataOnDemand_Roo_DataOnDemand {
     private Random UnitAnalysisDataOnDemand.rnd = new SecureRandom();
     
     private List<UnitAnalysis> UnitAnalysisDataOnDemand.data;
+    
+    @Autowired
+    UnitAnalysisService UnitAnalysisDataOnDemand.unitAnalysisService;
     
     public UnitAnalysis UnitAnalysisDataOnDemand.getNewTransientUnitAnalysis(int index) {
         UnitAnalysis obj = new UnitAnalysis();
@@ -52,14 +57,14 @@ privileged aspect UnitAnalysisDataOnDemand_Roo_DataOnDemand {
         }
         UnitAnalysis obj = data.get(index);
         Integer id = obj.getId();
-        return UnitAnalysis.findUnitAnalysis(id);
+        return unitAnalysisService.findUnitAnalysis(id);
     }
     
     public UnitAnalysis UnitAnalysisDataOnDemand.getRandomUnitAnalysis() {
         init();
         UnitAnalysis obj = data.get(rnd.nextInt(data.size()));
         Integer id = obj.getId();
-        return UnitAnalysis.findUnitAnalysis(id);
+        return unitAnalysisService.findUnitAnalysis(id);
     }
     
     public boolean UnitAnalysisDataOnDemand.modifyUnitAnalysis(UnitAnalysis obj) {
@@ -69,7 +74,7 @@ privileged aspect UnitAnalysisDataOnDemand_Roo_DataOnDemand {
     public void UnitAnalysisDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = UnitAnalysis.findUnitAnalysisEntries(from, to);
+        data = unitAnalysisService.findUnitAnalysisEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'UnitAnalysis' illegally returned null");
         }
@@ -81,7 +86,7 @@ privileged aspect UnitAnalysisDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             UnitAnalysis obj = getNewTransientUnitAnalysis(i);
             try {
-                obj.persist();
+                unitAnalysisService.saveUnitAnalysis(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

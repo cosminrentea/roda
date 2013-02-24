@@ -16,15 +16,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.User;
-import ro.roda.UserSetting;
 import ro.roda.UserSettingValue;
 import ro.roda.UserSettingValuePK;
+import ro.roda.service.UserSettingValueService;
 import ro.roda.web.UserSettingValueController;
 
 privileged aspect UserSettingValueController_Roo_Controller {
     
     private ConversionService UserSettingValueController.conversionService;
+    
+    @Autowired
+    UserSettingValueService UserSettingValueController.userSettingValueService;
     
     @Autowired
     public UserSettingValueController.new(ConversionService conversionService) {
@@ -39,7 +41,7 @@ privileged aspect UserSettingValueController_Roo_Controller {
             return "usersettingvalues/create";
         }
         uiModel.asMap().clear();
-        userSettingValue.persist();
+        userSettingValueService.saveUserSettingValue(userSettingValue);
         return "redirect:/usersettingvalues/" + encodeUrlPathSegment(conversionService.convert(userSettingValue.getId(), String.class), httpServletRequest);
     }
     
@@ -51,7 +53,7 @@ privileged aspect UserSettingValueController_Roo_Controller {
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String UserSettingValueController.show(@PathVariable("id") UserSettingValuePK id, Model uiModel) {
-        uiModel.addAttribute("usersettingvalue", UserSettingValue.findUserSettingValue(id));
+        uiModel.addAttribute("usersettingvalue", userSettingValueService.findUserSettingValue(id));
         uiModel.addAttribute("itemId", conversionService.convert(id, String.class));
         return "usersettingvalues/show";
     }
@@ -61,11 +63,11 @@ privileged aspect UserSettingValueController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("usersettingvalues", UserSettingValue.findUserSettingValueEntries(firstResult, sizeNo));
-            float nrOfPages = (float) UserSettingValue.countUserSettingValues() / sizeNo;
+            uiModel.addAttribute("usersettingvalues", userSettingValueService.findUserSettingValueEntries(firstResult, sizeNo));
+            float nrOfPages = (float) userSettingValueService.countAllUserSettingValues() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("usersettingvalues", UserSettingValue.findAllUserSettingValues());
+            uiModel.addAttribute("usersettingvalues", userSettingValueService.findAllUserSettingValues());
         }
         return "usersettingvalues/list";
     }
@@ -77,20 +79,20 @@ privileged aspect UserSettingValueController_Roo_Controller {
             return "usersettingvalues/update";
         }
         uiModel.asMap().clear();
-        userSettingValue.merge();
+        userSettingValueService.updateUserSettingValue(userSettingValue);
         return "redirect:/usersettingvalues/" + encodeUrlPathSegment(conversionService.convert(userSettingValue.getId(), String.class), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String UserSettingValueController.updateForm(@PathVariable("id") UserSettingValuePK id, Model uiModel) {
-        populateEditForm(uiModel, UserSettingValue.findUserSettingValue(id));
+        populateEditForm(uiModel, userSettingValueService.findUserSettingValue(id));
         return "usersettingvalues/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
     public String UserSettingValueController.delete(@PathVariable("id") UserSettingValuePK id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        UserSettingValue userSettingValue = UserSettingValue.findUserSettingValue(id);
-        userSettingValue.remove();
+        UserSettingValue userSettingValue = userSettingValueService.findUserSettingValue(id);
+        userSettingValueService.deleteUserSettingValue(userSettingValue);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
@@ -99,8 +101,6 @@ privileged aspect UserSettingValueController_Roo_Controller {
     
     void UserSettingValueController.populateEditForm(Model uiModel, UserSettingValue userSettingValue) {
         uiModel.addAttribute("userSettingValue", userSettingValue);
-        uiModel.addAttribute("users", User.findAllUsers());
-        uiModel.addAttribute("usersettings", UserSetting.findAllUserSettings());
     }
     
     String UserSettingValueController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

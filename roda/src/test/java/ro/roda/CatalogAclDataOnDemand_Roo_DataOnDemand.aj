@@ -12,10 +12,12 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import ro.roda.Catalog;
 import ro.roda.CatalogAcl;
 import ro.roda.CatalogAclDataOnDemand;
 import ro.roda.CatalogAclPK;
 import ro.roda.CatalogDataOnDemand;
+import ro.roda.service.CatalogAclService;
 
 privileged aspect CatalogAclDataOnDemand_Roo_DataOnDemand {
     
@@ -26,11 +28,15 @@ privileged aspect CatalogAclDataOnDemand_Roo_DataOnDemand {
     private List<CatalogAcl> CatalogAclDataOnDemand.data;
     
     @Autowired
-    private CatalogDataOnDemand CatalogAclDataOnDemand.catalogDataOnDemand;
+    CatalogDataOnDemand CatalogAclDataOnDemand.catalogDataOnDemand;
+    
+    @Autowired
+    CatalogAclService CatalogAclDataOnDemand.catalogAclService;
     
     public CatalogAcl CatalogAclDataOnDemand.getNewTransientCatalogAcl(int index) {
         CatalogAcl obj = new CatalogAcl();
         setEmbeddedIdClass(obj, index);
+        setCatalogId(obj, index);
         setDelete(obj, index);
         setModacl(obj, index);
         setRead(obj, index);
@@ -45,6 +51,11 @@ privileged aspect CatalogAclDataOnDemand_Roo_DataOnDemand {
         
         CatalogAclPK embeddedIdClass = new CatalogAclPK(catalogId, aroId, aroType);
         obj.setId(embeddedIdClass);
+    }
+    
+    public void CatalogAclDataOnDemand.setCatalogId(CatalogAcl obj, int index) {
+        Catalog catalogId = catalogDataOnDemand.getRandomCatalog();
+        obj.setCatalogId(catalogId);
     }
     
     public void CatalogAclDataOnDemand.setDelete(CatalogAcl obj, int index) {
@@ -77,14 +88,14 @@ privileged aspect CatalogAclDataOnDemand_Roo_DataOnDemand {
         }
         CatalogAcl obj = data.get(index);
         CatalogAclPK id = obj.getId();
-        return CatalogAcl.findCatalogAcl(id);
+        return catalogAclService.findCatalogAcl(id);
     }
     
     public CatalogAcl CatalogAclDataOnDemand.getRandomCatalogAcl() {
         init();
         CatalogAcl obj = data.get(rnd.nextInt(data.size()));
         CatalogAclPK id = obj.getId();
-        return CatalogAcl.findCatalogAcl(id);
+        return catalogAclService.findCatalogAcl(id);
     }
     
     public boolean CatalogAclDataOnDemand.modifyCatalogAcl(CatalogAcl obj) {
@@ -94,7 +105,7 @@ privileged aspect CatalogAclDataOnDemand_Roo_DataOnDemand {
     public void CatalogAclDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = CatalogAcl.findCatalogAclEntries(from, to);
+        data = catalogAclService.findCatalogAclEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'CatalogAcl' illegally returned null");
         }
@@ -106,7 +117,7 @@ privileged aspect CatalogAclDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             CatalogAcl obj = getNewTransientCatalogAcl(i);
             try {
-                obj.persist();
+                catalogAclService.saveCatalogAcl(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

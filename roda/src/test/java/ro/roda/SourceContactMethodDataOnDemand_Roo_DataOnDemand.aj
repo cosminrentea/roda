@@ -10,9 +10,11 @@ import java.util.List;
 import java.util.Random;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ro.roda.SourceContactMethod;
 import ro.roda.SourceContactMethodDataOnDemand;
+import ro.roda.service.SourceContactMethodService;
 
 privileged aspect SourceContactMethodDataOnDemand_Roo_DataOnDemand {
     
@@ -21,6 +23,9 @@ privileged aspect SourceContactMethodDataOnDemand_Roo_DataOnDemand {
     private Random SourceContactMethodDataOnDemand.rnd = new SecureRandom();
     
     private List<SourceContactMethod> SourceContactMethodDataOnDemand.data;
+    
+    @Autowired
+    SourceContactMethodService SourceContactMethodDataOnDemand.sourceContactMethodService;
     
     public SourceContactMethod SourceContactMethodDataOnDemand.getNewTransientSourceContactMethod(int index) {
         SourceContactMethod obj = new SourceContactMethod();
@@ -46,14 +51,14 @@ privileged aspect SourceContactMethodDataOnDemand_Roo_DataOnDemand {
         }
         SourceContactMethod obj = data.get(index);
         Integer id = obj.getId();
-        return SourceContactMethod.findSourceContactMethod(id);
+        return sourceContactMethodService.findSourceContactMethod(id);
     }
     
     public SourceContactMethod SourceContactMethodDataOnDemand.getRandomSourceContactMethod() {
         init();
         SourceContactMethod obj = data.get(rnd.nextInt(data.size()));
         Integer id = obj.getId();
-        return SourceContactMethod.findSourceContactMethod(id);
+        return sourceContactMethodService.findSourceContactMethod(id);
     }
     
     public boolean SourceContactMethodDataOnDemand.modifySourceContactMethod(SourceContactMethod obj) {
@@ -63,7 +68,7 @@ privileged aspect SourceContactMethodDataOnDemand_Roo_DataOnDemand {
     public void SourceContactMethodDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = SourceContactMethod.findSourceContactMethodEntries(from, to);
+        data = sourceContactMethodService.findSourceContactMethodEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'SourceContactMethod' illegally returned null");
         }
@@ -75,7 +80,7 @@ privileged aspect SourceContactMethodDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             SourceContactMethod obj = getNewTransientSourceContactMethod(i);
             try {
-                obj.persist();
+                sourceContactMethodService.saveSourceContactMethod(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

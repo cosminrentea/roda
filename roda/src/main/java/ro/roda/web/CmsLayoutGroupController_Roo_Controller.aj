@@ -6,6 +6,7 @@ package ro.roda.web;
 import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,11 +15,18 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.CmsLayout;
 import ro.roda.CmsLayoutGroup;
+import ro.roda.service.CmsLayoutGroupService;
+import ro.roda.service.CmsLayoutService;
 import ro.roda.web.CmsLayoutGroupController;
 
 privileged aspect CmsLayoutGroupController_Roo_Controller {
+    
+    @Autowired
+    CmsLayoutGroupService CmsLayoutGroupController.cmsLayoutGroupService;
+    
+    @Autowired
+    CmsLayoutService CmsLayoutGroupController.cmsLayoutService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String CmsLayoutGroupController.create(@Valid CmsLayoutGroup cmsLayoutGroup, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -27,7 +35,7 @@ privileged aspect CmsLayoutGroupController_Roo_Controller {
             return "cmslayoutgroups/create";
         }
         uiModel.asMap().clear();
-        cmsLayoutGroup.persist();
+        cmsLayoutGroupService.saveCmsLayoutGroup(cmsLayoutGroup);
         return "redirect:/cmslayoutgroups/" + encodeUrlPathSegment(cmsLayoutGroup.getId().toString(), httpServletRequest);
     }
     
@@ -39,7 +47,7 @@ privileged aspect CmsLayoutGroupController_Roo_Controller {
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String CmsLayoutGroupController.show(@PathVariable("id") Integer id, Model uiModel) {
-        uiModel.addAttribute("cmslayoutgroup", CmsLayoutGroup.findCmsLayoutGroup(id));
+        uiModel.addAttribute("cmslayoutgroup", cmsLayoutGroupService.findCmsLayoutGroup(id));
         uiModel.addAttribute("itemId", id);
         return "cmslayoutgroups/show";
     }
@@ -49,11 +57,11 @@ privileged aspect CmsLayoutGroupController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("cmslayoutgroups", CmsLayoutGroup.findCmsLayoutGroupEntries(firstResult, sizeNo));
-            float nrOfPages = (float) CmsLayoutGroup.countCmsLayoutGroups() / sizeNo;
+            uiModel.addAttribute("cmslayoutgroups", cmsLayoutGroupService.findCmsLayoutGroupEntries(firstResult, sizeNo));
+            float nrOfPages = (float) cmsLayoutGroupService.countAllCmsLayoutGroups() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("cmslayoutgroups", CmsLayoutGroup.findAllCmsLayoutGroups());
+            uiModel.addAttribute("cmslayoutgroups", cmsLayoutGroupService.findAllCmsLayoutGroups());
         }
         return "cmslayoutgroups/list";
     }
@@ -65,20 +73,20 @@ privileged aspect CmsLayoutGroupController_Roo_Controller {
             return "cmslayoutgroups/update";
         }
         uiModel.asMap().clear();
-        cmsLayoutGroup.merge();
+        cmsLayoutGroupService.updateCmsLayoutGroup(cmsLayoutGroup);
         return "redirect:/cmslayoutgroups/" + encodeUrlPathSegment(cmsLayoutGroup.getId().toString(), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String CmsLayoutGroupController.updateForm(@PathVariable("id") Integer id, Model uiModel) {
-        populateEditForm(uiModel, CmsLayoutGroup.findCmsLayoutGroup(id));
+        populateEditForm(uiModel, cmsLayoutGroupService.findCmsLayoutGroup(id));
         return "cmslayoutgroups/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
     public String CmsLayoutGroupController.delete(@PathVariable("id") Integer id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        CmsLayoutGroup cmsLayoutGroup = CmsLayoutGroup.findCmsLayoutGroup(id);
-        cmsLayoutGroup.remove();
+        CmsLayoutGroup cmsLayoutGroup = cmsLayoutGroupService.findCmsLayoutGroup(id);
+        cmsLayoutGroupService.deleteCmsLayoutGroup(cmsLayoutGroup);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
@@ -87,8 +95,7 @@ privileged aspect CmsLayoutGroupController_Roo_Controller {
     
     void CmsLayoutGroupController.populateEditForm(Model uiModel, CmsLayoutGroup cmsLayoutGroup) {
         uiModel.addAttribute("cmsLayoutGroup", cmsLayoutGroup);
-        uiModel.addAttribute("cmslayouts", CmsLayout.findAllCmsLayouts());
-        uiModel.addAttribute("cmslayoutgroups", CmsLayoutGroup.findAllCmsLayoutGroups());
+        uiModel.addAttribute("cmslayouts", cmsLayoutService.findAllCmsLayouts());
     }
     
     String CmsLayoutGroupController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

@@ -3,19 +3,23 @@
 
 package ro.roda;
 
-import java.util.Date;
+import java.util.Calendar;
 import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import org.springframework.format.annotation.DateTimeFormat;
+import ro.roda.Rodauser;
 import ro.roda.Sourcestudy;
 import ro.roda.SourcestudyType;
 import ro.roda.SourcestudyTypeHistory;
-import ro.roda.User;
 
 privileged aspect SourcestudyTypeHistory_Roo_DbManaged {
+    
+    @ManyToOne
+    @JoinColumn(name = "added_by", referencedColumnName = "id", nullable = false)
+    private Rodauser SourcestudyTypeHistory.addedBy;
     
     @ManyToOne
     @JoinColumn(name = "sourcesstudy_id", referencedColumnName = "id", nullable = false)
@@ -25,19 +29,23 @@ privileged aspect SourcestudyTypeHistory_Roo_DbManaged {
     @JoinColumn(name = "sourcestudy_type_id", referencedColumnName = "id", nullable = false)
     private SourcestudyType SourcestudyTypeHistory.sourcestudyTypeId;
     
-    @ManyToOne
-    @JoinColumn(name = "added_by", referencedColumnName = "id", nullable = false)
-    private User SourcestudyTypeHistory.addedBy;
-    
     @Column(name = "datestart", columnDefinition = "timestamp")
     @Temporal(TemporalType.TIMESTAMP)
-    @DateTimeFormat(style = "M-")
-    private Date SourcestudyTypeHistory.datestart;
+    @DateTimeFormat(style = "MM")
+    private Calendar SourcestudyTypeHistory.datestart;
     
     @Column(name = "dateend", columnDefinition = "timestamp")
     @Temporal(TemporalType.TIMESTAMP)
-    @DateTimeFormat(style = "M-")
-    private Date SourcestudyTypeHistory.dateend;
+    @DateTimeFormat(style = "MM")
+    private Calendar SourcestudyTypeHistory.dateend;
+    
+    public Rodauser SourcestudyTypeHistory.getAddedBy() {
+        return addedBy;
+    }
+    
+    public void SourcestudyTypeHistory.setAddedBy(Rodauser addedBy) {
+        this.addedBy = addedBy;
+    }
     
     public Sourcestudy SourcestudyTypeHistory.getSourcesstudyId() {
         return sourcesstudyId;
@@ -55,27 +63,19 @@ privileged aspect SourcestudyTypeHistory_Roo_DbManaged {
         this.sourcestudyTypeId = sourcestudyTypeId;
     }
     
-    public User SourcestudyTypeHistory.getAddedBy() {
-        return addedBy;
-    }
-    
-    public void SourcestudyTypeHistory.setAddedBy(User addedBy) {
-        this.addedBy = addedBy;
-    }
-    
-    public Date SourcestudyTypeHistory.getDatestart() {
+    public Calendar SourcestudyTypeHistory.getDatestart() {
         return datestart;
     }
     
-    public void SourcestudyTypeHistory.setDatestart(Date datestart) {
+    public void SourcestudyTypeHistory.setDatestart(Calendar datestart) {
         this.datestart = datestart;
     }
     
-    public Date SourcestudyTypeHistory.getDateend() {
+    public Calendar SourcestudyTypeHistory.getDateend() {
         return dateend;
     }
     
-    public void SourcestudyTypeHistory.setDateend(Date dateend) {
+    public void SourcestudyTypeHistory.setDateend(Calendar dateend) {
         this.dateend = dateend;
     }
     

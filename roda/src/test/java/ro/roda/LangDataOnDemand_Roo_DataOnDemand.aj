@@ -10,9 +10,11 @@ import java.util.List;
 import java.util.Random;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ro.roda.Lang;
 import ro.roda.LangDataOnDemand;
+import ro.roda.service.LangService;
 
 privileged aspect LangDataOnDemand_Roo_DataOnDemand {
     
@@ -21,6 +23,9 @@ privileged aspect LangDataOnDemand_Roo_DataOnDemand {
     private Random LangDataOnDemand.rnd = new SecureRandom();
     
     private List<Lang> LangDataOnDemand.data;
+    
+    @Autowired
+    LangService LangDataOnDemand.langService;
     
     public Lang LangDataOnDemand.getNewTransientLang(int index) {
         Lang obj = new Lang();
@@ -46,14 +51,14 @@ privileged aspect LangDataOnDemand_Roo_DataOnDemand {
         }
         Lang obj = data.get(index);
         String id = obj.getId();
-        return Lang.findLang(id);
+        return langService.findLang(id);
     }
     
     public Lang LangDataOnDemand.getRandomLang() {
         init();
         Lang obj = data.get(rnd.nextInt(data.size()));
         String id = obj.getId();
-        return Lang.findLang(id);
+        return langService.findLang(id);
     }
     
     public boolean LangDataOnDemand.modifyLang(Lang obj) {
@@ -63,7 +68,7 @@ privileged aspect LangDataOnDemand_Roo_DataOnDemand {
     public void LangDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = Lang.findLangEntries(from, to);
+        data = langService.findLangEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'Lang' illegally returned null");
         }
@@ -75,7 +80,7 @@ privileged aspect LangDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             Lang obj = getNewTransientLang(i);
             try {
-                obj.persist();
+                langService.saveLang(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

@@ -12,11 +12,14 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import ro.roda.Lang;
 import ro.roda.LangDataOnDemand;
+import ro.roda.Topic;
 import ro.roda.TopicDataOnDemand;
 import ro.roda.TranslatedTopic;
 import ro.roda.TranslatedTopicDataOnDemand;
 import ro.roda.TranslatedTopicPK;
+import ro.roda.service.TranslatedTopicService;
 
 privileged aspect TranslatedTopicDataOnDemand_Roo_DataOnDemand {
     
@@ -27,14 +30,19 @@ privileged aspect TranslatedTopicDataOnDemand_Roo_DataOnDemand {
     private List<TranslatedTopic> TranslatedTopicDataOnDemand.data;
     
     @Autowired
-    private LangDataOnDemand TranslatedTopicDataOnDemand.langDataOnDemand;
+    LangDataOnDemand TranslatedTopicDataOnDemand.langDataOnDemand;
     
     @Autowired
-    private TopicDataOnDemand TranslatedTopicDataOnDemand.topicDataOnDemand;
+    TopicDataOnDemand TranslatedTopicDataOnDemand.topicDataOnDemand;
+    
+    @Autowired
+    TranslatedTopicService TranslatedTopicDataOnDemand.translatedTopicService;
     
     public TranslatedTopic TranslatedTopicDataOnDemand.getNewTransientTranslatedTopic(int index) {
         TranslatedTopic obj = new TranslatedTopic();
         setEmbeddedIdClass(obj, index);
+        setLangId(obj, index);
+        setTopicId(obj, index);
         setTranslation(obj, index);
         return obj;
     }
@@ -48,6 +56,16 @@ privileged aspect TranslatedTopicDataOnDemand_Roo_DataOnDemand {
         
         TranslatedTopicPK embeddedIdClass = new TranslatedTopicPK(langId, topicId);
         obj.setId(embeddedIdClass);
+    }
+    
+    public void TranslatedTopicDataOnDemand.setLangId(TranslatedTopic obj, int index) {
+        Lang langId = langDataOnDemand.getRandomLang();
+        obj.setLangId(langId);
+    }
+    
+    public void TranslatedTopicDataOnDemand.setTopicId(TranslatedTopic obj, int index) {
+        Topic topicId = topicDataOnDemand.getRandomTopic();
+        obj.setTopicId(topicId);
     }
     
     public void TranslatedTopicDataOnDemand.setTranslation(TranslatedTopic obj, int index) {
@@ -65,14 +83,14 @@ privileged aspect TranslatedTopicDataOnDemand_Roo_DataOnDemand {
         }
         TranslatedTopic obj = data.get(index);
         TranslatedTopicPK id = obj.getId();
-        return TranslatedTopic.findTranslatedTopic(id);
+        return translatedTopicService.findTranslatedTopic(id);
     }
     
     public TranslatedTopic TranslatedTopicDataOnDemand.getRandomTranslatedTopic() {
         init();
         TranslatedTopic obj = data.get(rnd.nextInt(data.size()));
         TranslatedTopicPK id = obj.getId();
-        return TranslatedTopic.findTranslatedTopic(id);
+        return translatedTopicService.findTranslatedTopic(id);
     }
     
     public boolean TranslatedTopicDataOnDemand.modifyTranslatedTopic(TranslatedTopic obj) {
@@ -82,7 +100,7 @@ privileged aspect TranslatedTopicDataOnDemand_Roo_DataOnDemand {
     public void TranslatedTopicDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = TranslatedTopic.findTranslatedTopicEntries(from, to);
+        data = translatedTopicService.findTranslatedTopicEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'TranslatedTopic' illegally returned null");
         }
@@ -94,7 +112,7 @@ privileged aspect TranslatedTopicDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             TranslatedTopic obj = getNewTransientTranslatedTopic(i);
             try {
-                obj.persist();
+                translatedTopicService.saveTranslatedTopic(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

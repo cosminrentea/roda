@@ -2,11 +2,5 @@
 <div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <page:show id="ps_ro_roda_PersonOrg" object="${personorg}" path="/personorgs" z="aXPy+93eTnH/kesjhod/2xog1fk=">
-        <field:display field="orgId" id="s_ro_roda_PersonOrg_orgId" object="${personorg}" z="MjRWzp+Bq5v5g3mDsi6RuORWuk8="/>
-        <field:display field="personId" id="s_ro_roda_PersonOrg_personId" object="${personorg}" z="rSvBufpB8kmArb81LmF7XDjkzeI="/>
-        <field:display field="roleId" id="s_ro_roda_PersonOrg_roleId" object="${personorg}" z="CuViTxOVO/4OhX+4AXh1UGrKpLs="/>
-        <field:display date="true" dateTimePattern="${personOrg_datestart_date_format}" field="datestart" id="s_ro_roda_PersonOrg_datestart" object="${personorg}" z="q3W7veAJrNiRfv1N5KC6QQNPie0="/>
-        <field:display date="true" dateTimePattern="${personOrg_dateend_date_format}" field="dateend" id="s_ro_roda_PersonOrg_dateend" object="${personorg}" z="EWumyTJtPzP2HbZBStpwgZ9n8qg="/>
-    </page:show>
+    <page:show id="ps_ro_roda_PersonOrg" object="${personorg}" path="/personorgs" z="aXPy+93eTnH/kesjhod/2xog1fk="/>
 </div>

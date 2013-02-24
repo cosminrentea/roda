@@ -10,9 +10,11 @@ import java.util.List;
 import java.util.Random;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ro.roda.Internet;
 import ro.roda.InternetDataOnDemand;
+import ro.roda.service.InternetService;
 
 privileged aspect InternetDataOnDemand_Roo_DataOnDemand {
     
@@ -21,6 +23,9 @@ privileged aspect InternetDataOnDemand_Roo_DataOnDemand {
     private Random InternetDataOnDemand.rnd = new SecureRandom();
     
     private List<Internet> InternetDataOnDemand.data;
+    
+    @Autowired
+    InternetService InternetDataOnDemand.internetService;
     
     public Internet InternetDataOnDemand.getNewTransientInternet(int index) {
         Internet obj = new Internet();
@@ -52,14 +57,14 @@ privileged aspect InternetDataOnDemand_Roo_DataOnDemand {
         }
         Internet obj = data.get(index);
         Integer id = obj.getId();
-        return Internet.findInternet(id);
+        return internetService.findInternet(id);
     }
     
     public Internet InternetDataOnDemand.getRandomInternet() {
         init();
         Internet obj = data.get(rnd.nextInt(data.size()));
         Integer id = obj.getId();
-        return Internet.findInternet(id);
+        return internetService.findInternet(id);
     }
     
     public boolean InternetDataOnDemand.modifyInternet(Internet obj) {
@@ -69,7 +74,7 @@ privileged aspect InternetDataOnDemand_Roo_DataOnDemand {
     public void InternetDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = Internet.findInternetEntries(from, to);
+        data = internetService.findInternetEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'Internet' illegally returned null");
         }
@@ -81,7 +86,7 @@ privileged aspect InternetDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             Internet obj = getNewTransientInternet(i);
             try {
-                obj.persist();
+                internetService.saveInternet(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

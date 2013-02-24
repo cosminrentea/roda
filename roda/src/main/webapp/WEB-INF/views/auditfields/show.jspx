@@ -2,10 +2,5 @@
 <div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <page:show id="ps_ro_roda_AuditField" object="${auditfield}" path="/auditfields" z="fj7ve7FIUDKMKi/UmT3lSD64snA=">
-        <field:display field="auditId" id="s_ro_roda_AuditField_auditId" object="${auditfield}" z="oA2Y0dyeYVZNZm+rhjTO6a9WqjA="/>
-        <field:display field="columnName" id="s_ro_roda_AuditField_columnName" object="${auditfield}" z="WtNqXZWG0zsc1iYtt+h09YR4QKQ="/>
-        <field:display field="newValue" id="s_ro_roda_AuditField_newValue" object="${auditfield}" z="8ir69AvKMZJp1JBlQk9i8jDGgXw="/>
-        <field:display field="oldValue" id="s_ro_roda_AuditField_oldValue" object="${auditfield}" z="YPIIQMIUTUfqSUMn64jw6cjZZjk="/>
-    </page:show>
+    <page:show id="ps_ro_roda_AuditField" object="${auditfield}" path="/auditfields" z="fj7ve7FIUDKMKi/UmT3lSD64snA="/>
 </div>

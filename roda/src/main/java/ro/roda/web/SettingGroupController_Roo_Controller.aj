@@ -6,6 +6,7 @@ package ro.roda.web;
 import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,11 +15,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.Setting;
 import ro.roda.SettingGroup;
+import ro.roda.service.SettingGroupService;
 import ro.roda.web.SettingGroupController;
 
 privileged aspect SettingGroupController_Roo_Controller {
+    
+    @Autowired
+    SettingGroupService SettingGroupController.settingGroupService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String SettingGroupController.create(@Valid SettingGroup settingGroup, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -27,7 +31,7 @@ privileged aspect SettingGroupController_Roo_Controller {
             return "settinggroups/create";
         }
         uiModel.asMap().clear();
-        settingGroup.persist();
+        settingGroupService.saveSettingGroup(settingGroup);
         return "redirect:/settinggroups/" + encodeUrlPathSegment(settingGroup.getId().toString(), httpServletRequest);
     }
     
@@ -39,7 +43,7 @@ privileged aspect SettingGroupController_Roo_Controller {
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String SettingGroupController.show(@PathVariable("id") Integer id, Model uiModel) {
-        uiModel.addAttribute("settinggroup", SettingGroup.findSettingGroup(id));
+        uiModel.addAttribute("settinggroup", settingGroupService.findSettingGroup(id));
         uiModel.addAttribute("itemId", id);
         return "settinggroups/show";
     }
@@ -49,11 +53,11 @@ privileged aspect SettingGroupController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("settinggroups", SettingGroup.findSettingGroupEntries(firstResult, sizeNo));
-            float nrOfPages = (float) SettingGroup.countSettingGroups() / sizeNo;
+            uiModel.addAttribute("settinggroups", settingGroupService.findSettingGroupEntries(firstResult, sizeNo));
+            float nrOfPages = (float) settingGroupService.countAllSettingGroups() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("settinggroups", SettingGroup.findAllSettingGroups());
+            uiModel.addAttribute("settinggroups", settingGroupService.findAllSettingGroups());
         }
         return "settinggroups/list";
     }
@@ -65,20 +69,20 @@ privileged aspect SettingGroupController_Roo_Controller {
             return "settinggroups/update";
         }
         uiModel.asMap().clear();
-        settingGroup.merge();
+        settingGroupService.updateSettingGroup(settingGroup);
         return "redirect:/settinggroups/" + encodeUrlPathSegment(settingGroup.getId().toString(), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String SettingGroupController.updateForm(@PathVariable("id") Integer id, Model uiModel) {
-        populateEditForm(uiModel, SettingGroup.findSettingGroup(id));
+        populateEditForm(uiModel, settingGroupService.findSettingGroup(id));
         return "settinggroups/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
     public String SettingGroupController.delete(@PathVariable("id") Integer id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        SettingGroup settingGroup = SettingGroup.findSettingGroup(id);
-        settingGroup.remove();
+        SettingGroup settingGroup = settingGroupService.findSettingGroup(id);
+        settingGroupService.deleteSettingGroup(settingGroup);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
@@ -87,8 +91,6 @@ privileged aspect SettingGroupController_Roo_Controller {
     
     void SettingGroupController.populateEditForm(Model uiModel, SettingGroup settingGroup) {
         uiModel.addAttribute("settingGroup", settingGroup);
-        uiModel.addAttribute("settings", Setting.findAllSettings());
-        uiModel.addAttribute("settinggroups", SettingGroup.findAllSettingGroups());
     }
     
     String SettingGroupController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

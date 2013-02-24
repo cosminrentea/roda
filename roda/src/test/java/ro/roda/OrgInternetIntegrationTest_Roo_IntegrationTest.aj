@@ -11,10 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.OrgInternet;
 import ro.roda.OrgInternetDataOnDemand;
 import ro.roda.OrgInternetIntegrationTest;
 import ro.roda.OrgInternetPK;
+import ro.roda.service.OrgInternetService;
 
 privileged aspect OrgInternetIntegrationTest_Roo_IntegrationTest {
     
@@ -25,12 +25,15 @@ privileged aspect OrgInternetIntegrationTest_Roo_IntegrationTest {
     declare @type: OrgInternetIntegrationTest: @Transactional;
     
     @Autowired
-    private OrgInternetDataOnDemand OrgInternetIntegrationTest.dod;
+    OrgInternetDataOnDemand OrgInternetIntegrationTest.dod;
+    
+    @Autowired
+    OrgInternetService OrgInternetIntegrationTest.orgInternetService;
     
     @Test
-    public void OrgInternetIntegrationTest.testCountOrgInternets() {
+    public void OrgInternetIntegrationTest.testCountAllOrgInternets() {
         Assert.assertNotNull("Data on demand for 'OrgInternet' failed to initialize correctly", dod.getRandomOrgInternet());
-        long count = OrgInternet.countOrgInternets();
+        long count = orgInternetService.countAllOrgInternets();
         Assert.assertTrue("Counter for 'OrgInternet' incorrectly reported there were no entries", count > 0);
     }
     
@@ -40,7 +43,7 @@ privileged aspect OrgInternetIntegrationTest_Roo_IntegrationTest {
         Assert.assertNotNull("Data on demand for 'OrgInternet' failed to initialize correctly", obj);
         OrgInternetPK id = obj.getId();
         Assert.assertNotNull("Data on demand for 'OrgInternet' failed to provide an identifier", id);
-        obj = OrgInternet.findOrgInternet(id);
+        obj = orgInternetService.findOrgInternet(id);
         Assert.assertNotNull("Find method for 'OrgInternet' illegally returned null for id '" + id + "'", obj);
         Assert.assertEquals("Find method for 'OrgInternet' returned the incorrect identifier", id, obj.getId());
     }
@@ -48,9 +51,9 @@ privileged aspect OrgInternetIntegrationTest_Roo_IntegrationTest {
     @Test
     public void OrgInternetIntegrationTest.testFindAllOrgInternets() {
         Assert.assertNotNull("Data on demand for 'OrgInternet' failed to initialize correctly", dod.getRandomOrgInternet());
-        long count = OrgInternet.countOrgInternets();
+        long count = orgInternetService.countAllOrgInternets();
         Assert.assertTrue("Too expensive to perform a find all test for 'OrgInternet', as there are " + count + " entries; set the findAllMaximum to exceed this value or set findAll=false on the integration test annotation to disable the test", count < 250);
-        List<OrgInternet> result = OrgInternet.findAllOrgInternets();
+        List<OrgInternet> result = orgInternetService.findAllOrgInternets();
         Assert.assertNotNull("Find all method for 'OrgInternet' illegally returned null", result);
         Assert.assertTrue("Find all method for 'OrgInternet' failed to return any data", result.size() > 0);
     }
@@ -58,35 +61,35 @@ privileged aspect OrgInternetIntegrationTest_Roo_IntegrationTest {
     @Test
     public void OrgInternetIntegrationTest.testFindOrgInternetEntries() {
         Assert.assertNotNull("Data on demand for 'OrgInternet' failed to initialize correctly", dod.getRandomOrgInternet());
-        long count = OrgInternet.countOrgInternets();
+        long count = orgInternetService.countAllOrgInternets();
         if (count > 20) count = 20;
         int firstResult = 0;
         int maxResults = (int) count;
-        List<OrgInternet> result = OrgInternet.findOrgInternetEntries(firstResult, maxResults);
+        List<OrgInternet> result = orgInternetService.findOrgInternetEntries(firstResult, maxResults);
         Assert.assertNotNull("Find entries method for 'OrgInternet' illegally returned null", result);
         Assert.assertEquals("Find entries method for 'OrgInternet' returned an incorrect number of entries", count, result.size());
     }
     
     @Test
-    public void OrgInternetIntegrationTest.testPersist() {
+    public void OrgInternetIntegrationTest.testSaveOrgInternet() {
         Assert.assertNotNull("Data on demand for 'OrgInternet' failed to initialize correctly", dod.getRandomOrgInternet());
         OrgInternet obj = dod.getNewTransientOrgInternet(Integer.MAX_VALUE);
         Assert.assertNotNull("Data on demand for 'OrgInternet' failed to provide a new transient entity", obj);
-        obj.persist();
+        orgInternetService.saveOrgInternet(obj);
         obj.flush();
         Assert.assertNotNull("Expected 'OrgInternet' identifier to no longer be null", obj.getId());
     }
     
     @Test
-    public void OrgInternetIntegrationTest.testRemove() {
+    public void OrgInternetIntegrationTest.testDeleteOrgInternet() {
         OrgInternet obj = dod.getRandomOrgInternet();
         Assert.assertNotNull("Data on demand for 'OrgInternet' failed to initialize correctly", obj);
         OrgInternetPK id = obj.getId();
         Assert.assertNotNull("Data on demand for 'OrgInternet' failed to provide an identifier", id);
-        obj = OrgInternet.findOrgInternet(id);
-        obj.remove();
+        obj = orgInternetService.findOrgInternet(id);
+        orgInternetService.deleteOrgInternet(obj);
         obj.flush();
-        Assert.assertNull("Failed to remove 'OrgInternet' with identifier '" + id + "'", OrgInternet.findOrgInternet(id));
+        Assert.assertNull("Failed to remove 'OrgInternet' with identifier '" + id + "'", orgInternetService.findOrgInternet(id));
     }
     
 }

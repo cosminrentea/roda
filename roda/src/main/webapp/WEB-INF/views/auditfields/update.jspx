@@ -2,9 +2,5 @@
 <div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <form:update id="fu_ro_roda_AuditField" modelAttribute="auditField" path="/auditfields" versionField="none" z="MkJFpSY80oa6XFsEzrYE4WV0KwQ=">
-        <field:input field="columnName" id="c_ro_roda_AuditField_columnName" required="true" z="H69a6hQ4dYf4f9BfEYXxfSxAnyA="/>
-        <field:input field="newValue" id="c_ro_roda_AuditField_newValue" z="3PY3tFIqt+OnprsrBrOlIi4KgaY="/>
-        <field:input field="oldValue" id="c_ro_roda_AuditField_oldValue" z="eZ+XWcWgTfbF/OsdV1mVfnB3Fb8="/>
-    </form:update>
+    <form:update id="fu_ro_roda_AuditField" modelAttribute="auditField" path="/auditfields" versionField="none" z="MkJFpSY80oa6XFsEzrYE4WV0KwQ="/>
 </div>

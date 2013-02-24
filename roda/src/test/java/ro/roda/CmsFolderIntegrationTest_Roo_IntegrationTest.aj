@@ -11,9 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.CmsFolder;
 import ro.roda.CmsFolderDataOnDemand;
 import ro.roda.CmsFolderIntegrationTest;
+import ro.roda.service.CmsFolderService;
 
 privileged aspect CmsFolderIntegrationTest_Roo_IntegrationTest {
     
@@ -24,12 +24,15 @@ privileged aspect CmsFolderIntegrationTest_Roo_IntegrationTest {
     declare @type: CmsFolderIntegrationTest: @Transactional;
     
     @Autowired
-    private CmsFolderDataOnDemand CmsFolderIntegrationTest.dod;
+    CmsFolderDataOnDemand CmsFolderIntegrationTest.dod;
+    
+    @Autowired
+    CmsFolderService CmsFolderIntegrationTest.cmsFolderService;
     
     @Test
-    public void CmsFolderIntegrationTest.testCountCmsFolders() {
+    public void CmsFolderIntegrationTest.testCountAllCmsFolders() {
         Assert.assertNotNull("Data on demand for 'CmsFolder' failed to initialize correctly", dod.getRandomCmsFolder());
-        long count = CmsFolder.countCmsFolders();
+        long count = cmsFolderService.countAllCmsFolders();
         Assert.assertTrue("Counter for 'CmsFolder' incorrectly reported there were no entries", count > 0);
     }
     
@@ -39,7 +42,7 @@ privileged aspect CmsFolderIntegrationTest_Roo_IntegrationTest {
         Assert.assertNotNull("Data on demand for 'CmsFolder' failed to initialize correctly", obj);
         Integer id = obj.getId();
         Assert.assertNotNull("Data on demand for 'CmsFolder' failed to provide an identifier", id);
-        obj = CmsFolder.findCmsFolder(id);
+        obj = cmsFolderService.findCmsFolder(id);
         Assert.assertNotNull("Find method for 'CmsFolder' illegally returned null for id '" + id + "'", obj);
         Assert.assertEquals("Find method for 'CmsFolder' returned the incorrect identifier", id, obj.getId());
     }
@@ -47,9 +50,9 @@ privileged aspect CmsFolderIntegrationTest_Roo_IntegrationTest {
     @Test
     public void CmsFolderIntegrationTest.testFindAllCmsFolders() {
         Assert.assertNotNull("Data on demand for 'CmsFolder' failed to initialize correctly", dod.getRandomCmsFolder());
-        long count = CmsFolder.countCmsFolders();
+        long count = cmsFolderService.countAllCmsFolders();
         Assert.assertTrue("Too expensive to perform a find all test for 'CmsFolder', as there are " + count + " entries; set the findAllMaximum to exceed this value or set findAll=false on the integration test annotation to disable the test", count < 250);
-        List<CmsFolder> result = CmsFolder.findAllCmsFolders();
+        List<CmsFolder> result = cmsFolderService.findAllCmsFolders();
         Assert.assertNotNull("Find all method for 'CmsFolder' illegally returned null", result);
         Assert.assertTrue("Find all method for 'CmsFolder' failed to return any data", result.size() > 0);
     }
@@ -57,36 +60,36 @@ privileged aspect CmsFolderIntegrationTest_Roo_IntegrationTest {
     @Test
     public void CmsFolderIntegrationTest.testFindCmsFolderEntries() {
         Assert.assertNotNull("Data on demand for 'CmsFolder' failed to initialize correctly", dod.getRandomCmsFolder());
-        long count = CmsFolder.countCmsFolders();
+        long count = cmsFolderService.countAllCmsFolders();
         if (count > 20) count = 20;
         int firstResult = 0;
         int maxResults = (int) count;
-        List<CmsFolder> result = CmsFolder.findCmsFolderEntries(firstResult, maxResults);
+        List<CmsFolder> result = cmsFolderService.findCmsFolderEntries(firstResult, maxResults);
         Assert.assertNotNull("Find entries method for 'CmsFolder' illegally returned null", result);
         Assert.assertEquals("Find entries method for 'CmsFolder' returned an incorrect number of entries", count, result.size());
     }
     
     @Test
-    public void CmsFolderIntegrationTest.testPersist() {
+    public void CmsFolderIntegrationTest.testSaveCmsFolder() {
         Assert.assertNotNull("Data on demand for 'CmsFolder' failed to initialize correctly", dod.getRandomCmsFolder());
         CmsFolder obj = dod.getNewTransientCmsFolder(Integer.MAX_VALUE);
         Assert.assertNotNull("Data on demand for 'CmsFolder' failed to provide a new transient entity", obj);
         Assert.assertNull("Expected 'CmsFolder' identifier to be null", obj.getId());
-        obj.persist();
+        cmsFolderService.saveCmsFolder(obj);
         obj.flush();
         Assert.assertNotNull("Expected 'CmsFolder' identifier to no longer be null", obj.getId());
     }
     
     @Test
-    public void CmsFolderIntegrationTest.testRemove() {
+    public void CmsFolderIntegrationTest.testDeleteCmsFolder() {
         CmsFolder obj = dod.getRandomCmsFolder();
         Assert.assertNotNull("Data on demand for 'CmsFolder' failed to initialize correctly", obj);
         Integer id = obj.getId();
         Assert.assertNotNull("Data on demand for 'CmsFolder' failed to provide an identifier", id);
-        obj = CmsFolder.findCmsFolder(id);
-        obj.remove();
+        obj = cmsFolderService.findCmsFolder(id);
+        cmsFolderService.deleteCmsFolder(obj);
         obj.flush();
-        Assert.assertNull("Failed to remove 'CmsFolder' with identifier '" + id + "'", CmsFolder.findCmsFolder(id));
+        Assert.assertNull("Failed to remove 'CmsFolder' with identifier '" + id + "'", cmsFolderService.findCmsFolder(id));
     }
     
 }

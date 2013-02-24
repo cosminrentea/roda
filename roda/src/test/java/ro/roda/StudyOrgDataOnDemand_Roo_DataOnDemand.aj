@@ -12,12 +12,16 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import ro.roda.Org;
 import ro.roda.OrgDataOnDemand;
+import ro.roda.Study;
 import ro.roda.StudyDataOnDemand;
 import ro.roda.StudyOrg;
+import ro.roda.StudyOrgAssoc;
 import ro.roda.StudyOrgAssocDataOnDemand;
 import ro.roda.StudyOrgDataOnDemand;
 import ro.roda.StudyOrgPK;
+import ro.roda.service.StudyOrgService;
 
 privileged aspect StudyOrgDataOnDemand_Roo_DataOnDemand {
     
@@ -28,19 +32,25 @@ privileged aspect StudyOrgDataOnDemand_Roo_DataOnDemand {
     private List<StudyOrg> StudyOrgDataOnDemand.data;
     
     @Autowired
-    private StudyOrgAssocDataOnDemand StudyOrgDataOnDemand.studyOrgAssocDataOnDemand;
+    StudyOrgAssocDataOnDemand StudyOrgDataOnDemand.studyOrgAssocDataOnDemand;
     
     @Autowired
-    private OrgDataOnDemand StudyOrgDataOnDemand.orgDataOnDemand;
+    OrgDataOnDemand StudyOrgDataOnDemand.orgDataOnDemand;
     
     @Autowired
-    private StudyDataOnDemand StudyOrgDataOnDemand.studyDataOnDemand;
+    StudyDataOnDemand StudyOrgDataOnDemand.studyDataOnDemand;
+    
+    @Autowired
+    StudyOrgService StudyOrgDataOnDemand.studyOrgService;
     
     public StudyOrg StudyOrgDataOnDemand.getNewTransientStudyOrg(int index) {
         StudyOrg obj = new StudyOrg();
         setEmbeddedIdClass(obj, index);
         setAssocDetails(obj, index);
+        setAssoctypeId(obj, index);
         setCitation(obj, index);
+        setOrgId(obj, index);
+        setStudyId(obj, index);
         return obj;
     }
     
@@ -58,9 +68,24 @@ privileged aspect StudyOrgDataOnDemand_Roo_DataOnDemand {
         obj.setAssocDetails(assocDetails);
     }
     
+    public void StudyOrgDataOnDemand.setAssoctypeId(StudyOrg obj, int index) {
+        StudyOrgAssoc assoctypeId = studyOrgAssocDataOnDemand.getRandomStudyOrgAssoc();
+        obj.setAssoctypeId(assoctypeId);
+    }
+    
     public void StudyOrgDataOnDemand.setCitation(StudyOrg obj, int index) {
         String citation = "citation_" + index;
         obj.setCitation(citation);
+    }
+    
+    public void StudyOrgDataOnDemand.setOrgId(StudyOrg obj, int index) {
+        Org orgId = orgDataOnDemand.getRandomOrg();
+        obj.setOrgId(orgId);
+    }
+    
+    public void StudyOrgDataOnDemand.setStudyId(StudyOrg obj, int index) {
+        Study studyId = studyDataOnDemand.getRandomStudy();
+        obj.setStudyId(studyId);
     }
     
     public StudyOrg StudyOrgDataOnDemand.getSpecificStudyOrg(int index) {
@@ -73,14 +98,14 @@ privileged aspect StudyOrgDataOnDemand_Roo_DataOnDemand {
         }
         StudyOrg obj = data.get(index);
         StudyOrgPK id = obj.getId();
-        return StudyOrg.findStudyOrg(id);
+        return studyOrgService.findStudyOrg(id);
     }
     
     public StudyOrg StudyOrgDataOnDemand.getRandomStudyOrg() {
         init();
         StudyOrg obj = data.get(rnd.nextInt(data.size()));
         StudyOrgPK id = obj.getId();
-        return StudyOrg.findStudyOrg(id);
+        return studyOrgService.findStudyOrg(id);
     }
     
     public boolean StudyOrgDataOnDemand.modifyStudyOrg(StudyOrg obj) {
@@ -90,7 +115,7 @@ privileged aspect StudyOrgDataOnDemand_Roo_DataOnDemand {
     public void StudyOrgDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = StudyOrg.findStudyOrgEntries(from, to);
+        data = studyOrgService.findStudyOrgEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'StudyOrg' illegally returned null");
         }
@@ -102,7 +127,7 @@ privileged aspect StudyOrgDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             StudyOrg obj = getNewTransientStudyOrg(i);
             try {
-                obj.persist();
+                studyOrgService.saveStudyOrg(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

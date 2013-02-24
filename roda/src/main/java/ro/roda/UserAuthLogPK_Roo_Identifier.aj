@@ -3,12 +3,9 @@
 
 package ro.roda;
 
-import java.util.Date;
+import java.util.Calendar;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import org.springframework.format.annotation.DateTimeFormat;
 import ro.roda.UserAuthLogPK;
 
 privileged aspect UserAuthLogPK_Roo_Identifier {
@@ -19,11 +16,9 @@ privileged aspect UserAuthLogPK_Roo_Identifier {
     private Integer UserAuthLogPK.userId;
     
     @Column(name = "timestamp", columnDefinition = "timestamp", nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    @DateTimeFormat(style = "M-")
-    private Date UserAuthLogPK.timestamp;
+    private Calendar UserAuthLogPK.timestamp;
     
-    public UserAuthLogPK.new(Integer userId, Date timestamp) {
+    public UserAuthLogPK.new(Integer userId, Calendar timestamp) {
         super();
         this.userId = userId;
         this.timestamp = timestamp;
@@ -37,7 +32,7 @@ privileged aspect UserAuthLogPK_Roo_Identifier {
         return userId;
     }
     
-    public Date UserAuthLogPK.getTimestamp() {
+    public Calendar UserAuthLogPK.getTimestamp() {
         return timestamp;
     }
     

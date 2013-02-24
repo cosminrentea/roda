@@ -3,9 +3,9 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <page:show id="ps_ro_roda_AuthData" object="${authdata}" path="/authdatas" z="mchnaYiT2uCBDv+Lw+uGEAJDxpw=">
-        <field:display field="user" id="s_ro_roda_AuthData_user" object="${authdata}" z="c4uv0irODJviiVNQcWFYWQNGuOg="/>
         <field:display field="credentialProvider" id="s_ro_roda_AuthData_credentialProvider" object="${authdata}" z="mOBmlu3e/e2vCNWIYn1aW9JBDEI="/>
         <field:display field="fieldName" id="s_ro_roda_AuthData_fieldName" object="${authdata}" z="xZH8ZhqqqnSq81b/qz45K/aAUt4="/>
         <field:display field="fieldValue" id="s_ro_roda_AuthData_fieldValue" object="${authdata}" z="6+OZkQxZAz5Bv9dGndsnh7lFNkk="/>
+        <field:display field="rodauser" id="s_ro_roda_AuthData_rodauser" object="${authdata}" z="lraGrGKpuoLTORmqSeDO/yUrHHI="/>
     </page:show>
 </div>

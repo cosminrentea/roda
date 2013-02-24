@@ -11,9 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.Item;
 import ro.roda.ItemDataOnDemand;
 import ro.roda.ItemIntegrationTest;
+import ro.roda.service.ItemService;
 
 privileged aspect ItemIntegrationTest_Roo_IntegrationTest {
     
@@ -24,12 +24,15 @@ privileged aspect ItemIntegrationTest_Roo_IntegrationTest {
     declare @type: ItemIntegrationTest: @Transactional;
     
     @Autowired
-    private ItemDataOnDemand ItemIntegrationTest.dod;
+    ItemDataOnDemand ItemIntegrationTest.dod;
+    
+    @Autowired
+    ItemService ItemIntegrationTest.itemService;
     
     @Test
-    public void ItemIntegrationTest.testCountItems() {
+    public void ItemIntegrationTest.testCountAllItems() {
         Assert.assertNotNull("Data on demand for 'Item' failed to initialize correctly", dod.getRandomItem());
-        long count = Item.countItems();
+        long count = itemService.countAllItems();
         Assert.assertTrue("Counter for 'Item' incorrectly reported there were no entries", count > 0);
     }
     
@@ -39,7 +42,7 @@ privileged aspect ItemIntegrationTest_Roo_IntegrationTest {
         Assert.assertNotNull("Data on demand for 'Item' failed to initialize correctly", obj);
         Long id = obj.getId();
         Assert.assertNotNull("Data on demand for 'Item' failed to provide an identifier", id);
-        obj = Item.findItem(id);
+        obj = itemService.findItem(id);
         Assert.assertNotNull("Find method for 'Item' illegally returned null for id '" + id + "'", obj);
         Assert.assertEquals("Find method for 'Item' returned the incorrect identifier", id, obj.getId());
     }
@@ -47,9 +50,9 @@ privileged aspect ItemIntegrationTest_Roo_IntegrationTest {
     @Test
     public void ItemIntegrationTest.testFindAllItems() {
         Assert.assertNotNull("Data on demand for 'Item' failed to initialize correctly", dod.getRandomItem());
-        long count = Item.countItems();
+        long count = itemService.countAllItems();
         Assert.assertTrue("Too expensive to perform a find all test for 'Item', as there are " + count + " entries; set the findAllMaximum to exceed this value or set findAll=false on the integration test annotation to disable the test", count < 250);
-        List<Item> result = Item.findAllItems();
+        List<Item> result = itemService.findAllItems();
         Assert.assertNotNull("Find all method for 'Item' illegally returned null", result);
         Assert.assertTrue("Find all method for 'Item' failed to return any data", result.size() > 0);
     }
@@ -57,36 +60,36 @@ privileged aspect ItemIntegrationTest_Roo_IntegrationTest {
     @Test
     public void ItemIntegrationTest.testFindItemEntries() {
         Assert.assertNotNull("Data on demand for 'Item' failed to initialize correctly", dod.getRandomItem());
-        long count = Item.countItems();
+        long count = itemService.countAllItems();
         if (count > 20) count = 20;
         int firstResult = 0;
         int maxResults = (int) count;
-        List<Item> result = Item.findItemEntries(firstResult, maxResults);
+        List<Item> result = itemService.findItemEntries(firstResult, maxResults);
         Assert.assertNotNull("Find entries method for 'Item' illegally returned null", result);
         Assert.assertEquals("Find entries method for 'Item' returned an incorrect number of entries", count, result.size());
     }
     
     @Test
-    public void ItemIntegrationTest.testPersist() {
+    public void ItemIntegrationTest.testSaveItem() {
         Assert.assertNotNull("Data on demand for 'Item' failed to initialize correctly", dod.getRandomItem());
         Item obj = dod.getNewTransientItem(Integer.MAX_VALUE);
         Assert.assertNotNull("Data on demand for 'Item' failed to provide a new transient entity", obj);
         Assert.assertNull("Expected 'Item' identifier to be null", obj.getId());
-        obj.persist();
+        itemService.saveItem(obj);
         obj.flush();
         Assert.assertNotNull("Expected 'Item' identifier to no longer be null", obj.getId());
     }
     
     @Test
-    public void ItemIntegrationTest.testRemove() {
+    public void ItemIntegrationTest.testDeleteItem() {
         Item obj = dod.getRandomItem();
         Assert.assertNotNull("Data on demand for 'Item' failed to initialize correctly", obj);
         Long id = obj.getId();
         Assert.assertNotNull("Data on demand for 'Item' failed to provide an identifier", id);
-        obj = Item.findItem(id);
-        obj.remove();
+        obj = itemService.findItem(id);
+        itemService.deleteItem(obj);
         obj.flush();
-        Assert.assertNull("Failed to remove 'Item' with identifier '" + id + "'", Item.findItem(id));
+        Assert.assertNull("Failed to remove 'Item' with identifier '" + id + "'", itemService.findItem(id));
     }
     
 }

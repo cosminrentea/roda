@@ -7,14 +7,14 @@ import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
-import ro.roda.User;
+import ro.roda.Rodauser;
 import ro.roda.UserAuthLog;
 
 privileged aspect UserAuthLog_Roo_DbManaged {
     
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
-    private User UserAuthLog.userId;
+    private Rodauser UserAuthLog.userId;
     
     @Column(name = "action", columnDefinition = "varchar", length = 30)
     @NotNull
@@ -32,11 +32,11 @@ privileged aspect UserAuthLog_Roo_DbManaged {
     @NotNull
     private String UserAuthLog.errorMessage;
     
-    public User UserAuthLog.getUserId() {
+    public Rodauser UserAuthLog.getUserId() {
         return userId;
     }
     
-    public void UserAuthLog.setUserId(User userId) {
+    public void UserAuthLog.setUserId(Rodauser userId) {
         this.userId = userId;
     }
     

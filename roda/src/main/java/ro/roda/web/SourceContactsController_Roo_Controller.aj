@@ -7,6 +7,7 @@ import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.joda.time.format.DateTimeFormat;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -16,13 +17,26 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.Person;
-import ro.roda.Source;
-import ro.roda.SourceContactMethod;
 import ro.roda.SourceContacts;
+import ro.roda.service.PersonService;
+import ro.roda.service.SourceContactMethodService;
+import ro.roda.service.SourceContactsService;
+import ro.roda.service.SourceService;
 import ro.roda.web.SourceContactsController;
 
 privileged aspect SourceContactsController_Roo_Controller {
+    
+    @Autowired
+    SourceContactsService SourceContactsController.sourceContactsService;
+    
+    @Autowired
+    PersonService SourceContactsController.personService;
+    
+    @Autowired
+    SourceService SourceContactsController.sourceService;
+    
+    @Autowired
+    SourceContactMethodService SourceContactsController.sourceContactMethodService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String SourceContactsController.create(@Valid SourceContacts sourceContacts, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -31,7 +45,7 @@ privileged aspect SourceContactsController_Roo_Controller {
             return "sourcecontactses/create";
         }
         uiModel.asMap().clear();
-        sourceContacts.persist();
+        sourceContactsService.saveSourceContacts(sourceContacts);
         return "redirect:/sourcecontactses/" + encodeUrlPathSegment(sourceContacts.getId().toString(), httpServletRequest);
     }
     
@@ -44,7 +58,7 @@ privileged aspect SourceContactsController_Roo_Controller {
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String SourceContactsController.show(@PathVariable("id") Integer id, Model uiModel) {
         addDateTimeFormatPatterns(uiModel);
-        uiModel.addAttribute("sourcecontacts", SourceContacts.findSourceContacts(id));
+        uiModel.addAttribute("sourcecontacts", sourceContactsService.findSourceContacts(id));
         uiModel.addAttribute("itemId", id);
         return "sourcecontactses/show";
     }
@@ -54,11 +68,11 @@ privileged aspect SourceContactsController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("sourcecontactses", SourceContacts.findSourceContactsEntries(firstResult, sizeNo));
-            float nrOfPages = (float) SourceContacts.countSourceContactses() / sizeNo;
+            uiModel.addAttribute("sourcecontactses", sourceContactsService.findSourceContactsEntries(firstResult, sizeNo));
+            float nrOfPages = (float) sourceContactsService.countAllSourceContactses() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("sourcecontactses", SourceContacts.findAllSourceContactses());
+            uiModel.addAttribute("sourcecontactses", sourceContactsService.findAllSourceContactses());
         }
         addDateTimeFormatPatterns(uiModel);
         return "sourcecontactses/list";
@@ -71,20 +85,20 @@ privileged aspect SourceContactsController_Roo_Controller {
             return "sourcecontactses/update";
         }
         uiModel.asMap().clear();
-        sourceContacts.merge();
+        sourceContactsService.updateSourceContacts(sourceContacts);
         return "redirect:/sourcecontactses/" + encodeUrlPathSegment(sourceContacts.getId().toString(), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String SourceContactsController.updateForm(@PathVariable("id") Integer id, Model uiModel) {
-        populateEditForm(uiModel, SourceContacts.findSourceContacts(id));
+        populateEditForm(uiModel, sourceContactsService.findSourceContacts(id));
         return "sourcecontactses/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
     public String SourceContactsController.delete(@PathVariable("id") Integer id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        SourceContacts sourceContacts = SourceContacts.findSourceContacts(id);
-        sourceContacts.remove();
+        SourceContacts sourceContacts = sourceContactsService.findSourceContacts(id);
+        sourceContactsService.deleteSourceContacts(sourceContacts);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
@@ -92,15 +106,15 @@ privileged aspect SourceContactsController_Roo_Controller {
     }
     
     void SourceContactsController.addDateTimeFormatPatterns(Model uiModel) {
-        uiModel.addAttribute("sourceContacts_contactdate_date_format", DateTimeFormat.patternForStyle("M-", LocaleContextHolder.getLocale()));
+        uiModel.addAttribute("sourceContacts_contactdate_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
     }
     
     void SourceContactsController.populateEditForm(Model uiModel, SourceContacts sourceContacts) {
         uiModel.addAttribute("sourceContacts", sourceContacts);
         addDateTimeFormatPatterns(uiModel);
-        uiModel.addAttribute("people", Person.findAllPeople());
-        uiModel.addAttribute("sources", Source.findAllSources());
-        uiModel.addAttribute("sourcecontactmethods", SourceContactMethod.findAllSourceContactMethods());
+        uiModel.addAttribute("people", personService.findAllPeople());
+        uiModel.addAttribute("sources", sourceService.findAllSources());
+        uiModel.addAttribute("sourcecontactmethods", sourceContactMethodService.findAllSourceContactMethods());
     }
     
     String SourceContactsController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

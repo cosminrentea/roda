@@ -11,9 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.Address;
 import ro.roda.AddressDataOnDemand;
 import ro.roda.AddressIntegrationTest;
+import ro.roda.service.AddressService;
 
 privileged aspect AddressIntegrationTest_Roo_IntegrationTest {
     
@@ -24,12 +24,15 @@ privileged aspect AddressIntegrationTest_Roo_IntegrationTest {
     declare @type: AddressIntegrationTest: @Transactional;
     
     @Autowired
-    private AddressDataOnDemand AddressIntegrationTest.dod;
+    AddressDataOnDemand AddressIntegrationTest.dod;
+    
+    @Autowired
+    AddressService AddressIntegrationTest.addressService;
     
     @Test
-    public void AddressIntegrationTest.testCountAddresses() {
+    public void AddressIntegrationTest.testCountAllAddresses() {
         Assert.assertNotNull("Data on demand for 'Address' failed to initialize correctly", dod.getRandomAddress());
-        long count = Address.countAddresses();
+        long count = addressService.countAllAddresses();
         Assert.assertTrue("Counter for 'Address' incorrectly reported there were no entries", count > 0);
     }
     
@@ -39,7 +42,7 @@ privileged aspect AddressIntegrationTest_Roo_IntegrationTest {
         Assert.assertNotNull("Data on demand for 'Address' failed to initialize correctly", obj);
         Integer id = obj.getId();
         Assert.assertNotNull("Data on demand for 'Address' failed to provide an identifier", id);
-        obj = Address.findAddress(id);
+        obj = addressService.findAddress(id);
         Assert.assertNotNull("Find method for 'Address' illegally returned null for id '" + id + "'", obj);
         Assert.assertEquals("Find method for 'Address' returned the incorrect identifier", id, obj.getId());
     }
@@ -47,9 +50,9 @@ privileged aspect AddressIntegrationTest_Roo_IntegrationTest {
     @Test
     public void AddressIntegrationTest.testFindAllAddresses() {
         Assert.assertNotNull("Data on demand for 'Address' failed to initialize correctly", dod.getRandomAddress());
-        long count = Address.countAddresses();
+        long count = addressService.countAllAddresses();
         Assert.assertTrue("Too expensive to perform a find all test for 'Address', as there are " + count + " entries; set the findAllMaximum to exceed this value or set findAll=false on the integration test annotation to disable the test", count < 250);
-        List<Address> result = Address.findAllAddresses();
+        List<Address> result = addressService.findAllAddresses();
         Assert.assertNotNull("Find all method for 'Address' illegally returned null", result);
         Assert.assertTrue("Find all method for 'Address' failed to return any data", result.size() > 0);
     }
@@ -57,36 +60,36 @@ privileged aspect AddressIntegrationTest_Roo_IntegrationTest {
     @Test
     public void AddressIntegrationTest.testFindAddressEntries() {
         Assert.assertNotNull("Data on demand for 'Address' failed to initialize correctly", dod.getRandomAddress());
-        long count = Address.countAddresses();
+        long count = addressService.countAllAddresses();
         if (count > 20) count = 20;
         int firstResult = 0;
         int maxResults = (int) count;
-        List<Address> result = Address.findAddressEntries(firstResult, maxResults);
+        List<Address> result = addressService.findAddressEntries(firstResult, maxResults);
         Assert.assertNotNull("Find entries method for 'Address' illegally returned null", result);
         Assert.assertEquals("Find entries method for 'Address' returned an incorrect number of entries", count, result.size());
     }
     
     @Test
-    public void AddressIntegrationTest.testPersist() {
+    public void AddressIntegrationTest.testSaveAddress() {
         Assert.assertNotNull("Data on demand for 'Address' failed to initialize correctly", dod.getRandomAddress());
         Address obj = dod.getNewTransientAddress(Integer.MAX_VALUE);
         Assert.assertNotNull("Data on demand for 'Address' failed to provide a new transient entity", obj);
         Assert.assertNull("Expected 'Address' identifier to be null", obj.getId());
-        obj.persist();
+        addressService.saveAddress(obj);
         obj.flush();
         Assert.assertNotNull("Expected 'Address' identifier to no longer be null", obj.getId());
     }
     
     @Test
-    public void AddressIntegrationTest.testRemove() {
+    public void AddressIntegrationTest.testDeleteAddress() {
         Address obj = dod.getRandomAddress();
         Assert.assertNotNull("Data on demand for 'Address' failed to initialize correctly", obj);
         Integer id = obj.getId();
         Assert.assertNotNull("Data on demand for 'Address' failed to provide an identifier", id);
-        obj = Address.findAddress(id);
-        obj.remove();
+        obj = addressService.findAddress(id);
+        addressService.deleteAddress(obj);
         obj.flush();
-        Assert.assertNull("Failed to remove 'Address' with identifier '" + id + "'", Address.findAddress(id));
+        Assert.assertNull("Failed to remove 'Address' with identifier '" + id + "'", addressService.findAddress(id));
     }
     
 }

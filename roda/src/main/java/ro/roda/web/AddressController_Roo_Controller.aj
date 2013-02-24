@@ -6,6 +6,7 @@ package ro.roda.web;
 import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,12 +16,25 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.Address;
-import ro.roda.City;
-import ro.roda.OrgAddress;
-import ro.roda.PersonAddress;
+import ro.roda.service.AddressService;
+import ro.roda.service.CityService;
+import ro.roda.service.OrgAddressService;
+import ro.roda.service.PersonAddressService;
 import ro.roda.web.AddressController;
 
 privileged aspect AddressController_Roo_Controller {
+    
+    @Autowired
+    AddressService AddressController.addressService;
+    
+    @Autowired
+    CityService AddressController.cityService;
+    
+    @Autowired
+    OrgAddressService AddressController.orgAddressService;
+    
+    @Autowired
+    PersonAddressService AddressController.personAddressService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String AddressController.create(@Valid Address address, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -29,7 +43,7 @@ privileged aspect AddressController_Roo_Controller {
             return "addresses/create";
         }
         uiModel.asMap().clear();
-        address.persist();
+        addressService.saveAddress(address);
         return "redirect:/addresses/" + encodeUrlPathSegment(address.getId().toString(), httpServletRequest);
     }
     
@@ -41,7 +55,7 @@ privileged aspect AddressController_Roo_Controller {
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String AddressController.show(@PathVariable("id") Integer id, Model uiModel) {
-        uiModel.addAttribute("address", Address.findAddress(id));
+        uiModel.addAttribute("address", addressService.findAddress(id));
         uiModel.addAttribute("itemId", id);
         return "addresses/show";
     }
@@ -51,11 +65,11 @@ privileged aspect AddressController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("addresses", Address.findAddressEntries(firstResult, sizeNo));
-            float nrOfPages = (float) Address.countAddresses() / sizeNo;
+            uiModel.addAttribute("addresses", addressService.findAddressEntries(firstResult, sizeNo));
+            float nrOfPages = (float) addressService.countAllAddresses() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("addresses", Address.findAllAddresses());
+            uiModel.addAttribute("addresses", addressService.findAllAddresses());
         }
         return "addresses/list";
     }
@@ -67,20 +81,20 @@ privileged aspect AddressController_Roo_Controller {
             return "addresses/update";
         }
         uiModel.asMap().clear();
-        address.merge();
+        addressService.updateAddress(address);
         return "redirect:/addresses/" + encodeUrlPathSegment(address.getId().toString(), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String AddressController.updateForm(@PathVariable("id") Integer id, Model uiModel) {
-        populateEditForm(uiModel, Address.findAddress(id));
+        populateEditForm(uiModel, addressService.findAddress(id));
         return "addresses/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
     public String AddressController.delete(@PathVariable("id") Integer id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        Address address = Address.findAddress(id);
-        address.remove();
+        Address address = addressService.findAddress(id);
+        addressService.deleteAddress(address);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
@@ -89,9 +103,9 @@ privileged aspect AddressController_Roo_Controller {
     
     void AddressController.populateEditForm(Model uiModel, Address address) {
         uiModel.addAttribute("address", address);
-        uiModel.addAttribute("citys", City.findAllCitys());
-        uiModel.addAttribute("orgaddresses", OrgAddress.findAllOrgAddresses());
-        uiModel.addAttribute("personaddresses", PersonAddress.findAllPersonAddresses());
+        uiModel.addAttribute("citys", cityService.findAllCitys());
+        uiModel.addAttribute("orgaddresses", orgAddressService.findAllOrgAddresses());
+        uiModel.addAttribute("personaddresses", personAddressService.findAllPersonAddresses());
     }
     
     String AddressController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

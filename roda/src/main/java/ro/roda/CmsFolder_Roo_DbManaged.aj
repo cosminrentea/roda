@@ -5,8 +5,6 @@ package ro.roda;
 
 import java.util.Set;
 import javax.persistence.Column;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import ro.roda.CmsFile;
@@ -17,16 +15,12 @@ privileged aspect CmsFolder_Roo_DbManaged {
     @OneToMany(mappedBy = "cmsFolderId")
     private Set<CmsFile> CmsFolder.cmsFiles;
     
-    @OneToMany(mappedBy = "parentId")
-    private Set<CmsFolder> CmsFolder.cmsFolders;
-    
-    @ManyToOne
-    @JoinColumn(name = "parent_id", referencedColumnName = "id", insertable = false, updatable = false)
-    private CmsFolder CmsFolder.parentId;
-    
     @Column(name = "name", columnDefinition = "text")
     @NotNull
     private String CmsFolder.name;
+    
+    @Column(name = "parent_id", columnDefinition = "int4")
+    private Integer CmsFolder.parentId;
     
     @Column(name = "description", columnDefinition = "text")
     private String CmsFolder.description;
@@ -39,28 +33,20 @@ privileged aspect CmsFolder_Roo_DbManaged {
         this.cmsFiles = cmsFiles;
     }
     
-    public Set<CmsFolder> CmsFolder.getCmsFolders() {
-        return cmsFolders;
-    }
-    
-    public void CmsFolder.setCmsFolders(Set<CmsFolder> cmsFolders) {
-        this.cmsFolders = cmsFolders;
-    }
-    
-    public CmsFolder CmsFolder.getParentId() {
-        return parentId;
-    }
-    
-    public void CmsFolder.setParentId(CmsFolder parentId) {
-        this.parentId = parentId;
-    }
-    
     public String CmsFolder.getName() {
         return name;
     }
     
     public void CmsFolder.setName(String name) {
         this.name = name;
+    }
+    
+    public Integer CmsFolder.getParentId() {
+        return parentId;
+    }
+    
+    public void CmsFolder.setParentId(Integer parentId) {
+        this.parentId = parentId;
     }
     
     public String CmsFolder.getDescription() {

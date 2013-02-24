@@ -11,9 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.PropertyValue;
 import ro.roda.PropertyValueDataOnDemand;
 import ro.roda.PropertyValueIntegrationTest;
+import ro.roda.service.PropertyValueService;
 
 privileged aspect PropertyValueIntegrationTest_Roo_IntegrationTest {
     
@@ -24,12 +24,15 @@ privileged aspect PropertyValueIntegrationTest_Roo_IntegrationTest {
     declare @type: PropertyValueIntegrationTest: @Transactional;
     
     @Autowired
-    private PropertyValueDataOnDemand PropertyValueIntegrationTest.dod;
+    PropertyValueDataOnDemand PropertyValueIntegrationTest.dod;
+    
+    @Autowired
+    PropertyValueService PropertyValueIntegrationTest.propertyValueService;
     
     @Test
-    public void PropertyValueIntegrationTest.testCountPropertyValues() {
+    public void PropertyValueIntegrationTest.testCountAllPropertyValues() {
         Assert.assertNotNull("Data on demand for 'PropertyValue' failed to initialize correctly", dod.getRandomPropertyValue());
-        long count = PropertyValue.countPropertyValues();
+        long count = propertyValueService.countAllPropertyValues();
         Assert.assertTrue("Counter for 'PropertyValue' incorrectly reported there were no entries", count > 0);
     }
     
@@ -39,7 +42,7 @@ privileged aspect PropertyValueIntegrationTest_Roo_IntegrationTest {
         Assert.assertNotNull("Data on demand for 'PropertyValue' failed to initialize correctly", obj);
         Integer id = obj.getId();
         Assert.assertNotNull("Data on demand for 'PropertyValue' failed to provide an identifier", id);
-        obj = PropertyValue.findPropertyValue(id);
+        obj = propertyValueService.findPropertyValue(id);
         Assert.assertNotNull("Find method for 'PropertyValue' illegally returned null for id '" + id + "'", obj);
         Assert.assertEquals("Find method for 'PropertyValue' returned the incorrect identifier", id, obj.getId());
     }
@@ -47,9 +50,9 @@ privileged aspect PropertyValueIntegrationTest_Roo_IntegrationTest {
     @Test
     public void PropertyValueIntegrationTest.testFindAllPropertyValues() {
         Assert.assertNotNull("Data on demand for 'PropertyValue' failed to initialize correctly", dod.getRandomPropertyValue());
-        long count = PropertyValue.countPropertyValues();
+        long count = propertyValueService.countAllPropertyValues();
         Assert.assertTrue("Too expensive to perform a find all test for 'PropertyValue', as there are " + count + " entries; set the findAllMaximum to exceed this value or set findAll=false on the integration test annotation to disable the test", count < 250);
-        List<PropertyValue> result = PropertyValue.findAllPropertyValues();
+        List<PropertyValue> result = propertyValueService.findAllPropertyValues();
         Assert.assertNotNull("Find all method for 'PropertyValue' illegally returned null", result);
         Assert.assertTrue("Find all method for 'PropertyValue' failed to return any data", result.size() > 0);
     }
@@ -57,36 +60,36 @@ privileged aspect PropertyValueIntegrationTest_Roo_IntegrationTest {
     @Test
     public void PropertyValueIntegrationTest.testFindPropertyValueEntries() {
         Assert.assertNotNull("Data on demand for 'PropertyValue' failed to initialize correctly", dod.getRandomPropertyValue());
-        long count = PropertyValue.countPropertyValues();
+        long count = propertyValueService.countAllPropertyValues();
         if (count > 20) count = 20;
         int firstResult = 0;
         int maxResults = (int) count;
-        List<PropertyValue> result = PropertyValue.findPropertyValueEntries(firstResult, maxResults);
+        List<PropertyValue> result = propertyValueService.findPropertyValueEntries(firstResult, maxResults);
         Assert.assertNotNull("Find entries method for 'PropertyValue' illegally returned null", result);
         Assert.assertEquals("Find entries method for 'PropertyValue' returned an incorrect number of entries", count, result.size());
     }
     
     @Test
-    public void PropertyValueIntegrationTest.testPersist() {
+    public void PropertyValueIntegrationTest.testSavePropertyValue() {
         Assert.assertNotNull("Data on demand for 'PropertyValue' failed to initialize correctly", dod.getRandomPropertyValue());
         PropertyValue obj = dod.getNewTransientPropertyValue(Integer.MAX_VALUE);
         Assert.assertNotNull("Data on demand for 'PropertyValue' failed to provide a new transient entity", obj);
         Assert.assertNull("Expected 'PropertyValue' identifier to be null", obj.getId());
-        obj.persist();
+        propertyValueService.savePropertyValue(obj);
         obj.flush();
         Assert.assertNotNull("Expected 'PropertyValue' identifier to no longer be null", obj.getId());
     }
     
     @Test
-    public void PropertyValueIntegrationTest.testRemove() {
+    public void PropertyValueIntegrationTest.testDeletePropertyValue() {
         PropertyValue obj = dod.getRandomPropertyValue();
         Assert.assertNotNull("Data on demand for 'PropertyValue' failed to initialize correctly", obj);
         Integer id = obj.getId();
         Assert.assertNotNull("Data on demand for 'PropertyValue' failed to provide an identifier", id);
-        obj = PropertyValue.findPropertyValue(id);
-        obj.remove();
+        obj = propertyValueService.findPropertyValue(id);
+        propertyValueService.deletePropertyValue(obj);
         obj.flush();
-        Assert.assertNull("Failed to remove 'PropertyValue' with identifier '" + id + "'", PropertyValue.findPropertyValue(id));
+        Assert.assertNull("Failed to remove 'PropertyValue' with identifier '" + id + "'", propertyValueService.findPropertyValue(id));
     }
     
 }

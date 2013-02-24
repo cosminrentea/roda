@@ -14,8 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ro.roda.Setting;
 import ro.roda.SettingDataOnDemand;
+import ro.roda.SettingGroup;
 import ro.roda.SettingGroupDataOnDemand;
 import ro.roda.SettingValueDataOnDemand;
+import ro.roda.service.SettingService;
 
 privileged aspect SettingDataOnDemand_Roo_DataOnDemand {
     
@@ -26,10 +28,13 @@ privileged aspect SettingDataOnDemand_Roo_DataOnDemand {
     private List<Setting> SettingDataOnDemand.data;
     
     @Autowired
-    private SettingGroupDataOnDemand SettingDataOnDemand.settingGroupDataOnDemand;
+    SettingGroupDataOnDemand SettingDataOnDemand.settingGroupDataOnDemand;
     
     @Autowired
-    private SettingValueDataOnDemand SettingDataOnDemand.settingValueDataOnDemand;
+    SettingValueDataOnDemand SettingDataOnDemand.settingValueDataOnDemand;
+    
+    @Autowired
+    SettingService SettingDataOnDemand.settingService;
     
     public Setting SettingDataOnDemand.getNewTransientSetting(int index) {
         Setting obj = new Setting();
@@ -37,6 +42,7 @@ privileged aspect SettingDataOnDemand_Roo_DataOnDemand {
         setDescription(obj, index);
         setName(obj, index);
         setPredefinedValues(obj, index);
+        setSettingGroup(obj, index);
         return obj;
     }
     
@@ -63,6 +69,11 @@ privileged aspect SettingDataOnDemand_Roo_DataOnDemand {
         obj.setPredefinedValues(predefinedValues);
     }
     
+    public void SettingDataOnDemand.setSettingGroup(Setting obj, int index) {
+        SettingGroup settingGroup = settingGroupDataOnDemand.getRandomSettingGroup();
+        obj.setSettingGroup(settingGroup);
+    }
+    
     public Setting SettingDataOnDemand.getSpecificSetting(int index) {
         init();
         if (index < 0) {
@@ -73,14 +84,14 @@ privileged aspect SettingDataOnDemand_Roo_DataOnDemand {
         }
         Setting obj = data.get(index);
         Integer id = obj.getId();
-        return Setting.findSetting(id);
+        return settingService.findSetting(id);
     }
     
     public Setting SettingDataOnDemand.getRandomSetting() {
         init();
         Setting obj = data.get(rnd.nextInt(data.size()));
         Integer id = obj.getId();
-        return Setting.findSetting(id);
+        return settingService.findSetting(id);
     }
     
     public boolean SettingDataOnDemand.modifySetting(Setting obj) {
@@ -90,7 +101,7 @@ privileged aspect SettingDataOnDemand_Roo_DataOnDemand {
     public void SettingDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = Setting.findSettingEntries(from, to);
+        data = settingService.findSettingEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'Setting' illegally returned null");
         }
@@ -102,7 +113,7 @@ privileged aspect SettingDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             Setting obj = getNewTransientSetting(i);
             try {
-                obj.persist();
+                settingService.saveSetting(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

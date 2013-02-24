@@ -6,7 +6,7 @@
         <field:simple field="cmsPageContents" id="c_ro_roda_CmsPage_cmsPageContents" messageCode="entity_reference_not_managed" messageCodeAttribute="Cms Page Content" z="qvtonqtRdnuU/7WqWeaEhrTxuoA="/>
         <field:select field="cmsLayoutId" id="c_ro_roda_CmsPage_cmsLayoutId" itemValue="id" items="${cmslayouts}" path="/cmslayouts" z="q8rB4ucUSQRtkQBPUibZmBVyBbQ="/>
         <field:select field="cmsPageTypeId" id="c_ro_roda_CmsPage_cmsPageTypeId" itemValue="id" items="${cmspagetypes}" path="/cmspagetypes" z="CsHd93HEcA23VxKxMdTrUrTd7Qo="/>
-        <field:select field="ownerId" id="c_ro_roda_CmsPage_ownerId" itemValue="id" items="${users}" path="/users" z="sD9O/FbO9xlGoj772AwbmfFm0t8="/>
+        <field:select field="ownerId" id="c_ro_roda_CmsPage_ownerId" itemValue="id" items="${rodausers}" path="/rodausers" z="pI3NoqpOwPCqMtApShKOR01Zny8="/>
         <field:input field="name" id="c_ro_roda_CmsPage_name" required="true" z="grrqCgs6hCAI3B0Zj3hCZzPE3ZA="/>
         <field:checkbox field="visible" id="c_ro_roda_CmsPage_visible" z="RsKABo8TdYR7ONJ1Zh4+HkPAc18="/>
         <field:checkbox field="navigable" id="c_ro_roda_CmsPage_navigable" z="Bdy415pFiZXCZ9UPidb7FwfiaEo="/>

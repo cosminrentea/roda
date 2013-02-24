@@ -10,9 +10,11 @@ import java.util.List;
 import java.util.Random;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ro.roda.CmsPageType;
 import ro.roda.CmsPageTypeDataOnDemand;
+import ro.roda.service.CmsPageTypeService;
 
 privileged aspect CmsPageTypeDataOnDemand_Roo_DataOnDemand {
     
@@ -21,6 +23,9 @@ privileged aspect CmsPageTypeDataOnDemand_Roo_DataOnDemand {
     private Random CmsPageTypeDataOnDemand.rnd = new SecureRandom();
     
     private List<CmsPageType> CmsPageTypeDataOnDemand.data;
+    
+    @Autowired
+    CmsPageTypeService CmsPageTypeDataOnDemand.cmsPageTypeService;
     
     public CmsPageType CmsPageTypeDataOnDemand.getNewTransientCmsPageType(int index) {
         CmsPageType obj = new CmsPageType();
@@ -52,14 +57,14 @@ privileged aspect CmsPageTypeDataOnDemand_Roo_DataOnDemand {
         }
         CmsPageType obj = data.get(index);
         Integer id = obj.getId();
-        return CmsPageType.findCmsPageType(id);
+        return cmsPageTypeService.findCmsPageType(id);
     }
     
     public CmsPageType CmsPageTypeDataOnDemand.getRandomCmsPageType() {
         init();
         CmsPageType obj = data.get(rnd.nextInt(data.size()));
         Integer id = obj.getId();
-        return CmsPageType.findCmsPageType(id);
+        return cmsPageTypeService.findCmsPageType(id);
     }
     
     public boolean CmsPageTypeDataOnDemand.modifyCmsPageType(CmsPageType obj) {
@@ -69,7 +74,7 @@ privileged aspect CmsPageTypeDataOnDemand_Roo_DataOnDemand {
     public void CmsPageTypeDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = CmsPageType.findCmsPageTypeEntries(from, to);
+        data = cmsPageTypeService.findCmsPageTypeEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'CmsPageType' illegally returned null");
         }
@@ -81,7 +86,7 @@ privileged aspect CmsPageTypeDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             CmsPageType obj = getNewTransientCmsPageType(i);
             try {
-                obj.persist();
+                cmsPageTypeService.saveCmsPageType(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

@@ -6,8 +6,8 @@
         <field:display field="org2Id" id="s_ro_roda_OrgRelations_org2Id" object="${orgrelations}" z="ErQAcf/n03tOuoJuP8CytV8sirw="/>
         <field:display field="org1Id" id="s_ro_roda_OrgRelations_org1Id" object="${orgrelations}" z="Fl//xscDFAkLih4DFaC1/eQFHFg="/>
         <field:display field="orgRelationTypeId" id="s_ro_roda_OrgRelations_orgRelationTypeId" object="${orgrelations}" z="/umnOGvW5sNhPP5OGx74fBlHrRU="/>
-        <field:display date="true" dateTimePattern="${orgRelations_datestart_date_format}" field="datestart" id="s_ro_roda_OrgRelations_datestart" object="${orgrelations}" z="zO98ftt0x+COP8cAr46qXBsK+Rk="/>
-        <field:display date="true" dateTimePattern="${orgRelations_dateend_date_format}" field="dateend" id="s_ro_roda_OrgRelations_dateend" object="${orgrelations}" z="W/b4/v3cZddO02fIOlBaI4yt204="/>
+        <field:display calendar="true" dateTimePattern="${orgRelations_datestart_date_format}" field="datestart" id="s_ro_roda_OrgRelations_datestart" object="${orgrelations}" z="W5QTcIpN+87B4zxeZYsop9B8BTI="/>
+        <field:display calendar="true" dateTimePattern="${orgRelations_dateend_date_format}" field="dateend" id="s_ro_roda_OrgRelations_dateend" object="${orgrelations}" z="BJjzWFu5TVnpuHN24ZzCTbPVJ68="/>
         <field:display field="details" id="s_ro_roda_OrgRelations_details" object="${orgrelations}" z="6+nZZb+lmdLl3da4vufjcTuh90g="/>
     </page:show>
 </div>

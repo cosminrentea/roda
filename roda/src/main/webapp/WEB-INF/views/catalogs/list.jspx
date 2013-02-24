@@ -4,9 +4,10 @@
     <jsp:output omit-xml-declaration="yes"/>
     <page:list id="pl_ro_roda_Catalog" items="${catalogs}" z="NpXED3X9nVx/Y2m2DjP/LT/sFsI=">
         <table:table data="${catalogs}" id="l_ro_roda_Catalog" path="/catalogs" z="cGWOe4M5gCH/bl7h1BGiJ4i3pqw=">
-            <table:column id="c_ro_roda_Catalog_parent" property="parent" z="owlc9+O6KIA3bP76Z6I+zCAJ3Tg="/>
             <table:column id="c_ro_roda_Catalog_owner" property="owner" z="Giv8bbrs00EjQGYbSv2PX7sLcUM="/>
             <table:column id="c_ro_roda_Catalog_name" property="name" z="GXbkXsMu3eUaVhESdU1/jmGyNAs="/>
+            <table:column id="c_ro_roda_Catalog_parentId" property="parentId" z="jEX9He2q8UsHvXjrYZuLl0pqshU="/>
+            <table:column calendar="true" dateTimePattern="${catalog_added_date_format}" id="c_ro_roda_Catalog_added" property="added" z="VHQk1k0l5linm/KDwXiFF2XmwZ8="/>
         </table:table>
     </page:list>
 </div>

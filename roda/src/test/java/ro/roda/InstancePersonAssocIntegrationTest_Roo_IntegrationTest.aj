@@ -11,9 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.InstancePersonAssoc;
 import ro.roda.InstancePersonAssocDataOnDemand;
 import ro.roda.InstancePersonAssocIntegrationTest;
+import ro.roda.service.InstancePersonAssocService;
 
 privileged aspect InstancePersonAssocIntegrationTest_Roo_IntegrationTest {
     
@@ -24,12 +24,15 @@ privileged aspect InstancePersonAssocIntegrationTest_Roo_IntegrationTest {
     declare @type: InstancePersonAssocIntegrationTest: @Transactional;
     
     @Autowired
-    private InstancePersonAssocDataOnDemand InstancePersonAssocIntegrationTest.dod;
+    InstancePersonAssocDataOnDemand InstancePersonAssocIntegrationTest.dod;
+    
+    @Autowired
+    InstancePersonAssocService InstancePersonAssocIntegrationTest.instancePersonAssocService;
     
     @Test
-    public void InstancePersonAssocIntegrationTest.testCountInstancePersonAssocs() {
+    public void InstancePersonAssocIntegrationTest.testCountAllInstancePersonAssocs() {
         Assert.assertNotNull("Data on demand for 'InstancePersonAssoc' failed to initialize correctly", dod.getRandomInstancePersonAssoc());
-        long count = InstancePersonAssoc.countInstancePersonAssocs();
+        long count = instancePersonAssocService.countAllInstancePersonAssocs();
         Assert.assertTrue("Counter for 'InstancePersonAssoc' incorrectly reported there were no entries", count > 0);
     }
     
@@ -39,7 +42,7 @@ privileged aspect InstancePersonAssocIntegrationTest_Roo_IntegrationTest {
         Assert.assertNotNull("Data on demand for 'InstancePersonAssoc' failed to initialize correctly", obj);
         Integer id = obj.getId();
         Assert.assertNotNull("Data on demand for 'InstancePersonAssoc' failed to provide an identifier", id);
-        obj = InstancePersonAssoc.findInstancePersonAssoc(id);
+        obj = instancePersonAssocService.findInstancePersonAssoc(id);
         Assert.assertNotNull("Find method for 'InstancePersonAssoc' illegally returned null for id '" + id + "'", obj);
         Assert.assertEquals("Find method for 'InstancePersonAssoc' returned the incorrect identifier", id, obj.getId());
     }
@@ -47,9 +50,9 @@ privileged aspect InstancePersonAssocIntegrationTest_Roo_IntegrationTest {
     @Test
     public void InstancePersonAssocIntegrationTest.testFindAllInstancePersonAssocs() {
         Assert.assertNotNull("Data on demand for 'InstancePersonAssoc' failed to initialize correctly", dod.getRandomInstancePersonAssoc());
-        long count = InstancePersonAssoc.countInstancePersonAssocs();
+        long count = instancePersonAssocService.countAllInstancePersonAssocs();
         Assert.assertTrue("Too expensive to perform a find all test for 'InstancePersonAssoc', as there are " + count + " entries; set the findAllMaximum to exceed this value or set findAll=false on the integration test annotation to disable the test", count < 250);
-        List<InstancePersonAssoc> result = InstancePersonAssoc.findAllInstancePersonAssocs();
+        List<InstancePersonAssoc> result = instancePersonAssocService.findAllInstancePersonAssocs();
         Assert.assertNotNull("Find all method for 'InstancePersonAssoc' illegally returned null", result);
         Assert.assertTrue("Find all method for 'InstancePersonAssoc' failed to return any data", result.size() > 0);
     }
@@ -57,36 +60,36 @@ privileged aspect InstancePersonAssocIntegrationTest_Roo_IntegrationTest {
     @Test
     public void InstancePersonAssocIntegrationTest.testFindInstancePersonAssocEntries() {
         Assert.assertNotNull("Data on demand for 'InstancePersonAssoc' failed to initialize correctly", dod.getRandomInstancePersonAssoc());
-        long count = InstancePersonAssoc.countInstancePersonAssocs();
+        long count = instancePersonAssocService.countAllInstancePersonAssocs();
         if (count > 20) count = 20;
         int firstResult = 0;
         int maxResults = (int) count;
-        List<InstancePersonAssoc> result = InstancePersonAssoc.findInstancePersonAssocEntries(firstResult, maxResults);
+        List<InstancePersonAssoc> result = instancePersonAssocService.findInstancePersonAssocEntries(firstResult, maxResults);
         Assert.assertNotNull("Find entries method for 'InstancePersonAssoc' illegally returned null", result);
         Assert.assertEquals("Find entries method for 'InstancePersonAssoc' returned an incorrect number of entries", count, result.size());
     }
     
     @Test
-    public void InstancePersonAssocIntegrationTest.testPersist() {
+    public void InstancePersonAssocIntegrationTest.testSaveInstancePersonAssoc() {
         Assert.assertNotNull("Data on demand for 'InstancePersonAssoc' failed to initialize correctly", dod.getRandomInstancePersonAssoc());
         InstancePersonAssoc obj = dod.getNewTransientInstancePersonAssoc(Integer.MAX_VALUE);
         Assert.assertNotNull("Data on demand for 'InstancePersonAssoc' failed to provide a new transient entity", obj);
         Assert.assertNull("Expected 'InstancePersonAssoc' identifier to be null", obj.getId());
-        obj.persist();
+        instancePersonAssocService.saveInstancePersonAssoc(obj);
         obj.flush();
         Assert.assertNotNull("Expected 'InstancePersonAssoc' identifier to no longer be null", obj.getId());
     }
     
     @Test
-    public void InstancePersonAssocIntegrationTest.testRemove() {
+    public void InstancePersonAssocIntegrationTest.testDeleteInstancePersonAssoc() {
         InstancePersonAssoc obj = dod.getRandomInstancePersonAssoc();
         Assert.assertNotNull("Data on demand for 'InstancePersonAssoc' failed to initialize correctly", obj);
         Integer id = obj.getId();
         Assert.assertNotNull("Data on demand for 'InstancePersonAssoc' failed to provide an identifier", id);
-        obj = InstancePersonAssoc.findInstancePersonAssoc(id);
-        obj.remove();
+        obj = instancePersonAssocService.findInstancePersonAssoc(id);
+        instancePersonAssocService.deleteInstancePersonAssoc(obj);
         obj.flush();
-        Assert.assertNull("Failed to remove 'InstancePersonAssoc' with identifier '" + id + "'", InstancePersonAssoc.findInstancePersonAssoc(id));
+        Assert.assertNull("Failed to remove 'InstancePersonAssoc' with identifier '" + id + "'", instancePersonAssocService.findInstancePersonAssoc(id));
     }
     
 }

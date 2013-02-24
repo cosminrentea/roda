@@ -3,7 +3,7 @@
 
 package ro.roda;
 
-import java.util.Date;
+import java.util.Calendar;
 import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -12,19 +12,19 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import org.springframework.format.annotation.DateTimeFormat;
 import ro.roda.News;
-import ro.roda.User;
+import ro.roda.Rodauser;
 
 privileged aspect News_Roo_DbManaged {
     
     @ManyToOne
     @JoinColumn(name = "added_by", referencedColumnName = "id", nullable = false)
-    private User News.addedBy;
+    private Rodauser News.addedBy;
     
     @Column(name = "added", columnDefinition = "timestamp")
     @NotNull
     @Temporal(TemporalType.TIMESTAMP)
-    @DateTimeFormat(style = "M-")
-    private Date News.added;
+    @DateTimeFormat(style = "MM")
+    private Calendar News.added;
     
     @Column(name = "visible", columnDefinition = "bool")
     @NotNull
@@ -37,19 +37,19 @@ privileged aspect News_Roo_DbManaged {
     @Column(name = "content", columnDefinition = "text")
     private String News.content;
     
-    public User News.getAddedBy() {
+    public Rodauser News.getAddedBy() {
         return addedBy;
     }
     
-    public void News.setAddedBy(User addedBy) {
+    public void News.setAddedBy(Rodauser addedBy) {
         this.addedBy = addedBy;
     }
     
-    public Date News.getAdded() {
+    public Calendar News.getAdded() {
         return added;
     }
     
-    public void News.setAdded(Date added) {
+    public void News.setAdded(Calendar added) {
         this.added = added;
     }
     

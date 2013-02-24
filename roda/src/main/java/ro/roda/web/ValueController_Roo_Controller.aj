@@ -6,6 +6,7 @@ package ro.roda.web;
 import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,12 +15,22 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.Item;
-import ro.roda.Scale;
 import ro.roda.Value;
+import ro.roda.service.ItemService;
+import ro.roda.service.ScaleService;
+import ro.roda.service.ValueService;
 import ro.roda.web.ValueController;
 
 privileged aspect ValueController_Roo_Controller {
+    
+    @Autowired
+    ValueService ValueController.valueService;
+    
+    @Autowired
+    ItemService ValueController.itemService;
+    
+    @Autowired
+    ScaleService ValueController.scaleService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String ValueController.create(@Valid Value value, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -28,7 +39,7 @@ privileged aspect ValueController_Roo_Controller {
             return "values/create";
         }
         uiModel.asMap().clear();
-        value.persist();
+        valueService.saveValue(value);
         return "redirect:/values/" + encodeUrlPathSegment(value.getItemId().toString(), httpServletRequest);
     }
     
@@ -40,7 +51,7 @@ privileged aspect ValueController_Roo_Controller {
     
     @RequestMapping(value = "/{itemId}", produces = "text/html")
     public String ValueController.show(@PathVariable("itemId") Long itemId, Model uiModel) {
-        uiModel.addAttribute("value", Value.findValue(itemId));
+        uiModel.addAttribute("value", valueService.findValue(itemId));
         uiModel.addAttribute("itemId", itemId);
         return "values/show";
     }
@@ -50,11 +61,11 @@ privileged aspect ValueController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("values", Value.findValueEntries(firstResult, sizeNo));
-            float nrOfPages = (float) Value.countValues() / sizeNo;
+            uiModel.addAttribute("values", valueService.findValueEntries(firstResult, sizeNo));
+            float nrOfPages = (float) valueService.countAllValues() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("values", Value.findAllValues());
+            uiModel.addAttribute("values", valueService.findAllValues());
         }
         return "values/list";
     }
@@ -66,20 +77,20 @@ privileged aspect ValueController_Roo_Controller {
             return "values/update";
         }
         uiModel.asMap().clear();
-        value.merge();
+        valueService.updateValue(value);
         return "redirect:/values/" + encodeUrlPathSegment(value.getItemId().toString(), httpServletRequest);
     }
     
     @RequestMapping(value = "/{itemId}", params = "form", produces = "text/html")
     public String ValueController.updateForm(@PathVariable("itemId") Long itemId, Model uiModel) {
-        populateEditForm(uiModel, Value.findValue(itemId));
+        populateEditForm(uiModel, valueService.findValue(itemId));
         return "values/update";
     }
     
     @RequestMapping(value = "/{itemId}", method = RequestMethod.DELETE, produces = "text/html")
     public String ValueController.delete(@PathVariable("itemId") Long itemId, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        Value value = Value.findValue(itemId);
-        value.remove();
+        Value value = valueService.findValue(itemId);
+        valueService.deleteValue(value);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
@@ -88,8 +99,8 @@ privileged aspect ValueController_Roo_Controller {
     
     void ValueController.populateEditForm(Model uiModel, Value value) {
         uiModel.addAttribute("value", value);
-        uiModel.addAttribute("items", Item.findAllItems());
-        uiModel.addAttribute("scales", Scale.findAllScales());
+        uiModel.addAttribute("items", itemService.findAllItems());
+        uiModel.addAttribute("scales", scaleService.findAllScales());
     }
     
     String ValueController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

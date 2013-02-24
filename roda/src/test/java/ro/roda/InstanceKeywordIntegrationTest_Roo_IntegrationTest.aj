@@ -11,10 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.InstanceKeyword;
 import ro.roda.InstanceKeywordDataOnDemand;
 import ro.roda.InstanceKeywordIntegrationTest;
 import ro.roda.InstanceKeywordPK;
+import ro.roda.service.InstanceKeywordService;
 
 privileged aspect InstanceKeywordIntegrationTest_Roo_IntegrationTest {
     
@@ -25,12 +25,15 @@ privileged aspect InstanceKeywordIntegrationTest_Roo_IntegrationTest {
     declare @type: InstanceKeywordIntegrationTest: @Transactional;
     
     @Autowired
-    private InstanceKeywordDataOnDemand InstanceKeywordIntegrationTest.dod;
+    InstanceKeywordDataOnDemand InstanceKeywordIntegrationTest.dod;
+    
+    @Autowired
+    InstanceKeywordService InstanceKeywordIntegrationTest.instanceKeywordService;
     
     @Test
-    public void InstanceKeywordIntegrationTest.testCountInstanceKeywords() {
+    public void InstanceKeywordIntegrationTest.testCountAllInstanceKeywords() {
         Assert.assertNotNull("Data on demand for 'InstanceKeyword' failed to initialize correctly", dod.getRandomInstanceKeyword());
-        long count = InstanceKeyword.countInstanceKeywords();
+        long count = instanceKeywordService.countAllInstanceKeywords();
         Assert.assertTrue("Counter for 'InstanceKeyword' incorrectly reported there were no entries", count > 0);
     }
     
@@ -40,7 +43,7 @@ privileged aspect InstanceKeywordIntegrationTest_Roo_IntegrationTest {
         Assert.assertNotNull("Data on demand for 'InstanceKeyword' failed to initialize correctly", obj);
         InstanceKeywordPK id = obj.getId();
         Assert.assertNotNull("Data on demand for 'InstanceKeyword' failed to provide an identifier", id);
-        obj = InstanceKeyword.findInstanceKeyword(id);
+        obj = instanceKeywordService.findInstanceKeyword(id);
         Assert.assertNotNull("Find method for 'InstanceKeyword' illegally returned null for id '" + id + "'", obj);
         Assert.assertEquals("Find method for 'InstanceKeyword' returned the incorrect identifier", id, obj.getId());
     }
@@ -48,9 +51,9 @@ privileged aspect InstanceKeywordIntegrationTest_Roo_IntegrationTest {
     @Test
     public void InstanceKeywordIntegrationTest.testFindAllInstanceKeywords() {
         Assert.assertNotNull("Data on demand for 'InstanceKeyword' failed to initialize correctly", dod.getRandomInstanceKeyword());
-        long count = InstanceKeyword.countInstanceKeywords();
+        long count = instanceKeywordService.countAllInstanceKeywords();
         Assert.assertTrue("Too expensive to perform a find all test for 'InstanceKeyword', as there are " + count + " entries; set the findAllMaximum to exceed this value or set findAll=false on the integration test annotation to disable the test", count < 250);
-        List<InstanceKeyword> result = InstanceKeyword.findAllInstanceKeywords();
+        List<InstanceKeyword> result = instanceKeywordService.findAllInstanceKeywords();
         Assert.assertNotNull("Find all method for 'InstanceKeyword' illegally returned null", result);
         Assert.assertTrue("Find all method for 'InstanceKeyword' failed to return any data", result.size() > 0);
     }
@@ -58,35 +61,35 @@ privileged aspect InstanceKeywordIntegrationTest_Roo_IntegrationTest {
     @Test
     public void InstanceKeywordIntegrationTest.testFindInstanceKeywordEntries() {
         Assert.assertNotNull("Data on demand for 'InstanceKeyword' failed to initialize correctly", dod.getRandomInstanceKeyword());
-        long count = InstanceKeyword.countInstanceKeywords();
+        long count = instanceKeywordService.countAllInstanceKeywords();
         if (count > 20) count = 20;
         int firstResult = 0;
         int maxResults = (int) count;
-        List<InstanceKeyword> result = InstanceKeyword.findInstanceKeywordEntries(firstResult, maxResults);
+        List<InstanceKeyword> result = instanceKeywordService.findInstanceKeywordEntries(firstResult, maxResults);
         Assert.assertNotNull("Find entries method for 'InstanceKeyword' illegally returned null", result);
         Assert.assertEquals("Find entries method for 'InstanceKeyword' returned an incorrect number of entries", count, result.size());
     }
     
     @Test
-    public void InstanceKeywordIntegrationTest.testPersist() {
+    public void InstanceKeywordIntegrationTest.testSaveInstanceKeyword() {
         Assert.assertNotNull("Data on demand for 'InstanceKeyword' failed to initialize correctly", dod.getRandomInstanceKeyword());
         InstanceKeyword obj = dod.getNewTransientInstanceKeyword(Integer.MAX_VALUE);
         Assert.assertNotNull("Data on demand for 'InstanceKeyword' failed to provide a new transient entity", obj);
-        obj.persist();
+        instanceKeywordService.saveInstanceKeyword(obj);
         obj.flush();
         Assert.assertNotNull("Expected 'InstanceKeyword' identifier to no longer be null", obj.getId());
     }
     
     @Test
-    public void InstanceKeywordIntegrationTest.testRemove() {
+    public void InstanceKeywordIntegrationTest.testDeleteInstanceKeyword() {
         InstanceKeyword obj = dod.getRandomInstanceKeyword();
         Assert.assertNotNull("Data on demand for 'InstanceKeyword' failed to initialize correctly", obj);
         InstanceKeywordPK id = obj.getId();
         Assert.assertNotNull("Data on demand for 'InstanceKeyword' failed to provide an identifier", id);
-        obj = InstanceKeyword.findInstanceKeyword(id);
-        obj.remove();
+        obj = instanceKeywordService.findInstanceKeyword(id);
+        instanceKeywordService.deleteInstanceKeyword(obj);
         obj.flush();
-        Assert.assertNull("Failed to remove 'InstanceKeyword' with identifier '" + id + "'", InstanceKeyword.findInstanceKeyword(id));
+        Assert.assertNull("Failed to remove 'InstanceKeyword' with identifier '" + id + "'", instanceKeywordService.findInstanceKeyword(id));
     }
     
 }

@@ -7,7 +7,7 @@
             <table:column id="c_ro_roda_SourceContacts_personId" property="personId" z="0q2CtEWRLBrIt0gVDMw3ZTOarGM="/>
             <table:column id="c_ro_roda_SourceContacts_sourceId" property="sourceId" z="O0fKldoyG5IDA+jAHWAsiGoWon4="/>
             <table:column id="c_ro_roda_SourceContacts_sourceContactMethodId" property="sourceContactMethodId" z="qy3P7QZ59hVnnXPdx+Rqkkj0BDk="/>
-            <table:column date="true" dateTimePattern="${sourceContacts_contactdate_date_format}" id="c_ro_roda_SourceContacts_contactDate" property="contactDate" z="kCv+rt8m5WhvQXJVfldwYICfZRc="/>
+            <table:column calendar="true" dateTimePattern="${sourceContacts_contactdate_date_format}" id="c_ro_roda_SourceContacts_contactDate" property="contactDate" z="6aju7OkPozpv7kLSA+6vhML5NAE="/>
             <table:column id="c_ro_roda_SourceContacts_synopsis" property="synopsis" z="IeYFu1gpmPacqyZm0YepFtwtrys="/>
             <table:column id="c_ro_roda_SourceContacts_followup" property="followup" z="Tt+K0jH8IhPGenl5rAe2zarM0UU="/>
         </table:table>

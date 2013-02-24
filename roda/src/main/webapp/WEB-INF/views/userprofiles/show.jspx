@@ -3,9 +3,9 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <page:show id="ps_ro_roda_UserProfile" object="${userprofile}" path="/userprofiles" z="bytJqVlKW16OusaR3dEf5GQoJng=">
-        <field:display field="user" id="s_ro_roda_UserProfile_user" object="${userprofile}" z="eKPGQ0c8f4u9sZNGd+mMNFEXebw="/>
         <field:display field="FName" id="s_ro_roda_UserProfile_fName" object="${userprofile}" z="8HhoGJ9ptp3/B5Oa+PPxHyJPJtc="/>
         <field:display field="LName" id="s_ro_roda_UserProfile_lName" object="${userprofile}" z="dbtya8ZiuJAs6ZOVZtdzkrxSxFM="/>
         <field:display field="email" id="s_ro_roda_UserProfile_email" object="${userprofile}" z="j+jhRGQMeeI4nlQz282jScfB1A0="/>
+        <field:display field="rodauser" id="s_ro_roda_UserProfile_rodauser" object="${userprofile}" z="Hrw8aEJyYgRrz072uoaVdaP2H2E="/>
     </page:show>
 </div>

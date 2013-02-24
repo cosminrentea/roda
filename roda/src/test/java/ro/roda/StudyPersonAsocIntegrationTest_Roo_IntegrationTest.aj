@@ -11,9 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.StudyPersonAsoc;
 import ro.roda.StudyPersonAsocDataOnDemand;
 import ro.roda.StudyPersonAsocIntegrationTest;
+import ro.roda.service.StudyPersonAsocService;
 
 privileged aspect StudyPersonAsocIntegrationTest_Roo_IntegrationTest {
     
@@ -24,12 +24,15 @@ privileged aspect StudyPersonAsocIntegrationTest_Roo_IntegrationTest {
     declare @type: StudyPersonAsocIntegrationTest: @Transactional;
     
     @Autowired
-    private StudyPersonAsocDataOnDemand StudyPersonAsocIntegrationTest.dod;
+    StudyPersonAsocDataOnDemand StudyPersonAsocIntegrationTest.dod;
+    
+    @Autowired
+    StudyPersonAsocService StudyPersonAsocIntegrationTest.studyPersonAsocService;
     
     @Test
-    public void StudyPersonAsocIntegrationTest.testCountStudyPersonAsocs() {
+    public void StudyPersonAsocIntegrationTest.testCountAllStudyPersonAsocs() {
         Assert.assertNotNull("Data on demand for 'StudyPersonAsoc' failed to initialize correctly", dod.getRandomStudyPersonAsoc());
-        long count = StudyPersonAsoc.countStudyPersonAsocs();
+        long count = studyPersonAsocService.countAllStudyPersonAsocs();
         Assert.assertTrue("Counter for 'StudyPersonAsoc' incorrectly reported there were no entries", count > 0);
     }
     
@@ -39,7 +42,7 @@ privileged aspect StudyPersonAsocIntegrationTest_Roo_IntegrationTest {
         Assert.assertNotNull("Data on demand for 'StudyPersonAsoc' failed to initialize correctly", obj);
         Integer id = obj.getId();
         Assert.assertNotNull("Data on demand for 'StudyPersonAsoc' failed to provide an identifier", id);
-        obj = StudyPersonAsoc.findStudyPersonAsoc(id);
+        obj = studyPersonAsocService.findStudyPersonAsoc(id);
         Assert.assertNotNull("Find method for 'StudyPersonAsoc' illegally returned null for id '" + id + "'", obj);
         Assert.assertEquals("Find method for 'StudyPersonAsoc' returned the incorrect identifier", id, obj.getId());
     }
@@ -47,9 +50,9 @@ privileged aspect StudyPersonAsocIntegrationTest_Roo_IntegrationTest {
     @Test
     public void StudyPersonAsocIntegrationTest.testFindAllStudyPersonAsocs() {
         Assert.assertNotNull("Data on demand for 'StudyPersonAsoc' failed to initialize correctly", dod.getRandomStudyPersonAsoc());
-        long count = StudyPersonAsoc.countStudyPersonAsocs();
+        long count = studyPersonAsocService.countAllStudyPersonAsocs();
         Assert.assertTrue("Too expensive to perform a find all test for 'StudyPersonAsoc', as there are " + count + " entries; set the findAllMaximum to exceed this value or set findAll=false on the integration test annotation to disable the test", count < 250);
-        List<StudyPersonAsoc> result = StudyPersonAsoc.findAllStudyPersonAsocs();
+        List<StudyPersonAsoc> result = studyPersonAsocService.findAllStudyPersonAsocs();
         Assert.assertNotNull("Find all method for 'StudyPersonAsoc' illegally returned null", result);
         Assert.assertTrue("Find all method for 'StudyPersonAsoc' failed to return any data", result.size() > 0);
     }
@@ -57,36 +60,36 @@ privileged aspect StudyPersonAsocIntegrationTest_Roo_IntegrationTest {
     @Test
     public void StudyPersonAsocIntegrationTest.testFindStudyPersonAsocEntries() {
         Assert.assertNotNull("Data on demand for 'StudyPersonAsoc' failed to initialize correctly", dod.getRandomStudyPersonAsoc());
-        long count = StudyPersonAsoc.countStudyPersonAsocs();
+        long count = studyPersonAsocService.countAllStudyPersonAsocs();
         if (count > 20) count = 20;
         int firstResult = 0;
         int maxResults = (int) count;
-        List<StudyPersonAsoc> result = StudyPersonAsoc.findStudyPersonAsocEntries(firstResult, maxResults);
+        List<StudyPersonAsoc> result = studyPersonAsocService.findStudyPersonAsocEntries(firstResult, maxResults);
         Assert.assertNotNull("Find entries method for 'StudyPersonAsoc' illegally returned null", result);
         Assert.assertEquals("Find entries method for 'StudyPersonAsoc' returned an incorrect number of entries", count, result.size());
     }
     
     @Test
-    public void StudyPersonAsocIntegrationTest.testPersist() {
+    public void StudyPersonAsocIntegrationTest.testSaveStudyPersonAsoc() {
         Assert.assertNotNull("Data on demand for 'StudyPersonAsoc' failed to initialize correctly", dod.getRandomStudyPersonAsoc());
         StudyPersonAsoc obj = dod.getNewTransientStudyPersonAsoc(Integer.MAX_VALUE);
         Assert.assertNotNull("Data on demand for 'StudyPersonAsoc' failed to provide a new transient entity", obj);
         Assert.assertNull("Expected 'StudyPersonAsoc' identifier to be null", obj.getId());
-        obj.persist();
+        studyPersonAsocService.saveStudyPersonAsoc(obj);
         obj.flush();
         Assert.assertNotNull("Expected 'StudyPersonAsoc' identifier to no longer be null", obj.getId());
     }
     
     @Test
-    public void StudyPersonAsocIntegrationTest.testRemove() {
+    public void StudyPersonAsocIntegrationTest.testDeleteStudyPersonAsoc() {
         StudyPersonAsoc obj = dod.getRandomStudyPersonAsoc();
         Assert.assertNotNull("Data on demand for 'StudyPersonAsoc' failed to initialize correctly", obj);
         Integer id = obj.getId();
         Assert.assertNotNull("Data on demand for 'StudyPersonAsoc' failed to provide an identifier", id);
-        obj = StudyPersonAsoc.findStudyPersonAsoc(id);
-        obj.remove();
+        obj = studyPersonAsocService.findStudyPersonAsoc(id);
+        studyPersonAsocService.deleteStudyPersonAsoc(obj);
         obj.flush();
-        Assert.assertNull("Failed to remove 'StudyPersonAsoc' with identifier '" + id + "'", StudyPersonAsoc.findStudyPersonAsoc(id));
+        Assert.assertNull("Failed to remove 'StudyPersonAsoc' with identifier '" + id + "'", studyPersonAsocService.findStudyPersonAsoc(id));
     }
     
 }

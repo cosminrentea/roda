@@ -6,6 +6,7 @@ package ro.roda.web;
 import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,10 +16,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.AuthData;
-import ro.roda.User;
+import ro.roda.Rodauser;
+import ro.roda.service.AuthDataService;
 import ro.roda.web.AuthDataController;
 
 privileged aspect AuthDataController_Roo_Controller {
+    
+    @Autowired
+    AuthDataService AuthDataController.authDataService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String AuthDataController.create(@Valid AuthData authData, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -27,7 +32,7 @@ privileged aspect AuthDataController_Roo_Controller {
             return "authdatas/create";
         }
         uiModel.asMap().clear();
-        authData.persist();
+        authDataService.saveAuthData(authData);
         return "redirect:/authdatas/" + encodeUrlPathSegment(authData.getUserId().toString(), httpServletRequest);
     }
     
@@ -39,7 +44,7 @@ privileged aspect AuthDataController_Roo_Controller {
     
     @RequestMapping(value = "/{userId}", produces = "text/html")
     public String AuthDataController.show(@PathVariable("userId") Integer userId, Model uiModel) {
-        uiModel.addAttribute("authdata", AuthData.findAuthData(userId));
+        uiModel.addAttribute("authdata", authDataService.findAuthData(userId));
         uiModel.addAttribute("itemId", userId);
         return "authdatas/show";
     }
@@ -49,11 +54,11 @@ privileged aspect AuthDataController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("authdatas", AuthData.findAuthDataEntries(firstResult, sizeNo));
-            float nrOfPages = (float) AuthData.countAuthDatas() / sizeNo;
+            uiModel.addAttribute("authdatas", authDataService.findAuthDataEntries(firstResult, sizeNo));
+            float nrOfPages = (float) authDataService.countAllAuthDatas() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("authdatas", AuthData.findAllAuthDatas());
+            uiModel.addAttribute("authdatas", authDataService.findAllAuthDatas());
         }
         return "authdatas/list";
     }
@@ -65,20 +70,20 @@ privileged aspect AuthDataController_Roo_Controller {
             return "authdatas/update";
         }
         uiModel.asMap().clear();
-        authData.merge();
+        authDataService.updateAuthData(authData);
         return "redirect:/authdatas/" + encodeUrlPathSegment(authData.getUserId().toString(), httpServletRequest);
     }
     
     @RequestMapping(value = "/{userId}", params = "form", produces = "text/html")
     public String AuthDataController.updateForm(@PathVariable("userId") Integer userId, Model uiModel) {
-        populateEditForm(uiModel, AuthData.findAuthData(userId));
+        populateEditForm(uiModel, authDataService.findAuthData(userId));
         return "authdatas/update";
     }
     
     @RequestMapping(value = "/{userId}", method = RequestMethod.DELETE, produces = "text/html")
     public String AuthDataController.delete(@PathVariable("userId") Integer userId, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        AuthData authData = AuthData.findAuthData(userId);
-        authData.remove();
+        AuthData authData = authDataService.findAuthData(userId);
+        authDataService.deleteAuthData(authData);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
@@ -87,7 +92,7 @@ privileged aspect AuthDataController_Roo_Controller {
     
     void AuthDataController.populateEditForm(Model uiModel, AuthData authData) {
         uiModel.addAttribute("authData", authData);
-        uiModel.addAttribute("users", User.findAllUsers());
+        uiModel.addAttribute("rodausers", Rodauser.findAllRodausers());
     }
     
     String AuthDataController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

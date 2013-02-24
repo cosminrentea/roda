@@ -5,7 +5,7 @@
     <page:list id="pl_ro_roda_Audit" items="${audits}" z="qg8VRZOetNwoVeEksaHcw7gS69o=">
         <table:table data="${audits}" id="l_ro_roda_Audit" path="/audits" z="uvPVSfWyeu1Ol3IzdATzMwilgcY=">
             <table:column id="c_ro_roda_Audit_userId" property="userId" z="slbXfxSi+s2WiFkCOlgrNZP/pR8="/>
-            <table:column date="true" dateTimePattern="${audit_time_date_format}" id="c_ro_roda_Audit_time" property="time" z="BdDP6P0ilQxxq6/8KZg+0ad2uIE="/>
+            <table:column calendar="true" dateTimePattern="${audit_time_date_format}" id="c_ro_roda_Audit_time" property="time" z="mT42SIq2oYUUgGhFzggugcwc51w="/>
             <table:column id="c_ro_roda_Audit_operationType" property="operationType" z="sy86XMi5ZMHJrExuZ8eb28dK8eM="/>
             <table:column id="c_ro_roda_Audit_tableName" property="tableName" z="0u6AENJ0hZVaTFZh9ZvlZxnjFhs="/>
         </table:table>

@@ -12,12 +12,16 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import ro.roda.Person;
 import ro.roda.PersonDataOnDemand;
+import ro.roda.Study;
 import ro.roda.StudyDataOnDemand;
 import ro.roda.StudyPerson;
+import ro.roda.StudyPersonAssoc;
 import ro.roda.StudyPersonAssocDataOnDemand;
 import ro.roda.StudyPersonDataOnDemand;
 import ro.roda.StudyPersonPK;
+import ro.roda.service.StudyPersonService;
 
 privileged aspect StudyPersonDataOnDemand_Roo_DataOnDemand {
     
@@ -28,18 +32,24 @@ privileged aspect StudyPersonDataOnDemand_Roo_DataOnDemand {
     private List<StudyPerson> StudyPersonDataOnDemand.data;
     
     @Autowired
-    private StudyPersonAssocDataOnDemand StudyPersonDataOnDemand.studyPersonAssocDataOnDemand;
+    StudyPersonAssocDataOnDemand StudyPersonDataOnDemand.studyPersonAssocDataOnDemand;
     
     @Autowired
-    private PersonDataOnDemand StudyPersonDataOnDemand.personDataOnDemand;
+    PersonDataOnDemand StudyPersonDataOnDemand.personDataOnDemand;
     
     @Autowired
-    private StudyDataOnDemand StudyPersonDataOnDemand.studyDataOnDemand;
+    StudyDataOnDemand StudyPersonDataOnDemand.studyDataOnDemand;
+    
+    @Autowired
+    StudyPersonService StudyPersonDataOnDemand.studyPersonService;
     
     public StudyPerson StudyPersonDataOnDemand.getNewTransientStudyPerson(int index) {
         StudyPerson obj = new StudyPerson();
         setEmbeddedIdClass(obj, index);
         setAssocDetails(obj, index);
+        setAssoctypeId(obj, index);
+        setPersonId(obj, index);
+        setStudyId(obj, index);
         return obj;
     }
     
@@ -57,6 +67,21 @@ privileged aspect StudyPersonDataOnDemand_Roo_DataOnDemand {
         obj.setAssocDetails(assocDetails);
     }
     
+    public void StudyPersonDataOnDemand.setAssoctypeId(StudyPerson obj, int index) {
+        StudyPersonAssoc assoctypeId = studyPersonAssocDataOnDemand.getRandomStudyPersonAssoc();
+        obj.setAssoctypeId(assoctypeId);
+    }
+    
+    public void StudyPersonDataOnDemand.setPersonId(StudyPerson obj, int index) {
+        Person personId = personDataOnDemand.getRandomPerson();
+        obj.setPersonId(personId);
+    }
+    
+    public void StudyPersonDataOnDemand.setStudyId(StudyPerson obj, int index) {
+        Study studyId = studyDataOnDemand.getRandomStudy();
+        obj.setStudyId(studyId);
+    }
+    
     public StudyPerson StudyPersonDataOnDemand.getSpecificStudyPerson(int index) {
         init();
         if (index < 0) {
@@ -67,14 +92,14 @@ privileged aspect StudyPersonDataOnDemand_Roo_DataOnDemand {
         }
         StudyPerson obj = data.get(index);
         StudyPersonPK id = obj.getId();
-        return StudyPerson.findStudyPerson(id);
+        return studyPersonService.findStudyPerson(id);
     }
     
     public StudyPerson StudyPersonDataOnDemand.getRandomStudyPerson() {
         init();
         StudyPerson obj = data.get(rnd.nextInt(data.size()));
         StudyPersonPK id = obj.getId();
-        return StudyPerson.findStudyPerson(id);
+        return studyPersonService.findStudyPerson(id);
     }
     
     public boolean StudyPersonDataOnDemand.modifyStudyPerson(StudyPerson obj) {
@@ -84,7 +109,7 @@ privileged aspect StudyPersonDataOnDemand_Roo_DataOnDemand {
     public void StudyPersonDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = StudyPerson.findStudyPersonEntries(from, to);
+        data = studyPersonService.findStudyPersonEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'StudyPerson' illegally returned null");
         }
@@ -96,7 +121,7 @@ privileged aspect StudyPersonDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             StudyPerson obj = getNewTransientStudyPerson(i);
             try {
-                obj.persist();
+                studyPersonService.saveStudyPerson(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

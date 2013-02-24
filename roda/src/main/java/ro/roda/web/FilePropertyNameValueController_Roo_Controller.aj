@@ -16,16 +16,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.File;
 import ro.roda.FilePropertyNameValue;
 import ro.roda.FilePropertyNameValuePK;
-import ro.roda.PropertyName;
-import ro.roda.PropertyValue;
+import ro.roda.service.FilePropertyNameValueService;
 import ro.roda.web.FilePropertyNameValueController;
 
 privileged aspect FilePropertyNameValueController_Roo_Controller {
     
     private ConversionService FilePropertyNameValueController.conversionService;
+    
+    @Autowired
+    FilePropertyNameValueService FilePropertyNameValueController.filePropertyNameValueService;
     
     @Autowired
     public FilePropertyNameValueController.new(ConversionService conversionService) {
@@ -40,7 +41,7 @@ privileged aspect FilePropertyNameValueController_Roo_Controller {
             return "filepropertynamevalues/create";
         }
         uiModel.asMap().clear();
-        filePropertyNameValue.persist();
+        filePropertyNameValueService.saveFilePropertyNameValue(filePropertyNameValue);
         return "redirect:/filepropertynamevalues/" + encodeUrlPathSegment(conversionService.convert(filePropertyNameValue.getId(), String.class), httpServletRequest);
     }
     
@@ -52,7 +53,7 @@ privileged aspect FilePropertyNameValueController_Roo_Controller {
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String FilePropertyNameValueController.show(@PathVariable("id") FilePropertyNameValuePK id, Model uiModel) {
-        uiModel.addAttribute("filepropertynamevalue", FilePropertyNameValue.findFilePropertyNameValue(id));
+        uiModel.addAttribute("filepropertynamevalue", filePropertyNameValueService.findFilePropertyNameValue(id));
         uiModel.addAttribute("itemId", conversionService.convert(id, String.class));
         return "filepropertynamevalues/show";
     }
@@ -62,11 +63,11 @@ privileged aspect FilePropertyNameValueController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("filepropertynamevalues", FilePropertyNameValue.findFilePropertyNameValueEntries(firstResult, sizeNo));
-            float nrOfPages = (float) FilePropertyNameValue.countFilePropertyNameValues() / sizeNo;
+            uiModel.addAttribute("filepropertynamevalues", filePropertyNameValueService.findFilePropertyNameValueEntries(firstResult, sizeNo));
+            float nrOfPages = (float) filePropertyNameValueService.countAllFilePropertyNameValues() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("filepropertynamevalues", FilePropertyNameValue.findAllFilePropertyNameValues());
+            uiModel.addAttribute("filepropertynamevalues", filePropertyNameValueService.findAllFilePropertyNameValues());
         }
         return "filepropertynamevalues/list";
     }
@@ -78,20 +79,20 @@ privileged aspect FilePropertyNameValueController_Roo_Controller {
             return "filepropertynamevalues/update";
         }
         uiModel.asMap().clear();
-        filePropertyNameValue.merge();
+        filePropertyNameValueService.updateFilePropertyNameValue(filePropertyNameValue);
         return "redirect:/filepropertynamevalues/" + encodeUrlPathSegment(conversionService.convert(filePropertyNameValue.getId(), String.class), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String FilePropertyNameValueController.updateForm(@PathVariable("id") FilePropertyNameValuePK id, Model uiModel) {
-        populateEditForm(uiModel, FilePropertyNameValue.findFilePropertyNameValue(id));
+        populateEditForm(uiModel, filePropertyNameValueService.findFilePropertyNameValue(id));
         return "filepropertynamevalues/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
     public String FilePropertyNameValueController.delete(@PathVariable("id") FilePropertyNameValuePK id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        FilePropertyNameValue filePropertyNameValue = FilePropertyNameValue.findFilePropertyNameValue(id);
-        filePropertyNameValue.remove();
+        FilePropertyNameValue filePropertyNameValue = filePropertyNameValueService.findFilePropertyNameValue(id);
+        filePropertyNameValueService.deleteFilePropertyNameValue(filePropertyNameValue);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
@@ -100,9 +101,6 @@ privileged aspect FilePropertyNameValueController_Roo_Controller {
     
     void FilePropertyNameValueController.populateEditForm(Model uiModel, FilePropertyNameValue filePropertyNameValue) {
         uiModel.addAttribute("filePropertyNameValue", filePropertyNameValue);
-        uiModel.addAttribute("files", File.findAllFiles());
-        uiModel.addAttribute("propertynames", PropertyName.findAllPropertyNames());
-        uiModel.addAttribute("propertyvalues", PropertyValue.findAllPropertyValues());
     }
     
     String FilePropertyNameValueController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

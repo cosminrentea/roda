@@ -12,7 +12,7 @@
         <field:simple field="studyKeywords" id="c_ro_roda_Study_studyKeywords" messageCode="entity_reference_not_managed" messageCodeAttribute="Study Keyword" z="4A+KNTbVMoqbYXOMdJOgD01lzo0="/>
         <field:simple field="studyOrgs" id="c_ro_roda_Study_studyOrgs" messageCode="entity_reference_not_managed" messageCodeAttribute="Study Org" z="qlJmFx5c52DCK9C5P7sHyNPb31Y="/>
         <field:simple field="studypeople" id="c_ro_roda_Study_studypeople" messageCode="entity_reference_not_managed" messageCodeAttribute="Study Person" z="XjMh1nywVJ4oKeELW117i7TxWyc="/>
-        <field:select field="addedBy" id="c_ro_roda_Study_addedBy" itemValue="id" items="${users}" path="/users" z="vmIQ0Se3ScvPEXmmZetAYoYVj64="/>
+        <field:select field="addedBy" id="c_ro_roda_Study_addedBy" itemValue="id" items="${rodausers}" path="/rodausers" z="A+4fAlA+OSS/yqLpo32cjBdLBB4="/>
         <field:datetime dateTimePattern="${study_datestart_date_format}" field="datestart" id="c_ro_roda_Study_datestart" z="E0goxCmKiRUPHHVPzKjS8QXomi8="/>
         <field:datetime dateTimePattern="${study_dateend_date_format}" field="dateend" id="c_ro_roda_Study_dateend" z="ZSynLaSWEPXITNZWHEX5Hu1LE9w="/>
         <field:input field="insertionStatus" id="c_ro_roda_Study_insertionStatus" required="true" validationMessageCode="field_invalid_integer" z="qyV4xUrWWCdzd6FZ1u4dy2Y1sl8="/>

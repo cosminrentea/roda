@@ -10,9 +10,11 @@ import java.util.List;
 import java.util.Random;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ro.roda.File;
 import ro.roda.FileDataOnDemand;
+import ro.roda.service.FileService;
 
 privileged aspect FileDataOnDemand_Roo_DataOnDemand {
     
@@ -21,6 +23,9 @@ privileged aspect FileDataOnDemand_Roo_DataOnDemand {
     private Random FileDataOnDemand.rnd = new SecureRandom();
     
     private List<File> FileDataOnDemand.data;
+    
+    @Autowired
+    FileService FileDataOnDemand.fileService;
     
     public File FileDataOnDemand.getNewTransientFile(int index) {
         File obj = new File();
@@ -67,14 +72,14 @@ privileged aspect FileDataOnDemand_Roo_DataOnDemand {
         }
         File obj = data.get(index);
         Integer id = obj.getId();
-        return File.findFile(id);
+        return fileService.findFile(id);
     }
     
     public File FileDataOnDemand.getRandomFile() {
         init();
         File obj = data.get(rnd.nextInt(data.size()));
         Integer id = obj.getId();
-        return File.findFile(id);
+        return fileService.findFile(id);
     }
     
     public boolean FileDataOnDemand.modifyFile(File obj) {
@@ -84,7 +89,7 @@ privileged aspect FileDataOnDemand_Roo_DataOnDemand {
     public void FileDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = File.findFileEntries(from, to);
+        data = fileService.findFileEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'File' illegally returned null");
         }
@@ -96,7 +101,7 @@ privileged aspect FileDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             File obj = getNewTransientFile(i);
             try {
-                obj.persist();
+                fileService.saveFile(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

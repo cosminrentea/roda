@@ -6,7 +6,6 @@ package ro.roda;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
@@ -15,10 +14,12 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import ro.roda.Rodauser;
+import ro.roda.RodauserDataOnDemand;
 import ro.roda.UserAuthLog;
 import ro.roda.UserAuthLogDataOnDemand;
 import ro.roda.UserAuthLogPK;
-import ro.roda.UserDataOnDemand;
+import ro.roda.service.UserAuthLogService;
 
 privileged aspect UserAuthLogDataOnDemand_Roo_DataOnDemand {
     
@@ -29,7 +30,10 @@ privileged aspect UserAuthLogDataOnDemand_Roo_DataOnDemand {
     private List<UserAuthLog> UserAuthLogDataOnDemand.data;
     
     @Autowired
-    private UserDataOnDemand UserAuthLogDataOnDemand.userDataOnDemand;
+    RodauserDataOnDemand UserAuthLogDataOnDemand.rodauserDataOnDemand;
+    
+    @Autowired
+    UserAuthLogService UserAuthLogDataOnDemand.userAuthLogService;
     
     public UserAuthLog UserAuthLogDataOnDemand.getNewTransientUserAuthLog(int index) {
         UserAuthLog obj = new UserAuthLog();
@@ -38,12 +42,13 @@ privileged aspect UserAuthLogDataOnDemand_Roo_DataOnDemand {
         setCredentialIdentifier(obj, index);
         setCredentialProvider(obj, index);
         setErrorMessage(obj, index);
+        setUserId(obj, index);
         return obj;
     }
     
     public void UserAuthLogDataOnDemand.setEmbeddedIdClass(UserAuthLog obj, int index) {
         Integer userId = new Integer(index);
-        Date timestamp = new GregorianCalendar(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH), Calendar.getInstance().get(Calendar.HOUR_OF_DAY), Calendar.getInstance().get(Calendar.MINUTE), Calendar.getInstance().get(Calendar.SECOND) + new Double(Math.random() * 1000).intValue()).getTime();
+        Calendar timestamp = Calendar.getInstance();
         
         UserAuthLogPK embeddedIdClass = new UserAuthLogPK(userId, timestamp);
         obj.setId(embeddedIdClass);
@@ -72,6 +77,11 @@ privileged aspect UserAuthLogDataOnDemand_Roo_DataOnDemand {
         obj.setErrorMessage(errorMessage);
     }
     
+    public void UserAuthLogDataOnDemand.setUserId(UserAuthLog obj, int index) {
+        Rodauser userId = rodauserDataOnDemand.getRandomRodauser();
+        obj.setUserId(userId);
+    }
+    
     public UserAuthLog UserAuthLogDataOnDemand.getSpecificUserAuthLog(int index) {
         init();
         if (index < 0) {
@@ -82,14 +92,14 @@ privileged aspect UserAuthLogDataOnDemand_Roo_DataOnDemand {
         }
         UserAuthLog obj = data.get(index);
         UserAuthLogPK id = obj.getId();
-        return UserAuthLog.findUserAuthLog(id);
+        return userAuthLogService.findUserAuthLog(id);
     }
     
     public UserAuthLog UserAuthLogDataOnDemand.getRandomUserAuthLog() {
         init();
         UserAuthLog obj = data.get(rnd.nextInt(data.size()));
         UserAuthLogPK id = obj.getId();
-        return UserAuthLog.findUserAuthLog(id);
+        return userAuthLogService.findUserAuthLog(id);
     }
     
     public boolean UserAuthLogDataOnDemand.modifyUserAuthLog(UserAuthLog obj) {
@@ -99,7 +109,7 @@ privileged aspect UserAuthLogDataOnDemand_Roo_DataOnDemand {
     public void UserAuthLogDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = UserAuthLog.findUserAuthLogEntries(from, to);
+        data = userAuthLogService.findUserAuthLogEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'UserAuthLog' illegally returned null");
         }
@@ -111,7 +121,7 @@ privileged aspect UserAuthLogDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             UserAuthLog obj = getNewTransientUserAuthLog(i);
             try {
-                obj.persist();
+                userAuthLogService.saveUserAuthLog(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

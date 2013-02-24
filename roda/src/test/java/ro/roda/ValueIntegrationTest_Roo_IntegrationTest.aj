@@ -11,9 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.Value;
 import ro.roda.ValueDataOnDemand;
 import ro.roda.ValueIntegrationTest;
+import ro.roda.service.ValueService;
 
 privileged aspect ValueIntegrationTest_Roo_IntegrationTest {
     
@@ -24,12 +24,15 @@ privileged aspect ValueIntegrationTest_Roo_IntegrationTest {
     declare @type: ValueIntegrationTest: @Transactional;
     
     @Autowired
-    private ValueDataOnDemand ValueIntegrationTest.dod;
+    ValueDataOnDemand ValueIntegrationTest.dod;
+    
+    @Autowired
+    ValueService ValueIntegrationTest.valueService;
     
     @Test
-    public void ValueIntegrationTest.testCountValues() {
+    public void ValueIntegrationTest.testCountAllValues() {
         Assert.assertNotNull("Data on demand for 'Value' failed to initialize correctly", dod.getRandomValue());
-        long count = Value.countValues();
+        long count = valueService.countAllValues();
         Assert.assertTrue("Counter for 'Value' incorrectly reported there were no entries", count > 0);
     }
     
@@ -39,7 +42,7 @@ privileged aspect ValueIntegrationTest_Roo_IntegrationTest {
         Assert.assertNotNull("Data on demand for 'Value' failed to initialize correctly", obj);
         Long id = obj.getItemId();
         Assert.assertNotNull("Data on demand for 'Value' failed to provide an identifier", id);
-        obj = Value.findValue(id);
+        obj = valueService.findValue(id);
         Assert.assertNotNull("Find method for 'Value' illegally returned null for id '" + id + "'", obj);
         Assert.assertEquals("Find method for 'Value' returned the incorrect identifier", id, obj.getItemId());
     }
@@ -47,9 +50,9 @@ privileged aspect ValueIntegrationTest_Roo_IntegrationTest {
     @Test
     public void ValueIntegrationTest.testFindAllValues() {
         Assert.assertNotNull("Data on demand for 'Value' failed to initialize correctly", dod.getRandomValue());
-        long count = Value.countValues();
+        long count = valueService.countAllValues();
         Assert.assertTrue("Too expensive to perform a find all test for 'Value', as there are " + count + " entries; set the findAllMaximum to exceed this value or set findAll=false on the integration test annotation to disable the test", count < 250);
-        List<Value> result = Value.findAllValues();
+        List<Value> result = valueService.findAllValues();
         Assert.assertNotNull("Find all method for 'Value' illegally returned null", result);
         Assert.assertTrue("Find all method for 'Value' failed to return any data", result.size() > 0);
     }
@@ -57,36 +60,36 @@ privileged aspect ValueIntegrationTest_Roo_IntegrationTest {
     @Test
     public void ValueIntegrationTest.testFindValueEntries() {
         Assert.assertNotNull("Data on demand for 'Value' failed to initialize correctly", dod.getRandomValue());
-        long count = Value.countValues();
+        long count = valueService.countAllValues();
         if (count > 20) count = 20;
         int firstResult = 0;
         int maxResults = (int) count;
-        List<Value> result = Value.findValueEntries(firstResult, maxResults);
+        List<Value> result = valueService.findValueEntries(firstResult, maxResults);
         Assert.assertNotNull("Find entries method for 'Value' illegally returned null", result);
         Assert.assertEquals("Find entries method for 'Value' returned an incorrect number of entries", count, result.size());
     }
     
     @Test
-    public void ValueIntegrationTest.testPersist() {
+    public void ValueIntegrationTest.testSaveValue() {
         Assert.assertNotNull("Data on demand for 'Value' failed to initialize correctly", dod.getRandomValue());
         Value obj = dod.getNewTransientValue(Integer.MAX_VALUE);
         Assert.assertNotNull("Data on demand for 'Value' failed to provide a new transient entity", obj);
         Assert.assertNull("Expected 'Value' identifier to be null", obj.getItemId());
-        obj.persist();
+        valueService.saveValue(obj);
         obj.flush();
         Assert.assertNotNull("Expected 'Value' identifier to no longer be null", obj.getItemId());
     }
     
     @Test
-    public void ValueIntegrationTest.testRemove() {
+    public void ValueIntegrationTest.testDeleteValue() {
         Value obj = dod.getRandomValue();
         Assert.assertNotNull("Data on demand for 'Value' failed to initialize correctly", obj);
         Long id = obj.getItemId();
         Assert.assertNotNull("Data on demand for 'Value' failed to provide an identifier", id);
-        obj = Value.findValue(id);
-        obj.remove();
+        obj = valueService.findValue(id);
+        valueService.deleteValue(obj);
         obj.flush();
-        Assert.assertNull("Failed to remove 'Value' with identifier '" + id + "'", Value.findValue(id));
+        Assert.assertNull("Failed to remove 'Value' with identifier '" + id + "'", valueService.findValue(id));
     }
     
 }

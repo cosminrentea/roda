@@ -6,6 +6,7 @@ package ro.roda.web;
 import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,11 +15,18 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.Setting;
 import ro.roda.SettingValue;
+import ro.roda.service.SettingService;
+import ro.roda.service.SettingValueService;
 import ro.roda.web.SettingValueController;
 
 privileged aspect SettingValueController_Roo_Controller {
+    
+    @Autowired
+    SettingValueService SettingValueController.settingValueService;
+    
+    @Autowired
+    SettingService SettingValueController.settingService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String SettingValueController.create(@Valid SettingValue settingValue, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -27,7 +35,7 @@ privileged aspect SettingValueController_Roo_Controller {
             return "settingvalues/create";
         }
         uiModel.asMap().clear();
-        settingValue.persist();
+        settingValueService.saveSettingValue(settingValue);
         return "redirect:/settingvalues/" + encodeUrlPathSegment(settingValue.getSettingId().toString(), httpServletRequest);
     }
     
@@ -39,7 +47,7 @@ privileged aspect SettingValueController_Roo_Controller {
     
     @RequestMapping(value = "/{settingId}", produces = "text/html")
     public String SettingValueController.show(@PathVariable("settingId") Integer settingId, Model uiModel) {
-        uiModel.addAttribute("settingvalue", SettingValue.findSettingValue(settingId));
+        uiModel.addAttribute("settingvalue", settingValueService.findSettingValue(settingId));
         uiModel.addAttribute("itemId", settingId);
         return "settingvalues/show";
     }
@@ -49,11 +57,11 @@ privileged aspect SettingValueController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("settingvalues", SettingValue.findSettingValueEntries(firstResult, sizeNo));
-            float nrOfPages = (float) SettingValue.countSettingValues() / sizeNo;
+            uiModel.addAttribute("settingvalues", settingValueService.findSettingValueEntries(firstResult, sizeNo));
+            float nrOfPages = (float) settingValueService.countAllSettingValues() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("settingvalues", SettingValue.findAllSettingValues());
+            uiModel.addAttribute("settingvalues", settingValueService.findAllSettingValues());
         }
         return "settingvalues/list";
     }
@@ -65,20 +73,20 @@ privileged aspect SettingValueController_Roo_Controller {
             return "settingvalues/update";
         }
         uiModel.asMap().clear();
-        settingValue.merge();
+        settingValueService.updateSettingValue(settingValue);
         return "redirect:/settingvalues/" + encodeUrlPathSegment(settingValue.getSettingId().toString(), httpServletRequest);
     }
     
     @RequestMapping(value = "/{settingId}", params = "form", produces = "text/html")
     public String SettingValueController.updateForm(@PathVariable("settingId") Integer settingId, Model uiModel) {
-        populateEditForm(uiModel, SettingValue.findSettingValue(settingId));
+        populateEditForm(uiModel, settingValueService.findSettingValue(settingId));
         return "settingvalues/update";
     }
     
     @RequestMapping(value = "/{settingId}", method = RequestMethod.DELETE, produces = "text/html")
     public String SettingValueController.delete(@PathVariable("settingId") Integer settingId, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        SettingValue settingValue = SettingValue.findSettingValue(settingId);
-        settingValue.remove();
+        SettingValue settingValue = settingValueService.findSettingValue(settingId);
+        settingValueService.deleteSettingValue(settingValue);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
@@ -87,7 +95,7 @@ privileged aspect SettingValueController_Roo_Controller {
     
     void SettingValueController.populateEditForm(Model uiModel, SettingValue settingValue) {
         uiModel.addAttribute("settingValue", settingValue);
-        uiModel.addAttribute("settings", Setting.findAllSettings());
+        uiModel.addAttribute("settings", settingService.findAllSettings());
     }
     
     String SettingValueController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

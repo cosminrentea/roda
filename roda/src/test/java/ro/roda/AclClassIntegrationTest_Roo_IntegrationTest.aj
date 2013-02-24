@@ -11,9 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.AclClass;
 import ro.roda.AclClassDataOnDemand;
 import ro.roda.AclClassIntegrationTest;
+import ro.roda.service.AclClassService;
 
 privileged aspect AclClassIntegrationTest_Roo_IntegrationTest {
     
@@ -24,12 +24,15 @@ privileged aspect AclClassIntegrationTest_Roo_IntegrationTest {
     declare @type: AclClassIntegrationTest: @Transactional;
     
     @Autowired
-    private AclClassDataOnDemand AclClassIntegrationTest.dod;
+    AclClassDataOnDemand AclClassIntegrationTest.dod;
+    
+    @Autowired
+    AclClassService AclClassIntegrationTest.aclClassService;
     
     @Test
-    public void AclClassIntegrationTest.testCountAclClasses() {
+    public void AclClassIntegrationTest.testCountAllAclClasses() {
         Assert.assertNotNull("Data on demand for 'AclClass' failed to initialize correctly", dod.getRandomAclClass());
-        long count = AclClass.countAclClasses();
+        long count = aclClassService.countAllAclClasses();
         Assert.assertTrue("Counter for 'AclClass' incorrectly reported there were no entries", count > 0);
     }
     
@@ -39,7 +42,7 @@ privileged aspect AclClassIntegrationTest_Roo_IntegrationTest {
         Assert.assertNotNull("Data on demand for 'AclClass' failed to initialize correctly", obj);
         Long id = obj.getId();
         Assert.assertNotNull("Data on demand for 'AclClass' failed to provide an identifier", id);
-        obj = AclClass.findAclClass(id);
+        obj = aclClassService.findAclClass(id);
         Assert.assertNotNull("Find method for 'AclClass' illegally returned null for id '" + id + "'", obj);
         Assert.assertEquals("Find method for 'AclClass' returned the incorrect identifier", id, obj.getId());
     }
@@ -47,9 +50,9 @@ privileged aspect AclClassIntegrationTest_Roo_IntegrationTest {
     @Test
     public void AclClassIntegrationTest.testFindAllAclClasses() {
         Assert.assertNotNull("Data on demand for 'AclClass' failed to initialize correctly", dod.getRandomAclClass());
-        long count = AclClass.countAclClasses();
+        long count = aclClassService.countAllAclClasses();
         Assert.assertTrue("Too expensive to perform a find all test for 'AclClass', as there are " + count + " entries; set the findAllMaximum to exceed this value or set findAll=false on the integration test annotation to disable the test", count < 250);
-        List<AclClass> result = AclClass.findAllAclClasses();
+        List<AclClass> result = aclClassService.findAllAclClasses();
         Assert.assertNotNull("Find all method for 'AclClass' illegally returned null", result);
         Assert.assertTrue("Find all method for 'AclClass' failed to return any data", result.size() > 0);
     }
@@ -57,36 +60,36 @@ privileged aspect AclClassIntegrationTest_Roo_IntegrationTest {
     @Test
     public void AclClassIntegrationTest.testFindAclClassEntries() {
         Assert.assertNotNull("Data on demand for 'AclClass' failed to initialize correctly", dod.getRandomAclClass());
-        long count = AclClass.countAclClasses();
+        long count = aclClassService.countAllAclClasses();
         if (count > 20) count = 20;
         int firstResult = 0;
         int maxResults = (int) count;
-        List<AclClass> result = AclClass.findAclClassEntries(firstResult, maxResults);
+        List<AclClass> result = aclClassService.findAclClassEntries(firstResult, maxResults);
         Assert.assertNotNull("Find entries method for 'AclClass' illegally returned null", result);
         Assert.assertEquals("Find entries method for 'AclClass' returned an incorrect number of entries", count, result.size());
     }
     
     @Test
-    public void AclClassIntegrationTest.testPersist() {
+    public void AclClassIntegrationTest.testSaveAclClass() {
         Assert.assertNotNull("Data on demand for 'AclClass' failed to initialize correctly", dod.getRandomAclClass());
         AclClass obj = dod.getNewTransientAclClass(Integer.MAX_VALUE);
         Assert.assertNotNull("Data on demand for 'AclClass' failed to provide a new transient entity", obj);
         Assert.assertNull("Expected 'AclClass' identifier to be null", obj.getId());
-        obj.persist();
+        aclClassService.saveAclClass(obj);
         obj.flush();
         Assert.assertNotNull("Expected 'AclClass' identifier to no longer be null", obj.getId());
     }
     
     @Test
-    public void AclClassIntegrationTest.testRemove() {
+    public void AclClassIntegrationTest.testDeleteAclClass() {
         AclClass obj = dod.getRandomAclClass();
         Assert.assertNotNull("Data on demand for 'AclClass' failed to initialize correctly", obj);
         Long id = obj.getId();
         Assert.assertNotNull("Data on demand for 'AclClass' failed to provide an identifier", id);
-        obj = AclClass.findAclClass(id);
-        obj.remove();
+        obj = aclClassService.findAclClass(id);
+        aclClassService.deleteAclClass(obj);
         obj.flush();
-        Assert.assertNull("Failed to remove 'AclClass' with identifier '" + id + "'", AclClass.findAclClass(id));
+        Assert.assertNull("Failed to remove 'AclClass' with identifier '" + id + "'", aclClassService.findAclClass(id));
     }
     
 }

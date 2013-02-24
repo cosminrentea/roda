@@ -10,9 +10,11 @@ import java.util.List;
 import java.util.Random;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ro.roda.PropertyName;
 import ro.roda.PropertyNameDataOnDemand;
+import ro.roda.service.PropertyNameService;
 
 privileged aspect PropertyNameDataOnDemand_Roo_DataOnDemand {
     
@@ -21,6 +23,9 @@ privileged aspect PropertyNameDataOnDemand_Roo_DataOnDemand {
     private Random PropertyNameDataOnDemand.rnd = new SecureRandom();
     
     private List<PropertyName> PropertyNameDataOnDemand.data;
+    
+    @Autowired
+    PropertyNameService PropertyNameDataOnDemand.propertyNameService;
     
     public PropertyName PropertyNameDataOnDemand.getNewTransientPropertyName(int index) {
         PropertyName obj = new PropertyName();
@@ -49,14 +54,14 @@ privileged aspect PropertyNameDataOnDemand_Roo_DataOnDemand {
         }
         PropertyName obj = data.get(index);
         Integer id = obj.getId();
-        return PropertyName.findPropertyName(id);
+        return propertyNameService.findPropertyName(id);
     }
     
     public PropertyName PropertyNameDataOnDemand.getRandomPropertyName() {
         init();
         PropertyName obj = data.get(rnd.nextInt(data.size()));
         Integer id = obj.getId();
-        return PropertyName.findPropertyName(id);
+        return propertyNameService.findPropertyName(id);
     }
     
     public boolean PropertyNameDataOnDemand.modifyPropertyName(PropertyName obj) {
@@ -66,7 +71,7 @@ privileged aspect PropertyNameDataOnDemand_Roo_DataOnDemand {
     public void PropertyNameDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = PropertyName.findPropertyNameEntries(from, to);
+        data = propertyNameService.findPropertyNameEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'PropertyName' illegally returned null");
         }
@@ -78,7 +83,7 @@ privileged aspect PropertyNameDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             PropertyName obj = getNewTransientPropertyName(i);
             try {
-                obj.persist();
+                propertyNameService.savePropertyName(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

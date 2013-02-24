@@ -10,9 +10,11 @@ import java.util.List;
 import java.util.Random;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ro.roda.StudyOrgAssoc;
 import ro.roda.StudyOrgAssocDataOnDemand;
+import ro.roda.service.StudyOrgAssocService;
 
 privileged aspect StudyOrgAssocDataOnDemand_Roo_DataOnDemand {
     
@@ -21,6 +23,9 @@ privileged aspect StudyOrgAssocDataOnDemand_Roo_DataOnDemand {
     private Random StudyOrgAssocDataOnDemand.rnd = new SecureRandom();
     
     private List<StudyOrgAssoc> StudyOrgAssocDataOnDemand.data;
+    
+    @Autowired
+    StudyOrgAssocService StudyOrgAssocDataOnDemand.studyOrgAssocService;
     
     public StudyOrgAssoc StudyOrgAssocDataOnDemand.getNewTransientStudyOrgAssoc(int index) {
         StudyOrgAssoc obj = new StudyOrgAssoc();
@@ -52,14 +57,14 @@ privileged aspect StudyOrgAssocDataOnDemand_Roo_DataOnDemand {
         }
         StudyOrgAssoc obj = data.get(index);
         Integer id = obj.getId();
-        return StudyOrgAssoc.findStudyOrgAssoc(id);
+        return studyOrgAssocService.findStudyOrgAssoc(id);
     }
     
     public StudyOrgAssoc StudyOrgAssocDataOnDemand.getRandomStudyOrgAssoc() {
         init();
         StudyOrgAssoc obj = data.get(rnd.nextInt(data.size()));
         Integer id = obj.getId();
-        return StudyOrgAssoc.findStudyOrgAssoc(id);
+        return studyOrgAssocService.findStudyOrgAssoc(id);
     }
     
     public boolean StudyOrgAssocDataOnDemand.modifyStudyOrgAssoc(StudyOrgAssoc obj) {
@@ -69,7 +74,7 @@ privileged aspect StudyOrgAssocDataOnDemand_Roo_DataOnDemand {
     public void StudyOrgAssocDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = StudyOrgAssoc.findStudyOrgAssocEntries(from, to);
+        data = studyOrgAssocService.findStudyOrgAssocEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'StudyOrgAssoc' illegally returned null");
         }
@@ -81,7 +86,7 @@ privileged aspect StudyOrgAssocDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             StudyOrgAssoc obj = getNewTransientStudyOrgAssoc(i);
             try {
-                obj.persist();
+                studyOrgAssocService.saveStudyOrgAssoc(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

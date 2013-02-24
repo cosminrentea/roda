@@ -7,6 +7,7 @@ import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.joda.time.format.DateTimeFormat;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -16,12 +17,19 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.Person;
 import ro.roda.PersonLinks;
-import ro.roda.User;
+import ro.roda.Rodauser;
+import ro.roda.service.PersonLinksService;
+import ro.roda.service.PersonService;
 import ro.roda.web.PersonLinksController;
 
 privileged aspect PersonLinksController_Roo_Controller {
+    
+    @Autowired
+    PersonLinksService PersonLinksController.personLinksService;
+    
+    @Autowired
+    PersonService PersonLinksController.personService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String PersonLinksController.create(@Valid PersonLinks personLinks, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -30,7 +38,7 @@ privileged aspect PersonLinksController_Roo_Controller {
             return "personlinkses/create";
         }
         uiModel.asMap().clear();
-        personLinks.persist();
+        personLinksService.savePersonLinks(personLinks);
         return "redirect:/personlinkses/" + encodeUrlPathSegment(personLinks.getId().toString(), httpServletRequest);
     }
     
@@ -43,7 +51,7 @@ privileged aspect PersonLinksController_Roo_Controller {
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String PersonLinksController.show(@PathVariable("id") Integer id, Model uiModel) {
         addDateTimeFormatPatterns(uiModel);
-        uiModel.addAttribute("personlinks", PersonLinks.findPersonLinks(id));
+        uiModel.addAttribute("personlinks", personLinksService.findPersonLinks(id));
         uiModel.addAttribute("itemId", id);
         return "personlinkses/show";
     }
@@ -53,11 +61,11 @@ privileged aspect PersonLinksController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("personlinkses", PersonLinks.findPersonLinksEntries(firstResult, sizeNo));
-            float nrOfPages = (float) PersonLinks.countPersonLinkses() / sizeNo;
+            uiModel.addAttribute("personlinkses", personLinksService.findPersonLinksEntries(firstResult, sizeNo));
+            float nrOfPages = (float) personLinksService.countAllPersonLinkses() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("personlinkses", PersonLinks.findAllPersonLinkses());
+            uiModel.addAttribute("personlinkses", personLinksService.findAllPersonLinkses());
         }
         addDateTimeFormatPatterns(uiModel);
         return "personlinkses/list";
@@ -70,20 +78,20 @@ privileged aspect PersonLinksController_Roo_Controller {
             return "personlinkses/update";
         }
         uiModel.asMap().clear();
-        personLinks.merge();
+        personLinksService.updatePersonLinks(personLinks);
         return "redirect:/personlinkses/" + encodeUrlPathSegment(personLinks.getId().toString(), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String PersonLinksController.updateForm(@PathVariable("id") Integer id, Model uiModel) {
-        populateEditForm(uiModel, PersonLinks.findPersonLinks(id));
+        populateEditForm(uiModel, personLinksService.findPersonLinks(id));
         return "personlinkses/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
     public String PersonLinksController.delete(@PathVariable("id") Integer id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        PersonLinks personLinks = PersonLinks.findPersonLinks(id);
-        personLinks.remove();
+        PersonLinks personLinks = personLinksService.findPersonLinks(id);
+        personLinksService.deletePersonLinks(personLinks);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
@@ -91,14 +99,14 @@ privileged aspect PersonLinksController_Roo_Controller {
     }
     
     void PersonLinksController.addDateTimeFormatPatterns(Model uiModel) {
-        uiModel.addAttribute("personLinks_statustime_date_format", DateTimeFormat.patternForStyle("M-", LocaleContextHolder.getLocale()));
+        uiModel.addAttribute("personLinks_statustime_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
     }
     
     void PersonLinksController.populateEditForm(Model uiModel, PersonLinks personLinks) {
         uiModel.addAttribute("personLinks", personLinks);
         addDateTimeFormatPatterns(uiModel);
-        uiModel.addAttribute("people", Person.findAllPeople());
-        uiModel.addAttribute("users", User.findAllUsers());
+        uiModel.addAttribute("people", personService.findAllPeople());
+        uiModel.addAttribute("rodausers", Rodauser.findAllRodausers());
     }
     
     String PersonLinksController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

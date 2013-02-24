@@ -4,8 +4,7 @@
     <jsp:output omit-xml-declaration="yes"/>
     <form:update id="fu_ro_roda_CmsLayoutGroup" modelAttribute="cmsLayoutGroup" path="/cmslayoutgroups" versionField="none" z="M7/pV2u8KEH8+WTfYCNiXb1PkDI=">
         <field:simple field="cmsLayouts" id="c_ro_roda_CmsLayoutGroup_cmsLayouts" messageCode="entity_reference_not_managed" messageCodeAttribute="Cms Layout" z="Q9UWuucPpgOfpPeeY+vD8+X4qZg="/>
-        <field:simple field="cmsLayoutGroups" id="c_ro_roda_CmsLayoutGroup_cmsLayoutGroups" messageCode="entity_reference_not_managed" messageCodeAttribute="Cms Layout Group" z="7/3DeLGB+Oj8dme7h1VCE+pm/2U="/>
-        <field:select field="parentId" id="c_ro_roda_CmsLayoutGroup_parentId" itemValue="id" items="${cmslayoutgroups}" path="/cmslayoutgroups" z="LCkd6RxQQFseGAS+LJIOi1nUBU8="/>
+        <field:input field="parentId" id="c_ro_roda_CmsLayoutGroup_parentId" validationMessageCode="field_invalid_integer" z="tXdNlI6Ei5/mCJ3H8mSlz7a1+3c="/>
         <field:input field="name" id="c_ro_roda_CmsLayoutGroup_name" required="true" z="j1zVlQUsDeIZyMSoK0v2eQsE7ao="/>
         <field:input field="description" id="c_ro_roda_CmsLayoutGroup_description" z="JBhmks3sD0kDllXO+hxJJehWq2k="/>
     </form:update>

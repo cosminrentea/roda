@@ -10,9 +10,11 @@ import java.util.List;
 import java.util.Random;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ro.roda.OrgRelationType;
 import ro.roda.OrgRelationTypeDataOnDemand;
+import ro.roda.service.OrgRelationTypeService;
 
 privileged aspect OrgRelationTypeDataOnDemand_Roo_DataOnDemand {
     
@@ -21,6 +23,9 @@ privileged aspect OrgRelationTypeDataOnDemand_Roo_DataOnDemand {
     private Random OrgRelationTypeDataOnDemand.rnd = new SecureRandom();
     
     private List<OrgRelationType> OrgRelationTypeDataOnDemand.data;
+    
+    @Autowired
+    OrgRelationTypeService OrgRelationTypeDataOnDemand.orgRelationTypeService;
     
     public OrgRelationType OrgRelationTypeDataOnDemand.getNewTransientOrgRelationType(int index) {
         OrgRelationType obj = new OrgRelationType();
@@ -46,14 +51,14 @@ privileged aspect OrgRelationTypeDataOnDemand_Roo_DataOnDemand {
         }
         OrgRelationType obj = data.get(index);
         Integer id = obj.getId();
-        return OrgRelationType.findOrgRelationType(id);
+        return orgRelationTypeService.findOrgRelationType(id);
     }
     
     public OrgRelationType OrgRelationTypeDataOnDemand.getRandomOrgRelationType() {
         init();
         OrgRelationType obj = data.get(rnd.nextInt(data.size()));
         Integer id = obj.getId();
-        return OrgRelationType.findOrgRelationType(id);
+        return orgRelationTypeService.findOrgRelationType(id);
     }
     
     public boolean OrgRelationTypeDataOnDemand.modifyOrgRelationType(OrgRelationType obj) {
@@ -63,7 +68,7 @@ privileged aspect OrgRelationTypeDataOnDemand_Roo_DataOnDemand {
     public void OrgRelationTypeDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = OrgRelationType.findOrgRelationTypeEntries(from, to);
+        data = orgRelationTypeService.findOrgRelationTypeEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'OrgRelationType' illegally returned null");
         }
@@ -75,7 +80,7 @@ privileged aspect OrgRelationTypeDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             OrgRelationType obj = getNewTransientOrgRelationType(i);
             try {
-                obj.persist();
+                orgRelationTypeService.saveOrgRelationType(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

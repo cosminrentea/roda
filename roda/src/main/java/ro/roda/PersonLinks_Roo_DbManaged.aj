@@ -4,7 +4,7 @@
 package ro.roda;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.util.Calendar;
 import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -14,7 +14,7 @@ import javax.validation.constraints.NotNull;
 import org.springframework.format.annotation.DateTimeFormat;
 import ro.roda.Person;
 import ro.roda.PersonLinks;
-import ro.roda.User;
+import ro.roda.Rodauser;
 
 privileged aspect PersonLinks_Roo_DbManaged {
     
@@ -24,11 +24,11 @@ privileged aspect PersonLinks_Roo_DbManaged {
     
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
-    private User PersonLinks.userId;
+    private Rodauser PersonLinks.userId;
     
     @ManyToOne
     @JoinColumn(name = "status_by", referencedColumnName = "id", nullable = false)
-    private User PersonLinks.statusBy;
+    private Rodauser PersonLinks.statusBy;
     
     @Column(name = "simscore", columnDefinition = "numeric", precision = 10, scale = 2)
     @NotNull
@@ -49,8 +49,8 @@ privileged aspect PersonLinks_Roo_DbManaged {
     @Column(name = "status_time", columnDefinition = "timestamp")
     @NotNull
     @Temporal(TemporalType.TIMESTAMP)
-    @DateTimeFormat(style = "M-")
-    private Date PersonLinks.statusTime;
+    @DateTimeFormat(style = "MM")
+    private Calendar PersonLinks.statusTime;
     
     public Person PersonLinks.getPersonId() {
         return personId;
@@ -60,19 +60,19 @@ privileged aspect PersonLinks_Roo_DbManaged {
         this.personId = personId;
     }
     
-    public User PersonLinks.getUserId() {
+    public Rodauser PersonLinks.getUserId() {
         return userId;
     }
     
-    public void PersonLinks.setUserId(User userId) {
+    public void PersonLinks.setUserId(Rodauser userId) {
         this.userId = userId;
     }
     
-    public User PersonLinks.getStatusBy() {
+    public Rodauser PersonLinks.getStatusBy() {
         return statusBy;
     }
     
-    public void PersonLinks.setStatusBy(User statusBy) {
+    public void PersonLinks.setStatusBy(Rodauser statusBy) {
         this.statusBy = statusBy;
     }
     
@@ -108,11 +108,11 @@ privileged aspect PersonLinks_Roo_DbManaged {
         this.status = status;
     }
     
-    public Date PersonLinks.getStatusTime() {
+    public Calendar PersonLinks.getStatusTime() {
         return statusTime;
     }
     
-    public void PersonLinks.setStatusTime(Date statusTime) {
+    public void PersonLinks.setStatusTime(Calendar statusTime) {
         this.statusTime = statusTime;
     }
     

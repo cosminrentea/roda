@@ -10,7 +10,7 @@ import ro.roda.Scale;
 privileged aspect Scale_Roo_ToString {
     
     public String Scale.toString() {
-        return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+        return new ReflectionToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE).setExcludeFieldNames("item").toString();
     }
     
 }

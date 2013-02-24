@@ -6,6 +6,7 @@ package ro.roda.web;
 import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,11 +15,18 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.PersonOrg;
 import ro.roda.PersonRole;
+import ro.roda.service.PersonOrgService;
+import ro.roda.service.PersonRoleService;
 import ro.roda.web.PersonRoleController;
 
 privileged aspect PersonRoleController_Roo_Controller {
+    
+    @Autowired
+    PersonRoleService PersonRoleController.personRoleService;
+    
+    @Autowired
+    PersonOrgService PersonRoleController.personOrgService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String PersonRoleController.create(@Valid PersonRole personRole, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -27,7 +35,7 @@ privileged aspect PersonRoleController_Roo_Controller {
             return "personroles/create";
         }
         uiModel.asMap().clear();
-        personRole.persist();
+        personRoleService.savePersonRole(personRole);
         return "redirect:/personroles/" + encodeUrlPathSegment(personRole.getId().toString(), httpServletRequest);
     }
     
@@ -39,7 +47,7 @@ privileged aspect PersonRoleController_Roo_Controller {
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String PersonRoleController.show(@PathVariable("id") Integer id, Model uiModel) {
-        uiModel.addAttribute("personrole", PersonRole.findPersonRole(id));
+        uiModel.addAttribute("personrole", personRoleService.findPersonRole(id));
         uiModel.addAttribute("itemId", id);
         return "personroles/show";
     }
@@ -49,11 +57,11 @@ privileged aspect PersonRoleController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("personroles", PersonRole.findPersonRoleEntries(firstResult, sizeNo));
-            float nrOfPages = (float) PersonRole.countPersonRoles() / sizeNo;
+            uiModel.addAttribute("personroles", personRoleService.findPersonRoleEntries(firstResult, sizeNo));
+            float nrOfPages = (float) personRoleService.countAllPersonRoles() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("personroles", PersonRole.findAllPersonRoles());
+            uiModel.addAttribute("personroles", personRoleService.findAllPersonRoles());
         }
         return "personroles/list";
     }
@@ -65,20 +73,20 @@ privileged aspect PersonRoleController_Roo_Controller {
             return "personroles/update";
         }
         uiModel.asMap().clear();
-        personRole.merge();
+        personRoleService.updatePersonRole(personRole);
         return "redirect:/personroles/" + encodeUrlPathSegment(personRole.getId().toString(), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String PersonRoleController.updateForm(@PathVariable("id") Integer id, Model uiModel) {
-        populateEditForm(uiModel, PersonRole.findPersonRole(id));
+        populateEditForm(uiModel, personRoleService.findPersonRole(id));
         return "personroles/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
     public String PersonRoleController.delete(@PathVariable("id") Integer id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        PersonRole personRole = PersonRole.findPersonRole(id);
-        personRole.remove();
+        PersonRole personRole = personRoleService.findPersonRole(id);
+        personRoleService.deletePersonRole(personRole);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
@@ -87,7 +95,7 @@ privileged aspect PersonRoleController_Roo_Controller {
     
     void PersonRoleController.populateEditForm(Model uiModel, PersonRole personRole) {
         uiModel.addAttribute("personRole", personRole);
-        uiModel.addAttribute("personorgs", PersonOrg.findAllPersonOrgs());
+        uiModel.addAttribute("personorgs", personOrgService.findAllPersonOrgs());
     }
     
     String PersonRoleController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

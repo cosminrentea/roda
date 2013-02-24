@@ -10,6 +10,6 @@
         <field:display field="namescore" id="s_ro_roda_PersonLinks_namescore" object="${personlinks}" z="IQdOpmA7GvEP0UuLWw19tpwvkgo="/>
         <field:display field="emailscore" id="s_ro_roda_PersonLinks_emailscore" object="${personlinks}" z="7qNL///rvwQE2IGokkW8tSgbrmc="/>
         <field:display field="status" id="s_ro_roda_PersonLinks_status" object="${personlinks}" z="zBuGDcFY3blNmJqdLv8Uyx1Oynk="/>
-        <field:display date="true" dateTimePattern="${personLinks_statustime_date_format}" field="statusTime" id="s_ro_roda_PersonLinks_statusTime" object="${personlinks}" z="BMWsYOzbGrFZDRn7gCdwww6uA84="/>
+        <field:display calendar="true" dateTimePattern="${personLinks_statustime_date_format}" field="statusTime" id="s_ro_roda_PersonLinks_statusTime" object="${personlinks}" z="OTK2qRE6j85QFvAEH+lgdmpOQug="/>
     </page:show>
 </div>

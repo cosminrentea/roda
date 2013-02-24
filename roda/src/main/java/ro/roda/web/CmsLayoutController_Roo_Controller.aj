@@ -6,6 +6,7 @@ package ro.roda.web;
 import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,11 +16,21 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.CmsLayout;
-import ro.roda.CmsLayoutGroup;
-import ro.roda.CmsPage;
+import ro.roda.service.CmsLayoutGroupService;
+import ro.roda.service.CmsLayoutService;
+import ro.roda.service.CmsPageService;
 import ro.roda.web.CmsLayoutController;
 
 privileged aspect CmsLayoutController_Roo_Controller {
+    
+    @Autowired
+    CmsLayoutService CmsLayoutController.cmsLayoutService;
+    
+    @Autowired
+    CmsLayoutGroupService CmsLayoutController.cmsLayoutGroupService;
+    
+    @Autowired
+    CmsPageService CmsLayoutController.cmsPageService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String CmsLayoutController.create(@Valid CmsLayout cmsLayout, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -28,7 +39,7 @@ privileged aspect CmsLayoutController_Roo_Controller {
             return "cmslayouts/create";
         }
         uiModel.asMap().clear();
-        cmsLayout.persist();
+        cmsLayoutService.saveCmsLayout(cmsLayout);
         return "redirect:/cmslayouts/" + encodeUrlPathSegment(cmsLayout.getId().toString(), httpServletRequest);
     }
     
@@ -40,7 +51,7 @@ privileged aspect CmsLayoutController_Roo_Controller {
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String CmsLayoutController.show(@PathVariable("id") Integer id, Model uiModel) {
-        uiModel.addAttribute("cmslayout", CmsLayout.findCmsLayout(id));
+        uiModel.addAttribute("cmslayout", cmsLayoutService.findCmsLayout(id));
         uiModel.addAttribute("itemId", id);
         return "cmslayouts/show";
     }
@@ -50,11 +61,11 @@ privileged aspect CmsLayoutController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("cmslayouts", CmsLayout.findCmsLayoutEntries(firstResult, sizeNo));
-            float nrOfPages = (float) CmsLayout.countCmsLayouts() / sizeNo;
+            uiModel.addAttribute("cmslayouts", cmsLayoutService.findCmsLayoutEntries(firstResult, sizeNo));
+            float nrOfPages = (float) cmsLayoutService.countAllCmsLayouts() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("cmslayouts", CmsLayout.findAllCmsLayouts());
+            uiModel.addAttribute("cmslayouts", cmsLayoutService.findAllCmsLayouts());
         }
         return "cmslayouts/list";
     }
@@ -66,20 +77,20 @@ privileged aspect CmsLayoutController_Roo_Controller {
             return "cmslayouts/update";
         }
         uiModel.asMap().clear();
-        cmsLayout.merge();
+        cmsLayoutService.updateCmsLayout(cmsLayout);
         return "redirect:/cmslayouts/" + encodeUrlPathSegment(cmsLayout.getId().toString(), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String CmsLayoutController.updateForm(@PathVariable("id") Integer id, Model uiModel) {
-        populateEditForm(uiModel, CmsLayout.findCmsLayout(id));
+        populateEditForm(uiModel, cmsLayoutService.findCmsLayout(id));
         return "cmslayouts/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
     public String CmsLayoutController.delete(@PathVariable("id") Integer id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        CmsLayout cmsLayout = CmsLayout.findCmsLayout(id);
-        cmsLayout.remove();
+        CmsLayout cmsLayout = cmsLayoutService.findCmsLayout(id);
+        cmsLayoutService.deleteCmsLayout(cmsLayout);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
@@ -88,8 +99,8 @@ privileged aspect CmsLayoutController_Roo_Controller {
     
     void CmsLayoutController.populateEditForm(Model uiModel, CmsLayout cmsLayout) {
         uiModel.addAttribute("cmsLayout", cmsLayout);
-        uiModel.addAttribute("cmslayoutgroups", CmsLayoutGroup.findAllCmsLayoutGroups());
-        uiModel.addAttribute("cmspages", CmsPage.findAllCmsPages());
+        uiModel.addAttribute("cmslayoutgroups", cmsLayoutGroupService.findAllCmsLayoutGroups());
+        uiModel.addAttribute("cmspages", cmsPageService.findAllCmsPages());
     }
     
     String CmsLayoutController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

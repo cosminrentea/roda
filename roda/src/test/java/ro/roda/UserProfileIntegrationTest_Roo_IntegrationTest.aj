@@ -11,9 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.UserProfile;
 import ro.roda.UserProfileDataOnDemand;
 import ro.roda.UserProfileIntegrationTest;
+import ro.roda.service.UserProfileService;
 
 privileged aspect UserProfileIntegrationTest_Roo_IntegrationTest {
     
@@ -24,12 +24,15 @@ privileged aspect UserProfileIntegrationTest_Roo_IntegrationTest {
     declare @type: UserProfileIntegrationTest: @Transactional;
     
     @Autowired
-    private UserProfileDataOnDemand UserProfileIntegrationTest.dod;
+    UserProfileDataOnDemand UserProfileIntegrationTest.dod;
+    
+    @Autowired
+    UserProfileService UserProfileIntegrationTest.userProfileService;
     
     @Test
-    public void UserProfileIntegrationTest.testCountUserProfiles() {
+    public void UserProfileIntegrationTest.testCountAllUserProfiles() {
         Assert.assertNotNull("Data on demand for 'UserProfile' failed to initialize correctly", dod.getRandomUserProfile());
-        long count = UserProfile.countUserProfiles();
+        long count = userProfileService.countAllUserProfiles();
         Assert.assertTrue("Counter for 'UserProfile' incorrectly reported there were no entries", count > 0);
     }
     
@@ -39,7 +42,7 @@ privileged aspect UserProfileIntegrationTest_Roo_IntegrationTest {
         Assert.assertNotNull("Data on demand for 'UserProfile' failed to initialize correctly", obj);
         Integer id = obj.getUserId();
         Assert.assertNotNull("Data on demand for 'UserProfile' failed to provide an identifier", id);
-        obj = UserProfile.findUserProfile(id);
+        obj = userProfileService.findUserProfile(id);
         Assert.assertNotNull("Find method for 'UserProfile' illegally returned null for id '" + id + "'", obj);
         Assert.assertEquals("Find method for 'UserProfile' returned the incorrect identifier", id, obj.getUserId());
     }
@@ -47,9 +50,9 @@ privileged aspect UserProfileIntegrationTest_Roo_IntegrationTest {
     @Test
     public void UserProfileIntegrationTest.testFindAllUserProfiles() {
         Assert.assertNotNull("Data on demand for 'UserProfile' failed to initialize correctly", dod.getRandomUserProfile());
-        long count = UserProfile.countUserProfiles();
+        long count = userProfileService.countAllUserProfiles();
         Assert.assertTrue("Too expensive to perform a find all test for 'UserProfile', as there are " + count + " entries; set the findAllMaximum to exceed this value or set findAll=false on the integration test annotation to disable the test", count < 250);
-        List<UserProfile> result = UserProfile.findAllUserProfiles();
+        List<UserProfile> result = userProfileService.findAllUserProfiles();
         Assert.assertNotNull("Find all method for 'UserProfile' illegally returned null", result);
         Assert.assertTrue("Find all method for 'UserProfile' failed to return any data", result.size() > 0);
     }
@@ -57,36 +60,36 @@ privileged aspect UserProfileIntegrationTest_Roo_IntegrationTest {
     @Test
     public void UserProfileIntegrationTest.testFindUserProfileEntries() {
         Assert.assertNotNull("Data on demand for 'UserProfile' failed to initialize correctly", dod.getRandomUserProfile());
-        long count = UserProfile.countUserProfiles();
+        long count = userProfileService.countAllUserProfiles();
         if (count > 20) count = 20;
         int firstResult = 0;
         int maxResults = (int) count;
-        List<UserProfile> result = UserProfile.findUserProfileEntries(firstResult, maxResults);
+        List<UserProfile> result = userProfileService.findUserProfileEntries(firstResult, maxResults);
         Assert.assertNotNull("Find entries method for 'UserProfile' illegally returned null", result);
         Assert.assertEquals("Find entries method for 'UserProfile' returned an incorrect number of entries", count, result.size());
     }
     
     @Test
-    public void UserProfileIntegrationTest.testPersist() {
+    public void UserProfileIntegrationTest.testSaveUserProfile() {
         Assert.assertNotNull("Data on demand for 'UserProfile' failed to initialize correctly", dod.getRandomUserProfile());
         UserProfile obj = dod.getNewTransientUserProfile(Integer.MAX_VALUE);
         Assert.assertNotNull("Data on demand for 'UserProfile' failed to provide a new transient entity", obj);
         Assert.assertNull("Expected 'UserProfile' identifier to be null", obj.getUserId());
-        obj.persist();
+        userProfileService.saveUserProfile(obj);
         obj.flush();
         Assert.assertNotNull("Expected 'UserProfile' identifier to no longer be null", obj.getUserId());
     }
     
     @Test
-    public void UserProfileIntegrationTest.testRemove() {
+    public void UserProfileIntegrationTest.testDeleteUserProfile() {
         UserProfile obj = dod.getRandomUserProfile();
         Assert.assertNotNull("Data on demand for 'UserProfile' failed to initialize correctly", obj);
         Integer id = obj.getUserId();
         Assert.assertNotNull("Data on demand for 'UserProfile' failed to provide an identifier", id);
-        obj = UserProfile.findUserProfile(id);
-        obj.remove();
+        obj = userProfileService.findUserProfile(id);
+        userProfileService.deleteUserProfile(obj);
         obj.flush();
-        Assert.assertNull("Failed to remove 'UserProfile' with identifier '" + id + "'", UserProfile.findUserProfile(id));
+        Assert.assertNull("Failed to remove 'UserProfile' with identifier '" + id + "'", userProfileService.findUserProfile(id));
     }
     
 }

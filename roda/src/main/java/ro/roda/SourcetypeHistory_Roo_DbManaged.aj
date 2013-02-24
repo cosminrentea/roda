@@ -3,19 +3,23 @@
 
 package ro.roda;
 
-import java.util.Date;
+import java.util.Calendar;
 import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import org.springframework.format.annotation.DateTimeFormat;
+import ro.roda.Rodauser;
 import ro.roda.Source;
 import ro.roda.Sourcetype;
 import ro.roda.SourcetypeHistory;
-import ro.roda.User;
 
 privileged aspect SourcetypeHistory_Roo_DbManaged {
+    
+    @ManyToOne
+    @JoinColumn(name = "added_by", referencedColumnName = "id", nullable = false)
+    private Rodauser SourcetypeHistory.addedBy;
     
     @ManyToOne
     @JoinColumn(name = "org_id", referencedColumnName = "org_id", nullable = false)
@@ -25,19 +29,23 @@ privileged aspect SourcetypeHistory_Roo_DbManaged {
     @JoinColumn(name = "sourcetype_id", referencedColumnName = "id", nullable = false)
     private Sourcetype SourcetypeHistory.sourcetypeId;
     
-    @ManyToOne
-    @JoinColumn(name = "added_by", referencedColumnName = "id", nullable = false)
-    private User SourcetypeHistory.addedBy;
-    
     @Column(name = "datestart", columnDefinition = "timestamp")
     @Temporal(TemporalType.TIMESTAMP)
-    @DateTimeFormat(style = "M-")
-    private Date SourcetypeHistory.datestart;
+    @DateTimeFormat(style = "MM")
+    private Calendar SourcetypeHistory.datestart;
     
     @Column(name = "dateend", columnDefinition = "timestamp")
     @Temporal(TemporalType.TIMESTAMP)
-    @DateTimeFormat(style = "M-")
-    private Date SourcetypeHistory.dateend;
+    @DateTimeFormat(style = "MM")
+    private Calendar SourcetypeHistory.dateend;
+    
+    public Rodauser SourcetypeHistory.getAddedBy() {
+        return addedBy;
+    }
+    
+    public void SourcetypeHistory.setAddedBy(Rodauser addedBy) {
+        this.addedBy = addedBy;
+    }
     
     public Source SourcetypeHistory.getOrgId() {
         return orgId;
@@ -55,27 +63,19 @@ privileged aspect SourcetypeHistory_Roo_DbManaged {
         this.sourcetypeId = sourcetypeId;
     }
     
-    public User SourcetypeHistory.getAddedBy() {
-        return addedBy;
-    }
-    
-    public void SourcetypeHistory.setAddedBy(User addedBy) {
-        this.addedBy = addedBy;
-    }
-    
-    public Date SourcetypeHistory.getDatestart() {
+    public Calendar SourcetypeHistory.getDatestart() {
         return datestart;
     }
     
-    public void SourcetypeHistory.setDatestart(Date datestart) {
+    public void SourcetypeHistory.setDatestart(Calendar datestart) {
         this.datestart = datestart;
     }
     
-    public Date SourcetypeHistory.getDateend() {
+    public Calendar SourcetypeHistory.getDateend() {
         return dateend;
     }
     
-    public void SourcetypeHistory.setDateend(Date dateend) {
+    public void SourcetypeHistory.setDateend(Calendar dateend) {
         this.dateend = dateend;
     }
     

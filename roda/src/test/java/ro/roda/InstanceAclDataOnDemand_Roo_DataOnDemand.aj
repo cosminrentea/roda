@@ -12,10 +12,12 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import ro.roda.Instance;
 import ro.roda.InstanceAcl;
 import ro.roda.InstanceAclDataOnDemand;
 import ro.roda.InstanceAclPK;
 import ro.roda.InstanceDataOnDemand;
+import ro.roda.service.InstanceAclService;
 
 privileged aspect InstanceAclDataOnDemand_Roo_DataOnDemand {
     
@@ -26,12 +28,16 @@ privileged aspect InstanceAclDataOnDemand_Roo_DataOnDemand {
     private List<InstanceAcl> InstanceAclDataOnDemand.data;
     
     @Autowired
-    private InstanceDataOnDemand InstanceAclDataOnDemand.instanceDataOnDemand;
+    InstanceDataOnDemand InstanceAclDataOnDemand.instanceDataOnDemand;
+    
+    @Autowired
+    InstanceAclService InstanceAclDataOnDemand.instanceAclService;
     
     public InstanceAcl InstanceAclDataOnDemand.getNewTransientInstanceAcl(int index) {
         InstanceAcl obj = new InstanceAcl();
         setEmbeddedIdClass(obj, index);
         setDelete(obj, index);
+        setInstanceId(obj, index);
         setModacl(obj, index);
         setRead(obj, index);
         setUpdate(obj, index);
@@ -50,6 +56,11 @@ privileged aspect InstanceAclDataOnDemand_Roo_DataOnDemand {
     public void InstanceAclDataOnDemand.setDelete(InstanceAcl obj, int index) {
         Boolean delete = Boolean.TRUE;
         obj.setDelete(delete);
+    }
+    
+    public void InstanceAclDataOnDemand.setInstanceId(InstanceAcl obj, int index) {
+        Instance instanceId = instanceDataOnDemand.getRandomInstance();
+        obj.setInstanceId(instanceId);
     }
     
     public void InstanceAclDataOnDemand.setModacl(InstanceAcl obj, int index) {
@@ -77,14 +88,14 @@ privileged aspect InstanceAclDataOnDemand_Roo_DataOnDemand {
         }
         InstanceAcl obj = data.get(index);
         InstanceAclPK id = obj.getId();
-        return InstanceAcl.findInstanceAcl(id);
+        return instanceAclService.findInstanceAcl(id);
     }
     
     public InstanceAcl InstanceAclDataOnDemand.getRandomInstanceAcl() {
         init();
         InstanceAcl obj = data.get(rnd.nextInt(data.size()));
         InstanceAclPK id = obj.getId();
-        return InstanceAcl.findInstanceAcl(id);
+        return instanceAclService.findInstanceAcl(id);
     }
     
     public boolean InstanceAclDataOnDemand.modifyInstanceAcl(InstanceAcl obj) {
@@ -94,7 +105,7 @@ privileged aspect InstanceAclDataOnDemand_Roo_DataOnDemand {
     public void InstanceAclDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = InstanceAcl.findInstanceAclEntries(from, to);
+        data = instanceAclService.findInstanceAclEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'InstanceAcl' illegally returned null");
         }
@@ -106,7 +117,7 @@ privileged aspect InstanceAclDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             InstanceAcl obj = getNewTransientInstanceAcl(i);
             try {
-                obj.persist();
+                instanceAclService.saveInstanceAcl(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

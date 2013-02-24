@@ -12,10 +12,10 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import ro.roda.AuditDataOnDemand;
 import ro.roda.AuditRowId;
 import ro.roda.AuditRowIdDataOnDemand;
 import ro.roda.AuditRowIdPK;
+import ro.roda.service.AuditRowIdService;
 
 privileged aspect AuditRowIdDataOnDemand_Roo_DataOnDemand {
     
@@ -26,32 +26,19 @@ privileged aspect AuditRowIdDataOnDemand_Roo_DataOnDemand {
     private List<AuditRowId> AuditRowIdDataOnDemand.data;
     
     @Autowired
-    private AuditDataOnDemand AuditRowIdDataOnDemand.auditDataOnDemand;
+    AuditRowIdService AuditRowIdDataOnDemand.auditRowIdService;
     
     public AuditRowId AuditRowIdDataOnDemand.getNewTransientAuditRowId(int index) {
         AuditRowId obj = new AuditRowId();
         setEmbeddedIdClass(obj, index);
-        setColumnName(obj, index);
-        setColumnValue(obj, index);
         return obj;
     }
     
     public void AuditRowIdDataOnDemand.setEmbeddedIdClass(AuditRowId obj, int index) {
-        Integer auditId = new Integer(index);
-        Integer id = new Integer(index);
+        Long id = new Integer(index).longValue();
         
-        AuditRowIdPK embeddedIdClass = new AuditRowIdPK(auditId, id);
+        AuditRowIdPK embeddedIdClass = new AuditRowIdPK(id);
         obj.setId(embeddedIdClass);
-    }
-    
-    public void AuditRowIdDataOnDemand.setColumnName(AuditRowId obj, int index) {
-        String columnName = "columnName_" + index;
-        obj.setColumnName(columnName);
-    }
-    
-    public void AuditRowIdDataOnDemand.setColumnValue(AuditRowId obj, int index) {
-        Integer columnValue = new Integer(index);
-        obj.setColumnValue(columnValue);
     }
     
     public AuditRowId AuditRowIdDataOnDemand.getSpecificAuditRowId(int index) {
@@ -64,14 +51,14 @@ privileged aspect AuditRowIdDataOnDemand_Roo_DataOnDemand {
         }
         AuditRowId obj = data.get(index);
         AuditRowIdPK id = obj.getId();
-        return AuditRowId.findAuditRowId(id);
+        return auditRowIdService.findAuditRowId(id);
     }
     
     public AuditRowId AuditRowIdDataOnDemand.getRandomAuditRowId() {
         init();
         AuditRowId obj = data.get(rnd.nextInt(data.size()));
         AuditRowIdPK id = obj.getId();
-        return AuditRowId.findAuditRowId(id);
+        return auditRowIdService.findAuditRowId(id);
     }
     
     public boolean AuditRowIdDataOnDemand.modifyAuditRowId(AuditRowId obj) {
@@ -81,7 +68,7 @@ privileged aspect AuditRowIdDataOnDemand_Roo_DataOnDemand {
     public void AuditRowIdDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = AuditRowId.findAuditRowIdEntries(from, to);
+        data = auditRowIdService.findAuditRowIdEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'AuditRowId' illegally returned null");
         }
@@ -93,7 +80,7 @@ privileged aspect AuditRowIdDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             AuditRowId obj = getNewTransientAuditRowId(i);
             try {
-                obj.persist();
+                auditRowIdService.saveAuditRowId(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

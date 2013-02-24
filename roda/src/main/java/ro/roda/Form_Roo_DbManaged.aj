@@ -3,7 +3,7 @@
 
 package ro.roda;
 
-import java.util.Date;
+import java.util.Calendar;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.JoinColumn;
@@ -48,8 +48,8 @@ privileged aspect Form_Roo_DbManaged {
     
     @Column(name = "fill_time", columnDefinition = "timestamp")
     @Temporal(TemporalType.TIMESTAMP)
-    @DateTimeFormat(style = "M-")
-    private Date Form.fillTime;
+    @DateTimeFormat(style = "MM")
+    private Calendar Form.fillTime;
     
     public Set<FormEditedNumberVar> Form.getFormEditedNumberVars() {
         return formEditedNumberVars;
@@ -107,11 +107,11 @@ privileged aspect Form_Roo_DbManaged {
         this.operatorNotes = operatorNotes;
     }
     
-    public Date Form.getFillTime() {
+    public Calendar Form.getFillTime() {
         return fillTime;
     }
     
-    public void Form.setFillTime(Date fillTime) {
+    public void Form.setFillTime(Calendar fillTime) {
         this.fillTime = fillTime;
     }
     

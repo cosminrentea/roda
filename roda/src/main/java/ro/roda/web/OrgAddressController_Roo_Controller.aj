@@ -6,9 +6,7 @@ package ro.roda.web;
 import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -18,15 +16,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.Address;
-import ro.roda.Org;
 import ro.roda.OrgAddress;
 import ro.roda.OrgAddressPK;
+import ro.roda.service.OrgAddressService;
 import ro.roda.web.OrgAddressController;
 
 privileged aspect OrgAddressController_Roo_Controller {
     
     private ConversionService OrgAddressController.conversionService;
+    
+    @Autowired
+    OrgAddressService OrgAddressController.orgAddressService;
     
     @Autowired
     public OrgAddressController.new(ConversionService conversionService) {
@@ -41,7 +41,7 @@ privileged aspect OrgAddressController_Roo_Controller {
             return "orgaddresses/create";
         }
         uiModel.asMap().clear();
-        orgAddress.persist();
+        orgAddressService.saveOrgAddress(orgAddress);
         return "redirect:/orgaddresses/" + encodeUrlPathSegment(conversionService.convert(orgAddress.getId(), String.class), httpServletRequest);
     }
     
@@ -53,8 +53,7 @@ privileged aspect OrgAddressController_Roo_Controller {
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String OrgAddressController.show(@PathVariable("id") OrgAddressPK id, Model uiModel) {
-        addDateTimeFormatPatterns(uiModel);
-        uiModel.addAttribute("orgaddress", OrgAddress.findOrgAddress(id));
+        uiModel.addAttribute("orgaddress", orgAddressService.findOrgAddress(id));
         uiModel.addAttribute("itemId", conversionService.convert(id, String.class));
         return "orgaddresses/show";
     }
@@ -64,13 +63,12 @@ privileged aspect OrgAddressController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("orgaddresses", OrgAddress.findOrgAddressEntries(firstResult, sizeNo));
-            float nrOfPages = (float) OrgAddress.countOrgAddresses() / sizeNo;
+            uiModel.addAttribute("orgaddresses", orgAddressService.findOrgAddressEntries(firstResult, sizeNo));
+            float nrOfPages = (float) orgAddressService.countAllOrgAddresses() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("orgaddresses", OrgAddress.findAllOrgAddresses());
+            uiModel.addAttribute("orgaddresses", orgAddressService.findAllOrgAddresses());
         }
-        addDateTimeFormatPatterns(uiModel);
         return "orgaddresses/list";
     }
     
@@ -81,36 +79,28 @@ privileged aspect OrgAddressController_Roo_Controller {
             return "orgaddresses/update";
         }
         uiModel.asMap().clear();
-        orgAddress.merge();
+        orgAddressService.updateOrgAddress(orgAddress);
         return "redirect:/orgaddresses/" + encodeUrlPathSegment(conversionService.convert(orgAddress.getId(), String.class), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String OrgAddressController.updateForm(@PathVariable("id") OrgAddressPK id, Model uiModel) {
-        populateEditForm(uiModel, OrgAddress.findOrgAddress(id));
+        populateEditForm(uiModel, orgAddressService.findOrgAddress(id));
         return "orgaddresses/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
     public String OrgAddressController.delete(@PathVariable("id") OrgAddressPK id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        OrgAddress orgAddress = OrgAddress.findOrgAddress(id);
-        orgAddress.remove();
+        OrgAddress orgAddress = orgAddressService.findOrgAddress(id);
+        orgAddressService.deleteOrgAddress(orgAddress);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
         return "redirect:/orgaddresses";
     }
     
-    void OrgAddressController.addDateTimeFormatPatterns(Model uiModel) {
-        uiModel.addAttribute("orgAddress_datestart_date_format", DateTimeFormat.patternForStyle("M-", LocaleContextHolder.getLocale()));
-        uiModel.addAttribute("orgAddress_dateend_date_format", DateTimeFormat.patternForStyle("M-", LocaleContextHolder.getLocale()));
-    }
-    
     void OrgAddressController.populateEditForm(Model uiModel, OrgAddress orgAddress) {
         uiModel.addAttribute("orgAddress", orgAddress);
-        addDateTimeFormatPatterns(uiModel);
-        uiModel.addAttribute("addresses", Address.findAllAddresses());
-        uiModel.addAttribute("orgs", Org.findAllOrgs());
     }
     
     String OrgAddressController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

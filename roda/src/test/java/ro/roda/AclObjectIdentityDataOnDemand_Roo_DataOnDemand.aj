@@ -12,10 +12,13 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import ro.roda.AclClass;
 import ro.roda.AclClassDataOnDemand;
 import ro.roda.AclObjectIdentity;
 import ro.roda.AclObjectIdentityDataOnDemand;
+import ro.roda.AclSid;
 import ro.roda.AclSidDataOnDemand;
+import ro.roda.service.AclObjectIdentityService;
 
 privileged aspect AclObjectIdentityDataOnDemand_Roo_DataOnDemand {
     
@@ -26,15 +29,20 @@ privileged aspect AclObjectIdentityDataOnDemand_Roo_DataOnDemand {
     private List<AclObjectIdentity> AclObjectIdentityDataOnDemand.data;
     
     @Autowired
-    private AclClassDataOnDemand AclObjectIdentityDataOnDemand.aclClassDataOnDemand;
+    AclClassDataOnDemand AclObjectIdentityDataOnDemand.aclClassDataOnDemand;
     
     @Autowired
-    private AclSidDataOnDemand AclObjectIdentityDataOnDemand.aclSidDataOnDemand;
+    AclSidDataOnDemand AclObjectIdentityDataOnDemand.aclSidDataOnDemand;
+    
+    @Autowired
+    AclObjectIdentityService AclObjectIdentityDataOnDemand.aclObjectIdentityService;
     
     public AclObjectIdentity AclObjectIdentityDataOnDemand.getNewTransientAclObjectIdentity(int index) {
         AclObjectIdentity obj = new AclObjectIdentity();
         setEntriesInheriting(obj, index);
+        setObjectIdClass(obj, index);
         setObjectIdIdentity(obj, index);
+        setOwnerSid(obj, index);
         setParentObject(obj, index);
         return obj;
     }
@@ -44,9 +52,19 @@ privileged aspect AclObjectIdentityDataOnDemand_Roo_DataOnDemand {
         obj.setEntriesInheriting(entriesInheriting);
     }
     
+    public void AclObjectIdentityDataOnDemand.setObjectIdClass(AclObjectIdentity obj, int index) {
+        AclClass objectIdClass = aclClassDataOnDemand.getRandomAclClass();
+        obj.setObjectIdClass(objectIdClass);
+    }
+    
     public void AclObjectIdentityDataOnDemand.setObjectIdIdentity(AclObjectIdentity obj, int index) {
         Long objectIdIdentity = new Integer(index).longValue();
         obj.setObjectIdIdentity(objectIdIdentity);
+    }
+    
+    public void AclObjectIdentityDataOnDemand.setOwnerSid(AclObjectIdentity obj, int index) {
+        AclSid ownerSid = aclSidDataOnDemand.getRandomAclSid();
+        obj.setOwnerSid(ownerSid);
     }
     
     public void AclObjectIdentityDataOnDemand.setParentObject(AclObjectIdentity obj, int index) {
@@ -64,14 +82,14 @@ privileged aspect AclObjectIdentityDataOnDemand_Roo_DataOnDemand {
         }
         AclObjectIdentity obj = data.get(index);
         Long id = obj.getId();
-        return AclObjectIdentity.findAclObjectIdentity(id);
+        return aclObjectIdentityService.findAclObjectIdentity(id);
     }
     
     public AclObjectIdentity AclObjectIdentityDataOnDemand.getRandomAclObjectIdentity() {
         init();
         AclObjectIdentity obj = data.get(rnd.nextInt(data.size()));
         Long id = obj.getId();
-        return AclObjectIdentity.findAclObjectIdentity(id);
+        return aclObjectIdentityService.findAclObjectIdentity(id);
     }
     
     public boolean AclObjectIdentityDataOnDemand.modifyAclObjectIdentity(AclObjectIdentity obj) {
@@ -81,7 +99,7 @@ privileged aspect AclObjectIdentityDataOnDemand_Roo_DataOnDemand {
     public void AclObjectIdentityDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = AclObjectIdentity.findAclObjectIdentityEntries(from, to);
+        data = aclObjectIdentityService.findAclObjectIdentityEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'AclObjectIdentity' illegally returned null");
         }
@@ -93,7 +111,7 @@ privileged aspect AclObjectIdentityDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             AclObjectIdentity obj = getNewTransientAclObjectIdentity(i);
             try {
-                obj.persist();
+                aclObjectIdentityService.saveAclObjectIdentity(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

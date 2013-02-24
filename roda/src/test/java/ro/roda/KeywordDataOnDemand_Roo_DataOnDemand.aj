@@ -10,9 +10,11 @@ import java.util.List;
 import java.util.Random;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ro.roda.Keyword;
 import ro.roda.KeywordDataOnDemand;
+import ro.roda.service.KeywordService;
 
 privileged aspect KeywordDataOnDemand_Roo_DataOnDemand {
     
@@ -21,6 +23,9 @@ privileged aspect KeywordDataOnDemand_Roo_DataOnDemand {
     private Random KeywordDataOnDemand.rnd = new SecureRandom();
     
     private List<Keyword> KeywordDataOnDemand.data;
+    
+    @Autowired
+    KeywordService KeywordDataOnDemand.keywordService;
     
     public Keyword KeywordDataOnDemand.getNewTransientKeyword(int index) {
         Keyword obj = new Keyword();
@@ -43,14 +48,14 @@ privileged aspect KeywordDataOnDemand_Roo_DataOnDemand {
         }
         Keyword obj = data.get(index);
         Integer id = obj.getId();
-        return Keyword.findKeyword(id);
+        return keywordService.findKeyword(id);
     }
     
     public Keyword KeywordDataOnDemand.getRandomKeyword() {
         init();
         Keyword obj = data.get(rnd.nextInt(data.size()));
         Integer id = obj.getId();
-        return Keyword.findKeyword(id);
+        return keywordService.findKeyword(id);
     }
     
     public boolean KeywordDataOnDemand.modifyKeyword(Keyword obj) {
@@ -60,7 +65,7 @@ privileged aspect KeywordDataOnDemand_Roo_DataOnDemand {
     public void KeywordDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = Keyword.findKeywordEntries(from, to);
+        data = keywordService.findKeywordEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'Keyword' illegally returned null");
         }
@@ -72,7 +77,7 @@ privileged aspect KeywordDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             Keyword obj = getNewTransientKeyword(i);
             try {
-                obj.persist();
+                keywordService.saveKeyword(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

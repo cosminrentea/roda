@@ -10,9 +10,11 @@ import java.util.List;
 import java.util.Random;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ro.roda.StudyPersonAssoc;
 import ro.roda.StudyPersonAssocDataOnDemand;
+import ro.roda.service.StudyPersonAssocService;
 
 privileged aspect StudyPersonAssocDataOnDemand_Roo_DataOnDemand {
     
@@ -21,6 +23,9 @@ privileged aspect StudyPersonAssocDataOnDemand_Roo_DataOnDemand {
     private Random StudyPersonAssocDataOnDemand.rnd = new SecureRandom();
     
     private List<StudyPersonAssoc> StudyPersonAssocDataOnDemand.data;
+    
+    @Autowired
+    StudyPersonAssocService StudyPersonAssocDataOnDemand.studyPersonAssocService;
     
     public StudyPersonAssoc StudyPersonAssocDataOnDemand.getNewTransientStudyPersonAssoc(int index) {
         StudyPersonAssoc obj = new StudyPersonAssoc();
@@ -52,14 +57,14 @@ privileged aspect StudyPersonAssocDataOnDemand_Roo_DataOnDemand {
         }
         StudyPersonAssoc obj = data.get(index);
         Integer id = obj.getId();
-        return StudyPersonAssoc.findStudyPersonAssoc(id);
+        return studyPersonAssocService.findStudyPersonAssoc(id);
     }
     
     public StudyPersonAssoc StudyPersonAssocDataOnDemand.getRandomStudyPersonAssoc() {
         init();
         StudyPersonAssoc obj = data.get(rnd.nextInt(data.size()));
         Integer id = obj.getId();
-        return StudyPersonAssoc.findStudyPersonAssoc(id);
+        return studyPersonAssocService.findStudyPersonAssoc(id);
     }
     
     public boolean StudyPersonAssocDataOnDemand.modifyStudyPersonAssoc(StudyPersonAssoc obj) {
@@ -69,7 +74,7 @@ privileged aspect StudyPersonAssocDataOnDemand_Roo_DataOnDemand {
     public void StudyPersonAssocDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = StudyPersonAssoc.findStudyPersonAssocEntries(from, to);
+        data = studyPersonAssocService.findStudyPersonAssocEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'StudyPersonAssoc' illegally returned null");
         }
@@ -81,7 +86,7 @@ privileged aspect StudyPersonAssocDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             StudyPersonAssoc obj = getNewTransientStudyPersonAssoc(i);
             try {
-                obj.persist();
+                studyPersonAssocService.saveStudyPersonAssoc(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

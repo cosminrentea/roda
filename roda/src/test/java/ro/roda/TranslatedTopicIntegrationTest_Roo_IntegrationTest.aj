@@ -11,10 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.TranslatedTopic;
 import ro.roda.TranslatedTopicDataOnDemand;
 import ro.roda.TranslatedTopicIntegrationTest;
 import ro.roda.TranslatedTopicPK;
+import ro.roda.service.TranslatedTopicService;
 
 privileged aspect TranslatedTopicIntegrationTest_Roo_IntegrationTest {
     
@@ -25,12 +25,15 @@ privileged aspect TranslatedTopicIntegrationTest_Roo_IntegrationTest {
     declare @type: TranslatedTopicIntegrationTest: @Transactional;
     
     @Autowired
-    private TranslatedTopicDataOnDemand TranslatedTopicIntegrationTest.dod;
+    TranslatedTopicDataOnDemand TranslatedTopicIntegrationTest.dod;
+    
+    @Autowired
+    TranslatedTopicService TranslatedTopicIntegrationTest.translatedTopicService;
     
     @Test
-    public void TranslatedTopicIntegrationTest.testCountTranslatedTopics() {
+    public void TranslatedTopicIntegrationTest.testCountAllTranslatedTopics() {
         Assert.assertNotNull("Data on demand for 'TranslatedTopic' failed to initialize correctly", dod.getRandomTranslatedTopic());
-        long count = TranslatedTopic.countTranslatedTopics();
+        long count = translatedTopicService.countAllTranslatedTopics();
         Assert.assertTrue("Counter for 'TranslatedTopic' incorrectly reported there were no entries", count > 0);
     }
     
@@ -40,7 +43,7 @@ privileged aspect TranslatedTopicIntegrationTest_Roo_IntegrationTest {
         Assert.assertNotNull("Data on demand for 'TranslatedTopic' failed to initialize correctly", obj);
         TranslatedTopicPK id = obj.getId();
         Assert.assertNotNull("Data on demand for 'TranslatedTopic' failed to provide an identifier", id);
-        obj = TranslatedTopic.findTranslatedTopic(id);
+        obj = translatedTopicService.findTranslatedTopic(id);
         Assert.assertNotNull("Find method for 'TranslatedTopic' illegally returned null for id '" + id + "'", obj);
         Assert.assertEquals("Find method for 'TranslatedTopic' returned the incorrect identifier", id, obj.getId());
     }
@@ -48,9 +51,9 @@ privileged aspect TranslatedTopicIntegrationTest_Roo_IntegrationTest {
     @Test
     public void TranslatedTopicIntegrationTest.testFindAllTranslatedTopics() {
         Assert.assertNotNull("Data on demand for 'TranslatedTopic' failed to initialize correctly", dod.getRandomTranslatedTopic());
-        long count = TranslatedTopic.countTranslatedTopics();
+        long count = translatedTopicService.countAllTranslatedTopics();
         Assert.assertTrue("Too expensive to perform a find all test for 'TranslatedTopic', as there are " + count + " entries; set the findAllMaximum to exceed this value or set findAll=false on the integration test annotation to disable the test", count < 250);
-        List<TranslatedTopic> result = TranslatedTopic.findAllTranslatedTopics();
+        List<TranslatedTopic> result = translatedTopicService.findAllTranslatedTopics();
         Assert.assertNotNull("Find all method for 'TranslatedTopic' illegally returned null", result);
         Assert.assertTrue("Find all method for 'TranslatedTopic' failed to return any data", result.size() > 0);
     }
@@ -58,35 +61,35 @@ privileged aspect TranslatedTopicIntegrationTest_Roo_IntegrationTest {
     @Test
     public void TranslatedTopicIntegrationTest.testFindTranslatedTopicEntries() {
         Assert.assertNotNull("Data on demand for 'TranslatedTopic' failed to initialize correctly", dod.getRandomTranslatedTopic());
-        long count = TranslatedTopic.countTranslatedTopics();
+        long count = translatedTopicService.countAllTranslatedTopics();
         if (count > 20) count = 20;
         int firstResult = 0;
         int maxResults = (int) count;
-        List<TranslatedTopic> result = TranslatedTopic.findTranslatedTopicEntries(firstResult, maxResults);
+        List<TranslatedTopic> result = translatedTopicService.findTranslatedTopicEntries(firstResult, maxResults);
         Assert.assertNotNull("Find entries method for 'TranslatedTopic' illegally returned null", result);
         Assert.assertEquals("Find entries method for 'TranslatedTopic' returned an incorrect number of entries", count, result.size());
     }
     
     @Test
-    public void TranslatedTopicIntegrationTest.testPersist() {
+    public void TranslatedTopicIntegrationTest.testSaveTranslatedTopic() {
         Assert.assertNotNull("Data on demand for 'TranslatedTopic' failed to initialize correctly", dod.getRandomTranslatedTopic());
         TranslatedTopic obj = dod.getNewTransientTranslatedTopic(Integer.MAX_VALUE);
         Assert.assertNotNull("Data on demand for 'TranslatedTopic' failed to provide a new transient entity", obj);
-        obj.persist();
+        translatedTopicService.saveTranslatedTopic(obj);
         obj.flush();
         Assert.assertNotNull("Expected 'TranslatedTopic' identifier to no longer be null", obj.getId());
     }
     
     @Test
-    public void TranslatedTopicIntegrationTest.testRemove() {
+    public void TranslatedTopicIntegrationTest.testDeleteTranslatedTopic() {
         TranslatedTopic obj = dod.getRandomTranslatedTopic();
         Assert.assertNotNull("Data on demand for 'TranslatedTopic' failed to initialize correctly", obj);
         TranslatedTopicPK id = obj.getId();
         Assert.assertNotNull("Data on demand for 'TranslatedTopic' failed to provide an identifier", id);
-        obj = TranslatedTopic.findTranslatedTopic(id);
-        obj.remove();
+        obj = translatedTopicService.findTranslatedTopic(id);
+        translatedTopicService.deleteTranslatedTopic(obj);
         obj.flush();
-        Assert.assertNull("Failed to remove 'TranslatedTopic' with identifier '" + id + "'", TranslatedTopic.findTranslatedTopic(id));
+        Assert.assertNull("Failed to remove 'TranslatedTopic' with identifier '" + id + "'", translatedTopicService.findTranslatedTopic(id));
     }
     
 }

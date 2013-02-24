@@ -12,10 +12,13 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import ro.roda.Source;
 import ro.roda.SourceDataOnDemand;
 import ro.roda.Sourcestudy;
 import ro.roda.SourcestudyDataOnDemand;
+import ro.roda.SourcestudyType;
 import ro.roda.SourcestudyTypeDataOnDemand;
+import ro.roda.service.SourcestudyService;
 
 privileged aspect SourcestudyDataOnDemand_Roo_DataOnDemand {
     
@@ -26,15 +29,20 @@ privileged aspect SourcestudyDataOnDemand_Roo_DataOnDemand {
     private List<Sourcestudy> SourcestudyDataOnDemand.data;
     
     @Autowired
-    private SourceDataOnDemand SourcestudyDataOnDemand.sourceDataOnDemand;
+    SourceDataOnDemand SourcestudyDataOnDemand.sourceDataOnDemand;
     
     @Autowired
-    private SourcestudyTypeDataOnDemand SourcestudyDataOnDemand.sourcestudyTypeDataOnDemand;
+    SourcestudyTypeDataOnDemand SourcestudyDataOnDemand.sourcestudyTypeDataOnDemand;
+    
+    @Autowired
+    SourcestudyService SourcestudyDataOnDemand.sourcestudyService;
     
     public Sourcestudy SourcestudyDataOnDemand.getNewTransientSourcestudy(int index) {
         Sourcestudy obj = new Sourcestudy();
         setDetails(obj, index);
         setName(obj, index);
+        setOrgId(obj, index);
+        setType(obj, index);
         return obj;
     }
     
@@ -51,6 +59,16 @@ privileged aspect SourcestudyDataOnDemand_Roo_DataOnDemand {
         obj.setName(name);
     }
     
+    public void SourcestudyDataOnDemand.setOrgId(Sourcestudy obj, int index) {
+        Source orgId = sourceDataOnDemand.getRandomSource();
+        obj.setOrgId(orgId);
+    }
+    
+    public void SourcestudyDataOnDemand.setType(Sourcestudy obj, int index) {
+        SourcestudyType type = sourcestudyTypeDataOnDemand.getRandomSourcestudyType();
+        obj.setType(type);
+    }
+    
     public Sourcestudy SourcestudyDataOnDemand.getSpecificSourcestudy(int index) {
         init();
         if (index < 0) {
@@ -61,14 +79,14 @@ privileged aspect SourcestudyDataOnDemand_Roo_DataOnDemand {
         }
         Sourcestudy obj = data.get(index);
         Integer id = obj.getId();
-        return Sourcestudy.findSourcestudy(id);
+        return sourcestudyService.findSourcestudy(id);
     }
     
     public Sourcestudy SourcestudyDataOnDemand.getRandomSourcestudy() {
         init();
         Sourcestudy obj = data.get(rnd.nextInt(data.size()));
         Integer id = obj.getId();
-        return Sourcestudy.findSourcestudy(id);
+        return sourcestudyService.findSourcestudy(id);
     }
     
     public boolean SourcestudyDataOnDemand.modifySourcestudy(Sourcestudy obj) {
@@ -78,7 +96,7 @@ privileged aspect SourcestudyDataOnDemand_Roo_DataOnDemand {
     public void SourcestudyDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = Sourcestudy.findSourcestudyEntries(from, to);
+        data = sourcestudyService.findSourcestudyEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'Sourcestudy' illegally returned null");
         }
@@ -90,7 +108,7 @@ privileged aspect SourcestudyDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             Sourcestudy obj = getNewTransientSourcestudy(i);
             try {
-                obj.persist();
+                sourcestudyService.saveSourcestudy(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

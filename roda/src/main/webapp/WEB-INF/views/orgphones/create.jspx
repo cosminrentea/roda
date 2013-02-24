@@ -5,7 +5,6 @@
     <form:create compositePkField="id" id="fc_ro_roda_OrgPhone" modelAttribute="orgPhone" path="/orgphones" render="${empty dependencies}" z="fqAAKAQTcYbAtLJ0bWlpSiNGvv8=">
         <field:input disableFormBinding="true" field="id.orgId" id="c_ro_roda_OrgPhone_id_orgId" required="true" validationMessageCode="field_invalid_integer" z="1AzUFwFv4bT/VsLJTT/ijtfeuP8="/>
         <field:input disableFormBinding="true" field="id.phoneId" id="c_ro_roda_OrgPhone_id_phoneId" required="true" validationMessageCode="field_invalid_integer" z="nvBErG1LrM6MKuWvwF1KuZe2a4c="/>
-        <field:checkbox field="main" id="c_ro_roda_OrgPhone_main" z="GHfluxilQI4BnatWW6klFibzRLc="/>
     </form:create>
     <form:dependency dependencies="${dependencies}" id="d_ro_roda_OrgPhone" render="${not empty dependencies}" z="mjdjckLokAZqWoqBrgHGyVEQqEg="/>
 </div>

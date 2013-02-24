@@ -16,16 +16,29 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.Instance;
 import ro.roda.InstancePerson;
-import ro.roda.InstancePersonAssoc;
 import ro.roda.InstancePersonPK;
-import ro.roda.Person;
+import ro.roda.service.InstancePersonAssocService;
+import ro.roda.service.InstancePersonService;
+import ro.roda.service.InstanceService;
+import ro.roda.service.PersonService;
 import ro.roda.web.InstancePersonController;
 
 privileged aspect InstancePersonController_Roo_Controller {
     
     private ConversionService InstancePersonController.conversionService;
+    
+    @Autowired
+    InstancePersonService InstancePersonController.instancePersonService;
+    
+    @Autowired
+    InstanceService InstancePersonController.instanceService;
+    
+    @Autowired
+    InstancePersonAssocService InstancePersonController.instancePersonAssocService;
+    
+    @Autowired
+    PersonService InstancePersonController.personService;
     
     @Autowired
     public InstancePersonController.new(ConversionService conversionService) {
@@ -40,7 +53,7 @@ privileged aspect InstancePersonController_Roo_Controller {
             return "instancepeople/create";
         }
         uiModel.asMap().clear();
-        instancePerson.persist();
+        instancePersonService.saveInstancePerson(instancePerson);
         return "redirect:/instancepeople/" + encodeUrlPathSegment(conversionService.convert(instancePerson.getId(), String.class), httpServletRequest);
     }
     
@@ -52,7 +65,7 @@ privileged aspect InstancePersonController_Roo_Controller {
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String InstancePersonController.show(@PathVariable("id") InstancePersonPK id, Model uiModel) {
-        uiModel.addAttribute("instanceperson", InstancePerson.findInstancePerson(id));
+        uiModel.addAttribute("instanceperson", instancePersonService.findInstancePerson(id));
         uiModel.addAttribute("itemId", conversionService.convert(id, String.class));
         return "instancepeople/show";
     }
@@ -62,11 +75,11 @@ privileged aspect InstancePersonController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("instancepeople", InstancePerson.findInstancePersonEntries(firstResult, sizeNo));
-            float nrOfPages = (float) InstancePerson.countInstancepeople() / sizeNo;
+            uiModel.addAttribute("instancepeople", instancePersonService.findInstancePersonEntries(firstResult, sizeNo));
+            float nrOfPages = (float) instancePersonService.countAllInstancepeople() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("instancepeople", InstancePerson.findAllInstancepeople());
+            uiModel.addAttribute("instancepeople", instancePersonService.findAllInstancepeople());
         }
         return "instancepeople/list";
     }
@@ -78,20 +91,20 @@ privileged aspect InstancePersonController_Roo_Controller {
             return "instancepeople/update";
         }
         uiModel.asMap().clear();
-        instancePerson.merge();
+        instancePersonService.updateInstancePerson(instancePerson);
         return "redirect:/instancepeople/" + encodeUrlPathSegment(conversionService.convert(instancePerson.getId(), String.class), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String InstancePersonController.updateForm(@PathVariable("id") InstancePersonPK id, Model uiModel) {
-        populateEditForm(uiModel, InstancePerson.findInstancePerson(id));
+        populateEditForm(uiModel, instancePersonService.findInstancePerson(id));
         return "instancepeople/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
     public String InstancePersonController.delete(@PathVariable("id") InstancePersonPK id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        InstancePerson instancePerson = InstancePerson.findInstancePerson(id);
-        instancePerson.remove();
+        InstancePerson instancePerson = instancePersonService.findInstancePerson(id);
+        instancePersonService.deleteInstancePerson(instancePerson);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
@@ -100,9 +113,9 @@ privileged aspect InstancePersonController_Roo_Controller {
     
     void InstancePersonController.populateEditForm(Model uiModel, InstancePerson instancePerson) {
         uiModel.addAttribute("instancePerson", instancePerson);
-        uiModel.addAttribute("instances", Instance.findAllInstances());
-        uiModel.addAttribute("instancepersonassocs", InstancePersonAssoc.findAllInstancePersonAssocs());
-        uiModel.addAttribute("people", Person.findAllPeople());
+        uiModel.addAttribute("instances", instanceService.findAllInstances());
+        uiModel.addAttribute("instancepersonassocs", instancePersonAssocService.findAllInstancePersonAssocs());
+        uiModel.addAttribute("people", personService.findAllPeople());
     }
     
     String InstancePersonController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

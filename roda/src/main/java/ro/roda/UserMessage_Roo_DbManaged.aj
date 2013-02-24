@@ -7,36 +7,36 @@ import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
-import ro.roda.User;
+import ro.roda.Rodauser;
 import ro.roda.UserMessage;
 
 privileged aspect UserMessage_Roo_DbManaged {
     
     @ManyToOne
     @JoinColumn(name = "to_user_id", referencedColumnName = "id", nullable = false)
-    private User UserMessage.toUserId;
+    private Rodauser UserMessage.toUserId;
     
     @ManyToOne
     @JoinColumn(name = "from_user_id", referencedColumnName = "id", nullable = false)
-    private User UserMessage.fromUserId;
+    private Rodauser UserMessage.fromUserId;
     
     @Column(name = "message", columnDefinition = "text")
     @NotNull
     private String UserMessage.message;
     
-    public User UserMessage.getToUserId() {
+    public Rodauser UserMessage.getToUserId() {
         return toUserId;
     }
     
-    public void UserMessage.setToUserId(User toUserId) {
+    public void UserMessage.setToUserId(Rodauser toUserId) {
         this.toUserId = toUserId;
     }
     
-    public User UserMessage.getFromUserId() {
+    public Rodauser UserMessage.getFromUserId() {
         return fromUserId;
     }
     
-    public void UserMessage.setFromUserId(User fromUserId) {
+    public void UserMessage.setFromUserId(Rodauser fromUserId) {
         this.fromUserId = fromUserId;
     }
     

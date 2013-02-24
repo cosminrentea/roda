@@ -7,7 +7,6 @@ import java.math.BigDecimal;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
@@ -16,10 +15,13 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import ro.roda.Person;
 import ro.roda.PersonDataOnDemand;
 import ro.roda.PersonLinks;
 import ro.roda.PersonLinksDataOnDemand;
-import ro.roda.UserDataOnDemand;
+import ro.roda.Rodauser;
+import ro.roda.RodauserDataOnDemand;
+import ro.roda.service.PersonLinksService;
 
 privileged aspect PersonLinksDataOnDemand_Roo_DataOnDemand {
     
@@ -30,18 +32,24 @@ privileged aspect PersonLinksDataOnDemand_Roo_DataOnDemand {
     private List<PersonLinks> PersonLinksDataOnDemand.data;
     
     @Autowired
-    private PersonDataOnDemand PersonLinksDataOnDemand.personDataOnDemand;
+    PersonDataOnDemand PersonLinksDataOnDemand.personDataOnDemand;
     
     @Autowired
-    private UserDataOnDemand PersonLinksDataOnDemand.userDataOnDemand;
+    RodauserDataOnDemand PersonLinksDataOnDemand.rodauserDataOnDemand;
+    
+    @Autowired
+    PersonLinksService PersonLinksDataOnDemand.personLinksService;
     
     public PersonLinks PersonLinksDataOnDemand.getNewTransientPersonLinks(int index) {
         PersonLinks obj = new PersonLinks();
         setEmailscore(obj, index);
         setNamescore(obj, index);
+        setPersonId(obj, index);
         setSimscore(obj, index);
         setStatus(obj, index);
+        setStatusBy(obj, index);
         setStatusTime(obj, index);
+        setUserId(obj, index);
         return obj;
     }
     
@@ -61,6 +69,11 @@ privileged aspect PersonLinksDataOnDemand_Roo_DataOnDemand {
         obj.setNamescore(namescore);
     }
     
+    public void PersonLinksDataOnDemand.setPersonId(PersonLinks obj, int index) {
+        Person personId = personDataOnDemand.getRandomPerson();
+        obj.setPersonId(personId);
+    }
+    
     public void PersonLinksDataOnDemand.setSimscore(PersonLinks obj, int index) {
         BigDecimal simscore = BigDecimal.valueOf(index);
         if (simscore.compareTo(new BigDecimal("99999999.99")) == 1) {
@@ -74,9 +87,19 @@ privileged aspect PersonLinksDataOnDemand_Roo_DataOnDemand {
         obj.setStatus(status);
     }
     
+    public void PersonLinksDataOnDemand.setStatusBy(PersonLinks obj, int index) {
+        Rodauser statusBy = rodauserDataOnDemand.getRandomRodauser();
+        obj.setStatusBy(statusBy);
+    }
+    
     public void PersonLinksDataOnDemand.setStatusTime(PersonLinks obj, int index) {
-        Date statusTime = new GregorianCalendar(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH), Calendar.getInstance().get(Calendar.HOUR_OF_DAY), Calendar.getInstance().get(Calendar.MINUTE), Calendar.getInstance().get(Calendar.SECOND) + new Double(Math.random() * 1000).intValue()).getTime();
+        Calendar statusTime = Calendar.getInstance();
         obj.setStatusTime(statusTime);
+    }
+    
+    public void PersonLinksDataOnDemand.setUserId(PersonLinks obj, int index) {
+        Rodauser userId = rodauserDataOnDemand.getRandomRodauser();
+        obj.setUserId(userId);
     }
     
     public PersonLinks PersonLinksDataOnDemand.getSpecificPersonLinks(int index) {
@@ -89,14 +112,14 @@ privileged aspect PersonLinksDataOnDemand_Roo_DataOnDemand {
         }
         PersonLinks obj = data.get(index);
         Integer id = obj.getId();
-        return PersonLinks.findPersonLinks(id);
+        return personLinksService.findPersonLinks(id);
     }
     
     public PersonLinks PersonLinksDataOnDemand.getRandomPersonLinks() {
         init();
         PersonLinks obj = data.get(rnd.nextInt(data.size()));
         Integer id = obj.getId();
-        return PersonLinks.findPersonLinks(id);
+        return personLinksService.findPersonLinks(id);
     }
     
     public boolean PersonLinksDataOnDemand.modifyPersonLinks(PersonLinks obj) {
@@ -106,7 +129,7 @@ privileged aspect PersonLinksDataOnDemand_Roo_DataOnDemand {
     public void PersonLinksDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = PersonLinks.findPersonLinksEntries(from, to);
+        data = personLinksService.findPersonLinksEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'PersonLinks' illegally returned null");
         }
@@ -118,7 +141,7 @@ privileged aspect PersonLinksDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             PersonLinks obj = getNewTransientPersonLinks(i);
             try {
-                obj.persist();
+                personLinksService.savePersonLinks(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

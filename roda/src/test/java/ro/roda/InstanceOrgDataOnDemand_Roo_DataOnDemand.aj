@@ -12,12 +12,16 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import ro.roda.Instance;
 import ro.roda.InstanceDataOnDemand;
 import ro.roda.InstanceOrg;
+import ro.roda.InstanceOrgAssoc;
 import ro.roda.InstanceOrgAssocDataOnDemand;
 import ro.roda.InstanceOrgDataOnDemand;
 import ro.roda.InstanceOrgPK;
+import ro.roda.Org;
 import ro.roda.OrgDataOnDemand;
+import ro.roda.service.InstanceOrgService;
 
 privileged aspect InstanceOrgDataOnDemand_Roo_DataOnDemand {
     
@@ -28,19 +32,25 @@ privileged aspect InstanceOrgDataOnDemand_Roo_DataOnDemand {
     private List<InstanceOrg> InstanceOrgDataOnDemand.data;
     
     @Autowired
-    private InstanceOrgAssocDataOnDemand InstanceOrgDataOnDemand.instanceOrgAssocDataOnDemand;
+    InstanceOrgAssocDataOnDemand InstanceOrgDataOnDemand.instanceOrgAssocDataOnDemand;
     
     @Autowired
-    private InstanceDataOnDemand InstanceOrgDataOnDemand.instanceDataOnDemand;
+    InstanceDataOnDemand InstanceOrgDataOnDemand.instanceDataOnDemand;
     
     @Autowired
-    private OrgDataOnDemand InstanceOrgDataOnDemand.orgDataOnDemand;
+    OrgDataOnDemand InstanceOrgDataOnDemand.orgDataOnDemand;
+    
+    @Autowired
+    InstanceOrgService InstanceOrgDataOnDemand.instanceOrgService;
     
     public InstanceOrg InstanceOrgDataOnDemand.getNewTransientInstanceOrg(int index) {
         InstanceOrg obj = new InstanceOrg();
         setEmbeddedIdClass(obj, index);
         setAssocDetails(obj, index);
+        setAssocTypeId(obj, index);
         setCitation(obj, index);
+        setInstanceId(obj, index);
+        setOrgId(obj, index);
         return obj;
     }
     
@@ -58,9 +68,24 @@ privileged aspect InstanceOrgDataOnDemand_Roo_DataOnDemand {
         obj.setAssocDetails(assocDetails);
     }
     
+    public void InstanceOrgDataOnDemand.setAssocTypeId(InstanceOrg obj, int index) {
+        InstanceOrgAssoc assocTypeId = instanceOrgAssocDataOnDemand.getRandomInstanceOrgAssoc();
+        obj.setAssocTypeId(assocTypeId);
+    }
+    
     public void InstanceOrgDataOnDemand.setCitation(InstanceOrg obj, int index) {
         String citation = "citation_" + index;
         obj.setCitation(citation);
+    }
+    
+    public void InstanceOrgDataOnDemand.setInstanceId(InstanceOrg obj, int index) {
+        Instance instanceId = instanceDataOnDemand.getRandomInstance();
+        obj.setInstanceId(instanceId);
+    }
+    
+    public void InstanceOrgDataOnDemand.setOrgId(InstanceOrg obj, int index) {
+        Org orgId = orgDataOnDemand.getRandomOrg();
+        obj.setOrgId(orgId);
     }
     
     public InstanceOrg InstanceOrgDataOnDemand.getSpecificInstanceOrg(int index) {
@@ -73,14 +98,14 @@ privileged aspect InstanceOrgDataOnDemand_Roo_DataOnDemand {
         }
         InstanceOrg obj = data.get(index);
         InstanceOrgPK id = obj.getId();
-        return InstanceOrg.findInstanceOrg(id);
+        return instanceOrgService.findInstanceOrg(id);
     }
     
     public InstanceOrg InstanceOrgDataOnDemand.getRandomInstanceOrg() {
         init();
         InstanceOrg obj = data.get(rnd.nextInt(data.size()));
         InstanceOrgPK id = obj.getId();
-        return InstanceOrg.findInstanceOrg(id);
+        return instanceOrgService.findInstanceOrg(id);
     }
     
     public boolean InstanceOrgDataOnDemand.modifyInstanceOrg(InstanceOrg obj) {
@@ -90,7 +115,7 @@ privileged aspect InstanceOrgDataOnDemand_Roo_DataOnDemand {
     public void InstanceOrgDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = InstanceOrg.findInstanceOrgEntries(from, to);
+        data = instanceOrgService.findInstanceOrgEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'InstanceOrg' illegally returned null");
         }
@@ -102,7 +127,7 @@ privileged aspect InstanceOrgDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             InstanceOrg obj = getNewTransientInstanceOrg(i);
             try {
-                obj.persist();
+                instanceOrgService.saveInstanceOrg(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

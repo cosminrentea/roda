@@ -6,6 +6,7 @@ package ro.roda.web;
 import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,11 +15,18 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.InstanceOrg;
 import ro.roda.InstanceOrgAssoc;
+import ro.roda.service.InstanceOrgAssocService;
+import ro.roda.service.InstanceOrgService;
 import ro.roda.web.InstanceOrgAssocController;
 
 privileged aspect InstanceOrgAssocController_Roo_Controller {
+    
+    @Autowired
+    InstanceOrgAssocService InstanceOrgAssocController.instanceOrgAssocService;
+    
+    @Autowired
+    InstanceOrgService InstanceOrgAssocController.instanceOrgService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String InstanceOrgAssocController.create(@Valid InstanceOrgAssoc instanceOrgAssoc, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -27,7 +35,7 @@ privileged aspect InstanceOrgAssocController_Roo_Controller {
             return "instanceorgassocs/create";
         }
         uiModel.asMap().clear();
-        instanceOrgAssoc.persist();
+        instanceOrgAssocService.saveInstanceOrgAssoc(instanceOrgAssoc);
         return "redirect:/instanceorgassocs/" + encodeUrlPathSegment(instanceOrgAssoc.getId().toString(), httpServletRequest);
     }
     
@@ -39,7 +47,7 @@ privileged aspect InstanceOrgAssocController_Roo_Controller {
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String InstanceOrgAssocController.show(@PathVariable("id") Integer id, Model uiModel) {
-        uiModel.addAttribute("instanceorgassoc", InstanceOrgAssoc.findInstanceOrgAssoc(id));
+        uiModel.addAttribute("instanceorgassoc", instanceOrgAssocService.findInstanceOrgAssoc(id));
         uiModel.addAttribute("itemId", id);
         return "instanceorgassocs/show";
     }
@@ -49,11 +57,11 @@ privileged aspect InstanceOrgAssocController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("instanceorgassocs", InstanceOrgAssoc.findInstanceOrgAssocEntries(firstResult, sizeNo));
-            float nrOfPages = (float) InstanceOrgAssoc.countInstanceOrgAssocs() / sizeNo;
+            uiModel.addAttribute("instanceorgassocs", instanceOrgAssocService.findInstanceOrgAssocEntries(firstResult, sizeNo));
+            float nrOfPages = (float) instanceOrgAssocService.countAllInstanceOrgAssocs() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("instanceorgassocs", InstanceOrgAssoc.findAllInstanceOrgAssocs());
+            uiModel.addAttribute("instanceorgassocs", instanceOrgAssocService.findAllInstanceOrgAssocs());
         }
         return "instanceorgassocs/list";
     }
@@ -65,20 +73,20 @@ privileged aspect InstanceOrgAssocController_Roo_Controller {
             return "instanceorgassocs/update";
         }
         uiModel.asMap().clear();
-        instanceOrgAssoc.merge();
+        instanceOrgAssocService.updateInstanceOrgAssoc(instanceOrgAssoc);
         return "redirect:/instanceorgassocs/" + encodeUrlPathSegment(instanceOrgAssoc.getId().toString(), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String InstanceOrgAssocController.updateForm(@PathVariable("id") Integer id, Model uiModel) {
-        populateEditForm(uiModel, InstanceOrgAssoc.findInstanceOrgAssoc(id));
+        populateEditForm(uiModel, instanceOrgAssocService.findInstanceOrgAssoc(id));
         return "instanceorgassocs/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
     public String InstanceOrgAssocController.delete(@PathVariable("id") Integer id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        InstanceOrgAssoc instanceOrgAssoc = InstanceOrgAssoc.findInstanceOrgAssoc(id);
-        instanceOrgAssoc.remove();
+        InstanceOrgAssoc instanceOrgAssoc = instanceOrgAssocService.findInstanceOrgAssoc(id);
+        instanceOrgAssocService.deleteInstanceOrgAssoc(instanceOrgAssoc);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
@@ -87,7 +95,7 @@ privileged aspect InstanceOrgAssocController_Roo_Controller {
     
     void InstanceOrgAssocController.populateEditForm(Model uiModel, InstanceOrgAssoc instanceOrgAssoc) {
         uiModel.addAttribute("instanceOrgAssoc", instanceOrgAssoc);
-        uiModel.addAttribute("instanceorgs", InstanceOrg.findAllInstanceOrgs());
+        uiModel.addAttribute("instanceorgs", instanceOrgService.findAllInstanceOrgs());
     }
     
     String InstanceOrgAssocController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

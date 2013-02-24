@@ -14,7 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ro.roda.AuthData;
 import ro.roda.AuthDataDataOnDemand;
-import ro.roda.UserDataOnDemand;
+import ro.roda.Rodauser;
+import ro.roda.RodauserDataOnDemand;
+import ro.roda.service.AuthDataService;
 
 privileged aspect AuthDataDataOnDemand_Roo_DataOnDemand {
     
@@ -25,13 +27,17 @@ privileged aspect AuthDataDataOnDemand_Roo_DataOnDemand {
     private List<AuthData> AuthDataDataOnDemand.data;
     
     @Autowired
-    private UserDataOnDemand AuthDataDataOnDemand.userDataOnDemand;
+    RodauserDataOnDemand AuthDataDataOnDemand.rodauserDataOnDemand;
+    
+    @Autowired
+    AuthDataService AuthDataDataOnDemand.authDataService;
     
     public AuthData AuthDataDataOnDemand.getNewTransientAuthData(int index) {
         AuthData obj = new AuthData();
         setCredentialProvider(obj, index);
         setFieldName(obj, index);
         setFieldValue(obj, index);
+        setRodauser(obj, index);
         return obj;
     }
     
@@ -50,6 +56,11 @@ privileged aspect AuthDataDataOnDemand_Roo_DataOnDemand {
         obj.setFieldValue(fieldValue);
     }
     
+    public void AuthDataDataOnDemand.setRodauser(AuthData obj, int index) {
+        Rodauser rodauser = rodauserDataOnDemand.getSpecificRodauser(index);
+        obj.setRodauser(rodauser);
+    }
+    
     public AuthData AuthDataDataOnDemand.getSpecificAuthData(int index) {
         init();
         if (index < 0) {
@@ -60,14 +71,14 @@ privileged aspect AuthDataDataOnDemand_Roo_DataOnDemand {
         }
         AuthData obj = data.get(index);
         Integer id = obj.getUserId();
-        return AuthData.findAuthData(id);
+        return authDataService.findAuthData(id);
     }
     
     public AuthData AuthDataDataOnDemand.getRandomAuthData() {
         init();
         AuthData obj = data.get(rnd.nextInt(data.size()));
         Integer id = obj.getUserId();
-        return AuthData.findAuthData(id);
+        return authDataService.findAuthData(id);
     }
     
     public boolean AuthDataDataOnDemand.modifyAuthData(AuthData obj) {
@@ -77,7 +88,7 @@ privileged aspect AuthDataDataOnDemand_Roo_DataOnDemand {
     public void AuthDataDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = AuthData.findAuthDataEntries(from, to);
+        data = authDataService.findAuthDataEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'AuthData' illegally returned null");
         }
@@ -89,7 +100,7 @@ privileged aspect AuthDataDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             AuthData obj = getNewTransientAuthData(i);
             try {
-                obj.persist();
+                authDataService.saveAuthData(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

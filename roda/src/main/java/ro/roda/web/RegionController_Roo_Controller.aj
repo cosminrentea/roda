@@ -6,6 +6,7 @@ package ro.roda.web;
 import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,13 +15,26 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.City;
-import ro.roda.Country;
 import ro.roda.Region;
-import ro.roda.Regiontype;
+import ro.roda.service.CityService;
+import ro.roda.service.CountryService;
+import ro.roda.service.RegionService;
+import ro.roda.service.RegiontypeService;
 import ro.roda.web.RegionController;
 
 privileged aspect RegionController_Roo_Controller {
+    
+    @Autowired
+    RegionService RegionController.regionService;
+    
+    @Autowired
+    CityService RegionController.cityService;
+    
+    @Autowired
+    CountryService RegionController.countryService;
+    
+    @Autowired
+    RegiontypeService RegionController.regiontypeService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String RegionController.create(@Valid Region region, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -29,7 +43,7 @@ privileged aspect RegionController_Roo_Controller {
             return "regions/create";
         }
         uiModel.asMap().clear();
-        region.persist();
+        regionService.saveRegion(region);
         return "redirect:/regions/" + encodeUrlPathSegment(region.getId().toString(), httpServletRequest);
     }
     
@@ -41,7 +55,7 @@ privileged aspect RegionController_Roo_Controller {
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String RegionController.show(@PathVariable("id") Integer id, Model uiModel) {
-        uiModel.addAttribute("region", Region.findRegion(id));
+        uiModel.addAttribute("region", regionService.findRegion(id));
         uiModel.addAttribute("itemId", id);
         return "regions/show";
     }
@@ -51,11 +65,11 @@ privileged aspect RegionController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("regions", Region.findRegionEntries(firstResult, sizeNo));
-            float nrOfPages = (float) Region.countRegions() / sizeNo;
+            uiModel.addAttribute("regions", regionService.findRegionEntries(firstResult, sizeNo));
+            float nrOfPages = (float) regionService.countAllRegions() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("regions", Region.findAllRegions());
+            uiModel.addAttribute("regions", regionService.findAllRegions());
         }
         return "regions/list";
     }
@@ -67,20 +81,20 @@ privileged aspect RegionController_Roo_Controller {
             return "regions/update";
         }
         uiModel.asMap().clear();
-        region.merge();
+        regionService.updateRegion(region);
         return "redirect:/regions/" + encodeUrlPathSegment(region.getId().toString(), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String RegionController.updateForm(@PathVariable("id") Integer id, Model uiModel) {
-        populateEditForm(uiModel, Region.findRegion(id));
+        populateEditForm(uiModel, regionService.findRegion(id));
         return "regions/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
     public String RegionController.delete(@PathVariable("id") Integer id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        Region region = Region.findRegion(id);
-        region.remove();
+        Region region = regionService.findRegion(id);
+        regionService.deleteRegion(region);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
@@ -89,9 +103,9 @@ privileged aspect RegionController_Roo_Controller {
     
     void RegionController.populateEditForm(Model uiModel, Region region) {
         uiModel.addAttribute("region", region);
-        uiModel.addAttribute("citys", City.findAllCitys());
-        uiModel.addAttribute("countrys", Country.findAllCountrys());
-        uiModel.addAttribute("regiontypes", Regiontype.findAllRegiontypes());
+        uiModel.addAttribute("citys", cityService.findAllCitys());
+        uiModel.addAttribute("countrys", countryService.findAllCountrys());
+        uiModel.addAttribute("regiontypes", regiontypeService.findAllRegiontypes());
     }
     
     String RegionController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

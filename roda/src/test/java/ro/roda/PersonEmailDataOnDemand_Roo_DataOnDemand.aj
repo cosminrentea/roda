@@ -12,11 +12,14 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import ro.roda.Email;
 import ro.roda.EmailDataOnDemand;
+import ro.roda.Person;
 import ro.roda.PersonDataOnDemand;
 import ro.roda.PersonEmail;
 import ro.roda.PersonEmailDataOnDemand;
 import ro.roda.PersonEmailPK;
+import ro.roda.service.PersonEmailService;
 
 privileged aspect PersonEmailDataOnDemand_Roo_DataOnDemand {
     
@@ -27,15 +30,20 @@ privileged aspect PersonEmailDataOnDemand_Roo_DataOnDemand {
     private List<PersonEmail> PersonEmailDataOnDemand.data;
     
     @Autowired
-    private EmailDataOnDemand PersonEmailDataOnDemand.emailDataOnDemand;
+    EmailDataOnDemand PersonEmailDataOnDemand.emailDataOnDemand;
     
     @Autowired
-    private PersonDataOnDemand PersonEmailDataOnDemand.personDataOnDemand;
+    PersonDataOnDemand PersonEmailDataOnDemand.personDataOnDemand;
+    
+    @Autowired
+    PersonEmailService PersonEmailDataOnDemand.personEmailService;
     
     public PersonEmail PersonEmailDataOnDemand.getNewTransientPersonEmail(int index) {
         PersonEmail obj = new PersonEmail();
         setEmbeddedIdClass(obj, index);
+        setEmailId(obj, index);
         setMain(obj, index);
+        setPersonId(obj, index);
         return obj;
     }
     
@@ -47,9 +55,19 @@ privileged aspect PersonEmailDataOnDemand_Roo_DataOnDemand {
         obj.setId(embeddedIdClass);
     }
     
+    public void PersonEmailDataOnDemand.setEmailId(PersonEmail obj, int index) {
+        Email emailId = emailDataOnDemand.getRandomEmail();
+        obj.setEmailId(emailId);
+    }
+    
     public void PersonEmailDataOnDemand.setMain(PersonEmail obj, int index) {
         Boolean main = true;
         obj.setMain(main);
+    }
+    
+    public void PersonEmailDataOnDemand.setPersonId(PersonEmail obj, int index) {
+        Person personId = personDataOnDemand.getRandomPerson();
+        obj.setPersonId(personId);
     }
     
     public PersonEmail PersonEmailDataOnDemand.getSpecificPersonEmail(int index) {
@@ -62,14 +80,14 @@ privileged aspect PersonEmailDataOnDemand_Roo_DataOnDemand {
         }
         PersonEmail obj = data.get(index);
         PersonEmailPK id = obj.getId();
-        return PersonEmail.findPersonEmail(id);
+        return personEmailService.findPersonEmail(id);
     }
     
     public PersonEmail PersonEmailDataOnDemand.getRandomPersonEmail() {
         init();
         PersonEmail obj = data.get(rnd.nextInt(data.size()));
         PersonEmailPK id = obj.getId();
-        return PersonEmail.findPersonEmail(id);
+        return personEmailService.findPersonEmail(id);
     }
     
     public boolean PersonEmailDataOnDemand.modifyPersonEmail(PersonEmail obj) {
@@ -79,7 +97,7 @@ privileged aspect PersonEmailDataOnDemand_Roo_DataOnDemand {
     public void PersonEmailDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = PersonEmail.findPersonEmailEntries(from, to);
+        data = personEmailService.findPersonEmailEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'PersonEmail' illegally returned null");
         }
@@ -91,7 +109,7 @@ privileged aspect PersonEmailDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             PersonEmail obj = getNewTransientPersonEmail(i);
             try {
-                obj.persist();
+                personEmailService.savePersonEmail(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

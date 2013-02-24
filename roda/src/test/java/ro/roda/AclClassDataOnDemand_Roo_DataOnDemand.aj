@@ -10,9 +10,11 @@ import java.util.List;
 import java.util.Random;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ro.roda.AclClass;
 import ro.roda.AclClassDataOnDemand;
+import ro.roda.service.AclClassService;
 
 privileged aspect AclClassDataOnDemand_Roo_DataOnDemand {
     
@@ -21,6 +23,9 @@ privileged aspect AclClassDataOnDemand_Roo_DataOnDemand {
     private Random AclClassDataOnDemand.rnd = new SecureRandom();
     
     private List<AclClass> AclClassDataOnDemand.data;
+    
+    @Autowired
+    AclClassService AclClassDataOnDemand.aclClassService;
     
     public AclClass AclClassDataOnDemand.getNewTransientAclClass(int index) {
         AclClass obj = new AclClass();
@@ -43,14 +48,14 @@ privileged aspect AclClassDataOnDemand_Roo_DataOnDemand {
         }
         AclClass obj = data.get(index);
         Long id = obj.getId();
-        return AclClass.findAclClass(id);
+        return aclClassService.findAclClass(id);
     }
     
     public AclClass AclClassDataOnDemand.getRandomAclClass() {
         init();
         AclClass obj = data.get(rnd.nextInt(data.size()));
         Long id = obj.getId();
-        return AclClass.findAclClass(id);
+        return aclClassService.findAclClass(id);
     }
     
     public boolean AclClassDataOnDemand.modifyAclClass(AclClass obj) {
@@ -60,7 +65,7 @@ privileged aspect AclClassDataOnDemand_Roo_DataOnDemand {
     public void AclClassDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = AclClass.findAclClassEntries(from, to);
+        data = aclClassService.findAclClassEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'AclClass' illegally returned null");
         }
@@ -72,7 +77,7 @@ privileged aspect AclClassDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             AclClass obj = getNewTransientAclClass(i);
             try {
-                obj.persist();
+                aclClassService.saveAclClass(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

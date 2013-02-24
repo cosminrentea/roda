@@ -19,14 +19,14 @@ privileged aspect Audit_Roo_Jpa_Entity {
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", columnDefinition = "serial")
-    private Integer Audit.id;
+    @Column(name = "id")
+    private Long Audit.id;
     
-    public Integer Audit.getId() {
+    public Long Audit.getId() {
         return this.id;
     }
     
-    public void Audit.setId(Integer id) {
+    public void Audit.setId(Long id) {
         this.id = id;
     }
     

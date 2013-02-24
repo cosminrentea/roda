@@ -6,7 +6,6 @@ package ro.roda;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
@@ -15,12 +14,16 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import ro.roda.Org;
 import ro.roda.OrgDataOnDemand;
+import ro.roda.Person;
 import ro.roda.PersonDataOnDemand;
 import ro.roda.PersonOrg;
 import ro.roda.PersonOrgDataOnDemand;
 import ro.roda.PersonOrgPK;
+import ro.roda.PersonRole;
 import ro.roda.PersonRoleDataOnDemand;
+import ro.roda.service.PersonOrgService;
 
 privileged aspect PersonOrgDataOnDemand_Roo_DataOnDemand {
     
@@ -31,19 +34,25 @@ privileged aspect PersonOrgDataOnDemand_Roo_DataOnDemand {
     private List<PersonOrg> PersonOrgDataOnDemand.data;
     
     @Autowired
-    private OrgDataOnDemand PersonOrgDataOnDemand.orgDataOnDemand;
+    OrgDataOnDemand PersonOrgDataOnDemand.orgDataOnDemand;
     
     @Autowired
-    private PersonDataOnDemand PersonOrgDataOnDemand.personDataOnDemand;
+    PersonDataOnDemand PersonOrgDataOnDemand.personDataOnDemand;
     
     @Autowired
-    private PersonRoleDataOnDemand PersonOrgDataOnDemand.personRoleDataOnDemand;
+    PersonRoleDataOnDemand PersonOrgDataOnDemand.personRoleDataOnDemand;
+    
+    @Autowired
+    PersonOrgService PersonOrgDataOnDemand.personOrgService;
     
     public PersonOrg PersonOrgDataOnDemand.getNewTransientPersonOrg(int index) {
         PersonOrg obj = new PersonOrg();
         setEmbeddedIdClass(obj, index);
         setDateend(obj, index);
         setDatestart(obj, index);
+        setOrgId(obj, index);
+        setPersonId(obj, index);
+        setRoleId(obj, index);
         return obj;
     }
     
@@ -57,13 +66,28 @@ privileged aspect PersonOrgDataOnDemand_Roo_DataOnDemand {
     }
     
     public void PersonOrgDataOnDemand.setDateend(PersonOrg obj, int index) {
-        Date dateend = new GregorianCalendar(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH), Calendar.getInstance().get(Calendar.HOUR_OF_DAY), Calendar.getInstance().get(Calendar.MINUTE), Calendar.getInstance().get(Calendar.SECOND) + new Double(Math.random() * 1000).intValue()).getTime();
+        Calendar dateend = Calendar.getInstance();
         obj.setDateend(dateend);
     }
     
     public void PersonOrgDataOnDemand.setDatestart(PersonOrg obj, int index) {
-        Date datestart = new GregorianCalendar(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH), Calendar.getInstance().get(Calendar.HOUR_OF_DAY), Calendar.getInstance().get(Calendar.MINUTE), Calendar.getInstance().get(Calendar.SECOND) + new Double(Math.random() * 1000).intValue()).getTime();
+        Calendar datestart = Calendar.getInstance();
         obj.setDatestart(datestart);
+    }
+    
+    public void PersonOrgDataOnDemand.setOrgId(PersonOrg obj, int index) {
+        Org orgId = orgDataOnDemand.getRandomOrg();
+        obj.setOrgId(orgId);
+    }
+    
+    public void PersonOrgDataOnDemand.setPersonId(PersonOrg obj, int index) {
+        Person personId = personDataOnDemand.getRandomPerson();
+        obj.setPersonId(personId);
+    }
+    
+    public void PersonOrgDataOnDemand.setRoleId(PersonOrg obj, int index) {
+        PersonRole roleId = personRoleDataOnDemand.getRandomPersonRole();
+        obj.setRoleId(roleId);
     }
     
     public PersonOrg PersonOrgDataOnDemand.getSpecificPersonOrg(int index) {
@@ -76,14 +100,14 @@ privileged aspect PersonOrgDataOnDemand_Roo_DataOnDemand {
         }
         PersonOrg obj = data.get(index);
         PersonOrgPK id = obj.getId();
-        return PersonOrg.findPersonOrg(id);
+        return personOrgService.findPersonOrg(id);
     }
     
     public PersonOrg PersonOrgDataOnDemand.getRandomPersonOrg() {
         init();
         PersonOrg obj = data.get(rnd.nextInt(data.size()));
         PersonOrgPK id = obj.getId();
-        return PersonOrg.findPersonOrg(id);
+        return personOrgService.findPersonOrg(id);
     }
     
     public boolean PersonOrgDataOnDemand.modifyPersonOrg(PersonOrg obj) {
@@ -93,7 +117,7 @@ privileged aspect PersonOrgDataOnDemand_Roo_DataOnDemand {
     public void PersonOrgDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = PersonOrg.findPersonOrgEntries(from, to);
+        data = personOrgService.findPersonOrgEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'PersonOrg' illegally returned null");
         }
@@ -105,7 +129,7 @@ privileged aspect PersonOrgDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             PersonOrg obj = getNewTransientPersonOrg(i);
             try {
-                obj.persist();
+                personOrgService.savePersonOrg(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

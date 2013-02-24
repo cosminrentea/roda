@@ -16,15 +16,25 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.Person;
 import ro.roda.PersonPhone;
 import ro.roda.PersonPhonePK;
-import ro.roda.Phone;
+import ro.roda.service.PersonPhoneService;
+import ro.roda.service.PersonService;
+import ro.roda.service.PhoneService;
 import ro.roda.web.PersonPhoneController;
 
 privileged aspect PersonPhoneController_Roo_Controller {
     
     private ConversionService PersonPhoneController.conversionService;
+    
+    @Autowired
+    PersonPhoneService PersonPhoneController.personPhoneService;
+    
+    @Autowired
+    PersonService PersonPhoneController.personService;
+    
+    @Autowired
+    PhoneService PersonPhoneController.phoneService;
     
     @Autowired
     public PersonPhoneController.new(ConversionService conversionService) {
@@ -39,7 +49,7 @@ privileged aspect PersonPhoneController_Roo_Controller {
             return "personphones/create";
         }
         uiModel.asMap().clear();
-        personPhone.persist();
+        personPhoneService.savePersonPhone(personPhone);
         return "redirect:/personphones/" + encodeUrlPathSegment(conversionService.convert(personPhone.getId(), String.class), httpServletRequest);
     }
     
@@ -51,7 +61,7 @@ privileged aspect PersonPhoneController_Roo_Controller {
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String PersonPhoneController.show(@PathVariable("id") PersonPhonePK id, Model uiModel) {
-        uiModel.addAttribute("personphone", PersonPhone.findPersonPhone(id));
+        uiModel.addAttribute("personphone", personPhoneService.findPersonPhone(id));
         uiModel.addAttribute("itemId", conversionService.convert(id, String.class));
         return "personphones/show";
     }
@@ -61,11 +71,11 @@ privileged aspect PersonPhoneController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("personphones", PersonPhone.findPersonPhoneEntries(firstResult, sizeNo));
-            float nrOfPages = (float) PersonPhone.countPersonPhones() / sizeNo;
+            uiModel.addAttribute("personphones", personPhoneService.findPersonPhoneEntries(firstResult, sizeNo));
+            float nrOfPages = (float) personPhoneService.countAllPersonPhones() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("personphones", PersonPhone.findAllPersonPhones());
+            uiModel.addAttribute("personphones", personPhoneService.findAllPersonPhones());
         }
         return "personphones/list";
     }
@@ -77,20 +87,20 @@ privileged aspect PersonPhoneController_Roo_Controller {
             return "personphones/update";
         }
         uiModel.asMap().clear();
-        personPhone.merge();
+        personPhoneService.updatePersonPhone(personPhone);
         return "redirect:/personphones/" + encodeUrlPathSegment(conversionService.convert(personPhone.getId(), String.class), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String PersonPhoneController.updateForm(@PathVariable("id") PersonPhonePK id, Model uiModel) {
-        populateEditForm(uiModel, PersonPhone.findPersonPhone(id));
+        populateEditForm(uiModel, personPhoneService.findPersonPhone(id));
         return "personphones/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
     public String PersonPhoneController.delete(@PathVariable("id") PersonPhonePK id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        PersonPhone personPhone = PersonPhone.findPersonPhone(id);
-        personPhone.remove();
+        PersonPhone personPhone = personPhoneService.findPersonPhone(id);
+        personPhoneService.deletePersonPhone(personPhone);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
@@ -99,8 +109,8 @@ privileged aspect PersonPhoneController_Roo_Controller {
     
     void PersonPhoneController.populateEditForm(Model uiModel, PersonPhone personPhone) {
         uiModel.addAttribute("personPhone", personPhone);
-        uiModel.addAttribute("people", Person.findAllPeople());
-        uiModel.addAttribute("phones", Phone.findAllPhones());
+        uiModel.addAttribute("people", personService.findAllPeople());
+        uiModel.addAttribute("phones", phoneService.findAllPhones());
     }
     
     String PersonPhoneController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

@@ -6,7 +6,6 @@ package ro.roda;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
@@ -17,7 +16,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ro.roda.Catalog;
 import ro.roda.CatalogDataOnDemand;
-import ro.roda.UserDataOnDemand;
+import ro.roda.Rodauser;
+import ro.roda.RodauserDataOnDemand;
+import ro.roda.service.CatalogService;
 
 privileged aspect CatalogDataOnDemand_Roo_DataOnDemand {
     
@@ -28,19 +29,30 @@ privileged aspect CatalogDataOnDemand_Roo_DataOnDemand {
     private List<Catalog> CatalogDataOnDemand.data;
     
     @Autowired
-    private UserDataOnDemand CatalogDataOnDemand.userDataOnDemand;
+    RodauserDataOnDemand CatalogDataOnDemand.rodauserDataOnDemand;
+    
+    @Autowired
+    CatalogService CatalogDataOnDemand.catalogService;
     
     public Catalog CatalogDataOnDemand.getNewTransientCatalog(int index) {
         Catalog obj = new Catalog();
         setAdded(obj, index);
+        setDescription(obj, index);
         setName(obj, index);
-        setParent(obj, index);
+        setOwner(obj, index);
+        setParentId(obj, index);
+        setSequencenr(obj, index);
         return obj;
     }
     
     public void CatalogDataOnDemand.setAdded(Catalog obj, int index) {
-        Date added = new GregorianCalendar(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH), Calendar.getInstance().get(Calendar.HOUR_OF_DAY), Calendar.getInstance().get(Calendar.MINUTE), Calendar.getInstance().get(Calendar.SECOND) + new Double(Math.random() * 1000).intValue()).getTime();
+        Calendar added = Calendar.getInstance();
         obj.setAdded(added);
+    }
+    
+    public void CatalogDataOnDemand.setDescription(Catalog obj, int index) {
+        String description = "description_" + index;
+        obj.setDescription(description);
     }
     
     public void CatalogDataOnDemand.setName(Catalog obj, int index) {
@@ -51,9 +63,19 @@ privileged aspect CatalogDataOnDemand_Roo_DataOnDemand {
         obj.setName(name);
     }
     
-    public void CatalogDataOnDemand.setParent(Catalog obj, int index) {
-        Catalog parent = obj;
-        obj.setParent(parent);
+    public void CatalogDataOnDemand.setOwner(Catalog obj, int index) {
+        Rodauser owner = rodauserDataOnDemand.getRandomRodauser();
+        obj.setOwner(owner);
+    }
+    
+    public void CatalogDataOnDemand.setParentId(Catalog obj, int index) {
+        Integer parentId = new Integer(index);
+        obj.setParentId(parentId);
+    }
+    
+    public void CatalogDataOnDemand.setSequencenr(Catalog obj, int index) {
+        Integer sequencenr = new Integer(index);
+        obj.setSequencenr(sequencenr);
     }
     
     public Catalog CatalogDataOnDemand.getSpecificCatalog(int index) {
@@ -66,14 +88,14 @@ privileged aspect CatalogDataOnDemand_Roo_DataOnDemand {
         }
         Catalog obj = data.get(index);
         Integer id = obj.getId();
-        return Catalog.findCatalog(id);
+        return catalogService.findCatalog(id);
     }
     
     public Catalog CatalogDataOnDemand.getRandomCatalog() {
         init();
         Catalog obj = data.get(rnd.nextInt(data.size()));
         Integer id = obj.getId();
-        return Catalog.findCatalog(id);
+        return catalogService.findCatalog(id);
     }
     
     public boolean CatalogDataOnDemand.modifyCatalog(Catalog obj) {
@@ -83,7 +105,7 @@ privileged aspect CatalogDataOnDemand_Roo_DataOnDemand {
     public void CatalogDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = Catalog.findCatalogEntries(from, to);
+        data = catalogService.findCatalogEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'Catalog' illegally returned null");
         }
@@ -95,7 +117,7 @@ privileged aspect CatalogDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             Catalog obj = getNewTransientCatalog(i);
             try {
-                obj.persist();
+                catalogService.saveCatalog(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

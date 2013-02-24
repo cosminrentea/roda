@@ -2,8 +2,5 @@
 <div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <form:update id="fu_ro_roda_OrgAddress" modelAttribute="orgAddress" path="/orgaddresses" versionField="none" z="DJNuHv7i4ZQxgOMDKFwDTKlvXQM=">
-        <field:datetime dateTimePattern="${orgAddress_datestart_date_format}" field="datestart" id="c_ro_roda_OrgAddress_datestart" z="cvHpGBZfnY60xKYPn/P958/rNp0="/>
-        <field:datetime dateTimePattern="${orgAddress_dateend_date_format}" field="dateend" id="c_ro_roda_OrgAddress_dateend" z="F4WLPD1tpgQedt2zxvrApsDazlU="/>
-    </form:update>
+    <form:update id="fu_ro_roda_OrgAddress" modelAttribute="orgAddress" path="/orgaddresses" versionField="none" z="DJNuHv7i4ZQxgOMDKFwDTKlvXQM="/>
 </div>

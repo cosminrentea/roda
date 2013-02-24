@@ -4,8 +4,8 @@
     <jsp:output omit-xml-declaration="yes"/>
     <page:show id="ps_ro_roda_StudyKeyword" object="${studykeyword}" path="/studykeywords" z="ctRmhVG0m0due8RR3EskQiNnJVc=">
         <field:display field="keywordId" id="s_ro_roda_StudyKeyword_keywordId" object="${studykeyword}" z="iXOrsz8OarG+zaG8OS8+g9HUdNI="/>
-        <field:display field="studyId" id="s_ro_roda_StudyKeyword_studyId" object="${studykeyword}" z="6BNHxjFmmu+7SOdPF2xQAiSO94M="/>
         <field:display field="addedBy" id="s_ro_roda_StudyKeyword_addedBy" object="${studykeyword}" z="SEW/Y2nVyhUMLqKPr7Ya9nSGgCo="/>
-        <field:display date="true" dateTimePattern="${studyKeyword_added_date_format}" field="added" id="s_ro_roda_StudyKeyword_added" object="${studykeyword}" z="VZKmgcHSpNJGWCprW6TKM79HIQk="/>
+        <field:display field="studyId" id="s_ro_roda_StudyKeyword_studyId" object="${studykeyword}" z="6BNHxjFmmu+7SOdPF2xQAiSO94M="/>
+        <field:display calendar="true" dateTimePattern="${studyKeyword_added_date_format}" field="added" id="s_ro_roda_StudyKeyword_added" object="${studykeyword}" z="MD/ctKx83t8zaA0zRq1139Q2gi8="/>
     </page:show>
 </div>

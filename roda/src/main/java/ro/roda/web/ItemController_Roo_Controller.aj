@@ -6,6 +6,7 @@ package ro.roda.web;
 import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,12 +16,25 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.Item;
-import ro.roda.Scale;
-import ro.roda.SelectionVariableItem;
-import ro.roda.Value;
+import ro.roda.service.ItemService;
+import ro.roda.service.ScaleService;
+import ro.roda.service.SelectionVariableItemService;
+import ro.roda.service.ValueService;
 import ro.roda.web.ItemController;
 
 privileged aspect ItemController_Roo_Controller {
+    
+    @Autowired
+    ItemService ItemController.itemService;
+    
+    @Autowired
+    ScaleService ItemController.scaleService;
+    
+    @Autowired
+    SelectionVariableItemService ItemController.selectionVariableItemService;
+    
+    @Autowired
+    ValueService ItemController.valueService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String ItemController.create(@Valid Item item, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -29,7 +43,7 @@ privileged aspect ItemController_Roo_Controller {
             return "items/create";
         }
         uiModel.asMap().clear();
-        item.persist();
+        itemService.saveItem(item);
         return "redirect:/items/" + encodeUrlPathSegment(item.getId().toString(), httpServletRequest);
     }
     
@@ -41,7 +55,7 @@ privileged aspect ItemController_Roo_Controller {
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String ItemController.show(@PathVariable("id") Long id, Model uiModel) {
-        uiModel.addAttribute("item", Item.findItem(id));
+        uiModel.addAttribute("item", itemService.findItem(id));
         uiModel.addAttribute("itemId", id);
         return "items/show";
     }
@@ -51,11 +65,11 @@ privileged aspect ItemController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("items", Item.findItemEntries(firstResult, sizeNo));
-            float nrOfPages = (float) Item.countItems() / sizeNo;
+            uiModel.addAttribute("items", itemService.findItemEntries(firstResult, sizeNo));
+            float nrOfPages = (float) itemService.countAllItems() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("items", Item.findAllItems());
+            uiModel.addAttribute("items", itemService.findAllItems());
         }
         return "items/list";
     }
@@ -67,20 +81,20 @@ privileged aspect ItemController_Roo_Controller {
             return "items/update";
         }
         uiModel.asMap().clear();
-        item.merge();
+        itemService.updateItem(item);
         return "redirect:/items/" + encodeUrlPathSegment(item.getId().toString(), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String ItemController.updateForm(@PathVariable("id") Long id, Model uiModel) {
-        populateEditForm(uiModel, Item.findItem(id));
+        populateEditForm(uiModel, itemService.findItem(id));
         return "items/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
     public String ItemController.delete(@PathVariable("id") Long id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        Item item = Item.findItem(id);
-        item.remove();
+        Item item = itemService.findItem(id);
+        itemService.deleteItem(item);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
@@ -89,9 +103,9 @@ privileged aspect ItemController_Roo_Controller {
     
     void ItemController.populateEditForm(Model uiModel, Item item) {
         uiModel.addAttribute("item", item);
-        uiModel.addAttribute("scales", Scale.findAllScales());
-        uiModel.addAttribute("selectionvariableitems", SelectionVariableItem.findAllSelectionVariableItems());
-        uiModel.addAttribute("values", Value.findAllValues());
+        uiModel.addAttribute("scales", scaleService.findAllScales());
+        uiModel.addAttribute("selectionvariableitems", selectionVariableItemService.findAllSelectionVariableItems());
+        uiModel.addAttribute("values", valueService.findAllValues());
     }
     
     String ItemController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

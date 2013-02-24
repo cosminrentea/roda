@@ -10,9 +10,11 @@ import java.util.List;
 import java.util.Random;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ro.roda.InstancePersonAssoc;
 import ro.roda.InstancePersonAssocDataOnDemand;
+import ro.roda.service.InstancePersonAssocService;
 
 privileged aspect InstancePersonAssocDataOnDemand_Roo_DataOnDemand {
     
@@ -21,6 +23,9 @@ privileged aspect InstancePersonAssocDataOnDemand_Roo_DataOnDemand {
     private Random InstancePersonAssocDataOnDemand.rnd = new SecureRandom();
     
     private List<InstancePersonAssoc> InstancePersonAssocDataOnDemand.data;
+    
+    @Autowired
+    InstancePersonAssocService InstancePersonAssocDataOnDemand.instancePersonAssocService;
     
     public InstancePersonAssoc InstancePersonAssocDataOnDemand.getNewTransientInstancePersonAssoc(int index) {
         InstancePersonAssoc obj = new InstancePersonAssoc();
@@ -52,14 +57,14 @@ privileged aspect InstancePersonAssocDataOnDemand_Roo_DataOnDemand {
         }
         InstancePersonAssoc obj = data.get(index);
         Integer id = obj.getId();
-        return InstancePersonAssoc.findInstancePersonAssoc(id);
+        return instancePersonAssocService.findInstancePersonAssoc(id);
     }
     
     public InstancePersonAssoc InstancePersonAssocDataOnDemand.getRandomInstancePersonAssoc() {
         init();
         InstancePersonAssoc obj = data.get(rnd.nextInt(data.size()));
         Integer id = obj.getId();
-        return InstancePersonAssoc.findInstancePersonAssoc(id);
+        return instancePersonAssocService.findInstancePersonAssoc(id);
     }
     
     public boolean InstancePersonAssocDataOnDemand.modifyInstancePersonAssoc(InstancePersonAssoc obj) {
@@ -69,7 +74,7 @@ privileged aspect InstancePersonAssocDataOnDemand_Roo_DataOnDemand {
     public void InstancePersonAssocDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = InstancePersonAssoc.findInstancePersonAssocEntries(from, to);
+        data = instancePersonAssocService.findInstancePersonAssocEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'InstancePersonAssoc' illegally returned null");
         }
@@ -81,7 +86,7 @@ privileged aspect InstancePersonAssocDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             InstancePersonAssoc obj = getNewTransientInstancePersonAssoc(i);
             try {
-                obj.persist();
+                instancePersonAssocService.saveInstancePersonAssoc(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

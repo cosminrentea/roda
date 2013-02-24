@@ -12,12 +12,16 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import ro.roda.CmsFile;
 import ro.roda.CmsFileDataOnDemand;
 import ro.roda.CmsFilePropertyNameValue;
 import ro.roda.CmsFilePropertyNameValueDataOnDemand;
 import ro.roda.CmsFilePropertyNameValuePK;
+import ro.roda.PropertyName;
 import ro.roda.PropertyNameDataOnDemand;
+import ro.roda.PropertyValue;
 import ro.roda.PropertyValueDataOnDemand;
+import ro.roda.service.CmsFilePropertyNameValueService;
 
 privileged aspect CmsFilePropertyNameValueDataOnDemand_Roo_DataOnDemand {
     
@@ -28,17 +32,23 @@ privileged aspect CmsFilePropertyNameValueDataOnDemand_Roo_DataOnDemand {
     private List<CmsFilePropertyNameValue> CmsFilePropertyNameValueDataOnDemand.data;
     
     @Autowired
-    private CmsFileDataOnDemand CmsFilePropertyNameValueDataOnDemand.cmsFileDataOnDemand;
+    CmsFileDataOnDemand CmsFilePropertyNameValueDataOnDemand.cmsFileDataOnDemand;
     
     @Autowired
-    private PropertyNameDataOnDemand CmsFilePropertyNameValueDataOnDemand.propertyNameDataOnDemand;
+    PropertyNameDataOnDemand CmsFilePropertyNameValueDataOnDemand.propertyNameDataOnDemand;
     
     @Autowired
-    private PropertyValueDataOnDemand CmsFilePropertyNameValueDataOnDemand.propertyValueDataOnDemand;
+    PropertyValueDataOnDemand CmsFilePropertyNameValueDataOnDemand.propertyValueDataOnDemand;
+    
+    @Autowired
+    CmsFilePropertyNameValueService CmsFilePropertyNameValueDataOnDemand.cmsFilePropertyNameValueService;
     
     public CmsFilePropertyNameValue CmsFilePropertyNameValueDataOnDemand.getNewTransientCmsFilePropertyNameValue(int index) {
         CmsFilePropertyNameValue obj = new CmsFilePropertyNameValue();
         setEmbeddedIdClass(obj, index);
+        setCmsFileId(obj, index);
+        setPropertyNameId(obj, index);
+        setPropertyValueId(obj, index);
         return obj;
     }
     
@@ -51,6 +61,21 @@ privileged aspect CmsFilePropertyNameValueDataOnDemand_Roo_DataOnDemand {
         obj.setId(embeddedIdClass);
     }
     
+    public void CmsFilePropertyNameValueDataOnDemand.setCmsFileId(CmsFilePropertyNameValue obj, int index) {
+        CmsFile cmsFileId = cmsFileDataOnDemand.getRandomCmsFile();
+        obj.setCmsFileId(cmsFileId);
+    }
+    
+    public void CmsFilePropertyNameValueDataOnDemand.setPropertyNameId(CmsFilePropertyNameValue obj, int index) {
+        PropertyName propertyNameId = propertyNameDataOnDemand.getRandomPropertyName();
+        obj.setPropertyNameId(propertyNameId);
+    }
+    
+    public void CmsFilePropertyNameValueDataOnDemand.setPropertyValueId(CmsFilePropertyNameValue obj, int index) {
+        PropertyValue propertyValueId = propertyValueDataOnDemand.getRandomPropertyValue();
+        obj.setPropertyValueId(propertyValueId);
+    }
+    
     public CmsFilePropertyNameValue CmsFilePropertyNameValueDataOnDemand.getSpecificCmsFilePropertyNameValue(int index) {
         init();
         if (index < 0) {
@@ -61,14 +86,14 @@ privileged aspect CmsFilePropertyNameValueDataOnDemand_Roo_DataOnDemand {
         }
         CmsFilePropertyNameValue obj = data.get(index);
         CmsFilePropertyNameValuePK id = obj.getId();
-        return CmsFilePropertyNameValue.findCmsFilePropertyNameValue(id);
+        return cmsFilePropertyNameValueService.findCmsFilePropertyNameValue(id);
     }
     
     public CmsFilePropertyNameValue CmsFilePropertyNameValueDataOnDemand.getRandomCmsFilePropertyNameValue() {
         init();
         CmsFilePropertyNameValue obj = data.get(rnd.nextInt(data.size()));
         CmsFilePropertyNameValuePK id = obj.getId();
-        return CmsFilePropertyNameValue.findCmsFilePropertyNameValue(id);
+        return cmsFilePropertyNameValueService.findCmsFilePropertyNameValue(id);
     }
     
     public boolean CmsFilePropertyNameValueDataOnDemand.modifyCmsFilePropertyNameValue(CmsFilePropertyNameValue obj) {
@@ -78,7 +103,7 @@ privileged aspect CmsFilePropertyNameValueDataOnDemand_Roo_DataOnDemand {
     public void CmsFilePropertyNameValueDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = CmsFilePropertyNameValue.findCmsFilePropertyNameValueEntries(from, to);
+        data = cmsFilePropertyNameValueService.findCmsFilePropertyNameValueEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'CmsFilePropertyNameValue' illegally returned null");
         }
@@ -90,7 +115,7 @@ privileged aspect CmsFilePropertyNameValueDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             CmsFilePropertyNameValue obj = getNewTransientCmsFilePropertyNameValue(i);
             try {
-                obj.persist();
+                cmsFilePropertyNameValueService.saveCmsFilePropertyNameValue(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

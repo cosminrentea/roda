@@ -11,11 +11,11 @@
         <field:display field="timeMethId" id="s_ro_roda_Instance_timeMethId" object="${instance}" z="SAfRF/Mj267qyF+khU7jVmuzjSU="/>
         <field:display field="unitAnalysisId" id="s_ro_roda_Instance_unitAnalysisId" object="${instance}" z="ioVka87c6wv++t6mgZe3pW8Mlq8="/>
         <field:display field="addedBy" id="s_ro_roda_Instance_addedBy" object="${instance}" z="7QLNre9f53X+Z60FQxm+lyv+gIM="/>
-        <field:display date="true" dateTimePattern="${instance_datestart_date_format}" field="datestart" id="s_ro_roda_Instance_datestart" object="${instance}" z="zsng7RtodRMpmv9FjUBS8ri6I7E="/>
-        <field:display date="true" dateTimePattern="${instance_dateend_date_format}" field="dateend" id="s_ro_roda_Instance_dateend" object="${instance}" z="q/t87yajoG77xbTcFdGnfG0cJE4="/>
+        <field:display calendar="true" dateTimePattern="${instance_datestart_date_format}" field="datestart" id="s_ro_roda_Instance_datestart" object="${instance}" z="mCdvqkshaqK1jzQ7bZUyqMX/VXE="/>
+        <field:display calendar="true" dateTimePattern="${instance_dateend_date_format}" field="dateend" id="s_ro_roda_Instance_dateend" object="${instance}" z="cALfhAKsT7caLTDn30f7Lmw48/Y="/>
         <field:display field="insertionStatus" id="s_ro_roda_Instance_insertionStatus" object="${instance}" z="d4jCWU/ViucxCQyzEr0k8P0GL/0="/>
         <field:display field="rawData" id="s_ro_roda_Instance_rawData" object="${instance}" z="wd5jfnqGVa8moKGpvPgk4S4l6LE="/>
         <field:display field="rawMetadata" id="s_ro_roda_Instance_rawMetadata" object="${instance}" z="DYs3tCuFREzGzIdAtUYNo2o8D5k="/>
-        <field:display date="true" dateTimePattern="${instance_added_date_format}" field="added" id="s_ro_roda_Instance_added" object="${instance}" z="FLOfnq5EXybXR7yg+apKJsF20Tw="/>
+        <field:display calendar="true" dateTimePattern="${instance_added_date_format}" field="added" id="s_ro_roda_Instance_added" object="${instance}" z="ccnQlegjjVIMwnD7GOIScSkj06w="/>
     </page:show>
 </div>

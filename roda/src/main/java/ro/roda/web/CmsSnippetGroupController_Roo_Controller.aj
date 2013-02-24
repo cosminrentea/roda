@@ -6,6 +6,7 @@ package ro.roda.web;
 import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,11 +15,18 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.CmsSnippet;
 import ro.roda.CmsSnippetGroup;
+import ro.roda.service.CmsSnippetGroupService;
+import ro.roda.service.CmsSnippetService;
 import ro.roda.web.CmsSnippetGroupController;
 
 privileged aspect CmsSnippetGroupController_Roo_Controller {
+    
+    @Autowired
+    CmsSnippetGroupService CmsSnippetGroupController.cmsSnippetGroupService;
+    
+    @Autowired
+    CmsSnippetService CmsSnippetGroupController.cmsSnippetService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String CmsSnippetGroupController.create(@Valid CmsSnippetGroup cmsSnippetGroup, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -27,7 +35,7 @@ privileged aspect CmsSnippetGroupController_Roo_Controller {
             return "cmssnippetgroups/create";
         }
         uiModel.asMap().clear();
-        cmsSnippetGroup.persist();
+        cmsSnippetGroupService.saveCmsSnippetGroup(cmsSnippetGroup);
         return "redirect:/cmssnippetgroups/" + encodeUrlPathSegment(cmsSnippetGroup.getId().toString(), httpServletRequest);
     }
     
@@ -39,7 +47,7 @@ privileged aspect CmsSnippetGroupController_Roo_Controller {
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String CmsSnippetGroupController.show(@PathVariable("id") Integer id, Model uiModel) {
-        uiModel.addAttribute("cmssnippetgroup", CmsSnippetGroup.findCmsSnippetGroup(id));
+        uiModel.addAttribute("cmssnippetgroup", cmsSnippetGroupService.findCmsSnippetGroup(id));
         uiModel.addAttribute("itemId", id);
         return "cmssnippetgroups/show";
     }
@@ -49,11 +57,11 @@ privileged aspect CmsSnippetGroupController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("cmssnippetgroups", CmsSnippetGroup.findCmsSnippetGroupEntries(firstResult, sizeNo));
-            float nrOfPages = (float) CmsSnippetGroup.countCmsSnippetGroups() / sizeNo;
+            uiModel.addAttribute("cmssnippetgroups", cmsSnippetGroupService.findCmsSnippetGroupEntries(firstResult, sizeNo));
+            float nrOfPages = (float) cmsSnippetGroupService.countAllCmsSnippetGroups() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("cmssnippetgroups", CmsSnippetGroup.findAllCmsSnippetGroups());
+            uiModel.addAttribute("cmssnippetgroups", cmsSnippetGroupService.findAllCmsSnippetGroups());
         }
         return "cmssnippetgroups/list";
     }
@@ -65,20 +73,20 @@ privileged aspect CmsSnippetGroupController_Roo_Controller {
             return "cmssnippetgroups/update";
         }
         uiModel.asMap().clear();
-        cmsSnippetGroup.merge();
+        cmsSnippetGroupService.updateCmsSnippetGroup(cmsSnippetGroup);
         return "redirect:/cmssnippetgroups/" + encodeUrlPathSegment(cmsSnippetGroup.getId().toString(), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String CmsSnippetGroupController.updateForm(@PathVariable("id") Integer id, Model uiModel) {
-        populateEditForm(uiModel, CmsSnippetGroup.findCmsSnippetGroup(id));
+        populateEditForm(uiModel, cmsSnippetGroupService.findCmsSnippetGroup(id));
         return "cmssnippetgroups/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
     public String CmsSnippetGroupController.delete(@PathVariable("id") Integer id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        CmsSnippetGroup cmsSnippetGroup = CmsSnippetGroup.findCmsSnippetGroup(id);
-        cmsSnippetGroup.remove();
+        CmsSnippetGroup cmsSnippetGroup = cmsSnippetGroupService.findCmsSnippetGroup(id);
+        cmsSnippetGroupService.deleteCmsSnippetGroup(cmsSnippetGroup);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
@@ -87,8 +95,7 @@ privileged aspect CmsSnippetGroupController_Roo_Controller {
     
     void CmsSnippetGroupController.populateEditForm(Model uiModel, CmsSnippetGroup cmsSnippetGroup) {
         uiModel.addAttribute("cmsSnippetGroup", cmsSnippetGroup);
-        uiModel.addAttribute("cmssnippets", CmsSnippet.findAllCmsSnippets());
-        uiModel.addAttribute("cmssnippetgroups", CmsSnippetGroup.findAllCmsSnippetGroups());
+        uiModel.addAttribute("cmssnippets", cmsSnippetService.findAllCmsSnippets());
     }
     
     String CmsSnippetGroupController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

@@ -3,7 +3,7 @@
 
 package ro.roda;
 
-import java.util.Date;
+import java.util.Calendar;
 import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -14,7 +14,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import ro.roda.Instance;
 import ro.roda.InstanceKeyword;
 import ro.roda.Keyword;
-import ro.roda.User;
+import ro.roda.Rodauser;
 
 privileged aspect InstanceKeyword_Roo_DbManaged {
     
@@ -28,13 +28,13 @@ privileged aspect InstanceKeyword_Roo_DbManaged {
     
     @ManyToOne
     @JoinColumn(name = "added_by", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
-    private User InstanceKeyword.addedBy;
+    private Rodauser InstanceKeyword.addedBy;
     
     @Column(name = "added", columnDefinition = "timestamp")
     @NotNull
     @Temporal(TemporalType.TIMESTAMP)
-    @DateTimeFormat(style = "M-")
-    private Date InstanceKeyword.added;
+    @DateTimeFormat(style = "MM")
+    private Calendar InstanceKeyword.added;
     
     public Instance InstanceKeyword.getInstanceId() {
         return instanceId;
@@ -52,19 +52,19 @@ privileged aspect InstanceKeyword_Roo_DbManaged {
         this.keywordId = keywordId;
     }
     
-    public User InstanceKeyword.getAddedBy() {
+    public Rodauser InstanceKeyword.getAddedBy() {
         return addedBy;
     }
     
-    public void InstanceKeyword.setAddedBy(User addedBy) {
+    public void InstanceKeyword.setAddedBy(Rodauser addedBy) {
         this.addedBy = addedBy;
     }
     
-    public Date InstanceKeyword.getAdded() {
+    public Calendar InstanceKeyword.getAdded() {
         return added;
     }
     
-    public void InstanceKeyword.setAdded(Date added) {
+    public void InstanceKeyword.setAdded(Calendar added) {
         this.added = added;
     }
     

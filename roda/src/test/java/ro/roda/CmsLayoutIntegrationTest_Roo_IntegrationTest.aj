@@ -11,9 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.CmsLayout;
 import ro.roda.CmsLayoutDataOnDemand;
 import ro.roda.CmsLayoutIntegrationTest;
+import ro.roda.service.CmsLayoutService;
 
 privileged aspect CmsLayoutIntegrationTest_Roo_IntegrationTest {
     
@@ -24,12 +24,15 @@ privileged aspect CmsLayoutIntegrationTest_Roo_IntegrationTest {
     declare @type: CmsLayoutIntegrationTest: @Transactional;
     
     @Autowired
-    private CmsLayoutDataOnDemand CmsLayoutIntegrationTest.dod;
+    CmsLayoutDataOnDemand CmsLayoutIntegrationTest.dod;
+    
+    @Autowired
+    CmsLayoutService CmsLayoutIntegrationTest.cmsLayoutService;
     
     @Test
-    public void CmsLayoutIntegrationTest.testCountCmsLayouts() {
+    public void CmsLayoutIntegrationTest.testCountAllCmsLayouts() {
         Assert.assertNotNull("Data on demand for 'CmsLayout' failed to initialize correctly", dod.getRandomCmsLayout());
-        long count = CmsLayout.countCmsLayouts();
+        long count = cmsLayoutService.countAllCmsLayouts();
         Assert.assertTrue("Counter for 'CmsLayout' incorrectly reported there were no entries", count > 0);
     }
     
@@ -39,7 +42,7 @@ privileged aspect CmsLayoutIntegrationTest_Roo_IntegrationTest {
         Assert.assertNotNull("Data on demand for 'CmsLayout' failed to initialize correctly", obj);
         Integer id = obj.getId();
         Assert.assertNotNull("Data on demand for 'CmsLayout' failed to provide an identifier", id);
-        obj = CmsLayout.findCmsLayout(id);
+        obj = cmsLayoutService.findCmsLayout(id);
         Assert.assertNotNull("Find method for 'CmsLayout' illegally returned null for id '" + id + "'", obj);
         Assert.assertEquals("Find method for 'CmsLayout' returned the incorrect identifier", id, obj.getId());
     }
@@ -47,9 +50,9 @@ privileged aspect CmsLayoutIntegrationTest_Roo_IntegrationTest {
     @Test
     public void CmsLayoutIntegrationTest.testFindAllCmsLayouts() {
         Assert.assertNotNull("Data on demand for 'CmsLayout' failed to initialize correctly", dod.getRandomCmsLayout());
-        long count = CmsLayout.countCmsLayouts();
+        long count = cmsLayoutService.countAllCmsLayouts();
         Assert.assertTrue("Too expensive to perform a find all test for 'CmsLayout', as there are " + count + " entries; set the findAllMaximum to exceed this value or set findAll=false on the integration test annotation to disable the test", count < 250);
-        List<CmsLayout> result = CmsLayout.findAllCmsLayouts();
+        List<CmsLayout> result = cmsLayoutService.findAllCmsLayouts();
         Assert.assertNotNull("Find all method for 'CmsLayout' illegally returned null", result);
         Assert.assertTrue("Find all method for 'CmsLayout' failed to return any data", result.size() > 0);
     }
@@ -57,36 +60,36 @@ privileged aspect CmsLayoutIntegrationTest_Roo_IntegrationTest {
     @Test
     public void CmsLayoutIntegrationTest.testFindCmsLayoutEntries() {
         Assert.assertNotNull("Data on demand for 'CmsLayout' failed to initialize correctly", dod.getRandomCmsLayout());
-        long count = CmsLayout.countCmsLayouts();
+        long count = cmsLayoutService.countAllCmsLayouts();
         if (count > 20) count = 20;
         int firstResult = 0;
         int maxResults = (int) count;
-        List<CmsLayout> result = CmsLayout.findCmsLayoutEntries(firstResult, maxResults);
+        List<CmsLayout> result = cmsLayoutService.findCmsLayoutEntries(firstResult, maxResults);
         Assert.assertNotNull("Find entries method for 'CmsLayout' illegally returned null", result);
         Assert.assertEquals("Find entries method for 'CmsLayout' returned an incorrect number of entries", count, result.size());
     }
     
     @Test
-    public void CmsLayoutIntegrationTest.testPersist() {
+    public void CmsLayoutIntegrationTest.testSaveCmsLayout() {
         Assert.assertNotNull("Data on demand for 'CmsLayout' failed to initialize correctly", dod.getRandomCmsLayout());
         CmsLayout obj = dod.getNewTransientCmsLayout(Integer.MAX_VALUE);
         Assert.assertNotNull("Data on demand for 'CmsLayout' failed to provide a new transient entity", obj);
         Assert.assertNull("Expected 'CmsLayout' identifier to be null", obj.getId());
-        obj.persist();
+        cmsLayoutService.saveCmsLayout(obj);
         obj.flush();
         Assert.assertNotNull("Expected 'CmsLayout' identifier to no longer be null", obj.getId());
     }
     
     @Test
-    public void CmsLayoutIntegrationTest.testRemove() {
+    public void CmsLayoutIntegrationTest.testDeleteCmsLayout() {
         CmsLayout obj = dod.getRandomCmsLayout();
         Assert.assertNotNull("Data on demand for 'CmsLayout' failed to initialize correctly", obj);
         Integer id = obj.getId();
         Assert.assertNotNull("Data on demand for 'CmsLayout' failed to provide an identifier", id);
-        obj = CmsLayout.findCmsLayout(id);
-        obj.remove();
+        obj = cmsLayoutService.findCmsLayout(id);
+        cmsLayoutService.deleteCmsLayout(obj);
         obj.flush();
-        Assert.assertNull("Failed to remove 'CmsLayout' with identifier '" + id + "'", CmsLayout.findCmsLayout(id));
+        Assert.assertNull("Failed to remove 'CmsLayout' with identifier '" + id + "'", cmsLayoutService.findCmsLayout(id));
     }
     
 }

@@ -11,9 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.Keyword;
 import ro.roda.KeywordDataOnDemand;
 import ro.roda.KeywordIntegrationTest;
+import ro.roda.service.KeywordService;
 
 privileged aspect KeywordIntegrationTest_Roo_IntegrationTest {
     
@@ -24,12 +24,15 @@ privileged aspect KeywordIntegrationTest_Roo_IntegrationTest {
     declare @type: KeywordIntegrationTest: @Transactional;
     
     @Autowired
-    private KeywordDataOnDemand KeywordIntegrationTest.dod;
+    KeywordDataOnDemand KeywordIntegrationTest.dod;
+    
+    @Autowired
+    KeywordService KeywordIntegrationTest.keywordService;
     
     @Test
-    public void KeywordIntegrationTest.testCountKeywords() {
+    public void KeywordIntegrationTest.testCountAllKeywords() {
         Assert.assertNotNull("Data on demand for 'Keyword' failed to initialize correctly", dod.getRandomKeyword());
-        long count = Keyword.countKeywords();
+        long count = keywordService.countAllKeywords();
         Assert.assertTrue("Counter for 'Keyword' incorrectly reported there were no entries", count > 0);
     }
     
@@ -39,7 +42,7 @@ privileged aspect KeywordIntegrationTest_Roo_IntegrationTest {
         Assert.assertNotNull("Data on demand for 'Keyword' failed to initialize correctly", obj);
         Integer id = obj.getId();
         Assert.assertNotNull("Data on demand for 'Keyword' failed to provide an identifier", id);
-        obj = Keyword.findKeyword(id);
+        obj = keywordService.findKeyword(id);
         Assert.assertNotNull("Find method for 'Keyword' illegally returned null for id '" + id + "'", obj);
         Assert.assertEquals("Find method for 'Keyword' returned the incorrect identifier", id, obj.getId());
     }
@@ -47,9 +50,9 @@ privileged aspect KeywordIntegrationTest_Roo_IntegrationTest {
     @Test
     public void KeywordIntegrationTest.testFindAllKeywords() {
         Assert.assertNotNull("Data on demand for 'Keyword' failed to initialize correctly", dod.getRandomKeyword());
-        long count = Keyword.countKeywords();
+        long count = keywordService.countAllKeywords();
         Assert.assertTrue("Too expensive to perform a find all test for 'Keyword', as there are " + count + " entries; set the findAllMaximum to exceed this value or set findAll=false on the integration test annotation to disable the test", count < 250);
-        List<Keyword> result = Keyword.findAllKeywords();
+        List<Keyword> result = keywordService.findAllKeywords();
         Assert.assertNotNull("Find all method for 'Keyword' illegally returned null", result);
         Assert.assertTrue("Find all method for 'Keyword' failed to return any data", result.size() > 0);
     }
@@ -57,36 +60,36 @@ privileged aspect KeywordIntegrationTest_Roo_IntegrationTest {
     @Test
     public void KeywordIntegrationTest.testFindKeywordEntries() {
         Assert.assertNotNull("Data on demand for 'Keyword' failed to initialize correctly", dod.getRandomKeyword());
-        long count = Keyword.countKeywords();
+        long count = keywordService.countAllKeywords();
         if (count > 20) count = 20;
         int firstResult = 0;
         int maxResults = (int) count;
-        List<Keyword> result = Keyword.findKeywordEntries(firstResult, maxResults);
+        List<Keyword> result = keywordService.findKeywordEntries(firstResult, maxResults);
         Assert.assertNotNull("Find entries method for 'Keyword' illegally returned null", result);
         Assert.assertEquals("Find entries method for 'Keyword' returned an incorrect number of entries", count, result.size());
     }
     
     @Test
-    public void KeywordIntegrationTest.testPersist() {
+    public void KeywordIntegrationTest.testSaveKeyword() {
         Assert.assertNotNull("Data on demand for 'Keyword' failed to initialize correctly", dod.getRandomKeyword());
         Keyword obj = dod.getNewTransientKeyword(Integer.MAX_VALUE);
         Assert.assertNotNull("Data on demand for 'Keyword' failed to provide a new transient entity", obj);
         Assert.assertNull("Expected 'Keyword' identifier to be null", obj.getId());
-        obj.persist();
+        keywordService.saveKeyword(obj);
         obj.flush();
         Assert.assertNotNull("Expected 'Keyword' identifier to no longer be null", obj.getId());
     }
     
     @Test
-    public void KeywordIntegrationTest.testRemove() {
+    public void KeywordIntegrationTest.testDeleteKeyword() {
         Keyword obj = dod.getRandomKeyword();
         Assert.assertNotNull("Data on demand for 'Keyword' failed to initialize correctly", obj);
         Integer id = obj.getId();
         Assert.assertNotNull("Data on demand for 'Keyword' failed to provide an identifier", id);
-        obj = Keyword.findKeyword(id);
-        obj.remove();
+        obj = keywordService.findKeyword(id);
+        keywordService.deleteKeyword(obj);
         obj.flush();
-        Assert.assertNull("Failed to remove 'Keyword' with identifier '" + id + "'", Keyword.findKeyword(id));
+        Assert.assertNull("Failed to remove 'Keyword' with identifier '" + id + "'", keywordService.findKeyword(id));
     }
     
 }

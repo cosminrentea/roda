@@ -12,9 +12,10 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import ro.roda.ItemDataOnDemand;
+import ro.roda.Item;
 import ro.roda.Value;
 import ro.roda.ValueDataOnDemand;
+import ro.roda.service.ValueService;
 
 privileged aspect ValueDataOnDemand_Roo_DataOnDemand {
     
@@ -25,12 +26,18 @@ privileged aspect ValueDataOnDemand_Roo_DataOnDemand {
     private List<Value> ValueDataOnDemand.data;
     
     @Autowired
-    private ItemDataOnDemand ValueDataOnDemand.itemDataOnDemand;
+    ValueService ValueDataOnDemand.valueService;
     
     public Value ValueDataOnDemand.getNewTransientValue(int index) {
         Value obj = new Value();
+        setItem(obj, index);
         setValue(obj, index);
         return obj;
+    }
+    
+    public void ValueDataOnDemand.setItem(Value obj, int index) {
+        Item item = null;
+        obj.setItem(item);
     }
     
     public void ValueDataOnDemand.setValue(Value obj, int index) {
@@ -48,14 +55,14 @@ privileged aspect ValueDataOnDemand_Roo_DataOnDemand {
         }
         Value obj = data.get(index);
         Long id = obj.getItemId();
-        return Value.findValue(id);
+        return valueService.findValue(id);
     }
     
     public Value ValueDataOnDemand.getRandomValue() {
         init();
         Value obj = data.get(rnd.nextInt(data.size()));
         Long id = obj.getItemId();
-        return Value.findValue(id);
+        return valueService.findValue(id);
     }
     
     public boolean ValueDataOnDemand.modifyValue(Value obj) {
@@ -65,7 +72,7 @@ privileged aspect ValueDataOnDemand_Roo_DataOnDemand {
     public void ValueDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = Value.findValueEntries(from, to);
+        data = valueService.findValueEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'Value' illegally returned null");
         }
@@ -77,7 +84,7 @@ privileged aspect ValueDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             Value obj = getNewTransientValue(i);
             try {
-                obj.persist();
+                valueService.saveValue(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

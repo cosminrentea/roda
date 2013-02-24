@@ -6,6 +6,7 @@ package ro.roda.web;
 import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,14 +15,27 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.CmsLayout;
 import ro.roda.CmsPage;
-import ro.roda.CmsPageContent;
-import ro.roda.CmsPageType;
-import ro.roda.User;
+import ro.roda.Rodauser;
+import ro.roda.service.CmsLayoutService;
+import ro.roda.service.CmsPageContentService;
+import ro.roda.service.CmsPageService;
+import ro.roda.service.CmsPageTypeService;
 import ro.roda.web.CmsPageController;
 
 privileged aspect CmsPageController_Roo_Controller {
+    
+    @Autowired
+    CmsPageService CmsPageController.cmsPageService;
+    
+    @Autowired
+    CmsLayoutService CmsPageController.cmsLayoutService;
+    
+    @Autowired
+    CmsPageContentService CmsPageController.cmsPageContentService;
+    
+    @Autowired
+    CmsPageTypeService CmsPageController.cmsPageTypeService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String CmsPageController.create(@Valid CmsPage cmsPage, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -30,7 +44,7 @@ privileged aspect CmsPageController_Roo_Controller {
             return "cmspages/create";
         }
         uiModel.asMap().clear();
-        cmsPage.persist();
+        cmsPageService.saveCmsPage(cmsPage);
         return "redirect:/cmspages/" + encodeUrlPathSegment(cmsPage.getId().toString(), httpServletRequest);
     }
     
@@ -42,7 +56,7 @@ privileged aspect CmsPageController_Roo_Controller {
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String CmsPageController.show(@PathVariable("id") Integer id, Model uiModel) {
-        uiModel.addAttribute("cmspage", CmsPage.findCmsPage(id));
+        uiModel.addAttribute("cmspage", cmsPageService.findCmsPage(id));
         uiModel.addAttribute("itemId", id);
         return "cmspages/show";
     }
@@ -52,11 +66,11 @@ privileged aspect CmsPageController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("cmspages", CmsPage.findCmsPageEntries(firstResult, sizeNo));
-            float nrOfPages = (float) CmsPage.countCmsPages() / sizeNo;
+            uiModel.addAttribute("cmspages", cmsPageService.findCmsPageEntries(firstResult, sizeNo));
+            float nrOfPages = (float) cmsPageService.countAllCmsPages() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("cmspages", CmsPage.findAllCmsPages());
+            uiModel.addAttribute("cmspages", cmsPageService.findAllCmsPages());
         }
         return "cmspages/list";
     }
@@ -68,20 +82,20 @@ privileged aspect CmsPageController_Roo_Controller {
             return "cmspages/update";
         }
         uiModel.asMap().clear();
-        cmsPage.merge();
+        cmsPageService.updateCmsPage(cmsPage);
         return "redirect:/cmspages/" + encodeUrlPathSegment(cmsPage.getId().toString(), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String CmsPageController.updateForm(@PathVariable("id") Integer id, Model uiModel) {
-        populateEditForm(uiModel, CmsPage.findCmsPage(id));
+        populateEditForm(uiModel, cmsPageService.findCmsPage(id));
         return "cmspages/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
     public String CmsPageController.delete(@PathVariable("id") Integer id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        CmsPage cmsPage = CmsPage.findCmsPage(id);
-        cmsPage.remove();
+        CmsPage cmsPage = cmsPageService.findCmsPage(id);
+        cmsPageService.deleteCmsPage(cmsPage);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
@@ -90,10 +104,10 @@ privileged aspect CmsPageController_Roo_Controller {
     
     void CmsPageController.populateEditForm(Model uiModel, CmsPage cmsPage) {
         uiModel.addAttribute("cmsPage", cmsPage);
-        uiModel.addAttribute("cmslayouts", CmsLayout.findAllCmsLayouts());
-        uiModel.addAttribute("cmspagecontents", CmsPageContent.findAllCmsPageContents());
-        uiModel.addAttribute("cmspagetypes", CmsPageType.findAllCmsPageTypes());
-        uiModel.addAttribute("users", User.findAllUsers());
+        uiModel.addAttribute("cmslayouts", cmsLayoutService.findAllCmsLayouts());
+        uiModel.addAttribute("cmspagecontents", cmsPageContentService.findAllCmsPageContents());
+        uiModel.addAttribute("cmspagetypes", cmsPageTypeService.findAllCmsPageTypes());
+        uiModel.addAttribute("rodausers", Rodauser.findAllRodausers());
     }
     
     String CmsPageController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

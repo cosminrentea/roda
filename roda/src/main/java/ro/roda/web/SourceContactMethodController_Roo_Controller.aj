@@ -6,6 +6,7 @@ package ro.roda.web;
 import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,10 +16,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.SourceContactMethod;
-import ro.roda.SourceContacts;
+import ro.roda.service.SourceContactMethodService;
+import ro.roda.service.SourceContactsService;
 import ro.roda.web.SourceContactMethodController;
 
 privileged aspect SourceContactMethodController_Roo_Controller {
+    
+    @Autowired
+    SourceContactMethodService SourceContactMethodController.sourceContactMethodService;
+    
+    @Autowired
+    SourceContactsService SourceContactMethodController.sourceContactsService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String SourceContactMethodController.create(@Valid SourceContactMethod sourceContactMethod, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -27,7 +35,7 @@ privileged aspect SourceContactMethodController_Roo_Controller {
             return "sourcecontactmethods/create";
         }
         uiModel.asMap().clear();
-        sourceContactMethod.persist();
+        sourceContactMethodService.saveSourceContactMethod(sourceContactMethod);
         return "redirect:/sourcecontactmethods/" + encodeUrlPathSegment(sourceContactMethod.getId().toString(), httpServletRequest);
     }
     
@@ -39,7 +47,7 @@ privileged aspect SourceContactMethodController_Roo_Controller {
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String SourceContactMethodController.show(@PathVariable("id") Integer id, Model uiModel) {
-        uiModel.addAttribute("sourcecontactmethod", SourceContactMethod.findSourceContactMethod(id));
+        uiModel.addAttribute("sourcecontactmethod", sourceContactMethodService.findSourceContactMethod(id));
         uiModel.addAttribute("itemId", id);
         return "sourcecontactmethods/show";
     }
@@ -49,11 +57,11 @@ privileged aspect SourceContactMethodController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("sourcecontactmethods", SourceContactMethod.findSourceContactMethodEntries(firstResult, sizeNo));
-            float nrOfPages = (float) SourceContactMethod.countSourceContactMethods() / sizeNo;
+            uiModel.addAttribute("sourcecontactmethods", sourceContactMethodService.findSourceContactMethodEntries(firstResult, sizeNo));
+            float nrOfPages = (float) sourceContactMethodService.countAllSourceContactMethods() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("sourcecontactmethods", SourceContactMethod.findAllSourceContactMethods());
+            uiModel.addAttribute("sourcecontactmethods", sourceContactMethodService.findAllSourceContactMethods());
         }
         return "sourcecontactmethods/list";
     }
@@ -65,20 +73,20 @@ privileged aspect SourceContactMethodController_Roo_Controller {
             return "sourcecontactmethods/update";
         }
         uiModel.asMap().clear();
-        sourceContactMethod.merge();
+        sourceContactMethodService.updateSourceContactMethod(sourceContactMethod);
         return "redirect:/sourcecontactmethods/" + encodeUrlPathSegment(sourceContactMethod.getId().toString(), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String SourceContactMethodController.updateForm(@PathVariable("id") Integer id, Model uiModel) {
-        populateEditForm(uiModel, SourceContactMethod.findSourceContactMethod(id));
+        populateEditForm(uiModel, sourceContactMethodService.findSourceContactMethod(id));
         return "sourcecontactmethods/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
     public String SourceContactMethodController.delete(@PathVariable("id") Integer id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        SourceContactMethod sourceContactMethod = SourceContactMethod.findSourceContactMethod(id);
-        sourceContactMethod.remove();
+        SourceContactMethod sourceContactMethod = sourceContactMethodService.findSourceContactMethod(id);
+        sourceContactMethodService.deleteSourceContactMethod(sourceContactMethod);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
@@ -87,7 +95,7 @@ privileged aspect SourceContactMethodController_Roo_Controller {
     
     void SourceContactMethodController.populateEditForm(Model uiModel, SourceContactMethod sourceContactMethod) {
         uiModel.addAttribute("sourceContactMethod", sourceContactMethod);
-        uiModel.addAttribute("sourcecontactses", SourceContacts.findAllSourceContactses());
+        uiModel.addAttribute("sourcecontactses", sourceContactsService.findAllSourceContactses());
     }
     
     String SourceContactMethodController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

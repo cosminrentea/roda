@@ -7,8 +7,8 @@
             <table:column id="c_ro_roda_OrgRelations_org2Id" property="org2Id" z="bQmpq4uJCUslX1w0QNQA+CSwLD8="/>
             <table:column id="c_ro_roda_OrgRelations_org1Id" property="org1Id" z="IMiBJEOpSSm3BY9rqJdJi5JXqVk="/>
             <table:column id="c_ro_roda_OrgRelations_orgRelationTypeId" property="orgRelationTypeId" z="K8XoEE1WPmLK/tXPdeima33Fz/Q="/>
-            <table:column date="true" dateTimePattern="${orgRelations_datestart_date_format}" id="c_ro_roda_OrgRelations_datestart" property="datestart" z="LLNHIkWT4yTBndn095NCSpekKm4="/>
-            <table:column date="true" dateTimePattern="${orgRelations_dateend_date_format}" id="c_ro_roda_OrgRelations_dateend" property="dateend" z="XyyXxsCh0Asgeq4tGfZFukHiG1Q="/>
+            <table:column calendar="true" dateTimePattern="${orgRelations_datestart_date_format}" id="c_ro_roda_OrgRelations_datestart" property="datestart" z="qrK9egWDX0zmoETgLroY+cTJAVA="/>
+            <table:column calendar="true" dateTimePattern="${orgRelations_dateend_date_format}" id="c_ro_roda_OrgRelations_dateend" property="dateend" z="HXVFE8bnqcK8OPoOpX3lXFMDuws="/>
             <table:column id="c_ro_roda_OrgRelations_details" property="details" z="EyrSgbkAZjC1Ws/+SKXhHoEokIA="/>
         </table:table>
     </page:list>

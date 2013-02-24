@@ -10,9 +10,11 @@ import java.util.List;
 import java.util.Random;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ro.roda.SamplingProcedure;
 import ro.roda.SamplingProcedureDataOnDemand;
+import ro.roda.service.SamplingProcedureService;
 
 privileged aspect SamplingProcedureDataOnDemand_Roo_DataOnDemand {
     
@@ -21,6 +23,9 @@ privileged aspect SamplingProcedureDataOnDemand_Roo_DataOnDemand {
     private Random SamplingProcedureDataOnDemand.rnd = new SecureRandom();
     
     private List<SamplingProcedure> SamplingProcedureDataOnDemand.data;
+    
+    @Autowired
+    SamplingProcedureService SamplingProcedureDataOnDemand.samplingProcedureService;
     
     public SamplingProcedure SamplingProcedureDataOnDemand.getNewTransientSamplingProcedure(int index) {
         SamplingProcedure obj = new SamplingProcedure();
@@ -49,14 +54,14 @@ privileged aspect SamplingProcedureDataOnDemand_Roo_DataOnDemand {
         }
         SamplingProcedure obj = data.get(index);
         Integer id = obj.getId();
-        return SamplingProcedure.findSamplingProcedure(id);
+        return samplingProcedureService.findSamplingProcedure(id);
     }
     
     public SamplingProcedure SamplingProcedureDataOnDemand.getRandomSamplingProcedure() {
         init();
         SamplingProcedure obj = data.get(rnd.nextInt(data.size()));
         Integer id = obj.getId();
-        return SamplingProcedure.findSamplingProcedure(id);
+        return samplingProcedureService.findSamplingProcedure(id);
     }
     
     public boolean SamplingProcedureDataOnDemand.modifySamplingProcedure(SamplingProcedure obj) {
@@ -66,7 +71,7 @@ privileged aspect SamplingProcedureDataOnDemand_Roo_DataOnDemand {
     public void SamplingProcedureDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = SamplingProcedure.findSamplingProcedureEntries(from, to);
+        data = samplingProcedureService.findSamplingProcedureEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'SamplingProcedure' illegally returned null");
         }
@@ -78,7 +83,7 @@ privileged aspect SamplingProcedureDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             SamplingProcedure obj = getNewTransientSamplingProcedure(i);
             try {
-                obj.persist();
+                samplingProcedureService.saveSamplingProcedure(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

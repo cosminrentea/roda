@@ -12,11 +12,14 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import ro.roda.Org;
 import ro.roda.OrgDataOnDemand;
 import ro.roda.OrgPhone;
 import ro.roda.OrgPhoneDataOnDemand;
 import ro.roda.OrgPhonePK;
+import ro.roda.Phone;
 import ro.roda.PhoneDataOnDemand;
+import ro.roda.service.OrgPhoneService;
 
 privileged aspect OrgPhoneDataOnDemand_Roo_DataOnDemand {
     
@@ -27,15 +30,20 @@ privileged aspect OrgPhoneDataOnDemand_Roo_DataOnDemand {
     private List<OrgPhone> OrgPhoneDataOnDemand.data;
     
     @Autowired
-    private OrgDataOnDemand OrgPhoneDataOnDemand.orgDataOnDemand;
+    OrgDataOnDemand OrgPhoneDataOnDemand.orgDataOnDemand;
     
     @Autowired
-    private PhoneDataOnDemand OrgPhoneDataOnDemand.phoneDataOnDemand;
+    PhoneDataOnDemand OrgPhoneDataOnDemand.phoneDataOnDemand;
+    
+    @Autowired
+    OrgPhoneService OrgPhoneDataOnDemand.orgPhoneService;
     
     public OrgPhone OrgPhoneDataOnDemand.getNewTransientOrgPhone(int index) {
         OrgPhone obj = new OrgPhone();
         setEmbeddedIdClass(obj, index);
         setMain(obj, index);
+        setOrgId(obj, index);
+        setPhoneId(obj, index);
         return obj;
     }
     
@@ -52,6 +60,16 @@ privileged aspect OrgPhoneDataOnDemand_Roo_DataOnDemand {
         obj.setMain(main);
     }
     
+    public void OrgPhoneDataOnDemand.setOrgId(OrgPhone obj, int index) {
+        Org orgId = orgDataOnDemand.getRandomOrg();
+        obj.setOrgId(orgId);
+    }
+    
+    public void OrgPhoneDataOnDemand.setPhoneId(OrgPhone obj, int index) {
+        Phone phoneId = phoneDataOnDemand.getRandomPhone();
+        obj.setPhoneId(phoneId);
+    }
+    
     public OrgPhone OrgPhoneDataOnDemand.getSpecificOrgPhone(int index) {
         init();
         if (index < 0) {
@@ -62,14 +80,14 @@ privileged aspect OrgPhoneDataOnDemand_Roo_DataOnDemand {
         }
         OrgPhone obj = data.get(index);
         OrgPhonePK id = obj.getId();
-        return OrgPhone.findOrgPhone(id);
+        return orgPhoneService.findOrgPhone(id);
     }
     
     public OrgPhone OrgPhoneDataOnDemand.getRandomOrgPhone() {
         init();
         OrgPhone obj = data.get(rnd.nextInt(data.size()));
         OrgPhonePK id = obj.getId();
-        return OrgPhone.findOrgPhone(id);
+        return orgPhoneService.findOrgPhone(id);
     }
     
     public boolean OrgPhoneDataOnDemand.modifyOrgPhone(OrgPhone obj) {
@@ -79,7 +97,7 @@ privileged aspect OrgPhoneDataOnDemand_Roo_DataOnDemand {
     public void OrgPhoneDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = OrgPhone.findOrgPhoneEntries(from, to);
+        data = orgPhoneService.findOrgPhoneEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'OrgPhone' illegally returned null");
         }
@@ -91,7 +109,7 @@ privileged aspect OrgPhoneDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             OrgPhone obj = getNewTransientOrgPhone(i);
             try {
-                obj.persist();
+                orgPhoneService.saveOrgPhone(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

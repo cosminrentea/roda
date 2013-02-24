@@ -12,12 +12,16 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import ro.roda.Lang;
 import ro.roda.LangDataOnDemand;
+import ro.roda.Study;
 import ro.roda.StudyDataOnDemand;
 import ro.roda.StudyDescr;
 import ro.roda.StudyDescrDataOnDemand;
 import ro.roda.StudyDescrPK;
+import ro.roda.TitleType;
 import ro.roda.TitleTypeDataOnDemand;
+import ro.roda.service.StudyDescrService;
 
 privileged aspect StudyDescrDataOnDemand_Roo_DataOnDemand {
     
@@ -28,20 +32,26 @@ privileged aspect StudyDescrDataOnDemand_Roo_DataOnDemand {
     private List<StudyDescr> StudyDescrDataOnDemand.data;
     
     @Autowired
-    private LangDataOnDemand StudyDescrDataOnDemand.langDataOnDemand;
+    LangDataOnDemand StudyDescrDataOnDemand.langDataOnDemand;
     
     @Autowired
-    private StudyDataOnDemand StudyDescrDataOnDemand.studyDataOnDemand;
+    StudyDataOnDemand StudyDescrDataOnDemand.studyDataOnDemand;
     
     @Autowired
-    private TitleTypeDataOnDemand StudyDescrDataOnDemand.titleTypeDataOnDemand;
+    TitleTypeDataOnDemand StudyDescrDataOnDemand.titleTypeDataOnDemand;
+    
+    @Autowired
+    StudyDescrService StudyDescrDataOnDemand.studyDescrService;
     
     public StudyDescr StudyDescrDataOnDemand.getNewTransientStudyDescr(int index) {
         StudyDescr obj = new StudyDescr();
         setEmbeddedIdClass(obj, index);
         setAbstract1(obj, index);
         setGrantDetails(obj, index);
+        setLangId(obj, index);
+        setStudyId(obj, index);
         setTitle(obj, index);
+        setTitleTypeId(obj, index);
         return obj;
     }
     
@@ -66,12 +76,27 @@ privileged aspect StudyDescrDataOnDemand_Roo_DataOnDemand {
         obj.setGrantDetails(grantDetails);
     }
     
+    public void StudyDescrDataOnDemand.setLangId(StudyDescr obj, int index) {
+        Lang langId = langDataOnDemand.getRandomLang();
+        obj.setLangId(langId);
+    }
+    
+    public void StudyDescrDataOnDemand.setStudyId(StudyDescr obj, int index) {
+        Study studyId = studyDataOnDemand.getRandomStudy();
+        obj.setStudyId(studyId);
+    }
+    
     public void StudyDescrDataOnDemand.setTitle(StudyDescr obj, int index) {
         String title = "title_" + index;
         if (title.length() > 300) {
             title = title.substring(0, 300);
         }
         obj.setTitle(title);
+    }
+    
+    public void StudyDescrDataOnDemand.setTitleTypeId(StudyDescr obj, int index) {
+        TitleType titleTypeId = titleTypeDataOnDemand.getRandomTitleType();
+        obj.setTitleTypeId(titleTypeId);
     }
     
     public StudyDescr StudyDescrDataOnDemand.getSpecificStudyDescr(int index) {
@@ -84,14 +109,14 @@ privileged aspect StudyDescrDataOnDemand_Roo_DataOnDemand {
         }
         StudyDescr obj = data.get(index);
         StudyDescrPK id = obj.getId();
-        return StudyDescr.findStudyDescr(id);
+        return studyDescrService.findStudyDescr(id);
     }
     
     public StudyDescr StudyDescrDataOnDemand.getRandomStudyDescr() {
         init();
         StudyDescr obj = data.get(rnd.nextInt(data.size()));
         StudyDescrPK id = obj.getId();
-        return StudyDescr.findStudyDescr(id);
+        return studyDescrService.findStudyDescr(id);
     }
     
     public boolean StudyDescrDataOnDemand.modifyStudyDescr(StudyDescr obj) {
@@ -101,7 +126,7 @@ privileged aspect StudyDescrDataOnDemand_Roo_DataOnDemand {
     public void StudyDescrDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = StudyDescr.findStudyDescrEntries(from, to);
+        data = studyDescrService.findStudyDescrEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'StudyDescr' illegally returned null");
         }
@@ -113,7 +138,7 @@ privileged aspect StudyDescrDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             StudyDescr obj = getNewTransientStudyDescr(i);
             try {
-                obj.persist();
+                studyDescrService.saveStudyDescr(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

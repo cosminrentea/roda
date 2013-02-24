@@ -16,14 +16,18 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.User;
+import ro.roda.Rodauser;
 import ro.roda.UserAuthLog;
 import ro.roda.UserAuthLogPK;
+import ro.roda.service.UserAuthLogService;
 import ro.roda.web.UserAuthLogController;
 
 privileged aspect UserAuthLogController_Roo_Controller {
     
     private ConversionService UserAuthLogController.conversionService;
+    
+    @Autowired
+    UserAuthLogService UserAuthLogController.userAuthLogService;
     
     @Autowired
     public UserAuthLogController.new(ConversionService conversionService) {
@@ -38,7 +42,7 @@ privileged aspect UserAuthLogController_Roo_Controller {
             return "userauthlogs/create";
         }
         uiModel.asMap().clear();
-        userAuthLog.persist();
+        userAuthLogService.saveUserAuthLog(userAuthLog);
         return "redirect:/userauthlogs/" + encodeUrlPathSegment(conversionService.convert(userAuthLog.getId(), String.class), httpServletRequest);
     }
     
@@ -50,7 +54,7 @@ privileged aspect UserAuthLogController_Roo_Controller {
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String UserAuthLogController.show(@PathVariable("id") UserAuthLogPK id, Model uiModel) {
-        uiModel.addAttribute("userauthlog", UserAuthLog.findUserAuthLog(id));
+        uiModel.addAttribute("userauthlog", userAuthLogService.findUserAuthLog(id));
         uiModel.addAttribute("itemId", conversionService.convert(id, String.class));
         return "userauthlogs/show";
     }
@@ -60,11 +64,11 @@ privileged aspect UserAuthLogController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("userauthlogs", UserAuthLog.findUserAuthLogEntries(firstResult, sizeNo));
-            float nrOfPages = (float) UserAuthLog.countUserAuthLogs() / sizeNo;
+            uiModel.addAttribute("userauthlogs", userAuthLogService.findUserAuthLogEntries(firstResult, sizeNo));
+            float nrOfPages = (float) userAuthLogService.countAllUserAuthLogs() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("userauthlogs", UserAuthLog.findAllUserAuthLogs());
+            uiModel.addAttribute("userauthlogs", userAuthLogService.findAllUserAuthLogs());
         }
         return "userauthlogs/list";
     }
@@ -76,20 +80,20 @@ privileged aspect UserAuthLogController_Roo_Controller {
             return "userauthlogs/update";
         }
         uiModel.asMap().clear();
-        userAuthLog.merge();
+        userAuthLogService.updateUserAuthLog(userAuthLog);
         return "redirect:/userauthlogs/" + encodeUrlPathSegment(conversionService.convert(userAuthLog.getId(), String.class), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String UserAuthLogController.updateForm(@PathVariable("id") UserAuthLogPK id, Model uiModel) {
-        populateEditForm(uiModel, UserAuthLog.findUserAuthLog(id));
+        populateEditForm(uiModel, userAuthLogService.findUserAuthLog(id));
         return "userauthlogs/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
     public String UserAuthLogController.delete(@PathVariable("id") UserAuthLogPK id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        UserAuthLog userAuthLog = UserAuthLog.findUserAuthLog(id);
-        userAuthLog.remove();
+        UserAuthLog userAuthLog = userAuthLogService.findUserAuthLog(id);
+        userAuthLogService.deleteUserAuthLog(userAuthLog);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
@@ -98,7 +102,7 @@ privileged aspect UserAuthLogController_Roo_Controller {
     
     void UserAuthLogController.populateEditForm(Model uiModel, UserAuthLog userAuthLog) {
         uiModel.addAttribute("userAuthLog", userAuthLog);
-        uiModel.addAttribute("users", User.findAllUsers());
+        uiModel.addAttribute("rodausers", Rodauser.findAllRodausers());
     }
     
     String UserAuthLogController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

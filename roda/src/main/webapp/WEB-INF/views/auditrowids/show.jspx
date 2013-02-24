@@ -2,9 +2,5 @@
 <div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <page:show id="ps_ro_roda_AuditRowId" object="${auditrowid}" path="/auditrowids" z="dkza1pc1RW69btJW8yObduoUR5U=">
-        <field:display field="auditId" id="s_ro_roda_AuditRowId_auditId" object="${auditrowid}" z="0Sgmfr0UNLv+BZ4gC6F98nGogms="/>
-        <field:display field="columnName" id="s_ro_roda_AuditRowId_columnName" object="${auditrowid}" z="48/Lpwoc3av+crP88T3eRmWTW2w="/>
-        <field:display field="columnValue" id="s_ro_roda_AuditRowId_columnValue" object="${auditrowid}" z="6Tj4L3ekGkg+HCmPphuvJcGArco="/>
-    </page:show>
+    <page:show id="ps_ro_roda_AuditRowId" object="${auditrowid}" path="/auditrowids" z="dkza1pc1RW69btJW8yObduoUR5U="/>
 </div>

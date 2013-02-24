@@ -10,9 +10,11 @@ import java.util.List;
 import java.util.Random;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ro.roda.CmsLayoutGroup;
 import ro.roda.CmsLayoutGroupDataOnDemand;
+import ro.roda.service.CmsLayoutGroupService;
 
 privileged aspect CmsLayoutGroupDataOnDemand_Roo_DataOnDemand {
     
@@ -21,6 +23,9 @@ privileged aspect CmsLayoutGroupDataOnDemand_Roo_DataOnDemand {
     private Random CmsLayoutGroupDataOnDemand.rnd = new SecureRandom();
     
     private List<CmsLayoutGroup> CmsLayoutGroupDataOnDemand.data;
+    
+    @Autowired
+    CmsLayoutGroupService CmsLayoutGroupDataOnDemand.cmsLayoutGroupService;
     
     public CmsLayoutGroup CmsLayoutGroupDataOnDemand.getNewTransientCmsLayoutGroup(int index) {
         CmsLayoutGroup obj = new CmsLayoutGroup();
@@ -44,7 +49,7 @@ privileged aspect CmsLayoutGroupDataOnDemand_Roo_DataOnDemand {
     }
     
     public void CmsLayoutGroupDataOnDemand.setParentId(CmsLayoutGroup obj, int index) {
-        CmsLayoutGroup parentId = obj;
+        Integer parentId = new Integer(index);
         obj.setParentId(parentId);
     }
     
@@ -58,14 +63,14 @@ privileged aspect CmsLayoutGroupDataOnDemand_Roo_DataOnDemand {
         }
         CmsLayoutGroup obj = data.get(index);
         Integer id = obj.getId();
-        return CmsLayoutGroup.findCmsLayoutGroup(id);
+        return cmsLayoutGroupService.findCmsLayoutGroup(id);
     }
     
     public CmsLayoutGroup CmsLayoutGroupDataOnDemand.getRandomCmsLayoutGroup() {
         init();
         CmsLayoutGroup obj = data.get(rnd.nextInt(data.size()));
         Integer id = obj.getId();
-        return CmsLayoutGroup.findCmsLayoutGroup(id);
+        return cmsLayoutGroupService.findCmsLayoutGroup(id);
     }
     
     public boolean CmsLayoutGroupDataOnDemand.modifyCmsLayoutGroup(CmsLayoutGroup obj) {
@@ -75,7 +80,7 @@ privileged aspect CmsLayoutGroupDataOnDemand_Roo_DataOnDemand {
     public void CmsLayoutGroupDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = CmsLayoutGroup.findCmsLayoutGroupEntries(from, to);
+        data = cmsLayoutGroupService.findCmsLayoutGroupEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'CmsLayoutGroup' illegally returned null");
         }
@@ -87,7 +92,7 @@ privileged aspect CmsLayoutGroupDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             CmsLayoutGroup obj = getNewTransientCmsLayoutGroup(i);
             try {
-                obj.persist();
+                cmsLayoutGroupService.saveCmsLayoutGroup(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

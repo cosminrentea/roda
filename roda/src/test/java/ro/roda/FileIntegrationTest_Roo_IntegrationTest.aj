@@ -11,9 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.File;
 import ro.roda.FileDataOnDemand;
 import ro.roda.FileIntegrationTest;
+import ro.roda.service.FileService;
 
 privileged aspect FileIntegrationTest_Roo_IntegrationTest {
     
@@ -24,12 +24,15 @@ privileged aspect FileIntegrationTest_Roo_IntegrationTest {
     declare @type: FileIntegrationTest: @Transactional;
     
     @Autowired
-    private FileDataOnDemand FileIntegrationTest.dod;
+    FileDataOnDemand FileIntegrationTest.dod;
+    
+    @Autowired
+    FileService FileIntegrationTest.fileService;
     
     @Test
-    public void FileIntegrationTest.testCountFiles() {
+    public void FileIntegrationTest.testCountAllFiles() {
         Assert.assertNotNull("Data on demand for 'File' failed to initialize correctly", dod.getRandomFile());
-        long count = File.countFiles();
+        long count = fileService.countAllFiles();
         Assert.assertTrue("Counter for 'File' incorrectly reported there were no entries", count > 0);
     }
     
@@ -39,7 +42,7 @@ privileged aspect FileIntegrationTest_Roo_IntegrationTest {
         Assert.assertNotNull("Data on demand for 'File' failed to initialize correctly", obj);
         Integer id = obj.getId();
         Assert.assertNotNull("Data on demand for 'File' failed to provide an identifier", id);
-        obj = File.findFile(id);
+        obj = fileService.findFile(id);
         Assert.assertNotNull("Find method for 'File' illegally returned null for id '" + id + "'", obj);
         Assert.assertEquals("Find method for 'File' returned the incorrect identifier", id, obj.getId());
     }
@@ -47,9 +50,9 @@ privileged aspect FileIntegrationTest_Roo_IntegrationTest {
     @Test
     public void FileIntegrationTest.testFindAllFiles() {
         Assert.assertNotNull("Data on demand for 'File' failed to initialize correctly", dod.getRandomFile());
-        long count = File.countFiles();
+        long count = fileService.countAllFiles();
         Assert.assertTrue("Too expensive to perform a find all test for 'File', as there are " + count + " entries; set the findAllMaximum to exceed this value or set findAll=false on the integration test annotation to disable the test", count < 250);
-        List<File> result = File.findAllFiles();
+        List<File> result = fileService.findAllFiles();
         Assert.assertNotNull("Find all method for 'File' illegally returned null", result);
         Assert.assertTrue("Find all method for 'File' failed to return any data", result.size() > 0);
     }
@@ -57,36 +60,36 @@ privileged aspect FileIntegrationTest_Roo_IntegrationTest {
     @Test
     public void FileIntegrationTest.testFindFileEntries() {
         Assert.assertNotNull("Data on demand for 'File' failed to initialize correctly", dod.getRandomFile());
-        long count = File.countFiles();
+        long count = fileService.countAllFiles();
         if (count > 20) count = 20;
         int firstResult = 0;
         int maxResults = (int) count;
-        List<File> result = File.findFileEntries(firstResult, maxResults);
+        List<File> result = fileService.findFileEntries(firstResult, maxResults);
         Assert.assertNotNull("Find entries method for 'File' illegally returned null", result);
         Assert.assertEquals("Find entries method for 'File' returned an incorrect number of entries", count, result.size());
     }
     
     @Test
-    public void FileIntegrationTest.testPersist() {
+    public void FileIntegrationTest.testSaveFile() {
         Assert.assertNotNull("Data on demand for 'File' failed to initialize correctly", dod.getRandomFile());
         File obj = dod.getNewTransientFile(Integer.MAX_VALUE);
         Assert.assertNotNull("Data on demand for 'File' failed to provide a new transient entity", obj);
         Assert.assertNull("Expected 'File' identifier to be null", obj.getId());
-        obj.persist();
+        fileService.saveFile(obj);
         obj.flush();
         Assert.assertNotNull("Expected 'File' identifier to no longer be null", obj.getId());
     }
     
     @Test
-    public void FileIntegrationTest.testRemove() {
+    public void FileIntegrationTest.testDeleteFile() {
         File obj = dod.getRandomFile();
         Assert.assertNotNull("Data on demand for 'File' failed to initialize correctly", obj);
         Integer id = obj.getId();
         Assert.assertNotNull("Data on demand for 'File' failed to provide an identifier", id);
-        obj = File.findFile(id);
-        obj.remove();
+        obj = fileService.findFile(id);
+        fileService.deleteFile(obj);
         obj.flush();
-        Assert.assertNull("Failed to remove 'File' with identifier '" + id + "'", File.findFile(id));
+        Assert.assertNull("Failed to remove 'File' with identifier '" + id + "'", fileService.findFile(id));
     }
     
 }

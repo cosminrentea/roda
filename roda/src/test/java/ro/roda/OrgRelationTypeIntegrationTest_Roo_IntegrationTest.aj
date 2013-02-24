@@ -11,9 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.OrgRelationType;
 import ro.roda.OrgRelationTypeDataOnDemand;
 import ro.roda.OrgRelationTypeIntegrationTest;
+import ro.roda.service.OrgRelationTypeService;
 
 privileged aspect OrgRelationTypeIntegrationTest_Roo_IntegrationTest {
     
@@ -24,12 +24,15 @@ privileged aspect OrgRelationTypeIntegrationTest_Roo_IntegrationTest {
     declare @type: OrgRelationTypeIntegrationTest: @Transactional;
     
     @Autowired
-    private OrgRelationTypeDataOnDemand OrgRelationTypeIntegrationTest.dod;
+    OrgRelationTypeDataOnDemand OrgRelationTypeIntegrationTest.dod;
+    
+    @Autowired
+    OrgRelationTypeService OrgRelationTypeIntegrationTest.orgRelationTypeService;
     
     @Test
-    public void OrgRelationTypeIntegrationTest.testCountOrgRelationTypes() {
+    public void OrgRelationTypeIntegrationTest.testCountAllOrgRelationTypes() {
         Assert.assertNotNull("Data on demand for 'OrgRelationType' failed to initialize correctly", dod.getRandomOrgRelationType());
-        long count = OrgRelationType.countOrgRelationTypes();
+        long count = orgRelationTypeService.countAllOrgRelationTypes();
         Assert.assertTrue("Counter for 'OrgRelationType' incorrectly reported there were no entries", count > 0);
     }
     
@@ -39,7 +42,7 @@ privileged aspect OrgRelationTypeIntegrationTest_Roo_IntegrationTest {
         Assert.assertNotNull("Data on demand for 'OrgRelationType' failed to initialize correctly", obj);
         Integer id = obj.getId();
         Assert.assertNotNull("Data on demand for 'OrgRelationType' failed to provide an identifier", id);
-        obj = OrgRelationType.findOrgRelationType(id);
+        obj = orgRelationTypeService.findOrgRelationType(id);
         Assert.assertNotNull("Find method for 'OrgRelationType' illegally returned null for id '" + id + "'", obj);
         Assert.assertEquals("Find method for 'OrgRelationType' returned the incorrect identifier", id, obj.getId());
     }
@@ -47,9 +50,9 @@ privileged aspect OrgRelationTypeIntegrationTest_Roo_IntegrationTest {
     @Test
     public void OrgRelationTypeIntegrationTest.testFindAllOrgRelationTypes() {
         Assert.assertNotNull("Data on demand for 'OrgRelationType' failed to initialize correctly", dod.getRandomOrgRelationType());
-        long count = OrgRelationType.countOrgRelationTypes();
+        long count = orgRelationTypeService.countAllOrgRelationTypes();
         Assert.assertTrue("Too expensive to perform a find all test for 'OrgRelationType', as there are " + count + " entries; set the findAllMaximum to exceed this value or set findAll=false on the integration test annotation to disable the test", count < 250);
-        List<OrgRelationType> result = OrgRelationType.findAllOrgRelationTypes();
+        List<OrgRelationType> result = orgRelationTypeService.findAllOrgRelationTypes();
         Assert.assertNotNull("Find all method for 'OrgRelationType' illegally returned null", result);
         Assert.assertTrue("Find all method for 'OrgRelationType' failed to return any data", result.size() > 0);
     }
@@ -57,36 +60,36 @@ privileged aspect OrgRelationTypeIntegrationTest_Roo_IntegrationTest {
     @Test
     public void OrgRelationTypeIntegrationTest.testFindOrgRelationTypeEntries() {
         Assert.assertNotNull("Data on demand for 'OrgRelationType' failed to initialize correctly", dod.getRandomOrgRelationType());
-        long count = OrgRelationType.countOrgRelationTypes();
+        long count = orgRelationTypeService.countAllOrgRelationTypes();
         if (count > 20) count = 20;
         int firstResult = 0;
         int maxResults = (int) count;
-        List<OrgRelationType> result = OrgRelationType.findOrgRelationTypeEntries(firstResult, maxResults);
+        List<OrgRelationType> result = orgRelationTypeService.findOrgRelationTypeEntries(firstResult, maxResults);
         Assert.assertNotNull("Find entries method for 'OrgRelationType' illegally returned null", result);
         Assert.assertEquals("Find entries method for 'OrgRelationType' returned an incorrect number of entries", count, result.size());
     }
     
     @Test
-    public void OrgRelationTypeIntegrationTest.testPersist() {
+    public void OrgRelationTypeIntegrationTest.testSaveOrgRelationType() {
         Assert.assertNotNull("Data on demand for 'OrgRelationType' failed to initialize correctly", dod.getRandomOrgRelationType());
         OrgRelationType obj = dod.getNewTransientOrgRelationType(Integer.MAX_VALUE);
         Assert.assertNotNull("Data on demand for 'OrgRelationType' failed to provide a new transient entity", obj);
         Assert.assertNull("Expected 'OrgRelationType' identifier to be null", obj.getId());
-        obj.persist();
+        orgRelationTypeService.saveOrgRelationType(obj);
         obj.flush();
         Assert.assertNotNull("Expected 'OrgRelationType' identifier to no longer be null", obj.getId());
     }
     
     @Test
-    public void OrgRelationTypeIntegrationTest.testRemove() {
+    public void OrgRelationTypeIntegrationTest.testDeleteOrgRelationType() {
         OrgRelationType obj = dod.getRandomOrgRelationType();
         Assert.assertNotNull("Data on demand for 'OrgRelationType' failed to initialize correctly", obj);
         Integer id = obj.getId();
         Assert.assertNotNull("Data on demand for 'OrgRelationType' failed to provide an identifier", id);
-        obj = OrgRelationType.findOrgRelationType(id);
-        obj.remove();
+        obj = orgRelationTypeService.findOrgRelationType(id);
+        orgRelationTypeService.deleteOrgRelationType(obj);
         obj.flush();
-        Assert.assertNull("Failed to remove 'OrgRelationType' with identifier '" + id + "'", OrgRelationType.findOrgRelationType(id));
+        Assert.assertNull("Failed to remove 'OrgRelationType' with identifier '" + id + "'", orgRelationTypeService.findOrgRelationType(id));
     }
     
 }

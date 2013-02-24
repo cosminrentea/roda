@@ -11,9 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.SettingValue;
 import ro.roda.SettingValueDataOnDemand;
 import ro.roda.SettingValueIntegrationTest;
+import ro.roda.service.SettingValueService;
 
 privileged aspect SettingValueIntegrationTest_Roo_IntegrationTest {
     
@@ -24,12 +24,15 @@ privileged aspect SettingValueIntegrationTest_Roo_IntegrationTest {
     declare @type: SettingValueIntegrationTest: @Transactional;
     
     @Autowired
-    private SettingValueDataOnDemand SettingValueIntegrationTest.dod;
+    SettingValueDataOnDemand SettingValueIntegrationTest.dod;
+    
+    @Autowired
+    SettingValueService SettingValueIntegrationTest.settingValueService;
     
     @Test
-    public void SettingValueIntegrationTest.testCountSettingValues() {
+    public void SettingValueIntegrationTest.testCountAllSettingValues() {
         Assert.assertNotNull("Data on demand for 'SettingValue' failed to initialize correctly", dod.getRandomSettingValue());
-        long count = SettingValue.countSettingValues();
+        long count = settingValueService.countAllSettingValues();
         Assert.assertTrue("Counter for 'SettingValue' incorrectly reported there were no entries", count > 0);
     }
     
@@ -39,7 +42,7 @@ privileged aspect SettingValueIntegrationTest_Roo_IntegrationTest {
         Assert.assertNotNull("Data on demand for 'SettingValue' failed to initialize correctly", obj);
         Integer id = obj.getSettingId();
         Assert.assertNotNull("Data on demand for 'SettingValue' failed to provide an identifier", id);
-        obj = SettingValue.findSettingValue(id);
+        obj = settingValueService.findSettingValue(id);
         Assert.assertNotNull("Find method for 'SettingValue' illegally returned null for id '" + id + "'", obj);
         Assert.assertEquals("Find method for 'SettingValue' returned the incorrect identifier", id, obj.getSettingId());
     }
@@ -47,9 +50,9 @@ privileged aspect SettingValueIntegrationTest_Roo_IntegrationTest {
     @Test
     public void SettingValueIntegrationTest.testFindAllSettingValues() {
         Assert.assertNotNull("Data on demand for 'SettingValue' failed to initialize correctly", dod.getRandomSettingValue());
-        long count = SettingValue.countSettingValues();
+        long count = settingValueService.countAllSettingValues();
         Assert.assertTrue("Too expensive to perform a find all test for 'SettingValue', as there are " + count + " entries; set the findAllMaximum to exceed this value or set findAll=false on the integration test annotation to disable the test", count < 250);
-        List<SettingValue> result = SettingValue.findAllSettingValues();
+        List<SettingValue> result = settingValueService.findAllSettingValues();
         Assert.assertNotNull("Find all method for 'SettingValue' illegally returned null", result);
         Assert.assertTrue("Find all method for 'SettingValue' failed to return any data", result.size() > 0);
     }
@@ -57,36 +60,36 @@ privileged aspect SettingValueIntegrationTest_Roo_IntegrationTest {
     @Test
     public void SettingValueIntegrationTest.testFindSettingValueEntries() {
         Assert.assertNotNull("Data on demand for 'SettingValue' failed to initialize correctly", dod.getRandomSettingValue());
-        long count = SettingValue.countSettingValues();
+        long count = settingValueService.countAllSettingValues();
         if (count > 20) count = 20;
         int firstResult = 0;
         int maxResults = (int) count;
-        List<SettingValue> result = SettingValue.findSettingValueEntries(firstResult, maxResults);
+        List<SettingValue> result = settingValueService.findSettingValueEntries(firstResult, maxResults);
         Assert.assertNotNull("Find entries method for 'SettingValue' illegally returned null", result);
         Assert.assertEquals("Find entries method for 'SettingValue' returned an incorrect number of entries", count, result.size());
     }
     
     @Test
-    public void SettingValueIntegrationTest.testPersist() {
+    public void SettingValueIntegrationTest.testSaveSettingValue() {
         Assert.assertNotNull("Data on demand for 'SettingValue' failed to initialize correctly", dod.getRandomSettingValue());
         SettingValue obj = dod.getNewTransientSettingValue(Integer.MAX_VALUE);
         Assert.assertNotNull("Data on demand for 'SettingValue' failed to provide a new transient entity", obj);
         Assert.assertNull("Expected 'SettingValue' identifier to be null", obj.getSettingId());
-        obj.persist();
+        settingValueService.saveSettingValue(obj);
         obj.flush();
         Assert.assertNotNull("Expected 'SettingValue' identifier to no longer be null", obj.getSettingId());
     }
     
     @Test
-    public void SettingValueIntegrationTest.testRemove() {
+    public void SettingValueIntegrationTest.testDeleteSettingValue() {
         SettingValue obj = dod.getRandomSettingValue();
         Assert.assertNotNull("Data on demand for 'SettingValue' failed to initialize correctly", obj);
         Integer id = obj.getSettingId();
         Assert.assertNotNull("Data on demand for 'SettingValue' failed to provide an identifier", id);
-        obj = SettingValue.findSettingValue(id);
-        obj.remove();
+        obj = settingValueService.findSettingValue(id);
+        settingValueService.deleteSettingValue(obj);
         obj.flush();
-        Assert.assertNull("Failed to remove 'SettingValue' with identifier '" + id + "'", SettingValue.findSettingValue(id));
+        Assert.assertNull("Failed to remove 'SettingValue' with identifier '" + id + "'", settingValueService.findSettingValue(id));
     }
     
 }

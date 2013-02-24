@@ -137,61 +137,124 @@
             <unique-column name="id"/>
         </unique>
     </table>
-    <table alias="public" description="Tabel ce stocheaza informatiile referitoare la auditul bazei de date" name="audit">
-        <column description="Codul informatiei de audit" name="id" primaryKey="true" required="true" scale="0" size="10" type="4,serial"/>
-        <column description="Timpul la care a avut loc operatia" name="time" primaryKey="false" required="true" scale="6" size="29" type="93,timestamp"/>
-        <column description="Tipul operatiei (inserare, actualizare, stergere)" name="operationType" primaryKey="false" required="true" scale="0" size="5" type="5,int2"/>
-        <column description="Numele tabelului asupra caruia a avut loc operatia" name="tableName" primaryKey="false" required="true" scale="0" size="2147483647" type="12,text"/>
-        <column description="Codul utilizatorului care a efectuat operatia (refera atributul id din tabelul users)" name="user_id" primaryKey="false" required="true" scale="0" size="10" type="4,int4"/>
-        <column description="Numarul versiunii liniei in tabelul din care face parte" name="version_number" primaryKey="false" required="true" scale="0" size="10" type="4,int4"/>
-        <foreign-key foreignTable="user" name="fk_audit_users" onDelete="none" onUpdate="none">
+    <table alias="public" name="audit_log_action">
+        <column name="id" primaryKey="true" required="true" scale="0" size="10" type="4,serial"/>
+        <column name="changeset" primaryKey="false" required="true" scale="0" size="10" type="4,int4"/>
+        <column name="audited_table" primaryKey="false" required="true" scale="0" size="10" type="4,int4"/>
+        <column name="audited_row" primaryKey="false" required="false" scale="0" size="50" type="12,varchar"/>
+        <column name="type" primaryKey="false" required="true" scale="0" size="10" type="12,varchar"/>
+        <foreign-key foreignTable="audit_log_changeset" name="audit_log_action_fk_changeset" onDelete="cascade" onUpdate="cascade">
             <option key="foreignSchemaName" value="public"/>
             <option key="exported" value="false"/>
-            <reference foreign="id" local="user_id"/>
+            <reference foreign="id" local="changeset"/>
         </foreign-key>
-        <foreign-key foreignTable="audit_field" name="fk_audit_fields_audit" onDelete="none" onUpdate="none">
+        <foreign-key foreignTable="audit_log_table" name="audit_log_action_fk_audited_table" onDelete="cascade" onUpdate="cascade">
+            <option key="foreignSchemaName" value="public"/>
+            <option key="exported" value="false"/>
+            <reference foreign="id" local="audited_table"/>
+        </foreign-key>
+        <foreign-key foreignTable="audit_log_change" name="audit_log_change_fk_action" onDelete="cascade" onUpdate="cascade">
             <option key="foreignSchemaName" value="public"/>
             <option key="exported" value="true"/>
-            <reference foreign="audit_id" local="id"/>
+            <reference foreign="action" local="id"/>
         </foreign-key>
-        <foreign-key foreignTable="audit_row_id" name="fk_audit_row_id_audit" onDelete="none" onUpdate="none">
+        <unique name="audit_log_action_pkey">
+            <unique-column name="id"/>
+        </unique>
+        <index name="audit_log_action_idx_audited_table">
+            <index-column name="audited_table"/>
+        </index>
+        <index name="audit_log_action_idx_changeset">
+            <index-column name="changeset"/>
+        </index>
+    </table>
+    <table alias="public" name="audit_log_change">
+        <column name="id" primaryKey="true" required="true" scale="0" size="10" type="4,serial"/>
+        <column name="action" primaryKey="false" required="true" scale="0" size="10" type="4,int4"/>
+        <column name="field" primaryKey="false" required="true" scale="0" size="10" type="4,int4"/>
+        <column name="old_value" primaryKey="false" required="false" scale="0" size="255" type="12,varchar"/>
+        <column name="new_value" primaryKey="false" required="false" scale="0" size="255" type="12,varchar"/>
+        <foreign-key foreignTable="audit_log_action" name="audit_log_change_fk_action" onDelete="cascade" onUpdate="cascade">
+            <option key="foreignSchemaName" value="public"/>
+            <option key="exported" value="false"/>
+            <reference foreign="id" local="action"/>
+        </foreign-key>
+        <foreign-key foreignTable="audit_log_field" name="audit_log_change_fk_field" onDelete="cascade" onUpdate="cascade">
+            <option key="foreignSchemaName" value="public"/>
+            <option key="exported" value="false"/>
+            <reference foreign="id" local="field"/>
+        </foreign-key>
+        <unique name="audit_log_change_pkey">
+            <unique-column name="id"/>
+        </unique>
+        <index name="audit_log_change_idx_action">
+            <index-column name="action"/>
+        </index>
+        <index name="audit_log_change_idx_field">
+            <index-column name="field"/>
+        </index>
+    </table>
+    <table alias="public" name="audit_log_changeset">
+        <column name="id" primaryKey="true" required="true" scale="0" size="10" type="4,serial"/>
+        <column name="description" primaryKey="false" required="false" scale="0" size="255" type="12,varchar"/>
+        <column name="timestamp" primaryKey="false" required="true" scale="6" size="29" type="93,timestamp"/>
+        <column name="rodauser" primaryKey="false" required="true" scale="0" size="10" type="4,int4"/>
+        <foreign-key foreignTable="rodauser" name="fk_audit_log_changeset_rodauser" onDelete="none" onUpdate="none">
+            <option key="foreignSchemaName" value="public"/>
+            <option key="exported" value="false"/>
+            <reference foreign="id" local="rodauser"/>
+        </foreign-key>
+        <foreign-key foreignTable="audit_log_action" name="audit_log_action_fk_changeset" onDelete="cascade" onUpdate="cascade">
             <option key="foreignSchemaName" value="public"/>
             <option key="exported" value="true"/>
-            <reference foreign="audit_id" local="id"/>
+            <reference foreign="changeset" local="id"/>
         </foreign-key>
-        <unique name="pkaudit">
+        <unique name="audit_log_changeset_pkey">
             <unique-column name="id"/>
         </unique>
+        <index name="audit_log_changeset_idx_rodauser">
+            <index-column name="rodauser"/>
+        </index>
     </table>
-    <table alias="public" description="Tabel ce inregistreaza informatiile de audit la nivelul unei linii, stocand modificarile aduse asupra valorilor campurilor sale" name="audit_field">
-        <column description="Codul informatiei de audit (refera atributul id din tabelul audit)" name="audit_id" primaryKey="true" required="true" scale="0" size="10" type="4,int4"/>
-        <column description="Codul coloanei in cadrul informatiei de audit" name="id" primaryKey="true" required="true" scale="0" size="10" type="4,serial"/>
-        <column description="Numele coloanei a carei valoare a fost modificata" name="column_name" primaryKey="false" required="true" scale="0" size="2147483647" type="12,text"/>
-        <column description="Valoarea noua a coloanei column_name" name="new_value" primaryKey="false" required="false" scale="0" size="2147483647" type="12,text"/>
-        <column description="Valoarea veche a coloanei column_name" name="old_value" primaryKey="false" required="false" scale="0" size="2147483647" type="12,text"/>
-        <foreign-key foreignTable="audit" name="fk_audit_fields_audit" onDelete="none" onUpdate="none">
+    <table alias="public" name="audit_log_field">
+        <column name="id" primaryKey="true" required="true" scale="0" size="10" type="4,serial"/>
+        <column name="audited_table" primaryKey="false" required="true" scale="0" size="10" type="4,int4"/>
+        <column name="name" primaryKey="false" required="true" scale="0" size="40" type="12,varchar"/>
+        <foreign-key foreignTable="audit_log_table" name="audit_log_field_fk_audited_table" onDelete="cascade" onUpdate="cascade">
             <option key="foreignSchemaName" value="public"/>
             <option key="exported" value="false"/>
-            <reference foreign="id" local="audit_id"/>
+            <reference foreign="id" local="audited_table"/>
         </foreign-key>
-        <unique name="pkaudit_field">
-            <unique-column name="audit_id"/>
+        <foreign-key foreignTable="audit_log_change" name="audit_log_change_fk_field" onDelete="cascade" onUpdate="cascade">
+            <option key="foreignSchemaName" value="public"/>
+            <option key="exported" value="true"/>
+            <reference foreign="field" local="id"/>
+        </foreign-key>
+        <unique name="audit_log_field_pkey">
             <unique-column name="id"/>
         </unique>
+        <index name="audit_log_field_idx_audited_table">
+            <index-column name="audited_table"/>
+        </index>
     </table>
-    <table alias="public" description="Tabel ce stocheaza valorile identificatorilor liniilor pentru care sunt retinute informatii de audit" name="audit_row_id">
-        <column description="Codul informatiei de audit (refera atributul id din tabelul audit)" name="audit_id" primaryKey="true" required="true" scale="0" size="10" type="4,int4"/>
-        <column description="Codul coloanei care face parte din cheia primara a tabelului, in cadrul acestei informatii de audit" name="id" primaryKey="true" required="true" scale="0" size="10" type="4,serial"/>
-        <column description="Numele coloanei care face parte din identificatorul (cheia primara) a tabelului asupra caruia are loc o operatie LMD" name="column_name" primaryKey="false" required="true" scale="0" size="2147483647" type="12,text"/>
-        <column description="Valoarea coloanei column_name pe linia pentru care este inregistrata o informatie de audit" name="column_value" primaryKey="false" required="false" scale="0" size="10" type="4,int4"/>
-        <foreign-key foreignTable="audit" name="fk_audit_row_id_audit" onDelete="none" onUpdate="none">
+    <table alias="public" name="audit_log_table">
+        <column name="id" primaryKey="true" required="true" scale="0" size="10" type="4,serial"/>
+        <column name="name" primaryKey="false" required="true" scale="0" size="40" type="12,varchar"/>
+        <foreign-key foreignTable="audit_log_action" name="audit_log_action_fk_audited_table" onDelete="cascade" onUpdate="cascade">
             <option key="foreignSchemaName" value="public"/>
-            <option key="exported" value="false"/>
-            <reference foreign="id" local="audit_id"/>
+            <option key="exported" value="true"/>
+            <reference foreign="audited_table" local="id"/>
         </foreign-key>
-        <unique name="pkaudit_row_id">
+        <foreign-key foreignTable="audit_log_field" name="audit_log_field_fk_audited_table" onDelete="cascade" onUpdate="cascade">
+            <option key="foreignSchemaName" value="public"/>
+            <option key="exported" value="true"/>
+            <reference foreign="audited_table" local="id"/>
+        </foreign-key>
+        <unique name="audit_log_table_name">
+            <unique-column name="name"/>
+        </unique>
+        <unique name="audit_log_table_pkey">
             <unique-column name="id"/>
-            <unique-column name="audit_id"/>
         </unique>
     </table>
     <table alias="public" description="Tabel ce stocheaza datele de autentificare ale utilizatorilor" name="auth_data">
@@ -199,7 +262,7 @@
         <column description="Furnizorul de informatii de acces" name="credential_provider" primaryKey="false" required="true" scale="0" size="2147483647" type="12,text"/>
         <column description="Denumirea campului de autentificare (de exemplu: username)" name="field_name" primaryKey="false" required="true" scale="0" size="2147483647" type="12,text"/>
         <column description="Valoarea campului specificat prin atributul field_name pentru utilizatorul referit prin atributul user_id" name="field_value" primaryKey="false" required="true" scale="0" size="2147483647" type="12,text"/>
-        <foreign-key foreignTable="user" name="fk_auth_data_users" onDelete="none" onUpdate="none">
+        <foreign-key foreignTable="rodauser" name="fk_auth_data_users" onDelete="none" onUpdate="none">
             <option key="foreignSchemaName" value="public"/>
             <option key="exported" value="false"/>
             <reference foreign="id" local="user_id"/>
@@ -211,23 +274,15 @@
     <table alias="public" description="Tabel ce stocheaza informatii despre cataloagele de studii" name="catalog">
         <column description="Codul catalogului" name="id" primaryKey="true" required="true" scale="0" size="10" type="4,serial"/>
         <column description="Denumirea catalogului" name="name" primaryKey="false" required="true" scale="0" size="200" type="12,varchar"/>
-        <column description="Codul catalogului din care face parte catalogul curent (refera atributul id al tabelului catalog)" name="parent" primaryKey="false" required="false" scale="0" size="10" type="4,int4"/>
+        <column description="Codul catalogului din care face parte catalogul curent (refera atributul id al tabelului catalog)" name="parent_id" primaryKey="false" required="false" scale="0" size="10" type="4,int4"/>
         <column description="Codul utilizatorului care poseda catalogul (refera atributul id din tabelul users)" name="owner" primaryKey="false" required="true" scale="0" size="10" type="4,int4"/>
         <column description="Data si timpul cand a fost adaugat catalogul respectiv" name="added" primaryKey="false" required="true" scale="6" size="29" type="93,timestamp"/>
-        <foreign-key foreignTable="catalog" name="fk_catalog_catalog" onDelete="none" onUpdate="none">
-            <option key="foreignSchemaName" value="public"/>
-            <option key="exported" value="false"/>
-            <reference foreign="id" local="parent"/>
-        </foreign-key>
-        <foreign-key foreignTable="user" name="fk_catalog_users" onDelete="none" onUpdate="none">
+        <column description="Coloana care permite ordonarea elementelor subordonate aceluiasi parinte" name="sequencenr" primaryKey="false" required="false" scale="0" size="10" type="4,int4"/>
+        <column description="Descrierea catalogului" name="description" primaryKey="false" required="false" scale="0" size="2147483647" type="12,text"/>
+        <foreign-key foreignTable="rodauser" name="fk_catalog_users" onDelete="none" onUpdate="none">
             <option key="foreignSchemaName" value="public"/>
             <option key="exported" value="false"/>
             <reference foreign="id" local="owner"/>
-        </foreign-key>
-        <foreign-key foreignTable="catalog" name="fk_catalog_catalog" onDelete="none" onUpdate="none">
-            <option key="foreignSchemaName" value="public"/>
-            <option key="exported" value="true"/>
-            <reference foreign="parent" local="id"/>
         </foreign-key>
         <foreign-key foreignTable="catalog_acl" name="fk_catalog_acl_catalog" onDelete="none" onUpdate="none">
             <option key="foreignSchemaName" value="public"/>
@@ -360,20 +415,10 @@
         <column description="Denumirea unui folder din sistemul CMS al aplicatiei" name="name" primaryKey="false" required="true" scale="0" size="2147483647" type="12,text"/>
         <column description="Codul folder-ului parinte al folder-ului curent (refera atributul id din acelasi tabel)" name="parent_id" primaryKey="false" required="false" scale="0" size="10" type="4,int4"/>
         <column description="Descrierea unui folder din sistemul CMS al aplicatiei" name="description" primaryKey="false" required="false" scale="0" size="2147483647" type="12,text"/>
-        <foreign-key foreignTable="cms_folder" name="fk_cms_folders_cms_folders" onDelete="none" onUpdate="none">
-            <option key="foreignSchemaName" value="public"/>
-            <option key="exported" value="false"/>
-            <reference foreign="id" local="parent_id"/>
-        </foreign-key>
         <foreign-key foreignTable="cms_file" name="fk_cms_files_cms_folders" onDelete="none" onUpdate="none">
             <option key="foreignSchemaName" value="public"/>
             <option key="exported" value="true"/>
             <reference foreign="cms_folder_id" local="id"/>
-        </foreign-key>
-        <foreign-key foreignTable="cms_folder" name="fk_cms_folders_cms_folders" onDelete="none" onUpdate="none">
-            <option key="foreignSchemaName" value="public"/>
-            <option key="exported" value="true"/>
-            <reference foreign="parent_id" local="id"/>
         </foreign-key>
         <unique name="pkcms_folder">
             <unique-column name="id"/>
@@ -403,20 +448,10 @@
         <column description="Denumirea unui grup de layout-uri" name="name" primaryKey="false" required="true" scale="0" size="200" type="12,varchar"/>
         <column description="Codul parintelui unui grup de layout-uri (refera atributul id din tabelul curent))" name="parent_id" primaryKey="false" required="false" scale="0" size="10" type="4,int4"/>
         <column description="Descrierea unui grup de layout-uri" name="description" primaryKey="false" required="false" scale="0" size="2147483647" type="12,text"/>
-        <foreign-key foreignTable="cms_layout_group" name="fk_cms_layout_group_cms_layout_group" onDelete="none" onUpdate="none">
-            <option key="foreignSchemaName" value="public"/>
-            <option key="exported" value="false"/>
-            <reference foreign="id" local="parent_id"/>
-        </foreign-key>
         <foreign-key foreignTable="cms_layout" name="fk_cms_layout_cms_layout_group" onDelete="none" onUpdate="none">
             <option key="foreignSchemaName" value="public"/>
             <option key="exported" value="true"/>
             <reference foreign="cms_layout_group_id" local="id"/>
-        </foreign-key>
-        <foreign-key foreignTable="cms_layout_group" name="fk_cms_layout_group_cms_layout_group" onDelete="none" onUpdate="none">
-            <option key="foreignSchemaName" value="public"/>
-            <option key="exported" value="true"/>
-            <reference foreign="parent_id" local="id"/>
         </foreign-key>
         <unique name="pkcms_layout_group">
             <unique-column name="id"/>
@@ -441,7 +476,7 @@
             <option key="exported" value="false"/>
             <reference foreign="id" local="cms_page_type_id"/>
         </foreign-key>
-        <foreign-key foreignTable="user" name="fk_cms_page_users" onDelete="none" onUpdate="none">
+        <foreign-key foreignTable="rodauser" name="fk_cms_page_users" onDelete="none" onUpdate="none">
             <option key="foreignSchemaName" value="public"/>
             <option key="exported" value="false"/>
             <reference foreign="id" local="owner_id"/>
@@ -506,20 +541,10 @@
         <column description="Denumirea unui grup de snippet-uri din sistemul CMS al aplicatiei" name="name" primaryKey="false" required="true" scale="0" size="200" type="12,varchar"/>
         <column description="Codul grupului de snippet-uri care este parintele grupului curent (refera atributul id din acelasi tabel)" name="parent_id" primaryKey="false" required="false" scale="0" size="10" type="4,int4"/>
         <column description="Descrierea grupului de snippet-uri " name="description" primaryKey="false" required="false" scale="0" size="2147483647" type="12,text"/>
-        <foreign-key foreignTable="cms_snippet_group" name="fk_cms_snippet_group_cms_snippet_group" onDelete="none" onUpdate="none">
-            <option key="foreignSchemaName" value="public"/>
-            <option key="exported" value="false"/>
-            <reference foreign="id" local="parent_id"/>
-        </foreign-key>
         <foreign-key foreignTable="cms_snippet" name="fk_cms_snippet_cms_snippet_group" onDelete="none" onUpdate="none">
             <option key="foreignSchemaName" value="public"/>
             <option key="exported" value="true"/>
             <reference foreign="cms_snippet_group_id" local="id"/>
-        </foreign-key>
-        <foreign-key foreignTable="cms_snippet_group" name="fk_cms_snippet_group_cms_snippet_group" onDelete="none" onUpdate="none">
-            <option key="foreignSchemaName" value="public"/>
-            <option key="exported" value="true"/>
-            <reference foreign="parent_id" local="id"/>
         </foreign-key>
         <unique name="pkcms_snippet_group">
             <unique-column name="id"/>
@@ -807,6 +832,11 @@
         <column name="added_by" primaryKey="false" required="true" scale="0" size="10" type="4,int4"/>
         <column name="added" primaryKey="false" required="true" scale="6" size="29" type="93,timestamp"/>
         <column name="time_meth_id" primaryKey="false" required="true" scale="0" size="10" type="4,int4"/>
+        <foreign-key foreignTable="rodauser" name="fk_instance_user" onDelete="none" onUpdate="none">
+            <option key="foreignSchemaName" value="public"/>
+            <option key="exported" value="false"/>
+            <reference foreign="id" local="added_by"/>
+        </foreign-key>
         <foreign-key foreignTable="study" name="fk_instance_study" onDelete="none" onUpdate="none">
             <option key="foreignSchemaName" value="public"/>
             <option key="exported" value="false"/>
@@ -821,11 +851,6 @@
             <option key="foreignSchemaName" value="public"/>
             <option key="exported" value="false"/>
             <reference foreign="id" local="unit_analysis_id"/>
-        </foreign-key>
-        <foreign-key foreignTable="user" name="fk_instance_user" onDelete="none" onUpdate="none">
-            <option key="foreignSchemaName" value="public"/>
-            <option key="exported" value="false"/>
-            <reference foreign="id" local="added_by"/>
         </foreign-key>
         <foreign-key foreignTable="form" name="fk_form_instance" onDelete="none" onUpdate="none">
             <option key="foreignSchemaName" value="public"/>
@@ -962,7 +987,7 @@
             <option key="exported" value="false"/>
             <reference foreign="id" local="keyword_id"/>
         </foreign-key>
-        <foreign-key foreignTable="user" name="fk_instance_keyword_user" onDelete="none" onUpdate="none">
+        <foreign-key foreignTable="rodauser" name="fk_instance_keyword_user" onDelete="none" onUpdate="none">
             <option key="foreignSchemaName" value="public"/>
             <option key="exported" value="false"/>
             <reference foreign="id" local="added_by"/>
@@ -1195,7 +1220,7 @@
         <column description="Atribut boolean, a carui valoare este true daca stirea este vizibila" name="visible" primaryKey="false" required="true" scale="0" size="1" type="-7,bool"/>
         <column description="Titlul stirii" name="title" primaryKey="false" required="true" scale="0" size="2147483647" type="12,text"/>
         <column description="Continutul stirii" name="content" primaryKey="false" required="false" scale="0" size="2147483647" type="12,text"/>
-        <foreign-key foreignTable="user" name="fk_news_users" onDelete="none" onUpdate="none">
+        <foreign-key foreignTable="rodauser" name="fk_news_users" onDelete="none" onUpdate="none">
             <option key="foreignSchemaName" value="public"/>
             <option key="exported" value="false"/>
             <reference foreign="id" local="added_by"/>
@@ -1576,12 +1601,12 @@
             <option key="exported" value="false"/>
             <reference foreign="id" local="person_id"/>
         </foreign-key>
-        <foreign-key foreignTable="user" name="fk_person_links_users" onDelete="none" onUpdate="none">
+        <foreign-key foreignTable="rodauser" name="fk_person_links_users" onDelete="none" onUpdate="none">
             <option key="foreignSchemaName" value="public"/>
             <option key="exported" value="false"/>
             <reference foreign="id" local="user_id"/>
         </foreign-key>
-        <foreign-key foreignTable="user" name="fk_person_links_users2" onDelete="none" onUpdate="none">
+        <foreign-key foreignTable="rodauser" name="fk_person_links_users2" onDelete="none" onUpdate="none">
             <option key="foreignSchemaName" value="public"/>
             <option key="exported" value="false"/>
             <reference foreign="id" local="status_by"/>
@@ -1766,6 +1791,108 @@
             <reference foreign="regiontype_id" local="id"/>
         </foreign-key>
         <unique name="pkregiontype">
+            <unique-column name="id"/>
+        </unique>
+    </table>
+    <table alias="public" description="Tabel ce contine utilizatorii aplicatiei" name="rodauser">
+        <column description="Codul utilizatorului aplicatiei" name="id" primaryKey="true" required="true" scale="0" size="10" type="4,serial"/>
+        <column description="Furnizorul de informatii de acces pentru utilizatorul respectiv" name="credential_provider" primaryKey="false" required="true" scale="0" size="2147483647" type="12,text"/>
+        <foreign-key foreignTable="audit_log_changeset" name="fk_audit_log_changeset_rodauser" onDelete="none" onUpdate="none">
+            <option key="foreignSchemaName" value="public"/>
+            <option key="exported" value="true"/>
+            <reference foreign="rodauser" local="id"/>
+        </foreign-key>
+        <foreign-key foreignTable="auth_data" name="fk_auth_data_users" onDelete="none" onUpdate="none">
+            <option key="foreignSchemaName" value="public"/>
+            <option key="exported" value="true"/>
+            <reference foreign="user_id" local="id"/>
+        </foreign-key>
+        <foreign-key foreignTable="catalog" name="fk_catalog_users" onDelete="none" onUpdate="none">
+            <option key="foreignSchemaName" value="public"/>
+            <option key="exported" value="true"/>
+            <reference foreign="owner" local="id"/>
+        </foreign-key>
+        <foreign-key foreignTable="cms_page" name="fk_cms_page_users" onDelete="none" onUpdate="none">
+            <option key="foreignSchemaName" value="public"/>
+            <option key="exported" value="true"/>
+            <reference foreign="owner_id" local="id"/>
+        </foreign-key>
+        <foreign-key foreignTable="instance" name="fk_instance_user" onDelete="none" onUpdate="none">
+            <option key="foreignSchemaName" value="public"/>
+            <option key="exported" value="true"/>
+            <reference foreign="added_by" local="id"/>
+        </foreign-key>
+        <foreign-key foreignTable="instance_keyword" name="fk_instance_keyword_user" onDelete="none" onUpdate="none">
+            <option key="foreignSchemaName" value="public"/>
+            <option key="exported" value="true"/>
+            <reference foreign="added_by" local="id"/>
+        </foreign-key>
+        <foreign-key foreignTable="news" name="fk_news_users" onDelete="none" onUpdate="none">
+            <option key="foreignSchemaName" value="public"/>
+            <option key="exported" value="true"/>
+            <reference foreign="added_by" local="id"/>
+        </foreign-key>
+        <foreign-key foreignTable="person_links" name="fk_person_links_users" onDelete="none" onUpdate="none">
+            <option key="foreignSchemaName" value="public"/>
+            <option key="exported" value="true"/>
+            <reference foreign="user_id" local="id"/>
+        </foreign-key>
+        <foreign-key foreignTable="person_links" name="fk_person_links_users2" onDelete="none" onUpdate="none">
+            <option key="foreignSchemaName" value="public"/>
+            <option key="exported" value="true"/>
+            <reference foreign="status_by" local="id"/>
+        </foreign-key>
+        <foreign-key foreignTable="sourcestudy_type_history" name="fk_sourcestudy_type_history_user" onDelete="none" onUpdate="none">
+            <option key="foreignSchemaName" value="public"/>
+            <option key="exported" value="true"/>
+            <reference foreign="added_by" local="id"/>
+        </foreign-key>
+        <foreign-key foreignTable="sourcetype_history" name="fk_sourcetype_history_user" onDelete="none" onUpdate="none">
+            <option key="foreignSchemaName" value="public"/>
+            <option key="exported" value="true"/>
+            <reference foreign="added_by" local="id"/>
+        </foreign-key>
+        <foreign-key foreignTable="study" name="fk_study_user" onDelete="none" onUpdate="none">
+            <option key="foreignSchemaName" value="public"/>
+            <option key="exported" value="true"/>
+            <reference foreign="added_by" local="id"/>
+        </foreign-key>
+        <foreign-key foreignTable="study_keyword" name="fk_study_keyword_user" onDelete="none" onUpdate="none">
+            <option key="foreignSchemaName" value="public"/>
+            <option key="exported" value="true"/>
+            <reference foreign="added_by" local="id"/>
+        </foreign-key>
+        <foreign-key foreignTable="user_auth_log" name="fk_user_auth_log_users" onDelete="none" onUpdate="none">
+            <option key="foreignSchemaName" value="public"/>
+            <option key="exported" value="true"/>
+            <reference foreign="user_id" local="id"/>
+        </foreign-key>
+        <foreign-key foreignTable="user_message" name="fk_user_message_user" onDelete="none" onUpdate="none">
+            <option key="foreignSchemaName" value="public"/>
+            <option key="exported" value="true"/>
+            <reference foreign="to_user_id" local="id"/>
+        </foreign-key>
+        <foreign-key foreignTable="user_message" name="fk_user_messages_users" onDelete="none" onUpdate="none">
+            <option key="foreignSchemaName" value="public"/>
+            <option key="exported" value="true"/>
+            <reference foreign="from_user_id" local="id"/>
+        </foreign-key>
+        <foreign-key foreignTable="user_profile" name="fk_user_profile_users" onDelete="none" onUpdate="none">
+            <option key="foreignSchemaName" value="public"/>
+            <option key="exported" value="true"/>
+            <reference foreign="user_id" local="id"/>
+        </foreign-key>
+        <foreign-key foreignTable="user_role" name="fk_user_role_users" onDelete="none" onUpdate="none">
+            <option key="foreignSchemaName" value="public"/>
+            <option key="exported" value="true"/>
+            <reference foreign="user_id" local="id"/>
+        </foreign-key>
+        <foreign-key foreignTable="user_setting_value" name="fk_user_setting_value_users" onDelete="none" onUpdate="none">
+            <option key="foreignSchemaName" value="public"/>
+            <option key="exported" value="true"/>
+            <reference foreign="user_id" local="id"/>
+        </foreign-key>
+        <unique name="pkrodauser">
             <unique-column name="id"/>
         </unique>
     </table>
@@ -2070,6 +2197,11 @@
         <column description="Codul tipului (starii) studiului respectiv intre datele datestart si dateend" name="sourcestudy_type_id" primaryKey="false" required="true" scale="0" size="10" type="4,int4"/>
         <column description="Codul utilizatorului care a adaugat informatia referitoare la istoricul unui studiu" name="added_by" primaryKey="false" required="true" scale="0" size="10" type="4,int4"/>
         <column description="Codul studiului care poate fi furnizat de catre o sursa" name="sourcesstudy_id" primaryKey="false" required="true" scale="0" size="10" type="4,int4"/>
+        <foreign-key foreignTable="rodauser" name="fk_sourcestudy_type_history_user" onDelete="none" onUpdate="none">
+            <option key="foreignSchemaName" value="public"/>
+            <option key="exported" value="false"/>
+            <reference foreign="id" local="added_by"/>
+        </foreign-key>
         <foreign-key foreignTable="sourcestudy" name="fk_sourcestudy_type_history_sourcestudy" onDelete="none" onUpdate="none">
             <option key="foreignSchemaName" value="public"/>
             <option key="exported" value="false"/>
@@ -2079,11 +2211,6 @@
             <option key="foreignSchemaName" value="public"/>
             <option key="exported" value="false"/>
             <reference foreign="id" local="sourcestudy_type_id"/>
-        </foreign-key>
-        <foreign-key foreignTable="user" name="fk_sourcestudy_type_history_user" onDelete="none" onUpdate="none">
-            <option key="foreignSchemaName" value="public"/>
-            <option key="exported" value="false"/>
-            <reference foreign="id" local="added_by"/>
         </foreign-key>
         <unique name="pksourcestudy_type_history">
             <unique-column name="id"/>
@@ -2114,6 +2241,11 @@
         <column description="Codul organizatiei (sursei)careia ii corespunde o stare intre cele doua date calendaristice" name="org_id" primaryKey="false" required="true" scale="0" size="10" type="4,int4"/>
         <column description="Codul tipului sursei dintre cele doua date" name="sourcetype_id" primaryKey="false" required="true" scale="0" size="10" type="4,int4"/>
         <column description="Codul utilizatorului care a adaugat informatia referitoare la istoricul unei surse" name="added_by" primaryKey="false" required="true" scale="0" size="10" type="4,int4"/>
+        <foreign-key foreignTable="rodauser" name="fk_sourcetype_history_user" onDelete="none" onUpdate="none">
+            <option key="foreignSchemaName" value="public"/>
+            <option key="exported" value="false"/>
+            <reference foreign="id" local="added_by"/>
+        </foreign-key>
         <foreign-key foreignTable="source" name="fk_source_type_history_sources" onDelete="none" onUpdate="none">
             <option key="foreignSchemaName" value="public"/>
             <option key="exported" value="false"/>
@@ -2123,11 +2255,6 @@
             <option key="foreignSchemaName" value="public"/>
             <option key="exported" value="false"/>
             <reference foreign="id" local="sourcetype_id"/>
-        </foreign-key>
-        <foreign-key foreignTable="user" name="fk_sourcetype_history_user" onDelete="none" onUpdate="none">
-            <option key="foreignSchemaName" value="public"/>
-            <option key="exported" value="false"/>
-            <reference foreign="id" local="added_by"/>
         </foreign-key>
         <unique name="pksourcetype_history">
             <unique-column name="id"/>
@@ -2142,7 +2269,7 @@
         <column name="added" primaryKey="false" required="true" scale="6" size="29" type="93,timestamp"/>
         <column name="can_digitize" primaryKey="false" required="true" scale="0" size="1" type="-7,bool"/>
         <column name="can_use_anonymous" primaryKey="false" required="true" scale="0" size="1" type="-7,bool"/>
-        <foreign-key foreignTable="user" name="fk_study_user" onDelete="none" onUpdate="none">
+        <foreign-key foreignTable="rodauser" name="fk_study_user" onDelete="none" onUpdate="none">
             <option key="foreignSchemaName" value="public"/>
             <option key="exported" value="false"/>
             <reference foreign="id" local="added_by"/>
@@ -2278,15 +2405,15 @@
             <option key="exported" value="false"/>
             <reference foreign="id" local="keyword_id"/>
         </foreign-key>
+        <foreign-key foreignTable="rodauser" name="fk_study_keyword_user" onDelete="none" onUpdate="none">
+            <option key="foreignSchemaName" value="public"/>
+            <option key="exported" value="false"/>
+            <reference foreign="id" local="added_by"/>
+        </foreign-key>
         <foreign-key foreignTable="study" name="fk_study_keyword_study" onDelete="none" onUpdate="none">
             <option key="foreignSchemaName" value="public"/>
             <option key="exported" value="false"/>
             <reference foreign="id" local="study_id"/>
-        </foreign-key>
-        <foreign-key foreignTable="user" name="fk_study_keyword_user" onDelete="none" onUpdate="none">
-            <option key="foreignSchemaName" value="public"/>
-            <option key="exported" value="false"/>
-            <reference foreign="id" local="added_by"/>
         </foreign-key>
         <unique name="pkstudy_keyword">
             <unique-column name="study_id"/>
@@ -2513,108 +2640,6 @@
             <unique-column name="id"/>
         </unique>
     </table>
-    <table alias="public" description="Tabel ce contine utilizatorii aplicatiei" name="user">
-        <column description="Codul utilizatorului aplicatiei" name="id" primaryKey="true" required="true" scale="0" size="10" type="4,serial"/>
-        <column description="Furnizorul de informatii de acces pentru utilizatorul respectiv" name="credential_provider" primaryKey="false" required="true" scale="0" size="2147483647" type="12,text"/>
-        <foreign-key foreignTable="audit" name="fk_audit_users" onDelete="none" onUpdate="none">
-            <option key="foreignSchemaName" value="public"/>
-            <option key="exported" value="true"/>
-            <reference foreign="user_id" local="id"/>
-        </foreign-key>
-        <foreign-key foreignTable="auth_data" name="fk_auth_data_users" onDelete="none" onUpdate="none">
-            <option key="foreignSchemaName" value="public"/>
-            <option key="exported" value="true"/>
-            <reference foreign="user_id" local="id"/>
-        </foreign-key>
-        <foreign-key foreignTable="catalog" name="fk_catalog_users" onDelete="none" onUpdate="none">
-            <option key="foreignSchemaName" value="public"/>
-            <option key="exported" value="true"/>
-            <reference foreign="owner" local="id"/>
-        </foreign-key>
-        <foreign-key foreignTable="cms_page" name="fk_cms_page_users" onDelete="none" onUpdate="none">
-            <option key="foreignSchemaName" value="public"/>
-            <option key="exported" value="true"/>
-            <reference foreign="owner_id" local="id"/>
-        </foreign-key>
-        <foreign-key foreignTable="instance" name="fk_instance_user" onDelete="none" onUpdate="none">
-            <option key="foreignSchemaName" value="public"/>
-            <option key="exported" value="true"/>
-            <reference foreign="added_by" local="id"/>
-        </foreign-key>
-        <foreign-key foreignTable="instance_keyword" name="fk_instance_keyword_user" onDelete="none" onUpdate="none">
-            <option key="foreignSchemaName" value="public"/>
-            <option key="exported" value="true"/>
-            <reference foreign="added_by" local="id"/>
-        </foreign-key>
-        <foreign-key foreignTable="news" name="fk_news_users" onDelete="none" onUpdate="none">
-            <option key="foreignSchemaName" value="public"/>
-            <option key="exported" value="true"/>
-            <reference foreign="added_by" local="id"/>
-        </foreign-key>
-        <foreign-key foreignTable="person_links" name="fk_person_links_users" onDelete="none" onUpdate="none">
-            <option key="foreignSchemaName" value="public"/>
-            <option key="exported" value="true"/>
-            <reference foreign="user_id" local="id"/>
-        </foreign-key>
-        <foreign-key foreignTable="person_links" name="fk_person_links_users2" onDelete="none" onUpdate="none">
-            <option key="foreignSchemaName" value="public"/>
-            <option key="exported" value="true"/>
-            <reference foreign="status_by" local="id"/>
-        </foreign-key>
-        <foreign-key foreignTable="sourcestudy_type_history" name="fk_sourcestudy_type_history_user" onDelete="none" onUpdate="none">
-            <option key="foreignSchemaName" value="public"/>
-            <option key="exported" value="true"/>
-            <reference foreign="added_by" local="id"/>
-        </foreign-key>
-        <foreign-key foreignTable="sourcetype_history" name="fk_sourcetype_history_user" onDelete="none" onUpdate="none">
-            <option key="foreignSchemaName" value="public"/>
-            <option key="exported" value="true"/>
-            <reference foreign="added_by" local="id"/>
-        </foreign-key>
-        <foreign-key foreignTable="study" name="fk_study_user" onDelete="none" onUpdate="none">
-            <option key="foreignSchemaName" value="public"/>
-            <option key="exported" value="true"/>
-            <reference foreign="added_by" local="id"/>
-        </foreign-key>
-        <foreign-key foreignTable="study_keyword" name="fk_study_keyword_user" onDelete="none" onUpdate="none">
-            <option key="foreignSchemaName" value="public"/>
-            <option key="exported" value="true"/>
-            <reference foreign="added_by" local="id"/>
-        </foreign-key>
-        <foreign-key foreignTable="user_auth_log" name="fk_user_auth_log_users" onDelete="none" onUpdate="none">
-            <option key="foreignSchemaName" value="public"/>
-            <option key="exported" value="true"/>
-            <reference foreign="user_id" local="id"/>
-        </foreign-key>
-        <foreign-key foreignTable="user_message" name="fk_user_message_user" onDelete="none" onUpdate="none">
-            <option key="foreignSchemaName" value="public"/>
-            <option key="exported" value="true"/>
-            <reference foreign="to_user_id" local="id"/>
-        </foreign-key>
-        <foreign-key foreignTable="user_message" name="fk_user_messages_users" onDelete="none" onUpdate="none">
-            <option key="foreignSchemaName" value="public"/>
-            <option key="exported" value="true"/>
-            <reference foreign="from_user_id" local="id"/>
-        </foreign-key>
-        <foreign-key foreignTable="user_profile" name="fk_user_profile_users" onDelete="none" onUpdate="none">
-            <option key="foreignSchemaName" value="public"/>
-            <option key="exported" value="true"/>
-            <reference foreign="user_id" local="id"/>
-        </foreign-key>
-        <foreign-key foreignTable="user_role" name="fk_user_role_users" onDelete="none" onUpdate="none">
-            <option key="foreignSchemaName" value="public"/>
-            <option key="exported" value="true"/>
-            <reference foreign="user_id" local="id"/>
-        </foreign-key>
-        <foreign-key foreignTable="user_setting_value" name="fk_user_setting_value_users" onDelete="none" onUpdate="none">
-            <option key="foreignSchemaName" value="public"/>
-            <option key="exported" value="true"/>
-            <reference foreign="user_id" local="id"/>
-        </foreign-key>
-        <unique name="pkuser">
-            <unique-column name="id"/>
-        </unique>
-    </table>
     <table alias="public" description="Tabel ce stocheaza log-ul corespunzator procesului de autentificare a utilizatorilor" name="user_auth_log">
         <column description="Codul utilizatorului care a incercat sa se autentifice" name="user_id" primaryKey="true" required="true" scale="0" size="10" type="4,int4"/>
         <column description="Timpul la care incercarea de autentificare a avut loc" name="timestamp" primaryKey="true" required="true" scale="6" size="29" type="93,timestamp"/>
@@ -2622,7 +2647,7 @@
         <column description="Tipul de furnizor de informatii de acces pentru autentificarea respectiva" name="credential_provider" primaryKey="false" required="true" scale="0" size="2147483647" type="12,text"/>
         <column description="Detalii despre autentificarea utilizatorului" name="credential_identifier" primaryKey="false" required="true" scale="0" size="2147483647" type="12,text"/>
         <column description="Mesajul de eroare aparut " name="error_message" primaryKey="false" required="true" scale="0" size="2147483647" type="12,text"/>
-        <foreign-key foreignTable="user" name="fk_user_auth_log_users" onDelete="none" onUpdate="none">
+        <foreign-key foreignTable="rodauser" name="fk_user_auth_log_users" onDelete="none" onUpdate="none">
             <option key="foreignSchemaName" value="public"/>
             <option key="exported" value="false"/>
             <reference foreign="id" local="user_id"/>
@@ -2637,12 +2662,12 @@
         <column description="Textul mesajului trimis de catre utilizatorul referit prin atributul user_id" name="message" primaryKey="false" required="true" scale="0" size="2147483647" type="12,text"/>
         <column description="Codul utilizatorului care transmite mesajul (refera atributul id din tabelul users)" name="from_user_id" primaryKey="false" required="true" scale="0" size="10" type="4,int4"/>
         <column description="Codul utilizatorului caruia ii este transmis mesajul (refera atributul id din tabelul users)" name="to_user_id" primaryKey="false" required="true" scale="0" size="10" type="4,int4"/>
-        <foreign-key foreignTable="user" name="fk_user_message_user" onDelete="none" onUpdate="none">
+        <foreign-key foreignTable="rodauser" name="fk_user_message_user" onDelete="none" onUpdate="none">
             <option key="foreignSchemaName" value="public"/>
             <option key="exported" value="false"/>
             <reference foreign="id" local="to_user_id"/>
         </foreign-key>
-        <foreign-key foreignTable="user" name="fk_user_messages_users" onDelete="none" onUpdate="none">
+        <foreign-key foreignTable="rodauser" name="fk_user_messages_users" onDelete="none" onUpdate="none">
             <option key="foreignSchemaName" value="public"/>
             <option key="exported" value="false"/>
             <reference foreign="id" local="from_user_id"/>
@@ -2656,7 +2681,7 @@
         <column description="Prenumele utilizatorului" name="f_name" primaryKey="false" required="true" scale="0" size="100" type="12,varchar"/>
         <column description="Numele utilizatorului" name="l_name" primaryKey="false" required="true" scale="0" size="100" type="12,varchar"/>
         <column description="Adresa de email a utilizatorului" name="email" primaryKey="false" required="true" scale="0" size="200" type="12,varchar"/>
-        <foreign-key foreignTable="user" name="fk_user_profile_users" onDelete="none" onUpdate="none">
+        <foreign-key foreignTable="rodauser" name="fk_user_profile_users" onDelete="none" onUpdate="none">
             <option key="foreignSchemaName" value="public"/>
             <option key="exported" value="false"/>
             <reference foreign="id" local="user_id"/>
@@ -2668,15 +2693,15 @@
     <table alias="public" description="Tabel ce stocheaza asocierile dintre utilizatori si role-uri" name="user_role">
         <column description="Codul utilizatorului asociat role-ului referit prin atributul role_id" name="user_id" primaryKey="true" required="true" scale="0" size="10" type="4,int4"/>
         <column description="Codul role-ului corespunzator utilizatorului referit prin user_id" name="role_id" primaryKey="true" required="true" scale="0" size="10" type="4,int4"/>
+        <foreign-key foreignTable="rodauser" name="fk_user_role_users" onDelete="none" onUpdate="none">
+            <option key="foreignSchemaName" value="public"/>
+            <option key="exported" value="false"/>
+            <reference foreign="id" local="user_id"/>
+        </foreign-key>
         <foreign-key foreignTable="role" name="fk_user_role_role" onDelete="none" onUpdate="none">
             <option key="foreignSchemaName" value="public"/>
             <option key="exported" value="false"/>
             <reference foreign="id" local="role_id"/>
-        </foreign-key>
-        <foreign-key foreignTable="user" name="fk_user_role_users" onDelete="none" onUpdate="none">
-            <option key="foreignSchemaName" value="public"/>
-            <option key="exported" value="false"/>
-            <reference foreign="id" local="user_id"/>
         </foreign-key>
         <unique name="pkuser_role">
             <unique-column name="role_id"/>
@@ -2721,7 +2746,7 @@
         <column description="Codul setarii corespunzatoare unui utilizator (refera atributul id al tabelului user_settings)" name="user_setting_id" primaryKey="true" required="true" scale="0" size="10" type="4,int4"/>
         <column description="Codul utilizatorului caruia ii apartine setarea (refera atributul id al tabelului users)" name="user_id" primaryKey="true" required="true" scale="0" size="10" type="4,int4"/>
         <column description="Valoarea setarii respective" name="value" primaryKey="false" required="true" scale="0" size="2147483647" type="12,text"/>
-        <foreign-key foreignTable="user" name="fk_user_setting_value_users" onDelete="none" onUpdate="none">
+        <foreign-key foreignTable="rodauser" name="fk_user_setting_value_users" onDelete="none" onUpdate="none">
             <option key="foreignSchemaName" value="public"/>
             <option key="exported" value="false"/>
             <reference foreign="id" local="user_id"/>

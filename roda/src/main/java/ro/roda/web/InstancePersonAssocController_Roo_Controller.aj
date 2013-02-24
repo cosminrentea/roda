@@ -6,6 +6,7 @@ package ro.roda.web;
 import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,11 +15,18 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.InstancePerson;
 import ro.roda.InstancePersonAssoc;
+import ro.roda.service.InstancePersonAssocService;
+import ro.roda.service.InstancePersonService;
 import ro.roda.web.InstancePersonAssocController;
 
 privileged aspect InstancePersonAssocController_Roo_Controller {
+    
+    @Autowired
+    InstancePersonAssocService InstancePersonAssocController.instancePersonAssocService;
+    
+    @Autowired
+    InstancePersonService InstancePersonAssocController.instancePersonService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String InstancePersonAssocController.create(@Valid InstancePersonAssoc instancePersonAssoc, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -27,7 +35,7 @@ privileged aspect InstancePersonAssocController_Roo_Controller {
             return "instancepersonassocs/create";
         }
         uiModel.asMap().clear();
-        instancePersonAssoc.persist();
+        instancePersonAssocService.saveInstancePersonAssoc(instancePersonAssoc);
         return "redirect:/instancepersonassocs/" + encodeUrlPathSegment(instancePersonAssoc.getId().toString(), httpServletRequest);
     }
     
@@ -39,7 +47,7 @@ privileged aspect InstancePersonAssocController_Roo_Controller {
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String InstancePersonAssocController.show(@PathVariable("id") Integer id, Model uiModel) {
-        uiModel.addAttribute("instancepersonassoc", InstancePersonAssoc.findInstancePersonAssoc(id));
+        uiModel.addAttribute("instancepersonassoc", instancePersonAssocService.findInstancePersonAssoc(id));
         uiModel.addAttribute("itemId", id);
         return "instancepersonassocs/show";
     }
@@ -49,11 +57,11 @@ privileged aspect InstancePersonAssocController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("instancepersonassocs", InstancePersonAssoc.findInstancePersonAssocEntries(firstResult, sizeNo));
-            float nrOfPages = (float) InstancePersonAssoc.countInstancePersonAssocs() / sizeNo;
+            uiModel.addAttribute("instancepersonassocs", instancePersonAssocService.findInstancePersonAssocEntries(firstResult, sizeNo));
+            float nrOfPages = (float) instancePersonAssocService.countAllInstancePersonAssocs() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("instancepersonassocs", InstancePersonAssoc.findAllInstancePersonAssocs());
+            uiModel.addAttribute("instancepersonassocs", instancePersonAssocService.findAllInstancePersonAssocs());
         }
         return "instancepersonassocs/list";
     }
@@ -65,20 +73,20 @@ privileged aspect InstancePersonAssocController_Roo_Controller {
             return "instancepersonassocs/update";
         }
         uiModel.asMap().clear();
-        instancePersonAssoc.merge();
+        instancePersonAssocService.updateInstancePersonAssoc(instancePersonAssoc);
         return "redirect:/instancepersonassocs/" + encodeUrlPathSegment(instancePersonAssoc.getId().toString(), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String InstancePersonAssocController.updateForm(@PathVariable("id") Integer id, Model uiModel) {
-        populateEditForm(uiModel, InstancePersonAssoc.findInstancePersonAssoc(id));
+        populateEditForm(uiModel, instancePersonAssocService.findInstancePersonAssoc(id));
         return "instancepersonassocs/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
     public String InstancePersonAssocController.delete(@PathVariable("id") Integer id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        InstancePersonAssoc instancePersonAssoc = InstancePersonAssoc.findInstancePersonAssoc(id);
-        instancePersonAssoc.remove();
+        InstancePersonAssoc instancePersonAssoc = instancePersonAssocService.findInstancePersonAssoc(id);
+        instancePersonAssocService.deleteInstancePersonAssoc(instancePersonAssoc);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
@@ -87,7 +95,7 @@ privileged aspect InstancePersonAssocController_Roo_Controller {
     
     void InstancePersonAssocController.populateEditForm(Model uiModel, InstancePersonAssoc instancePersonAssoc) {
         uiModel.addAttribute("instancePersonAssoc", instancePersonAssoc);
-        uiModel.addAttribute("instancepeople", InstancePerson.findAllInstancepeople());
+        uiModel.addAttribute("instancepeople", instancePersonService.findAllInstancepeople());
     }
     
     String InstancePersonAssocController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

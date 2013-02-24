@@ -10,9 +10,11 @@ import java.util.List;
 import java.util.Random;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ro.roda.AclSid;
 import ro.roda.AclSidDataOnDemand;
+import ro.roda.service.AclSidService;
 
 privileged aspect AclSidDataOnDemand_Roo_DataOnDemand {
     
@@ -21,6 +23,9 @@ privileged aspect AclSidDataOnDemand_Roo_DataOnDemand {
     private Random AclSidDataOnDemand.rnd = new SecureRandom();
     
     private List<AclSid> AclSidDataOnDemand.data;
+    
+    @Autowired
+    AclSidService AclSidDataOnDemand.aclSidService;
     
     public AclSid AclSidDataOnDemand.getNewTransientAclSid(int index) {
         AclSid obj = new AclSid();
@@ -49,14 +54,14 @@ privileged aspect AclSidDataOnDemand_Roo_DataOnDemand {
         }
         AclSid obj = data.get(index);
         Long id = obj.getId();
-        return AclSid.findAclSid(id);
+        return aclSidService.findAclSid(id);
     }
     
     public AclSid AclSidDataOnDemand.getRandomAclSid() {
         init();
         AclSid obj = data.get(rnd.nextInt(data.size()));
         Long id = obj.getId();
-        return AclSid.findAclSid(id);
+        return aclSidService.findAclSid(id);
     }
     
     public boolean AclSidDataOnDemand.modifyAclSid(AclSid obj) {
@@ -66,7 +71,7 @@ privileged aspect AclSidDataOnDemand_Roo_DataOnDemand {
     public void AclSidDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = AclSid.findAclSidEntries(from, to);
+        data = aclSidService.findAclSidEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'AclSid' illegally returned null");
         }
@@ -78,7 +83,7 @@ privileged aspect AclSidDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             AclSid obj = getNewTransientAclSid(i);
             try {
-                obj.persist();
+                aclSidService.saveAclSid(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

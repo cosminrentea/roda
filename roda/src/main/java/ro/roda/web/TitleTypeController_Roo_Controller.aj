@@ -6,6 +6,7 @@ package ro.roda.web;
 import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,11 +15,18 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.StudyDescr;
 import ro.roda.TitleType;
+import ro.roda.service.StudyDescrService;
+import ro.roda.service.TitleTypeService;
 import ro.roda.web.TitleTypeController;
 
 privileged aspect TitleTypeController_Roo_Controller {
+    
+    @Autowired
+    TitleTypeService TitleTypeController.titleTypeService;
+    
+    @Autowired
+    StudyDescrService TitleTypeController.studyDescrService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String TitleTypeController.create(@Valid TitleType titleType, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -27,7 +35,7 @@ privileged aspect TitleTypeController_Roo_Controller {
             return "titletypes/create";
         }
         uiModel.asMap().clear();
-        titleType.persist();
+        titleTypeService.saveTitleType(titleType);
         return "redirect:/titletypes/" + encodeUrlPathSegment(titleType.getId().toString(), httpServletRequest);
     }
     
@@ -39,7 +47,7 @@ privileged aspect TitleTypeController_Roo_Controller {
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String TitleTypeController.show(@PathVariable("id") Integer id, Model uiModel) {
-        uiModel.addAttribute("titletype", TitleType.findTitleType(id));
+        uiModel.addAttribute("titletype", titleTypeService.findTitleType(id));
         uiModel.addAttribute("itemId", id);
         return "titletypes/show";
     }
@@ -49,11 +57,11 @@ privileged aspect TitleTypeController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("titletypes", TitleType.findTitleTypeEntries(firstResult, sizeNo));
-            float nrOfPages = (float) TitleType.countTitleTypes() / sizeNo;
+            uiModel.addAttribute("titletypes", titleTypeService.findTitleTypeEntries(firstResult, sizeNo));
+            float nrOfPages = (float) titleTypeService.countAllTitleTypes() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("titletypes", TitleType.findAllTitleTypes());
+            uiModel.addAttribute("titletypes", titleTypeService.findAllTitleTypes());
         }
         return "titletypes/list";
     }
@@ -65,20 +73,20 @@ privileged aspect TitleTypeController_Roo_Controller {
             return "titletypes/update";
         }
         uiModel.asMap().clear();
-        titleType.merge();
+        titleTypeService.updateTitleType(titleType);
         return "redirect:/titletypes/" + encodeUrlPathSegment(titleType.getId().toString(), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String TitleTypeController.updateForm(@PathVariable("id") Integer id, Model uiModel) {
-        populateEditForm(uiModel, TitleType.findTitleType(id));
+        populateEditForm(uiModel, titleTypeService.findTitleType(id));
         return "titletypes/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
     public String TitleTypeController.delete(@PathVariable("id") Integer id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        TitleType titleType = TitleType.findTitleType(id);
-        titleType.remove();
+        TitleType titleType = titleTypeService.findTitleType(id);
+        titleTypeService.deleteTitleType(titleType);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
@@ -87,7 +95,7 @@ privileged aspect TitleTypeController_Roo_Controller {
     
     void TitleTypeController.populateEditForm(Model uiModel, TitleType titleType) {
         uiModel.addAttribute("titleType", titleType);
-        uiModel.addAttribute("studydescrs", StudyDescr.findAllStudyDescrs());
+        uiModel.addAttribute("studydescrs", studyDescrService.findAllStudyDescrs());
     }
     
     String TitleTypeController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

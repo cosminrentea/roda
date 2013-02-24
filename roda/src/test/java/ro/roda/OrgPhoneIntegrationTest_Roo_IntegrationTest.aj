@@ -11,10 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.OrgPhone;
 import ro.roda.OrgPhoneDataOnDemand;
 import ro.roda.OrgPhoneIntegrationTest;
 import ro.roda.OrgPhonePK;
+import ro.roda.service.OrgPhoneService;
 
 privileged aspect OrgPhoneIntegrationTest_Roo_IntegrationTest {
     
@@ -25,12 +25,15 @@ privileged aspect OrgPhoneIntegrationTest_Roo_IntegrationTest {
     declare @type: OrgPhoneIntegrationTest: @Transactional;
     
     @Autowired
-    private OrgPhoneDataOnDemand OrgPhoneIntegrationTest.dod;
+    OrgPhoneDataOnDemand OrgPhoneIntegrationTest.dod;
+    
+    @Autowired
+    OrgPhoneService OrgPhoneIntegrationTest.orgPhoneService;
     
     @Test
-    public void OrgPhoneIntegrationTest.testCountOrgPhones() {
+    public void OrgPhoneIntegrationTest.testCountAllOrgPhones() {
         Assert.assertNotNull("Data on demand for 'OrgPhone' failed to initialize correctly", dod.getRandomOrgPhone());
-        long count = OrgPhone.countOrgPhones();
+        long count = orgPhoneService.countAllOrgPhones();
         Assert.assertTrue("Counter for 'OrgPhone' incorrectly reported there were no entries", count > 0);
     }
     
@@ -40,7 +43,7 @@ privileged aspect OrgPhoneIntegrationTest_Roo_IntegrationTest {
         Assert.assertNotNull("Data on demand for 'OrgPhone' failed to initialize correctly", obj);
         OrgPhonePK id = obj.getId();
         Assert.assertNotNull("Data on demand for 'OrgPhone' failed to provide an identifier", id);
-        obj = OrgPhone.findOrgPhone(id);
+        obj = orgPhoneService.findOrgPhone(id);
         Assert.assertNotNull("Find method for 'OrgPhone' illegally returned null for id '" + id + "'", obj);
         Assert.assertEquals("Find method for 'OrgPhone' returned the incorrect identifier", id, obj.getId());
     }
@@ -48,9 +51,9 @@ privileged aspect OrgPhoneIntegrationTest_Roo_IntegrationTest {
     @Test
     public void OrgPhoneIntegrationTest.testFindAllOrgPhones() {
         Assert.assertNotNull("Data on demand for 'OrgPhone' failed to initialize correctly", dod.getRandomOrgPhone());
-        long count = OrgPhone.countOrgPhones();
+        long count = orgPhoneService.countAllOrgPhones();
         Assert.assertTrue("Too expensive to perform a find all test for 'OrgPhone', as there are " + count + " entries; set the findAllMaximum to exceed this value or set findAll=false on the integration test annotation to disable the test", count < 250);
-        List<OrgPhone> result = OrgPhone.findAllOrgPhones();
+        List<OrgPhone> result = orgPhoneService.findAllOrgPhones();
         Assert.assertNotNull("Find all method for 'OrgPhone' illegally returned null", result);
         Assert.assertTrue("Find all method for 'OrgPhone' failed to return any data", result.size() > 0);
     }
@@ -58,35 +61,35 @@ privileged aspect OrgPhoneIntegrationTest_Roo_IntegrationTest {
     @Test
     public void OrgPhoneIntegrationTest.testFindOrgPhoneEntries() {
         Assert.assertNotNull("Data on demand for 'OrgPhone' failed to initialize correctly", dod.getRandomOrgPhone());
-        long count = OrgPhone.countOrgPhones();
+        long count = orgPhoneService.countAllOrgPhones();
         if (count > 20) count = 20;
         int firstResult = 0;
         int maxResults = (int) count;
-        List<OrgPhone> result = OrgPhone.findOrgPhoneEntries(firstResult, maxResults);
+        List<OrgPhone> result = orgPhoneService.findOrgPhoneEntries(firstResult, maxResults);
         Assert.assertNotNull("Find entries method for 'OrgPhone' illegally returned null", result);
         Assert.assertEquals("Find entries method for 'OrgPhone' returned an incorrect number of entries", count, result.size());
     }
     
     @Test
-    public void OrgPhoneIntegrationTest.testPersist() {
+    public void OrgPhoneIntegrationTest.testSaveOrgPhone() {
         Assert.assertNotNull("Data on demand for 'OrgPhone' failed to initialize correctly", dod.getRandomOrgPhone());
         OrgPhone obj = dod.getNewTransientOrgPhone(Integer.MAX_VALUE);
         Assert.assertNotNull("Data on demand for 'OrgPhone' failed to provide a new transient entity", obj);
-        obj.persist();
+        orgPhoneService.saveOrgPhone(obj);
         obj.flush();
         Assert.assertNotNull("Expected 'OrgPhone' identifier to no longer be null", obj.getId());
     }
     
     @Test
-    public void OrgPhoneIntegrationTest.testRemove() {
+    public void OrgPhoneIntegrationTest.testDeleteOrgPhone() {
         OrgPhone obj = dod.getRandomOrgPhone();
         Assert.assertNotNull("Data on demand for 'OrgPhone' failed to initialize correctly", obj);
         OrgPhonePK id = obj.getId();
         Assert.assertNotNull("Data on demand for 'OrgPhone' failed to provide an identifier", id);
-        obj = OrgPhone.findOrgPhone(id);
-        obj.remove();
+        obj = orgPhoneService.findOrgPhone(id);
+        orgPhoneService.deleteOrgPhone(obj);
         obj.flush();
-        Assert.assertNull("Failed to remove 'OrgPhone' with identifier '" + id + "'", OrgPhone.findOrgPhone(id));
+        Assert.assertNull("Failed to remove 'OrgPhone' with identifier '" + id + "'", orgPhoneService.findOrgPhone(id));
     }
     
 }

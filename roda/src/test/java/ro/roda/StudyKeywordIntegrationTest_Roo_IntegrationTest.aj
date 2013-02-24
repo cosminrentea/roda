@@ -11,10 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.StudyKeyword;
 import ro.roda.StudyKeywordDataOnDemand;
 import ro.roda.StudyKeywordIntegrationTest;
 import ro.roda.StudyKeywordPK;
+import ro.roda.service.StudyKeywordService;
 
 privileged aspect StudyKeywordIntegrationTest_Roo_IntegrationTest {
     
@@ -25,12 +25,15 @@ privileged aspect StudyKeywordIntegrationTest_Roo_IntegrationTest {
     declare @type: StudyKeywordIntegrationTest: @Transactional;
     
     @Autowired
-    private StudyKeywordDataOnDemand StudyKeywordIntegrationTest.dod;
+    StudyKeywordDataOnDemand StudyKeywordIntegrationTest.dod;
+    
+    @Autowired
+    StudyKeywordService StudyKeywordIntegrationTest.studyKeywordService;
     
     @Test
-    public void StudyKeywordIntegrationTest.testCountStudyKeywords() {
+    public void StudyKeywordIntegrationTest.testCountAllStudyKeywords() {
         Assert.assertNotNull("Data on demand for 'StudyKeyword' failed to initialize correctly", dod.getRandomStudyKeyword());
-        long count = StudyKeyword.countStudyKeywords();
+        long count = studyKeywordService.countAllStudyKeywords();
         Assert.assertTrue("Counter for 'StudyKeyword' incorrectly reported there were no entries", count > 0);
     }
     
@@ -40,7 +43,7 @@ privileged aspect StudyKeywordIntegrationTest_Roo_IntegrationTest {
         Assert.assertNotNull("Data on demand for 'StudyKeyword' failed to initialize correctly", obj);
         StudyKeywordPK id = obj.getId();
         Assert.assertNotNull("Data on demand for 'StudyKeyword' failed to provide an identifier", id);
-        obj = StudyKeyword.findStudyKeyword(id);
+        obj = studyKeywordService.findStudyKeyword(id);
         Assert.assertNotNull("Find method for 'StudyKeyword' illegally returned null for id '" + id + "'", obj);
         Assert.assertEquals("Find method for 'StudyKeyword' returned the incorrect identifier", id, obj.getId());
     }
@@ -48,9 +51,9 @@ privileged aspect StudyKeywordIntegrationTest_Roo_IntegrationTest {
     @Test
     public void StudyKeywordIntegrationTest.testFindAllStudyKeywords() {
         Assert.assertNotNull("Data on demand for 'StudyKeyword' failed to initialize correctly", dod.getRandomStudyKeyword());
-        long count = StudyKeyword.countStudyKeywords();
+        long count = studyKeywordService.countAllStudyKeywords();
         Assert.assertTrue("Too expensive to perform a find all test for 'StudyKeyword', as there are " + count + " entries; set the findAllMaximum to exceed this value or set findAll=false on the integration test annotation to disable the test", count < 250);
-        List<StudyKeyword> result = StudyKeyword.findAllStudyKeywords();
+        List<StudyKeyword> result = studyKeywordService.findAllStudyKeywords();
         Assert.assertNotNull("Find all method for 'StudyKeyword' illegally returned null", result);
         Assert.assertTrue("Find all method for 'StudyKeyword' failed to return any data", result.size() > 0);
     }
@@ -58,35 +61,35 @@ privileged aspect StudyKeywordIntegrationTest_Roo_IntegrationTest {
     @Test
     public void StudyKeywordIntegrationTest.testFindStudyKeywordEntries() {
         Assert.assertNotNull("Data on demand for 'StudyKeyword' failed to initialize correctly", dod.getRandomStudyKeyword());
-        long count = StudyKeyword.countStudyKeywords();
+        long count = studyKeywordService.countAllStudyKeywords();
         if (count > 20) count = 20;
         int firstResult = 0;
         int maxResults = (int) count;
-        List<StudyKeyword> result = StudyKeyword.findStudyKeywordEntries(firstResult, maxResults);
+        List<StudyKeyword> result = studyKeywordService.findStudyKeywordEntries(firstResult, maxResults);
         Assert.assertNotNull("Find entries method for 'StudyKeyword' illegally returned null", result);
         Assert.assertEquals("Find entries method for 'StudyKeyword' returned an incorrect number of entries", count, result.size());
     }
     
     @Test
-    public void StudyKeywordIntegrationTest.testPersist() {
+    public void StudyKeywordIntegrationTest.testSaveStudyKeyword() {
         Assert.assertNotNull("Data on demand for 'StudyKeyword' failed to initialize correctly", dod.getRandomStudyKeyword());
         StudyKeyword obj = dod.getNewTransientStudyKeyword(Integer.MAX_VALUE);
         Assert.assertNotNull("Data on demand for 'StudyKeyword' failed to provide a new transient entity", obj);
-        obj.persist();
+        studyKeywordService.saveStudyKeyword(obj);
         obj.flush();
         Assert.assertNotNull("Expected 'StudyKeyword' identifier to no longer be null", obj.getId());
     }
     
     @Test
-    public void StudyKeywordIntegrationTest.testRemove() {
+    public void StudyKeywordIntegrationTest.testDeleteStudyKeyword() {
         StudyKeyword obj = dod.getRandomStudyKeyword();
         Assert.assertNotNull("Data on demand for 'StudyKeyword' failed to initialize correctly", obj);
         StudyKeywordPK id = obj.getId();
         Assert.assertNotNull("Data on demand for 'StudyKeyword' failed to provide an identifier", id);
-        obj = StudyKeyword.findStudyKeyword(id);
-        obj.remove();
+        obj = studyKeywordService.findStudyKeyword(id);
+        studyKeywordService.deleteStudyKeyword(obj);
         obj.flush();
-        Assert.assertNull("Failed to remove 'StudyKeyword' with identifier '" + id + "'", StudyKeyword.findStudyKeyword(id));
+        Assert.assertNull("Failed to remove 'StudyKeyword' with identifier '" + id + "'", studyKeywordService.findStudyKeyword(id));
     }
     
 }

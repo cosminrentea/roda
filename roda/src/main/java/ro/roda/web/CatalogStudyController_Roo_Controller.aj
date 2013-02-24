@@ -18,15 +18,25 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.Catalog;
 import ro.roda.CatalogStudy;
 import ro.roda.CatalogStudyPK;
-import ro.roda.Study;
+import ro.roda.service.CatalogService;
+import ro.roda.service.CatalogStudyService;
+import ro.roda.service.StudyService;
 import ro.roda.web.CatalogStudyController;
 
 privileged aspect CatalogStudyController_Roo_Controller {
     
     private ConversionService CatalogStudyController.conversionService;
+    
+    @Autowired
+    CatalogStudyService CatalogStudyController.catalogStudyService;
+    
+    @Autowired
+    CatalogService CatalogStudyController.catalogService;
+    
+    @Autowired
+    StudyService CatalogStudyController.studyService;
     
     @Autowired
     public CatalogStudyController.new(ConversionService conversionService) {
@@ -41,7 +51,7 @@ privileged aspect CatalogStudyController_Roo_Controller {
             return "catalogstudys/create";
         }
         uiModel.asMap().clear();
-        catalogStudy.persist();
+        catalogStudyService.saveCatalogStudy(catalogStudy);
         return "redirect:/catalogstudys/" + encodeUrlPathSegment(conversionService.convert(catalogStudy.getId(), String.class), httpServletRequest);
     }
     
@@ -54,7 +64,7 @@ privileged aspect CatalogStudyController_Roo_Controller {
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String CatalogStudyController.show(@PathVariable("id") CatalogStudyPK id, Model uiModel) {
         addDateTimeFormatPatterns(uiModel);
-        uiModel.addAttribute("catalogstudy", CatalogStudy.findCatalogStudy(id));
+        uiModel.addAttribute("catalogstudy", catalogStudyService.findCatalogStudy(id));
         uiModel.addAttribute("itemId", conversionService.convert(id, String.class));
         return "catalogstudys/show";
     }
@@ -64,11 +74,11 @@ privileged aspect CatalogStudyController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("catalogstudys", CatalogStudy.findCatalogStudyEntries(firstResult, sizeNo));
-            float nrOfPages = (float) CatalogStudy.countCatalogStudys() / sizeNo;
+            uiModel.addAttribute("catalogstudys", catalogStudyService.findCatalogStudyEntries(firstResult, sizeNo));
+            float nrOfPages = (float) catalogStudyService.countAllCatalogStudys() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("catalogstudys", CatalogStudy.findAllCatalogStudys());
+            uiModel.addAttribute("catalogstudys", catalogStudyService.findAllCatalogStudys());
         }
         addDateTimeFormatPatterns(uiModel);
         return "catalogstudys/list";
@@ -81,20 +91,20 @@ privileged aspect CatalogStudyController_Roo_Controller {
             return "catalogstudys/update";
         }
         uiModel.asMap().clear();
-        catalogStudy.merge();
+        catalogStudyService.updateCatalogStudy(catalogStudy);
         return "redirect:/catalogstudys/" + encodeUrlPathSegment(conversionService.convert(catalogStudy.getId(), String.class), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String CatalogStudyController.updateForm(@PathVariable("id") CatalogStudyPK id, Model uiModel) {
-        populateEditForm(uiModel, CatalogStudy.findCatalogStudy(id));
+        populateEditForm(uiModel, catalogStudyService.findCatalogStudy(id));
         return "catalogstudys/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
     public String CatalogStudyController.delete(@PathVariable("id") CatalogStudyPK id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        CatalogStudy catalogStudy = CatalogStudy.findCatalogStudy(id);
-        catalogStudy.remove();
+        CatalogStudy catalogStudy = catalogStudyService.findCatalogStudy(id);
+        catalogStudyService.deleteCatalogStudy(catalogStudy);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
@@ -102,14 +112,14 @@ privileged aspect CatalogStudyController_Roo_Controller {
     }
     
     void CatalogStudyController.addDateTimeFormatPatterns(Model uiModel) {
-        uiModel.addAttribute("catalogStudy_added_date_format", DateTimeFormat.patternForStyle("M-", LocaleContextHolder.getLocale()));
+        uiModel.addAttribute("catalogStudy_added_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
     }
     
     void CatalogStudyController.populateEditForm(Model uiModel, CatalogStudy catalogStudy) {
         uiModel.addAttribute("catalogStudy", catalogStudy);
         addDateTimeFormatPatterns(uiModel);
-        uiModel.addAttribute("catalogs", Catalog.findAllCatalogs());
-        uiModel.addAttribute("studys", Study.findAllStudys());
+        uiModel.addAttribute("catalogs", catalogService.findAllCatalogs());
+        uiModel.addAttribute("studys", studyService.findAllStudys());
     }
     
     String CatalogStudyController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

@@ -6,6 +6,7 @@ package ro.roda.web;
 import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,11 +15,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.User;
+import ro.roda.Rodauser;
 import ro.roda.UserMessage;
+import ro.roda.service.UserMessageService;
 import ro.roda.web.UserMessageController;
 
 privileged aspect UserMessageController_Roo_Controller {
+    
+    @Autowired
+    UserMessageService UserMessageController.userMessageService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String UserMessageController.create(@Valid UserMessage userMessage, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -27,7 +32,7 @@ privileged aspect UserMessageController_Roo_Controller {
             return "usermessages/create";
         }
         uiModel.asMap().clear();
-        userMessage.persist();
+        userMessageService.saveUserMessage(userMessage);
         return "redirect:/usermessages/" + encodeUrlPathSegment(userMessage.getId().toString(), httpServletRequest);
     }
     
@@ -39,7 +44,7 @@ privileged aspect UserMessageController_Roo_Controller {
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String UserMessageController.show(@PathVariable("id") Integer id, Model uiModel) {
-        uiModel.addAttribute("usermessage", UserMessage.findUserMessage(id));
+        uiModel.addAttribute("usermessage", userMessageService.findUserMessage(id));
         uiModel.addAttribute("itemId", id);
         return "usermessages/show";
     }
@@ -49,11 +54,11 @@ privileged aspect UserMessageController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("usermessages", UserMessage.findUserMessageEntries(firstResult, sizeNo));
-            float nrOfPages = (float) UserMessage.countUserMessages() / sizeNo;
+            uiModel.addAttribute("usermessages", userMessageService.findUserMessageEntries(firstResult, sizeNo));
+            float nrOfPages = (float) userMessageService.countAllUserMessages() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("usermessages", UserMessage.findAllUserMessages());
+            uiModel.addAttribute("usermessages", userMessageService.findAllUserMessages());
         }
         return "usermessages/list";
     }
@@ -65,20 +70,20 @@ privileged aspect UserMessageController_Roo_Controller {
             return "usermessages/update";
         }
         uiModel.asMap().clear();
-        userMessage.merge();
+        userMessageService.updateUserMessage(userMessage);
         return "redirect:/usermessages/" + encodeUrlPathSegment(userMessage.getId().toString(), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String UserMessageController.updateForm(@PathVariable("id") Integer id, Model uiModel) {
-        populateEditForm(uiModel, UserMessage.findUserMessage(id));
+        populateEditForm(uiModel, userMessageService.findUserMessage(id));
         return "usermessages/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
     public String UserMessageController.delete(@PathVariable("id") Integer id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        UserMessage userMessage = UserMessage.findUserMessage(id);
-        userMessage.remove();
+        UserMessage userMessage = userMessageService.findUserMessage(id);
+        userMessageService.deleteUserMessage(userMessage);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
@@ -87,7 +92,7 @@ privileged aspect UserMessageController_Roo_Controller {
     
     void UserMessageController.populateEditForm(Model uiModel, UserMessage userMessage) {
         uiModel.addAttribute("userMessage", userMessage);
-        uiModel.addAttribute("users", User.findAllUsers());
+        uiModel.addAttribute("rodausers", Rodauser.findAllRodausers());
     }
     
     String UserMessageController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

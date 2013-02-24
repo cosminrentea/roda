@@ -10,9 +10,11 @@ import java.util.List;
 import java.util.Random;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ro.roda.PersonRole;
 import ro.roda.PersonRoleDataOnDemand;
+import ro.roda.service.PersonRoleService;
 
 privileged aspect PersonRoleDataOnDemand_Roo_DataOnDemand {
     
@@ -21,6 +23,9 @@ privileged aspect PersonRoleDataOnDemand_Roo_DataOnDemand {
     private Random PersonRoleDataOnDemand.rnd = new SecureRandom();
     
     private List<PersonRole> PersonRoleDataOnDemand.data;
+    
+    @Autowired
+    PersonRoleService PersonRoleDataOnDemand.personRoleService;
     
     public PersonRole PersonRoleDataOnDemand.getNewTransientPersonRole(int index) {
         PersonRole obj = new PersonRole();
@@ -43,14 +48,14 @@ privileged aspect PersonRoleDataOnDemand_Roo_DataOnDemand {
         }
         PersonRole obj = data.get(index);
         Integer id = obj.getId();
-        return PersonRole.findPersonRole(id);
+        return personRoleService.findPersonRole(id);
     }
     
     public PersonRole PersonRoleDataOnDemand.getRandomPersonRole() {
         init();
         PersonRole obj = data.get(rnd.nextInt(data.size()));
         Integer id = obj.getId();
-        return PersonRole.findPersonRole(id);
+        return personRoleService.findPersonRole(id);
     }
     
     public boolean PersonRoleDataOnDemand.modifyPersonRole(PersonRole obj) {
@@ -60,7 +65,7 @@ privileged aspect PersonRoleDataOnDemand_Roo_DataOnDemand {
     public void PersonRoleDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = PersonRole.findPersonRoleEntries(from, to);
+        data = personRoleService.findPersonRoleEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'PersonRole' illegally returned null");
         }
@@ -72,7 +77,7 @@ privileged aspect PersonRoleDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             PersonRole obj = getNewTransientPersonRole(i);
             try {
-                obj.persist();
+                personRoleService.savePersonRole(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

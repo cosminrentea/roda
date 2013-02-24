@@ -11,10 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.AuditRowId;
 import ro.roda.AuditRowIdDataOnDemand;
 import ro.roda.AuditRowIdIntegrationTest;
 import ro.roda.AuditRowIdPK;
+import ro.roda.service.AuditRowIdService;
 
 privileged aspect AuditRowIdIntegrationTest_Roo_IntegrationTest {
     
@@ -25,12 +25,15 @@ privileged aspect AuditRowIdIntegrationTest_Roo_IntegrationTest {
     declare @type: AuditRowIdIntegrationTest: @Transactional;
     
     @Autowired
-    private AuditRowIdDataOnDemand AuditRowIdIntegrationTest.dod;
+    AuditRowIdDataOnDemand AuditRowIdIntegrationTest.dod;
+    
+    @Autowired
+    AuditRowIdService AuditRowIdIntegrationTest.auditRowIdService;
     
     @Test
-    public void AuditRowIdIntegrationTest.testCountAuditRowIds() {
+    public void AuditRowIdIntegrationTest.testCountAllAuditRowIds() {
         Assert.assertNotNull("Data on demand for 'AuditRowId' failed to initialize correctly", dod.getRandomAuditRowId());
-        long count = AuditRowId.countAuditRowIds();
+        long count = auditRowIdService.countAllAuditRowIds();
         Assert.assertTrue("Counter for 'AuditRowId' incorrectly reported there were no entries", count > 0);
     }
     
@@ -40,7 +43,7 @@ privileged aspect AuditRowIdIntegrationTest_Roo_IntegrationTest {
         Assert.assertNotNull("Data on demand for 'AuditRowId' failed to initialize correctly", obj);
         AuditRowIdPK id = obj.getId();
         Assert.assertNotNull("Data on demand for 'AuditRowId' failed to provide an identifier", id);
-        obj = AuditRowId.findAuditRowId(id);
+        obj = auditRowIdService.findAuditRowId(id);
         Assert.assertNotNull("Find method for 'AuditRowId' illegally returned null for id '" + id + "'", obj);
         Assert.assertEquals("Find method for 'AuditRowId' returned the incorrect identifier", id, obj.getId());
     }
@@ -48,9 +51,9 @@ privileged aspect AuditRowIdIntegrationTest_Roo_IntegrationTest {
     @Test
     public void AuditRowIdIntegrationTest.testFindAllAuditRowIds() {
         Assert.assertNotNull("Data on demand for 'AuditRowId' failed to initialize correctly", dod.getRandomAuditRowId());
-        long count = AuditRowId.countAuditRowIds();
+        long count = auditRowIdService.countAllAuditRowIds();
         Assert.assertTrue("Too expensive to perform a find all test for 'AuditRowId', as there are " + count + " entries; set the findAllMaximum to exceed this value or set findAll=false on the integration test annotation to disable the test", count < 250);
-        List<AuditRowId> result = AuditRowId.findAllAuditRowIds();
+        List<AuditRowId> result = auditRowIdService.findAllAuditRowIds();
         Assert.assertNotNull("Find all method for 'AuditRowId' illegally returned null", result);
         Assert.assertTrue("Find all method for 'AuditRowId' failed to return any data", result.size() > 0);
     }
@@ -58,35 +61,35 @@ privileged aspect AuditRowIdIntegrationTest_Roo_IntegrationTest {
     @Test
     public void AuditRowIdIntegrationTest.testFindAuditRowIdEntries() {
         Assert.assertNotNull("Data on demand for 'AuditRowId' failed to initialize correctly", dod.getRandomAuditRowId());
-        long count = AuditRowId.countAuditRowIds();
+        long count = auditRowIdService.countAllAuditRowIds();
         if (count > 20) count = 20;
         int firstResult = 0;
         int maxResults = (int) count;
-        List<AuditRowId> result = AuditRowId.findAuditRowIdEntries(firstResult, maxResults);
+        List<AuditRowId> result = auditRowIdService.findAuditRowIdEntries(firstResult, maxResults);
         Assert.assertNotNull("Find entries method for 'AuditRowId' illegally returned null", result);
         Assert.assertEquals("Find entries method for 'AuditRowId' returned an incorrect number of entries", count, result.size());
     }
     
     @Test
-    public void AuditRowIdIntegrationTest.testPersist() {
+    public void AuditRowIdIntegrationTest.testSaveAuditRowId() {
         Assert.assertNotNull("Data on demand for 'AuditRowId' failed to initialize correctly", dod.getRandomAuditRowId());
         AuditRowId obj = dod.getNewTransientAuditRowId(Integer.MAX_VALUE);
         Assert.assertNotNull("Data on demand for 'AuditRowId' failed to provide a new transient entity", obj);
-        obj.persist();
+        auditRowIdService.saveAuditRowId(obj);
         obj.flush();
         Assert.assertNotNull("Expected 'AuditRowId' identifier to no longer be null", obj.getId());
     }
     
     @Test
-    public void AuditRowIdIntegrationTest.testRemove() {
+    public void AuditRowIdIntegrationTest.testDeleteAuditRowId() {
         AuditRowId obj = dod.getRandomAuditRowId();
         Assert.assertNotNull("Data on demand for 'AuditRowId' failed to initialize correctly", obj);
         AuditRowIdPK id = obj.getId();
         Assert.assertNotNull("Data on demand for 'AuditRowId' failed to provide an identifier", id);
-        obj = AuditRowId.findAuditRowId(id);
-        obj.remove();
+        obj = auditRowIdService.findAuditRowId(id);
+        auditRowIdService.deleteAuditRowId(obj);
         obj.flush();
-        Assert.assertNull("Failed to remove 'AuditRowId' with identifier '" + id + "'", AuditRowId.findAuditRowId(id));
+        Assert.assertNull("Failed to remove 'AuditRowId' with identifier '" + id + "'", auditRowIdService.findAuditRowId(id));
     }
     
 }

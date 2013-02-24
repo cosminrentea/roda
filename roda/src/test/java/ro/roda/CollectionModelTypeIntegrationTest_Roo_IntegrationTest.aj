@@ -11,9 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.CollectionModelType;
 import ro.roda.CollectionModelTypeDataOnDemand;
 import ro.roda.CollectionModelTypeIntegrationTest;
+import ro.roda.service.CollectionModelTypeService;
 
 privileged aspect CollectionModelTypeIntegrationTest_Roo_IntegrationTest {
     
@@ -24,12 +24,15 @@ privileged aspect CollectionModelTypeIntegrationTest_Roo_IntegrationTest {
     declare @type: CollectionModelTypeIntegrationTest: @Transactional;
     
     @Autowired
-    private CollectionModelTypeDataOnDemand CollectionModelTypeIntegrationTest.dod;
+    CollectionModelTypeDataOnDemand CollectionModelTypeIntegrationTest.dod;
+    
+    @Autowired
+    CollectionModelTypeService CollectionModelTypeIntegrationTest.collectionModelTypeService;
     
     @Test
-    public void CollectionModelTypeIntegrationTest.testCountCollectionModelTypes() {
+    public void CollectionModelTypeIntegrationTest.testCountAllCollectionModelTypes() {
         Assert.assertNotNull("Data on demand for 'CollectionModelType' failed to initialize correctly", dod.getRandomCollectionModelType());
-        long count = CollectionModelType.countCollectionModelTypes();
+        long count = collectionModelTypeService.countAllCollectionModelTypes();
         Assert.assertTrue("Counter for 'CollectionModelType' incorrectly reported there were no entries", count > 0);
     }
     
@@ -39,7 +42,7 @@ privileged aspect CollectionModelTypeIntegrationTest_Roo_IntegrationTest {
         Assert.assertNotNull("Data on demand for 'CollectionModelType' failed to initialize correctly", obj);
         Integer id = obj.getId();
         Assert.assertNotNull("Data on demand for 'CollectionModelType' failed to provide an identifier", id);
-        obj = CollectionModelType.findCollectionModelType(id);
+        obj = collectionModelTypeService.findCollectionModelType(id);
         Assert.assertNotNull("Find method for 'CollectionModelType' illegally returned null for id '" + id + "'", obj);
         Assert.assertEquals("Find method for 'CollectionModelType' returned the incorrect identifier", id, obj.getId());
     }
@@ -47,9 +50,9 @@ privileged aspect CollectionModelTypeIntegrationTest_Roo_IntegrationTest {
     @Test
     public void CollectionModelTypeIntegrationTest.testFindAllCollectionModelTypes() {
         Assert.assertNotNull("Data on demand for 'CollectionModelType' failed to initialize correctly", dod.getRandomCollectionModelType());
-        long count = CollectionModelType.countCollectionModelTypes();
+        long count = collectionModelTypeService.countAllCollectionModelTypes();
         Assert.assertTrue("Too expensive to perform a find all test for 'CollectionModelType', as there are " + count + " entries; set the findAllMaximum to exceed this value or set findAll=false on the integration test annotation to disable the test", count < 250);
-        List<CollectionModelType> result = CollectionModelType.findAllCollectionModelTypes();
+        List<CollectionModelType> result = collectionModelTypeService.findAllCollectionModelTypes();
         Assert.assertNotNull("Find all method for 'CollectionModelType' illegally returned null", result);
         Assert.assertTrue("Find all method for 'CollectionModelType' failed to return any data", result.size() > 0);
     }
@@ -57,36 +60,36 @@ privileged aspect CollectionModelTypeIntegrationTest_Roo_IntegrationTest {
     @Test
     public void CollectionModelTypeIntegrationTest.testFindCollectionModelTypeEntries() {
         Assert.assertNotNull("Data on demand for 'CollectionModelType' failed to initialize correctly", dod.getRandomCollectionModelType());
-        long count = CollectionModelType.countCollectionModelTypes();
+        long count = collectionModelTypeService.countAllCollectionModelTypes();
         if (count > 20) count = 20;
         int firstResult = 0;
         int maxResults = (int) count;
-        List<CollectionModelType> result = CollectionModelType.findCollectionModelTypeEntries(firstResult, maxResults);
+        List<CollectionModelType> result = collectionModelTypeService.findCollectionModelTypeEntries(firstResult, maxResults);
         Assert.assertNotNull("Find entries method for 'CollectionModelType' illegally returned null", result);
         Assert.assertEquals("Find entries method for 'CollectionModelType' returned an incorrect number of entries", count, result.size());
     }
     
     @Test
-    public void CollectionModelTypeIntegrationTest.testPersist() {
+    public void CollectionModelTypeIntegrationTest.testSaveCollectionModelType() {
         Assert.assertNotNull("Data on demand for 'CollectionModelType' failed to initialize correctly", dod.getRandomCollectionModelType());
         CollectionModelType obj = dod.getNewTransientCollectionModelType(Integer.MAX_VALUE);
         Assert.assertNotNull("Data on demand for 'CollectionModelType' failed to provide a new transient entity", obj);
         Assert.assertNull("Expected 'CollectionModelType' identifier to be null", obj.getId());
-        obj.persist();
+        collectionModelTypeService.saveCollectionModelType(obj);
         obj.flush();
         Assert.assertNotNull("Expected 'CollectionModelType' identifier to no longer be null", obj.getId());
     }
     
     @Test
-    public void CollectionModelTypeIntegrationTest.testRemove() {
+    public void CollectionModelTypeIntegrationTest.testDeleteCollectionModelType() {
         CollectionModelType obj = dod.getRandomCollectionModelType();
         Assert.assertNotNull("Data on demand for 'CollectionModelType' failed to initialize correctly", obj);
         Integer id = obj.getId();
         Assert.assertNotNull("Data on demand for 'CollectionModelType' failed to provide an identifier", id);
-        obj = CollectionModelType.findCollectionModelType(id);
-        obj.remove();
+        obj = collectionModelTypeService.findCollectionModelType(id);
+        collectionModelTypeService.deleteCollectionModelType(obj);
         obj.flush();
-        Assert.assertNull("Failed to remove 'CollectionModelType' with identifier '" + id + "'", CollectionModelType.findCollectionModelType(id));
+        Assert.assertNull("Failed to remove 'CollectionModelType' with identifier '" + id + "'", collectionModelTypeService.findCollectionModelType(id));
     }
     
 }

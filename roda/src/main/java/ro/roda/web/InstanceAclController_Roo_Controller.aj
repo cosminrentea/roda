@@ -16,14 +16,21 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.Instance;
 import ro.roda.InstanceAcl;
 import ro.roda.InstanceAclPK;
+import ro.roda.service.InstanceAclService;
+import ro.roda.service.InstanceService;
 import ro.roda.web.InstanceAclController;
 
 privileged aspect InstanceAclController_Roo_Controller {
     
     private ConversionService InstanceAclController.conversionService;
+    
+    @Autowired
+    InstanceAclService InstanceAclController.instanceAclService;
+    
+    @Autowired
+    InstanceService InstanceAclController.instanceService;
     
     @Autowired
     public InstanceAclController.new(ConversionService conversionService) {
@@ -38,7 +45,7 @@ privileged aspect InstanceAclController_Roo_Controller {
             return "instanceacls/create";
         }
         uiModel.asMap().clear();
-        instanceAcl.persist();
+        instanceAclService.saveInstanceAcl(instanceAcl);
         return "redirect:/instanceacls/" + encodeUrlPathSegment(conversionService.convert(instanceAcl.getId(), String.class), httpServletRequest);
     }
     
@@ -50,7 +57,7 @@ privileged aspect InstanceAclController_Roo_Controller {
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String InstanceAclController.show(@PathVariable("id") InstanceAclPK id, Model uiModel) {
-        uiModel.addAttribute("instanceacl", InstanceAcl.findInstanceAcl(id));
+        uiModel.addAttribute("instanceacl", instanceAclService.findInstanceAcl(id));
         uiModel.addAttribute("itemId", conversionService.convert(id, String.class));
         return "instanceacls/show";
     }
@@ -60,11 +67,11 @@ privileged aspect InstanceAclController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("instanceacls", InstanceAcl.findInstanceAclEntries(firstResult, sizeNo));
-            float nrOfPages = (float) InstanceAcl.countInstanceAcls() / sizeNo;
+            uiModel.addAttribute("instanceacls", instanceAclService.findInstanceAclEntries(firstResult, sizeNo));
+            float nrOfPages = (float) instanceAclService.countAllInstanceAcls() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("instanceacls", InstanceAcl.findAllInstanceAcls());
+            uiModel.addAttribute("instanceacls", instanceAclService.findAllInstanceAcls());
         }
         return "instanceacls/list";
     }
@@ -76,20 +83,20 @@ privileged aspect InstanceAclController_Roo_Controller {
             return "instanceacls/update";
         }
         uiModel.asMap().clear();
-        instanceAcl.merge();
+        instanceAclService.updateInstanceAcl(instanceAcl);
         return "redirect:/instanceacls/" + encodeUrlPathSegment(conversionService.convert(instanceAcl.getId(), String.class), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String InstanceAclController.updateForm(@PathVariable("id") InstanceAclPK id, Model uiModel) {
-        populateEditForm(uiModel, InstanceAcl.findInstanceAcl(id));
+        populateEditForm(uiModel, instanceAclService.findInstanceAcl(id));
         return "instanceacls/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
     public String InstanceAclController.delete(@PathVariable("id") InstanceAclPK id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        InstanceAcl instanceAcl = InstanceAcl.findInstanceAcl(id);
-        instanceAcl.remove();
+        InstanceAcl instanceAcl = instanceAclService.findInstanceAcl(id);
+        instanceAclService.deleteInstanceAcl(instanceAcl);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
@@ -98,7 +105,7 @@ privileged aspect InstanceAclController_Roo_Controller {
     
     void InstanceAclController.populateEditForm(Model uiModel, InstanceAcl instanceAcl) {
         uiModel.addAttribute("instanceAcl", instanceAcl);
-        uiModel.addAttribute("instances", Instance.findAllInstances());
+        uiModel.addAttribute("instances", instanceService.findAllInstances());
     }
     
     String InstanceAclController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

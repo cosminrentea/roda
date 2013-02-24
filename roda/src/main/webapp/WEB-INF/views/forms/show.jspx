@@ -7,6 +7,6 @@
         <field:display field="operatorId" id="s_ro_roda_Form_operatorId" object="${form}" z="FyrjP4b8DsKIp3y+2S0KIhRdmE4="/>
         <field:display field="orderInInstance" id="s_ro_roda_Form_orderInInstance" object="${form}" z="jYbowBeg2mO0nG/sSN4HLe9oeJc="/>
         <field:display field="operatorNotes" id="s_ro_roda_Form_operatorNotes" object="${form}" z="E6Zg9j49H/TwEBduJ2bwyISGf3s="/>
-        <field:display date="true" dateTimePattern="${form_filltime_date_format}" field="fillTime" id="s_ro_roda_Form_fillTime" object="${form}" z="jf1y1SbmdN87c8i/IkTEc+SqCiM="/>
+        <field:display calendar="true" dateTimePattern="${form_filltime_date_format}" field="fillTime" id="s_ro_roda_Form_fillTime" object="${form}" z="ZiIIuMrfIn22JJqrT5uGmUwQ0cg="/>
     </page:show>
 </div>

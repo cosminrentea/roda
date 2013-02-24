@@ -11,10 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.FormSelectionVar;
 import ro.roda.FormSelectionVarDataOnDemand;
 import ro.roda.FormSelectionVarIntegrationTest;
 import ro.roda.FormSelectionVarPK;
+import ro.roda.service.FormSelectionVarService;
 
 privileged aspect FormSelectionVarIntegrationTest_Roo_IntegrationTest {
     
@@ -25,12 +25,15 @@ privileged aspect FormSelectionVarIntegrationTest_Roo_IntegrationTest {
     declare @type: FormSelectionVarIntegrationTest: @Transactional;
     
     @Autowired
-    private FormSelectionVarDataOnDemand FormSelectionVarIntegrationTest.dod;
+    FormSelectionVarDataOnDemand FormSelectionVarIntegrationTest.dod;
+    
+    @Autowired
+    FormSelectionVarService FormSelectionVarIntegrationTest.formSelectionVarService;
     
     @Test
-    public void FormSelectionVarIntegrationTest.testCountFormSelectionVars() {
+    public void FormSelectionVarIntegrationTest.testCountAllFormSelectionVars() {
         Assert.assertNotNull("Data on demand for 'FormSelectionVar' failed to initialize correctly", dod.getRandomFormSelectionVar());
-        long count = FormSelectionVar.countFormSelectionVars();
+        long count = formSelectionVarService.countAllFormSelectionVars();
         Assert.assertTrue("Counter for 'FormSelectionVar' incorrectly reported there were no entries", count > 0);
     }
     
@@ -40,7 +43,7 @@ privileged aspect FormSelectionVarIntegrationTest_Roo_IntegrationTest {
         Assert.assertNotNull("Data on demand for 'FormSelectionVar' failed to initialize correctly", obj);
         FormSelectionVarPK id = obj.getId();
         Assert.assertNotNull("Data on demand for 'FormSelectionVar' failed to provide an identifier", id);
-        obj = FormSelectionVar.findFormSelectionVar(id);
+        obj = formSelectionVarService.findFormSelectionVar(id);
         Assert.assertNotNull("Find method for 'FormSelectionVar' illegally returned null for id '" + id + "'", obj);
         Assert.assertEquals("Find method for 'FormSelectionVar' returned the incorrect identifier", id, obj.getId());
     }
@@ -48,9 +51,9 @@ privileged aspect FormSelectionVarIntegrationTest_Roo_IntegrationTest {
     @Test
     public void FormSelectionVarIntegrationTest.testFindAllFormSelectionVars() {
         Assert.assertNotNull("Data on demand for 'FormSelectionVar' failed to initialize correctly", dod.getRandomFormSelectionVar());
-        long count = FormSelectionVar.countFormSelectionVars();
+        long count = formSelectionVarService.countAllFormSelectionVars();
         Assert.assertTrue("Too expensive to perform a find all test for 'FormSelectionVar', as there are " + count + " entries; set the findAllMaximum to exceed this value or set findAll=false on the integration test annotation to disable the test", count < 250);
-        List<FormSelectionVar> result = FormSelectionVar.findAllFormSelectionVars();
+        List<FormSelectionVar> result = formSelectionVarService.findAllFormSelectionVars();
         Assert.assertNotNull("Find all method for 'FormSelectionVar' illegally returned null", result);
         Assert.assertTrue("Find all method for 'FormSelectionVar' failed to return any data", result.size() > 0);
     }
@@ -58,35 +61,35 @@ privileged aspect FormSelectionVarIntegrationTest_Roo_IntegrationTest {
     @Test
     public void FormSelectionVarIntegrationTest.testFindFormSelectionVarEntries() {
         Assert.assertNotNull("Data on demand for 'FormSelectionVar' failed to initialize correctly", dod.getRandomFormSelectionVar());
-        long count = FormSelectionVar.countFormSelectionVars();
+        long count = formSelectionVarService.countAllFormSelectionVars();
         if (count > 20) count = 20;
         int firstResult = 0;
         int maxResults = (int) count;
-        List<FormSelectionVar> result = FormSelectionVar.findFormSelectionVarEntries(firstResult, maxResults);
+        List<FormSelectionVar> result = formSelectionVarService.findFormSelectionVarEntries(firstResult, maxResults);
         Assert.assertNotNull("Find entries method for 'FormSelectionVar' illegally returned null", result);
         Assert.assertEquals("Find entries method for 'FormSelectionVar' returned an incorrect number of entries", count, result.size());
     }
     
     @Test
-    public void FormSelectionVarIntegrationTest.testPersist() {
+    public void FormSelectionVarIntegrationTest.testSaveFormSelectionVar() {
         Assert.assertNotNull("Data on demand for 'FormSelectionVar' failed to initialize correctly", dod.getRandomFormSelectionVar());
         FormSelectionVar obj = dod.getNewTransientFormSelectionVar(Integer.MAX_VALUE);
         Assert.assertNotNull("Data on demand for 'FormSelectionVar' failed to provide a new transient entity", obj);
-        obj.persist();
+        formSelectionVarService.saveFormSelectionVar(obj);
         obj.flush();
         Assert.assertNotNull("Expected 'FormSelectionVar' identifier to no longer be null", obj.getId());
     }
     
     @Test
-    public void FormSelectionVarIntegrationTest.testRemove() {
+    public void FormSelectionVarIntegrationTest.testDeleteFormSelectionVar() {
         FormSelectionVar obj = dod.getRandomFormSelectionVar();
         Assert.assertNotNull("Data on demand for 'FormSelectionVar' failed to initialize correctly", obj);
         FormSelectionVarPK id = obj.getId();
         Assert.assertNotNull("Data on demand for 'FormSelectionVar' failed to provide an identifier", id);
-        obj = FormSelectionVar.findFormSelectionVar(id);
-        obj.remove();
+        obj = formSelectionVarService.findFormSelectionVar(id);
+        formSelectionVarService.deleteFormSelectionVar(obj);
         obj.flush();
-        Assert.assertNull("Failed to remove 'FormSelectionVar' with identifier '" + id + "'", FormSelectionVar.findFormSelectionVar(id));
+        Assert.assertNull("Failed to remove 'FormSelectionVar' with identifier '" + id + "'", formSelectionVarService.findFormSelectionVar(id));
     }
     
 }

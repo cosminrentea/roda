@@ -11,9 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.News;
 import ro.roda.NewsDataOnDemand;
 import ro.roda.NewsIntegrationTest;
+import ro.roda.service.NewsService;
 
 privileged aspect NewsIntegrationTest_Roo_IntegrationTest {
     
@@ -24,12 +24,15 @@ privileged aspect NewsIntegrationTest_Roo_IntegrationTest {
     declare @type: NewsIntegrationTest: @Transactional;
     
     @Autowired
-    private NewsDataOnDemand NewsIntegrationTest.dod;
+    NewsDataOnDemand NewsIntegrationTest.dod;
+    
+    @Autowired
+    NewsService NewsIntegrationTest.newsService;
     
     @Test
-    public void NewsIntegrationTest.testCountNews() {
+    public void NewsIntegrationTest.testCountAllNews() {
         Assert.assertNotNull("Data on demand for 'News' failed to initialize correctly", dod.getRandomNews());
-        long count = News.countNews();
+        long count = newsService.countAllNews();
         Assert.assertTrue("Counter for 'News' incorrectly reported there were no entries", count > 0);
     }
     
@@ -39,7 +42,7 @@ privileged aspect NewsIntegrationTest_Roo_IntegrationTest {
         Assert.assertNotNull("Data on demand for 'News' failed to initialize correctly", obj);
         Integer id = obj.getId();
         Assert.assertNotNull("Data on demand for 'News' failed to provide an identifier", id);
-        obj = News.findNews(id);
+        obj = newsService.findNews(id);
         Assert.assertNotNull("Find method for 'News' illegally returned null for id '" + id + "'", obj);
         Assert.assertEquals("Find method for 'News' returned the incorrect identifier", id, obj.getId());
     }
@@ -47,9 +50,9 @@ privileged aspect NewsIntegrationTest_Roo_IntegrationTest {
     @Test
     public void NewsIntegrationTest.testFindAllNews() {
         Assert.assertNotNull("Data on demand for 'News' failed to initialize correctly", dod.getRandomNews());
-        long count = News.countNews();
+        long count = newsService.countAllNews();
         Assert.assertTrue("Too expensive to perform a find all test for 'News', as there are " + count + " entries; set the findAllMaximum to exceed this value or set findAll=false on the integration test annotation to disable the test", count < 250);
-        List<News> result = News.findAllNews();
+        List<News> result = newsService.findAllNews();
         Assert.assertNotNull("Find all method for 'News' illegally returned null", result);
         Assert.assertTrue("Find all method for 'News' failed to return any data", result.size() > 0);
     }
@@ -57,36 +60,36 @@ privileged aspect NewsIntegrationTest_Roo_IntegrationTest {
     @Test
     public void NewsIntegrationTest.testFindNewsEntries() {
         Assert.assertNotNull("Data on demand for 'News' failed to initialize correctly", dod.getRandomNews());
-        long count = News.countNews();
+        long count = newsService.countAllNews();
         if (count > 20) count = 20;
         int firstResult = 0;
         int maxResults = (int) count;
-        List<News> result = News.findNewsEntries(firstResult, maxResults);
+        List<News> result = newsService.findNewsEntries(firstResult, maxResults);
         Assert.assertNotNull("Find entries method for 'News' illegally returned null", result);
         Assert.assertEquals("Find entries method for 'News' returned an incorrect number of entries", count, result.size());
     }
     
     @Test
-    public void NewsIntegrationTest.testPersist() {
+    public void NewsIntegrationTest.testSaveNews() {
         Assert.assertNotNull("Data on demand for 'News' failed to initialize correctly", dod.getRandomNews());
         News obj = dod.getNewTransientNews(Integer.MAX_VALUE);
         Assert.assertNotNull("Data on demand for 'News' failed to provide a new transient entity", obj);
         Assert.assertNull("Expected 'News' identifier to be null", obj.getId());
-        obj.persist();
+        newsService.saveNews(obj);
         obj.flush();
         Assert.assertNotNull("Expected 'News' identifier to no longer be null", obj.getId());
     }
     
     @Test
-    public void NewsIntegrationTest.testRemove() {
+    public void NewsIntegrationTest.testDeleteNews() {
         News obj = dod.getRandomNews();
         Assert.assertNotNull("Data on demand for 'News' failed to initialize correctly", obj);
         Integer id = obj.getId();
         Assert.assertNotNull("Data on demand for 'News' failed to provide an identifier", id);
-        obj = News.findNews(id);
-        obj.remove();
+        obj = newsService.findNews(id);
+        newsService.deleteNews(obj);
         obj.flush();
-        Assert.assertNull("Failed to remove 'News' with identifier '" + id + "'", News.findNews(id));
+        Assert.assertNull("Failed to remove 'News' with identifier '" + id + "'", newsService.findNews(id));
     }
     
 }

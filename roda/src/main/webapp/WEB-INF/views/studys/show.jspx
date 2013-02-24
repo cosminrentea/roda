@@ -6,10 +6,10 @@
         <field:display field="topics" id="s_ro_roda_Study_topics" object="${study}" z="yjsaNT1zBZzjkJ2jDJcbYupzb00="/>
         <field:display field="files1" id="s_ro_roda_Study_files1" object="${study}" z="XEK0Lz8uJY4NjT5dh0lO98eMMNQ="/>
         <field:display field="addedBy" id="s_ro_roda_Study_addedBy" object="${study}" z="BUAlq4ZXyqYD9cQ7FyTE+57ha14="/>
-        <field:display date="true" dateTimePattern="${study_datestart_date_format}" field="datestart" id="s_ro_roda_Study_datestart" object="${study}" z="nj+obu49Ra7hJlOKIUAcsg4DhmU="/>
-        <field:display date="true" dateTimePattern="${study_dateend_date_format}" field="dateend" id="s_ro_roda_Study_dateend" object="${study}" z="oJZf8sGAZb43dY6wurh1UmmR5rs="/>
+        <field:display calendar="true" dateTimePattern="${study_datestart_date_format}" field="datestart" id="s_ro_roda_Study_datestart" object="${study}" z="6g18UO/b6reA4HnfeFH4rJbyT0g="/>
+        <field:display calendar="true" dateTimePattern="${study_dateend_date_format}" field="dateend" id="s_ro_roda_Study_dateend" object="${study}" z="k0LgIp2fVcH9VLAxIQeXLhBoTI4="/>
         <field:display field="insertionStatus" id="s_ro_roda_Study_insertionStatus" object="${study}" z="wszsUVzQJslncmA4CY2pcCl06Z4="/>
-        <field:display date="true" dateTimePattern="${study_added_date_format}" field="added" id="s_ro_roda_Study_added" object="${study}" z="33bIkSk2QlGFoJuGGvoE0eEIBXs="/>
+        <field:display calendar="true" dateTimePattern="${study_added_date_format}" field="added" id="s_ro_roda_Study_added" object="${study}" z="OaokRGxxgmVJ/YF7SQZcE7+tdJI="/>
         <field:display field="canDigitize" id="s_ro_roda_Study_canDigitize" object="${study}" z="DFUVlVLyAVnIIjvL3ch1fCk1Ngw="/>
         <field:display field="canUseAnonymous" id="s_ro_roda_Study_canUseAnonymous" object="${study}" z="2Z4HtiqERxn4q6/6HFPymkZCKdE="/>
     </page:show>

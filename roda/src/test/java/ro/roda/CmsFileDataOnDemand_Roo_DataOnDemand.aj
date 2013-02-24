@@ -14,7 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ro.roda.CmsFile;
 import ro.roda.CmsFileDataOnDemand;
+import ro.roda.CmsFolder;
 import ro.roda.CmsFolderDataOnDemand;
+import ro.roda.service.CmsFileService;
 
 privileged aspect CmsFileDataOnDemand_Roo_DataOnDemand {
     
@@ -25,14 +27,23 @@ privileged aspect CmsFileDataOnDemand_Roo_DataOnDemand {
     private List<CmsFile> CmsFileDataOnDemand.data;
     
     @Autowired
-    private CmsFolderDataOnDemand CmsFileDataOnDemand.cmsFolderDataOnDemand;
+    CmsFolderDataOnDemand CmsFileDataOnDemand.cmsFolderDataOnDemand;
+    
+    @Autowired
+    CmsFileService CmsFileDataOnDemand.cmsFileService;
     
     public CmsFile CmsFileDataOnDemand.getNewTransientCmsFile(int index) {
         CmsFile obj = new CmsFile();
+        setCmsFolderId(obj, index);
         setFilename(obj, index);
         setFilesize(obj, index);
         setLabel(obj, index);
         return obj;
+    }
+    
+    public void CmsFileDataOnDemand.setCmsFolderId(CmsFile obj, int index) {
+        CmsFolder cmsFolderId = cmsFolderDataOnDemand.getRandomCmsFolder();
+        obj.setCmsFolderId(cmsFolderId);
     }
     
     public void CmsFileDataOnDemand.setFilename(CmsFile obj, int index) {
@@ -63,14 +74,14 @@ privileged aspect CmsFileDataOnDemand_Roo_DataOnDemand {
         }
         CmsFile obj = data.get(index);
         Integer id = obj.getId();
-        return CmsFile.findCmsFile(id);
+        return cmsFileService.findCmsFile(id);
     }
     
     public CmsFile CmsFileDataOnDemand.getRandomCmsFile() {
         init();
         CmsFile obj = data.get(rnd.nextInt(data.size()));
         Integer id = obj.getId();
-        return CmsFile.findCmsFile(id);
+        return cmsFileService.findCmsFile(id);
     }
     
     public boolean CmsFileDataOnDemand.modifyCmsFile(CmsFile obj) {
@@ -80,7 +91,7 @@ privileged aspect CmsFileDataOnDemand_Roo_DataOnDemand {
     public void CmsFileDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = CmsFile.findCmsFileEntries(from, to);
+        data = cmsFileService.findCmsFileEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'CmsFile' illegally returned null");
         }
@@ -92,7 +103,7 @@ privileged aspect CmsFileDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             CmsFile obj = getNewTransientCmsFile(i);
             try {
-                obj.persist();
+                cmsFileService.saveCmsFile(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

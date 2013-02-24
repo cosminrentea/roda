@@ -28,7 +28,7 @@ privileged aspect User_Roo_Jpa_ActiveRecord {
         return entityManager().createQuery("SELECT o FROM User o", User.class).getResultList();
     }
     
-    public static User User.findUser(Integer id) {
+    public static User User.findUser(Long id) {
         if (id == null) return null;
         return entityManager().find(User.class, id);
     }

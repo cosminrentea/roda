@@ -10,9 +10,11 @@ import java.util.List;
 import java.util.Random;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ro.roda.CollectionModelType;
 import ro.roda.CollectionModelTypeDataOnDemand;
+import ro.roda.service.CollectionModelTypeService;
 
 privileged aspect CollectionModelTypeDataOnDemand_Roo_DataOnDemand {
     
@@ -21,6 +23,9 @@ privileged aspect CollectionModelTypeDataOnDemand_Roo_DataOnDemand {
     private Random CollectionModelTypeDataOnDemand.rnd = new SecureRandom();
     
     private List<CollectionModelType> CollectionModelTypeDataOnDemand.data;
+    
+    @Autowired
+    CollectionModelTypeService CollectionModelTypeDataOnDemand.collectionModelTypeService;
     
     public CollectionModelType CollectionModelTypeDataOnDemand.getNewTransientCollectionModelType(int index) {
         CollectionModelType obj = new CollectionModelType();
@@ -49,14 +54,14 @@ privileged aspect CollectionModelTypeDataOnDemand_Roo_DataOnDemand {
         }
         CollectionModelType obj = data.get(index);
         Integer id = obj.getId();
-        return CollectionModelType.findCollectionModelType(id);
+        return collectionModelTypeService.findCollectionModelType(id);
     }
     
     public CollectionModelType CollectionModelTypeDataOnDemand.getRandomCollectionModelType() {
         init();
         CollectionModelType obj = data.get(rnd.nextInt(data.size()));
         Integer id = obj.getId();
-        return CollectionModelType.findCollectionModelType(id);
+        return collectionModelTypeService.findCollectionModelType(id);
     }
     
     public boolean CollectionModelTypeDataOnDemand.modifyCollectionModelType(CollectionModelType obj) {
@@ -66,7 +71,7 @@ privileged aspect CollectionModelTypeDataOnDemand_Roo_DataOnDemand {
     public void CollectionModelTypeDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = CollectionModelType.findCollectionModelTypeEntries(from, to);
+        data = collectionModelTypeService.findCollectionModelTypeEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'CollectionModelType' illegally returned null");
         }
@@ -78,7 +83,7 @@ privileged aspect CollectionModelTypeDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             CollectionModelType obj = getNewTransientCollectionModelType(i);
             try {
-                obj.persist();
+                collectionModelTypeService.saveCollectionModelType(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

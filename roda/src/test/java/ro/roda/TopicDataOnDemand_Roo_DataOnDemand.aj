@@ -10,9 +10,11 @@ import java.util.List;
 import java.util.Random;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ro.roda.Topic;
 import ro.roda.TopicDataOnDemand;
+import ro.roda.service.TopicService;
 
 privileged aspect TopicDataOnDemand_Roo_DataOnDemand {
     
@@ -21,6 +23,9 @@ privileged aspect TopicDataOnDemand_Roo_DataOnDemand {
     private Random TopicDataOnDemand.rnd = new SecureRandom();
     
     private List<Topic> TopicDataOnDemand.data;
+    
+    @Autowired
+    TopicService TopicDataOnDemand.topicService;
     
     public Topic TopicDataOnDemand.getNewTransientTopic(int index) {
         Topic obj = new Topic();
@@ -64,14 +69,14 @@ privileged aspect TopicDataOnDemand_Roo_DataOnDemand {
         }
         Topic obj = data.get(index);
         Integer id = obj.getId();
-        return Topic.findTopic(id);
+        return topicService.findTopic(id);
     }
     
     public Topic TopicDataOnDemand.getRandomTopic() {
         init();
         Topic obj = data.get(rnd.nextInt(data.size()));
         Integer id = obj.getId();
-        return Topic.findTopic(id);
+        return topicService.findTopic(id);
     }
     
     public boolean TopicDataOnDemand.modifyTopic(Topic obj) {
@@ -81,7 +86,7 @@ privileged aspect TopicDataOnDemand_Roo_DataOnDemand {
     public void TopicDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = Topic.findTopicEntries(from, to);
+        data = topicService.findTopicEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'Topic' illegally returned null");
         }
@@ -93,7 +98,7 @@ privileged aspect TopicDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             Topic obj = getNewTransientTopic(i);
             try {
-                obj.persist();
+                topicService.saveTopic(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

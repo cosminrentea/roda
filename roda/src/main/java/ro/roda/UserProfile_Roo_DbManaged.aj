@@ -7,14 +7,14 @@ import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
-import ro.roda.User;
+import ro.roda.Rodauser;
 import ro.roda.UserProfile;
 
 privileged aspect UserProfile_Roo_DbManaged {
     
     @OneToOne
     @JoinColumn(name = "user_id", nullable = false, insertable = false, updatable = false)
-    private User UserProfile.user;
+    private Rodauser UserProfile.rodauser;
     
     @Column(name = "f_name", columnDefinition = "varchar", length = 100)
     @NotNull
@@ -28,12 +28,12 @@ privileged aspect UserProfile_Roo_DbManaged {
     @NotNull
     private String UserProfile.email;
     
-    public User UserProfile.getUser() {
-        return user;
+    public Rodauser UserProfile.getRodauser() {
+        return rodauser;
     }
     
-    public void UserProfile.setUser(User user) {
-        this.user = user;
+    public void UserProfile.setRodauser(Rodauser rodauser) {
+        this.rodauser = rodauser;
     }
     
     public String UserProfile.getFName() {

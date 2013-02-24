@@ -16,16 +16,29 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.Lang;
-import ro.roda.Study;
 import ro.roda.StudyDescr;
 import ro.roda.StudyDescrPK;
-import ro.roda.TitleType;
+import ro.roda.service.LangService;
+import ro.roda.service.StudyDescrService;
+import ro.roda.service.StudyService;
+import ro.roda.service.TitleTypeService;
 import ro.roda.web.StudyDescrController;
 
 privileged aspect StudyDescrController_Roo_Controller {
     
     private ConversionService StudyDescrController.conversionService;
+    
+    @Autowired
+    StudyDescrService StudyDescrController.studyDescrService;
+    
+    @Autowired
+    LangService StudyDescrController.langService;
+    
+    @Autowired
+    StudyService StudyDescrController.studyService;
+    
+    @Autowired
+    TitleTypeService StudyDescrController.titleTypeService;
     
     @Autowired
     public StudyDescrController.new(ConversionService conversionService) {
@@ -40,7 +53,7 @@ privileged aspect StudyDescrController_Roo_Controller {
             return "studydescrs/create";
         }
         uiModel.asMap().clear();
-        studyDescr.persist();
+        studyDescrService.saveStudyDescr(studyDescr);
         return "redirect:/studydescrs/" + encodeUrlPathSegment(conversionService.convert(studyDescr.getId(), String.class), httpServletRequest);
     }
     
@@ -52,7 +65,7 @@ privileged aspect StudyDescrController_Roo_Controller {
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String StudyDescrController.show(@PathVariable("id") StudyDescrPK id, Model uiModel) {
-        uiModel.addAttribute("studydescr", StudyDescr.findStudyDescr(id));
+        uiModel.addAttribute("studydescr", studyDescrService.findStudyDescr(id));
         uiModel.addAttribute("itemId", conversionService.convert(id, String.class));
         return "studydescrs/show";
     }
@@ -62,11 +75,11 @@ privileged aspect StudyDescrController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("studydescrs", StudyDescr.findStudyDescrEntries(firstResult, sizeNo));
-            float nrOfPages = (float) StudyDescr.countStudyDescrs() / sizeNo;
+            uiModel.addAttribute("studydescrs", studyDescrService.findStudyDescrEntries(firstResult, sizeNo));
+            float nrOfPages = (float) studyDescrService.countAllStudyDescrs() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("studydescrs", StudyDescr.findAllStudyDescrs());
+            uiModel.addAttribute("studydescrs", studyDescrService.findAllStudyDescrs());
         }
         return "studydescrs/list";
     }
@@ -78,20 +91,20 @@ privileged aspect StudyDescrController_Roo_Controller {
             return "studydescrs/update";
         }
         uiModel.asMap().clear();
-        studyDescr.merge();
+        studyDescrService.updateStudyDescr(studyDescr);
         return "redirect:/studydescrs/" + encodeUrlPathSegment(conversionService.convert(studyDescr.getId(), String.class), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String StudyDescrController.updateForm(@PathVariable("id") StudyDescrPK id, Model uiModel) {
-        populateEditForm(uiModel, StudyDescr.findStudyDescr(id));
+        populateEditForm(uiModel, studyDescrService.findStudyDescr(id));
         return "studydescrs/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
     public String StudyDescrController.delete(@PathVariable("id") StudyDescrPK id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        StudyDescr studyDescr = StudyDescr.findStudyDescr(id);
-        studyDescr.remove();
+        StudyDescr studyDescr = studyDescrService.findStudyDescr(id);
+        studyDescrService.deleteStudyDescr(studyDescr);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
@@ -100,9 +113,9 @@ privileged aspect StudyDescrController_Roo_Controller {
     
     void StudyDescrController.populateEditForm(Model uiModel, StudyDescr studyDescr) {
         uiModel.addAttribute("studyDescr", studyDescr);
-        uiModel.addAttribute("langs", Lang.findAllLangs());
-        uiModel.addAttribute("studys", Study.findAllStudys());
-        uiModel.addAttribute("titletypes", TitleType.findAllTitleTypes());
+        uiModel.addAttribute("langs", langService.findAllLangs());
+        uiModel.addAttribute("studys", studyService.findAllStudys());
+        uiModel.addAttribute("titletypes", titleTypeService.findAllTitleTypes());
     }
     
     String StudyDescrController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

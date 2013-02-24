@@ -11,9 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.Role;
 import ro.roda.RoleDataOnDemand;
 import ro.roda.RoleIntegrationTest;
+import ro.roda.service.RoleService;
 
 privileged aspect RoleIntegrationTest_Roo_IntegrationTest {
     
@@ -24,12 +24,15 @@ privileged aspect RoleIntegrationTest_Roo_IntegrationTest {
     declare @type: RoleIntegrationTest: @Transactional;
     
     @Autowired
-    private RoleDataOnDemand RoleIntegrationTest.dod;
+    RoleDataOnDemand RoleIntegrationTest.dod;
+    
+    @Autowired
+    RoleService RoleIntegrationTest.roleService;
     
     @Test
-    public void RoleIntegrationTest.testCountRoles() {
+    public void RoleIntegrationTest.testCountAllRoles() {
         Assert.assertNotNull("Data on demand for 'Role' failed to initialize correctly", dod.getRandomRole());
-        long count = Role.countRoles();
+        long count = roleService.countAllRoles();
         Assert.assertTrue("Counter for 'Role' incorrectly reported there were no entries", count > 0);
     }
     
@@ -39,7 +42,7 @@ privileged aspect RoleIntegrationTest_Roo_IntegrationTest {
         Assert.assertNotNull("Data on demand for 'Role' failed to initialize correctly", obj);
         Integer id = obj.getId();
         Assert.assertNotNull("Data on demand for 'Role' failed to provide an identifier", id);
-        obj = Role.findRole(id);
+        obj = roleService.findRole(id);
         Assert.assertNotNull("Find method for 'Role' illegally returned null for id '" + id + "'", obj);
         Assert.assertEquals("Find method for 'Role' returned the incorrect identifier", id, obj.getId());
     }
@@ -47,9 +50,9 @@ privileged aspect RoleIntegrationTest_Roo_IntegrationTest {
     @Test
     public void RoleIntegrationTest.testFindAllRoles() {
         Assert.assertNotNull("Data on demand for 'Role' failed to initialize correctly", dod.getRandomRole());
-        long count = Role.countRoles();
+        long count = roleService.countAllRoles();
         Assert.assertTrue("Too expensive to perform a find all test for 'Role', as there are " + count + " entries; set the findAllMaximum to exceed this value or set findAll=false on the integration test annotation to disable the test", count < 250);
-        List<Role> result = Role.findAllRoles();
+        List<Role> result = roleService.findAllRoles();
         Assert.assertNotNull("Find all method for 'Role' illegally returned null", result);
         Assert.assertTrue("Find all method for 'Role' failed to return any data", result.size() > 0);
     }
@@ -57,36 +60,36 @@ privileged aspect RoleIntegrationTest_Roo_IntegrationTest {
     @Test
     public void RoleIntegrationTest.testFindRoleEntries() {
         Assert.assertNotNull("Data on demand for 'Role' failed to initialize correctly", dod.getRandomRole());
-        long count = Role.countRoles();
+        long count = roleService.countAllRoles();
         if (count > 20) count = 20;
         int firstResult = 0;
         int maxResults = (int) count;
-        List<Role> result = Role.findRoleEntries(firstResult, maxResults);
+        List<Role> result = roleService.findRoleEntries(firstResult, maxResults);
         Assert.assertNotNull("Find entries method for 'Role' illegally returned null", result);
         Assert.assertEquals("Find entries method for 'Role' returned an incorrect number of entries", count, result.size());
     }
     
     @Test
-    public void RoleIntegrationTest.testPersist() {
+    public void RoleIntegrationTest.testSaveRole() {
         Assert.assertNotNull("Data on demand for 'Role' failed to initialize correctly", dod.getRandomRole());
         Role obj = dod.getNewTransientRole(Integer.MAX_VALUE);
         Assert.assertNotNull("Data on demand for 'Role' failed to provide a new transient entity", obj);
         Assert.assertNull("Expected 'Role' identifier to be null", obj.getId());
-        obj.persist();
+        roleService.saveRole(obj);
         obj.flush();
         Assert.assertNotNull("Expected 'Role' identifier to no longer be null", obj.getId());
     }
     
     @Test
-    public void RoleIntegrationTest.testRemove() {
+    public void RoleIntegrationTest.testDeleteRole() {
         Role obj = dod.getRandomRole();
         Assert.assertNotNull("Data on demand for 'Role' failed to initialize correctly", obj);
         Integer id = obj.getId();
         Assert.assertNotNull("Data on demand for 'Role' failed to provide an identifier", id);
-        obj = Role.findRole(id);
-        obj.remove();
+        obj = roleService.findRole(id);
+        roleService.deleteRole(obj);
         obj.flush();
-        Assert.assertNull("Failed to remove 'Role' with identifier '" + id + "'", Role.findRole(id));
+        Assert.assertNull("Failed to remove 'Role' with identifier '" + id + "'", roleService.findRole(id));
     }
     
 }

@@ -6,6 +6,7 @@ package ro.roda.web;
 import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,11 +15,18 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.Person;
 import ro.roda.Suffix;
+import ro.roda.service.PersonService;
+import ro.roda.service.SuffixService;
 import ro.roda.web.SuffixController;
 
 privileged aspect SuffixController_Roo_Controller {
+    
+    @Autowired
+    SuffixService SuffixController.suffixService;
+    
+    @Autowired
+    PersonService SuffixController.personService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String SuffixController.create(@Valid Suffix suffix, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -27,7 +35,7 @@ privileged aspect SuffixController_Roo_Controller {
             return "suffixes/create";
         }
         uiModel.asMap().clear();
-        suffix.persist();
+        suffixService.saveSuffix(suffix);
         return "redirect:/suffixes/" + encodeUrlPathSegment(suffix.getId().toString(), httpServletRequest);
     }
     
@@ -39,7 +47,7 @@ privileged aspect SuffixController_Roo_Controller {
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String SuffixController.show(@PathVariable("id") Integer id, Model uiModel) {
-        uiModel.addAttribute("suffix", Suffix.findSuffix(id));
+        uiModel.addAttribute("suffix", suffixService.findSuffix(id));
         uiModel.addAttribute("itemId", id);
         return "suffixes/show";
     }
@@ -49,11 +57,11 @@ privileged aspect SuffixController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("suffixes", Suffix.findSuffixEntries(firstResult, sizeNo));
-            float nrOfPages = (float) Suffix.countSuffixes() / sizeNo;
+            uiModel.addAttribute("suffixes", suffixService.findSuffixEntries(firstResult, sizeNo));
+            float nrOfPages = (float) suffixService.countAllSuffixes() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("suffixes", Suffix.findAllSuffixes());
+            uiModel.addAttribute("suffixes", suffixService.findAllSuffixes());
         }
         return "suffixes/list";
     }
@@ -65,20 +73,20 @@ privileged aspect SuffixController_Roo_Controller {
             return "suffixes/update";
         }
         uiModel.asMap().clear();
-        suffix.merge();
+        suffixService.updateSuffix(suffix);
         return "redirect:/suffixes/" + encodeUrlPathSegment(suffix.getId().toString(), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String SuffixController.updateForm(@PathVariable("id") Integer id, Model uiModel) {
-        populateEditForm(uiModel, Suffix.findSuffix(id));
+        populateEditForm(uiModel, suffixService.findSuffix(id));
         return "suffixes/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
     public String SuffixController.delete(@PathVariable("id") Integer id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        Suffix suffix = Suffix.findSuffix(id);
-        suffix.remove();
+        Suffix suffix = suffixService.findSuffix(id);
+        suffixService.deleteSuffix(suffix);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
@@ -87,7 +95,7 @@ privileged aspect SuffixController_Roo_Controller {
     
     void SuffixController.populateEditForm(Model uiModel, Suffix suffix) {
         uiModel.addAttribute("suffix", suffix);
-        uiModel.addAttribute("people", Person.findAllPeople());
+        uiModel.addAttribute("people", personService.findAllPeople());
     }
     
     String SuffixController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

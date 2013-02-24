@@ -16,15 +16,25 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.Form;
 import ro.roda.FormSelectionVar;
 import ro.roda.FormSelectionVarPK;
-import ro.roda.SelectionVariableItem;
+import ro.roda.service.FormSelectionVarService;
+import ro.roda.service.FormService;
+import ro.roda.service.SelectionVariableItemService;
 import ro.roda.web.FormSelectionVarController;
 
 privileged aspect FormSelectionVarController_Roo_Controller {
     
     private ConversionService FormSelectionVarController.conversionService;
+    
+    @Autowired
+    FormSelectionVarService FormSelectionVarController.formSelectionVarService;
+    
+    @Autowired
+    FormService FormSelectionVarController.formService;
+    
+    @Autowired
+    SelectionVariableItemService FormSelectionVarController.selectionVariableItemService;
     
     @Autowired
     public FormSelectionVarController.new(ConversionService conversionService) {
@@ -39,7 +49,7 @@ privileged aspect FormSelectionVarController_Roo_Controller {
             return "formselectionvars/create";
         }
         uiModel.asMap().clear();
-        formSelectionVar.persist();
+        formSelectionVarService.saveFormSelectionVar(formSelectionVar);
         return "redirect:/formselectionvars/" + encodeUrlPathSegment(conversionService.convert(formSelectionVar.getId(), String.class), httpServletRequest);
     }
     
@@ -51,7 +61,7 @@ privileged aspect FormSelectionVarController_Roo_Controller {
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String FormSelectionVarController.show(@PathVariable("id") FormSelectionVarPK id, Model uiModel) {
-        uiModel.addAttribute("formselectionvar", FormSelectionVar.findFormSelectionVar(id));
+        uiModel.addAttribute("formselectionvar", formSelectionVarService.findFormSelectionVar(id));
         uiModel.addAttribute("itemId", conversionService.convert(id, String.class));
         return "formselectionvars/show";
     }
@@ -61,11 +71,11 @@ privileged aspect FormSelectionVarController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("formselectionvars", FormSelectionVar.findFormSelectionVarEntries(firstResult, sizeNo));
-            float nrOfPages = (float) FormSelectionVar.countFormSelectionVars() / sizeNo;
+            uiModel.addAttribute("formselectionvars", formSelectionVarService.findFormSelectionVarEntries(firstResult, sizeNo));
+            float nrOfPages = (float) formSelectionVarService.countAllFormSelectionVars() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("formselectionvars", FormSelectionVar.findAllFormSelectionVars());
+            uiModel.addAttribute("formselectionvars", formSelectionVarService.findAllFormSelectionVars());
         }
         return "formselectionvars/list";
     }
@@ -77,20 +87,20 @@ privileged aspect FormSelectionVarController_Roo_Controller {
             return "formselectionvars/update";
         }
         uiModel.asMap().clear();
-        formSelectionVar.merge();
+        formSelectionVarService.updateFormSelectionVar(formSelectionVar);
         return "redirect:/formselectionvars/" + encodeUrlPathSegment(conversionService.convert(formSelectionVar.getId(), String.class), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String FormSelectionVarController.updateForm(@PathVariable("id") FormSelectionVarPK id, Model uiModel) {
-        populateEditForm(uiModel, FormSelectionVar.findFormSelectionVar(id));
+        populateEditForm(uiModel, formSelectionVarService.findFormSelectionVar(id));
         return "formselectionvars/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
     public String FormSelectionVarController.delete(@PathVariable("id") FormSelectionVarPK id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        FormSelectionVar formSelectionVar = FormSelectionVar.findFormSelectionVar(id);
-        formSelectionVar.remove();
+        FormSelectionVar formSelectionVar = formSelectionVarService.findFormSelectionVar(id);
+        formSelectionVarService.deleteFormSelectionVar(formSelectionVar);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
@@ -99,8 +109,8 @@ privileged aspect FormSelectionVarController_Roo_Controller {
     
     void FormSelectionVarController.populateEditForm(Model uiModel, FormSelectionVar formSelectionVar) {
         uiModel.addAttribute("formSelectionVar", formSelectionVar);
-        uiModel.addAttribute("forms", Form.findAllForms());
-        uiModel.addAttribute("selectionvariableitems", SelectionVariableItem.findAllSelectionVariableItems());
+        uiModel.addAttribute("forms", formService.findAllForms());
+        uiModel.addAttribute("selectionvariableitems", selectionVariableItemService.findAllSelectionVariableItems());
     }
     
     String FormSelectionVarController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

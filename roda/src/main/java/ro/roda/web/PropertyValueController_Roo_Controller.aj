@@ -6,6 +6,7 @@ package ro.roda.web;
 import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,12 +15,22 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.CmsFilePropertyNameValue;
-import ro.roda.FilePropertyNameValue;
 import ro.roda.PropertyValue;
+import ro.roda.service.CmsFilePropertyNameValueService;
+import ro.roda.service.FilePropertyNameValueService;
+import ro.roda.service.PropertyValueService;
 import ro.roda.web.PropertyValueController;
 
 privileged aspect PropertyValueController_Roo_Controller {
+    
+    @Autowired
+    PropertyValueService PropertyValueController.propertyValueService;
+    
+    @Autowired
+    CmsFilePropertyNameValueService PropertyValueController.cmsFilePropertyNameValueService;
+    
+    @Autowired
+    FilePropertyNameValueService PropertyValueController.filePropertyNameValueService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String PropertyValueController.create(@Valid PropertyValue propertyValue, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -28,7 +39,7 @@ privileged aspect PropertyValueController_Roo_Controller {
             return "propertyvalues/create";
         }
         uiModel.asMap().clear();
-        propertyValue.persist();
+        propertyValueService.savePropertyValue(propertyValue);
         return "redirect:/propertyvalues/" + encodeUrlPathSegment(propertyValue.getId().toString(), httpServletRequest);
     }
     
@@ -40,7 +51,7 @@ privileged aspect PropertyValueController_Roo_Controller {
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String PropertyValueController.show(@PathVariable("id") Integer id, Model uiModel) {
-        uiModel.addAttribute("propertyvalue", PropertyValue.findPropertyValue(id));
+        uiModel.addAttribute("propertyvalue", propertyValueService.findPropertyValue(id));
         uiModel.addAttribute("itemId", id);
         return "propertyvalues/show";
     }
@@ -50,11 +61,11 @@ privileged aspect PropertyValueController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("propertyvalues", PropertyValue.findPropertyValueEntries(firstResult, sizeNo));
-            float nrOfPages = (float) PropertyValue.countPropertyValues() / sizeNo;
+            uiModel.addAttribute("propertyvalues", propertyValueService.findPropertyValueEntries(firstResult, sizeNo));
+            float nrOfPages = (float) propertyValueService.countAllPropertyValues() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("propertyvalues", PropertyValue.findAllPropertyValues());
+            uiModel.addAttribute("propertyvalues", propertyValueService.findAllPropertyValues());
         }
         return "propertyvalues/list";
     }
@@ -66,20 +77,20 @@ privileged aspect PropertyValueController_Roo_Controller {
             return "propertyvalues/update";
         }
         uiModel.asMap().clear();
-        propertyValue.merge();
+        propertyValueService.updatePropertyValue(propertyValue);
         return "redirect:/propertyvalues/" + encodeUrlPathSegment(propertyValue.getId().toString(), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String PropertyValueController.updateForm(@PathVariable("id") Integer id, Model uiModel) {
-        populateEditForm(uiModel, PropertyValue.findPropertyValue(id));
+        populateEditForm(uiModel, propertyValueService.findPropertyValue(id));
         return "propertyvalues/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
     public String PropertyValueController.delete(@PathVariable("id") Integer id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        PropertyValue propertyValue = PropertyValue.findPropertyValue(id);
-        propertyValue.remove();
+        PropertyValue propertyValue = propertyValueService.findPropertyValue(id);
+        propertyValueService.deletePropertyValue(propertyValue);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
@@ -88,8 +99,8 @@ privileged aspect PropertyValueController_Roo_Controller {
     
     void PropertyValueController.populateEditForm(Model uiModel, PropertyValue propertyValue) {
         uiModel.addAttribute("propertyValue", propertyValue);
-        uiModel.addAttribute("cmsfilepropertynamevalues", CmsFilePropertyNameValue.findAllCmsFilePropertyNameValues());
-        uiModel.addAttribute("filepropertynamevalues", FilePropertyNameValue.findAllFilePropertyNameValues());
+        uiModel.addAttribute("cmsfilepropertynamevalues", cmsFilePropertyNameValueService.findAllCmsFilePropertyNameValues());
+        uiModel.addAttribute("filepropertynamevalues", filePropertyNameValueService.findAllFilePropertyNameValues());
     }
     
     String PropertyValueController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

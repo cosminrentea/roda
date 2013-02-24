@@ -18,16 +18,26 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.Keyword;
-import ro.roda.Study;
+import ro.roda.Rodauser;
 import ro.roda.StudyKeyword;
 import ro.roda.StudyKeywordPK;
-import ro.roda.User;
+import ro.roda.service.KeywordService;
+import ro.roda.service.StudyKeywordService;
+import ro.roda.service.StudyService;
 import ro.roda.web.StudyKeywordController;
 
 privileged aspect StudyKeywordController_Roo_Controller {
     
     private ConversionService StudyKeywordController.conversionService;
+    
+    @Autowired
+    StudyKeywordService StudyKeywordController.studyKeywordService;
+    
+    @Autowired
+    KeywordService StudyKeywordController.keywordService;
+    
+    @Autowired
+    StudyService StudyKeywordController.studyService;
     
     @Autowired
     public StudyKeywordController.new(ConversionService conversionService) {
@@ -42,7 +52,7 @@ privileged aspect StudyKeywordController_Roo_Controller {
             return "studykeywords/create";
         }
         uiModel.asMap().clear();
-        studyKeyword.persist();
+        studyKeywordService.saveStudyKeyword(studyKeyword);
         return "redirect:/studykeywords/" + encodeUrlPathSegment(conversionService.convert(studyKeyword.getId(), String.class), httpServletRequest);
     }
     
@@ -55,7 +65,7 @@ privileged aspect StudyKeywordController_Roo_Controller {
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String StudyKeywordController.show(@PathVariable("id") StudyKeywordPK id, Model uiModel) {
         addDateTimeFormatPatterns(uiModel);
-        uiModel.addAttribute("studykeyword", StudyKeyword.findStudyKeyword(id));
+        uiModel.addAttribute("studykeyword", studyKeywordService.findStudyKeyword(id));
         uiModel.addAttribute("itemId", conversionService.convert(id, String.class));
         return "studykeywords/show";
     }
@@ -65,11 +75,11 @@ privileged aspect StudyKeywordController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("studykeywords", StudyKeyword.findStudyKeywordEntries(firstResult, sizeNo));
-            float nrOfPages = (float) StudyKeyword.countStudyKeywords() / sizeNo;
+            uiModel.addAttribute("studykeywords", studyKeywordService.findStudyKeywordEntries(firstResult, sizeNo));
+            float nrOfPages = (float) studyKeywordService.countAllStudyKeywords() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("studykeywords", StudyKeyword.findAllStudyKeywords());
+            uiModel.addAttribute("studykeywords", studyKeywordService.findAllStudyKeywords());
         }
         addDateTimeFormatPatterns(uiModel);
         return "studykeywords/list";
@@ -82,20 +92,20 @@ privileged aspect StudyKeywordController_Roo_Controller {
             return "studykeywords/update";
         }
         uiModel.asMap().clear();
-        studyKeyword.merge();
+        studyKeywordService.updateStudyKeyword(studyKeyword);
         return "redirect:/studykeywords/" + encodeUrlPathSegment(conversionService.convert(studyKeyword.getId(), String.class), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String StudyKeywordController.updateForm(@PathVariable("id") StudyKeywordPK id, Model uiModel) {
-        populateEditForm(uiModel, StudyKeyword.findStudyKeyword(id));
+        populateEditForm(uiModel, studyKeywordService.findStudyKeyword(id));
         return "studykeywords/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
     public String StudyKeywordController.delete(@PathVariable("id") StudyKeywordPK id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        StudyKeyword studyKeyword = StudyKeyword.findStudyKeyword(id);
-        studyKeyword.remove();
+        StudyKeyword studyKeyword = studyKeywordService.findStudyKeyword(id);
+        studyKeywordService.deleteStudyKeyword(studyKeyword);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
@@ -103,15 +113,15 @@ privileged aspect StudyKeywordController_Roo_Controller {
     }
     
     void StudyKeywordController.addDateTimeFormatPatterns(Model uiModel) {
-        uiModel.addAttribute("studyKeyword_added_date_format", DateTimeFormat.patternForStyle("M-", LocaleContextHolder.getLocale()));
+        uiModel.addAttribute("studyKeyword_added_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
     }
     
     void StudyKeywordController.populateEditForm(Model uiModel, StudyKeyword studyKeyword) {
         uiModel.addAttribute("studyKeyword", studyKeyword);
         addDateTimeFormatPatterns(uiModel);
-        uiModel.addAttribute("keywords", Keyword.findAllKeywords());
-        uiModel.addAttribute("studys", Study.findAllStudys());
-        uiModel.addAttribute("users", User.findAllUsers());
+        uiModel.addAttribute("keywords", keywordService.findAllKeywords());
+        uiModel.addAttribute("rodausers", Rodauser.findAllRodausers());
+        uiModel.addAttribute("studys", studyService.findAllStudys());
     }
     
     String StudyKeywordController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

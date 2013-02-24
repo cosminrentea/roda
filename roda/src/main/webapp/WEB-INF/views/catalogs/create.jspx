@@ -3,13 +3,14 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <form:create id="fc_ro_roda_Catalog" modelAttribute="catalog" path="/catalogs" render="${empty dependencies}" z="XMRUNlPTY33DpjrpDkb7BzBuP8Y=">
-        <field:simple field="catalogs" id="c_ro_roda_Catalog_catalogs" messageCode="entity_reference_not_managed" messageCodeAttribute="Catalog" z="0Eijmy0WGRKjP5MHsxT8L4V5tFU="/>
         <field:simple field="catalogAcls" id="c_ro_roda_Catalog_catalogAcls" messageCode="entity_reference_not_managed" messageCodeAttribute="Catalog Acl" z="wJtxikgDTQIfodNAGJK6/XExZDQ="/>
         <field:simple field="catalogStudies" id="c_ro_roda_Catalog_catalogStudies" messageCode="entity_reference_not_managed" messageCodeAttribute="Catalog Study" z="dmB2Xae2fa80zuWzN7XIbxg/81s="/>
-        <field:select field="parent" id="c_ro_roda_Catalog_parent" itemValue="id" items="${catalogs}" path="/catalogs" z="m3LerU7pPwqk4f8K3ChW7qGsRks="/>
-        <field:select field="owner" id="c_ro_roda_Catalog_owner" itemValue="id" items="${users}" path="/users" z="oGGTpixa6xa+ieWdjdAUavs4SxM="/>
+        <field:select field="owner" id="c_ro_roda_Catalog_owner" itemValue="id" items="${rodausers}" path="/rodausers" z="MUF+PB7ZS1vj1a5zmYOPpIlmk6o="/>
         <field:input field="name" id="c_ro_roda_Catalog_name" required="true" z="l1gS1o6OvcvUC6P1F4Z5PPXs3rQ="/>
         <field:datetime dateTimePattern="${catalog_added_date_format}" field="added" id="c_ro_roda_Catalog_added" required="true" z="zYj1qEr2nTfjBIQ59kwQOl2pt0g="/>
+        <field:input field="parentId" id="c_ro_roda_Catalog_parentId" validationMessageCode="field_invalid_integer" z="RhIxNPyfbzlj8vSezyjojUQ+u4I="/>
+        <field:input field="sequencenr" id="c_ro_roda_Catalog_sequencenr" validationMessageCode="field_invalid_integer" z="7p1UO7qH+tZW/2of7gwIrX2/004="/>
+        <field:input field="description" id="c_ro_roda_Catalog_description" z="Unu71z8D1J1s8Th1P6ozLaGuSKM="/>
     </form:create>
     <form:dependency dependencies="${dependencies}" id="d_ro_roda_Catalog" render="${not empty dependencies}" z="hUeagE0uDYv3D3F4nLWrL984IBg="/>
 </div>

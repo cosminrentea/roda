@@ -13,10 +13,12 @@ import javax.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ro.roda.FileDataOnDemand;
+import ro.roda.Instance;
 import ro.roda.InstanceDataOnDemand;
 import ro.roda.SelectionVariableDataOnDemand;
 import ro.roda.Variable;
 import ro.roda.VariableDataOnDemand;
+import ro.roda.service.VariableService;
 
 privileged aspect VariableDataOnDemand_Roo_DataOnDemand {
     
@@ -27,16 +29,20 @@ privileged aspect VariableDataOnDemand_Roo_DataOnDemand {
     private List<Variable> VariableDataOnDemand.data;
     
     @Autowired
-    private FileDataOnDemand VariableDataOnDemand.fileDataOnDemand;
+    FileDataOnDemand VariableDataOnDemand.fileDataOnDemand;
     
     @Autowired
-    private InstanceDataOnDemand VariableDataOnDemand.instanceDataOnDemand;
+    InstanceDataOnDemand VariableDataOnDemand.instanceDataOnDemand;
     
     @Autowired
-    private SelectionVariableDataOnDemand VariableDataOnDemand.selectionVariableDataOnDemand;
+    SelectionVariableDataOnDemand VariableDataOnDemand.selectionVariableDataOnDemand;
+    
+    @Autowired
+    VariableService VariableDataOnDemand.variableService;
     
     public Variable VariableDataOnDemand.getNewTransientVariable(int index) {
         Variable obj = new Variable();
+        setInstanceId(obj, index);
         setLabel(obj, index);
         setOperatorInstructions(obj, index);
         setOrderInInstance(obj, index);
@@ -45,6 +51,11 @@ privileged aspect VariableDataOnDemand_Roo_DataOnDemand {
         setTypeEditedText(obj, index);
         setTypeSelection(obj, index);
         return obj;
+    }
+    
+    public void VariableDataOnDemand.setInstanceId(Variable obj, int index) {
+        Instance instanceId = instanceDataOnDemand.getRandomInstance();
+        obj.setInstanceId(instanceId);
     }
     
     public void VariableDataOnDemand.setLabel(Variable obj, int index) {
@@ -92,14 +103,14 @@ privileged aspect VariableDataOnDemand_Roo_DataOnDemand {
         }
         Variable obj = data.get(index);
         Long id = obj.getId();
-        return Variable.findVariable(id);
+        return variableService.findVariable(id);
     }
     
     public Variable VariableDataOnDemand.getRandomVariable() {
         init();
         Variable obj = data.get(rnd.nextInt(data.size()));
         Long id = obj.getId();
-        return Variable.findVariable(id);
+        return variableService.findVariable(id);
     }
     
     public boolean VariableDataOnDemand.modifyVariable(Variable obj) {
@@ -109,7 +120,7 @@ privileged aspect VariableDataOnDemand_Roo_DataOnDemand {
     public void VariableDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = Variable.findVariableEntries(from, to);
+        data = variableService.findVariableEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'Variable' illegally returned null");
         }
@@ -121,7 +132,7 @@ privileged aspect VariableDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             Variable obj = getNewTransientVariable(i);
             try {
-                obj.persist();
+                variableService.saveVariable(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

@@ -10,9 +10,11 @@ import java.util.List;
 import java.util.Random;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ro.roda.OrgSufix;
 import ro.roda.OrgSufixDataOnDemand;
+import ro.roda.service.OrgSufixService;
 
 privileged aspect OrgSufixDataOnDemand_Roo_DataOnDemand {
     
@@ -21,6 +23,9 @@ privileged aspect OrgSufixDataOnDemand_Roo_DataOnDemand {
     private Random OrgSufixDataOnDemand.rnd = new SecureRandom();
     
     private List<OrgSufix> OrgSufixDataOnDemand.data;
+    
+    @Autowired
+    OrgSufixService OrgSufixDataOnDemand.orgSufixService;
     
     public OrgSufix OrgSufixDataOnDemand.getNewTransientOrgSufix(int index) {
         OrgSufix obj = new OrgSufix();
@@ -52,14 +57,14 @@ privileged aspect OrgSufixDataOnDemand_Roo_DataOnDemand {
         }
         OrgSufix obj = data.get(index);
         Integer id = obj.getId();
-        return OrgSufix.findOrgSufix(id);
+        return orgSufixService.findOrgSufix(id);
     }
     
     public OrgSufix OrgSufixDataOnDemand.getRandomOrgSufix() {
         init();
         OrgSufix obj = data.get(rnd.nextInt(data.size()));
         Integer id = obj.getId();
-        return OrgSufix.findOrgSufix(id);
+        return orgSufixService.findOrgSufix(id);
     }
     
     public boolean OrgSufixDataOnDemand.modifyOrgSufix(OrgSufix obj) {
@@ -69,7 +74,7 @@ privileged aspect OrgSufixDataOnDemand_Roo_DataOnDemand {
     public void OrgSufixDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = OrgSufix.findOrgSufixEntries(from, to);
+        data = orgSufixService.findOrgSufixEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'OrgSufix' illegally returned null");
         }
@@ -81,7 +86,7 @@ privileged aspect OrgSufixDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             OrgSufix obj = getNewTransientOrgSufix(i);
             try {
-                obj.persist();
+                orgSufixService.saveOrgSufix(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

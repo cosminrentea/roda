@@ -10,9 +10,11 @@ import java.util.List;
 import java.util.Random;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ro.roda.TitleType;
 import ro.roda.TitleTypeDataOnDemand;
+import ro.roda.service.TitleTypeService;
 
 privileged aspect TitleTypeDataOnDemand_Roo_DataOnDemand {
     
@@ -21,6 +23,9 @@ privileged aspect TitleTypeDataOnDemand_Roo_DataOnDemand {
     private Random TitleTypeDataOnDemand.rnd = new SecureRandom();
     
     private List<TitleType> TitleTypeDataOnDemand.data;
+    
+    @Autowired
+    TitleTypeService TitleTypeDataOnDemand.titleTypeService;
     
     public TitleType TitleTypeDataOnDemand.getNewTransientTitleType(int index) {
         TitleType obj = new TitleType();
@@ -46,14 +51,14 @@ privileged aspect TitleTypeDataOnDemand_Roo_DataOnDemand {
         }
         TitleType obj = data.get(index);
         Integer id = obj.getId();
-        return TitleType.findTitleType(id);
+        return titleTypeService.findTitleType(id);
     }
     
     public TitleType TitleTypeDataOnDemand.getRandomTitleType() {
         init();
         TitleType obj = data.get(rnd.nextInt(data.size()));
         Integer id = obj.getId();
-        return TitleType.findTitleType(id);
+        return titleTypeService.findTitleType(id);
     }
     
     public boolean TitleTypeDataOnDemand.modifyTitleType(TitleType obj) {
@@ -63,7 +68,7 @@ privileged aspect TitleTypeDataOnDemand_Roo_DataOnDemand {
     public void TitleTypeDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = TitleType.findTitleTypeEntries(from, to);
+        data = titleTypeService.findTitleTypeEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'TitleType' illegally returned null");
         }
@@ -75,7 +80,7 @@ privileged aspect TitleTypeDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             TitleType obj = getNewTransientTitleType(i);
             try {
-                obj.persist();
+                titleTypeService.saveTitleType(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

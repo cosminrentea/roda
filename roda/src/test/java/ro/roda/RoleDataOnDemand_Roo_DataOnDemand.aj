@@ -10,9 +10,11 @@ import java.util.List;
 import java.util.Random;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ro.roda.Role;
 import ro.roda.RoleDataOnDemand;
+import ro.roda.service.RoleService;
 
 privileged aspect RoleDataOnDemand_Roo_DataOnDemand {
     
@@ -21,6 +23,9 @@ privileged aspect RoleDataOnDemand_Roo_DataOnDemand {
     private Random RoleDataOnDemand.rnd = new SecureRandom();
     
     private List<Role> RoleDataOnDemand.data;
+    
+    @Autowired
+    RoleService RoleDataOnDemand.roleService;
     
     public Role RoleDataOnDemand.getNewTransientRole(int index) {
         Role obj = new Role();
@@ -52,14 +57,14 @@ privileged aspect RoleDataOnDemand_Roo_DataOnDemand {
         }
         Role obj = data.get(index);
         Integer id = obj.getId();
-        return Role.findRole(id);
+        return roleService.findRole(id);
     }
     
     public Role RoleDataOnDemand.getRandomRole() {
         init();
         Role obj = data.get(rnd.nextInt(data.size()));
         Integer id = obj.getId();
-        return Role.findRole(id);
+        return roleService.findRole(id);
     }
     
     public boolean RoleDataOnDemand.modifyRole(Role obj) {
@@ -69,7 +74,7 @@ privileged aspect RoleDataOnDemand_Roo_DataOnDemand {
     public void RoleDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = Role.findRoleEntries(from, to);
+        data = roleService.findRoleEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'Role' illegally returned null");
         }
@@ -81,7 +86,7 @@ privileged aspect RoleDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             Role obj = getNewTransientRole(i);
             try {
-                obj.persist();
+                roleService.saveRole(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

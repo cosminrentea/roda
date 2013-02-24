@@ -11,9 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.CmsLayoutGroup;
 import ro.roda.CmsLayoutGroupDataOnDemand;
 import ro.roda.CmsLayoutGroupIntegrationTest;
+import ro.roda.service.CmsLayoutGroupService;
 
 privileged aspect CmsLayoutGroupIntegrationTest_Roo_IntegrationTest {
     
@@ -24,12 +24,15 @@ privileged aspect CmsLayoutGroupIntegrationTest_Roo_IntegrationTest {
     declare @type: CmsLayoutGroupIntegrationTest: @Transactional;
     
     @Autowired
-    private CmsLayoutGroupDataOnDemand CmsLayoutGroupIntegrationTest.dod;
+    CmsLayoutGroupDataOnDemand CmsLayoutGroupIntegrationTest.dod;
+    
+    @Autowired
+    CmsLayoutGroupService CmsLayoutGroupIntegrationTest.cmsLayoutGroupService;
     
     @Test
-    public void CmsLayoutGroupIntegrationTest.testCountCmsLayoutGroups() {
+    public void CmsLayoutGroupIntegrationTest.testCountAllCmsLayoutGroups() {
         Assert.assertNotNull("Data on demand for 'CmsLayoutGroup' failed to initialize correctly", dod.getRandomCmsLayoutGroup());
-        long count = CmsLayoutGroup.countCmsLayoutGroups();
+        long count = cmsLayoutGroupService.countAllCmsLayoutGroups();
         Assert.assertTrue("Counter for 'CmsLayoutGroup' incorrectly reported there were no entries", count > 0);
     }
     
@@ -39,7 +42,7 @@ privileged aspect CmsLayoutGroupIntegrationTest_Roo_IntegrationTest {
         Assert.assertNotNull("Data on demand for 'CmsLayoutGroup' failed to initialize correctly", obj);
         Integer id = obj.getId();
         Assert.assertNotNull("Data on demand for 'CmsLayoutGroup' failed to provide an identifier", id);
-        obj = CmsLayoutGroup.findCmsLayoutGroup(id);
+        obj = cmsLayoutGroupService.findCmsLayoutGroup(id);
         Assert.assertNotNull("Find method for 'CmsLayoutGroup' illegally returned null for id '" + id + "'", obj);
         Assert.assertEquals("Find method for 'CmsLayoutGroup' returned the incorrect identifier", id, obj.getId());
     }
@@ -47,9 +50,9 @@ privileged aspect CmsLayoutGroupIntegrationTest_Roo_IntegrationTest {
     @Test
     public void CmsLayoutGroupIntegrationTest.testFindAllCmsLayoutGroups() {
         Assert.assertNotNull("Data on demand for 'CmsLayoutGroup' failed to initialize correctly", dod.getRandomCmsLayoutGroup());
-        long count = CmsLayoutGroup.countCmsLayoutGroups();
+        long count = cmsLayoutGroupService.countAllCmsLayoutGroups();
         Assert.assertTrue("Too expensive to perform a find all test for 'CmsLayoutGroup', as there are " + count + " entries; set the findAllMaximum to exceed this value or set findAll=false on the integration test annotation to disable the test", count < 250);
-        List<CmsLayoutGroup> result = CmsLayoutGroup.findAllCmsLayoutGroups();
+        List<CmsLayoutGroup> result = cmsLayoutGroupService.findAllCmsLayoutGroups();
         Assert.assertNotNull("Find all method for 'CmsLayoutGroup' illegally returned null", result);
         Assert.assertTrue("Find all method for 'CmsLayoutGroup' failed to return any data", result.size() > 0);
     }
@@ -57,36 +60,36 @@ privileged aspect CmsLayoutGroupIntegrationTest_Roo_IntegrationTest {
     @Test
     public void CmsLayoutGroupIntegrationTest.testFindCmsLayoutGroupEntries() {
         Assert.assertNotNull("Data on demand for 'CmsLayoutGroup' failed to initialize correctly", dod.getRandomCmsLayoutGroup());
-        long count = CmsLayoutGroup.countCmsLayoutGroups();
+        long count = cmsLayoutGroupService.countAllCmsLayoutGroups();
         if (count > 20) count = 20;
         int firstResult = 0;
         int maxResults = (int) count;
-        List<CmsLayoutGroup> result = CmsLayoutGroup.findCmsLayoutGroupEntries(firstResult, maxResults);
+        List<CmsLayoutGroup> result = cmsLayoutGroupService.findCmsLayoutGroupEntries(firstResult, maxResults);
         Assert.assertNotNull("Find entries method for 'CmsLayoutGroup' illegally returned null", result);
         Assert.assertEquals("Find entries method for 'CmsLayoutGroup' returned an incorrect number of entries", count, result.size());
     }
     
     @Test
-    public void CmsLayoutGroupIntegrationTest.testPersist() {
+    public void CmsLayoutGroupIntegrationTest.testSaveCmsLayoutGroup() {
         Assert.assertNotNull("Data on demand for 'CmsLayoutGroup' failed to initialize correctly", dod.getRandomCmsLayoutGroup());
         CmsLayoutGroup obj = dod.getNewTransientCmsLayoutGroup(Integer.MAX_VALUE);
         Assert.assertNotNull("Data on demand for 'CmsLayoutGroup' failed to provide a new transient entity", obj);
         Assert.assertNull("Expected 'CmsLayoutGroup' identifier to be null", obj.getId());
-        obj.persist();
+        cmsLayoutGroupService.saveCmsLayoutGroup(obj);
         obj.flush();
         Assert.assertNotNull("Expected 'CmsLayoutGroup' identifier to no longer be null", obj.getId());
     }
     
     @Test
-    public void CmsLayoutGroupIntegrationTest.testRemove() {
+    public void CmsLayoutGroupIntegrationTest.testDeleteCmsLayoutGroup() {
         CmsLayoutGroup obj = dod.getRandomCmsLayoutGroup();
         Assert.assertNotNull("Data on demand for 'CmsLayoutGroup' failed to initialize correctly", obj);
         Integer id = obj.getId();
         Assert.assertNotNull("Data on demand for 'CmsLayoutGroup' failed to provide an identifier", id);
-        obj = CmsLayoutGroup.findCmsLayoutGroup(id);
-        obj.remove();
+        obj = cmsLayoutGroupService.findCmsLayoutGroup(id);
+        cmsLayoutGroupService.deleteCmsLayoutGroup(obj);
         obj.flush();
-        Assert.assertNull("Failed to remove 'CmsLayoutGroup' with identifier '" + id + "'", CmsLayoutGroup.findCmsLayoutGroup(id));
+        Assert.assertNull("Failed to remove 'CmsLayoutGroup' with identifier '" + id + "'", cmsLayoutGroupService.findCmsLayoutGroup(id));
     }
     
 }

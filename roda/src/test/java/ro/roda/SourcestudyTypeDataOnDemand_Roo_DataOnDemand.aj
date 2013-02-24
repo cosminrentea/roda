@@ -10,9 +10,11 @@ import java.util.List;
 import java.util.Random;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ro.roda.SourcestudyType;
 import ro.roda.SourcestudyTypeDataOnDemand;
+import ro.roda.service.SourcestudyTypeService;
 
 privileged aspect SourcestudyTypeDataOnDemand_Roo_DataOnDemand {
     
@@ -21,6 +23,9 @@ privileged aspect SourcestudyTypeDataOnDemand_Roo_DataOnDemand {
     private Random SourcestudyTypeDataOnDemand.rnd = new SecureRandom();
     
     private List<SourcestudyType> SourcestudyTypeDataOnDemand.data;
+    
+    @Autowired
+    SourcestudyTypeService SourcestudyTypeDataOnDemand.sourcestudyTypeService;
     
     public SourcestudyType SourcestudyTypeDataOnDemand.getNewTransientSourcestudyType(int index) {
         SourcestudyType obj = new SourcestudyType();
@@ -52,14 +57,14 @@ privileged aspect SourcestudyTypeDataOnDemand_Roo_DataOnDemand {
         }
         SourcestudyType obj = data.get(index);
         Integer id = obj.getId();
-        return SourcestudyType.findSourcestudyType(id);
+        return sourcestudyTypeService.findSourcestudyType(id);
     }
     
     public SourcestudyType SourcestudyTypeDataOnDemand.getRandomSourcestudyType() {
         init();
         SourcestudyType obj = data.get(rnd.nextInt(data.size()));
         Integer id = obj.getId();
-        return SourcestudyType.findSourcestudyType(id);
+        return sourcestudyTypeService.findSourcestudyType(id);
     }
     
     public boolean SourcestudyTypeDataOnDemand.modifySourcestudyType(SourcestudyType obj) {
@@ -69,7 +74,7 @@ privileged aspect SourcestudyTypeDataOnDemand_Roo_DataOnDemand {
     public void SourcestudyTypeDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = SourcestudyType.findSourcestudyTypeEntries(from, to);
+        data = sourcestudyTypeService.findSourcestudyTypeEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'SourcestudyType' illegally returned null");
         }
@@ -81,7 +86,7 @@ privileged aspect SourcestudyTypeDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             SourcestudyType obj = getNewTransientSourcestudyType(i);
             try {
-                obj.persist();
+                sourcestudyTypeService.saveSourcestudyType(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

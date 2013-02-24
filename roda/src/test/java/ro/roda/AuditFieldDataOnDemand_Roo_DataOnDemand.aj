@@ -12,10 +12,10 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import ro.roda.AuditDataOnDemand;
 import ro.roda.AuditField;
 import ro.roda.AuditFieldDataOnDemand;
 import ro.roda.AuditFieldPK;
+import ro.roda.service.AuditFieldService;
 
 privileged aspect AuditFieldDataOnDemand_Roo_DataOnDemand {
     
@@ -26,38 +26,19 @@ privileged aspect AuditFieldDataOnDemand_Roo_DataOnDemand {
     private List<AuditField> AuditFieldDataOnDemand.data;
     
     @Autowired
-    private AuditDataOnDemand AuditFieldDataOnDemand.auditDataOnDemand;
+    AuditFieldService AuditFieldDataOnDemand.auditFieldService;
     
     public AuditField AuditFieldDataOnDemand.getNewTransientAuditField(int index) {
         AuditField obj = new AuditField();
         setEmbeddedIdClass(obj, index);
-        setColumnName(obj, index);
-        setNewValue(obj, index);
-        setOldValue(obj, index);
         return obj;
     }
     
     public void AuditFieldDataOnDemand.setEmbeddedIdClass(AuditField obj, int index) {
-        Integer auditId = new Integer(index);
-        Integer id = new Integer(index);
+        Long id = new Integer(index).longValue();
         
-        AuditFieldPK embeddedIdClass = new AuditFieldPK(auditId, id);
+        AuditFieldPK embeddedIdClass = new AuditFieldPK(id);
         obj.setId(embeddedIdClass);
-    }
-    
-    public void AuditFieldDataOnDemand.setColumnName(AuditField obj, int index) {
-        String columnName = "columnName_" + index;
-        obj.setColumnName(columnName);
-    }
-    
-    public void AuditFieldDataOnDemand.setNewValue(AuditField obj, int index) {
-        String newValue = "newValue_" + index;
-        obj.setNewValue(newValue);
-    }
-    
-    public void AuditFieldDataOnDemand.setOldValue(AuditField obj, int index) {
-        String oldValue = "oldValue_" + index;
-        obj.setOldValue(oldValue);
     }
     
     public AuditField AuditFieldDataOnDemand.getSpecificAuditField(int index) {
@@ -70,14 +51,14 @@ privileged aspect AuditFieldDataOnDemand_Roo_DataOnDemand {
         }
         AuditField obj = data.get(index);
         AuditFieldPK id = obj.getId();
-        return AuditField.findAuditField(id);
+        return auditFieldService.findAuditField(id);
     }
     
     public AuditField AuditFieldDataOnDemand.getRandomAuditField() {
         init();
         AuditField obj = data.get(rnd.nextInt(data.size()));
         AuditFieldPK id = obj.getId();
-        return AuditField.findAuditField(id);
+        return auditFieldService.findAuditField(id);
     }
     
     public boolean AuditFieldDataOnDemand.modifyAuditField(AuditField obj) {
@@ -87,7 +68,7 @@ privileged aspect AuditFieldDataOnDemand_Roo_DataOnDemand {
     public void AuditFieldDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = AuditField.findAuditFieldEntries(from, to);
+        data = auditFieldService.findAuditFieldEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'AuditField' illegally returned null");
         }
@@ -99,7 +80,7 @@ privileged aspect AuditFieldDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             AuditField obj = getNewTransientAuditField(i);
             try {
-                obj.persist();
+                auditFieldService.saveAuditField(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

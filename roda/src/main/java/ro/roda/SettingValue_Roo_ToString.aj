@@ -10,7 +10,7 @@ import ro.roda.SettingValue;
 privileged aspect SettingValue_Roo_ToString {
     
     public String SettingValue.toString() {
-        return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+        return new ReflectionToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE).setExcludeFieldNames("setting").toString();
     }
     
 }

@@ -12,9 +12,11 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import ro.roda.Setting;
 import ro.roda.SettingDataOnDemand;
 import ro.roda.SettingValue;
 import ro.roda.SettingValueDataOnDemand;
+import ro.roda.service.SettingValueService;
 
 privileged aspect SettingValueDataOnDemand_Roo_DataOnDemand {
     
@@ -25,12 +27,21 @@ privileged aspect SettingValueDataOnDemand_Roo_DataOnDemand {
     private List<SettingValue> SettingValueDataOnDemand.data;
     
     @Autowired
-    private SettingDataOnDemand SettingValueDataOnDemand.settingDataOnDemand;
+    SettingDataOnDemand SettingValueDataOnDemand.settingDataOnDemand;
+    
+    @Autowired
+    SettingValueService SettingValueDataOnDemand.settingValueService;
     
     public SettingValue SettingValueDataOnDemand.getNewTransientSettingValue(int index) {
         SettingValue obj = new SettingValue();
+        setSetting(obj, index);
         setValue(obj, index);
         return obj;
+    }
+    
+    public void SettingValueDataOnDemand.setSetting(SettingValue obj, int index) {
+        Setting setting = settingDataOnDemand.getSpecificSetting(index);
+        obj.setSetting(setting);
     }
     
     public void SettingValueDataOnDemand.setValue(SettingValue obj, int index) {
@@ -48,14 +59,14 @@ privileged aspect SettingValueDataOnDemand_Roo_DataOnDemand {
         }
         SettingValue obj = data.get(index);
         Integer id = obj.getSettingId();
-        return SettingValue.findSettingValue(id);
+        return settingValueService.findSettingValue(id);
     }
     
     public SettingValue SettingValueDataOnDemand.getRandomSettingValue() {
         init();
         SettingValue obj = data.get(rnd.nextInt(data.size()));
         Integer id = obj.getSettingId();
-        return SettingValue.findSettingValue(id);
+        return settingValueService.findSettingValue(id);
     }
     
     public boolean SettingValueDataOnDemand.modifySettingValue(SettingValue obj) {
@@ -65,7 +76,7 @@ privileged aspect SettingValueDataOnDemand_Roo_DataOnDemand {
     public void SettingValueDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = SettingValue.findSettingValueEntries(from, to);
+        data = settingValueService.findSettingValueEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'SettingValue' illegally returned null");
         }
@@ -77,7 +88,7 @@ privileged aspect SettingValueDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             SettingValue obj = getNewTransientSettingValue(i);
             try {
-                obj.persist();
+                settingValueService.saveSettingValue(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

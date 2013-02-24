@@ -10,9 +10,11 @@ import java.util.List;
 import java.util.Random;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ro.roda.SettingGroup;
 import ro.roda.SettingGroupDataOnDemand;
+import ro.roda.service.SettingGroupService;
 
 privileged aspect SettingGroupDataOnDemand_Roo_DataOnDemand {
     
@@ -21,6 +23,9 @@ privileged aspect SettingGroupDataOnDemand_Roo_DataOnDemand {
     private Random SettingGroupDataOnDemand.rnd = new SecureRandom();
     
     private List<SettingGroup> SettingGroupDataOnDemand.data;
+    
+    @Autowired
+    SettingGroupService SettingGroupDataOnDemand.settingGroupService;
     
     public SettingGroup SettingGroupDataOnDemand.getNewTransientSettingGroup(int index) {
         SettingGroup obj = new SettingGroup();
@@ -58,14 +63,14 @@ privileged aspect SettingGroupDataOnDemand_Roo_DataOnDemand {
         }
         SettingGroup obj = data.get(index);
         Integer id = obj.getId();
-        return SettingGroup.findSettingGroup(id);
+        return settingGroupService.findSettingGroup(id);
     }
     
     public SettingGroup SettingGroupDataOnDemand.getRandomSettingGroup() {
         init();
         SettingGroup obj = data.get(rnd.nextInt(data.size()));
         Integer id = obj.getId();
-        return SettingGroup.findSettingGroup(id);
+        return settingGroupService.findSettingGroup(id);
     }
     
     public boolean SettingGroupDataOnDemand.modifySettingGroup(SettingGroup obj) {
@@ -75,7 +80,7 @@ privileged aspect SettingGroupDataOnDemand_Roo_DataOnDemand {
     public void SettingGroupDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = SettingGroup.findSettingGroupEntries(from, to);
+        data = settingGroupService.findSettingGroupEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'SettingGroup' illegally returned null");
         }
@@ -87,7 +92,7 @@ privileged aspect SettingGroupDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             SettingGroup obj = getNewTransientSettingGroup(i);
             try {
-                obj.persist();
+                settingGroupService.saveSettingGroup(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

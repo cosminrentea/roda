@@ -6,6 +6,7 @@ package ro.roda.web;
 import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,11 +15,18 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.Instance;
 import ro.roda.SamplingProcedure;
+import ro.roda.service.InstanceService;
+import ro.roda.service.SamplingProcedureService;
 import ro.roda.web.SamplingProcedureController;
 
 privileged aspect SamplingProcedureController_Roo_Controller {
+    
+    @Autowired
+    SamplingProcedureService SamplingProcedureController.samplingProcedureService;
+    
+    @Autowired
+    InstanceService SamplingProcedureController.instanceService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String SamplingProcedureController.create(@Valid SamplingProcedure samplingProcedure, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -27,7 +35,7 @@ privileged aspect SamplingProcedureController_Roo_Controller {
             return "samplingprocedures/create";
         }
         uiModel.asMap().clear();
-        samplingProcedure.persist();
+        samplingProcedureService.saveSamplingProcedure(samplingProcedure);
         return "redirect:/samplingprocedures/" + encodeUrlPathSegment(samplingProcedure.getId().toString(), httpServletRequest);
     }
     
@@ -39,7 +47,7 @@ privileged aspect SamplingProcedureController_Roo_Controller {
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String SamplingProcedureController.show(@PathVariable("id") Integer id, Model uiModel) {
-        uiModel.addAttribute("samplingprocedure", SamplingProcedure.findSamplingProcedure(id));
+        uiModel.addAttribute("samplingprocedure", samplingProcedureService.findSamplingProcedure(id));
         uiModel.addAttribute("itemId", id);
         return "samplingprocedures/show";
     }
@@ -49,11 +57,11 @@ privileged aspect SamplingProcedureController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("samplingprocedures", SamplingProcedure.findSamplingProcedureEntries(firstResult, sizeNo));
-            float nrOfPages = (float) SamplingProcedure.countSamplingProcedures() / sizeNo;
+            uiModel.addAttribute("samplingprocedures", samplingProcedureService.findSamplingProcedureEntries(firstResult, sizeNo));
+            float nrOfPages = (float) samplingProcedureService.countAllSamplingProcedures() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("samplingprocedures", SamplingProcedure.findAllSamplingProcedures());
+            uiModel.addAttribute("samplingprocedures", samplingProcedureService.findAllSamplingProcedures());
         }
         return "samplingprocedures/list";
     }
@@ -65,20 +73,20 @@ privileged aspect SamplingProcedureController_Roo_Controller {
             return "samplingprocedures/update";
         }
         uiModel.asMap().clear();
-        samplingProcedure.merge();
+        samplingProcedureService.updateSamplingProcedure(samplingProcedure);
         return "redirect:/samplingprocedures/" + encodeUrlPathSegment(samplingProcedure.getId().toString(), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String SamplingProcedureController.updateForm(@PathVariable("id") Integer id, Model uiModel) {
-        populateEditForm(uiModel, SamplingProcedure.findSamplingProcedure(id));
+        populateEditForm(uiModel, samplingProcedureService.findSamplingProcedure(id));
         return "samplingprocedures/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
     public String SamplingProcedureController.delete(@PathVariable("id") Integer id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        SamplingProcedure samplingProcedure = SamplingProcedure.findSamplingProcedure(id);
-        samplingProcedure.remove();
+        SamplingProcedure samplingProcedure = samplingProcedureService.findSamplingProcedure(id);
+        samplingProcedureService.deleteSamplingProcedure(samplingProcedure);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
@@ -87,7 +95,7 @@ privileged aspect SamplingProcedureController_Roo_Controller {
     
     void SamplingProcedureController.populateEditForm(Model uiModel, SamplingProcedure samplingProcedure) {
         uiModel.addAttribute("samplingProcedure", samplingProcedure);
-        uiModel.addAttribute("instances", Instance.findAllInstances());
+        uiModel.addAttribute("instances", instanceService.findAllInstances());
     }
     
     String SamplingProcedureController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

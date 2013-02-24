@@ -16,14 +16,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.Audit;
 import ro.roda.AuditRowId;
 import ro.roda.AuditRowIdPK;
+import ro.roda.service.AuditRowIdService;
 import ro.roda.web.AuditRowIdController;
 
 privileged aspect AuditRowIdController_Roo_Controller {
     
     private ConversionService AuditRowIdController.conversionService;
+    
+    @Autowired
+    AuditRowIdService AuditRowIdController.auditRowIdService;
     
     @Autowired
     public AuditRowIdController.new(ConversionService conversionService) {
@@ -38,7 +41,7 @@ privileged aspect AuditRowIdController_Roo_Controller {
             return "auditrowids/create";
         }
         uiModel.asMap().clear();
-        auditRowId.persist();
+        auditRowIdService.saveAuditRowId(auditRowId);
         return "redirect:/auditrowids/" + encodeUrlPathSegment(conversionService.convert(auditRowId.getId(), String.class), httpServletRequest);
     }
     
@@ -50,7 +53,7 @@ privileged aspect AuditRowIdController_Roo_Controller {
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String AuditRowIdController.show(@PathVariable("id") AuditRowIdPK id, Model uiModel) {
-        uiModel.addAttribute("auditrowid", AuditRowId.findAuditRowId(id));
+        uiModel.addAttribute("auditrowid", auditRowIdService.findAuditRowId(id));
         uiModel.addAttribute("itemId", conversionService.convert(id, String.class));
         return "auditrowids/show";
     }
@@ -60,11 +63,11 @@ privileged aspect AuditRowIdController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("auditrowids", AuditRowId.findAuditRowIdEntries(firstResult, sizeNo));
-            float nrOfPages = (float) AuditRowId.countAuditRowIds() / sizeNo;
+            uiModel.addAttribute("auditrowids", auditRowIdService.findAuditRowIdEntries(firstResult, sizeNo));
+            float nrOfPages = (float) auditRowIdService.countAllAuditRowIds() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("auditrowids", AuditRowId.findAllAuditRowIds());
+            uiModel.addAttribute("auditrowids", auditRowIdService.findAllAuditRowIds());
         }
         return "auditrowids/list";
     }
@@ -76,20 +79,20 @@ privileged aspect AuditRowIdController_Roo_Controller {
             return "auditrowids/update";
         }
         uiModel.asMap().clear();
-        auditRowId.merge();
+        auditRowIdService.updateAuditRowId(auditRowId);
         return "redirect:/auditrowids/" + encodeUrlPathSegment(conversionService.convert(auditRowId.getId(), String.class), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String AuditRowIdController.updateForm(@PathVariable("id") AuditRowIdPK id, Model uiModel) {
-        populateEditForm(uiModel, AuditRowId.findAuditRowId(id));
+        populateEditForm(uiModel, auditRowIdService.findAuditRowId(id));
         return "auditrowids/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
     public String AuditRowIdController.delete(@PathVariable("id") AuditRowIdPK id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        AuditRowId auditRowId = AuditRowId.findAuditRowId(id);
-        auditRowId.remove();
+        AuditRowId auditRowId = auditRowIdService.findAuditRowId(id);
+        auditRowIdService.deleteAuditRowId(auditRowId);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
@@ -98,7 +101,6 @@ privileged aspect AuditRowIdController_Roo_Controller {
     
     void AuditRowIdController.populateEditForm(Model uiModel, AuditRowId auditRowId) {
         uiModel.addAttribute("auditRowId", auditRowId);
-        uiModel.addAttribute("audits", Audit.findAllAudits());
     }
     
     String AuditRowIdController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

@@ -16,6 +16,7 @@ import ro.roda.Person;
 import ro.roda.PersonDataOnDemand;
 import ro.roda.PrefixDataOnDemand;
 import ro.roda.SuffixDataOnDemand;
+import ro.roda.service.PersonService;
 
 privileged aspect PersonDataOnDemand_Roo_DataOnDemand {
     
@@ -26,10 +27,13 @@ privileged aspect PersonDataOnDemand_Roo_DataOnDemand {
     private List<Person> PersonDataOnDemand.data;
     
     @Autowired
-    private PrefixDataOnDemand PersonDataOnDemand.prefixDataOnDemand;
+    PrefixDataOnDemand PersonDataOnDemand.prefixDataOnDemand;
     
     @Autowired
-    private SuffixDataOnDemand PersonDataOnDemand.suffixDataOnDemand;
+    SuffixDataOnDemand PersonDataOnDemand.suffixDataOnDemand;
+    
+    @Autowired
+    PersonService PersonDataOnDemand.personService;
     
     public Person PersonDataOnDemand.getNewTransientPerson(int index) {
         Person obj = new Person();
@@ -73,14 +77,14 @@ privileged aspect PersonDataOnDemand_Roo_DataOnDemand {
         }
         Person obj = data.get(index);
         Integer id = obj.getId();
-        return Person.findPerson(id);
+        return personService.findPerson(id);
     }
     
     public Person PersonDataOnDemand.getRandomPerson() {
         init();
         Person obj = data.get(rnd.nextInt(data.size()));
         Integer id = obj.getId();
-        return Person.findPerson(id);
+        return personService.findPerson(id);
     }
     
     public boolean PersonDataOnDemand.modifyPerson(Person obj) {
@@ -90,7 +94,7 @@ privileged aspect PersonDataOnDemand_Roo_DataOnDemand {
     public void PersonDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = Person.findPersonEntries(from, to);
+        data = personService.findPersonEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'Person' illegally returned null");
         }
@@ -102,7 +106,7 @@ privileged aspect PersonDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             Person obj = getNewTransientPerson(i);
             try {
-                obj.persist();
+                personService.savePerson(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

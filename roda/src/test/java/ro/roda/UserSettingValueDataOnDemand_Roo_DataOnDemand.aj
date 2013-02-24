@@ -12,11 +12,14 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import ro.roda.UserDataOnDemand;
+import ro.roda.Rodauser;
+import ro.roda.RodauserDataOnDemand;
+import ro.roda.UserSetting;
 import ro.roda.UserSettingDataOnDemand;
 import ro.roda.UserSettingValue;
 import ro.roda.UserSettingValueDataOnDemand;
 import ro.roda.UserSettingValuePK;
+import ro.roda.service.UserSettingValueService;
 
 privileged aspect UserSettingValueDataOnDemand_Roo_DataOnDemand {
     
@@ -27,14 +30,19 @@ privileged aspect UserSettingValueDataOnDemand_Roo_DataOnDemand {
     private List<UserSettingValue> UserSettingValueDataOnDemand.data;
     
     @Autowired
-    private UserDataOnDemand UserSettingValueDataOnDemand.userDataOnDemand;
+    RodauserDataOnDemand UserSettingValueDataOnDemand.rodauserDataOnDemand;
     
     @Autowired
-    private UserSettingDataOnDemand UserSettingValueDataOnDemand.userSettingDataOnDemand;
+    UserSettingDataOnDemand UserSettingValueDataOnDemand.userSettingDataOnDemand;
+    
+    @Autowired
+    UserSettingValueService UserSettingValueDataOnDemand.userSettingValueService;
     
     public UserSettingValue UserSettingValueDataOnDemand.getNewTransientUserSettingValue(int index) {
         UserSettingValue obj = new UserSettingValue();
         setEmbeddedIdClass(obj, index);
+        setUserId(obj, index);
+        setUserSettingId(obj, index);
         setValue(obj, index);
         return obj;
     }
@@ -45,6 +53,16 @@ privileged aspect UserSettingValueDataOnDemand_Roo_DataOnDemand {
         
         UserSettingValuePK embeddedIdClass = new UserSettingValuePK(userSettingId, userId);
         obj.setId(embeddedIdClass);
+    }
+    
+    public void UserSettingValueDataOnDemand.setUserId(UserSettingValue obj, int index) {
+        Rodauser userId = rodauserDataOnDemand.getRandomRodauser();
+        obj.setUserId(userId);
+    }
+    
+    public void UserSettingValueDataOnDemand.setUserSettingId(UserSettingValue obj, int index) {
+        UserSetting userSettingId = userSettingDataOnDemand.getRandomUserSetting();
+        obj.setUserSettingId(userSettingId);
     }
     
     public void UserSettingValueDataOnDemand.setValue(UserSettingValue obj, int index) {
@@ -62,14 +80,14 @@ privileged aspect UserSettingValueDataOnDemand_Roo_DataOnDemand {
         }
         UserSettingValue obj = data.get(index);
         UserSettingValuePK id = obj.getId();
-        return UserSettingValue.findUserSettingValue(id);
+        return userSettingValueService.findUserSettingValue(id);
     }
     
     public UserSettingValue UserSettingValueDataOnDemand.getRandomUserSettingValue() {
         init();
         UserSettingValue obj = data.get(rnd.nextInt(data.size()));
         UserSettingValuePK id = obj.getId();
-        return UserSettingValue.findUserSettingValue(id);
+        return userSettingValueService.findUserSettingValue(id);
     }
     
     public boolean UserSettingValueDataOnDemand.modifyUserSettingValue(UserSettingValue obj) {
@@ -79,7 +97,7 @@ privileged aspect UserSettingValueDataOnDemand_Roo_DataOnDemand {
     public void UserSettingValueDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = UserSettingValue.findUserSettingValueEntries(from, to);
+        data = userSettingValueService.findUserSettingValueEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'UserSettingValue' illegally returned null");
         }
@@ -91,7 +109,7 @@ privileged aspect UserSettingValueDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             UserSettingValue obj = getNewTransientUserSettingValue(i);
             try {
-                obj.persist();
+                userSettingValueService.saveUserSettingValue(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

@@ -3,7 +3,7 @@
 
 package ro.roda;
 
-import java.util.Date;
+import java.util.Calendar;
 import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -28,8 +28,8 @@ privileged aspect CatalogStudy_Roo_DbManaged {
     @Column(name = "added", columnDefinition = "timestamp")
     @NotNull
     @Temporal(TemporalType.TIMESTAMP)
-    @DateTimeFormat(style = "M-")
-    private Date CatalogStudy.added;
+    @DateTimeFormat(style = "MM")
+    private Calendar CatalogStudy.added;
     
     public Catalog CatalogStudy.getCatalogId() {
         return catalogId;
@@ -47,11 +47,11 @@ privileged aspect CatalogStudy_Roo_DbManaged {
         this.studyId = studyId;
     }
     
-    public Date CatalogStudy.getAdded() {
+    public Calendar CatalogStudy.getAdded() {
         return added;
     }
     
-    public void CatalogStudy.setAdded(Date added) {
+    public void CatalogStudy.setAdded(Calendar added) {
         this.added = added;
     }
     

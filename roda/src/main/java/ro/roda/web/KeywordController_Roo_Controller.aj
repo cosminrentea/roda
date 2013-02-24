@@ -6,6 +6,7 @@ package ro.roda.web;
 import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,12 +15,22 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.InstanceKeyword;
 import ro.roda.Keyword;
-import ro.roda.StudyKeyword;
+import ro.roda.service.InstanceKeywordService;
+import ro.roda.service.KeywordService;
+import ro.roda.service.StudyKeywordService;
 import ro.roda.web.KeywordController;
 
 privileged aspect KeywordController_Roo_Controller {
+    
+    @Autowired
+    KeywordService KeywordController.keywordService;
+    
+    @Autowired
+    InstanceKeywordService KeywordController.instanceKeywordService;
+    
+    @Autowired
+    StudyKeywordService KeywordController.studyKeywordService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String KeywordController.create(@Valid Keyword keyword, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -28,7 +39,7 @@ privileged aspect KeywordController_Roo_Controller {
             return "keywords/create";
         }
         uiModel.asMap().clear();
-        keyword.persist();
+        keywordService.saveKeyword(keyword);
         return "redirect:/keywords/" + encodeUrlPathSegment(keyword.getId().toString(), httpServletRequest);
     }
     
@@ -40,7 +51,7 @@ privileged aspect KeywordController_Roo_Controller {
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String KeywordController.show(@PathVariable("id") Integer id, Model uiModel) {
-        uiModel.addAttribute("keyword", Keyword.findKeyword(id));
+        uiModel.addAttribute("keyword", keywordService.findKeyword(id));
         uiModel.addAttribute("itemId", id);
         return "keywords/show";
     }
@@ -50,11 +61,11 @@ privileged aspect KeywordController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("keywords", Keyword.findKeywordEntries(firstResult, sizeNo));
-            float nrOfPages = (float) Keyword.countKeywords() / sizeNo;
+            uiModel.addAttribute("keywords", keywordService.findKeywordEntries(firstResult, sizeNo));
+            float nrOfPages = (float) keywordService.countAllKeywords() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("keywords", Keyword.findAllKeywords());
+            uiModel.addAttribute("keywords", keywordService.findAllKeywords());
         }
         return "keywords/list";
     }
@@ -66,20 +77,20 @@ privileged aspect KeywordController_Roo_Controller {
             return "keywords/update";
         }
         uiModel.asMap().clear();
-        keyword.merge();
+        keywordService.updateKeyword(keyword);
         return "redirect:/keywords/" + encodeUrlPathSegment(keyword.getId().toString(), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String KeywordController.updateForm(@PathVariable("id") Integer id, Model uiModel) {
-        populateEditForm(uiModel, Keyword.findKeyword(id));
+        populateEditForm(uiModel, keywordService.findKeyword(id));
         return "keywords/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
     public String KeywordController.delete(@PathVariable("id") Integer id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        Keyword keyword = Keyword.findKeyword(id);
-        keyword.remove();
+        Keyword keyword = keywordService.findKeyword(id);
+        keywordService.deleteKeyword(keyword);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
@@ -88,8 +99,8 @@ privileged aspect KeywordController_Roo_Controller {
     
     void KeywordController.populateEditForm(Model uiModel, Keyword keyword) {
         uiModel.addAttribute("keyword", keyword);
-        uiModel.addAttribute("instancekeywords", InstanceKeyword.findAllInstanceKeywords());
-        uiModel.addAttribute("studykeywords", StudyKeyword.findAllStudyKeywords());
+        uiModel.addAttribute("instancekeywords", instanceKeywordService.findAllInstanceKeywords());
+        uiModel.addAttribute("studykeywords", studyKeywordService.findAllStudyKeywords());
     }
     
     String KeywordController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

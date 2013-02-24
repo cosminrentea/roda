@@ -14,7 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ro.roda.SelectionVariable;
 import ro.roda.SelectionVariableDataOnDemand;
-import ro.roda.VariableDataOnDemand;
+import ro.roda.Variable;
+import ro.roda.service.SelectionVariableService;
 
 privileged aspect SelectionVariableDataOnDemand_Roo_DataOnDemand {
     
@@ -25,12 +26,13 @@ privileged aspect SelectionVariableDataOnDemand_Roo_DataOnDemand {
     private List<SelectionVariable> SelectionVariableDataOnDemand.data;
     
     @Autowired
-    private VariableDataOnDemand SelectionVariableDataOnDemand.variableDataOnDemand;
+    SelectionVariableService SelectionVariableDataOnDemand.selectionVariableService;
     
     public SelectionVariable SelectionVariableDataOnDemand.getNewTransientSelectionVariable(int index) {
         SelectionVariable obj = new SelectionVariable();
         setMaxCount(obj, index);
         setMinCount(obj, index);
+        setVariable(obj, index);
         return obj;
     }
     
@@ -44,6 +46,11 @@ privileged aspect SelectionVariableDataOnDemand_Roo_DataOnDemand {
         obj.setMinCount(minCount);
     }
     
+    public void SelectionVariableDataOnDemand.setVariable(SelectionVariable obj, int index) {
+        Variable variable = null;
+        obj.setVariable(variable);
+    }
+    
     public SelectionVariable SelectionVariableDataOnDemand.getSpecificSelectionVariable(int index) {
         init();
         if (index < 0) {
@@ -54,14 +61,14 @@ privileged aspect SelectionVariableDataOnDemand_Roo_DataOnDemand {
         }
         SelectionVariable obj = data.get(index);
         Long id = obj.getVariableId();
-        return SelectionVariable.findSelectionVariable(id);
+        return selectionVariableService.findSelectionVariable(id);
     }
     
     public SelectionVariable SelectionVariableDataOnDemand.getRandomSelectionVariable() {
         init();
         SelectionVariable obj = data.get(rnd.nextInt(data.size()));
         Long id = obj.getVariableId();
-        return SelectionVariable.findSelectionVariable(id);
+        return selectionVariableService.findSelectionVariable(id);
     }
     
     public boolean SelectionVariableDataOnDemand.modifySelectionVariable(SelectionVariable obj) {
@@ -71,7 +78,7 @@ privileged aspect SelectionVariableDataOnDemand_Roo_DataOnDemand {
     public void SelectionVariableDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = SelectionVariable.findSelectionVariableEntries(from, to);
+        data = selectionVariableService.findSelectionVariableEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'SelectionVariable' illegally returned null");
         }
@@ -83,7 +90,7 @@ privileged aspect SelectionVariableDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             SelectionVariable obj = getNewTransientSelectionVariable(i);
             try {
-                obj.persist();
+                selectionVariableService.saveSelectionVariable(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

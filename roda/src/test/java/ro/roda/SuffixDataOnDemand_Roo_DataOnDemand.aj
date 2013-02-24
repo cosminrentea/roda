@@ -10,9 +10,11 @@ import java.util.List;
 import java.util.Random;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ro.roda.Suffix;
 import ro.roda.SuffixDataOnDemand;
+import ro.roda.service.SuffixService;
 
 privileged aspect SuffixDataOnDemand_Roo_DataOnDemand {
     
@@ -21,6 +23,9 @@ privileged aspect SuffixDataOnDemand_Roo_DataOnDemand {
     private Random SuffixDataOnDemand.rnd = new SecureRandom();
     
     private List<Suffix> SuffixDataOnDemand.data;
+    
+    @Autowired
+    SuffixService SuffixDataOnDemand.suffixService;
     
     public Suffix SuffixDataOnDemand.getNewTransientSuffix(int index) {
         Suffix obj = new Suffix();
@@ -46,14 +51,14 @@ privileged aspect SuffixDataOnDemand_Roo_DataOnDemand {
         }
         Suffix obj = data.get(index);
         Integer id = obj.getId();
-        return Suffix.findSuffix(id);
+        return suffixService.findSuffix(id);
     }
     
     public Suffix SuffixDataOnDemand.getRandomSuffix() {
         init();
         Suffix obj = data.get(rnd.nextInt(data.size()));
         Integer id = obj.getId();
-        return Suffix.findSuffix(id);
+        return suffixService.findSuffix(id);
     }
     
     public boolean SuffixDataOnDemand.modifySuffix(Suffix obj) {
@@ -63,7 +68,7 @@ privileged aspect SuffixDataOnDemand_Roo_DataOnDemand {
     public void SuffixDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = Suffix.findSuffixEntries(from, to);
+        data = suffixService.findSuffixEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'Suffix' illegally returned null");
         }
@@ -75,7 +80,7 @@ privileged aspect SuffixDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             Suffix obj = getNewTransientSuffix(i);
             try {
-                obj.persist();
+                suffixService.saveSuffix(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

@@ -11,9 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.Sourcetype;
 import ro.roda.SourcetypeDataOnDemand;
 import ro.roda.SourcetypeIntegrationTest;
+import ro.roda.service.SourcetypeService;
 
 privileged aspect SourcetypeIntegrationTest_Roo_IntegrationTest {
     
@@ -24,12 +24,15 @@ privileged aspect SourcetypeIntegrationTest_Roo_IntegrationTest {
     declare @type: SourcetypeIntegrationTest: @Transactional;
     
     @Autowired
-    private SourcetypeDataOnDemand SourcetypeIntegrationTest.dod;
+    SourcetypeDataOnDemand SourcetypeIntegrationTest.dod;
+    
+    @Autowired
+    SourcetypeService SourcetypeIntegrationTest.sourcetypeService;
     
     @Test
-    public void SourcetypeIntegrationTest.testCountSourcetypes() {
+    public void SourcetypeIntegrationTest.testCountAllSourcetypes() {
         Assert.assertNotNull("Data on demand for 'Sourcetype' failed to initialize correctly", dod.getRandomSourcetype());
-        long count = Sourcetype.countSourcetypes();
+        long count = sourcetypeService.countAllSourcetypes();
         Assert.assertTrue("Counter for 'Sourcetype' incorrectly reported there were no entries", count > 0);
     }
     
@@ -39,7 +42,7 @@ privileged aspect SourcetypeIntegrationTest_Roo_IntegrationTest {
         Assert.assertNotNull("Data on demand for 'Sourcetype' failed to initialize correctly", obj);
         Integer id = obj.getId();
         Assert.assertNotNull("Data on demand for 'Sourcetype' failed to provide an identifier", id);
-        obj = Sourcetype.findSourcetype(id);
+        obj = sourcetypeService.findSourcetype(id);
         Assert.assertNotNull("Find method for 'Sourcetype' illegally returned null for id '" + id + "'", obj);
         Assert.assertEquals("Find method for 'Sourcetype' returned the incorrect identifier", id, obj.getId());
     }
@@ -47,9 +50,9 @@ privileged aspect SourcetypeIntegrationTest_Roo_IntegrationTest {
     @Test
     public void SourcetypeIntegrationTest.testFindAllSourcetypes() {
         Assert.assertNotNull("Data on demand for 'Sourcetype' failed to initialize correctly", dod.getRandomSourcetype());
-        long count = Sourcetype.countSourcetypes();
+        long count = sourcetypeService.countAllSourcetypes();
         Assert.assertTrue("Too expensive to perform a find all test for 'Sourcetype', as there are " + count + " entries; set the findAllMaximum to exceed this value or set findAll=false on the integration test annotation to disable the test", count < 250);
-        List<Sourcetype> result = Sourcetype.findAllSourcetypes();
+        List<Sourcetype> result = sourcetypeService.findAllSourcetypes();
         Assert.assertNotNull("Find all method for 'Sourcetype' illegally returned null", result);
         Assert.assertTrue("Find all method for 'Sourcetype' failed to return any data", result.size() > 0);
     }
@@ -57,36 +60,36 @@ privileged aspect SourcetypeIntegrationTest_Roo_IntegrationTest {
     @Test
     public void SourcetypeIntegrationTest.testFindSourcetypeEntries() {
         Assert.assertNotNull("Data on demand for 'Sourcetype' failed to initialize correctly", dod.getRandomSourcetype());
-        long count = Sourcetype.countSourcetypes();
+        long count = sourcetypeService.countAllSourcetypes();
         if (count > 20) count = 20;
         int firstResult = 0;
         int maxResults = (int) count;
-        List<Sourcetype> result = Sourcetype.findSourcetypeEntries(firstResult, maxResults);
+        List<Sourcetype> result = sourcetypeService.findSourcetypeEntries(firstResult, maxResults);
         Assert.assertNotNull("Find entries method for 'Sourcetype' illegally returned null", result);
         Assert.assertEquals("Find entries method for 'Sourcetype' returned an incorrect number of entries", count, result.size());
     }
     
     @Test
-    public void SourcetypeIntegrationTest.testPersist() {
+    public void SourcetypeIntegrationTest.testSaveSourcetype() {
         Assert.assertNotNull("Data on demand for 'Sourcetype' failed to initialize correctly", dod.getRandomSourcetype());
         Sourcetype obj = dod.getNewTransientSourcetype(Integer.MAX_VALUE);
         Assert.assertNotNull("Data on demand for 'Sourcetype' failed to provide a new transient entity", obj);
         Assert.assertNull("Expected 'Sourcetype' identifier to be null", obj.getId());
-        obj.persist();
+        sourcetypeService.saveSourcetype(obj);
         obj.flush();
         Assert.assertNotNull("Expected 'Sourcetype' identifier to no longer be null", obj.getId());
     }
     
     @Test
-    public void SourcetypeIntegrationTest.testRemove() {
+    public void SourcetypeIntegrationTest.testDeleteSourcetype() {
         Sourcetype obj = dod.getRandomSourcetype();
         Assert.assertNotNull("Data on demand for 'Sourcetype' failed to initialize correctly", obj);
         Integer id = obj.getId();
         Assert.assertNotNull("Data on demand for 'Sourcetype' failed to provide an identifier", id);
-        obj = Sourcetype.findSourcetype(id);
-        obj.remove();
+        obj = sourcetypeService.findSourcetype(id);
+        sourcetypeService.deleteSourcetype(obj);
         obj.flush();
-        Assert.assertNull("Failed to remove 'Sourcetype' with identifier '" + id + "'", Sourcetype.findSourcetype(id));
+        Assert.assertNull("Failed to remove 'Sourcetype' with identifier '" + id + "'", sourcetypeService.findSourcetype(id));
     }
     
 }

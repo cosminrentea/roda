@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 import ro.roda.CmsLayout;
 import ro.roda.CmsLayoutDataOnDemand;
 import ro.roda.CmsLayoutGroupDataOnDemand;
+import ro.roda.service.CmsLayoutService;
 
 privileged aspect CmsLayoutDataOnDemand_Roo_DataOnDemand {
     
@@ -25,7 +26,10 @@ privileged aspect CmsLayoutDataOnDemand_Roo_DataOnDemand {
     private List<CmsLayout> CmsLayoutDataOnDemand.data;
     
     @Autowired
-    private CmsLayoutGroupDataOnDemand CmsLayoutDataOnDemand.cmsLayoutGroupDataOnDemand;
+    CmsLayoutGroupDataOnDemand CmsLayoutDataOnDemand.cmsLayoutGroupDataOnDemand;
+    
+    @Autowired
+    CmsLayoutService CmsLayoutDataOnDemand.cmsLayoutService;
     
     public CmsLayout CmsLayoutDataOnDemand.getNewTransientCmsLayout(int index) {
         CmsLayout obj = new CmsLayout();
@@ -57,14 +61,14 @@ privileged aspect CmsLayoutDataOnDemand_Roo_DataOnDemand {
         }
         CmsLayout obj = data.get(index);
         Integer id = obj.getId();
-        return CmsLayout.findCmsLayout(id);
+        return cmsLayoutService.findCmsLayout(id);
     }
     
     public CmsLayout CmsLayoutDataOnDemand.getRandomCmsLayout() {
         init();
         CmsLayout obj = data.get(rnd.nextInt(data.size()));
         Integer id = obj.getId();
-        return CmsLayout.findCmsLayout(id);
+        return cmsLayoutService.findCmsLayout(id);
     }
     
     public boolean CmsLayoutDataOnDemand.modifyCmsLayout(CmsLayout obj) {
@@ -74,7 +78,7 @@ privileged aspect CmsLayoutDataOnDemand_Roo_DataOnDemand {
     public void CmsLayoutDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = CmsLayout.findCmsLayoutEntries(from, to);
+        data = cmsLayoutService.findCmsLayoutEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'CmsLayout' illegally returned null");
         }
@@ -86,7 +90,7 @@ privileged aspect CmsLayoutDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             CmsLayout obj = getNewTransientCmsLayout(i);
             try {
-                obj.persist();
+                cmsLayoutService.saveCmsLayout(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

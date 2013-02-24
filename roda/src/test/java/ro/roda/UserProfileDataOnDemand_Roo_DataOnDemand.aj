@@ -12,9 +12,10 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import ro.roda.UserDataOnDemand;
+import ro.roda.Rodauser;
 import ro.roda.UserProfile;
 import ro.roda.UserProfileDataOnDemand;
+import ro.roda.service.UserProfileService;
 
 privileged aspect UserProfileDataOnDemand_Roo_DataOnDemand {
     
@@ -25,13 +26,14 @@ privileged aspect UserProfileDataOnDemand_Roo_DataOnDemand {
     private List<UserProfile> UserProfileDataOnDemand.data;
     
     @Autowired
-    private UserDataOnDemand UserProfileDataOnDemand.userDataOnDemand;
+    UserProfileService UserProfileDataOnDemand.userProfileService;
     
     public UserProfile UserProfileDataOnDemand.getNewTransientUserProfile(int index) {
         UserProfile obj = new UserProfile();
         setEmail(obj, index);
         setFName(obj, index);
         setLName(obj, index);
+        setRodauser(obj, index);
         return obj;
     }
     
@@ -59,6 +61,11 @@ privileged aspect UserProfileDataOnDemand_Roo_DataOnDemand {
         obj.setLName(lName);
     }
     
+    public void UserProfileDataOnDemand.setRodauser(UserProfile obj, int index) {
+        Rodauser rodauser = null;
+        obj.setRodauser(rodauser);
+    }
+    
     public UserProfile UserProfileDataOnDemand.getSpecificUserProfile(int index) {
         init();
         if (index < 0) {
@@ -69,14 +76,14 @@ privileged aspect UserProfileDataOnDemand_Roo_DataOnDemand {
         }
         UserProfile obj = data.get(index);
         Integer id = obj.getUserId();
-        return UserProfile.findUserProfile(id);
+        return userProfileService.findUserProfile(id);
     }
     
     public UserProfile UserProfileDataOnDemand.getRandomUserProfile() {
         init();
         UserProfile obj = data.get(rnd.nextInt(data.size()));
         Integer id = obj.getUserId();
-        return UserProfile.findUserProfile(id);
+        return userProfileService.findUserProfile(id);
     }
     
     public boolean UserProfileDataOnDemand.modifyUserProfile(UserProfile obj) {
@@ -86,7 +93,7 @@ privileged aspect UserProfileDataOnDemand_Roo_DataOnDemand {
     public void UserProfileDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = UserProfile.findUserProfileEntries(from, to);
+        data = userProfileService.findUserProfileEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'UserProfile' illegally returned null");
         }
@@ -98,7 +105,7 @@ privileged aspect UserProfileDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             UserProfile obj = getNewTransientUserProfile(i);
             try {
-                obj.persist();
+                userProfileService.saveUserProfile(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

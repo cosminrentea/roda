@@ -6,6 +6,7 @@ package ro.roda.web;
 import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,11 +15,18 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.Instance;
 import ro.roda.TimeMethType;
+import ro.roda.service.InstanceService;
+import ro.roda.service.TimeMethTypeService;
 import ro.roda.web.TimeMethTypeController;
 
 privileged aspect TimeMethTypeController_Roo_Controller {
+    
+    @Autowired
+    TimeMethTypeService TimeMethTypeController.timeMethTypeService;
+    
+    @Autowired
+    InstanceService TimeMethTypeController.instanceService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String TimeMethTypeController.create(@Valid TimeMethType timeMethType, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -27,7 +35,7 @@ privileged aspect TimeMethTypeController_Roo_Controller {
             return "timemethtypes/create";
         }
         uiModel.asMap().clear();
-        timeMethType.persist();
+        timeMethTypeService.saveTimeMethType(timeMethType);
         return "redirect:/timemethtypes/" + encodeUrlPathSegment(timeMethType.getId().toString(), httpServletRequest);
     }
     
@@ -39,7 +47,7 @@ privileged aspect TimeMethTypeController_Roo_Controller {
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String TimeMethTypeController.show(@PathVariable("id") Integer id, Model uiModel) {
-        uiModel.addAttribute("timemethtype", TimeMethType.findTimeMethType(id));
+        uiModel.addAttribute("timemethtype", timeMethTypeService.findTimeMethType(id));
         uiModel.addAttribute("itemId", id);
         return "timemethtypes/show";
     }
@@ -49,11 +57,11 @@ privileged aspect TimeMethTypeController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("timemethtypes", TimeMethType.findTimeMethTypeEntries(firstResult, sizeNo));
-            float nrOfPages = (float) TimeMethType.countTimeMethTypes() / sizeNo;
+            uiModel.addAttribute("timemethtypes", timeMethTypeService.findTimeMethTypeEntries(firstResult, sizeNo));
+            float nrOfPages = (float) timeMethTypeService.countAllTimeMethTypes() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("timemethtypes", TimeMethType.findAllTimeMethTypes());
+            uiModel.addAttribute("timemethtypes", timeMethTypeService.findAllTimeMethTypes());
         }
         return "timemethtypes/list";
     }
@@ -65,20 +73,20 @@ privileged aspect TimeMethTypeController_Roo_Controller {
             return "timemethtypes/update";
         }
         uiModel.asMap().clear();
-        timeMethType.merge();
+        timeMethTypeService.updateTimeMethType(timeMethType);
         return "redirect:/timemethtypes/" + encodeUrlPathSegment(timeMethType.getId().toString(), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String TimeMethTypeController.updateForm(@PathVariable("id") Integer id, Model uiModel) {
-        populateEditForm(uiModel, TimeMethType.findTimeMethType(id));
+        populateEditForm(uiModel, timeMethTypeService.findTimeMethType(id));
         return "timemethtypes/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
     public String TimeMethTypeController.delete(@PathVariable("id") Integer id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        TimeMethType timeMethType = TimeMethType.findTimeMethType(id);
-        timeMethType.remove();
+        TimeMethType timeMethType = timeMethTypeService.findTimeMethType(id);
+        timeMethTypeService.deleteTimeMethType(timeMethType);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
@@ -87,7 +95,7 @@ privileged aspect TimeMethTypeController_Roo_Controller {
     
     void TimeMethTypeController.populateEditForm(Model uiModel, TimeMethType timeMethType) {
         uiModel.addAttribute("timeMethType", timeMethType);
-        uiModel.addAttribute("instances", Instance.findAllInstances());
+        uiModel.addAttribute("instances", instanceService.findAllInstances());
     }
     
     String TimeMethTypeController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

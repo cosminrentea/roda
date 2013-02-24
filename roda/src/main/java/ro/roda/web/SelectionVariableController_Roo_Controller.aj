@@ -6,6 +6,7 @@ package ro.roda.web;
 import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,11 +16,21 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.SelectionVariable;
-import ro.roda.SelectionVariableItem;
-import ro.roda.Variable;
+import ro.roda.service.SelectionVariableItemService;
+import ro.roda.service.SelectionVariableService;
+import ro.roda.service.VariableService;
 import ro.roda.web.SelectionVariableController;
 
 privileged aspect SelectionVariableController_Roo_Controller {
+    
+    @Autowired
+    SelectionVariableService SelectionVariableController.selectionVariableService;
+    
+    @Autowired
+    SelectionVariableItemService SelectionVariableController.selectionVariableItemService;
+    
+    @Autowired
+    VariableService SelectionVariableController.variableService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String SelectionVariableController.create(@Valid SelectionVariable selectionVariable, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -28,7 +39,7 @@ privileged aspect SelectionVariableController_Roo_Controller {
             return "selectionvariables/create";
         }
         uiModel.asMap().clear();
-        selectionVariable.persist();
+        selectionVariableService.saveSelectionVariable(selectionVariable);
         return "redirect:/selectionvariables/" + encodeUrlPathSegment(selectionVariable.getVariableId().toString(), httpServletRequest);
     }
     
@@ -40,7 +51,7 @@ privileged aspect SelectionVariableController_Roo_Controller {
     
     @RequestMapping(value = "/{variableId}", produces = "text/html")
     public String SelectionVariableController.show(@PathVariable("variableId") Long variableId, Model uiModel) {
-        uiModel.addAttribute("selectionvariable", SelectionVariable.findSelectionVariable(variableId));
+        uiModel.addAttribute("selectionvariable", selectionVariableService.findSelectionVariable(variableId));
         uiModel.addAttribute("itemId", variableId);
         return "selectionvariables/show";
     }
@@ -50,11 +61,11 @@ privileged aspect SelectionVariableController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("selectionvariables", SelectionVariable.findSelectionVariableEntries(firstResult, sizeNo));
-            float nrOfPages = (float) SelectionVariable.countSelectionVariables() / sizeNo;
+            uiModel.addAttribute("selectionvariables", selectionVariableService.findSelectionVariableEntries(firstResult, sizeNo));
+            float nrOfPages = (float) selectionVariableService.countAllSelectionVariables() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("selectionvariables", SelectionVariable.findAllSelectionVariables());
+            uiModel.addAttribute("selectionvariables", selectionVariableService.findAllSelectionVariables());
         }
         return "selectionvariables/list";
     }
@@ -66,20 +77,20 @@ privileged aspect SelectionVariableController_Roo_Controller {
             return "selectionvariables/update";
         }
         uiModel.asMap().clear();
-        selectionVariable.merge();
+        selectionVariableService.updateSelectionVariable(selectionVariable);
         return "redirect:/selectionvariables/" + encodeUrlPathSegment(selectionVariable.getVariableId().toString(), httpServletRequest);
     }
     
     @RequestMapping(value = "/{variableId}", params = "form", produces = "text/html")
     public String SelectionVariableController.updateForm(@PathVariable("variableId") Long variableId, Model uiModel) {
-        populateEditForm(uiModel, SelectionVariable.findSelectionVariable(variableId));
+        populateEditForm(uiModel, selectionVariableService.findSelectionVariable(variableId));
         return "selectionvariables/update";
     }
     
     @RequestMapping(value = "/{variableId}", method = RequestMethod.DELETE, produces = "text/html")
     public String SelectionVariableController.delete(@PathVariable("variableId") Long variableId, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        SelectionVariable selectionVariable = SelectionVariable.findSelectionVariable(variableId);
-        selectionVariable.remove();
+        SelectionVariable selectionVariable = selectionVariableService.findSelectionVariable(variableId);
+        selectionVariableService.deleteSelectionVariable(selectionVariable);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
@@ -88,8 +99,8 @@ privileged aspect SelectionVariableController_Roo_Controller {
     
     void SelectionVariableController.populateEditForm(Model uiModel, SelectionVariable selectionVariable) {
         uiModel.addAttribute("selectionVariable", selectionVariable);
-        uiModel.addAttribute("selectionvariableitems", SelectionVariableItem.findAllSelectionVariableItems());
-        uiModel.addAttribute("variables", Variable.findAllVariables());
+        uiModel.addAttribute("selectionvariableitems", selectionVariableItemService.findAllSelectionVariableItems());
+        uiModel.addAttribute("variables", variableService.findAllVariables());
     }
     
     String SelectionVariableController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

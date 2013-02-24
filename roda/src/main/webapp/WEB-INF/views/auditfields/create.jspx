@@ -3,11 +3,7 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <form:create compositePkField="id" id="fc_ro_roda_AuditField" modelAttribute="auditField" path="/auditfields" render="${empty dependencies}" z="QE1zgFgDNlwGItkqo/Ixu+ozDtg=">
-        <field:input disableFormBinding="true" field="id.auditId" id="c_ro_roda_AuditField_id_auditId" required="true" validationMessageCode="field_invalid_integer" z="T3ZvDC1a3tKJshsF6F14ULtzMxI="/>
         <field:input disableFormBinding="true" field="id.id" id="c_ro_roda_AuditField_id_id" required="true" validationMessageCode="field_invalid_integer" z="OsB96vGIi53W5fDRqEZTnaRtals="/>
-        <field:input field="columnName" id="c_ro_roda_AuditField_columnName" required="true" z="H69a6hQ4dYf4f9BfEYXxfSxAnyA="/>
-        <field:input field="newValue" id="c_ro_roda_AuditField_newValue" z="3PY3tFIqt+OnprsrBrOlIi4KgaY="/>
-        <field:input field="oldValue" id="c_ro_roda_AuditField_oldValue" z="eZ+XWcWgTfbF/OsdV1mVfnB3Fb8="/>
     </form:create>
     <form:dependency dependencies="${dependencies}" id="d_ro_roda_AuditField" render="${not empty dependencies}" z="mYlV0DckagPl8u4/C4Vft3DDiXs="/>
 </div>

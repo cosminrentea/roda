@@ -11,10 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.FileAcl;
 import ro.roda.FileAclDataOnDemand;
 import ro.roda.FileAclIntegrationTest;
 import ro.roda.FileAclPK;
+import ro.roda.service.FileAclService;
 
 privileged aspect FileAclIntegrationTest_Roo_IntegrationTest {
     
@@ -25,12 +25,15 @@ privileged aspect FileAclIntegrationTest_Roo_IntegrationTest {
     declare @type: FileAclIntegrationTest: @Transactional;
     
     @Autowired
-    private FileAclDataOnDemand FileAclIntegrationTest.dod;
+    FileAclDataOnDemand FileAclIntegrationTest.dod;
+    
+    @Autowired
+    FileAclService FileAclIntegrationTest.fileAclService;
     
     @Test
-    public void FileAclIntegrationTest.testCountFileAcls() {
+    public void FileAclIntegrationTest.testCountAllFileAcls() {
         Assert.assertNotNull("Data on demand for 'FileAcl' failed to initialize correctly", dod.getRandomFileAcl());
-        long count = FileAcl.countFileAcls();
+        long count = fileAclService.countAllFileAcls();
         Assert.assertTrue("Counter for 'FileAcl' incorrectly reported there were no entries", count > 0);
     }
     
@@ -40,7 +43,7 @@ privileged aspect FileAclIntegrationTest_Roo_IntegrationTest {
         Assert.assertNotNull("Data on demand for 'FileAcl' failed to initialize correctly", obj);
         FileAclPK id = obj.getId();
         Assert.assertNotNull("Data on demand for 'FileAcl' failed to provide an identifier", id);
-        obj = FileAcl.findFileAcl(id);
+        obj = fileAclService.findFileAcl(id);
         Assert.assertNotNull("Find method for 'FileAcl' illegally returned null for id '" + id + "'", obj);
         Assert.assertEquals("Find method for 'FileAcl' returned the incorrect identifier", id, obj.getId());
     }
@@ -48,9 +51,9 @@ privileged aspect FileAclIntegrationTest_Roo_IntegrationTest {
     @Test
     public void FileAclIntegrationTest.testFindAllFileAcls() {
         Assert.assertNotNull("Data on demand for 'FileAcl' failed to initialize correctly", dod.getRandomFileAcl());
-        long count = FileAcl.countFileAcls();
+        long count = fileAclService.countAllFileAcls();
         Assert.assertTrue("Too expensive to perform a find all test for 'FileAcl', as there are " + count + " entries; set the findAllMaximum to exceed this value or set findAll=false on the integration test annotation to disable the test", count < 250);
-        List<FileAcl> result = FileAcl.findAllFileAcls();
+        List<FileAcl> result = fileAclService.findAllFileAcls();
         Assert.assertNotNull("Find all method for 'FileAcl' illegally returned null", result);
         Assert.assertTrue("Find all method for 'FileAcl' failed to return any data", result.size() > 0);
     }
@@ -58,35 +61,35 @@ privileged aspect FileAclIntegrationTest_Roo_IntegrationTest {
     @Test
     public void FileAclIntegrationTest.testFindFileAclEntries() {
         Assert.assertNotNull("Data on demand for 'FileAcl' failed to initialize correctly", dod.getRandomFileAcl());
-        long count = FileAcl.countFileAcls();
+        long count = fileAclService.countAllFileAcls();
         if (count > 20) count = 20;
         int firstResult = 0;
         int maxResults = (int) count;
-        List<FileAcl> result = FileAcl.findFileAclEntries(firstResult, maxResults);
+        List<FileAcl> result = fileAclService.findFileAclEntries(firstResult, maxResults);
         Assert.assertNotNull("Find entries method for 'FileAcl' illegally returned null", result);
         Assert.assertEquals("Find entries method for 'FileAcl' returned an incorrect number of entries", count, result.size());
     }
     
     @Test
-    public void FileAclIntegrationTest.testPersist() {
+    public void FileAclIntegrationTest.testSaveFileAcl() {
         Assert.assertNotNull("Data on demand for 'FileAcl' failed to initialize correctly", dod.getRandomFileAcl());
         FileAcl obj = dod.getNewTransientFileAcl(Integer.MAX_VALUE);
         Assert.assertNotNull("Data on demand for 'FileAcl' failed to provide a new transient entity", obj);
-        obj.persist();
+        fileAclService.saveFileAcl(obj);
         obj.flush();
         Assert.assertNotNull("Expected 'FileAcl' identifier to no longer be null", obj.getId());
     }
     
     @Test
-    public void FileAclIntegrationTest.testRemove() {
+    public void FileAclIntegrationTest.testDeleteFileAcl() {
         FileAcl obj = dod.getRandomFileAcl();
         Assert.assertNotNull("Data on demand for 'FileAcl' failed to initialize correctly", obj);
         FileAclPK id = obj.getId();
         Assert.assertNotNull("Data on demand for 'FileAcl' failed to provide an identifier", id);
-        obj = FileAcl.findFileAcl(id);
-        obj.remove();
+        obj = fileAclService.findFileAcl(id);
+        fileAclService.deleteFileAcl(obj);
         obj.flush();
-        Assert.assertNull("Failed to remove 'FileAcl' with identifier '" + id + "'", FileAcl.findFileAcl(id));
+        Assert.assertNull("Failed to remove 'FileAcl' with identifier '" + id + "'", fileAclService.findFileAcl(id));
     }
     
 }

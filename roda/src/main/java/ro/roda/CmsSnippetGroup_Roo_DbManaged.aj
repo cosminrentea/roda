@@ -5,8 +5,6 @@ package ro.roda;
 
 import java.util.Set;
 import javax.persistence.Column;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import ro.roda.CmsSnippet;
@@ -17,16 +15,12 @@ privileged aspect CmsSnippetGroup_Roo_DbManaged {
     @OneToMany(mappedBy = "cmsSnippetGroupId")
     private Set<CmsSnippet> CmsSnippetGroup.cmsSnippets;
     
-    @OneToMany(mappedBy = "parentId")
-    private Set<CmsSnippetGroup> CmsSnippetGroup.cmsSnippetGroups;
-    
-    @ManyToOne
-    @JoinColumn(name = "parent_id", referencedColumnName = "id", insertable = false, updatable = false)
-    private CmsSnippetGroup CmsSnippetGroup.parentId;
-    
     @Column(name = "name", columnDefinition = "varchar", length = 200)
     @NotNull
     private String CmsSnippetGroup.name;
+    
+    @Column(name = "parent_id", columnDefinition = "int4")
+    private Integer CmsSnippetGroup.parentId;
     
     @Column(name = "description", columnDefinition = "text")
     private String CmsSnippetGroup.description;
@@ -39,28 +33,20 @@ privileged aspect CmsSnippetGroup_Roo_DbManaged {
         this.cmsSnippets = cmsSnippets;
     }
     
-    public Set<CmsSnippetGroup> CmsSnippetGroup.getCmsSnippetGroups() {
-        return cmsSnippetGroups;
-    }
-    
-    public void CmsSnippetGroup.setCmsSnippetGroups(Set<CmsSnippetGroup> cmsSnippetGroups) {
-        this.cmsSnippetGroups = cmsSnippetGroups;
-    }
-    
-    public CmsSnippetGroup CmsSnippetGroup.getParentId() {
-        return parentId;
-    }
-    
-    public void CmsSnippetGroup.setParentId(CmsSnippetGroup parentId) {
-        this.parentId = parentId;
-    }
-    
     public String CmsSnippetGroup.getName() {
         return name;
     }
     
     public void CmsSnippetGroup.setName(String name) {
         this.name = name;
+    }
+    
+    public Integer CmsSnippetGroup.getParentId() {
+        return parentId;
+    }
+    
+    public void CmsSnippetGroup.setParentId(Integer parentId) {
+        this.parentId = parentId;
     }
     
     public String CmsSnippetGroup.getDescription() {

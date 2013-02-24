@@ -11,9 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.OrgPrefix;
 import ro.roda.OrgPrefixDataOnDemand;
 import ro.roda.OrgPrefixIntegrationTest;
+import ro.roda.service.OrgPrefixService;
 
 privileged aspect OrgPrefixIntegrationTest_Roo_IntegrationTest {
     
@@ -24,12 +24,15 @@ privileged aspect OrgPrefixIntegrationTest_Roo_IntegrationTest {
     declare @type: OrgPrefixIntegrationTest: @Transactional;
     
     @Autowired
-    private OrgPrefixDataOnDemand OrgPrefixIntegrationTest.dod;
+    OrgPrefixDataOnDemand OrgPrefixIntegrationTest.dod;
+    
+    @Autowired
+    OrgPrefixService OrgPrefixIntegrationTest.orgPrefixService;
     
     @Test
-    public void OrgPrefixIntegrationTest.testCountOrgPrefixes() {
+    public void OrgPrefixIntegrationTest.testCountAllOrgPrefixes() {
         Assert.assertNotNull("Data on demand for 'OrgPrefix' failed to initialize correctly", dod.getRandomOrgPrefix());
-        long count = OrgPrefix.countOrgPrefixes();
+        long count = orgPrefixService.countAllOrgPrefixes();
         Assert.assertTrue("Counter for 'OrgPrefix' incorrectly reported there were no entries", count > 0);
     }
     
@@ -39,7 +42,7 @@ privileged aspect OrgPrefixIntegrationTest_Roo_IntegrationTest {
         Assert.assertNotNull("Data on demand for 'OrgPrefix' failed to initialize correctly", obj);
         Integer id = obj.getId();
         Assert.assertNotNull("Data on demand for 'OrgPrefix' failed to provide an identifier", id);
-        obj = OrgPrefix.findOrgPrefix(id);
+        obj = orgPrefixService.findOrgPrefix(id);
         Assert.assertNotNull("Find method for 'OrgPrefix' illegally returned null for id '" + id + "'", obj);
         Assert.assertEquals("Find method for 'OrgPrefix' returned the incorrect identifier", id, obj.getId());
     }
@@ -47,9 +50,9 @@ privileged aspect OrgPrefixIntegrationTest_Roo_IntegrationTest {
     @Test
     public void OrgPrefixIntegrationTest.testFindAllOrgPrefixes() {
         Assert.assertNotNull("Data on demand for 'OrgPrefix' failed to initialize correctly", dod.getRandomOrgPrefix());
-        long count = OrgPrefix.countOrgPrefixes();
+        long count = orgPrefixService.countAllOrgPrefixes();
         Assert.assertTrue("Too expensive to perform a find all test for 'OrgPrefix', as there are " + count + " entries; set the findAllMaximum to exceed this value or set findAll=false on the integration test annotation to disable the test", count < 250);
-        List<OrgPrefix> result = OrgPrefix.findAllOrgPrefixes();
+        List<OrgPrefix> result = orgPrefixService.findAllOrgPrefixes();
         Assert.assertNotNull("Find all method for 'OrgPrefix' illegally returned null", result);
         Assert.assertTrue("Find all method for 'OrgPrefix' failed to return any data", result.size() > 0);
     }
@@ -57,36 +60,36 @@ privileged aspect OrgPrefixIntegrationTest_Roo_IntegrationTest {
     @Test
     public void OrgPrefixIntegrationTest.testFindOrgPrefixEntries() {
         Assert.assertNotNull("Data on demand for 'OrgPrefix' failed to initialize correctly", dod.getRandomOrgPrefix());
-        long count = OrgPrefix.countOrgPrefixes();
+        long count = orgPrefixService.countAllOrgPrefixes();
         if (count > 20) count = 20;
         int firstResult = 0;
         int maxResults = (int) count;
-        List<OrgPrefix> result = OrgPrefix.findOrgPrefixEntries(firstResult, maxResults);
+        List<OrgPrefix> result = orgPrefixService.findOrgPrefixEntries(firstResult, maxResults);
         Assert.assertNotNull("Find entries method for 'OrgPrefix' illegally returned null", result);
         Assert.assertEquals("Find entries method for 'OrgPrefix' returned an incorrect number of entries", count, result.size());
     }
     
     @Test
-    public void OrgPrefixIntegrationTest.testPersist() {
+    public void OrgPrefixIntegrationTest.testSaveOrgPrefix() {
         Assert.assertNotNull("Data on demand for 'OrgPrefix' failed to initialize correctly", dod.getRandomOrgPrefix());
         OrgPrefix obj = dod.getNewTransientOrgPrefix(Integer.MAX_VALUE);
         Assert.assertNotNull("Data on demand for 'OrgPrefix' failed to provide a new transient entity", obj);
         Assert.assertNull("Expected 'OrgPrefix' identifier to be null", obj.getId());
-        obj.persist();
+        orgPrefixService.saveOrgPrefix(obj);
         obj.flush();
         Assert.assertNotNull("Expected 'OrgPrefix' identifier to no longer be null", obj.getId());
     }
     
     @Test
-    public void OrgPrefixIntegrationTest.testRemove() {
+    public void OrgPrefixIntegrationTest.testDeleteOrgPrefix() {
         OrgPrefix obj = dod.getRandomOrgPrefix();
         Assert.assertNotNull("Data on demand for 'OrgPrefix' failed to initialize correctly", obj);
         Integer id = obj.getId();
         Assert.assertNotNull("Data on demand for 'OrgPrefix' failed to provide an identifier", id);
-        obj = OrgPrefix.findOrgPrefix(id);
-        obj.remove();
+        obj = orgPrefixService.findOrgPrefix(id);
+        orgPrefixService.deleteOrgPrefix(obj);
         obj.flush();
-        Assert.assertNull("Failed to remove 'OrgPrefix' with identifier '" + id + "'", OrgPrefix.findOrgPrefix(id));
+        Assert.assertNull("Failed to remove 'OrgPrefix' with identifier '" + id + "'", orgPrefixService.findOrgPrefix(id));
     }
     
 }

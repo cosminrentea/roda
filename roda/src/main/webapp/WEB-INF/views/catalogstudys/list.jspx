@@ -6,7 +6,7 @@
         <table:table data="${catalogstudys}" id="l_ro_roda_CatalogStudy" path="/catalogstudys" z="bpyijb+EsNh4FZtt55Rh3O9WJmM=">
             <table:column id="c_ro_roda_CatalogStudy_catalogId" property="catalogId" z="Wt8DAOt3CCJa4qxNNrO6fnbfncA="/>
             <table:column id="c_ro_roda_CatalogStudy_studyId" property="studyId" z="Hl7hQYd+0YNvAeeBloV55xw/9e0="/>
-            <table:column date="true" dateTimePattern="${catalogStudy_added_date_format}" id="c_ro_roda_CatalogStudy_added" property="added" z="FHdsdWeZlWMpteCh9IydjjD20d0="/>
+            <table:column calendar="true" dateTimePattern="${catalogStudy_added_date_format}" id="c_ro_roda_CatalogStudy_added" property="added" z="EbENVfmXI3IIn6s/Jn3iwmGJMoU="/>
         </table:table>
     </page:list>
 </div>

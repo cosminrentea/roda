@@ -10,9 +10,11 @@ import java.util.List;
 import java.util.Random;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ro.roda.Concept;
 import ro.roda.ConceptDataOnDemand;
+import ro.roda.service.ConceptService;
 
 privileged aspect ConceptDataOnDemand_Roo_DataOnDemand {
     
@@ -21,6 +23,9 @@ privileged aspect ConceptDataOnDemand_Roo_DataOnDemand {
     private Random ConceptDataOnDemand.rnd = new SecureRandom();
     
     private List<Concept> ConceptDataOnDemand.data;
+    
+    @Autowired
+    ConceptService ConceptDataOnDemand.conceptService;
     
     public Concept ConceptDataOnDemand.getNewTransientConcept(int index) {
         Concept obj = new Concept();
@@ -52,14 +57,14 @@ privileged aspect ConceptDataOnDemand_Roo_DataOnDemand {
         }
         Concept obj = data.get(index);
         Long id = obj.getId();
-        return Concept.findConcept(id);
+        return conceptService.findConcept(id);
     }
     
     public Concept ConceptDataOnDemand.getRandomConcept() {
         init();
         Concept obj = data.get(rnd.nextInt(data.size()));
         Long id = obj.getId();
-        return Concept.findConcept(id);
+        return conceptService.findConcept(id);
     }
     
     public boolean ConceptDataOnDemand.modifyConcept(Concept obj) {
@@ -69,7 +74,7 @@ privileged aspect ConceptDataOnDemand_Roo_DataOnDemand {
     public void ConceptDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = Concept.findConceptEntries(from, to);
+        data = conceptService.findConceptEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'Concept' illegally returned null");
         }
@@ -81,7 +86,7 @@ privileged aspect ConceptDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             Concept obj = getNewTransientConcept(i);
             try {
-                obj.persist();
+                conceptService.saveConcept(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

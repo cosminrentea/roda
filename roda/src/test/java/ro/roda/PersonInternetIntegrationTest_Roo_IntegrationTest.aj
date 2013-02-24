@@ -11,10 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.PersonInternet;
 import ro.roda.PersonInternetDataOnDemand;
 import ro.roda.PersonInternetIntegrationTest;
 import ro.roda.PersonInternetPK;
+import ro.roda.service.PersonInternetService;
 
 privileged aspect PersonInternetIntegrationTest_Roo_IntegrationTest {
     
@@ -25,12 +25,15 @@ privileged aspect PersonInternetIntegrationTest_Roo_IntegrationTest {
     declare @type: PersonInternetIntegrationTest: @Transactional;
     
     @Autowired
-    private PersonInternetDataOnDemand PersonInternetIntegrationTest.dod;
+    PersonInternetDataOnDemand PersonInternetIntegrationTest.dod;
+    
+    @Autowired
+    PersonInternetService PersonInternetIntegrationTest.personInternetService;
     
     @Test
-    public void PersonInternetIntegrationTest.testCountPersonInternets() {
+    public void PersonInternetIntegrationTest.testCountAllPersonInternets() {
         Assert.assertNotNull("Data on demand for 'PersonInternet' failed to initialize correctly", dod.getRandomPersonInternet());
-        long count = PersonInternet.countPersonInternets();
+        long count = personInternetService.countAllPersonInternets();
         Assert.assertTrue("Counter for 'PersonInternet' incorrectly reported there were no entries", count > 0);
     }
     
@@ -40,7 +43,7 @@ privileged aspect PersonInternetIntegrationTest_Roo_IntegrationTest {
         Assert.assertNotNull("Data on demand for 'PersonInternet' failed to initialize correctly", obj);
         PersonInternetPK id = obj.getId();
         Assert.assertNotNull("Data on demand for 'PersonInternet' failed to provide an identifier", id);
-        obj = PersonInternet.findPersonInternet(id);
+        obj = personInternetService.findPersonInternet(id);
         Assert.assertNotNull("Find method for 'PersonInternet' illegally returned null for id '" + id + "'", obj);
         Assert.assertEquals("Find method for 'PersonInternet' returned the incorrect identifier", id, obj.getId());
     }
@@ -48,9 +51,9 @@ privileged aspect PersonInternetIntegrationTest_Roo_IntegrationTest {
     @Test
     public void PersonInternetIntegrationTest.testFindAllPersonInternets() {
         Assert.assertNotNull("Data on demand for 'PersonInternet' failed to initialize correctly", dod.getRandomPersonInternet());
-        long count = PersonInternet.countPersonInternets();
+        long count = personInternetService.countAllPersonInternets();
         Assert.assertTrue("Too expensive to perform a find all test for 'PersonInternet', as there are " + count + " entries; set the findAllMaximum to exceed this value or set findAll=false on the integration test annotation to disable the test", count < 250);
-        List<PersonInternet> result = PersonInternet.findAllPersonInternets();
+        List<PersonInternet> result = personInternetService.findAllPersonInternets();
         Assert.assertNotNull("Find all method for 'PersonInternet' illegally returned null", result);
         Assert.assertTrue("Find all method for 'PersonInternet' failed to return any data", result.size() > 0);
     }
@@ -58,35 +61,35 @@ privileged aspect PersonInternetIntegrationTest_Roo_IntegrationTest {
     @Test
     public void PersonInternetIntegrationTest.testFindPersonInternetEntries() {
         Assert.assertNotNull("Data on demand for 'PersonInternet' failed to initialize correctly", dod.getRandomPersonInternet());
-        long count = PersonInternet.countPersonInternets();
+        long count = personInternetService.countAllPersonInternets();
         if (count > 20) count = 20;
         int firstResult = 0;
         int maxResults = (int) count;
-        List<PersonInternet> result = PersonInternet.findPersonInternetEntries(firstResult, maxResults);
+        List<PersonInternet> result = personInternetService.findPersonInternetEntries(firstResult, maxResults);
         Assert.assertNotNull("Find entries method for 'PersonInternet' illegally returned null", result);
         Assert.assertEquals("Find entries method for 'PersonInternet' returned an incorrect number of entries", count, result.size());
     }
     
     @Test
-    public void PersonInternetIntegrationTest.testPersist() {
+    public void PersonInternetIntegrationTest.testSavePersonInternet() {
         Assert.assertNotNull("Data on demand for 'PersonInternet' failed to initialize correctly", dod.getRandomPersonInternet());
         PersonInternet obj = dod.getNewTransientPersonInternet(Integer.MAX_VALUE);
         Assert.assertNotNull("Data on demand for 'PersonInternet' failed to provide a new transient entity", obj);
-        obj.persist();
+        personInternetService.savePersonInternet(obj);
         obj.flush();
         Assert.assertNotNull("Expected 'PersonInternet' identifier to no longer be null", obj.getId());
     }
     
     @Test
-    public void PersonInternetIntegrationTest.testRemove() {
+    public void PersonInternetIntegrationTest.testDeletePersonInternet() {
         PersonInternet obj = dod.getRandomPersonInternet();
         Assert.assertNotNull("Data on demand for 'PersonInternet' failed to initialize correctly", obj);
         PersonInternetPK id = obj.getId();
         Assert.assertNotNull("Data on demand for 'PersonInternet' failed to provide an identifier", id);
-        obj = PersonInternet.findPersonInternet(id);
-        obj.remove();
+        obj = personInternetService.findPersonInternet(id);
+        personInternetService.deletePersonInternet(obj);
         obj.flush();
-        Assert.assertNull("Failed to remove 'PersonInternet' with identifier '" + id + "'", PersonInternet.findPersonInternet(id));
+        Assert.assertNull("Failed to remove 'PersonInternet' with identifier '" + id + "'", personInternetService.findPersonInternet(id));
     }
     
 }

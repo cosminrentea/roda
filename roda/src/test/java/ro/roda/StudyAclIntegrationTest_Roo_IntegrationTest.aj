@@ -11,10 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.StudyAcl;
 import ro.roda.StudyAclDataOnDemand;
 import ro.roda.StudyAclIntegrationTest;
 import ro.roda.StudyAclPK;
+import ro.roda.service.StudyAclService;
 
 privileged aspect StudyAclIntegrationTest_Roo_IntegrationTest {
     
@@ -25,12 +25,15 @@ privileged aspect StudyAclIntegrationTest_Roo_IntegrationTest {
     declare @type: StudyAclIntegrationTest: @Transactional;
     
     @Autowired
-    private StudyAclDataOnDemand StudyAclIntegrationTest.dod;
+    StudyAclDataOnDemand StudyAclIntegrationTest.dod;
+    
+    @Autowired
+    StudyAclService StudyAclIntegrationTest.studyAclService;
     
     @Test
-    public void StudyAclIntegrationTest.testCountStudyAcls() {
+    public void StudyAclIntegrationTest.testCountAllStudyAcls() {
         Assert.assertNotNull("Data on demand for 'StudyAcl' failed to initialize correctly", dod.getRandomStudyAcl());
-        long count = StudyAcl.countStudyAcls();
+        long count = studyAclService.countAllStudyAcls();
         Assert.assertTrue("Counter for 'StudyAcl' incorrectly reported there were no entries", count > 0);
     }
     
@@ -40,7 +43,7 @@ privileged aspect StudyAclIntegrationTest_Roo_IntegrationTest {
         Assert.assertNotNull("Data on demand for 'StudyAcl' failed to initialize correctly", obj);
         StudyAclPK id = obj.getId();
         Assert.assertNotNull("Data on demand for 'StudyAcl' failed to provide an identifier", id);
-        obj = StudyAcl.findStudyAcl(id);
+        obj = studyAclService.findStudyAcl(id);
         Assert.assertNotNull("Find method for 'StudyAcl' illegally returned null for id '" + id + "'", obj);
         Assert.assertEquals("Find method for 'StudyAcl' returned the incorrect identifier", id, obj.getId());
     }
@@ -48,9 +51,9 @@ privileged aspect StudyAclIntegrationTest_Roo_IntegrationTest {
     @Test
     public void StudyAclIntegrationTest.testFindAllStudyAcls() {
         Assert.assertNotNull("Data on demand for 'StudyAcl' failed to initialize correctly", dod.getRandomStudyAcl());
-        long count = StudyAcl.countStudyAcls();
+        long count = studyAclService.countAllStudyAcls();
         Assert.assertTrue("Too expensive to perform a find all test for 'StudyAcl', as there are " + count + " entries; set the findAllMaximum to exceed this value or set findAll=false on the integration test annotation to disable the test", count < 250);
-        List<StudyAcl> result = StudyAcl.findAllStudyAcls();
+        List<StudyAcl> result = studyAclService.findAllStudyAcls();
         Assert.assertNotNull("Find all method for 'StudyAcl' illegally returned null", result);
         Assert.assertTrue("Find all method for 'StudyAcl' failed to return any data", result.size() > 0);
     }
@@ -58,35 +61,35 @@ privileged aspect StudyAclIntegrationTest_Roo_IntegrationTest {
     @Test
     public void StudyAclIntegrationTest.testFindStudyAclEntries() {
         Assert.assertNotNull("Data on demand for 'StudyAcl' failed to initialize correctly", dod.getRandomStudyAcl());
-        long count = StudyAcl.countStudyAcls();
+        long count = studyAclService.countAllStudyAcls();
         if (count > 20) count = 20;
         int firstResult = 0;
         int maxResults = (int) count;
-        List<StudyAcl> result = StudyAcl.findStudyAclEntries(firstResult, maxResults);
+        List<StudyAcl> result = studyAclService.findStudyAclEntries(firstResult, maxResults);
         Assert.assertNotNull("Find entries method for 'StudyAcl' illegally returned null", result);
         Assert.assertEquals("Find entries method for 'StudyAcl' returned an incorrect number of entries", count, result.size());
     }
     
     @Test
-    public void StudyAclIntegrationTest.testPersist() {
+    public void StudyAclIntegrationTest.testSaveStudyAcl() {
         Assert.assertNotNull("Data on demand for 'StudyAcl' failed to initialize correctly", dod.getRandomStudyAcl());
         StudyAcl obj = dod.getNewTransientStudyAcl(Integer.MAX_VALUE);
         Assert.assertNotNull("Data on demand for 'StudyAcl' failed to provide a new transient entity", obj);
-        obj.persist();
+        studyAclService.saveStudyAcl(obj);
         obj.flush();
         Assert.assertNotNull("Expected 'StudyAcl' identifier to no longer be null", obj.getId());
     }
     
     @Test
-    public void StudyAclIntegrationTest.testRemove() {
+    public void StudyAclIntegrationTest.testDeleteStudyAcl() {
         StudyAcl obj = dod.getRandomStudyAcl();
         Assert.assertNotNull("Data on demand for 'StudyAcl' failed to initialize correctly", obj);
         StudyAclPK id = obj.getId();
         Assert.assertNotNull("Data on demand for 'StudyAcl' failed to provide an identifier", id);
-        obj = StudyAcl.findStudyAcl(id);
-        obj.remove();
+        obj = studyAclService.findStudyAcl(id);
+        studyAclService.deleteStudyAcl(obj);
         obj.flush();
-        Assert.assertNull("Failed to remove 'StudyAcl' with identifier '" + id + "'", StudyAcl.findStudyAcl(id));
+        Assert.assertNull("Failed to remove 'StudyAcl' with identifier '" + id + "'", studyAclService.findStudyAcl(id));
     }
     
 }

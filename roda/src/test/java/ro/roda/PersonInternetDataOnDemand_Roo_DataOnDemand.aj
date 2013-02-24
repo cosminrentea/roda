@@ -12,11 +12,14 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import ro.roda.Internet;
 import ro.roda.InternetDataOnDemand;
+import ro.roda.Person;
 import ro.roda.PersonDataOnDemand;
 import ro.roda.PersonInternet;
 import ro.roda.PersonInternetDataOnDemand;
 import ro.roda.PersonInternetPK;
+import ro.roda.service.PersonInternetService;
 
 privileged aspect PersonInternetDataOnDemand_Roo_DataOnDemand {
     
@@ -27,15 +30,20 @@ privileged aspect PersonInternetDataOnDemand_Roo_DataOnDemand {
     private List<PersonInternet> PersonInternetDataOnDemand.data;
     
     @Autowired
-    private InternetDataOnDemand PersonInternetDataOnDemand.internetDataOnDemand;
+    InternetDataOnDemand PersonInternetDataOnDemand.internetDataOnDemand;
     
     @Autowired
-    private PersonDataOnDemand PersonInternetDataOnDemand.personDataOnDemand;
+    PersonDataOnDemand PersonInternetDataOnDemand.personDataOnDemand;
+    
+    @Autowired
+    PersonInternetService PersonInternetDataOnDemand.personInternetService;
     
     public PersonInternet PersonInternetDataOnDemand.getNewTransientPersonInternet(int index) {
         PersonInternet obj = new PersonInternet();
         setEmbeddedIdClass(obj, index);
+        setInternetId(obj, index);
         setMain(obj, index);
+        setPersonId(obj, index);
         return obj;
     }
     
@@ -47,9 +55,19 @@ privileged aspect PersonInternetDataOnDemand_Roo_DataOnDemand {
         obj.setId(embeddedIdClass);
     }
     
+    public void PersonInternetDataOnDemand.setInternetId(PersonInternet obj, int index) {
+        Internet internetId = internetDataOnDemand.getRandomInternet();
+        obj.setInternetId(internetId);
+    }
+    
     public void PersonInternetDataOnDemand.setMain(PersonInternet obj, int index) {
         Boolean main = true;
         obj.setMain(main);
+    }
+    
+    public void PersonInternetDataOnDemand.setPersonId(PersonInternet obj, int index) {
+        Person personId = personDataOnDemand.getRandomPerson();
+        obj.setPersonId(personId);
     }
     
     public PersonInternet PersonInternetDataOnDemand.getSpecificPersonInternet(int index) {
@@ -62,14 +80,14 @@ privileged aspect PersonInternetDataOnDemand_Roo_DataOnDemand {
         }
         PersonInternet obj = data.get(index);
         PersonInternetPK id = obj.getId();
-        return PersonInternet.findPersonInternet(id);
+        return personInternetService.findPersonInternet(id);
     }
     
     public PersonInternet PersonInternetDataOnDemand.getRandomPersonInternet() {
         init();
         PersonInternet obj = data.get(rnd.nextInt(data.size()));
         PersonInternetPK id = obj.getId();
-        return PersonInternet.findPersonInternet(id);
+        return personInternetService.findPersonInternet(id);
     }
     
     public boolean PersonInternetDataOnDemand.modifyPersonInternet(PersonInternet obj) {
@@ -79,7 +97,7 @@ privileged aspect PersonInternetDataOnDemand_Roo_DataOnDemand {
     public void PersonInternetDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = PersonInternet.findPersonInternetEntries(from, to);
+        data = personInternetService.findPersonInternetEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'PersonInternet' illegally returned null");
         }
@@ -91,7 +109,7 @@ privileged aspect PersonInternetDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             PersonInternet obj = getNewTransientPersonInternet(i);
             try {
-                obj.persist();
+                personInternetService.savePersonInternet(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

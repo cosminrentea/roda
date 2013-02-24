@@ -11,9 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.Source;
 import ro.roda.SourceDataOnDemand;
 import ro.roda.SourceIntegrationTest;
+import ro.roda.service.SourceService;
 
 privileged aspect SourceIntegrationTest_Roo_IntegrationTest {
     
@@ -24,12 +24,15 @@ privileged aspect SourceIntegrationTest_Roo_IntegrationTest {
     declare @type: SourceIntegrationTest: @Transactional;
     
     @Autowired
-    private SourceDataOnDemand SourceIntegrationTest.dod;
+    SourceDataOnDemand SourceIntegrationTest.dod;
+    
+    @Autowired
+    SourceService SourceIntegrationTest.sourceService;
     
     @Test
-    public void SourceIntegrationTest.testCountSources() {
+    public void SourceIntegrationTest.testCountAllSources() {
         Assert.assertNotNull("Data on demand for 'Source' failed to initialize correctly", dod.getRandomSource());
-        long count = Source.countSources();
+        long count = sourceService.countAllSources();
         Assert.assertTrue("Counter for 'Source' incorrectly reported there were no entries", count > 0);
     }
     
@@ -39,7 +42,7 @@ privileged aspect SourceIntegrationTest_Roo_IntegrationTest {
         Assert.assertNotNull("Data on demand for 'Source' failed to initialize correctly", obj);
         Integer id = obj.getOrgId();
         Assert.assertNotNull("Data on demand for 'Source' failed to provide an identifier", id);
-        obj = Source.findSource(id);
+        obj = sourceService.findSource(id);
         Assert.assertNotNull("Find method for 'Source' illegally returned null for id '" + id + "'", obj);
         Assert.assertEquals("Find method for 'Source' returned the incorrect identifier", id, obj.getOrgId());
     }
@@ -47,9 +50,9 @@ privileged aspect SourceIntegrationTest_Roo_IntegrationTest {
     @Test
     public void SourceIntegrationTest.testFindAllSources() {
         Assert.assertNotNull("Data on demand for 'Source' failed to initialize correctly", dod.getRandomSource());
-        long count = Source.countSources();
+        long count = sourceService.countAllSources();
         Assert.assertTrue("Too expensive to perform a find all test for 'Source', as there are " + count + " entries; set the findAllMaximum to exceed this value or set findAll=false on the integration test annotation to disable the test", count < 250);
-        List<Source> result = Source.findAllSources();
+        List<Source> result = sourceService.findAllSources();
         Assert.assertNotNull("Find all method for 'Source' illegally returned null", result);
         Assert.assertTrue("Find all method for 'Source' failed to return any data", result.size() > 0);
     }
@@ -57,36 +60,36 @@ privileged aspect SourceIntegrationTest_Roo_IntegrationTest {
     @Test
     public void SourceIntegrationTest.testFindSourceEntries() {
         Assert.assertNotNull("Data on demand for 'Source' failed to initialize correctly", dod.getRandomSource());
-        long count = Source.countSources();
+        long count = sourceService.countAllSources();
         if (count > 20) count = 20;
         int firstResult = 0;
         int maxResults = (int) count;
-        List<Source> result = Source.findSourceEntries(firstResult, maxResults);
+        List<Source> result = sourceService.findSourceEntries(firstResult, maxResults);
         Assert.assertNotNull("Find entries method for 'Source' illegally returned null", result);
         Assert.assertEquals("Find entries method for 'Source' returned an incorrect number of entries", count, result.size());
     }
     
     @Test
-    public void SourceIntegrationTest.testPersist() {
+    public void SourceIntegrationTest.testSaveSource() {
         Assert.assertNotNull("Data on demand for 'Source' failed to initialize correctly", dod.getRandomSource());
         Source obj = dod.getNewTransientSource(Integer.MAX_VALUE);
         Assert.assertNotNull("Data on demand for 'Source' failed to provide a new transient entity", obj);
         Assert.assertNull("Expected 'Source' identifier to be null", obj.getOrgId());
-        obj.persist();
+        sourceService.saveSource(obj);
         obj.flush();
         Assert.assertNotNull("Expected 'Source' identifier to no longer be null", obj.getOrgId());
     }
     
     @Test
-    public void SourceIntegrationTest.testRemove() {
+    public void SourceIntegrationTest.testDeleteSource() {
         Source obj = dod.getRandomSource();
         Assert.assertNotNull("Data on demand for 'Source' failed to initialize correctly", obj);
         Integer id = obj.getOrgId();
         Assert.assertNotNull("Data on demand for 'Source' failed to provide an identifier", id);
-        obj = Source.findSource(id);
-        obj.remove();
+        obj = sourceService.findSource(id);
+        sourceService.deleteSource(obj);
         obj.flush();
-        Assert.assertNull("Failed to remove 'Source' with identifier '" + id + "'", Source.findSource(id));
+        Assert.assertNull("Failed to remove 'Source' with identifier '" + id + "'", sourceService.findSource(id));
     }
     
 }

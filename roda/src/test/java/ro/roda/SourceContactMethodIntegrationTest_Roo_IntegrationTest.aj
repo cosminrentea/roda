@@ -11,9 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.SourceContactMethod;
 import ro.roda.SourceContactMethodDataOnDemand;
 import ro.roda.SourceContactMethodIntegrationTest;
+import ro.roda.service.SourceContactMethodService;
 
 privileged aspect SourceContactMethodIntegrationTest_Roo_IntegrationTest {
     
@@ -24,12 +24,15 @@ privileged aspect SourceContactMethodIntegrationTest_Roo_IntegrationTest {
     declare @type: SourceContactMethodIntegrationTest: @Transactional;
     
     @Autowired
-    private SourceContactMethodDataOnDemand SourceContactMethodIntegrationTest.dod;
+    SourceContactMethodDataOnDemand SourceContactMethodIntegrationTest.dod;
+    
+    @Autowired
+    SourceContactMethodService SourceContactMethodIntegrationTest.sourceContactMethodService;
     
     @Test
-    public void SourceContactMethodIntegrationTest.testCountSourceContactMethods() {
+    public void SourceContactMethodIntegrationTest.testCountAllSourceContactMethods() {
         Assert.assertNotNull("Data on demand for 'SourceContactMethod' failed to initialize correctly", dod.getRandomSourceContactMethod());
-        long count = SourceContactMethod.countSourceContactMethods();
+        long count = sourceContactMethodService.countAllSourceContactMethods();
         Assert.assertTrue("Counter for 'SourceContactMethod' incorrectly reported there were no entries", count > 0);
     }
     
@@ -39,7 +42,7 @@ privileged aspect SourceContactMethodIntegrationTest_Roo_IntegrationTest {
         Assert.assertNotNull("Data on demand for 'SourceContactMethod' failed to initialize correctly", obj);
         Integer id = obj.getId();
         Assert.assertNotNull("Data on demand for 'SourceContactMethod' failed to provide an identifier", id);
-        obj = SourceContactMethod.findSourceContactMethod(id);
+        obj = sourceContactMethodService.findSourceContactMethod(id);
         Assert.assertNotNull("Find method for 'SourceContactMethod' illegally returned null for id '" + id + "'", obj);
         Assert.assertEquals("Find method for 'SourceContactMethod' returned the incorrect identifier", id, obj.getId());
     }
@@ -47,9 +50,9 @@ privileged aspect SourceContactMethodIntegrationTest_Roo_IntegrationTest {
     @Test
     public void SourceContactMethodIntegrationTest.testFindAllSourceContactMethods() {
         Assert.assertNotNull("Data on demand for 'SourceContactMethod' failed to initialize correctly", dod.getRandomSourceContactMethod());
-        long count = SourceContactMethod.countSourceContactMethods();
+        long count = sourceContactMethodService.countAllSourceContactMethods();
         Assert.assertTrue("Too expensive to perform a find all test for 'SourceContactMethod', as there are " + count + " entries; set the findAllMaximum to exceed this value or set findAll=false on the integration test annotation to disable the test", count < 250);
-        List<SourceContactMethod> result = SourceContactMethod.findAllSourceContactMethods();
+        List<SourceContactMethod> result = sourceContactMethodService.findAllSourceContactMethods();
         Assert.assertNotNull("Find all method for 'SourceContactMethod' illegally returned null", result);
         Assert.assertTrue("Find all method for 'SourceContactMethod' failed to return any data", result.size() > 0);
     }
@@ -57,36 +60,36 @@ privileged aspect SourceContactMethodIntegrationTest_Roo_IntegrationTest {
     @Test
     public void SourceContactMethodIntegrationTest.testFindSourceContactMethodEntries() {
         Assert.assertNotNull("Data on demand for 'SourceContactMethod' failed to initialize correctly", dod.getRandomSourceContactMethod());
-        long count = SourceContactMethod.countSourceContactMethods();
+        long count = sourceContactMethodService.countAllSourceContactMethods();
         if (count > 20) count = 20;
         int firstResult = 0;
         int maxResults = (int) count;
-        List<SourceContactMethod> result = SourceContactMethod.findSourceContactMethodEntries(firstResult, maxResults);
+        List<SourceContactMethod> result = sourceContactMethodService.findSourceContactMethodEntries(firstResult, maxResults);
         Assert.assertNotNull("Find entries method for 'SourceContactMethod' illegally returned null", result);
         Assert.assertEquals("Find entries method for 'SourceContactMethod' returned an incorrect number of entries", count, result.size());
     }
     
     @Test
-    public void SourceContactMethodIntegrationTest.testPersist() {
+    public void SourceContactMethodIntegrationTest.testSaveSourceContactMethod() {
         Assert.assertNotNull("Data on demand for 'SourceContactMethod' failed to initialize correctly", dod.getRandomSourceContactMethod());
         SourceContactMethod obj = dod.getNewTransientSourceContactMethod(Integer.MAX_VALUE);
         Assert.assertNotNull("Data on demand for 'SourceContactMethod' failed to provide a new transient entity", obj);
         Assert.assertNull("Expected 'SourceContactMethod' identifier to be null", obj.getId());
-        obj.persist();
+        sourceContactMethodService.saveSourceContactMethod(obj);
         obj.flush();
         Assert.assertNotNull("Expected 'SourceContactMethod' identifier to no longer be null", obj.getId());
     }
     
     @Test
-    public void SourceContactMethodIntegrationTest.testRemove() {
+    public void SourceContactMethodIntegrationTest.testDeleteSourceContactMethod() {
         SourceContactMethod obj = dod.getRandomSourceContactMethod();
         Assert.assertNotNull("Data on demand for 'SourceContactMethod' failed to initialize correctly", obj);
         Integer id = obj.getId();
         Assert.assertNotNull("Data on demand for 'SourceContactMethod' failed to provide an identifier", id);
-        obj = SourceContactMethod.findSourceContactMethod(id);
-        obj.remove();
+        obj = sourceContactMethodService.findSourceContactMethod(id);
+        sourceContactMethodService.deleteSourceContactMethod(obj);
         obj.flush();
-        Assert.assertNull("Failed to remove 'SourceContactMethod' with identifier '" + id + "'", SourceContactMethod.findSourceContactMethod(id));
+        Assert.assertNull("Failed to remove 'SourceContactMethod' with identifier '" + id + "'", sourceContactMethodService.findSourceContactMethod(id));
     }
     
 }

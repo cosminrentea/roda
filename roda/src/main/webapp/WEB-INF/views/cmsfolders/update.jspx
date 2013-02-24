@@ -4,8 +4,7 @@
     <jsp:output omit-xml-declaration="yes"/>
     <form:update id="fu_ro_roda_CmsFolder" modelAttribute="cmsFolder" path="/cmsfolders" versionField="none" z="hvQheqxiTGtLDYnwn2oTzEKAJhc=">
         <field:simple field="cmsFiles" id="c_ro_roda_CmsFolder_cmsFiles" messageCode="entity_reference_not_managed" messageCodeAttribute="Cms File" z="7FHs7s9izXGmNgI9IFbyhSoq/KU="/>
-        <field:simple field="cmsFolders" id="c_ro_roda_CmsFolder_cmsFolders" messageCode="entity_reference_not_managed" messageCodeAttribute="Cms Folder" z="uQiEHT16CdGi+FihDRRcPBDVbP0="/>
-        <field:select field="parentId" id="c_ro_roda_CmsFolder_parentId" itemValue="id" items="${cmsfolders}" path="/cmsfolders" z="cdu3hJ+RgLd6PtvxndQHdUXae+g="/>
+        <field:input field="parentId" id="c_ro_roda_CmsFolder_parentId" validationMessageCode="field_invalid_integer" z="j2mCFP23JRwnvlZQg+ID0r/TJtw="/>
         <field:input field="name" id="c_ro_roda_CmsFolder_name" required="true" z="ABGBkJjbp5rr8OfAoB4upzA0/94="/>
         <field:input field="description" id="c_ro_roda_CmsFolder_description" z="GPPxom6YqSaicaNNSnYhZnu/zDo="/>
     </form:update>

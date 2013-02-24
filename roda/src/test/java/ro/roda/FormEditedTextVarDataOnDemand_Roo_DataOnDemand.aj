@@ -12,11 +12,14 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import ro.roda.Form;
 import ro.roda.FormDataOnDemand;
 import ro.roda.FormEditedTextVar;
 import ro.roda.FormEditedTextVarDataOnDemand;
 import ro.roda.FormEditedTextVarPK;
+import ro.roda.Variable;
 import ro.roda.VariableDataOnDemand;
+import ro.roda.service.FormEditedTextVarService;
 
 privileged aspect FormEditedTextVarDataOnDemand_Roo_DataOnDemand {
     
@@ -27,15 +30,20 @@ privileged aspect FormEditedTextVarDataOnDemand_Roo_DataOnDemand {
     private List<FormEditedTextVar> FormEditedTextVarDataOnDemand.data;
     
     @Autowired
-    private FormDataOnDemand FormEditedTextVarDataOnDemand.formDataOnDemand;
+    FormDataOnDemand FormEditedTextVarDataOnDemand.formDataOnDemand;
     
     @Autowired
-    private VariableDataOnDemand FormEditedTextVarDataOnDemand.variableDataOnDemand;
+    VariableDataOnDemand FormEditedTextVarDataOnDemand.variableDataOnDemand;
+    
+    @Autowired
+    FormEditedTextVarService FormEditedTextVarDataOnDemand.formEditedTextVarService;
     
     public FormEditedTextVar FormEditedTextVarDataOnDemand.getNewTransientFormEditedTextVar(int index) {
         FormEditedTextVar obj = new FormEditedTextVar();
         setEmbeddedIdClass(obj, index);
+        setFormId(obj, index);
         setText(obj, index);
+        setVariableId(obj, index);
         return obj;
     }
     
@@ -47,9 +55,19 @@ privileged aspect FormEditedTextVarDataOnDemand_Roo_DataOnDemand {
         obj.setId(embeddedIdClass);
     }
     
+    public void FormEditedTextVarDataOnDemand.setFormId(FormEditedTextVar obj, int index) {
+        Form formId = formDataOnDemand.getRandomForm();
+        obj.setFormId(formId);
+    }
+    
     public void FormEditedTextVarDataOnDemand.setText(FormEditedTextVar obj, int index) {
         String text = "text_" + index;
         obj.setText(text);
+    }
+    
+    public void FormEditedTextVarDataOnDemand.setVariableId(FormEditedTextVar obj, int index) {
+        Variable variableId = variableDataOnDemand.getRandomVariable();
+        obj.setVariableId(variableId);
     }
     
     public FormEditedTextVar FormEditedTextVarDataOnDemand.getSpecificFormEditedTextVar(int index) {
@@ -62,14 +80,14 @@ privileged aspect FormEditedTextVarDataOnDemand_Roo_DataOnDemand {
         }
         FormEditedTextVar obj = data.get(index);
         FormEditedTextVarPK id = obj.getId();
-        return FormEditedTextVar.findFormEditedTextVar(id);
+        return formEditedTextVarService.findFormEditedTextVar(id);
     }
     
     public FormEditedTextVar FormEditedTextVarDataOnDemand.getRandomFormEditedTextVar() {
         init();
         FormEditedTextVar obj = data.get(rnd.nextInt(data.size()));
         FormEditedTextVarPK id = obj.getId();
-        return FormEditedTextVar.findFormEditedTextVar(id);
+        return formEditedTextVarService.findFormEditedTextVar(id);
     }
     
     public boolean FormEditedTextVarDataOnDemand.modifyFormEditedTextVar(FormEditedTextVar obj) {
@@ -79,7 +97,7 @@ privileged aspect FormEditedTextVarDataOnDemand_Roo_DataOnDemand {
     public void FormEditedTextVarDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = FormEditedTextVar.findFormEditedTextVarEntries(from, to);
+        data = formEditedTextVarService.findFormEditedTextVarEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'FormEditedTextVar' illegally returned null");
         }
@@ -91,7 +109,7 @@ privileged aspect FormEditedTextVarDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             FormEditedTextVar obj = getNewTransientFormEditedTextVar(i);
             try {
-                obj.persist();
+                formEditedTextVarService.saveFormEditedTextVar(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

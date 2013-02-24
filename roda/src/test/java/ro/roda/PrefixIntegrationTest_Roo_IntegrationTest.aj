@@ -11,9 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.Prefix;
 import ro.roda.PrefixDataOnDemand;
 import ro.roda.PrefixIntegrationTest;
+import ro.roda.service.PrefixService;
 
 privileged aspect PrefixIntegrationTest_Roo_IntegrationTest {
     
@@ -24,12 +24,15 @@ privileged aspect PrefixIntegrationTest_Roo_IntegrationTest {
     declare @type: PrefixIntegrationTest: @Transactional;
     
     @Autowired
-    private PrefixDataOnDemand PrefixIntegrationTest.dod;
+    PrefixDataOnDemand PrefixIntegrationTest.dod;
+    
+    @Autowired
+    PrefixService PrefixIntegrationTest.prefixService;
     
     @Test
-    public void PrefixIntegrationTest.testCountPrefixes() {
+    public void PrefixIntegrationTest.testCountAllPrefixes() {
         Assert.assertNotNull("Data on demand for 'Prefix' failed to initialize correctly", dod.getRandomPrefix());
-        long count = Prefix.countPrefixes();
+        long count = prefixService.countAllPrefixes();
         Assert.assertTrue("Counter for 'Prefix' incorrectly reported there were no entries", count > 0);
     }
     
@@ -39,7 +42,7 @@ privileged aspect PrefixIntegrationTest_Roo_IntegrationTest {
         Assert.assertNotNull("Data on demand for 'Prefix' failed to initialize correctly", obj);
         Integer id = obj.getId();
         Assert.assertNotNull("Data on demand for 'Prefix' failed to provide an identifier", id);
-        obj = Prefix.findPrefix(id);
+        obj = prefixService.findPrefix(id);
         Assert.assertNotNull("Find method for 'Prefix' illegally returned null for id '" + id + "'", obj);
         Assert.assertEquals("Find method for 'Prefix' returned the incorrect identifier", id, obj.getId());
     }
@@ -47,9 +50,9 @@ privileged aspect PrefixIntegrationTest_Roo_IntegrationTest {
     @Test
     public void PrefixIntegrationTest.testFindAllPrefixes() {
         Assert.assertNotNull("Data on demand for 'Prefix' failed to initialize correctly", dod.getRandomPrefix());
-        long count = Prefix.countPrefixes();
+        long count = prefixService.countAllPrefixes();
         Assert.assertTrue("Too expensive to perform a find all test for 'Prefix', as there are " + count + " entries; set the findAllMaximum to exceed this value or set findAll=false on the integration test annotation to disable the test", count < 250);
-        List<Prefix> result = Prefix.findAllPrefixes();
+        List<Prefix> result = prefixService.findAllPrefixes();
         Assert.assertNotNull("Find all method for 'Prefix' illegally returned null", result);
         Assert.assertTrue("Find all method for 'Prefix' failed to return any data", result.size() > 0);
     }
@@ -57,36 +60,36 @@ privileged aspect PrefixIntegrationTest_Roo_IntegrationTest {
     @Test
     public void PrefixIntegrationTest.testFindPrefixEntries() {
         Assert.assertNotNull("Data on demand for 'Prefix' failed to initialize correctly", dod.getRandomPrefix());
-        long count = Prefix.countPrefixes();
+        long count = prefixService.countAllPrefixes();
         if (count > 20) count = 20;
         int firstResult = 0;
         int maxResults = (int) count;
-        List<Prefix> result = Prefix.findPrefixEntries(firstResult, maxResults);
+        List<Prefix> result = prefixService.findPrefixEntries(firstResult, maxResults);
         Assert.assertNotNull("Find entries method for 'Prefix' illegally returned null", result);
         Assert.assertEquals("Find entries method for 'Prefix' returned an incorrect number of entries", count, result.size());
     }
     
     @Test
-    public void PrefixIntegrationTest.testPersist() {
+    public void PrefixIntegrationTest.testSavePrefix() {
         Assert.assertNotNull("Data on demand for 'Prefix' failed to initialize correctly", dod.getRandomPrefix());
         Prefix obj = dod.getNewTransientPrefix(Integer.MAX_VALUE);
         Assert.assertNotNull("Data on demand for 'Prefix' failed to provide a new transient entity", obj);
         Assert.assertNull("Expected 'Prefix' identifier to be null", obj.getId());
-        obj.persist();
+        prefixService.savePrefix(obj);
         obj.flush();
         Assert.assertNotNull("Expected 'Prefix' identifier to no longer be null", obj.getId());
     }
     
     @Test
-    public void PrefixIntegrationTest.testRemove() {
+    public void PrefixIntegrationTest.testDeletePrefix() {
         Prefix obj = dod.getRandomPrefix();
         Assert.assertNotNull("Data on demand for 'Prefix' failed to initialize correctly", obj);
         Integer id = obj.getId();
         Assert.assertNotNull("Data on demand for 'Prefix' failed to provide an identifier", id);
-        obj = Prefix.findPrefix(id);
-        obj.remove();
+        obj = prefixService.findPrefix(id);
+        prefixService.deletePrefix(obj);
         obj.flush();
-        Assert.assertNull("Failed to remove 'Prefix' with identifier '" + id + "'", Prefix.findPrefix(id));
+        Assert.assertNull("Failed to remove 'Prefix' with identifier '" + id + "'", prefixService.findPrefix(id));
     }
     
 }

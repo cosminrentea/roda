@@ -10,7 +10,7 @@ import ro.roda.Source;
 privileged aspect Source_Roo_ToString {
     
     public String Source.toString() {
-        return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+        return new ReflectionToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE).setExcludeFieldNames("org").toString();
     }
     
 }

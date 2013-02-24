@@ -11,9 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.Country;
 import ro.roda.CountryDataOnDemand;
 import ro.roda.CountryIntegrationTest;
+import ro.roda.service.CountryService;
 
 privileged aspect CountryIntegrationTest_Roo_IntegrationTest {
     
@@ -24,12 +24,15 @@ privileged aspect CountryIntegrationTest_Roo_IntegrationTest {
     declare @type: CountryIntegrationTest: @Transactional;
     
     @Autowired
-    private CountryDataOnDemand CountryIntegrationTest.dod;
+    CountryDataOnDemand CountryIntegrationTest.dod;
+    
+    @Autowired
+    CountryService CountryIntegrationTest.countryService;
     
     @Test
-    public void CountryIntegrationTest.testCountCountrys() {
+    public void CountryIntegrationTest.testCountAllCountrys() {
         Assert.assertNotNull("Data on demand for 'Country' failed to initialize correctly", dod.getRandomCountry());
-        long count = Country.countCountrys();
+        long count = countryService.countAllCountrys();
         Assert.assertTrue("Counter for 'Country' incorrectly reported there were no entries", count > 0);
     }
     
@@ -39,7 +42,7 @@ privileged aspect CountryIntegrationTest_Roo_IntegrationTest {
         Assert.assertNotNull("Data on demand for 'Country' failed to initialize correctly", obj);
         String id = obj.getId();
         Assert.assertNotNull("Data on demand for 'Country' failed to provide an identifier", id);
-        obj = Country.findCountry(id);
+        obj = countryService.findCountry(id);
         Assert.assertNotNull("Find method for 'Country' illegally returned null for id '" + id + "'", obj);
         Assert.assertEquals("Find method for 'Country' returned the incorrect identifier", id, obj.getId());
     }
@@ -47,9 +50,9 @@ privileged aspect CountryIntegrationTest_Roo_IntegrationTest {
     @Test
     public void CountryIntegrationTest.testFindAllCountrys() {
         Assert.assertNotNull("Data on demand for 'Country' failed to initialize correctly", dod.getRandomCountry());
-        long count = Country.countCountrys();
+        long count = countryService.countAllCountrys();
         Assert.assertTrue("Too expensive to perform a find all test for 'Country', as there are " + count + " entries; set the findAllMaximum to exceed this value or set findAll=false on the integration test annotation to disable the test", count < 250);
-        List<Country> result = Country.findAllCountrys();
+        List<Country> result = countryService.findAllCountrys();
         Assert.assertNotNull("Find all method for 'Country' illegally returned null", result);
         Assert.assertTrue("Find all method for 'Country' failed to return any data", result.size() > 0);
     }
@@ -57,36 +60,36 @@ privileged aspect CountryIntegrationTest_Roo_IntegrationTest {
     @Test
     public void CountryIntegrationTest.testFindCountryEntries() {
         Assert.assertNotNull("Data on demand for 'Country' failed to initialize correctly", dod.getRandomCountry());
-        long count = Country.countCountrys();
+        long count = countryService.countAllCountrys();
         if (count > 20) count = 20;
         int firstResult = 0;
         int maxResults = (int) count;
-        List<Country> result = Country.findCountryEntries(firstResult, maxResults);
+        List<Country> result = countryService.findCountryEntries(firstResult, maxResults);
         Assert.assertNotNull("Find entries method for 'Country' illegally returned null", result);
         Assert.assertEquals("Find entries method for 'Country' returned an incorrect number of entries", count, result.size());
     }
     
     @Test
-    public void CountryIntegrationTest.testPersist() {
+    public void CountryIntegrationTest.testSaveCountry() {
         Assert.assertNotNull("Data on demand for 'Country' failed to initialize correctly", dod.getRandomCountry());
         Country obj = dod.getNewTransientCountry(Integer.MAX_VALUE);
         Assert.assertNotNull("Data on demand for 'Country' failed to provide a new transient entity", obj);
         Assert.assertNull("Expected 'Country' identifier to be null", obj.getId());
-        obj.persist();
+        countryService.saveCountry(obj);
         obj.flush();
         Assert.assertNotNull("Expected 'Country' identifier to no longer be null", obj.getId());
     }
     
     @Test
-    public void CountryIntegrationTest.testRemove() {
+    public void CountryIntegrationTest.testDeleteCountry() {
         Country obj = dod.getRandomCountry();
         Assert.assertNotNull("Data on demand for 'Country' failed to initialize correctly", obj);
         String id = obj.getId();
         Assert.assertNotNull("Data on demand for 'Country' failed to provide an identifier", id);
-        obj = Country.findCountry(id);
-        obj.remove();
+        obj = countryService.findCountry(id);
+        countryService.deleteCountry(obj);
         obj.flush();
-        Assert.assertNull("Failed to remove 'Country' with identifier '" + id + "'", Country.findCountry(id));
+        Assert.assertNull("Failed to remove 'Country' with identifier '" + id + "'", countryService.findCountry(id));
     }
     
 }

@@ -6,7 +6,6 @@ package ro.roda;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
@@ -15,11 +14,15 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import ro.roda.Rodauser;
+import ro.roda.RodauserDataOnDemand;
+import ro.roda.Source;
 import ro.roda.SourceDataOnDemand;
+import ro.roda.Sourcetype;
 import ro.roda.SourcetypeDataOnDemand;
 import ro.roda.SourcetypeHistory;
 import ro.roda.SourcetypeHistoryDataOnDemand;
-import ro.roda.UserDataOnDemand;
+import ro.roda.service.SourcetypeHistoryService;
 
 privileged aspect SourcetypeHistoryDataOnDemand_Roo_DataOnDemand {
     
@@ -30,29 +33,50 @@ privileged aspect SourcetypeHistoryDataOnDemand_Roo_DataOnDemand {
     private List<SourcetypeHistory> SourcetypeHistoryDataOnDemand.data;
     
     @Autowired
-    private UserDataOnDemand SourcetypeHistoryDataOnDemand.userDataOnDemand;
+    RodauserDataOnDemand SourcetypeHistoryDataOnDemand.rodauserDataOnDemand;
     
     @Autowired
-    private SourceDataOnDemand SourcetypeHistoryDataOnDemand.sourceDataOnDemand;
+    SourceDataOnDemand SourcetypeHistoryDataOnDemand.sourceDataOnDemand;
     
     @Autowired
-    private SourcetypeDataOnDemand SourcetypeHistoryDataOnDemand.sourcetypeDataOnDemand;
+    SourcetypeDataOnDemand SourcetypeHistoryDataOnDemand.sourcetypeDataOnDemand;
+    
+    @Autowired
+    SourcetypeHistoryService SourcetypeHistoryDataOnDemand.sourcetypeHistoryService;
     
     public SourcetypeHistory SourcetypeHistoryDataOnDemand.getNewTransientSourcetypeHistory(int index) {
         SourcetypeHistory obj = new SourcetypeHistory();
+        setAddedBy(obj, index);
         setDateend(obj, index);
         setDatestart(obj, index);
+        setOrgId(obj, index);
+        setSourcetypeId(obj, index);
         return obj;
     }
     
+    public void SourcetypeHistoryDataOnDemand.setAddedBy(SourcetypeHistory obj, int index) {
+        Rodauser addedBy = rodauserDataOnDemand.getRandomRodauser();
+        obj.setAddedBy(addedBy);
+    }
+    
     public void SourcetypeHistoryDataOnDemand.setDateend(SourcetypeHistory obj, int index) {
-        Date dateend = new GregorianCalendar(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH), Calendar.getInstance().get(Calendar.HOUR_OF_DAY), Calendar.getInstance().get(Calendar.MINUTE), Calendar.getInstance().get(Calendar.SECOND) + new Double(Math.random() * 1000).intValue()).getTime();
+        Calendar dateend = Calendar.getInstance();
         obj.setDateend(dateend);
     }
     
     public void SourcetypeHistoryDataOnDemand.setDatestart(SourcetypeHistory obj, int index) {
-        Date datestart = new GregorianCalendar(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH), Calendar.getInstance().get(Calendar.HOUR_OF_DAY), Calendar.getInstance().get(Calendar.MINUTE), Calendar.getInstance().get(Calendar.SECOND) + new Double(Math.random() * 1000).intValue()).getTime();
+        Calendar datestart = Calendar.getInstance();
         obj.setDatestart(datestart);
+    }
+    
+    public void SourcetypeHistoryDataOnDemand.setOrgId(SourcetypeHistory obj, int index) {
+        Source orgId = sourceDataOnDemand.getRandomSource();
+        obj.setOrgId(orgId);
+    }
+    
+    public void SourcetypeHistoryDataOnDemand.setSourcetypeId(SourcetypeHistory obj, int index) {
+        Sourcetype sourcetypeId = sourcetypeDataOnDemand.getRandomSourcetype();
+        obj.setSourcetypeId(sourcetypeId);
     }
     
     public SourcetypeHistory SourcetypeHistoryDataOnDemand.getSpecificSourcetypeHistory(int index) {
@@ -65,14 +89,14 @@ privileged aspect SourcetypeHistoryDataOnDemand_Roo_DataOnDemand {
         }
         SourcetypeHistory obj = data.get(index);
         Integer id = obj.getId();
-        return SourcetypeHistory.findSourcetypeHistory(id);
+        return sourcetypeHistoryService.findSourcetypeHistory(id);
     }
     
     public SourcetypeHistory SourcetypeHistoryDataOnDemand.getRandomSourcetypeHistory() {
         init();
         SourcetypeHistory obj = data.get(rnd.nextInt(data.size()));
         Integer id = obj.getId();
-        return SourcetypeHistory.findSourcetypeHistory(id);
+        return sourcetypeHistoryService.findSourcetypeHistory(id);
     }
     
     public boolean SourcetypeHistoryDataOnDemand.modifySourcetypeHistory(SourcetypeHistory obj) {
@@ -82,7 +106,7 @@ privileged aspect SourcetypeHistoryDataOnDemand_Roo_DataOnDemand {
     public void SourcetypeHistoryDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = SourcetypeHistory.findSourcetypeHistoryEntries(from, to);
+        data = sourcetypeHistoryService.findSourcetypeHistoryEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'SourcetypeHistory' illegally returned null");
         }
@@ -94,7 +118,7 @@ privileged aspect SourcetypeHistoryDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             SourcetypeHistory obj = getNewTransientSourcetypeHistory(i);
             try {
-                obj.persist();
+                sourcetypeHistoryService.saveSourcetypeHistory(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

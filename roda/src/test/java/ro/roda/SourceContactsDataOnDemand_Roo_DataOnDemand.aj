@@ -6,7 +6,6 @@ package ro.roda;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
@@ -15,11 +14,15 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import ro.roda.Person;
 import ro.roda.PersonDataOnDemand;
+import ro.roda.Source;
+import ro.roda.SourceContactMethod;
 import ro.roda.SourceContactMethodDataOnDemand;
 import ro.roda.SourceContacts;
 import ro.roda.SourceContactsDataOnDemand;
 import ro.roda.SourceDataOnDemand;
+import ro.roda.service.SourceContactsService;
 
 privileged aspect SourceContactsDataOnDemand_Roo_DataOnDemand {
     
@@ -30,30 +33,51 @@ privileged aspect SourceContactsDataOnDemand_Roo_DataOnDemand {
     private List<SourceContacts> SourceContactsDataOnDemand.data;
     
     @Autowired
-    private PersonDataOnDemand SourceContactsDataOnDemand.personDataOnDemand;
+    PersonDataOnDemand SourceContactsDataOnDemand.personDataOnDemand;
     
     @Autowired
-    private SourceContactMethodDataOnDemand SourceContactsDataOnDemand.sourceContactMethodDataOnDemand;
+    SourceContactMethodDataOnDemand SourceContactsDataOnDemand.sourceContactMethodDataOnDemand;
     
     @Autowired
-    private SourceDataOnDemand SourceContactsDataOnDemand.sourceDataOnDemand;
+    SourceDataOnDemand SourceContactsDataOnDemand.sourceDataOnDemand;
+    
+    @Autowired
+    SourceContactsService SourceContactsDataOnDemand.sourceContactsService;
     
     public SourceContacts SourceContactsDataOnDemand.getNewTransientSourceContacts(int index) {
         SourceContacts obj = new SourceContacts();
         setContactDate(obj, index);
         setFollowup(obj, index);
+        setPersonId(obj, index);
+        setSourceContactMethodId(obj, index);
+        setSourceId(obj, index);
         setSynopsis(obj, index);
         return obj;
     }
     
     public void SourceContactsDataOnDemand.setContactDate(SourceContacts obj, int index) {
-        Date contactDate = new GregorianCalendar(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH), Calendar.getInstance().get(Calendar.HOUR_OF_DAY), Calendar.getInstance().get(Calendar.MINUTE), Calendar.getInstance().get(Calendar.SECOND) + new Double(Math.random() * 1000).intValue()).getTime();
+        Calendar contactDate = Calendar.getInstance();
         obj.setContactDate(contactDate);
     }
     
     public void SourceContactsDataOnDemand.setFollowup(SourceContacts obj, int index) {
         Integer followup = new Integer(index);
         obj.setFollowup(followup);
+    }
+    
+    public void SourceContactsDataOnDemand.setPersonId(SourceContacts obj, int index) {
+        Person personId = personDataOnDemand.getRandomPerson();
+        obj.setPersonId(personId);
+    }
+    
+    public void SourceContactsDataOnDemand.setSourceContactMethodId(SourceContacts obj, int index) {
+        SourceContactMethod sourceContactMethodId = sourceContactMethodDataOnDemand.getRandomSourceContactMethod();
+        obj.setSourceContactMethodId(sourceContactMethodId);
+    }
+    
+    public void SourceContactsDataOnDemand.setSourceId(SourceContacts obj, int index) {
+        Source sourceId = sourceDataOnDemand.getRandomSource();
+        obj.setSourceId(sourceId);
     }
     
     public void SourceContactsDataOnDemand.setSynopsis(SourceContacts obj, int index) {
@@ -71,14 +95,14 @@ privileged aspect SourceContactsDataOnDemand_Roo_DataOnDemand {
         }
         SourceContacts obj = data.get(index);
         Integer id = obj.getId();
-        return SourceContacts.findSourceContacts(id);
+        return sourceContactsService.findSourceContacts(id);
     }
     
     public SourceContacts SourceContactsDataOnDemand.getRandomSourceContacts() {
         init();
         SourceContacts obj = data.get(rnd.nextInt(data.size()));
         Integer id = obj.getId();
-        return SourceContacts.findSourceContacts(id);
+        return sourceContactsService.findSourceContacts(id);
     }
     
     public boolean SourceContactsDataOnDemand.modifySourceContacts(SourceContacts obj) {
@@ -88,7 +112,7 @@ privileged aspect SourceContactsDataOnDemand_Roo_DataOnDemand {
     public void SourceContactsDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = SourceContacts.findSourceContactsEntries(from, to);
+        data = sourceContactsService.findSourceContactsEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'SourceContacts' illegally returned null");
         }
@@ -100,7 +124,7 @@ privileged aspect SourceContactsDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             SourceContacts obj = getNewTransientSourceContacts(i);
             try {
-                obj.persist();
+                sourceContactsService.saveSourceContacts(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

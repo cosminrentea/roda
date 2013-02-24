@@ -5,18 +5,15 @@ package ro.roda;
 
 import java.util.Set;
 import javax.persistence.Column;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.validation.constraints.NotNull;
+import ro.roda.Rodauser;
 import ro.roda.Role;
-import ro.roda.User;
 
 privileged aspect Role_Roo_DbManaged {
     
-    @ManyToMany
-    @JoinTable(name = "user_role", joinColumns = { @JoinColumn(name = "role_id", nullable = false) }, inverseJoinColumns = { @JoinColumn(name = "user_id", nullable = false) })
-    private Set<User> Role.users;
+    @ManyToMany(mappedBy = "roles")
+    private Set<Rodauser> Role.rodausers;
     
     @Column(name = "name", columnDefinition = "varchar", length = 100)
     @NotNull
@@ -25,12 +22,12 @@ privileged aspect Role_Roo_DbManaged {
     @Column(name = "description", columnDefinition = "text")
     private String Role.description;
     
-    public Set<User> Role.getUsers() {
-        return users;
+    public Set<Rodauser> Role.getRodausers() {
+        return rodausers;
     }
     
-    public void Role.setUsers(Set<User> users) {
-        this.users = users;
+    public void Role.setRodausers(Set<Rodauser> rodausers) {
+        this.rodausers = rodausers;
     }
     
     public String Role.getName() {

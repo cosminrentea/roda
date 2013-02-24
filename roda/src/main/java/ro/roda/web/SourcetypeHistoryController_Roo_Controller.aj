@@ -7,6 +7,7 @@ import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.joda.time.format.DateTimeFormat;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -16,13 +17,23 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.Source;
-import ro.roda.Sourcetype;
+import ro.roda.Rodauser;
 import ro.roda.SourcetypeHistory;
-import ro.roda.User;
+import ro.roda.service.SourceService;
+import ro.roda.service.SourcetypeHistoryService;
+import ro.roda.service.SourcetypeService;
 import ro.roda.web.SourcetypeHistoryController;
 
 privileged aspect SourcetypeHistoryController_Roo_Controller {
+    
+    @Autowired
+    SourcetypeHistoryService SourcetypeHistoryController.sourcetypeHistoryService;
+    
+    @Autowired
+    SourceService SourcetypeHistoryController.sourceService;
+    
+    @Autowired
+    SourcetypeService SourcetypeHistoryController.sourcetypeService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String SourcetypeHistoryController.create(@Valid SourcetypeHistory sourcetypeHistory, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -31,7 +42,7 @@ privileged aspect SourcetypeHistoryController_Roo_Controller {
             return "sourcetypehistorys/create";
         }
         uiModel.asMap().clear();
-        sourcetypeHistory.persist();
+        sourcetypeHistoryService.saveSourcetypeHistory(sourcetypeHistory);
         return "redirect:/sourcetypehistorys/" + encodeUrlPathSegment(sourcetypeHistory.getId().toString(), httpServletRequest);
     }
     
@@ -44,7 +55,7 @@ privileged aspect SourcetypeHistoryController_Roo_Controller {
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String SourcetypeHistoryController.show(@PathVariable("id") Integer id, Model uiModel) {
         addDateTimeFormatPatterns(uiModel);
-        uiModel.addAttribute("sourcetypehistory", SourcetypeHistory.findSourcetypeHistory(id));
+        uiModel.addAttribute("sourcetypehistory", sourcetypeHistoryService.findSourcetypeHistory(id));
         uiModel.addAttribute("itemId", id);
         return "sourcetypehistorys/show";
     }
@@ -54,11 +65,11 @@ privileged aspect SourcetypeHistoryController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("sourcetypehistorys", SourcetypeHistory.findSourcetypeHistoryEntries(firstResult, sizeNo));
-            float nrOfPages = (float) SourcetypeHistory.countSourcetypeHistorys() / sizeNo;
+            uiModel.addAttribute("sourcetypehistorys", sourcetypeHistoryService.findSourcetypeHistoryEntries(firstResult, sizeNo));
+            float nrOfPages = (float) sourcetypeHistoryService.countAllSourcetypeHistorys() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("sourcetypehistorys", SourcetypeHistory.findAllSourcetypeHistorys());
+            uiModel.addAttribute("sourcetypehistorys", sourcetypeHistoryService.findAllSourcetypeHistorys());
         }
         addDateTimeFormatPatterns(uiModel);
         return "sourcetypehistorys/list";
@@ -71,20 +82,20 @@ privileged aspect SourcetypeHistoryController_Roo_Controller {
             return "sourcetypehistorys/update";
         }
         uiModel.asMap().clear();
-        sourcetypeHistory.merge();
+        sourcetypeHistoryService.updateSourcetypeHistory(sourcetypeHistory);
         return "redirect:/sourcetypehistorys/" + encodeUrlPathSegment(sourcetypeHistory.getId().toString(), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String SourcetypeHistoryController.updateForm(@PathVariable("id") Integer id, Model uiModel) {
-        populateEditForm(uiModel, SourcetypeHistory.findSourcetypeHistory(id));
+        populateEditForm(uiModel, sourcetypeHistoryService.findSourcetypeHistory(id));
         return "sourcetypehistorys/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
     public String SourcetypeHistoryController.delete(@PathVariable("id") Integer id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        SourcetypeHistory sourcetypeHistory = SourcetypeHistory.findSourcetypeHistory(id);
-        sourcetypeHistory.remove();
+        SourcetypeHistory sourcetypeHistory = sourcetypeHistoryService.findSourcetypeHistory(id);
+        sourcetypeHistoryService.deleteSourcetypeHistory(sourcetypeHistory);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
@@ -92,16 +103,16 @@ privileged aspect SourcetypeHistoryController_Roo_Controller {
     }
     
     void SourcetypeHistoryController.addDateTimeFormatPatterns(Model uiModel) {
-        uiModel.addAttribute("sourcetypeHistory_datestart_date_format", DateTimeFormat.patternForStyle("M-", LocaleContextHolder.getLocale()));
-        uiModel.addAttribute("sourcetypeHistory_dateend_date_format", DateTimeFormat.patternForStyle("M-", LocaleContextHolder.getLocale()));
+        uiModel.addAttribute("sourcetypeHistory_datestart_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
+        uiModel.addAttribute("sourcetypeHistory_dateend_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
     }
     
     void SourcetypeHistoryController.populateEditForm(Model uiModel, SourcetypeHistory sourcetypeHistory) {
         uiModel.addAttribute("sourcetypeHistory", sourcetypeHistory);
         addDateTimeFormatPatterns(uiModel);
-        uiModel.addAttribute("sources", Source.findAllSources());
-        uiModel.addAttribute("sourcetypes", Sourcetype.findAllSourcetypes());
-        uiModel.addAttribute("users", User.findAllUsers());
+        uiModel.addAttribute("rodausers", Rodauser.findAllRodausers());
+        uiModel.addAttribute("sources", sourceService.findAllSources());
+        uiModel.addAttribute("sourcetypes", sourcetypeService.findAllSourcetypes());
     }
     
     String SourcetypeHistoryController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

@@ -7,7 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
-import ro.roda.User;
+import ro.roda.Rodauser;
 import ro.roda.UserSetting;
 import ro.roda.UserSettingValue;
 
@@ -15,7 +15,7 @@ privileged aspect UserSettingValue_Roo_DbManaged {
     
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
-    private User UserSettingValue.userId;
+    private Rodauser UserSettingValue.userId;
     
     @ManyToOne
     @JoinColumn(name = "user_setting_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
@@ -25,11 +25,11 @@ privileged aspect UserSettingValue_Roo_DbManaged {
     @NotNull
     private String UserSettingValue.value;
     
-    public User UserSettingValue.getUserId() {
+    public Rodauser UserSettingValue.getUserId() {
         return userId;
     }
     
-    public void UserSettingValue.setUserId(User userId) {
+    public void UserSettingValue.setUserId(Rodauser userId) {
         this.userId = userId;
     }
     

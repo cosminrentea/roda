@@ -3,7 +3,7 @@
 
 package ro.roda;
 
-import java.util.Date;
+import java.util.Calendar;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.JoinColumn;
@@ -24,12 +24,12 @@ import ro.roda.InstanceDescr;
 import ro.roda.InstanceKeyword;
 import ro.roda.InstanceOrg;
 import ro.roda.InstancePerson;
+import ro.roda.Rodauser;
 import ro.roda.SamplingProcedure;
 import ro.roda.Study;
 import ro.roda.TimeMethType;
 import ro.roda.Topic;
 import ro.roda.UnitAnalysis;
-import ro.roda.User;
 import ro.roda.Variable;
 
 privileged aspect Instance_Roo_DbManaged {
@@ -70,6 +70,10 @@ privileged aspect Instance_Roo_DbManaged {
     private Set<Variable> Instance.variables;
     
     @ManyToOne
+    @JoinColumn(name = "added_by", referencedColumnName = "id", nullable = false)
+    private Rodauser Instance.addedBy;
+    
+    @ManyToOne
     @JoinColumn(name = "study_id", referencedColumnName = "id", nullable = false)
     private Study Instance.studyId;
     
@@ -81,19 +85,15 @@ privileged aspect Instance_Roo_DbManaged {
     @JoinColumn(name = "unit_analysis_id", referencedColumnName = "id", nullable = false)
     private UnitAnalysis Instance.unitAnalysisId;
     
-    @ManyToOne
-    @JoinColumn(name = "added_by", referencedColumnName = "id", nullable = false)
-    private User Instance.addedBy;
-    
     @Column(name = "datestart", columnDefinition = "timestamp")
     @Temporal(TemporalType.TIMESTAMP)
-    @DateTimeFormat(style = "M-")
-    private Date Instance.datestart;
+    @DateTimeFormat(style = "MM")
+    private Calendar Instance.datestart;
     
     @Column(name = "dateend", columnDefinition = "timestamp")
     @Temporal(TemporalType.TIMESTAMP)
-    @DateTimeFormat(style = "M-")
-    private Date Instance.dateend;
+    @DateTimeFormat(style = "MM")
+    private Calendar Instance.dateend;
     
     @Column(name = "insertion_status", columnDefinition = "int4")
     @NotNull
@@ -110,8 +110,8 @@ privileged aspect Instance_Roo_DbManaged {
     @Column(name = "added", columnDefinition = "timestamp")
     @NotNull
     @Temporal(TemporalType.TIMESTAMP)
-    @DateTimeFormat(style = "M-")
-    private Date Instance.added;
+    @DateTimeFormat(style = "MM")
+    private Calendar Instance.added;
     
     public Set<SamplingProcedure> Instance.getSamplingProcedures() {
         return samplingProcedures;
@@ -201,6 +201,14 @@ privileged aspect Instance_Roo_DbManaged {
         this.variables = variables;
     }
     
+    public Rodauser Instance.getAddedBy() {
+        return addedBy;
+    }
+    
+    public void Instance.setAddedBy(Rodauser addedBy) {
+        this.addedBy = addedBy;
+    }
+    
     public Study Instance.getStudyId() {
         return studyId;
     }
@@ -225,27 +233,19 @@ privileged aspect Instance_Roo_DbManaged {
         this.unitAnalysisId = unitAnalysisId;
     }
     
-    public User Instance.getAddedBy() {
-        return addedBy;
-    }
-    
-    public void Instance.setAddedBy(User addedBy) {
-        this.addedBy = addedBy;
-    }
-    
-    public Date Instance.getDatestart() {
+    public Calendar Instance.getDatestart() {
         return datestart;
     }
     
-    public void Instance.setDatestart(Date datestart) {
+    public void Instance.setDatestart(Calendar datestart) {
         this.datestart = datestart;
     }
     
-    public Date Instance.getDateend() {
+    public Calendar Instance.getDateend() {
         return dateend;
     }
     
-    public void Instance.setDateend(Date dateend) {
+    public void Instance.setDateend(Calendar dateend) {
         this.dateend = dateend;
     }
     
@@ -273,11 +273,11 @@ privileged aspect Instance_Roo_DbManaged {
         this.rawMetadata = rawMetadata;
     }
     
-    public Date Instance.getAdded() {
+    public Calendar Instance.getAdded() {
         return added;
     }
     
-    public void Instance.setAdded(Date added) {
+    public void Instance.setAdded(Calendar added) {
         this.added = added;
     }
     

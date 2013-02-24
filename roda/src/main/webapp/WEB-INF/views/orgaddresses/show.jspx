@@ -2,10 +2,5 @@
 <div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <page:show id="ps_ro_roda_OrgAddress" object="${orgaddress}" path="/orgaddresses" z="RsWf55gSdmE4y8P/gIrd21+ai6M=">
-        <field:display field="addressId" id="s_ro_roda_OrgAddress_addressId" object="${orgaddress}" z="AmMtyIf9yx14om9X+BIkswFV+ZA="/>
-        <field:display field="orgId" id="s_ro_roda_OrgAddress_orgId" object="${orgaddress}" z="kiQZJbldKLQ072hMezrJ5gqA0xA="/>
-        <field:display date="true" dateTimePattern="${orgAddress_datestart_date_format}" field="datestart" id="s_ro_roda_OrgAddress_datestart" object="${orgaddress}" z="89FguHIxPA7GwRjiRci9nw+mW0A="/>
-        <field:display date="true" dateTimePattern="${orgAddress_dateend_date_format}" field="dateend" id="s_ro_roda_OrgAddress_dateend" object="${orgaddress}" z="IJL2en5+Jm3UC6jpGeVA/mbRZm8="/>
-    </page:show>
+    <page:show id="ps_ro_roda_OrgAddress" object="${orgaddress}" path="/orgaddresses" z="RsWf55gSdmE4y8P/gIrd21+ai6M="/>
 </div>

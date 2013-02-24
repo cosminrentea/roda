@@ -12,9 +12,11 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import ro.roda.CmsPage;
 import ro.roda.CmsPageContent;
 import ro.roda.CmsPageContentDataOnDemand;
 import ro.roda.CmsPageDataOnDemand;
+import ro.roda.service.CmsPageContentService;
 
 privileged aspect CmsPageContentDataOnDemand_Roo_DataOnDemand {
     
@@ -25,15 +27,24 @@ privileged aspect CmsPageContentDataOnDemand_Roo_DataOnDemand {
     private List<CmsPageContent> CmsPageContentDataOnDemand.data;
     
     @Autowired
-    private CmsPageDataOnDemand CmsPageContentDataOnDemand.cmsPageDataOnDemand;
+    CmsPageDataOnDemand CmsPageContentDataOnDemand.cmsPageDataOnDemand;
+    
+    @Autowired
+    CmsPageContentService CmsPageContentDataOnDemand.cmsPageContentService;
     
     public CmsPageContent CmsPageContentDataOnDemand.getNewTransientCmsPageContent(int index) {
         CmsPageContent obj = new CmsPageContent();
+        setCmsPageId(obj, index);
         setContentText(obj, index);
         setContentTitle(obj, index);
         setName(obj, index);
         setOrderInPage(obj, index);
         return obj;
+    }
+    
+    public void CmsPageContentDataOnDemand.setCmsPageId(CmsPageContent obj, int index) {
+        CmsPage cmsPageId = cmsPageDataOnDemand.getRandomCmsPage();
+        obj.setCmsPageId(cmsPageId);
     }
     
     public void CmsPageContentDataOnDemand.setContentText(CmsPageContent obj, int index) {
@@ -72,14 +83,14 @@ privileged aspect CmsPageContentDataOnDemand_Roo_DataOnDemand {
         }
         CmsPageContent obj = data.get(index);
         Integer id = obj.getId();
-        return CmsPageContent.findCmsPageContent(id);
+        return cmsPageContentService.findCmsPageContent(id);
     }
     
     public CmsPageContent CmsPageContentDataOnDemand.getRandomCmsPageContent() {
         init();
         CmsPageContent obj = data.get(rnd.nextInt(data.size()));
         Integer id = obj.getId();
-        return CmsPageContent.findCmsPageContent(id);
+        return cmsPageContentService.findCmsPageContent(id);
     }
     
     public boolean CmsPageContentDataOnDemand.modifyCmsPageContent(CmsPageContent obj) {
@@ -89,7 +100,7 @@ privileged aspect CmsPageContentDataOnDemand_Roo_DataOnDemand {
     public void CmsPageContentDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = CmsPageContent.findCmsPageContentEntries(from, to);
+        data = cmsPageContentService.findCmsPageContentEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'CmsPageContent' illegally returned null");
         }
@@ -101,7 +112,7 @@ privileged aspect CmsPageContentDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             CmsPageContent obj = getNewTransientCmsPageContent(i);
             try {
-                obj.persist();
+                cmsPageContentService.saveCmsPageContent(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

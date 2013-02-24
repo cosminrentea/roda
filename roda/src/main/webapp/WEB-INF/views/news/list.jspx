@@ -5,7 +5,7 @@
     <page:list id="pl_ro_roda_News" items="${newsitems}" z="hTEFJP9PDc/QZCZ7DWxSLSyx6bA=">
         <table:table data="${newsitems}" id="l_ro_roda_News" path="/news" z="JOx8KDXLFJjK4EYtpaJiPe2R9gI=">
             <table:column id="c_ro_roda_News_addedBy" property="addedBy" z="XJgxVo3XsTT4de3QzHmnwcXWC4w="/>
-            <table:column date="true" dateTimePattern="${news_added_date_format}" id="c_ro_roda_News_added" property="added" z="h2Vh40gfqAdtjmV3/Zk/x4S1etM="/>
+            <table:column calendar="true" dateTimePattern="${news_added_date_format}" id="c_ro_roda_News_added" property="added" z="9158AEdBruNP2tIvIzu5U28isEU="/>
             <table:column id="c_ro_roda_News_visible" property="visible" z="b02SuKg9+uvbN+hO2ylrPMB82LY="/>
             <table:column id="c_ro_roda_News_title" property="title" z="YtR2uVoChbaDB1VSj5LK9a3bpfw="/>
             <table:column id="c_ro_roda_News_content" property="content" z="zp6K6ghBbLJ2k4mBFAxViq1MFjI="/>

@@ -12,9 +12,11 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import ro.roda.UserDataOnDemand;
+import ro.roda.Rodauser;
+import ro.roda.RodauserDataOnDemand;
 import ro.roda.UserMessage;
 import ro.roda.UserMessageDataOnDemand;
+import ro.roda.service.UserMessageService;
 
 privileged aspect UserMessageDataOnDemand_Roo_DataOnDemand {
     
@@ -25,17 +27,32 @@ privileged aspect UserMessageDataOnDemand_Roo_DataOnDemand {
     private List<UserMessage> UserMessageDataOnDemand.data;
     
     @Autowired
-    private UserDataOnDemand UserMessageDataOnDemand.userDataOnDemand;
+    RodauserDataOnDemand UserMessageDataOnDemand.rodauserDataOnDemand;
+    
+    @Autowired
+    UserMessageService UserMessageDataOnDemand.userMessageService;
     
     public UserMessage UserMessageDataOnDemand.getNewTransientUserMessage(int index) {
         UserMessage obj = new UserMessage();
+        setFromUserId(obj, index);
         setMessage(obj, index);
+        setToUserId(obj, index);
         return obj;
+    }
+    
+    public void UserMessageDataOnDemand.setFromUserId(UserMessage obj, int index) {
+        Rodauser fromUserId = rodauserDataOnDemand.getRandomRodauser();
+        obj.setFromUserId(fromUserId);
     }
     
     public void UserMessageDataOnDemand.setMessage(UserMessage obj, int index) {
         String message = "message_" + index;
         obj.setMessage(message);
+    }
+    
+    public void UserMessageDataOnDemand.setToUserId(UserMessage obj, int index) {
+        Rodauser toUserId = rodauserDataOnDemand.getRandomRodauser();
+        obj.setToUserId(toUserId);
     }
     
     public UserMessage UserMessageDataOnDemand.getSpecificUserMessage(int index) {
@@ -48,14 +65,14 @@ privileged aspect UserMessageDataOnDemand_Roo_DataOnDemand {
         }
         UserMessage obj = data.get(index);
         Integer id = obj.getId();
-        return UserMessage.findUserMessage(id);
+        return userMessageService.findUserMessage(id);
     }
     
     public UserMessage UserMessageDataOnDemand.getRandomUserMessage() {
         init();
         UserMessage obj = data.get(rnd.nextInt(data.size()));
         Integer id = obj.getId();
-        return UserMessage.findUserMessage(id);
+        return userMessageService.findUserMessage(id);
     }
     
     public boolean UserMessageDataOnDemand.modifyUserMessage(UserMessage obj) {
@@ -65,7 +82,7 @@ privileged aspect UserMessageDataOnDemand_Roo_DataOnDemand {
     public void UserMessageDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = UserMessage.findUserMessageEntries(from, to);
+        data = userMessageService.findUserMessageEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'UserMessage' illegally returned null");
         }
@@ -77,7 +94,7 @@ privileged aspect UserMessageDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             UserMessage obj = getNewTransientUserMessage(i);
             try {
-                obj.persist();
+                userMessageService.saveUserMessage(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

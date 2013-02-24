@@ -12,11 +12,13 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import ro.roda.Form;
 import ro.roda.FormDataOnDemand;
 import ro.roda.FormSelectionVar;
 import ro.roda.FormSelectionVarDataOnDemand;
 import ro.roda.FormSelectionVarPK;
 import ro.roda.SelectionVariableItemDataOnDemand;
+import ro.roda.service.FormSelectionVarService;
 
 privileged aspect FormSelectionVarDataOnDemand_Roo_DataOnDemand {
     
@@ -27,14 +29,18 @@ privileged aspect FormSelectionVarDataOnDemand_Roo_DataOnDemand {
     private List<FormSelectionVar> FormSelectionVarDataOnDemand.data;
     
     @Autowired
-    private FormDataOnDemand FormSelectionVarDataOnDemand.formDataOnDemand;
+    FormDataOnDemand FormSelectionVarDataOnDemand.formDataOnDemand;
     
     @Autowired
-    private SelectionVariableItemDataOnDemand FormSelectionVarDataOnDemand.selectionVariableItemDataOnDemand;
+    SelectionVariableItemDataOnDemand FormSelectionVarDataOnDemand.selectionVariableItemDataOnDemand;
+    
+    @Autowired
+    FormSelectionVarService FormSelectionVarDataOnDemand.formSelectionVarService;
     
     public FormSelectionVar FormSelectionVarDataOnDemand.getNewTransientFormSelectionVar(int index) {
         FormSelectionVar obj = new FormSelectionVar();
         setEmbeddedIdClass(obj, index);
+        setFormId(obj, index);
         setOrderOfItemsInResponse(obj, index);
         return obj;
     }
@@ -46,6 +52,11 @@ privileged aspect FormSelectionVarDataOnDemand_Roo_DataOnDemand {
         
         FormSelectionVarPK embeddedIdClass = new FormSelectionVarPK(formId, variableId, itemId);
         obj.setId(embeddedIdClass);
+    }
+    
+    public void FormSelectionVarDataOnDemand.setFormId(FormSelectionVar obj, int index) {
+        Form formId = formDataOnDemand.getRandomForm();
+        obj.setFormId(formId);
     }
     
     public void FormSelectionVarDataOnDemand.setOrderOfItemsInResponse(FormSelectionVar obj, int index) {
@@ -63,14 +74,14 @@ privileged aspect FormSelectionVarDataOnDemand_Roo_DataOnDemand {
         }
         FormSelectionVar obj = data.get(index);
         FormSelectionVarPK id = obj.getId();
-        return FormSelectionVar.findFormSelectionVar(id);
+        return formSelectionVarService.findFormSelectionVar(id);
     }
     
     public FormSelectionVar FormSelectionVarDataOnDemand.getRandomFormSelectionVar() {
         init();
         FormSelectionVar obj = data.get(rnd.nextInt(data.size()));
         FormSelectionVarPK id = obj.getId();
-        return FormSelectionVar.findFormSelectionVar(id);
+        return formSelectionVarService.findFormSelectionVar(id);
     }
     
     public boolean FormSelectionVarDataOnDemand.modifyFormSelectionVar(FormSelectionVar obj) {
@@ -80,7 +91,7 @@ privileged aspect FormSelectionVarDataOnDemand_Roo_DataOnDemand {
     public void FormSelectionVarDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = FormSelectionVar.findFormSelectionVarEntries(from, to);
+        data = formSelectionVarService.findFormSelectionVarEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'FormSelectionVar' illegally returned null");
         }
@@ -92,7 +103,7 @@ privileged aspect FormSelectionVarDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             FormSelectionVar obj = getNewTransientFormSelectionVar(i);
             try {
-                obj.persist();
+                formSelectionVarService.saveFormSelectionVar(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

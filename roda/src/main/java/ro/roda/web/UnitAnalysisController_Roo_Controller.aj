@@ -6,6 +6,7 @@ package ro.roda.web;
 import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,11 +15,18 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.Instance;
 import ro.roda.UnitAnalysis;
+import ro.roda.service.InstanceService;
+import ro.roda.service.UnitAnalysisService;
 import ro.roda.web.UnitAnalysisController;
 
 privileged aspect UnitAnalysisController_Roo_Controller {
+    
+    @Autowired
+    UnitAnalysisService UnitAnalysisController.unitAnalysisService;
+    
+    @Autowired
+    InstanceService UnitAnalysisController.instanceService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String UnitAnalysisController.create(@Valid UnitAnalysis unitAnalysis, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -27,7 +35,7 @@ privileged aspect UnitAnalysisController_Roo_Controller {
             return "unitanalyses/create";
         }
         uiModel.asMap().clear();
-        unitAnalysis.persist();
+        unitAnalysisService.saveUnitAnalysis(unitAnalysis);
         return "redirect:/unitanalyses/" + encodeUrlPathSegment(unitAnalysis.getId().toString(), httpServletRequest);
     }
     
@@ -39,7 +47,7 @@ privileged aspect UnitAnalysisController_Roo_Controller {
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String UnitAnalysisController.show(@PathVariable("id") Integer id, Model uiModel) {
-        uiModel.addAttribute("unitanalysis", UnitAnalysis.findUnitAnalysis(id));
+        uiModel.addAttribute("unitanalysis", unitAnalysisService.findUnitAnalysis(id));
         uiModel.addAttribute("itemId", id);
         return "unitanalyses/show";
     }
@@ -49,11 +57,11 @@ privileged aspect UnitAnalysisController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("unitanalyses", UnitAnalysis.findUnitAnalysisEntries(firstResult, sizeNo));
-            float nrOfPages = (float) UnitAnalysis.countUnitAnalyses() / sizeNo;
+            uiModel.addAttribute("unitanalyses", unitAnalysisService.findUnitAnalysisEntries(firstResult, sizeNo));
+            float nrOfPages = (float) unitAnalysisService.countAllUnitAnalyses() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("unitanalyses", UnitAnalysis.findAllUnitAnalyses());
+            uiModel.addAttribute("unitanalyses", unitAnalysisService.findAllUnitAnalyses());
         }
         return "unitanalyses/list";
     }
@@ -65,20 +73,20 @@ privileged aspect UnitAnalysisController_Roo_Controller {
             return "unitanalyses/update";
         }
         uiModel.asMap().clear();
-        unitAnalysis.merge();
+        unitAnalysisService.updateUnitAnalysis(unitAnalysis);
         return "redirect:/unitanalyses/" + encodeUrlPathSegment(unitAnalysis.getId().toString(), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String UnitAnalysisController.updateForm(@PathVariable("id") Integer id, Model uiModel) {
-        populateEditForm(uiModel, UnitAnalysis.findUnitAnalysis(id));
+        populateEditForm(uiModel, unitAnalysisService.findUnitAnalysis(id));
         return "unitanalyses/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
     public String UnitAnalysisController.delete(@PathVariable("id") Integer id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        UnitAnalysis unitAnalysis = UnitAnalysis.findUnitAnalysis(id);
-        unitAnalysis.remove();
+        UnitAnalysis unitAnalysis = unitAnalysisService.findUnitAnalysis(id);
+        unitAnalysisService.deleteUnitAnalysis(unitAnalysis);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
@@ -87,7 +95,7 @@ privileged aspect UnitAnalysisController_Roo_Controller {
     
     void UnitAnalysisController.populateEditForm(Model uiModel, UnitAnalysis unitAnalysis) {
         uiModel.addAttribute("unitAnalysis", unitAnalysis);
-        uiModel.addAttribute("instances", Instance.findAllInstances());
+        uiModel.addAttribute("instances", instanceService.findAllInstances());
     }
     
     String UnitAnalysisController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

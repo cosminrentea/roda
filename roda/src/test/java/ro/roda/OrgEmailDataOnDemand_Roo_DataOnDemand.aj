@@ -12,11 +12,14 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import ro.roda.Email;
 import ro.roda.EmailDataOnDemand;
+import ro.roda.Org;
 import ro.roda.OrgDataOnDemand;
 import ro.roda.OrgEmail;
 import ro.roda.OrgEmailDataOnDemand;
 import ro.roda.OrgEmailPK;
+import ro.roda.service.OrgEmailService;
 
 privileged aspect OrgEmailDataOnDemand_Roo_DataOnDemand {
     
@@ -27,15 +30,20 @@ privileged aspect OrgEmailDataOnDemand_Roo_DataOnDemand {
     private List<OrgEmail> OrgEmailDataOnDemand.data;
     
     @Autowired
-    private EmailDataOnDemand OrgEmailDataOnDemand.emailDataOnDemand;
+    EmailDataOnDemand OrgEmailDataOnDemand.emailDataOnDemand;
     
     @Autowired
-    private OrgDataOnDemand OrgEmailDataOnDemand.orgDataOnDemand;
+    OrgDataOnDemand OrgEmailDataOnDemand.orgDataOnDemand;
+    
+    @Autowired
+    OrgEmailService OrgEmailDataOnDemand.orgEmailService;
     
     public OrgEmail OrgEmailDataOnDemand.getNewTransientOrgEmail(int index) {
         OrgEmail obj = new OrgEmail();
         setEmbeddedIdClass(obj, index);
+        setEmailId(obj, index);
         setMain(obj, index);
+        setOrgId(obj, index);
         return obj;
     }
     
@@ -47,9 +55,19 @@ privileged aspect OrgEmailDataOnDemand_Roo_DataOnDemand {
         obj.setId(embeddedIdClass);
     }
     
+    public void OrgEmailDataOnDemand.setEmailId(OrgEmail obj, int index) {
+        Email emailId = emailDataOnDemand.getRandomEmail();
+        obj.setEmailId(emailId);
+    }
+    
     public void OrgEmailDataOnDemand.setMain(OrgEmail obj, int index) {
         Boolean main = true;
         obj.setMain(main);
+    }
+    
+    public void OrgEmailDataOnDemand.setOrgId(OrgEmail obj, int index) {
+        Org orgId = orgDataOnDemand.getRandomOrg();
+        obj.setOrgId(orgId);
     }
     
     public OrgEmail OrgEmailDataOnDemand.getSpecificOrgEmail(int index) {
@@ -62,14 +80,14 @@ privileged aspect OrgEmailDataOnDemand_Roo_DataOnDemand {
         }
         OrgEmail obj = data.get(index);
         OrgEmailPK id = obj.getId();
-        return OrgEmail.findOrgEmail(id);
+        return orgEmailService.findOrgEmail(id);
     }
     
     public OrgEmail OrgEmailDataOnDemand.getRandomOrgEmail() {
         init();
         OrgEmail obj = data.get(rnd.nextInt(data.size()));
         OrgEmailPK id = obj.getId();
-        return OrgEmail.findOrgEmail(id);
+        return orgEmailService.findOrgEmail(id);
     }
     
     public boolean OrgEmailDataOnDemand.modifyOrgEmail(OrgEmail obj) {
@@ -79,7 +97,7 @@ privileged aspect OrgEmailDataOnDemand_Roo_DataOnDemand {
     public void OrgEmailDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = OrgEmail.findOrgEmailEntries(from, to);
+        data = orgEmailService.findOrgEmailEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'OrgEmail' illegally returned null");
         }
@@ -91,7 +109,7 @@ privileged aspect OrgEmailDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             OrgEmail obj = getNewTransientOrgEmail(i);
             try {
-                obj.persist();
+                orgEmailService.saveOrgEmail(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

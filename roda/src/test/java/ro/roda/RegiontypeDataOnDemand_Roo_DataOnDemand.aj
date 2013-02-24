@@ -10,9 +10,11 @@ import java.util.List;
 import java.util.Random;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ro.roda.Regiontype;
 import ro.roda.RegiontypeDataOnDemand;
+import ro.roda.service.RegiontypeService;
 
 privileged aspect RegiontypeDataOnDemand_Roo_DataOnDemand {
     
@@ -21,6 +23,9 @@ privileged aspect RegiontypeDataOnDemand_Roo_DataOnDemand {
     private Random RegiontypeDataOnDemand.rnd = new SecureRandom();
     
     private List<Regiontype> RegiontypeDataOnDemand.data;
+    
+    @Autowired
+    RegiontypeService RegiontypeDataOnDemand.regiontypeService;
     
     public Regiontype RegiontypeDataOnDemand.getNewTransientRegiontype(int index) {
         Regiontype obj = new Regiontype();
@@ -46,14 +51,14 @@ privileged aspect RegiontypeDataOnDemand_Roo_DataOnDemand {
         }
         Regiontype obj = data.get(index);
         Integer id = obj.getId();
-        return Regiontype.findRegiontype(id);
+        return regiontypeService.findRegiontype(id);
     }
     
     public Regiontype RegiontypeDataOnDemand.getRandomRegiontype() {
         init();
         Regiontype obj = data.get(rnd.nextInt(data.size()));
         Integer id = obj.getId();
-        return Regiontype.findRegiontype(id);
+        return regiontypeService.findRegiontype(id);
     }
     
     public boolean RegiontypeDataOnDemand.modifyRegiontype(Regiontype obj) {
@@ -63,7 +68,7 @@ privileged aspect RegiontypeDataOnDemand_Roo_DataOnDemand {
     public void RegiontypeDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = Regiontype.findRegiontypeEntries(from, to);
+        data = regiontypeService.findRegiontypeEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'Regiontype' illegally returned null");
         }
@@ -75,7 +80,7 @@ privileged aspect RegiontypeDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             Regiontype obj = getNewTransientRegiontype(i);
             try {
-                obj.persist();
+                regiontypeService.saveRegiontype(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

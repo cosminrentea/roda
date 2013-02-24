@@ -3,7 +3,7 @@
 
 package ro.roda;
 
-import java.util.Date;
+import java.util.Calendar;
 import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -12,9 +12,9 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import org.springframework.format.annotation.DateTimeFormat;
 import ro.roda.Keyword;
+import ro.roda.Rodauser;
 import ro.roda.Study;
 import ro.roda.StudyKeyword;
-import ro.roda.User;
 
 privileged aspect StudyKeyword_Roo_DbManaged {
     
@@ -23,18 +23,18 @@ privileged aspect StudyKeyword_Roo_DbManaged {
     private Keyword StudyKeyword.keywordId;
     
     @ManyToOne
-    @JoinColumn(name = "study_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
-    private Study StudyKeyword.studyId;
+    @JoinColumn(name = "added_by", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+    private Rodauser StudyKeyword.addedBy;
     
     @ManyToOne
-    @JoinColumn(name = "added_by", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
-    private User StudyKeyword.addedBy;
+    @JoinColumn(name = "study_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+    private Study StudyKeyword.studyId;
     
     @Column(name = "added", columnDefinition = "timestamp")
     @NotNull
     @Temporal(TemporalType.TIMESTAMP)
-    @DateTimeFormat(style = "M-")
-    private Date StudyKeyword.added;
+    @DateTimeFormat(style = "MM")
+    private Calendar StudyKeyword.added;
     
     public Keyword StudyKeyword.getKeywordId() {
         return keywordId;
@@ -42,6 +42,14 @@ privileged aspect StudyKeyword_Roo_DbManaged {
     
     public void StudyKeyword.setKeywordId(Keyword keywordId) {
         this.keywordId = keywordId;
+    }
+    
+    public Rodauser StudyKeyword.getAddedBy() {
+        return addedBy;
+    }
+    
+    public void StudyKeyword.setAddedBy(Rodauser addedBy) {
+        this.addedBy = addedBy;
     }
     
     public Study StudyKeyword.getStudyId() {
@@ -52,19 +60,11 @@ privileged aspect StudyKeyword_Roo_DbManaged {
         this.studyId = studyId;
     }
     
-    public User StudyKeyword.getAddedBy() {
-        return addedBy;
-    }
-    
-    public void StudyKeyword.setAddedBy(User addedBy) {
-        this.addedBy = addedBy;
-    }
-    
-    public Date StudyKeyword.getAdded() {
+    public Calendar StudyKeyword.getAdded() {
         return added;
     }
     
-    public void StudyKeyword.setAdded(Date added) {
+    public void StudyKeyword.setAdded(Calendar added) {
         this.added = added;
     }
     

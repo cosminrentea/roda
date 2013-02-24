@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 import ro.roda.CmsSnippet;
 import ro.roda.CmsSnippetDataOnDemand;
 import ro.roda.CmsSnippetGroupDataOnDemand;
+import ro.roda.service.CmsSnippetService;
 
 privileged aspect CmsSnippetDataOnDemand_Roo_DataOnDemand {
     
@@ -25,7 +26,10 @@ privileged aspect CmsSnippetDataOnDemand_Roo_DataOnDemand {
     private List<CmsSnippet> CmsSnippetDataOnDemand.data;
     
     @Autowired
-    private CmsSnippetGroupDataOnDemand CmsSnippetDataOnDemand.cmsSnippetGroupDataOnDemand;
+    CmsSnippetGroupDataOnDemand CmsSnippetDataOnDemand.cmsSnippetGroupDataOnDemand;
+    
+    @Autowired
+    CmsSnippetService CmsSnippetDataOnDemand.cmsSnippetService;
     
     public CmsSnippet CmsSnippetDataOnDemand.getNewTransientCmsSnippet(int index) {
         CmsSnippet obj = new CmsSnippet();
@@ -57,14 +61,14 @@ privileged aspect CmsSnippetDataOnDemand_Roo_DataOnDemand {
         }
         CmsSnippet obj = data.get(index);
         Integer id = obj.getId();
-        return CmsSnippet.findCmsSnippet(id);
+        return cmsSnippetService.findCmsSnippet(id);
     }
     
     public CmsSnippet CmsSnippetDataOnDemand.getRandomCmsSnippet() {
         init();
         CmsSnippet obj = data.get(rnd.nextInt(data.size()));
         Integer id = obj.getId();
-        return CmsSnippet.findCmsSnippet(id);
+        return cmsSnippetService.findCmsSnippet(id);
     }
     
     public boolean CmsSnippetDataOnDemand.modifyCmsSnippet(CmsSnippet obj) {
@@ -74,7 +78,7 @@ privileged aspect CmsSnippetDataOnDemand_Roo_DataOnDemand {
     public void CmsSnippetDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = CmsSnippet.findCmsSnippetEntries(from, to);
+        data = cmsSnippetService.findCmsSnippetEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'CmsSnippet' illegally returned null");
         }
@@ -86,7 +90,7 @@ privileged aspect CmsSnippetDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             CmsSnippet obj = getNewTransientCmsSnippet(i);
             try {
-                obj.persist();
+                cmsSnippetService.saveCmsSnippet(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

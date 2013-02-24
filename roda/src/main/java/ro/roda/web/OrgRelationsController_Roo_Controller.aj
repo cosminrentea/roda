@@ -18,15 +18,25 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.Org;
-import ro.roda.OrgRelationType;
 import ro.roda.OrgRelations;
 import ro.roda.OrgRelationsPK;
+import ro.roda.service.OrgRelationTypeService;
+import ro.roda.service.OrgRelationsService;
+import ro.roda.service.OrgService;
 import ro.roda.web.OrgRelationsController;
 
 privileged aspect OrgRelationsController_Roo_Controller {
     
     private ConversionService OrgRelationsController.conversionService;
+    
+    @Autowired
+    OrgRelationsService OrgRelationsController.orgRelationsService;
+    
+    @Autowired
+    OrgService OrgRelationsController.orgService;
+    
+    @Autowired
+    OrgRelationTypeService OrgRelationsController.orgRelationTypeService;
     
     @Autowired
     public OrgRelationsController.new(ConversionService conversionService) {
@@ -41,7 +51,7 @@ privileged aspect OrgRelationsController_Roo_Controller {
             return "orgrelationses/create";
         }
         uiModel.asMap().clear();
-        orgRelations.persist();
+        orgRelationsService.saveOrgRelations(orgRelations);
         return "redirect:/orgrelationses/" + encodeUrlPathSegment(conversionService.convert(orgRelations.getId(), String.class), httpServletRequest);
     }
     
@@ -54,7 +64,7 @@ privileged aspect OrgRelationsController_Roo_Controller {
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String OrgRelationsController.show(@PathVariable("id") OrgRelationsPK id, Model uiModel) {
         addDateTimeFormatPatterns(uiModel);
-        uiModel.addAttribute("orgrelations", OrgRelations.findOrgRelations(id));
+        uiModel.addAttribute("orgrelations", orgRelationsService.findOrgRelations(id));
         uiModel.addAttribute("itemId", conversionService.convert(id, String.class));
         return "orgrelationses/show";
     }
@@ -64,11 +74,11 @@ privileged aspect OrgRelationsController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("orgrelationses", OrgRelations.findOrgRelationsEntries(firstResult, sizeNo));
-            float nrOfPages = (float) OrgRelations.countOrgRelationses() / sizeNo;
+            uiModel.addAttribute("orgrelationses", orgRelationsService.findOrgRelationsEntries(firstResult, sizeNo));
+            float nrOfPages = (float) orgRelationsService.countAllOrgRelationses() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("orgrelationses", OrgRelations.findAllOrgRelationses());
+            uiModel.addAttribute("orgrelationses", orgRelationsService.findAllOrgRelationses());
         }
         addDateTimeFormatPatterns(uiModel);
         return "orgrelationses/list";
@@ -81,20 +91,20 @@ privileged aspect OrgRelationsController_Roo_Controller {
             return "orgrelationses/update";
         }
         uiModel.asMap().clear();
-        orgRelations.merge();
+        orgRelationsService.updateOrgRelations(orgRelations);
         return "redirect:/orgrelationses/" + encodeUrlPathSegment(conversionService.convert(orgRelations.getId(), String.class), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String OrgRelationsController.updateForm(@PathVariable("id") OrgRelationsPK id, Model uiModel) {
-        populateEditForm(uiModel, OrgRelations.findOrgRelations(id));
+        populateEditForm(uiModel, orgRelationsService.findOrgRelations(id));
         return "orgrelationses/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
     public String OrgRelationsController.delete(@PathVariable("id") OrgRelationsPK id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        OrgRelations orgRelations = OrgRelations.findOrgRelations(id);
-        orgRelations.remove();
+        OrgRelations orgRelations = orgRelationsService.findOrgRelations(id);
+        orgRelationsService.deleteOrgRelations(orgRelations);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
@@ -102,15 +112,15 @@ privileged aspect OrgRelationsController_Roo_Controller {
     }
     
     void OrgRelationsController.addDateTimeFormatPatterns(Model uiModel) {
-        uiModel.addAttribute("orgRelations_datestart_date_format", DateTimeFormat.patternForStyle("M-", LocaleContextHolder.getLocale()));
-        uiModel.addAttribute("orgRelations_dateend_date_format", DateTimeFormat.patternForStyle("M-", LocaleContextHolder.getLocale()));
+        uiModel.addAttribute("orgRelations_datestart_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
+        uiModel.addAttribute("orgRelations_dateend_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
     }
     
     void OrgRelationsController.populateEditForm(Model uiModel, OrgRelations orgRelations) {
         uiModel.addAttribute("orgRelations", orgRelations);
         addDateTimeFormatPatterns(uiModel);
-        uiModel.addAttribute("orgs", Org.findAllOrgs());
-        uiModel.addAttribute("orgrelationtypes", OrgRelationType.findAllOrgRelationTypes());
+        uiModel.addAttribute("orgs", orgService.findAllOrgs());
+        uiModel.addAttribute("orgrelationtypes", orgRelationTypeService.findAllOrgRelationTypes());
     }
     
     String OrgRelationsController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

@@ -6,6 +6,7 @@ package ro.roda.web;
 import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,13 +15,26 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.Instance;
-import ro.roda.Study;
 import ro.roda.Topic;
-import ro.roda.TranslatedTopic;
+import ro.roda.service.InstanceService;
+import ro.roda.service.StudyService;
+import ro.roda.service.TopicService;
+import ro.roda.service.TranslatedTopicService;
 import ro.roda.web.TopicController;
 
 privileged aspect TopicController_Roo_Controller {
+    
+    @Autowired
+    TopicService TopicController.topicService;
+    
+    @Autowired
+    InstanceService TopicController.instanceService;
+    
+    @Autowired
+    StudyService TopicController.studyService;
+    
+    @Autowired
+    TranslatedTopicService TopicController.translatedTopicService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String TopicController.create(@Valid Topic topic, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -29,7 +43,7 @@ privileged aspect TopicController_Roo_Controller {
             return "topics/create";
         }
         uiModel.asMap().clear();
-        topic.persist();
+        topicService.saveTopic(topic);
         return "redirect:/topics/" + encodeUrlPathSegment(topic.getId().toString(), httpServletRequest);
     }
     
@@ -41,7 +55,7 @@ privileged aspect TopicController_Roo_Controller {
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String TopicController.show(@PathVariable("id") Integer id, Model uiModel) {
-        uiModel.addAttribute("topic", Topic.findTopic(id));
+        uiModel.addAttribute("topic", topicService.findTopic(id));
         uiModel.addAttribute("itemId", id);
         return "topics/show";
     }
@@ -51,11 +65,11 @@ privileged aspect TopicController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("topics", Topic.findTopicEntries(firstResult, sizeNo));
-            float nrOfPages = (float) Topic.countTopics() / sizeNo;
+            uiModel.addAttribute("topics", topicService.findTopicEntries(firstResult, sizeNo));
+            float nrOfPages = (float) topicService.countAllTopics() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("topics", Topic.findAllTopics());
+            uiModel.addAttribute("topics", topicService.findAllTopics());
         }
         return "topics/list";
     }
@@ -67,20 +81,20 @@ privileged aspect TopicController_Roo_Controller {
             return "topics/update";
         }
         uiModel.asMap().clear();
-        topic.merge();
+        topicService.updateTopic(topic);
         return "redirect:/topics/" + encodeUrlPathSegment(topic.getId().toString(), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String TopicController.updateForm(@PathVariable("id") Integer id, Model uiModel) {
-        populateEditForm(uiModel, Topic.findTopic(id));
+        populateEditForm(uiModel, topicService.findTopic(id));
         return "topics/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
     public String TopicController.delete(@PathVariable("id") Integer id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        Topic topic = Topic.findTopic(id);
-        topic.remove();
+        Topic topic = topicService.findTopic(id);
+        topicService.deleteTopic(topic);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
@@ -89,10 +103,10 @@ privileged aspect TopicController_Roo_Controller {
     
     void TopicController.populateEditForm(Model uiModel, Topic topic) {
         uiModel.addAttribute("topic", topic);
-        uiModel.addAttribute("instances", Instance.findAllInstances());
-        uiModel.addAttribute("studys", Study.findAllStudys());
-        uiModel.addAttribute("topics", Topic.findAllTopics());
-        uiModel.addAttribute("translatedtopics", TranslatedTopic.findAllTranslatedTopics());
+        uiModel.addAttribute("instances", instanceService.findAllInstances());
+        uiModel.addAttribute("studys", studyService.findAllStudys());
+        uiModel.addAttribute("topics", topicService.findAllTopics());
+        uiModel.addAttribute("translatedtopics", translatedTopicService.findAllTranslatedTopics());
     }
     
     String TopicController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

@@ -11,10 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.InstancePerson;
 import ro.roda.InstancePersonDataOnDemand;
 import ro.roda.InstancePersonIntegrationTest;
 import ro.roda.InstancePersonPK;
+import ro.roda.service.InstancePersonService;
 
 privileged aspect InstancePersonIntegrationTest_Roo_IntegrationTest {
     
@@ -25,12 +25,15 @@ privileged aspect InstancePersonIntegrationTest_Roo_IntegrationTest {
     declare @type: InstancePersonIntegrationTest: @Transactional;
     
     @Autowired
-    private InstancePersonDataOnDemand InstancePersonIntegrationTest.dod;
+    InstancePersonDataOnDemand InstancePersonIntegrationTest.dod;
+    
+    @Autowired
+    InstancePersonService InstancePersonIntegrationTest.instancePersonService;
     
     @Test
-    public void InstancePersonIntegrationTest.testCountInstancepeople() {
+    public void InstancePersonIntegrationTest.testCountAllInstancepeople() {
         Assert.assertNotNull("Data on demand for 'InstancePerson' failed to initialize correctly", dod.getRandomInstancePerson());
-        long count = InstancePerson.countInstancepeople();
+        long count = instancePersonService.countAllInstancepeople();
         Assert.assertTrue("Counter for 'InstancePerson' incorrectly reported there were no entries", count > 0);
     }
     
@@ -40,7 +43,7 @@ privileged aspect InstancePersonIntegrationTest_Roo_IntegrationTest {
         Assert.assertNotNull("Data on demand for 'InstancePerson' failed to initialize correctly", obj);
         InstancePersonPK id = obj.getId();
         Assert.assertNotNull("Data on demand for 'InstancePerson' failed to provide an identifier", id);
-        obj = InstancePerson.findInstancePerson(id);
+        obj = instancePersonService.findInstancePerson(id);
         Assert.assertNotNull("Find method for 'InstancePerson' illegally returned null for id '" + id + "'", obj);
         Assert.assertEquals("Find method for 'InstancePerson' returned the incorrect identifier", id, obj.getId());
     }
@@ -48,9 +51,9 @@ privileged aspect InstancePersonIntegrationTest_Roo_IntegrationTest {
     @Test
     public void InstancePersonIntegrationTest.testFindAllInstancepeople() {
         Assert.assertNotNull("Data on demand for 'InstancePerson' failed to initialize correctly", dod.getRandomInstancePerson());
-        long count = InstancePerson.countInstancepeople();
+        long count = instancePersonService.countAllInstancepeople();
         Assert.assertTrue("Too expensive to perform a find all test for 'InstancePerson', as there are " + count + " entries; set the findAllMaximum to exceed this value or set findAll=false on the integration test annotation to disable the test", count < 250);
-        List<InstancePerson> result = InstancePerson.findAllInstancepeople();
+        List<InstancePerson> result = instancePersonService.findAllInstancepeople();
         Assert.assertNotNull("Find all method for 'InstancePerson' illegally returned null", result);
         Assert.assertTrue("Find all method for 'InstancePerson' failed to return any data", result.size() > 0);
     }
@@ -58,35 +61,35 @@ privileged aspect InstancePersonIntegrationTest_Roo_IntegrationTest {
     @Test
     public void InstancePersonIntegrationTest.testFindInstancePersonEntries() {
         Assert.assertNotNull("Data on demand for 'InstancePerson' failed to initialize correctly", dod.getRandomInstancePerson());
-        long count = InstancePerson.countInstancepeople();
+        long count = instancePersonService.countAllInstancepeople();
         if (count > 20) count = 20;
         int firstResult = 0;
         int maxResults = (int) count;
-        List<InstancePerson> result = InstancePerson.findInstancePersonEntries(firstResult, maxResults);
+        List<InstancePerson> result = instancePersonService.findInstancePersonEntries(firstResult, maxResults);
         Assert.assertNotNull("Find entries method for 'InstancePerson' illegally returned null", result);
         Assert.assertEquals("Find entries method for 'InstancePerson' returned an incorrect number of entries", count, result.size());
     }
     
     @Test
-    public void InstancePersonIntegrationTest.testPersist() {
+    public void InstancePersonIntegrationTest.testSaveInstancePerson() {
         Assert.assertNotNull("Data on demand for 'InstancePerson' failed to initialize correctly", dod.getRandomInstancePerson());
         InstancePerson obj = dod.getNewTransientInstancePerson(Integer.MAX_VALUE);
         Assert.assertNotNull("Data on demand for 'InstancePerson' failed to provide a new transient entity", obj);
-        obj.persist();
+        instancePersonService.saveInstancePerson(obj);
         obj.flush();
         Assert.assertNotNull("Expected 'InstancePerson' identifier to no longer be null", obj.getId());
     }
     
     @Test
-    public void InstancePersonIntegrationTest.testRemove() {
+    public void InstancePersonIntegrationTest.testDeleteInstancePerson() {
         InstancePerson obj = dod.getRandomInstancePerson();
         Assert.assertNotNull("Data on demand for 'InstancePerson' failed to initialize correctly", obj);
         InstancePersonPK id = obj.getId();
         Assert.assertNotNull("Data on demand for 'InstancePerson' failed to provide an identifier", id);
-        obj = InstancePerson.findInstancePerson(id);
-        obj.remove();
+        obj = instancePersonService.findInstancePerson(id);
+        instancePersonService.deleteInstancePerson(obj);
         obj.flush();
-        Assert.assertNull("Failed to remove 'InstancePerson' with identifier '" + id + "'", InstancePerson.findInstancePerson(id));
+        Assert.assertNull("Failed to remove 'InstancePerson' with identifier '" + id + "'", instancePersonService.findInstancePerson(id));
     }
     
 }

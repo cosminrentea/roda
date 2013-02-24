@@ -6,6 +6,7 @@ package ro.roda.web;
 import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,12 +15,22 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.City;
 import ro.roda.Country;
-import ro.roda.Region;
+import ro.roda.service.CityService;
+import ro.roda.service.CountryService;
+import ro.roda.service.RegionService;
 import ro.roda.web.CountryController;
 
 privileged aspect CountryController_Roo_Controller {
+    
+    @Autowired
+    CountryService CountryController.countryService;
+    
+    @Autowired
+    CityService CountryController.cityService;
+    
+    @Autowired
+    RegionService CountryController.regionService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String CountryController.create(@Valid Country country, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -28,7 +39,7 @@ privileged aspect CountryController_Roo_Controller {
             return "countrys/create";
         }
         uiModel.asMap().clear();
-        country.persist();
+        countryService.saveCountry(country);
         return "redirect:/countrys/" + encodeUrlPathSegment(country.getId().toString(), httpServletRequest);
     }
     
@@ -40,7 +51,7 @@ privileged aspect CountryController_Roo_Controller {
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String CountryController.show(@PathVariable("id") String id, Model uiModel) {
-        uiModel.addAttribute("country", Country.findCountry(id));
+        uiModel.addAttribute("country", countryService.findCountry(id));
         uiModel.addAttribute("itemId", id);
         return "countrys/show";
     }
@@ -50,11 +61,11 @@ privileged aspect CountryController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("countrys", Country.findCountryEntries(firstResult, sizeNo));
-            float nrOfPages = (float) Country.countCountrys() / sizeNo;
+            uiModel.addAttribute("countrys", countryService.findCountryEntries(firstResult, sizeNo));
+            float nrOfPages = (float) countryService.countAllCountrys() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("countrys", Country.findAllCountrys());
+            uiModel.addAttribute("countrys", countryService.findAllCountrys());
         }
         return "countrys/list";
     }
@@ -66,20 +77,20 @@ privileged aspect CountryController_Roo_Controller {
             return "countrys/update";
         }
         uiModel.asMap().clear();
-        country.merge();
+        countryService.updateCountry(country);
         return "redirect:/countrys/" + encodeUrlPathSegment(country.getId().toString(), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String CountryController.updateForm(@PathVariable("id") String id, Model uiModel) {
-        populateEditForm(uiModel, Country.findCountry(id));
+        populateEditForm(uiModel, countryService.findCountry(id));
         return "countrys/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
     public String CountryController.delete(@PathVariable("id") String id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        Country country = Country.findCountry(id);
-        country.remove();
+        Country country = countryService.findCountry(id);
+        countryService.deleteCountry(country);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
@@ -88,8 +99,8 @@ privileged aspect CountryController_Roo_Controller {
     
     void CountryController.populateEditForm(Model uiModel, Country country) {
         uiModel.addAttribute("country", country);
-        uiModel.addAttribute("citys", City.findAllCitys());
-        uiModel.addAttribute("regions", Region.findAllRegions());
+        uiModel.addAttribute("citys", cityService.findAllCitys());
+        uiModel.addAttribute("regions", regionService.findAllRegions());
     }
     
     String CountryController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

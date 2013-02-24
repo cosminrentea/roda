@@ -6,7 +6,6 @@ package ro.roda;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
@@ -15,11 +14,15 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import ro.roda.Rodauser;
+import ro.roda.RodauserDataOnDemand;
+import ro.roda.Sourcestudy;
 import ro.roda.SourcestudyDataOnDemand;
+import ro.roda.SourcestudyType;
 import ro.roda.SourcestudyTypeDataOnDemand;
 import ro.roda.SourcestudyTypeHistory;
 import ro.roda.SourcestudyTypeHistoryDataOnDemand;
-import ro.roda.UserDataOnDemand;
+import ro.roda.service.SourcestudyTypeHistoryService;
 
 privileged aspect SourcestudyTypeHistoryDataOnDemand_Roo_DataOnDemand {
     
@@ -30,29 +33,50 @@ privileged aspect SourcestudyTypeHistoryDataOnDemand_Roo_DataOnDemand {
     private List<SourcestudyTypeHistory> SourcestudyTypeHistoryDataOnDemand.data;
     
     @Autowired
-    private UserDataOnDemand SourcestudyTypeHistoryDataOnDemand.userDataOnDemand;
+    RodauserDataOnDemand SourcestudyTypeHistoryDataOnDemand.rodauserDataOnDemand;
     
     @Autowired
-    private SourcestudyDataOnDemand SourcestudyTypeHistoryDataOnDemand.sourcestudyDataOnDemand;
+    SourcestudyDataOnDemand SourcestudyTypeHistoryDataOnDemand.sourcestudyDataOnDemand;
     
     @Autowired
-    private SourcestudyTypeDataOnDemand SourcestudyTypeHistoryDataOnDemand.sourcestudyTypeDataOnDemand;
+    SourcestudyTypeDataOnDemand SourcestudyTypeHistoryDataOnDemand.sourcestudyTypeDataOnDemand;
+    
+    @Autowired
+    SourcestudyTypeHistoryService SourcestudyTypeHistoryDataOnDemand.sourcestudyTypeHistoryService;
     
     public SourcestudyTypeHistory SourcestudyTypeHistoryDataOnDemand.getNewTransientSourcestudyTypeHistory(int index) {
         SourcestudyTypeHistory obj = new SourcestudyTypeHistory();
+        setAddedBy(obj, index);
         setDateend(obj, index);
         setDatestart(obj, index);
+        setSourcesstudyId(obj, index);
+        setSourcestudyTypeId(obj, index);
         return obj;
     }
     
+    public void SourcestudyTypeHistoryDataOnDemand.setAddedBy(SourcestudyTypeHistory obj, int index) {
+        Rodauser addedBy = rodauserDataOnDemand.getRandomRodauser();
+        obj.setAddedBy(addedBy);
+    }
+    
     public void SourcestudyTypeHistoryDataOnDemand.setDateend(SourcestudyTypeHistory obj, int index) {
-        Date dateend = new GregorianCalendar(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH), Calendar.getInstance().get(Calendar.HOUR_OF_DAY), Calendar.getInstance().get(Calendar.MINUTE), Calendar.getInstance().get(Calendar.SECOND) + new Double(Math.random() * 1000).intValue()).getTime();
+        Calendar dateend = Calendar.getInstance();
         obj.setDateend(dateend);
     }
     
     public void SourcestudyTypeHistoryDataOnDemand.setDatestart(SourcestudyTypeHistory obj, int index) {
-        Date datestart = new GregorianCalendar(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH), Calendar.getInstance().get(Calendar.HOUR_OF_DAY), Calendar.getInstance().get(Calendar.MINUTE), Calendar.getInstance().get(Calendar.SECOND) + new Double(Math.random() * 1000).intValue()).getTime();
+        Calendar datestart = Calendar.getInstance();
         obj.setDatestart(datestart);
+    }
+    
+    public void SourcestudyTypeHistoryDataOnDemand.setSourcesstudyId(SourcestudyTypeHistory obj, int index) {
+        Sourcestudy sourcesstudyId = sourcestudyDataOnDemand.getRandomSourcestudy();
+        obj.setSourcesstudyId(sourcesstudyId);
+    }
+    
+    public void SourcestudyTypeHistoryDataOnDemand.setSourcestudyTypeId(SourcestudyTypeHistory obj, int index) {
+        SourcestudyType sourcestudyTypeId = sourcestudyTypeDataOnDemand.getRandomSourcestudyType();
+        obj.setSourcestudyTypeId(sourcestudyTypeId);
     }
     
     public SourcestudyTypeHistory SourcestudyTypeHistoryDataOnDemand.getSpecificSourcestudyTypeHistory(int index) {
@@ -65,14 +89,14 @@ privileged aspect SourcestudyTypeHistoryDataOnDemand_Roo_DataOnDemand {
         }
         SourcestudyTypeHistory obj = data.get(index);
         Integer id = obj.getId();
-        return SourcestudyTypeHistory.findSourcestudyTypeHistory(id);
+        return sourcestudyTypeHistoryService.findSourcestudyTypeHistory(id);
     }
     
     public SourcestudyTypeHistory SourcestudyTypeHistoryDataOnDemand.getRandomSourcestudyTypeHistory() {
         init();
         SourcestudyTypeHistory obj = data.get(rnd.nextInt(data.size()));
         Integer id = obj.getId();
-        return SourcestudyTypeHistory.findSourcestudyTypeHistory(id);
+        return sourcestudyTypeHistoryService.findSourcestudyTypeHistory(id);
     }
     
     public boolean SourcestudyTypeHistoryDataOnDemand.modifySourcestudyTypeHistory(SourcestudyTypeHistory obj) {
@@ -82,7 +106,7 @@ privileged aspect SourcestudyTypeHistoryDataOnDemand_Roo_DataOnDemand {
     public void SourcestudyTypeHistoryDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = SourcestudyTypeHistory.findSourcestudyTypeHistoryEntries(from, to);
+        data = sourcestudyTypeHistoryService.findSourcestudyTypeHistoryEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'SourcestudyTypeHistory' illegally returned null");
         }
@@ -94,7 +118,7 @@ privileged aspect SourcestudyTypeHistoryDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             SourcestudyTypeHistory obj = getNewTransientSourcestudyTypeHistory(i);
             try {
-                obj.persist();
+                sourcestudyTypeHistoryService.saveSourcestudyTypeHistory(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

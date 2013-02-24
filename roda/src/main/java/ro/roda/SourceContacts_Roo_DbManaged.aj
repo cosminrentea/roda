@@ -3,7 +3,7 @@
 
 package ro.roda;
 
-import java.util.Date;
+import java.util.Calendar;
 import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -33,8 +33,8 @@ privileged aspect SourceContacts_Roo_DbManaged {
     @Column(name = "contact_date", columnDefinition = "timestamp")
     @NotNull
     @Temporal(TemporalType.TIMESTAMP)
-    @DateTimeFormat(style = "M-")
-    private Date SourceContacts.contactDate;
+    @DateTimeFormat(style = "MM")
+    private Calendar SourceContacts.contactDate;
     
     @Column(name = "synopsis", columnDefinition = "text")
     @NotNull
@@ -68,11 +68,11 @@ privileged aspect SourceContacts_Roo_DbManaged {
         this.sourceContactMethodId = sourceContactMethodId;
     }
     
-    public Date SourceContacts.getContactDate() {
+    public Calendar SourceContacts.getContactDate() {
         return contactDate;
     }
     
-    public void SourceContacts.setContactDate(Date contactDate) {
+    public void SourceContacts.setContactDate(Calendar contactDate) {
         this.contactDate = contactDate;
     }
     

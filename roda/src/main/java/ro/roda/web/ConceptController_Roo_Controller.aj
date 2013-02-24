@@ -6,6 +6,7 @@ package ro.roda.web;
 import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,10 +16,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.Concept;
-import ro.roda.Variable;
+import ro.roda.service.ConceptService;
+import ro.roda.service.VariableService;
 import ro.roda.web.ConceptController;
 
 privileged aspect ConceptController_Roo_Controller {
+    
+    @Autowired
+    ConceptService ConceptController.conceptService;
+    
+    @Autowired
+    VariableService ConceptController.variableService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String ConceptController.create(@Valid Concept concept, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -27,7 +35,7 @@ privileged aspect ConceptController_Roo_Controller {
             return "concepts/create";
         }
         uiModel.asMap().clear();
-        concept.persist();
+        conceptService.saveConcept(concept);
         return "redirect:/concepts/" + encodeUrlPathSegment(concept.getId().toString(), httpServletRequest);
     }
     
@@ -39,7 +47,7 @@ privileged aspect ConceptController_Roo_Controller {
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String ConceptController.show(@PathVariable("id") Long id, Model uiModel) {
-        uiModel.addAttribute("concept", Concept.findConcept(id));
+        uiModel.addAttribute("concept", conceptService.findConcept(id));
         uiModel.addAttribute("itemId", id);
         return "concepts/show";
     }
@@ -49,11 +57,11 @@ privileged aspect ConceptController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("concepts", Concept.findConceptEntries(firstResult, sizeNo));
-            float nrOfPages = (float) Concept.countConcepts() / sizeNo;
+            uiModel.addAttribute("concepts", conceptService.findConceptEntries(firstResult, sizeNo));
+            float nrOfPages = (float) conceptService.countAllConcepts() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("concepts", Concept.findAllConcepts());
+            uiModel.addAttribute("concepts", conceptService.findAllConcepts());
         }
         return "concepts/list";
     }
@@ -65,20 +73,20 @@ privileged aspect ConceptController_Roo_Controller {
             return "concepts/update";
         }
         uiModel.asMap().clear();
-        concept.merge();
+        conceptService.updateConcept(concept);
         return "redirect:/concepts/" + encodeUrlPathSegment(concept.getId().toString(), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String ConceptController.updateForm(@PathVariable("id") Long id, Model uiModel) {
-        populateEditForm(uiModel, Concept.findConcept(id));
+        populateEditForm(uiModel, conceptService.findConcept(id));
         return "concepts/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
     public String ConceptController.delete(@PathVariable("id") Long id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        Concept concept = Concept.findConcept(id);
-        concept.remove();
+        Concept concept = conceptService.findConcept(id);
+        conceptService.deleteConcept(concept);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
@@ -87,7 +95,7 @@ privileged aspect ConceptController_Roo_Controller {
     
     void ConceptController.populateEditForm(Model uiModel, Concept concept) {
         uiModel.addAttribute("concept", concept);
-        uiModel.addAttribute("variables", Variable.findAllVariables());
+        uiModel.addAttribute("variables", variableService.findAllVariables());
     }
     
     String ConceptController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

@@ -11,9 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.Org;
 import ro.roda.OrgDataOnDemand;
 import ro.roda.OrgIntegrationTest;
+import ro.roda.service.OrgService;
 
 privileged aspect OrgIntegrationTest_Roo_IntegrationTest {
     
@@ -24,12 +24,15 @@ privileged aspect OrgIntegrationTest_Roo_IntegrationTest {
     declare @type: OrgIntegrationTest: @Transactional;
     
     @Autowired
-    private OrgDataOnDemand OrgIntegrationTest.dod;
+    OrgDataOnDemand OrgIntegrationTest.dod;
+    
+    @Autowired
+    OrgService OrgIntegrationTest.orgService;
     
     @Test
-    public void OrgIntegrationTest.testCountOrgs() {
+    public void OrgIntegrationTest.testCountAllOrgs() {
         Assert.assertNotNull("Data on demand for 'Org' failed to initialize correctly", dod.getRandomOrg());
-        long count = Org.countOrgs();
+        long count = orgService.countAllOrgs();
         Assert.assertTrue("Counter for 'Org' incorrectly reported there were no entries", count > 0);
     }
     
@@ -39,7 +42,7 @@ privileged aspect OrgIntegrationTest_Roo_IntegrationTest {
         Assert.assertNotNull("Data on demand for 'Org' failed to initialize correctly", obj);
         Integer id = obj.getId();
         Assert.assertNotNull("Data on demand for 'Org' failed to provide an identifier", id);
-        obj = Org.findOrg(id);
+        obj = orgService.findOrg(id);
         Assert.assertNotNull("Find method for 'Org' illegally returned null for id '" + id + "'", obj);
         Assert.assertEquals("Find method for 'Org' returned the incorrect identifier", id, obj.getId());
     }
@@ -47,9 +50,9 @@ privileged aspect OrgIntegrationTest_Roo_IntegrationTest {
     @Test
     public void OrgIntegrationTest.testFindAllOrgs() {
         Assert.assertNotNull("Data on demand for 'Org' failed to initialize correctly", dod.getRandomOrg());
-        long count = Org.countOrgs();
+        long count = orgService.countAllOrgs();
         Assert.assertTrue("Too expensive to perform a find all test for 'Org', as there are " + count + " entries; set the findAllMaximum to exceed this value or set findAll=false on the integration test annotation to disable the test", count < 250);
-        List<Org> result = Org.findAllOrgs();
+        List<Org> result = orgService.findAllOrgs();
         Assert.assertNotNull("Find all method for 'Org' illegally returned null", result);
         Assert.assertTrue("Find all method for 'Org' failed to return any data", result.size() > 0);
     }
@@ -57,36 +60,36 @@ privileged aspect OrgIntegrationTest_Roo_IntegrationTest {
     @Test
     public void OrgIntegrationTest.testFindOrgEntries() {
         Assert.assertNotNull("Data on demand for 'Org' failed to initialize correctly", dod.getRandomOrg());
-        long count = Org.countOrgs();
+        long count = orgService.countAllOrgs();
         if (count > 20) count = 20;
         int firstResult = 0;
         int maxResults = (int) count;
-        List<Org> result = Org.findOrgEntries(firstResult, maxResults);
+        List<Org> result = orgService.findOrgEntries(firstResult, maxResults);
         Assert.assertNotNull("Find entries method for 'Org' illegally returned null", result);
         Assert.assertEquals("Find entries method for 'Org' returned an incorrect number of entries", count, result.size());
     }
     
     @Test
-    public void OrgIntegrationTest.testPersist() {
+    public void OrgIntegrationTest.testSaveOrg() {
         Assert.assertNotNull("Data on demand for 'Org' failed to initialize correctly", dod.getRandomOrg());
         Org obj = dod.getNewTransientOrg(Integer.MAX_VALUE);
         Assert.assertNotNull("Data on demand for 'Org' failed to provide a new transient entity", obj);
         Assert.assertNull("Expected 'Org' identifier to be null", obj.getId());
-        obj.persist();
+        orgService.saveOrg(obj);
         obj.flush();
         Assert.assertNotNull("Expected 'Org' identifier to no longer be null", obj.getId());
     }
     
     @Test
-    public void OrgIntegrationTest.testRemove() {
+    public void OrgIntegrationTest.testDeleteOrg() {
         Org obj = dod.getRandomOrg();
         Assert.assertNotNull("Data on demand for 'Org' failed to initialize correctly", obj);
         Integer id = obj.getId();
         Assert.assertNotNull("Data on demand for 'Org' failed to provide an identifier", id);
-        obj = Org.findOrg(id);
-        obj.remove();
+        obj = orgService.findOrg(id);
+        orgService.deleteOrg(obj);
         obj.flush();
-        Assert.assertNull("Failed to remove 'Org' with identifier '" + id + "'", Org.findOrg(id));
+        Assert.assertNull("Failed to remove 'Org' with identifier '" + id + "'", orgService.findOrg(id));
     }
     
 }

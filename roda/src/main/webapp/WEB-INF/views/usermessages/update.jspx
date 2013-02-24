@@ -3,8 +3,8 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <form:update id="fu_ro_roda_UserMessage" modelAttribute="userMessage" path="/usermessages" versionField="none" z="fjvPwy+HjGiVy4ENvhxXjmdZECE=">
-        <field:select field="toUserId" id="c_ro_roda_UserMessage_toUserId" itemValue="id" items="${users}" path="/users" z="Sq7r6BfMNpgeXUeLmh67lf8i49E="/>
-        <field:select field="fromUserId" id="c_ro_roda_UserMessage_fromUserId" itemValue="id" items="${users}" path="/users" z="t9yOaGv4C746lr1lo7NN9EoYqUM="/>
+        <field:select field="toUserId" id="c_ro_roda_UserMessage_toUserId" itemValue="id" items="${rodausers}" path="/rodausers" z="slg49avUohlI93QFCnzRCkyp4E4="/>
+        <field:select field="fromUserId" id="c_ro_roda_UserMessage_fromUserId" itemValue="id" items="${rodausers}" path="/rodausers" z="dICpS06bR9ygRuv5Vfeu+dDTdu4="/>
         <field:input field="message" id="c_ro_roda_UserMessage_message" required="true" z="cTOCTDBlA9GmuHyuzsQ8QlfSd0I="/>
     </form:update>
 </div>

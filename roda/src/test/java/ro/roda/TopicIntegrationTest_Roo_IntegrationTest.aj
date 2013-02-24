@@ -11,9 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.Topic;
 import ro.roda.TopicDataOnDemand;
 import ro.roda.TopicIntegrationTest;
+import ro.roda.service.TopicService;
 
 privileged aspect TopicIntegrationTest_Roo_IntegrationTest {
     
@@ -24,12 +24,15 @@ privileged aspect TopicIntegrationTest_Roo_IntegrationTest {
     declare @type: TopicIntegrationTest: @Transactional;
     
     @Autowired
-    private TopicDataOnDemand TopicIntegrationTest.dod;
+    TopicDataOnDemand TopicIntegrationTest.dod;
+    
+    @Autowired
+    TopicService TopicIntegrationTest.topicService;
     
     @Test
-    public void TopicIntegrationTest.testCountTopics() {
+    public void TopicIntegrationTest.testCountAllTopics() {
         Assert.assertNotNull("Data on demand for 'Topic' failed to initialize correctly", dod.getRandomTopic());
-        long count = Topic.countTopics();
+        long count = topicService.countAllTopics();
         Assert.assertTrue("Counter for 'Topic' incorrectly reported there were no entries", count > 0);
     }
     
@@ -39,7 +42,7 @@ privileged aspect TopicIntegrationTest_Roo_IntegrationTest {
         Assert.assertNotNull("Data on demand for 'Topic' failed to initialize correctly", obj);
         Integer id = obj.getId();
         Assert.assertNotNull("Data on demand for 'Topic' failed to provide an identifier", id);
-        obj = Topic.findTopic(id);
+        obj = topicService.findTopic(id);
         Assert.assertNotNull("Find method for 'Topic' illegally returned null for id '" + id + "'", obj);
         Assert.assertEquals("Find method for 'Topic' returned the incorrect identifier", id, obj.getId());
     }
@@ -47,9 +50,9 @@ privileged aspect TopicIntegrationTest_Roo_IntegrationTest {
     @Test
     public void TopicIntegrationTest.testFindAllTopics() {
         Assert.assertNotNull("Data on demand for 'Topic' failed to initialize correctly", dod.getRandomTopic());
-        long count = Topic.countTopics();
+        long count = topicService.countAllTopics();
         Assert.assertTrue("Too expensive to perform a find all test for 'Topic', as there are " + count + " entries; set the findAllMaximum to exceed this value or set findAll=false on the integration test annotation to disable the test", count < 250);
-        List<Topic> result = Topic.findAllTopics();
+        List<Topic> result = topicService.findAllTopics();
         Assert.assertNotNull("Find all method for 'Topic' illegally returned null", result);
         Assert.assertTrue("Find all method for 'Topic' failed to return any data", result.size() > 0);
     }
@@ -57,36 +60,36 @@ privileged aspect TopicIntegrationTest_Roo_IntegrationTest {
     @Test
     public void TopicIntegrationTest.testFindTopicEntries() {
         Assert.assertNotNull("Data on demand for 'Topic' failed to initialize correctly", dod.getRandomTopic());
-        long count = Topic.countTopics();
+        long count = topicService.countAllTopics();
         if (count > 20) count = 20;
         int firstResult = 0;
         int maxResults = (int) count;
-        List<Topic> result = Topic.findTopicEntries(firstResult, maxResults);
+        List<Topic> result = topicService.findTopicEntries(firstResult, maxResults);
         Assert.assertNotNull("Find entries method for 'Topic' illegally returned null", result);
         Assert.assertEquals("Find entries method for 'Topic' returned an incorrect number of entries", count, result.size());
     }
     
     @Test
-    public void TopicIntegrationTest.testPersist() {
+    public void TopicIntegrationTest.testSaveTopic() {
         Assert.assertNotNull("Data on demand for 'Topic' failed to initialize correctly", dod.getRandomTopic());
         Topic obj = dod.getNewTransientTopic(Integer.MAX_VALUE);
         Assert.assertNotNull("Data on demand for 'Topic' failed to provide a new transient entity", obj);
         Assert.assertNull("Expected 'Topic' identifier to be null", obj.getId());
-        obj.persist();
+        topicService.saveTopic(obj);
         obj.flush();
         Assert.assertNotNull("Expected 'Topic' identifier to no longer be null", obj.getId());
     }
     
     @Test
-    public void TopicIntegrationTest.testRemove() {
+    public void TopicIntegrationTest.testDeleteTopic() {
         Topic obj = dod.getRandomTopic();
         Assert.assertNotNull("Data on demand for 'Topic' failed to initialize correctly", obj);
         Integer id = obj.getId();
         Assert.assertNotNull("Data on demand for 'Topic' failed to provide an identifier", id);
-        obj = Topic.findTopic(id);
-        obj.remove();
+        obj = topicService.findTopic(id);
+        topicService.deleteTopic(obj);
         obj.flush();
-        Assert.assertNull("Failed to remove 'Topic' with identifier '" + id + "'", Topic.findTopic(id));
+        Assert.assertNull("Failed to remove 'Topic' with identifier '" + id + "'", topicService.findTopic(id));
     }
     
 }

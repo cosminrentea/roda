@@ -14,7 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ro.roda.OtherStatistic;
 import ro.roda.OtherStatisticDataOnDemand;
+import ro.roda.Variable;
 import ro.roda.VariableDataOnDemand;
+import ro.roda.service.OtherStatisticService;
 
 privileged aspect OtherStatisticDataOnDemand_Roo_DataOnDemand {
     
@@ -25,13 +27,17 @@ privileged aspect OtherStatisticDataOnDemand_Roo_DataOnDemand {
     private List<OtherStatistic> OtherStatisticDataOnDemand.data;
     
     @Autowired
-    private VariableDataOnDemand OtherStatisticDataOnDemand.variableDataOnDemand;
+    VariableDataOnDemand OtherStatisticDataOnDemand.variableDataOnDemand;
+    
+    @Autowired
+    OtherStatisticService OtherStatisticDataOnDemand.otherStatisticService;
     
     public OtherStatistic OtherStatisticDataOnDemand.getNewTransientOtherStatistic(int index) {
         OtherStatistic obj = new OtherStatistic();
         setDescription(obj, index);
         setName(obj, index);
         setValue(obj, index);
+        setVariableId(obj, index);
         return obj;
     }
     
@@ -56,6 +62,11 @@ privileged aspect OtherStatisticDataOnDemand_Roo_DataOnDemand {
         obj.setValue(value);
     }
     
+    public void OtherStatisticDataOnDemand.setVariableId(OtherStatistic obj, int index) {
+        Variable variableId = variableDataOnDemand.getRandomVariable();
+        obj.setVariableId(variableId);
+    }
+    
     public OtherStatistic OtherStatisticDataOnDemand.getSpecificOtherStatistic(int index) {
         init();
         if (index < 0) {
@@ -66,14 +77,14 @@ privileged aspect OtherStatisticDataOnDemand_Roo_DataOnDemand {
         }
         OtherStatistic obj = data.get(index);
         Long id = obj.getId();
-        return OtherStatistic.findOtherStatistic(id);
+        return otherStatisticService.findOtherStatistic(id);
     }
     
     public OtherStatistic OtherStatisticDataOnDemand.getRandomOtherStatistic() {
         init();
         OtherStatistic obj = data.get(rnd.nextInt(data.size()));
         Long id = obj.getId();
-        return OtherStatistic.findOtherStatistic(id);
+        return otherStatisticService.findOtherStatistic(id);
     }
     
     public boolean OtherStatisticDataOnDemand.modifyOtherStatistic(OtherStatistic obj) {
@@ -83,7 +94,7 @@ privileged aspect OtherStatisticDataOnDemand_Roo_DataOnDemand {
     public void OtherStatisticDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = OtherStatistic.findOtherStatisticEntries(from, to);
+        data = otherStatisticService.findOtherStatisticEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'OtherStatistic' illegally returned null");
         }
@@ -95,7 +106,7 @@ privileged aspect OtherStatisticDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             OtherStatistic obj = getNewTransientOtherStatistic(i);
             try {
-                obj.persist();
+                otherStatisticService.saveOtherStatistic(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

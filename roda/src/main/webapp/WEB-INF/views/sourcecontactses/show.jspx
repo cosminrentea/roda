@@ -6,7 +6,7 @@
         <field:display field="personId" id="s_ro_roda_SourceContacts_personId" object="${sourcecontacts}" z="BpJSaOAJeZtHO8T29cOFe0yxs7Y="/>
         <field:display field="sourceId" id="s_ro_roda_SourceContacts_sourceId" object="${sourcecontacts}" z="sYAk7B7k5+pNACiXrhwJ7vXGl7A="/>
         <field:display field="sourceContactMethodId" id="s_ro_roda_SourceContacts_sourceContactMethodId" object="${sourcecontacts}" z="23oAJDIqz7BEHDXoDfOzOgO+CdY="/>
-        <field:display date="true" dateTimePattern="${sourceContacts_contactdate_date_format}" field="contactDate" id="s_ro_roda_SourceContacts_contactDate" object="${sourcecontacts}" z="a9z4Tt9vn0whDTrk+1KUxAF1UFk="/>
+        <field:display calendar="true" dateTimePattern="${sourceContacts_contactdate_date_format}" field="contactDate" id="s_ro_roda_SourceContacts_contactDate" object="${sourcecontacts}" z="ilMBY+V5Aqq0YW/0ZehhlMXXKws="/>
         <field:display field="synopsis" id="s_ro_roda_SourceContacts_synopsis" object="${sourcecontacts}" z="PKoQnTHss0hObEFbjfvIxmzS1ro="/>
         <field:display field="followup" id="s_ro_roda_SourceContacts_followup" object="${sourcecontacts}" z="OZHl9q9Yq+iCtQHyAW1iqOMMxoM="/>
     </page:show>

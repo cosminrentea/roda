@@ -11,9 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.TimeMethType;
 import ro.roda.TimeMethTypeDataOnDemand;
 import ro.roda.TimeMethTypeIntegrationTest;
+import ro.roda.service.TimeMethTypeService;
 
 privileged aspect TimeMethTypeIntegrationTest_Roo_IntegrationTest {
     
@@ -24,12 +24,15 @@ privileged aspect TimeMethTypeIntegrationTest_Roo_IntegrationTest {
     declare @type: TimeMethTypeIntegrationTest: @Transactional;
     
     @Autowired
-    private TimeMethTypeDataOnDemand TimeMethTypeIntegrationTest.dod;
+    TimeMethTypeDataOnDemand TimeMethTypeIntegrationTest.dod;
+    
+    @Autowired
+    TimeMethTypeService TimeMethTypeIntegrationTest.timeMethTypeService;
     
     @Test
-    public void TimeMethTypeIntegrationTest.testCountTimeMethTypes() {
+    public void TimeMethTypeIntegrationTest.testCountAllTimeMethTypes() {
         Assert.assertNotNull("Data on demand for 'TimeMethType' failed to initialize correctly", dod.getRandomTimeMethType());
-        long count = TimeMethType.countTimeMethTypes();
+        long count = timeMethTypeService.countAllTimeMethTypes();
         Assert.assertTrue("Counter for 'TimeMethType' incorrectly reported there were no entries", count > 0);
     }
     
@@ -39,7 +42,7 @@ privileged aspect TimeMethTypeIntegrationTest_Roo_IntegrationTest {
         Assert.assertNotNull("Data on demand for 'TimeMethType' failed to initialize correctly", obj);
         Integer id = obj.getId();
         Assert.assertNotNull("Data on demand for 'TimeMethType' failed to provide an identifier", id);
-        obj = TimeMethType.findTimeMethType(id);
+        obj = timeMethTypeService.findTimeMethType(id);
         Assert.assertNotNull("Find method for 'TimeMethType' illegally returned null for id '" + id + "'", obj);
         Assert.assertEquals("Find method for 'TimeMethType' returned the incorrect identifier", id, obj.getId());
     }
@@ -47,9 +50,9 @@ privileged aspect TimeMethTypeIntegrationTest_Roo_IntegrationTest {
     @Test
     public void TimeMethTypeIntegrationTest.testFindAllTimeMethTypes() {
         Assert.assertNotNull("Data on demand for 'TimeMethType' failed to initialize correctly", dod.getRandomTimeMethType());
-        long count = TimeMethType.countTimeMethTypes();
+        long count = timeMethTypeService.countAllTimeMethTypes();
         Assert.assertTrue("Too expensive to perform a find all test for 'TimeMethType', as there are " + count + " entries; set the findAllMaximum to exceed this value or set findAll=false on the integration test annotation to disable the test", count < 250);
-        List<TimeMethType> result = TimeMethType.findAllTimeMethTypes();
+        List<TimeMethType> result = timeMethTypeService.findAllTimeMethTypes();
         Assert.assertNotNull("Find all method for 'TimeMethType' illegally returned null", result);
         Assert.assertTrue("Find all method for 'TimeMethType' failed to return any data", result.size() > 0);
     }
@@ -57,36 +60,36 @@ privileged aspect TimeMethTypeIntegrationTest_Roo_IntegrationTest {
     @Test
     public void TimeMethTypeIntegrationTest.testFindTimeMethTypeEntries() {
         Assert.assertNotNull("Data on demand for 'TimeMethType' failed to initialize correctly", dod.getRandomTimeMethType());
-        long count = TimeMethType.countTimeMethTypes();
+        long count = timeMethTypeService.countAllTimeMethTypes();
         if (count > 20) count = 20;
         int firstResult = 0;
         int maxResults = (int) count;
-        List<TimeMethType> result = TimeMethType.findTimeMethTypeEntries(firstResult, maxResults);
+        List<TimeMethType> result = timeMethTypeService.findTimeMethTypeEntries(firstResult, maxResults);
         Assert.assertNotNull("Find entries method for 'TimeMethType' illegally returned null", result);
         Assert.assertEquals("Find entries method for 'TimeMethType' returned an incorrect number of entries", count, result.size());
     }
     
     @Test
-    public void TimeMethTypeIntegrationTest.testPersist() {
+    public void TimeMethTypeIntegrationTest.testSaveTimeMethType() {
         Assert.assertNotNull("Data on demand for 'TimeMethType' failed to initialize correctly", dod.getRandomTimeMethType());
         TimeMethType obj = dod.getNewTransientTimeMethType(Integer.MAX_VALUE);
         Assert.assertNotNull("Data on demand for 'TimeMethType' failed to provide a new transient entity", obj);
         Assert.assertNull("Expected 'TimeMethType' identifier to be null", obj.getId());
-        obj.persist();
+        timeMethTypeService.saveTimeMethType(obj);
         obj.flush();
         Assert.assertNotNull("Expected 'TimeMethType' identifier to no longer be null", obj.getId());
     }
     
     @Test
-    public void TimeMethTypeIntegrationTest.testRemove() {
+    public void TimeMethTypeIntegrationTest.testDeleteTimeMethType() {
         TimeMethType obj = dod.getRandomTimeMethType();
         Assert.assertNotNull("Data on demand for 'TimeMethType' failed to initialize correctly", obj);
         Integer id = obj.getId();
         Assert.assertNotNull("Data on demand for 'TimeMethType' failed to provide an identifier", id);
-        obj = TimeMethType.findTimeMethType(id);
-        obj.remove();
+        obj = timeMethTypeService.findTimeMethType(id);
+        timeMethTypeService.deleteTimeMethType(obj);
         obj.flush();
-        Assert.assertNull("Failed to remove 'TimeMethType' with identifier '" + id + "'", TimeMethType.findTimeMethType(id));
+        Assert.assertNull("Failed to remove 'TimeMethType' with identifier '" + id + "'", timeMethTypeService.findTimeMethType(id));
     }
     
 }

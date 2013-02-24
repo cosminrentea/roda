@@ -11,10 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.InstanceDescr;
 import ro.roda.InstanceDescrDataOnDemand;
 import ro.roda.InstanceDescrIntegrationTest;
 import ro.roda.InstanceDescrPK;
+import ro.roda.service.InstanceDescrService;
 
 privileged aspect InstanceDescrIntegrationTest_Roo_IntegrationTest {
     
@@ -25,12 +25,15 @@ privileged aspect InstanceDescrIntegrationTest_Roo_IntegrationTest {
     declare @type: InstanceDescrIntegrationTest: @Transactional;
     
     @Autowired
-    private InstanceDescrDataOnDemand InstanceDescrIntegrationTest.dod;
+    InstanceDescrDataOnDemand InstanceDescrIntegrationTest.dod;
+    
+    @Autowired
+    InstanceDescrService InstanceDescrIntegrationTest.instanceDescrService;
     
     @Test
-    public void InstanceDescrIntegrationTest.testCountInstanceDescrs() {
+    public void InstanceDescrIntegrationTest.testCountAllInstanceDescrs() {
         Assert.assertNotNull("Data on demand for 'InstanceDescr' failed to initialize correctly", dod.getRandomInstanceDescr());
-        long count = InstanceDescr.countInstanceDescrs();
+        long count = instanceDescrService.countAllInstanceDescrs();
         Assert.assertTrue("Counter for 'InstanceDescr' incorrectly reported there were no entries", count > 0);
     }
     
@@ -40,7 +43,7 @@ privileged aspect InstanceDescrIntegrationTest_Roo_IntegrationTest {
         Assert.assertNotNull("Data on demand for 'InstanceDescr' failed to initialize correctly", obj);
         InstanceDescrPK id = obj.getId();
         Assert.assertNotNull("Data on demand for 'InstanceDescr' failed to provide an identifier", id);
-        obj = InstanceDescr.findInstanceDescr(id);
+        obj = instanceDescrService.findInstanceDescr(id);
         Assert.assertNotNull("Find method for 'InstanceDescr' illegally returned null for id '" + id + "'", obj);
         Assert.assertEquals("Find method for 'InstanceDescr' returned the incorrect identifier", id, obj.getId());
     }
@@ -48,9 +51,9 @@ privileged aspect InstanceDescrIntegrationTest_Roo_IntegrationTest {
     @Test
     public void InstanceDescrIntegrationTest.testFindAllInstanceDescrs() {
         Assert.assertNotNull("Data on demand for 'InstanceDescr' failed to initialize correctly", dod.getRandomInstanceDescr());
-        long count = InstanceDescr.countInstanceDescrs();
+        long count = instanceDescrService.countAllInstanceDescrs();
         Assert.assertTrue("Too expensive to perform a find all test for 'InstanceDescr', as there are " + count + " entries; set the findAllMaximum to exceed this value or set findAll=false on the integration test annotation to disable the test", count < 250);
-        List<InstanceDescr> result = InstanceDescr.findAllInstanceDescrs();
+        List<InstanceDescr> result = instanceDescrService.findAllInstanceDescrs();
         Assert.assertNotNull("Find all method for 'InstanceDescr' illegally returned null", result);
         Assert.assertTrue("Find all method for 'InstanceDescr' failed to return any data", result.size() > 0);
     }
@@ -58,35 +61,35 @@ privileged aspect InstanceDescrIntegrationTest_Roo_IntegrationTest {
     @Test
     public void InstanceDescrIntegrationTest.testFindInstanceDescrEntries() {
         Assert.assertNotNull("Data on demand for 'InstanceDescr' failed to initialize correctly", dod.getRandomInstanceDescr());
-        long count = InstanceDescr.countInstanceDescrs();
+        long count = instanceDescrService.countAllInstanceDescrs();
         if (count > 20) count = 20;
         int firstResult = 0;
         int maxResults = (int) count;
-        List<InstanceDescr> result = InstanceDescr.findInstanceDescrEntries(firstResult, maxResults);
+        List<InstanceDescr> result = instanceDescrService.findInstanceDescrEntries(firstResult, maxResults);
         Assert.assertNotNull("Find entries method for 'InstanceDescr' illegally returned null", result);
         Assert.assertEquals("Find entries method for 'InstanceDescr' returned an incorrect number of entries", count, result.size());
     }
     
     @Test
-    public void InstanceDescrIntegrationTest.testPersist() {
+    public void InstanceDescrIntegrationTest.testSaveInstanceDescr() {
         Assert.assertNotNull("Data on demand for 'InstanceDescr' failed to initialize correctly", dod.getRandomInstanceDescr());
         InstanceDescr obj = dod.getNewTransientInstanceDescr(Integer.MAX_VALUE);
         Assert.assertNotNull("Data on demand for 'InstanceDescr' failed to provide a new transient entity", obj);
-        obj.persist();
+        instanceDescrService.saveInstanceDescr(obj);
         obj.flush();
         Assert.assertNotNull("Expected 'InstanceDescr' identifier to no longer be null", obj.getId());
     }
     
     @Test
-    public void InstanceDescrIntegrationTest.testRemove() {
+    public void InstanceDescrIntegrationTest.testDeleteInstanceDescr() {
         InstanceDescr obj = dod.getRandomInstanceDescr();
         Assert.assertNotNull("Data on demand for 'InstanceDescr' failed to initialize correctly", obj);
         InstanceDescrPK id = obj.getId();
         Assert.assertNotNull("Data on demand for 'InstanceDescr' failed to provide an identifier", id);
-        obj = InstanceDescr.findInstanceDescr(id);
-        obj.remove();
+        obj = instanceDescrService.findInstanceDescr(id);
+        instanceDescrService.deleteInstanceDescr(obj);
         obj.flush();
-        Assert.assertNull("Failed to remove 'InstanceDescr' with identifier '" + id + "'", InstanceDescr.findInstanceDescr(id));
+        Assert.assertNull("Failed to remove 'InstanceDescr' with identifier '" + id + "'", instanceDescrService.findInstanceDescr(id));
     }
     
 }

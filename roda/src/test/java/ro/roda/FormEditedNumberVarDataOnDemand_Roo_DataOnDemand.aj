@@ -13,11 +13,14 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import ro.roda.Form;
 import ro.roda.FormDataOnDemand;
 import ro.roda.FormEditedNumberVar;
 import ro.roda.FormEditedNumberVarDataOnDemand;
 import ro.roda.FormEditedNumberVarPK;
+import ro.roda.Variable;
 import ro.roda.VariableDataOnDemand;
+import ro.roda.service.FormEditedNumberVarService;
 
 privileged aspect FormEditedNumberVarDataOnDemand_Roo_DataOnDemand {
     
@@ -28,15 +31,20 @@ privileged aspect FormEditedNumberVarDataOnDemand_Roo_DataOnDemand {
     private List<FormEditedNumberVar> FormEditedNumberVarDataOnDemand.data;
     
     @Autowired
-    private FormDataOnDemand FormEditedNumberVarDataOnDemand.formDataOnDemand;
+    FormDataOnDemand FormEditedNumberVarDataOnDemand.formDataOnDemand;
     
     @Autowired
-    private VariableDataOnDemand FormEditedNumberVarDataOnDemand.variableDataOnDemand;
+    VariableDataOnDemand FormEditedNumberVarDataOnDemand.variableDataOnDemand;
+    
+    @Autowired
+    FormEditedNumberVarService FormEditedNumberVarDataOnDemand.formEditedNumberVarService;
     
     public FormEditedNumberVar FormEditedNumberVarDataOnDemand.getNewTransientFormEditedNumberVar(int index) {
         FormEditedNumberVar obj = new FormEditedNumberVar();
         setEmbeddedIdClass(obj, index);
+        setFormId(obj, index);
         setValue(obj, index);
+        setVariableId(obj, index);
         return obj;
     }
     
@@ -48,12 +56,22 @@ privileged aspect FormEditedNumberVarDataOnDemand_Roo_DataOnDemand {
         obj.setId(embeddedIdClass);
     }
     
+    public void FormEditedNumberVarDataOnDemand.setFormId(FormEditedNumberVar obj, int index) {
+        Form formId = formDataOnDemand.getRandomForm();
+        obj.setFormId(formId);
+    }
+    
     public void FormEditedNumberVarDataOnDemand.setValue(FormEditedNumberVar obj, int index) {
         BigDecimal value = BigDecimal.valueOf(index);
         if (value.compareTo(new BigDecimal("99999999.99")) == 1) {
             value = new BigDecimal("99999999.99");
         }
         obj.setValue(value);
+    }
+    
+    public void FormEditedNumberVarDataOnDemand.setVariableId(FormEditedNumberVar obj, int index) {
+        Variable variableId = variableDataOnDemand.getRandomVariable();
+        obj.setVariableId(variableId);
     }
     
     public FormEditedNumberVar FormEditedNumberVarDataOnDemand.getSpecificFormEditedNumberVar(int index) {
@@ -66,14 +84,14 @@ privileged aspect FormEditedNumberVarDataOnDemand_Roo_DataOnDemand {
         }
         FormEditedNumberVar obj = data.get(index);
         FormEditedNumberVarPK id = obj.getId();
-        return FormEditedNumberVar.findFormEditedNumberVar(id);
+        return formEditedNumberVarService.findFormEditedNumberVar(id);
     }
     
     public FormEditedNumberVar FormEditedNumberVarDataOnDemand.getRandomFormEditedNumberVar() {
         init();
         FormEditedNumberVar obj = data.get(rnd.nextInt(data.size()));
         FormEditedNumberVarPK id = obj.getId();
-        return FormEditedNumberVar.findFormEditedNumberVar(id);
+        return formEditedNumberVarService.findFormEditedNumberVar(id);
     }
     
     public boolean FormEditedNumberVarDataOnDemand.modifyFormEditedNumberVar(FormEditedNumberVar obj) {
@@ -83,7 +101,7 @@ privileged aspect FormEditedNumberVarDataOnDemand_Roo_DataOnDemand {
     public void FormEditedNumberVarDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = FormEditedNumberVar.findFormEditedNumberVarEntries(from, to);
+        data = formEditedNumberVarService.findFormEditedNumberVarEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'FormEditedNumberVar' illegally returned null");
         }
@@ -95,7 +113,7 @@ privileged aspect FormEditedNumberVarDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             FormEditedNumberVar obj = getNewTransientFormEditedNumberVar(i);
             try {
-                obj.persist();
+                formEditedNumberVarService.saveFormEditedNumberVar(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

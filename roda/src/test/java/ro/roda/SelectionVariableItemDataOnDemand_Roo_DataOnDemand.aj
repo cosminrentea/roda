@@ -13,11 +13,14 @@ import javax.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ro.roda.FileDataOnDemand;
+import ro.roda.Item;
 import ro.roda.ItemDataOnDemand;
+import ro.roda.SelectionVariable;
 import ro.roda.SelectionVariableDataOnDemand;
 import ro.roda.SelectionVariableItem;
 import ro.roda.SelectionVariableItemDataOnDemand;
 import ro.roda.SelectionVariableItemPK;
+import ro.roda.service.SelectionVariableItemService;
 
 privileged aspect SelectionVariableItemDataOnDemand_Roo_DataOnDemand {
     
@@ -28,19 +31,24 @@ privileged aspect SelectionVariableItemDataOnDemand_Roo_DataOnDemand {
     private List<SelectionVariableItem> SelectionVariableItemDataOnDemand.data;
     
     @Autowired
-    private ItemDataOnDemand SelectionVariableItemDataOnDemand.itemDataOnDemand;
+    ItemDataOnDemand SelectionVariableItemDataOnDemand.itemDataOnDemand;
     
     @Autowired
-    private FileDataOnDemand SelectionVariableItemDataOnDemand.fileDataOnDemand;
+    FileDataOnDemand SelectionVariableItemDataOnDemand.fileDataOnDemand;
     
     @Autowired
-    private SelectionVariableDataOnDemand SelectionVariableItemDataOnDemand.selectionVariableDataOnDemand;
+    SelectionVariableDataOnDemand SelectionVariableItemDataOnDemand.selectionVariableDataOnDemand;
+    
+    @Autowired
+    SelectionVariableItemService SelectionVariableItemDataOnDemand.selectionVariableItemService;
     
     public SelectionVariableItem SelectionVariableItemDataOnDemand.getNewTransientSelectionVariableItem(int index) {
         SelectionVariableItem obj = new SelectionVariableItem();
         setEmbeddedIdClass(obj, index);
         setFrequencyValue(obj, index);
+        setItemId(obj, index);
         setOrderOfItemInVariable(obj, index);
+        setVariableId(obj, index);
         return obj;
     }
     
@@ -60,9 +68,19 @@ privileged aspect SelectionVariableItemDataOnDemand_Roo_DataOnDemand {
         obj.setFrequencyValue(frequencyValue);
     }
     
+    public void SelectionVariableItemDataOnDemand.setItemId(SelectionVariableItem obj, int index) {
+        Item itemId = itemDataOnDemand.getRandomItem();
+        obj.setItemId(itemId);
+    }
+    
     public void SelectionVariableItemDataOnDemand.setOrderOfItemInVariable(SelectionVariableItem obj, int index) {
         Integer orderOfItemInVariable = new Integer(index);
         obj.setOrderOfItemInVariable(orderOfItemInVariable);
+    }
+    
+    public void SelectionVariableItemDataOnDemand.setVariableId(SelectionVariableItem obj, int index) {
+        SelectionVariable variableId = selectionVariableDataOnDemand.getRandomSelectionVariable();
+        obj.setVariableId(variableId);
     }
     
     public SelectionVariableItem SelectionVariableItemDataOnDemand.getSpecificSelectionVariableItem(int index) {
@@ -75,14 +93,14 @@ privileged aspect SelectionVariableItemDataOnDemand_Roo_DataOnDemand {
         }
         SelectionVariableItem obj = data.get(index);
         SelectionVariableItemPK id = obj.getId();
-        return SelectionVariableItem.findSelectionVariableItem(id);
+        return selectionVariableItemService.findSelectionVariableItem(id);
     }
     
     public SelectionVariableItem SelectionVariableItemDataOnDemand.getRandomSelectionVariableItem() {
         init();
         SelectionVariableItem obj = data.get(rnd.nextInt(data.size()));
         SelectionVariableItemPK id = obj.getId();
-        return SelectionVariableItem.findSelectionVariableItem(id);
+        return selectionVariableItemService.findSelectionVariableItem(id);
     }
     
     public boolean SelectionVariableItemDataOnDemand.modifySelectionVariableItem(SelectionVariableItem obj) {
@@ -92,7 +110,7 @@ privileged aspect SelectionVariableItemDataOnDemand_Roo_DataOnDemand {
     public void SelectionVariableItemDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = SelectionVariableItem.findSelectionVariableItemEntries(from, to);
+        data = selectionVariableItemService.findSelectionVariableItemEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'SelectionVariableItem' illegally returned null");
         }
@@ -104,7 +122,7 @@ privileged aspect SelectionVariableItemDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             SelectionVariableItem obj = getNewTransientSelectionVariableItem(i);
             try {
-                obj.persist();
+                selectionVariableItemService.saveSelectionVariableItem(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

@@ -12,10 +12,13 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import ro.roda.Country;
 import ro.roda.CountryDataOnDemand;
 import ro.roda.Region;
 import ro.roda.RegionDataOnDemand;
+import ro.roda.Regiontype;
 import ro.roda.RegiontypeDataOnDemand;
+import ro.roda.service.RegionService;
 
 privileged aspect RegionDataOnDemand_Roo_DataOnDemand {
     
@@ -26,17 +29,27 @@ privileged aspect RegionDataOnDemand_Roo_DataOnDemand {
     private List<Region> RegionDataOnDemand.data;
     
     @Autowired
-    private CountryDataOnDemand RegionDataOnDemand.countryDataOnDemand;
+    CountryDataOnDemand RegionDataOnDemand.countryDataOnDemand;
     
     @Autowired
-    private RegiontypeDataOnDemand RegionDataOnDemand.regiontypeDataOnDemand;
+    RegiontypeDataOnDemand RegionDataOnDemand.regiontypeDataOnDemand;
+    
+    @Autowired
+    RegionService RegionDataOnDemand.regionService;
     
     public Region RegionDataOnDemand.getNewTransientRegion(int index) {
         Region obj = new Region();
+        setCountryId(obj, index);
         setName(obj, index);
         setRegionCode(obj, index);
         setRegionCodeName(obj, index);
+        setRegiontypeId(obj, index);
         return obj;
+    }
+    
+    public void RegionDataOnDemand.setCountryId(Region obj, int index) {
+        Country countryId = countryDataOnDemand.getRandomCountry();
+        obj.setCountryId(countryId);
     }
     
     public void RegionDataOnDemand.setName(Region obj, int index) {
@@ -63,6 +76,11 @@ privileged aspect RegionDataOnDemand_Roo_DataOnDemand {
         obj.setRegionCodeName(regionCodeName);
     }
     
+    public void RegionDataOnDemand.setRegiontypeId(Region obj, int index) {
+        Regiontype regiontypeId = regiontypeDataOnDemand.getRandomRegiontype();
+        obj.setRegiontypeId(regiontypeId);
+    }
+    
     public Region RegionDataOnDemand.getSpecificRegion(int index) {
         init();
         if (index < 0) {
@@ -73,14 +91,14 @@ privileged aspect RegionDataOnDemand_Roo_DataOnDemand {
         }
         Region obj = data.get(index);
         Integer id = obj.getId();
-        return Region.findRegion(id);
+        return regionService.findRegion(id);
     }
     
     public Region RegionDataOnDemand.getRandomRegion() {
         init();
         Region obj = data.get(rnd.nextInt(data.size()));
         Integer id = obj.getId();
-        return Region.findRegion(id);
+        return regionService.findRegion(id);
     }
     
     public boolean RegionDataOnDemand.modifyRegion(Region obj) {
@@ -90,7 +108,7 @@ privileged aspect RegionDataOnDemand_Roo_DataOnDemand {
     public void RegionDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = Region.findRegionEntries(from, to);
+        data = regionService.findRegionEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'Region' illegally returned null");
         }
@@ -102,7 +120,7 @@ privileged aspect RegionDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             Region obj = getNewTransientRegion(i);
             try {
-                obj.persist();
+                regionService.saveRegion(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

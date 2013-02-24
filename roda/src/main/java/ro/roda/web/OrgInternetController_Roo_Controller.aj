@@ -16,15 +16,25 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.Internet;
-import ro.roda.Org;
 import ro.roda.OrgInternet;
 import ro.roda.OrgInternetPK;
+import ro.roda.service.InternetService;
+import ro.roda.service.OrgInternetService;
+import ro.roda.service.OrgService;
 import ro.roda.web.OrgInternetController;
 
 privileged aspect OrgInternetController_Roo_Controller {
     
     private ConversionService OrgInternetController.conversionService;
+    
+    @Autowired
+    OrgInternetService OrgInternetController.orgInternetService;
+    
+    @Autowired
+    InternetService OrgInternetController.internetService;
+    
+    @Autowired
+    OrgService OrgInternetController.orgService;
     
     @Autowired
     public OrgInternetController.new(ConversionService conversionService) {
@@ -39,7 +49,7 @@ privileged aspect OrgInternetController_Roo_Controller {
             return "orginternets/create";
         }
         uiModel.asMap().clear();
-        orgInternet.persist();
+        orgInternetService.saveOrgInternet(orgInternet);
         return "redirect:/orginternets/" + encodeUrlPathSegment(conversionService.convert(orgInternet.getId(), String.class), httpServletRequest);
     }
     
@@ -51,7 +61,7 @@ privileged aspect OrgInternetController_Roo_Controller {
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String OrgInternetController.show(@PathVariable("id") OrgInternetPK id, Model uiModel) {
-        uiModel.addAttribute("orginternet", OrgInternet.findOrgInternet(id));
+        uiModel.addAttribute("orginternet", orgInternetService.findOrgInternet(id));
         uiModel.addAttribute("itemId", conversionService.convert(id, String.class));
         return "orginternets/show";
     }
@@ -61,11 +71,11 @@ privileged aspect OrgInternetController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("orginternets", OrgInternet.findOrgInternetEntries(firstResult, sizeNo));
-            float nrOfPages = (float) OrgInternet.countOrgInternets() / sizeNo;
+            uiModel.addAttribute("orginternets", orgInternetService.findOrgInternetEntries(firstResult, sizeNo));
+            float nrOfPages = (float) orgInternetService.countAllOrgInternets() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("orginternets", OrgInternet.findAllOrgInternets());
+            uiModel.addAttribute("orginternets", orgInternetService.findAllOrgInternets());
         }
         return "orginternets/list";
     }
@@ -77,20 +87,20 @@ privileged aspect OrgInternetController_Roo_Controller {
             return "orginternets/update";
         }
         uiModel.asMap().clear();
-        orgInternet.merge();
+        orgInternetService.updateOrgInternet(orgInternet);
         return "redirect:/orginternets/" + encodeUrlPathSegment(conversionService.convert(orgInternet.getId(), String.class), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String OrgInternetController.updateForm(@PathVariable("id") OrgInternetPK id, Model uiModel) {
-        populateEditForm(uiModel, OrgInternet.findOrgInternet(id));
+        populateEditForm(uiModel, orgInternetService.findOrgInternet(id));
         return "orginternets/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
     public String OrgInternetController.delete(@PathVariable("id") OrgInternetPK id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        OrgInternet orgInternet = OrgInternet.findOrgInternet(id);
-        orgInternet.remove();
+        OrgInternet orgInternet = orgInternetService.findOrgInternet(id);
+        orgInternetService.deleteOrgInternet(orgInternet);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
@@ -99,8 +109,8 @@ privileged aspect OrgInternetController_Roo_Controller {
     
     void OrgInternetController.populateEditForm(Model uiModel, OrgInternet orgInternet) {
         uiModel.addAttribute("orgInternet", orgInternet);
-        uiModel.addAttribute("internets", Internet.findAllInternets());
-        uiModel.addAttribute("orgs", Org.findAllOrgs());
+        uiModel.addAttribute("internets", internetService.findAllInternets());
+        uiModel.addAttribute("orgs", orgService.findAllOrgs());
     }
     
     String OrgInternetController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

@@ -11,9 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.Vargroup;
 import ro.roda.VargroupDataOnDemand;
 import ro.roda.VargroupIntegrationTest;
+import ro.roda.service.VargroupService;
 
 privileged aspect VargroupIntegrationTest_Roo_IntegrationTest {
     
@@ -24,12 +24,15 @@ privileged aspect VargroupIntegrationTest_Roo_IntegrationTest {
     declare @type: VargroupIntegrationTest: @Transactional;
     
     @Autowired
-    private VargroupDataOnDemand VargroupIntegrationTest.dod;
+    VargroupDataOnDemand VargroupIntegrationTest.dod;
+    
+    @Autowired
+    VargroupService VargroupIntegrationTest.vargroupService;
     
     @Test
-    public void VargroupIntegrationTest.testCountVargroups() {
+    public void VargroupIntegrationTest.testCountAllVargroups() {
         Assert.assertNotNull("Data on demand for 'Vargroup' failed to initialize correctly", dod.getRandomVargroup());
-        long count = Vargroup.countVargroups();
+        long count = vargroupService.countAllVargroups();
         Assert.assertTrue("Counter for 'Vargroup' incorrectly reported there were no entries", count > 0);
     }
     
@@ -39,7 +42,7 @@ privileged aspect VargroupIntegrationTest_Roo_IntegrationTest {
         Assert.assertNotNull("Data on demand for 'Vargroup' failed to initialize correctly", obj);
         Long id = obj.getId();
         Assert.assertNotNull("Data on demand for 'Vargroup' failed to provide an identifier", id);
-        obj = Vargroup.findVargroup(id);
+        obj = vargroupService.findVargroup(id);
         Assert.assertNotNull("Find method for 'Vargroup' illegally returned null for id '" + id + "'", obj);
         Assert.assertEquals("Find method for 'Vargroup' returned the incorrect identifier", id, obj.getId());
     }
@@ -47,9 +50,9 @@ privileged aspect VargroupIntegrationTest_Roo_IntegrationTest {
     @Test
     public void VargroupIntegrationTest.testFindAllVargroups() {
         Assert.assertNotNull("Data on demand for 'Vargroup' failed to initialize correctly", dod.getRandomVargroup());
-        long count = Vargroup.countVargroups();
+        long count = vargroupService.countAllVargroups();
         Assert.assertTrue("Too expensive to perform a find all test for 'Vargroup', as there are " + count + " entries; set the findAllMaximum to exceed this value or set findAll=false on the integration test annotation to disable the test", count < 250);
-        List<Vargroup> result = Vargroup.findAllVargroups();
+        List<Vargroup> result = vargroupService.findAllVargroups();
         Assert.assertNotNull("Find all method for 'Vargroup' illegally returned null", result);
         Assert.assertTrue("Find all method for 'Vargroup' failed to return any data", result.size() > 0);
     }
@@ -57,36 +60,36 @@ privileged aspect VargroupIntegrationTest_Roo_IntegrationTest {
     @Test
     public void VargroupIntegrationTest.testFindVargroupEntries() {
         Assert.assertNotNull("Data on demand for 'Vargroup' failed to initialize correctly", dod.getRandomVargroup());
-        long count = Vargroup.countVargroups();
+        long count = vargroupService.countAllVargroups();
         if (count > 20) count = 20;
         int firstResult = 0;
         int maxResults = (int) count;
-        List<Vargroup> result = Vargroup.findVargroupEntries(firstResult, maxResults);
+        List<Vargroup> result = vargroupService.findVargroupEntries(firstResult, maxResults);
         Assert.assertNotNull("Find entries method for 'Vargroup' illegally returned null", result);
         Assert.assertEquals("Find entries method for 'Vargroup' returned an incorrect number of entries", count, result.size());
     }
     
     @Test
-    public void VargroupIntegrationTest.testPersist() {
+    public void VargroupIntegrationTest.testSaveVargroup() {
         Assert.assertNotNull("Data on demand for 'Vargroup' failed to initialize correctly", dod.getRandomVargroup());
         Vargroup obj = dod.getNewTransientVargroup(Integer.MAX_VALUE);
         Assert.assertNotNull("Data on demand for 'Vargroup' failed to provide a new transient entity", obj);
         Assert.assertNull("Expected 'Vargroup' identifier to be null", obj.getId());
-        obj.persist();
+        vargroupService.saveVargroup(obj);
         obj.flush();
         Assert.assertNotNull("Expected 'Vargroup' identifier to no longer be null", obj.getId());
     }
     
     @Test
-    public void VargroupIntegrationTest.testRemove() {
+    public void VargroupIntegrationTest.testDeleteVargroup() {
         Vargroup obj = dod.getRandomVargroup();
         Assert.assertNotNull("Data on demand for 'Vargroup' failed to initialize correctly", obj);
         Long id = obj.getId();
         Assert.assertNotNull("Data on demand for 'Vargroup' failed to provide an identifier", id);
-        obj = Vargroup.findVargroup(id);
-        obj.remove();
+        obj = vargroupService.findVargroup(id);
+        vargroupService.deleteVargroup(obj);
         obj.flush();
-        Assert.assertNull("Failed to remove 'Vargroup' with identifier '" + id + "'", Vargroup.findVargroup(id));
+        Assert.assertNull("Failed to remove 'Vargroup' with identifier '" + id + "'", vargroupService.findVargroup(id));
     }
     
 }

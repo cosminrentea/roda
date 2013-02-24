@@ -16,14 +16,21 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.Catalog;
 import ro.roda.CatalogAcl;
 import ro.roda.CatalogAclPK;
+import ro.roda.service.CatalogAclService;
+import ro.roda.service.CatalogService;
 import ro.roda.web.CatalogAclController;
 
 privileged aspect CatalogAclController_Roo_Controller {
     
     private ConversionService CatalogAclController.conversionService;
+    
+    @Autowired
+    CatalogAclService CatalogAclController.catalogAclService;
+    
+    @Autowired
+    CatalogService CatalogAclController.catalogService;
     
     @Autowired
     public CatalogAclController.new(ConversionService conversionService) {
@@ -38,7 +45,7 @@ privileged aspect CatalogAclController_Roo_Controller {
             return "catalogacls/create";
         }
         uiModel.asMap().clear();
-        catalogAcl.persist();
+        catalogAclService.saveCatalogAcl(catalogAcl);
         return "redirect:/catalogacls/" + encodeUrlPathSegment(conversionService.convert(catalogAcl.getId(), String.class), httpServletRequest);
     }
     
@@ -50,7 +57,7 @@ privileged aspect CatalogAclController_Roo_Controller {
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String CatalogAclController.show(@PathVariable("id") CatalogAclPK id, Model uiModel) {
-        uiModel.addAttribute("catalogacl", CatalogAcl.findCatalogAcl(id));
+        uiModel.addAttribute("catalogacl", catalogAclService.findCatalogAcl(id));
         uiModel.addAttribute("itemId", conversionService.convert(id, String.class));
         return "catalogacls/show";
     }
@@ -60,11 +67,11 @@ privileged aspect CatalogAclController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("catalogacls", CatalogAcl.findCatalogAclEntries(firstResult, sizeNo));
-            float nrOfPages = (float) CatalogAcl.countCatalogAcls() / sizeNo;
+            uiModel.addAttribute("catalogacls", catalogAclService.findCatalogAclEntries(firstResult, sizeNo));
+            float nrOfPages = (float) catalogAclService.countAllCatalogAcls() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("catalogacls", CatalogAcl.findAllCatalogAcls());
+            uiModel.addAttribute("catalogacls", catalogAclService.findAllCatalogAcls());
         }
         return "catalogacls/list";
     }
@@ -76,20 +83,20 @@ privileged aspect CatalogAclController_Roo_Controller {
             return "catalogacls/update";
         }
         uiModel.asMap().clear();
-        catalogAcl.merge();
+        catalogAclService.updateCatalogAcl(catalogAcl);
         return "redirect:/catalogacls/" + encodeUrlPathSegment(conversionService.convert(catalogAcl.getId(), String.class), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String CatalogAclController.updateForm(@PathVariable("id") CatalogAclPK id, Model uiModel) {
-        populateEditForm(uiModel, CatalogAcl.findCatalogAcl(id));
+        populateEditForm(uiModel, catalogAclService.findCatalogAcl(id));
         return "catalogacls/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
     public String CatalogAclController.delete(@PathVariable("id") CatalogAclPK id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        CatalogAcl catalogAcl = CatalogAcl.findCatalogAcl(id);
-        catalogAcl.remove();
+        CatalogAcl catalogAcl = catalogAclService.findCatalogAcl(id);
+        catalogAclService.deleteCatalogAcl(catalogAcl);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
@@ -98,7 +105,7 @@ privileged aspect CatalogAclController_Roo_Controller {
     
     void CatalogAclController.populateEditForm(Model uiModel, CatalogAcl catalogAcl) {
         uiModel.addAttribute("catalogAcl", catalogAcl);
-        uiModel.addAttribute("catalogs", Catalog.findAllCatalogs());
+        uiModel.addAttribute("catalogs", catalogService.findAllCatalogs());
     }
     
     String CatalogAclController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

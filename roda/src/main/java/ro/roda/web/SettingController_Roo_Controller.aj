@@ -6,6 +6,7 @@ package ro.roda.web;
 import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,11 +16,21 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.Setting;
-import ro.roda.SettingGroup;
-import ro.roda.SettingValue;
+import ro.roda.service.SettingGroupService;
+import ro.roda.service.SettingService;
+import ro.roda.service.SettingValueService;
 import ro.roda.web.SettingController;
 
 privileged aspect SettingController_Roo_Controller {
+    
+    @Autowired
+    SettingService SettingController.settingService;
+    
+    @Autowired
+    SettingGroupService SettingController.settingGroupService;
+    
+    @Autowired
+    SettingValueService SettingController.settingValueService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String SettingController.create(@Valid Setting setting, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -28,7 +39,7 @@ privileged aspect SettingController_Roo_Controller {
             return "settings/create";
         }
         uiModel.asMap().clear();
-        setting.persist();
+        settingService.saveSetting(setting);
         return "redirect:/settings/" + encodeUrlPathSegment(setting.getId().toString(), httpServletRequest);
     }
     
@@ -40,7 +51,7 @@ privileged aspect SettingController_Roo_Controller {
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String SettingController.show(@PathVariable("id") Integer id, Model uiModel) {
-        uiModel.addAttribute("setting", Setting.findSetting(id));
+        uiModel.addAttribute("setting", settingService.findSetting(id));
         uiModel.addAttribute("itemId", id);
         return "settings/show";
     }
@@ -50,11 +61,11 @@ privileged aspect SettingController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("settings", Setting.findSettingEntries(firstResult, sizeNo));
-            float nrOfPages = (float) Setting.countSettings() / sizeNo;
+            uiModel.addAttribute("settings", settingService.findSettingEntries(firstResult, sizeNo));
+            float nrOfPages = (float) settingService.countAllSettings() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("settings", Setting.findAllSettings());
+            uiModel.addAttribute("settings", settingService.findAllSettings());
         }
         return "settings/list";
     }
@@ -66,20 +77,20 @@ privileged aspect SettingController_Roo_Controller {
             return "settings/update";
         }
         uiModel.asMap().clear();
-        setting.merge();
+        settingService.updateSetting(setting);
         return "redirect:/settings/" + encodeUrlPathSegment(setting.getId().toString(), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String SettingController.updateForm(@PathVariable("id") Integer id, Model uiModel) {
-        populateEditForm(uiModel, Setting.findSetting(id));
+        populateEditForm(uiModel, settingService.findSetting(id));
         return "settings/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
     public String SettingController.delete(@PathVariable("id") Integer id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        Setting setting = Setting.findSetting(id);
-        setting.remove();
+        Setting setting = settingService.findSetting(id);
+        settingService.deleteSetting(setting);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
@@ -88,8 +99,8 @@ privileged aspect SettingController_Roo_Controller {
     
     void SettingController.populateEditForm(Model uiModel, Setting setting) {
         uiModel.addAttribute("setting", setting);
-        uiModel.addAttribute("settinggroups", SettingGroup.findAllSettingGroups());
-        uiModel.addAttribute("settingvalues", SettingValue.findAllSettingValues());
+        uiModel.addAttribute("settinggroups", settingGroupService.findAllSettingGroups());
+        uiModel.addAttribute("settingvalues", settingValueService.findAllSettingValues());
     }
     
     String SettingController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

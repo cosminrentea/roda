@@ -7,6 +7,7 @@ import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.joda.time.format.DateTimeFormat;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -16,25 +17,71 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.CollectionModelType;
-import ro.roda.File;
-import ro.roda.Form;
 import ro.roda.Instance;
-import ro.roda.InstanceAcl;
-import ro.roda.InstanceDescr;
-import ro.roda.InstanceKeyword;
-import ro.roda.InstanceOrg;
-import ro.roda.InstancePerson;
-import ro.roda.SamplingProcedure;
-import ro.roda.Study;
-import ro.roda.TimeMethType;
-import ro.roda.Topic;
-import ro.roda.UnitAnalysis;
-import ro.roda.User;
-import ro.roda.Variable;
+import ro.roda.Rodauser;
+import ro.roda.service.CollectionModelTypeService;
+import ro.roda.service.FileService;
+import ro.roda.service.FormService;
+import ro.roda.service.InstanceAclService;
+import ro.roda.service.InstanceDescrService;
+import ro.roda.service.InstanceKeywordService;
+import ro.roda.service.InstanceOrgService;
+import ro.roda.service.InstancePersonService;
+import ro.roda.service.InstanceService;
+import ro.roda.service.SamplingProcedureService;
+import ro.roda.service.StudyService;
+import ro.roda.service.TimeMethTypeService;
+import ro.roda.service.TopicService;
+import ro.roda.service.UnitAnalysisService;
+import ro.roda.service.VariableService;
 import ro.roda.web.InstanceController;
 
 privileged aspect InstanceController_Roo_Controller {
+    
+    @Autowired
+    InstanceService InstanceController.instanceService;
+    
+    @Autowired
+    CollectionModelTypeService InstanceController.collectionModelTypeService;
+    
+    @Autowired
+    FileService InstanceController.fileService;
+    
+    @Autowired
+    FormService InstanceController.formService;
+    
+    @Autowired
+    InstanceAclService InstanceController.instanceAclService;
+    
+    @Autowired
+    InstanceDescrService InstanceController.instanceDescrService;
+    
+    @Autowired
+    InstanceKeywordService InstanceController.instanceKeywordService;
+    
+    @Autowired
+    InstanceOrgService InstanceController.instanceOrgService;
+    
+    @Autowired
+    InstancePersonService InstanceController.instancePersonService;
+    
+    @Autowired
+    SamplingProcedureService InstanceController.samplingProcedureService;
+    
+    @Autowired
+    StudyService InstanceController.studyService;
+    
+    @Autowired
+    TimeMethTypeService InstanceController.timeMethTypeService;
+    
+    @Autowired
+    TopicService InstanceController.topicService;
+    
+    @Autowired
+    UnitAnalysisService InstanceController.unitAnalysisService;
+    
+    @Autowired
+    VariableService InstanceController.variableService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String InstanceController.create(@Valid Instance instance, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -43,7 +90,7 @@ privileged aspect InstanceController_Roo_Controller {
             return "instances/create";
         }
         uiModel.asMap().clear();
-        instance.persist();
+        instanceService.saveInstance(instance);
         return "redirect:/instances/" + encodeUrlPathSegment(instance.getId().toString(), httpServletRequest);
     }
     
@@ -56,7 +103,7 @@ privileged aspect InstanceController_Roo_Controller {
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String InstanceController.show(@PathVariable("id") Integer id, Model uiModel) {
         addDateTimeFormatPatterns(uiModel);
-        uiModel.addAttribute("instance", Instance.findInstance(id));
+        uiModel.addAttribute("instance", instanceService.findInstance(id));
         uiModel.addAttribute("itemId", id);
         return "instances/show";
     }
@@ -66,11 +113,11 @@ privileged aspect InstanceController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("instances", Instance.findInstanceEntries(firstResult, sizeNo));
-            float nrOfPages = (float) Instance.countInstances() / sizeNo;
+            uiModel.addAttribute("instances", instanceService.findInstanceEntries(firstResult, sizeNo));
+            float nrOfPages = (float) instanceService.countAllInstances() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("instances", Instance.findAllInstances());
+            uiModel.addAttribute("instances", instanceService.findAllInstances());
         }
         addDateTimeFormatPatterns(uiModel);
         return "instances/list";
@@ -83,20 +130,20 @@ privileged aspect InstanceController_Roo_Controller {
             return "instances/update";
         }
         uiModel.asMap().clear();
-        instance.merge();
+        instanceService.updateInstance(instance);
         return "redirect:/instances/" + encodeUrlPathSegment(instance.getId().toString(), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String InstanceController.updateForm(@PathVariable("id") Integer id, Model uiModel) {
-        populateEditForm(uiModel, Instance.findInstance(id));
+        populateEditForm(uiModel, instanceService.findInstance(id));
         return "instances/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
     public String InstanceController.delete(@PathVariable("id") Integer id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        Instance instance = Instance.findInstance(id);
-        instance.remove();
+        Instance instance = instanceService.findInstance(id);
+        instanceService.deleteInstance(instance);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
@@ -104,29 +151,29 @@ privileged aspect InstanceController_Roo_Controller {
     }
     
     void InstanceController.addDateTimeFormatPatterns(Model uiModel) {
-        uiModel.addAttribute("instance_datestart_date_format", DateTimeFormat.patternForStyle("M-", LocaleContextHolder.getLocale()));
-        uiModel.addAttribute("instance_dateend_date_format", DateTimeFormat.patternForStyle("M-", LocaleContextHolder.getLocale()));
-        uiModel.addAttribute("instance_added_date_format", DateTimeFormat.patternForStyle("M-", LocaleContextHolder.getLocale()));
+        uiModel.addAttribute("instance_datestart_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
+        uiModel.addAttribute("instance_dateend_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
+        uiModel.addAttribute("instance_added_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
     }
     
     void InstanceController.populateEditForm(Model uiModel, Instance instance) {
         uiModel.addAttribute("instance", instance);
         addDateTimeFormatPatterns(uiModel);
-        uiModel.addAttribute("collectionmodeltypes", CollectionModelType.findAllCollectionModelTypes());
-        uiModel.addAttribute("files", File.findAllFiles());
-        uiModel.addAttribute("forms", Form.findAllForms());
-        uiModel.addAttribute("instanceacls", InstanceAcl.findAllInstanceAcls());
-        uiModel.addAttribute("instancedescrs", InstanceDescr.findAllInstanceDescrs());
-        uiModel.addAttribute("instancekeywords", InstanceKeyword.findAllInstanceKeywords());
-        uiModel.addAttribute("instanceorgs", InstanceOrg.findAllInstanceOrgs());
-        uiModel.addAttribute("instancepeople", InstancePerson.findAllInstancepeople());
-        uiModel.addAttribute("samplingprocedures", SamplingProcedure.findAllSamplingProcedures());
-        uiModel.addAttribute("studys", Study.findAllStudys());
-        uiModel.addAttribute("timemethtypes", TimeMethType.findAllTimeMethTypes());
-        uiModel.addAttribute("topics", Topic.findAllTopics());
-        uiModel.addAttribute("unitanalyses", UnitAnalysis.findAllUnitAnalyses());
-        uiModel.addAttribute("users", User.findAllUsers());
-        uiModel.addAttribute("variables", Variable.findAllVariables());
+        uiModel.addAttribute("collectionmodeltypes", collectionModelTypeService.findAllCollectionModelTypes());
+        uiModel.addAttribute("files", fileService.findAllFiles());
+        uiModel.addAttribute("forms", formService.findAllForms());
+        uiModel.addAttribute("instanceacls", instanceAclService.findAllInstanceAcls());
+        uiModel.addAttribute("instancedescrs", instanceDescrService.findAllInstanceDescrs());
+        uiModel.addAttribute("instancekeywords", instanceKeywordService.findAllInstanceKeywords());
+        uiModel.addAttribute("instanceorgs", instanceOrgService.findAllInstanceOrgs());
+        uiModel.addAttribute("instancepeople", instancePersonService.findAllInstancepeople());
+        uiModel.addAttribute("rodausers", Rodauser.findAllRodausers());
+        uiModel.addAttribute("samplingprocedures", samplingProcedureService.findAllSamplingProcedures());
+        uiModel.addAttribute("studys", studyService.findAllStudys());
+        uiModel.addAttribute("timemethtypes", timeMethTypeService.findAllTimeMethTypes());
+        uiModel.addAttribute("topics", topicService.findAllTopics());
+        uiModel.addAttribute("unitanalyses", unitAnalysisService.findAllUnitAnalyses());
+        uiModel.addAttribute("variables", variableService.findAllVariables());
     }
     
     String InstanceController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

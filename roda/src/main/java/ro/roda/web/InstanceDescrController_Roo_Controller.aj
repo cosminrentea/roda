@@ -16,15 +16,25 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.Instance;
 import ro.roda.InstanceDescr;
 import ro.roda.InstanceDescrPK;
-import ro.roda.Lang;
+import ro.roda.service.InstanceDescrService;
+import ro.roda.service.InstanceService;
+import ro.roda.service.LangService;
 import ro.roda.web.InstanceDescrController;
 
 privileged aspect InstanceDescrController_Roo_Controller {
     
     private ConversionService InstanceDescrController.conversionService;
+    
+    @Autowired
+    InstanceDescrService InstanceDescrController.instanceDescrService;
+    
+    @Autowired
+    InstanceService InstanceDescrController.instanceService;
+    
+    @Autowired
+    LangService InstanceDescrController.langService;
     
     @Autowired
     public InstanceDescrController.new(ConversionService conversionService) {
@@ -39,7 +49,7 @@ privileged aspect InstanceDescrController_Roo_Controller {
             return "instancedescrs/create";
         }
         uiModel.asMap().clear();
-        instanceDescr.persist();
+        instanceDescrService.saveInstanceDescr(instanceDescr);
         return "redirect:/instancedescrs/" + encodeUrlPathSegment(conversionService.convert(instanceDescr.getId(), String.class), httpServletRequest);
     }
     
@@ -51,7 +61,7 @@ privileged aspect InstanceDescrController_Roo_Controller {
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String InstanceDescrController.show(@PathVariable("id") InstanceDescrPK id, Model uiModel) {
-        uiModel.addAttribute("instancedescr", InstanceDescr.findInstanceDescr(id));
+        uiModel.addAttribute("instancedescr", instanceDescrService.findInstanceDescr(id));
         uiModel.addAttribute("itemId", conversionService.convert(id, String.class));
         return "instancedescrs/show";
     }
@@ -61,11 +71,11 @@ privileged aspect InstanceDescrController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("instancedescrs", InstanceDescr.findInstanceDescrEntries(firstResult, sizeNo));
-            float nrOfPages = (float) InstanceDescr.countInstanceDescrs() / sizeNo;
+            uiModel.addAttribute("instancedescrs", instanceDescrService.findInstanceDescrEntries(firstResult, sizeNo));
+            float nrOfPages = (float) instanceDescrService.countAllInstanceDescrs() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("instancedescrs", InstanceDescr.findAllInstanceDescrs());
+            uiModel.addAttribute("instancedescrs", instanceDescrService.findAllInstanceDescrs());
         }
         return "instancedescrs/list";
     }
@@ -77,20 +87,20 @@ privileged aspect InstanceDescrController_Roo_Controller {
             return "instancedescrs/update";
         }
         uiModel.asMap().clear();
-        instanceDescr.merge();
+        instanceDescrService.updateInstanceDescr(instanceDescr);
         return "redirect:/instancedescrs/" + encodeUrlPathSegment(conversionService.convert(instanceDescr.getId(), String.class), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String InstanceDescrController.updateForm(@PathVariable("id") InstanceDescrPK id, Model uiModel) {
-        populateEditForm(uiModel, InstanceDescr.findInstanceDescr(id));
+        populateEditForm(uiModel, instanceDescrService.findInstanceDescr(id));
         return "instancedescrs/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
     public String InstanceDescrController.delete(@PathVariable("id") InstanceDescrPK id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        InstanceDescr instanceDescr = InstanceDescr.findInstanceDescr(id);
-        instanceDescr.remove();
+        InstanceDescr instanceDescr = instanceDescrService.findInstanceDescr(id);
+        instanceDescrService.deleteInstanceDescr(instanceDescr);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
@@ -99,8 +109,8 @@ privileged aspect InstanceDescrController_Roo_Controller {
     
     void InstanceDescrController.populateEditForm(Model uiModel, InstanceDescr instanceDescr) {
         uiModel.addAttribute("instanceDescr", instanceDescr);
-        uiModel.addAttribute("instances", Instance.findAllInstances());
-        uiModel.addAttribute("langs", Lang.findAllLangs());
+        uiModel.addAttribute("instances", instanceService.findAllInstances());
+        uiModel.addAttribute("langs", langService.findAllLangs());
     }
     
     String InstanceDescrController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

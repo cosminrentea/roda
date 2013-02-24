@@ -18,11 +18,15 @@ import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.StudyDocuments;
 import ro.roda.StudyDocumentsPK;
+import ro.roda.service.StudyDocumentsService;
 import ro.roda.web.StudyDocumentsController;
 
 privileged aspect StudyDocumentsController_Roo_Controller {
     
     private ConversionService StudyDocumentsController.conversionService;
+    
+    @Autowired
+    StudyDocumentsService StudyDocumentsController.studyDocumentsService;
     
     @Autowired
     public StudyDocumentsController.new(ConversionService conversionService) {
@@ -37,7 +41,7 @@ privileged aspect StudyDocumentsController_Roo_Controller {
             return "studydocumentses/create";
         }
         uiModel.asMap().clear();
-        studyDocuments.persist();
+        studyDocumentsService.saveStudyDocuments(studyDocuments);
         return "redirect:/studydocumentses/" + encodeUrlPathSegment(conversionService.convert(studyDocuments.getId(), String.class), httpServletRequest);
     }
     
@@ -49,7 +53,7 @@ privileged aspect StudyDocumentsController_Roo_Controller {
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String StudyDocumentsController.show(@PathVariable("id") StudyDocumentsPK id, Model uiModel) {
-        uiModel.addAttribute("studydocuments", StudyDocuments.findStudyDocuments(id));
+        uiModel.addAttribute("studydocuments", studyDocumentsService.findStudyDocuments(id));
         uiModel.addAttribute("itemId", conversionService.convert(id, String.class));
         return "studydocumentses/show";
     }
@@ -59,11 +63,11 @@ privileged aspect StudyDocumentsController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("studydocumentses", StudyDocuments.findStudyDocumentsEntries(firstResult, sizeNo));
-            float nrOfPages = (float) StudyDocuments.countStudyDocumentses() / sizeNo;
+            uiModel.addAttribute("studydocumentses", studyDocumentsService.findStudyDocumentsEntries(firstResult, sizeNo));
+            float nrOfPages = (float) studyDocumentsService.countAllStudyDocumentses() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("studydocumentses", StudyDocuments.findAllStudyDocumentses());
+            uiModel.addAttribute("studydocumentses", studyDocumentsService.findAllStudyDocumentses());
         }
         return "studydocumentses/list";
     }
@@ -75,20 +79,20 @@ privileged aspect StudyDocumentsController_Roo_Controller {
             return "studydocumentses/update";
         }
         uiModel.asMap().clear();
-        studyDocuments.merge();
+        studyDocumentsService.updateStudyDocuments(studyDocuments);
         return "redirect:/studydocumentses/" + encodeUrlPathSegment(conversionService.convert(studyDocuments.getId(), String.class), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String StudyDocumentsController.updateForm(@PathVariable("id") StudyDocumentsPK id, Model uiModel) {
-        populateEditForm(uiModel, StudyDocuments.findStudyDocuments(id));
+        populateEditForm(uiModel, studyDocumentsService.findStudyDocuments(id));
         return "studydocumentses/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
     public String StudyDocumentsController.delete(@PathVariable("id") StudyDocumentsPK id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        StudyDocuments studyDocuments = StudyDocuments.findStudyDocuments(id);
-        studyDocuments.remove();
+        StudyDocuments studyDocuments = studyDocumentsService.findStudyDocuments(id);
+        studyDocumentsService.deleteStudyDocuments(studyDocuments);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());

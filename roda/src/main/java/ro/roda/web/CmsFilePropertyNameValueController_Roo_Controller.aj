@@ -16,16 +16,29 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.CmsFile;
 import ro.roda.CmsFilePropertyNameValue;
 import ro.roda.CmsFilePropertyNameValuePK;
-import ro.roda.PropertyName;
-import ro.roda.PropertyValue;
+import ro.roda.service.CmsFilePropertyNameValueService;
+import ro.roda.service.CmsFileService;
+import ro.roda.service.PropertyNameService;
+import ro.roda.service.PropertyValueService;
 import ro.roda.web.CmsFilePropertyNameValueController;
 
 privileged aspect CmsFilePropertyNameValueController_Roo_Controller {
     
     private ConversionService CmsFilePropertyNameValueController.conversionService;
+    
+    @Autowired
+    CmsFilePropertyNameValueService CmsFilePropertyNameValueController.cmsFilePropertyNameValueService;
+    
+    @Autowired
+    CmsFileService CmsFilePropertyNameValueController.cmsFileService;
+    
+    @Autowired
+    PropertyNameService CmsFilePropertyNameValueController.propertyNameService;
+    
+    @Autowired
+    PropertyValueService CmsFilePropertyNameValueController.propertyValueService;
     
     @Autowired
     public CmsFilePropertyNameValueController.new(ConversionService conversionService) {
@@ -40,7 +53,7 @@ privileged aspect CmsFilePropertyNameValueController_Roo_Controller {
             return "cmsfilepropertynamevalues/create";
         }
         uiModel.asMap().clear();
-        cmsFilePropertyNameValue.persist();
+        cmsFilePropertyNameValueService.saveCmsFilePropertyNameValue(cmsFilePropertyNameValue);
         return "redirect:/cmsfilepropertynamevalues/" + encodeUrlPathSegment(conversionService.convert(cmsFilePropertyNameValue.getId(), String.class), httpServletRequest);
     }
     
@@ -52,7 +65,7 @@ privileged aspect CmsFilePropertyNameValueController_Roo_Controller {
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String CmsFilePropertyNameValueController.show(@PathVariable("id") CmsFilePropertyNameValuePK id, Model uiModel) {
-        uiModel.addAttribute("cmsfilepropertynamevalue", CmsFilePropertyNameValue.findCmsFilePropertyNameValue(id));
+        uiModel.addAttribute("cmsfilepropertynamevalue", cmsFilePropertyNameValueService.findCmsFilePropertyNameValue(id));
         uiModel.addAttribute("itemId", conversionService.convert(id, String.class));
         return "cmsfilepropertynamevalues/show";
     }
@@ -62,11 +75,11 @@ privileged aspect CmsFilePropertyNameValueController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("cmsfilepropertynamevalues", CmsFilePropertyNameValue.findCmsFilePropertyNameValueEntries(firstResult, sizeNo));
-            float nrOfPages = (float) CmsFilePropertyNameValue.countCmsFilePropertyNameValues() / sizeNo;
+            uiModel.addAttribute("cmsfilepropertynamevalues", cmsFilePropertyNameValueService.findCmsFilePropertyNameValueEntries(firstResult, sizeNo));
+            float nrOfPages = (float) cmsFilePropertyNameValueService.countAllCmsFilePropertyNameValues() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("cmsfilepropertynamevalues", CmsFilePropertyNameValue.findAllCmsFilePropertyNameValues());
+            uiModel.addAttribute("cmsfilepropertynamevalues", cmsFilePropertyNameValueService.findAllCmsFilePropertyNameValues());
         }
         return "cmsfilepropertynamevalues/list";
     }
@@ -78,20 +91,20 @@ privileged aspect CmsFilePropertyNameValueController_Roo_Controller {
             return "cmsfilepropertynamevalues/update";
         }
         uiModel.asMap().clear();
-        cmsFilePropertyNameValue.merge();
+        cmsFilePropertyNameValueService.updateCmsFilePropertyNameValue(cmsFilePropertyNameValue);
         return "redirect:/cmsfilepropertynamevalues/" + encodeUrlPathSegment(conversionService.convert(cmsFilePropertyNameValue.getId(), String.class), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String CmsFilePropertyNameValueController.updateForm(@PathVariable("id") CmsFilePropertyNameValuePK id, Model uiModel) {
-        populateEditForm(uiModel, CmsFilePropertyNameValue.findCmsFilePropertyNameValue(id));
+        populateEditForm(uiModel, cmsFilePropertyNameValueService.findCmsFilePropertyNameValue(id));
         return "cmsfilepropertynamevalues/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
     public String CmsFilePropertyNameValueController.delete(@PathVariable("id") CmsFilePropertyNameValuePK id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        CmsFilePropertyNameValue cmsFilePropertyNameValue = CmsFilePropertyNameValue.findCmsFilePropertyNameValue(id);
-        cmsFilePropertyNameValue.remove();
+        CmsFilePropertyNameValue cmsFilePropertyNameValue = cmsFilePropertyNameValueService.findCmsFilePropertyNameValue(id);
+        cmsFilePropertyNameValueService.deleteCmsFilePropertyNameValue(cmsFilePropertyNameValue);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
@@ -100,9 +113,9 @@ privileged aspect CmsFilePropertyNameValueController_Roo_Controller {
     
     void CmsFilePropertyNameValueController.populateEditForm(Model uiModel, CmsFilePropertyNameValue cmsFilePropertyNameValue) {
         uiModel.addAttribute("cmsFilePropertyNameValue", cmsFilePropertyNameValue);
-        uiModel.addAttribute("cmsfiles", CmsFile.findAllCmsFiles());
-        uiModel.addAttribute("propertynames", PropertyName.findAllPropertyNames());
-        uiModel.addAttribute("propertyvalues", PropertyValue.findAllPropertyValues());
+        uiModel.addAttribute("cmsfiles", cmsFileService.findAllCmsFiles());
+        uiModel.addAttribute("propertynames", propertyNameService.findAllPropertyNames());
+        uiModel.addAttribute("propertyvalues", propertyValueService.findAllPropertyValues());
     }
     
     String CmsFilePropertyNameValueController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

@@ -11,9 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.SourcetypeHistory;
 import ro.roda.SourcetypeHistoryDataOnDemand;
 import ro.roda.SourcetypeHistoryIntegrationTest;
+import ro.roda.service.SourcetypeHistoryService;
 
 privileged aspect SourcetypeHistoryIntegrationTest_Roo_IntegrationTest {
     
@@ -24,12 +24,15 @@ privileged aspect SourcetypeHistoryIntegrationTest_Roo_IntegrationTest {
     declare @type: SourcetypeHistoryIntegrationTest: @Transactional;
     
     @Autowired
-    private SourcetypeHistoryDataOnDemand SourcetypeHistoryIntegrationTest.dod;
+    SourcetypeHistoryDataOnDemand SourcetypeHistoryIntegrationTest.dod;
+    
+    @Autowired
+    SourcetypeHistoryService SourcetypeHistoryIntegrationTest.sourcetypeHistoryService;
     
     @Test
-    public void SourcetypeHistoryIntegrationTest.testCountSourcetypeHistorys() {
+    public void SourcetypeHistoryIntegrationTest.testCountAllSourcetypeHistorys() {
         Assert.assertNotNull("Data on demand for 'SourcetypeHistory' failed to initialize correctly", dod.getRandomSourcetypeHistory());
-        long count = SourcetypeHistory.countSourcetypeHistorys();
+        long count = sourcetypeHistoryService.countAllSourcetypeHistorys();
         Assert.assertTrue("Counter for 'SourcetypeHistory' incorrectly reported there were no entries", count > 0);
     }
     
@@ -39,7 +42,7 @@ privileged aspect SourcetypeHistoryIntegrationTest_Roo_IntegrationTest {
         Assert.assertNotNull("Data on demand for 'SourcetypeHistory' failed to initialize correctly", obj);
         Integer id = obj.getId();
         Assert.assertNotNull("Data on demand for 'SourcetypeHistory' failed to provide an identifier", id);
-        obj = SourcetypeHistory.findSourcetypeHistory(id);
+        obj = sourcetypeHistoryService.findSourcetypeHistory(id);
         Assert.assertNotNull("Find method for 'SourcetypeHistory' illegally returned null for id '" + id + "'", obj);
         Assert.assertEquals("Find method for 'SourcetypeHistory' returned the incorrect identifier", id, obj.getId());
     }
@@ -47,9 +50,9 @@ privileged aspect SourcetypeHistoryIntegrationTest_Roo_IntegrationTest {
     @Test
     public void SourcetypeHistoryIntegrationTest.testFindAllSourcetypeHistorys() {
         Assert.assertNotNull("Data on demand for 'SourcetypeHistory' failed to initialize correctly", dod.getRandomSourcetypeHistory());
-        long count = SourcetypeHistory.countSourcetypeHistorys();
+        long count = sourcetypeHistoryService.countAllSourcetypeHistorys();
         Assert.assertTrue("Too expensive to perform a find all test for 'SourcetypeHistory', as there are " + count + " entries; set the findAllMaximum to exceed this value or set findAll=false on the integration test annotation to disable the test", count < 250);
-        List<SourcetypeHistory> result = SourcetypeHistory.findAllSourcetypeHistorys();
+        List<SourcetypeHistory> result = sourcetypeHistoryService.findAllSourcetypeHistorys();
         Assert.assertNotNull("Find all method for 'SourcetypeHistory' illegally returned null", result);
         Assert.assertTrue("Find all method for 'SourcetypeHistory' failed to return any data", result.size() > 0);
     }
@@ -57,36 +60,36 @@ privileged aspect SourcetypeHistoryIntegrationTest_Roo_IntegrationTest {
     @Test
     public void SourcetypeHistoryIntegrationTest.testFindSourcetypeHistoryEntries() {
         Assert.assertNotNull("Data on demand for 'SourcetypeHistory' failed to initialize correctly", dod.getRandomSourcetypeHistory());
-        long count = SourcetypeHistory.countSourcetypeHistorys();
+        long count = sourcetypeHistoryService.countAllSourcetypeHistorys();
         if (count > 20) count = 20;
         int firstResult = 0;
         int maxResults = (int) count;
-        List<SourcetypeHistory> result = SourcetypeHistory.findSourcetypeHistoryEntries(firstResult, maxResults);
+        List<SourcetypeHistory> result = sourcetypeHistoryService.findSourcetypeHistoryEntries(firstResult, maxResults);
         Assert.assertNotNull("Find entries method for 'SourcetypeHistory' illegally returned null", result);
         Assert.assertEquals("Find entries method for 'SourcetypeHistory' returned an incorrect number of entries", count, result.size());
     }
     
     @Test
-    public void SourcetypeHistoryIntegrationTest.testPersist() {
+    public void SourcetypeHistoryIntegrationTest.testSaveSourcetypeHistory() {
         Assert.assertNotNull("Data on demand for 'SourcetypeHistory' failed to initialize correctly", dod.getRandomSourcetypeHistory());
         SourcetypeHistory obj = dod.getNewTransientSourcetypeHistory(Integer.MAX_VALUE);
         Assert.assertNotNull("Data on demand for 'SourcetypeHistory' failed to provide a new transient entity", obj);
         Assert.assertNull("Expected 'SourcetypeHistory' identifier to be null", obj.getId());
-        obj.persist();
+        sourcetypeHistoryService.saveSourcetypeHistory(obj);
         obj.flush();
         Assert.assertNotNull("Expected 'SourcetypeHistory' identifier to no longer be null", obj.getId());
     }
     
     @Test
-    public void SourcetypeHistoryIntegrationTest.testRemove() {
+    public void SourcetypeHistoryIntegrationTest.testDeleteSourcetypeHistory() {
         SourcetypeHistory obj = dod.getRandomSourcetypeHistory();
         Assert.assertNotNull("Data on demand for 'SourcetypeHistory' failed to initialize correctly", obj);
         Integer id = obj.getId();
         Assert.assertNotNull("Data on demand for 'SourcetypeHistory' failed to provide an identifier", id);
-        obj = SourcetypeHistory.findSourcetypeHistory(id);
-        obj.remove();
+        obj = sourcetypeHistoryService.findSourcetypeHistory(id);
+        sourcetypeHistoryService.deleteSourcetypeHistory(obj);
         obj.flush();
-        Assert.assertNull("Failed to remove 'SourcetypeHistory' with identifier '" + id + "'", SourcetypeHistory.findSourcetypeHistory(id));
+        Assert.assertNull("Failed to remove 'SourcetypeHistory' with identifier '" + id + "'", sourcetypeHistoryService.findSourcetypeHistory(id));
     }
     
 }

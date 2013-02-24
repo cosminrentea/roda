@@ -6,6 +6,7 @@ package ro.roda.web;
 import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,10 +16,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.CollectionModelType;
-import ro.roda.Instance;
+import ro.roda.service.CollectionModelTypeService;
+import ro.roda.service.InstanceService;
 import ro.roda.web.CollectionModelTypeController;
 
 privileged aspect CollectionModelTypeController_Roo_Controller {
+    
+    @Autowired
+    CollectionModelTypeService CollectionModelTypeController.collectionModelTypeService;
+    
+    @Autowired
+    InstanceService CollectionModelTypeController.instanceService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String CollectionModelTypeController.create(@Valid CollectionModelType collectionModelType, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -27,7 +35,7 @@ privileged aspect CollectionModelTypeController_Roo_Controller {
             return "collectionmodeltypes/create";
         }
         uiModel.asMap().clear();
-        collectionModelType.persist();
+        collectionModelTypeService.saveCollectionModelType(collectionModelType);
         return "redirect:/collectionmodeltypes/" + encodeUrlPathSegment(collectionModelType.getId().toString(), httpServletRequest);
     }
     
@@ -39,7 +47,7 @@ privileged aspect CollectionModelTypeController_Roo_Controller {
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String CollectionModelTypeController.show(@PathVariable("id") Integer id, Model uiModel) {
-        uiModel.addAttribute("collectionmodeltype", CollectionModelType.findCollectionModelType(id));
+        uiModel.addAttribute("collectionmodeltype", collectionModelTypeService.findCollectionModelType(id));
         uiModel.addAttribute("itemId", id);
         return "collectionmodeltypes/show";
     }
@@ -49,11 +57,11 @@ privileged aspect CollectionModelTypeController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("collectionmodeltypes", CollectionModelType.findCollectionModelTypeEntries(firstResult, sizeNo));
-            float nrOfPages = (float) CollectionModelType.countCollectionModelTypes() / sizeNo;
+            uiModel.addAttribute("collectionmodeltypes", collectionModelTypeService.findCollectionModelTypeEntries(firstResult, sizeNo));
+            float nrOfPages = (float) collectionModelTypeService.countAllCollectionModelTypes() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("collectionmodeltypes", CollectionModelType.findAllCollectionModelTypes());
+            uiModel.addAttribute("collectionmodeltypes", collectionModelTypeService.findAllCollectionModelTypes());
         }
         return "collectionmodeltypes/list";
     }
@@ -65,20 +73,20 @@ privileged aspect CollectionModelTypeController_Roo_Controller {
             return "collectionmodeltypes/update";
         }
         uiModel.asMap().clear();
-        collectionModelType.merge();
+        collectionModelTypeService.updateCollectionModelType(collectionModelType);
         return "redirect:/collectionmodeltypes/" + encodeUrlPathSegment(collectionModelType.getId().toString(), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String CollectionModelTypeController.updateForm(@PathVariable("id") Integer id, Model uiModel) {
-        populateEditForm(uiModel, CollectionModelType.findCollectionModelType(id));
+        populateEditForm(uiModel, collectionModelTypeService.findCollectionModelType(id));
         return "collectionmodeltypes/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
     public String CollectionModelTypeController.delete(@PathVariable("id") Integer id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        CollectionModelType collectionModelType = CollectionModelType.findCollectionModelType(id);
-        collectionModelType.remove();
+        CollectionModelType collectionModelType = collectionModelTypeService.findCollectionModelType(id);
+        collectionModelTypeService.deleteCollectionModelType(collectionModelType);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
@@ -87,7 +95,7 @@ privileged aspect CollectionModelTypeController_Roo_Controller {
     
     void CollectionModelTypeController.populateEditForm(Model uiModel, CollectionModelType collectionModelType) {
         uiModel.addAttribute("collectionModelType", collectionModelType);
-        uiModel.addAttribute("instances", Instance.findAllInstances());
+        uiModel.addAttribute("instances", instanceService.findAllInstances());
     }
     
     String CollectionModelTypeController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

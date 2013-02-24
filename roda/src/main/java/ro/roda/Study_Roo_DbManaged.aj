@@ -3,7 +3,7 @@
 
 package ro.roda;
 
-import java.util.Date;
+import java.util.Calendar;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.JoinColumn;
@@ -18,6 +18,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import ro.roda.CatalogStudy;
 import ro.roda.File;
 import ro.roda.Instance;
+import ro.roda.Rodauser;
 import ro.roda.Study;
 import ro.roda.StudyAcl;
 import ro.roda.StudyDescr;
@@ -25,7 +26,6 @@ import ro.roda.StudyKeyword;
 import ro.roda.StudyOrg;
 import ro.roda.StudyPerson;
 import ro.roda.Topic;
-import ro.roda.User;
 
 privileged aspect Study_Roo_DbManaged {
     
@@ -59,17 +59,17 @@ privileged aspect Study_Roo_DbManaged {
     
     @ManyToOne
     @JoinColumn(name = "added_by", referencedColumnName = "id", nullable = false)
-    private User Study.addedBy;
+    private Rodauser Study.addedBy;
     
     @Column(name = "datestart", columnDefinition = "timestamp")
     @Temporal(TemporalType.TIMESTAMP)
-    @DateTimeFormat(style = "M-")
-    private Date Study.datestart;
+    @DateTimeFormat(style = "MM")
+    private Calendar Study.datestart;
     
     @Column(name = "dateend", columnDefinition = "timestamp")
     @Temporal(TemporalType.TIMESTAMP)
-    @DateTimeFormat(style = "M-")
-    private Date Study.dateend;
+    @DateTimeFormat(style = "MM")
+    private Calendar Study.dateend;
     
     @Column(name = "insertion_status", columnDefinition = "int4")
     @NotNull
@@ -78,8 +78,8 @@ privileged aspect Study_Roo_DbManaged {
     @Column(name = "added", columnDefinition = "timestamp")
     @NotNull
     @Temporal(TemporalType.TIMESTAMP)
-    @DateTimeFormat(style = "M-")
-    private Date Study.added;
+    @DateTimeFormat(style = "MM")
+    private Calendar Study.added;
     
     @Column(name = "can_digitize", columnDefinition = "bool")
     @NotNull
@@ -161,27 +161,27 @@ privileged aspect Study_Roo_DbManaged {
         this.studypeople = studypeople;
     }
     
-    public User Study.getAddedBy() {
+    public Rodauser Study.getAddedBy() {
         return addedBy;
     }
     
-    public void Study.setAddedBy(User addedBy) {
+    public void Study.setAddedBy(Rodauser addedBy) {
         this.addedBy = addedBy;
     }
     
-    public Date Study.getDatestart() {
+    public Calendar Study.getDatestart() {
         return datestart;
     }
     
-    public void Study.setDatestart(Date datestart) {
+    public void Study.setDatestart(Calendar datestart) {
         this.datestart = datestart;
     }
     
-    public Date Study.getDateend() {
+    public Calendar Study.getDateend() {
         return dateend;
     }
     
-    public void Study.setDateend(Date dateend) {
+    public void Study.setDateend(Calendar dateend) {
         this.dateend = dateend;
     }
     
@@ -193,11 +193,11 @@ privileged aspect Study_Roo_DbManaged {
         this.insertionStatus = insertionStatus;
     }
     
-    public Date Study.getAdded() {
+    public Calendar Study.getAdded() {
         return added;
     }
     
-    public void Study.setAdded(Date added) {
+    public void Study.setAdded(Calendar added) {
         this.added = added;
     }
     

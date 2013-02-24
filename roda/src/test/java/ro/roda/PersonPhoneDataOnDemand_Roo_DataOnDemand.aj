@@ -12,11 +12,14 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import ro.roda.Person;
 import ro.roda.PersonDataOnDemand;
 import ro.roda.PersonPhone;
 import ro.roda.PersonPhoneDataOnDemand;
 import ro.roda.PersonPhonePK;
+import ro.roda.Phone;
 import ro.roda.PhoneDataOnDemand;
+import ro.roda.service.PersonPhoneService;
 
 privileged aspect PersonPhoneDataOnDemand_Roo_DataOnDemand {
     
@@ -27,15 +30,20 @@ privileged aspect PersonPhoneDataOnDemand_Roo_DataOnDemand {
     private List<PersonPhone> PersonPhoneDataOnDemand.data;
     
     @Autowired
-    private PersonDataOnDemand PersonPhoneDataOnDemand.personDataOnDemand;
+    PersonDataOnDemand PersonPhoneDataOnDemand.personDataOnDemand;
     
     @Autowired
-    private PhoneDataOnDemand PersonPhoneDataOnDemand.phoneDataOnDemand;
+    PhoneDataOnDemand PersonPhoneDataOnDemand.phoneDataOnDemand;
+    
+    @Autowired
+    PersonPhoneService PersonPhoneDataOnDemand.personPhoneService;
     
     public PersonPhone PersonPhoneDataOnDemand.getNewTransientPersonPhone(int index) {
         PersonPhone obj = new PersonPhone();
         setEmbeddedIdClass(obj, index);
         setMain(obj, index);
+        setPersonId(obj, index);
+        setPhoneId(obj, index);
         return obj;
     }
     
@@ -52,6 +60,16 @@ privileged aspect PersonPhoneDataOnDemand_Roo_DataOnDemand {
         obj.setMain(main);
     }
     
+    public void PersonPhoneDataOnDemand.setPersonId(PersonPhone obj, int index) {
+        Person personId = personDataOnDemand.getRandomPerson();
+        obj.setPersonId(personId);
+    }
+    
+    public void PersonPhoneDataOnDemand.setPhoneId(PersonPhone obj, int index) {
+        Phone phoneId = phoneDataOnDemand.getRandomPhone();
+        obj.setPhoneId(phoneId);
+    }
+    
     public PersonPhone PersonPhoneDataOnDemand.getSpecificPersonPhone(int index) {
         init();
         if (index < 0) {
@@ -62,14 +80,14 @@ privileged aspect PersonPhoneDataOnDemand_Roo_DataOnDemand {
         }
         PersonPhone obj = data.get(index);
         PersonPhonePK id = obj.getId();
-        return PersonPhone.findPersonPhone(id);
+        return personPhoneService.findPersonPhone(id);
     }
     
     public PersonPhone PersonPhoneDataOnDemand.getRandomPersonPhone() {
         init();
         PersonPhone obj = data.get(rnd.nextInt(data.size()));
         PersonPhonePK id = obj.getId();
-        return PersonPhone.findPersonPhone(id);
+        return personPhoneService.findPersonPhone(id);
     }
     
     public boolean PersonPhoneDataOnDemand.modifyPersonPhone(PersonPhone obj) {
@@ -79,7 +97,7 @@ privileged aspect PersonPhoneDataOnDemand_Roo_DataOnDemand {
     public void PersonPhoneDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = PersonPhone.findPersonPhoneEntries(from, to);
+        data = personPhoneService.findPersonPhoneEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'PersonPhone' illegally returned null");
         }
@@ -91,7 +109,7 @@ privileged aspect PersonPhoneDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             PersonPhone obj = getNewTransientPersonPhone(i);
             try {
-                obj.persist();
+                personPhoneService.savePersonPhone(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

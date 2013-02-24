@@ -11,10 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.FormEditedTextVar;
 import ro.roda.FormEditedTextVarDataOnDemand;
 import ro.roda.FormEditedTextVarIntegrationTest;
 import ro.roda.FormEditedTextVarPK;
+import ro.roda.service.FormEditedTextVarService;
 
 privileged aspect FormEditedTextVarIntegrationTest_Roo_IntegrationTest {
     
@@ -25,12 +25,15 @@ privileged aspect FormEditedTextVarIntegrationTest_Roo_IntegrationTest {
     declare @type: FormEditedTextVarIntegrationTest: @Transactional;
     
     @Autowired
-    private FormEditedTextVarDataOnDemand FormEditedTextVarIntegrationTest.dod;
+    FormEditedTextVarDataOnDemand FormEditedTextVarIntegrationTest.dod;
+    
+    @Autowired
+    FormEditedTextVarService FormEditedTextVarIntegrationTest.formEditedTextVarService;
     
     @Test
-    public void FormEditedTextVarIntegrationTest.testCountFormEditedTextVars() {
+    public void FormEditedTextVarIntegrationTest.testCountAllFormEditedTextVars() {
         Assert.assertNotNull("Data on demand for 'FormEditedTextVar' failed to initialize correctly", dod.getRandomFormEditedTextVar());
-        long count = FormEditedTextVar.countFormEditedTextVars();
+        long count = formEditedTextVarService.countAllFormEditedTextVars();
         Assert.assertTrue("Counter for 'FormEditedTextVar' incorrectly reported there were no entries", count > 0);
     }
     
@@ -40,7 +43,7 @@ privileged aspect FormEditedTextVarIntegrationTest_Roo_IntegrationTest {
         Assert.assertNotNull("Data on demand for 'FormEditedTextVar' failed to initialize correctly", obj);
         FormEditedTextVarPK id = obj.getId();
         Assert.assertNotNull("Data on demand for 'FormEditedTextVar' failed to provide an identifier", id);
-        obj = FormEditedTextVar.findFormEditedTextVar(id);
+        obj = formEditedTextVarService.findFormEditedTextVar(id);
         Assert.assertNotNull("Find method for 'FormEditedTextVar' illegally returned null for id '" + id + "'", obj);
         Assert.assertEquals("Find method for 'FormEditedTextVar' returned the incorrect identifier", id, obj.getId());
     }
@@ -48,9 +51,9 @@ privileged aspect FormEditedTextVarIntegrationTest_Roo_IntegrationTest {
     @Test
     public void FormEditedTextVarIntegrationTest.testFindAllFormEditedTextVars() {
         Assert.assertNotNull("Data on demand for 'FormEditedTextVar' failed to initialize correctly", dod.getRandomFormEditedTextVar());
-        long count = FormEditedTextVar.countFormEditedTextVars();
+        long count = formEditedTextVarService.countAllFormEditedTextVars();
         Assert.assertTrue("Too expensive to perform a find all test for 'FormEditedTextVar', as there are " + count + " entries; set the findAllMaximum to exceed this value or set findAll=false on the integration test annotation to disable the test", count < 250);
-        List<FormEditedTextVar> result = FormEditedTextVar.findAllFormEditedTextVars();
+        List<FormEditedTextVar> result = formEditedTextVarService.findAllFormEditedTextVars();
         Assert.assertNotNull("Find all method for 'FormEditedTextVar' illegally returned null", result);
         Assert.assertTrue("Find all method for 'FormEditedTextVar' failed to return any data", result.size() > 0);
     }
@@ -58,35 +61,35 @@ privileged aspect FormEditedTextVarIntegrationTest_Roo_IntegrationTest {
     @Test
     public void FormEditedTextVarIntegrationTest.testFindFormEditedTextVarEntries() {
         Assert.assertNotNull("Data on demand for 'FormEditedTextVar' failed to initialize correctly", dod.getRandomFormEditedTextVar());
-        long count = FormEditedTextVar.countFormEditedTextVars();
+        long count = formEditedTextVarService.countAllFormEditedTextVars();
         if (count > 20) count = 20;
         int firstResult = 0;
         int maxResults = (int) count;
-        List<FormEditedTextVar> result = FormEditedTextVar.findFormEditedTextVarEntries(firstResult, maxResults);
+        List<FormEditedTextVar> result = formEditedTextVarService.findFormEditedTextVarEntries(firstResult, maxResults);
         Assert.assertNotNull("Find entries method for 'FormEditedTextVar' illegally returned null", result);
         Assert.assertEquals("Find entries method for 'FormEditedTextVar' returned an incorrect number of entries", count, result.size());
     }
     
     @Test
-    public void FormEditedTextVarIntegrationTest.testPersist() {
+    public void FormEditedTextVarIntegrationTest.testSaveFormEditedTextVar() {
         Assert.assertNotNull("Data on demand for 'FormEditedTextVar' failed to initialize correctly", dod.getRandomFormEditedTextVar());
         FormEditedTextVar obj = dod.getNewTransientFormEditedTextVar(Integer.MAX_VALUE);
         Assert.assertNotNull("Data on demand for 'FormEditedTextVar' failed to provide a new transient entity", obj);
-        obj.persist();
+        formEditedTextVarService.saveFormEditedTextVar(obj);
         obj.flush();
         Assert.assertNotNull("Expected 'FormEditedTextVar' identifier to no longer be null", obj.getId());
     }
     
     @Test
-    public void FormEditedTextVarIntegrationTest.testRemove() {
+    public void FormEditedTextVarIntegrationTest.testDeleteFormEditedTextVar() {
         FormEditedTextVar obj = dod.getRandomFormEditedTextVar();
         Assert.assertNotNull("Data on demand for 'FormEditedTextVar' failed to initialize correctly", obj);
         FormEditedTextVarPK id = obj.getId();
         Assert.assertNotNull("Data on demand for 'FormEditedTextVar' failed to provide an identifier", id);
-        obj = FormEditedTextVar.findFormEditedTextVar(id);
-        obj.remove();
+        obj = formEditedTextVarService.findFormEditedTextVar(id);
+        formEditedTextVarService.deleteFormEditedTextVar(obj);
         obj.flush();
-        Assert.assertNull("Failed to remove 'FormEditedTextVar' with identifier '" + id + "'", FormEditedTextVar.findFormEditedTextVar(id));
+        Assert.assertNull("Failed to remove 'FormEditedTextVar' with identifier '" + id + "'", formEditedTextVarService.findFormEditedTextVar(id));
     }
     
 }

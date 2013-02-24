@@ -14,7 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ro.roda.Skip;
 import ro.roda.SkipDataOnDemand;
+import ro.roda.Variable;
 import ro.roda.VariableDataOnDemand;
+import ro.roda.service.SkipService;
 
 privileged aspect SkipDataOnDemand_Roo_DataOnDemand {
     
@@ -25,17 +27,32 @@ privileged aspect SkipDataOnDemand_Roo_DataOnDemand {
     private List<Skip> SkipDataOnDemand.data;
     
     @Autowired
-    private VariableDataOnDemand SkipDataOnDemand.variableDataOnDemand;
+    VariableDataOnDemand SkipDataOnDemand.variableDataOnDemand;
+    
+    @Autowired
+    SkipService SkipDataOnDemand.skipService;
     
     public Skip SkipDataOnDemand.getNewTransientSkip(int index) {
         Skip obj = new Skip();
         setCondition(obj, index);
+        setNextVariableId(obj, index);
+        setVariableId(obj, index);
         return obj;
     }
     
     public void SkipDataOnDemand.setCondition(Skip obj, int index) {
         String condition = "condition_" + index;
         obj.setCondition(condition);
+    }
+    
+    public void SkipDataOnDemand.setNextVariableId(Skip obj, int index) {
+        Variable nextVariableId = variableDataOnDemand.getRandomVariable();
+        obj.setNextVariableId(nextVariableId);
+    }
+    
+    public void SkipDataOnDemand.setVariableId(Skip obj, int index) {
+        Variable variableId = variableDataOnDemand.getRandomVariable();
+        obj.setVariableId(variableId);
     }
     
     public Skip SkipDataOnDemand.getSpecificSkip(int index) {
@@ -48,14 +65,14 @@ privileged aspect SkipDataOnDemand_Roo_DataOnDemand {
         }
         Skip obj = data.get(index);
         Long id = obj.getId();
-        return Skip.findSkip(id);
+        return skipService.findSkip(id);
     }
     
     public Skip SkipDataOnDemand.getRandomSkip() {
         init();
         Skip obj = data.get(rnd.nextInt(data.size()));
         Long id = obj.getId();
-        return Skip.findSkip(id);
+        return skipService.findSkip(id);
     }
     
     public boolean SkipDataOnDemand.modifySkip(Skip obj) {
@@ -65,7 +82,7 @@ privileged aspect SkipDataOnDemand_Roo_DataOnDemand {
     public void SkipDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = Skip.findSkipEntries(from, to);
+        data = skipService.findSkipEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'Skip' illegally returned null");
         }
@@ -77,7 +94,7 @@ privileged aspect SkipDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             Skip obj = getNewTransientSkip(i);
             try {
-                obj.persist();
+                skipService.saveSkip(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

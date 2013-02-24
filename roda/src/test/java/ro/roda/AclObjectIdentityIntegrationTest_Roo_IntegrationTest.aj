@@ -11,9 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.AclObjectIdentity;
 import ro.roda.AclObjectIdentityDataOnDemand;
 import ro.roda.AclObjectIdentityIntegrationTest;
+import ro.roda.service.AclObjectIdentityService;
 
 privileged aspect AclObjectIdentityIntegrationTest_Roo_IntegrationTest {
     
@@ -24,12 +24,15 @@ privileged aspect AclObjectIdentityIntegrationTest_Roo_IntegrationTest {
     declare @type: AclObjectIdentityIntegrationTest: @Transactional;
     
     @Autowired
-    private AclObjectIdentityDataOnDemand AclObjectIdentityIntegrationTest.dod;
+    AclObjectIdentityDataOnDemand AclObjectIdentityIntegrationTest.dod;
+    
+    @Autowired
+    AclObjectIdentityService AclObjectIdentityIntegrationTest.aclObjectIdentityService;
     
     @Test
-    public void AclObjectIdentityIntegrationTest.testCountAclObjectIdentitys() {
+    public void AclObjectIdentityIntegrationTest.testCountAllAclObjectIdentitys() {
         Assert.assertNotNull("Data on demand for 'AclObjectIdentity' failed to initialize correctly", dod.getRandomAclObjectIdentity());
-        long count = AclObjectIdentity.countAclObjectIdentitys();
+        long count = aclObjectIdentityService.countAllAclObjectIdentitys();
         Assert.assertTrue("Counter for 'AclObjectIdentity' incorrectly reported there were no entries", count > 0);
     }
     
@@ -39,7 +42,7 @@ privileged aspect AclObjectIdentityIntegrationTest_Roo_IntegrationTest {
         Assert.assertNotNull("Data on demand for 'AclObjectIdentity' failed to initialize correctly", obj);
         Long id = obj.getId();
         Assert.assertNotNull("Data on demand for 'AclObjectIdentity' failed to provide an identifier", id);
-        obj = AclObjectIdentity.findAclObjectIdentity(id);
+        obj = aclObjectIdentityService.findAclObjectIdentity(id);
         Assert.assertNotNull("Find method for 'AclObjectIdentity' illegally returned null for id '" + id + "'", obj);
         Assert.assertEquals("Find method for 'AclObjectIdentity' returned the incorrect identifier", id, obj.getId());
     }
@@ -47,9 +50,9 @@ privileged aspect AclObjectIdentityIntegrationTest_Roo_IntegrationTest {
     @Test
     public void AclObjectIdentityIntegrationTest.testFindAllAclObjectIdentitys() {
         Assert.assertNotNull("Data on demand for 'AclObjectIdentity' failed to initialize correctly", dod.getRandomAclObjectIdentity());
-        long count = AclObjectIdentity.countAclObjectIdentitys();
+        long count = aclObjectIdentityService.countAllAclObjectIdentitys();
         Assert.assertTrue("Too expensive to perform a find all test for 'AclObjectIdentity', as there are " + count + " entries; set the findAllMaximum to exceed this value or set findAll=false on the integration test annotation to disable the test", count < 250);
-        List<AclObjectIdentity> result = AclObjectIdentity.findAllAclObjectIdentitys();
+        List<AclObjectIdentity> result = aclObjectIdentityService.findAllAclObjectIdentitys();
         Assert.assertNotNull("Find all method for 'AclObjectIdentity' illegally returned null", result);
         Assert.assertTrue("Find all method for 'AclObjectIdentity' failed to return any data", result.size() > 0);
     }
@@ -57,36 +60,36 @@ privileged aspect AclObjectIdentityIntegrationTest_Roo_IntegrationTest {
     @Test
     public void AclObjectIdentityIntegrationTest.testFindAclObjectIdentityEntries() {
         Assert.assertNotNull("Data on demand for 'AclObjectIdentity' failed to initialize correctly", dod.getRandomAclObjectIdentity());
-        long count = AclObjectIdentity.countAclObjectIdentitys();
+        long count = aclObjectIdentityService.countAllAclObjectIdentitys();
         if (count > 20) count = 20;
         int firstResult = 0;
         int maxResults = (int) count;
-        List<AclObjectIdentity> result = AclObjectIdentity.findAclObjectIdentityEntries(firstResult, maxResults);
+        List<AclObjectIdentity> result = aclObjectIdentityService.findAclObjectIdentityEntries(firstResult, maxResults);
         Assert.assertNotNull("Find entries method for 'AclObjectIdentity' illegally returned null", result);
         Assert.assertEquals("Find entries method for 'AclObjectIdentity' returned an incorrect number of entries", count, result.size());
     }
     
     @Test
-    public void AclObjectIdentityIntegrationTest.testPersist() {
+    public void AclObjectIdentityIntegrationTest.testSaveAclObjectIdentity() {
         Assert.assertNotNull("Data on demand for 'AclObjectIdentity' failed to initialize correctly", dod.getRandomAclObjectIdentity());
         AclObjectIdentity obj = dod.getNewTransientAclObjectIdentity(Integer.MAX_VALUE);
         Assert.assertNotNull("Data on demand for 'AclObjectIdentity' failed to provide a new transient entity", obj);
         Assert.assertNull("Expected 'AclObjectIdentity' identifier to be null", obj.getId());
-        obj.persist();
+        aclObjectIdentityService.saveAclObjectIdentity(obj);
         obj.flush();
         Assert.assertNotNull("Expected 'AclObjectIdentity' identifier to no longer be null", obj.getId());
     }
     
     @Test
-    public void AclObjectIdentityIntegrationTest.testRemove() {
+    public void AclObjectIdentityIntegrationTest.testDeleteAclObjectIdentity() {
         AclObjectIdentity obj = dod.getRandomAclObjectIdentity();
         Assert.assertNotNull("Data on demand for 'AclObjectIdentity' failed to initialize correctly", obj);
         Long id = obj.getId();
         Assert.assertNotNull("Data on demand for 'AclObjectIdentity' failed to provide an identifier", id);
-        obj = AclObjectIdentity.findAclObjectIdentity(id);
-        obj.remove();
+        obj = aclObjectIdentityService.findAclObjectIdentity(id);
+        aclObjectIdentityService.deleteAclObjectIdentity(obj);
         obj.flush();
-        Assert.assertNull("Failed to remove 'AclObjectIdentity' with identifier '" + id + "'", AclObjectIdentity.findAclObjectIdentity(id));
+        Assert.assertNull("Failed to remove 'AclObjectIdentity' with identifier '" + id + "'", aclObjectIdentityService.findAclObjectIdentity(id));
     }
     
 }

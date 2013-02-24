@@ -6,7 +6,6 @@ package ro.roda;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
@@ -15,11 +14,14 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import ro.roda.Address;
 import ro.roda.AddressDataOnDemand;
+import ro.roda.Org;
 import ro.roda.OrgAddress;
 import ro.roda.OrgAddressDataOnDemand;
 import ro.roda.OrgAddressPK;
 import ro.roda.OrgDataOnDemand;
+import ro.roda.service.OrgAddressService;
 
 privileged aspect OrgAddressDataOnDemand_Roo_DataOnDemand {
     
@@ -30,16 +32,21 @@ privileged aspect OrgAddressDataOnDemand_Roo_DataOnDemand {
     private List<OrgAddress> OrgAddressDataOnDemand.data;
     
     @Autowired
-    private AddressDataOnDemand OrgAddressDataOnDemand.addressDataOnDemand;
+    AddressDataOnDemand OrgAddressDataOnDemand.addressDataOnDemand;
     
     @Autowired
-    private OrgDataOnDemand OrgAddressDataOnDemand.orgDataOnDemand;
+    OrgDataOnDemand OrgAddressDataOnDemand.orgDataOnDemand;
+    
+    @Autowired
+    OrgAddressService OrgAddressDataOnDemand.orgAddressService;
     
     public OrgAddress OrgAddressDataOnDemand.getNewTransientOrgAddress(int index) {
         OrgAddress obj = new OrgAddress();
         setEmbeddedIdClass(obj, index);
+        setAddressId(obj, index);
         setDateend(obj, index);
         setDatestart(obj, index);
+        setOrgId(obj, index);
         return obj;
     }
     
@@ -51,14 +58,24 @@ privileged aspect OrgAddressDataOnDemand_Roo_DataOnDemand {
         obj.setId(embeddedIdClass);
     }
     
+    public void OrgAddressDataOnDemand.setAddressId(OrgAddress obj, int index) {
+        Address addressId = addressDataOnDemand.getRandomAddress();
+        obj.setAddressId(addressId);
+    }
+    
     public void OrgAddressDataOnDemand.setDateend(OrgAddress obj, int index) {
-        Date dateend = new GregorianCalendar(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH), Calendar.getInstance().get(Calendar.HOUR_OF_DAY), Calendar.getInstance().get(Calendar.MINUTE), Calendar.getInstance().get(Calendar.SECOND) + new Double(Math.random() * 1000).intValue()).getTime();
+        Calendar dateend = Calendar.getInstance();
         obj.setDateend(dateend);
     }
     
     public void OrgAddressDataOnDemand.setDatestart(OrgAddress obj, int index) {
-        Date datestart = new GregorianCalendar(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH), Calendar.getInstance().get(Calendar.HOUR_OF_DAY), Calendar.getInstance().get(Calendar.MINUTE), Calendar.getInstance().get(Calendar.SECOND) + new Double(Math.random() * 1000).intValue()).getTime();
+        Calendar datestart = Calendar.getInstance();
         obj.setDatestart(datestart);
+    }
+    
+    public void OrgAddressDataOnDemand.setOrgId(OrgAddress obj, int index) {
+        Org orgId = orgDataOnDemand.getRandomOrg();
+        obj.setOrgId(orgId);
     }
     
     public OrgAddress OrgAddressDataOnDemand.getSpecificOrgAddress(int index) {
@@ -71,14 +88,14 @@ privileged aspect OrgAddressDataOnDemand_Roo_DataOnDemand {
         }
         OrgAddress obj = data.get(index);
         OrgAddressPK id = obj.getId();
-        return OrgAddress.findOrgAddress(id);
+        return orgAddressService.findOrgAddress(id);
     }
     
     public OrgAddress OrgAddressDataOnDemand.getRandomOrgAddress() {
         init();
         OrgAddress obj = data.get(rnd.nextInt(data.size()));
         OrgAddressPK id = obj.getId();
-        return OrgAddress.findOrgAddress(id);
+        return orgAddressService.findOrgAddress(id);
     }
     
     public boolean OrgAddressDataOnDemand.modifyOrgAddress(OrgAddress obj) {
@@ -88,7 +105,7 @@ privileged aspect OrgAddressDataOnDemand_Roo_DataOnDemand {
     public void OrgAddressDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = OrgAddress.findOrgAddressEntries(from, to);
+        data = orgAddressService.findOrgAddressEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'OrgAddress' illegally returned null");
         }
@@ -100,7 +117,7 @@ privileged aspect OrgAddressDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             OrgAddress obj = getNewTransientOrgAddress(i);
             try {
-                obj.persist();
+                orgAddressService.saveOrgAddress(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

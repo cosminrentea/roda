@@ -11,9 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.Catalog;
 import ro.roda.CatalogDataOnDemand;
 import ro.roda.CatalogIntegrationTest;
+import ro.roda.service.CatalogService;
 
 privileged aspect CatalogIntegrationTest_Roo_IntegrationTest {
     
@@ -24,12 +24,15 @@ privileged aspect CatalogIntegrationTest_Roo_IntegrationTest {
     declare @type: CatalogIntegrationTest: @Transactional;
     
     @Autowired
-    private CatalogDataOnDemand CatalogIntegrationTest.dod;
+    CatalogDataOnDemand CatalogIntegrationTest.dod;
+    
+    @Autowired
+    CatalogService CatalogIntegrationTest.catalogService;
     
     @Test
-    public void CatalogIntegrationTest.testCountCatalogs() {
+    public void CatalogIntegrationTest.testCountAllCatalogs() {
         Assert.assertNotNull("Data on demand for 'Catalog' failed to initialize correctly", dod.getRandomCatalog());
-        long count = Catalog.countCatalogs();
+        long count = catalogService.countAllCatalogs();
         Assert.assertTrue("Counter for 'Catalog' incorrectly reported there were no entries", count > 0);
     }
     
@@ -39,7 +42,7 @@ privileged aspect CatalogIntegrationTest_Roo_IntegrationTest {
         Assert.assertNotNull("Data on demand for 'Catalog' failed to initialize correctly", obj);
         Integer id = obj.getId();
         Assert.assertNotNull("Data on demand for 'Catalog' failed to provide an identifier", id);
-        obj = Catalog.findCatalog(id);
+        obj = catalogService.findCatalog(id);
         Assert.assertNotNull("Find method for 'Catalog' illegally returned null for id '" + id + "'", obj);
         Assert.assertEquals("Find method for 'Catalog' returned the incorrect identifier", id, obj.getId());
     }
@@ -47,9 +50,9 @@ privileged aspect CatalogIntegrationTest_Roo_IntegrationTest {
     @Test
     public void CatalogIntegrationTest.testFindAllCatalogs() {
         Assert.assertNotNull("Data on demand for 'Catalog' failed to initialize correctly", dod.getRandomCatalog());
-        long count = Catalog.countCatalogs();
+        long count = catalogService.countAllCatalogs();
         Assert.assertTrue("Too expensive to perform a find all test for 'Catalog', as there are " + count + " entries; set the findAllMaximum to exceed this value or set findAll=false on the integration test annotation to disable the test", count < 250);
-        List<Catalog> result = Catalog.findAllCatalogs();
+        List<Catalog> result = catalogService.findAllCatalogs();
         Assert.assertNotNull("Find all method for 'Catalog' illegally returned null", result);
         Assert.assertTrue("Find all method for 'Catalog' failed to return any data", result.size() > 0);
     }
@@ -57,36 +60,36 @@ privileged aspect CatalogIntegrationTest_Roo_IntegrationTest {
     @Test
     public void CatalogIntegrationTest.testFindCatalogEntries() {
         Assert.assertNotNull("Data on demand for 'Catalog' failed to initialize correctly", dod.getRandomCatalog());
-        long count = Catalog.countCatalogs();
+        long count = catalogService.countAllCatalogs();
         if (count > 20) count = 20;
         int firstResult = 0;
         int maxResults = (int) count;
-        List<Catalog> result = Catalog.findCatalogEntries(firstResult, maxResults);
+        List<Catalog> result = catalogService.findCatalogEntries(firstResult, maxResults);
         Assert.assertNotNull("Find entries method for 'Catalog' illegally returned null", result);
         Assert.assertEquals("Find entries method for 'Catalog' returned an incorrect number of entries", count, result.size());
     }
     
     @Test
-    public void CatalogIntegrationTest.testPersist() {
+    public void CatalogIntegrationTest.testSaveCatalog() {
         Assert.assertNotNull("Data on demand for 'Catalog' failed to initialize correctly", dod.getRandomCatalog());
         Catalog obj = dod.getNewTransientCatalog(Integer.MAX_VALUE);
         Assert.assertNotNull("Data on demand for 'Catalog' failed to provide a new transient entity", obj);
         Assert.assertNull("Expected 'Catalog' identifier to be null", obj.getId());
-        obj.persist();
+        catalogService.saveCatalog(obj);
         obj.flush();
         Assert.assertNotNull("Expected 'Catalog' identifier to no longer be null", obj.getId());
     }
     
     @Test
-    public void CatalogIntegrationTest.testRemove() {
+    public void CatalogIntegrationTest.testDeleteCatalog() {
         Catalog obj = dod.getRandomCatalog();
         Assert.assertNotNull("Data on demand for 'Catalog' failed to initialize correctly", obj);
         Integer id = obj.getId();
         Assert.assertNotNull("Data on demand for 'Catalog' failed to provide an identifier", id);
-        obj = Catalog.findCatalog(id);
-        obj.remove();
+        obj = catalogService.findCatalog(id);
+        catalogService.deleteCatalog(obj);
         obj.flush();
-        Assert.assertNull("Failed to remove 'Catalog' with identifier '" + id + "'", Catalog.findCatalog(id));
+        Assert.assertNull("Failed to remove 'Catalog' with identifier '" + id + "'", catalogService.findCatalog(id));
     }
     
 }

@@ -16,15 +16,25 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.Email;
-import ro.roda.Org;
 import ro.roda.OrgEmail;
 import ro.roda.OrgEmailPK;
+import ro.roda.service.EmailService;
+import ro.roda.service.OrgEmailService;
+import ro.roda.service.OrgService;
 import ro.roda.web.OrgEmailController;
 
 privileged aspect OrgEmailController_Roo_Controller {
     
     private ConversionService OrgEmailController.conversionService;
+    
+    @Autowired
+    OrgEmailService OrgEmailController.orgEmailService;
+    
+    @Autowired
+    EmailService OrgEmailController.emailService;
+    
+    @Autowired
+    OrgService OrgEmailController.orgService;
     
     @Autowired
     public OrgEmailController.new(ConversionService conversionService) {
@@ -39,7 +49,7 @@ privileged aspect OrgEmailController_Roo_Controller {
             return "orgemails/create";
         }
         uiModel.asMap().clear();
-        orgEmail.persist();
+        orgEmailService.saveOrgEmail(orgEmail);
         return "redirect:/orgemails/" + encodeUrlPathSegment(conversionService.convert(orgEmail.getId(), String.class), httpServletRequest);
     }
     
@@ -51,7 +61,7 @@ privileged aspect OrgEmailController_Roo_Controller {
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String OrgEmailController.show(@PathVariable("id") OrgEmailPK id, Model uiModel) {
-        uiModel.addAttribute("orgemail", OrgEmail.findOrgEmail(id));
+        uiModel.addAttribute("orgemail", orgEmailService.findOrgEmail(id));
         uiModel.addAttribute("itemId", conversionService.convert(id, String.class));
         return "orgemails/show";
     }
@@ -61,11 +71,11 @@ privileged aspect OrgEmailController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("orgemails", OrgEmail.findOrgEmailEntries(firstResult, sizeNo));
-            float nrOfPages = (float) OrgEmail.countOrgEmails() / sizeNo;
+            uiModel.addAttribute("orgemails", orgEmailService.findOrgEmailEntries(firstResult, sizeNo));
+            float nrOfPages = (float) orgEmailService.countAllOrgEmails() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("orgemails", OrgEmail.findAllOrgEmails());
+            uiModel.addAttribute("orgemails", orgEmailService.findAllOrgEmails());
         }
         return "orgemails/list";
     }
@@ -77,20 +87,20 @@ privileged aspect OrgEmailController_Roo_Controller {
             return "orgemails/update";
         }
         uiModel.asMap().clear();
-        orgEmail.merge();
+        orgEmailService.updateOrgEmail(orgEmail);
         return "redirect:/orgemails/" + encodeUrlPathSegment(conversionService.convert(orgEmail.getId(), String.class), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String OrgEmailController.updateForm(@PathVariable("id") OrgEmailPK id, Model uiModel) {
-        populateEditForm(uiModel, OrgEmail.findOrgEmail(id));
+        populateEditForm(uiModel, orgEmailService.findOrgEmail(id));
         return "orgemails/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
     public String OrgEmailController.delete(@PathVariable("id") OrgEmailPK id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        OrgEmail orgEmail = OrgEmail.findOrgEmail(id);
-        orgEmail.remove();
+        OrgEmail orgEmail = orgEmailService.findOrgEmail(id);
+        orgEmailService.deleteOrgEmail(orgEmail);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
@@ -99,8 +109,8 @@ privileged aspect OrgEmailController_Roo_Controller {
     
     void OrgEmailController.populateEditForm(Model uiModel, OrgEmail orgEmail) {
         uiModel.addAttribute("orgEmail", orgEmail);
-        uiModel.addAttribute("emails", Email.findAllEmails());
-        uiModel.addAttribute("orgs", Org.findAllOrgs());
+        uiModel.addAttribute("emails", emailService.findAllEmails());
+        uiModel.addAttribute("orgs", orgService.findAllOrgs());
     }
     
     String OrgEmailController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

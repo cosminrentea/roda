@@ -16,14 +16,21 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.File;
 import ro.roda.FileAcl;
 import ro.roda.FileAclPK;
+import ro.roda.service.FileAclService;
+import ro.roda.service.FileService;
 import ro.roda.web.FileAclController;
 
 privileged aspect FileAclController_Roo_Controller {
     
     private ConversionService FileAclController.conversionService;
+    
+    @Autowired
+    FileAclService FileAclController.fileAclService;
+    
+    @Autowired
+    FileService FileAclController.fileService;
     
     @Autowired
     public FileAclController.new(ConversionService conversionService) {
@@ -38,7 +45,7 @@ privileged aspect FileAclController_Roo_Controller {
             return "fileacls/create";
         }
         uiModel.asMap().clear();
-        fileAcl.persist();
+        fileAclService.saveFileAcl(fileAcl);
         return "redirect:/fileacls/" + encodeUrlPathSegment(conversionService.convert(fileAcl.getId(), String.class), httpServletRequest);
     }
     
@@ -50,7 +57,7 @@ privileged aspect FileAclController_Roo_Controller {
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String FileAclController.show(@PathVariable("id") FileAclPK id, Model uiModel) {
-        uiModel.addAttribute("fileacl", FileAcl.findFileAcl(id));
+        uiModel.addAttribute("fileacl", fileAclService.findFileAcl(id));
         uiModel.addAttribute("itemId", conversionService.convert(id, String.class));
         return "fileacls/show";
     }
@@ -60,11 +67,11 @@ privileged aspect FileAclController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("fileacls", FileAcl.findFileAclEntries(firstResult, sizeNo));
-            float nrOfPages = (float) FileAcl.countFileAcls() / sizeNo;
+            uiModel.addAttribute("fileacls", fileAclService.findFileAclEntries(firstResult, sizeNo));
+            float nrOfPages = (float) fileAclService.countAllFileAcls() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("fileacls", FileAcl.findAllFileAcls());
+            uiModel.addAttribute("fileacls", fileAclService.findAllFileAcls());
         }
         return "fileacls/list";
     }
@@ -76,20 +83,20 @@ privileged aspect FileAclController_Roo_Controller {
             return "fileacls/update";
         }
         uiModel.asMap().clear();
-        fileAcl.merge();
+        fileAclService.updateFileAcl(fileAcl);
         return "redirect:/fileacls/" + encodeUrlPathSegment(conversionService.convert(fileAcl.getId(), String.class), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String FileAclController.updateForm(@PathVariable("id") FileAclPK id, Model uiModel) {
-        populateEditForm(uiModel, FileAcl.findFileAcl(id));
+        populateEditForm(uiModel, fileAclService.findFileAcl(id));
         return "fileacls/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
     public String FileAclController.delete(@PathVariable("id") FileAclPK id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        FileAcl fileAcl = FileAcl.findFileAcl(id);
-        fileAcl.remove();
+        FileAcl fileAcl = fileAclService.findFileAcl(id);
+        fileAclService.deleteFileAcl(fileAcl);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
@@ -98,7 +105,7 @@ privileged aspect FileAclController_Roo_Controller {
     
     void FileAclController.populateEditForm(Model uiModel, FileAcl fileAcl) {
         uiModel.addAttribute("fileAcl", fileAcl);
-        uiModel.addAttribute("files", File.findAllFiles());
+        uiModel.addAttribute("files", fileService.findAllFiles());
     }
     
     String FileAclController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

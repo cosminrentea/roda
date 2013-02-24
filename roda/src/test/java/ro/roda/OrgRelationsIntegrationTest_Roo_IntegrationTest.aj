@@ -11,10 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.OrgRelations;
 import ro.roda.OrgRelationsDataOnDemand;
 import ro.roda.OrgRelationsIntegrationTest;
 import ro.roda.OrgRelationsPK;
+import ro.roda.service.OrgRelationsService;
 
 privileged aspect OrgRelationsIntegrationTest_Roo_IntegrationTest {
     
@@ -25,12 +25,15 @@ privileged aspect OrgRelationsIntegrationTest_Roo_IntegrationTest {
     declare @type: OrgRelationsIntegrationTest: @Transactional;
     
     @Autowired
-    private OrgRelationsDataOnDemand OrgRelationsIntegrationTest.dod;
+    OrgRelationsDataOnDemand OrgRelationsIntegrationTest.dod;
+    
+    @Autowired
+    OrgRelationsService OrgRelationsIntegrationTest.orgRelationsService;
     
     @Test
-    public void OrgRelationsIntegrationTest.testCountOrgRelationses() {
+    public void OrgRelationsIntegrationTest.testCountAllOrgRelationses() {
         Assert.assertNotNull("Data on demand for 'OrgRelations' failed to initialize correctly", dod.getRandomOrgRelations());
-        long count = OrgRelations.countOrgRelationses();
+        long count = orgRelationsService.countAllOrgRelationses();
         Assert.assertTrue("Counter for 'OrgRelations' incorrectly reported there were no entries", count > 0);
     }
     
@@ -40,7 +43,7 @@ privileged aspect OrgRelationsIntegrationTest_Roo_IntegrationTest {
         Assert.assertNotNull("Data on demand for 'OrgRelations' failed to initialize correctly", obj);
         OrgRelationsPK id = obj.getId();
         Assert.assertNotNull("Data on demand for 'OrgRelations' failed to provide an identifier", id);
-        obj = OrgRelations.findOrgRelations(id);
+        obj = orgRelationsService.findOrgRelations(id);
         Assert.assertNotNull("Find method for 'OrgRelations' illegally returned null for id '" + id + "'", obj);
         Assert.assertEquals("Find method for 'OrgRelations' returned the incorrect identifier", id, obj.getId());
     }
@@ -48,9 +51,9 @@ privileged aspect OrgRelationsIntegrationTest_Roo_IntegrationTest {
     @Test
     public void OrgRelationsIntegrationTest.testFindAllOrgRelationses() {
         Assert.assertNotNull("Data on demand for 'OrgRelations' failed to initialize correctly", dod.getRandomOrgRelations());
-        long count = OrgRelations.countOrgRelationses();
+        long count = orgRelationsService.countAllOrgRelationses();
         Assert.assertTrue("Too expensive to perform a find all test for 'OrgRelations', as there are " + count + " entries; set the findAllMaximum to exceed this value or set findAll=false on the integration test annotation to disable the test", count < 250);
-        List<OrgRelations> result = OrgRelations.findAllOrgRelationses();
+        List<OrgRelations> result = orgRelationsService.findAllOrgRelationses();
         Assert.assertNotNull("Find all method for 'OrgRelations' illegally returned null", result);
         Assert.assertTrue("Find all method for 'OrgRelations' failed to return any data", result.size() > 0);
     }
@@ -58,35 +61,35 @@ privileged aspect OrgRelationsIntegrationTest_Roo_IntegrationTest {
     @Test
     public void OrgRelationsIntegrationTest.testFindOrgRelationsEntries() {
         Assert.assertNotNull("Data on demand for 'OrgRelations' failed to initialize correctly", dod.getRandomOrgRelations());
-        long count = OrgRelations.countOrgRelationses();
+        long count = orgRelationsService.countAllOrgRelationses();
         if (count > 20) count = 20;
         int firstResult = 0;
         int maxResults = (int) count;
-        List<OrgRelations> result = OrgRelations.findOrgRelationsEntries(firstResult, maxResults);
+        List<OrgRelations> result = orgRelationsService.findOrgRelationsEntries(firstResult, maxResults);
         Assert.assertNotNull("Find entries method for 'OrgRelations' illegally returned null", result);
         Assert.assertEquals("Find entries method for 'OrgRelations' returned an incorrect number of entries", count, result.size());
     }
     
     @Test
-    public void OrgRelationsIntegrationTest.testPersist() {
+    public void OrgRelationsIntegrationTest.testSaveOrgRelations() {
         Assert.assertNotNull("Data on demand for 'OrgRelations' failed to initialize correctly", dod.getRandomOrgRelations());
         OrgRelations obj = dod.getNewTransientOrgRelations(Integer.MAX_VALUE);
         Assert.assertNotNull("Data on demand for 'OrgRelations' failed to provide a new transient entity", obj);
-        obj.persist();
+        orgRelationsService.saveOrgRelations(obj);
         obj.flush();
         Assert.assertNotNull("Expected 'OrgRelations' identifier to no longer be null", obj.getId());
     }
     
     @Test
-    public void OrgRelationsIntegrationTest.testRemove() {
+    public void OrgRelationsIntegrationTest.testDeleteOrgRelations() {
         OrgRelations obj = dod.getRandomOrgRelations();
         Assert.assertNotNull("Data on demand for 'OrgRelations' failed to initialize correctly", obj);
         OrgRelationsPK id = obj.getId();
         Assert.assertNotNull("Data on demand for 'OrgRelations' failed to provide an identifier", id);
-        obj = OrgRelations.findOrgRelations(id);
-        obj.remove();
+        obj = orgRelationsService.findOrgRelations(id);
+        orgRelationsService.deleteOrgRelations(obj);
         obj.flush();
-        Assert.assertNull("Failed to remove 'OrgRelations' with identifier '" + id + "'", OrgRelations.findOrgRelations(id));
+        Assert.assertNull("Failed to remove 'OrgRelations' with identifier '" + id + "'", orgRelationsService.findOrgRelations(id));
     }
     
 }

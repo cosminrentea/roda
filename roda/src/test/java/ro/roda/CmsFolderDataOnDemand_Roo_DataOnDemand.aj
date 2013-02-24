@@ -10,9 +10,11 @@ import java.util.List;
 import java.util.Random;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ro.roda.CmsFolder;
 import ro.roda.CmsFolderDataOnDemand;
+import ro.roda.service.CmsFolderService;
 
 privileged aspect CmsFolderDataOnDemand_Roo_DataOnDemand {
     
@@ -21,6 +23,9 @@ privileged aspect CmsFolderDataOnDemand_Roo_DataOnDemand {
     private Random CmsFolderDataOnDemand.rnd = new SecureRandom();
     
     private List<CmsFolder> CmsFolderDataOnDemand.data;
+    
+    @Autowired
+    CmsFolderService CmsFolderDataOnDemand.cmsFolderService;
     
     public CmsFolder CmsFolderDataOnDemand.getNewTransientCmsFolder(int index) {
         CmsFolder obj = new CmsFolder();
@@ -41,7 +46,7 @@ privileged aspect CmsFolderDataOnDemand_Roo_DataOnDemand {
     }
     
     public void CmsFolderDataOnDemand.setParentId(CmsFolder obj, int index) {
-        CmsFolder parentId = obj;
+        Integer parentId = new Integer(index);
         obj.setParentId(parentId);
     }
     
@@ -55,14 +60,14 @@ privileged aspect CmsFolderDataOnDemand_Roo_DataOnDemand {
         }
         CmsFolder obj = data.get(index);
         Integer id = obj.getId();
-        return CmsFolder.findCmsFolder(id);
+        return cmsFolderService.findCmsFolder(id);
     }
     
     public CmsFolder CmsFolderDataOnDemand.getRandomCmsFolder() {
         init();
         CmsFolder obj = data.get(rnd.nextInt(data.size()));
         Integer id = obj.getId();
-        return CmsFolder.findCmsFolder(id);
+        return cmsFolderService.findCmsFolder(id);
     }
     
     public boolean CmsFolderDataOnDemand.modifyCmsFolder(CmsFolder obj) {
@@ -72,7 +77,7 @@ privileged aspect CmsFolderDataOnDemand_Roo_DataOnDemand {
     public void CmsFolderDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = CmsFolder.findCmsFolderEntries(from, to);
+        data = cmsFolderService.findCmsFolderEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'CmsFolder' illegally returned null");
         }
@@ -84,7 +89,7 @@ privileged aspect CmsFolderDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             CmsFolder obj = getNewTransientCmsFolder(i);
             try {
-                obj.persist();
+                cmsFolderService.saveCmsFolder(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

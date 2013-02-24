@@ -10,9 +10,11 @@ import java.util.List;
 import java.util.Random;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ro.roda.Vargroup;
 import ro.roda.VargroupDataOnDemand;
+import ro.roda.service.VargroupService;
 
 privileged aspect VargroupDataOnDemand_Roo_DataOnDemand {
     
@@ -21,6 +23,9 @@ privileged aspect VargroupDataOnDemand_Roo_DataOnDemand {
     private Random VargroupDataOnDemand.rnd = new SecureRandom();
     
     private List<Vargroup> VargroupDataOnDemand.data;
+    
+    @Autowired
+    VargroupService VargroupDataOnDemand.vargroupService;
     
     public Vargroup VargroupDataOnDemand.getNewTransientVargroup(int index) {
         Vargroup obj = new Vargroup();
@@ -43,14 +48,14 @@ privileged aspect VargroupDataOnDemand_Roo_DataOnDemand {
         }
         Vargroup obj = data.get(index);
         Long id = obj.getId();
-        return Vargroup.findVargroup(id);
+        return vargroupService.findVargroup(id);
     }
     
     public Vargroup VargroupDataOnDemand.getRandomVargroup() {
         init();
         Vargroup obj = data.get(rnd.nextInt(data.size()));
         Long id = obj.getId();
-        return Vargroup.findVargroup(id);
+        return vargroupService.findVargroup(id);
     }
     
     public boolean VargroupDataOnDemand.modifyVargroup(Vargroup obj) {
@@ -60,7 +65,7 @@ privileged aspect VargroupDataOnDemand_Roo_DataOnDemand {
     public void VargroupDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = Vargroup.findVargroupEntries(from, to);
+        data = vargroupService.findVargroupEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'Vargroup' illegally returned null");
         }
@@ -72,7 +77,7 @@ privileged aspect VargroupDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             Vargroup obj = getNewTransientVargroup(i);
             try {
-                obj.persist();
+                vargroupService.saveVargroup(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

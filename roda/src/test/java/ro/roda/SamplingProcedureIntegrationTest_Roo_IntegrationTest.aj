@@ -11,9 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.SamplingProcedure;
 import ro.roda.SamplingProcedureDataOnDemand;
 import ro.roda.SamplingProcedureIntegrationTest;
+import ro.roda.service.SamplingProcedureService;
 
 privileged aspect SamplingProcedureIntegrationTest_Roo_IntegrationTest {
     
@@ -24,12 +24,15 @@ privileged aspect SamplingProcedureIntegrationTest_Roo_IntegrationTest {
     declare @type: SamplingProcedureIntegrationTest: @Transactional;
     
     @Autowired
-    private SamplingProcedureDataOnDemand SamplingProcedureIntegrationTest.dod;
+    SamplingProcedureDataOnDemand SamplingProcedureIntegrationTest.dod;
+    
+    @Autowired
+    SamplingProcedureService SamplingProcedureIntegrationTest.samplingProcedureService;
     
     @Test
-    public void SamplingProcedureIntegrationTest.testCountSamplingProcedures() {
+    public void SamplingProcedureIntegrationTest.testCountAllSamplingProcedures() {
         Assert.assertNotNull("Data on demand for 'SamplingProcedure' failed to initialize correctly", dod.getRandomSamplingProcedure());
-        long count = SamplingProcedure.countSamplingProcedures();
+        long count = samplingProcedureService.countAllSamplingProcedures();
         Assert.assertTrue("Counter for 'SamplingProcedure' incorrectly reported there were no entries", count > 0);
     }
     
@@ -39,7 +42,7 @@ privileged aspect SamplingProcedureIntegrationTest_Roo_IntegrationTest {
         Assert.assertNotNull("Data on demand for 'SamplingProcedure' failed to initialize correctly", obj);
         Integer id = obj.getId();
         Assert.assertNotNull("Data on demand for 'SamplingProcedure' failed to provide an identifier", id);
-        obj = SamplingProcedure.findSamplingProcedure(id);
+        obj = samplingProcedureService.findSamplingProcedure(id);
         Assert.assertNotNull("Find method for 'SamplingProcedure' illegally returned null for id '" + id + "'", obj);
         Assert.assertEquals("Find method for 'SamplingProcedure' returned the incorrect identifier", id, obj.getId());
     }
@@ -47,9 +50,9 @@ privileged aspect SamplingProcedureIntegrationTest_Roo_IntegrationTest {
     @Test
     public void SamplingProcedureIntegrationTest.testFindAllSamplingProcedures() {
         Assert.assertNotNull("Data on demand for 'SamplingProcedure' failed to initialize correctly", dod.getRandomSamplingProcedure());
-        long count = SamplingProcedure.countSamplingProcedures();
+        long count = samplingProcedureService.countAllSamplingProcedures();
         Assert.assertTrue("Too expensive to perform a find all test for 'SamplingProcedure', as there are " + count + " entries; set the findAllMaximum to exceed this value or set findAll=false on the integration test annotation to disable the test", count < 250);
-        List<SamplingProcedure> result = SamplingProcedure.findAllSamplingProcedures();
+        List<SamplingProcedure> result = samplingProcedureService.findAllSamplingProcedures();
         Assert.assertNotNull("Find all method for 'SamplingProcedure' illegally returned null", result);
         Assert.assertTrue("Find all method for 'SamplingProcedure' failed to return any data", result.size() > 0);
     }
@@ -57,36 +60,36 @@ privileged aspect SamplingProcedureIntegrationTest_Roo_IntegrationTest {
     @Test
     public void SamplingProcedureIntegrationTest.testFindSamplingProcedureEntries() {
         Assert.assertNotNull("Data on demand for 'SamplingProcedure' failed to initialize correctly", dod.getRandomSamplingProcedure());
-        long count = SamplingProcedure.countSamplingProcedures();
+        long count = samplingProcedureService.countAllSamplingProcedures();
         if (count > 20) count = 20;
         int firstResult = 0;
         int maxResults = (int) count;
-        List<SamplingProcedure> result = SamplingProcedure.findSamplingProcedureEntries(firstResult, maxResults);
+        List<SamplingProcedure> result = samplingProcedureService.findSamplingProcedureEntries(firstResult, maxResults);
         Assert.assertNotNull("Find entries method for 'SamplingProcedure' illegally returned null", result);
         Assert.assertEquals("Find entries method for 'SamplingProcedure' returned an incorrect number of entries", count, result.size());
     }
     
     @Test
-    public void SamplingProcedureIntegrationTest.testPersist() {
+    public void SamplingProcedureIntegrationTest.testSaveSamplingProcedure() {
         Assert.assertNotNull("Data on demand for 'SamplingProcedure' failed to initialize correctly", dod.getRandomSamplingProcedure());
         SamplingProcedure obj = dod.getNewTransientSamplingProcedure(Integer.MAX_VALUE);
         Assert.assertNotNull("Data on demand for 'SamplingProcedure' failed to provide a new transient entity", obj);
         Assert.assertNull("Expected 'SamplingProcedure' identifier to be null", obj.getId());
-        obj.persist();
+        samplingProcedureService.saveSamplingProcedure(obj);
         obj.flush();
         Assert.assertNotNull("Expected 'SamplingProcedure' identifier to no longer be null", obj.getId());
     }
     
     @Test
-    public void SamplingProcedureIntegrationTest.testRemove() {
+    public void SamplingProcedureIntegrationTest.testDeleteSamplingProcedure() {
         SamplingProcedure obj = dod.getRandomSamplingProcedure();
         Assert.assertNotNull("Data on demand for 'SamplingProcedure' failed to initialize correctly", obj);
         Integer id = obj.getId();
         Assert.assertNotNull("Data on demand for 'SamplingProcedure' failed to provide an identifier", id);
-        obj = SamplingProcedure.findSamplingProcedure(id);
-        obj.remove();
+        obj = samplingProcedureService.findSamplingProcedure(id);
+        samplingProcedureService.deleteSamplingProcedure(obj);
         obj.flush();
-        Assert.assertNull("Failed to remove 'SamplingProcedure' with identifier '" + id + "'", SamplingProcedure.findSamplingProcedure(id));
+        Assert.assertNull("Failed to remove 'SamplingProcedure' with identifier '" + id + "'", samplingProcedureService.findSamplingProcedure(id));
     }
     
 }

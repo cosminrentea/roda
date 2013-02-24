@@ -11,9 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.AclSid;
 import ro.roda.AclSidDataOnDemand;
 import ro.roda.AclSidIntegrationTest;
+import ro.roda.service.AclSidService;
 
 privileged aspect AclSidIntegrationTest_Roo_IntegrationTest {
     
@@ -24,12 +24,15 @@ privileged aspect AclSidIntegrationTest_Roo_IntegrationTest {
     declare @type: AclSidIntegrationTest: @Transactional;
     
     @Autowired
-    private AclSidDataOnDemand AclSidIntegrationTest.dod;
+    AclSidDataOnDemand AclSidIntegrationTest.dod;
+    
+    @Autowired
+    AclSidService AclSidIntegrationTest.aclSidService;
     
     @Test
-    public void AclSidIntegrationTest.testCountAclSids() {
+    public void AclSidIntegrationTest.testCountAllAclSids() {
         Assert.assertNotNull("Data on demand for 'AclSid' failed to initialize correctly", dod.getRandomAclSid());
-        long count = AclSid.countAclSids();
+        long count = aclSidService.countAllAclSids();
         Assert.assertTrue("Counter for 'AclSid' incorrectly reported there were no entries", count > 0);
     }
     
@@ -39,7 +42,7 @@ privileged aspect AclSidIntegrationTest_Roo_IntegrationTest {
         Assert.assertNotNull("Data on demand for 'AclSid' failed to initialize correctly", obj);
         Long id = obj.getId();
         Assert.assertNotNull("Data on demand for 'AclSid' failed to provide an identifier", id);
-        obj = AclSid.findAclSid(id);
+        obj = aclSidService.findAclSid(id);
         Assert.assertNotNull("Find method for 'AclSid' illegally returned null for id '" + id + "'", obj);
         Assert.assertEquals("Find method for 'AclSid' returned the incorrect identifier", id, obj.getId());
     }
@@ -47,9 +50,9 @@ privileged aspect AclSidIntegrationTest_Roo_IntegrationTest {
     @Test
     public void AclSidIntegrationTest.testFindAllAclSids() {
         Assert.assertNotNull("Data on demand for 'AclSid' failed to initialize correctly", dod.getRandomAclSid());
-        long count = AclSid.countAclSids();
+        long count = aclSidService.countAllAclSids();
         Assert.assertTrue("Too expensive to perform a find all test for 'AclSid', as there are " + count + " entries; set the findAllMaximum to exceed this value or set findAll=false on the integration test annotation to disable the test", count < 250);
-        List<AclSid> result = AclSid.findAllAclSids();
+        List<AclSid> result = aclSidService.findAllAclSids();
         Assert.assertNotNull("Find all method for 'AclSid' illegally returned null", result);
         Assert.assertTrue("Find all method for 'AclSid' failed to return any data", result.size() > 0);
     }
@@ -57,36 +60,36 @@ privileged aspect AclSidIntegrationTest_Roo_IntegrationTest {
     @Test
     public void AclSidIntegrationTest.testFindAclSidEntries() {
         Assert.assertNotNull("Data on demand for 'AclSid' failed to initialize correctly", dod.getRandomAclSid());
-        long count = AclSid.countAclSids();
+        long count = aclSidService.countAllAclSids();
         if (count > 20) count = 20;
         int firstResult = 0;
         int maxResults = (int) count;
-        List<AclSid> result = AclSid.findAclSidEntries(firstResult, maxResults);
+        List<AclSid> result = aclSidService.findAclSidEntries(firstResult, maxResults);
         Assert.assertNotNull("Find entries method for 'AclSid' illegally returned null", result);
         Assert.assertEquals("Find entries method for 'AclSid' returned an incorrect number of entries", count, result.size());
     }
     
     @Test
-    public void AclSidIntegrationTest.testPersist() {
+    public void AclSidIntegrationTest.testSaveAclSid() {
         Assert.assertNotNull("Data on demand for 'AclSid' failed to initialize correctly", dod.getRandomAclSid());
         AclSid obj = dod.getNewTransientAclSid(Integer.MAX_VALUE);
         Assert.assertNotNull("Data on demand for 'AclSid' failed to provide a new transient entity", obj);
         Assert.assertNull("Expected 'AclSid' identifier to be null", obj.getId());
-        obj.persist();
+        aclSidService.saveAclSid(obj);
         obj.flush();
         Assert.assertNotNull("Expected 'AclSid' identifier to no longer be null", obj.getId());
     }
     
     @Test
-    public void AclSidIntegrationTest.testRemove() {
+    public void AclSidIntegrationTest.testDeleteAclSid() {
         AclSid obj = dod.getRandomAclSid();
         Assert.assertNotNull("Data on demand for 'AclSid' failed to initialize correctly", obj);
         Long id = obj.getId();
         Assert.assertNotNull("Data on demand for 'AclSid' failed to provide an identifier", id);
-        obj = AclSid.findAclSid(id);
-        obj.remove();
+        obj = aclSidService.findAclSid(id);
+        aclSidService.deleteAclSid(obj);
         obj.flush();
-        Assert.assertNull("Failed to remove 'AclSid' with identifier '" + id + "'", AclSid.findAclSid(id));
+        Assert.assertNull("Failed to remove 'AclSid' with identifier '" + id + "'", aclSidService.findAclSid(id));
     }
     
 }

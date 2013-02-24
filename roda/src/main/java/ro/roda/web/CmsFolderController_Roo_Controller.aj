@@ -6,6 +6,7 @@ package ro.roda.web;
 import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,9 +16,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.CmsFolder;
+import ro.roda.service.CmsFileService;
+import ro.roda.service.CmsFolderService;
 import ro.roda.web.CmsFolderController;
 
 privileged aspect CmsFolderController_Roo_Controller {
+    
+    @Autowired
+    CmsFolderService CmsFolderController.cmsFolderService;
+    
+    @Autowired
+    CmsFileService CmsFolderController.cmsFileService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String CmsFolderController.create(@Valid CmsFolder cmsFolder, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -26,7 +35,7 @@ privileged aspect CmsFolderController_Roo_Controller {
             return "cmsfolders/create";
         }
         uiModel.asMap().clear();
-        cmsFolder.persist();
+        cmsFolderService.saveCmsFolder(cmsFolder);
         return "redirect:/cmsfolders/" + encodeUrlPathSegment(cmsFolder.getId().toString(), httpServletRequest);
     }
     
@@ -38,7 +47,7 @@ privileged aspect CmsFolderController_Roo_Controller {
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String CmsFolderController.show(@PathVariable("id") Integer id, Model uiModel) {
-        uiModel.addAttribute("cmsfolder", CmsFolder.findCmsFolder(id));
+        uiModel.addAttribute("cmsfolder", cmsFolderService.findCmsFolder(id));
         uiModel.addAttribute("itemId", id);
         return "cmsfolders/show";
     }
@@ -48,11 +57,11 @@ privileged aspect CmsFolderController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("cmsfolders", CmsFolder.findCmsFolderEntries(firstResult, sizeNo));
-            float nrOfPages = (float) CmsFolder.countCmsFolders() / sizeNo;
+            uiModel.addAttribute("cmsfolders", cmsFolderService.findCmsFolderEntries(firstResult, sizeNo));
+            float nrOfPages = (float) cmsFolderService.countAllCmsFolders() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("cmsfolders", CmsFolder.findAllCmsFolders());
+            uiModel.addAttribute("cmsfolders", cmsFolderService.findAllCmsFolders());
         }
         return "cmsfolders/list";
     }
@@ -64,20 +73,20 @@ privileged aspect CmsFolderController_Roo_Controller {
             return "cmsfolders/update";
         }
         uiModel.asMap().clear();
-        cmsFolder.merge();
+        cmsFolderService.updateCmsFolder(cmsFolder);
         return "redirect:/cmsfolders/" + encodeUrlPathSegment(cmsFolder.getId().toString(), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String CmsFolderController.updateForm(@PathVariable("id") Integer id, Model uiModel) {
-        populateEditForm(uiModel, CmsFolder.findCmsFolder(id));
+        populateEditForm(uiModel, cmsFolderService.findCmsFolder(id));
         return "cmsfolders/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
     public String CmsFolderController.delete(@PathVariable("id") Integer id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        CmsFolder cmsFolder = CmsFolder.findCmsFolder(id);
-        cmsFolder.remove();
+        CmsFolder cmsFolder = cmsFolderService.findCmsFolder(id);
+        cmsFolderService.deleteCmsFolder(cmsFolder);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
@@ -86,6 +95,7 @@ privileged aspect CmsFolderController_Roo_Controller {
     
     void CmsFolderController.populateEditForm(Model uiModel, CmsFolder cmsFolder) {
         uiModel.addAttribute("cmsFolder", cmsFolder);
+        uiModel.addAttribute("cmsfiles", cmsFileService.findAllCmsFiles());
     }
     
     String CmsFolderController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

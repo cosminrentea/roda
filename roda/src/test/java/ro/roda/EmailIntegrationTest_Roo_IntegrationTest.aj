@@ -11,9 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.Email;
 import ro.roda.EmailDataOnDemand;
 import ro.roda.EmailIntegrationTest;
+import ro.roda.service.EmailService;
 
 privileged aspect EmailIntegrationTest_Roo_IntegrationTest {
     
@@ -24,12 +24,15 @@ privileged aspect EmailIntegrationTest_Roo_IntegrationTest {
     declare @type: EmailIntegrationTest: @Transactional;
     
     @Autowired
-    private EmailDataOnDemand EmailIntegrationTest.dod;
+    EmailDataOnDemand EmailIntegrationTest.dod;
+    
+    @Autowired
+    EmailService EmailIntegrationTest.emailService;
     
     @Test
-    public void EmailIntegrationTest.testCountEmails() {
+    public void EmailIntegrationTest.testCountAllEmails() {
         Assert.assertNotNull("Data on demand for 'Email' failed to initialize correctly", dod.getRandomEmail());
-        long count = Email.countEmails();
+        long count = emailService.countAllEmails();
         Assert.assertTrue("Counter for 'Email' incorrectly reported there were no entries", count > 0);
     }
     
@@ -39,7 +42,7 @@ privileged aspect EmailIntegrationTest_Roo_IntegrationTest {
         Assert.assertNotNull("Data on demand for 'Email' failed to initialize correctly", obj);
         Integer id = obj.getId();
         Assert.assertNotNull("Data on demand for 'Email' failed to provide an identifier", id);
-        obj = Email.findEmail(id);
+        obj = emailService.findEmail(id);
         Assert.assertNotNull("Find method for 'Email' illegally returned null for id '" + id + "'", obj);
         Assert.assertEquals("Find method for 'Email' returned the incorrect identifier", id, obj.getId());
     }
@@ -47,9 +50,9 @@ privileged aspect EmailIntegrationTest_Roo_IntegrationTest {
     @Test
     public void EmailIntegrationTest.testFindAllEmails() {
         Assert.assertNotNull("Data on demand for 'Email' failed to initialize correctly", dod.getRandomEmail());
-        long count = Email.countEmails();
+        long count = emailService.countAllEmails();
         Assert.assertTrue("Too expensive to perform a find all test for 'Email', as there are " + count + " entries; set the findAllMaximum to exceed this value or set findAll=false on the integration test annotation to disable the test", count < 250);
-        List<Email> result = Email.findAllEmails();
+        List<Email> result = emailService.findAllEmails();
         Assert.assertNotNull("Find all method for 'Email' illegally returned null", result);
         Assert.assertTrue("Find all method for 'Email' failed to return any data", result.size() > 0);
     }
@@ -57,36 +60,36 @@ privileged aspect EmailIntegrationTest_Roo_IntegrationTest {
     @Test
     public void EmailIntegrationTest.testFindEmailEntries() {
         Assert.assertNotNull("Data on demand for 'Email' failed to initialize correctly", dod.getRandomEmail());
-        long count = Email.countEmails();
+        long count = emailService.countAllEmails();
         if (count > 20) count = 20;
         int firstResult = 0;
         int maxResults = (int) count;
-        List<Email> result = Email.findEmailEntries(firstResult, maxResults);
+        List<Email> result = emailService.findEmailEntries(firstResult, maxResults);
         Assert.assertNotNull("Find entries method for 'Email' illegally returned null", result);
         Assert.assertEquals("Find entries method for 'Email' returned an incorrect number of entries", count, result.size());
     }
     
     @Test
-    public void EmailIntegrationTest.testPersist() {
+    public void EmailIntegrationTest.testSaveEmail() {
         Assert.assertNotNull("Data on demand for 'Email' failed to initialize correctly", dod.getRandomEmail());
         Email obj = dod.getNewTransientEmail(Integer.MAX_VALUE);
         Assert.assertNotNull("Data on demand for 'Email' failed to provide a new transient entity", obj);
         Assert.assertNull("Expected 'Email' identifier to be null", obj.getId());
-        obj.persist();
+        emailService.saveEmail(obj);
         obj.flush();
         Assert.assertNotNull("Expected 'Email' identifier to no longer be null", obj.getId());
     }
     
     @Test
-    public void EmailIntegrationTest.testRemove() {
+    public void EmailIntegrationTest.testDeleteEmail() {
         Email obj = dod.getRandomEmail();
         Assert.assertNotNull("Data on demand for 'Email' failed to initialize correctly", obj);
         Integer id = obj.getId();
         Assert.assertNotNull("Data on demand for 'Email' failed to provide an identifier", id);
-        obj = Email.findEmail(id);
-        obj.remove();
+        obj = emailService.findEmail(id);
+        emailService.deleteEmail(obj);
         obj.flush();
-        Assert.assertNull("Failed to remove 'Email' with identifier '" + id + "'", Email.findEmail(id));
+        Assert.assertNull("Failed to remove 'Email' with identifier '" + id + "'", emailService.findEmail(id));
     }
     
 }

@@ -6,8 +6,8 @@
         <table:table data="${personaddresses}" id="l_ro_roda_PersonAddress" path="/personaddresses" z="rMpdQeMqwy7masLjZQ+Aegntups=">
             <table:column id="c_ro_roda_PersonAddress_addressId" property="addressId" z="kWncAN13lhZNs2B37VrN52efEaY="/>
             <table:column id="c_ro_roda_PersonAddress_personId" property="personId" z="yIpQ5nTHNARljJRHffbgaWynWLM="/>
-            <table:column date="true" dateTimePattern="${personAddress_datestart_date_format}" id="c_ro_roda_PersonAddress_datestart" property="datestart" z="3rMZZTtXny7ODqSTM8rEwiN3rVA="/>
-            <table:column date="true" dateTimePattern="${personAddress_dateend_date_format}" id="c_ro_roda_PersonAddress_dateend" property="dateend" z="1Ptj0K9z6zY889yVWNlItlUvZWM="/>
+            <table:column calendar="true" dateTimePattern="${personAddress_datestart_date_format}" id="c_ro_roda_PersonAddress_datestart" property="datestart" z="RzF2bEoDUz68p6fV9KlwvuWtLAc="/>
+            <table:column calendar="true" dateTimePattern="${personAddress_dateend_date_format}" id="c_ro_roda_PersonAddress_dateend" property="dateend" z="VM5yiFydtlDyhdLPXi+K3P25CX0="/>
         </table:table>
     </page:list>
 </div>

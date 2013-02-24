@@ -11,9 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.CmsSnippetGroup;
 import ro.roda.CmsSnippetGroupDataOnDemand;
 import ro.roda.CmsSnippetGroupIntegrationTest;
+import ro.roda.service.CmsSnippetGroupService;
 
 privileged aspect CmsSnippetGroupIntegrationTest_Roo_IntegrationTest {
     
@@ -24,12 +24,15 @@ privileged aspect CmsSnippetGroupIntegrationTest_Roo_IntegrationTest {
     declare @type: CmsSnippetGroupIntegrationTest: @Transactional;
     
     @Autowired
-    private CmsSnippetGroupDataOnDemand CmsSnippetGroupIntegrationTest.dod;
+    CmsSnippetGroupDataOnDemand CmsSnippetGroupIntegrationTest.dod;
+    
+    @Autowired
+    CmsSnippetGroupService CmsSnippetGroupIntegrationTest.cmsSnippetGroupService;
     
     @Test
-    public void CmsSnippetGroupIntegrationTest.testCountCmsSnippetGroups() {
+    public void CmsSnippetGroupIntegrationTest.testCountAllCmsSnippetGroups() {
         Assert.assertNotNull("Data on demand for 'CmsSnippetGroup' failed to initialize correctly", dod.getRandomCmsSnippetGroup());
-        long count = CmsSnippetGroup.countCmsSnippetGroups();
+        long count = cmsSnippetGroupService.countAllCmsSnippetGroups();
         Assert.assertTrue("Counter for 'CmsSnippetGroup' incorrectly reported there were no entries", count > 0);
     }
     
@@ -39,7 +42,7 @@ privileged aspect CmsSnippetGroupIntegrationTest_Roo_IntegrationTest {
         Assert.assertNotNull("Data on demand for 'CmsSnippetGroup' failed to initialize correctly", obj);
         Integer id = obj.getId();
         Assert.assertNotNull("Data on demand for 'CmsSnippetGroup' failed to provide an identifier", id);
-        obj = CmsSnippetGroup.findCmsSnippetGroup(id);
+        obj = cmsSnippetGroupService.findCmsSnippetGroup(id);
         Assert.assertNotNull("Find method for 'CmsSnippetGroup' illegally returned null for id '" + id + "'", obj);
         Assert.assertEquals("Find method for 'CmsSnippetGroup' returned the incorrect identifier", id, obj.getId());
     }
@@ -47,9 +50,9 @@ privileged aspect CmsSnippetGroupIntegrationTest_Roo_IntegrationTest {
     @Test
     public void CmsSnippetGroupIntegrationTest.testFindAllCmsSnippetGroups() {
         Assert.assertNotNull("Data on demand for 'CmsSnippetGroup' failed to initialize correctly", dod.getRandomCmsSnippetGroup());
-        long count = CmsSnippetGroup.countCmsSnippetGroups();
+        long count = cmsSnippetGroupService.countAllCmsSnippetGroups();
         Assert.assertTrue("Too expensive to perform a find all test for 'CmsSnippetGroup', as there are " + count + " entries; set the findAllMaximum to exceed this value or set findAll=false on the integration test annotation to disable the test", count < 250);
-        List<CmsSnippetGroup> result = CmsSnippetGroup.findAllCmsSnippetGroups();
+        List<CmsSnippetGroup> result = cmsSnippetGroupService.findAllCmsSnippetGroups();
         Assert.assertNotNull("Find all method for 'CmsSnippetGroup' illegally returned null", result);
         Assert.assertTrue("Find all method for 'CmsSnippetGroup' failed to return any data", result.size() > 0);
     }
@@ -57,36 +60,36 @@ privileged aspect CmsSnippetGroupIntegrationTest_Roo_IntegrationTest {
     @Test
     public void CmsSnippetGroupIntegrationTest.testFindCmsSnippetGroupEntries() {
         Assert.assertNotNull("Data on demand for 'CmsSnippetGroup' failed to initialize correctly", dod.getRandomCmsSnippetGroup());
-        long count = CmsSnippetGroup.countCmsSnippetGroups();
+        long count = cmsSnippetGroupService.countAllCmsSnippetGroups();
         if (count > 20) count = 20;
         int firstResult = 0;
         int maxResults = (int) count;
-        List<CmsSnippetGroup> result = CmsSnippetGroup.findCmsSnippetGroupEntries(firstResult, maxResults);
+        List<CmsSnippetGroup> result = cmsSnippetGroupService.findCmsSnippetGroupEntries(firstResult, maxResults);
         Assert.assertNotNull("Find entries method for 'CmsSnippetGroup' illegally returned null", result);
         Assert.assertEquals("Find entries method for 'CmsSnippetGroup' returned an incorrect number of entries", count, result.size());
     }
     
     @Test
-    public void CmsSnippetGroupIntegrationTest.testPersist() {
+    public void CmsSnippetGroupIntegrationTest.testSaveCmsSnippetGroup() {
         Assert.assertNotNull("Data on demand for 'CmsSnippetGroup' failed to initialize correctly", dod.getRandomCmsSnippetGroup());
         CmsSnippetGroup obj = dod.getNewTransientCmsSnippetGroup(Integer.MAX_VALUE);
         Assert.assertNotNull("Data on demand for 'CmsSnippetGroup' failed to provide a new transient entity", obj);
         Assert.assertNull("Expected 'CmsSnippetGroup' identifier to be null", obj.getId());
-        obj.persist();
+        cmsSnippetGroupService.saveCmsSnippetGroup(obj);
         obj.flush();
         Assert.assertNotNull("Expected 'CmsSnippetGroup' identifier to no longer be null", obj.getId());
     }
     
     @Test
-    public void CmsSnippetGroupIntegrationTest.testRemove() {
+    public void CmsSnippetGroupIntegrationTest.testDeleteCmsSnippetGroup() {
         CmsSnippetGroup obj = dod.getRandomCmsSnippetGroup();
         Assert.assertNotNull("Data on demand for 'CmsSnippetGroup' failed to initialize correctly", obj);
         Integer id = obj.getId();
         Assert.assertNotNull("Data on demand for 'CmsSnippetGroup' failed to provide an identifier", id);
-        obj = CmsSnippetGroup.findCmsSnippetGroup(id);
-        obj.remove();
+        obj = cmsSnippetGroupService.findCmsSnippetGroup(id);
+        cmsSnippetGroupService.deleteCmsSnippetGroup(obj);
         obj.flush();
-        Assert.assertNull("Failed to remove 'CmsSnippetGroup' with identifier '" + id + "'", CmsSnippetGroup.findCmsSnippetGroup(id));
+        Assert.assertNull("Failed to remove 'CmsSnippetGroup' with identifier '" + id + "'", cmsSnippetGroupService.findCmsSnippetGroup(id));
     }
     
 }

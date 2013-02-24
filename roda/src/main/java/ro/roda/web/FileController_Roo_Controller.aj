@@ -6,6 +6,7 @@ package ro.roda.web;
 import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,15 +16,37 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.File;
-import ro.roda.FileAcl;
-import ro.roda.FilePropertyNameValue;
-import ro.roda.Instance;
-import ro.roda.SelectionVariableItem;
-import ro.roda.Study;
-import ro.roda.Variable;
+import ro.roda.service.FileAclService;
+import ro.roda.service.FilePropertyNameValueService;
+import ro.roda.service.FileService;
+import ro.roda.service.InstanceService;
+import ro.roda.service.SelectionVariableItemService;
+import ro.roda.service.StudyService;
+import ro.roda.service.VariableService;
 import ro.roda.web.FileController;
 
 privileged aspect FileController_Roo_Controller {
+    
+    @Autowired
+    FileService FileController.fileService;
+    
+    @Autowired
+    FileAclService FileController.fileAclService;
+    
+    @Autowired
+    FilePropertyNameValueService FileController.filePropertyNameValueService;
+    
+    @Autowired
+    InstanceService FileController.instanceService;
+    
+    @Autowired
+    SelectionVariableItemService FileController.selectionVariableItemService;
+    
+    @Autowired
+    StudyService FileController.studyService;
+    
+    @Autowired
+    VariableService FileController.variableService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String FileController.create(@Valid File file, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -32,7 +55,7 @@ privileged aspect FileController_Roo_Controller {
             return "files/create";
         }
         uiModel.asMap().clear();
-        file.persist();
+        fileService.saveFile(file);
         return "redirect:/files/" + encodeUrlPathSegment(file.getId().toString(), httpServletRequest);
     }
     
@@ -44,7 +67,7 @@ privileged aspect FileController_Roo_Controller {
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String FileController.show(@PathVariable("id") Integer id, Model uiModel) {
-        uiModel.addAttribute("file", File.findFile(id));
+        uiModel.addAttribute("file", fileService.findFile(id));
         uiModel.addAttribute("itemId", id);
         return "files/show";
     }
@@ -54,11 +77,11 @@ privileged aspect FileController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("files", File.findFileEntries(firstResult, sizeNo));
-            float nrOfPages = (float) File.countFiles() / sizeNo;
+            uiModel.addAttribute("files", fileService.findFileEntries(firstResult, sizeNo));
+            float nrOfPages = (float) fileService.countAllFiles() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("files", File.findAllFiles());
+            uiModel.addAttribute("files", fileService.findAllFiles());
         }
         return "files/list";
     }
@@ -70,20 +93,20 @@ privileged aspect FileController_Roo_Controller {
             return "files/update";
         }
         uiModel.asMap().clear();
-        file.merge();
+        fileService.updateFile(file);
         return "redirect:/files/" + encodeUrlPathSegment(file.getId().toString(), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String FileController.updateForm(@PathVariable("id") Integer id, Model uiModel) {
-        populateEditForm(uiModel, File.findFile(id));
+        populateEditForm(uiModel, fileService.findFile(id));
         return "files/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
     public String FileController.delete(@PathVariable("id") Integer id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        File file = File.findFile(id);
-        file.remove();
+        File file = fileService.findFile(id);
+        fileService.deleteFile(file);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
@@ -92,12 +115,12 @@ privileged aspect FileController_Roo_Controller {
     
     void FileController.populateEditForm(Model uiModel, File file) {
         uiModel.addAttribute("file", file);
-        uiModel.addAttribute("fileacls", FileAcl.findAllFileAcls());
-        uiModel.addAttribute("filepropertynamevalues", FilePropertyNameValue.findAllFilePropertyNameValues());
-        uiModel.addAttribute("instances", Instance.findAllInstances());
-        uiModel.addAttribute("selectionvariableitems", SelectionVariableItem.findAllSelectionVariableItems());
-        uiModel.addAttribute("studys", Study.findAllStudys());
-        uiModel.addAttribute("variables", Variable.findAllVariables());
+        uiModel.addAttribute("fileacls", fileAclService.findAllFileAcls());
+        uiModel.addAttribute("filepropertynamevalues", filePropertyNameValueService.findAllFilePropertyNameValues());
+        uiModel.addAttribute("instances", instanceService.findAllInstances());
+        uiModel.addAttribute("selectionvariableitems", selectionVariableItemService.findAllSelectionVariableItems());
+        uiModel.addAttribute("studys", studyService.findAllStudys());
+        uiModel.addAttribute("variables", variableService.findAllVariables());
     }
     
     String FileController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

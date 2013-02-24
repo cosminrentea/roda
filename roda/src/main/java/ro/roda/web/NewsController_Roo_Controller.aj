@@ -7,6 +7,7 @@ import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.joda.time.format.DateTimeFormat;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -17,10 +18,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.News;
-import ro.roda.User;
+import ro.roda.Rodauser;
+import ro.roda.service.NewsService;
 import ro.roda.web.NewsController;
 
 privileged aspect NewsController_Roo_Controller {
+    
+    @Autowired
+    NewsService NewsController.newsService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String NewsController.create(@Valid News news, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -29,7 +34,7 @@ privileged aspect NewsController_Roo_Controller {
             return "news/create";
         }
         uiModel.asMap().clear();
-        news.persist();
+        newsService.saveNews(news);
         return "redirect:/news/" + encodeUrlPathSegment(news.getId().toString(), httpServletRequest);
     }
     
@@ -42,7 +47,7 @@ privileged aspect NewsController_Roo_Controller {
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String NewsController.show(@PathVariable("id") Integer id, Model uiModel) {
         addDateTimeFormatPatterns(uiModel);
-        uiModel.addAttribute("news", News.findNews(id));
+        uiModel.addAttribute("news", newsService.findNews(id));
         uiModel.addAttribute("itemId", id);
         return "news/show";
     }
@@ -52,11 +57,11 @@ privileged aspect NewsController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("newsitems", News.findNewsEntries(firstResult, sizeNo));
-            float nrOfPages = (float) News.countNews() / sizeNo;
+            uiModel.addAttribute("newsitems", newsService.findNewsEntries(firstResult, sizeNo));
+            float nrOfPages = (float) newsService.countAllNews() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("newsitems", News.findAllNews());
+            uiModel.addAttribute("newsitems", newsService.findAllNews());
         }
         addDateTimeFormatPatterns(uiModel);
         return "news/list";
@@ -69,20 +74,20 @@ privileged aspect NewsController_Roo_Controller {
             return "news/update";
         }
         uiModel.asMap().clear();
-        news.merge();
+        newsService.updateNews(news);
         return "redirect:/news/" + encodeUrlPathSegment(news.getId().toString(), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String NewsController.updateForm(@PathVariable("id") Integer id, Model uiModel) {
-        populateEditForm(uiModel, News.findNews(id));
+        populateEditForm(uiModel, newsService.findNews(id));
         return "news/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
     public String NewsController.delete(@PathVariable("id") Integer id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        News news = News.findNews(id);
-        news.remove();
+        News news = newsService.findNews(id);
+        newsService.deleteNews(news);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
@@ -90,13 +95,13 @@ privileged aspect NewsController_Roo_Controller {
     }
     
     void NewsController.addDateTimeFormatPatterns(Model uiModel) {
-        uiModel.addAttribute("news_added_date_format", DateTimeFormat.patternForStyle("M-", LocaleContextHolder.getLocale()));
+        uiModel.addAttribute("news_added_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
     }
     
     void NewsController.populateEditForm(Model uiModel, News news) {
         uiModel.addAttribute("news", news);
         addDateTimeFormatPatterns(uiModel);
-        uiModel.addAttribute("users", User.findAllUsers());
+        uiModel.addAttribute("rodausers", Rodauser.findAllRodausers());
     }
     
     String NewsController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

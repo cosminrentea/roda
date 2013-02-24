@@ -11,9 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.CmsPage;
 import ro.roda.CmsPageDataOnDemand;
 import ro.roda.CmsPageIntegrationTest;
+import ro.roda.service.CmsPageService;
 
 privileged aspect CmsPageIntegrationTest_Roo_IntegrationTest {
     
@@ -24,12 +24,15 @@ privileged aspect CmsPageIntegrationTest_Roo_IntegrationTest {
     declare @type: CmsPageIntegrationTest: @Transactional;
     
     @Autowired
-    private CmsPageDataOnDemand CmsPageIntegrationTest.dod;
+    CmsPageDataOnDemand CmsPageIntegrationTest.dod;
+    
+    @Autowired
+    CmsPageService CmsPageIntegrationTest.cmsPageService;
     
     @Test
-    public void CmsPageIntegrationTest.testCountCmsPages() {
+    public void CmsPageIntegrationTest.testCountAllCmsPages() {
         Assert.assertNotNull("Data on demand for 'CmsPage' failed to initialize correctly", dod.getRandomCmsPage());
-        long count = CmsPage.countCmsPages();
+        long count = cmsPageService.countAllCmsPages();
         Assert.assertTrue("Counter for 'CmsPage' incorrectly reported there were no entries", count > 0);
     }
     
@@ -39,7 +42,7 @@ privileged aspect CmsPageIntegrationTest_Roo_IntegrationTest {
         Assert.assertNotNull("Data on demand for 'CmsPage' failed to initialize correctly", obj);
         Integer id = obj.getId();
         Assert.assertNotNull("Data on demand for 'CmsPage' failed to provide an identifier", id);
-        obj = CmsPage.findCmsPage(id);
+        obj = cmsPageService.findCmsPage(id);
         Assert.assertNotNull("Find method for 'CmsPage' illegally returned null for id '" + id + "'", obj);
         Assert.assertEquals("Find method for 'CmsPage' returned the incorrect identifier", id, obj.getId());
     }
@@ -47,9 +50,9 @@ privileged aspect CmsPageIntegrationTest_Roo_IntegrationTest {
     @Test
     public void CmsPageIntegrationTest.testFindAllCmsPages() {
         Assert.assertNotNull("Data on demand for 'CmsPage' failed to initialize correctly", dod.getRandomCmsPage());
-        long count = CmsPage.countCmsPages();
+        long count = cmsPageService.countAllCmsPages();
         Assert.assertTrue("Too expensive to perform a find all test for 'CmsPage', as there are " + count + " entries; set the findAllMaximum to exceed this value or set findAll=false on the integration test annotation to disable the test", count < 250);
-        List<CmsPage> result = CmsPage.findAllCmsPages();
+        List<CmsPage> result = cmsPageService.findAllCmsPages();
         Assert.assertNotNull("Find all method for 'CmsPage' illegally returned null", result);
         Assert.assertTrue("Find all method for 'CmsPage' failed to return any data", result.size() > 0);
     }
@@ -57,36 +60,36 @@ privileged aspect CmsPageIntegrationTest_Roo_IntegrationTest {
     @Test
     public void CmsPageIntegrationTest.testFindCmsPageEntries() {
         Assert.assertNotNull("Data on demand for 'CmsPage' failed to initialize correctly", dod.getRandomCmsPage());
-        long count = CmsPage.countCmsPages();
+        long count = cmsPageService.countAllCmsPages();
         if (count > 20) count = 20;
         int firstResult = 0;
         int maxResults = (int) count;
-        List<CmsPage> result = CmsPage.findCmsPageEntries(firstResult, maxResults);
+        List<CmsPage> result = cmsPageService.findCmsPageEntries(firstResult, maxResults);
         Assert.assertNotNull("Find entries method for 'CmsPage' illegally returned null", result);
         Assert.assertEquals("Find entries method for 'CmsPage' returned an incorrect number of entries", count, result.size());
     }
     
     @Test
-    public void CmsPageIntegrationTest.testPersist() {
+    public void CmsPageIntegrationTest.testSaveCmsPage() {
         Assert.assertNotNull("Data on demand for 'CmsPage' failed to initialize correctly", dod.getRandomCmsPage());
         CmsPage obj = dod.getNewTransientCmsPage(Integer.MAX_VALUE);
         Assert.assertNotNull("Data on demand for 'CmsPage' failed to provide a new transient entity", obj);
         Assert.assertNull("Expected 'CmsPage' identifier to be null", obj.getId());
-        obj.persist();
+        cmsPageService.saveCmsPage(obj);
         obj.flush();
         Assert.assertNotNull("Expected 'CmsPage' identifier to no longer be null", obj.getId());
     }
     
     @Test
-    public void CmsPageIntegrationTest.testRemove() {
+    public void CmsPageIntegrationTest.testDeleteCmsPage() {
         CmsPage obj = dod.getRandomCmsPage();
         Assert.assertNotNull("Data on demand for 'CmsPage' failed to initialize correctly", obj);
         Integer id = obj.getId();
         Assert.assertNotNull("Data on demand for 'CmsPage' failed to provide an identifier", id);
-        obj = CmsPage.findCmsPage(id);
-        obj.remove();
+        obj = cmsPageService.findCmsPage(id);
+        cmsPageService.deleteCmsPage(obj);
         obj.flush();
-        Assert.assertNull("Failed to remove 'CmsPage' with identifier '" + id + "'", CmsPage.findCmsPage(id));
+        Assert.assertNull("Failed to remove 'CmsPage' with identifier '" + id + "'", cmsPageService.findCmsPage(id));
     }
     
 }

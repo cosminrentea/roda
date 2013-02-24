@@ -11,9 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.AuthData;
 import ro.roda.AuthDataDataOnDemand;
 import ro.roda.AuthDataIntegrationTest;
+import ro.roda.service.AuthDataService;
 
 privileged aspect AuthDataIntegrationTest_Roo_IntegrationTest {
     
@@ -24,12 +24,15 @@ privileged aspect AuthDataIntegrationTest_Roo_IntegrationTest {
     declare @type: AuthDataIntegrationTest: @Transactional;
     
     @Autowired
-    private AuthDataDataOnDemand AuthDataIntegrationTest.dod;
+    AuthDataDataOnDemand AuthDataIntegrationTest.dod;
+    
+    @Autowired
+    AuthDataService AuthDataIntegrationTest.authDataService;
     
     @Test
-    public void AuthDataIntegrationTest.testCountAuthDatas() {
+    public void AuthDataIntegrationTest.testCountAllAuthDatas() {
         Assert.assertNotNull("Data on demand for 'AuthData' failed to initialize correctly", dod.getRandomAuthData());
-        long count = AuthData.countAuthDatas();
+        long count = authDataService.countAllAuthDatas();
         Assert.assertTrue("Counter for 'AuthData' incorrectly reported there were no entries", count > 0);
     }
     
@@ -39,7 +42,7 @@ privileged aspect AuthDataIntegrationTest_Roo_IntegrationTest {
         Assert.assertNotNull("Data on demand for 'AuthData' failed to initialize correctly", obj);
         Integer id = obj.getUserId();
         Assert.assertNotNull("Data on demand for 'AuthData' failed to provide an identifier", id);
-        obj = AuthData.findAuthData(id);
+        obj = authDataService.findAuthData(id);
         Assert.assertNotNull("Find method for 'AuthData' illegally returned null for id '" + id + "'", obj);
         Assert.assertEquals("Find method for 'AuthData' returned the incorrect identifier", id, obj.getUserId());
     }
@@ -47,9 +50,9 @@ privileged aspect AuthDataIntegrationTest_Roo_IntegrationTest {
     @Test
     public void AuthDataIntegrationTest.testFindAllAuthDatas() {
         Assert.assertNotNull("Data on demand for 'AuthData' failed to initialize correctly", dod.getRandomAuthData());
-        long count = AuthData.countAuthDatas();
+        long count = authDataService.countAllAuthDatas();
         Assert.assertTrue("Too expensive to perform a find all test for 'AuthData', as there are " + count + " entries; set the findAllMaximum to exceed this value or set findAll=false on the integration test annotation to disable the test", count < 250);
-        List<AuthData> result = AuthData.findAllAuthDatas();
+        List<AuthData> result = authDataService.findAllAuthDatas();
         Assert.assertNotNull("Find all method for 'AuthData' illegally returned null", result);
         Assert.assertTrue("Find all method for 'AuthData' failed to return any data", result.size() > 0);
     }
@@ -57,36 +60,36 @@ privileged aspect AuthDataIntegrationTest_Roo_IntegrationTest {
     @Test
     public void AuthDataIntegrationTest.testFindAuthDataEntries() {
         Assert.assertNotNull("Data on demand for 'AuthData' failed to initialize correctly", dod.getRandomAuthData());
-        long count = AuthData.countAuthDatas();
+        long count = authDataService.countAllAuthDatas();
         if (count > 20) count = 20;
         int firstResult = 0;
         int maxResults = (int) count;
-        List<AuthData> result = AuthData.findAuthDataEntries(firstResult, maxResults);
+        List<AuthData> result = authDataService.findAuthDataEntries(firstResult, maxResults);
         Assert.assertNotNull("Find entries method for 'AuthData' illegally returned null", result);
         Assert.assertEquals("Find entries method for 'AuthData' returned an incorrect number of entries", count, result.size());
     }
     
     @Test
-    public void AuthDataIntegrationTest.testPersist() {
+    public void AuthDataIntegrationTest.testSaveAuthData() {
         Assert.assertNotNull("Data on demand for 'AuthData' failed to initialize correctly", dod.getRandomAuthData());
         AuthData obj = dod.getNewTransientAuthData(Integer.MAX_VALUE);
         Assert.assertNotNull("Data on demand for 'AuthData' failed to provide a new transient entity", obj);
         Assert.assertNull("Expected 'AuthData' identifier to be null", obj.getUserId());
-        obj.persist();
+        authDataService.saveAuthData(obj);
         obj.flush();
         Assert.assertNotNull("Expected 'AuthData' identifier to no longer be null", obj.getUserId());
     }
     
     @Test
-    public void AuthDataIntegrationTest.testRemove() {
+    public void AuthDataIntegrationTest.testDeleteAuthData() {
         AuthData obj = dod.getRandomAuthData();
         Assert.assertNotNull("Data on demand for 'AuthData' failed to initialize correctly", obj);
         Integer id = obj.getUserId();
         Assert.assertNotNull("Data on demand for 'AuthData' failed to provide an identifier", id);
-        obj = AuthData.findAuthData(id);
-        obj.remove();
+        obj = authDataService.findAuthData(id);
+        authDataService.deleteAuthData(obj);
         obj.flush();
-        Assert.assertNull("Failed to remove 'AuthData' with identifier '" + id + "'", AuthData.findAuthData(id));
+        Assert.assertNull("Failed to remove 'AuthData' with identifier '" + id + "'", authDataService.findAuthData(id));
     }
     
 }

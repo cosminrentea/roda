@@ -6,6 +6,7 @@ package ro.roda.web;
 import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,11 +16,21 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.Email;
-import ro.roda.OrgEmail;
-import ro.roda.PersonEmail;
+import ro.roda.service.EmailService;
+import ro.roda.service.OrgEmailService;
+import ro.roda.service.PersonEmailService;
 import ro.roda.web.EmailController;
 
 privileged aspect EmailController_Roo_Controller {
+    
+    @Autowired
+    EmailService EmailController.emailService;
+    
+    @Autowired
+    OrgEmailService EmailController.orgEmailService;
+    
+    @Autowired
+    PersonEmailService EmailController.personEmailService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String EmailController.create(@Valid Email email, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -28,7 +39,7 @@ privileged aspect EmailController_Roo_Controller {
             return "emails/create";
         }
         uiModel.asMap().clear();
-        email.persist();
+        emailService.saveEmail(email);
         return "redirect:/emails/" + encodeUrlPathSegment(email.getId().toString(), httpServletRequest);
     }
     
@@ -40,7 +51,7 @@ privileged aspect EmailController_Roo_Controller {
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String EmailController.show(@PathVariable("id") Integer id, Model uiModel) {
-        uiModel.addAttribute("email", Email.findEmail(id));
+        uiModel.addAttribute("email", emailService.findEmail(id));
         uiModel.addAttribute("itemId", id);
         return "emails/show";
     }
@@ -50,11 +61,11 @@ privileged aspect EmailController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("emails", Email.findEmailEntries(firstResult, sizeNo));
-            float nrOfPages = (float) Email.countEmails() / sizeNo;
+            uiModel.addAttribute("emails", emailService.findEmailEntries(firstResult, sizeNo));
+            float nrOfPages = (float) emailService.countAllEmails() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("emails", Email.findAllEmails());
+            uiModel.addAttribute("emails", emailService.findAllEmails());
         }
         return "emails/list";
     }
@@ -66,20 +77,20 @@ privileged aspect EmailController_Roo_Controller {
             return "emails/update";
         }
         uiModel.asMap().clear();
-        email.merge();
+        emailService.updateEmail(email);
         return "redirect:/emails/" + encodeUrlPathSegment(email.getId().toString(), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String EmailController.updateForm(@PathVariable("id") Integer id, Model uiModel) {
-        populateEditForm(uiModel, Email.findEmail(id));
+        populateEditForm(uiModel, emailService.findEmail(id));
         return "emails/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
     public String EmailController.delete(@PathVariable("id") Integer id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        Email email = Email.findEmail(id);
-        email.remove();
+        Email email = emailService.findEmail(id);
+        emailService.deleteEmail(email);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
@@ -88,8 +99,8 @@ privileged aspect EmailController_Roo_Controller {
     
     void EmailController.populateEditForm(Model uiModel, Email email) {
         uiModel.addAttribute("email", email);
-        uiModel.addAttribute("orgemails", OrgEmail.findAllOrgEmails());
-        uiModel.addAttribute("personemails", PersonEmail.findAllPersonEmails());
+        uiModel.addAttribute("orgemails", orgEmailService.findAllOrgEmails());
+        uiModel.addAttribute("personemails", personEmailService.findAllPersonEmails());
     }
     
     String EmailController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

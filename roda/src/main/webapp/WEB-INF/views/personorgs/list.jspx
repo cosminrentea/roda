@@ -3,12 +3,6 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <page:list id="pl_ro_roda_PersonOrg" items="${personorgs}" z="mzhVNpincS0cwyKYyEURoQhTrys=">
-        <table:table data="${personorgs}" id="l_ro_roda_PersonOrg" path="/personorgs" z="dWANBqSZ+UPNuSpufYQ0SSVvZJA=">
-            <table:column id="c_ro_roda_PersonOrg_orgId" property="orgId" z="Nx/2lOJJQ02LhOBwiHCeUPrmHjk="/>
-            <table:column id="c_ro_roda_PersonOrg_personId" property="personId" z="IvQLAHk/GKNFutuW+UFHBK22Ajw="/>
-            <table:column id="c_ro_roda_PersonOrg_roleId" property="roleId" z="z7KwPobKnwPkyXIH4+7oDt7gE8w="/>
-            <table:column date="true" dateTimePattern="${personOrg_datestart_date_format}" id="c_ro_roda_PersonOrg_datestart" property="datestart" z="S7YqUNuhAGdjJVFw0tGrVyn8pjQ="/>
-            <table:column date="true" dateTimePattern="${personOrg_dateend_date_format}" id="c_ro_roda_PersonOrg_dateend" property="dateend" z="7j3po6o0whg7JD8Y6ceDobE8e8Q="/>
-        </table:table>
+        <table:table data="${personorgs}" id="l_ro_roda_PersonOrg" path="/personorgs" z="dWANBqSZ+UPNuSpufYQ0SSVvZJA="/>
     </page:list>
 </div>

@@ -6,8 +6,7 @@ package ro.roda.web;
 import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import org.joda.time.format.DateTimeFormat;
-import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,12 +16,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.Audit;
-import ro.roda.AuditField;
-import ro.roda.AuditRowId;
-import ro.roda.User;
+import ro.roda.service.AuditService;
 import ro.roda.web.AuditController;
 
 privileged aspect AuditController_Roo_Controller {
+    
+    @Autowired
+    AuditService AuditController.auditService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String AuditController.create(@Valid Audit audit, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -31,7 +31,7 @@ privileged aspect AuditController_Roo_Controller {
             return "audits/create";
         }
         uiModel.asMap().clear();
-        audit.persist();
+        auditService.saveAudit(audit);
         return "redirect:/audits/" + encodeUrlPathSegment(audit.getId().toString(), httpServletRequest);
     }
     
@@ -42,9 +42,8 @@ privileged aspect AuditController_Roo_Controller {
     }
     
     @RequestMapping(value = "/{id}", produces = "text/html")
-    public String AuditController.show(@PathVariable("id") Integer id, Model uiModel) {
-        addDateTimeFormatPatterns(uiModel);
-        uiModel.addAttribute("audit", Audit.findAudit(id));
+    public String AuditController.show(@PathVariable("id") Long id, Model uiModel) {
+        uiModel.addAttribute("audit", auditService.findAudit(id));
         uiModel.addAttribute("itemId", id);
         return "audits/show";
     }
@@ -54,13 +53,12 @@ privileged aspect AuditController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("audits", Audit.findAuditEntries(firstResult, sizeNo));
-            float nrOfPages = (float) Audit.countAudits() / sizeNo;
+            uiModel.addAttribute("audits", auditService.findAuditEntries(firstResult, sizeNo));
+            float nrOfPages = (float) auditService.countAllAudits() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("audits", Audit.findAllAudits());
+            uiModel.addAttribute("audits", auditService.findAllAudits());
         }
-        addDateTimeFormatPatterns(uiModel);
         return "audits/list";
     }
     
@@ -71,36 +69,28 @@ privileged aspect AuditController_Roo_Controller {
             return "audits/update";
         }
         uiModel.asMap().clear();
-        audit.merge();
+        auditService.updateAudit(audit);
         return "redirect:/audits/" + encodeUrlPathSegment(audit.getId().toString(), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
-    public String AuditController.updateForm(@PathVariable("id") Integer id, Model uiModel) {
-        populateEditForm(uiModel, Audit.findAudit(id));
+    public String AuditController.updateForm(@PathVariable("id") Long id, Model uiModel) {
+        populateEditForm(uiModel, auditService.findAudit(id));
         return "audits/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
-    public String AuditController.delete(@PathVariable("id") Integer id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        Audit audit = Audit.findAudit(id);
-        audit.remove();
+    public String AuditController.delete(@PathVariable("id") Long id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
+        Audit audit = auditService.findAudit(id);
+        auditService.deleteAudit(audit);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
         return "redirect:/audits";
     }
     
-    void AuditController.addDateTimeFormatPatterns(Model uiModel) {
-        uiModel.addAttribute("audit_time_date_format", DateTimeFormat.patternForStyle("M-", LocaleContextHolder.getLocale()));
-    }
-    
     void AuditController.populateEditForm(Model uiModel, Audit audit) {
         uiModel.addAttribute("audit", audit);
-        addDateTimeFormatPatterns(uiModel);
-        uiModel.addAttribute("auditfields", AuditField.findAllAuditFields());
-        uiModel.addAttribute("auditrowids", AuditRowId.findAllAuditRowIds());
-        uiModel.addAttribute("users", User.findAllUsers());
     }
     
     String AuditController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

@@ -3,9 +3,11 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <page:show id="ps_ro_roda_Catalog" object="${catalog}" path="/catalogs" z="zOQt3lRsaEHwfzUwbv92zSkTEY0=">
-        <field:display field="parent" id="s_ro_roda_Catalog_parent" object="${catalog}" z="AtDhgxfgDDBcC9b7Cc6145hlqfM="/>
         <field:display field="owner" id="s_ro_roda_Catalog_owner" object="${catalog}" z="Akj04KflAwiWu7QQiFMoGW2udQw="/>
         <field:display field="name" id="s_ro_roda_Catalog_name" object="${catalog}" z="j5CM2gy0jPn0/ViKTm5acgFDHC4="/>
-        <field:display date="true" dateTimePattern="${catalog_added_date_format}" field="added" id="s_ro_roda_Catalog_added" object="${catalog}" z="+X9MvZleM71vGIVOarRBIQfKMu0="/>
+        <field:display calendar="true" dateTimePattern="${catalog_added_date_format}" field="added" id="s_ro_roda_Catalog_added" object="${catalog}" z="0YSPzcMPR8CjhWpG2v3UDBTD0Co="/>
+        <field:display field="parentId" id="s_ro_roda_Catalog_parentId" object="${catalog}" z="/mrRmFa++G0BbxdSuVsn28kyQMQ="/>
+        <field:display field="sequencenr" id="s_ro_roda_Catalog_sequencenr" object="${catalog}" z="5ON1PRS/trmj1wRRx41BVwuwLbw="/>
+        <field:display field="description" id="s_ro_roda_Catalog_description" object="${catalog}" z="iie78tz8qPKTQN9PunFMkjl1qjY="/>
     </page:show>
 </div>

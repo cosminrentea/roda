@@ -10,9 +10,11 @@ import java.util.List;
 import java.util.Random;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ro.roda.StudyPersonAsoc;
 import ro.roda.StudyPersonAsocDataOnDemand;
+import ro.roda.service.StudyPersonAsocService;
 
 privileged aspect StudyPersonAsocDataOnDemand_Roo_DataOnDemand {
     
@@ -21,6 +23,9 @@ privileged aspect StudyPersonAsocDataOnDemand_Roo_DataOnDemand {
     private Random StudyPersonAsocDataOnDemand.rnd = new SecureRandom();
     
     private List<StudyPersonAsoc> StudyPersonAsocDataOnDemand.data;
+    
+    @Autowired
+    StudyPersonAsocService StudyPersonAsocDataOnDemand.studyPersonAsocService;
     
     public StudyPersonAsoc StudyPersonAsocDataOnDemand.getNewTransientStudyPersonAsoc(int index) {
         StudyPersonAsoc obj = new StudyPersonAsoc();
@@ -52,14 +57,14 @@ privileged aspect StudyPersonAsocDataOnDemand_Roo_DataOnDemand {
         }
         StudyPersonAsoc obj = data.get(index);
         Integer id = obj.getId();
-        return StudyPersonAsoc.findStudyPersonAsoc(id);
+        return studyPersonAsocService.findStudyPersonAsoc(id);
     }
     
     public StudyPersonAsoc StudyPersonAsocDataOnDemand.getRandomStudyPersonAsoc() {
         init();
         StudyPersonAsoc obj = data.get(rnd.nextInt(data.size()));
         Integer id = obj.getId();
-        return StudyPersonAsoc.findStudyPersonAsoc(id);
+        return studyPersonAsocService.findStudyPersonAsoc(id);
     }
     
     public boolean StudyPersonAsocDataOnDemand.modifyStudyPersonAsoc(StudyPersonAsoc obj) {
@@ -69,7 +74,7 @@ privileged aspect StudyPersonAsocDataOnDemand_Roo_DataOnDemand {
     public void StudyPersonAsocDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = StudyPersonAsoc.findStudyPersonAsocEntries(from, to);
+        data = studyPersonAsocService.findStudyPersonAsocEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'StudyPersonAsoc' illegally returned null");
         }
@@ -81,7 +86,7 @@ privileged aspect StudyPersonAsocDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             StudyPersonAsoc obj = getNewTransientStudyPersonAsoc(i);
             try {
-                obj.persist();
+                studyPersonAsocService.saveStudyPersonAsoc(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

@@ -11,10 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.SelectionVariableItem;
 import ro.roda.SelectionVariableItemDataOnDemand;
 import ro.roda.SelectionVariableItemIntegrationTest;
 import ro.roda.SelectionVariableItemPK;
+import ro.roda.service.SelectionVariableItemService;
 
 privileged aspect SelectionVariableItemIntegrationTest_Roo_IntegrationTest {
     
@@ -25,12 +25,15 @@ privileged aspect SelectionVariableItemIntegrationTest_Roo_IntegrationTest {
     declare @type: SelectionVariableItemIntegrationTest: @Transactional;
     
     @Autowired
-    private SelectionVariableItemDataOnDemand SelectionVariableItemIntegrationTest.dod;
+    SelectionVariableItemDataOnDemand SelectionVariableItemIntegrationTest.dod;
+    
+    @Autowired
+    SelectionVariableItemService SelectionVariableItemIntegrationTest.selectionVariableItemService;
     
     @Test
-    public void SelectionVariableItemIntegrationTest.testCountSelectionVariableItems() {
+    public void SelectionVariableItemIntegrationTest.testCountAllSelectionVariableItems() {
         Assert.assertNotNull("Data on demand for 'SelectionVariableItem' failed to initialize correctly", dod.getRandomSelectionVariableItem());
-        long count = SelectionVariableItem.countSelectionVariableItems();
+        long count = selectionVariableItemService.countAllSelectionVariableItems();
         Assert.assertTrue("Counter for 'SelectionVariableItem' incorrectly reported there were no entries", count > 0);
     }
     
@@ -40,7 +43,7 @@ privileged aspect SelectionVariableItemIntegrationTest_Roo_IntegrationTest {
         Assert.assertNotNull("Data on demand for 'SelectionVariableItem' failed to initialize correctly", obj);
         SelectionVariableItemPK id = obj.getId();
         Assert.assertNotNull("Data on demand for 'SelectionVariableItem' failed to provide an identifier", id);
-        obj = SelectionVariableItem.findSelectionVariableItem(id);
+        obj = selectionVariableItemService.findSelectionVariableItem(id);
         Assert.assertNotNull("Find method for 'SelectionVariableItem' illegally returned null for id '" + id + "'", obj);
         Assert.assertEquals("Find method for 'SelectionVariableItem' returned the incorrect identifier", id, obj.getId());
     }
@@ -48,9 +51,9 @@ privileged aspect SelectionVariableItemIntegrationTest_Roo_IntegrationTest {
     @Test
     public void SelectionVariableItemIntegrationTest.testFindAllSelectionVariableItems() {
         Assert.assertNotNull("Data on demand for 'SelectionVariableItem' failed to initialize correctly", dod.getRandomSelectionVariableItem());
-        long count = SelectionVariableItem.countSelectionVariableItems();
+        long count = selectionVariableItemService.countAllSelectionVariableItems();
         Assert.assertTrue("Too expensive to perform a find all test for 'SelectionVariableItem', as there are " + count + " entries; set the findAllMaximum to exceed this value or set findAll=false on the integration test annotation to disable the test", count < 250);
-        List<SelectionVariableItem> result = SelectionVariableItem.findAllSelectionVariableItems();
+        List<SelectionVariableItem> result = selectionVariableItemService.findAllSelectionVariableItems();
         Assert.assertNotNull("Find all method for 'SelectionVariableItem' illegally returned null", result);
         Assert.assertTrue("Find all method for 'SelectionVariableItem' failed to return any data", result.size() > 0);
     }
@@ -58,35 +61,35 @@ privileged aspect SelectionVariableItemIntegrationTest_Roo_IntegrationTest {
     @Test
     public void SelectionVariableItemIntegrationTest.testFindSelectionVariableItemEntries() {
         Assert.assertNotNull("Data on demand for 'SelectionVariableItem' failed to initialize correctly", dod.getRandomSelectionVariableItem());
-        long count = SelectionVariableItem.countSelectionVariableItems();
+        long count = selectionVariableItemService.countAllSelectionVariableItems();
         if (count > 20) count = 20;
         int firstResult = 0;
         int maxResults = (int) count;
-        List<SelectionVariableItem> result = SelectionVariableItem.findSelectionVariableItemEntries(firstResult, maxResults);
+        List<SelectionVariableItem> result = selectionVariableItemService.findSelectionVariableItemEntries(firstResult, maxResults);
         Assert.assertNotNull("Find entries method for 'SelectionVariableItem' illegally returned null", result);
         Assert.assertEquals("Find entries method for 'SelectionVariableItem' returned an incorrect number of entries", count, result.size());
     }
     
     @Test
-    public void SelectionVariableItemIntegrationTest.testPersist() {
+    public void SelectionVariableItemIntegrationTest.testSaveSelectionVariableItem() {
         Assert.assertNotNull("Data on demand for 'SelectionVariableItem' failed to initialize correctly", dod.getRandomSelectionVariableItem());
         SelectionVariableItem obj = dod.getNewTransientSelectionVariableItem(Integer.MAX_VALUE);
         Assert.assertNotNull("Data on demand for 'SelectionVariableItem' failed to provide a new transient entity", obj);
-        obj.persist();
+        selectionVariableItemService.saveSelectionVariableItem(obj);
         obj.flush();
         Assert.assertNotNull("Expected 'SelectionVariableItem' identifier to no longer be null", obj.getId());
     }
     
     @Test
-    public void SelectionVariableItemIntegrationTest.testRemove() {
+    public void SelectionVariableItemIntegrationTest.testDeleteSelectionVariableItem() {
         SelectionVariableItem obj = dod.getRandomSelectionVariableItem();
         Assert.assertNotNull("Data on demand for 'SelectionVariableItem' failed to initialize correctly", obj);
         SelectionVariableItemPK id = obj.getId();
         Assert.assertNotNull("Data on demand for 'SelectionVariableItem' failed to provide an identifier", id);
-        obj = SelectionVariableItem.findSelectionVariableItem(id);
-        obj.remove();
+        obj = selectionVariableItemService.findSelectionVariableItem(id);
+        selectionVariableItemService.deleteSelectionVariableItem(obj);
         obj.flush();
-        Assert.assertNull("Failed to remove 'SelectionVariableItem' with identifier '" + id + "'", SelectionVariableItem.findSelectionVariableItem(id));
+        Assert.assertNull("Failed to remove 'SelectionVariableItem' with identifier '" + id + "'", selectionVariableItemService.findSelectionVariableItem(id));
     }
     
 }

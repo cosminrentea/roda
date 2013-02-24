@@ -7,11 +7,12 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.CmsFile;
 import ro.roda.CmsFileIntegrationTest;
+import ro.roda.service.CmsFileService;
 
 privileged aspect CmsFileIntegrationTest_Roo_IntegrationTest {
     
@@ -21,10 +22,13 @@ privileged aspect CmsFileIntegrationTest_Roo_IntegrationTest {
     
     declare @type: CmsFileIntegrationTest: @Transactional;
     
+    @Autowired
+    CmsFileService CmsFileIntegrationTest.cmsFileService;
+    
     @Test
-    public void CmsFileIntegrationTest.testCountCmsFiles() {
+    public void CmsFileIntegrationTest.testCountAllCmsFiles() {
         Assert.assertNotNull("Data on demand for 'CmsFile' failed to initialize correctly", dod.getRandomCmsFile());
-        long count = CmsFile.countCmsFiles();
+        long count = cmsFileService.countAllCmsFiles();
         Assert.assertTrue("Counter for 'CmsFile' incorrectly reported there were no entries", count > 0);
     }
     
@@ -34,7 +38,7 @@ privileged aspect CmsFileIntegrationTest_Roo_IntegrationTest {
         Assert.assertNotNull("Data on demand for 'CmsFile' failed to initialize correctly", obj);
         Integer id = obj.getId();
         Assert.assertNotNull("Data on demand for 'CmsFile' failed to provide an identifier", id);
-        obj = CmsFile.findCmsFile(id);
+        obj = cmsFileService.findCmsFile(id);
         Assert.assertNotNull("Find method for 'CmsFile' illegally returned null for id '" + id + "'", obj);
         Assert.assertEquals("Find method for 'CmsFile' returned the incorrect identifier", id, obj.getId());
     }
@@ -42,9 +46,9 @@ privileged aspect CmsFileIntegrationTest_Roo_IntegrationTest {
     @Test
     public void CmsFileIntegrationTest.testFindAllCmsFiles() {
         Assert.assertNotNull("Data on demand for 'CmsFile' failed to initialize correctly", dod.getRandomCmsFile());
-        long count = CmsFile.countCmsFiles();
+        long count = cmsFileService.countAllCmsFiles();
         Assert.assertTrue("Too expensive to perform a find all test for 'CmsFile', as there are " + count + " entries; set the findAllMaximum to exceed this value or set findAll=false on the integration test annotation to disable the test", count < 250);
-        List<CmsFile> result = CmsFile.findAllCmsFiles();
+        List<CmsFile> result = cmsFileService.findAllCmsFiles();
         Assert.assertNotNull("Find all method for 'CmsFile' illegally returned null", result);
         Assert.assertTrue("Find all method for 'CmsFile' failed to return any data", result.size() > 0);
     }
@@ -52,36 +56,36 @@ privileged aspect CmsFileIntegrationTest_Roo_IntegrationTest {
     @Test
     public void CmsFileIntegrationTest.testFindCmsFileEntries() {
         Assert.assertNotNull("Data on demand for 'CmsFile' failed to initialize correctly", dod.getRandomCmsFile());
-        long count = CmsFile.countCmsFiles();
+        long count = cmsFileService.countAllCmsFiles();
         if (count > 20) count = 20;
         int firstResult = 0;
         int maxResults = (int) count;
-        List<CmsFile> result = CmsFile.findCmsFileEntries(firstResult, maxResults);
+        List<CmsFile> result = cmsFileService.findCmsFileEntries(firstResult, maxResults);
         Assert.assertNotNull("Find entries method for 'CmsFile' illegally returned null", result);
         Assert.assertEquals("Find entries method for 'CmsFile' returned an incorrect number of entries", count, result.size());
     }
     
     @Test
-    public void CmsFileIntegrationTest.testPersist() {
+    public void CmsFileIntegrationTest.testSaveCmsFile() {
         Assert.assertNotNull("Data on demand for 'CmsFile' failed to initialize correctly", dod.getRandomCmsFile());
         CmsFile obj = dod.getNewTransientCmsFile(Integer.MAX_VALUE);
         Assert.assertNotNull("Data on demand for 'CmsFile' failed to provide a new transient entity", obj);
         Assert.assertNull("Expected 'CmsFile' identifier to be null", obj.getId());
-        obj.persist();
+        cmsFileService.saveCmsFile(obj);
         obj.flush();
         Assert.assertNotNull("Expected 'CmsFile' identifier to no longer be null", obj.getId());
     }
     
     @Test
-    public void CmsFileIntegrationTest.testRemove() {
+    public void CmsFileIntegrationTest.testDeleteCmsFile() {
         CmsFile obj = dod.getRandomCmsFile();
         Assert.assertNotNull("Data on demand for 'CmsFile' failed to initialize correctly", obj);
         Integer id = obj.getId();
         Assert.assertNotNull("Data on demand for 'CmsFile' failed to provide an identifier", id);
-        obj = CmsFile.findCmsFile(id);
-        obj.remove();
+        obj = cmsFileService.findCmsFile(id);
+        cmsFileService.deleteCmsFile(obj);
         obj.flush();
-        Assert.assertNull("Failed to remove 'CmsFile' with identifier '" + id + "'", CmsFile.findCmsFile(id));
+        Assert.assertNull("Failed to remove 'CmsFile' with identifier '" + id + "'", cmsFileService.findCmsFile(id));
     }
     
 }

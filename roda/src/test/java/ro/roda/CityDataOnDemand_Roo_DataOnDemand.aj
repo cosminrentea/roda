@@ -14,7 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ro.roda.City;
 import ro.roda.CityDataOnDemand;
+import ro.roda.Country;
 import ro.roda.CountryDataOnDemand;
+import ro.roda.service.CityService;
 
 privileged aspect CityDataOnDemand_Roo_DataOnDemand {
     
@@ -25,7 +27,10 @@ privileged aspect CityDataOnDemand_Roo_DataOnDemand {
     private List<City> CityDataOnDemand.data;
     
     @Autowired
-    private CountryDataOnDemand CityDataOnDemand.countryDataOnDemand;
+    CountryDataOnDemand CityDataOnDemand.countryDataOnDemand;
+    
+    @Autowired
+    CityService CityDataOnDemand.cityService;
     
     public City CityDataOnDemand.getNewTransientCity(int index) {
         City obj = new City();
@@ -34,6 +39,7 @@ privileged aspect CityDataOnDemand_Roo_DataOnDemand {
         setCityCodeSup(obj, index);
         setCityType(obj, index);
         setCityTypeSystem(obj, index);
+        setCountryId(obj, index);
         setName(obj, index);
         setPrefix(obj, index);
         return obj;
@@ -79,6 +85,11 @@ privileged aspect CityDataOnDemand_Roo_DataOnDemand {
         obj.setCityTypeSystem(cityTypeSystem);
     }
     
+    public void CityDataOnDemand.setCountryId(City obj, int index) {
+        Country countryId = countryDataOnDemand.getRandomCountry();
+        obj.setCountryId(countryId);
+    }
+    
     public void CityDataOnDemand.setName(City obj, int index) {
         String name = "name_" + index;
         if (name.length() > 100) {
@@ -105,14 +116,14 @@ privileged aspect CityDataOnDemand_Roo_DataOnDemand {
         }
         City obj = data.get(index);
         Integer id = obj.getId();
-        return City.findCity(id);
+        return cityService.findCity(id);
     }
     
     public City CityDataOnDemand.getRandomCity() {
         init();
         City obj = data.get(rnd.nextInt(data.size()));
         Integer id = obj.getId();
-        return City.findCity(id);
+        return cityService.findCity(id);
     }
     
     public boolean CityDataOnDemand.modifyCity(City obj) {
@@ -122,7 +133,7 @@ privileged aspect CityDataOnDemand_Roo_DataOnDemand {
     public void CityDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = City.findCityEntries(from, to);
+        data = cityService.findCityEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'City' illegally returned null");
         }
@@ -134,7 +145,7 @@ privileged aspect CityDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             City obj = getNewTransientCity(i);
             try {
-                obj.persist();
+                cityService.saveCity(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

@@ -12,10 +12,12 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import ro.roda.File;
 import ro.roda.FileAcl;
 import ro.roda.FileAclDataOnDemand;
 import ro.roda.FileAclPK;
 import ro.roda.FileDataOnDemand;
+import ro.roda.service.FileAclService;
 
 privileged aspect FileAclDataOnDemand_Roo_DataOnDemand {
     
@@ -26,12 +28,16 @@ privileged aspect FileAclDataOnDemand_Roo_DataOnDemand {
     private List<FileAcl> FileAclDataOnDemand.data;
     
     @Autowired
-    private FileDataOnDemand FileAclDataOnDemand.fileDataOnDemand;
+    FileDataOnDemand FileAclDataOnDemand.fileDataOnDemand;
+    
+    @Autowired
+    FileAclService FileAclDataOnDemand.fileAclService;
     
     public FileAcl FileAclDataOnDemand.getNewTransientFileAcl(int index) {
         FileAcl obj = new FileAcl();
         setEmbeddedIdClass(obj, index);
         setDelete(obj, index);
+        setDocumentId(obj, index);
         setRead(obj, index);
         setUpdate(obj, index);
         return obj;
@@ -49,6 +55,11 @@ privileged aspect FileAclDataOnDemand_Roo_DataOnDemand {
     public void FileAclDataOnDemand.setDelete(FileAcl obj, int index) {
         Boolean delete = true;
         obj.setDelete(delete);
+    }
+    
+    public void FileAclDataOnDemand.setDocumentId(FileAcl obj, int index) {
+        File documentId = fileDataOnDemand.getRandomFile();
+        obj.setDocumentId(documentId);
     }
     
     public void FileAclDataOnDemand.setRead(FileAcl obj, int index) {
@@ -71,14 +82,14 @@ privileged aspect FileAclDataOnDemand_Roo_DataOnDemand {
         }
         FileAcl obj = data.get(index);
         FileAclPK id = obj.getId();
-        return FileAcl.findFileAcl(id);
+        return fileAclService.findFileAcl(id);
     }
     
     public FileAcl FileAclDataOnDemand.getRandomFileAcl() {
         init();
         FileAcl obj = data.get(rnd.nextInt(data.size()));
         FileAclPK id = obj.getId();
-        return FileAcl.findFileAcl(id);
+        return fileAclService.findFileAcl(id);
     }
     
     public boolean FileAclDataOnDemand.modifyFileAcl(FileAcl obj) {
@@ -88,7 +99,7 @@ privileged aspect FileAclDataOnDemand_Roo_DataOnDemand {
     public void FileAclDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = FileAcl.findFileAclEntries(from, to);
+        data = fileAclService.findFileAclEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'FileAcl' illegally returned null");
         }
@@ -100,7 +111,7 @@ privileged aspect FileAclDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             FileAcl obj = getNewTransientFileAcl(i);
             try {
-                obj.persist();
+                fileAclService.saveFileAcl(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

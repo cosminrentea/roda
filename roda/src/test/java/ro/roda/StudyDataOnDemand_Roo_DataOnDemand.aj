@@ -6,7 +6,6 @@ package ro.roda;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
@@ -15,9 +14,11 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import ro.roda.Rodauser;
+import ro.roda.RodauserDataOnDemand;
 import ro.roda.Study;
 import ro.roda.StudyDataOnDemand;
-import ro.roda.UserDataOnDemand;
+import ro.roda.service.StudyService;
 
 privileged aspect StudyDataOnDemand_Roo_DataOnDemand {
     
@@ -28,11 +29,15 @@ privileged aspect StudyDataOnDemand_Roo_DataOnDemand {
     private List<Study> StudyDataOnDemand.data;
     
     @Autowired
-    private UserDataOnDemand StudyDataOnDemand.userDataOnDemand;
+    RodauserDataOnDemand StudyDataOnDemand.rodauserDataOnDemand;
+    
+    @Autowired
+    StudyService StudyDataOnDemand.studyService;
     
     public Study StudyDataOnDemand.getNewTransientStudy(int index) {
         Study obj = new Study();
         setAdded(obj, index);
+        setAddedBy(obj, index);
         setCanDigitize(obj, index);
         setCanUseAnonymous(obj, index);
         setDateend(obj, index);
@@ -42,8 +47,13 @@ privileged aspect StudyDataOnDemand_Roo_DataOnDemand {
     }
     
     public void StudyDataOnDemand.setAdded(Study obj, int index) {
-        Date added = new GregorianCalendar(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH), Calendar.getInstance().get(Calendar.HOUR_OF_DAY), Calendar.getInstance().get(Calendar.MINUTE), Calendar.getInstance().get(Calendar.SECOND) + new Double(Math.random() * 1000).intValue()).getTime();
+        Calendar added = Calendar.getInstance();
         obj.setAdded(added);
+    }
+    
+    public void StudyDataOnDemand.setAddedBy(Study obj, int index) {
+        Rodauser addedBy = rodauserDataOnDemand.getRandomRodauser();
+        obj.setAddedBy(addedBy);
     }
     
     public void StudyDataOnDemand.setCanDigitize(Study obj, int index) {
@@ -57,12 +67,12 @@ privileged aspect StudyDataOnDemand_Roo_DataOnDemand {
     }
     
     public void StudyDataOnDemand.setDateend(Study obj, int index) {
-        Date dateend = new GregorianCalendar(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH), Calendar.getInstance().get(Calendar.HOUR_OF_DAY), Calendar.getInstance().get(Calendar.MINUTE), Calendar.getInstance().get(Calendar.SECOND) + new Double(Math.random() * 1000).intValue()).getTime();
+        Calendar dateend = Calendar.getInstance();
         obj.setDateend(dateend);
     }
     
     public void StudyDataOnDemand.setDatestart(Study obj, int index) {
-        Date datestart = new GregorianCalendar(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH), Calendar.getInstance().get(Calendar.HOUR_OF_DAY), Calendar.getInstance().get(Calendar.MINUTE), Calendar.getInstance().get(Calendar.SECOND) + new Double(Math.random() * 1000).intValue()).getTime();
+        Calendar datestart = Calendar.getInstance();
         obj.setDatestart(datestart);
     }
     
@@ -81,14 +91,14 @@ privileged aspect StudyDataOnDemand_Roo_DataOnDemand {
         }
         Study obj = data.get(index);
         Integer id = obj.getId();
-        return Study.findStudy(id);
+        return studyService.findStudy(id);
     }
     
     public Study StudyDataOnDemand.getRandomStudy() {
         init();
         Study obj = data.get(rnd.nextInt(data.size()));
         Integer id = obj.getId();
-        return Study.findStudy(id);
+        return studyService.findStudy(id);
     }
     
     public boolean StudyDataOnDemand.modifyStudy(Study obj) {
@@ -98,7 +108,7 @@ privileged aspect StudyDataOnDemand_Roo_DataOnDemand {
     public void StudyDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = Study.findStudyEntries(from, to);
+        data = studyService.findStudyEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'Study' illegally returned null");
         }
@@ -110,7 +120,7 @@ privileged aspect StudyDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             Study obj = getNewTransientStudy(i);
             try {
-                obj.persist();
+                studyService.saveStudy(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

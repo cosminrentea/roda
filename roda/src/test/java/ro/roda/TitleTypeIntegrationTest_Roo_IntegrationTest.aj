@@ -11,9 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.TitleType;
 import ro.roda.TitleTypeDataOnDemand;
 import ro.roda.TitleTypeIntegrationTest;
+import ro.roda.service.TitleTypeService;
 
 privileged aspect TitleTypeIntegrationTest_Roo_IntegrationTest {
     
@@ -24,12 +24,15 @@ privileged aspect TitleTypeIntegrationTest_Roo_IntegrationTest {
     declare @type: TitleTypeIntegrationTest: @Transactional;
     
     @Autowired
-    private TitleTypeDataOnDemand TitleTypeIntegrationTest.dod;
+    TitleTypeDataOnDemand TitleTypeIntegrationTest.dod;
+    
+    @Autowired
+    TitleTypeService TitleTypeIntegrationTest.titleTypeService;
     
     @Test
-    public void TitleTypeIntegrationTest.testCountTitleTypes() {
+    public void TitleTypeIntegrationTest.testCountAllTitleTypes() {
         Assert.assertNotNull("Data on demand for 'TitleType' failed to initialize correctly", dod.getRandomTitleType());
-        long count = TitleType.countTitleTypes();
+        long count = titleTypeService.countAllTitleTypes();
         Assert.assertTrue("Counter for 'TitleType' incorrectly reported there were no entries", count > 0);
     }
     
@@ -39,7 +42,7 @@ privileged aspect TitleTypeIntegrationTest_Roo_IntegrationTest {
         Assert.assertNotNull("Data on demand for 'TitleType' failed to initialize correctly", obj);
         Integer id = obj.getId();
         Assert.assertNotNull("Data on demand for 'TitleType' failed to provide an identifier", id);
-        obj = TitleType.findTitleType(id);
+        obj = titleTypeService.findTitleType(id);
         Assert.assertNotNull("Find method for 'TitleType' illegally returned null for id '" + id + "'", obj);
         Assert.assertEquals("Find method for 'TitleType' returned the incorrect identifier", id, obj.getId());
     }
@@ -47,9 +50,9 @@ privileged aspect TitleTypeIntegrationTest_Roo_IntegrationTest {
     @Test
     public void TitleTypeIntegrationTest.testFindAllTitleTypes() {
         Assert.assertNotNull("Data on demand for 'TitleType' failed to initialize correctly", dod.getRandomTitleType());
-        long count = TitleType.countTitleTypes();
+        long count = titleTypeService.countAllTitleTypes();
         Assert.assertTrue("Too expensive to perform a find all test for 'TitleType', as there are " + count + " entries; set the findAllMaximum to exceed this value or set findAll=false on the integration test annotation to disable the test", count < 250);
-        List<TitleType> result = TitleType.findAllTitleTypes();
+        List<TitleType> result = titleTypeService.findAllTitleTypes();
         Assert.assertNotNull("Find all method for 'TitleType' illegally returned null", result);
         Assert.assertTrue("Find all method for 'TitleType' failed to return any data", result.size() > 0);
     }
@@ -57,36 +60,36 @@ privileged aspect TitleTypeIntegrationTest_Roo_IntegrationTest {
     @Test
     public void TitleTypeIntegrationTest.testFindTitleTypeEntries() {
         Assert.assertNotNull("Data on demand for 'TitleType' failed to initialize correctly", dod.getRandomTitleType());
-        long count = TitleType.countTitleTypes();
+        long count = titleTypeService.countAllTitleTypes();
         if (count > 20) count = 20;
         int firstResult = 0;
         int maxResults = (int) count;
-        List<TitleType> result = TitleType.findTitleTypeEntries(firstResult, maxResults);
+        List<TitleType> result = titleTypeService.findTitleTypeEntries(firstResult, maxResults);
         Assert.assertNotNull("Find entries method for 'TitleType' illegally returned null", result);
         Assert.assertEquals("Find entries method for 'TitleType' returned an incorrect number of entries", count, result.size());
     }
     
     @Test
-    public void TitleTypeIntegrationTest.testPersist() {
+    public void TitleTypeIntegrationTest.testSaveTitleType() {
         Assert.assertNotNull("Data on demand for 'TitleType' failed to initialize correctly", dod.getRandomTitleType());
         TitleType obj = dod.getNewTransientTitleType(Integer.MAX_VALUE);
         Assert.assertNotNull("Data on demand for 'TitleType' failed to provide a new transient entity", obj);
         Assert.assertNull("Expected 'TitleType' identifier to be null", obj.getId());
-        obj.persist();
+        titleTypeService.saveTitleType(obj);
         obj.flush();
         Assert.assertNotNull("Expected 'TitleType' identifier to no longer be null", obj.getId());
     }
     
     @Test
-    public void TitleTypeIntegrationTest.testRemove() {
+    public void TitleTypeIntegrationTest.testDeleteTitleType() {
         TitleType obj = dod.getRandomTitleType();
         Assert.assertNotNull("Data on demand for 'TitleType' failed to initialize correctly", obj);
         Integer id = obj.getId();
         Assert.assertNotNull("Data on demand for 'TitleType' failed to provide an identifier", id);
-        obj = TitleType.findTitleType(id);
-        obj.remove();
+        obj = titleTypeService.findTitleType(id);
+        titleTypeService.deleteTitleType(obj);
         obj.flush();
-        Assert.assertNull("Failed to remove 'TitleType' with identifier '" + id + "'", TitleType.findTitleType(id));
+        Assert.assertNull("Failed to remove 'TitleType' with identifier '" + id + "'", titleTypeService.findTitleType(id));
     }
     
 }

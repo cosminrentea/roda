@@ -6,6 +6,7 @@ package ro.roda.web;
 import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,11 +16,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.CmsFile;
-import ro.roda.CmsFilePropertyNameValue;
-import ro.roda.CmsFolder;
+import ro.roda.service.CmsFileService;
 import ro.roda.web.CmsFileController;
 
 privileged aspect CmsFileController_Roo_Controller {
+    
+    @Autowired
+    CmsFileService CmsFileController.cmsFileService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String CmsFileController.create(@Valid CmsFile cmsFile, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -28,7 +31,7 @@ privileged aspect CmsFileController_Roo_Controller {
             return "cmsfiles/create";
         }
         uiModel.asMap().clear();
-        cmsFile.persist();
+        cmsFileService.saveCmsFile(cmsFile);
         return "redirect:/cmsfiles/" + encodeUrlPathSegment(cmsFile.getId().toString(), httpServletRequest);
     }
     
@@ -40,7 +43,7 @@ privileged aspect CmsFileController_Roo_Controller {
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String CmsFileController.show(@PathVariable("id") Integer id, Model uiModel) {
-        uiModel.addAttribute("cmsfile", CmsFile.findCmsFile(id));
+        uiModel.addAttribute("cmsfile", cmsFileService.findCmsFile(id));
         uiModel.addAttribute("itemId", id);
         return "cmsfiles/show";
     }
@@ -50,11 +53,11 @@ privileged aspect CmsFileController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("cmsfiles", CmsFile.findCmsFileEntries(firstResult, sizeNo));
-            float nrOfPages = (float) CmsFile.countCmsFiles() / sizeNo;
+            uiModel.addAttribute("cmsfiles", cmsFileService.findCmsFileEntries(firstResult, sizeNo));
+            float nrOfPages = (float) cmsFileService.countAllCmsFiles() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("cmsfiles", CmsFile.findAllCmsFiles());
+            uiModel.addAttribute("cmsfiles", cmsFileService.findAllCmsFiles());
         }
         return "cmsfiles/list";
     }
@@ -66,20 +69,20 @@ privileged aspect CmsFileController_Roo_Controller {
             return "cmsfiles/update";
         }
         uiModel.asMap().clear();
-        cmsFile.merge();
+        cmsFileService.updateCmsFile(cmsFile);
         return "redirect:/cmsfiles/" + encodeUrlPathSegment(cmsFile.getId().toString(), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String CmsFileController.updateForm(@PathVariable("id") Integer id, Model uiModel) {
-        populateEditForm(uiModel, CmsFile.findCmsFile(id));
+        populateEditForm(uiModel, cmsFileService.findCmsFile(id));
         return "cmsfiles/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
     public String CmsFileController.delete(@PathVariable("id") Integer id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        CmsFile cmsFile = CmsFile.findCmsFile(id);
-        cmsFile.remove();
+        CmsFile cmsFile = cmsFileService.findCmsFile(id);
+        cmsFileService.deleteCmsFile(cmsFile);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
@@ -88,8 +91,6 @@ privileged aspect CmsFileController_Roo_Controller {
     
     void CmsFileController.populateEditForm(Model uiModel, CmsFile cmsFile) {
         uiModel.addAttribute("cmsFile", cmsFile);
-        uiModel.addAttribute("cmsfilepropertynamevalues", CmsFilePropertyNameValue.findAllCmsFilePropertyNameValues());
-        uiModel.addAttribute("cmsfolders", CmsFolder.findAllCmsFolders());
     }
     
     String CmsFileController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

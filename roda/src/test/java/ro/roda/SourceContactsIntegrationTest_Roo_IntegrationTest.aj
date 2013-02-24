@@ -11,9 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.SourceContacts;
 import ro.roda.SourceContactsDataOnDemand;
 import ro.roda.SourceContactsIntegrationTest;
+import ro.roda.service.SourceContactsService;
 
 privileged aspect SourceContactsIntegrationTest_Roo_IntegrationTest {
     
@@ -24,12 +24,15 @@ privileged aspect SourceContactsIntegrationTest_Roo_IntegrationTest {
     declare @type: SourceContactsIntegrationTest: @Transactional;
     
     @Autowired
-    private SourceContactsDataOnDemand SourceContactsIntegrationTest.dod;
+    SourceContactsDataOnDemand SourceContactsIntegrationTest.dod;
+    
+    @Autowired
+    SourceContactsService SourceContactsIntegrationTest.sourceContactsService;
     
     @Test
-    public void SourceContactsIntegrationTest.testCountSourceContactses() {
+    public void SourceContactsIntegrationTest.testCountAllSourceContactses() {
         Assert.assertNotNull("Data on demand for 'SourceContacts' failed to initialize correctly", dod.getRandomSourceContacts());
-        long count = SourceContacts.countSourceContactses();
+        long count = sourceContactsService.countAllSourceContactses();
         Assert.assertTrue("Counter for 'SourceContacts' incorrectly reported there were no entries", count > 0);
     }
     
@@ -39,7 +42,7 @@ privileged aspect SourceContactsIntegrationTest_Roo_IntegrationTest {
         Assert.assertNotNull("Data on demand for 'SourceContacts' failed to initialize correctly", obj);
         Integer id = obj.getId();
         Assert.assertNotNull("Data on demand for 'SourceContacts' failed to provide an identifier", id);
-        obj = SourceContacts.findSourceContacts(id);
+        obj = sourceContactsService.findSourceContacts(id);
         Assert.assertNotNull("Find method for 'SourceContacts' illegally returned null for id '" + id + "'", obj);
         Assert.assertEquals("Find method for 'SourceContacts' returned the incorrect identifier", id, obj.getId());
     }
@@ -47,9 +50,9 @@ privileged aspect SourceContactsIntegrationTest_Roo_IntegrationTest {
     @Test
     public void SourceContactsIntegrationTest.testFindAllSourceContactses() {
         Assert.assertNotNull("Data on demand for 'SourceContacts' failed to initialize correctly", dod.getRandomSourceContacts());
-        long count = SourceContacts.countSourceContactses();
+        long count = sourceContactsService.countAllSourceContactses();
         Assert.assertTrue("Too expensive to perform a find all test for 'SourceContacts', as there are " + count + " entries; set the findAllMaximum to exceed this value or set findAll=false on the integration test annotation to disable the test", count < 250);
-        List<SourceContacts> result = SourceContacts.findAllSourceContactses();
+        List<SourceContacts> result = sourceContactsService.findAllSourceContactses();
         Assert.assertNotNull("Find all method for 'SourceContacts' illegally returned null", result);
         Assert.assertTrue("Find all method for 'SourceContacts' failed to return any data", result.size() > 0);
     }
@@ -57,36 +60,36 @@ privileged aspect SourceContactsIntegrationTest_Roo_IntegrationTest {
     @Test
     public void SourceContactsIntegrationTest.testFindSourceContactsEntries() {
         Assert.assertNotNull("Data on demand for 'SourceContacts' failed to initialize correctly", dod.getRandomSourceContacts());
-        long count = SourceContacts.countSourceContactses();
+        long count = sourceContactsService.countAllSourceContactses();
         if (count > 20) count = 20;
         int firstResult = 0;
         int maxResults = (int) count;
-        List<SourceContacts> result = SourceContacts.findSourceContactsEntries(firstResult, maxResults);
+        List<SourceContacts> result = sourceContactsService.findSourceContactsEntries(firstResult, maxResults);
         Assert.assertNotNull("Find entries method for 'SourceContacts' illegally returned null", result);
         Assert.assertEquals("Find entries method for 'SourceContacts' returned an incorrect number of entries", count, result.size());
     }
     
     @Test
-    public void SourceContactsIntegrationTest.testPersist() {
+    public void SourceContactsIntegrationTest.testSaveSourceContacts() {
         Assert.assertNotNull("Data on demand for 'SourceContacts' failed to initialize correctly", dod.getRandomSourceContacts());
         SourceContacts obj = dod.getNewTransientSourceContacts(Integer.MAX_VALUE);
         Assert.assertNotNull("Data on demand for 'SourceContacts' failed to provide a new transient entity", obj);
         Assert.assertNull("Expected 'SourceContacts' identifier to be null", obj.getId());
-        obj.persist();
+        sourceContactsService.saveSourceContacts(obj);
         obj.flush();
         Assert.assertNotNull("Expected 'SourceContacts' identifier to no longer be null", obj.getId());
     }
     
     @Test
-    public void SourceContactsIntegrationTest.testRemove() {
+    public void SourceContactsIntegrationTest.testDeleteSourceContacts() {
         SourceContacts obj = dod.getRandomSourceContacts();
         Assert.assertNotNull("Data on demand for 'SourceContacts' failed to initialize correctly", obj);
         Integer id = obj.getId();
         Assert.assertNotNull("Data on demand for 'SourceContacts' failed to provide an identifier", id);
-        obj = SourceContacts.findSourceContacts(id);
-        obj.remove();
+        obj = sourceContactsService.findSourceContacts(id);
+        sourceContactsService.deleteSourceContacts(obj);
         obj.flush();
-        Assert.assertNull("Failed to remove 'SourceContacts' with identifier '" + id + "'", SourceContacts.findSourceContacts(id));
+        Assert.assertNull("Failed to remove 'SourceContacts' with identifier '" + id + "'", sourceContactsService.findSourceContacts(id));
     }
     
 }

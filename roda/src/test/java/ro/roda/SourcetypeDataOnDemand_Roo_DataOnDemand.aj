@@ -10,9 +10,11 @@ import java.util.List;
 import java.util.Random;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ro.roda.Sourcetype;
 import ro.roda.SourcetypeDataOnDemand;
+import ro.roda.service.SourcetypeService;
 
 privileged aspect SourcetypeDataOnDemand_Roo_DataOnDemand {
     
@@ -21,6 +23,9 @@ privileged aspect SourcetypeDataOnDemand_Roo_DataOnDemand {
     private Random SourcetypeDataOnDemand.rnd = new SecureRandom();
     
     private List<Sourcetype> SourcetypeDataOnDemand.data;
+    
+    @Autowired
+    SourcetypeService SourcetypeDataOnDemand.sourcetypeService;
     
     public Sourcetype SourcetypeDataOnDemand.getNewTransientSourcetype(int index) {
         Sourcetype obj = new Sourcetype();
@@ -52,14 +57,14 @@ privileged aspect SourcetypeDataOnDemand_Roo_DataOnDemand {
         }
         Sourcetype obj = data.get(index);
         Integer id = obj.getId();
-        return Sourcetype.findSourcetype(id);
+        return sourcetypeService.findSourcetype(id);
     }
     
     public Sourcetype SourcetypeDataOnDemand.getRandomSourcetype() {
         init();
         Sourcetype obj = data.get(rnd.nextInt(data.size()));
         Integer id = obj.getId();
-        return Sourcetype.findSourcetype(id);
+        return sourcetypeService.findSourcetype(id);
     }
     
     public boolean SourcetypeDataOnDemand.modifySourcetype(Sourcetype obj) {
@@ -69,7 +74,7 @@ privileged aspect SourcetypeDataOnDemand_Roo_DataOnDemand {
     public void SourcetypeDataOnDemand.init() {
         int from = 0;
         int to = 10;
-        data = Sourcetype.findSourcetypeEntries(from, to);
+        data = sourcetypeService.findSourcetypeEntries(from, to);
         if (data == null) {
             throw new IllegalStateException("Find entries implementation for 'Sourcetype' illegally returned null");
         }
@@ -81,7 +86,7 @@ privileged aspect SourcetypeDataOnDemand_Roo_DataOnDemand {
         for (int i = 0; i < 10; i++) {
             Sourcetype obj = getNewTransientSourcetype(i);
             try {
-                obj.persist();
+                sourcetypeService.saveSourcetype(obj);
             } catch (ConstraintViolationException e) {
                 StringBuilder msg = new StringBuilder();
                 for (Iterator<ConstraintViolation<?>> iter = e.getConstraintViolations().iterator(); iter.hasNext();) {

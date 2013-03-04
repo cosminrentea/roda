@@ -107,6 +107,11 @@ sk,slovenčina
 13,Other
 \.
 
+\copy catalog(id,name,parent_id,owner,added,sequencenr,description) FROM stdin DELIMITERS ',' CSV;
+0,"fake root",0,1,now(),1,"Fake Root Folder"
+1,"catalog_test",0,1,now(),1,"Catalog pentru testare"
+\.
+
 \copy region(region_code,region_code_name,regiontype_id,name,country_id) FROM stdin DELIMITERS ',' CSV;
 10,siruta,1,alba,ro
 29,siruta,1,arad,ro
@@ -150,6 +155,14 @@ sk,slovenčina
 387,siruta,1,vâlcea,ro
 396,siruta,1,vrancea,ro
 403,siruta,1,bucureşti,ro
+\.
+
+\copy study(id,datestart,dateend,insertion_status,added_by,added,can_digitize,can_use_anonymous) FROM stdin DELIMITERS ',' CSV;
+1,now(),now(),0,1,now(),true,true
+\.
+
+\copy catalog_study(catalog_id,study_id,added) FROM stdin DELIMITERS ',' CSV;
+1,1,now()
 \.
 
 \copy city(city_code,name,city_code_name,city_code_type,city_code_sup,regiune,judet) FROM stdin DELIMITERS ',' CSV;

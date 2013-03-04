@@ -4,7 +4,7 @@
 package ro.roda.service;
 
 import java.util.List;
-import ro.roda.AclClass;
+import ro.roda.domain.AclClass;
 import ro.roda.service.AclClassService;
 
 privileged aspect AclClassService_Roo_Service {

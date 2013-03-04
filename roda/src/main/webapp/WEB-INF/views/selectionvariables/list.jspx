@@ -2,11 +2,11 @@
 <div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <page:list id="pl_ro_roda_SelectionVariable" items="${selectionvariables}" z="0kz12U0faSVGOsPtJ7g8sxOQG8Y=">
-        <table:table data="${selectionvariables}" id="l_ro_roda_SelectionVariable" path="/selectionvariables" typeIdFieldName="variableId" z="FF6QSZez4wY0ZWm9Loz0PIEpmKU=">
-            <table:column id="c_ro_roda_SelectionVariable_variable" property="variable" z="IYCibgfRVWKLvCK9gr4vtjqMRHI="/>
-            <table:column id="c_ro_roda_SelectionVariable_minCount" property="minCount" z="SSFMCLVjj9iizbBljg0NoOh/IXk="/>
-            <table:column id="c_ro_roda_SelectionVariable_maxCount" property="maxCount" z="1vMzSRTimXQQi3oSC8b88suNv70="/>
+    <page:list id="pl_ro_roda_domain_SelectionVariable" items="${selectionvariables}" z="yWJunuDx5ZS4jjQ5nFmdiL4M8/k=">
+        <table:table data="${selectionvariables}" id="l_ro_roda_domain_SelectionVariable" path="/selectionvariables" typeIdFieldName="variableId" z="vJFDroJStz+UsGVz0poFOeql+as=">
+            <table:column id="c_ro_roda_domain_SelectionVariable_variable" property="variable" z="JNpqJUl0KJfVpSq1OxxdS09JIEs="/>
+            <table:column id="c_ro_roda_domain_SelectionVariable_minCount" property="minCount" z="Yxb4MJ2pQ1pSEztAeW4CpKA7o4M="/>
+            <table:column id="c_ro_roda_domain_SelectionVariable_maxCount" property="maxCount" z="MBiDcW7Dqaxlbn3aRbSBH/S3QhI="/>
         </table:table>
     </page:list>
 </div>

@@ -15,18 +15,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.Vargroup;
+import ro.roda.domain.Vargroup;
 import ro.roda.service.VargroupService;
-import ro.roda.service.VariableService;
 import ro.roda.web.VargroupController;
 
 privileged aspect VargroupController_Roo_Controller {
     
     @Autowired
     VargroupService VargroupController.vargroupService;
-    
-    @Autowired
-    VariableService VargroupController.variableService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String VargroupController.create(@Valid Vargroup vargroup, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -95,7 +91,6 @@ privileged aspect VargroupController_Roo_Controller {
     
     void VargroupController.populateEditForm(Model uiModel, Vargroup vargroup) {
         uiModel.addAttribute("vargroup", vargroup);
-        uiModel.addAttribute("variables", variableService.findAllVariables());
     }
     
     String VargroupController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

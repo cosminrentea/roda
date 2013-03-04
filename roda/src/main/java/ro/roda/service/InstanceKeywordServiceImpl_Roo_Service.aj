@@ -6,8 +6,8 @@ package ro.roda.service;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.InstanceKeyword;
-import ro.roda.InstanceKeywordPK;
+import ro.roda.domain.InstanceKeyword;
+import ro.roda.domain.InstanceKeywordPK;
 import ro.roda.service.InstanceKeywordServiceImpl;
 
 privileged aspect InstanceKeywordServiceImpl_Roo_Service {

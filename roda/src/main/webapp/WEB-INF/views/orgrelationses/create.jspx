@@ -2,13 +2,10 @@
 <div xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:spring="http://www.springframework.org/tags" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <form:create compositePkField="id" id="fc_ro_roda_OrgRelations" modelAttribute="orgRelations" path="/orgrelationses" render="${empty dependencies}" z="427/l1fqovmHipag+VKo3/MaKCE=">
-        <field:input disableFormBinding="true" field="id.org1Id" id="c_ro_roda_OrgRelations_id_org1Id" required="true" validationMessageCode="field_invalid_integer" z="bozWiqYoUUORHjH7mreUEVl7/rM="/>
-        <field:input disableFormBinding="true" field="id.org2Id" id="c_ro_roda_OrgRelations_id_org2Id" required="true" validationMessageCode="field_invalid_integer" z="gH+WuVJqabuybIZjuo5/tM7JQQo="/>
-        <field:input disableFormBinding="true" field="id.orgRelationTypeId" id="c_ro_roda_OrgRelations_id_orgRelationTypeId" required="true" validationMessageCode="field_invalid_integer" z="M6x4WJRK2SEt3fhgAAG5QDAlyys="/>
-        <field:datetime dateTimePattern="${orgRelations_datestart_date_format}" field="datestart" id="c_ro_roda_OrgRelations_datestart" z="DyqWb8KV+aFmGSBEc2SyfTuNbzo="/>
-        <field:datetime dateTimePattern="${orgRelations_dateend_date_format}" field="dateend" id="c_ro_roda_OrgRelations_dateend" z="teNBZDnG9+28p574X/Sc4MxcJfU="/>
-        <field:input field="details" id="c_ro_roda_OrgRelations_details" required="true" z="Znci/78uUT5tbdif5ZPaJOW+AbA="/>
+    <form:create compositePkField="id" id="fc_ro_roda_domain_OrgRelations" modelAttribute="orgRelations" path="/orgrelationses" render="${empty dependencies}" z="rL36Xqwpo9XTYiaN1nCnYnAVvpc=">
+        <field:input disableFormBinding="true" field="id.org1Id" id="c_ro_roda_domain_OrgRelations_id_org1Id" required="true" validationMessageCode="field_invalid_integer" z="coa9OXsbIQDpGvDKcUa7bGUuYkY="/>
+        <field:input disableFormBinding="true" field="id.org2Id" id="c_ro_roda_domain_OrgRelations_id_org2Id" required="true" validationMessageCode="field_invalid_integer" z="XBBTN9RjWJFeVnDbt01cL5+aDkk="/>
+        <field:input disableFormBinding="true" field="id.orgRelationTypeId" id="c_ro_roda_domain_OrgRelations_id_orgRelationTypeId" required="true" validationMessageCode="field_invalid_integer" z="rvphxHrU8kuqgO1lZNOt2BfC7u8="/>
     </form:create>
-    <form:dependency dependencies="${dependencies}" id="d_ro_roda_OrgRelations" render="${not empty dependencies}" z="52IQRhF1bJeHFOxgVYR/Jf6DzXE="/>
+    <form:dependency dependencies="${dependencies}" id="d_ro_roda_domain_OrgRelations" render="${not empty dependencies}" z="B7FjoeqE84ut4eRJz1yljmIe/UU="/>
 </div>

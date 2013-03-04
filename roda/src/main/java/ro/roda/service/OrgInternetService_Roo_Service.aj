@@ -4,8 +4,8 @@
 package ro.roda.service;
 
 import java.util.List;
-import ro.roda.OrgInternet;
-import ro.roda.OrgInternetPK;
+import ro.roda.domain.OrgInternet;
+import ro.roda.domain.OrgInternetPK;
 import ro.roda.service.OrgInternetService;
 
 privileged aspect OrgInternetService_Roo_Service {

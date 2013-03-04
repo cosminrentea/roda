@@ -4,8 +4,8 @@
 package ro.roda.service;
 
 import java.util.List;
-import ro.roda.FormEditedNumberVar;
-import ro.roda.FormEditedNumberVarPK;
+import ro.roda.domain.FormEditedNumberVar;
+import ro.roda.domain.FormEditedNumberVarPK;
 import ro.roda.service.FormEditedNumberVarService;
 
 privileged aspect FormEditedNumberVarService_Roo_Service {

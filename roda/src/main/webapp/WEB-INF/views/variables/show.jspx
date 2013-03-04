@@ -2,18 +2,18 @@
 <div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <page:show id="ps_ro_roda_Variable" object="${variable}" path="/variables" z="Rpj6HymyHoU9h5tr/xlHXfoH5ho=">
-        <field:display field="concepts" id="s_ro_roda_Variable_concepts" object="${variable}" z="rKeQzKeH0gxZ8/VrTktTr8BaDxE="/>
-        <field:display field="vargroups" id="s_ro_roda_Variable_vargroups" object="${variable}" z="dhzMHwVajTIEL/+kBCSLd17Gybk="/>
-        <field:display field="selectionVariable" id="s_ro_roda_Variable_selectionVariable" object="${variable}" z="RjoPgFsekmIEuw8EzfnAJEgVwsg="/>
-        <field:display field="fileId" id="s_ro_roda_Variable_fileId" object="${variable}" z="t1e5DgmRDgrouD3HdWvHcOV9blU="/>
-        <field:display field="instanceId" id="s_ro_roda_Variable_instanceId" object="${variable}" z="XXQohEpl7zUY1uxj96pfE2fh438="/>
-        <field:display field="label" id="s_ro_roda_Variable_label" object="${variable}" z="9XX43pZhp3kp/AzXrjbvDOrNwlU="/>
-        <field:display field="type" id="s_ro_roda_Variable_type" object="${variable}" z="UzfM96wR4DyUL8sNYjX2yJ8zQBE="/>
-        <field:display field="orderInInstance" id="s_ro_roda_Variable_orderInInstance" object="${variable}" z="6nZKdZRZjs7yrONoGiDy9REyFBI="/>
-        <field:display field="operatorInstructions" id="s_ro_roda_Variable_operatorInstructions" object="${variable}" z="VAAGaP9ZUB6yGWoXi5xo48r9Md4="/>
-        <field:display field="typeEditedText" id="s_ro_roda_Variable_typeEditedText" object="${variable}" z="ebGg4lyldCJJo7UMlsKvZtGYJyw="/>
-        <field:display field="typeEditedNumber" id="s_ro_roda_Variable_typeEditedNumber" object="${variable}" z="vb1FxMQd2qiOeoDPPwppbbDIg48="/>
-        <field:display field="typeSelection" id="s_ro_roda_Variable_typeSelection" object="${variable}" z="8CjZ1uCiT95v2Fd7tOQovgVhPrw="/>
+    <page:show id="ps_ro_roda_domain_Variable" object="${variable}" path="/variables" z="vG2oKLKhhoPXevYfujmlBVXecjg=">
+        <field:display field="concepts" id="s_ro_roda_domain_Variable_concepts" object="${variable}" z="87bqoLASlB7T5BgH2kcSQCCEDWg="/>
+        <field:display field="vargroups" id="s_ro_roda_domain_Variable_vargroups" object="${variable}" z="rpdWARFQpnjxGZwdJUq7mgkabb4="/>
+        <field:display field="selectionVariable" id="s_ro_roda_domain_Variable_selectionVariable" object="${variable}" z="44Z5pqPw9WmOzbDWQP6V9+zA4O8="/>
+        <field:display field="fileId" id="s_ro_roda_domain_Variable_fileId" object="${variable}" z="F7hf+CeY53ilCkjqz0YzRAzFU88="/>
+        <field:display field="instanceId" id="s_ro_roda_domain_Variable_instanceId" object="${variable}" z="0eeZAxpWSMkXlHe/Jnqd/fzyTMI="/>
+        <field:display field="label" id="s_ro_roda_domain_Variable_label" object="${variable}" z="2z9DEeJuZWhFw3p1/AszLFCbNVo="/>
+        <field:display field="type" id="s_ro_roda_domain_Variable_type" object="${variable}" z="RSSheQ3/hUfZosrPtARJ4/paD30="/>
+        <field:display field="orderInInstance" id="s_ro_roda_domain_Variable_orderInInstance" object="${variable}" z="C9FynTELgh+a4FVLi1/ziPBj5CE="/>
+        <field:display field="operatorInstructions" id="s_ro_roda_domain_Variable_operatorInstructions" object="${variable}" z="TYwXYhwgFxWdCA6R8awrG/gkUkM="/>
+        <field:display field="typeEditedText" id="s_ro_roda_domain_Variable_typeEditedText" object="${variable}" z="PoYWBdRZSQ9R9eosGnIMx5Esv6c="/>
+        <field:display field="typeEditedNumber" id="s_ro_roda_domain_Variable_typeEditedNumber" object="${variable}" z="rDmv3Z1iGul85faLNxXFKJdtP6E="/>
+        <field:display field="typeSelection" id="s_ro_roda_domain_Variable_typeSelection" object="${variable}" z="jNoAcH5iR0ADBRKETX0EbP/w1XM="/>
     </page:show>
 </div>

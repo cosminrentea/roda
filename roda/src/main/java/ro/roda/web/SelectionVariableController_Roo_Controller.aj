@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.SelectionVariable;
+import ro.roda.domain.SelectionVariable;
 import ro.roda.service.SelectionVariableItemService;
 import ro.roda.service.SelectionVariableService;
 import ro.roda.service.VariableService;

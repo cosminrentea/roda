@@ -2,10 +2,5 @@
 <div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <page:show id="ps_ro_roda_StudyKeyword" object="${studykeyword}" path="/studykeywords" z="ctRmhVG0m0due8RR3EskQiNnJVc=">
-        <field:display field="keywordId" id="s_ro_roda_StudyKeyword_keywordId" object="${studykeyword}" z="iXOrsz8OarG+zaG8OS8+g9HUdNI="/>
-        <field:display field="addedBy" id="s_ro_roda_StudyKeyword_addedBy" object="${studykeyword}" z="SEW/Y2nVyhUMLqKPr7Ya9nSGgCo="/>
-        <field:display field="studyId" id="s_ro_roda_StudyKeyword_studyId" object="${studykeyword}" z="6BNHxjFmmu+7SOdPF2xQAiSO94M="/>
-        <field:display calendar="true" dateTimePattern="${studyKeyword_added_date_format}" field="added" id="s_ro_roda_StudyKeyword_added" object="${studykeyword}" z="MD/ctKx83t8zaA0zRq1139Q2gi8="/>
-    </page:show>
+    <page:show id="ps_ro_roda_domain_StudyKeyword" object="${studykeyword}" path="/studykeywords" z="NQ5kOBQOnAEj7z7JGfuKwTTWwYc="/>
 </div>

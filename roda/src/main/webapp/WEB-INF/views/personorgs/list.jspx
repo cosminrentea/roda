@@ -2,7 +2,13 @@
 <div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <page:list id="pl_ro_roda_PersonOrg" items="${personorgs}" z="mzhVNpincS0cwyKYyEURoQhTrys=">
-        <table:table data="${personorgs}" id="l_ro_roda_PersonOrg" path="/personorgs" z="dWANBqSZ+UPNuSpufYQ0SSVvZJA="/>
+    <page:list id="pl_ro_roda_domain_PersonOrg" items="${personorgs}" z="nrqsKAE90RC4Ktl+emvI8k1Kz98=">
+        <table:table data="${personorgs}" id="l_ro_roda_domain_PersonOrg" path="/personorgs" z="e3/FvqLIEi9HDel/Zf5uji3Aj0U=">
+            <table:column id="c_ro_roda_domain_PersonOrg_orgId" property="orgId" z="cd+PuXaf13AATm5R9/bxbu0nilQ="/>
+            <table:column id="c_ro_roda_domain_PersonOrg_personId" property="personId" z="x8FXeLaHdDEHx9LNIEoKeFY2+rQ="/>
+            <table:column id="c_ro_roda_domain_PersonOrg_roleId" property="roleId" z="zmmNoduJxag4Ie/egI2SkfaMUQs="/>
+            <table:column calendar="true" dateTimePattern="${personOrg_datestart_date_format}" id="c_ro_roda_domain_PersonOrg_datestart" property="datestart" z="9w0xklh+GuBAk1T+FOHttwG8CZ4="/>
+            <table:column calendar="true" dateTimePattern="${personOrg_dateend_date_format}" id="c_ro_roda_domain_PersonOrg_dateend" property="dateend" z="BaiqYx9YIytjhDit4U7xbVxI1nE="/>
+        </table:table>
     </page:list>
 </div>

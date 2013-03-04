@@ -4,7 +4,7 @@
 package ro.roda.service;
 
 import java.util.List;
-import ro.roda.Vargroup;
+import ro.roda.domain.Vargroup;
 import ro.roda.service.VargroupService;
 
 privileged aspect VargroupService_Roo_Service {

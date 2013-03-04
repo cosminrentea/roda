@@ -4,7 +4,7 @@
 package ro.roda.service;
 
 import java.util.List;
-import ro.roda.Suffix;
+import ro.roda.domain.Suffix;
 import ro.roda.service.SuffixService;
 
 privileged aspect SuffixService_Roo_Service {

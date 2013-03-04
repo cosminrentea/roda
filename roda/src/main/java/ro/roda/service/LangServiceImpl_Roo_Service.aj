@@ -6,7 +6,7 @@ package ro.roda.service;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.Lang;
+import ro.roda.domain.Lang;
 import ro.roda.service.LangServiceImpl;
 
 privileged aspect LangServiceImpl_Roo_Service {

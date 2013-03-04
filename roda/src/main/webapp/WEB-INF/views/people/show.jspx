@@ -2,11 +2,11 @@
 <div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <page:show id="ps_ro_roda_Person" object="${person}" path="/people" z="Mo38MZb7ZBqfO6KqyzCTLd7L7TI=">
-        <field:display field="prefixId" id="s_ro_roda_Person_prefixId" object="${person}" z="M6qIE6cqL2lkkj73CgilHM49dFU="/>
-        <field:display field="suffixId" id="s_ro_roda_Person_suffixId" object="${person}" z="EsSBaXwYmyaLrZPIWs4/ISzjcHI="/>
-        <field:display field="fname" id="s_ro_roda_Person_fname" object="${person}" z="XRaFtu7rP7SQeUJ9NpeK830lRyo="/>
-        <field:display field="mname" id="s_ro_roda_Person_mname" object="${person}" z="Zpn6Mec8rYwAfeqrLtUD2XGqjnk="/>
-        <field:display field="lname" id="s_ro_roda_Person_lname" object="${person}" z="2KZxkaj5pfx0FVvQfkELwpyk9fY="/>
+    <page:show id="ps_ro_roda_domain_Person" object="${person}" path="/people" z="C6yu3G6pt9oW5iQ0fkfRm6V3jfk=">
+        <field:display field="prefixId" id="s_ro_roda_domain_Person_prefixId" object="${person}" z="/ZzRCxRQlWzxUVGEcZwiNsRNNSg="/>
+        <field:display field="suffixId" id="s_ro_roda_domain_Person_suffixId" object="${person}" z="GXsNlmbQKyXEnQ39v6/TJYfmXBw="/>
+        <field:display field="fname" id="s_ro_roda_domain_Person_fname" object="${person}" z="rTy2EGOLuMLIAgvYDbSUuJ7qBiE="/>
+        <field:display field="mname" id="s_ro_roda_domain_Person_mname" object="${person}" z="PqpzdJ6yKuAZItGtD/BMFE8mlDA="/>
+        <field:display field="lname" id="s_ro_roda_domain_Person_lname" object="${person}" z="mbS3eOjkjJh2OG0676Htls+o3f4="/>
     </page:show>
 </div>

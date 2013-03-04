@@ -2,8 +2,8 @@
 <div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <page:show id="ps_ro_roda_SettingValue" object="${settingvalue}" path="/settingvalues" z="S4YVgpk0b+7FbXRCe/68q/ckOXU=">
-        <field:display field="setting" id="s_ro_roda_SettingValue_setting" object="${settingvalue}" z="Wpk2jI0I4bxEWBX8nNyI6qnXGXw="/>
-        <field:display field="value" id="s_ro_roda_SettingValue_value" object="${settingvalue}" z="adxcOCDNfQbcQ27e0Gjoo6jJoGM="/>
+    <page:show id="ps_ro_roda_domain_SettingValue" object="${settingvalue}" path="/settingvalues" z="jeEbwEpLqqBeEijSvFrldKznprU=">
+        <field:display field="setting" id="s_ro_roda_domain_SettingValue_setting" object="${settingvalue}" z="Nh5t7gR1+bI3XZHflnA7LCl7tbE="/>
+        <field:display field="value" id="s_ro_roda_domain_SettingValue_value" object="${settingvalue}" z="mu7Vpnn4pkmeIoHSCZPUvzVd3L8="/>
     </page:show>
 </div>

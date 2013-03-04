@@ -4,7 +4,7 @@
 package ro.roda.service;
 
 import java.util.List;
-import ro.roda.AuthData;
+import ro.roda.domain.AuthData;
 import ro.roda.service.AuthDataService;
 
 privileged aspect AuthDataService_Roo_Service {

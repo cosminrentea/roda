@@ -6,8 +6,8 @@ package ro.roda.service;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.StudyDocuments;
-import ro.roda.StudyDocumentsPK;
+import ro.roda.domain.StudyDocuments;
+import ro.roda.domain.StudyDocumentsPK;
 import ro.roda.service.StudyDocumentsServiceImpl;
 
 privileged aspect StudyDocumentsServiceImpl_Roo_Service {

@@ -4,7 +4,7 @@
 package ro.roda.service;
 
 import java.util.List;
-import ro.roda.CmsFolder;
+import ro.roda.domain.CmsFolder;
 import ro.roda.service.CmsFolderService;
 
 privileged aspect CmsFolderService_Roo_Service {

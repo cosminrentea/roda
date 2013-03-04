@@ -2,13 +2,13 @@
 <div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <page:list id="pl_ro_roda_SelectionVariableItem" items="${selectionvariableitems}" z="1N82b2wLvpI63gEsbcA6hIr14g4=">
-        <table:table data="${selectionvariableitems}" id="l_ro_roda_SelectionVariableItem" path="/selectionvariableitems" z="ugI48ExIDJR2t8Veeqn+XcfTzkA=">
-            <table:column id="c_ro_roda_SelectionVariableItem_responseCardFileId" property="responseCardFileId" z="pBQWEZX+4GK4XL4cLVtmc0uGnAc="/>
-            <table:column id="c_ro_roda_SelectionVariableItem_itemId" property="itemId" z="SZEmwo6D2WwvVZxu1SpuPGgsMB8="/>
-            <table:column id="c_ro_roda_SelectionVariableItem_variableId" property="variableId" z="Q0eZSof2949OXM5trH5mXem1XIY="/>
-            <table:column id="c_ro_roda_SelectionVariableItem_orderOfItemInVariable" property="orderOfItemInVariable" z="TB6cTUzXUMjHI5dDCdJdH1Ps5bg="/>
-            <table:column id="c_ro_roda_SelectionVariableItem_frequencyValue" property="frequencyValue" z="j3Ja3oD936IGxdP7mVT8f4PrJeY="/>
+    <page:list id="pl_ro_roda_domain_SelectionVariableItem" items="${selectionvariableitems}" z="hN4HsAE1dxmbGpu7uJ1gunz7N1M=">
+        <table:table data="${selectionvariableitems}" id="l_ro_roda_domain_SelectionVariableItem" path="/selectionvariableitems" z="YO5FzsWc4Ho3Jiu3MRysAd1abvE=">
+            <table:column id="c_ro_roda_domain_SelectionVariableItem_responseCardFileId" property="responseCardFileId" z="9+1SWv8kovG6wpqAn3D9VGv1xjQ="/>
+            <table:column id="c_ro_roda_domain_SelectionVariableItem_itemId" property="itemId" z="lhMVgCB2+rkmSja/BjhF7A/t30U="/>
+            <table:column id="c_ro_roda_domain_SelectionVariableItem_variableId" property="variableId" z="LyM7kNKgl311wuI/5PSDwrOeSg4="/>
+            <table:column id="c_ro_roda_domain_SelectionVariableItem_orderOfItemInVariable" property="orderOfItemInVariable" z="XOoLyBhPM76+oHhiQiNJwIXnvOI="/>
+            <table:column id="c_ro_roda_domain_SelectionVariableItem_frequencyValue" property="frequencyValue" z="GilsJMN2wtgAStwSAcgC2/Sn5zw="/>
         </table:table>
     </page:list>
 </div>

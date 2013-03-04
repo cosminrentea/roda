@@ -4,7 +4,7 @@
 package ro.roda.service;
 
 import java.util.List;
-import ro.roda.PersonLinks;
+import ro.roda.domain.PersonLinks;
 import ro.roda.service.PersonLinksService;
 
 privileged aspect PersonLinksService_Roo_Service {

@@ -6,7 +6,7 @@ package ro.roda.service;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.OtherStatistic;
+import ro.roda.domain.OtherStatistic;
 import ro.roda.service.OtherStatisticServiceImpl;
 
 privileged aspect OtherStatisticServiceImpl_Roo_Service {

@@ -2,12 +2,12 @@
 <div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <page:show id="ps_ro_roda_Catalog" object="${catalog}" path="/catalogs" z="zOQt3lRsaEHwfzUwbv92zSkTEY0=">
-        <field:display field="owner" id="s_ro_roda_Catalog_owner" object="${catalog}" z="Akj04KflAwiWu7QQiFMoGW2udQw="/>
-        <field:display field="name" id="s_ro_roda_Catalog_name" object="${catalog}" z="j5CM2gy0jPn0/ViKTm5acgFDHC4="/>
-        <field:display calendar="true" dateTimePattern="${catalog_added_date_format}" field="added" id="s_ro_roda_Catalog_added" object="${catalog}" z="0YSPzcMPR8CjhWpG2v3UDBTD0Co="/>
-        <field:display field="parentId" id="s_ro_roda_Catalog_parentId" object="${catalog}" z="/mrRmFa++G0BbxdSuVsn28kyQMQ="/>
-        <field:display field="sequencenr" id="s_ro_roda_Catalog_sequencenr" object="${catalog}" z="5ON1PRS/trmj1wRRx41BVwuwLbw="/>
-        <field:display field="description" id="s_ro_roda_Catalog_description" object="${catalog}" z="iie78tz8qPKTQN9PunFMkjl1qjY="/>
+    <page:show id="ps_ro_roda_domain_Catalog" object="${catalog}" path="/catalogs" z="VFXTMHQjetkEGN7wUrAyTyXXzCQ=">
+        <field:display field="owner" id="s_ro_roda_domain_Catalog_owner" object="${catalog}" z="DbPG3MUpujM/IpzCn0r1fpUaXDI="/>
+        <field:display field="name" id="s_ro_roda_domain_Catalog_name" object="${catalog}" z="AoYcSNNk90AYSaquntPwhquu9ww="/>
+        <field:display field="parentId" id="s_ro_roda_domain_Catalog_parentId" object="${catalog}" z="HJ6KtgZLrU7uz5Ec61uLyOt64yI="/>
+        <field:display calendar="true" dateTimePattern="${catalog_added_date_format}" field="added" id="s_ro_roda_domain_Catalog_added" object="${catalog}" z="bxXuk41kdw4pNQm/H8dINTqb/z4="/>
+        <field:display field="sequencenr" id="s_ro_roda_domain_Catalog_sequencenr" object="${catalog}" z="NPe0IEtVAb/VUnwU+jcbNb7SocY="/>
+        <field:display field="description" id="s_ro_roda_domain_Catalog_description" object="${catalog}" z="WxkpO+s4TpXfos2gmRWm154UPRs="/>
     </page:show>
 </div>

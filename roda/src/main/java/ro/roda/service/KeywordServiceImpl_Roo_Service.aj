@@ -6,7 +6,7 @@ package ro.roda.service;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.Keyword;
+import ro.roda.domain.Keyword;
 import ro.roda.service.KeywordServiceImpl;
 
 privileged aspect KeywordServiceImpl_Roo_Service {

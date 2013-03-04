@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:spring="http://www.springframework.org/tags" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <form:create id="fc_ro_roda_domain_AuditLogChangeset" modelAttribute="auditLogChangeset" path="/auditlogchangesets" render="${empty dependencies}" z="6L9RYxYHPDZBe2TZvyZxDRKqm1M=">
+        <field:simple field="auditLogActions" id="c_ro_roda_domain_AuditLogChangeset_auditLogActions" messageCode="entity_reference_not_managed" messageCodeAttribute="Audit Log Action" z="DVABPCuhfaYCMJXL0NZwgru1qvc="/>
+        <field:select field="rodauser" id="c_ro_roda_domain_AuditLogChangeset_rodauser" itemValue="id" items="${rodausers}" path="/rodausers" z="xlf6LOZKE3clgxwtxDKM7va9Uuw="/>
+        <field:input field="description" id="c_ro_roda_domain_AuditLogChangeset_description" z="frCB3ciwrGUKMysnDxzhkt+BCJk="/>
+        <field:datetime dateTimePattern="${auditLogChangeset_timestamp_date_format}" field="timestamp" id="c_ro_roda_domain_AuditLogChangeset_timestamp" required="true" z="2RUqfkYtPQffrrp5ATiBB3EuKIg="/>
+    </form:create>
+    <form:dependency dependencies="${dependencies}" id="d_ro_roda_domain_AuditLogChangeset" render="${not empty dependencies}" z="bBAI/xEiIaVswylg4dZWusBA+G4="/>
+</div>

@@ -15,18 +15,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.CmsPageContent;
+import ro.roda.domain.CmsPageContent;
 import ro.roda.service.CmsPageContentService;
-import ro.roda.service.CmsPageService;
 import ro.roda.web.CmsPageContentController;
 
 privileged aspect CmsPageContentController_Roo_Controller {
     
     @Autowired
     CmsPageContentService CmsPageContentController.cmsPageContentService;
-    
-    @Autowired
-    CmsPageService CmsPageContentController.cmsPageService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String CmsPageContentController.create(@Valid CmsPageContent cmsPageContent, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -95,7 +91,6 @@ privileged aspect CmsPageContentController_Roo_Controller {
     
     void CmsPageContentController.populateEditForm(Model uiModel, CmsPageContent cmsPageContent) {
         uiModel.addAttribute("cmsPageContent", cmsPageContent);
-        uiModel.addAttribute("cmspages", cmsPageService.findAllCmsPages());
     }
     
     String CmsPageContentController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

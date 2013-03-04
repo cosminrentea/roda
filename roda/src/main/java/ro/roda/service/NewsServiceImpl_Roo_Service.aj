@@ -6,7 +6,7 @@ package ro.roda.service;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.News;
+import ro.roda.domain.News;
 import ro.roda.service.NewsServiceImpl;
 
 privileged aspect NewsServiceImpl_Roo_Service {
@@ -15,8 +15,8 @@ privileged aspect NewsServiceImpl_Roo_Service {
     
     declare @type: NewsServiceImpl: @Transactional;
     
-    public long NewsServiceImpl.countAllNews() {
-        return News.countNews();
+    public long NewsServiceImpl.countAllNewsPieces() {
+        return News.countNewsPieces();
     }
     
     public void NewsServiceImpl.deleteNews(News news) {
@@ -27,8 +27,8 @@ privileged aspect NewsServiceImpl_Roo_Service {
         return News.findNews(id);
     }
     
-    public List<News> NewsServiceImpl.findAllNews() {
-        return News.findAllNews();
+    public List<News> NewsServiceImpl.findAllNewsPieces() {
+        return News.findAllNewsPieces();
     }
     
     public List<News> NewsServiceImpl.findNewsEntries(int firstResult, int maxResults) {

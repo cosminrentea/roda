@@ -4,8 +4,8 @@
 package ro.roda.service;
 
 import java.util.List;
-import ro.roda.UserSettingValue;
-import ro.roda.UserSettingValuePK;
+import ro.roda.domain.UserSettingValue;
+import ro.roda.domain.UserSettingValuePK;
 import ro.roda.service.UserSettingValueService;
 
 privileged aspect UserSettingValueService_Roo_Service {

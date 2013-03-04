@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.PropertyName;
+import ro.roda.domain.PropertyName;
+import ro.roda.service.CmsFilePropertyNameValueService;
+import ro.roda.service.FilePropertyNameValueService;
 import ro.roda.service.PropertyNameService;
 import ro.roda.web.PropertyNameController;
 
@@ -23,6 +25,12 @@ privileged aspect PropertyNameController_Roo_Controller {
     
     @Autowired
     PropertyNameService PropertyNameController.propertyNameService;
+    
+    @Autowired
+    CmsFilePropertyNameValueService PropertyNameController.cmsFilePropertyNameValueService;
+    
+    @Autowired
+    FilePropertyNameValueService PropertyNameController.filePropertyNameValueService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String PropertyNameController.create(@Valid PropertyName propertyName, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -91,6 +99,8 @@ privileged aspect PropertyNameController_Roo_Controller {
     
     void PropertyNameController.populateEditForm(Model uiModel, PropertyName propertyName) {
         uiModel.addAttribute("propertyName", propertyName);
+        uiModel.addAttribute("cmsfilepropertynamevalues", cmsFilePropertyNameValueService.findAllCmsFilePropertyNameValues());
+        uiModel.addAttribute("filepropertynamevalues", filePropertyNameValueService.findAllFilePropertyNameValues());
     }
     
     String PropertyNameController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

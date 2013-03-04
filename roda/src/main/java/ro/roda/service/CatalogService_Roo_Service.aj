@@ -4,7 +4,7 @@
 package ro.roda.service;
 
 import java.util.List;
-import ro.roda.Catalog;
+import ro.roda.domain.Catalog;
 import ro.roda.service.CatalogService;
 
 privileged aspect CatalogService_Roo_Service {

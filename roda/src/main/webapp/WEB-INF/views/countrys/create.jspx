@@ -2,11 +2,11 @@
 <div xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:spring="http://www.springframework.org/tags" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <form:create id="fc_ro_roda_Country" modelAttribute="country" path="/countrys" render="${empty dependencies}" z="y62wz8cfI+AZhwbCBdJfzdYZ9Zw=">
-        <field:simple field="cities" id="c_ro_roda_Country_cities" messageCode="entity_reference_not_managed" messageCodeAttribute="City" z="p0tqdNGUKBxkf3j3HCkumlgcNRE="/>
-        <field:simple field="regions" id="c_ro_roda_Country_regions" messageCode="entity_reference_not_managed" messageCodeAttribute="Region" z="Z853lxVmBFQ0sHopH+tlVdoLTe8="/>
-        <field:input field="name" id="c_ro_roda_Country_name" required="true" z="dDrx8ZW8wB2Mnkv6nhAvgzh27tM="/>
-        <field:input field="alpha3" id="c_ro_roda_Country_alpha3" required="true" z="39b/izZlGe8pkP30HBY6er0hSSw="/>
+    <form:create id="fc_ro_roda_domain_Country" modelAttribute="country" path="/countrys" render="${empty dependencies}" z="BROD8bQvl0HA+AoxnUKD8nFwJno=">
+        <field:simple field="cities" id="c_ro_roda_domain_Country_cities" messageCode="entity_reference_not_managed" messageCodeAttribute="City" z="1cxYwT+qn3jJ5YxxQjR1b0oX7lY="/>
+        <field:simple field="regions" id="c_ro_roda_domain_Country_regions" messageCode="entity_reference_not_managed" messageCodeAttribute="Region" z="S8UpTaWsRI0BRI5cck0YtuPGqZk="/>
+        <field:input field="name" id="c_ro_roda_domain_Country_name" required="true" z="aXT3K2DXlOqZgDU3Kh/krxeM0kc="/>
+        <field:input field="alpha3" id="c_ro_roda_domain_Country_alpha3" required="true" z="aaGFtun4+OwojJQMSsyFSHtkYdM="/>
     </form:create>
-    <form:dependency dependencies="${dependencies}" id="d_ro_roda_Country" render="${not empty dependencies}" z="rFoCaBo4egfdf8N1trRvy9S8cOc="/>
+    <form:dependency dependencies="${dependencies}" id="d_ro_roda_domain_Country" render="${not empty dependencies}" z="Xl9PmpNe8fDz9JHkOp30VPGc/XU="/>
 </div>

@@ -2,9 +2,9 @@
 <div xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:spring="http://www.springframework.org/tags" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <form:create id="fc_ro_roda_SettingValue" modelAttribute="settingValue" path="/settingvalues" render="${empty dependencies}" z="8cA4MIGMqKbMoDUooQAAYCK6Hi0=">
-        <field:select field="setting" id="c_ro_roda_SettingValue_setting" itemValue="id" items="${settings}" path="/settings" z="j52yO752hjZdqQtFCmprqqRMT2g="/>
-        <field:input field="value" id="c_ro_roda_SettingValue_value" required="true" z="QNO0zEiarftEn8siR/Oj4lQMV7k="/>
+    <form:create id="fc_ro_roda_domain_SettingValue" modelAttribute="settingValue" path="/settingvalues" render="${empty dependencies}" z="1pNdqeWbns3ufgiB6um8GawLQmM=">
+        <field:select field="setting" id="c_ro_roda_domain_SettingValue_setting" itemValue="id" items="${settings}" path="/settings" z="WFHMDNrQulSS6yLYS3uLMV8UWfI="/>
+        <field:input field="value" id="c_ro_roda_domain_SettingValue_value" required="true" z="AITKvxjK8dZzjJL61Q0HDzK0Llg="/>
     </form:create>
-    <form:dependency dependencies="${dependencies}" id="d_ro_roda_SettingValue" render="${not empty dependencies}" z="rZRducPLYxJeG/eGIqDnHoJeIFc="/>
+    <form:dependency dependencies="${dependencies}" id="d_ro_roda_domain_SettingValue" render="${not empty dependencies}" z="EfSRxivszLU7ah8cQmhG3ONXk+I="/>
 </div>

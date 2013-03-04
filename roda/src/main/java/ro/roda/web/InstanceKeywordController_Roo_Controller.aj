@@ -18,12 +18,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.InstanceKeyword;
-import ro.roda.InstanceKeywordPK;
-import ro.roda.Rodauser;
+import ro.roda.domain.InstanceKeyword;
+import ro.roda.domain.InstanceKeywordPK;
 import ro.roda.service.InstanceKeywordService;
 import ro.roda.service.InstanceService;
 import ro.roda.service.KeywordService;
+import ro.roda.service.RodauserService;
 import ro.roda.web.InstanceKeywordController;
 
 privileged aspect InstanceKeywordController_Roo_Controller {
@@ -38,6 +38,9 @@ privileged aspect InstanceKeywordController_Roo_Controller {
     
     @Autowired
     KeywordService InstanceKeywordController.keywordService;
+    
+    @Autowired
+    RodauserService InstanceKeywordController.rodauserService;
     
     @Autowired
     public InstanceKeywordController.new(ConversionService conversionService) {
@@ -121,7 +124,7 @@ privileged aspect InstanceKeywordController_Roo_Controller {
         addDateTimeFormatPatterns(uiModel);
         uiModel.addAttribute("instances", instanceService.findAllInstances());
         uiModel.addAttribute("keywords", keywordService.findAllKeywords());
-        uiModel.addAttribute("rodausers", Rodauser.findAllRodausers());
+        uiModel.addAttribute("rodausers", rodauserService.findAllRodausers());
     }
     
     String InstanceKeywordController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

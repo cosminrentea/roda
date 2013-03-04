@@ -2,11 +2,11 @@
 <div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <page:list id="pl_ro_roda_CmsSnippet" items="${cmssnippets}" z="hMJB6QNXZ3KJ3ne/wzS7Py90CMM=">
-        <table:table data="${cmssnippets}" id="l_ro_roda_CmsSnippet" path="/cmssnippets" z="IPHUYhob+6jFk49ClgD4fmjGWMw=">
-            <table:column id="c_ro_roda_CmsSnippet_cmsSnippetGroupId" property="cmsSnippetGroupId" z="ZxX4KLP8FqirPuN6KeNxYOnsTOs="/>
-            <table:column id="c_ro_roda_CmsSnippet_name" property="name" z="0bKWtR46NR00xUkR76BwTE4NvUI="/>
-            <table:column id="c_ro_roda_CmsSnippet_snippetContent" property="snippetContent" z="5uK8S0ORK6UGviw5yfRoFxo+WgQ="/>
+    <page:list id="pl_ro_roda_domain_CmsSnippet" items="${cmssnippets}" z="AxNfdvhHIhiswgG8uVHSA+4Nyi4=">
+        <table:table data="${cmssnippets}" id="l_ro_roda_domain_CmsSnippet" path="/cmssnippets" z="R0ongUiyo+McC4uJDZTplf/in1w=">
+            <table:column id="c_ro_roda_domain_CmsSnippet_cmsSnippetGroupId" property="cmsSnippetGroupId" z="8f8vySSUDHhM+F1dTKe8x+0eIZ0="/>
+            <table:column id="c_ro_roda_domain_CmsSnippet_name" property="name" z="YRVeP4YUXIusIhrfrOS1i9Nvppg="/>
+            <table:column id="c_ro_roda_domain_CmsSnippet_snippetContent" property="snippetContent" z="t4qkcb/7VLQgAKh4Z1NG6qO7QaY="/>
         </table:table>
     </page:list>
 </div>

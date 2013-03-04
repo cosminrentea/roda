@@ -4,8 +4,8 @@
 package ro.roda.service;
 
 import java.util.List;
-import ro.roda.OrgEmail;
-import ro.roda.OrgEmailPK;
+import ro.roda.domain.OrgEmail;
+import ro.roda.domain.OrgEmailPK;
 import ro.roda.service.OrgEmailService;
 
 privileged aspect OrgEmailService_Roo_Service {

@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.Keyword;
+import ro.roda.domain.Keyword;
 import ro.roda.service.InstanceKeywordService;
 import ro.roda.service.KeywordService;
 import ro.roda.service.StudyKeywordService;

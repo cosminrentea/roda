@@ -4,7 +4,7 @@
 package ro.roda.service;
 
 import java.util.List;
-import ro.roda.Scale;
+import ro.roda.domain.Scale;
 import ro.roda.service.ScaleService;
 
 privileged aspect ScaleService_Roo_Service {

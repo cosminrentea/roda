@@ -2,6 +2,6 @@ package ro.roda.service;
 
 import org.springframework.roo.addon.layers.service.RooService;
 
-@RooService(domainTypes = { ro.roda.PersonAddress.class })
+@RooService(domainTypes = { ro.roda.domain.PersonAddress.class })
 public interface PersonAddressService {
 }

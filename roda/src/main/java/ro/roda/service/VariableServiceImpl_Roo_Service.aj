@@ -6,7 +6,7 @@ package ro.roda.service;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.Variable;
+import ro.roda.domain.Variable;
 import ro.roda.service.VariableServiceImpl;
 
 privileged aspect VariableServiceImpl_Roo_Service {

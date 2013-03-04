@@ -2,9 +2,9 @@
 <div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <page:list id="pl_ro_roda_Regiontype" items="${regiontypes}" z="yQurhSViBMCESE1PHbMcCwLSUNo=">
-        <table:table data="${regiontypes}" id="l_ro_roda_Regiontype" path="/regiontypes" z="3vxlNWAI0Iq/0MvQmUDk0b7ll80=">
-            <table:column id="c_ro_roda_Regiontype_name" property="name" z="Myt97rc8DxkQAZii9jdSjoJw45k="/>
+    <page:list id="pl_ro_roda_domain_Regiontype" items="${regiontypes}" z="gAuFomiY8khIbWc42TlucrSnSe4=">
+        <table:table data="${regiontypes}" id="l_ro_roda_domain_Regiontype" path="/regiontypes" z="EshqAqBma8hrJb9Rrk3xibmZJwU=">
+            <table:column id="c_ro_roda_domain_Regiontype_name" property="name" z="z3KJnu5QKp7YHZEVqvMehGBnae4="/>
         </table:table>
     </page:list>
 </div>

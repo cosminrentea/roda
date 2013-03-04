@@ -6,9 +6,7 @@ package ro.roda.web;
 import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -18,11 +16,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.CatalogStudy;
-import ro.roda.CatalogStudyPK;
-import ro.roda.service.CatalogService;
+import ro.roda.domain.CatalogStudy;
+import ro.roda.domain.CatalogStudyPK;
 import ro.roda.service.CatalogStudyService;
-import ro.roda.service.StudyService;
 import ro.roda.web.CatalogStudyController;
 
 privileged aspect CatalogStudyController_Roo_Controller {
@@ -31,12 +27,6 @@ privileged aspect CatalogStudyController_Roo_Controller {
     
     @Autowired
     CatalogStudyService CatalogStudyController.catalogStudyService;
-    
-    @Autowired
-    CatalogService CatalogStudyController.catalogService;
-    
-    @Autowired
-    StudyService CatalogStudyController.studyService;
     
     @Autowired
     public CatalogStudyController.new(ConversionService conversionService) {
@@ -63,7 +53,6 @@ privileged aspect CatalogStudyController_Roo_Controller {
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String CatalogStudyController.show(@PathVariable("id") CatalogStudyPK id, Model uiModel) {
-        addDateTimeFormatPatterns(uiModel);
         uiModel.addAttribute("catalogstudy", catalogStudyService.findCatalogStudy(id));
         uiModel.addAttribute("itemId", conversionService.convert(id, String.class));
         return "catalogstudys/show";
@@ -80,7 +69,6 @@ privileged aspect CatalogStudyController_Roo_Controller {
         } else {
             uiModel.addAttribute("catalogstudys", catalogStudyService.findAllCatalogStudys());
         }
-        addDateTimeFormatPatterns(uiModel);
         return "catalogstudys/list";
     }
     
@@ -111,15 +99,8 @@ privileged aspect CatalogStudyController_Roo_Controller {
         return "redirect:/catalogstudys";
     }
     
-    void CatalogStudyController.addDateTimeFormatPatterns(Model uiModel) {
-        uiModel.addAttribute("catalogStudy_added_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
-    }
-    
     void CatalogStudyController.populateEditForm(Model uiModel, CatalogStudy catalogStudy) {
         uiModel.addAttribute("catalogStudy", catalogStudy);
-        addDateTimeFormatPatterns(uiModel);
-        uiModel.addAttribute("catalogs", catalogService.findAllCatalogs());
-        uiModel.addAttribute("studys", studyService.findAllStudys());
     }
     
     String CatalogStudyController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

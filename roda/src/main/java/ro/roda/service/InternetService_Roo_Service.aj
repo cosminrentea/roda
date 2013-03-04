@@ -4,7 +4,7 @@
 package ro.roda.service;
 
 import java.util.List;
-import ro.roda.Internet;
+import ro.roda.domain.Internet;
 import ro.roda.service.InternetService;
 
 privileged aspect InternetService_Roo_Service {

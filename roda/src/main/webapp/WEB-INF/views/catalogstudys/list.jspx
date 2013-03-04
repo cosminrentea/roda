@@ -2,11 +2,7 @@
 <div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <page:list id="pl_ro_roda_CatalogStudy" items="${catalogstudys}" z="wh4XHQdaPJvZMKeou6BDNDxtzcY=">
-        <table:table data="${catalogstudys}" id="l_ro_roda_CatalogStudy" path="/catalogstudys" z="bpyijb+EsNh4FZtt55Rh3O9WJmM=">
-            <table:column id="c_ro_roda_CatalogStudy_catalogId" property="catalogId" z="Wt8DAOt3CCJa4qxNNrO6fnbfncA="/>
-            <table:column id="c_ro_roda_CatalogStudy_studyId" property="studyId" z="Hl7hQYd+0YNvAeeBloV55xw/9e0="/>
-            <table:column calendar="true" dateTimePattern="${catalogStudy_added_date_format}" id="c_ro_roda_CatalogStudy_added" property="added" z="EbENVfmXI3IIn6s/Jn3iwmGJMoU="/>
-        </table:table>
+    <page:list id="pl_ro_roda_domain_CatalogStudy" items="${catalogstudys}" z="NfxQW1rqbMTeAzIfKdDr82BGeE8=">
+        <table:table data="${catalogstudys}" id="l_ro_roda_domain_CatalogStudy" path="/catalogstudys" z="IXhygHG7m67qx6NtocSmFo7WzR4="/>
     </page:list>
 </div>

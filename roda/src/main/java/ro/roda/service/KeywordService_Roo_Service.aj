@@ -4,7 +4,7 @@
 package ro.roda.service;
 
 import java.util.List;
-import ro.roda.Keyword;
+import ro.roda.domain.Keyword;
 import ro.roda.service.KeywordService;
 
 privileged aspect KeywordService_Roo_Service {

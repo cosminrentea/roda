@@ -2,12 +2,12 @@
 <div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <page:list id="pl_ro_roda_Scale" items="${scales}" z="KmfovYKx7gFLZROHDUobom35p/0=">
-        <table:table data="${scales}" id="l_ro_roda_Scale" path="/scales" typeIdFieldName="itemId" z="Dc4qVWnc6Q37dFaHC+fgKVjNyQE=">
-            <table:column id="c_ro_roda_Scale_item" property="item" z="chMNOXL4K3O5v5WiE+Ilw+mLKss="/>
-            <table:column id="c_ro_roda_Scale_maxValueId" property="maxValueId" z="JnNExusOSMt4b1kCYr09fbjiaeY="/>
-            <table:column id="c_ro_roda_Scale_minValueId" property="minValueId" z="fDTRLLyWv/SnGjDtmwzl1GmT7Mo="/>
-            <table:column id="c_ro_roda_Scale_units" property="units" z="4tN9J9ViYgdsgJsdzMa+ayQGOQ8="/>
+    <page:list id="pl_ro_roda_domain_Scale" items="${scales}" z="XoJCtOI9sdZgmVkcmm2x6NkuYUw=">
+        <table:table data="${scales}" id="l_ro_roda_domain_Scale" path="/scales" typeIdFieldName="itemId" z="F1leg6Q/Pk1r+vmIzbvEiQlWFhY=">
+            <table:column id="c_ro_roda_domain_Scale_item" property="item" z="KKsCTvWuXLtP4hQhGCkc1SKR2Kw="/>
+            <table:column id="c_ro_roda_domain_Scale_maxValueId" property="maxValueId" z="RLlPBWRaZQMmPqa2fbmZnVo9bFY="/>
+            <table:column id="c_ro_roda_domain_Scale_minValueId" property="minValueId" z="TamAWC2mqsH+HvFsyBDpUdLuPLQ="/>
+            <table:column id="c_ro_roda_domain_Scale_units" property="units" z="hbckB8MqywyxtKfY+wdnEnCDLG8="/>
         </table:table>
     </page:list>
 </div>

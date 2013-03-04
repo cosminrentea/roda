@@ -4,8 +4,8 @@
 package ro.roda.service;
 
 import java.util.List;
-import ro.roda.TranslatedTopic;
-import ro.roda.TranslatedTopicPK;
+import ro.roda.domain.TranslatedTopic;
+import ro.roda.domain.TranslatedTopicPK;
 import ro.roda.service.TranslatedTopicService;
 
 privileged aspect TranslatedTopicService_Roo_Service {

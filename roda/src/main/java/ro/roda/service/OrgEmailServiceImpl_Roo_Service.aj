@@ -6,8 +6,8 @@ package ro.roda.service;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.OrgEmail;
-import ro.roda.OrgEmailPK;
+import ro.roda.domain.OrgEmail;
+import ro.roda.domain.OrgEmailPK;
 import ro.roda.service.OrgEmailServiceImpl;
 
 privileged aspect OrgEmailServiceImpl_Roo_Service {

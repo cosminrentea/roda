@@ -6,7 +6,7 @@ package ro.roda.service;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.UserMessage;
+import ro.roda.domain.UserMessage;
 import ro.roda.service.UserMessageServiceImpl;
 
 privileged aspect UserMessageServiceImpl_Roo_Service {

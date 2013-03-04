@@ -6,7 +6,7 @@ package ro.roda.service;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.CmsSnippet;
+import ro.roda.domain.CmsSnippet;
 import ro.roda.service.CmsSnippetServiceImpl;
 
 privileged aspect CmsSnippetServiceImpl_Roo_Service {

@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.UnitAnalysis;
+import ro.roda.domain.UnitAnalysis;
 import ro.roda.service.InstanceService;
 import ro.roda.service.UnitAnalysisService;
 import ro.roda.web.UnitAnalysisController;

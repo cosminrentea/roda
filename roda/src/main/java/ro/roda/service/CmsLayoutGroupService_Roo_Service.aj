@@ -4,7 +4,7 @@
 package ro.roda.service;
 
 import java.util.List;
-import ro.roda.CmsLayoutGroup;
+import ro.roda.domain.CmsLayoutGroup;
 import ro.roda.service.CmsLayoutGroupService;
 
 privileged aspect CmsLayoutGroupService_Roo_Service {

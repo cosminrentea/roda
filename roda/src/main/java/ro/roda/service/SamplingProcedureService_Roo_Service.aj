@@ -4,7 +4,7 @@
 package ro.roda.service;
 
 import java.util.List;
-import ro.roda.SamplingProcedure;
+import ro.roda.domain.SamplingProcedure;
 import ro.roda.service.SamplingProcedureService;
 
 privileged aspect SamplingProcedureService_Roo_Service {

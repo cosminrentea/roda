@@ -6,7 +6,7 @@ package ro.roda.service;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.SourceContactMethod;
+import ro.roda.domain.SourceContactMethod;
 import ro.roda.service.SourceContactMethodServiceImpl;
 
 privileged aspect SourceContactMethodServiceImpl_Roo_Service {

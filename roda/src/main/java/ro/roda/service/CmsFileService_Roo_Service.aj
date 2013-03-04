@@ -4,7 +4,7 @@
 package ro.roda.service;
 
 import java.util.List;
-import ro.roda.CmsFile;
+import ro.roda.domain.CmsFile;
 import ro.roda.service.CmsFileService;
 
 privileged aspect CmsFileService_Roo_Service {

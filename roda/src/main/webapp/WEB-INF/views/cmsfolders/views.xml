@@ -13,7 +13,4 @@
 <definition extends="default" name="cmsfolders/update">
         <put-attribute name="body" value="/WEB-INF/views/cmsfolders/update.jspx"/>
     </definition>
-<definition extends="default" name="cmsfolders/findCmsFoldersByNameEquals">
-        <put-attribute name="body" value="/WEB-INF/views/cmsfolders/findCmsFoldersByNameEquals.jspx"/>
-    </definition>
 </tiles-definitions>

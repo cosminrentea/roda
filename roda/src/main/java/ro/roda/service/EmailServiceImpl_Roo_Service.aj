@@ -6,7 +6,7 @@ package ro.roda.service;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.Email;
+import ro.roda.domain.Email;
 import ro.roda.service.EmailServiceImpl;
 
 privileged aspect EmailServiceImpl_Roo_Service {

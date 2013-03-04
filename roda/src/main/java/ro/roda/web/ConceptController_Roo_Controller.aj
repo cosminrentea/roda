@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.Concept;
+import ro.roda.domain.Concept;
 import ro.roda.service.ConceptService;
 import ro.roda.service.VariableService;
 import ro.roda.web.ConceptController;

@@ -2,14 +2,14 @@
 <div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <form:update id="fu_ro_roda_CmsPage" modelAttribute="cmsPage" path="/cmspages" versionField="none" z="uRk8Ht7mUDr6hgVT4MBEpNPdRSY=">
-        <field:simple field="cmsPageContents" id="c_ro_roda_CmsPage_cmsPageContents" messageCode="entity_reference_not_managed" messageCodeAttribute="Cms Page Content" z="qvtonqtRdnuU/7WqWeaEhrTxuoA="/>
-        <field:select field="cmsLayoutId" id="c_ro_roda_CmsPage_cmsLayoutId" itemValue="id" items="${cmslayouts}" path="/cmslayouts" z="q8rB4ucUSQRtkQBPUibZmBVyBbQ="/>
-        <field:select field="cmsPageTypeId" id="c_ro_roda_CmsPage_cmsPageTypeId" itemValue="id" items="${cmspagetypes}" path="/cmspagetypes" z="CsHd93HEcA23VxKxMdTrUrTd7Qo="/>
-        <field:select field="ownerId" id="c_ro_roda_CmsPage_ownerId" itemValue="id" items="${rodausers}" path="/rodausers" z="pI3NoqpOwPCqMtApShKOR01Zny8="/>
-        <field:input field="name" id="c_ro_roda_CmsPage_name" required="true" z="grrqCgs6hCAI3B0Zj3hCZzPE3ZA="/>
-        <field:checkbox field="visible" id="c_ro_roda_CmsPage_visible" z="RsKABo8TdYR7ONJ1Zh4+HkPAc18="/>
-        <field:checkbox field="navigable" id="c_ro_roda_CmsPage_navigable" z="Bdy415pFiZXCZ9UPidb7FwfiaEo="/>
-        <field:input field="url" id="c_ro_roda_CmsPage_url" required="true" z="NdBNaeJRQygv6r0L2NbWII2euxA="/>
+    <form:update id="fu_ro_roda_domain_CmsPage" modelAttribute="cmsPage" path="/cmspages" versionField="none" z="XYo0b5g9sn+wr9ytm3VQrhS8D3M=">
+        <field:simple field="cmsPageContents" id="c_ro_roda_domain_CmsPage_cmsPageContents" messageCode="entity_reference_not_managed" messageCodeAttribute="Cms Page Content" z="i86f3mA8bizUePixi/mdFLMflJk="/>
+        <field:select field="cmsLayoutId" id="c_ro_roda_domain_CmsPage_cmsLayoutId" itemValue="id" items="${cmslayouts}" path="/cmslayouts" z="q0PUforSEgzIAfpHdtsfi2fikqw="/>
+        <field:select field="cmsPageTypeId" id="c_ro_roda_domain_CmsPage_cmsPageTypeId" itemValue="id" items="${cmspagetypes}" path="/cmspagetypes" z="nkrFje3Oz3t5/3Q9C7J3Mo/ENlE="/>
+        <field:select field="ownerId" id="c_ro_roda_domain_CmsPage_ownerId" itemValue="id" items="${rodausers}" path="/rodausers" z="b0QENObTqlCe9QT/ndZoqNl672M="/>
+        <field:input field="name" id="c_ro_roda_domain_CmsPage_name" required="true" z="7z6aaeyTCvWNYkdgYEFS5wILAGw="/>
+        <field:checkbox field="visible" id="c_ro_roda_domain_CmsPage_visible" z="2UG/Vm2gpMxfcj3+7oG068CJwME="/>
+        <field:checkbox field="navigable" id="c_ro_roda_domain_CmsPage_navigable" z="8MocoJM2qMs+ZsthGhIYHewYcPA="/>
+        <field:input field="url" id="c_ro_roda_domain_CmsPage_url" required="true" z="V6gnrYOkkJRiyU0cK6pV2a96TGM="/>
     </form:update>
 </div>

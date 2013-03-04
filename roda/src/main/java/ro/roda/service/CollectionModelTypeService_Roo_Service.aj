@@ -4,7 +4,7 @@
 package ro.roda.service;
 
 import java.util.List;
-import ro.roda.CollectionModelType;
+import ro.roda.domain.CollectionModelType;
 import ro.roda.service.CollectionModelTypeService;
 
 privileged aspect CollectionModelTypeService_Roo_Service {

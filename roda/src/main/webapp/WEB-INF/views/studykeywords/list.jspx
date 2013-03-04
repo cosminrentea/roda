@@ -2,12 +2,7 @@
 <div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <page:list id="pl_ro_roda_StudyKeyword" items="${studykeywords}" z="+EocdOB+AXRSvTtu8KGURSFc9RM=">
-        <table:table data="${studykeywords}" id="l_ro_roda_StudyKeyword" path="/studykeywords" z="HeQJ07GNG9lS0LNeUQ89wW4pmhU=">
-            <table:column id="c_ro_roda_StudyKeyword_keywordId" property="keywordId" z="fhfPDx7lc7o6blORfk6q/Lvt1iE="/>
-            <table:column id="c_ro_roda_StudyKeyword_addedBy" property="addedBy" z="A8gMfleNEFuGDffn5qm4JCilykA="/>
-            <table:column id="c_ro_roda_StudyKeyword_studyId" property="studyId" z="lg9CuzOR0BovMp8+/KY57nZRBFM="/>
-            <table:column calendar="true" dateTimePattern="${studyKeyword_added_date_format}" id="c_ro_roda_StudyKeyword_added" property="added" z="fTK4Z+jz73AEjMEaKH9ML75ISxc="/>
-        </table:table>
+    <page:list id="pl_ro_roda_domain_StudyKeyword" items="${studykeywords}" z="OWVClS+HfjYIWeXBoJqRGXbkyLo=">
+        <table:table data="${studykeywords}" id="l_ro_roda_domain_StudyKeyword" path="/studykeywords" z="azwI3TdiZLetZYQjkPPJWxZvAU4="/>
     </page:list>
 </div>

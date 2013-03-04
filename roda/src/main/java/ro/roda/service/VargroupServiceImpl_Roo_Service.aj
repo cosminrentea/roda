@@ -6,7 +6,7 @@ package ro.roda.service;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.Vargroup;
+import ro.roda.domain.Vargroup;
 import ro.roda.service.VargroupServiceImpl;
 
 privileged aspect VargroupServiceImpl_Roo_Service {

@@ -17,8 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.Instance;
-import ro.roda.Rodauser;
+import ro.roda.domain.Instance;
 import ro.roda.service.CollectionModelTypeService;
 import ro.roda.service.FileService;
 import ro.roda.service.FormService;
@@ -28,6 +27,7 @@ import ro.roda.service.InstanceKeywordService;
 import ro.roda.service.InstanceOrgService;
 import ro.roda.service.InstancePersonService;
 import ro.roda.service.InstanceService;
+import ro.roda.service.RodauserService;
 import ro.roda.service.SamplingProcedureService;
 import ro.roda.service.StudyService;
 import ro.roda.service.TimeMethTypeService;
@@ -64,6 +64,9 @@ privileged aspect InstanceController_Roo_Controller {
     
     @Autowired
     InstancePersonService InstanceController.instancePersonService;
+    
+    @Autowired
+    RodauserService InstanceController.rodauserService;
     
     @Autowired
     SamplingProcedureService InstanceController.samplingProcedureService;
@@ -167,7 +170,7 @@ privileged aspect InstanceController_Roo_Controller {
         uiModel.addAttribute("instancekeywords", instanceKeywordService.findAllInstanceKeywords());
         uiModel.addAttribute("instanceorgs", instanceOrgService.findAllInstanceOrgs());
         uiModel.addAttribute("instancepeople", instancePersonService.findAllInstancepeople());
-        uiModel.addAttribute("rodausers", Rodauser.findAllRodausers());
+        uiModel.addAttribute("rodausers", rodauserService.findAllRodausers());
         uiModel.addAttribute("samplingprocedures", samplingProcedureService.findAllSamplingProcedures());
         uiModel.addAttribute("studys", studyService.findAllStudys());
         uiModel.addAttribute("timemethtypes", timeMethTypeService.findAllTimeMethTypes());

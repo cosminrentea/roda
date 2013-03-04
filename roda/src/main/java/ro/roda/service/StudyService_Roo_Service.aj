@@ -4,7 +4,7 @@
 package ro.roda.service;
 
 import java.util.List;
-import ro.roda.Study;
+import ro.roda.domain.Study;
 import ro.roda.service.StudyService;
 
 privileged aspect StudyService_Roo_Service {

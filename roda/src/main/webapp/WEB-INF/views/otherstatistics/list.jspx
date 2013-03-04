@@ -2,12 +2,12 @@
 <div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <page:list id="pl_ro_roda_OtherStatistic" items="${otherstatistics}" z="s2uYCmud571YW4opA19Nev5ybzo=">
-        <table:table data="${otherstatistics}" id="l_ro_roda_OtherStatistic" path="/otherstatistics" z="m2RiidKnoHDzyIjigialB1Zvq/o=">
-            <table:column id="c_ro_roda_OtherStatistic_variableId" property="variableId" z="BSXqEMaQEmEORHVoWXR5SRV3KvU="/>
-            <table:column id="c_ro_roda_OtherStatistic_name" property="name" z="39cbkqeIe8IxfHZEvvuYzPyFW/I="/>
-            <table:column id="c_ro_roda_OtherStatistic_value" property="value" z="3xH43TMkhmLMu9KlWeiOVHdnSCc="/>
-            <table:column id="c_ro_roda_OtherStatistic_description" property="description" z="Zq0Ewo531DiVKNuBHlQuSzsTt9I="/>
+    <page:list id="pl_ro_roda_domain_OtherStatistic" items="${otherstatistics}" z="KJ1pTCZZKg2lSvrsz7cEo+7yvAM=">
+        <table:table data="${otherstatistics}" id="l_ro_roda_domain_OtherStatistic" path="/otherstatistics" z="FVk6Q0DdpfAk0Esm0An1i8Cinxs=">
+            <table:column id="c_ro_roda_domain_OtherStatistic_variableId" property="variableId" z="Q5ugsypHMvQPMrrk+SBEC4cJix0="/>
+            <table:column id="c_ro_roda_domain_OtherStatistic_name" property="name" z="ED0QBfHDD9woYj4Gx35wH8G28Kw="/>
+            <table:column id="c_ro_roda_domain_OtherStatistic_value" property="value" z="b1MSAAe/F2j5UN0sAd6jnegk6nc="/>
+            <table:column id="c_ro_roda_domain_OtherStatistic_description" property="description" z="s+2odbBeM9f3/NzcrPMvFOQ3UVM="/>
         </table:table>
     </page:list>
 </div>

@@ -2,7 +2,5 @@
 <div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <form:update id="fu_ro_roda_TranslatedTopic" modelAttribute="translatedTopic" path="/translatedtopics" versionField="none" z="de0b5ezKjY+zZ4ggvPUgYvmQE0Y=">
-        <field:input field="translation" id="c_ro_roda_TranslatedTopic_translation" required="true" z="UaFKBDoMasOtbgX4YVvb9X5KQxs="/>
-    </form:update>
+    <form:update id="fu_ro_roda_domain_TranslatedTopic" modelAttribute="translatedTopic" path="/translatedtopics" versionField="none" z="MYVQYU+d6E8zvKJ8DtzsvH8pDrM="/>
 </div>

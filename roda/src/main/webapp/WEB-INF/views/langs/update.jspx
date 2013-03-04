@@ -2,10 +2,10 @@
 <div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <form:update id="fu_ro_roda_Lang" modelAttribute="lang" path="/langs" versionField="none" z="G/rXtdfgrtx7gGSUNaA1EnMkZHo=">
-        <field:simple field="instanceDescrs" id="c_ro_roda_Lang_instanceDescrs" messageCode="entity_reference_not_managed" messageCodeAttribute="Instance Descr" z="rHmKbeTSmgR9SPUARAVf+R4cZeY="/>
-        <field:simple field="studyDescrs" id="c_ro_roda_Lang_studyDescrs" messageCode="entity_reference_not_managed" messageCodeAttribute="Study Descr" z="a2jnvkiDrxzX1dSFQzKfQplA3iI="/>
-        <field:simple field="translatedTopics" id="c_ro_roda_Lang_translatedTopics" messageCode="entity_reference_not_managed" messageCodeAttribute="Translated Topic" z="v8tnpfDHeIgoh5HqETTWvxYm04s="/>
-        <field:input field="name" id="c_ro_roda_Lang_name" required="true" z="kR5IHO17VZTv9jGtrV2yLU9W7Vs="/>
+    <form:update id="fu_ro_roda_domain_Lang" modelAttribute="lang" path="/langs" versionField="none" z="TXQPp6YZwe11ITfculaG/1bOjc8=">
+        <field:simple field="instanceDescrs" id="c_ro_roda_domain_Lang_instanceDescrs" messageCode="entity_reference_not_managed" messageCodeAttribute="Instance Descr" z="tibu9+zuGdpoyZ9K10E6kBJ2+vY="/>
+        <field:simple field="studyDescrs" id="c_ro_roda_domain_Lang_studyDescrs" messageCode="entity_reference_not_managed" messageCodeAttribute="Study Descr" z="RtdrPDexhusCcanhTN/+wNAVmwc="/>
+        <field:simple field="translatedTopics" id="c_ro_roda_domain_Lang_translatedTopics" messageCode="entity_reference_not_managed" messageCodeAttribute="Translated Topic" z="FeLBZtlcL03fphvz5WfvpQQo3xQ="/>
+        <field:input field="name" id="c_ro_roda_domain_Lang_name" required="true" z="GH9yviavlAbdjYGDmK1/XX8CZk0="/>
     </form:update>
 </div>

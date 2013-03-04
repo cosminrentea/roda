@@ -6,7 +6,7 @@ package ro.roda.service;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.PersonRole;
+import ro.roda.domain.PersonRole;
 import ro.roda.service.PersonRoleServiceImpl;
 
 privileged aspect PersonRoleServiceImpl_Roo_Service {

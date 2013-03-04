@@ -4,7 +4,7 @@
 package ro.roda.service;
 
 import java.util.List;
-import ro.roda.UserMessage;
+import ro.roda.domain.UserMessage;
 import ro.roda.service.UserMessageService;
 
 privileged aspect UserMessageService_Roo_Service {

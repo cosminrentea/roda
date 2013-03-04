@@ -2,8 +2,8 @@
 <div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <page:show id="ps_ro_roda_Source" object="${source}" path="/sources" z="HtQG7zzootwc2/8uUOtgcblGyuI=">
-        <field:display field="org" id="s_ro_roda_Source_org" object="${source}" z="ZXi5BlthLDCETelgexMTUq8tOf4="/>
-        <field:display field="sourcetypeId" id="s_ro_roda_Source_sourcetypeId" object="${source}" z="kI8IPhcq5YOFaZ3PEq0rctqaFgQ="/>
+    <page:show id="ps_ro_roda_domain_Source" object="${source}" path="/sources" z="Jj43GLY2OdvXhazmLWPi2cmyWuE=">
+        <field:display field="org" id="s_ro_roda_domain_Source_org" object="${source}" z="GXYfbXwyLdeDI54rumGN3RtdzAY="/>
+        <field:display field="sourcetypeId" id="s_ro_roda_domain_Source_sourcetypeId" object="${source}" z="aL8GSSx8UaRuP4qCKsfNvawaN6c="/>
     </page:show>
 </div>

@@ -2,14 +2,14 @@
 <div xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:spring="http://www.springframework.org/tags" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <form:create compositePkField="id" id="fc_ro_roda_StudyAcl" modelAttribute="studyAcl" path="/studyacls" render="${empty dependencies}" z="nw75WD2DbRIPGbdcjCZSFLG6HMg=">
-        <field:input disableFormBinding="true" field="id.studyId" id="c_ro_roda_StudyAcl_id_studyId" required="true" validationMessageCode="field_invalid_integer" z="dVEiBFIJGvTkUkXiYuCIHqWHmg8="/>
-        <field:input disableFormBinding="true" field="id.aroId" id="c_ro_roda_StudyAcl_id_aroId" required="true" validationMessageCode="field_invalid_integer" z="YVMG/0El4zYOvU6UvxSiqoWIjuo="/>
-        <field:input disableFormBinding="true" field="id.aroType" id="c_ro_roda_StudyAcl_id_aroType" required="true" validationMessageCode="field_invalid_integer" z="zQdmcwyN/RT3L8JCuf0rJNjFyok="/>
-        <field:checkbox field="read" id="c_ro_roda_StudyAcl_read" z="mn46fmXPd5dtEXkNZSMn29cAnzc="/>
-        <field:checkbox field="update" id="c_ro_roda_StudyAcl_update" z="XbMeP8iImKaO1mi2afp7afcH8Rg="/>
-        <field:checkbox field="delete" id="c_ro_roda_StudyAcl_delete" z="d5uptMiJ/5ZeBvM+KYDd6VYCxGI="/>
-        <field:checkbox field="modacl" id="c_ro_roda_StudyAcl_modacl" z="ahJFMkcXgxg88GXWVWDN2CmBz6Y="/>
+    <form:create compositePkField="id" id="fc_ro_roda_domain_StudyAcl" modelAttribute="studyAcl" path="/studyacls" render="${empty dependencies}" z="nJ/l2NAyukoAf6kop6ic8Fha8zQ=">
+        <field:input disableFormBinding="true" field="id.studyId" id="c_ro_roda_domain_StudyAcl_id_studyId" required="true" validationMessageCode="field_invalid_integer" z="McGMty2ukAWmnSyo2DM8hGQzJj0="/>
+        <field:input disableFormBinding="true" field="id.aroId" id="c_ro_roda_domain_StudyAcl_id_aroId" required="true" validationMessageCode="field_invalid_integer" z="RmZyWmviMGzbCL0PU5p5/DfsyZA="/>
+        <field:input disableFormBinding="true" field="id.aroType" id="c_ro_roda_domain_StudyAcl_id_aroType" required="true" validationMessageCode="field_invalid_integer" z="BpzCNNzm9EjKXd+CMdvkMC3rHd8="/>
+        <field:checkbox field="read" id="c_ro_roda_domain_StudyAcl_read" z="1nMSHdpntxqWrdHTSCggfZlFRjI="/>
+        <field:checkbox field="update" id="c_ro_roda_domain_StudyAcl_update" z="vCyOXtTWiOhokqmS2gCwAIeqldQ="/>
+        <field:checkbox field="delete" id="c_ro_roda_domain_StudyAcl_delete" z="Htr11xqmMB7TK/mkxMneJE7DF3M="/>
+        <field:checkbox field="modacl" id="c_ro_roda_domain_StudyAcl_modacl" z="vdWuyUHpVrE9l0bUhndjIzF4oAk="/>
     </form:create>
-    <form:dependency dependencies="${dependencies}" id="d_ro_roda_StudyAcl" render="${not empty dependencies}" z="zXal2N0RH3NumS0O4ItHFQqZ/nQ="/>
+    <form:dependency dependencies="${dependencies}" id="d_ro_roda_domain_StudyAcl" render="${not empty dependencies}" z="6FuHwj8rhBIt/hrXuY9RrKJRIcQ="/>
 </div>

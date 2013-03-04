@@ -2,6 +2,6 @@ package ro.roda.service;
 
 import org.springframework.roo.addon.layers.service.RooService;
 
-@RooService(domainTypes = { ro.roda.Source.class })
+@RooService(domainTypes = { ro.roda.domain.Source.class })
 public interface SourceService {
 }

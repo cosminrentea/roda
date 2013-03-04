@@ -16,9 +16,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.Rodauser;
-import ro.roda.UserAuthLog;
-import ro.roda.UserAuthLogPK;
+import ro.roda.domain.UserAuthLog;
+import ro.roda.domain.UserAuthLogPK;
 import ro.roda.service.UserAuthLogService;
 import ro.roda.web.UserAuthLogController;
 
@@ -102,7 +101,6 @@ privileged aspect UserAuthLogController_Roo_Controller {
     
     void UserAuthLogController.populateEditForm(Model uiModel, UserAuthLog userAuthLog) {
         uiModel.addAttribute("userAuthLog", userAuthLog);
-        uiModel.addAttribute("rodausers", Rodauser.findAllRodausers());
     }
     
     String UserAuthLogController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

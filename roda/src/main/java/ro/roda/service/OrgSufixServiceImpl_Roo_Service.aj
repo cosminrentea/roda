@@ -6,7 +6,7 @@ package ro.roda.service;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.OrgSufix;
+import ro.roda.domain.OrgSufix;
 import ro.roda.service.OrgSufixServiceImpl;
 
 privileged aspect OrgSufixServiceImpl_Roo_Service {

@@ -6,7 +6,7 @@ package ro.roda.service;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.File;
+import ro.roda.domain.File;
 import ro.roda.service.FileServiceImpl;
 
 privileged aspect FileServiceImpl_Roo_Service {

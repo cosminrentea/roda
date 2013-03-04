@@ -4,7 +4,7 @@
 package ro.roda.service;
 
 import java.util.List;
-import ro.roda.Instance;
+import ro.roda.domain.Instance;
 import ro.roda.service.InstanceService;
 
 privileged aspect InstanceService_Roo_Service {

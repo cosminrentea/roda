@@ -15,7 +15,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.OrgSufix;
+import ro.roda.domain.OrgSufix;
+import ro.roda.service.OrgService;
 import ro.roda.service.OrgSufixService;
 import ro.roda.web.OrgSufixController;
 
@@ -23,6 +24,9 @@ privileged aspect OrgSufixController_Roo_Controller {
     
     @Autowired
     OrgSufixService OrgSufixController.orgSufixService;
+    
+    @Autowired
+    OrgService OrgSufixController.orgService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String OrgSufixController.create(@Valid OrgSufix orgSufix, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -91,6 +95,7 @@ privileged aspect OrgSufixController_Roo_Controller {
     
     void OrgSufixController.populateEditForm(Model uiModel, OrgSufix orgSufix) {
         uiModel.addAttribute("orgSufix", orgSufix);
+        uiModel.addAttribute("orgs", orgService.findAllOrgs());
     }
     
     String OrgSufixController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

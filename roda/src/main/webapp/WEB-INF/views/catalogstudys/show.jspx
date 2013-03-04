@@ -2,9 +2,5 @@
 <div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <page:show id="ps_ro_roda_CatalogStudy" object="${catalogstudy}" path="/catalogstudys" z="vbjuRGRGPZQzAVkep0R/mEuK5wY=">
-        <field:display field="catalogId" id="s_ro_roda_CatalogStudy_catalogId" object="${catalogstudy}" z="IYyVKE6XlKjeV3MHEYTDTXPexkw="/>
-        <field:display field="studyId" id="s_ro_roda_CatalogStudy_studyId" object="${catalogstudy}" z="glP49UuLylbMyGLQQ/RbrkpiWog="/>
-        <field:display calendar="true" dateTimePattern="${catalogStudy_added_date_format}" field="added" id="s_ro_roda_CatalogStudy_added" object="${catalogstudy}" z="7SP67J/Ov7RlT8H/BBjR+BxN8Ng="/>
-    </page:show>
+    <page:show id="ps_ro_roda_domain_CatalogStudy" object="${catalogstudy}" path="/catalogstudys" z="nNy5BVPs+64LSLZAtkCvHAm65JI="/>
 </div>

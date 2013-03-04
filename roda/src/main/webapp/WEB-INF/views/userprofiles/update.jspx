@@ -2,10 +2,10 @@
 <div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <form:update id="fu_ro_roda_UserProfile" idField="userId" modelAttribute="userProfile" path="/userprofiles" versionField="none" z="T6joeBXTI31C8mHMD8jfU9xhXD4=">
-        <field:input field="fName" id="c_ro_roda_UserProfile_fName" required="true" z="sTKrpL8ghXDDHLgNOQLBlMv8fIM="/>
-        <field:input field="lName" id="c_ro_roda_UserProfile_lName" required="true" z="FtlJYq27o0I8xOUaQIjjhMuRmbA="/>
-        <field:input field="email" id="c_ro_roda_UserProfile_email" required="true" validationMessageCode="field_invalid_email" z="GKFg104ES4mBoUdGx8ZbqrDdguQ="/>
-        <field:select field="rodauser" id="c_ro_roda_UserProfile_rodauser" itemValue="id" items="${rodausers}" path="/rodausers" z="p9YHAKV/0WHRzE22F3qXx/ccxDI="/>
+    <form:update id="fu_ro_roda_domain_UserProfile" idField="userId" modelAttribute="userProfile" path="/userprofiles" versionField="none" z="e7i2AJ/d+OGl80THUYD5e12/91Q=">
+        <field:select field="rodauser" id="c_ro_roda_domain_UserProfile_rodauser" itemValue="id" items="${rodausers}" path="/rodausers" z="VAjbl9GZqPdRHcMRWh1FX9OeMGE="/>
+        <field:input field="fName" id="c_ro_roda_domain_UserProfile_fName" required="true" z="Fv66AguxljgZr/sSS2zuJE4ZSlQ="/>
+        <field:input field="lName" id="c_ro_roda_domain_UserProfile_lName" required="true" z="33H5pDVG23nDrXKoBLJX+LglC4w="/>
+        <field:input field="email" id="c_ro_roda_domain_UserProfile_email" required="true" validationMessageCode="field_invalid_email" z="qcaF8XS0dHgzNbRFMJi7sBzHEDA="/>
     </form:update>
 </div>

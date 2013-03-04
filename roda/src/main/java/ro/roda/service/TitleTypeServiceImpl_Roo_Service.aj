@@ -6,7 +6,7 @@ package ro.roda.service;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.TitleType;
+import ro.roda.domain.TitleType;
 import ro.roda.service.TitleTypeServiceImpl;
 
 privileged aspect TitleTypeServiceImpl_Roo_Service {

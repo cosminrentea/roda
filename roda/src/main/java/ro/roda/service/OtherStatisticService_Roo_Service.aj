@@ -4,7 +4,7 @@
 package ro.roda.service;
 
 import java.util.List;
-import ro.roda.OtherStatistic;
+import ro.roda.domain.OtherStatistic;
 import ro.roda.service.OtherStatisticService;
 
 privileged aspect OtherStatisticService_Roo_Service {

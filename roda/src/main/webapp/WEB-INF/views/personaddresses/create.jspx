@@ -2,11 +2,9 @@
 <div xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:spring="http://www.springframework.org/tags" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <form:create compositePkField="id" id="fc_ro_roda_PersonAddress" modelAttribute="personAddress" path="/personaddresses" render="${empty dependencies}" z="vgca9TlQ9jJQ+8mao/j4chlUSyU=">
-        <field:input disableFormBinding="true" field="id.personId" id="c_ro_roda_PersonAddress_id_personId" required="true" validationMessageCode="field_invalid_integer" z="XOwRsTAo7Lb2l+uj6mDijcEz9OE="/>
-        <field:input disableFormBinding="true" field="id.addressId" id="c_ro_roda_PersonAddress_id_addressId" required="true" validationMessageCode="field_invalid_integer" z="RlLnaR9Upqs1M0wH2Mrhh8wsRmo="/>
-        <field:datetime dateTimePattern="${personAddress_datestart_date_format}" field="datestart" id="c_ro_roda_PersonAddress_datestart" z="0tNgx9nJ/mvVe1CoU8WEzlhwd0s="/>
-        <field:datetime dateTimePattern="${personAddress_dateend_date_format}" field="dateend" id="c_ro_roda_PersonAddress_dateend" z="5t+4cx77ano4eqHa3fCTeQZoxNg="/>
+    <form:create compositePkField="id" id="fc_ro_roda_domain_PersonAddress" modelAttribute="personAddress" path="/personaddresses" render="${empty dependencies}" z="8lW+5+m4Y+N5paGyVm3WdJT4Ey8=">
+        <field:input disableFormBinding="true" field="id.personId" id="c_ro_roda_domain_PersonAddress_id_personId" required="true" validationMessageCode="field_invalid_integer" z="wLk0IgtVX7/GbunAvoXG2NIXLLo="/>
+        <field:input disableFormBinding="true" field="id.addressId" id="c_ro_roda_domain_PersonAddress_id_addressId" required="true" validationMessageCode="field_invalid_integer" z="LvnejvXavwAtEguI3MC3D86FceI="/>
     </form:create>
-    <form:dependency dependencies="${dependencies}" id="d_ro_roda_PersonAddress" render="${not empty dependencies}" z="xsuJmP6K5DXZ0u5wUI3eO0NxY9I="/>
+    <form:dependency dependencies="${dependencies}" id="d_ro_roda_domain_PersonAddress" render="${not empty dependencies}" z="rSXyzmuik3JryvJGr4FfFJAY2fY="/>
 </div>

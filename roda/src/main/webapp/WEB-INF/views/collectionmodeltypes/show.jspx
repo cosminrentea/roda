@@ -2,9 +2,9 @@
 <div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <page:show id="ps_ro_roda_CollectionModelType" object="${collectionmodeltype}" path="/collectionmodeltypes" z="01qcEw1HYiGemJMpYpmBFqU734U=">
-        <field:display field="instances" id="s_ro_roda_CollectionModelType_instances" object="${collectionmodeltype}" z="gc9xpz+UDAQiHULqfWzU26Z/83U="/>
-        <field:display field="name" id="s_ro_roda_CollectionModelType_name" object="${collectionmodeltype}" z="D44eg1FVUgbmkQrWEIazATr/TVo="/>
-        <field:display field="description" id="s_ro_roda_CollectionModelType_description" object="${collectionmodeltype}" z="CP+W2FwCzzMZCWez24qZ3pWJhys="/>
+    <page:show id="ps_ro_roda_domain_CollectionModelType" object="${collectionmodeltype}" path="/collectionmodeltypes" z="d/1560u2ciQyr/r1MRqnaaewh0k=">
+        <field:display field="instances" id="s_ro_roda_domain_CollectionModelType_instances" object="${collectionmodeltype}" z="IV88XZ41e2bFrRyQ1KZpcJoOw1c="/>
+        <field:display field="name" id="s_ro_roda_domain_CollectionModelType_name" object="${collectionmodeltype}" z="AByKLOnKcfvwQK6U6lWvrUfslTA="/>
+        <field:display field="description" id="s_ro_roda_domain_CollectionModelType_description" object="${collectionmodeltype}" z="bO5TI1qtMIZb36dQUCFhKVxEiYM="/>
     </page:show>
 </div>

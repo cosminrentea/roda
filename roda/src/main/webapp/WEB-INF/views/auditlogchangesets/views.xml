@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN" "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+<tiles-definitions>
+    <definition extends="default" name="auditlogchangesets/list">
+        <put-attribute name="body" value="/WEB-INF/views/auditlogchangesets/list.jspx"/>
+    </definition>
+<definition extends="default" name="auditlogchangesets/show">
+        <put-attribute name="body" value="/WEB-INF/views/auditlogchangesets/show.jspx"/>
+    </definition>
+<definition extends="default" name="auditlogchangesets/create">
+        <put-attribute name="body" value="/WEB-INF/views/auditlogchangesets/create.jspx"/>
+    </definition>
+<definition extends="default" name="auditlogchangesets/update">
+        <put-attribute name="body" value="/WEB-INF/views/auditlogchangesets/update.jspx"/>
+    </definition>
+</tiles-definitions>

@@ -2,9 +2,9 @@
 <div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <page:show id="ps_ro_roda_CmsLayoutGroup" object="${cmslayoutgroup}" path="/cmslayoutgroups" z="AHabWjdBLkS6G4X7GUHWRvbXeeU=">
-        <field:display field="parentId" id="s_ro_roda_CmsLayoutGroup_parentId" object="${cmslayoutgroup}" z="gyRKz8fWUI0sE1RVG6fqBrgCDJU="/>
-        <field:display field="name" id="s_ro_roda_CmsLayoutGroup_name" object="${cmslayoutgroup}" z="EAXJQ/EXMbiapAIgYx+r9z9zByI="/>
-        <field:display field="description" id="s_ro_roda_CmsLayoutGroup_description" object="${cmslayoutgroup}" z="CvkPqqvzYfSxLIAc9Yv86Gp98ko="/>
+    <page:show id="ps_ro_roda_domain_CmsLayoutGroup" object="${cmslayoutgroup}" path="/cmslayoutgroups" z="g+tJeb3p3r2zooo03BsyIeaJfNM=">
+        <field:display field="name" id="s_ro_roda_domain_CmsLayoutGroup_name" object="${cmslayoutgroup}" z="ehoNuIsVh+xuTXQxA0nP4vcUB6M="/>
+        <field:display field="parentId" id="s_ro_roda_domain_CmsLayoutGroup_parentId" object="${cmslayoutgroup}" z="igR+1qa5UMceIdHwdqEr8XHQSFo="/>
+        <field:display field="description" id="s_ro_roda_domain_CmsLayoutGroup_description" object="${cmslayoutgroup}" z="vf90SbyEGShhdXISekz2uwqhNqY="/>
     </page:show>
 </div>

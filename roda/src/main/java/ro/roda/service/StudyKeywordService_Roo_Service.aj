@@ -4,8 +4,8 @@
 package ro.roda.service;
 
 import java.util.List;
-import ro.roda.StudyKeyword;
-import ro.roda.StudyKeywordPK;
+import ro.roda.domain.StudyKeyword;
+import ro.roda.domain.StudyKeywordPK;
 import ro.roda.service.StudyKeywordService;
 
 privileged aspect StudyKeywordService_Roo_Service {

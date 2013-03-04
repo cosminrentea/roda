@@ -6,8 +6,8 @@ package ro.roda.service;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.InstanceAcl;
-import ro.roda.InstanceAclPK;
+import ro.roda.domain.InstanceAcl;
+import ro.roda.domain.InstanceAclPK;
 import ro.roda.service.InstanceAclServiceImpl;
 
 privileged aspect InstanceAclServiceImpl_Roo_Service {

@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.CmsFile;
+import ro.roda.domain.CmsFile;
 import ro.roda.service.CmsFileService;
 import ro.roda.web.CmsFileController;
 

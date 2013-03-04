@@ -6,8 +6,8 @@ package ro.roda.service;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.SelectionVariableItem;
-import ro.roda.SelectionVariableItemPK;
+import ro.roda.domain.SelectionVariableItem;
+import ro.roda.domain.SelectionVariableItemPK;
 import ro.roda.service.SelectionVariableItemServiceImpl;
 
 privileged aspect SelectionVariableItemServiceImpl_Roo_Service {

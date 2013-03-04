@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.SourceContacts;
+import ro.roda.domain.SourceContacts;
 import ro.roda.service.PersonService;
 import ro.roda.service.SourceContactMethodService;
 import ro.roda.service.SourceContactsService;

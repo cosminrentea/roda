@@ -4,8 +4,8 @@
 package ro.roda.service;
 
 import java.util.List;
-import ro.roda.CatalogStudy;
-import ro.roda.CatalogStudyPK;
+import ro.roda.domain.CatalogStudy;
+import ro.roda.domain.CatalogStudyPK;
 import ro.roda.service.CatalogStudyService;
 
 privileged aspect CatalogStudyService_Roo_Service {

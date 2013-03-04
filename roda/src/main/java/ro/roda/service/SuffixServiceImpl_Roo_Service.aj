@@ -6,7 +6,7 @@ package ro.roda.service;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.Suffix;
+import ro.roda.domain.Suffix;
 import ro.roda.service.SuffixServiceImpl;
 
 privileged aspect SuffixServiceImpl_Roo_Service {

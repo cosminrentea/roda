@@ -2,7 +2,7 @@
 <div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <form:update id="fu_ro_roda_OrgInternet" modelAttribute="orgInternet" path="/orginternets" versionField="none" z="O46pFiwDTxe3/zlTIFX279jKahA=">
-        <field:checkbox field="main" id="c_ro_roda_OrgInternet_main" z="Z+fLgi/7H/O3BFg2bUE46OeGU/I="/>
+    <form:update id="fu_ro_roda_domain_OrgInternet" modelAttribute="orgInternet" path="/orginternets" versionField="none" z="AEODObVrRY3JVTyE7Dmea6YoVfI=">
+        <field:checkbox field="main" id="c_ro_roda_domain_OrgInternet_main" z="Wgvu2BV9ULz3Q7mNfEwjQ1xV7i4="/>
     </form:update>
 </div>

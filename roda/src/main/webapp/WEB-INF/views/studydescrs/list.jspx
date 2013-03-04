@@ -2,14 +2,14 @@
 <div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <page:list id="pl_ro_roda_StudyDescr" items="${studydescrs}" z="9pfHKCFaGbg3ZqmCwrmrH4j7HeA=">
-        <table:table data="${studydescrs}" id="l_ro_roda_StudyDescr" path="/studydescrs" z="0BeYITNLKefAdnOAVNPcsJN+Chg=">
-            <table:column id="c_ro_roda_StudyDescr_langId" property="langId" z="SrB+1xhcLbAQGCQVqhge5HtYUH8="/>
-            <table:column id="c_ro_roda_StudyDescr_studyId" property="studyId" z="PtBRcpFeh5wjHDPWtg0AXJtML38="/>
-            <table:column id="c_ro_roda_StudyDescr_titleTypeId" property="titleTypeId" z="EB3KGP1zwBm1vUQOmkBHkAHc8cU="/>
-            <table:column id="c_ro_roda_StudyDescr_abstract1" property="abstract1" z="MRrZZuiNXD5ZpaINkWsN1velJDY="/>
-            <table:column id="c_ro_roda_StudyDescr_grantDetails" property="grantDetails" z="7F77bC8mjPT44b7TsxRtI+QEV1U="/>
-            <table:column id="c_ro_roda_StudyDescr_title" property="title" z="tdd0CZpVGKDeObdXAMyriQtg2xk="/>
+    <page:list id="pl_ro_roda_domain_StudyDescr" items="${studydescrs}" z="VSsIGplz68lJb7AHatf344is/LQ=">
+        <table:table data="${studydescrs}" id="l_ro_roda_domain_StudyDescr" path="/studydescrs" z="Xk9Gdvsr0ewP1LGzyTXvT7oXpf0=">
+            <table:column id="c_ro_roda_domain_StudyDescr_langId" property="langId" z="/plqF6pSz+okP5YJCha2gxFtKxM="/>
+            <table:column id="c_ro_roda_domain_StudyDescr_studyId" property="studyId" z="eS/olWLeh+olCR5IDZbiqTIZIs0="/>
+            <table:column id="c_ro_roda_domain_StudyDescr_titleTypeId" property="titleTypeId" z="yc2jSTMUHsl/Vfn8W91oYspAUZQ="/>
+            <table:column id="c_ro_roda_domain_StudyDescr_abstract1" property="abstract1" z="OXz1Ds43jTaNOPWCPeSiVCuXuow="/>
+            <table:column id="c_ro_roda_domain_StudyDescr_grantDetails" property="grantDetails" z="7HOlFl4n0oZZZ9t6R3D1Vc+rLEs="/>
+            <table:column id="c_ro_roda_domain_StudyDescr_title" property="title" z="r7qtLAIq2VewZyxaHfPGlZIjFyQ="/>
         </table:table>
     </page:list>
 </div>

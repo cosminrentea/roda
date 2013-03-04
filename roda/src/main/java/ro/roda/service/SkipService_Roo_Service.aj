@@ -4,7 +4,7 @@
 package ro.roda.service;
 
 import java.util.List;
-import ro.roda.Skip;
+import ro.roda.domain.Skip;
 import ro.roda.service.SkipService;
 
 privileged aspect SkipService_Roo_Service {

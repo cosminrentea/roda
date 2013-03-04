@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.AclClass;
+import ro.roda.domain.AclClass;
 import ro.roda.service.AclClassService;
 import ro.roda.service.AclObjectIdentityService;
 import ro.roda.web.AclClassController;

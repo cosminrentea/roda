@@ -4,8 +4,8 @@
 package ro.roda.service;
 
 import java.util.List;
-import ro.roda.CmsFilePropertyNameValue;
-import ro.roda.CmsFilePropertyNameValuePK;
+import ro.roda.domain.CmsFilePropertyNameValue;
+import ro.roda.domain.CmsFilePropertyNameValuePK;
 import ro.roda.service.CmsFilePropertyNameValueService;
 
 privileged aspect CmsFilePropertyNameValueService_Roo_Service {

@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.FilePropertyNameValue;
-import ro.roda.FilePropertyNameValuePK;
+import ro.roda.domain.FilePropertyNameValue;
+import ro.roda.domain.FilePropertyNameValuePK;
 import ro.roda.service.FilePropertyNameValueService;
 import ro.roda.web.FilePropertyNameValueController;
 

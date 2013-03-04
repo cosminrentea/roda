@@ -4,7 +4,7 @@
 package ro.roda.service;
 
 import java.util.List;
-import ro.roda.OrgRelationType;
+import ro.roda.domain.OrgRelationType;
 import ro.roda.service.OrgRelationTypeService;
 
 privileged aspect OrgRelationTypeService_Roo_Service {

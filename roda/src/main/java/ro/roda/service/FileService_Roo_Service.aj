@@ -4,7 +4,7 @@
 package ro.roda.service;
 
 import java.util.List;
-import ro.roda.File;
+import ro.roda.domain.File;
 import ro.roda.service.FileService;
 
 privileged aspect FileService_Roo_Service {

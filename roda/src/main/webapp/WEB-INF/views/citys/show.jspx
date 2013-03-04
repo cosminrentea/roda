@@ -2,15 +2,15 @@
 <div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <page:show id="ps_ro_roda_City" object="${city}" path="/citys" z="h0Y3Snfk4mPt0CJIPLvp5T4GEPs=">
-        <field:display field="regions" id="s_ro_roda_City_regions" object="${city}" z="oFodDCC0eLqOnA/32kPilfAYKN8="/>
-        <field:display field="countryId" id="s_ro_roda_City_countryId" object="${city}" z="MMZv5TCIZbBj444OFtf/4KdyTqM="/>
-        <field:display field="name" id="s_ro_roda_City_name" object="${city}" z="D98iGmeIRkK8eT47PxrZIlqGooY="/>
-        <field:display field="cityCode" id="s_ro_roda_City_cityCode" object="${city}" z="lednVRdj71cyz821pLCXW6RB/lk="/>
-        <field:display field="cityCodeName" id="s_ro_roda_City_cityCodeName" object="${city}" z="T4G7GbW2oXjymBk0Pi3kCZ5uD6I="/>
-        <field:display field="cityCodeSup" id="s_ro_roda_City_cityCodeSup" object="${city}" z="dxWhkxrkQpM9rX5NkoIBkrAzrBY="/>
-        <field:display field="prefix" id="s_ro_roda_City_prefix" object="${city}" z="8tSCTa0Le10ICHUs8KxmI6mf8Gk="/>
-        <field:display field="cityType" id="s_ro_roda_City_cityType" object="${city}" z="Ft6XEJlPkxU023ts3CVctXSwTbE="/>
-        <field:display field="cityTypeSystem" id="s_ro_roda_City_cityTypeSystem" object="${city}" z="bIywNKQWG44BHom+u554/a+DSBY="/>
+    <page:show id="ps_ro_roda_domain_City" object="${city}" path="/citys" z="Zvb0mtRbBvSJjrp04udFnkTpO/s=">
+        <field:display field="regions" id="s_ro_roda_domain_City_regions" object="${city}" z="zvUAS1nltxJt3VBGupRE3evcVo4="/>
+        <field:display field="countryId" id="s_ro_roda_domain_City_countryId" object="${city}" z="+inETUx7Tmx+s6ZUuSjC9qa/i84="/>
+        <field:display field="name" id="s_ro_roda_domain_City_name" object="${city}" z="iR+KyWJH0bq3Tn07/KVH5qmT3As="/>
+        <field:display field="cityCode" id="s_ro_roda_domain_City_cityCode" object="${city}" z="iIn4lO/GrbKBTny3CShZzmYSpfQ="/>
+        <field:display field="cityCodeName" id="s_ro_roda_domain_City_cityCodeName" object="${city}" z="ThJpd052q9HPDPIixEAMHpiinVs="/>
+        <field:display field="cityCodeSup" id="s_ro_roda_domain_City_cityCodeSup" object="${city}" z="3CAXUaMcc31ce500YytcV2jYRQY="/>
+        <field:display field="prefix" id="s_ro_roda_domain_City_prefix" object="${city}" z="eAyOi3+9opjSm8O3tnPwRFQYa/w="/>
+        <field:display field="cityType" id="s_ro_roda_domain_City_cityType" object="${city}" z="ILqHmr05s/A9dhRol7fTl1JIRlo="/>
+        <field:display field="cityTypeSystem" id="s_ro_roda_domain_City_cityTypeSystem" object="${city}" z="VC/z0jBaU8MHgeZrMFHiRWjqZXI="/>
     </page:show>
 </div>

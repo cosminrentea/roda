@@ -2,11 +2,11 @@
 <div xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:spring="http://www.springframework.org/tags" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <form:create id="fc_ro_roda_CmsFolder" modelAttribute="cmsFolder" path="/cmsfolders" render="${empty dependencies}" z="acnOqb2mwXRR4UknGHh9rLFCrEU=">
-        <field:simple field="cmsFiles" id="c_ro_roda_CmsFolder_cmsFiles" messageCode="entity_reference_not_managed" messageCodeAttribute="Cms File" z="7FHs7s9izXGmNgI9IFbyhSoq/KU="/>
-        <field:input field="parentId" id="c_ro_roda_CmsFolder_parentId" validationMessageCode="field_invalid_integer" z="j2mCFP23JRwnvlZQg+ID0r/TJtw="/>
-        <field:input field="name" id="c_ro_roda_CmsFolder_name" required="true" z="ABGBkJjbp5rr8OfAoB4upzA0/94="/>
-        <field:input field="description" id="c_ro_roda_CmsFolder_description" z="GPPxom6YqSaicaNNSnYhZnu/zDo="/>
+    <form:create id="fc_ro_roda_domain_CmsFolder" modelAttribute="cmsFolder" path="/cmsfolders" render="${empty dependencies}" z="EGlWTN0Y//WcCfYw+JvrWjIXm5A=">
+        <field:simple field="cmsFiles" id="c_ro_roda_domain_CmsFolder_cmsFiles" messageCode="entity_reference_not_managed" messageCodeAttribute="Cms File" z="VOkODcIU48bsWqHcnxScjSlNmys="/>
+        <field:input field="name" id="c_ro_roda_domain_CmsFolder_name" required="true" z="ZQs/guapRGjf2YIAr+/mgpNzP9w="/>
+        <field:input field="parentId" id="c_ro_roda_domain_CmsFolder_parentId" validationMessageCode="field_invalid_integer" z="/ApGX5Fe67cMme6OoJFs1cs3KbY="/>
+        <field:input field="description" id="c_ro_roda_domain_CmsFolder_description" z="KneFfNsuHQh+36vPMv7233Gn5cA="/>
     </form:create>
-    <form:dependency dependencies="${dependencies}" id="d_ro_roda_CmsFolder" render="${not empty dependencies}" z="LvTjZjEd1znHv2HGA4iYFLHylyQ="/>
+    <form:dependency dependencies="${dependencies}" id="d_ro_roda_domain_CmsFolder" render="${not empty dependencies}" z="1IgIHaTwuBOQyhRQjCkaTBWkfgY="/>
 </div>

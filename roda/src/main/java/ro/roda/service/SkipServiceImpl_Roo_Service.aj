@@ -6,7 +6,7 @@ package ro.roda.service;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.Skip;
+import ro.roda.domain.Skip;
 import ro.roda.service.SkipServiceImpl;
 
 privileged aspect SkipServiceImpl_Roo_Service {

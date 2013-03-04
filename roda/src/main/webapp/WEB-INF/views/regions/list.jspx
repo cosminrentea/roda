@@ -2,14 +2,14 @@
 <div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <page:list id="pl_ro_roda_Region" items="${regions}" z="9BbIyCClXFGn3vO335Bcd7X3pXE=">
-        <table:table data="${regions}" id="l_ro_roda_Region" path="/regions" z="90hOIICDfk8JDYjlBJI7LH9YIEQ=">
-            <table:column id="c_ro_roda_Region_cities" property="cities" z="ze/+bshnLcs2d3iCSzKfPJkUGEc="/>
-            <table:column id="c_ro_roda_Region_countryId" property="countryId" z="QubgJ5GbcB05HnhIls42+ZvQze4="/>
-            <table:column id="c_ro_roda_Region_regiontypeId" property="regiontypeId" z="+FxOuzels/qn4tO5wfrScCxcGMU="/>
-            <table:column id="c_ro_roda_Region_name" property="name" z="pScy+TEL7BIk3ebMN+0TcXd/wVs="/>
-            <table:column id="c_ro_roda_Region_regionCode" property="regionCode" z="MYbSnx853rZ4T3Vo3Nd9sFGf8OM="/>
-            <table:column id="c_ro_roda_Region_regionCodeName" property="regionCodeName" z="ThGYv5yaSz761miA3pnTSc9K7og="/>
+    <page:list id="pl_ro_roda_domain_Region" items="${regions}" z="QhfTWgHI0EUi0wYbc6KWU+oq8vw=">
+        <table:table data="${regions}" id="l_ro_roda_domain_Region" path="/regions" z="i/dR4JR485ka4Ehn3A1QH990+AE=">
+            <table:column id="c_ro_roda_domain_Region_cities" property="cities" z="xMNslBJfLV+/JVXMu4u0nmbuVWY="/>
+            <table:column id="c_ro_roda_domain_Region_countryId" property="countryId" z="0Gtqa/syTjRr+CIQhRPrdv/qbUk="/>
+            <table:column id="c_ro_roda_domain_Region_regiontypeId" property="regiontypeId" z="CLPX8/gbVOcWccOuLP7iwxmtxkw="/>
+            <table:column id="c_ro_roda_domain_Region_name" property="name" z="mgUCtS8hHHC0f9LJy7Ebpizslww="/>
+            <table:column id="c_ro_roda_domain_Region_regionCode" property="regionCode" z="NO8/EdVpBygrvXSKQwHTt+81dYY="/>
+            <table:column id="c_ro_roda_domain_Region_regionCodeName" property="regionCodeName" z="uJgERT+o6zZB+V/r65hK1ddMdC4="/>
         </table:table>
     </page:list>
 </div>

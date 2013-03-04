@@ -2,9 +2,9 @@
 <div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <page:list id="pl_ro_roda_SourceContactMethod" items="${sourcecontactmethods}" z="fE7skcVAg9kGOuCCJZEL62ZOda0=">
-        <table:table data="${sourcecontactmethods}" id="l_ro_roda_SourceContactMethod" path="/sourcecontactmethods" z="LLF5+S/2rfxrimteTl1PGGhIy7o=">
-            <table:column id="c_ro_roda_SourceContactMethod_name" property="name" z="HinmFYNmBwHkP9XRcp9d9Oux/g8="/>
+    <page:list id="pl_ro_roda_domain_SourceContactMethod" items="${sourcecontactmethods}" z="NSL8V3gmWkX8tgoMKkDewY71yJI=">
+        <table:table data="${sourcecontactmethods}" id="l_ro_roda_domain_SourceContactMethod" path="/sourcecontactmethods" z="O2phB8BLzaRXM81w5OqBwvSAljQ=">
+            <table:column id="c_ro_roda_domain_SourceContactMethod_name" property="name" z="O3cQ1xABdrRXfcx8r1FiW3NdH/w="/>
         </table:table>
     </page:list>
 </div>

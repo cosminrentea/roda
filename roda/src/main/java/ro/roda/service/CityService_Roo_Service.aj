@@ -4,7 +4,7 @@
 package ro.roda.service;
 
 import java.util.List;
-import ro.roda.City;
+import ro.roda.domain.City;
 import ro.roda.service.CityService;
 
 privileged aspect CityService_Roo_Service {

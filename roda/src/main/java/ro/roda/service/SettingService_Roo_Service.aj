@@ -4,7 +4,7 @@
 package ro.roda.service;
 
 import java.util.List;
-import ro.roda.Setting;
+import ro.roda.domain.Setting;
 import ro.roda.service.SettingService;
 
 privileged aspect SettingService_Roo_Service {

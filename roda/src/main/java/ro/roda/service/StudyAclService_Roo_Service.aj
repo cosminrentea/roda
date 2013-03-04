@@ -4,8 +4,8 @@
 package ro.roda.service;
 
 import java.util.List;
-import ro.roda.StudyAcl;
-import ro.roda.StudyAclPK;
+import ro.roda.domain.StudyAcl;
+import ro.roda.domain.StudyAclPK;
 import ro.roda.service.StudyAclService;
 
 privileged aspect StudyAclService_Roo_Service {

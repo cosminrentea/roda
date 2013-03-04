@@ -15,26 +15,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.AclObjectIdentity;
-import ro.roda.service.AclClassService;
-import ro.roda.service.AclEntryService;
+import ro.roda.domain.AclObjectIdentity;
 import ro.roda.service.AclObjectIdentityService;
-import ro.roda.service.AclSidService;
 import ro.roda.web.AclObjectIdentityController;
 
 privileged aspect AclObjectIdentityController_Roo_Controller {
     
     @Autowired
     AclObjectIdentityService AclObjectIdentityController.aclObjectIdentityService;
-    
-    @Autowired
-    AclClassService AclObjectIdentityController.aclClassService;
-    
-    @Autowired
-    AclEntryService AclObjectIdentityController.aclEntryService;
-    
-    @Autowired
-    AclSidService AclObjectIdentityController.aclSidService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String AclObjectIdentityController.create(@Valid AclObjectIdentity aclObjectIdentity, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -103,10 +91,6 @@ privileged aspect AclObjectIdentityController_Roo_Controller {
     
     void AclObjectIdentityController.populateEditForm(Model uiModel, AclObjectIdentity aclObjectIdentity) {
         uiModel.addAttribute("aclObjectIdentity", aclObjectIdentity);
-        uiModel.addAttribute("aclclasses", aclClassService.findAllAclClasses());
-        uiModel.addAttribute("aclentrys", aclEntryService.findAllAclEntrys());
-        uiModel.addAttribute("aclobjectidentitys", aclObjectIdentityService.findAllAclObjectIdentitys());
-        uiModel.addAttribute("aclsids", aclSidService.findAllAclSids());
     }
     
     String AclObjectIdentityController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

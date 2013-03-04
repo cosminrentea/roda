@@ -2,10 +2,10 @@
 <div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <form:update id="fu_ro_roda_Sourcetype" modelAttribute="sourcetype" path="/sourcetypes" versionField="none" z="jwDBHD0l5+FfZsvcspbzdo0POUg=">
-        <field:simple field="sources" id="c_ro_roda_Sourcetype_sources" messageCode="entity_reference_not_managed" messageCodeAttribute="Source" z="AQOWCDjK0csc7M9NVhZuFuU2xDo="/>
-        <field:simple field="sourcetypeHistories" id="c_ro_roda_Sourcetype_sourcetypeHistories" messageCode="entity_reference_not_managed" messageCodeAttribute="Sourcetype History" z="20SZH4ACM+KcDfuITGiubtDHus8="/>
-        <field:input field="name" id="c_ro_roda_Sourcetype_name" required="true" z="3pbFB/Z+mn2ilYgLVnNhudlfrvs="/>
-        <field:input field="description" id="c_ro_roda_Sourcetype_description" z="fFn2+qSpdKb8C/eF8AiwtnL57fQ="/>
+    <form:update id="fu_ro_roda_domain_Sourcetype" modelAttribute="sourcetype" path="/sourcetypes" versionField="none" z="6L7DsyQo0Grq3U4q0AmUBCZ8qzk=">
+        <field:simple field="sources" id="c_ro_roda_domain_Sourcetype_sources" messageCode="entity_reference_not_managed" messageCodeAttribute="Source" z="2ynmagyTPMIbNz+xUDyqh+XEoak="/>
+        <field:simple field="sourcetypeHistories" id="c_ro_roda_domain_Sourcetype_sourcetypeHistories" messageCode="entity_reference_not_managed" messageCodeAttribute="Sourcetype History" z="76jNlvBM+eFaEZvq3CPyGl7yg8E="/>
+        <field:input field="name" id="c_ro_roda_domain_Sourcetype_name" required="true" z="+zhndkLPzDgn/VWlby0FHB2hru0="/>
+        <field:input field="description" id="c_ro_roda_domain_Sourcetype_description" z="plgmRO47Bp41qvhGLZM38k7Aq1c="/>
     </form:update>
 </div>

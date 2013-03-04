@@ -2,12 +2,12 @@
 <div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <form:update id="fu_ro_roda_UserSetting" modelAttribute="userSetting" path="/usersettings" versionField="none" z="+MyKcqLAvPcIvi8VYCCrYxe0jPs=">
-        <field:simple field="userSettingValues" id="c_ro_roda_UserSetting_userSettingValues" messageCode="entity_reference_not_managed" messageCodeAttribute="User Setting Value" z="6ZKtlx0UD5S8OQn7K5rUL7tZV1c="/>
-        <field:select field="settingGroup" id="c_ro_roda_UserSetting_settingGroup" itemValue="id" items="${usersettinggroups}" path="/usersettinggroups" z="RlZLMjJ+cbhlBGfdtCLnoMd2q9o="/>
-        <field:input field="name" id="c_ro_roda_UserSetting_name" required="true" z="I9+PG8xFN8uc27JFfdB35bTtZtk="/>
-        <field:input field="description" id="c_ro_roda_UserSetting_description" z="oeu6+bi4VUCEaiY2+O7hKrcoHIM="/>
-        <field:input field="predefinedValues" id="c_ro_roda_UserSetting_predefinedValues" z="8jBETOV89fQlNRtHVxc71CGqHIs="/>
-        <field:input field="defaultValue" id="c_ro_roda_UserSetting_defaultValue" z="yNJwvKqSvzUj1O+EShpU3H1X0wU="/>
+    <form:update id="fu_ro_roda_domain_UserSetting" modelAttribute="userSetting" path="/usersettings" versionField="none" z="SfiKP9rLmdT/hEfINzBWZ+Tl/S4=">
+        <field:simple field="userSettingValues" id="c_ro_roda_domain_UserSetting_userSettingValues" messageCode="entity_reference_not_managed" messageCodeAttribute="User Setting Value" z="PgtytuJs2u1O8CI3/q0LfXNuQiM="/>
+        <field:select field="settingGroup" id="c_ro_roda_domain_UserSetting_settingGroup" itemValue="id" items="${usersettinggroups}" path="/usersettinggroups" z="gaS1vAVhmnMW1K3u2TrRGjYP0p8="/>
+        <field:input field="name" id="c_ro_roda_domain_UserSetting_name" required="true" z="lcQy+r0UC64p4pyuiVhnVs9ZxP8="/>
+        <field:input field="description" id="c_ro_roda_domain_UserSetting_description" z="wsFV/HZRECjrz6Ys6hKd3WNAv2M="/>
+        <field:input field="predefinedValues" id="c_ro_roda_domain_UserSetting_predefinedValues" z="UV8SgUNR0hHHTxBx9e/EJ+SwZSk="/>
+        <field:input field="defaultValue" id="c_ro_roda_domain_UserSetting_defaultValue" z="9okDGr/sYw4qHTOu7d/cRsdqrA8="/>
     </form:update>
 </div>

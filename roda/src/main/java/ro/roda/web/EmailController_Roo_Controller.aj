@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.Email;
+import ro.roda.domain.Email;
 import ro.roda.service.EmailService;
 import ro.roda.service.OrgEmailService;
 import ro.roda.service.PersonEmailService;

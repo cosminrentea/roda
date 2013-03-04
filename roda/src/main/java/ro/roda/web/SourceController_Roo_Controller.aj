@@ -15,14 +15,34 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.Source;
+import ro.roda.domain.Source;
+import ro.roda.service.OrgService;
+import ro.roda.service.SourceContactsService;
 import ro.roda.service.SourceService;
+import ro.roda.service.SourcestudyService;
+import ro.roda.service.SourcetypeHistoryService;
+import ro.roda.service.SourcetypeService;
 import ro.roda.web.SourceController;
 
 privileged aspect SourceController_Roo_Controller {
     
     @Autowired
     SourceService SourceController.sourceService;
+    
+    @Autowired
+    OrgService SourceController.orgService;
+    
+    @Autowired
+    SourceContactsService SourceController.sourceContactsService;
+    
+    @Autowired
+    SourcestudyService SourceController.sourcestudyService;
+    
+    @Autowired
+    SourcetypeService SourceController.sourcetypeService;
+    
+    @Autowired
+    SourcetypeHistoryService SourceController.sourcetypeHistoryService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String SourceController.create(@Valid Source source, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -91,6 +111,11 @@ privileged aspect SourceController_Roo_Controller {
     
     void SourceController.populateEditForm(Model uiModel, Source source) {
         uiModel.addAttribute("source", source);
+        uiModel.addAttribute("orgs", orgService.findAllOrgs());
+        uiModel.addAttribute("sourcecontactses", sourceContactsService.findAllSourceContactses());
+        uiModel.addAttribute("sourcestudys", sourcestudyService.findAllSourcestudys());
+        uiModel.addAttribute("sourcetypes", sourcetypeService.findAllSourcetypes());
+        uiModel.addAttribute("sourcetypehistorys", sourcetypeHistoryService.findAllSourcetypeHistorys());
     }
     
     String SourceController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

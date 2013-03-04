@@ -6,7 +6,7 @@ package ro.roda.service;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.Region;
+import ro.roda.domain.Region;
 import ro.roda.service.RegionServiceImpl;
 
 privileged aspect RegionServiceImpl_Roo_Service {

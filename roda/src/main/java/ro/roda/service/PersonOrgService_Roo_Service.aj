@@ -4,8 +4,8 @@
 package ro.roda.service;
 
 import java.util.List;
-import ro.roda.PersonOrg;
-import ro.roda.PersonOrgPK;
+import ro.roda.domain.PersonOrg;
+import ro.roda.domain.PersonOrgPK;
 import ro.roda.service.PersonOrgService;
 
 privileged aspect PersonOrgService_Roo_Service {

@@ -4,7 +4,7 @@
 package ro.roda.service;
 
 import java.util.List;
-import ro.roda.Email;
+import ro.roda.domain.Email;
 import ro.roda.service.EmailService;
 
 privileged aspect EmailService_Roo_Service {

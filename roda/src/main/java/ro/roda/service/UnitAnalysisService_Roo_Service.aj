@@ -4,7 +4,7 @@
 package ro.roda.service;
 
 import java.util.List;
-import ro.roda.UnitAnalysis;
+import ro.roda.domain.UnitAnalysis;
 import ro.roda.service.UnitAnalysisService;
 
 privileged aspect UnitAnalysisService_Roo_Service {

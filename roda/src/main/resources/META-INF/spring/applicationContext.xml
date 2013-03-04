@@ -43,10 +43,6 @@
         The most commonly used annotation is @Autowired, which instructs Spring to
         dependency inject an object into your class.
     -->
-    <context:component-scan base-package="ro.roda">
-        <context:exclude-filter expression=".*_Roo_.*" type="regex"/>
-        <context:exclude-filter expression="org.springframework.stereotype.Controller" type="annotation"/>
-    </context:component-scan>
     <bean class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" id="dataSource">
         <property name="driverClassName" value="${database.driverClassName}"/>
         <property name="url" value="${database.url}"/>
@@ -73,4 +69,15 @@
     <bean class="org.apache.solr.client.solrj.impl.CommonsHttpSolrServer" id="solrServer">
         <constructor-arg value="${solr.serverUrl}"/>
     </bean>
+    
+    <!-- 
+    	Cosmin: the component-scan must be after the "dataSource" bean declaration
+    	because that bean must be available when seeding the initial data into the DB 
+    	(the connection details are the same)  
+     -->
+    <context:component-scan base-package="ro.roda">
+        <context:exclude-filter expression=".*_Roo_.*" type="regex"/>
+        <context:exclude-filter expression="org.springframework.stereotype.Controller" type="annotation"/>
+    </context:component-scan>
+    
 </beans>

@@ -4,8 +4,8 @@
 package ro.roda.service;
 
 import java.util.List;
-import ro.roda.UserAuthLog;
-import ro.roda.UserAuthLogPK;
+import ro.roda.domain.UserAuthLog;
+import ro.roda.domain.UserAuthLogPK;
 import ro.roda.service.UserAuthLogService;
 
 privileged aspect UserAuthLogService_Roo_Service {

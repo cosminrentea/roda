@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.Setting;
+import ro.roda.domain.Setting;
 import ro.roda.service.SettingGroupService;
 import ro.roda.service.SettingService;
 import ro.roda.service.SettingValueService;

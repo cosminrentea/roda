@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.StudyDocuments;
-import ro.roda.StudyDocumentsPK;
+import ro.roda.domain.StudyDocuments;
+import ro.roda.domain.StudyDocumentsPK;
 import ro.roda.service.StudyDocumentsService;
 import ro.roda.web.StudyDocumentsController;
 

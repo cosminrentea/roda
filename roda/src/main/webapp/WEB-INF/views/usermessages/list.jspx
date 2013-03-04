@@ -2,11 +2,11 @@
 <div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <page:list id="pl_ro_roda_UserMessage" items="${usermessages}" z="RxumToDB64Iz/mMiXtKd5CijvL8=">
-        <table:table data="${usermessages}" id="l_ro_roda_UserMessage" path="/usermessages" z="e21B3dC/XOPJsYr7km2cjlTUbO0=">
-            <table:column id="c_ro_roda_UserMessage_toUserId" property="toUserId" z="2BSEeQqzm/hbKfAb1McwbMRR4DM="/>
-            <table:column id="c_ro_roda_UserMessage_fromUserId" property="fromUserId" z="N3J/A5CR0D+qmNTIc8fOJG6vlms="/>
-            <table:column id="c_ro_roda_UserMessage_message" property="message" z="xDuauPuwZOLOexa8gYkFE6yOasU="/>
+    <page:list id="pl_ro_roda_domain_UserMessage" items="${usermessages}" z="/Sj4Cb7WvRJpiIarTfOGgi7fSaI=">
+        <table:table data="${usermessages}" id="l_ro_roda_domain_UserMessage" path="/usermessages" z="EELEr5SeE1qTITO+piM5n8WAots=">
+            <table:column id="c_ro_roda_domain_UserMessage_toUserId" property="toUserId" z="4jwasvVuZiHeQr54+X9hsKCckDk="/>
+            <table:column id="c_ro_roda_domain_UserMessage_fromUserId" property="fromUserId" z="ToXEu1w3VdywW866Pf1c++uAEBc="/>
+            <table:column id="c_ro_roda_domain_UserMessage_message" property="message" z="m+nGpheqvAdn/muJ/VU7ys25Kyk="/>
         </table:table>
     </page:list>
 </div>

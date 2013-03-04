@@ -15,8 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.AuthData;
-import ro.roda.Rodauser;
+import ro.roda.domain.AuthData;
 import ro.roda.service.AuthDataService;
 import ro.roda.web.AuthDataController;
 
@@ -92,7 +91,6 @@ privileged aspect AuthDataController_Roo_Controller {
     
     void AuthDataController.populateEditForm(Model uiModel, AuthData authData) {
         uiModel.addAttribute("authData", authData);
-        uiModel.addAttribute("rodausers", Rodauser.findAllRodausers());
     }
     
     String AuthDataController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

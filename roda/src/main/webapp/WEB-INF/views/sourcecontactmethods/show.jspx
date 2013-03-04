@@ -2,7 +2,7 @@
 <div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <page:show id="ps_ro_roda_SourceContactMethod" object="${sourcecontactmethod}" path="/sourcecontactmethods" z="NN82Fpx3jG6lL+gE0pb8PQ9WGYs=">
-        <field:display field="name" id="s_ro_roda_SourceContactMethod_name" object="${sourcecontactmethod}" z="MZAeGXy1kWC1yRDiiSisDlPet7A="/>
+    <page:show id="ps_ro_roda_domain_SourceContactMethod" object="${sourcecontactmethod}" path="/sourcecontactmethods" z="0WOwffgnQRnUrio2I1yOd69UnzU=">
+        <field:display field="name" id="s_ro_roda_domain_SourceContactMethod_name" object="${sourcecontactmethod}" z="IUi/3TwXV3Rf+xTHVDBE9Cg1ENA="/>
     </page:show>
 </div>

@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.UserSettingGroup;
+import ro.roda.domain.UserSettingGroup;
 import ro.roda.service.UserSettingGroupService;
 import ro.roda.service.UserSettingService;
 import ro.roda.web.UserSettingGroupController;

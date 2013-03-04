@@ -3,10 +3,10 @@ package ro.roda.web;
 import org.springframework.roo.addon.web.mvc.controller.scaffold.RooWebScaffold;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import ro.roda.News;
+import ro.roda.domain.News;
 
-@RequestMapping("/news")
+@RequestMapping("/newspieces")
 @Controller
-@RooWebScaffold(path = "news", formBackingObject = News.class)
+@RooWebScaffold(path = "newspieces", formBackingObject = News.class)
 public class NewsController {
 }

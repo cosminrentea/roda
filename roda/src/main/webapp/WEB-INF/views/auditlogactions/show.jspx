@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:show id="ps_ro_roda_domain_AuditLogAction" object="${auditlogaction}" path="/auditlogactions" z="wswH2pzfeUb6QQv3+uyn4Bz67D8=">
+        <field:display field="changeset" id="s_ro_roda_domain_AuditLogAction_changeset" object="${auditlogaction}" z="ItlXvQkV/YjdjX4d0AFtkTXwkWA="/>
+        <field:display field="auditedTable" id="s_ro_roda_domain_AuditLogAction_auditedTable" object="${auditlogaction}" z="LgC+QqPEPYutjWVUtacYXRHbXeY="/>
+        <field:display field="auditedRow" id="s_ro_roda_domain_AuditLogAction_auditedRow" object="${auditlogaction}" z="630zqD88ZK87wVmjY2bW/bqMaOI="/>
+        <field:display field="type" id="s_ro_roda_domain_AuditLogAction_type" object="${auditlogaction}" z="8hI1vjf+u/bc0DIpxlOLAHV4ePA="/>
+    </page:show>
+</div>

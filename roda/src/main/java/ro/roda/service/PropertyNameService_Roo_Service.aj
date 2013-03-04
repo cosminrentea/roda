@@ -4,7 +4,7 @@
 package ro.roda.service;
 
 import java.util.List;
-import ro.roda.PropertyName;
+import ro.roda.domain.PropertyName;
 import ro.roda.service.PropertyNameService;
 
 privileged aspect PropertyNameService_Roo_Service {

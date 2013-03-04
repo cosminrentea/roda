@@ -6,8 +6,8 @@ package ro.roda.service;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.CmsFilePropertyNameValue;
-import ro.roda.CmsFilePropertyNameValuePK;
+import ro.roda.domain.CmsFilePropertyNameValue;
+import ro.roda.domain.CmsFilePropertyNameValuePK;
 import ro.roda.service.CmsFilePropertyNameValueServiceImpl;
 
 privileged aspect CmsFilePropertyNameValueServiceImpl_Roo_Service {

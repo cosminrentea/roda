@@ -2,10 +2,10 @@
 <div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <page:list id="pl_ro_roda_StudyPersonAsoc" items="${studypersonasocs}" z="XVjXPrRmgR3XgoeGND6Rv9fhkJU=">
-        <table:table data="${studypersonasocs}" id="l_ro_roda_StudyPersonAsoc" path="/studypersonasocs" z="ZdwBbeXxvqK0cEJUUDmBEzy0Ba0=">
-            <table:column id="c_ro_roda_StudyPersonAsoc_asocName" property="asocName" z="+w7TQJ5HhY1ViOsFwW0Q3ZnoqGU="/>
-            <table:column id="c_ro_roda_StudyPersonAsoc_asocDescription" property="asocDescription" z="HdweTISgV5QYpIeQV21Ya+mCWwY="/>
+    <page:list id="pl_ro_roda_domain_StudyPersonAsoc" items="${studypersonasocs}" z="uB8BE4MInSNSx7Uq+m/tEUR49q8=">
+        <table:table data="${studypersonasocs}" id="l_ro_roda_domain_StudyPersonAsoc" path="/studypersonasocs" z="sEVIlaKG5bmOhHcGZtJll47QddU=">
+            <table:column id="c_ro_roda_domain_StudyPersonAsoc_asocName" property="asocName" z="eKY4eQA2tSWgKrW8Sw3GYkyaRdc="/>
+            <table:column id="c_ro_roda_domain_StudyPersonAsoc_asocDescription" property="asocDescription" z="3fAT5bhsSYrGLexYdG3VKF81who="/>
         </table:table>
     </page:list>
 </div>

@@ -6,8 +6,8 @@ package ro.roda.service;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.PersonAddress;
-import ro.roda.PersonAddressPK;
+import ro.roda.domain.PersonAddress;
+import ro.roda.domain.PersonAddressPK;
 import ro.roda.service.PersonAddressServiceImpl;
 
 privileged aspect PersonAddressServiceImpl_Roo_Service {

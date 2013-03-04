@@ -6,7 +6,7 @@ package ro.roda.service;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.Sourcetype;
+import ro.roda.domain.Sourcetype;
 import ro.roda.service.SourcetypeServiceImpl;
 
 privileged aspect SourcetypeServiceImpl_Roo_Service {

@@ -2,9 +2,9 @@
 <div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <page:list id="pl_ro_roda_OrgRelationType" items="${orgrelationtypes}" z="zcDV2ci1jqy7e6sk3/XPUL1TE80=">
-        <table:table data="${orgrelationtypes}" id="l_ro_roda_OrgRelationType" path="/orgrelationtypes" z="mx37b8foSKjJpbAAtBEYgqidSfI=">
-            <table:column id="c_ro_roda_OrgRelationType_name" property="name" z="1ChcsLfbDb+c7TMfBNTlcPkN6oo="/>
+    <page:list id="pl_ro_roda_domain_OrgRelationType" items="${orgrelationtypes}" z="AWWsnnXCRgbZj7BT2sv8PY033ow=">
+        <table:table data="${orgrelationtypes}" id="l_ro_roda_domain_OrgRelationType" path="/orgrelationtypes" z="8zbV9PVTCvFgP4cgEevRCLKChtc=">
+            <table:column id="c_ro_roda_domain_OrgRelationType_name" property="name" z="INT1xIUxJPaj9/ZRQOcEPsoz3og="/>
         </table:table>
     </page:list>
 </div>

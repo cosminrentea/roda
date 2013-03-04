@@ -2,11 +2,11 @@
 <div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <page:list id="pl_ro_roda_SettingGroup" items="${settinggroups}" z="jZtwQU9XS4MirQFOzYw7ftlUbIg=">
-        <table:table data="${settinggroups}" id="l_ro_roda_SettingGroup" path="/settinggroups" z="ekCryYKM4MocierfcsLZf+Ud160=">
-            <table:column id="c_ro_roda_SettingGroup_parent" property="parent" z="K6bgz8gSEzZasEHi18nT/a8E0y8="/>
-            <table:column id="c_ro_roda_SettingGroup_name" property="name" z="oI5d+XKqGY8cMf7hGQrTh4HXlA0="/>
-            <table:column id="c_ro_roda_SettingGroup_description" property="description" z="EmZkK0nlHj+M0XS5tpPizrptE0I="/>
+    <page:list id="pl_ro_roda_domain_SettingGroup" items="${settinggroups}" z="EUWL8v0oN2pcScU861+d703OpGg=">
+        <table:table data="${settinggroups}" id="l_ro_roda_domain_SettingGroup" path="/settinggroups" z="lPKbvOvDR1AnzwahIxykGnme+Dw=">
+            <table:column id="c_ro_roda_domain_SettingGroup_parent" property="parent" z="lSWibwd/7LhZ6tm+oVF0F6soigk="/>
+            <table:column id="c_ro_roda_domain_SettingGroup_name" property="name" z="13J5Ut90fnR3rBq4YoAeDQAn6Js="/>
+            <table:column id="c_ro_roda_domain_SettingGroup_description" property="description" z="/UshPQSoww+9LEiYiKpADS/uOTU="/>
         </table:table>
     </page:list>
 </div>

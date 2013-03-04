@@ -6,7 +6,7 @@ package ro.roda.service;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.PersonLinks;
+import ro.roda.domain.PersonLinks;
 import ro.roda.service.PersonLinksServiceImpl;
 
 privileged aspect PersonLinksServiceImpl_Roo_Service {

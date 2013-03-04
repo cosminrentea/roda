@@ -2,24 +2,24 @@
 <div xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:spring="http://www.springframework.org/tags" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <form:create id="fc_ro_roda_Variable" modelAttribute="variable" path="/variables" render="${empty dependencies}" z="/PpLKQu2D1HMTTciMZxOeylvYNY=">
-        <field:select field="concepts" id="c_ro_roda_Variable_concepts" itemValue="id" items="${concepts}" multiple="true" path="/concepts" z="aYnDZOEPbxbNjgJCbGN8xtj8otc="/>
-        <field:select field="vargroups" id="c_ro_roda_Variable_vargroups" itemValue="id" items="${vargroups}" multiple="true" path="/vargroups" z="ihKekiq+7nFi2oP9o+hdtsXww8E="/>
-        <field:select field="selectionVariable" id="c_ro_roda_Variable_selectionVariable" itemValue="variableId" items="${selectionvariables}" path="/selectionvariables" z="piClk1nsdyp4nhkvY+RxdF9DX+s="/>
-        <field:simple field="formEditedNumberVars" id="c_ro_roda_Variable_formEditedNumberVars" messageCode="entity_reference_not_managed" messageCodeAttribute="Form Edited Number Var" z="qNGTg/CB4PzC/omkYtexQfcM3jo="/>
-        <field:simple field="formEditedTextVars" id="c_ro_roda_Variable_formEditedTextVars" messageCode="entity_reference_not_managed" messageCodeAttribute="Form Edited Text Var" z="F6XjMNu9IeikH+3sNu82Y0MXgLA="/>
-        <field:simple field="otherStatistics" id="c_ro_roda_Variable_otherStatistics" messageCode="entity_reference_not_managed" messageCodeAttribute="Other Statistic" z="miCOJqUKBK19VfDYObRSEhDSpfY="/>
-        <field:simple field="skips" id="c_ro_roda_Variable_skips" messageCode="entity_reference_not_managed" messageCodeAttribute="Skip" z="Q6irMRbF1p5OE1ZpXTbvq0PXiJ8="/>
-        <field:simple field="skips1" id="c_ro_roda_Variable_skips1" messageCode="entity_reference_not_managed" messageCodeAttribute="Skip" z="bMOmTDFMbMZqf76wat6BCNmNbXs="/>
-        <field:select field="fileId" id="c_ro_roda_Variable_fileId" itemValue="id" items="${files}" path="/files" z="HCKfSreExp3r0IuG11FKTtBIDcg="/>
-        <field:select field="instanceId" id="c_ro_roda_Variable_instanceId" itemValue="id" items="${instances}" path="/instances" z="Eyx75pEauFUULeeSycOsGL0h8l8="/>
-        <field:input field="label" id="c_ro_roda_Variable_label" required="true" z="Fqk0zcsTzaPQ6/sElz9JEFpaqh8="/>
-        <field:input field="type" id="c_ro_roda_Variable_type" required="true" validationMessageCode="field_invalid_integer" z="hRvzVC4ShC8cJphnxUheNfj46ms="/>
-        <field:input field="orderInInstance" id="c_ro_roda_Variable_orderInInstance" required="true" validationMessageCode="field_invalid_integer" z="uHB4fv2XXFKK4DYoO2DsUqDM+Us="/>
-        <field:input field="operatorInstructions" id="c_ro_roda_Variable_operatorInstructions" z="JBYiS/xvUxpKRpoQcNxCzB0mrzU="/>
-        <field:checkbox field="typeEditedText" id="c_ro_roda_Variable_typeEditedText" z="Lx1yfKRcTgFozbMBUcKLZ7t4okY="/>
-        <field:checkbox field="typeEditedNumber" id="c_ro_roda_Variable_typeEditedNumber" z="CgP1Ab33uTEzSdNxXPRqryUPHKo="/>
-        <field:checkbox field="typeSelection" id="c_ro_roda_Variable_typeSelection" z="oObbu/5R71QzPosOLtPD0WTeAQo="/>
+    <form:create id="fc_ro_roda_domain_Variable" modelAttribute="variable" path="/variables" render="${empty dependencies}" z="ADihn60AnZoyQBWgyEj20kACDV0=">
+        <field:select field="concepts" id="c_ro_roda_domain_Variable_concepts" itemValue="id" items="${concepts}" multiple="true" path="/concepts" z="VJgxlCLURZ+y8oEsBxaXRXtdpfk="/>
+        <field:select field="vargroups" id="c_ro_roda_domain_Variable_vargroups" itemValue="id" items="${vargroups}" multiple="true" path="/vargroups" z="tvKeoWZLnH+dI068heE58nEokns="/>
+        <field:select field="selectionVariable" id="c_ro_roda_domain_Variable_selectionVariable" itemValue="variableId" items="${selectionvariables}" path="/selectionvariables" z="EPaeYZMbOXCwDqAGZ4TjxJG3ogg="/>
+        <field:simple field="formEditedNumberVars" id="c_ro_roda_domain_Variable_formEditedNumberVars" messageCode="entity_reference_not_managed" messageCodeAttribute="Form Edited Number Var" z="JlFxjRpux0NGsPtoaP/7B87dQq0="/>
+        <field:simple field="formEditedTextVars" id="c_ro_roda_domain_Variable_formEditedTextVars" messageCode="entity_reference_not_managed" messageCodeAttribute="Form Edited Text Var" z="QMd7xp4+JLk+gWFndFM6s0/wDGg="/>
+        <field:simple field="otherStatistics" id="c_ro_roda_domain_Variable_otherStatistics" messageCode="entity_reference_not_managed" messageCodeAttribute="Other Statistic" z="gAHc3LS5g8tBY8pEv+2nD8rJODU="/>
+        <field:simple field="skips" id="c_ro_roda_domain_Variable_skips" messageCode="entity_reference_not_managed" messageCodeAttribute="Skip" z="PoFseWOGwr/7rx/hh3W0ga7ms9w="/>
+        <field:simple field="skips1" id="c_ro_roda_domain_Variable_skips1" messageCode="entity_reference_not_managed" messageCodeAttribute="Skip" z="2GXzJaG4t7nsF+14BB9Lze6TwJI="/>
+        <field:select field="fileId" id="c_ro_roda_domain_Variable_fileId" itemValue="id" items="${files}" path="/files" z="+UCGJ+rFynZeFBtU/UZFJTY6/l4="/>
+        <field:select field="instanceId" id="c_ro_roda_domain_Variable_instanceId" itemValue="id" items="${instances}" path="/instances" z="ayA+mfjL0+JZeYrr6dBxLnKX1Lc="/>
+        <field:input field="label" id="c_ro_roda_domain_Variable_label" required="true" z="U4H9F6TRglypoj0aBR3oJ62o50I="/>
+        <field:input field="type" id="c_ro_roda_domain_Variable_type" required="true" validationMessageCode="field_invalid_integer" z="SZ9yMYHU52F4bU5bITPd0zMpPtg="/>
+        <field:input field="orderInInstance" id="c_ro_roda_domain_Variable_orderInInstance" required="true" validationMessageCode="field_invalid_integer" z="ITUGuc2gQNjfILvPiZUIEqeaQfc="/>
+        <field:input field="operatorInstructions" id="c_ro_roda_domain_Variable_operatorInstructions" z="EetEOYIX6xzRdjI4JOLi4CfEiU8="/>
+        <field:checkbox field="typeEditedText" id="c_ro_roda_domain_Variable_typeEditedText" z="VlNrGUWZ/A2DfAk7rD2vpknZbjI="/>
+        <field:checkbox field="typeEditedNumber" id="c_ro_roda_domain_Variable_typeEditedNumber" z="fbUZ8YCvRkSGCgA6iEb2tBHQcpU="/>
+        <field:checkbox field="typeSelection" id="c_ro_roda_domain_Variable_typeSelection" z="eAaY1w67HZdxmLHOwQRLcCbctj8="/>
     </form:create>
-    <form:dependency dependencies="${dependencies}" id="d_ro_roda_Variable" render="${not empty dependencies}" z="icEtK/4oNd0vTSBXDJ4BXehhNXQ="/>
+    <form:dependency dependencies="${dependencies}" id="d_ro_roda_domain_Variable" render="${not empty dependencies}" z="UAmzEUxOCP0+gZMdtKc6oVAFEkU="/>
 </div>

@@ -16,9 +16,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.OrgPhone;
-import ro.roda.OrgPhonePK;
+import ro.roda.domain.OrgPhone;
+import ro.roda.domain.OrgPhonePK;
 import ro.roda.service.OrgPhoneService;
+import ro.roda.service.OrgService;
+import ro.roda.service.PhoneService;
 import ro.roda.web.OrgPhoneController;
 
 privileged aspect OrgPhoneController_Roo_Controller {
@@ -27,6 +29,12 @@ privileged aspect OrgPhoneController_Roo_Controller {
     
     @Autowired
     OrgPhoneService OrgPhoneController.orgPhoneService;
+    
+    @Autowired
+    OrgService OrgPhoneController.orgService;
+    
+    @Autowired
+    PhoneService OrgPhoneController.phoneService;
     
     @Autowired
     public OrgPhoneController.new(ConversionService conversionService) {
@@ -101,6 +109,8 @@ privileged aspect OrgPhoneController_Roo_Controller {
     
     void OrgPhoneController.populateEditForm(Model uiModel, OrgPhone orgPhone) {
         uiModel.addAttribute("orgPhone", orgPhone);
+        uiModel.addAttribute("orgs", orgService.findAllOrgs());
+        uiModel.addAttribute("phones", phoneService.findAllPhones());
     }
     
     String OrgPhoneController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

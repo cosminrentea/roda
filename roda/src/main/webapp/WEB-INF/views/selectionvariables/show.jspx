@@ -2,9 +2,9 @@
 <div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <page:show id="ps_ro_roda_SelectionVariable" object="${selectionvariable}" path="/selectionvariables" z="UB4myfnpXzC5iZmEFLsSuse6xew=">
-        <field:display field="variable" id="s_ro_roda_SelectionVariable_variable" object="${selectionvariable}" z="SBQfMpVmBhUmNL/SYGPFELy7g8c="/>
-        <field:display field="minCount" id="s_ro_roda_SelectionVariable_minCount" object="${selectionvariable}" z="5XjCY0Tdk4GjxszVxWV+NQZLmbQ="/>
-        <field:display field="maxCount" id="s_ro_roda_SelectionVariable_maxCount" object="${selectionvariable}" z="Ta2VY1TrLOMZdtws2FNM8IvkcRo="/>
+    <page:show id="ps_ro_roda_domain_SelectionVariable" object="${selectionvariable}" path="/selectionvariables" z="1tIqgh7lKASP+CHIcUOWJKs/hh8=">
+        <field:display field="variable" id="s_ro_roda_domain_SelectionVariable_variable" object="${selectionvariable}" z="iROpE2Y+nR7g54QbC7+HgTn1G3Q="/>
+        <field:display field="minCount" id="s_ro_roda_domain_SelectionVariable_minCount" object="${selectionvariable}" z="Cy4QTIuJBqbtItlM2B6GHwZQF5Q="/>
+        <field:display field="maxCount" id="s_ro_roda_domain_SelectionVariable_maxCount" object="${selectionvariable}" z="dS7HctzWzdFlwCtVNMrrlgpKuQA="/>
     </page:show>
 </div>

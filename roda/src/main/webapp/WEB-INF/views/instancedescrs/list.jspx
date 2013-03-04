@@ -2,14 +2,7 @@
 <div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <page:list id="pl_ro_roda_InstanceDescr" items="${instancedescrs}" z="QkGmzkVmqnk8KN2riZsifPcHRyg=">
-        <table:table data="${instancedescrs}" id="l_ro_roda_InstanceDescr" path="/instancedescrs" z="dHpUQctLVh5x8IPNViEGh9j4ZXA=">
-            <table:column id="c_ro_roda_InstanceDescr_instanceId" property="instanceId" z="HUXxkgpV3H1hIiF4NEWxJJ1bol4="/>
-            <table:column id="c_ro_roda_InstanceDescr_langId" property="langId" z="OvNstuRqBrT5dRYHqU+L6PMYDyo="/>
-            <table:column id="c_ro_roda_InstanceDescr_weighting" property="weighting" z="sgIWGs7aMtUppRIsrpSGR/ZNBf0="/>
-            <table:column id="c_ro_roda_InstanceDescr_researchInstrument" property="researchInstrument" z="MPV9EFroQeGZhSiPq0xzDHdGMg0="/>
-            <table:column id="c_ro_roda_InstanceDescr_scope" property="scope" z="menF2yCkSBzdgDELItD3FQi6Vkg="/>
-            <table:column id="c_ro_roda_InstanceDescr_universe" property="universe" z="UlH27ClBr0v145pDpa+edDhZ+Wk="/>
-        </table:table>
+    <page:list id="pl_ro_roda_domain_InstanceDescr" items="${instancedescrs}" z="ITxt7ntCzMC4/icuvnNfxnaTV+Y=">
+        <table:table data="${instancedescrs}" id="l_ro_roda_domain_InstanceDescr" path="/instancedescrs" z="ru0wDSLEl+L+4VJbTNXhAX6+sCU="/>
     </page:list>
 </div>

@@ -20,7 +20,9 @@ linia care incepe cu -Xmx => -Xmx1536m
 ./STS &
 
 
-1.5. Din Dashboard (Help -> Dashboard), in tab-ul "Extensions" (jos, in view) bifati si instalati "Cloud Foundry Eclipse Integration" din lista. 
+1.5. Din Dashboard (Help -> Dashboard), click pe tab-ul "Extensions" (jos, in view), bifati in lista si apoi instalati (buton "Install"):
+- "Cloud Foundry Eclipse Integration"
+- "Edgewall Trac" 
 Restartati STS.
 
 Instalati in STS versiunea curenta de Subclipse si de SVNKIT (suport pentru Subversion 1.7), prin meniu Help -> Install New Software:
@@ -44,27 +46,26 @@ Faceti Checkout din repository pentru:
 2. Configurarea locala a proiectului
 ----
 
-2.1. Conexiunea la baza de date trebuie configurata in
+Conexiunea la baza de date trebuie configurata in
 src/main/resources/META-INF/spring/database.properties
 
-2.2. Hibernate (de ex. modul de lucru: update / create / create-drop / validate):
+Hibernate (de ex. modul de lucru: update / create / create-drop / validate):
 src/main/resources/META-INF/persistence.xml
 
-2.3. Logging-ul:
+Logging-ul:
 src/main/resources/log4j.properties
 
-2.4. Conexiunea cu SOLR:
+Conexiunea cu SOLR:
 src/main/resources/META-INF/spring/solr.properties
 
-2.5. Spring (Beans, properties etc.):
+Spring (Beans, properties etc.):
 src/main/resources/META-INF/spring/applicationContext.xml
 
-2.6. Spring Security:
+Spring Security:
 src/main/resources/META-INF/spring/applicationContext-security.xml
 
-2.7. Procesele de build (Maven):
+Procesele de build (Maven):
 /pom.xml
-
 (aici se pot schimba si parametri: portul folosit de Tomcat la rularea aplicatiei; rularea sau nu a testelor etc.)
 
 ----
@@ -80,11 +81,14 @@ perform package
 4. Rularea locala a proiectului
 ----
 
-4.1. Rularea din STS
+4.1. Rularea din STS, pe Server Local
 Se trage (drag-and-drop) proiectul "roda" din view-ul "Package Explorer" peste serverul local prezent in view-ul "Servers" (configurat sa foloseasca portul 8181).
 Eventual, se (re)porneste serverul.
 
-4.2. Rularea din linia de comanda
+4.2. Rularea din STS, pe Cloud Foundry
+TODO
+
+4.3. Rularea din linia de comanda
 In radacina proiectului, cu comanda:
 mvn tomcat:run
 

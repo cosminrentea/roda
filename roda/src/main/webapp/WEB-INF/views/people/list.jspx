@@ -2,7 +2,7 @@
 <div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <page:list id="pl_ro_roda_Person" items="${people}" z="sewJQr3KKPUkFrDwxMRmdOfwPOM=">
-        <table:table data="${people}" id="l_ro_roda_Person" path="/people" z="YGHdS4qXNFREuHSN8ZP9X7MSs30="/>
+    <page:list id="pl_ro_roda_domain_Person" items="${people}" z="ME+/QHTmvTnN9HUDWV7uB4QXFhY=">
+        <table:table data="${people}" id="l_ro_roda_domain_Person" path="/people" z="Y2jYU7u7GgfV8Vm61HWU6BD39Vo="/>
     </page:list>
 </div>

@@ -15,8 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.CmsPageType;
-import ro.roda.service.CmsPageService;
+import ro.roda.domain.CmsPageType;
 import ro.roda.service.CmsPageTypeService;
 import ro.roda.web.CmsPageTypeController;
 
@@ -24,9 +23,6 @@ privileged aspect CmsPageTypeController_Roo_Controller {
     
     @Autowired
     CmsPageTypeService CmsPageTypeController.cmsPageTypeService;
-    
-    @Autowired
-    CmsPageService CmsPageTypeController.cmsPageService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String CmsPageTypeController.create(@Valid CmsPageType cmsPageType, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -95,7 +91,6 @@ privileged aspect CmsPageTypeController_Roo_Controller {
     
     void CmsPageTypeController.populateEditForm(Model uiModel, CmsPageType cmsPageType) {
         uiModel.addAttribute("cmsPageType", cmsPageType);
-        uiModel.addAttribute("cmspages", cmsPageService.findAllCmsPages());
     }
     
     String CmsPageTypeController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

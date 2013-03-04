@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.UserSettingValue;
-import ro.roda.UserSettingValuePK;
+import ro.roda.domain.UserSettingValue;
+import ro.roda.domain.UserSettingValuePK;
 import ro.roda.service.UserSettingValueService;
 import ro.roda.web.UserSettingValueController;
 

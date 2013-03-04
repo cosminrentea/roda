@@ -2,13 +2,7 @@
 <div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <page:list id="pl_ro_roda_CatalogAcl" items="${catalogacls}" z="U8y2Z/ZULfTxfzi6P4P8hGLVN0w=">
-        <table:table data="${catalogacls}" id="l_ro_roda_CatalogAcl" path="/catalogacls" z="f2ZL7aNVozOteJPtCOb3ab6AlAs=">
-            <table:column id="c_ro_roda_CatalogAcl_catalogId" property="catalogId" z="TYmr2bWn83X8jcZbh8Dg3W/hxdI="/>
-            <table:column id="c_ro_roda_CatalogAcl_read" property="read" z="uhFy+uHaQSqA+si9QJDYbDjN1/w="/>
-            <table:column id="c_ro_roda_CatalogAcl_update" property="update" z="hjWTisQegTxS/urPcrn7sot6XZA="/>
-            <table:column id="c_ro_roda_CatalogAcl_delete" property="delete" z="gEX/lwwGP8cnhUE0B2bIp37tc2g="/>
-            <table:column id="c_ro_roda_CatalogAcl_modacl" property="modacl" z="H85pK64iuzLIjX3EEVLCpU2beCU="/>
-        </table:table>
+    <page:list id="pl_ro_roda_domain_CatalogAcl" items="${catalogacls}" z="Y6IORTJ+GyRX82uqnnV1u3HbSIc=">
+        <table:table data="${catalogacls}" id="l_ro_roda_domain_CatalogAcl" path="/catalogacls" z="tb97pY9n8+yfDtH1p9qzTaGbpBM="/>
     </page:list>
 </div>

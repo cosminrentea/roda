@@ -4,7 +4,7 @@
 package ro.roda.service;
 
 import java.util.List;
-import ro.roda.TimeMethType;
+import ro.roda.domain.TimeMethType;
 import ro.roda.service.TimeMethTypeService;
 
 privileged aspect TimeMethTypeService_Roo_Service {

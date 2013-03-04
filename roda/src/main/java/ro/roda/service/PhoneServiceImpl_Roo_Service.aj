@@ -6,7 +6,7 @@ package ro.roda.service;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.Phone;
+import ro.roda.domain.Phone;
 import ro.roda.service.PhoneServiceImpl;
 
 privileged aspect PhoneServiceImpl_Roo_Service {

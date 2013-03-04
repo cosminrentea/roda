@@ -4,8 +4,8 @@
 package ro.roda.service;
 
 import java.util.List;
-import ro.roda.CatalogAcl;
-import ro.roda.CatalogAclPK;
+import ro.roda.domain.CatalogAcl;
+import ro.roda.domain.CatalogAclPK;
 import ro.roda.service.CatalogAclService;
 
 privileged aspect CatalogAclService_Roo_Service {

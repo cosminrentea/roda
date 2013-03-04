@@ -4,7 +4,7 @@
 package ro.roda.service;
 
 import java.util.List;
-import ro.roda.SelectionVariable;
+import ro.roda.domain.SelectionVariable;
 import ro.roda.service.SelectionVariableService;
 
 privileged aspect SelectionVariableService_Roo_Service {

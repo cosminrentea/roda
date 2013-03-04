@@ -2,9 +2,9 @@
 <div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <form:update id="fu_ro_roda_OrgPrefix" modelAttribute="orgPrefix" path="/orgprefixes" versionField="none" z="5vfSxM+yfncA3Q4xIoTiLGZsCuY=">
-        <field:simple field="orgs" id="c_ro_roda_OrgPrefix_orgs" messageCode="entity_reference_not_managed" messageCodeAttribute="Org" z="aVnLfl+HU9PnStJllWUo6RtwXmI="/>
-        <field:input field="name" id="c_ro_roda_OrgPrefix_name" required="true" z="4phTLg0RDPAfaCNTpiKHx/jzfio="/>
-        <field:input field="description" id="c_ro_roda_OrgPrefix_description" z="LYxTgYHWoUpCshzHA9qsBOQ7D6I="/>
+    <form:update id="fu_ro_roda_domain_OrgPrefix" modelAttribute="orgPrefix" path="/orgprefixes" versionField="none" z="OutGtMB0ge2Y9GOgxOzEti5g6yQ=">
+        <field:simple field="orgs" id="c_ro_roda_domain_OrgPrefix_orgs" messageCode="entity_reference_not_managed" messageCodeAttribute="Org" z="tCAMSPdJ4d2dlVk8fIZOaylcV84="/>
+        <field:input field="name" id="c_ro_roda_domain_OrgPrefix_name" required="true" z="/wOPPS3PKbBNn0Gqn9Bc86IQWg0="/>
+        <field:input field="description" id="c_ro_roda_domain_OrgPrefix_description" z="B3Oze8/k2Q7ZO7T95hc1f5piFTQ="/>
     </form:update>
 </div>

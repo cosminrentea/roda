@@ -4,7 +4,7 @@
 package ro.roda.service;
 
 import java.util.List;
-import ro.roda.SourceContactMethod;
+import ro.roda.domain.SourceContactMethod;
 import ro.roda.service.SourceContactMethodService;
 
 privileged aspect SourceContactMethodService_Roo_Service {

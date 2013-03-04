@@ -2,6 +2,6 @@ package ro.roda.service;
 
 import org.springframework.roo.addon.layers.service.RooService;
 
-@RooService(domainTypes = { ro.roda.SourcetypeHistory.class })
+@RooService(domainTypes = { ro.roda.domain.SourcetypeHistory.class })
 public interface SourcetypeHistoryService {
 }

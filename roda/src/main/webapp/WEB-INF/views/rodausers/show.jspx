@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:show id="ps_ro_roda_domain_Rodauser" object="${rodauser}" path="/rodausers" z="fQdd9UO9bfrVKwC/CmI1BmO8dTU=">
+        <field:display field="roles" id="s_ro_roda_domain_Rodauser_roles" object="${rodauser}" z="2JKHgUq5pM1j074okYv4+dMjtY8="/>
+        <field:display field="authData" id="s_ro_roda_domain_Rodauser_authData" object="${rodauser}" z="yDrugf3XP+Eeu6iB1KJMHXFeai8="/>
+        <field:display field="userProfile" id="s_ro_roda_domain_Rodauser_userProfile" object="${rodauser}" z="zv3kyMa/+pkLKlCXH4+nChDvaBs="/>
+        <field:display field="credentialProvider" id="s_ro_roda_domain_Rodauser_credentialProvider" object="${rodauser}" z="bB3cgTgoCOHcgLwZL1hLyxfOMns="/>
+    </page:show>
+</div>

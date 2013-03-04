@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.PersonRole;
+import ro.roda.domain.PersonRole;
 import ro.roda.service.PersonOrgService;
 import ro.roda.service.PersonRoleService;
 import ro.roda.web.PersonRoleController;

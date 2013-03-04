@@ -17,11 +17,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.Rodauser;
-import ro.roda.Study;
+import ro.roda.domain.Study;
 import ro.roda.service.CatalogStudyService;
 import ro.roda.service.FileService;
 import ro.roda.service.InstanceService;
+import ro.roda.service.RodauserService;
 import ro.roda.service.StudyAclService;
 import ro.roda.service.StudyDescrService;
 import ro.roda.service.StudyKeywordService;
@@ -44,6 +44,9 @@ privileged aspect StudyController_Roo_Controller {
     
     @Autowired
     InstanceService StudyController.instanceService;
+    
+    @Autowired
+    RodauserService StudyController.rodauserService;
     
     @Autowired
     StudyAclService StudyController.studyAclService;
@@ -142,7 +145,7 @@ privileged aspect StudyController_Roo_Controller {
         uiModel.addAttribute("catalogstudys", catalogStudyService.findAllCatalogStudys());
         uiModel.addAttribute("files", fileService.findAllFiles());
         uiModel.addAttribute("instances", instanceService.findAllInstances());
-        uiModel.addAttribute("rodausers", Rodauser.findAllRodausers());
+        uiModel.addAttribute("rodausers", rodauserService.findAllRodausers());
         uiModel.addAttribute("studyacls", studyAclService.findAllStudyAcls());
         uiModel.addAttribute("studydescrs", studyDescrService.findAllStudyDescrs());
         uiModel.addAttribute("studykeywords", studyKeywordService.findAllStudyKeywords());

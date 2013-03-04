@@ -2,8 +2,8 @@
 <div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <page:show id="ps_ro_roda_OrgSufix" object="${orgsufix}" path="/orgsufixes" z="0r8QJ673+48QhKkquUN2u/+SBiE=">
-        <field:display field="name" id="s_ro_roda_OrgSufix_name" object="${orgsufix}" z="M0oMWITy/rTtmcS7hIfEtD473pc="/>
-        <field:display field="description" id="s_ro_roda_OrgSufix_description" object="${orgsufix}" z="VCKZZ3Y/xDh1l0L6TNuuwZ/MB4g="/>
+    <page:show id="ps_ro_roda_domain_OrgSufix" object="${orgsufix}" path="/orgsufixes" z="RHboLbPZMWDsiLMea/dFStNXMaM=">
+        <field:display field="name" id="s_ro_roda_domain_OrgSufix_name" object="${orgsufix}" z="UU9V5rZx/c07TgY4XwIX/KoSzYo="/>
+        <field:display field="description" id="s_ro_roda_domain_OrgSufix_description" object="${orgsufix}" z="oNgQ7y90RZw1xsmZ2BMUODxAaU8="/>
     </page:show>
 </div>

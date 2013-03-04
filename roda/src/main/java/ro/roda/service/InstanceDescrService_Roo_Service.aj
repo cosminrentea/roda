@@ -4,8 +4,8 @@
 package ro.roda.service;
 
 import java.util.List;
-import ro.roda.InstanceDescr;
-import ro.roda.InstanceDescrPK;
+import ro.roda.domain.InstanceDescr;
+import ro.roda.domain.InstanceDescrPK;
 import ro.roda.service.InstanceDescrService;
 
 privileged aspect InstanceDescrService_Roo_Service {

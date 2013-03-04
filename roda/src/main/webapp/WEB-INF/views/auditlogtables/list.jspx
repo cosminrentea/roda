@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:list id="pl_ro_roda_domain_AuditLogTable" items="${auditlogtables}" z="lSI0qvg1eLdnO+p/wbQeAV6jGDY=">
+        <table:table data="${auditlogtables}" id="l_ro_roda_domain_AuditLogTable" path="/auditlogtables" z="v6lVn7u5sDlzSZXWms7YxBFJRrA=">
+            <table:column id="c_ro_roda_domain_AuditLogTable_name" property="name" z="taIG+ixfMDEWVfaMh+TQbF9FujM="/>
+        </table:table>
+    </page:list>
+</div>

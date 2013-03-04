@@ -6,8 +6,8 @@ package ro.roda.service;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.FormEditedTextVar;
-import ro.roda.FormEditedTextVarPK;
+import ro.roda.domain.FormEditedTextVar;
+import ro.roda.domain.FormEditedTextVarPK;
 import ro.roda.service.FormEditedTextVarServiceImpl;
 
 privileged aspect FormEditedTextVarServiceImpl_Roo_Service {

@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.Topic;
+import ro.roda.domain.Topic;
 import ro.roda.service.InstanceService;
 import ro.roda.service.StudyService;
 import ro.roda.service.TopicService;

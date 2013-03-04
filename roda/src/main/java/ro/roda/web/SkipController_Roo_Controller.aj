@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.Skip;
+import ro.roda.domain.Skip;
 import ro.roda.service.SkipService;
 import ro.roda.service.VariableService;
 import ro.roda.web.SkipController;

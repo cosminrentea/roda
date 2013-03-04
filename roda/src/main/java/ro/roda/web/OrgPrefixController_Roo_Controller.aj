@@ -15,18 +15,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.OrgPrefix;
+import ro.roda.domain.OrgPrefix;
 import ro.roda.service.OrgPrefixService;
-import ro.roda.service.OrgService;
 import ro.roda.web.OrgPrefixController;
 
 privileged aspect OrgPrefixController_Roo_Controller {
     
     @Autowired
     OrgPrefixService OrgPrefixController.orgPrefixService;
-    
-    @Autowired
-    OrgService OrgPrefixController.orgService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String OrgPrefixController.create(@Valid OrgPrefix orgPrefix, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -95,7 +91,6 @@ privileged aspect OrgPrefixController_Roo_Controller {
     
     void OrgPrefixController.populateEditForm(Model uiModel, OrgPrefix orgPrefix) {
         uiModel.addAttribute("orgPrefix", orgPrefix);
-        uiModel.addAttribute("orgs", orgService.findAllOrgs());
     }
     
     String OrgPrefixController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

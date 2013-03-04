@@ -4,7 +4,7 @@
 package ro.roda.service;
 
 import java.util.List;
-import ro.roda.Lang;
+import ro.roda.domain.Lang;
 import ro.roda.service.LangService;
 
 privileged aspect LangService_Roo_Service {

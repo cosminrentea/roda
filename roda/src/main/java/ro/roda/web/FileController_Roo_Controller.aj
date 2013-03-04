@@ -15,38 +15,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.File;
-import ro.roda.service.FileAclService;
-import ro.roda.service.FilePropertyNameValueService;
+import ro.roda.domain.File;
 import ro.roda.service.FileService;
-import ro.roda.service.InstanceService;
-import ro.roda.service.SelectionVariableItemService;
-import ro.roda.service.StudyService;
-import ro.roda.service.VariableService;
 import ro.roda.web.FileController;
 
 privileged aspect FileController_Roo_Controller {
     
     @Autowired
     FileService FileController.fileService;
-    
-    @Autowired
-    FileAclService FileController.fileAclService;
-    
-    @Autowired
-    FilePropertyNameValueService FileController.filePropertyNameValueService;
-    
-    @Autowired
-    InstanceService FileController.instanceService;
-    
-    @Autowired
-    SelectionVariableItemService FileController.selectionVariableItemService;
-    
-    @Autowired
-    StudyService FileController.studyService;
-    
-    @Autowired
-    VariableService FileController.variableService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String FileController.create(@Valid File file, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -115,12 +91,6 @@ privileged aspect FileController_Roo_Controller {
     
     void FileController.populateEditForm(Model uiModel, File file) {
         uiModel.addAttribute("file", file);
-        uiModel.addAttribute("fileacls", fileAclService.findAllFileAcls());
-        uiModel.addAttribute("filepropertynamevalues", filePropertyNameValueService.findAllFilePropertyNameValues());
-        uiModel.addAttribute("instances", instanceService.findAllInstances());
-        uiModel.addAttribute("selectionvariableitems", selectionVariableItemService.findAllSelectionVariableItems());
-        uiModel.addAttribute("studys", studyService.findAllStudys());
-        uiModel.addAttribute("variables", variableService.findAllVariables());
     }
     
     String FileController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

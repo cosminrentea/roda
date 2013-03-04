@@ -4,7 +4,7 @@
 package ro.roda.service;
 
 import java.util.List;
-import ro.roda.Concept;
+import ro.roda.domain.Concept;
 import ro.roda.service.ConceptService;
 
 privileged aspect ConceptService_Roo_Service {

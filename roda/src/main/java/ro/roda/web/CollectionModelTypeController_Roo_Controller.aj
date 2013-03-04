@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.CollectionModelType;
+import ro.roda.domain.CollectionModelType;
 import ro.roda.service.CollectionModelTypeService;
 import ro.roda.service.InstanceService;
 import ro.roda.web.CollectionModelTypeController;

@@ -4,7 +4,7 @@
 package ro.roda.service;
 
 import java.util.List;
-import ro.roda.AclObjectIdentity;
+import ro.roda.domain.AclObjectIdentity;
 import ro.roda.service.AclObjectIdentityService;
 
 privileged aspect AclObjectIdentityService_Roo_Service {

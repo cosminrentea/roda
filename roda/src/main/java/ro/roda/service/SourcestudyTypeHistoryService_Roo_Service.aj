@@ -4,7 +4,7 @@
 package ro.roda.service;
 
 import java.util.List;
-import ro.roda.SourcestudyTypeHistory;
+import ro.roda.domain.SourcestudyTypeHistory;
 import ro.roda.service.SourcestudyTypeHistoryService;
 
 privileged aspect SourcestudyTypeHistoryService_Roo_Service {

@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.Sourcetype;
+import ro.roda.domain.Sourcetype;
 import ro.roda.service.SourceService;
 import ro.roda.service.SourcetypeHistoryService;
 import ro.roda.service.SourcetypeService;

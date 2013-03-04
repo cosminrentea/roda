@@ -4,7 +4,7 @@
 package ro.roda.service;
 
 import java.util.List;
-import ro.roda.SourceContacts;
+import ro.roda.domain.SourceContacts;
 import ro.roda.service.SourceContactsService;
 
 privileged aspect SourceContactsService_Roo_Service {

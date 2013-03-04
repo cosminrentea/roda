@@ -6,8 +6,8 @@ package ro.roda.service;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.FormSelectionVar;
-import ro.roda.FormSelectionVarPK;
+import ro.roda.domain.FormSelectionVar;
+import ro.roda.domain.FormSelectionVarPK;
 import ro.roda.service.FormSelectionVarServiceImpl;
 
 privileged aspect FormSelectionVarServiceImpl_Roo_Service {

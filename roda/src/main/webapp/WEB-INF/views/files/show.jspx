@@ -2,13 +2,13 @@
 <div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <page:show id="ps_ro_roda_File" object="${file}" path="/files" z="XFQ7vlkMR8Y8mDzY+UTFvi1hvLg=">
-        <field:display field="instances" id="s_ro_roda_File_instances" object="${file}" z="zuKkXQ5cTPuzu3XcHhrV94jd5vI="/>
-        <field:display field="studies1" id="s_ro_roda_File_studies1" object="${file}" z="siX4i/sSUhPJDyGt6DMffKyG3DA="/>
-        <field:display field="title" id="s_ro_roda_File_title" object="${file}" z="zGOsapuUYx43306o+6lb9+cHAZo="/>
-        <field:display field="description" id="s_ro_roda_File_description" object="${file}" z="dGaGdsKuJ+G6G/9Xo+1bHp3vxcI="/>
-        <field:display field="filetypeId" id="s_ro_roda_File_filetypeId" object="${file}" z="5TewpWSubdR438EuKZvO8A8zpUQ="/>
-        <field:display field="name" id="s_ro_roda_File_name" object="${file}" z="2iDpEi8S2wH+4+bVrGf4IcClWQI="/>
-        <field:display field="size" id="s_ro_roda_File_size" object="${file}" z="epXTTGMYmfR6ecXFFsFIftT2yHA="/>
+    <page:show id="ps_ro_roda_domain_File" object="${file}" path="/files" z="o1tboFkQX6Jf4dnwvyCrIsmaSk4=">
+        <field:display field="instances" id="s_ro_roda_domain_File_instances" object="${file}" z="Ef4WbhOFDPb8idRpXDjYRZWrY3Q="/>
+        <field:display field="studies1" id="s_ro_roda_domain_File_studies1" object="${file}" z="BKR3UnYj26Df3gJasWCa9ijT/2s="/>
+        <field:display field="title" id="s_ro_roda_domain_File_title" object="${file}" z="cBGYTQGiHat7CpLsmapA/licmv4="/>
+        <field:display field="description" id="s_ro_roda_domain_File_description" object="${file}" z="SwkgLMM1WMoZV22djUQzopMFFms="/>
+        <field:display field="filetypeId" id="s_ro_roda_domain_File_filetypeId" object="${file}" z="ukGVWcJf31pdC5YoK2A59yvauNc="/>
+        <field:display field="name" id="s_ro_roda_domain_File_name" object="${file}" z="JyGQ9kAdJEcjjng5ExsNt7Y3sqg="/>
+        <field:display field="size" id="s_ro_roda_domain_File_size" object="${file}" z="5Z7NnyWZZbYQohBeoe7VAsoOSac="/>
     </page:show>
 </div>

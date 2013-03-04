@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN" "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+<tiles-definitions>
+    <definition extends="default" name="rodausers/list">
+        <put-attribute name="body" value="/WEB-INF/views/rodausers/list.jspx"/>
+    </definition>
+<definition extends="default" name="rodausers/show">
+        <put-attribute name="body" value="/WEB-INF/views/rodausers/show.jspx"/>
+    </definition>
+<definition extends="default" name="rodausers/create">
+        <put-attribute name="body" value="/WEB-INF/views/rodausers/create.jspx"/>
+    </definition>
+<definition extends="default" name="rodausers/update">
+        <put-attribute name="body" value="/WEB-INF/views/rodausers/update.jspx"/>
+    </definition>
+</tiles-definitions>

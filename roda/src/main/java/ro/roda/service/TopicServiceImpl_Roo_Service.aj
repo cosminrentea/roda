@@ -6,7 +6,7 @@ package ro.roda.service;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.Topic;
+import ro.roda.domain.Topic;
 import ro.roda.service.TopicServiceImpl;
 
 privileged aspect TopicServiceImpl_Roo_Service {

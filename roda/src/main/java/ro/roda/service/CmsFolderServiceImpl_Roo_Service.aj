@@ -6,7 +6,7 @@ package ro.roda.service;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.CmsFolder;
+import ro.roda.domain.CmsFolder;
 import ro.roda.service.CmsFolderServiceImpl;
 
 privileged aspect CmsFolderServiceImpl_Roo_Service {

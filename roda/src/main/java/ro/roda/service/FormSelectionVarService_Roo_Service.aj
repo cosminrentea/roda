@@ -4,8 +4,8 @@
 package ro.roda.service;
 
 import java.util.List;
-import ro.roda.FormSelectionVar;
-import ro.roda.FormSelectionVarPK;
+import ro.roda.domain.FormSelectionVar;
+import ro.roda.domain.FormSelectionVarPK;
 import ro.roda.service.FormSelectionVarService;
 
 privileged aspect FormSelectionVarService_Roo_Service {

@@ -4,7 +4,7 @@
 package ro.roda.service;
 
 import java.util.List;
-import ro.roda.Form;
+import ro.roda.domain.Form;
 import ro.roda.service.FormService;
 
 privileged aspect FormService_Roo_Service {

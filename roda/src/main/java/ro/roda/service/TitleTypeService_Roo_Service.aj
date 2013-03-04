@@ -4,7 +4,7 @@
 package ro.roda.service;
 
 import java.util.List;
-import ro.roda.TitleType;
+import ro.roda.domain.TitleType;
 import ro.roda.service.TitleTypeService;
 
 privileged aspect TitleTypeService_Roo_Service {

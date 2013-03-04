@@ -2,11 +2,7 @@
 <div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <page:list id="pl_ro_roda_FormEditedTextVar" items="${formeditedtextvars}" z="G0OZJNh26zXNwtDsAjWvMM7vov4=">
-        <table:table data="${formeditedtextvars}" id="l_ro_roda_FormEditedTextVar" path="/formeditedtextvars" z="lgP3f8J7ZSwl2aBzOTpPOaVtV8A=">
-            <table:column id="c_ro_roda_FormEditedTextVar_formId" property="formId" z="iQwNZBmFjNUlEXDRLE/vJ6EDImY="/>
-            <table:column id="c_ro_roda_FormEditedTextVar_variableId" property="variableId" z="lEPzebo3s5umOLVHUbe4Brqsn5Q="/>
-            <table:column id="c_ro_roda_FormEditedTextVar_text" property="text" z="uaWhcZifQDzmeSYKgSHaUaFuK/E="/>
-        </table:table>
+    <page:list id="pl_ro_roda_domain_FormEditedTextVar" items="${formeditedtextvars}" z="15ooMw2TFr+qfH2B6tNDIjWfcWI=">
+        <table:table data="${formeditedtextvars}" id="l_ro_roda_domain_FormEditedTextVar" path="/formeditedtextvars" z="HeaHGGIykmJfOQx9b/q2Ggp+Lq0="/>
     </page:list>
 </div>

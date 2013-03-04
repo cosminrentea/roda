@@ -6,7 +6,7 @@ package ro.roda.service;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.AclObjectIdentity;
+import ro.roda.domain.AclObjectIdentity;
 import ro.roda.service.AclObjectIdentityServiceImpl;
 
 privileged aspect AclObjectIdentityServiceImpl_Roo_Service {

@@ -6,7 +6,7 @@ package ro.roda.service;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.Internet;
+import ro.roda.domain.Internet;
 import ro.roda.service.InternetServiceImpl;
 
 privileged aspect InternetServiceImpl_Roo_Service {

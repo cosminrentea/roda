@@ -2,8 +2,8 @@
 <div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <page:show id="ps_ro_roda_InstanceOrgAssoc" object="${instanceorgassoc}" path="/instanceorgassocs" z="baZVYdZU/xVki1Mf0fMCYQT1InM=">
-        <field:display field="assocName" id="s_ro_roda_InstanceOrgAssoc_assocName" object="${instanceorgassoc}" z="eqCD3BZAKGrS7Ed2YwkvvT41Y+A="/>
-        <field:display field="assocDescription" id="s_ro_roda_InstanceOrgAssoc_assocDescription" object="${instanceorgassoc}" z="OigCnsD/20zdhGU4UearsQZw6Cs="/>
+    <page:show id="ps_ro_roda_domain_InstanceOrgAssoc" object="${instanceorgassoc}" path="/instanceorgassocs" z="SCEKR7Z63Fg8nEmsU2T1S+kHQ9U=">
+        <field:display field="assocName" id="s_ro_roda_domain_InstanceOrgAssoc_assocName" object="${instanceorgassoc}" z="kgvle9SahtsL16rBHnejtDXqNvk="/>
+        <field:display field="assocDescription" id="s_ro_roda_domain_InstanceOrgAssoc_assocDescription" object="${instanceorgassoc}" z="cyhsya5nngqDL8XwfCzwrVzEgLw="/>
     </page:show>
 </div>

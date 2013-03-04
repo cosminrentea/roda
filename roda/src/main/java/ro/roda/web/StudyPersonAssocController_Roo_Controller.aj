@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.StudyPersonAssoc;
+import ro.roda.domain.StudyPersonAssoc;
 import ro.roda.service.StudyPersonAssocService;
 import ro.roda.service.StudyPersonService;
 import ro.roda.web.StudyPersonAssocController;

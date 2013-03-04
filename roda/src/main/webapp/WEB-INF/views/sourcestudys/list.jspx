@@ -2,12 +2,12 @@
 <div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <page:list id="pl_ro_roda_Sourcestudy" items="${sourcestudys}" z="PTC9UeagOOxbSLyEoBdu3GfIwQc=">
-        <table:table data="${sourcestudys}" id="l_ro_roda_Sourcestudy" path="/sourcestudys" z="Nb8ww9kqC5kcqZTOFMyyXfx1mBo=">
-            <table:column id="c_ro_roda_Sourcestudy_orgId" property="orgId" z="c6km5j+O7f2TtdxxeQ/8IFlqqTs="/>
-            <table:column id="c_ro_roda_Sourcestudy_type" property="type" z="vCqfR7g+/SJ78rmZhBNkAg5VAi8="/>
-            <table:column id="c_ro_roda_Sourcestudy_name" property="name" z="UV6ceHIBJlxSduBVdhYZd2RADhk="/>
-            <table:column id="c_ro_roda_Sourcestudy_details" property="details" z="Ekh+G02mJD69gMsxLO38C0L/Bw8="/>
+    <page:list id="pl_ro_roda_domain_Sourcestudy" items="${sourcestudys}" z="DkJ5uJCaT39eGwPh+UbU+gsHJMY=">
+        <table:table data="${sourcestudys}" id="l_ro_roda_domain_Sourcestudy" path="/sourcestudys" z="k3JrPv5bkEm8WQkHvUI/QfWPqxI=">
+            <table:column id="c_ro_roda_domain_Sourcestudy_orgId" property="orgId" z="12Je5INSDvrXfelPyaPZskhoP/0="/>
+            <table:column id="c_ro_roda_domain_Sourcestudy_type" property="type" z="XW8iDtRIcKAiPg6exUv/W2Bl0oI="/>
+            <table:column id="c_ro_roda_domain_Sourcestudy_name" property="name" z="D6Ua7OVKQzQ8S8m05STY6vXHFBk="/>
+            <table:column id="c_ro_roda_domain_Sourcestudy_details" property="details" z="FRCxCzX4LEZtzZ/dflIKwhPoryY="/>
         </table:table>
     </page:list>
 </div>

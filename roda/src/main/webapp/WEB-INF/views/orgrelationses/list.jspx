@@ -2,14 +2,7 @@
 <div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <page:list id="pl_ro_roda_OrgRelations" items="${orgrelationses}" z="qJtfMFbK+W8e2rJ02DzmSCsOR64=">
-        <table:table data="${orgrelationses}" id="l_ro_roda_OrgRelations" path="/orgrelationses" z="Ar4yQuS95dqHU4Q+VPCf//wGc/E=">
-            <table:column id="c_ro_roda_OrgRelations_org2Id" property="org2Id" z="bQmpq4uJCUslX1w0QNQA+CSwLD8="/>
-            <table:column id="c_ro_roda_OrgRelations_org1Id" property="org1Id" z="IMiBJEOpSSm3BY9rqJdJi5JXqVk="/>
-            <table:column id="c_ro_roda_OrgRelations_orgRelationTypeId" property="orgRelationTypeId" z="K8XoEE1WPmLK/tXPdeima33Fz/Q="/>
-            <table:column calendar="true" dateTimePattern="${orgRelations_datestart_date_format}" id="c_ro_roda_OrgRelations_datestart" property="datestart" z="qrK9egWDX0zmoETgLroY+cTJAVA="/>
-            <table:column calendar="true" dateTimePattern="${orgRelations_dateend_date_format}" id="c_ro_roda_OrgRelations_dateend" property="dateend" z="HXVFE8bnqcK8OPoOpX3lXFMDuws="/>
-            <table:column id="c_ro_roda_OrgRelations_details" property="details" z="EyrSgbkAZjC1Ws/+SKXhHoEokIA="/>
-        </table:table>
+    <page:list id="pl_ro_roda_domain_OrgRelations" items="${orgrelationses}" z="LfFMJ5U0pVmHpQPH1H6UU9sjdLo=">
+        <table:table data="${orgrelationses}" id="l_ro_roda_domain_OrgRelations" path="/orgrelationses" z="IcfIIapi/IJHl+FiP+Hb4MqychE="/>
     </page:list>
 </div>

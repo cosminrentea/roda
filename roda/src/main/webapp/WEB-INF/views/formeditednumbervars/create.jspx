@@ -2,10 +2,9 @@
 <div xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:spring="http://www.springframework.org/tags" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <form:create compositePkField="id" id="fc_ro_roda_FormEditedNumberVar" modelAttribute="formEditedNumberVar" path="/formeditednumbervars" render="${empty dependencies}" z="xceyGLVNUOVF5ll5YHdjev+pOOY=">
-        <field:input disableFormBinding="true" field="id.formId" id="c_ro_roda_FormEditedNumberVar_id_formId" required="true" validationMessageCode="field_invalid_integer" z="+Ir6h0EApTBk0wD+YKlfmrIzyG4="/>
-        <field:input disableFormBinding="true" field="id.variableId" id="c_ro_roda_FormEditedNumberVar_id_variableId" required="true" validationMessageCode="field_invalid_integer" z="ZDGtWdH9ZnZL1A4qa9plo2kVLuI="/>
-        <field:input field="value" id="c_ro_roda_FormEditedNumberVar_value" required="true" validationMessageCode="field_invalid_number" z="ixNxGikech/8RgSDWWF5qbbwgJc="/>
+    <form:create compositePkField="id" id="fc_ro_roda_domain_FormEditedNumberVar" modelAttribute="formEditedNumberVar" path="/formeditednumbervars" render="${empty dependencies}" z="epBjAnSI/LLtMN9C2qK6QFvEt10=">
+        <field:input disableFormBinding="true" field="id.formId" id="c_ro_roda_domain_FormEditedNumberVar_id_formId" required="true" validationMessageCode="field_invalid_integer" z="rOQi8rJk4nk/mQZmEc5DvHr4eFI="/>
+        <field:input disableFormBinding="true" field="id.variableId" id="c_ro_roda_domain_FormEditedNumberVar_id_variableId" required="true" validationMessageCode="field_invalid_integer" z="KadFLNMxU57454rmhrDdhqWqvsQ="/>
     </form:create>
-    <form:dependency dependencies="${dependencies}" id="d_ro_roda_FormEditedNumberVar" render="${not empty dependencies}" z="PaSKwiy5nsO0FTejO5s3STEXAUc="/>
+    <form:dependency dependencies="${dependencies}" id="d_ro_roda_domain_FormEditedNumberVar" render="${not empty dependencies}" z="uyhcCLw5MgAd+Mc/QPH1VFZffj4="/>
 </div>

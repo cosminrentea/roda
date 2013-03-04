@@ -2,11 +2,11 @@
 <div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <page:show id="ps_ro_roda_SelectionVariableItem" object="${selectionvariableitem}" path="/selectionvariableitems" z="+7dCYxuPoJQyEzJdk98blGzuKfI=">
-        <field:display field="responseCardFileId" id="s_ro_roda_SelectionVariableItem_responseCardFileId" object="${selectionvariableitem}" z="byZD+aSXBJdaHvvCymYJIRZCmOU="/>
-        <field:display field="itemId" id="s_ro_roda_SelectionVariableItem_itemId" object="${selectionvariableitem}" z="1CsF6Yjhg3MJcf7YgQe43reTaHg="/>
-        <field:display field="variableId" id="s_ro_roda_SelectionVariableItem_variableId" object="${selectionvariableitem}" z="Pa2OhsFSg57zLIuyntpBoW59sL4="/>
-        <field:display field="orderOfItemInVariable" id="s_ro_roda_SelectionVariableItem_orderOfItemInVariable" object="${selectionvariableitem}" z="D96JBuy9WW1KIZLGwi2UYdcP7qA="/>
-        <field:display field="frequencyValue" id="s_ro_roda_SelectionVariableItem_frequencyValue" object="${selectionvariableitem}" z="sRqtfzNPGWsV9PEXIR+LoDyk5LU="/>
+    <page:show id="ps_ro_roda_domain_SelectionVariableItem" object="${selectionvariableitem}" path="/selectionvariableitems" z="OaD9Ym72Z/+Zfxy6dSyXwcFpUwk=">
+        <field:display field="responseCardFileId" id="s_ro_roda_domain_SelectionVariableItem_responseCardFileId" object="${selectionvariableitem}" z="Jz6BM6Azj7ujqc5el/Lm1IOFcG8="/>
+        <field:display field="itemId" id="s_ro_roda_domain_SelectionVariableItem_itemId" object="${selectionvariableitem}" z="96Sq9sEgxLWTK5ut2+ve+AW6S1Y="/>
+        <field:display field="variableId" id="s_ro_roda_domain_SelectionVariableItem_variableId" object="${selectionvariableitem}" z="60TQNwJuHqh8ODEAa7XnPU0TKYk="/>
+        <field:display field="orderOfItemInVariable" id="s_ro_roda_domain_SelectionVariableItem_orderOfItemInVariable" object="${selectionvariableitem}" z="wyyO3u4qdhgREsYRPnmwY2ROmuA="/>
+        <field:display field="frequencyValue" id="s_ro_roda_domain_SelectionVariableItem_frequencyValue" object="${selectionvariableitem}" z="8Auevca3rJfZvX6dTYYC/pWnf/8="/>
     </page:show>
 </div>

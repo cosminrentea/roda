@@ -2,9 +2,9 @@
 <div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <page:show id="ps_ro_roda_UserMessage" object="${usermessage}" path="/usermessages" z="lSFiHlX/0SBWwbHIUOzAZtZGdfc=">
-        <field:display field="toUserId" id="s_ro_roda_UserMessage_toUserId" object="${usermessage}" z="pocjDmoeqxqS5+sTjOBo2wBegFE="/>
-        <field:display field="fromUserId" id="s_ro_roda_UserMessage_fromUserId" object="${usermessage}" z="2xaB6Sb3uNlktN21BD4K8l4MoJU="/>
-        <field:display field="message" id="s_ro_roda_UserMessage_message" object="${usermessage}" z="XXc8SXibzuRLczeuwJCkuGD3yoc="/>
+    <page:show id="ps_ro_roda_domain_UserMessage" object="${usermessage}" path="/usermessages" z="EXARaWN2mBdKjQCQ7kCRPA+f0Jg=">
+        <field:display field="toUserId" id="s_ro_roda_domain_UserMessage_toUserId" object="${usermessage}" z="5HhgbBZhlRT+bn0ZIBTUmNAl4us="/>
+        <field:display field="fromUserId" id="s_ro_roda_domain_UserMessage_fromUserId" object="${usermessage}" z="Yq1b2OTc47QKfIE8rN3kNYUxTGA="/>
+        <field:display field="message" id="s_ro_roda_domain_UserMessage_message" object="${usermessage}" z="/Dsk+p5EPyTwtsLhv55ERH0PHoU="/>
     </page:show>
 </div>

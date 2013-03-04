@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.Phone;
+import ro.roda.domain.Phone;
 import ro.roda.service.OrgPhoneService;
 import ro.roda.service.PersonPhoneService;
 import ro.roda.service.PhoneService;

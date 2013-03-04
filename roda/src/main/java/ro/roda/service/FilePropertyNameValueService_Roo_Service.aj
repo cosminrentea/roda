@@ -4,8 +4,8 @@
 package ro.roda.service;
 
 import java.util.List;
-import ro.roda.FilePropertyNameValue;
-import ro.roda.FilePropertyNameValuePK;
+import ro.roda.domain.FilePropertyNameValue;
+import ro.roda.domain.FilePropertyNameValuePK;
 import ro.roda.service.FilePropertyNameValueService;
 
 privileged aspect FilePropertyNameValueService_Roo_Service {

@@ -15,27 +15,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.CmsPage;
-import ro.roda.Rodauser;
-import ro.roda.service.CmsLayoutService;
-import ro.roda.service.CmsPageContentService;
+import ro.roda.domain.CmsPage;
 import ro.roda.service.CmsPageService;
-import ro.roda.service.CmsPageTypeService;
 import ro.roda.web.CmsPageController;
 
 privileged aspect CmsPageController_Roo_Controller {
     
     @Autowired
     CmsPageService CmsPageController.cmsPageService;
-    
-    @Autowired
-    CmsLayoutService CmsPageController.cmsLayoutService;
-    
-    @Autowired
-    CmsPageContentService CmsPageController.cmsPageContentService;
-    
-    @Autowired
-    CmsPageTypeService CmsPageController.cmsPageTypeService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String CmsPageController.create(@Valid CmsPage cmsPage, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -104,10 +91,6 @@ privileged aspect CmsPageController_Roo_Controller {
     
     void CmsPageController.populateEditForm(Model uiModel, CmsPage cmsPage) {
         uiModel.addAttribute("cmsPage", cmsPage);
-        uiModel.addAttribute("cmslayouts", cmsLayoutService.findAllCmsLayouts());
-        uiModel.addAttribute("cmspagecontents", cmsPageContentService.findAllCmsPageContents());
-        uiModel.addAttribute("cmspagetypes", cmsPageTypeService.findAllCmsPageTypes());
-        uiModel.addAttribute("rodausers", Rodauser.findAllRodausers());
     }
     
     String CmsPageController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

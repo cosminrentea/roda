@@ -2,12 +2,12 @@
 <div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <page:show id="ps_ro_roda_Topic" object="${topic}" path="/topics" z="ZzVgZwFAVu6SLMIXQcWVMT2wlDY=">
-        <field:display field="instances1" id="s_ro_roda_Topic_instances1" object="${topic}" z="RsVXAxs6Y88YAYutmvWDjv/aTYU="/>
-        <field:display field="studies" id="s_ro_roda_Topic_studies" object="${topic}" z="YUFQHgNPP+Y1baIvrJBsCU6VwfA="/>
-        <field:display field="parentTopicId" id="s_ro_roda_Topic_parentTopicId" object="${topic}" z="mGMGlNslX0we1GCJ64r4jiHLks0="/>
-        <field:display field="preferredSynonymTopicId" id="s_ro_roda_Topic_preferredSynonymTopicId" object="${topic}" z="bp9q2x9tRO9NZBFsaV7IblxTx9U="/>
-        <field:display field="name" id="s_ro_roda_Topic_name" object="${topic}" z="YHMhCcz+FitFTNYbCRBUKcMwe7Y="/>
-        <field:display field="description" id="s_ro_roda_Topic_description" object="${topic}" z="5/GziJZ6cjMBeei6FbhgASIjb1M="/>
+    <page:show id="ps_ro_roda_domain_Topic" object="${topic}" path="/topics" z="9D4T/klfI0cX9zJuge7smx1GdzM=">
+        <field:display field="instances1" id="s_ro_roda_domain_Topic_instances1" object="${topic}" z="dI83oEo+hXHqkreNspzyNiD6aP4="/>
+        <field:display field="studies" id="s_ro_roda_domain_Topic_studies" object="${topic}" z="GC3zet/0KqqJOIXrYDbBKEnK9cA="/>
+        <field:display field="parentTopicId" id="s_ro_roda_domain_Topic_parentTopicId" object="${topic}" z="76aQ+gyVrjO6CcxDZ2VnSXWpE+s="/>
+        <field:display field="preferredSynonymTopicId" id="s_ro_roda_domain_Topic_preferredSynonymTopicId" object="${topic}" z="8NjfwkCB06Z2RzW3IY+QyflXWM4="/>
+        <field:display field="name" id="s_ro_roda_domain_Topic_name" object="${topic}" z="jrz+bb6RMwlbVV/5gQmznLiLi38="/>
+        <field:display field="description" id="s_ro_roda_domain_Topic_description" object="${topic}" z="b//Y+qVg5QQNknMGvyJoEMqqBsk="/>
     </page:show>
 </div>

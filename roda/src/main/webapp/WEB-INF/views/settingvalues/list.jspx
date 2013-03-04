@@ -2,10 +2,10 @@
 <div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <page:list id="pl_ro_roda_SettingValue" items="${settingvalues}" z="cUQRo9v5KHFhT9KlS0Ti082dOlw=">
-        <table:table data="${settingvalues}" id="l_ro_roda_SettingValue" path="/settingvalues" typeIdFieldName="settingId" z="iFkJQ7y1VrSvciLzM4L9sZ2Qep0=">
-            <table:column id="c_ro_roda_SettingValue_setting" property="setting" z="2mVVWDxgtNMp1SfP+2Oa1o08OGA="/>
-            <table:column id="c_ro_roda_SettingValue_value" property="value" z="m6zp8Wbr56DtvphmCLCp0CJxxZU="/>
+    <page:list id="pl_ro_roda_domain_SettingValue" items="${settingvalues}" z="W77WXeInDPk/wKap9OHvtLwmACQ=">
+        <table:table data="${settingvalues}" id="l_ro_roda_domain_SettingValue" path="/settingvalues" typeIdFieldName="settingId" z="mAfEy8bfU4rgRdeKsQ4D5Gu9+X0=">
+            <table:column id="c_ro_roda_domain_SettingValue_setting" property="setting" z="gSDM4+CDwzfhS3zh70HbDYW7Fsw="/>
+            <table:column id="c_ro_roda_domain_SettingValue_value" property="value" z="kJzcI82SgSl+qe/A8d7LLEHRDKY="/>
         </table:table>
     </page:list>
 </div>

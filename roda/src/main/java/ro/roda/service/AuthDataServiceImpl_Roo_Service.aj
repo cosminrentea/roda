@@ -6,7 +6,7 @@ package ro.roda.service;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.AuthData;
+import ro.roda.domain.AuthData;
 import ro.roda.service.AuthDataServiceImpl;
 
 privileged aspect AuthDataServiceImpl_Roo_Service {

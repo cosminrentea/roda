@@ -2,9 +2,9 @@
 <div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <page:show id="ps_ro_roda_CmsFolder" object="${cmsfolder}" path="/cmsfolders" z="FUwhK5Fn0t4f4NvUZoKdtzDkxVo=">
-        <field:display field="parentId" id="s_ro_roda_CmsFolder_parentId" object="${cmsfolder}" z="xUbzBy7RzhEvkvvwVMbTO9dpucc="/>
-        <field:display field="name" id="s_ro_roda_CmsFolder_name" object="${cmsfolder}" z="9Zski3F6Drc10IOF0Oti2Su64CU="/>
-        <field:display field="description" id="s_ro_roda_CmsFolder_description" object="${cmsfolder}" z="e7HrLn4BENgZ26fhx5LtrO6FMbE="/>
+    <page:show id="ps_ro_roda_domain_CmsFolder" object="${cmsfolder}" path="/cmsfolders" z="RdacPIajrgbiYCwjuyZ542YPPK0=">
+        <field:display field="name" id="s_ro_roda_domain_CmsFolder_name" object="${cmsfolder}" z="ksWut0Uoaw2li+SJA5GOzA9eG5g="/>
+        <field:display field="parentId" id="s_ro_roda_domain_CmsFolder_parentId" object="${cmsfolder}" z="Nf9jiYc3KhYnKpZoSq64mwoFue0="/>
+        <field:display field="description" id="s_ro_roda_domain_CmsFolder_description" object="${cmsfolder}" z="6klez2hbFWon6N/qe5glgWIVXWY="/>
     </page:show>
 </div>

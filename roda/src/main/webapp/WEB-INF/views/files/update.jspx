@@ -2,17 +2,17 @@
 <div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <form:update id="fu_ro_roda_File" modelAttribute="file" path="/files" versionField="none" z="l84O1OqCEEHTY64Sd+yvtvGcuAo=">
-        <field:select field="instances" id="c_ro_roda_File_instances" itemValue="id" items="${instances}" multiple="true" path="/instances" z="mQljWkoHdV6e8tX4rneEi0bUjhY="/>
-        <field:select field="studies1" id="c_ro_roda_File_studies1" itemValue="id" items="${studys}" multiple="true" path="/studys" z="/iDHy3tPoc6+Me6vpA7D2z5VWKM="/>
-        <field:simple field="fileAcls" id="c_ro_roda_File_fileAcls" messageCode="entity_reference_not_managed" messageCodeAttribute="File Acl" z="CIUF880+S7gdjeXnpdur7W0nS5M="/>
-        <field:simple field="filePropertyNameValues" id="c_ro_roda_File_filePropertyNameValues" messageCode="entity_reference_not_managed" messageCodeAttribute="File Property Name Value" z="AL8L5+LkzZcMvTSkNoECasmkETM="/>
-        <field:simple field="selectionVariableItems" id="c_ro_roda_File_selectionVariableItems" messageCode="entity_reference_not_managed" messageCodeAttribute="Selection Variable Item" z="LX2GyIwhdKx4AVCzO+WGEMIU+Ys="/>
-        <field:simple field="variables" id="c_ro_roda_File_variables" messageCode="entity_reference_not_managed" messageCodeAttribute="Variable" z="TrvJg239MrVh6s5VwDfqO9EJgxs="/>
-        <field:input field="title" id="c_ro_roda_File_title" required="true" z="z7oxea5PqdvxfDWEbdML9ule98o="/>
-        <field:input field="description" id="c_ro_roda_File_description" z="AwBZjYqKdLTwfUEJH5Q5Rq4tbyM="/>
-        <field:input field="filetypeId" id="c_ro_roda_File_filetypeId" required="true" validationMessageCode="field_invalid_integer" z="NNLT+yni/EBuBk3kjr8aHd41Qok="/>
-        <field:input field="name" id="c_ro_roda_File_name" required="true" z="mxIi++2S76GPJRr92odxnhL3Xh0="/>
-        <field:input field="size" id="c_ro_roda_File_size" validationMessageCode="field_invalid_integer" z="Y1CkKjeQZMyTC2xrwuztYhrkQ5I="/>
+    <form:update id="fu_ro_roda_domain_File" modelAttribute="file" path="/files" versionField="none" z="QtyENylegvIAy+tebgIbuldM/GU=">
+        <field:select field="instances" id="c_ro_roda_domain_File_instances" itemValue="id" items="${instances}" multiple="true" path="/instances" z="Gp9rWKNgSUGH7mK/qR5yVnxypos="/>
+        <field:select field="studies1" id="c_ro_roda_domain_File_studies1" itemValue="id" items="${studys}" multiple="true" path="/studys" z="AI0nGJJYVLaePoOgKHLuHZ72aTw="/>
+        <field:simple field="fileAcls" id="c_ro_roda_domain_File_fileAcls" messageCode="entity_reference_not_managed" messageCodeAttribute="File Acl" z="77d7cwfK2Kfl+v5MuQn7eGs5Jl8="/>
+        <field:simple field="filePropertyNameValues" id="c_ro_roda_domain_File_filePropertyNameValues" messageCode="entity_reference_not_managed" messageCodeAttribute="File Property Name Value" z="tM6o6R9rRWc6gewW30UBFGOkjgs="/>
+        <field:simple field="selectionVariableItems" id="c_ro_roda_domain_File_selectionVariableItems" messageCode="entity_reference_not_managed" messageCodeAttribute="Selection Variable Item" z="NYJVLaUp9TL6oVC4yy6j4NEZxhc="/>
+        <field:simple field="variables" id="c_ro_roda_domain_File_variables" messageCode="entity_reference_not_managed" messageCodeAttribute="Variable" z="VyGBdgZveSLd7p4zINemyIhqQf0="/>
+        <field:input field="title" id="c_ro_roda_domain_File_title" required="true" z="mGbEREPwT0tZtIEZHoyJGPQmGBQ="/>
+        <field:input field="description" id="c_ro_roda_domain_File_description" z="8LJREJAr9SJqYV7YatxnFoBWUX0="/>
+        <field:input field="filetypeId" id="c_ro_roda_domain_File_filetypeId" required="true" validationMessageCode="field_invalid_integer" z="NuiggTGpybh4y9ylfbutIcrWWzI="/>
+        <field:input field="name" id="c_ro_roda_domain_File_name" required="true" z="bsqSPcjHt20RxwI1tw3c/gOf9Sg="/>
+        <field:input field="size" id="c_ro_roda_domain_File_size" validationMessageCode="field_invalid_integer" z="ExvMcmCmlKeFT6YB3SQY+pfJvus="/>
     </form:update>
 </div>

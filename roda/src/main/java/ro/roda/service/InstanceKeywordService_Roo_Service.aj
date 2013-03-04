@@ -4,8 +4,8 @@
 package ro.roda.service;
 
 import java.util.List;
-import ro.roda.InstanceKeyword;
-import ro.roda.InstanceKeywordPK;
+import ro.roda.domain.InstanceKeyword;
+import ro.roda.domain.InstanceKeywordPK;
 import ro.roda.service.InstanceKeywordService;
 
 privileged aspect InstanceKeywordService_Roo_Service {

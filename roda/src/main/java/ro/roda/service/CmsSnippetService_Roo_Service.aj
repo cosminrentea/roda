@@ -4,7 +4,7 @@
 package ro.roda.service;
 
 import java.util.List;
-import ro.roda.CmsSnippet;
+import ro.roda.domain.CmsSnippet;
 import ro.roda.service.CmsSnippetService;
 
 privileged aspect CmsSnippetService_Roo_Service {

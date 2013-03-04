@@ -120,7 +120,6 @@
         <menu:category id="c_cmsfolder" z="3+lxmD7xtL1zZU/Mpxk2LkVazSM=">
             <menu:item id="i_cmsfolder_new" messageCode="global_menu_new" url="/cmsfolders?form" z="AznueMAejIh+BlNVPQHHQPcvG0k="/>
             <menu:item id="i_cmsfolder_list" messageCode="global_menu_list" url="/cmsfolders?page=1&amp;size=${empty param.size ? 10 : param.size}" z="Sxky6173w6C2VzrSCT1D2pyikKQ="/>
-            <menu:item id="fi_cmsfolder_nameequals" messageCode="global_menu_find" url="/cmsfolders?find=ByNameEquals&amp;form" z="sNKB2nB89SMpnxsa86sOK/Yzp8I="/>
         </menu:category>
         <menu:category id="c_item" z="jWO1pnucyLwI2bZuwfja4eCYsjU=">
             <menu:item id="i_item_new" messageCode="global_menu_new" url="/items?form" z="I+/MpOYxZ47XKvsQW1PUi6uC060="/>
@@ -349,7 +348,6 @@
         <menu:category id="c_city" z="4hVKAkWoLVM4Da06LymSga9Sizg=">
             <menu:item id="i_city_new" messageCode="global_menu_new" url="/citys?form" z="dbfrmJjWGvOtF7e23trrw/vQnRE="/>
             <menu:item id="i_city_list" messageCode="global_menu_list" url="/citys?page=1&amp;size=${empty param.size ? 10 : param.size}" z="Yq246nbcmHRrSUSB+sOWkE5wtxQ="/>
-            <menu:item id="fi_city_namelike" messageCode="global_menu_find" url="/citys?find=ByNameLike&amp;form" z="7le7+HcRXvQvESJbCI9wS6mzfG8="/>
         </menu:category>
         <menu:category id="c_concept" z="wVOs6ZGM/bHscM45mMVIBEwWFB4=">
             <menu:item id="i_concept_new" messageCode="global_menu_new" url="/concepts?form" z="k/7/xzFe8LUvpO/kA2XuAsEtAKc="/>
@@ -485,6 +483,30 @@
         <menu:category id="c_cmsfilepropertynamevalue" z="Q7LFzu9/lmSJG+uKFTLuR1dbsY0=">
             <menu:item id="i_cmsfilepropertynamevalue_new" messageCode="global_menu_new" url="/cmsfilepropertynamevalues?form" z="NLHsKrYxUvvxD5046/F8Y9OAu9w="/>
             <menu:item id="i_cmsfilepropertynamevalue_list" messageCode="global_menu_list" url="/cmsfilepropertynamevalues?page=1&amp;size=${empty param.size ? 10 : param.size}" z="fZCCaKEd5kofkAZOc+xop0vIjS0="/>
+        </menu:category>
+        <menu:category id="c_auditlogchangeset" z="11ASlLome39ZhaDkLU/bqTdb+J0=">
+            <menu:item id="i_auditlogchangeset_new" messageCode="global_menu_new" url="/auditlogchangesets?form" z="S3Ea15eDgwvdDtyH2cG6sEqdcr4="/>
+            <menu:item id="i_auditlogchangeset_list" messageCode="global_menu_list" url="/auditlogchangesets?page=1&amp;size=${empty param.size ? 10 : param.size}" z="i3VntSixyQW9kxvRsFDncgEBd1g="/>
+        </menu:category>
+        <menu:category id="c_auditlogaction" z="F7xjrbFmUk4yK/wYtxQZghsw5zU=">
+            <menu:item id="i_auditlogaction_new" messageCode="global_menu_new" url="/auditlogactions?form" z="g7d/aRQayOAIRS2xucP2TCQxqG8="/>
+            <menu:item id="i_auditlogaction_list" messageCode="global_menu_list" url="/auditlogactions?page=1&amp;size=${empty param.size ? 10 : param.size}" z="JEgglN+qvNbjlNEpgX98+WX54S0="/>
+        </menu:category>
+        <menu:category id="c_auditlogchange" z="V2U8rcTfHV3+gtj+2AOicZgv33A=">
+            <menu:item id="i_auditlogchange_new" messageCode="global_menu_new" url="/auditlogchanges?form" z="lXWRviqm++TBrlKV+iDGfCARz5g="/>
+            <menu:item id="i_auditlogchange_list" messageCode="global_menu_list" url="/auditlogchanges?page=1&amp;size=${empty param.size ? 10 : param.size}" z="0y6ODHRWKfz7OhYhsbbjL5ADVag="/>
+        </menu:category>
+        <menu:category id="c_auditlogtable" z="BENPtcMii3M1WchiFH0AjHXqrVM=">
+            <menu:item id="i_auditlogtable_new" messageCode="global_menu_new" url="/auditlogtables?form" z="JBEyyioXbDSInIdpEhCO1FJb4Xo="/>
+            <menu:item id="i_auditlogtable_list" messageCode="global_menu_list" url="/auditlogtables?page=1&amp;size=${empty param.size ? 10 : param.size}" z="xrcoOqRJbv+yk4t+PehMgxPkqnU="/>
+        </menu:category>
+        <menu:category id="c_rodauser" z="Cr5YqTF4PWbwhxYAaRnMC9DYJgM=">
+            <menu:item id="i_rodauser_new" messageCode="global_menu_new" url="/rodausers?form" z="TeQxtT9cyoG6J1u5YxxcKv+V6U4="/>
+            <menu:item id="i_rodauser_list" messageCode="global_menu_list" url="/rodausers?page=1&amp;size=${empty param.size ? 10 : param.size}" z="Ez7BSsCkMGWCXCtPh2OoXVljGek="/>
+        </menu:category>
+        <menu:category id="c_auditlogfield" z="teenOcLOlwVJrmy0L2F4Iwzn6vA=">
+            <menu:item id="i_auditlogfield_new" messageCode="global_menu_new" url="/auditlogfields?form" z="AYPWxmQRNyItL96cGFkaFmNrF2c="/>
+            <menu:item id="i_auditlogfield_list" messageCode="global_menu_list" url="/auditlogfields?page=1&amp;size=${empty param.size ? 10 : param.size}" z="0zzqQNMCLL+83DxGPKxSC5x+KlA="/>
         </menu:category>
     </menu:menu>
 </div>

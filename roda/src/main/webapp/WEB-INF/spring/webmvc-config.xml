@@ -102,6 +102,6 @@
 			</list>
 		</property>
 	</bean>
-	<bean class="ro.roda.web.ApplicationConversionServiceFactoryBean"
+	<bean class="ro.roda.conversion.ApplicationConversionServiceFactoryBean"
 		id="applicationConversionService" />
 </beans>

@@ -4,7 +4,7 @@
 package ro.roda.service;
 
 import java.util.List;
-import ro.roda.CmsPageType;
+import ro.roda.domain.CmsPageType;
 import ro.roda.service.CmsPageTypeService;
 
 privileged aspect CmsPageTypeService_Roo_Service {

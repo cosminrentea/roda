@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.Lang;
+import ro.roda.domain.Lang;
 import ro.roda.service.InstanceDescrService;
 import ro.roda.service.LangService;
 import ro.roda.service.StudyDescrService;

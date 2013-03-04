@@ -6,8 +6,8 @@ package ro.roda.service;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.TranslatedTopic;
-import ro.roda.TranslatedTopicPK;
+import ro.roda.domain.TranslatedTopic;
+import ro.roda.domain.TranslatedTopicPK;
 import ro.roda.service.TranslatedTopicServiceImpl;
 
 privileged aspect TranslatedTopicServiceImpl_Roo_Service {

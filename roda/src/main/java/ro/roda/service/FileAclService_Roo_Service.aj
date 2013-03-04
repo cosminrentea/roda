@@ -4,8 +4,8 @@
 package ro.roda.service;
 
 import java.util.List;
-import ro.roda.FileAcl;
-import ro.roda.FileAclPK;
+import ro.roda.domain.FileAcl;
+import ro.roda.domain.FileAclPK;
 import ro.roda.service.FileAclService;
 
 privileged aspect FileAclService_Roo_Service {

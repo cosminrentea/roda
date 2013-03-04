@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.Form;
+import ro.roda.domain.Form;
 import ro.roda.service.FormEditedNumberVarService;
 import ro.roda.service.FormEditedTextVarService;
 import ro.roda.service.FormSelectionVarService;

@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.Region;
+import ro.roda.domain.Region;
 import ro.roda.service.CityService;
 import ro.roda.service.CountryService;
 import ro.roda.service.RegionService;

@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.InstanceOrgAssoc;
+import ro.roda.domain.InstanceOrgAssoc;
 import ro.roda.service.InstanceOrgAssocService;
 import ro.roda.service.InstanceOrgService;
 import ro.roda.web.InstanceOrgAssocController;

@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.Internet;
+import ro.roda.domain.Internet;
 import ro.roda.service.InternetService;
 import ro.roda.service.OrgInternetService;
 import ro.roda.service.PersonInternetService;

@@ -2,11 +2,11 @@
 <div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <page:show id="ps_ro_roda_StudyAcl" object="${studyacl}" path="/studyacls" z="aJxsUhjfQVTa6aw38doCx4kAC8g=">
-        <field:display field="studyId" id="s_ro_roda_StudyAcl_studyId" object="${studyacl}" z="JBhzFBcw+XNMi42jblQL9YBZs4o="/>
-        <field:display field="read" id="s_ro_roda_StudyAcl_read" object="${studyacl}" z="ZHHJiheSer8Axiv+I8CXz0Jlsmk="/>
-        <field:display field="update" id="s_ro_roda_StudyAcl_update" object="${studyacl}" z="kS7/fCCwoRBVa0PJ8KdLT1wcLos="/>
-        <field:display field="delete" id="s_ro_roda_StudyAcl_delete" object="${studyacl}" z="vBfU0TehHTBvY2svCSLJXV0JRjQ="/>
-        <field:display field="modacl" id="s_ro_roda_StudyAcl_modacl" object="${studyacl}" z="kId4W3sJGn2kINJ6jcx0m0mvYWg="/>
+    <page:show id="ps_ro_roda_domain_StudyAcl" object="${studyacl}" path="/studyacls" z="TPWKbJBT8QXro7BDo6BkyrZW9zo=">
+        <field:display field="studyId" id="s_ro_roda_domain_StudyAcl_studyId" object="${studyacl}" z="RbdK+DbNcJGeoaJqDuks+7V1xKQ="/>
+        <field:display field="read" id="s_ro_roda_domain_StudyAcl_read" object="${studyacl}" z="Q6vMUk6UB64Bcf+qN9s027HZ4Jo="/>
+        <field:display field="update" id="s_ro_roda_domain_StudyAcl_update" object="${studyacl}" z="FmQOn743WecAsbTMCy2m0HREwPM="/>
+        <field:display field="delete" id="s_ro_roda_domain_StudyAcl_delete" object="${studyacl}" z="rMQWK3lBP8l2MYGLOhru4/nTLy0="/>
+        <field:display field="modacl" id="s_ro_roda_domain_StudyAcl_modacl" object="${studyacl}" z="h5Gv8KulaQjNHyQRoV89Kz9U9ro="/>
     </page:show>
 </div>

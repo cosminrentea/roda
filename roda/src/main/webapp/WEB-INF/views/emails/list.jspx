@@ -2,9 +2,9 @@
 <div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <page:list id="pl_ro_roda_Email" items="${emails}" z="vDhHFA0T7alqug/rnhKRJhOK+aA=">
-        <table:table data="${emails}" id="l_ro_roda_Email" path="/emails" z="FuQbF63LkqfnNgxaD7giRW0G/ao=">
-            <table:column id="c_ro_roda_Email_email" property="email" z="saxpVOkHVy22me5u6GdhTpjhokU="/>
+    <page:list id="pl_ro_roda_domain_Email" items="${emails}" z="QOUSvG8wk5rzZtffixr1ANP6EYE=">
+        <table:table data="${emails}" id="l_ro_roda_domain_Email" path="/emails" z="JoedjCB/inNNFhET2Q5KnOt0CQc=">
+            <table:column id="c_ro_roda_domain_Email_email" property="email" z="PBhq4GvyHDGY98WQ1Dtp86A1rPg="/>
         </table:table>
     </page:list>
 </div>

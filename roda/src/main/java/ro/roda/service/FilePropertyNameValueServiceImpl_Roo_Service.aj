@@ -6,8 +6,8 @@ package ro.roda.service;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.FilePropertyNameValue;
-import ro.roda.FilePropertyNameValuePK;
+import ro.roda.domain.FilePropertyNameValue;
+import ro.roda.domain.FilePropertyNameValuePK;
 import ro.roda.service.FilePropertyNameValueServiceImpl;
 
 privileged aspect FilePropertyNameValueServiceImpl_Roo_Service {

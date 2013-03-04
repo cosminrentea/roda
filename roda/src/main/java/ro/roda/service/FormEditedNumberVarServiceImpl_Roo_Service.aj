@@ -6,8 +6,8 @@ package ro.roda.service;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.FormEditedNumberVar;
-import ro.roda.FormEditedNumberVarPK;
+import ro.roda.domain.FormEditedNumberVar;
+import ro.roda.domain.FormEditedNumberVarPK;
 import ro.roda.service.FormEditedNumberVarServiceImpl;
 
 privileged aspect FormEditedNumberVarServiceImpl_Roo_Service {

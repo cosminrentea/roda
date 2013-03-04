@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
-import ro.roda.CmsLayoutGroup;
+import ro.roda.domain.CmsLayoutGroup;
 import ro.roda.service.CmsLayoutGroupService;
 import ro.roda.service.CmsLayoutService;
 import ro.roda.web.CmsLayoutGroupController;

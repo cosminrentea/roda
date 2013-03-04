@@ -2,11 +2,11 @@
 <div xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:spring="http://www.springframework.org/tags" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <form:create compositePkField="id" id="fc_ro_roda_InstanceKeyword" modelAttribute="instanceKeyword" path="/instancekeywords" render="${empty dependencies}" z="Nipasyploqvm6r8/gLuurKyU1B4=">
-        <field:input disableFormBinding="true" field="id.instanceId" id="c_ro_roda_InstanceKeyword_id_instanceId" required="true" validationMessageCode="field_invalid_integer" z="mknjYLU7khZ4cT0IrHVe79OJL+U="/>
-        <field:input disableFormBinding="true" field="id.keywordId" id="c_ro_roda_InstanceKeyword_id_keywordId" required="true" validationMessageCode="field_invalid_integer" z="eNbcsOyWd68o0glKCzYYUsp23Jk="/>
-        <field:input disableFormBinding="true" field="id.addedBy" id="c_ro_roda_InstanceKeyword_id_addedBy" required="true" validationMessageCode="field_invalid_integer" z="NBXzfJKwCpaQg7aDiVvSeL15hXc="/>
-        <field:datetime dateTimePattern="${instanceKeyword_added_date_format}" field="added" id="c_ro_roda_InstanceKeyword_added" required="true" z="sWuVaWgh0yeCEfXcqt/jx21DiGE="/>
+    <form:create compositePkField="id" id="fc_ro_roda_domain_InstanceKeyword" modelAttribute="instanceKeyword" path="/instancekeywords" render="${empty dependencies}" z="4t42SywK9fyFHr0UIPeYSLD6nDI=">
+        <field:input disableFormBinding="true" field="id.instanceId" id="c_ro_roda_domain_InstanceKeyword_id_instanceId" required="true" validationMessageCode="field_invalid_integer" z="TFB1HDEirFFphbT5fuPzle0gvow="/>
+        <field:input disableFormBinding="true" field="id.keywordId" id="c_ro_roda_domain_InstanceKeyword_id_keywordId" required="true" validationMessageCode="field_invalid_integer" z="EFPEgZgxccmYm+X+GQ60dwfH0l4="/>
+        <field:input disableFormBinding="true" field="id.addedBy" id="c_ro_roda_domain_InstanceKeyword_id_addedBy" required="true" validationMessageCode="field_invalid_integer" z="1EGK6maRjSBh19iEC9neSZ2/YO8="/>
+        <field:datetime dateTimePattern="${instanceKeyword_added_date_format}" field="added" id="c_ro_roda_domain_InstanceKeyword_added" required="true" z="NrhI3D5oayp+1dsJTXZ4OQVmbuY="/>
     </form:create>
-    <form:dependency dependencies="${dependencies}" id="d_ro_roda_InstanceKeyword" render="${not empty dependencies}" z="ujh61LjwQkYlz99rbaXpPDYXVT0="/>
+    <form:dependency dependencies="${dependencies}" id="d_ro_roda_domain_InstanceKeyword" render="${not empty dependencies}" z="oqoJiNuH7jxvclmmAYN9PD1v86U="/>
 </div>

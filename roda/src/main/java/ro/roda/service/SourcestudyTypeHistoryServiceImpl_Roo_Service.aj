@@ -6,7 +6,7 @@ package ro.roda.service;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ro.roda.SourcestudyTypeHistory;
+import ro.roda.domain.SourcestudyTypeHistory;
 import ro.roda.service.SourcestudyTypeHistoryServiceImpl;
 
 privileged aspect SourcestudyTypeHistoryServiceImpl_Roo_Service {

@@ -2,6 +2,6 @@ package ro.roda.service;
 
 import org.springframework.roo.addon.layers.service.RooService;
 
-@RooService(domainTypes = { ro.roda.StudyDocuments.class })
+@RooService(domainTypes = { ro.roda.domain.StudyDocuments.class })
 public interface StudyDocumentsService {
 }

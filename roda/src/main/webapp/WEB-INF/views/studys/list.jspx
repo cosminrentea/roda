@@ -2,10 +2,10 @@
 <div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <page:list id="pl_ro_roda_Study" items="${studys}" z="QNdBfCC++cRoa48d7ZwQfafxBis=">
-        <table:table data="${studys}" id="l_ro_roda_Study" path="/studys" z="rEQhCiPqBh/Mv2kdqLest6jrWOE=">
-            <table:column id="c_ro_roda_Study_topics" property="topics" z="974evIqdSgs4ETfZSTUewDVbzYM="/>
-            <table:column id="c_ro_roda_Study_files1" property="files1" z="GwAywVGD6z1iR5F4Bs0R1ezwtrE="/>
+    <page:list id="pl_ro_roda_domain_Study" items="${studys}" z="hvnVck+FRAKNSCMVxF03j40JP60=">
+        <table:table data="${studys}" id="l_ro_roda_domain_Study" path="/studys" z="lLTHthFYJl/c4j1cSr9hcL0+XPQ=">
+            <table:column id="c_ro_roda_domain_Study_topics" property="topics" z="Dmm698J/8zDNkLHcMzQjuMtglh0="/>
+            <table:column id="c_ro_roda_domain_Study_files1" property="files1" z="fVuZZVVaYeo/EIqIyW2NyPwYq5Y="/>
         </table:table>
     </page:list>
 </div>

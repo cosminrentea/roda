@@ -48,9 +48,9 @@ privileged aspect TitleType_Roo_SolrSearch {
         for (TitleType titleType : titletypes) {
             SolrInputDocument sid = new SolrInputDocument();
             sid.addField("id", "titletype_" + titleType.getId());
-            sid.addField("titleType.id_i", titleType.getId());
+            sid.addField("titleType.name_s", titleType.getName());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("titletype_solrsummary_t", new StringBuilder().append(titleType.getId()));
+            sid.addField("titletype_solrsummary_t", new StringBuilder().append(titleType.getName()));
             documents.add(sid);
         }
         try {

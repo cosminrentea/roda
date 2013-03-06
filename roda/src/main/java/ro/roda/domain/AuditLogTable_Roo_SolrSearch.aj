@@ -48,9 +48,10 @@ privileged aspect AuditLogTable_Roo_SolrSearch {
         for (AuditLogTable auditLogTable : auditlogtables) {
             SolrInputDocument sid = new SolrInputDocument();
             sid.addField("id", "auditlogtable_" + auditLogTable.getId());
+            sid.addField("auditLogTable.name_s", auditLogTable.getName());
             sid.addField("auditLogTable.id_i", auditLogTable.getId());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("auditlogtable_solrsummary_t", new StringBuilder().append(auditLogTable.getId()));
+            sid.addField("auditlogtable_solrsummary_t", new StringBuilder().append(auditLogTable.getName()).append(" ").append(auditLogTable.getId()));
             documents.add(sid);
         }
         try {

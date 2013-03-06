@@ -6,7 +6,9 @@ package ro.roda.web;
 import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,13 +18,25 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.domain.SourcestudyTypeHistory;
+import ro.roda.service.RodauserService;
+import ro.roda.service.SourcestudyService;
 import ro.roda.service.SourcestudyTypeHistoryService;
+import ro.roda.service.SourcestudyTypeService;
 import ro.roda.web.SourcestudyTypeHistoryController;
 
 privileged aspect SourcestudyTypeHistoryController_Roo_Controller {
     
     @Autowired
     SourcestudyTypeHistoryService SourcestudyTypeHistoryController.sourcestudyTypeHistoryService;
+    
+    @Autowired
+    RodauserService SourcestudyTypeHistoryController.rodauserService;
+    
+    @Autowired
+    SourcestudyService SourcestudyTypeHistoryController.sourcestudyService;
+    
+    @Autowired
+    SourcestudyTypeService SourcestudyTypeHistoryController.sourcestudyTypeService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String SourcestudyTypeHistoryController.create(@Valid SourcestudyTypeHistory sourcestudyTypeHistory, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -43,6 +57,7 @@ privileged aspect SourcestudyTypeHistoryController_Roo_Controller {
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String SourcestudyTypeHistoryController.show(@PathVariable("id") Integer id, Model uiModel) {
+        addDateTimeFormatPatterns(uiModel);
         uiModel.addAttribute("sourcestudytypehistory", sourcestudyTypeHistoryService.findSourcestudyTypeHistory(id));
         uiModel.addAttribute("itemId", id);
         return "sourcestudytypehistorys/show";
@@ -59,6 +74,7 @@ privileged aspect SourcestudyTypeHistoryController_Roo_Controller {
         } else {
             uiModel.addAttribute("sourcestudytypehistorys", sourcestudyTypeHistoryService.findAllSourcestudyTypeHistorys());
         }
+        addDateTimeFormatPatterns(uiModel);
         return "sourcestudytypehistorys/list";
     }
     
@@ -89,8 +105,17 @@ privileged aspect SourcestudyTypeHistoryController_Roo_Controller {
         return "redirect:/sourcestudytypehistorys";
     }
     
+    void SourcestudyTypeHistoryController.addDateTimeFormatPatterns(Model uiModel) {
+        uiModel.addAttribute("sourcestudyTypeHistory_datestart_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
+        uiModel.addAttribute("sourcestudyTypeHistory_dateend_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
+    }
+    
     void SourcestudyTypeHistoryController.populateEditForm(Model uiModel, SourcestudyTypeHistory sourcestudyTypeHistory) {
         uiModel.addAttribute("sourcestudyTypeHistory", sourcestudyTypeHistory);
+        addDateTimeFormatPatterns(uiModel);
+        uiModel.addAttribute("rodausers", rodauserService.findAllRodausers());
+        uiModel.addAttribute("sourcestudys", sourcestudyService.findAllSourcestudys());
+        uiModel.addAttribute("sourcestudytypes", sourcestudyTypeService.findAllSourcestudyTypes());
     }
     
     String SourcestudyTypeHistoryController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

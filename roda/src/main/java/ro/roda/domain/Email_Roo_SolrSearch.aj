@@ -48,9 +48,10 @@ privileged aspect Email_Roo_SolrSearch {
         for (Email email : emails) {
             SolrInputDocument sid = new SolrInputDocument();
             sid.addField("id", "email_" + email.getId());
+            sid.addField("email.email_s", email.getEmail());
             sid.addField("email.id_i", email.getId());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("email_solrsummary_t", new StringBuilder().append(email.getId()));
+            sid.addField("email_solrsummary_t", new StringBuilder().append(email.getEmail()).append(" ").append(email.getId()));
             documents.add(sid);
         }
         try {

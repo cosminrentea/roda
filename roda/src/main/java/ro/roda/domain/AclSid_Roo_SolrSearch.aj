@@ -48,9 +48,10 @@ privileged aspect AclSid_Roo_SolrSearch {
         for (AclSid aclSid : aclsids) {
             SolrInputDocument sid = new SolrInputDocument();
             sid.addField("id", "aclsid_" + aclSid.getId());
+            sid.addField("aclSid.sid_s", aclSid.getSid());
             sid.addField("aclSid.id_l", aclSid.getId());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("aclsid_solrsummary_t", new StringBuilder().append(aclSid.getId()));
+            sid.addField("aclsid_solrsummary_t", new StringBuilder().append(aclSid.getSid()).append(" ").append(aclSid.getId()));
             documents.add(sid);
         }
         try {

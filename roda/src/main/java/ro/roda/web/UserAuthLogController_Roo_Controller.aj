@@ -18,6 +18,7 @@ import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.domain.UserAuthLog;
 import ro.roda.domain.UserAuthLogPK;
+import ro.roda.service.RodauserService;
 import ro.roda.service.UserAuthLogService;
 import ro.roda.web.UserAuthLogController;
 
@@ -27,6 +28,9 @@ privileged aspect UserAuthLogController_Roo_Controller {
     
     @Autowired
     UserAuthLogService UserAuthLogController.userAuthLogService;
+    
+    @Autowired
+    RodauserService UserAuthLogController.rodauserService;
     
     @Autowired
     public UserAuthLogController.new(ConversionService conversionService) {
@@ -101,6 +105,7 @@ privileged aspect UserAuthLogController_Roo_Controller {
     
     void UserAuthLogController.populateEditForm(Model uiModel, UserAuthLog userAuthLog) {
         uiModel.addAttribute("userAuthLog", userAuthLog);
+        uiModel.addAttribute("rodausers", rodauserService.findAllRodausers());
     }
     
     String UserAuthLogController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

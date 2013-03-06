@@ -48,13 +48,9 @@ privileged aspect OrgAddress_Roo_SolrSearch {
         for (OrgAddress orgAddress : orgaddresses) {
             SolrInputDocument sid = new SolrInputDocument();
             sid.addField("id", "orgaddress_" + orgAddress.getId());
-            sid.addField("orgAddress.addressid_t", orgAddress.getAddressId());
-            sid.addField("orgAddress.orgid_t", orgAddress.getOrgId());
-            sid.addField("orgAddress.datestart_dt", orgAddress.getDatestart().getTime());
-            sid.addField("orgAddress.dateend_dt", orgAddress.getDateend().getTime());
             sid.addField("orgAddress.id_t", orgAddress.getId());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("orgaddress_solrsummary_t", new StringBuilder().append(orgAddress.getAddressId()).append(" ").append(orgAddress.getOrgId()).append(" ").append(orgAddress.getDatestart().getTime()).append(" ").append(orgAddress.getDateend().getTime()).append(" ").append(orgAddress.getId()));
+            sid.addField("orgaddress_solrsummary_t", new StringBuilder().append(orgAddress.getId()));
             documents.add(sid);
         }
         try {

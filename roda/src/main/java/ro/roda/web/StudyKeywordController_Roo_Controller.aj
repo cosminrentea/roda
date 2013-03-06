@@ -6,7 +6,9 @@ package ro.roda.web;
 import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -18,7 +20,10 @@ import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.domain.StudyKeyword;
 import ro.roda.domain.StudyKeywordPK;
+import ro.roda.service.KeywordService;
+import ro.roda.service.RodauserService;
 import ro.roda.service.StudyKeywordService;
+import ro.roda.service.StudyService;
 import ro.roda.web.StudyKeywordController;
 
 privileged aspect StudyKeywordController_Roo_Controller {
@@ -27,6 +32,15 @@ privileged aspect StudyKeywordController_Roo_Controller {
     
     @Autowired
     StudyKeywordService StudyKeywordController.studyKeywordService;
+    
+    @Autowired
+    KeywordService StudyKeywordController.keywordService;
+    
+    @Autowired
+    RodauserService StudyKeywordController.rodauserService;
+    
+    @Autowired
+    StudyService StudyKeywordController.studyService;
     
     @Autowired
     public StudyKeywordController.new(ConversionService conversionService) {
@@ -53,6 +67,7 @@ privileged aspect StudyKeywordController_Roo_Controller {
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String StudyKeywordController.show(@PathVariable("id") StudyKeywordPK id, Model uiModel) {
+        addDateTimeFormatPatterns(uiModel);
         uiModel.addAttribute("studykeyword", studyKeywordService.findStudyKeyword(id));
         uiModel.addAttribute("itemId", conversionService.convert(id, String.class));
         return "studykeywords/show";
@@ -69,6 +84,7 @@ privileged aspect StudyKeywordController_Roo_Controller {
         } else {
             uiModel.addAttribute("studykeywords", studyKeywordService.findAllStudyKeywords());
         }
+        addDateTimeFormatPatterns(uiModel);
         return "studykeywords/list";
     }
     
@@ -99,8 +115,16 @@ privileged aspect StudyKeywordController_Roo_Controller {
         return "redirect:/studykeywords";
     }
     
+    void StudyKeywordController.addDateTimeFormatPatterns(Model uiModel) {
+        uiModel.addAttribute("studyKeyword_added_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
+    }
+    
     void StudyKeywordController.populateEditForm(Model uiModel, StudyKeyword studyKeyword) {
         uiModel.addAttribute("studyKeyword", studyKeyword);
+        addDateTimeFormatPatterns(uiModel);
+        uiModel.addAttribute("keywords", keywordService.findAllKeywords());
+        uiModel.addAttribute("rodausers", rodauserService.findAllRodausers());
+        uiModel.addAttribute("studys", studyService.findAllStudys());
     }
     
     String StudyKeywordController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

@@ -18,6 +18,8 @@ import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.domain.UserSettingValue;
 import ro.roda.domain.UserSettingValuePK;
+import ro.roda.service.RodauserService;
+import ro.roda.service.UserSettingService;
 import ro.roda.service.UserSettingValueService;
 import ro.roda.web.UserSettingValueController;
 
@@ -27,6 +29,12 @@ privileged aspect UserSettingValueController_Roo_Controller {
     
     @Autowired
     UserSettingValueService UserSettingValueController.userSettingValueService;
+    
+    @Autowired
+    RodauserService UserSettingValueController.rodauserService;
+    
+    @Autowired
+    UserSettingService UserSettingValueController.userSettingService;
     
     @Autowired
     public UserSettingValueController.new(ConversionService conversionService) {
@@ -101,6 +109,8 @@ privileged aspect UserSettingValueController_Roo_Controller {
     
     void UserSettingValueController.populateEditForm(Model uiModel, UserSettingValue userSettingValue) {
         uiModel.addAttribute("userSettingValue", userSettingValue);
+        uiModel.addAttribute("rodausers", rodauserService.findAllRodausers());
+        uiModel.addAttribute("usersettings", userSettingService.findAllUserSettings());
     }
     
     String UserSettingValueController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

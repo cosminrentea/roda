@@ -13,7 +13,6 @@
         <field:simple field="instanceKeywords" id="c_ro_roda_domain_Instance_instanceKeywords" messageCode="entity_reference_not_managed" messageCodeAttribute="Instance Keyword" z="MPhAcQafhS0SFdnCL6VolYcmNiY="/>
         <field:simple field="instanceOrgs" id="c_ro_roda_domain_Instance_instanceOrgs" messageCode="entity_reference_not_managed" messageCodeAttribute="Instance Org" z="CKJF/JVUZ5UUSFTq62n3E81Amdg="/>
         <field:simple field="instancepeople" id="c_ro_roda_domain_Instance_instancepeople" messageCode="entity_reference_not_managed" messageCodeAttribute="Instance Person" z="TZwn071LC3pc4+kVHslXH4bpIug="/>
-        <field:simple field="variables" id="c_ro_roda_domain_Instance_variables" messageCode="entity_reference_not_managed" messageCodeAttribute="Variable" z="HFtMAW35iOYmcAkpeg/jmt8gSKI="/>
         <field:select field="addedBy" id="c_ro_roda_domain_Instance_addedBy" itemValue="id" items="${rodausers}" path="/rodausers" z="gJ4TJTxmTLym5HMYrEpyQFAKIYY="/>
         <field:select field="studyId" id="c_ro_roda_domain_Instance_studyId" itemValue="id" items="${studys}" path="/studys" z="jZrevqEXYv/24n592oO2YWKjPWM="/>
         <field:select field="timeMethId" id="c_ro_roda_domain_Instance_timeMethId" itemValue="id" items="${timemethtypes}" path="/timemethtypes" z="kzPkQuwxHF0vOY08ZAGdW2PlTzQ="/>

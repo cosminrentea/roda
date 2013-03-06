@@ -9,38 +9,54 @@ Alegeti versiunea bazata pe Eclipse 3.8.2 !!!
 Pe website, sectiunea este:
 "Milestone Version - Spring Tool Suite 3.2.0.M2 - based on Eclipse Juno 3.8.2"
 
+
 1.2. Instalati STS, eventual din linia de comanda, cu optiunile default: Next -> ... -> Finish
 
 
-1.3. Modificati setarile referitoare la memoria utilizata de STS, in fisierul "STS.ini" (din folder-ul radacina al STS):
-linia care incepe cu -Xmx => -Xmx1536m
+1.3. Configurare de baza STS.
+In fisierul "STS.ini" (in Windows/Linux, in folder-ul radacina al STS; in MacOS X, in folder-ul "STS.app/Contents/MacOS/"),
+linia care incepe cu -Xmx (memoria maxima utilizabila de STS) trebuie modificata astfel:
+-Xmx1536m
 
+1.5. Instalare Extensii si Plugin-uri in STS.
 
-1.4. Porniti STS, eventual din linia de comanda, in folder-ul radacina al instalarii STS:
+Porniti STS, eventual din linia de comanda, in folder-ul radacina al instalarii STS:
 ./STS &
 
-
-1.5. Din Dashboard (Help -> Dashboard), click pe tab-ul "Extensions" (jos, in view), bifati in lista si apoi instalati (buton "Install"):
+Din Dashboard (Help -> Dashboard), click pe tab-ul "Extensions" (jos, in view), bifati in lista si apoi instalati (buton "Install"):
 - "Cloud Foundry Eclipse Integration"
 - "Edgewall Trac" 
 Restartati STS.
 
-Instalati in STS versiunea curenta de Subclipse si de SVNKIT (suport pentru Subversion 1.7), prin meniu Help -> Install New Software:
+Instalati in STS ultima versiune de Subclipse (cu suport pentru Subversion 1.7), prin meniu Help -> Install New Software:
 http://subclipse.tigris.org/update_1.8.x
+Selectati si instalati de la acest update-site: "Subclipse" si "SVNKit"
+Restartati STS.
 
-Restartati STS. 
-Configurati Subclipse sa foloseasca SVNKIT: 
+Configurati in STS Subclipse pentru a utiliza SVNKIT: 
 meniu Window -> Preferences -> Team -> SVN, apoi la "SVN Interface" (mai jos in pagina de optiuni aparuta) se alege Client = "SVNKit (pure Java) SVNKit v1.7...."
 
 (optional) Instalati in STS IDE-ul pentru Perl, prin meniu Help -> Install New Software:
 Perl EPIC - http://e-p-i-c.sf.net/updates
 
 
-1.6. Configurati repository-ul SVN, URL=svn://fisiere.dyndns.org/roda 
+1.6. Configurati in STS repository-ul SVN (in perspectiva "SVN Repository Exploring"), folosind ca URL:  svn://fisiere.dyndns.org/roda 
 Faceti Checkout din repository pentru:
 - modulul "roda" (proiectul Spring din repository)
 - modulul "dbwrench2-files" (fisierele dbWrench, scripturile si datele asociate din fisierele CSV).
 - [optional] modulul "RODA-Model" (proiectul Perl, pentru scripturile din folderul "script" si fisierele CSV asociate)
+
+
+1.7 Configurati in STS task repository-ul (de tip Trac)
+In view-ul "Task List", buton "Add Repository", tipul "Trac", iar in pasul urmator:
+Server URL:    http://fisiere.dyndns.org:8888/roda
+Debifare Anonymous
+Completare User si Parola
+Bifare "Save password"
+"Validate Settings"
+Finish.
+
+La final, se adauga un Query legat de acest Repository (de exemplu, se completeaza doar un nume de tip "All" si se apasa Finish).
 
 ----
 2. Configurarea locala a proiectului
@@ -72,10 +88,15 @@ Procesele de build (Maven):
 3. Compilarea proiectului
 ----
 
-In STS, deschideti din meniu: Window -> Open View -> Roo Shell.
-Click pe buton "Open Roo shell" in view, bifati proiectul si apasati OK.
+In STS, click-dreapta in view-ul "Package Explorer" pe numele proiectului ("roda"), apoi din meniul aparut: 
+Maven -> Update Project -> OK
+
+Deschideti din meniul STS: 
+Window -> Open View -> Roo Shell
+
+Click pe buton "Open Roo shell" in view-ul aparut, bifati proiectul ("roda") si apasati OK.
 Tastati in Roo shell, atunci cand devine disponibila:
-perform package
+  perform package
 
 ----
 4. Rularea locala a proiectului
@@ -84,13 +105,34 @@ perform package
 4.1. Rularea din STS, pe Server Local
 Se trage (drag-and-drop) proiectul "roda" din view-ul "Package Explorer" peste serverul local prezent in view-ul "Servers" (configurat sa foloseasca portul 8181).
 Eventual, se (re)porneste serverul.
+Daca portul local 8181 era liber, proiectul e disponibil la URL-ul:
+http://localhost:8181/roda
+
 
 4.2. Rularea din STS, pe Cloud Foundry
-TODO
+Se adauga in view-ul "Servers" un nou server remote: click-dreapta, New, Server, Vmware -> Cloud Foundry, Next
+Se completeaza cu
+Email: roda.devel@gmail.com
+Parola: RodaAdor
+"Validate Account"
+"Next"
+Se muta proiectul "roda" din lista "Available" in lista "Configured"
+"Next"
+In fereastra "Application details", se selecteaza "Application Type" => "Spring"
+"Next"
+Deployed URL:    roda.cloudfoundry.com
+Memory Reservation:    2048 M
+"Next"
+Se bifeaza serviciul "roda-postgres" din lista aparuta.
+"Finish"
 
-4.3. Rularea din linia de comanda
-In radacina proiectului, cu comanda:
-mvn tomcat:run
+Proiectul e disponibil la URL-ul:
+http://roda.cloudfoundry.com
+
+
+4.3. Rularea din linia de comanda, pe Server Local
+Din linia de comanda, in folder-ul radacina al proiectului, cu comanda:
+  mvn tomcat:run
 
 Daca portul local 8282 era liber, proiectul e disponibil la URL-ul:
 http://localhost:8282/roda

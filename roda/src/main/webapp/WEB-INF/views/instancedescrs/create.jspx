@@ -5,6 +5,12 @@
     <form:create compositePkField="id" id="fc_ro_roda_domain_InstanceDescr" modelAttribute="instanceDescr" path="/instancedescrs" render="${empty dependencies}" z="Ex3znhchxOrrM1QXIErDbbjZS8U=">
         <field:input disableFormBinding="true" field="id.instanceId" id="c_ro_roda_domain_InstanceDescr_id_instanceId" required="true" validationMessageCode="field_invalid_integer" z="u5EbXsL/NY09T0r/7C1I7Zavo44="/>
         <field:input disableFormBinding="true" field="id.langId" id="c_ro_roda_domain_InstanceDescr_id_langId" required="true" z="77gNjGMh82ete5NQ7z4Tm2hwn5c="/>
+        <field:input field="weighting" id="c_ro_roda_domain_InstanceDescr_weighting" z="DIfzEci1x3MdkDYol0LC0ykwbKk="/>
+        <field:input field="researchInstrument" id="c_ro_roda_domain_InstanceDescr_researchInstrument" z="voe0pd09+lIs0uW459k0evXlnvA="/>
+        <field:input field="scope" id="c_ro_roda_domain_InstanceDescr_scope" z="u08wy33uw2bnMSBDBCRoI0qi7yY="/>
+        <field:input field="universe" id="c_ro_roda_domain_InstanceDescr_universe" z="U3IZcsqbReXRuKTYufV7XOH95VA="/>
+        <field:input field="abstract1" id="c_ro_roda_domain_InstanceDescr_abstract1" z="Jw2ftAppNCCfsU4YgmuBHby/Z2o="/>
+        <field:input field="title" id="c_ro_roda_domain_InstanceDescr_title" required="true" z="Oy1uJmgIgBpWtGfNUJdXNVchw+g="/>
     </form:create>
     <form:dependency dependencies="${dependencies}" id="d_ro_roda_domain_InstanceDescr" render="${not empty dependencies}" z="BjMm22J7eatsMJJ4ca7E3iv8tpQ="/>
 </div>

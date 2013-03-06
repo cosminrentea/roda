@@ -48,9 +48,13 @@ privileged aspect OtherStatistic_Roo_SolrSearch {
         for (OtherStatistic otherStatistic : otherstatistics) {
             SolrInputDocument sid = new SolrInputDocument();
             sid.addField("id", "otherstatistic_" + otherStatistic.getId());
+            sid.addField("otherStatistic.variableid_t", otherStatistic.getVariableId());
+            sid.addField("otherStatistic.name_s", otherStatistic.getName());
+            sid.addField("otherStatistic.value_f", otherStatistic.getValue());
+            sid.addField("otherStatistic.description_s", otherStatistic.getDescription());
             sid.addField("otherStatistic.id_l", otherStatistic.getId());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("otherstatistic_solrsummary_t", new StringBuilder().append(otherStatistic.getId()));
+            sid.addField("otherstatistic_solrsummary_t", new StringBuilder().append(otherStatistic.getVariableId()).append(" ").append(otherStatistic.getName()).append(" ").append(otherStatistic.getValue()).append(" ").append(otherStatistic.getDescription()).append(" ").append(otherStatistic.getId()));
             documents.add(sid);
         }
         try {

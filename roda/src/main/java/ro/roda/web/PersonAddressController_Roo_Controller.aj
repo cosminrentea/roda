@@ -6,7 +6,9 @@ package ro.roda.web;
 import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -18,7 +20,9 @@ import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.domain.PersonAddress;
 import ro.roda.domain.PersonAddressPK;
+import ro.roda.service.AddressService;
 import ro.roda.service.PersonAddressService;
+import ro.roda.service.PersonService;
 import ro.roda.web.PersonAddressController;
 
 privileged aspect PersonAddressController_Roo_Controller {
@@ -27,6 +31,12 @@ privileged aspect PersonAddressController_Roo_Controller {
     
     @Autowired
     PersonAddressService PersonAddressController.personAddressService;
+    
+    @Autowired
+    AddressService PersonAddressController.addressService;
+    
+    @Autowired
+    PersonService PersonAddressController.personService;
     
     @Autowired
     public PersonAddressController.new(ConversionService conversionService) {
@@ -53,6 +63,7 @@ privileged aspect PersonAddressController_Roo_Controller {
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String PersonAddressController.show(@PathVariable("id") PersonAddressPK id, Model uiModel) {
+        addDateTimeFormatPatterns(uiModel);
         uiModel.addAttribute("personaddress", personAddressService.findPersonAddress(id));
         uiModel.addAttribute("itemId", conversionService.convert(id, String.class));
         return "personaddresses/show";
@@ -69,6 +80,7 @@ privileged aspect PersonAddressController_Roo_Controller {
         } else {
             uiModel.addAttribute("personaddresses", personAddressService.findAllPersonAddresses());
         }
+        addDateTimeFormatPatterns(uiModel);
         return "personaddresses/list";
     }
     
@@ -99,8 +111,16 @@ privileged aspect PersonAddressController_Roo_Controller {
         return "redirect:/personaddresses";
     }
     
+    void PersonAddressController.addDateTimeFormatPatterns(Model uiModel) {
+        uiModel.addAttribute("personAddress_datestart_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
+        uiModel.addAttribute("personAddress_dateend_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
+    }
+    
     void PersonAddressController.populateEditForm(Model uiModel, PersonAddress personAddress) {
         uiModel.addAttribute("personAddress", personAddress);
+        addDateTimeFormatPatterns(uiModel);
+        uiModel.addAttribute("addresses", addressService.findAllAddresses());
+        uiModel.addAttribute("people", personService.findAllPeople());
     }
     
     String PersonAddressController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

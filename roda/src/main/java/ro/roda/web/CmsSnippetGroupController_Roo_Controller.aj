@@ -17,12 +17,16 @@ import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.domain.CmsSnippetGroup;
 import ro.roda.service.CmsSnippetGroupService;
+import ro.roda.service.CmsSnippetService;
 import ro.roda.web.CmsSnippetGroupController;
 
 privileged aspect CmsSnippetGroupController_Roo_Controller {
     
     @Autowired
     CmsSnippetGroupService CmsSnippetGroupController.cmsSnippetGroupService;
+    
+    @Autowired
+    CmsSnippetService CmsSnippetGroupController.cmsSnippetService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String CmsSnippetGroupController.create(@Valid CmsSnippetGroup cmsSnippetGroup, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -91,6 +95,7 @@ privileged aspect CmsSnippetGroupController_Roo_Controller {
     
     void CmsSnippetGroupController.populateEditForm(Model uiModel, CmsSnippetGroup cmsSnippetGroup) {
         uiModel.addAttribute("cmsSnippetGroup", cmsSnippetGroup);
+        uiModel.addAttribute("cmssnippets", cmsSnippetService.findAllCmsSnippets());
     }
     
     String CmsSnippetGroupController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

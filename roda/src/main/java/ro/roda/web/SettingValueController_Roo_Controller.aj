@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.domain.SettingValue;
+import ro.roda.service.SettingService;
 import ro.roda.service.SettingValueService;
 import ro.roda.web.SettingValueController;
 
@@ -23,6 +24,9 @@ privileged aspect SettingValueController_Roo_Controller {
     
     @Autowired
     SettingValueService SettingValueController.settingValueService;
+    
+    @Autowired
+    SettingService SettingValueController.settingService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String SettingValueController.create(@Valid SettingValue settingValue, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -91,6 +95,7 @@ privileged aspect SettingValueController_Roo_Controller {
     
     void SettingValueController.populateEditForm(Model uiModel, SettingValue settingValue) {
         uiModel.addAttribute("settingValue", settingValue);
+        uiModel.addAttribute("settings", settingService.findAllSettings());
     }
     
     String SettingValueController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

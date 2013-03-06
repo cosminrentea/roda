@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.domain.TitleType;
+import ro.roda.service.StudyDescrService;
 import ro.roda.service.TitleTypeService;
 import ro.roda.web.TitleTypeController;
 
@@ -23,6 +24,9 @@ privileged aspect TitleTypeController_Roo_Controller {
     
     @Autowired
     TitleTypeService TitleTypeController.titleTypeService;
+    
+    @Autowired
+    StudyDescrService TitleTypeController.studyDescrService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String TitleTypeController.create(@Valid TitleType titleType, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -91,6 +95,7 @@ privileged aspect TitleTypeController_Roo_Controller {
     
     void TitleTypeController.populateEditForm(Model uiModel, TitleType titleType) {
         uiModel.addAttribute("titleType", titleType);
+        uiModel.addAttribute("studydescrs", studyDescrService.findAllStudyDescrs());
     }
     
     String TitleTypeController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

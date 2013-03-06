@@ -48,9 +48,12 @@ privileged aspect CmsSnippetGroup_Roo_SolrSearch {
         for (CmsSnippetGroup cmsSnippetGroup : cmssnippetgroups) {
             SolrInputDocument sid = new SolrInputDocument();
             sid.addField("id", "cmssnippetgroup_" + cmsSnippetGroup.getId());
+            sid.addField("cmsSnippetGroup.name_s", cmsSnippetGroup.getName());
+            sid.addField("cmsSnippetGroup.parentid_i", cmsSnippetGroup.getParentId());
+            sid.addField("cmsSnippetGroup.description_s", cmsSnippetGroup.getDescription());
             sid.addField("cmsSnippetGroup.id_i", cmsSnippetGroup.getId());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("cmssnippetgroup_solrsummary_t", new StringBuilder().append(cmsSnippetGroup.getId()));
+            sid.addField("cmssnippetgroup_solrsummary_t", new StringBuilder().append(cmsSnippetGroup.getName()).append(" ").append(cmsSnippetGroup.getParentId()).append(" ").append(cmsSnippetGroup.getDescription()).append(" ").append(cmsSnippetGroup.getId()));
             documents.add(sid);
         }
         try {

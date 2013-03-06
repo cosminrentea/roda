@@ -33,7 +33,6 @@ import ro.roda.service.StudyService;
 import ro.roda.service.TimeMethTypeService;
 import ro.roda.service.TopicService;
 import ro.roda.service.UnitAnalysisService;
-import ro.roda.service.VariableService;
 import ro.roda.web.InstanceController;
 
 privileged aspect InstanceController_Roo_Controller {
@@ -82,9 +81,6 @@ privileged aspect InstanceController_Roo_Controller {
     
     @Autowired
     UnitAnalysisService InstanceController.unitAnalysisService;
-    
-    @Autowired
-    VariableService InstanceController.variableService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String InstanceController.create(@Valid Instance instance, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -176,7 +172,6 @@ privileged aspect InstanceController_Roo_Controller {
         uiModel.addAttribute("timemethtypes", timeMethTypeService.findAllTimeMethTypes());
         uiModel.addAttribute("topics", topicService.findAllTopics());
         uiModel.addAttribute("unitanalyses", unitAnalysisService.findAllUnitAnalyses());
-        uiModel.addAttribute("variables", variableService.findAllVariables());
     }
     
     String InstanceController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

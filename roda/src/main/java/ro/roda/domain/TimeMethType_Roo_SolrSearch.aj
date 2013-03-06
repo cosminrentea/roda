@@ -48,9 +48,11 @@ privileged aspect TimeMethType_Roo_SolrSearch {
         for (TimeMethType timeMethType : timemethtypes) {
             SolrInputDocument sid = new SolrInputDocument();
             sid.addField("id", "timemethtype_" + timeMethType.getId());
+            sid.addField("timeMethType.name_s", timeMethType.getName());
+            sid.addField("timeMethType.description_s", timeMethType.getDescription());
             sid.addField("timeMethType.id_i", timeMethType.getId());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("timemethtype_solrsummary_t", new StringBuilder().append(timeMethType.getId()));
+            sid.addField("timemethtype_solrsummary_t", new StringBuilder().append(timeMethType.getName()).append(" ").append(timeMethType.getDescription()).append(" ").append(timeMethType.getId()));
             documents.add(sid);
         }
         try {

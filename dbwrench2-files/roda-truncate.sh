@@ -3,7 +3,7 @@
 source database.properties
 
 # create temporary file for an SQL script
-TEMPSCRIPT=`mktemp`
+TEMPSCRIPT=`mktemp roda-truncate.XXXXXX`
 echo "${TEMPSCRIPT}"
 
 # get a list of the "TRUNCATE" commands - for all the tables

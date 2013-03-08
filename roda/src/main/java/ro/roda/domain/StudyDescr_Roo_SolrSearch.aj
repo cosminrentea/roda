@@ -54,8 +54,9 @@ privileged aspect StudyDescr_Roo_SolrSearch {
             sid.addField("studyDescr.abstract1_s", studyDescr.getAbstract1());
             sid.addField("studyDescr.grantdetails_s", studyDescr.getGrantDetails());
             sid.addField("studyDescr.title_s", studyDescr.getTitle());
+            sid.addField("studyDescr.id_t", studyDescr.getId());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("studydescr_solrsummary_t", new StringBuilder().append(studyDescr.getLangId()).append(" ").append(studyDescr.getStudyId()).append(" ").append(studyDescr.getTitleTypeId()).append(" ").append(studyDescr.getAbstract1()).append(" ").append(studyDescr.getGrantDetails()).append(" ").append(studyDescr.getTitle()));
+            sid.addField("studydescr_solrsummary_t", new StringBuilder().append(studyDescr.getLangId()).append(" ").append(studyDescr.getStudyId()).append(" ").append(studyDescr.getTitleTypeId()).append(" ").append(studyDescr.getAbstract1()).append(" ").append(studyDescr.getGrantDetails()).append(" ").append(studyDescr.getTitle()).append(" ").append(studyDescr.getId()));
             documents.add(sid);
         }
         try {

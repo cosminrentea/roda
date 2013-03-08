@@ -51,8 +51,9 @@ privileged aspect FormEditedTextVar_Roo_SolrSearch {
             sid.addField("formEditedTextVar.formid_t", formEditedTextVar.getFormId());
             sid.addField("formEditedTextVar.variableid_t", formEditedTextVar.getVariableId());
             sid.addField("formEditedTextVar.text_s", formEditedTextVar.getText());
+            sid.addField("formEditedTextVar.id_t", formEditedTextVar.getId());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("formeditedtextvar_solrsummary_t", new StringBuilder().append(formEditedTextVar.getFormId()).append(" ").append(formEditedTextVar.getVariableId()).append(" ").append(formEditedTextVar.getText()));
+            sid.addField("formeditedtextvar_solrsummary_t", new StringBuilder().append(formEditedTextVar.getFormId()).append(" ").append(formEditedTextVar.getVariableId()).append(" ").append(formEditedTextVar.getText()).append(" ").append(formEditedTextVar.getId()));
             documents.add(sid);
         }
         try {

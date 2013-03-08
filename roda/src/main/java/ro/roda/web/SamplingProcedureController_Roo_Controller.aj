@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.domain.SamplingProcedure;
+import ro.roda.service.InstanceService;
 import ro.roda.service.SamplingProcedureService;
 import ro.roda.web.SamplingProcedureController;
 
@@ -23,6 +24,9 @@ privileged aspect SamplingProcedureController_Roo_Controller {
     
     @Autowired
     SamplingProcedureService SamplingProcedureController.samplingProcedureService;
+    
+    @Autowired
+    InstanceService SamplingProcedureController.instanceService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String SamplingProcedureController.create(@Valid SamplingProcedure samplingProcedure, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -91,6 +95,7 @@ privileged aspect SamplingProcedureController_Roo_Controller {
     
     void SamplingProcedureController.populateEditForm(Model uiModel, SamplingProcedure samplingProcedure) {
         uiModel.addAttribute("samplingProcedure", samplingProcedure);
+        uiModel.addAttribute("instances", instanceService.findAllInstances());
     }
     
     String SamplingProcedureController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

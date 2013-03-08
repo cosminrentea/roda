@@ -52,8 +52,9 @@ privileged aspect UserProfile_Roo_SolrSearch {
             sid.addField("userProfile.fname_s", userProfile.getFName());
             sid.addField("userProfile.lname_s", userProfile.getLName());
             sid.addField("userProfile.email_s", userProfile.getEmail());
+            sid.addField("userProfile.userid_i", userProfile.getUserId());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("userprofile_solrsummary_t", new StringBuilder().append(userProfile.getRodauser()).append(" ").append(userProfile.getFName()).append(" ").append(userProfile.getLName()).append(" ").append(userProfile.getEmail()));
+            sid.addField("userprofile_solrsummary_t", new StringBuilder().append(userProfile.getRodauser()).append(" ").append(userProfile.getFName()).append(" ").append(userProfile.getLName()).append(" ").append(userProfile.getEmail()).append(" ").append(userProfile.getUserId()));
             documents.add(sid);
         }
         try {

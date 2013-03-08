@@ -50,8 +50,9 @@ privileged aspect PersonPhone_Roo_SolrSearch {
             sid.addField("id", "personphone_" + personPhone.getId());
             sid.addField("personPhone.personid_t", personPhone.getPersonId());
             sid.addField("personPhone.phoneid_t", personPhone.getPhoneId());
+            sid.addField("personPhone.id_t", personPhone.getId());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("personphone_solrsummary_t", new StringBuilder().append(personPhone.getPersonId()).append(" ").append(personPhone.getPhoneId()));
+            sid.addField("personphone_solrsummary_t", new StringBuilder().append(personPhone.getPersonId()).append(" ").append(personPhone.getPhoneId()).append(" ").append(personPhone.getId()));
             documents.add(sid);
         }
         try {

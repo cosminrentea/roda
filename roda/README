@@ -1,4 +1,12 @@
 ----
+0. Instalarea si configurarea serviciilor
+----
+Postgresql 9 - server local
+In MacOSX e necesar sa se instaleze anterior MacPorts, sau sa se instaleze/ruleze Postgres.app (de la http://postgresapp.com )
+TODO
+
+
+----
 1. Instalarea IDE si a proiectului
 ----
 
@@ -34,10 +42,12 @@ Selectati si instalati de la acest update-site: "Subclipse" si "SVNKit"
 Restartati STS.
 
 Configurati in STS Subclipse pentru a utiliza SVNKIT: 
-meniu Window -> Preferences -> Team -> SVN, apoi la "SVN Interface" (mai jos in pagina de optiuni aparuta) se alege Client = "SVNKit (pure Java) SVNKit v1.7...."
+meniu Window -> Preferences -> Team -> SVN, 
+apoi la "SVN Interface" (mai jos in pagina de optiuni aparuta) se alege Client = "SVNKit (pure Java) SVNKit v1.7...."
 
-(optional) Instalati in STS IDE-ul pentru Perl, prin meniu Help -> Install New Software:
-Perl EPIC - http://e-p-i-c.sf.net/updates
+[optional] Instalati in STS pachetul de tip IDE pentru Perl, prin meniu Help -> Install New Software:
+Perl EPIC, URL:
+http://e-p-i-c.sf.net/updates/testing
 
 
 1.6. Configurati in STS repository-ul SVN (in perspectiva "SVN Repository Exploring"), folosind ca URL:  svn://fisiere.dyndns.org/roda 
@@ -51,12 +61,17 @@ Faceti Checkout din repository pentru:
 In view-ul "Task List", buton "Add Repository", tipul "Trac", iar in pasul urmator:
 Server URL:    http://fisiere.dyndns.org:8888/roda
 Debifare Anonymous
-Completare User si Parola
+Completare User si Parola (specifice)
 Bifare "Save password"
 "Validate Settings"
-Finish.
+"Finish"
 
 La final, se adauga un Query legat de acest Repository (de exemplu, se completeaza doar un nume de tip "All" si se apasa Finish).
+
+
+1.8 Configurarea Serverului Local (in STS)
+TODO
+
 
 ----
 2. Configurarea locala a proiectului
@@ -103,13 +118,23 @@ Tastati in Roo shell, atunci cand devine disponibila:
 ----
 
 4.1. Rularea din STS, pe Server Local
-Se trage (drag-and-drop) proiectul "roda" din view-ul "Package Explorer" peste serverul local prezent in view-ul "Servers" (configurat sa foloseasca portul 8181).
+Se trage (drag-and-drop) proiectul "roda" din view-ul "Package Explorer" peste serverul local prezent in view-ul "Servers" (configurat anterior sa foloseasca portul 8181).
 Eventual, se (re)porneste serverul.
 Daca portul local 8181 era liber, proiectul e disponibil la URL-ul:
 http://localhost:8181/roda
 
 
-4.2. Rularea din STS, pe Cloud Foundry
+4.2. Rularea din linia de comanda, pe un Server Local
+Din linia de comanda, in folder-ul radacina al proiectului, cu comanda:
+  mvn tomcat:run
+
+Daca portul local 8282 era liber, proiectul e disponibil la URL-ul:
+http://localhost:8282/roda
+
+
+4.3. Rularea din STS, pe Cloud Foundry
+! ATENTIE ! Accesul la acest cont/server este shared, pot exista suprapuneri nedorite intre variante diferite / dezvoltatori diferiti !
+
 Se adauga in view-ul "Servers" un nou server remote: click-dreapta, New, Server, Vmware -> Cloud Foundry, Next
 Se completeaza cu
 Email: roda.devel@gmail.com
@@ -128,11 +153,3 @@ Se bifeaza serviciul "roda-postgres" din lista aparuta.
 
 Proiectul e disponibil la URL-ul:
 http://roda.cloudfoundry.com
-
-
-4.3. Rularea din linia de comanda, pe Server Local
-Din linia de comanda, in folder-ul radacina al proiectului, cu comanda:
-  mvn tomcat:run
-
-Daca portul local 8282 era liber, proiectul e disponibil la URL-ul:
-http://localhost:8282/roda

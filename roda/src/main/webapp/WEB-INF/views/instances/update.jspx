@@ -23,5 +23,6 @@
         <field:checkbox field="rawData" id="c_ro_roda_domain_Instance_rawData" z="zY90QbUb3wU48Ek+m2I9SLApq6U="/>
         <field:checkbox field="rawMetadata" id="c_ro_roda_domain_Instance_rawMetadata" z="JgC/aJcxMjnglkleVf1/l6jQzrc="/>
         <field:datetime dateTimePattern="${instance_added_date_format}" field="added" id="c_ro_roda_domain_Instance_added" required="true" z="SQNnGV3OZ3vjGJaN++YED6eqfQc="/>
+        <field:simple field="variables" id="c_ro_roda_domain_Instance_variables" messageCode="entity_reference_not_managed" messageCodeAttribute="Variable" z="HFtMAW35iOYmcAkpeg/jmt8gSKI="/>
     </form:update>
 </div>

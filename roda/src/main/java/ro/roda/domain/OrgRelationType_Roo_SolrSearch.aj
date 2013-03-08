@@ -49,8 +49,9 @@ privileged aspect OrgRelationType_Roo_SolrSearch {
             SolrInputDocument sid = new SolrInputDocument();
             sid.addField("id", "orgrelationtype_" + orgRelationType.getId());
             sid.addField("orgRelationType.name_s", orgRelationType.getName());
+            sid.addField("orgRelationType.id_i", orgRelationType.getId());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("orgrelationtype_solrsummary_t", new StringBuilder().append(orgRelationType.getName()));
+            sid.addField("orgrelationtype_solrsummary_t", new StringBuilder().append(orgRelationType.getName()).append(" ").append(orgRelationType.getId()));
             documents.add(sid);
         }
         try {

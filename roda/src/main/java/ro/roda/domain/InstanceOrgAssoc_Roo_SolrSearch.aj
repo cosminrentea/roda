@@ -50,8 +50,9 @@ privileged aspect InstanceOrgAssoc_Roo_SolrSearch {
             sid.addField("id", "instanceorgassoc_" + instanceOrgAssoc.getId());
             sid.addField("instanceOrgAssoc.assocname_s", instanceOrgAssoc.getAssocName());
             sid.addField("instanceOrgAssoc.assocdescription_s", instanceOrgAssoc.getAssocDescription());
+            sid.addField("instanceOrgAssoc.id_i", instanceOrgAssoc.getId());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("instanceorgassoc_solrsummary_t", new StringBuilder().append(instanceOrgAssoc.getAssocName()).append(" ").append(instanceOrgAssoc.getAssocDescription()));
+            sid.addField("instanceorgassoc_solrsummary_t", new StringBuilder().append(instanceOrgAssoc.getAssocName()).append(" ").append(instanceOrgAssoc.getAssocDescription()).append(" ").append(instanceOrgAssoc.getId()));
             documents.add(sid);
         }
         try {

@@ -54,8 +54,9 @@ privileged aspect OrgRelations_Roo_SolrSearch {
             sid.addField("orgRelations.datestart_dt", orgRelations.getDatestart().getTime());
             sid.addField("orgRelations.dateend_dt", orgRelations.getDateend().getTime());
             sid.addField("orgRelations.details_s", orgRelations.getDetails());
+            sid.addField("orgRelations.id_t", orgRelations.getId());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("orgrelations_solrsummary_t", new StringBuilder().append(orgRelations.getOrg2Id()).append(" ").append(orgRelations.getOrg1Id()).append(" ").append(orgRelations.getOrgRelationTypeId()).append(" ").append(orgRelations.getDatestart().getTime()).append(" ").append(orgRelations.getDateend().getTime()).append(" ").append(orgRelations.getDetails()));
+            sid.addField("orgrelations_solrsummary_t", new StringBuilder().append(orgRelations.getOrg2Id()).append(" ").append(orgRelations.getOrg1Id()).append(" ").append(orgRelations.getOrgRelationTypeId()).append(" ").append(orgRelations.getDatestart().getTime()).append(" ").append(orgRelations.getDateend().getTime()).append(" ").append(orgRelations.getDetails()).append(" ").append(orgRelations.getId()));
             documents.add(sid);
         }
         try {

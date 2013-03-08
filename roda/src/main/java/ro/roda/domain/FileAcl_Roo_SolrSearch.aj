@@ -49,8 +49,9 @@ privileged aspect FileAcl_Roo_SolrSearch {
             SolrInputDocument sid = new SolrInputDocument();
             sid.addField("id", "fileacl_" + fileAcl.getId());
             sid.addField("fileAcl.documentid_t", fileAcl.getDocumentId());
+            sid.addField("fileAcl.id_t", fileAcl.getId());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("fileacl_solrsummary_t", new StringBuilder().append(fileAcl.getDocumentId()));
+            sid.addField("fileacl_solrsummary_t", new StringBuilder().append(fileAcl.getDocumentId()).append(" ").append(fileAcl.getId()));
             documents.add(sid);
         }
         try {

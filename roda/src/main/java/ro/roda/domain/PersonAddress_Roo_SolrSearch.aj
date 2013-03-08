@@ -52,8 +52,9 @@ privileged aspect PersonAddress_Roo_SolrSearch {
             sid.addField("personAddress.personid_t", personAddress.getPersonId());
             sid.addField("personAddress.datestart_dt", personAddress.getDatestart().getTime());
             sid.addField("personAddress.dateend_dt", personAddress.getDateend().getTime());
+            sid.addField("personAddress.id_t", personAddress.getId());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("personaddress_solrsummary_t", new StringBuilder().append(personAddress.getAddressId()).append(" ").append(personAddress.getPersonId()).append(" ").append(personAddress.getDatestart().getTime()).append(" ").append(personAddress.getDateend().getTime()));
+            sid.addField("personaddress_solrsummary_t", new StringBuilder().append(personAddress.getAddressId()).append(" ").append(personAddress.getPersonId()).append(" ").append(personAddress.getDatestart().getTime()).append(" ").append(personAddress.getDateend().getTime()).append(" ").append(personAddress.getId()));
             documents.add(sid);
         }
         try {

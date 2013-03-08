@@ -49,8 +49,9 @@ privileged aspect Lang_Roo_SolrSearch {
             SolrInputDocument sid = new SolrInputDocument();
             sid.addField("id", "lang_" + lang.getId());
             sid.addField("lang.name_s", lang.getName());
+            sid.addField("lang.id_s", lang.getId());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("lang_solrsummary_t", new StringBuilder().append(lang.getName()));
+            sid.addField("lang_solrsummary_t", new StringBuilder().append(lang.getName()).append(" ").append(lang.getId()));
             documents.add(sid);
         }
         try {

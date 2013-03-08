@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.domain.Role;
+import ro.roda.service.RodauserService;
 import ro.roda.service.RoleService;
 import ro.roda.web.RoleController;
 
@@ -23,6 +24,9 @@ privileged aspect RoleController_Roo_Controller {
     
     @Autowired
     RoleService RoleController.roleService;
+    
+    @Autowired
+    RodauserService RoleController.rodauserService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String RoleController.create(@Valid Role role, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -91,6 +95,7 @@ privileged aspect RoleController_Roo_Controller {
     
     void RoleController.populateEditForm(Model uiModel, Role role) {
         uiModel.addAttribute("role", role);
+        uiModel.addAttribute("rodausers", rodauserService.findAllRodausers());
     }
     
     String RoleController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

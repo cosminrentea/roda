@@ -1013,3 +1013,28 @@ web mvc all --package ~.web
 solr all
 // Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log opened at 2013-03-06 17:48:51
 // Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log closed at 2013-03-06 22:39:38
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log opened at 2013-03-07 01:13:31
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log closed at 2013-03-07 04:56:34
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log opened at 2013-03-07 13:26:40
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log closed at 2013-03-07 13:48:17
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log opened at 2013-03-07 13:48:26
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log closed at 2013-03-07 13:52:23
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log opened at 2013-03-07 17:51:49
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log opened at 2013-03-07 20:49:02
+// [failed] database reverse engineer --schema public --includeNonPortableAttributes --package ~.domain
+osgi obr url add --url http://spring-roo-repository.springsource.org/repository.xml
+osgi obr start --bundleSymbolicName org.springframework.roo.wrapping.postgresql-jdbc4
+osgi obr url remove --url http://spring-roo-repository.springsource.org/repository.xml
+addon install id 01
+addon search cloud foundry
+osgi obr url add --url http://spring-roo-repository.springsource.org/repository.xml
+osgi obr start --bundleSymbolicName org.springframework.roo.addon.cloud.foundry
+osgi obr url remove --url http://spring-roo-repository.springsource.org/repository.xml
+addon install id 02
+database reverse engineer --schema public --includeNonPortableAttributes --package ~.domain
+web mvc all --package ~.web
+web mvc all --package ~.web
+database reverse engineer --schema public --includeNonPortableAttributes --package ~.domain
+solr all
+web mvc all --package ~.web
+web mvc all --package ~.web

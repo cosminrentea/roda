@@ -53,8 +53,9 @@ privileged aspect CatalogAcl_Roo_SolrSearch {
             sid.addField("catalogAcl.update_b", catalogAcl.getUpdate());
             sid.addField("catalogAcl.delete_b", catalogAcl.getDelete());
             sid.addField("catalogAcl.modacl_b", catalogAcl.getModacl());
+            sid.addField("catalogAcl.id_t", catalogAcl.getId());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("catalogacl_solrsummary_t", new StringBuilder().append(catalogAcl.getCatalogId()).append(" ").append(catalogAcl.getRead()).append(" ").append(catalogAcl.getUpdate()).append(" ").append(catalogAcl.getDelete()).append(" ").append(catalogAcl.getModacl()));
+            sid.addField("catalogacl_solrsummary_t", new StringBuilder().append(catalogAcl.getCatalogId()).append(" ").append(catalogAcl.getRead()).append(" ").append(catalogAcl.getUpdate()).append(" ").append(catalogAcl.getDelete()).append(" ").append(catalogAcl.getModacl()).append(" ").append(catalogAcl.getId()));
             documents.add(sid);
         }
         try {

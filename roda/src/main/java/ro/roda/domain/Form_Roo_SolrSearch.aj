@@ -53,8 +53,9 @@ privileged aspect Form_Roo_SolrSearch {
             sid.addField("form.orderininstance_i", form.getOrderInInstance());
             sid.addField("form.operatornotes_s", form.getOperatorNotes());
             sid.addField("form.filltime_dt", form.getFillTime().getTime());
+            sid.addField("form.id_l", form.getId());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("form_solrsummary_t", new StringBuilder().append(form.getInstanceId()).append(" ").append(form.getOperatorId()).append(" ").append(form.getOrderInInstance()).append(" ").append(form.getOperatorNotes()).append(" ").append(form.getFillTime().getTime()));
+            sid.addField("form_solrsummary_t", new StringBuilder().append(form.getInstanceId()).append(" ").append(form.getOperatorId()).append(" ").append(form.getOrderInInstance()).append(" ").append(form.getOperatorNotes()).append(" ").append(form.getFillTime().getTime()).append(" ").append(form.getId()));
             documents.add(sid);
         }
         try {

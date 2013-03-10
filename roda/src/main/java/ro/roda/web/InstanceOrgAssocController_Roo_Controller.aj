@@ -17,16 +17,12 @@ import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.domain.InstanceOrgAssoc;
 import ro.roda.service.InstanceOrgAssocService;
-import ro.roda.service.InstanceOrgService;
 import ro.roda.web.InstanceOrgAssocController;
 
 privileged aspect InstanceOrgAssocController_Roo_Controller {
     
     @Autowired
     InstanceOrgAssocService InstanceOrgAssocController.instanceOrgAssocService;
-    
-    @Autowired
-    InstanceOrgService InstanceOrgAssocController.instanceOrgService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String InstanceOrgAssocController.create(@Valid InstanceOrgAssoc instanceOrgAssoc, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -95,7 +91,6 @@ privileged aspect InstanceOrgAssocController_Roo_Controller {
     
     void InstanceOrgAssocController.populateEditForm(Model uiModel, InstanceOrgAssoc instanceOrgAssoc) {
         uiModel.addAttribute("instanceOrgAssoc", instanceOrgAssoc);
-        uiModel.addAttribute("instanceorgs", instanceOrgService.findAllInstanceOrgs());
     }
     
     String InstanceOrgAssocController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

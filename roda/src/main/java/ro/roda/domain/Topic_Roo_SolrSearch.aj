@@ -48,13 +48,9 @@ privileged aspect Topic_Roo_SolrSearch {
         for (Topic topic : topics) {
             SolrInputDocument sid = new SolrInputDocument();
             sid.addField("id", "topic_" + topic.getId());
-            sid.addField("topic.parenttopicid_t", topic.getParentTopicId());
-            sid.addField("topic.preferredsynonymtopicid_t", topic.getPreferredSynonymTopicId());
-            sid.addField("topic.name_s", topic.getName());
-            sid.addField("topic.description_s", topic.getDescription());
             sid.addField("topic.id_i", topic.getId());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("topic_solrsummary_t", new StringBuilder().append(topic.getParentTopicId()).append(" ").append(topic.getPreferredSynonymTopicId()).append(" ").append(topic.getName()).append(" ").append(topic.getDescription()).append(" ").append(topic.getId()));
+            sid.addField("topic_solrsummary_t", new StringBuilder().append(topic.getId()));
             documents.add(sid);
         }
         try {

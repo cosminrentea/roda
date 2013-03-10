@@ -17,16 +17,12 @@ import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.domain.OrgRelationType;
 import ro.roda.service.OrgRelationTypeService;
-import ro.roda.service.OrgRelationsService;
 import ro.roda.web.OrgRelationTypeController;
 
 privileged aspect OrgRelationTypeController_Roo_Controller {
     
     @Autowired
     OrgRelationTypeService OrgRelationTypeController.orgRelationTypeService;
-    
-    @Autowired
-    OrgRelationsService OrgRelationTypeController.orgRelationsService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String OrgRelationTypeController.create(@Valid OrgRelationType orgRelationType, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -95,7 +91,6 @@ privileged aspect OrgRelationTypeController_Roo_Controller {
     
     void OrgRelationTypeController.populateEditForm(Model uiModel, OrgRelationType orgRelationType) {
         uiModel.addAttribute("orgRelationType", orgRelationType);
-        uiModel.addAttribute("orgrelationses", orgRelationsService.findAllOrgRelationses());
     }
     
     String OrgRelationTypeController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

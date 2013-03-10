@@ -6,9 +6,6 @@
         <field:input disableFormBinding="true" field="id.documentId" id="c_ro_roda_domain_FileAcl_id_documentId" required="true" validationMessageCode="field_invalid_integer" z="vwqT0UVwM9c57mztkMK+EBr6ehA="/>
         <field:input disableFormBinding="true" field="id.aroId" id="c_ro_roda_domain_FileAcl_id_aroId" required="true" validationMessageCode="field_invalid_integer" z="PGuASG8UwNdCcCs74PhFD7UNMgU="/>
         <field:input disableFormBinding="true" field="id.aroType" id="c_ro_roda_domain_FileAcl_id_aroType" required="true" validationMessageCode="field_invalid_integer" z="mLDDvLs6bUtwIDRfIdDdqbPl0io="/>
-        <field:checkbox field="read" id="c_ro_roda_domain_FileAcl_read" z="Qg5/DwOBxtGCdt702ozpLsE50Vo="/>
-        <field:checkbox field="update" id="c_ro_roda_domain_FileAcl_update" z="Slh9RpmCt4rY7KRPiIz16HK3JMs="/>
-        <field:checkbox field="delete" id="c_ro_roda_domain_FileAcl_delete" z="3CiTCtkIu2s0VBCo+R6uWrfmuX8="/>
     </form:create>
     <form:dependency dependencies="${dependencies}" id="d_ro_roda_domain_FileAcl" render="${not empty dependencies}" z="rjtZUmTCgWtaDCdRh5GfGTOzq1A="/>
 </div>

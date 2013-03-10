@@ -6,9 +6,7 @@ package ro.roda.web;
 import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -21,9 +19,6 @@ import org.springframework.web.util.WebUtils;
 import ro.roda.domain.InstanceKeyword;
 import ro.roda.domain.InstanceKeywordPK;
 import ro.roda.service.InstanceKeywordService;
-import ro.roda.service.InstanceService;
-import ro.roda.service.KeywordService;
-import ro.roda.service.RodauserService;
 import ro.roda.web.InstanceKeywordController;
 
 privileged aspect InstanceKeywordController_Roo_Controller {
@@ -32,15 +27,6 @@ privileged aspect InstanceKeywordController_Roo_Controller {
     
     @Autowired
     InstanceKeywordService InstanceKeywordController.instanceKeywordService;
-    
-    @Autowired
-    InstanceService InstanceKeywordController.instanceService;
-    
-    @Autowired
-    KeywordService InstanceKeywordController.keywordService;
-    
-    @Autowired
-    RodauserService InstanceKeywordController.rodauserService;
     
     @Autowired
     public InstanceKeywordController.new(ConversionService conversionService) {
@@ -67,7 +53,6 @@ privileged aspect InstanceKeywordController_Roo_Controller {
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String InstanceKeywordController.show(@PathVariable("id") InstanceKeywordPK id, Model uiModel) {
-        addDateTimeFormatPatterns(uiModel);
         uiModel.addAttribute("instancekeyword", instanceKeywordService.findInstanceKeyword(id));
         uiModel.addAttribute("itemId", conversionService.convert(id, String.class));
         return "instancekeywords/show";
@@ -84,7 +69,6 @@ privileged aspect InstanceKeywordController_Roo_Controller {
         } else {
             uiModel.addAttribute("instancekeywords", instanceKeywordService.findAllInstanceKeywords());
         }
-        addDateTimeFormatPatterns(uiModel);
         return "instancekeywords/list";
     }
     
@@ -115,16 +99,8 @@ privileged aspect InstanceKeywordController_Roo_Controller {
         return "redirect:/instancekeywords";
     }
     
-    void InstanceKeywordController.addDateTimeFormatPatterns(Model uiModel) {
-        uiModel.addAttribute("instanceKeyword_added_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
-    }
-    
     void InstanceKeywordController.populateEditForm(Model uiModel, InstanceKeyword instanceKeyword) {
         uiModel.addAttribute("instanceKeyword", instanceKeyword);
-        addDateTimeFormatPatterns(uiModel);
-        uiModel.addAttribute("instances", instanceService.findAllInstances());
-        uiModel.addAttribute("keywords", keywordService.findAllKeywords());
-        uiModel.addAttribute("rodausers", rodauserService.findAllRodausers());
     }
     
     String InstanceKeywordController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

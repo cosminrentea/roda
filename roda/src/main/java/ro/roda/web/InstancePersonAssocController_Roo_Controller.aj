@@ -17,16 +17,12 @@ import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.domain.InstancePersonAssoc;
 import ro.roda.service.InstancePersonAssocService;
-import ro.roda.service.InstancePersonService;
 import ro.roda.web.InstancePersonAssocController;
 
 privileged aspect InstancePersonAssocController_Roo_Controller {
     
     @Autowired
     InstancePersonAssocService InstancePersonAssocController.instancePersonAssocService;
-    
-    @Autowired
-    InstancePersonService InstancePersonAssocController.instancePersonService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String InstancePersonAssocController.create(@Valid InstancePersonAssoc instancePersonAssoc, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -95,7 +91,6 @@ privileged aspect InstancePersonAssocController_Roo_Controller {
     
     void InstancePersonAssocController.populateEditForm(Model uiModel, InstancePersonAssoc instancePersonAssoc) {
         uiModel.addAttribute("instancePersonAssoc", instancePersonAssoc);
-        uiModel.addAttribute("instancepeople", instancePersonService.findAllInstancepeople());
     }
     
     String InstancePersonAssocController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

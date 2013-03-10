@@ -17,16 +17,12 @@ import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.domain.CmsLayoutGroup;
 import ro.roda.service.CmsLayoutGroupService;
-import ro.roda.service.CmsLayoutService;
 import ro.roda.web.CmsLayoutGroupController;
 
 privileged aspect CmsLayoutGroupController_Roo_Controller {
     
     @Autowired
     CmsLayoutGroupService CmsLayoutGroupController.cmsLayoutGroupService;
-    
-    @Autowired
-    CmsLayoutService CmsLayoutGroupController.cmsLayoutService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String CmsLayoutGroupController.create(@Valid CmsLayoutGroup cmsLayoutGroup, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -95,7 +91,6 @@ privileged aspect CmsLayoutGroupController_Roo_Controller {
     
     void CmsLayoutGroupController.populateEditForm(Model uiModel, CmsLayoutGroup cmsLayoutGroup) {
         uiModel.addAttribute("cmsLayoutGroup", cmsLayoutGroup);
-        uiModel.addAttribute("cmslayouts", cmsLayoutService.findAllCmsLayouts());
     }
     
     String CmsLayoutGroupController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

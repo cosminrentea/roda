@@ -503,7 +503,7 @@
 				<!-- start Cosmin -->
 				<configuration>
 					<!-- <fork>true</fork> -->
-					<port>8282</port>
+					<port>8080</port>
 				</configuration>
 				<executions>
 					<execution>

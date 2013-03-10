@@ -48,10 +48,9 @@ privileged aspect Keyword_Roo_SolrSearch {
         for (Keyword keyword : keywords) {
             SolrInputDocument sid = new SolrInputDocument();
             sid.addField("id", "keyword_" + keyword.getId());
-            sid.addField("keyword.name_s", keyword.getName());
             sid.addField("keyword.id_i", keyword.getId());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("keyword_solrsummary_t", new StringBuilder().append(keyword.getName()).append(" ").append(keyword.getId()));
+            sid.addField("keyword_solrsummary_t", new StringBuilder().append(keyword.getId()));
             documents.add(sid);
         }
         try {

@@ -5,7 +5,6 @@
     <form:create compositePkField="id" id="fc_ro_roda_domain_FormEditedTextVar" modelAttribute="formEditedTextVar" path="/formeditedtextvars" render="${empty dependencies}" z="hOmH+ZJNumhQ2VkqZMNnNY9zoSI=">
         <field:input disableFormBinding="true" field="id.variableId" id="c_ro_roda_domain_FormEditedTextVar_id_variableId" required="true" validationMessageCode="field_invalid_integer" z="qhYfujwviHU8mbxcY7Dnc5ZEZvQ="/>
         <field:input disableFormBinding="true" field="id.formId" id="c_ro_roda_domain_FormEditedTextVar_id_formId" required="true" validationMessageCode="field_invalid_integer" z="FHnf85QvDntm3nCz5TjDMyvk8f8="/>
-        <field:input field="text" id="c_ro_roda_domain_FormEditedTextVar_text" required="true" z="z95dOXAu9MET3daIL14JqwI5sVQ="/>
     </form:create>
     <form:dependency dependencies="${dependencies}" id="d_ro_roda_domain_FormEditedTextVar" render="${not empty dependencies}" z="whcKHrdJ1mOf4gnk+mVnm84zd8c="/>
 </div>

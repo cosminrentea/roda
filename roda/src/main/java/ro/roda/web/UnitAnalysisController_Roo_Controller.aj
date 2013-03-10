@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.domain.UnitAnalysis;
-import ro.roda.service.InstanceService;
 import ro.roda.service.UnitAnalysisService;
 import ro.roda.web.UnitAnalysisController;
 
@@ -24,9 +23,6 @@ privileged aspect UnitAnalysisController_Roo_Controller {
     
     @Autowired
     UnitAnalysisService UnitAnalysisController.unitAnalysisService;
-    
-    @Autowired
-    InstanceService UnitAnalysisController.instanceService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String UnitAnalysisController.create(@Valid UnitAnalysis unitAnalysis, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -95,7 +91,6 @@ privileged aspect UnitAnalysisController_Roo_Controller {
     
     void UnitAnalysisController.populateEditForm(Model uiModel, UnitAnalysis unitAnalysis) {
         uiModel.addAttribute("unitAnalysis", unitAnalysis);
-        uiModel.addAttribute("instances", instanceService.findAllInstances());
     }
     
     String UnitAnalysisController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

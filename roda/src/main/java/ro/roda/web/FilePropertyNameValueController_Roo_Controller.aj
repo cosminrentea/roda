@@ -19,9 +19,6 @@ import org.springframework.web.util.WebUtils;
 import ro.roda.domain.FilePropertyNameValue;
 import ro.roda.domain.FilePropertyNameValuePK;
 import ro.roda.service.FilePropertyNameValueService;
-import ro.roda.service.FileService;
-import ro.roda.service.PropertyNameService;
-import ro.roda.service.PropertyValueService;
 import ro.roda.web.FilePropertyNameValueController;
 
 privileged aspect FilePropertyNameValueController_Roo_Controller {
@@ -30,15 +27,6 @@ privileged aspect FilePropertyNameValueController_Roo_Controller {
     
     @Autowired
     FilePropertyNameValueService FilePropertyNameValueController.filePropertyNameValueService;
-    
-    @Autowired
-    FileService FilePropertyNameValueController.fileService;
-    
-    @Autowired
-    PropertyNameService FilePropertyNameValueController.propertyNameService;
-    
-    @Autowired
-    PropertyValueService FilePropertyNameValueController.propertyValueService;
     
     @Autowired
     public FilePropertyNameValueController.new(ConversionService conversionService) {
@@ -113,9 +101,6 @@ privileged aspect FilePropertyNameValueController_Roo_Controller {
     
     void FilePropertyNameValueController.populateEditForm(Model uiModel, FilePropertyNameValue filePropertyNameValue) {
         uiModel.addAttribute("filePropertyNameValue", filePropertyNameValue);
-        uiModel.addAttribute("files", fileService.findAllFiles());
-        uiModel.addAttribute("propertynames", propertyNameService.findAllPropertyNames());
-        uiModel.addAttribute("propertyvalues", propertyValueService.findAllPropertyValues());
     }
     
     String FilePropertyNameValueController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

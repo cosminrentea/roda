@@ -48,14 +48,9 @@ privileged aspect StudyAcl_Roo_SolrSearch {
         for (StudyAcl studyAcl : studyacls) {
             SolrInputDocument sid = new SolrInputDocument();
             sid.addField("id", "studyacl_" + studyAcl.getId());
-            sid.addField("studyAcl.studyid_t", studyAcl.getStudyId());
-            sid.addField("studyAcl.read_b", studyAcl.getRead());
-            sid.addField("studyAcl.update_b", studyAcl.getUpdate());
-            sid.addField("studyAcl.delete_b", studyAcl.getDelete());
-            sid.addField("studyAcl.modacl_b", studyAcl.getModacl());
             sid.addField("studyAcl.id_t", studyAcl.getId());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("studyacl_solrsummary_t", new StringBuilder().append(studyAcl.getStudyId()).append(" ").append(studyAcl.getRead()).append(" ").append(studyAcl.getUpdate()).append(" ").append(studyAcl.getDelete()).append(" ").append(studyAcl.getModacl()).append(" ").append(studyAcl.getId()));
+            sid.addField("studyacl_solrsummary_t", new StringBuilder().append(studyAcl.getId()));
             documents.add(sid);
         }
         try {

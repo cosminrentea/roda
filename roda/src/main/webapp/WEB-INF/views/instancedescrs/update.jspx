@@ -2,12 +2,5 @@
 <div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <form:update id="fu_ro_roda_domain_InstanceDescr" modelAttribute="instanceDescr" path="/instancedescrs" versionField="none" z="kZzJ3JMLt2FT4krpUk4c0AozVZI=">
-        <field:input field="weighting" id="c_ro_roda_domain_InstanceDescr_weighting" z="DIfzEci1x3MdkDYol0LC0ykwbKk="/>
-        <field:input field="researchInstrument" id="c_ro_roda_domain_InstanceDescr_researchInstrument" z="voe0pd09+lIs0uW459k0evXlnvA="/>
-        <field:input field="scope" id="c_ro_roda_domain_InstanceDescr_scope" z="u08wy33uw2bnMSBDBCRoI0qi7yY="/>
-        <field:input field="universe" id="c_ro_roda_domain_InstanceDescr_universe" z="U3IZcsqbReXRuKTYufV7XOH95VA="/>
-        <field:input field="abstract1" id="c_ro_roda_domain_InstanceDescr_abstract1" z="Jw2ftAppNCCfsU4YgmuBHby/Z2o="/>
-        <field:input field="title" id="c_ro_roda_domain_InstanceDescr_title" required="true" z="Oy1uJmgIgBpWtGfNUJdXNVchw+g="/>
-    </form:update>
+    <form:update id="fu_ro_roda_domain_InstanceDescr" modelAttribute="instanceDescr" path="/instancedescrs" versionField="none" z="kZzJ3JMLt2FT4krpUk4c0AozVZI="/>
 </div>

@@ -16,25 +16,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.domain.Topic;
-import ro.roda.service.InstanceService;
-import ro.roda.service.StudyService;
 import ro.roda.service.TopicService;
-import ro.roda.service.TranslatedTopicService;
 import ro.roda.web.TopicController;
 
 privileged aspect TopicController_Roo_Controller {
     
     @Autowired
     TopicService TopicController.topicService;
-    
-    @Autowired
-    InstanceService TopicController.instanceService;
-    
-    @Autowired
-    StudyService TopicController.studyService;
-    
-    @Autowired
-    TranslatedTopicService TopicController.translatedTopicService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String TopicController.create(@Valid Topic topic, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -103,10 +91,6 @@ privileged aspect TopicController_Roo_Controller {
     
     void TopicController.populateEditForm(Model uiModel, Topic topic) {
         uiModel.addAttribute("topic", topic);
-        uiModel.addAttribute("instances", instanceService.findAllInstances());
-        uiModel.addAttribute("studys", studyService.findAllStudys());
-        uiModel.addAttribute("topics", topicService.findAllTopics());
-        uiModel.addAttribute("translatedtopics", translatedTopicService.findAllTranslatedTopics());
     }
     
     String TopicController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

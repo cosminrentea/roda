@@ -48,11 +48,9 @@ privileged aspect Sourcetype_Roo_SolrSearch {
         for (Sourcetype sourcetype : sourcetypes) {
             SolrInputDocument sid = new SolrInputDocument();
             sid.addField("id", "sourcetype_" + sourcetype.getId());
-            sid.addField("sourcetype.name_s", sourcetype.getName());
-            sid.addField("sourcetype.description_s", sourcetype.getDescription());
             sid.addField("sourcetype.id_i", sourcetype.getId());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("sourcetype_solrsummary_t", new StringBuilder().append(sourcetype.getName()).append(" ").append(sourcetype.getDescription()).append(" ").append(sourcetype.getId()));
+            sid.addField("sourcetype_solrsummary_t", new StringBuilder().append(sourcetype.getId()));
             documents.add(sid);
         }
         try {

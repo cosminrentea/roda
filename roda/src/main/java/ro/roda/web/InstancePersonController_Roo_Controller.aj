@@ -18,10 +18,7 @@ import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.domain.InstancePerson;
 import ro.roda.domain.InstancePersonPK;
-import ro.roda.service.InstancePersonAssocService;
 import ro.roda.service.InstancePersonService;
-import ro.roda.service.InstanceService;
-import ro.roda.service.PersonService;
 import ro.roda.web.InstancePersonController;
 
 privileged aspect InstancePersonController_Roo_Controller {
@@ -30,15 +27,6 @@ privileged aspect InstancePersonController_Roo_Controller {
     
     @Autowired
     InstancePersonService InstancePersonController.instancePersonService;
-    
-    @Autowired
-    InstanceService InstancePersonController.instanceService;
-    
-    @Autowired
-    InstancePersonAssocService InstancePersonController.instancePersonAssocService;
-    
-    @Autowired
-    PersonService InstancePersonController.personService;
     
     @Autowired
     public InstancePersonController.new(ConversionService conversionService) {
@@ -113,9 +101,6 @@ privileged aspect InstancePersonController_Roo_Controller {
     
     void InstancePersonController.populateEditForm(Model uiModel, InstancePerson instancePerson) {
         uiModel.addAttribute("instancePerson", instancePerson);
-        uiModel.addAttribute("instances", instanceService.findAllInstances());
-        uiModel.addAttribute("instancepersonassocs", instancePersonAssocService.findAllInstancePersonAssocs());
-        uiModel.addAttribute("people", personService.findAllPeople());
     }
     
     String InstancePersonController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

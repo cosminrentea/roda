@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.domain.TimeMethType;
-import ro.roda.service.InstanceService;
 import ro.roda.service.TimeMethTypeService;
 import ro.roda.web.TimeMethTypeController;
 
@@ -24,9 +23,6 @@ privileged aspect TimeMethTypeController_Roo_Controller {
     
     @Autowired
     TimeMethTypeService TimeMethTypeController.timeMethTypeService;
-    
-    @Autowired
-    InstanceService TimeMethTypeController.instanceService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String TimeMethTypeController.create(@Valid TimeMethType timeMethType, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -95,7 +91,6 @@ privileged aspect TimeMethTypeController_Roo_Controller {
     
     void TimeMethTypeController.populateEditForm(Model uiModel, TimeMethType timeMethType) {
         uiModel.addAttribute("timeMethType", timeMethType);
-        uiModel.addAttribute("instances", instanceService.findAllInstances());
     }
     
     String TimeMethTypeController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

@@ -16,25 +16,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.domain.City;
-import ro.roda.service.AddressService;
 import ro.roda.service.CityService;
-import ro.roda.service.CountryService;
-import ro.roda.service.RegionService;
 import ro.roda.web.CityController;
 
 privileged aspect CityController_Roo_Controller {
     
     @Autowired
     CityService CityController.cityService;
-    
-    @Autowired
-    AddressService CityController.addressService;
-    
-    @Autowired
-    CountryService CityController.countryService;
-    
-    @Autowired
-    RegionService CityController.regionService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String CityController.create(@Valid City city, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -103,9 +91,6 @@ privileged aspect CityController_Roo_Controller {
     
     void CityController.populateEditForm(Model uiModel, City city) {
         uiModel.addAttribute("city", city);
-        uiModel.addAttribute("addresses", addressService.findAllAddresses());
-        uiModel.addAttribute("countrys", countryService.findAllCountrys());
-        uiModel.addAttribute("regions", regionService.findAllRegions());
     }
     
     String CityController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

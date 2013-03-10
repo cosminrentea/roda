@@ -15,6 +15,10 @@ body {
 	margin-bottom: 1em;
 }
 
+#header-right {
+	text-align: right;
+}
+
 #wrapper {
 	width:900px;
 	min-width: 900px;

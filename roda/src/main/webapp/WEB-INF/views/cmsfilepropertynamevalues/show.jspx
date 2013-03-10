@@ -2,9 +2,5 @@
 <div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <page:show id="ps_ro_roda_domain_CmsFilePropertyNameValue" object="${cmsfilepropertynamevalue}" path="/cmsfilepropertynamevalues" z="Y3WEXE4T0PJu/iTJ4EK8u/w6Jow=">
-        <field:display field="cmsFileId" id="s_ro_roda_domain_CmsFilePropertyNameValue_cmsFileId" object="${cmsfilepropertynamevalue}" z="+ggmnQwt68J0w1+L+iSaHxcBC2k="/>
-        <field:display field="propertyNameId" id="s_ro_roda_domain_CmsFilePropertyNameValue_propertyNameId" object="${cmsfilepropertynamevalue}" z="jRDMKJE1QO0wJQXVL493olxsnWM="/>
-        <field:display field="propertyValueId" id="s_ro_roda_domain_CmsFilePropertyNameValue_propertyValueId" object="${cmsfilepropertynamevalue}" z="x5oWR2oajKqU3gA4VAgII9JEd2o="/>
-    </page:show>
+    <page:show id="ps_ro_roda_domain_CmsFilePropertyNameValue" object="${cmsfilepropertynamevalue}" path="/cmsfilepropertynamevalues" z="Y3WEXE4T0PJu/iTJ4EK8u/w6Jow="/>
 </div>

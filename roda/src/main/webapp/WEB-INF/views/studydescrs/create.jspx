@@ -5,10 +5,6 @@
     <form:create compositePkField="id" id="fc_ro_roda_domain_StudyDescr" modelAttribute="studyDescr" path="/studydescrs" render="${empty dependencies}" z="Tsc8HD+D9Q5JW12YCdLVr8MNW0w=">
         <field:input disableFormBinding="true" field="id.langId" id="c_ro_roda_domain_StudyDescr_id_langId" required="true" z="me0WsauuwXlvn5MVy/FdP+g99JM="/>
         <field:input disableFormBinding="true" field="id.studyId" id="c_ro_roda_domain_StudyDescr_id_studyId" required="true" validationMessageCode="field_invalid_integer" z="gHOx3hCqbzlmEQZ/jZrpHaa2j3Y="/>
-        <field:select field="titleTypeId" id="c_ro_roda_domain_StudyDescr_titleTypeId" itemValue="id" items="${titletypes}" path="/titletypes" z="4VJmd/l0r+X5cZOmdE4guO6f69s="/>
-        <field:input field="abstract1" id="c_ro_roda_domain_StudyDescr_abstract1" z="YwDCOIrlkkZc1dOg5ohB1RiWIIk="/>
-        <field:input field="grantDetails" id="c_ro_roda_domain_StudyDescr_grantDetails" z="8Erc1xgfUDIQv8aRgwSa9C8XXyA="/>
-        <field:input field="title" id="c_ro_roda_domain_StudyDescr_title" required="true" z="y3QAgvRlBakimqBmNIrGN0ep2fA="/>
     </form:create>
     <form:dependency dependencies="${dependencies}" id="d_ro_roda_domain_StudyDescr" render="${not empty dependencies}" z="276cLbSr00Kf7rphBXD0sJeGDiY="/>
 </div>

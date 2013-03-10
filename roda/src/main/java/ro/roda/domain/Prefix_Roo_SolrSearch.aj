@@ -48,10 +48,9 @@ privileged aspect Prefix_Roo_SolrSearch {
         for (Prefix prefix : prefixes) {
             SolrInputDocument sid = new SolrInputDocument();
             sid.addField("id", "prefix_" + prefix.getId());
-            sid.addField("prefix.name_s", prefix.getName());
             sid.addField("prefix.id_i", prefix.getId());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("prefix_solrsummary_t", new StringBuilder().append(prefix.getName()).append(" ").append(prefix.getId()));
+            sid.addField("prefix_solrsummary_t", new StringBuilder().append(prefix.getId()));
             documents.add(sid);
         }
         try {

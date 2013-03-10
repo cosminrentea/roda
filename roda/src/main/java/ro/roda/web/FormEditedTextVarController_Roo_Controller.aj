@@ -19,8 +19,6 @@ import org.springframework.web.util.WebUtils;
 import ro.roda.domain.FormEditedTextVar;
 import ro.roda.domain.FormEditedTextVarPK;
 import ro.roda.service.FormEditedTextVarService;
-import ro.roda.service.FormService;
-import ro.roda.service.VariableService;
 import ro.roda.web.FormEditedTextVarController;
 
 privileged aspect FormEditedTextVarController_Roo_Controller {
@@ -29,12 +27,6 @@ privileged aspect FormEditedTextVarController_Roo_Controller {
     
     @Autowired
     FormEditedTextVarService FormEditedTextVarController.formEditedTextVarService;
-    
-    @Autowired
-    FormService FormEditedTextVarController.formService;
-    
-    @Autowired
-    VariableService FormEditedTextVarController.variableService;
     
     @Autowired
     public FormEditedTextVarController.new(ConversionService conversionService) {
@@ -109,8 +101,6 @@ privileged aspect FormEditedTextVarController_Roo_Controller {
     
     void FormEditedTextVarController.populateEditForm(Model uiModel, FormEditedTextVar formEditedTextVar) {
         uiModel.addAttribute("formEditedTextVar", formEditedTextVar);
-        uiModel.addAttribute("forms", formService.findAllForms());
-        uiModel.addAttribute("variables", variableService.findAllVariables());
     }
     
     String FormEditedTextVarController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

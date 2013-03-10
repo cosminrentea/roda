@@ -16,21 +16,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.domain.AuditLogField;
-import ro.roda.service.AuditLogChangeService;
 import ro.roda.service.AuditLogFieldService;
-import ro.roda.service.AuditLogTableService;
 import ro.roda.web.AuditLogFieldController;
 
 privileged aspect AuditLogFieldController_Roo_Controller {
     
     @Autowired
     AuditLogFieldService AuditLogFieldController.auditLogFieldService;
-    
-    @Autowired
-    AuditLogChangeService AuditLogFieldController.auditLogChangeService;
-    
-    @Autowired
-    AuditLogTableService AuditLogFieldController.auditLogTableService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String AuditLogFieldController.create(@Valid AuditLogField auditLogField, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -99,8 +91,6 @@ privileged aspect AuditLogFieldController_Roo_Controller {
     
     void AuditLogFieldController.populateEditForm(Model uiModel, AuditLogField auditLogField) {
         uiModel.addAttribute("auditLogField", auditLogField);
-        uiModel.addAttribute("auditlogchanges", auditLogChangeService.findAllAuditLogChanges());
-        uiModel.addAttribute("auditlogtables", auditLogTableService.findAllAuditLogTables());
     }
     
     String AuditLogFieldController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

@@ -6,9 +6,7 @@ package ro.roda.web;
 import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,16 +17,12 @@ import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.domain.News;
 import ro.roda.service.NewsService;
-import ro.roda.service.RodauserService;
 import ro.roda.web.NewsController;
 
 privileged aspect NewsController_Roo_Controller {
     
     @Autowired
     NewsService NewsController.newsService;
-    
-    @Autowired
-    RodauserService NewsController.rodauserService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String NewsController.create(@Valid News news, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -49,7 +43,6 @@ privileged aspect NewsController_Roo_Controller {
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String NewsController.show(@PathVariable("id") Integer id, Model uiModel) {
-        addDateTimeFormatPatterns(uiModel);
         uiModel.addAttribute("news", newsService.findNews(id));
         uiModel.addAttribute("itemId", id);
         return "newspieces/show";
@@ -66,7 +59,6 @@ privileged aspect NewsController_Roo_Controller {
         } else {
             uiModel.addAttribute("newspieces", newsService.findAllNewsPieces());
         }
-        addDateTimeFormatPatterns(uiModel);
         return "newspieces/list";
     }
     
@@ -97,14 +89,8 @@ privileged aspect NewsController_Roo_Controller {
         return "redirect:/newspieces";
     }
     
-    void NewsController.addDateTimeFormatPatterns(Model uiModel) {
-        uiModel.addAttribute("news_added_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
-    }
-    
     void NewsController.populateEditForm(Model uiModel, News news) {
         uiModel.addAttribute("news", news);
-        addDateTimeFormatPatterns(uiModel);
-        uiModel.addAttribute("rodausers", rodauserService.findAllRodausers());
     }
     
     String NewsController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

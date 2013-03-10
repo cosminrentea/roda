@@ -6,8 +6,6 @@
         <field:input disableFormBinding="true" field="id.orgId" id="c_ro_roda_domain_InstanceOrg_id_orgId" required="true" validationMessageCode="field_invalid_integer" z="omnVm3qwxXk+55cfvdaNVPEtsK8="/>
         <field:input disableFormBinding="true" field="id.instanceId" id="c_ro_roda_domain_InstanceOrg_id_instanceId" required="true" validationMessageCode="field_invalid_integer" z="ZGlblpxr3c9DyLkik/vQF4uGf0Q="/>
         <field:input disableFormBinding="true" field="id.assocTypeId" id="c_ro_roda_domain_InstanceOrg_id_assocTypeId" required="true" validationMessageCode="field_invalid_integer" z="+rLZF3nDO1std432VpG8jjQg5+Q="/>
-        <field:input field="assocDetails" id="c_ro_roda_domain_InstanceOrg_assocDetails" z="bnnJs3ZpxM7qWJ7esy/WLGiL8Vg="/>
-        <field:input field="citation" id="c_ro_roda_domain_InstanceOrg_citation" z="JTcLQZJoEKQuC0LNf26wGtYI2rU="/>
     </form:create>
     <form:dependency dependencies="${dependencies}" id="d_ro_roda_domain_InstanceOrg" render="${not empty dependencies}" z="+DsG/LGMTYeX2ORD7qgJTXazIKQ="/>
 </div>

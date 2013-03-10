@@ -19,8 +19,6 @@ import org.springframework.web.util.WebUtils;
 import ro.roda.domain.FormEditedNumberVar;
 import ro.roda.domain.FormEditedNumberVarPK;
 import ro.roda.service.FormEditedNumberVarService;
-import ro.roda.service.FormService;
-import ro.roda.service.VariableService;
 import ro.roda.web.FormEditedNumberVarController;
 
 privileged aspect FormEditedNumberVarController_Roo_Controller {
@@ -29,12 +27,6 @@ privileged aspect FormEditedNumberVarController_Roo_Controller {
     
     @Autowired
     FormEditedNumberVarService FormEditedNumberVarController.formEditedNumberVarService;
-    
-    @Autowired
-    FormService FormEditedNumberVarController.formService;
-    
-    @Autowired
-    VariableService FormEditedNumberVarController.variableService;
     
     @Autowired
     public FormEditedNumberVarController.new(ConversionService conversionService) {
@@ -109,8 +101,6 @@ privileged aspect FormEditedNumberVarController_Roo_Controller {
     
     void FormEditedNumberVarController.populateEditForm(Model uiModel, FormEditedNumberVar formEditedNumberVar) {
         uiModel.addAttribute("formEditedNumberVar", formEditedNumberVar);
-        uiModel.addAttribute("forms", formService.findAllForms());
-        uiModel.addAttribute("variables", variableService.findAllVariables());
     }
     
     String FormEditedNumberVarController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

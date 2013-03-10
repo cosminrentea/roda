@@ -19,7 +19,6 @@ import org.springframework.web.util.WebUtils;
 import ro.roda.domain.FileAcl;
 import ro.roda.domain.FileAclPK;
 import ro.roda.service.FileAclService;
-import ro.roda.service.FileService;
 import ro.roda.web.FileAclController;
 
 privileged aspect FileAclController_Roo_Controller {
@@ -28,9 +27,6 @@ privileged aspect FileAclController_Roo_Controller {
     
     @Autowired
     FileAclService FileAclController.fileAclService;
-    
-    @Autowired
-    FileService FileAclController.fileService;
     
     @Autowired
     public FileAclController.new(ConversionService conversionService) {
@@ -105,7 +101,6 @@ privileged aspect FileAclController_Roo_Controller {
     
     void FileAclController.populateEditForm(Model uiModel, FileAcl fileAcl) {
         uiModel.addAttribute("fileAcl", fileAcl);
-        uiModel.addAttribute("files", fileService.findAllFiles());
     }
     
     String FileAclController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

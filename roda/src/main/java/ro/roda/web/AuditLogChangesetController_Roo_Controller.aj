@@ -6,9 +6,7 @@ package ro.roda.web;
 import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,21 +16,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.domain.AuditLogChangeset;
-import ro.roda.service.AuditLogActionService;
 import ro.roda.service.AuditLogChangesetService;
-import ro.roda.service.RodauserService;
 import ro.roda.web.AuditLogChangesetController;
 
 privileged aspect AuditLogChangesetController_Roo_Controller {
     
     @Autowired
     AuditLogChangesetService AuditLogChangesetController.auditLogChangesetService;
-    
-    @Autowired
-    AuditLogActionService AuditLogChangesetController.auditLogActionService;
-    
-    @Autowired
-    RodauserService AuditLogChangesetController.rodauserService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String AuditLogChangesetController.create(@Valid AuditLogChangeset auditLogChangeset, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -53,7 +43,6 @@ privileged aspect AuditLogChangesetController_Roo_Controller {
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String AuditLogChangesetController.show(@PathVariable("id") Integer id, Model uiModel) {
-        addDateTimeFormatPatterns(uiModel);
         uiModel.addAttribute("auditlogchangeset", auditLogChangesetService.findAuditLogChangeset(id));
         uiModel.addAttribute("itemId", id);
         return "auditlogchangesets/show";
@@ -70,7 +59,6 @@ privileged aspect AuditLogChangesetController_Roo_Controller {
         } else {
             uiModel.addAttribute("auditlogchangesets", auditLogChangesetService.findAllAuditLogChangesets());
         }
-        addDateTimeFormatPatterns(uiModel);
         return "auditlogchangesets/list";
     }
     
@@ -101,15 +89,8 @@ privileged aspect AuditLogChangesetController_Roo_Controller {
         return "redirect:/auditlogchangesets";
     }
     
-    void AuditLogChangesetController.addDateTimeFormatPatterns(Model uiModel) {
-        uiModel.addAttribute("auditLogChangeset_timestamp_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
-    }
-    
     void AuditLogChangesetController.populateEditForm(Model uiModel, AuditLogChangeset auditLogChangeset) {
         uiModel.addAttribute("auditLogChangeset", auditLogChangeset);
-        addDateTimeFormatPatterns(uiModel);
-        uiModel.addAttribute("auditlogactions", auditLogActionService.findAllAuditLogActions());
-        uiModel.addAttribute("rodausers", rodauserService.findAllRodausers());
     }
     
     String AuditLogChangesetController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

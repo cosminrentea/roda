@@ -48,12 +48,9 @@ privileged aspect SettingGroup_Roo_SolrSearch {
         for (SettingGroup settingGroup : settinggroups) {
             SolrInputDocument sid = new SolrInputDocument();
             sid.addField("id", "settinggroup_" + settingGroup.getId());
-            sid.addField("settingGroup.parent_t", settingGroup.getParent());
-            sid.addField("settingGroup.name_s", settingGroup.getName());
-            sid.addField("settingGroup.description_s", settingGroup.getDescription());
             sid.addField("settingGroup.id_i", settingGroup.getId());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("settinggroup_solrsummary_t", new StringBuilder().append(settingGroup.getParent()).append(" ").append(settingGroup.getName()).append(" ").append(settingGroup.getDescription()).append(" ").append(settingGroup.getId()));
+            sid.addField("settinggroup_solrsummary_t", new StringBuilder().append(settingGroup.getId()));
             documents.add(sid);
         }
         try {

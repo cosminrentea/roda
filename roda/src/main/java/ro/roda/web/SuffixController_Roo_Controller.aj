@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.domain.Suffix;
-import ro.roda.service.PersonService;
 import ro.roda.service.SuffixService;
 import ro.roda.web.SuffixController;
 
@@ -24,9 +23,6 @@ privileged aspect SuffixController_Roo_Controller {
     
     @Autowired
     SuffixService SuffixController.suffixService;
-    
-    @Autowired
-    PersonService SuffixController.personService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String SuffixController.create(@Valid Suffix suffix, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -95,7 +91,6 @@ privileged aspect SuffixController_Roo_Controller {
     
     void SuffixController.populateEditForm(Model uiModel, Suffix suffix) {
         uiModel.addAttribute("suffix", suffix);
-        uiModel.addAttribute("people", personService.findAllPeople());
     }
     
     String SuffixController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

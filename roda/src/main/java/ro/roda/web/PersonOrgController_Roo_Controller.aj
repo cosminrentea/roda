@@ -6,9 +6,7 @@ package ro.roda.web;
 import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -20,10 +18,7 @@ import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.domain.PersonOrg;
 import ro.roda.domain.PersonOrgPK;
-import ro.roda.service.OrgService;
 import ro.roda.service.PersonOrgService;
-import ro.roda.service.PersonRoleService;
-import ro.roda.service.PersonService;
 import ro.roda.web.PersonOrgController;
 
 privileged aspect PersonOrgController_Roo_Controller {
@@ -32,15 +27,6 @@ privileged aspect PersonOrgController_Roo_Controller {
     
     @Autowired
     PersonOrgService PersonOrgController.personOrgService;
-    
-    @Autowired
-    OrgService PersonOrgController.orgService;
-    
-    @Autowired
-    PersonService PersonOrgController.personService;
-    
-    @Autowired
-    PersonRoleService PersonOrgController.personRoleService;
     
     @Autowired
     public PersonOrgController.new(ConversionService conversionService) {
@@ -67,7 +53,6 @@ privileged aspect PersonOrgController_Roo_Controller {
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String PersonOrgController.show(@PathVariable("id") PersonOrgPK id, Model uiModel) {
-        addDateTimeFormatPatterns(uiModel);
         uiModel.addAttribute("personorg", personOrgService.findPersonOrg(id));
         uiModel.addAttribute("itemId", conversionService.convert(id, String.class));
         return "personorgs/show";
@@ -84,7 +69,6 @@ privileged aspect PersonOrgController_Roo_Controller {
         } else {
             uiModel.addAttribute("personorgs", personOrgService.findAllPersonOrgs());
         }
-        addDateTimeFormatPatterns(uiModel);
         return "personorgs/list";
     }
     
@@ -115,17 +99,8 @@ privileged aspect PersonOrgController_Roo_Controller {
         return "redirect:/personorgs";
     }
     
-    void PersonOrgController.addDateTimeFormatPatterns(Model uiModel) {
-        uiModel.addAttribute("personOrg_datestart_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
-        uiModel.addAttribute("personOrg_dateend_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
-    }
-    
     void PersonOrgController.populateEditForm(Model uiModel, PersonOrg personOrg) {
         uiModel.addAttribute("personOrg", personOrg);
-        addDateTimeFormatPatterns(uiModel);
-        uiModel.addAttribute("orgs", orgService.findAllOrgs());
-        uiModel.addAttribute("people", personService.findAllPeople());
-        uiModel.addAttribute("personroles", personRoleService.findAllPersonRoles());
     }
     
     String PersonOrgController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

@@ -48,13 +48,9 @@ privileged aspect StudyKeyword_Roo_SolrSearch {
         for (StudyKeyword studyKeyword : studykeywords) {
             SolrInputDocument sid = new SolrInputDocument();
             sid.addField("id", "studykeyword_" + studyKeyword.getId());
-            sid.addField("studyKeyword.keywordid_t", studyKeyword.getKeywordId());
-            sid.addField("studyKeyword.addedby_t", studyKeyword.getAddedBy());
-            sid.addField("studyKeyword.studyid_t", studyKeyword.getStudyId());
-            sid.addField("studyKeyword.added_dt", studyKeyword.getAdded().getTime());
             sid.addField("studyKeyword.id_t", studyKeyword.getId());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("studykeyword_solrsummary_t", new StringBuilder().append(studyKeyword.getKeywordId()).append(" ").append(studyKeyword.getAddedBy()).append(" ").append(studyKeyword.getStudyId()).append(" ").append(studyKeyword.getAdded().getTime()).append(" ").append(studyKeyword.getId()));
+            sid.addField("studykeyword_solrsummary_t", new StringBuilder().append(studyKeyword.getId()));
             documents.add(sid);
         }
         try {

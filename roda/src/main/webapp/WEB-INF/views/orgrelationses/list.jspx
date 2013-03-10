@@ -3,13 +3,6 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <page:list id="pl_ro_roda_domain_OrgRelations" items="${orgrelationses}" z="LfFMJ5U0pVmHpQPH1H6UU9sjdLo=">
-        <table:table data="${orgrelationses}" id="l_ro_roda_domain_OrgRelations" path="/orgrelationses" z="IcfIIapi/IJHl+FiP+Hb4MqychE=">
-            <table:column id="c_ro_roda_domain_OrgRelations_org2Id" property="org2Id" z="dUE8TEtmOB6Mqi/ulbuhK4qVEMk="/>
-            <table:column id="c_ro_roda_domain_OrgRelations_org1Id" property="org1Id" z="tyOPBe9LQEQCKtq1shURyQuXagc="/>
-            <table:column id="c_ro_roda_domain_OrgRelations_orgRelationTypeId" property="orgRelationTypeId" z="1B0G2yyNv/etdxfp6T3peT3qdOM="/>
-            <table:column calendar="true" dateTimePattern="${orgRelations_datestart_date_format}" id="c_ro_roda_domain_OrgRelations_datestart" property="datestart" z="6rPjvgiVtBDCjIBoy5R1thFQ7IM="/>
-            <table:column calendar="true" dateTimePattern="${orgRelations_dateend_date_format}" id="c_ro_roda_domain_OrgRelations_dateend" property="dateend" z="oBai8XiyrGmzGHwNR42kb3gHPyI="/>
-            <table:column id="c_ro_roda_domain_OrgRelations_details" property="details" z="r5QsoVw5MrqeJkoxhxp2M27NnOw="/>
-        </table:table>
+        <table:table data="${orgrelationses}" id="l_ro_roda_domain_OrgRelations" path="/orgrelationses" z="IcfIIapi/IJHl+FiP+Hb4MqychE="/>
     </page:list>
 </div>

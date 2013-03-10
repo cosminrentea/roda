@@ -17,16 +17,12 @@ import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.domain.Concept;
 import ro.roda.service.ConceptService;
-import ro.roda.service.VariableService;
 import ro.roda.web.ConceptController;
 
 privileged aspect ConceptController_Roo_Controller {
     
     @Autowired
     ConceptService ConceptController.conceptService;
-    
-    @Autowired
-    VariableService ConceptController.variableService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String ConceptController.create(@Valid Concept concept, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -95,7 +91,6 @@ privileged aspect ConceptController_Roo_Controller {
     
     void ConceptController.populateEditForm(Model uiModel, Concept concept) {
         uiModel.addAttribute("concept", concept);
-        uiModel.addAttribute("variables", variableService.findAllVariables());
     }
     
     String ConceptController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

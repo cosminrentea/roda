@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.domain.CmsFolder;
-import ro.roda.service.CmsFileService;
 import ro.roda.service.CmsFolderService;
 import ro.roda.web.CmsFolderController;
 
@@ -24,9 +23,6 @@ privileged aspect CmsFolderController_Roo_Controller {
     
     @Autowired
     CmsFolderService CmsFolderController.cmsFolderService;
-    
-    @Autowired
-    CmsFileService CmsFolderController.cmsFileService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String CmsFolderController.create(@Valid CmsFolder cmsFolder, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -95,7 +91,6 @@ privileged aspect CmsFolderController_Roo_Controller {
     
     void CmsFolderController.populateEditForm(Model uiModel, CmsFolder cmsFolder) {
         uiModel.addAttribute("cmsFolder", cmsFolder);
-        uiModel.addAttribute("cmsfiles", cmsFileService.findAllCmsFiles());
     }
     
     String CmsFolderController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

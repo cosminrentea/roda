@@ -6,9 +6,7 @@ package ro.roda.web;
 import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -20,9 +18,7 @@ import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.domain.OrgRelations;
 import ro.roda.domain.OrgRelationsPK;
-import ro.roda.service.OrgRelationTypeService;
 import ro.roda.service.OrgRelationsService;
-import ro.roda.service.OrgService;
 import ro.roda.web.OrgRelationsController;
 
 privileged aspect OrgRelationsController_Roo_Controller {
@@ -31,12 +27,6 @@ privileged aspect OrgRelationsController_Roo_Controller {
     
     @Autowired
     OrgRelationsService OrgRelationsController.orgRelationsService;
-    
-    @Autowired
-    OrgService OrgRelationsController.orgService;
-    
-    @Autowired
-    OrgRelationTypeService OrgRelationsController.orgRelationTypeService;
     
     @Autowired
     public OrgRelationsController.new(ConversionService conversionService) {
@@ -63,7 +53,6 @@ privileged aspect OrgRelationsController_Roo_Controller {
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String OrgRelationsController.show(@PathVariable("id") OrgRelationsPK id, Model uiModel) {
-        addDateTimeFormatPatterns(uiModel);
         uiModel.addAttribute("orgrelations", orgRelationsService.findOrgRelations(id));
         uiModel.addAttribute("itemId", conversionService.convert(id, String.class));
         return "orgrelationses/show";
@@ -80,7 +69,6 @@ privileged aspect OrgRelationsController_Roo_Controller {
         } else {
             uiModel.addAttribute("orgrelationses", orgRelationsService.findAllOrgRelationses());
         }
-        addDateTimeFormatPatterns(uiModel);
         return "orgrelationses/list";
     }
     
@@ -111,16 +99,8 @@ privileged aspect OrgRelationsController_Roo_Controller {
         return "redirect:/orgrelationses";
     }
     
-    void OrgRelationsController.addDateTimeFormatPatterns(Model uiModel) {
-        uiModel.addAttribute("orgRelations_datestart_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
-        uiModel.addAttribute("orgRelations_dateend_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
-    }
-    
     void OrgRelationsController.populateEditForm(Model uiModel, OrgRelations orgRelations) {
         uiModel.addAttribute("orgRelations", orgRelations);
-        addDateTimeFormatPatterns(uiModel);
-        uiModel.addAttribute("orgs", orgService.findAllOrgs());
-        uiModel.addAttribute("orgrelationtypes", orgRelationTypeService.findAllOrgRelationTypes());
     }
     
     String OrgRelationsController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

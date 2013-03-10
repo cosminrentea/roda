@@ -3,11 +3,6 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <page:list id="pl_ro_roda_domain_InstanceKeyword" items="${instancekeywords}" z="Nbtae/2fNkRWMeBXT1AqY/xLyCM=">
-        <table:table data="${instancekeywords}" id="l_ro_roda_domain_InstanceKeyword" path="/instancekeywords" z="q+O7xRwDz3A+ACjFqOZrqdrqYhg=">
-            <table:column id="c_ro_roda_domain_InstanceKeyword_instanceId" property="instanceId" z="6WbHP0yCmv4+YT2kZEEozld02C8="/>
-            <table:column id="c_ro_roda_domain_InstanceKeyword_keywordId" property="keywordId" z="mlE1awWfi5ffFJTMzp6FeiAM+nE="/>
-            <table:column id="c_ro_roda_domain_InstanceKeyword_addedBy" property="addedBy" z="ocu4AiWB74ngc0BWm2UP1rDu20I="/>
-            <table:column calendar="true" dateTimePattern="${instanceKeyword_added_date_format}" id="c_ro_roda_domain_InstanceKeyword_added" property="added" z="Z6LGjTPCtRyS2w27w4ZO2+OALHg="/>
-        </table:table>
+        <table:table data="${instancekeywords}" id="l_ro_roda_domain_InstanceKeyword" path="/instancekeywords" z="q+O7xRwDz3A+ACjFqOZrqdrqYhg="/>
     </page:list>
 </div>

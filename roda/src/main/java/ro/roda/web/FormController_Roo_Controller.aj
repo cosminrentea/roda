@@ -6,9 +6,7 @@ package ro.roda.web;
 import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,33 +16,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.domain.Form;
-import ro.roda.service.FormEditedNumberVarService;
-import ro.roda.service.FormEditedTextVarService;
-import ro.roda.service.FormSelectionVarService;
 import ro.roda.service.FormService;
-import ro.roda.service.InstanceService;
-import ro.roda.service.PersonService;
 import ro.roda.web.FormController;
 
 privileged aspect FormController_Roo_Controller {
     
     @Autowired
     FormService FormController.formService;
-    
-    @Autowired
-    FormEditedNumberVarService FormController.formEditedNumberVarService;
-    
-    @Autowired
-    FormEditedTextVarService FormController.formEditedTextVarService;
-    
-    @Autowired
-    FormSelectionVarService FormController.formSelectionVarService;
-    
-    @Autowired
-    InstanceService FormController.instanceService;
-    
-    @Autowired
-    PersonService FormController.personService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String FormController.create(@Valid Form form, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -65,7 +43,6 @@ privileged aspect FormController_Roo_Controller {
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String FormController.show(@PathVariable("id") Long id, Model uiModel) {
-        addDateTimeFormatPatterns(uiModel);
         uiModel.addAttribute("form", formService.findForm(id));
         uiModel.addAttribute("itemId", id);
         return "forms/show";
@@ -82,7 +59,6 @@ privileged aspect FormController_Roo_Controller {
         } else {
             uiModel.addAttribute("forms", formService.findAllForms());
         }
-        addDateTimeFormatPatterns(uiModel);
         return "forms/list";
     }
     
@@ -113,18 +89,8 @@ privileged aspect FormController_Roo_Controller {
         return "redirect:/forms";
     }
     
-    void FormController.addDateTimeFormatPatterns(Model uiModel) {
-        uiModel.addAttribute("form_filltime_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
-    }
-    
     void FormController.populateEditForm(Model uiModel, Form form) {
         uiModel.addAttribute("form", form);
-        addDateTimeFormatPatterns(uiModel);
-        uiModel.addAttribute("formeditednumbervars", formEditedNumberVarService.findAllFormEditedNumberVars());
-        uiModel.addAttribute("formeditedtextvars", formEditedTextVarService.findAllFormEditedTextVars());
-        uiModel.addAttribute("formselectionvars", formSelectionVarService.findAllFormSelectionVars());
-        uiModel.addAttribute("instances", instanceService.findAllInstances());
-        uiModel.addAttribute("people", personService.findAllPeople());
     }
     
     String FormController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

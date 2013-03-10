@@ -48,14 +48,9 @@ privileged aspect SourcestudyTypeHistory_Roo_SolrSearch {
         for (SourcestudyTypeHistory sourcestudyTypeHistory : sourcestudytypehistorys) {
             SolrInputDocument sid = new SolrInputDocument();
             sid.addField("id", "sourcestudytypehistory_" + sourcestudyTypeHistory.getId());
-            sid.addField("sourcestudyTypeHistory.addedby_t", sourcestudyTypeHistory.getAddedBy());
-            sid.addField("sourcestudyTypeHistory.sourcesstudyid_t", sourcestudyTypeHistory.getSourcesstudyId());
-            sid.addField("sourcestudyTypeHistory.sourcestudytypeid_t", sourcestudyTypeHistory.getSourcestudyTypeId());
-            sid.addField("sourcestudyTypeHistory.datestart_dt", sourcestudyTypeHistory.getDatestart().getTime());
-            sid.addField("sourcestudyTypeHistory.dateend_dt", sourcestudyTypeHistory.getDateend().getTime());
             sid.addField("sourcestudyTypeHistory.id_i", sourcestudyTypeHistory.getId());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("sourcestudytypehistory_solrsummary_t", new StringBuilder().append(sourcestudyTypeHistory.getAddedBy()).append(" ").append(sourcestudyTypeHistory.getSourcesstudyId()).append(" ").append(sourcestudyTypeHistory.getSourcestudyTypeId()).append(" ").append(sourcestudyTypeHistory.getDatestart().getTime()).append(" ").append(sourcestudyTypeHistory.getDateend().getTime()).append(" ").append(sourcestudyTypeHistory.getId()));
+            sid.addField("sourcestudytypehistory_solrsummary_t", new StringBuilder().append(sourcestudyTypeHistory.getId()));
             documents.add(sid);
         }
         try {

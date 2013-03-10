@@ -44,8 +44,9 @@ public class ApplicationListenerContextRefreshed implements
 			}
 			log.info("run.mode = " + runMode);
 			if ("server".equals(runMode)) {
-				log.error(dataSource.getUsername() + ":"
-						+ dataSource.getPassword() + ":" + dataSource.getUrl());
+//				log.error(dataSource.getUsername() + ":"
+//						+ dataSource.getPassword() + ":" + dataSource.getUrl());
+				
 				DatabaseUtils du = new DatabaseUtils(dataSource.getUsername(), dataSource.getPassword(),
 						dataSource.getUrl());
 				

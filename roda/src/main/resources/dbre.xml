@@ -271,6 +271,19 @@
             <unique-column name="user_id"/>
         </unique>
     </table>
+    <table alias="public" name="authorities">
+        <column name="username" primaryKey="false" required="true" scale="0" size="64" type="12,varchar"/>
+        <column name="authority" primaryKey="false" required="true" scale="0" size="64" type="12,varchar"/>
+        <foreign-key foreignTable="users" name="fk_authorities_users" onDelete="none" onUpdate="none">
+            <option key="foreignSchemaName" value="public"/>
+            <option key="exported" value="false"/>
+            <reference foreign="username" local="username"/>
+        </foreign-key>
+        <unique name="authorities_auhtority_Idx">
+            <unique-column name="username"/>
+            <unique-column name="authority"/>
+        </unique>
+    </table>
     <table alias="public" description="Tabel ce stocheaza informatii despre cataloagele de studii" name="catalog">
         <column description="Codul catalogului" name="id" primaryKey="true" required="true" scale="0" size="10" type="4,serial"/>
         <column description="Denumirea catalogului" name="name" primaryKey="false" required="true" scale="0" size="200" type="12,varchar"/>
@@ -817,6 +830,45 @@
             <unique-column name="form_id"/>
             <unique-column name="variable_id"/>
             <unique-column name="item_id"/>
+        </unique>
+    </table>
+    <table alias="public" name="group_authorities">
+        <column name="group_id" primaryKey="false" required="true" scale="0" size="19" type="-5,int8"/>
+        <column name="authority" primaryKey="false" required="true" scale="0" size="64" type="12,varchar"/>
+        <foreign-key foreignTable="groups" name="fk_group_authorities_groups" onDelete="none" onUpdate="none">
+            <option key="foreignSchemaName" value="public"/>
+            <option key="exported" value="false"/>
+            <reference foreign="id" local="group_id"/>
+        </foreign-key>
+    </table>
+    <table alias="public" name="group_members">
+        <column name="id" primaryKey="true" required="true" scale="0" size="19" type="-5,bigserial"/>
+        <column name="username" primaryKey="false" required="true" scale="0" size="64" type="12,varchar"/>
+        <column name="group_id" primaryKey="false" required="true" scale="0" size="19" type="-5,int8"/>
+        <foreign-key foreignTable="groups" name="fk_group_members_groups" onDelete="none" onUpdate="none">
+            <option key="foreignSchemaName" value="public"/>
+            <option key="exported" value="false"/>
+            <reference foreign="id" local="group_id"/>
+        </foreign-key>
+        <unique name="pkgroup_members">
+            <unique-column name="id"/>
+        </unique>
+    </table>
+    <table alias="public" name="groups">
+        <column name="id" primaryKey="true" required="true" scale="0" size="19" type="-5,bigserial"/>
+        <column name="group_name" primaryKey="false" required="true" scale="0" size="64" type="12,varchar"/>
+        <foreign-key foreignTable="group_authorities" name="fk_group_authorities_groups" onDelete="none" onUpdate="none">
+            <option key="foreignSchemaName" value="public"/>
+            <option key="exported" value="true"/>
+            <reference foreign="group_id" local="id"/>
+        </foreign-key>
+        <foreign-key foreignTable="group_members" name="fk_group_members_groups" onDelete="none" onUpdate="none">
+            <option key="foreignSchemaName" value="public"/>
+            <option key="exported" value="true"/>
+            <reference foreign="group_id" local="id"/>
+        </foreign-key>
+        <unique name="pkgroups">
+            <unique-column name="id"/>
         </unique>
     </table>
     <table alias="public" description="Tabel ce contine informatiile principale ale instantelor" name="instance">
@@ -2759,6 +2811,19 @@
         <unique name="pkuser_setting_value">
             <unique-column name="user_setting_id"/>
             <unique-column name="user_id"/>
+        </unique>
+    </table>
+    <table alias="public" name="users">
+        <column name="username" primaryKey="true" required="true" scale="0" size="64" type="12,varchar"/>
+        <column name="password" primaryKey="false" required="true" scale="0" size="64" type="12,varchar"/>
+        <column name="enabled" primaryKey="false" required="true" scale="0" size="1" type="-7,bool"/>
+        <foreign-key foreignTable="authorities" name="fk_authorities_users" onDelete="none" onUpdate="none">
+            <option key="foreignSchemaName" value="public"/>
+            <option key="exported" value="true"/>
+            <reference foreign="username" local="username"/>
+        </foreign-key>
+        <unique name="pkusers">
+            <unique-column name="username"/>
         </unique>
     </table>
     <table alias="public" description="Tabel ce stocheaza valorile posibile ale item-urilor variabilelor de selectie" name="value">

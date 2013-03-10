@@ -2,9 +2,5 @@
 <div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <page:show id="ps_ro_roda_domain_OrgInternet" object="${orginternet}" path="/orginternets" z="lBbT362+J4WMfJ2tS303JqroWz8=">
-        <field:display field="internetId" id="s_ro_roda_domain_OrgInternet_internetId" object="${orginternet}" z="1ZucQX8TfzUpgTSYydpnGR0lmVs="/>
-        <field:display field="orgId" id="s_ro_roda_domain_OrgInternet_orgId" object="${orginternet}" z="9DmWDKTMCV2wZhbhNNhv9JrTDeA="/>
-        <field:display field="main" id="s_ro_roda_domain_OrgInternet_main" object="${orginternet}" z="fSm2sqrpTEyTPMO112WjkBZpwN4="/>
-    </page:show>
+    <page:show id="ps_ro_roda_domain_OrgInternet" object="${orginternet}" path="/orginternets" z="lBbT362+J4WMfJ2tS303JqroWz8="/>
 </div>

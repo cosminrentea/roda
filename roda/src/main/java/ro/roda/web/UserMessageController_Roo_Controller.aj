@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.domain.UserMessage;
-import ro.roda.service.RodauserService;
 import ro.roda.service.UserMessageService;
 import ro.roda.web.UserMessageController;
 
@@ -24,9 +23,6 @@ privileged aspect UserMessageController_Roo_Controller {
     
     @Autowired
     UserMessageService UserMessageController.userMessageService;
-    
-    @Autowired
-    RodauserService UserMessageController.rodauserService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String UserMessageController.create(@Valid UserMessage userMessage, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -95,7 +91,6 @@ privileged aspect UserMessageController_Roo_Controller {
     
     void UserMessageController.populateEditForm(Model uiModel, UserMessage userMessage) {
         uiModel.addAttribute("userMessage", userMessage);
-        uiModel.addAttribute("rodausers", rodauserService.findAllRodausers());
     }
     
     String UserMessageController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

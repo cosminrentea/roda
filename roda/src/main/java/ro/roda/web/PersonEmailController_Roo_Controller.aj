@@ -18,9 +18,7 @@ import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.domain.PersonEmail;
 import ro.roda.domain.PersonEmailPK;
-import ro.roda.service.EmailService;
 import ro.roda.service.PersonEmailService;
-import ro.roda.service.PersonService;
 import ro.roda.web.PersonEmailController;
 
 privileged aspect PersonEmailController_Roo_Controller {
@@ -29,12 +27,6 @@ privileged aspect PersonEmailController_Roo_Controller {
     
     @Autowired
     PersonEmailService PersonEmailController.personEmailService;
-    
-    @Autowired
-    EmailService PersonEmailController.emailService;
-    
-    @Autowired
-    PersonService PersonEmailController.personService;
     
     @Autowired
     public PersonEmailController.new(ConversionService conversionService) {
@@ -109,8 +101,6 @@ privileged aspect PersonEmailController_Roo_Controller {
     
     void PersonEmailController.populateEditForm(Model uiModel, PersonEmail personEmail) {
         uiModel.addAttribute("personEmail", personEmail);
-        uiModel.addAttribute("emails", emailService.findAllEmails());
-        uiModel.addAttribute("people", personService.findAllPeople());
     }
     
     String PersonEmailController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

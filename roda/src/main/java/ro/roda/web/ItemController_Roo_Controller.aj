@@ -17,24 +17,12 @@ import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.domain.Item;
 import ro.roda.service.ItemService;
-import ro.roda.service.ScaleService;
-import ro.roda.service.SelectionVariableItemService;
-import ro.roda.service.ValueService;
 import ro.roda.web.ItemController;
 
 privileged aspect ItemController_Roo_Controller {
     
     @Autowired
     ItemService ItemController.itemService;
-    
-    @Autowired
-    ScaleService ItemController.scaleService;
-    
-    @Autowired
-    SelectionVariableItemService ItemController.selectionVariableItemService;
-    
-    @Autowired
-    ValueService ItemController.valueService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String ItemController.create(@Valid Item item, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -103,9 +91,6 @@ privileged aspect ItemController_Roo_Controller {
     
     void ItemController.populateEditForm(Model uiModel, Item item) {
         uiModel.addAttribute("item", item);
-        uiModel.addAttribute("scales", scaleService.findAllScales());
-        uiModel.addAttribute("selectionvariableitems", selectionVariableItemService.findAllSelectionVariableItems());
-        uiModel.addAttribute("values", valueService.findAllValues());
     }
     
     String ItemController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

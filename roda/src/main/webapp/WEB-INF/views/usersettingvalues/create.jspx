@@ -5,7 +5,6 @@
     <form:create compositePkField="id" id="fc_ro_roda_domain_UserSettingValue" modelAttribute="userSettingValue" path="/usersettingvalues" render="${empty dependencies}" z="Iu3MbCNbJrQz3TfMPorOug1jpAY=">
         <field:input disableFormBinding="true" field="id.userSettingId" id="c_ro_roda_domain_UserSettingValue_id_userSettingId" required="true" validationMessageCode="field_invalid_integer" z="y49JdENcgIA2cClTnkzGRxzi/70="/>
         <field:input disableFormBinding="true" field="id.userId" id="c_ro_roda_domain_UserSettingValue_id_userId" required="true" validationMessageCode="field_invalid_integer" z="CT6M63Ggsk41sHAB7gb2WN/K4YA="/>
-        <field:input field="value" id="c_ro_roda_domain_UserSettingValue_value" required="true" z="3YnXadO6gq1y/0OWQshD44/84rw="/>
     </form:create>
     <form:dependency dependencies="${dependencies}" id="d_ro_roda_domain_UserSettingValue" render="${not empty dependencies}" z="XySRviHVkXrBTZMMW1XPpaKuUwU="/>
 </div>

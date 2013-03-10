@@ -16,8 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.domain.Sourcetype;
-import ro.roda.service.SourceService;
-import ro.roda.service.SourcetypeHistoryService;
 import ro.roda.service.SourcetypeService;
 import ro.roda.web.SourcetypeController;
 
@@ -25,12 +23,6 @@ privileged aspect SourcetypeController_Roo_Controller {
     
     @Autowired
     SourcetypeService SourcetypeController.sourcetypeService;
-    
-    @Autowired
-    SourceService SourcetypeController.sourceService;
-    
-    @Autowired
-    SourcetypeHistoryService SourcetypeController.sourcetypeHistoryService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String SourcetypeController.create(@Valid Sourcetype sourcetype, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -99,8 +91,6 @@ privileged aspect SourcetypeController_Roo_Controller {
     
     void SourcetypeController.populateEditForm(Model uiModel, Sourcetype sourcetype) {
         uiModel.addAttribute("sourcetype", sourcetype);
-        uiModel.addAttribute("sources", sourceService.findAllSources());
-        uiModel.addAttribute("sourcetypehistorys", sourcetypeHistoryService.findAllSourcetypeHistorys());
     }
     
     String SourcetypeController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

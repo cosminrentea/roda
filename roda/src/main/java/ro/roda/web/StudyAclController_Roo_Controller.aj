@@ -19,7 +19,6 @@ import org.springframework.web.util.WebUtils;
 import ro.roda.domain.StudyAcl;
 import ro.roda.domain.StudyAclPK;
 import ro.roda.service.StudyAclService;
-import ro.roda.service.StudyService;
 import ro.roda.web.StudyAclController;
 
 privileged aspect StudyAclController_Roo_Controller {
@@ -28,9 +27,6 @@ privileged aspect StudyAclController_Roo_Controller {
     
     @Autowired
     StudyAclService StudyAclController.studyAclService;
-    
-    @Autowired
-    StudyService StudyAclController.studyService;
     
     @Autowired
     public StudyAclController.new(ConversionService conversionService) {
@@ -105,7 +101,6 @@ privileged aspect StudyAclController_Roo_Controller {
     
     void StudyAclController.populateEditForm(Model uiModel, StudyAcl studyAcl) {
         uiModel.addAttribute("studyAcl", studyAcl);
-        uiModel.addAttribute("studys", studyService.findAllStudys());
     }
     
     String StudyAclController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

@@ -18,9 +18,7 @@ import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.domain.OrgInternet;
 import ro.roda.domain.OrgInternetPK;
-import ro.roda.service.InternetService;
 import ro.roda.service.OrgInternetService;
-import ro.roda.service.OrgService;
 import ro.roda.web.OrgInternetController;
 
 privileged aspect OrgInternetController_Roo_Controller {
@@ -29,12 +27,6 @@ privileged aspect OrgInternetController_Roo_Controller {
     
     @Autowired
     OrgInternetService OrgInternetController.orgInternetService;
-    
-    @Autowired
-    InternetService OrgInternetController.internetService;
-    
-    @Autowired
-    OrgService OrgInternetController.orgService;
     
     @Autowired
     public OrgInternetController.new(ConversionService conversionService) {
@@ -109,8 +101,6 @@ privileged aspect OrgInternetController_Roo_Controller {
     
     void OrgInternetController.populateEditForm(Model uiModel, OrgInternet orgInternet) {
         uiModel.addAttribute("orgInternet", orgInternet);
-        uiModel.addAttribute("internets", internetService.findAllInternets());
-        uiModel.addAttribute("orgs", orgService.findAllOrgs());
     }
     
     String OrgInternetController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

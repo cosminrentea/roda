@@ -6,10 +6,6 @@
         <field:input disableFormBinding="true" field="id.catalogId" id="c_ro_roda_domain_CatalogAcl_id_catalogId" required="true" validationMessageCode="field_invalid_integer" z="exg8GJJOPcPtYyYiEnO3u48yV0c="/>
         <field:input disableFormBinding="true" field="id.aroId" id="c_ro_roda_domain_CatalogAcl_id_aroId" required="true" validationMessageCode="field_invalid_integer" z="qDOMcj2pjHrqs1hEVUAk7BWwA2k="/>
         <field:input disableFormBinding="true" field="id.aroType" id="c_ro_roda_domain_CatalogAcl_id_aroType" required="true" validationMessageCode="field_invalid_integer" z="OScv+5UiDoFtWf2N22tEIzIcci4="/>
-        <field:checkbox field="read" id="c_ro_roda_domain_CatalogAcl_read" z="u+ZliKqvjh5qlxOdDP0OWONX3QI="/>
-        <field:checkbox field="update" id="c_ro_roda_domain_CatalogAcl_update" z="zYBRxVMWb2zvfU8ConCH+eB4nYw="/>
-        <field:checkbox field="delete" id="c_ro_roda_domain_CatalogAcl_delete" z="rqA0pN1yuQEjatmeURJLbJi8E+w="/>
-        <field:checkbox field="modacl" id="c_ro_roda_domain_CatalogAcl_modacl" z="6dNeC4//wEv5SRfufNthosaYz+U="/>
     </form:create>
     <form:dependency dependencies="${dependencies}" id="d_ro_roda_domain_CatalogAcl" render="${not empty dependencies}" z="uV9qCtXTjTlXfUlRFZMh2q9c2hc="/>
 </div>

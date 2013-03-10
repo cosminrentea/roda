@@ -48,14 +48,9 @@ privileged aspect InstanceAcl_Roo_SolrSearch {
         for (InstanceAcl instanceAcl : instanceacls) {
             SolrInputDocument sid = new SolrInputDocument();
             sid.addField("id", "instanceacl_" + instanceAcl.getId());
-            sid.addField("instanceAcl.instanceid_t", instanceAcl.getInstanceId());
-            sid.addField("instanceAcl.read_b", instanceAcl.getRead());
-            sid.addField("instanceAcl.update_b", instanceAcl.getUpdate());
-            sid.addField("instanceAcl.delete_b", instanceAcl.getDelete());
-            sid.addField("instanceAcl.modacl_b", instanceAcl.getModacl());
             sid.addField("instanceAcl.id_t", instanceAcl.getId());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("instanceacl_solrsummary_t", new StringBuilder().append(instanceAcl.getInstanceId()).append(" ").append(instanceAcl.getRead()).append(" ").append(instanceAcl.getUpdate()).append(" ").append(instanceAcl.getDelete()).append(" ").append(instanceAcl.getModacl()).append(" ").append(instanceAcl.getId()));
+            sid.addField("instanceacl_solrsummary_t", new StringBuilder().append(instanceAcl.getId()));
             documents.add(sid);
         }
         try {

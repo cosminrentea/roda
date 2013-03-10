@@ -2,8 +2,5 @@
 <div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <form:update id="fu_ro_roda_domain_FormSelectionVar" modelAttribute="formSelectionVar" path="/formselectionvars" versionField="none" z="BWMMRylsmBEz+7gf4ZRWSIqTxTE=">
-        <field:select field="selectionVariableItem" id="c_ro_roda_domain_FormSelectionVar_selectionVariableItem" itemValue="id" items="${selectionvariableitems}" path="/selectionvariableitems" z="fUIWV/G54Kx44HigYUYeTCwSEI4="/>
-        <field:input field="orderOfItemsInResponse" id="c_ro_roda_domain_FormSelectionVar_orderOfItemsInResponse" validationMessageCode="field_invalid_integer" z="eRGBw65vVMtfYUN8MbymfuVpHd8="/>
-    </form:update>
+    <form:update id="fu_ro_roda_domain_FormSelectionVar" modelAttribute="formSelectionVar" path="/formselectionvars" versionField="none" z="BWMMRylsmBEz+7gf4ZRWSIqTxTE="/>
 </div>

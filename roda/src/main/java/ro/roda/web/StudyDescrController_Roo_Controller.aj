@@ -18,10 +18,7 @@ import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.domain.StudyDescr;
 import ro.roda.domain.StudyDescrPK;
-import ro.roda.service.LangService;
 import ro.roda.service.StudyDescrService;
-import ro.roda.service.StudyService;
-import ro.roda.service.TitleTypeService;
 import ro.roda.web.StudyDescrController;
 
 privileged aspect StudyDescrController_Roo_Controller {
@@ -30,15 +27,6 @@ privileged aspect StudyDescrController_Roo_Controller {
     
     @Autowired
     StudyDescrService StudyDescrController.studyDescrService;
-    
-    @Autowired
-    LangService StudyDescrController.langService;
-    
-    @Autowired
-    StudyService StudyDescrController.studyService;
-    
-    @Autowired
-    TitleTypeService StudyDescrController.titleTypeService;
     
     @Autowired
     public StudyDescrController.new(ConversionService conversionService) {
@@ -113,9 +101,6 @@ privileged aspect StudyDescrController_Roo_Controller {
     
     void StudyDescrController.populateEditForm(Model uiModel, StudyDescr studyDescr) {
         uiModel.addAttribute("studyDescr", studyDescr);
-        uiModel.addAttribute("langs", langService.findAllLangs());
-        uiModel.addAttribute("studys", studyService.findAllStudys());
-        uiModel.addAttribute("titletypes", titleTypeService.findAllTitleTypes());
     }
     
     String StudyDescrController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

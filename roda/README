@@ -128,8 +128,8 @@ http://localhost:8181/roda
 Din linia de comanda, in folder-ul radacina al proiectului, cu comanda:
   mvn tomcat:run
 
-Daca portul local 8282 era liber, proiectul e disponibil la URL-ul:
-http://localhost:8282/roda
+Daca portul local 8080 era liber (portul se poate schimba in "pom.xml"), proiectul e disponibil la URL-ul:
+http://localhost:8080/roda
 
 
 4.3. Rularea din STS, pe Cloud Foundry

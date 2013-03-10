@@ -488,5 +488,9 @@
             <menu:item id="i_auditlogfield_new" messageCode="global_menu_new" url="/auditlogfields?form" z="AYPWxmQRNyItL96cGFkaFmNrF2c="/>
             <menu:item id="i_auditlogfield_list" messageCode="global_menu_list" url="/auditlogfields?page=1&amp;size=${empty param.size ? 10 : param.size}" z="0zzqQNMCLL+83DxGPKxSC5x+KlA="/>
         </menu:category>
+        <menu:category id="c_news" z="/GYP5OCuHDR51pEBl2hXSgh9Kzs=">
+            <menu:item id="i_news_new" messageCode="global_menu_new" url="/newspieces?form" z="pgkB2S0o3zsRoFY0HagdPp9Y6o0="/>
+            <menu:item id="i_news_list" messageCode="global_menu_list" url="/newspieces?page=1&amp;size=${empty param.size ? 10 : param.size}" z="bVdCgMj63hiMp/hWifacFqdS9Pg="/>
+        </menu:category>
     </menu:menu>
 </div>

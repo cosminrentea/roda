@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.domain.Regiontype;
-import ro.roda.service.RegionService;
 import ro.roda.service.RegiontypeService;
 import ro.roda.web.RegiontypeController;
 
@@ -24,9 +23,6 @@ privileged aspect RegiontypeController_Roo_Controller {
     
     @Autowired
     RegiontypeService RegiontypeController.regiontypeService;
-    
-    @Autowired
-    RegionService RegiontypeController.regionService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String RegiontypeController.create(@Valid Regiontype regiontype, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -95,7 +91,6 @@ privileged aspect RegiontypeController_Roo_Controller {
     
     void RegiontypeController.populateEditForm(Model uiModel, Regiontype regiontype) {
         uiModel.addAttribute("regiontype", regiontype);
-        uiModel.addAttribute("regions", regionService.findAllRegions());
     }
     
     String RegiontypeController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

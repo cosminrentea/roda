@@ -18,9 +18,7 @@ import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.domain.OrgEmail;
 import ro.roda.domain.OrgEmailPK;
-import ro.roda.service.EmailService;
 import ro.roda.service.OrgEmailService;
-import ro.roda.service.OrgService;
 import ro.roda.web.OrgEmailController;
 
 privileged aspect OrgEmailController_Roo_Controller {
@@ -29,12 +27,6 @@ privileged aspect OrgEmailController_Roo_Controller {
     
     @Autowired
     OrgEmailService OrgEmailController.orgEmailService;
-    
-    @Autowired
-    EmailService OrgEmailController.emailService;
-    
-    @Autowired
-    OrgService OrgEmailController.orgService;
     
     @Autowired
     public OrgEmailController.new(ConversionService conversionService) {
@@ -109,8 +101,6 @@ privileged aspect OrgEmailController_Roo_Controller {
     
     void OrgEmailController.populateEditForm(Model uiModel, OrgEmail orgEmail) {
         uiModel.addAttribute("orgEmail", orgEmail);
-        uiModel.addAttribute("emails", emailService.findAllEmails());
-        uiModel.addAttribute("orgs", orgService.findAllOrgs());
     }
     
     String OrgEmailController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

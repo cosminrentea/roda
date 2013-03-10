@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+<link href="http://localhost:8080/" rel="selenium.base"/>
+<title>Selenium test for StudyDescrController</title>
+</head>
+<body>
+    <table border="1" cellpadding="1" cellspacing="1">
+        <thead>
+            <tr>
+                <td colspan="3" rowspan="1">Selenium test for StudyDescrController</td>
+            </tr>
+        </thead>
+        <tbody>
+        <tr>
+                    <td>open</td>
+                    <td>http://localhost:8080/roda/studydescrs?form&amp;lang=en_US</td>
+                    <td> </td>
+                </tr>
+                <tr>
+                    <td>type</td>
+                    <td>_langId.langId_id</td>
+                    <td>someLangId.langId1</td>
+                </tr>
+                <tr>
+                    <td>type</td>
+                    <td>_studyId.studyId_id</td>
+                    <td>1</td>
+                </tr>
+                <tr>
+                    <td>type</td>
+                    <td>_abstract1_id</td>
+                    <td>someAbstract11</td>
+                </tr>
+                <tr>
+                    <td>type</td>
+                    <td>_grantDetails_id</td>
+                    <td>someGrantDetails1</td>
+                </tr>
+                <tr>
+                    <td>type</td>
+                    <td>_title_id</td>
+                    <td>someTitle1</td>
+                </tr>
+                <tr>
+                    <td>clickAndWait</td>
+                    <td>//input[@id = 'proceed']</td>
+                    <td> </td>
+                </tr>
+                <tr>
+                    <td>verifyText</td>
+                    <td>_s_ro_roda_domain_StudyDescr_abstract1_abstract1_id</td>
+                    <td>someAbstract11</td>
+                </tr>
+                <tr>
+                    <td>verifyText</td>
+                    <td>_s_ro_roda_domain_StudyDescr_grantDetails_grantDetails_id</td>
+                    <td>someGrantDetails1</td>
+                </tr>
+                <tr>
+                    <td>verifyText</td>
+                    <td>_s_ro_roda_domain_StudyDescr_title_title_id</td>
+                    <td>someTitle1</td>
+                </tr>
+            </tbody>
+    </table>
+</body>
+</html>

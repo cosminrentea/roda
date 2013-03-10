@@ -5,7 +5,6 @@
     <form:create compositePkField="id" id="fc_ro_roda_domain_OrgEmail" modelAttribute="orgEmail" path="/orgemails" render="${empty dependencies}" z="Sju5Xt/4C2izYBUPgGaF/5e89l0=">
         <field:input disableFormBinding="true" field="id.orgId" id="c_ro_roda_domain_OrgEmail_id_orgId" required="true" validationMessageCode="field_invalid_integer" z="dttHQS7qeggLVYQrFYyoLh7P/Ts="/>
         <field:input disableFormBinding="true" field="id.emailId" id="c_ro_roda_domain_OrgEmail_id_emailId" required="true" validationMessageCode="field_invalid_integer" z="NUD54sBTM7WE64QQGKy3Jigyois="/>
-        <field:checkbox field="main" id="c_ro_roda_domain_OrgEmail_main" z="lYOMgOHauGOvkndcs/bA0mYMZ2s="/>
     </form:create>
     <form:dependency dependencies="${dependencies}" id="d_ro_roda_domain_OrgEmail" render="${not empty dependencies}" z="cDAWIPyLJREFrqqNLzIbCjgmjsg="/>
 </div>

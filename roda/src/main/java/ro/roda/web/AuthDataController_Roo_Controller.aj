@@ -17,16 +17,12 @@ import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.domain.AuthData;
 import ro.roda.service.AuthDataService;
-import ro.roda.service.RodauserService;
 import ro.roda.web.AuthDataController;
 
 privileged aspect AuthDataController_Roo_Controller {
     
     @Autowired
     AuthDataService AuthDataController.authDataService;
-    
-    @Autowired
-    RodauserService AuthDataController.rodauserService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String AuthDataController.create(@Valid AuthData authData, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -95,7 +91,6 @@ privileged aspect AuthDataController_Roo_Controller {
     
     void AuthDataController.populateEditForm(Model uiModel, AuthData authData) {
         uiModel.addAttribute("authData", authData);
-        uiModel.addAttribute("rodausers", rodauserService.findAllRodausers());
     }
     
     String AuthDataController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

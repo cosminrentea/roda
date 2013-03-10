@@ -19,7 +19,6 @@ import org.springframework.web.util.WebUtils;
 import ro.roda.domain.CatalogAcl;
 import ro.roda.domain.CatalogAclPK;
 import ro.roda.service.CatalogAclService;
-import ro.roda.service.CatalogService;
 import ro.roda.web.CatalogAclController;
 
 privileged aspect CatalogAclController_Roo_Controller {
@@ -28,9 +27,6 @@ privileged aspect CatalogAclController_Roo_Controller {
     
     @Autowired
     CatalogAclService CatalogAclController.catalogAclService;
-    
-    @Autowired
-    CatalogService CatalogAclController.catalogService;
     
     @Autowired
     public CatalogAclController.new(ConversionService conversionService) {
@@ -105,7 +101,6 @@ privileged aspect CatalogAclController_Roo_Controller {
     
     void CatalogAclController.populateEditForm(Model uiModel, CatalogAcl catalogAcl) {
         uiModel.addAttribute("catalogAcl", catalogAcl);
-        uiModel.addAttribute("catalogs", catalogService.findAllCatalogs());
     }
     
     String CatalogAclController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

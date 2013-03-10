@@ -6,9 +6,7 @@ package ro.roda.web;
 import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,25 +16,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.domain.Catalog;
-import ro.roda.service.CatalogAclService;
 import ro.roda.service.CatalogService;
-import ro.roda.service.CatalogStudyService;
-import ro.roda.service.RodauserService;
 import ro.roda.web.CatalogController;
 
 privileged aspect CatalogController_Roo_Controller {
     
     @Autowired
     CatalogService CatalogController.catalogService;
-    
-    @Autowired
-    CatalogAclService CatalogController.catalogAclService;
-    
-    @Autowired
-    CatalogStudyService CatalogController.catalogStudyService;
-    
-    @Autowired
-    RodauserService CatalogController.rodauserService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String CatalogController.create(@Valid Catalog catalog, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -57,7 +43,6 @@ privileged aspect CatalogController_Roo_Controller {
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String CatalogController.show(@PathVariable("id") Integer id, Model uiModel) {
-        addDateTimeFormatPatterns(uiModel);
         uiModel.addAttribute("catalog", catalogService.findCatalog(id));
         uiModel.addAttribute("itemId", id);
         return "catalogs/show";
@@ -74,7 +59,6 @@ privileged aspect CatalogController_Roo_Controller {
         } else {
             uiModel.addAttribute("catalogs", catalogService.findAllCatalogs());
         }
-        addDateTimeFormatPatterns(uiModel);
         return "catalogs/list";
     }
     
@@ -105,16 +89,8 @@ privileged aspect CatalogController_Roo_Controller {
         return "redirect:/catalogs";
     }
     
-    void CatalogController.addDateTimeFormatPatterns(Model uiModel) {
-        uiModel.addAttribute("catalog_added_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
-    }
-    
     void CatalogController.populateEditForm(Model uiModel, Catalog catalog) {
         uiModel.addAttribute("catalog", catalog);
-        addDateTimeFormatPatterns(uiModel);
-        uiModel.addAttribute("catalogacls", catalogAclService.findAllCatalogAcls());
-        uiModel.addAttribute("catalogstudys", catalogStudyService.findAllCatalogStudys());
-        uiModel.addAttribute("rodausers", rodauserService.findAllRodausers());
     }
     
     String CatalogController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

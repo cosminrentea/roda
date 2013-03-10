@@ -16,81 +16,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.domain.Rodauser;
-import ro.roda.service.AuditLogChangesetService;
-import ro.roda.service.AuthDataService;
-import ro.roda.service.CatalogService;
-import ro.roda.service.CmsPageService;
-import ro.roda.service.InstanceKeywordService;
-import ro.roda.service.InstanceService;
-import ro.roda.service.NewsService;
-import ro.roda.service.PersonLinksService;
 import ro.roda.service.RodauserService;
-import ro.roda.service.RoleService;
-import ro.roda.service.SourcestudyTypeHistoryService;
-import ro.roda.service.SourcetypeHistoryService;
-import ro.roda.service.StudyKeywordService;
-import ro.roda.service.StudyService;
-import ro.roda.service.UserAuthLogService;
-import ro.roda.service.UserMessageService;
-import ro.roda.service.UserProfileService;
-import ro.roda.service.UserSettingValueService;
 import ro.roda.web.RodauserController;
 
 privileged aspect RodauserController_Roo_Controller {
     
     @Autowired
     RodauserService RodauserController.rodauserService;
-    
-    @Autowired
-    AuditLogChangesetService RodauserController.auditLogChangesetService;
-    
-    @Autowired
-    AuthDataService RodauserController.authDataService;
-    
-    @Autowired
-    CatalogService RodauserController.catalogService;
-    
-    @Autowired
-    CmsPageService RodauserController.cmsPageService;
-    
-    @Autowired
-    InstanceService RodauserController.instanceService;
-    
-    @Autowired
-    InstanceKeywordService RodauserController.instanceKeywordService;
-    
-    @Autowired
-    NewsService RodauserController.newsService;
-    
-    @Autowired
-    PersonLinksService RodauserController.personLinksService;
-    
-    @Autowired
-    RoleService RodauserController.roleService;
-    
-    @Autowired
-    SourcestudyTypeHistoryService RodauserController.sourcestudyTypeHistoryService;
-    
-    @Autowired
-    SourcetypeHistoryService RodauserController.sourcetypeHistoryService;
-    
-    @Autowired
-    StudyService RodauserController.studyService;
-    
-    @Autowired
-    StudyKeywordService RodauserController.studyKeywordService;
-    
-    @Autowired
-    UserAuthLogService RodauserController.userAuthLogService;
-    
-    @Autowired
-    UserMessageService RodauserController.userMessageService;
-    
-    @Autowired
-    UserProfileService RodauserController.userProfileService;
-    
-    @Autowired
-    UserSettingValueService RodauserController.userSettingValueService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String RodauserController.create(@Valid Rodauser rodauser, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -159,23 +91,6 @@ privileged aspect RodauserController_Roo_Controller {
     
     void RodauserController.populateEditForm(Model uiModel, Rodauser rodauser) {
         uiModel.addAttribute("rodauser", rodauser);
-        uiModel.addAttribute("auditlogchangesets", auditLogChangesetService.findAllAuditLogChangesets());
-        uiModel.addAttribute("authdatas", authDataService.findAllAuthDatas());
-        uiModel.addAttribute("catalogs", catalogService.findAllCatalogs());
-        uiModel.addAttribute("cmspages", cmsPageService.findAllCmsPages());
-        uiModel.addAttribute("instances", instanceService.findAllInstances());
-        uiModel.addAttribute("instancekeywords", instanceKeywordService.findAllInstanceKeywords());
-        uiModel.addAttribute("newspieces", newsService.findAllNewsPieces());
-        uiModel.addAttribute("personlinkses", personLinksService.findAllPersonLinkses());
-        uiModel.addAttribute("roles", roleService.findAllRoles());
-        uiModel.addAttribute("sourcestudytypehistorys", sourcestudyTypeHistoryService.findAllSourcestudyTypeHistorys());
-        uiModel.addAttribute("sourcetypehistorys", sourcetypeHistoryService.findAllSourcetypeHistorys());
-        uiModel.addAttribute("studys", studyService.findAllStudys());
-        uiModel.addAttribute("studykeywords", studyKeywordService.findAllStudyKeywords());
-        uiModel.addAttribute("userauthlogs", userAuthLogService.findAllUserAuthLogs());
-        uiModel.addAttribute("usermessages", userMessageService.findAllUserMessages());
-        uiModel.addAttribute("userprofiles", userProfileService.findAllUserProfiles());
-        uiModel.addAttribute("usersettingvalues", userSettingValueService.findAllUserSettingValues());
     }
     
     String RodauserController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

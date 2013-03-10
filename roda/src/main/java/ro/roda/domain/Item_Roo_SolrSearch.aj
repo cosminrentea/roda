@@ -48,12 +48,9 @@ privileged aspect Item_Roo_SolrSearch {
         for (Item item : items) {
             SolrInputDocument sid = new SolrInputDocument();
             sid.addField("id", "item_" + item.getId());
-            sid.addField("item.scale_t", item.getScale());
-            sid.addField("item.value_t", item.getValue());
-            sid.addField("item.name_s", item.getName());
             sid.addField("item.id_l", item.getId());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("item_solrsummary_t", new StringBuilder().append(item.getScale()).append(" ").append(item.getValue()).append(" ").append(item.getName()).append(" ").append(item.getId()));
+            sid.addField("item_solrsummary_t", new StringBuilder().append(item.getId()));
             documents.add(sid);
         }
         try {

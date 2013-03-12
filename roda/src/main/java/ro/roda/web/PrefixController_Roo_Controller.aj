@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.domain.Prefix;
+import ro.roda.service.PersonService;
 import ro.roda.service.PrefixService;
 import ro.roda.web.PrefixController;
 
@@ -23,6 +24,9 @@ privileged aspect PrefixController_Roo_Controller {
     
     @Autowired
     PrefixService PrefixController.prefixService;
+    
+    @Autowired
+    PersonService PrefixController.personService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String PrefixController.create(@Valid Prefix prefix, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -91,6 +95,7 @@ privileged aspect PrefixController_Roo_Controller {
     
     void PrefixController.populateEditForm(Model uiModel, Prefix prefix) {
         uiModel.addAttribute("prefix", prefix);
+        uiModel.addAttribute("people", personService.findAllPeople());
     }
     
     String PrefixController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

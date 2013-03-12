@@ -20,6 +20,8 @@ import ro.roda.domain.AuditLogChangeset;
 import ro.roda.domain.AuditLogField;
 import ro.roda.domain.AuditLogTable;
 import ro.roda.domain.AuthData;
+import ro.roda.domain.Authorities;
+import ro.roda.domain.AuthoritiesPK;
 import ro.roda.domain.Catalog;
 import ro.roda.domain.CatalogAcl;
 import ro.roda.domain.CatalogAclPK;
@@ -53,6 +55,10 @@ import ro.roda.domain.FormEditedTextVar;
 import ro.roda.domain.FormEditedTextVarPK;
 import ro.roda.domain.FormSelectionVar;
 import ro.roda.domain.FormSelectionVarPK;
+import ro.roda.domain.GroupAuthorities;
+import ro.roda.domain.GroupAuthoritiesPK;
+import ro.roda.domain.GroupMembers;
+import ro.roda.domain.Groups;
 import ro.roda.domain.Instance;
 import ro.roda.domain.InstanceAcl;
 import ro.roda.domain.InstanceAclPK;
@@ -155,6 +161,7 @@ import ro.roda.domain.UserSetting;
 import ro.roda.domain.UserSettingGroup;
 import ro.roda.domain.UserSettingValue;
 import ro.roda.domain.UserSettingValuePK;
+import ro.roda.domain.Users;
 import ro.roda.domain.Value;
 import ro.roda.domain.Vargroup;
 import ro.roda.domain.Variable;
@@ -169,6 +176,7 @@ import ro.roda.service.AuditLogChangesetService;
 import ro.roda.service.AuditLogFieldService;
 import ro.roda.service.AuditLogTableService;
 import ro.roda.service.AuthDataService;
+import ro.roda.service.AuthoritiesService;
 import ro.roda.service.CatalogAclService;
 import ro.roda.service.CatalogService;
 import ro.roda.service.CatalogStudyService;
@@ -194,6 +202,9 @@ import ro.roda.service.FormEditedNumberVarService;
 import ro.roda.service.FormEditedTextVarService;
 import ro.roda.service.FormSelectionVarService;
 import ro.roda.service.FormService;
+import ro.roda.service.GroupAuthoritiesService;
+import ro.roda.service.GroupMembersService;
+import ro.roda.service.GroupsService;
 import ro.roda.service.InstanceAclService;
 import ro.roda.service.InstanceDescrService;
 import ro.roda.service.InstanceKeywordService;
@@ -271,6 +282,7 @@ import ro.roda.service.UserProfileService;
 import ro.roda.service.UserSettingGroupService;
 import ro.roda.service.UserSettingService;
 import ro.roda.service.UserSettingValueService;
+import ro.roda.service.UsersService;
 import ro.roda.service.ValueService;
 import ro.roda.service.VargroupService;
 import ro.roda.service.VariableService;
@@ -311,6 +323,9 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
     
     @Autowired
     AuthDataService ApplicationConversionServiceFactoryBean.authDataService;
+    
+    @Autowired
+    AuthoritiesService ApplicationConversionServiceFactoryBean.authoritiesService;
     
     @Autowired
     CatalogService ApplicationConversionServiceFactoryBean.catalogService;
@@ -386,6 +401,15 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
     
     @Autowired
     FormSelectionVarService ApplicationConversionServiceFactoryBean.formSelectionVarService;
+    
+    @Autowired
+    GroupAuthoritiesService ApplicationConversionServiceFactoryBean.groupAuthoritiesService;
+    
+    @Autowired
+    GroupMembersService ApplicationConversionServiceFactoryBean.groupMembersService;
+    
+    @Autowired
+    GroupsService ApplicationConversionServiceFactoryBean.groupsService;
     
     @Autowired
     InstanceService ApplicationConversionServiceFactoryBean.instanceService;
@@ -617,6 +641,9 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
     
     @Autowired
     UserSettingValueService ApplicationConversionServiceFactoryBean.userSettingValueService;
+    
+    @Autowired
+    UsersService ApplicationConversionServiceFactoryBean.usersService;
     
     @Autowired
     ValueService ApplicationConversionServiceFactoryBean.valueService;
@@ -887,6 +914,30 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
         return new org.springframework.core.convert.converter.Converter<java.lang.String, ro.roda.domain.AuthData>() {
             public ro.roda.domain.AuthData convert(String id) {
                 return getObject().convert(getObject().convert(id, Integer.class), AuthData.class);
+            }
+        };
+    }
+    
+    public Converter<Authorities, String> ApplicationConversionServiceFactoryBean.getAuthoritiesToStringConverter() {
+        return new org.springframework.core.convert.converter.Converter<ro.roda.domain.Authorities, java.lang.String>() {
+            public String convert(Authorities authorities) {
+                return "(no displayable fields)";
+            }
+        };
+    }
+    
+    public Converter<AuthoritiesPK, Authorities> ApplicationConversionServiceFactoryBean.getIdToAuthoritiesConverter() {
+        return new org.springframework.core.convert.converter.Converter<ro.roda.domain.AuthoritiesPK, ro.roda.domain.Authorities>() {
+            public ro.roda.domain.Authorities convert(ro.roda.domain.AuthoritiesPK id) {
+                return authoritiesService.findAuthorities(id);
+            }
+        };
+    }
+    
+    public Converter<String, Authorities> ApplicationConversionServiceFactoryBean.getStringToAuthoritiesConverter() {
+        return new org.springframework.core.convert.converter.Converter<java.lang.String, ro.roda.domain.Authorities>() {
+            public ro.roda.domain.Authorities convert(String id) {
+                return getObject().convert(getObject().convert(id, AuthoritiesPK.class), Authorities.class);
             }
         };
     }
@@ -1479,6 +1530,78 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
         return new org.springframework.core.convert.converter.Converter<java.lang.String, ro.roda.domain.FormSelectionVar>() {
             public ro.roda.domain.FormSelectionVar convert(String id) {
                 return getObject().convert(getObject().convert(id, FormSelectionVarPK.class), FormSelectionVar.class);
+            }
+        };
+    }
+    
+    public Converter<GroupAuthorities, String> ApplicationConversionServiceFactoryBean.getGroupAuthoritiesToStringConverter() {
+        return new org.springframework.core.convert.converter.Converter<ro.roda.domain.GroupAuthorities, java.lang.String>() {
+            public String convert(GroupAuthorities groupAuthorities) {
+                return "(no displayable fields)";
+            }
+        };
+    }
+    
+    public Converter<GroupAuthoritiesPK, GroupAuthorities> ApplicationConversionServiceFactoryBean.getIdToGroupAuthoritiesConverter() {
+        return new org.springframework.core.convert.converter.Converter<ro.roda.domain.GroupAuthoritiesPK, ro.roda.domain.GroupAuthorities>() {
+            public ro.roda.domain.GroupAuthorities convert(ro.roda.domain.GroupAuthoritiesPK id) {
+                return groupAuthoritiesService.findGroupAuthorities(id);
+            }
+        };
+    }
+    
+    public Converter<String, GroupAuthorities> ApplicationConversionServiceFactoryBean.getStringToGroupAuthoritiesConverter() {
+        return new org.springframework.core.convert.converter.Converter<java.lang.String, ro.roda.domain.GroupAuthorities>() {
+            public ro.roda.domain.GroupAuthorities convert(String id) {
+                return getObject().convert(getObject().convert(id, GroupAuthoritiesPK.class), GroupAuthorities.class);
+            }
+        };
+    }
+    
+    public Converter<GroupMembers, String> ApplicationConversionServiceFactoryBean.getGroupMembersToStringConverter() {
+        return new org.springframework.core.convert.converter.Converter<ro.roda.domain.GroupMembers, java.lang.String>() {
+            public String convert(GroupMembers groupMembers) {
+                return new StringBuilder().append(groupMembers.getUsername()).toString();
+            }
+        };
+    }
+    
+    public Converter<Long, GroupMembers> ApplicationConversionServiceFactoryBean.getIdToGroupMembersConverter() {
+        return new org.springframework.core.convert.converter.Converter<java.lang.Long, ro.roda.domain.GroupMembers>() {
+            public ro.roda.domain.GroupMembers convert(java.lang.Long id) {
+                return groupMembersService.findGroupMembers(id);
+            }
+        };
+    }
+    
+    public Converter<String, GroupMembers> ApplicationConversionServiceFactoryBean.getStringToGroupMembersConverter() {
+        return new org.springframework.core.convert.converter.Converter<java.lang.String, ro.roda.domain.GroupMembers>() {
+            public ro.roda.domain.GroupMembers convert(String id) {
+                return getObject().convert(getObject().convert(id, Long.class), GroupMembers.class);
+            }
+        };
+    }
+    
+    public Converter<Groups, String> ApplicationConversionServiceFactoryBean.getGroupsToStringConverter() {
+        return new org.springframework.core.convert.converter.Converter<ro.roda.domain.Groups, java.lang.String>() {
+            public String convert(Groups groups) {
+                return new StringBuilder().append(groups.getGroupName()).toString();
+            }
+        };
+    }
+    
+    public Converter<Long, Groups> ApplicationConversionServiceFactoryBean.getIdToGroupsConverter() {
+        return new org.springframework.core.convert.converter.Converter<java.lang.Long, ro.roda.domain.Groups>() {
+            public ro.roda.domain.Groups convert(java.lang.Long id) {
+                return groupsService.findGroups(id);
+            }
+        };
+    }
+    
+    public Converter<String, Groups> ApplicationConversionServiceFactoryBean.getStringToGroupsConverter() {
+        return new org.springframework.core.convert.converter.Converter<java.lang.String, ro.roda.domain.Groups>() {
+            public ro.roda.domain.Groups convert(String id) {
+                return getObject().convert(getObject().convert(id, Long.class), Groups.class);
             }
         };
     }
@@ -3323,6 +3446,22 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
         };
     }
     
+    public Converter<Users, String> ApplicationConversionServiceFactoryBean.getUsersToStringConverter() {
+        return new org.springframework.core.convert.converter.Converter<ro.roda.domain.Users, java.lang.String>() {
+            public String convert(Users users) {
+                return new StringBuilder().append(users.getPassword()).toString();
+            }
+        };
+    }
+    
+    public Converter<String, Users> ApplicationConversionServiceFactoryBean.getIdToUsersConverter() {
+        return new org.springframework.core.convert.converter.Converter<java.lang.String, ro.roda.domain.Users>() {
+            public ro.roda.domain.Users convert(java.lang.String id) {
+                return usersService.findUsers(id);
+            }
+        };
+    }
+    
     public Converter<Value, String> ApplicationConversionServiceFactoryBean.getValueToStringConverter() {
         return new org.springframework.core.convert.converter.Converter<ro.roda.domain.Value, java.lang.String>() {
             public String convert(Value value) {
@@ -3374,7 +3513,7 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
     public Converter<Variable, String> ApplicationConversionServiceFactoryBean.getVariableToStringConverter() {
         return new org.springframework.core.convert.converter.Converter<ro.roda.domain.Variable, java.lang.String>() {
             public String convert(Variable variable) {
-                return "(no displayable fields)";
+                return new StringBuilder().append(variable.getLabel()).append(' ').append(variable.getType()).append(' ').append(variable.getOrderInInstance()).append(' ').append(variable.getOperatorInstructions()).toString();
             }
         };
     }
@@ -3395,50 +3534,18 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
         };
     }
     
-    public Converter<String, FormEditedNumberVarPK> ApplicationConversionServiceFactoryBean.getJsonToFormEditedNumberVarPKConverter() {
-        return new org.springframework.core.convert.converter.Converter<java.lang.String, ro.roda.domain.FormEditedNumberVarPK>() {
-            public FormEditedNumberVarPK convert(String encodedJson) {
-                return FormEditedNumberVarPK.fromJsonToFormEditedNumberVarPK(new String(Base64.decodeBase64(encodedJson)));
+    public Converter<String, PersonPhonePK> ApplicationConversionServiceFactoryBean.getJsonToPersonPhonePKConverter() {
+        return new org.springframework.core.convert.converter.Converter<java.lang.String, ro.roda.domain.PersonPhonePK>() {
+            public PersonPhonePK convert(String encodedJson) {
+                return PersonPhonePK.fromJsonToPersonPhonePK(new String(Base64.decodeBase64(encodedJson)));
             }
         };
     }
     
-    public Converter<FormEditedNumberVarPK, String> ApplicationConversionServiceFactoryBean.getFormEditedNumberVarPKToJsonConverter() {
-        return new org.springframework.core.convert.converter.Converter<ro.roda.domain.FormEditedNumberVarPK, java.lang.String>() {
-            public String convert(FormEditedNumberVarPK formEditedNumberVarPK) {
-                return Base64.encodeBase64URLSafeString(formEditedNumberVarPK.toJson().getBytes());
-            }
-        };
-    }
-    
-    public Converter<String, StudyKeywordPK> ApplicationConversionServiceFactoryBean.getJsonToStudyKeywordPKConverter() {
-        return new org.springframework.core.convert.converter.Converter<java.lang.String, ro.roda.domain.StudyKeywordPK>() {
-            public StudyKeywordPK convert(String encodedJson) {
-                return StudyKeywordPK.fromJsonToStudyKeywordPK(new String(Base64.decodeBase64(encodedJson)));
-            }
-        };
-    }
-    
-    public Converter<StudyKeywordPK, String> ApplicationConversionServiceFactoryBean.getStudyKeywordPKToJsonConverter() {
-        return new org.springframework.core.convert.converter.Converter<ro.roda.domain.StudyKeywordPK, java.lang.String>() {
-            public String convert(StudyKeywordPK studyKeywordPK) {
-                return Base64.encodeBase64URLSafeString(studyKeywordPK.toJson().getBytes());
-            }
-        };
-    }
-    
-    public Converter<String, OrgRelationsPK> ApplicationConversionServiceFactoryBean.getJsonToOrgRelationsPKConverter() {
-        return new org.springframework.core.convert.converter.Converter<java.lang.String, ro.roda.domain.OrgRelationsPK>() {
-            public OrgRelationsPK convert(String encodedJson) {
-                return OrgRelationsPK.fromJsonToOrgRelationsPK(new String(Base64.decodeBase64(encodedJson)));
-            }
-        };
-    }
-    
-    public Converter<OrgRelationsPK, String> ApplicationConversionServiceFactoryBean.getOrgRelationsPKToJsonConverter() {
-        return new org.springframework.core.convert.converter.Converter<ro.roda.domain.OrgRelationsPK, java.lang.String>() {
-            public String convert(OrgRelationsPK orgRelationsPK) {
-                return Base64.encodeBase64URLSafeString(orgRelationsPK.toJson().getBytes());
+    public Converter<PersonPhonePK, String> ApplicationConversionServiceFactoryBean.getPersonPhonePKToJsonConverter() {
+        return new org.springframework.core.convert.converter.Converter<ro.roda.domain.PersonPhonePK, java.lang.String>() {
+            public String convert(PersonPhonePK personPhonePK) {
+                return Base64.encodeBase64URLSafeString(personPhonePK.toJson().getBytes());
             }
         };
     }
@@ -3459,178 +3566,18 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
         };
     }
     
-    public Converter<String, InstancePersonPK> ApplicationConversionServiceFactoryBean.getJsonToInstancePersonPKConverter() {
-        return new org.springframework.core.convert.converter.Converter<java.lang.String, ro.roda.domain.InstancePersonPK>() {
-            public InstancePersonPK convert(String encodedJson) {
-                return InstancePersonPK.fromJsonToInstancePersonPK(new String(Base64.decodeBase64(encodedJson)));
+    public Converter<String, SelectionVariableItemPK> ApplicationConversionServiceFactoryBean.getJsonToSelectionVariableItemPKConverter() {
+        return new org.springframework.core.convert.converter.Converter<java.lang.String, ro.roda.domain.SelectionVariableItemPK>() {
+            public SelectionVariableItemPK convert(String encodedJson) {
+                return SelectionVariableItemPK.fromJsonToSelectionVariableItemPK(new String(Base64.decodeBase64(encodedJson)));
             }
         };
     }
     
-    public Converter<InstancePersonPK, String> ApplicationConversionServiceFactoryBean.getInstancePersonPKToJsonConverter() {
-        return new org.springframework.core.convert.converter.Converter<ro.roda.domain.InstancePersonPK, java.lang.String>() {
-            public String convert(InstancePersonPK instancePersonPK) {
-                return Base64.encodeBase64URLSafeString(instancePersonPK.toJson().getBytes());
-            }
-        };
-    }
-    
-    public Converter<String, UserAuthLogPK> ApplicationConversionServiceFactoryBean.getJsonToUserAuthLogPKConverter() {
-        return new org.springframework.core.convert.converter.Converter<java.lang.String, ro.roda.domain.UserAuthLogPK>() {
-            public UserAuthLogPK convert(String encodedJson) {
-                return UserAuthLogPK.fromJsonToUserAuthLogPK(new String(Base64.decodeBase64(encodedJson)));
-            }
-        };
-    }
-    
-    public Converter<UserAuthLogPK, String> ApplicationConversionServiceFactoryBean.getUserAuthLogPKToJsonConverter() {
-        return new org.springframework.core.convert.converter.Converter<ro.roda.domain.UserAuthLogPK, java.lang.String>() {
-            public String convert(UserAuthLogPK userAuthLogPK) {
-                return Base64.encodeBase64URLSafeString(userAuthLogPK.toJson().getBytes());
-            }
-        };
-    }
-    
-    public Converter<String, PersonInternetPK> ApplicationConversionServiceFactoryBean.getJsonToPersonInternetPKConverter() {
-        return new org.springframework.core.convert.converter.Converter<java.lang.String, ro.roda.domain.PersonInternetPK>() {
-            public PersonInternetPK convert(String encodedJson) {
-                return PersonInternetPK.fromJsonToPersonInternetPK(new String(Base64.decodeBase64(encodedJson)));
-            }
-        };
-    }
-    
-    public Converter<PersonInternetPK, String> ApplicationConversionServiceFactoryBean.getPersonInternetPKToJsonConverter() {
-        return new org.springframework.core.convert.converter.Converter<ro.roda.domain.PersonInternetPK, java.lang.String>() {
-            public String convert(PersonInternetPK personInternetPK) {
-                return Base64.encodeBase64URLSafeString(personInternetPK.toJson().getBytes());
-            }
-        };
-    }
-    
-    public Converter<String, StudyDocumentsPK> ApplicationConversionServiceFactoryBean.getJsonToStudyDocumentsPKConverter() {
-        return new org.springframework.core.convert.converter.Converter<java.lang.String, ro.roda.domain.StudyDocumentsPK>() {
-            public StudyDocumentsPK convert(String encodedJson) {
-                return StudyDocumentsPK.fromJsonToStudyDocumentsPK(new String(Base64.decodeBase64(encodedJson)));
-            }
-        };
-    }
-    
-    public Converter<StudyDocumentsPK, String> ApplicationConversionServiceFactoryBean.getStudyDocumentsPKToJsonConverter() {
-        return new org.springframework.core.convert.converter.Converter<ro.roda.domain.StudyDocumentsPK, java.lang.String>() {
-            public String convert(StudyDocumentsPK studyDocumentsPK) {
-                return Base64.encodeBase64URLSafeString(studyDocumentsPK.toJson().getBytes());
-            }
-        };
-    }
-    
-    public Converter<String, StudyAclPK> ApplicationConversionServiceFactoryBean.getJsonToStudyAclPKConverter() {
-        return new org.springframework.core.convert.converter.Converter<java.lang.String, ro.roda.domain.StudyAclPK>() {
-            public StudyAclPK convert(String encodedJson) {
-                return StudyAclPK.fromJsonToStudyAclPK(new String(Base64.decodeBase64(encodedJson)));
-            }
-        };
-    }
-    
-    public Converter<StudyAclPK, String> ApplicationConversionServiceFactoryBean.getStudyAclPKToJsonConverter() {
-        return new org.springframework.core.convert.converter.Converter<ro.roda.domain.StudyAclPK, java.lang.String>() {
-            public String convert(StudyAclPK studyAclPK) {
-                return Base64.encodeBase64URLSafeString(studyAclPK.toJson().getBytes());
-            }
-        };
-    }
-    
-    public Converter<String, FormSelectionVarPK> ApplicationConversionServiceFactoryBean.getJsonToFormSelectionVarPKConverter() {
-        return new org.springframework.core.convert.converter.Converter<java.lang.String, ro.roda.domain.FormSelectionVarPK>() {
-            public FormSelectionVarPK convert(String encodedJson) {
-                return FormSelectionVarPK.fromJsonToFormSelectionVarPK(new String(Base64.decodeBase64(encodedJson)));
-            }
-        };
-    }
-    
-    public Converter<FormSelectionVarPK, String> ApplicationConversionServiceFactoryBean.getFormSelectionVarPKToJsonConverter() {
-        return new org.springframework.core.convert.converter.Converter<ro.roda.domain.FormSelectionVarPK, java.lang.String>() {
-            public String convert(FormSelectionVarPK formSelectionVarPK) {
-                return Base64.encodeBase64URLSafeString(formSelectionVarPK.toJson().getBytes());
-            }
-        };
-    }
-    
-    public Converter<String, InstanceDescrPK> ApplicationConversionServiceFactoryBean.getJsonToInstanceDescrPKConverter() {
-        return new org.springframework.core.convert.converter.Converter<java.lang.String, ro.roda.domain.InstanceDescrPK>() {
-            public InstanceDescrPK convert(String encodedJson) {
-                return InstanceDescrPK.fromJsonToInstanceDescrPK(new String(Base64.decodeBase64(encodedJson)));
-            }
-        };
-    }
-    
-    public Converter<InstanceDescrPK, String> ApplicationConversionServiceFactoryBean.getInstanceDescrPKToJsonConverter() {
-        return new org.springframework.core.convert.converter.Converter<ro.roda.domain.InstanceDescrPK, java.lang.String>() {
-            public String convert(InstanceDescrPK instanceDescrPK) {
-                return Base64.encodeBase64URLSafeString(instanceDescrPK.toJson().getBytes());
-            }
-        };
-    }
-    
-    public Converter<String, PersonPhonePK> ApplicationConversionServiceFactoryBean.getJsonToPersonPhonePKConverter() {
-        return new org.springframework.core.convert.converter.Converter<java.lang.String, ro.roda.domain.PersonPhonePK>() {
-            public PersonPhonePK convert(String encodedJson) {
-                return PersonPhonePK.fromJsonToPersonPhonePK(new String(Base64.decodeBase64(encodedJson)));
-            }
-        };
-    }
-    
-    public Converter<PersonPhonePK, String> ApplicationConversionServiceFactoryBean.getPersonPhonePKToJsonConverter() {
-        return new org.springframework.core.convert.converter.Converter<ro.roda.domain.PersonPhonePK, java.lang.String>() {
-            public String convert(PersonPhonePK personPhonePK) {
-                return Base64.encodeBase64URLSafeString(personPhonePK.toJson().getBytes());
-            }
-        };
-    }
-    
-    public Converter<String, TranslatedTopicPK> ApplicationConversionServiceFactoryBean.getJsonToTranslatedTopicPKConverter() {
-        return new org.springframework.core.convert.converter.Converter<java.lang.String, ro.roda.domain.TranslatedTopicPK>() {
-            public TranslatedTopicPK convert(String encodedJson) {
-                return TranslatedTopicPK.fromJsonToTranslatedTopicPK(new String(Base64.decodeBase64(encodedJson)));
-            }
-        };
-    }
-    
-    public Converter<TranslatedTopicPK, String> ApplicationConversionServiceFactoryBean.getTranslatedTopicPKToJsonConverter() {
-        return new org.springframework.core.convert.converter.Converter<ro.roda.domain.TranslatedTopicPK, java.lang.String>() {
-            public String convert(TranslatedTopicPK translatedTopicPK) {
-                return Base64.encodeBase64URLSafeString(translatedTopicPK.toJson().getBytes());
-            }
-        };
-    }
-    
-    public Converter<String, StudyOrgPK> ApplicationConversionServiceFactoryBean.getJsonToStudyOrgPKConverter() {
-        return new org.springframework.core.convert.converter.Converter<java.lang.String, ro.roda.domain.StudyOrgPK>() {
-            public StudyOrgPK convert(String encodedJson) {
-                return StudyOrgPK.fromJsonToStudyOrgPK(new String(Base64.decodeBase64(encodedJson)));
-            }
-        };
-    }
-    
-    public Converter<StudyOrgPK, String> ApplicationConversionServiceFactoryBean.getStudyOrgPKToJsonConverter() {
-        return new org.springframework.core.convert.converter.Converter<ro.roda.domain.StudyOrgPK, java.lang.String>() {
-            public String convert(StudyOrgPK studyOrgPK) {
-                return Base64.encodeBase64URLSafeString(studyOrgPK.toJson().getBytes());
-            }
-        };
-    }
-    
-    public Converter<String, OrgAddressPK> ApplicationConversionServiceFactoryBean.getJsonToOrgAddressPKConverter() {
-        return new org.springframework.core.convert.converter.Converter<java.lang.String, ro.roda.domain.OrgAddressPK>() {
-            public OrgAddressPK convert(String encodedJson) {
-                return OrgAddressPK.fromJsonToOrgAddressPK(new String(Base64.decodeBase64(encodedJson)));
-            }
-        };
-    }
-    
-    public Converter<OrgAddressPK, String> ApplicationConversionServiceFactoryBean.getOrgAddressPKToJsonConverter() {
-        return new org.springframework.core.convert.converter.Converter<ro.roda.domain.OrgAddressPK, java.lang.String>() {
-            public String convert(OrgAddressPK orgAddressPK) {
-                return Base64.encodeBase64URLSafeString(orgAddressPK.toJson().getBytes());
+    public Converter<SelectionVariableItemPK, String> ApplicationConversionServiceFactoryBean.getSelectionVariableItemPKToJsonConverter() {
+        return new org.springframework.core.convert.converter.Converter<ro.roda.domain.SelectionVariableItemPK, java.lang.String>() {
+            public String convert(SelectionVariableItemPK selectionVariableItemPK) {
+                return Base64.encodeBase64URLSafeString(selectionVariableItemPK.toJson().getBytes());
             }
         };
     }
@@ -3651,82 +3598,50 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
         };
     }
     
-    public Converter<String, StudyDescrPK> ApplicationConversionServiceFactoryBean.getJsonToStudyDescrPKConverter() {
-        return new org.springframework.core.convert.converter.Converter<java.lang.String, ro.roda.domain.StudyDescrPK>() {
-            public StudyDescrPK convert(String encodedJson) {
-                return StudyDescrPK.fromJsonToStudyDescrPK(new String(Base64.decodeBase64(encodedJson)));
+    public Converter<String, InstancePersonPK> ApplicationConversionServiceFactoryBean.getJsonToInstancePersonPKConverter() {
+        return new org.springframework.core.convert.converter.Converter<java.lang.String, ro.roda.domain.InstancePersonPK>() {
+            public InstancePersonPK convert(String encodedJson) {
+                return InstancePersonPK.fromJsonToInstancePersonPK(new String(Base64.decodeBase64(encodedJson)));
             }
         };
     }
     
-    public Converter<StudyDescrPK, String> ApplicationConversionServiceFactoryBean.getStudyDescrPKToJsonConverter() {
-        return new org.springframework.core.convert.converter.Converter<ro.roda.domain.StudyDescrPK, java.lang.String>() {
-            public String convert(StudyDescrPK studyDescrPK) {
-                return Base64.encodeBase64URLSafeString(studyDescrPK.toJson().getBytes());
+    public Converter<InstancePersonPK, String> ApplicationConversionServiceFactoryBean.getInstancePersonPKToJsonConverter() {
+        return new org.springframework.core.convert.converter.Converter<ro.roda.domain.InstancePersonPK, java.lang.String>() {
+            public String convert(InstancePersonPK instancePersonPK) {
+                return Base64.encodeBase64URLSafeString(instancePersonPK.toJson().getBytes());
             }
         };
     }
     
-    public Converter<String, StudyPersonPK> ApplicationConversionServiceFactoryBean.getJsonToStudyPersonPKConverter() {
-        return new org.springframework.core.convert.converter.Converter<java.lang.String, ro.roda.domain.StudyPersonPK>() {
-            public StudyPersonPK convert(String encodedJson) {
-                return StudyPersonPK.fromJsonToStudyPersonPK(new String(Base64.decodeBase64(encodedJson)));
+    public Converter<String, FormEditedNumberVarPK> ApplicationConversionServiceFactoryBean.getJsonToFormEditedNumberVarPKConverter() {
+        return new org.springframework.core.convert.converter.Converter<java.lang.String, ro.roda.domain.FormEditedNumberVarPK>() {
+            public FormEditedNumberVarPK convert(String encodedJson) {
+                return FormEditedNumberVarPK.fromJsonToFormEditedNumberVarPK(new String(Base64.decodeBase64(encodedJson)));
             }
         };
     }
     
-    public Converter<StudyPersonPK, String> ApplicationConversionServiceFactoryBean.getStudyPersonPKToJsonConverter() {
-        return new org.springframework.core.convert.converter.Converter<ro.roda.domain.StudyPersonPK, java.lang.String>() {
-            public String convert(StudyPersonPK studyPersonPK) {
-                return Base64.encodeBase64URLSafeString(studyPersonPK.toJson().getBytes());
+    public Converter<FormEditedNumberVarPK, String> ApplicationConversionServiceFactoryBean.getFormEditedNumberVarPKToJsonConverter() {
+        return new org.springframework.core.convert.converter.Converter<ro.roda.domain.FormEditedNumberVarPK, java.lang.String>() {
+            public String convert(FormEditedNumberVarPK formEditedNumberVarPK) {
+                return Base64.encodeBase64URLSafeString(formEditedNumberVarPK.toJson().getBytes());
             }
         };
     }
     
-    public Converter<String, FileAclPK> ApplicationConversionServiceFactoryBean.getJsonToFileAclPKConverter() {
-        return new org.springframework.core.convert.converter.Converter<java.lang.String, ro.roda.domain.FileAclPK>() {
-            public FileAclPK convert(String encodedJson) {
-                return FileAclPK.fromJsonToFileAclPK(new String(Base64.decodeBase64(encodedJson)));
+    public Converter<String, PersonInternetPK> ApplicationConversionServiceFactoryBean.getJsonToPersonInternetPKConverter() {
+        return new org.springframework.core.convert.converter.Converter<java.lang.String, ro.roda.domain.PersonInternetPK>() {
+            public PersonInternetPK convert(String encodedJson) {
+                return PersonInternetPK.fromJsonToPersonInternetPK(new String(Base64.decodeBase64(encodedJson)));
             }
         };
     }
     
-    public Converter<FileAclPK, String> ApplicationConversionServiceFactoryBean.getFileAclPKToJsonConverter() {
-        return new org.springframework.core.convert.converter.Converter<ro.roda.domain.FileAclPK, java.lang.String>() {
-            public String convert(FileAclPK fileAclPK) {
-                return Base64.encodeBase64URLSafeString(fileAclPK.toJson().getBytes());
-            }
-        };
-    }
-    
-    public Converter<String, FilePropertyNameValuePK> ApplicationConversionServiceFactoryBean.getJsonToFilePropertyNameValuePKConverter() {
-        return new org.springframework.core.convert.converter.Converter<java.lang.String, ro.roda.domain.FilePropertyNameValuePK>() {
-            public FilePropertyNameValuePK convert(String encodedJson) {
-                return FilePropertyNameValuePK.fromJsonToFilePropertyNameValuePK(new String(Base64.decodeBase64(encodedJson)));
-            }
-        };
-    }
-    
-    public Converter<FilePropertyNameValuePK, String> ApplicationConversionServiceFactoryBean.getFilePropertyNameValuePKToJsonConverter() {
-        return new org.springframework.core.convert.converter.Converter<ro.roda.domain.FilePropertyNameValuePK, java.lang.String>() {
-            public String convert(FilePropertyNameValuePK filePropertyNameValuePK) {
-                return Base64.encodeBase64URLSafeString(filePropertyNameValuePK.toJson().getBytes());
-            }
-        };
-    }
-    
-    public Converter<String, OrgEmailPK> ApplicationConversionServiceFactoryBean.getJsonToOrgEmailPKConverter() {
-        return new org.springframework.core.convert.converter.Converter<java.lang.String, ro.roda.domain.OrgEmailPK>() {
-            public OrgEmailPK convert(String encodedJson) {
-                return OrgEmailPK.fromJsonToOrgEmailPK(new String(Base64.decodeBase64(encodedJson)));
-            }
-        };
-    }
-    
-    public Converter<OrgEmailPK, String> ApplicationConversionServiceFactoryBean.getOrgEmailPKToJsonConverter() {
-        return new org.springframework.core.convert.converter.Converter<ro.roda.domain.OrgEmailPK, java.lang.String>() {
-            public String convert(OrgEmailPK orgEmailPK) {
-                return Base64.encodeBase64URLSafeString(orgEmailPK.toJson().getBytes());
+    public Converter<PersonInternetPK, String> ApplicationConversionServiceFactoryBean.getPersonInternetPKToJsonConverter() {
+        return new org.springframework.core.convert.converter.Converter<ro.roda.domain.PersonInternetPK, java.lang.String>() {
+            public String convert(PersonInternetPK personInternetPK) {
+                return Base64.encodeBase64URLSafeString(personInternetPK.toJson().getBytes());
             }
         };
     }
@@ -3747,22 +3662,6 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
         };
     }
     
-    public Converter<String, CatalogStudyPK> ApplicationConversionServiceFactoryBean.getJsonToCatalogStudyPKConverter() {
-        return new org.springframework.core.convert.converter.Converter<java.lang.String, ro.roda.domain.CatalogStudyPK>() {
-            public CatalogStudyPK convert(String encodedJson) {
-                return CatalogStudyPK.fromJsonToCatalogStudyPK(new String(Base64.decodeBase64(encodedJson)));
-            }
-        };
-    }
-    
-    public Converter<CatalogStudyPK, String> ApplicationConversionServiceFactoryBean.getCatalogStudyPKToJsonConverter() {
-        return new org.springframework.core.convert.converter.Converter<ro.roda.domain.CatalogStudyPK, java.lang.String>() {
-            public String convert(CatalogStudyPK catalogStudyPK) {
-                return Base64.encodeBase64URLSafeString(catalogStudyPK.toJson().getBytes());
-            }
-        };
-    }
-    
     public Converter<String, PersonAddressPK> ApplicationConversionServiceFactoryBean.getJsonToPersonAddressPKConverter() {
         return new org.springframework.core.convert.converter.Converter<java.lang.String, ro.roda.domain.PersonAddressPK>() {
             public PersonAddressPK convert(String encodedJson) {
@@ -3779,66 +3678,194 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
         };
     }
     
-    public Converter<String, SelectionVariableItemPK> ApplicationConversionServiceFactoryBean.getJsonToSelectionVariableItemPKConverter() {
-        return new org.springframework.core.convert.converter.Converter<java.lang.String, ro.roda.domain.SelectionVariableItemPK>() {
-            public SelectionVariableItemPK convert(String encodedJson) {
-                return SelectionVariableItemPK.fromJsonToSelectionVariableItemPK(new String(Base64.decodeBase64(encodedJson)));
+    public Converter<String, InstanceKeywordPK> ApplicationConversionServiceFactoryBean.getJsonToInstanceKeywordPKConverter() {
+        return new org.springframework.core.convert.converter.Converter<java.lang.String, ro.roda.domain.InstanceKeywordPK>() {
+            public InstanceKeywordPK convert(String encodedJson) {
+                return InstanceKeywordPK.fromJsonToInstanceKeywordPK(new String(Base64.decodeBase64(encodedJson)));
             }
         };
     }
     
-    public Converter<SelectionVariableItemPK, String> ApplicationConversionServiceFactoryBean.getSelectionVariableItemPKToJsonConverter() {
-        return new org.springframework.core.convert.converter.Converter<ro.roda.domain.SelectionVariableItemPK, java.lang.String>() {
-            public String convert(SelectionVariableItemPK selectionVariableItemPK) {
-                return Base64.encodeBase64URLSafeString(selectionVariableItemPK.toJson().getBytes());
+    public Converter<InstanceKeywordPK, String> ApplicationConversionServiceFactoryBean.getInstanceKeywordPKToJsonConverter() {
+        return new org.springframework.core.convert.converter.Converter<ro.roda.domain.InstanceKeywordPK, java.lang.String>() {
+            public String convert(InstanceKeywordPK instanceKeywordPK) {
+                return Base64.encodeBase64URLSafeString(instanceKeywordPK.toJson().getBytes());
             }
         };
     }
     
-    public Converter<String, CmsFilePropertyNameValuePK> ApplicationConversionServiceFactoryBean.getJsonToCmsFilePropertyNameValuePKConverter() {
-        return new org.springframework.core.convert.converter.Converter<java.lang.String, ro.roda.domain.CmsFilePropertyNameValuePK>() {
-            public CmsFilePropertyNameValuePK convert(String encodedJson) {
-                return CmsFilePropertyNameValuePK.fromJsonToCmsFilePropertyNameValuePK(new String(Base64.decodeBase64(encodedJson)));
+    public Converter<String, UserAuthLogPK> ApplicationConversionServiceFactoryBean.getJsonToUserAuthLogPKConverter() {
+        return new org.springframework.core.convert.converter.Converter<java.lang.String, ro.roda.domain.UserAuthLogPK>() {
+            public UserAuthLogPK convert(String encodedJson) {
+                return UserAuthLogPK.fromJsonToUserAuthLogPK(new String(Base64.decodeBase64(encodedJson)));
             }
         };
     }
     
-    public Converter<CmsFilePropertyNameValuePK, String> ApplicationConversionServiceFactoryBean.getCmsFilePropertyNameValuePKToJsonConverter() {
-        return new org.springframework.core.convert.converter.Converter<ro.roda.domain.CmsFilePropertyNameValuePK, java.lang.String>() {
-            public String convert(CmsFilePropertyNameValuePK cmsFilePropertyNameValuePK) {
-                return Base64.encodeBase64URLSafeString(cmsFilePropertyNameValuePK.toJson().getBytes());
+    public Converter<UserAuthLogPK, String> ApplicationConversionServiceFactoryBean.getUserAuthLogPKToJsonConverter() {
+        return new org.springframework.core.convert.converter.Converter<ro.roda.domain.UserAuthLogPK, java.lang.String>() {
+            public String convert(UserAuthLogPK userAuthLogPK) {
+                return Base64.encodeBase64URLSafeString(userAuthLogPK.toJson().getBytes());
             }
         };
     }
     
-    public Converter<String, FormEditedTextVarPK> ApplicationConversionServiceFactoryBean.getJsonToFormEditedTextVarPKConverter() {
-        return new org.springframework.core.convert.converter.Converter<java.lang.String, ro.roda.domain.FormEditedTextVarPK>() {
-            public FormEditedTextVarPK convert(String encodedJson) {
-                return FormEditedTextVarPK.fromJsonToFormEditedTextVarPK(new String(Base64.decodeBase64(encodedJson)));
+    public Converter<String, OrgEmailPK> ApplicationConversionServiceFactoryBean.getJsonToOrgEmailPKConverter() {
+        return new org.springframework.core.convert.converter.Converter<java.lang.String, ro.roda.domain.OrgEmailPK>() {
+            public OrgEmailPK convert(String encodedJson) {
+                return OrgEmailPK.fromJsonToOrgEmailPK(new String(Base64.decodeBase64(encodedJson)));
             }
         };
     }
     
-    public Converter<FormEditedTextVarPK, String> ApplicationConversionServiceFactoryBean.getFormEditedTextVarPKToJsonConverter() {
-        return new org.springframework.core.convert.converter.Converter<ro.roda.domain.FormEditedTextVarPK, java.lang.String>() {
-            public String convert(FormEditedTextVarPK formEditedTextVarPK) {
-                return Base64.encodeBase64URLSafeString(formEditedTextVarPK.toJson().getBytes());
+    public Converter<OrgEmailPK, String> ApplicationConversionServiceFactoryBean.getOrgEmailPKToJsonConverter() {
+        return new org.springframework.core.convert.converter.Converter<ro.roda.domain.OrgEmailPK, java.lang.String>() {
+            public String convert(OrgEmailPK orgEmailPK) {
+                return Base64.encodeBase64URLSafeString(orgEmailPK.toJson().getBytes());
             }
         };
     }
     
-    public Converter<String, UserSettingValuePK> ApplicationConversionServiceFactoryBean.getJsonToUserSettingValuePKConverter() {
-        return new org.springframework.core.convert.converter.Converter<java.lang.String, ro.roda.domain.UserSettingValuePK>() {
-            public UserSettingValuePK convert(String encodedJson) {
-                return UserSettingValuePK.fromJsonToUserSettingValuePK(new String(Base64.decodeBase64(encodedJson)));
+    public Converter<String, TranslatedTopicPK> ApplicationConversionServiceFactoryBean.getJsonToTranslatedTopicPKConverter() {
+        return new org.springframework.core.convert.converter.Converter<java.lang.String, ro.roda.domain.TranslatedTopicPK>() {
+            public TranslatedTopicPK convert(String encodedJson) {
+                return TranslatedTopicPK.fromJsonToTranslatedTopicPK(new String(Base64.decodeBase64(encodedJson)));
             }
         };
     }
     
-    public Converter<UserSettingValuePK, String> ApplicationConversionServiceFactoryBean.getUserSettingValuePKToJsonConverter() {
-        return new org.springframework.core.convert.converter.Converter<ro.roda.domain.UserSettingValuePK, java.lang.String>() {
-            public String convert(UserSettingValuePK userSettingValuePK) {
-                return Base64.encodeBase64URLSafeString(userSettingValuePK.toJson().getBytes());
+    public Converter<TranslatedTopicPK, String> ApplicationConversionServiceFactoryBean.getTranslatedTopicPKToJsonConverter() {
+        return new org.springframework.core.convert.converter.Converter<ro.roda.domain.TranslatedTopicPK, java.lang.String>() {
+            public String convert(TranslatedTopicPK translatedTopicPK) {
+                return Base64.encodeBase64URLSafeString(translatedTopicPK.toJson().getBytes());
+            }
+        };
+    }
+    
+    public Converter<String, FormSelectionVarPK> ApplicationConversionServiceFactoryBean.getJsonToFormSelectionVarPKConverter() {
+        return new org.springframework.core.convert.converter.Converter<java.lang.String, ro.roda.domain.FormSelectionVarPK>() {
+            public FormSelectionVarPK convert(String encodedJson) {
+                return FormSelectionVarPK.fromJsonToFormSelectionVarPK(new String(Base64.decodeBase64(encodedJson)));
+            }
+        };
+    }
+    
+    public Converter<FormSelectionVarPK, String> ApplicationConversionServiceFactoryBean.getFormSelectionVarPKToJsonConverter() {
+        return new org.springframework.core.convert.converter.Converter<ro.roda.domain.FormSelectionVarPK, java.lang.String>() {
+            public String convert(FormSelectionVarPK formSelectionVarPK) {
+                return Base64.encodeBase64URLSafeString(formSelectionVarPK.toJson().getBytes());
+            }
+        };
+    }
+    
+    public Converter<String, StudyDocumentsPK> ApplicationConversionServiceFactoryBean.getJsonToStudyDocumentsPKConverter() {
+        return new org.springframework.core.convert.converter.Converter<java.lang.String, ro.roda.domain.StudyDocumentsPK>() {
+            public StudyDocumentsPK convert(String encodedJson) {
+                return StudyDocumentsPK.fromJsonToStudyDocumentsPK(new String(Base64.decodeBase64(encodedJson)));
+            }
+        };
+    }
+    
+    public Converter<StudyDocumentsPK, String> ApplicationConversionServiceFactoryBean.getStudyDocumentsPKToJsonConverter() {
+        return new org.springframework.core.convert.converter.Converter<ro.roda.domain.StudyDocumentsPK, java.lang.String>() {
+            public String convert(StudyDocumentsPK studyDocumentsPK) {
+                return Base64.encodeBase64URLSafeString(studyDocumentsPK.toJson().getBytes());
+            }
+        };
+    }
+    
+    public Converter<String, StudyDescrPK> ApplicationConversionServiceFactoryBean.getJsonToStudyDescrPKConverter() {
+        return new org.springframework.core.convert.converter.Converter<java.lang.String, ro.roda.domain.StudyDescrPK>() {
+            public StudyDescrPK convert(String encodedJson) {
+                return StudyDescrPK.fromJsonToStudyDescrPK(new String(Base64.decodeBase64(encodedJson)));
+            }
+        };
+    }
+    
+    public Converter<StudyDescrPK, String> ApplicationConversionServiceFactoryBean.getStudyDescrPKToJsonConverter() {
+        return new org.springframework.core.convert.converter.Converter<ro.roda.domain.StudyDescrPK, java.lang.String>() {
+            public String convert(StudyDescrPK studyDescrPK) {
+                return Base64.encodeBase64URLSafeString(studyDescrPK.toJson().getBytes());
+            }
+        };
+    }
+    
+    public Converter<String, FileAclPK> ApplicationConversionServiceFactoryBean.getJsonToFileAclPKConverter() {
+        return new org.springframework.core.convert.converter.Converter<java.lang.String, ro.roda.domain.FileAclPK>() {
+            public FileAclPK convert(String encodedJson) {
+                return FileAclPK.fromJsonToFileAclPK(new String(Base64.decodeBase64(encodedJson)));
+            }
+        };
+    }
+    
+    public Converter<FileAclPK, String> ApplicationConversionServiceFactoryBean.getFileAclPKToJsonConverter() {
+        return new org.springframework.core.convert.converter.Converter<ro.roda.domain.FileAclPK, java.lang.String>() {
+            public String convert(FileAclPK fileAclPK) {
+                return Base64.encodeBase64URLSafeString(fileAclPK.toJson().getBytes());
+            }
+        };
+    }
+    
+    public Converter<String, OrgRelationsPK> ApplicationConversionServiceFactoryBean.getJsonToOrgRelationsPKConverter() {
+        return new org.springframework.core.convert.converter.Converter<java.lang.String, ro.roda.domain.OrgRelationsPK>() {
+            public OrgRelationsPK convert(String encodedJson) {
+                return OrgRelationsPK.fromJsonToOrgRelationsPK(new String(Base64.decodeBase64(encodedJson)));
+            }
+        };
+    }
+    
+    public Converter<OrgRelationsPK, String> ApplicationConversionServiceFactoryBean.getOrgRelationsPKToJsonConverter() {
+        return new org.springframework.core.convert.converter.Converter<ro.roda.domain.OrgRelationsPK, java.lang.String>() {
+            public String convert(OrgRelationsPK orgRelationsPK) {
+                return Base64.encodeBase64URLSafeString(orgRelationsPK.toJson().getBytes());
+            }
+        };
+    }
+    
+    public Converter<String, StudyAclPK> ApplicationConversionServiceFactoryBean.getJsonToStudyAclPKConverter() {
+        return new org.springframework.core.convert.converter.Converter<java.lang.String, ro.roda.domain.StudyAclPK>() {
+            public StudyAclPK convert(String encodedJson) {
+                return StudyAclPK.fromJsonToStudyAclPK(new String(Base64.decodeBase64(encodedJson)));
+            }
+        };
+    }
+    
+    public Converter<StudyAclPK, String> ApplicationConversionServiceFactoryBean.getStudyAclPKToJsonConverter() {
+        return new org.springframework.core.convert.converter.Converter<ro.roda.domain.StudyAclPK, java.lang.String>() {
+            public String convert(StudyAclPK studyAclPK) {
+                return Base64.encodeBase64URLSafeString(studyAclPK.toJson().getBytes());
+            }
+        };
+    }
+    
+    public Converter<String, StudyOrgPK> ApplicationConversionServiceFactoryBean.getJsonToStudyOrgPKConverter() {
+        return new org.springframework.core.convert.converter.Converter<java.lang.String, ro.roda.domain.StudyOrgPK>() {
+            public StudyOrgPK convert(String encodedJson) {
+                return StudyOrgPK.fromJsonToStudyOrgPK(new String(Base64.decodeBase64(encodedJson)));
+            }
+        };
+    }
+    
+    public Converter<StudyOrgPK, String> ApplicationConversionServiceFactoryBean.getStudyOrgPKToJsonConverter() {
+        return new org.springframework.core.convert.converter.Converter<ro.roda.domain.StudyOrgPK, java.lang.String>() {
+            public String convert(StudyOrgPK studyOrgPK) {
+                return Base64.encodeBase64URLSafeString(studyOrgPK.toJson().getBytes());
+            }
+        };
+    }
+    
+    public Converter<String, FilePropertyNameValuePK> ApplicationConversionServiceFactoryBean.getJsonToFilePropertyNameValuePKConverter() {
+        return new org.springframework.core.convert.converter.Converter<java.lang.String, ro.roda.domain.FilePropertyNameValuePK>() {
+            public FilePropertyNameValuePK convert(String encodedJson) {
+                return FilePropertyNameValuePK.fromJsonToFilePropertyNameValuePK(new String(Base64.decodeBase64(encodedJson)));
+            }
+        };
+    }
+    
+    public Converter<FilePropertyNameValuePK, String> ApplicationConversionServiceFactoryBean.getFilePropertyNameValuePKToJsonConverter() {
+        return new org.springframework.core.convert.converter.Converter<ro.roda.domain.FilePropertyNameValuePK, java.lang.String>() {
+            public String convert(FilePropertyNameValuePK filePropertyNameValuePK) {
+                return Base64.encodeBase64URLSafeString(filePropertyNameValuePK.toJson().getBytes());
             }
         };
     }
@@ -3859,18 +3886,18 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
         };
     }
     
-    public Converter<String, PersonOrgPK> ApplicationConversionServiceFactoryBean.getJsonToPersonOrgPKConverter() {
-        return new org.springframework.core.convert.converter.Converter<java.lang.String, ro.roda.domain.PersonOrgPK>() {
-            public PersonOrgPK convert(String encodedJson) {
-                return PersonOrgPK.fromJsonToPersonOrgPK(new String(Base64.decodeBase64(encodedJson)));
+    public Converter<String, InstanceDescrPK> ApplicationConversionServiceFactoryBean.getJsonToInstanceDescrPKConverter() {
+        return new org.springframework.core.convert.converter.Converter<java.lang.String, ro.roda.domain.InstanceDescrPK>() {
+            public InstanceDescrPK convert(String encodedJson) {
+                return InstanceDescrPK.fromJsonToInstanceDescrPK(new String(Base64.decodeBase64(encodedJson)));
             }
         };
     }
     
-    public Converter<PersonOrgPK, String> ApplicationConversionServiceFactoryBean.getPersonOrgPKToJsonConverter() {
-        return new org.springframework.core.convert.converter.Converter<ro.roda.domain.PersonOrgPK, java.lang.String>() {
-            public String convert(PersonOrgPK personOrgPK) {
-                return Base64.encodeBase64URLSafeString(personOrgPK.toJson().getBytes());
+    public Converter<InstanceDescrPK, String> ApplicationConversionServiceFactoryBean.getInstanceDescrPKToJsonConverter() {
+        return new org.springframework.core.convert.converter.Converter<ro.roda.domain.InstanceDescrPK, java.lang.String>() {
+            public String convert(InstanceDescrPK instanceDescrPK) {
+                return Base64.encodeBase64URLSafeString(instanceDescrPK.toJson().getBytes());
             }
         };
     }
@@ -3891,18 +3918,162 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
         };
     }
     
-    public Converter<String, InstanceKeywordPK> ApplicationConversionServiceFactoryBean.getJsonToInstanceKeywordPKConverter() {
-        return new org.springframework.core.convert.converter.Converter<java.lang.String, ro.roda.domain.InstanceKeywordPK>() {
-            public InstanceKeywordPK convert(String encodedJson) {
-                return InstanceKeywordPK.fromJsonToInstanceKeywordPK(new String(Base64.decodeBase64(encodedJson)));
+    public Converter<String, UserSettingValuePK> ApplicationConversionServiceFactoryBean.getJsonToUserSettingValuePKConverter() {
+        return new org.springframework.core.convert.converter.Converter<java.lang.String, ro.roda.domain.UserSettingValuePK>() {
+            public UserSettingValuePK convert(String encodedJson) {
+                return UserSettingValuePK.fromJsonToUserSettingValuePK(new String(Base64.decodeBase64(encodedJson)));
             }
         };
     }
     
-    public Converter<InstanceKeywordPK, String> ApplicationConversionServiceFactoryBean.getInstanceKeywordPKToJsonConverter() {
-        return new org.springframework.core.convert.converter.Converter<ro.roda.domain.InstanceKeywordPK, java.lang.String>() {
-            public String convert(InstanceKeywordPK instanceKeywordPK) {
-                return Base64.encodeBase64URLSafeString(instanceKeywordPK.toJson().getBytes());
+    public Converter<UserSettingValuePK, String> ApplicationConversionServiceFactoryBean.getUserSettingValuePKToJsonConverter() {
+        return new org.springframework.core.convert.converter.Converter<ro.roda.domain.UserSettingValuePK, java.lang.String>() {
+            public String convert(UserSettingValuePK userSettingValuePK) {
+                return Base64.encodeBase64URLSafeString(userSettingValuePK.toJson().getBytes());
+            }
+        };
+    }
+    
+    public Converter<String, FormEditedTextVarPK> ApplicationConversionServiceFactoryBean.getJsonToFormEditedTextVarPKConverter() {
+        return new org.springframework.core.convert.converter.Converter<java.lang.String, ro.roda.domain.FormEditedTextVarPK>() {
+            public FormEditedTextVarPK convert(String encodedJson) {
+                return FormEditedTextVarPK.fromJsonToFormEditedTextVarPK(new String(Base64.decodeBase64(encodedJson)));
+            }
+        };
+    }
+    
+    public Converter<FormEditedTextVarPK, String> ApplicationConversionServiceFactoryBean.getFormEditedTextVarPKToJsonConverter() {
+        return new org.springframework.core.convert.converter.Converter<ro.roda.domain.FormEditedTextVarPK, java.lang.String>() {
+            public String convert(FormEditedTextVarPK formEditedTextVarPK) {
+                return Base64.encodeBase64URLSafeString(formEditedTextVarPK.toJson().getBytes());
+            }
+        };
+    }
+    
+    public Converter<String, CmsFilePropertyNameValuePK> ApplicationConversionServiceFactoryBean.getJsonToCmsFilePropertyNameValuePKConverter() {
+        return new org.springframework.core.convert.converter.Converter<java.lang.String, ro.roda.domain.CmsFilePropertyNameValuePK>() {
+            public CmsFilePropertyNameValuePK convert(String encodedJson) {
+                return CmsFilePropertyNameValuePK.fromJsonToCmsFilePropertyNameValuePK(new String(Base64.decodeBase64(encodedJson)));
+            }
+        };
+    }
+    
+    public Converter<CmsFilePropertyNameValuePK, String> ApplicationConversionServiceFactoryBean.getCmsFilePropertyNameValuePKToJsonConverter() {
+        return new org.springframework.core.convert.converter.Converter<ro.roda.domain.CmsFilePropertyNameValuePK, java.lang.String>() {
+            public String convert(CmsFilePropertyNameValuePK cmsFilePropertyNameValuePK) {
+                return Base64.encodeBase64URLSafeString(cmsFilePropertyNameValuePK.toJson().getBytes());
+            }
+        };
+    }
+    
+    public Converter<String, OrgAddressPK> ApplicationConversionServiceFactoryBean.getJsonToOrgAddressPKConverter() {
+        return new org.springframework.core.convert.converter.Converter<java.lang.String, ro.roda.domain.OrgAddressPK>() {
+            public OrgAddressPK convert(String encodedJson) {
+                return OrgAddressPK.fromJsonToOrgAddressPK(new String(Base64.decodeBase64(encodedJson)));
+            }
+        };
+    }
+    
+    public Converter<OrgAddressPK, String> ApplicationConversionServiceFactoryBean.getOrgAddressPKToJsonConverter() {
+        return new org.springframework.core.convert.converter.Converter<ro.roda.domain.OrgAddressPK, java.lang.String>() {
+            public String convert(OrgAddressPK orgAddressPK) {
+                return Base64.encodeBase64URLSafeString(orgAddressPK.toJson().getBytes());
+            }
+        };
+    }
+    
+    public Converter<String, StudyPersonPK> ApplicationConversionServiceFactoryBean.getJsonToStudyPersonPKConverter() {
+        return new org.springframework.core.convert.converter.Converter<java.lang.String, ro.roda.domain.StudyPersonPK>() {
+            public StudyPersonPK convert(String encodedJson) {
+                return StudyPersonPK.fromJsonToStudyPersonPK(new String(Base64.decodeBase64(encodedJson)));
+            }
+        };
+    }
+    
+    public Converter<StudyPersonPK, String> ApplicationConversionServiceFactoryBean.getStudyPersonPKToJsonConverter() {
+        return new org.springframework.core.convert.converter.Converter<ro.roda.domain.StudyPersonPK, java.lang.String>() {
+            public String convert(StudyPersonPK studyPersonPK) {
+                return Base64.encodeBase64URLSafeString(studyPersonPK.toJson().getBytes());
+            }
+        };
+    }
+    
+    public Converter<String, CatalogStudyPK> ApplicationConversionServiceFactoryBean.getJsonToCatalogStudyPKConverter() {
+        return new org.springframework.core.convert.converter.Converter<java.lang.String, ro.roda.domain.CatalogStudyPK>() {
+            public CatalogStudyPK convert(String encodedJson) {
+                return CatalogStudyPK.fromJsonToCatalogStudyPK(new String(Base64.decodeBase64(encodedJson)));
+            }
+        };
+    }
+    
+    public Converter<CatalogStudyPK, String> ApplicationConversionServiceFactoryBean.getCatalogStudyPKToJsonConverter() {
+        return new org.springframework.core.convert.converter.Converter<ro.roda.domain.CatalogStudyPK, java.lang.String>() {
+            public String convert(CatalogStudyPK catalogStudyPK) {
+                return Base64.encodeBase64URLSafeString(catalogStudyPK.toJson().getBytes());
+            }
+        };
+    }
+    
+    public Converter<String, PersonOrgPK> ApplicationConversionServiceFactoryBean.getJsonToPersonOrgPKConverter() {
+        return new org.springframework.core.convert.converter.Converter<java.lang.String, ro.roda.domain.PersonOrgPK>() {
+            public PersonOrgPK convert(String encodedJson) {
+                return PersonOrgPK.fromJsonToPersonOrgPK(new String(Base64.decodeBase64(encodedJson)));
+            }
+        };
+    }
+    
+    public Converter<PersonOrgPK, String> ApplicationConversionServiceFactoryBean.getPersonOrgPKToJsonConverter() {
+        return new org.springframework.core.convert.converter.Converter<ro.roda.domain.PersonOrgPK, java.lang.String>() {
+            public String convert(PersonOrgPK personOrgPK) {
+                return Base64.encodeBase64URLSafeString(personOrgPK.toJson().getBytes());
+            }
+        };
+    }
+    
+    public Converter<String, StudyKeywordPK> ApplicationConversionServiceFactoryBean.getJsonToStudyKeywordPKConverter() {
+        return new org.springframework.core.convert.converter.Converter<java.lang.String, ro.roda.domain.StudyKeywordPK>() {
+            public StudyKeywordPK convert(String encodedJson) {
+                return StudyKeywordPK.fromJsonToStudyKeywordPK(new String(Base64.decodeBase64(encodedJson)));
+            }
+        };
+    }
+    
+    public Converter<StudyKeywordPK, String> ApplicationConversionServiceFactoryBean.getStudyKeywordPKToJsonConverter() {
+        return new org.springframework.core.convert.converter.Converter<ro.roda.domain.StudyKeywordPK, java.lang.String>() {
+            public String convert(StudyKeywordPK studyKeywordPK) {
+                return Base64.encodeBase64URLSafeString(studyKeywordPK.toJson().getBytes());
+            }
+        };
+    }
+    
+    public Converter<String, GroupAuthoritiesPK> ApplicationConversionServiceFactoryBean.getJsonToGroupAuthoritiesPKConverter() {
+        return new org.springframework.core.convert.converter.Converter<java.lang.String, ro.roda.domain.GroupAuthoritiesPK>() {
+            public GroupAuthoritiesPK convert(String encodedJson) {
+                return GroupAuthoritiesPK.fromJsonToGroupAuthoritiesPK(new String(Base64.decodeBase64(encodedJson)));
+            }
+        };
+    }
+    
+    public Converter<GroupAuthoritiesPK, String> ApplicationConversionServiceFactoryBean.getGroupAuthoritiesPKToJsonConverter() {
+        return new org.springframework.core.convert.converter.Converter<ro.roda.domain.GroupAuthoritiesPK, java.lang.String>() {
+            public String convert(GroupAuthoritiesPK groupAuthoritiesPK) {
+                return Base64.encodeBase64URLSafeString(groupAuthoritiesPK.toJson().getBytes());
+            }
+        };
+    }
+    
+    public Converter<String, AuthoritiesPK> ApplicationConversionServiceFactoryBean.getJsonToAuthoritiesPKConverter() {
+        return new org.springframework.core.convert.converter.Converter<java.lang.String, ro.roda.domain.AuthoritiesPK>() {
+            public AuthoritiesPK convert(String encodedJson) {
+                return AuthoritiesPK.fromJsonToAuthoritiesPK(new String(Base64.decodeBase64(encodedJson)));
+            }
+        };
+    }
+    
+    public Converter<AuthoritiesPK, String> ApplicationConversionServiceFactoryBean.getAuthoritiesPKToJsonConverter() {
+        return new org.springframework.core.convert.converter.Converter<ro.roda.domain.AuthoritiesPK, java.lang.String>() {
+            public String convert(AuthoritiesPK authoritiesPK) {
+                return Base64.encodeBase64URLSafeString(authoritiesPK.toJson().getBytes());
             }
         };
     }
@@ -3957,6 +4128,9 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
         registry.addConverter(getAuthDataToStringConverter());
         registry.addConverter(getIdToAuthDataConverter());
         registry.addConverter(getStringToAuthDataConverter());
+        registry.addConverter(getAuthoritiesToStringConverter());
+        registry.addConverter(getIdToAuthoritiesConverter());
+        registry.addConverter(getStringToAuthoritiesConverter());
         registry.addConverter(getCatalogToStringConverter());
         registry.addConverter(getIdToCatalogConverter());
         registry.addConverter(getStringToCatalogConverter());
@@ -4031,6 +4205,15 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
         registry.addConverter(getFormSelectionVarToStringConverter());
         registry.addConverter(getIdToFormSelectionVarConverter());
         registry.addConverter(getStringToFormSelectionVarConverter());
+        registry.addConverter(getGroupAuthoritiesToStringConverter());
+        registry.addConverter(getIdToGroupAuthoritiesConverter());
+        registry.addConverter(getStringToGroupAuthoritiesConverter());
+        registry.addConverter(getGroupMembersToStringConverter());
+        registry.addConverter(getIdToGroupMembersConverter());
+        registry.addConverter(getStringToGroupMembersConverter());
+        registry.addConverter(getGroupsToStringConverter());
+        registry.addConverter(getIdToGroupsConverter());
+        registry.addConverter(getStringToGroupsConverter());
         registry.addConverter(getInstanceToStringConverter());
         registry.addConverter(getIdToInstanceConverter());
         registry.addConverter(getStringToInstanceConverter());
@@ -4261,6 +4444,8 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
         registry.addConverter(getUserSettingValueToStringConverter());
         registry.addConverter(getIdToUserSettingValueConverter());
         registry.addConverter(getStringToUserSettingValueConverter());
+        registry.addConverter(getUsersToStringConverter());
+        registry.addConverter(getIdToUsersConverter());
         registry.addConverter(getValueToStringConverter());
         registry.addConverter(getIdToValueConverter());
         registry.addConverter(getStringToValueConverter());
@@ -4270,70 +4455,74 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
         registry.addConverter(getVariableToStringConverter());
         registry.addConverter(getIdToVariableConverter());
         registry.addConverter(getStringToVariableConverter());
-        registry.addConverter(getJsonToFormEditedNumberVarPKConverter());
-        registry.addConverter(getFormEditedNumberVarPKToJsonConverter());
-        registry.addConverter(getJsonToStudyKeywordPKConverter());
-        registry.addConverter(getStudyKeywordPKToJsonConverter());
-        registry.addConverter(getJsonToOrgRelationsPKConverter());
-        registry.addConverter(getOrgRelationsPKToJsonConverter());
-        registry.addConverter(getJsonToPersonEmailPKConverter());
-        registry.addConverter(getPersonEmailPKToJsonConverter());
-        registry.addConverter(getJsonToInstancePersonPKConverter());
-        registry.addConverter(getInstancePersonPKToJsonConverter());
-        registry.addConverter(getJsonToUserAuthLogPKConverter());
-        registry.addConverter(getUserAuthLogPKToJsonConverter());
-        registry.addConverter(getJsonToPersonInternetPKConverter());
-        registry.addConverter(getPersonInternetPKToJsonConverter());
-        registry.addConverter(getJsonToStudyDocumentsPKConverter());
-        registry.addConverter(getStudyDocumentsPKToJsonConverter());
-        registry.addConverter(getJsonToStudyAclPKConverter());
-        registry.addConverter(getStudyAclPKToJsonConverter());
-        registry.addConverter(getJsonToFormSelectionVarPKConverter());
-        registry.addConverter(getFormSelectionVarPKToJsonConverter());
-        registry.addConverter(getJsonToInstanceDescrPKConverter());
-        registry.addConverter(getInstanceDescrPKToJsonConverter());
         registry.addConverter(getJsonToPersonPhonePKConverter());
         registry.addConverter(getPersonPhonePKToJsonConverter());
-        registry.addConverter(getJsonToTranslatedTopicPKConverter());
-        registry.addConverter(getTranslatedTopicPKToJsonConverter());
-        registry.addConverter(getJsonToStudyOrgPKConverter());
-        registry.addConverter(getStudyOrgPKToJsonConverter());
-        registry.addConverter(getJsonToOrgAddressPKConverter());
-        registry.addConverter(getOrgAddressPKToJsonConverter());
-        registry.addConverter(getJsonToInstanceAclPKConverter());
-        registry.addConverter(getInstanceAclPKToJsonConverter());
-        registry.addConverter(getJsonToStudyDescrPKConverter());
-        registry.addConverter(getStudyDescrPKToJsonConverter());
-        registry.addConverter(getJsonToStudyPersonPKConverter());
-        registry.addConverter(getStudyPersonPKToJsonConverter());
-        registry.addConverter(getJsonToFileAclPKConverter());
-        registry.addConverter(getFileAclPKToJsonConverter());
-        registry.addConverter(getJsonToFilePropertyNameValuePKConverter());
-        registry.addConverter(getFilePropertyNameValuePKToJsonConverter());
-        registry.addConverter(getJsonToOrgEmailPKConverter());
-        registry.addConverter(getOrgEmailPKToJsonConverter());
-        registry.addConverter(getJsonToOrgPhonePKConverter());
-        registry.addConverter(getOrgPhonePKToJsonConverter());
-        registry.addConverter(getJsonToCatalogStudyPKConverter());
-        registry.addConverter(getCatalogStudyPKToJsonConverter());
-        registry.addConverter(getJsonToPersonAddressPKConverter());
-        registry.addConverter(getPersonAddressPKToJsonConverter());
+        registry.addConverter(getJsonToPersonEmailPKConverter());
+        registry.addConverter(getPersonEmailPKToJsonConverter());
         registry.addConverter(getJsonToSelectionVariableItemPKConverter());
         registry.addConverter(getSelectionVariableItemPKToJsonConverter());
-        registry.addConverter(getJsonToCmsFilePropertyNameValuePKConverter());
-        registry.addConverter(getCmsFilePropertyNameValuePKToJsonConverter());
-        registry.addConverter(getJsonToFormEditedTextVarPKConverter());
-        registry.addConverter(getFormEditedTextVarPKToJsonConverter());
-        registry.addConverter(getJsonToUserSettingValuePKConverter());
-        registry.addConverter(getUserSettingValuePKToJsonConverter());
-        registry.addConverter(getJsonToOrgInternetPKConverter());
-        registry.addConverter(getOrgInternetPKToJsonConverter());
-        registry.addConverter(getJsonToPersonOrgPKConverter());
-        registry.addConverter(getPersonOrgPKToJsonConverter());
-        registry.addConverter(getJsonToCatalogAclPKConverter());
-        registry.addConverter(getCatalogAclPKToJsonConverter());
+        registry.addConverter(getJsonToInstanceAclPKConverter());
+        registry.addConverter(getInstanceAclPKToJsonConverter());
+        registry.addConverter(getJsonToInstancePersonPKConverter());
+        registry.addConverter(getInstancePersonPKToJsonConverter());
+        registry.addConverter(getJsonToFormEditedNumberVarPKConverter());
+        registry.addConverter(getFormEditedNumberVarPKToJsonConverter());
+        registry.addConverter(getJsonToPersonInternetPKConverter());
+        registry.addConverter(getPersonInternetPKToJsonConverter());
+        registry.addConverter(getJsonToOrgPhonePKConverter());
+        registry.addConverter(getOrgPhonePKToJsonConverter());
+        registry.addConverter(getJsonToPersonAddressPKConverter());
+        registry.addConverter(getPersonAddressPKToJsonConverter());
         registry.addConverter(getJsonToInstanceKeywordPKConverter());
         registry.addConverter(getInstanceKeywordPKToJsonConverter());
+        registry.addConverter(getJsonToUserAuthLogPKConverter());
+        registry.addConverter(getUserAuthLogPKToJsonConverter());
+        registry.addConverter(getJsonToOrgEmailPKConverter());
+        registry.addConverter(getOrgEmailPKToJsonConverter());
+        registry.addConverter(getJsonToTranslatedTopicPKConverter());
+        registry.addConverter(getTranslatedTopicPKToJsonConverter());
+        registry.addConverter(getJsonToFormSelectionVarPKConverter());
+        registry.addConverter(getFormSelectionVarPKToJsonConverter());
+        registry.addConverter(getJsonToStudyDocumentsPKConverter());
+        registry.addConverter(getStudyDocumentsPKToJsonConverter());
+        registry.addConverter(getJsonToStudyDescrPKConverter());
+        registry.addConverter(getStudyDescrPKToJsonConverter());
+        registry.addConverter(getJsonToFileAclPKConverter());
+        registry.addConverter(getFileAclPKToJsonConverter());
+        registry.addConverter(getJsonToOrgRelationsPKConverter());
+        registry.addConverter(getOrgRelationsPKToJsonConverter());
+        registry.addConverter(getJsonToStudyAclPKConverter());
+        registry.addConverter(getStudyAclPKToJsonConverter());
+        registry.addConverter(getJsonToStudyOrgPKConverter());
+        registry.addConverter(getStudyOrgPKToJsonConverter());
+        registry.addConverter(getJsonToFilePropertyNameValuePKConverter());
+        registry.addConverter(getFilePropertyNameValuePKToJsonConverter());
+        registry.addConverter(getJsonToOrgInternetPKConverter());
+        registry.addConverter(getOrgInternetPKToJsonConverter());
+        registry.addConverter(getJsonToInstanceDescrPKConverter());
+        registry.addConverter(getInstanceDescrPKToJsonConverter());
+        registry.addConverter(getJsonToCatalogAclPKConverter());
+        registry.addConverter(getCatalogAclPKToJsonConverter());
+        registry.addConverter(getJsonToUserSettingValuePKConverter());
+        registry.addConverter(getUserSettingValuePKToJsonConverter());
+        registry.addConverter(getJsonToFormEditedTextVarPKConverter());
+        registry.addConverter(getFormEditedTextVarPKToJsonConverter());
+        registry.addConverter(getJsonToCmsFilePropertyNameValuePKConverter());
+        registry.addConverter(getCmsFilePropertyNameValuePKToJsonConverter());
+        registry.addConverter(getJsonToOrgAddressPKConverter());
+        registry.addConverter(getOrgAddressPKToJsonConverter());
+        registry.addConverter(getJsonToStudyPersonPKConverter());
+        registry.addConverter(getStudyPersonPKToJsonConverter());
+        registry.addConverter(getJsonToCatalogStudyPKConverter());
+        registry.addConverter(getCatalogStudyPKToJsonConverter());
+        registry.addConverter(getJsonToPersonOrgPKConverter());
+        registry.addConverter(getPersonOrgPKToJsonConverter());
+        registry.addConverter(getJsonToStudyKeywordPKConverter());
+        registry.addConverter(getStudyKeywordPKToJsonConverter());
+        registry.addConverter(getJsonToGroupAuthoritiesPKConverter());
+        registry.addConverter(getGroupAuthoritiesPKToJsonConverter());
+        registry.addConverter(getJsonToAuthoritiesPKConverter());
+        registry.addConverter(getAuthoritiesPKToJsonConverter());
         registry.addConverter(getJsonToInstanceOrgPKConverter());
         registry.addConverter(getInstanceOrgPKToJsonConverter());
     }

@@ -3,6 +3,12 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <page:list id="pl_ro_roda_domain_InstanceAcl" items="${instanceacls}" z="33ICypAEvVypNyEw540wUSxWiZM=">
-        <table:table data="${instanceacls}" id="l_ro_roda_domain_InstanceAcl" path="/instanceacls" z="PIRwmvQE+qu2AEw2/nsNYGCxq/o="/>
+        <table:table data="${instanceacls}" id="l_ro_roda_domain_InstanceAcl" path="/instanceacls" z="PIRwmvQE+qu2AEw2/nsNYGCxq/o=">
+            <table:column id="c_ro_roda_domain_InstanceAcl_instanceId" property="instanceId" z="0Yr0hVe2N4bF2f1ugCUOzYLQmwM="/>
+            <table:column id="c_ro_roda_domain_InstanceAcl_read" property="read" z="g+H5Bk8TAOI18zhQClYjuk1IimY="/>
+            <table:column id="c_ro_roda_domain_InstanceAcl_update" property="update" z="QeqfNdct8wYMLuy11ox7FTSNtjM="/>
+            <table:column id="c_ro_roda_domain_InstanceAcl_delete" property="delete" z="0a5AAg9L8XdjxKKRWEcB9tlEgPE="/>
+            <table:column id="c_ro_roda_domain_InstanceAcl_modacl" property="modacl" z="O696S9tRZeHVdslSZkEMpUtjPOI="/>
+        </table:table>
     </page:list>
 </div>

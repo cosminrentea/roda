@@ -16,13 +16,57 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.domain.Org;
+import ro.roda.service.InstanceOrgService;
+import ro.roda.service.OrgAddressService;
+import ro.roda.service.OrgEmailService;
+import ro.roda.service.OrgInternetService;
+import ro.roda.service.OrgPhoneService;
+import ro.roda.service.OrgPrefixService;
+import ro.roda.service.OrgRelationsService;
 import ro.roda.service.OrgService;
+import ro.roda.service.OrgSufixService;
+import ro.roda.service.PersonOrgService;
+import ro.roda.service.SourceService;
+import ro.roda.service.StudyOrgService;
 import ro.roda.web.OrgController;
 
 privileged aspect OrgController_Roo_Controller {
     
     @Autowired
     OrgService OrgController.orgService;
+    
+    @Autowired
+    InstanceOrgService OrgController.instanceOrgService;
+    
+    @Autowired
+    OrgAddressService OrgController.orgAddressService;
+    
+    @Autowired
+    OrgEmailService OrgController.orgEmailService;
+    
+    @Autowired
+    OrgInternetService OrgController.orgInternetService;
+    
+    @Autowired
+    OrgPhoneService OrgController.orgPhoneService;
+    
+    @Autowired
+    OrgPrefixService OrgController.orgPrefixService;
+    
+    @Autowired
+    OrgRelationsService OrgController.orgRelationsService;
+    
+    @Autowired
+    OrgSufixService OrgController.orgSufixService;
+    
+    @Autowired
+    PersonOrgService OrgController.personOrgService;
+    
+    @Autowired
+    SourceService OrgController.sourceService;
+    
+    @Autowired
+    StudyOrgService OrgController.studyOrgService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String OrgController.create(@Valid Org org, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -91,6 +135,17 @@ privileged aspect OrgController_Roo_Controller {
     
     void OrgController.populateEditForm(Model uiModel, Org org) {
         uiModel.addAttribute("org", org);
+        uiModel.addAttribute("instanceorgs", instanceOrgService.findAllInstanceOrgs());
+        uiModel.addAttribute("orgaddresses", orgAddressService.findAllOrgAddresses());
+        uiModel.addAttribute("orgemails", orgEmailService.findAllOrgEmails());
+        uiModel.addAttribute("orginternets", orgInternetService.findAllOrgInternets());
+        uiModel.addAttribute("orgphones", orgPhoneService.findAllOrgPhones());
+        uiModel.addAttribute("orgprefixes", orgPrefixService.findAllOrgPrefixes());
+        uiModel.addAttribute("orgrelationses", orgRelationsService.findAllOrgRelationses());
+        uiModel.addAttribute("orgsufixes", orgSufixService.findAllOrgSufixes());
+        uiModel.addAttribute("personorgs", personOrgService.findAllPersonOrgs());
+        uiModel.addAttribute("sources", sourceService.findAllSources());
+        uiModel.addAttribute("studyorgs", studyOrgService.findAllStudyOrgs());
     }
     
     String OrgController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

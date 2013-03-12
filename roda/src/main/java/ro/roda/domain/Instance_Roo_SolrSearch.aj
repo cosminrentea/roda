@@ -48,9 +48,17 @@ privileged aspect Instance_Roo_SolrSearch {
         for (Instance instance : instances) {
             SolrInputDocument sid = new SolrInputDocument();
             sid.addField("id", "instance_" + instance.getId());
+            sid.addField("instance.addedby_t", instance.getAddedBy());
+            sid.addField("instance.studyid_t", instance.getStudyId());
+            sid.addField("instance.timemethid_t", instance.getTimeMethId());
+            sid.addField("instance.unitanalysisid_t", instance.getUnitAnalysisId());
+            sid.addField("instance.datestart_dt", instance.getDatestart().getTime());
+            sid.addField("instance.dateend_dt", instance.getDateend().getTime());
+            sid.addField("instance.insertionstatus_i", instance.getInsertionStatus());
+            sid.addField("instance.added_dt", instance.getAdded().getTime());
             sid.addField("instance.id_i", instance.getId());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("instance_solrsummary_t", new StringBuilder().append(instance.getId()));
+            sid.addField("instance_solrsummary_t", new StringBuilder().append(instance.getAddedBy()).append(" ").append(instance.getStudyId()).append(" ").append(instance.getTimeMethId()).append(" ").append(instance.getUnitAnalysisId()).append(" ").append(instance.getDatestart().getTime()).append(" ").append(instance.getDateend().getTime()).append(" ").append(instance.getInsertionStatus()).append(" ").append(instance.getAdded().getTime()).append(" ").append(instance.getId()));
             documents.add(sid);
         }
         try {

@@ -6,6 +6,9 @@
         <field:input disableFormBinding="true" field="id.org1Id" id="c_ro_roda_domain_OrgRelations_id_org1Id" required="true" validationMessageCode="field_invalid_integer" z="coa9OXsbIQDpGvDKcUa7bGUuYkY="/>
         <field:input disableFormBinding="true" field="id.org2Id" id="c_ro_roda_domain_OrgRelations_id_org2Id" required="true" validationMessageCode="field_invalid_integer" z="XBBTN9RjWJFeVnDbt01cL5+aDkk="/>
         <field:input disableFormBinding="true" field="id.orgRelationTypeId" id="c_ro_roda_domain_OrgRelations_id_orgRelationTypeId" required="true" validationMessageCode="field_invalid_integer" z="rvphxHrU8kuqgO1lZNOt2BfC7u8="/>
+        <field:datetime dateTimePattern="${orgRelations_datestart_date_format}" field="datestart" id="c_ro_roda_domain_OrgRelations_datestart" z="cDggLWK5la70sBUQhCf9u8MOrSg="/>
+        <field:datetime dateTimePattern="${orgRelations_dateend_date_format}" field="dateend" id="c_ro_roda_domain_OrgRelations_dateend" z="vDY69MkT8ABNVPfVnA6KCcAKxkY="/>
+        <field:input field="details" id="c_ro_roda_domain_OrgRelations_details" required="true" z="60Br/j3Q5czu5dD+3/7hOqLaKqo="/>
     </form:create>
     <form:dependency dependencies="${dependencies}" id="d_ro_roda_domain_OrgRelations" render="${not empty dependencies}" z="B7FjoeqE84ut4eRJz1yljmIe/UU="/>
 </div>

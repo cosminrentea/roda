@@ -48,9 +48,11 @@ privileged aspect CollectionModelType_Roo_SolrSearch {
         for (CollectionModelType collectionModelType : collectionmodeltypes) {
             SolrInputDocument sid = new SolrInputDocument();
             sid.addField("id", "collectionmodeltype_" + collectionModelType.getId());
+            sid.addField("collectionModelType.name_s", collectionModelType.getName());
+            sid.addField("collectionModelType.description_s", collectionModelType.getDescription());
             sid.addField("collectionModelType.id_i", collectionModelType.getId());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("collectionmodeltype_solrsummary_t", new StringBuilder().append(collectionModelType.getId()));
+            sid.addField("collectionmodeltype_solrsummary_t", new StringBuilder().append(collectionModelType.getName()).append(" ").append(collectionModelType.getDescription()).append(" ").append(collectionModelType.getId()));
             documents.add(sid);
         }
         try {

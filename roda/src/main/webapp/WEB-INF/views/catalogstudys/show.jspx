@@ -2,5 +2,9 @@
 <div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <page:show id="ps_ro_roda_domain_CatalogStudy" object="${catalogstudy}" path="/catalogstudys" z="nNy5BVPs+64LSLZAtkCvHAm65JI="/>
+    <page:show id="ps_ro_roda_domain_CatalogStudy" object="${catalogstudy}" path="/catalogstudys" z="nNy5BVPs+64LSLZAtkCvHAm65JI=">
+        <field:display field="catalogId" id="s_ro_roda_domain_CatalogStudy_catalogId" object="${catalogstudy}" z="aBVVxIXoPJYNwaiv8e3q3PMyxTI="/>
+        <field:display field="studyId" id="s_ro_roda_domain_CatalogStudy_studyId" object="${catalogstudy}" z="ThujNJs/TO1/x9uVRcVAiuL3avM="/>
+        <field:display calendar="true" dateTimePattern="${catalogStudy_added_date_format}" field="added" id="s_ro_roda_domain_CatalogStudy_added" object="${catalogstudy}" z="TVIrsr+LpckooIxYtcNyPazW4P0="/>
+    </page:show>
 </div>

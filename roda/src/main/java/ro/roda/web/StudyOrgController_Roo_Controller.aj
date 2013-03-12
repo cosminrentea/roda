@@ -18,7 +18,10 @@ import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.domain.StudyOrg;
 import ro.roda.domain.StudyOrgPK;
+import ro.roda.service.OrgService;
+import ro.roda.service.StudyOrgAssocService;
 import ro.roda.service.StudyOrgService;
+import ro.roda.service.StudyService;
 import ro.roda.web.StudyOrgController;
 
 privileged aspect StudyOrgController_Roo_Controller {
@@ -27,6 +30,15 @@ privileged aspect StudyOrgController_Roo_Controller {
     
     @Autowired
     StudyOrgService StudyOrgController.studyOrgService;
+    
+    @Autowired
+    OrgService StudyOrgController.orgService;
+    
+    @Autowired
+    StudyService StudyOrgController.studyService;
+    
+    @Autowired
+    StudyOrgAssocService StudyOrgController.studyOrgAssocService;
     
     @Autowired
     public StudyOrgController.new(ConversionService conversionService) {
@@ -101,6 +113,9 @@ privileged aspect StudyOrgController_Roo_Controller {
     
     void StudyOrgController.populateEditForm(Model uiModel, StudyOrg studyOrg) {
         uiModel.addAttribute("studyOrg", studyOrg);
+        uiModel.addAttribute("orgs", orgService.findAllOrgs());
+        uiModel.addAttribute("studys", studyService.findAllStudys());
+        uiModel.addAttribute("studyorgassocs", studyOrgAssocService.findAllStudyOrgAssocs());
     }
     
     String StudyOrgController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

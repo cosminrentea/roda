@@ -2,5 +2,9 @@
 <div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <page:show id="ps_ro_roda_domain_FormEditedTextVar" object="${formeditedtextvar}" path="/formeditedtextvars" z="M8PUJ/yXT0IN+2tBsKUaw247onY="/>
+    <page:show id="ps_ro_roda_domain_FormEditedTextVar" object="${formeditedtextvar}" path="/formeditedtextvars" z="M8PUJ/yXT0IN+2tBsKUaw247onY=">
+        <field:display field="formId" id="s_ro_roda_domain_FormEditedTextVar_formId" object="${formeditedtextvar}" z="XUEVX2QHfaLmv9bCrASKg3LfYoY="/>
+        <field:display field="variableId" id="s_ro_roda_domain_FormEditedTextVar_variableId" object="${formeditedtextvar}" z="86NikPXTHpV0Hy+JgT+k/8YBuSY="/>
+        <field:display field="text" id="s_ro_roda_domain_FormEditedTextVar_text" object="${formeditedtextvar}" z="OfK0/IYYQgbXdFn6UxC9dpWyews="/>
+    </page:show>
 </div>

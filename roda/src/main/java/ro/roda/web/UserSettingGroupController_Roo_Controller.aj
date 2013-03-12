@@ -17,12 +17,16 @@ import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.domain.UserSettingGroup;
 import ro.roda.service.UserSettingGroupService;
+import ro.roda.service.UserSettingService;
 import ro.roda.web.UserSettingGroupController;
 
 privileged aspect UserSettingGroupController_Roo_Controller {
     
     @Autowired
     UserSettingGroupService UserSettingGroupController.userSettingGroupService;
+    
+    @Autowired
+    UserSettingService UserSettingGroupController.userSettingService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String UserSettingGroupController.create(@Valid UserSettingGroup userSettingGroup, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -91,6 +95,7 @@ privileged aspect UserSettingGroupController_Roo_Controller {
     
     void UserSettingGroupController.populateEditForm(Model uiModel, UserSettingGroup userSettingGroup) {
         uiModel.addAttribute("userSettingGroup", userSettingGroup);
+        uiModel.addAttribute("usersettings", userSettingService.findAllUserSettings());
     }
     
     String UserSettingGroupController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

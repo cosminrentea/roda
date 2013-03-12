@@ -48,9 +48,12 @@ privileged aspect FilePropertyNameValue_Roo_SolrSearch {
         for (FilePropertyNameValue filePropertyNameValue : filepropertynamevalues) {
             SolrInputDocument sid = new SolrInputDocument();
             sid.addField("id", "filepropertynamevalue_" + filePropertyNameValue.getId());
+            sid.addField("filePropertyNameValue.fileid_t", filePropertyNameValue.getFileId());
+            sid.addField("filePropertyNameValue.propertynameid_t", filePropertyNameValue.getPropertyNameId());
+            sid.addField("filePropertyNameValue.propertyvalueid_t", filePropertyNameValue.getPropertyValueId());
             sid.addField("filePropertyNameValue.id_t", filePropertyNameValue.getId());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("filepropertynamevalue_solrsummary_t", new StringBuilder().append(filePropertyNameValue.getId()));
+            sid.addField("filepropertynamevalue_solrsummary_t", new StringBuilder().append(filePropertyNameValue.getFileId()).append(" ").append(filePropertyNameValue.getPropertyNameId()).append(" ").append(filePropertyNameValue.getPropertyValueId()).append(" ").append(filePropertyNameValue.getId()));
             documents.add(sid);
         }
         try {

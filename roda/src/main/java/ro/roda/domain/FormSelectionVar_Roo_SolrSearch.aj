@@ -48,9 +48,12 @@ privileged aspect FormSelectionVar_Roo_SolrSearch {
         for (FormSelectionVar formSelectionVar : formselectionvars) {
             SolrInputDocument sid = new SolrInputDocument();
             sid.addField("id", "formselectionvar_" + formSelectionVar.getId());
+            sid.addField("formSelectionVar.formid_t", formSelectionVar.getFormId());
+            sid.addField("formSelectionVar.selectionvariableitem_t", formSelectionVar.getSelectionVariableItem());
+            sid.addField("formSelectionVar.orderofitemsinresponse_i", formSelectionVar.getOrderOfItemsInResponse());
             sid.addField("formSelectionVar.id_t", formSelectionVar.getId());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("formselectionvar_solrsummary_t", new StringBuilder().append(formSelectionVar.getId()));
+            sid.addField("formselectionvar_solrsummary_t", new StringBuilder().append(formSelectionVar.getFormId()).append(" ").append(formSelectionVar.getSelectionVariableItem()).append(" ").append(formSelectionVar.getOrderOfItemsInResponse()).append(" ").append(formSelectionVar.getId()));
             documents.add(sid);
         }
         try {

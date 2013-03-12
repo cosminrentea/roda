@@ -2,5 +2,10 @@
 <div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <page:show id="ps_ro_roda_domain_StudyPerson" object="${studyperson}" path="/studypeople" z="d9nkCVPVIeMMbdp/n7xtf5gFvJU="/>
+    <page:show id="ps_ro_roda_domain_StudyPerson" object="${studyperson}" path="/studypeople" z="d9nkCVPVIeMMbdp/n7xtf5gFvJU=">
+        <field:display field="personId" id="s_ro_roda_domain_StudyPerson_personId" object="${studyperson}" z="XQ1/CWBaQd9jUjaJvetQefFKZjo="/>
+        <field:display field="studyId" id="s_ro_roda_domain_StudyPerson_studyId" object="${studyperson}" z="40/oH/0fov2m/VRxB6eGT+gjkPk="/>
+        <field:display field="assoctypeId" id="s_ro_roda_domain_StudyPerson_assoctypeId" object="${studyperson}" z="CvJbF1xzzIHi0E1VfY8uxckPd7c="/>
+        <field:display field="assocDetails" id="s_ro_roda_domain_StudyPerson_assocDetails" object="${studyperson}" z="IH+KB387SpLy+lpZHp4f/0D2XpI="/>
+    </page:show>
 </div>

@@ -17,12 +17,16 @@ import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.domain.SourceContactMethod;
 import ro.roda.service.SourceContactMethodService;
+import ro.roda.service.SourceContactsService;
 import ro.roda.web.SourceContactMethodController;
 
 privileged aspect SourceContactMethodController_Roo_Controller {
     
     @Autowired
     SourceContactMethodService SourceContactMethodController.sourceContactMethodService;
+    
+    @Autowired
+    SourceContactsService SourceContactMethodController.sourceContactsService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String SourceContactMethodController.create(@Valid SourceContactMethod sourceContactMethod, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -91,6 +95,7 @@ privileged aspect SourceContactMethodController_Roo_Controller {
     
     void SourceContactMethodController.populateEditForm(Model uiModel, SourceContactMethod sourceContactMethod) {
         uiModel.addAttribute("sourceContactMethod", sourceContactMethod);
+        uiModel.addAttribute("sourcecontactses", sourceContactsService.findAllSourceContactses());
     }
     
     String SourceContactMethodController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

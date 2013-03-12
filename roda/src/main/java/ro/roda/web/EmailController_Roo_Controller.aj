@@ -17,12 +17,20 @@ import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.domain.Email;
 import ro.roda.service.EmailService;
+import ro.roda.service.OrgEmailService;
+import ro.roda.service.PersonEmailService;
 import ro.roda.web.EmailController;
 
 privileged aspect EmailController_Roo_Controller {
     
     @Autowired
     EmailService EmailController.emailService;
+    
+    @Autowired
+    OrgEmailService EmailController.orgEmailService;
+    
+    @Autowired
+    PersonEmailService EmailController.personEmailService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String EmailController.create(@Valid Email email, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -91,6 +99,8 @@ privileged aspect EmailController_Roo_Controller {
     
     void EmailController.populateEditForm(Model uiModel, Email email) {
         uiModel.addAttribute("email", email);
+        uiModel.addAttribute("orgemails", orgEmailService.findAllOrgEmails());
+        uiModel.addAttribute("personemails", personEmailService.findAllPersonEmails());
     }
     
     String EmailController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

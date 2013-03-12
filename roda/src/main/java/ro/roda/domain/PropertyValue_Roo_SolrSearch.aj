@@ -48,9 +48,10 @@ privileged aspect PropertyValue_Roo_SolrSearch {
         for (PropertyValue propertyValue : propertyvalues) {
             SolrInputDocument sid = new SolrInputDocument();
             sid.addField("id", "propertyvalue_" + propertyValue.getId());
+            sid.addField("propertyValue.value_s", propertyValue.getValue());
             sid.addField("propertyValue.id_i", propertyValue.getId());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("propertyvalue_solrsummary_t", new StringBuilder().append(propertyValue.getId()));
+            sid.addField("propertyvalue_solrsummary_t", new StringBuilder().append(propertyValue.getValue()).append(" ").append(propertyValue.getId()));
             documents.add(sid);
         }
         try {

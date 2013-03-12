@@ -48,9 +48,15 @@ privileged aspect Catalog_Roo_SolrSearch {
         for (Catalog catalog : catalogs) {
             SolrInputDocument sid = new SolrInputDocument();
             sid.addField("id", "catalog_" + catalog.getId());
+            sid.addField("catalog.owner_t", catalog.getOwner());
+            sid.addField("catalog.name_s", catalog.getName());
+            sid.addField("catalog.parentid_i", catalog.getParentId());
+            sid.addField("catalog.added_dt", catalog.getAdded().getTime());
+            sid.addField("catalog.sequencenr_i", catalog.getSequencenr());
+            sid.addField("catalog.description_s", catalog.getDescription());
             sid.addField("catalog.id_i", catalog.getId());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("catalog_solrsummary_t", new StringBuilder().append(catalog.getId()));
+            sid.addField("catalog_solrsummary_t", new StringBuilder().append(catalog.getOwner()).append(" ").append(catalog.getName()).append(" ").append(catalog.getParentId()).append(" ").append(catalog.getAdded().getTime()).append(" ").append(catalog.getSequencenr()).append(" ").append(catalog.getDescription()).append(" ").append(catalog.getId()));
             documents.add(sid);
         }
         try {

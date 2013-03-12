@@ -19,6 +19,7 @@ import org.springframework.web.util.WebUtils;
 import ro.roda.domain.InstanceAcl;
 import ro.roda.domain.InstanceAclPK;
 import ro.roda.service.InstanceAclService;
+import ro.roda.service.InstanceService;
 import ro.roda.web.InstanceAclController;
 
 privileged aspect InstanceAclController_Roo_Controller {
@@ -27,6 +28,9 @@ privileged aspect InstanceAclController_Roo_Controller {
     
     @Autowired
     InstanceAclService InstanceAclController.instanceAclService;
+    
+    @Autowired
+    InstanceService InstanceAclController.instanceService;
     
     @Autowired
     public InstanceAclController.new(ConversionService conversionService) {
@@ -101,6 +105,7 @@ privileged aspect InstanceAclController_Roo_Controller {
     
     void InstanceAclController.populateEditForm(Model uiModel, InstanceAcl instanceAcl) {
         uiModel.addAttribute("instanceAcl", instanceAcl);
+        uiModel.addAttribute("instances", instanceService.findAllInstances());
     }
     
     String InstanceAclController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

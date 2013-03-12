@@ -6,6 +6,7 @@
         <field:input disableFormBinding="true" field="id.personId" id="c_ro_roda_domain_StudyPerson_id_personId" required="true" validationMessageCode="field_invalid_integer" z="L8h+WyO12JDelib9WBMjlYlTv74="/>
         <field:input disableFormBinding="true" field="id.studyId" id="c_ro_roda_domain_StudyPerson_id_studyId" required="true" validationMessageCode="field_invalid_integer" z="J6d9fVHF+SteMOeDxQUZjm/VVbA="/>
         <field:input disableFormBinding="true" field="id.assoctypeId" id="c_ro_roda_domain_StudyPerson_id_assoctypeId" required="true" validationMessageCode="field_invalid_integer" z="Q94ZsPDS4NClU7m9c7jxukmr6F4="/>
+        <field:input field="assocDetails" id="c_ro_roda_domain_StudyPerson_assocDetails" z="1BxGhvlsF2AywD8QwYpYF+kiZE0="/>
     </form:create>
     <form:dependency dependencies="${dependencies}" id="d_ro_roda_domain_StudyPerson" render="${not empty dependencies}" z="4uOoH28fTRlcv77WyJkZnEcLOzw="/>
 </div>

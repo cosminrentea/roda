@@ -18,7 +18,10 @@ import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.domain.InstanceOrg;
 import ro.roda.domain.InstanceOrgPK;
+import ro.roda.service.InstanceOrgAssocService;
 import ro.roda.service.InstanceOrgService;
+import ro.roda.service.InstanceService;
+import ro.roda.service.OrgService;
 import ro.roda.web.InstanceOrgController;
 
 privileged aspect InstanceOrgController_Roo_Controller {
@@ -27,6 +30,15 @@ privileged aspect InstanceOrgController_Roo_Controller {
     
     @Autowired
     InstanceOrgService InstanceOrgController.instanceOrgService;
+    
+    @Autowired
+    InstanceService InstanceOrgController.instanceService;
+    
+    @Autowired
+    InstanceOrgAssocService InstanceOrgController.instanceOrgAssocService;
+    
+    @Autowired
+    OrgService InstanceOrgController.orgService;
     
     @Autowired
     public InstanceOrgController.new(ConversionService conversionService) {
@@ -101,6 +113,9 @@ privileged aspect InstanceOrgController_Roo_Controller {
     
     void InstanceOrgController.populateEditForm(Model uiModel, InstanceOrg instanceOrg) {
         uiModel.addAttribute("instanceOrg", instanceOrg);
+        uiModel.addAttribute("instances", instanceService.findAllInstances());
+        uiModel.addAttribute("instanceorgassocs", instanceOrgAssocService.findAllInstanceOrgAssocs());
+        uiModel.addAttribute("orgs", orgService.findAllOrgs());
     }
     
     String InstanceOrgController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

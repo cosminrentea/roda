@@ -5,6 +5,7 @@
     <form:create compositePkField="id" id="fc_ro_roda_domain_OrgInternet" modelAttribute="orgInternet" path="/orginternets" render="${empty dependencies}" z="XOo1YMHLgLncH7tgv2IYaR19Alg=">
         <field:input disableFormBinding="true" field="id.orgId" id="c_ro_roda_domain_OrgInternet_id_orgId" required="true" validationMessageCode="field_invalid_integer" z="B5cVISAPZosmE4CNV6s7Oqp5grc="/>
         <field:input disableFormBinding="true" field="id.internetId" id="c_ro_roda_domain_OrgInternet_id_internetId" required="true" validationMessageCode="field_invalid_integer" z="XGDfOEJF17S1U2e7OH1aDlkqNIs="/>
+        <field:checkbox field="main" id="c_ro_roda_domain_OrgInternet_main" z="Wgvu2BV9ULz3Q7mNfEwjQ1xV7i4="/>
     </form:create>
     <form:dependency dependencies="${dependencies}" id="d_ro_roda_domain_OrgInternet" render="${not empty dependencies}" z="Q2niFJRtQO4aVaZcROXz7cQqR88="/>
 </div>

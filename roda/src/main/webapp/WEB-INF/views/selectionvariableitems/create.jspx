@@ -5,6 +5,10 @@
     <form:create compositePkField="id" id="fc_ro_roda_domain_SelectionVariableItem" modelAttribute="selectionVariableItem" path="/selectionvariableitems" render="${empty dependencies}" z="BmQZYImYAsU45lmqagqToO0vEqM=">
         <field:input disableFormBinding="true" field="id.variableId" id="c_ro_roda_domain_SelectionVariableItem_id_variableId" required="true" validationMessageCode="field_invalid_integer" z="VMLd4AdMIJHthilEojooRSbEl+U="/>
         <field:input disableFormBinding="true" field="id.itemId" id="c_ro_roda_domain_SelectionVariableItem_id_itemId" required="true" validationMessageCode="field_invalid_integer" z="CTpgBYv0W2E6gOfzHobJ8ykzoIY="/>
+        <field:simple field="formSelectionVars" id="c_ro_roda_domain_SelectionVariableItem_formSelectionVars" messageCode="entity_reference_not_managed" messageCodeAttribute="Form Selection Var" z="tQc1GzJ5+GuT7uae6/NXk1Q5nhQ="/>
+        <field:select field="responseCardFileId" id="c_ro_roda_domain_SelectionVariableItem_responseCardFileId" itemValue="id" items="${files}" path="/files" z="j2iET1bUX8SXDZVuI1rx6nutUKM="/>
+        <field:input field="orderOfItemInVariable" id="c_ro_roda_domain_SelectionVariableItem_orderOfItemInVariable" required="true" validationMessageCode="field_invalid_integer" z="VL08+jopzLjvX6xkuy/EmbtZUic="/>
+        <field:input field="frequencyValue" id="c_ro_roda_domain_SelectionVariableItem_frequencyValue" validationMessageCode="field_invalid_number" z="d8eymDOHvkosY7iIy6D6S7xfV5w="/>
     </form:create>
     <form:dependency dependencies="${dependencies}" id="d_ro_roda_domain_SelectionVariableItem" render="${not empty dependencies}" z="LP3WwQAPVwGMA1C6bycPot6ijew="/>
 </div>

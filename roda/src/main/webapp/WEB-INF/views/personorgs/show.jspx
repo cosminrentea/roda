@@ -2,5 +2,11 @@
 <div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <page:show id="ps_ro_roda_domain_PersonOrg" object="${personorg}" path="/personorgs" z="8P5tn1dKcukMPB+wERcoizrpXxk="/>
+    <page:show id="ps_ro_roda_domain_PersonOrg" object="${personorg}" path="/personorgs" z="8P5tn1dKcukMPB+wERcoizrpXxk=">
+        <field:display field="orgId" id="s_ro_roda_domain_PersonOrg_orgId" object="${personorg}" z="lhAeFfudha+UARj3+IorQYo7zwo="/>
+        <field:display field="personId" id="s_ro_roda_domain_PersonOrg_personId" object="${personorg}" z="AAs9xemXwtsYrYxDpkGS7LilZRc="/>
+        <field:display field="roleId" id="s_ro_roda_domain_PersonOrg_roleId" object="${personorg}" z="7ILpQV+D5D890PJ/Zb/bynTHKZM="/>
+        <field:display calendar="true" dateTimePattern="${personOrg_datestart_date_format}" field="datestart" id="s_ro_roda_domain_PersonOrg_datestart" object="${personorg}" z="Cvj8MeznUTgbHC9NGob3nvSgsto="/>
+        <field:display calendar="true" dateTimePattern="${personOrg_dateend_date_format}" field="dateend" id="s_ro_roda_domain_PersonOrg_dateend" object="${personorg}" z="nk58eliDc4rINFm+xX77BE7m6RI="/>
+    </page:show>
 </div>

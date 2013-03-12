@@ -17,12 +17,20 @@ import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.domain.Internet;
 import ro.roda.service.InternetService;
+import ro.roda.service.OrgInternetService;
+import ro.roda.service.PersonInternetService;
 import ro.roda.web.InternetController;
 
 privileged aspect InternetController_Roo_Controller {
     
     @Autowired
     InternetService InternetController.internetService;
+    
+    @Autowired
+    OrgInternetService InternetController.orgInternetService;
+    
+    @Autowired
+    PersonInternetService InternetController.personInternetService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String InternetController.create(@Valid Internet internet, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -91,6 +99,8 @@ privileged aspect InternetController_Roo_Controller {
     
     void InternetController.populateEditForm(Model uiModel, Internet internet) {
         uiModel.addAttribute("internet", internet);
+        uiModel.addAttribute("orginternets", orgInternetService.findAllOrgInternets());
+        uiModel.addAttribute("personinternets", personInternetService.findAllPersonInternets());
     }
     
     String InternetController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

@@ -16,13 +16,21 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.domain.Keyword;
+import ro.roda.service.InstanceKeywordService;
 import ro.roda.service.KeywordService;
+import ro.roda.service.StudyKeywordService;
 import ro.roda.web.KeywordController;
 
 privileged aspect KeywordController_Roo_Controller {
     
     @Autowired
     KeywordService KeywordController.keywordService;
+    
+    @Autowired
+    InstanceKeywordService KeywordController.instanceKeywordService;
+    
+    @Autowired
+    StudyKeywordService KeywordController.studyKeywordService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String KeywordController.create(@Valid Keyword keyword, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -91,6 +99,8 @@ privileged aspect KeywordController_Roo_Controller {
     
     void KeywordController.populateEditForm(Model uiModel, Keyword keyword) {
         uiModel.addAttribute("keyword", keyword);
+        uiModel.addAttribute("instancekeywords", instanceKeywordService.findAllInstanceKeywords());
+        uiModel.addAttribute("studykeywords", studyKeywordService.findAllStudyKeywords());
     }
     
     String KeywordController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

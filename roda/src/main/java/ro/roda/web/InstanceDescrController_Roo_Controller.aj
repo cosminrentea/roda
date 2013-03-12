@@ -19,6 +19,8 @@ import org.springframework.web.util.WebUtils;
 import ro.roda.domain.InstanceDescr;
 import ro.roda.domain.InstanceDescrPK;
 import ro.roda.service.InstanceDescrService;
+import ro.roda.service.InstanceService;
+import ro.roda.service.LangService;
 import ro.roda.web.InstanceDescrController;
 
 privileged aspect InstanceDescrController_Roo_Controller {
@@ -27,6 +29,12 @@ privileged aspect InstanceDescrController_Roo_Controller {
     
     @Autowired
     InstanceDescrService InstanceDescrController.instanceDescrService;
+    
+    @Autowired
+    InstanceService InstanceDescrController.instanceService;
+    
+    @Autowired
+    LangService InstanceDescrController.langService;
     
     @Autowired
     public InstanceDescrController.new(ConversionService conversionService) {
@@ -101,6 +109,8 @@ privileged aspect InstanceDescrController_Roo_Controller {
     
     void InstanceDescrController.populateEditForm(Model uiModel, InstanceDescr instanceDescr) {
         uiModel.addAttribute("instanceDescr", instanceDescr);
+        uiModel.addAttribute("instances", instanceService.findAllInstances());
+        uiModel.addAttribute("langs", langService.findAllLangs());
     }
     
     String InstanceDescrController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

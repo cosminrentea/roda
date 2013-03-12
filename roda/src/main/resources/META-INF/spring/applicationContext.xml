@@ -56,6 +56,19 @@
         <property name="minEvictableIdleTimeMillis" value="1800000"/>
         <property name="validationQuery" value="SELECT version();"/>
     </bean>
+    
+	<!-- 
+	[Cosmin] Already Declared a DataSource. 
+	Next bean is a possible alternative, using c3p0 instead of DBCP 
+	-->
+	<!-- 
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		destroy-method="close" p:driverClass="${database.driverClassName}"
+		p:jdbcUrl="${database.url}" p:user="${database.username}" p:password="${database.password}"
+		p:acquireIncrement="5" p:idleConnectionTestPeriod="60" p:maxPoolSize="100"
+		p:maxStatements="50" p:minPoolSize="10" />
+     -->
+     
     <bean class="org.springframework.orm.jpa.JpaTransactionManager" id="transactionManager">
         <property name="entityManagerFactory" ref="entityManagerFactory"/>
     </bean>

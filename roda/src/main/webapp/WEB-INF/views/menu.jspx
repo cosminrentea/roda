@@ -492,5 +492,25 @@
             <menu:item id="i_news_new" messageCode="global_menu_new" url="/newspieces?form" z="pgkB2S0o3zsRoFY0HagdPp9Y6o0="/>
             <menu:item id="i_news_list" messageCode="global_menu_list" url="/newspieces?page=1&amp;size=${empty param.size ? 10 : param.size}" z="bVdCgMj63hiMp/hWifacFqdS9Pg="/>
         </menu:category>
+        <menu:category id="c_users" z="Ysam8XVhG5uotPoUGGxkia1RE/s=">
+            <menu:item id="i_users_new" messageCode="global_menu_new" url="/userses?form" z="utrdLkYms6xk5f4IDxc9zrg5FWs="/>
+            <menu:item id="i_users_list" messageCode="global_menu_list" url="/userses?page=1&amp;size=${empty param.size ? 10 : param.size}" z="tqSwojZmRduyx4xtHWcJzgbgtJk="/>
+        </menu:category>
+        <menu:category id="c_authorities" z="GIjKsVX7q9V5I+B/i5YP+XPvlK0=">
+            <menu:item id="i_authorities_new" messageCode="global_menu_new" url="/authoritieses?form" z="2mmPz62GZozb3OilbywIxJnKcBc="/>
+            <menu:item id="i_authorities_list" messageCode="global_menu_list" url="/authoritieses?page=1&amp;size=${empty param.size ? 10 : param.size}" z="on1x7LkbV2LweGhXOBmPjrzwbMo="/>
+        </menu:category>
+        <menu:category id="c_groupauthorities" z="qSf4MP7FP4bG1GkQkadgJd6EZUE=">
+            <menu:item id="i_groupauthorities_new" messageCode="global_menu_new" url="/groupauthoritieses?form" z="K6zqKRRqyC3zIyE/8ndbA5l9TpE="/>
+            <menu:item id="i_groupauthorities_list" messageCode="global_menu_list" url="/groupauthoritieses?page=1&amp;size=${empty param.size ? 10 : param.size}" z="2BM4Q9cCKscz2JwW3Qaa6hkD/Gs="/>
+        </menu:category>
+        <menu:category id="c_groups" z="NRIYuxh1c9CCVsqI2vgEg+kgcSk=">
+            <menu:item id="i_groups_new" messageCode="global_menu_new" url="/groupses?form" z="aMg2LU+Zurz10taJ+LLBDwKtMkg="/>
+            <menu:item id="i_groups_list" messageCode="global_menu_list" url="/groupses?page=1&amp;size=${empty param.size ? 10 : param.size}" z="ZD4ucHAn/NRfQQAb0UAumu3jceE="/>
+        </menu:category>
+        <menu:category id="c_groupmembers" z="XpdnjEib+fG7rz2RtLBeFXdeNxA=">
+            <menu:item id="i_groupmembers_new" messageCode="global_menu_new" url="/groupmemberses?form" z="V+KFL1E5qh+KWuRpApB0i+KA4BU="/>
+            <menu:item id="i_groupmembers_list" messageCode="global_menu_list" url="/groupmemberses?page=1&amp;size=${empty param.size ? 10 : param.size}" z="FuD/EJ4ES3xEit530qG4xZy6sa0="/>
+        </menu:category>
     </menu:menu>
 </div>

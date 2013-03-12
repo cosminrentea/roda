@@ -48,9 +48,13 @@ privileged aspect AclEntry_Roo_SolrSearch {
         for (AclEntry aclEntry : aclentrys) {
             SolrInputDocument sid = new SolrInputDocument();
             sid.addField("id", "aclentry_" + aclEntry.getId());
+            sid.addField("aclEntry.aclobjectidentity_t", aclEntry.getAclObjectIdentity());
+            sid.addField("aclEntry.sid_t", aclEntry.getSid());
+            sid.addField("aclEntry.aceorder_i", aclEntry.getAceOrder());
+            sid.addField("aclEntry.mask_i", aclEntry.getMask());
             sid.addField("aclEntry.id_l", aclEntry.getId());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("aclentry_solrsummary_t", new StringBuilder().append(aclEntry.getId()));
+            sid.addField("aclentry_solrsummary_t", new StringBuilder().append(aclEntry.getAclObjectIdentity()).append(" ").append(aclEntry.getSid()).append(" ").append(aclEntry.getAceOrder()).append(" ").append(aclEntry.getMask()).append(" ").append(aclEntry.getId()));
             documents.add(sid);
         }
         try {

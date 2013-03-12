@@ -6,7 +6,9 @@ package ro.roda.web;
 import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,12 +19,20 @@ import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.domain.PersonLinks;
 import ro.roda.service.PersonLinksService;
+import ro.roda.service.PersonService;
+import ro.roda.service.RodauserService;
 import ro.roda.web.PersonLinksController;
 
 privileged aspect PersonLinksController_Roo_Controller {
     
     @Autowired
     PersonLinksService PersonLinksController.personLinksService;
+    
+    @Autowired
+    PersonService PersonLinksController.personService;
+    
+    @Autowired
+    RodauserService PersonLinksController.rodauserService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String PersonLinksController.create(@Valid PersonLinks personLinks, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -43,6 +53,7 @@ privileged aspect PersonLinksController_Roo_Controller {
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String PersonLinksController.show(@PathVariable("id") Integer id, Model uiModel) {
+        addDateTimeFormatPatterns(uiModel);
         uiModel.addAttribute("personlinks", personLinksService.findPersonLinks(id));
         uiModel.addAttribute("itemId", id);
         return "personlinkses/show";
@@ -59,6 +70,7 @@ privileged aspect PersonLinksController_Roo_Controller {
         } else {
             uiModel.addAttribute("personlinkses", personLinksService.findAllPersonLinkses());
         }
+        addDateTimeFormatPatterns(uiModel);
         return "personlinkses/list";
     }
     
@@ -89,8 +101,15 @@ privileged aspect PersonLinksController_Roo_Controller {
         return "redirect:/personlinkses";
     }
     
+    void PersonLinksController.addDateTimeFormatPatterns(Model uiModel) {
+        uiModel.addAttribute("personLinks_statustime_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
+    }
+    
     void PersonLinksController.populateEditForm(Model uiModel, PersonLinks personLinks) {
         uiModel.addAttribute("personLinks", personLinks);
+        addDateTimeFormatPatterns(uiModel);
+        uiModel.addAttribute("people", personService.findAllPeople());
+        uiModel.addAttribute("rodausers", rodauserService.findAllRodausers());
     }
     
     String PersonLinksController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

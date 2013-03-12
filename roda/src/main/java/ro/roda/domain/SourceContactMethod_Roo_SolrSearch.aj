@@ -48,9 +48,10 @@ privileged aspect SourceContactMethod_Roo_SolrSearch {
         for (SourceContactMethod sourceContactMethod : sourcecontactmethods) {
             SolrInputDocument sid = new SolrInputDocument();
             sid.addField("id", "sourcecontactmethod_" + sourceContactMethod.getId());
+            sid.addField("sourceContactMethod.name_s", sourceContactMethod.getName());
             sid.addField("sourceContactMethod.id_i", sourceContactMethod.getId());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("sourcecontactmethod_solrsummary_t", new StringBuilder().append(sourceContactMethod.getId()));
+            sid.addField("sourcecontactmethod_solrsummary_t", new StringBuilder().append(sourceContactMethod.getName()).append(" ").append(sourceContactMethod.getId()));
             documents.add(sid);
         }
         try {

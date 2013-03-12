@@ -19,6 +19,8 @@ import org.springframework.web.util.WebUtils;
 import ro.roda.domain.PersonPhone;
 import ro.roda.domain.PersonPhonePK;
 import ro.roda.service.PersonPhoneService;
+import ro.roda.service.PersonService;
+import ro.roda.service.PhoneService;
 import ro.roda.web.PersonPhoneController;
 
 privileged aspect PersonPhoneController_Roo_Controller {
@@ -27,6 +29,12 @@ privileged aspect PersonPhoneController_Roo_Controller {
     
     @Autowired
     PersonPhoneService PersonPhoneController.personPhoneService;
+    
+    @Autowired
+    PersonService PersonPhoneController.personService;
+    
+    @Autowired
+    PhoneService PersonPhoneController.phoneService;
     
     @Autowired
     public PersonPhoneController.new(ConversionService conversionService) {
@@ -101,6 +109,8 @@ privileged aspect PersonPhoneController_Roo_Controller {
     
     void PersonPhoneController.populateEditForm(Model uiModel, PersonPhone personPhone) {
         uiModel.addAttribute("personPhone", personPhone);
+        uiModel.addAttribute("people", personService.findAllPeople());
+        uiModel.addAttribute("phones", phoneService.findAllPhones());
     }
     
     String PersonPhoneController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

@@ -18,7 +18,11 @@ import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.domain.SelectionVariableItem;
 import ro.roda.domain.SelectionVariableItemPK;
+import ro.roda.service.FileService;
+import ro.roda.service.FormSelectionVarService;
+import ro.roda.service.ItemService;
 import ro.roda.service.SelectionVariableItemService;
+import ro.roda.service.SelectionVariableService;
 import ro.roda.web.SelectionVariableItemController;
 
 privileged aspect SelectionVariableItemController_Roo_Controller {
@@ -27,6 +31,18 @@ privileged aspect SelectionVariableItemController_Roo_Controller {
     
     @Autowired
     SelectionVariableItemService SelectionVariableItemController.selectionVariableItemService;
+    
+    @Autowired
+    FileService SelectionVariableItemController.fileService;
+    
+    @Autowired
+    FormSelectionVarService SelectionVariableItemController.formSelectionVarService;
+    
+    @Autowired
+    ItemService SelectionVariableItemController.itemService;
+    
+    @Autowired
+    SelectionVariableService SelectionVariableItemController.selectionVariableService;
     
     @Autowired
     public SelectionVariableItemController.new(ConversionService conversionService) {
@@ -101,6 +117,10 @@ privileged aspect SelectionVariableItemController_Roo_Controller {
     
     void SelectionVariableItemController.populateEditForm(Model uiModel, SelectionVariableItem selectionVariableItem) {
         uiModel.addAttribute("selectionVariableItem", selectionVariableItem);
+        uiModel.addAttribute("files", fileService.findAllFiles());
+        uiModel.addAttribute("formselectionvars", formSelectionVarService.findAllFormSelectionVars());
+        uiModel.addAttribute("items", itemService.findAllItems());
+        uiModel.addAttribute("selectionvariables", selectionVariableService.findAllSelectionVariables());
     }
     
     String SelectionVariableItemController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

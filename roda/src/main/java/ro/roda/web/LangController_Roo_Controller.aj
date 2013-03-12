@@ -16,13 +16,25 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.domain.Lang;
+import ro.roda.service.InstanceDescrService;
 import ro.roda.service.LangService;
+import ro.roda.service.StudyDescrService;
+import ro.roda.service.TranslatedTopicService;
 import ro.roda.web.LangController;
 
 privileged aspect LangController_Roo_Controller {
     
     @Autowired
     LangService LangController.langService;
+    
+    @Autowired
+    InstanceDescrService LangController.instanceDescrService;
+    
+    @Autowired
+    StudyDescrService LangController.studyDescrService;
+    
+    @Autowired
+    TranslatedTopicService LangController.translatedTopicService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String LangController.create(@Valid Lang lang, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -91,6 +103,9 @@ privileged aspect LangController_Roo_Controller {
     
     void LangController.populateEditForm(Model uiModel, Lang lang) {
         uiModel.addAttribute("lang", lang);
+        uiModel.addAttribute("instancedescrs", instanceDescrService.findAllInstanceDescrs());
+        uiModel.addAttribute("studydescrs", studyDescrService.findAllStudyDescrs());
+        uiModel.addAttribute("translatedtopics", translatedTopicService.findAllTranslatedTopics());
     }
     
     String LangController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

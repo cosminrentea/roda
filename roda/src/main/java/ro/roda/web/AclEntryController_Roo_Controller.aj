@@ -17,12 +17,20 @@ import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.domain.AclEntry;
 import ro.roda.service.AclEntryService;
+import ro.roda.service.AclObjectIdentityService;
+import ro.roda.service.AclSidService;
 import ro.roda.web.AclEntryController;
 
 privileged aspect AclEntryController_Roo_Controller {
     
     @Autowired
     AclEntryService AclEntryController.aclEntryService;
+    
+    @Autowired
+    AclObjectIdentityService AclEntryController.aclObjectIdentityService;
+    
+    @Autowired
+    AclSidService AclEntryController.aclSidService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String AclEntryController.create(@Valid AclEntry aclEntry, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -91,6 +99,8 @@ privileged aspect AclEntryController_Roo_Controller {
     
     void AclEntryController.populateEditForm(Model uiModel, AclEntry aclEntry) {
         uiModel.addAttribute("aclEntry", aclEntry);
+        uiModel.addAttribute("aclobjectidentitys", aclObjectIdentityService.findAllAclObjectIdentitys());
+        uiModel.addAttribute("aclsids", aclSidService.findAllAclSids());
     }
     
     String AclEntryController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

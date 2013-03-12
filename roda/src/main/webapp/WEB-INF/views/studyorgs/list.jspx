@@ -3,6 +3,12 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <page:list id="pl_ro_roda_domain_StudyOrg" items="${studyorgs}" z="TZVbzkpuUUEaqF29XFVv3G5s3e8=">
-        <table:table data="${studyorgs}" id="l_ro_roda_domain_StudyOrg" path="/studyorgs" z="6UZn0eT2fhYq1DXnbD7AjsiCpdA="/>
+        <table:table data="${studyorgs}" id="l_ro_roda_domain_StudyOrg" path="/studyorgs" z="6UZn0eT2fhYq1DXnbD7AjsiCpdA=">
+            <table:column id="c_ro_roda_domain_StudyOrg_orgId" property="orgId" z="/dBws6dvZbuiQcOd+rF4tsgZceg="/>
+            <table:column id="c_ro_roda_domain_StudyOrg_studyId" property="studyId" z="nwdgbg2w5I3QNbhbvNmfsKbiMkg="/>
+            <table:column id="c_ro_roda_domain_StudyOrg_assoctypeId" property="assoctypeId" z="xm/bKr/plrrrwt1TO4G/21ZuXOI="/>
+            <table:column id="c_ro_roda_domain_StudyOrg_citation" property="citation" z="ghEecnlIdaeOILp0+c+wt4IonJE="/>
+            <table:column id="c_ro_roda_domain_StudyOrg_assocDetails" property="assocDetails" z="PvGpz4T9tRPavi/Rjur1aUiaGkY="/>
+        </table:table>
     </page:list>
 </div>

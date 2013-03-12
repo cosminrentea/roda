@@ -17,12 +17,16 @@ import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.domain.OtherStatistic;
 import ro.roda.service.OtherStatisticService;
+import ro.roda.service.VariableService;
 import ro.roda.web.OtherStatisticController;
 
 privileged aspect OtherStatisticController_Roo_Controller {
     
     @Autowired
     OtherStatisticService OtherStatisticController.otherStatisticService;
+    
+    @Autowired
+    VariableService OtherStatisticController.variableService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String OtherStatisticController.create(@Valid OtherStatistic otherStatistic, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -91,6 +95,7 @@ privileged aspect OtherStatisticController_Roo_Controller {
     
     void OtherStatisticController.populateEditForm(Model uiModel, OtherStatistic otherStatistic) {
         uiModel.addAttribute("otherStatistic", otherStatistic);
+        uiModel.addAttribute("variables", variableService.findAllVariables());
     }
     
     String OtherStatisticController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

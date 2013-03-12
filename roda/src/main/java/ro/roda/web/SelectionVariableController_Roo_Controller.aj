@@ -16,13 +16,21 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.domain.SelectionVariable;
+import ro.roda.service.SelectionVariableItemService;
 import ro.roda.service.SelectionVariableService;
+import ro.roda.service.VariableService;
 import ro.roda.web.SelectionVariableController;
 
 privileged aspect SelectionVariableController_Roo_Controller {
     
     @Autowired
     SelectionVariableService SelectionVariableController.selectionVariableService;
+    
+    @Autowired
+    SelectionVariableItemService SelectionVariableController.selectionVariableItemService;
+    
+    @Autowired
+    VariableService SelectionVariableController.variableService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String SelectionVariableController.create(@Valid SelectionVariable selectionVariable, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -91,6 +99,8 @@ privileged aspect SelectionVariableController_Roo_Controller {
     
     void SelectionVariableController.populateEditForm(Model uiModel, SelectionVariable selectionVariable) {
         uiModel.addAttribute("selectionVariable", selectionVariable);
+        uiModel.addAttribute("selectionvariableitems", selectionVariableItemService.findAllSelectionVariableItems());
+        uiModel.addAttribute("variables", variableService.findAllVariables());
     }
     
     String SelectionVariableController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

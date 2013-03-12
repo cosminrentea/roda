@@ -2,5 +2,10 @@
 <div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <form:update id="fu_ro_roda_domain_StudyDescr" modelAttribute="studyDescr" path="/studydescrs" versionField="none" z="Z6kFB7YO5WW1QYwdm9gLLsmOPXo="/>
+    <form:update id="fu_ro_roda_domain_StudyDescr" modelAttribute="studyDescr" path="/studydescrs" versionField="none" z="Z6kFB7YO5WW1QYwdm9gLLsmOPXo=">
+        <field:select field="titleTypeId" id="c_ro_roda_domain_StudyDescr_titleTypeId" itemValue="id" items="${titletypes}" path="/titletypes" z="4VJmd/l0r+X5cZOmdE4guO6f69s="/>
+        <field:input field="abstract1" id="c_ro_roda_domain_StudyDescr_abstract1" z="YwDCOIrlkkZc1dOg5ohB1RiWIIk="/>
+        <field:input field="grantDetails" id="c_ro_roda_domain_StudyDescr_grantDetails" z="8Erc1xgfUDIQv8aRgwSa9C8XXyA="/>
+        <field:input field="title" id="c_ro_roda_domain_StudyDescr_title" required="true" z="y3QAgvRlBakimqBmNIrGN0ep2fA="/>
+    </form:update>
 </div>

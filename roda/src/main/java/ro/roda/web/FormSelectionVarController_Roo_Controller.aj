@@ -19,6 +19,8 @@ import org.springframework.web.util.WebUtils;
 import ro.roda.domain.FormSelectionVar;
 import ro.roda.domain.FormSelectionVarPK;
 import ro.roda.service.FormSelectionVarService;
+import ro.roda.service.FormService;
+import ro.roda.service.SelectionVariableItemService;
 import ro.roda.web.FormSelectionVarController;
 
 privileged aspect FormSelectionVarController_Roo_Controller {
@@ -27,6 +29,12 @@ privileged aspect FormSelectionVarController_Roo_Controller {
     
     @Autowired
     FormSelectionVarService FormSelectionVarController.formSelectionVarService;
+    
+    @Autowired
+    FormService FormSelectionVarController.formService;
+    
+    @Autowired
+    SelectionVariableItemService FormSelectionVarController.selectionVariableItemService;
     
     @Autowired
     public FormSelectionVarController.new(ConversionService conversionService) {
@@ -101,6 +109,8 @@ privileged aspect FormSelectionVarController_Roo_Controller {
     
     void FormSelectionVarController.populateEditForm(Model uiModel, FormSelectionVar formSelectionVar) {
         uiModel.addAttribute("formSelectionVar", formSelectionVar);
+        uiModel.addAttribute("forms", formService.findAllForms());
+        uiModel.addAttribute("selectionvariableitems", selectionVariableItemService.findAllSelectionVariableItems());
     }
     
     String FormSelectionVarController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

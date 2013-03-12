@@ -16,13 +16,21 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.domain.Scale;
+import ro.roda.service.ItemService;
 import ro.roda.service.ScaleService;
+import ro.roda.service.ValueService;
 import ro.roda.web.ScaleController;
 
 privileged aspect ScaleController_Roo_Controller {
     
     @Autowired
     ScaleService ScaleController.scaleService;
+    
+    @Autowired
+    ItemService ScaleController.itemService;
+    
+    @Autowired
+    ValueService ScaleController.valueService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String ScaleController.create(@Valid Scale scale, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -91,6 +99,8 @@ privileged aspect ScaleController_Roo_Controller {
     
     void ScaleController.populateEditForm(Model uiModel, Scale scale) {
         uiModel.addAttribute("scale", scale);
+        uiModel.addAttribute("items", itemService.findAllItems());
+        uiModel.addAttribute("values", valueService.findAllValues());
     }
     
     String ScaleController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

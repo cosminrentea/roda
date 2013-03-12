@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.domain.UserProfile;
+import ro.roda.service.RodauserService;
 import ro.roda.service.UserProfileService;
 import ro.roda.web.UserProfileController;
 
@@ -23,6 +24,9 @@ privileged aspect UserProfileController_Roo_Controller {
     
     @Autowired
     UserProfileService UserProfileController.userProfileService;
+    
+    @Autowired
+    RodauserService UserProfileController.rodauserService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String UserProfileController.create(@Valid UserProfile userProfile, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -91,6 +95,7 @@ privileged aspect UserProfileController_Roo_Controller {
     
     void UserProfileController.populateEditForm(Model uiModel, UserProfile userProfile) {
         uiModel.addAttribute("userProfile", userProfile);
+        uiModel.addAttribute("rodausers", rodauserService.findAllRodausers());
     }
     
     String UserProfileController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

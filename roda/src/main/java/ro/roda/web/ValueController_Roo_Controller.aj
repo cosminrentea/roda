@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.domain.Value;
+import ro.roda.service.ItemService;
+import ro.roda.service.ScaleService;
 import ro.roda.service.ValueService;
 import ro.roda.web.ValueController;
 
@@ -23,6 +25,12 @@ privileged aspect ValueController_Roo_Controller {
     
     @Autowired
     ValueService ValueController.valueService;
+    
+    @Autowired
+    ItemService ValueController.itemService;
+    
+    @Autowired
+    ScaleService ValueController.scaleService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String ValueController.create(@Valid Value value, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -91,6 +99,8 @@ privileged aspect ValueController_Roo_Controller {
     
     void ValueController.populateEditForm(Model uiModel, Value value) {
         uiModel.addAttribute("value", value);
+        uiModel.addAttribute("items", itemService.findAllItems());
+        uiModel.addAttribute("scales", scaleService.findAllScales());
     }
     
     String ValueController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

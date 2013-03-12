@@ -48,9 +48,11 @@ privileged aspect UnitAnalysis_Roo_SolrSearch {
         for (UnitAnalysis unitAnalysis : unitanalyses) {
             SolrInputDocument sid = new SolrInputDocument();
             sid.addField("id", "unitanalysis_" + unitAnalysis.getId());
+            sid.addField("unitAnalysis.name_s", unitAnalysis.getName());
+            sid.addField("unitAnalysis.description_s", unitAnalysis.getDescription());
             sid.addField("unitAnalysis.id_i", unitAnalysis.getId());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("unitanalysis_solrsummary_t", new StringBuilder().append(unitAnalysis.getId()));
+            sid.addField("unitanalysis_solrsummary_t", new StringBuilder().append(unitAnalysis.getName()).append(" ").append(unitAnalysis.getDescription()).append(" ").append(unitAnalysis.getId()));
             documents.add(sid);
         }
         try {

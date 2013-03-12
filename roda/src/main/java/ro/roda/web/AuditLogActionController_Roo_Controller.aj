@@ -17,12 +17,24 @@ import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.domain.AuditLogAction;
 import ro.roda.service.AuditLogActionService;
+import ro.roda.service.AuditLogChangeService;
+import ro.roda.service.AuditLogChangesetService;
+import ro.roda.service.AuditLogTableService;
 import ro.roda.web.AuditLogActionController;
 
 privileged aspect AuditLogActionController_Roo_Controller {
     
     @Autowired
     AuditLogActionService AuditLogActionController.auditLogActionService;
+    
+    @Autowired
+    AuditLogChangeService AuditLogActionController.auditLogChangeService;
+    
+    @Autowired
+    AuditLogChangesetService AuditLogActionController.auditLogChangesetService;
+    
+    @Autowired
+    AuditLogTableService AuditLogActionController.auditLogTableService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String AuditLogActionController.create(@Valid AuditLogAction auditLogAction, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -91,6 +103,9 @@ privileged aspect AuditLogActionController_Roo_Controller {
     
     void AuditLogActionController.populateEditForm(Model uiModel, AuditLogAction auditLogAction) {
         uiModel.addAttribute("auditLogAction", auditLogAction);
+        uiModel.addAttribute("auditlogchanges", auditLogChangeService.findAllAuditLogChanges());
+        uiModel.addAttribute("auditlogchangesets", auditLogChangesetService.findAllAuditLogChangesets());
+        uiModel.addAttribute("auditlogtables", auditLogTableService.findAllAuditLogTables());
     }
     
     String AuditLogActionController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

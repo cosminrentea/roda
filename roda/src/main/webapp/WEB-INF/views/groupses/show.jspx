@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:show id="ps_ro_roda_domain_Groups" object="${groups}" path="/groupses" z="INVU/jhmT3f83B+qwYXRwt3+0ss=">
+        <field:display field="groupName" id="s_ro_roda_domain_Groups_groupName" object="${groups}" z="xowE3TxkVzltzeB8sw2+3WP8n/w="/>
+    </page:show>
+</div>

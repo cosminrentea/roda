@@ -48,9 +48,12 @@ privileged aspect UserMessage_Roo_SolrSearch {
         for (UserMessage userMessage : usermessages) {
             SolrInputDocument sid = new SolrInputDocument();
             sid.addField("id", "usermessage_" + userMessage.getId());
+            sid.addField("userMessage.touserid_t", userMessage.getToUserId());
+            sid.addField("userMessage.fromuserid_t", userMessage.getFromUserId());
+            sid.addField("userMessage.message_s", userMessage.getMessage());
             sid.addField("userMessage.id_i", userMessage.getId());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("usermessage_solrsummary_t", new StringBuilder().append(userMessage.getId()));
+            sid.addField("usermessage_solrsummary_t", new StringBuilder().append(userMessage.getToUserId()).append(" ").append(userMessage.getFromUserId()).append(" ").append(userMessage.getMessage()).append(" ").append(userMessage.getId()));
             documents.add(sid);
         }
         try {

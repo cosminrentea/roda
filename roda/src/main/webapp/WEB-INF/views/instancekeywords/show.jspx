@@ -2,5 +2,10 @@
 <div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <page:show id="ps_ro_roda_domain_InstanceKeyword" object="${instancekeyword}" path="/instancekeywords" z="WJjakUj88jPI/2W7o/jofwnwz0k="/>
+    <page:show id="ps_ro_roda_domain_InstanceKeyword" object="${instancekeyword}" path="/instancekeywords" z="WJjakUj88jPI/2W7o/jofwnwz0k=">
+        <field:display field="instanceId" id="s_ro_roda_domain_InstanceKeyword_instanceId" object="${instancekeyword}" z="Di9whDoyadTx4OM9HC8lkO7oNNc="/>
+        <field:display field="keywordId" id="s_ro_roda_domain_InstanceKeyword_keywordId" object="${instancekeyword}" z="MWQvMnx1xdv+y88mWLxveS25peM="/>
+        <field:display field="addedBy" id="s_ro_roda_domain_InstanceKeyword_addedBy" object="${instancekeyword}" z="OQjNBUB8elx/6JKD59dSh74CGE4="/>
+        <field:display calendar="true" dateTimePattern="${instanceKeyword_added_date_format}" field="added" id="s_ro_roda_domain_InstanceKeyword_added" object="${instancekeyword}" z="FdqqSl/uth5N2cW8zAcRxYbdAps="/>
+    </page:show>
 </div>

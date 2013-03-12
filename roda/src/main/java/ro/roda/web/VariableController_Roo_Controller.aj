@@ -16,6 +16,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.domain.Variable;
+import ro.roda.service.ConceptService;
+import ro.roda.service.FileService;
+import ro.roda.service.FormEditedNumberVarService;
+import ro.roda.service.FormEditedTextVarService;
+import ro.roda.service.InstanceService;
+import ro.roda.service.OtherStatisticService;
+import ro.roda.service.SelectionVariableService;
+import ro.roda.service.SkipService;
+import ro.roda.service.VargroupService;
 import ro.roda.service.VariableService;
 import ro.roda.web.VariableController;
 
@@ -23,6 +32,33 @@ privileged aspect VariableController_Roo_Controller {
     
     @Autowired
     VariableService VariableController.variableService;
+    
+    @Autowired
+    ConceptService VariableController.conceptService;
+    
+    @Autowired
+    FileService VariableController.fileService;
+    
+    @Autowired
+    FormEditedNumberVarService VariableController.formEditedNumberVarService;
+    
+    @Autowired
+    FormEditedTextVarService VariableController.formEditedTextVarService;
+    
+    @Autowired
+    InstanceService VariableController.instanceService;
+    
+    @Autowired
+    OtherStatisticService VariableController.otherStatisticService;
+    
+    @Autowired
+    SelectionVariableService VariableController.selectionVariableService;
+    
+    @Autowired
+    SkipService VariableController.skipService;
+    
+    @Autowired
+    VargroupService VariableController.vargroupService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String VariableController.create(@Valid Variable variable, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -91,6 +127,15 @@ privileged aspect VariableController_Roo_Controller {
     
     void VariableController.populateEditForm(Model uiModel, Variable variable) {
         uiModel.addAttribute("variable", variable);
+        uiModel.addAttribute("concepts", conceptService.findAllConcepts());
+        uiModel.addAttribute("files", fileService.findAllFiles());
+        uiModel.addAttribute("formeditednumbervars", formEditedNumberVarService.findAllFormEditedNumberVars());
+        uiModel.addAttribute("formeditedtextvars", formEditedTextVarService.findAllFormEditedTextVars());
+        uiModel.addAttribute("instances", instanceService.findAllInstances());
+        uiModel.addAttribute("otherstatistics", otherStatisticService.findAllOtherStatistics());
+        uiModel.addAttribute("selectionvariables", selectionVariableService.findAllSelectionVariables());
+        uiModel.addAttribute("skips", skipService.findAllSkips());
+        uiModel.addAttribute("vargroups", vargroupService.findAllVargroups());
     }
     
     String VariableController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

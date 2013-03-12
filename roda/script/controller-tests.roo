@@ -9,6 +9,7 @@ selenium test --controller ~.web.AuditLogChangesetController
 selenium test --controller ~.web.AuditLogFieldController
 selenium test --controller ~.web.AuditLogTableController
 selenium test --controller ~.web.AuthDataController
+selenium test --controller ~.web.AuthoritiesController
 selenium test --controller ~.web.CatalogAclController
 selenium test --controller ~.web.CatalogController
 selenium test --controller ~.web.CatalogStudyController
@@ -34,6 +35,9 @@ selenium test --controller ~.web.FormController
 selenium test --controller ~.web.FormEditedNumberVarController
 selenium test --controller ~.web.FormEditedTextVarController
 selenium test --controller ~.web.FormSelectionVarController
+selenium test --controller ~.web.GroupAuthoritiesController
+selenium test --controller ~.web.GroupMembersController
+selenium test --controller ~.web.GroupsController
 selenium test --controller ~.web.InstanceAclController
 selenium test --controller ~.web.InstanceController
 selenium test --controller ~.web.InstanceDescrController
@@ -111,6 +115,7 @@ selenium test --controller ~.web.UserProfileController
 selenium test --controller ~.web.UserSettingController
 selenium test --controller ~.web.UserSettingGroupController
 selenium test --controller ~.web.UserSettingValueController
+selenium test --controller ~.web.UsersController
 selenium test --controller ~.web.ValueController
 selenium test --controller ~.web.VargroupController
 selenium test --controller ~.web.VariableController

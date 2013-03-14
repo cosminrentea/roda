@@ -446,4 +446,53 @@ __PACKAGE__->many_to_many("topics", "instance_topics", "topic");
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
 __PACKAGE__->meta->make_immutable;
+
+sub attach_organizations {
+
+     my ( $self, %params ) = @_;
+     foreach my $org (@{$params{orgs}}) { 
+     	
+        my $assoctypeId;
+        #Verificarea tipului asocierii intre instanta si organizatie (assoctype); daca nu exista, este inserat mai intai in tabelul instance_org_assoc
+    	if ( $org -> {assoc_name} && $org -> {assoc_name} ne '' ) {
+    		my $guard = $self->result_source->schema()->txn_scope_guard;
+        	my $assoctypers = $self->result_source->schema()->resultset('InstanceOrgAssoc')->checkassoctype(%$org);    	
+        
+        	$self->result_source->schema()->resultset('InstanceOrg')->find_or_create({
+          																			org_id => $org->{id},
+          																			instance_id => $self->id,
+          																			assoc_type_id => $assoctypers->id,
+         																		  },
+         																		  {
+         		 																	key => 'primary',
+         																		  });
+      		$guard->commit;
+    	} 	
+     }
+}
+
+sub attach_persons {
+
+     my ( $self, %params ) = @_;
+     foreach my $person (@{$params{persons}}) { 
+     	
+        my $assoctypeId;
+        #Verificarea tipului asocierii intre instanta si persoana (assoctype); daca nu exista, este inserat mai intai in tabelul instance_person_assoc
+    	if ( $person -> {assoc_name} && $person -> {assoc_name} ne '' ) {
+    		my $guard = $self->result_source->schema()->txn_scope_guard;
+        	my $assoctypers = $self->result_source->schema()->resultset('InstancePersonAssoc')->checkassoctype(%$person);    	
+        
+        	$self->result_source->schema()->resultset('InstancePerson')->find_or_create({
+          																			person_id => $person->{id},
+          																			instance_id => $self->id,
+          																			assoc_type_id => $assoctypers->id,
+         																		  },
+         																		  {
+         		 																	key => 'primary',
+         																		  });
+      		$guard->commit;
+    	} 	
+     }
+}
+
 1;

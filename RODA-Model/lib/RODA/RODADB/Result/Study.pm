@@ -32,7 +32,7 @@ extends 'DBIx::Class::Core';
 
 =cut
 
-__PACKAGE__->load_components("InflateColumn::DateTime");
+__PACKAGE__->load_components("InflateColumn::DateTime", "+RODA::Components::DBIC::DBAudit");
 
 =head1 TABLE: C<study>
 
@@ -137,13 +137,13 @@ __PACKAGE__->set_primary_key("id");
 
 Type: belongs_to
 
-Related object: L<RODA::RODADB::Result::User>
+Related object: L<RODA::RODADB::Result::RodaUser>
 
 =cut
 
 __PACKAGE__->belongs_to(
   "added_by",
-  "RODA::RODADB::Result::User",
+  "RODA::RODADB::Result::RodaUser",
   { id => "added_by" },
   { is_deferrable => 0, on_delete => "NO ACTION", on_update => "NO ACTION" },
 );
@@ -310,4 +310,53 @@ __PACKAGE__->many_to_many("topics", "study_topics", "topic");
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
 __PACKAGE__->meta->make_immutable;
+
+sub attach_organizations {
+
+     my ( $self, %params ) = @_;
+     foreach my $org (@{$params{orgs}}) { 
+     	
+        my $assoctypeId;
+        #Verificarea tipului asocierii intre studiu si organizatie (assoctype); daca nu exista, este inserat mai intai in tabelul study_org_assoc
+    	if ( $org -> {assoc_name} && $org -> {assoc_name} ne '' ) {
+    		my $guard = $self->result_source->schema()->txn_scope_guard;
+        	my $assoctypers = $self->result_source->schema()->resultset('StudyOrgAssoc')->checkassoctype(%$org);    	
+        
+        	$self->result_source->schema()->resultset('StudyOrg')->find_or_create({
+          																			org_id => $org->{id},
+          																			study_id => $self->id,
+          																			assoctype_id => $assoctypers->id,
+         																		  },
+         																		  {
+         		 																	key => 'primary',
+         																		  });
+      		$guard->commit;
+    	} 	
+     }
+}
+
+sub attach_persons {
+
+     my ( $self, %params ) = @_;
+     foreach my $person (@{$params{persons}}) { 
+     	
+        my $assoctypeId;
+        #Verificarea tipului asocierii intre studiu si persoana (assoctype); daca nu exista, este inserat mai intai in tabelul study_person_assoc
+    	if ( $person -> {assoc_name} && $person -> {assoc_name} ne '' ) {
+    		my $guard = $self->result_source->schema()->txn_scope_guard;
+        	my $assoctypers = $self->result_source->schema()->resultset('StudyPersonAssoc')->checkassoctype(%$person);    	
+        
+        	$self->result_source->schema()->resultset('StudyPerson')->find_or_create({
+          																			person_id => $person->{id},
+          																			study_id => $self->id,
+          																			assoctype_id => $assoctypers->id,
+         																		  },
+         																		  {
+         		 																	key => 'primary',
+         																		  });
+      		$guard->commit;
+    	} 	
+     }
+}
+
 1;

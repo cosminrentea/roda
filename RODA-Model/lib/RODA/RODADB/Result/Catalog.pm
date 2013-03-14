@@ -1,4 +1,5 @@
 use utf8;
+use DateTime;
 package RODA::RODADB::Result::Catalog;
 
 # Created by DBIx::Class::Schema::Loader
@@ -172,13 +173,13 @@ __PACKAGE__->has_many(
 
 Type: belongs_to
 
-Related object: L<RODA::RODADB::Result::User>
+Related object: L<RODA::RODADB::Result::RodaUser>
 
 =cut
 
 __PACKAGE__->belongs_to(
   "owner",
-  "RODA::RODADB::Result::User",
+  "RODA::RODADB::Result::RodaUser",
   { id => "owner" },
   { is_deferrable => 0, on_delete => "NO ACTION", on_update => "NO ACTION" },
 );
@@ -210,4 +211,32 @@ Related object: L<RODA::RODADB::Result::Catalog>
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
 __PACKAGE__->meta->make_immutable;
+
+sub attach_studies {
+     my ( $self, %params ) = @_;
+     foreach my $study (@{$params{studies}}) { 
+     	my $guard = $self->result_source->schema()->txn_scope_guard;
+        
+        #my $studyrs = $self->result_source->schema()->resultset('Study')->checkstudyid(%$study);  
+        my $added;
+		if (!$study->{added}) {
+			$added = DateTime->now;
+		} else {
+			$added = $study->{added};
+		}
+			   
+        #if ($studyrs) { 
+        	$self->result_source->schema()->resultset('CatalogStudy')->find_or_create({
+          																			    study_id => $study->{id},
+          																			    catalog_id => $self->id,
+          																			    added => $added,
+         																			  },
+         																			  {
+         		 																	  key => 'primary',
+         																			  });
+      		#}
+      	$guard->commit; 	
+     }
+}
+
 1;

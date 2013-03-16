@@ -4,9 +4,7 @@
 package ro.roda.domain;
 
 import java.util.Set;
-import javax.persistence.Column;
 import javax.persistence.OneToMany;
-import javax.validation.constraints.NotNull;
 import ro.roda.domain.AclEntry;
 import ro.roda.domain.AclObjectIdentity;
 import ro.roda.domain.AclSid;
@@ -18,14 +16,6 @@ privileged aspect AclSid_Roo_DbManaged {
     
     @OneToMany(mappedBy = "ownerSid")
     private Set<AclObjectIdentity> AclSid.aclObjectIdentities;
-    
-    @Column(name = "principal", columnDefinition = "bool", unique = true)
-    @NotNull
-    private boolean AclSid.principal;
-    
-    @Column(name = "sid", columnDefinition = "text", unique = true)
-    @NotNull
-    private String AclSid.sid;
     
     public Set<AclEntry> AclSid.getAclEntries() {
         return aclEntries;
@@ -41,22 +31,6 @@ privileged aspect AclSid_Roo_DbManaged {
     
     public void AclSid.setAclObjectIdentities(Set<AclObjectIdentity> aclObjectIdentities) {
         this.aclObjectIdentities = aclObjectIdentities;
-    }
-    
-    public boolean AclSid.isPrincipal() {
-        return principal;
-    }
-    
-    public void AclSid.setPrincipal(boolean principal) {
-        this.principal = principal;
-    }
-    
-    public String AclSid.getSid() {
-        return sid;
-    }
-    
-    public void AclSid.setSid(String sid) {
-        this.sid = sid;
     }
     
 }

@@ -15,12 +15,12 @@
             <menu:item id="i_catalogacl_new" messageCode="global_menu_new" url="/catalogacls?form" z="QoXs8yVmpATu0aDeTGDuLwnu5r0="/>
             <menu:item id="i_catalogacl_list" messageCode="global_menu_list" url="/catalogacls?page=1&amp;size=${empty param.size ? 10 : param.size}" z="j/vVIinhrWPU+3pifOKmCK4iskQ="/>
         </menu:category>
-        <sec:authorize ifAllGranted="ROLE_ADMIN">
+<!--    <sec:authorize ifAllGranted="ROLE_ADMIN">  -->
             <menu:category id="c_catalog" z="/IwzZ/FhPYxAhzDNjL9QQjNnCHU=">
                 <menu:item id="i_catalog_new" messageCode="global_menu_new" url="/catalogs?form" z="a6hixpJnjl/hCZKXAkVdLW874K4="/>
                 <menu:item id="i_catalog_list" messageCode="global_menu_list" url="/catalogs?page=1&amp;size=${empty param.size ? 10 : param.size}" z="4Txa+T+L3VWl7nHTpDVypAEDxIw="/>
             </menu:category>
-        </sec:authorize>
+<!--         </sec:authorize>  -->
         <menu:category id="c_studyorgassoc" z="hG9ls5dGrs3aNAIK60HaJ6Nu7Xs=">
             <menu:item id="i_studyorgassoc_new" messageCode="global_menu_new" url="/studyorgassocs?form" z="DG0ir+PXiXbXAH4sLd2renJFAS8="/>
             <menu:item id="i_studyorgassoc_list" messageCode="global_menu_list" url="/studyorgassocs?page=1&amp;size=${empty param.size ? 10 : param.size}" z="Updm6Nbra4BXmMMvwa2JDkgJ8tc="/>

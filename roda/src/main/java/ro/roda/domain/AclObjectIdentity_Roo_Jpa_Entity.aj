@@ -8,14 +8,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
 import ro.roda.domain.AclObjectIdentity;
 
 privileged aspect AclObjectIdentity_Roo_Jpa_Entity {
     
     declare @type: AclObjectIdentity: @Entity;
-    
-    declare @type: AclObjectIdentity: @Table(schema = "public", name = "acl_object_identity");
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

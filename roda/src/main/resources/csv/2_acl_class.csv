@@ -1,0 +1,4 @@
+id,class
+1,ro.roda.domain.Catalog
+2,ro.roda.domain.Study
+3,ro.roda.domain.CatalogStudy

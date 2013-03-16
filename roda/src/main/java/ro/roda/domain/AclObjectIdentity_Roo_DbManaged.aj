@@ -27,16 +27,8 @@ privileged aspect AclObjectIdentity_Roo_DbManaged {
     private AclClass AclObjectIdentity.objectIdClass;
     
     @ManyToOne
-    @JoinColumn(name = "parent_object", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
-    private AclObjectIdentity AclObjectIdentity.parentObject;
-    
-    @ManyToOne
     @JoinColumn(name = "owner_sid", referencedColumnName = "id", nullable = false)
     private AclSid AclObjectIdentity.ownerSid;
-    
-    @Column(name = "object_id_identity", columnDefinition = "int8", unique = true)
-    @NotNull
-    private Long AclObjectIdentity.objectIdIdentity;
     
     @Column(name = "entries_inheriting", columnDefinition = "bool")
     @NotNull
@@ -66,28 +58,12 @@ privileged aspect AclObjectIdentity_Roo_DbManaged {
         this.objectIdClass = objectIdClass;
     }
     
-    public AclObjectIdentity AclObjectIdentity.getParentObject() {
-        return parentObject;
-    }
-    
-    public void AclObjectIdentity.setParentObject(AclObjectIdentity parentObject) {
-        this.parentObject = parentObject;
-    }
-    
     public AclSid AclObjectIdentity.getOwnerSid() {
         return ownerSid;
     }
     
     public void AclObjectIdentity.setOwnerSid(AclSid ownerSid) {
         this.ownerSid = ownerSid;
-    }
-    
-    public Long AclObjectIdentity.getObjectIdIdentity() {
-        return objectIdIdentity;
-    }
-    
-    public void AclObjectIdentity.setObjectIdIdentity(Long objectIdIdentity) {
-        this.objectIdIdentity = objectIdIdentity;
     }
     
     public boolean AclObjectIdentity.isEntriesInheriting() {

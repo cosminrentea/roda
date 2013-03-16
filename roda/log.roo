@@ -1596,3 +1596,9 @@ selenium test --controller ~.web.ValueController
 selenium test --controller ~.web.VargroupController
 selenium test --controller ~.web.VariableController
 // script --file /Users/cosmin/Documents/workspace-sts/roda/script/controller-tests.roo
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log closed at 2013-03-12 22:37:07
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log opened at 2013-03-13 15:39:34
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log opened at 2013-03-13 15:56:11
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log closed at 2013-03-14 14:37:28
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log opened at 2013-03-14 14:39:33
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log closed at 2013-03-14 16:12:10

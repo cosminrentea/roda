@@ -49,12 +49,6 @@ privileged aspect CatalogController_Roo_Controller {
         return "redirect:/catalogs/" + encodeUrlPathSegment(catalog.getId().toString(), httpServletRequest);
     }
     
-    @RequestMapping(params = "form", produces = "text/html")
-    public String CatalogController.createForm(Model uiModel) {
-        populateEditForm(uiModel, new Catalog());
-        return "catalogs/create";
-    }
-    
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String CatalogController.show(@PathVariable("id") Integer id, Model uiModel) {
         addDateTimeFormatPatterns(uiModel);

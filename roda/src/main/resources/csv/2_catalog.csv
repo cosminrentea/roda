@@ -1,3 +1,5 @@
 id,name,parent_id,owner,added,sequencenr,description
 0,"fake root",0,1,now(),1,"Fake Root Folder"
-1,"catalog_test",0,1,now(),1,"Catalog pentru testare"
+1,"catalog_nivel1_1",0,1,now(),2,"Catalog pentru testare 1"
+2,"catalog_nivel1_2",0,1,now(),3,"Catalog pentru testare 2"
+3,"catalog_nivel1_3",0,1,now(),4,"Catalog pentru testare 3"

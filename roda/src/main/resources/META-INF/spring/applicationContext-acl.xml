@@ -91,7 +91,7 @@
 	<bean id="auditLogger"
 		class="org.springframework.security.acls.domain.ConsoleAuditLogger" />
 
-	<!-- http://static.springsource.org/spring-security/site/docs/3.0.x/apidocs/org/springframework/security/access/hierarchicalroles/RoleHierarchyImpl.html -->
+	<!-- http://static.springsource.org/spring-security/site/docs/3.2.x/apidocs/org/springframework/security/access/hierarchicalroles/RoleHierarchyImpl.html -->
 	<bean id="roleHierarchy"
 		class="org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl">
 		<property name="hierarchy">

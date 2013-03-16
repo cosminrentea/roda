@@ -121,7 +121,7 @@
       <Cl au="0" df="" nm="sid" nu="0">
         <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
-      <Idx clu="0" nm="acl_sid_principal_Idx" unq="1">
+      <Idx clu="0" nm="acl_sid_principal_sid_Idx" unq="1">
         <ClNs>principal, sid</ClNs>
       </Idx>
       <UniqueConstraints/>
@@ -334,6 +334,25 @@
         <CdTb mn="1" nm="auth_data" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="user_id" prCl="id"/>
       </Fk>
+      <UniqueConstraints/>
+      <SchTrHis/>
+    </Tbl>
+    <Tbl UsSo="1" nm="authorities">
+      <TblOpts/>
+      <Cl au="0" df="" nm="username" nu="0">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="64" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="authority" nu="0">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="64" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Fk deAc="3" nm="fk_authorities_users" prLkCl="username" upAc="3">
+        <PrTb mn="0" nm="users" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="authorities" oe="0" sch="public" zr="1"/>
+        <ClPr cdCl="username" prCl="username"/>
+      </Fk>
+      <Idx clu="0" nm="authorities_auhtority_Idx" unq="1">
+        <ClNs>username, authority</ClNs>
+      </Idx>
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
@@ -1109,6 +1128,54 @@
         <ClPr cdCl="variable_id" prCl="variable_id"/>
         <ClPr cdCl="item_id" prCl="item_id"/>
       </Fk>
+      <UniqueConstraints/>
+      <SchTrHis/>
+    </Tbl>
+    <Tbl UsSo="1" nm="group_authorities">
+      <TblOpts/>
+      <Cl au="0" df="" nm="group_id" nu="0">
+        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="authority" nu="0">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="64" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Fk deAc="3" nm="fk_group_authorities_groups" prLkCl="id" upAc="3">
+        <PrTb mn="0" nm="groups" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="group_authorities" oe="0" sch="public" zr="1"/>
+        <ClPr cdCl="group_id" prCl="id"/>
+      </Fk>
+      <UniqueConstraints/>
+      <SchTrHis/>
+    </Tbl>
+    <Tbl UsSo="1" nm="group_members">
+      <TblOpts/>
+      <Pk ClNs="id" nm="pkgroup_members"/>
+      <Cl au="0" df="" nm="id" nu="0">
+        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="username" nu="0">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="64" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="group_id" nu="0">
+        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Fk deAc="3" nm="fk_group_members_groups" prLkCl="id" upAc="3">
+        <PrTb mn="0" nm="groups" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="group_members" oe="0" sch="public" zr="1"/>
+        <ClPr cdCl="group_id" prCl="id"/>
+      </Fk>
+      <UniqueConstraints/>
+      <SchTrHis/>
+    </Tbl>
+    <Tbl UsSo="1" nm="groups">
+      <TblOpts/>
+      <Pk ClNs="id" nm="pkgroups"/>
+      <Cl au="0" df="" nm="id" nu="0">
+        <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="group_name" nu="0">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="64" sc="null" sg="1" un="0"/>
+      </Cl>
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
@@ -3536,6 +3603,21 @@
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
+    <Tbl UsSo="1" nm="users">
+      <TblOpts/>
+      <Pk ClNs="username" nm="pkusers"/>
+      <Cl au="0" df="" nm="username" nu="0">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="64" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="password" nu="0">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="64" sc="null" sg="1" un="0"/>
+      </Cl>
+      <Cl au="0" df="" nm="enabled" nu="0">
+        <DT arr="0" ds="Boolean" en="" id="16" ln="null" sc="null" sg="1" un="0"/>
+      </Cl>
+      <UniqueConstraints/>
+      <SchTrHis/>
+    </Tbl>
     <Tbl UsSo="1" nm="value">
       <Cm>Tabel ce stocheaza valorile posibile ale item-urilor variabilelor de selectie</Cm>
       <TblOpts>WITHOUT OIDS</TblOpts>
@@ -3854,7 +3936,7 @@
     <TbGl bkCl="ffccccff" sch="public" tbl="acl_sid" x="443" y="1378"/>
     <TbGl bkCl="ffccccff" sch="public" tbl="acl_class" x="123" y="1382"/>
     <TbGl bkCl="ffccccff" sch="public" tbl="acl_object_identity" x="78" y="1517"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="acl_entry" x="408" y="1669"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="acl_entry" x="413" y="1661"/>
     <TbGl bkCl="ffffccff" sch="public" tbl="phone" x="1271" y="573"/>
     <TbGl bkCl="ffffccff" sch="public" tbl="org_email" x="1039" y="718"/>
     <TbGl bkCl="ffffccff" sch="public" tbl="person_email" x="1140" y="471"/>
@@ -3875,7 +3957,12 @@
     <TbGl bkCl="ffccccff" sch="public" tbl="audit_log_table" x="1438" y="1563"/>
     <TbGl bkCl="ffccccff" sch="public" tbl="audit_log_field" x="1421" y="1651"/>
     <TbGl bkCl="ffccccff" sch="public" tbl="audit_log_action" x="1090" y="1421"/>
-    <TbGl bkCl="ffccccff" sch="public" tbl="audit_log_change" x="1093" y="1643"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="audit_log_change" x="1093" y="1642"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="users" x="2878" y="1165"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="authorities" x="2874" y="1286"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="groups" x="2874" y="1410"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="group_authorities" x="2993" y="1534"/>
+    <TbGl bkCl="ffccccff" sch="public" tbl="group_members" x="2774" y="1532"/>
     <FkGl bkCl="ff000000" nm="public.acl_entry.fk_acl_entry_acl_object_identity"/>
     <FkGl bkCl="ff000000" nm="public.acl_entry.fk_acl_entry_acl_sid"/>
     <FkGl bkCl="ff000000" nm="public.acl_object_identity.fk_acl_object_identity_acl_class"/>
@@ -3889,6 +3976,7 @@
     <FkGl bkCl="ff000000" nm="public.audit_log_changeset.fk_audit_log_changeset_rodauser"/>
     <FkGl bkCl="ff000000" nm="public.audit_log_field.audit_log_field_fk_audited_table"/>
     <FkGl bkCl="ff000000" nm="public.auth_data.fk_auth_data_users"/>
+    <FkGl bkCl="ff000000" nm="public.authorities.fk_authorities_users"/>
     <FkGl bkCl="ff000000" nm="public.catalog.fk_catalog_users"/>
     <FkGl bkCl="ff000000" nm="public.catalog_acl.fk_catalog_acl_catalog"/>
     <FkGl bkCl="ff000000" nm="public.catalog_study.fk_catalog_study_catalog"/>
@@ -3918,6 +4006,8 @@
     <FkGl bkCl="ff000000" nm="public.form_edited_text_var.fk_form_edited_text_var_variable"/>
     <FkGl bkCl="ff000000" nm="public.form_selection_var.fk_form_selection_var_form"/>
     <FkGl bkCl="ff000000" nm="public.form_selection_var.fk_form_selection_var_selection_variable_item"/>
+    <FkGl bkCl="ff000000" nm="public.group_authorities.fk_group_authorities_groups"/>
+    <FkGl bkCl="ff000000" nm="public.group_members.fk_group_members_groups"/>
     <FkGl bkCl="ff000000" nm="public.instance.fk_instance_study"/>
     <FkGl bkCl="ff000000" nm="public.instance.fk_instance_time_meth_type"/>
     <FkGl bkCl="ff000000" nm="public.instance.fk_instance_unit_analysis"/>
@@ -4052,11 +4142,11 @@
       <Zone bkCl="ffece9d8" h="1059" nm="Org + Person" w="1000" x="722" y="211"/>
       <Zone bkCl="ffece9d8" h="1028" nm="Studies + Catalogs" w="804" x="1794" y="202"/>
       <Zone bkCl="ffece9d8" h="805" nm="Topics + Keywords" w="177" x="1794" y="10"/>
-      <Zone bkCl="ffece9d8" h="1001" nm="User Data" w="572" x="1810" y="1060"/>
+      <Zone bkCl="ffece9d8" h="1400" nm="User Data" w="572" x="1798" y="1056"/>
       <Zone bkCl="ffece9d8" h="1456" nm="Variables" w="623" x="3873" y="181"/>
     </Zones>
   </Dgm>
-  <RnmMgr NxRnmId="299">
+  <RnmMgr NxRnmId="302">
     <RnmCh ObjCls="Table" ParCls="Schema" ParNme="public" SupCls="" SupNme="">
       <Rnm id="1" nNm="person" oNm="Persoane"/>
     </RnmCh>
@@ -4619,6 +4709,8 @@
       <Rnm id="220" nNm="user_setting_group" oNm="user_settings_group"/>
     </RnmCh>
     <RnmCh ObjCls="Table" ParCls="Schema" ParNme="public" SupCls="" SupNme="">
+      <Rnm id="300" nNm="rodauser" oNm="users"/>
+      <Rnm id="299" nNm="users" oNm="rodauser"/>
       <Rnm id="298" nNm="rodauser" oNm="user"/>
       <Rnm id="221" nNm="user" oNm="users"/>
     </RnmCh>
@@ -4821,6 +4913,9 @@
     <RnmCh ObjCls="Column" ParCls="Table" ParNme="catalog" SupCls="Schema" SupNme="public">
       <Rnm id="297" nNm="sequencenr" oNm="sequence"/>
     </RnmCh>
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="authorities" SupCls="Schema" SupNme="public">
+      <Rnm id="301" nNm="authority" oNm="auhtority"/>
+    </RnmCh>
   </RnmMgr>
   <DbDocOptionMgr>
     <BasicOptionMgr>
@@ -4844,7 +4939,6 @@
     <TreePath/>
     <TreePath>/Schemas (1)</TreePath>
     <TreePath>/Schemas (1)/public</TreePath>
-    <TreePath>/Schemas (1)/public/Tables (126)</TreePath>
     <TreePath>/Diagrams (1)</TreePath>
     <TreePath>/Diagrams (1)/diagram</TreePath>
   </TreePaths>

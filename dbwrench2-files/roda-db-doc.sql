@@ -412,6 +412,19 @@ COMMENT ON COLUMN auth_data.field_value IS 'Valoarea campului specificat prin at
 COMMENT ON TABLE auth_data IS 'Tabel ce stocheaza datele de autentificare ale utilizatorilor';
 
 
+/******************** Add Table: authorities ************************/
+
+/* Build Table Structure */
+CREATE TABLE authorities
+(
+	username VARCHAR(64) NOT NULL,
+	authority VARCHAR(64) NOT NULL
+);
+
+/* Add Indexes */
+CREATE UNIQUE INDEX "authorities_auhtority_Idx" ON authorities (username, authority);
+
+
 /******************** Add Table: catalog ************************/
 
 /* Build Table Structure */
@@ -1106,6 +1119,45 @@ COMMENT ON COLUMN form_selection_var.item_id IS 'Identificatorul elementului sel
 COMMENT ON COLUMN form_selection_var.order_of_items_in_response IS 'Numarul de ordine al elementului corespunzator variabilei in cadrul raspunsului (relevant pentru raspunsuri care accepta o selectie multipla, in care ordinea este importanta)';
 
 COMMENT ON TABLE form_selection_var IS 'Tabel ce inregistreaza raspunsurile la variabilele de selectie (pentru care exista optiuni de raspuns) ';
+
+
+/******************** Add Table: group_authorities ************************/
+
+/* Build Table Structure */
+CREATE TABLE group_authorities
+(
+	group_id BIGINT NOT NULL,
+	authority VARCHAR(64) NOT NULL
+);
+
+
+/******************** Add Table: group_members ************************/
+
+/* Build Table Structure */
+CREATE TABLE group_members
+(
+id BIGSERIAL,
+	username VARCHAR(64) NOT NULL,
+	group_id BIGINT NOT NULL
+);
+
+/* Add Primary Key */
+ALTER TABLE group_members ADD CONSTRAINT pkgroup_members
+	PRIMARY KEY (id);
+
+
+/******************** Add Table: "groups" ************************/
+
+/* Build Table Structure */
+CREATE TABLE "groups"
+(
+id BIGSERIAL,
+	group_name VARCHAR(64) NOT NULL
+);
+
+/* Add Primary Key */
+ALTER TABLE "groups" ADD CONSTRAINT pkgroups
+	PRIMARY KEY (id);
 
 
 /******************** Add Table: instance ************************/
@@ -3245,6 +3297,21 @@ COMMENT ON COLUMN user_setting_value.value IS 'Valoarea setarii respective';
 COMMENT ON TABLE user_setting_value IS 'Tabel care stocheaza valorile setarilor utilizatorului';
 
 
+/******************** Add Table: users ************************/
+
+/* Build Table Structure */
+CREATE TABLE users
+(
+	username VARCHAR(64) NOT NULL,
+	password VARCHAR(64) NOT NULL,
+	enabled BOOL NOT NULL
+);
+
+/* Add Primary Key */
+ALTER TABLE users ADD CONSTRAINT pkusers
+	PRIMARY KEY (username);
+
+
 /******************** Add Table: value ************************/
 
 /* Build Table Structure */
@@ -3418,6 +3485,11 @@ ALTER TABLE auth_data ADD CONSTRAINT fk_auth_data_users
 	FOREIGN KEY (user_id) REFERENCES rodauser (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
+/* Add Foreign Key: fk_authorities_users */
+ALTER TABLE authorities ADD CONSTRAINT fk_authorities_users
+	FOREIGN KEY (username) REFERENCES users (username)
+	ON UPDATE NO ACTION ON DELETE NO ACTION;
+
 /* Add Foreign Key: fk_catalog_users */
 ALTER TABLE catalog ADD CONSTRAINT fk_catalog_users
 	FOREIGN KEY (owner) REFERENCES rodauser (id)
@@ -3561,6 +3633,16 @@ ALTER TABLE form_selection_var ADD CONSTRAINT fk_form_selection_var_form
 /* Add Foreign Key: fk_form_selection_var_selection_variable_item */
 ALTER TABLE form_selection_var ADD CONSTRAINT fk_form_selection_var_selection_variable_item
 	FOREIGN KEY (variable_id, item_id) REFERENCES selection_variable_item (variable_id, item_id)
+	ON UPDATE NO ACTION ON DELETE NO ACTION;
+
+/* Add Foreign Key: fk_group_authorities_groups */
+ALTER TABLE group_authorities ADD CONSTRAINT fk_group_authorities_groups
+	FOREIGN KEY (group_id) REFERENCES "groups" (id)
+	ON UPDATE NO ACTION ON DELETE NO ACTION;
+
+/* Add Foreign Key: fk_group_members_groups */
+ALTER TABLE group_members ADD CONSTRAINT fk_group_members_groups
+	FOREIGN KEY (group_id) REFERENCES "groups" (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 /* Add Foreign Key: fk_instance_study */

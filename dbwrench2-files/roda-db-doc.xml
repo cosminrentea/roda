@@ -3548,83 +3548,6 @@
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
-    <Seq incr="1" nm="acl_class_id_seq"/>
-    <Seq incr="1" nm="acl_entry_id_seq"/>
-    <Seq incr="1" nm="acl_object_identity_id_seq"/>
-    <Seq incr="1" nm="acl_sid_id_seq"/>
-    <Seq incr="1" nm="address_id_seq"/>
-    <Seq incr="1" nm="audit_field_id_seq"/>
-    <Seq incr="1" nm="audit_id_seq"/>
-    <Seq incr="1" nm="audit_log_action_id_seq"/>
-    <Seq incr="1" nm="audit_log_change_id_seq"/>
-    <Seq incr="1" nm="audit_log_changeset_id_seq"/>
-    <Seq incr="1" nm="audit_log_field_id_seq"/>
-    <Seq incr="1" nm="audit_log_table_id_seq"/>
-    <Seq incr="1" nm="audit_row_id_id_seq"/>
-    <Seq incr="1" nm="catalog_id_seq"/>
-    <Seq incr="1" nm="city_id_seq"/>
-    <Seq incr="1" nm="cms_file_id_seq"/>
-    <Seq incr="1" nm="cms_folder_id_seq"/>
-    <Seq incr="1" nm="cms_layout_group_id_seq"/>
-    <Seq incr="1" nm="cms_layout_id_seq"/>
-    <Seq incr="1" nm="cms_page_content_id_seq"/>
-    <Seq incr="1" nm="cms_page_id_seq"/>
-    <Seq incr="1" nm="cms_page_type_id_seq"/>
-    <Seq incr="1" nm="cms_snippet_group_id_seq"/>
-    <Seq incr="1" nm="cms_snippet_id_seq"/>
-    <Seq incr="1" nm="collection_model_type_id_seq"/>
-    <Seq incr="1" nm="concept_id_seq"/>
-    <Seq incr="1" nm="email_id_seq"/>
-    <Seq incr="1" nm="file_id_seq"/>
-    <Seq incr="1" nm="form_id_seq"/>
-    <Seq incr="1" nm="instance_id_seq"/>
-    <Seq incr="1" nm="instance_org_assoc_id_seq"/>
-    <Seq incr="1" nm="instance_person_assoc_id_seq"/>
-    <Seq incr="1" nm="internet_id_seq"/>
-    <Seq incr="1" nm="item_id_seq"/>
-    <Seq incr="1" nm="keyword_id_seq"/>
-    <Seq incr="1" nm="news_id_seq"/>
-    <Seq incr="1" nm="org_id_seq"/>
-    <Seq incr="1" nm="org_prefix_id_seq"/>
-    <Seq incr="1" nm="org_relation_type_id_seq"/>
-    <Seq incr="1" nm="org_sufix_id_seq"/>
-    <Seq incr="1" nm="other_statistic_id_seq"/>
-    <Seq incr="1" nm="person_id_seq"/>
-    <Seq incr="1" nm="person_links_id_seq"/>
-    <Seq incr="1" nm="person_role_id_seq"/>
-    <Seq incr="1" nm="phone_id_seq"/>
-    <Seq incr="1" nm="prefix_id_seq"/>
-    <Seq incr="1" nm="property_name_id_seq"/>
-    <Seq incr="1" nm="property_value_id_seq"/>
-    <Seq incr="1" nm="region_id_seq"/>
-    <Seq incr="1" nm="regiontype_id_seq"/>
-    <Seq incr="1" nm="rodauser_id_seq"/>
-    <Seq incr="1" nm="role_id_seq"/>
-    <Seq incr="1" nm="sampling_procedure_id_seq"/>
-    <Seq incr="1" nm="setting_group_id_seq"/>
-    <Seq incr="1" nm="setting_id_seq"/>
-    <Seq incr="1" nm="skip_id_seq"/>
-    <Seq incr="1" nm="source_contact_method_id_seq"/>
-    <Seq incr="1" nm="source_contacts_id_seq"/>
-    <Seq incr="1" nm="sourcestudy_id_seq"/>
-    <Seq incr="1" nm="sourcestudy_type_history_id_seq"/>
-    <Seq incr="1" nm="sourcestudy_type_id_seq"/>
-    <Seq incr="1" nm="sourcetype_history_id_seq"/>
-    <Seq incr="1" nm="sourcetype_id_seq"/>
-    <Seq incr="1" nm="study_id_seq"/>
-    <Seq incr="1" nm="study_org_assoc_id_seq"/>
-    <Seq incr="1" nm="study_person_asoc_id_seq"/>
-    <Seq incr="1" nm="study_person_assoc_id_seq"/>
-    <Seq incr="1" nm="suffix_id_seq"/>
-    <Seq incr="1" nm="time_meth_type_id_seq"/>
-    <Seq incr="1" nm="title_type_id_seq"/>
-    <Seq incr="1" nm="topic_id_seq"/>
-    <Seq incr="1" nm="unit_analysis_id_seq"/>
-    <Seq incr="1" nm="user_message_id_seq"/>
-    <Seq incr="1" nm="user_setting_group_id_seq"/>
-    <Seq incr="1" nm="user_setting_id_seq"/>
-    <Seq incr="1" nm="vargroup_id_seq"/>
-    <Seq incr="1" nm="variable_id_seq"/>
     <CustomTypes/>
   </Sch>
   <Dgm nm="diagram">
@@ -4821,6 +4744,7 @@
     <TreePath>/Schemas (1)</TreePath>
     <TreePath>/Schemas (1)/public</TreePath>
     <TreePath>/Schemas (1)/public/Tables (124)</TreePath>
+    <TreePath>/Schemas (1)/public/Sequences (0)</TreePath>
     <TreePath>/Diagrams (1)</TreePath>
     <TreePath>/Diagrams (1)/diagram</TreePath>
   </TreePaths>

@@ -246,7 +246,7 @@ ALTER TABLE acl_sid ADD CONSTRAINT pkacl_sid
 COMMENT ON TABLE acl_sid IS 'Tabel folosit de Spring Security pentru ACL. Uniquely identify any principal or authority in the system ("SID" stands for "security identity"). The only columns are the ID, a textual representation of the SID, and a flag to indicate whether the textual representation refers to a principal name or a GrantedAuthority. Thus, there is a single row for each unique principal or GrantedAuthority. When used in the context of receiving a permission, a SID is generally called a "recipient".';
 
 /* Add Indexes */
-CREATE UNIQUE INDEX "acl_sid_principal_Idx" ON acl_sid (principal, sid);
+CREATE UNIQUE INDEX "acl_sid_principal_sid_Idx" ON acl_sid (principal, sid);
 
 
 /******************** Add Table: address ************************/
@@ -291,7 +291,7 @@ COMMENT ON TABLE address IS 'Tabel unic pentru toate adresele care se gasesc in 
 /* Build Table Structure */
 CREATE TABLE audit_log_action
 (
-	id INTEGER DEFAULT nextval('audit_log_action_id_seq'::regclass) NOT NULL,
+id SERIAL,
 	changeset INTEGER NOT NULL,
 	audited_table INTEGER NOT NULL,
 	audited_row VARCHAR(50) NULL,
@@ -313,7 +313,7 @@ CREATE INDEX audit_log_action_idx_changeset ON audit_log_action (changeset);
 /* Build Table Structure */
 CREATE TABLE audit_log_change
 (
-	id INTEGER DEFAULT nextval('audit_log_change_id_seq'::regclass) NOT NULL,
+id SERIAL,
 	"action" INTEGER NOT NULL,
 	field INTEGER NOT NULL,
 	old_value VARCHAR(255) NULL,
@@ -335,10 +335,10 @@ CREATE INDEX audit_log_change_idx_field ON audit_log_change (field);
 /* Build Table Structure */
 CREATE TABLE audit_log_changeset
 (
-	id INTEGER DEFAULT nextval('audit_log_changeset_id_seq'::regclass) NOT NULL,
-	description VARCHAR(255) NULL,
+id SERIAL,
+	description TEXT NULL,
 	"timestamp" TIMESTAMP DEFAULT now() NOT NULL,
-	rodauser INTEGER NOT NULL
+	user_id INTEGER NOT NULL
 ) WITHOUT OIDS;
 
 /* Add Primary Key */
@@ -346,7 +346,7 @@ ALTER TABLE audit_log_changeset ADD CONSTRAINT audit_log_changeset_pkey
 	PRIMARY KEY (id);
 
 /* Add Indexes */
-CREATE INDEX audit_log_changeset_idx_rodauser ON audit_log_changeset (rodauser);
+CREATE INDEX audit_log_changeset_idx_rodauser ON audit_log_changeset (user_id);
 
 
 /******************** Add Table: audit_log_field ************************/
@@ -354,9 +354,9 @@ CREATE INDEX audit_log_changeset_idx_rodauser ON audit_log_changeset (rodauser);
 /* Build Table Structure */
 CREATE TABLE audit_log_field
 (
-	id INTEGER DEFAULT nextval('audit_log_field_id_seq'::regclass) NOT NULL,
+id SERIAL,
 	audited_table INTEGER NOT NULL,
-	name VARCHAR(40) NOT NULL
+	name TEXT NOT NULL
 ) WITHOUT OIDS;
 
 /* Add Primary Key */
@@ -372,8 +372,8 @@ CREATE INDEX audit_log_field_idx_audited_table ON audit_log_field (audited_table
 /* Build Table Structure */
 CREATE TABLE audit_log_table
 (
-	id INTEGER DEFAULT nextval('audit_log_table_id_seq'::regclass) NOT NULL,
-	name VARCHAR(40) NOT NULL
+id SERIAL,
+	name TEXT NOT NULL
 ) WITHOUT OIDS;
 
 /* Add Primary Key */
@@ -461,42 +461,6 @@ COMMENT ON COLUMN catalog.description IS 'Descrierea catalogului';
 COMMENT ON TABLE catalog IS 'Tabel ce stocheaza informatii despre cataloagele de studii';
 
 
-/******************** Add Table: catalog_acl ************************/
-
-/* Build Table Structure */
-CREATE TABLE catalog_acl
-(
-	catalog_id INTEGER NOT NULL,
-	aro_id INTEGER NOT NULL,
-	aro_type INTEGER NOT NULL,
-	read BOOL NULL,
-	"update" BOOL NULL,
-	"delete" BOOL NULL,
-	modacl BOOL NULL
-) WITHOUT OIDS;
-
-/* Add Primary Key */
-ALTER TABLE catalog_acl ADD CONSTRAINT pkcatalog_acl
-	PRIMARY KEY (catalog_id, aro_id, aro_type);
-
-/* Add Comments */
-COMMENT ON COLUMN catalog_acl.catalog_id IS 'Codul catalogului (refera atributul id din tabelul catalog)';
-
-COMMENT ON COLUMN catalog_acl.aro_id IS 'Codul unui obiect care solicita acces';
-
-COMMENT ON COLUMN catalog_acl.aro_type IS 'Tipul unui obiect care solicita acces';
-
-COMMENT ON COLUMN catalog_acl.read IS 'Atribut boolean avand valoare true daca este acordat drept de citire asupra catalogului; false, altfel';
-
-COMMENT ON COLUMN catalog_acl."update" IS 'Atribut boolean avand valoare true daca este acordat drept de modificare asupra catalogului; false, altfel';
-
-COMMENT ON COLUMN catalog_acl."delete" IS 'Atribut boolean avand valoare true daca este acordat drept de stergere asupra catalogului; false, altfel';
-
-COMMENT ON COLUMN catalog_acl.modacl IS 'Atribut boolean, a carui valoare este true daca drepturile pot fi modificate; altfel, valoarea atributului este false';
-
-COMMENT ON TABLE catalog_acl IS 'Tabel ce stocheaza drepturile de acces asupra unui catalog';
-
-
 /******************** Add Table: catalog_study ************************/
 
 /* Build Table Structure */
@@ -525,8 +489,8 @@ COMMENT ON TABLE catalog_study IS 'Tabel ce contine asocierile dintre cataloage 
 CREATE TABLE city
 (
 id SERIAL,
-	name VARCHAR(100) NOT NULL,
-	country_id CHAR(2) NOT NULL,
+	name TEXT NOT NULL,
+	country_id INTEGER NOT NULL,
 	city_code VARCHAR(50) NULL,
 	city_code_name VARCHAR(100) NULL,
 	city_code_sup VARCHAR(100) NULL,
@@ -897,9 +861,12 @@ COMMENT ON TABLE concept_variable IS 'Tabel ce asociaza variabilelor o multime d
 /* Build Table Structure */
 CREATE TABLE country
 (
-	id CHAR(2) NOT NULL,
-	name VARCHAR(100) NOT NULL,
-	alpha3 CHAR(3) NOT NULL
+id SERIAL,
+	name_ro TEXT NULL,
+	name_self TEXT NULL,
+	name_en TEXT NULL,
+	iso3166 CHAR(2) NOT NULL,
+	iso3166_alpha3 CHAR(3) NULL
 ) WITHOUT OIDS;
 
 /* Add Primary Key */
@@ -909,14 +876,14 @@ ALTER TABLE country ADD CONSTRAINT pkcountry
 /* Add Comments */
 COMMENT ON COLUMN country.id IS 'Codul tarii';
 
-COMMENT ON COLUMN country.name IS 'Numele tarii';
+COMMENT ON COLUMN country.name_ro IS 'Numele tarii in limba romana';
+
+COMMENT ON COLUMN country.name_self IS 'Numele tarii in limba romana';
 
 COMMENT ON TABLE country IS 'Tabel unic pentru toate referintele la tari';
 
 /* Add Indexes */
-CREATE UNIQUE INDEX "country_alpha3_Idx" ON country (alpha3);
-
-CREATE UNIQUE INDEX "country_name_Idx" ON country (name);
+CREATE UNIQUE INDEX "country_iso3166_Idx" ON country (iso3166);
 
 
 /******************** Add Table: email ************************/
@@ -971,39 +938,6 @@ COMMENT ON COLUMN file.size IS 'Dimensiunea fisierului (specificata in bytes)';
 COMMENT ON TABLE file IS 'Tabel ce contine documentele asociate oricarei entitati din baza de date (studiu sau instanta)';
 
 
-/******************** Add Table: file_acl ************************/
-
-/* Build Table Structure */
-CREATE TABLE file_acl
-(
-	document_id INTEGER NOT NULL,
-	aro_id INTEGER NOT NULL,
-	aro_type INTEGER NOT NULL,
-	read BOOL NOT NULL,
-	"update" BOOL NOT NULL,
-	"delete" BOOL NOT NULL
-) WITHOUT OIDS;
-
-/* Add Primary Key */
-ALTER TABLE file_acl ADD CONSTRAINT pkfile_acl
-	PRIMARY KEY (document_id, aro_id, aro_type);
-
-/* Add Comments */
-COMMENT ON COLUMN file_acl.document_id IS 'Codul documentului asupra caruia sunt definite drepturi de acces';
-
-COMMENT ON COLUMN file_acl.aro_id IS 'Codul obiectului care solicita drepturi de acces';
-
-COMMENT ON COLUMN file_acl.aro_type IS 'Tipul obiectului care solicita drepturi de acces';
-
-COMMENT ON COLUMN file_acl.read IS 'Atribut boolean, ce va avea valoarea true daca exista dreptul de citire; altfel, valoarea atributului va fi false';
-
-COMMENT ON COLUMN file_acl."update" IS 'Atribut boolean, ce va avea valoarea true daca exista dreptul de modificare; altfel, valoarea atributului va fi false';
-
-COMMENT ON COLUMN file_acl."delete" IS 'Atribut boolean, ce va avea valoarea true daca exista dreptul de stergere; altfel, valoarea atributului va fi false';
-
-COMMENT ON TABLE file_acl IS 'Tabel ce contine drepturile de acces asupra documentelor';
-
-
 /******************** Add Table: file_property_name_value ************************/
 
 /* Build Table Structure */
@@ -1032,7 +966,7 @@ id BIGSERIAL,
 	order_in_instance INTEGER NOT NULL,
 	operator_id INTEGER NULL,
 	operator_notes TEXT NULL,
-	fill_time TIMESTAMP NULL
+	form_filled_at TIMESTAMP NULL
 ) WITHOUT OIDS;
 
 /* Add Primary Key */
@@ -1040,6 +974,12 @@ ALTER TABLE form ADD CONSTRAINT pkform
 	PRIMARY KEY (id);
 
 /* Add Comments */
+COMMENT ON COLUMN form.order_in_instance IS 'numarul de ordine al chestionarului completat cu raspunsuri, in setul de date';
+
+COMMENT ON COLUMN form.operator_notes IS 'observatii ale operatorului';
+
+COMMENT ON COLUMN form.form_filled_at IS 'momentul completarii acestui chestionar cu raspunsuri de catre operator, pe teren';
+
 COMMENT ON TABLE form IS 'Tabel pentru informatiile legate de un chestionarele aplicate (un rand reprezinta o anumita fisa completata pe teren cu raspunsuri)';
 
 /* Add Indexes */
@@ -1167,8 +1107,8 @@ CREATE TABLE instance
 (
 id SERIAL,
 	study_id INTEGER NOT NULL,
-	datestart TIMESTAMP NULL,
-	dateend TIMESTAMP NULL,
+	date_start DATE NULL,
+	date_end DATE NULL,
 	unit_analysis_id INTEGER NOT NULL,
 	version INTEGER NOT NULL,
 	insertion_status INTEGER NOT NULL,
@@ -1188,9 +1128,9 @@ COMMENT ON COLUMN instance.id IS 'Codul instantei';
 
 COMMENT ON COLUMN instance.study_id IS 'Codul studiului caruia ii apartine instanta (refera atributul id al tabelului study)';
 
-COMMENT ON COLUMN instance.datestart IS 'Data de inceput a instantei';
+COMMENT ON COLUMN instance.date_start IS 'Data de inceput a instantei';
 
-COMMENT ON COLUMN instance.dateend IS 'Data de incheiere a instantei';
+COMMENT ON COLUMN instance.date_end IS 'Data de incheiere a instantei';
 
 COMMENT ON COLUMN instance.unit_analysis_id IS 'Codul unitatii de analiza specifice instantei (refera atributul id al tabelului unit_analysis)';
 
@@ -1205,49 +1145,13 @@ COMMENT ON COLUMN instance.raw_metadata IS 'daca metadatele sunt in forma digiti
 COMMENT ON TABLE instance IS 'Tabel ce contine informatiile principale ale instantelor';
 
 
-/******************** Add Table: instance_acl ************************/
-
-/* Build Table Structure */
-CREATE TABLE instance_acl
-(
-	instance_id INTEGER NOT NULL,
-	aro_id INTEGER NOT NULL,
-	aro_type INTEGER NOT NULL,
-	read BOOL NULL,
-	"update" BOOL NULL,
-	"delete" BOOL NULL,
-	modacl BOOL NULL
-) WITHOUT OIDS;
-
-/* Add Primary Key */
-ALTER TABLE instance_acl ADD CONSTRAINT pkinstance_acl
-	PRIMARY KEY (instance_id, aro_id, aro_type);
-
-/* Add Comments */
-COMMENT ON COLUMN instance_acl.instance_id IS 'Codul instantei asupra careia vor fi definite drepturi de acces ';
-
-COMMENT ON COLUMN instance_acl.aro_id IS 'Codul unui obiect care solicita drepturi de acces';
-
-COMMENT ON COLUMN instance_acl.aro_type IS 'Tipul unui obiect care solicita drepturi de acces';
-
-COMMENT ON COLUMN instance_acl.read IS 'Atribut a carui valoare este true daca exista drept de citire; altfel, valoarea sa este false.';
-
-COMMENT ON COLUMN instance_acl."update" IS 'Atribut a carui valoare este true daca exista drept de actualizare; altfel, valoarea sa este false.';
-
-COMMENT ON COLUMN instance_acl."delete" IS 'Atribut a carui valoare este true daca exista drept de stergere; altfel, valoarea sa este false.';
-
-COMMENT ON COLUMN instance_acl.modacl IS 'Atribut boolean, a carui valoare este true daca drepturile pot fi modificate; altfel, valoarea atributului este false';
-
-COMMENT ON TABLE instance_acl IS 'Tabel ce contine listele pentru controlul accesului la nivel de instanta';
-
-
 /******************** Add Table: instance_descr ************************/
 
 /* Build Table Structure */
 CREATE TABLE instance_descr
 (
 	instance_id INTEGER NOT NULL,
-	lang_id CHAR(2) NOT NULL,
+	lang_id INTEGER NOT NULL,
 	weighting TEXT NULL,
 	research_instrument TEXT NULL,
 	scope TEXT NULL,
@@ -1526,8 +1430,11 @@ COMMENT ON TABLE keyword IS 'Tabel ce contine cuvintele cheie ale studiilor si i
 /* Build Table Structure */
 CREATE TABLE lang
 (
-	id CHAR(2) NOT NULL,
-	name VARCHAR(50) NOT NULL
+id SERIAL,
+	iso639 CHAR(2) NOT NULL,
+	name_self VARCHAR(50) NULL,
+	name_ro VARCHAR(50) NULL,
+	name_en VARCHAR(50) NULL
 ) WITHOUT OIDS;
 
 /* Add Primary Key */
@@ -1537,12 +1444,18 @@ ALTER TABLE lang ADD CONSTRAINT pklang
 /* Add Comments */
 COMMENT ON COLUMN lang.id IS 'Codul unei limbi ce poate fi utilizata pentru un termen din baza de date';
 
-COMMENT ON COLUMN lang.name IS 'Denumirea unei limbi';
+COMMENT ON COLUMN lang.iso639 IS 'Codul unei limbi in ISO 639-1 (2 litere)';
+
+COMMENT ON COLUMN lang.name_self IS 'Denumirea unei limbi in propria limba';
+
+COMMENT ON COLUMN lang.name_ro IS 'Denumirea unei limbi in limba romana';
+
+COMMENT ON COLUMN lang.name_en IS 'Denumirea unei limbi in limba engleza';
 
 COMMENT ON TABLE lang IS 'Tabel ce contine limbile utilizate pentru unii termeni din baza de date';
 
 /* Add Indexes */
-CREATE UNIQUE INDEX "lang_name_Idx" ON lang (name);
+CREATE UNIQUE INDEX "lang_iso639_Idx" ON lang (iso639);
 
 
 /******************** Add Table: meth_coll_type ************************/
@@ -1636,8 +1549,8 @@ CREATE TABLE org_address
 (
 	org_id INTEGER NOT NULL,
 	address_id INTEGER NOT NULL,
-	datestart TIMESTAMP NULL,
-	dateend TIMESTAMP NULL
+	date_start DATE NULL,
+	date_end DATE NULL
 ) WITHOUT OIDS;
 
 /* Add Primary Key */
@@ -1649,9 +1562,9 @@ COMMENT ON COLUMN org_address.org_id IS 'Codul organizatiei care detine o adresa
 
 COMMENT ON COLUMN org_address.address_id IS 'Codul adresei detinute de organizatia specificata prin atributul org_id (refera atributul id din tabelul org)';
 
-COMMENT ON COLUMN org_address.datestart IS 'Data incepand de la care adresa organizatiei referite prin atributul org_id a devenit cea identificata prin atributul address_id';
+COMMENT ON COLUMN org_address.date_start IS 'Data incepand de la care adresa organizatiei referite prin atributul org_id a devenit cea identificata prin atributul address_id';
 
-COMMENT ON COLUMN org_address.dateend IS 'Data pana la care adresa organizatiei referite prin org_id a fost cea identificata prin address_id';
+COMMENT ON COLUMN org_address.date_end IS 'Data pana la care adresa organizatiei referite prin org_id a fost cea identificata prin address_id';
 
 COMMENT ON TABLE org_address IS 'Tabel ce contine asocierile dintre organizatii si adrese (implementeaza relatia many-to-many intre tabelele org si adresa)';
 
@@ -1762,8 +1675,8 @@ CREATE TABLE org_relations
 (
 	org_1_id INTEGER NOT NULL,
 	org_2_id INTEGER NOT NULL,
-	datestart TIMESTAMP NULL,
-	dateend TIMESTAMP NULL,
+	date_start DATE NULL,
+	date_end DATE NULL,
 	org_relation_type_id INTEGER NOT NULL,
 	details TEXT NOT NULL
 ) WITHOUT OIDS;
@@ -1777,9 +1690,9 @@ COMMENT ON COLUMN org_relations.org_1_id IS 'Codul primei organizatii implicate 
 
 COMMENT ON COLUMN org_relations.org_2_id IS 'Codul celei de-a doua organizatii implicate in relatie';
 
-COMMENT ON COLUMN org_relations.datestart IS 'Data de inceput a relatiei specificate prin tipul org_relation_type_id intre organizatiile specificate prin org_1_id si org_2_id';
+COMMENT ON COLUMN org_relations.date_start IS 'Data de inceput a relatiei specificate prin tipul org_relation_type_id intre organizatiile specificate prin org_1_id si org_2_id';
 
-COMMENT ON COLUMN org_relations.dateend IS 'Data de final a relatiei specificate prin tipul org_relation_type intre organizatiile specificate prin org_1_id si org_2_id';
+COMMENT ON COLUMN org_relations.date_end IS 'Data de final a relatiei specificate prin tipul org_relation_type intre organizatiile specificate prin org_1_id si org_2_id';
 
 COMMENT ON COLUMN org_relations.org_relation_type_id IS 'Codul tipului relatiei demarate la datestart intre organizatiile specificate prin org_1_id si org_2_id ';
 
@@ -1878,8 +1791,8 @@ CREATE TABLE person_address
 (
 	person_id INTEGER NOT NULL,
 	address_id INTEGER NOT NULL,
-	datestart TIMESTAMP NULL,
-	dateend TIMESTAMP NULL
+	date_start DATE NULL,
+	date_end DATE NULL
 ) WITHOUT OIDS;
 
 /* Add Primary Key */
@@ -1891,9 +1804,9 @@ COMMENT ON COLUMN person_address.person_id IS 'Codul persoanei pentru care este 
 
 COMMENT ON COLUMN person_address.address_id IS 'Codul adresei care este asociata persoanei identificate prin atributul person_id (refera atributul id din tabelul address)';
 
-COMMENT ON COLUMN person_address.datestart IS 'Data incepand de la care persoana identificata prin atributul person_id a avut adresa referita prin atributul address_id';
+COMMENT ON COLUMN person_address.date_start IS 'Data incepand de la care persoana identificata prin atributul person_id a avut adresa referita prin atributul address_id';
 
-COMMENT ON COLUMN person_address.dateend IS 'Data pana la care persoana identificata prin atributul person_id a avut adresa referita prin atributul address_id';
+COMMENT ON COLUMN person_address.date_end IS 'Data pana la care persoana identificata prin atributul person_id a avut adresa referita prin atributul address_id';
 
 COMMENT ON TABLE person_address IS 'Tabel ce contine asocierile intre persoane si adrese (implementeaza relatia many-to-many intre tabelele address si person)';
 
@@ -1984,8 +1897,8 @@ CREATE TABLE person_org
 	person_id INTEGER NOT NULL,
 	org_id INTEGER NOT NULL,
 	role_id INTEGER NOT NULL,
-	datestart TIMESTAMP NULL,
-	dateend TIMESTAMP NULL
+	date_start DATE NULL,
+	date_end DATE NULL
 ) WITHOUT OIDS;
 
 /* Add Primary Key */
@@ -1999,9 +1912,9 @@ COMMENT ON COLUMN person_org.org_id IS 'Idetificatorul organizatiei';
 
 COMMENT ON COLUMN person_org.role_id IS 'Identificatorul rolului detinut de persoana in cadrul organizatiei (refera atributul id al tabelului person_role)';
 
-COMMENT ON COLUMN person_org.datestart IS 'Data de inceput a apartenentei persoanei la organizatie';
+COMMENT ON COLUMN person_org.date_start IS 'Data de inceput a apartenentei persoanei la organizatie';
 
-COMMENT ON COLUMN person_org.dateend IS 'Data de final a apartenentei persoanei la organizatie';
+COMMENT ON COLUMN person_org.date_end IS 'Data de final a apartenentei persoanei la organizatie';
 
 COMMENT ON TABLE person_org IS 'Tabel ce stocheaza asocierile dintre persoane si organizatii (implementeaza relatia many-to-many intre tabelele person si org)';
 
@@ -2125,9 +2038,9 @@ COMMENT ON TABLE property_value IS 'Tabel folosit pentru Proprietati (stocheaza 
 CREATE TABLE region
 (
 id SERIAL,
-	name VARCHAR(100) NOT NULL,
+	name TEXT NOT NULL,
 	regiontype_id INTEGER NOT NULL,
-	country_id CHAR(2) NOT NULL,
+	country_id INTEGER NOT NULL,
 	region_code VARCHAR(50) NULL,
 	region_code_name VARCHAR(50) NULL
 ) WITHOUT OIDS;
@@ -2175,7 +2088,7 @@ COMMENT ON TABLE region_city IS 'Tabel ce contine asocierile sintre orase si reg
 CREATE TABLE regiontype
 (
 id SERIAL,
-	name VARCHAR(150) NOT NULL
+	name TEXT NOT NULL
 ) WITHOUT OIDS;
 
 /* Add Primary Key */
@@ -2188,51 +2101,6 @@ COMMENT ON COLUMN regiontype.id IS 'Identificatorul tipului de regiune';
 COMMENT ON COLUMN regiontype.name IS 'Denumirea tipului de regiune';
 
 COMMENT ON TABLE regiontype IS 'Tabel ce contine tipurile regiunilor corespunzatoare studiilor efectuate';
-
-
-/******************** Add Table: rodauser ************************/
-
-/* Build Table Structure */
-CREATE TABLE rodauser
-(
-id SERIAL,
-	credential_provider TEXT NOT NULL
-) WITHOUT OIDS;
-
-/* Add Primary Key */
-ALTER TABLE rodauser ADD CONSTRAINT pkrodauser
-	PRIMARY KEY (id);
-
-/* Add Comments */
-COMMENT ON COLUMN rodauser.id IS 'Codul utilizatorului aplicatiei';
-
-COMMENT ON COLUMN rodauser.credential_provider IS 'Furnizorul de informatii de acces pentru utilizatorul respectiv';
-
-COMMENT ON TABLE rodauser IS 'Tabel ce contine utilizatorii aplicatiei';
-
-
-/******************** Add Table: "role" ************************/
-
-/* Build Table Structure */
-CREATE TABLE "role"
-(
-id SERIAL,
-	name VARCHAR(100) NOT NULL,
-	description TEXT NULL
-) WITHOUT OIDS;
-
-/* Add Primary Key */
-ALTER TABLE "role" ADD CONSTRAINT pkrole
-	PRIMARY KEY (id);
-
-/* Add Comments */
-COMMENT ON COLUMN "role".id IS 'Codul unui role al aplicatiei ';
-
-COMMENT ON COLUMN "role".name IS 'Denumirea role-ului aplicatiei';
-
-COMMENT ON COLUMN "role".description IS 'Descrierea role-ului';
-
-COMMENT ON TABLE "role" IS 'Tabel care stocheaza role-urile care pot fi asociate utilizatorilor aplicatiei';
 
 
 /******************** Add Table: sampling_procedure ************************/
@@ -2490,7 +2358,7 @@ CREATE TABLE source_contacts
 (
 id SERIAL,
 	person_id INTEGER NOT NULL,
-	contact_date TIMESTAMP NOT NULL,
+	contacted_at TIMESTAMP NOT NULL,
 	synopsis TEXT NOT NULL,
 	followup INTEGER NOT NULL,
 	source_contact_method_id INTEGER NOT NULL,
@@ -2506,7 +2374,7 @@ COMMENT ON COLUMN source_contacts.id IS 'Codul contactului';
 
 COMMENT ON COLUMN source_contacts.person_id IS 'Codul persoanei (refera atributul id din tabelul person)';
 
-COMMENT ON COLUMN source_contacts.contact_date IS 'Data la care persoana identificata prin atributul person_id a fost contactata';
+COMMENT ON COLUMN source_contacts.contacted_at IS 'Data la care persoana identificata prin atributul person_id a fost contactata';
 
 COMMENT ON COLUMN source_contacts.source_contact_method_id IS 'Metoda prin care persoana a fost contactata (refera atributul id din tabelul source_contact_method)';
 
@@ -2575,8 +2443,8 @@ COMMENT ON TABLE sourcestudy_type IS 'Tabel ce stocheaza tipul (starea) studiilo
 CREATE TABLE sourcestudy_type_history
 (
 id SERIAL,
-	datestart TIMESTAMP NULL,
-	dateend TIMESTAMP NULL,
+	date_start DATE NULL,
+	date_end DATE NULL,
 	sourcestudy_type_id INTEGER NOT NULL,
 	added_by INTEGER NOT NULL,
 	sourcesstudy_id INTEGER NOT NULL
@@ -2589,9 +2457,9 @@ ALTER TABLE sourcestudy_type_history ADD CONSTRAINT pksourcestudy_type_history
 /* Add Comments */
 COMMENT ON COLUMN sourcestudy_type_history.id IS 'Codul liniei referitoare la istoricul unui studiu care poate fi furnizat de catre o sursa';
 
-COMMENT ON COLUMN sourcestudy_type_history.datestart IS 'Data de inceput';
+COMMENT ON COLUMN sourcestudy_type_history.date_start IS 'Data de inceput';
 
-COMMENT ON COLUMN sourcestudy_type_history.dateend IS 'Data de final';
+COMMENT ON COLUMN sourcestudy_type_history.date_end IS 'Data de final';
 
 COMMENT ON COLUMN sourcestudy_type_history.sourcestudy_type_id IS 'Codul tipului (starii) studiului respectiv intre datele datestart si dateend';
 
@@ -2632,8 +2500,8 @@ COMMENT ON TABLE sourcetype IS 'Tabel ce contine tipurile de surse ';
 CREATE TABLE sourcetype_history
 (
 id SERIAL,
-	datestart TIMESTAMP NULL,
-	dateend TIMESTAMP NULL,
+	date_start DATE NULL,
+	date_end DATE NULL,
 	org_id INTEGER NOT NULL,
 	sourcetype_id INTEGER NOT NULL,
 	added_by INTEGER NOT NULL
@@ -2646,9 +2514,9 @@ ALTER TABLE sourcetype_history ADD CONSTRAINT pksourcetype_history
 /* Add Comments */
 COMMENT ON COLUMN sourcetype_history.id IS 'Codul liniei referitoare la istoricul surselor';
 
-COMMENT ON COLUMN sourcetype_history.datestart IS 'Data de inceput a starii unei surse';
+COMMENT ON COLUMN sourcetype_history.date_start IS 'Data de inceput a starii unei surse';
 
-COMMENT ON COLUMN sourcetype_history.dateend IS 'Data de final a starii unei surse';
+COMMENT ON COLUMN sourcetype_history.date_end IS 'Data de final a starii unei surse';
 
 COMMENT ON COLUMN sourcetype_history.org_id IS 'Codul organizatiei (sursei)careia ii corespunde o stare intre cele doua date calendaristice';
 
@@ -2665,13 +2533,13 @@ COMMENT ON TABLE sourcetype_history IS 'Tabel ce stocheaza istoricul tipului sur
 CREATE TABLE study
 (
 id SERIAL,
-	datestart TIMESTAMP NULL,
-	dateend TIMESTAMP NULL,
+	date_start DATE NULL,
+	date_end DATE NULL,
 	insertion_status INTEGER NOT NULL,
 	added_by INTEGER NOT NULL,
 	added TIMESTAMP NOT NULL,
-	can_digitize BOOL NOT NULL,
-	can_use_anonymous BOOL NOT NULL
+	digitizable BOOL NOT NULL,
+	anonymous_usage BOOL NOT NULL
 ) WITHOUT OIDS;
 
 /* Add Primary Key */
@@ -2681,49 +2549,13 @@ ALTER TABLE study ADD CONSTRAINT pkstudy
 /* Add Comments */
 COMMENT ON COLUMN study.id IS 'Codul studiului';
 
-COMMENT ON COLUMN study.datestart IS 'Data de inceput a studiului';
+COMMENT ON COLUMN study.date_start IS 'Data de inceput a studiului';
 
-COMMENT ON COLUMN study.dateend IS 'Data de final a studiului';
+COMMENT ON COLUMN study.date_end IS 'Data de final a studiului';
 
 COMMENT ON COLUMN study.insertion_status IS 'Pasul din wizard-ul de introducere a metadatelor - din moment ce introducerea se face prin wizard, fiecare pas trebuie comis in baza de date; pana la finalizarea introducerii intregului studiu e nevoie sa stim ca ele au fost partial introduse.';
 
 COMMENT ON TABLE study IS 'Tabel care stocheaza studiile desfasurate, ale caror informatii sunt prezente in baza de date ';
-
-
-/******************** Add Table: study_acl ************************/
-
-/* Build Table Structure */
-CREATE TABLE study_acl
-(
-	study_id INTEGER NOT NULL,
-	aro_id INTEGER NOT NULL,
-	aro_type INTEGER NOT NULL,
-	read BOOL NULL,
-	"update" BOOL NULL,
-	"delete" BOOL NULL,
-	modacl BOOL NULL
-) WITHOUT OIDS;
-
-/* Add Primary Key */
-ALTER TABLE study_acl ADD CONSTRAINT pkstudy_acl
-	PRIMARY KEY (study_id, aro_id, aro_type);
-
-/* Add Comments */
-COMMENT ON COLUMN study_acl.study_id IS 'Codul studiului ce va detine drepturi de acces pentru obiectul identificat prin atributul aro_id';
-
-COMMENT ON COLUMN study_acl.aro_id IS 'Codul unui obiect care solicita drepturi ';
-
-COMMENT ON COLUMN study_acl.aro_type IS 'Tipul unui obiect care solicita drepturi';
-
-COMMENT ON COLUMN study_acl.read IS 'Atribut a carui valoare este true daca exista drept de citire; altfel, valoarea sa este false.';
-
-COMMENT ON COLUMN study_acl."update" IS 'Atribut a carui valoare este true daca exista drept de actualizare; altfel, valoarea sa este false.';
-
-COMMENT ON COLUMN study_acl."delete" IS 'Atribut a carui valoare este true daca exista drept de stergere; altfel, valoarea sa este false.';
-
-COMMENT ON COLUMN study_acl.modacl IS 'Atribut boolean, a carui valoare este true daca drepturile pot fi modificate; altfel, valoarea atributului este false';
-
-COMMENT ON TABLE study_acl IS 'Tabel ce contine listele pentru controlul accesului la nivel de studiu';
 
 
 /******************** Add Table: study_descr ************************/
@@ -2731,12 +2563,12 @@ COMMENT ON TABLE study_acl IS 'Tabel ce contine listele pentru controlul accesul
 /* Build Table Structure */
 CREATE TABLE study_descr
 (
-	lang_id CHAR(2) NOT NULL,
+	lang_id INTEGER NOT NULL,
 	title_type_id INTEGER NOT NULL,
 	study_id INTEGER NOT NULL,
 	abstract TEXT NULL,
 	grant_details TEXT NULL,
-	title VARCHAR(300) NOT NULL
+	title TEXT NOT NULL
 ) WITHOUT OIDS;
 
 /* Add Primary Key */
@@ -3065,7 +2897,7 @@ COMMENT ON TABLE topic IS 'Tabel ce contine topic-urile ce pot fi asociate unei 
 /* Build Table Structure */
 CREATE TABLE translated_topic
 (
-	lang_id CHAR(2) NOT NULL,
+	lang_id INTEGER NOT NULL,
 	topic_id INTEGER NOT NULL,
 	translation TEXT NOT NULL
 ) WITHOUT OIDS;
@@ -3114,21 +2946,22 @@ COMMENT ON TABLE unit_analysis IS 'Tabel care stocheaza tipurile de unitati de a
 CREATE TABLE user_auth_log
 (
 	user_id INTEGER NOT NULL,
-	"timestamp" TIMESTAMP NOT NULL,
+	auth_attempted_at TIMESTAMP DEFAULT now() NOT NULL,
 	"action" VARCHAR(30) NOT NULL,
 	credential_provider TEXT NOT NULL,
 	credential_identifier TEXT NOT NULL,
-	error_message TEXT NOT NULL
+	error_message TEXT NOT NULL,
+id BIGSERIAL
 ) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE user_auth_log ADD CONSTRAINT pkuser_auth_log
-	PRIMARY KEY (user_id, "timestamp");
+	PRIMARY KEY (id);
 
 /* Add Comments */
 COMMENT ON COLUMN user_auth_log.user_id IS 'Codul utilizatorului care a incercat sa se autentifice';
 
-COMMENT ON COLUMN user_auth_log."timestamp" IS 'Timpul la care incercarea de autentificare a avut loc';
+COMMENT ON COLUMN user_auth_log.auth_attempted_at IS 'Timpul la care incercarea de autentificare a avut loc';
 
 COMMENT ON COLUMN user_auth_log."action" IS 'Actiunea login/logout/session expire (in functie de tipul de autentificare)';
 
@@ -3193,27 +3026,6 @@ COMMENT ON COLUMN user_profile.l_name IS 'Numele utilizatorului';
 COMMENT ON COLUMN user_profile.email IS 'Adresa de email a utilizatorului';
 
 COMMENT ON TABLE user_profile IS 'Tabel ce stocheaza profilurile utilizatorilor aplicatiei';
-
-
-/******************** Add Table: user_role ************************/
-
-/* Build Table Structure */
-CREATE TABLE user_role
-(
-	user_id INTEGER NOT NULL,
-	role_id INTEGER NOT NULL
-) WITHOUT OIDS;
-
-/* Add Primary Key */
-ALTER TABLE user_role ADD CONSTRAINT pkuser_role
-	PRIMARY KEY (role_id, user_id);
-
-/* Add Comments */
-COMMENT ON COLUMN user_role.user_id IS 'Codul utilizatorului asociat role-ului referit prin atributul role_id';
-
-COMMENT ON COLUMN user_role.role_id IS 'Codul role-ului corespunzator utilizatorului referit prin user_id';
-
-COMMENT ON TABLE user_role IS 'Tabel ce stocheaza asocierile dintre utilizatori si role-uri';
 
 
 /******************** Add Table: user_setting ************************/
@@ -3302,14 +3114,25 @@ COMMENT ON TABLE user_setting_value IS 'Tabel care stocheaza valorile setarilor 
 /* Build Table Structure */
 CREATE TABLE users
 (
+id SERIAL,
 	username VARCHAR(64) NOT NULL,
 	password VARCHAR(64) NOT NULL,
 	enabled BOOL NOT NULL
-);
+) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE users ADD CONSTRAINT pkusers
-	PRIMARY KEY (username);
+	PRIMARY KEY (id);
+
+/* Add Comments */
+COMMENT ON COLUMN users.id IS 'Codul utilizatorului aplicatiei';
+
+COMMENT ON COLUMN users.username IS 'Furnizorul de informatii de acces pentru utilizatorul respectiv';
+
+COMMENT ON TABLE users IS 'Tabel ce contine utilizatorii aplicatiei';
+
+/* Add Indexes */
+CREATE UNIQUE INDEX "rodauser_username_Idx" ON users (username);
 
 
 /******************** Add Table: value ************************/
@@ -3364,9 +3187,7 @@ id BIGSERIAL,
 	order_in_instance INTEGER NOT NULL,
 	operator_instructions TEXT NULL,
 	file_id INTEGER NULL,
-	type_edited_text BOOL NOT NULL,
-	type_edited_number BOOL NOT NULL,
-	type_selection BOOL NOT NULL
+	variable_type SMALLINT NOT NULL
 ) WITHOUT OIDS;
 
 /* Add Primary Key */
@@ -3387,6 +3208,8 @@ COMMENT ON COLUMN variable.order_in_instance IS 'Intregul ordinal reprezentand p
 COMMENT ON COLUMN variable.operator_instructions IS 'Text care informeaza operatorul ce chestioneaza asupra unor actiuni pe care trebuie sa le faca atunci cand ajunge la variabila aceasta';
 
 COMMENT ON COLUMN variable.file_id IS 'Fisierul din care provine variabila';
+
+COMMENT ON COLUMN variable.variable_type IS 'Tipul Variabilei: 0=edited, 1=edited_number, 2=selection';
 
 COMMENT ON TABLE variable IS 'Tabel care stocheaza variabilele din cadrul instantelor';
 
@@ -3472,7 +3295,7 @@ ALTER TABLE audit_log_change ADD CONSTRAINT audit_log_change_fk_field
 
 /* Add Foreign Key: fk_audit_log_changeset_rodauser */
 ALTER TABLE audit_log_changeset ADD CONSTRAINT fk_audit_log_changeset_rodauser
-	FOREIGN KEY (rodauser) REFERENCES rodauser (id)
+	FOREIGN KEY (user_id) REFERENCES users (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 /* Add Foreign Key: audit_log_field_fk_audited_table */
@@ -3482,22 +3305,17 @@ ALTER TABLE audit_log_field ADD CONSTRAINT audit_log_field_fk_audited_table
 
 /* Add Foreign Key: fk_auth_data_users */
 ALTER TABLE auth_data ADD CONSTRAINT fk_auth_data_users
-	FOREIGN KEY (user_id) REFERENCES rodauser (id)
+	FOREIGN KEY (user_id) REFERENCES users (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
-/* Add Foreign Key: fk_authorities_users */
-ALTER TABLE authorities ADD CONSTRAINT fk_authorities_users
+/* Add Foreign Key: fk_authorities_rodauser */
+ALTER TABLE authorities ADD CONSTRAINT fk_authorities_rodauser
 	FOREIGN KEY (username) REFERENCES users (username)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 /* Add Foreign Key: fk_catalog_users */
 ALTER TABLE catalog ADD CONSTRAINT fk_catalog_users
-	FOREIGN KEY (owner) REFERENCES rodauser (id)
-	ON UPDATE NO ACTION ON DELETE NO ACTION;
-
-/* Add Foreign Key: fk_catalog_acl_catalog */
-ALTER TABLE catalog_acl ADD CONSTRAINT fk_catalog_acl_catalog
-	FOREIGN KEY (catalog_id) REFERENCES catalog (id)
+	FOREIGN KEY (owner) REFERENCES users (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 /* Add Foreign Key: fk_catalog_study_catalog */
@@ -3552,7 +3370,7 @@ ALTER TABLE cms_page ADD CONSTRAINT fk_cms_page_cms_page_type
 
 /* Add Foreign Key: fk_cms_page_users */
 ALTER TABLE cms_page ADD CONSTRAINT fk_cms_page_users
-	FOREIGN KEY (owner_id) REFERENCES rodauser (id)
+	FOREIGN KEY (owner_id) REFERENCES users (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 /* Add Foreign Key: fk_cms_page_content_cms_page */
@@ -3573,11 +3391,6 @@ ALTER TABLE concept_variable ADD CONSTRAINT "fk_Concept_Variables_Concepts"
 /* Add Foreign Key: fk_concept_variable_variable */
 ALTER TABLE concept_variable ADD CONSTRAINT fk_concept_variable_variable
 	FOREIGN KEY (variable_id) REFERENCES variable (id)
-	ON UPDATE NO ACTION ON DELETE NO ACTION;
-
-/* Add Foreign Key: fk_documents_acl_documents */
-ALTER TABLE file_acl ADD CONSTRAINT fk_documents_acl_documents
-	FOREIGN KEY (document_id) REFERENCES file (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 /* Add Foreign Key: fk_file_property_name_value_file */
@@ -3662,12 +3475,7 @@ ALTER TABLE instance ADD CONSTRAINT fk_instance_unit_analysis
 
 /* Add Foreign Key: fk_instance_user */
 ALTER TABLE instance ADD CONSTRAINT fk_instance_user
-	FOREIGN KEY (added_by) REFERENCES rodauser (id)
-	ON UPDATE NO ACTION ON DELETE NO ACTION;
-
-/* Add Foreign Key: fk_instance_acl_instance */
-ALTER TABLE instance_acl ADD CONSTRAINT fk_instance_acl_instance
-	FOREIGN KEY (instance_id) REFERENCES instance (id)
+	FOREIGN KEY (added_by) REFERENCES users (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 /* Add Foreign Key: fk_instance_descr_instance */
@@ -3702,7 +3510,7 @@ ALTER TABLE instance_keyword ADD CONSTRAINT fk_instance_keyword_keyword
 
 /* Add Foreign Key: fk_instance_keyword_user */
 ALTER TABLE instance_keyword ADD CONSTRAINT fk_instance_keyword_user
-	FOREIGN KEY (added_by) REFERENCES rodauser (id)
+	FOREIGN KEY (added_by) REFERENCES users (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 /* Add Foreign Key: fk_instance_org_instance */
@@ -3767,7 +3575,7 @@ ALTER TABLE meth_coll_type ADD CONSTRAINT fk_meth_coll_type_instance
 
 /* Add Foreign Key: fk_news_users */
 ALTER TABLE news ADD CONSTRAINT fk_news_users
-	FOREIGN KEY (added_by) REFERENCES rodauser (id)
+	FOREIGN KEY (added_by) REFERENCES users (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 /* Add Foreign Key: fk_org_org_prefix */
@@ -3887,12 +3695,12 @@ ALTER TABLE person_links ADD CONSTRAINT fk_person_links_person
 
 /* Add Foreign Key: fk_person_links_users */
 ALTER TABLE person_links ADD CONSTRAINT fk_person_links_users
-	FOREIGN KEY (user_id) REFERENCES rodauser (id)
+	FOREIGN KEY (user_id) REFERENCES users (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 /* Add Foreign Key: fk_person_links_users2 */
 ALTER TABLE person_links ADD CONSTRAINT fk_person_links_users2
-	FOREIGN KEY (status_by) REFERENCES rodauser (id)
+	FOREIGN KEY (status_by) REFERENCES users (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 /* Add Foreign Key: fk_person_org_org */
@@ -4047,7 +3855,7 @@ ALTER TABLE sourcestudy_type_history ADD CONSTRAINT fk_sourcestudy_type_history_
 
 /* Add Foreign Key: fk_sourcestudy_type_history_user */
 ALTER TABLE sourcestudy_type_history ADD CONSTRAINT fk_sourcestudy_type_history_user
-	FOREIGN KEY (added_by) REFERENCES rodauser (id)
+	FOREIGN KEY (added_by) REFERENCES users (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 /* Add Foreign Key: fk_source_type_history_sources */
@@ -4062,17 +3870,12 @@ ALTER TABLE sourcetype_history ADD CONSTRAINT fk_source_type_history_sourcetype
 
 /* Add Foreign Key: fk_sourcetype_history_user */
 ALTER TABLE sourcetype_history ADD CONSTRAINT fk_sourcetype_history_user
-	FOREIGN KEY (added_by) REFERENCES rodauser (id)
+	FOREIGN KEY (added_by) REFERENCES users (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 /* Add Foreign Key: fk_study_user */
 ALTER TABLE study ADD CONSTRAINT fk_study_user
-	FOREIGN KEY (added_by) REFERENCES rodauser (id)
-	ON UPDATE NO ACTION ON DELETE NO ACTION;
-
-/* Add Foreign Key: fk_study_acl_study */
-ALTER TABLE study_acl ADD CONSTRAINT fk_study_acl_study
-	FOREIGN KEY (study_id) REFERENCES study (id)
+	FOREIGN KEY (added_by) REFERENCES users (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 /* Add Foreign Key: fk_study_descr_lang */
@@ -4112,7 +3915,7 @@ ALTER TABLE study_keyword ADD CONSTRAINT fk_study_keyword_study
 
 /* Add Foreign Key: fk_study_keyword_user */
 ALTER TABLE study_keyword ADD CONSTRAINT fk_study_keyword_user
-	FOREIGN KEY (added_by) REFERENCES rodauser (id)
+	FOREIGN KEY (added_by) REFERENCES users (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 /* Add Foreign Key: fk_studiu_org_org */
@@ -4177,32 +3980,22 @@ ALTER TABLE translated_topic ADD CONSTRAINT fk_translated_topic_topic
 
 /* Add Foreign Key: fk_user_auth_log_users */
 ALTER TABLE user_auth_log ADD CONSTRAINT fk_user_auth_log_users
-	FOREIGN KEY (user_id) REFERENCES rodauser (id)
+	FOREIGN KEY (user_id) REFERENCES users (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 /* Add Foreign Key: fk_user_message_user */
 ALTER TABLE user_message ADD CONSTRAINT fk_user_message_user
-	FOREIGN KEY (to_user_id) REFERENCES rodauser (id)
+	FOREIGN KEY (to_user_id) REFERENCES users (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 /* Add Foreign Key: fk_user_messages_users */
 ALTER TABLE user_message ADD CONSTRAINT fk_user_messages_users
-	FOREIGN KEY (from_user_id) REFERENCES rodauser (id)
+	FOREIGN KEY (from_user_id) REFERENCES users (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 /* Add Foreign Key: fk_user_profile_users */
 ALTER TABLE user_profile ADD CONSTRAINT fk_user_profile_users
-	FOREIGN KEY (user_id) REFERENCES rodauser (id)
-	ON UPDATE NO ACTION ON DELETE NO ACTION;
-
-/* Add Foreign Key: fk_user_role_role */
-ALTER TABLE user_role ADD CONSTRAINT fk_user_role_role
-	FOREIGN KEY (role_id) REFERENCES "role" (id)
-	ON UPDATE NO ACTION ON DELETE NO ACTION;
-
-/* Add Foreign Key: fk_user_role_users */
-ALTER TABLE user_role ADD CONSTRAINT fk_user_role_users
-	FOREIGN KEY (user_id) REFERENCES rodauser (id)
+	FOREIGN KEY (user_id) REFERENCES users (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 /* Add Foreign Key: fk_user_settings_user_settings_group */
@@ -4217,7 +4010,7 @@ ALTER TABLE user_setting_value ADD CONSTRAINT fk_user_setting_value_user_setting
 
 /* Add Foreign Key: fk_user_setting_value_users */
 ALTER TABLE user_setting_value ADD CONSTRAINT fk_user_setting_value_users
-	FOREIGN KEY (user_id) REFERENCES rodauser (id)
+	FOREIGN KEY (user_id) REFERENCES users (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 /* Add Foreign Key: fk_value_item */

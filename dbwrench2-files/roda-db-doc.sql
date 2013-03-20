@@ -2083,7 +2083,7 @@ CREATE TABLE setting_group
 (
 id SERIAL,
 	name VARCHAR(150) NOT NULL,
-	parent INTEGER NOT NULL,
+	parent_id INTEGER NULL,
 	description TEXT NULL
 ) WITHOUT OIDS;
 
@@ -2096,7 +2096,7 @@ COMMENT ON COLUMN setting_group.id IS 'Codul unui grup de setari ale aplicatiei'
 
 COMMENT ON COLUMN setting_group.name IS 'Denumirea unui grup de setari ale aplicatiei';
 
-COMMENT ON COLUMN setting_group.parent IS 'Codul grupului parinte al grupului de setari ale aplicatiei (refera atributul id al tabelului setting_group)';
+COMMENT ON COLUMN setting_group.parent_id IS 'Codul grupului parinte al grupului de setari ale aplicatiei (refera atributul id al tabelului setting_group)';
 
 COMMENT ON COLUMN setting_group.description IS 'Descrierea grupului de setari ale aplicatiei';
 
@@ -2714,7 +2714,7 @@ CREATE TABLE topic
 id SERIAL,
 	name VARCHAR(100) NOT NULL,
 	description TEXT NULL,
-	parent_topic_id INTEGER NULL,
+	parent_id INTEGER NULL,
 	preferred_synonym_topic_id INTEGER NULL
 ) WITHOUT OIDS;
 
@@ -2729,7 +2729,7 @@ COMMENT ON COLUMN topic.name IS 'Numele unui topic ce poate fi asociat unui stud
 
 COMMENT ON COLUMN topic.description IS 'Descrierea topic-ului ce poate fi asociat unui studiu sau unei instante';
 
-COMMENT ON COLUMN topic.parent_topic_id IS 'Codul topic-ului din dreapta, in ierarhia arorescenta creata pentru a mentine legaturile cu topic-urile referite ';
+COMMENT ON COLUMN topic.parent_id IS 'Codul topic-ului din dreapta, in ierarhia arorescenta creata pentru a mentine legaturile cu topic-urile referite ';
 
 COMMENT ON TABLE topic IS 'Tabel ce contine topic-urile ce pot fi asociate unei instante sau unui studiu';
 
@@ -3155,6 +3155,11 @@ ALTER TABLE authorities ADD CONSTRAINT fk_authorities_rodauser
 	FOREIGN KEY (username) REFERENCES users (username)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
+/* Add Foreign Key: fk_catalog_catalog */
+ALTER TABLE catalog ADD CONSTRAINT fk_catalog_catalog
+	FOREIGN KEY (parent_id) REFERENCES catalog (id)
+	ON UPDATE NO ACTION ON DELETE NO ACTION;
+
 /* Add Foreign Key: fk_catalog_users */
 ALTER TABLE catalog ADD CONSTRAINT fk_catalog_users
 	FOREIGN KEY (owner) REFERENCES users (id)
@@ -3195,9 +3200,19 @@ ALTER TABLE cms_file_property_name_value ADD CONSTRAINT fk_cms_file_property_nam
 	FOREIGN KEY (property_value_id) REFERENCES property_value (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
+/* Add Foreign Key: fk_cms_folder_cms_folder */
+ALTER TABLE cms_folder ADD CONSTRAINT fk_cms_folder_cms_folder
+	FOREIGN KEY (parent_id) REFERENCES cms_folder (id)
+	ON UPDATE NO ACTION ON DELETE NO ACTION;
+
 /* Add Foreign Key: fk_cms_layout_cms_layout_group */
 ALTER TABLE cms_layout ADD CONSTRAINT fk_cms_layout_cms_layout_group
 	FOREIGN KEY (cms_layout_group_id) REFERENCES cms_layout_group (id)
+	ON UPDATE NO ACTION ON DELETE NO ACTION;
+
+/* Add Foreign Key: fk_cms_layout_group_cms_layout_group */
+ALTER TABLE cms_layout_group ADD CONSTRAINT fk_cms_layout_group_cms_layout_group
+	FOREIGN KEY (parent_id) REFERENCES cms_layout_group (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 /* Add Foreign Key: fk_cms_page_cms_layout */
@@ -3223,6 +3238,11 @@ ALTER TABLE cms_page_content ADD CONSTRAINT fk_cms_page_content_cms_page
 /* Add Foreign Key: fk_cms_snippet_cms_snippet_group */
 ALTER TABLE cms_snippet ADD CONSTRAINT fk_cms_snippet_cms_snippet_group
 	FOREIGN KEY (cms_snippet_group_id) REFERENCES cms_snippet_group (id)
+	ON UPDATE NO ACTION ON DELETE NO ACTION;
+
+/* Add Foreign Key: fk_cms_snippet_group_cms_snippet_group */
+ALTER TABLE cms_snippet_group ADD CONSTRAINT fk_cms_snippet_group_cms_snippet_group
+	FOREIGN KEY (parent_id) REFERENCES cms_snippet_group (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 /* Add Foreign Key: fk_Concept_Variables_Concepts */
@@ -3632,7 +3652,7 @@ ALTER TABLE setting ADD CONSTRAINT fk_setting_setting_group
 
 /* Add Foreign Key: fk_setting_group_setting_group */
 ALTER TABLE setting_group ADD CONSTRAINT fk_setting_group_setting_group
-	FOREIGN KEY (parent) REFERENCES setting_group (id)
+	FOREIGN KEY (parent_id) REFERENCES setting_group (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 /* Add Foreign Key: fk_setting_values_setting */
@@ -3802,7 +3822,7 @@ ALTER TABLE study_topic ADD CONSTRAINT fk_study_topic_topic
 
 /* Add Foreign Key: fk_topic_topic_parent */
 ALTER TABLE topic ADD CONSTRAINT fk_topic_topic_parent
-	FOREIGN KEY (parent_topic_id) REFERENCES topic (id)
+	FOREIGN KEY (parent_id) REFERENCES topic (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 /* Add Foreign Key: fk_topic_topic_preferred */

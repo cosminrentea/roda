@@ -388,6 +388,11 @@
         <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Descrierea catalogului</Cm>
       </Cl>
+      <Fk deAc="3" nm="fk_catalog_catalog" prLkCl="id" upAc="3">
+        <PrTb mn="0" nm="catalog" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="catalog" oe="0" sch="public" zr="1"/>
+        <ClPr cdCl="parent_id" prCl="id"/>
+      </Fk>
       <Fk deAc="3" nm="fk_catalog_users" prLkCl="id" upAc="3">
         <PrTb mn="0" nm="users" oe="1" sch="public" zr="0"/>
         <CdTb mn="1" nm="catalog" oe="0" sch="public" zr="1"/>
@@ -549,6 +554,11 @@
         <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Descrierea unui folder din sistemul CMS al aplicatiei</Cm>
       </Cl>
+      <Fk deAc="3" nm="fk_cms_folder_cms_folder" prLkCl="id" upAc="3">
+        <PrTb mn="0" nm="cms_folder" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="cms_folder" oe="0" sch="public" zr="1"/>
+        <ClPr cdCl="parent_id" prCl="id"/>
+      </Fk>
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
@@ -600,6 +610,11 @@
         <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Descrierea unui grup de layout-uri</Cm>
       </Cl>
+      <Fk deAc="3" nm="fk_cms_layout_group_cms_layout_group" prLkCl="id" upAc="3">
+        <PrTb mn="0" nm="cms_layout_group" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="cms_layout_group" oe="0" sch="public" zr="1"/>
+        <ClPr cdCl="parent_id" prCl="id"/>
+      </Fk>
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
@@ -760,6 +775,11 @@
         <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Descrierea grupului de snippet-uri </Cm>
       </Cl>
+      <Fk deAc="3" nm="fk_cms_snippet_group_cms_snippet_group" prLkCl="id" upAc="3">
+        <PrTb mn="0" nm="cms_snippet_group" oe="1" sch="public" zr="0"/>
+        <CdTb mn="1" nm="cms_snippet_group" oe="0" sch="public" zr="1"/>
+        <ClPr cdCl="parent_id" prCl="id"/>
+      </Fk>
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>
@@ -2447,7 +2467,7 @@
         <DT arr="0" ds="VarChar" en="" id="12" ln="150" sc="null" sg="1" un="0"/>
         <Cm>Denumirea unui grup de setari ale aplicatiei</Cm>
       </Cl>
-      <Cl au="0" df="" nm="parent" nu="0">
+      <Cl au="0" df="" nm="parent_id" nu="1">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul grupului parinte al grupului de setari ale aplicatiei (refera atributul id al tabelului setting_group)</Cm>
       </Cl>
@@ -2458,7 +2478,7 @@
       <Fk deAc="3" nm="fk_setting_group_setting_group" prLkCl="id" upAc="3">
         <PrTb mn="0" nm="setting_group" oe="1" sch="public" zr="0"/>
         <CdTb mn="1" nm="setting_group" oe="0" sch="public" zr="1"/>
-        <ClPr cdCl="parent" prCl="id"/>
+        <ClPr cdCl="parent_id" prCl="id"/>
       </Fk>
       <UniqueConstraints/>
       <SchTrHis/>
@@ -3161,7 +3181,7 @@
         <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Descrierea topic-ului ce poate fi asociat unui studiu sau unei instante</Cm>
       </Cl>
-      <Cl au="0" df="" nm="parent_topic_id" nu="1">
+      <Cl au="0" df="" nm="parent_id" nu="1">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul topic-ului din dreapta, in ierarhia arorescenta creata pentru a mentine legaturile cu topic-urile referite </Cm>
       </Cl>
@@ -3171,7 +3191,7 @@
       <Fk deAc="3" nm="fk_topic_topic_parent" prLkCl="id" upAc="3">
         <PrTb mn="0" nm="topic" oe="1" sch="public" zr="0"/>
         <CdTb mn="1" nm="topic" oe="0" sch="public" zr="1"/>
-        <ClPr cdCl="parent_topic_id" prCl="id"/>
+        <ClPr cdCl="parent_id" prCl="id"/>
       </Fk>
       <Fk deAc="3" nm="fk_topic_topic_preferred" prLkCl="id" upAc="3">
         <PrTb mn="0" nm="topic" oe="1" sch="public" zr="0"/>
@@ -3594,7 +3614,7 @@
     <TbGl bkCl="ffffffe6" sch="public" tbl="instance_descr" x="3231" y="694"/>
     <TbGl bkCl="ffccccff" sch="public" tbl="file" x="3259" y="1243"/>
     <TbGl bkCl="ffffffe6" sch="public" tbl="instance_documents" x="3501" y="705"/>
-    <TbGl bkCl="ffffffe6" sch="public" tbl="study_file" x="2506" y="937"/>
+    <TbGl bkCl="ffffffe6" sch="public" tbl="study_file" x="2508" y="933"/>
     <TbGl bkCl="ffffccff" sch="public" tbl="org_prefix" x="813" y="1008"/>
     <TbGl bkCl="ffffccff" sch="public" tbl="org_sufix" x="1440" y="1022"/>
     <TbGl bkCl="ffffccff" sch="public" tbl="org_relations" x="1129" y="1081"/>
@@ -3603,18 +3623,18 @@
     <TbGl bkCl="ffffccff" sch="public" tbl="person_address" x="774" y="338"/>
     <TbGl bkCl="ffffffe6" sch="public" tbl="unit_analysis" x="3615" y="352"/>
     <TbGl bkCl="ffffccff" sch="public" tbl="person_role" x="1065" y="372"/>
-    <TbGl bkCl="ffffffcc" sch="public" tbl="catalog" x="1809" y="498"/>
-    <TbGl bkCl="ffffffcc" sch="public" tbl="catalog_study" x="2057" y="529"/>
+    <TbGl bkCl="ffffffcc" sch="public" tbl="catalog" x="1819" y="507"/>
+    <TbGl bkCl="ffffffcc" sch="public" tbl="catalog_study" x="2064" y="530"/>
     <TbGl bkCl="ffccffcc" sch="public" tbl="users" x="2106" y="1297"/>
     <TbGl bkCl="ffccffcc" sch="public" tbl="auth_data" x="2521" y="1198"/>
     <TbGl bkCl="ffccffcc" sch="public" tbl="user_auth_log" x="2521" y="1080"/>
     <TbGl bkCl="ffff3333" sch="public" tbl="cms_file" x="4749" y="1397"/>
-    <TbGl bkCl="ffff3333" sch="public" tbl="cms_folder" x="4407" y="1388"/>
+    <TbGl bkCl="ffff3333" sch="public" tbl="cms_folder" x="4411" y="1388"/>
     <TbGl bkCl="ffff3333" sch="public" tbl="cms_page" x="4403" y="1104"/>
     <TbGl bkCl="ffff3333" sch="public" tbl="cms_layout" x="4397" y="993"/>
     <TbGl bkCl="ffff3333" sch="public" tbl="cms_layout_group" x="4083" y="993"/>
     <TbGl bkCl="ffff3333" sch="public" tbl="cms_snippet" x="4704" y="1266"/>
-    <TbGl bkCl="ffff3333" sch="public" tbl="cms_snippet_group" x="4399" y="1262"/>
+    <TbGl bkCl="ffff3333" sch="public" tbl="cms_snippet_group" x="4409" y="1269"/>
     <TbGl bkCl="ffff3333" sch="public" tbl="cms_page_content" x="4748" y="1113"/>
     <TbGl bkCl="ffcccc00" sch="public" tbl="setting_group" x="1858" y="1711"/>
     <TbGl bkCl="ffcccc00" sch="public" tbl="setting" x="2188" y="1707"/>
@@ -3707,6 +3727,7 @@
     <FkGl bkCl="ff000000" nm="public.audit_log_field.audit_log_field_fk_audited_table"/>
     <FkGl bkCl="ff000000" nm="public.auth_data.fk_auth_data_users"/>
     <FkGl bkCl="ff000000" nm="public.authorities.fk_authorities_rodauser"/>
+    <FkGl bkCl="ff000000" nm="public.catalog.fk_catalog_catalog"/>
     <FkGl bkCl="ff000000" nm="public.catalog.fk_catalog_users"/>
     <FkGl bkCl="ff000000" nm="public.catalog_study.fk_catalog_study_catalog"/>
     <FkGl bkCl="ff000000" nm="public.catalog_study.fk_catalog_study_study"/>
@@ -3715,12 +3736,15 @@
     <FkGl bkCl="ff000000" nm="public.cms_file_property_name_value.fk_cms_file_property_name_value_cms_file"/>
     <FkGl bkCl="ff000000" nm="public.cms_file_property_name_value.fk_cms_file_property_name_value_property_name"/>
     <FkGl bkCl="ff000000" nm="public.cms_file_property_name_value.fk_cms_file_property_name_value_property_value"/>
+    <FkGl bkCl="ff000000" nm="public.cms_folder.fk_cms_folder_cms_folder"/>
     <FkGl bkCl="ff000000" nm="public.cms_layout.fk_cms_layout_cms_layout_group"/>
+    <FkGl bkCl="ff000000" nm="public.cms_layout_group.fk_cms_layout_group_cms_layout_group"/>
     <FkGl bkCl="ff000000" nm="public.cms_page.fk_cms_page_cms_layout"/>
     <FkGl bkCl="ff000000" nm="public.cms_page.fk_cms_page_cms_page_type"/>
     <FkGl bkCl="ff000000" nm="public.cms_page.fk_cms_page_users"/>
     <FkGl bkCl="ff000000" nm="public.cms_page_content.fk_cms_page_content_cms_page"/>
     <FkGl bkCl="ff000000" nm="public.cms_snippet.fk_cms_snippet_cms_snippet_group"/>
+    <FkGl bkCl="ff000000" nm="public.cms_snippet_group.fk_cms_snippet_group_cms_snippet_group"/>
     <FkGl bkCl="ff000000" nm="public.concept_variable.fk_concept_variable_variable"/>
     <FkGl bkCl="ff000000" nm="public.concept_variable.fk_Concept_Variables_Concepts"/>
     <FkGl bkCl="ff000000" nm="public.file_property_name_value.fk_file_property_name_value_file"/>
@@ -3870,7 +3894,7 @@
       <Zone bkCl="ffece9d8" h="1456" nm="Variables" w="623" x="3873" y="181"/>
     </Zones>
   </Dgm>
-  <RnmMgr NxRnmId="334">
+  <RnmMgr NxRnmId="336">
     <RnmCh ObjCls="Table" ParCls="Schema" ParNme="public" SupCls="" SupNme="">
       <Rnm id="1" nNm="person" oNm="Persoane"/>
     </RnmCh>
@@ -4480,6 +4504,7 @@
       <Rnm id="236" nNm="left_topic_id" oNm="left_topic"/>
     </RnmCh>
     <RnmCh ObjCls="Column" ParCls="Table" ParNme="topic" SupCls="Schema" SupNme="public">
+      <Rnm id="335" nNm="parent_id" oNm="parent_topic_id"/>
       <Rnm id="257" nNm="parent_topic_id" oNm="right_topic"/>
       <Rnm id="239" nNm="right_topic" oNm="right_topic_id"/>
       <Rnm id="237" nNm="right_topic_id" oNm="right_topic"/>
@@ -4720,6 +4745,9 @@
     <RnmCh ObjCls="Column" ParCls="Table" ParNme="country" SupCls="Schema" SupNme="public">
       <Rnm id="333" nNm="name_ro" oNm="name"/>
     </RnmCh>
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="setting_group" SupCls="Schema" SupNme="public">
+      <Rnm id="334" nNm="parent_id" oNm="parent"/>
+    </RnmCh>
   </RnmMgr>
   <DbDocOptionMgr>
     <BasicOptionMgr>
@@ -4744,7 +4772,6 @@
     <TreePath>/Schemas (1)</TreePath>
     <TreePath>/Schemas (1)/public</TreePath>
     <TreePath>/Schemas (1)/public/Tables (124)</TreePath>
-    <TreePath>/Schemas (1)/public/Sequences (0)</TreePath>
     <TreePath>/Diagrams (1)</TreePath>
     <TreePath>/Diagrams (1)/diagram</TreePath>
   </TreePaths>

@@ -3,10 +3,10 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <form:create id="fc_ro_roda_domain_AuthData" modelAttribute="authData" path="/authdatas" render="${empty dependencies}" z="re3nLoDftfL8WvSLfWILYR2FkHk=">
-        <field:select field="rodauser" id="c_ro_roda_domain_AuthData_rodauser" itemValue="id" items="${rodausers}" path="/rodausers" z="x2dVgUaYTU4sti/R0uXrTbsxyl4="/>
         <field:input field="credentialProvider" id="c_ro_roda_domain_AuthData_credentialProvider" required="true" z="Up4DFLeGayHp+RHXvKWckvtk7NE="/>
         <field:input field="fieldName" id="c_ro_roda_domain_AuthData_fieldName" required="true" z="tgO9GQ51G8En0DHSpAuQT0HBSRI="/>
         <field:input field="fieldValue" id="c_ro_roda_domain_AuthData_fieldValue" required="true" z="bhlpENPKgAzphTzEv6D3+pldOZc="/>
+        <field:select field="users" id="c_ro_roda_domain_AuthData_users" itemValue="id" items="${userses}" path="/userses" z="jYeQEjVydxawTv1aOJTuNhOWuxk="/>
     </form:create>
     <form:dependency dependencies="${dependencies}" id="d_ro_roda_domain_AuthData" render="${not empty dependencies}" z="WI/JaOo3VVPyPeV7HfhZUHnrSlg="/>
 </div>

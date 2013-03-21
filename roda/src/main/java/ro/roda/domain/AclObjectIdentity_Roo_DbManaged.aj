@@ -27,6 +27,10 @@ privileged aspect AclObjectIdentity_Roo_DbManaged {
     private AclClass AclObjectIdentity.objectIdClass;
     
     @ManyToOne
+    @JoinColumn(name = "parent_object", referencedColumnName = "id", insertable = false, updatable = false)
+    private AclObjectIdentity AclObjectIdentity.parentObject;
+    
+    @ManyToOne
     @JoinColumn(name = "owner_sid", referencedColumnName = "id", nullable = false)
     private AclSid AclObjectIdentity.ownerSid;
     
@@ -56,6 +60,14 @@ privileged aspect AclObjectIdentity_Roo_DbManaged {
     
     public void AclObjectIdentity.setObjectIdClass(AclClass objectIdClass) {
         this.objectIdClass = objectIdClass;
+    }
+    
+    public AclObjectIdentity AclObjectIdentity.getParentObject() {
+        return parentObject;
+    }
+    
+    public void AclObjectIdentity.setParentObject(AclObjectIdentity parentObject) {
+        this.parentObject = parentObject;
     }
     
     public AclSid AclObjectIdentity.getOwnerSid() {

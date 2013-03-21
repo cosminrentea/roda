@@ -6,7 +6,7 @@
         <field:simple field="cmsPageContents" id="c_ro_roda_domain_CmsPage_cmsPageContents" messageCode="entity_reference_not_managed" messageCodeAttribute="Cms Page Content" z="i86f3mA8bizUePixi/mdFLMflJk="/>
         <field:select field="cmsLayoutId" id="c_ro_roda_domain_CmsPage_cmsLayoutId" itemValue="id" items="${cmslayouts}" path="/cmslayouts" z="q0PUforSEgzIAfpHdtsfi2fikqw="/>
         <field:select field="cmsPageTypeId" id="c_ro_roda_domain_CmsPage_cmsPageTypeId" itemValue="id" items="${cmspagetypes}" path="/cmspagetypes" z="nkrFje3Oz3t5/3Q9C7J3Mo/ENlE="/>
-        <field:select field="ownerId" id="c_ro_roda_domain_CmsPage_ownerId" itemValue="id" items="${rodausers}" path="/rodausers" z="b0QENObTqlCe9QT/ndZoqNl672M="/>
+        <field:select field="ownerId" id="c_ro_roda_domain_CmsPage_ownerId" itemValue="id" items="${userses}" path="/userses" z="8nZtwZu98jSrqAAIG0bwqkyoVFY="/>
         <field:input field="name" id="c_ro_roda_domain_CmsPage_name" required="true" z="7z6aaeyTCvWNYkdgYEFS5wILAGw="/>
         <field:checkbox field="visible" id="c_ro_roda_domain_CmsPage_visible" z="2UG/Vm2gpMxfcj3+7oG068CJwME="/>
         <field:checkbox field="navigable" id="c_ro_roda_domain_CmsPage_navigable" z="8MocoJM2qMs+ZsthGhIYHewYcPA="/>

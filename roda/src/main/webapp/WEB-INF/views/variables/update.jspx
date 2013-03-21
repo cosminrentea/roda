@@ -17,8 +17,6 @@
         <field:input field="type" id="c_ro_roda_domain_Variable_type" required="true" validationMessageCode="field_invalid_integer" z="SZ9yMYHU52F4bU5bITPd0zMpPtg="/>
         <field:input field="orderInInstance" id="c_ro_roda_domain_Variable_orderInInstance" required="true" validationMessageCode="field_invalid_integer" z="ITUGuc2gQNjfILvPiZUIEqeaQfc="/>
         <field:input field="operatorInstructions" id="c_ro_roda_domain_Variable_operatorInstructions" z="EetEOYIX6xzRdjI4JOLi4CfEiU8="/>
-        <field:checkbox field="typeEditedText" id="c_ro_roda_domain_Variable_typeEditedText" z="VlNrGUWZ/A2DfAk7rD2vpknZbjI="/>
-        <field:checkbox field="typeEditedNumber" id="c_ro_roda_domain_Variable_typeEditedNumber" z="fbUZ8YCvRkSGCgA6iEb2tBHQcpU="/>
-        <field:checkbox field="typeSelection" id="c_ro_roda_domain_Variable_typeSelection" z="eAaY1w67HZdxmLHOwQRLcCbctj8="/>
+        <field:input field="variableType" id="c_ro_roda_domain_Variable_variableType" required="true" validationMessageCode="field_invalid_integer" z="m5NMLow0YXw7fJ6eJf9zBWJuIsU="/>
     </form:update>
 </div>

@@ -20,7 +20,7 @@ import org.springframework.web.util.WebUtils;
 import ro.roda.domain.AuditLogChangeset;
 import ro.roda.service.AuditLogActionService;
 import ro.roda.service.AuditLogChangesetService;
-import ro.roda.service.RodauserService;
+import ro.roda.service.UsersService;
 import ro.roda.web.AuditLogChangesetController;
 
 privileged aspect AuditLogChangesetController_Roo_Controller {
@@ -32,7 +32,7 @@ privileged aspect AuditLogChangesetController_Roo_Controller {
     AuditLogActionService AuditLogChangesetController.auditLogActionService;
     
     @Autowired
-    RodauserService AuditLogChangesetController.rodauserService;
+    UsersService AuditLogChangesetController.usersService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String AuditLogChangesetController.create(@Valid AuditLogChangeset auditLogChangeset, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -109,7 +109,7 @@ privileged aspect AuditLogChangesetController_Roo_Controller {
         uiModel.addAttribute("auditLogChangeset", auditLogChangeset);
         addDateTimeFormatPatterns(uiModel);
         uiModel.addAttribute("auditlogactions", auditLogActionService.findAllAuditLogActions());
-        uiModel.addAttribute("rodausers", rodauserService.findAllRodausers());
+        uiModel.addAttribute("userses", usersService.findAllUserses());
     }
     
     String AuditLogChangesetController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

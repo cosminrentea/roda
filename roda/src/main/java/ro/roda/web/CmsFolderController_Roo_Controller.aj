@@ -96,6 +96,7 @@ privileged aspect CmsFolderController_Roo_Controller {
     void CmsFolderController.populateEditForm(Model uiModel, CmsFolder cmsFolder) {
         uiModel.addAttribute("cmsFolder", cmsFolder);
         uiModel.addAttribute("cmsfiles", cmsFileService.findAllCmsFiles());
+        uiModel.addAttribute("cmsfolders", cmsFolderService.findAllCmsFolders());
     }
     
     String CmsFolderController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

@@ -12,8 +12,6 @@ service --interface ~.service.AuthDataService --entity ~.domain.AuthData
 service --interface ~.service.AuthoritiesService --entity ~.domain.Authorities
 service --interface ~.service.AuthoritiesPKService --entity ~.domain.AuthoritiesPK
 service --interface ~.service.CatalogService --entity ~.domain.Catalog
-service --interface ~.service.CatalogAclService --entity ~.domain.CatalogAcl
-service --interface ~.service.CatalogAclPKService --entity ~.domain.CatalogAclPK
 service --interface ~.service.CatalogStudyService --entity ~.domain.CatalogStudy
 service --interface ~.service.CatalogStudyPKService --entity ~.domain.CatalogStudyPK
 service --interface ~.service.CityService --entity ~.domain.City
@@ -33,8 +31,6 @@ service --interface ~.service.ConceptService --entity ~.domain.Concept
 service --interface ~.service.CountryService --entity ~.domain.Country
 service --interface ~.service.EmailService --entity ~.domain.Email
 service --interface ~.service.FileService --entity ~.domain.File
-service --interface ~.service.FileAclService --entity ~.domain.FileAcl
-service --interface ~.service.FileAclPKService --entity ~.domain.FileAclPK
 service --interface ~.service.FilePropertyNameValueService --entity ~.domain.FilePropertyNameValue
 service --interface ~.service.FilePropertyNameValuePKService --entity ~.domain.FilePropertyNameValuePK
 service --interface ~.service.FormService --entity ~.domain.Form
@@ -49,8 +45,6 @@ service --interface ~.service.GroupAuthoritiesPKService --entity ~.domain.GroupA
 service --interface ~.service.GroupMembersService --entity ~.domain.GroupMembers
 service --interface ~.service.GroupsService --entity ~.domain.Groups
 service --interface ~.service.InstanceService --entity ~.domain.Instance
-service --interface ~.service.InstanceAclService --entity ~.domain.InstanceAcl
-service --interface ~.service.InstanceAclPKService --entity ~.domain.InstanceAclPK
 service --interface ~.service.InstanceDescrService --entity ~.domain.InstanceDescr
 service --interface ~.service.InstanceDescrPKService --entity ~.domain.InstanceDescrPK
 service --interface ~.service.InstanceKeywordService --entity ~.domain.InstanceKeyword
@@ -100,8 +94,6 @@ service --interface ~.service.PropertyNameService --entity ~.domain.PropertyName
 service --interface ~.service.PropertyValueService --entity ~.domain.PropertyValue
 service --interface ~.service.RegionService --entity ~.domain.Region
 service --interface ~.service.RegiontypeService --entity ~.domain.Regiontype
-service --interface ~.service.RodauserService --entity ~.domain.Rodauser
-service --interface ~.service.RoleService --entity ~.domain.Role
 service --interface ~.service.SamplingProcedureService --entity ~.domain.SamplingProcedure
 service --interface ~.service.ScaleService --entity ~.domain.Scale
 service --interface ~.service.SelectionVariableService --entity ~.domain.SelectionVariable
@@ -120,8 +112,6 @@ service --interface ~.service.SourcestudyTypeHistoryService --entity ~.domain.So
 service --interface ~.service.SourcetypeService --entity ~.domain.Sourcetype
 service --interface ~.service.SourcetypeHistoryService --entity ~.domain.SourcetypeHistory
 service --interface ~.service.StudyService --entity ~.domain.Study
-service --interface ~.service.StudyAclService --entity ~.domain.StudyAcl
-service --interface ~.service.StudyAclPKService --entity ~.domain.StudyAclPK
 service --interface ~.service.StudyDescrService --entity ~.domain.StudyDescr
 service --interface ~.service.StudyDescrPKService --entity ~.domain.StudyDescrPK
 service --interface ~.service.StudyDocumentsService --entity ~.domain.StudyDocuments
@@ -143,7 +133,6 @@ service --interface ~.service.TranslatedTopicService --entity ~.domain.Translate
 service --interface ~.service.TranslatedTopicPKService --entity ~.domain.TranslatedTopicPK
 service --interface ~.service.UnitAnalysisService --entity ~.domain.UnitAnalysis
 service --interface ~.service.UserAuthLogService --entity ~.domain.UserAuthLog
-service --interface ~.service.UserAuthLogPKService --entity ~.domain.UserAuthLogPK
 service --interface ~.service.UserMessageService --entity ~.domain.UserMessage
 service --interface ~.service.UserProfileService --entity ~.domain.UserProfile
 service --interface ~.service.UserSettingService --entity ~.domain.UserSetting

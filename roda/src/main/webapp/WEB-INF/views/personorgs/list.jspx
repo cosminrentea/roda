@@ -7,8 +7,8 @@
             <table:column id="c_ro_roda_domain_PersonOrg_orgId" property="orgId" z="cd+PuXaf13AATm5R9/bxbu0nilQ="/>
             <table:column id="c_ro_roda_domain_PersonOrg_personId" property="personId" z="x8FXeLaHdDEHx9LNIEoKeFY2+rQ="/>
             <table:column id="c_ro_roda_domain_PersonOrg_roleId" property="roleId" z="zmmNoduJxag4Ie/egI2SkfaMUQs="/>
-            <table:column calendar="true" dateTimePattern="${personOrg_datestart_date_format}" id="c_ro_roda_domain_PersonOrg_datestart" property="datestart" z="9w0xklh+GuBAk1T+FOHttwG8CZ4="/>
-            <table:column calendar="true" dateTimePattern="${personOrg_dateend_date_format}" id="c_ro_roda_domain_PersonOrg_dateend" property="dateend" z="BaiqYx9YIytjhDit4U7xbVxI1nE="/>
+            <table:column date="true" dateTimePattern="${personOrg_datestart_date_format}" id="c_ro_roda_domain_PersonOrg_dateStart" property="dateStart" z="Bsn+d+0z0RH7M82tYgBvSPzznZ4="/>
+            <table:column date="true" dateTimePattern="${personOrg_dateend_date_format}" id="c_ro_roda_domain_PersonOrg_dateEnd" property="dateEnd" z="0wiB+CFP8oLgyhvEumuUKdWmWMA="/>
         </table:table>
     </page:list>
 </div>

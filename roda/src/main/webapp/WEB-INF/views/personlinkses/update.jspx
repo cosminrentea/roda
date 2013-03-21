@@ -4,8 +4,8 @@
     <jsp:output omit-xml-declaration="yes"/>
     <form:update id="fu_ro_roda_domain_PersonLinks" modelAttribute="personLinks" path="/personlinkses" versionField="none" z="eLC5YTe4n7lQNCb23weR3t96B+E=">
         <field:select field="personId" id="c_ro_roda_domain_PersonLinks_personId" itemValue="id" items="${people}" path="/people" z="KkYnbzTpCqvlAFzXrsmEx1c0sz0="/>
-        <field:select field="userId" id="c_ro_roda_domain_PersonLinks_userId" itemValue="id" items="${rodausers}" path="/rodausers" z="hoNWTFBefeKAwRMRdFRbryyi9/0="/>
-        <field:select field="statusBy" id="c_ro_roda_domain_PersonLinks_statusBy" itemValue="id" items="${rodausers}" path="/rodausers" z="jNWUpil9wa7jr/I3h9pACLzh4Zk="/>
+        <field:select field="userId" id="c_ro_roda_domain_PersonLinks_userId" itemValue="id" items="${userses}" path="/userses" z="2IGvqIV83HL88zh5MCUV1509Imk="/>
+        <field:select field="statusBy" id="c_ro_roda_domain_PersonLinks_statusBy" itemValue="id" items="${userses}" path="/userses" z="NXlFDzd1sX4Dr4duVaYd3sHe6Js="/>
         <field:input field="simscore" id="c_ro_roda_domain_PersonLinks_simscore" required="true" validationMessageCode="field_invalid_number" z="blf1SlEp4C9HFXWGZpsXIQ/J8hI="/>
         <field:input field="namescore" id="c_ro_roda_domain_PersonLinks_namescore" required="true" validationMessageCode="field_invalid_number" z="IAZ+1QgZzAw+IFmGgSIcf/vzoZw="/>
         <field:input field="emailscore" id="c_ro_roda_domain_PersonLinks_emailscore" required="true" validationMessageCode="field_invalid_number" z="aJjbGV0Ap37NyIOgysxC4iJLv1M="/>

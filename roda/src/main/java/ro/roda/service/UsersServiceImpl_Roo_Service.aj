@@ -23,7 +23,7 @@ privileged aspect UsersServiceImpl_Roo_Service {
         users.remove();
     }
     
-    public Users UsersServiceImpl.findUsers(String id) {
+    public Users UsersServiceImpl.findUsers(Integer id) {
         return Users.findUsers(id);
     }
     

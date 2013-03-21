@@ -4,9 +4,9 @@
     <jsp:output omit-xml-declaration="yes"/>
     <page:list id="pl_ro_roda_domain_AuditLogChangeset" items="${auditlogchangesets}" z="oVCAgSiWW0JRlxD8KYFUhG+TY2A=">
         <table:table data="${auditlogchangesets}" id="l_ro_roda_domain_AuditLogChangeset" path="/auditlogchangesets" z="FdJ1blqNkYZi1D3HONx1lEYenOA=">
-            <table:column id="c_ro_roda_domain_AuditLogChangeset_rodauser" property="rodauser" z="8jE6+mtWfGM57+xZIg6bAChwCL4="/>
             <table:column id="c_ro_roda_domain_AuditLogChangeset_description" property="description" z="Ms1ZinNN4dH5pBp8c2nU5LdNNkg="/>
             <table:column calendar="true" dateTimePattern="${auditLogChangeset_timestamp_date_format}" id="c_ro_roda_domain_AuditLogChangeset_timestamp" property="timestamp" z="neieX85x/QOm7GRLCUjiUs9M9+Q="/>
+            <table:column id="c_ro_roda_domain_AuditLogChangeset_userId" property="userId" z="x3uuVo1p4UEEu+vkd3kGfO2n8wY="/>
         </table:table>
     </page:list>
 </div>

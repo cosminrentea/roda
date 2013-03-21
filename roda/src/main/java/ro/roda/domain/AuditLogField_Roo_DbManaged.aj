@@ -23,7 +23,7 @@ privileged aspect AuditLogField_Roo_DbManaged {
     @JoinColumn(name = "audited_table", referencedColumnName = "id", nullable = false)
     private AuditLogTable AuditLogField.auditedTable;
     
-    @Column(name = "name", columnDefinition = "varchar", length = 40)
+    @Column(name = "name", columnDefinition = "text")
     @NotNull
     private String AuditLogField.name;
     

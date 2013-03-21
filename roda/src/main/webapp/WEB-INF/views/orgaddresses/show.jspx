@@ -5,7 +5,7 @@
     <page:show id="ps_ro_roda_domain_OrgAddress" object="${orgaddress}" path="/orgaddresses" z="4H/mjcdTefLD/IM00EkXKwlrp/c=">
         <field:display field="addressId" id="s_ro_roda_domain_OrgAddress_addressId" object="${orgaddress}" z="4naIn3mMbY26WFPHcw/IMFJ/1qM="/>
         <field:display field="orgId" id="s_ro_roda_domain_OrgAddress_orgId" object="${orgaddress}" z="B/VxUaQEdZuT8XY3V7UVsxqc8qw="/>
-        <field:display calendar="true" dateTimePattern="${orgAddress_datestart_date_format}" field="datestart" id="s_ro_roda_domain_OrgAddress_datestart" object="${orgaddress}" z="liyvWPzEgYbgoFy94jtTjNgeWSg="/>
-        <field:display calendar="true" dateTimePattern="${orgAddress_dateend_date_format}" field="dateend" id="s_ro_roda_domain_OrgAddress_dateend" object="${orgaddress}" z="Ew3+GWaIFvHMEXYLSn9bKv+DcFw="/>
+        <field:display date="true" dateTimePattern="${orgAddress_datestart_date_format}" field="dateStart" id="s_ro_roda_domain_OrgAddress_dateStart" object="${orgaddress}" z="PqTuu0QCyxMmkAthw/7rKpovbFc="/>
+        <field:display date="true" dateTimePattern="${orgAddress_dateend_date_format}" field="dateEnd" id="s_ro_roda_domain_OrgAddress_dateEnd" object="${orgaddress}" z="+S12KszM+BRTGYmMjQWl4E4fWqg="/>
     </page:show>
 </div>

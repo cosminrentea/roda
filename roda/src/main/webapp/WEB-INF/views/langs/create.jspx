@@ -6,7 +6,10 @@
         <field:simple field="instanceDescrs" id="c_ro_roda_domain_Lang_instanceDescrs" messageCode="entity_reference_not_managed" messageCodeAttribute="Instance Descr" z="tibu9+zuGdpoyZ9K10E6kBJ2+vY="/>
         <field:simple field="studyDescrs" id="c_ro_roda_domain_Lang_studyDescrs" messageCode="entity_reference_not_managed" messageCodeAttribute="Study Descr" z="RtdrPDexhusCcanhTN/+wNAVmwc="/>
         <field:simple field="translatedTopics" id="c_ro_roda_domain_Lang_translatedTopics" messageCode="entity_reference_not_managed" messageCodeAttribute="Translated Topic" z="FeLBZtlcL03fphvz5WfvpQQo3xQ="/>
-        <field:input field="name" id="c_ro_roda_domain_Lang_name" required="true" z="GH9yviavlAbdjYGDmK1/XX8CZk0="/>
+        <field:input field="iso639" id="c_ro_roda_domain_Lang_iso639" required="true" z="qQEzT1x9Ypizx9E6x+89mDe+xaM="/>
+        <field:input field="nameSelf" id="c_ro_roda_domain_Lang_nameSelf" z="2qFAgUBDmv8IlPyAleqUfvdEqoY="/>
+        <field:input field="nameRo" id="c_ro_roda_domain_Lang_nameRo" z="iax0r7m/qVptpEIBw0SL3rJPd1g="/>
+        <field:input field="nameEn" id="c_ro_roda_domain_Lang_nameEn" z="CSefQ4LHpjXRMUJ920qg5gYQPi0="/>
     </form:create>
     <form:dependency dependencies="${dependencies}" id="d_ro_roda_domain_Lang" render="${not empty dependencies}" z="wsMvEEaeH1Yg2DJ1vlgdmWgqu5s="/>
 </div>

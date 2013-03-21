@@ -20,7 +20,7 @@ import org.springframework.web.util.WebUtils;
 import ro.roda.domain.PersonLinks;
 import ro.roda.service.PersonLinksService;
 import ro.roda.service.PersonService;
-import ro.roda.service.RodauserService;
+import ro.roda.service.UsersService;
 import ro.roda.web.PersonLinksController;
 
 privileged aspect PersonLinksController_Roo_Controller {
@@ -32,7 +32,7 @@ privileged aspect PersonLinksController_Roo_Controller {
     PersonService PersonLinksController.personService;
     
     @Autowired
-    RodauserService PersonLinksController.rodauserService;
+    UsersService PersonLinksController.usersService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String PersonLinksController.create(@Valid PersonLinks personLinks, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -109,7 +109,7 @@ privileged aspect PersonLinksController_Roo_Controller {
         uiModel.addAttribute("personLinks", personLinks);
         addDateTimeFormatPatterns(uiModel);
         uiModel.addAttribute("people", personService.findAllPeople());
-        uiModel.addAttribute("rodausers", rodauserService.findAllRodausers());
+        uiModel.addAttribute("userses", usersService.findAllUserses());
     }
     
     String PersonLinksController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

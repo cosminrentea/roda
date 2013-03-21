@@ -5,7 +5,7 @@
     <page:show id="ps_ro_roda_domain_PersonAddress" object="${personaddress}" path="/personaddresses" z="nwy0Lk4q7RRiZvaIOxJqRqapLe4=">
         <field:display field="addressId" id="s_ro_roda_domain_PersonAddress_addressId" object="${personaddress}" z="t5vdAApbVsEZFyuPBLs+rkq9vcY="/>
         <field:display field="personId" id="s_ro_roda_domain_PersonAddress_personId" object="${personaddress}" z="vfxU/ZZw1WrwhNx6GAWNkmd8v74="/>
-        <field:display calendar="true" dateTimePattern="${personAddress_datestart_date_format}" field="datestart" id="s_ro_roda_domain_PersonAddress_datestart" object="${personaddress}" z="qdKnRd8eCN0lJ1t1EELGDlGb3uQ="/>
-        <field:display calendar="true" dateTimePattern="${personAddress_dateend_date_format}" field="dateend" id="s_ro_roda_domain_PersonAddress_dateend" object="${personaddress}" z="oItKeOReKV0WSGVw5022YH4Kt7w="/>
+        <field:display date="true" dateTimePattern="${personAddress_datestart_date_format}" field="dateStart" id="s_ro_roda_domain_PersonAddress_dateStart" object="${personaddress}" z="6sxudDEzhJ8w8sEoYTvpPtDg6GE="/>
+        <field:display date="true" dateTimePattern="${personAddress_dateend_date_format}" field="dateEnd" id="s_ro_roda_domain_PersonAddress_dateEnd" object="${personaddress}" z="3tg8NwwObqOciiY60qNLiSwCqGQ="/>
     </page:show>
 </div>

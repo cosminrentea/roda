@@ -21,14 +21,13 @@ import ro.roda.domain.Study;
 import ro.roda.service.CatalogStudyService;
 import ro.roda.service.FileService;
 import ro.roda.service.InstanceService;
-import ro.roda.service.RodauserService;
-import ro.roda.service.StudyAclService;
 import ro.roda.service.StudyDescrService;
 import ro.roda.service.StudyKeywordService;
 import ro.roda.service.StudyOrgService;
 import ro.roda.service.StudyPersonService;
 import ro.roda.service.StudyService;
 import ro.roda.service.TopicService;
+import ro.roda.service.UsersService;
 import ro.roda.web.StudyController;
 
 privileged aspect StudyController_Roo_Controller {
@@ -46,12 +45,6 @@ privileged aspect StudyController_Roo_Controller {
     InstanceService StudyController.instanceService;
     
     @Autowired
-    RodauserService StudyController.rodauserService;
-    
-    @Autowired
-    StudyAclService StudyController.studyAclService;
-    
-    @Autowired
     StudyDescrService StudyController.studyDescrService;
     
     @Autowired
@@ -65,6 +58,9 @@ privileged aspect StudyController_Roo_Controller {
     
     @Autowired
     TopicService StudyController.topicService;
+    
+    @Autowired
+    UsersService StudyController.usersService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String StudyController.create(@Valid Study study, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -134,8 +130,8 @@ privileged aspect StudyController_Roo_Controller {
     }
     
     void StudyController.addDateTimeFormatPatterns(Model uiModel) {
-        uiModel.addAttribute("study_datestart_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
-        uiModel.addAttribute("study_dateend_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
+        uiModel.addAttribute("study_datestart_date_format", DateTimeFormat.patternForStyle("M-", LocaleContextHolder.getLocale()));
+        uiModel.addAttribute("study_dateend_date_format", DateTimeFormat.patternForStyle("M-", LocaleContextHolder.getLocale()));
         uiModel.addAttribute("study_added_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
     }
     
@@ -145,13 +141,12 @@ privileged aspect StudyController_Roo_Controller {
         uiModel.addAttribute("catalogstudys", catalogStudyService.findAllCatalogStudys());
         uiModel.addAttribute("files", fileService.findAllFiles());
         uiModel.addAttribute("instances", instanceService.findAllInstances());
-        uiModel.addAttribute("rodausers", rodauserService.findAllRodausers());
-        uiModel.addAttribute("studyacls", studyAclService.findAllStudyAcls());
         uiModel.addAttribute("studydescrs", studyDescrService.findAllStudyDescrs());
         uiModel.addAttribute("studykeywords", studyKeywordService.findAllStudyKeywords());
         uiModel.addAttribute("studyorgs", studyOrgService.findAllStudyOrgs());
         uiModel.addAttribute("studypeople", studyPersonService.findAllStudypeople());
         uiModel.addAttribute("topics", topicService.findAllTopics());
+        uiModel.addAttribute("userses", usersService.findAllUserses());
     }
     
     String StudyController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

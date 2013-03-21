@@ -37,6 +37,10 @@ public class DatabaseUtils {
 		this.dbUrl = dbUrl;
 	}
 
+	/**
+	 * Truncates the existing data in all the database tables, and restarts the
+	 * associated sequences.
+	 */
 	public void truncate() {
 		Connection con = null;
 		try {
@@ -49,7 +53,7 @@ public class DatabaseUtils {
 			try {
 				stmt = con.createStatement();
 				ResultSet rs = stmt
-						.executeQuery("SELECT 'TRUNCATE TABLE \"' || tablename || '\" RESTART IDENTITY CASCADE;' from pg_tables where schemaname = 'public'");
+						.executeQuery("SELECT 'TRUNCATE TABLE \"' || tablename || '\" RESTART IDENTITY CASCADE;' FROM pg_tables WHERE schemaname = 'public'");
 				while (rs.next()) {
 					String sqlCommand = rs.getString(1);
 					log.info(sqlCommand);
@@ -76,7 +80,11 @@ public class DatabaseUtils {
 		}
 	}
 
-	public void initData() {
+	/**
+	 * Populates the data in the database (data is taken from a directory of CSV
+	 * files)
+	 */
+	public void initData(String csvDirname) {
 		Connection con = null;
 		try {
 			Properties conProps = new Properties();
@@ -84,7 +92,7 @@ public class DatabaseUtils {
 			conProps.put("password", this.dbPassword);
 			con = DriverManager.getConnection(this.dbUrl, conProps);
 
-			Resource csvRes = new ClassPathResource("/csv");
+			Resource csvRes = new ClassPathResource(csvDirname);
 			File csvDir = csvRes.getFile();
 			File[] csvFiles = csvDir.listFiles();
 
@@ -114,11 +122,68 @@ public class DatabaseUtils {
 						+ ") FROM stdin DELIMITERS ',' CSV";
 				log.info(copyQuery);
 				cm.copyIn(copyQuery, br);
+//				br.close();
 			}
 		} catch (SQLException e) {
 			log.error("SQLException:", e);
 		} catch (IOException e) {
 			log.error("IOException:", e);
+		} finally {
+			if (con != null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					log.error("SQLException:", e);
+				}
+			}
+		}
+	}
+
+	/**
+	 * increments a sequence (managed by Hibernate) by a given value, and set a
+	 * new increment. Code is Postgresql-specific.
+	 * 
+	 * @param sequence
+	 *            the sequence name
+	 * @param value
+	 *            the amount by which the sequence is incremented (one time
+	 *            only)
+	 * @param increment
+	 *            the final "increment" setting of the sequence
+	 */
+	public void setSequence(String sequence, int value, int increment) {
+		Connection con = null;
+		try {
+			Properties conProps = new Properties();
+			conProps.put("user", this.dbUsername);
+			conProps.put("password", this.dbPassword);
+			con = DriverManager.getConnection(this.dbUrl, conProps);
+
+			Statement stmt = null;
+			try {
+				stmt = con.createStatement();
+				
+				// set the current/next value
+				ResultSet rs = stmt.executeQuery("SELECT setval('" + sequence
+						+ "',"+ value + ")");
+				while (rs.next()) {
+					int newValue = rs.getInt(1);
+					log.error("sequence new value: " + sequence + " = "
+							+ newValue);
+				}
+
+				// set the new increment
+				stmt.executeUpdate("ALTER SEQUENCE " + sequence
+						+ " INCREMENT BY " + increment);
+				log.error("sequence new increment: " + sequence + " += "
+						+ increment);
+			} finally {
+				if (stmt != null) {
+					stmt.close();
+				}
+			}
+		} catch (SQLException e) {
+			log.error("SQLException:", e);
 		} finally {
 			if (con != null) {
 				try {

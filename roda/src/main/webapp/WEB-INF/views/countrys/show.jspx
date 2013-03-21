@@ -3,7 +3,10 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <page:show id="ps_ro_roda_domain_Country" object="${country}" path="/countrys" z="ItsCdeHBF3c26CZOYsUnPyEGyDA=">
-        <field:display field="name" id="s_ro_roda_domain_Country_name" object="${country}" z="UPRPpUmq0mKj3oh4wV0cOJtXFvg="/>
-        <field:display field="alpha3" id="s_ro_roda_domain_Country_alpha3" object="${country}" z="IW49DYUbH5xPYj/s8kgmFK8zntQ="/>
+        <field:display field="nameRo" id="s_ro_roda_domain_Country_nameRo" object="${country}" z="7nNe3GeLsUF2I9PmBsBwLP8VqoE="/>
+        <field:display field="nameSelf" id="s_ro_roda_domain_Country_nameSelf" object="${country}" z="hkOKlpgiBi+VNFZFRHuE0fcsDIg="/>
+        <field:display field="nameEn" id="s_ro_roda_domain_Country_nameEn" object="${country}" z="qzkGuTw33EFcq+oe1K9H2oOIKsQ="/>
+        <field:display field="iso3166" id="s_ro_roda_domain_Country_iso3166" object="${country}" z="Ma99WLBoQsEaZxjXlXffBPfIIEk="/>
+        <field:display field="iso3166Alpha3" id="s_ro_roda_domain_Country_iso3166Alpha3" object="${country}" z="Aq1N2R6mdDPjs+/YD9PZ0Wmvfoo="/>
     </page:show>
 </div>

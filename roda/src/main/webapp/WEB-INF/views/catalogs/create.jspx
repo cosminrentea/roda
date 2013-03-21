@@ -3,14 +3,14 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <form:create id="fc_ro_roda_domain_Catalog" modelAttribute="catalog" path="/catalogs" render="${empty dependencies}" z="U65O0FJizXq902qG3t0k8Eu8Jc8=">
-        <field:simple field="catalogAcls" id="c_ro_roda_domain_Catalog_catalogAcls" messageCode="entity_reference_not_managed" messageCodeAttribute="Catalog Acl" z="CF3fiin/QFqOnLSHFhjPdhVUZb0="/>
         <field:simple field="catalogStudies" id="c_ro_roda_domain_Catalog_catalogStudies" messageCode="entity_reference_not_managed" messageCodeAttribute="Catalog Study" z="IjLuiMi7QypX1mEBtXesh/oMLnc="/>
-        <field:select field="owner" id="c_ro_roda_domain_Catalog_owner" itemValue="id" items="${rodausers}" path="/rodausers" z="wOp5TfuQ7tx6RwD6164HIIcTuKU="/>
+        <field:select field="owner" id="c_ro_roda_domain_Catalog_owner" itemValue="id" items="${userses}" path="/userses" z="EhZckWNufz5vgXQvrxQGR/tfv8o="/>
         <field:input field="name" id="c_ro_roda_domain_Catalog_name" required="true" z="Cn2m2FNpA51Rw1MtBm31/U6FWoo="/>
-        <field:input field="parentId" id="c_ro_roda_domain_Catalog_parentId" validationMessageCode="field_invalid_integer" z="U+Eec0cl2zjYaBlYnxwjx8qeDdw="/>
         <field:datetime dateTimePattern="${catalog_added_date_format}" field="added" id="c_ro_roda_domain_Catalog_added" required="true" z="uzQ2+JHkX+actnS63rZvdyN+gh0="/>
         <field:input field="sequencenr" id="c_ro_roda_domain_Catalog_sequencenr" validationMessageCode="field_invalid_integer" z="Z6kuAWCl1f0SKrx7DjWKccK52HQ="/>
         <field:input field="description" id="c_ro_roda_domain_Catalog_description" z="yPZvigLtZdWl94RypBehnwZqedo="/>
+        <field:select field="parentId" id="c_ro_roda_domain_Catalog_parentId" itemValue="id" items="${catalogs}" path="/catalogs" z="VgmiAl50cCdCFHKylVnKGqq+ck8="/>
+        <field:simple field="catalogs" id="c_ro_roda_domain_Catalog_catalogs" messageCode="entity_reference_not_managed" messageCodeAttribute="Catalog" z="ZO3TMKVx2sXrK2gLuwhbS7iOfMw="/>
     </form:create>
     <form:dependency dependencies="${dependencies}" id="d_ro_roda_domain_Catalog" render="${not empty dependencies}" z="FG3oqcxPP7LL08yoIgUct5MMV4w="/>
 </div>

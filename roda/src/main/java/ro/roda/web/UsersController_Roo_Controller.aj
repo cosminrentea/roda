@@ -16,7 +16,23 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.domain.Users;
+import ro.roda.service.AuditLogChangesetService;
+import ro.roda.service.AuthDataService;
 import ro.roda.service.AuthoritiesService;
+import ro.roda.service.CatalogService;
+import ro.roda.service.CmsPageService;
+import ro.roda.service.InstanceKeywordService;
+import ro.roda.service.InstanceService;
+import ro.roda.service.NewsService;
+import ro.roda.service.PersonLinksService;
+import ro.roda.service.SourcestudyTypeHistoryService;
+import ro.roda.service.SourcetypeHistoryService;
+import ro.roda.service.StudyKeywordService;
+import ro.roda.service.StudyService;
+import ro.roda.service.UserAuthLogService;
+import ro.roda.service.UserMessageService;
+import ro.roda.service.UserProfileService;
+import ro.roda.service.UserSettingValueService;
 import ro.roda.service.UsersService;
 import ro.roda.web.UsersController;
 
@@ -26,7 +42,55 @@ privileged aspect UsersController_Roo_Controller {
     UsersService UsersController.usersService;
     
     @Autowired
+    AuditLogChangesetService UsersController.auditLogChangesetService;
+    
+    @Autowired
+    AuthDataService UsersController.authDataService;
+    
+    @Autowired
     AuthoritiesService UsersController.authoritiesService;
+    
+    @Autowired
+    CatalogService UsersController.catalogService;
+    
+    @Autowired
+    CmsPageService UsersController.cmsPageService;
+    
+    @Autowired
+    InstanceService UsersController.instanceService;
+    
+    @Autowired
+    InstanceKeywordService UsersController.instanceKeywordService;
+    
+    @Autowired
+    NewsService UsersController.newsService;
+    
+    @Autowired
+    PersonLinksService UsersController.personLinksService;
+    
+    @Autowired
+    SourcestudyTypeHistoryService UsersController.sourcestudyTypeHistoryService;
+    
+    @Autowired
+    SourcetypeHistoryService UsersController.sourcetypeHistoryService;
+    
+    @Autowired
+    StudyService UsersController.studyService;
+    
+    @Autowired
+    StudyKeywordService UsersController.studyKeywordService;
+    
+    @Autowired
+    UserAuthLogService UsersController.userAuthLogService;
+    
+    @Autowired
+    UserMessageService UsersController.userMessageService;
+    
+    @Autowired
+    UserProfileService UsersController.userProfileService;
+    
+    @Autowired
+    UserSettingValueService UsersController.userSettingValueService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String UsersController.create(@Valid Users users, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -36,7 +100,7 @@ privileged aspect UsersController_Roo_Controller {
         }
         uiModel.asMap().clear();
         usersService.saveUsers(users);
-        return "redirect:/userses/" + encodeUrlPathSegment(users.getUsername().toString(), httpServletRequest);
+        return "redirect:/userses/" + encodeUrlPathSegment(users.getId().toString(), httpServletRequest);
     }
     
     @RequestMapping(params = "form", produces = "text/html")
@@ -45,10 +109,10 @@ privileged aspect UsersController_Roo_Controller {
         return "userses/create";
     }
     
-    @RequestMapping(value = "/{username}", produces = "text/html")
-    public String UsersController.show(@PathVariable("username") String username, Model uiModel) {
-        uiModel.addAttribute("users", usersService.findUsers(username));
-        uiModel.addAttribute("itemId", username);
+    @RequestMapping(value = "/{id}", produces = "text/html")
+    public String UsersController.show(@PathVariable("id") Integer id, Model uiModel) {
+        uiModel.addAttribute("users", usersService.findUsers(id));
+        uiModel.addAttribute("itemId", id);
         return "userses/show";
     }
     
@@ -74,18 +138,18 @@ privileged aspect UsersController_Roo_Controller {
         }
         uiModel.asMap().clear();
         usersService.updateUsers(users);
-        return "redirect:/userses/" + encodeUrlPathSegment(users.getUsername().toString(), httpServletRequest);
+        return "redirect:/userses/" + encodeUrlPathSegment(users.getId().toString(), httpServletRequest);
     }
     
-    @RequestMapping(value = "/{username}", params = "form", produces = "text/html")
-    public String UsersController.updateForm(@PathVariable("username") String username, Model uiModel) {
-        populateEditForm(uiModel, usersService.findUsers(username));
+    @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
+    public String UsersController.updateForm(@PathVariable("id") Integer id, Model uiModel) {
+        populateEditForm(uiModel, usersService.findUsers(id));
         return "userses/update";
     }
     
-    @RequestMapping(value = "/{username}", method = RequestMethod.DELETE, produces = "text/html")
-    public String UsersController.delete(@PathVariable("username") String username, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        Users users = usersService.findUsers(username);
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
+    public String UsersController.delete(@PathVariable("id") Integer id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
+        Users users = usersService.findUsers(id);
         usersService.deleteUsers(users);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
@@ -95,7 +159,23 @@ privileged aspect UsersController_Roo_Controller {
     
     void UsersController.populateEditForm(Model uiModel, Users users) {
         uiModel.addAttribute("users", users);
+        uiModel.addAttribute("auditlogchangesets", auditLogChangesetService.findAllAuditLogChangesets());
+        uiModel.addAttribute("authdatas", authDataService.findAllAuthDatas());
         uiModel.addAttribute("authoritieses", authoritiesService.findAllAuthoritieses());
+        uiModel.addAttribute("catalogs", catalogService.findAllCatalogs());
+        uiModel.addAttribute("cmspages", cmsPageService.findAllCmsPages());
+        uiModel.addAttribute("instances", instanceService.findAllInstances());
+        uiModel.addAttribute("instancekeywords", instanceKeywordService.findAllInstanceKeywords());
+        uiModel.addAttribute("newsitems", newsService.findAllNews());
+        uiModel.addAttribute("personlinkses", personLinksService.findAllPersonLinkses());
+        uiModel.addAttribute("sourcestudytypehistorys", sourcestudyTypeHistoryService.findAllSourcestudyTypeHistorys());
+        uiModel.addAttribute("sourcetypehistorys", sourcetypeHistoryService.findAllSourcetypeHistorys());
+        uiModel.addAttribute("studys", studyService.findAllStudys());
+        uiModel.addAttribute("studykeywords", studyKeywordService.findAllStudyKeywords());
+        uiModel.addAttribute("userauthlogs", userAuthLogService.findAllUserAuthLogs());
+        uiModel.addAttribute("usermessages", userMessageService.findAllUserMessages());
+        uiModel.addAttribute("userprofiles", userProfileService.findAllUserProfiles());
+        uiModel.addAttribute("usersettingvalues", userSettingValueService.findAllUserSettingValues());
     }
     
     String UsersController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

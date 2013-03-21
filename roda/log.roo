@@ -1602,3 +1602,320 @@ selenium test --controller ~.web.VariableController
 // Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log closed at 2013-03-14 14:37:28
 // Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log opened at 2013-03-14 14:39:33
 // Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log closed at 2013-03-14 16:12:10
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log opened at 2013-03-18 13:23:16
+database reverse engineer --schema public --includeNonPortableAttributes --package ~.domain
+database reverse engineer --schema public --includeNonPortableAttributes --package ~.domain
+web mvc all --package ~.web
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log closed at 2013-03-18 16:04:15
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log opened at 2013-03-18 16:04:23
+hint
+web mvc all --package ~.web
+database reverse engineer --schema public --includeNonPortableAttributes --package ~.domain
+database reverse engineer --schema public --includeNonPortableAttributes --package ~.domain
+web mvc all --package ~.web
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log closed at 2013-03-18 16:21:24
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log opened at 2013-03-18 16:25:04
+hint
+hint
+backup
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log closed at 2013-03-18 17:45:57
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log opened at 2013-03-18 17:46:04
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log closed at 2013-03-18 17:47:43
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log opened at 2013-03-18 17:47:49
+backup
+database reverse engineer --schema public --includeNonPortableAttributes --package ~.domain
+// [failed] database reverse engineer --schema public --includeNonPortableAttributes --package ~.domain
+database reverse engineer --schema public --includeNonPortableAttributes --package ~.domain
+database reverse engineer --schema public --includeNonPortableAttributes --package ~.domain
+web mvc all --package ~.web
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log closed at 2013-03-18 18:03:08
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log opened at 2013-03-18 18:03:14
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log closed at 2013-03-18 18:07:06
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log opened at 2013-03-18 18:16:34
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log closed at 2013-03-18 18:26:15
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log opened at 2013-03-18 18:47:07
+database reverse engineer --schema public --includeNonPortableAttributes --package ~.domain
+web mvc all --package ~.web
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log closed at 2013-03-19 14:42:41
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log opened at 2013-03-19 15:09:45
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log closed at 2013-03-19 15:30:23
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log opened at 2013-03-19 20:20:16
+hint
+web mvc all --package ~.web
+database reverse engineer --schema public --includeNonPortableAttributes --package ~.domain
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log closed at 2013-03-19 21:15:18
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log opened at 2013-03-19 21:38:29
+database reverse engineer --schema public --includeNonPortableAttributes --package ~.domain
+web mvc all --package ~.web
+hint
+backup
+service --interface ~.service.UserSettingGroupService --entity ~.domain.UserSettingGroup
+web mvc all --package ~.web
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log closed at 2013-03-19 22:02:08
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log opened at 2013-03-19 22:15:54
+database reverse engineer --schema public --includeNonPortableAttributes --package ~.domain
+web mvc all --package ~.web
+web mvc all --package ~.web
+database reverse engineer --schema public --includeNonPortableAttributes --package ~.domain
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log closed at 2013-03-19 22:25:57
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log opened at 2013-03-19 22:42:00
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log closed at 2013-03-19 22:57:36
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log opened at 2013-03-19 22:57:47
+database reverse engineer --schema public --includeNonPortableAttributes --package ~.domain
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log closed at 2013-03-19 23:11:59
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log opened at 2013-03-19 23:18:28
+hint
+development mode
+database reverse engineer --schema public --includeNonPortableAttributes --package ~.domain
+web mvc all --package ~.web
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log closed at 2013-03-19 23:28:51
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log opened at 2013-03-19 23:28:59
+development mode
+database reverse engineer --schema public --includeNonPortableAttributes --package ~.domain
+database reverse engineer --schema public --includeNonPortableAttributes --package ~.domain
+web mvc all --package ~.web
+backup
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log closed at 2013-03-19 23:48:06
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log opened at 2013-03-19 23:49:25
+database reverse engineer --schema public --includeNonPortableAttributes --package ~.domain
+development mode
+database reverse engineer --schema public --includeNonPortableAttributes --package ~.domain
+database reverse engineer --schema public --includeNonPortableAttributes --package ~.domain
+hint
+database reverse engineer --schema public --includeNonPortableAttributes --package ~.domain
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log closed at 2013-03-20 00:01:24
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log opened at 2013-03-20 00:01:30
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log closed at 2013-03-20 00:01:40
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log opened at 2013-03-20 00:12:13
+development mode
+database reverse engineer --schema public --includeNonPortableAttributes --package ~.domain
+service --interface ~.service.AclClassService --entity ~.domain.AclClass
+service --interface ~.service.AclEntryService --entity ~.domain.AclEntry
+service --interface ~.service.AclObjectIdentityService --entity ~.domain.AclObjectIdentity
+service --interface ~.service.AclSidService --entity ~.domain.AclSid
+service --interface ~.service.AddressService --entity ~.domain.Address
+service --interface ~.service.AuditLogActionService --entity ~.domain.AuditLogAction
+service --interface ~.service.AuditLogChangeService --entity ~.domain.AuditLogChange
+service --interface ~.service.AuditLogChangesetService --entity ~.domain.AuditLogChangeset
+service --interface ~.service.AuditLogFieldService --entity ~.domain.AuditLogField
+service --interface ~.service.AuditLogTableService --entity ~.domain.AuditLogTable
+service --interface ~.service.AuthDataService --entity ~.domain.AuthData
+service --interface ~.service.AuthoritiesService --entity ~.domain.Authorities
+service --interface ~.service.AuthoritiesPKService --entity ~.domain.AuthoritiesPK
+service --interface ~.service.CatalogService --entity ~.domain.Catalog
+service --interface ~.service.CatalogStudyService --entity ~.domain.CatalogStudy
+service --interface ~.service.CatalogStudyPKService --entity ~.domain.CatalogStudyPK
+service --interface ~.service.CityService --entity ~.domain.City
+service --interface ~.service.CmsFileService --entity ~.domain.CmsFile
+service --interface ~.service.CmsFilePropertyNameValueService --entity ~.domain.CmsFilePropertyNameValue
+service --interface ~.service.CmsFilePropertyNameValuePKService --entity ~.domain.CmsFilePropertyNameValuePK
+service --interface ~.service.CmsFolderService --entity ~.domain.CmsFolder
+service --interface ~.service.CmsLayoutService --entity ~.domain.CmsLayout
+service --interface ~.service.CmsLayoutGroupService --entity ~.domain.CmsLayoutGroup
+service --interface ~.service.CmsPageService --entity ~.domain.CmsPage
+service --interface ~.service.CmsPageContentService --entity ~.domain.CmsPageContent
+service --interface ~.service.CmsPageTypeService --entity ~.domain.CmsPageType
+service --interface ~.service.CmsSnippetService --entity ~.domain.CmsSnippet
+service --interface ~.service.CmsSnippetGroupService --entity ~.domain.CmsSnippetGroup
+service --interface ~.service.CollectionModelTypeService --entity ~.domain.CollectionModelType
+service --interface ~.service.ConceptService --entity ~.domain.Concept
+service --interface ~.service.CountryService --entity ~.domain.Country
+service --interface ~.service.EmailService --entity ~.domain.Email
+service --interface ~.service.FileService --entity ~.domain.File
+service --interface ~.service.FilePropertyNameValueService --entity ~.domain.FilePropertyNameValue
+service --interface ~.service.FilePropertyNameValuePKService --entity ~.domain.FilePropertyNameValuePK
+service --interface ~.service.FormService --entity ~.domain.Form
+service --interface ~.service.FormEditedNumberVarService --entity ~.domain.FormEditedNumberVar
+service --interface ~.service.FormEditedNumberVarPKService --entity ~.domain.FormEditedNumberVarPK
+service --interface ~.service.FormEditedTextVarService --entity ~.domain.FormEditedTextVar
+service --interface ~.service.FormEditedTextVarPKService --entity ~.domain.FormEditedTextVarPK
+service --interface ~.service.FormSelectionVarService --entity ~.domain.FormSelectionVar
+service --interface ~.service.FormSelectionVarPKService --entity ~.domain.FormSelectionVarPK
+service --interface ~.service.GroupAuthoritiesService --entity ~.domain.GroupAuthorities
+service --interface ~.service.GroupAuthoritiesPKService --entity ~.domain.GroupAuthoritiesPK
+service --interface ~.service.GroupMembersService --entity ~.domain.GroupMembers
+service --interface ~.service.GroupsService --entity ~.domain.Groups
+service --interface ~.service.InstanceService --entity ~.domain.Instance
+service --interface ~.service.InstanceDescrService --entity ~.domain.InstanceDescr
+service --interface ~.service.InstanceDescrPKService --entity ~.domain.InstanceDescrPK
+service --interface ~.service.InstanceKeywordService --entity ~.domain.InstanceKeyword
+service --interface ~.service.InstanceKeywordPKService --entity ~.domain.InstanceKeywordPK
+service --interface ~.service.InstanceOrgService --entity ~.domain.InstanceOrg
+service --interface ~.service.InstanceOrgAssocService --entity ~.domain.InstanceOrgAssoc
+service --interface ~.service.InstanceOrgPKService --entity ~.domain.InstanceOrgPK
+service --interface ~.service.InstancePersonService --entity ~.domain.InstancePerson
+service --interface ~.service.InstancePersonAssocService --entity ~.domain.InstancePersonAssoc
+service --interface ~.service.InstancePersonPKService --entity ~.domain.InstancePersonPK
+service --interface ~.service.InternetService --entity ~.domain.Internet
+service --interface ~.service.ItemService --entity ~.domain.Item
+service --interface ~.service.KeywordService --entity ~.domain.Keyword
+service --interface ~.service.LangService --entity ~.domain.Lang
+service --interface ~.service.NewsService --entity ~.domain.News
+service --interface ~.service.OrgService --entity ~.domain.Org
+service --interface ~.service.OrgAddressService --entity ~.domain.OrgAddress
+service --interface ~.service.OrgAddressPKService --entity ~.domain.OrgAddressPK
+service --interface ~.service.OrgEmailService --entity ~.domain.OrgEmail
+service --interface ~.service.OrgEmailPKService --entity ~.domain.OrgEmailPK
+service --interface ~.service.OrgInternetService --entity ~.domain.OrgInternet
+service --interface ~.service.OrgInternetPKService --entity ~.domain.OrgInternetPK
+service --interface ~.service.OrgPhoneService --entity ~.domain.OrgPhone
+service --interface ~.service.OrgPhonePKService --entity ~.domain.OrgPhonePK
+service --interface ~.service.OrgPrefixService --entity ~.domain.OrgPrefix
+service --interface ~.service.OrgRelationTypeService --entity ~.domain.OrgRelationType
+service --interface ~.service.OrgRelationsService --entity ~.domain.OrgRelations
+service --interface ~.service.OrgRelationsPKService --entity ~.domain.OrgRelationsPK
+service --interface ~.service.OrgSufixService --entity ~.domain.OrgSufix
+service --interface ~.service.OtherStatisticService --entity ~.domain.OtherStatistic
+service --interface ~.service.PersonService --entity ~.domain.Person
+service --interface ~.service.PersonAddressService --entity ~.domain.PersonAddress
+service --interface ~.service.PersonAddressPKService --entity ~.domain.PersonAddressPK
+service --interface ~.service.PersonEmailService --entity ~.domain.PersonEmail
+service --interface ~.service.PersonEmailPKService --entity ~.domain.PersonEmailPK
+service --interface ~.service.PersonInternetService --entity ~.domain.PersonInternet
+service --interface ~.service.PersonInternetPKService --entity ~.domain.PersonInternetPK
+service --interface ~.service.PersonLinksService --entity ~.domain.PersonLinks
+service --interface ~.service.PersonOrgService --entity ~.domain.PersonOrg
+service --interface ~.service.PersonOrgPKService --entity ~.domain.PersonOrgPK
+service --interface ~.service.PersonPhoneService --entity ~.domain.PersonPhone
+service --interface ~.service.PersonPhonePKService --entity ~.domain.PersonPhonePK
+service --interface ~.service.PersonRoleService --entity ~.domain.PersonRole
+service --interface ~.service.PhoneService --entity ~.domain.Phone
+service --interface ~.service.PrefixService --entity ~.domain.Prefix
+service --interface ~.service.PropertyNameService --entity ~.domain.PropertyName
+service --interface ~.service.PropertyValueService --entity ~.domain.PropertyValue
+service --interface ~.service.RegionService --entity ~.domain.Region
+service --interface ~.service.RegiontypeService --entity ~.domain.Regiontype
+service --interface ~.service.SamplingProcedureService --entity ~.domain.SamplingProcedure
+service --interface ~.service.ScaleService --entity ~.domain.Scale
+service --interface ~.service.SelectionVariableService --entity ~.domain.SelectionVariable
+service --interface ~.service.SelectionVariableItemService --entity ~.domain.SelectionVariableItem
+service --interface ~.service.SelectionVariableItemPKService --entity ~.domain.SelectionVariableItemPK
+service --interface ~.service.SettingService --entity ~.domain.Setting
+service --interface ~.service.SettingGroupService --entity ~.domain.SettingGroup
+service --interface ~.service.SettingValueService --entity ~.domain.SettingValue
+service --interface ~.service.SkipService --entity ~.domain.Skip
+service --interface ~.service.SourceService --entity ~.domain.Source
+service --interface ~.service.SourceContactMethodService --entity ~.domain.SourceContactMethod
+service --interface ~.service.SourceContactsService --entity ~.domain.SourceContacts
+service --interface ~.service.SourcestudyService --entity ~.domain.Sourcestudy
+service --interface ~.service.SourcestudyTypeService --entity ~.domain.SourcestudyType
+service --interface ~.service.SourcestudyTypeHistoryService --entity ~.domain.SourcestudyTypeHistory
+service --interface ~.service.SourcetypeService --entity ~.domain.Sourcetype
+service --interface ~.service.SourcetypeHistoryService --entity ~.domain.SourcetypeHistory
+service --interface ~.service.StudyService --entity ~.domain.Study
+service --interface ~.service.StudyDescrService --entity ~.domain.StudyDescr
+service --interface ~.service.StudyDescrPKService --entity ~.domain.StudyDescrPK
+service --interface ~.service.StudyDocumentsService --entity ~.domain.StudyDocuments
+service --interface ~.service.StudyDocumentsPKService --entity ~.domain.StudyDocumentsPK
+service --interface ~.service.StudyKeywordService --entity ~.domain.StudyKeyword
+service --interface ~.service.StudyKeywordPKService --entity ~.domain.StudyKeywordPK
+service --interface ~.service.StudyOrgService --entity ~.domain.StudyOrg
+service --interface ~.service.StudyOrgAssocService --entity ~.domain.StudyOrgAssoc
+service --interface ~.service.StudyOrgPKService --entity ~.domain.StudyOrgPK
+service --interface ~.service.StudyPersonService --entity ~.domain.StudyPerson
+service --interface ~.service.StudyPersonAsocService --entity ~.domain.StudyPersonAsoc
+service --interface ~.service.StudyPersonAssocService --entity ~.domain.StudyPersonAssoc
+service --interface ~.service.StudyPersonPKService --entity ~.domain.StudyPersonPK
+service --interface ~.service.SuffixService --entity ~.domain.Suffix
+service --interface ~.service.TimeMethTypeService --entity ~.domain.TimeMethType
+service --interface ~.service.TitleTypeService --entity ~.domain.TitleType
+service --interface ~.service.TopicService --entity ~.domain.Topic
+service --interface ~.service.TranslatedTopicService --entity ~.domain.TranslatedTopic
+service --interface ~.service.TranslatedTopicPKService --entity ~.domain.TranslatedTopicPK
+service --interface ~.service.UnitAnalysisService --entity ~.domain.UnitAnalysis
+service --interface ~.service.UserAuthLogService --entity ~.domain.UserAuthLog
+service --interface ~.service.UserMessageService --entity ~.domain.UserMessage
+service --interface ~.service.UserProfileService --entity ~.domain.UserProfile
+service --interface ~.service.UserSettingService --entity ~.domain.UserSetting
+service --interface ~.service.UserSettingGroupService --entity ~.domain.UserSettingGroup
+service --interface ~.service.UserSettingValueService --entity ~.domain.UserSettingValue
+service --interface ~.service.UserSettingValuePKService --entity ~.domain.UserSettingValuePK
+service --interface ~.service.UsersService --entity ~.domain.Users
+service --interface ~.service.ValueService --entity ~.domain.Value
+service --interface ~.service.VargroupService --entity ~.domain.Vargroup
+service --interface ~.service.VariableService --entity ~.domain.Variable
+// script --file /Users/cosmin/Documents/workspace-sts/roda/script/services.roo
+web mvc all --package ~.web
+web mvc all --package ~.web
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log closed at 2013-03-20 01:32:20
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log opened at 2013-03-20 01:32:28
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log closed at 2013-03-20 02:11:30
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log opened at 2013-03-20 02:14:10
+// [failed] database reverse engineer --schema public --includeNonPortableAttributes --package ~.domain
+// [failed] database reverse engineer --schema public --includeNonPortableAttributes --package ~.domain
+development mode
+// [failed] database reverse engineer --schema public --includeNonPortableAttributes --package ~.domain
+// [failed] database reverse engineer --schema public --includeNonPortableAttributes --package ~.domain
+// [failed] database reverse engineer --schema public --includeNonPortableAttributes --package ~.domain
+database reverse engineer --schema public --includeNonPortableAttributes --package ~.domain
+// [failed] database reverse engineer --schema public --includeNonPortableAttributes --package ~.domain
+// [failed] database reverse engineer --schema public --includeNonPortableAttributes --package ~.domain
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log closed at 2013-03-20 12:42:39
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log opened at 2013-03-20 12:43:37
+hint
+database reverse engineer --schema public --includeNonPortableAttributes --package ~.domain
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log closed at 2013-03-20 13:05:41
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log opened at 2013-03-20 13:19:44
+database reverse engineer --schema public --includeNonPortableAttributes --package ~.domain
+// Spring Roo UNKNOWN VERSION log closed at 2013-03-20 13:35:51
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log opened at 2013-03-20 13:53:46
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log closed at 2013-03-20 14:05:33
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log opened at 2013-03-20 14:35:13
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log closed at 2013-03-20 14:53:56
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log opened at 2013-03-20 16:58:03
+// [failed] database reverse engineer --schema public --includeNonPortableAttributes --package ~.domain
+addon search postgresql
+// [failed] database introspect --schema no-schema-required
+addon search org.postgresql.Driver
+download status
+addon search org.postgresql.Driver
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log closed at 2013-03-20 17:14:04
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log opened at 2013-03-20 17:17:58
+download accept terms of use
+// [failed] database introspect --schema no-schema-required
+// [failed] database reverse engineer --schema public --includeNonPortableAttributes --package ~.domain
+// [failed] database introspect --schema no-schema-required
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log closed at 2013-03-20 17:27:47
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log opened at 2013-03-20 17:27:53
+// [failed] database introspect --schema no-schema-required
+// [failed] database reverse engineer --schema public --includeNonPortableAttributes --package ~.domain
+// [failed] database introspect --schema no-schema-required
+addon list
+addon search
+download status
+download view
+addon search
+addon search postgres
+osgi obr url add --url http://spring-roo-repository.springsource.org/repository.xml
+pgp automatic trust
+addon list
+addon search postgres
+osgi obr deploy --bundleSymbolicName  org.springframework.roo.wrapping.postgresql-jdbc3
+database reverse engineer --schema public --includeNonPortableAttributes --package ~.domain
+addon list
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log closed at 2013-03-20 23:15:40
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log opened at 2013-03-20 23:15:46
+database reverse engineer --schema public --includeNonPortableAttributes --package ~.domain
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log closed at 2013-03-20 23:28:31
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log opened at 2013-03-20 23:34:03
+database reverse engineer --schema public --includeNonPortableAttributes --package ~.domain
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log closed at 2013-03-20 23:51:11
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log opened at 2013-03-20 23:57:13
+database reverse engineer --schema public --includeNonPortableAttributes --package ~.domain
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log closed at 2013-03-21 00:11:09
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log opened at 2013-03-21 00:15:43
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log closed at 2013-03-21 00:16:26
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log opened at 2013-03-21 00:16:33
+database reverse engineer --schema public --includeNonPortableAttributes --package ~.domain
+database reverse engineer --schema public --includeNonPortableAttributes --package ~.domain
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log closed at 2013-03-21 02:16:14
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log opened at 2013-03-21 03:09:07
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log closed at 2013-03-21 03:21:40
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log opened at 2013-03-21 03:22:43
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log closed at 2013-03-21 03:31:06
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log opened at 2013-03-21 03:48:35
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log closed at 2013-03-21 04:11:26
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log opened at 2013-03-21 13:11:54
+web mvc all --package ~.web
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log closed at 2013-03-21 14:15:28
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log opened at 2013-03-21 14:15:34

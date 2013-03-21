@@ -6,7 +6,7 @@
         <field:display field="addedBy" id="s_ro_roda_domain_SourcestudyTypeHistory_addedBy" object="${sourcestudytypehistory}" z="vHhxditKKHVPY8kRI4Ge1l+psMY="/>
         <field:display field="sourcesstudyId" id="s_ro_roda_domain_SourcestudyTypeHistory_sourcesstudyId" object="${sourcestudytypehistory}" z="gQoUqV7oAaXD0cmglRb0dPECSKI="/>
         <field:display field="sourcestudyTypeId" id="s_ro_roda_domain_SourcestudyTypeHistory_sourcestudyTypeId" object="${sourcestudytypehistory}" z="F5N3Njlma5YmqqOPMrq26vbZgT0="/>
-        <field:display calendar="true" dateTimePattern="${sourcestudyTypeHistory_datestart_date_format}" field="datestart" id="s_ro_roda_domain_SourcestudyTypeHistory_datestart" object="${sourcestudytypehistory}" z="KZMIPlYHYrjGA/SDZQH8BrQ465k="/>
-        <field:display calendar="true" dateTimePattern="${sourcestudyTypeHistory_dateend_date_format}" field="dateend" id="s_ro_roda_domain_SourcestudyTypeHistory_dateend" object="${sourcestudytypehistory}" z="W4aq1HhniJ0DnuVuxXcQn4O9Tc4="/>
+        <field:display date="true" dateTimePattern="${sourcestudyTypeHistory_datestart_date_format}" field="dateStart" id="s_ro_roda_domain_SourcestudyTypeHistory_dateStart" object="${sourcestudytypehistory}" z="Bxde/2X54V7qF5Gtg2R188Ru1hI="/>
+        <field:display date="true" dateTimePattern="${sourcestudyTypeHistory_dateend_date_format}" field="dateEnd" id="s_ro_roda_domain_SourcestudyTypeHistory_dateEnd" object="${sourcestudytypehistory}" z="gh5Ruw5shVLVNuRbr/upwADQ2hE="/>
     </page:show>
 </div>

@@ -18,10 +18,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.domain.Catalog;
-import ro.roda.service.CatalogAclService;
 import ro.roda.service.CatalogService;
 import ro.roda.service.CatalogStudyService;
-import ro.roda.service.RodauserService;
+import ro.roda.service.UsersService;
 import ro.roda.web.CatalogController;
 
 privileged aspect CatalogController_Roo_Controller {
@@ -30,13 +29,10 @@ privileged aspect CatalogController_Roo_Controller {
     CatalogService CatalogController.catalogService;
     
     @Autowired
-    CatalogAclService CatalogController.catalogAclService;
-    
-    @Autowired
     CatalogStudyService CatalogController.catalogStudyService;
     
     @Autowired
-    RodauserService CatalogController.rodauserService;
+    UsersService CatalogController.usersService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String CatalogController.create(@Valid Catalog catalog, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -47,6 +43,12 @@ privileged aspect CatalogController_Roo_Controller {
         uiModel.asMap().clear();
         catalogService.saveCatalog(catalog);
         return "redirect:/catalogs/" + encodeUrlPathSegment(catalog.getId().toString(), httpServletRequest);
+    }
+    
+    @RequestMapping(params = "form", produces = "text/html")
+    public String CatalogController.createForm(Model uiModel) {
+        populateEditForm(uiModel, new Catalog());
+        return "catalogs/create";
     }
     
     @RequestMapping(value = "/{id}", produces = "text/html")
@@ -106,9 +108,9 @@ privileged aspect CatalogController_Roo_Controller {
     void CatalogController.populateEditForm(Model uiModel, Catalog catalog) {
         uiModel.addAttribute("catalog", catalog);
         addDateTimeFormatPatterns(uiModel);
-        uiModel.addAttribute("catalogacls", catalogAclService.findAllCatalogAcls());
+        uiModel.addAttribute("catalogs", catalogService.findAllCatalogs());
         uiModel.addAttribute("catalogstudys", catalogStudyService.findAllCatalogStudys());
-        uiModel.addAttribute("rodausers", rodauserService.findAllRodausers());
+        uiModel.addAttribute("userses", usersService.findAllUserses());
     }
     
     String CatalogController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

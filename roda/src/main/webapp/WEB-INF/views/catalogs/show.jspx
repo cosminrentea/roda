@@ -5,9 +5,9 @@
     <page:show id="ps_ro_roda_domain_Catalog" object="${catalog}" path="/catalogs" z="VFXTMHQjetkEGN7wUrAyTyXXzCQ=">
         <field:display field="owner" id="s_ro_roda_domain_Catalog_owner" object="${catalog}" z="DbPG3MUpujM/IpzCn0r1fpUaXDI="/>
         <field:display field="name" id="s_ro_roda_domain_Catalog_name" object="${catalog}" z="AoYcSNNk90AYSaquntPwhquu9ww="/>
-        <field:display field="parentId" id="s_ro_roda_domain_Catalog_parentId" object="${catalog}" z="HJ6KtgZLrU7uz5Ec61uLyOt64yI="/>
         <field:display calendar="true" dateTimePattern="${catalog_added_date_format}" field="added" id="s_ro_roda_domain_Catalog_added" object="${catalog}" z="bxXuk41kdw4pNQm/H8dINTqb/z4="/>
         <field:display field="sequencenr" id="s_ro_roda_domain_Catalog_sequencenr" object="${catalog}" z="NPe0IEtVAb/VUnwU+jcbNb7SocY="/>
         <field:display field="description" id="s_ro_roda_domain_Catalog_description" object="${catalog}" z="WxkpO+s4TpXfos2gmRWm154UPRs="/>
+        <field:display field="parentId" id="s_ro_roda_domain_Catalog_parentId" object="${catalog}" z="HJ6KtgZLrU7uz5Ec61uLyOt64yI="/>
     </page:show>
 </div>

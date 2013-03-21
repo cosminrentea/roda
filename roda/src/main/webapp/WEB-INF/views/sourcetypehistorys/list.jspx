@@ -7,8 +7,8 @@
             <table:column id="c_ro_roda_domain_SourcetypeHistory_addedBy" property="addedBy" z="b/WfZd24tWws5acf9dWypFck4Jg="/>
             <table:column id="c_ro_roda_domain_SourcetypeHistory_orgId" property="orgId" z="Badg55DgKCpxtl6WMnX4mswKOxo="/>
             <table:column id="c_ro_roda_domain_SourcetypeHistory_sourcetypeId" property="sourcetypeId" z="iooWzWcj627NJTLDvHk0nQooFDs="/>
-            <table:column calendar="true" dateTimePattern="${sourcetypeHistory_datestart_date_format}" id="c_ro_roda_domain_SourcetypeHistory_datestart" property="datestart" z="k5V8oH6T6WwfVb9DtJAVGqeCNRM="/>
-            <table:column calendar="true" dateTimePattern="${sourcetypeHistory_dateend_date_format}" id="c_ro_roda_domain_SourcetypeHistory_dateend" property="dateend" z="CSjq2k+d/+LfhAF2WR6PtBzmsgM="/>
+            <table:column date="true" dateTimePattern="${sourcetypeHistory_datestart_date_format}" id="c_ro_roda_domain_SourcetypeHistory_dateStart" property="dateStart" z="AyusLKOQtYttx4bg9ODhwoeaLoc="/>
+            <table:column date="true" dateTimePattern="${sourcetypeHistory_dateend_date_format}" id="c_ro_roda_domain_SourcetypeHistory_dateEnd" property="dateEnd" z="p1YsvbMuxTd98c4WDKEuafrSGRg="/>
         </table:table>
     </page:list>
 </div>

@@ -16,7 +16,7 @@ import javax.validation.constraints.NotNull;
 import org.springframework.format.annotation.DateTimeFormat;
 import ro.roda.domain.AuditLogAction;
 import ro.roda.domain.AuditLogChangeset;
-import ro.roda.domain.Rodauser;
+import ro.roda.domain.Users;
 
 privileged aspect AuditLogChangeset_Roo_DbManaged {
     
@@ -24,10 +24,10 @@ privileged aspect AuditLogChangeset_Roo_DbManaged {
     private Set<AuditLogAction> AuditLogChangeset.auditLogActions;
     
     @ManyToOne
-    @JoinColumn(name = "rodauser", referencedColumnName = "id", nullable = false)
-    private Rodauser AuditLogChangeset.rodauser;
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
+    private Users AuditLogChangeset.userId;
     
-    @Column(name = "description", columnDefinition = "varchar", length = 255)
+    @Column(name = "description", columnDefinition = "text")
     private String AuditLogChangeset.description;
     
     @Column(name = "timestamp", columnDefinition = "timestamp")
@@ -44,12 +44,12 @@ privileged aspect AuditLogChangeset_Roo_DbManaged {
         this.auditLogActions = auditLogActions;
     }
     
-    public Rodauser AuditLogChangeset.getRodauser() {
-        return rodauser;
+    public Users AuditLogChangeset.getUserId() {
+        return userId;
     }
     
-    public void AuditLogChangeset.setRodauser(Rodauser rodauser) {
-        this.rodauser = rodauser;
+    public void AuditLogChangeset.setUserId(Users userId) {
+        this.userId = userId;
     }
     
     public String AuditLogChangeset.getDescription() {

@@ -157,6 +157,23 @@
 			<artifactId>spring-aspects</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
+	<!--
+    Object-to-XML Mapping (OXM) abstraction and integration with JAXB, JiBX, Castor, XStream, and XML Beans.
+    (depends on spring-core, spring-beans, spring-context)
+    Define this if you need OXM (org.springframework.oxm.*)
+	-->
+		<dependency>
+	  		<groupId>org.springframework</groupId>
+			<artifactId>spring-oxm</artifactId>
+  			<version>${spring.version}</version>
+		</dependency>
+		
+		<dependency>
+	  		<groupId>com.thoughtworks.xstream</groupId>
+			<artifactId>xstream</artifactId>
+  			<version>1.4.4</version>
+		</dependency>
+		
 		<dependency>
 			<groupId>postgresql</groupId>
 			<artifactId>postgresql</artifactId>

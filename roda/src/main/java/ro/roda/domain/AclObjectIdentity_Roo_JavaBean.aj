@@ -15,12 +15,4 @@ privileged aspect AclObjectIdentity_Roo_JavaBean {
         this.objectIdIdentity = objectIdIdentity;
     }
     
-    public AclObjectIdentity AclObjectIdentity.getParentObject() {
-        return this.parentObject;
-    }
-    
-    public void AclObjectIdentity.setParentObject(AclObjectIdentity parentObject) {
-        this.parentObject = parentObject;
-    }
-    
 }

@@ -11,7 +11,7 @@ privileged aspect UsersService_Roo_Service {
     
     public abstract long UsersService.countAllUserses();    
     public abstract void UsersService.deleteUsers(Users users);    
-    public abstract Users UsersService.findUsers(String id);    
+    public abstract Users UsersService.findUsers(Integer id);    
     public abstract List<Users> UsersService.findAllUserses();    
     public abstract List<Users> UsersService.findUsersEntries(int firstResult, int maxResults);    
     public abstract void UsersService.saveUsers(Users users);    

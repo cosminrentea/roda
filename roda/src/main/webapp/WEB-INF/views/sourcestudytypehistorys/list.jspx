@@ -7,8 +7,8 @@
             <table:column id="c_ro_roda_domain_SourcestudyTypeHistory_addedBy" property="addedBy" z="x2lrvIgPaTa8LVhzeAZAZDlc02U="/>
             <table:column id="c_ro_roda_domain_SourcestudyTypeHistory_sourcesstudyId" property="sourcesstudyId" z="UzUPCh59jYe7hpKBrHVHLWDhmhk="/>
             <table:column id="c_ro_roda_domain_SourcestudyTypeHistory_sourcestudyTypeId" property="sourcestudyTypeId" z="UMAjMNbYwh4/k0ZmHKymJA3YrK0="/>
-            <table:column calendar="true" dateTimePattern="${sourcestudyTypeHistory_datestart_date_format}" id="c_ro_roda_domain_SourcestudyTypeHistory_datestart" property="datestart" z="z7euVweDulgHZA0BiFBVp4YEcnM="/>
-            <table:column calendar="true" dateTimePattern="${sourcestudyTypeHistory_dateend_date_format}" id="c_ro_roda_domain_SourcestudyTypeHistory_dateend" property="dateend" z="SSf60FFqpXtS8iOpDOqu+TzATWQ="/>
+            <table:column date="true" dateTimePattern="${sourcestudyTypeHistory_datestart_date_format}" id="c_ro_roda_domain_SourcestudyTypeHistory_dateStart" property="dateStart" z="tmBEjaCPpEdkTX1L1b5Ou224IDM="/>
+            <table:column date="true" dateTimePattern="${sourcestudyTypeHistory_dateend_date_format}" id="c_ro_roda_domain_SourcestudyTypeHistory_dateEnd" property="dateEnd" z="xTioicqbeR94IgljJkXRaIcFSwM="/>
         </table:table>
     </page:list>
 </div>

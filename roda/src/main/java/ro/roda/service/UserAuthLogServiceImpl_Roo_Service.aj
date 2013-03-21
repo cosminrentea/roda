@@ -7,7 +7,6 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ro.roda.domain.UserAuthLog;
-import ro.roda.domain.UserAuthLogPK;
 import ro.roda.service.UserAuthLogServiceImpl;
 
 privileged aspect UserAuthLogServiceImpl_Roo_Service {
@@ -24,7 +23,7 @@ privileged aspect UserAuthLogServiceImpl_Roo_Service {
         userAuthLog.remove();
     }
     
-    public UserAuthLog UserAuthLogServiceImpl.findUserAuthLog(UserAuthLogPK id) {
+    public UserAuthLog UserAuthLogServiceImpl.findUserAuthLog(Long id) {
         return UserAuthLog.findUserAuthLog(id);
     }
     

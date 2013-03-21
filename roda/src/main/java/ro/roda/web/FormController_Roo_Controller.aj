@@ -114,7 +114,7 @@ privileged aspect FormController_Roo_Controller {
     }
     
     void FormController.addDateTimeFormatPatterns(Model uiModel) {
-        uiModel.addAttribute("form_filltime_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
+        uiModel.addAttribute("form_formfilledat_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
     }
     
     void FormController.populateEditForm(Model uiModel, Form form) {

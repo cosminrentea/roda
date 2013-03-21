@@ -21,18 +21,17 @@ import ro.roda.domain.Instance;
 import ro.roda.service.CollectionModelTypeService;
 import ro.roda.service.FileService;
 import ro.roda.service.FormService;
-import ro.roda.service.InstanceAclService;
 import ro.roda.service.InstanceDescrService;
 import ro.roda.service.InstanceKeywordService;
 import ro.roda.service.InstanceOrgService;
 import ro.roda.service.InstancePersonService;
 import ro.roda.service.InstanceService;
-import ro.roda.service.RodauserService;
 import ro.roda.service.SamplingProcedureService;
 import ro.roda.service.StudyService;
 import ro.roda.service.TimeMethTypeService;
 import ro.roda.service.TopicService;
 import ro.roda.service.UnitAnalysisService;
+import ro.roda.service.UsersService;
 import ro.roda.service.VariableService;
 import ro.roda.web.InstanceController;
 
@@ -51,9 +50,6 @@ privileged aspect InstanceController_Roo_Controller {
     FormService InstanceController.formService;
     
     @Autowired
-    InstanceAclService InstanceController.instanceAclService;
-    
-    @Autowired
     InstanceDescrService InstanceController.instanceDescrService;
     
     @Autowired
@@ -64,9 +60,6 @@ privileged aspect InstanceController_Roo_Controller {
     
     @Autowired
     InstancePersonService InstanceController.instancePersonService;
-    
-    @Autowired
-    RodauserService InstanceController.rodauserService;
     
     @Autowired
     SamplingProcedureService InstanceController.samplingProcedureService;
@@ -82,6 +75,9 @@ privileged aspect InstanceController_Roo_Controller {
     
     @Autowired
     UnitAnalysisService InstanceController.unitAnalysisService;
+    
+    @Autowired
+    UsersService InstanceController.usersService;
     
     @Autowired
     VariableService InstanceController.variableService;
@@ -154,8 +150,8 @@ privileged aspect InstanceController_Roo_Controller {
     }
     
     void InstanceController.addDateTimeFormatPatterns(Model uiModel) {
-        uiModel.addAttribute("instance_datestart_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
-        uiModel.addAttribute("instance_dateend_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
+        uiModel.addAttribute("instance_datestart_date_format", DateTimeFormat.patternForStyle("M-", LocaleContextHolder.getLocale()));
+        uiModel.addAttribute("instance_dateend_date_format", DateTimeFormat.patternForStyle("M-", LocaleContextHolder.getLocale()));
         uiModel.addAttribute("instance_added_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
     }
     
@@ -165,17 +161,16 @@ privileged aspect InstanceController_Roo_Controller {
         uiModel.addAttribute("collectionmodeltypes", collectionModelTypeService.findAllCollectionModelTypes());
         uiModel.addAttribute("files", fileService.findAllFiles());
         uiModel.addAttribute("forms", formService.findAllForms());
-        uiModel.addAttribute("instanceacls", instanceAclService.findAllInstanceAcls());
         uiModel.addAttribute("instancedescrs", instanceDescrService.findAllInstanceDescrs());
         uiModel.addAttribute("instancekeywords", instanceKeywordService.findAllInstanceKeywords());
         uiModel.addAttribute("instanceorgs", instanceOrgService.findAllInstanceOrgs());
         uiModel.addAttribute("instancepeople", instancePersonService.findAllInstancepeople());
-        uiModel.addAttribute("rodausers", rodauserService.findAllRodausers());
         uiModel.addAttribute("samplingprocedures", samplingProcedureService.findAllSamplingProcedures());
         uiModel.addAttribute("studys", studyService.findAllStudys());
         uiModel.addAttribute("timemethtypes", timeMethTypeService.findAllTimeMethTypes());
         uiModel.addAttribute("topics", topicService.findAllTopics());
         uiModel.addAttribute("unitanalyses", unitAnalysisService.findAllUnitAnalyses());
+        uiModel.addAttribute("userses", usersService.findAllUserses());
         uiModel.addAttribute("variables", variableService.findAllVariables());
     }
     

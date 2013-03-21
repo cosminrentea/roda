@@ -5,8 +5,11 @@
     <form:create id="fc_ro_roda_domain_Country" modelAttribute="country" path="/countrys" render="${empty dependencies}" z="BROD8bQvl0HA+AoxnUKD8nFwJno=">
         <field:simple field="cities" id="c_ro_roda_domain_Country_cities" messageCode="entity_reference_not_managed" messageCodeAttribute="City" z="1cxYwT+qn3jJ5YxxQjR1b0oX7lY="/>
         <field:simple field="regions" id="c_ro_roda_domain_Country_regions" messageCode="entity_reference_not_managed" messageCodeAttribute="Region" z="S8UpTaWsRI0BRI5cck0YtuPGqZk="/>
-        <field:input field="name" id="c_ro_roda_domain_Country_name" required="true" z="aXT3K2DXlOqZgDU3Kh/krxeM0kc="/>
-        <field:input field="alpha3" id="c_ro_roda_domain_Country_alpha3" required="true" z="aaGFtun4+OwojJQMSsyFSHtkYdM="/>
+        <field:input field="nameRo" id="c_ro_roda_domain_Country_nameRo" z="6394DQb0UFNi+W4MImKMnHycMG4="/>
+        <field:input field="nameSelf" id="c_ro_roda_domain_Country_nameSelf" z="y88vCnfY21nM8NnuDqw69Qfu6ak="/>
+        <field:input field="nameEn" id="c_ro_roda_domain_Country_nameEn" z="c4RXMSQLdOw9CBqfIJxUN/oGc1I="/>
+        <field:input field="iso3166" id="c_ro_roda_domain_Country_iso3166" required="true" z="l3ibS+Ae3tP74n5BGZMpMDqisfg="/>
+        <field:input field="iso3166Alpha3" id="c_ro_roda_domain_Country_iso3166Alpha3" z="tqP1m1qbk6JBvsTOXOP/RgYzGPc="/>
     </form:create>
     <form:dependency dependencies="${dependencies}" id="d_ro_roda_domain_Country" render="${not empty dependencies}" z="Xl9PmpNe8fDz9JHkOp30VPGc/XU="/>
 </div>

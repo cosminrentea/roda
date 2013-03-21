@@ -11,7 +11,7 @@ privileged aspect LangService_Roo_Service {
     
     public abstract long LangService.countAllLangs();    
     public abstract void LangService.deleteLang(Lang lang);    
-    public abstract Lang LangService.findLang(String id);    
+    public abstract Lang LangService.findLang(Integer id);    
     public abstract List<Lang> LangService.findAllLangs();    
     public abstract List<Lang> LangService.findLangEntries(int firstResult, int maxResults);    
     public abstract void LangService.saveLang(Lang lang);    

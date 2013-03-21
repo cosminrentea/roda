@@ -106,7 +106,7 @@ privileged aspect SourceContactsController_Roo_Controller {
     }
     
     void SourceContactsController.addDateTimeFormatPatterns(Model uiModel) {
-        uiModel.addAttribute("sourceContacts_contactdate_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
+        uiModel.addAttribute("sourceContacts_contactedat_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
     }
     
     void SourceContactsController.populateEditForm(Model uiModel, SourceContacts sourceContacts) {

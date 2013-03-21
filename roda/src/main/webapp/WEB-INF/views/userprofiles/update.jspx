@@ -3,9 +3,9 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <form:update id="fu_ro_roda_domain_UserProfile" idField="userId" modelAttribute="userProfile" path="/userprofiles" versionField="none" z="e7i2AJ/d+OGl80THUYD5e12/91Q=">
-        <field:select field="rodauser" id="c_ro_roda_domain_UserProfile_rodauser" itemValue="id" items="${rodausers}" path="/rodausers" z="VAjbl9GZqPdRHcMRWh1FX9OeMGE="/>
         <field:input field="fName" id="c_ro_roda_domain_UserProfile_fName" required="true" z="Fv66AguxljgZr/sSS2zuJE4ZSlQ="/>
         <field:input field="lName" id="c_ro_roda_domain_UserProfile_lName" required="true" z="33H5pDVG23nDrXKoBLJX+LglC4w="/>
         <field:input field="email" id="c_ro_roda_domain_UserProfile_email" required="true" validationMessageCode="field_invalid_email" z="qcaF8XS0dHgzNbRFMJi7sBzHEDA="/>
+        <field:select field="users" id="c_ro_roda_domain_UserProfile_users" itemValue="id" items="${userses}" path="/userses" z="Wh0Zxxr/Bf7qIfrjEZUj/JRLlqs="/>
     </form:update>
 </div>

@@ -2,13 +2,13 @@
 <div xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:spring="http://www.springframework.org/tags" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <form:create compositePkField="id" id="fc_ro_roda_domain_UserAuthLog" modelAttribute="userAuthLog" path="/userauthlogs" render="${empty dependencies}" z="Oum32I4bGH3xP/8M3tLPaBS8Da4=">
-        <field:input disableFormBinding="true" field="id.userId" id="c_ro_roda_domain_UserAuthLog_id_userId" required="true" validationMessageCode="field_invalid_integer" z="XyfSdJ3dwAbbL3CcJ1ixWrfyg7M="/>
-        <field:datetime dateTimePattern="${userAuthLog_id.timestamp_date_format}" disableFormBinding="true" field="id.timestamp" id="c_ro_roda_domain_UserAuthLog_id_timestamp" required="true" z="GDAL9mMmwX3UpLLwiVGeqm6SFYA="/>
+    <form:create id="fc_ro_roda_domain_UserAuthLog" modelAttribute="userAuthLog" path="/userauthlogs" render="${empty dependencies}" z="ZJdloaR+mMReaXtbbUiIYR0dyis=">
+        <field:select field="userId" id="c_ro_roda_domain_UserAuthLog_userId" itemValue="id" items="${userses}" path="/userses" z="AFNDZKOLFmB0zv2JPYs3la9Swc0="/>
         <field:input field="action" id="c_ro_roda_domain_UserAuthLog_action" required="true" z="wcqNtEkI8Ael8Sa8ZvpDOeIQVrc="/>
         <field:input field="credentialProvider" id="c_ro_roda_domain_UserAuthLog_credentialProvider" required="true" z="0F70etLcxkV/rHJPskYP4C2KoyM="/>
         <field:input field="credentialIdentifier" id="c_ro_roda_domain_UserAuthLog_credentialIdentifier" required="true" z="KGKEK5CXnDilcpv1rlMNNTeqmyM="/>
         <field:input field="errorMessage" id="c_ro_roda_domain_UserAuthLog_errorMessage" required="true" z="/ABW9FR2cfgMUJKEmey4NMTpPsM="/>
+        <field:datetime dateTimePattern="${userAuthLog_authattemptedat_date_format}" field="authAttemptedAt" id="c_ro_roda_domain_UserAuthLog_authAttemptedAt" required="true" z="DU5YWhC/sY3a6smZS0F7gh3jYrI="/>
     </form:create>
     <form:dependency dependencies="${dependencies}" id="d_ro_roda_domain_UserAuthLog" render="${not empty dependencies}" z="o4F47pQKXWrFEgele0kBA9rEQdk="/>
 </div>

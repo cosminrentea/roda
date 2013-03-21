@@ -112,8 +112,8 @@ privileged aspect OrgRelationsController_Roo_Controller {
     }
     
     void OrgRelationsController.addDateTimeFormatPatterns(Model uiModel) {
-        uiModel.addAttribute("orgRelations_datestart_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
-        uiModel.addAttribute("orgRelations_dateend_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
+        uiModel.addAttribute("orgRelations_datestart_date_format", DateTimeFormat.patternForStyle("M-", LocaleContextHolder.getLocale()));
+        uiModel.addAttribute("orgRelations_dateend_date_format", DateTimeFormat.patternForStyle("M-", LocaleContextHolder.getLocale()));
     }
     
     void OrgRelationsController.populateEditForm(Model uiModel, OrgRelations orgRelations) {

@@ -23,7 +23,7 @@ privileged aspect CountryServiceImpl_Roo_Service {
         country.remove();
     }
     
-    public Country CountryServiceImpl.findCountry(String id) {
+    public Country CountryServiceImpl.findCountry(Integer id) {
         return Country.findCountry(id);
     }
     

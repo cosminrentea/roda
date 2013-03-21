@@ -18,10 +18,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.domain.SourcestudyTypeHistory;
-import ro.roda.service.RodauserService;
 import ro.roda.service.SourcestudyService;
 import ro.roda.service.SourcestudyTypeHistoryService;
 import ro.roda.service.SourcestudyTypeService;
+import ro.roda.service.UsersService;
 import ro.roda.web.SourcestudyTypeHistoryController;
 
 privileged aspect SourcestudyTypeHistoryController_Roo_Controller {
@@ -30,13 +30,13 @@ privileged aspect SourcestudyTypeHistoryController_Roo_Controller {
     SourcestudyTypeHistoryService SourcestudyTypeHistoryController.sourcestudyTypeHistoryService;
     
     @Autowired
-    RodauserService SourcestudyTypeHistoryController.rodauserService;
-    
-    @Autowired
     SourcestudyService SourcestudyTypeHistoryController.sourcestudyService;
     
     @Autowired
     SourcestudyTypeService SourcestudyTypeHistoryController.sourcestudyTypeService;
+    
+    @Autowired
+    UsersService SourcestudyTypeHistoryController.usersService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String SourcestudyTypeHistoryController.create(@Valid SourcestudyTypeHistory sourcestudyTypeHistory, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -106,16 +106,16 @@ privileged aspect SourcestudyTypeHistoryController_Roo_Controller {
     }
     
     void SourcestudyTypeHistoryController.addDateTimeFormatPatterns(Model uiModel) {
-        uiModel.addAttribute("sourcestudyTypeHistory_datestart_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
-        uiModel.addAttribute("sourcestudyTypeHistory_dateend_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
+        uiModel.addAttribute("sourcestudyTypeHistory_datestart_date_format", DateTimeFormat.patternForStyle("M-", LocaleContextHolder.getLocale()));
+        uiModel.addAttribute("sourcestudyTypeHistory_dateend_date_format", DateTimeFormat.patternForStyle("M-", LocaleContextHolder.getLocale()));
     }
     
     void SourcestudyTypeHistoryController.populateEditForm(Model uiModel, SourcestudyTypeHistory sourcestudyTypeHistory) {
         uiModel.addAttribute("sourcestudyTypeHistory", sourcestudyTypeHistory);
         addDateTimeFormatPatterns(uiModel);
-        uiModel.addAttribute("rodausers", rodauserService.findAllRodausers());
         uiModel.addAttribute("sourcestudys", sourcestudyService.findAllSourcestudys());
         uiModel.addAttribute("sourcestudytypes", sourcestudyTypeService.findAllSourcestudyTypes());
+        uiModel.addAttribute("userses", usersService.findAllUserses());
     }
     
     String SourcestudyTypeHistoryController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

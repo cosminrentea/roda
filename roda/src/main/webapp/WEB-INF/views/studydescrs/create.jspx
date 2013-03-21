@@ -3,7 +3,7 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <form:create compositePkField="id" id="fc_ro_roda_domain_StudyDescr" modelAttribute="studyDescr" path="/studydescrs" render="${empty dependencies}" z="Tsc8HD+D9Q5JW12YCdLVr8MNW0w=">
-        <field:input disableFormBinding="true" field="id.langId" id="c_ro_roda_domain_StudyDescr_id_langId" required="true" z="me0WsauuwXlvn5MVy/FdP+g99JM="/>
+        <field:input disableFormBinding="true" field="id.langId" id="c_ro_roda_domain_StudyDescr_id_langId" required="true" validationMessageCode="field_invalid_integer" z="B9M2vvJUipTdHfG0RDyrhc2IRb4="/>
         <field:input disableFormBinding="true" field="id.studyId" id="c_ro_roda_domain_StudyDescr_id_studyId" required="true" validationMessageCode="field_invalid_integer" z="gHOx3hCqbzlmEQZ/jZrpHaa2j3Y="/>
         <field:select field="titleTypeId" id="c_ro_roda_domain_StudyDescr_titleTypeId" itemValue="id" items="${titletypes}" path="/titletypes" z="4VJmd/l0r+X5cZOmdE4guO6f69s="/>
         <field:input field="abstract1" id="c_ro_roda_domain_StudyDescr_abstract1" z="YwDCOIrlkkZc1dOg5ohB1RiWIIk="/>

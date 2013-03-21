@@ -5,10 +5,10 @@
     <form:update id="fu_ro_roda_domain_AclEntry" modelAttribute="aclEntry" path="/aclentrys" versionField="none" z="xeBhL0bjLxAJ/pu0dYhklglNgpM=">
         <field:select field="aclObjectIdentity" id="c_ro_roda_domain_AclEntry_aclObjectIdentity" itemValue="id" items="${aclobjectidentitys}" path="/aclobjectidentitys" z="CdWBZcSer0WsDZbokHHnIcumbAQ="/>
         <field:select field="sid" id="c_ro_roda_domain_AclEntry_sid" itemValue="id" items="${aclsids}" path="/aclsids" z="1EHd6E8ffTLnwT53zjtTC5nX1UQ="/>
-        <field:input field="aceOrder" id="c_ro_roda_domain_AclEntry_aceOrder" required="true" validationMessageCode="field_invalid_integer" z="g8/3s6EmbFAtPdnEuWdW2cjvjlU="/>
         <field:input field="mask" id="c_ro_roda_domain_AclEntry_mask" required="true" validationMessageCode="field_invalid_integer" z="X7wtR3225/AEZAZr4LjsdULnxNA="/>
         <field:checkbox field="granting" id="c_ro_roda_domain_AclEntry_granting" z="E0dhUDDkcbjXfzX3Q5KyZXBal+U="/>
         <field:checkbox field="auditSuccess" id="c_ro_roda_domain_AclEntry_auditSuccess" z="Lr+Bj5szPm8pJH+EfIfoSk9nccE="/>
         <field:checkbox field="auditFailure" id="c_ro_roda_domain_AclEntry_auditFailure" z="Yuz+BjSyFBt0MVChfuzB/RLokEA="/>
+        <field:input field="aceOrder" id="c_ro_roda_domain_AclEntry_aceOrder" required="true" validationMessageCode="field_invalid_integer" z="g8/3s6EmbFAtPdnEuWdW2cjvjlU="/>
     </form:update>
 </div>

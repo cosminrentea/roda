@@ -23,7 +23,7 @@ import ro.roda.domain.InstanceKeywordPK;
 import ro.roda.service.InstanceKeywordService;
 import ro.roda.service.InstanceService;
 import ro.roda.service.KeywordService;
-import ro.roda.service.RodauserService;
+import ro.roda.service.UsersService;
 import ro.roda.web.InstanceKeywordController;
 
 privileged aspect InstanceKeywordController_Roo_Controller {
@@ -40,7 +40,7 @@ privileged aspect InstanceKeywordController_Roo_Controller {
     KeywordService InstanceKeywordController.keywordService;
     
     @Autowired
-    RodauserService InstanceKeywordController.rodauserService;
+    UsersService InstanceKeywordController.usersService;
     
     @Autowired
     public InstanceKeywordController.new(ConversionService conversionService) {
@@ -124,7 +124,7 @@ privileged aspect InstanceKeywordController_Roo_Controller {
         addDateTimeFormatPatterns(uiModel);
         uiModel.addAttribute("instances", instanceService.findAllInstances());
         uiModel.addAttribute("keywords", keywordService.findAllKeywords());
-        uiModel.addAttribute("rodausers", rodauserService.findAllRodausers());
+        uiModel.addAttribute("userses", usersService.findAllUserses());
     }
     
     String InstanceKeywordController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

@@ -54,7 +54,7 @@ privileged aspect LangController_Roo_Controller {
     }
     
     @RequestMapping(value = "/{id}", produces = "text/html")
-    public String LangController.show(@PathVariable("id") String id, Model uiModel) {
+    public String LangController.show(@PathVariable("id") Integer id, Model uiModel) {
         uiModel.addAttribute("lang", langService.findLang(id));
         uiModel.addAttribute("itemId", id);
         return "langs/show";
@@ -86,13 +86,13 @@ privileged aspect LangController_Roo_Controller {
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
-    public String LangController.updateForm(@PathVariable("id") String id, Model uiModel) {
+    public String LangController.updateForm(@PathVariable("id") Integer id, Model uiModel) {
         populateEditForm(uiModel, langService.findLang(id));
         return "langs/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
-    public String LangController.delete(@PathVariable("id") String id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
+    public String LangController.delete(@PathVariable("id") Integer id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
         Lang lang = langService.findLang(id);
         langService.deleteLang(lang);
         uiModel.asMap().clear();

@@ -5,10 +5,10 @@
     <page:show id="ps_ro_roda_domain_AclEntry" object="${aclentry}" path="/aclentrys" z="rRZYyRtgK0zs+b6RxvGr3rNH4xA=">
         <field:display field="aclObjectIdentity" id="s_ro_roda_domain_AclEntry_aclObjectIdentity" object="${aclentry}" z="4atYRjbSCH/sUC3jfoYOaqlnHDw="/>
         <field:display field="sid" id="s_ro_roda_domain_AclEntry_sid" object="${aclentry}" z="7jTlfEJywjUU5nkmliEuyKNBPuw="/>
-        <field:display field="aceOrder" id="s_ro_roda_domain_AclEntry_aceOrder" object="${aclentry}" z="v4YjfcGwZTVzfRjB0JiD0Hmu0Co="/>
         <field:display field="mask" id="s_ro_roda_domain_AclEntry_mask" object="${aclentry}" z="/ceBV/rzPnGAf5GOre9RInhVtUg="/>
         <field:display field="granting" id="s_ro_roda_domain_AclEntry_granting" object="${aclentry}" z="EzPge8qyXM0gGEvkaZQlPou9RfQ="/>
         <field:display field="auditSuccess" id="s_ro_roda_domain_AclEntry_auditSuccess" object="${aclentry}" z="N+dIvDnfd14LVaNsuAZK+nDjSLk="/>
         <field:display field="auditFailure" id="s_ro_roda_domain_AclEntry_auditFailure" object="${aclentry}" z="nXg0y5c26oCF42u2MshXziCUyGM="/>
+        <field:display field="aceOrder" id="s_ro_roda_domain_AclEntry_aceOrder" object="${aclentry}" z="v4YjfcGwZTVzfRjB0JiD0Hmu0Co="/>
     </page:show>
 </div>

@@ -6,8 +6,8 @@
         <field:display field="personId" id="s_ro_roda_domain_SourceContacts_personId" object="${sourcecontacts}" z="LVAH8v5TezXiMZJS08iT6hUQFe4="/>
         <field:display field="sourceId" id="s_ro_roda_domain_SourceContacts_sourceId" object="${sourcecontacts}" z="kZArnU+I01jsqlCM9TzxJFbizXk="/>
         <field:display field="sourceContactMethodId" id="s_ro_roda_domain_SourceContacts_sourceContactMethodId" object="${sourcecontacts}" z="jPS/1mgi87AO5gYaSTV75E2hELQ="/>
-        <field:display calendar="true" dateTimePattern="${sourceContacts_contactdate_date_format}" field="contactDate" id="s_ro_roda_domain_SourceContacts_contactDate" object="${sourcecontacts}" z="bcL83x2rP7SaeVjIVe1/zYZwmQ8="/>
         <field:display field="synopsis" id="s_ro_roda_domain_SourceContacts_synopsis" object="${sourcecontacts}" z="/8ftLSHJ1R1USTGRM4SN6ymlhpM="/>
         <field:display field="followup" id="s_ro_roda_domain_SourceContacts_followup" object="${sourcecontacts}" z="YKWqAlojbOLt/WLrLEJjrfV9iKI="/>
+        <field:display calendar="true" dateTimePattern="${sourceContacts_contactedat_date_format}" field="contactedAt" id="s_ro_roda_domain_SourceContacts_contactedAt" object="${sourcecontacts}" z="1qj4REVlZiZGPmSnho4AeFRIV4I="/>
     </page:show>
 </div>

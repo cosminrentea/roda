@@ -11,11 +11,11 @@
         <field:display field="studyId" id="s_ro_roda_domain_Instance_studyId" object="${instance}" z="GMOdSpwu+DEmq85ikWvQrB/CLc8="/>
         <field:display field="timeMethId" id="s_ro_roda_domain_Instance_timeMethId" object="${instance}" z="tYC58t3xQ5NdvExUiUZ74Jxx6BI="/>
         <field:display field="unitAnalysisId" id="s_ro_roda_domain_Instance_unitAnalysisId" object="${instance}" z="9saYOaMCkd+FWy/sXQOacfBMUJo="/>
-        <field:display calendar="true" dateTimePattern="${instance_datestart_date_format}" field="datestart" id="s_ro_roda_domain_Instance_datestart" object="${instance}" z="SDlUOjBRq1GgDJxYm0rObacgzc8="/>
-        <field:display calendar="true" dateTimePattern="${instance_dateend_date_format}" field="dateend" id="s_ro_roda_domain_Instance_dateend" object="${instance}" z="5sm/N+n4bncZAqxCxQyTH5usQnw="/>
         <field:display field="insertionStatus" id="s_ro_roda_domain_Instance_insertionStatus" object="${instance}" z="FhQ8Vk8rGdbJDg+Oe0kOXXx8rDI="/>
         <field:display field="rawData" id="s_ro_roda_domain_Instance_rawData" object="${instance}" z="NWATSG24DeALAI4+Hs+JephiTWs="/>
         <field:display field="rawMetadata" id="s_ro_roda_domain_Instance_rawMetadata" object="${instance}" z="DC4kwnymGylLPLKfw+bsTs3loNE="/>
         <field:display calendar="true" dateTimePattern="${instance_added_date_format}" field="added" id="s_ro_roda_domain_Instance_added" object="${instance}" z="1Yar/alRqfJ9O90bsy14Unctv3U="/>
+        <field:display date="true" dateTimePattern="${instance_datestart_date_format}" field="dateStart" id="s_ro_roda_domain_Instance_dateStart" object="${instance}" z="JQVvYN0k3Sbcl7UcrioGQKv6L8I="/>
+        <field:display date="true" dateTimePattern="${instance_dateend_date_format}" field="dateEnd" id="s_ro_roda_domain_Instance_dateEnd" object="${instance}" z="OrsC4HhNxarJfdKnqcxVpUPo9cI="/>
     </page:show>
 </div>

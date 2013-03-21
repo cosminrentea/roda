@@ -6,7 +6,7 @@
         <field:display field="addedBy" id="s_ro_roda_domain_SourcetypeHistory_addedBy" object="${sourcetypehistory}" z="tuGd7m9XBR0RH4M/I0zWOePZHs8="/>
         <field:display field="orgId" id="s_ro_roda_domain_SourcetypeHistory_orgId" object="${sourcetypehistory}" z="sxsJlqU6sVs/w/ytycutq4Q31qU="/>
         <field:display field="sourcetypeId" id="s_ro_roda_domain_SourcetypeHistory_sourcetypeId" object="${sourcetypehistory}" z="RxDL9zx4ia4GKZFS1i0UOqxOv5s="/>
-        <field:display calendar="true" dateTimePattern="${sourcetypeHistory_datestart_date_format}" field="datestart" id="s_ro_roda_domain_SourcetypeHistory_datestart" object="${sourcetypehistory}" z="xdU05DGTu5ne2MjCww1iYlDOvt0="/>
-        <field:display calendar="true" dateTimePattern="${sourcetypeHistory_dateend_date_format}" field="dateend" id="s_ro_roda_domain_SourcetypeHistory_dateend" object="${sourcetypehistory}" z="7GAIh3gYxa3hxnTkywuzYvY5Rrg="/>
+        <field:display date="true" dateTimePattern="${sourcetypeHistory_datestart_date_format}" field="dateStart" id="s_ro_roda_domain_SourcetypeHistory_dateStart" object="${sourcetypehistory}" z="kt4UFDkgNixlHC+AjydwirfveO0="/>
+        <field:display date="true" dateTimePattern="${sourcetypeHistory_dateend_date_format}" field="dateEnd" id="s_ro_roda_domain_SourcetypeHistory_dateEnd" object="${sourcetypehistory}" z="5Qb3NGwQL5pdcZKFQ0VBkbAP5fg="/>
     </page:show>
 </div>

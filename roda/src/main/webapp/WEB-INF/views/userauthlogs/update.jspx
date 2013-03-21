@@ -7,5 +7,7 @@
         <field:input field="credentialProvider" id="c_ro_roda_domain_UserAuthLog_credentialProvider" required="true" z="0F70etLcxkV/rHJPskYP4C2KoyM="/>
         <field:input field="credentialIdentifier" id="c_ro_roda_domain_UserAuthLog_credentialIdentifier" required="true" z="KGKEK5CXnDilcpv1rlMNNTeqmyM="/>
         <field:input field="errorMessage" id="c_ro_roda_domain_UserAuthLog_errorMessage" required="true" z="/ABW9FR2cfgMUJKEmey4NMTpPsM="/>
+        <field:select field="userId" id="c_ro_roda_domain_UserAuthLog_userId" itemValue="id" items="${userses}" path="/userses" z="AFNDZKOLFmB0zv2JPYs3la9Swc0="/>
+        <field:datetime dateTimePattern="${userAuthLog_authattemptedat_date_format}" field="authAttemptedAt" id="c_ro_roda_domain_UserAuthLog_authAttemptedAt" required="true" z="DU5YWhC/sY3a6smZS0F7gh3jYrI="/>
     </form:update>
 </div>

@@ -12,8 +12,6 @@
         <field:display field="type" id="s_ro_roda_domain_Variable_type" object="${variable}" z="RSSheQ3/hUfZosrPtARJ4/paD30="/>
         <field:display field="orderInInstance" id="s_ro_roda_domain_Variable_orderInInstance" object="${variable}" z="C9FynTELgh+a4FVLi1/ziPBj5CE="/>
         <field:display field="operatorInstructions" id="s_ro_roda_domain_Variable_operatorInstructions" object="${variable}" z="TYwXYhwgFxWdCA6R8awrG/gkUkM="/>
-        <field:display field="typeEditedText" id="s_ro_roda_domain_Variable_typeEditedText" object="${variable}" z="PoYWBdRZSQ9R9eosGnIMx5Esv6c="/>
-        <field:display field="typeEditedNumber" id="s_ro_roda_domain_Variable_typeEditedNumber" object="${variable}" z="rDmv3Z1iGul85faLNxXFKJdtP6E="/>
-        <field:display field="typeSelection" id="s_ro_roda_domain_Variable_typeSelection" object="${variable}" z="jNoAcH5iR0ADBRKETX0EbP/w1XM="/>
+        <field:display field="variableType" id="s_ro_roda_domain_Variable_variableType" object="${variable}" z="Hm7tCjum2vXj2jJBz2XsZEVrOMM="/>
     </page:show>
 </div>

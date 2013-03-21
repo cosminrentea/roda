@@ -5,7 +5,6 @@
     <form:create id="fc_ro_roda_domain_File" modelAttribute="file" path="/files" render="${empty dependencies}" z="cB5t/jNT+2BX9oWlbUCiBTvptkI=">
         <field:select field="instances" id="c_ro_roda_domain_File_instances" itemValue="id" items="${instances}" multiple="true" path="/instances" z="Gp9rWKNgSUGH7mK/qR5yVnxypos="/>
         <field:select field="studies1" id="c_ro_roda_domain_File_studies1" itemValue="id" items="${studys}" multiple="true" path="/studys" z="AI0nGJJYVLaePoOgKHLuHZ72aTw="/>
-        <field:simple field="fileAcls" id="c_ro_roda_domain_File_fileAcls" messageCode="entity_reference_not_managed" messageCodeAttribute="File Acl" z="77d7cwfK2Kfl+v5MuQn7eGs5Jl8="/>
         <field:simple field="filePropertyNameValues" id="c_ro_roda_domain_File_filePropertyNameValues" messageCode="entity_reference_not_managed" messageCodeAttribute="File Property Name Value" z="tM6o6R9rRWc6gewW30UBFGOkjgs="/>
         <field:simple field="selectionVariableItems" id="c_ro_roda_domain_File_selectionVariableItems" messageCode="entity_reference_not_managed" messageCodeAttribute="Selection Variable Item" z="NYJVLaUp9TL6oVC4yy6j4NEZxhc="/>
         <field:simple field="variables" id="c_ro_roda_domain_File_variables" messageCode="entity_reference_not_managed" messageCodeAttribute="Variable" z="VyGBdgZveSLd7p4zINemyIhqQf0="/>

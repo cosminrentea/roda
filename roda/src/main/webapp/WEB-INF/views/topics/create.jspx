@@ -8,10 +8,10 @@
         <field:simple field="topics" id="c_ro_roda_domain_Topic_topics" messageCode="entity_reference_not_managed" messageCodeAttribute="Topic" z="FGMNjag8rwRVCZkUJeSfvqsr2DI="/>
         <field:simple field="topics1" id="c_ro_roda_domain_Topic_topics1" messageCode="entity_reference_not_managed" messageCodeAttribute="Topic" z="U+9kROpoefhPwJr3gD+E6afxGqw="/>
         <field:simple field="translatedTopics" id="c_ro_roda_domain_Topic_translatedTopics" messageCode="entity_reference_not_managed" messageCodeAttribute="Translated Topic" z="nPDlFqYREFDKx5x9E68ME6By1Hc="/>
-        <field:select field="parentTopicId" id="c_ro_roda_domain_Topic_parentTopicId" itemValue="id" items="${topics}" path="/topics" z="6mU65WnDcj6zHy9W/mkC9tYkr5E="/>
         <field:select field="preferredSynonymTopicId" id="c_ro_roda_domain_Topic_preferredSynonymTopicId" itemValue="id" items="${topics}" path="/topics" z="yXOuBeWcx5YNw87hBSL63SuYZTg="/>
         <field:input field="name" id="c_ro_roda_domain_Topic_name" required="true" z="phte3U5lrdC17xg1Dc1riZ68Bdw="/>
         <field:input field="description" id="c_ro_roda_domain_Topic_description" z="OvWsYp02ICxht9TqjH7txEjOAIE="/>
+        <field:select field="parentId" id="c_ro_roda_domain_Topic_parentId" itemValue="id" items="${topics}" path="/topics" z="xc6BKi16/gof/udsbCt5LDEMNfI="/>
     </form:create>
     <form:dependency dependencies="${dependencies}" id="d_ro_roda_domain_Topic" render="${not empty dependencies}" z="Rseg+jjqu5t3rF9G3EidieulTew="/>
 </div>

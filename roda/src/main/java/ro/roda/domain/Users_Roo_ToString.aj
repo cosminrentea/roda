@@ -10,7 +10,7 @@ import ro.roda.domain.Users;
 privileged aspect Users_Roo_ToString {
     
     public String Users.toString() {
-        return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+        return new ReflectionToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE).setExcludeFieldNames("enabled", "password").toString();
     }
     
 }

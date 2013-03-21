@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.domain.File;
-import ro.roda.service.FileAclService;
 import ro.roda.service.FilePropertyNameValueService;
 import ro.roda.service.FileService;
 import ro.roda.service.InstanceService;
@@ -29,9 +28,6 @@ privileged aspect FileController_Roo_Controller {
     
     @Autowired
     FileService FileController.fileService;
-    
-    @Autowired
-    FileAclService FileController.fileAclService;
     
     @Autowired
     FilePropertyNameValueService FileController.filePropertyNameValueService;
@@ -115,7 +111,6 @@ privileged aspect FileController_Roo_Controller {
     
     void FileController.populateEditForm(Model uiModel, File file) {
         uiModel.addAttribute("file", file);
-        uiModel.addAttribute("fileacls", fileAclService.findAllFileAcls());
         uiModel.addAttribute("filepropertynamevalues", filePropertyNameValueService.findAllFilePropertyNameValues());
         uiModel.addAttribute("instances", instanceService.findAllInstances());
         uiModel.addAttribute("selectionvariableitems", selectionVariableItemService.findAllSelectionVariableItems());

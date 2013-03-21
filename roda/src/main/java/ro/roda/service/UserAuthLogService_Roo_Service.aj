@@ -5,14 +5,13 @@ package ro.roda.service;
 
 import java.util.List;
 import ro.roda.domain.UserAuthLog;
-import ro.roda.domain.UserAuthLogPK;
 import ro.roda.service.UserAuthLogService;
 
 privileged aspect UserAuthLogService_Roo_Service {
     
     public abstract long UserAuthLogService.countAllUserAuthLogs();    
     public abstract void UserAuthLogService.deleteUserAuthLog(UserAuthLog userAuthLog);    
-    public abstract UserAuthLog UserAuthLogService.findUserAuthLog(UserAuthLogPK id);    
+    public abstract UserAuthLog UserAuthLogService.findUserAuthLog(Long id);    
     public abstract List<UserAuthLog> UserAuthLogService.findAllUserAuthLogs();    
     public abstract List<UserAuthLog> UserAuthLogService.findUserAuthLogEntries(int firstResult, int maxResults);    
     public abstract void UserAuthLogService.saveUserAuthLog(UserAuthLog userAuthLog);    

@@ -10,7 +10,7 @@
         <field:select field="operatorId" id="c_ro_roda_domain_Form_operatorId" itemValue="id" items="${people}" path="/people" z="I/ExLDGdqletc6WJai/ODJ6C138="/>
         <field:input field="orderInInstance" id="c_ro_roda_domain_Form_orderInInstance" required="true" validationMessageCode="field_invalid_integer" z="YDT3k/LCnD6mGwY9utE4ZDOLtts="/>
         <field:input field="operatorNotes" id="c_ro_roda_domain_Form_operatorNotes" z="w5SIfAUaBndh+VVNTGeEJdxkID4="/>
-        <field:datetime dateTimePattern="${form_filltime_date_format}" field="fillTime" id="c_ro_roda_domain_Form_fillTime" z="LS89kYDQykOTGjKw+fiKFlyQ0Mo="/>
+        <field:datetime dateTimePattern="${form_formfilledat_date_format}" field="formFilledAt" id="c_ro_roda_domain_Form_formFilledAt" z="Qsnikpoenf/badiu0CszN1ELwR8="/>
     </form:create>
     <form:dependency dependencies="${dependencies}" id="d_ro_roda_domain_Form" render="${not empty dependencies}" z="cGpQRFlo2e4JGejItOM2Mfjhv3Q="/>
 </div>

@@ -12,11 +12,13 @@
         <!-- Configure these elements to secure URIs in your application -->
 
         <!-- Cosmin settings -->
-        <intercept-url pattern="/countrys/**" access="hasRole('ROLE_ADMIN')"/>
-        <intercept-url pattern="/regions/**" access="hasRole('ROLE_ADMIN')"/>
-        <intercept-url pattern="/regiontypes/**" access="hasRole('ROLE_ADMIN')"/>
-        <intercept-url pattern="/citys/**" access="hasRole('ROLE_ADMIN')"/>
-        
+       	<!-- 
+        <intercept-url pattern="/aclsids/**" access="hasRole('ROLE_ADMIN')"/>
+        <intercept-url pattern="/aclclasses/**" access="hasRole('ROLE_ADMIN')"/>
+        <intercept-url pattern="/aclobjectidentitys/**" access="hasRole('ROLE_ADMIN')"/>
+        <intercept-url pattern="/aclentrys/**" access="hasRole('ROLE_ADMIN')"/>
+        -->
+         
         <!-- original settings -->
         <intercept-url pattern="/member/**" access="isAuthenticated()" />
         <intercept-url pattern="/resources/**" access="permitAll" />

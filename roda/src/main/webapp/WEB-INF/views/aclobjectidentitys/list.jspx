@@ -4,9 +4,9 @@
     <jsp:output omit-xml-declaration="yes"/>
     <page:list id="pl_ro_roda_domain_AclObjectIdentity" items="${aclobjectidentitys}" z="Ixt49hXkdjUXVYITJAdAJYoL4/8=">
         <table:table data="${aclobjectidentitys}" id="l_ro_roda_domain_AclObjectIdentity" path="/aclobjectidentitys" z="7n8EUBZBdIdkQ+bdsXwr+3bTtqQ=">
-            <table:column id="c_ro_roda_domain_AclObjectIdentity_objectIdIdentity" property="objectIdIdentity" z="/+dnRPMDeQtE2atBa9pZmT8e1Io="/>
             <table:column id="c_ro_roda_domain_AclObjectIdentity_objectIdClass" property="objectIdClass" z="kmNm3aAK5QHtorNnAYAcIjXC/q4="/>
             <table:column id="c_ro_roda_domain_AclObjectIdentity_ownerSid" property="ownerSid" z="VPyyjvIEKgRnbiFmVE/yzeEbtQg="/>
+            <table:column id="c_ro_roda_domain_AclObjectIdentity_parentObject" property="parentObject" z="8kS1bXtlJko5SijOcHkVKfgAjf0="/>
             <table:column id="c_ro_roda_domain_AclObjectIdentity_entriesInheriting" property="entriesInheriting" z="vlemMrsjCG3AAYIen+5Bfd+dZms="/>
         </table:table>
     </page:list>

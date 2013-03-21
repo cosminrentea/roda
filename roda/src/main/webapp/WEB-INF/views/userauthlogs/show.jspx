@@ -8,5 +8,6 @@
         <field:display field="credentialProvider" id="s_ro_roda_domain_UserAuthLog_credentialProvider" object="${userauthlog}" z="LKFUOBX+Mc+CI5Eo7IX1+2g6ZdQ="/>
         <field:display field="credentialIdentifier" id="s_ro_roda_domain_UserAuthLog_credentialIdentifier" object="${userauthlog}" z="Xh+9hsb4yizDHm73Tew6RcEu/lU="/>
         <field:display field="errorMessage" id="s_ro_roda_domain_UserAuthLog_errorMessage" object="${userauthlog}" z="mTlydUYfZi0rtizFU8yUN3Dxi94="/>
+        <field:display calendar="true" dateTimePattern="${userAuthLog_authattemptedat_date_format}" field="authAttemptedAt" id="s_ro_roda_domain_UserAuthLog_authAttemptedAt" object="${userauthlog}" z="cqRq1X2VqELqyIcq3t66tsbrFes="/>
     </page:show>
 </div>

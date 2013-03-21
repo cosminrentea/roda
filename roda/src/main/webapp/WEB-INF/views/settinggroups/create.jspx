@@ -5,9 +5,9 @@
     <form:create id="fc_ro_roda_domain_SettingGroup" modelAttribute="settingGroup" path="/settinggroups" render="${empty dependencies}" z="hc5S2H8T0AOoRgbjPrMTN0yV14Y=">
         <field:simple field="settings" id="c_ro_roda_domain_SettingGroup_settings" messageCode="entity_reference_not_managed" messageCodeAttribute="Setting" z="/97x9WNOg+tfdJl3/wsr0RrfBvM="/>
         <field:simple field="settingGroups" id="c_ro_roda_domain_SettingGroup_settingGroups" messageCode="entity_reference_not_managed" messageCodeAttribute="Setting Group" z="De+SgXzdsEcKYqHy9BfwQInSl5Y="/>
-        <field:select field="parent" id="c_ro_roda_domain_SettingGroup_parent" itemValue="id" items="${settinggroups}" path="/settinggroups" z="ZHMzC0AbWD09N8eNGpwyiuRgMuE="/>
         <field:input field="name" id="c_ro_roda_domain_SettingGroup_name" required="true" z="BKT4C4xEaFsnExcZD3Em/yMx0js="/>
         <field:input field="description" id="c_ro_roda_domain_SettingGroup_description" z="Jj8HNIA+qGgOav4KzQU/saPiW7g="/>
+        <field:select field="parentId" id="c_ro_roda_domain_SettingGroup_parentId" itemValue="id" items="${settinggroups}" path="/settinggroups" z="H/cJPau7JDQ3+dCJz8pPB3YBxzU="/>
     </form:create>
     <form:dependency dependencies="${dependencies}" id="d_ro_roda_domain_SettingGroup" render="${not empty dependencies}" z="yajZ+y1skVIieMnsINLkNyrBG/s="/>
 </div>

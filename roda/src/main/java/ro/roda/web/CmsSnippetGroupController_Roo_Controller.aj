@@ -96,6 +96,7 @@ privileged aspect CmsSnippetGroupController_Roo_Controller {
     void CmsSnippetGroupController.populateEditForm(Model uiModel, CmsSnippetGroup cmsSnippetGroup) {
         uiModel.addAttribute("cmsSnippetGroup", cmsSnippetGroup);
         uiModel.addAttribute("cmssnippets", cmsSnippetService.findAllCmsSnippets());
+        uiModel.addAttribute("cmssnippetgroups", cmsSnippetGroupService.findAllCmsSnippetGroups());
     }
     
     String CmsSnippetGroupController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

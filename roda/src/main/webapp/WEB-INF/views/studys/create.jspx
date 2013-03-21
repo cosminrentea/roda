@@ -7,18 +7,17 @@
         <field:select field="files1" id="c_ro_roda_domain_Study_files1" itemValue="id" items="${files}" multiple="true" path="/files" z="EO1XCezkQBnufweF8ybaB5tt1Z0="/>
         <field:simple field="catalogStudies" id="c_ro_roda_domain_Study_catalogStudies" messageCode="entity_reference_not_managed" messageCodeAttribute="Catalog Study" z="N4BpyMRmK2oSBhDWqxP49PA8B60="/>
         <field:simple field="instances" id="c_ro_roda_domain_Study_instances" messageCode="entity_reference_not_managed" messageCodeAttribute="Instance" z="tlMbNGIZfu2raBzFAgiRv19L724="/>
-        <field:simple field="studyAcls" id="c_ro_roda_domain_Study_studyAcls" messageCode="entity_reference_not_managed" messageCodeAttribute="Study Acl" z="94YaONQ68KPG9OL3OlkxSFqfE9g="/>
         <field:simple field="studyDescrs" id="c_ro_roda_domain_Study_studyDescrs" messageCode="entity_reference_not_managed" messageCodeAttribute="Study Descr" z="/4qUoCpEnokZS4d1AICU4QG1wh0="/>
         <field:simple field="studyKeywords" id="c_ro_roda_domain_Study_studyKeywords" messageCode="entity_reference_not_managed" messageCodeAttribute="Study Keyword" z="DqAmbGm96A4UJ45xCbiqNm3ACPA="/>
         <field:simple field="studyOrgs" id="c_ro_roda_domain_Study_studyOrgs" messageCode="entity_reference_not_managed" messageCodeAttribute="Study Org" z="TWtbOGsijQ8qIB1zAzCrv6HkcQA="/>
         <field:simple field="studypeople" id="c_ro_roda_domain_Study_studypeople" messageCode="entity_reference_not_managed" messageCodeAttribute="Study Person" z="roJpJNAp5UKRQoBCgmcCOcFVqFs="/>
-        <field:select field="addedBy" id="c_ro_roda_domain_Study_addedBy" itemValue="id" items="${rodausers}" path="/rodausers" z="KhvENjNr5PqjlO0OyP2DZ9idkcE="/>
-        <field:datetime dateTimePattern="${study_datestart_date_format}" field="datestart" id="c_ro_roda_domain_Study_datestart" z="eCY+H6x53f/Hh97JWvf8bgXzvHY="/>
-        <field:datetime dateTimePattern="${study_dateend_date_format}" field="dateend" id="c_ro_roda_domain_Study_dateend" z="CblI79SF25itneqZhjuXOlcHz38="/>
+        <field:select field="addedBy" id="c_ro_roda_domain_Study_addedBy" itemValue="id" items="${userses}" path="/userses" z="FtcDtxxrCEb+m51O1Rbl/CVI5cw="/>
         <field:input field="insertionStatus" id="c_ro_roda_domain_Study_insertionStatus" required="true" validationMessageCode="field_invalid_integer" z="+fBmHxwk9UoY/giK9HsKoJFVjYY="/>
         <field:datetime dateTimePattern="${study_added_date_format}" field="added" id="c_ro_roda_domain_Study_added" required="true" z="LpJhZeOKsCzC+s5RFcx0TivrV18="/>
-        <field:checkbox field="canDigitize" id="c_ro_roda_domain_Study_canDigitize" z="seYohlZz8kxlppeaywiquVkTnCA="/>
-        <field:checkbox field="canUseAnonymous" id="c_ro_roda_domain_Study_canUseAnonymous" z="e1TGyZ5PDGtQm2skQOUV9fxPpiw="/>
+        <field:datetime dateTimePattern="${study_datestart_date_format}" field="dateStart" id="c_ro_roda_domain_Study_dateStart" z="eAmTIs/tpJMftb7msuk+71Tu/UI="/>
+        <field:datetime dateTimePattern="${study_dateend_date_format}" field="dateEnd" id="c_ro_roda_domain_Study_dateEnd" z="msngWx8ueGN97HfjolVHRylIpEk="/>
+        <field:checkbox field="digitizable" id="c_ro_roda_domain_Study_digitizable" z="9lDLuUwMXZ/HgEEuFAklmLZI4R8="/>
+        <field:checkbox field="anonymousUsage" id="c_ro_roda_domain_Study_anonymousUsage" z="iy4DSlhHsl4YGVJV/6o2JbLGP+M="/>
     </form:create>
     <form:dependency dependencies="${dependencies}" id="d_ro_roda_domain_Study" render="${not empty dependencies}" z="wHS+A+FfAybmOfn/5CWxPb0COAk="/>
 </div>

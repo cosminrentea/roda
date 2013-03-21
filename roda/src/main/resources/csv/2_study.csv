@@ -1,4 +1,4 @@
-id,datestart,dateend,insertion_status,added_by,added,can_digitize,can_use_anonymous
+id,date_start,date_end,insertion_status,added_by,added,digitizable,anonymous_usage
 1,now(),now(),0,1,now(),true,true
 2,now(),now(),0,1,now(),true,false
 3,now(),now(),0,1,now(),false,false

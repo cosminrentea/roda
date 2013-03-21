@@ -11,7 +11,7 @@ privileged aspect CountryService_Roo_Service {
     
     public abstract long CountryService.countAllCountrys();    
     public abstract void CountryService.deleteCountry(Country country);    
-    public abstract Country CountryService.findCountry(String id);    
+    public abstract Country CountryService.findCountry(Integer id);    
     public abstract List<Country> CountryService.findAllCountrys();    
     public abstract List<Country> CountryService.findCountryEntries(int firstResult, int maxResults);    
     public abstract void CountryService.saveCountry(Country country);    

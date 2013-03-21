@@ -3,6 +3,83 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <menu:menu id="_menu" z="nZaf43BjUg1iM0v70HJVEsXDopc=">
+        <sec:authorize ifAllGranted="ROLE_ADMIN">
+            <!-- Spring Security Authentication -->
+            <menu:category id="c_users" z="Ysam8XVhG5uotPoUGGxkia1RE/s=">
+                <menu:item id="i_users_new" messageCode="global_menu_new" url="/userses?form" z="utrdLkYms6xk5f4IDxc9zrg5FWs="/>
+                <menu:item id="i_users_list" messageCode="global_menu_list" url="/userses?page=1&amp;size=${empty param.size ? 10 : param.size}" z="tqSwojZmRduyx4xtHWcJzgbgtJk="/>
+            </menu:category>
+            <menu:category id="c_authorities" z="GIjKsVX7q9V5I+B/i5YP+XPvlK0=">
+                <menu:item id="i_authorities_new" messageCode="global_menu_new" url="/authoritieses?form" z="2mmPz62GZozb3OilbywIxJnKcBc="/>
+                <menu:item id="i_authorities_list" messageCode="global_menu_list" url="/authoritieses?page=1&amp;size=${empty param.size ? 10 : param.size}" z="on1x7LkbV2LweGhXOBmPjrzwbMo="/>
+            </menu:category>
+            <menu:category id="c_groupauthorities" z="qSf4MP7FP4bG1GkQkadgJd6EZUE=">
+                <menu:item id="i_groupauthorities_new" messageCode="global_menu_new" url="/groupauthoritieses?form" z="K6zqKRRqyC3zIyE/8ndbA5l9TpE="/>
+                <menu:item id="i_groupauthorities_list" messageCode="global_menu_list" url="/groupauthoritieses?page=1&amp;size=${empty param.size ? 10 : param.size}" z="2BM4Q9cCKscz2JwW3Qaa6hkD/Gs="/>
+            </menu:category>
+            <menu:category id="c_groups" z="NRIYuxh1c9CCVsqI2vgEg+kgcSk=">
+                <menu:item id="i_groups_new" messageCode="global_menu_new" url="/groupses?form" z="aMg2LU+Zurz10taJ+LLBDwKtMkg="/>
+                <menu:item id="i_groups_list" messageCode="global_menu_list" url="/groupses?page=1&amp;size=${empty param.size ? 10 : param.size}" z="ZD4ucHAn/NRfQQAb0UAumu3jceE="/>
+            </menu:category>
+            <menu:category id="c_groupmembers" z="XpdnjEib+fG7rz2RtLBeFXdeNxA=">
+                <menu:item id="i_groupmembers_new" messageCode="global_menu_new" url="/groupmemberses?form" z="V+KFL1E5qh+KWuRpApB0i+KA4BU="/>
+                <menu:item id="i_groupmembers_list" messageCode="global_menu_list" url="/groupmemberses?page=1&amp;size=${empty param.size ? 10 : param.size}" z="FuD/EJ4ES3xEit530qG4xZy6sa0="/>
+            </menu:category>
+            <!-- Spring Security Authorization -->
+            <menu:category id="c_aclsid" z="y8s5ZYcvtVFZWhjC1mcACDGn5t8=">
+                <menu:item id="i_aclsid_new" messageCode="global_menu_new" url="/aclsids?form" z="ZokiKOCo2WrAsPoBOcNLYcsZq9o="/>
+                <menu:item id="i_aclsid_list" messageCode="global_menu_list" url="/aclsids?page=1&amp;size=${empty param.size ? 10 : param.size}" z="7JYx9zrBOCqCgZlx2FwzMCTQfqE="/>
+            </menu:category>
+            <menu:category id="c_aclclass" z="NV1nEyR01Xh1kCMlHUH4r1HqDXo=">
+                <menu:item id="i_aclclass_new" messageCode="global_menu_new" url="/aclclasses?form" z="eGWdfs05hnzekL+5yP9vHlqnhmU="/>
+                <menu:item id="i_aclclass_list" messageCode="global_menu_list" url="/aclclasses?page=1&amp;size=${empty param.size ? 10 : param.size}" z="8K/vdgVjnOs/FOID7nUfH1spKYk="/>
+            </menu:category>
+            <menu:category id="c_aclobjectidentity" z="f08oOntvlw2HzPknMM7BWQxv5eE=">
+                <menu:item id="i_aclobjectidentity_new" messageCode="global_menu_new" url="/aclobjectidentitys?form" z="UoKT7ijJ12jfLKbIUVgz26f1sis="/>
+                <menu:item id="i_aclobjectidentity_list" messageCode="global_menu_list" url="/aclobjectidentitys?page=1&amp;size=${empty param.size ? 10 : param.size}" z="pRuUDAJK+qJPl69JmiQr/w/XrPE="/>
+            </menu:category>
+            <menu:category id="c_aclentry" z="zFXjT0Yy85OFdOIRxmCkd/tjdqk=">
+                <menu:item id="i_aclentry_new" messageCode="global_menu_new" url="/aclentrys?form" z="D5xtd5pH0Gkf35QXvjb1eNlWbEU="/>
+                <menu:item id="i_aclentry_list" messageCode="global_menu_list" url="/aclentrys?page=1&amp;size=${empty param.size ? 10 : param.size}" z="th/ZfGAnIjfW/Yl/IKleMm0+2Wo="/>
+            </menu:category>
+            <!-- Audit -->
+            <menu:category id="c_auditlogchangeset" z="11ASlLome39ZhaDkLU/bqTdb+J0=">
+                <menu:item id="i_auditlogchangeset_new" messageCode="global_menu_new" url="/auditlogchangesets?form" z="S3Ea15eDgwvdDtyH2cG6sEqdcr4="/>
+                <menu:item id="i_auditlogchangeset_list" messageCode="global_menu_list" url="/auditlogchangesets?page=1&amp;size=${empty param.size ? 10 : param.size}" z="i3VntSixyQW9kxvRsFDncgEBd1g="/>
+            </menu:category>
+            <menu:category id="c_auditlogaction" z="F7xjrbFmUk4yK/wYtxQZghsw5zU=">
+                <menu:item id="i_auditlogaction_new" messageCode="global_menu_new" url="/auditlogactions?form" z="g7d/aRQayOAIRS2xucP2TCQxqG8="/>
+                <menu:item id="i_auditlogaction_list" messageCode="global_menu_list" url="/auditlogactions?page=1&amp;size=${empty param.size ? 10 : param.size}" z="JEgglN+qvNbjlNEpgX98+WX54S0="/>
+            </menu:category>
+            <menu:category id="c_auditlogchange" z="V2U8rcTfHV3+gtj+2AOicZgv33A=">
+                <menu:item id="i_auditlogchange_new" messageCode="global_menu_new" url="/auditlogchanges?form" z="lXWRviqm++TBrlKV+iDGfCARz5g="/>
+                <menu:item id="i_auditlogchange_list" messageCode="global_menu_list" url="/auditlogchanges?page=1&amp;size=${empty param.size ? 10 : param.size}" z="0y6ODHRWKfz7OhYhsbbjL5ADVag="/>
+            </menu:category>
+            <menu:category id="c_auditlogtable" z="BENPtcMii3M1WchiFH0AjHXqrVM=">
+                <menu:item id="i_auditlogtable_new" messageCode="global_menu_new" url="/auditlogtables?form" z="JBEyyioXbDSInIdpEhCO1FJb4Xo="/>
+                <menu:item id="i_auditlogtable_list" messageCode="global_menu_list" url="/auditlogtables?page=1&amp;size=${empty param.size ? 10 : param.size}" z="xrcoOqRJbv+yk4t+PehMgxPkqnU="/>
+            </menu:category>
+            <menu:category id="c_auditlogfield" z="teenOcLOlwVJrmy0L2F4Iwzn6vA=">
+                <menu:item id="i_auditlogfield_new" messageCode="global_menu_new" url="/auditlogfields?form" z="AYPWxmQRNyItL96cGFkaFmNrF2c="/>
+                <menu:item id="i_auditlogfield_list" messageCode="global_menu_list" url="/auditlogfields?page=1&amp;size=${empty param.size ? 10 : param.size}" z="0zzqQNMCLL+83DxGPKxSC5x+KlA="/>
+            </menu:category>
+        </sec:authorize>
+        <menu:category id="c_catalog" z="/IwzZ/FhPYxAhzDNjL9QQjNnCHU=">
+            <menu:item id="i_catalog_new" messageCode="global_menu_new" url="/catalogs?form" z="a6hixpJnjl/hCZKXAkVdLW874K4="/>
+            <menu:item id="i_catalog_list" messageCode="global_menu_list" url="/catalogs?page=1&amp;size=${empty param.size ? 10 : param.size}" z="4Txa+T+L3VWl7nHTpDVypAEDxIw="/>
+        </menu:category>
+        <menu:category id="c_catalogstudy" z="DJQ2xVoofr926GRQPAB9bSVbtbQ=">
+            <menu:item id="i_catalogstudy_new" messageCode="global_menu_new" url="/catalogstudys?form" z="e/qLkO+ZUMm6ZywaVglBdUtj6Ic="/>
+            <menu:item id="i_catalogstudy_list" messageCode="global_menu_list" url="/catalogstudys?page=1&amp;size=${empty param.size ? 10 : param.size}" z="ohTWT3g/My/8H4pZO+xQLk+IrRY="/>
+        </menu:category>
+        <menu:category id="c_study" z="oI9yzpkdnDyWi0t2LVLS4mL6fW4=">
+            <menu:item id="i_study_new" messageCode="global_menu_new" url="/studys?form" z="+WXmYQAhPHo/7isXzdlKSadyyLU="/>
+            <menu:item id="i_study_list" messageCode="global_menu_list" url="/studys?page=1&amp;size=${empty param.size ? 10 : param.size}" z="jfnhlPPF15oFiHQFu5RywJfHLW0="/>
+        </menu:category>
+        <menu:category id="c_instance" z="6PbWsMvohZVsHuRFQ78WRWmvkhg=">
+            <menu:item id="i_instance_new" messageCode="global_menu_new" url="/instances?form" z="yYTDNtlNDPWw6b+VyL7qrujBkAI="/>
+            <menu:item id="i_instance_list" messageCode="global_menu_list" url="/instances?page=1&amp;size=${empty param.size ? 10 : param.size}" z="U45SbjgURJC3YJzm0zzeJj5a1d8="/>
+        </menu:category>
         <menu:category id="c_otherstatistic" z="NpJQmpjQ3JrPfQVv5isk93LLJlA=">
             <menu:item id="i_otherstatistic_new" messageCode="global_menu_new" url="/otherstatistics?form" z="11auQyQwuQDpf9XrRpGY6ZnYank="/>
             <menu:item id="i_otherstatistic_list" messageCode="global_menu_list" url="/otherstatistics?page=1&amp;size=${empty param.size ? 10 : param.size}" z="rjZwF88tSXm/NdKLZwmFdfxSKAg="/>
@@ -11,39 +88,13 @@
             <menu:item id="i_topic_new" messageCode="global_menu_new" url="/topics?form" z="6SERWdKOafumerqp5IWOYZ77rGM="/>
             <menu:item id="i_topic_list" messageCode="global_menu_list" url="/topics?page=1&amp;size=${empty param.size ? 10 : param.size}" z="5Jq20ypYFl/VCnw+28VEjhNlmf0="/>
         </menu:category>
-        <menu:category id="c_catalogacl" z="6IuB6aH+6Js2p1vEnRozTAxozPw=">
-            <menu:item id="i_catalogacl_new" messageCode="global_menu_new" url="/catalogacls?form" z="QoXs8yVmpATu0aDeTGDuLwnu5r0="/>
-            <menu:item id="i_catalogacl_list" messageCode="global_menu_list" url="/catalogacls?page=1&amp;size=${empty param.size ? 10 : param.size}" z="j/vVIinhrWPU+3pifOKmCK4iskQ="/>
-        </menu:category>
-<!--    <sec:authorize ifAllGranted="ROLE_ADMIN">  -->
-            <menu:category id="c_catalog" z="/IwzZ/FhPYxAhzDNjL9QQjNnCHU=">
-                <menu:item id="i_catalog_new" messageCode="global_menu_new" url="/catalogs?form" z="a6hixpJnjl/hCZKXAkVdLW874K4="/>
-                <menu:item id="i_catalog_list" messageCode="global_menu_list" url="/catalogs?page=1&amp;size=${empty param.size ? 10 : param.size}" z="4Txa+T+L3VWl7nHTpDVypAEDxIw="/>
-            </menu:category>
-<!--         </sec:authorize>  -->
         <menu:category id="c_studyorgassoc" z="hG9ls5dGrs3aNAIK60HaJ6Nu7Xs=">
             <menu:item id="i_studyorgassoc_new" messageCode="global_menu_new" url="/studyorgassocs?form" z="DG0ir+PXiXbXAH4sLd2renJFAS8="/>
             <menu:item id="i_studyorgassoc_list" messageCode="global_menu_list" url="/studyorgassocs?page=1&amp;size=${empty param.size ? 10 : param.size}" z="Updm6Nbra4BXmMMvwa2JDkgJ8tc="/>
         </menu:category>
-        <menu:category id="c_instance" z="6PbWsMvohZVsHuRFQ78WRWmvkhg=">
-            <menu:item id="i_instance_new" messageCode="global_menu_new" url="/instances?form" z="yYTDNtlNDPWw6b+VyL7qrujBkAI="/>
-            <menu:item id="i_instance_list" messageCode="global_menu_list" url="/instances?page=1&amp;size=${empty param.size ? 10 : param.size}" z="U45SbjgURJC3YJzm0zzeJj5a1d8="/>
-        </menu:category>
-        <menu:category id="c_instanceacl" z="zgdRx521NhsJ9iB6EmIqzeOdIe4=">
-            <menu:item id="i_instanceacl_new" messageCode="global_menu_new" url="/instanceacls?form" z="9vIVqtCLfUFUlBNugS4ucizxPXA="/>
-            <menu:item id="i_instanceacl_list" messageCode="global_menu_list" url="/instanceacls?page=1&amp;size=${empty param.size ? 10 : param.size}" z="UY4CbNZlrBlmlhFeZ6Hln1opseY="/>
-        </menu:category>
         <menu:category id="c_sourcestudy" z="i996Pt6gzQ4qjFplkYMJwssu+mA=">
             <menu:item id="i_sourcestudy_new" messageCode="global_menu_new" url="/sourcestudys?form" z="M0/UZ+ZT3y22p8j6kWB/203z+9g="/>
             <menu:item id="i_sourcestudy_list" messageCode="global_menu_list" url="/sourcestudys?page=1&amp;size=${empty param.size ? 10 : param.size}" z="gilxQ9zUVGVrGGkM9tMEJrcHjoQ="/>
-        </menu:category>
-        <menu:category id="c_studyacl" z="h3RHTvSYiksaJX+sMS3Rs8HKnt8=">
-            <menu:item id="i_studyacl_new" messageCode="global_menu_new" url="/studyacls?form" z="5R2kjtT86o9tgUjYrtlIQT9zQgo="/>
-            <menu:item id="i_studyacl_list" messageCode="global_menu_list" url="/studyacls?page=1&amp;size=${empty param.size ? 10 : param.size}" z="pvvvc/l61QubaMhACcvbHV7ORfg="/>
-        </menu:category>
-        <menu:category id="c_cmspage" z="snktLbN7dMg1gTocz4pLzWBRKVE=">
-            <menu:item id="i_cmspage_new" messageCode="global_menu_new" url="/cmspages?form" z="gICKRK6YICqipUIdeRtBm/PPRzU="/>
-            <menu:item id="i_cmspage_list" messageCode="global_menu_list" url="/cmspages?page=1&amp;size=${empty param.size ? 10 : param.size}" z="asLenfR2hnhi6q3EOrlsu0VpZgM="/>
         </menu:category>
         <menu:category id="c_formeditedtextvar" z="CdbdVm80j681YULlgV8AjOqTwuo=">
             <menu:item id="i_formeditedtextvar_new" messageCode="global_menu_new" url="/formeditedtextvars?form" z="RBkhLANiRBWhegrIdls40cZ3KYc="/>
@@ -89,17 +140,9 @@
             <menu:item id="i_personorg_new" messageCode="global_menu_new" url="/personorgs?form" z="GUq9gd5aYnAbFJYq7cf+wOpnWkM="/>
             <menu:item id="i_personorg_list" messageCode="global_menu_list" url="/personorgs?page=1&amp;size=${empty param.size ? 10 : param.size}" z="BnYb50vpFR8KHHrq6V5RLzQtW1w="/>
         </menu:category>
-        <menu:category id="c_studypersonacl" z="Yz5i0TL5NC4YVZm3rUzFuaXlxGM=">
-            <menu:item id="i_studypersonacl_new" messageCode="global_menu_new" url="/studypersonacls?form" z="uHvc2dh1tAlhNaDGOB9GeQFPJ9U="/>
-            <menu:item id="i_studypersonacl_list" messageCode="global_menu_list" url="/studypersonacls?page=1&amp;size=${empty param.size ? 10 : param.size}" z="1pVbuHYPfxeDAL+SR0icLC4Bmi4="/>
-        </menu:category>
         <menu:category id="c_studyorg" z="2FMZ5g7Ar38aVNtmmeY66FpGRkY=">
             <menu:item id="i_studyorg_new" messageCode="global_menu_new" url="/studyorgs?form" z="+ZulTFhac00xi5XtH9nohTKg0Ko="/>
             <menu:item id="i_studyorg_list" messageCode="global_menu_list" url="/studyorgs?page=1&amp;size=${empty param.size ? 10 : param.size}" z="+qpknTYUOxLXZ2pNFifFZHfcf5o="/>
-        </menu:category>
-        <menu:category id="c_title" z="uqwQUwoQbIJDzpgSKPbQ5tSZ4og=">
-            <menu:item id="i_title_new" messageCode="global_menu_new" url="/titles?form" z="Se/Sj2IvKhH2jzR7xhtMlnmvE4A="/>
-            <menu:item id="i_title_list" messageCode="global_menu_list" url="/titles?page=1&amp;size=${empty param.size ? 10 : param.size}" z="u3F7E/L7KE2aU7+hhBtV20hHwx8="/>
         </menu:category>
         <menu:category id="c_sourcestudytype" z="EROAgBm+ZOp6ri4zT8YZlUuEvsQ=">
             <menu:item id="i_sourcestudytype_new" messageCode="global_menu_new" url="/sourcestudytypes?form" z="fqlA3DLLN+gtlOxw4iu6H1AG+F0="/>
@@ -108,14 +151,6 @@
         <menu:category id="c_userauthlog" z="glt5dF8VU/7L+xaE/BSyrluIWbw=">
             <menu:item id="i_userauthlog_new" messageCode="global_menu_new" url="/userauthlogs?form" z="hXEZ+pNCULkWGL8KU6i4RL0bpaI="/>
             <menu:item id="i_userauthlog_list" messageCode="global_menu_list" url="/userauthlogs?page=1&amp;size=${empty param.size ? 10 : param.size}" z="xKAqM4nniYKLOo8GpiOR9J2SND8="/>
-        </menu:category>
-        <menu:category id="c_fileacl" z="1NwFc77YkpUvrwjZod2d2Lfaar0=">
-            <menu:item id="i_fileacl_new" messageCode="global_menu_new" url="/fileacls?form" z="ylKGCZC8sK3nv3ialV0w/BktCpM="/>
-            <menu:item id="i_fileacl_list" messageCode="global_menu_list" url="/fileacls?page=1&amp;size=${empty param.size ? 10 : param.size}" z="U/ly03MVyXv9Iz2m9xk7co5s/LI="/>
-        </menu:category>
-        <menu:category id="c_cmsfolder" z="3+lxmD7xtL1zZU/Mpxk2LkVazSM=">
-            <menu:item id="i_cmsfolder_new" messageCode="global_menu_new" url="/cmsfolders?form" z="AznueMAejIh+BlNVPQHHQPcvG0k="/>
-            <menu:item id="i_cmsfolder_list" messageCode="global_menu_list" url="/cmsfolders?page=1&amp;size=${empty param.size ? 10 : param.size}" z="Sxky6173w6C2VzrSCT1D2pyikKQ="/>
         </menu:category>
         <menu:category id="c_item" z="jWO1pnucyLwI2bZuwfja4eCYsjU=">
             <menu:item id="i_item_new" messageCode="global_menu_new" url="/items?form" z="I+/MpOYxZ47XKvsQW1PUi6uC060="/>
@@ -129,10 +164,6 @@
             <menu:item id="i_selectionvariableitem_new" messageCode="global_menu_new" url="/selectionvariableitems?form" z="a3GmrxE2bAzPOwer9yAG7sMEPtw="/>
             <menu:item id="i_selectionvariableitem_list" messageCode="global_menu_list" url="/selectionvariableitems?page=1&amp;size=${empty param.size ? 10 : param.size}" z="gDvihcJqnAAIYdkJcdSieDTlKwg="/>
         </menu:category>
-        <menu:category id="c_cmslayoutgroup" z="kMvehH7p/OLkhKp21DBQUnSNeZM=">
-            <menu:item id="i_cmslayoutgroup_new" messageCode="global_menu_new" url="/cmslayoutgroups?form" z="msjllPwynQGmeQ+1y62wJsqps0U="/>
-            <menu:item id="i_cmslayoutgroup_list" messageCode="global_menu_list" url="/cmslayoutgroups?page=1&amp;size=${empty param.size ? 10 : param.size}" z="MWHvnyBlCcLpCv8o+8u+tbvhLoM="/>
-        </menu:category>
         <menu:category id="c_sourcetype" z="pr5J5kWKMJYZ/H5KCctpj0vuuSo=">
             <menu:item id="i_sourcetype_new" messageCode="global_menu_new" url="/sourcetypes?form" z="ee2OCBAiH7s0CrXzHWUZjbeqSk8="/>
             <menu:item id="i_sourcetype_list" messageCode="global_menu_list" url="/sourcetypes?page=1&amp;size=${empty param.size ? 10 : param.size}" z="dLUefh5knArEhX0SgxnW8eAd51E="/>
@@ -141,21 +172,9 @@
             <menu:item id="i_timemethtype_new" messageCode="global_menu_new" url="/timemethtypes?form" z="XsHqnfxd9T5j5n4W+U6V3TpvUfc="/>
             <menu:item id="i_timemethtype_list" messageCode="global_menu_list" url="/timemethtypes?page=1&amp;size=${empty param.size ? 10 : param.size}" z="MurjT1SPZfJucDzEq5gGcheHjnY="/>
         </menu:category>
-        <menu:category id="c_catalogstudy" z="DJQ2xVoofr926GRQPAB9bSVbtbQ=">
-            <menu:item id="i_catalogstudy_new" messageCode="global_menu_new" url="/catalogstudys?form" z="e/qLkO+ZUMm6ZywaVglBdUtj6Ic="/>
-            <menu:item id="i_catalogstudy_list" messageCode="global_menu_list" url="/catalogstudys?page=1&amp;size=${empty param.size ? 10 : param.size}" z="ohTWT3g/My/8H4pZO+xQLk+IrRY="/>
-        </menu:category>
         <menu:category id="c_studypersonassoc" z="+/eG5Se37DCwmv7yEdrwkDul1YU=">
             <menu:item id="i_studypersonassoc_new" messageCode="global_menu_new" url="/studypersonassocs?form" z="P+Cvm2jNLP79fwrrZosO2anj9oM="/>
             <menu:item id="i_studypersonassoc_list" messageCode="global_menu_list" url="/studypersonassocs?page=1&amp;size=${empty param.size ? 10 : param.size}" z="HKd7vqpGBDDHPJw03XpPd42DQts="/>
-        </menu:category>
-        <menu:category id="c_cmsfile" z="gbSCpxoLWS4r/ub3zD5OzugxnF0=">
-            <menu:item id="i_cmsfile_new" messageCode="global_menu_new" url="/cmsfiles?form" z="E2wb40nWFcKAZ0mSL3pYJKR+W6Q="/>
-            <menu:item id="i_cmsfile_list" messageCode="global_menu_list" url="/cmsfiles?page=1&amp;size=${empty param.size ? 10 : param.size}" z="ddBoRKmO9sG0Caka7X8XKTE2F2s="/>
-        </menu:category>
-        <menu:category id="c_filetype" z="ZtMAYMziwhKBWn1d7rJ2Z2qCTKU=">
-            <menu:item id="i_filetype_new" messageCode="global_menu_new" url="/filetypes?form" z="KgZDHotqr83ugmuhjsMTgMiEStM="/>
-            <menu:item id="i_filetype_list" messageCode="global_menu_list" url="/filetypes?page=1&amp;size=${empty param.size ? 10 : param.size}" z="zjaVtNqO4B+Z7hZrRGBmmy4y2x0="/>
         </menu:category>
         <menu:category id="c_translatedtopic" z="VlT2cLNSzQb5+EcKi3y8zN50kOI=">
             <menu:item id="i_translatedtopic_new" messageCode="global_menu_new" url="/translatedtopics?form" z="SGyElbKjDzLlfC17tYHdpAo8R7I="/>
@@ -173,10 +192,6 @@
             <menu:item id="i_orgrelationtype_new" messageCode="global_menu_new" url="/orgrelationtypes?form" z="z/VlTpMKRxfHUz5UrVgReZg9p0Q="/>
             <menu:item id="i_orgrelationtype_list" messageCode="global_menu_list" url="/orgrelationtypes?page=1&amp;size=${empty param.size ? 10 : param.size}" z="DuiNlVKVNZ5T4pPhx3uWcxThy4k="/>
         </menu:category>
-        <menu:category id="c_cmslayout" z="igAo4DpPL6SpkJqkr35f99x+Nko=">
-            <menu:item id="i_cmslayout_new" messageCode="global_menu_new" url="/cmslayouts?form" z="tRnvmxeyYeHABYwWk79SVEzw1Vo="/>
-            <menu:item id="i_cmslayout_list" messageCode="global_menu_list" url="/cmslayouts?page=1&amp;size=${empty param.size ? 10 : param.size}" z="K4wr0nprj0tnu7ShfwMWEuA61DE="/>
-        </menu:category>
         <menu:category id="c_source" z="ZRahMIHGJ7nfKe+xwSu4RUeydX4=">
             <menu:item id="i_source_new" messageCode="global_menu_new" url="/sources?form" z="8ZDA2RLaRcKfVfyYqoK2IHSudOM="/>
             <menu:item id="i_source_list" messageCode="global_menu_list" url="/sources?page=1&amp;size=${empty param.size ? 10 : param.size}" z="NtFJNroKWNZZpapGfL+Y/tvlE8E="/>
@@ -184,10 +199,6 @@
         <menu:category id="c_regiontype" z="4yd/xc5Fu2mVzCFc4PHwRf8Nzys=">
             <menu:item id="i_regiontype_new" messageCode="global_menu_new" url="/regiontypes?form" z="lgvO55E1jLPSl1Yt/U3YWiRIUcE="/>
             <menu:item id="i_regiontype_list" messageCode="global_menu_list" url="/regiontypes?page=1&amp;size=${empty param.size ? 10 : param.size}" z="ss/8lcAVqTTfsQV5tlhDt38ynnI="/>
-        </menu:category>
-        <menu:category id="c_cmspagecontent" z="vOyRwcNJ2Q06zSCLz6Ev5Go8Nxg=">
-            <menu:item id="i_cmspagecontent_new" messageCode="global_menu_new" url="/cmspagecontents?form" z="qxZSBvoCXYSr5ukJ62dMIiD2LVo="/>
-            <menu:item id="i_cmspagecontent_list" messageCode="global_menu_list" url="/cmspagecontents?page=1&amp;size=${empty param.size ? 10 : param.size}" z="nP8cehtkJ8XVg4cPWawBLrObK4M="/>
         </menu:category>
         <menu:category id="c_sourcetypehistory" z="c9QSVdOGmexTIb0lQhCcJVJx5go=">
             <menu:item id="i_sourcetypehistory_new" messageCode="global_menu_new" url="/sourcetypehistorys?form" z="g0G0C4cnvDotOGJ3lvrCyhKutoo="/>
@@ -249,10 +260,6 @@
             <menu:item id="i_instanceperson_new" messageCode="global_menu_new" url="/instancepeople?form" z="xfFnVL65Fv+nfiIULdIMPSX2W2E="/>
             <menu:item id="i_instanceperson_list" messageCode="global_menu_list" url="/instancepeople?page=1&amp;size=${empty param.size ? 10 : param.size}" z="FaBZ/5YtWIyxo8/1Mzl88E0C5No="/>
         </menu:category>
-        <menu:category id="c_role" z="LPygIx2EuEArCzqsfpQQev0lHyc=">
-            <menu:item id="i_role_new" messageCode="global_menu_new" url="/roles?form" z="WNB2HvnzvtbOA3r7qL1gqrUOq8g="/>
-            <menu:item id="i_role_list" messageCode="global_menu_list" url="/roles?page=1&amp;size=${empty param.size ? 10 : param.size}" z="DVFtqj4xcHbEiJh6bgI7Tyre3ec="/>
-        </menu:category>
         <menu:category id="c_value" z="b8++vY4hPKH74/LDbYv6wUUKHTc=">
             <menu:item id="i_value_new" messageCode="global_menu_new" url="/values?form" z="g5Y8E2sbGvgpAB+e/Ir5Px+wG3Y="/>
             <menu:item id="i_value_list" messageCode="global_menu_list" url="/values?page=1&amp;size=${empty param.size ? 10 : param.size}" z="CznhukTWVoN2l6WDwCqRDTkHjuw="/>
@@ -281,14 +288,6 @@
             <menu:item id="i_keyword_new" messageCode="global_menu_new" url="/keywords?form" z="fo04uONblBwAJ8YN5QYwo8zfi/o="/>
             <menu:item id="i_keyword_list" messageCode="global_menu_list" url="/keywords?page=1&amp;size=${empty param.size ? 10 : param.size}" z="IJc3nkE+du8kl5Y8mGH0yoOewkk="/>
         </menu:category>
-        <menu:category id="c_studyorgacl" z="H+x+9cA/S7tyrWzUmlJmQQEyTCU=">
-            <menu:item id="i_studyorgacl_new" messageCode="global_menu_new" url="/studyorgacls?form" z="AAx9+isdyx0EW9h2oWgLky8K6tU="/>
-            <menu:item id="i_studyorgacl_list" messageCode="global_menu_list" url="/studyorgacls?page=1&amp;size=${empty param.size ? 10 : param.size}" z="m4MljcJ9/E8QrWEbI/yMncebMVI="/>
-        </menu:category>
-        <menu:category id="c_study" z="oI9yzpkdnDyWi0t2LVLS4mL6fW4=">
-            <menu:item id="i_study_new" messageCode="global_menu_new" url="/studys?form" z="+WXmYQAhPHo/7isXzdlKSadyyLU="/>
-            <menu:item id="i_study_list" messageCode="global_menu_list" url="/studys?page=1&amp;size=${empty param.size ? 10 : param.size}" z="jfnhlPPF15oFiHQFu5RywJfHLW0="/>
-        </menu:category>
         <menu:category id="c_usersetting" z="B89BqCyFXUCOGwzOUDbGTBh9Tk8=">
             <menu:item id="i_usersetting_new" messageCode="global_menu_new" url="/usersettings?form" z="8fB5FTuUYndPXjlwJUeWMjJ89zI="/>
             <menu:item id="i_usersetting_list" messageCode="global_menu_list" url="/usersettings?page=1&amp;size=${empty param.size ? 10 : param.size}" z="0b2zd15sDOMaS4qafWx9wx/FW0g="/>
@@ -312,10 +311,6 @@
         <menu:category id="c_titletype" z="i8Hln1r8PcUFlVYbHq5ArzyNm8A=">
             <menu:item id="i_titletype_new" messageCode="global_menu_new" url="/titletypes?form" z="PU2W4ufsLvLQBKVkDjXMKlo4o8Y="/>
             <menu:item id="i_titletype_list" messageCode="global_menu_list" url="/titletypes?page=1&amp;size=${empty param.size ? 10 : param.size}" z="2pcfnPw4rld46PiP6nF2P9/2ceo="/>
-        </menu:category>
-        <menu:category id="c_editedvariable" z="eg7Z3sQO0ScsawROAcOKDA7crNE=">
-            <menu:item id="i_editedvariable_new" messageCode="global_menu_new" url="/editedvariables?form" z="VMns7Md62KDEmt+juGA8PJNfJ30="/>
-            <menu:item id="i_editedvariable_list" messageCode="global_menu_list" url="/editedvariables?page=1&amp;size=${empty param.size ? 10 : param.size}" z="cdKfnZmyxwuPDsC+SRvfGNFVYow="/>
         </menu:category>
         <menu:category id="c_form" z="li55QJ+F+IFotCv0M07wc1IZPic=">
             <menu:item id="i_form_new" messageCode="global_menu_new" url="/forms?form" z="OYKDlzsMN+er7C3TnPU8440yisI="/>
@@ -349,10 +344,6 @@
             <menu:item id="i_orgrelations_new" messageCode="global_menu_new" url="/orgrelationses?form" z="t7m9NY1ie0f+wS7WLqbrvPH0+eU="/>
             <menu:item id="i_orgrelations_list" messageCode="global_menu_list" url="/orgrelationses?page=1&amp;size=${empty param.size ? 10 : param.size}" z="X2tfrPtEgjBpVhBz3g51mYHTGMQ="/>
         </menu:category>
-        <menu:category id="c_cmssnippet" z="s5EoqLIk/Uusglm+Jdz1Pt+1O0E=">
-            <menu:item id="i_cmssnippet_new" messageCode="global_menu_new" url="/cmssnippets?form" z="hIh9409VCTfDNxqsgtXkWyr9hgM="/>
-            <menu:item id="i_cmssnippet_list" messageCode="global_menu_list" url="/cmssnippets?page=1&amp;size=${empty param.size ? 10 : param.size}" z="dwXPTqGkk5crgVYatSuSiVZbr0Q="/>
-        </menu:category>
         <menu:category id="c_usersettinggroup" z="NYRycaf/e7nG1ILG9nONOhfQe84=">
             <menu:item id="i_usersettinggroup_new" messageCode="global_menu_new" url="/usersettinggroups?form" z="S6aIp7IvnBjWqd18CluR0GFagv8="/>
             <menu:item id="i_usersettinggroup_list" messageCode="global_menu_list" url="/usersettinggroups?page=1&amp;size=${empty param.size ? 10 : param.size}" z="Xo3bGPtcg4D0srL5RjzhmfXVCvM="/>
@@ -360,10 +351,6 @@
         <menu:category id="c_collectionmodeltype" z="KD+nI3N1FckZ2+moAmE2YLDJl60=">
             <menu:item id="i_collectionmodeltype_new" messageCode="global_menu_new" url="/collectionmodeltypes?form" z="dVjHPwtNukSKJp2oMhH0VrPgh0g="/>
             <menu:item id="i_collectionmodeltype_list" messageCode="global_menu_list" url="/collectionmodeltypes?page=1&amp;size=${empty param.size ? 10 : param.size}" z="HSTIe5xG2yxQAAXknqK5hjM+sog="/>
-        </menu:category>
-        <menu:category id="c_cmssnippetgroup" z="y5udF3jxMsgmUeYaRjm27GgF+lc=">
-            <menu:item id="i_cmssnippetgroup_new" messageCode="global_menu_new" url="/cmssnippetgroups?form" z="sjHmvlLkxYsc3HWxbGac6n5Raak="/>
-            <menu:item id="i_cmssnippetgroup_list" messageCode="global_menu_list" url="/cmssnippetgroups?page=1&amp;size=${empty param.size ? 10 : param.size}" z="eyfTbnDJcR/Zd7Ey3AgV+a+VUwc="/>
         </menu:category>
         <menu:category id="c_org" z="qNZcS4W05m3QrFeQMOkVqP2gm7Y=">
             <menu:item id="i_org_new" messageCode="global_menu_new" url="/orgs?form" z="pcRsJZLZyGgFTC/pA+MlnPYI+pQ="/>
@@ -373,16 +360,9 @@
             <menu:item id="i_sourcestudytypehistory_new" messageCode="global_menu_new" url="/sourcestudytypehistorys?form" z="fJ/ujtlWUFOfwopd6IRMSu7GOH8="/>
             <menu:item id="i_sourcestudytypehistory_list" messageCode="global_menu_list" url="/sourcestudytypehistorys?page=1&amp;size=${empty param.size ? 10 : param.size}" z="+M5sMml6Xob7+9ujw/+QM0h56o0="/>
         </menu:category>
-        <menu:category id="c_seleniumtests" z="PPLMd2yNB6/LSbjIWogAacRPU+Q=">
-            <menu:item id="si_seleniumtests_test" messageCode="selenium_menu_test_suite" url="/resources/selenium/test-suite.xhtml" z="wwunW/IPDcunN97u41MvMJZQ2to="/>
-        </menu:category>
         <menu:category id="c_lang" z="ZRuh/+8JTvOclLt6WDokmNcUZMA=">
             <menu:item id="i_lang_new" messageCode="global_menu_new" url="/langs?form" z="1iu7xr33/rif0kTBKGvB94x3dPE="/>
             <menu:item id="i_lang_list" messageCode="global_menu_list" url="/langs?page=1&amp;size=${empty param.size ? 10 : param.size}" z="FuukG0cMdTbSIwq7DGyR8EKgOfI="/>
-        </menu:category>
-        <menu:category id="c_aclclass" z="NV1nEyR01Xh1kCMlHUH4r1HqDXo=">
-            <menu:item id="i_aclclass_new" messageCode="global_menu_new" url="/aclclasses?form" z="eGWdfs05hnzekL+5yP9vHlqnhmU="/>
-            <menu:item id="i_aclclass_list" messageCode="global_menu_list" url="/aclclasses?page=1&amp;size=${empty param.size ? 10 : param.size}" z="8K/vdgVjnOs/FOID7nUfH1spKYk="/>
         </menu:category>
         <menu:category id="c_orgphone" z="Qg+C318C5Wv3car4HFz2GoHqIgY=">
             <menu:item id="i_orgphone_new" messageCode="global_menu_new" url="/orgphones?form" z="UT0c25ffMUlDSjJizABup4my/T8="/>
@@ -403,10 +383,6 @@
         <menu:category id="c_personemail" z="scXFHwjDnQnpT4JmmNqOd1s0lIk=">
             <menu:item id="i_personemail_new" messageCode="global_menu_new" url="/personemails?form" z="RCRqwNDFDk7Gbsu9PKLnbakJuDY="/>
             <menu:item id="i_personemail_list" messageCode="global_menu_list" url="/personemails?page=1&amp;size=${empty param.size ? 10 : param.size}" z="uAH/a3mObjFWb/V5C8G12xtdE7Q="/>
-        </menu:category>
-        <menu:category id="c_aclobjectidentity" z="f08oOntvlw2HzPknMM7BWQxv5eE=">
-            <menu:item id="i_aclobjectidentity_new" messageCode="global_menu_new" url="/aclobjectidentitys?form" z="UoKT7ijJ12jfLKbIUVgz26f1sis="/>
-            <menu:item id="i_aclobjectidentity_list" messageCode="global_menu_list" url="/aclobjectidentitys?page=1&amp;size=${empty param.size ? 10 : param.size}" z="pRuUDAJK+qJPl69JmiQr/w/XrPE="/>
         </menu:category>
         <menu:category id="c_phone" z="zE5vGa9dYTAIcxMY61b9yeOhsZc=">
             <menu:item id="i_phone_new" messageCode="global_menu_new" url="/phones?form" z="FYAJ1AAm+Gdog/nkhKKoQ7Kk+Ts="/>
@@ -432,10 +408,6 @@
             <menu:item id="i_personinternet_new" messageCode="global_menu_new" url="/personinternets?form" z="vRENNYnxnmHNvG6Tf1PVw7AVaF0="/>
             <menu:item id="i_personinternet_list" messageCode="global_menu_list" url="/personinternets?page=1&amp;size=${empty param.size ? 10 : param.size}" z="7CHzcopvzKStH9H0tfjs5r2WIac="/>
         </menu:category>
-        <menu:category id="c_aclentry" z="zFXjT0Yy85OFdOIRxmCkd/tjdqk=">
-            <menu:item id="i_aclentry_new" messageCode="global_menu_new" url="/aclentrys?form" z="D5xtd5pH0Gkf35QXvjb1eNlWbEU="/>
-            <menu:item id="i_aclentry_list" messageCode="global_menu_list" url="/aclentrys?page=1&amp;size=${empty param.size ? 10 : param.size}" z="th/ZfGAnIjfW/Yl/IKleMm0+2Wo="/>
-        </menu:category>
         <menu:category id="c_propertyname" z="V35MWsXjPaPlgFJN6qzFNkP7dTs=">
             <menu:item id="i_propertyname_new" messageCode="global_menu_new" url="/propertynames?form" z="nwbp8JBGIHn/xddMnhKonOog/Wc="/>
             <menu:item id="i_propertyname_list" messageCode="global_menu_list" url="/propertynames?page=1&amp;size=${empty param.size ? 10 : param.size}" z="0kcO0Hn6b20obPvsl4p9iEDpqh8="/>
@@ -443,10 +415,6 @@
         <menu:category id="c_propertyvalue" z="jgyWUxJ+709Zj6vE9a3sYGd+amU=">
             <menu:item id="i_propertyvalue_new" messageCode="global_menu_new" url="/propertyvalues?form" z="Los2KKOiyFB91Rp/DgWqtHbgYUY="/>
             <menu:item id="i_propertyvalue_list" messageCode="global_menu_list" url="/propertyvalues?page=1&amp;size=${empty param.size ? 10 : param.size}" z="GMjUxOCbwYwFiwjvbwUV0ug1b2I="/>
-        </menu:category>
-        <menu:category id="c_aclsid" z="y8s5ZYcvtVFZWhjC1mcACDGn5t8=">
-            <menu:item id="i_aclsid_new" messageCode="global_menu_new" url="/aclsids?form" z="ZokiKOCo2WrAsPoBOcNLYcsZq9o="/>
-            <menu:item id="i_aclsid_list" messageCode="global_menu_list" url="/aclsids?page=1&amp;size=${empty param.size ? 10 : param.size}" z="7JYx9zrBOCqCgZlx2FwzMCTQfqE="/>
         </menu:category>
         <menu:category id="c_sourcecontactmethod" z="1I5HEjL+oa1pcS99aLf1Fbje/is=">
             <menu:item id="i_sourcecontactmethod_new" messageCode="global_menu_new" url="/sourcecontactmethods?form" z="n6bafvtZDQKYZKN3Pw6xjwtVfJw="/>
@@ -456,6 +424,15 @@
             <menu:item id="i_personphone_new" messageCode="global_menu_new" url="/personphones?form" z="F3oNPY4OZHxXJMbrlPlN3Z0jAXw="/>
             <menu:item id="i_personphone_list" messageCode="global_menu_list" url="/personphones?page=1&amp;size=${empty param.size ? 10 : param.size}" z="1Pm0Y3eoU9D2I66bBgfzNXyIs58="/>
         </menu:category>
+        <menu:category id="c_news" z="/GYP5OCuHDR51pEBl2hXSgh9Kzs=">
+            <menu:item id="i_news_new" messageCode="global_menu_new" url="/news?form" z="user-managed"/>
+            <menu:item id="i_news_list" messageCode="global_menu_list" url="/news?page=1&amp;size=${empty param.size ? 10 : param.size}" z="user-managed"/>
+        </menu:category>
+        <!-- CMS -->
+        <menu:category id="c_cmssnippet" z="s5EoqLIk/Uusglm+Jdz1Pt+1O0E=">
+            <menu:item id="i_cmssnippet_new" messageCode="global_menu_new" url="/cmssnippets?form" z="hIh9409VCTfDNxqsgtXkWyr9hgM="/>
+            <menu:item id="i_cmssnippet_list" messageCode="global_menu_list" url="/cmssnippets?page=1&amp;size=${empty param.size ? 10 : param.size}" z="dwXPTqGkk5crgVYatSuSiVZbr0Q="/>
+        </menu:category>
         <menu:category id="c_cmspagetype" z="qMo3Sbh7lYXFzZ0TGps5U6zfVM0=">
             <menu:item id="i_cmspagetype_new" messageCode="global_menu_new" url="/cmspagetypes?form" z="YlEC2gM0uPtGz10r5HTDNT5D/0c="/>
             <menu:item id="i_cmspagetype_list" messageCode="global_menu_list" url="/cmspagetypes?page=1&amp;size=${empty param.size ? 10 : param.size}" z="bL+0r4KeGa5Wda4E2jcCzDbkza4="/>
@@ -464,53 +441,37 @@
             <menu:item id="i_cmsfilepropertynamevalue_new" messageCode="global_menu_new" url="/cmsfilepropertynamevalues?form" z="NLHsKrYxUvvxD5046/F8Y9OAu9w="/>
             <menu:item id="i_cmsfilepropertynamevalue_list" messageCode="global_menu_list" url="/cmsfilepropertynamevalues?page=1&amp;size=${empty param.size ? 10 : param.size}" z="fZCCaKEd5kofkAZOc+xop0vIjS0="/>
         </menu:category>
-        <menu:category id="c_auditlogchangeset" z="11ASlLome39ZhaDkLU/bqTdb+J0=">
-            <menu:item id="i_auditlogchangeset_new" messageCode="global_menu_new" url="/auditlogchangesets?form" z="S3Ea15eDgwvdDtyH2cG6sEqdcr4="/>
-            <menu:item id="i_auditlogchangeset_list" messageCode="global_menu_list" url="/auditlogchangesets?page=1&amp;size=${empty param.size ? 10 : param.size}" z="i3VntSixyQW9kxvRsFDncgEBd1g="/>
+        <menu:category id="c_cmspage" z="snktLbN7dMg1gTocz4pLzWBRKVE=">
+            <menu:item id="i_cmspage_new" messageCode="global_menu_new" url="/cmspages?form" z="gICKRK6YICqipUIdeRtBm/PPRzU="/>
+            <menu:item id="i_cmspage_list" messageCode="global_menu_list" url="/cmspages?page=1&amp;size=${empty param.size ? 10 : param.size}" z="asLenfR2hnhi6q3EOrlsu0VpZgM="/>
         </menu:category>
-        <menu:category id="c_auditlogaction" z="F7xjrbFmUk4yK/wYtxQZghsw5zU=">
-            <menu:item id="i_auditlogaction_new" messageCode="global_menu_new" url="/auditlogactions?form" z="g7d/aRQayOAIRS2xucP2TCQxqG8="/>
-            <menu:item id="i_auditlogaction_list" messageCode="global_menu_list" url="/auditlogactions?page=1&amp;size=${empty param.size ? 10 : param.size}" z="JEgglN+qvNbjlNEpgX98+WX54S0="/>
+        <menu:category id="c_cmsfolder" z="3+lxmD7xtL1zZU/Mpxk2LkVazSM=">
+            <menu:item id="i_cmsfolder_new" messageCode="global_menu_new" url="/cmsfolders?form" z="AznueMAejIh+BlNVPQHHQPcvG0k="/>
+            <menu:item id="i_cmsfolder_list" messageCode="global_menu_list" url="/cmsfolders?page=1&amp;size=${empty param.size ? 10 : param.size}" z="Sxky6173w6C2VzrSCT1D2pyikKQ="/>
         </menu:category>
-        <menu:category id="c_auditlogchange" z="V2U8rcTfHV3+gtj+2AOicZgv33A=">
-            <menu:item id="i_auditlogchange_new" messageCode="global_menu_new" url="/auditlogchanges?form" z="lXWRviqm++TBrlKV+iDGfCARz5g="/>
-            <menu:item id="i_auditlogchange_list" messageCode="global_menu_list" url="/auditlogchanges?page=1&amp;size=${empty param.size ? 10 : param.size}" z="0y6ODHRWKfz7OhYhsbbjL5ADVag="/>
+        <menu:category id="c_cmslayoutgroup" z="kMvehH7p/OLkhKp21DBQUnSNeZM=">
+            <menu:item id="i_cmslayoutgroup_new" messageCode="global_menu_new" url="/cmslayoutgroups?form" z="msjllPwynQGmeQ+1y62wJsqps0U="/>
+            <menu:item id="i_cmslayoutgroup_list" messageCode="global_menu_list" url="/cmslayoutgroups?page=1&amp;size=${empty param.size ? 10 : param.size}" z="MWHvnyBlCcLpCv8o+8u+tbvhLoM="/>
         </menu:category>
-        <menu:category id="c_auditlogtable" z="BENPtcMii3M1WchiFH0AjHXqrVM=">
-            <menu:item id="i_auditlogtable_new" messageCode="global_menu_new" url="/auditlogtables?form" z="JBEyyioXbDSInIdpEhCO1FJb4Xo="/>
-            <menu:item id="i_auditlogtable_list" messageCode="global_menu_list" url="/auditlogtables?page=1&amp;size=${empty param.size ? 10 : param.size}" z="xrcoOqRJbv+yk4t+PehMgxPkqnU="/>
+        <menu:category id="c_cmsfile" z="gbSCpxoLWS4r/ub3zD5OzugxnF0=">
+            <menu:item id="i_cmsfile_new" messageCode="global_menu_new" url="/cmsfiles?form" z="E2wb40nWFcKAZ0mSL3pYJKR+W6Q="/>
+            <menu:item id="i_cmsfile_list" messageCode="global_menu_list" url="/cmsfiles?page=1&amp;size=${empty param.size ? 10 : param.size}" z="ddBoRKmO9sG0Caka7X8XKTE2F2s="/>
         </menu:category>
-        <menu:category id="c_rodauser" z="Cr5YqTF4PWbwhxYAaRnMC9DYJgM=">
-            <menu:item id="i_rodauser_new" messageCode="global_menu_new" url="/rodausers?form" z="TeQxtT9cyoG6J1u5YxxcKv+V6U4="/>
-            <menu:item id="i_rodauser_list" messageCode="global_menu_list" url="/rodausers?page=1&amp;size=${empty param.size ? 10 : param.size}" z="Ez7BSsCkMGWCXCtPh2OoXVljGek="/>
+        <menu:category id="c_cmslayout" z="igAo4DpPL6SpkJqkr35f99x+Nko=">
+            <menu:item id="i_cmslayout_new" messageCode="global_menu_new" url="/cmslayouts?form" z="tRnvmxeyYeHABYwWk79SVEzw1Vo="/>
+            <menu:item id="i_cmslayout_list" messageCode="global_menu_list" url="/cmslayouts?page=1&amp;size=${empty param.size ? 10 : param.size}" z="K4wr0nprj0tnu7ShfwMWEuA61DE="/>
         </menu:category>
-        <menu:category id="c_auditlogfield" z="teenOcLOlwVJrmy0L2F4Iwzn6vA=">
-            <menu:item id="i_auditlogfield_new" messageCode="global_menu_new" url="/auditlogfields?form" z="AYPWxmQRNyItL96cGFkaFmNrF2c="/>
-            <menu:item id="i_auditlogfield_list" messageCode="global_menu_list" url="/auditlogfields?page=1&amp;size=${empty param.size ? 10 : param.size}" z="0zzqQNMCLL+83DxGPKxSC5x+KlA="/>
+        <menu:category id="c_cmspagecontent" z="vOyRwcNJ2Q06zSCLz6Ev5Go8Nxg=">
+            <menu:item id="i_cmspagecontent_new" messageCode="global_menu_new" url="/cmspagecontents?form" z="qxZSBvoCXYSr5ukJ62dMIiD2LVo="/>
+            <menu:item id="i_cmspagecontent_list" messageCode="global_menu_list" url="/cmspagecontents?page=1&amp;size=${empty param.size ? 10 : param.size}" z="nP8cehtkJ8XVg4cPWawBLrObK4M="/>
         </menu:category>
-        <menu:category id="c_news" z="/GYP5OCuHDR51pEBl2hXSgh9Kzs=">
-            <menu:item id="i_news_new" messageCode="global_menu_new" url="/newspieces?form" z="pgkB2S0o3zsRoFY0HagdPp9Y6o0="/>
-            <menu:item id="i_news_list" messageCode="global_menu_list" url="/newspieces?page=1&amp;size=${empty param.size ? 10 : param.size}" z="bVdCgMj63hiMp/hWifacFqdS9Pg="/>
+        <menu:category id="c_cmssnippetgroup" z="y5udF3jxMsgmUeYaRjm27GgF+lc=">
+            <menu:item id="i_cmssnippetgroup_new" messageCode="global_menu_new" url="/cmssnippetgroups?form" z="sjHmvlLkxYsc3HWxbGac6n5Raak="/>
+            <menu:item id="i_cmssnippetgroup_list" messageCode="global_menu_list" url="/cmssnippetgroups?page=1&amp;size=${empty param.size ? 10 : param.size}" z="eyfTbnDJcR/Zd7Ey3AgV+a+VUwc="/>
         </menu:category>
-        <menu:category id="c_users" z="Ysam8XVhG5uotPoUGGxkia1RE/s=">
-            <menu:item id="i_users_new" messageCode="global_menu_new" url="/userses?form" z="utrdLkYms6xk5f4IDxc9zrg5FWs="/>
-            <menu:item id="i_users_list" messageCode="global_menu_list" url="/userses?page=1&amp;size=${empty param.size ? 10 : param.size}" z="tqSwojZmRduyx4xtHWcJzgbgtJk="/>
-        </menu:category>
-        <menu:category id="c_authorities" z="GIjKsVX7q9V5I+B/i5YP+XPvlK0=">
-            <menu:item id="i_authorities_new" messageCode="global_menu_new" url="/authoritieses?form" z="2mmPz62GZozb3OilbywIxJnKcBc="/>
-            <menu:item id="i_authorities_list" messageCode="global_menu_list" url="/authoritieses?page=1&amp;size=${empty param.size ? 10 : param.size}" z="on1x7LkbV2LweGhXOBmPjrzwbMo="/>
-        </menu:category>
-        <menu:category id="c_groupauthorities" z="qSf4MP7FP4bG1GkQkadgJd6EZUE=">
-            <menu:item id="i_groupauthorities_new" messageCode="global_menu_new" url="/groupauthoritieses?form" z="K6zqKRRqyC3zIyE/8ndbA5l9TpE="/>
-            <menu:item id="i_groupauthorities_list" messageCode="global_menu_list" url="/groupauthoritieses?page=1&amp;size=${empty param.size ? 10 : param.size}" z="2BM4Q9cCKscz2JwW3Qaa6hkD/Gs="/>
-        </menu:category>
-        <menu:category id="c_groups" z="NRIYuxh1c9CCVsqI2vgEg+kgcSk=">
-            <menu:item id="i_groups_new" messageCode="global_menu_new" url="/groupses?form" z="aMg2LU+Zurz10taJ+LLBDwKtMkg="/>
-            <menu:item id="i_groups_list" messageCode="global_menu_list" url="/groupses?page=1&amp;size=${empty param.size ? 10 : param.size}" z="ZD4ucHAn/NRfQQAb0UAumu3jceE="/>
-        </menu:category>
-        <menu:category id="c_groupmembers" z="XpdnjEib+fG7rz2RtLBeFXdeNxA=">
-            <menu:item id="i_groupmembers_new" messageCode="global_menu_new" url="/groupmemberses?form" z="V+KFL1E5qh+KWuRpApB0i+KA4BU="/>
-            <menu:item id="i_groupmembers_list" messageCode="global_menu_list" url="/groupmemberses?page=1&amp;size=${empty param.size ? 10 : param.size}" z="FuD/EJ4ES3xEit530qG4xZy6sa0="/>
+        <!-- Selenium Test Suite -->
+        <menu:category id="c_seleniumtests" z="PPLMd2yNB6/LSbjIWogAacRPU+Q=">
+            <menu:item id="si_seleniumtests_test" messageCode="selenium_menu_test_suite" url="/resources/selenium/test-suite.xhtml" z="wwunW/IPDcunN97u41MvMJZQ2to="/>
         </menu:category>
     </menu:menu>
 </div>

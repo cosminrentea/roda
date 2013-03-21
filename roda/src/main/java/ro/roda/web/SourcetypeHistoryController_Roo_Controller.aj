@@ -18,10 +18,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.domain.SourcetypeHistory;
-import ro.roda.service.RodauserService;
 import ro.roda.service.SourceService;
 import ro.roda.service.SourcetypeHistoryService;
 import ro.roda.service.SourcetypeService;
+import ro.roda.service.UsersService;
 import ro.roda.web.SourcetypeHistoryController;
 
 privileged aspect SourcetypeHistoryController_Roo_Controller {
@@ -30,13 +30,13 @@ privileged aspect SourcetypeHistoryController_Roo_Controller {
     SourcetypeHistoryService SourcetypeHistoryController.sourcetypeHistoryService;
     
     @Autowired
-    RodauserService SourcetypeHistoryController.rodauserService;
-    
-    @Autowired
     SourceService SourcetypeHistoryController.sourceService;
     
     @Autowired
     SourcetypeService SourcetypeHistoryController.sourcetypeService;
+    
+    @Autowired
+    UsersService SourcetypeHistoryController.usersService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String SourcetypeHistoryController.create(@Valid SourcetypeHistory sourcetypeHistory, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -106,16 +106,16 @@ privileged aspect SourcetypeHistoryController_Roo_Controller {
     }
     
     void SourcetypeHistoryController.addDateTimeFormatPatterns(Model uiModel) {
-        uiModel.addAttribute("sourcetypeHistory_datestart_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
-        uiModel.addAttribute("sourcetypeHistory_dateend_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
+        uiModel.addAttribute("sourcetypeHistory_datestart_date_format", DateTimeFormat.patternForStyle("M-", LocaleContextHolder.getLocale()));
+        uiModel.addAttribute("sourcetypeHistory_dateend_date_format", DateTimeFormat.patternForStyle("M-", LocaleContextHolder.getLocale()));
     }
     
     void SourcetypeHistoryController.populateEditForm(Model uiModel, SourcetypeHistory sourcetypeHistory) {
         uiModel.addAttribute("sourcetypeHistory", sourcetypeHistory);
         addDateTimeFormatPatterns(uiModel);
-        uiModel.addAttribute("rodausers", rodauserService.findAllRodausers());
         uiModel.addAttribute("sources", sourceService.findAllSources());
         uiModel.addAttribute("sourcetypes", sourcetypeService.findAllSourcetypes());
+        uiModel.addAttribute("userses", usersService.findAllUserses());
     }
     
     String SourcetypeHistoryController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

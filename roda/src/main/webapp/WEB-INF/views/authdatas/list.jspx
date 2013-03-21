@@ -4,10 +4,10 @@
     <jsp:output omit-xml-declaration="yes"/>
     <page:list id="pl_ro_roda_domain_AuthData" items="${authdatas}" z="p0rfWYkb984vxSUA0c1wiaEpVH8=">
         <table:table data="${authdatas}" id="l_ro_roda_domain_AuthData" path="/authdatas" typeIdFieldName="userId" z="rV1vE+TPkR516djtDUtfbncKu2s=">
-            <table:column id="c_ro_roda_domain_AuthData_rodauser" property="rodauser" z="QE1lX81WV+Zhm6HkSuaZSNJJsUk="/>
             <table:column id="c_ro_roda_domain_AuthData_credentialProvider" property="credentialProvider" z="h61hSVSrdsebWAbfoCRNJvX5tpw="/>
             <table:column id="c_ro_roda_domain_AuthData_fieldName" property="fieldName" z="9P67nIscHovYanvrBif9KwOJvy0="/>
             <table:column id="c_ro_roda_domain_AuthData_fieldValue" property="fieldValue" z="m3TUidiRX8pZjwW9Wgo5bG9i6CQ="/>
+            <table:column id="c_ro_roda_domain_AuthData_users" property="users" z="FgNqXzq5+n6I3xFBksd8tvnPiL8="/>
         </table:table>
     </page:list>
 </div>

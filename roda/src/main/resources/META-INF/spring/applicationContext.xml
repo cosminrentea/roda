@@ -72,15 +72,24 @@
     <bean class="org.springframework.orm.jpa.JpaTransactionManager" id="transactionManager">
         <property name="entityManagerFactory" ref="entityManagerFactory"/>
     </bean>
+    
     <tx:annotation-driven mode="aspectj" transaction-manager="transactionManager"/>
+    
     <bean class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean" id="entityManagerFactory">
         <property name="persistenceUnitName" value="persistenceUnit"/>
         <property name="dataSource" ref="dataSource"/>
     </bean>
+    
     <task:annotation-driven executor="asyncExecutor" mode="aspectj"/>
+    
     <task:executor id="asyncExecutor" pool-size="${executor.poolSize}"/>
+    
     <bean class="org.apache.solr.client.solrj.impl.CommonsHttpSolrServer" id="solrServer">
         <constructor-arg value="${solr.serverUrl}"/>
+    </bean>
+    
+    <!-- Cosmin: Basic Object-to-XML Serialization -->
+    <bean id="xstreamMarshaller" class="org.springframework.oxm.xstream.XStreamMarshaller">
     </bean>
     
     <!-- 

@@ -9,6 +9,7 @@
             <table:column id="c_ro_roda_domain_UserAuthLog_credentialProvider" property="credentialProvider" z="lskB6/Puge7mUYrgh/cQkNqdDfs="/>
             <table:column id="c_ro_roda_domain_UserAuthLog_credentialIdentifier" property="credentialIdentifier" z="s3XNyvUWy/2Gcl068gA15NiFRy8="/>
             <table:column id="c_ro_roda_domain_UserAuthLog_errorMessage" property="errorMessage" z="Pq1XB5BVQRdX6cQ4YPFGcf8WFFA="/>
+            <table:column calendar="true" dateTimePattern="${userAuthLog_authattemptedat_date_format}" id="c_ro_roda_domain_UserAuthLog_authAttemptedAt" property="authAttemptedAt" z="nj/L4USfBiqQ1QM8towoE7KPW80="/>
         </table:table>
     </page:list>
 </div>

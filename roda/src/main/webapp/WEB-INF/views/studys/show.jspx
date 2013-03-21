@@ -6,11 +6,11 @@
         <field:display field="topics" id="s_ro_roda_domain_Study_topics" object="${study}" z="8vYQn3dWkZhL35qadhWK1zhpiy0="/>
         <field:display field="files1" id="s_ro_roda_domain_Study_files1" object="${study}" z="EMkXkqRyNbyPsMlDOb572j3Il68="/>
         <field:display field="addedBy" id="s_ro_roda_domain_Study_addedBy" object="${study}" z="Y+XZWlbBd4bDy7YBPZQm0fCqOpM="/>
-        <field:display calendar="true" dateTimePattern="${study_datestart_date_format}" field="datestart" id="s_ro_roda_domain_Study_datestart" object="${study}" z="+HTkG192nxTPSghouaJrgUfQNZs="/>
-        <field:display calendar="true" dateTimePattern="${study_dateend_date_format}" field="dateend" id="s_ro_roda_domain_Study_dateend" object="${study}" z="wddAxpEL16wFABh0yt5Lk2SLyXU="/>
         <field:display field="insertionStatus" id="s_ro_roda_domain_Study_insertionStatus" object="${study}" z="ifS4Lbo/viBGfxH1ynqwGbnkGGI="/>
         <field:display calendar="true" dateTimePattern="${study_added_date_format}" field="added" id="s_ro_roda_domain_Study_added" object="${study}" z="u9Y7t2uVFJY0H6wo+CwvuLsdXc0="/>
-        <field:display field="canDigitize" id="s_ro_roda_domain_Study_canDigitize" object="${study}" z="OvX89UBntUpIP8l5gh+hpCQb5jo="/>
-        <field:display field="canUseAnonymous" id="s_ro_roda_domain_Study_canUseAnonymous" object="${study}" z="c3whlHPQwngK268F/GSEj4wIvHE="/>
+        <field:display date="true" dateTimePattern="${study_datestart_date_format}" field="dateStart" id="s_ro_roda_domain_Study_dateStart" object="${study}" z="lsR7wIvTzOiNddFC2q789KaigaA="/>
+        <field:display date="true" dateTimePattern="${study_dateend_date_format}" field="dateEnd" id="s_ro_roda_domain_Study_dateEnd" object="${study}" z="Vw9BtCpb8Yq2pgyKpRPb/Sqx9Mw="/>
+        <field:display field="digitizable" id="s_ro_roda_domain_Study_digitizable" object="${study}" z="YUgOo0K9pGuzmCr13sfzx5oncsE="/>
+        <field:display field="anonymousUsage" id="s_ro_roda_domain_Study_anonymousUsage" object="${study}" z="/TKWVTQvuvavOxl85CjPjBr37jY="/>
     </page:show>
 </div>

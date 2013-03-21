@@ -5,8 +5,8 @@
     <page:list id="pl_ro_roda_domain_StudyKeyword" items="${studykeywords}" z="OWVClS+HfjYIWeXBoJqRGXbkyLo=">
         <table:table data="${studykeywords}" id="l_ro_roda_domain_StudyKeyword" path="/studykeywords" z="azwI3TdiZLetZYQjkPPJWxZvAU4=">
             <table:column id="c_ro_roda_domain_StudyKeyword_keywordId" property="keywordId" z="M6ufhYDeojYCH56PXU0cZDNlO4I="/>
-            <table:column id="c_ro_roda_domain_StudyKeyword_addedBy" property="addedBy" z="yow0ZNsAdTycdzmp/61zqF1njw8="/>
             <table:column id="c_ro_roda_domain_StudyKeyword_studyId" property="studyId" z="5ijbHEL9wAf1wSaYTV0eZjlcV30="/>
+            <table:column id="c_ro_roda_domain_StudyKeyword_addedBy" property="addedBy" z="yow0ZNsAdTycdzmp/61zqF1njw8="/>
             <table:column calendar="true" dateTimePattern="${studyKeyword_added_date_format}" id="c_ro_roda_domain_StudyKeyword_added" property="added" z="eZP68txRFyMm8FXGBBDbzQnm3VM="/>
         </table:table>
     </page:list>

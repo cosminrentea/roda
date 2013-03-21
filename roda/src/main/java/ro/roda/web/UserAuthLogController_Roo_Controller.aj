@@ -6,8 +6,9 @@ package ro.roda.web;
 import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.convert.ConversionService;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,27 +18,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.domain.UserAuthLog;
-import ro.roda.domain.UserAuthLogPK;
-import ro.roda.service.RodauserService;
 import ro.roda.service.UserAuthLogService;
+import ro.roda.service.UsersService;
 import ro.roda.web.UserAuthLogController;
 
 privileged aspect UserAuthLogController_Roo_Controller {
-    
-    private ConversionService UserAuthLogController.conversionService;
     
     @Autowired
     UserAuthLogService UserAuthLogController.userAuthLogService;
     
     @Autowired
-    RodauserService UserAuthLogController.rodauserService;
+    UsersService UserAuthLogController.usersService;
     
-    @Autowired
-    public UserAuthLogController.new(ConversionService conversionService) {
-        super();
-        this.conversionService = conversionService;
-    }
-
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String UserAuthLogController.create(@Valid UserAuthLog userAuthLog, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
         if (bindingResult.hasErrors()) {
@@ -46,7 +38,7 @@ privileged aspect UserAuthLogController_Roo_Controller {
         }
         uiModel.asMap().clear();
         userAuthLogService.saveUserAuthLog(userAuthLog);
-        return "redirect:/userauthlogs/" + encodeUrlPathSegment(conversionService.convert(userAuthLog.getId(), String.class), httpServletRequest);
+        return "redirect:/userauthlogs/" + encodeUrlPathSegment(userAuthLog.getId().toString(), httpServletRequest);
     }
     
     @RequestMapping(params = "form", produces = "text/html")
@@ -56,9 +48,10 @@ privileged aspect UserAuthLogController_Roo_Controller {
     }
     
     @RequestMapping(value = "/{id}", produces = "text/html")
-    public String UserAuthLogController.show(@PathVariable("id") UserAuthLogPK id, Model uiModel) {
+    public String UserAuthLogController.show(@PathVariable("id") Long id, Model uiModel) {
+        addDateTimeFormatPatterns(uiModel);
         uiModel.addAttribute("userauthlog", userAuthLogService.findUserAuthLog(id));
-        uiModel.addAttribute("itemId", conversionService.convert(id, String.class));
+        uiModel.addAttribute("itemId", id);
         return "userauthlogs/show";
     }
     
@@ -73,6 +66,7 @@ privileged aspect UserAuthLogController_Roo_Controller {
         } else {
             uiModel.addAttribute("userauthlogs", userAuthLogService.findAllUserAuthLogs());
         }
+        addDateTimeFormatPatterns(uiModel);
         return "userauthlogs/list";
     }
     
@@ -84,17 +78,17 @@ privileged aspect UserAuthLogController_Roo_Controller {
         }
         uiModel.asMap().clear();
         userAuthLogService.updateUserAuthLog(userAuthLog);
-        return "redirect:/userauthlogs/" + encodeUrlPathSegment(conversionService.convert(userAuthLog.getId(), String.class), httpServletRequest);
+        return "redirect:/userauthlogs/" + encodeUrlPathSegment(userAuthLog.getId().toString(), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
-    public String UserAuthLogController.updateForm(@PathVariable("id") UserAuthLogPK id, Model uiModel) {
+    public String UserAuthLogController.updateForm(@PathVariable("id") Long id, Model uiModel) {
         populateEditForm(uiModel, userAuthLogService.findUserAuthLog(id));
         return "userauthlogs/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
-    public String UserAuthLogController.delete(@PathVariable("id") UserAuthLogPK id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
+    public String UserAuthLogController.delete(@PathVariable("id") Long id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
         UserAuthLog userAuthLog = userAuthLogService.findUserAuthLog(id);
         userAuthLogService.deleteUserAuthLog(userAuthLog);
         uiModel.asMap().clear();
@@ -103,9 +97,14 @@ privileged aspect UserAuthLogController_Roo_Controller {
         return "redirect:/userauthlogs";
     }
     
+    void UserAuthLogController.addDateTimeFormatPatterns(Model uiModel) {
+        uiModel.addAttribute("userAuthLog_authattemptedat_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
+    }
+    
     void UserAuthLogController.populateEditForm(Model uiModel, UserAuthLog userAuthLog) {
         uiModel.addAttribute("userAuthLog", userAuthLog);
-        uiModel.addAttribute("rodausers", rodauserService.findAllRodausers());
+        addDateTimeFormatPatterns(uiModel);
+        uiModel.addAttribute("userses", usersService.findAllUserses());
     }
     
     String UserAuthLogController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

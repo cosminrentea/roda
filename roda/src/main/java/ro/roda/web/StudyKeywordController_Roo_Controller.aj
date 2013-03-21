@@ -21,9 +21,9 @@ import org.springframework.web.util.WebUtils;
 import ro.roda.domain.StudyKeyword;
 import ro.roda.domain.StudyKeywordPK;
 import ro.roda.service.KeywordService;
-import ro.roda.service.RodauserService;
 import ro.roda.service.StudyKeywordService;
 import ro.roda.service.StudyService;
+import ro.roda.service.UsersService;
 import ro.roda.web.StudyKeywordController;
 
 privileged aspect StudyKeywordController_Roo_Controller {
@@ -37,10 +37,10 @@ privileged aspect StudyKeywordController_Roo_Controller {
     KeywordService StudyKeywordController.keywordService;
     
     @Autowired
-    RodauserService StudyKeywordController.rodauserService;
+    StudyService StudyKeywordController.studyService;
     
     @Autowired
-    StudyService StudyKeywordController.studyService;
+    UsersService StudyKeywordController.usersService;
     
     @Autowired
     public StudyKeywordController.new(ConversionService conversionService) {
@@ -123,8 +123,8 @@ privileged aspect StudyKeywordController_Roo_Controller {
         uiModel.addAttribute("studyKeyword", studyKeyword);
         addDateTimeFormatPatterns(uiModel);
         uiModel.addAttribute("keywords", keywordService.findAllKeywords());
-        uiModel.addAttribute("rodausers", rodauserService.findAllRodausers());
         uiModel.addAttribute("studys", studyService.findAllStudys());
+        uiModel.addAttribute("userses", usersService.findAllUserses());
     }
     
     String StudyKeywordController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

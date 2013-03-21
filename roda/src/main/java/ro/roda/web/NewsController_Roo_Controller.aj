@@ -19,7 +19,7 @@ import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.domain.News;
 import ro.roda.service.NewsService;
-import ro.roda.service.RodauserService;
+import ro.roda.service.UsersService;
 import ro.roda.web.NewsController;
 
 privileged aspect NewsController_Roo_Controller {
@@ -28,23 +28,23 @@ privileged aspect NewsController_Roo_Controller {
     NewsService NewsController.newsService;
     
     @Autowired
-    RodauserService NewsController.rodauserService;
+    UsersService NewsController.usersService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String NewsController.create(@Valid News news, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
         if (bindingResult.hasErrors()) {
             populateEditForm(uiModel, news);
-            return "newspieces/create";
+            return "news/create";
         }
         uiModel.asMap().clear();
         newsService.saveNews(news);
-        return "redirect:/newspieces/" + encodeUrlPathSegment(news.getId().toString(), httpServletRequest);
+        return "redirect:/news/" + encodeUrlPathSegment(news.getId().toString(), httpServletRequest);
     }
     
     @RequestMapping(params = "form", produces = "text/html")
     public String NewsController.createForm(Model uiModel) {
         populateEditForm(uiModel, new News());
-        return "newspieces/create";
+        return "news/create";
     }
     
     @RequestMapping(value = "/{id}", produces = "text/html")
@@ -52,7 +52,7 @@ privileged aspect NewsController_Roo_Controller {
         addDateTimeFormatPatterns(uiModel);
         uiModel.addAttribute("news", newsService.findNews(id));
         uiModel.addAttribute("itemId", id);
-        return "newspieces/show";
+        return "news/show";
     }
     
     @RequestMapping(produces = "text/html")
@@ -60,31 +60,31 @@ privileged aspect NewsController_Roo_Controller {
         if (page != null || size != null) {
             int sizeNo = size == null ? 10 : size.intValue();
             final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("newspieces", newsService.findNewsEntries(firstResult, sizeNo));
-            float nrOfPages = (float) newsService.countAllNewsPieces() / sizeNo;
+            uiModel.addAttribute("newsitems", newsService.findNewsEntries(firstResult, sizeNo));
+            float nrOfPages = (float) newsService.countAllNews() / sizeNo;
             uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
         } else {
-            uiModel.addAttribute("newspieces", newsService.findAllNewsPieces());
+            uiModel.addAttribute("newsitems", newsService.findAllNews());
         }
         addDateTimeFormatPatterns(uiModel);
-        return "newspieces/list";
+        return "news/list";
     }
     
     @RequestMapping(method = RequestMethod.PUT, produces = "text/html")
     public String NewsController.update(@Valid News news, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
         if (bindingResult.hasErrors()) {
             populateEditForm(uiModel, news);
-            return "newspieces/update";
+            return "news/update";
         }
         uiModel.asMap().clear();
         newsService.updateNews(news);
-        return "redirect:/newspieces/" + encodeUrlPathSegment(news.getId().toString(), httpServletRequest);
+        return "redirect:/news/" + encodeUrlPathSegment(news.getId().toString(), httpServletRequest);
     }
     
     @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
     public String NewsController.updateForm(@PathVariable("id") Integer id, Model uiModel) {
         populateEditForm(uiModel, newsService.findNews(id));
-        return "newspieces/update";
+        return "news/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
@@ -94,7 +94,7 @@ privileged aspect NewsController_Roo_Controller {
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
         uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
-        return "redirect:/newspieces";
+        return "redirect:/news";
     }
     
     void NewsController.addDateTimeFormatPatterns(Model uiModel) {
@@ -104,7 +104,7 @@ privileged aspect NewsController_Roo_Controller {
     void NewsController.populateEditForm(Model uiModel, News news) {
         uiModel.addAttribute("news", news);
         addDateTimeFormatPatterns(uiModel);
-        uiModel.addAttribute("rodausers", rodauserService.findAllRodausers());
+        uiModel.addAttribute("userses", usersService.findAllUserses());
     }
     
     String NewsController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

@@ -5,7 +5,8 @@
     <form:update id="fu_ro_roda_domain_CmsLayoutGroup" modelAttribute="cmsLayoutGroup" path="/cmslayoutgroups" versionField="none" z="E2FPj6lqkRbNTgf69h9NS0kFkek=">
         <field:simple field="cmsLayouts" id="c_ro_roda_domain_CmsLayoutGroup_cmsLayouts" messageCode="entity_reference_not_managed" messageCodeAttribute="Cms Layout" z="vCg6hC3XJvvmOmgx93YIHevI4c4="/>
         <field:input field="name" id="c_ro_roda_domain_CmsLayoutGroup_name" required="true" z="qtljeC8eD8XoPE5ZI8wuBTN9KpA="/>
-        <field:input field="parentId" id="c_ro_roda_domain_CmsLayoutGroup_parentId" validationMessageCode="field_invalid_integer" z="E8COzVTPlyrdkt6KYCqrQNu0y3k="/>
+        <field:select field="parentId" id="c_ro_roda_domain_CmsLayoutGroup_parentId" itemValue="id" items="${cmslayoutgroups}" path="/cmslayoutgroups" z="UvHgLKOgb+GHgiN8GPQnDASocE4="/>
         <field:input field="description" id="c_ro_roda_domain_CmsLayoutGroup_description" z="mHUrBxcQoUcrsiO1tEU/ba8l+RU="/>
+        <field:simple field="cmsLayoutGroups" id="c_ro_roda_domain_CmsLayoutGroup_cmsLayoutGroups" messageCode="entity_reference_not_managed" messageCodeAttribute="Cms Layout Group" z="/boUAVM7nDKUgeg+zUdkQe+UTeA="/>
     </form:update>
 </div>

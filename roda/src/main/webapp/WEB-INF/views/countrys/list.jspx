@@ -4,8 +4,10 @@
     <jsp:output omit-xml-declaration="yes"/>
     <page:list id="pl_ro_roda_domain_Country" items="${countrys}" z="LSAoKJxvOqNiw3fV8ALsq0Z+sNs=">
         <table:table data="${countrys}" id="l_ro_roda_domain_Country" path="/countrys" z="uHea5bJiAs2G4dUerqJhu3vaWJc=">
-            <table:column id="c_ro_roda_domain_Country_name" property="name" z="ZxcypOd7DatANjvos8HFPHj8U/A="/>
-            <table:column id="c_ro_roda_domain_Country_alpha3" property="alpha3" z="3b33UaPszDKQ4cbAaKa/K6wlD1A="/>
+            <table:column id="c_ro_roda_domain_Country_nameRo" property="nameRo" z="0ym1IdhvTfTDm9SIuCVJWlQbyWI="/>
+            <table:column id="c_ro_roda_domain_Country_nameSelf" property="nameSelf" z="VTziizI6NXlB5TrY7d3AHOY7484="/>
+            <table:column id="c_ro_roda_domain_Country_nameEn" property="nameEn" z="XcGyJrn0fJ1E07LcjfSq82KZOKM="/>
+            <table:column id="c_ro_roda_domain_Country_iso3166" property="iso3166" z="pmH1rgmDw2trOcbBntESbPGzw24="/>
         </table:table>
     </page:list>
 </div>

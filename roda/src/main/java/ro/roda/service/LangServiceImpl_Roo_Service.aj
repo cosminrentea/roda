@@ -23,7 +23,7 @@ privileged aspect LangServiceImpl_Roo_Service {
         lang.remove();
     }
     
-    public Lang LangServiceImpl.findLang(String id) {
+    public Lang LangServiceImpl.findLang(Integer id) {
         return Lang.findLang(id);
     }
     

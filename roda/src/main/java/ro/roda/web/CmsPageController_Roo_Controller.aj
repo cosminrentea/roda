@@ -20,7 +20,7 @@ import ro.roda.service.CmsLayoutService;
 import ro.roda.service.CmsPageContentService;
 import ro.roda.service.CmsPageService;
 import ro.roda.service.CmsPageTypeService;
-import ro.roda.service.RodauserService;
+import ro.roda.service.UsersService;
 import ro.roda.web.CmsPageController;
 
 privileged aspect CmsPageController_Roo_Controller {
@@ -38,7 +38,7 @@ privileged aspect CmsPageController_Roo_Controller {
     CmsPageTypeService CmsPageController.cmsPageTypeService;
     
     @Autowired
-    RodauserService CmsPageController.rodauserService;
+    UsersService CmsPageController.usersService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String CmsPageController.create(@Valid CmsPage cmsPage, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -110,7 +110,7 @@ privileged aspect CmsPageController_Roo_Controller {
         uiModel.addAttribute("cmslayouts", cmsLayoutService.findAllCmsLayouts());
         uiModel.addAttribute("cmspagecontents", cmsPageContentService.findAllCmsPageContents());
         uiModel.addAttribute("cmspagetypes", cmsPageTypeService.findAllCmsPageTypes());
-        uiModel.addAttribute("rodausers", rodauserService.findAllRodausers());
+        uiModel.addAttribute("userses", usersService.findAllUserses());
     }
     
     String CmsPageController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

@@ -5,8 +5,9 @@
     <form:create id="fc_ro_roda_domain_CmsSnippetGroup" modelAttribute="cmsSnippetGroup" path="/cmssnippetgroups" render="${empty dependencies}" z="TJa8HSwOppA6fpRJ60+xNM5ZFn4=">
         <field:simple field="cmsSnippets" id="c_ro_roda_domain_CmsSnippetGroup_cmsSnippets" messageCode="entity_reference_not_managed" messageCodeAttribute="Cms Snippet" z="LeEImn15y/fMQfTTDRKCEyAT3PM="/>
         <field:input field="name" id="c_ro_roda_domain_CmsSnippetGroup_name" required="true" z="upjw4apl7l6KCgoinEy2YDAw5Eg="/>
-        <field:input field="parentId" id="c_ro_roda_domain_CmsSnippetGroup_parentId" validationMessageCode="field_invalid_integer" z="eMAKLV38Nl5du3nsED01o8y28kk="/>
+        <field:select field="parentId" id="c_ro_roda_domain_CmsSnippetGroup_parentId" itemValue="id" items="${cmssnippetgroups}" path="/cmssnippetgroups" z="+G9yM5AIHDjxECqZ8Tacebsc5YE="/>
         <field:input field="description" id="c_ro_roda_domain_CmsSnippetGroup_description" z="tJZsIJTEThq2wwqN2VEWYmQaOPQ="/>
+        <field:simple field="cmsSnippetGroups" id="c_ro_roda_domain_CmsSnippetGroup_cmsSnippetGroups" messageCode="entity_reference_not_managed" messageCodeAttribute="Cms Snippet Group" z="hJNOBLapufRAehh46BxrFDQJLR0="/>
     </form:create>
     <form:dependency dependencies="${dependencies}" id="d_ro_roda_domain_CmsSnippetGroup" render="${not empty dependencies}" z="/3tVkrL1eocsUfQ/SeZRGxojPMc="/>
 </div>

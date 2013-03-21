@@ -21,10 +21,6 @@ privileged aspect AclEntry_Roo_DbManaged {
     @JoinColumn(name = "sid", referencedColumnName = "id", nullable = false)
     private AclSid AclEntry.sid;
     
-    @Column(name = "ace_order", columnDefinition = "int4")
-    @NotNull
-    private Integer AclEntry.aceOrder;
-    
     @Column(name = "mask", columnDefinition = "int4")
     @NotNull
     private Integer AclEntry.mask;
@@ -55,14 +51,6 @@ privileged aspect AclEntry_Roo_DbManaged {
     
     public void AclEntry.setSid(AclSid sid) {
         this.sid = sid;
-    }
-    
-    public Integer AclEntry.getAceOrder() {
-        return aceOrder;
-    }
-    
-    public void AclEntry.setAceOrder(Integer aceOrder) {
-        this.aceOrder = aceOrder;
     }
     
     public Integer AclEntry.getMask() {

@@ -7,6 +7,22 @@ use MooseX::Types::Common::String;
 our $VERSION = "0.001";
 $VERSION = eval $VERSION;
 
+=head1 NUME
+
+RODA::Config
+
+=head1 DESCRIERE
+
+Clasa care se ocupa de citirea si interpretarea fisierului de configurare a aplicatiei, in care sunt scrise informatiile esentiale, de care sistemul are nevoie pentru initializare inainte de a putea accesa serverul de base de date
+
+=cut
+
+=head1 UTILIZARE
+
+
+=cut
+
+
 
 has software_name => (
     is      => 'ro',

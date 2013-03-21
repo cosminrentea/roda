@@ -6,6 +6,46 @@ use warnings;
 use Data::Dumper;
 use parent qw/DBIx::Class::ResultSet/;
 
+=head1 NUME
+
+RODA::RODADB::ResultSet::Email - metode specifice pentru manipularea emailurilor
+
+=cut
+
+=head1 VERSIUNE
+
+version 0.01
+
+=cut
+
+=head1 DESCRIERE
+
+Metode suplimentare care se aplica asupra seturilor de rezultate de tip email.
+
+=cut
+
+=head 1 METODE
+
+=cut
+
+=head2 checkemail
+
+verifica existenta unui email in baza de date, daca exista returneaza obiectul respectiv, daca nu, il introduce si returneaza obiectul corespunzator
+
+
+Paramtetrii de intrare:
+
+=over 
+
+=item C<email>
+- adresa de e-mail
+
+=back
+
+
+=cut
+
+
 sub checkemail {
     my ( $self, %params ) = @_;
 

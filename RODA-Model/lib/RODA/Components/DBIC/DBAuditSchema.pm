@@ -12,13 +12,13 @@ __PACKAGE__->mk_group_accessors( simple => '_current_changeset_container' );
 
 
 
-=head1 NAME
+=head1 NUME
 
 RODA::Components::DBIC::DBAuditSchema;
 
 =cut
 
-=head1 
+=head1 VERSIUNE
 
 version 0.01
 
@@ -27,9 +27,9 @@ version 0.01
 
 =head1 INCARCARE
 
-In clasa schemei: 
+In clasa schemei L<RODA::RODADB>: 
 
-__PACKAGE__->load_components(qw/+RODA::Components::DBIC::DBAuditSchema/);
+  __PACKAGE__->load_components(qw/+RODA::Components::DBIC::DBAuditSchema/);
 
 
 =head1 FUNCTIONARE
@@ -38,7 +38,7 @@ Permite auditarea tabelelor prin inregistrarea modificarilor intr-o serie de tab
 
 Definirea coloanelor in clasele Result permite urmatoarele:
 
-  -evitarea auditarii unei coloane
+-evitarea auditarii unei coloane
 
     __PACKAGE__->add_columns(
            "age",
@@ -46,12 +46,13 @@ Definirea coloanelor in clasele Result permite urmatoarele:
     );
 
 
-  -fortarea auditarii unei coloane, chiar daca modificarile nu au atins-o
+-fortarea auditarii unei coloane, chiar daca modificarile nu au atins-o
 
    __PACKAGE__->add_columns(
           "age",
           { data_type => "integer", audit_log_column => 0 },
     );
+
 
 Pachetul permite de asemenea interceptarea valorii unor coloane inainte de audit si modificarea acestora, prin utilizarea atributului
 modify_audit_value
@@ -111,15 +112,14 @@ $roda->userid('3');
 
 =cut
 
-
-=head1 METHODS
+=head1 METODE
 
 =cut
 
 
 =head2 txn_do
 
-txn_do se va executa inainte de txn_do din DBIx::Class. Verifica daca exista deja un changeset activ (pentru eventualitatea in care
+txn_do se va executa inainte de txn_do din L<DBIx::Class>. Verifica daca exista deja un changeset activ (pentru eventualitatea in care
 s-a solicitat o tranzactie in interiorul altei tranzactii. Daca exista, trece mai departe, daca nu, va seta atributul _current_changeset_container
 apoi trece mai departe la urmatorul txn_do din lantul de executie
 
@@ -199,14 +199,27 @@ Are nevoie de numele in clar al tabelului si de id-ul randului care trebuie urma
 
 Lista de argumente:
 
- id - id-ul randului din tabel pentru care se doreste auditul. Obligatoriu 
- table - tabelul de interes. Obligatoriu
- change_order - default desc, ordinea in care sunt returnate modificarile
- field - in lipsa specificarii unui camp, vor fi returnate toate campurile tabelului curent.
- timestamp - filtreaza dupa timestampul changeseturilor
- action_types - default este [ 'insert', 'update', 'delete' ], se poate inlocui cu o lista redusa
-  
+=over
 
+=item id 
+- id-ul randului din tabel pentru care se doreste auditul. Obligatoriu 
+
+=item table 
+- tabelul de interes. Obligatoriu
+
+=item change_order
+- default desc, ordinea in care sunt returnate modificarile
+
+=item field
+- in lipsa specificarii unui camp, vor fi returnate toate campurile tabelului curent.
+
+=item timestamp 
+- filtreaza dupa timestampul changeseturilor 
+
+=item action_types 
+- default este [ 'insert', 'update', 'delete' ], se poate inlocui cu o lista redusa
+  
+=back
 
 =cut
 

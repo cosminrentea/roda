@@ -7,10 +7,6 @@ use Data::Dumper;
 use MooseX::MarkAsMethods autoclean => 1;
 
 
-
-
-
-
 our $VERSION = "0.001";
 $VERSION = eval $VERSION;
 
@@ -23,20 +19,31 @@ with 'RODA::Components::DBIC::DBConfig';
 
 =head1 NUME
 
-RODA
+RODA::RODADB
 
 =head1 DESCRIERE
 
-Clasa principala a modelului RODA
+Componentul principal al sistemului de acces la date. Acesta se bazeaza pe o mapare relational-obiectuala extinsa cu componente necesare. RODA::RODADB contine elementele principale necesare accesului la datele relationale, metode care permit introducerea datelor in tabele, citirea lor, modificarea celor existente, stergere, etc.
 
 =cut
 
-=head1 METODE
+=head1 ATRIBUTE
 
- B<configfile> - calea completa catre fisierul de configurare.   
- B<rootconfig> - instanta a RODA::Config  
- B<test> - determina RODA::RODADB sa se conecteza la baza de date de test si la sistemul de fisiere de test specificate in fisierul de configurare
- B<filestore> - instanta a RODA::FileStore initializata automat dupa conexiunea la baza de date 
+=over
+
+=item  
+I<configfile> - calea completa catre fisierul de configurare.   
+
+=item  
+I<rootconfig> - instanta a RODA::Config  
+
+=item  
+I<test> - determina RODA::RODADB sa se conecteza la baza de date de test si la sistemul de fisiere de test specificate in fisierul de configurare
+
+=item  
+I<filestore> - instanta a RODA::FileStore initializata automat dupa conexiunea la baza de date 
+
+=back
 
 =cut
 

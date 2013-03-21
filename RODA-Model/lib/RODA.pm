@@ -10,26 +10,67 @@ our $VERSION = "0.001";
 $VERSION = eval $VERSION;
 
 
-=head1 NAME
+=head1 NUME
 
-RODA
+RODA - Clasa principala a sistemului de acces la date RODA
 
-=head1 DESCRIPTION
+=cut 
 
-Clasa principala a modelului RODA
+
+=head1 DESCRIERE
+
+Clasa principala a modelului RODA. Orice operatie de acces la datele arhivei se face prin intermediul unei instante a acestei clase
 
 =cut
 
-=head1 ATTRIBUTES
+=head1 UTILIZARE
 
- B<configfile> - calea completa catre fisierul de configurare. In cazul in care nu exista, se va incerca ghicirea lui, intai in variabila de mediu RODA_CONFIG
-      apoi in directorul /etc/roda/roda.ini. 
- B<debugsql> - determina imprimarea tuturor interogarilor SQL trimise de RODA::RODADB catre baza de date
- B<test> - determina RODA::RODADB sa se conecteza la baza de date de test si la sistemul de fisiere de test specificate in fisierul de configurare
- B<rootconfig> - instanta a RODA::Config initializata automat prin citirea fisierului din B<configfile> 
- B<dbschema> - instanta a RODA::DODADB initializata automat dupa conexiunea la baza de date specificata in B<rootconfig>
- 
+  $roda = RODA->new( configfile => '/etc/roda/rodaconfig.ini', 
+                                   test => '1', 
+                                   userid=>'1', 
+                                   debugsql=>'1'
+                                 );
+
 =cut
+
+=head1 ATRIBUTE
+
+=cut
+
+=over
+
+=item  
+C<configfile> 
+- calea completa catre fisierul de configurare. In cazul in care nu exista, se va incerca cautarea lui, intai in variabila de mediu RODA_CONFIG apoi in directorul /etc/roda/roda.ini.
+
+=item  
+C<debugsql> 
+- determina imprimarea tuturor interogarilor SQL trimise de L<RODA::RODADB> catre baza de date
+
+=item
+C<test> 
+- determina L<RODA::RODADB> sa se conecteza la baza de date de test si la sistemul de fisiere de test specificate in fisierul de configurare
+
+=item
+C<rootconfig> 
+- instanta a L<RODA::Config> initializata automat prin citirea fisierului din B<configfile> 
+
+=item
+C<dbschema> - instanta a L<RODA::RODADB> initializata automat dupa conexiunea la baza de date specificata in B<rootconfig>
+
+=item
+C<userid> - id-ul utilizatorului care va rula comenzile. Trebuie sa se gaseasca in tabelul corespunzator din schema, userid declanseaza un trigger care determina cautarea lui
+
+=item
+C<indexer> - instanta a L<RODA::Indexer>
+
+=item
+C<log> - instanta a L<RODA::Logger>  
+
+=back
+
+=cut
+
 
 has 'configfile' => ( is => 'ro', isa => 'Str',          builder => '_guess_config',      lazy => 1 );
 has 'rootconfig' => ( is => 'ro', isa => 'RODA::Config', builder => '_build_root_config', lazy => 1 );
@@ -40,14 +81,16 @@ has 'test' => ( is => 'ro', isa => 'Str', default=>'0');
 has 'userid'   => ( is => 'rw', isa => 'Maybe[Int]', trigger => \&propagate_user_id, );
 
 =head1 METODE
-=cut
-
-
-=head 2 propagate_user_id
-
-trigger care se executa la setarea userid-ului 
 
 =cut
+
+=head2 propagate_user_id
+
+trigger care se executa la setarea userid-ului si care propaga informatiile despre 
+utilizator pana la nivelul schemei bazei de date. 
+
+=cut
+
 
 sub propagate_user_id {
      my $self     = shift;
@@ -57,7 +100,7 @@ sub propagate_user_id {
 
 
 
-=head 2 _build_root_config
+=head3 _build_root_config
 
 construieste instanta RODA::Config si o ataseaza atributului B<configfile>
 este apelata automat la constructia obiectului RODA datorita declararii in atribut
@@ -69,12 +112,12 @@ sub _build_root_config {
     return RODA::Config->new( config_file => $self->configfile );
 }
 
-=head 2 _guess_config
+=head3 _guess_config
 
-cauta fisierul de configurare
+cauta fisierul de configurare, intai in variabila de mediu RODA_CONFIG
+apoi in directorul /etc/roda/roda.ini. 
 
 =cut
-
 
 
 sub _guess_config {
@@ -94,7 +137,7 @@ sub _guess_config {
 }
 
 
-=head 2 _build_db_schema
+=head3 _build_db_schema
 
 initializeaza ORM-ul si il conecteaza la baza de date aleasa (fie cea de test, fie cea principala)
 Ataseaza informatiile suplimentare despre configurare instantei ORM-ului

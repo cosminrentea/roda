@@ -7,15 +7,15 @@ use warnings;
 our $VERSION = "0.001";
 $VERSION = eval $VERSION;
 
-=head1 NAME
+=head1 NUME
 
 RODA::Components::DBIC::DBAudit;
 
 =cut
 
-=head1 
+=head1 VERSIUNE
 
-version 0.01
+version 0.02
 
 =cut
 
@@ -23,7 +23,7 @@ version 0.01
 
 In clasa result a tabelului cu pricina: 
 
-__PACKAGE__->load_components(qw/+RODA::Components::DBIC::DBAudit/);
+  __PACKAGE__->load_components(qw/+RODA::Components::DBIC::DBAudit/);
 
 Nu functioneaza pe tabelele cu chei multiple. Inca. 
 
@@ -37,7 +37,7 @@ delete si propaga inserarea datelor in tabelele de audit, folosind metodele adau
 =cut
 
 
-=head1 METHODS
+=head1 METODE
 
 =cut
 

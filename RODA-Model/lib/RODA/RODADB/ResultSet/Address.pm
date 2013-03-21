@@ -6,6 +6,85 @@ use warnings;
 use Data::Dumper;
 use parent qw/DBIx::Class::ResultSet/;
 
+=head1 NUME
+
+RODA::RODADB::ResultSet::Address - metode specifice pentru manipularea adreselor
+
+=cut
+
+=head1 VERSIUNE
+
+version 0.01
+
+=cut
+
+=head1 DESCRIERE
+
+Metode suplimentare care se aplica asupra seturilor de rezultate de tip adresa.
+
+=cut
+
+=head 1 METODE
+
+=cut
+
+=head2 checkaddress
+
+checkaddress verifica existenta unei adrese (preluata prin combinatii ale parametrilir de intrare), verifica daca aceasta exista in baza de date, daca da, returneaza obiectul corespunzator, daca nu, o introduce in baza de date si apoi returneaza obiectul corespunzator.
+
+Paramtetrii de intrare:
+
+=over 
+
+=item C<id>
+- cheia primara a adresei din tabelul de adrese
+
+=item C<country_name>
+- numele tarii in care se gaseste adresa
+
+=item C<country_id>
+- cheia primara a tarii curente, din tabelul de tari
+
+=item C<city_name>
+- numele orasului in care se gaseste adresa
+
+=item C<city_id>
+- id-ul corespunzator orasului curent, din tabelul de orase
+
+=item C<postal_code>
+- codul postal 
+
+=item C<adddress1>
+- primele elemente ale adresei (de obicei strada si numar)
+
+=item C<adddress2>
+- elemente suplimentare ale adresei
+
+=item C<subdiv_code>
+- codul subdiviziunii orasului in care se gaseste adresa. In cazul in care se foloseste acest parametru trebuie sa fie obligatoriu insotit de parametrul subdiv_type 
+
+=item C<subdiv_type>
+- tipul subdiviziunii orasului in care se gaseste adresa (ex: sector). In cazul in care se foloseste acest parametru trebuie sa fie obligatoriu insotit de parametrul subdiv_code
+
+=back
+
+
+Criterii de unicitate:
+
+=over
+
+
+=item
+- (country_id || country_name) + postal_code + address1 + address2 (codurile postale sunt unice pe tari)
+
+=item
+- (city_id || city_name) + postal_code + address1 + address2 
+
+=back
+
+
+=cut
+
 sub checkaddress {
     my ( $self, %params ) = @_;
 

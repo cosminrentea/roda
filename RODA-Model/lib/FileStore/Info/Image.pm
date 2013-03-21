@@ -8,6 +8,46 @@ use Image::Info qw(image_info dim);
 our $VERSION = "0.001";
 $VERSION = eval $VERSION;
 
+=head1 NUME
+
+FileStore::Info::Image - Plugin pentru informatii despre fisierele de tip imagine
+
+=cut
+
+=head1 VERSIUNE
+
+version 0.01
+
+=cut
+
+=head1 DESCRIERE
+
+Nu se apeleaza direct, se apeleaza automat de catre L<FileStore::File> cand se citeste fisierul
+utilizeaza modului L<Image::Info>. Returneaza urmatoarele proprietati:
+
+=over
+
+=item width 
+- latimea imaginii in pixeli
+
+=item heigth
+- inaltimea imaginii in pixeli
+
+=item color_type
+- spatiul de culoare al imaginii (Gray, GrayA, RGB, RGBA, CMYK, YCbCr, CIELab)
+
+=back
+
+=head1 Atribute
+
+=over
+
+=item  
+C<wfile> - obiect de tip FileStore::File 
+
+=back
+
+=cut
 
 has 'wfile'=> (is => 'ro', isa => 'FileStore::File', required=>1 );
 

@@ -24,7 +24,7 @@ Metode suplimentare care se aplica asupra seturilor de rezultate de tip email.
 
 =cut
 
-=head 1 METODE
+=head1 METODE
 
 =cut
 

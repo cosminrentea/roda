@@ -6,6 +6,64 @@ use warnings;
 use Data::Dumper;
 use parent qw/DBIx::Class::ResultSet/;
 
+
+=head1 NUME
+
+RODA::RODADB::ResultSet::Country - metode specifice pentru manipularea informatiilor despre tari
+
+=cut
+
+=head1 VERSIUNE
+
+version 0.01
+
+=cut
+
+=head1 DESCRIERE
+
+Metode suplimentare care se aplica asupra seturilor de rezultate de tip country.
+
+=cut
+
+=head1 METODE
+
+=cut
+
+=head2 checkcountry
+
+verifica existenta unei tari in baza de date, daca exista returneaza obiectul respectiv, daca nu, o introduce si returneaza obiectul corespunzator
+
+
+Paramtetrii de intrare:
+
+=over 
+
+=item C<id>
+- cheia primara din tabelul de tari (in format ISO 3166-alpha2)
+
+=item C<name>
+- numele tarii
+
+=item C<alpha3>
+- codul tarii in format de 3 litere (in format ISO 3166-alpha3)
+
+=back
+
+Criterii de unicitate:
+
+=over
+
+
+=item
+- alpha3 (codurile alpha3 sunt unice pe tari)
+
+=item
+- name (numele tarilor vor fi unice) 
+
+=back
+
+
+=cut
 sub checkcountry {
     my ( $self, %params ) = @_;
 

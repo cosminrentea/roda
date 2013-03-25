@@ -7,6 +7,88 @@ use Data::Dumper;
 use parent qw/DBIx::Class::ResultSet/;
 use Try::Tiny;
 
+=head1 NUME
+
+RODA::RODADB::ResultSet::City - metode specifice pentru manipularea inregistrarilor oraselor
+
+=cut
+
+=head1 VERSIUNE
+
+=head1 VERSIUNE
+
+version 0.01
+
+=cut
+
+=head1 DESCRIERE
+
+Metode suplimentare care se aplica asupra seturilor de rezultate de tip city.
+
+=cut
+
+=head1 UTILIZARE
+
+     my $cityrs = $roda->dbschema->resultset('City')->checkcity(
+                                                                name          => 'Bucuresti',
+                                                                country_id    => 'ro',
+                                                                city_code     => '403',
+                                                                city_code_name    => 'siruta',
+                                                                prefix        => 'municipiu',
+                                                                city_type     => '40',
+                                                                city_type_system  => 'siruta',
+                                                                city_code_sup => '1',
+            );
+
+=cut
+
+=head1 METODE
+
+=cut
+
+=head2 checkcity
+
+checkcity verifica existenta unui oras, verifica daca aceasta exista in baza de date, daca da, returneaza obiectul corespunzator, daca nu, il introduce in baza de date si apoi returneaza obiectul corespunzator.
+
+Paramtetrii de intrare:
+
+=over 
+
+=item C<id>
+- cheia primara a adresei din tabelul city
+
+=item C<name>
+- numele orasului 
+
+=item C<city_code>
+- codul orasului
+
+=item C<city_code_name>
+- numele sistemului de codificare a orasului  (SIRUTA pentru Romania)
+
+=item C<city_code_sup>
+- codul entitatii superioare orasului curent (nu e obligatoriu)
+
+=item C<country_name>
+- numele tarii in care se gaseste adresa
+
+=item C<country_id>
+- cheia primara a tarii curente, din tabelul de tari
+
+=item C<prefix>
+- prefixul numelui orasului (ex: municipiu)
+
+=item C<city_type>
+- codul tipului orasului
+
+=item C<city_type_system>
+- numele sistemului de codificare a tipului orasului (SIRUTA pentru Romania) 
+
+
+=back
+
+=cut
+
 sub checkcity {
     my ( $self, %params ) = @_;
     #deocamdata putem identifica unic un oras doar prin id sau city_code + ccode_name, e suficient pentru initializarea bazei de date

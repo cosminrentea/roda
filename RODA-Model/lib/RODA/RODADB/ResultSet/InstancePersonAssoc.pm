@@ -6,6 +6,24 @@ use warnings;
 use Data::Dumper;
 use parent qw/DBIx::Class::ResultSet/;
 
+=head1 NUME
+
+RODA::RODADB::ResultSet::InstancePersonAssoc
+
+=cut
+
+=head1 VERSIUNE
+
+version 0.01
+
+=cut
+
+=head1 DESCRIERE
+
+
+
+=cut
+
 sub checkassoctype {
     my ( $self, %params ) = @_;
     my $assoctypers;

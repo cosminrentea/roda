@@ -6,6 +6,25 @@ use warnings;
 use Data::Dumper;
 use parent qw/DBIx::Class::ResultSet/;
 
+=head1 NUME
+
+RODA::RODADB::ResultSet::TitleType
+
+=cut
+
+=head1 VERSIUNE
+
+version 0.01
+
+=cut
+
+=head1 DESCRIERE
+
+
+
+=cut
+
+
 sub checktitletype {
     my ( $self, %params ) = @_;
     my $titletypers;

@@ -7,6 +7,23 @@ use Data::Dumper;
 use parent qw/DBIx::Class::ResultSet/;
 use Try::Tiny;
 
+=head1 NUME
+
+RODA::RODADB::ResultSet::InstanceDescr
+=cut
+
+=head1 VERSIUNE
+
+version 0.01
+
+=cut
+
+=head1 DESCRIERE
+
+
+
+=cut
+
 sub checkinstancedescr {
     my ( $self, %params ) = @_;
     my $langId;

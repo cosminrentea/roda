@@ -6,6 +6,25 @@ use warnings;
 use Data::Dumper;
 use parent qw/DBIx::Class::ResultSet/;
 
+=head1 NUME
+
+RODA::RODADB::ResultSet::TimeMethType
+
+=cut
+
+=head1 VERSIUNE
+
+version 0.01
+
+=cut
+
+=head1 DESCRIERE
+
+
+
+=cut
+
+
 sub check_time_meth {
     my ( $self, %params ) = @_;
     my $time_meth_rs;

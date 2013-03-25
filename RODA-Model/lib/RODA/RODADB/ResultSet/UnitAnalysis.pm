@@ -6,6 +6,25 @@ use warnings;
 use Data::Dumper;
 use parent qw/DBIx::Class::ResultSet/;
 
+=head1 NUME
+
+RODA::RODADB::ResultSet::UnitAnalysis
+
+=cut
+
+=head1 VERSIUNE
+
+version 0.01
+
+=cut
+
+=head1 DESCRIERE
+
+
+
+=cut
+
+
 sub check_unit_analysis {
     my ( $self, %params ) = @_;
     my $unit_analysis_rs;

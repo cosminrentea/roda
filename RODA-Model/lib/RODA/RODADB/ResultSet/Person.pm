@@ -7,6 +7,88 @@ use Data::Dumper;
 use parent qw/DBIx::Class::ResultSet/;
 use Try::Tiny;
 
+
+
+=head1 NUME
+
+RODA::RODADB::ResultSet::Person - metode specifice pentru manipularea inregistrarilor despre persoane
+
+=cut
+
+=head1 VERSIUNE
+
+version 0.01
+
+=cut
+
+=head1 DESCRIERE
+
+Metode suplimentare care se aplica asupra seturilor de rezultate de tip persoana.
+
+=cut
+
+=head1 UTILIZARE
+
+    my %moi = (fname => 'Ion',
+                     mname => 'Vlad',
+                     lname => 'Popescu',
+                     prefix => 'domnul',
+                     addresses => [{country_name => 'Romania',
+                                           city_name => 'Bucuresti',
+                                           address1 => 'Str. Sperantei nr. 14',
+                                           address2 => 'Bloc 10 sc. C,. etaj 1, apt. 97',
+                                           subdiv_name => 'sector',
+                                           subdiv_code => '2',
+                                           postal_code => '0216',
+                     },{
+                                           country_name => 'Romania',
+                                           city_name => 'Bucuresti',
+                                           address1 => 'Str. Emisferei nr. 1',
+                                           address2 => '',
+                                           subdiv_name => 'sector',
+                                           subdiv_code => '3',
+                                           postal_code => '0693',
+                     }],
+                     emails => [
+                               {
+                                email=>'dummy@example.com', 
+                                ismain => '1'
+                               },
+                                {email => 'dummy2@example.com'},
+                                {email => 'dummy3@example.com'}
+                                ],
+                     phones => [
+                                          {phone => '074000000', 
+                                           phone_type => 'mobile'},
+                                          {phone => '0216545454', 
+                                           phone_type => 'home'}
+                                       ],
+                     internets => [
+                                          {internet_type => 'blog',
+                                           internet=>'http://vivi.wordp.ro'},
+                                           {internet_type => 'erepx', 
+                                           internet => 'http://erepx.com/vivi'},
+                                           {internet_type => 'facebook', 
+                                            internet => 'http://www.facebook.com/vivid'}
+                                         ],                       
+                     );
+
+    my $person = $roda->dbschema->resultset('Person')->checkperson( %moi );
+
+=cut
+
+=head1 METODE
+
+=cut
+
+=head2 checkperson
+
+verifica existenta unei persoane in baza de date, daca exista returneaza obiectul respectiv, daca nu, il introduce si returneaza obiectul corespunzator. Asteapta o 
+structura de date sub forma unui hash conform exemplului de mai sus. 
+
+=cut
+
+
 sub checkperson {
     my ( $self, %params ) = @_;
 

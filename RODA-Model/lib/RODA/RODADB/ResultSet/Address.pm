@@ -24,7 +24,7 @@ Metode suplimentare care se aplica asupra seturilor de rezultate de tip adresa.
 
 =cut
 
-=head 1 METODE
+=head1 METODE
 
 =cut
 
@@ -49,7 +49,7 @@ Paramtetrii de intrare:
 - numele orasului in care se gaseste adresa
 
 =item C<city_id>
-- id-ul corespunzator orasului curent, din tabelul de orase
+- cheia primara corespunzatoare orasului curent, din tabelul de orase
 
 =item C<postal_code>
 - codul postal 

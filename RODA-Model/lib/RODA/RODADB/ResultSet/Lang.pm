@@ -6,6 +6,36 @@ use warnings;
 use Data::Dumper;
 use parent qw/DBIx::Class::ResultSet/;
 
+=head1 NUME
+
+RODA::RODADB::ResultSet::Lang - metode specifice pentru manipularea inregistrarilor despre limba
+
+=cut
+
+=head1 VERSIUNE
+
+version 0.01
+
+=cut
+
+=head1 DESCRIERE
+
+ - metode specifice pentru manipularea inregistrarilor despre limba
+
+=cut
+
+
+
+=head1 METODE
+
+=cut
+
+=head2 checklanguage
+
+verifica existenta unei limbi dupa nume si id. Utila in special pentru import si initializarea bazei de date, vrem sa ne asiguram ca limba are acelasi id indiferent de cate ori este refacuta baza de date in timpul dezvoltarii.
+
+=cut
+
 sub checklanguage {
     my ( $self, %params ) = @_;
 
@@ -25,6 +55,14 @@ sub checklanguage {
 }
 
 #Verificarea unei limbi, daca avem numele sau.
+
+=head2 checklangname
+
+verifica existenta unei limbi dupa nume. Numele limbii ar trebui sa fie unic. Daca exista, returneaza obiectul respectiv, daca nu, il introduce si returneaza obiectul
+
+=cut
+
+
 sub checklangname {
     my ( $self, %params ) = @_;
     my $langrs;

@@ -4,7 +4,7 @@ package RODA::RODADB::Result::City;
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
 
-=head1 NAME
+=head1 NAUME
 
 RODA::RODADB::Result::City - Tabel unic pentru toate referintele la orase
 
@@ -24,11 +24,13 @@ extends 'DBIx::Class::Core';
 
 =item * L<DBIx::Class::InflateColumn::DateTime>
 
+=item * L<+RODA::Components::DBIC::DBAudit>
+
 =back
 
 =cut
 
-__PACKAGE__->load_components("InflateColumn::DateTime");
+__PACKAGE__->load_components("InflateColumn::DateTime",  "+RODA::Components::DBIC::DBAudit");
 
 =head1 TABLE: C<city>
 
@@ -203,6 +205,17 @@ __PACKAGE__->many_to_many("regions", "region_cities", "region");
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
+
+=head1 METODE SUPLIMENTARE
+
+=cut
+
+
+=head2 attach_region
+
+ataseaza o regiune (existenta) orasului curent
+
+=cut
 
 sub attach_region {
      my ( $self, %params ) = @_;

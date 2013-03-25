@@ -5,7 +5,7 @@ package RODA::RODADB::Result::Catalog;
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
 
-=head1 NAME
+=head1 NUME
 
 RODA::RODADB::Result::Catalog - Tabel ce stocheaza informatii despre cataloagele de studii
 
@@ -19,11 +19,13 @@ use MooseX::NonMoose;
 use MooseX::MarkAsMethods autoclean => 1;
 extends 'DBIx::Class::Core';
 
-=head1 COMPONENTS LOADED
+=head1 COMPONENTE UTILIZATE
 
 =over 4
 
 =item * L<DBIx::Class::InflateColumn::DateTime>
+
+=item * L<Tree::AdjacencyList::Ordered>
 
 =back
 
@@ -122,7 +124,7 @@ __PACKAGE__->position_column('sequencenr');
 __PACKAGE__->parent_column('parent_id');
 
 
-=head1 RELATIONS
+=head1 RELATII
 
 =head2 catalog_acls
 
@@ -184,13 +186,6 @@ __PACKAGE__->belongs_to(
   { is_deferrable => 0, on_delete => "NO ACTION", on_update => "NO ACTION" },
 );
 
-=head2 parent
-
-Type: belongs_to
-
-Related object: L<RODA::RODADB::Result::Catalog>
-
-=cut
 
 #__PACKAGE__->belongs_to(
 #  "parent",
@@ -211,6 +206,18 @@ Related object: L<RODA::RODADB::Result::Catalog>
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
 __PACKAGE__->meta->make_immutable;
+
+=head1 METODE SUPLIMENTARE
+
+=cut
+
+
+=head2 attach_studies
+
+Ataseaza studii la catalogul curent
+
+=cut
+
 
 sub attach_studies {
      my ( $self, %params ) = @_;

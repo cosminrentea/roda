@@ -4,7 +4,7 @@ package RODA::RODADB::Result::Person;
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
 
-=head1 NAME
+=head1 NUME
 
 RODA::RODADB::Result::Person - Tabel unic pentru toate persoanele din baza de date
 
@@ -18,11 +18,13 @@ use MooseX::NonMoose;
 use MooseX::MarkAsMethods autoclean => 1;
 extends 'DBIx::Class::Core';
 
-=head1 COMPONENTS LOADED
+=head1 COMPONENTE UTILIZATE
 
 =over 4
 
 =item * L<DBIx::Class::InflateColumn::DateTime>
+
+=item * L<RODA::Components::DBIC::DBAudit>
 
 =back
 
@@ -121,7 +123,7 @@ __PACKAGE__->add_columns(
 
 __PACKAGE__->set_primary_key("id");
 
-=head1 RELATIONS
+=head1 RELATII
 
 =head2 forms
 
@@ -322,6 +324,37 @@ __PACKAGE__->meta->make_immutable;
 
 #__PACKAGE__->has_many( "emails", "RODA::RODADB::Result::Email", { "foreign.entity_id" => "self.id" }, { where => { "emails.entity_type" => "1" } } );
 
+=head1 METODE SUPLIMENTARE
+
+=cut
+
+
+=head2 attach_addresses
+
+ataseaza unul sau mai multe adrese persoanei curente. Primeste la intrare un arrayref
+
+    $person->attach_addresses(
+             addresses => [
+             {country_name => 'Romania',
+               city_name => 'Bucuresti',
+               address1 => 'Sos. Pantelimon nr. 144',
+               address2 => 'Bloc 102Am sc. C,. etaj 1, apt. 97',
+               subdiv_name => 'sector',
+               subdiv_code => '2',
+               postal_code => '021644',
+             },{
+               country_name => 'Romania',
+               city_name => 'Bucuresti',
+               address1 => 'Str. Preot Vasile Lucaciu nr. 117',
+               address2 => '',
+               subdiv_name => 'sector',
+               subdiv_code => '3',
+               postal_code => '030693',
+             }
+             ]
+             ),
+
+=cut
 
 sub attach_addresses {
      my ( $self, %params ) = @_;
@@ -342,6 +375,25 @@ sub attach_addresses {
         $guard->commit; 
      }
 }
+
+
+=head2 attach_emails
+
+ataseaza unul sau mai multe emailuri persoanei curente. Primeste la intrare un arrayref
+
+   $person->attach_emails( emails => [
+                               {
+                                email=>'dummy@example.com', 
+                                ismain => '1'
+                               },
+                                {email => 'dummy2@example.com'},
+                                {email => 'dummy3@example.com'}
+                                ],
+                               );
+
+
+=cut
+
 
 sub attach_emails {
      my ( $self, %params ) = @_;
@@ -374,6 +426,22 @@ sub attach_emails {
      }
 }
 
+=head2 attach_phones
+
+ataseaza unul sau mai multe telefoane persoanei curente. Primeste la intrare un arrayref
+
+      $person->attach_phones (
+                     phones => [
+                        {phone => '074000000', 
+                         phone_type => 'mobile'},
+                        {phone => '0216545454', 
+                         phone_type => 'home'}
+                      ],
+       );
+
+=cut
+
+
 sub attach_phones {
      my ( $self, %params ) = @_;
      foreach my $phone (@{$params{phones}}) { 
@@ -399,6 +467,25 @@ sub attach_phones {
       		$guard->commit; 	
         }
 }
+
+=head2 attach_internets
+
+ataseaza una sau mai multe adrese internet persoanei curente (blog, homepage, facebook, etc). 
+Primeste la intrare un arrayref
+
+   $person->attach_internets (
+     internets => [
+          {internet_type => 'blog',
+           internet=>'http://vivi.wordp.ro'},
+          {internet_type => 'erepx', 
+           internet => 'http://erepx.com/vivi'},
+          {internet_type => 'facebook', 
+           internet => 'http://www.facebook.com/vivid'}
+                      ],   
+                 );
+
+=cut
+
 
 sub attach_internets {
      my ( $self, %params ) = @_;

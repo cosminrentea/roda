@@ -1,0 +1,13 @@
+Clasele de tip Result corespund tuturor tabelelor din baza de date. Acestea au doua scopuri:
+
+\begin{description}
+
+\item[{\textit{definirea tuturor elementelor importante pentru tabelul respectiv} }] , pe care sistemul obiectual apoi le utilizeaza pentru generarea interogarilor (coloane, tipuri de coloane, chei externe, chei primare, relatii cu alte clase bazate sau nu pe chei externe definite la nivelul bazei de date) 
+
+\item[{\textit{operatiile cu un singur rand din tabel} }]  (ex: update, delete). 
+
+\end{description}
+
+Exista doua moduri de a extinde functionalitatea unei astfel de clase: fie prin componente (pentru functionalitatile suplimentare care trebuie sa afecteze un numar mare de tabele - ex: audit) fie prin atasarea de noi metode care pot fi executate la nivelul unui rand. 
+
+O parte din clasele de tip Result din modelul RODA au astfel de clase suplimentare, doar acelea sunt trecute in aceasta lista. 

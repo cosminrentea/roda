@@ -53,7 +53,7 @@ public class DatabaseUtils {
 			try {
 				stmt = con.createStatement();
 				ResultSet rs = stmt
-						.executeQuery("SELECT 'TRUNCATE TABLE \"' || tablename || '\" RESTART IDENTITY CASCADE;' FROM pg_tables WHERE schemaname = 'public'");
+						.executeQuery("SELECT 'TRUNCATE TABLE ' || schemaname || '.' || tablename || ' RESTART IDENTITY CASCADE;' FROM pg_tables WHERE schemaname = 'public' OR schemaname = 'audit'");
 				while (rs.next()) {
 					String sqlCommand = rs.getString(1);
 					log.info(sqlCommand);

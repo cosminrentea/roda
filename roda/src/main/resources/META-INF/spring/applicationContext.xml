@@ -45,8 +45,8 @@
 		<property name="targetMethod" value="putAll" />
 		<property name="arguments">
 			<util:properties>
-				<prop key="java.library.path">/Users/cosmin/R/x86_64-apple-darwin12.2.1-library/2.15/rJava/jri:/opt/local/lib/R/lib/x86_64
-				</prop>
+				<prop key="java.library.path">/Users/cosmin/R/x86_64-apple-darwin12.2.1-library/2.15/rJava/jri:/opt/local/lib/R/lib/x86_64</prop>
+				<prop key="jri.ignore.ule">${R.jri.ignore.ule}</prop>
 			</util:properties>
 		</property>
 	</bean>

@@ -168,14 +168,14 @@ public class DatabaseUtils {
 						+ "',"+ value + ")");
 				while (rs.next()) {
 					int newValue = rs.getInt(1);
-					log.error("sequence new value: " + sequence + " = "
+					log.info("sequence new value: " + sequence + " = "
 							+ newValue);
 				}
 
 				// set the new increment
 				stmt.executeUpdate("ALTER SEQUENCE " + sequence
 						+ " INCREMENT BY " + increment);
-				log.error("sequence new increment: " + sequence + " += "
+				log.info("sequence new increment: " + sequence + " += "
 						+ increment);
 			} finally {
 				if (stmt != null) {

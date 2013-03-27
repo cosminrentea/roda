@@ -666,11 +666,12 @@
     </table>
     <table alias="public" description="Tabel ce contine documentele asociate oricarei entitati din baza de date (studiu sau instanta)" name="file">
         <column description="Codul documentului" name="id" primaryKey="true" required="true" scale="0" size="10" type="4,serial"/>
-        <column description="Titlul documentului" name="title" primaryKey="false" required="true" scale="0" size="2147483647" type="12,text"/>
+        <column description="Titlul documentului" name="title" primaryKey="false" required="false" scale="0" size="2147483647" type="12,text"/>
         <column description="Descrierea documentului" name="description" primaryKey="false" required="false" scale="0" size="2147483647" type="12,text"/>
-        <column description="Codul tipului documentului (refera atributul id al tabelului document_type)" name="filetype_id" primaryKey="false" required="true" scale="0" size="10" type="4,int4"/>
         <column description="Numele fisierului asociat documentului" name="name" primaryKey="false" required="true" scale="0" size="2147483647" type="12,text"/>
         <column description="Dimensiunea fisierului (specificata in bytes)" name="size" primaryKey="false" required="false" scale="0" size="19" type="-5,int8"/>
+        <column description="Calea completa (unde este stocat fisierul pe server)" name="full_path" primaryKey="false" required="false" scale="0" size="2147483647" type="12,text"/>
+        <column name="content_type" primaryKey="false" required="false" scale="0" size="100" type="12,varchar"/>
         <foreign-key foreignTable="file_property_name_value" name="fk_file_property_name_value_file" onDelete="none" onUpdate="none">
             <option key="foreignSchemaName" value="public"/>
             <option key="exported" value="true"/>
@@ -1833,8 +1834,8 @@
     </table>
     <table alias="public" description="Tabel ce stocheaza elementele de tip scala ale variabilelor de selectie" name="scale">
         <column description="Codul item-ului" name="item_id" primaryKey="true" required="true" scale="0" size="19" type="-5,int8"/>
-        <column description="Codul valorii minime (refera atributul itemId din tabelul value) " name="minValue_id" primaryKey="false" required="true" scale="0" size="19" type="-5,int8"/>
-        <column description="Codul valorii maxime (refera atributul itemId din tabelul value) " name="maxValue_id" primaryKey="false" required="true" scale="0" size="19" type="-5,int8"/>
+        <column description="Codul valorii minime (refera atributul itemId din tabelul value) " name="min_value_id" primaryKey="false" required="true" scale="0" size="19" type="-5,int8"/>
+        <column description="Codul valorii maxime (refera atributul itemId din tabelul value) " name="max_value_id" primaryKey="false" required="true" scale="0" size="19" type="-5,int8"/>
         <column description="Unitatea scalei respective" name="units" primaryKey="false" required="true" scale="0" size="5" type="5,int2"/>
         <foreign-key foreignTable="item" name="fk_scale_item" onDelete="none" onUpdate="none">
             <option key="foreignSchemaName" value="public"/>
@@ -1844,12 +1845,12 @@
         <foreign-key foreignTable="value" name="fk_scale_max_value" onDelete="none" onUpdate="none">
             <option key="foreignSchemaName" value="public"/>
             <option key="exported" value="false"/>
-            <reference foreign="item_id" local="maxValue_id"/>
+            <reference foreign="item_id" local="max_value_id"/>
         </foreign-key>
         <foreign-key foreignTable="value" name="fk_scale_min_value" onDelete="none" onUpdate="none">
             <option key="foreignSchemaName" value="public"/>
             <option key="exported" value="false"/>
-            <reference foreign="item_id" local="minValue_id"/>
+            <reference foreign="item_id" local="min_value_id"/>
         </foreign-key>
         <unique name="pkscale">
             <unique-column name="item_id"/>
@@ -2746,12 +2747,12 @@
         <foreign-key foreignTable="scale" name="fk_scale_max_value" onDelete="none" onUpdate="none">
             <option key="foreignSchemaName" value="public"/>
             <option key="exported" value="true"/>
-            <reference foreign="maxValue_id" local="item_id"/>
+            <reference foreign="max_value_id" local="item_id"/>
         </foreign-key>
         <foreign-key foreignTable="scale" name="fk_scale_min_value" onDelete="none" onUpdate="none">
             <option key="foreignSchemaName" value="public"/>
             <option key="exported" value="true"/>
-            <reference foreign="minValue_id" local="item_id"/>
+            <reference foreign="min_value_id" local="item_id"/>
         </foreign-key>
         <unique name="pkvalue">
             <unique-column name="item_id"/>

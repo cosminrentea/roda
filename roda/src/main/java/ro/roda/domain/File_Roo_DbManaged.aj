@@ -37,15 +37,10 @@ privileged aspect File_Roo_DbManaged {
     private Set<Variable> File.variables;
     
     @Column(name = "title", columnDefinition = "text")
-    @NotNull
     private String File.title;
     
     @Column(name = "description", columnDefinition = "text")
     private String File.description;
-    
-    @Column(name = "filetype_id", columnDefinition = "int4")
-    @NotNull
-    private Integer File.filetypeId;
     
     @Column(name = "name", columnDefinition = "text")
     @NotNull
@@ -53,6 +48,12 @@ privileged aspect File_Roo_DbManaged {
     
     @Column(name = "size", columnDefinition = "int8")
     private Long File.size;
+    
+    @Column(name = "full_path", columnDefinition = "text")
+    private String File.fullPath;
+    
+    @Column(name = "content_type", columnDefinition = "varchar", length = 100)
+    private String File.contentType;
     
     public Set<Instance> File.getInstances() {
         return instances;
@@ -110,14 +111,6 @@ privileged aspect File_Roo_DbManaged {
         this.description = description;
     }
     
-    public Integer File.getFiletypeId() {
-        return filetypeId;
-    }
-    
-    public void File.setFiletypeId(Integer filetypeId) {
-        this.filetypeId = filetypeId;
-    }
-    
     public String File.getName() {
         return name;
     }
@@ -132,6 +125,22 @@ privileged aspect File_Roo_DbManaged {
     
     public void File.setSize(Long size) {
         this.size = size;
+    }
+    
+    public String File.getFullPath() {
+        return fullPath;
+    }
+    
+    public void File.setFullPath(String fullPath) {
+        this.fullPath = fullPath;
+    }
+    
+    public String File.getContentType() {
+        return contentType;
+    }
+    
+    public void File.setContentType(String contentType) {
+        this.contentType = contentType;
     }
     
 }

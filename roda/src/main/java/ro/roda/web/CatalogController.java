@@ -12,17 +12,4 @@ import ro.roda.domain.Catalog;
 @Controller
 @RooWebScaffold(path = "catalogs", formBackingObject = Catalog.class)
 public class CatalogController {
-	
-/*
-	protected static Logger logger = Logger.getLogger(CatalogController.class.getName());
-
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    @RequestMapping(params = "form", produces = "text/html")
-    public String createForm(Model uiModel) {
-        logger.error("Catalog add page");
-        populateEditForm(uiModel, new Catalog());
-        return "catalogs/create";
-    }
-*/
-	
 }

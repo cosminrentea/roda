@@ -5,10 +5,8 @@ package ro.roda.web;
 
 import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,7 +15,6 @@ import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.domain.File;
 import ro.roda.service.FilePropertyNameValueService;
-import ro.roda.service.FileService;
 import ro.roda.service.InstanceService;
 import ro.roda.service.SelectionVariableItemService;
 import ro.roda.service.StudyService;
@@ -25,9 +22,6 @@ import ro.roda.service.VariableService;
 import ro.roda.web.FileController;
 
 privileged aspect FileController_Roo_Controller {
-    
-    @Autowired
-    FileService FileController.fileService;
     
     @Autowired
     FilePropertyNameValueService FileController.filePropertyNameValueService;
@@ -44,28 +38,10 @@ privileged aspect FileController_Roo_Controller {
     @Autowired
     VariableService FileController.variableService;
     
-    @RequestMapping(method = RequestMethod.POST, produces = "text/html")
-    public String FileController.create(@Valid File file, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
-        if (bindingResult.hasErrors()) {
-            populateEditForm(uiModel, file);
-            return "files/create";
-        }
-        uiModel.asMap().clear();
-        fileService.saveFile(file);
-        return "redirect:/files/" + encodeUrlPathSegment(file.getId().toString(), httpServletRequest);
-    }
-    
     @RequestMapping(params = "form", produces = "text/html")
     public String FileController.createForm(Model uiModel) {
         populateEditForm(uiModel, new File());
         return "files/create";
-    }
-    
-    @RequestMapping(value = "/{id}", produces = "text/html")
-    public String FileController.show(@PathVariable("id") Integer id, Model uiModel) {
-        uiModel.addAttribute("file", fileService.findFile(id));
-        uiModel.addAttribute("itemId", id);
-        return "files/show";
     }
     
     @RequestMapping(produces = "text/html")
@@ -80,23 +56,6 @@ privileged aspect FileController_Roo_Controller {
             uiModel.addAttribute("files", fileService.findAllFiles());
         }
         return "files/list";
-    }
-    
-    @RequestMapping(method = RequestMethod.PUT, produces = "text/html")
-    public String FileController.update(@Valid File file, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
-        if (bindingResult.hasErrors()) {
-            populateEditForm(uiModel, file);
-            return "files/update";
-        }
-        uiModel.asMap().clear();
-        fileService.updateFile(file);
-        return "redirect:/files/" + encodeUrlPathSegment(file.getId().toString(), httpServletRequest);
-    }
-    
-    @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
-    public String FileController.updateForm(@PathVariable("id") Integer id, Model uiModel) {
-        populateEditForm(uiModel, fileService.findFile(id));
-        return "files/update";
     }
     
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")

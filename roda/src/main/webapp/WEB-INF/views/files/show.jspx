@@ -2,13 +2,16 @@
 <div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <page:show id="ps_ro_roda_domain_File" object="${file}" path="/files" z="o1tboFkQX6Jf4dnwvyCrIsmaSk4=">
+    <page:show id="ps_ro_roda_domain_File" object="${file}" path="/files" update="false" z="72+lili2nvpBoi5bBoJuN7C9bOU=">
         <field:display field="instances" id="s_ro_roda_domain_File_instances" object="${file}" z="Ef4WbhOFDPb8idRpXDjYRZWrY3Q="/>
         <field:display field="studies1" id="s_ro_roda_domain_File_studies1" object="${file}" z="BKR3UnYj26Df3gJasWCa9ijT/2s="/>
         <field:display field="title" id="s_ro_roda_domain_File_title" object="${file}" z="cBGYTQGiHat7CpLsmapA/licmv4="/>
         <field:display field="description" id="s_ro_roda_domain_File_description" object="${file}" z="SwkgLMM1WMoZV22djUQzopMFFms="/>
-        <field:display field="filetypeId" id="s_ro_roda_domain_File_filetypeId" object="${file}" z="ukGVWcJf31pdC5YoK2A59yvauNc="/>
         <field:display field="name" id="s_ro_roda_domain_File_name" object="${file}" z="JyGQ9kAdJEcjjng5ExsNt7Y3sqg="/>
         <field:display field="size" id="s_ro_roda_domain_File_size" object="${file}" z="5Z7NnyWZZbYQohBeoe7VAsoOSac="/>
+        <field:display field="fullPath" id="s_ro_roda_domain_File_fullPath" object="${file}" z="jgZNJsfK1G1NhvfHLKEdUiZU7Xk="/>
+        <field:display field="content" id="s_ro_roda_domain_File_content" object="${file}" render="false" z="user-managed"/>
+        <field:display field="contentType" id="s_ro_roda_domain_File_contentType" object="${file}" z="PkyxTviNw9itcoFoivsU/PVPSUc="/>
+        <field:frame field="url" id="s_ro_roda_domain_File_url" object="${file}" z="user-managed"/>
     </page:show>
 </div>

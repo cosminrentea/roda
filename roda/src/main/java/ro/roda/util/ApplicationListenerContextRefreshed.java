@@ -2,10 +2,7 @@ package ro.roda.util;
 
 import java.io.File;
 import java.io.FileWriter;
-
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.List;
@@ -17,32 +14,35 @@ import javax.xml.transform.stream.StreamResult;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.rosuda.JRI.REXP;
+import org.rosuda.JRI.Rengine;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.oxm.XmlMappingException;
 import org.springframework.oxm.xstream.XStreamMarshaller;
-
-import com.thoughtworks.xstream.XStream;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import ro.roda.domain.Catalog;
 import ro.roda.domain.CatalogStudy;
 import ro.roda.domain.CatalogStudyPK;
+import ro.roda.domain.Person;
+import ro.roda.domain.Prefix;
 import ro.roda.domain.Study;
+import ro.roda.domain.Suffix;
 import ro.roda.domain.Users;
-import ro.roda.service.CatalogService;
 import ro.roda.service.CatalogServiceImpl;
-import ro.roda.service.UsersServiceImpl;
+
+import com.thoughtworks.xstream.XStream;
 
 @Component
 public class ApplicationListenerContextRefreshed implements
 		ApplicationListener<ContextRefreshedEvent> {
-
+	
 	private final Log log = LogFactory
 			.getLog(ApplicationListenerContextRefreshed.class);
 
@@ -54,6 +54,9 @@ public class ApplicationListenerContextRefreshed implements
 
 	@Autowired
 	XStreamMarshaller xstreamMarshaller;
+	
+	@Autowired
+	RBean rb;
 
 	@Override
 	@Transactional
@@ -86,14 +89,13 @@ public class ApplicationListenerContextRefreshed implements
 				du.initData("csv/");
 				du.setSequence("hibernate_sequence", 1000, 1);
 
-				changeData();
-				
+//				changeData();
+				rb.rnorm(4);
 				saveXstream();
 			}
 		}
 	}
 	
-	@Transactional
 	public void changeData() {
 
 		Catalog oldCatalog = catalogService.findCatalog(new Integer(2));
@@ -124,12 +126,45 @@ public class ApplicationListenerContextRefreshed implements
 			cs.persist();
 		}
 	
+		// add the same Person entity: when there are similar fields -> only one insertion
+		
+		Person p1 = new Person();
+		p1.setFname("Ion");
+		p1.setLname("VASILE");
+		p1.setPrefixId(Prefix.findPrefix(1));
+		p1.setSuffixId(Suffix.findSuffix(1));
+		p1.persist();
+
+		Person p2 = new Person();
+		p2.setFname("Ionel");
+		p2.setLname("Vasile");
+		p2.setPrefixId(Prefix.findPrefix(1));
+		p2.setSuffixId(Suffix.findSuffix(1));
+		p2.persist();
+
+		Person p3 = new Person();
+		p3.setFname("Ion");
+		p3.setLname("Vasile");
+		p3.setPrefixId(Prefix.findPrefix(1));
+		p3.setSuffixId(Suffix.findSuffix(1));
+
+		Person resultPerson = null;
+		for (Person p : Person.findAllPeople()) {
+			if (p.equals(p3)) {
+				resultPerson = p;
+			}
+		}
+		
+		if (resultPerson == null) {
+			p3.persist();
+		}
 	}
 
 	public void saveXstream() {
+		log.debug(">saveXstream");
 		for (Catalog c : catalogService.findAllCatalogs()) {
 			File file = new File(c.getId() + ".xml");
-			log.error("Catalog XML Filename: " + file.getAbsolutePath());
+			log.debug("Catalog XML Filename: " + file.getAbsolutePath());
 			Result result;
 			try {
 				result = new StreamResult(new FileWriter(file));
@@ -144,6 +179,8 @@ public class ApplicationListenerContextRefreshed implements
 			}
 		}
 	}
+	
+	
 }
 
 // public void populateJAXB () {

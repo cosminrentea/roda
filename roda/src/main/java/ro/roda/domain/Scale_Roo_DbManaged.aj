@@ -19,11 +19,11 @@ privileged aspect Scale_Roo_DbManaged {
     private Item Scale.item;
     
     @ManyToOne
-    @JoinColumn(name = "maxValue_id", referencedColumnName = "item_id", nullable = false)
+    @JoinColumn(name = "max_value_id", referencedColumnName = "item_id", nullable = false)
     private Value Scale.maxValueId;
     
     @ManyToOne
-    @JoinColumn(name = "minValue_id", referencedColumnName = "item_id", nullable = false)
+    @JoinColumn(name = "min_value_id", referencedColumnName = "item_id", nullable = false)
     private Value Scale.minValueId;
     
     @Column(name = "units", columnDefinition = "int2")

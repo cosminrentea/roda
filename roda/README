@@ -1,10 +1,19 @@
 ----
-0. Instalarea si configurarea serviciilor
+0. Instalarea si configurarea - servicii si software aditional
 ----
-Postgresql 9 - server local
-In MacOSX e necesar sa se instaleze anterior MacPorts, sau sa se instaleze/ruleze Postgres.app (de la http://postgresapp.com )
+Se instaleaza Postgresql 9 ca server pe statia locala (preferabil, pornit automat ca serviciu la bootare).
+In MacOSX, se instaleaza/ruleaza Postgres.app (descarcat de la http://postgresapp.com )
 
+In MacOSX e necesar sa se instaleze anterior MacPorts.
+Apoi, se ruleaza comenzile:
+	sudo port install perl5 R pgadmin3 p5.12-test-www-selenium 
+	sudo R CMD javareconf
 
+Se instaleaza rJava, cu urmatoarea comanda data in shell-ul R :
+	R
+	install.packages('rJava')
+	
+Se instaleaza dbWrench2.
 
 ----
 1. Instalarea IDE si a proiectului
@@ -152,7 +161,7 @@ Daca portul local 8080 era liber (se poate edita dupa dublu-click pe server, pro
 	http://localhost:8080/roda
 
 
-4.2. Rularea din linia de comanda, pe un Server Local ad-hoc
+4.2. Rularea din linia de comanda, pe un Server Local ad-hoc (tip Tomcat)
 Din linia de comanda, in folder-ul radacina al proiectului "roda", cu comanda:
 	mvn tomcat:run
 
@@ -161,8 +170,10 @@ Daca portul local 8080 era liber (portul se poate schimba in "pom.xml"), proiect
 
 
 4.3. Rularea din STS, pe CloudFoundry
-! ATENTIE ! Accesul la acest cont/server este shared, pot aparea suprapuneri nedorite intre variante diferite / dezvoltatori diferiti !
-! ATENTIE ! Rularea pe CloudFoundry va fi facuta automat in viitor de catre serviciul Jenkins
+
+!!! ATENTIE !!!
+Accesul la acest cont/server este shared (e folosit inclusiv de catre Jenkins), 
+pot aparea suprapuneri nedorite intre variante diferite / dezvoltatori diferiti !
 
 Se adauga in view-ul "Servers" un nou server remote: click-dreapta, New, Server, Vmware -> Cloud Foundry, Next
 Se completeaza cu
@@ -180,5 +191,5 @@ Memory Reservation:    2048 M
 Se bifeaza serviciul "roda-postgres" din lista aparuta.
 "Finish"
 
-Proiectul e disponibil la URL-ul:
-http://roda.cloudfoundry.com
+Proiectul e disponibil online permanent la URL-ul:
+	http://roda.cloudfoundry.com

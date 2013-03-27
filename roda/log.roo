@@ -1919,3 +1919,27 @@ database reverse engineer --schema public --includeNonPortableAttributes --packa
 web mvc all --package ~.web
 // Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log closed at 2013-03-21 14:15:28
 // Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log opened at 2013-03-21 14:15:34
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log closed at 2013-03-22 14:20:29
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log opened at 2013-03-22 14:44:39
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log closed at 2013-03-22 21:10:19
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log opened at 2013-03-23 13:13:30
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log closed at 2013-03-23 15:49:52
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log opened at 2013-03-23 22:34:36
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log closed at 2013-03-23 22:37:59
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log opened at 2013-03-23 22:38:06
+web mvc all --package ~.web
+web mvc all --package ~.web
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log closed at 2013-03-26 14:57:31
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log opened at 2013-03-26 15:23:11
+web mvc all --package ~.web
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log closed at 2013-03-26 22:54:11
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log opened at 2013-03-27 12:15:28
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log closed at 2013-03-27 12:19:37
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log opened at 2013-03-27 12:22:33
+database reverse engineer --schema public --includeNonPortableAttributes --package ~.domain
+database reverse engineer --schema public --includeNonPortableAttributes --package ~.domain
+database reverse engineer --schema public --includeNonPortableAttributes --package ~.domain
+database reverse engineer --schema public --includeNonPortableAttributes --package ~.domain
+web mvc all --package ~.web
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log closed at 2013-03-27 14:55:46
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log opened at 2013-03-27 15:10:18

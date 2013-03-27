@@ -13,5 +13,6 @@
         <field:input field="filetypeId" id="c_ro_roda_domain_File_filetypeId" required="true" validationMessageCode="field_invalid_integer" z="NuiggTGpybh4y9ylfbutIcrWWzI="/>
         <field:input field="name" id="c_ro_roda_domain_File_name" required="true" z="bsqSPcjHt20RxwI1tw3c/gOf9Sg="/>
         <field:input field="size" id="c_ro_roda_domain_File_size" validationMessageCode="field_invalid_integer" z="ExvMcmCmlKeFT6YB3SQY+pfJvus="/>
+        <field:input field="content" id="c_ro_roda_domain_File_content" z="96daozDsvE/mEikDiIXyqsoveF8="/>
     </form:update>
 </div>

@@ -10,7 +10,7 @@ import ro.roda.domain.Catalog;
 privileged aspect Catalog_Roo_ToString {
     
     public String Catalog.toString() {
-        return new ReflectionToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE).setExcludeFieldNames("parentId", "owner").toString();
+        return new ReflectionToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE).setExcludeFieldNames("parentId").toString();
     }
     
 }

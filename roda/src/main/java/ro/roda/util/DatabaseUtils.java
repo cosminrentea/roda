@@ -42,6 +42,7 @@ public class DatabaseUtils {
 	 * associated sequences.
 	 */
 	public void truncate() {
+		log.debug("> truncate");
 		Connection con = null;
 		try {
 			Properties conProps = new Properties();
@@ -56,7 +57,7 @@ public class DatabaseUtils {
 						.executeQuery("SELECT 'TRUNCATE TABLE ' || schemaname || '.' || tablename || ' RESTART IDENTITY CASCADE;' FROM pg_tables WHERE schemaname = 'public' OR schemaname = 'audit'");
 				while (rs.next()) {
 					String sqlCommand = rs.getString(1);
-					log.info(sqlCommand);
+					log.trace(sqlCommand);
 
 					Statement stTruncate = con.createStatement();
 					stTruncate.execute(sqlCommand);

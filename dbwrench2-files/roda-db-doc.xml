@@ -4,6 +4,9 @@
   <VerNotes/>
   <DefTblOpts/>
   <DocFolder>C:\Users\user\Desktop\db\doc_bd</DocFolder>
+  <Sch Cm="" nm="audit">
+    <CustomTypes/>
+  </Sch>
   <Sch Cm="standard public schema" nm="public">
     <Tbl UsSo="1" nm="acl_class">
       <Cm>Tabel folosit de Spring Security pentru ACL. Uniquely identify any domain object class in the system. The only columns are the ID and the Java class name. Thus, there is a single row for each unique Class we wish to store ACL permissions for.</Cm>
@@ -59,7 +62,7 @@
         <CdTb mn="1" nm="acl_entry" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="sid" prCl="id"/>
       </Fk>
-      <Idx clu="0" nm="acl_entry_acl_object_identity_Idx" unq="0">
+      <Idx clu="0" nm="acl_entry_acl_object_identity_Idx" unq="1">
         <ClNs>acl_object_identity, ace_order</ClNs>
       </Idx>
       <UniqueConstraints/>
@@ -78,7 +81,7 @@
       <Cl au="0" df="" nm="object_id_identity" nu="0">
         <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
-      <Cl au="0" df="" nm="parent_object" nu="0">
+      <Cl au="0" df="" nm="parent_object" nu="1">
         <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
       </Cl>
       <Cl au="0" df="" nm="owner_sid" nu="0">
@@ -368,7 +371,7 @@
         <DT arr="0" ds="VarChar" en="" id="12" ln="200" sc="null" sg="1" un="0"/>
         <Cm>Denumirea catalogului</Cm>
       </Cl>
-      <Cl au="0" df="0" nm="parent_id" nu="1">
+      <Cl au="0" df="" nm="parent_id" nu="1">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul catalogului din care face parte catalogul curent (refera atributul id al tabelului catalog)</Cm>
       </Cl>
@@ -546,7 +549,7 @@
         <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Denumirea unui folder din sistemul CMS al aplicatiei</Cm>
       </Cl>
-      <Cl au="0" df="0" nm="parent_id" nu="1">
+      <Cl au="0" df="" nm="parent_id" nu="1">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul folder-ului parinte al folder-ului curent (refera atributul id din acelasi tabel)</Cm>
       </Cl>
@@ -898,17 +901,13 @@
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul documentului</Cm>
       </Cl>
-      <Cl au="0" df="" nm="title" nu="0">
+      <Cl au="0" df="" nm="title" nu="1">
         <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Titlul documentului</Cm>
       </Cl>
       <Cl au="0" df="" nm="description" nu="1">
         <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Descrierea documentului</Cm>
-      </Cl>
-      <Cl au="0" df="" nm="filetype_id" nu="0">
-        <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
-        <Cm>Codul tipului documentului (refera atributul id al tabelului document_type)</Cm>
       </Cl>
       <Cl au="0" df="" nm="name" nu="0">
         <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
@@ -917,6 +916,13 @@
       <Cl au="0" df="" nm="size" nu="1">
         <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Dimensiunea fisierului (specificata in bytes)</Cm>
+      </Cl>
+      <Cl au="0" df="" nm="full_path" nu="1">
+        <DT arr="0" ds="Text" en="" id="703" ln="null" sc="null" sg="1" un="0"/>
+        <Cm>Calea completa (unde este stocat fisierul pe server)</Cm>
+      </Cl>
+      <Cl au="0" df="" nm="content_type" nu="1">
+        <DT arr="0" ds="VarChar" en="" id="12" ln="100" sc="null" sg="1" un="0"/>
       </Cl>
       <UniqueConstraints/>
       <SchTrHis/>
@@ -2322,11 +2328,11 @@
         <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul item-ului</Cm>
       </Cl>
-      <Cl au="0" df="" nm="minValue_id" nu="0">
+      <Cl au="0" df="" nm="min_value_id" nu="0">
         <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul valorii minime (refera atributul itemId din tabelul value) </Cm>
       </Cl>
-      <Cl au="0" df="" nm="maxValue_id" nu="0">
+      <Cl au="0" df="" nm="max_value_id" nu="0">
         <DT arr="0" ds="BigInt" en="" id="-5" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul valorii maxime (refera atributul itemId din tabelul value) </Cm>
       </Cl>
@@ -2342,12 +2348,12 @@
       <Fk deAc="3" nm="fk_scale_max_value" prLkCl="item_id" upAc="3">
         <PrTb mn="0" nm="value" oe="1" sch="public" zr="0"/>
         <CdTb mn="1" nm="scale" oe="0" sch="public" zr="1"/>
-        <ClPr cdCl="maxValue_id" prCl="item_id"/>
+        <ClPr cdCl="max_value_id" prCl="item_id"/>
       </Fk>
       <Fk deAc="3" nm="fk_scale_min_value" prLkCl="item_id" upAc="3">
         <PrTb mn="0" nm="value" oe="1" sch="public" zr="0"/>
         <CdTb mn="1" nm="scale" oe="0" sch="public" zr="1"/>
-        <ClPr cdCl="minValue_id" prCl="item_id"/>
+        <ClPr cdCl="min_value_id" prCl="item_id"/>
       </Fk>
       <UniqueConstraints/>
       <SchTrHis/>
@@ -3894,7 +3900,7 @@
       <Zone bkCl="ffece9d8" h="1456" nm="Variables" w="623" x="3873" y="181"/>
     </Zones>
   </Dgm>
-  <RnmMgr NxRnmId="336">
+  <RnmMgr NxRnmId="338">
     <RnmCh ObjCls="Table" ParCls="Schema" ParNme="public" SupCls="" SupNme="">
       <Rnm id="1" nNm="person" oNm="Persoane"/>
     </RnmCh>
@@ -4748,6 +4754,12 @@
     <RnmCh ObjCls="Column" ParCls="Table" ParNme="setting_group" SupCls="Schema" SupNme="public">
       <Rnm id="334" nNm="parent_id" oNm="parent"/>
     </RnmCh>
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="scale" SupCls="Schema" SupNme="public">
+      <Rnm id="336" nNm="min_value_id" oNm="minValue_id"/>
+    </RnmCh>
+    <RnmCh ObjCls="Column" ParCls="Table" ParNme="scale" SupCls="Schema" SupNme="public">
+      <Rnm id="337" nNm="max_value_id" oNm="maxValue_id"/>
+    </RnmCh>
   </RnmMgr>
   <DbDocOptionMgr>
     <BasicOptionMgr>
@@ -4769,9 +4781,7 @@
   </OpenEditors>
   <TreePaths>
     <TreePath/>
-    <TreePath>/Schemas (1)</TreePath>
-    <TreePath>/Schemas (1)/public</TreePath>
-    <TreePath>/Schemas (1)/public/Tables (124)</TreePath>
+    <TreePath>/Schemas (2)</TreePath>
     <TreePath>/Diagrams (1)</TreePath>
     <TreePath>/Diagrams (1)/diagram</TreePath>
   </TreePaths>

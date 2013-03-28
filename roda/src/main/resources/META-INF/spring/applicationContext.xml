@@ -119,20 +119,6 @@
 		<!-- <constructor-arg index="3" value="${R.property}" /> -->
 	</bean>
 
-	<bean id="multipartFilter"
-		class="org.springframework.web.multipart.support.MultipartFilter">
-		<property name="multipartResolverBeanName" value="multipartResolver" />
-	</bean>
-
-	<!-- Cosmin: support for file-uploading -->
-	<bean id="multipartResolver"
-		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-		<!-- one of the properties available; the maximum file size in bytes -->
-		<property name="maxUploadSize" value="10000000" />
-	</bean>
-
-
-
 	<!-- Cosmin: the component-scan must be after the "dataSource" bean declaration 
 		because "dataSource" must be available when seeding the initial data into 
 		the DB (the connection details are the same) -->
@@ -142,5 +128,18 @@
 		<context:exclude-filter expression="org.springframework.stereotype.Controller"
 			type="annotation" />
 	</context:component-scan>
+
+	<!-- Cosmin: support for file-uploading -->
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<!-- one of the properties available; the maximum file size in bytes -->
+		<property name="maxUploadSize" value="10000000" />
+	</bean>
+<!-- 
+	<bean id="multipartFilter"
+		class="org.springframework.web.multipart.support.MultipartFilter">
+		<property name="multipartResolverBeanName" value="multipartResolver" />
+	</bean>
+-->
 
 </beans>

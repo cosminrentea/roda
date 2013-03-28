@@ -23,12 +23,12 @@ privileged aspect PersonLinks_Roo_DbManaged {
     private Person PersonLinks.personId;
     
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
-    private Users PersonLinks.userId;
-    
-    @ManyToOne
     @JoinColumn(name = "status_by", referencedColumnName = "id", nullable = false)
     private Users PersonLinks.statusBy;
+    
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
+    private Users PersonLinks.userId;
     
     @Column(name = "simscore", columnDefinition = "numeric", precision = 10, scale = 2)
     @NotNull
@@ -60,20 +60,20 @@ privileged aspect PersonLinks_Roo_DbManaged {
         this.personId = personId;
     }
     
-    public Users PersonLinks.getUserId() {
-        return userId;
-    }
-    
-    public void PersonLinks.setUserId(Users userId) {
-        this.userId = userId;
-    }
-    
     public Users PersonLinks.getStatusBy() {
         return statusBy;
     }
     
     public void PersonLinks.setStatusBy(Users statusBy) {
         this.statusBy = statusBy;
+    }
+    
+    public Users PersonLinks.getUserId() {
+        return userId;
+    }
+    
+    public void PersonLinks.setUserId(Users userId) {
+        this.userId = userId;
     }
     
     public BigDecimal PersonLinks.getSimscore() {

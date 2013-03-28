@@ -37,6 +37,7 @@ public class DatabaseUtils {
 		this.dbUrl = dbUrl;
 	}
 
+	
 	/**
 	 * Truncates the existing data in all the database tables, and restarts the
 	 * associated sequences.
@@ -178,6 +179,35 @@ public class DatabaseUtils {
 						+ " INCREMENT BY " + increment);
 				log.info("sequence new increment: " + sequence + " += "
 						+ increment);
+			} finally {
+				if (stmt != null) {
+					stmt.close();
+				}
+			}
+		} catch (SQLException e) {
+			log.error("SQLException:", e);
+		} finally {
+			if (con != null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					log.error("SQLException:", e);
+				}
+			}
+		}
+	}
+	
+	public void executeUpdate(String sqlCommand) {
+		Connection con = null;
+		try {
+			Properties conProps = new Properties();
+			conProps.put("user", this.dbUsername);
+			conProps.put("password", this.dbPassword);
+			con = DriverManager.getConnection(this.dbUrl, conProps);
+			Statement stmt = null;
+			try {
+				stmt = con.createStatement();
+				stmt.executeUpdate(sqlCommand);
 			} finally {
 				if (stmt != null) {
 					stmt.close();

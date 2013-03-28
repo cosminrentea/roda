@@ -6,7 +6,7 @@ In MacOSX, se instaleaza/ruleaza Postgres.app (descarcat de la http://postgresap
 
 In MacOSX e necesar sa se instaleze anterior MacPorts.
 Apoi, se ruleaza comenzile:
-	sudo port install perl5 R pgadmin3 p5.12-test-www-selenium 
+	sudo port install perl5 R pgadmin3 p5.12-test-www-selenium
 	sudo R CMD javareconf
 
 Se instaleaza rJava, cu urmatoarea comanda data in shell-ul R :
@@ -15,6 +15,10 @@ Se instaleaza rJava, cu urmatoarea comanda data in shell-ul R :
 	
 Se instaleaza dbWrench2.
 
+[Optional] Se instaleaza VMC, pentru configurarea CloudFoundry:
+	sudo port install gem
+	sudo gem install vmc
+	
 ----
 1. Instalarea IDE si a proiectului
 ----

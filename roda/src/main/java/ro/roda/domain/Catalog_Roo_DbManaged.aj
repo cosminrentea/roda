@@ -26,6 +26,10 @@ privileged aspect Catalog_Roo_DbManaged {
     private Set<CatalogStudy> Catalog.catalogStudies;
     
     @ManyToOne
+    @JoinColumn(name = "parent_id", referencedColumnName = "id", insertable = false, updatable = false)
+    private Catalog Catalog.parentId;
+    
+    @ManyToOne
     @JoinColumn(name = "owner", referencedColumnName = "id", nullable = false)
     private Users Catalog.owner;
     
@@ -59,6 +63,14 @@ privileged aspect Catalog_Roo_DbManaged {
     
     public void Catalog.setCatalogStudies(Set<CatalogStudy> catalogStudies) {
         this.catalogStudies = catalogStudies;
+    }
+    
+    public Catalog Catalog.getParentId() {
+        return parentId;
+    }
+    
+    public void Catalog.setParentId(Catalog parentId) {
+        this.parentId = parentId;
     }
     
     public Users Catalog.getOwner() {

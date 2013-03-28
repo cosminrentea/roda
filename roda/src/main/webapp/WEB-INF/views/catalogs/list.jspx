@@ -7,7 +7,7 @@
             <table:column id="c_ro_roda_domain_Catalog_owner" property="owner" z="7cJhGbijsvP6xnM2rgU/fH8f1Ps="/>
             <table:column id="c_ro_roda_domain_Catalog_name" property="name" z="/7+2gfxmSvDY0jhYZbdb19vyj8k="/>
             <table:column calendar="true" dateTimePattern="${catalog_added_date_format}" id="c_ro_roda_domain_Catalog_added" property="added" z="DAWMXETV6AjypQO7ley4UC8rCgo="/>
-            <table:column id="c_ro_roda_domain_Catalog_sequencenr" property="sequencenr" z="PVXeW8lg7UQHRnJ9DHEeGnKuU3k="/>
+            <table:column id="c_ro_roda_domain_Catalog_parentId" property="parentId" z="QKaT+00C/urCP/D9wMzgplpk45g="/>
         </table:table>
     </page:list>
 </div>

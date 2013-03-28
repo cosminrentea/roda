@@ -14,8 +14,6 @@ import javax.xml.transform.stream.StreamResult;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.rosuda.JRI.REXP;
-import org.rosuda.JRI.Rengine;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -88,10 +86,11 @@ public class ApplicationListenerContextRefreshed implements
 				du.truncate();
 				du.initData("csv/");
 				du.setSequence("hibernate_sequence", 1000, 1);
+				du.executeUpdate("CREATE SCHEMA audit");
 
 //				changeData();
 				rb.rnorm(4);
-				saveXstream();
+//				saveXstream();
 			}
 		}
 	}

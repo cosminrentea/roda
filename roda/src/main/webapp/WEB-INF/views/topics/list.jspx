@@ -6,7 +6,7 @@
         <table:table data="${topics}" id="l_ro_roda_domain_Topic" path="/topics" z="2uBNlUONAxQ/LDEBM7LI9UB/r4I=">
             <table:column id="c_ro_roda_domain_Topic_instances1" property="instances1" z="3tZzYa7jujvlrNq3IkkMzZmrFj0="/>
             <table:column id="c_ro_roda_domain_Topic_studies" property="studies" z="35h7VFPx9BCjmd18z0Yntf5MtGY="/>
-            <table:column id="c_ro_roda_domain_Topic_parentId" property="parentId" z="N4jGUTfI/bKsr9LACjy9U8vpXOk="/>
+            <table:column id="c_ro_roda_domain_Topic_preferredSynonymTopicId" property="preferredSynonymTopicId" z="TIe38CIsNVaWteKfFmZObD6uBlc="/>
         </table:table>
     </page:list>
 </div>

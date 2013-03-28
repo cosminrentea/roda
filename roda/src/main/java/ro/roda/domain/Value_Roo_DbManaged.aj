@@ -25,6 +25,12 @@ privileged aspect Value_Roo_DbManaged {
     @OneToMany(mappedBy = "minValueId")
     private Set<Scale> Value.scales1;
     
+    @OneToMany(mappedBy = "minvalueId")
+    private Set<Scale> Value.scales2;
+    
+    @OneToMany(mappedBy = "maxvalueId")
+    private Set<Scale> Value.scales3;
+    
     @Column(name = "value", columnDefinition = "int4")
     @NotNull
     private Integer Value.value;
@@ -51,6 +57,22 @@ privileged aspect Value_Roo_DbManaged {
     
     public void Value.setScales1(Set<Scale> scales1) {
         this.scales1 = scales1;
+    }
+    
+    public Set<Scale> Value.getScales2() {
+        return scales2;
+    }
+    
+    public void Value.setScales2(Set<Scale> scales2) {
+        this.scales2 = scales2;
+    }
+    
+    public Set<Scale> Value.getScales3() {
+        return scales3;
+    }
+    
+    public void Value.setScales3(Set<Scale> scales3) {
+        this.scales3 = scales3;
     }
     
     public Integer Value.getValue() {

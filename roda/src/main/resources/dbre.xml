@@ -1433,15 +1433,15 @@
         <column description="Data de final a relatiei specificate prin tipul org_relation_type intre organizatiile specificate prin org_1_id si org_2_id" name="date_end" primaryKey="false" required="false" scale="0" size="13" type="91,date"/>
         <column description="Codul tipului relatiei demarate la datestart intre organizatiile specificate prin org_1_id si org_2_id " name="org_relation_type_id" primaryKey="true" required="true" scale="0" size="10" type="4,int4"/>
         <column description="Detaliile relatiei demarate la datestart intre organizatiile specificate prin org_1_id si org_2_id" name="details" primaryKey="false" required="true" scale="0" size="2147483647" type="12,text"/>
-        <foreign-key foreignTable="org" name="fk_org_2_relations_org" onDelete="none" onUpdate="none">
-            <option key="foreignSchemaName" value="public"/>
-            <option key="exported" value="false"/>
-            <reference foreign="id" local="org_2_id"/>
-        </foreign-key>
         <foreign-key foreignTable="org" name="fk_org_relations_org" onDelete="none" onUpdate="none">
             <option key="foreignSchemaName" value="public"/>
             <option key="exported" value="false"/>
             <reference foreign="id" local="org_1_id"/>
+        </foreign-key>
+        <foreign-key foreignTable="org" name="fk_org_2_relations_org" onDelete="none" onUpdate="none">
+            <option key="foreignSchemaName" value="public"/>
+            <option key="exported" value="false"/>
+            <reference foreign="id" local="org_2_id"/>
         </foreign-key>
         <foreign-key foreignTable="org_relation_type" name="fk_org_relations_org_relation_type" onDelete="none" onUpdate="none">
             <option key="foreignSchemaName" value="public"/>
@@ -1626,15 +1626,15 @@
             <option key="exported" value="false"/>
             <reference foreign="id" local="person_id"/>
         </foreign-key>
-        <foreign-key foreignTable="users" name="fk_person_links_users" onDelete="none" onUpdate="none">
-            <option key="foreignSchemaName" value="public"/>
-            <option key="exported" value="false"/>
-            <reference foreign="id" local="user_id"/>
-        </foreign-key>
         <foreign-key foreignTable="users" name="fk_person_links_users2" onDelete="none" onUpdate="none">
             <option key="foreignSchemaName" value="public"/>
             <option key="exported" value="false"/>
             <reference foreign="id" local="status_by"/>
+        </foreign-key>
+        <foreign-key foreignTable="users" name="fk_person_links_users" onDelete="none" onUpdate="none">
+            <option key="foreignSchemaName" value="public"/>
+            <option key="exported" value="false"/>
+            <reference foreign="id" local="user_id"/>
         </foreign-key>
         <unique name="pkperson_links">
             <unique-column name="id"/>
@@ -1837,20 +1837,32 @@
         <column description="Codul valorii minime (refera atributul itemId din tabelul value) " name="min_value_id" primaryKey="false" required="true" scale="0" size="19" type="-5,int8"/>
         <column description="Codul valorii maxime (refera atributul itemId din tabelul value) " name="max_value_id" primaryKey="false" required="true" scale="0" size="19" type="-5,int8"/>
         <column description="Unitatea scalei respective" name="units" primaryKey="false" required="true" scale="0" size="5" type="5,int2"/>
+        <column name="maxvalue_id" primaryKey="false" required="true" scale="0" size="19" type="-5,int8"/>
+        <column name="minvalue_id" primaryKey="false" required="true" scale="0" size="19" type="-5,int8"/>
         <foreign-key foreignTable="item" name="fk_scale_item" onDelete="none" onUpdate="none">
             <option key="foreignSchemaName" value="public"/>
             <option key="exported" value="false"/>
             <reference foreign="id" local="item_id"/>
         </foreign-key>
-        <foreign-key foreignTable="value" name="fk_scale_max_value" onDelete="none" onUpdate="none">
+        <foreign-key foreignTable="value" name="fk683094a7603fc37" onDelete="none" onUpdate="none">
             <option key="foreignSchemaName" value="public"/>
             <option key="exported" value="false"/>
-            <reference foreign="item_id" local="max_value_id"/>
+            <reference foreign="item_id" local="maxvalue_id"/>
+        </foreign-key>
+        <foreign-key foreignTable="value" name="fk683094a4da32f25" onDelete="none" onUpdate="none">
+            <option key="foreignSchemaName" value="public"/>
+            <option key="exported" value="false"/>
+            <reference foreign="item_id" local="minvalue_id"/>
         </foreign-key>
         <foreign-key foreignTable="value" name="fk_scale_min_value" onDelete="none" onUpdate="none">
             <option key="foreignSchemaName" value="public"/>
             <option key="exported" value="false"/>
             <reference foreign="item_id" local="min_value_id"/>
+        </foreign-key>
+        <foreign-key foreignTable="value" name="fk_scale_max_value" onDelete="none" onUpdate="none">
+            <option key="foreignSchemaName" value="public"/>
+            <option key="exported" value="false"/>
+            <reference foreign="item_id" local="max_value_id"/>
         </foreign-key>
         <unique name="pkscale">
             <unique-column name="item_id"/>
@@ -1972,15 +1984,15 @@
         <column description="Identificatorul saltului, corespunzator variabilei referite prin atributul variable_id din cadrul instantei identificate prin atributul instance_id " name="id" primaryKey="true" required="true" scale="0" size="19" type="-5,bigserial"/>
         <column description="Conditia specificata ca text, care in urma evaluarii va confirma saltul" name="condition" primaryKey="false" required="true" scale="0" size="2147483647" type="12,text"/>
         <column description="Identificatorul variabilei la care se va face salt" name="next_variable_id" primaryKey="false" required="true" scale="0" size="19" type="-5,int8"/>
-        <foreign-key foreignTable="variable" name="fk_skip_next_variable" onDelete="none" onUpdate="none">
-            <option key="foreignSchemaName" value="public"/>
-            <option key="exported" value="false"/>
-            <reference foreign="id" local="next_variable_id"/>
-        </foreign-key>
         <foreign-key foreignTable="variable" name="fk_skip_variable" onDelete="none" onUpdate="none">
             <option key="foreignSchemaName" value="public"/>
             <option key="exported" value="false"/>
             <reference foreign="id" local="variable_id"/>
+        </foreign-key>
+        <foreign-key foreignTable="variable" name="fk_skip_next_variable" onDelete="none" onUpdate="none">
+            <option key="foreignSchemaName" value="public"/>
+            <option key="exported" value="false"/>
+            <reference foreign="id" local="next_variable_id"/>
         </foreign-key>
         <unique name="pkskip">
             <unique-column name="id"/>
@@ -2455,15 +2467,15 @@
         <column description="Descrierea topic-ului ce poate fi asociat unui studiu sau unei instante" name="description" primaryKey="false" required="false" scale="0" size="2147483647" type="12,text"/>
         <column description="Codul topic-ului din dreapta, in ierarhia arorescenta creata pentru a mentine legaturile cu topic-urile referite " name="parent_id" primaryKey="false" required="false" scale="0" size="10" type="4,int4"/>
         <column name="preferred_synonym_topic_id" primaryKey="false" required="false" scale="0" size="10" type="4,int4"/>
-        <foreign-key foreignTable="topic" name="fk_topic_topic_parent" onDelete="none" onUpdate="none">
-            <option key="foreignSchemaName" value="public"/>
-            <option key="exported" value="false"/>
-            <reference foreign="id" local="parent_id"/>
-        </foreign-key>
         <foreign-key foreignTable="topic" name="fk_topic_topic_preferred" onDelete="none" onUpdate="none">
             <option key="foreignSchemaName" value="public"/>
             <option key="exported" value="false"/>
             <reference foreign="id" local="preferred_synonym_topic_id"/>
+        </foreign-key>
+        <foreign-key foreignTable="topic" name="fk_topic_topic_parent" onDelete="none" onUpdate="none">
+            <option key="foreignSchemaName" value="public"/>
+            <option key="exported" value="false"/>
+            <reference foreign="id" local="parent_id"/>
         </foreign-key>
         <foreign-key foreignTable="instance_topic" name="fk_instance_topic_topic" onDelete="none" onUpdate="none">
             <option key="foreignSchemaName" value="public"/>
@@ -2548,15 +2560,15 @@
         <column description="Textul mesajului trimis de catre utilizatorul referit prin atributul user_id" name="message" primaryKey="false" required="true" scale="0" size="2147483647" type="12,text"/>
         <column description="Codul utilizatorului care transmite mesajul (refera atributul id din tabelul users)" name="from_user_id" primaryKey="false" required="true" scale="0" size="10" type="4,int4"/>
         <column description="Codul utilizatorului caruia ii este transmis mesajul (refera atributul id din tabelul users)" name="to_user_id" primaryKey="false" required="true" scale="0" size="10" type="4,int4"/>
-        <foreign-key foreignTable="users" name="fk_user_message_user" onDelete="none" onUpdate="none">
-            <option key="foreignSchemaName" value="public"/>
-            <option key="exported" value="false"/>
-            <reference foreign="id" local="to_user_id"/>
-        </foreign-key>
         <foreign-key foreignTable="users" name="fk_user_messages_users" onDelete="none" onUpdate="none">
             <option key="foreignSchemaName" value="public"/>
             <option key="exported" value="false"/>
             <reference foreign="id" local="from_user_id"/>
+        </foreign-key>
+        <foreign-key foreignTable="users" name="fk_user_message_user" onDelete="none" onUpdate="none">
+            <option key="foreignSchemaName" value="public"/>
+            <option key="exported" value="false"/>
+            <reference foreign="id" local="to_user_id"/>
         </foreign-key>
         <unique name="pkuser_message">
             <unique-column name="id"/>
@@ -2753,6 +2765,16 @@
             <option key="foreignSchemaName" value="public"/>
             <option key="exported" value="true"/>
             <reference foreign="min_value_id" local="item_id"/>
+        </foreign-key>
+        <foreign-key foreignTable="scale" name="fk683094a4da32f25" onDelete="none" onUpdate="none">
+            <option key="foreignSchemaName" value="public"/>
+            <option key="exported" value="true"/>
+            <reference foreign="minvalue_id" local="item_id"/>
+        </foreign-key>
+        <foreign-key foreignTable="scale" name="fk683094a7603fc37" onDelete="none" onUpdate="none">
+            <option key="foreignSchemaName" value="public"/>
+            <option key="exported" value="true"/>
+            <reference foreign="maxvalue_id" local="item_id"/>
         </foreign-key>
         <unique name="pkvalue">
             <unique-column name="item_id"/>

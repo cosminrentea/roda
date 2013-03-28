@@ -33,12 +33,12 @@ privileged aspect Topic_Roo_DbManaged {
     private Set<TranslatedTopic> Topic.translatedTopics;
     
     @ManyToOne
-    @JoinColumn(name = "parent_id", referencedColumnName = "id", insertable = false, updatable = false)
-    private Topic Topic.parentId;
-    
-    @ManyToOne
     @JoinColumn(name = "preferred_synonym_topic_id", referencedColumnName = "id", insertable = false, updatable = false)
     private Topic Topic.preferredSynonymTopicId;
+    
+    @ManyToOne
+    @JoinColumn(name = "parent_id", referencedColumnName = "id", insertable = false, updatable = false)
+    private Topic Topic.parentId;
     
     @Column(name = "name", columnDefinition = "varchar", length = 100)
     @NotNull
@@ -87,20 +87,20 @@ privileged aspect Topic_Roo_DbManaged {
         this.translatedTopics = translatedTopics;
     }
     
-    public Topic Topic.getParentId() {
-        return parentId;
-    }
-    
-    public void Topic.setParentId(Topic parentId) {
-        this.parentId = parentId;
-    }
-    
     public Topic Topic.getPreferredSynonymTopicId() {
         return preferredSynonymTopicId;
     }
     
     public void Topic.setPreferredSynonymTopicId(Topic preferredSynonymTopicId) {
         this.preferredSynonymTopicId = preferredSynonymTopicId;
+    }
+    
+    public Topic Topic.getParentId() {
+        return parentId;
+    }
+    
+    public void Topic.setParentId(Topic parentId) {
+        this.parentId = parentId;
     }
     
     public String Topic.getName() {

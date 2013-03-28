@@ -88,6 +88,7 @@
 		<property name="viewClass"
 			value="org.springframework.web.servlet.view.tiles2.TilesView" />
 	</bean>
+	
 	<bean class="org.springframework.web.servlet.view.tiles2.TilesConfigurer"
 		id="tilesConfigurer">
 		<property name="definitions">
@@ -98,6 +99,8 @@
 			</list>
 		</property>
 	</bean>
+	
 	<bean class="ro.roda.conversion.ApplicationConversionServiceFactoryBean"
 		id="applicationConversionService" />
+		
 </beans>

@@ -18,12 +18,12 @@ import ro.roda.domain.OrgRelations;
 privileged aspect OrgRelations_Roo_DbManaged {
     
     @ManyToOne
-    @JoinColumn(name = "org_2_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
-    private Org OrgRelations.org2Id;
-    
-    @ManyToOne
     @JoinColumn(name = "org_1_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     private Org OrgRelations.org1Id;
+    
+    @ManyToOne
+    @JoinColumn(name = "org_2_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+    private Org OrgRelations.org2Id;
     
     @ManyToOne
     @JoinColumn(name = "org_relation_type_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
@@ -43,20 +43,20 @@ privileged aspect OrgRelations_Roo_DbManaged {
     @NotNull
     private String OrgRelations.details;
     
-    public Org OrgRelations.getOrg2Id() {
-        return org2Id;
-    }
-    
-    public void OrgRelations.setOrg2Id(Org org2Id) {
-        this.org2Id = org2Id;
-    }
-    
     public Org OrgRelations.getOrg1Id() {
         return org1Id;
     }
     
     public void OrgRelations.setOrg1Id(Org org1Id) {
         this.org1Id = org1Id;
+    }
+    
+    public Org OrgRelations.getOrg2Id() {
+        return org2Id;
+    }
+    
+    public void OrgRelations.setOrg2Id(Org org2Id) {
+        this.org2Id = org2Id;
     }
     
     public OrgRelationType OrgRelations.getOrgRelationTypeId() {

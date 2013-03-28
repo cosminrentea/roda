@@ -6,8 +6,8 @@ import org.springframework.roo.addon.javabean.RooJavaBean;
 import org.springframework.roo.addon.jpa.activerecord.RooJpaActiveRecord;
 import org.springframework.roo.addon.tostring.RooToString;
 
-
-@Audited @RooJavaBean
+@Audited
+@RooJavaBean
 @RooToString
 @RooJpaActiveRecord(identifierType = PersonPhonePK.class, versionField = "", table = "person_phone", schema = "public")
 @RooDbManaged(automaticallyDelete = true)

@@ -7,5 +7,7 @@
         <field:select field="maxValueId" id="c_ro_roda_domain_Scale_maxValueId" itemValue="itemId" items="${values}" path="/values" z="J1Zf3CX1jXTh28FeBUrTozt/on0="/>
         <field:select field="minValueId" id="c_ro_roda_domain_Scale_minValueId" itemValue="itemId" items="${values}" path="/values" z="FtiMBi9a6RK7BRshahF3C4lDB1I="/>
         <field:input field="units" id="c_ro_roda_domain_Scale_units" required="true" validationMessageCode="field_invalid_integer" z="CtdcePXVaji/bOYj0OkQtXjetMQ="/>
+        <field:select field="maxvalueId" id="c_ro_roda_domain_Scale_maxvalueId" itemValue="itemId" items="${values}" path="/values" z="uJ08ibAhY6kFZpYUTYSNilvG1Hc="/>
+        <field:select field="minvalueId" id="c_ro_roda_domain_Scale_minvalueId" itemValue="itemId" items="${values}" path="/values" z="XDj/6I8DhPEexDuU5R+a8Aqm+Hc="/>
     </form:update>
 </div>

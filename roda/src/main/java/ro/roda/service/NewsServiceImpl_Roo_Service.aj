@@ -15,8 +15,8 @@ privileged aspect NewsServiceImpl_Roo_Service {
     
     declare @type: NewsServiceImpl: @Transactional;
     
-    public long NewsServiceImpl.countAllNews() {
-        return News.countNews();
+    public long NewsServiceImpl.countAllNewspieces() {
+        return News.countNewspieces();
     }
     
     public void NewsServiceImpl.deleteNews(News news) {
@@ -27,8 +27,8 @@ privileged aspect NewsServiceImpl_Roo_Service {
         return News.findNews(id);
     }
     
-    public List<News> NewsServiceImpl.findAllNews() {
-        return News.findAllNews();
+    public List<News> NewsServiceImpl.findAllNewspieces() {
+        return News.findAllNewspieces();
     }
     
     public List<News> NewsServiceImpl.findNewsEntries(int firstResult, int maxResults) {

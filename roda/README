@@ -167,13 +167,17 @@ Daca portul local 8080 era liber (se poate edita dupa dublu-click pe server, pro
 
 4.2. Rularea din linia de comanda, pe un Server Local ad-hoc (tip Tomcat)
 Din linia de comanda, in folder-ul radacina al proiectului "roda", cu comanda:
-	mvn tomcat:run
+	MAVEN_OPTS="-Xmx1024m -XX:MaxPermSize=256m" mvn tomcat:run
 
 Daca portul local 8080 era liber (portul se poate schimba in "pom.xml"), proiectul e disponibil la URL-ul:
 	http://localhost:8080/roda
 
+4.3. Rularea automata a testelor web (Selenium) 
+Din linia de comanda, in folder-ul radacina al proiectului "roda", cu comanda:
+	MAVEN_OPTS="-Xmx1024m -XX:MaxPermSize=256m" mvn tomcat:run selenium:selenese
 
-4.3. Rularea din STS, pe CloudFoundry
+
+4.4. Rularea din STS, pe CloudFoundry (nerecomandat)
 
 !!! ATENTIE !!!
 Accesul la acest cont/server este shared (e folosit inclusiv de catre Jenkins), 
@@ -192,7 +196,7 @@ In fereastra "Application details", se selecteaza "Application Type" => "Spring"
 Deployed URL:    roda.cloudfoundry.com
 Memory Reservation:    2048 M
 "Next"
-Se bifeaza serviciul "roda-postgres" din lista aparuta.
+Se bifeaza serviciul "roda-postgres" (baza de date Postgres) din lista aparuta.
 "Finish"
 
 Proiectul e disponibil online permanent la URL-ul:

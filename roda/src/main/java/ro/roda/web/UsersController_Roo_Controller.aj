@@ -166,7 +166,7 @@ privileged aspect UsersController_Roo_Controller {
         uiModel.addAttribute("cmspages", cmsPageService.findAllCmsPages());
         uiModel.addAttribute("instances", instanceService.findAllInstances());
         uiModel.addAttribute("instancekeywords", instanceKeywordService.findAllInstanceKeywords());
-        uiModel.addAttribute("newsitems", newsService.findAllNews());
+        uiModel.addAttribute("newspieces", newsService.findAllNewspieces());
         uiModel.addAttribute("personlinkses", personLinksService.findAllPersonLinkses());
         uiModel.addAttribute("sourcestudytypehistorys", sourcestudyTypeHistoryService.findAllSourcestudyTypeHistorys());
         uiModel.addAttribute("sourcetypehistorys", sourcetypeHistoryService.findAllSourcetypeHistorys());

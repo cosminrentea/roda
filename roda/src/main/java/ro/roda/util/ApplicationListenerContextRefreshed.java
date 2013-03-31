@@ -1,41 +1,19 @@
 package ro.roda.util;
 
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.util.GregorianCalendar;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Properties;
 
-import javax.xml.transform.Result;
-import javax.xml.transform.stream.StreamResult;
-
-import org.apache.commons.dbcp.BasicDataSource;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
-import org.springframework.oxm.XmlMappingException;
-import org.springframework.oxm.xstream.XStreamMarshaller;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
-import ro.roda.domain.Catalog;
-import ro.roda.domain.CatalogStudy;
-import ro.roda.domain.CatalogStudyPK;
-import ro.roda.domain.Person;
-import ro.roda.domain.Prefix;
-import ro.roda.domain.Study;
-import ro.roda.domain.Suffix;
-import ro.roda.domain.Users;
-import ro.roda.service.CatalogServiceImpl;
-
-import com.thoughtworks.xstream.XStream;
 
 @Component
 public class ApplicationListenerContextRefreshed implements
@@ -45,17 +23,14 @@ public class ApplicationListenerContextRefreshed implements
 			.getLog(ApplicationListenerContextRefreshed.class);
 
 	@Autowired
-	BasicDataSource dataSource;
-
-	@Autowired
-	CatalogServiceImpl catalogService;
-
-	@Autowired
-	XStreamMarshaller xstreamMarshaller;
-	
-	@Autowired
 	RBean rb;
 
+	@Autowired
+	DatabaseUtils du;
+	
+	@Value("${roda.mode}")
+	private String rodaMode = "server-data";
+	
 	@Override
 	@Transactional
 	public void onApplicationEvent(ContextRefreshedEvent event) {
@@ -63,147 +38,37 @@ public class ApplicationListenerContextRefreshed implements
 			// root context
 			log.info("event.getApplicationContext() = "
 					+ event.getApplicationContext());
-			String runMode = "server";
+
+			// check if we are in "test mode"
+			// (and the properties file has set a property)
 			try {
-				// check if we are in "test mode"
-				// (and the properties file has set a property)
-				Resource resource = new ClassPathResource("/env.properties");
+				Resource resource = new ClassPathResource("roda.properties");
 				Properties props = PropertiesLoaderUtils
 						.loadProperties(resource);
-				runMode = props.getProperty("run.mode");
+				rodaMode = props.getProperty("roda.mode");
 			} catch (IOException ignored) {
 			}
-			log.info("run.mode = " + runMode);
-			if ("server".equals(runMode)) {
+			
+			log.info("roda.mode = " + rodaMode);
+			
+			du.executeUpdate("CREATE SCHEMA audit");
+			du.truncate();
+			
+			rb.rnorm(4);
+			
+			// to skip the initial actions,
+			// change "run.mode" property to another string 
+			// (not "server-data")
+			if ("server-data".equals(rodaMode)) {
 				// log.error(dataSource.getUsername() + ":"
 				// + dataSource.getPassword() + ":" + dataSource.getUrl());
 
-				DatabaseUtils du = new DatabaseUtils(dataSource.getUsername(),
-						dataSource.getPassword(), dataSource.getUrl());
-
-				// DatabaseUtils du = new DatabaseUtils("roda", "roda",
-				// "jdbc:postgresql://localhost:5432/roda");
-				du.truncate();
 				du.initData("csv/");
 				du.setSequence("hibernate_sequence", 1000, 1);
-				du.executeUpdate("CREATE SCHEMA audit");
-
-//				changeData();
-				rb.rnorm(4);
-//				saveXstream();
+//				du.changeData();
+//				du.saveXstream();
 			}
 		}
 	}
-	
-	public void changeData() {
-
-		Catalog oldCatalog = catalogService.findCatalog(new Integer(2));
-
-		// add a new catalog
-		Catalog newCatalog = new Catalog();
-		newCatalog.setParentId(null);
-		newCatalog.setName("root 2");
-		newCatalog.setOwner(Users.findUsers(1));
-		newCatalog.setAdded(new GregorianCalendar());
-		newCatalog.persist();
-		
-		// move the old/existing catalog in the new folder
-		oldCatalog.setParentId(newCatalog);
-		HashSet<Catalog> children = new HashSet<Catalog>();
-		children.add(oldCatalog);
-		newCatalog.setCatalogs(children);
-		
-		oldCatalog.merge();
-		
-		// add all existing studies to the new catalog
-		List<Study> ls = Study.findAllStudys();
-		for (Study study : ls) {
-			CatalogStudy cs = new CatalogStudy();
-			CatalogStudyPK csid = new CatalogStudyPK(newCatalog.getId(),study.getId());
-			cs.setId(csid);
-			cs.setAdded(new GregorianCalendar());
-			cs.persist();
-		}
-	
-		// add the same Person entity: when there are similar fields -> only one insertion
-		
-		Person p1 = new Person();
-		p1.setFname("Ion");
-		p1.setLname("VASILE");
-		p1.setPrefixId(Prefix.findPrefix(1));
-		p1.setSuffixId(Suffix.findSuffix(1));
-		p1.persist();
-
-		Person p2 = new Person();
-		p2.setFname("Ionel");
-		p2.setLname("Vasile");
-		p2.setPrefixId(Prefix.findPrefix(1));
-		p2.setSuffixId(Suffix.findSuffix(1));
-		p2.persist();
-
-		Person p3 = new Person();
-		p3.setFname("Ion");
-		p3.setLname("Vasile");
-		p3.setPrefixId(Prefix.findPrefix(1));
-		p3.setSuffixId(Suffix.findSuffix(1));
-
-		Person resultPerson = null;
-		for (Person p : Person.findAllPeople()) {
-			if (p.equals(p3)) {
-				resultPerson = p;
-			}
-		}
-		
-		if (resultPerson == null) {
-			p3.persist();
-		}
-	}
-
-	public void saveXstream() {
-		log.debug(">saveXstream");
-		for (Catalog c : catalogService.findAllCatalogs()) {
-			File file = new File(c.getId() + ".xml");
-			log.debug("Catalog XML Filename: " + file.getAbsolutePath());
-			Result result;
-			try {
-				result = new StreamResult(new FileWriter(file));
-				xstreamMarshaller.setMode(XStream.XPATH_ABSOLUTE_REFERENCES);
-				xstreamMarshaller.marshal(c, result);
-			} catch (XmlMappingException e) {
-				// TODO Auto-generated catch block
-				log.error("XmlMappingException:", e);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				log.error("IOException:", e);
-			}
-		}
-	}
-	
 	
 }
-
-// public void populateJAXB () {
-// JAXBContext jc;
-// try {
-// jc = JAXBContext.newInstance("ro.roda.domain");
-// Marshaller marshaller = jc.createMarshaller();
-// // validate using DDI 1.2.2 XML Schema
-// // marshaller.setSchema(SchemaFactory.newInstance(
-// // XMLConstants.W3C_XML_SCHEMA_NS_URI).newSchema(
-// // new File(xsdDdi122)));
-//
-// // clean XML formatting
-// marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-//
-// for (Catalog u:catalogService.findAllCatalogs()) {
-//
-// String filename = u.getId() + ".xml";
-// File file = new File(filename);
-// log.error("Catalog XML Filename: " + file.getAbsolutePath());
-// // save the Catalog as XML
-// marshaller.marshal(u, file);
-// }
-// } catch (JAXBException e) {
-// log.error("SQLException:", e);
-// }
-// }

@@ -16,25 +16,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.domain.Sourcestudy;
-import ro.roda.service.SourceService;
 import ro.roda.service.SourcestudyService;
-import ro.roda.service.SourcestudyTypeHistoryService;
-import ro.roda.service.SourcestudyTypeService;
 import ro.roda.web.SourcestudyController;
 
 privileged aspect SourcestudyController_Roo_Controller {
     
     @Autowired
     SourcestudyService SourcestudyController.sourcestudyService;
-    
-    @Autowired
-    SourceService SourcestudyController.sourceService;
-    
-    @Autowired
-    SourcestudyTypeService SourcestudyController.sourcestudyTypeService;
-    
-    @Autowired
-    SourcestudyTypeHistoryService SourcestudyController.sourcestudyTypeHistoryService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String SourcestudyController.create(@Valid Sourcestudy sourcestudy, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -103,9 +91,6 @@ privileged aspect SourcestudyController_Roo_Controller {
     
     void SourcestudyController.populateEditForm(Model uiModel, Sourcestudy sourcestudy) {
         uiModel.addAttribute("sourcestudy", sourcestudy);
-        uiModel.addAttribute("sources", sourceService.findAllSources());
-        uiModel.addAttribute("sourcestudytypes", sourcestudyTypeService.findAllSourcestudyTypes());
-        uiModel.addAttribute("sourcestudytypehistorys", sourcestudyTypeHistoryService.findAllSourcestudyTypeHistorys());
     }
     
     String SourcestudyController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

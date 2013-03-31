@@ -20,11 +20,11 @@ privileged aspect News_Roo_Jpa_ActiveRecord {
         return em;
     }
     
-    public static long News.countNews() {
+    public static long News.countNewspieces() {
         return entityManager().createQuery("SELECT COUNT(o) FROM News o", Long.class).getSingleResult();
     }
     
-    public static List<News> News.findAllNews() {
+    public static List<News> News.findAllNewspieces() {
         return entityManager().createQuery("SELECT o FROM News o", News.class).getResultList();
     }
     

@@ -547,7 +547,7 @@
 
 				<!-- start Cosmin -->
 				<configuration>
-					<!-- <fork>true</fork> -->
+					<fork>true</fork>
 					<port>8080</port>
 				</configuration>
 				<executions>

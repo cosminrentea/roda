@@ -9,10 +9,10 @@ import ro.roda.service.NewsService;
 
 privileged aspect NewsService_Roo_Service {
     
-    public abstract long NewsService.countAllNews();    
+    public abstract long NewsService.countAllNewspieces();    
     public abstract void NewsService.deleteNews(News news);    
     public abstract News NewsService.findNews(Integer id);    
-    public abstract List<News> NewsService.findAllNews();    
+    public abstract List<News> NewsService.findAllNewspieces();    
     public abstract List<News> NewsService.findNewsEntries(int firstResult, int maxResults);    
     public abstract void NewsService.saveNews(News news);    
     public abstract News NewsService.updateNews(News news);    

@@ -138,4 +138,3 @@ DocStructure:
       FileOrPod: FileStore::Info::Image
   - Input:
       FileOrPod: FileStore::Info::PDF
- 

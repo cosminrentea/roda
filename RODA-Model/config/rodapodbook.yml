@@ -1,0 +1,141 @@
+DocOptions:
+  Title:  RODA
+  Author: Sorin Milutinovici
+  Date: Martie 29, 2013
+  TexOut: roda.tex
+  UserPreamble: |
+   \documentclass[12pt,twoside,romanian]{extbook}
+   \usepackage[T1]{fontenc}
+   \usepackage[utf8]{inputenc}
+   \usepackage{color}
+   \usepackage{times}
+   \usepackage[margin=2.5cm]{geometry}
+   \usepackage{fancyhdr}
+   \pagestyle{fancy}
+   \usepackage{lscape}
+   \usepackage{listings}
+   \usepackage{babel}
+   \usepackage[pdftitle={Documentatie Sistem de acces la date RODA}, pdfauthor={RODA}, colorlinks=true, linkcolor=blue]{hyperref}
+   \begin{document}
+   \pagenumbering{arabic} 
+   \cfoot{\tiny{RODA - Sistemul de acces la date}\tiny}
+   \fancyhead[LE,RO]{RODA: Sistem de acces la date - ANEXA1 - \leftmark}
+   \fancyhead[RE,LO]{\thepage}
+   \newpage\thispagestyle{plain}\tableofcontents{}
+   \setcounter{page}{1}
+   
+  UserPostamble: |
+    \cleardoublepage
+    \end{document}
+  AddPreamble: 1
+  Head1Level:  1
+  LevelNoNum:  2
+  ReplaceNAMEwithSection: 1
+DocStructure:
+  - Section:
+      Level: chapter
+      Title: RODA
+  - Input:
+      FileOrPod: RODA
+  - Input:
+      FileOrPod: RODA::Config.pm
+  - Input:
+      FileOrPod: RODA::RODADB
+  - Input:
+      FileOrPod: RODA::FileStore
+  - Input:
+      FileOrPod: RODA::Util
+  - Input:
+      FileOrPod: RODA::Components::DBIC::DBAuditSchema
+  - Input:
+      FileOrPod: RODA::Components::DBIC::DBAudit
+  - Input:
+      FileOrPod: RODA::Components::DBIC::DBConfig
+  - Input:
+      FileOrPod: RODA::Components::DBIC::FileStore
+  - Section:
+      Level: chapter
+      Title: RODA ResultSet
+  - Input:
+      FileOrPod: roda_resultset.tex
+  - Input:
+      FileOrPod: RODA::RODADB::ResultSet::Address
+  - Input:
+      FileOrPod: RODA::RODADB::ResultSet::Catalog
+  - Input:
+      FileOrPod: RODA::RODADB::ResultSet::City
+  - Input:
+      FileOrPod: RODA::RODADB::ResultSet::Country
+  - Input:
+      FileOrPod: RODA::RODADB::ResultSet::Email
+  - Input:
+      FileOrPod: RODA::RODADB::ResultSet::Instance
+  - Input:
+      FileOrPod: RODA::RODADB::ResultSet::InstanceDescr
+  - Input:
+      FileOrPod: RODA::RODADB::ResultSet::InstanceOrgAssoc
+  - Input:
+      FileOrPod: RODA::RODADB::ResultSet::InstancePersonAssoc
+  - Input:
+      FileOrPod: RODA::RODADB::ResultSet::Internet
+  - Input:
+      FileOrPod: RODA::RODADB::ResultSet::Lang
+  - Input:
+      FileOrPod: RODA::RODADB::ResultSet::Org
+  - Input:
+      FileOrPod: RODA::RODADB::ResultSet::OrgPrefix
+  - Input:
+      FileOrPod: RODA::RODADB::ResultSet::OrgRelation
+  - Input:
+      FileOrPod: RODA::RODADB::ResultSet::OrgRelationType
+  - Input:
+      FileOrPod: RODA::RODADB::ResultSet::OrgSufix
+  - Input:
+      FileOrPod: RODA::RODADB::ResultSet::Person
+  - Input:
+      FileOrPod: RODA::RODADB::ResultSet::PersonOrg
+  - Input:
+      FileOrPod: RODA::RODADB::ResultSet::PersonRole
+  - Input:
+      FileOrPod: RODA::RODADB::ResultSet::Phone
+  - Input:
+      FileOrPod: RODA::RODADB::ResultSet::Prefix
+  - Input:
+      FileOrPod: RODA::RODADB::ResultSet::Region
+  - Input:
+      FileOrPod: RODA::RODADB::ResultSet::Study
+  - Input:
+      FileOrPod: RODA::RODADB::ResultSet::StudyDescr
+  - Input:
+      FileOrPod: RODA::RODADB::ResultSet::StudyOrgAssoc
+  - Input:
+      FileOrPod: RODA::RODADB::ResultSet::StudyPersonAssoc
+  - Input:
+      FileOrPod: RODA::RODADB::ResultSet::TimeMethType
+  - Input:
+      FileOrPod: RODA::RODADB::ResultSet::TitleType
+  - Input:
+      FileOrPod: RODA::RODADB::ResultSet::UnitAnalysis
+  - Section:
+      Level: chapter
+      Title: Result
+  - Input:
+      FileOrPod: roda_result.tex
+  - Input:
+      FileOrPod: RODA::RODADB::Result::Catalog
+  - Input:
+      FileOrPod: RODA::RODADB::Result::City
+  - Input:
+      FileOrPod: RODA::RODADB::Result::Person
+  - Section:
+      Level: chapter
+      Title: FileStore
+  - Input:
+      FileOrPod: FileStore::Volume
+  - Input:
+      FileOrPod: FileStore::File
+  - Input:
+      FileOrPod: FileStore::Info::Image
+  - Input:
+      FileOrPod: FileStore::Info::PDF
+ 

@@ -9,7 +9,8 @@ use Try::Tiny;
 
 =head1 NUME
 
-RODA::RODADB::ResultSet::InstanceDescr
+RODA::RODADB::ResultSet::InstanceDescr - metode specifice pentru manipularea descrierilor de instante
+
 =cut
 
 =head1 VERSIUNE
@@ -20,7 +21,57 @@ version 0.01
 
 =head1 DESCRIERE
 
+Metode suplimentare care se aplica asupra seturilor de rezultate de tip descriere de instanta.
 
+=cut
+
+=head1 METODE
+
+=cut
+
+=head2 checkinstancedescr
+
+checkinstancedescr verifica existenta unei descrieri de instanta (preluata prin valori ale parametrilor de intrare), verifica daca aceasta exista in baza de date; in caz afirmativ, returneaza obiectul corespunzator, altfel, metoda introduce descrierea in baza de date si apoi returneaza obiectul corespunzator. Verificarea existentei in baza de date se realizeaza fie dupa valoarea cheii primare, fie dupa un criteriu de unicitate.
+
+Parametrii de intrare:
+
+=over 
+
+=item C<instance_id>
+- cheia primara a instantei pentru care este furnizata descrierea curenta
+
+=item C<lang>
+- limba in care este furnizata descrierea curenta a instantei; daca limba nu exista, ea va fi adaugata in baza de date
+
+=item C<title>
+- titlul instantei, in limba specificata prin parametrul lang
+
+=item C<weighting>
+- ponderea
+
+=item C<universe>
+- universul instantei
+
+=item C<research_instrument>
+- instrumentul de cercetare
+
+=item C<scope>
+- domeniul instantei
+
+=item C<abstract>
+- rezumatul instantei
+
+=back
+
+
+Criterii de unicitate:
+
+=over
+
+=item
+- instance_id, title
+
+=back
 
 =cut
 
@@ -43,6 +94,7 @@ sub checkinstancedescr {
     	my $instancedescrexist = $self->result_source->schema()->resultset('InstanceDescr')
     							->search(
                                          {
+                                         	instance_id => $params{instance_id},
                                            'lower(me.title)' => lc($params{title}),
        									 }
                                         );

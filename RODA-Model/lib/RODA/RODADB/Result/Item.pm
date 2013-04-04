@@ -6,11 +6,7 @@ package RODA::RODADB::Result::Item;
 
 =head1 NAME
 
-RODA::RODADB::Result::Item
-
-=head1 DESCRIPTION
-
-Tabel ce stocheaza elementele (item-urile) variabilelor de selectie din baza de date
+RODA::RODADB::Result::Item - Tabel ce stocheaza elementele (item-urile) variabilelor de selectie din baza de date
 
 =cut
 
@@ -22,7 +18,7 @@ use MooseX::NonMoose;
 use MooseX::MarkAsMethods autoclean => 1;
 extends 'DBIx::Class::Core';
 
-=head1 COMPONENTS LOADED
+=head1 COMPONENTE UTILIZATE
 
 =over 4
 
@@ -85,7 +81,7 @@ __PACKAGE__->add_columns(
 
 __PACKAGE__->set_primary_key("id");
 
-=head1 RELATIONS
+=head1 RELATII
 
 =head2 scale
 
@@ -140,6 +136,16 @@ __PACKAGE__->might_have(
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
 __PACKAGE__->meta->make_immutable;
 
+=head1 METODE SUPLIMENTARE
+
+=cut
+
+=head2 attach_value
+
+Ataseaza o valoare elementului de selectie curent (in cazul unei selectii simple).
+
+=cut
+
 sub attach_value {
 	
 	my ( $self, %params ) = @_;
@@ -151,6 +157,12 @@ sub attach_value {
     	$guard -> commit;
     }       	 	
 }
+
+=head2 attach_scale
+
+Ataseaza o scala elementului de selectie curent (in cazul unei selectii de tip scala).
+
+=cut
 
 sub attach_scale {
 	

@@ -4,13 +4,9 @@ package RODA::RODADB::Result::Form;
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
 
-=head1 NAME
+=head1 NUME
 
-RODA::RODADB::Result::Form
-
-=head1 DESCRIPTION
-
-Tabel pentru informatiile legate de un chestionarele aplicate (un rand reprezinta o anumita fisa completata pe teren cu raspunsuri)
+RODA::RODADB::Result::Form - Tabel pentru informatiile legate de chestionarele aplicate (un rand reprezinta o anumita fisa completata pe teren cu raspunsuri).
 
 =cut
 
@@ -22,7 +18,7 @@ use MooseX::NonMoose;
 use MooseX::MarkAsMethods autoclean => 1;
 extends 'DBIx::Class::Core';
 
-=head1 COMPONENTS LOADED
+=head1 COMPONENTE UTILIZATE
 
 =over 4
 
@@ -126,7 +122,7 @@ __PACKAGE__->set_primary_key("id");
 
 __PACKAGE__->add_unique_constraint("form_instance_id_Idx", ["instance_id", "order_in_instance"]);
 
-=head1 RELATIONS
+=head1 RELATII
 
 =head2 form_edited_number_vars
 
@@ -216,6 +212,17 @@ __PACKAGE__->belongs_to(
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
 __PACKAGE__->meta->make_immutable;
 
+=head1 METODE SUPLIMENTARE
+
+=cut
+
+=head2 attach_edited_text_vars
+
+Ataseaza variabile de tip text editat formularului curent.
+
+=cut
+
+
 sub attach_edited_text_vars {
      my ( $self, %params ) = @_;
      foreach my $edited_text_var (@{$params{edited_text_vars}}) { 
@@ -247,6 +254,12 @@ sub attach_edited_text_vars {
      }
 }
 
+=head2 attach_edited_number_vars
+
+Ataseaza variabile editate de tip numeric formularului curent.
+
+=cut
+
 sub attach_edited_number_vars {
      my ( $self, %params ) = @_;
      foreach my $edited_number_var (@{$params{edited_number_vars}}) { 
@@ -277,6 +290,12 @@ sub attach_edited_number_vars {
         }        
      }
 }
+
+=head2 attach_selection_vars
+
+Ataseaza variabile de selectie formularului curent.
+
+=cut
 
 sub attach_selection_vars {
      my ( $self, %params ) = @_;

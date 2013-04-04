@@ -6,7 +6,7 @@ package RODA::RODADB::Result::Instance;
 
 =head1 NAME
 
-RODA::RODADB::Result::Instance - Tabel ce contine informatiile principale ale instantelor
+RODA::RODADB::Result::Instance - Tabel pentru informatiile legate de instante
 
 =cut
 
@@ -18,7 +18,7 @@ use MooseX::NonMoose;
 use MooseX::MarkAsMethods autoclean => 1;
 extends 'DBIx::Class::Core';
 
-=head1 COMPONENTS LOADED
+=head1 COMPONENTE UTILIZATE
 
 =over 4
 
@@ -168,7 +168,7 @@ __PACKAGE__->add_columns(
 
 __PACKAGE__->set_primary_key("id");
 
-=head1 RELATIONS
+=head1 RELATII
 
 =head2 added_by
 
@@ -447,6 +447,16 @@ __PACKAGE__->many_to_many("topics", "instance_topics", "topic");
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
 __PACKAGE__->meta->make_immutable;
 
+=head1 METODE SUPLIMENTARE
+
+=cut
+
+=head2 attach_organizations
+
+Ataseaza organizatii instantei curente.
+
+=cut
+
 sub attach_organizations {
 
      my ( $self, %params ) = @_;
@@ -470,6 +480,12 @@ sub attach_organizations {
     	} 	
      }
 }
+
+=head2 attach_persons
+
+Ataseaza persoane instantei curente.
+
+=cut
 
 sub attach_persons {
 
@@ -495,6 +511,12 @@ sub attach_persons {
      }
 }
 
+=head2 attach_topics
+
+Ataseaza topicuri instantei curente.
+
+=cut
+
 sub attach_topics {
 
      my ( $self, %params ) = @_;
@@ -514,6 +536,12 @@ sub attach_topics {
     	} 	
      }
 }
+
+=head2 attach_keywords
+
+Ataseaza cuvinte cheie instantei curente.
+
+=cut
 
 sub attach_keywords {
 
@@ -536,6 +564,12 @@ sub attach_keywords {
     	} 	
      }
 }
+
+=head2 attach_variables
+
+Ataseaza variabile instantei curente.
+
+=cut
 
 sub attach_variables {
      my ( $self, %params ) = @_;
@@ -591,6 +625,12 @@ sub attach_variables {
       	$guard->commit; 	           
      }
 }
+
+=head2 attach_forms
+
+Ataseaza formulare instantei curente.
+
+=cut
 
 sub attach_forms {
      my ( $self, %params ) = @_;

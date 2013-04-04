@@ -4,9 +4,9 @@ package RODA::RODADB::Result::City;
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
 
-=head1 NAUME
+=head1 NUME
 
-RODA::RODADB::Result::City - Tabel unic pentru toate referintele la orase
+RODA::RODADB::Result::City - Tabel care stocheaza toate referintele la orase. 
 
 =cut
 

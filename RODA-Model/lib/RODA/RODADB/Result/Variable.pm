@@ -6,7 +6,7 @@ package RODA::RODADB::Result::Variable;
 
 =head1 NAME
 
-RODA::RODADB::Result::Variable - Tabel care stocheaza variabilele din cadrul instantelor
+RODA::RODADB::Result::Variable - Tabel care stocheaza  variabilele din cadrul instantelor 
 
 =cut
 
@@ -18,7 +18,7 @@ use MooseX::NonMoose;
 use MooseX::MarkAsMethods autoclean => 1;
 extends 'DBIx::Class::Core';
 
-=head1 COMPONENTS LOADED
+=head1 COMPONENTE UTILIZATE
 
 =over 4
 
@@ -167,7 +167,7 @@ __PACKAGE__->add_unique_constraint(
   ["instance_id", "order_in_instance"],
 );
 
-=head1 RELATIONS
+=head1 RELATII
 
 =head2 concept_variables
 
@@ -352,6 +352,16 @@ __PACKAGE__->many_to_many("vargroups", "variable_vargroups", "vargroup");
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
 __PACKAGE__->meta->make_immutable;
 
+=head1 METODE SUPLIMENTARE
+
+=cut
+
+=head2 attach_skips
+
+Ataseaza salturi de la variabila curenta catre alte variabile.
+
+=cut
+
 sub attach_skips {
 
      my ( $self, %params ) = @_;
@@ -364,6 +374,12 @@ sub attach_skips {
      }
 }
 
+=head2 attach_other_statistics
+
+Ataseaza statistici asociate variabilei curente.
+
+=cut
+
 sub attach_other_statistics {
 
      my ( $self, %params ) = @_;
@@ -375,6 +391,12 @@ sub attach_other_statistics {
       	#$guard->commit;
      }
 }
+
+=head2 attach_concepts
+
+Ataseaza concepte variabilei curente.
+
+=cut
 
 sub attach_concepts {
 
@@ -396,6 +418,12 @@ sub attach_concepts {
      }
 }
 
+=head2 attach_vargroups
+
+Ataseaza grupuri variabilei curente.
+
+=cut
+
 sub attach_vargroups {
 
      my ( $self, %params ) = @_;
@@ -415,6 +443,12 @@ sub attach_vargroups {
     	} 	
      }
 }
+
+=head2 attach_selection_variable
+
+Ataseaza informatii specifice in cazul in care variabila curenta este de tip selectie.
+
+=cut
 
 sub attach_selection_variable {
 	

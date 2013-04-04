@@ -6,11 +6,7 @@ package RODA::RODADB::Result::Scale;
 
 =head1 NAME
 
-RODA::RODADB::Result::Scale
-
-=head1 DESCRIPTION
-
-Tabel ce stocheaza elementele de tip scala ale variabilelor de selectie
+RODA::RODADB::Result::Scale - Tabel ce stocheaza elementele de tip scala ale variabilelor de selectie.
 
 =cut
 
@@ -22,7 +18,7 @@ use MooseX::NonMoose;
 use MooseX::MarkAsMethods autoclean => 1;
 extends 'DBIx::Class::Core';
 
-=head1 COMPONENTS LOADED
+=head1 COMPONENTE UTILIZATE
 
 =over 4
 
@@ -98,7 +94,7 @@ __PACKAGE__->add_columns(
 
 __PACKAGE__->set_primary_key("item_id");
 
-=head1 RELATIONS
+=head1 RELATII
 
 =head2 item
 
@@ -152,4 +148,5 @@ __PACKAGE__->belongs_to(
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
 __PACKAGE__->meta->make_immutable;
+
 1;

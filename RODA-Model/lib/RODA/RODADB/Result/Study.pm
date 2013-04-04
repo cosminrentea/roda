@@ -6,11 +6,7 @@ package RODA::RODADB::Result::Study;
 
 =head1 NAME
 
-RODA::RODADB::Result::Study
-
-=head1 DESCRIPTION
-
-Tabel care stocheaza studiile desfasurate, ale caror informatii sunt prezente in baza de date 
+RODA::RODADB::Result::Study - Tabel care stocheaza studiile desfasurate, ale caror informatii sunt prezente in baza de date
 
 =cut
 
@@ -22,7 +18,7 @@ use MooseX::NonMoose;
 use MooseX::MarkAsMethods autoclean => 1;
 extends 'DBIx::Class::Core';
 
-=head1 COMPONENTS LOADED
+=head1 COMPONENTE UTILIZATE
 
 =over 4
 
@@ -131,7 +127,7 @@ __PACKAGE__->add_columns(
 
 __PACKAGE__->set_primary_key("id");
 
-=head1 RELATIONS
+=head1 RELATII
 
 =head2 added_by
 
@@ -311,6 +307,16 @@ __PACKAGE__->many_to_many("topics", "study_topics", "topic");
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
 __PACKAGE__->meta->make_immutable;
 
+=head1 METODE SUPLIMENTARE
+
+=cut
+
+=head2 attach_organizations
+
+Ataseaza organizatii studiului curent.
+
+=cut
+
 sub attach_organizations {
 
      my ( $self, %params ) = @_;
@@ -334,6 +340,12 @@ sub attach_organizations {
     	} 	
      }
 }
+
+=head2 attach_persons
+
+Ataseaza persoane studiului curent.
+
+=cut
 
 sub attach_persons {
 
@@ -359,6 +371,12 @@ sub attach_persons {
      }
 }
 
+=head2 attach_topic
+
+Ataseaza topicuri studiului curent.
+
+=cut
+
 sub attach_topic {
 
      my ( $self, %params ) = @_;
@@ -378,6 +396,12 @@ sub attach_topic {
     	} 	
      }
 }
+
+=head2 attach_keywords
+
+Ataseaza cuvinte cheie studiului curent.
+
+=cut
 
 sub attach_keyword {
 

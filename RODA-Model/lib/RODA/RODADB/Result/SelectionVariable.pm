@@ -6,11 +6,7 @@ package RODA::RODADB::Result::SelectionVariable;
 
 =head1 NAME
 
-RODA::RODADB::Result::SelectionVariable
-
-=head1 DESCRIPTION
-
-Tabel ce contine informatii despre variabilele de selectie din instante
+RODA::RODADB::Result::SelectionVariable - Tabel ce contine informatii despre variabilele de selectie din instante
 
 =cut
 
@@ -22,7 +18,7 @@ use MooseX::NonMoose;
 use MooseX::MarkAsMethods autoclean => 1;
 extends 'DBIx::Class::Core';
 
-=head1 COMPONENTS LOADED
+=head1 COMPONENTE UTILIZATE
 
 =over 4
 
@@ -87,7 +83,7 @@ __PACKAGE__->add_columns(
 
 __PACKAGE__->set_primary_key("variable_id");
 
-=head1 RELATIONS
+=head1 RELATII
 
 =head2 selection_variable_items
 
@@ -126,6 +122,16 @@ __PACKAGE__->belongs_to(
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
 __PACKAGE__->meta->make_immutable;
+
+=head1 METODE SUPLIMENTARE
+
+=cut
+
+=head2 attach_items
+
+Ataseaza elemente de selectie variabilei curente.
+
+=cut
 
 sub attach_items {
      my ( $self, %params ) = @_;

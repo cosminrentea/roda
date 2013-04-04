@@ -6,7 +6,7 @@ package RODA::RODADB::Result::Org;
 
 =head1 NAME
 
-RODA::RODADB::Result::Org - Tabel ce contine toate organizatiile din baza de date
+RODA::RODADB::Result::Org - Tabel ce stocheaza organizatiile din baza de date
 
 =cut
 
@@ -18,7 +18,7 @@ use MooseX::NonMoose;
 use MooseX::MarkAsMethods autoclean => 1;
 extends 'DBIx::Class::Core';
 
-=head1 COMPONENTS LOADED
+=head1 COMPONENTE UTILIZATE
 
 =over 4
 
@@ -111,7 +111,7 @@ __PACKAGE__->add_columns(
 
 __PACKAGE__->set_primary_key("id");
 
-=head1 RELATIONS
+=head1 RELATII
 
 =head2 instance_orgs
 
@@ -309,6 +309,17 @@ __PACKAGE__->has_many(
 
 __PACKAGE__->meta->make_immutable;
 
+=head1 METODE SUPLIMENTARE
+
+=cut
+
+=head2 attach_addresses
+
+Ataseaza adrese postale organizatiei curente.
+
+=cut
+
+
 sub attach_addresses {
      my ( $self, %params ) = @_;
      foreach my $address (@{$params{addresses}}) {
@@ -329,6 +340,12 @@ sub attach_addresses {
         $guard->commit; 
      }
 }
+
+=head2 attach_emails
+
+Ataseaza adrese de email organizatiei curente.
+
+=cut
 
 sub attach_emails {
      my ( $self, %params ) = @_;
@@ -360,6 +377,12 @@ sub attach_emails {
      }
 }
 
+=head2 attach_phones
+
+Ataseaza numere de telefon organizatiei curente.
+
+=cut
+
 sub attach_phones {
      my ( $self, %params ) = @_;
      foreach my $phone (@{$params{phones}}) { 
@@ -386,6 +409,12 @@ sub attach_phones {
         }
 }
 
+=head2 attach_phones
+
+Ataseaza adrese de internet organizatiei curente.
+
+=cut
+
 sub attach_internets {
      my ( $self, %params ) = @_;
      foreach my $internet (@{$params{internets}}) { 
@@ -411,6 +440,12 @@ sub attach_internets {
       		$guard->commit; 	           
         }
 }
+
+=head2 attach_persons
+
+Ataseaza persoanele aflate in relatie cu organizatia curenta.
+
+=cut
 
 sub attach_persons {
      my ( $self, %params ) = @_;

@@ -177,3 +177,15 @@ DocStructure:
       FileOrPod: FileStore::Info::Image
   - Input:
       FileOrPod: FileStore::Info::PDF
+      
+  - Section:
+      Level: chapter
+      Title: Modelul aplicatiei web in Java / Spring
+  - Input:
+      FileOrPod: roda_spring.tex
+  - Section:
+      Level: chapter
+      Title: Servicii TIC destinate echipei proiectului
+  - Input:
+      FileOrPod: roda_services.tex      
+      

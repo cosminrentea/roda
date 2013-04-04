@@ -1,0 +1,168 @@
+\section{Arhitectura generala a aplicatiei Spring}
+
+Aplicatie de tip MVC ???
+
+Nivelurile arhitecturii ???
+
+Diagrame UML componente si clase ???
+
+Utilizarea Spring Roo ???
+
+Forward-engineering pornind de la un editor grafic al schemei bazei de date
+(dbWrench 2) ???
+
+\subsection{Modelul domeniului specific aplicatiei}
+Se foloseste pentru descrierea modelului specificatia JPA 2.0.
+Astfel, pornind de la schema bazei de date prezentate in raportul etapei 1 (ce
+a suferit unele modificari pentru a se apropia de standardul DDI Codebook),
+sunt definite entitati in sensul JPA 2.0; aceste Java Beans (pachetul
+'domain') sunt independente (fara relatii de mostenire), o parte din ele
+implementand interfata Serializable, si avand fisiere aferente de tip AspectJ
+(re-)generate automat de catre Spring Roo in timpul development-ului.
+
+Se folosesc in model adnotari specifice precum:
+\begin{itemize}
+  \item @Id
+  \item @Table
+  \item @Column
+  \item @Transient
+  \item adnotari pentru tipuri de relatii intre entitati
+\end{itemize}
+
+Multe din aceste adnotari, metodele toString, getter/setter pentru
+campurile claselor, sunt generate in mod configurabil de catre Spring Roo.
+Fiecare clasa din model expune si metode conform pattern-ului 'ActiveRecord'. 
+
+\subsubsection{Nivelul de acces la baza de date}
+Implementarea JPA selectata pentru proiect este Hibernate (versiunea 4.2).
+\begin{description}
+\item[Hibernate] este un pachet complex de tip 'Object-Relational Mapping';
+in fisierul de configurare se specifica optiuni precum dialectul de SQL folosit
+(tipul de server de baze de date), clase ale modelului, modul de lucru
+(validate, create, create-drop, update), charset, setari de logging si formatare
+etc.
+\item[Hibernate Envers] asigura auditarea/versionarea entitatilor/tabelelor din
+model (sunt create tabele specifice pentru auditare, intr-o alta schema a bazei
+de date)
+\end{description}
+
+\subsubsection{Date disponibile initial in aplicatie}
+Aplicatia poate fi configurata sa porneasca cu sau fara date initiale
+disponibile.
+Aceste date sunt importate din fisiere de tip CSV; se specifica ordinea de
+importare a acestor fisiere pentru a se respecta constrangerile relatiilor
+dintre tabele/entitati.
+
+\subsection{Nivelul de servicii}
+Nivelul de servicii permite 
+\begin{itemize}
+  \item izolarea nivelului modelului (pentru accesul la
+date s-ar putea folosi astfel, alternativ: JPA, sau JPA adaptat unui ORM sau
+baze de date, sau o baza de date XML)
+  \item definirea de reguli de acces la date(autorizare pe baza de ACL), modelul
+  ramanand astfel izolat de adnotari specifice Spring.
+\end{itemize} 
+Serviciile (perechi de interfete si implementari) folosesc metodele de tip ActiveRecord definite la
+nivelul modelului.
+
+\subsection{Nivelul de Controllere si View-uri}
+???
+
+\section{Aspecte transversale in aplicatia Spring}
+In aceasta sectiune descriem care sunt aspectele care apar in mod repetat la mai
+multe niveluri diferite ale aplicatiei (precum configurari, logging
+autentificare, servicii disponibile etc.).
+
+\subsection{Configurari}
+Configurarea aplicatiei se face prin:
+\begin {itemize}
+  \item fisiere de tip 'properties', prin care pot suprascrie
+inclusiv variabile definite in mediul de executie, si care sunt specifice modului de rulare a
+aplicatiei (executie pe server, sau testare); de exemplu: setarile de acces la
+baza de date, setarile pentru connection-pooling, pentru serverul de indexare
+Solr, pentru integrarea R, pentru FileStore, pentru datele initiale disponibile
+in aplicatie etc.
+  \item fisiere de configurare a Spring: applicationContext.xml,
+  applicationContext-security.xml, applicationContext-acl.xml. Acestea
+  configureaza Beans-urile din aplicatia Spring si proprietatile acestora.
+  \item fisiere de configurare a Spring MVC: webmvc-config.xml
+  \item fisiere de configurare a aplicatiei web ce foloseste Spring Servlet:
+  web.xml
+  \item fisiere de configurare pentru view-uri (Apache Tiles: views.xml,
+  layouts.xml).
+\end{itemize}
+
+Astfel, configurarea bean-urilor poate fi reprezentata grafic astfel:
+???
+
+\subsection{Logging}
+Se foloseste Log4j, iar logger-ele sunt configurate ierarhic (cf. ierarhiei
+pachetelor si claselor) si pe niveluri de detaliu, intr-un fisier de
+configurare.
+
+\subsection{Autentificare}
+Pentru autentificare este utilizata si adaptata solutia Spring Security.
+Utilizatorii precum si hash-urile parolelor lor (SHA-256) sunt stocate in
+tabele specifice din baza de date.
+Se foloseste o schema de tipul 'users' / 'roles'.
+
+???
+
+\subsection{Autorizare}
+Pentru autorizare este utilizata si adaptata solutia Spring Security.
+
+???
+
+\subsection{Integrarea R}
+Este folosit pachetul rJava/JRI. Atunci cand acesta nu e disponibil pe host,
+serviciul aplicatiei care incapsuleaza functionalitatile R este dezactivat.
+
+\subsection{Serviciu de tip FileStore (file repository)}
+???
+
+\subsection{Indexare si Cautare}
+Se utilizeaza un server Solr extern (versiunea curenta 4.2) rulat pe un
+application server pentru:
+\begin{description}
+\item[datele din BD] la creare/update/stergere de date din tabelele bazei de
+date
+\item[metadatele extrase din fisiere] la upload-ul unui fisier
+in FileStore (metadatele fiind disponibile ulterior aplicatiei web)
+\end{description}
+
+Schimburile de date intre aplicatia web si serverul Solr (de tip update, query
+etc.) se fac prin mijlocirea pachetului SolrJ, in mod asincron.
+
+\subsection{Documentare}
+Se folosesc in codul-sursa comentarii de tip Javadoc. 
+
+In procesul de build se genereaza automat documentatie  de tip HTML. 
+De asemenea, prin utilitarul 'htmldoc' se poate genera
+si documentatie in format PDF pornind de la aceasta documentatie anterior
+generata.
+
+\section{Aspecte legate de dezvoltarea aplicatiei Spring}
+In aceasta sectiune descriem aspectele legate de dezvoltarea in practica, intr-o
+maniera incrementala si cu asigurarea calitatii procesului de dezvoltare.
+
+\subsection{Testarea aplicatiei}
+Testarea e realizata momentan prin 3 metode:
+\begin{enumerate}
+  \item testarea claselor din model, folosind JUnit adaptat pentru Spring
+  \item testarea controller-elelor printr-o suita de teste generate semi-automat
+  in limbajul Selenese si executate prin Selenium
+  \item testarea aplicatiei web cu Selenium RC si un client Perl executand
+  scripturi de testare
+\end{enumerate}
+
+\subsection{Build si Deployment}
+Procesele de build sunt realizate prin Maven 3. Fisierul aferent (pom.xml)
+contine dependentele necesare pentru configurarea, compilarea,
+deploymentul, rularea, testarea, documentarea proiectului.
+
+Procesul de build continuu este realizat prin serviciul de tip continuous-build
+(Jenkins), 
+care realizeaza efectiv pasii descrisi mai sus atunci cand repository-ul SVN continand codul-sursa este modificat. 
+Se face deployment al aplicatiei si remote pe un
+serviciu de tip 'cloud' (cloudfoundry.com), iar schema curenta a bazei de date
+este creata pe un server Postgresql intern, pentru referinta.

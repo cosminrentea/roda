@@ -151,7 +151,21 @@ DocStructure:
   - Input:
       FileOrPod: RODA::RODADB::Result::City
   - Input:
+      FileOrPod: RODA::RODADB::Result::Form
+  - Input:
+      FileOrPod: RODA::RODADB::Result::Instance
+  - Input:
+      FileOrPod: RODA::RODADB::Result::Item
+  - Input:
+      FileOrPod: RODA::RODADB::Result::Org                        
+  - Input:
       FileOrPod: RODA::RODADB::Result::Person
+  - Input:
+      FileOrPod: RODA::RODADB::Result::SelectionVariable
+  - Input:
+      FileOrPod: RODA::RODADB::Result::Study
+  - Input:
+      FileOrPod: RODA::RODADB::Result::Variable                  
   - Section:
       Level: chapter
       Title: FileStore

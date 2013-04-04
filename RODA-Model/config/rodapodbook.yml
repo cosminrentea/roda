@@ -65,9 +65,13 @@ DocStructure:
   - Input:
       FileOrPod: RODA::RODADB::ResultSet::City
   - Input:
+      FileOrPod: RODA::RODADB::ResultSet::Concept      
+  - Input:
       FileOrPod: RODA::RODADB::ResultSet::Country
   - Input:
       FileOrPod: RODA::RODADB::ResultSet::Email
+  - Input:
+      FileOrPod: RODA::RODADB::ResultSet::Form      
   - Input:
       FileOrPod: RODA::RODADB::ResultSet::Instance
   - Input:
@@ -78,6 +82,10 @@ DocStructure:
       FileOrPod: RODA::RODADB::ResultSet::InstancePersonAssoc
   - Input:
       FileOrPod: RODA::RODADB::ResultSet::Internet
+  - Input:
+      FileOrPod: RODA::RODADB::ResultSet::Item
+  - Input:
+      FileOrPod: RODA::RODADB::ResultSet::Keyword            
   - Input:
       FileOrPod: RODA::RODADB::ResultSet::Lang
   - Input:
@@ -91,9 +99,9 @@ DocStructure:
   - Input:
       FileOrPod: RODA::RODADB::ResultSet::OrgSufix
   - Input:
-      FileOrPod: RODA::RODADB::ResultSet::Person
+      FileOrPod: RODA::RODADB::ResultSet::OtherStatistic      
   - Input:
-      FileOrPod: RODA::RODADB::ResultSet::PersonOrg
+      FileOrPod: RODA::RODADB::ResultSet::Person
   - Input:
       FileOrPod: RODA::RODADB::ResultSet::PersonRole
   - Input:
@@ -102,6 +110,14 @@ DocStructure:
       FileOrPod: RODA::RODADB::ResultSet::Prefix
   - Input:
       FileOrPod: RODA::RODADB::ResultSet::Region
+  - Input:
+      FileOrPod: RODA::RODADB::ResultSet::Scale
+  - Input:
+      FileOrPod: RODA::RODADB::ResultSet::SelectionVariable
+  - Input:
+      FileOrPod: RODA::RODADB::ResultSet::SelectionVariableItem
+  - Input:
+      FileOrPod: RODA::RODADB::ResultSet::Skip                        
   - Input:
       FileOrPod: RODA::RODADB::ResultSet::Study
   - Input:
@@ -115,7 +131,16 @@ DocStructure:
   - Input:
       FileOrPod: RODA::RODADB::ResultSet::TitleType
   - Input:
+      FileOrPod: RODA::RODADB::ResultSet::Topic      
+  - Input:
       FileOrPod: RODA::RODADB::ResultSet::UnitAnalysis
+  - Input:
+      FileOrPod: RODA::RODADB::ResultSet::Value
+  - Input:
+      FileOrPod: RODA::RODADB::ResultSet::Vargroup
+  - Input:
+      FileOrPod: RODA::RODADB::ResultSet::Variable
+                  
   - Section:
       Level: chapter
       Title: Result

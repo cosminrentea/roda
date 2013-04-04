@@ -9,7 +9,7 @@ use Try::Tiny;
 
 =head1 NUME
 
-RODA::RODADB::ResultSet::StudyDescr
+RODA::RODADB::ResultSet::StudyDescr - metode specifice pentru manipularea descrierilor de studii
 
 =cut
 
@@ -21,7 +21,51 @@ version 0.01
 
 =head1 DESCRIERE
 
+Metode suplimentare care se aplica asupra seturilor de rezultate de tip descriere de studiu.
 
+=cut
+
+=head1 METODE
+
+=cut
+
+=head2 checkstudydescr
+
+checkstudydescr verifica existenta unei descrieri de studiu (preluat prin valori ale parametrilor de intrare), verifica daca aceasta exista in baza de date; in caz afirmativ, returneaza obiectul corespunzator, altfel, metoda introduce descrierea in baza de date si apoi returneaza obiectul corespunzator. Verificarea existentei in baza de date se realizeaza fie dupa valoarea cheii primare, fie dupa un criteriu de unicitate.
+
+Parametrii de intrare:
+
+=over 
+
+=item C<study_id>
+- cheia primara a studiului pentru care este furnizata descrierea curenta
+
+=item C<lang>
+- limba in care este furnizata descrierea curenta a studiului; daca limba nu exista, ea va fi adaugata in baza de date
+
+=item C<title_type>
+- tipul titlului studiului in descrierea curenta
+
+=item C<title>
+- titlul studiului in descrierea curenta
+
+=item C<abstract>
+- rezumatul studiului
+
+=item C<grant_details>
+- detaliile asociate grantului in cadrul caruia se desfasoara studiul curent
+
+
+=back
+
+
+Criterii de unicitate:
+
+=over
+
+=item
+- title_type + title + lang_id + datestart  
+=back
 
 =cut
 

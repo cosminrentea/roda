@@ -8,7 +8,7 @@ use parent qw/DBIx::Class::ResultSet/;
 
 =head1 NUME
 
-RODA::RODADB::ResultSet::OrgPrefix
+RODA::RODADB::ResultSet::OrgPrefix - metode specifice pentru manipularea prefixelor organizatiilor
 
 =cut
 
@@ -20,7 +20,33 @@ version 0.01
 
 =head1 DESCRIERE
 
+Metode suplimentare care se aplica asupra seturilor de rezultate de tip prefix al organizatiilor.
 
+=cut
+
+=head1 UTILIZARE
+
+  my $prefix = $roda->dbschema->resultset('OrgPrefix')
+                         ->checkorgprefix( 
+                                          id => '100', 
+                                          name => 'SC' 
+                                         );
+
+  my $prefix = $roda->dbschema->resultset('OrgPrefix')
+                         ->checkorgprefixname( 
+                                              name => 'SC' 
+                                             );
+
+=cut
+
+
+=head1 METODE
+
+=cut
+
+=head2 checkorgprefix
+
+Primeste ca parametri de intrare id-ul si numele prefixului de organizatie, daca gaseste in tabel o intrare corespunzatoare, returneaza obiectul respectiv, daca nu, creaza intrarea si returneaza obiectul atasat
 
 =cut
 
@@ -45,4 +71,11 @@ sub checkorgprefix {
     	}
     }  
 }
+
+=head2 checkorgprefixname
+
+Primeste ca parametru de intrare numele prefixului de organizatie, daca gaseste in tabel o intrare corespunzatoare, returneaza obiectul respectiv, daca nu, creaza intrarea si returneaza obiectul atasat
+
+=cut
+
 1;

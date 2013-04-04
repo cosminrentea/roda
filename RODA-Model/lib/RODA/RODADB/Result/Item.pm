@@ -139,4 +139,40 @@ __PACKAGE__->might_have(
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
 __PACKAGE__->meta->make_immutable;
+
+sub attach_value {
+	
+	my ( $self, %params ) = @_;
+	
+    if ($params {value}) {
+    	my $guard = $self->result_source->schema()->txn_scope_guard;
+    	my %value = (value => $params{value}, item_id => $self -> id);					   	
+    	$self->result_source->schema()->resultset('Value')->checkvalue(%value);
+    	$guard -> commit;
+    }       	 	
+}
+
+sub attach_scale {
+	
+	my ( $self, %params ) = @_;
+    if ($params{min_value} && $params{min_item} && $params{max_value} 
+    		&& $params{max_item} && $params{units}) {
+#    	my %scale -> (item_id => $self -> id,
+#    				  min_value => $params{min_value},
+#    				  min_item => $params{min_item},
+#    				  max_value => $params{max_value},
+#    				  max_item => $params{max_item},
+#    				  units => $params{units} 
+#    				);		
+		my $guard = $self->result_source->schema()->txn_scope_guard;	   	
+    	$self->result_source->schema()->resultset('Scale')->checkscale(item_id => $self -> id,
+    				  min_value => $params{min_value},
+    				  min_item => $params{min_item},
+    				  max_value => $params{max_value},
+    				  max_item => $params{max_item},
+    				  units => $params{units} );	
+    	$guard -> commit;			  	  
+    }       	 	
+}
+
 1;

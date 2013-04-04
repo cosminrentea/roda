@@ -495,4 +495,111 @@ sub attach_persons {
      }
 }
 
+sub attach_topics {
+
+     my ( $self, %params ) = @_;
+     foreach my $topic (@{$params{topics}}) {      	
+     	if ( $topic -> {name} && $topic -> {name} ne '' ) {
+    		my $guard = $self->result_source->schema()->txn_scope_guard;
+        	my $topicrs = $self->result_source->schema()->resultset('Topic')->checktopic(%$topic);    	
+        
+        	$self->result_source->schema()->resultset('InstanceTopic')->find_or_create({
+          																			 topic_id => $topicrs->id,
+          																			 study_id => $self->id,
+         																		    },
+         																		    {
+         		 																	 key => 'primary',
+         																		    });
+      		$guard->commit;
+    	} 	
+     }
+}
+
+sub attach_keywords {
+
+     my ( $self, %params ) = @_;
+     foreach my $keyword (@{$params{keywords}}) {      	
+     	if ( $keyword -> {name} && $keyword -> {name} ne '' ) {
+    		my $guard = $self->result_source->schema()->txn_scope_guard;
+        	my $keywordrs = $self->result_source->schema()->resultset('Keyword')->checkkeyword(%$keyword);    	
+        
+        	$self->result_source->schema()->resultset('InstanceKeyword')->find_or_create({
+          																			   keyword_id => $keywordrs->id,
+          																			   study_id => $self->id,
+          																			   added => $keyword->{added},
+          																			   added_by => $keyword->{added_by},
+         																		      },
+         																		      {
+         		 																	   key => 'primary',
+         																		      });
+      		$guard->commit;
+    	} 	
+     }
+}
+
+sub attach_variables {
+     my ( $self, %params ) = @_;
+     foreach my $variable (@{$params{variables}}) { 
+     	my $guard = $self->result_source->schema()->txn_scope_guard;
+        my $variable_exists = $self->result_source->schema()->resultset('Variable')->checkvariableexists(%$variable);
+        if (!$variable_exists) {
+        	my $editedTextType;
+        	my $editedNumberType;
+        	my $selectionType;
+        	if ($variable->{type_edited_text} && $variable->{type_edited_text}) {
+				$editedTextType = 1;
+			} else {
+				$editedTextType = 0;
+			}
+             
+        	if ($variable->{type_edited_number} && $variable->{type_edited_number}) {
+				$editedNumberType = 1;
+			} else {
+				$editedNumberType = 0;
+			}     
+             
+        	if ($variable->{type_selection} && $variable->{type_selection}) {
+				$selectionType = 1;
+			} else {
+				$selectionType = 0;
+			}
+		
+            #Deocamdata nu exista identificare pe fisiere
+             
+        	my $variablers = $self->result_source->schema()->resultset('Variable')
+        														 ->find_or_create({          																		   
+          																		   instance_id => $self->id,
+          																		   label => $variable -> {label},
+          																		   type => $variable -> {type},
+          																		   order_in_instance => $variable -> {order_in_instance},
+          																		   operator_instructions => $variable -> {operator_instructions},
+          																		   #file_id => $filers -> id,
+          																		   type_edited_text => $editedTextType,
+          																		   type_edited_number => $editedNumberType,
+          																		   type_selection => $selectionType, 
+         																		  },         													
+         																		 );
+         	if ($variable -> {skips} && @{$variable -> {skips}} > 0){
+         		$variablers -> attach_skips(skips => $variable -> {skips});
+         	}																		 
+         	
+         	if ($variable -> {other_statistics} && @{$variable -> {other_statistics}} > 0){
+         		$variablers -> attach_other_statistics(other_statistics => $variable -> {other_statistics});
+         	}	
+         																		 
+      	}
+      	$guard->commit; 	           
+     }
+}
+
+sub attach_forms {
+     my ( $self, %params ) = @_;
+     foreach my $form (@{$params{forms}}) { 
+     	my $guard = $self->result_source->schema()->txn_scope_guard;
+     	$form -> {instance_id} = $self -> id;
+        my $formrs = $self->result_source->schema()->resultset('Form')->checkform(%$form);       
+      	$guard->commit; 	           
+     }
+}
+
 1;

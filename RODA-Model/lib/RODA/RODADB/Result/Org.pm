@@ -412,6 +412,27 @@ sub attach_internets {
         }
 }
 
-# You can replace this text with custom code or comments, and it will be preserved on regeneration
-#__PACKAGE__->meta->make_immutable;
+sub attach_persons {
+     my ( $self, %params ) = @_;
+     foreach my $person (@{$params{persons}}) { 
+     	my $guard = $self->result_source->schema()->txn_scope_guard;
+        my $personrs = $self->result_source->schema()->resultset('Person')->checkperson(%$person);
+        my $rolers = $self->result_source->schema()->resultset('PersonRole')->checkpersonrole(%$person); 
+             
+        if ($personrs && $rolers) { 
+        	$self->result_source->schema()->resultset('PersonOrg')->find_or_create({
+          																			     person_id => $personrs->id,
+          																			     org_id => $self->id,
+          																			     role_id => $rolers->id,
+          																			     datestart => $params{datestart},
+          																			     dateend => $params{dateend},
+         																			    },
+         																			    {
+         		 																	     key => 'primary',
+         																			    });
+      		}
+      		$guard->commit; 	           
+        }
+}
+
 1;

@@ -26,7 +26,7 @@ my $roda = RODA->new( configfile => $config->stringify, test => '1', userid=>'1'
 my $transaction = sub {
 	
 my %moi = (name => 'RODA',
-           fullname => 'Romanian Data Archive',      
+           fullname => 'Romanian Social Data Archive',      
            addresses => [{country_name => 'România',
                           city_name => 'Bucureşti',
                           address1 => 'Bd. Schitu Magureanu nr. 5',
@@ -45,7 +45,10 @@ my %moi = (name => 'RODA',
                      }],
                      emails => [{email=>'roda@unibuc.ro', ismain => '1'},{email => 'roda@gmail.com'}],
                      phones => [{phone => '0777900800', phone_type => 'mobile'},{phone => '0213146789'}],
-                     internets => [{internet_type => 'blog', internet=>'http://roda.greencore.ro'},{internet_type => 'google', internet => 'http://google.docs'}],                       
+                     internets => [{internet_type => 'blog', internet=>'http://roda.greencore.ro'},{internet_type => 'google', internet => 'http://google.docs'}],
+                     persons => [{fname => 'Sorin', mname => 'Petru', lname => 'Milutinovici', role => 'project manager'},
+                                 {fname => 'Letitia', mname => 'Ana', lname => 'Velcescu', role => 'dezvoltator'}
+                                ]                       
           );
 
 

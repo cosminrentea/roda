@@ -26,14 +26,16 @@ Metode suplimentare care se aplica asupra seturilor de rezultate de tip prefix.
 
 =head1 UTILIZARE
 
-  my $prefix = $roda->dbschema->resultset('Prefix')->checkprefix( 
-                                                          id => '12', 
-                                                          name => 'Doamna' 
-                                                          );
+  my $prefix = $roda->dbschema->resultset('Prefix')
+                            ->checkprefix( 
+                                          id => '12', 
+                                          name => 'Doamna' 
+                                         );
 
-  my $prefix = $roda->dbschema->resultset('Prefix')->checkprefixname( 
-                                                          name => 'Domnul' 
-                                                          );
+  my $prefix = $roda->dbschema->resultset('Prefix')
+                            ->checkprefixname( 
+                                              name => 'Domnul' 
+                                             );
 
 =cut
 

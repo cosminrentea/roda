@@ -351,4 +351,81 @@ __PACKAGE__->many_to_many("vargroups", "variable_vargroups", "vargroup");
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
 __PACKAGE__->meta->make_immutable;
+
+sub attach_skips {
+
+     my ( $self, %params ) = @_;
+     foreach my $skip (@{$params{skips}}) {      	
+    	#my $guard = $self->result_source->schema()->txn_scope_guard;
+    	$skip->{variable_id} = $self->id;  
+        my $skiprs = $self->result_source->schema()->resultset('Skip')->checkskip(%$skip);    	
+        
+      	#$guard->commit;
+     }
+}
+
+sub attach_other_statistics {
+
+     my ( $self, %params ) = @_;
+     foreach my $other_statistic (@{$params{other_statistics}}) {      	
+    	#my $guard = $self->result_source->schema()->txn_scope_guard;
+    	$other_statistic->{variable_id} = $self->id;  
+        my $other_statistic_rs = $self->result_source->schema()->resultset('OtherStatistic')->check_other_statistic(%$other_statistic);    	
+        
+      	#$guard->commit;
+     }
+}
+
+sub attach_concepts {
+
+     my ( $self, %params ) = @_;
+     foreach my $concept (@{$params{concepts}}) {      	
+     	if ( $concept -> {name} && $concept -> {name} ne '' ) {
+    		my $guard = $self->result_source->schema()->txn_scope_guard;
+        	my $conceptrs = $self->result_source->schema()->resultset('Concept')->checkconcept(%$concept);    	
+        
+        	$self->result_source->schema()->resultset('ConceptVariable')->find_or_create({
+          																			 concept_id => $conceptrs->id,
+          																			 variable_id => $self->id,
+         																		    },
+         																		    {
+         		 																	 key => 'primary',
+         																		    });
+      		$guard->commit;
+    	} 	
+     }
+}
+
+sub attach_vargroups {
+
+     my ( $self, %params ) = @_;
+     foreach my $vargroup (@{$params{vargroups}}) {      	
+     	if ( $vargroup -> {name} && $vargroup -> {name} ne '' ) {
+    		my $guard = $self->result_source->schema()->txn_scope_guard;
+        	my $vargrouprs = $self->result_source->schema()->resultset('Vargroup')->checkvargroup(%$vargroup);    	
+        
+        	$self->result_source->schema()->resultset('VariableVargroup')->find_or_create({
+          																			 vargroup_id => $vargrouprs->id,
+          																			 variable_id => $self->id,
+         																		    },
+         																		    {
+         		 																	 key => 'primary',
+         																		    });
+      		$guard->commit;
+    	} 	
+     }
+}
+
+sub attach_selection_variable {
+	
+	my ( $self, %params ) = @_;
+    if ($self -> type_selection) {
+    	my $selection_variable = @{$params{selection_variable}}[0];
+     	if ($selection_variable -> {min_count} && $selection_variable -> {max_count}) {
+    		$selection_variable -> {variable_id} = $self -> id;					   	
+    		$self->result_source->schema()->resultset('SelectionVariable')->check_selection_variable(%$selection_variable);
+     	}
+    }       	 	
+}
+
 1;

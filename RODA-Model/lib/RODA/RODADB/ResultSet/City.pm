@@ -29,16 +29,17 @@ Metode suplimentare care se aplica asupra seturilor de rezultate de tip city.
 
 =head1 UTILIZARE
 
-     my $cityrs = $roda->dbschema->resultset('City')->checkcity(
-                                                                name          => 'Bucuresti',
-                                                                country_id    => 'ro',
-                                                                city_code     => '403',
-                                                                city_code_name    => 'siruta',
-                                                                prefix        => 'municipiu',
-                                                                city_type     => '40',
-                                                                city_type_system  => 'siruta',
-                                                                city_code_sup => '1',
-            );
+     my $cityrs = $roda->dbschema->resultset('City')
+                     ->checkcity(
+                                 name          => 'Bucuresti',
+                                 country_id    => 'ro',
+                                 city_code     => '403',
+                                 city_code_name    => 'siruta',
+                                 prefix        => 'municipiu',
+                                 city_type     => '40',
+                                 city_type_system  => 'siruta',
+                                 city_code_sup => '1',
+	);
 
 =cut
 

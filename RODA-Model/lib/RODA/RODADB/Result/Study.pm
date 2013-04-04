@@ -359,4 +359,46 @@ sub attach_persons {
      }
 }
 
+sub attach_topic {
+
+     my ( $self, %params ) = @_;
+     foreach my $topic (@{$params{topics}}) {      	
+     	if ( $topic -> {name} && $topic -> {name} ne '' ) {
+    		my $guard = $self->result_source->schema()->txn_scope_guard;
+        	my $topicrs = $self->result_source->schema()->resultset('Topic')->checktopic(%$topic);    	
+        
+        	$self->result_source->schema()->resultset('StudyTopic')->find_or_create({
+          																			 topic_id => $topicrs->id,
+          																			 study_id => $self->id,
+         																		    },
+         																		    {
+         		 																	 key => 'primary',
+         																		    });
+      		$guard->commit;
+    	} 	
+     }
+}
+
+sub attach_keyword {
+
+     my ( $self, %params ) = @_;
+     foreach my $keyword (@{$params{keywords}}) {      	
+     	if ( $keyword -> {name} && $keyword -> {name} ne '' ) {
+    		my $guard = $self->result_source->schema()->txn_scope_guard;
+        	my $keywordrs = $self->result_source->schema()->resultset('Keyword')->checkkeyword(%$keyword);    	
+        
+        	$self->result_source->schema()->resultset('StudyKeyword')->find_or_create({
+          																			   keyword_id => $keywordrs->id,
+          																			   study_id => $self->id,
+          																			   added => $keyword->{added},
+          																			   added_by => $keyword->{added_by},
+         																		      },
+         																		      {
+         		 																	   key => 'primary',
+         																		      });
+      		$guard->commit;
+    	} 	
+     }
+}
+
 1;

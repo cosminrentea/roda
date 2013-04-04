@@ -9,7 +9,7 @@ use Try::Tiny;
 
 =head1 NUME
 
-RODA::RODADB::ResultSet::OrgRelation
+RODA::RODADB::ResultSet::OrgRelation - metode specifice pentru manipularea relatiilor dintre organizatii
 
 =cut
 
@@ -21,6 +21,70 @@ version 0.01
 
 =head1 DESCRIERE
 
+Metode suplimentare care se aplica asupra seturilor de rezultate de tip relatie dintre organizatii.
+
+=cut
+
+=head1 UTILIZARE
+
+	my $dtf = $roda->dbschema->storage->datetime_parser;
+	my %moi = (org_1_id => 1,
+               org_2_id => 2,
+               relation_type => 'afiliere',
+               datestart => $dtf -> format_datetime(
+               				DateTime->new(year => 2002, 
+               				              month => 10, 
+               				              day => 1)),
+               details => 'Institutie afiliata universitatii'                   
+               );
+
+	my $orgrelation = $roda->dbschema->resultset('OrgRelation')
+	                             ->checkorgrelation( %moi );
+
+=cut
+
+=head1 METODE
+
+=cut
+
+=head2 checkorgrelation
+
+checkorgrelation verifica existenta unei organizatii in baza de date (pe baza parametrilor furnizati); daca exista, returneaza obiectul respectiv, altfel introduce si returneaza obiectul corespunzator. Parametrii de intrare formeaza o 
+structura de date sub forma unui hash conform exemplului de mai sus. 
+
+Parametrii de intrare:
+
+=over 
+
+=item C<org_1_id>
+- cheia primara a unei organizatii din tabelul de organizatii, implicate in relatia curenta
+
+=item C<org_1_id>
+- cheia primara a celeilalte organizatii din tabelul de organizatii, implicate in relatia curenta
+
+=item C<relation_type>
+- tipul relatiei curente; existenta acestuia este verificata in baza de date (in tabelul OrgRelationType), iar in cazul inexistentei tipul relatiei este inserat in tabelul respectiv.
+
+=item C<datestart>
+- data de inceput a relatiei dintre cele doua organizatii
+
+=item C<dateend>
+- data de final a relatiei dintre cele doua organizatii
+
+=item C<details>
+- detalii referitoare la relatia curenta dintre cele doua organizatii 
+
+=back
+
+
+Criterii de unicitate:
+
+=over
+
+=item
+- org_1_id + org_2_id + relation_type + datestart + dateend 
+
+=back
 
 
 =cut
@@ -47,7 +111,7 @@ sub checkorgrelation {
                                                                             	'me.org_relation_type_id' => $relationId,  
                                                                             	'me.datestart' => $params{datestart},
                                                                             	'me.dateend' => $params{dateend},
-                                                                            	'me.details' => $params{details},                                                                          
+                                                                            	#'me.details' => $params{details},                                                                          
                                                                             	});
 
 

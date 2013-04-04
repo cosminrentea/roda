@@ -215,4 +215,94 @@ __PACKAGE__->belongs_to(
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
 __PACKAGE__->meta->make_immutable;
+
+sub attach_edited_text_vars {
+     my ( $self, %params ) = @_;
+     foreach my $edited_text_var (@{$params{edited_text_vars}}) { 
+     	my $guard = $self->result_source->schema()->txn_scope_guard;
+     	
+     	#setam adecvat tipul variabilei pentru situatia in care aceasta va fi creata
+     	#presupunem ca functiei ii vor fi transmise doar celelalte atribute ale tabelului "variable"
+     	$edited_text_var -> {type_edited_text} = 1;
+     	$edited_text_var -> {type_edited_number} = 0;
+     	$edited_text_var -> {type_selection} = 0; 
+        my $variablers = $self->result_source->schema()->resultset('Variable')->checkvariable(%$edited_text_var);
+        
+        if ($variablers) {
+        	if(!$variablers -> get_column('type_edited_text')) {
+        		print("Not a edited text variable: " . $variablers -> get_column('label'),"\n");
+        	}
+        	else {
+        		$self->result_source->schema()->resultset('FormEditedTextVar')->find_or_create({
+          																			     variable_id => $variablers->id,
+          																			     form_id => $self->id,
+          																			     text => $edited_text_var->{text},
+         																			    },
+         																			    {
+         		 																	     key => 'primary',
+         																			    });
+      		}
+      		$guard->commit; 	           
+        }        
+     }
+}
+
+sub attach_edited_number_vars {
+     my ( $self, %params ) = @_;
+     foreach my $edited_number_var (@{$params{edited_number_vars}}) { 
+     	my $guard = $self->result_source->schema()->txn_scope_guard;
+     	
+     	#setam adecvat tipul variabilei pentru situatia in care aceasta va fi creata
+     	#presupunem ca functiei ii vor fi transmise doar celelalte atribute ale tabelului "variable"
+     	$edited_number_var -> {type_edited_text} = 0;
+     	$edited_number_var -> {type_edited_number} = 1;
+     	$edited_number_var -> {type_selection} = 0; 
+        my $variablers = $self->result_source->schema()->resultset('Variable')->checkvariable(%$edited_number_var);
+        
+        if ($variablers) {
+        	if(!$variablers -> get_column('type_edited_number')) {
+        		print("Not a edited number variable: " . $variablers -> get_column('label'),"\n");
+        	}
+        	else {
+        		$self->result_source->schema()->resultset('FormEditedNumberVar')->find_or_create({
+          																			     variable_id => $variablers->id,
+          																			     form_id => $self->id,
+          																			     value => $edited_number_var->{value},
+         																			    },
+         																			    {
+         		 																	     key => 'primary',
+         																			    });
+      		}
+      		$guard->commit; 	           
+        }        
+     }
+}
+
+sub attach_selection_vars {
+     my ( $self, %params ) = @_;
+     foreach my $selection_var (@{$params{selection_vars}}) { 
+     	my $guard = $self->result_source->schema()->txn_scope_guard;
+     	
+     	#nu este necesara verificarea tipului variabilei deoarece legatura se face direct 
+     	#cu tabelul asociativ dintre selection_variable_item
+     	
+        my $selection_variable_item_rs = $self->result_source->schema()->resultset('SelectionVariableItem')
+        										->check_selection_variable_item(%$selection_var);
+        
+        if ($selection_variable_item_rs) {
+        	$self->result_source->schema()->resultset('FormSelectionVar')
+        										->find_or_create({
+          														  variable_id => $selection_variable_item_rs->variable_id,
+          														  form_id => $self->id,
+          														  item_id => $selection_variable_item_rs->item_id,
+          														  order_of_items_in_response => $selection_var -> {order_of_items_in_response},
+         													     },
+         														 {
+         									   				      key => 'primary',
+         														 });
+      	}
+      		$guard->commit; 	                  
+     }
+}
+
 1;

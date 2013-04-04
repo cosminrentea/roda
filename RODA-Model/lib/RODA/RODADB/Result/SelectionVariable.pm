@@ -126,4 +126,29 @@ __PACKAGE__->belongs_to(
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
 __PACKAGE__->meta->make_immutable;
+
+sub attach_items {
+     my ( $self, %params ) = @_;
+     foreach my $item (@{$params{items}}) { 
+     	my $guard = $self->result_source->schema()->txn_scope_guard;
+        my $itemrs = $self->result_source->schema()->resultset('Item')->checkitem(%$item);
+             
+        if ($itemrs) { 
+        	$self->result_source->schema()->resultset('SelectionVariableItem')
+        									->find_or_create({
+          													  item_id => $itemrs->id,
+          													  variable_id => $self->variable_id,
+          													  order_of_item_in_variable => $item -> {order_of_item_in_variable},
+          													  response_card_file_id => $item -> {response_card_file_id},
+          													  frequency_value => $item -> {frequency_value},
+         													 },
+         													 {
+         		 											  key => 'primary',
+         													 }
+         													);
+      		}
+      		$guard->commit; 	           
+        }
+}
+
 1;

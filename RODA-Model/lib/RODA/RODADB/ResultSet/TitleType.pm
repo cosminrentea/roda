@@ -8,7 +8,7 @@ use parent qw/DBIx::Class::ResultSet/;
 
 =head1 NUME
 
-RODA::RODADB::ResultSet::TitleType
+RODA::RODADB::ResultSet::TitleType - metode specifice prelucrarii tipurilor de titluri
 
 =cut
 
@@ -20,7 +20,40 @@ version 0.01
 
 =head1 DESCRIERE
 
+Metode suplimentare care se aplica asupra seturilor de rezultate corespunzatoare tipurilor de titluri.
 
+=cut
+
+=head1 METODE
+
+=cut
+
+=head2 checktitletype
+
+checktitletype verifica existenta unui tip de titlu (preluat prin valori ale parametrilor de intrare) in baza de date; in caz afirmativ, returneaza obiectul corespunzator, altfel, metoda introduce tipul de titlu in baza de date si apoi returneaza obiectul corespunzator. Verificarea existentei in baza de date se realizeaza fie dupa valoarea cheii primare, fie dupa un criteriu de unicitate.
+
+Parametrii de intrare:
+
+=over 
+
+=item C<title_type_id>
+- cheia primara a tipului din tabelul de tipuri de titluri
+
+=item C<name>
+- denumirea tipului de titlu
+
+
+=back
+
+
+Criterii de unicitate:
+
+=over
+
+=item
+- name (presupunem ca denumirile tipurilor de titluri sunt unice)
+
+=back
 
 =cut
 

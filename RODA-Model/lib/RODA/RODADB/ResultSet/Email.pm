@@ -33,7 +33,7 @@ Metode suplimentare care se aplica asupra seturilor de rezultate de tip email.
 verifica existenta unui email in baza de date, daca exista returneaza obiectul respectiv, daca nu, il introduce si returneaza obiectul corespunzator
 
 
-Paramtetrii de intrare:
+Parametrii de intrare:
 
 =over 
 
@@ -42,6 +42,14 @@ Paramtetrii de intrare:
 
 =back
 
+Criterii de unicitate:
+
+=over
+
+=item
+- email 
+
+=back
 
 =cut
 

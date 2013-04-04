@@ -8,7 +8,7 @@ use parent qw/DBIx::Class::ResultSet/;
 
 =head1 NUME
 
-RODA::RODADB::ResultSet::TimeMethType
+RODA::RODADB::ResultSet::TimeMethType - metode specifice prelucrarii metodelor temporale
 
 =cut
 
@@ -20,7 +20,42 @@ version 0.01
 
 =head1 DESCRIERE
 
+Metode suplimentare care se aplica asupra seturilor de rezultate de tip metoda temporala.
 
+=cut
+
+=head1 METODE
+
+=cut
+
+=head2 check_time_meth
+
+check_time_meth verifica existenta unei metode temporale (preluate prin valori ale parametrilor de intrare) in baza de date; in caz afirmativ, returneaza obiectul corespunzator, altfel, metoda introduce metoda temporala in baza de date si apoi returneaza obiectul corespunzator. Verificarea existentei in baza de date se realizeaza fie dupa valoarea cheii primare, fie dupa un criteriu de unicitate.
+
+Parametrii de intrare:
+
+=over 
+
+=item C<time_meth_id>
+- cheia primara a metodei din tabelul de metode temporale
+
+=item C<name>
+- denumirea metodei temporale
+
+=item C<description>
+- descrierea metodei temporale
+
+=back
+
+
+Criterii de unicitate:
+
+=over
+
+=item
+- name (presupunem ca denumirile metodelor temporale sunt unice)
+
+=back
 
 =cut
 

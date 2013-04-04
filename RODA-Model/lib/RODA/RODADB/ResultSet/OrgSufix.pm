@@ -8,7 +8,7 @@ use parent qw/DBIx::Class::ResultSet/;
 
 =head1 NUME
 
-RODA::RODADB::ResultSet::OrgSufix
+RODA::RODADB::ResultSet::OrgSufix - metode specifice pentru manipularea sufixelor organizatiilor
 
 =cut
 
@@ -20,7 +20,46 @@ version 0.01
 
 =head1 DESCRIERE
 
+Metode suplimentare care se aplica asupra seturilor de rezultate de tip suix al organizatiilor.
 
+=cut
+
+=head1 UTILIZARE
+
+  my $prefix = $roda->dbschema->resultset('OrgPrefix')
+                           ->checkorgsufix( 
+                                           id => '200', 
+                                           name => 'SRL' 
+                                          );
+
+  my $prefix = $roda->dbschema->resultset('OrgPrefix')
+                           ->checkorgsufixname( 
+                                               name => 'SRL' 
+                                              );
+
+=cut
+
+
+=head1 METODE
+
+=cut
+
+=head2 checkprefix
+
+Primeste ca parametri de intrare id-ul si numele prefixului, daca gaseste in tabel o intrare corespunzatoare, returneaza obiectul respectiv, daca nu, creaza intrarea si returneaza obiectul atasat
+
+Parametrii de intrare:
+
+=over 
+
+=item C<id>
+- cheia primara a sufixului de organizatie din tabelul corespunzator acestor sufixe
+
+=item C<name>
+- denumirea sufixului de organizatie
+
+
+=back
 
 =cut
 
@@ -45,4 +84,12 @@ sub checkorgsufix {
     }
    
 }
+
+=head2 checkorgsufixname
+
+Primeste ca parametru de intrare numele sufixului de organizatie, daca gaseste in tabel o intrare corespunzatoare, returneaza obiectul respectiv, daca nu, creaza intrarea si returneaza obiectul atasat
+
+=cut
+
+
 1;

@@ -7,6 +7,10 @@
 	<packaging>war</packaging>
 	<version>0.1.0.BUILD-SNAPSHOT</version>
 	<name>roda</name>
+	<organization>
+		<name>RODA</name>
+		<url>http://www.roda.ro</url>
+	</organization>
 	<properties>
 		<aspectj.version>1.7.0</aspectj.version>
 		<java.version>6</java.version>
@@ -64,11 +68,16 @@
 			<version>0.9.1.1</version>
 		</dependency>
 		<dependency>
-        	<groupId>org.nuiton.thirdparty</groupId>
-        	<artifactId>JRI</artifactId>
-        	<version>0.8-4</version>
-      	</dependency>
-		
+			<groupId>org.nuiton.thirdparty</groupId>
+			<artifactId>JRI</artifactId>
+			<version>0.8-4</version>
+		</dependency>
+		<dependency>
+			<groupId>org.umlgraph</groupId>
+			<artifactId>umlgraph</artifactId>
+			<version>5.6</version>
+		</dependency>
+
 		<!-- General dependencies for standard applications -->
 		<dependency>
 			<groupId>junit</groupId>
@@ -162,32 +171,28 @@
 			<artifactId>spring-aspects</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
-		
+
 		<!-- Cosmin -->
-	<!--
-    Object-to-XML Mapping (OXM) abstraction and integration with JAXB, JiBX, Castor, XStream, and XML Beans.
-    (depends on spring-core, spring-beans, spring-context)
-    Define this if you need OXM (org.springframework.oxm.*)
-	-->
+		<!-- Object-to-XML Mapping (OXM) abstraction and integration with JAXB, 
+			JiBX, Castor, XStream, and XML Beans. (depends on spring-core, spring-beans, 
+			spring-context) Define this if you need OXM (org.springframework.oxm.*) -->
 		<dependency>
-	  		<groupId>org.springframework</groupId>
+			<groupId>org.springframework</groupId>
 			<artifactId>spring-oxm</artifactId>
-  			<version>${spring.version}</version>
+			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
-	  		<groupId>com.thoughtworks.xstream</groupId>
+			<groupId>com.thoughtworks.xstream</groupId>
 			<artifactId>xstream</artifactId>
-  			<version>1.4.4</version>
+			<version>1.4.4</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>postgresql</groupId>
 			<artifactId>postgresql</artifactId>
 			<!-- original version -->
-			<!-- 
-			<version>9.1-901.jdbc3</version>
-			-->
-			
+			<!-- <version>9.1-901.jdbc3</version> -->
+
 			<!-- Cosmin: latest version, JDBC 4 -->
 			<version>9.1-901-1.jdbc4</version>
 		</dependency>
@@ -309,7 +314,7 @@
 			</exclusions>
 		</dependency>
 		<dependency>
-		<groupId>commons-io</groupId>
+			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
 			<version>2.1</version>
 		</dependency>
@@ -393,9 +398,7 @@
 			<!-- original version -->
 			<version>3.6.1</version>
 			<!-- Cosmin: latest version, matching installed SOLR server -->
-<!--
-			<version>4.2.0</version>
--->
+			<!-- <version>4.2.0</version> -->
 		</dependency>
 	</dependencies>
 	<build>
@@ -595,6 +598,23 @@
 						<version>2.25.0</version>
 					</dependency>
 				</dependencies>
+			</plugin>
+			
+			<!-- Cosmin: Javadoc + UML class diagrams -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.9</version>
+				<configuration>
+					<doclet>org.umlgraph.doclet.UmlGraphDoc</doclet>
+					<docletArtifact>
+						<groupId>org.umlgraph</groupId>
+						<artifactId>umlgraph</artifactId>
+						<version>5.6</version>
+					</docletArtifact>
+					<additionalparam>-views</additionalparam>
+					<useStandardDocletOptions>true</useStandardDocletOptions>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>

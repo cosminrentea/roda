@@ -19,12 +19,16 @@ DocOptions:
    \begin{document}
    \pagenumbering{arabic} 
    \cfoot{\tiny{RODA - Sistemul de acces la date}\tiny}
-   \fancyhead[LE,RO]{RODA: Sistem de acces la date - ANEXA1 - \leftmark}
+   \fancyhead[LE,RO]{RODA: Sistem de acces la date - ANEXA 1 - \leftmark}
    \fancyhead[RE,LO]{\thepage}
-   \newpage\thispagestyle{plain}\tableofcontents{}
+   \newpage
+   \thispagestyle{plain}
+   \tableofcontents{}
    \setcounter{page}{1}
    
   UserPostamble: |
+    \cleardoublepage
+    \listoffigures
     \cleardoublepage
     \end{document}
   AddPreamble: 1
@@ -53,9 +57,10 @@ DocStructure:
       FileOrPod: RODA::Components::DBIC::DBConfig
   - Input:
       FileOrPod: RODA::Components::DBIC::FileStore
+      
   - Section:
       Level: chapter
-      Title: RODA ResultSet
+      Title: ResultSet
   - Input:
       FileOrPod: roda_resultset.tex
   - Input:
@@ -165,7 +170,8 @@ DocStructure:
   - Input:
       FileOrPod: RODA::RODADB::Result::Study
   - Input:
-      FileOrPod: RODA::RODADB::Result::Variable                  
+      FileOrPod: RODA::RODADB::Result::Variable
+
   - Section:
       Level: chapter
       Title: FileStore
@@ -180,9 +186,10 @@ DocStructure:
       
   - Section:
       Level: chapter
-      Title: Modelul aplicatiei web in Java / Spring
+      Title: Componente ale aplicatiei in Java / Spring
   - Input:
       FileOrPod: roda_spring.tex
+      
   - Section:
       Level: chapter
       Title: Servicii TIC destinate echipei proiectului

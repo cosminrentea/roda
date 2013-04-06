@@ -65,6 +65,7 @@ Criterii de unicitate:
 
 =item
 - title_type + title + lang_id + datestart  
+
 =back
 
 =cut

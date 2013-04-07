@@ -47,7 +47,7 @@ import ro.roda.service.CatalogServiceImpl;
 @Component
 public class DatabaseUtils {
 
-	private final Log log = LogFactory.getLog(DatabaseUtils.class);
+	private final Log log = LogFactory.getLog(this.getClass());
 
 	@Autowired
 	CatalogServiceImpl catalogService;

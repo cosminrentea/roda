@@ -52,8 +52,9 @@ privileged aspect News_Roo_SolrSearch {
             sid.addField("news.added_dt", news.getAdded().getTime());
             sid.addField("news.title_s", news.getTitle());
             sid.addField("news.content_s", news.getContent());
+            sid.addField("news.id_i", news.getId());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("news_solrsummary_t", new StringBuilder().append(news.getAddedBy()).append(" ").append(news.getAdded().getTime()).append(" ").append(news.getTitle()).append(" ").append(news.getContent()));
+            sid.addField("news_solrsummary_t", new StringBuilder().append(news.getAddedBy()).append(" ").append(news.getAdded().getTime()).append(" ").append(news.getTitle()).append(" ").append(news.getContent()).append(" ").append(news.getId()));
             documents.add(sid);
         }
         try {

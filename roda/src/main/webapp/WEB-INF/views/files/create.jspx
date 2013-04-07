@@ -9,6 +9,13 @@
         <field:input field="fullPath" id="c_ro_roda_domain_File_fullPath" render="false" z="user-managed"/>
         <field:input field="url" id="c_ro_roda_domain_File_url" render="false" z="user-managed"/>
         <field:input field="contentType" id="c_ro_roda_domain_File_contentType" render="false" z="user-managed"/>
+        <field:select field="instances" id="c_ro_roda_domain_File_instances" itemValue="id" items="${instances}" multiple="true" path="/instances" z="Gp9rWKNgSUGH7mK/qR5yVnxypos="/>
+        <field:select field="studies1" id="c_ro_roda_domain_File_studies1" itemValue="id" items="${studys}" multiple="true" path="/studys" z="AI0nGJJYVLaePoOgKHLuHZ72aTw="/>
+        <field:simple field="filePropertyNameValues" id="c_ro_roda_domain_File_filePropertyNameValues" messageCode="entity_reference_not_managed" messageCodeAttribute="File Property Name Value" z="tM6o6R9rRWc6gewW30UBFGOkjgs="/>
+        <field:simple field="selectionVariableItems" id="c_ro_roda_domain_File_selectionVariableItems" messageCode="entity_reference_not_managed" messageCodeAttribute="Selection Variable Item" z="NYJVLaUp9TL6oVC4yy6j4NEZxhc="/>
+        <field:simple field="variables" id="c_ro_roda_domain_File_variables" messageCode="entity_reference_not_managed" messageCodeAttribute="Variable" z="VyGBdgZveSLd7p4zINemyIhqQf0="/>
+        <field:input field="title" id="c_ro_roda_domain_File_title" z="nn1qf2FshnJpAU5XdZYRMx8VhS0="/>
+        <field:input field="description" id="c_ro_roda_domain_File_description" z="8LJREJAr9SJqYV7YatxnFoBWUX0="/>
     </form:create>
     <form:dependency dependencies="${dependencies}" id="d_ro_roda_domain_File" render="${not empty dependencies}" z="/lO+Lol7DuSyprc38UkEKmrXRHM="/>
 </div>

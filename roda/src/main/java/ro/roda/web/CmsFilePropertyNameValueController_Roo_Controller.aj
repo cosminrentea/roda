@@ -19,6 +19,9 @@ import org.springframework.web.util.WebUtils;
 import ro.roda.domain.CmsFilePropertyNameValue;
 import ro.roda.domain.CmsFilePropertyNameValuePK;
 import ro.roda.service.CmsFilePropertyNameValueService;
+import ro.roda.service.CmsFileService;
+import ro.roda.service.PropertyNameService;
+import ro.roda.service.PropertyValueService;
 import ro.roda.web.CmsFilePropertyNameValueController;
 
 privileged aspect CmsFilePropertyNameValueController_Roo_Controller {
@@ -27,6 +30,15 @@ privileged aspect CmsFilePropertyNameValueController_Roo_Controller {
     
     @Autowired
     CmsFilePropertyNameValueService CmsFilePropertyNameValueController.cmsFilePropertyNameValueService;
+    
+    @Autowired
+    CmsFileService CmsFilePropertyNameValueController.cmsFileService;
+    
+    @Autowired
+    PropertyNameService CmsFilePropertyNameValueController.propertyNameService;
+    
+    @Autowired
+    PropertyValueService CmsFilePropertyNameValueController.propertyValueService;
     
     @Autowired
     public CmsFilePropertyNameValueController.new(ConversionService conversionService) {
@@ -101,6 +113,9 @@ privileged aspect CmsFilePropertyNameValueController_Roo_Controller {
     
     void CmsFilePropertyNameValueController.populateEditForm(Model uiModel, CmsFilePropertyNameValue cmsFilePropertyNameValue) {
         uiModel.addAttribute("cmsFilePropertyNameValue", cmsFilePropertyNameValue);
+        uiModel.addAttribute("cmsfiles", cmsFileService.findAllCmsFiles());
+        uiModel.addAttribute("propertynames", propertyNameService.findAllPropertyNames());
+        uiModel.addAttribute("propertyvalues", propertyValueService.findAllPropertyValues());
     }
     
     String CmsFilePropertyNameValueController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

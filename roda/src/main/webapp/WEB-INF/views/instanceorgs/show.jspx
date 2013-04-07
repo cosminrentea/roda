@@ -2,5 +2,11 @@
 <div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <page:show id="ps_ro_roda_domain_InstanceOrg" object="${instanceorg}" path="/instanceorgs" z="mi9dU5EX01P33ygxqnGNLOpz/90="/>
+    <page:show id="ps_ro_roda_domain_InstanceOrg" object="${instanceorg}" path="/instanceorgs" z="mi9dU5EX01P33ygxqnGNLOpz/90=">
+        <field:display field="instanceId" id="s_ro_roda_domain_InstanceOrg_instanceId" object="${instanceorg}" z="lRxKfnlGfygLEL1f4hRbEd4yql0="/>
+        <field:display field="assocTypeId" id="s_ro_roda_domain_InstanceOrg_assocTypeId" object="${instanceorg}" z="DxKu9rcJqPo5TVZIVWHaDAEC/5M="/>
+        <field:display field="orgId" id="s_ro_roda_domain_InstanceOrg_orgId" object="${instanceorg}" z="sKEhbUdD6vXYkMrHJ7clgLOmB9U="/>
+        <field:display field="assocDetails" id="s_ro_roda_domain_InstanceOrg_assocDetails" object="${instanceorg}" z="Kz1s+Ajqdxn9O1ha8SgdOpyO6Bc="/>
+        <field:display field="citation" id="s_ro_roda_domain_InstanceOrg_citation" object="${instanceorg}" z="cIHV8ilFfrDajrmgcg4M58yJ7xE="/>
+    </page:show>
 </div>

@@ -20,7 +20,7 @@ public class ApplicationListenerContextRefreshed implements
 		ApplicationListener<ContextRefreshedEvent> {
 	
 	private final Log log = LogFactory
-			.getLog(ApplicationListenerContextRefreshed.class);
+			.getLog(this.getClass());
 
 	@Autowired
 	RBean rb;

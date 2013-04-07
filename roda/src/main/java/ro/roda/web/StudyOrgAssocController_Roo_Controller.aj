@@ -17,12 +17,16 @@ import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.domain.StudyOrgAssoc;
 import ro.roda.service.StudyOrgAssocService;
+import ro.roda.service.StudyOrgService;
 import ro.roda.web.StudyOrgAssocController;
 
 privileged aspect StudyOrgAssocController_Roo_Controller {
     
     @Autowired
     StudyOrgAssocService StudyOrgAssocController.studyOrgAssocService;
+    
+    @Autowired
+    StudyOrgService StudyOrgAssocController.studyOrgService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String StudyOrgAssocController.create(@Valid StudyOrgAssoc studyOrgAssoc, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -91,6 +95,7 @@ privileged aspect StudyOrgAssocController_Roo_Controller {
     
     void StudyOrgAssocController.populateEditForm(Model uiModel, StudyOrgAssoc studyOrgAssoc) {
         uiModel.addAttribute("studyOrgAssoc", studyOrgAssoc);
+        uiModel.addAttribute("studyorgs", studyOrgService.findAllStudyOrgs());
     }
     
     String StudyOrgAssocController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

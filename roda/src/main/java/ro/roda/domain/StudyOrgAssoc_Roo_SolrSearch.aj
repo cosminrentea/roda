@@ -48,9 +48,11 @@ privileged aspect StudyOrgAssoc_Roo_SolrSearch {
         for (StudyOrgAssoc studyOrgAssoc : studyorgassocs) {
             SolrInputDocument sid = new SolrInputDocument();
             sid.addField("id", "studyorgassoc_" + studyOrgAssoc.getId());
+            sid.addField("studyOrgAssoc.assocname_s", studyOrgAssoc.getAssocName());
+            sid.addField("studyOrgAssoc.assocdescription_s", studyOrgAssoc.getAssocDescription());
             sid.addField("studyOrgAssoc.id_i", studyOrgAssoc.getId());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("studyorgassoc_solrsummary_t", new StringBuilder().append(studyOrgAssoc.getId()));
+            sid.addField("studyorgassoc_solrsummary_t", new StringBuilder().append(studyOrgAssoc.getAssocName()).append(" ").append(studyOrgAssoc.getAssocDescription()).append(" ").append(studyOrgAssoc.getId()));
             documents.add(sid);
         }
         try {

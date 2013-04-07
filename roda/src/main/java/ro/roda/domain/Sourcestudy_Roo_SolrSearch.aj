@@ -48,9 +48,13 @@ privileged aspect Sourcestudy_Roo_SolrSearch {
         for (Sourcestudy sourcestudy : sourcestudys) {
             SolrInputDocument sid = new SolrInputDocument();
             sid.addField("id", "sourcestudy_" + sourcestudy.getId());
+            sid.addField("sourcestudy.orgid_t", sourcestudy.getOrgId());
+            sid.addField("sourcestudy.type_t", sourcestudy.getType());
+            sid.addField("sourcestudy.name_s", sourcestudy.getName());
+            sid.addField("sourcestudy.details_s", sourcestudy.getDetails());
             sid.addField("sourcestudy.id_i", sourcestudy.getId());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("sourcestudy_solrsummary_t", new StringBuilder().append(sourcestudy.getId()));
+            sid.addField("sourcestudy_solrsummary_t", new StringBuilder().append(sourcestudy.getOrgId()).append(" ").append(sourcestudy.getType()).append(" ").append(sourcestudy.getName()).append(" ").append(sourcestudy.getDetails()).append(" ").append(sourcestudy.getId()));
             documents.add(sid);
         }
         try {

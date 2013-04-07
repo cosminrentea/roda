@@ -48,9 +48,12 @@ privileged aspect Skip_Roo_SolrSearch {
         for (Skip skip : skips) {
             SolrInputDocument sid = new SolrInputDocument();
             sid.addField("id", "skip_" + skip.getId());
+            sid.addField("skip.variableid_t", skip.getVariableId());
+            sid.addField("skip.nextvariableid_t", skip.getNextVariableId());
+            sid.addField("skip.condition_s", skip.getCondition());
             sid.addField("skip.id_l", skip.getId());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("skip_solrsummary_t", new StringBuilder().append(skip.getId()));
+            sid.addField("skip_solrsummary_t", new StringBuilder().append(skip.getVariableId()).append(" ").append(skip.getNextVariableId()).append(" ").append(skip.getCondition()).append(" ").append(skip.getId()));
             documents.add(sid);
         }
         try {

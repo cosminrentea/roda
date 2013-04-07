@@ -45,8 +45,8 @@
 		<property name="targetMethod" value="putAll" />
 		<property name="arguments">
 			<util:properties>
-				<prop key="java.library.path">${R.java.library.path}</prop>
-				<prop key="jri.ignore.ule">${R.jri.ignore.ule}</prop>
+				<prop key="java.library.path">${roda.R.java.library.path}</prop>
+				<prop key="jri.ignore.ule">${roda.R.jri.ignore.ule}</prop>
 			</util:properties>
 		</property>
 	</bean>
@@ -92,12 +92,22 @@
 	<task:annotation-driven executor="asyncExecutor"
 		mode="aspectj" />
 
-	<task:executor id="asyncExecutor" pool-size="${executor.poolSize}" />
-
-	<bean class="org.apache.solr.client.solrj.impl.CommonsHttpSolrServer"
-		id="solrServer">
-		<constructor-arg value="${solr.serverUrl}" />
+	<task:executor id="asyncExecutor" pool-size="${roda.executor.poolSize}" />
+	
+	<bean class="ro.roda.util.ScheduledTask" id="rodaScheduledTask">
 	</bean>
+
+	<task:scheduled-tasks scheduler="rodaScheduler">
+		
+		<!-- every 30 sec. -->
+    	<task:scheduled ref="rodaScheduledTask" method="maintenance" cron="*/30 * * * * *"/>
+
+		<!-- every hour -->
+    	<task:scheduled ref="rodaScheduledTask" method="backup" cron="0 0 * * * *"/>
+    	
+	</task:scheduled-tasks>
+
+	<task:scheduler id="rodaScheduler" pool-size="${roda.scheduler.poolSize}"/>
 
 	<!-- Cosmin: Basic Object-to-XML Serialization -->
 	<bean id="xstreamMarshaller" class="org.springframework.oxm.xstream.XStreamMarshaller">
@@ -116,9 +126,14 @@
 		<constructor-arg index="2">
 			<null />
 		</constructor-arg>
-		<!-- <constructor-arg index="3" value="${R.property}" /> -->
 	</bean>
 
+	<!-- Solr -->
+	<bean class="org.apache.solr.client.solrj.impl.CommonsHttpSolrServer"
+		id="solrServer">
+		<constructor-arg value="${solr.serverUrl}" />
+	</bean>
+	
 	<!-- Cosmin: the component-scan must be after the "dataSource" bean declaration 
 		because "dataSource" must be available when seeding the initial data into 
 		the DB (the connection details are the same) -->
@@ -133,7 +148,7 @@
 	<bean id="multipartResolver"
 		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
 		<!-- one of the properties available; the maximum file size in bytes -->
-		<property name="maxUploadSize" value="10000000" />
+		<property name="maxUploadSize" value="${roda.filestore.maxuploadsize}" />
 	</bean>
 <!-- 
 	<bean id="multipartFilter"

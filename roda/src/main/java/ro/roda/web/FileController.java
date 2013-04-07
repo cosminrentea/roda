@@ -33,7 +33,7 @@ public class FileController {
     @Autowired
     FileService fileService;
 
-    private final Log log = LogFactory.getLog(FileController.class);
+    private final Log log = LogFactory.getLog(this.getClass());
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {

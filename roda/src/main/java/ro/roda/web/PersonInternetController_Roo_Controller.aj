@@ -18,7 +18,9 @@ import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.domain.PersonInternet;
 import ro.roda.domain.PersonInternetPK;
+import ro.roda.service.InternetService;
 import ro.roda.service.PersonInternetService;
+import ro.roda.service.PersonService;
 import ro.roda.web.PersonInternetController;
 
 privileged aspect PersonInternetController_Roo_Controller {
@@ -27,6 +29,12 @@ privileged aspect PersonInternetController_Roo_Controller {
     
     @Autowired
     PersonInternetService PersonInternetController.personInternetService;
+    
+    @Autowired
+    InternetService PersonInternetController.internetService;
+    
+    @Autowired
+    PersonService PersonInternetController.personService;
     
     @Autowired
     public PersonInternetController.new(ConversionService conversionService) {
@@ -101,6 +109,8 @@ privileged aspect PersonInternetController_Roo_Controller {
     
     void PersonInternetController.populateEditForm(Model uiModel, PersonInternet personInternet) {
         uiModel.addAttribute("personInternet", personInternet);
+        uiModel.addAttribute("internets", internetService.findAllInternets());
+        uiModel.addAttribute("people", personService.findAllPeople());
     }
     
     String PersonInternetController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

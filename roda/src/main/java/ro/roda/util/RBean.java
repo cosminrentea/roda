@@ -8,7 +8,7 @@ import org.rosuda.JRI.Rengine;
 
 public class RBean {
 
-	private final Log log = LogFactory.getLog(RBean.class);
+	private final Log log = LogFactory.getLog(this.getClass());
 
 	private Rengine re;
 
@@ -27,7 +27,7 @@ public class RBean {
 
 		// Tomcat JVM:
 		// -Djava.library.path=/Users/cosmin/R/x86_64-apple-darwin12.2.1-library/2.15/rJava/jri:/opt/local/lib/R/lib/x86_64
-		// Environment: 
+		// Environment for MacOSX + macports: 
 		// R_HOME=/opt/local/lib/R
 
 		// the engine creates R as a new thread

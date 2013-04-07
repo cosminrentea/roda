@@ -50,8 +50,9 @@ privileged aspect Concept_Roo_SolrSearch {
             sid.addField("id", "concept_" + concept.getId());
             sid.addField("concept.name_s", concept.getName());
             sid.addField("concept.description_s", concept.getDescription());
+            sid.addField("concept.id_l", concept.getId());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("concept_solrsummary_t", new StringBuilder().append(concept.getName()).append(" ").append(concept.getDescription()));
+            sid.addField("concept_solrsummary_t", new StringBuilder().append(concept.getName()).append(" ").append(concept.getDescription()).append(" ").append(concept.getId()));
             documents.add(sid);
         }
         try {

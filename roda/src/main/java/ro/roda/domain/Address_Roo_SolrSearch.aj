@@ -48,9 +48,16 @@ privileged aspect Address_Roo_SolrSearch {
         for (Address address : addresses) {
             SolrInputDocument sid = new SolrInputDocument();
             sid.addField("id", "address_" + address.getId());
+            sid.addField("address.cityid_t", address.getCityId());
+            sid.addField("address.countryid_s", address.getCountryId());
+            sid.addField("address.address1_s", address.getAddress1());
+            sid.addField("address.address2_s", address.getAddress2());
+            sid.addField("address.subdivname_s", address.getSubdivName());
+            sid.addField("address.subdivcode_s", address.getSubdivCode());
+            sid.addField("address.postalcode_s", address.getPostalCode());
             sid.addField("address.id_i", address.getId());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("address_solrsummary_t", new StringBuilder().append(address.getId()));
+            sid.addField("address_solrsummary_t", new StringBuilder().append(address.getCityId()).append(" ").append(address.getCountryId()).append(" ").append(address.getAddress1()).append(" ").append(address.getAddress2()).append(" ").append(address.getSubdivName()).append(" ").append(address.getSubdivCode()).append(" ").append(address.getPostalCode()).append(" ").append(address.getId()));
             documents.add(sid);
         }
         try {

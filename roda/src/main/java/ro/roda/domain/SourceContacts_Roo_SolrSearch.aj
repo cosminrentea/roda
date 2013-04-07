@@ -54,8 +54,9 @@ privileged aspect SourceContacts_Roo_SolrSearch {
             sid.addField("sourceContacts.contactedat_dt", sourceContacts.getContactedAt().getTime());
             sid.addField("sourceContacts.synopsis_s", sourceContacts.getSynopsis());
             sid.addField("sourceContacts.followup_i", sourceContacts.getFollowup());
+            sid.addField("sourceContacts.id_i", sourceContacts.getId());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("sourcecontacts_solrsummary_t", new StringBuilder().append(sourceContacts.getPersonId()).append(" ").append(sourceContacts.getSourceId()).append(" ").append(sourceContacts.getSourceContactMethodId()).append(" ").append(sourceContacts.getContactedAt().getTime()).append(" ").append(sourceContacts.getSynopsis()).append(" ").append(sourceContacts.getFollowup()));
+            sid.addField("sourcecontacts_solrsummary_t", new StringBuilder().append(sourceContacts.getPersonId()).append(" ").append(sourceContacts.getSourceId()).append(" ").append(sourceContacts.getSourceContactMethodId()).append(" ").append(sourceContacts.getContactedAt().getTime()).append(" ").append(sourceContacts.getSynopsis()).append(" ").append(sourceContacts.getFollowup()).append(" ").append(sourceContacts.getId()));
             documents.add(sid);
         }
         try {

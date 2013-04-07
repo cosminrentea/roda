@@ -18,6 +18,8 @@ import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.domain.TranslatedTopic;
 import ro.roda.domain.TranslatedTopicPK;
+import ro.roda.service.LangService;
+import ro.roda.service.TopicService;
 import ro.roda.service.TranslatedTopicService;
 import ro.roda.web.TranslatedTopicController;
 
@@ -27,6 +29,12 @@ privileged aspect TranslatedTopicController_Roo_Controller {
     
     @Autowired
     TranslatedTopicService TranslatedTopicController.translatedTopicService;
+    
+    @Autowired
+    LangService TranslatedTopicController.langService;
+    
+    @Autowired
+    TopicService TranslatedTopicController.topicService;
     
     @Autowired
     public TranslatedTopicController.new(ConversionService conversionService) {
@@ -101,6 +109,8 @@ privileged aspect TranslatedTopicController_Roo_Controller {
     
     void TranslatedTopicController.populateEditForm(Model uiModel, TranslatedTopic translatedTopic) {
         uiModel.addAttribute("translatedTopic", translatedTopic);
+        uiModel.addAttribute("langs", langService.findAllLangs());
+        uiModel.addAttribute("topics", topicService.findAllTopics());
     }
     
     String TranslatedTopicController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

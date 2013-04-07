@@ -48,9 +48,12 @@ privileged aspect CmsLayout_Roo_SolrSearch {
         for (CmsLayout cmsLayout : cmslayouts) {
             SolrInputDocument sid = new SolrInputDocument();
             sid.addField("id", "cmslayout_" + cmsLayout.getId());
+            sid.addField("cmsLayout.cmslayoutgroupid_t", cmsLayout.getCmsLayoutGroupId());
+            sid.addField("cmsLayout.name_s", cmsLayout.getName());
+            sid.addField("cmsLayout.layoutcontent_s", cmsLayout.getLayoutContent());
             sid.addField("cmsLayout.id_i", cmsLayout.getId());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("cmslayout_solrsummary_t", new StringBuilder().append(cmsLayout.getId()));
+            sid.addField("cmslayout_solrsummary_t", new StringBuilder().append(cmsLayout.getCmsLayoutGroupId()).append(" ").append(cmsLayout.getName()).append(" ").append(cmsLayout.getLayoutContent()).append(" ").append(cmsLayout.getId()));
             documents.add(sid);
         }
         try {

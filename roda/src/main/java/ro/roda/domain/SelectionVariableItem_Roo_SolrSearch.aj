@@ -53,8 +53,9 @@ privileged aspect SelectionVariableItem_Roo_SolrSearch {
             sid.addField("selectionVariableItem.variableid_t", selectionVariableItem.getVariableId());
             sid.addField("selectionVariableItem.orderofiteminvariable_i", selectionVariableItem.getOrderOfItemInVariable());
             sid.addField("selectionVariableItem.frequencyvalue_f", selectionVariableItem.getFrequencyValue());
+            sid.addField("selectionVariableItem.id_t", selectionVariableItem.getId());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("selectionvariableitem_solrsummary_t", new StringBuilder().append(selectionVariableItem.getResponseCardFileId()).append(" ").append(selectionVariableItem.getItemId()).append(" ").append(selectionVariableItem.getVariableId()).append(" ").append(selectionVariableItem.getOrderOfItemInVariable()).append(" ").append(selectionVariableItem.getFrequencyValue()));
+            sid.addField("selectionvariableitem_solrsummary_t", new StringBuilder().append(selectionVariableItem.getResponseCardFileId()).append(" ").append(selectionVariableItem.getItemId()).append(" ").append(selectionVariableItem.getVariableId()).append(" ").append(selectionVariableItem.getOrderOfItemInVariable()).append(" ").append(selectionVariableItem.getFrequencyValue()).append(" ").append(selectionVariableItem.getId()));
             documents.add(sid);
         }
         try {

@@ -5,6 +5,7 @@ package ro.roda.web;
 
 import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,9 +14,29 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.domain.File;
+import ro.roda.service.FilePropertyNameValueService;
+import ro.roda.service.InstanceService;
+import ro.roda.service.SelectionVariableItemService;
+import ro.roda.service.StudyService;
+import ro.roda.service.VariableService;
 import ro.roda.web.FileController;
 
 privileged aspect FileController_Roo_Controller {
+    
+    @Autowired
+    FilePropertyNameValueService FileController.filePropertyNameValueService;
+    
+    @Autowired
+    InstanceService FileController.instanceService;
+    
+    @Autowired
+    SelectionVariableItemService FileController.selectionVariableItemService;
+    
+    @Autowired
+    StudyService FileController.studyService;
+    
+    @Autowired
+    VariableService FileController.variableService;
     
     @RequestMapping(params = "form", produces = "text/html")
     public String FileController.createForm(Model uiModel) {
@@ -49,6 +70,11 @@ privileged aspect FileController_Roo_Controller {
     
     void FileController.populateEditForm(Model uiModel, File file) {
         uiModel.addAttribute("file", file);
+        uiModel.addAttribute("filepropertynamevalues", filePropertyNameValueService.findAllFilePropertyNameValues());
+        uiModel.addAttribute("instances", instanceService.findAllInstances());
+        uiModel.addAttribute("selectionvariableitems", selectionVariableItemService.findAllSelectionVariableItems());
+        uiModel.addAttribute("studys", studyService.findAllStudys());
+        uiModel.addAttribute("variables", variableService.findAllVariables());
     }
     
     String FileController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

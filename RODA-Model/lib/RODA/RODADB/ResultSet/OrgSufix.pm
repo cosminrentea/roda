@@ -26,13 +26,13 @@ Metode suplimentare care se aplica asupra seturilor de rezultate de tip suix al 
 
 =head1 UTILIZARE
 
-  my $prefix = $roda->dbschema->resultset('OrgPrefix')
+  my $sufix = $roda->dbschema->resultset('OrgSufix')
                            ->checkorgsufix( 
                                            id => '200', 
                                            name => 'SRL' 
                                           );
 
-  my $prefix = $roda->dbschema->resultset('OrgPrefix')
+  my $sufix = $roda->dbschema->resultset('OrgSufix')
                            ->checkorgsufixname( 
                                                name => 'SRL' 
                                               );
@@ -44,7 +44,7 @@ Metode suplimentare care se aplica asupra seturilor de rezultate de tip suix al 
 
 =cut
 
-=head2 checkprefix
+=head2 checkorgsufix
 
 Primeste ca parametri de intrare id-ul si numele prefixului, daca gaseste in tabel o intrare corespunzatoare, returneaza obiectul respectiv, daca nu, creaza intrarea si returneaza obiectul atasat
 

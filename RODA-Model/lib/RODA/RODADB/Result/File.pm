@@ -4,13 +4,9 @@ package RODA::RODADB::Result::File;
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
 
-=head1 NAME
+=head1 NUME
 
-RODA::RODADB::Result::File
-
-=head1 DESCRIPTION
-
-Tabel ce contine documentele asociate oricarei entitati din baza de date (studiu sau instanta)
+RODA::RODADB::Result::File - Tabel ce contine documentele asociate oricarei entitati din baza de date (studiu sau instanta)
 
 =cut
 
@@ -22,7 +18,7 @@ use MooseX::NonMoose;
 use MooseX::MarkAsMethods autoclean => 1;
 extends 'DBIx::Class::Core';
 
-=head1 COMPONENTS LOADED
+=head1 COMPONENTE UTILIZATE
 
 =over 4
 
@@ -120,7 +116,7 @@ __PACKAGE__->add_columns(
 
 __PACKAGE__->set_primary_key("id");
 
-=head1 RELATIONS
+=head1 RELATII
 
 =head2 file_acls
 
@@ -239,4 +235,30 @@ __PACKAGE__->many_to_many("studies", "study_files", "study");
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
 __PACKAGE__->meta->make_immutable;
+
+=head1 METODE SUPLIMENTARE
+
+=cut
+
+=head2 attach_file_properties
+
+Ataseaza proprietati fisierului curent.
+
+=cut
+
+
+sub attach_file_properties {
+     # TODO
+}
+
+=head2 attach_file_acls
+
+Ataseaza o lista de drepturi (acl) fisierului curent. Un element al acestei liste este o structura de tip hash avand urmatoarele chei: aro_id, aro_type, read, update, delete. 
+
+=cut
+
+sub attach_file_acls {
+     # TODO
+}
+
 1;

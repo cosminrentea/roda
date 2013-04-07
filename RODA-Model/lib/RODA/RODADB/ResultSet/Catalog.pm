@@ -28,20 +28,21 @@ Metode suplimentare care se aplica asupra seturilor de rezultate de tip catalog.
 =head1 UTILIZARE
 
 	my %moi = (name => 'Catalog1',
-           owner => 1,
-           added => $dtf -> 
-                 format_datetime(DateTime -> now),                   
-           studies => [
-           				{
-           					id => 1,
-                     	},
-                     	{
-                        	id => 5,
-                     	}
-                      ],                       
+               owner => 1,
+               added => $dtf -> 
+                    format_datetime(DateTime -> now),                   
+               studies => [
+                           {
+                            id => 1,
+                           },
+                           {
+                            id => 5,
+                           }
+                          ],                       
 	);
 
-	my $catalog = $roda->dbschema->resultset('Catalog')->checkcatalog( %moi );
+	my $catalog = $roda->dbschema->resultset('Catalog')
+	                     ->checkcatalog( %moi );
 
 =cut
 

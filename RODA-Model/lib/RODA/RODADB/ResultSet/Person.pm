@@ -83,7 +83,8 @@ Metode suplimentare care se aplica asupra seturilor de rezultate de tip persoana
                              }],                       
               );
 
-    my $person = $roda->dbschema->resultset('Person')->checkperson( %moi );
+    my $person = $roda->dbschema->resultset('Person')
+                            ->checkperson( %moi );
 
 =cut
 

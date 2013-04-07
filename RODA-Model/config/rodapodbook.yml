@@ -76,6 +76,10 @@ DocStructure:
   - Input:
       FileOrPod: RODA::RODADB::ResultSet::Email
   - Input:
+      FileOrPod: RODA::RODADB::ResultSet::File
+  - Input:
+      FileOrPod: RODA::RODADB::ResultSet::FileAcl            
+  - Input:
       FileOrPod: RODA::RODADB::ResultSet::Form      
   - Input:
       FileOrPod: RODA::RODADB::ResultSet::Instance
@@ -114,6 +118,10 @@ DocStructure:
   - Input:
       FileOrPod: RODA::RODADB::ResultSet::Prefix
   - Input:
+      FileOrPod: RODA::RODADB::ResultSet::PropertyName
+  - Input:
+      FileOrPod: RODA::RODADB::ResultSet::PropertyValue            
+  - Input:
       FileOrPod: RODA::RODADB::ResultSet::Region
   - Input:
       FileOrPod: RODA::RODADB::ResultSet::Scale
@@ -122,7 +130,11 @@ DocStructure:
   - Input:
       FileOrPod: RODA::RODADB::ResultSet::SelectionVariableItem
   - Input:
-      FileOrPod: RODA::RODADB::ResultSet::Skip                        
+      FileOrPod: RODA::RODADB::ResultSet::Skip 
+  - Input:
+      FileOrPod: RODA::RODADB::ResultSet::Source
+  - Input:
+      FileOrPod: RODA::RODADB::ResultSet::Sourcestudy                                   
   - Input:
       FileOrPod: RODA::RODADB::ResultSet::Study
   - Input:
@@ -140,6 +152,12 @@ DocStructure:
   - Input:
       FileOrPod: RODA::RODADB::ResultSet::UnitAnalysis
   - Input:
+      FileOrPod: RODA::RODADB::ResultSet::UserProfile
+  - Input:
+      FileOrPod: RODA::RODADB::ResultSet::Users
+  - Input:
+      FileOrPod: RODA::RODADB::ResultSet::UserSetting                  
+  - Input:
       FileOrPod: RODA::RODADB::ResultSet::Value
   - Input:
       FileOrPod: RODA::RODADB::ResultSet::Vargroup
@@ -156,6 +174,8 @@ DocStructure:
   - Input:
       FileOrPod: RODA::RODADB::Result::City
   - Input:
+      FileOrPod: RODA::RODADB::Result::File      
+  - Input:
       FileOrPod: RODA::RODADB::Result::Form
   - Input:
       FileOrPod: RODA::RODADB::Result::Instance
@@ -168,7 +188,13 @@ DocStructure:
   - Input:
       FileOrPod: RODA::RODADB::Result::SelectionVariable
   - Input:
+      FileOrPod: RODA::RODADB::Result::Source
+  - Input:
+      FileOrPod: RODA::RODADB::Result::Sourcestudy            
+  - Input:
       FileOrPod: RODA::RODADB::Result::Study
+  - Input:
+      FileOrPod: RODA::RODADB::Result::Users      
   - Input:
       FileOrPod: RODA::RODADB::Result::Variable
 

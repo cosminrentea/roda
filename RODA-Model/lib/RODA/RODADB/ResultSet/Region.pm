@@ -9,7 +9,7 @@ use Try::Tiny;
 
 =head1 NUME
 
-RODA::RODADB::ResultSet::Region
+RODA::RODADB::ResultSet::Region - metode specifice pentru manipularea informatiilor despre regiuni
 
 =cut
 
@@ -21,7 +21,62 @@ version 0.01
 
 =head1 DESCRIERE
 
+Metode suplimentare care se aplica asupra seturilor de rezultate de tip regiune.
 
+=cut
+
+=head1 METODE
+
+=cut
+
+=head2 checkregion
+
+checkregion verifica existenta unei regiuni in baza de date; daca regiunea exista, returneaza obiectul corespunzator, daca nu, il introduce in baza de date si apoi returneaza obiectul corespunzator.
+
+Parametrii de intrare:
+
+=over 
+
+=item C<id>
+- cheia primara a regiunii din tabelul region
+
+=item C<name>
+- numele regiunii 
+
+=item C<region_code>
+- codul regiunii
+
+=item C<rcode_name>
+- numele sistemului de codificare a regiunii
+
+=item C<rtype>
+- codul tipului regiunii
+
+=item C<rtype_name>
+- numele tipului regiunii
+
+=item C<country_name>
+- numele tarii in care se gaseste regiunea
+
+=item C<country_id>
+- cheia primara a tarii, din tabelul de tari
+
+=back
+
+Criterii de unicitate:
+
+=over
+
+=item
+- region_code + rcode_name
+
+=item
+- name + rtype
+
+=item
+- name + rtype_name
+
+=back
 
 =cut
 

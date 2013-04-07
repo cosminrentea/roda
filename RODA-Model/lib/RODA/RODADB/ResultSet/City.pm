@@ -15,8 +15,6 @@ RODA::RODADB::ResultSet::City - metode specifice pentru manipularea inregistrari
 
 =head1 VERSIUNE
 
-=head1 VERSIUNE
-
 version 0.01
 
 =cut
@@ -49,9 +47,9 @@ Metode suplimentare care se aplica asupra seturilor de rezultate de tip city.
 
 =head2 checkcity
 
-checkcity verifica existenta unui oras, verifica daca aceasta exista in baza de date, daca da, returneaza obiectul corespunzator, daca nu, il introduce in baza de date si apoi returneaza obiectul corespunzator.
+checkcity verifica existenta unui oras in baza de date; daca orasul exista, returneaza obiectul corespunzator, daca nu, il introduce in baza de date si apoi returneaza obiectul corespunzator.
 
-Paramtetrii de intrare:
+Parametrii de intrare:
 
 =over 
 

@@ -38,7 +38,7 @@ Parametrii de intrare:
 =over 
 
 =item C<email>
-- adresa de e-mail
+- adresa de email
 
 =back
 

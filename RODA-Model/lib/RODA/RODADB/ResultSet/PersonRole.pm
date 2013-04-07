@@ -28,11 +28,11 @@ Metode suplimentare care se aplica asupra seturilor de rezultate corespunzatoare
 =head1 UTILIZARE
 
 	my %moi = (
-				role => 'manager proiect',                               
+	           role => 'manager proiect',                               
                );
 
-	my $orgrelationtype = $roda->dbschema->resultset('OrgRelationType')
-	              ->checkorgrelationtype( %moi );
+	my $orgrelationtype = $roda->dbschema->resultset('PersonRole')
+	              ->checkpersonrole( %moi );
 
 =cut
 

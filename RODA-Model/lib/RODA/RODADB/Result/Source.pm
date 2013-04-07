@@ -4,13 +4,9 @@ package RODA::RODADB::Result::Source;
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
 
-=head1 NAME
+=head1 NUME
 
-RODA::RODADB::Result::Source
-
-=head1 DESCRIPTION
-
-Tabel ce stocheaza sursele (organizatiile) care pot oferi studii pentru partea de colectare
+RODA::RODADB::Result::Source - Tabel ce stocheaza sursele (organizatiile) care pot oferi studii pentru partea de colectare
 
 =cut
 
@@ -22,7 +18,7 @@ use MooseX::NonMoose;
 use MooseX::MarkAsMethods autoclean => 1;
 extends 'DBIx::Class::Core';
 
-=head1 COMPONENTS LOADED
+=head1 COMPONENTE UTILIZATE
 
 =over 4
 
@@ -79,7 +75,7 @@ __PACKAGE__->add_columns(
 
 __PACKAGE__->set_primary_key("org_id");
 
-=head1 RELATIONS
+=head1 RELATII
 
 =head2 org
 
@@ -163,4 +159,40 @@ __PACKAGE__->has_many(
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
 __PACKAGE__->meta->make_immutable;
+
+=head1 METODE SUPLIMENTARE
+
+=cut
+
+=head2 attach_source_contacts
+
+Ataseaza persoanele de contact ale unei surse ce poate furniza studii. De asemenea, functia ataseaza si metoda de contact corespunzatoare fiecarei persoane. 
+
+=cut
+
+
+sub attach_source_contacts {
+    # TODO
+}
+
+=head2 attach_source_studies
+
+Ataseaza studiile furnizate de sursa (organizatia) curenta.
+
+=cut
+
+sub attach_source_studies {
+     # TODO
+}
+
+=head2 attach_source_type_history
+
+Ataseaza istoricul tipului sursei curente. Metoda este utila initial; ulterior, liniile acestui tabel vor fi adaugate automat, prin intermediul unui declansator.
+
+=cut
+
+sub attach_source_type_history {
+     # TODO
+}
+
 1;

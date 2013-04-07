@@ -4,13 +4,9 @@ package RODA::RODADB::Result::Sourcestudy;
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
 
-=head1 NAME
+=head1 NUME
 
-RODA::RODADB::Result::Sourcestudy
-
-=head1 DESCRIPTION
-
-Tabel ce stocheaza informatii despre studiile pe care le poate furniza o organizatie 
+RODA::RODADB::Result::Sourcestudy - Tabel ce stocheaza informatii despre studiile pe care le poate furniza o organizatie 
 
 =cut
 
@@ -22,7 +18,7 @@ use MooseX::NonMoose;
 use MooseX::MarkAsMethods autoclean => 1;
 extends 'DBIx::Class::Core';
 
-=head1 COMPONENTS LOADED
+=head1 COMPONENTE UTILIZATE
 
 =over 4
 
@@ -114,7 +110,7 @@ __PACKAGE__->add_columns(
 
 __PACKAGE__->set_primary_key("id");
 
-=head1 RELATIONS
+=head1 RELATII
 
 =head2 org
 
@@ -168,4 +164,149 @@ __PACKAGE__->belongs_to(
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
 __PACKAGE__->meta->make_immutable;
+
+=head1 METODE SUPLIMENTARE
+
+=cut
+
+=head2 attach_addresses
+
+Ataseaza adrese postale organizatiei curente.
+
+=cut
+
+
+sub attach_addresses {
+     my ( $self, %params ) = @_;
+     foreach my $address (@{$params{addresses}}) {
+         my $guard = $self->result_source->schema()->txn_scope_guard;
+         my $addressrs = $self->result_source->schema()->resultset('Address')->checkaddress(%$address);
+         #acum trebuie sa inseram si in many-to-many
+         if ($addressrs) { 
+        	#acu trebuie sa inseram asocierea
+         	$self->result_source->schema()->resultset('OrgAddress')->find_or_create({
+          	address_id => $addressrs->id,
+          	org_id => $self->id,
+         },
+         {
+          key => 'primary',
+         }
+         );
+      }
+        $guard->commit; 
+     }
+}
+
+=head2 attach_emails
+
+Ataseaza adrese de email organizatiei curente.
+
+=cut
+
+sub attach_emails {
+     my ( $self, %params ) = @_;
+     foreach my $email (@{$params{emails}}) { 
+        if (Email::Valid->address($email->{email})) {
+			my $guard = $self->result_source->schema()->txn_scope_guard;
+        	my $emailrs = $self->result_source->schema()->resultset('Email')->checkemail(%$email);   
+			my $ismain;
+			if (!$email->{ismain}) {
+				$ismain = '0';
+			} else {
+				$ismain = $email->{ismain};
+			}
+			
+            if ($emailrs) { 
+         		$self->result_source->schema()->resultset('OrgEmail')->find_or_create({
+          																				  email_id => $emailrs->id,
+          																				  org_id => $self->id,
+          																				  main => $ismain,
+         																				 },
+         																				 {
+         		 																		  key => 'primary',
+         																				 });
+      		}
+      		$guard->commit; 	
+        } else {
+         	die 'Invalid Email';
+        }
+     }
+}
+
+=head2 attach_phones
+
+Ataseaza numere de telefon organizatiei curente.
+
+=cut
+
+sub attach_phones {
+     my ( $self, %params ) = @_;
+     foreach my $phone (@{$params{phones}}) { 
+     	my $guard = $self->result_source->schema()->txn_scope_guard;
+        my $phoners = $self->result_source->schema()->resultset('Phone')->checkphone(%$phone);  
+        my $ismain;
+		if (!$phone->{ismain}) {
+			$ismain = '0';
+		} else {
+			$ismain = $phone->{ismain};
+		}
+			   
+        if ($phoners) { 
+        	$self->result_source->schema()->resultset('OrgPhone')->find_or_create({
+          																			  phone_id => $phoners->id,
+          																			  org_id => $self->id,
+          																			  main => $ismain,
+         																			 },
+         																			 {
+         		 																	  key => 'primary',
+         																			 });
+      		}
+      		$guard->commit; 	
+        }
+}
+
+=head2 attach_phones
+
+Ataseaza adrese de internet organizatiei curente.
+
+=cut
+
+sub attach_internets {
+     my ( $self, %params ) = @_;
+     foreach my $internet (@{$params{internets}}) { 
+     	my $guard = $self->result_source->schema()->txn_scope_guard;
+        my $internetrs = $self->result_source->schema()->resultset('Internet')->checkinternet(%$internet);
+        my $ismain;
+        if (!$internet->{ismain}) {
+			$ismain = '0';
+		} else {
+			$ismain = $internet->{ismain};
+		}
+             
+        if ($internetrs) { 
+        	$self->result_source->schema()->resultset('OrgInternet')->find_or_create({
+          																			     internet_id => $internetrs->id,
+          																			     org_id => $self->id,
+          																			     main => $ismain,
+         																			    },
+         																			    {
+         		 																	     key => 'primary',
+         																			    });
+      		}
+      		$guard->commit; 	           
+        }
+}
+
+=head2 attach_sourcestudy_type_history
+
+Ataseaza tipului unui studiu furnizat de catre o sursa (organizatie). Metosa este utila initial, la popularea tabelelor prin intermediul interfetei; 
+ulterior, liniile vor fi inserate in acest tabel automat, cu ajutorul unui declansator.
+
+=cut
+
+sub attach_sourcestudy_type_history {
+     # TODO
+}
+
+
 1;

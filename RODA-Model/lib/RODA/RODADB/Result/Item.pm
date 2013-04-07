@@ -4,7 +4,7 @@ package RODA::RODADB::Result::Item;
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
 
-=head1 NAME
+=head1 NUME
 
 RODA::RODADB::Result::Item - Tabel ce stocheaza elementele (item-urile) variabilelor de selectie din baza de date
 

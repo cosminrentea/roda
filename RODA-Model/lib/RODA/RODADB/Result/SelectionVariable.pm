@@ -4,7 +4,7 @@ package RODA::RODADB::Result::SelectionVariable;
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
 
-=head1 NAME
+=head1 NUME
 
 RODA::RODADB::Result::SelectionVariable - Tabel ce contine informatii despre variabilele de selectie din instante
 

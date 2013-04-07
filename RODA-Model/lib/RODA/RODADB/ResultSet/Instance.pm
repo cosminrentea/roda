@@ -47,10 +47,10 @@ Metode suplimentare care se aplica asupra seturilor de rezultate de tip instanta
                	         id =>'1', 
                	         assoc_name=>'producator'
                         },
-               			{
+                        {
                          id => '2', 
                          assoc_name => 'investigator principal'
-               			}], 
+                        }], 
                persons => [{
                	            id =>'1', 
                	            assoc_name=>'finantator'
@@ -77,20 +77,21 @@ Metode suplimentare care se aplica asupra seturilor de rezultate de tip instanta
                              }],
                forms => [{
                	          order_in_instance => 2, 
-			   			  operator => {fname => 'Ion', 
-			   			  	           lname => 'Popescu'},	
-			   			  edited_text_vars => [{
-			   			  	            variable_id => '16', 
-			   			  	            text => 'raspuns la var 16'
-			   			                }],
-			   			  selection_vars => [{
-			   			  	            variable_id => '107', 
-			   			  	            item_id => '70'
-			   			                }]					  
+	                      operator => {fname => 'Ion', 
+	                                   lname => 'Popescu'},	
+	                      edited_text_vars => [{
+	                                    variable_id => '16', 
+	                                    text => 'raspuns la var 16'
+	                                    }],
+	                      selection_vars => [{
+	                                    variable_id => '107', 
+	                                    item_id => '70'
+	                                    }]					  
                          }],   	                                     
               );
 
-	my $instance = $roda->dbschema->resultset('Instance')->checkinstance( %moi );
+	my $instance = $roda->dbschema->resultset('Instance')
+	                   ->checkinstance( %moi );
 	
 =cut
 

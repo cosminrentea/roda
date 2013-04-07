@@ -27,10 +27,11 @@ Metode suplimentare care se aplica asupra seturilor de rezultate corespunzatoare
 =head1 UTILIZARE
 
 	my %moi = (
-				relation_type => 'afiliere',                               
-               );
+	           relation_type => 'afiliere',                               
+              );
 
-	my $orgrelationtype = $roda->dbschema->resultset('OrgRelationType')
+	my $orgrelationtype = $roda->dbschema
+	           ->resultset('OrgRelationType')
 	           ->checkorgrelationtype( %moi );
 
 =cut

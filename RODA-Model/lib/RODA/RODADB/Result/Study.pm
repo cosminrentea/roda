@@ -4,7 +4,7 @@ package RODA::RODADB::Result::Study;
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
 
-=head1 NAME
+=head1 NUME
 
 RODA::RODADB::Result::Study - Tabel care stocheaza studiile desfasurate, ale caror informatii sunt prezente in baza de date
 

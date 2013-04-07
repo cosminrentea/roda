@@ -40,8 +40,8 @@ Metode suplimentare care se aplica asupra seturilor de rezultate de tip studiu.
                can_digitize => 'true',
                can_use_anonymous => 'false',  
                orgs => [{
-               			  id =>'1', 
-               			  assoc_name=>'producator'
+                         id =>'1', 
+                         assoc_name=>'producator'
                         },
                         {
                           id => '2', 
@@ -52,7 +52,8 @@ Metode suplimentare care se aplica asupra seturilor de rezultate de tip studiu.
                             assoc_name=>'finantator'}],                          
                );
 
-	my $study = $roda->dbschema->resultset('Study')->checkstudy( %moi );
+	my $study = $roda->dbschema->resultset('Study')
+	                ->checkstudy( %moi );
 	
 =cut
 

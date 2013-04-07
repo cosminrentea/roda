@@ -15,12 +15,22 @@ DocOptions:
    \usepackage{lscape}
    \usepackage{listings}
    \usepackage{babel}
+   \usepackage{amsmath}
+   \usepackage{amssymb,amsfonts,textcomp}
+   \usepackage{array}
+   \usepackage{hhline}
+   \usepackage[pdftex]{graphicx}
    \usepackage[pdftitle={Documentatie Sistem de acces la date RODA}, pdfauthor={RODA}, colorlinks=true, linkcolor=blue]{hyperref}
+   \hypersetup{pdftex, colorlinks=true, linkcolor=blue, citecolor=blue, filecolor=blue, urlcolor=blue, pdftitle=, pdfauthor=, pdfsubject=, pdfkeywords=}
+
    \begin{document}
    \pagenumbering{arabic} 
    \cfoot{\tiny{RODA - Sistemul de acces la date}\tiny}
-   \fancyhead[LE,RO]{RODA: Sistem de acces la date - ANEXA 1 - \leftmark}
+   \fancyhead[LE,RO]{Anexa 1 - \leftmark}
    \fancyhead[RE,LO]{\thepage}
+   \title{ANEXA 1. RODA - Sistemul de acces la date}
+   \author{}
+   \date{}
    \newpage
    \thispagestyle{plain}
    \tableofcontents{}
@@ -215,7 +225,13 @@ DocStructure:
       Title: Componente ale aplicatiei in Java / Spring
   - Input:
       FileOrPod: roda_spring.tex
-      
+
+  - Section:
+      Level: chapter
+      Title: Securitatea Arhivei RODA
+  - Input:
+      FileOrPod: roda_securitate.tex
+
   - Section:
       Level: chapter
       Title: Servicii TIC destinate echipei proiectului

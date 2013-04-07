@@ -30,7 +30,8 @@ Metode suplimentare care se aplica asupra seturilor de rezultate de tip acl asoc
 
 =head2 check_file_acl
 
-verifica existenta unui acl asociat unui fisier in baza de date, daca exista returneaza obiectul respectiv, daca nu, il introduce si returneaza obiectul corespunzator.
+verifica existenta unui acl asociat unui fisier in baza de date; daca exista, returneaza obiectul respectiv, altfel, il introduce in baza de date si returneaza obiectul corespunzator. 
+Verificarea existentei se realizeaza pe baza valorii cheii primare.
 
 
 Parametrii de intrare:

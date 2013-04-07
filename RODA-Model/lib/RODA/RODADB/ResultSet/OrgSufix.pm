@@ -20,7 +20,7 @@ version 0.01
 
 =head1 DESCRIERE
 
-Metode suplimentare care se aplica asupra seturilor de rezultate de tip suix al organizatiilor.
+Metode suplimentare care se aplica asupra seturilor de rezultate de tip sufix al organizatiilor.
 
 =cut
 
@@ -46,7 +46,7 @@ Metode suplimentare care se aplica asupra seturilor de rezultate de tip suix al 
 
 =head2 checkorgsufix
 
-Primeste ca parametri de intrare id-ul si numele prefixului, daca gaseste in tabel o intrare corespunzatoare, returneaza obiectul respectiv, daca nu, creaza intrarea si returneaza obiectul atasat
+Primeste ca parametri de intrare id-ul si numele prefixului, daca gaseste in tabel o intrare corespunzatoare, returneaza obiectul respectiv, daca nu, creeaza intrarea si returneaza obiectul atasat.
 
 Parametrii de intrare:
 
@@ -87,7 +87,7 @@ sub checkorgsufix {
 
 =head2 checkorgsufixname
 
-Primeste ca parametru de intrare numele sufixului de organizatie, daca gaseste in tabel o intrare corespunzatoare, returneaza obiectul respectiv, daca nu, creaza intrarea si returneaza obiectul atasat
+Primeste ca parametru de intrare numele sufixului de organizatie; daca gaseste in tabel o intrare corespunzatoare, returneaza obiectul respectiv, daca nu, creeaza intrarea si returneaza obiectul atasat.
 
 =cut
 

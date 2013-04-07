@@ -30,7 +30,7 @@ Metode suplimentare care se aplica asupra seturilor de rezultate de tip setare a
 
 =head2 check_user_setting
 
-verifica existenta unei setari utilizator in baza de date, daca exista returneaza obiectul respectiv, daca nu, il introduce si returneaza obiectul corespunzator
+verifica existenta unei setari utilizator in baza de date; daca exista returneaza obiectul respectiv, altfel, il introduce si returneaza obiectul corespunzator.
 
 
 Parametrii de intrare:

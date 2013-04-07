@@ -54,7 +54,7 @@ Parametrii de intrare:
 - denumirea tipului (starii) sursei
 
 =item C<source_contacts>
-- lista ce contine persoanele de contact ale sursei respective; existenta fiecarei persoane va fi verificata in baza de date, iar in cazul inexistentei va fi introdusa. 
+- lista ce contine persoanele de contact ale sursei respective; existenta fiecarei persoane va fi verificata in baza de date, iar in cazul inexistentei persoana va fi introdusa. 
 Un element al acestei iste contine si metoda de contact a persoanei. 
 
 =item C<source_type_history>

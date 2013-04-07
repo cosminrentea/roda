@@ -30,7 +30,7 @@ Metode suplimentare care se aplica asupra seturilor de rezultate de tip formular
 
 =head2 checkform
 
-checkform verifica existenta unui formular (daca este furnizata valoarea identificatirului sau), verifica daca acesta exista in baza de date; in caz afirmativ, returneaza obiectul corespunzator, altfel, metoda introduce formularul in baza de date si apoi returneaza obiectul corespunzator. 
+checkform verifica existenta unui formular (daca este furnizata valoarea identificatorului sau) in baza de date; in caz afirmativ, returneaza obiectul corespunzator, altfel, metoda introduce formularul in baza de date si apoi returneaza obiectul corespunzator. 
 
 Parametrii de intrare:
 
@@ -46,7 +46,7 @@ Parametrii de intrare:
 - numarul de ordine al formularului in cadrul instantei
 
 =item C<operator>
-- operatorul are a completat formularul curent; acesta poate fi furnizat prin valoarea cheii primare a unei persoane sau prin informatiile minimale (nume si prenume) asociate operatorului. Daca persoana nu exista in baza de date, va fi adaugata cu aceste informatii. 
+- operatorul care a completat formularul curent; acesta poate fi furnizat prin valoarea cheii primare a unei persoane sau prin informatiile minimale (nume si prenume) asociate operatorului. Daca persoana nu exista in baza de date, va fi adaugata cu aceste informatii. 
 
 =item C<operator_notes>
 - note, insemnari ale operatorului pe parcursul completarii formularului curent
@@ -58,7 +58,7 @@ Parametrii de intrare:
 - lista de raspunsuri corespunzatoare formularului curent, asociate variabilelor de tip numeric editat; un element al acestei liste contine codul unei variabile de tip numeric editat si valoarea (numarul) ce reprezinta raspunsul
 
 =item C<selection_vars>
-- lista de raspunsuri corespunzatoare formularului curent, asociate variabilelor de selectie; un element al acestei liste contine codul unei variabile de tip selectie, codul elementului selectat ce reprezinta raspunsul si (optional) numarul de ordine al acestui element in cadrul raspunsului (relevant in cadrul selectiilor multiple, atunci cand ordinea rapunsurilor este importanta) 
+- lista de raspunsuri corespunzatoare formularului curent, asociate variabilelor de selectie; un element al acestei liste contine codul unei variabile de tip selectie, codul elementului selectat ce reprezinta raspunsul si (optional) numarul de ordine al acestui element in cadrul raspunsului (relevant in cadrul selectiilor multiple, atunci cand ordinea rapunsurilor este importanta). 
 
 =back
 

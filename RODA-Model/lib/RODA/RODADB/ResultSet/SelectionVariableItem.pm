@@ -40,7 +40,7 @@ Parametrii de intrare:
 =over 
 
 =item C<variable_id>
-- cheia primara a unei variabilei de selectie din tabelul selection_variable
+- cheia primara a unei variabile de selectie din tabelul selection_variable
 
 =item C<item_id>
 - cheia primara a unui element din tabelul item, corespunzator unei variabile de selectie

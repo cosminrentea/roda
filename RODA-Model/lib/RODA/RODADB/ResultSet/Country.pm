@@ -31,21 +31,21 @@ Metode suplimentare care se aplica asupra seturilor de rezultate de tip country.
 
 =head2 checkcountry
 
-verifica existenta unei tari in baza de date, daca exista returneaza obiectul respectiv, daca nu, o introduce si returneaza obiectul corespunzator
+verifica existenta unei tari in baza de date; in cazul existentei, returneaza obiectul respectiv, altfel, introduce tara in baza de date si returneaza obiectul corespunzator.
 
 
-Paramtetrii de intrare:
+Parametrii de intrare:
 
 =over 
 
 =item C<id>
-- cheia primara din tabelul de tari (in format ISO 3166-alpha2)
+- cheia primara din tabelul de tari (in format ISO 3166_alpha2)
 
 =item C<name>
 - numele tarii
 
 =item C<alpha3>
-- codul tarii in format de 3 litere (in format ISO 3166-alpha3)
+- codul tarii in format de 3 litere (in format ISO 3166_alpha3)
 
 =back
 

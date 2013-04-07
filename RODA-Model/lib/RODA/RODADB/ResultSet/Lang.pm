@@ -20,7 +20,7 @@ version 0.01
 
 =head1 DESCRIERE
 
- - metode specifice pentru manipularea inregistrarilor despre limba
+Metode suplimentare pentru manipularea inregistrarilor despre limba.
 
 =cut
 
@@ -33,6 +33,28 @@ version 0.01
 =head2 checklanguage
 
 verifica existenta unei limbi dupa nume si id. Utila in special pentru import si initializarea bazei de date, vrem sa ne asiguram ca limba are acelasi id indiferent de cate ori este refacuta baza de date in timpul dezvoltarii.
+
+Parametrii de intrare:
+
+=over 
+
+=item C<id>
+- cheia primara a limbii din tabelul de limbi
+
+=item C<name>
+- denumirea limbii
+
+=back
+
+
+Criterii de unicitate:
+
+=over
+
+=item
+- name
+
+=back
 
 =cut
 
@@ -59,6 +81,25 @@ sub checklanguage {
 =head2 checklangname
 
 verifica existenta unei limbi dupa nume. Numele limbii ar trebui sa fie unic. Daca exista, returneaza obiectul respectiv, daca nu, il introduce si returneaza obiectul
+
+Parametrii de intrare:
+
+=over 
+
+=item C<name>
+- denumirea limbii
+
+=back
+
+
+Criterii de unicitate:
+
+=over
+
+=item
+- name
+
+=back
 
 =cut
 

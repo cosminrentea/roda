@@ -31,7 +31,7 @@ Metode suplimentare care se aplica asupra seturilor de rezultate de tip descrier
 
 =head2 checkinstancedescr
 
-checkinstancedescr verifica existenta unei descrieri de instanta (preluata prin valori ale parametrilor de intrare), verifica daca aceasta exista in baza de date; in caz afirmativ, returneaza obiectul corespunzator, altfel, metoda introduce descrierea in baza de date si apoi returneaza obiectul corespunzator. Verificarea existentei in baza de date se realizeaza fie dupa valoarea cheii primare, fie dupa un criteriu de unicitate.
+checkinstancedescr verifica existenta unei descrieri de instanta (preluata prin valori ale parametrilor de intrare) in baza de date; in caz afirmativ, returneaza obiectul corespunzator, altfel, metoda introduce descrierea in baza de date si apoi returneaza obiectul corespunzator. Verificarea existentei in baza de date se realizeaza fie dupa valoarea cheii primare, fie dupa un criteriu de unicitate.
 
 Parametrii de intrare:
 
@@ -41,7 +41,7 @@ Parametrii de intrare:
 - cheia primara a instantei pentru care este furnizata descrierea curenta
 
 =item C<lang>
-- limba in care este furnizata descrierea curenta a instantei; daca limba nu exista, ea va fi adaugata in baza de date
+- limba in care este furnizata descrierea curenta a instantei; daca limba nu exista, ea va fi adaugata in baza de date.
 
 =item C<title>
 - titlul instantei, in limba specificata prin parametrul lang
@@ -69,7 +69,7 @@ Criterii de unicitate:
 =over
 
 =item
-- instance_id, title
+- instance_id + title
 
 =back
 

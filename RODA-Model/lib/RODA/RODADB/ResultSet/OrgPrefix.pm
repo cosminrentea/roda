@@ -46,7 +46,30 @@ Metode suplimentare care se aplica asupra seturilor de rezultate de tip prefix a
 
 =head2 checkorgprefix
 
-Primeste ca parametri de intrare id-ul si numele prefixului de organizatie, daca gaseste in tabel o intrare corespunzatoare, returneaza obiectul respectiv, daca nu, creaza intrarea si returneaza obiectul atasat
+Primeste ca parametri de intrare id-ul si numele prefixului de organizatie, daca gaseste in tabel o intrare corespunzatoare, returneaza obiectul respectiv, daca nu, creaza intrarea si returneaza obiectul atasat.
+
+Parametrii de intrare:
+
+=over 
+
+=item C<id>
+- cheia primara a prefixului de organizatie
+
+=item C<name>
+- denumirea prefixului de organizatie
+
+=back
+
+
+Criterii de unicitate:
+
+=over
+
+=item
+- name
+
+=back
+
 
 =cut
 
@@ -74,7 +97,26 @@ sub checkorgprefix {
 
 =head2 checkorgprefixname
 
-Primeste ca parametru de intrare numele prefixului de organizatie, daca gaseste in tabel o intrare corespunzatoare, returneaza obiectul respectiv, daca nu, creaza intrarea si returneaza obiectul atasat
+Primeste ca parametru de intrare numele prefixului de organizatie, daca gaseste in tabel o intrare corespunzatoare, returneaza obiectul respectiv, daca nu, creaza intrarea si returneaza obiectul atasat.
+
+Parametrii de intrare:
+
+=over 
+
+=item C<name>
+- denumirea prefixului de organizatie
+
+=back
+
+
+Criterii de unicitate:
+
+=over
+
+=item
+- name
+
+=back
 
 =cut
 

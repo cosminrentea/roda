@@ -94,7 +94,7 @@ Metode suplimentare care se aplica asupra seturilor de rezultate de tip persoana
 
 =head2 checkperson
 
-verifica existenta unei persoane in baza de date, daca exista returneaza obiectul respectiv, daca nu, il introduce si returneaza obiectul corespunzator. Asteapta o 
+verifica existenta unei persoane in baza de date; daca exista, returneaza obiectul respectiv, altfel, il introduce si returneaza obiectul corespunzator. Asteapta o 
 structura de date sub forma unui hash conform exemplului de mai sus. 
 
 Parametrii de intrare:

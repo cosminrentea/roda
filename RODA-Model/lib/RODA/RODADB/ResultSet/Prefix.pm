@@ -46,7 +46,7 @@ Metode suplimentare care se aplica asupra seturilor de rezultate de tip prefix.
 
 =head2 checkprefix
 
-Primeste ca parametri de intrare id-ul si numele prefixului, daca gaseste in tabel o intrare corespunzatoare, returneaza obiectul respectiv, daca nu, creaza intrarea si returneaza obiectul atasat
+Primeste ca parametri de intrare id-ul si numele prefixului; daca gaseste in tabel o intrare corespunzatoare, returneaza obiectul respectiv, altfel, creeaza intrarea si returneaza obiectul atasat.
 
 =cut
 
@@ -70,7 +70,7 @@ sub checkprefix {
 
 =head2 checkprefixname
 
-Primeste ca parametru de intrare numele prefixului, daca gaseste in tabel o intrare corespunzatoare, returneaza obiectul respectiv, daca nu, creaza intrarea si returneaza obiectul atasat
+Primeste ca parametru de intrare numele prefixului; daca gaseste in tabel o intrare corespunzatoare, returneaza obiectul respectiv, altfel, creeaza intrarea si returneaza obiectul atasat.
 
 =cut
 

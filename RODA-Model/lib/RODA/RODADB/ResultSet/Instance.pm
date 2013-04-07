@@ -59,9 +59,9 @@ Metode suplimentare care se aplica asupra seturilor de rezultate de tip instanta
                	              label => 'Categorie de varsta', 
                	              type => 1, 
                	              order_in_instance => 2, 
-               				  type_edited_text => 0, 
-               				  type_edited_number => 0, 
-               				  type_selection => 1,
+                              type_edited_text => 0, 
+                              type_edited_number => 0, 
+                              type_selection => 1,
                              },
                              {
                               label => 'Mediu', 
@@ -101,7 +101,7 @@ Metode suplimentare care se aplica asupra seturilor de rezultate de tip instanta
 
 =head2 checkinstance
 
-checkinstance verifica existenta unei instante (preluata prin valori ale parametrilor de intrare sau combinatii ale acestora), verifica daca acesta exista in baza de date; in caz afirmativ, returneaza obiectul corespunzator, altfel, metoda introduce instanta in baza de date si apoi returneaza obiectul corespunzator. Verificarea existentei in baza de date se realizeaza fie dupa valoarea cheii primare, fie dupa un criteriu de unicitate.
+checkinstance verifica existenta unei instante (preluata prin valori ale parametrilor de intrare sau combinatii ale acestora) in baza de date; in caz afirmativ, returneaza obiectul corespunzator, altfel, metoda introduce instanta in baza de date si apoi returneaza obiectul corespunzator. Verificarea existentei in baza de date se realizeaza fie dupa valoarea cheii primare, fie dupa un criteriu de unicitate.
  Parametrii de intrare formeaza o structura de date sub forma unui hash conform exemplului de mai sus. 
 
 Parametrii de intrare:
@@ -145,16 +145,16 @@ Parametrii de intrare:
 - parametru boolean ce indica daca metadatele sunt in forma digitizata (true) sau in forma de fisiere procesabile/editabile (false)
 
 =item C<orgs>
-- lista de organizatii aflate in relatie cu instanta curenta; un element al acestei liste contine codul unei organizatii si codul asocierii care exista cu organizatia respectiva. O organizatie poate fi specificata atat prin codul sau, cat si prin informatiile complete ale acesteia. La randul ei, daca organizatia nu exista, va fi introdusa in baza de date.
+- lista de organizatii aflate in relatie cu instanta curenta; un element al acestei liste contine o organizatie si codul asocierii care exista cu organizatia respectiva. O organizatie poate fi specificata atat prin codul sau, cat si prin informatiile complete ale acesteia. La randul ei, daca organizatia nu exista, va fi introdusa in baza de date.
 
 =item C<persons>
-- lista de persoane aflate in relatie cu instanta curenta; un element al acestei liste contine codul unei persoane si codul asocierii care exista cu persoana respectiva. O persoana poate fi specificata atat prin codul sau, cat si prin informatiile complete ale acesteia. La randul ei, daca persoana nu exista, va fi introdusa in baza de date.
+- lista de persoane aflate in relatie cu instanta curenta; un element al acestei liste contine o persoana si codul asocierii care exista cu persoana respectiva. O persoana poate fi specificata atat prin codul sau, cat si prin informatiile complete ale acesteia. La randul ei, daca persoana nu exista, va fi introdusa in baza de date.
 
 =item C<topics>
-- lista de topicuri asociate instantei curente; un element al acestei liste contine codul unui topic. Un topic poate fi specificat atat prin codul sau, cat si prin denumirea sa. La randul lui, daca topicul nu exista, va fi introdus in baza de date.
+- lista de topicuri asociate instantei curente. Un topic poate fi specificat atat prin codul sau, cat si prin denumirea sa. La randul lui, daca topicul nu exista, va fi introdus in baza de date.
 
 =item C<keywords>
-- lista de cuvinte cheie asociate instantei curente; un element al acestei liste contine codul unui cuvant cheie. Un cuvant cheie poate fi specificat atat prin codul sau, cat si prin denumirea sa. La randul lui, daca topicul nu exista, va fi introdus in baza de date.
+- lista de cuvinte cheie asociate instantei curente. Un cuvant cheie poate fi specificat atat prin codul sau, cat si prin denumirea sa. La randul lui, daca nu exista cuvantul cheie, va fi introdus in baza de date.
 
 =item C<variables>
 - lista de variabile asociate instantei curente; un element al acestei liste contine informatiile specifice unei variabile. La randul ei, variabila va fi introdusa in baza de date.

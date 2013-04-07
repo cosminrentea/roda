@@ -59,10 +59,10 @@ Parametrii de intrare:
 =item C<file_properties>
 - lista proprietatilor fisierului. Existenta unei proprietati este verificata, iar in caz ca nu exista, proprietatea respectiva este mai intai inserata in tabelul property_name. 
 Analog sunt verificate valorile proprietatilor si, daca nu exista, sunt inserate in tabelul property_value. 
-Totodata, asocierea dintre fisierul curent, proprietate si valoarea acesteia este adaugata tabelului file_property_name_value.
+Totodata, asocierea dintre fisierul curent, o proprietate si valoarea acesteia este adaugata tabelului file_property_name_value.
 
 =item C<file_acls>
-- lista de acl-uri asociata fisierului curent. Un element al acestei liste este o structura de tip hash avand urmatoarele chei: aro_id, aro_type, read, update, delete. 
+- lista de drepturi (acl) asociate fisierului curent. Un element al acestei liste este o structura de tip hash avand urmatoarele chei: aro_id, aro_type, read, update, delete. 
 
 =back
 

@@ -30,7 +30,7 @@ Metode suplimentare care se aplica asupra seturilor de rezultate de tip asociere
 
 =head2 checkassoctype
 
-checkassoctype verifica existenta unui tip de asociere intre organizatie si instanta (preluat prin valori ale parametrilor de intrare), verifica daca acesta exista in baza de date; in caz afirmativ, returneaza obiectul corespunzator, altfel, metoda introduce conceptul in baza de date si apoi returneaza obiectul corespunzator. Verificarea existentei in baza de date se realizeaza fie dupa valoarea cheii primare, fie dupa un criteriu de unicitate.
+checkassoctype verifica existenta unui tip de asociere intre organizatie si instanta (preluat prin valori ale parametrilor de intrare) in baza de date; in caz afirmativ, returneaza obiectul corespunzator, altfel, metoda introduce conceptul in baza de date si apoi returneaza obiectul corespunzator. Verificarea existentei in baza de date se realizeaza fie dupa valoarea cheii primare, fie dupa un criteriu de unicitate.
 
 Parametrii de intrare:
 

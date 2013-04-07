@@ -8,7 +8,7 @@ use parent qw/DBIx::Class::ResultSet/;
 
 =head1 NUME
 
-RODA::RODADB::ResultSet::Email - metode specifice pentru manipularea emailurilor
+RODA::RODADB::ResultSet::Email - metode specifice pentru manipularea adreselor de email
 
 =cut
 
@@ -30,7 +30,7 @@ Metode suplimentare care se aplica asupra seturilor de rezultate de tip email.
 
 =head2 checkemail
 
-verifica existenta unui email in baza de date, daca exista returneaza obiectul respectiv, daca nu, il introduce si returneaza obiectul corespunzator
+verifica existenta unui email in baza de date; daca exista, returneaza obiectul respectiv, altfel, il introduce in baza de date si returneaza obiectul corespunzator.
 
 
 Parametrii de intrare:

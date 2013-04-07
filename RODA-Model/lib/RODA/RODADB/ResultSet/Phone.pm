@@ -30,7 +30,7 @@ Metode suplimentare care se aplica asupra seturilor de rezultate de numere de te
 
 =head2 checkphone
 
-verifica existenta unui numar de telefon in baza de date; daca acesta exista este returnat obiectul respectiv, altfel, metoda il introduce in tabel si returneaza obiectul corespunzator
+verifica existenta unui numar de telefon in baza de date; daca acesta exista este returnat obiectul respectiv, altfel, metoda il introduce in tabel si returneaza obiectul corespunzator.
 
 
 Parametrii de intrare:

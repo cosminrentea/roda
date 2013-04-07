@@ -20,7 +20,7 @@ version 0.01
 
 =head1 DESCRIERE
 
-Metode suplimentare care se aplica asupra seturilor de rezultate corespunzatoare elementelor de stip scala ale variabilelor de selectie.
+Metode suplimentare care se aplica asupra seturilor de rezultate corespunzatoare elementelor de tip scala ale variabilelor de selectie.
 
 =cut
 

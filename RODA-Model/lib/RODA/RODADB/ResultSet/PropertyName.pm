@@ -30,7 +30,7 @@ Metode suplimentare care se aplica asupra seturilor de rezultate de tip nume al 
 
 =head2 check_property_name
 
-verifica existenta unui nume de proprietate, daca exista returneaza obiectul respectiv, daca nu, il introduce si returneaza obiectul corespunzator.
+verifica existenta unui nume de proprietate in tabel; daca exista, returneaza obiectul respectiv, altfel, il introduce si returneaza obiectul corespunzator.
 
 
 Parametrii de intrare:

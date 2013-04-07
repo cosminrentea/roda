@@ -40,7 +40,7 @@ Parametrii de intrare:
 
 =item C<variable_id>
 - cheia primara a variabilei de selectie; totodata, este cheie externa, referind cheia primara a unei variabile 
-din tabelul ce contine toate variabilele din baza de date (variable)
+din tabelul ce contine toate variabilele din baza de date (variable).
 
 =item C<item>
 - numele elementului corespunzator unei variabile de selectie

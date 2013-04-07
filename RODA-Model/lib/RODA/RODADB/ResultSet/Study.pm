@@ -37,8 +37,8 @@ Metode suplimentare care se aplica asupra seturilor de rezultate de tip studiu.
                added_by => 1,
                added => $dtf -> format_datetime(
                        DateTime->now),
-               can_digitize => 'true',
-               can_use_anonymous => 'false',  
+               can_digitize => 1,
+               can_use_anonymous => 0,  
                orgs => [{
                          id =>'1', 
                          assoc_name=>'producator'

@@ -52,7 +52,8 @@ Metode suplimentare care se aplica asupra seturilor de rezultate de tip catalog.
 
 =head2 checkcatalog
 
-checkcatalog verifica existenta unui catalog (preluat prin combinatii ale parametrilor de intrare), verifica daca acesta exista in baza de date; in caz afirmativ, returneaza obiectul corespunzator, altfel, metoda introduce catalogul in baza de date si apoi returneaza obiectul corespunzator. Verificarea existentei in baza de date se realizeaza fie dupa valoarea cheii primare, fie dupa un criteriu de unicitate.
+checkcatalog verifica existenta unui catalog (preluat prin combinatii ale parametrilor de intrare) in baza de date; in caz afirmativ, returneaza obiectul corespunzator, altfel, metoda introduce catalogul in baza de date si apoi returneaza obiectul corespunzator. Verificarea existentei in baza de date se realizeaza fie dupa valoarea cheii primare, fie dupa un criteriu de unicitate.
+Parametrii vor fi furnizati sub forma unei structuri de date de tip hash conform exemplului de mai sus. 
 
 Parametrii de intrare:
 

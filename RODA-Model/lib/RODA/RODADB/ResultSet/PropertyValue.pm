@@ -30,7 +30,7 @@ Metode suplimentare care se aplica asupra seturilor de rezultate de tip valoare 
 
 =head2 check_property_value
 
-verifica existenta unui valori a unei proprietati, daca exista returneaza obiectul respectiv, daca nu, il introduce si returneaza obiectul corespunzator.
+verifica existenta unui valori a unei proprietati in tabel; daca exista, returneaza obiectul respectiv, altfel, il introduce si returneaza obiectul corespunzator.
 
 
 Parametrii de intrare:

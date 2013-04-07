@@ -30,9 +30,9 @@ Metode suplimentare care se aplica asupra seturilor de rezultate de tip adresa.
 
 =head2 checkaddress
 
-checkaddress verifica existenta unei adrese (preluata prin combinatii ale parametrilir de intrare), verifica daca aceasta exista in baza de date, daca da, returneaza obiectul corespunzator, daca nu, o introduce in baza de date si apoi returneaza obiectul corespunzator.
+checkaddress verifica existenta unei adrese (preluata prin combinatii ale parametrilor de intrare) in baza de date; daca adresa exista, returneaza obiectul corespunzator, altfel, metoda introduce adresa in baza de date si apoi returneaza obiectul corespunzator.
 
-Paramtetrii de intrare:
+Parametrii de intrare:
 
 =over 
 
@@ -61,10 +61,10 @@ Paramtetrii de intrare:
 - elemente suplimentare ale adresei
 
 =item C<subdiv_code>
-- codul subdiviziunii orasului in care se gaseste adresa. In cazul in care se foloseste acest parametru trebuie sa fie obligatoriu insotit de parametrul subdiv_type 
+- codul subdiviziunii orasului in care se gaseste adresa. In cazul in care se foloseste acest parametru, el trebuie sa fie obligatoriu insotit de parametrul subdiv_type. 
 
 =item C<subdiv_type>
-- tipul subdiviziunii orasului in care se gaseste adresa (ex: sector). In cazul in care se foloseste acest parametru trebuie sa fie obligatoriu insotit de parametrul subdiv_code
+- tipul subdiviziunii orasului in care se gaseste adresa (ex: sector). In cazul in care se foloseste acest parametru, el trebuie sa fie obligatoriu insotit de parametrul subdiv_code.
 
 =back
 

@@ -426,7 +426,7 @@ sub initialize {
 
   # Control the level of =head1. default is \section
   # 
-  $self->{Head1Level}     = 1   # Offset in latex sections
+  $self->{Head1Level}     = 2   # Offset in latex sections
     unless exists $self->{Head1Level}; # 0 is chapter, 2 is subsection
 
   # Control at which level numbering of sections is turned off
@@ -434,7 +434,7 @@ sub initialize {
   # The numbering is relative to the latex sectioning commands
   # and is independent of Pod heading level
   # default is to number \section but not \subsection
-  $self->{LevelNoNum} = 2
+  $self->{LevelNoNum} = 3
     unless exists $self->{LevelNoNum};
 
   # Label to be used as prefix to all internal section names

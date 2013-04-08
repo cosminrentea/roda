@@ -1,4 +1,4 @@
-\section{Arhitectura generala a aplicatiei Spring}
+\subsection{Arhitectura generala a aplicatiei Spring}
 
 Intr-o aplicatie web moderna, exista o separare clara intre layers /
 nivele. O aplicatie ce utilizeaza Spring MVC (Spring 3.2.x) va avea cel putin
@@ -12,10 +12,10 @@ sau programata de task-uri etc.
 %Diagrame UML componente si clase ???
 
 Pentru dezvoltare se utilizeaza IDE-ul STS
-\footnote{http://www.springsource.org/sts}
+\footnote{\href{http://www.springsource.org/sts}{http://www.springsource.org/sts}}
 si Spring Roo
-\footnote{http://www.springsource.org/spring-roo} (care permite sincronizarea
-schema BD - model, sincronizarea model-controllers-views si generarea de
+\footnote{\href{http://www.springsource.org/spring-roo}{http://www.springsource.org/spring-roo}}
+(care permite sincronizarea schema BD - model, sincronizarea model-controllers-views si generarea de
 interfete CRUD, adaugarea de servicii si componente,generarea de configuratii
 best-practice).
 
@@ -25,7 +25,7 @@ schemei bazei de date (DbWrench 2), se obtine scriptul de creare a bazei de
 date, care este post-procesat si care este apoi folosit de Spring Roo pentru
 actualizarea modelului.
 
-\subsection{Modelul domeniului specific aplicatiei}
+\subsubsection{Modelul domeniului specific aplicatiei}
 Se foloseste pentru descrierea modelului specificatia JPA 2.0 (Java Persistence
 API).
 Astfel, pornind de la schema bazei de date prezentate in raportul etapei 1 (ce
@@ -48,7 +48,7 @@ Multe din aceste adnotari, metodele toString, getter/setter pentru
 campurile claselor, sunt generate in mod configurabil de catre Spring Roo.
 Fiecare clasa din model expune si metode conform pattern-ului 'ActiveRecord'. 
 
-\subsubsection{Acces la baza de date relationala}
+\paragraph{Acces la baza de date relationala}
 Implementarea JPA selectata pentru proiect este Hibernate (versiunea 4.2).
 \begin{description}
 \item[Hibernate] este un pachet complex de tip 'Object-Relational Mapping';
@@ -61,14 +61,14 @@ model (sunt create tabele specifice pentru auditare, intr-o alta schema a bazei
 de date)
 \end{description}
 
-\subsubsection{Date disponibile initial in aplicatie}
+\paragraph{Date disponibile initial in aplicatie}
 Aplicatia poate fi configurata sa porneasca cu sau fara date initiale
 disponibile.
 Aceste date sunt importate din fisiere de tip CSV; se specifica ordinea de
 importare a acestor fisiere pentru a se respecta constrangerile relatiilor
 dintre tabele/entitati.
 
-\subsection{Services}
+\subsubsection{Services}
 Nivelul de servicii permite 
 \begin{itemize}
   \item izolarea nivelului modelului (pentru accesul la
@@ -80,21 +80,21 @@ baze de date, sau o baza de date XML)
 Serviciile (perechi de interfete si implementari) folosesc 
 metodele de tip ActiveRecord definite la nivelul modelului.
 
-\subsection{Controllers}
+\subsubsection{Controllers}
 Sunt definite controllere corespunzand unui sablon de interfata de tip CRUD
 (Create / Read / Update / Delete), pentru fiecare clasa din model. In
 controllere se fac apeluri catre nivelul de servicii.
 
-\subsection{Views}
+\subsubsection{Views}
 Se utilizeaza o combinatie intre Apache Tiles (templating framework) si JSPX
 (pagini JSP utilizand librarii de tag-uri specifice).
 
-\section{Aspecte transversale in aplicatia Spring}
+\subsection{Aspecte transversale in aplicatia Spring}
 In aceasta sectiune descriem care sunt aspectele care apar in mod repetat la mai
 multe niveluri diferite ale aplicatiei (precum configurari, logging
 autentificare, servicii disponibile etc.).
 
-\subsection{Configurari}
+\subsubsection{Configurari}
 Configurarea aplicatiei se face prin:
 \begin {itemize}
   \item fisiere de tip 'properties', prin care pot suprascrie
@@ -113,20 +113,24 @@ in aplicatie etc.
   layouts.xml).
 \end{itemize}
 
-\subsection{Logging}
+\subsubsection{Logging}
 Se foloseste Log4j, iar logger-ele sunt configurate ierarhic (cf. ierarhiei
 pachetelor si claselor) si pe niveluri de detaliu, intr-un fisier de
 configurare.
 
-\subsection{Autentificare}
+\subsubsection{Autentificare}
 Pentru autentificare este utilizata si adaptata solutia Spring Security.
 Utilizatorii precum si hash-urile parolelor lor (SHA-256) sunt stocate in
 tabele specifice din baza de date.
+
 Se foloseste o schema de tipul 'users' / 'roles'.
 Din tabelul 'users' nu se sterg utilizatori, acestia pot fi dezactivati.
 Tabelul 'users' este relationat cu alte tabele corespunzand modelului.
 
-\subsection{Autorizare}
+Spring Security are un design modular, si permite extinderea modelului de
+securitate prin autentificarea cu LDAP si Shibboleth (SAML2).
+
+\subsubsection{Autorizare}
 Pentru autorizare este utilizata si adaptata solutia Spring Security.
 Solutia de tip 'ACL' (Access Control Lists) utilizeaza implementari standard din
 Spring Security (ACL ierarhic asupra diferitelor clase din model). 
@@ -135,18 +139,18 @@ Serviciile ce permit accesul la model sunt adnotate folosind SpEL
 Pentru a mari viteza de decizie este utilizata o solutie de caching (ehcache). 
 Se face auditarea simpla a accesului (incercare, succes / esec). 
 
-\subsection{Integrarea R}
+\subsubsection{Integrarea R}
 Pentru implementarea acestui serviciu sste folosit pachetul 'rJava/JRI'. 
 Atunci cand acesta nu e disponibil pe host, serviciul care
 incapsuleaza functionalitatile R este dezactivat.
 
-\subsection{File Repository (FileStore)}
+\subsubsection{File Repository (FileStore)}
 Acest serviciu respecta interfetele definite prin RODA::FileStore, stocand
 fisierele incarcate de utilizatori intr-o structura de directoare pe server;
 metadatele extrase din aceste fisiere sunt indexate.
 
-\subsection{Indexare si Cautare}
-Se utilizeaza un server Solr extern (versiunea curenta 4.2) rulat pe un
+\subsubsection{Indexare si Cautare}
+Se utilizeaza un server Solr extern (versiunea curenta: 4.2) rulat pe un
 application server pentru:
 \begin{description}
 \item[datele din BD] la creare/update/stergere de date din tabelele bazei de
@@ -158,7 +162,7 @@ in FileStore (metadatele fiind disponibile ulterior aplicatiei web)
 Schimburile de date intre aplicatia web si serverul Solr (de tip update, delete
 etc.) se fac prin mijlocirea pachetului SolrJ, in mod asincron.
 
-\subsection{Rularea asincrona sau programata a unor task-uri}
+\subsubsection{Rularea asincrona sau programata a unor task-uri}
 Operatiile prin care se interactioneaza cu serverul Solr sunt efectuate
 asincron. Componenta ce permite aceasta poate fi reutilizata si de catre alte
 componente in scopul executiei asincrone de task-uri.
@@ -168,19 +172,18 @@ Folosind optiuni de configurare a momentelor de executie in stilul 'cron',
 aceasta componenta este utila pentru task-uri ce nu sunt declansate explicit de
 utilizatori, precum mentenanta bazei de date sau efectuarea de backup-uri.
 
-\subsection{Documentare}
+\subsubsection{Documentare}
 Se folosesc in codul-sursa comentarii de tip Javadoc. 
 
 In procesul de build se genereaza automat documentatie  de tip HTML. 
 De asemenea, prin utilitarul 'htmldoc' se poate genera
-si documentatie in format PDF pornind de la aceasta documentatie anterior
-generata.
+si documentatie in format PDF pornind de la aceasta documentatie in format HTML.
 
-\section{Aspecte legate de dezvoltarea aplicatiei Spring}
+\subsection{Aspecte legate de dezvoltarea aplicatiei Spring}
 In aceasta sectiune descriem aspectele legate de dezvoltarea in practica, intr-o
 maniera incrementala si cu asigurarea calitatii procesului de dezvoltare.
 
-\subsection{Testarea aplicatiei}
+\subsubsection{Testarea aplicatiei}
 Testarea e realizata momentan prin 3 metode:
 \begin{enumerate}
   \item testarea claselor din model, folosind JUnit adaptat pentru Spring
@@ -190,7 +193,7 @@ Testarea e realizata momentan prin 3 metode:
   scripturi de testare
 \end{enumerate}
 
-\subsection{Build si Deployment}
+\subsubsection{Build si Deployment}
 Procesele de build sunt realizate prin Maven 3. Fisierul aferent (pom.xml)
 contine dependentele necesare pentru configurarea, compilarea,
 deploymentul, rularea, testarea, documentarea proiectului.

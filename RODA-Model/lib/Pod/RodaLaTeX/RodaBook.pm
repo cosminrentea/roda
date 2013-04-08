@@ -168,7 +168,7 @@ sub configure{
                                  },
                Head1Level    => { # optional, default: 1 (\section)
                                  type => SCALAR,
-                                 default => 1
+                                 default => 2
                                  },
                LevelNoNum    => { # optional, default: 4 (\paragraph)
                                  type => SCALAR,

@@ -1,10 +1,10 @@
 DocOptions:
   Title:  RODA
-  Author: Sorin Milutinovici
-  Date: Martie 29, 2013
+  Author: Sorin Milutinovici, Letitia Velcescu, Cosmin Rentea
+  Date: April 06, 2013
   TexOut: roda.tex
   UserPreamble: |
-   \documentclass[12pt,twoside,romanian]{extbook}
+   \documentclass[11pt,twoside,romanian]{extbook}
    \usepackage[T1]{fontenc}
    \usepackage[utf8]{inputenc}
    \usepackage{color}
@@ -22,33 +22,35 @@ DocOptions:
    \usepackage[pdftex]{graphicx}
    \usepackage[pdftitle={Documentatie Sistem de acces la date RODA}, pdfauthor={RODA}, colorlinks=true, linkcolor=blue]{hyperref}
    \hypersetup{pdftex, colorlinks=true, linkcolor=blue, citecolor=blue, filecolor=blue, urlcolor=blue, pdftitle=, pdfauthor=, pdfsubject=, pdfkeywords=}
-
+   \addto\captionsromanian{\renewcommand{\chaptername}{Anexa}}
+   
    \begin{document}
    \pagenumbering{arabic} 
    \cfoot{\tiny{RODA - Sistemul de acces la date}\tiny}
-   \fancyhead[LE,RO]{Anexa 1 - \leftmark}
+   \fancyhead[LE,RO]{ANEXE - \leftmark}
    \fancyhead[RE,LO]{\thepage}
-   \title{ANEXA 1. RODA - Sistemul de acces la date}
-   \author{}
-   \date{}
+   \title{ANEXE - Sistemul de acces la date}
+   \author{RODA}
+   \date{06.04.2013}
+   \maketitle
    \newpage
    \thispagestyle{plain}
    \tableofcontents{}
    \setcounter{page}{1}
    
   UserPostamble: |
-    \cleardoublepage
-    \listoffigures
+    %\cleardoublepage
+    %\listoffigures
     \cleardoublepage
     \end{document}
   AddPreamble: 1
-  Head1Level:  1
-  LevelNoNum:  2
+  Head1Level:  2
+  LevelNoNum:  3
   ReplaceNAMEwithSection: 1
 DocStructure:
   - Section:
       Level: chapter
-      Title: RODA
+      Title: RODA - Detalii ale sistemului de acces la date
   - Input:
       FileOrPod: RODA
   - Input:
@@ -69,7 +71,7 @@ DocStructure:
       FileOrPod: RODA::Components::DBIC::FileStore
       
   - Section:
-      Level: chapter
+      Level: section
       Title: ResultSet
   - Input:
       FileOrPod: roda_resultset.tex
@@ -175,7 +177,7 @@ DocStructure:
       FileOrPod: RODA::RODADB::ResultSet::Variable
                   
   - Section:
-      Level: chapter
+      Level: section
       Title: Result
   - Input:
       FileOrPod: roda_result.tex
@@ -209,7 +211,7 @@ DocStructure:
       FileOrPod: RODA::RODADB::Result::Variable
 
   - Section:
-      Level: chapter
+      Level: section
       Title: FileStore
   - Input:
       FileOrPod: FileStore::Volume
@@ -221,7 +223,7 @@ DocStructure:
       FileOrPod: FileStore::Info::PDF
       
   - Section:
-      Level: chapter
+      Level: section
       Title: Componente ale aplicatiei in Java / Spring
   - Input:
       FileOrPod: roda_spring.tex

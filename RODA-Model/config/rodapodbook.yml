@@ -85,6 +85,22 @@ DocStructure:
   - Input:
       FileOrPod: RODA::RODADB::ResultSet::City
   - Input:
+      FileOrPod: RODA::RODADB::ResultSet::CmsFile
+  - Input:
+      FileOrPod: RODA::RODADB::ResultSet::CmsFolder
+  - Input:
+      FileOrPod: RODA::RODADB::ResultSet::CmsLayout
+  - Input:
+      FileOrPod: RODA::RODADB::ResultSet::CmsLayoutGroup
+  - Input:
+      FileOrPod: RODA::RODADB::ResultSet::CmsPage
+  - Input:
+      FileOrPod: RODA::RODADB::ResultSet::CmsPageType
+  - Input:
+      FileOrPod: RODA::RODADB::ResultSet::CmsSnippet
+  - Input:
+      FileOrPod: RODA::RODADB::ResultSet::CmsSnippetGroup                                                      
+  - Input:
       FileOrPod: RODA::RODADB::ResultSet::Concept      
   - Input:
       FileOrPod: RODA::RODADB::ResultSet::Country
@@ -95,7 +111,11 @@ DocStructure:
   - Input:
       FileOrPod: RODA::RODADB::ResultSet::FileAcl            
   - Input:
-      FileOrPod: RODA::RODADB::ResultSet::Form      
+      FileOrPod: RODA::RODADB::ResultSet::Form
+  - Input:
+      FileOrPod: RODA::RODADB::ResultSet::GroupMembers
+  - Input:
+      FileOrPod: RODA::RODADB::ResultSet::Groups                  
   - Input:
       FileOrPod: RODA::RODADB::ResultSet::Instance
   - Input:

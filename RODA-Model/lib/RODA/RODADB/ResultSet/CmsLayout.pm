@@ -42,6 +42,9 @@ Parametrii de intrare:
 =item C<content>
 - continutul
 
+=item C<layout_group>
+- grupul din care face parte layoutul
+
 =back
 
 
@@ -50,4 +53,43 @@ Parametrii de intrare:
 sub addlayout {
   # TODO
 }
+
+=head2 checklayout
+
+checklayout verifica existenta unui layout (preluat prin valori ale parametrilor de intrare) in baza de date; in caz afirmativ, returneaza obiectul corespunzator, altfel, metoda introduce layoutul in baza de date si apoi returneaza obiectul corespunzator. Verificarea existentei in baza de date se realizeaza fie dupa valoarea cheii primare, fie dupa un criteriu de unicitate.
+
+Parametrii de intrare:
+
+=over 
+
+=item C<id>
+- cheia primara a layoutului
+
+=item C<name>
+- denumirea 
+
+=item C<layout_group>
+- grupul din care face parte layoutul
+
+=item C<content>
+- continutul layoutului
+
+=back
+
+
+Criterii de unicitate:
+
+=over
+
+=item
+- name + layout_group
+
+=back
+
+=cut
+
+sub checklayout {
+   # TODO
+}
+
 1;

@@ -489,5 +489,14 @@ sub set_default_settings {
      # TODO
 }
 
+=head2 attach_groups
+
+Ataseaza grupurile din care face parte utilizatorul.
+
+=cut
+
+sub attach_groups {
+     # TODO
+}
 
 1;

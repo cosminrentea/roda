@@ -8,7 +8,7 @@ use parent qw/DBIx::Class::ResultSet/;
 
 =head1 NUME
 
-RODA::RODADB::ResultSet::CmsLayoutGroup - metode specifice prelucrarii grupurilot de layout din CMS
+RODA::RODADB::ResultSet::CmsLayoutGroup - metode specifice prelucrarii grupurilor de layout din CMS
 
 =cut
 
@@ -28,9 +28,9 @@ Metode suplimentare care se aplica asupra seturilor de rezultate de tip grup de 
 
 =cut
 
-=head2 checkgroup
+=head2 checklayoutgroup
 
-checkgroup verifica existenta unui grup (preluat prin valori ale parametrilor de intrare) in baza de date; in caz afirmativ, returneaza obiectul corespunzator, altfel, metoda introduce grupul in baza de date si apoi returneaza obiectul corespunzator. Verificarea existentei in baza de date se realizeaza fie dupa valoarea cheii primare, fie dupa un criteriu de unicitate.
+checklayoutgroup verifica existenta unui grup (preluat prin valori ale parametrilor de intrare) in baza de date; in caz afirmativ, returneaza obiectul corespunzator, altfel, metoda introduce grupul in baza de date si apoi returneaza obiectul corespunzator. Verificarea existentei in baza de date se realizeaza fie dupa valoarea cheii primare, fie dupa un criteriu de unicitate.
 
 Parametrii de intrare:
 
@@ -45,6 +45,9 @@ Parametrii de intrare:
 =item C<description>
 - descrierea grupului
 
+=item C<parent>
+- parintele grupului
+
 =back
 
 
@@ -53,13 +56,38 @@ Criterii de unicitate:
 =over
 
 =item
-- name (presupunem ca denumirile grupurilor sunt unice)
+- name + parent
 
 =back
 
 =cut
 
-sub checkgroup {
+sub checklayoutgroup {
+   # TODO
+}
+
+=head2 addlayoutgroup
+
+addlayoutgroup adauga un grup de layouturi (preluat prin valori ale parametrilor de intrare) in baza de date.
+
+Parametrii de intrare:
+
+=over 
+
+=item C<name>
+- denumirea grupului
+
+=item C<description>
+- descrierea grupului
+
+=item C<parent>
+- parintele grupului
+
+=back
+
+=cut
+
+sub addlayoutgroup {
    # TODO
 }
 1;

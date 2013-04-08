@@ -254,4 +254,45 @@ sub checkinstance {
     return $instancers;
 }
 
+=head2 insert_root_instance
+
+insert_root_instance insereaza informatiile de baza ale unei instante (preluata prin valori ale parametrilor de intrare sau combinatii ale acestora) in baza de date si returneaza obiectul corespunzator. 
+Metoda este utila in contextul interfetei pe baza de instrumente de tip wizard, in care datele sunt furnizate in mai multi pasi. 
+
+Parametrii de intrare:
+
+=over 
+
+=item C<study_id>
+- cheia primara a studiului din care face parte instanta
+
+=item C<datestart>
+- data de inceput a desfasurarii instantei curente
+
+=item C<dateend>
+- data de final a desfasurarii instantei curente
+
+=item C<added_by>
+- cheia primara a utilizatorului caruia ii apartine instanta curenta
+
+=item C<added>
+- data si timpul la care a fost adaugata instanta curenta in baza de date
+
+=item C<version>
+- versiunea instantei
+
+=item C<raw_data>
+- parametru boolean ce indica daca datele sunt in forma digitizata (true) sau in forma de fisiere procesabile/editabile (false)
+
+=item C<raw_metadata>
+- parametru boolean ce indica daca metadatele sunt in forma digitizata (true) sau in forma de fisiere procesabile/editabile (false)
+
+=back
+
+=cut
+
+sub insert_root_instance {
+    # TODO
+}
+
 1;

@@ -146,4 +146,33 @@ sub checkstudy {
     return $studyrs;
 }
 
+=head2 insert_root_study
+
+insert_root_study introduce informatiile de baza pentru un studiu (preluat prin valori ale parametrilor de intrare) in baza de date si returneaza obiectul corespunzator. 
+Metoda este utila in contextul interfetei pe baza de instrumente de tip wizard, in care datele sunt furnizate in mai multi pasi.  
+
+Parametrii de intrare:
+
+=over 
+
+=item C<datestart>
+- data de inceput a desfasurarii studiului curent
+
+=item C<dateend>
+- data de final a desfasurarii studiului curent
+
+=item C<added_by>
+- cheia primara a utilizatorului caruia ii apartine studiului curent
+
+=item C<added>
+- data si timpul la care a fost adaugata studiul curent in baza de date
+
+=back
+
+=cut
+
+sub insert_root_study {
+    # TODO
+}
+
 1;

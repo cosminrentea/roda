@@ -389,23 +389,23 @@ __PACKAGE__->meta->make_immutable;
 
 =cut
 
-=head2 attach_user_profile
+=head2 init_user_profile
 
-Ataseaza un profil utilizatorului curent.
+Initialiezeaza profilul utilizatorului curent.
 
 =cut
 
-sub attach_user_profile {
+sub init_user_profile {
      # TODO
 }
 
-=head2 attach_auth_data
+=head2 add_auth_data
 
-Ataseaza informatiile referitoare la autentificarea utilizatorului curent.
+Adauga informatiile referitoare la autentificarea utilizatorului curent.
 
 =cut
 
-sub attach_auth_data {
+sub add_auth_data {
      # TODO
 }
 
@@ -466,6 +466,26 @@ Ataseaza autoritatile corespunzatoare utilizatorului curent.
 =cut
 
 sub attach_authorities {
+     # TODO
+}
+
+=head2 send_welcome_message
+
+Trimite un mesaj de bun venit utilizatorului curent.
+
+=cut
+
+sub send_welcome_message {
+     # TODO
+}
+
+=head2 set_default_settings
+
+Stabileste valorile implicite ale setarilor utilizatorului curent.
+
+=cut
+
+sub set_default_settings {
      # TODO
 }
 

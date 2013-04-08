@@ -642,4 +642,44 @@ sub attach_forms {
      }
 }
 
+=head2 set_descriptions
+
+Adauga descrierile instantei curente.
+
+=cut
+
+sub set_descriptions {
+	# TODO
+}
+
+=head2 set_unit_analysis
+
+Seteaza unitatea de analiza a instantei curente.
+
+=cut
+
+sub set_unit_analysis {
+	# TODO
+}
+
+=head2 set_methodology
+
+Seteaza metodologia utilizata in cadrul instantei curente.
+
+=cut
+
+sub set_methodology {
+	# TODO
+}
+
+=head2 attach_docs
+
+Ataseaza documentele corespunzatoare instantei curente.
+
+=cut
+
+sub attach_docs {
+	# TODO
+}
+
 1;

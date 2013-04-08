@@ -97,4 +97,40 @@ Criterii de unicitate:
 sub checkuser {
     # TODO
 }
+
+=head2 insert_root_user
+
+insert_root_user introduce in baza de date informatiile principale referitoare la un nou utilizator al aplicatiei. 
+
+Parametrii de intrare:
+
+=over 
+
+=item C<username>
+- numele (identificatorul) utilizatorului
+
+=item C<password>
+- parola utilizatorului
+
+=item C<fname>
+- prenumele utilizatorului
+
+=item C<lname>
+- numele de familie al utilizatorului
+
+=item C<email>
+- adresa de email a utilizatorului
+
+=item C<enabled>
+- parametru boolean, ce specifica daca utilzatorul este activat sau nu
+
+=back
+
+=cut
+
+
+sub insert_root_user {
+    # TODO
+}
+
 1;

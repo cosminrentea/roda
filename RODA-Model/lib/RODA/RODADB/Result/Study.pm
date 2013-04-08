@@ -425,4 +425,45 @@ sub attach_keyword {
      }
 }
 
+=head2 insert_title
+
+Insereaza titlul studiului curent.
+
+=cut
+
+sub insert_title {
+	# TODO
+}
+
+=head2 insert_abstract
+
+Insereaza rezumatul studiului curent.
+
+=cut
+
+sub insert_abstract {
+	# TODO
+}
+
+=head2 add_to_catalog
+
+Adauga studiul curent la catalogul furnizat ca parametru.
+
+=cut
+
+sub add_to_catalog {
+	# TODO
+}
+
+=head2 add_instance
+
+Adauga o noua instanta studiului curent.
+
+=cut
+
+sub add_instance {
+	# TODO
+}
+
+
 1;

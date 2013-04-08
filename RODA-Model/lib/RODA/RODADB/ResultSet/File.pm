@@ -28,18 +28,13 @@ Metode suplimentare care se aplica asupra seturilor de rezultate de tip fisier.
 
 =cut
 
-=head2 checkfile
+=head2 addfile
 
-checkfile verifica existenta unui fisier preluat prin intermediul parametrilor de intrare; daca fisierul exista, metoda returneaza obiectul corespunzator, altfel introduce informatiile referitoare la un nou fisier in baza de date. 
-Existenta este verificata pe baza cheii primare.
-
+addfile introduce informatiile referitoare la un nou fisier in baza de date. 
 
 Parametrii de intrare:
 
 =over 
-
-=item C<file_id>
-- cheia primara a unui fisier
 
 =item C<title>
 - titlul fisierului
@@ -56,29 +51,41 @@ Parametrii de intrare:
 =item C<size>
 - dimensiunea fisierului
 
-=item C<file_properties>
-- lista proprietatilor fisierului. Existenta unei proprietati este verificata, iar in caz ca nu exista, proprietatea respectiva este mai intai inserata in tabelul property_name. 
-Analog sunt verificate valorile proprietatilor si, daca nu exista, sunt inserate in tabelul property_value. 
-Totodata, asocierea dintre fisierul curent, o proprietate si valoarea acesteia este adaugata tabelului file_property_name_value.
-
 =item C<file_acls>
 - lista de drepturi (acl) asociate fisierului curent. Un element al acestei liste este o structura de tip hash avand urmatoarele chei: aro_id, aro_type, read, update, delete. 
-
-=back
-
-Criterii de unicitate:
-
-=over
-
-=item
-- N/A 
 
 =back
 
 =cut
 
 
-sub checkfile {
+sub addfile {
     # TODO
 }
+
+=head2 set_file_properties
+
+set_file_properties seteaza proprietatile unui fisier, acestea fiind introduse in baza de date. 
+
+Parametrii de intrare:
+
+=over 
+
+=item C<file_id>
+- cheia primara a unui fisier
+
+=item C<file_properties>
+- lista proprietatilor fisierului. Existenta unei proprietati este verificata, iar in caz ca nu exista, proprietatea respectiva este mai intai inserata in tabelul property_name. 
+Analog sunt verificate valorile proprietatilor si, daca nu exista, sunt inserate in tabelul property_value. 
+Totodata, asocierea dintre fisierul curent, o proprietate si valoarea acesteia este adaugata tabelului file_property_name_value.
+
+=back
+
+=cut
+
+sub set_file_properties {
+    # TODO
+}
+
+
 1;

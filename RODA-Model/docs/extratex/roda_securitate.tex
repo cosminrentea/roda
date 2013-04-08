@@ -53,9 +53,10 @@ Riscurile de pierdere a datelor provin de obicei din urmatoarele accidente:
 
 {\sffamily\color{black}
 {}- Disfunctionalitati ale infrastructurii hardware (hard-diskuri defecte, sisteme de date corupte de erori software,
-manevrarea excesiva de catre utilizatori cu drepturi ridicate a functiilor de curatare). Principala protectie impotriva
-acestui grup de probleme reprezinta redundanta datelor si backupul. Astfel, RODA va functiona conform schemei
-urmatoare:}
+manevrarea excesiva de catre utilizatori cu drepturi ridicate a functiilor de curatare). 
+Principala protectie impotriva
+acestui grup de probleme o reprezinta redundanta datelor si backupul. 
+Astfel, RODA va functiona conform schemei urmatoare:}
 
 {\sffamily\color{black}
 \ \ Redundanta in timpul functionarii. Datele din primele doua categorii (studiile, \ informatiile conexe si nivelele de
@@ -79,8 +80,13 @@ vor contine copii ale tuturor datelor din lista de mai sus }
 Vor exista proceduri care vor acoperi toate scenariile posibile si care vor permite recuperarea datelor in toate
 situatiile imaginabile.
 
- \includegraphics[width=6.2709in,height=4.1354in]{SecuritateaarhiveiRODA-img001.png} 
-
+\begin{figure}[hbt]
+\centering
+\includegraphics[width=\textwidth]{SecuritateaarhiveiRODA-img001.png}
+%\includegraphics[width=6.2709in,height=4.1354in]{SecuritateaarhiveiRODA-img001.png}
+%\caption{Awesome Image}
+\label{fig:img001}
+\end{figure}
 
 \section{Securitatea aplicatiei si mediului de rulare}
 
@@ -128,7 +134,13 @@ Protectia impotriva accesului neautorizat se face prin:
 {\sffamily\color{black}
 \ \ {}- reguli specifice de acces pentru administratori}
 
-\includegraphics[width=4.75in,height=5.0626in]{SecuritateaarhiveiRODA-img002.png}
+\begin{figure}[hbt]
+\centering
+\includegraphics{SecuritateaarhiveiRODA-img002.png}
+%\includegraphics[width=4.75in,height=5.0626in]{SecuritateaarhiveiRODA-img002.png}
+%\caption{Awesome Image}
+\label{fig:img002}
+\end{figure}
 
 Arhitectura retelei este construita astfel incat intregul ansamblu de servere se este conectat la internet prin
 intermediul unui router care va contine un firewall. Routerul este un computer care nu are nevoie de servicii
@@ -201,7 +213,13 @@ de incercari de injectare pe ora. Cea mai frecventa modalitate de atac prin inje
 afecteaza aplicatiile care nu filtreaza datele care sunt trimise bazei de date in formularele disponibile
 utilizatorilor.
 
- \includegraphics[width=7.1146in,height=4.6146in]{SecuritateaarhiveiRODA-img003.png} 
+\begin{figure}[hbt]
+\centering
+\includegraphics[width=\textwidth]{SecuritateaarhiveiRODA-img003.png} 
+%\includegraphics[width=7.1146in,height=4.6146in]{SecuritateaarhiveiRODA-img003.png} 
+%\caption{Awesome Image}
+\label{fig:img003}
+\end{figure}
 
 Moduri de evitare a injectiei SQL. Evitarea injectiei SQL se face in RODA in mai multe etape:
 \begin{enumerate}
@@ -279,7 +297,13 @@ informatia aflata in baza de date si fisierele statice care folosesc la construc
 javascript). Astfel, protectia impotriva acestui tip de atacuri trebuie sa fie duala: protectia datelor introduse in
 baza de date si protectia fisierelor statice.
 
- \includegraphics[width=6.7602in,height=3.8437in]{SecuritateaarhiveiRODA-img004.png} 
+\begin{figure}[hbt]
+\centering
+\includegraphics[width=\textwidth]{SecuritateaarhiveiRODA-img004.png} 
+%\includegraphics[width=6.7602in,height=3.8437in]{SecuritateaarhiveiRODA-img004.png} 
+%\caption{Awesome Image}
+\label{fig:img004}
+\end{figure}
 
 Protectia bazei de date:
 
@@ -351,8 +375,8 @@ de drepturile de acces, astfel, nici un utilizator nu va avea disponibile optiun
 acceseze.
 
 Prin modul de proiectare al aplicatiei RODA, autentificarea se verifica la fiecare actiune a utilizatorului, astfel,
-chiar in situatia in care acesta poate ``ghici'' un anumit url de apel al unei functii pe care nu o vede in interfata,
-serverul va refuza executia acesteia daca utilizatorul nu are drepturile necesare.
+chiar in situatia in care acesta poate ``ghici'' un anumit URL de apel al unei
+functii pe care nu o vede in interfata, serverul va refuza executia acesteia daca utilizatorul nu are drepturile necesare.
 
 \subsubsection{CSRF (Cross Site Request Forgery)}
 
@@ -361,9 +385,15 @@ site. Aceasta conduce catre trimiterea unor modificari catre sistem, fara sa se 
 pentru aceasta, si, in functie de proiectarea sistemului, ocolindu-se procedurile de validare daca acestea sunt
 prezente doar in formular sau intreg sistemul de autentificare.
 
-\includegraphics[width=6.8437in,height=3.6457in]{SecuritateaarhiveiRODA-img005.png} 
+\begin{figure}[hbt]
+\centering
+\includegraphics[width=\textwidth]{SecuritateaarhiveiRODA-img005.png} 
+%\includegraphics[width=6.8437in,height=3.6457in]{SecuritateaarhiveiRODA-img005.png} 
+%\caption{Awesome Image}
+\label{fig:img005}
+\end{figure}
 
-Pentru evitarea acesui gen de atac, aplicatia RODA va lua urmatoarele masuri:
+Pentru evitarea acestui gen de atac, aplicatia RODA va lua urmatoarele masuri:
 
 {\sffamily\color{black}
 \ \ {}- toate formularele care conduc catre inserarea de noi date sau modificarea datelor existente for folosi o

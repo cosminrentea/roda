@@ -9,10 +9,10 @@ DocOptions:
    \usepackage[utf8]{inputenc}
    \usepackage{color}
    \usepackage{times}
-   \usepackage[margin=2.5cm]{geometry}
+   \usepackage[margin=1in]{geometry}
    \usepackage{fancyhdr}
-   \pagestyle{fancy}
    \usepackage{lscape}
+   \usepackage{float}
    \usepackage{listings}
    \usepackage{babel}
    \usepackage{amsmath}
@@ -20,8 +20,11 @@ DocOptions:
    \usepackage{array}
    \usepackage{hhline}
    \usepackage[pdftex]{graphicx}
-   \usepackage[pdftitle={Documentatie Sistem de acces la date RODA}, pdfauthor={RODA}, colorlinks=true, linkcolor=blue]{hyperref}
-   \hypersetup{pdftex, colorlinks=true, linkcolor=blue, citecolor=blue, filecolor=blue, urlcolor=blue, pdftitle=, pdfauthor=, pdfsubject=, pdfkeywords=}
+   \usepackage[pdftitle={ANEXE - Sistemul de acces la date}, pdfauthor={RODA}, colorlinks=true, linkcolor=blue]{hyperref}
+   
+   %\hypersetup{pdftex, colorlinks=true, linkcolor=blue, citecolor=blue, filecolor=blue, urlcolor=blue, pdftitle=, pdfauthor=, pdfsubject=, pdfkeywords=}
+   \pagestyle{fancy}
+   \DeclareGraphicsExtensions{.png,.gif,.jpg,.pdf}
    \addto\captionsromanian{\renewcommand{\chaptername}{Anexa}}
    
    \begin{document}

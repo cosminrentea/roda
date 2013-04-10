@@ -31,7 +31,7 @@ $parser->parse( );
 
 my $finaldir = $extratexdir->stringify; 
 
-print "PDF Latex run\n";
-
-system("cd $finaldir; pdflatex roda.tex >de_sters.log");
-system("cd $finaldir; pdflatex roda.tex >de_sters.log");
+print "pdflatex roda.tex (run 1)\n";
+system("cd $finaldir; pdflatex roda.tex");
+print "pdflatex roda.tex (run 2)\n";
+system("cd $finaldir; pdflatex roda.tex");

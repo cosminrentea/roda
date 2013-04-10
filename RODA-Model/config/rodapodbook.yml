@@ -262,4 +262,9 @@ DocStructure:
       Title: Servicii TIC destinate echipei proiectului
   - Input:
       FileOrPod: roda_services.tex      
-      
+
+  - Section:
+      Level: chapter
+      Title: Documentatie pentru dezvoltatorii aplicatiei Spring
+  - Input:
+      FileOrPod: roda_spring_doc_dev.tex     

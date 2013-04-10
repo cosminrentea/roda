@@ -1,0 +1,295 @@
+La specificarea in instructiunile de mai jos a sistemului de operare:
+\begin{description} 
+\item [MacOSX =] OS X version 10.8.3, 64 bit
+\item [Ubuntu =] Ubuntu 12.04LTS, kernel 3.2.0-39-generic-pae, 32bit
+\item [Postgresql =] Postgresql 9.2
+\item [DbWrench =] DbWrench 2.3.2
+\item [STS =] Spring Tool Suite 3.2.0.RELEASE - based on Eclipse Juno 3.8.2
+\item [Maven =] Maven 3
+\end{description}
+
+\section{Instalare si configurare - servicii si software aditional}
+
+Se instaleaza Postgresql ca server pe statia locala (preferabil, pornit automat ca serviciu la bootare):
+\begin{description}
+\item[Ubuntu:] In linia de comanda:
+\begin{lstlisting}
+	sudo apt-get install postgresql
+\end{lstlisting}
+
+[Optional] Se configureaza in fisierele de configurare ale Postgresql drepturile
+de acces ale clientilor la server (???).
+
+\item [MacOSX:] 
+Se instaleaza si ruleaza Postgres.app (descarcat de la http://postgresapp.com ).
+Se bifeaza in meniu optiunea "Automatically Start at Login".
+\end{description}
+
+Se instaleaza pachete necesare:
+\begin{description}
+\item[Ubuntu:]
+Se ruleaza urmatoarele comenzi, din shell:
+\begin{lstlisting}[breaklines=true]
+sudo apt-get install openjdk-6-jdk maven perl r-base r-base-dev pgadmin3 libtest-www-selenium-perl graphviz rubygems
+sudo gem install vmc
+\end{lstlisting}
+\item[MacOSX:]
+Se instaleaza anterior MacPorts si dependentele necesare (instructiuni la: http://www.macports.org/install.php ).
+
+Se ruleaza urmatoarele comenzi, din shell:
+\begin{lstlisting}[breaklines=true]
+sudo port install maven3 perl5 R pgadmin3 p5.12-test-www-selenium graphviz gem
+sudo gem install vmc
+\end{lstlisting}
+\end{description}
+
+Se verifica instalarea Java si tipul de JVM disponibil (32 sau 64 bit), cu comanda:
+\begin{lstlisting}
+	java -version
+\end{lstlisting}
+
+Se creeaza in directorul \$HOME al utilizatorului un fisier numit ".mavenrc"
+(ce contine setarile generale pentru Maven, in acest caz legate de memoria utilizata);
+in fisier se scrie:
+\begin{lstlisting}
+	MAVEN_OPTS="-Xmx1024m -XX:MaxPermSize=256m"
+	export MAVEN_OPTS
+\end{lstlisting}
+
+Se instaleaza rJava in R, cu urmatoarele comenzi in shell si apoi in shell-ul R
+(cu alegerea in timpul instalarii a mirror-ului de folosit, dintr-o fereastra):
+\begin{lstlisting}
+	sudo R CMD javareconf
+	R
+	install.packages('rJava')
+\end{lstlisting}
+
+Se instaleaza DbWrench de la \url{http://www.dbwrench.com}.
+
+\section{Instalarea si configurarea IDE-ului si a proiectului}
+
+\subsection{Instalare Spring Tool Suite (STS)}
+Descarcati STS de pe pagina:
+\url{http://www.springsource.org/downloads/sts-ggts} .
+
+Alegeti pentru descarcarea versiunea STS bazata pe Eclipse 3.8.2; pe website,
+sectiunea respectiva este intitulata:
+"Milestone Version - Spring Tool Suite 3.2.0.RELEASE - based on Eclipse Juno 3.8.2"
+
+Instalati STS, eventual din linia de comanda, cu optiunile default: 
+Next -> ... -> Finish.
+
+\subsection{Configurare STS (inainte de pornire)}
+In fisierul "STS.ini" (in Windows/Linux, acesta este in folder-ul radacina al STS; in MacOS X, in folder-ul "STS.app/Contents/MacOS/"),
+se modifica memoria maxima utilizabila de STS.
+
+In "STS.ini", linia care incepe cu \emph{-Xmx} (memoria maxima utilizabila de
+STS) trebuie modificata astfel:
+\begin{itemize} 
+\item daca JVM este pe 64 biti:
+
+	-Xmx3072m
+\item daca JVM este pe 32 biti:
+
+	-Xmx1536m
+\end{itemize}
+
+\subsection{Instalare Extensii si Plugin-uri in STS}
+
+Porniti STS, eventual din linia de comanda, in folder-ul radacina al instalarii STS:
+\begin{lstlisting}	
+	./STS &
+\end{lstlisting}
+
+Din Dashboard (meniu Help -> Dashboard), click pe tab-ul "Extensions"
+(pozitionat jos, in Dashboard), bifati in lista si apoi instalati (butonul
+"Install"):
+\begin{itemize}
+  \item Cloud Foundry Eclipse Integration
+  \item Edgewall Trac
+\end{itemize} 
+
+Restartati STS.
+
+Instalati in STS ultima versiune de Subclipse (cu suport pentru Subversion 1.7), prin meniu Help -> Install New Software:
+
+URL = \url{http://subclipse.tigris.org/update_1.8.x}
+	
+Selectati si instalati de la acest update-site: "Subclipse" si "SVNKit".
+
+Restartati STS.
+
+Configurati in STS Subclipse pentru a utiliza SVNKIT: 
+meniu Window -> Preferences -> Team -> SVN, 
+apoi la "SVN Interface" (mai jos in pagina de optiuni aparuta) se alege Client = "SVNKit (pure Java) SVNKit v1.7...."
+
+Instalati in STS plugin-ul IDE pentru Perl, prin meniu Help -> Install
+New Software:
+Perl EPIC, URL = \url{http://e-p-i-c.sf.net/updates/testing}
+
+\subsection{Configurare Task Repository}
+In STS, in view-ul "Task List", butonul "Add Repository", de tipul "Trac", 
+iar in pasul urmator:
+
+Server URL:    \url{http://fisiere.dyndns.org:8888/roda}
+
+Debifare optiune "Anonymous"
+
+Completare User si Parola (specifice)
+
+Bifare "Save password"
+
+"Validate Settings"
+
+"Finish"
+
+La ultimul pas, se adauga un Query legat de acest Repository (de exemplu, se completeaza doar un nume de tip "All" si se apasa Finish).
+
+\subsection{Preluare proiecte din SVN repository}
+In STS, adaugati SVN repository (in perspectiva "SVN Repository
+Exploring"), 
+
+URL = \url{svn://fisiere.dyndns.org/roda}
+
+Faceti \emph{Checkout} din SVN repository (click-dreapta pe numele
+proiectului, apoi 'Checkout') pentru urmatoarele proiecte:
+\begin{description}
+\item [roda:] aplicatia web Java / Spring / Roo
+\item [dbwrench2-files:] fisierele dbWrench, SQL si scripturile asociate
+\item [RODA-Model:] modelul Perl si documentatia
+\end{description}
+
+In STS, se face upgrade la Subversion 1.7 (pt. working copy) pentru fiecare din proiectele de mai sus: 
+click-dreapta pe proiect in view-ul "Package Explorer" sau "Navigator", si apoi in meniul aparut:
+Team -> Upgrade -> 'OK'.
+
+\section{Configurarea locala a proiectului}
+
+\subsection{Compilarea pentru prima data a proiectului}
+
+In linia de comanda, in folderul-radacina al proiectului "roda":
+\begin{lstlisting}
+mvn -e -X clean package
+\end{lstlisting}
+
+Toate pachetele necesare sunt descarcate cand se face prima compilare (care poate dura mai mult).
+
+In STS, click-dreapta in view-ul "Package Explorer" pe numele proiectului ("roda"),
+apoi din meniul aparut:
+Maven -> Update Project -> 'OK'.
+
+STS va deschide un view numit "Roo shell" unde se pot da comenzi Roo referitoare
+la proiect.
+
+\subsection{Configurarea Serverului Local (in STS)}
+Se trage (drag-and-drop) proiectul "roda" din view-ul "Package Explorer" 
+peste serverul local prezent in view-ul "Servers" (VMware vFabric tc Server ...).
+
+\subsection{Configurarea serverului Postgresql local}
+Folosind pentru conectare in linia de comanda
+\begin{lstlisting}
+psql -h localhost
+\end{lstlisting}
+se dau comenzile:
+\begin{lstlisting}
+CREATE USER roda;
+CREATE DATABASE roda OWNER roda ENCODING 'UTF8';
+\end{lstlisting}
+
+\subsection{Fisierele de configurare ale proiectului}
+\begin{description}
+\item[Conexiunea la baza de date trebuie configurata in:]
+src/main/resources/META-INF/spring/database.properties
+\item[Hibernate si JPA] (de ex. modul de lucru: update / create / create-drop /
+validate):
+src/main/resources/META-INF/persistence.xml
+\item[Logging-ul:]
+src/main/resources/log4j.properties
+\item[Spring (Beans, properties etc.):]
+src/main/resources/META-INF/spring/applicationContext.xml
+\item[Spring Security Authentication:]
+src/main/resources/META-INF/spring/applicationContext-security.xml
+\item[Spring Security ACL:]
+src/main/resources/META-INF/spring/applicationContext-acl.xml
+\item[Conexiunea cu serverul Solr:]
+src/main/resources/META-INF/spring/solr.properties
+\item[Configurarea aplicatiei web RODA:]
+src/main/resources/META-INF/spring/roda.properties
+\item[Procedurile de build (Maven):]
+/pom.xml
+(aici se pot schimba si parametri: portul folosit de Tomcat la rularea aplicatiei; rularea sau nu a testelor etc.)
+\end{description}
+
+\section{Rularea locala a proiectului}
+
+\subsection{Rularea din STS, pe Server Local}
+Se (re-)porneste serverul folosind butoanele din view-ul "Servers".
+
+Daca portul local 8080 era liber (se poate edita dupa dublu-click pe server,
+aplicatia e disponibila la:
+
+\url{http://localhost:8080/roda}
+
+\subsection{Rularea din linia de comanda, pe un Server Local ad-hoc (tip
+Tomcat)}
+Din linia de comanda, in folder-ul radacina al proiectului "roda", cu comanda:
+\begin{lstlisting}
+mvn tomcat:run
+\end{lstlisting}
+Daca portul local 8080 era liber (portul se poate schimba in "pom.xml"),
+aplicatia e disponibila la:
+
+\url{http://localhost:8080/roda}
+
+\subsection{Rularea automata a testelor web (Selenium)}
+Din linia de comanda, in folder-ul radacina al proiectului "roda", cu comanda:
+\begin{lstlisting}
+mvn tomcat:run selenium:selenese
+\end{lstlisting}
+
+\section{Rularea proiectului din STS, pe CloudFoundry (NERECOMANDAT)}
+
+!!! ATENTIE !!!
+Accesul la acest cont/server este shared (e folosit inclusiv de catre Jenkins), 
+pot aparea suprapuneri nedorite intre variante diferite / dezvoltatori diferiti !!!
+
+Se adauga in view-ul "Servers" un nou server remote: click-dreapta -> 'New'
+-> 'Server' -> VMware - Cloud Foundry -> 'Next'.
+
+Se completeaza wizard-ul conform urmatorilor pasi:
+\begin{itemize}
+  \item 
+Email: roda.devel@gmail.com
+  \item 
+Parola: RodaAdor
+  \item 
+"Validate Account"
+  \item 
+"Next"
+  \item 
+Se muta proiectul "roda" din lista "Available" in lista "Configured"
+  \item 
+"Next"
+  \item 
+In fereastra "Application details", se selecteaza "Application Type" -> "Spring"
+  \item 
+"Next"
+  \item 
+Deployed URL: roda.cloudfoundry.com
+  \item 
+Memory Reservation: 2048 M
+  \item 
+"Next"
+  \item 
+Se bifeaza serviciul "roda-postgres" (baza de date Postgres) din lista aparuta.
+  \item 
+"Finish"
+\end{itemize}
+
+Proiectul este disponibil online permanent la adresa:
+
+\url{http://roda.cloudfoundry.com}
+
+\section{Instalarea si configurarea Jenkins}
+
+???

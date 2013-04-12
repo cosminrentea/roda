@@ -48,11 +48,9 @@ privileged aspect SamplingProcedure_Roo_SolrSearch {
         for (SamplingProcedure samplingProcedure : samplingprocedures) {
             SolrInputDocument sid = new SolrInputDocument();
             sid.addField("id", "samplingprocedure_" + samplingProcedure.getId());
-            sid.addField("samplingProcedure.name_s", samplingProcedure.getName());
-            sid.addField("samplingProcedure.description_s", samplingProcedure.getDescription());
             sid.addField("samplingProcedure.id_i", samplingProcedure.getId());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("samplingprocedure_solrsummary_t", new StringBuilder().append(samplingProcedure.getName()).append(" ").append(samplingProcedure.getDescription()).append(" ").append(samplingProcedure.getId()));
+            sid.addField("samplingprocedure_solrsummary_t", new StringBuilder().append(samplingProcedure.getId()));
             documents.add(sid);
         }
         try {

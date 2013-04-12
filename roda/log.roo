@@ -2091,3 +2091,5 @@ service --interface ~.service.AclEntryService --entity ~.domain.AclEntry
 service --interface ~.service.AclEntryService --entity ~.domain.AclEntry
 // Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log closed at 2013-04-05 20:19:54
 // Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log opened at 2013-04-12 12:44:30
+json all
+web mvc json all 

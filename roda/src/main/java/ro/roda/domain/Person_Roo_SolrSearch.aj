@@ -48,14 +48,9 @@ privileged aspect Person_Roo_SolrSearch {
         for (Person person : people) {
             SolrInputDocument sid = new SolrInputDocument();
             sid.addField("id", "person_" + person.getId());
-            sid.addField("person.prefixid_t", person.getPrefixId());
-            sid.addField("person.suffixid_t", person.getSuffixId());
-            sid.addField("person.fname_s", person.getFname());
-            sid.addField("person.mname_s", person.getMname());
-            sid.addField("person.lname_s", person.getLname());
             sid.addField("person.id_i", person.getId());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("person_solrsummary_t", new StringBuilder().append(person.getPrefixId()).append(" ").append(person.getSuffixId()).append(" ").append(person.getFname()).append(" ").append(person.getMname()).append(" ").append(person.getLname()).append(" ").append(person.getId()));
+            sid.addField("person_solrsummary_t", new StringBuilder().append(person.getId()));
             documents.add(sid);
         }
         try {

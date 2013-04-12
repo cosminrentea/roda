@@ -48,13 +48,9 @@ privileged aspect AuditLogAction_Roo_SolrSearch {
         for (AuditLogAction auditLogAction : auditlogactions) {
             SolrInputDocument sid = new SolrInputDocument();
             sid.addField("id", "auditlogaction_" + auditLogAction.getId());
-            sid.addField("auditLogAction.changeset_t", auditLogAction.getChangeset());
-            sid.addField("auditLogAction.auditedtable_t", auditLogAction.getAuditedTable());
-            sid.addField("auditLogAction.auditedrow_s", auditLogAction.getAuditedRow());
-            sid.addField("auditLogAction.type_s", auditLogAction.getType());
             sid.addField("auditLogAction.id_i", auditLogAction.getId());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("auditlogaction_solrsummary_t", new StringBuilder().append(auditLogAction.getChangeset()).append(" ").append(auditLogAction.getAuditedTable()).append(" ").append(auditLogAction.getAuditedRow()).append(" ").append(auditLogAction.getType()).append(" ").append(auditLogAction.getId()));
+            sid.addField("auditlogaction_solrsummary_t", new StringBuilder().append(auditLogAction.getId()));
             documents.add(sid);
         }
         try {

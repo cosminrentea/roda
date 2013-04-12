@@ -48,14 +48,9 @@ privileged aspect Country_Roo_SolrSearch {
         for (Country country : countrys) {
             SolrInputDocument sid = new SolrInputDocument();
             sid.addField("id", "country_" + country.getId());
-            sid.addField("country.namero_s", country.getNameRo());
-            sid.addField("country.nameself_s", country.getNameSelf());
-            sid.addField("country.nameen_s", country.getNameEn());
-            sid.addField("country.iso3166_s", country.getIso3166());
-            sid.addField("country.iso3166alpha3_s", country.getIso3166Alpha3());
             sid.addField("country.id_i", country.getId());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("country_solrsummary_t", new StringBuilder().append(country.getNameRo()).append(" ").append(country.getNameSelf()).append(" ").append(country.getNameEn()).append(" ").append(country.getIso3166()).append(" ").append(country.getIso3166Alpha3()).append(" ").append(country.getId()));
+            sid.addField("country_solrsummary_t", new StringBuilder().append(country.getId()));
             documents.add(sid);
         }
         try {

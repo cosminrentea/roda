@@ -48,14 +48,9 @@ privileged aspect CmsPage_Roo_SolrSearch {
         for (CmsPage cmsPage : cmspages) {
             SolrInputDocument sid = new SolrInputDocument();
             sid.addField("id", "cmspage_" + cmsPage.getId());
-            sid.addField("cmsPage.cmslayoutid_t", cmsPage.getCmsLayoutId());
-            sid.addField("cmsPage.cmspagetypeid_t", cmsPage.getCmsPageTypeId());
-            sid.addField("cmsPage.ownerid_t", cmsPage.getOwnerId());
-            sid.addField("cmsPage.name_s", cmsPage.getName());
-            sid.addField("cmsPage.url_s", cmsPage.getUrl());
             sid.addField("cmsPage.id_i", cmsPage.getId());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("cmspage_solrsummary_t", new StringBuilder().append(cmsPage.getCmsLayoutId()).append(" ").append(cmsPage.getCmsPageTypeId()).append(" ").append(cmsPage.getOwnerId()).append(" ").append(cmsPage.getName()).append(" ").append(cmsPage.getUrl()).append(" ").append(cmsPage.getId()));
+            sid.addField("cmspage_solrsummary_t", new StringBuilder().append(cmsPage.getId()));
             documents.add(sid);
         }
         try {

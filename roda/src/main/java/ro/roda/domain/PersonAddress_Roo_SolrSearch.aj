@@ -48,13 +48,9 @@ privileged aspect PersonAddress_Roo_SolrSearch {
         for (PersonAddress personAddress : personaddresses) {
             SolrInputDocument sid = new SolrInputDocument();
             sid.addField("id", "personaddress_" + personAddress.getId());
-            sid.addField("personAddress.addressid_t", personAddress.getAddressId());
-            sid.addField("personAddress.personid_t", personAddress.getPersonId());
-            sid.addField("personAddress.datestart_dt", personAddress.getDateStart());
-            sid.addField("personAddress.dateend_dt", personAddress.getDateEnd());
             sid.addField("personAddress.id_t", personAddress.getId());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("personaddress_solrsummary_t", new StringBuilder().append(personAddress.getAddressId()).append(" ").append(personAddress.getPersonId()).append(" ").append(personAddress.getDateStart()).append(" ").append(personAddress.getDateEnd()).append(" ").append(personAddress.getId()));
+            sid.addField("personaddress_solrsummary_t", new StringBuilder().append(personAddress.getId()));
             documents.add(sid);
         }
         try {

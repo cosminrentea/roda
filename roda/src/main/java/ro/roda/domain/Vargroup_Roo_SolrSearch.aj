@@ -48,10 +48,9 @@ privileged aspect Vargroup_Roo_SolrSearch {
         for (Vargroup vargroup : vargroups) {
             SolrInputDocument sid = new SolrInputDocument();
             sid.addField("id", "vargroup_" + vargroup.getId());
-            sid.addField("vargroup.name_s", vargroup.getName());
             sid.addField("vargroup.id_l", vargroup.getId());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("vargroup_solrsummary_t", new StringBuilder().append(vargroup.getName()).append(" ").append(vargroup.getId()));
+            sid.addField("vargroup_solrsummary_t", new StringBuilder().append(vargroup.getId()));
             documents.add(sid);
         }
         try {

@@ -48,11 +48,9 @@ privileged aspect OrgPhone_Roo_SolrSearch {
         for (OrgPhone orgPhone : orgphones) {
             SolrInputDocument sid = new SolrInputDocument();
             sid.addField("id", "orgphone_" + orgPhone.getId());
-            sid.addField("orgPhone.orgid_t", orgPhone.getOrgId());
-            sid.addField("orgPhone.phoneid_t", orgPhone.getPhoneId());
             sid.addField("orgPhone.id_t", orgPhone.getId());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("orgphone_solrsummary_t", new StringBuilder().append(orgPhone.getOrgId()).append(" ").append(orgPhone.getPhoneId()).append(" ").append(orgPhone.getId()));
+            sid.addField("orgphone_solrsummary_t", new StringBuilder().append(orgPhone.getId()));
             documents.add(sid);
         }
         try {

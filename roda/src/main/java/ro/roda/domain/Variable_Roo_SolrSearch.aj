@@ -48,17 +48,9 @@ privileged aspect Variable_Roo_SolrSearch {
         for (Variable variable : variables) {
             SolrInputDocument sid = new SolrInputDocument();
             sid.addField("id", "variable_" + variable.getId());
-            sid.addField("variable.selectionvariable_t", variable.getSelectionVariable());
-            sid.addField("variable.fileid_t", variable.getFileId());
-            sid.addField("variable.instanceid_t", variable.getInstanceId());
-            sid.addField("variable.label_s", variable.getLabel());
-            sid.addField("variable.type_t", variable.getType());
-            sid.addField("variable.orderininstance_i", variable.getOrderInInstance());
-            sid.addField("variable.operatorinstructions_s", variable.getOperatorInstructions());
-            sid.addField("variable.variabletype_t", variable.getVariableType());
             sid.addField("variable.id_l", variable.getId());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("variable_solrsummary_t", new StringBuilder().append(variable.getSelectionVariable()).append(" ").append(variable.getFileId()).append(" ").append(variable.getInstanceId()).append(" ").append(variable.getLabel()).append(" ").append(variable.getType()).append(" ").append(variable.getOrderInInstance()).append(" ").append(variable.getOperatorInstructions()).append(" ").append(variable.getVariableType()).append(" ").append(variable.getId()));
+            sid.addField("variable_solrsummary_t", new StringBuilder().append(variable.getId()));
             documents.add(sid);
         }
         try {

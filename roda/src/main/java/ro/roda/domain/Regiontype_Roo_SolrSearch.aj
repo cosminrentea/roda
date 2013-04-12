@@ -48,10 +48,9 @@ privileged aspect Regiontype_Roo_SolrSearch {
         for (Regiontype regiontype : regiontypes) {
             SolrInputDocument sid = new SolrInputDocument();
             sid.addField("id", "regiontype_" + regiontype.getId());
-            sid.addField("regiontype.name_s", regiontype.getName());
             sid.addField("regiontype.id_i", regiontype.getId());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("regiontype_solrsummary_t", new StringBuilder().append(regiontype.getName()).append(" ").append(regiontype.getId()));
+            sid.addField("regiontype_solrsummary_t", new StringBuilder().append(regiontype.getId()));
             documents.add(sid);
         }
         try {

@@ -10,6 +10,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.roo.addon.web.mvc.controller.json.RooWebJson;
 import org.springframework.roo.addon.web.mvc.controller.scaffold.RooWebScaffold;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,6 +29,7 @@ import ro.roda.service.FileService;
 @RequestMapping("/files")
 @Controller
 @RooWebScaffold(path = "files", formBackingObject = File.class, update = false)
+@RooWebJson(jsonObject = File.class)
 public class FileController {
 
     @Autowired

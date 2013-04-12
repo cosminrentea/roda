@@ -48,15 +48,9 @@ privileged aspect Scale_Roo_SolrSearch {
         for (Scale scale : scales) {
             SolrInputDocument sid = new SolrInputDocument();
             sid.addField("id", "scale_" + scale.getItemId());
-            sid.addField("scale.item_t", scale.getItem());
-            sid.addField("scale.maxvalueid_t", scale.getMaxvalueId());
-            sid.addField("scale.minvalueid_t", scale.getMinvalueId());
-            sid.addField("scale.minvalueid_t", scale.getMinValueId());
-            sid.addField("scale.maxvalueid_t", scale.getMaxValueId());
-            sid.addField("scale.units_t", scale.getUnits());
             sid.addField("scale.itemid_l", scale.getItemId());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("scale_solrsummary_t", new StringBuilder().append(scale.getItem()).append(" ").append(scale.getMaxvalueId()).append(" ").append(scale.getMinvalueId()).append(" ").append(scale.getMinValueId()).append(" ").append(scale.getMaxValueId()).append(" ").append(scale.getUnits()).append(" ").append(scale.getItemId()));
+            sid.addField("scale_solrsummary_t", new StringBuilder().append(scale.getItemId()));
             documents.add(sid);
         }
         try {

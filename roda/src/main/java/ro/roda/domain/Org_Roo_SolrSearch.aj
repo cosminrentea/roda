@@ -48,14 +48,9 @@ privileged aspect Org_Roo_SolrSearch {
         for (Org org : orgs) {
             SolrInputDocument sid = new SolrInputDocument();
             sid.addField("id", "org_" + org.getId());
-            sid.addField("org.source_t", org.getSource());
-            sid.addField("org.orgprefixid_t", org.getOrgPrefixId());
-            sid.addField("org.orgsufixid_t", org.getOrgSufixId());
-            sid.addField("org.name_s", org.getName());
-            sid.addField("org.fullname_s", org.getFullname());
             sid.addField("org.id_i", org.getId());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("org_solrsummary_t", new StringBuilder().append(org.getSource()).append(" ").append(org.getOrgPrefixId()).append(" ").append(org.getOrgSufixId()).append(" ").append(org.getName()).append(" ").append(org.getFullname()).append(" ").append(org.getId()));
+            sid.addField("org_solrsummary_t", new StringBuilder().append(org.getId()));
             documents.add(sid);
         }
         try {

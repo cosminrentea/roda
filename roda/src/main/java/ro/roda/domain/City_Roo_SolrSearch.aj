@@ -48,17 +48,9 @@ privileged aspect City_Roo_SolrSearch {
         for (City city : citys) {
             SolrInputDocument sid = new SolrInputDocument();
             sid.addField("id", "city_" + city.getId());
-            sid.addField("city.countryid_t", city.getCountryId());
-            sid.addField("city.name_s", city.getName());
-            sid.addField("city.citycode_s", city.getCityCode());
-            sid.addField("city.citycodename_s", city.getCityCodeName());
-            sid.addField("city.citycodesup_s", city.getCityCodeSup());
-            sid.addField("city.prefix_s", city.getPrefix());
-            sid.addField("city.citytype_s", city.getCityType());
-            sid.addField("city.citytypesystem_s", city.getCityTypeSystem());
             sid.addField("city.id_i", city.getId());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("city_solrsummary_t", new StringBuilder().append(city.getCountryId()).append(" ").append(city.getName()).append(" ").append(city.getCityCode()).append(" ").append(city.getCityCodeName()).append(" ").append(city.getCityCodeSup()).append(" ").append(city.getPrefix()).append(" ").append(city.getCityType()).append(" ").append(city.getCityTypeSystem()).append(" ").append(city.getId()));
+            sid.addField("city_solrsummary_t", new StringBuilder().append(city.getId()));
             documents.add(sid);
         }
         try {

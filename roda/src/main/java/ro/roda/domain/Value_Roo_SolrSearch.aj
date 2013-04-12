@@ -48,11 +48,9 @@ privileged aspect Value_Roo_SolrSearch {
         for (Value value : values) {
             SolrInputDocument sid = new SolrInputDocument();
             sid.addField("id", "value_" + value.getItemId());
-            sid.addField("value.item_t", value.getItem());
-            sid.addField("value.value_i", value.getValue());
             sid.addField("value.itemid_l", value.getItemId());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("value_solrsummary_t", new StringBuilder().append(value.getItem()).append(" ").append(value.getValue()).append(" ").append(value.getItemId()));
+            sid.addField("value_solrsummary_t", new StringBuilder().append(value.getItemId()));
             documents.add(sid);
         }
         try {

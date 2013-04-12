@@ -48,14 +48,9 @@ privileged aspect InstanceOrg_Roo_SolrSearch {
         for (InstanceOrg instanceOrg : instanceorgs) {
             SolrInputDocument sid = new SolrInputDocument();
             sid.addField("id", "instanceorg_" + instanceOrg.getId());
-            sid.addField("instanceOrg.instanceid_t", instanceOrg.getInstanceId());
-            sid.addField("instanceOrg.assoctypeid_t", instanceOrg.getAssocTypeId());
-            sid.addField("instanceOrg.orgid_t", instanceOrg.getOrgId());
-            sid.addField("instanceOrg.assocdetails_s", instanceOrg.getAssocDetails());
-            sid.addField("instanceOrg.citation_s", instanceOrg.getCitation());
             sid.addField("instanceOrg.id_t", instanceOrg.getId());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("instanceorg_solrsummary_t", new StringBuilder().append(instanceOrg.getInstanceId()).append(" ").append(instanceOrg.getAssocTypeId()).append(" ").append(instanceOrg.getOrgId()).append(" ").append(instanceOrg.getAssocDetails()).append(" ").append(instanceOrg.getCitation()).append(" ").append(instanceOrg.getId()));
+            sid.addField("instanceorg_solrsummary_t", new StringBuilder().append(instanceOrg.getId()));
             documents.add(sid);
         }
         try {

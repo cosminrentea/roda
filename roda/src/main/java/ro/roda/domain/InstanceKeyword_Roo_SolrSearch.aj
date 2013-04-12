@@ -48,13 +48,9 @@ privileged aspect InstanceKeyword_Roo_SolrSearch {
         for (InstanceKeyword instanceKeyword : instancekeywords) {
             SolrInputDocument sid = new SolrInputDocument();
             sid.addField("id", "instancekeyword_" + instanceKeyword.getId());
-            sid.addField("instanceKeyword.instanceid_t", instanceKeyword.getInstanceId());
-            sid.addField("instanceKeyword.keywordid_t", instanceKeyword.getKeywordId());
-            sid.addField("instanceKeyword.addedby_t", instanceKeyword.getAddedBy());
-            sid.addField("instanceKeyword.added_dt", instanceKeyword.getAdded().getTime());
             sid.addField("instanceKeyword.id_t", instanceKeyword.getId());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("instancekeyword_solrsummary_t", new StringBuilder().append(instanceKeyword.getInstanceId()).append(" ").append(instanceKeyword.getKeywordId()).append(" ").append(instanceKeyword.getAddedBy()).append(" ").append(instanceKeyword.getAdded().getTime()).append(" ").append(instanceKeyword.getId()));
+            sid.addField("instancekeyword_solrsummary_t", new StringBuilder().append(instanceKeyword.getId()));
             documents.add(sid);
         }
         try {

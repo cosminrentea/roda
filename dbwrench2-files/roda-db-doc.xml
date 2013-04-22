@@ -138,10 +138,6 @@
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul adresei retinute</Cm>
       </Cl>
-      <Cl au="0" df="" nm="country_id" nu="0">
-        <DT arr="0" ds="Char" en="" id="1" ln="2" sc="null" sg="1" un="0"/>
-        <Cm>Codul tarii corespunzatoare adresei (refera atributul id din tabelul country)</Cm>
-      </Cl>
       <Cl au="0" df="" nm="city_id" nu="0">
         <DT arr="0" ds="Integer" en="" id="4" ln="null" sc="null" sg="1" un="0"/>
         <Cm>Codul orasului corespunzator adresei (refera atributul id din tabelul city)</Cm>
@@ -342,6 +338,7 @@
     </Tbl>
     <Tbl UsSo="1" nm="authorities">
       <TblOpts/>
+      <Pk ClNs="username, authority" nm="pkauthorities"/>
       <Cl au="0" df="" nm="username" nu="0">
         <DT arr="0" ds="VarChar" en="" id="12" ln="64" sc="null" sg="1" un="0"/>
       </Cl>
@@ -353,9 +350,6 @@
         <CdTb mn="1" nm="authorities" oe="0" sch="public" zr="1"/>
         <ClPr cdCl="username" prCl="username"/>
       </Fk>
-      <Idx clu="0" nm="authorities_auhtority_Idx" unq="1">
-        <ClNs>username, authority</ClNs>
-      </Idx>
       <UniqueConstraints/>
       <SchTrHis/>
     </Tbl>

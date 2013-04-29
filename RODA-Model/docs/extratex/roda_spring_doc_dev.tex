@@ -11,30 +11,17 @@ La specificarea in instructiunile de mai jos a sistemului de operare:
 
 \section{Instalare si configurare - servicii si software aditional}
 
-Se instaleaza Postgresql ca server pe statia locala (preferabil, pornit automat ca serviciu la bootare):
-\begin{description}
-\item[Ubuntu:] In shell:
-\begin{lstlisting}
-	sudo apt-get install postgresql
-\end{lstlisting}
-
-[Optional] Se configureaza in fisierele de configurare ale Postgresql drepturile
-de acces ale clientilor la server, de ex. pentru a permite accesul prin internet.
-% TODO ???
-
-\item [MacOSX:] 
-Se instaleaza si ruleaza Postgres.app (descarcat de la http://postgresapp.com ).
-Se bifeaza in meniu optiunea 'Automatically Start at Login'.
-\end{description}
-
-Se instaleaza pachete necesare:
+\paragraph{Instalarea pachetelor necesare}
 \begin{description}
 \item[Ubuntu:]
 Se ruleaza urmatoarele comenzi, din shell:
 \begin{lstlisting}[breaklines=true]
-sudo apt-get install openjdk-6-jdk maven perl r-base r-base-dev pgadmin3 libtest-www-selenium-perl graphviz rubygems
+sudo apt-get install openjdk-6-jdk maven perl r-base r-base-dev pgadmin3
+libtest-www-selenium-perl htmldoc graphviz rubygems postgresql-server
+
 sudo gem install vmc
 \end{lstlisting}
+
 \item[OpenSUSE:]
 % TODO ???
 Maven se instaleaza manual sau dintr-un repository non-standard.
@@ -45,34 +32,57 @@ Test::WWW::Selenium se instaleaza din CPAN.
 
 Se ruleaza urmatoarele comenzi, din shell:
 \begin{lstlisting}[breaklines=true]
-sudo zypper in openjdk-7-jdk perl pgadmin3 graphviz ruby ruby-devel rubygems
+sudo zypper in openjdk-7-jdk perl pgadmin3 htmldoc graphviz ruby ruby-devel
+rubygems postgresql
+
 sudo gem install vmc
 \end{lstlisting}]
 
 \item[MacOSX:]
-Se instaleaza anterior MacPorts si dependentele necesare (instructiuni la:
+Se instaleaza si ruleaza Postgres.app (descarcat de la http://postgresapp.com ).
+Se bifeaza in meniu optiunea 'Automatically Start at Login'.
+
+Se instaleaza MacPorts si toate dependentele necesare (instructiuni la:
 \url{http://www.macports.org/install.php} ).
 
 Se ruleaza urmatoarele comenzi, din shell:
 \begin{lstlisting}[breaklines=true]
-sudo port install maven3 perl5 R pgadmin3 p5.12-test-www-selenium graphviz gem
+sudo port install maven3 perl5 R pgadmin3 p5.12-test-www-selenium
+htmldoc graphviz gem postgresql92 postgresql92-server
+
 sudo gem install vmc
 \end{lstlisting}
 \end{description}
 
-Se verifica instalarea Java si tipul de JVM disponibil (32 sau 64 bit), cu comanda:
+\paragraph{Configurare Postgresql}
+Se configureaza Postgresql ca server pe statia locala (preferabil, pornit
+automat ca serviciu la bootare). 
+Se configureaza in fisierele de configurare ale Postgresql drepturile
+de acces ale clientilor la server, de ex. pentru a permite accesul prin
+internet, nu doar de la statia locala / reteaua locala.
+% TODO mai precis ???
+
+\paragraph{LaTeX (necesar pentru documentatie)}
+
+\paragraph{JVM}
+\label{java_version}
+Se verifica instalarea Java (trebuie sa fie minim Java 1.6) si tipul de JVM
+utilizat (32 sau 64 bit), cu comanda:
 \begin{lstlisting}
 	java -version
 \end{lstlisting}
 
+\paragraph{Configurare Maven}
 Se creeaza in directorul \emph{\$HOME} al utilizatorului un fisier numit
-'.mavenrc' (ce contine setarile generale pentru Maven, in acest caz legate de memoria utilizata);
+'.mavenrc' 
+(ce contine setarile generale pentru Maven, in acest caz legate de memoria utilizata);
 in fisier se scrie:
 \begin{lstlisting}
 	MAVEN_OPTS='-Xmx1024m -XX:MaxPermSize=256m'
 	export MAVEN_OPTS
 \end{lstlisting}
 
+\paragraph{rJAva}
 Se instaleaza rJava in R, cu urmatoarele comenzi in shell si apoi in shell-ul R
 (se alege in timpul instalarii site-mirror-ul folosit, dintr-o fereastra;
 se iese la final din Shell-ul R cu Ctrl+D):
@@ -82,7 +92,9 @@ se iese la final din Shell-ul R cu Ctrl+D):
 	install.packages('rJava')
 \end{lstlisting}
 
-Se instaleaza DbWrench de la \url{http://www.dbwrench.com}.
+\paragraph{DbWrench}
+Se instaleaza DbWrench de pe site-ul producatorului:
+\url{http://www.dbwrench.com}.
 
 \section{Instalarea si configurarea IDE-ului si a proiectului}
 
@@ -93,8 +105,12 @@ facand click direct pe link-ul \emph{'Just take me to the download page'}.
 
 Alegeti pentru descarcarea versiunea STS bazata pe Eclipse 3.8.2, extensia
 fisierului de salvat fiind '.sh', iar arhitectura cea stabilita de versiunea
-JVM (32 sau 64 bit); pe website, sectiunea respectiva este cea intitulata:
-'Milestone Version - Spring Tool Suite 3.2.0.RELEASE - based on Eclipse Juno 3.8.2'
+JVM (32 sau 64 bit, vezi \href{java_version}); pe website, sectiunea respectiva
+este cea intitulata:
+\begin{verbatim}
+Milestone Version - Spring Tool Suite 3.2.0.RELEASE - 
+based on Eclipse Juno 3.8.2
+\end{verbatim}
 
 Instalati STS din shell (fara 'sudo'), cu optiunile default (se poate
 schimba eventual path-ul care este propus de wizard pentru instalarea STS,
@@ -240,37 +256,20 @@ peste serverul local prezent in view-ul 'Servers' (VMware vFabric tc Server ...)
 \subsection{Configurarea serverului Postgresql local}
 Folosind pentru conectare in linia de comanda
 \begin{lstlisting}
-psql -h localhost
+	psql -h localhost
 \end{lstlisting}
 se dau comenzile:
 \begin{lstlisting}
-CREATE USER roda PASSWORD 'roda';
-CREATE DATABASE roda OWNER roda ENCODING 'UTF8';
+	CREATE USER roda PASSWORD 'roda';
+	CREATE DATABASE roda OWNER roda ENCODING 'UTF8';
 \end{lstlisting}
 
 \subsection{Fisierele de configurare ale proiectului}
-\begin{description}
-\item[Conexiunea la baza de date trebuie configurata in:]
-src/main/resources/META-INF/spring/database.properties
-\item[Hibernate si JPA] (de ex. modul de lucru: update / create / create-drop /
-validate, auditare, setari logging, dialect DB):
-src/main/resources/META-INF/persistence.xml
-\item[Logging:]
-src/main/resources/log4j.properties
-\item[Spring (setup, JavaBeans, properties-handling etc.):]
-src/main/resources/META-INF/spring/applicationContext.xml
-\item[Spring Security Authentication:]
-src/main/resources/META-INF/spring/applicationContext-security.xml
-\item[Spring Security ACL:]
-src/main/resources/META-INF/spring/applicationContext-acl.xml
-\item[Conexiunea cu serverul Solr:]
-src/main/resources/META-INF/spring/solr.properties
-\item[Configurarea aplicatiei web RODA:]
-src/main/resources/META-INF/spring/roda.properties
-\item[Procedurile de build (Maven):]
-/pom.xml
-(aici se pot schimba si parametri: portul folosit de Tomcat la rularea aplicatiei; rularea sau nu a testelor etc.)
-\end{description}
+Toate detaliile necesare se regasesc in sectiunea
+corespunzatoare: \href{fisiere_configurare}.
+
+Configurarile \emph{default} din aceste fisiere nu trebuie neaparat
+schimbate, daca se urmeaza intocmai acest ghid de instalare/configurare.
 
 \section{Rularea locala a proiectului}
 
@@ -287,7 +286,7 @@ server, in lista din view-ul 'Servers'), aplicatia e disponibila la:
 Tomcat}
 Din linia de comanda, in folder-ul radacina al proiectului 'roda', cu comanda:
 \begin{lstlisting}
-mvn tomcat:run
+	mvn tomcat:run
 \end{lstlisting}
 Daca portul local 8080 era liber (portul se poate schimba in 'pom.xml'),
 aplicatia e disponibila la:
@@ -297,13 +296,15 @@ aplicatia e disponibila la:
 \subsection{Rularea automata a testelor web (Selenium)}
 Din linia de comanda, in folder-ul radacina al proiectului 'roda', cu comanda:
 \begin{lstlisting}
-mvn tomcat:run selenium:selenese
+	mvn tomcat:run selenium:selenese
 \end{lstlisting}
 
 \section{Rularea proiectului din STS, pe CloudFoundry (NERECOMANDAT)}
 
-\paragraph{!!! ATENTIE !!!} Accesul la acest cont/server este shared (e folosit
-inclusiv de catre Jenkins), pot aparea suprapuneri nedorite intre variante diferite / dezvoltatori diferiti !!!
+\paragraph{!!! ATENTIE !!!} 
+Accesul la acest cont/server este shared (e folosit
+inclusiv de catre Jenkins), 
+pot aparea suprapuneri nedorite intre variante diferite / dezvoltatori diferiti !!!
 
 Se adauga in view-ul 'Servers' un nou server remote: click-dreapta -> 'New'
 -> 'Server' -> vendor 'VMware' -> tip 'Cloud Foundry' -> 'Next'.
@@ -345,4 +346,11 @@ Proiectul este disponibil online permanent la adresa:
 
 \section{Instalarea si configurarea Jenkins}
 
+Lista plugin-urilor Jenkins ce trebuie instalate:
+% TODO ???
+
+\section{Instalarea si configurarea Solr}
+
+Se instaleaza Solr 4.2 in '/opt', se foloseste schema din subfolder-ul
+'examples'. Se porneste ca un server standalone, folosind Jetty.
 % TODO ???

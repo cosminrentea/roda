@@ -94,7 +94,11 @@ In aceasta sectiune descriem care sunt aspectele care apar in mod repetat la mai
 multe niveluri diferite ale aplicatiei (precum configurari, logging
 autentificare, servicii disponibile etc.).
 
-\subsubsection{Configurari}
+\subsubsection{Fisiere de configurare a aplicatiei}
+\label{fisiere_configurare}
+
+% TODO integrarea celor 2 bucati de text de mai jos
+
 Configurarea aplicatiei se face prin:
 \begin {itemize}
   \item fisiere de tip 'properties', prin care pot suprascrie
@@ -113,9 +117,33 @@ in aplicatie etc.
   layouts.xml).
 \end{itemize}
 
+Mai precis:
+\begin{description}
+\item[Conexiunea la baza de date trebuie configurata in:]
+src/main/resources/META-INF/spring/database.properties
+\item[Hibernate si JPA] (de ex. modul de lucru: update / create / create-drop /
+validate, auditare, setari logging, dialect DB):
+src/main/resources/META-INF/persistence.xml
+\item[Logging:]
+src/main/resources/log4j.properties
+\item[Spring (setup, JavaBeans, properties-handling etc.):]
+src/main/resources/META-INF/spring/applicationContext.xml
+\item[Spring Security Authentication:]
+src/main/resources/META-INF/spring/applicationContext-security.xml
+\item[Spring Security ACL:]
+src/main/resources/META-INF/spring/applicationContext-acl.xml
+\item[Conexiunea cu serverul Solr:]
+src/main/resources/META-INF/spring/solr.properties
+\item[Configurarea aplicatiei web RODA:]
+src/main/resources/META-INF/spring/roda.properties
+\item[Procedurile de build (Maven):]
+/pom.xml
+(aici se pot schimba si parametri: portul folosit de Tomcat la rularea aplicatiei; rularea sau nu a testelor etc.)
+\end{description}
+
 \subsubsection{Logging}
 Se foloseste Log4j, iar logger-ele sunt configurate ierarhic (cf. ierarhiei
-pachetelor si claselor) si pe niveluri de detaliu, intr-un fisier de
+pachetelor si claselor) si pe niveluri de detaliu, in fisierul de
 configurare.
 
 \subsubsection{Autentificare}
@@ -123,7 +151,7 @@ Pentru autentificare este utilizata si adaptata solutia Spring Security.
 Utilizatorii precum si hash-urile parolelor lor (SHA-256) sunt stocate in
 tabele specifice din baza de date.
 
-Se foloseste o schema de tipul 'users' / 'roles'.
+Se foloseste o schema de tipul 'users' / 'authorities'.
 Din tabelul 'users' nu se sterg utilizatori, acestia pot fi dezactivati.
 Tabelul 'users' este relationat cu alte tabele corespunzand modelului.
 
@@ -178,13 +206,14 @@ Se folosesc in codul-sursa comentarii de tip Javadoc.
 In procesul de build se genereaza automat documentatie  de tip HTML. 
 De asemenea, prin utilitarul 'htmldoc' se poate genera
 si documentatie in format PDF pornind de la aceasta documentatie in format HTML.
+%TODO detaliere htmldoc
 
 \subsection{Aspecte legate de dezvoltarea aplicatiei Spring}
 In aceasta sectiune descriem aspectele legate de dezvoltarea in practica, intr-o
 maniera incrementala si cu asigurarea calitatii procesului de dezvoltare.
 
 \subsubsection{Testarea aplicatiei}
-Testarea e realizata momentan prin 3 metode:
+Testarea este realizata in acest moment prin 3 metode:
 \begin{enumerate}
   \item testarea claselor din model, folosind JUnit adaptat pentru Spring
   \item testarea controller-elelor printr-o suita de teste generate semi-automat
@@ -197,10 +226,13 @@ Testarea e realizata momentan prin 3 metode:
 Procesele de build sunt realizate prin Maven 3. Fisierul aferent (pom.xml)
 contine dependentele necesare pentru configurarea, compilarea,
 deploymentul, rularea, testarea, documentarea proiectului.
+
 Procesul de build continuu este realizat prin 
 serviciul de tip continuous-build (Jenkins), 
 care realizeaza efectiv pasii descrisi mai sus 
 atunci cand repository-ul SVN continand codul-sursa este modificat. 
+%TODO detaliere job-uri Jenkins
+
 Se face deployment al aplicatiei si remote pe un
 serviciu de tip 'cloud' (cloudfoundry.com), 
 iar schema curenta a bazei de date este creata pe un server Postgresql intern,

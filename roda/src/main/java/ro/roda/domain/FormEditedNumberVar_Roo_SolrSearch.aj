@@ -48,9 +48,11 @@ privileged aspect FormEditedNumberVar_Roo_SolrSearch {
         for (FormEditedNumberVar formEditedNumberVar : formeditednumbervars) {
             SolrInputDocument sid = new SolrInputDocument();
             sid.addField("id", "formeditednumbervar_" + formEditedNumberVar.getId());
-            sid.addField("formEditedNumberVar.id_t", formEditedNumberVar.getId());
+            sid.addField("formEditedNumberVar.formid_t", formEditedNumberVar.getFormId());
+            sid.addField("formEditedNumberVar.variableid_t", formEditedNumberVar.getVariableId());
+            sid.addField("formEditedNumberVar.value_t", formEditedNumberVar.getValue());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("formeditednumbervar_solrsummary_t", new StringBuilder().append(formEditedNumberVar.getId()));
+            sid.addField("formeditednumbervar_solrsummary_t", new StringBuilder().append(formEditedNumberVar.getFormId()).append(" ").append(formEditedNumberVar.getVariableId()).append(" ").append(formEditedNumberVar.getValue()));
             documents.add(sid);
         }
         try {

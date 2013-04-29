@@ -48,9 +48,9 @@ privileged aspect PersonRole_Roo_SolrSearch {
         for (PersonRole personRole : personroles) {
             SolrInputDocument sid = new SolrInputDocument();
             sid.addField("id", "personrole_" + personRole.getId());
-            sid.addField("personRole.id_i", personRole.getId());
+            sid.addField("personRole.name_s", personRole.getName());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("personrole_solrsummary_t", new StringBuilder().append(personRole.getId()));
+            sid.addField("personrole_solrsummary_t", new StringBuilder().append(personRole.getName()));
             documents.add(sid);
         }
         try {

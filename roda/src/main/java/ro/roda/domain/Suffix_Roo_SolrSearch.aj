@@ -48,9 +48,9 @@ privileged aspect Suffix_Roo_SolrSearch {
         for (Suffix suffix : suffixes) {
             SolrInputDocument sid = new SolrInputDocument();
             sid.addField("id", "suffix_" + suffix.getId());
-            sid.addField("suffix.id_i", suffix.getId());
+            sid.addField("suffix.name_s", suffix.getName());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("suffix_solrsummary_t", new StringBuilder().append(suffix.getId()));
+            sid.addField("suffix_solrsummary_t", new StringBuilder().append(suffix.getName()));
             documents.add(sid);
         }
         try {

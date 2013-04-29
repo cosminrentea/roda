@@ -8,11 +8,11 @@ public class ScheduledTask {
 	private final Log log = LogFactory.getLog(this.getClass());
 
 	public void maintenance() {
-		//log.debug("> maintenance");
+		// log.debug("> maintenance");
 	}
 
 	public void backup() {
-		//log.debug("> backup");
+		// log.debug("> backup");
 	}
 
 }

@@ -48,9 +48,14 @@ privileged aspect Setting_Roo_SolrSearch {
         for (Setting setting : settings) {
             SolrInputDocument sid = new SolrInputDocument();
             sid.addField("id", "setting_" + setting.getId());
-            sid.addField("setting.id_i", setting.getId());
+            sid.addField("setting.settingvalue_t", setting.getSettingValue());
+            sid.addField("setting.settinggroup_t", setting.getSettingGroup());
+            sid.addField("setting.name_s", setting.getName());
+            sid.addField("setting.description_s", setting.getDescription());
+            sid.addField("setting.predefinedvalues_s", setting.getPredefinedValues());
+            sid.addField("setting.defaultvalue_s", setting.getDefaultValue());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("setting_solrsummary_t", new StringBuilder().append(setting.getId()));
+            sid.addField("setting_solrsummary_t", new StringBuilder().append(setting.getSettingValue()).append(" ").append(setting.getSettingGroup()).append(" ").append(setting.getName()).append(" ").append(setting.getDescription()).append(" ").append(setting.getPredefinedValues()).append(" ").append(setting.getDefaultValue()));
             documents.add(sid);
         }
         try {

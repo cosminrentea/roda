@@ -599,7 +599,25 @@
 					</dependency>
 				</dependencies>
 			</plugin>
-			
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>1.2.1</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>exec</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<executable>perl</executable>
+					<workingDirectory>../RODA-Model/script</workingDirectory>
+					<arguments>
+						<argument>roda_pod2book.pl</argument>
+					</arguments>
+				</configuration>
+			</plugin>
 			<!-- Cosmin: Javadoc + UML class diagrams -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

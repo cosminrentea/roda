@@ -48,9 +48,14 @@ privileged aspect StudyDescr_Roo_SolrSearch {
         for (StudyDescr studyDescr : studydescrs) {
             SolrInputDocument sid = new SolrInputDocument();
             sid.addField("id", "studydescr_" + studyDescr.getId());
-            sid.addField("studyDescr.id_t", studyDescr.getId());
+            sid.addField("studyDescr.langid_t", studyDescr.getLangId());
+            sid.addField("studyDescr.studyid_t", studyDescr.getStudyId());
+            sid.addField("studyDescr.titletypeid_t", studyDescr.getTitleTypeId());
+            sid.addField("studyDescr.abstract1_s", studyDescr.getAbstract1());
+            sid.addField("studyDescr.grantdetails_s", studyDescr.getGrantDetails());
+            sid.addField("studyDescr.title_s", studyDescr.getTitle());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("studydescr_solrsummary_t", new StringBuilder().append(studyDescr.getId()));
+            sid.addField("studydescr_solrsummary_t", new StringBuilder().append(studyDescr.getLangId()).append(" ").append(studyDescr.getStudyId()).append(" ").append(studyDescr.getTitleTypeId()).append(" ").append(studyDescr.getAbstract1()).append(" ").append(studyDescr.getGrantDetails()).append(" ").append(studyDescr.getTitle()));
             documents.add(sid);
         }
         try {

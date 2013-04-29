@@ -52,9 +52,8 @@ privileged aspect AclObjectIdentity_Roo_SolrSearch {
             sid.addField("aclObjectIdentity.parentobject_t", aclObjectIdentity.getParentObject());
             sid.addField("aclObjectIdentity.ownersid_t", aclObjectIdentity.getOwnerSid());
             sid.addField("aclObjectIdentity.objectididentity_l", aclObjectIdentity.getObjectIdIdentity());
-            sid.addField("aclObjectIdentity.id_l", aclObjectIdentity.getId());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("aclobjectidentity_solrsummary_t", new StringBuilder().append(aclObjectIdentity.getObjectIdClass()).append(" ").append(aclObjectIdentity.getParentObject()).append(" ").append(aclObjectIdentity.getOwnerSid()).append(" ").append(aclObjectIdentity.getObjectIdIdentity()).append(" ").append(aclObjectIdentity.getId()));
+            sid.addField("aclobjectidentity_solrsummary_t", new StringBuilder().append(aclObjectIdentity.getObjectIdClass()).append(" ").append(aclObjectIdentity.getParentObject()).append(" ").append(aclObjectIdentity.getOwnerSid()).append(" ").append(aclObjectIdentity.getObjectIdIdentity()));
             documents.add(sid);
         }
         try {

@@ -48,9 +48,14 @@ privileged aspect Region_Roo_SolrSearch {
         for (Region region : regions) {
             SolrInputDocument sid = new SolrInputDocument();
             sid.addField("id", "region_" + region.getId());
+            sid.addField("region.countryid_t", region.getCountryId());
+            sid.addField("region.regiontypeid_t", region.getRegiontypeId());
+            sid.addField("region.name_s", region.getName());
+            sid.addField("region.regioncode_s", region.getRegionCode());
+            sid.addField("region.regioncodename_s", region.getRegionCodeName());
             sid.addField("region.id_i", region.getId());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("region_solrsummary_t", new StringBuilder().append(region.getId()));
+            sid.addField("region_solrsummary_t", new StringBuilder().append(region.getCountryId()).append(" ").append(region.getRegiontypeId()).append(" ").append(region.getName()).append(" ").append(region.getRegionCode()).append(" ").append(region.getRegionCodeName()).append(" ").append(region.getId()));
             documents.add(sid);
         }
         try {

@@ -48,9 +48,12 @@ privileged aspect SelectionVariable_Roo_SolrSearch {
         for (SelectionVariable selectionVariable : selectionvariables) {
             SolrInputDocument sid = new SolrInputDocument();
             sid.addField("id", "selectionvariable_" + selectionVariable.getVariableId());
+            sid.addField("selectionVariable.variable_t", selectionVariable.getVariable());
+            sid.addField("selectionVariable.mincount_t", selectionVariable.getMinCount());
+            sid.addField("selectionVariable.maxcount_t", selectionVariable.getMaxCount());
             sid.addField("selectionVariable.variableid_l", selectionVariable.getVariableId());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("selectionvariable_solrsummary_t", new StringBuilder().append(selectionVariable.getVariableId()));
+            sid.addField("selectionvariable_solrsummary_t", new StringBuilder().append(selectionVariable.getVariable()).append(" ").append(selectionVariable.getMinCount()).append(" ").append(selectionVariable.getMaxCount()).append(" ").append(selectionVariable.getVariableId()));
             documents.add(sid);
         }
         try {

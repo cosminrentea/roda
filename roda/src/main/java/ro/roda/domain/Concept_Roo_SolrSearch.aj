@@ -48,9 +48,10 @@ privileged aspect Concept_Roo_SolrSearch {
         for (Concept concept : concepts) {
             SolrInputDocument sid = new SolrInputDocument();
             sid.addField("id", "concept_" + concept.getId());
-            sid.addField("concept.id_l", concept.getId());
+            sid.addField("concept.name_s", concept.getName());
+            sid.addField("concept.description_s", concept.getDescription());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("concept_solrsummary_t", new StringBuilder().append(concept.getId()));
+            sid.addField("concept_solrsummary_t", new StringBuilder().append(concept.getName()).append(" ").append(concept.getDescription()));
             documents.add(sid);
         }
         try {

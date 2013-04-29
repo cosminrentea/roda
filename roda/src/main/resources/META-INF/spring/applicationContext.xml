@@ -94,8 +94,7 @@
 
 	<task:executor id="asyncExecutor" pool-size="${roda.executor.poolSize}" />
 	
-	<bean class="ro.roda.util.ScheduledTask" id="rodaScheduledTask">
-	</bean>
+	<bean class="ro.roda.util.ScheduledTask" id="rodaScheduledTask" />
 
 	<task:scheduled-tasks scheduler="rodaScheduler">
 		

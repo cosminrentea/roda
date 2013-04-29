@@ -56,9 +56,8 @@ privileged aspect File_Roo_SolrSearch {
             sid.addField("file.contenttype_s", file.getContentType());
             sid.addField("file.content_t", file.getContent());
             sid.addField("file.url_s", file.getUrl());
-            sid.addField("file.id_i", file.getId());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("file_solrsummary_t", new StringBuilder().append(file.getTitle()).append(" ").append(file.getDescription()).append(" ").append(file.getName()).append(" ").append(file.getSize()).append(" ").append(file.getFullPath()).append(" ").append(file.getContentType()).append(" ").append(file.getContent()).append(" ").append(file.getUrl()).append(" ").append(file.getId()));
+            sid.addField("file_solrsummary_t", new StringBuilder().append(file.getTitle()).append(" ").append(file.getDescription()).append(" ").append(file.getName()).append(" ").append(file.getSize()).append(" ").append(file.getFullPath()).append(" ").append(file.getContentType()).append(" ").append(file.getContent()).append(" ").append(file.getUrl()));
             documents.add(sid);
         }
         try {

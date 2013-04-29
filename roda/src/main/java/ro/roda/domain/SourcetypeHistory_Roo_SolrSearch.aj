@@ -48,9 +48,13 @@ privileged aspect SourcetypeHistory_Roo_SolrSearch {
         for (SourcetypeHistory sourcetypeHistory : sourcetypehistorys) {
             SolrInputDocument sid = new SolrInputDocument();
             sid.addField("id", "sourcetypehistory_" + sourcetypeHistory.getId());
-            sid.addField("sourcetypeHistory.id_i", sourcetypeHistory.getId());
+            sid.addField("sourcetypeHistory.orgid_t", sourcetypeHistory.getOrgId());
+            sid.addField("sourcetypeHistory.sourcetypeid_t", sourcetypeHistory.getSourcetypeId());
+            sid.addField("sourcetypeHistory.addedby_t", sourcetypeHistory.getAddedBy());
+            sid.addField("sourcetypeHistory.datestart_dt", sourcetypeHistory.getDateStart());
+            sid.addField("sourcetypeHistory.dateend_dt", sourcetypeHistory.getDateEnd());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("sourcetypehistory_solrsummary_t", new StringBuilder().append(sourcetypeHistory.getId()));
+            sid.addField("sourcetypehistory_solrsummary_t", new StringBuilder().append(sourcetypeHistory.getOrgId()).append(" ").append(sourcetypeHistory.getSourcetypeId()).append(" ").append(sourcetypeHistory.getAddedBy()).append(" ").append(sourcetypeHistory.getDateStart()).append(" ").append(sourcetypeHistory.getDateEnd()));
             documents.add(sid);
         }
         try {

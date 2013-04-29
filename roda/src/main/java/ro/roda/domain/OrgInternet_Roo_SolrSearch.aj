@@ -48,9 +48,11 @@ privileged aspect OrgInternet_Roo_SolrSearch {
         for (OrgInternet orgInternet : orginternets) {
             SolrInputDocument sid = new SolrInputDocument();
             sid.addField("id", "orginternet_" + orgInternet.getId());
+            sid.addField("orgInternet.internetid_t", orgInternet.getInternetId());
+            sid.addField("orgInternet.orgid_t", orgInternet.getOrgId());
             sid.addField("orgInternet.id_t", orgInternet.getId());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("orginternet_solrsummary_t", new StringBuilder().append(orgInternet.getId()));
+            sid.addField("orginternet_solrsummary_t", new StringBuilder().append(orgInternet.getInternetId()).append(" ").append(orgInternet.getOrgId()).append(" ").append(orgInternet.getId()));
             documents.add(sid);
         }
         try {

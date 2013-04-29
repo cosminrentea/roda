@@ -48,9 +48,12 @@ privileged aspect AuthData_Roo_SolrSearch {
         for (AuthData authData : authdatas) {
             SolrInputDocument sid = new SolrInputDocument();
             sid.addField("id", "authdata_" + authData.getUserId());
-            sid.addField("authData.userid_i", authData.getUserId());
+            sid.addField("authData.users_t", authData.getUsers());
+            sid.addField("authData.credentialprovider_s", authData.getCredentialProvider());
+            sid.addField("authData.fieldname_s", authData.getFieldName());
+            sid.addField("authData.fieldvalue_s", authData.getFieldValue());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("authdata_solrsummary_t", new StringBuilder().append(authData.getUserId()));
+            sid.addField("authdata_solrsummary_t", new StringBuilder().append(authData.getUsers()).append(" ").append(authData.getCredentialProvider()).append(" ").append(authData.getFieldName()).append(" ").append(authData.getFieldValue()));
             documents.add(sid);
         }
         try {

@@ -48,9 +48,13 @@ privileged aspect SelectionVariableItem_Roo_SolrSearch {
         for (SelectionVariableItem selectionVariableItem : selectionvariableitems) {
             SolrInputDocument sid = new SolrInputDocument();
             sid.addField("id", "selectionvariableitem_" + selectionVariableItem.getId());
-            sid.addField("selectionVariableItem.id_t", selectionVariableItem.getId());
+            sid.addField("selectionVariableItem.responsecardfileid_t", selectionVariableItem.getResponseCardFileId());
+            sid.addField("selectionVariableItem.itemid_t", selectionVariableItem.getItemId());
+            sid.addField("selectionVariableItem.variableid_t", selectionVariableItem.getVariableId());
+            sid.addField("selectionVariableItem.orderofiteminvariable_i", selectionVariableItem.getOrderOfItemInVariable());
+            sid.addField("selectionVariableItem.frequencyvalue_f", selectionVariableItem.getFrequencyValue());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("selectionvariableitem_solrsummary_t", new StringBuilder().append(selectionVariableItem.getId()));
+            sid.addField("selectionvariableitem_solrsummary_t", new StringBuilder().append(selectionVariableItem.getResponseCardFileId()).append(" ").append(selectionVariableItem.getItemId()).append(" ").append(selectionVariableItem.getVariableId()).append(" ").append(selectionVariableItem.getOrderOfItemInVariable()).append(" ").append(selectionVariableItem.getFrequencyValue()));
             documents.add(sid);
         }
         try {

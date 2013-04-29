@@ -48,9 +48,8 @@ privileged aspect StudyDocuments_Roo_SolrSearch {
         for (StudyDocuments studyDocuments : studydocumentses) {
             SolrInputDocument sid = new SolrInputDocument();
             sid.addField("id", "studydocuments_" + studyDocuments.getId());
-            sid.addField("studyDocuments.id_t", studyDocuments.getId());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("studydocuments_solrsummary_t", new StringBuilder().append(studyDocuments.getId()));
+            sid.addField("studydocuments_solrsummary_t", new StringBuilder());
             documents.add(sid);
         }
         try {

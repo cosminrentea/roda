@@ -48,9 +48,9 @@ privileged aspect GroupAuthorities_Roo_SolrSearch {
         for (GroupAuthorities groupAuthorities : groupauthoritieses) {
             SolrInputDocument sid = new SolrInputDocument();
             sid.addField("id", "groupauthorities_" + groupAuthorities.getId());
-            sid.addField("groupAuthorities.id_t", groupAuthorities.getId());
+            sid.addField("groupAuthorities.groupid_t", groupAuthorities.getGroupId());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("groupauthorities_solrsummary_t", new StringBuilder().append(groupAuthorities.getId()));
+            sid.addField("groupauthorities_solrsummary_t", new StringBuilder().append(groupAuthorities.getGroupId()));
             documents.add(sid);
         }
         try {

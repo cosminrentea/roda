@@ -48,13 +48,9 @@ privileged aspect Study_Roo_SolrSearch {
         for (Study study : studys) {
             SolrInputDocument sid = new SolrInputDocument();
             sid.addField("id", "study_" + study.getId());
-            sid.addField("study.addedby_t", study.getAddedBy());
-            sid.addField("study.datestart_dt", study.getDateStart());
-            sid.addField("study.dateend_dt", study.getDateEnd());
-            sid.addField("study.insertionstatus_i", study.getInsertionStatus());
-            sid.addField("study.added_dt", study.getAdded().getTime());
+            sid.addField("study.id_i", study.getId());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("study_solrsummary_t", new StringBuilder().append(study.getAddedBy()).append(" ").append(study.getDateStart()).append(" ").append(study.getDateEnd()).append(" ").append(study.getInsertionStatus()).append(" ").append(study.getAdded().getTime()));
+            sid.addField("study_solrsummary_t", new StringBuilder().append(study.getId()));
             documents.add(sid);
         }
         try {

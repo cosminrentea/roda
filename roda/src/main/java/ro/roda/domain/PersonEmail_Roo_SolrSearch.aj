@@ -48,11 +48,9 @@ privileged aspect PersonEmail_Roo_SolrSearch {
         for (PersonEmail personEmail : personemails) {
             SolrInputDocument sid = new SolrInputDocument();
             sid.addField("id", "personemail_" + personEmail.getId());
-            sid.addField("personEmail.emailid_t", personEmail.getEmailId());
-            sid.addField("personEmail.personid_t", personEmail.getPersonId());
             sid.addField("personEmail.id_t", personEmail.getId());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("personemail_solrsummary_t", new StringBuilder().append(personEmail.getEmailId()).append(" ").append(personEmail.getPersonId()).append(" ").append(personEmail.getId()));
+            sid.addField("personemail_solrsummary_t", new StringBuilder().append(personEmail.getId()));
             documents.add(sid);
         }
         try {

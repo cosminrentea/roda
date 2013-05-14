@@ -4,9 +4,8 @@
     <jsp:output omit-xml-declaration="yes"/>
     <page:list id="pl_ro_roda_domain_File" items="${files}" z="n0u6mo7J7ieu92kReEvIbgyPxiA=">
         <table:table data="${files}" id="l_ro_roda_domain_File" path="/files" update="false" z="U8FynGp6zZBNyud8DcbjOPJwjOs=">
-            <table:column id="c_ro_roda_domain_File_instances" property="instances" z="u7Yfe6Hv9Vtuss8IHHNw8JQu/DY="/>
-            <table:column id="c_ro_roda_domain_File_studies1" property="studies1" z="WfmReulFEW/238LF8tG7zoJEKlQ="/>
-            <table:column id="c_ro_roda_domain_File_title" property="title" z="rduwHtDTOmknnAPk1JX7beKovqQ="/>
+            <table:column id="c_ro_roda_domain_File_content" property="content" z="quAvetTKe3uBkLhJtujmlD9ypfk="/>
+            <table:column id="c_ro_roda_domain_File_url" property="url" z="VzmrC7YxdYN0npQWR15gJZpQNE0="/>
         </table:table>
     </page:list>
 </div>

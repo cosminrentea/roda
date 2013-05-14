@@ -6,9 +6,7 @@ package ro.roda.web;
 import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,49 +16,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.domain.Study;
-import ro.roda.service.CatalogStudyService;
-import ro.roda.service.FileService;
-import ro.roda.service.InstanceService;
-import ro.roda.service.StudyDescrService;
-import ro.roda.service.StudyKeywordService;
-import ro.roda.service.StudyOrgService;
-import ro.roda.service.StudyPersonService;
 import ro.roda.service.StudyService;
-import ro.roda.service.TopicService;
-import ro.roda.service.UsersService;
 import ro.roda.web.StudyController;
 
 privileged aspect StudyController_Roo_Controller {
     
     @Autowired
     StudyService StudyController.studyService;
-    
-    @Autowired
-    CatalogStudyService StudyController.catalogStudyService;
-    
-    @Autowired
-    FileService StudyController.fileService;
-    
-    @Autowired
-    InstanceService StudyController.instanceService;
-    
-    @Autowired
-    StudyDescrService StudyController.studyDescrService;
-    
-    @Autowired
-    StudyKeywordService StudyController.studyKeywordService;
-    
-    @Autowired
-    StudyOrgService StudyController.studyOrgService;
-    
-    @Autowired
-    StudyPersonService StudyController.studyPersonService;
-    
-    @Autowired
-    TopicService StudyController.topicService;
-    
-    @Autowired
-    UsersService StudyController.usersService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String StudyController.create(@Valid Study study, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -81,7 +43,6 @@ privileged aspect StudyController_Roo_Controller {
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String StudyController.show(@PathVariable("id") Integer id, Model uiModel) {
-        addDateTimeFormatPatterns(uiModel);
         uiModel.addAttribute("study", studyService.findStudy(id));
         uiModel.addAttribute("itemId", id);
         return "studys/show";
@@ -98,7 +59,6 @@ privileged aspect StudyController_Roo_Controller {
         } else {
             uiModel.addAttribute("studys", studyService.findAllStudys());
         }
-        addDateTimeFormatPatterns(uiModel);
         return "studys/list";
     }
     
@@ -129,24 +89,8 @@ privileged aspect StudyController_Roo_Controller {
         return "redirect:/studys";
     }
     
-    void StudyController.addDateTimeFormatPatterns(Model uiModel) {
-        uiModel.addAttribute("study_datestart_date_format", DateTimeFormat.patternForStyle("M-", LocaleContextHolder.getLocale()));
-        uiModel.addAttribute("study_dateend_date_format", DateTimeFormat.patternForStyle("M-", LocaleContextHolder.getLocale()));
-        uiModel.addAttribute("study_added_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
-    }
-    
     void StudyController.populateEditForm(Model uiModel, Study study) {
         uiModel.addAttribute("study", study);
-        addDateTimeFormatPatterns(uiModel);
-        uiModel.addAttribute("catalogstudys", catalogStudyService.findAllCatalogStudys());
-        uiModel.addAttribute("files", fileService.findAllFiles());
-        uiModel.addAttribute("instances", instanceService.findAllInstances());
-        uiModel.addAttribute("studydescrs", studyDescrService.findAllStudyDescrs());
-        uiModel.addAttribute("studykeywords", studyKeywordService.findAllStudyKeywords());
-        uiModel.addAttribute("studyorgs", studyOrgService.findAllStudyOrgs());
-        uiModel.addAttribute("studypeople", studyPersonService.findAllStudypeople());
-        uiModel.addAttribute("topics", topicService.findAllTopics());
-        uiModel.addAttribute("userses", usersService.findAllUserses());
     }
     
     String StudyController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

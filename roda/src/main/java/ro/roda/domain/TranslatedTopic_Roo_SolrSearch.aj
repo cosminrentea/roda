@@ -48,12 +48,9 @@ privileged aspect TranslatedTopic_Roo_SolrSearch {
         for (TranslatedTopic translatedTopic : translatedtopics) {
             SolrInputDocument sid = new SolrInputDocument();
             sid.addField("id", "translatedtopic_" + translatedTopic.getId());
-            sid.addField("translatedTopic.langid_t", translatedTopic.getLangId());
-            sid.addField("translatedTopic.topicid_t", translatedTopic.getTopicId());
-            sid.addField("translatedTopic.translation_s", translatedTopic.getTranslation());
             sid.addField("translatedTopic.id_t", translatedTopic.getId());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("translatedtopic_solrsummary_t", new StringBuilder().append(translatedTopic.getLangId()).append(" ").append(translatedTopic.getTopicId()).append(" ").append(translatedTopic.getTranslation()).append(" ").append(translatedTopic.getId()));
+            sid.addField("translatedtopic_solrsummary_t", new StringBuilder().append(translatedTopic.getId()));
             documents.add(sid);
         }
         try {

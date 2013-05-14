@@ -6,9 +6,7 @@ package ro.roda.web;
 import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,25 +16,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.domain.SourcetypeHistory;
-import ro.roda.service.SourceService;
 import ro.roda.service.SourcetypeHistoryService;
-import ro.roda.service.SourcetypeService;
-import ro.roda.service.UsersService;
 import ro.roda.web.SourcetypeHistoryController;
 
 privileged aspect SourcetypeHistoryController_Roo_Controller {
     
     @Autowired
     SourcetypeHistoryService SourcetypeHistoryController.sourcetypeHistoryService;
-    
-    @Autowired
-    SourceService SourcetypeHistoryController.sourceService;
-    
-    @Autowired
-    SourcetypeService SourcetypeHistoryController.sourcetypeService;
-    
-    @Autowired
-    UsersService SourcetypeHistoryController.usersService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String SourcetypeHistoryController.create(@Valid SourcetypeHistory sourcetypeHistory, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -57,7 +43,6 @@ privileged aspect SourcetypeHistoryController_Roo_Controller {
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String SourcetypeHistoryController.show(@PathVariable("id") Integer id, Model uiModel) {
-        addDateTimeFormatPatterns(uiModel);
         uiModel.addAttribute("sourcetypehistory", sourcetypeHistoryService.findSourcetypeHistory(id));
         uiModel.addAttribute("itemId", id);
         return "sourcetypehistorys/show";
@@ -74,7 +59,6 @@ privileged aspect SourcetypeHistoryController_Roo_Controller {
         } else {
             uiModel.addAttribute("sourcetypehistorys", sourcetypeHistoryService.findAllSourcetypeHistorys());
         }
-        addDateTimeFormatPatterns(uiModel);
         return "sourcetypehistorys/list";
     }
     
@@ -105,17 +89,8 @@ privileged aspect SourcetypeHistoryController_Roo_Controller {
         return "redirect:/sourcetypehistorys";
     }
     
-    void SourcetypeHistoryController.addDateTimeFormatPatterns(Model uiModel) {
-        uiModel.addAttribute("sourcetypeHistory_datestart_date_format", DateTimeFormat.patternForStyle("M-", LocaleContextHolder.getLocale()));
-        uiModel.addAttribute("sourcetypeHistory_dateend_date_format", DateTimeFormat.patternForStyle("M-", LocaleContextHolder.getLocale()));
-    }
-    
     void SourcetypeHistoryController.populateEditForm(Model uiModel, SourcetypeHistory sourcetypeHistory) {
         uiModel.addAttribute("sourcetypeHistory", sourcetypeHistory);
-        addDateTimeFormatPatterns(uiModel);
-        uiModel.addAttribute("sources", sourceService.findAllSources());
-        uiModel.addAttribute("sourcetypes", sourcetypeService.findAllSourcetypes());
-        uiModel.addAttribute("userses", usersService.findAllUserses());
     }
     
     String SourcetypeHistoryController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

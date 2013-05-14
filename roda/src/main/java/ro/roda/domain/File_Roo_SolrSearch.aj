@@ -48,16 +48,11 @@ privileged aspect File_Roo_SolrSearch {
         for (File file : files) {
             SolrInputDocument sid = new SolrInputDocument();
             sid.addField("id", "file_" + file.getId());
-            sid.addField("file.title_s", file.getTitle());
-            sid.addField("file.description_s", file.getDescription());
-            sid.addField("file.name_s", file.getName());
-            sid.addField("file.size_l", file.getSize());
-            sid.addField("file.fullpath_s", file.getFullPath());
-            sid.addField("file.contenttype_s", file.getContentType());
             sid.addField("file.content_t", file.getContent());
             sid.addField("file.url_s", file.getUrl());
+            sid.addField("file.id_i", file.getId());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("file_solrsummary_t", new StringBuilder().append(file.getTitle()).append(" ").append(file.getDescription()).append(" ").append(file.getName()).append(" ").append(file.getSize()).append(" ").append(file.getFullPath()).append(" ").append(file.getContentType()).append(" ").append(file.getContent()).append(" ").append(file.getUrl()));
+            sid.addField("file_solrsummary_t", new StringBuilder().append(file.getContent()).append(" ").append(file.getUrl()).append(" ").append(file.getId()));
             documents.add(sid);
         }
         try {

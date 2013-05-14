@@ -2097,3 +2097,54 @@ web mvc json all
 // Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log opened at 2013-04-25 14:17:14
 // Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log closed at 2013-04-25 14:30:01
 // Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log opened at 2013-04-25 14:38:24
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log closed at 2013-05-07 16:05:19
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log opened at 2013-05-08 21:23:33
+osgi obr url add --url http://spring-roo-repository.springsource.org/repository.xml
+osgi obr start --bundleSymbolicName org.springframework.roo.wrapping.protobuf-java-lite
+osgi obr url remove --url http://spring-roo-repository.springsource.org/repository.xml
+osgi obr url add --url http://spring-roo-repository.springsource.org/repository.xml
+osgi obr start --bundleSymbolicName org.springframework.roo.addon.cloud.foundry
+osgi obr url remove --url http://spring-roo-repository.springsource.org/repository.xml
+osgi obr url add --url http://spring-roo-repository.springsource.org/repository.xml
+osgi obr start --bundleSymbolicName org.springframework.roo.wrapping.postgresql-jdbc4
+osgi obr url remove --url http://spring-roo-repository.springsource.org/repository.xml
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log closed at 2013-05-13 14:02:22
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log opened at 2013-05-13 14:09:48
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log closed at 2013-05-13 14:51:11
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log opened at 2013-05-13 14:53:50
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log closed at 2013-05-14 00:53:25
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log opened at 2013-05-14 15:35:15
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log closed at 2013-05-14 16:08:06
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log opened at 2013-05-14 16:14:29
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log closed at 2013-05-14 16:48:55
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log opened at 2013-05-14 16:53:50
+web mvc all --package ~.web
+json all
+web mvc json all
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log closed at 2013-05-15 00:10:56
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log opened at 2013-05-15 00:13:21
+web mvc all --package ~.web
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log closed at 2013-05-15 00:21:28
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log opened at 2013-05-15 00:22:23
+web mvc all --package ~.web
+web mvc all --package ~.web
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log closed at 2013-05-15 00:50:11
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log opened at 2013-05-15 00:50:17
+web mvc all --package ~.web
+json all
+web mvc json all
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log closed at 2013-05-15 01:10:39
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log opened at 2013-05-15 01:11:50
+json all
+web mvc json all
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log closed at 2013-05-15 01:28:10
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log opened at 2013-05-15 01:28:16
+hint
+web mvc json all
+hint
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log closed at 2013-05-15 01:52:41
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log opened at 2013-05-15 01:56:24
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log closed at 2013-05-15 02:03:50
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log opened at 2013-05-15 02:09:10
+hint
+// Spring Roo 1.2.3.RELEASE [rev 7fd62b6] log closed at 2013-05-15 02:20:18

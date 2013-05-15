@@ -21,7 +21,7 @@
             "codeClass": null,
             "userConfig": {
                 "designer|userClassName": "MyRestProxy",
-                "url": "../../userses",
+                "url": "../userses",
                 "format": null
             },
             "designerId": "34aacbb5-167d-4979-8962-bb9d85713ff2",

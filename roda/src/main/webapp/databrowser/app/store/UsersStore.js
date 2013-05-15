@@ -24,7 +24,7 @@ Ext.define('databrowser.store.UsersStore', {
             storeId: 'UsersStore',
             proxy: {
                 type: 'rest',
-                url: '../../userses',
+                url: '../userses',
                 reader: {
                     type: 'json'
                 }

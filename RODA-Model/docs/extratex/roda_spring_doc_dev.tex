@@ -3,10 +3,13 @@ La specificarea in instructiunile de mai jos a sistemului de operare:
 \item [MacOSX =] OS X version 10.8.3, 64 bit
 \item [Ubuntu =] Ubuntu 12.04LTS, kernel 3.2.0-39-generic-pae, 32bit
 \item [OpenSUSE = ] OpenSUSE 12.2
-\item [Postgresql =] Postgresql 9.2
+\item [Postgresql =] Postgresql 9.2.2
 \item [DbWrench =] DbWrench 2.3.2
 \item [STS =] Spring Tool Suite 3.2.0.RELEASE - based on Eclipse Juno 3.8.2
 \item [Maven =] Maven 3
+\item [Jenkins =] Jenkins 1.514
+\item [Solr =] Solr 4.2.1
+\item [Sencha Architect =] Sencha Architect 2.2.2
 \end{description}
 
 \section{Instalare si configurare - servicii si software aditional}
@@ -36,13 +39,13 @@ sudo zypper in openjdk-7-jdk perl pgadmin3 htmldoc graphviz ruby ruby-devel
 rubygems postgresql
 
 sudo gem install vmc
-\end{lstlisting}]
+\end{lstlisting}
 
 \item[MacOSX:]
-Se instaleaza si ruleaza Postgres.app (descarcat de la http://postgresapp.com ).
+Se instaleaza si ruleaza Postgres.app (descarcat de la \url{http://postgresapp.com} ).
 Se bifeaza in meniu optiunea 'Automatically Start at Login'.
 
-Se instaleaza MacPorts si toate dependentele necesare (instructiuni la:
+Se instaleaza MacPorts si toate dependentele necesare (instructiuni complete la:
 \url{http://www.macports.org/install.php} ).
 
 Se ruleaza urmatoarele comenzi, din shell:
@@ -62,7 +65,15 @@ de acces ale clientilor la server, de ex. pentru a permite accesul prin
 internet, nu doar de la statia locala / reteaua locala.
 % TODO mai precis ???
 
-\paragraph{LaTeX (necesar pentru documentatie)}
+\paragraph{LaTeX}
+O distributie LaTeX este necesara pentru generarea documentatiei:
+\begin{description}
+\item[Ubuntu:] 
+\begin{lstlisting}[breaklines=true]
+	sudo apt-get install texlive
+\end{lstlisting}
+\item[MacOSX:] MacTeX, instalata de la \url{http://tug.org/mactex/} 
+\end{description}
 
 \paragraph{JVM}
 \label{java_version}
@@ -85,7 +96,7 @@ in fisier se scrie:
 \paragraph{rJAva}
 Se instaleaza rJava in R, cu urmatoarele comenzi in shell si apoi in shell-ul R
 (se alege in timpul instalarii site-mirror-ul folosit, dintr-o fereastra;
-se iese la final din Shell-ul R cu Ctrl+D):
+se iese la final din shell-ul R cu Ctrl+D):
 \begin{lstlisting}
 	sudo R CMD javareconf
 	R
@@ -105,7 +116,7 @@ facand click direct pe link-ul \emph{'Just take me to the download page'}.
 
 Alegeti pentru descarcarea versiunea STS bazata pe Eclipse 3.8.2, extensia
 fisierului de salvat fiind '.sh', iar arhitectura cea stabilita de versiunea
-JVM (32 sau 64 bit, vezi \href{java_version}); pe website, sectiunea respectiva
+JVM (32 sau 64 bit, vezi \ref{java_version}); pe website, sectiunea respectiva
 este cea intitulata:
 \begin{verbatim}
 Milestone Version - Spring Tool Suite 3.2.0.RELEASE - 
@@ -266,7 +277,7 @@ se dau comenzile:
 
 \subsection{Fisierele de configurare ale proiectului}
 Toate detaliile necesare se regasesc in sectiunea
-corespunzatoare: \href{fisiere_configurare}.
+corespunzatoare: \ref{fisiere_configurare}.
 
 Configurarile \emph{default} din aceste fisiere nu trebuie neaparat
 schimbate, daca se urmeaza intocmai acest ghid de instalare/configurare.
@@ -347,10 +358,61 @@ Proiectul este disponibil online permanent la adresa:
 \section{Instalarea si configurarea Jenkins}
 
 Lista plugin-urilor Jenkins ce trebuie instalate:
+\begin{itemize}
+\item 
+Ant Plugin
+\item
+conditional-buildstep
+\item
+Credentials Plugin
+\item
+External Monitor Job Type Plugin
+\item
+Flexible Publish Plugin
+\item
+GitHub API Plugin
+\item
+GitHub plugin
+\item
+Javadoc Plugin
+\item
+Jenkins CVS Plug-in
+\item
+Jenkins Email Extension Plugin
+\item
+Jenkins GIT client plugin
+\item
+Jenkins GIT plugin
+\item
+Jenkins Mailer Plugin
+\item
+Jenkins SSH Slaves plugin
+\item
+Jenkins Subversion Plug-in
+\item
+Jenkins Translation Assistance plugin
+\item
+Jenkins VirtualBox Plugin
+\item
+Jenkins Workspace Cleanup Plugin
+\item
+LDAP Plugin
+\item
+Maven 2 Project Plugin
+\item
+pam-auth
+\item
+Run Condition Plugin
+\item
+SSH Credentials Plugin
+\item
+Token Macro Plugin
+\end{itemize}
+
 % TODO ???
 
 \section{Instalarea si configurarea Solr}
 
-Se instaleaza Solr 4.2 in '/opt', se foloseste schema din subfolder-ul
-'examples'. Se porneste ca un server standalone, folosind Jetty.
+Se instaleaza Solr in '/opt', se foloseste schema din subfolder-ul
+'examples'. Se porneste ca un server standalone, folosind Jetty, pe portul 8983.
 % TODO ???

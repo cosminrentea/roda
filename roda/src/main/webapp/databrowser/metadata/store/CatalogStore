@@ -1,0 +1,45 @@
+{
+    "type": "jsonstore",
+    "reference": {
+        "name": "items",
+        "type": "array"
+    },
+    "codeClass": null,
+    "userConfig": {
+        "autoLoad": true,
+        "model": "CatalogsModel",
+        "storeId": "CatalogStore",
+        "designer|userClassName": "CatalogStore"
+    },
+    "designerId": "6a53e171-71fc-481c-ac3f-b33e9b9e996c",
+    "cn": [
+        {
+            "type": "Ext.data.proxy.Ajax",
+            "reference": {
+                "name": "proxy",
+                "type": "object"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "designer|userClassName": "MyAjaxProxy",
+                "url": "data/catalogs.json"
+            },
+            "designerId": "588b3d20-fdae-4cf7-be3d-a999e2eff237",
+            "cn": [
+                {
+                    "type": "Ext.data.reader.Json",
+                    "reference": {
+                        "name": "reader",
+                        "type": "object"
+                    },
+                    "codeClass": null,
+                    "userConfig": {
+                        "root": "data",
+                        "designer|userClassName": "MyJsonReader"
+                    },
+                    "designerId": "ca368706-99d0-4d83-97fc-1e9bd0d4bc58"
+                }
+            ]
+        }
+    ]
+}

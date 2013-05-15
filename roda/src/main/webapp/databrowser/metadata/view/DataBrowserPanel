@@ -1,0 +1,510 @@
+{
+    "type": "Ext.panel.Panel",
+    "reference": {
+        "name": "items",
+        "type": "array"
+    },
+    "codeClass": null,
+    "userConfig": {
+        "container|align": "stretch",
+        "frame": true,
+        "height": 473,
+        "width": 668,
+        "designer|userClassName": "DataBrowserPanel",
+        "designer|initialView": true,
+        "layout": "hbox",
+        "title": "RODA - Data Browser"
+    },
+    "designerId": "2eb1d7a7-f76a-4655-8f2f-cb1097375b93",
+    "cn": [
+        {
+            "type": "Ext.tab.Panel",
+            "reference": {
+                "name": "dockedItems",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "dock": "left",
+                "height": null,
+                "id": "NavigatorTabPanel",
+                "width": 226,
+                "designer|userClassName": "MyTabPanel",
+                "designer|displayName": null,
+                "animCollapse": false,
+                "collapseDirection": "left",
+                "collapsible": true,
+                "activeTab": 0
+            },
+            "designerId": "91e9e694-dba2-4820-9db1-ca2d04a5f4c8",
+            "cn": [
+                {
+                    "type": "Ext.panel.Panel",
+                    "reference": {
+                        "name": "items",
+                        "type": "array"
+                    },
+                    "codeClass": null,
+                    "userConfig": {
+                        "id": "CatalogsPanel",
+                        "designer|userClassName": "MyPanel1",
+                        "designer|displayName": null,
+                        "autoScroll": true,
+                        "title": "Cataloage"
+                    },
+                    "designerId": "ac76b5ea-b3fc-480b-b49f-51a39aff02c8",
+                    "cn": [
+                        {
+                            "type": "Ext.tab.Tab",
+                            "reference": {
+                                "name": "tabConfig",
+                                "type": "object"
+                            },
+                            "codeClass": null,
+                            "userConfig": {
+                                "id": "CatalogsTabConfig",
+                                "designer|userClassName": "TabConfig",
+                                "designer|displayName": null
+                            },
+                            "designerId": "4736580d-eb07-4573-a15c-25c42252f637"
+                        },
+                        {
+                            "type": "Ext.tree.Panel",
+                            "reference": {
+                                "name": "items",
+                                "type": "array"
+                            },
+                            "codeClass": null,
+                            "userConfig": {
+                                "height": 389,
+                                "id": "CatalogsTreePanel",
+                                "designer|userClassName": "MyTreePanel",
+                                "designer|displayName": null,
+                                "title": null,
+                                "store": "CatalogTreeStore",
+                                "displayField": "name",
+                                "root": null
+                            },
+                            "designerId": "cc2581de-fc4c-4340-8527-b94ce5859426",
+                            "cn": [
+                                {
+                                    "type": "Ext.tree.View",
+                                    "reference": {
+                                        "name": "viewConfig",
+                                        "type": "object"
+                                    },
+                                    "codeClass": null,
+                                    "userConfig": {
+                                        "id": "CatalogsTreeView",
+                                        "designer|userClassName": "MyTreeView",
+                                        "autoScroll": true,
+                                        "emptyText": null,
+                                        "rootVisible": false
+                                    },
+                                    "designerId": "e5e83b77-9370-4c95-bf2a-711d7ff02aad"
+                                },
+                                {
+                                    "type": "basiceventbinding",
+                                    "reference": {
+                                        "name": "listeners",
+                                        "type": "array"
+                                    },
+                                    "codeClass": null,
+                                    "userConfig": {
+                                        "designer|userClassName": "onTreepanelItemClick",
+                                        "fn": "onTreepanelItemClick",
+                                        "implHandler": [
+                                            "//if (record.get('leaf') === true) \r",
+                                            "//{\r",
+                                            "//var mainPanel = dataview.up('#DataBrowserPanel');\r",
+                                            "//var gridPanel = mainPanel.down('#MyGridPanel');\r",
+                                            "var gridPanel = Ext.getCmp('#MyGridPanel');\r",
+                                            "\r",
+                                            "var studyYear = record.get('an');\r",
+                                            "var studyTitle = record.get('name');\r",
+                                            "var studyData = [{an: studyYear, name: studyTitle}];\t\r",
+                                            "\r",
+                                            "var store = gridPanel.getStore();\r",
+                                            "\r",
+                                            "store.add(new store.recordType({\r",
+                                            "    an: studyYear,\r",
+                                            "    name: studyTitle\r",
+                                            "}));\r",
+                                            "store.commitChanges();\r",
+                                            "\r",
+                                            "gridPanel.refresh();\r",
+                                            "\r",
+                                            "//var studyData = [studyYear, studyTitle];\r",
+                                            "/*var store = Ext.create('Ext.data.Store', {\r",
+                                            "autoLoad: true,\r",
+                                            "model: Ext.ModelManager.getModel('Studies'),\r",
+                                            "data: studyData,\r",
+                                            "proxy: {\r",
+                                            "type:'Memory',\r",
+                                            "reader: {\r",
+                                            "type: 'json',\r",
+                                            "root: 'records'}\r",
+                                            "}\r",
+                                            "});\r",
+                                            "\r",
+                                            "gridPanel.store = store;*/\r",
+                                            "\r",
+                                            "\r",
+                                            "\r",
+                                            "//gridPanel.store.loadRecords(studyData);\r",
+                                            "// gridPanel.store.commitChanges();\r",
+                                            "\r",
+                                            "// gridPanel.getView().refresh();\r",
+                                            "//}\r",
+                                            ""
+                                        ],
+                                        "name": "itemclick",
+                                        "scope": "me"
+                                    },
+                                    "designerId": "6a612996-392f-48fc-b1e6-4f09da323730"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "Ext.panel.Panel",
+                    "reference": {
+                        "name": "items",
+                        "type": "array"
+                    },
+                    "codeClass": null,
+                    "userConfig": {
+                        "id": "YearsPanel",
+                        "designer|userClassName": "MyPanel2",
+                        "designer|displayName": null,
+                        "autoScroll": true,
+                        "title": "Ani"
+                    },
+                    "designerId": "c8f7d126-cb1d-4803-84d3-55848f07ded9",
+                    "cn": [
+                        {
+                            "type": "Ext.tab.Tab",
+                            "reference": {
+                                "name": "tabConfig",
+                                "type": "object"
+                            },
+                            "codeClass": null,
+                            "userConfig": {
+                                "id": "YearsTabConfig",
+                                "designer|userClassName": "TabConfig1",
+                                "designer|displayName": null
+                            },
+                            "designerId": "1477b7b5-bb76-4acd-9397-066c95591d91"
+                        }
+                    ]
+                },
+                {
+                    "type": "Ext.panel.Panel",
+                    "reference": {
+                        "name": "items",
+                        "type": "array"
+                    },
+                    "codeClass": null,
+                    "userConfig": {
+                        "id": "UsersPanel",
+                        "width": 226,
+                        "designer|userClassName": "MyPanel2",
+                        "designer|displayName": null,
+                        "autoScroll": true,
+                        "title": "Utilizatori"
+                    },
+                    "designerId": "20421e22-8cd6-4da1-9da1-52148711bd81",
+                    "cn": [
+                        {
+                            "type": "Ext.tab.Tab",
+                            "reference": {
+                                "name": "tabConfig",
+                                "type": "object"
+                            },
+                            "codeClass": null,
+                            "userConfig": {
+                                "id": "UsersTabConfig",
+                                "designer|userClassName": "TabConfig1",
+                                "designer|displayName": null
+                            },
+                            "designerId": "e2631c8d-e4e3-481b-9762-bcbfd9afc08b"
+                        },
+                        {
+                            "type": "Ext.grid.Panel",
+                            "reference": {
+                                "name": "items",
+                                "type": "array"
+                            },
+                            "codeClass": null,
+                            "userConfig": {
+                                "id": "UsersGridPanel",
+                                "designer|userClassName": "MyGridPanel1",
+                                "title": "My Grid Panel",
+                                "store": "UsersStore"
+                            },
+                            "designerId": "8f545f6e-cef1-48c2-9a13-55ab26202117",
+                            "cn": [
+                                {
+                                    "type": "Ext.grid.column.Column",
+                                    "reference": {
+                                        "name": "columns",
+                                        "type": "array"
+                                    },
+                                    "codeClass": null,
+                                    "userConfig": {
+                                        "designer|userClassName": "MyColumn1",
+                                        "dataIndex": "username",
+                                        "hideable": false,
+                                        "text": "User"
+                                    },
+                                    "designerId": "dc59decf-5253-4c8e-b40e-4506e8e519ba"
+                                },
+                                {
+                                    "type": "Ext.grid.column.Column",
+                                    "reference": {
+                                        "name": "columns",
+                                        "type": "array"
+                                    },
+                                    "codeClass": null,
+                                    "userConfig": {
+                                        "designer|userClassName": "MyColumn2",
+                                        "dataIndex": "password",
+                                        "hideable": false,
+                                        "text": "Password"
+                                    },
+                                    "designerId": "36b8fbfa-6095-4462-984f-074071e28be8"
+                                },
+                                {
+                                    "type": "Ext.grid.View",
+                                    "reference": {
+                                        "name": "viewConfig",
+                                        "type": "object"
+                                    },
+                                    "codeClass": null,
+                                    "userConfig": {
+                                        "id": "UsersGridView",
+                                        "designer|userClassName": "MyGridView1"
+                                    },
+                                    "designerId": "7813eb25-5fec-475a-8901-98909332f29a"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "Ext.panel.Panel",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "layout|flex": 1,
+                "id": "DetailsPanel",
+                "designer|userClassName": "MyPanel3",
+                "designer|displayName": null,
+                "title": null
+            },
+            "designerId": "50c869e3-3db8-4a56-9567-e41206ddfb13",
+            "cn": [
+                {
+                    "type": "Ext.toolbar.Toolbar",
+                    "reference": {
+                        "name": "dockedItems",
+                        "type": "array"
+                    },
+                    "codeClass": null,
+                    "userConfig": {
+                        "dock": "top",
+                        "id": "DataBrowserToolbar",
+                        "designer|userClassName": "MyToolbar",
+                        "designer|displayName": null
+                    },
+                    "designerId": "31fc37bd-e97b-43bb-9ff2-3cc0e481dad9",
+                    "cn": [
+                        {
+                            "type": "Ext.form.field.Text",
+                            "reference": {
+                                "name": "items",
+                                "type": "array"
+                            },
+                            "codeClass": null,
+                            "userConfig": {
+                                "layout|flex": null,
+                                "id": "LocalSearchTextField",
+                                "width": 190,
+                                "designer|userClassName": "MyTextField",
+                                "fieldLabel": null,
+                                "emptyText": "Cautare locala"
+                            },
+                            "designerId": "aaf43f21-2799-4484-8dfd-5653ac9dd531"
+                        },
+                        {
+                            "type": "Ext.button.Button",
+                            "reference": {
+                                "name": "items",
+                                "type": "array"
+                            },
+                            "codeClass": null,
+                            "userConfig": {
+                                "layout|flex": null,
+                                "id": "AdvancedSearchButton",
+                                "width": 156,
+                                "designer|userClassName": "MyButton",
+                                "designer|displayName": null,
+                                "text": "Cautare avansata"
+                            },
+                            "designerId": "14085576-66de-4f47-aae3-5dfe6d695e6b"
+                        },
+                        {
+                            "type": "Ext.toolbar.Separator",
+                            "reference": {
+                                "name": "items",
+                                "type": "array"
+                            },
+                            "codeClass": null,
+                            "userConfig": {
+                                "layout|flex": null,
+                                "id": "DataBrowserToolbarSeparator1",
+                                "designer|userClassName": "MySeparator"
+                            },
+                            "designerId": "c0cb48a5-ebe5-47f3-b6fa-c6bc0ddb099a"
+                        },
+                        {
+                            "type": "Ext.container.ButtonGroup",
+                            "reference": {
+                                "name": "items",
+                                "type": "array"
+                            },
+                            "codeClass": null,
+                            "userConfig": {
+                                "layout|flex": null,
+                                "autoRender": false,
+                                "id": "SMCButtonGroup",
+                                "width": 72,
+                                "designer|userClassName": "MyButtonGroup",
+                                "designer|userAlias": "mybuttongroup",
+                                "header": false,
+                                "title": "Buttons",
+                                "columns": 3
+                            },
+                            "designerId": "c50b5fcd-cea3-4bad-b5d4-28b65aea7c09",
+                            "cn": [
+                                {
+                                    "type": "Ext.button.Button",
+                                    "reference": {
+                                        "name": "items",
+                                        "type": "array"
+                                    },
+                                    "codeClass": null,
+                                    "userConfig": {
+                                        "id": "SButton",
+                                        "designer|userClassName": "MyButton1",
+                                        "text": "S"
+                                    },
+                                    "designerId": "bd59ab62-cca3-46fb-b651-54089adbfa15"
+                                },
+                                {
+                                    "type": "Ext.button.Button",
+                                    "reference": {
+                                        "name": "items",
+                                        "type": "array"
+                                    },
+                                    "codeClass": null,
+                                    "userConfig": {
+                                        "id": "MButton",
+                                        "designer|userClassName": "MyButton2",
+                                        "text": "M"
+                                    },
+                                    "designerId": "66531436-affe-4fd5-a15c-d6a0827ef534"
+                                },
+                                {
+                                    "type": "Ext.button.Button",
+                                    "reference": {
+                                        "name": "items",
+                                        "type": "array"
+                                    },
+                                    "codeClass": null,
+                                    "userConfig": {
+                                        "id": "CButton",
+                                        "designer|userClassName": "MyButton3",
+                                        "text": "C"
+                                    },
+                                    "designerId": "4e34ca55-6e9c-4b55-a599-b0fb3c41b9a7"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "Ext.grid.Panel",
+                    "reference": {
+                        "name": "items",
+                        "type": "array"
+                    },
+                    "codeClass": null,
+                    "userConfig": {
+                        "height": 404,
+                        "id": "DetailsGridPanel",
+                        "itemId": "MyGridPanel",
+                        "width": 432,
+                        "designer|userClassName": "MyGridPanel",
+                        "title": null,
+                        "hideHeaders": true,
+                        "store": null
+                    },
+                    "designerId": "b78f8155-2789-4490-8bbf-0c2650d94d02",
+                    "cn": [
+                        {
+                            "type": "Ext.grid.column.Number",
+                            "reference": {
+                                "name": "columns",
+                                "type": "array"
+                            },
+                            "codeClass": null,
+                            "userConfig": {
+                                "designer|userClassName": "MyNumberColumn",
+                                "dataIndex": "an",
+                                "text": "Number",
+                                "format": "0000"
+                            },
+                            "designerId": "fba7e760-5673-46db-bc2b-9868c1e45683"
+                        },
+                        {
+                            "type": "Ext.grid.column.Column",
+                            "reference": {
+                                "name": "columns",
+                                "type": "array"
+                            },
+                            "codeClass": null,
+                            "userConfig": {
+                                "width": 326,
+                                "designer|userClassName": "MyColumn",
+                                "dataIndex": "name",
+                                "text": "String"
+                            },
+                            "designerId": "3dac1795-c253-47bf-b2f8-ee9910483d98"
+                        },
+                        {
+                            "type": "Ext.grid.View",
+                            "reference": {
+                                "name": "viewConfig",
+                                "type": "object"
+                            },
+                            "codeClass": null,
+                            "userConfig": {
+                                "frame": true,
+                                "id": "DetailsGridView",
+                                "designer|userClassName": "MyGridView"
+                            },
+                            "designerId": "bcdaefd4-9b43-4847-864c-e8f181a53ef1"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

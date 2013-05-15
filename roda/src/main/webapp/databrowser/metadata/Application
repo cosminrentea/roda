@@ -1,0 +1,25 @@
+{
+    "type": "Ext.app.Application",
+    "reference": {
+        "name": "items",
+        "type": "array"
+    },
+    "codeClass": null,
+    "userConfig": {
+        "models": [
+            "CatalogsModel",
+            "StudiesModel"
+        ],
+        "stores": [
+            "CatalogStore",
+            "CatalogTreeStore",
+            "UsersStore"
+        ],
+        "views": [
+            "DataBrowserPanel"
+        ],
+        "autoCreateViewport": true,
+        "name": "databrowser"
+    },
+    "designerId": "application"
+}

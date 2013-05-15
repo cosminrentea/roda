@@ -1,0 +1,38 @@
+{
+	data: [{
+		name: 'RODA',
+		data: [{
+			id: 1,
+			name: 'Catalog1',
+			data: [{
+				name: 'Study11',
+				an: 1999,
+				leaf: true
+				},{
+				name: 'Study12', 
+				an: 2000,
+				leaf: true
+				}]
+		},{
+			id: 2,
+			name: 'Catalog2',
+			data: [{
+				id: 3,
+				name: 'Catalog3',
+				data: [{
+					name: 'Study31', 
+					an: 2002,
+					leaf: true
+					}]
+				},{
+				name: 'Study21',
+				an: 2012,				
+				leaf: true
+				},{
+				name: 'Study22',
+				an: 2007,
+				leaf: true
+				}]
+		}]
+	}]
+}

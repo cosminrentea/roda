@@ -1,0 +1,95 @@
+{
+    "name": "databrowser",
+    "settings": {
+        "spacesToIndent": 4,
+        "lineEnding": "CRLF",
+        "genTimestamps": false,
+        "cacheBust": false,
+        "urlPrefix": "http://localhost:8080/roda/databrowser",
+        "exportPath": "",
+        "buildShouldOverwriteIndex": true
+    },
+    "xdsVersion": "2.2.1",
+    "xdsBuild": 951,
+    "schemaVersion": 1,
+    "upgradeVersion": 210000000500,
+    "framework": "ext42",
+    "topInstanceFileMap": {
+        "cdd283e3-4192-4b83-928d-27fc6114ed53": {
+            "paths": [
+                "metadata/resource/Library"
+            ],
+            "className": "Library"
+        },
+        "6a53e171-71fc-481c-ac3f-b33e9b9e996c": {
+            "paths": [
+                "metadata/store/CatalogStore",
+                "app/store/override/CatalogStore.js",
+                "app/store/CatalogStore.js"
+            ],
+            "className": "CatalogStore"
+        },
+        "9b5fa0d4-8b38-470a-ab0e-3ab2987af3ee": {
+            "paths": [
+                "metadata/model/CatalogsModel",
+                "app/model/override/CatalogsModel.js",
+                "app/model/CatalogsModel.js"
+            ],
+            "className": "CatalogsModel"
+        },
+        "0a591825-1e42-45f7-a5b3-4ae11e03608b": {
+            "paths": [
+                "metadata/store/CatalogTreeStore",
+                "app/store/override/CatalogTreeStore.js",
+                "app/store/CatalogTreeStore.js"
+            ],
+            "className": "CatalogTreeStore"
+        },
+        "240716ff-02cb-46fd-8d5f-32c20cc9cea8": {
+            "paths": [
+                "metadata/model/StudiesModel",
+                "app/model/override/StudiesModel.js",
+                "app/model/StudiesModel.js"
+            ],
+            "className": "StudiesModel"
+        },
+        "9378a02d-5862-4455-a05e-06380ef3539c": {
+            "paths": [
+                "metadata/store/UsersStore",
+                "app/store/override/UsersStore.js",
+                "app/store/UsersStore.js"
+            ],
+            "className": "UsersStore"
+        },
+        "2eb1d7a7-f76a-4655-8f2f-cb1097375b93": {
+            "paths": [
+                "metadata/view/DataBrowserPanel",
+                "app/view/override/DataBrowserPanel.js",
+                "app/view/DataBrowserPanel.js",
+                "app/view/Viewport.js"
+            ],
+            "className": "DataBrowserPanel"
+        }
+    },
+    "viewOrderMap": {
+        "view": [
+            "2eb1d7a7-f76a-4655-8f2f-cb1097375b93"
+        ],
+        "store": [
+            "6a53e171-71fc-481c-ac3f-b33e9b9e996c",
+            "0a591825-1e42-45f7-a5b3-4ae11e03608b",
+            "9378a02d-5862-4455-a05e-06380ef3539c"
+        ],
+        "controller": [],
+        "model": [
+            "9b5fa0d4-8b38-470a-ab0e-3ab2987af3ee",
+            "240716ff-02cb-46fd-8d5f-32c20cc9cea8"
+        ],
+        "resource": [
+            "cdd283e3-4192-4b83-928d-27fc6114ed53"
+        ],
+        "app": [
+            "application"
+        ]
+    }
+}

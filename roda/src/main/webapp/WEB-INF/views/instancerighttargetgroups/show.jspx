@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:show id="ps_ro_roda_domain_InstanceRightTargetGroup" object="${instancerighttargetgroup}" path="/instancerighttargetgroups" z="kcGVvmWmD3Q/r0eRClXRGKXXP2U=">
+        <field:display field="instanceId" id="s_ro_roda_domain_InstanceRightTargetGroup_instanceId" object="${instancerighttargetgroup}" z="jZ02NndQaBzTphoeXtLcrUwXn4w="/>
+        <field:display field="instanceRightId" id="s_ro_roda_domain_InstanceRightTargetGroup_instanceRightId" object="${instancerighttargetgroup}" z="8TeNXURb+4bdBoabBFtxHGSqlis="/>
+        <field:display field="instanceRightValueId" id="s_ro_roda_domain_InstanceRightTargetGroup_instanceRightValueId" object="${instancerighttargetgroup}" z="oRz2/BQJTvbXisbHBevhvHp2MfQ="/>
+        <field:display field="targetGroupId" id="s_ro_roda_domain_InstanceRightTargetGroup_targetGroupId" object="${instancerighttargetgroup}" z="8ulzaQzuGNGWVZEz4WsrG+DSCqk="/>
+    </page:show>
+</div>

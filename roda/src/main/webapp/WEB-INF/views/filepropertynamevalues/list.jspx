@@ -3,10 +3,6 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <page:list id="pl_ro_roda_domain_FilePropertyNameValue" items="${filepropertynamevalues}" z="eLCDBtDarVHrqmT87gqXQUv7i0U=">
-        <table:table data="${filepropertynamevalues}" id="l_ro_roda_domain_FilePropertyNameValue" path="/filepropertynamevalues" z="ebdQWudxEXnpzBUpbKdh++C3TbE=">
-            <table:column id="c_ro_roda_domain_FilePropertyNameValue_fileId" property="fileId" z="15LfoaoA3uQQceRxwxtJRkcHcE4="/>
-            <table:column id="c_ro_roda_domain_FilePropertyNameValue_propertyNameId" property="propertyNameId" z="oKXDcejoyocFh9iQ7hLoAuvouF8="/>
-            <table:column id="c_ro_roda_domain_FilePropertyNameValue_propertyValueId" property="propertyValueId" z="j1hYrtlq3iOUfkkRJEAYgI+MC18="/>
-        </table:table>
+        <table:table data="${filepropertynamevalues}" id="l_ro_roda_domain_FilePropertyNameValue" path="/filepropertynamevalues" z="ebdQWudxEXnpzBUpbKdh++C3TbE="/>
     </page:list>
 </div>

@@ -17,7 +17,7 @@ import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.domain.CollectionModelType;
 import ro.roda.service.CollectionModelTypeService;
-import ro.roda.service.InstanceService;
+import ro.roda.service.StudyService;
 import ro.roda.web.CollectionModelTypeController;
 
 privileged aspect CollectionModelTypeController_Roo_Controller {
@@ -26,7 +26,7 @@ privileged aspect CollectionModelTypeController_Roo_Controller {
     CollectionModelTypeService CollectionModelTypeController.collectionModelTypeService;
     
     @Autowired
-    InstanceService CollectionModelTypeController.instanceService;
+    StudyService CollectionModelTypeController.studyService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String CollectionModelTypeController.create(@Valid CollectionModelType collectionModelType, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -95,7 +95,7 @@ privileged aspect CollectionModelTypeController_Roo_Controller {
     
     void CollectionModelTypeController.populateEditForm(Model uiModel, CollectionModelType collectionModelType) {
         uiModel.addAttribute("collectionModelType", collectionModelType);
-        uiModel.addAttribute("instances", instanceService.findAllInstances());
+        uiModel.addAttribute("studys", studyService.findAllStudys());
     }
     
     String CollectionModelTypeController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

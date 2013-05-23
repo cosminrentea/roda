@@ -3,7 +3,6 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <form:update id="fu_ro_roda_domain_Org" modelAttribute="org" path="/orgs" versionField="none" z="rn7Y0yRi5MVCG2AUzQsg8I3rN/Q=">
-        <field:select field="source" id="c_ro_roda_domain_Org_source" itemValue="orgId" items="${sources}" path="/sources" z="It2hfQJBYHFdDux//j2ZHH29xYc="/>
         <field:simple field="instanceOrgs" id="c_ro_roda_domain_Org_instanceOrgs" messageCode="entity_reference_not_managed" messageCodeAttribute="Instance Org" z="9Z4vzgwZ0TK+ZQFaVDELJfw70YI="/>
         <field:simple field="orgAddresses" id="c_ro_roda_domain_Org_orgAddresses" messageCode="entity_reference_not_managed" messageCodeAttribute="Org Address" z="XsrHBfNZNA97DrI4W1Fz6RAtHF0="/>
         <field:simple field="orgEmails" id="c_ro_roda_domain_Org_orgEmails" messageCode="entity_reference_not_managed" messageCodeAttribute="Org Email" z="3c5yoS9C7KhAuFBEtx14Sn8s8O4="/>
@@ -12,10 +11,10 @@
         <field:simple field="orgRelationss" id="c_ro_roda_domain_Org_orgRelationss" messageCode="entity_reference_not_managed" messageCodeAttribute="Org Relations" z="Q67FJhmlNB2Ic4+25w6oSFVlRVs="/>
         <field:simple field="orgRelationss1" id="c_ro_roda_domain_Org_orgRelationss1" messageCode="entity_reference_not_managed" messageCodeAttribute="Org Relations" z="UnzrOWEDl6K2OIsMP6WpoKBYkQ8="/>
         <field:simple field="personOrgs" id="c_ro_roda_domain_Org_personOrgs" messageCode="entity_reference_not_managed" messageCodeAttribute="Person Org" z="XAx9ZhI1MEPAsrEOYs/yXEX84As="/>
-        <field:simple field="studyOrgs" id="c_ro_roda_domain_Org_studyOrgs" messageCode="entity_reference_not_managed" messageCodeAttribute="Study Org" z="Zug81uQAqMj7Gz2eXMudDWznba8="/>
         <field:select field="orgPrefixId" id="c_ro_roda_domain_Org_orgPrefixId" itemValue="id" items="${orgprefixes}" path="/orgprefixes" z="bS5bCquSIvkPDOxF3f8cjFp4aL8="/>
         <field:select field="orgSufixId" id="c_ro_roda_domain_Org_orgSufixId" itemValue="id" items="${orgsufixes}" path="/orgsufixes" z="qUBXQnlIqr9RRTrVgvdukD3HF9c="/>
-        <field:input field="name" id="c_ro_roda_domain_Org_name" required="true" z="1gSbbpvZ3eK7i7Bnphq/17pL0JA="/>
-        <field:input field="fullname" id="c_ro_roda_domain_Org_fullname" required="true" z="VtGMuNqCKBCb59gM3W3HQ4Op1Yg="/>
+        <field:input field="shortName" id="c_ro_roda_domain_Org_shortName" required="true" z="JttCSu95hUAJevc3Jw0twGe+Ejk="/>
+        <field:input field="fullName" id="c_ro_roda_domain_Org_fullName" required="true" z="sHf766h73UEb/N831/SjViPmnKU="/>
+        <field:simple field="studyOrgs" id="c_ro_roda_domain_Org_studyOrgs" messageCode="entity_reference_not_managed" messageCodeAttribute="Study Org" z="Zug81uQAqMj7Gz2eXMudDWznba8="/>
     </form:update>
 </div>

@@ -473,5 +473,41 @@
         <menu:category id="c_seleniumtests" z="PPLMd2yNB6/LSbjIWogAacRPU+Q=">
             <menu:item id="si_seleniumtests_test" messageCode="selenium_menu_test_suite" url="/resources/selenium/test-suite.xhtml" z="wwunW/IPDcunN97u41MvMJZQ2to="/>
         </menu:category>
+        <menu:category id="c_datasourcetype" z="PEl22OvUuO/1hQjB1vHePm9AFH8=">
+            <menu:item id="i_datasourcetype_new" messageCode="global_menu_new" url="/datasourcetypes?form" z="ccKt44E2pb+HhSmCDesNUulhH+Q="/>
+            <menu:item id="i_datasourcetype_list" messageCode="global_menu_list" url="/datasourcetypes?page=1&amp;size=${empty param.size ? 10 : param.size}" z="PWJ2Xio8rBlOeSBk9BWMeB4ZQ6w="/>
+        </menu:category>
+        <menu:category id="c_seriesdescr" z="oBw6t9Ydf4JmRApnLsdc3jElmlU=">
+            <menu:item id="i_seriesdescr_new" messageCode="global_menu_new" url="/seriesdescrs?form" z="Wsw0M1PAoJ7Ni9XyIld5ST2F6qk="/>
+            <menu:item id="i_seriesdescr_list" messageCode="global_menu_list" url="/seriesdescrs?page=1&amp;size=${empty param.size ? 10 : param.size}" z="Xpj9uC8eK2XkMQa9FQm0R+MLg50="/>
+        </menu:category>
+        <menu:category id="c_instancerighttargetgroup" z="H/PtRRjx+cbSBSjxO/6nr0RV3po=">
+            <menu:item id="i_instancerighttargetgroup_new" messageCode="global_menu_new" url="/instancerighttargetgroups?form" z="b2fFWpqeEjdIJ1dQGF64hb17Q9E="/>
+            <menu:item id="i_instancerighttargetgroup_list" messageCode="global_menu_list" url="/instancerighttargetgroups?page=1&amp;size=${empty param.size ? 10 : param.size}" z="zinRtoKLKgmT1P/xoR0ARdNnTuw="/>
+        </menu:category>
+        <menu:category id="c_series" z="MFpsgddpe3ynv4Hd3cr67odLCBk=">
+            <menu:item id="i_series_new" messageCode="global_menu_new" url="/series?form" z="gJzSwnAjAalh8EwsH9az7mZdyo0="/>
+            <menu:item id="i_series_list" messageCode="global_menu_list" url="/series?page=1&amp;size=${empty param.size ? 10 : param.size}" z="CpgmdDqDzV4fudpPzlt+Rq/Wh7Y="/>
+        </menu:category>
+        <menu:category id="c_targetgroup" z="YEGFrCEj54/DaVRjIk5cVxjbCwk=">
+            <menu:item id="i_targetgroup_new" messageCode="global_menu_new" url="/targetgroups?form" z="wOjRfW69BrtgQkmyB1spaqN1k4Y="/>
+            <menu:item id="i_targetgroup_list" messageCode="global_menu_list" url="/targetgroups?page=1&amp;size=${empty param.size ? 10 : param.size}" z="zFNRfo4OQpVYi+4Y+xACA3xjMhI="/>
+        </menu:category>
+        <menu:category id="c_instancevariable" z="AoMpZKozkTdHScnSi0qU2iqsuC0=">
+            <menu:item id="i_instancevariable_new" messageCode="global_menu_new" url="/instancevariables?form" z="WSREZLMKCGrtz7gEsqf98+4l67k="/>
+            <menu:item id="i_instancevariable_list" messageCode="global_menu_list" url="/instancevariables?page=1&amp;size=${empty param.size ? 10 : param.size}" z="tarTGlI7n2/T4CppmpPEQ4DhZho="/>
+        </menu:category>
+        <menu:category id="c_instancerightvalue" z="Ap1twZdKQBbXXLhuhwS/TlTY/Bs=">
+            <menu:item id="i_instancerightvalue_new" messageCode="global_menu_new" url="/instancerightvalues?form" z="hAm/vf0HrCbEWUT1pPcSWupsgXA="/>
+            <menu:item id="i_instancerightvalue_list" messageCode="global_menu_list" url="/instancerightvalues?page=1&amp;size=${empty param.size ? 10 : param.size}" z="ZAtPl3aDrkLPMCJG7ElaOULanBY="/>
+        </menu:category>
+        <menu:category id="c_instanceform" z="eX00jCxtPYOc01A93vf18h9FWcs=">
+            <menu:item id="i_instanceform_new" messageCode="global_menu_new" url="/instanceforms?form" z="1E2GP5xRv7NAfPl9AIl3OV23WYM="/>
+            <menu:item id="i_instanceform_list" messageCode="global_menu_list" url="/instanceforms?page=1&amp;size=${empty param.size ? 10 : param.size}" z="wRgL72G8jz99BS28IVjoO2cjXf8="/>
+        </menu:category>
+        <menu:category id="c_instanceright" z="8BSGZnV+J10ruQ0Wt7EtNPwAfh0=">
+            <menu:item id="i_instanceright_new" messageCode="global_menu_new" url="/instancerights?form" z="VzGVR09M4By48xh1W+JsUdbqOhI="/>
+            <menu:item id="i_instanceright_list" messageCode="global_menu_list" url="/instancerights?page=1&amp;size=${empty param.size ? 10 : param.size}" z="SJ9KYrKOZ1WMKn/2QM+wS/apnhg="/>
+        </menu:category>
     </menu:menu>
 </div>

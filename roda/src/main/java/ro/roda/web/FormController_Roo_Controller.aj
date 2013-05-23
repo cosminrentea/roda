@@ -22,7 +22,7 @@ import ro.roda.service.FormEditedNumberVarService;
 import ro.roda.service.FormEditedTextVarService;
 import ro.roda.service.FormSelectionVarService;
 import ro.roda.service.FormService;
-import ro.roda.service.InstanceService;
+import ro.roda.service.InstanceFormService;
 import ro.roda.service.PersonService;
 import ro.roda.web.FormController;
 
@@ -41,7 +41,7 @@ privileged aspect FormController_Roo_Controller {
     FormSelectionVarService FormController.formSelectionVarService;
     
     @Autowired
-    InstanceService FormController.instanceService;
+    InstanceFormService FormController.instanceFormService;
     
     @Autowired
     PersonService FormController.personService;
@@ -123,7 +123,7 @@ privileged aspect FormController_Roo_Controller {
         uiModel.addAttribute("formeditednumbervars", formEditedNumberVarService.findAllFormEditedNumberVars());
         uiModel.addAttribute("formeditedtextvars", formEditedTextVarService.findAllFormEditedTextVars());
         uiModel.addAttribute("formselectionvars", formSelectionVarService.findAllFormSelectionVars());
-        uiModel.addAttribute("instances", instanceService.findAllInstances());
+        uiModel.addAttribute("instanceforms", instanceFormService.findAllInstanceForms());
         uiModel.addAttribute("people", personService.findAllPeople());
     }
     

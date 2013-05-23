@@ -11,5 +11,6 @@
         <field:input field="description" id="c_ro_roda_domain_Catalog_description" z="yPZvigLtZdWl94RypBehnwZqedo="/>
         <field:select field="parentId" id="c_ro_roda_domain_Catalog_parentId" itemValue="id" items="${catalogs}" path="/catalogs" z="VgmiAl50cCdCFHKylVnKGqq+ck8="/>
         <field:simple field="catalogs" id="c_ro_roda_domain_Catalog_catalogs" messageCode="entity_reference_not_managed" messageCodeAttribute="Catalog" z="ZO3TMKVx2sXrK2gLuwhbS7iOfMw="/>
+        <field:select field="series" id="c_ro_roda_domain_Catalog_series" itemValue="catalogId" items="${serieses}" path="/serieses" z="i54zlOB2GpVuIgXKd+zJM5u4igY="/>
     </form:update>
 </div>

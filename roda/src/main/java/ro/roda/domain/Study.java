@@ -9,10 +9,10 @@ import org.springframework.roo.addon.solr.RooSolrSearchable;
 import org.springframework.roo.addon.tostring.RooToString;
 
 @RooJavaBean
-@RooToString
-@RooJpaActiveRecord(versionField = "", table = "study", schema = "public")
 @RooDbManaged(automaticallyDelete = true)
 @RooSolrSearchable
 @RooJson
+@RooJpaActiveRecord(table = "study", schema = "public")
+@RooToString(excludeFields = { "timeMethType" })
 public class Study {
 }

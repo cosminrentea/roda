@@ -28,9 +28,6 @@ privileged aspect InstanceOrg_Roo_DbManaged {
     @Column(name = "assoc_details", columnDefinition = "text")
     private String InstanceOrg.assocDetails;
     
-    @Column(name = "citation", columnDefinition = "text")
-    private String InstanceOrg.citation;
-    
     public Instance InstanceOrg.getInstanceId() {
         return instanceId;
     }
@@ -61,14 +58,6 @@ privileged aspect InstanceOrg_Roo_DbManaged {
     
     public void InstanceOrg.setAssocDetails(String assocDetails) {
         this.assocDetails = assocDetails;
-    }
-    
-    public String InstanceOrg.getCitation() {
-        return citation;
-    }
-    
-    public void InstanceOrg.setCitation(String citation) {
-        this.citation = citation;
     }
     
 }

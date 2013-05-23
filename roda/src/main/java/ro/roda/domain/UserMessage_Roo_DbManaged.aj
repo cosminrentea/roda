@@ -13,24 +13,16 @@ import ro.roda.domain.Users;
 privileged aspect UserMessage_Roo_DbManaged {
     
     @ManyToOne
-    @JoinColumn(name = "from_user_id", referencedColumnName = "id", nullable = false)
-    private Users UserMessage.fromUserId;
-    
-    @ManyToOne
     @JoinColumn(name = "to_user_id", referencedColumnName = "id", nullable = false)
     private Users UserMessage.toUserId;
+    
+    @ManyToOne
+    @JoinColumn(name = "from_user_id", referencedColumnName = "id", nullable = false)
+    private Users UserMessage.fromUserId;
     
     @Column(name = "message", columnDefinition = "text")
     @NotNull
     private String UserMessage.message;
-    
-    public Users UserMessage.getFromUserId() {
-        return fromUserId;
-    }
-    
-    public void UserMessage.setFromUserId(Users fromUserId) {
-        this.fromUserId = fromUserId;
-    }
     
     public Users UserMessage.getToUserId() {
         return toUserId;
@@ -38,6 +30,14 @@ privileged aspect UserMessage_Roo_DbManaged {
     
     public void UserMessage.setToUserId(Users toUserId) {
         this.toUserId = toUserId;
+    }
+    
+    public Users UserMessage.getFromUserId() {
+        return fromUserId;
+    }
+    
+    public void UserMessage.setFromUserId(Users fromUserId) {
+        this.fromUserId = fromUserId;
     }
     
     public String UserMessage.getMessage() {

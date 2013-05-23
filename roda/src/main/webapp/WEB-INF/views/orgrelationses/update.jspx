@@ -5,6 +5,6 @@
     <form:update id="fu_ro_roda_domain_OrgRelations" modelAttribute="orgRelations" path="/orgrelationses" versionField="none" z="bt+TfTmNHOQNXLBxVFDhU53Butc=">
         <field:datetime dateTimePattern="${orgRelations_datestart_date_format}" field="dateStart" id="c_ro_roda_domain_OrgRelations_dateStart" z="YsQEagPAWQYB7bIWoxeL7tZO9KY="/>
         <field:datetime dateTimePattern="${orgRelations_dateend_date_format}" field="dateEnd" id="c_ro_roda_domain_OrgRelations_dateEnd" z="+PluNX64vfdxKK4pz4jA9P+wtxU="/>
-        <field:input field="details" id="c_ro_roda_domain_OrgRelations_details" required="true" z="60Br/j3Q5czu5dD+3/7hOqLaKqo="/>
+        <field:input field="details" id="c_ro_roda_domain_OrgRelations_details" z="f3zDjNV99InQbOIuYGRTKo7F18o="/>
     </form:update>
 </div>

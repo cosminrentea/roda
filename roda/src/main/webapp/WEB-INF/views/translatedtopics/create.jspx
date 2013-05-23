@@ -5,6 +5,7 @@
     <form:create compositePkField="id" id="fc_ro_roda_domain_TranslatedTopic" modelAttribute="translatedTopic" path="/translatedtopics" render="${empty dependencies}" z="70YPftn596Kf1IKk7qbCDwd4Ggc=">
         <field:input disableFormBinding="true" field="id.langId" id="c_ro_roda_domain_TranslatedTopic_id_langId" required="true" validationMessageCode="field_invalid_integer" z="ubhoKPwPQZI+CJItYRzmLBQLXTQ="/>
         <field:input disableFormBinding="true" field="id.topicId" id="c_ro_roda_domain_TranslatedTopic_id_topicId" required="true" validationMessageCode="field_invalid_integer" z="hCY9pPvrekUgJ6ae0dbC1f2Q4vc="/>
+        <field:input field="translation" id="c_ro_roda_domain_TranslatedTopic_translation" required="true" z="ODPiwcrEd63LRf2nUnwzV32rIr0="/>
     </form:create>
     <form:dependency dependencies="${dependencies}" id="d_ro_roda_domain_TranslatedTopic" render="${not empty dependencies}" z="HTdY2R+KQ2rhubx4WwkcKuIzipc="/>
 </div>

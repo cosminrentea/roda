@@ -8,8 +8,6 @@
             <table:column id="c_ro_roda_domain_Scale_maxValueId" property="maxValueId" z="RLlPBWRaZQMmPqa2fbmZnVo9bFY="/>
             <table:column id="c_ro_roda_domain_Scale_minValueId" property="minValueId" z="TamAWC2mqsH+HvFsyBDpUdLuPLQ="/>
             <table:column id="c_ro_roda_domain_Scale_units" property="units" z="hbckB8MqywyxtKfY+wdnEnCDLG8="/>
-            <table:column id="c_ro_roda_domain_Scale_maxvalueId" property="maxvalueId" z="8qO5mNnPitipAB1Q6MC4fPCT4Fs="/>
-            <table:column id="c_ro_roda_domain_Scale_minvalueId" property="minvalueId" z="Lo2nz4LvbfDyA/W9mWYEtlST0K0="/>
         </table:table>
     </page:list>
 </div>

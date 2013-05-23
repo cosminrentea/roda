@@ -11,7 +11,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import ro.roda.domain.File;
-import ro.roda.domain.FilePropertyNameValue;
 import ro.roda.domain.Instance;
 import ro.roda.domain.SelectionVariableItem;
 import ro.roda.domain.Study;
@@ -26,9 +25,6 @@ privileged aspect File_Roo_DbManaged {
     @ManyToMany
     @JoinTable(name = "study_file", joinColumns = { @JoinColumn(name = "file_id", nullable = false) }, inverseJoinColumns = { @JoinColumn(name = "study_id", nullable = false) })
     private Set<Study> File.studies1;
-    
-    @OneToMany(mappedBy = "fileId")
-    private Set<FilePropertyNameValue> File.filePropertyNameValues;
     
     @OneToMany(mappedBy = "responseCardFileId")
     private Set<SelectionVariableItem> File.selectionVariableItems;
@@ -69,14 +65,6 @@ privileged aspect File_Roo_DbManaged {
     
     public void File.setStudies1(Set<Study> studies1) {
         this.studies1 = studies1;
-    }
-    
-    public Set<FilePropertyNameValue> File.getFilePropertyNameValues() {
-        return filePropertyNameValues;
-    }
-    
-    public void File.setFilePropertyNameValues(Set<FilePropertyNameValue> filePropertyNameValues) {
-        this.filePropertyNameValues = filePropertyNameValues;
     }
     
     public Set<SelectionVariableItem> File.getSelectionVariableItems() {

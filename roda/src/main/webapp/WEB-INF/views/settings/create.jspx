@@ -3,12 +3,11 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <form:create id="fc_ro_roda_domain_Setting" modelAttribute="setting" path="/settings" render="${empty dependencies}" z="1yll3wlNKLRVQgmR9RgcVbZ6J2k=">
-        <field:select field="settingValue" id="c_ro_roda_domain_Setting_settingValue" itemValue="settingId" items="${settingvalues}" path="/settingvalues" z="K0H0wafWljCD5oF2NL/1Quqr9sY="/>
-        <field:select field="settingGroup" id="c_ro_roda_domain_Setting_settingGroup" itemValue="id" items="${settinggroups}" path="/settinggroups" z="9atnKgyDzDdSqx7u1Vt0qhozu7E="/>
         <field:input field="name" id="c_ro_roda_domain_Setting_name" required="true" z="VScmcPDgVkYwMXiUW9s3kQoJDPo="/>
         <field:input field="description" id="c_ro_roda_domain_Setting_description" z="zQmnLWZxBEBd8kajGfbtzLB1sAE="/>
-        <field:input field="predefinedValues" id="c_ro_roda_domain_Setting_predefinedValues" required="true" z="25+arIFSZdIgSofrzBYkULas1iA="/>
-        <field:input field="defaultValue" id="c_ro_roda_domain_Setting_defaultValue" required="true" z="teYoqcRgrBeIf1qZvHuarecdftE="/>
+        <field:input field="defaultValue" id="c_ro_roda_domain_Setting_defaultValue" z="EuFFkTfAsIz8LbLCJRZxlhIb8vM="/>
+        <field:select field="settingGroupId" id="c_ro_roda_domain_Setting_settingGroupId" itemValue="id" items="${settinggroups}" path="/settinggroups" z="hBfaFg4eJSockAMuta9h24yAJNw="/>
+        <field:input field="value" id="c_ro_roda_domain_Setting_value" required="true" z="15jQWfDVNyY+vUSXZRShiIcSGbM="/>
     </form:create>
     <form:dependency dependencies="${dependencies}" id="d_ro_roda_domain_Setting" render="${not empty dependencies}" z="dqHVrVDnYHhqXWe2q281shtRqM4="/>
 </div>

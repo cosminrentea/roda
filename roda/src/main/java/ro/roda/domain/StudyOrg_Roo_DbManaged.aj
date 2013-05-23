@@ -25,9 +25,6 @@ privileged aspect StudyOrg_Roo_DbManaged {
     @JoinColumn(name = "assoctype_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     private StudyOrgAssoc StudyOrg.assoctypeId;
     
-    @Column(name = "citation", columnDefinition = "text")
-    private String StudyOrg.citation;
-    
     @Column(name = "assoc_details", columnDefinition = "text")
     private String StudyOrg.assocDetails;
     
@@ -53,14 +50,6 @@ privileged aspect StudyOrg_Roo_DbManaged {
     
     public void StudyOrg.setAssoctypeId(StudyOrgAssoc assoctypeId) {
         this.assoctypeId = assoctypeId;
-    }
-    
-    public String StudyOrg.getCitation() {
-        return citation;
-    }
-    
-    public void StudyOrg.setCitation(String citation) {
-        this.citation = citation;
     }
     
     public String StudyOrg.getAssocDetails() {

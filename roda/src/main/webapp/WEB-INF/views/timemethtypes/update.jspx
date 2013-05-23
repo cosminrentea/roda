@@ -3,8 +3,8 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <form:update id="fu_ro_roda_domain_TimeMethType" modelAttribute="timeMethType" path="/timemethtypes" versionField="none" z="l6GBaKdAJiXhl7b9KU7tnWLO3nA=">
-        <field:simple field="instances" id="c_ro_roda_domain_TimeMethType_instances" messageCode="entity_reference_not_managed" messageCodeAttribute="Instance" z="ryEL32zAoVzkWn6yVnc5gnpiHxU="/>
         <field:input field="name" id="c_ro_roda_domain_TimeMethType_name" required="true" z="jBMRt4ENw7p7Qp+Jfb5oxfpU18g="/>
         <field:input field="description" id="c_ro_roda_domain_TimeMethType_description" z="cr3XiYt/114XSP6dOY++T++H+t8="/>
+        <field:select field="study" id="c_ro_roda_domain_TimeMethType_study" itemValue="id" items="${studys}" path="/studys" z="PhvlwCO1bw62pW4IAhyNELfMcyI="/>
     </form:update>
 </div>

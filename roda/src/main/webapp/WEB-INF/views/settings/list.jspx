@@ -4,12 +4,11 @@
     <jsp:output omit-xml-declaration="yes"/>
     <page:list id="pl_ro_roda_domain_Setting" items="${settings}" z="aRo6Pyd6IglcuflgegqV6k97arM=">
         <table:table data="${settings}" id="l_ro_roda_domain_Setting" path="/settings" z="Y3fs75xAGpHN52hGl92S3EXAiRA=">
-            <table:column id="c_ro_roda_domain_Setting_settingValue" property="settingValue" z="2fRuhmje58mtJjrFWeAXXO+J56k="/>
-            <table:column id="c_ro_roda_domain_Setting_settingGroup" property="settingGroup" z="rbfiiibnrUzir/UdXdgziT2+ZNY="/>
             <table:column id="c_ro_roda_domain_Setting_name" property="name" z="z3YDkY8ij85U9U04+GvY2StrCPY="/>
             <table:column id="c_ro_roda_domain_Setting_description" property="description" z="75/0cNb+ihzg27/cUB+nrbBxqjM="/>
-            <table:column id="c_ro_roda_domain_Setting_predefinedValues" property="predefinedValues" z="bRKkj+XJ5GWD+LD5/ItbB6lB3M4="/>
             <table:column id="c_ro_roda_domain_Setting_defaultValue" property="defaultValue" z="NH32Ke+KCG0NnfX0JWPws3FSC+s="/>
+            <table:column id="c_ro_roda_domain_Setting_settingGroupId" property="settingGroupId" z="j7xTx32dxphnbbEZlZaEVS5hBJ0="/>
+            <table:column id="c_ro_roda_domain_Setting_value" property="value" z="TCy5IgzaRHiQCzSSSXE7wzU0NqQ="/>
         </table:table>
     </page:list>
 </div>

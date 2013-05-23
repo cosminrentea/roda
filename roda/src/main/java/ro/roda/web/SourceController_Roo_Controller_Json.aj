@@ -17,10 +17,10 @@ import ro.roda.web.SourceController;
 
 privileged aspect SourceController_Roo_Controller_Json {
     
-    @RequestMapping(value = "/{orgId}", headers = "Accept=application/json")
+    @RequestMapping(value = "/{id}", headers = "Accept=application/json")
     @ResponseBody
-    public ResponseEntity<String> SourceController.showJson(@PathVariable("orgId") Integer orgId) {
-        Source source = sourceService.findSource(orgId);
+    public ResponseEntity<String> SourceController.showJson(@PathVariable("id") Integer id) {
+        Source source = sourceService.findSource(id);
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json; charset=utf-8");
         if (source == null) {
@@ -80,9 +80,9 @@ privileged aspect SourceController_Roo_Controller_Json {
         return new ResponseEntity<String>(headers, HttpStatus.OK);
     }
     
-    @RequestMapping(value = "/{orgId}", method = RequestMethod.DELETE, headers = "Accept=application/json")
-    public ResponseEntity<String> SourceController.deleteFromJson(@PathVariable("orgId") Integer orgId) {
-        Source source = sourceService.findSource(orgId);
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, headers = "Accept=application/json")
+    public ResponseEntity<String> SourceController.deleteFromJson(@PathVariable("id") Integer id) {
+        Source source = sourceService.findSource(id);
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json");
         if (source == null) {

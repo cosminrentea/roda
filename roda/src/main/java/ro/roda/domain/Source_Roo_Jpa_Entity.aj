@@ -19,15 +19,15 @@ privileged aspect Source_Roo_Jpa_Entity {
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "org_id", columnDefinition = "int4")
-    private Integer Source.orgId;
+    @Column(name = "id", columnDefinition = "serial")
+    private Integer Source.id;
     
-    public Integer Source.getOrgId() {
-        return this.orgId;
+    public Integer Source.getId() {
+        return this.id;
     }
     
-    public void Source.setOrgId(Integer id) {
-        this.orgId = id;
+    public void Source.setId(Integer id) {
+        this.id = id;
     }
     
 }

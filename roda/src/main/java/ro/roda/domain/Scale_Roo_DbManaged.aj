@@ -19,20 +19,12 @@ privileged aspect Scale_Roo_DbManaged {
     private Item Scale.item;
     
     @ManyToOne
-    @JoinColumn(name = "maxvalue_id", referencedColumnName = "item_id", nullable = false)
-    private Value Scale.maxvalueId;
-    
-    @ManyToOne
-    @JoinColumn(name = "minvalue_id", referencedColumnName = "item_id", nullable = false)
-    private Value Scale.minvalueId;
+    @JoinColumn(name = "max_value_id", referencedColumnName = "item_id", nullable = false)
+    private Value Scale.maxValueId;
     
     @ManyToOne
     @JoinColumn(name = "min_value_id", referencedColumnName = "item_id", nullable = false)
     private Value Scale.minValueId;
-    
-    @ManyToOne
-    @JoinColumn(name = "max_value_id", referencedColumnName = "item_id", nullable = false)
-    private Value Scale.maxValueId;
     
     @Column(name = "units", columnDefinition = "int2")
     @NotNull
@@ -46,20 +38,12 @@ privileged aspect Scale_Roo_DbManaged {
         this.item = item;
     }
     
-    public Value Scale.getMaxvalueId() {
-        return maxvalueId;
+    public Value Scale.getMaxValueId() {
+        return maxValueId;
     }
     
-    public void Scale.setMaxvalueId(Value maxvalueId) {
-        this.maxvalueId = maxvalueId;
-    }
-    
-    public Value Scale.getMinvalueId() {
-        return minvalueId;
-    }
-    
-    public void Scale.setMinvalueId(Value minvalueId) {
-        this.minvalueId = minvalueId;
+    public void Scale.setMaxValueId(Value maxValueId) {
+        this.maxValueId = maxValueId;
     }
     
     public Value Scale.getMinValueId() {
@@ -68,14 +52,6 @@ privileged aspect Scale_Roo_DbManaged {
     
     public void Scale.setMinValueId(Value minValueId) {
         this.minValueId = minValueId;
-    }
-    
-    public Value Scale.getMaxValueId() {
-        return maxValueId;
-    }
-    
-    public void Scale.setMaxValueId(Value maxValueId) {
-        this.maxValueId = maxValueId;
     }
     
     public Short Scale.getUnits() {

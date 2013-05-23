@@ -3,11 +3,10 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <page:show id="ps_ro_roda_domain_Setting" object="${setting}" path="/settings" z="HbVegWoTkVAhA58cHJsY3+xXnBw=">
-        <field:display field="settingValue" id="s_ro_roda_domain_Setting_settingValue" object="${setting}" z="u3WctVWc95Rcy35K5NCDr8yiyVY="/>
-        <field:display field="settingGroup" id="s_ro_roda_domain_Setting_settingGroup" object="${setting}" z="i/jD3M+t12hlrUg0G0dsBUqKmKo="/>
         <field:display field="name" id="s_ro_roda_domain_Setting_name" object="${setting}" z="Hd2XbJxcEDIm/GFRx5lhUPWoIs8="/>
         <field:display field="description" id="s_ro_roda_domain_Setting_description" object="${setting}" z="Inz+UAXfJzKMjNJu2QRqMr1cRrE="/>
-        <field:display field="predefinedValues" id="s_ro_roda_domain_Setting_predefinedValues" object="${setting}" z="cB5BWYeljnZL7tkNdRpSR3y7LRI="/>
         <field:display field="defaultValue" id="s_ro_roda_domain_Setting_defaultValue" object="${setting}" z="+5QiDnTQOxPDREUbUJndV+/KgMA="/>
+        <field:display field="settingGroupId" id="s_ro_roda_domain_Setting_settingGroupId" object="${setting}" z="K4gLAJz2yB/RoPNN5OIgTUcOiIk="/>
+        <field:display field="value" id="s_ro_roda_domain_Setting_value" object="${setting}" z="78lFs8nGyd2zDog5YU0+wS7twWk="/>
     </page:show>
 </div>

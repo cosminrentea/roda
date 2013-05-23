@@ -3,7 +3,6 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <form:update id="fu_ro_roda_domain_News" modelAttribute="news" path="/newspieces" versionField="none" z="q+/VPYubSdEydWONB02sGP3iPiI=">
-        <field:select field="addedBy" id="c_ro_roda_domain_News_addedBy" itemValue="id" items="${userses}" path="/userses" z="YrmYIMvfSNUZseSzOkU0z36acPU="/>
         <field:datetime dateTimePattern="${news_added_date_format}" field="added" id="c_ro_roda_domain_News_added" required="true" z="AAJf1NtU/mPWCZ0eWqi1MQrfMRU="/>
         <field:checkbox field="visible" id="c_ro_roda_domain_News_visible" z="6LOosI7Uh7dMlylysq2Kya3jOOE="/>
         <field:input field="title" id="c_ro_roda_domain_News_title" required="true" z="7iPs3uYemjajHpDRIHQ1x5Laevo="/>

@@ -50,12 +50,20 @@ privileged aspect StudyDescr_Roo_SolrSearch {
             sid.addField("id", "studydescr_" + studyDescr.getId());
             sid.addField("studyDescr.langid_t", studyDescr.getLangId());
             sid.addField("studyDescr.studyid_t", studyDescr.getStudyId());
-            sid.addField("studyDescr.titletypeid_t", studyDescr.getTitleTypeId());
             sid.addField("studyDescr.abstract1_s", studyDescr.getAbstract1());
             sid.addField("studyDescr.grantdetails_s", studyDescr.getGrantDetails());
             sid.addField("studyDescr.title_s", studyDescr.getTitle());
+            sid.addField("studyDescr.notes_s", studyDescr.getNotes());
+            sid.addField("studyDescr.weighting_s", studyDescr.getWeighting());
+            sid.addField("studyDescr.researchinstrument_s", studyDescr.getResearchInstrument());
+            sid.addField("studyDescr.scope_s", studyDescr.getScope());
+            sid.addField("studyDescr.universe_s", studyDescr.getUniverse());
+            sid.addField("studyDescr.subtitle_s", studyDescr.getSubtitle());
+            sid.addField("studyDescr.alternativetitle_s", studyDescr.getAlternativeTitle());
+            sid.addField("studyDescr.timecovered_s", studyDescr.getTimeCovered());
+            sid.addField("studyDescr.geographiccoverage_s", studyDescr.getGeographicCoverage());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("studydescr_solrsummary_t", new StringBuilder().append(studyDescr.getLangId()).append(" ").append(studyDescr.getStudyId()).append(" ").append(studyDescr.getTitleTypeId()).append(" ").append(studyDescr.getAbstract1()).append(" ").append(studyDescr.getGrantDetails()).append(" ").append(studyDescr.getTitle()));
+            sid.addField("studydescr_solrsummary_t", new StringBuilder().append(studyDescr.getLangId()).append(" ").append(studyDescr.getStudyId()).append(" ").append(studyDescr.getAbstract1()).append(" ").append(studyDescr.getGrantDetails()).append(" ").append(studyDescr.getTitle()).append(" ").append(studyDescr.getNotes()).append(" ").append(studyDescr.getWeighting()).append(" ").append(studyDescr.getResearchInstrument()).append(" ").append(studyDescr.getScope()).append(" ").append(studyDescr.getUniverse()).append(" ").append(studyDescr.getSubtitle()).append(" ").append(studyDescr.getAlternativeTitle()).append(" ").append(studyDescr.getTimeCovered()).append(" ").append(studyDescr.getGeographicCoverage()));
             documents.add(sid);
         }
         try {

@@ -3,8 +3,8 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <form:update id="fu_ro_roda_domain_UnitAnalysis" modelAttribute="unitAnalysis" path="/unitanalyses" versionField="none" z="Jjy1/2iWfgRIBnP5zHapJ8IcDCE=">
-        <field:simple field="instances" id="c_ro_roda_domain_UnitAnalysis_instances" messageCode="entity_reference_not_managed" messageCodeAttribute="Instance" z="nY45qF2Gyl3AZ/3uDUde9u+zclo="/>
         <field:input field="name" id="c_ro_roda_domain_UnitAnalysis_name" required="true" z="w3kgkJUqbmUpPm50l+WYyMw8WVY="/>
         <field:input field="description" id="c_ro_roda_domain_UnitAnalysis_description" z="kCPaOmp2vYR7gMYPQeNk3rCn9To="/>
+        <field:simple field="studies" id="c_ro_roda_domain_UnitAnalysis_studies" messageCode="entity_reference_not_managed" messageCodeAttribute="Study" z="co9om+aL5GSZaTc243tPV3PFY6w="/>
     </form:update>
 </div>

@@ -4,9 +4,8 @@
     <jsp:output omit-xml-declaration="yes"/>
     <page:list id="pl_ro_roda_domain_Form" items="${forms}" z="GnUEpJr0EtSrMVVJfYsMPVP7/jI=">
         <table:table data="${forms}" id="l_ro_roda_domain_Form" path="/forms" z="Fwgz70aglum59tmvgMf/OjLGwU4=">
-            <table:column id="c_ro_roda_domain_Form_instanceId" property="instanceId" z="y8b9+9XKsO497EOx7GHLZnK9LY4="/>
             <table:column id="c_ro_roda_domain_Form_operatorId" property="operatorId" z="btKLmnc9L6TXumB1btAEahbRUSY="/>
-            <table:column id="c_ro_roda_domain_Form_orderInInstance" property="orderInInstance" z="6ya0sy+SG27YMm6DXYAYnGa9sT4="/>
+            <table:column id="c_ro_roda_domain_Form_operatorNotes" property="operatorNotes" z="vzZs70heZn355u5tgAkCtANfVHg="/>
         </table:table>
     </page:list>
 </div>

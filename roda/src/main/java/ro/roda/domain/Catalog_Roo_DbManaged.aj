@@ -9,15 +9,20 @@ import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import org.springframework.format.annotation.DateTimeFormat;
 import ro.roda.domain.Catalog;
 import ro.roda.domain.CatalogStudy;
+import ro.roda.domain.Series;
 import ro.roda.domain.Users;
 
 privileged aspect Catalog_Roo_DbManaged {
+    
+    @OneToOne(mappedBy = "catalog")
+    private Series Catalog.series;
     
     @OneToMany(mappedBy = "parentId")
     private Set<Catalog> Catalog.catalogs;
@@ -48,6 +53,14 @@ privileged aspect Catalog_Roo_DbManaged {
     
     @Column(name = "description", columnDefinition = "text")
     private String Catalog.description;
+    
+    public Series Catalog.getSeries() {
+        return series;
+    }
+    
+    public void Catalog.setSeries(Series series) {
+        this.series = series;
+    }
     
     public Set<Catalog> Catalog.getCatalogs() {
         return catalogs;

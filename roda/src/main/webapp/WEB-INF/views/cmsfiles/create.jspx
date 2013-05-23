@@ -3,7 +3,6 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <form:create id="fc_ro_roda_domain_CmsFile" modelAttribute="cmsFile" path="/cmsfiles" render="${empty dependencies}" z="woxFDHdvmRHX5H3Wp0luV3NFgng=">
-        <field:simple field="cmsFilePropertyNameValues" id="c_ro_roda_domain_CmsFile_cmsFilePropertyNameValues" messageCode="entity_reference_not_managed" messageCodeAttribute="Cms File Property Name Value" z="eYcQmpNs5oBLjLT1ZJN3bvXSNdY="/>
         <field:select field="cmsFolderId" id="c_ro_roda_domain_CmsFile_cmsFolderId" itemValue="id" items="${cmsfolders}" path="/cmsfolders" z="Cn2rMzlgJXIE8y9hbbzvyuBV6hM="/>
         <field:input field="filename" id="c_ro_roda_domain_CmsFile_filename" required="true" z="lU+y+ilbnS3+gKeixvUaycfkYJ0="/>
         <field:input field="label" id="c_ro_roda_domain_CmsFile_label" required="true" z="c1dWptTgcSqbvLKGe29n7mWjNGY="/>

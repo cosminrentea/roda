@@ -3,11 +3,8 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <form:create id="fc_ro_roda_domain_Source" modelAttribute="source" path="/sources" render="${empty dependencies}" z="3kuXNu+Rm+kqHUo7AvvhHbxhIFE=">
-        <field:select field="org" id="c_ro_roda_domain_Source_org" itemValue="id" items="${orgs}" path="/orgs" z="X4stGoUJZn21+9OjT0P/EKe2SkQ="/>
-        <field:simple field="sourceContactss" id="c_ro_roda_domain_Source_sourceContactss" messageCode="entity_reference_not_managed" messageCodeAttribute="Source Contacts" z="7IRFMkWpT6VIQnY4e3JAnatzY64="/>
-        <field:simple field="sourcestudies" id="c_ro_roda_domain_Source_sourcestudies" messageCode="entity_reference_not_managed" messageCodeAttribute="Sourcestudy" z="9e2dnhEqsO4JEljQ7n+WYaom3Ag="/>
-        <field:simple field="sourcetypeHistories" id="c_ro_roda_domain_Source_sourcetypeHistories" messageCode="entity_reference_not_managed" messageCodeAttribute="Sourcetype History" z="n2N31ylA+rNZfWhw6ReXLQ/Lxrs="/>
-        <field:select field="sourcetypeId" id="c_ro_roda_domain_Source_sourcetypeId" itemValue="id" items="${sourcetypes}" path="/sourcetypes" z="T9lGkjMxwRX1C7z2wdm064dbEl4="/>
+        <field:select field="studies" id="c_ro_roda_domain_Source_studies" itemValue="id" items="${studys}" multiple="true" path="/studys" z="kBUSV1nlcUr7m9vg6MHyjcGPH6w="/>
+        <field:input field="citation" id="c_ro_roda_domain_Source_citation" required="true" z="6gvQwvWslzetncudkPrgk+PQ1UE="/>
     </form:create>
     <form:dependency dependencies="${dependencies}" id="d_ro_roda_domain_Source" render="${not empty dependencies}" z="TSrzMbtPSBFn23d1pRwD848KXtI="/>
 </div>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:list id="pl_ro_roda_domain_InstanceRightValue" items="${instancerightvalues}" z="0tDt7gC7YC3jEh52NP4vBiiNlaY=">
+        <table:table data="${instancerightvalues}" id="l_ro_roda_domain_InstanceRightValue" path="/instancerightvalues" z="p3SGCRBty5lcPAI67IWoUTTvXKY=">
+            <table:column id="c_ro_roda_domain_InstanceRightValue_instanceRightId" property="instanceRightId" z="izR7Ziui8kqrGBgFcFOWioEQZB0="/>
+            <table:column id="c_ro_roda_domain_InstanceRightValue_value" property="value" z="xwQoGQ0ls8xG3vj+v7tqZgFsxgM="/>
+            <table:column id="c_ro_roda_domain_InstanceRightValue_description" property="description" z="4G6ABNJ4PVHEn4oGk8bwfo3Dlxw="/>
+            <table:column id="c_ro_roda_domain_InstanceRightValue_fee" property="fee" z="z6dLg2cknJrxnQEGA55bvTukdsw="/>
+            <table:column id="c_ro_roda_domain_InstanceRightValue_feeCurrencyAbbr" property="feeCurrencyAbbr" z="Uu2hzi5jlQ0hXDVfV2MYAVZqFm0="/>
+        </table:table>
+    </page:list>
+</div>

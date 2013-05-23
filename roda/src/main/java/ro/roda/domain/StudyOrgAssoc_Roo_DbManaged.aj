@@ -15,7 +15,7 @@ privileged aspect StudyOrgAssoc_Roo_DbManaged {
     @OneToMany(mappedBy = "assoctypeId")
     private Set<StudyOrg> StudyOrgAssoc.studyOrgs;
     
-    @Column(name = "assoc_name", columnDefinition = "varchar", length = 100)
+    @Column(name = "assoc_name", columnDefinition = "text")
     @NotNull
     private String StudyOrgAssoc.assocName;
     

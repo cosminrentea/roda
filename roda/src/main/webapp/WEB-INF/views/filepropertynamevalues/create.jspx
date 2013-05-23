@@ -3,9 +3,7 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <form:create compositePkField="id" id="fc_ro_roda_domain_FilePropertyNameValue" modelAttribute="filePropertyNameValue" path="/filepropertynamevalues" render="${empty dependencies}" z="kw38VEG62VhfqP9bixTlLEoPqMw=">
-        <field:input disableFormBinding="true" field="id.propertyNameId" id="c_ro_roda_domain_FilePropertyNameValue_id_propertyNameId" required="true" validationMessageCode="field_invalid_integer" z="8Vzar+w6bu7zMhWjrCtobJzJU78="/>
-        <field:input disableFormBinding="true" field="id.propertyValueId" id="c_ro_roda_domain_FilePropertyNameValue_id_propertyValueId" required="true" validationMessageCode="field_invalid_integer" z="1EMjUuI+pL37CIAAwtxNEvYYr9w="/>
-        <field:input disableFormBinding="true" field="id.fileId" id="c_ro_roda_domain_FilePropertyNameValue_id_fileId" required="true" validationMessageCode="field_invalid_integer" z="10TA3ycdKp6ZA6qh/UBb1iWX43c="/>
+        <field:input disableFormBinding="true" field="id.id" id="c_ro_roda_domain_FilePropertyNameValue_id_id" required="true" validationMessageCode="field_invalid_integer" z="ys1NcbTferiASowRQrwGvgVZG/c="/>
     </form:create>
     <form:dependency dependencies="${dependencies}" id="d_ro_roda_domain_FilePropertyNameValue" render="${not empty dependencies}" z="9OAs2smnDgxlobftM16N7lby6/8="/>
 </div>

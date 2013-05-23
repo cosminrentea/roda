@@ -53,8 +53,9 @@ privileged aspect PersonOrg_Roo_SolrSearch {
             sid.addField("personOrg.roleid_t", personOrg.getRoleId());
             sid.addField("personOrg.datestart_dt", personOrg.getDateStart());
             sid.addField("personOrg.dateend_dt", personOrg.getDateEnd());
+            sid.addField("personOrg.id_t", personOrg.getId());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("personorg_solrsummary_t", new StringBuilder().append(personOrg.getOrgId()).append(" ").append(personOrg.getPersonId()).append(" ").append(personOrg.getRoleId()).append(" ").append(personOrg.getDateStart()).append(" ").append(personOrg.getDateEnd()));
+            sid.addField("personorg_solrsummary_t", new StringBuilder().append(personOrg.getOrgId()).append(" ").append(personOrg.getPersonId()).append(" ").append(personOrg.getRoleId()).append(" ").append(personOrg.getDateStart()).append(" ").append(personOrg.getDateEnd()).append(" ").append(personOrg.getId()));
             documents.add(sid);
         }
         try {

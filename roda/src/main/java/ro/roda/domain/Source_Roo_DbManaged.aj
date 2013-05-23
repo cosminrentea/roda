@@ -4,74 +4,38 @@
 package ro.roda.domain;
 
 import java.util.Set;
+import javax.persistence.Column;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import ro.roda.domain.Org;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.validation.constraints.NotNull;
 import ro.roda.domain.Source;
-import ro.roda.domain.SourceContacts;
-import ro.roda.domain.Sourcestudy;
-import ro.roda.domain.Sourcetype;
-import ro.roda.domain.SourcetypeHistory;
+import ro.roda.domain.Study;
 
 privileged aspect Source_Roo_DbManaged {
     
-    @OneToOne
-    @JoinColumn(name = "org_id", nullable = false, insertable = false, updatable = false)
-    private Org Source.org;
+    @ManyToMany
+    @JoinTable(name = "study_source", joinColumns = { @JoinColumn(name = "source_id", nullable = false) }, inverseJoinColumns = { @JoinColumn(name = "study_id", nullable = false) })
+    private Set<Study> Source.studies;
     
-    @OneToMany(mappedBy = "sourceId")
-    private Set<SourceContacts> Source.sourceContactss;
+    @Column(name = "citation", columnDefinition = "text")
+    @NotNull
+    private String Source.citation;
     
-    @OneToMany(mappedBy = "orgId")
-    private Set<Sourcestudy> Source.sourcestudies;
-    
-    @OneToMany(mappedBy = "orgId")
-    private Set<SourcetypeHistory> Source.sourcetypeHistories;
-    
-    @ManyToOne
-    @JoinColumn(name = "sourcetype_id", referencedColumnName = "id", nullable = false)
-    private Sourcetype Source.sourcetypeId;
-    
-    public Org Source.getOrg() {
-        return org;
+    public Set<Study> Source.getStudies() {
+        return studies;
     }
     
-    public void Source.setOrg(Org org) {
-        this.org = org;
+    public void Source.setStudies(Set<Study> studies) {
+        this.studies = studies;
     }
     
-    public Set<SourceContacts> Source.getSourceContactss() {
-        return sourceContactss;
+    public String Source.getCitation() {
+        return citation;
     }
     
-    public void Source.setSourceContactss(Set<SourceContacts> sourceContactss) {
-        this.sourceContactss = sourceContactss;
-    }
-    
-    public Set<Sourcestudy> Source.getSourcestudies() {
-        return sourcestudies;
-    }
-    
-    public void Source.setSourcestudies(Set<Sourcestudy> sourcestudies) {
-        this.sourcestudies = sourcestudies;
-    }
-    
-    public Set<SourcetypeHistory> Source.getSourcetypeHistories() {
-        return sourcetypeHistories;
-    }
-    
-    public void Source.setSourcetypeHistories(Set<SourcetypeHistory> sourcetypeHistories) {
-        this.sourcetypeHistories = sourcetypeHistories;
-    }
-    
-    public Sourcetype Source.getSourcetypeId() {
-        return sourcetypeId;
-    }
-    
-    public void Source.setSourcetypeId(Sourcetype sourcetypeId) {
-        this.sourcetypeId = sourcetypeId;
+    public void Source.setCitation(String citation) {
+        this.citation = citation;
     }
     
 }

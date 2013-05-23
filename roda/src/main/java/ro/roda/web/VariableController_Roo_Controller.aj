@@ -20,7 +20,7 @@ import ro.roda.service.ConceptService;
 import ro.roda.service.FileService;
 import ro.roda.service.FormEditedNumberVarService;
 import ro.roda.service.FormEditedTextVarService;
-import ro.roda.service.InstanceService;
+import ro.roda.service.InstanceVariableService;
 import ro.roda.service.OtherStatisticService;
 import ro.roda.service.SelectionVariableService;
 import ro.roda.service.SkipService;
@@ -46,7 +46,7 @@ privileged aspect VariableController_Roo_Controller {
     FormEditedTextVarService VariableController.formEditedTextVarService;
     
     @Autowired
-    InstanceService VariableController.instanceService;
+    InstanceVariableService VariableController.instanceVariableService;
     
     @Autowired
     OtherStatisticService VariableController.otherStatisticService;
@@ -131,7 +131,7 @@ privileged aspect VariableController_Roo_Controller {
         uiModel.addAttribute("files", fileService.findAllFiles());
         uiModel.addAttribute("formeditednumbervars", formEditedNumberVarService.findAllFormEditedNumberVars());
         uiModel.addAttribute("formeditedtextvars", formEditedTextVarService.findAllFormEditedTextVars());
-        uiModel.addAttribute("instances", instanceService.findAllInstances());
+        uiModel.addAttribute("instancevariables", instanceVariableService.findAllInstanceVariables());
         uiModel.addAttribute("otherstatistics", otherStatisticService.findAllOtherStatistics());
         uiModel.addAttribute("selectionvariables", selectionVariableService.findAllSelectionVariables());
         uiModel.addAttribute("skips", skipService.findAllSkips());

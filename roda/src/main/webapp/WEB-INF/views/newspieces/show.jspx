@@ -3,7 +3,6 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <page:show id="ps_ro_roda_domain_News" object="${news}" path="/newspieces" z="vHy9Jy7wONsmyEYyQOvYBMomH20=">
-        <field:display field="addedBy" id="s_ro_roda_domain_News_addedBy" object="${news}" z="mCM0WHzjZHORFQZeRFfkuFa6xVk="/>
         <field:display calendar="true" dateTimePattern="${news_added_date_format}" field="added" id="s_ro_roda_domain_News_added" object="${news}" z="DsPu8yYbRsm/xIIxaW1a9DyqzB8="/>
         <field:display field="visible" id="s_ro_roda_domain_News_visible" object="${news}" z="kLgiKG150G8XbK5YRc0cdQMdaBM="/>
         <field:display field="title" id="s_ro_roda_domain_News_title" object="${news}" z="d+xHife7Vb38DsyChzO6wJuhDfs="/>

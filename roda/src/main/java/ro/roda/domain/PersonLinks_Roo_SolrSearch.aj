@@ -49,8 +49,8 @@ privileged aspect PersonLinks_Roo_SolrSearch {
             SolrInputDocument sid = new SolrInputDocument();
             sid.addField("id", "personlinks_" + personLinks.getId());
             sid.addField("personLinks.personid_t", personLinks.getPersonId());
-            sid.addField("personLinks.statusby_t", personLinks.getStatusBy());
             sid.addField("personLinks.userid_t", personLinks.getUserId());
+            sid.addField("personLinks.statusby_t", personLinks.getStatusBy());
             sid.addField("personLinks.simscore_t", personLinks.getSimscore());
             sid.addField("personLinks.namescore_t", personLinks.getNamescore());
             sid.addField("personLinks.emailscore_t", personLinks.getEmailscore());
@@ -58,7 +58,7 @@ privileged aspect PersonLinks_Roo_SolrSearch {
             sid.addField("personLinks.statustime_dt", personLinks.getStatusTime().getTime());
             sid.addField("personLinks.id_i", personLinks.getId());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("personlinks_solrsummary_t", new StringBuilder().append(personLinks.getPersonId()).append(" ").append(personLinks.getStatusBy()).append(" ").append(personLinks.getUserId()).append(" ").append(personLinks.getSimscore()).append(" ").append(personLinks.getNamescore()).append(" ").append(personLinks.getEmailscore()).append(" ").append(personLinks.getStatus()).append(" ").append(personLinks.getStatusTime().getTime()).append(" ").append(personLinks.getId()));
+            sid.addField("personlinks_solrsummary_t", new StringBuilder().append(personLinks.getPersonId()).append(" ").append(personLinks.getUserId()).append(" ").append(personLinks.getStatusBy()).append(" ").append(personLinks.getSimscore()).append(" ").append(personLinks.getNamescore()).append(" ").append(personLinks.getEmailscore()).append(" ").append(personLinks.getStatus()).append(" ").append(personLinks.getStatusTime().getTime()).append(" ").append(personLinks.getId()));
             documents.add(sid);
         }
         try {

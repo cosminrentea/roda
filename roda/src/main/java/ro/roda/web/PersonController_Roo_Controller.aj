@@ -16,13 +16,57 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.domain.Person;
+import ro.roda.service.FormService;
+import ro.roda.service.InstancePersonService;
+import ro.roda.service.PersonAddressService;
+import ro.roda.service.PersonEmailService;
+import ro.roda.service.PersonInternetService;
+import ro.roda.service.PersonLinksService;
+import ro.roda.service.PersonOrgService;
+import ro.roda.service.PersonPhoneService;
 import ro.roda.service.PersonService;
+import ro.roda.service.PrefixService;
+import ro.roda.service.StudyPersonService;
+import ro.roda.service.SuffixService;
 import ro.roda.web.PersonController;
 
 privileged aspect PersonController_Roo_Controller {
     
     @Autowired
     PersonService PersonController.personService;
+    
+    @Autowired
+    FormService PersonController.formService;
+    
+    @Autowired
+    InstancePersonService PersonController.instancePersonService;
+    
+    @Autowired
+    PersonAddressService PersonController.personAddressService;
+    
+    @Autowired
+    PersonEmailService PersonController.personEmailService;
+    
+    @Autowired
+    PersonInternetService PersonController.personInternetService;
+    
+    @Autowired
+    PersonLinksService PersonController.personLinksService;
+    
+    @Autowired
+    PersonOrgService PersonController.personOrgService;
+    
+    @Autowired
+    PersonPhoneService PersonController.personPhoneService;
+    
+    @Autowired
+    PrefixService PersonController.prefixService;
+    
+    @Autowired
+    StudyPersonService PersonController.studyPersonService;
+    
+    @Autowired
+    SuffixService PersonController.suffixService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String PersonController.create(@Valid Person person, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -91,6 +135,17 @@ privileged aspect PersonController_Roo_Controller {
     
     void PersonController.populateEditForm(Model uiModel, Person person) {
         uiModel.addAttribute("person", person);
+        uiModel.addAttribute("forms", formService.findAllForms());
+        uiModel.addAttribute("instancepeople", instancePersonService.findAllInstancepeople());
+        uiModel.addAttribute("personaddresses", personAddressService.findAllPersonAddresses());
+        uiModel.addAttribute("personemails", personEmailService.findAllPersonEmails());
+        uiModel.addAttribute("personinternets", personInternetService.findAllPersonInternets());
+        uiModel.addAttribute("personlinkses", personLinksService.findAllPersonLinkses());
+        uiModel.addAttribute("personorgs", personOrgService.findAllPersonOrgs());
+        uiModel.addAttribute("personphones", personPhoneService.findAllPersonPhones());
+        uiModel.addAttribute("prefixes", prefixService.findAllPrefixes());
+        uiModel.addAttribute("studypeople", studyPersonService.findAllStudypeople());
+        uiModel.addAttribute("suffixes", suffixService.findAllSuffixes());
     }
     
     String PersonController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

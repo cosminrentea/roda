@@ -13,4 +13,13 @@
 <definition extends="default" name="addresses/update">
         <put-attribute name="body" value="/WEB-INF/views/addresses/update.jspx"/>
     </definition>
+<definition extends="default" name="addresses/findAddressesByCityId">
+        <put-attribute name="body" value="/WEB-INF/views/addresses/findAddressesByCityId.jspx"/>
+    </definition>
+<definition extends="default" name="addresses/findAddressesByCityIdAndPostalCodeEquals">
+        <put-attribute name="body" value="/WEB-INF/views/addresses/findAddressesByCityIdAndPostalCodeEquals.jspx"/>
+    </definition>
+<definition extends="default" name="addresses/findAddressesByPostalCodeEquals">
+        <put-attribute name="body" value="/WEB-INF/views/addresses/findAddressesByPostalCodeEquals.jspx"/>
+    </definition>
 </tiles-definitions>

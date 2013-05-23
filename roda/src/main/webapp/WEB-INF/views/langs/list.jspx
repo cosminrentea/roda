@@ -6,7 +6,6 @@
         <table:table data="${langs}" id="l_ro_roda_domain_Lang" path="/langs" z="A/hbpdwTBSsbzcy18AgraO1Ldi8=">
             <table:column id="c_ro_roda_domain_Lang_iso639" property="iso639" z="XlMcDkb8vR9u4rQ2KzJHF/jDpRs="/>
             <table:column id="c_ro_roda_domain_Lang_nameSelf" property="nameSelf" z="SlubMyOR2rglE5w+AaEgBJlshs0="/>
-            <table:column id="c_ro_roda_domain_Lang_nameRo" property="nameRo" z="Y7HlkuM7hGgiT+OYGZB+pP1YLBE="/>
         </table:table>
     </page:list>
 </div>

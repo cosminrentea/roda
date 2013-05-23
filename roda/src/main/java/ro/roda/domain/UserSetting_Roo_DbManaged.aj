@@ -19,8 +19,8 @@ privileged aspect UserSetting_Roo_DbManaged {
     private Set<UserSettingValue> UserSetting.userSettingValues;
     
     @ManyToOne
-    @JoinColumn(name = "setting_group", referencedColumnName = "id", nullable = false)
-    private UserSettingGroup UserSetting.settingGroup;
+    @JoinColumn(name = "user_setting_group_id", referencedColumnName = "id", nullable = false)
+    private UserSettingGroup UserSetting.userSettingGroupId;
     
     @Column(name = "name", columnDefinition = "text")
     @NotNull
@@ -28,9 +28,6 @@ privileged aspect UserSetting_Roo_DbManaged {
     
     @Column(name = "description", columnDefinition = "text")
     private String UserSetting.description;
-    
-    @Column(name = "predefined_values", columnDefinition = "text")
-    private String UserSetting.predefinedValues;
     
     @Column(name = "default_value", columnDefinition = "text")
     private String UserSetting.defaultValue;
@@ -43,12 +40,12 @@ privileged aspect UserSetting_Roo_DbManaged {
         this.userSettingValues = userSettingValues;
     }
     
-    public UserSettingGroup UserSetting.getSettingGroup() {
-        return settingGroup;
+    public UserSettingGroup UserSetting.getUserSettingGroupId() {
+        return userSettingGroupId;
     }
     
-    public void UserSetting.setSettingGroup(UserSettingGroup settingGroup) {
-        this.settingGroup = settingGroup;
+    public void UserSetting.setUserSettingGroupId(UserSettingGroup userSettingGroupId) {
+        this.userSettingGroupId = userSettingGroupId;
     }
     
     public String UserSetting.getName() {
@@ -65,14 +62,6 @@ privileged aspect UserSetting_Roo_DbManaged {
     
     public void UserSetting.setDescription(String description) {
         this.description = description;
-    }
-    
-    public String UserSetting.getPredefinedValues() {
-        return predefinedValues;
-    }
-    
-    public void UserSetting.setPredefinedValues(String predefinedValues) {
-        this.predefinedValues = predefinedValues;
     }
     
     public String UserSetting.getDefaultValue() {

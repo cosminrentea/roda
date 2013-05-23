@@ -3,17 +3,16 @@
 
 package ro.roda.domain;
 
-import java.util.Set;
 import javax.persistence.Column;
-import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
-import ro.roda.domain.Instance;
+import ro.roda.domain.Study;
 import ro.roda.domain.TimeMethType;
 
 privileged aspect TimeMethType_Roo_DbManaged {
     
-    @OneToMany(mappedBy = "timeMethId")
-    private Set<Instance> TimeMethType.instances;
+    @OneToOne(mappedBy = "timeMethType")
+    private Study TimeMethType.study;
     
     @Column(name = "name", columnDefinition = "varchar", length = 100)
     @NotNull
@@ -22,12 +21,12 @@ privileged aspect TimeMethType_Roo_DbManaged {
     @Column(name = "description", columnDefinition = "text")
     private String TimeMethType.description;
     
-    public Set<Instance> TimeMethType.getInstances() {
-        return instances;
+    public Study TimeMethType.getStudy() {
+        return study;
     }
     
-    public void TimeMethType.setInstances(Set<Instance> instances) {
-        this.instances = instances;
+    public void TimeMethType.setStudy(Study study) {
+        this.study = study;
     }
     
     public String TimeMethType.getName() {

@@ -20,6 +20,7 @@ import org.springframework.web.util.WebUtils;
 import ro.roda.domain.Catalog;
 import ro.roda.service.CatalogService;
 import ro.roda.service.CatalogStudyService;
+import ro.roda.service.SeriesService;
 import ro.roda.service.UsersService;
 import ro.roda.web.CatalogController;
 
@@ -30,6 +31,9 @@ privileged aspect CatalogController_Roo_Controller {
     
     @Autowired
     CatalogStudyService CatalogController.catalogStudyService;
+    
+    @Autowired
+    SeriesService CatalogController.seriesService;
     
     @Autowired
     UsersService CatalogController.usersService;
@@ -110,6 +114,7 @@ privileged aspect CatalogController_Roo_Controller {
         addDateTimeFormatPatterns(uiModel);
         uiModel.addAttribute("catalogs", catalogService.findAllCatalogs());
         uiModel.addAttribute("catalogstudys", catalogStudyService.findAllCatalogStudys());
+        uiModel.addAttribute("serieses", seriesService.findAllSerieses());
         uiModel.addAttribute("userses", usersService.findAllUserses());
     }
     

@@ -9,6 +9,7 @@ import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import ro.roda.domain.InstanceDescr;
 import ro.roda.domain.Lang;
+import ro.roda.domain.SeriesDescr;
 import ro.roda.domain.StudyDescr;
 import ro.roda.domain.TranslatedTopic;
 
@@ -16,6 +17,9 @@ privileged aspect Lang_Roo_DbManaged {
     
     @OneToMany(mappedBy = "langId")
     private Set<InstanceDescr> Lang.instanceDescrs;
+    
+    @OneToMany(mappedBy = "langId")
+    private Set<SeriesDescr> Lang.seriesDescrs;
     
     @OneToMany(mappedBy = "langId")
     private Set<StudyDescr> Lang.studyDescrs;
@@ -42,6 +46,14 @@ privileged aspect Lang_Roo_DbManaged {
     
     public void Lang.setInstanceDescrs(Set<InstanceDescr> instanceDescrs) {
         this.instanceDescrs = instanceDescrs;
+    }
+    
+    public Set<SeriesDescr> Lang.getSeriesDescrs() {
+        return seriesDescrs;
+    }
+    
+    public void Lang.setSeriesDescrs(Set<SeriesDescr> seriesDescrs) {
+        this.seriesDescrs = seriesDescrs;
     }
     
     public Set<StudyDescr> Lang.getStudyDescrs() {

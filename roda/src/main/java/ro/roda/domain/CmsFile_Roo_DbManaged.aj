@@ -3,20 +3,14 @@
 
 package ro.roda.domain;
 
-import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import ro.roda.domain.CmsFile;
-import ro.roda.domain.CmsFilePropertyNameValue;
 import ro.roda.domain.CmsFolder;
 
 privileged aspect CmsFile_Roo_DbManaged {
-    
-    @OneToMany(mappedBy = "cmsFileId")
-    private Set<CmsFilePropertyNameValue> CmsFile.cmsFilePropertyNameValues;
     
     @ManyToOne
     @JoinColumn(name = "cms_folder_id", referencedColumnName = "id", nullable = false)
@@ -32,14 +26,6 @@ privileged aspect CmsFile_Roo_DbManaged {
     
     @Column(name = "filesize", columnDefinition = "int8")
     private Long CmsFile.filesize;
-    
-    public Set<CmsFilePropertyNameValue> CmsFile.getCmsFilePropertyNameValues() {
-        return cmsFilePropertyNameValues;
-    }
-    
-    public void CmsFile.setCmsFilePropertyNameValues(Set<CmsFilePropertyNameValue> cmsFilePropertyNameValues) {
-        this.cmsFilePropertyNameValues = cmsFilePropertyNameValues;
-    }
     
     public CmsFolder CmsFile.getCmsFolderId() {
         return cmsFolderId;

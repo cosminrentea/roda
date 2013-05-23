@@ -3,9 +3,7 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <form:create compositePkField="id" id="fc_ro_roda_domain_CmsFilePropertyNameValue" modelAttribute="cmsFilePropertyNameValue" path="/cmsfilepropertynamevalues" render="${empty dependencies}" z="tNWJrESfafjQD2l0U9GTKKJaBec=">
-        <field:input disableFormBinding="true" field="id.cmsFileId" id="c_ro_roda_domain_CmsFilePropertyNameValue_id_cmsFileId" required="true" validationMessageCode="field_invalid_integer" z="2nfRISzAKz1ycPzUdabs6Zji6mc="/>
-        <field:input disableFormBinding="true" field="id.propertyNameId" id="c_ro_roda_domain_CmsFilePropertyNameValue_id_propertyNameId" required="true" validationMessageCode="field_invalid_integer" z="974jvXJIaNTeDAFV4/B4nGL8JcU="/>
-        <field:input disableFormBinding="true" field="id.propertyValueId" id="c_ro_roda_domain_CmsFilePropertyNameValue_id_propertyValueId" required="true" validationMessageCode="field_invalid_integer" z="yLRAZbfgjDpIxOx1h/EzZQefx0M="/>
+        <field:input disableFormBinding="true" field="id.id" id="c_ro_roda_domain_CmsFilePropertyNameValue_id_id" required="true" validationMessageCode="field_invalid_integer" z="TdROHcT0FdzwAEkY/OOfczoxscQ="/>
     </form:create>
     <form:dependency dependencies="${dependencies}" id="d_ro_roda_domain_CmsFilePropertyNameValue" render="${not empty dependencies}" z="2iJKm8NE15saEaRoYn7lY0hPBqo="/>
 </div>

@@ -11,8 +11,9 @@
 				to modify an existing database; value="create-drop" means the same as "create" 
 				but also drops tables when Hibernate closes; value="validate" makes no changes 
 				to the database -->
-			<!-- Cosmin: always use value="update" here !! -->
-			<property name="hibernate.hbm2ddl.auto" value="update"/>
+			<!-- Cosmin: if using Roo, use value="update" here ! -->
+			<!-- Cosmin: if NOT using Roo, use value="create-drop" here ! -->
+			<property name="hibernate.hbm2ddl.auto" value="create-drop"/>
 
 			<!-- Cosmin: logging SQL inside Hibernate ? -->
 			<!-- <property name="hibernate.show_sql" value="true"/> -->

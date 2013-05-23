@@ -3,8 +3,7 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <form:create compositePkField="id" id="fc_ro_roda_domain_GroupAuthorities" modelAttribute="groupAuthorities" path="/groupauthoritieses" render="${empty dependencies}" z="4u/z/C7gZTkahK+zKH5eit08eBE=">
-        <field:input disableFormBinding="true" field="id.groupId" id="c_ro_roda_domain_GroupAuthorities_id_groupId" required="true" validationMessageCode="field_invalid_integer" z="sbt0V/NHkwGeSCm8bKDmyXH7seQ="/>
-        <field:input disableFormBinding="true" field="id.authority" id="c_ro_roda_domain_GroupAuthorities_id_authority" required="true" z="7D31ZU7M2pfyfINxDTIR0kMrbXc="/>
+        <field:input disableFormBinding="true" field="id.id" id="c_ro_roda_domain_GroupAuthorities_id_id" required="true" validationMessageCode="field_invalid_integer" z="5fc0Kz9sM9MZ6CUyVjzm35ZtjB0="/>
     </form:create>
     <form:dependency dependencies="${dependencies}" id="d_ro_roda_domain_GroupAuthorities" render="${not empty dependencies}" z="OhPvgIi2CwULHoc53ZRddaHIf2o="/>
 </div>

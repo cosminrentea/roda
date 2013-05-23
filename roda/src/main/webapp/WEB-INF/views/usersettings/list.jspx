@@ -4,11 +4,10 @@
     <jsp:output omit-xml-declaration="yes"/>
     <page:list id="pl_ro_roda_domain_UserSetting" items="${usersettings}" z="gSFkqZd827Rz0aNsG5XMhFUTKL0=">
         <table:table data="${usersettings}" id="l_ro_roda_domain_UserSetting" path="/usersettings" z="y+Zdiura8olWbJSHjcBiCJJVJoM=">
-            <table:column id="c_ro_roda_domain_UserSetting_settingGroup" property="settingGroup" z="YBUm9/kiCb6iydczV/RUhtF8qWE="/>
             <table:column id="c_ro_roda_domain_UserSetting_name" property="name" z="D3ON50rgApw/u0zSmJYtg5PyvtM="/>
             <table:column id="c_ro_roda_domain_UserSetting_description" property="description" z="jaP4PSti77SWfpHh++7wqzVL/r4="/>
-            <table:column id="c_ro_roda_domain_UserSetting_predefinedValues" property="predefinedValues" z="zfK/LV80aelYnB1UuJfEnc62MnU="/>
             <table:column id="c_ro_roda_domain_UserSetting_defaultValue" property="defaultValue" z="21FsUUrXWv45r1Zj5sLR+cwS7gM="/>
+            <table:column id="c_ro_roda_domain_UserSetting_userSettingGroupId" property="userSettingGroupId" z="R2uFJYER1xy8JEUgq6ugfAxnexg="/>
         </table:table>
     </page:list>
 </div>

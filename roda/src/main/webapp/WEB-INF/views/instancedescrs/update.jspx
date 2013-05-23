@@ -3,11 +3,9 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <form:update id="fu_ro_roda_domain_InstanceDescr" modelAttribute="instanceDescr" path="/instancedescrs" versionField="none" z="kZzJ3JMLt2FT4krpUk4c0AozVZI=">
-        <field:input field="weighting" id="c_ro_roda_domain_InstanceDescr_weighting" z="DIfzEci1x3MdkDYol0LC0ykwbKk="/>
-        <field:input field="researchInstrument" id="c_ro_roda_domain_InstanceDescr_researchInstrument" z="voe0pd09+lIs0uW459k0evXlnvA="/>
-        <field:input field="scope" id="c_ro_roda_domain_InstanceDescr_scope" z="u08wy33uw2bnMSBDBCRoI0qi7yY="/>
-        <field:input field="universe" id="c_ro_roda_domain_InstanceDescr_universe" z="U3IZcsqbReXRuKTYufV7XOH95VA="/>
-        <field:input field="abstract1" id="c_ro_roda_domain_InstanceDescr_abstract1" z="Jw2ftAppNCCfsU4YgmuBHby/Z2o="/>
+        <field:input field="accessConditions" id="c_ro_roda_domain_InstanceDescr_accessConditions" z="ZNywb9k1nFWrt7HSextcO/2lalQ="/>
+        <field:input field="notes" id="c_ro_roda_domain_InstanceDescr_notes" z="AhW/DFYfE+hUJhHkUPyQH4VzQEY="/>
         <field:input field="title" id="c_ro_roda_domain_InstanceDescr_title" required="true" z="Oy1uJmgIgBpWtGfNUJdXNVchw+g="/>
+        <field:checkbox field="originalTitleLanguage" id="c_ro_roda_domain_InstanceDescr_originalTitleLanguage" z="dobMuyx+4vk2vx5yGVKz3lzBegM="/>
     </form:update>
 </div>

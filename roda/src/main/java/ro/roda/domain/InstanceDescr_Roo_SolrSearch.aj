@@ -50,15 +50,12 @@ privileged aspect InstanceDescr_Roo_SolrSearch {
             sid.addField("id", "instancedescr_" + instanceDescr.getId());
             sid.addField("instanceDescr.instanceid_t", instanceDescr.getInstanceId());
             sid.addField("instanceDescr.langid_t", instanceDescr.getLangId());
-            sid.addField("instanceDescr.weighting_s", instanceDescr.getWeighting());
-            sid.addField("instanceDescr.researchinstrument_s", instanceDescr.getResearchInstrument());
-            sid.addField("instanceDescr.scope_s", instanceDescr.getScope());
-            sid.addField("instanceDescr.universe_s", instanceDescr.getUniverse());
-            sid.addField("instanceDescr.abstract1_s", instanceDescr.getAbstract1());
+            sid.addField("instanceDescr.accessconditions_s", instanceDescr.getAccessConditions());
+            sid.addField("instanceDescr.notes_s", instanceDescr.getNotes());
             sid.addField("instanceDescr.title_s", instanceDescr.getTitle());
             sid.addField("instanceDescr.id_t", instanceDescr.getId());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("instancedescr_solrsummary_t", new StringBuilder().append(instanceDescr.getInstanceId()).append(" ").append(instanceDescr.getLangId()).append(" ").append(instanceDescr.getWeighting()).append(" ").append(instanceDescr.getResearchInstrument()).append(" ").append(instanceDescr.getScope()).append(" ").append(instanceDescr.getUniverse()).append(" ").append(instanceDescr.getAbstract1()).append(" ").append(instanceDescr.getTitle()).append(" ").append(instanceDescr.getId()));
+            sid.addField("instancedescr_solrsummary_t", new StringBuilder().append(instanceDescr.getInstanceId()).append(" ").append(instanceDescr.getLangId()).append(" ").append(instanceDescr.getAccessConditions()).append(" ").append(instanceDescr.getNotes()).append(" ").append(instanceDescr.getTitle()).append(" ").append(instanceDescr.getId()));
             documents.add(sid);
         }
         try {

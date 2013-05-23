@@ -28,9 +28,9 @@ privileged aspect Source_Roo_Jpa_ActiveRecord {
         return entityManager().createQuery("SELECT o FROM Source o", Source.class).getResultList();
     }
     
-    public static Source Source.findSource(Integer orgId) {
-        if (orgId == null) return null;
-        return entityManager().find(Source.class, orgId);
+    public static Source Source.findSource(Integer id) {
+        if (id == null) return null;
+        return entityManager().find(Source.class, id);
     }
     
     public static List<Source> Source.findSourceEntries(int firstResult, int maxResults) {
@@ -49,7 +49,7 @@ privileged aspect Source_Roo_Jpa_ActiveRecord {
         if (this.entityManager.contains(this)) {
             this.entityManager.remove(this);
         } else {
-            Source attached = Source.findSource(this.orgId);
+            Source attached = Source.findSource(this.id);
             this.entityManager.remove(attached);
         }
     }

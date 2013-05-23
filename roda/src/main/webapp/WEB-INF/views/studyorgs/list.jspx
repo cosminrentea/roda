@@ -7,7 +7,6 @@
             <table:column id="c_ro_roda_domain_StudyOrg_orgId" property="orgId" z="/dBws6dvZbuiQcOd+rF4tsgZceg="/>
             <table:column id="c_ro_roda_domain_StudyOrg_studyId" property="studyId" z="nwdgbg2w5I3QNbhbvNmfsKbiMkg="/>
             <table:column id="c_ro_roda_domain_StudyOrg_assoctypeId" property="assoctypeId" z="xm/bKr/plrrrwt1TO4G/21ZuXOI="/>
-            <table:column id="c_ro_roda_domain_StudyOrg_citation" property="citation" z="ghEecnlIdaeOILp0+c+wt4IonJE="/>
             <table:column id="c_ro_roda_domain_StudyOrg_assocDetails" property="assocDetails" z="PvGpz4T9tRPavi/Rjur1aUiaGkY="/>
         </table:table>
     </page:list>

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import ro.roda.domain.Users;
 import ro.roda.web.UsersController;
@@ -90,6 +91,22 @@ privileged aspect UsersController_Roo_Controller_Json {
         }
         usersService.deleteUsers(users);
         return new ResponseEntity<String>(headers, HttpStatus.OK);
+    }
+    
+    @RequestMapping(params = "find=ByUsernameLike", headers = "Accept=application/json")
+    @ResponseBody
+    public ResponseEntity<String> UsersController.jsonFindUsersesByUsernameLike(@RequestParam("username") String username) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Type", "application/json; charset=utf-8");
+        return new ResponseEntity<String>(Users.toJsonArray(Users.findUsersesByUsernameLike(username).getResultList()), headers, HttpStatus.OK);
+    }
+    
+    @RequestMapping(params = "find=ByUsernameLikeAndEnabled", headers = "Accept=application/json")
+    @ResponseBody
+    public ResponseEntity<String> UsersController.jsonFindUsersesByUsernameLikeAndEnabled(@RequestParam("username") String username, @RequestParam(value = "enabled", required = false) boolean enabled) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Type", "application/json; charset=utf-8");
+        return new ResponseEntity<String>(Users.toJsonArray(Users.findUsersesByUsernameLikeAndEnabled(username, enabled).getResultList()), headers, HttpStatus.OK);
     }
     
 }

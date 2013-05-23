@@ -13,24 +13,16 @@ import ro.roda.domain.Variable;
 privileged aspect Skip_Roo_DbManaged {
     
     @ManyToOne
-    @JoinColumn(name = "variable_id", referencedColumnName = "id", nullable = false)
-    private Variable Skip.variableId;
-    
-    @ManyToOne
     @JoinColumn(name = "next_variable_id", referencedColumnName = "id", nullable = false)
     private Variable Skip.nextVariableId;
+    
+    @ManyToOne
+    @JoinColumn(name = "variable_id", referencedColumnName = "id", nullable = false)
+    private Variable Skip.variableId;
     
     @Column(name = "condition", columnDefinition = "text")
     @NotNull
     private String Skip.condition;
-    
-    public Variable Skip.getVariableId() {
-        return variableId;
-    }
-    
-    public void Skip.setVariableId(Variable variableId) {
-        this.variableId = variableId;
-    }
     
     public Variable Skip.getNextVariableId() {
         return nextVariableId;
@@ -38,6 +30,14 @@ privileged aspect Skip_Roo_DbManaged {
     
     public void Skip.setNextVariableId(Variable nextVariableId) {
         this.nextVariableId = nextVariableId;
+    }
+    
+    public Variable Skip.getVariableId() {
+        return variableId;
+    }
+    
+    public void Skip.setVariableId(Variable variableId) {
+        this.variableId = variableId;
     }
     
     public String Skip.getCondition() {

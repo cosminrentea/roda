@@ -6,7 +6,9 @@ package ro.roda.web;
 import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -18,7 +20,9 @@ import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.domain.OrgAddress;
 import ro.roda.domain.OrgAddressPK;
+import ro.roda.service.AddressService;
 import ro.roda.service.OrgAddressService;
+import ro.roda.service.OrgService;
 import ro.roda.web.OrgAddressController;
 
 privileged aspect OrgAddressController_Roo_Controller {
@@ -27,6 +31,12 @@ privileged aspect OrgAddressController_Roo_Controller {
     
     @Autowired
     OrgAddressService OrgAddressController.orgAddressService;
+    
+    @Autowired
+    AddressService OrgAddressController.addressService;
+    
+    @Autowired
+    OrgService OrgAddressController.orgService;
     
     @Autowired
     public OrgAddressController.new(ConversionService conversionService) {
@@ -53,6 +63,7 @@ privileged aspect OrgAddressController_Roo_Controller {
     
     @RequestMapping(value = "/{id}", produces = "text/html")
     public String OrgAddressController.show(@PathVariable("id") OrgAddressPK id, Model uiModel) {
+        addDateTimeFormatPatterns(uiModel);
         uiModel.addAttribute("orgaddress", orgAddressService.findOrgAddress(id));
         uiModel.addAttribute("itemId", conversionService.convert(id, String.class));
         return "orgaddresses/show";
@@ -69,6 +80,7 @@ privileged aspect OrgAddressController_Roo_Controller {
         } else {
             uiModel.addAttribute("orgaddresses", orgAddressService.findAllOrgAddresses());
         }
+        addDateTimeFormatPatterns(uiModel);
         return "orgaddresses/list";
     }
     
@@ -99,8 +111,16 @@ privileged aspect OrgAddressController_Roo_Controller {
         return "redirect:/orgaddresses";
     }
     
+    void OrgAddressController.addDateTimeFormatPatterns(Model uiModel) {
+        uiModel.addAttribute("orgAddress_datestart_date_format", DateTimeFormat.patternForStyle("M-", LocaleContextHolder.getLocale()));
+        uiModel.addAttribute("orgAddress_dateend_date_format", DateTimeFormat.patternForStyle("M-", LocaleContextHolder.getLocale()));
+    }
+    
     void OrgAddressController.populateEditForm(Model uiModel, OrgAddress orgAddress) {
         uiModel.addAttribute("orgAddress", orgAddress);
+        addDateTimeFormatPatterns(uiModel);
+        uiModel.addAttribute("addresses", addressService.findAllAddresses());
+        uiModel.addAttribute("orgs", orgService.findAllOrgs());
     }
     
     String OrgAddressController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

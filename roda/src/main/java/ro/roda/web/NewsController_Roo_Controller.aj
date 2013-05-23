@@ -19,16 +19,12 @@ import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.domain.News;
 import ro.roda.service.NewsService;
-import ro.roda.service.UsersService;
 import ro.roda.web.NewsController;
 
 privileged aspect NewsController_Roo_Controller {
     
     @Autowired
     NewsService NewsController.newsService;
-    
-    @Autowired
-    UsersService NewsController.usersService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String NewsController.create(@Valid News news, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -104,7 +100,6 @@ privileged aspect NewsController_Roo_Controller {
     void NewsController.populateEditForm(Model uiModel, News news) {
         uiModel.addAttribute("news", news);
         addDateTimeFormatPatterns(uiModel);
-        uiModel.addAttribute("userses", usersService.findAllUserses());
     }
     
     String NewsController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

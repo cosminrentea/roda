@@ -10,15 +10,15 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
-import ro.roda.domain.Instance;
+import ro.roda.domain.Series;
 import ro.roda.domain.Study;
 import ro.roda.domain.Topic;
 import ro.roda.domain.TranslatedTopic;
 
 privileged aspect Topic_Roo_DbManaged {
     
-    @ManyToMany(mappedBy = "topics1")
-    private Set<Instance> Topic.instances1;
+    @ManyToMany(mappedBy = "topics")
+    private Set<Series> Topic.series;
     
     @ManyToMany(mappedBy = "topics")
     private Set<Study> Topic.studies;
@@ -33,12 +33,12 @@ privileged aspect Topic_Roo_DbManaged {
     private Set<TranslatedTopic> Topic.translatedTopics;
     
     @ManyToOne
-    @JoinColumn(name = "preferred_synonym_topic_id", referencedColumnName = "id", insertable = false, updatable = false)
-    private Topic Topic.preferredSynonymTopicId;
-    
-    @ManyToOne
     @JoinColumn(name = "parent_id", referencedColumnName = "id", insertable = false, updatable = false)
     private Topic Topic.parentId;
+    
+    @ManyToOne
+    @JoinColumn(name = "preferred_synonym_topic_id", referencedColumnName = "id", insertable = false, updatable = false)
+    private Topic Topic.preferredSynonymTopicId;
     
     @Column(name = "name", columnDefinition = "varchar", length = 100)
     @NotNull
@@ -47,12 +47,12 @@ privileged aspect Topic_Roo_DbManaged {
     @Column(name = "description", columnDefinition = "text")
     private String Topic.description;
     
-    public Set<Instance> Topic.getInstances1() {
-        return instances1;
+    public Set<Series> Topic.getSeries() {
+        return series;
     }
     
-    public void Topic.setInstances1(Set<Instance> instances1) {
-        this.instances1 = instances1;
+    public void Topic.setSeries(Set<Series> series) {
+        this.series = series;
     }
     
     public Set<Study> Topic.getStudies() {
@@ -87,20 +87,20 @@ privileged aspect Topic_Roo_DbManaged {
         this.translatedTopics = translatedTopics;
     }
     
-    public Topic Topic.getPreferredSynonymTopicId() {
-        return preferredSynonymTopicId;
-    }
-    
-    public void Topic.setPreferredSynonymTopicId(Topic preferredSynonymTopicId) {
-        this.preferredSynonymTopicId = preferredSynonymTopicId;
-    }
-    
     public Topic Topic.getParentId() {
         return parentId;
     }
     
     public void Topic.setParentId(Topic parentId) {
         this.parentId = parentId;
+    }
+    
+    public Topic Topic.getPreferredSynonymTopicId() {
+        return preferredSynonymTopicId;
+    }
+    
+    public void Topic.setPreferredSynonymTopicId(Topic preferredSynonymTopicId) {
+        this.preferredSynonymTopicId = preferredSynonymTopicId;
     }
     
     public String Topic.getName() {

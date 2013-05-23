@@ -3,8 +3,8 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <form:update id="fu_ro_roda_domain_SamplingProcedure" modelAttribute="samplingProcedure" path="/samplingprocedures" versionField="none" z="/Q8pY4xISU+x1fMHg5jqGzL4DIw=">
-        <field:select field="instances" id="c_ro_roda_domain_SamplingProcedure_instances" itemValue="id" items="${instances}" multiple="true" path="/instances" z="aKH6LEWVMkmDTWs3QdiotdCLSLA="/>
         <field:input field="name" id="c_ro_roda_domain_SamplingProcedure_name" required="true" z="Yucz6bB/7BBh4grLZrWjXvSP3ic="/>
         <field:input field="description" id="c_ro_roda_domain_SamplingProcedure_description" z="nEQfazIWL2oy2Yf7nDn6dAc0Pmo="/>
+        <field:select field="studies" id="c_ro_roda_domain_SamplingProcedure_studies" itemValue="id" items="${studys}" multiple="true" path="/studys" z="SelsHHS1QfBbOA/yrCPdrt4jkNI="/>
     </form:update>
 </div>

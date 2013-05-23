@@ -14,7 +14,7 @@ import ro.roda.domain.SettingGroup;
 
 privileged aspect SettingGroup_Roo_DbManaged {
     
-    @OneToMany(mappedBy = "settingGroup")
+    @OneToMany(mappedBy = "settingGroupId")
     private Set<Setting> SettingGroup.settings;
     
     @OneToMany(mappedBy = "parentId")
@@ -24,7 +24,7 @@ privileged aspect SettingGroup_Roo_DbManaged {
     @JoinColumn(name = "parent_id", referencedColumnName = "id", insertable = false, updatable = false)
     private SettingGroup SettingGroup.parentId;
     
-    @Column(name = "name", columnDefinition = "varchar", length = 150)
+    @Column(name = "name", columnDefinition = "text")
     @NotNull
     private String SettingGroup.name;
     

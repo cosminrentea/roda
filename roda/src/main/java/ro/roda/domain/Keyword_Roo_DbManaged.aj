@@ -7,14 +7,10 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
-import ro.roda.domain.InstanceKeyword;
 import ro.roda.domain.Keyword;
 import ro.roda.domain.StudyKeyword;
 
 privileged aspect Keyword_Roo_DbManaged {
-    
-    @OneToMany(mappedBy = "keywordId")
-    private Set<InstanceKeyword> Keyword.instanceKeywords;
     
     @OneToMany(mappedBy = "keywordId")
     private Set<StudyKeyword> Keyword.studyKeywords;
@@ -22,14 +18,6 @@ privileged aspect Keyword_Roo_DbManaged {
     @Column(name = "name", columnDefinition = "text")
     @NotNull
     private String Keyword.name;
-    
-    public Set<InstanceKeyword> Keyword.getInstanceKeywords() {
-        return instanceKeywords;
-    }
-    
-    public void Keyword.setInstanceKeywords(Set<InstanceKeyword> instanceKeywords) {
-        this.instanceKeywords = instanceKeywords;
-    }
     
     public Set<StudyKeyword> Keyword.getStudyKeywords() {
         return studyKeywords;

@@ -3,7 +3,6 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <form:update id="fu_ro_roda_domain_Topic" modelAttribute="topic" path="/topics" versionField="none" z="ylofo/CRJixMfh6rN2+Ero90i6s=">
-        <field:select field="instances1" id="c_ro_roda_domain_Topic_instances1" itemValue="id" items="${instances}" multiple="true" path="/instances" z="oaOg7ZeNF2rirI7+KAP8u4pebPY="/>
         <field:select field="studies" id="c_ro_roda_domain_Topic_studies" itemValue="id" items="${studys}" multiple="true" path="/studys" z="bLxdU7Y8Ar40t/y8pIMYm0YY2J4="/>
         <field:simple field="topics" id="c_ro_roda_domain_Topic_topics" messageCode="entity_reference_not_managed" messageCodeAttribute="Topic" z="FGMNjag8rwRVCZkUJeSfvqsr2DI="/>
         <field:simple field="topics1" id="c_ro_roda_domain_Topic_topics1" messageCode="entity_reference_not_managed" messageCodeAttribute="Topic" z="U+9kROpoefhPwJr3gD+E6afxGqw="/>
@@ -12,5 +11,6 @@
         <field:input field="name" id="c_ro_roda_domain_Topic_name" required="true" z="phte3U5lrdC17xg1Dc1riZ68Bdw="/>
         <field:input field="description" id="c_ro_roda_domain_Topic_description" z="OvWsYp02ICxht9TqjH7txEjOAIE="/>
         <field:select field="parentId" id="c_ro_roda_domain_Topic_parentId" itemValue="id" items="${topics}" path="/topics" z="xc6BKi16/gof/udsbCt5LDEMNfI="/>
+        <field:select field="series" id="c_ro_roda_domain_Topic_series" itemValue="catalogId" items="${serieses}" multiple="true" path="/serieses" z="r5xPlAqtPtngrKDk3E79QJvZGV8="/>
     </form:update>
 </div>

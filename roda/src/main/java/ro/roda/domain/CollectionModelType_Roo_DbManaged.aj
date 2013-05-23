@@ -10,27 +10,27 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.validation.constraints.NotNull;
 import ro.roda.domain.CollectionModelType;
-import ro.roda.domain.Instance;
+import ro.roda.domain.Study;
 
 privileged aspect CollectionModelType_Roo_DbManaged {
     
     @ManyToMany
-    @JoinTable(name = "meth_coll_type", joinColumns = { @JoinColumn(name = "collection_model_id", nullable = false) }, inverseJoinColumns = { @JoinColumn(name = "instance_id", nullable = false) })
-    private Set<Instance> CollectionModelType.instances;
+    @JoinTable(name = "meth_coll_type", joinColumns = { @JoinColumn(name = "collection_model_id", nullable = false) }, inverseJoinColumns = { @JoinColumn(name = "study_id", nullable = false) })
+    private Set<Study> CollectionModelType.studies;
     
-    @Column(name = "name", columnDefinition = "text")
+    @Column(name = "name", columnDefinition = "varchar", length = 100)
     @NotNull
     private String CollectionModelType.name;
     
     @Column(name = "description", columnDefinition = "text")
     private String CollectionModelType.description;
     
-    public Set<Instance> CollectionModelType.getInstances() {
-        return instances;
+    public Set<Study> CollectionModelType.getStudies() {
+        return studies;
     }
     
-    public void CollectionModelType.setInstances(Set<Instance> instances) {
-        this.instances = instances;
+    public void CollectionModelType.setStudies(Set<Study> studies) {
+        this.studies = studies;
     }
     
     public String CollectionModelType.getName() {

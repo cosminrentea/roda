@@ -10,9 +10,9 @@ import org.springframework.roo.addon.tostring.RooToString;
 
 @RooJavaBean
 @RooToString
-@RooJpaActiveRecord(table = "instance", schema = "public")
 @RooDbManaged(automaticallyDelete = true)
 @RooSolrSearchable
 @RooJson
+@RooJpaActiveRecord(table = "instance", schema = "public", versionField = "")
 public class Instance {
 }

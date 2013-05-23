@@ -4,7 +4,7 @@
     <jsp:output omit-xml-declaration="yes"/>
     <form:update id="fu_ro_roda_domain_SourceContacts" modelAttribute="sourceContacts" path="/sourcecontactses" versionField="none" z="Fergb8AuWURICkJs45jLoASvsZk=">
         <field:select field="personId" id="c_ro_roda_domain_SourceContacts_personId" itemValue="id" items="${people}" path="/people" z="1PzVoXYis9WrYsMIRa3bMDdRcf0="/>
-        <field:select field="sourceId" id="c_ro_roda_domain_SourceContacts_sourceId" itemValue="orgId" items="${sources}" path="/sources" z="0+DdTv7PzAFnBY6pPuTqBb8Ff9A="/>
+        <field:select field="sourceId" id="c_ro_roda_domain_SourceContacts_sourceId" itemValue="id" items="${sources}" path="/sources" z="rDMbacZOQJJPvwpuaz/nq8wqbKo="/>
         <field:select field="sourceContactMethodId" id="c_ro_roda_domain_SourceContacts_sourceContactMethodId" itemValue="id" items="${sourcecontactmethods}" path="/sourcecontactmethods" z="wibRAwNBgyrC5S/buZZ7v/6wmgA="/>
         <field:input field="synopsis" id="c_ro_roda_domain_SourceContacts_synopsis" required="true" z="osvgUV6QE92m+1h1J1RGNSG0B0U="/>
         <field:input field="followup" id="c_ro_roda_domain_SourceContacts_followup" required="true" validationMessageCode="field_invalid_integer" z="hkFux467c1NYvyzEW+cHkRppLO8="/>

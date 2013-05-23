@@ -13,4 +13,10 @@
 <definition extends="default" name="userses/update">
         <put-attribute name="body" value="/WEB-INF/views/userses/update.jspx"/>
     </definition>
+<definition extends="default" name="userses/findUsersesByUsernameLike">
+        <put-attribute name="body" value="/WEB-INF/views/userses/findUsersesByUsernameLike.jspx"/>
+    </definition>
+<definition extends="default" name="userses/findUsersesByUsernameLikeAndEnabled">
+        <put-attribute name="body" value="/WEB-INF/views/userses/findUsersesByUsernameLikeAndEnabled.jspx"/>
+    </definition>
 </tiles-definitions>

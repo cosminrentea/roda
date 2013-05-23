@@ -12,11 +12,10 @@
         <field:simple field="skips" id="c_ro_roda_domain_Variable_skips" messageCode="entity_reference_not_managed" messageCodeAttribute="Skip" z="PoFseWOGwr/7rx/hh3W0ga7ms9w="/>
         <field:simple field="skips1" id="c_ro_roda_domain_Variable_skips1" messageCode="entity_reference_not_managed" messageCodeAttribute="Skip" z="2GXzJaG4t7nsF+14BB9Lze6TwJI="/>
         <field:select field="fileId" id="c_ro_roda_domain_Variable_fileId" itemValue="id" items="${files}" path="/files" z="+UCGJ+rFynZeFBtU/UZFJTY6/l4="/>
-        <field:select field="instanceId" id="c_ro_roda_domain_Variable_instanceId" itemValue="id" items="${instances}" path="/instances" z="ayA+mfjL0+JZeYrr6dBxLnKX1Lc="/>
         <field:input field="label" id="c_ro_roda_domain_Variable_label" required="true" z="U4H9F6TRglypoj0aBR3oJ62o50I="/>
         <field:input field="type" id="c_ro_roda_domain_Variable_type" required="true" validationMessageCode="field_invalid_integer" z="SZ9yMYHU52F4bU5bITPd0zMpPtg="/>
-        <field:input field="orderInInstance" id="c_ro_roda_domain_Variable_orderInInstance" required="true" validationMessageCode="field_invalid_integer" z="ITUGuc2gQNjfILvPiZUIEqeaQfc="/>
         <field:input field="operatorInstructions" id="c_ro_roda_domain_Variable_operatorInstructions" z="EetEOYIX6xzRdjI4JOLi4CfEiU8="/>
         <field:input field="variableType" id="c_ro_roda_domain_Variable_variableType" required="true" validationMessageCode="field_invalid_integer" z="m5NMLow0YXw7fJ6eJf9zBWJuIsU="/>
+        <field:simple field="instanceVariables" id="c_ro_roda_domain_Variable_instanceVariables" messageCode="entity_reference_not_managed" messageCodeAttribute="Instance Variable" z="smV5o8nNXDPHMCfmhcKO/ZW50kQ="/>
     </form:update>
 </div>

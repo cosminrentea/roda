@@ -10,7 +10,7 @@ import ro.roda.domain.Study;
 privileged aspect Study_Roo_ToString {
     
     public String Study.toString() {
-        return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+        return new ReflectionToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE).setExcludeFieldNames("timeMethType").toString();
     }
     
 }

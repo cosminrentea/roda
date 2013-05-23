@@ -21,24 +21,19 @@ privileged aspect InstanceDescr_Roo_DbManaged {
     @JoinColumn(name = "lang_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     private Lang InstanceDescr.langId;
     
-    @Column(name = "weighting", columnDefinition = "text")
-    private String InstanceDescr.weighting;
+    @Column(name = "access_conditions", columnDefinition = "text")
+    private String InstanceDescr.accessConditions;
     
-    @Column(name = "research_instrument", columnDefinition = "text")
-    private String InstanceDescr.researchInstrument;
-    
-    @Column(name = "scope", columnDefinition = "text")
-    private String InstanceDescr.scope;
-    
-    @Column(name = "universe", columnDefinition = "text")
-    private String InstanceDescr.universe;
-    
-    @Column(name = "abstract", columnDefinition = "text")
-    private String InstanceDescr.abstract1;
+    @Column(name = "notes", columnDefinition = "text")
+    private String InstanceDescr.notes;
     
     @Column(name = "title", columnDefinition = "text")
     @NotNull
     private String InstanceDescr.title;
+    
+    @Column(name = "original_title_language", columnDefinition = "bool")
+    @NotNull
+    private boolean InstanceDescr.originalTitleLanguage;
     
     public Instance InstanceDescr.getInstanceId() {
         return instanceId;
@@ -56,44 +51,20 @@ privileged aspect InstanceDescr_Roo_DbManaged {
         this.langId = langId;
     }
     
-    public String InstanceDescr.getWeighting() {
-        return weighting;
+    public String InstanceDescr.getAccessConditions() {
+        return accessConditions;
     }
     
-    public void InstanceDescr.setWeighting(String weighting) {
-        this.weighting = weighting;
+    public void InstanceDescr.setAccessConditions(String accessConditions) {
+        this.accessConditions = accessConditions;
     }
     
-    public String InstanceDescr.getResearchInstrument() {
-        return researchInstrument;
+    public String InstanceDescr.getNotes() {
+        return notes;
     }
     
-    public void InstanceDescr.setResearchInstrument(String researchInstrument) {
-        this.researchInstrument = researchInstrument;
-    }
-    
-    public String InstanceDescr.getScope() {
-        return scope;
-    }
-    
-    public void InstanceDescr.setScope(String scope) {
-        this.scope = scope;
-    }
-    
-    public String InstanceDescr.getUniverse() {
-        return universe;
-    }
-    
-    public void InstanceDescr.setUniverse(String universe) {
-        this.universe = universe;
-    }
-    
-    public String InstanceDescr.getAbstract1() {
-        return abstract1;
-    }
-    
-    public void InstanceDescr.setAbstract1(String abstract1) {
-        this.abstract1 = abstract1;
+    public void InstanceDescr.setNotes(String notes) {
+        this.notes = notes;
     }
     
     public String InstanceDescr.getTitle() {
@@ -102,6 +73,14 @@ privileged aspect InstanceDescr_Roo_DbManaged {
     
     public void InstanceDescr.setTitle(String title) {
         this.title = title;
+    }
+    
+    public boolean InstanceDescr.isOriginalTitleLanguage() {
+        return originalTitleLanguage;
+    }
+    
+    public void InstanceDescr.setOriginalTitleLanguage(boolean originalTitleLanguage) {
+        this.originalTitleLanguage = originalTitleLanguage;
     }
     
 }

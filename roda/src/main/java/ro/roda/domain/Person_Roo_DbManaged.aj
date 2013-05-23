@@ -19,7 +19,6 @@ import ro.roda.domain.PersonLinks;
 import ro.roda.domain.PersonOrg;
 import ro.roda.domain.PersonPhone;
 import ro.roda.domain.Prefix;
-import ro.roda.domain.SourceContacts;
 import ro.roda.domain.StudyPerson;
 import ro.roda.domain.Suffix;
 
@@ -48,9 +47,6 @@ privileged aspect Person_Roo_DbManaged {
     
     @OneToMany(mappedBy = "personId")
     private Set<PersonPhone> Person.personPhones;
-    
-    @OneToMany(mappedBy = "personId")
-    private Set<SourceContacts> Person.sourceContactss;
     
     @OneToMany(mappedBy = "personId")
     private Set<StudyPerson> Person.studypeople;
@@ -136,14 +132,6 @@ privileged aspect Person_Roo_DbManaged {
     
     public void Person.setPersonPhones(Set<PersonPhone> personPhones) {
         this.personPhones = personPhones;
-    }
-    
-    public Set<SourceContacts> Person.getSourceContactss() {
-        return sourceContactss;
-    }
-    
-    public void Person.setSourceContactss(Set<SourceContacts> sourceContactss) {
-        this.sourceContactss = sourceContactss;
     }
     
     public Set<StudyPerson> Person.getStudypeople() {

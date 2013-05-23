@@ -3,7 +3,6 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <form:update id="fu_ro_roda_domain_StudyOrg" modelAttribute="studyOrg" path="/studyorgs" versionField="none" z="VBCRoEdnpNBT7gcFAZfhAVL8Dag=">
-        <field:input field="citation" id="c_ro_roda_domain_StudyOrg_citation" z="8Ps4EJmne4Pr3DpPB5XZRw3IvCQ="/>
         <field:input field="assocDetails" id="c_ro_roda_domain_StudyOrg_assocDetails" z="MGTi4ZSXw9W17OcYwEiEmlLvvEE="/>
     </form:update>
 </div>

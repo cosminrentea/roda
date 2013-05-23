@@ -9,7 +9,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Version;
 import ro.roda.domain.Instance;
 
 privileged aspect Instance_Roo_Jpa_Entity {
@@ -23,24 +22,12 @@ privileged aspect Instance_Roo_Jpa_Entity {
     @Column(name = "id", columnDefinition = "serial")
     private Integer Instance.id;
     
-    @Version
-    @Column(name = "version")
-    private Integer Instance.version;
-    
     public Integer Instance.getId() {
         return this.id;
     }
     
     public void Instance.setId(Integer id) {
         this.id = id;
-    }
-    
-    public Integer Instance.getVersion() {
-        return this.version;
-    }
-    
-    public void Instance.setVersion(Integer version) {
-        this.version = version;
     }
     
 }

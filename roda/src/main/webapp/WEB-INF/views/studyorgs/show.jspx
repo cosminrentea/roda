@@ -6,7 +6,6 @@
         <field:display field="orgId" id="s_ro_roda_domain_StudyOrg_orgId" object="${studyorg}" z="RbW/ILw0KX/XFZCuSFLEdUtr0vU="/>
         <field:display field="studyId" id="s_ro_roda_domain_StudyOrg_studyId" object="${studyorg}" z="uDJBGq9MavklIG2nzdno/Ei51ok="/>
         <field:display field="assoctypeId" id="s_ro_roda_domain_StudyOrg_assoctypeId" object="${studyorg}" z="xSltFP7rXdICI9Qg9GYIosRpr1I="/>
-        <field:display field="citation" id="s_ro_roda_domain_StudyOrg_citation" object="${studyorg}" z="5R3c7BfQ78Ln45JpDllHgtFySYQ="/>
         <field:display field="assocDetails" id="s_ro_roda_domain_StudyOrg_assocDetails" object="${studyorg}" z="tfaNecwqc704YA9CYUh5kNzM0vQ="/>
     </page:show>
 </div>

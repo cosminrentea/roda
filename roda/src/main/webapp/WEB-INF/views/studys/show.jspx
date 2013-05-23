@@ -12,5 +12,14 @@
         <field:display date="true" dateTimePattern="${study_dateend_date_format}" field="dateEnd" id="s_ro_roda_domain_Study_dateEnd" object="${study}" z="Vw9BtCpb8Yq2pgyKpRPb/Sqx9Mw="/>
         <field:display field="digitizable" id="s_ro_roda_domain_Study_digitizable" object="${study}" z="YUgOo0K9pGuzmCr13sfzx5oncsE="/>
         <field:display field="anonymousUsage" id="s_ro_roda_domain_Study_anonymousUsage" object="${study}" z="/TKWVTQvuvavOxl85CjPjBr37jY="/>
+        <field:display field="samplingProcedures" id="s_ro_roda_domain_Study_samplingProcedures" object="${study}" z="X+wvGG+Cdq1U8nzl4Qw4jgbl1uY="/>
+        <field:display field="collectionModelTypes" id="s_ro_roda_domain_Study_collectionModelTypes" object="${study}" z="6C6Fs1hFWAZHkVwiWn9Y8hEaxuM="/>
+        <field:display field="dataSourceTypes" id="s_ro_roda_domain_Study_dataSourceTypes" object="${study}" z="U9Zlq+j/Jb3aCzV0/AcvNJ8kY0s="/>
+        <field:display field="sources" id="s_ro_roda_domain_Study_sources" object="${study}" z="YbO6/yHf0qc888FIqJvdTiFMWGA="/>
+        <field:display field="timeMethType" id="s_ro_roda_domain_Study_timeMethType" object="${study}" z="zHbUQFNmDmEyErb81usYhFvK+zU="/>
+        <field:display field="unitAnalysisId" id="s_ro_roda_domain_Study_unitAnalysisId" object="${study}" z="pDalYmddqJtcnIvEL1ycEEmvrKQ="/>
+        <field:display field="rawData" id="s_ro_roda_domain_Study_rawData" object="${study}" z="FWFFC7nDeer4DlleKRZ+3P/wFZQ="/>
+        <field:display field="rawMetadata" id="s_ro_roda_domain_Study_rawMetadata" object="${study}" z="v7ptdm5MXnbgG3rLnrB25zV2J5M="/>
+        <field:display field="timeMethId" id="s_ro_roda_domain_Study_timeMethId" object="${study}" z="mv5/MezdeNKm90A4yqYgKdZaRXE="/>
     </page:show>
 </div>

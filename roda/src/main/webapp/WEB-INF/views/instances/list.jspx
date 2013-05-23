@@ -4,10 +4,7 @@
     <jsp:output omit-xml-declaration="yes"/>
     <page:list id="pl_ro_roda_domain_Instance" items="${instances}" z="wzG7NyHotVIgj5jnpTUBySy2L0Q=">
         <table:table data="${instances}" id="l_ro_roda_domain_Instance" path="/instances" z="xVm9PdUz9eQZsGUbn5F6crgdBwg=">
-            <table:column id="c_ro_roda_domain_Instance_samplingProcedures" property="samplingProcedures" z="+jnILo6Mat0Y8d1BMAp+UEPvTRY="/>
-            <table:column id="c_ro_roda_domain_Instance_topics1" property="topics1" z="FTyfJ/lUAY5WBxQHMLTBHn7XkGg="/>
             <table:column id="c_ro_roda_domain_Instance_files" property="files" z="f37eh/dVO56UM6zy3d6Nbm55ZvI="/>
-            <table:column id="c_ro_roda_domain_Instance_collectionModelTypes" property="collectionModelTypes" z="l5pltPNLicsWl98rgFGbC3t8UHQ="/>
         </table:table>
     </page:list>
 </div>

@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.domain.Topic;
-import ro.roda.service.InstanceService;
+import ro.roda.service.SeriesService;
 import ro.roda.service.StudyService;
 import ro.roda.service.TopicService;
 import ro.roda.service.TranslatedTopicService;
@@ -28,7 +28,7 @@ privileged aspect TopicController_Roo_Controller {
     TopicService TopicController.topicService;
     
     @Autowired
-    InstanceService TopicController.instanceService;
+    SeriesService TopicController.seriesService;
     
     @Autowired
     StudyService TopicController.studyService;
@@ -103,7 +103,7 @@ privileged aspect TopicController_Roo_Controller {
     
     void TopicController.populateEditForm(Model uiModel, Topic topic) {
         uiModel.addAttribute("topic", topic);
-        uiModel.addAttribute("instances", instanceService.findAllInstances());
+        uiModel.addAttribute("serieses", seriesService.findAllSerieses());
         uiModel.addAttribute("studys", studyService.findAllStudys());
         uiModel.addAttribute("topics", topicService.findAllTopics());
         uiModel.addAttribute("translatedtopics", translatedTopicService.findAllTranslatedTopics());

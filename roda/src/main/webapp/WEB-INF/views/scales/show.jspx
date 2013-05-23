@@ -7,7 +7,5 @@
         <field:display field="maxValueId" id="s_ro_roda_domain_Scale_maxValueId" object="${scale}" z="D6v/PidQf7pc0h2Lf34QPUQG5lY="/>
         <field:display field="minValueId" id="s_ro_roda_domain_Scale_minValueId" object="${scale}" z="VPrppMX9D7lIJ0CjERbG3nTDDGs="/>
         <field:display field="units" id="s_ro_roda_domain_Scale_units" object="${scale}" z="5u5XTncNEkLjIr+RORiEyiikebk="/>
-        <field:display field="maxvalueId" id="s_ro_roda_domain_Scale_maxvalueId" object="${scale}" z="1bgBkFJWtrlIbV0SNOb1NwZ89vw="/>
-        <field:display field="minvalueId" id="s_ro_roda_domain_Scale_minvalueId" object="${scale}" z="wd1FT9Xsl5sSSJp9MGuq1AgyHNc="/>
     </page:show>
 </div>

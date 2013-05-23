@@ -3,7 +3,6 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <form:update id="fu_ro_roda_domain_Keyword" modelAttribute="keyword" path="/keywords" versionField="none" z="e2bH3jkUuZ98Dhnf4clVhSBbaXc=">
-        <field:simple field="instanceKeywords" id="c_ro_roda_domain_Keyword_instanceKeywords" messageCode="entity_reference_not_managed" messageCodeAttribute="Instance Keyword" z="MRxRbXgSd395T0STvQg4nX6A4nU="/>
         <field:simple field="studyKeywords" id="c_ro_roda_domain_Keyword_studyKeywords" messageCode="entity_reference_not_managed" messageCodeAttribute="Study Keyword" z="HdlVw8j2nJDwdHqlAmsr/A6Fntc="/>
         <field:input field="name" id="c_ro_roda_domain_Keyword_name" required="true" z="mVRqdjUVWBX60ICuvh9ITzXgdjI="/>
     </form:update>

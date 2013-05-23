@@ -6,50 +6,36 @@ package ro.roda.domain;
 import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 import ro.roda.domain.Setting;
 import ro.roda.domain.SettingGroup;
-import ro.roda.domain.SettingValue;
 
 privileged aspect Setting_Roo_DbManaged {
     
-    @OneToOne(mappedBy = "setting")
-    private SettingValue Setting.settingValue;
-    
     @ManyToOne
-    @JoinColumn(name = "setting_group", referencedColumnName = "id", nullable = false)
-    private SettingGroup Setting.settingGroup;
+    @JoinColumn(name = "setting_group_id", referencedColumnName = "id", nullable = false)
+    private SettingGroup Setting.settingGroupId;
     
-    @Column(name = "name", columnDefinition = "varchar", length = 150)
+    @Column(name = "name", columnDefinition = "text")
     @NotNull
     private String Setting.name;
     
     @Column(name = "description", columnDefinition = "text")
     private String Setting.description;
     
-    @Column(name = "predefined_values", columnDefinition = "text")
-    @NotNull
-    private String Setting.predefinedValues;
-    
     @Column(name = "default_value", columnDefinition = "text")
-    @NotNull
     private String Setting.defaultValue;
     
-    public SettingValue Setting.getSettingValue() {
-        return settingValue;
+    @Column(name = "value", columnDefinition = "text")
+    @NotNull
+    private String Setting.value;
+    
+    public SettingGroup Setting.getSettingGroupId() {
+        return settingGroupId;
     }
     
-    public void Setting.setSettingValue(SettingValue settingValue) {
-        this.settingValue = settingValue;
-    }
-    
-    public SettingGroup Setting.getSettingGroup() {
-        return settingGroup;
-    }
-    
-    public void Setting.setSettingGroup(SettingGroup settingGroup) {
-        this.settingGroup = settingGroup;
+    public void Setting.setSettingGroupId(SettingGroup settingGroupId) {
+        this.settingGroupId = settingGroupId;
     }
     
     public String Setting.getName() {
@@ -68,20 +54,20 @@ privileged aspect Setting_Roo_DbManaged {
         this.description = description;
     }
     
-    public String Setting.getPredefinedValues() {
-        return predefinedValues;
-    }
-    
-    public void Setting.setPredefinedValues(String predefinedValues) {
-        this.predefinedValues = predefinedValues;
-    }
-    
     public String Setting.getDefaultValue() {
         return defaultValue;
     }
     
     public void Setting.setDefaultValue(String defaultValue) {
         this.defaultValue = defaultValue;
+    }
+    
+    public String Setting.getValue() {
+        return value;
+    }
+    
+    public void Setting.setValue(String value) {
+        this.value = value;
     }
     
 }

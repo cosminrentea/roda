@@ -11,13 +11,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
 import org.springframework.format.annotation.DateTimeFormat;
 import ro.roda.domain.Form;
 import ro.roda.domain.FormEditedNumberVar;
 import ro.roda.domain.FormEditedTextVar;
 import ro.roda.domain.FormSelectionVar;
-import ro.roda.domain.Instance;
+import ro.roda.domain.InstanceForm;
 import ro.roda.domain.Person;
 
 privileged aspect Form_Roo_DbManaged {
@@ -31,17 +30,12 @@ privileged aspect Form_Roo_DbManaged {
     @OneToMany(mappedBy = "formId")
     private Set<FormSelectionVar> Form.formSelectionVars;
     
-    @ManyToOne
-    @JoinColumn(name = "instance_id", referencedColumnName = "id", nullable = false)
-    private Instance Form.instanceId;
+    @OneToMany(mappedBy = "formId")
+    private Set<InstanceForm> Form.instanceForms;
     
     @ManyToOne
     @JoinColumn(name = "operator_id", referencedColumnName = "id")
     private Person Form.operatorId;
-    
-    @Column(name = "order_in_instance", columnDefinition = "int4", unique = true)
-    @NotNull
-    private Integer Form.orderInInstance;
     
     @Column(name = "operator_notes", columnDefinition = "text")
     private String Form.operatorNotes;
@@ -75,12 +69,12 @@ privileged aspect Form_Roo_DbManaged {
         this.formSelectionVars = formSelectionVars;
     }
     
-    public Instance Form.getInstanceId() {
-        return instanceId;
+    public Set<InstanceForm> Form.getInstanceForms() {
+        return instanceForms;
     }
     
-    public void Form.setInstanceId(Instance instanceId) {
-        this.instanceId = instanceId;
+    public void Form.setInstanceForms(Set<InstanceForm> instanceForms) {
+        this.instanceForms = instanceForms;
     }
     
     public Person Form.getOperatorId() {
@@ -89,14 +83,6 @@ privileged aspect Form_Roo_DbManaged {
     
     public void Form.setOperatorId(Person operatorId) {
         this.operatorId = operatorId;
-    }
-    
-    public Integer Form.getOrderInInstance() {
-        return orderInInstance;
-    }
-    
-    public void Form.setOrderInInstance(Integer orderInInstance) {
-        this.orderInInstance = orderInInstance;
     }
     
     public String Form.getOperatorNotes() {

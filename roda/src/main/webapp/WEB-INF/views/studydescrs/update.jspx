@@ -3,9 +3,18 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <form:update id="fu_ro_roda_domain_StudyDescr" modelAttribute="studyDescr" path="/studydescrs" versionField="none" z="Z6kFB7YO5WW1QYwdm9gLLsmOPXo=">
-        <field:select field="titleTypeId" id="c_ro_roda_domain_StudyDescr_titleTypeId" itemValue="id" items="${titletypes}" path="/titletypes" z="4VJmd/l0r+X5cZOmdE4guO6f69s="/>
         <field:input field="abstract1" id="c_ro_roda_domain_StudyDescr_abstract1" z="YwDCOIrlkkZc1dOg5ohB1RiWIIk="/>
         <field:input field="grantDetails" id="c_ro_roda_domain_StudyDescr_grantDetails" z="8Erc1xgfUDIQv8aRgwSa9C8XXyA="/>
         <field:input field="title" id="c_ro_roda_domain_StudyDescr_title" required="true" z="y3QAgvRlBakimqBmNIrGN0ep2fA="/>
+        <field:input field="notes" id="c_ro_roda_domain_StudyDescr_notes" z="amHni/hDJVaJXTClDNTkP45rna8="/>
+        <field:input field="weighting" id="c_ro_roda_domain_StudyDescr_weighting" z="lIH79bnKez4f7iJ8nxavQ1P9N64="/>
+        <field:input field="researchInstrument" id="c_ro_roda_domain_StudyDescr_researchInstrument" z="G4pFKV3vh/cw6hC+syeHQ5jHMqE="/>
+        <field:input field="scope" id="c_ro_roda_domain_StudyDescr_scope" z="k51XKJJE/+P0TrKw6zJeub5dkHY="/>
+        <field:input field="universe" id="c_ro_roda_domain_StudyDescr_universe" z="Q3XUQZkD0THwiepEqtjVGLuw4Hk="/>
+        <field:input field="subtitle" id="c_ro_roda_domain_StudyDescr_subtitle" z="QgOMP3IR2YhTSYdYzkUCGTdoprs="/>
+        <field:input field="alternativeTitle" id="c_ro_roda_domain_StudyDescr_alternativeTitle" z="h1TQy6RYFlTH9D8j+qHRCWLYpyg="/>
+        <field:checkbox field="originalTitleLanguage" id="c_ro_roda_domain_StudyDescr_originalTitleLanguage" z="8GlcjaUBMWjGW3EoiMI6/6tEGDY="/>
+        <field:input field="timeCovered" id="c_ro_roda_domain_StudyDescr_timeCovered" z="XYk78/ZnoXWeLBUckr2/2OZp5MY="/>
+        <field:input field="geographicCoverage" id="c_ro_roda_domain_StudyDescr_geographicCoverage" z="FVfewztX2cRimydchkDDkk+RmK0="/>
     </form:update>
 </div>

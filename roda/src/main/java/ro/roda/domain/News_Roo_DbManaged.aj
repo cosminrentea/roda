@@ -5,20 +5,13 @@ package ro.roda.domain;
 
 import java.util.Calendar;
 import javax.persistence.Column;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import org.springframework.format.annotation.DateTimeFormat;
 import ro.roda.domain.News;
-import ro.roda.domain.Users;
 
 privileged aspect News_Roo_DbManaged {
-    
-    @ManyToOne
-    @JoinColumn(name = "added_by", referencedColumnName = "id", nullable = false)
-    private Users News.addedBy;
     
     @Column(name = "added", columnDefinition = "timestamp")
     @NotNull
@@ -36,14 +29,6 @@ privileged aspect News_Roo_DbManaged {
     
     @Column(name = "content", columnDefinition = "text")
     private String News.content;
-    
-    public Users News.getAddedBy() {
-        return addedBy;
-    }
-    
-    public void News.setAddedBy(Users addedBy) {
-        this.addedBy = addedBy;
-    }
     
     public Calendar News.getAdded() {
         return added;

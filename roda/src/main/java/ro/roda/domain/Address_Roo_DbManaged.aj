@@ -26,10 +26,6 @@ privileged aspect Address_Roo_DbManaged {
     @JoinColumn(name = "city_id", referencedColumnName = "id", nullable = false)
     private City Address.cityId;
     
-    @Column(name = "country_id", columnDefinition = "bpchar", length = 2)
-    @NotNull
-    private String Address.countryId;
-    
     @Column(name = "address1", columnDefinition = "text")
     @NotNull
     private String Address.address1;
@@ -68,14 +64,6 @@ privileged aspect Address_Roo_DbManaged {
     
     public void Address.setCityId(City cityId) {
         this.cityId = cityId;
-    }
-    
-    public String Address.getCountryId() {
-        return countryId;
-    }
-    
-    public void Address.setCountryId(String countryId) {
-        this.countryId = countryId;
     }
     
     public String Address.getAddress1() {

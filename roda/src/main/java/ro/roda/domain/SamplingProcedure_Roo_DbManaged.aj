@@ -5,29 +5,32 @@ package ro.roda.domain;
 
 import java.util.Set;
 import javax.persistence.Column;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.validation.constraints.NotNull;
-import ro.roda.domain.Instance;
 import ro.roda.domain.SamplingProcedure;
+import ro.roda.domain.Study;
 
 privileged aspect SamplingProcedure_Roo_DbManaged {
     
-    @ManyToMany(mappedBy = "samplingProcedures")
-    private Set<Instance> SamplingProcedure.instances;
+    @ManyToMany
+    @JoinTable(name = "instance_sampling_procedure", joinColumns = { @JoinColumn(name = "sampling_procedure_id", nullable = false) }, inverseJoinColumns = { @JoinColumn(name = "study_id", nullable = false) })
+    private Set<Study> SamplingProcedure.studies;
     
-    @Column(name = "name", columnDefinition = "text")
+    @Column(name = "name", columnDefinition = "varchar", length = 100)
     @NotNull
     private String SamplingProcedure.name;
     
     @Column(name = "description", columnDefinition = "text")
     private String SamplingProcedure.description;
     
-    public Set<Instance> SamplingProcedure.getInstances() {
-        return instances;
+    public Set<Study> SamplingProcedure.getStudies() {
+        return studies;
     }
     
-    public void SamplingProcedure.setInstances(Set<Instance> instances) {
-        this.instances = instances;
+    public void SamplingProcedure.setStudies(Set<Study> studies) {
+        this.studies = studies;
     }
     
     public String SamplingProcedure.getName() {

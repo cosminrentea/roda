@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import ro.roda.domain.Address;
+import ro.roda.domain.City;
 import ro.roda.web.AddressController;
 
 privileged aspect AddressController_Roo_Controller_Json {
@@ -90,6 +92,30 @@ privileged aspect AddressController_Roo_Controller_Json {
         }
         addressService.deleteAddress(address);
         return new ResponseEntity<String>(headers, HttpStatus.OK);
+    }
+    
+    @RequestMapping(params = "find=ByCityId", headers = "Accept=application/json")
+    @ResponseBody
+    public ResponseEntity<String> AddressController.jsonFindAddressesByCityId(@RequestParam("cityId") City cityId) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Type", "application/json; charset=utf-8");
+        return new ResponseEntity<String>(Address.toJsonArray(Address.findAddressesByCityId(cityId).getResultList()), headers, HttpStatus.OK);
+    }
+    
+    @RequestMapping(params = "find=ByCityIdAndPostalCodeEquals", headers = "Accept=application/json")
+    @ResponseBody
+    public ResponseEntity<String> AddressController.jsonFindAddressesByCityIdAndPostalCodeEquals(@RequestParam("cityId") City cityId, @RequestParam("postalCode") String postalCode) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Type", "application/json; charset=utf-8");
+        return new ResponseEntity<String>(Address.toJsonArray(Address.findAddressesByCityIdAndPostalCodeEquals(cityId, postalCode).getResultList()), headers, HttpStatus.OK);
+    }
+    
+    @RequestMapping(params = "find=ByPostalCodeEquals", headers = "Accept=application/json")
+    @ResponseBody
+    public ResponseEntity<String> AddressController.jsonFindAddressesByPostalCodeEquals(@RequestParam("postalCode") String postalCode) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Type", "application/json; charset=utf-8");
+        return new ResponseEntity<String>(Address.toJsonArray(Address.findAddressesByPostalCodeEquals(postalCode).getResultList()), headers, HttpStatus.OK);
     }
     
 }

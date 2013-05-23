@@ -6,10 +6,9 @@
         <field:simple field="formEditedNumberVars" id="c_ro_roda_domain_Form_formEditedNumberVars" messageCode="entity_reference_not_managed" messageCodeAttribute="Form Edited Number Var" z="7WGb+UH1TduHkKefBY3o5D0xxa8="/>
         <field:simple field="formEditedTextVars" id="c_ro_roda_domain_Form_formEditedTextVars" messageCode="entity_reference_not_managed" messageCodeAttribute="Form Edited Text Var" z="LzoH2BBrGzh3ziMnZHZRyP/zwxw="/>
         <field:simple field="formSelectionVars" id="c_ro_roda_domain_Form_formSelectionVars" messageCode="entity_reference_not_managed" messageCodeAttribute="Form Selection Var" z="izF0DbgW1p+oMsMhDQ/IPvxnMUs="/>
-        <field:select field="instanceId" id="c_ro_roda_domain_Form_instanceId" itemValue="id" items="${instances}" path="/instances" z="DeTkY3BFdJiDSIkepA71hoj/dTs="/>
         <field:select field="operatorId" id="c_ro_roda_domain_Form_operatorId" itemValue="id" items="${people}" path="/people" z="I/ExLDGdqletc6WJai/ODJ6C138="/>
-        <field:input field="orderInInstance" id="c_ro_roda_domain_Form_orderInInstance" required="true" validationMessageCode="field_invalid_integer" z="YDT3k/LCnD6mGwY9utE4ZDOLtts="/>
         <field:input field="operatorNotes" id="c_ro_roda_domain_Form_operatorNotes" z="w5SIfAUaBndh+VVNTGeEJdxkID4="/>
         <field:datetime dateTimePattern="${form_formfilledat_date_format}" field="formFilledAt" id="c_ro_roda_domain_Form_formFilledAt" z="Qsnikpoenf/badiu0CszN1ELwR8="/>
+        <field:simple field="instanceForms" id="c_ro_roda_domain_Form_instanceForms" messageCode="entity_reference_not_managed" messageCodeAttribute="Instance Form" z="IfssPVGQYLMxLhooUexNqQUojX4="/>
     </form:update>
 </div>

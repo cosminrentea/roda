@@ -47,11 +47,11 @@ privileged aspect Source_Roo_SolrSearch {
         List<SolrInputDocument> documents = new ArrayList<SolrInputDocument>();
         for (Source source : sources) {
             SolrInputDocument sid = new SolrInputDocument();
-            sid.addField("id", "source_" + source.getOrgId());
-            sid.addField("source.org_t", source.getOrg());
-            sid.addField("source.sourcetypeid_t", source.getSourcetypeId());
+            sid.addField("id", "source_" + source.getId());
+            sid.addField("source.citation_s", source.getCitation());
+            sid.addField("source.id_i", source.getId());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("source_solrsummary_t", new StringBuilder().append(source.getOrg()).append(" ").append(source.getSourcetypeId()));
+            sid.addField("source_solrsummary_t", new StringBuilder().append(source.getCitation()).append(" ").append(source.getId()));
             documents.add(sid);
         }
         try {
@@ -67,7 +67,7 @@ privileged aspect Source_Roo_SolrSearch {
     public static void Source.deleteIndex(Source source) {
         SolrServer solrServer = solrServer();
         try {
-            solrServer.deleteById("source_" + source.getOrgId());
+            solrServer.deleteById("source_" + source.getId());
             solrServer.commit();
         } catch (Exception e) {
             e.printStackTrace();

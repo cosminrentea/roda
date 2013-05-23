@@ -7,13 +7,13 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
-import ro.roda.domain.Instance;
+import ro.roda.domain.Study;
 import ro.roda.domain.UnitAnalysis;
 
 privileged aspect UnitAnalysis_Roo_DbManaged {
     
     @OneToMany(mappedBy = "unitAnalysisId")
-    private Set<Instance> UnitAnalysis.instances;
+    private Set<Study> UnitAnalysis.studies;
     
     @Column(name = "name", columnDefinition = "varchar", length = 100)
     @NotNull
@@ -22,12 +22,12 @@ privileged aspect UnitAnalysis_Roo_DbManaged {
     @Column(name = "description", columnDefinition = "text")
     private String UnitAnalysis.description;
     
-    public Set<Instance> UnitAnalysis.getInstances() {
-        return instances;
+    public Set<Study> UnitAnalysis.getStudies() {
+        return studies;
     }
     
-    public void UnitAnalysis.setInstances(Set<Instance> instances) {
-        this.instances = instances;
+    public void UnitAnalysis.setStudies(Set<Study> studies) {
+        this.studies = studies;
     }
     
     public String UnitAnalysis.getName() {

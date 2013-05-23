@@ -10,7 +10,6 @@ import org.springframework.roo.addon.json.RooJson;
 import org.springframework.roo.addon.solr.RooSolrSearchable;
 import org.springframework.roo.addon.tostring.RooToString;
 
-@Audited
 @RooJavaBean
 @RooToString
 @RooJpaActiveRecord(versionField = "", table = "acl_entry", schema = "public")

@@ -51,11 +51,10 @@ privileged aspect StudyOrg_Roo_SolrSearch {
             sid.addField("studyOrg.orgid_t", studyOrg.getOrgId());
             sid.addField("studyOrg.studyid_t", studyOrg.getStudyId());
             sid.addField("studyOrg.assoctypeid_t", studyOrg.getAssoctypeId());
-            sid.addField("studyOrg.citation_s", studyOrg.getCitation());
             sid.addField("studyOrg.assocdetails_s", studyOrg.getAssocDetails());
             sid.addField("studyOrg.id_t", studyOrg.getId());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("studyorg_solrsummary_t", new StringBuilder().append(studyOrg.getOrgId()).append(" ").append(studyOrg.getStudyId()).append(" ").append(studyOrg.getAssoctypeId()).append(" ").append(studyOrg.getCitation()).append(" ").append(studyOrg.getAssocDetails()).append(" ").append(studyOrg.getId()));
+            sid.addField("studyorg_solrsummary_t", new StringBuilder().append(studyOrg.getOrgId()).append(" ").append(studyOrg.getStudyId()).append(" ").append(studyOrg.getAssoctypeId()).append(" ").append(studyOrg.getAssocDetails()).append(" ").append(studyOrg.getId()));
             documents.add(sid);
         }
         try {

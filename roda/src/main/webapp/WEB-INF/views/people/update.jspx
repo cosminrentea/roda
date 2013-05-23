@@ -11,7 +11,6 @@
         <field:simple field="personLinkss" id="c_ro_roda_domain_Person_personLinkss" messageCode="entity_reference_not_managed" messageCodeAttribute="Person Links" z="VWCn5fm7xnlMZHTfhXa4GNby/x0="/>
         <field:simple field="personOrgs" id="c_ro_roda_domain_Person_personOrgs" messageCode="entity_reference_not_managed" messageCodeAttribute="Person Org" z="B13y6zXnLYjuGwZXgeGdSOWbP9M="/>
         <field:simple field="personPhones" id="c_ro_roda_domain_Person_personPhones" messageCode="entity_reference_not_managed" messageCodeAttribute="Person Phone" z="YNxdtIoNon9dt+qyX2fGTJxAls4="/>
-        <field:simple field="sourceContactss" id="c_ro_roda_domain_Person_sourceContactss" messageCode="entity_reference_not_managed" messageCodeAttribute="Source Contacts" z="dn8zzRC0puI9ogv5ZkgWjuLes8A="/>
         <field:simple field="studypeople" id="c_ro_roda_domain_Person_studypeople" messageCode="entity_reference_not_managed" messageCodeAttribute="Study Person" z="11cFm/E0Rpy2gqChHWbetJ5lsyI="/>
         <field:select field="prefixId" id="c_ro_roda_domain_Person_prefixId" itemValue="id" items="${prefixes}" path="/prefixes" z="TxWh8KGJaxJwDZo7rnleH2gVBcw="/>
         <field:select field="suffixId" id="c_ro_roda_domain_Person_suffixId" itemValue="id" items="${suffixes}" path="/suffixes" z="bJTXBZTzpyTJJurRhUoOCQJlv7M="/>

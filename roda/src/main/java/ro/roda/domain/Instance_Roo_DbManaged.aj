@@ -4,11 +4,9 @@
 package ro.roda.domain;
 
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -16,46 +14,27 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import org.springframework.format.annotation.DateTimeFormat;
-import ro.roda.domain.CollectionModelType;
 import ro.roda.domain.File;
-import ro.roda.domain.Form;
 import ro.roda.domain.Instance;
 import ro.roda.domain.InstanceDescr;
-import ro.roda.domain.InstanceKeyword;
+import ro.roda.domain.InstanceForm;
 import ro.roda.domain.InstanceOrg;
 import ro.roda.domain.InstancePerson;
-import ro.roda.domain.SamplingProcedure;
+import ro.roda.domain.InstanceRightTargetGroup;
+import ro.roda.domain.InstanceVariable;
 import ro.roda.domain.Study;
-import ro.roda.domain.TimeMethType;
-import ro.roda.domain.Topic;
-import ro.roda.domain.UnitAnalysis;
 import ro.roda.domain.Users;
-import ro.roda.domain.Variable;
 
 privileged aspect Instance_Roo_DbManaged {
     
-    @ManyToMany
-    @JoinTable(name = "instance_sampling_procedure", joinColumns = { @JoinColumn(name = "instance_id", nullable = false) }, inverseJoinColumns = { @JoinColumn(name = "sampling_procedure_id", nullable = false) })
-    private Set<SamplingProcedure> Instance.samplingProcedures;
-    
-    @ManyToMany
-    @JoinTable(name = "instance_topic", joinColumns = { @JoinColumn(name = "instance_id", nullable = false) }, inverseJoinColumns = { @JoinColumn(name = "topic_id", nullable = false) })
-    private Set<Topic> Instance.topics1;
-    
     @ManyToMany(mappedBy = "instances")
     private Set<File> Instance.files;
-    
-    @ManyToMany(mappedBy = "instances")
-    private Set<CollectionModelType> Instance.collectionModelTypes;
-    
-    @OneToMany(mappedBy = "instanceId")
-    private Set<Form> Instance.forms;
     
     @OneToMany(mappedBy = "instanceId")
     private Set<InstanceDescr> Instance.instanceDescrs;
     
     @OneToMany(mappedBy = "instanceId")
-    private Set<InstanceKeyword> Instance.instanceKeywords;
+    private Set<InstanceForm> Instance.instanceForms;
     
     @OneToMany(mappedBy = "instanceId")
     private Set<InstanceOrg> Instance.instanceOrgs;
@@ -64,45 +43,18 @@ privileged aspect Instance_Roo_DbManaged {
     private Set<InstancePerson> Instance.instancepeople;
     
     @OneToMany(mappedBy = "instanceId")
-    private Set<Variable> Instance.variables;
+    private Set<InstanceRightTargetGroup> Instance.instanceRightTargetGroups;
+    
+    @OneToMany(mappedBy = "instanceId")
+    private Set<InstanceVariable> Instance.instanceVariables;
     
     @ManyToOne
     @JoinColumn(name = "study_id", referencedColumnName = "id", nullable = false)
     private Study Instance.studyId;
     
     @ManyToOne
-    @JoinColumn(name = "time_meth_id", referencedColumnName = "id", nullable = false)
-    private TimeMethType Instance.timeMethId;
-    
-    @ManyToOne
-    @JoinColumn(name = "unit_analysis_id", referencedColumnName = "id", nullable = false)
-    private UnitAnalysis Instance.unitAnalysisId;
-    
-    @ManyToOne
     @JoinColumn(name = "added_by", referencedColumnName = "id", nullable = false)
     private Users Instance.addedBy;
-    
-    @Column(name = "date_start", columnDefinition = "date")
-    @Temporal(TemporalType.DATE)
-    @DateTimeFormat(style = "M-")
-    private Date Instance.dateStart;
-    
-    @Column(name = "date_end", columnDefinition = "date")
-    @Temporal(TemporalType.DATE)
-    @DateTimeFormat(style = "M-")
-    private Date Instance.dateEnd;
-    
-    @Column(name = "insertion_status", columnDefinition = "int4")
-    @NotNull
-    private Integer Instance.insertionStatus;
-    
-    @Column(name = "raw_data", columnDefinition = "bool")
-    @NotNull
-    private boolean Instance.rawData;
-    
-    @Column(name = "raw_metadata", columnDefinition = "bool")
-    @NotNull
-    private boolean Instance.rawMetadata;
     
     @Column(name = "added", columnDefinition = "timestamp")
     @NotNull
@@ -110,21 +62,12 @@ privileged aspect Instance_Roo_DbManaged {
     @DateTimeFormat(style = "MM")
     private Calendar Instance.added;
     
-    public Set<SamplingProcedure> Instance.getSamplingProcedures() {
-        return samplingProcedures;
-    }
+    @Column(name = "disseminator_identifier", columnDefinition = "text")
+    private String Instance.disseminatorIdentifier;
     
-    public void Instance.setSamplingProcedures(Set<SamplingProcedure> samplingProcedures) {
-        this.samplingProcedures = samplingProcedures;
-    }
-    
-    public Set<Topic> Instance.getTopics1() {
-        return topics1;
-    }
-    
-    public void Instance.setTopics1(Set<Topic> topics1) {
-        this.topics1 = topics1;
-    }
+    @Column(name = "main", columnDefinition = "bool")
+    @NotNull
+    private boolean Instance.main;
     
     public Set<File> Instance.getFiles() {
         return files;
@@ -132,22 +75,6 @@ privileged aspect Instance_Roo_DbManaged {
     
     public void Instance.setFiles(Set<File> files) {
         this.files = files;
-    }
-    
-    public Set<CollectionModelType> Instance.getCollectionModelTypes() {
-        return collectionModelTypes;
-    }
-    
-    public void Instance.setCollectionModelTypes(Set<CollectionModelType> collectionModelTypes) {
-        this.collectionModelTypes = collectionModelTypes;
-    }
-    
-    public Set<Form> Instance.getForms() {
-        return forms;
-    }
-    
-    public void Instance.setForms(Set<Form> forms) {
-        this.forms = forms;
     }
     
     public Set<InstanceDescr> Instance.getInstanceDescrs() {
@@ -158,12 +85,12 @@ privileged aspect Instance_Roo_DbManaged {
         this.instanceDescrs = instanceDescrs;
     }
     
-    public Set<InstanceKeyword> Instance.getInstanceKeywords() {
-        return instanceKeywords;
+    public Set<InstanceForm> Instance.getInstanceForms() {
+        return instanceForms;
     }
     
-    public void Instance.setInstanceKeywords(Set<InstanceKeyword> instanceKeywords) {
-        this.instanceKeywords = instanceKeywords;
+    public void Instance.setInstanceForms(Set<InstanceForm> instanceForms) {
+        this.instanceForms = instanceForms;
     }
     
     public Set<InstanceOrg> Instance.getInstanceOrgs() {
@@ -182,12 +109,20 @@ privileged aspect Instance_Roo_DbManaged {
         this.instancepeople = instancepeople;
     }
     
-    public Set<Variable> Instance.getVariables() {
-        return variables;
+    public Set<InstanceRightTargetGroup> Instance.getInstanceRightTargetGroups() {
+        return instanceRightTargetGroups;
     }
     
-    public void Instance.setVariables(Set<Variable> variables) {
-        this.variables = variables;
+    public void Instance.setInstanceRightTargetGroups(Set<InstanceRightTargetGroup> instanceRightTargetGroups) {
+        this.instanceRightTargetGroups = instanceRightTargetGroups;
+    }
+    
+    public Set<InstanceVariable> Instance.getInstanceVariables() {
+        return instanceVariables;
+    }
+    
+    public void Instance.setInstanceVariables(Set<InstanceVariable> instanceVariables) {
+        this.instanceVariables = instanceVariables;
     }
     
     public Study Instance.getStudyId() {
@@ -198,22 +133,6 @@ privileged aspect Instance_Roo_DbManaged {
         this.studyId = studyId;
     }
     
-    public TimeMethType Instance.getTimeMethId() {
-        return timeMethId;
-    }
-    
-    public void Instance.setTimeMethId(TimeMethType timeMethId) {
-        this.timeMethId = timeMethId;
-    }
-    
-    public UnitAnalysis Instance.getUnitAnalysisId() {
-        return unitAnalysisId;
-    }
-    
-    public void Instance.setUnitAnalysisId(UnitAnalysis unitAnalysisId) {
-        this.unitAnalysisId = unitAnalysisId;
-    }
-    
     public Users Instance.getAddedBy() {
         return addedBy;
     }
@@ -222,52 +141,28 @@ privileged aspect Instance_Roo_DbManaged {
         this.addedBy = addedBy;
     }
     
-    public Date Instance.getDateStart() {
-        return dateStart;
-    }
-    
-    public void Instance.setDateStart(Date dateStart) {
-        this.dateStart = dateStart;
-    }
-    
-    public Date Instance.getDateEnd() {
-        return dateEnd;
-    }
-    
-    public void Instance.setDateEnd(Date dateEnd) {
-        this.dateEnd = dateEnd;
-    }
-    
-    public Integer Instance.getInsertionStatus() {
-        return insertionStatus;
-    }
-    
-    public void Instance.setInsertionStatus(Integer insertionStatus) {
-        this.insertionStatus = insertionStatus;
-    }
-    
-    public boolean Instance.isRawData() {
-        return rawData;
-    }
-    
-    public void Instance.setRawData(boolean rawData) {
-        this.rawData = rawData;
-    }
-    
-    public boolean Instance.isRawMetadata() {
-        return rawMetadata;
-    }
-    
-    public void Instance.setRawMetadata(boolean rawMetadata) {
-        this.rawMetadata = rawMetadata;
-    }
-    
     public Calendar Instance.getAdded() {
         return added;
     }
     
     public void Instance.setAdded(Calendar added) {
         this.added = added;
+    }
+    
+    public String Instance.getDisseminatorIdentifier() {
+        return disseminatorIdentifier;
+    }
+    
+    public void Instance.setDisseminatorIdentifier(String disseminatorIdentifier) {
+        this.disseminatorIdentifier = disseminatorIdentifier;
+    }
+    
+    public boolean Instance.isMain() {
+        return main;
+    }
+    
+    public void Instance.setMain(boolean main) {
+        this.main = main;
     }
     
 }

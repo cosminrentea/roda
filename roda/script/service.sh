@@ -1,6 +1,6 @@
 #!/bin/bash
 
-ROOSCRIPT=services.roo
+ROOSCRIPT=service.roo
 
 >${ROOSCRIPT}
 

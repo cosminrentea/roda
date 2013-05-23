@@ -6,9 +6,9 @@
         <table:table data="${cmspages}" id="l_ro_roda_domain_CmsPage" path="/cmspages" z="8PjnqsFuMqPvUZZ4aJrRbgbdDco=">
             <table:column id="c_ro_roda_domain_CmsPage_cmsLayoutId" property="cmsLayoutId" z="b1wsjp2PjM2PZSceXEyPNKJbocE="/>
             <table:column id="c_ro_roda_domain_CmsPage_cmsPageTypeId" property="cmsPageTypeId" z="1WI3TeujvXcSO8opOU8Vht4VNnU="/>
-            <table:column id="c_ro_roda_domain_CmsPage_ownerId" property="ownerId" z="j3aKh65EeZzioFYqDfQ9W3lkj2g="/>
             <table:column id="c_ro_roda_domain_CmsPage_name" property="name" z="la4JY/yjpJyz2jCKf2FBTsr+KJw="/>
             <table:column id="c_ro_roda_domain_CmsPage_visible" property="visible" z="e30kxwPmr9YSr0CHaOtcFn5sBw0="/>
+            <table:column id="c_ro_roda_domain_CmsPage_navigable" property="navigable" z="WZvIcRPNZ7+Z+4c5lcaCIE3+iGU="/>
         </table:table>
     </page:list>
 </div>

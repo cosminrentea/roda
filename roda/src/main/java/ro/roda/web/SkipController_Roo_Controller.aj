@@ -17,12 +17,16 @@ import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.domain.Skip;
 import ro.roda.service.SkipService;
+import ro.roda.service.VariableService;
 import ro.roda.web.SkipController;
 
 privileged aspect SkipController_Roo_Controller {
     
     @Autowired
     SkipService SkipController.skipService;
+    
+    @Autowired
+    VariableService SkipController.variableService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String SkipController.create(@Valid Skip skip, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -91,6 +95,7 @@ privileged aspect SkipController_Roo_Controller {
     
     void SkipController.populateEditForm(Model uiModel, Skip skip) {
         uiModel.addAttribute("skip", skip);
+        uiModel.addAttribute("variables", variableService.findAllVariables());
     }
     
     String SkipController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

@@ -18,6 +18,7 @@ import org.springframework.web.util.WebUtils;
 import ro.roda.domain.Lang;
 import ro.roda.service.InstanceDescrService;
 import ro.roda.service.LangService;
+import ro.roda.service.SeriesDescrService;
 import ro.roda.service.StudyDescrService;
 import ro.roda.service.TranslatedTopicService;
 import ro.roda.web.LangController;
@@ -29,6 +30,9 @@ privileged aspect LangController_Roo_Controller {
     
     @Autowired
     InstanceDescrService LangController.instanceDescrService;
+    
+    @Autowired
+    SeriesDescrService LangController.seriesDescrService;
     
     @Autowired
     StudyDescrService LangController.studyDescrService;
@@ -104,6 +108,7 @@ privileged aspect LangController_Roo_Controller {
     void LangController.populateEditForm(Model uiModel, Lang lang) {
         uiModel.addAttribute("lang", lang);
         uiModel.addAttribute("instancedescrs", instanceDescrService.findAllInstanceDescrs());
+        uiModel.addAttribute("seriesdescrs", seriesDescrService.findAllSeriesDescrs());
         uiModel.addAttribute("studydescrs", studyDescrService.findAllStudyDescrs());
         uiModel.addAttribute("translatedtopics", translatedTopicService.findAllTranslatedTopics());
     }

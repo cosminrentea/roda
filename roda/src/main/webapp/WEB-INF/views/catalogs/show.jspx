@@ -9,5 +9,6 @@
         <field:display field="sequencenr" id="s_ro_roda_domain_Catalog_sequencenr" object="${catalog}" z="NPe0IEtVAb/VUnwU+jcbNb7SocY="/>
         <field:display field="description" id="s_ro_roda_domain_Catalog_description" object="${catalog}" z="WxkpO+s4TpXfos2gmRWm154UPRs="/>
         <field:display field="parentId" id="s_ro_roda_domain_Catalog_parentId" object="${catalog}" z="HJ6KtgZLrU7uz5Ec61uLyOt64yI="/>
+        <field:display field="series" id="s_ro_roda_domain_Catalog_series" object="${catalog}" z="twsD/2IaEs7BXHT4MWuoUGrP2S0="/>
     </page:show>
 </div>

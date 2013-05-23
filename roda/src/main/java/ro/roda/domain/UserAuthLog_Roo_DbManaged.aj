@@ -27,19 +27,15 @@ privileged aspect UserAuthLog_Roo_DbManaged {
     private Calendar UserAuthLog.authAttemptedAt;
     
     @Column(name = "action", columnDefinition = "varchar", length = 30)
-    @NotNull
     private String UserAuthLog.action;
     
     @Column(name = "credential_provider", columnDefinition = "text")
-    @NotNull
     private String UserAuthLog.credentialProvider;
     
     @Column(name = "credential_identifier", columnDefinition = "text")
-    @NotNull
     private String UserAuthLog.credentialIdentifier;
     
     @Column(name = "error_message", columnDefinition = "text")
-    @NotNull
     private String UserAuthLog.errorMessage;
     
     public Users UserAuthLog.getUserId() {

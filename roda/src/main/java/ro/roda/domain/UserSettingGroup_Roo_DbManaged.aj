@@ -12,7 +12,7 @@ import ro.roda.domain.UserSettingGroup;
 
 privileged aspect UserSettingGroup_Roo_DbManaged {
     
-    @OneToMany(mappedBy = "settingGroup")
+    @OneToMany(mappedBy = "userSettingGroupId")
     private Set<UserSetting> UserSettingGroup.userSettings;
     
     @Column(name = "name", columnDefinition = "varchar", length = 100)

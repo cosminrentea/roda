@@ -5,11 +5,9 @@
     <page:show id="ps_ro_roda_domain_InstanceDescr" object="${instancedescr}" path="/instancedescrs" z="HEzvSLLCnAHTvgKybJqw096L2bU=">
         <field:display field="instanceId" id="s_ro_roda_domain_InstanceDescr_instanceId" object="${instancedescr}" z="5DZpwE0SFyWGpD2hHn1zMZj2R2o="/>
         <field:display field="langId" id="s_ro_roda_domain_InstanceDescr_langId" object="${instancedescr}" z="XHu2FEWLXW55ugmwAr32FogP+PA="/>
-        <field:display field="weighting" id="s_ro_roda_domain_InstanceDescr_weighting" object="${instancedescr}" z="+r7OfhyphlRl4SbBVs973Jeps9Y="/>
-        <field:display field="researchInstrument" id="s_ro_roda_domain_InstanceDescr_researchInstrument" object="${instancedescr}" z="p+weMcqGCLJnoto9AqK19ticaRU="/>
-        <field:display field="scope" id="s_ro_roda_domain_InstanceDescr_scope" object="${instancedescr}" z="QmGuc+7fdHgrK9xtPrkqSgSQTKw="/>
-        <field:display field="universe" id="s_ro_roda_domain_InstanceDescr_universe" object="${instancedescr}" z="HTg3Gz4our7AGtI+BOsvfeSj4Cg="/>
-        <field:display field="abstract1" id="s_ro_roda_domain_InstanceDescr_abstract1" object="${instancedescr}" z="eJJYfzb8fhx51YSS+oUsvPf2iWk="/>
+        <field:display field="accessConditions" id="s_ro_roda_domain_InstanceDescr_accessConditions" object="${instancedescr}" z="IWI9ZtgBBjhbYUgkRjWtUZ2MUrY="/>
+        <field:display field="notes" id="s_ro_roda_domain_InstanceDescr_notes" object="${instancedescr}" z="C1XyFUv7BbqXrGApSEHwugN0Eec="/>
         <field:display field="title" id="s_ro_roda_domain_InstanceDescr_title" object="${instancedescr}" z="yt2ru84AJvYx+yr6tUPFdl6Ii8o="/>
+        <field:display field="originalTitleLanguage" id="s_ro_roda_domain_InstanceDescr_originalTitleLanguage" object="${instancedescr}" z="q+exhut4/Zwdk0jamB84Kn2RcpA="/>
     </page:show>
 </div>

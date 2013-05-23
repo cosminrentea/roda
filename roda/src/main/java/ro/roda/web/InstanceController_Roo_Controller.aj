@@ -18,19 +18,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.domain.Instance;
-import ro.roda.service.CollectionModelTypeService;
 import ro.roda.service.FileService;
-import ro.roda.service.FormService;
 import ro.roda.service.InstanceDescrService;
-import ro.roda.service.InstanceKeywordService;
+import ro.roda.service.InstanceFormService;
 import ro.roda.service.InstanceOrgService;
 import ro.roda.service.InstancePersonService;
+import ro.roda.service.InstanceRightTargetGroupService;
 import ro.roda.service.InstanceService;
-import ro.roda.service.SamplingProcedureService;
+import ro.roda.service.InstanceVariableService;
 import ro.roda.service.StudyService;
-import ro.roda.service.TimeMethTypeService;
-import ro.roda.service.TopicService;
-import ro.roda.service.UnitAnalysisService;
 import ro.roda.service.UsersService;
 import ro.roda.web.InstanceController;
 
@@ -40,19 +36,13 @@ privileged aspect InstanceController_Roo_Controller {
     InstanceService InstanceController.instanceService;
     
     @Autowired
-    CollectionModelTypeService InstanceController.collectionModelTypeService;
-    
-    @Autowired
     FileService InstanceController.fileService;
-    
-    @Autowired
-    FormService InstanceController.formService;
     
     @Autowired
     InstanceDescrService InstanceController.instanceDescrService;
     
     @Autowired
-    InstanceKeywordService InstanceController.instanceKeywordService;
+    InstanceFormService InstanceController.instanceFormService;
     
     @Autowired
     InstanceOrgService InstanceController.instanceOrgService;
@@ -61,19 +51,13 @@ privileged aspect InstanceController_Roo_Controller {
     InstancePersonService InstanceController.instancePersonService;
     
     @Autowired
-    SamplingProcedureService InstanceController.samplingProcedureService;
+    InstanceRightTargetGroupService InstanceController.instanceRightTargetGroupService;
+    
+    @Autowired
+    InstanceVariableService InstanceController.instanceVariableService;
     
     @Autowired
     StudyService InstanceController.studyService;
-    
-    @Autowired
-    TimeMethTypeService InstanceController.timeMethTypeService;
-    
-    @Autowired
-    TopicService InstanceController.topicService;
-    
-    @Autowired
-    UnitAnalysisService InstanceController.unitAnalysisService;
     
     @Autowired
     UsersService InstanceController.usersService;
@@ -146,26 +130,20 @@ privileged aspect InstanceController_Roo_Controller {
     }
     
     void InstanceController.addDateTimeFormatPatterns(Model uiModel) {
-        uiModel.addAttribute("instance_datestart_date_format", DateTimeFormat.patternForStyle("M-", LocaleContextHolder.getLocale()));
-        uiModel.addAttribute("instance_dateend_date_format", DateTimeFormat.patternForStyle("M-", LocaleContextHolder.getLocale()));
         uiModel.addAttribute("instance_added_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
     }
     
     void InstanceController.populateEditForm(Model uiModel, Instance instance) {
         uiModel.addAttribute("instance", instance);
         addDateTimeFormatPatterns(uiModel);
-        uiModel.addAttribute("collectionmodeltypes", collectionModelTypeService.findAllCollectionModelTypes());
         uiModel.addAttribute("files", fileService.findAllFiles());
-        uiModel.addAttribute("forms", formService.findAllForms());
         uiModel.addAttribute("instancedescrs", instanceDescrService.findAllInstanceDescrs());
-        uiModel.addAttribute("instancekeywords", instanceKeywordService.findAllInstanceKeywords());
+        uiModel.addAttribute("instanceforms", instanceFormService.findAllInstanceForms());
         uiModel.addAttribute("instanceorgs", instanceOrgService.findAllInstanceOrgs());
         uiModel.addAttribute("instancepeople", instancePersonService.findAllInstancepeople());
-        uiModel.addAttribute("samplingprocedures", samplingProcedureService.findAllSamplingProcedures());
+        uiModel.addAttribute("instancerighttargetgroups", instanceRightTargetGroupService.findAllInstanceRightTargetGroups());
+        uiModel.addAttribute("instancevariables", instanceVariableService.findAllInstanceVariables());
         uiModel.addAttribute("studys", studyService.findAllStudys());
-        uiModel.addAttribute("timemethtypes", timeMethTypeService.findAllTimeMethTypes());
-        uiModel.addAttribute("topics", topicService.findAllTopics());
-        uiModel.addAttribute("unitanalyses", unitAnalysisService.findAllUnitAnalyses());
         uiModel.addAttribute("userses", usersService.findAllUserses());
     }
     

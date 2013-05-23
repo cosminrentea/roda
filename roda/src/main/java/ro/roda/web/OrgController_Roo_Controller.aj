@@ -26,7 +26,6 @@ import ro.roda.service.OrgRelationsService;
 import ro.roda.service.OrgService;
 import ro.roda.service.OrgSufixService;
 import ro.roda.service.PersonOrgService;
-import ro.roda.service.SourceService;
 import ro.roda.service.StudyOrgService;
 import ro.roda.web.OrgController;
 
@@ -61,9 +60,6 @@ privileged aspect OrgController_Roo_Controller {
     
     @Autowired
     PersonOrgService OrgController.personOrgService;
-    
-    @Autowired
-    SourceService OrgController.sourceService;
     
     @Autowired
     StudyOrgService OrgController.studyOrgService;
@@ -144,7 +140,6 @@ privileged aspect OrgController_Roo_Controller {
         uiModel.addAttribute("orgrelationses", orgRelationsService.findAllOrgRelationses());
         uiModel.addAttribute("orgsufixes", orgSufixService.findAllOrgSufixes());
         uiModel.addAttribute("personorgs", personOrgService.findAllPersonOrgs());
-        uiModel.addAttribute("sources", sourceService.findAllSources());
         uiModel.addAttribute("studyorgs", studyOrgService.findAllStudyOrgs());
     }
     

@@ -6,7 +6,6 @@
         <field:simple field="orgAddresses" id="c_ro_roda_domain_Address_orgAddresses" messageCode="entity_reference_not_managed" messageCodeAttribute="Org Address" z="1CrZHlZOuAkYrEkMMY37RaVcjZU="/>
         <field:simple field="personAddresses" id="c_ro_roda_domain_Address_personAddresses" messageCode="entity_reference_not_managed" messageCodeAttribute="Person Address" z="0ZW0zffizdy38IE99XDvneMnt1s="/>
         <field:select field="cityId" id="c_ro_roda_domain_Address_cityId" itemValue="id" items="${citys}" path="/citys" z="L3E8drk7yZ8kED85cIHnod0rhEY="/>
-        <field:input field="countryId" id="c_ro_roda_domain_Address_countryId" required="true" z="ExX+Uw60mG22Ubw6uRn0sQlhvkw="/>
         <field:input field="address1" id="c_ro_roda_domain_Address_address1" required="true" z="keXu/To3Awu5jASgg8S/QkLnZZ4="/>
         <field:input field="address2" id="c_ro_roda_domain_Address_address2" z="RVMnTU7NacUVmhmbzC53pf0zlUc="/>
         <field:input field="subdivName" id="c_ro_roda_domain_Address_subdivName" z="wiiEyxjcxxeOcn1zz6fBOT2QoQk="/>

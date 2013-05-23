@@ -16,22 +16,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.domain.Users;
-import ro.roda.service.AuditLogChangesetService;
-import ro.roda.service.AuthDataService;
 import ro.roda.service.AuthoritiesService;
 import ro.roda.service.CatalogService;
-import ro.roda.service.CmsPageService;
-import ro.roda.service.InstanceKeywordService;
 import ro.roda.service.InstanceService;
-import ro.roda.service.NewsService;
 import ro.roda.service.PersonLinksService;
-import ro.roda.service.SourcestudyTypeHistoryService;
-import ro.roda.service.SourcetypeHistoryService;
 import ro.roda.service.StudyKeywordService;
 import ro.roda.service.StudyService;
 import ro.roda.service.UserAuthLogService;
 import ro.roda.service.UserMessageService;
-import ro.roda.service.UserProfileService;
 import ro.roda.service.UserSettingValueService;
 import ro.roda.service.UsersService;
 import ro.roda.web.UsersController;
@@ -42,37 +34,16 @@ privileged aspect UsersController_Roo_Controller {
     UsersService UsersController.usersService;
     
     @Autowired
-    AuditLogChangesetService UsersController.auditLogChangesetService;
-    
-    @Autowired
-    AuthDataService UsersController.authDataService;
-    
-    @Autowired
     AuthoritiesService UsersController.authoritiesService;
     
     @Autowired
     CatalogService UsersController.catalogService;
     
     @Autowired
-    CmsPageService UsersController.cmsPageService;
-    
-    @Autowired
     InstanceService UsersController.instanceService;
     
     @Autowired
-    InstanceKeywordService UsersController.instanceKeywordService;
-    
-    @Autowired
-    NewsService UsersController.newsService;
-    
-    @Autowired
     PersonLinksService UsersController.personLinksService;
-    
-    @Autowired
-    SourcestudyTypeHistoryService UsersController.sourcestudyTypeHistoryService;
-    
-    @Autowired
-    SourcetypeHistoryService UsersController.sourcetypeHistoryService;
     
     @Autowired
     StudyService UsersController.studyService;
@@ -85,9 +56,6 @@ privileged aspect UsersController_Roo_Controller {
     
     @Autowired
     UserMessageService UsersController.userMessageService;
-    
-    @Autowired
-    UserProfileService UsersController.userProfileService;
     
     @Autowired
     UserSettingValueService UsersController.userSettingValueService;
@@ -159,22 +127,14 @@ privileged aspect UsersController_Roo_Controller {
     
     void UsersController.populateEditForm(Model uiModel, Users users) {
         uiModel.addAttribute("users", users);
-        uiModel.addAttribute("auditlogchangesets", auditLogChangesetService.findAllAuditLogChangesets());
-        uiModel.addAttribute("authdatas", authDataService.findAllAuthDatas());
         uiModel.addAttribute("authoritieses", authoritiesService.findAllAuthoritieses());
         uiModel.addAttribute("catalogs", catalogService.findAllCatalogs());
-        uiModel.addAttribute("cmspages", cmsPageService.findAllCmsPages());
         uiModel.addAttribute("instances", instanceService.findAllInstances());
-        uiModel.addAttribute("instancekeywords", instanceKeywordService.findAllInstanceKeywords());
-        uiModel.addAttribute("newspieces", newsService.findAllNewspieces());
         uiModel.addAttribute("personlinkses", personLinksService.findAllPersonLinkses());
-        uiModel.addAttribute("sourcestudytypehistorys", sourcestudyTypeHistoryService.findAllSourcestudyTypeHistorys());
-        uiModel.addAttribute("sourcetypehistorys", sourcetypeHistoryService.findAllSourcetypeHistorys());
         uiModel.addAttribute("studys", studyService.findAllStudys());
         uiModel.addAttribute("studykeywords", studyKeywordService.findAllStudyKeywords());
         uiModel.addAttribute("userauthlogs", userAuthLogService.findAllUserAuthLogs());
         uiModel.addAttribute("usermessages", userMessageService.findAllUserMessages());
-        uiModel.addAttribute("userprofiles", userProfileService.findAllUserProfiles());
         uiModel.addAttribute("usersettingvalues", userSettingValueService.findAllUserSettingValues());
     }
     

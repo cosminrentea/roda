@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:list id="pl_ro_roda_domain_SeriesDescr" items="${seriesdescrs}" z="51M6EG+CX5CN1bN65zIf/krjMAQ=">
+        <table:table data="${seriesdescrs}" id="l_ro_roda_domain_SeriesDescr" path="/seriesdescrs" z="MssBl2VAWIWK7DmdwamjOgad0iQ=">
+            <table:column id="c_ro_roda_domain_SeriesDescr_langId" property="langId" z="a7TluHBZdeoyYHwkWCpuA6vlTag="/>
+            <table:column id="c_ro_roda_domain_SeriesDescr_catalogId" property="catalogId" z="LHZAY2QuaozyBq2OGEqUj2iq+p0="/>
+            <table:column id="c_ro_roda_domain_SeriesDescr_notes" property="notes" z="O5W6yLx4jI7/YIG0GXcIIrQaAdo="/>
+            <table:column id="c_ro_roda_domain_SeriesDescr_title" property="title" z="ZWy2Dvrrii7d8Ym2KV5AtMEcNOc="/>
+            <table:column id="c_ro_roda_domain_SeriesDescr_subtitle" property="subtitle" z="QDDsJN942CkIKtSKx666bD5ne5M="/>
+            <table:column id="c_ro_roda_domain_SeriesDescr_alternativeTitle" property="alternativeTitle" z="TiXcJw2BKqJ9w8yGUQDZc2bG3tE="/>
+        </table:table>
+    </page:list>
+</div>

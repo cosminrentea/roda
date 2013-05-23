@@ -15,7 +15,7 @@ import ro.roda.domain.Concept;
 import ro.roda.domain.File;
 import ro.roda.domain.FormEditedNumberVar;
 import ro.roda.domain.FormEditedTextVar;
-import ro.roda.domain.Instance;
+import ro.roda.domain.InstanceVariable;
 import ro.roda.domain.OtherStatistic;
 import ro.roda.domain.SelectionVariable;
 import ro.roda.domain.Skip;
@@ -40,6 +40,9 @@ privileged aspect Variable_Roo_DbManaged {
     private Set<FormEditedTextVar> Variable.formEditedTextVars;
     
     @OneToMany(mappedBy = "variableId")
+    private Set<InstanceVariable> Variable.instanceVariables;
+    
+    @OneToMany(mappedBy = "variableId")
     private Set<OtherStatistic> Variable.otherStatistics;
     
     @OneToMany(mappedBy = "nextVariableId")
@@ -52,10 +55,6 @@ privileged aspect Variable_Roo_DbManaged {
     @JoinColumn(name = "file_id", referencedColumnName = "id")
     private File Variable.fileId;
     
-    @ManyToOne
-    @JoinColumn(name = "instance_id", referencedColumnName = "id", nullable = false)
-    private Instance Variable.instanceId;
-    
     @Column(name = "label", columnDefinition = "text")
     @NotNull
     private String Variable.label;
@@ -63,10 +62,6 @@ privileged aspect Variable_Roo_DbManaged {
     @Column(name = "type", columnDefinition = "int2")
     @NotNull
     private Short Variable.type;
-    
-    @Column(name = "order_in_instance", columnDefinition = "int4", unique = true)
-    @NotNull
-    private Integer Variable.orderInInstance;
     
     @Column(name = "operator_instructions", columnDefinition = "text")
     private String Variable.operatorInstructions;
@@ -115,6 +110,14 @@ privileged aspect Variable_Roo_DbManaged {
         this.formEditedTextVars = formEditedTextVars;
     }
     
+    public Set<InstanceVariable> Variable.getInstanceVariables() {
+        return instanceVariables;
+    }
+    
+    public void Variable.setInstanceVariables(Set<InstanceVariable> instanceVariables) {
+        this.instanceVariables = instanceVariables;
+    }
+    
     public Set<OtherStatistic> Variable.getOtherStatistics() {
         return otherStatistics;
     }
@@ -147,14 +150,6 @@ privileged aspect Variable_Roo_DbManaged {
         this.fileId = fileId;
     }
     
-    public Instance Variable.getInstanceId() {
-        return instanceId;
-    }
-    
-    public void Variable.setInstanceId(Instance instanceId) {
-        this.instanceId = instanceId;
-    }
-    
     public String Variable.getLabel() {
         return label;
     }
@@ -169,14 +164,6 @@ privileged aspect Variable_Roo_DbManaged {
     
     public void Variable.setType(Short type) {
         this.type = type;
-    }
-    
-    public Integer Variable.getOrderInInstance() {
-        return orderInInstance;
-    }
-    
-    public void Variable.setOrderInInstance(Integer orderInInstance) {
-        this.orderInInstance = orderInInstance;
     }
     
     public String Variable.getOperatorInstructions() {

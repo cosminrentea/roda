@@ -18,7 +18,7 @@ privileged aspect Concept_Roo_DbManaged {
     @JoinTable(name = "concept_variable", joinColumns = { @JoinColumn(name = "concept_id", nullable = false) }, inverseJoinColumns = { @JoinColumn(name = "variable_id", nullable = false) })
     private Set<Variable> Concept.variables;
     
-    @Column(name = "name", columnDefinition = "varchar", length = 100)
+    @Column(name = "name", columnDefinition = "text")
     @NotNull
     private String Concept.name;
     

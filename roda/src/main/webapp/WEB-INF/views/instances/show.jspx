@@ -3,19 +3,11 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <page:show id="ps_ro_roda_domain_Instance" object="${instance}" path="/instances" z="kinUCrmZZHtsDUvxYP3E2IZQKnA=">
-        <field:display field="samplingProcedures" id="s_ro_roda_domain_Instance_samplingProcedures" object="${instance}" z="WkPns3Jh8Jg+iUYugK/gT0LEbVs="/>
-        <field:display field="topics1" id="s_ro_roda_domain_Instance_topics1" object="${instance}" z="guhPYSIoYYfQuy9c9Z77D3dksuc="/>
         <field:display field="files" id="s_ro_roda_domain_Instance_files" object="${instance}" z="72Mv6jzWU2UN3IhFtlYWa82MerA="/>
-        <field:display field="collectionModelTypes" id="s_ro_roda_domain_Instance_collectionModelTypes" object="${instance}" z="1BBAHC4clv9bs//9OblpoTvzSQ0="/>
         <field:display field="addedBy" id="s_ro_roda_domain_Instance_addedBy" object="${instance}" z="peie0zGp6YCkII3oOhnjfD8Na/o="/>
         <field:display field="studyId" id="s_ro_roda_domain_Instance_studyId" object="${instance}" z="GMOdSpwu+DEmq85ikWvQrB/CLc8="/>
-        <field:display field="timeMethId" id="s_ro_roda_domain_Instance_timeMethId" object="${instance}" z="tYC58t3xQ5NdvExUiUZ74Jxx6BI="/>
-        <field:display field="unitAnalysisId" id="s_ro_roda_domain_Instance_unitAnalysisId" object="${instance}" z="9saYOaMCkd+FWy/sXQOacfBMUJo="/>
-        <field:display field="insertionStatus" id="s_ro_roda_domain_Instance_insertionStatus" object="${instance}" z="FhQ8Vk8rGdbJDg+Oe0kOXXx8rDI="/>
-        <field:display field="rawData" id="s_ro_roda_domain_Instance_rawData" object="${instance}" z="NWATSG24DeALAI4+Hs+JephiTWs="/>
-        <field:display field="rawMetadata" id="s_ro_roda_domain_Instance_rawMetadata" object="${instance}" z="DC4kwnymGylLPLKfw+bsTs3loNE="/>
         <field:display calendar="true" dateTimePattern="${instance_added_date_format}" field="added" id="s_ro_roda_domain_Instance_added" object="${instance}" z="1Yar/alRqfJ9O90bsy14Unctv3U="/>
-        <field:display date="true" dateTimePattern="${instance_datestart_date_format}" field="dateStart" id="s_ro_roda_domain_Instance_dateStart" object="${instance}" z="JQVvYN0k3Sbcl7UcrioGQKv6L8I="/>
-        <field:display date="true" dateTimePattern="${instance_dateend_date_format}" field="dateEnd" id="s_ro_roda_domain_Instance_dateEnd" object="${instance}" z="OrsC4HhNxarJfdKnqcxVpUPo9cI="/>
+        <field:display field="disseminatorIdentifier" id="s_ro_roda_domain_Instance_disseminatorIdentifier" object="${instance}" z="F1dJF9ZtBuce2E9JuRxWjptTC3I="/>
+        <field:display field="main" id="s_ro_roda_domain_Instance_main" object="${instance}" z="PhLC2OtO8WEQRGAOTQJnSsXjBXs="/>
     </page:show>
 </div>

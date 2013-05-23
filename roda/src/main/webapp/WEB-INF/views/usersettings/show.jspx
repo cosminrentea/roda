@@ -3,10 +3,9 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <page:show id="ps_ro_roda_domain_UserSetting" object="${usersetting}" path="/usersettings" z="kfE7FPADwo97/Mj13ag50YD8f+w=">
-        <field:display field="settingGroup" id="s_ro_roda_domain_UserSetting_settingGroup" object="${usersetting}" z="DdloAsBm37TXCt4pWr9Hbm9Ddtw="/>
         <field:display field="name" id="s_ro_roda_domain_UserSetting_name" object="${usersetting}" z="2ehAtbETOaNhx298rF5Ylx35lYA="/>
         <field:display field="description" id="s_ro_roda_domain_UserSetting_description" object="${usersetting}" z="8NsbHmaHZnHybf+W1HQTJ9Ko+6c="/>
-        <field:display field="predefinedValues" id="s_ro_roda_domain_UserSetting_predefinedValues" object="${usersetting}" z="xEGnIScE8/wqyFYOey+s/ftt8/g="/>
         <field:display field="defaultValue" id="s_ro_roda_domain_UserSetting_defaultValue" object="${usersetting}" z="CfeQPP0yK0EJb6O7ZGexmYDx4YE="/>
+        <field:display field="userSettingGroupId" id="s_ro_roda_domain_UserSetting_userSettingGroupId" object="${usersetting}" z="OBPv72AEOzIKeGPqhYeVDoj5AcE="/>
     </page:show>
 </div>

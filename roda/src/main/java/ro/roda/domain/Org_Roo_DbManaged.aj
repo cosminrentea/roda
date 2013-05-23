@@ -8,7 +8,6 @@ import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 import ro.roda.domain.InstanceOrg;
 import ro.roda.domain.Org;
@@ -20,13 +19,9 @@ import ro.roda.domain.OrgPrefix;
 import ro.roda.domain.OrgRelations;
 import ro.roda.domain.OrgSufix;
 import ro.roda.domain.PersonOrg;
-import ro.roda.domain.Source;
 import ro.roda.domain.StudyOrg;
 
 privileged aspect Org_Roo_DbManaged {
-    
-    @OneToOne(mappedBy = "org")
-    private Source Org.source;
     
     @OneToMany(mappedBy = "orgId")
     private Set<InstanceOrg> Org.instanceOrgs;
@@ -63,21 +58,13 @@ privileged aspect Org_Roo_DbManaged {
     @JoinColumn(name = "org_sufix_id", referencedColumnName = "id")
     private OrgSufix Org.orgSufixId;
     
-    @Column(name = "name", columnDefinition = "varchar", length = 100)
+    @Column(name = "short_name", columnDefinition = "varchar", length = 100)
     @NotNull
-    private String Org.name;
+    private String Org.shortName;
     
-    @Column(name = "fullname", columnDefinition = "varchar", length = 100)
+    @Column(name = "full_name", columnDefinition = "text")
     @NotNull
-    private String Org.fullname;
-    
-    public Source Org.getSource() {
-        return source;
-    }
-    
-    public void Org.setSource(Source source) {
-        this.source = source;
-    }
+    private String Org.fullName;
     
     public Set<InstanceOrg> Org.getInstanceOrgs() {
         return instanceOrgs;
@@ -167,20 +154,20 @@ privileged aspect Org_Roo_DbManaged {
         this.orgSufixId = orgSufixId;
     }
     
-    public String Org.getName() {
-        return name;
+    public String Org.getShortName() {
+        return shortName;
     }
     
-    public void Org.setName(String name) {
-        this.name = name;
+    public void Org.setShortName(String shortName) {
+        this.shortName = shortName;
     }
     
-    public String Org.getFullname() {
-        return fullname;
+    public String Org.getFullName() {
+        return fullName;
     }
     
-    public void Org.setFullname(String fullname) {
-        this.fullname = fullname;
+    public void Org.setFullName(String fullName) {
+        this.fullName = fullName;
     }
     
 }

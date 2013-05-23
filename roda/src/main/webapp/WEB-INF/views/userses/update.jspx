@@ -6,18 +6,10 @@
         <field:simple field="authoritieses" id="c_ro_roda_domain_Users_authoritieses" messageCode="entity_reference_not_managed" messageCodeAttribute="Authorities" z="iwThu0tbHecqM9sf+WeX2fe+2Fw="/>
         <field:input field="password" id="c_ro_roda_domain_Users_password" required="true" z="BESEnQj+jjWo1Uy4tCw31fZSHuo="/>
         <field:checkbox field="enabled" id="c_ro_roda_domain_Users_enabled" z="BROU05Bz040Fylu01Q8aYct95o0="/>
-        <field:select field="authData" id="c_ro_roda_domain_Users_authData" itemValue="userId" items="${authdatas}" path="/authdatas" z="sNqzJydjQvwcB1djZ5xrL7BWZDI="/>
-        <field:select field="userProfile" id="c_ro_roda_domain_Users_userProfile" itemValue="userId" items="${userprofiles}" path="/userprofiles" z="9GtKsPpTd47Lt7gOEMe2W8M5GEM="/>
-        <field:simple field="auditLogChangesets" id="c_ro_roda_domain_Users_auditLogChangesets" messageCode="entity_reference_not_managed" messageCodeAttribute="Audit Log Changeset" z="gpDvvvJTtpY1q12xai4WmFaZtIQ="/>
         <field:simple field="catalogs" id="c_ro_roda_domain_Users_catalogs" messageCode="entity_reference_not_managed" messageCodeAttribute="Catalog" z="G5pzciEUfGxZRYU80pxwas2Wkvk="/>
-        <field:simple field="cmsPages" id="c_ro_roda_domain_Users_cmsPages" messageCode="entity_reference_not_managed" messageCodeAttribute="Cms Page" z="MzUncvuh4XjmOvsc5KgeMD1x6I4="/>
         <field:simple field="instances" id="c_ro_roda_domain_Users_instances" messageCode="entity_reference_not_managed" messageCodeAttribute="Instance" z="B/I0K4sOfshzipQKRjoCagpPq54="/>
-        <field:simple field="instanceKeywords" id="c_ro_roda_domain_Users_instanceKeywords" messageCode="entity_reference_not_managed" messageCodeAttribute="Instance Keyword" z="RZNKyJkhPEap3deun/RLkAJXHJI="/>
-        <field:simple field="news" id="c_ro_roda_domain_Users_news" messageCode="entity_reference_not_managed" messageCodeAttribute="News" z="w0MDw8Q8XivMFxFqhOEMDL0gYvg="/>
         <field:simple field="personLinkss" id="c_ro_roda_domain_Users_personLinkss" messageCode="entity_reference_not_managed" messageCodeAttribute="Person Links" z="4DIJuobL3poA27VLMLL03vdTBSU="/>
         <field:simple field="personLinkss1" id="c_ro_roda_domain_Users_personLinkss1" messageCode="entity_reference_not_managed" messageCodeAttribute="Person Links" z="PfMxayYmzdvz12PmAyp8Kz9qfck="/>
-        <field:simple field="sourcestudyTypeHistories" id="c_ro_roda_domain_Users_sourcestudyTypeHistories" messageCode="entity_reference_not_managed" messageCodeAttribute="Sourcestudy Type History" z="U+wxawfaB2z5N56QX9N7jJlE7VU="/>
-        <field:simple field="sourcetypeHistories" id="c_ro_roda_domain_Users_sourcetypeHistories" messageCode="entity_reference_not_managed" messageCodeAttribute="Sourcetype History" z="crkX6GxShEEZqoGvSGY55Kcbnng="/>
         <field:simple field="studies" id="c_ro_roda_domain_Users_studies" messageCode="entity_reference_not_managed" messageCodeAttribute="Study" z="e0pR8Q4vdEck7i8zQeT1XpedaiM="/>
         <field:simple field="studyKeywords" id="c_ro_roda_domain_Users_studyKeywords" messageCode="entity_reference_not_managed" messageCodeAttribute="Study Keyword" z="Ut8nmYgCkTxlBQBdBU70G68JGrQ="/>
         <field:simple field="userAuthLogs" id="c_ro_roda_domain_Users_userAuthLogs" messageCode="entity_reference_not_managed" messageCodeAttribute="User Auth Log" z="nJSMZZGu/+3YtdVY89yWhMGw9hI="/>

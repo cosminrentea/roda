@@ -10,7 +10,6 @@ import javax.validation.constraints.NotNull;
 import ro.roda.domain.Lang;
 import ro.roda.domain.Study;
 import ro.roda.domain.StudyDescr;
-import ro.roda.domain.TitleType;
 
 privileged aspect StudyDescr_Roo_DbManaged {
     
@@ -22,10 +21,6 @@ privileged aspect StudyDescr_Roo_DbManaged {
     @JoinColumn(name = "study_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     private Study StudyDescr.studyId;
     
-    @ManyToOne
-    @JoinColumn(name = "title_type_id", referencedColumnName = "id", nullable = false)
-    private TitleType StudyDescr.titleTypeId;
-    
     @Column(name = "abstract", columnDefinition = "text")
     private String StudyDescr.abstract1;
     
@@ -35,6 +30,37 @@ privileged aspect StudyDescr_Roo_DbManaged {
     @Column(name = "title", columnDefinition = "text")
     @NotNull
     private String StudyDescr.title;
+    
+    @Column(name = "notes", columnDefinition = "text")
+    private String StudyDescr.notes;
+    
+    @Column(name = "weighting", columnDefinition = "text")
+    private String StudyDescr.weighting;
+    
+    @Column(name = "research_instrument", columnDefinition = "text")
+    private String StudyDescr.researchInstrument;
+    
+    @Column(name = "scope", columnDefinition = "text")
+    private String StudyDescr.scope;
+    
+    @Column(name = "universe", columnDefinition = "text")
+    private String StudyDescr.universe;
+    
+    @Column(name = "subtitle", columnDefinition = "text")
+    private String StudyDescr.subtitle;
+    
+    @Column(name = "alternative_title", columnDefinition = "text")
+    private String StudyDescr.alternativeTitle;
+    
+    @Column(name = "original_title_language", columnDefinition = "bool")
+    @NotNull
+    private boolean StudyDescr.originalTitleLanguage;
+    
+    @Column(name = "time_covered", columnDefinition = "text")
+    private String StudyDescr.timeCovered;
+    
+    @Column(name = "geographic_coverage", columnDefinition = "text")
+    private String StudyDescr.geographicCoverage;
     
     public Lang StudyDescr.getLangId() {
         return langId;
@@ -50,14 +76,6 @@ privileged aspect StudyDescr_Roo_DbManaged {
     
     public void StudyDescr.setStudyId(Study studyId) {
         this.studyId = studyId;
-    }
-    
-    public TitleType StudyDescr.getTitleTypeId() {
-        return titleTypeId;
-    }
-    
-    public void StudyDescr.setTitleTypeId(TitleType titleTypeId) {
-        this.titleTypeId = titleTypeId;
     }
     
     public String StudyDescr.getAbstract1() {
@@ -82,6 +100,86 @@ privileged aspect StudyDescr_Roo_DbManaged {
     
     public void StudyDescr.setTitle(String title) {
         this.title = title;
+    }
+    
+    public String StudyDescr.getNotes() {
+        return notes;
+    }
+    
+    public void StudyDescr.setNotes(String notes) {
+        this.notes = notes;
+    }
+    
+    public String StudyDescr.getWeighting() {
+        return weighting;
+    }
+    
+    public void StudyDescr.setWeighting(String weighting) {
+        this.weighting = weighting;
+    }
+    
+    public String StudyDescr.getResearchInstrument() {
+        return researchInstrument;
+    }
+    
+    public void StudyDescr.setResearchInstrument(String researchInstrument) {
+        this.researchInstrument = researchInstrument;
+    }
+    
+    public String StudyDescr.getScope() {
+        return scope;
+    }
+    
+    public void StudyDescr.setScope(String scope) {
+        this.scope = scope;
+    }
+    
+    public String StudyDescr.getUniverse() {
+        return universe;
+    }
+    
+    public void StudyDescr.setUniverse(String universe) {
+        this.universe = universe;
+    }
+    
+    public String StudyDescr.getSubtitle() {
+        return subtitle;
+    }
+    
+    public void StudyDescr.setSubtitle(String subtitle) {
+        this.subtitle = subtitle;
+    }
+    
+    public String StudyDescr.getAlternativeTitle() {
+        return alternativeTitle;
+    }
+    
+    public void StudyDescr.setAlternativeTitle(String alternativeTitle) {
+        this.alternativeTitle = alternativeTitle;
+    }
+    
+    public boolean StudyDescr.isOriginalTitleLanguage() {
+        return originalTitleLanguage;
+    }
+    
+    public void StudyDescr.setOriginalTitleLanguage(boolean originalTitleLanguage) {
+        this.originalTitleLanguage = originalTitleLanguage;
+    }
+    
+    public String StudyDescr.getTimeCovered() {
+        return timeCovered;
+    }
+    
+    public void StudyDescr.setTimeCovered(String timeCovered) {
+        this.timeCovered = timeCovered;
+    }
+    
+    public String StudyDescr.getGeographicCoverage() {
+        return geographicCoverage;
+    }
+    
+    public void StudyDescr.setGeographicCoverage(String geographicCoverage) {
+        this.geographicCoverage = geographicCoverage;
     }
     
 }

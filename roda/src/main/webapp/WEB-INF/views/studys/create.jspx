@@ -18,6 +18,15 @@
         <field:datetime dateTimePattern="${study_dateend_date_format}" field="dateEnd" id="c_ro_roda_domain_Study_dateEnd" z="msngWx8ueGN97HfjolVHRylIpEk="/>
         <field:checkbox field="digitizable" id="c_ro_roda_domain_Study_digitizable" z="9lDLuUwMXZ/HgEEuFAklmLZI4R8="/>
         <field:checkbox field="anonymousUsage" id="c_ro_roda_domain_Study_anonymousUsage" z="iy4DSlhHsl4YGVJV/6o2JbLGP+M="/>
+        <field:select field="samplingProcedures" id="c_ro_roda_domain_Study_samplingProcedures" itemValue="id" items="${samplingprocedures}" multiple="true" path="/samplingprocedures" z="pPqgeKETCgNK74ETh+pbqVh4su8="/>
+        <field:select field="collectionModelTypes" id="c_ro_roda_domain_Study_collectionModelTypes" itemValue="id" items="${collectionmodeltypes}" multiple="true" path="/collectionmodeltypes" z="wyW8+xk6LKcxih3FGnbV83M1+5Y="/>
+        <field:select field="dataSourceTypes" id="c_ro_roda_domain_Study_dataSourceTypes" itemValue="id" items="${datasourcetypes}" multiple="true" path="/datasourcetypes" z="op+alBH27r9N96bm503UJ3E4gyg="/>
+        <field:select field="sources" id="c_ro_roda_domain_Study_sources" itemValue="id" items="${sources}" multiple="true" path="/sources" z="3eoA2MfpSOtBogNkZ81+L8mUSDQ="/>
+        <field:select field="timeMethType" id="c_ro_roda_domain_Study_timeMethType" itemValue="id" items="${timemethtypes}" path="/timemethtypes" z="I+1l8N4hSexf63knjJ0D/8NTntY="/>
+        <field:select field="unitAnalysisId" id="c_ro_roda_domain_Study_unitAnalysisId" itemValue="id" items="${unitanalyses}" path="/unitanalyses" z="qCfTPet2eSK5VKd41dBaHfO+FEE="/>
+        <field:checkbox field="rawData" id="c_ro_roda_domain_Study_rawData" z="cVgQ2lLQa9bHNyje9uI+9HorDBU="/>
+        <field:checkbox field="rawMetadata" id="c_ro_roda_domain_Study_rawMetadata" z="EoIW9BArZ9E+orzLcONLV0irBHQ="/>
+        <field:input field="timeMethId" id="c_ro_roda_domain_Study_timeMethId" required="true" validationMessageCode="field_invalid_integer" z="oZ957ifjs2iHbWYVSkIMTsu62lI="/>
     </form:create>
     <form:dependency dependencies="${dependencies}" id="d_ro_roda_domain_Study" render="${not empty dependencies}" z="wHS+A+FfAybmOfn/5CWxPb0COAk="/>
 </div>

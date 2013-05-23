@@ -4,11 +4,10 @@
     <jsp:output omit-xml-declaration="yes"/>
     <form:create id="fc_ro_roda_domain_UserSetting" modelAttribute="userSetting" path="/usersettings" render="${empty dependencies}" z="YpMKL7/OJEIkehJo3nUUa56VrRk=">
         <field:simple field="userSettingValues" id="c_ro_roda_domain_UserSetting_userSettingValues" messageCode="entity_reference_not_managed" messageCodeAttribute="User Setting Value" z="PgtytuJs2u1O8CI3/q0LfXNuQiM="/>
-        <field:select field="settingGroup" id="c_ro_roda_domain_UserSetting_settingGroup" itemValue="id" items="${usersettinggroups}" path="/usersettinggroups" z="gaS1vAVhmnMW1K3u2TrRGjYP0p8="/>
         <field:input field="name" id="c_ro_roda_domain_UserSetting_name" required="true" z="lcQy+r0UC64p4pyuiVhnVs9ZxP8="/>
         <field:input field="description" id="c_ro_roda_domain_UserSetting_description" z="wsFV/HZRECjrz6Ys6hKd3WNAv2M="/>
-        <field:input field="predefinedValues" id="c_ro_roda_domain_UserSetting_predefinedValues" z="UV8SgUNR0hHHTxBx9e/EJ+SwZSk="/>
         <field:input field="defaultValue" id="c_ro_roda_domain_UserSetting_defaultValue" z="9okDGr/sYw4qHTOu7d/cRsdqrA8="/>
+        <field:select field="userSettingGroupId" id="c_ro_roda_domain_UserSetting_userSettingGroupId" itemValue="id" items="${usersettinggroups}" path="/usersettinggroups" z="Mm/NMvBUBpcnDG+er5ecjntdJ8U="/>
     </form:create>
     <form:dependency dependencies="${dependencies}" id="d_ro_roda_domain_UserSetting" render="${not empty dependencies}" z="xAmTcE2qXZYgTrdvpAYqbB3uS/4="/>
 </div>

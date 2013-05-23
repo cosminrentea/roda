@@ -54,8 +54,9 @@ privileged aspect UserAuthLog_Roo_SolrSearch {
             sid.addField("userAuthLog.credentialprovider_s", userAuthLog.getCredentialProvider());
             sid.addField("userAuthLog.credentialidentifier_s", userAuthLog.getCredentialIdentifier());
             sid.addField("userAuthLog.errormessage_s", userAuthLog.getErrorMessage());
+            sid.addField("userAuthLog.id_l", userAuthLog.getId());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("userauthlog_solrsummary_t", new StringBuilder().append(userAuthLog.getUserId()).append(" ").append(userAuthLog.getAuthAttemptedAt().getTime()).append(" ").append(userAuthLog.getAction()).append(" ").append(userAuthLog.getCredentialProvider()).append(" ").append(userAuthLog.getCredentialIdentifier()).append(" ").append(userAuthLog.getErrorMessage()));
+            sid.addField("userauthlog_solrsummary_t", new StringBuilder().append(userAuthLog.getUserId()).append(" ").append(userAuthLog.getAuthAttemptedAt().getTime()).append(" ").append(userAuthLog.getAction()).append(" ").append(userAuthLog.getCredentialProvider()).append(" ").append(userAuthLog.getCredentialIdentifier()).append(" ").append(userAuthLog.getErrorMessage()).append(" ").append(userAuthLog.getId()));
             documents.add(sid);
         }
         try {

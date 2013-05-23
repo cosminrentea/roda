@@ -5,8 +5,6 @@
     <page:show id="ps_ro_roda_domain_Users" object="${users}" path="/userses" z="7Ebtaq05CeHsxRjFdknjykAMUeM=">
         <field:display field="password" id="s_ro_roda_domain_Users_password" object="${users}" z="muCW7Gdi+B9JE05mYuQsFviSs+U="/>
         <field:display field="enabled" id="s_ro_roda_domain_Users_enabled" object="${users}" z="ZAXQJfTly+cRTtiEVRmX/CQwz08="/>
-        <field:display field="authData" id="s_ro_roda_domain_Users_authData" object="${users}" z="vPIFQkZxsSwt0vT56khMQbGrnXs="/>
-        <field:display field="userProfile" id="s_ro_roda_domain_Users_userProfile" object="${users}" z="+JbsBmwmx6CMio88QAfSZjcF4Z0="/>
         <field:display field="username" id="s_ro_roda_domain_Users_username" object="${users}" z="z45+ZYCqqwrSAkeeeBrBxQuh4Do="/>
     </page:show>
 </div>

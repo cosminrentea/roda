@@ -7,7 +7,5 @@
         <field:simple field="scales" id="c_ro_roda_domain_Value_scales" messageCode="entity_reference_not_managed" messageCodeAttribute="Scale" z="S6nWqpkb2hEdOVZx8vffPy19jBo="/>
         <field:simple field="scales1" id="c_ro_roda_domain_Value_scales1" messageCode="entity_reference_not_managed" messageCodeAttribute="Scale" z="QUBrXBPQhxg2RH/QcGxes8FCh0E="/>
         <field:input field="value" id="c_ro_roda_domain_Value_value" required="true" validationMessageCode="field_invalid_integer" z="xsCl7S3tUXRl8Tv+suKrqm5Zs4c="/>
-        <field:simple field="scales2" id="c_ro_roda_domain_Value_scales2" messageCode="entity_reference_not_managed" messageCodeAttribute="Scale" z="KsZjoEW639W76B6HSL4kO5vT7ag="/>
-        <field:simple field="scales3" id="c_ro_roda_domain_Value_scales3" messageCode="entity_reference_not_managed" messageCodeAttribute="Scale" z="+HDZGq05xE4iR4ETYaqzEas5JaQ="/>
     </form:update>
 </div>

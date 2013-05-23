@@ -15,7 +15,7 @@ privileged aspect InstancePersonAssoc_Roo_DbManaged {
     @OneToMany(mappedBy = "assocTypeId")
     private Set<InstancePerson> InstancePersonAssoc.instancepeople;
     
-    @Column(name = "assoc_name", columnDefinition = "varchar", length = 100)
+    @Column(name = "assoc_name", columnDefinition = "text")
     @NotNull
     private String InstancePersonAssoc.assocName;
     

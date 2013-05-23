@@ -2,25 +2,18 @@
 <div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
-    <form:update id="fu_ro_roda_domain_Instance" modelAttribute="instance" path="/instances" versionField="Version" z="qXW+Lja+vWKGFF2zV3nhv1gSI80=">
-        <field:select field="samplingProcedures" id="c_ro_roda_domain_Instance_samplingProcedures" itemValue="id" items="${samplingprocedures}" multiple="true" path="/samplingprocedures" z="q41lLL0tQVRMut17kefBubA6Kk0="/>
-        <field:select field="topics1" id="c_ro_roda_domain_Instance_topics1" itemValue="id" items="${topics}" multiple="true" path="/topics" z="IYnfmy6hCEuyxfaW8JIK3Knx0eE="/>
+    <form:update id="fu_ro_roda_domain_Instance" modelAttribute="instance" path="/instances" versionField="none" z="FDY22K1JfNH3xzrN5EKYYhKKCYI=">
         <field:select field="files" id="c_ro_roda_domain_Instance_files" itemValue="id" items="${files}" multiple="true" path="/files" z="+Eea8H7YRu2LzsCQSJw+eOXsMb4="/>
-        <field:select field="collectionModelTypes" id="c_ro_roda_domain_Instance_collectionModelTypes" itemValue="id" items="${collectionmodeltypes}" multiple="true" path="/collectionmodeltypes" z="P3uSj/4NwnUFhADER9hXb5IpEAg="/>
-        <field:simple field="forms" id="c_ro_roda_domain_Instance_forms" messageCode="entity_reference_not_managed" messageCodeAttribute="Form" z="vV33Ir4kPMTGv5TZq/GoLTUVho0="/>
         <field:simple field="instanceDescrs" id="c_ro_roda_domain_Instance_instanceDescrs" messageCode="entity_reference_not_managed" messageCodeAttribute="Instance Descr" z="eVB65IIDgRn7fpIEAta2XY+wkt4="/>
-        <field:simple field="instanceKeywords" id="c_ro_roda_domain_Instance_instanceKeywords" messageCode="entity_reference_not_managed" messageCodeAttribute="Instance Keyword" z="MPhAcQafhS0SFdnCL6VolYcmNiY="/>
         <field:simple field="instanceOrgs" id="c_ro_roda_domain_Instance_instanceOrgs" messageCode="entity_reference_not_managed" messageCodeAttribute="Instance Org" z="CKJF/JVUZ5UUSFTq62n3E81Amdg="/>
         <field:simple field="instancepeople" id="c_ro_roda_domain_Instance_instancepeople" messageCode="entity_reference_not_managed" messageCodeAttribute="Instance Person" z="TZwn071LC3pc4+kVHslXH4bpIug="/>
-        <field:select field="addedBy" id="c_ro_roda_domain_Instance_addedBy" itemValue="id" items="${userses}" path="/userses" z="yq1o8JvxzWjC4W24nxBoNPAYJBs="/>
         <field:select field="studyId" id="c_ro_roda_domain_Instance_studyId" itemValue="id" items="${studys}" path="/studys" z="jZrevqEXYv/24n592oO2YWKjPWM="/>
-        <field:select field="timeMethId" id="c_ro_roda_domain_Instance_timeMethId" itemValue="id" items="${timemethtypes}" path="/timemethtypes" z="kzPkQuwxHF0vOY08ZAGdW2PlTzQ="/>
-        <field:select field="unitAnalysisId" id="c_ro_roda_domain_Instance_unitAnalysisId" itemValue="id" items="${unitanalyses}" path="/unitanalyses" z="sTKOfQonig22yCYLL4M/ZN+eU7o="/>
-        <field:input field="insertionStatus" id="c_ro_roda_domain_Instance_insertionStatus" required="true" validationMessageCode="field_invalid_integer" z="DCpnzMlTuo6Bh9ezebsQTNPSxjc="/>
-        <field:checkbox field="rawData" id="c_ro_roda_domain_Instance_rawData" z="zY90QbUb3wU48Ek+m2I9SLApq6U="/>
-        <field:checkbox field="rawMetadata" id="c_ro_roda_domain_Instance_rawMetadata" z="JgC/aJcxMjnglkleVf1/l6jQzrc="/>
+        <field:select field="addedBy" id="c_ro_roda_domain_Instance_addedBy" itemValue="id" items="${userses}" path="/userses" z="yq1o8JvxzWjC4W24nxBoNPAYJBs="/>
         <field:datetime dateTimePattern="${instance_added_date_format}" field="added" id="c_ro_roda_domain_Instance_added" required="true" z="SQNnGV3OZ3vjGJaN++YED6eqfQc="/>
-        <field:datetime dateTimePattern="${instance_datestart_date_format}" field="dateStart" id="c_ro_roda_domain_Instance_dateStart" z="GFBh5Kt7YwXrOwx3I3gS50T1dUA="/>
-        <field:datetime dateTimePattern="${instance_dateend_date_format}" field="dateEnd" id="c_ro_roda_domain_Instance_dateEnd" z="MTVsGUJ7lkLEiK4bkNmfMJGPHa0="/>
+        <field:simple field="instanceForms" id="c_ro_roda_domain_Instance_instanceForms" messageCode="entity_reference_not_managed" messageCodeAttribute="Instance Form" z="0wUD9V8t5jo/6E9W62qkMn5eHN0="/>
+        <field:simple field="instanceRightTargetGroups" id="c_ro_roda_domain_Instance_instanceRightTargetGroups" messageCode="entity_reference_not_managed" messageCodeAttribute="Instance Right Target Group" z="QLWPwFruHP7aUuojdedHl+HAqvc="/>
+        <field:simple field="instanceVariables" id="c_ro_roda_domain_Instance_instanceVariables" messageCode="entity_reference_not_managed" messageCodeAttribute="Instance Variable" z="6+xX1nLoqxcmGSx10Tm2pXFi6uU="/>
+        <field:input field="disseminatorIdentifier" id="c_ro_roda_domain_Instance_disseminatorIdentifier" z="kGqAneWiJi48zWrrQcpgTHYGJeM="/>
+        <field:checkbox field="main" id="c_ro_roda_domain_Instance_main" z="wZePLYsQ53mrnNtHaQGMvi180to="/>
     </form:update>
 </div>

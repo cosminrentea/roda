@@ -48,6 +48,7 @@ privileged aspect Catalog_Roo_SolrSearch {
         for (Catalog catalog : catalogs) {
             SolrInputDocument sid = new SolrInputDocument();
             sid.addField("id", "catalog_" + catalog.getId());
+            sid.addField("catalog.series_t", catalog.getSeries());
             sid.addField("catalog.parentid_t", catalog.getParentId());
             sid.addField("catalog.owner_t", catalog.getOwner());
             sid.addField("catalog.name_s", catalog.getName());
@@ -56,7 +57,7 @@ privileged aspect Catalog_Roo_SolrSearch {
             sid.addField("catalog.description_s", catalog.getDescription());
             sid.addField("catalog.id_i", catalog.getId());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("catalog_solrsummary_t", new StringBuilder().append(catalog.getParentId()).append(" ").append(catalog.getOwner()).append(" ").append(catalog.getName()).append(" ").append(catalog.getAdded().getTime()).append(" ").append(catalog.getSequencenr()).append(" ").append(catalog.getDescription()).append(" ").append(catalog.getId()));
+            sid.addField("catalog_solrsummary_t", new StringBuilder().append(catalog.getSeries()).append(" ").append(catalog.getParentId()).append(" ").append(catalog.getOwner()).append(" ").append(catalog.getName()).append(" ").append(catalog.getAdded().getTime()).append(" ").append(catalog.getSequencenr()).append(" ").append(catalog.getDescription()).append(" ").append(catalog.getId()));
             documents.add(sid);
         }
         try {

@@ -52,8 +52,9 @@ privileged aspect InstancePerson_Roo_SolrSearch {
             sid.addField("instancePerson.assoctypeid_t", instancePerson.getAssocTypeId());
             sid.addField("instancePerson.personid_t", instancePerson.getPersonId());
             sid.addField("instancePerson.assocdetails_s", instancePerson.getAssocDetails());
+            sid.addField("instancePerson.id_t", instancePerson.getId());
             // Add summary field to allow searching documents for objects of this type
-            sid.addField("instanceperson_solrsummary_t", new StringBuilder().append(instancePerson.getInstanceId()).append(" ").append(instancePerson.getAssocTypeId()).append(" ").append(instancePerson.getPersonId()).append(" ").append(instancePerson.getAssocDetails()));
+            sid.addField("instanceperson_solrsummary_t", new StringBuilder().append(instancePerson.getInstanceId()).append(" ").append(instancePerson.getAssocTypeId()).append(" ").append(instancePerson.getPersonId()).append(" ").append(instancePerson.getAssocDetails()).append(" ").append(instancePerson.getId()));
             documents.add(sid);
         }
         try {

@@ -3,9 +3,9 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <form:create id="fc_ro_roda_domain_TimeMethType" modelAttribute="timeMethType" path="/timemethtypes" render="${empty dependencies}" z="bt6H5KkE9nWsqxmAe/bz7eYP3z4=">
-        <field:simple field="instances" id="c_ro_roda_domain_TimeMethType_instances" messageCode="entity_reference_not_managed" messageCodeAttribute="Instance" z="ryEL32zAoVzkWn6yVnc5gnpiHxU="/>
         <field:input field="name" id="c_ro_roda_domain_TimeMethType_name" required="true" z="jBMRt4ENw7p7Qp+Jfb5oxfpU18g="/>
         <field:input field="description" id="c_ro_roda_domain_TimeMethType_description" z="cr3XiYt/114XSP6dOY++T++H+t8="/>
+        <field:select field="study" id="c_ro_roda_domain_TimeMethType_study" itemValue="id" items="${studys}" path="/studys" z="PhvlwCO1bw62pW4IAhyNELfMcyI="/>
     </form:create>
     <form:dependency dependencies="${dependencies}" id="d_ro_roda_domain_TimeMethType" render="${not empty dependencies}" z="H4PwupcNfZ4ZjjbvcRtDcsw4G3A="/>
 </div>

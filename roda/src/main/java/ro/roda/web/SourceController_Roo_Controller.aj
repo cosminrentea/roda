@@ -16,12 +16,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 import ro.roda.domain.Source;
-import ro.roda.service.OrgService;
-import ro.roda.service.SourceContactsService;
 import ro.roda.service.SourceService;
-import ro.roda.service.SourcestudyService;
-import ro.roda.service.SourcetypeHistoryService;
-import ro.roda.service.SourcetypeService;
+import ro.roda.service.StudyService;
 import ro.roda.web.SourceController;
 
 privileged aspect SourceController_Roo_Controller {
@@ -30,19 +26,7 @@ privileged aspect SourceController_Roo_Controller {
     SourceService SourceController.sourceService;
     
     @Autowired
-    OrgService SourceController.orgService;
-    
-    @Autowired
-    SourceContactsService SourceController.sourceContactsService;
-    
-    @Autowired
-    SourcestudyService SourceController.sourcestudyService;
-    
-    @Autowired
-    SourcetypeService SourceController.sourcetypeService;
-    
-    @Autowired
-    SourcetypeHistoryService SourceController.sourcetypeHistoryService;
+    StudyService SourceController.studyService;
     
     @RequestMapping(method = RequestMethod.POST, produces = "text/html")
     public String SourceController.create(@Valid Source source, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
@@ -52,7 +36,7 @@ privileged aspect SourceController_Roo_Controller {
         }
         uiModel.asMap().clear();
         sourceService.saveSource(source);
-        return "redirect:/sources/" + encodeUrlPathSegment(source.getOrgId().toString(), httpServletRequest);
+        return "redirect:/sources/" + encodeUrlPathSegment(source.getId().toString(), httpServletRequest);
     }
     
     @RequestMapping(params = "form", produces = "text/html")
@@ -61,10 +45,10 @@ privileged aspect SourceController_Roo_Controller {
         return "sources/create";
     }
     
-    @RequestMapping(value = "/{orgId}", produces = "text/html")
-    public String SourceController.show(@PathVariable("orgId") Integer orgId, Model uiModel) {
-        uiModel.addAttribute("source", sourceService.findSource(orgId));
-        uiModel.addAttribute("itemId", orgId);
+    @RequestMapping(value = "/{id}", produces = "text/html")
+    public String SourceController.show(@PathVariable("id") Integer id, Model uiModel) {
+        uiModel.addAttribute("source", sourceService.findSource(id));
+        uiModel.addAttribute("itemId", id);
         return "sources/show";
     }
     
@@ -90,18 +74,18 @@ privileged aspect SourceController_Roo_Controller {
         }
         uiModel.asMap().clear();
         sourceService.updateSource(source);
-        return "redirect:/sources/" + encodeUrlPathSegment(source.getOrgId().toString(), httpServletRequest);
+        return "redirect:/sources/" + encodeUrlPathSegment(source.getId().toString(), httpServletRequest);
     }
     
-    @RequestMapping(value = "/{orgId}", params = "form", produces = "text/html")
-    public String SourceController.updateForm(@PathVariable("orgId") Integer orgId, Model uiModel) {
-        populateEditForm(uiModel, sourceService.findSource(orgId));
+    @RequestMapping(value = "/{id}", params = "form", produces = "text/html")
+    public String SourceController.updateForm(@PathVariable("id") Integer id, Model uiModel) {
+        populateEditForm(uiModel, sourceService.findSource(id));
         return "sources/update";
     }
     
-    @RequestMapping(value = "/{orgId}", method = RequestMethod.DELETE, produces = "text/html")
-    public String SourceController.delete(@PathVariable("orgId") Integer orgId, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        Source source = sourceService.findSource(orgId);
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
+    public String SourceController.delete(@PathVariable("id") Integer id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
+        Source source = sourceService.findSource(id);
         sourceService.deleteSource(source);
         uiModel.asMap().clear();
         uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
@@ -111,11 +95,7 @@ privileged aspect SourceController_Roo_Controller {
     
     void SourceController.populateEditForm(Model uiModel, Source source) {
         uiModel.addAttribute("source", source);
-        uiModel.addAttribute("orgs", orgService.findAllOrgs());
-        uiModel.addAttribute("sourcecontactses", sourceContactsService.findAllSourceContactses());
-        uiModel.addAttribute("sourcestudys", sourcestudyService.findAllSourcestudys());
-        uiModel.addAttribute("sourcetypes", sourcetypeService.findAllSourcetypes());
-        uiModel.addAttribute("sourcetypehistorys", sourcetypeHistoryService.findAllSourcetypeHistorys());
+        uiModel.addAttribute("studys", studyService.findAllStudys());
     }
     
     String SourceController.encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

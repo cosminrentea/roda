@@ -12,10 +12,10 @@ import org.springframework.roo.addon.tostring.RooToString;
 
 @RooJavaBean
 @RooToString
-@RooJpaActiveRecord(versionField = "", table = "users", schema = "public")
 @RooDbManaged(automaticallyDelete = true)
 @RooSerializable
 @RooSolrSearchable
 @RooJson
+@RooJpaActiveRecord(versionField = "", table = "users", schema = "public", finders = { "findUsersesByUsernameLike", "findUsersesByUsernameLikeAndEnabled" })
 public class Users {
 }

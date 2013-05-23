@@ -3,8 +3,8 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <page:show id="ps_ro_roda_domain_SamplingProcedure" object="${samplingprocedure}" path="/samplingprocedures" z="GgeIhNbePkgCRKiP7Qw96xzIe+k=">
-        <field:display field="instances" id="s_ro_roda_domain_SamplingProcedure_instances" object="${samplingprocedure}" z="o/cwuAcvaUNbDjp1Xl5DTQbnKmc="/>
         <field:display field="name" id="s_ro_roda_domain_SamplingProcedure_name" object="${samplingprocedure}" z="7KKG4SKqbVVLCD9bbCCp0yrSgPY="/>
         <field:display field="description" id="s_ro_roda_domain_SamplingProcedure_description" object="${samplingprocedure}" z="CiM18bLVtVqob9Xp3VvPNVq9bsg="/>
+        <field:display field="studies" id="s_ro_roda_domain_SamplingProcedure_studies" object="${samplingprocedure}" z="Uw2Y4oR1frnZFPGx0vqA+ulLnT0="/>
     </page:show>
 </div>

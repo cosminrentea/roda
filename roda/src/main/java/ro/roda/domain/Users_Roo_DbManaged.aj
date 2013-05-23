@@ -6,37 +6,19 @@ package ro.roda.domain;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
-import ro.roda.domain.AuditLogChangeset;
-import ro.roda.domain.AuthData;
 import ro.roda.domain.Authorities;
 import ro.roda.domain.Catalog;
-import ro.roda.domain.CmsPage;
 import ro.roda.domain.Instance;
-import ro.roda.domain.InstanceKeyword;
-import ro.roda.domain.News;
 import ro.roda.domain.PersonLinks;
-import ro.roda.domain.SourcestudyTypeHistory;
-import ro.roda.domain.SourcetypeHistory;
 import ro.roda.domain.Study;
 import ro.roda.domain.StudyKeyword;
 import ro.roda.domain.UserAuthLog;
 import ro.roda.domain.UserMessage;
-import ro.roda.domain.UserProfile;
 import ro.roda.domain.UserSettingValue;
 import ro.roda.domain.Users;
 
 privileged aspect Users_Roo_DbManaged {
-    
-    @OneToOne(mappedBy = "users")
-    private AuthData Users.authData;
-    
-    @OneToOne(mappedBy = "users")
-    private UserProfile Users.userProfile;
-    
-    @OneToMany(mappedBy = "userId")
-    private Set<AuditLogChangeset> Users.auditLogChangesets;
     
     @OneToMany(mappedBy = "username")
     private Set<Authorities> Users.authoritieses;
@@ -44,29 +26,14 @@ privileged aspect Users_Roo_DbManaged {
     @OneToMany(mappedBy = "owner")
     private Set<Catalog> Users.catalogs;
     
-    @OneToMany(mappedBy = "ownerId")
-    private Set<CmsPage> Users.cmsPages;
-    
     @OneToMany(mappedBy = "addedBy")
     private Set<Instance> Users.instances;
-    
-    @OneToMany(mappedBy = "addedBy")
-    private Set<InstanceKeyword> Users.instanceKeywords;
-    
-    @OneToMany(mappedBy = "addedBy")
-    private Set<News> Users.news;
     
     @OneToMany(mappedBy = "userId")
     private Set<PersonLinks> Users.personLinkss;
     
     @OneToMany(mappedBy = "statusBy")
     private Set<PersonLinks> Users.personLinkss1;
-    
-    @OneToMany(mappedBy = "addedBy")
-    private Set<SourcestudyTypeHistory> Users.sourcestudyTypeHistories;
-    
-    @OneToMany(mappedBy = "addedBy")
-    private Set<SourcetypeHistory> Users.sourcetypeHistories;
     
     @OneToMany(mappedBy = "addedBy")
     private Set<Study> Users.studies;
@@ -98,30 +65,6 @@ privileged aspect Users_Roo_DbManaged {
     @NotNull
     private boolean Users.enabled;
     
-    public AuthData Users.getAuthData() {
-        return authData;
-    }
-    
-    public void Users.setAuthData(AuthData authData) {
-        this.authData = authData;
-    }
-    
-    public UserProfile Users.getUserProfile() {
-        return userProfile;
-    }
-    
-    public void Users.setUserProfile(UserProfile userProfile) {
-        this.userProfile = userProfile;
-    }
-    
-    public Set<AuditLogChangeset> Users.getAuditLogChangesets() {
-        return auditLogChangesets;
-    }
-    
-    public void Users.setAuditLogChangesets(Set<AuditLogChangeset> auditLogChangesets) {
-        this.auditLogChangesets = auditLogChangesets;
-    }
-    
     public Set<Authorities> Users.getAuthoritieses() {
         return authoritieses;
     }
@@ -138,36 +81,12 @@ privileged aspect Users_Roo_DbManaged {
         this.catalogs = catalogs;
     }
     
-    public Set<CmsPage> Users.getCmsPages() {
-        return cmsPages;
-    }
-    
-    public void Users.setCmsPages(Set<CmsPage> cmsPages) {
-        this.cmsPages = cmsPages;
-    }
-    
     public Set<Instance> Users.getInstances() {
         return instances;
     }
     
     public void Users.setInstances(Set<Instance> instances) {
         this.instances = instances;
-    }
-    
-    public Set<InstanceKeyword> Users.getInstanceKeywords() {
-        return instanceKeywords;
-    }
-    
-    public void Users.setInstanceKeywords(Set<InstanceKeyword> instanceKeywords) {
-        this.instanceKeywords = instanceKeywords;
-    }
-    
-    public Set<News> Users.getNews() {
-        return news;
-    }
-    
-    public void Users.setNews(Set<News> news) {
-        this.news = news;
     }
     
     public Set<PersonLinks> Users.getPersonLinkss() {
@@ -184,22 +103,6 @@ privileged aspect Users_Roo_DbManaged {
     
     public void Users.setPersonLinkss1(Set<PersonLinks> personLinkss1) {
         this.personLinkss1 = personLinkss1;
-    }
-    
-    public Set<SourcestudyTypeHistory> Users.getSourcestudyTypeHistories() {
-        return sourcestudyTypeHistories;
-    }
-    
-    public void Users.setSourcestudyTypeHistories(Set<SourcestudyTypeHistory> sourcestudyTypeHistories) {
-        this.sourcestudyTypeHistories = sourcestudyTypeHistories;
-    }
-    
-    public Set<SourcetypeHistory> Users.getSourcetypeHistories() {
-        return sourcetypeHistories;
-    }
-    
-    public void Users.setSourcetypeHistories(Set<SourcetypeHistory> sourcetypeHistories) {
-        this.sourcetypeHistories = sourcetypeHistories;
     }
     
     public Set<Study> Users.getStudies() {

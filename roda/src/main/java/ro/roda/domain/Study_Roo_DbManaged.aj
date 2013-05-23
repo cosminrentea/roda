@@ -12,19 +12,26 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import org.springframework.format.annotation.DateTimeFormat;
 import ro.roda.domain.CatalogStudy;
+import ro.roda.domain.CollectionModelType;
+import ro.roda.domain.DataSourceType;
 import ro.roda.domain.File;
 import ro.roda.domain.Instance;
+import ro.roda.domain.SamplingProcedure;
+import ro.roda.domain.Source;
 import ro.roda.domain.Study;
 import ro.roda.domain.StudyDescr;
 import ro.roda.domain.StudyKeyword;
 import ro.roda.domain.StudyOrg;
 import ro.roda.domain.StudyPerson;
+import ro.roda.domain.TimeMethType;
 import ro.roda.domain.Topic;
+import ro.roda.domain.UnitAnalysis;
 import ro.roda.domain.Users;
 
 privileged aspect Study_Roo_DbManaged {
@@ -33,8 +40,24 @@ privileged aspect Study_Roo_DbManaged {
     @JoinTable(name = "study_topic", joinColumns = { @JoinColumn(name = "study_id", nullable = false) }, inverseJoinColumns = { @JoinColumn(name = "topic_id", nullable = false) })
     private Set<Topic> Study.topics;
     
+    @ManyToMany(mappedBy = "studies")
+    private Set<SamplingProcedure> Study.samplingProcedures;
+    
+    @ManyToMany(mappedBy = "studies")
+    private Set<CollectionModelType> Study.collectionModelTypes;
+    
+    @ManyToMany(mappedBy = "studies")
+    private Set<DataSourceType> Study.dataSourceTypes;
+    
     @ManyToMany(mappedBy = "studies1")
     private Set<File> Study.files1;
+    
+    @ManyToMany(mappedBy = "studies")
+    private Set<Source> Study.sources;
+    
+    @OneToOne
+    @JoinColumn(name = "id", nullable = false, insertable = false, updatable = false)
+    private TimeMethType Study.timeMethType;
     
     @OneToMany(mappedBy = "studyId")
     private Set<CatalogStudy> Study.catalogStudies;
@@ -53,6 +76,10 @@ privileged aspect Study_Roo_DbManaged {
     
     @OneToMany(mappedBy = "studyId")
     private Set<StudyPerson> Study.studypeople;
+    
+    @ManyToOne
+    @JoinColumn(name = "unit_analysis_id", referencedColumnName = "id", nullable = false)
+    private UnitAnalysis Study.unitAnalysisId;
     
     @ManyToOne
     @JoinColumn(name = "added_by", referencedColumnName = "id", nullable = false)
@@ -86,6 +113,18 @@ privileged aspect Study_Roo_DbManaged {
     @NotNull
     private boolean Study.anonymousUsage;
     
+    @Column(name = "raw_data", columnDefinition = "bool")
+    @NotNull
+    private boolean Study.rawData;
+    
+    @Column(name = "raw_metadata", columnDefinition = "bool")
+    @NotNull
+    private boolean Study.rawMetadata;
+    
+    @Column(name = "time_meth_id", columnDefinition = "int4")
+    @NotNull
+    private Integer Study.timeMethId;
+    
     public Set<Topic> Study.getTopics() {
         return topics;
     }
@@ -94,12 +133,52 @@ privileged aspect Study_Roo_DbManaged {
         this.topics = topics;
     }
     
+    public Set<SamplingProcedure> Study.getSamplingProcedures() {
+        return samplingProcedures;
+    }
+    
+    public void Study.setSamplingProcedures(Set<SamplingProcedure> samplingProcedures) {
+        this.samplingProcedures = samplingProcedures;
+    }
+    
+    public Set<CollectionModelType> Study.getCollectionModelTypes() {
+        return collectionModelTypes;
+    }
+    
+    public void Study.setCollectionModelTypes(Set<CollectionModelType> collectionModelTypes) {
+        this.collectionModelTypes = collectionModelTypes;
+    }
+    
+    public Set<DataSourceType> Study.getDataSourceTypes() {
+        return dataSourceTypes;
+    }
+    
+    public void Study.setDataSourceTypes(Set<DataSourceType> dataSourceTypes) {
+        this.dataSourceTypes = dataSourceTypes;
+    }
+    
     public Set<File> Study.getFiles1() {
         return files1;
     }
     
     public void Study.setFiles1(Set<File> files1) {
         this.files1 = files1;
+    }
+    
+    public Set<Source> Study.getSources() {
+        return sources;
+    }
+    
+    public void Study.setSources(Set<Source> sources) {
+        this.sources = sources;
+    }
+    
+    public TimeMethType Study.getTimeMethType() {
+        return timeMethType;
+    }
+    
+    public void Study.setTimeMethType(TimeMethType timeMethType) {
+        this.timeMethType = timeMethType;
     }
     
     public Set<CatalogStudy> Study.getCatalogStudies() {
@@ -148,6 +227,14 @@ privileged aspect Study_Roo_DbManaged {
     
     public void Study.setStudypeople(Set<StudyPerson> studypeople) {
         this.studypeople = studypeople;
+    }
+    
+    public UnitAnalysis Study.getUnitAnalysisId() {
+        return unitAnalysisId;
+    }
+    
+    public void Study.setUnitAnalysisId(UnitAnalysis unitAnalysisId) {
+        this.unitAnalysisId = unitAnalysisId;
     }
     
     public Users Study.getAddedBy() {
@@ -204,6 +291,30 @@ privileged aspect Study_Roo_DbManaged {
     
     public void Study.setAnonymousUsage(boolean anonymousUsage) {
         this.anonymousUsage = anonymousUsage;
+    }
+    
+    public boolean Study.isRawData() {
+        return rawData;
+    }
+    
+    public void Study.setRawData(boolean rawData) {
+        this.rawData = rawData;
+    }
+    
+    public boolean Study.isRawMetadata() {
+        return rawMetadata;
+    }
+    
+    public void Study.setRawMetadata(boolean rawMetadata) {
+        this.rawMetadata = rawMetadata;
+    }
+    
+    public Integer Study.getTimeMethId() {
+        return timeMethId;
+    }
+    
+    public void Study.setTimeMethId(Integer timeMethId) {
+        this.timeMethId = timeMethId;
     }
     
 }

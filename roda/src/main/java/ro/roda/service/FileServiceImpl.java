@@ -1,6 +1,7 @@
 package ro.roda.service;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -13,10 +14,14 @@ import org.apache.solr.client.solrj.response.QueryResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import ro.roda.domain.File;
 
+@Service
+@Transactional
 public class FileServiceImpl implements FileService {
 
 	@Autowired
@@ -82,4 +87,32 @@ public class FileServiceImpl implements FileService {
 			e.printStackTrace();
 		}
 	}
+
+	public long countAllFiles() {
+        return File.countFiles();
+    }
+
+	public void deleteFile(File file) {
+        file.remove();
+    }
+
+	public File findFile(Integer id) {
+        return File.findFile(id);
+    }
+
+	public List<File> findAllFiles() {
+        return File.findAllFiles();
+    }
+
+	public List<File> findFileEntries(int firstResult, int maxResults) {
+        return File.findFileEntries(firstResult, maxResults);
+    }
+
+	public void saveFile(File file) {
+        file.persist();
+    }
+
+	public File updateFile(File file) {
+        return file.merge();
+    }
 }

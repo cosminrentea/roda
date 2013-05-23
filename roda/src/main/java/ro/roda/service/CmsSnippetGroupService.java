@@ -1,7 +1,30 @@
 package ro.roda.service;
 
+import java.util.List;
 import org.springframework.roo.addon.layers.service.RooService;
+import ro.roda.domain.CmsSnippetGroup;
 
-@RooService(domainTypes = { ro.roda.domain.CmsSnippetGroup.class })
+
 public interface CmsSnippetGroupService {
+
+	public abstract long countAllCmsSnippetGroups();
+
+
+	public abstract void deleteCmsSnippetGroup(CmsSnippetGroup cmsSnippetGroup);
+
+
+	public abstract CmsSnippetGroup findCmsSnippetGroup(Integer id);
+
+
+	public abstract List<CmsSnippetGroup> findAllCmsSnippetGroups();
+
+
+	public abstract List<CmsSnippetGroup> findCmsSnippetGroupEntries(int firstResult, int maxResults);
+
+
+	public abstract void saveCmsSnippetGroup(CmsSnippetGroup cmsSnippetGroup);
+
+
+	public abstract CmsSnippetGroup updateCmsSnippetGroup(CmsSnippetGroup cmsSnippetGroup);
+
 }

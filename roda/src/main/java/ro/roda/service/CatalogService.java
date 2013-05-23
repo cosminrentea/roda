@@ -9,7 +9,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 
 import ro.roda.domain.Catalog;
 
-@RooService(domainTypes = { ro.roda.domain.Catalog.class })
+
 public interface CatalogService {
 	
 /*	   
@@ -32,5 +32,26 @@ public interface CatalogService {
 		@PreAuthorize("hasPermission(#catalog, 'WRITE')")
 	    public abstract Catalog updateCatalog(Catalog catalog);
 */
+
+
+	public abstract long countAllCatalogs();
+
+
+	public abstract void deleteCatalog(Catalog catalog);
+
+
+	public abstract Catalog findCatalog(Integer id);
+
+
+	public abstract List<Catalog> findAllCatalogs();
+
+
+	public abstract List<Catalog> findCatalogEntries(int firstResult, int maxResults);
+
+
+	public abstract void saveCatalog(Catalog catalog);
+
+
+	public abstract Catalog updateCatalog(Catalog catalog);
 
 }

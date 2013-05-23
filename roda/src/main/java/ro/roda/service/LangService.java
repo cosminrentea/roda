@@ -1,7 +1,30 @@
 package ro.roda.service;
 
+import java.util.List;
 import org.springframework.roo.addon.layers.service.RooService;
+import ro.roda.domain.Lang;
 
-@RooService(domainTypes = { ro.roda.domain.Lang.class })
+
 public interface LangService {
+
+	public abstract long countAllLangs();
+
+
+	public abstract void deleteLang(Lang lang);
+
+
+	public abstract Lang findLang(Integer id);
+
+
+	public abstract List<Lang> findAllLangs();
+
+
+	public abstract List<Lang> findLangEntries(int firstResult, int maxResults);
+
+
+	public abstract void saveLang(Lang lang);
+
+
+	public abstract Lang updateLang(Lang lang);
+
 }

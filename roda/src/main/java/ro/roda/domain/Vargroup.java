@@ -1,18 +1,244 @@
 package ro.roda.domain;
 
+import flexjson.JSONDeserializer;
+import flexjson.JSONSerializer;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EntityManager;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.PersistenceContext;
+import javax.persistence.PostPersist;
+import javax.persistence.PostUpdate;
+import javax.persistence.PreRemove;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+import org.apache.solr.client.solrj.SolrQuery;
+import org.apache.solr.client.solrj.SolrServer;
+import org.apache.solr.client.solrj.response.QueryResponse;
+import org.apache.solr.common.SolrInputDocument;
 import org.hibernate.envers.Audited;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.roo.addon.dbre.RooDbManaged;
 import org.springframework.roo.addon.javabean.RooJavaBean;
 import org.springframework.roo.addon.jpa.activerecord.RooJpaActiveRecord;
 import org.springframework.roo.addon.json.RooJson;
 import org.springframework.roo.addon.solr.RooSolrSearchable;
 import org.springframework.roo.addon.tostring.RooToString;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.transaction.annotation.Transactional;
 
-@RooJavaBean
-@RooToString
-@RooJpaActiveRecord(versionField = "", table = "vargroup", schema = "public")
-@RooDbManaged(automaticallyDelete = true)
-@RooSolrSearchable
-@RooJson
+@Entity
+@Table(schema = "public",name = "vargroup")
+@Configurable
+
+
+
+
+
+
 public class Vargroup {
+
+	@Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", columnDefinition = "bigserial")
+    private Long id;
+
+	public Long getId() {
+        return this.id;
+    }
+
+	public void setId(Long id) {
+        this.id = id;
+    }
+
+	public String toJson() {
+        return new JSONSerializer().exclude("*.class").serialize(this);
+    }
+
+	public static Vargroup fromJsonToVargroup(String json) {
+        return new JSONDeserializer<Vargroup>().use(null, Vargroup.class).deserialize(json);
+    }
+
+	public static String toJsonArray(Collection<Vargroup> collection) {
+        return new JSONSerializer().exclude("*.class").serialize(collection);
+    }
+
+	public static Collection<Vargroup> fromJsonArrayToVargroups(String json) {
+        return new JSONDeserializer<List<Vargroup>>().use(null, ArrayList.class).use("values", Vargroup.class).deserialize(json);
+    }
+
+	@ManyToMany
+    @JoinTable(name = "variable_vargroup", joinColumns = { @JoinColumn(name = "vargroup_id", nullable = false) }, inverseJoinColumns = { @JoinColumn(name = "variable_id", nullable = false) })
+    private Set<Variable> variables;
+
+	@Column(name = "name", columnDefinition = "text")
+    @NotNull
+    private String name;
+
+	public Set<Variable> getVariables() {
+        return variables;
+    }
+
+	public void setVariables(Set<Variable> variables) {
+        this.variables = variables;
+    }
+
+	public String getName() {
+        return name;
+    }
+
+	public void setName(String name) {
+        this.name = name;
+    }
+
+	@Autowired
+    transient SolrServer solrServer;
+
+	public static QueryResponse search(String queryString) {
+        String searchString = "Vargroup_solrsummary_t:" + queryString;
+        return search(new SolrQuery(searchString.toLowerCase()));
+    }
+
+	public static QueryResponse search(SolrQuery query) {
+        try {
+            return solrServer().query(query);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new QueryResponse();
+    }
+
+	public static void indexVargroup(Vargroup vargroup) {
+        List<Vargroup> vargroups = new ArrayList<Vargroup>();
+        vargroups.add(vargroup);
+        indexVargroups(vargroups);
+    }
+
+	@Async
+    public static void indexVargroups(Collection<Vargroup> vargroups) {
+        List<SolrInputDocument> documents = new ArrayList<SolrInputDocument>();
+        for (Vargroup vargroup : vargroups) {
+            SolrInputDocument sid = new SolrInputDocument();
+            sid.addField("id", "vargroup_" + vargroup.getId());
+            sid.addField("vargroup.name_s", vargroup.getName());
+            sid.addField("vargroup.id_l", vargroup.getId());
+            // Add summary field to allow searching documents for objects of this type
+            sid.addField("vargroup_solrsummary_t", new StringBuilder().append(vargroup.getName()).append(" ").append(vargroup.getId()));
+            documents.add(sid);
+        }
+        try {
+            SolrServer solrServer = solrServer();
+            solrServer.add(documents);
+            solrServer.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+	@Async
+    public static void deleteIndex(Vargroup vargroup) {
+        SolrServer solrServer = solrServer();
+        try {
+            solrServer.deleteById("vargroup_" + vargroup.getId());
+            solrServer.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+	@PostUpdate
+    @PostPersist
+    private void postPersistOrUpdate() {
+        indexVargroup(this);
+    }
+
+	@PreRemove
+    private void preRemove() {
+        deleteIndex(this);
+    }
+
+	public static SolrServer solrServer() {
+        SolrServer _solrServer = new Vargroup().solrServer;
+        if (_solrServer == null) throw new IllegalStateException("Solr server has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+        return _solrServer;
+    }
+
+	@PersistenceContext
+    transient EntityManager entityManager;
+
+	public static final EntityManager entityManager() {
+        EntityManager em = new Vargroup().entityManager;
+        if (em == null) throw new IllegalStateException("Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+        return em;
+    }
+
+	public static long countVargroups() {
+        return entityManager().createQuery("SELECT COUNT(o) FROM Vargroup o", Long.class).getSingleResult();
+    }
+
+	public static List<Vargroup> findAllVargroups() {
+        return entityManager().createQuery("SELECT o FROM Vargroup o", Vargroup.class).getResultList();
+    }
+
+	public static Vargroup findVargroup(Long id) {
+        if (id == null) return null;
+        return entityManager().find(Vargroup.class, id);
+    }
+
+	public static List<Vargroup> findVargroupEntries(int firstResult, int maxResults) {
+        return entityManager().createQuery("SELECT o FROM Vargroup o", Vargroup.class).setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
+    }
+
+	@Transactional
+    public void persist() {
+        if (this.entityManager == null) this.entityManager = entityManager();
+        this.entityManager.persist(this);
+    }
+
+	@Transactional
+    public void remove() {
+        if (this.entityManager == null) this.entityManager = entityManager();
+        if (this.entityManager.contains(this)) {
+            this.entityManager.remove(this);
+        } else {
+            Vargroup attached = Vargroup.findVargroup(this.id);
+            this.entityManager.remove(attached);
+        }
+    }
+
+	@Transactional
+    public void flush() {
+        if (this.entityManager == null) this.entityManager = entityManager();
+        this.entityManager.flush();
+    }
+
+	@Transactional
+    public void clear() {
+        if (this.entityManager == null) this.entityManager = entityManager();
+        this.entityManager.clear();
+    }
+
+	@Transactional
+    public Vargroup merge() {
+        if (this.entityManager == null) this.entityManager = entityManager();
+        Vargroup merged = this.entityManager.merge(this);
+        this.entityManager.flush();
+        return merged;
+    }
+
+	public String toString() {
+        return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+    }
 }

@@ -97,7 +97,6 @@ CREATE UNIQUE INDEX "acl_sid_principal_sid_Idx" ON public.acl_sid (principal, si
 CREATE TABLE public.address
 (
 id SERIAL,
-	country_id CHAR(2) NOT NULL,
 	city_id INTEGER NOT NULL,
 	address1 TEXT NOT NULL,
 	address2 TEXT NULL,
@@ -113,8 +112,6 @@ ALTER TABLE public.address ADD CONSTRAINT pkaddress
 /* Add Comments */
 COMMENT ON COLUMN public.address.id IS 'Codul adresei retinute';
 
-COMMENT ON COLUMN public.address.country_id IS 'Codul tarii corespunzatoare adresei (refera atributul id din tabelul country)';
-
 COMMENT ON COLUMN public.address.city_id IS 'Codul orasului corespunzator adresei (refera atributul id din tabelul city)';
 
 COMMENT ON COLUMN public.address.address1 IS 'Adresa detaliata (strada, numar, bloc, scara, apartament)';
@@ -128,132 +125,6 @@ COMMENT ON COLUMN public.address.postal_code IS 'Codul Postal';
 COMMENT ON TABLE public.address IS 'Tabel unic pentru toate adresele care se gasesc in baza de date';
 
 
-/******************** Add Table: public.audit_log_action ************************/
-
-/* Build Table Structure */
-CREATE TABLE public.audit_log_action
-(
-id SERIAL,
-	changeset INTEGER NOT NULL,
-	audited_table INTEGER NOT NULL,
-	audited_row VARCHAR(50) NULL,
-	type VARCHAR(10) NOT NULL
-) WITHOUT OIDS;
-
-/* Add Primary Key */
-ALTER TABLE public.audit_log_action ADD CONSTRAINT audit_log_action_pkey
-	PRIMARY KEY (id);
-
-/* Add Indexes */
-CREATE INDEX audit_log_action_idx_audited_table ON public.audit_log_action (audited_table);
-
-CREATE INDEX audit_log_action_idx_changeset ON public.audit_log_action (changeset);
-
-
-/******************** Add Table: public.audit_log_change ************************/
-
-/* Build Table Structure */
-CREATE TABLE public.audit_log_change
-(
-id SERIAL,
-	"action" INTEGER NOT NULL,
-	field INTEGER NOT NULL,
-	old_value VARCHAR(255) NULL,
-	new_value VARCHAR(255) NULL
-) WITHOUT OIDS;
-
-/* Add Primary Key */
-ALTER TABLE public.audit_log_change ADD CONSTRAINT audit_log_change_pkey
-	PRIMARY KEY (id);
-
-/* Add Indexes */
-CREATE INDEX audit_log_change_idx_action ON public.audit_log_change ("action");
-
-CREATE INDEX audit_log_change_idx_field ON public.audit_log_change (field);
-
-
-/******************** Add Table: public.audit_log_changeset ************************/
-
-/* Build Table Structure */
-CREATE TABLE public.audit_log_changeset
-(
-id SERIAL,
-	description TEXT NULL,
-	"timestamp" TIMESTAMP DEFAULT now() NOT NULL,
-	user_id INTEGER NOT NULL
-) WITHOUT OIDS;
-
-/* Add Primary Key */
-ALTER TABLE public.audit_log_changeset ADD CONSTRAINT audit_log_changeset_pkey
-	PRIMARY KEY (id);
-
-/* Add Indexes */
-CREATE INDEX audit_log_changeset_idx_rodauser ON public.audit_log_changeset (user_id);
-
-
-/******************** Add Table: public.audit_log_field ************************/
-
-/* Build Table Structure */
-CREATE TABLE public.audit_log_field
-(
-id SERIAL,
-	audited_table INTEGER NOT NULL,
-	name TEXT NOT NULL
-) WITHOUT OIDS;
-
-/* Add Primary Key */
-ALTER TABLE public.audit_log_field ADD CONSTRAINT audit_log_field_pkey
-	PRIMARY KEY (id);
-
-/* Add Indexes */
-CREATE INDEX audit_log_field_idx_audited_table ON public.audit_log_field (audited_table);
-
-
-/******************** Add Table: public.audit_log_table ************************/
-
-/* Build Table Structure */
-CREATE TABLE public.audit_log_table
-(
-id SERIAL,
-	name TEXT NOT NULL
-) WITHOUT OIDS;
-
-/* Add Primary Key */
-ALTER TABLE public.audit_log_table ADD CONSTRAINT audit_log_table_pkey
-	PRIMARY KEY (id);
-
-/* Add Unique Constraints */
-ALTER TABLE public.audit_log_table
-	ADD CONSTRAINT audit_log_table_name UNIQUE (name);
-
-
-/******************** Add Table: public.auth_data ************************/
-
-/* Build Table Structure */
-CREATE TABLE public.auth_data
-(
-	user_id INTEGER NOT NULL,
-	credential_provider TEXT NOT NULL,
-	field_name TEXT NOT NULL,
-	field_value TEXT NOT NULL
-) WITHOUT OIDS;
-
-/* Add Primary Key */
-ALTER TABLE public.auth_data ADD CONSTRAINT pkauth_data
-	PRIMARY KEY (user_id);
-
-/* Add Comments */
-COMMENT ON COLUMN public.auth_data.user_id IS 'Codul utilizatorului (refera atributul id al tabelului users)';
-
-COMMENT ON COLUMN public.auth_data.credential_provider IS 'Furnizorul de informatii de acces';
-
-COMMENT ON COLUMN public.auth_data.field_name IS 'Denumirea campului de autentificare (de exemplu: username)';
-
-COMMENT ON COLUMN public.auth_data.field_value IS 'Valoarea campului specificat prin atributul field_name pentru utilizatorul referit prin atributul user_id';
-
-COMMENT ON TABLE public.auth_data IS 'Tabel ce stocheaza datele de autentificare ale utilizatorilor';
-
-
 /******************** Add Table: public.authorities ************************/
 
 /* Build Table Structure */
@@ -263,8 +134,9 @@ CREATE TABLE public.authorities
 	authority VARCHAR(64) NOT NULL
 );
 
-/* Add Indexes */
-CREATE UNIQUE INDEX "authorities_auhtority_Idx" ON public.authorities (username, authority);
+/* Add Primary Key */
+ALTER TABLE public.authorities ADD CONSTRAINT pkauthorities
+	PRIMARY KEY (username, authority);
 
 
 /******************** Add Table: public.catalog ************************/
@@ -385,24 +257,6 @@ COMMENT ON COLUMN public.cms_file.filesize IS 'Dimensiunea unui fisier din siste
 COMMENT ON TABLE public.cms_file IS 'Tabel ce stocheaza informatii despre fisierele din sistemul CMS al aplicatiei';
 
 
-/******************** Add Table: public.cms_file_property_name_value ************************/
-
-/* Build Table Structure */
-CREATE TABLE public.cms_file_property_name_value
-(
-	cms_file_id INTEGER NOT NULL,
-	property_name_id INTEGER NOT NULL,
-	property_value_id INTEGER NOT NULL
-) WITHOUT OIDS;
-
-/* Add Primary Key */
-ALTER TABLE public.cms_file_property_name_value ADD CONSTRAINT pkcms_file_property_name_value
-	PRIMARY KEY (cms_file_id, property_name_id, property_value_id);
-
-/* Add Comments */
-COMMENT ON TABLE public.cms_file_property_name_value IS 'Tabel ce pastreaza asocierile intre CMS_File si proprietatile fisierului respectiv (name+value)';
-
-
 /******************** Add Table: public.cms_folder ************************/
 
 /* Build Table Structure */
@@ -495,7 +349,6 @@ id SERIAL,
 	cms_page_type_id INTEGER NOT NULL,
 	visible BOOL DEFAULT 'true' NOT NULL,
 	navigable BOOL DEFAULT 'true' NOT NULL,
-	owner_id INTEGER NOT NULL,
 	url TEXT NOT NULL
 ) WITHOUT OIDS;
 
@@ -515,8 +368,6 @@ COMMENT ON COLUMN public.cms_page.cms_page_type_id IS 'Codul tipului unei pagini
 COMMENT ON COLUMN public.cms_page.visible IS 'Atribut a carui valoare este true daca pagina din sistemul CMS este vizibila (valoarea implicita a acestui atribut este true)';
 
 COMMENT ON COLUMN public.cms_page.navigable IS 'Atribut a carui valoare este true daca pagina din sistemul CMS este navigabila (valoarea implicita a acestui atribut este true)';
-
-COMMENT ON COLUMN public.cms_page.owner_id IS 'Codul utilizatorului care detine pagina din sistemul CMS (refera atributul id din tabelul users)';
 
 COMMENT ON COLUMN public.cms_page.url IS 'URL-ul paginii din sistemul CMS';
 
@@ -637,7 +488,7 @@ COMMENT ON TABLE public.cms_snippet_group IS 'Tabel care stocheaza grupuri de sn
 CREATE TABLE public.collection_model_type
 (
 id SERIAL,
-	name TEXT NOT NULL,
+	name VARCHAR(100) NOT NULL,
 	description TEXT NULL
 ) WITHOUT OIDS;
 
@@ -659,7 +510,7 @@ COMMENT ON TABLE public.collection_model_type IS 'Tabel ce contine tipurile mode
 CREATE TABLE public.concept
 (
 id BIGSERIAL,
-	name VARCHAR(100) NOT NULL,
+	name TEXT NOT NULL,
 	description TEXT NULL
 ) WITHOUT OIDS;
 
@@ -728,6 +579,23 @@ COMMENT ON TABLE public.country IS 'Tabel unic pentru toate referintele la tari'
 CREATE UNIQUE INDEX "country_iso3166_Idx" ON public.country (iso3166);
 
 
+/******************** Add Table: public.data_source_type ************************/
+
+/* Build Table Structure */
+CREATE TABLE public.data_source_type
+(
+id SERIAL,
+	name TEXT NOT NULL
+);
+
+/* Add Primary Key */
+ALTER TABLE public.data_source_type ADD CONSTRAINT pkdata_source_type
+	PRIMARY KEY (id);
+
+/* Add Comments */
+COMMENT ON COLUMN public.data_source_type.name IS 'The type of data sources which can be used in a study (controlled vocabulary - Nesstar)';
+
+
 /******************** Add Table: public.email ************************/
 
 /* Build Table Structure */
@@ -781,32 +649,12 @@ COMMENT ON COLUMN public.file.full_path IS 'Calea completa (unde este stocat fis
 COMMENT ON TABLE public.file IS 'Tabel ce contine documentele asociate oricarei entitati din baza de date (studiu sau instanta)';
 
 
-/******************** Add Table: public.file_property_name_value ************************/
-
-/* Build Table Structure */
-CREATE TABLE public.file_property_name_value
-(
-	property_name_id INTEGER NOT NULL,
-	property_value_id INTEGER NOT NULL,
-	file_id INTEGER NOT NULL
-) WITHOUT OIDS;
-
-/* Add Primary Key */
-ALTER TABLE public.file_property_name_value ADD CONSTRAINT pkfile_property_name_value
-	PRIMARY KEY (property_name_id, property_value_id, file_id);
-
-/* Add Comments */
-COMMENT ON TABLE public.file_property_name_value IS 'Tabel ce pastreaza asocierile intre un "File" (din tabelul respectiv) si proprietatile fisierului respectiv (name+value)';
-
-
 /******************** Add Table: public.form ************************/
 
 /* Build Table Structure */
 CREATE TABLE public.form
 (
 id BIGSERIAL,
-	instance_id INTEGER NOT NULL,
-	order_in_instance INTEGER NOT NULL,
 	operator_id INTEGER NULL,
 	operator_notes TEXT NULL,
 	form_filled_at TIMESTAMP NULL
@@ -817,16 +665,11 @@ ALTER TABLE public.form ADD CONSTRAINT pkform
 	PRIMARY KEY (id);
 
 /* Add Comments */
-COMMENT ON COLUMN public.form.order_in_instance IS 'numarul de ordine al chestionarului completat cu raspunsuri, in setul de date';
-
 COMMENT ON COLUMN public.form.operator_notes IS 'observatii ale operatorului';
 
 COMMENT ON COLUMN public.form.form_filled_at IS 'momentul completarii acestui chestionar cu raspunsuri de catre operator, pe teren';
 
 COMMENT ON TABLE public.form IS 'Tabel pentru informatiile legate de un chestionarele aplicate (un rand reprezinta o anumita fisa completata pe teren cu raspunsuri)';
-
-/* Add Indexes */
-CREATE UNIQUE INDEX "form_instance_id_Idx" ON public.form (instance_id, order_in_instance);
 
 
 /******************** Add Table: public.form_edited_number_var ************************/
@@ -904,45 +747,6 @@ COMMENT ON COLUMN public.form_selection_var.order_of_items_in_response IS 'Numar
 COMMENT ON TABLE public.form_selection_var IS 'Tabel ce inregistreaza raspunsurile la variabilele de selectie (pentru care exista optiuni de raspuns) ';
 
 
-/******************** Add Table: public.group_authorities ************************/
-
-/* Build Table Structure */
-CREATE TABLE public.group_authorities
-(
-	group_id BIGINT NOT NULL,
-	authority VARCHAR(64) NOT NULL
-);
-
-
-/******************** Add Table: public.group_members ************************/
-
-/* Build Table Structure */
-CREATE TABLE public.group_members
-(
-id BIGSERIAL,
-	username VARCHAR(64) NOT NULL,
-	group_id BIGINT NOT NULL
-);
-
-/* Add Primary Key */
-ALTER TABLE public.group_members ADD CONSTRAINT pkgroup_members
-	PRIMARY KEY (id);
-
-
-/******************** Add Table: public.groups ************************/
-
-/* Build Table Structure */
-CREATE TABLE public.groups
-(
-id BIGSERIAL,
-	group_name VARCHAR(64) NOT NULL
-);
-
-/* Add Primary Key */
-ALTER TABLE public.groups ADD CONSTRAINT pkgroups
-	PRIMARY KEY (id);
-
-
 /******************** Add Table: public.instance ************************/
 
 /* Build Table Structure */
@@ -950,16 +754,10 @@ CREATE TABLE public.instance
 (
 id SERIAL,
 	study_id INTEGER NOT NULL,
-	date_start DATE NULL,
-	date_end DATE NULL,
-	unit_analysis_id INTEGER NOT NULL,
-	version INTEGER NOT NULL,
-	insertion_status INTEGER NOT NULL,
-	raw_data BOOL NOT NULL,
-	raw_metadata BOOL NOT NULL,
 	added_by INTEGER NOT NULL,
 	added TIMESTAMP NOT NULL,
-	time_meth_id INTEGER NOT NULL
+	disseminator_identifier TEXT NULL,
+	main BOOL NOT NULL
 ) WITHOUT OIDS;
 
 /* Add Primary Key */
@@ -971,19 +769,9 @@ COMMENT ON COLUMN public.instance.id IS 'Codul instantei';
 
 COMMENT ON COLUMN public.instance.study_id IS 'Codul studiului caruia ii apartine instanta (refera atributul id al tabelului study)';
 
-COMMENT ON COLUMN public.instance.date_start IS 'Data de inceput a instantei';
+COMMENT ON COLUMN public.instance.disseminator_identifier IS 'Identification Number/String provided by the disseminator of the Dataset';
 
-COMMENT ON COLUMN public.instance.date_end IS 'Data de incheiere a instantei';
-
-COMMENT ON COLUMN public.instance.unit_analysis_id IS 'Codul unitatii de analiza specifice instantei (refera atributul id al tabelului unit_analysis)';
-
-COMMENT ON COLUMN public.instance.version IS 'Versiunea instantei';
-
-COMMENT ON COLUMN public.instance.insertion_status IS 'Pasul din wizard-ul de introducere a metadatelor - din moment ce introducerea se face prin wizard, fiecare pas trebuie comis in baza de dat; pana la finalizarea introducerii intregii instante e nevoie sa stim ca ele au fost partial introduse.';
-
-COMMENT ON COLUMN public.instance.raw_data IS 'daca datele sunt in forma digitizata (YES) sau in forma de fisiere procesabile/editabile (NO)';
-
-COMMENT ON COLUMN public.instance.raw_metadata IS 'daca metadatele sunt in forma digitizata (YES) sau in forma de fisiere procesabile/editabile (NO)';
+COMMENT ON COLUMN public.instance.main IS 'Daca este instanta/Dataset-ul principal al studiului (rezultat dupa importarea tuturor datelor)';
 
 COMMENT ON TABLE public.instance IS 'Tabel ce contine informatiile principale ale instantelor';
 
@@ -995,12 +783,10 @@ CREATE TABLE public.instance_descr
 (
 	instance_id INTEGER NOT NULL,
 	lang_id INTEGER NOT NULL,
-	weighting TEXT NULL,
-	research_instrument TEXT NULL,
-	scope TEXT NULL,
-	universe TEXT NULL,
-	abstract TEXT NULL,
-	title TEXT NOT NULL
+	access_conditions TEXT NULL,
+	notes TEXT NULL,
+	title TEXT NOT NULL,
+	original_title_language BOOL NOT NULL
 ) WITHOUT OIDS;
 
 /* Add Primary Key */
@@ -1010,7 +796,7 @@ ALTER TABLE public.instance_descr ADD CONSTRAINT pkinstance_descr
 /* Add Comments */
 COMMENT ON COLUMN public.instance_descr.instance_id IS 'Codul instantei pentru care sunt furnizate elemente descriptive';
 
-COMMENT ON COLUMN public.instance_descr.title IS 'Titlul instantei';
+COMMENT ON COLUMN public.instance_descr.access_conditions IS 'Details the terms of access for the specific Dataset as issued by the publisher';
 
 COMMENT ON TABLE public.instance_descr IS 'Tabel ce contine elementele descriptive ale instantelor';
 
@@ -1036,31 +822,22 @@ COMMENT ON COLUMN public.instance_documents.document_id IS 'Codul documentului a
 COMMENT ON TABLE public.instance_documents IS 'Tabel ce contine asocierile dintre instante si documente (implementeaza relatia many-to-many intre tabelele instance si documents)';
 
 
-/******************** Add Table: public.instance_keyword ************************/
+/******************** Add Table: public.instance_form ************************/
 
 /* Build Table Structure */
-CREATE TABLE public.instance_keyword
+CREATE TABLE public.instance_form
 (
 	instance_id INTEGER NOT NULL,
-	keyword_id INTEGER NOT NULL,
-	added TIMESTAMP NOT NULL,
-	added_by INTEGER NOT NULL
-) WITHOUT OIDS;
+	form_id BIGINT NOT NULL,
+	order_form_in_instance INTEGER NOT NULL
+);
 
 /* Add Primary Key */
-ALTER TABLE public.instance_keyword ADD CONSTRAINT pkinstance_keyword
-	PRIMARY KEY (instance_id, keyword_id, added_by);
+ALTER TABLE public.instance_form ADD CONSTRAINT pkinstance_form
+	PRIMARY KEY (instance_id, form_id);
 
-/* Add Comments */
-COMMENT ON COLUMN public.instance_keyword.instance_id IS 'Codul instantei careia ii este asociat cuvantul cheie referit prin atributul keyword_id';
-
-COMMENT ON COLUMN public.instance_keyword.keyword_id IS 'Codul unui cuvant cheie asociat instantei identificate prin atributul instance_id';
-
-COMMENT ON COLUMN public.instance_keyword.added IS 'Momentul de timp la care a fost adaugata o asociere intre o instanta si un cuvant cheie';
-
-COMMENT ON COLUMN public.instance_keyword.added_by IS 'Utilizatorul care a adaugat asocierea dintre o instanta si un cuvant cheie';
-
-COMMENT ON TABLE public.instance_keyword IS 'Tabel ce stocheaza asocierile dintre cuvinte cheie si instante (implementeaza relatia many-to-many intre tabelele instance si keyword)';
+/* Add Indexes */
+CREATE UNIQUE INDEX "instance_form_instance_id_Idx" ON public.instance_form (instance_id, order_form_in_instance);
 
 
 /******************** Add Table: public.instance_org ************************/
@@ -1071,8 +848,7 @@ CREATE TABLE public.instance_org
 	org_id INTEGER NOT NULL,
 	instance_id INTEGER NOT NULL,
 	assoc_type_id INTEGER NOT NULL,
-	assoc_details TEXT NULL,
-	citation TEXT NULL
+	assoc_details TEXT NULL
 ) WITHOUT OIDS;
 
 /* Add Primary Key */
@@ -1088,8 +864,6 @@ COMMENT ON COLUMN public.instance_org.assoc_type_id IS 'Codul tipului de asocier
 
 COMMENT ON COLUMN public.instance_org.assoc_details IS 'Detaliile asocierii dintre  organizatia identificata prin atributul org_id si instanta specificata prin atributul instance_id';
 
-COMMENT ON COLUMN public.instance_org.citation IS 'Modalitatea de citare in cadrul instantei identificate prin atributul instance_id realizate de catre organizatia referita prin atributul org_id';
-
 COMMENT ON TABLE public.instance_org IS 'Tabel ce contine asocierile dintre instante si organizatii (implementeaza relatia many-to-many intre tabelele instance si org)';
 
 
@@ -1099,7 +873,7 @@ COMMENT ON TABLE public.instance_org IS 'Tabel ce contine asocierile dintre inst
 CREATE TABLE public.instance_org_assoc
 (
 id SERIAL,
-	assoc_name VARCHAR(100) NOT NULL,
+	assoc_name TEXT NOT NULL,
 	assoc_description TEXT NULL
 ) WITHOUT OIDS;
 
@@ -1148,7 +922,7 @@ COMMENT ON TABLE public.instance_person IS 'Tabel care stocheaza asocierile intr
 CREATE TABLE public.instance_person_assoc
 (
 id SERIAL,
-	assoc_name VARCHAR(100) NOT NULL,
+	assoc_name TEXT NOT NULL,
 	assoc_description TEXT NULL
 ) WITHOUT OIDS;
 
@@ -1166,42 +940,91 @@ COMMENT ON COLUMN public.instance_person_assoc.assoc_description IS 'Descrierea 
 COMMENT ON TABLE public.instance_person_assoc IS 'Tabel ce contine tipurile de asociere intre instanta si persoana';
 
 
+/******************** Add Table: public.instance_right ************************/
+
+/* Build Table Structure */
+CREATE TABLE public.instance_right
+(
+id SERIAL,
+	name TEXT NOT NULL,
+	description TEXT NULL
+);
+
+/* Add Primary Key */
+ALTER TABLE public.instance_right ADD CONSTRAINT pkinstance_right
+	PRIMARY KEY (id);
+
+/* Add Comments */
+COMMENT ON COLUMN public.instance_right.name IS 'Descrierea dreptului (file posession, onsite access, remote access, remote execution etc.)';
+
+
+/******************** Add Table: public.instance_right_target_group ************************/
+
+/* Build Table Structure */
+CREATE TABLE public.instance_right_target_group
+(
+	instance_id INTEGER NOT NULL,
+	instance_right_id INTEGER NOT NULL,
+	target_group_id INTEGER NOT NULL,
+	instance_right_value_id INTEGER NOT NULL
+);
+
+/* Add Primary Key */
+ALTER TABLE public.instance_right_target_group ADD CONSTRAINT pkinstance_right_target_group
+	PRIMARY KEY (instance_id, instance_right_id, target_group_id);
+
+
+/******************** Add Table: public.instance_right_value ************************/
+
+/* Build Table Structure */
+CREATE TABLE public.instance_right_value
+(
+id SERIAL,
+	value INTEGER NOT NULL,
+	description TEXT NULL,
+	instance_right_id INTEGER NOT NULL,
+	fee INTEGER NULL,
+	fee_currency_abbr VARCHAR(3) NULL
+);
+
+/* Add Primary Key */
+ALTER TABLE public.instance_right_value ADD CONSTRAINT pkinstance_right_value
+	PRIMARY KEY (id);
+
+
 /******************** Add Table: public.instance_sampling_procedure ************************/
 
 /* Build Table Structure */
 CREATE TABLE public.instance_sampling_procedure
 (
-	instance_id INTEGER NOT NULL,
+	study_id INTEGER NOT NULL,
 	sampling_procedure_id INTEGER NOT NULL
 ) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE public.instance_sampling_procedure ADD CONSTRAINT pkinstance_sampling_procedure
-	PRIMARY KEY (instance_id, sampling_procedure_id);
+	PRIMARY KEY (study_id, sampling_procedure_id);
 
 /* Add Comments */
 COMMENT ON TABLE public.instance_sampling_procedure IS 'Tabel pentru reprezentarea relatiilor NxM intre o anumita "Instance" si o anumita "Sampling_Procedure"';
 
 
-/******************** Add Table: public.instance_topic ************************/
+/******************** Add Table: public.instance_variable ************************/
 
 /* Build Table Structure */
-CREATE TABLE public.instance_topic
+CREATE TABLE public.instance_variable
 (
 	instance_id INTEGER NOT NULL,
-	topic_id INTEGER NOT NULL
-) WITHOUT OIDS;
+	variable_id BIGINT NOT NULL,
+	order_variable_in_instance INTEGER NOT NULL
+);
 
 /* Add Primary Key */
-ALTER TABLE public.instance_topic ADD CONSTRAINT pkinstance_topic
-	PRIMARY KEY (instance_id, topic_id);
+ALTER TABLE public.instance_variable ADD CONSTRAINT pkinstance_variable
+	PRIMARY KEY (instance_id, variable_id);
 
-/* Add Comments */
-COMMENT ON COLUMN public.instance_topic.instance_id IS 'Codul unei instante careia i se asociaza topic-ul specificat prin atributul topic_id (refera atributul id din tabelul instance)';
-
-COMMENT ON COLUMN public.instance_topic.topic_id IS 'Codul topic-ului care este asociat instantei specificate prin atributul instance_id (refera atributul id din tabelul topic)';
-
-COMMENT ON TABLE public.instance_topic IS 'Tabel ce stocheaza asocierile dintre instante si topic-uri (implementeaza relatia many-to-many intre aceste tabele)';
+/* Add Indexes */
+CREATE UNIQUE INDEX "instance_variable_instance_id_Idx" ON public.instance_variable (instance_id, order_variable_in_instance);
 
 
 /******************** Add Table: public.internet ************************/
@@ -1306,16 +1129,16 @@ CREATE UNIQUE INDEX "lang_iso639_Idx" ON public.lang (iso639);
 /* Build Table Structure */
 CREATE TABLE public.meth_coll_type
 (
-	instance_id INTEGER NOT NULL,
+	study_id INTEGER NOT NULL,
 	collection_model_id INTEGER NOT NULL
 ) WITHOUT OIDS;
 
 /* Add Primary Key */
 ALTER TABLE public.meth_coll_type ADD CONSTRAINT pkmeth_coll_type
-	PRIMARY KEY (instance_id, collection_model_id);
+	PRIMARY KEY (study_id, collection_model_id);
 
 /* Add Comments */
-COMMENT ON COLUMN public.meth_coll_type.instance_id IS 'Codul instantei pentru care se asociaza un model de colectare a datelor';
+COMMENT ON COLUMN public.meth_coll_type.study_id IS 'Codul instantei pentru care se asociaza un model de colectare a datelor';
 
 COMMENT ON COLUMN public.meth_coll_type.collection_model_id IS 'Codul tipului de model de colectare a datelor asociat instantei identificate prin atributul instance_id';
 
@@ -1328,7 +1151,6 @@ COMMENT ON TABLE public.meth_coll_type IS 'Tabel ce stocheaza tipurile modelelor
 CREATE TABLE public.news
 (
 id SERIAL,
-	added_by INTEGER NOT NULL,
 	added TIMESTAMP NOT NULL,
 	visible BOOL NOT NULL,
 	title TEXT NOT NULL,
@@ -1341,8 +1163,6 @@ ALTER TABLE public.news ADD CONSTRAINT pknews
 
 /* Add Comments */
 COMMENT ON COLUMN public.news.id IS 'Codul stirii';
-
-COMMENT ON COLUMN public.news.added_by IS 'Codul utilizatorului care a introdus stirea';
 
 COMMENT ON COLUMN public.news.added IS 'Momentul de timp la care stirea a fost adaugata';
 
@@ -1361,9 +1181,9 @@ COMMENT ON TABLE public.news IS 'Tabel ce stocheaza stirile ce vor aparea in int
 CREATE TABLE public.org
 (
 id SERIAL,
-	name VARCHAR(100) NOT NULL,
+	short_name VARCHAR(100) NOT NULL,
 	org_prefix_id INTEGER NULL,
-	fullname VARCHAR(100) NOT NULL,
+	full_name TEXT NOT NULL,
 	org_sufix_id INTEGER NULL
 ) WITHOUT OIDS;
 
@@ -1374,11 +1194,11 @@ ALTER TABLE public.org ADD CONSTRAINT pkorg
 /* Add Comments */
 COMMENT ON COLUMN public.org.id IS 'Codul organizatiei';
 
-COMMENT ON COLUMN public.org.name IS 'Denumirea prescurtata a organizatiei (posibil un acronim al acesteia)';
+COMMENT ON COLUMN public.org.short_name IS 'Denumirea prescurtata a organizatiei (posibil un acronim al acesteia)';
 
 COMMENT ON COLUMN public.org.org_prefix_id IS 'Codul prefixului organizatiei (refera atributul id din tabelul org_prefix)';
 
-COMMENT ON COLUMN public.org.fullname IS 'Denumirea completa a organizatiei ';
+COMMENT ON COLUMN public.org.full_name IS 'Denumirea completa a organizatiei ';
 
 COMMENT ON COLUMN public.org.org_sufix_id IS 'Codul sufixului organizatiei (refera atributul id din tabelul org_sufix)';
 
@@ -1521,7 +1341,7 @@ CREATE TABLE public.org_relations
 	date_start DATE NULL,
 	date_end DATE NULL,
 	org_relation_type_id INTEGER NOT NULL,
-	details TEXT NOT NULL
+	details TEXT NULL
 ) WITHOUT OIDS;
 
 /* Add Primary Key */
@@ -1840,41 +1660,6 @@ COMMENT ON COLUMN public.prefix.name IS 'Denumirea prefixului care poate fi util
 COMMENT ON TABLE public.prefix IS 'Tabel ce contine prefixele corespunzatoare formulelor de adresare catre persoane';
 
 
-/******************** Add Table: public.property_name ************************/
-
-/* Build Table Structure */
-CREATE TABLE public.property_name
-(
-id SERIAL,
-	name TEXT NOT NULL,
-	description TEXT NULL
-) WITHOUT OIDS;
-
-/* Add Primary Key */
-ALTER TABLE public.property_name ADD CONSTRAINT pkproperty_name
-	PRIMARY KEY (id);
-
-/* Add Comments */
-COMMENT ON TABLE public.property_name IS 'Tabel folosit pentru Proprietati (stocheaza numele acestora)';
-
-
-/******************** Add Table: public.property_value ************************/
-
-/* Build Table Structure */
-CREATE TABLE public.property_value
-(
-id SERIAL,
-	value TEXT NULL
-) WITHOUT OIDS;
-
-/* Add Primary Key */
-ALTER TABLE public.property_value ADD CONSTRAINT pkproperty_value
-	PRIMARY KEY (id);
-
-/* Add Comments */
-COMMENT ON TABLE public.property_value IS 'Tabel folosit pentru Proprietati (stocheaza valorile acestora)';
-
-
 /******************** Add Table: public.region ************************/
 
 /* Build Table Structure */
@@ -1952,7 +1737,7 @@ COMMENT ON TABLE public.regiontype IS 'Tabel ce contine tipurile regiunilor core
 CREATE TABLE public.sampling_procedure
 (
 id SERIAL,
-	name TEXT NOT NULL,
+	name VARCHAR(100) NOT NULL,
 	description TEXT NULL
 ) WITHOUT OIDS;
 
@@ -2044,17 +1829,68 @@ COMMENT ON TABLE public.selection_variable_item IS 'Tabel ce contine elementele 
 CREATE UNIQUE INDEX "selection_variable_item_order_Idx" ON public.selection_variable_item (order_of_item_in_variable, variable_id);
 
 
+/******************** Add Table: public.series ************************/
+
+/* Build Table Structure */
+CREATE TABLE public.series
+(
+	catalog_id INTEGER NOT NULL
+);
+
+/* Add Primary Key */
+ALTER TABLE public.series ADD CONSTRAINT pkseries
+	PRIMARY KEY (catalog_id);
+
+
+/******************** Add Table: public.series_descr ************************/
+
+/* Build Table Structure */
+CREATE TABLE public.series_descr
+(
+	catalog_id INTEGER NOT NULL,
+	lang_id INTEGER NOT NULL,
+	notes TEXT NULL,
+	title TEXT NOT NULL,
+	subtitle TEXT NULL,
+	alternative_title TEXT NULL,
+	abstract TEXT NULL,
+	time_covered TEXT NULL,
+	geographic_coverage TEXT NULL
+);
+
+/* Add Primary Key */
+ALTER TABLE public.series_descr ADD CONSTRAINT pkseries_descr
+	PRIMARY KEY (catalog_id, lang_id);
+
+/* Add Comments */
+COMMENT ON COLUMN public.series_descr.time_covered IS 'The time period the data in the series refers to. This can correspond to different points/periods in time (if, for example, retrospective questions were asked).';
+
+
+/******************** Add Table: public.series_topic ************************/
+
+/* Build Table Structure */
+CREATE TABLE public.series_topic
+(
+	catalog_id INTEGER NOT NULL,
+	topic_id INTEGER NOT NULL
+);
+
+/* Add Primary Key */
+ALTER TABLE public.series_topic ADD CONSTRAINT pkseries_topic
+	PRIMARY KEY (catalog_id, topic_id);
+
+
 /******************** Add Table: public.setting ************************/
 
 /* Build Table Structure */
 CREATE TABLE public.setting
 (
 id SERIAL,
-	name VARCHAR(150) NOT NULL,
-	setting_group INTEGER NOT NULL,
+	name TEXT NOT NULL,
+	setting_group_id INTEGER NOT NULL,
 	description TEXT NULL,
-	predefined_values TEXT NOT NULL,
-	default_value TEXT NOT NULL
+	default_value TEXT NULL,
+	value TEXT NOT NULL
 ) WITHOUT OIDS;
 
 /* Add Primary Key */
@@ -2066,11 +1902,9 @@ COMMENT ON COLUMN public.setting.id IS 'Codul unei setari a aplicatiei';
 
 COMMENT ON COLUMN public.setting.name IS 'Denumirea unei setari a aplicatiei';
 
-COMMENT ON COLUMN public.setting.setting_group IS 'Grupul din care setarea face parte (refera atributul id din tabelul setting_group)';
+COMMENT ON COLUMN public.setting.setting_group_id IS 'Grupul din care setarea face parte (refera atributul id din tabelul setting_group)';
 
 COMMENT ON COLUMN public.setting.description IS 'Descrierea unei setari a aplicatiei';
-
-COMMENT ON COLUMN public.setting.predefined_values IS 'Valori predefinite ale setarii';
 
 COMMENT ON COLUMN public.setting.default_value IS 'Valoarea implicita a setarii';
 
@@ -2083,7 +1917,7 @@ COMMENT ON TABLE public.setting IS 'Tabel care contine setarile aplicatiei';
 CREATE TABLE public.setting_group
 (
 id SERIAL,
-	name VARCHAR(150) NOT NULL,
+	name TEXT NOT NULL,
 	parent_id INTEGER NULL,
 	description TEXT NULL
 ) WITHOUT OIDS;
@@ -2102,27 +1936,6 @@ COMMENT ON COLUMN public.setting_group.parent_id IS 'Codul grupului parinte al g
 COMMENT ON COLUMN public.setting_group.description IS 'Descrierea grupului de setari ale aplicatiei';
 
 COMMENT ON TABLE public.setting_group IS 'Tabel care stocheaza grupurile de setari ale aplicatiei';
-
-
-/******************** Add Table: public.setting_value ************************/
-
-/* Build Table Structure */
-CREATE TABLE public.setting_value
-(
-	setting_id INTEGER NOT NULL,
-	value TEXT NOT NULL
-) WITHOUT OIDS;
-
-/* Add Primary Key */
-ALTER TABLE public.setting_value ADD CONSTRAINT pksetting_value
-	PRIMARY KEY (setting_id);
-
-/* Add Comments */
-COMMENT ON COLUMN public.setting_value.setting_id IS 'Codul setarii a carei valoare este inregistrata (refera atributul id din tabelul setting)';
-
-COMMENT ON COLUMN public.setting_value.value IS 'Valoarea setarii referite prin atributul setting_id';
-
-COMMENT ON TABLE public.setting_value IS 'Tabel care contine valorile setarilor aplicatiei';
 
 
 /******************** Add Table: public.skip ************************/
@@ -2157,217 +1970,13 @@ COMMENT ON TABLE public.skip IS 'Tabel ce contine salturile care pot avea loc de
 /* Build Table Structure */
 CREATE TABLE public.source
 (
-	org_id INTEGER NOT NULL,
-	sourcetype_id INTEGER NOT NULL
-) WITHOUT OIDS;
+id SERIAL,
+	citation TEXT NOT NULL
+);
 
 /* Add Primary Key */
 ALTER TABLE public.source ADD CONSTRAINT pksource
-	PRIMARY KEY (org_id);
-
-/* Add Comments */
-COMMENT ON COLUMN public.source.org_id IS 'Codul organizatiei care reprezinta o sursa a studiilor colectate';
-
-COMMENT ON COLUMN public.source.sourcetype_id IS 'Codul tipului sursei (refera atributul id din tabelul sourcetype)';
-
-COMMENT ON TABLE public.source IS 'Tabel ce stocheaza sursele (organizatiile) care pot oferi studii pentru partea de colectare';
-
-
-/******************** Add Table: public.source_contact_method ************************/
-
-/* Build Table Structure */
-CREATE TABLE public.source_contact_method
-(
-id SERIAL,
-	name VARCHAR(150) NOT NULL
-) WITHOUT OIDS;
-
-/* Add Primary Key */
-ALTER TABLE public.source_contact_method ADD CONSTRAINT pksource_contact_method
 	PRIMARY KEY (id);
-
-/* Add Comments */
-COMMENT ON COLUMN public.source_contact_method.id IS 'Codul metodei de contact';
-
-COMMENT ON COLUMN public.source_contact_method.name IS 'Denumirea metodei de contact (telefon, email etc.)';
-
-COMMENT ON TABLE public.source_contact_method IS 'Tabel ce contine metodele prin care persoana de contact al unui posibil furnizor de studii poate fi contactata';
-
-
-/******************** Add Table: public.source_contacts ************************/
-
-/* Build Table Structure */
-CREATE TABLE public.source_contacts
-(
-id SERIAL,
-	person_id INTEGER NOT NULL,
-	contacted_at TIMESTAMP NOT NULL,
-	synopsis TEXT NOT NULL,
-	followup INTEGER NOT NULL,
-	source_contact_method_id INTEGER NOT NULL,
-	source_id INTEGER NOT NULL
-) WITHOUT OIDS;
-
-/* Add Primary Key */
-ALTER TABLE public.source_contacts ADD CONSTRAINT pksource_contacts
-	PRIMARY KEY (id);
-
-/* Add Comments */
-COMMENT ON COLUMN public.source_contacts.id IS 'Codul contactului';
-
-COMMENT ON COLUMN public.source_contacts.person_id IS 'Codul persoanei (refera atributul id din tabelul person)';
-
-COMMENT ON COLUMN public.source_contacts.contacted_at IS 'Data la care persoana identificata prin atributul person_id a fost contactata';
-
-COMMENT ON COLUMN public.source_contacts.source_contact_method_id IS 'Metoda prin care persoana a fost contactata (refera atributul id din tabelul source_contact_method)';
-
-COMMENT ON COLUMN public.source_contacts.source_id IS 'Codul organizatiei careia ii aunt asociate informatiile de contact (refera atributul org_id din tabelul sources)';
-
-COMMENT ON TABLE public.source_contacts IS 'Datele de contact ale unei surse ';
-
-
-/******************** Add Table: public.sourcestudy ************************/
-
-/* Build Table Structure */
-CREATE TABLE public.sourcestudy
-(
-id SERIAL,
-	name VARCHAR(150) NOT NULL,
-	details TEXT NULL,
-	org_id INTEGER NOT NULL,
-	type INTEGER NOT NULL
-) WITHOUT OIDS;
-
-/* Add Primary Key */
-ALTER TABLE public.sourcestudy ADD CONSTRAINT pksourcestudy
-	PRIMARY KEY (id);
-
-/* Add Comments */
-COMMENT ON COLUMN public.sourcestudy.id IS 'Codul studiului pe care il poate furniza o organizatie';
-
-COMMENT ON COLUMN public.sourcestudy.name IS 'Denumirea studiului';
-
-COMMENT ON COLUMN public.sourcestudy.details IS 'Detalii asupra studiului care poate fi furnizat';
-
-COMMENT ON COLUMN public.sourcestudy.org_id IS 'Codul organizatiei care poate pune la dispozitie studiul respectiv (refera atributul org_id din tabelul sources)';
-
-COMMENT ON COLUMN public.sourcestudy.type IS 'Tipul sursei unui studiu';
-
-COMMENT ON TABLE public.sourcestudy IS 'Tabel ce stocheaza informatii despre studiile pe care le poate furniza o organizatie ';
-
-
-/******************** Add Table: public.sourcestudy_type ************************/
-
-/* Build Table Structure */
-CREATE TABLE public.sourcestudy_type
-(
-id SERIAL,
-	name VARCHAR(150) NOT NULL,
-	description TEXT NULL
-) WITHOUT OIDS;
-
-/* Add Primary Key */
-ALTER TABLE public.sourcestudy_type ADD CONSTRAINT pksourcestudy_type
-	PRIMARY KEY (id);
-
-/* Add Comments */
-COMMENT ON COLUMN public.sourcestudy_type.id IS 'Codului tipului (starii) unui studiu care poate fi furnizat de catre o sursa';
-
-COMMENT ON COLUMN public.sourcestudy_type.name IS 'Denumirea tipului (starii) in care se poate afla un studiu furnizat de catre o sursa';
-
-COMMENT ON COLUMN public.sourcestudy_type.description IS 'Descrierea tipului (starii) unui studiu care poate fi furnizat de catre o sursa';
-
-COMMENT ON TABLE public.sourcestudy_type IS 'Tabel ce stocheaza tipul (starea) studiilor pe care le poate furniza o organizatie';
-
-
-/******************** Add Table: public.sourcestudy_type_history ************************/
-
-/* Build Table Structure */
-CREATE TABLE public.sourcestudy_type_history
-(
-id SERIAL,
-	date_start DATE NULL,
-	date_end DATE NULL,
-	sourcestudy_type_id INTEGER NOT NULL,
-	added_by INTEGER NOT NULL,
-	sourcesstudy_id INTEGER NOT NULL
-) WITHOUT OIDS;
-
-/* Add Primary Key */
-ALTER TABLE public.sourcestudy_type_history ADD CONSTRAINT pksourcestudy_type_history
-	PRIMARY KEY (id);
-
-/* Add Comments */
-COMMENT ON COLUMN public.sourcestudy_type_history.id IS 'Codul liniei referitoare la istoricul unui studiu care poate fi furnizat de catre o sursa';
-
-COMMENT ON COLUMN public.sourcestudy_type_history.date_start IS 'Data de inceput';
-
-COMMENT ON COLUMN public.sourcestudy_type_history.date_end IS 'Data de final';
-
-COMMENT ON COLUMN public.sourcestudy_type_history.sourcestudy_type_id IS 'Codul tipului (starii) studiului respectiv intre datele datestart si dateend';
-
-COMMENT ON COLUMN public.sourcestudy_type_history.added_by IS 'Codul utilizatorului care a adaugat informatia referitoare la istoricul unui studiu';
-
-COMMENT ON COLUMN public.sourcestudy_type_history.sourcesstudy_id IS 'Codul studiului care poate fi furnizat de catre o sursa';
-
-COMMENT ON TABLE public.sourcestudy_type_history IS 'Tabel ce stocheaza istoricul tipului (starii) surselor studiilor';
-
-
-/******************** Add Table: public.sourcetype ************************/
-
-/* Build Table Structure */
-CREATE TABLE public.sourcetype
-(
-id SERIAL,
-	name VARCHAR(150) NOT NULL,
-	description TEXT NULL
-) WITHOUT OIDS;
-
-/* Add Primary Key */
-ALTER TABLE public.sourcetype ADD CONSTRAINT pksourcetype
-	PRIMARY KEY (id);
-
-/* Add Comments */
-COMMENT ON COLUMN public.sourcetype.id IS 'Codul sursei';
-
-COMMENT ON COLUMN public.sourcetype.name IS 'Denumirea tipului sursei (a starii in care se afla sursa: in curs de prospectare, de recuperare a datelor, contactata etc.)';
-
-COMMENT ON COLUMN public.sourcetype.description IS 'Descrierea tipului sursei';
-
-COMMENT ON TABLE public.sourcetype IS 'Tabel ce contine tipurile de surse ';
-
-
-/******************** Add Table: public.sourcetype_history ************************/
-
-/* Build Table Structure */
-CREATE TABLE public.sourcetype_history
-(
-id SERIAL,
-	date_start DATE NULL,
-	date_end DATE NULL,
-	org_id INTEGER NOT NULL,
-	sourcetype_id INTEGER NOT NULL,
-	added_by INTEGER NOT NULL
-) WITHOUT OIDS;
-
-/* Add Primary Key */
-ALTER TABLE public.sourcetype_history ADD CONSTRAINT pksourcetype_history
-	PRIMARY KEY (id);
-
-/* Add Comments */
-COMMENT ON COLUMN public.sourcetype_history.id IS 'Codul liniei referitoare la istoricul surselor';
-
-COMMENT ON COLUMN public.sourcetype_history.date_start IS 'Data de inceput a starii unei surse';
-
-COMMENT ON COLUMN public.sourcetype_history.date_end IS 'Data de final a starii unei surse';
-
-COMMENT ON COLUMN public.sourcetype_history.org_id IS 'Codul organizatiei (sursei)careia ii corespunde o stare intre cele doua date calendaristice';
-
-COMMENT ON COLUMN public.sourcetype_history.sourcetype_id IS 'Codul tipului sursei dintre cele doua date';
-
-COMMENT ON COLUMN public.sourcetype_history.added_by IS 'Codul utilizatorului care a adaugat informatia referitoare la istoricul unei surse';
-
-COMMENT ON TABLE public.sourcetype_history IS 'Tabel ce stocheaza istoricul tipului surselor';
 
 
 /******************** Add Table: public.study ************************/
@@ -2382,7 +1991,12 @@ id SERIAL,
 	added_by INTEGER NOT NULL,
 	added TIMESTAMP NOT NULL,
 	digitizable BOOL NOT NULL,
-	anonymous_usage BOOL NOT NULL
+	anonymous_usage BOOL NOT NULL,
+	unit_analysis_id INTEGER NOT NULL,
+	version INTEGER NULL,
+	raw_data BOOL NOT NULL,
+	raw_metadata BOOL NOT NULL,
+	time_meth_id INTEGER NOT NULL
 ) WITHOUT OIDS;
 
 /* Add Primary Key */
@@ -2398,7 +2012,23 @@ COMMENT ON COLUMN public.study.date_end IS 'Data de final a studiului';
 
 COMMENT ON COLUMN public.study.insertion_status IS 'Pasul din wizard-ul de introducere a metadatelor - din moment ce introducerea se face prin wizard, fiecare pas trebuie comis in baza de date; pana la finalizarea introducerii intregului studiu e nevoie sa stim ca ele au fost partial introduse.';
 
+COMMENT ON COLUMN public.study.unit_analysis_id IS 'Codul unitatii de analiza specifice instantei (refera atributul id al tabelului unit_analysis)';
+
 COMMENT ON TABLE public.study IS 'Tabel care stocheaza studiile desfasurate, ale caror informatii sunt prezente in baza de date ';
+
+
+/******************** Add Table: public.study_data_source_type ************************/
+
+/* Build Table Structure */
+CREATE TABLE public.study_data_source_type
+(
+	study_id INTEGER NOT NULL,
+	data_source_type_id INTEGER NOT NULL
+);
+
+/* Add Primary Key */
+ALTER TABLE public.study_data_source_type ADD CONSTRAINT pkstudy_data_source_type
+	PRIMARY KEY (study_id, data_source_type_id);
 
 
 /******************** Add Table: public.study_descr ************************/
@@ -2407,11 +2037,20 @@ COMMENT ON TABLE public.study IS 'Tabel care stocheaza studiile desfasurate, ale
 CREATE TABLE public.study_descr
 (
 	lang_id INTEGER NOT NULL,
-	title_type_id INTEGER NOT NULL,
 	study_id INTEGER NOT NULL,
 	abstract TEXT NULL,
 	grant_details TEXT NULL,
-	title TEXT NOT NULL
+	title TEXT NOT NULL,
+	notes TEXT NULL,
+	weighting TEXT NULL,
+	research_instrument TEXT NULL,
+	scope TEXT NULL,
+	universe TEXT NULL,
+	subtitle TEXT NULL,
+	alternative_title TEXT NULL,
+	original_title_language BOOL NOT NULL,
+	time_covered TEXT NULL,
+	geographic_coverage TEXT NULL
 ) WITHOUT OIDS;
 
 /* Add Primary Key */
@@ -2421,9 +2060,11 @@ ALTER TABLE public.study_descr ADD CONSTRAINT pkstudy_descr
 /* Add Comments */
 COMMENT ON COLUMN public.study_descr.lang_id IS 'Limba in care este furnizat titlul identificat prin atributul id';
 
-COMMENT ON COLUMN public.study_descr.title_type_id IS 'Tipul titlului (refera atributul id din tabelul table_type)';
-
 COMMENT ON COLUMN public.study_descr.study_id IS 'Codul studiului caruia ii corespunde titlul (refera atributul id din tabelul study)';
+
+COMMENT ON COLUMN public.study_descr.original_title_language IS 'daca limbajul folosit in aceasta descriere a studiului este cel original (al producatorului)';
+
+COMMENT ON COLUMN public.study_descr.time_covered IS 'The time period the data refers to. This can correspond to different points/periods in time (if, for example, retrospective questions were asked).';
 
 COMMENT ON TABLE public.study_descr IS 'Tabel ce stocheaza informatii despre titlurile studiilor din baza de date';
 
@@ -2505,7 +2146,6 @@ CREATE TABLE public.study_org
 	org_id INTEGER NOT NULL,
 	study_id INTEGER NOT NULL,
 	assoctype_id INTEGER NOT NULL,
-	citation TEXT NULL,
 	assoc_details TEXT NULL
 ) WITHOUT OIDS;
 
@@ -2520,8 +2160,6 @@ COMMENT ON COLUMN public.study_org.study_id IS 'Codul studiului care se afla in 
 
 COMMENT ON COLUMN public.study_org.assoctype_id IS 'Codul tipului de asociere existent intre studiul identificat prin study_id si organizatia referita prin org_id (refera atributul id din tabelul study_org_assoc)';
 
-COMMENT ON COLUMN public.study_org.citation IS 'Modalitatea de citare in cadrul studiului identificat prin atributul study_id realizat de catre organizatia referita prin atributul org_id';
-
 COMMENT ON TABLE public.study_org IS 'Tabel ce stocheaza toate organizatiile care au legatura cu studiul: finantator, realizator, arhivar, etc. ( implementeaza relatia many-to-many intre studiu si organizatie)';
 
 
@@ -2531,7 +2169,7 @@ COMMENT ON TABLE public.study_org IS 'Tabel ce stocheaza toate organizatiile car
 CREATE TABLE public.study_org_assoc
 (
 id SERIAL,
-	assoc_name VARCHAR(100) NOT NULL,
+	assoc_name TEXT NOT NULL,
 	assoc_description TEXT NULL
 ) WITHOUT OIDS;
 
@@ -2604,7 +2242,7 @@ COMMENT ON TABLE public.study_person_asoc IS 'Tabel ce contine tipurile de asoci
 CREATE TABLE public.study_person_assoc
 (
 id SERIAL,
-	asoc_name VARCHAR(100) NOT NULL,
+	asoc_name TEXT NOT NULL,
 	asoc_description TEXT NULL
 ) WITHOUT OIDS;
 
@@ -2620,6 +2258,20 @@ COMMENT ON COLUMN public.study_person_assoc.asoc_name IS 'Numele unei asocieri c
 COMMENT ON COLUMN public.study_person_assoc.asoc_description IS 'Descrierea asocierii';
 
 COMMENT ON TABLE public.study_person_assoc IS 'Tabel ce contine tipurile de asocieri care pot exista intre studiu si persoane';
+
+
+/******************** Add Table: public.study_source ************************/
+
+/* Build Table Structure */
+CREATE TABLE public.study_source
+(
+	study_id INTEGER NOT NULL,
+	source_id INTEGER NOT NULL
+);
+
+/* Add Primary Key */
+ALTER TABLE public.study_source ADD CONSTRAINT pkstudy_source
+	PRIMARY KEY (study_id, source_id);
 
 
 /******************** Add Table: public.study_topic ************************/
@@ -2664,6 +2316,20 @@ COMMENT ON COLUMN public.suffix.name IS 'Denumirea sufixului care poate fi utili
 COMMENT ON TABLE public.suffix IS 'Tabel ce contine sufixele care pot fi adaugate numelor persoanelor';
 
 
+/******************** Add Table: public.target_group ************************/
+
+/* Build Table Structure */
+CREATE TABLE public.target_group
+(
+id SERIAL,
+	name TEXT NOT NULL
+);
+
+/* Add Primary Key */
+ALTER TABLE public.target_group ADD CONSTRAINT pktarget_group
+	PRIMARY KEY (id);
+
+
 /******************** Add Table: public.time_meth_type ************************/
 
 /* Build Table Structure */
@@ -2684,27 +2350,6 @@ COMMENT ON COLUMN public.time_meth_type.id IS 'Codul tipului de metoda temporala
 COMMENT ON COLUMN public.time_meth_type.name IS 'Denumirea tipului de metoda temporala (longitudinal, serie temporala, cross section etc.)';
 
 COMMENT ON TABLE public.time_meth_type IS 'Tabel ce contine tipurile de metode temporale';
-
-
-/******************** Add Table: public.title_type ************************/
-
-/* Build Table Structure */
-CREATE TABLE public.title_type
-(
-id SERIAL,
-	name VARCHAR(50) NOT NULL
-) WITHOUT OIDS;
-
-/* Add Primary Key */
-ALTER TABLE public.title_type ADD CONSTRAINT pktitle_type
-	PRIMARY KEY (id);
-
-/* Add Comments */
-COMMENT ON COLUMN public.title_type.id IS 'Codul tipului titlului';
-
-COMMENT ON COLUMN public.title_type.name IS 'Denumirea tipului titlului (principal, paralel, alternativ)';
-
-COMMENT ON TABLE public.title_type IS 'Tabel ce stocheaza tipurile titlurilor din baza de date';
 
 
 /******************** Add Table: public.topic ************************/
@@ -2790,10 +2435,10 @@ CREATE TABLE public.user_auth_log
 (
 	user_id INTEGER NOT NULL,
 	auth_attempted_at TIMESTAMP DEFAULT now() NOT NULL,
-	"action" VARCHAR(30) NOT NULL,
-	credential_provider TEXT NOT NULL,
-	credential_identifier TEXT NOT NULL,
-	error_message TEXT NOT NULL,
+	"action" VARCHAR(30) NULL,
+	credential_provider TEXT NULL,
+	credential_identifier TEXT NULL,
+	error_message TEXT NULL,
 id BIGSERIAL
 ) WITHOUT OIDS;
 
@@ -2844,33 +2489,6 @@ COMMENT ON COLUMN public.user_message.to_user_id IS 'Codul utilizatorului caruia
 COMMENT ON TABLE public.user_message IS 'Tabel care stocheaza mesajele trimise catre utilizatori';
 
 
-/******************** Add Table: public.user_profile ************************/
-
-/* Build Table Structure */
-CREATE TABLE public.user_profile
-(
-	user_id INTEGER NOT NULL,
-	f_name VARCHAR(100) NOT NULL,
-	l_name VARCHAR(100) NOT NULL,
-	email VARCHAR(200) NOT NULL
-) WITHOUT OIDS;
-
-/* Add Primary Key */
-ALTER TABLE public.user_profile ADD CONSTRAINT pkuser_profile
-	PRIMARY KEY (user_id);
-
-/* Add Comments */
-COMMENT ON COLUMN public.user_profile.user_id IS 'Codul utilizatorului';
-
-COMMENT ON COLUMN public.user_profile.f_name IS 'Prenumele utilizatorului';
-
-COMMENT ON COLUMN public.user_profile.l_name IS 'Numele utilizatorului';
-
-COMMENT ON COLUMN public.user_profile.email IS 'Adresa de email a utilizatorului';
-
-COMMENT ON TABLE public.user_profile IS 'Tabel ce stocheaza profilurile utilizatorilor aplicatiei';
-
-
 /******************** Add Table: public.user_setting ************************/
 
 /* Build Table Structure */
@@ -2878,9 +2496,8 @@ CREATE TABLE public.user_setting
 (
 id SERIAL,
 	name TEXT NOT NULL,
-	setting_group INTEGER NOT NULL,
+	user_setting_group_id INTEGER NOT NULL,
 	description TEXT NULL,
-	predefined_values TEXT NULL,
 	default_value TEXT NULL
 ) WITHOUT OIDS;
 
@@ -2893,11 +2510,9 @@ COMMENT ON COLUMN public.user_setting.id IS 'Codul unei setari asociate utilizat
 
 COMMENT ON COLUMN public.user_setting.name IS 'Denumirea setarii';
 
-COMMENT ON COLUMN public.user_setting.setting_group IS 'Grupul de setari din care aceasta face parte (refera atributul id al tabelului user_settings_group)';
+COMMENT ON COLUMN public.user_setting.user_setting_group_id IS 'Grupul de setari din care aceasta face parte (refera atributul id al tabelului user_settings_group)';
 
 COMMENT ON COLUMN public.user_setting.description IS 'Descrierea setarii';
-
-COMMENT ON COLUMN public.user_setting.predefined_values IS 'Valorile predefinite ale setarii';
 
 COMMENT ON COLUMN public.user_setting.default_value IS 'Valoarea implicita a setarii';
 
@@ -2972,6 +2587,10 @@ COMMENT ON COLUMN public.users.id IS 'Codul utilizatorului aplicatiei';
 
 COMMENT ON COLUMN public.users.username IS 'Furnizorul de informatii de acces pentru utilizatorul respectiv';
 
+COMMENT ON COLUMN public.users.password IS 'Parola utilizatorului (codificata SHA-256)';
+
+COMMENT ON COLUMN public.users.enabled IS 'Daca utilizatorul este activ sau nu';
+
 COMMENT ON TABLE public.users IS 'Tabel ce contine utilizatorii aplicatiei';
 
 /* Add Indexes */
@@ -3023,11 +2642,9 @@ COMMENT ON TABLE public.vargroup IS 'Tabel pentru definirea gruparilor de variab
 /* Build Table Structure */
 CREATE TABLE public.variable
 (
-	instance_id INTEGER NOT NULL,
 id BIGSERIAL,
 	label TEXT NOT NULL,
 	type SMALLINT NOT NULL,
-	order_in_instance INTEGER NOT NULL,
 	operator_instructions TEXT NULL,
 	file_id INTEGER NULL,
 	variable_type SMALLINT NOT NULL
@@ -3038,15 +2655,11 @@ ALTER TABLE public.variable ADD CONSTRAINT pkvariable
 	PRIMARY KEY (id);
 
 /* Add Comments */
-COMMENT ON COLUMN public.variable.instance_id IS 'Codul instantei in care este definita variabila';
-
 COMMENT ON COLUMN public.variable.id IS 'Codul variabilei in cadrul instantei';
 
 COMMENT ON COLUMN public.variable.label IS 'Reprezentarea textuala a variabilei (numele)';
 
 COMMENT ON COLUMN public.variable.type IS 'Tipul de variabila (constanta a unei enumeratii)';
-
-COMMENT ON COLUMN public.variable.order_in_instance IS 'Intregul ordinal reprezentand pozitia variabilei in secventa de variabile care definesc instanta';
 
 COMMENT ON COLUMN public.variable.operator_instructions IS 'Text care informeaza operatorul ce chestioneaza asupra unor actiuni pe care trebuie sa le faca atunci cand ajunge la variabila aceasta';
 
@@ -3055,9 +2668,6 @@ COMMENT ON COLUMN public.variable.file_id IS 'Fisierul din care provine variabil
 COMMENT ON COLUMN public.variable.variable_type IS 'Tipul Variabilei: 0=edited, 1=edited_number, 2=selection';
 
 COMMENT ON TABLE public.variable IS 'Tabel care stocheaza variabilele din cadrul instantelor';
-
-/* Add Indexes */
-CREATE UNIQUE INDEX "Variables_QuestionnaireId_Order_Idx" ON public.variable (instance_id, order_in_instance);
 
 
 /******************** Add Table: public.variable_vargroup ************************/
@@ -3116,41 +2726,6 @@ ALTER TABLE public.address ADD CONSTRAINT fk_address_city
 	FOREIGN KEY (city_id) REFERENCES public.city (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
-/* Add Foreign Key: audit_log_action_fk_audited_table */
-ALTER TABLE public.audit_log_action ADD CONSTRAINT audit_log_action_fk_audited_table
-	FOREIGN KEY (audited_table) REFERENCES public.audit_log_table (id)
-	ON UPDATE CASCADE ON DELETE CASCADE;
-
-/* Add Foreign Key: audit_log_action_fk_changeset */
-ALTER TABLE public.audit_log_action ADD CONSTRAINT audit_log_action_fk_changeset
-	FOREIGN KEY (changeset) REFERENCES public.audit_log_changeset (id)
-	ON UPDATE CASCADE ON DELETE CASCADE;
-
-/* Add Foreign Key: audit_log_change_fk_action */
-ALTER TABLE public.audit_log_change ADD CONSTRAINT audit_log_change_fk_action
-	FOREIGN KEY ("action") REFERENCES public.audit_log_action (id)
-	ON UPDATE CASCADE ON DELETE CASCADE;
-
-/* Add Foreign Key: audit_log_change_fk_field */
-ALTER TABLE public.audit_log_change ADD CONSTRAINT audit_log_change_fk_field
-	FOREIGN KEY (field) REFERENCES public.audit_log_field (id)
-	ON UPDATE CASCADE ON DELETE CASCADE;
-
-/* Add Foreign Key: fk_audit_log_changeset_rodauser */
-ALTER TABLE public.audit_log_changeset ADD CONSTRAINT fk_audit_log_changeset_rodauser
-	FOREIGN KEY (user_id) REFERENCES public.users (id)
-	ON UPDATE NO ACTION ON DELETE NO ACTION;
-
-/* Add Foreign Key: audit_log_field_fk_audited_table */
-ALTER TABLE public.audit_log_field ADD CONSTRAINT audit_log_field_fk_audited_table
-	FOREIGN KEY (audited_table) REFERENCES public.audit_log_table (id)
-	ON UPDATE CASCADE ON DELETE CASCADE;
-
-/* Add Foreign Key: fk_auth_data_users */
-ALTER TABLE public.auth_data ADD CONSTRAINT fk_auth_data_users
-	FOREIGN KEY (user_id) REFERENCES public.users (id)
-	ON UPDATE NO ACTION ON DELETE NO ACTION;
-
 /* Add Foreign Key: fk_authorities_rodauser */
 ALTER TABLE public.authorities ADD CONSTRAINT fk_authorities_rodauser
 	FOREIGN KEY (username) REFERENCES public.users (username)
@@ -3186,21 +2761,6 @@ ALTER TABLE public.cms_file ADD CONSTRAINT fk_cms_files_cms_folders
 	FOREIGN KEY (cms_folder_id) REFERENCES public.cms_folder (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
-/* Add Foreign Key: fk_cms_file_property_name_value_cms_file */
-ALTER TABLE public.cms_file_property_name_value ADD CONSTRAINT fk_cms_file_property_name_value_cms_file
-	FOREIGN KEY (cms_file_id) REFERENCES public.cms_file (id)
-	ON UPDATE NO ACTION ON DELETE NO ACTION;
-
-/* Add Foreign Key: fk_cms_file_property_name_value_property_name */
-ALTER TABLE public.cms_file_property_name_value ADD CONSTRAINT fk_cms_file_property_name_value_property_name
-	FOREIGN KEY (property_name_id) REFERENCES public.property_name (id)
-	ON UPDATE NO ACTION ON DELETE NO ACTION;
-
-/* Add Foreign Key: fk_cms_file_property_name_value_property_value */
-ALTER TABLE public.cms_file_property_name_value ADD CONSTRAINT fk_cms_file_property_name_value_property_value
-	FOREIGN KEY (property_value_id) REFERENCES public.property_value (id)
-	ON UPDATE NO ACTION ON DELETE NO ACTION;
-
 /* Add Foreign Key: fk_cms_folder_cms_folder */
 ALTER TABLE public.cms_folder ADD CONSTRAINT fk_cms_folder_cms_folder
 	FOREIGN KEY (parent_id) REFERENCES public.cms_folder (id)
@@ -3226,11 +2786,6 @@ ALTER TABLE public.cms_page ADD CONSTRAINT fk_cms_page_cms_page_type
 	FOREIGN KEY (cms_page_type_id) REFERENCES public.cms_page_type (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
-/* Add Foreign Key: fk_cms_page_users */
-ALTER TABLE public.cms_page ADD CONSTRAINT fk_cms_page_users
-	FOREIGN KEY (owner_id) REFERENCES public.users (id)
-	ON UPDATE NO ACTION ON DELETE NO ACTION;
-
 /* Add Foreign Key: fk_cms_page_content_cms_page */
 ALTER TABLE public.cms_page_content ADD CONSTRAINT fk_cms_page_content_cms_page
 	FOREIGN KEY (cms_page_id) REFERENCES public.cms_page (id)
@@ -3254,26 +2809,6 @@ ALTER TABLE public.concept_variable ADD CONSTRAINT "fk_Concept_Variables_Concept
 /* Add Foreign Key: fk_concept_variable_variable */
 ALTER TABLE public.concept_variable ADD CONSTRAINT fk_concept_variable_variable
 	FOREIGN KEY (variable_id) REFERENCES public.variable (id)
-	ON UPDATE NO ACTION ON DELETE NO ACTION;
-
-/* Add Foreign Key: fk_file_property_name_value_file */
-ALTER TABLE public.file_property_name_value ADD CONSTRAINT fk_file_property_name_value_file
-	FOREIGN KEY (file_id) REFERENCES public.file (id)
-	ON UPDATE NO ACTION ON DELETE NO ACTION;
-
-/* Add Foreign Key: fk_file_property_name_value_property_name */
-ALTER TABLE public.file_property_name_value ADD CONSTRAINT fk_file_property_name_value_property_name
-	FOREIGN KEY (property_name_id) REFERENCES public.property_name (id)
-	ON UPDATE NO ACTION ON DELETE NO ACTION;
-
-/* Add Foreign Key: fk_file_property_name_value_property_value */
-ALTER TABLE public.file_property_name_value ADD CONSTRAINT fk_file_property_name_value_property_value
-	FOREIGN KEY (property_value_id) REFERENCES public.property_value (id)
-	ON UPDATE NO ACTION ON DELETE NO ACTION;
-
-/* Add Foreign Key: fk_form_instance */
-ALTER TABLE public.form ADD CONSTRAINT fk_form_instance
-	FOREIGN KEY (instance_id) REFERENCES public.instance (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 /* Add Foreign Key: fk_form_person */
@@ -3311,29 +2846,9 @@ ALTER TABLE public.form_selection_var ADD CONSTRAINT fk_form_selection_var_selec
 	FOREIGN KEY (variable_id, item_id) REFERENCES public.selection_variable_item (variable_id, item_id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
-/* Add Foreign Key: fk_group_authorities_groups */
-ALTER TABLE public.group_authorities ADD CONSTRAINT fk_group_authorities_groups
-	FOREIGN KEY (group_id) REFERENCES public.groups (id)
-	ON UPDATE NO ACTION ON DELETE NO ACTION;
-
-/* Add Foreign Key: fk_group_members_groups */
-ALTER TABLE public.group_members ADD CONSTRAINT fk_group_members_groups
-	FOREIGN KEY (group_id) REFERENCES public.groups (id)
-	ON UPDATE NO ACTION ON DELETE NO ACTION;
-
 /* Add Foreign Key: fk_instance_study */
 ALTER TABLE public.instance ADD CONSTRAINT fk_instance_study
 	FOREIGN KEY (study_id) REFERENCES public.study (id)
-	ON UPDATE NO ACTION ON DELETE NO ACTION;
-
-/* Add Foreign Key: fk_instance_time_meth_type */
-ALTER TABLE public.instance ADD CONSTRAINT fk_instance_time_meth_type
-	FOREIGN KEY (time_meth_id) REFERENCES public.time_meth_type (id)
-	ON UPDATE NO ACTION ON DELETE NO ACTION;
-
-/* Add Foreign Key: fk_instance_unit_analysis */
-ALTER TABLE public.instance ADD CONSTRAINT fk_instance_unit_analysis
-	FOREIGN KEY (unit_analysis_id) REFERENCES public.unit_analysis (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 /* Add Foreign Key: fk_instance_user */
@@ -3361,19 +2876,14 @@ ALTER TABLE public.instance_documents ADD CONSTRAINT fk_instance_documents_insta
 	FOREIGN KEY (instance_id) REFERENCES public.instance (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
-/* Add Foreign Key: fk_instance_keyword_instance */
-ALTER TABLE public.instance_keyword ADD CONSTRAINT fk_instance_keyword_instance
+/* Add Foreign Key: fk_instance_form_form */
+ALTER TABLE public.instance_form ADD CONSTRAINT fk_instance_form_form
+	FOREIGN KEY (form_id) REFERENCES public.form (id)
+	ON UPDATE NO ACTION ON DELETE NO ACTION;
+
+/* Add Foreign Key: fk_instance_form_instance */
+ALTER TABLE public.instance_form ADD CONSTRAINT fk_instance_form_instance
 	FOREIGN KEY (instance_id) REFERENCES public.instance (id)
-	ON UPDATE NO ACTION ON DELETE NO ACTION;
-
-/* Add Foreign Key: fk_instance_keyword_keyword */
-ALTER TABLE public.instance_keyword ADD CONSTRAINT fk_instance_keyword_keyword
-	FOREIGN KEY (keyword_id) REFERENCES public.keyword (id)
-	ON UPDATE NO ACTION ON DELETE NO ACTION;
-
-/* Add Foreign Key: fk_instance_keyword_user */
-ALTER TABLE public.instance_keyword ADD CONSTRAINT fk_instance_keyword_user
-	FOREIGN KEY (added_by) REFERENCES public.users (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 /* Add Foreign Key: fk_instance_org_instance */
@@ -3406,9 +2916,29 @@ ALTER TABLE public.instance_person ADD CONSTRAINT fk_instance_person_person
 	FOREIGN KEY (person_id) REFERENCES public.person (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
-/* Add Foreign Key: fk_instance_sampling_procedure_instance */
-ALTER TABLE public.instance_sampling_procedure ADD CONSTRAINT fk_instance_sampling_procedure_instance
+/* Add Foreign Key: fk_dataset_right_target_group_dataset_right */
+ALTER TABLE public.instance_right_target_group ADD CONSTRAINT fk_dataset_right_target_group_dataset_right
+	FOREIGN KEY (instance_right_id) REFERENCES public.instance_right (id)
+	ON UPDATE NO ACTION ON DELETE NO ACTION;
+
+/* Add Foreign Key: fk_dataset_right_target_group_dataset_right_value */
+ALTER TABLE public.instance_right_target_group ADD CONSTRAINT fk_dataset_right_target_group_dataset_right_value
+	FOREIGN KEY (instance_right_value_id) REFERENCES public.instance_right_value (id)
+	ON UPDATE NO ACTION ON DELETE NO ACTION;
+
+/* Add Foreign Key: fk_dataset_right_target_group_instance */
+ALTER TABLE public.instance_right_target_group ADD CONSTRAINT fk_dataset_right_target_group_instance
 	FOREIGN KEY (instance_id) REFERENCES public.instance (id)
+	ON UPDATE NO ACTION ON DELETE NO ACTION;
+
+/* Add Foreign Key: fk_dataset_right_target_group_target_group */
+ALTER TABLE public.instance_right_target_group ADD CONSTRAINT fk_dataset_right_target_group_target_group
+	FOREIGN KEY (target_group_id) REFERENCES public.target_group (id)
+	ON UPDATE NO ACTION ON DELETE NO ACTION;
+
+/* Add Foreign Key: fk_dataset_right_value_dataset_right */
+ALTER TABLE public.instance_right_value ADD CONSTRAINT fk_dataset_right_value_dataset_right
+	FOREIGN KEY (instance_right_id) REFERENCES public.instance_right (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 /* Add Foreign Key: fk_instance_sampling_procedure_sampling_procedure */
@@ -3416,14 +2946,19 @@ ALTER TABLE public.instance_sampling_procedure ADD CONSTRAINT fk_instance_sampli
 	FOREIGN KEY (sampling_procedure_id) REFERENCES public.sampling_procedure (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
-/* Add Foreign Key: fk_instance_topic_instance */
-ALTER TABLE public.instance_topic ADD CONSTRAINT fk_instance_topic_instance
+/* Add Foreign Key: fk_instance_sampling_procedure_study */
+ALTER TABLE public.instance_sampling_procedure ADD CONSTRAINT fk_instance_sampling_procedure_study
+	FOREIGN KEY (study_id) REFERENCES public.study (id)
+	ON UPDATE NO ACTION ON DELETE NO ACTION;
+
+/* Add Foreign Key: fk_instance_variable_instance */
+ALTER TABLE public.instance_variable ADD CONSTRAINT fk_instance_variable_instance
 	FOREIGN KEY (instance_id) REFERENCES public.instance (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
-/* Add Foreign Key: fk_instance_topic_topic */
-ALTER TABLE public.instance_topic ADD CONSTRAINT fk_instance_topic_topic
-	FOREIGN KEY (topic_id) REFERENCES public.topic (id)
+/* Add Foreign Key: fk_instance_variable_variable */
+ALTER TABLE public.instance_variable ADD CONSTRAINT fk_instance_variable_variable
+	FOREIGN KEY (variable_id) REFERENCES public.variable (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 /* Add Foreign Key: fk_meth_coll_type_collection_model_type */
@@ -3431,14 +2966,9 @@ ALTER TABLE public.meth_coll_type ADD CONSTRAINT fk_meth_coll_type_collection_mo
 	FOREIGN KEY (collection_model_id) REFERENCES public.collection_model_type (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
-/* Add Foreign Key: fk_meth_coll_type_instance */
-ALTER TABLE public.meth_coll_type ADD CONSTRAINT fk_meth_coll_type_instance
-	FOREIGN KEY (instance_id) REFERENCES public.instance (id)
-	ON UPDATE NO ACTION ON DELETE NO ACTION;
-
-/* Add Foreign Key: fk_news_users */
-ALTER TABLE public.news ADD CONSTRAINT fk_news_users
-	FOREIGN KEY (added_by) REFERENCES public.users (id)
+/* Add Foreign Key: fk_meth_coll_type_study */
+ALTER TABLE public.meth_coll_type ADD CONSTRAINT fk_meth_coll_type_study
+	FOREIGN KEY (study_id) REFERENCES public.study (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 /* Add Foreign Key: fk_org_org_prefix */
@@ -3646,19 +3176,39 @@ ALTER TABLE public.selection_variable_item ADD CONSTRAINT fk_selection_variable_
 	FOREIGN KEY (variable_id) REFERENCES public.selection_variable (variable_id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
+/* Add Foreign Key: fk_series_catalog */
+ALTER TABLE public.series ADD CONSTRAINT fk_series_catalog
+	FOREIGN KEY (catalog_id) REFERENCES public.catalog (id)
+	ON UPDATE NO ACTION ON DELETE NO ACTION;
+
+/* Add Foreign Key: fk_series_descr_lang */
+ALTER TABLE public.series_descr ADD CONSTRAINT fk_series_descr_lang
+	FOREIGN KEY (lang_id) REFERENCES public.lang (id)
+	ON UPDATE NO ACTION ON DELETE NO ACTION;
+
+/* Add Foreign Key: fk_series_descr_series */
+ALTER TABLE public.series_descr ADD CONSTRAINT fk_series_descr_series
+	FOREIGN KEY (catalog_id) REFERENCES public.series (catalog_id)
+	ON UPDATE NO ACTION ON DELETE NO ACTION;
+
+/* Add Foreign Key: fk_series_topic_series */
+ALTER TABLE public.series_topic ADD CONSTRAINT fk_series_topic_series
+	FOREIGN KEY (catalog_id) REFERENCES public.series (catalog_id)
+	ON UPDATE NO ACTION ON DELETE NO ACTION;
+
+/* Add Foreign Key: fk_series_topic_topic */
+ALTER TABLE public.series_topic ADD CONSTRAINT fk_series_topic_topic
+	FOREIGN KEY (topic_id) REFERENCES public.topic (id)
+	ON UPDATE NO ACTION ON DELETE NO ACTION;
+
 /* Add Foreign Key: fk_setting_setting_group */
 ALTER TABLE public.setting ADD CONSTRAINT fk_setting_setting_group
-	FOREIGN KEY (setting_group) REFERENCES public.setting_group (id)
+	FOREIGN KEY (setting_group_id) REFERENCES public.setting_group (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 /* Add Foreign Key: fk_setting_group_setting_group */
 ALTER TABLE public.setting_group ADD CONSTRAINT fk_setting_group_setting_group
 	FOREIGN KEY (parent_id) REFERENCES public.setting_group (id)
-	ON UPDATE NO ACTION ON DELETE NO ACTION;
-
-/* Add Foreign Key: fk_setting_values_setting */
-ALTER TABLE public.setting_value ADD CONSTRAINT fk_setting_values_setting
-	FOREIGN KEY (setting_id) REFERENCES public.setting (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 /* Add Foreign Key: fk_skip_next_variable */
@@ -3671,74 +3221,29 @@ ALTER TABLE public.skip ADD CONSTRAINT fk_skip_variable
 	FOREIGN KEY (variable_id) REFERENCES public.variable (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
-/* Add Foreign Key: fk_sources_org */
-ALTER TABLE public.source ADD CONSTRAINT fk_sources_org
-	FOREIGN KEY (org_id) REFERENCES public.org (id)
+/* Add Foreign Key: fk_study_time_meth_type */
+ALTER TABLE public.study ADD CONSTRAINT fk_study_time_meth_type
+	FOREIGN KEY (id) REFERENCES public.time_meth_type (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
-/* Add Foreign Key: fk_sources_sourcetype */
-ALTER TABLE public.source ADD CONSTRAINT fk_sources_sourcetype
-	FOREIGN KEY (sourcetype_id) REFERENCES public.sourcetype (id)
-	ON UPDATE NO ACTION ON DELETE NO ACTION;
-
-/* Add Foreign Key: fk_source_contacts_person */
-ALTER TABLE public.source_contacts ADD CONSTRAINT fk_source_contacts_person
-	FOREIGN KEY (person_id) REFERENCES public.person (id)
-	ON UPDATE NO ACTION ON DELETE NO ACTION;
-
-/* Add Foreign Key: fk_source_contacts_source_contact_method */
-ALTER TABLE public.source_contacts ADD CONSTRAINT fk_source_contacts_source_contact_method
-	FOREIGN KEY (source_contact_method_id) REFERENCES public.source_contact_method (id)
-	ON UPDATE NO ACTION ON DELETE NO ACTION;
-
-/* Add Foreign Key: fk_source_contacts_sources */
-ALTER TABLE public.source_contacts ADD CONSTRAINT fk_source_contacts_sources
-	FOREIGN KEY (source_id) REFERENCES public.source (org_id)
-	ON UPDATE NO ACTION ON DELETE NO ACTION;
-
-/* Add Foreign Key: fk_sourcestudy_sources */
-ALTER TABLE public.sourcestudy ADD CONSTRAINT fk_sourcestudy_sources
-	FOREIGN KEY (org_id) REFERENCES public.source (org_id)
-	ON UPDATE NO ACTION ON DELETE NO ACTION;
-
-/* Add Foreign Key: fk_sourcestudy_sourcestudy_type */
-ALTER TABLE public.sourcestudy ADD CONSTRAINT fk_sourcestudy_sourcestudy_type
-	FOREIGN KEY (type) REFERENCES public.sourcestudy_type (id)
-	ON UPDATE NO ACTION ON DELETE NO ACTION;
-
-/* Add Foreign Key: fk_sourcestudy_type_history_sourcestudy */
-ALTER TABLE public.sourcestudy_type_history ADD CONSTRAINT fk_sourcestudy_type_history_sourcestudy
-	FOREIGN KEY (sourcesstudy_id) REFERENCES public.sourcestudy (id)
-	ON UPDATE NO ACTION ON DELETE NO ACTION;
-
-/* Add Foreign Key: fk_sourcestudy_type_history_sourcestudy_type */
-ALTER TABLE public.sourcestudy_type_history ADD CONSTRAINT fk_sourcestudy_type_history_sourcestudy_type
-	FOREIGN KEY (sourcestudy_type_id) REFERENCES public.sourcestudy_type (id)
-	ON UPDATE NO ACTION ON DELETE NO ACTION;
-
-/* Add Foreign Key: fk_sourcestudy_type_history_user */
-ALTER TABLE public.sourcestudy_type_history ADD CONSTRAINT fk_sourcestudy_type_history_user
-	FOREIGN KEY (added_by) REFERENCES public.users (id)
-	ON UPDATE NO ACTION ON DELETE NO ACTION;
-
-/* Add Foreign Key: fk_source_type_history_sources */
-ALTER TABLE public.sourcetype_history ADD CONSTRAINT fk_source_type_history_sources
-	FOREIGN KEY (org_id) REFERENCES public.source (org_id)
-	ON UPDATE NO ACTION ON DELETE NO ACTION;
-
-/* Add Foreign Key: fk_source_type_history_sourcetype */
-ALTER TABLE public.sourcetype_history ADD CONSTRAINT fk_source_type_history_sourcetype
-	FOREIGN KEY (sourcetype_id) REFERENCES public.sourcetype (id)
-	ON UPDATE NO ACTION ON DELETE NO ACTION;
-
-/* Add Foreign Key: fk_sourcetype_history_user */
-ALTER TABLE public.sourcetype_history ADD CONSTRAINT fk_sourcetype_history_user
-	FOREIGN KEY (added_by) REFERENCES public.users (id)
+/* Add Foreign Key: fk_study_unit_analysis */
+ALTER TABLE public.study ADD CONSTRAINT fk_study_unit_analysis
+	FOREIGN KEY (unit_analysis_id) REFERENCES public.unit_analysis (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 /* Add Foreign Key: fk_study_user */
 ALTER TABLE public.study ADD CONSTRAINT fk_study_user
 	FOREIGN KEY (added_by) REFERENCES public.users (id)
+	ON UPDATE NO ACTION ON DELETE NO ACTION;
+
+/* Add Foreign Key: fk_study_data_source_type_data_source_type */
+ALTER TABLE public.study_data_source_type ADD CONSTRAINT fk_study_data_source_type_data_source_type
+	FOREIGN KEY (data_source_type_id) REFERENCES public.data_source_type (id)
+	ON UPDATE NO ACTION ON DELETE NO ACTION;
+
+/* Add Foreign Key: fk_study_data_source_type_study */
+ALTER TABLE public.study_data_source_type ADD CONSTRAINT fk_study_data_source_type_study
+	FOREIGN KEY (study_id) REFERENCES public.study (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 /* Add Foreign Key: fk_study_descr_lang */
@@ -3749,11 +3254,6 @@ ALTER TABLE public.study_descr ADD CONSTRAINT fk_study_descr_lang
 /* Add Foreign Key: fk_title_study */
 ALTER TABLE public.study_descr ADD CONSTRAINT fk_title_study
 	FOREIGN KEY (study_id) REFERENCES public.study (id)
-	ON UPDATE NO ACTION ON DELETE NO ACTION;
-
-/* Add Foreign Key: fk_title_title_type */
-ALTER TABLE public.study_descr ADD CONSTRAINT fk_title_title_type
-	FOREIGN KEY (title_type_id) REFERENCES public.title_type (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 /* Add Foreign Key: fk_study_documents_documents */
@@ -3811,6 +3311,16 @@ ALTER TABLE public.study_person ADD CONSTRAINT fk_study_person_study
 	FOREIGN KEY (study_id) REFERENCES public.study (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
+/* Add Foreign Key: fk_study_source_source */
+ALTER TABLE public.study_source ADD CONSTRAINT fk_study_source_source
+	FOREIGN KEY (source_id) REFERENCES public.source (id)
+	ON UPDATE NO ACTION ON DELETE NO ACTION;
+
+/* Add Foreign Key: fk_study_source_study */
+ALTER TABLE public.study_source ADD CONSTRAINT fk_study_source_study
+	FOREIGN KEY (study_id) REFERENCES public.study (id)
+	ON UPDATE NO ACTION ON DELETE NO ACTION;
+
 /* Add Foreign Key: fk_study_topic_study */
 ALTER TABLE public.study_topic ADD CONSTRAINT fk_study_topic_study
 	FOREIGN KEY (study_id) REFERENCES public.study (id)
@@ -3856,14 +3366,9 @@ ALTER TABLE public.user_message ADD CONSTRAINT fk_user_messages_users
 	FOREIGN KEY (from_user_id) REFERENCES public.users (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
-/* Add Foreign Key: fk_user_profile_users */
-ALTER TABLE public.user_profile ADD CONSTRAINT fk_user_profile_users
-	FOREIGN KEY (user_id) REFERENCES public.users (id)
-	ON UPDATE NO ACTION ON DELETE NO ACTION;
-
 /* Add Foreign Key: fk_user_settings_user_settings_group */
 ALTER TABLE public.user_setting ADD CONSTRAINT fk_user_settings_user_settings_group
-	FOREIGN KEY (setting_group) REFERENCES public.user_setting_group (id)
+	FOREIGN KEY (user_setting_group_id) REFERENCES public.user_setting_group (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 /* Add Foreign Key: fk_user_setting_value_user_settings */
@@ -3879,11 +3384,6 @@ ALTER TABLE public.user_setting_value ADD CONSTRAINT fk_user_setting_value_users
 /* Add Foreign Key: fk_value_item */
 ALTER TABLE public.value ADD CONSTRAINT fk_value_item
 	FOREIGN KEY (item_id) REFERENCES public.item (id)
-	ON UPDATE NO ACTION ON DELETE NO ACTION;
-
-/* Add Foreign Key: fk_formsSelectionVar_selection_variable_item */
-ALTER TABLE public.variable ADD CONSTRAINT "fk_formsSelectionVar_selection_variable_item"
-	FOREIGN KEY (instance_id) REFERENCES public.instance (id)
 	ON UPDATE NO ACTION ON DELETE NO ACTION;
 
 /* Add Foreign Key: fk_variable_documents */

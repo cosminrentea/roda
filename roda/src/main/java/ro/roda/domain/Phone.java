@@ -38,227 +38,236 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.transaction.annotation.Transactional;
 
 @Entity
-@Table(schema = "public",name = "phone")
+@Table(schema = "public", name = "phone")
 @Configurable
-
-
-
-
-
-
 public class Phone {
 
 	@PersistenceContext
-    transient EntityManager entityManager;
+	transient EntityManager entityManager;
 
 	public static final EntityManager entityManager() {
-        EntityManager em = new Phone().entityManager;
-        if (em == null) throw new IllegalStateException("Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-        return em;
-    }
+		EntityManager em = new Phone().entityManager;
+		if (em == null)
+			throw new IllegalStateException(
+					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return em;
+	}
 
 	public static long countPhones() {
-        return entityManager().createQuery("SELECT COUNT(o) FROM Phone o", Long.class).getSingleResult();
-    }
+		return entityManager().createQuery("SELECT COUNT(o) FROM Phone o", Long.class).getSingleResult();
+	}
 
 	public static List<Phone> findAllPhones() {
-        return entityManager().createQuery("SELECT o FROM Phone o", Phone.class).getResultList();
-    }
+		return entityManager().createQuery("SELECT o FROM Phone o", Phone.class).getResultList();
+	}
 
 	public static Phone findPhone(Integer id) {
-        if (id == null) return null;
-        return entityManager().find(Phone.class, id);
-    }
+		if (id == null)
+			return null;
+		return entityManager().find(Phone.class, id);
+	}
 
 	public static List<Phone> findPhoneEntries(int firstResult, int maxResults) {
-        return entityManager().createQuery("SELECT o FROM Phone o", Phone.class).setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
-    }
+		return entityManager().createQuery("SELECT o FROM Phone o", Phone.class).setFirstResult(firstResult)
+				.setMaxResults(maxResults).getResultList();
+	}
 
 	@Transactional
-    public void persist() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        this.entityManager.persist(this);
-    }
+	public void persist() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.persist(this);
+	}
 
 	@Transactional
-    public void remove() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        if (this.entityManager.contains(this)) {
-            this.entityManager.remove(this);
-        } else {
-            Phone attached = Phone.findPhone(this.id);
-            this.entityManager.remove(attached);
-        }
-    }
+	public void remove() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		if (this.entityManager.contains(this)) {
+			this.entityManager.remove(this);
+		} else {
+			Phone attached = Phone.findPhone(this.id);
+			this.entityManager.remove(attached);
+		}
+	}
 
 	@Transactional
-    public void flush() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        this.entityManager.flush();
-    }
+	public void flush() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.flush();
+	}
 
 	@Transactional
-    public void clear() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        this.entityManager.clear();
-    }
+	public void clear() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.clear();
+	}
 
 	@Transactional
-    public Phone merge() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        Phone merged = this.entityManager.merge(this);
-        this.entityManager.flush();
-        return merged;
-    }
+	public Phone merge() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		Phone merged = this.entityManager.merge(this);
+		this.entityManager.flush();
+		return merged;
+	}
 
 	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", columnDefinition = "serial")
-    private Integer id;
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id", columnDefinition = "serial")
+	private Integer id;
 
 	public Integer getId() {
-        return this.id;
-    }
+		return this.id;
+	}
 
 	public void setId(Integer id) {
-        this.id = id;
-    }
+		this.id = id;
+	}
 
 	@Autowired
-    transient SolrServer solrServer;
+	transient SolrServer solrServer;
 
 	public static QueryResponse search(String queryString) {
-        String searchString = "Phone_solrsummary_t:" + queryString;
-        return search(new SolrQuery(searchString.toLowerCase()));
-    }
+		String searchString = "Phone_solrsummary_t:" + queryString;
+		return search(new SolrQuery(searchString.toLowerCase()));
+	}
 
 	public static QueryResponse search(SolrQuery query) {
-        try {
-            return solrServer().query(query);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return new QueryResponse();
-    }
+		try {
+			return solrServer().query(query);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new QueryResponse();
+	}
 
 	public static void indexPhone(Phone phone) {
-        List<Phone> phones = new ArrayList<Phone>();
-        phones.add(phone);
-        indexPhones(phones);
-    }
+		List<Phone> phones = new ArrayList<Phone>();
+		phones.add(phone);
+		indexPhones(phones);
+	}
 
 	@Async
-    public static void indexPhones(Collection<Phone> phones) {
-        List<SolrInputDocument> documents = new ArrayList<SolrInputDocument>();
-        for (Phone phone : phones) {
-            SolrInputDocument sid = new SolrInputDocument();
-            sid.addField("id", "phone_" + phone.getId());
-            sid.addField("phone.phone_s", phone.getPhone());
-            sid.addField("phone.phonetype_s", phone.getPhoneType());
-            sid.addField("phone.id_i", phone.getId());
-            // Add summary field to allow searching documents for objects of this type
-            sid.addField("phone_solrsummary_t", new StringBuilder().append(phone.getPhone()).append(" ").append(phone.getPhoneType()).append(" ").append(phone.getId()));
-            documents.add(sid);
-        }
-        try {
-            SolrServer solrServer = solrServer();
-            solrServer.add(documents);
-            solrServer.commit();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+	public static void indexPhones(Collection<Phone> phones) {
+		List<SolrInputDocument> documents = new ArrayList<SolrInputDocument>();
+		for (Phone phone : phones) {
+			SolrInputDocument sid = new SolrInputDocument();
+			sid.addField("id", "phone_" + phone.getId());
+			sid.addField("phone.phone_s", phone.getPhone());
+			sid.addField("phone.phonetype_s", phone.getPhoneType());
+			sid.addField("phone.id_i", phone.getId());
+			// Add summary field to allow searching documents for objects of
+			// this type
+			sid.addField("phone_solrsummary_t",
+					new StringBuilder().append(phone.getPhone()).append(" ").append(phone.getPhoneType()).append(" ")
+							.append(phone.getId()));
+			documents.add(sid);
+		}
+		try {
+			SolrServer solrServer = solrServer();
+			solrServer.add(documents);
+			solrServer.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	@Async
-    public static void deleteIndex(Phone phone) {
-        SolrServer solrServer = solrServer();
-        try {
-            solrServer.deleteById("phone_" + phone.getId());
-            solrServer.commit();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+	public static void deleteIndex(Phone phone) {
+		SolrServer solrServer = solrServer();
+		try {
+			solrServer.deleteById("phone_" + phone.getId());
+			solrServer.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	@PostUpdate
-    @PostPersist
-    private void postPersistOrUpdate() {
-        indexPhone(this);
-    }
+	@PostPersist
+	private void postPersistOrUpdate() {
+		indexPhone(this);
+	}
 
 	@PreRemove
-    private void preRemove() {
-        deleteIndex(this);
-    }
+	private void preRemove() {
+		deleteIndex(this);
+	}
 
 	public static SolrServer solrServer() {
-        SolrServer _solrServer = new Phone().solrServer;
-        if (_solrServer == null) throw new IllegalStateException("Solr server has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-        return _solrServer;
-    }
+		SolrServer _solrServer = new Phone().solrServer;
+		if (_solrServer == null)
+			throw new IllegalStateException(
+					"Solr server has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return _solrServer;
+	}
 
 	@OneToMany(mappedBy = "phoneId")
-    private Set<OrgPhone> orgPhones;
+	private Set<OrgPhone> orgPhones;
 
 	@OneToMany(mappedBy = "phoneId")
-    private Set<PersonPhone> personPhones;
+	private Set<PersonPhone> personPhones;
 
 	@Column(name = "phone", columnDefinition = "varchar", length = 30)
-    @NotNull
-    private String phone;
+	@NotNull
+	private String phone;
 
 	@Column(name = "phone_type", columnDefinition = "varchar", length = 50)
-    private String phoneType;
+	private String phoneType;
 
 	public Set<OrgPhone> getOrgPhones() {
-        return orgPhones;
-    }
+		return orgPhones;
+	}
 
 	public void setOrgPhones(Set<OrgPhone> orgPhones) {
-        this.orgPhones = orgPhones;
-    }
+		this.orgPhones = orgPhones;
+	}
 
 	public Set<PersonPhone> getPersonPhones() {
-        return personPhones;
-    }
+		return personPhones;
+	}
 
 	public void setPersonPhones(Set<PersonPhone> personPhones) {
-        this.personPhones = personPhones;
-    }
+		this.personPhones = personPhones;
+	}
 
 	public String getPhone() {
-        return phone;
-    }
+		return phone;
+	}
 
 	public void setPhone(String phone) {
-        this.phone = phone;
-    }
+		this.phone = phone;
+	}
 
 	public String getPhoneType() {
-        return phoneType;
-    }
+		return phoneType;
+	}
 
 	public void setPhoneType(String phoneType) {
-        this.phoneType = phoneType;
-    }
+		this.phoneType = phoneType;
+	}
 
 	public String toString() {
-        return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
-    }
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+	}
 
 	public String toJson() {
-        return new JSONSerializer().exclude("*.class").serialize(this);
-    }
+		return new JSONSerializer().exclude("*.class").serialize(this);
+	}
 
 	public static Phone fromJsonToPhone(String json) {
-        return new JSONDeserializer<Phone>().use(null, Phone.class).deserialize(json);
-    }
+		return new JSONDeserializer<Phone>().use(null, Phone.class).deserialize(json);
+	}
 
 	public static String toJsonArray(Collection<Phone> collection) {
-        return new JSONSerializer().exclude("*.class").serialize(collection);
-    }
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
 
 	public static Collection<Phone> fromJsonArrayToPhones(String json) {
-        return new JSONDeserializer<List<Phone>>().use(null, ArrayList.class).use("values", Phone.class).deserialize(json);
-    }
+		return new JSONDeserializer<List<Phone>>().use(null, ArrayList.class).use("values", Phone.class)
+				.deserialize(json);
+	}
 }

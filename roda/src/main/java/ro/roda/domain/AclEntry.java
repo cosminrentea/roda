@@ -39,267 +39,278 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Configurable
 @Entity
-@Table(schema = "public",name = "acl_entry")
-
-
-
-
-
-
+@Table(schema = "public", name = "acl_entry")
 public class AclEntry {
 
-    @Column(name = "ace_order", columnDefinition = "int4")
-    @NotNull
-    private Integer aceOrder;
+	@Column(name = "ace_order", columnDefinition = "int4")
+	@NotNull
+	private Integer aceOrder;
 
 	@ManyToOne
-    @JoinColumn(name = "acl_object_identity", referencedColumnName = "id", nullable = false)
-    private AclObjectIdentity aclObjectIdentity;
+	@JoinColumn(name = "acl_object_identity", referencedColumnName = "id", nullable = false)
+	private AclObjectIdentity aclObjectIdentity;
 
 	@ManyToOne
-    @JoinColumn(name = "sid", referencedColumnName = "id", nullable = false)
-    private AclSid sid;
+	@JoinColumn(name = "sid", referencedColumnName = "id", nullable = false)
+	private AclSid sid;
 
 	@Column(name = "mask", columnDefinition = "int4")
-    @NotNull
-    private Integer mask;
+	@NotNull
+	private Integer mask;
 
 	@Column(name = "granting", columnDefinition = "bool")
-    @NotNull
-    private boolean granting;
+	@NotNull
+	private boolean granting;
 
 	@Column(name = "audit_success", columnDefinition = "bool")
-    @NotNull
-    private boolean auditSuccess;
+	@NotNull
+	private boolean auditSuccess;
 
 	@Column(name = "audit_failure", columnDefinition = "bool")
-    @NotNull
-    private boolean auditFailure;
+	@NotNull
+	private boolean auditFailure;
 
 	public AclObjectIdentity getAclObjectIdentity() {
-        return aclObjectIdentity;
-    }
+		return aclObjectIdentity;
+	}
 
 	public void setAclObjectIdentity(AclObjectIdentity aclObjectIdentity) {
-        this.aclObjectIdentity = aclObjectIdentity;
-    }
+		this.aclObjectIdentity = aclObjectIdentity;
+	}
 
 	public AclSid getSid() {
-        return sid;
-    }
+		return sid;
+	}
 
 	public void setSid(AclSid sid) {
-        this.sid = sid;
-    }
+		this.sid = sid;
+	}
 
 	public Integer getMask() {
-        return mask;
-    }
+		return mask;
+	}
 
 	public void setMask(Integer mask) {
-        this.mask = mask;
-    }
+		this.mask = mask;
+	}
 
 	public boolean isGranting() {
-        return granting;
-    }
+		return granting;
+	}
 
 	public void setGranting(boolean granting) {
-        this.granting = granting;
-    }
+		this.granting = granting;
+	}
 
 	public boolean isAuditSuccess() {
-        return auditSuccess;
-    }
+		return auditSuccess;
+	}
 
 	public void setAuditSuccess(boolean auditSuccess) {
-        this.auditSuccess = auditSuccess;
-    }
+		this.auditSuccess = auditSuccess;
+	}
 
 	public boolean isAuditFailure() {
-        return auditFailure;
-    }
+		return auditFailure;
+	}
 
 	public void setAuditFailure(boolean auditFailure) {
-        this.auditFailure = auditFailure;
-    }
+		this.auditFailure = auditFailure;
+	}
 
 	@Autowired
-    transient SolrServer solrServer;
+	transient SolrServer solrServer;
 
 	public static QueryResponse search(String queryString) {
-        String searchString = "AclEntry_solrsummary_t:" + queryString;
-        return search(new SolrQuery(searchString.toLowerCase()));
-    }
+		String searchString = "AclEntry_solrsummary_t:" + queryString;
+		return search(new SolrQuery(searchString.toLowerCase()));
+	}
 
 	public static QueryResponse search(SolrQuery query) {
-        try {
-            return solrServer().query(query);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return new QueryResponse();
-    }
+		try {
+			return solrServer().query(query);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new QueryResponse();
+	}
 
 	public static void indexAclEntry(AclEntry aclEntry) {
-        List<AclEntry> aclentrys = new ArrayList<AclEntry>();
-        aclentrys.add(aclEntry);
-        indexAclEntrys(aclentrys);
-    }
+		List<AclEntry> aclentrys = new ArrayList<AclEntry>();
+		aclentrys.add(aclEntry);
+		indexAclEntrys(aclentrys);
+	}
 
 	@Async
-    public static void indexAclEntrys(Collection<AclEntry> aclentrys) {
-        List<SolrInputDocument> documents = new ArrayList<SolrInputDocument>();
-        for (AclEntry aclEntry : aclentrys) {
-            SolrInputDocument sid = new SolrInputDocument();
-            sid.addField("id", "aclentry_" + aclEntry.getId());
-            sid.addField("aclEntry.aclobjectidentity_t", aclEntry.getAclObjectIdentity());
-            sid.addField("aclEntry.sid_t", aclEntry.getSid());
-            sid.addField("aclEntry.mask_i", aclEntry.getMask());
-            sid.addField("aclEntry.aceorder_i", aclEntry.getAceOrder());
-            sid.addField("aclEntry.id_l", aclEntry.getId());
-            // Add summary field to allow searching documents for objects of this type
-            sid.addField("aclentry_solrsummary_t", new StringBuilder().append(aclEntry.getAclObjectIdentity()).append(" ").append(aclEntry.getSid()).append(" ").append(aclEntry.getMask()).append(" ").append(aclEntry.getAceOrder()).append(" ").append(aclEntry.getId()));
-            documents.add(sid);
-        }
-        try {
-            SolrServer solrServer = solrServer();
-            solrServer.add(documents);
-            solrServer.commit();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+	public static void indexAclEntrys(Collection<AclEntry> aclentrys) {
+		List<SolrInputDocument> documents = new ArrayList<SolrInputDocument>();
+		for (AclEntry aclEntry : aclentrys) {
+			SolrInputDocument sid = new SolrInputDocument();
+			sid.addField("id", "aclentry_" + aclEntry.getId());
+			sid.addField("aclEntry.aclobjectidentity_t", aclEntry.getAclObjectIdentity());
+			sid.addField("aclEntry.sid_t", aclEntry.getSid());
+			sid.addField("aclEntry.mask_i", aclEntry.getMask());
+			sid.addField("aclEntry.aceorder_i", aclEntry.getAceOrder());
+			sid.addField("aclEntry.id_l", aclEntry.getId());
+			// Add summary field to allow searching documents for objects of
+			// this type
+			sid.addField(
+					"aclentry_solrsummary_t",
+					new StringBuilder().append(aclEntry.getAclObjectIdentity()).append(" ").append(aclEntry.getSid())
+							.append(" ").append(aclEntry.getMask()).append(" ").append(aclEntry.getAceOrder())
+							.append(" ").append(aclEntry.getId()));
+			documents.add(sid);
+		}
+		try {
+			SolrServer solrServer = solrServer();
+			solrServer.add(documents);
+			solrServer.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	@Async
-    public static void deleteIndex(AclEntry aclEntry) {
-        SolrServer solrServer = solrServer();
-        try {
-            solrServer.deleteById("aclentry_" + aclEntry.getId());
-            solrServer.commit();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+	public static void deleteIndex(AclEntry aclEntry) {
+		SolrServer solrServer = solrServer();
+		try {
+			solrServer.deleteById("aclentry_" + aclEntry.getId());
+			solrServer.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	@PostUpdate
-    @PostPersist
-    private void postPersistOrUpdate() {
-        indexAclEntry(this);
-    }
+	@PostPersist
+	private void postPersistOrUpdate() {
+		indexAclEntry(this);
+	}
 
 	@PreRemove
-    private void preRemove() {
-        deleteIndex(this);
-    }
+	private void preRemove() {
+		deleteIndex(this);
+	}
 
 	public static SolrServer solrServer() {
-        SolrServer _solrServer = new AclEntry().solrServer;
-        if (_solrServer == null) throw new IllegalStateException("Solr server has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-        return _solrServer;
-    }
+		SolrServer _solrServer = new AclEntry().solrServer;
+		if (_solrServer == null)
+			throw new IllegalStateException(
+					"Solr server has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return _solrServer;
+	}
 
 	public String toString() {
-        return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
-    }
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+	}
 
 	public String toJson() {
-        return new JSONSerializer().exclude("*.class").serialize(this);
-    }
+		return new JSONSerializer().exclude("*.class").serialize(this);
+	}
 
 	public static AclEntry fromJsonToAclEntry(String json) {
-        return new JSONDeserializer<AclEntry>().use(null, AclEntry.class).deserialize(json);
-    }
+		return new JSONDeserializer<AclEntry>().use(null, AclEntry.class).deserialize(json);
+	}
 
 	public static String toJsonArray(Collection<AclEntry> collection) {
-        return new JSONSerializer().exclude("*.class").serialize(collection);
-    }
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
 
 	public static Collection<AclEntry> fromJsonArrayToAclEntrys(String json) {
-        return new JSONDeserializer<List<AclEntry>>().use(null, ArrayList.class).use("values", AclEntry.class).deserialize(json);
-    }
+		return new JSONDeserializer<List<AclEntry>>().use(null, ArrayList.class).use("values", AclEntry.class)
+				.deserialize(json);
+	}
 
 	@PersistenceContext
-    transient EntityManager entityManager;
+	transient EntityManager entityManager;
 
 	public static final EntityManager entityManager() {
-        EntityManager em = new AclEntry().entityManager;
-        if (em == null) throw new IllegalStateException("Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-        return em;
-    }
+		EntityManager em = new AclEntry().entityManager;
+		if (em == null)
+			throw new IllegalStateException(
+					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return em;
+	}
 
 	public static long countAclEntrys() {
-        return entityManager().createQuery("SELECT COUNT(o) FROM AclEntry o", Long.class).getSingleResult();
-    }
+		return entityManager().createQuery("SELECT COUNT(o) FROM AclEntry o", Long.class).getSingleResult();
+	}
 
 	public static List<AclEntry> findAllAclEntrys() {
-        return entityManager().createQuery("SELECT o FROM AclEntry o", AclEntry.class).getResultList();
-    }
+		return entityManager().createQuery("SELECT o FROM AclEntry o", AclEntry.class).getResultList();
+	}
 
 	public static AclEntry findAclEntry(Long id) {
-        if (id == null) return null;
-        return entityManager().find(AclEntry.class, id);
-    }
+		if (id == null)
+			return null;
+		return entityManager().find(AclEntry.class, id);
+	}
 
 	public static List<AclEntry> findAclEntryEntries(int firstResult, int maxResults) {
-        return entityManager().createQuery("SELECT o FROM AclEntry o", AclEntry.class).setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
-    }
+		return entityManager().createQuery("SELECT o FROM AclEntry o", AclEntry.class).setFirstResult(firstResult)
+				.setMaxResults(maxResults).getResultList();
+	}
 
 	@Transactional
-    public void persist() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        this.entityManager.persist(this);
-    }
+	public void persist() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.persist(this);
+	}
 
 	@Transactional
-    public void remove() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        if (this.entityManager.contains(this)) {
-            this.entityManager.remove(this);
-        } else {
-            AclEntry attached = AclEntry.findAclEntry(this.id);
-            this.entityManager.remove(attached);
-        }
-    }
+	public void remove() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		if (this.entityManager.contains(this)) {
+			this.entityManager.remove(this);
+		} else {
+			AclEntry attached = AclEntry.findAclEntry(this.id);
+			this.entityManager.remove(attached);
+		}
+	}
 
 	@Transactional
-    public void flush() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        this.entityManager.flush();
-    }
+	public void flush() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.flush();
+	}
 
 	@Transactional
-    public void clear() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        this.entityManager.clear();
-    }
+	public void clear() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.clear();
+	}
 
 	@Transactional
-    public AclEntry merge() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        AclEntry merged = this.entityManager.merge(this);
-        this.entityManager.flush();
-        return merged;
-    }
+	public AclEntry merge() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		AclEntry merged = this.entityManager.merge(this);
+		this.entityManager.flush();
+		return merged;
+	}
 
 	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", columnDefinition = "bigserial")
-    private Long id;
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id", columnDefinition = "bigserial")
+	private Long id;
 
 	public Long getId() {
-        return this.id;
-    }
+		return this.id;
+	}
 
 	public void setId(Long id) {
-        this.id = id;
-    }
+		this.id = id;
+	}
 
 	public Integer getAceOrder() {
-        return this.aceOrder;
-    }
+		return this.aceOrder;
+	}
 
 	public void setAceOrder(Integer aceOrder) {
-        this.aceOrder = aceOrder;
-    }
+		this.aceOrder = aceOrder;
+	}
 }

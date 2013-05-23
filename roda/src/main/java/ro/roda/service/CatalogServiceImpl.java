@@ -5,36 +5,35 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ro.roda.domain.Catalog;
 
-
 @Service
 @Transactional
 public class CatalogServiceImpl implements CatalogService {
 
 	public long countAllCatalogs() {
-        return Catalog.countCatalogs();
-    }
+		return Catalog.countCatalogs();
+	}
 
 	public void deleteCatalog(Catalog catalog) {
-        catalog.remove();
-    }
+		catalog.remove();
+	}
 
 	public Catalog findCatalog(Integer id) {
-        return Catalog.findCatalog(id);
-    }
+		return Catalog.findCatalog(id);
+	}
 
 	public List<Catalog> findAllCatalogs() {
-        return Catalog.findAllCatalogs();
-    }
+		return Catalog.findAllCatalogs();
+	}
 
 	public List<Catalog> findCatalogEntries(int firstResult, int maxResults) {
-        return Catalog.findCatalogEntries(firstResult, maxResults);
-    }
+		return Catalog.findCatalogEntries(firstResult, maxResults);
+	}
 
 	public void saveCatalog(Catalog catalog) {
-        catalog.persist();
-    }
+		catalog.persist();
+	}
 
 	public Catalog updateCatalog(Catalog catalog) {
-        return catalog.merge();
-    }
+		return catalog.merge();
+	}
 }

@@ -36,215 +36,223 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.transaction.annotation.Transactional;
 
 @Entity
-@Table(schema = "public",name = "org_email")
+@Table(schema = "public", name = "org_email")
 @Configurable
-
-
-
-
-
-
 public class OrgEmail {
 
 	public String toString() {
-        return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
-    }
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+	}
 
 	@Autowired
-    transient SolrServer solrServer;
+	transient SolrServer solrServer;
 
 	public static QueryResponse search(String queryString) {
-        String searchString = "OrgEmail_solrsummary_t:" + queryString;
-        return search(new SolrQuery(searchString.toLowerCase()));
-    }
+		String searchString = "OrgEmail_solrsummary_t:" + queryString;
+		return search(new SolrQuery(searchString.toLowerCase()));
+	}
 
 	public static QueryResponse search(SolrQuery query) {
-        try {
-            return solrServer().query(query);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return new QueryResponse();
-    }
+		try {
+			return solrServer().query(query);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new QueryResponse();
+	}
 
 	public static void indexOrgEmail(OrgEmail orgEmail) {
-        List<OrgEmail> orgemails = new ArrayList<OrgEmail>();
-        orgemails.add(orgEmail);
-        indexOrgEmails(orgemails);
-    }
+		List<OrgEmail> orgemails = new ArrayList<OrgEmail>();
+		orgemails.add(orgEmail);
+		indexOrgEmails(orgemails);
+	}
 
 	@Async
-    public static void indexOrgEmails(Collection<OrgEmail> orgemails) {
-        List<SolrInputDocument> documents = new ArrayList<SolrInputDocument>();
-        for (OrgEmail orgEmail : orgemails) {
-            SolrInputDocument sid = new SolrInputDocument();
-            sid.addField("id", "orgemail_" + orgEmail.getId());
-            sid.addField("orgEmail.emailid_t", orgEmail.getEmailId());
-            sid.addField("orgEmail.orgid_t", orgEmail.getOrgId());
-            // Add summary field to allow searching documents for objects of this type
-            sid.addField("orgemail_solrsummary_t", new StringBuilder().append(orgEmail.getEmailId()).append(" ").append(orgEmail.getOrgId()));
-            documents.add(sid);
-        }
-        try {
-            SolrServer solrServer = solrServer();
-            solrServer.add(documents);
-            solrServer.commit();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+	public static void indexOrgEmails(Collection<OrgEmail> orgemails) {
+		List<SolrInputDocument> documents = new ArrayList<SolrInputDocument>();
+		for (OrgEmail orgEmail : orgemails) {
+			SolrInputDocument sid = new SolrInputDocument();
+			sid.addField("id", "orgemail_" + orgEmail.getId());
+			sid.addField("orgEmail.emailid_t", orgEmail.getEmailId());
+			sid.addField("orgEmail.orgid_t", orgEmail.getOrgId());
+			// Add summary field to allow searching documents for objects of
+			// this type
+			sid.addField("orgemail_solrsummary_t", new StringBuilder().append(orgEmail.getEmailId()).append(" ")
+					.append(orgEmail.getOrgId()));
+			documents.add(sid);
+		}
+		try {
+			SolrServer solrServer = solrServer();
+			solrServer.add(documents);
+			solrServer.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	@Async
-    public static void deleteIndex(OrgEmail orgEmail) {
-        SolrServer solrServer = solrServer();
-        try {
-            solrServer.deleteById("orgemail_" + orgEmail.getId());
-            solrServer.commit();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+	public static void deleteIndex(OrgEmail orgEmail) {
+		SolrServer solrServer = solrServer();
+		try {
+			solrServer.deleteById("orgemail_" + orgEmail.getId());
+			solrServer.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	@PostUpdate
-    @PostPersist
-    private void postPersistOrUpdate() {
-        indexOrgEmail(this);
-    }
+	@PostPersist
+	private void postPersistOrUpdate() {
+		indexOrgEmail(this);
+	}
 
 	@PreRemove
-    private void preRemove() {
-        deleteIndex(this);
-    }
+	private void preRemove() {
+		deleteIndex(this);
+	}
 
 	public static SolrServer solrServer() {
-        SolrServer _solrServer = new OrgEmail().solrServer;
-        if (_solrServer == null) throw new IllegalStateException("Solr server has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-        return _solrServer;
-    }
+		SolrServer _solrServer = new OrgEmail().solrServer;
+		if (_solrServer == null)
+			throw new IllegalStateException(
+					"Solr server has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return _solrServer;
+	}
 
 	@PersistenceContext
-    transient EntityManager entityManager;
+	transient EntityManager entityManager;
 
 	public static final EntityManager entityManager() {
-        EntityManager em = new OrgEmail().entityManager;
-        if (em == null) throw new IllegalStateException("Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-        return em;
-    }
+		EntityManager em = new OrgEmail().entityManager;
+		if (em == null)
+			throw new IllegalStateException(
+					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return em;
+	}
 
 	public static long countOrgEmails() {
-        return entityManager().createQuery("SELECT COUNT(o) FROM OrgEmail o", Long.class).getSingleResult();
-    }
+		return entityManager().createQuery("SELECT COUNT(o) FROM OrgEmail o", Long.class).getSingleResult();
+	}
 
 	public static List<OrgEmail> findAllOrgEmails() {
-        return entityManager().createQuery("SELECT o FROM OrgEmail o", OrgEmail.class).getResultList();
-    }
+		return entityManager().createQuery("SELECT o FROM OrgEmail o", OrgEmail.class).getResultList();
+	}
 
 	public static OrgEmail findOrgEmail(OrgEmailPK id) {
-        if (id == null) return null;
-        return entityManager().find(OrgEmail.class, id);
-    }
+		if (id == null)
+			return null;
+		return entityManager().find(OrgEmail.class, id);
+	}
 
 	public static List<OrgEmail> findOrgEmailEntries(int firstResult, int maxResults) {
-        return entityManager().createQuery("SELECT o FROM OrgEmail o", OrgEmail.class).setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
-    }
+		return entityManager().createQuery("SELECT o FROM OrgEmail o", OrgEmail.class).setFirstResult(firstResult)
+				.setMaxResults(maxResults).getResultList();
+	}
 
 	@Transactional
-    public void persist() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        this.entityManager.persist(this);
-    }
+	public void persist() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.persist(this);
+	}
 
 	@Transactional
-    public void remove() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        if (this.entityManager.contains(this)) {
-            this.entityManager.remove(this);
-        } else {
-            OrgEmail attached = OrgEmail.findOrgEmail(this.id);
-            this.entityManager.remove(attached);
-        }
-    }
+	public void remove() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		if (this.entityManager.contains(this)) {
+			this.entityManager.remove(this);
+		} else {
+			OrgEmail attached = OrgEmail.findOrgEmail(this.id);
+			this.entityManager.remove(attached);
+		}
+	}
 
 	@Transactional
-    public void flush() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        this.entityManager.flush();
-    }
+	public void flush() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.flush();
+	}
 
 	@Transactional
-    public void clear() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        this.entityManager.clear();
-    }
+	public void clear() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.clear();
+	}
 
 	@Transactional
-    public OrgEmail merge() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        OrgEmail merged = this.entityManager.merge(this);
-        this.entityManager.flush();
-        return merged;
-    }
+	public OrgEmail merge() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		OrgEmail merged = this.entityManager.merge(this);
+		this.entityManager.flush();
+		return merged;
+	}
 
 	@EmbeddedId
-    private OrgEmailPK id;
+	private OrgEmailPK id;
 
 	public OrgEmailPK getId() {
-        return this.id;
-    }
+		return this.id;
+	}
 
 	public void setId(OrgEmailPK id) {
-        this.id = id;
-    }
+		this.id = id;
+	}
 
 	public String toJson() {
-        return new JSONSerializer().exclude("*.class").serialize(this);
-    }
+		return new JSONSerializer().exclude("*.class").serialize(this);
+	}
 
 	public static OrgEmail fromJsonToOrgEmail(String json) {
-        return new JSONDeserializer<OrgEmail>().use(null, OrgEmail.class).deserialize(json);
-    }
+		return new JSONDeserializer<OrgEmail>().use(null, OrgEmail.class).deserialize(json);
+	}
 
 	public static String toJsonArray(Collection<OrgEmail> collection) {
-        return new JSONSerializer().exclude("*.class").serialize(collection);
-    }
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
 
 	public static Collection<OrgEmail> fromJsonArrayToOrgEmails(String json) {
-        return new JSONDeserializer<List<OrgEmail>>().use(null, ArrayList.class).use("values", OrgEmail.class).deserialize(json);
-    }
+		return new JSONDeserializer<List<OrgEmail>>().use(null, ArrayList.class).use("values", OrgEmail.class)
+				.deserialize(json);
+	}
 
 	@ManyToOne
-    @JoinColumn(name = "email_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
-    private Email emailId;
+	@JoinColumn(name = "email_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	private Email emailId;
 
 	@ManyToOne
-    @JoinColumn(name = "org_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
-    private Org orgId;
+	@JoinColumn(name = "org_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	private Org orgId;
 
 	@Column(name = "main", columnDefinition = "bool")
-    @NotNull
-    private boolean main;
+	@NotNull
+	private boolean main;
 
 	public Email getEmailId() {
-        return emailId;
-    }
+		return emailId;
+	}
 
 	public void setEmailId(Email emailId) {
-        this.emailId = emailId;
-    }
+		this.emailId = emailId;
+	}
 
 	public Org getOrgId() {
-        return orgId;
-    }
+		return orgId;
+	}
 
 	public void setOrgId(Org orgId) {
-        this.orgId = orgId;
-    }
+		this.orgId = orgId;
+	}
 
 	public boolean isMain() {
-        return main;
-    }
+		return main;
+	}
 
 	public void setMain(boolean main) {
-        this.main = main;
-    }
+		this.main = main;
+	}
 }

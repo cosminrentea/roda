@@ -13,48 +13,48 @@ import org.springframework.roo.addon.jpa.identifier.RooIdentifier;
 
 @Configurable
 @Embeddable
-
 public final class AuthoritiesPK implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	public String toJson() {
-        return new JSONSerializer().exclude("*.class").serialize(this);
-    }
+		return new JSONSerializer().exclude("*.class").serialize(this);
+	}
 
 	public static AuthoritiesPK fromJsonToAuthoritiesPK(String json) {
-        return new JSONDeserializer<AuthoritiesPK>().use(null, AuthoritiesPK.class).deserialize(json);
-    }
+		return new JSONDeserializer<AuthoritiesPK>().use(null, AuthoritiesPK.class).deserialize(json);
+	}
 
 	public static String toJsonArray(Collection<AuthoritiesPK> collection) {
-        return new JSONSerializer().exclude("*.class").serialize(collection);
-    }
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
 
 	public static Collection<AuthoritiesPK> fromJsonArrayToAuthoritiesPKs(String json) {
-        return new JSONDeserializer<List<AuthoritiesPK>>().use(null, ArrayList.class).use("values", AuthoritiesPK.class).deserialize(json);
-    }
+		return new JSONDeserializer<List<AuthoritiesPK>>().use(null, ArrayList.class)
+				.use("values", AuthoritiesPK.class).deserialize(json);
+	}
 
 	@Column(name = "username", columnDefinition = "varchar", nullable = false, length = 64)
-    private String username;
+	private String username;
 
 	@Column(name = "authority", columnDefinition = "varchar", nullable = false, length = 64)
-    private String authority;
+	private String authority;
 
 	public AuthoritiesPK(String username, String authority) {
-        super();
-        this.username = username;
-        this.authority = authority;
-    }
+		super();
+		this.username = username;
+		this.authority = authority;
+	}
 
 	private AuthoritiesPK() {
-        super();
-    }
+		super();
+	}
 
 	public String getUsername() {
-        return username;
-    }
+		return username;
+	}
 
 	public String getAuthority() {
-        return authority;
-    }
+		return authority;
+	}
 }

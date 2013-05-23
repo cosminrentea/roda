@@ -38,203 +38,210 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.transaction.annotation.Transactional;
 
 @Entity
-@Table(schema = "public",name = "org_relation_type")
+@Table(schema = "public", name = "org_relation_type")
 @Configurable
-
-
-
-
-
-
 public class OrgRelationType {
 
 	public String toString() {
-        return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
-    }
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+	}
 
 	@OneToMany(mappedBy = "orgRelationTypeId")
-    private Set<OrgRelations> orgRelationss;
+	private Set<OrgRelations> orgRelationss;
 
 	@Column(name = "name", columnDefinition = "varchar", length = 100)
-    @NotNull
-    private String name;
+	@NotNull
+	private String name;
 
 	public Set<OrgRelations> getOrgRelationss() {
-        return orgRelationss;
-    }
+		return orgRelationss;
+	}
 
 	public void setOrgRelationss(Set<OrgRelations> orgRelationss) {
-        this.orgRelationss = orgRelationss;
-    }
+		this.orgRelationss = orgRelationss;
+	}
 
 	public String getName() {
-        return name;
-    }
+		return name;
+	}
 
 	public void setName(String name) {
-        this.name = name;
-    }
+		this.name = name;
+	}
 
 	@PersistenceContext
-    transient EntityManager entityManager;
+	transient EntityManager entityManager;
 
 	public static final EntityManager entityManager() {
-        EntityManager em = new OrgRelationType().entityManager;
-        if (em == null) throw new IllegalStateException("Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-        return em;
-    }
+		EntityManager em = new OrgRelationType().entityManager;
+		if (em == null)
+			throw new IllegalStateException(
+					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return em;
+	}
 
 	public static long countOrgRelationTypes() {
-        return entityManager().createQuery("SELECT COUNT(o) FROM OrgRelationType o", Long.class).getSingleResult();
-    }
+		return entityManager().createQuery("SELECT COUNT(o) FROM OrgRelationType o", Long.class).getSingleResult();
+	}
 
 	public static List<OrgRelationType> findAllOrgRelationTypes() {
-        return entityManager().createQuery("SELECT o FROM OrgRelationType o", OrgRelationType.class).getResultList();
-    }
+		return entityManager().createQuery("SELECT o FROM OrgRelationType o", OrgRelationType.class).getResultList();
+	}
 
 	public static OrgRelationType findOrgRelationType(Integer id) {
-        if (id == null) return null;
-        return entityManager().find(OrgRelationType.class, id);
-    }
+		if (id == null)
+			return null;
+		return entityManager().find(OrgRelationType.class, id);
+	}
 
 	public static List<OrgRelationType> findOrgRelationTypeEntries(int firstResult, int maxResults) {
-        return entityManager().createQuery("SELECT o FROM OrgRelationType o", OrgRelationType.class).setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
-    }
+		return entityManager().createQuery("SELECT o FROM OrgRelationType o", OrgRelationType.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
+	}
 
 	@Transactional
-    public void persist() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        this.entityManager.persist(this);
-    }
+	public void persist() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.persist(this);
+	}
 
 	@Transactional
-    public void remove() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        if (this.entityManager.contains(this)) {
-            this.entityManager.remove(this);
-        } else {
-            OrgRelationType attached = OrgRelationType.findOrgRelationType(this.id);
-            this.entityManager.remove(attached);
-        }
-    }
+	public void remove() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		if (this.entityManager.contains(this)) {
+			this.entityManager.remove(this);
+		} else {
+			OrgRelationType attached = OrgRelationType.findOrgRelationType(this.id);
+			this.entityManager.remove(attached);
+		}
+	}
 
 	@Transactional
-    public void flush() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        this.entityManager.flush();
-    }
+	public void flush() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.flush();
+	}
 
 	@Transactional
-    public void clear() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        this.entityManager.clear();
-    }
+	public void clear() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.clear();
+	}
 
 	@Transactional
-    public OrgRelationType merge() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        OrgRelationType merged = this.entityManager.merge(this);
-        this.entityManager.flush();
-        return merged;
-    }
+	public OrgRelationType merge() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		OrgRelationType merged = this.entityManager.merge(this);
+		this.entityManager.flush();
+		return merged;
+	}
 
 	@Autowired
-    transient SolrServer solrServer;
+	transient SolrServer solrServer;
 
 	public static QueryResponse search(String queryString) {
-        String searchString = "OrgRelationType_solrsummary_t:" + queryString;
-        return search(new SolrQuery(searchString.toLowerCase()));
-    }
+		String searchString = "OrgRelationType_solrsummary_t:" + queryString;
+		return search(new SolrQuery(searchString.toLowerCase()));
+	}
 
 	public static QueryResponse search(SolrQuery query) {
-        try {
-            return solrServer().query(query);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return new QueryResponse();
-    }
+		try {
+			return solrServer().query(query);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new QueryResponse();
+	}
 
 	public static void indexOrgRelationType(OrgRelationType orgRelationType) {
-        List<OrgRelationType> orgrelationtypes = new ArrayList<OrgRelationType>();
-        orgrelationtypes.add(orgRelationType);
-        indexOrgRelationTypes(orgrelationtypes);
-    }
+		List<OrgRelationType> orgrelationtypes = new ArrayList<OrgRelationType>();
+		orgrelationtypes.add(orgRelationType);
+		indexOrgRelationTypes(orgrelationtypes);
+	}
 
 	@Async
-    public static void indexOrgRelationTypes(Collection<OrgRelationType> orgrelationtypes) {
-        List<SolrInputDocument> documents = new ArrayList<SolrInputDocument>();
-        for (OrgRelationType orgRelationType : orgrelationtypes) {
-            SolrInputDocument sid = new SolrInputDocument();
-            sid.addField("id", "orgrelationtype_" + orgRelationType.getId());
-            sid.addField("orgRelationType.name_s", orgRelationType.getName());
-            // Add summary field to allow searching documents for objects of this type
-            sid.addField("orgrelationtype_solrsummary_t", new StringBuilder().append(orgRelationType.getName()));
-            documents.add(sid);
-        }
-        try {
-            SolrServer solrServer = solrServer();
-            solrServer.add(documents);
-            solrServer.commit();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+	public static void indexOrgRelationTypes(Collection<OrgRelationType> orgrelationtypes) {
+		List<SolrInputDocument> documents = new ArrayList<SolrInputDocument>();
+		for (OrgRelationType orgRelationType : orgrelationtypes) {
+			SolrInputDocument sid = new SolrInputDocument();
+			sid.addField("id", "orgrelationtype_" + orgRelationType.getId());
+			sid.addField("orgRelationType.name_s", orgRelationType.getName());
+			// Add summary field to allow searching documents for objects of
+			// this type
+			sid.addField("orgrelationtype_solrsummary_t", new StringBuilder().append(orgRelationType.getName()));
+			documents.add(sid);
+		}
+		try {
+			SolrServer solrServer = solrServer();
+			solrServer.add(documents);
+			solrServer.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	@Async
-    public static void deleteIndex(OrgRelationType orgRelationType) {
-        SolrServer solrServer = solrServer();
-        try {
-            solrServer.deleteById("orgrelationtype_" + orgRelationType.getId());
-            solrServer.commit();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+	public static void deleteIndex(OrgRelationType orgRelationType) {
+		SolrServer solrServer = solrServer();
+		try {
+			solrServer.deleteById("orgrelationtype_" + orgRelationType.getId());
+			solrServer.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	@PostUpdate
-    @PostPersist
-    private void postPersistOrUpdate() {
-        indexOrgRelationType(this);
-    }
+	@PostPersist
+	private void postPersistOrUpdate() {
+		indexOrgRelationType(this);
+	}
 
 	@PreRemove
-    private void preRemove() {
-        deleteIndex(this);
-    }
+	private void preRemove() {
+		deleteIndex(this);
+	}
 
 	public static SolrServer solrServer() {
-        SolrServer _solrServer = new OrgRelationType().solrServer;
-        if (_solrServer == null) throw new IllegalStateException("Solr server has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-        return _solrServer;
-    }
+		SolrServer _solrServer = new OrgRelationType().solrServer;
+		if (_solrServer == null)
+			throw new IllegalStateException(
+					"Solr server has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return _solrServer;
+	}
 
 	public String toJson() {
-        return new JSONSerializer().exclude("*.class").serialize(this);
-    }
+		return new JSONSerializer().exclude("*.class").serialize(this);
+	}
 
 	public static OrgRelationType fromJsonToOrgRelationType(String json) {
-        return new JSONDeserializer<OrgRelationType>().use(null, OrgRelationType.class).deserialize(json);
-    }
+		return new JSONDeserializer<OrgRelationType>().use(null, OrgRelationType.class).deserialize(json);
+	}
 
 	public static String toJsonArray(Collection<OrgRelationType> collection) {
-        return new JSONSerializer().exclude("*.class").serialize(collection);
-    }
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
 
 	public static Collection<OrgRelationType> fromJsonArrayToOrgRelationTypes(String json) {
-        return new JSONDeserializer<List<OrgRelationType>>().use(null, ArrayList.class).use("values", OrgRelationType.class).deserialize(json);
-    }
+		return new JSONDeserializer<List<OrgRelationType>>().use(null, ArrayList.class)
+				.use("values", OrgRelationType.class).deserialize(json);
+	}
 
 	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", columnDefinition = "serial")
-    private Integer id;
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id", columnDefinition = "serial")
+	private Integer id;
 
 	public Integer getId() {
-        return this.id;
-    }
+		return this.id;
+	}
 
 	public void setId(Integer id) {
-        this.id = id;
-    }
+		this.id = id;
+	}
 }

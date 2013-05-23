@@ -40,254 +40,264 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.transaction.annotation.Transactional;
 
 @Entity
-@Table(schema = "public",name = "region")
+@Table(schema = "public", name = "region")
 @Configurable
-
-
-
-
-
-
 public class Region {
 
 	@ManyToMany(mappedBy = "regions")
-    private Set<City> cities;
+	private Set<City> cities;
 
 	@ManyToOne
-    @JoinColumn(name = "country_id", referencedColumnName = "id", nullable = false)
-    private Country countryId;
+	@JoinColumn(name = "country_id", referencedColumnName = "id", nullable = false)
+	private Country countryId;
 
 	@ManyToOne
-    @JoinColumn(name = "regiontype_id", referencedColumnName = "id", nullable = false)
-    private Regiontype regiontypeId;
+	@JoinColumn(name = "regiontype_id", referencedColumnName = "id", nullable = false)
+	private Regiontype regiontypeId;
 
 	@Column(name = "name", columnDefinition = "text")
-    @NotNull
-    private String name;
+	@NotNull
+	private String name;
 
 	@Column(name = "region_code", columnDefinition = "varchar", length = 50)
-    private String regionCode;
+	private String regionCode;
 
 	@Column(name = "region_code_name", columnDefinition = "varchar", length = 50)
-    private String regionCodeName;
+	private String regionCodeName;
 
 	public Set<City> getCities() {
-        return cities;
-    }
+		return cities;
+	}
 
 	public void setCities(Set<City> cities) {
-        this.cities = cities;
-    }
+		this.cities = cities;
+	}
 
 	public Country getCountryId() {
-        return countryId;
-    }
+		return countryId;
+	}
 
 	public void setCountryId(Country countryId) {
-        this.countryId = countryId;
-    }
+		this.countryId = countryId;
+	}
 
 	public Regiontype getRegiontypeId() {
-        return regiontypeId;
-    }
+		return regiontypeId;
+	}
 
 	public void setRegiontypeId(Regiontype regiontypeId) {
-        this.regiontypeId = regiontypeId;
-    }
+		this.regiontypeId = regiontypeId;
+	}
 
 	public String getName() {
-        return name;
-    }
+		return name;
+	}
 
 	public void setName(String name) {
-        this.name = name;
-    }
+		this.name = name;
+	}
 
 	public String getRegionCode() {
-        return regionCode;
-    }
+		return regionCode;
+	}
 
 	public void setRegionCode(String regionCode) {
-        this.regionCode = regionCode;
-    }
+		this.regionCode = regionCode;
+	}
 
 	public String getRegionCodeName() {
-        return regionCodeName;
-    }
+		return regionCodeName;
+	}
 
 	public void setRegionCodeName(String regionCodeName) {
-        this.regionCodeName = regionCodeName;
-    }
+		this.regionCodeName = regionCodeName;
+	}
 
 	public String toJson() {
-        return new JSONSerializer().exclude("*.class").serialize(this);
-    }
+		return new JSONSerializer().exclude("*.class").serialize(this);
+	}
 
 	public static Region fromJsonToRegion(String json) {
-        return new JSONDeserializer<Region>().use(null, Region.class).deserialize(json);
-    }
+		return new JSONDeserializer<Region>().use(null, Region.class).deserialize(json);
+	}
 
 	public static String toJsonArray(Collection<Region> collection) {
-        return new JSONSerializer().exclude("*.class").serialize(collection);
-    }
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
 
 	public static Collection<Region> fromJsonArrayToRegions(String json) {
-        return new JSONDeserializer<List<Region>>().use(null, ArrayList.class).use("values", Region.class).deserialize(json);
-    }
+		return new JSONDeserializer<List<Region>>().use(null, ArrayList.class).use("values", Region.class)
+				.deserialize(json);
+	}
 
 	@PersistenceContext
-    transient EntityManager entityManager;
+	transient EntityManager entityManager;
 
 	public static final EntityManager entityManager() {
-        EntityManager em = new Region().entityManager;
-        if (em == null) throw new IllegalStateException("Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-        return em;
-    }
+		EntityManager em = new Region().entityManager;
+		if (em == null)
+			throw new IllegalStateException(
+					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return em;
+	}
 
 	public static long countRegions() {
-        return entityManager().createQuery("SELECT COUNT(o) FROM Region o", Long.class).getSingleResult();
-    }
+		return entityManager().createQuery("SELECT COUNT(o) FROM Region o", Long.class).getSingleResult();
+	}
 
 	public static List<Region> findAllRegions() {
-        return entityManager().createQuery("SELECT o FROM Region o", Region.class).getResultList();
-    }
+		return entityManager().createQuery("SELECT o FROM Region o", Region.class).getResultList();
+	}
 
 	public static Region findRegion(Integer id) {
-        if (id == null) return null;
-        return entityManager().find(Region.class, id);
-    }
+		if (id == null)
+			return null;
+		return entityManager().find(Region.class, id);
+	}
 
 	public static List<Region> findRegionEntries(int firstResult, int maxResults) {
-        return entityManager().createQuery("SELECT o FROM Region o", Region.class).setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
-    }
+		return entityManager().createQuery("SELECT o FROM Region o", Region.class).setFirstResult(firstResult)
+				.setMaxResults(maxResults).getResultList();
+	}
 
 	@Transactional
-    public void persist() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        this.entityManager.persist(this);
-    }
+	public void persist() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.persist(this);
+	}
 
 	@Transactional
-    public void remove() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        if (this.entityManager.contains(this)) {
-            this.entityManager.remove(this);
-        } else {
-            Region attached = Region.findRegion(this.id);
-            this.entityManager.remove(attached);
-        }
-    }
+	public void remove() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		if (this.entityManager.contains(this)) {
+			this.entityManager.remove(this);
+		} else {
+			Region attached = Region.findRegion(this.id);
+			this.entityManager.remove(attached);
+		}
+	}
 
 	@Transactional
-    public void flush() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        this.entityManager.flush();
-    }
+	public void flush() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.flush();
+	}
 
 	@Transactional
-    public void clear() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        this.entityManager.clear();
-    }
+	public void clear() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.clear();
+	}
 
 	@Transactional
-    public Region merge() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        Region merged = this.entityManager.merge(this);
-        this.entityManager.flush();
-        return merged;
-    }
+	public Region merge() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		Region merged = this.entityManager.merge(this);
+		this.entityManager.flush();
+		return merged;
+	}
 
 	public String toString() {
-        return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
-    }
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+	}
 
 	@Autowired
-    transient SolrServer solrServer;
+	transient SolrServer solrServer;
 
 	public static QueryResponse search(String queryString) {
-        String searchString = "Region_solrsummary_t:" + queryString;
-        return search(new SolrQuery(searchString.toLowerCase()));
-    }
+		String searchString = "Region_solrsummary_t:" + queryString;
+		return search(new SolrQuery(searchString.toLowerCase()));
+	}
 
 	public static QueryResponse search(SolrQuery query) {
-        try {
-            return solrServer().query(query);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return new QueryResponse();
-    }
+		try {
+			return solrServer().query(query);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new QueryResponse();
+	}
 
 	public static void indexRegion(Region region) {
-        List<Region> regions = new ArrayList<Region>();
-        regions.add(region);
-        indexRegions(regions);
-    }
+		List<Region> regions = new ArrayList<Region>();
+		regions.add(region);
+		indexRegions(regions);
+	}
 
 	@Async
-    public static void indexRegions(Collection<Region> regions) {
-        List<SolrInputDocument> documents = new ArrayList<SolrInputDocument>();
-        for (Region region : regions) {
-            SolrInputDocument sid = new SolrInputDocument();
-            sid.addField("id", "region_" + region.getId());
-            sid.addField("region.countryid_t", region.getCountryId());
-            sid.addField("region.regiontypeid_t", region.getRegiontypeId());
-            sid.addField("region.name_s", region.getName());
-            sid.addField("region.regioncode_s", region.getRegionCode());
-            sid.addField("region.regioncodename_s", region.getRegionCodeName());
-            sid.addField("region.id_i", region.getId());
-            // Add summary field to allow searching documents for objects of this type
-            sid.addField("region_solrsummary_t", new StringBuilder().append(region.getCountryId()).append(" ").append(region.getRegiontypeId()).append(" ").append(region.getName()).append(" ").append(region.getRegionCode()).append(" ").append(region.getRegionCodeName()).append(" ").append(region.getId()));
-            documents.add(sid);
-        }
-        try {
-            SolrServer solrServer = solrServer();
-            solrServer.add(documents);
-            solrServer.commit();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+	public static void indexRegions(Collection<Region> regions) {
+		List<SolrInputDocument> documents = new ArrayList<SolrInputDocument>();
+		for (Region region : regions) {
+			SolrInputDocument sid = new SolrInputDocument();
+			sid.addField("id", "region_" + region.getId());
+			sid.addField("region.countryid_t", region.getCountryId());
+			sid.addField("region.regiontypeid_t", region.getRegiontypeId());
+			sid.addField("region.name_s", region.getName());
+			sid.addField("region.regioncode_s", region.getRegionCode());
+			sid.addField("region.regioncodename_s", region.getRegionCodeName());
+			sid.addField("region.id_i", region.getId());
+			// Add summary field to allow searching documents for objects of
+			// this type
+			sid.addField("region_solrsummary_t",
+					new StringBuilder().append(region.getCountryId()).append(" ").append(region.getRegiontypeId())
+							.append(" ").append(region.getName()).append(" ").append(region.getRegionCode())
+							.append(" ").append(region.getRegionCodeName()).append(" ").append(region.getId()));
+			documents.add(sid);
+		}
+		try {
+			SolrServer solrServer = solrServer();
+			solrServer.add(documents);
+			solrServer.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	@Async
-    public static void deleteIndex(Region region) {
-        SolrServer solrServer = solrServer();
-        try {
-            solrServer.deleteById("region_" + region.getId());
-            solrServer.commit();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+	public static void deleteIndex(Region region) {
+		SolrServer solrServer = solrServer();
+		try {
+			solrServer.deleteById("region_" + region.getId());
+			solrServer.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	@PostUpdate
-    @PostPersist
-    private void postPersistOrUpdate() {
-        indexRegion(this);
-    }
+	@PostPersist
+	private void postPersistOrUpdate() {
+		indexRegion(this);
+	}
 
 	@PreRemove
-    private void preRemove() {
-        deleteIndex(this);
-    }
+	private void preRemove() {
+		deleteIndex(this);
+	}
 
 	public static SolrServer solrServer() {
-        SolrServer _solrServer = new Region().solrServer;
-        if (_solrServer == null) throw new IllegalStateException("Solr server has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-        return _solrServer;
-    }
+		SolrServer _solrServer = new Region().solrServer;
+		if (_solrServer == null)
+			throw new IllegalStateException(
+					"Solr server has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return _solrServer;
+	}
 
 	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", columnDefinition = "serial")
-    private Integer id;
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id", columnDefinition = "serial")
+	private Integer id;
 
 	public Integer getId() {
-        return this.id;
-    }
+		return this.id;
+	}
 
 	public void setId(Integer id) {
-        this.id = id;
-    }
+		this.id = id;
+	}
 }

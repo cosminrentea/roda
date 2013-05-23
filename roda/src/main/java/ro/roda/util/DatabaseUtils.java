@@ -54,7 +54,7 @@ public class DatabaseUtils {
 
 	@Autowired
 	XStreamMarshaller xstreamMarshaller;
-	
+
 	@Value("${database.username}")
 	private String dbUsername;
 
@@ -63,7 +63,7 @@ public class DatabaseUtils {
 
 	@Value("${database.url}")
 	private String dbUrl;
-	
+
 	/**
 	 * Truncates the existing data in all the database tables, and restarts the
 	 * associated sequences.
@@ -142,15 +142,13 @@ public class DatabaseUtils {
 				String tableFields = br.readLine();
 
 				// obtain the table name from the file name
-				String tableName = f.getName().substring(2,
-						f.getName().length() - 4);
+				String tableName = f.getName().substring(2, f.getName().length() - 4);
 
 				// bulk COPY the remaining lines (CSV data)
-				String copyQuery = "COPY " + tableName + "(" + tableFields
-						+ ") FROM stdin DELIMITERS ',' CSV";
+				String copyQuery = "COPY " + tableName + "(" + tableFields + ") FROM stdin DELIMITERS ',' CSV";
 				log.info(copyQuery);
 				cm.copyIn(copyQuery, br);
-//				br.close();
+				// br.close();
 			}
 		} catch (SQLException e) {
 			log.error("SQLException:", e);
@@ -190,21 +188,17 @@ public class DatabaseUtils {
 			Statement stmt = null;
 			try {
 				stmt = con.createStatement();
-				
+
 				// set the current/next value
-				ResultSet rs = stmt.executeQuery("SELECT setval('" + sequence
-						+ "',"+ value + ")");
+				ResultSet rs = stmt.executeQuery("SELECT setval('" + sequence + "'," + value + ")");
 				while (rs.next()) {
 					int newValue = rs.getInt(1);
-					log.info("sequence new value: " + sequence + " = "
-							+ newValue);
+					log.info("sequence new value: " + sequence + " = " + newValue);
 				}
 
 				// set the new increment
-				stmt.executeUpdate("ALTER SEQUENCE " + sequence
-						+ " INCREMENT BY " + increment);
-				log.info("sequence new increment: " + sequence + " += "
-						+ increment);
+				stmt.executeUpdate("ALTER SEQUENCE " + sequence + " INCREMENT BY " + increment);
+				log.info("sequence new increment: " + sequence + " += " + increment);
 			} finally {
 				if (stmt != null) {
 					stmt.close();
@@ -222,7 +216,7 @@ public class DatabaseUtils {
 			}
 		}
 	}
-	
+
 	public void executeUpdate(String sqlCommand) {
 		Connection con = null;
 		try {
@@ -251,7 +245,6 @@ public class DatabaseUtils {
 			}
 		}
 	}
-	
 
 	public void changeData() {
 
@@ -264,27 +257,28 @@ public class DatabaseUtils {
 		newCatalog.setOwner(Users.findUsers(1));
 		newCatalog.setAdded(new GregorianCalendar());
 		newCatalog.persist();
-		
+
 		// move the old/existing catalog in the new folder
 		oldCatalog.setParentId(newCatalog);
 		HashSet<Catalog> children = new HashSet<Catalog>();
 		children.add(oldCatalog);
 		newCatalog.setCatalogs(children);
-		
+
 		oldCatalog.merge();
-		
+
 		// add all existing studies to the new catalog
 		List<Study> ls = Study.findAllStudys();
 		for (Study study : ls) {
 			CatalogStudy cs = new CatalogStudy();
-			CatalogStudyPK csid = new CatalogStudyPK(newCatalog.getId(),study.getId());
+			CatalogStudyPK csid = new CatalogStudyPK(newCatalog.getId(), study.getId());
 			cs.setId(csid);
 			cs.setAdded(new GregorianCalendar());
 			cs.persist();
 		}
-	
-		// add the same Person entity: when there are similar fields -> only one insertion
-		
+
+		// add the same Person entity: when there are similar fields -> only one
+		// insertion
+
 		Person p1 = new Person();
 		p1.setFname("Ion");
 		p1.setLname("VASILE");
@@ -311,7 +305,7 @@ public class DatabaseUtils {
 				resultPerson = p;
 			}
 		}
-		
+
 		if (resultPerson == null) {
 			p3.persist();
 		}
@@ -336,33 +330,31 @@ public class DatabaseUtils {
 			}
 		}
 	}
-	
+
 }
 
-
-
-//public void populateJAXB () {
-//JAXBContext jc;
-//try {
-//jc = JAXBContext.newInstance("ro.roda.domain");
-//Marshaller marshaller = jc.createMarshaller();
-//// validate using DDI 1.2.2 XML Schema
-//// marshaller.setSchema(SchemaFactory.newInstance(
-//// XMLConstants.W3C_XML_SCHEMA_NS_URI).newSchema(
-//// new File(xsdDdi122)));
+// public void populateJAXB () {
+// JAXBContext jc;
+// try {
+// jc = JAXBContext.newInstance("ro.roda.domain");
+// Marshaller marshaller = jc.createMarshaller();
+// // validate using DDI 1.2.2 XML Schema
+// // marshaller.setSchema(SchemaFactory.newInstance(
+// // XMLConstants.W3C_XML_SCHEMA_NS_URI).newSchema(
+// // new File(xsdDdi122)));
 //
-//// clean XML formatting
-//marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+// // clean XML formatting
+// marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 //
-//for (Catalog u:catalogService.findAllCatalogs()) {
+// for (Catalog u:catalogService.findAllCatalogs()) {
 //
-//String filename = u.getId() + ".xml";
-//File file = new File(filename);
-//log.error("Catalog XML Filename: " + file.getAbsolutePath());
-//// save the Catalog as XML
-//marshaller.marshal(u, file);
-//}
-//} catch (JAXBException e) {
-//log.error("SQLException:", e);
-//}
-//}
+// String filename = u.getId() + ".xml";
+// File file = new File(filename);
+// log.error("Catalog XML Filename: " + file.getAbsolutePath());
+// // save the Catalog as XML
+// marshaller.marshal(u, file);
+// }
+// } catch (JAXBException e) {
+// log.error("SQLException:", e);
+// }
+// }

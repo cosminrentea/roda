@@ -13,56 +13,56 @@ import org.springframework.roo.addon.jpa.identifier.RooIdentifier;
 
 @Configurable
 @Embeddable
-
 public final class StudyKeywordPK implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@Column(name = "study_id", columnDefinition = "int4", nullable = false)
-    private Integer studyId;
+	private Integer studyId;
 
 	@Column(name = "keyword_id", columnDefinition = "int4", nullable = false)
-    private Integer keywordId;
+	private Integer keywordId;
 
 	@Column(name = "added_by", columnDefinition = "int4", nullable = false)
-    private Integer addedBy;
+	private Integer addedBy;
 
 	public StudyKeywordPK(Integer studyId, Integer keywordId, Integer addedBy) {
-        super();
-        this.studyId = studyId;
-        this.keywordId = keywordId;
-        this.addedBy = addedBy;
-    }
+		super();
+		this.studyId = studyId;
+		this.keywordId = keywordId;
+		this.addedBy = addedBy;
+	}
 
 	private StudyKeywordPK() {
-        super();
-    }
+		super();
+	}
 
 	public Integer getStudyId() {
-        return studyId;
-    }
+		return studyId;
+	}
 
 	public Integer getKeywordId() {
-        return keywordId;
-    }
+		return keywordId;
+	}
 
 	public Integer getAddedBy() {
-        return addedBy;
-    }
+		return addedBy;
+	}
 
 	public String toJson() {
-        return new JSONSerializer().exclude("*.class").serialize(this);
-    }
+		return new JSONSerializer().exclude("*.class").serialize(this);
+	}
 
 	public static StudyKeywordPK fromJsonToStudyKeywordPK(String json) {
-        return new JSONDeserializer<StudyKeywordPK>().use(null, StudyKeywordPK.class).deserialize(json);
-    }
+		return new JSONDeserializer<StudyKeywordPK>().use(null, StudyKeywordPK.class).deserialize(json);
+	}
 
 	public static String toJsonArray(Collection<StudyKeywordPK> collection) {
-        return new JSONSerializer().exclude("*.class").serialize(collection);
-    }
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
 
 	public static Collection<StudyKeywordPK> fromJsonArrayToStudyKeywordPKs(String json) {
-        return new JSONDeserializer<List<StudyKeywordPK>>().use(null, ArrayList.class).use("values", StudyKeywordPK.class).deserialize(json);
-    }
+		return new JSONDeserializer<List<StudyKeywordPK>>().use(null, ArrayList.class)
+				.use("values", StudyKeywordPK.class).deserialize(json);
+	}
 }

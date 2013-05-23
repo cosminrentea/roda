@@ -13,48 +13,48 @@ import org.springframework.roo.addon.jpa.identifier.RooIdentifier;
 
 @Configurable
 @Embeddable
-
 public final class StudyDocumentsPK implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	public String toJson() {
-        return new JSONSerializer().exclude("*.class").serialize(this);
-    }
+		return new JSONSerializer().exclude("*.class").serialize(this);
+	}
 
 	public static StudyDocumentsPK fromJsonToStudyDocumentsPK(String json) {
-        return new JSONDeserializer<StudyDocumentsPK>().use(null, StudyDocumentsPK.class).deserialize(json);
-    }
+		return new JSONDeserializer<StudyDocumentsPK>().use(null, StudyDocumentsPK.class).deserialize(json);
+	}
 
 	public static String toJsonArray(Collection<StudyDocumentsPK> collection) {
-        return new JSONSerializer().exclude("*.class").serialize(collection);
-    }
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
 
 	public static Collection<StudyDocumentsPK> fromJsonArrayToStudyDocumentsPKs(String json) {
-        return new JSONDeserializer<List<StudyDocumentsPK>>().use(null, ArrayList.class).use("values", StudyDocumentsPK.class).deserialize(json);
-    }
+		return new JSONDeserializer<List<StudyDocumentsPK>>().use(null, ArrayList.class)
+				.use("values", StudyDocumentsPK.class).deserialize(json);
+	}
 
 	@Column(name = "study_id", columnDefinition = "int4", nullable = false)
-    private Integer studyId;
+	private Integer studyId;
 
 	@Column(name = "document_id", columnDefinition = "int4", nullable = false)
-    private Integer documentId;
+	private Integer documentId;
 
 	public StudyDocumentsPK(Integer studyId, Integer documentId) {
-        super();
-        this.studyId = studyId;
-        this.documentId = documentId;
-    }
+		super();
+		this.studyId = studyId;
+		this.documentId = documentId;
+	}
 
 	private StudyDocumentsPK() {
-        super();
-    }
+		super();
+	}
 
 	public Integer getStudyId() {
-        return studyId;
-    }
+		return studyId;
+	}
 
 	public Integer getDocumentId() {
-        return documentId;
-    }
+		return documentId;
+	}
 }

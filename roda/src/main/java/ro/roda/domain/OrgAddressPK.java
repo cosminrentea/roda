@@ -13,48 +13,48 @@ import org.springframework.roo.addon.jpa.identifier.RooIdentifier;
 
 @Configurable
 @Embeddable
-
 public final class OrgAddressPK implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@Column(name = "org_id", columnDefinition = "int4", nullable = false)
-    private Integer orgId;
+	private Integer orgId;
 
 	@Column(name = "address_id", columnDefinition = "int4", nullable = false)
-    private Integer addressId;
+	private Integer addressId;
 
 	public OrgAddressPK(Integer orgId, Integer addressId) {
-        super();
-        this.orgId = orgId;
-        this.addressId = addressId;
-    }
+		super();
+		this.orgId = orgId;
+		this.addressId = addressId;
+	}
 
 	private OrgAddressPK() {
-        super();
-    }
+		super();
+	}
 
 	public Integer getOrgId() {
-        return orgId;
-    }
+		return orgId;
+	}
 
 	public Integer getAddressId() {
-        return addressId;
-    }
+		return addressId;
+	}
 
 	public String toJson() {
-        return new JSONSerializer().exclude("*.class").serialize(this);
-    }
+		return new JSONSerializer().exclude("*.class").serialize(this);
+	}
 
 	public static OrgAddressPK fromJsonToOrgAddressPK(String json) {
-        return new JSONDeserializer<OrgAddressPK>().use(null, OrgAddressPK.class).deserialize(json);
-    }
+		return new JSONDeserializer<OrgAddressPK>().use(null, OrgAddressPK.class).deserialize(json);
+	}
 
 	public static String toJsonArray(Collection<OrgAddressPK> collection) {
-        return new JSONSerializer().exclude("*.class").serialize(collection);
-    }
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
 
 	public static Collection<OrgAddressPK> fromJsonArrayToOrgAddressPKs(String json) {
-        return new JSONDeserializer<List<OrgAddressPK>>().use(null, ArrayList.class).use("values", OrgAddressPK.class).deserialize(json);
-    }
+		return new JSONDeserializer<List<OrgAddressPK>>().use(null, ArrayList.class).use("values", OrgAddressPK.class)
+				.deserialize(json);
+	}
 }

@@ -39,203 +39,211 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Configurable
 @Entity
-@Table(schema = "public",name = "acl_class")
-
-
-
-
-
-
+@Table(schema = "public", name = "acl_class")
 public class AclClass {
 
 	public String toJson() {
-        return new JSONSerializer().exclude("*.class").serialize(this);
-    }
+		return new JSONSerializer().exclude("*.class").serialize(this);
+	}
 
 	public static AclClass fromJsonToAclClass(String json) {
-        return new JSONDeserializer<AclClass>().use(null, AclClass.class).deserialize(json);
-    }
+		return new JSONDeserializer<AclClass>().use(null, AclClass.class).deserialize(json);
+	}
 
 	public static String toJsonArray(Collection<AclClass> collection) {
-        return new JSONSerializer().exclude("*.class").serialize(collection);
-    }
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
 
 	public static Collection<AclClass> fromJsonArrayToAclClasses(String json) {
-        return new JSONDeserializer<List<AclClass>>().use(null, ArrayList.class).use("values", AclClass.class).deserialize(json);
-    }
+		return new JSONDeserializer<List<AclClass>>().use(null, ArrayList.class).use("values", AclClass.class)
+				.deserialize(json);
+	}
 
 	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", columnDefinition = "bigserial")
-    private Long id;
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id", columnDefinition = "bigserial")
+	private Long id;
 
 	public Long getId() {
-        return this.id;
-    }
+		return this.id;
+	}
 
 	public void setId(Long id) {
-        this.id = id;
-    }
+		this.id = id;
+	}
 
 	@OneToMany(mappedBy = "objectIdClass")
-    private Set<AclObjectIdentity> aclObjectIdentities;
+	private Set<AclObjectIdentity> aclObjectIdentities;
 
 	@Column(name = "class", columnDefinition = "text", unique = true)
-    @NotNull
-    private String class1;
+	@NotNull
+	private String class1;
 
 	public Set<AclObjectIdentity> getAclObjectIdentities() {
-        return aclObjectIdentities;
-    }
+		return aclObjectIdentities;
+	}
 
 	public void setAclObjectIdentities(Set<AclObjectIdentity> aclObjectIdentities) {
-        this.aclObjectIdentities = aclObjectIdentities;
-    }
+		this.aclObjectIdentities = aclObjectIdentities;
+	}
 
 	public String getClass1() {
-        return class1;
-    }
+		return class1;
+	}
 
 	public void setClass1(String class1) {
-        this.class1 = class1;
-    }
+		this.class1 = class1;
+	}
 
 	@Autowired
-    transient SolrServer solrServer;
+	transient SolrServer solrServer;
 
 	public static QueryResponse search(String queryString) {
-        String searchString = "AclClass_solrsummary_t:" + queryString;
-        return search(new SolrQuery(searchString.toLowerCase()));
-    }
+		String searchString = "AclClass_solrsummary_t:" + queryString;
+		return search(new SolrQuery(searchString.toLowerCase()));
+	}
 
 	public static QueryResponse search(SolrQuery query) {
-        try {
-            return solrServer().query(query);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return new QueryResponse();
-    }
+		try {
+			return solrServer().query(query);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new QueryResponse();
+	}
 
 	public static void indexAclClass(AclClass aclClass) {
-        List<AclClass> aclclasses = new ArrayList<AclClass>();
-        aclclasses.add(aclClass);
-        indexAclClasses(aclclasses);
-    }
+		List<AclClass> aclclasses = new ArrayList<AclClass>();
+		aclclasses.add(aclClass);
+		indexAclClasses(aclclasses);
+	}
 
 	@Async
-    public static void indexAclClasses(Collection<AclClass> aclclasses) {
-        List<SolrInputDocument> documents = new ArrayList<SolrInputDocument>();
-        for (AclClass aclClass : aclclasses) {
-            SolrInputDocument sid = new SolrInputDocument();
-            sid.addField("id", "aclclass_" + aclClass.getId());
-            sid.addField("aclClass.class1_s", aclClass.getClass1());
-            sid.addField("aclClass.id_l", aclClass.getId());
-            // Add summary field to allow searching documents for objects of this type
-            sid.addField("aclclass_solrsummary_t", new StringBuilder().append(aclClass.getClass1()).append(" ").append(aclClass.getId()));
-            documents.add(sid);
-        }
-        try {
-            SolrServer solrServer = solrServer();
-            solrServer.add(documents);
-            solrServer.commit();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+	public static void indexAclClasses(Collection<AclClass> aclclasses) {
+		List<SolrInputDocument> documents = new ArrayList<SolrInputDocument>();
+		for (AclClass aclClass : aclclasses) {
+			SolrInputDocument sid = new SolrInputDocument();
+			sid.addField("id", "aclclass_" + aclClass.getId());
+			sid.addField("aclClass.class1_s", aclClass.getClass1());
+			sid.addField("aclClass.id_l", aclClass.getId());
+			// Add summary field to allow searching documents for objects of
+			// this type
+			sid.addField("aclclass_solrsummary_t",
+					new StringBuilder().append(aclClass.getClass1()).append(" ").append(aclClass.getId()));
+			documents.add(sid);
+		}
+		try {
+			SolrServer solrServer = solrServer();
+			solrServer.add(documents);
+			solrServer.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	@Async
-    public static void deleteIndex(AclClass aclClass) {
-        SolrServer solrServer = solrServer();
-        try {
-            solrServer.deleteById("aclclass_" + aclClass.getId());
-            solrServer.commit();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+	public static void deleteIndex(AclClass aclClass) {
+		SolrServer solrServer = solrServer();
+		try {
+			solrServer.deleteById("aclclass_" + aclClass.getId());
+			solrServer.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	@PostUpdate
-    @PostPersist
-    private void postPersistOrUpdate() {
-        indexAclClass(this);
-    }
+	@PostPersist
+	private void postPersistOrUpdate() {
+		indexAclClass(this);
+	}
 
 	@PreRemove
-    private void preRemove() {
-        deleteIndex(this);
-    }
+	private void preRemove() {
+		deleteIndex(this);
+	}
 
 	public static SolrServer solrServer() {
-        SolrServer _solrServer = new AclClass().solrServer;
-        if (_solrServer == null) throw new IllegalStateException("Solr server has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-        return _solrServer;
-    }
+		SolrServer _solrServer = new AclClass().solrServer;
+		if (_solrServer == null)
+			throw new IllegalStateException(
+					"Solr server has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return _solrServer;
+	}
 
 	public String toString() {
-        return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
-    }
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+	}
 
 	@PersistenceContext
-    transient EntityManager entityManager;
+	transient EntityManager entityManager;
 
 	public static final EntityManager entityManager() {
-        EntityManager em = new AclClass().entityManager;
-        if (em == null) throw new IllegalStateException("Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-        return em;
-    }
+		EntityManager em = new AclClass().entityManager;
+		if (em == null)
+			throw new IllegalStateException(
+					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return em;
+	}
 
 	public static long countAclClasses() {
-        return entityManager().createQuery("SELECT COUNT(o) FROM AclClass o", Long.class).getSingleResult();
-    }
+		return entityManager().createQuery("SELECT COUNT(o) FROM AclClass o", Long.class).getSingleResult();
+	}
 
 	public static List<AclClass> findAllAclClasses() {
-        return entityManager().createQuery("SELECT o FROM AclClass o", AclClass.class).getResultList();
-    }
+		return entityManager().createQuery("SELECT o FROM AclClass o", AclClass.class).getResultList();
+	}
 
 	public static AclClass findAclClass(Long id) {
-        if (id == null) return null;
-        return entityManager().find(AclClass.class, id);
-    }
+		if (id == null)
+			return null;
+		return entityManager().find(AclClass.class, id);
+	}
 
 	public static List<AclClass> findAclClassEntries(int firstResult, int maxResults) {
-        return entityManager().createQuery("SELECT o FROM AclClass o", AclClass.class).setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
-    }
+		return entityManager().createQuery("SELECT o FROM AclClass o", AclClass.class).setFirstResult(firstResult)
+				.setMaxResults(maxResults).getResultList();
+	}
 
 	@Transactional
-    public void persist() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        this.entityManager.persist(this);
-    }
+	public void persist() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.persist(this);
+	}
 
 	@Transactional
-    public void remove() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        if (this.entityManager.contains(this)) {
-            this.entityManager.remove(this);
-        } else {
-            AclClass attached = AclClass.findAclClass(this.id);
-            this.entityManager.remove(attached);
-        }
-    }
+	public void remove() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		if (this.entityManager.contains(this)) {
+			this.entityManager.remove(this);
+		} else {
+			AclClass attached = AclClass.findAclClass(this.id);
+			this.entityManager.remove(attached);
+		}
+	}
 
 	@Transactional
-    public void flush() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        this.entityManager.flush();
-    }
+	public void flush() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.flush();
+	}
 
 	@Transactional
-    public void clear() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        this.entityManager.clear();
-    }
+	public void clear() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.clear();
+	}
 
 	@Transactional
-    public AclClass merge() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        AclClass merged = this.entityManager.merge(this);
-        this.entityManager.flush();
-        return merged;
-    }
+	public AclClass merge() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		AclClass merged = this.entityManager.merge(this);
+		this.entityManager.flush();
+		return merged;
+	}
 }

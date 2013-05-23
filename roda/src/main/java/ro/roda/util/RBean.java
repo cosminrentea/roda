@@ -27,7 +27,7 @@ public class RBean {
 
 		// Tomcat JVM:
 		// -Djava.library.path=/Users/cosmin/R/x86_64-apple-darwin12.2.1-library/2.15/rJava/jri:/opt/local/lib/R/lib/x86_64
-		// Environment for MacOSX + macports: 
+		// Environment for MacOSX + macports:
 		// R_HOME=/opt/local/lib/R
 
 		// the engine creates R as a new thread
@@ -49,7 +49,7 @@ public class RBean {
 		REXP rn = re.eval("rnorm(" + param + ")");
 
 		// The data type REXP provides functions for converting to different
-		// data types. 
+		// data types.
 		// In this case we know that rnorm(X) must have returned
 		// an array of doubles, so we know what to convert to:
 		double[] rnd = rn.asDoubleArray();

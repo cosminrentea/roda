@@ -13,48 +13,48 @@ import org.springframework.roo.addon.jpa.identifier.RooIdentifier;
 
 @Configurable
 @Embeddable
-
 public final class SeriesDescrPK implements Serializable {
 
 	public String toJson() {
-        return new JSONSerializer().exclude("*.class").serialize(this);
-    }
+		return new JSONSerializer().exclude("*.class").serialize(this);
+	}
 
 	public static SeriesDescrPK fromJsonToSeriesDescrPK(String json) {
-        return new JSONDeserializer<SeriesDescrPK>().use(null, SeriesDescrPK.class).deserialize(json);
-    }
+		return new JSONDeserializer<SeriesDescrPK>().use(null, SeriesDescrPK.class).deserialize(json);
+	}
 
 	public static String toJsonArray(Collection<SeriesDescrPK> collection) {
-        return new JSONSerializer().exclude("*.class").serialize(collection);
-    }
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
 
 	public static Collection<SeriesDescrPK> fromJsonArrayToSeriesDescrPKs(String json) {
-        return new JSONDeserializer<List<SeriesDescrPK>>().use(null, ArrayList.class).use("values", SeriesDescrPK.class).deserialize(json);
-    }
+		return new JSONDeserializer<List<SeriesDescrPK>>().use(null, ArrayList.class)
+				.use("values", SeriesDescrPK.class).deserialize(json);
+	}
 
 	private static final long serialVersionUID = 1L;
 
 	@Column(name = "catalog_id", columnDefinition = "int4", nullable = false)
-    private Integer catalogId;
+	private Integer catalogId;
 
 	@Column(name = "lang_id", columnDefinition = "int4", nullable = false)
-    private Integer langId;
+	private Integer langId;
 
 	public SeriesDescrPK(Integer catalogId, Integer langId) {
-        super();
-        this.catalogId = catalogId;
-        this.langId = langId;
-    }
+		super();
+		this.catalogId = catalogId;
+		this.langId = langId;
+	}
 
 	private SeriesDescrPK() {
-        super();
-    }
+		super();
+	}
 
 	public Integer getCatalogId() {
-        return catalogId;
-    }
+		return catalogId;
+	}
 
 	public Integer getLangId() {
-        return langId;
-    }
+		return langId;
+	}
 }

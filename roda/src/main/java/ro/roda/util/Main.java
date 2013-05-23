@@ -1,8 +1,5 @@
 package ro.roda.util;
 
-
-
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -34,7 +31,6 @@ import javax.xml.validation.Validator;
 import org.xml.sax.SAXException;
 
 import ro.roda.domain.Catalog;
-
 
 public class Main {
 
@@ -92,17 +88,16 @@ public class Main {
 				String[] filenames = getAllFilenames(args[1], ".XML");
 				int i;
 				for (i = 0; i < filenames.length; i++) {
-					rt.convertNesstarToDdi25(args[1] + "/" + filenames[i],
-							args[2] + "/" + filenames[i]);
+					rt.convertNesstarToDdi25(args[1] + "/" + filenames[i], args[2] + "/" + filenames[i]);
 				}
 			} else if ("-s".compareTo(args[0]) == 0) {
-//				String[] filenames = getAllFilenames(args[1], ".SAV");
-//				int i;
-//				for (i = 0; i < filenames.length; i++) {
-//					rt.convertSpssToAsciiDelimited(
-//							args[1] + "/" + filenames[i], args[2] + "/"
-//									+ filenames[i]);
-//				}
+				// String[] filenames = getAllFilenames(args[1], ".SAV");
+				// int i;
+				// for (i = 0; i < filenames.length; i++) {
+				// rt.convertSpssToAsciiDelimited(
+				// args[1] + "/" + filenames[i], args[2] + "/"
+				// + filenames[i]);
+				// }
 			} else {
 				usage();
 			}
@@ -113,10 +108,8 @@ public class Main {
 
 		if (rt.executionTimeMeasurement) {
 			rt.endTime = System.nanoTime();
-			System.err.println("Duration: "
-					+ ((rt.endTime - rt.startTime) / 1000000000) + "."
-					+ ((rt.endTime - rt.startTime) % 1000000000) / 1000000
-					+ " s ");
+			System.err.println("Duration: " + ((rt.endTime - rt.startTime) / 1000000000) + "."
+					+ ((rt.endTime - rt.startTime) % 1000000000) / 1000000 + " s ");
 		}
 	}
 
@@ -126,16 +119,11 @@ public class Main {
 		System.out.println("-i\timport all to DB");
 		System.out.println("-e\texport all from DB");
 		System.out.println("-g\tGENERATE SCHEMA from JAXB Java classes");
-		System.out
-				.println("-v1\tVALIDATE DDI 1.2.2\tparameter 1 : [XML file] | [XML dir]");
-		System.out
-				.println("-v2\tVALIDATE DDI 2.5\tparameter 1 : [XML file] | [XML dir]");
-		System.out
-				.println("-s\tSPSS\t parameter 1 : [SPSS .SAV file] | [SPSS dir]");
-		System.out
-				.println("-c\tCONVERT\tparameter 1: [source XML file] | [source XML dir]");
-		System.out
-				.println("\t\t parameter 2: [converted XML file] | [converted XML dir]");
+		System.out.println("-v1\tVALIDATE DDI 1.2.2\tparameter 1 : [XML file] | [XML dir]");
+		System.out.println("-v2\tVALIDATE DDI 2.5\tparameter 1 : [XML file] | [XML dir]");
+		System.out.println("-s\tSPSS\t parameter 1 : [SPSS .SAV file] | [SPSS dir]");
+		System.out.println("-c\tCONVERT\tparameter 1: [source XML file] | [source XML dir]");
+		System.out.println("\t\t parameter 2: [converted XML file] | [converted XML dir]");
 	}
 
 	private static String[] getAllFilenames(String filename, String extension) {
@@ -149,11 +137,9 @@ public class Main {
 		return filenames;
 	}
 
-	private void validateDdi25(String filename) throws SAXException,
-			IOException {
+	private void validateDdi25(String filename) throws SAXException, IOException {
 
-		Validator validatorDdi25 = SchemaFactory
-				.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI)
+		Validator validatorDdi25 = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI)
 				.newSchema(new File(xsdDdi25)).newValidator();
 
 		File file = new File(filename);
@@ -167,11 +153,9 @@ public class Main {
 		}
 	}
 
-	private void validateDdi122(String filename) throws SAXException,
-			IOException {
+	private void validateDdi122(String filename) throws SAXException, IOException {
 
-		Validator validatorDdi122 = SchemaFactory
-				.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI)
+		Validator validatorDdi122 = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI)
 				.newSchema(new File(xsdDdi122)).newValidator();
 
 		File file = new File(filename);
@@ -185,15 +169,13 @@ public class Main {
 		}
 	}
 
-	private void convertNesstarToDdi25(String filenameInput,
-			String filenameOutput) throws SAXException, IOException {
+	private void convertNesstarToDdi25(String filenameInput, String filenameOutput) throws SAXException, IOException {
 		BufferedReader br;
 		FileWriter fw = new FileWriter(filenameOutput);
 		String line;
 		boolean insideTag = false, afterTag = false;
 
-		br = new BufferedReader(new InputStreamReader(new FileInputStream(
-				filenameInput), Charset.forName("UTF-8")));
+		br = new BufferedReader(new InputStreamReader(new FileInputStream(filenameInput), Charset.forName("UTF-8")));
 		while ((line = br.readLine()) != null) {
 			if (afterTag) {
 				fw.write(line + "\n");
@@ -213,8 +195,7 @@ public class Main {
 		// validate(filenameOutput);
 	}
 
-	private void exportAllFromDb() throws JAXBException, IOException,
-			SAXException {
+	private void exportAllFromDb() throws JAXBException, IOException, SAXException {
 
 		// override DDL generation
 		// make sure tables are _not_ created / dropped
@@ -230,10 +211,8 @@ public class Main {
 		properties.put("hibernate.connection.username", "roda");
 
 		properties.put("hibernate.connection.password", "roda");
-		
-		
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory(
-				jpaPersistenceUnitName, properties);
+
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory(jpaPersistenceUnitName, properties);
 
 		EntityManager em = emf.createEntityManager();
 
@@ -241,9 +220,9 @@ public class Main {
 
 		Marshaller marshaller = jc.createMarshaller();
 		// validate using DDI 1.2.2 XML Schema
-//		marshaller.setSchema(SchemaFactory.newInstance(
-//				XMLConstants.W3C_XML_SCHEMA_NS_URI).newSchema(
-//				new File(xsdDdi122)));
+		// marshaller.setSchema(SchemaFactory.newInstance(
+		// XMLConstants.W3C_XML_SCHEMA_NS_URI).newSchema(
+		// new File(xsdDdi122)));
 
 		// clean XML formatting
 		marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
@@ -276,8 +255,7 @@ public class Main {
 	 * @throws IOException
 	 * @throws SAXException
 	 */
-	private void importAllToDb(String jdbcUrl, String username,
-			String userpassword) throws JAXBException, IOException,
+	private void importAllToDb(String jdbcUrl, String username, String userpassword) throws JAXBException, IOException,
 			SAXException {
 		EntityManagerFactory emf;
 		EntityManager em;
@@ -287,8 +265,7 @@ public class Main {
 		Unmarshaller unmarshaller = jc.createUnmarshaller();
 
 		// validate using DDI 1.2.2 XML Schema
-		unmarshaller.setSchema(SchemaFactory.newInstance(
-				XMLConstants.W3C_XML_SCHEMA_NS_URI).newSchema(
+		unmarshaller.setSchema(SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI).newSchema(
 				new File(xsdDdi122)));
 
 		File file = new File(rodaNesstar);
@@ -305,21 +282,18 @@ public class Main {
 
 			// override DDL generation type
 			HashMap<String, Object> properties = new HashMap<String, Object>();
-			properties.put("eclipselink.ddl-generation",
-					"drop-and-create-tables");
+			properties.put("eclipselink.ddl-generation", "drop-and-create-tables");
 			properties.put("hibernate.hbm2ddl.auto", "create");
 			// TODO Cosmin: add logging level control
 
-			emf = Persistence.createEntityManagerFactory(
-					jpaPersistenceUnitName, properties);
+			emf = Persistence.createEntityManagerFactory(jpaPersistenceUnitName, properties);
 
 			em = emf.createEntityManager();
 
 			for (String filename : filenames) {
 				System.err.println(filename);
 
-				Catalog cb = (Catalog) unmarshaller.unmarshal(new File(
-						rodaNesstar + filename));
+				Catalog cb = (Catalog) unmarshaller.unmarshal(new File(rodaNesstar + filename));
 
 				em.getTransaction().begin();
 				em.persist(cb);
@@ -341,8 +315,7 @@ public class Main {
 
 	}
 
-	private void importOneToDb(String jdbcUrl, String username,
-			String userpassword, String fname, boolean importSpss)
+	private void importOneToDb(String jdbcUrl, String username, String userpassword, String fname, boolean importSpss)
 			throws JAXBException, IOException, SAXException {
 
 		EntityManagerFactory emf;
@@ -352,8 +325,7 @@ public class Main {
 
 		Unmarshaller unmarshaller = jc.createUnmarshaller();
 		// validate using DDI 1.2.2 XML Schema
-		unmarshaller.setSchema(SchemaFactory.newInstance(
-				XMLConstants.W3C_XML_SCHEMA_NS_URI).newSchema(
+		unmarshaller.setSchema(SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI).newSchema(
 				new File(xsdDdi122)));
 
 		String filename = fname;
@@ -380,8 +352,7 @@ public class Main {
 
 		// TODO Cosmin: add logging level control
 
-		emf = Persistence.createEntityManagerFactory(jpaPersistenceUnitName,
-				properties);
+		emf = Persistence.createEntityManagerFactory(jpaPersistenceUnitName, properties);
 
 		em = emf.createEntityManager();
 
@@ -398,53 +369,53 @@ public class Main {
 
 		if (importSpss) {
 
-//			em.getTransaction().begin();
-//
-//			Query query = em.createQuery("select f from FileTxtType f");
-//
-//			em.getTransaction().commit();
-//
-//			// iterate over results
-//			for (FileTxtType f : (List<FileTxtType>) query.getResultList()) {
-//
-//				String datafilename = f.getFileName().getContent();
-//				System.err.println(datafilename);
-//
-//				if (datafilename != null && datafilename.endsWith(".sav")) {
-//					try {
-//
-//						// TODO eliminate hard-coding
-//						SPSSFile sf = new SPSSFile("data/roda-nesstar/"
-//								+ datafilename);
-//						sf.loadMetadata();
-//						sf.loadData();
-//
-//						// verbose logging
-//						// sf.dumpMetadata();
-//
-//						sf.dumpData();
-//
-//						f.setSpssfile(sf);
-//
-//						em.getTransaction().begin();
-//						em.persist(f);
-//						em.getTransaction().commit();
-//
-//					} catch (FileNotFoundException e) {
-//						// TODO Auto-generated catch block
-//						e.printStackTrace();
-//					} catch (IOException e) {
-//						// TODO Auto-generated catch block
-//						e.printStackTrace();
-//					} catch (SPSSFileException e) {
-//						// TODO Auto-generated catch block
-//						e.printStackTrace();
-//					}
-//				}
-//
-//				// optional gentle suggestion :)
-//				System.gc();
-//			}
+			// em.getTransaction().begin();
+			//
+			// Query query = em.createQuery("select f from FileTxtType f");
+			//
+			// em.getTransaction().commit();
+			//
+			// // iterate over results
+			// for (FileTxtType f : (List<FileTxtType>) query.getResultList()) {
+			//
+			// String datafilename = f.getFileName().getContent();
+			// System.err.println(datafilename);
+			//
+			// if (datafilename != null && datafilename.endsWith(".sav")) {
+			// try {
+			//
+			// // TODO eliminate hard-coding
+			// SPSSFile sf = new SPSSFile("data/roda-nesstar/"
+			// + datafilename);
+			// sf.loadMetadata();
+			// sf.loadData();
+			//
+			// // verbose logging
+			// // sf.dumpMetadata();
+			//
+			// sf.dumpData();
+			//
+			// f.setSpssfile(sf);
+			//
+			// em.getTransaction().begin();
+			// em.persist(f);
+			// em.getTransaction().commit();
+			//
+			// } catch (FileNotFoundException e) {
+			// // TODO Auto-generated catch block
+			// e.printStackTrace();
+			// } catch (IOException e) {
+			// // TODO Auto-generated catch block
+			// e.printStackTrace();
+			// } catch (SPSSFileException e) {
+			// // TODO Auto-generated catch block
+			// e.printStackTrace();
+			// }
+			// }
+			//
+			// // optional gentle suggestion :)
+			// System.gc();
+			// }
 		}
 
 		em.close();
@@ -452,8 +423,7 @@ public class Main {
 
 	}
 
-	private void generateSchema(SchemaOutputResolver sor) throws JAXBException,
-			IOException, SAXException {
+	private void generateSchema(SchemaOutputResolver sor) throws JAXBException, IOException, SAXException {
 		JAXBContext jc = JAXBContext.newInstance(jaxbContextPath);
 		jc.generateSchema(sor);
 	}

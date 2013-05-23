@@ -5,36 +5,35 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ro.roda.domain.Skip;
 
-
 @Service
 @Transactional
 public class SkipServiceImpl implements SkipService {
 
 	public long countAllSkips() {
-        return Skip.countSkips();
-    }
+		return Skip.countSkips();
+	}
 
 	public void deleteSkip(Skip skip) {
-        skip.remove();
-    }
+		skip.remove();
+	}
 
 	public Skip findSkip(Long id) {
-        return Skip.findSkip(id);
-    }
+		return Skip.findSkip(id);
+	}
 
 	public List<Skip> findAllSkips() {
-        return Skip.findAllSkips();
-    }
+		return Skip.findAllSkips();
+	}
 
 	public List<Skip> findSkipEntries(int firstResult, int maxResults) {
-        return Skip.findSkipEntries(firstResult, maxResults);
-    }
+		return Skip.findSkipEntries(firstResult, maxResults);
+	}
 
 	public void saveSkip(Skip skip) {
-        skip.persist();
-    }
+		skip.persist();
+	}
 
 	public Skip updateSkip(Skip skip) {
-        return skip.merge();
-    }
+		return skip.merge();
+	}
 }

@@ -5,36 +5,35 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ro.roda.domain.Users;
 
-
 @Service
 @Transactional
 public class UsersServiceImpl implements UsersService {
 
 	public long countAllUserses() {
-        return Users.countUserses();
-    }
+		return Users.countUserses();
+	}
 
 	public void deleteUsers(Users users) {
-        users.remove();
-    }
+		users.remove();
+	}
 
 	public Users findUsers(Integer id) {
-        return Users.findUsers(id);
-    }
+		return Users.findUsers(id);
+	}
 
 	public List<Users> findAllUserses() {
-        return Users.findAllUserses();
-    }
+		return Users.findAllUserses();
+	}
 
 	public List<Users> findUsersEntries(int firstResult, int maxResults) {
-        return Users.findUsersEntries(firstResult, maxResults);
-    }
+		return Users.findUsersEntries(firstResult, maxResults);
+	}
 
 	public void saveUsers(Users users) {
-        users.persist();
-    }
+		users.persist();
+	}
 
 	public Users updateUsers(Users users) {
-        return users.merge();
-    }
+		return users.merge();
+	}
 }

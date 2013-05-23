@@ -38,203 +38,210 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.transaction.annotation.Transactional;
 
 @Entity
-@Table(schema = "public",name = "person_role")
+@Table(schema = "public", name = "person_role")
 @Configurable
-
-
-
-
-
-
 public class PersonRole {
 
 	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", columnDefinition = "serial")
-    private Integer id;
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id", columnDefinition = "serial")
+	private Integer id;
 
 	public Integer getId() {
-        return this.id;
-    }
+		return this.id;
+	}
 
 	public void setId(Integer id) {
-        this.id = id;
-    }
+		this.id = id;
+	}
 
 	@OneToMany(mappedBy = "roleId")
-    private Set<PersonOrg> personOrgs;
+	private Set<PersonOrg> personOrgs;
 
 	@Column(name = "name", columnDefinition = "text")
-    @NotNull
-    private String name;
+	@NotNull
+	private String name;
 
 	public Set<PersonOrg> getPersonOrgs() {
-        return personOrgs;
-    }
+		return personOrgs;
+	}
 
 	public void setPersonOrgs(Set<PersonOrg> personOrgs) {
-        this.personOrgs = personOrgs;
-    }
+		this.personOrgs = personOrgs;
+	}
 
 	public String getName() {
-        return name;
-    }
+		return name;
+	}
 
 	public void setName(String name) {
-        this.name = name;
-    }
+		this.name = name;
+	}
 
 	@PersistenceContext
-    transient EntityManager entityManager;
+	transient EntityManager entityManager;
 
 	public static final EntityManager entityManager() {
-        EntityManager em = new PersonRole().entityManager;
-        if (em == null) throw new IllegalStateException("Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-        return em;
-    }
+		EntityManager em = new PersonRole().entityManager;
+		if (em == null)
+			throw new IllegalStateException(
+					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return em;
+	}
 
 	public static long countPersonRoles() {
-        return entityManager().createQuery("SELECT COUNT(o) FROM PersonRole o", Long.class).getSingleResult();
-    }
+		return entityManager().createQuery("SELECT COUNT(o) FROM PersonRole o", Long.class).getSingleResult();
+	}
 
 	public static List<PersonRole> findAllPersonRoles() {
-        return entityManager().createQuery("SELECT o FROM PersonRole o", PersonRole.class).getResultList();
-    }
+		return entityManager().createQuery("SELECT o FROM PersonRole o", PersonRole.class).getResultList();
+	}
 
 	public static PersonRole findPersonRole(Integer id) {
-        if (id == null) return null;
-        return entityManager().find(PersonRole.class, id);
-    }
+		if (id == null)
+			return null;
+		return entityManager().find(PersonRole.class, id);
+	}
 
 	public static List<PersonRole> findPersonRoleEntries(int firstResult, int maxResults) {
-        return entityManager().createQuery("SELECT o FROM PersonRole o", PersonRole.class).setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
-    }
+		return entityManager().createQuery("SELECT o FROM PersonRole o", PersonRole.class).setFirstResult(firstResult)
+				.setMaxResults(maxResults).getResultList();
+	}
 
 	@Transactional
-    public void persist() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        this.entityManager.persist(this);
-    }
+	public void persist() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.persist(this);
+	}
 
 	@Transactional
-    public void remove() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        if (this.entityManager.contains(this)) {
-            this.entityManager.remove(this);
-        } else {
-            PersonRole attached = PersonRole.findPersonRole(this.id);
-            this.entityManager.remove(attached);
-        }
-    }
+	public void remove() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		if (this.entityManager.contains(this)) {
+			this.entityManager.remove(this);
+		} else {
+			PersonRole attached = PersonRole.findPersonRole(this.id);
+			this.entityManager.remove(attached);
+		}
+	}
 
 	@Transactional
-    public void flush() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        this.entityManager.flush();
-    }
+	public void flush() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.flush();
+	}
 
 	@Transactional
-    public void clear() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        this.entityManager.clear();
-    }
+	public void clear() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.clear();
+	}
 
 	@Transactional
-    public PersonRole merge() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        PersonRole merged = this.entityManager.merge(this);
-        this.entityManager.flush();
-        return merged;
-    }
+	public PersonRole merge() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		PersonRole merged = this.entityManager.merge(this);
+		this.entityManager.flush();
+		return merged;
+	}
 
 	@Autowired
-    transient SolrServer solrServer;
+	transient SolrServer solrServer;
 
 	public static QueryResponse search(String queryString) {
-        String searchString = "PersonRole_solrsummary_t:" + queryString;
-        return search(new SolrQuery(searchString.toLowerCase()));
-    }
+		String searchString = "PersonRole_solrsummary_t:" + queryString;
+		return search(new SolrQuery(searchString.toLowerCase()));
+	}
 
 	public static QueryResponse search(SolrQuery query) {
-        try {
-            return solrServer().query(query);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return new QueryResponse();
-    }
+		try {
+			return solrServer().query(query);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new QueryResponse();
+	}
 
 	public static void indexPersonRole(PersonRole personRole) {
-        List<PersonRole> personroles = new ArrayList<PersonRole>();
-        personroles.add(personRole);
-        indexPersonRoles(personroles);
-    }
+		List<PersonRole> personroles = new ArrayList<PersonRole>();
+		personroles.add(personRole);
+		indexPersonRoles(personroles);
+	}
 
 	@Async
-    public static void indexPersonRoles(Collection<PersonRole> personroles) {
-        List<SolrInputDocument> documents = new ArrayList<SolrInputDocument>();
-        for (PersonRole personRole : personroles) {
-            SolrInputDocument sid = new SolrInputDocument();
-            sid.addField("id", "personrole_" + personRole.getId());
-            sid.addField("personRole.name_s", personRole.getName());
-            // Add summary field to allow searching documents for objects of this type
-            sid.addField("personrole_solrsummary_t", new StringBuilder().append(personRole.getName()));
-            documents.add(sid);
-        }
-        try {
-            SolrServer solrServer = solrServer();
-            solrServer.add(documents);
-            solrServer.commit();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+	public static void indexPersonRoles(Collection<PersonRole> personroles) {
+		List<SolrInputDocument> documents = new ArrayList<SolrInputDocument>();
+		for (PersonRole personRole : personroles) {
+			SolrInputDocument sid = new SolrInputDocument();
+			sid.addField("id", "personrole_" + personRole.getId());
+			sid.addField("personRole.name_s", personRole.getName());
+			// Add summary field to allow searching documents for objects of
+			// this type
+			sid.addField("personrole_solrsummary_t", new StringBuilder().append(personRole.getName()));
+			documents.add(sid);
+		}
+		try {
+			SolrServer solrServer = solrServer();
+			solrServer.add(documents);
+			solrServer.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	@Async
-    public static void deleteIndex(PersonRole personRole) {
-        SolrServer solrServer = solrServer();
-        try {
-            solrServer.deleteById("personrole_" + personRole.getId());
-            solrServer.commit();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+	public static void deleteIndex(PersonRole personRole) {
+		SolrServer solrServer = solrServer();
+		try {
+			solrServer.deleteById("personrole_" + personRole.getId());
+			solrServer.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	@PostUpdate
-    @PostPersist
-    private void postPersistOrUpdate() {
-        indexPersonRole(this);
-    }
+	@PostPersist
+	private void postPersistOrUpdate() {
+		indexPersonRole(this);
+	}
 
 	@PreRemove
-    private void preRemove() {
-        deleteIndex(this);
-    }
+	private void preRemove() {
+		deleteIndex(this);
+	}
 
 	public static SolrServer solrServer() {
-        SolrServer _solrServer = new PersonRole().solrServer;
-        if (_solrServer == null) throw new IllegalStateException("Solr server has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-        return _solrServer;
-    }
+		SolrServer _solrServer = new PersonRole().solrServer;
+		if (_solrServer == null)
+			throw new IllegalStateException(
+					"Solr server has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return _solrServer;
+	}
 
 	public String toJson() {
-        return new JSONSerializer().exclude("*.class").serialize(this);
-    }
+		return new JSONSerializer().exclude("*.class").serialize(this);
+	}
 
 	public static PersonRole fromJsonToPersonRole(String json) {
-        return new JSONDeserializer<PersonRole>().use(null, PersonRole.class).deserialize(json);
-    }
+		return new JSONDeserializer<PersonRole>().use(null, PersonRole.class).deserialize(json);
+	}
 
 	public static String toJsonArray(Collection<PersonRole> collection) {
-        return new JSONSerializer().exclude("*.class").serialize(collection);
-    }
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
 
 	public static Collection<PersonRole> fromJsonArrayToPersonRoles(String json) {
-        return new JSONDeserializer<List<PersonRole>>().use(null, ArrayList.class).use("values", PersonRole.class).deserialize(json);
-    }
+		return new JSONDeserializer<List<PersonRole>>().use(null, ArrayList.class).use("values", PersonRole.class)
+				.deserialize(json);
+	}
 
 	public String toString() {
-        return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
-    }
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+	}
 }

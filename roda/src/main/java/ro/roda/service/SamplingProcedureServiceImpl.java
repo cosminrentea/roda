@@ -5,36 +5,35 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ro.roda.domain.SamplingProcedure;
 
-
 @Service
 @Transactional
 public class SamplingProcedureServiceImpl implements SamplingProcedureService {
 
 	public long countAllSamplingProcedures() {
-        return SamplingProcedure.countSamplingProcedures();
-    }
+		return SamplingProcedure.countSamplingProcedures();
+	}
 
 	public void deleteSamplingProcedure(SamplingProcedure samplingProcedure) {
-        samplingProcedure.remove();
-    }
+		samplingProcedure.remove();
+	}
 
 	public SamplingProcedure findSamplingProcedure(Integer id) {
-        return SamplingProcedure.findSamplingProcedure(id);
-    }
+		return SamplingProcedure.findSamplingProcedure(id);
+	}
 
 	public List<SamplingProcedure> findAllSamplingProcedures() {
-        return SamplingProcedure.findAllSamplingProcedures();
-    }
+		return SamplingProcedure.findAllSamplingProcedures();
+	}
 
 	public List<SamplingProcedure> findSamplingProcedureEntries(int firstResult, int maxResults) {
-        return SamplingProcedure.findSamplingProcedureEntries(firstResult, maxResults);
-    }
+		return SamplingProcedure.findSamplingProcedureEntries(firstResult, maxResults);
+	}
 
 	public void saveSamplingProcedure(SamplingProcedure samplingProcedure) {
-        samplingProcedure.persist();
-    }
+		samplingProcedure.persist();
+	}
 
 	public SamplingProcedure updateSamplingProcedure(SamplingProcedure samplingProcedure) {
-        return samplingProcedure.merge();
-    }
+		return samplingProcedure.merge();
+	}
 }

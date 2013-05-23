@@ -13,48 +13,48 @@ import org.springframework.roo.addon.jpa.identifier.RooIdentifier;
 
 @Embeddable
 @Configurable
-
 public final class InstanceVariablePK implements Serializable {
 
 	@Column(name = "instance_id", columnDefinition = "int4", nullable = false)
-    private Integer instanceId;
+	private Integer instanceId;
 
 	@Column(name = "variable_id", columnDefinition = "int8", nullable = false)
-    private Long variableId;
+	private Long variableId;
 
 	public InstanceVariablePK(Integer instanceId, Long variableId) {
-        super();
-        this.instanceId = instanceId;
-        this.variableId = variableId;
-    }
+		super();
+		this.instanceId = instanceId;
+		this.variableId = variableId;
+	}
 
 	private InstanceVariablePK() {
-        super();
-    }
+		super();
+	}
 
 	public Integer getInstanceId() {
-        return instanceId;
-    }
+		return instanceId;
+	}
 
 	public Long getVariableId() {
-        return variableId;
-    }
+		return variableId;
+	}
 
 	public String toJson() {
-        return new JSONSerializer().exclude("*.class").serialize(this);
-    }
+		return new JSONSerializer().exclude("*.class").serialize(this);
+	}
 
 	public static InstanceVariablePK fromJsonToInstanceVariablePK(String json) {
-        return new JSONDeserializer<InstanceVariablePK>().use(null, InstanceVariablePK.class).deserialize(json);
-    }
+		return new JSONDeserializer<InstanceVariablePK>().use(null, InstanceVariablePK.class).deserialize(json);
+	}
 
 	public static String toJsonArray(Collection<InstanceVariablePK> collection) {
-        return new JSONSerializer().exclude("*.class").serialize(collection);
-    }
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
 
 	public static Collection<InstanceVariablePK> fromJsonArrayToInstanceVariablePKs(String json) {
-        return new JSONDeserializer<List<InstanceVariablePK>>().use(null, ArrayList.class).use("values", InstanceVariablePK.class).deserialize(json);
-    }
+		return new JSONDeserializer<List<InstanceVariablePK>>().use(null, ArrayList.class)
+				.use("values", InstanceVariablePK.class).deserialize(json);
+	}
 
 	private static final long serialVersionUID = 1L;
 }

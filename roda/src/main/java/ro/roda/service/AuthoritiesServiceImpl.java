@@ -6,36 +6,35 @@ import org.springframework.transaction.annotation.Transactional;
 import ro.roda.domain.Authorities;
 import ro.roda.domain.AuthoritiesPK;
 
-
 @Service
 @Transactional
 public class AuthoritiesServiceImpl implements AuthoritiesService {
 
 	public long countAllAuthoritieses() {
-        return Authorities.countAuthoritieses();
-    }
+		return Authorities.countAuthoritieses();
+	}
 
 	public void deleteAuthorities(Authorities authorities) {
-        authorities.remove();
-    }
+		authorities.remove();
+	}
 
 	public Authorities findAuthorities(AuthoritiesPK id) {
-        return Authorities.findAuthorities(id);
-    }
+		return Authorities.findAuthorities(id);
+	}
 
 	public List<Authorities> findAllAuthoritieses() {
-        return Authorities.findAllAuthoritieses();
-    }
+		return Authorities.findAllAuthoritieses();
+	}
 
 	public List<Authorities> findAuthoritiesEntries(int firstResult, int maxResults) {
-        return Authorities.findAuthoritiesEntries(firstResult, maxResults);
-    }
+		return Authorities.findAuthoritiesEntries(firstResult, maxResults);
+	}
 
 	public void saveAuthorities(Authorities authorities) {
-        authorities.persist();
-    }
+		authorities.persist();
+	}
 
 	public Authorities updateAuthorities(Authorities authorities) {
-        return authorities.merge();
-    }
+		return authorities.merge();
+	}
 }

@@ -5,36 +5,35 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ro.roda.domain.Series;
 
-
 @Service
 @Transactional
 public class SeriesServiceImpl implements SeriesService {
 
 	public long countAllSerieses() {
-        return Series.countSerieses();
-    }
+		return Series.countSerieses();
+	}
 
 	public void deleteSeries(Series series) {
-        series.remove();
-    }
+		series.remove();
+	}
 
 	public Series findSeries(Integer id) {
-        return Series.findSeries(id);
-    }
+		return Series.findSeries(id);
+	}
 
 	public List<Series> findAllSerieses() {
-        return Series.findAllSerieses();
-    }
+		return Series.findAllSerieses();
+	}
 
 	public List<Series> findSeriesEntries(int firstResult, int maxResults) {
-        return Series.findSeriesEntries(firstResult, maxResults);
-    }
+		return Series.findSeriesEntries(firstResult, maxResults);
+	}
 
 	public void saveSeries(Series series) {
-        series.persist();
-    }
+		series.persist();
+	}
 
 	public Series updateSeries(Series series) {
-        return series.merge();
-    }
+		return series.merge();
+	}
 }

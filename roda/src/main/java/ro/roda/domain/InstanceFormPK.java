@@ -13,48 +13,48 @@ import org.springframework.roo.addon.jpa.identifier.RooIdentifier;
 
 @Embeddable
 @Configurable
-
 public final class InstanceFormPK implements Serializable {
 
 	@Column(name = "instance_id", columnDefinition = "int4", nullable = false)
-    private Integer instanceId;
+	private Integer instanceId;
 
 	@Column(name = "form_id", columnDefinition = "int8", nullable = false)
-    private Long formId;
+	private Long formId;
 
 	public InstanceFormPK(Integer instanceId, Long formId) {
-        super();
-        this.instanceId = instanceId;
-        this.formId = formId;
-    }
+		super();
+		this.instanceId = instanceId;
+		this.formId = formId;
+	}
 
 	private InstanceFormPK() {
-        super();
-    }
+		super();
+	}
 
 	public Integer getInstanceId() {
-        return instanceId;
-    }
+		return instanceId;
+	}
 
 	public Long getFormId() {
-        return formId;
-    }
+		return formId;
+	}
 
 	private static final long serialVersionUID = 1L;
 
 	public String toJson() {
-        return new JSONSerializer().exclude("*.class").serialize(this);
-    }
+		return new JSONSerializer().exclude("*.class").serialize(this);
+	}
 
 	public static InstanceFormPK fromJsonToInstanceFormPK(String json) {
-        return new JSONDeserializer<InstanceFormPK>().use(null, InstanceFormPK.class).deserialize(json);
-    }
+		return new JSONDeserializer<InstanceFormPK>().use(null, InstanceFormPK.class).deserialize(json);
+	}
 
 	public static String toJsonArray(Collection<InstanceFormPK> collection) {
-        return new JSONSerializer().exclude("*.class").serialize(collection);
-    }
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
 
 	public static Collection<InstanceFormPK> fromJsonArrayToInstanceFormPKs(String json) {
-        return new JSONDeserializer<List<InstanceFormPK>>().use(null, ArrayList.class).use("values", InstanceFormPK.class).deserialize(json);
-    }
+		return new JSONDeserializer<List<InstanceFormPK>>().use(null, ArrayList.class)
+				.use("values", InstanceFormPK.class).deserialize(json);
+	}
 }

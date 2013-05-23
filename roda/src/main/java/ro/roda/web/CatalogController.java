@@ -31,185 +31,190 @@ import ro.roda.service.UsersService;
 
 @RequestMapping("/catalogs")
 @Controller
-
-
 public class CatalogController {
 
 	@Autowired
-    CatalogService catalogService;
+	CatalogService catalogService;
 
 	@Autowired
-    CatalogStudyService catalogStudyService;
+	CatalogStudyService catalogStudyService;
 
 	@Autowired
-    SeriesService seriesService;
+	SeriesService seriesService;
 
 	@Autowired
-    UsersService usersService;
+	UsersService usersService;
 
 	@RequestMapping(method = RequestMethod.POST, produces = "text/html")
-    public String create(@Valid Catalog catalog, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
-        if (bindingResult.hasErrors()) {
-            populateEditForm(uiModel, catalog);
-            return "catalogs/create";
-        }
-        uiModel.asMap().clear();
-        catalogService.saveCatalog(catalog);
-        return "redirect:/catalogs/" + encodeUrlPathSegment(catalog.getId().toString(), httpServletRequest);
-    }
+	public String create(@Valid Catalog catalog, BindingResult bindingResult, Model uiModel,
+			HttpServletRequest httpServletRequest) {
+		if (bindingResult.hasErrors()) {
+			populateEditForm(uiModel, catalog);
+			return "catalogs/create";
+		}
+		uiModel.asMap().clear();
+		catalogService.saveCatalog(catalog);
+		return "redirect:/catalogs/" + encodeUrlPathSegment(catalog.getId().toString(), httpServletRequest);
+	}
 
 	@RequestMapping(params = "form", produces = "text/html")
-    public String createForm(Model uiModel) {
-        populateEditForm(uiModel, new Catalog());
-        return "catalogs/create";
-    }
+	public String createForm(Model uiModel) {
+		populateEditForm(uiModel, new Catalog());
+		return "catalogs/create";
+	}
 
 	@RequestMapping(value = "/{id}", produces = "text/html")
-    public String show(@PathVariable("id") Integer id, Model uiModel) {
-        addDateTimeFormatPatterns(uiModel);
-        uiModel.addAttribute("catalog", catalogService.findCatalog(id));
-        uiModel.addAttribute("itemId", id);
-        return "catalogs/show";
-    }
+	public String show(@PathVariable("id") Integer id, Model uiModel) {
+		addDateTimeFormatPatterns(uiModel);
+		uiModel.addAttribute("catalog", catalogService.findCatalog(id));
+		uiModel.addAttribute("itemId", id);
+		return "catalogs/show";
+	}
 
 	@RequestMapping(produces = "text/html")
-    public String list(@RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        if (page != null || size != null) {
-            int sizeNo = size == null ? 10 : size.intValue();
-            final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("catalogs", catalogService.findCatalogEntries(firstResult, sizeNo));
-            float nrOfPages = (float) catalogService.countAllCatalogs() / sizeNo;
-            uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
-        } else {
-            uiModel.addAttribute("catalogs", catalogService.findAllCatalogs());
-        }
-        addDateTimeFormatPatterns(uiModel);
-        return "catalogs/list";
-    }
+	public String list(@RequestParam(value = "page", required = false) Integer page,
+			@RequestParam(value = "size", required = false) Integer size, Model uiModel) {
+		if (page != null || size != null) {
+			int sizeNo = size == null ? 10 : size.intValue();
+			final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
+			uiModel.addAttribute("catalogs", catalogService.findCatalogEntries(firstResult, sizeNo));
+			float nrOfPages = (float) catalogService.countAllCatalogs() / sizeNo;
+			uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1
+					: nrOfPages));
+		} else {
+			uiModel.addAttribute("catalogs", catalogService.findAllCatalogs());
+		}
+		addDateTimeFormatPatterns(uiModel);
+		return "catalogs/list";
+	}
 
 	@RequestMapping(method = RequestMethod.PUT, produces = "text/html")
-    public String update(@Valid Catalog catalog, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
-        if (bindingResult.hasErrors()) {
-            populateEditForm(uiModel, catalog);
-            return "catalogs/update";
-        }
-        uiModel.asMap().clear();
-        catalogService.updateCatalog(catalog);
-        return "redirect:/catalogs/" + encodeUrlPathSegment(catalog.getId().toString(), httpServletRequest);
-    }
+	public String update(@Valid Catalog catalog, BindingResult bindingResult, Model uiModel,
+			HttpServletRequest httpServletRequest) {
+		if (bindingResult.hasErrors()) {
+			populateEditForm(uiModel, catalog);
+			return "catalogs/update";
+		}
+		uiModel.asMap().clear();
+		catalogService.updateCatalog(catalog);
+		return "redirect:/catalogs/" + encodeUrlPathSegment(catalog.getId().toString(), httpServletRequest);
+	}
 
 	@RequestMapping(value = "/{id}", params = "form", produces = "text/html")
-    public String updateForm(@PathVariable("id") Integer id, Model uiModel) {
-        populateEditForm(uiModel, catalogService.findCatalog(id));
-        return "catalogs/update";
-    }
+	public String updateForm(@PathVariable("id") Integer id, Model uiModel) {
+		populateEditForm(uiModel, catalogService.findCatalog(id));
+		return "catalogs/update";
+	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
-    public String delete(@PathVariable("id") Integer id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        Catalog catalog = catalogService.findCatalog(id);
-        catalogService.deleteCatalog(catalog);
-        uiModel.asMap().clear();
-        uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
-        uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
-        return "redirect:/catalogs";
-    }
+	public String delete(@PathVariable("id") Integer id, @RequestParam(value = "page", required = false) Integer page,
+			@RequestParam(value = "size", required = false) Integer size, Model uiModel) {
+		Catalog catalog = catalogService.findCatalog(id);
+		catalogService.deleteCatalog(catalog);
+		uiModel.asMap().clear();
+		uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
+		uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
+		return "redirect:/catalogs";
+	}
 
 	void addDateTimeFormatPatterns(Model uiModel) {
-        uiModel.addAttribute("catalog_added_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
-    }
+		uiModel.addAttribute("catalog_added_date_format",
+				DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
+	}
 
 	void populateEditForm(Model uiModel, Catalog catalog) {
-        uiModel.addAttribute("catalog", catalog);
-        addDateTimeFormatPatterns(uiModel);
-        uiModel.addAttribute("catalogs", catalogService.findAllCatalogs());
-        uiModel.addAttribute("catalogstudys", catalogStudyService.findAllCatalogStudys());
-        uiModel.addAttribute("serieses", seriesService.findAllSerieses());
-        uiModel.addAttribute("userses", usersService.findAllUserses());
-    }
+		uiModel.addAttribute("catalog", catalog);
+		addDateTimeFormatPatterns(uiModel);
+		uiModel.addAttribute("catalogs", catalogService.findAllCatalogs());
+		uiModel.addAttribute("catalogstudys", catalogStudyService.findAllCatalogStudys());
+		uiModel.addAttribute("serieses", seriesService.findAllSerieses());
+		uiModel.addAttribute("userses", usersService.findAllUserses());
+	}
 
 	String encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {
-        String enc = httpServletRequest.getCharacterEncoding();
-        if (enc == null) {
-            enc = WebUtils.DEFAULT_CHARACTER_ENCODING;
-        }
-        try {
-            pathSegment = UriUtils.encodePathSegment(pathSegment, enc);
-        } catch (UnsupportedEncodingException uee) {}
-        return pathSegment;
-    }
+		String enc = httpServletRequest.getCharacterEncoding();
+		if (enc == null) {
+			enc = WebUtils.DEFAULT_CHARACTER_ENCODING;
+		}
+		try {
+			pathSegment = UriUtils.encodePathSegment(pathSegment, enc);
+		} catch (UnsupportedEncodingException uee) {
+		}
+		return pathSegment;
+	}
 
 	@RequestMapping(value = "/{id}", headers = "Accept=application/json")
-    @ResponseBody
-    public ResponseEntity<String> showJson(@PathVariable("id") Integer id) {
-        Catalog catalog = catalogService.findCatalog(id);
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Type", "application/json; charset=utf-8");
-        if (catalog == null) {
-            return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<String>(catalog.toJson(), headers, HttpStatus.OK);
-    }
+	@ResponseBody
+	public ResponseEntity<String> showJson(@PathVariable("id") Integer id) {
+		Catalog catalog = catalogService.findCatalog(id);
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Type", "application/json; charset=utf-8");
+		if (catalog == null) {
+			return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<String>(catalog.toJson(), headers, HttpStatus.OK);
+	}
 
 	@RequestMapping(headers = "Accept=application/json")
-    @ResponseBody
-    public ResponseEntity<String> listJson() {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Type", "application/json; charset=utf-8");
-        List<Catalog> result = catalogService.findAllCatalogs();
-        return new ResponseEntity<String>(Catalog.toJsonArray(result), headers, HttpStatus.OK);
-    }
+	@ResponseBody
+	public ResponseEntity<String> listJson() {
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Type", "application/json; charset=utf-8");
+		List<Catalog> result = catalogService.findAllCatalogs();
+		return new ResponseEntity<String>(Catalog.toJsonArray(result), headers, HttpStatus.OK);
+	}
 
 	@RequestMapping(method = RequestMethod.POST, headers = "Accept=application/json")
-    public ResponseEntity<String> createFromJson(@RequestBody String json) {
-        Catalog catalog = Catalog.fromJsonToCatalog(json);
-        catalogService.saveCatalog(catalog);
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Type", "application/json");
-        return new ResponseEntity<String>(headers, HttpStatus.CREATED);
-    }
+	public ResponseEntity<String> createFromJson(@RequestBody String json) {
+		Catalog catalog = Catalog.fromJsonToCatalog(json);
+		catalogService.saveCatalog(catalog);
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Type", "application/json");
+		return new ResponseEntity<String>(headers, HttpStatus.CREATED);
+	}
 
 	@RequestMapping(value = "/jsonArray", method = RequestMethod.POST, headers = "Accept=application/json")
-    public ResponseEntity<String> createFromJsonArray(@RequestBody String json) {
-        for (Catalog catalog: Catalog.fromJsonArrayToCatalogs(json)) {
-            catalogService.saveCatalog(catalog);
-        }
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Type", "application/json");
-        return new ResponseEntity<String>(headers, HttpStatus.CREATED);
-    }
+	public ResponseEntity<String> createFromJsonArray(@RequestBody String json) {
+		for (Catalog catalog : Catalog.fromJsonArrayToCatalogs(json)) {
+			catalogService.saveCatalog(catalog);
+		}
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Type", "application/json");
+		return new ResponseEntity<String>(headers, HttpStatus.CREATED);
+	}
 
 	@RequestMapping(method = RequestMethod.PUT, headers = "Accept=application/json")
-    public ResponseEntity<String> updateFromJson(@RequestBody String json) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Type", "application/json");
-        Catalog catalog = Catalog.fromJsonToCatalog(json);
-        if (catalogService.updateCatalog(catalog) == null) {
-            return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<String>(headers, HttpStatus.OK);
-    }
+	public ResponseEntity<String> updateFromJson(@RequestBody String json) {
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Type", "application/json");
+		Catalog catalog = Catalog.fromJsonToCatalog(json);
+		if (catalogService.updateCatalog(catalog) == null) {
+			return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<String>(headers, HttpStatus.OK);
+	}
 
 	@RequestMapping(value = "/jsonArray", method = RequestMethod.PUT, headers = "Accept=application/json")
-    public ResponseEntity<String> updateFromJsonArray(@RequestBody String json) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Type", "application/json");
-        for (Catalog catalog: Catalog.fromJsonArrayToCatalogs(json)) {
-            if (catalogService.updateCatalog(catalog) == null) {
-                return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
-            }
-        }
-        return new ResponseEntity<String>(headers, HttpStatus.OK);
-    }
+	public ResponseEntity<String> updateFromJsonArray(@RequestBody String json) {
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Type", "application/json");
+		for (Catalog catalog : Catalog.fromJsonArrayToCatalogs(json)) {
+			if (catalogService.updateCatalog(catalog) == null) {
+				return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
+			}
+		}
+		return new ResponseEntity<String>(headers, HttpStatus.OK);
+	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE, headers = "Accept=application/json")
-    public ResponseEntity<String> deleteFromJson(@PathVariable("id") Integer id) {
-        Catalog catalog = catalogService.findCatalog(id);
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Type", "application/json");
-        if (catalog == null) {
-            return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
-        }
-        catalogService.deleteCatalog(catalog);
-        return new ResponseEntity<String>(headers, HttpStatus.OK);
-    }
+	public ResponseEntity<String> deleteFromJson(@PathVariable("id") Integer id) {
+		Catalog catalog = catalogService.findCatalog(id);
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Type", "application/json");
+		if (catalog == null) {
+			return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
+		}
+		catalogService.deleteCatalog(catalog);
+		return new ResponseEntity<String>(headers, HttpStatus.OK);
+	}
 }

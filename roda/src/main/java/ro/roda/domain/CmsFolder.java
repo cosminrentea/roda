@@ -41,239 +41,249 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Configurable
 @Entity
-@Table(schema = "public",name = "cms_folder")
-
-
-
-
-
-
+@Table(schema = "public", name = "cms_folder")
 public class CmsFolder {
 
 	public String toJson() {
-        return new JSONSerializer().exclude("*.class").serialize(this);
-    }
+		return new JSONSerializer().exclude("*.class").serialize(this);
+	}
 
 	public static CmsFolder fromJsonToCmsFolder(String json) {
-        return new JSONDeserializer<CmsFolder>().use(null, CmsFolder.class).deserialize(json);
-    }
+		return new JSONDeserializer<CmsFolder>().use(null, CmsFolder.class).deserialize(json);
+	}
 
 	public static String toJsonArray(Collection<CmsFolder> collection) {
-        return new JSONSerializer().exclude("*.class").serialize(collection);
-    }
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
 
 	public static Collection<CmsFolder> fromJsonArrayToCmsFolders(String json) {
-        return new JSONDeserializer<List<CmsFolder>>().use(null, ArrayList.class).use("values", CmsFolder.class).deserialize(json);
-    }
+		return new JSONDeserializer<List<CmsFolder>>().use(null, ArrayList.class).use("values", CmsFolder.class)
+				.deserialize(json);
+	}
 
 	@OneToMany(mappedBy = "cmsFolderId")
-    private Set<CmsFile> cmsFiles;
+	private Set<CmsFile> cmsFiles;
 
 	@OneToMany(mappedBy = "parentId")
-    private Set<CmsFolder> cmsFolders;
+	private Set<CmsFolder> cmsFolders;
 
 	@ManyToOne
-    @JoinColumn(name = "parent_id", referencedColumnName = "id", insertable = false, updatable = false)
-    private CmsFolder parentId;
+	@JoinColumn(name = "parent_id", referencedColumnName = "id", insertable = false, updatable = false)
+	private CmsFolder parentId;
 
 	@Column(name = "name", columnDefinition = "text")
-    @NotNull
-    private String name;
+	@NotNull
+	private String name;
 
 	@Column(name = "description", columnDefinition = "text")
-    private String description;
+	private String description;
 
 	public Set<CmsFile> getCmsFiles() {
-        return cmsFiles;
-    }
+		return cmsFiles;
+	}
 
 	public void setCmsFiles(Set<CmsFile> cmsFiles) {
-        this.cmsFiles = cmsFiles;
-    }
+		this.cmsFiles = cmsFiles;
+	}
 
 	public Set<CmsFolder> getCmsFolders() {
-        return cmsFolders;
-    }
+		return cmsFolders;
+	}
 
 	public void setCmsFolders(Set<CmsFolder> cmsFolders) {
-        this.cmsFolders = cmsFolders;
-    }
+		this.cmsFolders = cmsFolders;
+	}
 
 	public CmsFolder getParentId() {
-        return parentId;
-    }
+		return parentId;
+	}
 
 	public void setParentId(CmsFolder parentId) {
-        this.parentId = parentId;
-    }
+		this.parentId = parentId;
+	}
 
 	public String getName() {
-        return name;
-    }
+		return name;
+	}
 
 	public void setName(String name) {
-        this.name = name;
-    }
+		this.name = name;
+	}
 
 	public String getDescription() {
-        return description;
-    }
+		return description;
+	}
 
 	public void setDescription(String description) {
-        this.description = description;
-    }
+		this.description = description;
+	}
 
 	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", columnDefinition = "serial")
-    private Integer id;
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id", columnDefinition = "serial")
+	private Integer id;
 
 	public Integer getId() {
-        return this.id;
-    }
+		return this.id;
+	}
 
 	public void setId(Integer id) {
-        this.id = id;
-    }
+		this.id = id;
+	}
 
 	@PersistenceContext
-    transient EntityManager entityManager;
+	transient EntityManager entityManager;
 
 	public static final EntityManager entityManager() {
-        EntityManager em = new CmsFolder().entityManager;
-        if (em == null) throw new IllegalStateException("Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-        return em;
-    }
+		EntityManager em = new CmsFolder().entityManager;
+		if (em == null)
+			throw new IllegalStateException(
+					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return em;
+	}
 
 	public static long countCmsFolders() {
-        return entityManager().createQuery("SELECT COUNT(o) FROM CmsFolder o", Long.class).getSingleResult();
-    }
+		return entityManager().createQuery("SELECT COUNT(o) FROM CmsFolder o", Long.class).getSingleResult();
+	}
 
 	public static List<CmsFolder> findAllCmsFolders() {
-        return entityManager().createQuery("SELECT o FROM CmsFolder o", CmsFolder.class).getResultList();
-    }
+		return entityManager().createQuery("SELECT o FROM CmsFolder o", CmsFolder.class).getResultList();
+	}
 
 	public static CmsFolder findCmsFolder(Integer id) {
-        if (id == null) return null;
-        return entityManager().find(CmsFolder.class, id);
-    }
+		if (id == null)
+			return null;
+		return entityManager().find(CmsFolder.class, id);
+	}
 
 	public static List<CmsFolder> findCmsFolderEntries(int firstResult, int maxResults) {
-        return entityManager().createQuery("SELECT o FROM CmsFolder o", CmsFolder.class).setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
-    }
+		return entityManager().createQuery("SELECT o FROM CmsFolder o", CmsFolder.class).setFirstResult(firstResult)
+				.setMaxResults(maxResults).getResultList();
+	}
 
 	@Transactional
-    public void persist() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        this.entityManager.persist(this);
-    }
+	public void persist() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.persist(this);
+	}
 
 	@Transactional
-    public void remove() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        if (this.entityManager.contains(this)) {
-            this.entityManager.remove(this);
-        } else {
-            CmsFolder attached = CmsFolder.findCmsFolder(this.id);
-            this.entityManager.remove(attached);
-        }
-    }
+	public void remove() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		if (this.entityManager.contains(this)) {
+			this.entityManager.remove(this);
+		} else {
+			CmsFolder attached = CmsFolder.findCmsFolder(this.id);
+			this.entityManager.remove(attached);
+		}
+	}
 
 	@Transactional
-    public void flush() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        this.entityManager.flush();
-    }
+	public void flush() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.flush();
+	}
 
 	@Transactional
-    public void clear() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        this.entityManager.clear();
-    }
+	public void clear() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.clear();
+	}
 
 	@Transactional
-    public CmsFolder merge() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        CmsFolder merged = this.entityManager.merge(this);
-        this.entityManager.flush();
-        return merged;
-    }
+	public CmsFolder merge() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		CmsFolder merged = this.entityManager.merge(this);
+		this.entityManager.flush();
+		return merged;
+	}
 
 	public String toString() {
-        return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
-    }
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+	}
 
 	@Autowired
-    transient SolrServer solrServer;
+	transient SolrServer solrServer;
 
 	public static QueryResponse search(String queryString) {
-        String searchString = "CmsFolder_solrsummary_t:" + queryString;
-        return search(new SolrQuery(searchString.toLowerCase()));
-    }
+		String searchString = "CmsFolder_solrsummary_t:" + queryString;
+		return search(new SolrQuery(searchString.toLowerCase()));
+	}
 
 	public static QueryResponse search(SolrQuery query) {
-        try {
-            return solrServer().query(query);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return new QueryResponse();
-    }
+		try {
+			return solrServer().query(query);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new QueryResponse();
+	}
 
 	public static void indexCmsFolder(CmsFolder cmsFolder) {
-        List<CmsFolder> cmsfolders = new ArrayList<CmsFolder>();
-        cmsfolders.add(cmsFolder);
-        indexCmsFolders(cmsfolders);
-    }
+		List<CmsFolder> cmsfolders = new ArrayList<CmsFolder>();
+		cmsfolders.add(cmsFolder);
+		indexCmsFolders(cmsfolders);
+	}
 
 	@Async
-    public static void indexCmsFolders(Collection<CmsFolder> cmsfolders) {
-        List<SolrInputDocument> documents = new ArrayList<SolrInputDocument>();
-        for (CmsFolder cmsFolder : cmsfolders) {
-            SolrInputDocument sid = new SolrInputDocument();
-            sid.addField("id", "cmsfolder_" + cmsFolder.getId());
-            sid.addField("cmsFolder.parentid_t", cmsFolder.getParentId());
-            sid.addField("cmsFolder.name_s", cmsFolder.getName());
-            sid.addField("cmsFolder.description_s", cmsFolder.getDescription());
-            sid.addField("cmsFolder.id_i", cmsFolder.getId());
-            // Add summary field to allow searching documents for objects of this type
-            sid.addField("cmsfolder_solrsummary_t", new StringBuilder().append(cmsFolder.getParentId()).append(" ").append(cmsFolder.getName()).append(" ").append(cmsFolder.getDescription()).append(" ").append(cmsFolder.getId()));
-            documents.add(sid);
-        }
-        try {
-            SolrServer solrServer = solrServer();
-            solrServer.add(documents);
-            solrServer.commit();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+	public static void indexCmsFolders(Collection<CmsFolder> cmsfolders) {
+		List<SolrInputDocument> documents = new ArrayList<SolrInputDocument>();
+		for (CmsFolder cmsFolder : cmsfolders) {
+			SolrInputDocument sid = new SolrInputDocument();
+			sid.addField("id", "cmsfolder_" + cmsFolder.getId());
+			sid.addField("cmsFolder.parentid_t", cmsFolder.getParentId());
+			sid.addField("cmsFolder.name_s", cmsFolder.getName());
+			sid.addField("cmsFolder.description_s", cmsFolder.getDescription());
+			sid.addField("cmsFolder.id_i", cmsFolder.getId());
+			// Add summary field to allow searching documents for objects of
+			// this type
+			sid.addField(
+					"cmsfolder_solrsummary_t",
+					new StringBuilder().append(cmsFolder.getParentId()).append(" ").append(cmsFolder.getName())
+							.append(" ").append(cmsFolder.getDescription()).append(" ").append(cmsFolder.getId()));
+			documents.add(sid);
+		}
+		try {
+			SolrServer solrServer = solrServer();
+			solrServer.add(documents);
+			solrServer.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	@Async
-    public static void deleteIndex(CmsFolder cmsFolder) {
-        SolrServer solrServer = solrServer();
-        try {
-            solrServer.deleteById("cmsfolder_" + cmsFolder.getId());
-            solrServer.commit();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+	public static void deleteIndex(CmsFolder cmsFolder) {
+		SolrServer solrServer = solrServer();
+		try {
+			solrServer.deleteById("cmsfolder_" + cmsFolder.getId());
+			solrServer.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	@PostUpdate
-    @PostPersist
-    private void postPersistOrUpdate() {
-        indexCmsFolder(this);
-    }
+	@PostPersist
+	private void postPersistOrUpdate() {
+		indexCmsFolder(this);
+	}
 
 	@PreRemove
-    private void preRemove() {
-        deleteIndex(this);
-    }
+	private void preRemove() {
+		deleteIndex(this);
+	}
 
 	public static SolrServer solrServer() {
-        SolrServer _solrServer = new CmsFolder().solrServer;
-        if (_solrServer == null) throw new IllegalStateException("Solr server has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-        return _solrServer;
-    }
+		SolrServer _solrServer = new CmsFolder().solrServer;
+		if (_solrServer == null)
+			throw new IllegalStateException(
+					"Solr server has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return _solrServer;
+	}
 }

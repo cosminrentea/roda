@@ -5,36 +5,35 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ro.roda.domain.StudyPersonAsoc;
 
-
 @Service
 @Transactional
 public class StudyPersonAsocServiceImpl implements StudyPersonAsocService {
 
 	public long countAllStudyPersonAsocs() {
-        return StudyPersonAsoc.countStudyPersonAsocs();
-    }
+		return StudyPersonAsoc.countStudyPersonAsocs();
+	}
 
 	public void deleteStudyPersonAsoc(StudyPersonAsoc studyPersonAsoc) {
-        studyPersonAsoc.remove();
-    }
+		studyPersonAsoc.remove();
+	}
 
 	public StudyPersonAsoc findStudyPersonAsoc(Integer id) {
-        return StudyPersonAsoc.findStudyPersonAsoc(id);
-    }
+		return StudyPersonAsoc.findStudyPersonAsoc(id);
+	}
 
 	public List<StudyPersonAsoc> findAllStudyPersonAsocs() {
-        return StudyPersonAsoc.findAllStudyPersonAsocs();
-    }
+		return StudyPersonAsoc.findAllStudyPersonAsocs();
+	}
 
 	public List<StudyPersonAsoc> findStudyPersonAsocEntries(int firstResult, int maxResults) {
-        return StudyPersonAsoc.findStudyPersonAsocEntries(firstResult, maxResults);
-    }
+		return StudyPersonAsoc.findStudyPersonAsocEntries(firstResult, maxResults);
+	}
 
 	public void saveStudyPersonAsoc(StudyPersonAsoc studyPersonAsoc) {
-        studyPersonAsoc.persist();
-    }
+		studyPersonAsoc.persist();
+	}
 
 	public StudyPersonAsoc updateStudyPersonAsoc(StudyPersonAsoc studyPersonAsoc) {
-        return studyPersonAsoc.merge();
-    }
+		return studyPersonAsoc.merge();
+	}
 }

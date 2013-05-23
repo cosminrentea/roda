@@ -16,48 +16,44 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 @Component
-public class ApplicationListenerContextRefreshed implements
-		ApplicationListener<ContextRefreshedEvent> {
-	
-	private final Log log = LogFactory
-			.getLog(this.getClass());
+public class ApplicationListenerContextRefreshed implements ApplicationListener<ContextRefreshedEvent> {
+
+	private final Log log = LogFactory.getLog(this.getClass());
 
 	@Autowired
 	RBean rb;
 
 	@Autowired
 	DatabaseUtils du;
-	
+
 	@Value("${roda.mode}")
 	private String rodaMode = "server-data";
-	
+
 	@Override
 	@Transactional
 	public void onApplicationEvent(ContextRefreshedEvent event) {
 		if (event.getApplicationContext().getParent() == null) {
 			// root context
-			log.info("event.getApplicationContext() = "
-					+ event.getApplicationContext());
+			log.info("event.getApplicationContext() = " + event.getApplicationContext());
 
 			// check if we are in "test mode"
 			// (and the properties file has set a property)
 			try {
 				Resource resource = new ClassPathResource("roda.properties");
-				Properties props = PropertiesLoaderUtils
-						.loadProperties(resource);
+				Properties props = PropertiesLoaderUtils.loadProperties(resource);
 				rodaMode = props.getProperty("roda.mode");
 			} catch (IOException ignored) {
 			}
-			
+
 			log.info("roda.mode = " + rodaMode);
-			
+
 			du.executeUpdate("CREATE SCHEMA audit");
 			du.truncate();
-			
+
 			rb.rnorm(4);
-			
+
 			// to skip the initial actions,
-			// change "run.mode" property to another string 
+			// change "run.mode" property to another string
 			// (not "server-data")
 			if ("server-data".equals(rodaMode)) {
 				// log.error(dataSource.getUsername() + ":"
@@ -65,10 +61,10 @@ public class ApplicationListenerContextRefreshed implements
 
 				du.initData("csv/");
 				du.setSequence("hibernate_sequence", 1000, 1);
-//				du.changeData();
-//				du.saveXstream();
+				// du.changeData();
+				// du.saveXstream();
 			}
 		}
 	}
-	
+
 }

@@ -6,36 +6,35 @@ import org.springframework.transaction.annotation.Transactional;
 import ro.roda.domain.StudyOrg;
 import ro.roda.domain.StudyOrgPK;
 
-
 @Service
 @Transactional
 public class StudyOrgServiceImpl implements StudyOrgService {
 
 	public long countAllStudyOrgs() {
-        return StudyOrg.countStudyOrgs();
-    }
+		return StudyOrg.countStudyOrgs();
+	}
 
 	public void deleteStudyOrg(StudyOrg studyOrg) {
-        studyOrg.remove();
-    }
+		studyOrg.remove();
+	}
 
 	public StudyOrg findStudyOrg(StudyOrgPK id) {
-        return StudyOrg.findStudyOrg(id);
-    }
+		return StudyOrg.findStudyOrg(id);
+	}
 
 	public List<StudyOrg> findAllStudyOrgs() {
-        return StudyOrg.findAllStudyOrgs();
-    }
+		return StudyOrg.findAllStudyOrgs();
+	}
 
 	public List<StudyOrg> findStudyOrgEntries(int firstResult, int maxResults) {
-        return StudyOrg.findStudyOrgEntries(firstResult, maxResults);
-    }
+		return StudyOrg.findStudyOrgEntries(firstResult, maxResults);
+	}
 
 	public void saveStudyOrg(StudyOrg studyOrg) {
-        studyOrg.persist();
-    }
+		studyOrg.persist();
+	}
 
 	public StudyOrg updateStudyOrg(StudyOrg studyOrg) {
-        return studyOrg.merge();
-    }
+		return studyOrg.merge();
+	}
 }

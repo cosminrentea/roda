@@ -5,36 +5,35 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ro.roda.domain.Address;
 
-
 @Service
 @Transactional
 public class AddressServiceImpl implements AddressService {
 
 	public long countAllAddresses() {
-        return Address.countAddresses();
-    }
+		return Address.countAddresses();
+	}
 
 	public void deleteAddress(Address address) {
-        address.remove();
-    }
+		address.remove();
+	}
 
 	public Address findAddress(Integer id) {
-        return Address.findAddress(id);
-    }
+		return Address.findAddress(id);
+	}
 
 	public List<Address> findAllAddresses() {
-        return Address.findAllAddresses();
-    }
+		return Address.findAllAddresses();
+	}
 
 	public List<Address> findAddressEntries(int firstResult, int maxResults) {
-        return Address.findAddressEntries(firstResult, maxResults);
-    }
+		return Address.findAddressEntries(firstResult, maxResults);
+	}
 
 	public void saveAddress(Address address) {
-        address.persist();
-    }
+		address.persist();
+	}
 
 	public Address updateAddress(Address address) {
-        return address.merge();
-    }
+		return address.merge();
+	}
 }

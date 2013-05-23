@@ -5,36 +5,35 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ro.roda.domain.Vargroup;
 
-
 @Service
 @Transactional
 public class VargroupServiceImpl implements VargroupService {
 
 	public long countAllVargroups() {
-        return Vargroup.countVargroups();
-    }
+		return Vargroup.countVargroups();
+	}
 
 	public void deleteVargroup(Vargroup vargroup) {
-        vargroup.remove();
-    }
+		vargroup.remove();
+	}
 
 	public Vargroup findVargroup(Long id) {
-        return Vargroup.findVargroup(id);
-    }
+		return Vargroup.findVargroup(id);
+	}
 
 	public List<Vargroup> findAllVargroups() {
-        return Vargroup.findAllVargroups();
-    }
+		return Vargroup.findAllVargroups();
+	}
 
 	public List<Vargroup> findVargroupEntries(int firstResult, int maxResults) {
-        return Vargroup.findVargroupEntries(firstResult, maxResults);
-    }
+		return Vargroup.findVargroupEntries(firstResult, maxResults);
+	}
 
 	public void saveVargroup(Vargroup vargroup) {
-        vargroup.persist();
-    }
+		vargroup.persist();
+	}
 
 	public Vargroup updateVargroup(Vargroup vargroup) {
-        return vargroup.merge();
-    }
+		return vargroup.merge();
+	}
 }

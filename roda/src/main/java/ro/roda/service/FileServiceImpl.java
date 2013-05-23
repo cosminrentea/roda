@@ -55,12 +55,11 @@ public class FileServiceImpl implements FileService {
 		saveFile(file);
 		log.trace("> saveFile > saved: " + file);
 	}
-	
+
 	@Async
 	private void updateSolrFile(java.io.File f, MultipartFile content) {
 		log.debug("> updateSolrFile");
-		ContentStreamUpdateRequest up = new ContentStreamUpdateRequest(
-				"/update/extract");
+		ContentStreamUpdateRequest up = new ContentStreamUpdateRequest("/update/extract");
 
 		try {
 			up.addFile(f);
@@ -72,12 +71,13 @@ public class FileServiceImpl implements FileService {
 			log.debug("> updateSolrFile > sending file to Solr for metadata indexing");
 
 			solrServer.request(up);
-			
+
 			log.debug("> updateSolrFile > sent to Solr for metadata indexing");
 
-//			log.debug("> saveFile > querying Solr");
-//			QueryResponse rsp = solrServer.query(new SolrQuery("id:" + content.getOriginalFilename()));
-//			log.trace(rsp);
+			// log.debug("> saveFile > querying Solr");
+			// QueryResponse rsp = solrServer.query(new SolrQuery("id:" +
+			// content.getOriginalFilename()));
+			// log.trace(rsp);
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -89,30 +89,30 @@ public class FileServiceImpl implements FileService {
 	}
 
 	public long countAllFiles() {
-        return File.countFiles();
-    }
+		return File.countFiles();
+	}
 
 	public void deleteFile(File file) {
-        file.remove();
-    }
+		file.remove();
+	}
 
 	public File findFile(Integer id) {
-        return File.findFile(id);
-    }
+		return File.findFile(id);
+	}
 
 	public List<File> findAllFiles() {
-        return File.findAllFiles();
-    }
+		return File.findAllFiles();
+	}
 
 	public List<File> findFileEntries(int firstResult, int maxResults) {
-        return File.findFileEntries(firstResult, maxResults);
-    }
+		return File.findFileEntries(firstResult, maxResults);
+	}
 
 	public void saveFile(File file) {
-        file.persist();
-    }
+		file.persist();
+	}
 
 	public File updateFile(File file) {
-        return file.merge();
-    }
+		return file.merge();
+	}
 }

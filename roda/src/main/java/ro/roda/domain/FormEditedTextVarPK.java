@@ -13,48 +13,48 @@ import org.springframework.roo.addon.jpa.identifier.RooIdentifier;
 
 @Embeddable
 @Configurable
-
 public final class FormEditedTextVarPK implements Serializable {
 
 	@Column(name = "variable_id", columnDefinition = "int8", nullable = false)
-    private Long variableId;
+	private Long variableId;
 
 	@Column(name = "form_id", columnDefinition = "int8", nullable = false)
-    private Long formId;
+	private Long formId;
 
 	public FormEditedTextVarPK(Long variableId, Long formId) {
-        super();
-        this.variableId = variableId;
-        this.formId = formId;
-    }
+		super();
+		this.variableId = variableId;
+		this.formId = formId;
+	}
 
 	private FormEditedTextVarPK() {
-        super();
-    }
+		super();
+	}
 
 	public Long getVariableId() {
-        return variableId;
-    }
+		return variableId;
+	}
 
 	public Long getFormId() {
-        return formId;
-    }
+		return formId;
+	}
 
 	public String toJson() {
-        return new JSONSerializer().exclude("*.class").serialize(this);
-    }
+		return new JSONSerializer().exclude("*.class").serialize(this);
+	}
 
 	public static FormEditedTextVarPK fromJsonToFormEditedTextVarPK(String json) {
-        return new JSONDeserializer<FormEditedTextVarPK>().use(null, FormEditedTextVarPK.class).deserialize(json);
-    }
+		return new JSONDeserializer<FormEditedTextVarPK>().use(null, FormEditedTextVarPK.class).deserialize(json);
+	}
 
 	public static String toJsonArray(Collection<FormEditedTextVarPK> collection) {
-        return new JSONSerializer().exclude("*.class").serialize(collection);
-    }
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
 
 	public static Collection<FormEditedTextVarPK> fromJsonArrayToFormEditedTextVarPKs(String json) {
-        return new JSONDeserializer<List<FormEditedTextVarPK>>().use(null, ArrayList.class).use("values", FormEditedTextVarPK.class).deserialize(json);
-    }
+		return new JSONDeserializer<List<FormEditedTextVarPK>>().use(null, ArrayList.class)
+				.use("values", FormEditedTextVarPK.class).deserialize(json);
+	}
 
 	private static final long serialVersionUID = 1L;
 }

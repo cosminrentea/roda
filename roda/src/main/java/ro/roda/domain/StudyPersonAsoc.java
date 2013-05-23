@@ -36,204 +36,212 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.transaction.annotation.Transactional;
 
 @Entity
-@Table(schema = "public",name = "study_person_asoc")
+@Table(schema = "public", name = "study_person_asoc")
 @Configurable
-
-
-
-
-
-
 public class StudyPersonAsoc {
 
 	@PersistenceContext
-    transient EntityManager entityManager;
+	transient EntityManager entityManager;
 
 	public static final EntityManager entityManager() {
-        EntityManager em = new StudyPersonAsoc().entityManager;
-        if (em == null) throw new IllegalStateException("Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-        return em;
-    }
+		EntityManager em = new StudyPersonAsoc().entityManager;
+		if (em == null)
+			throw new IllegalStateException(
+					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return em;
+	}
 
 	public static long countStudyPersonAsocs() {
-        return entityManager().createQuery("SELECT COUNT(o) FROM StudyPersonAsoc o", Long.class).getSingleResult();
-    }
+		return entityManager().createQuery("SELECT COUNT(o) FROM StudyPersonAsoc o", Long.class).getSingleResult();
+	}
 
 	public static List<StudyPersonAsoc> findAllStudyPersonAsocs() {
-        return entityManager().createQuery("SELECT o FROM StudyPersonAsoc o", StudyPersonAsoc.class).getResultList();
-    }
+		return entityManager().createQuery("SELECT o FROM StudyPersonAsoc o", StudyPersonAsoc.class).getResultList();
+	}
 
 	public static StudyPersonAsoc findStudyPersonAsoc(Integer id) {
-        if (id == null) return null;
-        return entityManager().find(StudyPersonAsoc.class, id);
-    }
+		if (id == null)
+			return null;
+		return entityManager().find(StudyPersonAsoc.class, id);
+	}
 
 	public static List<StudyPersonAsoc> findStudyPersonAsocEntries(int firstResult, int maxResults) {
-        return entityManager().createQuery("SELECT o FROM StudyPersonAsoc o", StudyPersonAsoc.class).setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
-    }
+		return entityManager().createQuery("SELECT o FROM StudyPersonAsoc o", StudyPersonAsoc.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
+	}
 
 	@Transactional
-    public void persist() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        this.entityManager.persist(this);
-    }
+	public void persist() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.persist(this);
+	}
 
 	@Transactional
-    public void remove() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        if (this.entityManager.contains(this)) {
-            this.entityManager.remove(this);
-        } else {
-            StudyPersonAsoc attached = StudyPersonAsoc.findStudyPersonAsoc(this.id);
-            this.entityManager.remove(attached);
-        }
-    }
+	public void remove() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		if (this.entityManager.contains(this)) {
+			this.entityManager.remove(this);
+		} else {
+			StudyPersonAsoc attached = StudyPersonAsoc.findStudyPersonAsoc(this.id);
+			this.entityManager.remove(attached);
+		}
+	}
 
 	@Transactional
-    public void flush() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        this.entityManager.flush();
-    }
+	public void flush() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.flush();
+	}
 
 	@Transactional
-    public void clear() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        this.entityManager.clear();
-    }
+	public void clear() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.clear();
+	}
 
 	@Transactional
-    public StudyPersonAsoc merge() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        StudyPersonAsoc merged = this.entityManager.merge(this);
-        this.entityManager.flush();
-        return merged;
-    }
+	public StudyPersonAsoc merge() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		StudyPersonAsoc merged = this.entityManager.merge(this);
+		this.entityManager.flush();
+		return merged;
+	}
 
 	public String toString() {
-        return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
-    }
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+	}
 
 	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", columnDefinition = "serial")
-    private Integer id;
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id", columnDefinition = "serial")
+	private Integer id;
 
 	public Integer getId() {
-        return this.id;
-    }
+		return this.id;
+	}
 
 	public void setId(Integer id) {
-        this.id = id;
-    }
+		this.id = id;
+	}
 
 	@Column(name = "asoc_name", columnDefinition = "varchar", length = 100)
-    @NotNull
-    private String asocName;
+	@NotNull
+	private String asocName;
 
 	@Column(name = "asoc_description", columnDefinition = "text")
-    private String asocDescription;
+	private String asocDescription;
 
 	public String getAsocName() {
-        return asocName;
-    }
+		return asocName;
+	}
 
 	public void setAsocName(String asocName) {
-        this.asocName = asocName;
-    }
+		this.asocName = asocName;
+	}
 
 	public String getAsocDescription() {
-        return asocDescription;
-    }
+		return asocDescription;
+	}
 
 	public void setAsocDescription(String asocDescription) {
-        this.asocDescription = asocDescription;
-    }
+		this.asocDescription = asocDescription;
+	}
 
 	public String toJson() {
-        return new JSONSerializer().exclude("*.class").serialize(this);
-    }
+		return new JSONSerializer().exclude("*.class").serialize(this);
+	}
 
 	public static StudyPersonAsoc fromJsonToStudyPersonAsoc(String json) {
-        return new JSONDeserializer<StudyPersonAsoc>().use(null, StudyPersonAsoc.class).deserialize(json);
-    }
+		return new JSONDeserializer<StudyPersonAsoc>().use(null, StudyPersonAsoc.class).deserialize(json);
+	}
 
 	public static String toJsonArray(Collection<StudyPersonAsoc> collection) {
-        return new JSONSerializer().exclude("*.class").serialize(collection);
-    }
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
 
 	public static Collection<StudyPersonAsoc> fromJsonArrayToStudyPersonAsocs(String json) {
-        return new JSONDeserializer<List<StudyPersonAsoc>>().use(null, ArrayList.class).use("values", StudyPersonAsoc.class).deserialize(json);
-    }
+		return new JSONDeserializer<List<StudyPersonAsoc>>().use(null, ArrayList.class)
+				.use("values", StudyPersonAsoc.class).deserialize(json);
+	}
 
 	@Autowired
-    transient SolrServer solrServer;
+	transient SolrServer solrServer;
 
 	public static QueryResponse search(String queryString) {
-        String searchString = "StudyPersonAsoc_solrsummary_t:" + queryString;
-        return search(new SolrQuery(searchString.toLowerCase()));
-    }
+		String searchString = "StudyPersonAsoc_solrsummary_t:" + queryString;
+		return search(new SolrQuery(searchString.toLowerCase()));
+	}
 
 	public static QueryResponse search(SolrQuery query) {
-        try {
-            return solrServer().query(query);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return new QueryResponse();
-    }
+		try {
+			return solrServer().query(query);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new QueryResponse();
+	}
 
 	public static void indexStudyPersonAsoc(StudyPersonAsoc studyPersonAsoc) {
-        List<StudyPersonAsoc> studypersonasocs = new ArrayList<StudyPersonAsoc>();
-        studypersonasocs.add(studyPersonAsoc);
-        indexStudyPersonAsocs(studypersonasocs);
-    }
+		List<StudyPersonAsoc> studypersonasocs = new ArrayList<StudyPersonAsoc>();
+		studypersonasocs.add(studyPersonAsoc);
+		indexStudyPersonAsocs(studypersonasocs);
+	}
 
 	@Async
-    public static void indexStudyPersonAsocs(Collection<StudyPersonAsoc> studypersonasocs) {
-        List<SolrInputDocument> documents = new ArrayList<SolrInputDocument>();
-        for (StudyPersonAsoc studyPersonAsoc : studypersonasocs) {
-            SolrInputDocument sid = new SolrInputDocument();
-            sid.addField("id", "studypersonasoc_" + studyPersonAsoc.getId());
-            sid.addField("studyPersonAsoc.asocname_s", studyPersonAsoc.getAsocName());
-            sid.addField("studyPersonAsoc.asocdescription_s", studyPersonAsoc.getAsocDescription());
-            // Add summary field to allow searching documents for objects of this type
-            sid.addField("studypersonasoc_solrsummary_t", new StringBuilder().append(studyPersonAsoc.getAsocName()).append(" ").append(studyPersonAsoc.getAsocDescription()));
-            documents.add(sid);
-        }
-        try {
-            SolrServer solrServer = solrServer();
-            solrServer.add(documents);
-            solrServer.commit();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+	public static void indexStudyPersonAsocs(Collection<StudyPersonAsoc> studypersonasocs) {
+		List<SolrInputDocument> documents = new ArrayList<SolrInputDocument>();
+		for (StudyPersonAsoc studyPersonAsoc : studypersonasocs) {
+			SolrInputDocument sid = new SolrInputDocument();
+			sid.addField("id", "studypersonasoc_" + studyPersonAsoc.getId());
+			sid.addField("studyPersonAsoc.asocname_s", studyPersonAsoc.getAsocName());
+			sid.addField("studyPersonAsoc.asocdescription_s", studyPersonAsoc.getAsocDescription());
+			// Add summary field to allow searching documents for objects of
+			// this type
+			sid.addField("studypersonasoc_solrsummary_t", new StringBuilder().append(studyPersonAsoc.getAsocName())
+					.append(" ").append(studyPersonAsoc.getAsocDescription()));
+			documents.add(sid);
+		}
+		try {
+			SolrServer solrServer = solrServer();
+			solrServer.add(documents);
+			solrServer.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	@Async
-    public static void deleteIndex(StudyPersonAsoc studyPersonAsoc) {
-        SolrServer solrServer = solrServer();
-        try {
-            solrServer.deleteById("studypersonasoc_" + studyPersonAsoc.getId());
-            solrServer.commit();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+	public static void deleteIndex(StudyPersonAsoc studyPersonAsoc) {
+		SolrServer solrServer = solrServer();
+		try {
+			solrServer.deleteById("studypersonasoc_" + studyPersonAsoc.getId());
+			solrServer.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	@PostUpdate
-    @PostPersist
-    private void postPersistOrUpdate() {
-        indexStudyPersonAsoc(this);
-    }
+	@PostPersist
+	private void postPersistOrUpdate() {
+		indexStudyPersonAsoc(this);
+	}
 
 	@PreRemove
-    private void preRemove() {
-        deleteIndex(this);
-    }
+	private void preRemove() {
+		deleteIndex(this);
+	}
 
 	public static SolrServer solrServer() {
-        SolrServer _solrServer = new StudyPersonAsoc().solrServer;
-        if (_solrServer == null) throw new IllegalStateException("Solr server has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-        return _solrServer;
-    }
+		SolrServer _solrServer = new StudyPersonAsoc().solrServer;
+		if (_solrServer == null)
+			throw new IllegalStateException(
+					"Solr server has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return _solrServer;
+	}
 }

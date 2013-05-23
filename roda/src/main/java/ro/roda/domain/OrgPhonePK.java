@@ -13,48 +13,48 @@ import org.springframework.roo.addon.jpa.identifier.RooIdentifier;
 
 @Configurable
 @Embeddable
-
 public final class OrgPhonePK implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	public String toJson() {
-        return new JSONSerializer().exclude("*.class").serialize(this);
-    }
+		return new JSONSerializer().exclude("*.class").serialize(this);
+	}
 
 	public static OrgPhonePK fromJsonToOrgPhonePK(String json) {
-        return new JSONDeserializer<OrgPhonePK>().use(null, OrgPhonePK.class).deserialize(json);
-    }
+		return new JSONDeserializer<OrgPhonePK>().use(null, OrgPhonePK.class).deserialize(json);
+	}
 
 	public static String toJsonArray(Collection<OrgPhonePK> collection) {
-        return new JSONSerializer().exclude("*.class").serialize(collection);
-    }
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
 
 	public static Collection<OrgPhonePK> fromJsonArrayToOrgPhonePKs(String json) {
-        return new JSONDeserializer<List<OrgPhonePK>>().use(null, ArrayList.class).use("values", OrgPhonePK.class).deserialize(json);
-    }
+		return new JSONDeserializer<List<OrgPhonePK>>().use(null, ArrayList.class).use("values", OrgPhonePK.class)
+				.deserialize(json);
+	}
 
 	@Column(name = "org_id", columnDefinition = "int4", nullable = false)
-    private Integer orgId;
+	private Integer orgId;
 
 	@Column(name = "phone_id", columnDefinition = "int4", nullable = false)
-    private Integer phoneId;
+	private Integer phoneId;
 
 	public OrgPhonePK(Integer orgId, Integer phoneId) {
-        super();
-        this.orgId = orgId;
-        this.phoneId = phoneId;
-    }
+		super();
+		this.orgId = orgId;
+		this.phoneId = phoneId;
+	}
 
 	private OrgPhonePK() {
-        super();
-    }
+		super();
+	}
 
 	public Integer getOrgId() {
-        return orgId;
-    }
+		return orgId;
+	}
 
 	public Integer getPhoneId() {
-        return phoneId;
-    }
+		return phoneId;
+	}
 }

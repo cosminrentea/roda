@@ -39,214 +39,222 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Configurable
 @Entity
-@Table(schema = "public",name = "email")
-
-
-
-
-
-
+@Table(schema = "public", name = "email")
 public class Email {
 
 	public String toJson() {
-        return new JSONSerializer().exclude("*.class").serialize(this);
-    }
+		return new JSONSerializer().exclude("*.class").serialize(this);
+	}
 
 	public static Email fromJsonToEmail(String json) {
-        return new JSONDeserializer<Email>().use(null, Email.class).deserialize(json);
-    }
+		return new JSONDeserializer<Email>().use(null, Email.class).deserialize(json);
+	}
 
 	public static String toJsonArray(Collection<Email> collection) {
-        return new JSONSerializer().exclude("*.class").serialize(collection);
-    }
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
 
 	public static Collection<Email> fromJsonArrayToEmails(String json) {
-        return new JSONDeserializer<List<Email>>().use(null, ArrayList.class).use("values", Email.class).deserialize(json);
-    }
+		return new JSONDeserializer<List<Email>>().use(null, ArrayList.class).use("values", Email.class)
+				.deserialize(json);
+	}
 
 	@PersistenceContext
-    transient EntityManager entityManager;
+	transient EntityManager entityManager;
 
 	public static final EntityManager entityManager() {
-        EntityManager em = new Email().entityManager;
-        if (em == null) throw new IllegalStateException("Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-        return em;
-    }
+		EntityManager em = new Email().entityManager;
+		if (em == null)
+			throw new IllegalStateException(
+					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return em;
+	}
 
 	public static long countEmails() {
-        return entityManager().createQuery("SELECT COUNT(o) FROM Email o", Long.class).getSingleResult();
-    }
+		return entityManager().createQuery("SELECT COUNT(o) FROM Email o", Long.class).getSingleResult();
+	}
 
 	public static List<Email> findAllEmails() {
-        return entityManager().createQuery("SELECT o FROM Email o", Email.class).getResultList();
-    }
+		return entityManager().createQuery("SELECT o FROM Email o", Email.class).getResultList();
+	}
 
 	public static Email findEmail(Integer id) {
-        if (id == null) return null;
-        return entityManager().find(Email.class, id);
-    }
+		if (id == null)
+			return null;
+		return entityManager().find(Email.class, id);
+	}
 
 	public static List<Email> findEmailEntries(int firstResult, int maxResults) {
-        return entityManager().createQuery("SELECT o FROM Email o", Email.class).setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
-    }
+		return entityManager().createQuery("SELECT o FROM Email o", Email.class).setFirstResult(firstResult)
+				.setMaxResults(maxResults).getResultList();
+	}
 
 	@Transactional
-    public void persist() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        this.entityManager.persist(this);
-    }
+	public void persist() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.persist(this);
+	}
 
 	@Transactional
-    public void remove() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        if (this.entityManager.contains(this)) {
-            this.entityManager.remove(this);
-        } else {
-            Email attached = Email.findEmail(this.id);
-            this.entityManager.remove(attached);
-        }
-    }
+	public void remove() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		if (this.entityManager.contains(this)) {
+			this.entityManager.remove(this);
+		} else {
+			Email attached = Email.findEmail(this.id);
+			this.entityManager.remove(attached);
+		}
+	}
 
 	@Transactional
-    public void flush() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        this.entityManager.flush();
-    }
+	public void flush() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.flush();
+	}
 
 	@Transactional
-    public void clear() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        this.entityManager.clear();
-    }
+	public void clear() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.clear();
+	}
 
 	@Transactional
-    public Email merge() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        Email merged = this.entityManager.merge(this);
-        this.entityManager.flush();
-        return merged;
-    }
+	public Email merge() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		Email merged = this.entityManager.merge(this);
+		this.entityManager.flush();
+		return merged;
+	}
 
 	@OneToMany(mappedBy = "emailId")
-    private Set<OrgEmail> orgEmails;
+	private Set<OrgEmail> orgEmails;
 
 	@OneToMany(mappedBy = "emailId")
-    private Set<PersonEmail> personEmails;
+	private Set<PersonEmail> personEmails;
 
 	@Column(name = "email", columnDefinition = "varchar", length = 200)
-    @NotNull
-    private String email;
+	@NotNull
+	private String email;
 
 	public Set<OrgEmail> getOrgEmails() {
-        return orgEmails;
-    }
+		return orgEmails;
+	}
 
 	public void setOrgEmails(Set<OrgEmail> orgEmails) {
-        this.orgEmails = orgEmails;
-    }
+		this.orgEmails = orgEmails;
+	}
 
 	public Set<PersonEmail> getPersonEmails() {
-        return personEmails;
-    }
+		return personEmails;
+	}
 
 	public void setPersonEmails(Set<PersonEmail> personEmails) {
-        this.personEmails = personEmails;
-    }
+		this.personEmails = personEmails;
+	}
 
 	public String getEmail() {
-        return email;
-    }
+		return email;
+	}
 
 	public void setEmail(String email) {
-        this.email = email;
-    }
+		this.email = email;
+	}
 
 	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", columnDefinition = "serial")
-    private Integer id;
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id", columnDefinition = "serial")
+	private Integer id;
 
 	public Integer getId() {
-        return this.id;
-    }
+		return this.id;
+	}
 
 	public void setId(Integer id) {
-        this.id = id;
-    }
+		this.id = id;
+	}
 
 	@Autowired
-    transient SolrServer solrServer;
+	transient SolrServer solrServer;
 
 	public static QueryResponse search(String queryString) {
-        String searchString = "Email_solrsummary_t:" + queryString;
-        return search(new SolrQuery(searchString.toLowerCase()));
-    }
+		String searchString = "Email_solrsummary_t:" + queryString;
+		return search(new SolrQuery(searchString.toLowerCase()));
+	}
 
 	public static QueryResponse search(SolrQuery query) {
-        try {
-            return solrServer().query(query);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return new QueryResponse();
-    }
+		try {
+			return solrServer().query(query);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new QueryResponse();
+	}
 
 	public static void indexEmail(Email email) {
-        List<Email> emails = new ArrayList<Email>();
-        emails.add(email);
-        indexEmails(emails);
-    }
+		List<Email> emails = new ArrayList<Email>();
+		emails.add(email);
+		indexEmails(emails);
+	}
 
 	@Async
-    public static void indexEmails(Collection<Email> emails) {
-        List<SolrInputDocument> documents = new ArrayList<SolrInputDocument>();
-        for (Email email : emails) {
-            SolrInputDocument sid = new SolrInputDocument();
-            sid.addField("id", "email_" + email.getId());
-            sid.addField("email.email_s", email.getEmail());
-            sid.addField("email.id_i", email.getId());
-            // Add summary field to allow searching documents for objects of this type
-            sid.addField("email_solrsummary_t", new StringBuilder().append(email.getEmail()).append(" ").append(email.getId()));
-            documents.add(sid);
-        }
-        try {
-            SolrServer solrServer = solrServer();
-            solrServer.add(documents);
-            solrServer.commit();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+	public static void indexEmails(Collection<Email> emails) {
+		List<SolrInputDocument> documents = new ArrayList<SolrInputDocument>();
+		for (Email email : emails) {
+			SolrInputDocument sid = new SolrInputDocument();
+			sid.addField("id", "email_" + email.getId());
+			sid.addField("email.email_s", email.getEmail());
+			sid.addField("email.id_i", email.getId());
+			// Add summary field to allow searching documents for objects of
+			// this type
+			sid.addField("email_solrsummary_t",
+					new StringBuilder().append(email.getEmail()).append(" ").append(email.getId()));
+			documents.add(sid);
+		}
+		try {
+			SolrServer solrServer = solrServer();
+			solrServer.add(documents);
+			solrServer.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	@Async
-    public static void deleteIndex(Email email) {
-        SolrServer solrServer = solrServer();
-        try {
-            solrServer.deleteById("email_" + email.getId());
-            solrServer.commit();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+	public static void deleteIndex(Email email) {
+		SolrServer solrServer = solrServer();
+		try {
+			solrServer.deleteById("email_" + email.getId());
+			solrServer.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	@PostUpdate
-    @PostPersist
-    private void postPersistOrUpdate() {
-        indexEmail(this);
-    }
+	@PostPersist
+	private void postPersistOrUpdate() {
+		indexEmail(this);
+	}
 
 	@PreRemove
-    private void preRemove() {
-        deleteIndex(this);
-    }
+	private void preRemove() {
+		deleteIndex(this);
+	}
 
 	public static SolrServer solrServer() {
-        SolrServer _solrServer = new Email().solrServer;
-        if (_solrServer == null) throw new IllegalStateException("Solr server has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-        return _solrServer;
-    }
+		SolrServer _solrServer = new Email().solrServer;
+		if (_solrServer == null)
+			throw new IllegalStateException(
+					"Solr server has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return _solrServer;
+	}
 
 	public String toString() {
-        return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
-    }
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+	}
 }

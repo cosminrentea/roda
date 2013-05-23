@@ -36,288 +36,302 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Configurable
 @Entity
-@Table(schema = "public",name = "series_descr")
-
-
-
-
-
-
+@Table(schema = "public", name = "series_descr")
 public class SeriesDescr {
 
 	@Autowired
-    transient SolrServer solrServer;
+	transient SolrServer solrServer;
 
 	public static QueryResponse search(String queryString) {
-        String searchString = "SeriesDescr_solrsummary_t:" + queryString;
-        return search(new SolrQuery(searchString.toLowerCase()));
-    }
+		String searchString = "SeriesDescr_solrsummary_t:" + queryString;
+		return search(new SolrQuery(searchString.toLowerCase()));
+	}
 
 	public static QueryResponse search(SolrQuery query) {
-        try {
-            return solrServer().query(query);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return new QueryResponse();
-    }
+		try {
+			return solrServer().query(query);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new QueryResponse();
+	}
 
 	public static void indexSeriesDescr(SeriesDescr seriesDescr) {
-        List<SeriesDescr> seriesdescrs = new ArrayList<SeriesDescr>();
-        seriesdescrs.add(seriesDescr);
-        indexSeriesDescrs(seriesdescrs);
-    }
+		List<SeriesDescr> seriesdescrs = new ArrayList<SeriesDescr>();
+		seriesdescrs.add(seriesDescr);
+		indexSeriesDescrs(seriesdescrs);
+	}
 
 	@Async
-    public static void indexSeriesDescrs(Collection<SeriesDescr> seriesdescrs) {
-        List<SolrInputDocument> documents = new ArrayList<SolrInputDocument>();
-        for (SeriesDescr seriesDescr : seriesdescrs) {
-            SolrInputDocument sid = new SolrInputDocument();
-            sid.addField("id", "seriesdescr_" + seriesDescr.getId());
-            sid.addField("seriesDescr.langid_t", seriesDescr.getLangId());
-            sid.addField("seriesDescr.catalogid_t", seriesDescr.getCatalogId());
-            sid.addField("seriesDescr.notes_s", seriesDescr.getNotes());
-            sid.addField("seriesDescr.title_s", seriesDescr.getTitle());
-            sid.addField("seriesDescr.subtitle_s", seriesDescr.getSubtitle());
-            sid.addField("seriesDescr.alternativetitle_s", seriesDescr.getAlternativeTitle());
-            sid.addField("seriesDescr.abstract1_s", seriesDescr.getAbstract1());
-            sid.addField("seriesDescr.timecovered_s", seriesDescr.getTimeCovered());
-            sid.addField("seriesDescr.geographiccoverage_s", seriesDescr.getGeographicCoverage());
-            sid.addField("seriesDescr.id_t", seriesDescr.getId());
-            // Add summary field to allow searching documents for objects of this type
-            sid.addField("seriesdescr_solrsummary_t", new StringBuilder().append(seriesDescr.getLangId()).append(" ").append(seriesDescr.getCatalogId()).append(" ").append(seriesDescr.getNotes()).append(" ").append(seriesDescr.getTitle()).append(" ").append(seriesDescr.getSubtitle()).append(" ").append(seriesDescr.getAlternativeTitle()).append(" ").append(seriesDescr.getAbstract1()).append(" ").append(seriesDescr.getTimeCovered()).append(" ").append(seriesDescr.getGeographicCoverage()).append(" ").append(seriesDescr.getId()));
-            documents.add(sid);
-        }
-        try {
-            SolrServer solrServer = solrServer();
-            solrServer.add(documents);
-            solrServer.commit();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+	public static void indexSeriesDescrs(Collection<SeriesDescr> seriesdescrs) {
+		List<SolrInputDocument> documents = new ArrayList<SolrInputDocument>();
+		for (SeriesDescr seriesDescr : seriesdescrs) {
+			SolrInputDocument sid = new SolrInputDocument();
+			sid.addField("id", "seriesdescr_" + seriesDescr.getId());
+			sid.addField("seriesDescr.langid_t", seriesDescr.getLangId());
+			sid.addField("seriesDescr.catalogid_t", seriesDescr.getCatalogId());
+			sid.addField("seriesDescr.notes_s", seriesDescr.getNotes());
+			sid.addField("seriesDescr.title_s", seriesDescr.getTitle());
+			sid.addField("seriesDescr.subtitle_s", seriesDescr.getSubtitle());
+			sid.addField("seriesDescr.alternativetitle_s", seriesDescr.getAlternativeTitle());
+			sid.addField("seriesDescr.abstract1_s", seriesDescr.getAbstract1());
+			sid.addField("seriesDescr.timecovered_s", seriesDescr.getTimeCovered());
+			sid.addField("seriesDescr.geographiccoverage_s", seriesDescr.getGeographicCoverage());
+			sid.addField("seriesDescr.id_t", seriesDescr.getId());
+			// Add summary field to allow searching documents for objects of
+			// this type
+			sid.addField(
+					"seriesdescr_solrsummary_t",
+					new StringBuilder().append(seriesDescr.getLangId()).append(" ").append(seriesDescr.getCatalogId())
+							.append(" ").append(seriesDescr.getNotes()).append(" ").append(seriesDescr.getTitle())
+							.append(" ").append(seriesDescr.getSubtitle()).append(" ")
+							.append(seriesDescr.getAlternativeTitle()).append(" ").append(seriesDescr.getAbstract1())
+							.append(" ").append(seriesDescr.getTimeCovered()).append(" ")
+							.append(seriesDescr.getGeographicCoverage()).append(" ").append(seriesDescr.getId()));
+			documents.add(sid);
+		}
+		try {
+			SolrServer solrServer = solrServer();
+			solrServer.add(documents);
+			solrServer.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	@Async
-    public static void deleteIndex(SeriesDescr seriesDescr) {
-        SolrServer solrServer = solrServer();
-        try {
-            solrServer.deleteById("seriesdescr_" + seriesDescr.getId());
-            solrServer.commit();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+	public static void deleteIndex(SeriesDescr seriesDescr) {
+		SolrServer solrServer = solrServer();
+		try {
+			solrServer.deleteById("seriesdescr_" + seriesDescr.getId());
+			solrServer.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	@PostUpdate
-    @PostPersist
-    private void postPersistOrUpdate() {
-        indexSeriesDescr(this);
-    }
+	@PostPersist
+	private void postPersistOrUpdate() {
+		indexSeriesDescr(this);
+	}
 
 	@PreRemove
-    private void preRemove() {
-        deleteIndex(this);
-    }
+	private void preRemove() {
+		deleteIndex(this);
+	}
 
 	public static SolrServer solrServer() {
-        SolrServer _solrServer = new SeriesDescr().solrServer;
-        if (_solrServer == null) throw new IllegalStateException("Solr server has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-        return _solrServer;
-    }
+		SolrServer _solrServer = new SeriesDescr().solrServer;
+		if (_solrServer == null)
+			throw new IllegalStateException(
+					"Solr server has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return _solrServer;
+	}
 
 	@EmbeddedId
-    private SeriesDescrPK id;
+	private SeriesDescrPK id;
 
 	public SeriesDescrPK getId() {
-        return this.id;
-    }
+		return this.id;
+	}
 
 	public void setId(SeriesDescrPK id) {
-        this.id = id;
-    }
+		this.id = id;
+	}
 
 	public String toString() {
-        return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
-    }
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+	}
 
 	@PersistenceContext
-    transient EntityManager entityManager;
+	transient EntityManager entityManager;
 
 	public static final EntityManager entityManager() {
-        EntityManager em = new SeriesDescr().entityManager;
-        if (em == null) throw new IllegalStateException("Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-        return em;
-    }
+		EntityManager em = new SeriesDescr().entityManager;
+		if (em == null)
+			throw new IllegalStateException(
+					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return em;
+	}
 
 	public static long countSeriesDescrs() {
-        return entityManager().createQuery("SELECT COUNT(o) FROM SeriesDescr o", Long.class).getSingleResult();
-    }
+		return entityManager().createQuery("SELECT COUNT(o) FROM SeriesDescr o", Long.class).getSingleResult();
+	}
 
 	public static List<SeriesDescr> findAllSeriesDescrs() {
-        return entityManager().createQuery("SELECT o FROM SeriesDescr o", SeriesDescr.class).getResultList();
-    }
+		return entityManager().createQuery("SELECT o FROM SeriesDescr o", SeriesDescr.class).getResultList();
+	}
 
 	public static SeriesDescr findSeriesDescr(SeriesDescrPK id) {
-        if (id == null) return null;
-        return entityManager().find(SeriesDescr.class, id);
-    }
+		if (id == null)
+			return null;
+		return entityManager().find(SeriesDescr.class, id);
+	}
 
 	public static List<SeriesDescr> findSeriesDescrEntries(int firstResult, int maxResults) {
-        return entityManager().createQuery("SELECT o FROM SeriesDescr o", SeriesDescr.class).setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
-    }
+		return entityManager().createQuery("SELECT o FROM SeriesDescr o", SeriesDescr.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
+	}
 
 	@Transactional
-    public void persist() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        this.entityManager.persist(this);
-    }
+	public void persist() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.persist(this);
+	}
 
 	@Transactional
-    public void remove() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        if (this.entityManager.contains(this)) {
-            this.entityManager.remove(this);
-        } else {
-            SeriesDescr attached = SeriesDescr.findSeriesDescr(this.id);
-            this.entityManager.remove(attached);
-        }
-    }
+	public void remove() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		if (this.entityManager.contains(this)) {
+			this.entityManager.remove(this);
+		} else {
+			SeriesDescr attached = SeriesDescr.findSeriesDescr(this.id);
+			this.entityManager.remove(attached);
+		}
+	}
 
 	@Transactional
-    public void flush() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        this.entityManager.flush();
-    }
+	public void flush() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.flush();
+	}
 
 	@Transactional
-    public void clear() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        this.entityManager.clear();
-    }
+	public void clear() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.clear();
+	}
 
 	@Transactional
-    public SeriesDescr merge() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        SeriesDescr merged = this.entityManager.merge(this);
-        this.entityManager.flush();
-        return merged;
-    }
+	public SeriesDescr merge() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		SeriesDescr merged = this.entityManager.merge(this);
+		this.entityManager.flush();
+		return merged;
+	}
 
 	@ManyToOne
-    @JoinColumn(name = "lang_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
-    private Lang langId;
+	@JoinColumn(name = "lang_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	private Lang langId;
 
 	@ManyToOne
-    @JoinColumn(name = "catalog_id", referencedColumnName = "catalog_id", nullable = false, insertable = false, updatable = false)
-    private Series catalogId;
+	@JoinColumn(name = "catalog_id", referencedColumnName = "catalog_id", nullable = false, insertable = false, updatable = false)
+	private Series catalogId;
 
 	@Column(name = "notes", columnDefinition = "text")
-    private String notes;
+	private String notes;
 
 	@Column(name = "title", columnDefinition = "text")
-    @NotNull
-    private String title;
+	@NotNull
+	private String title;
 
 	@Column(name = "subtitle", columnDefinition = "text")
-    private String subtitle;
+	private String subtitle;
 
 	@Column(name = "alternative_title", columnDefinition = "text")
-    private String alternativeTitle;
+	private String alternativeTitle;
 
 	@Column(name = "abstract", columnDefinition = "text")
-    private String abstract1;
+	private String abstract1;
 
 	@Column(name = "time_covered", columnDefinition = "text")
-    private String timeCovered;
+	private String timeCovered;
 
 	@Column(name = "geographic_coverage", columnDefinition = "text")
-    private String geographicCoverage;
+	private String geographicCoverage;
 
 	public Lang getLangId() {
-        return langId;
-    }
+		return langId;
+	}
 
 	public void setLangId(Lang langId) {
-        this.langId = langId;
-    }
+		this.langId = langId;
+	}
 
 	public Series getCatalogId() {
-        return catalogId;
-    }
+		return catalogId;
+	}
 
 	public void setCatalogId(Series catalogId) {
-        this.catalogId = catalogId;
-    }
+		this.catalogId = catalogId;
+	}
 
 	public String getNotes() {
-        return notes;
-    }
+		return notes;
+	}
 
 	public void setNotes(String notes) {
-        this.notes = notes;
-    }
+		this.notes = notes;
+	}
 
 	public String getTitle() {
-        return title;
-    }
+		return title;
+	}
 
 	public void setTitle(String title) {
-        this.title = title;
-    }
+		this.title = title;
+	}
 
 	public String getSubtitle() {
-        return subtitle;
-    }
+		return subtitle;
+	}
 
 	public void setSubtitle(String subtitle) {
-        this.subtitle = subtitle;
-    }
+		this.subtitle = subtitle;
+	}
 
 	public String getAlternativeTitle() {
-        return alternativeTitle;
-    }
+		return alternativeTitle;
+	}
 
 	public void setAlternativeTitle(String alternativeTitle) {
-        this.alternativeTitle = alternativeTitle;
-    }
+		this.alternativeTitle = alternativeTitle;
+	}
 
 	public String getAbstract1() {
-        return abstract1;
-    }
+		return abstract1;
+	}
 
 	public void setAbstract1(String abstract1) {
-        this.abstract1 = abstract1;
-    }
+		this.abstract1 = abstract1;
+	}
 
 	public String getTimeCovered() {
-        return timeCovered;
-    }
+		return timeCovered;
+	}
 
 	public void setTimeCovered(String timeCovered) {
-        this.timeCovered = timeCovered;
-    }
+		this.timeCovered = timeCovered;
+	}
 
 	public String getGeographicCoverage() {
-        return geographicCoverage;
-    }
+		return geographicCoverage;
+	}
 
 	public void setGeographicCoverage(String geographicCoverage) {
-        this.geographicCoverage = geographicCoverage;
-    }
+		this.geographicCoverage = geographicCoverage;
+	}
 
 	public String toJson() {
-        return new JSONSerializer().exclude("*.class").serialize(this);
-    }
+		return new JSONSerializer().exclude("*.class").serialize(this);
+	}
 
 	public static SeriesDescr fromJsonToSeriesDescr(String json) {
-        return new JSONDeserializer<SeriesDescr>().use(null, SeriesDescr.class).deserialize(json);
-    }
+		return new JSONDeserializer<SeriesDescr>().use(null, SeriesDescr.class).deserialize(json);
+	}
 
 	public static String toJsonArray(Collection<SeriesDescr> collection) {
-        return new JSONSerializer().exclude("*.class").serialize(collection);
-    }
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
 
 	public static Collection<SeriesDescr> fromJsonArrayToSeriesDescrs(String json) {
-        return new JSONDeserializer<List<SeriesDescr>>().use(null, ArrayList.class).use("values", SeriesDescr.class).deserialize(json);
-    }
+		return new JSONDeserializer<List<SeriesDescr>>().use(null, ArrayList.class).use("values", SeriesDescr.class)
+				.deserialize(json);
+	}
 }

@@ -36,217 +36,228 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.transaction.annotation.Transactional;
 
 @Entity
-@Table(schema = "public",name = "user_setting_value")
+@Table(schema = "public", name = "user_setting_value")
 @Configurable
-
-
-
-
-
-
 public class UserSettingValue {
 
 	public String toJson() {
-        return new JSONSerializer().exclude("*.class").serialize(this);
-    }
+		return new JSONSerializer().exclude("*.class").serialize(this);
+	}
 
 	public static UserSettingValue fromJsonToUserSettingValue(String json) {
-        return new JSONDeserializer<UserSettingValue>().use(null, UserSettingValue.class).deserialize(json);
-    }
+		return new JSONDeserializer<UserSettingValue>().use(null, UserSettingValue.class).deserialize(json);
+	}
 
 	public static String toJsonArray(Collection<UserSettingValue> collection) {
-        return new JSONSerializer().exclude("*.class").serialize(collection);
-    }
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
 
 	public static Collection<UserSettingValue> fromJsonArrayToUserSettingValues(String json) {
-        return new JSONDeserializer<List<UserSettingValue>>().use(null, ArrayList.class).use("values", UserSettingValue.class).deserialize(json);
-    }
+		return new JSONDeserializer<List<UserSettingValue>>().use(null, ArrayList.class)
+				.use("values", UserSettingValue.class).deserialize(json);
+	}
 
 	@EmbeddedId
-    private UserSettingValuePK id;
+	private UserSettingValuePK id;
 
 	public UserSettingValuePK getId() {
-        return this.id;
-    }
+		return this.id;
+	}
 
 	public void setId(UserSettingValuePK id) {
-        this.id = id;
-    }
+		this.id = id;
+	}
 
 	@Autowired
-    transient SolrServer solrServer;
+	transient SolrServer solrServer;
 
 	public static QueryResponse search(String queryString) {
-        String searchString = "UserSettingValue_solrsummary_t:" + queryString;
-        return search(new SolrQuery(searchString.toLowerCase()));
-    }
+		String searchString = "UserSettingValue_solrsummary_t:" + queryString;
+		return search(new SolrQuery(searchString.toLowerCase()));
+	}
 
 	public static QueryResponse search(SolrQuery query) {
-        try {
-            return solrServer().query(query);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return new QueryResponse();
-    }
+		try {
+			return solrServer().query(query);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new QueryResponse();
+	}
 
 	public static void indexUserSettingValue(UserSettingValue userSettingValue) {
-        List<UserSettingValue> usersettingvalues = new ArrayList<UserSettingValue>();
-        usersettingvalues.add(userSettingValue);
-        indexUserSettingValues(usersettingvalues);
-    }
+		List<UserSettingValue> usersettingvalues = new ArrayList<UserSettingValue>();
+		usersettingvalues.add(userSettingValue);
+		indexUserSettingValues(usersettingvalues);
+	}
 
 	@Async
-    public static void indexUserSettingValues(Collection<UserSettingValue> usersettingvalues) {
-        List<SolrInputDocument> documents = new ArrayList<SolrInputDocument>();
-        for (UserSettingValue userSettingValue : usersettingvalues) {
-            SolrInputDocument sid = new SolrInputDocument();
-            sid.addField("id", "usersettingvalue_" + userSettingValue.getId());
-            sid.addField("userSettingValue.usersettingid_t", userSettingValue.getUserSettingId());
-            sid.addField("userSettingValue.userid_t", userSettingValue.getUserId());
-            sid.addField("userSettingValue.value_s", userSettingValue.getValue());
-            sid.addField("userSettingValue.id_t", userSettingValue.getId());
-            // Add summary field to allow searching documents for objects of this type
-            sid.addField("usersettingvalue_solrsummary_t", new StringBuilder().append(userSettingValue.getUserSettingId()).append(" ").append(userSettingValue.getUserId()).append(" ").append(userSettingValue.getValue()).append(" ").append(userSettingValue.getId()));
-            documents.add(sid);
-        }
-        try {
-            SolrServer solrServer = solrServer();
-            solrServer.add(documents);
-            solrServer.commit();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+	public static void indexUserSettingValues(Collection<UserSettingValue> usersettingvalues) {
+		List<SolrInputDocument> documents = new ArrayList<SolrInputDocument>();
+		for (UserSettingValue userSettingValue : usersettingvalues) {
+			SolrInputDocument sid = new SolrInputDocument();
+			sid.addField("id", "usersettingvalue_" + userSettingValue.getId());
+			sid.addField("userSettingValue.usersettingid_t", userSettingValue.getUserSettingId());
+			sid.addField("userSettingValue.userid_t", userSettingValue.getUserId());
+			sid.addField("userSettingValue.value_s", userSettingValue.getValue());
+			sid.addField("userSettingValue.id_t", userSettingValue.getId());
+			// Add summary field to allow searching documents for objects of
+			// this type
+			sid.addField(
+					"usersettingvalue_solrsummary_t",
+					new StringBuilder().append(userSettingValue.getUserSettingId()).append(" ")
+							.append(userSettingValue.getUserId()).append(" ").append(userSettingValue.getValue())
+							.append(" ").append(userSettingValue.getId()));
+			documents.add(sid);
+		}
+		try {
+			SolrServer solrServer = solrServer();
+			solrServer.add(documents);
+			solrServer.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	@Async
-    public static void deleteIndex(UserSettingValue userSettingValue) {
-        SolrServer solrServer = solrServer();
-        try {
-            solrServer.deleteById("usersettingvalue_" + userSettingValue.getId());
-            solrServer.commit();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+	public static void deleteIndex(UserSettingValue userSettingValue) {
+		SolrServer solrServer = solrServer();
+		try {
+			solrServer.deleteById("usersettingvalue_" + userSettingValue.getId());
+			solrServer.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	@PostUpdate
-    @PostPersist
-    private void postPersistOrUpdate() {
-        indexUserSettingValue(this);
-    }
+	@PostPersist
+	private void postPersistOrUpdate() {
+		indexUserSettingValue(this);
+	}
 
 	@PreRemove
-    private void preRemove() {
-        deleteIndex(this);
-    }
+	private void preRemove() {
+		deleteIndex(this);
+	}
 
 	public static SolrServer solrServer() {
-        SolrServer _solrServer = new UserSettingValue().solrServer;
-        if (_solrServer == null) throw new IllegalStateException("Solr server has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-        return _solrServer;
-    }
+		SolrServer _solrServer = new UserSettingValue().solrServer;
+		if (_solrServer == null)
+			throw new IllegalStateException(
+					"Solr server has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return _solrServer;
+	}
 
 	public String toString() {
-        return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
-    }
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+	}
 
 	@PersistenceContext
-    transient EntityManager entityManager;
+	transient EntityManager entityManager;
 
 	public static final EntityManager entityManager() {
-        EntityManager em = new UserSettingValue().entityManager;
-        if (em == null) throw new IllegalStateException("Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-        return em;
-    }
+		EntityManager em = new UserSettingValue().entityManager;
+		if (em == null)
+			throw new IllegalStateException(
+					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return em;
+	}
 
 	public static long countUserSettingValues() {
-        return entityManager().createQuery("SELECT COUNT(o) FROM UserSettingValue o", Long.class).getSingleResult();
-    }
+		return entityManager().createQuery("SELECT COUNT(o) FROM UserSettingValue o", Long.class).getSingleResult();
+	}
 
 	public static List<UserSettingValue> findAllUserSettingValues() {
-        return entityManager().createQuery("SELECT o FROM UserSettingValue o", UserSettingValue.class).getResultList();
-    }
+		return entityManager().createQuery("SELECT o FROM UserSettingValue o", UserSettingValue.class).getResultList();
+	}
 
 	public static UserSettingValue findUserSettingValue(UserSettingValuePK id) {
-        if (id == null) return null;
-        return entityManager().find(UserSettingValue.class, id);
-    }
+		if (id == null)
+			return null;
+		return entityManager().find(UserSettingValue.class, id);
+	}
 
 	public static List<UserSettingValue> findUserSettingValueEntries(int firstResult, int maxResults) {
-        return entityManager().createQuery("SELECT o FROM UserSettingValue o", UserSettingValue.class).setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
-    }
+		return entityManager().createQuery("SELECT o FROM UserSettingValue o", UserSettingValue.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
+	}
 
 	@Transactional
-    public void persist() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        this.entityManager.persist(this);
-    }
+	public void persist() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.persist(this);
+	}
 
 	@Transactional
-    public void remove() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        if (this.entityManager.contains(this)) {
-            this.entityManager.remove(this);
-        } else {
-            UserSettingValue attached = UserSettingValue.findUserSettingValue(this.id);
-            this.entityManager.remove(attached);
-        }
-    }
+	public void remove() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		if (this.entityManager.contains(this)) {
+			this.entityManager.remove(this);
+		} else {
+			UserSettingValue attached = UserSettingValue.findUserSettingValue(this.id);
+			this.entityManager.remove(attached);
+		}
+	}
 
 	@Transactional
-    public void flush() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        this.entityManager.flush();
-    }
+	public void flush() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.flush();
+	}
 
 	@Transactional
-    public void clear() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        this.entityManager.clear();
-    }
+	public void clear() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.clear();
+	}
 
 	@Transactional
-    public UserSettingValue merge() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        UserSettingValue merged = this.entityManager.merge(this);
-        this.entityManager.flush();
-        return merged;
-    }
+	public UserSettingValue merge() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		UserSettingValue merged = this.entityManager.merge(this);
+		this.entityManager.flush();
+		return merged;
+	}
 
 	@ManyToOne
-    @JoinColumn(name = "user_setting_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
-    private UserSetting userSettingId;
+	@JoinColumn(name = "user_setting_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	private UserSetting userSettingId;
 
 	@ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
-    private Users userId;
+	@JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	private Users userId;
 
 	@Column(name = "value", columnDefinition = "text")
-    @NotNull
-    private String value;
+	@NotNull
+	private String value;
 
 	public UserSetting getUserSettingId() {
-        return userSettingId;
-    }
+		return userSettingId;
+	}
 
 	public void setUserSettingId(UserSetting userSettingId) {
-        this.userSettingId = userSettingId;
-    }
+		this.userSettingId = userSettingId;
+	}
 
 	public Users getUserId() {
-        return userId;
-    }
+		return userId;
+	}
 
 	public void setUserId(Users userId) {
-        this.userId = userId;
-    }
+		this.userId = userId;
+	}
 
 	public String getValue() {
-        return value;
-    }
+		return value;
+	}
 
 	public void setValue(String value) {
-        this.value = value;
-    }
+		this.value = value;
+	}
 }

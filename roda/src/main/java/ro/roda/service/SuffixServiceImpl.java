@@ -5,36 +5,35 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ro.roda.domain.Suffix;
 
-
 @Service
 @Transactional
 public class SuffixServiceImpl implements SuffixService {
 
 	public long countAllSuffixes() {
-        return Suffix.countSuffixes();
-    }
+		return Suffix.countSuffixes();
+	}
 
 	public void deleteSuffix(Suffix suffix) {
-        suffix.remove();
-    }
+		suffix.remove();
+	}
 
 	public Suffix findSuffix(Integer id) {
-        return Suffix.findSuffix(id);
-    }
+		return Suffix.findSuffix(id);
+	}
 
 	public List<Suffix> findAllSuffixes() {
-        return Suffix.findAllSuffixes();
-    }
+		return Suffix.findAllSuffixes();
+	}
 
 	public List<Suffix> findSuffixEntries(int firstResult, int maxResults) {
-        return Suffix.findSuffixEntries(firstResult, maxResults);
-    }
+		return Suffix.findSuffixEntries(firstResult, maxResults);
+	}
 
 	public void saveSuffix(Suffix suffix) {
-        suffix.persist();
-    }
+		suffix.persist();
+	}
 
 	public Suffix updateSuffix(Suffix suffix) {
-        return suffix.merge();
-    }
+		return suffix.merge();
+	}
 }

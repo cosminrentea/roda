@@ -13,56 +13,56 @@ import org.springframework.roo.addon.jpa.identifier.RooIdentifier;
 
 @Embeddable
 @Configurable
-
 public final class PersonOrgPK implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	public String toJson() {
-        return new JSONSerializer().exclude("*.class").serialize(this);
-    }
+		return new JSONSerializer().exclude("*.class").serialize(this);
+	}
 
 	public static PersonOrgPK fromJsonToPersonOrgPK(String json) {
-        return new JSONDeserializer<PersonOrgPK>().use(null, PersonOrgPK.class).deserialize(json);
-    }
+		return new JSONDeserializer<PersonOrgPK>().use(null, PersonOrgPK.class).deserialize(json);
+	}
 
 	public static String toJsonArray(Collection<PersonOrgPK> collection) {
-        return new JSONSerializer().exclude("*.class").serialize(collection);
-    }
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
 
 	public static Collection<PersonOrgPK> fromJsonArrayToPersonOrgPKs(String json) {
-        return new JSONDeserializer<List<PersonOrgPK>>().use(null, ArrayList.class).use("values", PersonOrgPK.class).deserialize(json);
-    }
+		return new JSONDeserializer<List<PersonOrgPK>>().use(null, ArrayList.class).use("values", PersonOrgPK.class)
+				.deserialize(json);
+	}
 
 	@Column(name = "person_id", columnDefinition = "int4", nullable = false)
-    private Integer personId;
+	private Integer personId;
 
 	@Column(name = "org_id", columnDefinition = "int4", nullable = false)
-    private Integer orgId;
+	private Integer orgId;
 
 	@Column(name = "role_id", columnDefinition = "int4", nullable = false)
-    private Integer roleId;
+	private Integer roleId;
 
 	public PersonOrgPK(Integer personId, Integer orgId, Integer roleId) {
-        super();
-        this.personId = personId;
-        this.orgId = orgId;
-        this.roleId = roleId;
-    }
+		super();
+		this.personId = personId;
+		this.orgId = orgId;
+		this.roleId = roleId;
+	}
 
 	private PersonOrgPK() {
-        super();
-    }
+		super();
+	}
 
 	public Integer getPersonId() {
-        return personId;
-    }
+		return personId;
+	}
 
 	public Integer getOrgId() {
-        return orgId;
-    }
+		return orgId;
+	}
 
 	public Integer getRoleId() {
-        return roleId;
-    }
+		return roleId;
+	}
 }

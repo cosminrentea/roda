@@ -5,36 +5,35 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ro.roda.domain.OrgSufix;
 
-
 @Service
 @Transactional
 public class OrgSufixServiceImpl implements OrgSufixService {
 
 	public long countAllOrgSufixes() {
-        return OrgSufix.countOrgSufixes();
-    }
+		return OrgSufix.countOrgSufixes();
+	}
 
 	public void deleteOrgSufix(OrgSufix orgSufix) {
-        orgSufix.remove();
-    }
+		orgSufix.remove();
+	}
 
 	public OrgSufix findOrgSufix(Integer id) {
-        return OrgSufix.findOrgSufix(id);
-    }
+		return OrgSufix.findOrgSufix(id);
+	}
 
 	public List<OrgSufix> findAllOrgSufixes() {
-        return OrgSufix.findAllOrgSufixes();
-    }
+		return OrgSufix.findAllOrgSufixes();
+	}
 
 	public List<OrgSufix> findOrgSufixEntries(int firstResult, int maxResults) {
-        return OrgSufix.findOrgSufixEntries(firstResult, maxResults);
-    }
+		return OrgSufix.findOrgSufixEntries(firstResult, maxResults);
+	}
 
 	public void saveOrgSufix(OrgSufix orgSufix) {
-        orgSufix.persist();
-    }
+		orgSufix.persist();
+	}
 
 	public OrgSufix updateOrgSufix(OrgSufix orgSufix) {
-        return orgSufix.merge();
-    }
+		return orgSufix.merge();
+	}
 }

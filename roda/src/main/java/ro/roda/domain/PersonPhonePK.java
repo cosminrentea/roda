@@ -13,48 +13,48 @@ import org.springframework.roo.addon.jpa.identifier.RooIdentifier;
 
 @Configurable
 @Embeddable
-
 public final class PersonPhonePK implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	public String toJson() {
-        return new JSONSerializer().exclude("*.class").serialize(this);
-    }
+		return new JSONSerializer().exclude("*.class").serialize(this);
+	}
 
 	public static PersonPhonePK fromJsonToPersonPhonePK(String json) {
-        return new JSONDeserializer<PersonPhonePK>().use(null, PersonPhonePK.class).deserialize(json);
-    }
+		return new JSONDeserializer<PersonPhonePK>().use(null, PersonPhonePK.class).deserialize(json);
+	}
 
 	public static String toJsonArray(Collection<PersonPhonePK> collection) {
-        return new JSONSerializer().exclude("*.class").serialize(collection);
-    }
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
 
 	public static Collection<PersonPhonePK> fromJsonArrayToPersonPhonePKs(String json) {
-        return new JSONDeserializer<List<PersonPhonePK>>().use(null, ArrayList.class).use("values", PersonPhonePK.class).deserialize(json);
-    }
+		return new JSONDeserializer<List<PersonPhonePK>>().use(null, ArrayList.class)
+				.use("values", PersonPhonePK.class).deserialize(json);
+	}
 
 	@Column(name = "person_id", columnDefinition = "int4", nullable = false)
-    private Integer personId;
+	private Integer personId;
 
 	@Column(name = "phone_id", columnDefinition = "int4", nullable = false)
-    private Integer phoneId;
+	private Integer phoneId;
 
 	public PersonPhonePK(Integer personId, Integer phoneId) {
-        super();
-        this.personId = personId;
-        this.phoneId = phoneId;
-    }
+		super();
+		this.personId = personId;
+		this.phoneId = phoneId;
+	}
 
 	private PersonPhonePK() {
-        super();
-    }
+		super();
+	}
 
 	public Integer getPersonId() {
-        return personId;
-    }
+		return personId;
+	}
 
 	public Integer getPhoneId() {
-        return phoneId;
-    }
+		return phoneId;
+	}
 }

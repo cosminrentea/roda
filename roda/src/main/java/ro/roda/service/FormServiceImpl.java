@@ -5,36 +5,35 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ro.roda.domain.Form;
 
-
 @Service
 @Transactional
 public class FormServiceImpl implements FormService {
 
 	public long countAllForms() {
-        return Form.countForms();
-    }
+		return Form.countForms();
+	}
 
 	public void deleteForm(Form form) {
-        form.remove();
-    }
+		form.remove();
+	}
 
 	public Form findForm(Long id) {
-        return Form.findForm(id);
-    }
+		return Form.findForm(id);
+	}
 
 	public List<Form> findAllForms() {
-        return Form.findAllForms();
-    }
+		return Form.findAllForms();
+	}
 
 	public List<Form> findFormEntries(int firstResult, int maxResults) {
-        return Form.findFormEntries(firstResult, maxResults);
-    }
+		return Form.findFormEntries(firstResult, maxResults);
+	}
 
 	public void saveForm(Form form) {
-        form.persist();
-    }
+		form.persist();
+	}
 
 	public Form updateForm(Form form) {
-        return form.merge();
-    }
+		return form.merge();
+	}
 }

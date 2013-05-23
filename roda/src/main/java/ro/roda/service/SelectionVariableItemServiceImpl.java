@@ -6,36 +6,35 @@ import org.springframework.transaction.annotation.Transactional;
 import ro.roda.domain.SelectionVariableItem;
 import ro.roda.domain.SelectionVariableItemPK;
 
-
 @Service
 @Transactional
 public class SelectionVariableItemServiceImpl implements SelectionVariableItemService {
 
 	public long countAllSelectionVariableItems() {
-        return SelectionVariableItem.countSelectionVariableItems();
-    }
+		return SelectionVariableItem.countSelectionVariableItems();
+	}
 
 	public void deleteSelectionVariableItem(SelectionVariableItem selectionVariableItem) {
-        selectionVariableItem.remove();
-    }
+		selectionVariableItem.remove();
+	}
 
 	public SelectionVariableItem findSelectionVariableItem(SelectionVariableItemPK id) {
-        return SelectionVariableItem.findSelectionVariableItem(id);
-    }
+		return SelectionVariableItem.findSelectionVariableItem(id);
+	}
 
 	public List<SelectionVariableItem> findAllSelectionVariableItems() {
-        return SelectionVariableItem.findAllSelectionVariableItems();
-    }
+		return SelectionVariableItem.findAllSelectionVariableItems();
+	}
 
 	public List<SelectionVariableItem> findSelectionVariableItemEntries(int firstResult, int maxResults) {
-        return SelectionVariableItem.findSelectionVariableItemEntries(firstResult, maxResults);
-    }
+		return SelectionVariableItem.findSelectionVariableItemEntries(firstResult, maxResults);
+	}
 
 	public void saveSelectionVariableItem(SelectionVariableItem selectionVariableItem) {
-        selectionVariableItem.persist();
-    }
+		selectionVariableItem.persist();
+	}
 
 	public SelectionVariableItem updateSelectionVariableItem(SelectionVariableItem selectionVariableItem) {
-        return selectionVariableItem.merge();
-    }
+		return selectionVariableItem.merge();
+	}
 }

@@ -13,48 +13,48 @@ import org.springframework.roo.addon.jpa.identifier.RooIdentifier;
 
 @Embeddable
 @Configurable
-
 public final class PersonInternetPK implements Serializable {
 
 	@Column(name = "person_id", columnDefinition = "int4", nullable = false)
-    private Integer personId;
+	private Integer personId;
 
 	@Column(name = "internet_id", columnDefinition = "int4", nullable = false)
-    private Integer internetId;
+	private Integer internetId;
 
 	public PersonInternetPK(Integer personId, Integer internetId) {
-        super();
-        this.personId = personId;
-        this.internetId = internetId;
-    }
+		super();
+		this.personId = personId;
+		this.internetId = internetId;
+	}
 
 	private PersonInternetPK() {
-        super();
-    }
+		super();
+	}
 
 	public Integer getPersonId() {
-        return personId;
-    }
+		return personId;
+	}
 
 	public Integer getInternetId() {
-        return internetId;
-    }
+		return internetId;
+	}
 
 	private static final long serialVersionUID = 1L;
 
 	public String toJson() {
-        return new JSONSerializer().exclude("*.class").serialize(this);
-    }
+		return new JSONSerializer().exclude("*.class").serialize(this);
+	}
 
 	public static PersonInternetPK fromJsonToPersonInternetPK(String json) {
-        return new JSONDeserializer<PersonInternetPK>().use(null, PersonInternetPK.class).deserialize(json);
-    }
+		return new JSONDeserializer<PersonInternetPK>().use(null, PersonInternetPK.class).deserialize(json);
+	}
 
 	public static String toJsonArray(Collection<PersonInternetPK> collection) {
-        return new JSONSerializer().exclude("*.class").serialize(collection);
-    }
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
 
 	public static Collection<PersonInternetPK> fromJsonArrayToPersonInternetPKs(String json) {
-        return new JSONDeserializer<List<PersonInternetPK>>().use(null, ArrayList.class).use("values", PersonInternetPK.class).deserialize(json);
-    }
+		return new JSONDeserializer<List<PersonInternetPK>>().use(null, ArrayList.class)
+				.use("values", PersonInternetPK.class).deserialize(json);
+	}
 }

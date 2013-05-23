@@ -5,36 +5,35 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ro.roda.domain.CmsSnippetGroup;
 
-
 @Service
 @Transactional
 public class CmsSnippetGroupServiceImpl implements CmsSnippetGroupService {
 
 	public long countAllCmsSnippetGroups() {
-        return CmsSnippetGroup.countCmsSnippetGroups();
-    }
+		return CmsSnippetGroup.countCmsSnippetGroups();
+	}
 
 	public void deleteCmsSnippetGroup(CmsSnippetGroup cmsSnippetGroup) {
-        cmsSnippetGroup.remove();
-    }
+		cmsSnippetGroup.remove();
+	}
 
 	public CmsSnippetGroup findCmsSnippetGroup(Integer id) {
-        return CmsSnippetGroup.findCmsSnippetGroup(id);
-    }
+		return CmsSnippetGroup.findCmsSnippetGroup(id);
+	}
 
 	public List<CmsSnippetGroup> findAllCmsSnippetGroups() {
-        return CmsSnippetGroup.findAllCmsSnippetGroups();
-    }
+		return CmsSnippetGroup.findAllCmsSnippetGroups();
+	}
 
 	public List<CmsSnippetGroup> findCmsSnippetGroupEntries(int firstResult, int maxResults) {
-        return CmsSnippetGroup.findCmsSnippetGroupEntries(firstResult, maxResults);
-    }
+		return CmsSnippetGroup.findCmsSnippetGroupEntries(firstResult, maxResults);
+	}
 
 	public void saveCmsSnippetGroup(CmsSnippetGroup cmsSnippetGroup) {
-        cmsSnippetGroup.persist();
-    }
+		cmsSnippetGroup.persist();
+	}
 
 	public CmsSnippetGroup updateCmsSnippetGroup(CmsSnippetGroup cmsSnippetGroup) {
-        return cmsSnippetGroup.merge();
-    }
+		return cmsSnippetGroup.merge();
+	}
 }

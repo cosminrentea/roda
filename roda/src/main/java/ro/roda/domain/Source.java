@@ -39,205 +39,213 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.transaction.annotation.Transactional;
 
 @Entity
-@Table(schema = "public",name = "source")
+@Table(schema = "public", name = "source")
 @Configurable
-
-
-
-
-
-
 public class Source {
 
 	@ManyToMany
-    @JoinTable(name = "study_source", joinColumns = { @JoinColumn(name = "source_id", nullable = false) }, inverseJoinColumns = { @JoinColumn(name = "study_id", nullable = false) })
-    private Set<Study> studies;
+	@JoinTable(name = "study_source", joinColumns = { @JoinColumn(name = "source_id", nullable = false) }, inverseJoinColumns = { @JoinColumn(name = "study_id", nullable = false) })
+	private Set<Study> studies;
 
 	@Column(name = "citation", columnDefinition = "text")
-    @NotNull
-    private String citation;
+	@NotNull
+	private String citation;
 
 	public Set<Study> getStudies() {
-        return studies;
-    }
+		return studies;
+	}
 
 	public void setStudies(Set<Study> studies) {
-        this.studies = studies;
-    }
+		this.studies = studies;
+	}
 
 	public String getCitation() {
-        return citation;
-    }
+		return citation;
+	}
 
 	public void setCitation(String citation) {
-        this.citation = citation;
-    }
+		this.citation = citation;
+	}
 
 	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", columnDefinition = "serial")
-    private Integer id;
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id", columnDefinition = "serial")
+	private Integer id;
 
 	public Integer getId() {
-        return this.id;
-    }
+		return this.id;
+	}
 
 	public void setId(Integer id) {
-        this.id = id;
-    }
+		this.id = id;
+	}
 
 	public String toString() {
-        return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
-    }
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+	}
 
 	@Autowired
-    transient SolrServer solrServer;
+	transient SolrServer solrServer;
 
 	public static QueryResponse search(String queryString) {
-        String searchString = "Source_solrsummary_t:" + queryString;
-        return search(new SolrQuery(searchString.toLowerCase()));
-    }
+		String searchString = "Source_solrsummary_t:" + queryString;
+		return search(new SolrQuery(searchString.toLowerCase()));
+	}
 
 	public static QueryResponse search(SolrQuery query) {
-        try {
-            return solrServer().query(query);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return new QueryResponse();
-    }
+		try {
+			return solrServer().query(query);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new QueryResponse();
+	}
 
 	public static void indexSource(Source source) {
-        List<Source> sources = new ArrayList<Source>();
-        sources.add(source);
-        indexSources(sources);
-    }
+		List<Source> sources = new ArrayList<Source>();
+		sources.add(source);
+		indexSources(sources);
+	}
 
 	@Async
-    public static void indexSources(Collection<Source> sources) {
-        List<SolrInputDocument> documents = new ArrayList<SolrInputDocument>();
-        for (Source source : sources) {
-            SolrInputDocument sid = new SolrInputDocument();
-            sid.addField("id", "source_" + source.getId());
-            sid.addField("source.citation_s", source.getCitation());
-            sid.addField("source.id_i", source.getId());
-            // Add summary field to allow searching documents for objects of this type
-            sid.addField("source_solrsummary_t", new StringBuilder().append(source.getCitation()).append(" ").append(source.getId()));
-            documents.add(sid);
-        }
-        try {
-            SolrServer solrServer = solrServer();
-            solrServer.add(documents);
-            solrServer.commit();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+	public static void indexSources(Collection<Source> sources) {
+		List<SolrInputDocument> documents = new ArrayList<SolrInputDocument>();
+		for (Source source : sources) {
+			SolrInputDocument sid = new SolrInputDocument();
+			sid.addField("id", "source_" + source.getId());
+			sid.addField("source.citation_s", source.getCitation());
+			sid.addField("source.id_i", source.getId());
+			// Add summary field to allow searching documents for objects of
+			// this type
+			sid.addField("source_solrsummary_t",
+					new StringBuilder().append(source.getCitation()).append(" ").append(source.getId()));
+			documents.add(sid);
+		}
+		try {
+			SolrServer solrServer = solrServer();
+			solrServer.add(documents);
+			solrServer.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	@Async
-    public static void deleteIndex(Source source) {
-        SolrServer solrServer = solrServer();
-        try {
-            solrServer.deleteById("source_" + source.getId());
-            solrServer.commit();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+	public static void deleteIndex(Source source) {
+		SolrServer solrServer = solrServer();
+		try {
+			solrServer.deleteById("source_" + source.getId());
+			solrServer.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	@PostUpdate
-    @PostPersist
-    private void postPersistOrUpdate() {
-        indexSource(this);
-    }
+	@PostPersist
+	private void postPersistOrUpdate() {
+		indexSource(this);
+	}
 
 	@PreRemove
-    private void preRemove() {
-        deleteIndex(this);
-    }
+	private void preRemove() {
+		deleteIndex(this);
+	}
 
 	public static SolrServer solrServer() {
-        SolrServer _solrServer = new Source().solrServer;
-        if (_solrServer == null) throw new IllegalStateException("Solr server has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-        return _solrServer;
-    }
+		SolrServer _solrServer = new Source().solrServer;
+		if (_solrServer == null)
+			throw new IllegalStateException(
+					"Solr server has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return _solrServer;
+	}
 
 	public String toJson() {
-        return new JSONSerializer().exclude("*.class").serialize(this);
-    }
+		return new JSONSerializer().exclude("*.class").serialize(this);
+	}
 
 	public static Source fromJsonToSource(String json) {
-        return new JSONDeserializer<Source>().use(null, Source.class).deserialize(json);
-    }
+		return new JSONDeserializer<Source>().use(null, Source.class).deserialize(json);
+	}
 
 	public static String toJsonArray(Collection<Source> collection) {
-        return new JSONSerializer().exclude("*.class").serialize(collection);
-    }
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
 
 	public static Collection<Source> fromJsonArrayToSources(String json) {
-        return new JSONDeserializer<List<Source>>().use(null, ArrayList.class).use("values", Source.class).deserialize(json);
-    }
+		return new JSONDeserializer<List<Source>>().use(null, ArrayList.class).use("values", Source.class)
+				.deserialize(json);
+	}
 
 	@PersistenceContext
-    transient EntityManager entityManager;
+	transient EntityManager entityManager;
 
 	public static final EntityManager entityManager() {
-        EntityManager em = new Source().entityManager;
-        if (em == null) throw new IllegalStateException("Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-        return em;
-    }
+		EntityManager em = new Source().entityManager;
+		if (em == null)
+			throw new IllegalStateException(
+					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return em;
+	}
 
 	public static long countSources() {
-        return entityManager().createQuery("SELECT COUNT(o) FROM Source o", Long.class).getSingleResult();
-    }
+		return entityManager().createQuery("SELECT COUNT(o) FROM Source o", Long.class).getSingleResult();
+	}
 
 	public static List<Source> findAllSources() {
-        return entityManager().createQuery("SELECT o FROM Source o", Source.class).getResultList();
-    }
+		return entityManager().createQuery("SELECT o FROM Source o", Source.class).getResultList();
+	}
 
 	public static Source findSource(Integer id) {
-        if (id == null) return null;
-        return entityManager().find(Source.class, id);
-    }
+		if (id == null)
+			return null;
+		return entityManager().find(Source.class, id);
+	}
 
 	public static List<Source> findSourceEntries(int firstResult, int maxResults) {
-        return entityManager().createQuery("SELECT o FROM Source o", Source.class).setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
-    }
+		return entityManager().createQuery("SELECT o FROM Source o", Source.class).setFirstResult(firstResult)
+				.setMaxResults(maxResults).getResultList();
+	}
 
 	@Transactional
-    public void persist() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        this.entityManager.persist(this);
-    }
+	public void persist() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.persist(this);
+	}
 
 	@Transactional
-    public void remove() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        if (this.entityManager.contains(this)) {
-            this.entityManager.remove(this);
-        } else {
-            Source attached = Source.findSource(this.id);
-            this.entityManager.remove(attached);
-        }
-    }
+	public void remove() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		if (this.entityManager.contains(this)) {
+			this.entityManager.remove(this);
+		} else {
+			Source attached = Source.findSource(this.id);
+			this.entityManager.remove(attached);
+		}
+	}
 
 	@Transactional
-    public void flush() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        this.entityManager.flush();
-    }
+	public void flush() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.flush();
+	}
 
 	@Transactional
-    public void clear() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        this.entityManager.clear();
-    }
+	public void clear() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.clear();
+	}
 
 	@Transactional
-    public Source merge() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        Source merged = this.entityManager.merge(this);
-        this.entityManager.flush();
-        return merged;
-    }
+	public Source merge() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		Source merged = this.entityManager.merge(this);
+		this.entityManager.flush();
+		return merged;
+	}
 }

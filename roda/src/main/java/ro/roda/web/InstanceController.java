@@ -37,208 +37,214 @@ import ro.roda.service.UsersService;
 
 @RequestMapping("/instances")
 @Controller
-
-
 public class InstanceController {
 
 	@Autowired
-    InstanceService instanceService;
+	InstanceService instanceService;
 
 	@Autowired
-    FileService fileService;
+	FileService fileService;
 
 	@Autowired
-    InstanceDescrService instanceDescrService;
+	InstanceDescrService instanceDescrService;
 
 	@Autowired
-    InstanceFormService instanceFormService;
+	InstanceFormService instanceFormService;
 
 	@Autowired
-    InstanceOrgService instanceOrgService;
+	InstanceOrgService instanceOrgService;
 
 	@Autowired
-    InstancePersonService instancePersonService;
+	InstancePersonService instancePersonService;
 
 	@Autowired
-    InstanceRightTargetGroupService instanceRightTargetGroupService;
+	InstanceRightTargetGroupService instanceRightTargetGroupService;
 
 	@Autowired
-    InstanceVariableService instanceVariableService;
+	InstanceVariableService instanceVariableService;
 
 	@Autowired
-    StudyService studyService;
+	StudyService studyService;
 
 	@Autowired
-    UsersService usersService;
+	UsersService usersService;
 
 	@RequestMapping(method = RequestMethod.POST, produces = "text/html")
-    public String create(@Valid Instance instance, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
-        if (bindingResult.hasErrors()) {
-            populateEditForm(uiModel, instance);
-            return "instances/create";
-        }
-        uiModel.asMap().clear();
-        instanceService.saveInstance(instance);
-        return "redirect:/instances/" + encodeUrlPathSegment(instance.getId().toString(), httpServletRequest);
-    }
+	public String create(@Valid Instance instance, BindingResult bindingResult, Model uiModel,
+			HttpServletRequest httpServletRequest) {
+		if (bindingResult.hasErrors()) {
+			populateEditForm(uiModel, instance);
+			return "instances/create";
+		}
+		uiModel.asMap().clear();
+		instanceService.saveInstance(instance);
+		return "redirect:/instances/" + encodeUrlPathSegment(instance.getId().toString(), httpServletRequest);
+	}
 
 	@RequestMapping(params = "form", produces = "text/html")
-    public String createForm(Model uiModel) {
-        populateEditForm(uiModel, new Instance());
-        return "instances/create";
-    }
+	public String createForm(Model uiModel) {
+		populateEditForm(uiModel, new Instance());
+		return "instances/create";
+	}
 
 	@RequestMapping(value = "/{id}", produces = "text/html")
-    public String show(@PathVariable("id") Integer id, Model uiModel) {
-        addDateTimeFormatPatterns(uiModel);
-        uiModel.addAttribute("instance", instanceService.findInstance(id));
-        uiModel.addAttribute("itemId", id);
-        return "instances/show";
-    }
+	public String show(@PathVariable("id") Integer id, Model uiModel) {
+		addDateTimeFormatPatterns(uiModel);
+		uiModel.addAttribute("instance", instanceService.findInstance(id));
+		uiModel.addAttribute("itemId", id);
+		return "instances/show";
+	}
 
 	@RequestMapping(produces = "text/html")
-    public String list(@RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        if (page != null || size != null) {
-            int sizeNo = size == null ? 10 : size.intValue();
-            final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-            uiModel.addAttribute("instances", instanceService.findInstanceEntries(firstResult, sizeNo));
-            float nrOfPages = (float) instanceService.countAllInstances() / sizeNo;
-            uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1 : nrOfPages));
-        } else {
-            uiModel.addAttribute("instances", instanceService.findAllInstances());
-        }
-        addDateTimeFormatPatterns(uiModel);
-        return "instances/list";
-    }
+	public String list(@RequestParam(value = "page", required = false) Integer page,
+			@RequestParam(value = "size", required = false) Integer size, Model uiModel) {
+		if (page != null || size != null) {
+			int sizeNo = size == null ? 10 : size.intValue();
+			final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
+			uiModel.addAttribute("instances", instanceService.findInstanceEntries(firstResult, sizeNo));
+			float nrOfPages = (float) instanceService.countAllInstances() / sizeNo;
+			uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1
+					: nrOfPages));
+		} else {
+			uiModel.addAttribute("instances", instanceService.findAllInstances());
+		}
+		addDateTimeFormatPatterns(uiModel);
+		return "instances/list";
+	}
 
 	@RequestMapping(method = RequestMethod.PUT, produces = "text/html")
-    public String update(@Valid Instance instance, BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
-        if (bindingResult.hasErrors()) {
-            populateEditForm(uiModel, instance);
-            return "instances/update";
-        }
-        uiModel.asMap().clear();
-        instanceService.updateInstance(instance);
-        return "redirect:/instances/" + encodeUrlPathSegment(instance.getId().toString(), httpServletRequest);
-    }
+	public String update(@Valid Instance instance, BindingResult bindingResult, Model uiModel,
+			HttpServletRequest httpServletRequest) {
+		if (bindingResult.hasErrors()) {
+			populateEditForm(uiModel, instance);
+			return "instances/update";
+		}
+		uiModel.asMap().clear();
+		instanceService.updateInstance(instance);
+		return "redirect:/instances/" + encodeUrlPathSegment(instance.getId().toString(), httpServletRequest);
+	}
 
 	@RequestMapping(value = "/{id}", params = "form", produces = "text/html")
-    public String updateForm(@PathVariable("id") Integer id, Model uiModel) {
-        populateEditForm(uiModel, instanceService.findInstance(id));
-        return "instances/update";
-    }
+	public String updateForm(@PathVariable("id") Integer id, Model uiModel) {
+		populateEditForm(uiModel, instanceService.findInstance(id));
+		return "instances/update";
+	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
-    public String delete(@PathVariable("id") Integer id, @RequestParam(value = "page", required = false) Integer page, @RequestParam(value = "size", required = false) Integer size, Model uiModel) {
-        Instance instance = instanceService.findInstance(id);
-        instanceService.deleteInstance(instance);
-        uiModel.asMap().clear();
-        uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
-        uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
-        return "redirect:/instances";
-    }
+	public String delete(@PathVariable("id") Integer id, @RequestParam(value = "page", required = false) Integer page,
+			@RequestParam(value = "size", required = false) Integer size, Model uiModel) {
+		Instance instance = instanceService.findInstance(id);
+		instanceService.deleteInstance(instance);
+		uiModel.asMap().clear();
+		uiModel.addAttribute("page", (page == null) ? "1" : page.toString());
+		uiModel.addAttribute("size", (size == null) ? "10" : size.toString());
+		return "redirect:/instances";
+	}
 
 	void addDateTimeFormatPatterns(Model uiModel) {
-        uiModel.addAttribute("instance_added_date_format", DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
-    }
+		uiModel.addAttribute("instance_added_date_format",
+				DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
+	}
 
 	void populateEditForm(Model uiModel, Instance instance) {
-        uiModel.addAttribute("instance", instance);
-        addDateTimeFormatPatterns(uiModel);
-        uiModel.addAttribute("files", fileService.findAllFiles());
-        uiModel.addAttribute("instancedescrs", instanceDescrService.findAllInstanceDescrs());
-        uiModel.addAttribute("instanceforms", instanceFormService.findAllInstanceForms());
-        uiModel.addAttribute("instanceorgs", instanceOrgService.findAllInstanceOrgs());
-        uiModel.addAttribute("instancepeople", instancePersonService.findAllInstancepeople());
-        uiModel.addAttribute("instancerighttargetgroups", instanceRightTargetGroupService.findAllInstanceRightTargetGroups());
-        uiModel.addAttribute("instancevariables", instanceVariableService.findAllInstanceVariables());
-        uiModel.addAttribute("studys", studyService.findAllStudys());
-        uiModel.addAttribute("userses", usersService.findAllUserses());
-    }
+		uiModel.addAttribute("instance", instance);
+		addDateTimeFormatPatterns(uiModel);
+		uiModel.addAttribute("files", fileService.findAllFiles());
+		uiModel.addAttribute("instancedescrs", instanceDescrService.findAllInstanceDescrs());
+		uiModel.addAttribute("instanceforms", instanceFormService.findAllInstanceForms());
+		uiModel.addAttribute("instanceorgs", instanceOrgService.findAllInstanceOrgs());
+		uiModel.addAttribute("instancepeople", instancePersonService.findAllInstancepeople());
+		uiModel.addAttribute("instancerighttargetgroups",
+				instanceRightTargetGroupService.findAllInstanceRightTargetGroups());
+		uiModel.addAttribute("instancevariables", instanceVariableService.findAllInstanceVariables());
+		uiModel.addAttribute("studys", studyService.findAllStudys());
+		uiModel.addAttribute("userses", usersService.findAllUserses());
+	}
 
 	String encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {
-        String enc = httpServletRequest.getCharacterEncoding();
-        if (enc == null) {
-            enc = WebUtils.DEFAULT_CHARACTER_ENCODING;
-        }
-        try {
-            pathSegment = UriUtils.encodePathSegment(pathSegment, enc);
-        } catch (UnsupportedEncodingException uee) {}
-        return pathSegment;
-    }
+		String enc = httpServletRequest.getCharacterEncoding();
+		if (enc == null) {
+			enc = WebUtils.DEFAULT_CHARACTER_ENCODING;
+		}
+		try {
+			pathSegment = UriUtils.encodePathSegment(pathSegment, enc);
+		} catch (UnsupportedEncodingException uee) {
+		}
+		return pathSegment;
+	}
 
 	@RequestMapping(value = "/{id}", headers = "Accept=application/json")
-    @ResponseBody
-    public ResponseEntity<String> showJson(@PathVariable("id") Integer id) {
-        Instance instance = instanceService.findInstance(id);
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Type", "application/json; charset=utf-8");
-        if (instance == null) {
-            return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<String>(instance.toJson(), headers, HttpStatus.OK);
-    }
+	@ResponseBody
+	public ResponseEntity<String> showJson(@PathVariable("id") Integer id) {
+		Instance instance = instanceService.findInstance(id);
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Type", "application/json; charset=utf-8");
+		if (instance == null) {
+			return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<String>(instance.toJson(), headers, HttpStatus.OK);
+	}
 
 	@RequestMapping(headers = "Accept=application/json")
-    @ResponseBody
-    public ResponseEntity<String> listJson() {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Type", "application/json; charset=utf-8");
-        List<Instance> result = instanceService.findAllInstances();
-        return new ResponseEntity<String>(Instance.toJsonArray(result), headers, HttpStatus.OK);
-    }
+	@ResponseBody
+	public ResponseEntity<String> listJson() {
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Type", "application/json; charset=utf-8");
+		List<Instance> result = instanceService.findAllInstances();
+		return new ResponseEntity<String>(Instance.toJsonArray(result), headers, HttpStatus.OK);
+	}
 
 	@RequestMapping(method = RequestMethod.POST, headers = "Accept=application/json")
-    public ResponseEntity<String> createFromJson(@RequestBody String json) {
-        Instance instance = Instance.fromJsonToInstance(json);
-        instanceService.saveInstance(instance);
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Type", "application/json");
-        return new ResponseEntity<String>(headers, HttpStatus.CREATED);
-    }
+	public ResponseEntity<String> createFromJson(@RequestBody String json) {
+		Instance instance = Instance.fromJsonToInstance(json);
+		instanceService.saveInstance(instance);
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Type", "application/json");
+		return new ResponseEntity<String>(headers, HttpStatus.CREATED);
+	}
 
 	@RequestMapping(value = "/jsonArray", method = RequestMethod.POST, headers = "Accept=application/json")
-    public ResponseEntity<String> createFromJsonArray(@RequestBody String json) {
-        for (Instance instance: Instance.fromJsonArrayToInstances(json)) {
-            instanceService.saveInstance(instance);
-        }
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Type", "application/json");
-        return new ResponseEntity<String>(headers, HttpStatus.CREATED);
-    }
+	public ResponseEntity<String> createFromJsonArray(@RequestBody String json) {
+		for (Instance instance : Instance.fromJsonArrayToInstances(json)) {
+			instanceService.saveInstance(instance);
+		}
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Type", "application/json");
+		return new ResponseEntity<String>(headers, HttpStatus.CREATED);
+	}
 
 	@RequestMapping(method = RequestMethod.PUT, headers = "Accept=application/json")
-    public ResponseEntity<String> updateFromJson(@RequestBody String json) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Type", "application/json");
-        Instance instance = Instance.fromJsonToInstance(json);
-        if (instanceService.updateInstance(instance) == null) {
-            return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<String>(headers, HttpStatus.OK);
-    }
+	public ResponseEntity<String> updateFromJson(@RequestBody String json) {
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Type", "application/json");
+		Instance instance = Instance.fromJsonToInstance(json);
+		if (instanceService.updateInstance(instance) == null) {
+			return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<String>(headers, HttpStatus.OK);
+	}
 
 	@RequestMapping(value = "/jsonArray", method = RequestMethod.PUT, headers = "Accept=application/json")
-    public ResponseEntity<String> updateFromJsonArray(@RequestBody String json) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Type", "application/json");
-        for (Instance instance: Instance.fromJsonArrayToInstances(json)) {
-            if (instanceService.updateInstance(instance) == null) {
-                return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
-            }
-        }
-        return new ResponseEntity<String>(headers, HttpStatus.OK);
-    }
+	public ResponseEntity<String> updateFromJsonArray(@RequestBody String json) {
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Type", "application/json");
+		for (Instance instance : Instance.fromJsonArrayToInstances(json)) {
+			if (instanceService.updateInstance(instance) == null) {
+				return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
+			}
+		}
+		return new ResponseEntity<String>(headers, HttpStatus.OK);
+	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE, headers = "Accept=application/json")
-    public ResponseEntity<String> deleteFromJson(@PathVariable("id") Integer id) {
-        Instance instance = instanceService.findInstance(id);
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Type", "application/json");
-        if (instance == null) {
-            return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
-        }
-        instanceService.deleteInstance(instance);
-        return new ResponseEntity<String>(headers, HttpStatus.OK);
-    }
+	public ResponseEntity<String> deleteFromJson(@PathVariable("id") Integer id) {
+		Instance instance = instanceService.findInstance(id);
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Type", "application/json");
+		if (instance == null) {
+			return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
+		}
+		instanceService.deleteInstance(instance);
+		return new ResponseEntity<String>(headers, HttpStatus.OK);
+	}
 }

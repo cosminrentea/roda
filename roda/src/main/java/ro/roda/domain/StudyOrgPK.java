@@ -13,56 +13,56 @@ import org.springframework.roo.addon.jpa.identifier.RooIdentifier;
 
 @Embeddable
 @Configurable
-
 public final class StudyOrgPK implements Serializable {
 
 	@Column(name = "org_id", columnDefinition = "int4", nullable = false)
-    private Integer orgId;
+	private Integer orgId;
 
 	@Column(name = "study_id", columnDefinition = "int4", nullable = false)
-    private Integer studyId;
+	private Integer studyId;
 
 	@Column(name = "assoctype_id", columnDefinition = "int4", nullable = false)
-    private Integer assoctypeId;
+	private Integer assoctypeId;
 
 	public StudyOrgPK(Integer orgId, Integer studyId, Integer assoctypeId) {
-        super();
-        this.orgId = orgId;
-        this.studyId = studyId;
-        this.assoctypeId = assoctypeId;
-    }
+		super();
+		this.orgId = orgId;
+		this.studyId = studyId;
+		this.assoctypeId = assoctypeId;
+	}
 
 	private StudyOrgPK() {
-        super();
-    }
+		super();
+	}
 
 	public Integer getOrgId() {
-        return orgId;
-    }
+		return orgId;
+	}
 
 	public Integer getStudyId() {
-        return studyId;
-    }
+		return studyId;
+	}
 
 	public Integer getAssoctypeId() {
-        return assoctypeId;
-    }
+		return assoctypeId;
+	}
 
 	public String toJson() {
-        return new JSONSerializer().exclude("*.class").serialize(this);
-    }
+		return new JSONSerializer().exclude("*.class").serialize(this);
+	}
 
 	public static StudyOrgPK fromJsonToStudyOrgPK(String json) {
-        return new JSONDeserializer<StudyOrgPK>().use(null, StudyOrgPK.class).deserialize(json);
-    }
+		return new JSONDeserializer<StudyOrgPK>().use(null, StudyOrgPK.class).deserialize(json);
+	}
 
 	public static String toJsonArray(Collection<StudyOrgPK> collection) {
-        return new JSONSerializer().exclude("*.class").serialize(collection);
-    }
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
 
 	public static Collection<StudyOrgPK> fromJsonArrayToStudyOrgPKs(String json) {
-        return new JSONDeserializer<List<StudyOrgPK>>().use(null, ArrayList.class).use("values", StudyOrgPK.class).deserialize(json);
-    }
+		return new JSONDeserializer<List<StudyOrgPK>>().use(null, ArrayList.class).use("values", StudyOrgPK.class)
+				.deserialize(json);
+	}
 
 	private static final long serialVersionUID = 1L;
 }

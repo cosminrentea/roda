@@ -5,36 +5,35 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ro.roda.domain.City;
 
-
 @Service
 @Transactional
 public class CityServiceImpl implements CityService {
 
 	public long countAllCitys() {
-        return City.countCitys();
-    }
+		return City.countCitys();
+	}
 
 	public void deleteCity(City city) {
-        city.remove();
-    }
+		city.remove();
+	}
 
 	public City findCity(Integer id) {
-        return City.findCity(id);
-    }
+		return City.findCity(id);
+	}
 
 	public List<City> findAllCitys() {
-        return City.findAllCitys();
-    }
+		return City.findAllCitys();
+	}
 
 	public List<City> findCityEntries(int firstResult, int maxResults) {
-        return City.findCityEntries(firstResult, maxResults);
-    }
+		return City.findCityEntries(firstResult, maxResults);
+	}
 
 	public void saveCity(City city) {
-        city.persist();
-    }
+		city.persist();
+	}
 
 	public City updateCity(City city) {
-        return city.merge();
-    }
+		return city.merge();
+	}
 }

@@ -41,231 +41,243 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Configurable
 @Entity
-@Table(schema = "public",name = "study_keyword")
-
-
-
-
-
-
+@Table(schema = "public", name = "study_keyword")
 public class StudyKeyword {
 
 	@Autowired
-    transient SolrServer solrServer;
+	transient SolrServer solrServer;
 
 	public static QueryResponse search(String queryString) {
-        String searchString = "StudyKeyword_solrsummary_t:" + queryString;
-        return search(new SolrQuery(searchString.toLowerCase()));
-    }
+		String searchString = "StudyKeyword_solrsummary_t:" + queryString;
+		return search(new SolrQuery(searchString.toLowerCase()));
+	}
 
 	public static QueryResponse search(SolrQuery query) {
-        try {
-            return solrServer().query(query);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return new QueryResponse();
-    }
+		try {
+			return solrServer().query(query);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new QueryResponse();
+	}
 
 	public static void indexStudyKeyword(StudyKeyword studyKeyword) {
-        List<StudyKeyword> studykeywords = new ArrayList<StudyKeyword>();
-        studykeywords.add(studyKeyword);
-        indexStudyKeywords(studykeywords);
-    }
+		List<StudyKeyword> studykeywords = new ArrayList<StudyKeyword>();
+		studykeywords.add(studyKeyword);
+		indexStudyKeywords(studykeywords);
+	}
 
 	@Async
-    public static void indexStudyKeywords(Collection<StudyKeyword> studykeywords) {
-        List<SolrInputDocument> documents = new ArrayList<SolrInputDocument>();
-        for (StudyKeyword studyKeyword : studykeywords) {
-            SolrInputDocument sid = new SolrInputDocument();
-            sid.addField("id", "studykeyword_" + studyKeyword.getId());
-            sid.addField("studyKeyword.keywordid_t", studyKeyword.getKeywordId());
-            sid.addField("studyKeyword.studyid_t", studyKeyword.getStudyId());
-            sid.addField("studyKeyword.addedby_t", studyKeyword.getAddedBy());
-            sid.addField("studyKeyword.added_dt", studyKeyword.getAdded().getTime());
-            sid.addField("studyKeyword.id_t", studyKeyword.getId());
-            // Add summary field to allow searching documents for objects of this type
-            sid.addField("studykeyword_solrsummary_t", new StringBuilder().append(studyKeyword.getKeywordId()).append(" ").append(studyKeyword.getStudyId()).append(" ").append(studyKeyword.getAddedBy()).append(" ").append(studyKeyword.getAdded().getTime()).append(" ").append(studyKeyword.getId()));
-            documents.add(sid);
-        }
-        try {
-            SolrServer solrServer = solrServer();
-            solrServer.add(documents);
-            solrServer.commit();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+	public static void indexStudyKeywords(Collection<StudyKeyword> studykeywords) {
+		List<SolrInputDocument> documents = new ArrayList<SolrInputDocument>();
+		for (StudyKeyword studyKeyword : studykeywords) {
+			SolrInputDocument sid = new SolrInputDocument();
+			sid.addField("id", "studykeyword_" + studyKeyword.getId());
+			sid.addField("studyKeyword.keywordid_t", studyKeyword.getKeywordId());
+			sid.addField("studyKeyword.studyid_t", studyKeyword.getStudyId());
+			sid.addField("studyKeyword.addedby_t", studyKeyword.getAddedBy());
+			sid.addField("studyKeyword.added_dt", studyKeyword.getAdded().getTime());
+			sid.addField("studyKeyword.id_t", studyKeyword.getId());
+			// Add summary field to allow searching documents for objects of
+			// this type
+			sid.addField(
+					"studykeyword_solrsummary_t",
+					new StringBuilder().append(studyKeyword.getKeywordId()).append(" ")
+							.append(studyKeyword.getStudyId()).append(" ").append(studyKeyword.getAddedBy())
+							.append(" ").append(studyKeyword.getAdded().getTime()).append(" ")
+							.append(studyKeyword.getId()));
+			documents.add(sid);
+		}
+		try {
+			SolrServer solrServer = solrServer();
+			solrServer.add(documents);
+			solrServer.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	@Async
-    public static void deleteIndex(StudyKeyword studyKeyword) {
-        SolrServer solrServer = solrServer();
-        try {
-            solrServer.deleteById("studykeyword_" + studyKeyword.getId());
-            solrServer.commit();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+	public static void deleteIndex(StudyKeyword studyKeyword) {
+		SolrServer solrServer = solrServer();
+		try {
+			solrServer.deleteById("studykeyword_" + studyKeyword.getId());
+			solrServer.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	@PostUpdate
-    @PostPersist
-    private void postPersistOrUpdate() {
-        indexStudyKeyword(this);
-    }
+	@PostPersist
+	private void postPersistOrUpdate() {
+		indexStudyKeyword(this);
+	}
 
 	@PreRemove
-    private void preRemove() {
-        deleteIndex(this);
-    }
+	private void preRemove() {
+		deleteIndex(this);
+	}
 
 	public static SolrServer solrServer() {
-        SolrServer _solrServer = new StudyKeyword().solrServer;
-        if (_solrServer == null) throw new IllegalStateException("Solr server has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-        return _solrServer;
-    }
+		SolrServer _solrServer = new StudyKeyword().solrServer;
+		if (_solrServer == null)
+			throw new IllegalStateException(
+					"Solr server has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return _solrServer;
+	}
 
 	public String toJson() {
-        return new JSONSerializer().exclude("*.class").serialize(this);
-    }
+		return new JSONSerializer().exclude("*.class").serialize(this);
+	}
 
 	public static StudyKeyword fromJsonToStudyKeyword(String json) {
-        return new JSONDeserializer<StudyKeyword>().use(null, StudyKeyword.class).deserialize(json);
-    }
+		return new JSONDeserializer<StudyKeyword>().use(null, StudyKeyword.class).deserialize(json);
+	}
 
 	public static String toJsonArray(Collection<StudyKeyword> collection) {
-        return new JSONSerializer().exclude("*.class").serialize(collection);
-    }
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
 
 	public static Collection<StudyKeyword> fromJsonArrayToStudyKeywords(String json) {
-        return new JSONDeserializer<List<StudyKeyword>>().use(null, ArrayList.class).use("values", StudyKeyword.class).deserialize(json);
-    }
+		return new JSONDeserializer<List<StudyKeyword>>().use(null, ArrayList.class).use("values", StudyKeyword.class)
+				.deserialize(json);
+	}
 
 	@EmbeddedId
-    private StudyKeywordPK id;
+	private StudyKeywordPK id;
 
 	public StudyKeywordPK getId() {
-        return this.id;
-    }
+		return this.id;
+	}
 
 	public void setId(StudyKeywordPK id) {
-        this.id = id;
-    }
+		this.id = id;
+	}
 
 	public String toString() {
-        return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
-    }
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+	}
 
 	@PersistenceContext
-    transient EntityManager entityManager;
+	transient EntityManager entityManager;
 
 	public static final EntityManager entityManager() {
-        EntityManager em = new StudyKeyword().entityManager;
-        if (em == null) throw new IllegalStateException("Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-        return em;
-    }
+		EntityManager em = new StudyKeyword().entityManager;
+		if (em == null)
+			throw new IllegalStateException(
+					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return em;
+	}
 
 	public static long countStudyKeywords() {
-        return entityManager().createQuery("SELECT COUNT(o) FROM StudyKeyword o", Long.class).getSingleResult();
-    }
+		return entityManager().createQuery("SELECT COUNT(o) FROM StudyKeyword o", Long.class).getSingleResult();
+	}
 
 	public static List<StudyKeyword> findAllStudyKeywords() {
-        return entityManager().createQuery("SELECT o FROM StudyKeyword o", StudyKeyword.class).getResultList();
-    }
+		return entityManager().createQuery("SELECT o FROM StudyKeyword o", StudyKeyword.class).getResultList();
+	}
 
 	public static StudyKeyword findStudyKeyword(StudyKeywordPK id) {
-        if (id == null) return null;
-        return entityManager().find(StudyKeyword.class, id);
-    }
+		if (id == null)
+			return null;
+		return entityManager().find(StudyKeyword.class, id);
+	}
 
 	public static List<StudyKeyword> findStudyKeywordEntries(int firstResult, int maxResults) {
-        return entityManager().createQuery("SELECT o FROM StudyKeyword o", StudyKeyword.class).setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
-    }
+		return entityManager().createQuery("SELECT o FROM StudyKeyword o", StudyKeyword.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
+	}
 
 	@Transactional
-    public void persist() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        this.entityManager.persist(this);
-    }
+	public void persist() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.persist(this);
+	}
 
 	@Transactional
-    public void remove() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        if (this.entityManager.contains(this)) {
-            this.entityManager.remove(this);
-        } else {
-            StudyKeyword attached = StudyKeyword.findStudyKeyword(this.id);
-            this.entityManager.remove(attached);
-        }
-    }
+	public void remove() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		if (this.entityManager.contains(this)) {
+			this.entityManager.remove(this);
+		} else {
+			StudyKeyword attached = StudyKeyword.findStudyKeyword(this.id);
+			this.entityManager.remove(attached);
+		}
+	}
 
 	@Transactional
-    public void flush() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        this.entityManager.flush();
-    }
+	public void flush() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.flush();
+	}
 
 	@Transactional
-    public void clear() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        this.entityManager.clear();
-    }
+	public void clear() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.clear();
+	}
 
 	@Transactional
-    public StudyKeyword merge() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        StudyKeyword merged = this.entityManager.merge(this);
-        this.entityManager.flush();
-        return merged;
-    }
+	public StudyKeyword merge() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		StudyKeyword merged = this.entityManager.merge(this);
+		this.entityManager.flush();
+		return merged;
+	}
 
 	@ManyToOne
-    @JoinColumn(name = "keyword_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
-    private Keyword keywordId;
+	@JoinColumn(name = "keyword_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	private Keyword keywordId;
 
 	@ManyToOne
-    @JoinColumn(name = "study_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
-    private Study studyId;
+	@JoinColumn(name = "study_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	private Study studyId;
 
 	@ManyToOne
-    @JoinColumn(name = "added_by", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
-    private Users addedBy;
+	@JoinColumn(name = "added_by", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	private Users addedBy;
 
 	@Column(name = "added", columnDefinition = "timestamp")
-    @NotNull
-    @Temporal(TemporalType.TIMESTAMP)
-    @DateTimeFormat(style = "MM")
-    private Calendar added;
+	@NotNull
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(style = "MM")
+	private Calendar added;
 
 	public Keyword getKeywordId() {
-        return keywordId;
-    }
+		return keywordId;
+	}
 
 	public void setKeywordId(Keyword keywordId) {
-        this.keywordId = keywordId;
-    }
+		this.keywordId = keywordId;
+	}
 
 	public Study getStudyId() {
-        return studyId;
-    }
+		return studyId;
+	}
 
 	public void setStudyId(Study studyId) {
-        this.studyId = studyId;
-    }
+		this.studyId = studyId;
+	}
 
 	public Users getAddedBy() {
-        return addedBy;
-    }
+		return addedBy;
+	}
 
 	public void setAddedBy(Users addedBy) {
-        this.addedBy = addedBy;
-    }
+		this.addedBy = addedBy;
+	}
 
 	public Calendar getAdded() {
-        return added;
-    }
+		return added;
+	}
 
 	public void setAdded(Calendar added) {
-        this.added = added;
-    }
+		this.added = added;
+	}
 }

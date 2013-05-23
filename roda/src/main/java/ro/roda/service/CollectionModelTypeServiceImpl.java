@@ -5,36 +5,35 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ro.roda.domain.CollectionModelType;
 
-
 @Service
 @Transactional
 public class CollectionModelTypeServiceImpl implements CollectionModelTypeService {
 
 	public long countAllCollectionModelTypes() {
-        return CollectionModelType.countCollectionModelTypes();
-    }
+		return CollectionModelType.countCollectionModelTypes();
+	}
 
 	public void deleteCollectionModelType(CollectionModelType collectionModelType) {
-        collectionModelType.remove();
-    }
+		collectionModelType.remove();
+	}
 
 	public CollectionModelType findCollectionModelType(Integer id) {
-        return CollectionModelType.findCollectionModelType(id);
-    }
+		return CollectionModelType.findCollectionModelType(id);
+	}
 
 	public List<CollectionModelType> findAllCollectionModelTypes() {
-        return CollectionModelType.findAllCollectionModelTypes();
-    }
+		return CollectionModelType.findAllCollectionModelTypes();
+	}
 
 	public List<CollectionModelType> findCollectionModelTypeEntries(int firstResult, int maxResults) {
-        return CollectionModelType.findCollectionModelTypeEntries(firstResult, maxResults);
-    }
+		return CollectionModelType.findCollectionModelTypeEntries(firstResult, maxResults);
+	}
 
 	public void saveCollectionModelType(CollectionModelType collectionModelType) {
-        collectionModelType.persist();
-    }
+		collectionModelType.persist();
+	}
 
 	public CollectionModelType updateCollectionModelType(CollectionModelType collectionModelType) {
-        return collectionModelType.merge();
-    }
+		return collectionModelType.merge();
+	}
 }

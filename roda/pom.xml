@@ -603,6 +603,7 @@
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>exec-maven-plugin</artifactId>
 				<version>1.2.1</version>
+				<!-- 
 				<executions>
 					<execution>
 						<goals>
@@ -617,6 +618,7 @@
 						<argument>roda_pod2book.pl</argument>
 					</arguments>
 				</configuration>
+				-->
 			</plugin>
 			<!-- Cosmin: Javadoc + UML class diagrams -->
 			<plugin>

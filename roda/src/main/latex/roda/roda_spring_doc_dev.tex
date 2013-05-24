@@ -3,10 +3,11 @@ La specificarea in instructiunile de mai jos a sistemului de operare:
 \item [MacOSX =] OS X version 10.8.3, 64 bit
 \item [Ubuntu =] Ubuntu 12.04LTS, kernel 3.2.0-39-generic-pae, 32bit
 \item [OpenSUSE = ] OpenSUSE 12.2
-\item [Postgresql =] Postgresql 9.2.2
+\item [Postgresql =] Postgresql 9.2.4
 \item [DbWrench =] DbWrench 2.3.2
 \item [STS =] Spring Tool Suite 3.2.0.RELEASE - based on Eclipse Juno 3.8.2
 \item [Maven =] Maven 3
+\item [JVM =] Java Virtual Machine (JVM) 1.6
 \item [Jenkins =] Jenkins 1.514
 \item [Solr =] Solr 4.2.1
 \item [Sencha Architect =] Sencha Architect 2.2.2
@@ -14,7 +15,7 @@ La specificarea in instructiunile de mai jos a sistemului de operare:
 
 \section{Instalare si configurare - servicii si software aditional}
 
-\paragraph{Instalarea pachetelor necesare}
+\subsection{Instalarea pachetelor necesare}
 \begin{description}
 \item[Ubuntu:]
 Se ruleaza urmatoarele comenzi, din shell:
@@ -42,58 +43,67 @@ sudo gem install vmc
 \end{lstlisting}
 
 \item[MacOSX:]
+
+Se ruleaza urmatoarele comenzi, din shell:
+\begin{lstlisting}[breaklines=true]
+sudo port install maven3 perl5 R pgadmin3 p5.12-test-www-selenium
+htmldoc graphviz rb-rubygems postgresql92
+
+sudo gem install vmc
+\end{lstlisting}
+\end{description}
+
+\subsection{Postgresql}
+\begin{description}
+\item[MacOSX:]
+
 Se instaleaza si ruleaza Postgres.app (descarcat de la \url{http://postgresapp.com} ).
 Se bifeaza in meniu optiunea 'Automatically Start at Login'.
 
 Se instaleaza MacPorts si toate dependentele necesare (instructiuni complete la:
 \url{http://www.macports.org/install.php} ).
 
-Se ruleaza urmatoarele comenzi, din shell:
-\begin{lstlisting}[breaklines=true]
-sudo port install maven3 perl5 R pgadmin3 p5.12-test-www-selenium
-htmldoc graphviz gem postgresql92 postgresql92-server
+\item[orice alt sistem de operare:]
 
-sudo gem install vmc
-\end{lstlisting}
-\end{description}
-
-\paragraph{Configurare Postgresql}
 Se configureaza Postgresql ca server pe statia locala (preferabil, pornit
 automat ca serviciu la bootare). 
 Se configureaza in fisierele de configurare ale Postgresql drepturile
 de acces ale clientilor la server, de ex. pentru a permite accesul prin
 internet, nu doar de la statia locala / reteaua locala.
 % TODO mai precis ???
+\end{description}
 
-\paragraph{LaTeX}
+\subsection{LaTeX}
 O distributie LaTeX este necesara pentru generarea documentatiei:
 \begin{description}
 \item[Ubuntu:] 
+
 \begin{lstlisting}[breaklines=true]
 	sudo apt-get install texlive
 \end{lstlisting}
-\item[MacOSX:] MacTeX, instalata de la \url{http://tug.org/mactex/} 
+
+\item[MacOSX:] 
+MacTeX, instalata de la \url{http://tug.org/mactex/} 
 \end{description}
 
-\paragraph{JVM}
-\label{java_version}
-Se verifica instalarea Java (trebuie sa fie minim Java 1.6) si tipul de JVM
-utilizat (32 sau 64 bit), cu comanda:
-\begin{lstlisting}
-	java -version
-\end{lstlisting}
-
-\paragraph{Configurare Maven}
+\subsection{Maven si Java Virtual Machine (JVM)}
 Se creeaza in directorul \emph{\$HOME} al utilizatorului un fisier numit
 '.mavenrc' 
 (ce contine setarile generale pentru Maven, in acest caz legate de memoria utilizata);
 in fisier se scrie:
-\begin{lstlisting}
+\begin{lstlisting}[breaklines=true]
 	MAVEN_OPTS='-Xmx1024m -XX:MaxPermSize=256m'
 	export MAVEN_OPTS
 \end{lstlisting}
 
-\paragraph{rJAva}
+\label{java_version}
+Se verifica instalarea Java (e necesar minim Java 1.6) si tipul de JVM
+utilizat (32 sau 64 bit), in shell:
+\begin{lstlisting}
+	java -version
+\end{lstlisting}
+
+\subsection{rJava}
 Se instaleaza rJava in R, cu urmatoarele comenzi in shell si apoi in shell-ul R
 (se alege in timpul instalarii site-mirror-ul folosit, dintr-o fereastra;
 se iese la final din shell-ul R cu Ctrl+D):
@@ -103,7 +113,7 @@ se iese la final din shell-ul R cu Ctrl+D):
 	install.packages('rJava')
 \end{lstlisting}
 
-\paragraph{DbWrench}
+\subsection{DbWrench}
 Se instaleaza DbWrench de pe site-ul producatorului:
 \url{http://www.dbwrench.com}.
 
@@ -119,8 +129,9 @@ fisierului de salvat fiind '.sh', iar arhitectura cea stabilita de versiunea
 JVM (32 sau 64 bit, vezi \ref{java_version}); pe website, sectiunea respectiva
 este cea intitulata:
 \begin{verbatim}
-Milestone Version - Spring Tool Suite 3.2.0.RELEASE - 
-based on Eclipse Juno 3.8.2
+	Milestone Version - 
+	Spring Tool Suite 3.2.0.RELEASE - 
+	based on Eclipse Juno 3.8.2
 \end{verbatim}
 
 Instalati STS din shell (fara 'sudo'), cu optiunile default (se poate
@@ -133,8 +144,9 @@ In fisierul \emph{STS.ini} (in Ubuntu/OpenSUSE, acesta este in folder-ul
 radacina al STS, ales la pasul anterior; in MacOS X, este in sub-folder-ul
 'STS.app/Contents/MacOS/'), se modifica memoria maxima utilizabila de STS.
 
-In \emph{STS.ini}, linia care incepe cu \emph{-Xmx} (memoria maxima utilizabila
-de STS) trebuie modificata astfel:
+In \emph{STS.ini}, linia care incepe cu \emph{-Xmx} 
+(memoria maxima utilizabila de STS) 
+trebuie modificata astfel:
 \begin{itemize} 
 \item daca JVM este pe 64 biti:
 \begin{lstlisting}
@@ -157,8 +169,10 @@ Din Dashboard (meniu Help -> Dashboard), click pe tab-ul 'Extensions'
 (pozitionat stanga-jos, in Dashboard), bifati in lista si apoi instalati
 (butonul 'Install', dreapta-jos) urmatoarele extensii:
 \begin{itemize}
-  \item Cloud Foundry Eclipse Integration
-  \item Edgewall Trac
+\item
+Cloud Foundry Eclipse Integration
+\item
+Edgewall Trac
 \end{itemize} 
 
 Restartati STS.
@@ -212,14 +226,16 @@ proiectului, apoi 'Checkout') pentru urmatoarele proiecte:
 \item [RODA-Model:] modelul Perl si documentatia
 \end{description}
 
-% In STS, se face upgrade la Subversion 1.7 (pt. working copy) pentru fiecare din proiectele de mai sus: 
-% in perspectiva 'Spring', 
-% in view-ul 'Package Explorer' sau in view-ul 'Navigator', 
-% click-dreapta pe numele proiectului respectiv,
-% si apoi in meniul aparut:
-% 'Team' -> 'Upgrade' -> 'OK'. 
-% Poate aparea un mesaj de eroare/warning, care indica
-% faptul ca working-copy local este deja conform versiunii 1.7 a SVN.
+\begin{comment}
+In STS, se face upgrade la Subversion 1.7 (pt. working copy) pentru fiecare din proiectele de mai sus: 
+in perspectiva 'Spring', 
+in view-ul 'Package Explorer' sau in view-ul 'Navigator', 
+click-dreapta pe numele proiectului respectiv,
+si apoi in meniul aparut:
+'Team' -> 'Upgrade' -> 'OK'. 
+Poate aparea un mesaj de eroare/warning, care indica
+faptul ca working-copy local este deja conform versiunii 1.7 a SVN.
+\end{comment}
 
 \subsection{Configurare Task Repository}
 In STS, in view-ul 'Task List', butonul 'Add Repository', de tipul 'Trac', 
@@ -257,8 +273,7 @@ In STS, se alege perspectiva 'Spring', apoi click-dreapta in view-ul 'Package
 Explorer' pe numele proiectului ('roda'), apoi din meniul aparut:
 'Maven' -> 'Update Project', apoi 'OK'.
 
-STS va deschide un view numit 'Roo shell' unde se pot da comenzi Roo referitoare
-la proiect.
+% STS va deschide un view numit 'Roo shell' unde se pot da comenzi Roo referitoare la proiect.
 
 \subsection{Configurarea Serverului Local (in STS)}
 Se trage (drag-and-drop) proiectul 'roda' din view-ul 'Package Explorer' 
@@ -312,6 +327,8 @@ Din linia de comanda, in folder-ul radacina al proiectului 'roda', cu comanda:
 
 \section{Rularea proiectului din STS, pe CloudFoundry (NERECOMANDAT)}
 
+\begin{comment}
+
 \paragraph{!!! ATENTIE !!!} 
 Accesul la acest cont/server este shared (e folosit
 inclusiv de catre Jenkins), 
@@ -354,6 +371,8 @@ aparuta.
 Proiectul este disponibil online permanent la adresa:
 
 \url{http://roda.cloudfoundry.com}
+
+\end{comment}
 
 \section{Instalarea si configurarea Jenkins}
 

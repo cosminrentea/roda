@@ -39,6 +39,7 @@ import org.springframework.roo.addon.tostring.RooToString;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.transaction.annotation.Transactional;
 
+@Audited
 @Entity
 @Table(schema = "public", name = "setting_group")
 @Configurable

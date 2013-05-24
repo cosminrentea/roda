@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
-    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
-    <jsp:output omit-xml-declaration="yes"/>
-    <form:update id="fu_ro_roda_domain_GroupMembers" modelAttribute="groupMembers" path="/groupmemberses" versionField="none" z="7hkB4HGlo9ffwVhE1PJMhh+YU1I=">
-        <field:select field="groupId" id="c_ro_roda_domain_GroupMembers_groupId" itemValue="id" items="${groupses}" path="/groupses" z="RRDt6FVRbZFIqkLkjUmCVsVry/w="/>
-        <field:input field="username" id="c_ro_roda_domain_GroupMembers_username" required="true" z="+kaH1Kn7WdMxm+2i3S7IRQFxqSY="/>
-    </form:update>
-</div>

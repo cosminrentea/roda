@@ -16,13 +16,18 @@
 Ext.define('databrowser.view.DataBrowserPanel', {
     extend: 'Ext.panel.Panel',
 
+    requires: [
+        'databrowser.view.DetailGridPanelCls'
+    ],
+
     frame: true,
-    height: 473,
-    width: 668,
+    height: 471,
+    width: 695,
     layout: {
         align: 'stretch',
         type: 'hbox'
     },
+    closable: true,
     title: 'RODA - Data Browser',
 
     initComponent: function() {
@@ -62,8 +67,8 @@ Ext.define('databrowser.view.DataBrowserPanel', {
                                         rootVisible: false
                                     },
                                     listeners: {
-                                        itemclick: {
-                                            fn: me.onTreepanelItemClick,
+                                        select: {
+                                            fn: me.onCatalogsTreePanelSelect,
                                             scope: me
                                         }
                                     }
@@ -78,13 +83,36 @@ Ext.define('databrowser.view.DataBrowserPanel', {
                             tabConfig: {
                                 xtype: 'tab',
                                 id: 'YearsTabConfig'
-                            }
+                            },
+                            items: [
+                                {
+                                    xtype: 'treepanel',
+                                    height: 389,
+                                    id: 'YearsTreePanel',
+                                    store: 'YearTreeStore',
+                                    displayField: 'name',
+                                    viewConfig: {
+                                        id: 'YearsTreeView',
+                                        autoScroll: true,
+                                        rootVisible: false
+                                    },
+                                    listeners: {
+                                        select: {
+                                            fn: me.onYearsTreePanelSelect,
+                                            scope: me
+                                        }
+                                    }
+                                }
+                            ]
                         },
                         {
                             xtype: 'panel',
                             id: 'UsersPanel',
                             width: 226,
                             autoScroll: true,
+                            layout: {
+                                type: 'fit'
+                            },
                             title: 'Utilizatori',
                             tabConfig: {
                                 xtype: 'tab',
@@ -93,8 +121,11 @@ Ext.define('databrowser.view.DataBrowserPanel', {
                             items: [
                                 {
                                     xtype: 'gridpanel',
+                                    height: 373,
                                     id: 'UsersGridPanel',
-                                    title: 'My Grid Panel',
+                                    width: 247,
+                                    autoScroll: true,
+                                    title: 'users',
                                     store: 'UsersStore',
                                     columns: [
                                         {
@@ -121,88 +152,9 @@ Ext.define('databrowser.view.DataBrowserPanel', {
             ],
             items: [
                 {
-                    xtype: 'panel',
-                    flex: 1,
-                    id: 'DetailsPanel',
-                    dockedItems: [
-                        {
-                            xtype: 'toolbar',
-                            dock: 'top',
-                            id: 'DataBrowserToolbar',
-                            items: [
-                                {
-                                    xtype: 'textfield',
-                                    id: 'LocalSearchTextField',
-                                    width: 190,
-                                    emptyText: 'Cautare locala'
-                                },
-                                {
-                                    xtype: 'button',
-                                    id: 'AdvancedSearchButton',
-                                    width: 156,
-                                    text: 'Cautare avansata'
-                                },
-                                {
-                                    xtype: 'tbseparator',
-                                    id: 'DataBrowserToolbarSeparator1'
-                                },
-                                {
-                                    xtype: 'buttongroup',
-                                    autoRender: false,
-                                    id: 'SMCButtonGroup',
-                                    width: 72,
-                                    header: false,
-                                    title: 'Buttons',
-                                    columns: 3,
-                                    items: [
-                                        {
-                                            xtype: 'button',
-                                            id: 'SButton',
-                                            text: 'S'
-                                        },
-                                        {
-                                            xtype: 'button',
-                                            id: 'MButton',
-                                            text: 'M'
-                                        },
-                                        {
-                                            xtype: 'button',
-                                            id: 'CButton',
-                                            text: 'C'
-                                        }
-                                    ]
-                                }
-                            ]
-                        }
-                    ],
-                    items: [
-                        {
-                            xtype: 'gridpanel',
-                            height: 404,
-                            id: 'DetailsGridPanel',
-                            itemId: 'MyGridPanel',
-                            width: 432,
-                            hideHeaders: true,
-                            columns: [
-                                {
-                                    xtype: 'numbercolumn',
-                                    dataIndex: 'an',
-                                    text: 'Number',
-                                    format: '0000'
-                                },
-                                {
-                                    xtype: 'gridcolumn',
-                                    width: 326,
-                                    dataIndex: 'name',
-                                    text: 'String'
-                                }
-                            ],
-                            viewConfig: {
-                                frame: true,
-                                id: 'DetailsGridView'
-                            }
-                        }
-                    ]
+                    xtype: 'detailgridpanelcls1',
+                    height: 438,
+                    width: 465
                 }
             ]
         });
@@ -210,49 +162,72 @@ Ext.define('databrowser.view.DataBrowserPanel', {
         me.callParent(arguments);
     },
 
-    onTreepanelItemClick: function(dataview, record, item, index, e, eOpts) {
-        //if (record.get('leaf') === true) 
-        //{
-        //var mainPanel = dataview.up('#DataBrowserPanel');
-        //var gridPanel = mainPanel.down('#MyGridPanel');
-        var gridPanel = Ext.getCmp('#MyGridPanel');
+    onCatalogsTreePanelSelect: function(rowmodel, record, index, eOpts) {
+        var gridPanel = Ext.getCmp('DetailsGridPanel');
 
-        var studyYear = record.get('an');
-        var studyTitle = record.get('name');
-        var studyData = [{an: studyYear, name: studyTitle}];	
+        if (record.get('leaf') !== true && record.get('name') != 'RODA') 
+        {
+            var studyYear = record.get('an');
+            var studyTitle = record.get('name');
+            var studyData = [{an: studyYear, name: studyTitle}];	
 
-        var store = gridPanel.getStore();
-
-        store.add(new store.recordType({
-            an: studyYear,
-            name: studyTitle
-        }));
-        store.commitChanges();
-
-        gridPanel.refresh();
-
-        //var studyData = [studyYear, studyTitle];
-        /*var store = Ext.create('Ext.data.Store', {
-        autoLoad: true,
-        model: Ext.ModelManager.getModel('Studies'),
-        data: studyData,
-        proxy: {
-        type:'Memory',
-        reader: {
-        type: 'json',
-        root: 'records'}
+            gridPanel.store.loadData(studyData);
         }
-        });
+        else
+        {
+            gridPanel.store.removeAll();
+        }
 
-        gridPanel.store = store;*/
+    },
 
+    onYearsTreePanelSelect: function(rowmodel, record, index, eOpts) {
+        var gridPanel = Ext.getCmp('DetailsGridPanel');
 
+        if (record.get('leaf') !== true && record.get('depth') > 1)
+        {
+            var data = record.childNodes;
+            var year;
+            var aut = "";
+            var loadedInfo = [];
 
-        //gridPanel.store.loadRecords(studyData);
-        // gridPanel.store.commitChanges();
+            gridPanel.store.removeAll();
 
-        // gridPanel.getView().refresh();
-        //}
+            if (data.length > 0)
+            {
+                for (var i = 0; i < data.length; i++)
+                {
+                    if (record.get('depth') == 2) 
+                    {
+                        // daca a fost selectat un an, in panel-ul cu detalii vor fi afisate
+                        // cataloagele din anul respectiv	
+                        year = record.get('name');
+                    }
+                    else 
+                    {
+                        // daca a fost selectat un catalog, in panel-ul cu detalii vor fi afisate
+                        // studiile din catalogul respectiv	
+                        if (record.get('depth') >= 3) 
+                        {
+                            year = Ext.data.Model(data[i]).get('an');
+                            aut = Ext.data.Model(data[i]).get('author');                   
+                        }
+                    }
+                    var title = Ext.data.Model(data[i]).get('name');
+                    loadedInfo[i] = {an: year, name: title, author: aut};
+                }
+
+                //gridPanel.store.loadData(loadedInfo);
+                //gridPanel.store.add(loadedInfo);
+
+                gridPanel.store.proxy.data = loadedInfo;
+                gridPanel.store.load();
+
+                var preview = Ext.getCmp('DetailsGridView').getPlugin('preview');
+                preview.toggleExpanded(false);
+            }
+        }
+        else
+        gridPanel.store.removeAll();
 
     }
 

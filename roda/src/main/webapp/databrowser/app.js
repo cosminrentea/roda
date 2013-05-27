@@ -15,22 +15,46 @@
 
 //@require @packageOverrides
 Ext.Loader.setConfig({
-    enabled: true
+    enabled: true,
+    paths: {
+        'Ext.ux': 'ux/'
+    }
 });
 
 Ext.application({
+
+    requires: [
+        'Ext.grid.*',
+        'Ext.ux.PreviewPlugin',
+        'Ext.data.*',
+        'Ext.util.*',
+        'Ext.toolbar.Paging',
+        'Ext.ModelManager'
+    ],
     models: [
         'CatalogsModel',
-        'StudiesModel'
+        'CatalogDetailModel',
+        'UsersModel',
+        'YearsModel'
     ],
     stores: [
         'CatalogStore',
         'CatalogTreeStore',
-        'UsersStore'
+        'UsersStore',
+        'CatalogDetailStore',
+        'YearTreeStore'
     ],
     views: [
-        'DataBrowserPanel'
+        'DataBrowserPanel',
+        'DetailGridPanelCls'
     ],
     autoCreateViewport: true,
-    name: 'databrowser'
+    name: 'databrowser',
+
+    launch: function() {
+        Ext.syncRequire([
+        'Ext.ux.PreviewPlugin'
+        ]);
+    }
+
 });

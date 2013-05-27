@@ -6,7 +6,7 @@
     },
     "codeClass": null,
     "userConfig": {
-        "designer|userClassName": "StudiesModel"
+        "designer|userClassName": "CatalogDetailModel"
     },
     "designerId": "240716ff-02cb-46fd-8d5f-32c20cc9cea8",
     "cn": [
@@ -37,6 +37,20 @@
                 "designer|userClassName": "MyField3"
             },
             "designerId": "f9a670a9-213c-4176-a43a-9e1194f23dd8"
+        },
+        {
+            "type": "Ext.data.Field",
+            "reference": {
+                "name": "fields",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "name": "author",
+                "type": "string",
+                "designer|userClassName": "MyField15"
+            },
+            "designerId": "7f67345a-cec3-4c18-b9f3-68a36283e8b0"
         }
     ]
 }

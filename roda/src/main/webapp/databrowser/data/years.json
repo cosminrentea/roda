@@ -1,0 +1,47 @@
+{
+	data: [{
+		name: 'RODA',
+		level: 0,
+		data: [{			
+				name: '2000',
+				level: 1,
+				data: [{
+						name: 'Catalog1',
+						level: 2,
+						data: [{
+								name: 'Study11',
+								an: 1999,
+								author: 'ICCV - Institutul de Cercetare a calitatii vietii',
+								leaf: true
+								},{
+								name: 'Study12', 
+								an: 2000,
+								author: 'ICCV - Institutul de Cercetare a calitatii vietii',
+								leaf: true
+								}]
+						},{
+						name: 'Catalog2',
+						level: 2,
+						data: [{				
+								name: 'Study21', 
+								an: 2002,
+								leaf: true
+								}]
+						}
+				]},
+				{
+				name: '2012',
+				level: 1,
+				data: [{
+						name: 'Catalog3',
+						level: 2,
+						data: [{
+								name: 'Study22',
+								an: 2007,
+								leaf: true
+								}]
+						}]
+				}
+			]
+		}]
+}

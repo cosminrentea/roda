@@ -7,6 +7,7 @@
     "codeClass": null,
     "userConfig": {
         "autoLoad": true,
+        "model": "UsersModel",
         "storeId": "UsersStore",
         "designer|userClassName": "UsersStore"
     },
@@ -21,7 +22,7 @@
             "codeClass": null,
             "userConfig": {
                 "designer|userClassName": "MyRestProxy",
-                "url": "../userses",
+                "url": "../../userses",
                 "format": null
             },
             "designerId": "34aacbb5-167d-4979-8962-bb9d85713ff2",
@@ -49,10 +50,10 @@
             },
             "codeClass": null,
             "userConfig": {
-                "name": "password",
-                "designer|userClassName": "MyField6"
+                "name": "username",
+                "designer|userClassName": "MyField5"
             },
-            "designerId": "399eebfa-e440-49ba-a41a-02a358e2671d"
+            "designerId": "394ece80-6517-476c-b76d-8fd6b3d02560"
         },
         {
             "type": "Ext.data.Field",
@@ -62,10 +63,10 @@
             },
             "codeClass": null,
             "userConfig": {
-                "name": "username",
-                "designer|userClassName": "MyField5"
+                "name": "password",
+                "designer|userClassName": "MyField6"
             },
-            "designerId": "fb3512ac-d62a-43d7-bc0a-5eb73248c8d7"
+            "designerId": "0b581401-3349-4c61-85f5-59805e9873c5"
         }
     ]
 }

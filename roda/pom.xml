@@ -133,14 +133,14 @@
 		</dependency>
 		
 		<!-- ROO dependencies -->
-		<!-- --> 
+		<!-- 
 		<dependency>
 			<groupId>org.springframework.roo</groupId>
 			<artifactId>org.springframework.roo.annotations</artifactId>
 			<version>${roo.version}</version>
 			<scope>provided</scope>
 		</dependency>
-		<!-- -->
+		-->
 		 
 		<!-- Spring dependencies -->
 		<dependency>
@@ -533,9 +533,9 @@
 					</additionalBuildcommands>
 					<additionalProjectnatures>
 						<projectnature>org.eclipse.ajdt.ui.ajnature</projectnature>
-						<!-- -->
+						<!--
 						<projectnature>com.springsource.sts.roo.core.nature</projectnature>
-						<!-- -->
+						-->
 						<projectnature>org.springframework.ide.eclipse.core.springnature</projectnature>
 					</additionalProjectnatures>
 				</configuration>
@@ -651,4 +651,16 @@
 			</plugin>
 		</plugins>
 	</build>
+	<scm>
+		<url>svn://fisiere.dyndns.org/roda</url>
+	</scm>
+	<ciManagement>
+		<url>http://fisiere.dyndns.org:9999</url>
+		<system>Jenkins</system>
+	</ciManagement>
+	<issueManagement>
+		<url>http://fisiere.dyndns.org:8888</url>
+		<system>Trac</system>
+	</issueManagement>
+	<description>The RODA web application.</description>
 </project>

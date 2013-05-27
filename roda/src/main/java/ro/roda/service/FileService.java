@@ -1,7 +1,7 @@
 package ro.roda.service;
 
 import java.util.List;
-import org.springframework.roo.addon.layers.service.RooService;
+
 import org.springframework.web.multipart.MultipartFile;
 
 import ro.roda.domain.File;

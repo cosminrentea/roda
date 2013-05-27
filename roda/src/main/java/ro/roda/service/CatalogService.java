@@ -2,11 +2,6 @@ package ro.roda.service;
 
 import java.util.List;
 
-import org.springframework.roo.addon.layers.service.RooService;
-import org.springframework.security.access.prepost.PostAuthorize;
-import org.springframework.security.access.prepost.PostFilter;
-import org.springframework.security.access.prepost.PreAuthorize;
-
 import ro.roda.domain.Catalog;
 
 public interface CatalogService {

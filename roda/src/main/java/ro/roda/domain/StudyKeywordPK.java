@@ -1,15 +1,17 @@
 package ro.roda.domain;
 
-import flexjson.JSONDeserializer;
-import flexjson.JSONSerializer;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+
 import org.springframework.beans.factory.annotation.Configurable;
-import org.springframework.roo.addon.jpa.identifier.RooIdentifier;
+
+import flexjson.JSONDeserializer;
+import flexjson.JSONSerializer;
 
 @Configurable
 @Embeddable

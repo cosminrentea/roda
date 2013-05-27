@@ -32,8 +32,6 @@ import org.springframework.oxm.XmlMappingException;
 import org.springframework.oxm.xstream.XStreamMarshaller;
 import org.springframework.stereotype.Component;
 
-import com.thoughtworks.xstream.XStream;
-
 import ro.roda.domain.Catalog;
 import ro.roda.domain.CatalogStudy;
 import ro.roda.domain.CatalogStudyPK;
@@ -43,6 +41,8 @@ import ro.roda.domain.Study;
 import ro.roda.domain.Suffix;
 import ro.roda.domain.Users;
 import ro.roda.service.CatalogServiceImpl;
+
+import com.thoughtworks.xstream.XStream;
 
 @Component
 public class DatabaseUtils {

@@ -1,7 +1,7 @@
 package ro.roda.service;
 
 import java.util.List;
-import org.springframework.roo.addon.layers.service.RooService;
+
 import ro.roda.domain.PersonPhone;
 import ro.roda.domain.PersonPhonePK;
 

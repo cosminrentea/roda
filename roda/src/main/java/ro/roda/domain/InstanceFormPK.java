@@ -17,11 +17,26 @@ import flexjson.JSONSerializer;
 @Configurable
 public final class InstanceFormPK implements Serializable {
 
-	@Column(name = "instance_id", columnDefinition = "int4", nullable = false)
-	private Integer instanceId;
+	private static final long serialVersionUID = 1L;
+
+	public static Collection<InstanceFormPK> fromJsonArrayToInstanceFormPKs(String json) {
+		return new JSONDeserializer<List<InstanceFormPK>>().use(null, ArrayList.class)
+				.use("values", InstanceFormPK.class).deserialize(json);
+	}
+
+	public static InstanceFormPK fromJsonToInstanceFormPK(String json) {
+		return new JSONDeserializer<InstanceFormPK>().use(null, InstanceFormPK.class).deserialize(json);
+	}
+
+	public static String toJsonArray(Collection<InstanceFormPK> collection) {
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
 
 	@Column(name = "form_id", columnDefinition = "int8", nullable = false)
 	private Long formId;
+
+	@Column(name = "instance_id", columnDefinition = "int4", nullable = false)
+	private Integer instanceId;
 
 	public InstanceFormPK(Integer instanceId, Long formId) {
 		super();
@@ -33,30 +48,15 @@ public final class InstanceFormPK implements Serializable {
 		super();
 	}
 
-	public Integer getInstanceId() {
-		return instanceId;
-	}
-
 	public Long getFormId() {
 		return formId;
 	}
 
-	private static final long serialVersionUID = 1L;
+	public Integer getInstanceId() {
+		return instanceId;
+	}
 
 	public String toJson() {
 		return new JSONSerializer().exclude("*.class").serialize(this);
-	}
-
-	public static InstanceFormPK fromJsonToInstanceFormPK(String json) {
-		return new JSONDeserializer<InstanceFormPK>().use(null, InstanceFormPK.class).deserialize(json);
-	}
-
-	public static String toJsonArray(Collection<InstanceFormPK> collection) {
-		return new JSONSerializer().exclude("*.class").serialize(collection);
-	}
-
-	public static Collection<InstanceFormPK> fromJsonArrayToInstanceFormPKs(String json) {
-		return new JSONDeserializer<List<InstanceFormPK>>().use(null, ArrayList.class)
-				.use("values", InstanceFormPK.class).deserialize(json);
 	}
 }

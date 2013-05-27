@@ -17,8 +17,11 @@ import flexjson.JSONSerializer;
 @Embeddable
 public final class OrgInternetPK implements Serializable {
 
-	public String toJson() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
+	private static final long serialVersionUID = 1L;
+
+	public static Collection<OrgInternetPK> fromJsonArrayToOrgInternetPKs(String json) {
+		return new JSONDeserializer<List<OrgInternetPK>>().use(null, ArrayList.class)
+				.use("values", OrgInternetPK.class).deserialize(json);
 	}
 
 	public static OrgInternetPK fromJsonToOrgInternetPK(String json) {
@@ -29,16 +32,11 @@ public final class OrgInternetPK implements Serializable {
 		return new JSONSerializer().exclude("*.class").serialize(collection);
 	}
 
-	public static Collection<OrgInternetPK> fromJsonArrayToOrgInternetPKs(String json) {
-		return new JSONDeserializer<List<OrgInternetPK>>().use(null, ArrayList.class)
-				.use("values", OrgInternetPK.class).deserialize(json);
-	}
+	@Column(name = "internet_id", columnDefinition = "int4", nullable = false)
+	private Integer internetId;
 
 	@Column(name = "org_id", columnDefinition = "int4", nullable = false)
 	private Integer orgId;
-
-	@Column(name = "internet_id", columnDefinition = "int4", nullable = false)
-	private Integer internetId;
 
 	public OrgInternetPK(Integer orgId, Integer internetId) {
 		super();
@@ -50,13 +48,15 @@ public final class OrgInternetPK implements Serializable {
 		super();
 	}
 
-	public Integer getOrgId() {
-		return orgId;
-	}
-
 	public Integer getInternetId() {
 		return internetId;
 	}
 
-	private static final long serialVersionUID = 1L;
+	public Integer getOrgId() {
+		return orgId;
+	}
+
+	public String toJson() {
+		return new JSONSerializer().exclude("*.class").serialize(this);
+	}
 }

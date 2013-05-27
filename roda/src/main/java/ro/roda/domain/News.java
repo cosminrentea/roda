@@ -42,16 +42,42 @@ import flexjson.JSONSerializer;
 @Audited
 public class News {
 
-	public String toJson() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
+	public static long countNewspieces() {
+		return entityManager().createQuery("SELECT COUNT(o) FROM News o", Long.class).getSingleResult();
 	}
 
-	public static News fromJsonToNews(String json) {
-		return new JSONDeserializer<News>().use(null, News.class).deserialize(json);
+	@Async
+	public static void deleteIndex(News news) {
+		SolrServer solrServer = solrServer();
+		try {
+			solrServer.deleteById("news_" + news.getId());
+			solrServer.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
-	public static String toJsonArray(Collection<News> collection) {
-		return new JSONSerializer().exclude("*.class").serialize(collection);
+	public static final EntityManager entityManager() {
+		EntityManager em = new News().entityManager;
+		if (em == null)
+			throw new IllegalStateException(
+					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return em;
+	}
+
+	public static List<News> findAllNewspieces() {
+		return entityManager().createQuery("SELECT o FROM News o", News.class).getResultList();
+	}
+
+	public static News findNews(Integer id) {
+		if (id == null)
+			return null;
+		return entityManager().find(News.class, id);
+	}
+
+	public static List<News> findNewsEntries(int firstResult, int maxResults) {
+		return entityManager().createQuery("SELECT o FROM News o", News.class).setFirstResult(firstResult)
+				.setMaxResults(maxResults).getResultList();
 	}
 
 	public static Collection<News> fromJsonArrayToNewspieces(String json) {
@@ -59,21 +85,8 @@ public class News {
 				.deserialize(json);
 	}
 
-	@Autowired
-	transient SolrServer solrServer;
-
-	public static QueryResponse search(String queryString) {
-		String searchString = "News_solrsummary_t:" + queryString;
-		return search(new SolrQuery(searchString.toLowerCase()));
-	}
-
-	public static QueryResponse search(SolrQuery query) {
-		try {
-			return solrServer().query(query);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return new QueryResponse();
+	public static News fromJsonToNews(String json) {
+		return new JSONDeserializer<News>().use(null, News.class).deserialize(json);
 	}
 
 	public static void indexNews(News news) {
@@ -106,26 +119,18 @@ public class News {
 		}
 	}
 
-	@Async
-	public static void deleteIndex(News news) {
-		SolrServer solrServer = solrServer();
+	public static QueryResponse search(SolrQuery query) {
 		try {
-			solrServer.deleteById("news_" + news.getId());
-			solrServer.commit();
+			return solrServer().query(query);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return new QueryResponse();
 	}
 
-	@PostUpdate
-	@PostPersist
-	private void postPersistOrUpdate() {
-		indexNews(this);
-	}
-
-	@PreRemove
-	private void preRemove() {
-		deleteIndex(this);
+	public static QueryResponse search(String queryString) {
+		String searchString = "News_solrsummary_t:" + queryString;
+		return search(new SolrQuery(searchString.toLowerCase()));
 	}
 
 	public static SolrServer solrServer() {
@@ -136,34 +141,79 @@ public class News {
 		return _solrServer;
 	}
 
+	public static String toJsonArray(Collection<News> collection) {
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	@Column(name = "added", columnDefinition = "timestamp")
+	@NotNull
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(style = "MM")
+	private Calendar added;
+
+	@Column(name = "content", columnDefinition = "text")
+	private String content;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id", columnDefinition = "serial")
+	private Integer id;
+
+	@Column(name = "title", columnDefinition = "text")
+	@NotNull
+	private String title;
+
+	@Column(name = "visible", columnDefinition = "bool")
+	@NotNull
+	private boolean visible;
+
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	public static final EntityManager entityManager() {
-		EntityManager em = new News().entityManager;
-		if (em == null)
-			throw new IllegalStateException(
-					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-		return em;
+	@Autowired
+	transient SolrServer solrServer;
+
+	@Transactional
+	public void clear() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.clear();
 	}
 
-	public static long countNewspieces() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM News o", Long.class).getSingleResult();
+	@Transactional
+	public void flush() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.flush();
 	}
 
-	public static List<News> findAllNewspieces() {
-		return entityManager().createQuery("SELECT o FROM News o", News.class).getResultList();
+	public Calendar getAdded() {
+		return added;
 	}
 
-	public static News findNews(Integer id) {
-		if (id == null)
-			return null;
-		return entityManager().find(News.class, id);
+	public String getContent() {
+		return content;
 	}
 
-	public static List<News> findNewsEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM News o", News.class).setFirstResult(firstResult)
-				.setMaxResults(maxResults).getResultList();
+	public Integer getId() {
+		return this.id;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public boolean isVisible() {
+		return visible;
+	}
+
+	@Transactional
+	public News merge() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		News merged = this.entityManager.merge(this);
+		this.entityManager.flush();
+		return merged;
 	}
 
 	@Transactional
@@ -185,92 +235,42 @@ public class News {
 		}
 	}
 
-	@Transactional
-	public void flush() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.flush();
+	public void setAdded(Calendar added) {
+		this.added = added;
 	}
 
-	@Transactional
-	public void clear() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.clear();
-	}
-
-	@Transactional
-	public News merge() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		News merged = this.entityManager.merge(this);
-		this.entityManager.flush();
-		return merged;
-	}
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "id", columnDefinition = "serial")
-	private Integer id;
-
-	public Integer getId() {
-		return this.id;
+	public void setContent(String content) {
+		this.content = content;
 	}
 
 	public void setId(Integer id) {
 		this.id = id;
 	}
 
-	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
-	}
-
-	@Column(name = "added", columnDefinition = "timestamp")
-	@NotNull
-	@Temporal(TemporalType.TIMESTAMP)
-	@DateTimeFormat(style = "MM")
-	private Calendar added;
-
-	@Column(name = "visible", columnDefinition = "bool")
-	@NotNull
-	private boolean visible;
-
-	@Column(name = "title", columnDefinition = "text")
-	@NotNull
-	private String title;
-
-	@Column(name = "content", columnDefinition = "text")
-	private String content;
-
-	public Calendar getAdded() {
-		return added;
-	}
-
-	public void setAdded(Calendar added) {
-		this.added = added;
-	}
-
-	public boolean isVisible() {
-		return visible;
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
 	public void setVisible(boolean visible) {
 		this.visible = visible;
 	}
 
-	public String getTitle() {
-		return title;
+	public String toJson() {
+		return new JSONSerializer().exclude("*.class").serialize(this);
 	}
 
-	public void setTitle(String title) {
-		this.title = title;
+	public String toString() {
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
-	public String getContent() {
-		return content;
+	@PostUpdate
+	@PostPersist
+	private void postPersistOrUpdate() {
+		indexNews(this);
 	}
 
-	public void setContent(String content) {
-		this.content = content;
+	@PreRemove
+	private void preRemove() {
+		deleteIndex(this);
 	}
 }

@@ -41,27 +41,42 @@ import flexjson.JSONSerializer;
 @Audited
 public class OrgAddress {
 
-	@EmbeddedId
-	private OrgAddressPK id;
-
-	public OrgAddressPK getId() {
-		return this.id;
+	public static long countOrgAddresses() {
+		return entityManager().createQuery("SELECT COUNT(o) FROM OrgAddress o", Long.class).getSingleResult();
 	}
 
-	public void setId(OrgAddressPK id) {
-		this.id = id;
+	@Async
+	public static void deleteIndex(OrgAddress orgAddress) {
+		SolrServer solrServer = solrServer();
+		try {
+			solrServer.deleteById("orgaddress_" + orgAddress.getId());
+			solrServer.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
-	public String toJson() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
+	public static final EntityManager entityManager() {
+		EntityManager em = new OrgAddress().entityManager;
+		if (em == null)
+			throw new IllegalStateException(
+					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return em;
 	}
 
-	public static OrgAddress fromJsonToOrgAddress(String json) {
-		return new JSONDeserializer<OrgAddress>().use(null, OrgAddress.class).deserialize(json);
+	public static List<OrgAddress> findAllOrgAddresses() {
+		return entityManager().createQuery("SELECT o FROM OrgAddress o", OrgAddress.class).getResultList();
 	}
 
-	public static String toJsonArray(Collection<OrgAddress> collection) {
-		return new JSONSerializer().exclude("*.class").serialize(collection);
+	public static OrgAddress findOrgAddress(OrgAddressPK id) {
+		if (id == null)
+			return null;
+		return entityManager().find(OrgAddress.class, id);
+	}
+
+	public static List<OrgAddress> findOrgAddressEntries(int firstResult, int maxResults) {
+		return entityManager().createQuery("SELECT o FROM OrgAddress o", OrgAddress.class).setFirstResult(firstResult)
+				.setMaxResults(maxResults).getResultList();
 	}
 
 	public static Collection<OrgAddress> fromJsonArrayToOrgAddresses(String json) {
@@ -69,21 +84,8 @@ public class OrgAddress {
 				.deserialize(json);
 	}
 
-	@Autowired
-	transient SolrServer solrServer;
-
-	public static QueryResponse search(String queryString) {
-		String searchString = "OrgAddress_solrsummary_t:" + queryString;
-		return search(new SolrQuery(searchString.toLowerCase()));
-	}
-
-	public static QueryResponse search(SolrQuery query) {
-		try {
-			return solrServer().query(query);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return new QueryResponse();
+	public static OrgAddress fromJsonToOrgAddress(String json) {
+		return new JSONDeserializer<OrgAddress>().use(null, OrgAddress.class).deserialize(json);
 	}
 
 	public static void indexOrgAddress(OrgAddress orgAddress) {
@@ -113,26 +115,18 @@ public class OrgAddress {
 		}
 	}
 
-	@Async
-	public static void deleteIndex(OrgAddress orgAddress) {
-		SolrServer solrServer = solrServer();
+	public static QueryResponse search(SolrQuery query) {
 		try {
-			solrServer.deleteById("orgaddress_" + orgAddress.getId());
-			solrServer.commit();
+			return solrServer().query(query);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return new QueryResponse();
 	}
 
-	@PostUpdate
-	@PostPersist
-	private void postPersistOrUpdate() {
-		indexOrgAddress(this);
-	}
-
-	@PreRemove
-	private void preRemove() {
-		deleteIndex(this);
+	public static QueryResponse search(String queryString) {
+		String searchString = "OrgAddress_solrsummary_t:" + queryString;
+		return search(new SolrQuery(searchString.toLowerCase()));
 	}
 
 	public static SolrServer solrServer() {
@@ -143,84 +137,78 @@ public class OrgAddress {
 		return _solrServer;
 	}
 
+	public static String toJsonArray(Collection<OrgAddress> collection) {
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
 	@ManyToOne
 	@JoinColumn(name = "address_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
 	private Address addressId;
-
-	@ManyToOne
-	@JoinColumn(name = "org_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
-	private Org orgId;
-
-	@Column(name = "date_start", columnDefinition = "date")
-	@Temporal(TemporalType.DATE)
-	@DateTimeFormat(style = "M-")
-	private Date dateStart;
 
 	@Column(name = "date_end", columnDefinition = "date")
 	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(style = "M-")
 	private Date dateEnd;
 
+	@Column(name = "date_start", columnDefinition = "date")
+	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(style = "M-")
+	private Date dateStart;
+
+	@EmbeddedId
+	private OrgAddressPK id;
+
+	@ManyToOne
+	@JoinColumn(name = "org_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	private Org orgId;
+
+	@PersistenceContext
+	transient EntityManager entityManager;
+
+	@Autowired
+	transient SolrServer solrServer;
+
+	@Transactional
+	public void clear() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.clear();
+	}
+
+	@Transactional
+	public void flush() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.flush();
+	}
+
 	public Address getAddressId() {
 		return addressId;
-	}
-
-	public void setAddressId(Address addressId) {
-		this.addressId = addressId;
-	}
-
-	public Org getOrgId() {
-		return orgId;
-	}
-
-	public void setOrgId(Org orgId) {
-		this.orgId = orgId;
-	}
-
-	public Date getDateStart() {
-		return dateStart;
-	}
-
-	public void setDateStart(Date dateStart) {
-		this.dateStart = dateStart;
 	}
 
 	public Date getDateEnd() {
 		return dateEnd;
 	}
 
-	public void setDateEnd(Date dateEnd) {
-		this.dateEnd = dateEnd;
+	public Date getDateStart() {
+		return dateStart;
 	}
 
-	@PersistenceContext
-	transient EntityManager entityManager;
-
-	public static final EntityManager entityManager() {
-		EntityManager em = new OrgAddress().entityManager;
-		if (em == null)
-			throw new IllegalStateException(
-					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-		return em;
+	public OrgAddressPK getId() {
+		return this.id;
 	}
 
-	public static long countOrgAddresses() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM OrgAddress o", Long.class).getSingleResult();
+	public Org getOrgId() {
+		return orgId;
 	}
 
-	public static List<OrgAddress> findAllOrgAddresses() {
-		return entityManager().createQuery("SELECT o FROM OrgAddress o", OrgAddress.class).getResultList();
-	}
-
-	public static OrgAddress findOrgAddress(OrgAddressPK id) {
-		if (id == null)
-			return null;
-		return entityManager().find(OrgAddress.class, id);
-	}
-
-	public static List<OrgAddress> findOrgAddressEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM OrgAddress o", OrgAddress.class).setFirstResult(firstResult)
-				.setMaxResults(maxResults).getResultList();
+	@Transactional
+	public OrgAddress merge() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		OrgAddress merged = this.entityManager.merge(this);
+		this.entityManager.flush();
+		return merged;
 	}
 
 	@Transactional
@@ -242,30 +230,42 @@ public class OrgAddress {
 		}
 	}
 
-	@Transactional
-	public void flush() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.flush();
+	public void setAddressId(Address addressId) {
+		this.addressId = addressId;
 	}
 
-	@Transactional
-	public void clear() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.clear();
+	public void setDateEnd(Date dateEnd) {
+		this.dateEnd = dateEnd;
 	}
 
-	@Transactional
-	public OrgAddress merge() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		OrgAddress merged = this.entityManager.merge(this);
-		this.entityManager.flush();
-		return merged;
+	public void setDateStart(Date dateStart) {
+		this.dateStart = dateStart;
+	}
+
+	public void setId(OrgAddressPK id) {
+		this.id = id;
+	}
+
+	public void setOrgId(Org orgId) {
+		this.orgId = orgId;
+	}
+
+	public String toJson() {
+		return new JSONSerializer().exclude("*.class").serialize(this);
 	}
 
 	public String toString() {
 		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+	}
+
+	@PostUpdate
+	@PostPersist
+	private void postPersistOrUpdate() {
+		indexOrgAddress(this);
+	}
+
+	@PreRemove
+	private void preRemove() {
+		deleteIndex(this);
 	}
 }

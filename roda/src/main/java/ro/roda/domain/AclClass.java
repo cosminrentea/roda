@@ -40,16 +40,42 @@ import flexjson.JSONSerializer;
 @Audited
 public class AclClass {
 
-	public String toJson() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
+	public static long countAclClasses() {
+		return entityManager().createQuery("SELECT COUNT(o) FROM AclClass o", Long.class).getSingleResult();
 	}
 
-	public static AclClass fromJsonToAclClass(String json) {
-		return new JSONDeserializer<AclClass>().use(null, AclClass.class).deserialize(json);
+	@Async
+	public static void deleteIndex(AclClass aclClass) {
+		SolrServer solrServer = solrServer();
+		try {
+			solrServer.deleteById("aclclass_" + aclClass.getId());
+			solrServer.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
-	public static String toJsonArray(Collection<AclClass> collection) {
-		return new JSONSerializer().exclude("*.class").serialize(collection);
+	public static final EntityManager entityManager() {
+		EntityManager em = new AclClass().entityManager;
+		if (em == null)
+			throw new IllegalStateException(
+					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return em;
+	}
+
+	public static AclClass findAclClass(Long id) {
+		if (id == null)
+			return null;
+		return entityManager().find(AclClass.class, id);
+	}
+
+	public static List<AclClass> findAclClassEntries(int firstResult, int maxResults) {
+		return entityManager().createQuery("SELECT o FROM AclClass o", AclClass.class).setFirstResult(firstResult)
+				.setMaxResults(maxResults).getResultList();
+	}
+
+	public static List<AclClass> findAllAclClasses() {
+		return entityManager().createQuery("SELECT o FROM AclClass o", AclClass.class).getResultList();
 	}
 
 	public static Collection<AclClass> fromJsonArrayToAclClasses(String json) {
@@ -57,57 +83,8 @@ public class AclClass {
 				.deserialize(json);
 	}
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "id", columnDefinition = "bigserial")
-	private Long id;
-
-	public Long getId() {
-		return this.id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	@OneToMany(mappedBy = "objectIdClass")
-	private Set<AclObjectIdentity> aclObjectIdentities;
-
-	@Column(name = "class", columnDefinition = "text", unique = true)
-	@NotNull
-	private String class1;
-
-	public Set<AclObjectIdentity> getAclObjectIdentities() {
-		return aclObjectIdentities;
-	}
-
-	public void setAclObjectIdentities(Set<AclObjectIdentity> aclObjectIdentities) {
-		this.aclObjectIdentities = aclObjectIdentities;
-	}
-
-	public String getClass1() {
-		return class1;
-	}
-
-	public void setClass1(String class1) {
-		this.class1 = class1;
-	}
-
-	@Autowired
-	transient SolrServer solrServer;
-
-	public static QueryResponse search(String queryString) {
-		String searchString = "AclClass_solrsummary_t:" + queryString;
-		return search(new SolrQuery(searchString.toLowerCase()));
-	}
-
-	public static QueryResponse search(SolrQuery query) {
-		try {
-			return solrServer().query(query);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return new QueryResponse();
+	public static AclClass fromJsonToAclClass(String json) {
+		return new JSONDeserializer<AclClass>().use(null, AclClass.class).deserialize(json);
 	}
 
 	public static void indexAclClass(AclClass aclClass) {
@@ -139,26 +116,18 @@ public class AclClass {
 		}
 	}
 
-	@Async
-	public static void deleteIndex(AclClass aclClass) {
-		SolrServer solrServer = solrServer();
+	public static QueryResponse search(SolrQuery query) {
 		try {
-			solrServer.deleteById("aclclass_" + aclClass.getId());
-			solrServer.commit();
+			return solrServer().query(query);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return new QueryResponse();
 	}
 
-	@PostUpdate
-	@PostPersist
-	private void postPersistOrUpdate() {
-		indexAclClass(this);
-	}
-
-	@PreRemove
-	private void preRemove() {
-		deleteIndex(this);
+	public static QueryResponse search(String queryString) {
+		String searchString = "AclClass_solrsummary_t:" + queryString;
+		return search(new SolrQuery(searchString.toLowerCase()));
 	}
 
 	public static SolrServer solrServer() {
@@ -169,38 +138,61 @@ public class AclClass {
 		return _solrServer;
 	}
 
-	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+	public static String toJsonArray(Collection<AclClass> collection) {
+		return new JSONSerializer().exclude("*.class").serialize(collection);
 	}
+
+	@OneToMany(mappedBy = "objectIdClass")
+	private Set<AclObjectIdentity> aclObjectIdentities;
+
+	@Column(name = "class", columnDefinition = "text", unique = true)
+	@NotNull
+	private String class1;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id", columnDefinition = "bigserial")
+	private Long id;
 
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	public static final EntityManager entityManager() {
-		EntityManager em = new AclClass().entityManager;
-		if (em == null)
-			throw new IllegalStateException(
-					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-		return em;
+	@Autowired
+	transient SolrServer solrServer;
+
+	@Transactional
+	public void clear() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.clear();
 	}
 
-	public static long countAclClasses() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM AclClass o", Long.class).getSingleResult();
+	@Transactional
+	public void flush() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.flush();
 	}
 
-	public static List<AclClass> findAllAclClasses() {
-		return entityManager().createQuery("SELECT o FROM AclClass o", AclClass.class).getResultList();
+	public Set<AclObjectIdentity> getAclObjectIdentities() {
+		return aclObjectIdentities;
 	}
 
-	public static AclClass findAclClass(Long id) {
-		if (id == null)
-			return null;
-		return entityManager().find(AclClass.class, id);
+	public String getClass1() {
+		return class1;
 	}
 
-	public static List<AclClass> findAclClassEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM AclClass o", AclClass.class).setFirstResult(firstResult)
-				.setMaxResults(maxResults).getResultList();
+	public Long getId() {
+		return this.id;
+	}
+
+	@Transactional
+	public AclClass merge() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		AclClass merged = this.entityManager.merge(this);
+		this.entityManager.flush();
+		return merged;
 	}
 
 	@Transactional
@@ -222,26 +214,34 @@ public class AclClass {
 		}
 	}
 
-	@Transactional
-	public void flush() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.flush();
+	public void setAclObjectIdentities(Set<AclObjectIdentity> aclObjectIdentities) {
+		this.aclObjectIdentities = aclObjectIdentities;
 	}
 
-	@Transactional
-	public void clear() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.clear();
+	public void setClass1(String class1) {
+		this.class1 = class1;
 	}
 
-	@Transactional
-	public AclClass merge() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		AclClass merged = this.entityManager.merge(this);
-		this.entityManager.flush();
-		return merged;
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String toJson() {
+		return new JSONSerializer().exclude("*.class").serialize(this);
+	}
+
+	public String toString() {
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+	}
+
+	@PostUpdate
+	@PostPersist
+	private void postPersistOrUpdate() {
+		indexAclClass(this);
+	}
+
+	@PreRemove
+	private void preRemove() {
+		deleteIndex(this);
 	}
 }

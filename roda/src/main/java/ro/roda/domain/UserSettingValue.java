@@ -38,16 +38,42 @@ import flexjson.JSONSerializer;
 @Audited
 public class UserSettingValue {
 
-	public String toJson() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
+	public static long countUserSettingValues() {
+		return entityManager().createQuery("SELECT COUNT(o) FROM UserSettingValue o", Long.class).getSingleResult();
 	}
 
-	public static UserSettingValue fromJsonToUserSettingValue(String json) {
-		return new JSONDeserializer<UserSettingValue>().use(null, UserSettingValue.class).deserialize(json);
+	@Async
+	public static void deleteIndex(UserSettingValue userSettingValue) {
+		SolrServer solrServer = solrServer();
+		try {
+			solrServer.deleteById("usersettingvalue_" + userSettingValue.getId());
+			solrServer.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
-	public static String toJsonArray(Collection<UserSettingValue> collection) {
-		return new JSONSerializer().exclude("*.class").serialize(collection);
+	public static final EntityManager entityManager() {
+		EntityManager em = new UserSettingValue().entityManager;
+		if (em == null)
+			throw new IllegalStateException(
+					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return em;
+	}
+
+	public static List<UserSettingValue> findAllUserSettingValues() {
+		return entityManager().createQuery("SELECT o FROM UserSettingValue o", UserSettingValue.class).getResultList();
+	}
+
+	public static UserSettingValue findUserSettingValue(UserSettingValuePK id) {
+		if (id == null)
+			return null;
+		return entityManager().find(UserSettingValue.class, id);
+	}
+
+	public static List<UserSettingValue> findUserSettingValueEntries(int firstResult, int maxResults) {
+		return entityManager().createQuery("SELECT o FROM UserSettingValue o", UserSettingValue.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
 	}
 
 	public static Collection<UserSettingValue> fromJsonArrayToUserSettingValues(String json) {
@@ -55,32 +81,8 @@ public class UserSettingValue {
 				.use("values", UserSettingValue.class).deserialize(json);
 	}
 
-	@EmbeddedId
-	private UserSettingValuePK id;
-
-	public UserSettingValuePK getId() {
-		return this.id;
-	}
-
-	public void setId(UserSettingValuePK id) {
-		this.id = id;
-	}
-
-	@Autowired
-	transient SolrServer solrServer;
-
-	public static QueryResponse search(String queryString) {
-		String searchString = "UserSettingValue_solrsummary_t:" + queryString;
-		return search(new SolrQuery(searchString.toLowerCase()));
-	}
-
-	public static QueryResponse search(SolrQuery query) {
-		try {
-			return solrServer().query(query);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return new QueryResponse();
+	public static UserSettingValue fromJsonToUserSettingValue(String json) {
+		return new JSONDeserializer<UserSettingValue>().use(null, UserSettingValue.class).deserialize(json);
 	}
 
 	public static void indexUserSettingValue(UserSettingValue userSettingValue) {
@@ -117,26 +119,18 @@ public class UserSettingValue {
 		}
 	}
 
-	@Async
-	public static void deleteIndex(UserSettingValue userSettingValue) {
-		SolrServer solrServer = solrServer();
+	public static QueryResponse search(SolrQuery query) {
 		try {
-			solrServer.deleteById("usersettingvalue_" + userSettingValue.getId());
-			solrServer.commit();
+			return solrServer().query(query);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return new QueryResponse();
 	}
 
-	@PostUpdate
-	@PostPersist
-	private void postPersistOrUpdate() {
-		indexUserSettingValue(this);
-	}
-
-	@PreRemove
-	private void preRemove() {
-		deleteIndex(this);
+	public static QueryResponse search(String queryString) {
+		String searchString = "UserSettingValue_solrsummary_t:" + queryString;
+		return search(new SolrQuery(searchString.toLowerCase()));
 	}
 
 	public static SolrServer solrServer() {
@@ -147,38 +141,68 @@ public class UserSettingValue {
 		return _solrServer;
 	}
 
-	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+	public static String toJsonArray(Collection<UserSettingValue> collection) {
+		return new JSONSerializer().exclude("*.class").serialize(collection);
 	}
+
+	@EmbeddedId
+	private UserSettingValuePK id;
+
+	@ManyToOne
+	@JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	private Users userId;
+
+	@ManyToOne
+	@JoinColumn(name = "user_setting_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	private UserSetting userSettingId;
+
+	@Column(name = "value", columnDefinition = "text")
+	@NotNull
+	private String value;
 
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	public static final EntityManager entityManager() {
-		EntityManager em = new UserSettingValue().entityManager;
-		if (em == null)
-			throw new IllegalStateException(
-					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-		return em;
+	@Autowired
+	transient SolrServer solrServer;
+
+	@Transactional
+	public void clear() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.clear();
 	}
 
-	public static long countUserSettingValues() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM UserSettingValue o", Long.class).getSingleResult();
+	@Transactional
+	public void flush() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.flush();
 	}
 
-	public static List<UserSettingValue> findAllUserSettingValues() {
-		return entityManager().createQuery("SELECT o FROM UserSettingValue o", UserSettingValue.class).getResultList();
+	public UserSettingValuePK getId() {
+		return this.id;
 	}
 
-	public static UserSettingValue findUserSettingValue(UserSettingValuePK id) {
-		if (id == null)
-			return null;
-		return entityManager().find(UserSettingValue.class, id);
+	public Users getUserId() {
+		return userId;
 	}
 
-	public static List<UserSettingValue> findUserSettingValueEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM UserSettingValue o", UserSettingValue.class)
-				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
+	public UserSetting getUserSettingId() {
+		return userSettingId;
+	}
+
+	public String getValue() {
+		return value;
+	}
+
+	@Transactional
+	public UserSettingValue merge() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		UserSettingValue merged = this.entityManager.merge(this);
+		this.entityManager.flush();
+		return merged;
 	}
 
 	@Transactional
@@ -200,62 +224,38 @@ public class UserSettingValue {
 		}
 	}
 
-	@Transactional
-	public void flush() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.flush();
-	}
-
-	@Transactional
-	public void clear() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.clear();
-	}
-
-	@Transactional
-	public UserSettingValue merge() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		UserSettingValue merged = this.entityManager.merge(this);
-		this.entityManager.flush();
-		return merged;
-	}
-
-	@ManyToOne
-	@JoinColumn(name = "user_setting_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
-	private UserSetting userSettingId;
-
-	@ManyToOne
-	@JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
-	private Users userId;
-
-	@Column(name = "value", columnDefinition = "text")
-	@NotNull
-	private String value;
-
-	public UserSetting getUserSettingId() {
-		return userSettingId;
-	}
-
-	public void setUserSettingId(UserSetting userSettingId) {
-		this.userSettingId = userSettingId;
-	}
-
-	public Users getUserId() {
-		return userId;
+	public void setId(UserSettingValuePK id) {
+		this.id = id;
 	}
 
 	public void setUserId(Users userId) {
 		this.userId = userId;
 	}
 
-	public String getValue() {
-		return value;
+	public void setUserSettingId(UserSetting userSettingId) {
+		this.userSettingId = userSettingId;
 	}
 
 	public void setValue(String value) {
 		this.value = value;
+	}
+
+	public String toJson() {
+		return new JSONSerializer().exclude("*.class").serialize(this);
+	}
+
+	public String toString() {
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+	}
+
+	@PostUpdate
+	@PostPersist
+	private void postPersistOrUpdate() {
+		indexUserSettingValue(this);
+	}
+
+	@PreRemove
+	private void preRemove() {
+		deleteIndex(this);
 	}
 }

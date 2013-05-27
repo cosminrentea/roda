@@ -40,25 +40,20 @@ import flexjson.JSONSerializer;
 @Audited
 public class Email {
 
-	public String toJson() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
+	public static long countEmails() {
+		return entityManager().createQuery("SELECT COUNT(o) FROM Email o", Long.class).getSingleResult();
 	}
 
-	public static Email fromJsonToEmail(String json) {
-		return new JSONDeserializer<Email>().use(null, Email.class).deserialize(json);
+	@Async
+	public static void deleteIndex(Email email) {
+		SolrServer solrServer = solrServer();
+		try {
+			solrServer.deleteById("email_" + email.getId());
+			solrServer.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
-
-	public static String toJsonArray(Collection<Email> collection) {
-		return new JSONSerializer().exclude("*.class").serialize(collection);
-	}
-
-	public static Collection<Email> fromJsonArrayToEmails(String json) {
-		return new JSONDeserializer<List<Email>>().use(null, ArrayList.class).use("values", Email.class)
-				.deserialize(json);
-	}
-
-	@PersistenceContext
-	transient EntityManager entityManager;
 
 	public static final EntityManager entityManager() {
 		EntityManager em = new Email().entityManager;
@@ -66,10 +61,6 @@ public class Email {
 			throw new IllegalStateException(
 					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
 		return em;
-	}
-
-	public static long countEmails() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM Email o", Long.class).getSingleResult();
 	}
 
 	public static List<Email> findAllEmails() {
@@ -87,110 +78,13 @@ public class Email {
 				.setMaxResults(maxResults).getResultList();
 	}
 
-	@Transactional
-	public void persist() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.persist(this);
+	public static Collection<Email> fromJsonArrayToEmails(String json) {
+		return new JSONDeserializer<List<Email>>().use(null, ArrayList.class).use("values", Email.class)
+				.deserialize(json);
 	}
 
-	@Transactional
-	public void remove() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		if (this.entityManager.contains(this)) {
-			this.entityManager.remove(this);
-		} else {
-			Email attached = Email.findEmail(this.id);
-			this.entityManager.remove(attached);
-		}
-	}
-
-	@Transactional
-	public void flush() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.flush();
-	}
-
-	@Transactional
-	public void clear() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.clear();
-	}
-
-	@Transactional
-	public Email merge() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		Email merged = this.entityManager.merge(this);
-		this.entityManager.flush();
-		return merged;
-	}
-
-	@OneToMany(mappedBy = "emailId")
-	private Set<OrgEmail> orgEmails;
-
-	@OneToMany(mappedBy = "emailId")
-	private Set<PersonEmail> personEmails;
-
-	@Column(name = "email", columnDefinition = "varchar", length = 200)
-	@NotNull
-	private String email;
-
-	public Set<OrgEmail> getOrgEmails() {
-		return orgEmails;
-	}
-
-	public void setOrgEmails(Set<OrgEmail> orgEmails) {
-		this.orgEmails = orgEmails;
-	}
-
-	public Set<PersonEmail> getPersonEmails() {
-		return personEmails;
-	}
-
-	public void setPersonEmails(Set<PersonEmail> personEmails) {
-		this.personEmails = personEmails;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "id", columnDefinition = "serial")
-	private Integer id;
-
-	public Integer getId() {
-		return this.id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	@Autowired
-	transient SolrServer solrServer;
-
-	public static QueryResponse search(String queryString) {
-		String searchString = "Email_solrsummary_t:" + queryString;
-		return search(new SolrQuery(searchString.toLowerCase()));
-	}
-
-	public static QueryResponse search(SolrQuery query) {
-		try {
-			return solrServer().query(query);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return new QueryResponse();
+	public static Email fromJsonToEmail(String json) {
+		return new JSONDeserializer<Email>().use(null, Email.class).deserialize(json);
 	}
 
 	public static void indexEmail(Email email) {
@@ -222,15 +116,133 @@ public class Email {
 		}
 	}
 
-	@Async
-	public static void deleteIndex(Email email) {
-		SolrServer solrServer = solrServer();
+	public static QueryResponse search(SolrQuery query) {
 		try {
-			solrServer.deleteById("email_" + email.getId());
-			solrServer.commit();
+			return solrServer().query(query);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return new QueryResponse();
+	}
+
+	public static QueryResponse search(String queryString) {
+		String searchString = "Email_solrsummary_t:" + queryString;
+		return search(new SolrQuery(searchString.toLowerCase()));
+	}
+
+	public static SolrServer solrServer() {
+		SolrServer _solrServer = new Email().solrServer;
+		if (_solrServer == null)
+			throw new IllegalStateException(
+					"Solr server has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return _solrServer;
+	}
+
+	public static String toJsonArray(Collection<Email> collection) {
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	@Column(name = "email", columnDefinition = "varchar", length = 200)
+	@NotNull
+	private String email;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id", columnDefinition = "serial")
+	private Integer id;
+
+	@OneToMany(mappedBy = "emailId")
+	private Set<OrgEmail> orgEmails;
+
+	@OneToMany(mappedBy = "emailId")
+	private Set<PersonEmail> personEmails;
+
+	@PersistenceContext
+	transient EntityManager entityManager;
+
+	@Autowired
+	transient SolrServer solrServer;
+
+	@Transactional
+	public void clear() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.clear();
+	}
+
+	@Transactional
+	public void flush() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.flush();
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public Integer getId() {
+		return this.id;
+	}
+
+	public Set<OrgEmail> getOrgEmails() {
+		return orgEmails;
+	}
+
+	public Set<PersonEmail> getPersonEmails() {
+		return personEmails;
+	}
+
+	@Transactional
+	public Email merge() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		Email merged = this.entityManager.merge(this);
+		this.entityManager.flush();
+		return merged;
+	}
+
+	@Transactional
+	public void persist() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.persist(this);
+	}
+
+	@Transactional
+	public void remove() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		if (this.entityManager.contains(this)) {
+			this.entityManager.remove(this);
+		} else {
+			Email attached = Email.findEmail(this.id);
+			this.entityManager.remove(attached);
+		}
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public void setOrgEmails(Set<OrgEmail> orgEmails) {
+		this.orgEmails = orgEmails;
+	}
+
+	public void setPersonEmails(Set<PersonEmail> personEmails) {
+		this.personEmails = personEmails;
+	}
+
+	public String toJson() {
+		return new JSONSerializer().exclude("*.class").serialize(this);
+	}
+
+	public String toString() {
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate
@@ -242,17 +254,5 @@ public class Email {
 	@PreRemove
 	private void preRemove() {
 		deleteIndex(this);
-	}
-
-	public static SolrServer solrServer() {
-		SolrServer _solrServer = new Email().solrServer;
-		if (_solrServer == null)
-			throw new IllegalStateException(
-					"Solr server has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-		return _solrServer;
-	}
-
-	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 }

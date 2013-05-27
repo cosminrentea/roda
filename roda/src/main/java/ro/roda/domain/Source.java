@@ -42,62 +42,51 @@ import flexjson.JSONSerializer;
 @Audited
 public class Source {
 
-	@ManyToMany
-	@JoinTable(name = "study_source", joinColumns = { @JoinColumn(name = "source_id", nullable = false) }, inverseJoinColumns = { @JoinColumn(name = "study_id", nullable = false) })
-	private Set<Study> studies;
-
-	@Column(name = "citation", columnDefinition = "text")
-	@NotNull
-	private String citation;
-
-	public Set<Study> getStudies() {
-		return studies;
+	public static long countSources() {
+		return entityManager().createQuery("SELECT COUNT(o) FROM Source o", Long.class).getSingleResult();
 	}
 
-	public void setStudies(Set<Study> studies) {
-		this.studies = studies;
-	}
-
-	public String getCitation() {
-		return citation;
-	}
-
-	public void setCitation(String citation) {
-		this.citation = citation;
-	}
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "id", columnDefinition = "serial")
-	private Integer id;
-
-	public Integer getId() {
-		return this.id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
-	}
-
-	@Autowired
-	transient SolrServer solrServer;
-
-	public static QueryResponse search(String queryString) {
-		String searchString = "Source_solrsummary_t:" + queryString;
-		return search(new SolrQuery(searchString.toLowerCase()));
-	}
-
-	public static QueryResponse search(SolrQuery query) {
+	@Async
+	public static void deleteIndex(Source source) {
+		SolrServer solrServer = solrServer();
 		try {
-			return solrServer().query(query);
+			solrServer.deleteById("source_" + source.getId());
+			solrServer.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return new QueryResponse();
+	}
+
+	public static final EntityManager entityManager() {
+		EntityManager em = new Source().entityManager;
+		if (em == null)
+			throw new IllegalStateException(
+					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return em;
+	}
+
+	public static List<Source> findAllSources() {
+		return entityManager().createQuery("SELECT o FROM Source o", Source.class).getResultList();
+	}
+
+	public static Source findSource(Integer id) {
+		if (id == null)
+			return null;
+		return entityManager().find(Source.class, id);
+	}
+
+	public static List<Source> findSourceEntries(int firstResult, int maxResults) {
+		return entityManager().createQuery("SELECT o FROM Source o", Source.class).setFirstResult(firstResult)
+				.setMaxResults(maxResults).getResultList();
+	}
+
+	public static Collection<Source> fromJsonArrayToSources(String json) {
+		return new JSONDeserializer<List<Source>>().use(null, ArrayList.class).use("values", Source.class)
+				.deserialize(json);
+	}
+
+	public static Source fromJsonToSource(String json) {
+		return new JSONDeserializer<Source>().use(null, Source.class).deserialize(json);
 	}
 
 	public static void indexSource(Source source) {
@@ -129,26 +118,18 @@ public class Source {
 		}
 	}
 
-	@Async
-	public static void deleteIndex(Source source) {
-		SolrServer solrServer = solrServer();
+	public static QueryResponse search(SolrQuery query) {
 		try {
-			solrServer.deleteById("source_" + source.getId());
-			solrServer.commit();
+			return solrServer().query(query);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return new QueryResponse();
 	}
 
-	@PostUpdate
-	@PostPersist
-	private void postPersistOrUpdate() {
-		indexSource(this);
-	}
-
-	@PreRemove
-	private void preRemove() {
-		deleteIndex(this);
+	public static QueryResponse search(String queryString) {
+		String searchString = "Source_solrsummary_t:" + queryString;
+		return search(new SolrQuery(searchString.toLowerCase()));
 	}
 
 	public static SolrServer solrServer() {
@@ -159,51 +140,62 @@ public class Source {
 		return _solrServer;
 	}
 
-	public String toJson() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
-	}
-
-	public static Source fromJsonToSource(String json) {
-		return new JSONDeserializer<Source>().use(null, Source.class).deserialize(json);
-	}
-
 	public static String toJsonArray(Collection<Source> collection) {
 		return new JSONSerializer().exclude("*.class").serialize(collection);
 	}
 
-	public static Collection<Source> fromJsonArrayToSources(String json) {
-		return new JSONDeserializer<List<Source>>().use(null, ArrayList.class).use("values", Source.class)
-				.deserialize(json);
-	}
+	@Column(name = "citation", columnDefinition = "text")
+	@NotNull
+	private String citation;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id", columnDefinition = "serial")
+	private Integer id;
+
+	@ManyToMany
+	@JoinTable(name = "study_source", joinColumns = { @JoinColumn(name = "source_id", nullable = false) }, inverseJoinColumns = { @JoinColumn(name = "study_id", nullable = false) })
+	private Set<Study> studies;
 
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	public static final EntityManager entityManager() {
-		EntityManager em = new Source().entityManager;
-		if (em == null)
-			throw new IllegalStateException(
-					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-		return em;
+	@Autowired
+	transient SolrServer solrServer;
+
+	@Transactional
+	public void clear() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.clear();
 	}
 
-	public static long countSources() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM Source o", Long.class).getSingleResult();
+	@Transactional
+	public void flush() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.flush();
 	}
 
-	public static List<Source> findAllSources() {
-		return entityManager().createQuery("SELECT o FROM Source o", Source.class).getResultList();
+	public String getCitation() {
+		return citation;
 	}
 
-	public static Source findSource(Integer id) {
-		if (id == null)
-			return null;
-		return entityManager().find(Source.class, id);
+	public Integer getId() {
+		return this.id;
 	}
 
-	public static List<Source> findSourceEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM Source o", Source.class).setFirstResult(firstResult)
-				.setMaxResults(maxResults).getResultList();
+	public Set<Study> getStudies() {
+		return studies;
+	}
+
+	@Transactional
+	public Source merge() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		Source merged = this.entityManager.merge(this);
+		this.entityManager.flush();
+		return merged;
 	}
 
 	@Transactional
@@ -225,26 +217,34 @@ public class Source {
 		}
 	}
 
-	@Transactional
-	public void flush() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.flush();
+	public void setCitation(String citation) {
+		this.citation = citation;
 	}
 
-	@Transactional
-	public void clear() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.clear();
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
-	@Transactional
-	public Source merge() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		Source merged = this.entityManager.merge(this);
-		this.entityManager.flush();
-		return merged;
+	public void setStudies(Set<Study> studies) {
+		this.studies = studies;
+	}
+
+	public String toJson() {
+		return new JSONSerializer().exclude("*.class").serialize(this);
+	}
+
+	public String toString() {
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+	}
+
+	@PostUpdate
+	@PostPersist
+	private void postPersistOrUpdate() {
+		indexSource(this);
+	}
+
+	@PreRemove
+	private void preRemove() {
+		deleteIndex(this);
 	}
 }

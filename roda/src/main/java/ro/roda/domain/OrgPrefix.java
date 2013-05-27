@@ -40,68 +40,51 @@ import flexjson.JSONSerializer;
 @Audited
 public class OrgPrefix {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "id", columnDefinition = "serial")
-	private Integer id;
-
-	public Integer getId() {
-		return this.id;
+	public static long countOrgPrefixes() {
+		return entityManager().createQuery("SELECT COUNT(o) FROM OrgPrefix o", Long.class).getSingleResult();
 	}
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	@OneToMany(mappedBy = "orgPrefixId")
-	private Set<Org> orgs;
-
-	@Column(name = "name", columnDefinition = "varchar", length = 100)
-	@NotNull
-	private String name;
-
-	@Column(name = "description", columnDefinition = "text")
-	private String description;
-
-	public Set<Org> getOrgs() {
-		return orgs;
-	}
-
-	public void setOrgs(Set<Org> orgs) {
-		this.orgs = orgs;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	@Autowired
-	transient SolrServer solrServer;
-
-	public static QueryResponse search(String queryString) {
-		String searchString = "OrgPrefix_solrsummary_t:" + queryString;
-		return search(new SolrQuery(searchString.toLowerCase()));
-	}
-
-	public static QueryResponse search(SolrQuery query) {
+	@Async
+	public static void deleteIndex(OrgPrefix orgPrefix) {
+		SolrServer solrServer = solrServer();
 		try {
-			return solrServer().query(query);
+			solrServer.deleteById("orgprefix_" + orgPrefix.getId());
+			solrServer.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return new QueryResponse();
+	}
+
+	public static final EntityManager entityManager() {
+		EntityManager em = new OrgPrefix().entityManager;
+		if (em == null)
+			throw new IllegalStateException(
+					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return em;
+	}
+
+	public static List<OrgPrefix> findAllOrgPrefixes() {
+		return entityManager().createQuery("SELECT o FROM OrgPrefix o", OrgPrefix.class).getResultList();
+	}
+
+	public static OrgPrefix findOrgPrefix(Integer id) {
+		if (id == null)
+			return null;
+		return entityManager().find(OrgPrefix.class, id);
+	}
+
+	public static List<OrgPrefix> findOrgPrefixEntries(int firstResult, int maxResults) {
+		return entityManager().createQuery("SELECT o FROM OrgPrefix o", OrgPrefix.class).setFirstResult(firstResult)
+				.setMaxResults(maxResults).getResultList();
+	}
+
+	public static Collection<OrgPrefix> fromJsonArrayToOrgPrefixes(String json) {
+		return new JSONDeserializer<List<OrgPrefix>>().use(null, ArrayList.class).use("values", OrgPrefix.class)
+				.deserialize(json);
+	}
+
+	public static OrgPrefix fromJsonToOrgPrefix(String json) {
+		return new JSONDeserializer<OrgPrefix>().use(null, OrgPrefix.class).deserialize(json);
 	}
 
 	public static void indexOrgPrefix(OrgPrefix orgPrefix) {
@@ -133,26 +116,18 @@ public class OrgPrefix {
 		}
 	}
 
-	@Async
-	public static void deleteIndex(OrgPrefix orgPrefix) {
-		SolrServer solrServer = solrServer();
+	public static QueryResponse search(SolrQuery query) {
 		try {
-			solrServer.deleteById("orgprefix_" + orgPrefix.getId());
-			solrServer.commit();
+			return solrServer().query(query);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return new QueryResponse();
 	}
 
-	@PostUpdate
-	@PostPersist
-	private void postPersistOrUpdate() {
-		indexOrgPrefix(this);
-	}
-
-	@PreRemove
-	private void preRemove() {
-		deleteIndex(this);
+	public static QueryResponse search(String queryString) {
+		String searchString = "OrgPrefix_solrsummary_t:" + queryString;
+		return search(new SolrQuery(searchString.toLowerCase()));
 	}
 
 	public static SolrServer solrServer() {
@@ -163,34 +138,68 @@ public class OrgPrefix {
 		return _solrServer;
 	}
 
+	public static String toJsonArray(Collection<OrgPrefix> collection) {
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	@Column(name = "description", columnDefinition = "text")
+	private String description;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id", columnDefinition = "serial")
+	private Integer id;
+
+	@Column(name = "name", columnDefinition = "varchar", length = 100)
+	@NotNull
+	private String name;
+
+	@OneToMany(mappedBy = "orgPrefixId")
+	private Set<Org> orgs;
+
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	public static final EntityManager entityManager() {
-		EntityManager em = new OrgPrefix().entityManager;
-		if (em == null)
-			throw new IllegalStateException(
-					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-		return em;
+	@Autowired
+	transient SolrServer solrServer;
+
+	@Transactional
+	public void clear() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.clear();
 	}
 
-	public static long countOrgPrefixes() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM OrgPrefix o", Long.class).getSingleResult();
+	@Transactional
+	public void flush() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.flush();
 	}
 
-	public static List<OrgPrefix> findAllOrgPrefixes() {
-		return entityManager().createQuery("SELECT o FROM OrgPrefix o", OrgPrefix.class).getResultList();
+	public String getDescription() {
+		return description;
 	}
 
-	public static OrgPrefix findOrgPrefix(Integer id) {
-		if (id == null)
-			return null;
-		return entityManager().find(OrgPrefix.class, id);
+	public Integer getId() {
+		return this.id;
 	}
 
-	public static List<OrgPrefix> findOrgPrefixEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM OrgPrefix o", OrgPrefix.class).setFirstResult(firstResult)
-				.setMaxResults(maxResults).getResultList();
+	public String getName() {
+		return name;
+	}
+
+	public Set<Org> getOrgs() {
+		return orgs;
+	}
+
+	@Transactional
+	public OrgPrefix merge() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		OrgPrefix merged = this.entityManager.merge(this);
+		this.entityManager.flush();
+		return merged;
 	}
 
 	@Transactional
@@ -212,47 +221,38 @@ public class OrgPrefix {
 		}
 	}
 
-	@Transactional
-	public void flush() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.flush();
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
-	@Transactional
-	public void clear() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.clear();
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
-	@Transactional
-	public OrgPrefix merge() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		OrgPrefix merged = this.entityManager.merge(this);
-		this.entityManager.flush();
-		return merged;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+	public void setOrgs(Set<Org> orgs) {
+		this.orgs = orgs;
 	}
 
 	public String toJson() {
 		return new JSONSerializer().exclude("*.class").serialize(this);
 	}
 
-	public static OrgPrefix fromJsonToOrgPrefix(String json) {
-		return new JSONDeserializer<OrgPrefix>().use(null, OrgPrefix.class).deserialize(json);
+	public String toString() {
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
-	public static String toJsonArray(Collection<OrgPrefix> collection) {
-		return new JSONSerializer().exclude("*.class").serialize(collection);
+	@PostUpdate
+	@PostPersist
+	private void postPersistOrUpdate() {
+		indexOrgPrefix(this);
 	}
 
-	public static Collection<OrgPrefix> fromJsonArrayToOrgPrefixes(String json) {
-		return new JSONDeserializer<List<OrgPrefix>>().use(null, ArrayList.class).use("values", OrgPrefix.class)
-				.deserialize(json);
+	@PreRemove
+	private void preRemove() {
+		deleteIndex(this);
 	}
 }

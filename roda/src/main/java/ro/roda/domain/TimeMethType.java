@@ -39,21 +39,51 @@ import flexjson.JSONSerializer;
 @Audited
 public class TimeMethType {
 
-	@Autowired
-	transient SolrServer solrServer;
-
-	public static QueryResponse search(String queryString) {
-		String searchString = "TimeMethType_solrsummary_t:" + queryString;
-		return search(new SolrQuery(searchString.toLowerCase()));
+	public static long countTimeMethTypes() {
+		return entityManager().createQuery("SELECT COUNT(o) FROM TimeMethType o", Long.class).getSingleResult();
 	}
 
-	public static QueryResponse search(SolrQuery query) {
+	@Async
+	public static void deleteIndex(TimeMethType timeMethType) {
+		SolrServer solrServer = solrServer();
 		try {
-			return solrServer().query(query);
+			solrServer.deleteById("timemethtype_" + timeMethType.getId());
+			solrServer.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return new QueryResponse();
+	}
+
+	public static final EntityManager entityManager() {
+		EntityManager em = new TimeMethType().entityManager;
+		if (em == null)
+			throw new IllegalStateException(
+					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return em;
+	}
+
+	public static List<TimeMethType> findAllTimeMethTypes() {
+		return entityManager().createQuery("SELECT o FROM TimeMethType o", TimeMethType.class).getResultList();
+	}
+
+	public static TimeMethType findTimeMethType(Integer id) {
+		if (id == null)
+			return null;
+		return entityManager().find(TimeMethType.class, id);
+	}
+
+	public static List<TimeMethType> findTimeMethTypeEntries(int firstResult, int maxResults) {
+		return entityManager().createQuery("SELECT o FROM TimeMethType o", TimeMethType.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
+	}
+
+	public static Collection<TimeMethType> fromJsonArrayToTimeMethTypes(String json) {
+		return new JSONDeserializer<List<TimeMethType>>().use(null, ArrayList.class).use("values", TimeMethType.class)
+				.deserialize(json);
+	}
+
+	public static TimeMethType fromJsonToTimeMethType(String json) {
+		return new JSONDeserializer<TimeMethType>().use(null, TimeMethType.class).deserialize(json);
 	}
 
 	public static void indexTimeMethType(TimeMethType timeMethType) {
@@ -88,26 +118,18 @@ public class TimeMethType {
 		}
 	}
 
-	@Async
-	public static void deleteIndex(TimeMethType timeMethType) {
-		SolrServer solrServer = solrServer();
+	public static QueryResponse search(SolrQuery query) {
 		try {
-			solrServer.deleteById("timemethtype_" + timeMethType.getId());
-			solrServer.commit();
+			return solrServer().query(query);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return new QueryResponse();
 	}
 
-	@PostUpdate
-	@PostPersist
-	private void postPersistOrUpdate() {
-		indexTimeMethType(this);
-	}
-
-	@PreRemove
-	private void preRemove() {
-		deleteIndex(this);
+	public static QueryResponse search(String queryString) {
+		String searchString = "TimeMethType_solrsummary_t:" + queryString;
+		return search(new SolrQuery(searchString.toLowerCase()));
 	}
 
 	public static SolrServer solrServer() {
@@ -118,68 +140,68 @@ public class TimeMethType {
 		return _solrServer;
 	}
 
+	public static String toJsonArray(Collection<TimeMethType> collection) {
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	@Column(name = "description", columnDefinition = "text")
+	private String description;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id", columnDefinition = "serial")
 	private Integer id;
 
-	public Integer getId() {
-		return this.id;
-	}
+	@Column(name = "name", columnDefinition = "varchar", length = 100)
+	@NotNull
+	private String name;
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public String toJson() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
-	}
-
-	public static TimeMethType fromJsonToTimeMethType(String json) {
-		return new JSONDeserializer<TimeMethType>().use(null, TimeMethType.class).deserialize(json);
-	}
-
-	public static String toJsonArray(Collection<TimeMethType> collection) {
-		return new JSONSerializer().exclude("*.class").serialize(collection);
-	}
-
-	public static Collection<TimeMethType> fromJsonArrayToTimeMethTypes(String json) {
-		return new JSONDeserializer<List<TimeMethType>>().use(null, ArrayList.class).use("values", TimeMethType.class)
-				.deserialize(json);
-	}
-
-	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
-	}
+	@OneToOne(mappedBy = "timeMethType")
+	private Study study;
 
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	public static final EntityManager entityManager() {
-		EntityManager em = new TimeMethType().entityManager;
-		if (em == null)
-			throw new IllegalStateException(
-					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-		return em;
+	@Autowired
+	transient SolrServer solrServer;
+
+	@Transactional
+	public void clear() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.clear();
 	}
 
-	public static long countTimeMethTypes() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM TimeMethType o", Long.class).getSingleResult();
+	@Transactional
+	public void flush() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.flush();
 	}
 
-	public static List<TimeMethType> findAllTimeMethTypes() {
-		return entityManager().createQuery("SELECT o FROM TimeMethType o", TimeMethType.class).getResultList();
+	public String getDescription() {
+		return description;
 	}
 
-	public static TimeMethType findTimeMethType(Integer id) {
-		if (id == null)
-			return null;
-		return entityManager().find(TimeMethType.class, id);
+	public Integer getId() {
+		return this.id;
 	}
 
-	public static List<TimeMethType> findTimeMethTypeEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM TimeMethType o", TimeMethType.class)
-				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
+	public String getName() {
+		return name;
+	}
+
+	public Study getStudy() {
+		return study;
+	}
+
+	@Transactional
+	public TimeMethType merge() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		TimeMethType merged = this.entityManager.merge(this);
+		this.entityManager.flush();
+		return merged;
 	}
 
 	@Transactional
@@ -201,60 +223,38 @@ public class TimeMethType {
 		}
 	}
 
-	@Transactional
-	public void flush() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.flush();
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
-	@Transactional
-	public void clear() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.clear();
-	}
-
-	@Transactional
-	public TimeMethType merge() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		TimeMethType merged = this.entityManager.merge(this);
-		this.entityManager.flush();
-		return merged;
-	}
-
-	@OneToOne(mappedBy = "timeMethType")
-	private Study study;
-
-	@Column(name = "name", columnDefinition = "varchar", length = 100)
-	@NotNull
-	private String name;
-
-	@Column(name = "description", columnDefinition = "text")
-	private String description;
-
-	public Study getStudy() {
-		return study;
-	}
-
-	public void setStudy(Study study) {
-		this.study = study;
-	}
-
-	public String getName() {
-		return name;
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	public String getDescription() {
-		return description;
+	public void setStudy(Study study) {
+		this.study = study;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
+	public String toJson() {
+		return new JSONSerializer().exclude("*.class").serialize(this);
+	}
+
+	public String toString() {
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+	}
+
+	@PostUpdate
+	@PostPersist
+	private void postPersistOrUpdate() {
+		indexTimeMethType(this);
+	}
+
+	@PreRemove
+	private void preRemove() {
+		deleteIndex(this);
 	}
 }

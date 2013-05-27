@@ -36,80 +36,54 @@ import flexjson.JSONSerializer;
 @Audited
 public class InstanceRightTargetGroup {
 
-	@ManyToOne
-	@JoinColumn(name = "instance_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
-	private Instance instanceId;
-
-	@ManyToOne
-	@JoinColumn(name = "instance_right_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
-	private InstanceRight instanceRightId;
-
-	@ManyToOne
-	@JoinColumn(name = "instance_right_value_id", referencedColumnName = "id", nullable = false)
-	private InstanceRightValue instanceRightValueId;
-
-	@ManyToOne
-	@JoinColumn(name = "target_group_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
-	private TargetGroup targetGroupId;
-
-	public Instance getInstanceId() {
-		return instanceId;
+	public static long countInstanceRightTargetGroups() {
+		return entityManager().createQuery("SELECT COUNT(o) FROM InstanceRightTargetGroup o", Long.class)
+				.getSingleResult();
 	}
 
-	public void setInstanceId(Instance instanceId) {
-		this.instanceId = instanceId;
-	}
-
-	public InstanceRight getInstanceRightId() {
-		return instanceRightId;
-	}
-
-	public void setInstanceRightId(InstanceRight instanceRightId) {
-		this.instanceRightId = instanceRightId;
-	}
-
-	public InstanceRightValue getInstanceRightValueId() {
-		return instanceRightValueId;
-	}
-
-	public void setInstanceRightValueId(InstanceRightValue instanceRightValueId) {
-		this.instanceRightValueId = instanceRightValueId;
-	}
-
-	public TargetGroup getTargetGroupId() {
-		return targetGroupId;
-	}
-
-	public void setTargetGroupId(TargetGroup targetGroupId) {
-		this.targetGroupId = targetGroupId;
-	}
-
-	@EmbeddedId
-	private InstanceRightTargetGroupPK id;
-
-	public InstanceRightTargetGroupPK getId() {
-		return this.id;
-	}
-
-	public void setId(InstanceRightTargetGroupPK id) {
-		this.id = id;
-	}
-
-	@Autowired
-	transient SolrServer solrServer;
-
-	public static QueryResponse search(String queryString) {
-		String searchString = "InstanceRightTargetGroup_solrsummary_t:" + queryString;
-		return search(new SolrQuery(searchString.toLowerCase()));
-	}
-
-	public static QueryResponse search(SolrQuery query) {
+	@Async
+	public static void deleteIndex(InstanceRightTargetGroup instanceRightTargetGroup) {
+		SolrServer solrServer = solrServer();
 		try {
-			return solrServer().query(query);
+			solrServer.deleteById("instancerighttargetgroup_" + instanceRightTargetGroup.getId());
+			solrServer.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return new QueryResponse();
+	}
+
+	public static final EntityManager entityManager() {
+		EntityManager em = new InstanceRightTargetGroup().entityManager;
+		if (em == null)
+			throw new IllegalStateException(
+					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return em;
+	}
+
+	public static List<InstanceRightTargetGroup> findAllInstanceRightTargetGroups() {
+		return entityManager().createQuery("SELECT o FROM InstanceRightTargetGroup o", InstanceRightTargetGroup.class)
+				.getResultList();
+	}
+
+	public static InstanceRightTargetGroup findInstanceRightTargetGroup(InstanceRightTargetGroupPK id) {
+		if (id == null)
+			return null;
+		return entityManager().find(InstanceRightTargetGroup.class, id);
+	}
+
+	public static List<InstanceRightTargetGroup> findInstanceRightTargetGroupEntries(int firstResult, int maxResults) {
+		return entityManager().createQuery("SELECT o FROM InstanceRightTargetGroup o", InstanceRightTargetGroup.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
+	}
+
+	public static Collection<InstanceRightTargetGroup> fromJsonArrayToInstanceRightTargetGroups(String json) {
+		return new JSONDeserializer<List<InstanceRightTargetGroup>>().use(null, ArrayList.class)
+				.use("values", InstanceRightTargetGroup.class).deserialize(json);
+	}
+
+	public static InstanceRightTargetGroup fromJsonToInstanceRightTargetGroup(String json) {
+		return new JSONDeserializer<InstanceRightTargetGroup>().use(null, InstanceRightTargetGroup.class).deserialize(
+				json);
 	}
 
 	public static void indexInstanceRightTargetGroup(InstanceRightTargetGroup instanceRightTargetGroup) {
@@ -148,26 +122,18 @@ public class InstanceRightTargetGroup {
 		}
 	}
 
-	@Async
-	public static void deleteIndex(InstanceRightTargetGroup instanceRightTargetGroup) {
-		SolrServer solrServer = solrServer();
+	public static QueryResponse search(SolrQuery query) {
 		try {
-			solrServer.deleteById("instancerighttargetgroup_" + instanceRightTargetGroup.getId());
-			solrServer.commit();
+			return solrServer().query(query);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return new QueryResponse();
 	}
 
-	@PostUpdate
-	@PostPersist
-	private void postPersistOrUpdate() {
-		indexInstanceRightTargetGroup(this);
-	}
-
-	@PreRemove
-	private void preRemove() {
-		deleteIndex(this);
+	public static QueryResponse search(String queryString) {
+		String searchString = "InstanceRightTargetGroup_solrsummary_t:" + queryString;
+		return search(new SolrQuery(searchString.toLowerCase()));
 	}
 
 	public static SolrServer solrServer() {
@@ -178,36 +144,76 @@ public class InstanceRightTargetGroup {
 		return _solrServer;
 	}
 
+	public static String toJsonArray(Collection<InstanceRightTargetGroup> collection) {
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	@EmbeddedId
+	private InstanceRightTargetGroupPK id;
+
+	@ManyToOne
+	@JoinColumn(name = "instance_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	private Instance instanceId;
+
+	@ManyToOne
+	@JoinColumn(name = "instance_right_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	private InstanceRight instanceRightId;
+
+	@ManyToOne
+	@JoinColumn(name = "instance_right_value_id", referencedColumnName = "id", nullable = false)
+	private InstanceRightValue instanceRightValueId;
+
+	@ManyToOne
+	@JoinColumn(name = "target_group_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	private TargetGroup targetGroupId;
+
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	public static final EntityManager entityManager() {
-		EntityManager em = new InstanceRightTargetGroup().entityManager;
-		if (em == null)
-			throw new IllegalStateException(
-					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-		return em;
+	@Autowired
+	transient SolrServer solrServer;
+
+	@Transactional
+	public void clear() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.clear();
 	}
 
-	public static long countInstanceRightTargetGroups() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM InstanceRightTargetGroup o", Long.class)
-				.getSingleResult();
+	@Transactional
+	public void flush() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.flush();
 	}
 
-	public static List<InstanceRightTargetGroup> findAllInstanceRightTargetGroups() {
-		return entityManager().createQuery("SELECT o FROM InstanceRightTargetGroup o", InstanceRightTargetGroup.class)
-				.getResultList();
+	public InstanceRightTargetGroupPK getId() {
+		return this.id;
 	}
 
-	public static InstanceRightTargetGroup findInstanceRightTargetGroup(InstanceRightTargetGroupPK id) {
-		if (id == null)
-			return null;
-		return entityManager().find(InstanceRightTargetGroup.class, id);
+	public Instance getInstanceId() {
+		return instanceId;
 	}
 
-	public static List<InstanceRightTargetGroup> findInstanceRightTargetGroupEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM InstanceRightTargetGroup o", InstanceRightTargetGroup.class)
-				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
+	public InstanceRight getInstanceRightId() {
+		return instanceRightId;
+	}
+
+	public InstanceRightValue getInstanceRightValueId() {
+		return instanceRightValueId;
+	}
+
+	public TargetGroup getTargetGroupId() {
+		return targetGroupId;
+	}
+
+	@Transactional
+	public InstanceRightTargetGroup merge() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		InstanceRightTargetGroup merged = this.entityManager.merge(this);
+		this.entityManager.flush();
+		return merged;
 	}
 
 	@Transactional
@@ -229,48 +235,42 @@ public class InstanceRightTargetGroup {
 		}
 	}
 
-	@Transactional
-	public void flush() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.flush();
+	public void setId(InstanceRightTargetGroupPK id) {
+		this.id = id;
 	}
 
-	@Transactional
-	public void clear() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.clear();
+	public void setInstanceId(Instance instanceId) {
+		this.instanceId = instanceId;
 	}
 
-	@Transactional
-	public InstanceRightTargetGroup merge() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		InstanceRightTargetGroup merged = this.entityManager.merge(this);
-		this.entityManager.flush();
-		return merged;
+	public void setInstanceRightId(InstanceRight instanceRightId) {
+		this.instanceRightId = instanceRightId;
+	}
+
+	public void setInstanceRightValueId(InstanceRightValue instanceRightValueId) {
+		this.instanceRightValueId = instanceRightValueId;
+	}
+
+	public void setTargetGroupId(TargetGroup targetGroupId) {
+		this.targetGroupId = targetGroupId;
 	}
 
 	public String toJson() {
 		return new JSONSerializer().exclude("*.class").serialize(this);
 	}
 
-	public static InstanceRightTargetGroup fromJsonToInstanceRightTargetGroup(String json) {
-		return new JSONDeserializer<InstanceRightTargetGroup>().use(null, InstanceRightTargetGroup.class).deserialize(
-				json);
-	}
-
-	public static String toJsonArray(Collection<InstanceRightTargetGroup> collection) {
-		return new JSONSerializer().exclude("*.class").serialize(collection);
-	}
-
-	public static Collection<InstanceRightTargetGroup> fromJsonArrayToInstanceRightTargetGroups(String json) {
-		return new JSONDeserializer<List<InstanceRightTargetGroup>>().use(null, ArrayList.class)
-				.use("values", InstanceRightTargetGroup.class).deserialize(json);
-	}
-
 	public String toString() {
 		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+	}
+
+	@PostUpdate
+	@PostPersist
+	private void postPersistOrUpdate() {
+		indexInstanceRightTargetGroup(this);
+	}
+
+	@PreRemove
+	private void preRemove() {
+		deleteIndex(this);
 	}
 }

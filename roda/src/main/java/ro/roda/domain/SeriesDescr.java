@@ -38,21 +38,51 @@ import flexjson.JSONSerializer;
 @Audited
 public class SeriesDescr {
 
-	@Autowired
-	transient SolrServer solrServer;
-
-	public static QueryResponse search(String queryString) {
-		String searchString = "SeriesDescr_solrsummary_t:" + queryString;
-		return search(new SolrQuery(searchString.toLowerCase()));
+	public static long countSeriesDescrs() {
+		return entityManager().createQuery("SELECT COUNT(o) FROM SeriesDescr o", Long.class).getSingleResult();
 	}
 
-	public static QueryResponse search(SolrQuery query) {
+	@Async
+	public static void deleteIndex(SeriesDescr seriesDescr) {
+		SolrServer solrServer = solrServer();
 		try {
-			return solrServer().query(query);
+			solrServer.deleteById("seriesdescr_" + seriesDescr.getId());
+			solrServer.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return new QueryResponse();
+	}
+
+	public static final EntityManager entityManager() {
+		EntityManager em = new SeriesDescr().entityManager;
+		if (em == null)
+			throw new IllegalStateException(
+					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return em;
+	}
+
+	public static List<SeriesDescr> findAllSeriesDescrs() {
+		return entityManager().createQuery("SELECT o FROM SeriesDescr o", SeriesDescr.class).getResultList();
+	}
+
+	public static SeriesDescr findSeriesDescr(SeriesDescrPK id) {
+		if (id == null)
+			return null;
+		return entityManager().find(SeriesDescr.class, id);
+	}
+
+	public static List<SeriesDescr> findSeriesDescrEntries(int firstResult, int maxResults) {
+		return entityManager().createQuery("SELECT o FROM SeriesDescr o", SeriesDescr.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
+	}
+
+	public static Collection<SeriesDescr> fromJsonArrayToSeriesDescrs(String json) {
+		return new JSONDeserializer<List<SeriesDescr>>().use(null, ArrayList.class).use("values", SeriesDescr.class)
+				.deserialize(json);
+	}
+
+	public static SeriesDescr fromJsonToSeriesDescr(String json) {
+		return new JSONDeserializer<SeriesDescr>().use(null, SeriesDescr.class).deserialize(json);
 	}
 
 	public static void indexSeriesDescr(SeriesDescr seriesDescr) {
@@ -98,26 +128,18 @@ public class SeriesDescr {
 		}
 	}
 
-	@Async
-	public static void deleteIndex(SeriesDescr seriesDescr) {
-		SolrServer solrServer = solrServer();
+	public static QueryResponse search(SolrQuery query) {
 		try {
-			solrServer.deleteById("seriesdescr_" + seriesDescr.getId());
-			solrServer.commit();
+			return solrServer().query(query);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return new QueryResponse();
 	}
 
-	@PostUpdate
-	@PostPersist
-	private void postPersistOrUpdate() {
-		indexSeriesDescr(this);
-	}
-
-	@PreRemove
-	private void preRemove() {
-		deleteIndex(this);
+	public static QueryResponse search(String queryString) {
+		String searchString = "SeriesDescr_solrsummary_t:" + queryString;
+		return search(new SolrQuery(searchString.toLowerCase()));
 	}
 
 	public static SolrServer solrServer() {
@@ -128,49 +150,110 @@ public class SeriesDescr {
 		return _solrServer;
 	}
 
+	public static String toJsonArray(Collection<SeriesDescr> collection) {
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	@Column(name = "abstract", columnDefinition = "text")
+	private String abstract1;
+
+	@Column(name = "alternative_title", columnDefinition = "text")
+	private String alternativeTitle;
+
+	@ManyToOne
+	@JoinColumn(name = "catalog_id", referencedColumnName = "catalog_id", nullable = false, insertable = false, updatable = false)
+	private Series catalogId;
+
+	@Column(name = "geographic_coverage", columnDefinition = "text")
+	private String geographicCoverage;
+
 	@EmbeddedId
 	private SeriesDescrPK id;
+
+	@ManyToOne
+	@JoinColumn(name = "lang_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	private Lang langId;
+
+	@Column(name = "notes", columnDefinition = "text")
+	private String notes;
+
+	@Column(name = "subtitle", columnDefinition = "text")
+	private String subtitle;
+
+	@Column(name = "time_covered", columnDefinition = "text")
+	private String timeCovered;
+
+	@Column(name = "title", columnDefinition = "text")
+	@NotNull
+	private String title;
+
+	@PersistenceContext
+	transient EntityManager entityManager;
+
+	@Autowired
+	transient SolrServer solrServer;
+
+	@Transactional
+	public void clear() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.clear();
+	}
+
+	@Transactional
+	public void flush() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.flush();
+	}
+
+	public String getAbstract1() {
+		return abstract1;
+	}
+
+	public String getAlternativeTitle() {
+		return alternativeTitle;
+	}
+
+	public Series getCatalogId() {
+		return catalogId;
+	}
+
+	public String getGeographicCoverage() {
+		return geographicCoverage;
+	}
 
 	public SeriesDescrPK getId() {
 		return this.id;
 	}
 
-	public void setId(SeriesDescrPK id) {
-		this.id = id;
+	public Lang getLangId() {
+		return langId;
 	}
 
-	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+	public String getNotes() {
+		return notes;
 	}
 
-	@PersistenceContext
-	transient EntityManager entityManager;
-
-	public static final EntityManager entityManager() {
-		EntityManager em = new SeriesDescr().entityManager;
-		if (em == null)
-			throw new IllegalStateException(
-					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-		return em;
+	public String getSubtitle() {
+		return subtitle;
 	}
 
-	public static long countSeriesDescrs() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM SeriesDescr o", Long.class).getSingleResult();
+	public String getTimeCovered() {
+		return timeCovered;
 	}
 
-	public static List<SeriesDescr> findAllSeriesDescrs() {
-		return entityManager().createQuery("SELECT o FROM SeriesDescr o", SeriesDescr.class).getResultList();
+	public String getTitle() {
+		return title;
 	}
 
-	public static SeriesDescr findSeriesDescr(SeriesDescrPK id) {
-		if (id == null)
-			return null;
-		return entityManager().find(SeriesDescr.class, id);
-	}
-
-	public static List<SeriesDescr> findSeriesDescrEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM SeriesDescr o", SeriesDescr.class)
-				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
+	@Transactional
+	public SeriesDescr merge() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		SeriesDescr merged = this.entityManager.merge(this);
+		this.entityManager.flush();
+		return merged;
 	}
 
 	@Transactional
@@ -192,145 +275,62 @@ public class SeriesDescr {
 		}
 	}
 
-	@Transactional
-	public void flush() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.flush();
-	}
-
-	@Transactional
-	public void clear() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.clear();
-	}
-
-	@Transactional
-	public SeriesDescr merge() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		SeriesDescr merged = this.entityManager.merge(this);
-		this.entityManager.flush();
-		return merged;
-	}
-
-	@ManyToOne
-	@JoinColumn(name = "lang_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
-	private Lang langId;
-
-	@ManyToOne
-	@JoinColumn(name = "catalog_id", referencedColumnName = "catalog_id", nullable = false, insertable = false, updatable = false)
-	private Series catalogId;
-
-	@Column(name = "notes", columnDefinition = "text")
-	private String notes;
-
-	@Column(name = "title", columnDefinition = "text")
-	@NotNull
-	private String title;
-
-	@Column(name = "subtitle", columnDefinition = "text")
-	private String subtitle;
-
-	@Column(name = "alternative_title", columnDefinition = "text")
-	private String alternativeTitle;
-
-	@Column(name = "abstract", columnDefinition = "text")
-	private String abstract1;
-
-	@Column(name = "time_covered", columnDefinition = "text")
-	private String timeCovered;
-
-	@Column(name = "geographic_coverage", columnDefinition = "text")
-	private String geographicCoverage;
-
-	public Lang getLangId() {
-		return langId;
-	}
-
-	public void setLangId(Lang langId) {
-		this.langId = langId;
-	}
-
-	public Series getCatalogId() {
-		return catalogId;
-	}
-
-	public void setCatalogId(Series catalogId) {
-		this.catalogId = catalogId;
-	}
-
-	public String getNotes() {
-		return notes;
-	}
-
-	public void setNotes(String notes) {
-		this.notes = notes;
-	}
-
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
-	public String getSubtitle() {
-		return subtitle;
-	}
-
-	public void setSubtitle(String subtitle) {
-		this.subtitle = subtitle;
-	}
-
-	public String getAlternativeTitle() {
-		return alternativeTitle;
+	public void setAbstract1(String abstract1) {
+		this.abstract1 = abstract1;
 	}
 
 	public void setAlternativeTitle(String alternativeTitle) {
 		this.alternativeTitle = alternativeTitle;
 	}
 
-	public String getAbstract1() {
-		return abstract1;
-	}
-
-	public void setAbstract1(String abstract1) {
-		this.abstract1 = abstract1;
-	}
-
-	public String getTimeCovered() {
-		return timeCovered;
-	}
-
-	public void setTimeCovered(String timeCovered) {
-		this.timeCovered = timeCovered;
-	}
-
-	public String getGeographicCoverage() {
-		return geographicCoverage;
+	public void setCatalogId(Series catalogId) {
+		this.catalogId = catalogId;
 	}
 
 	public void setGeographicCoverage(String geographicCoverage) {
 		this.geographicCoverage = geographicCoverage;
 	}
 
+	public void setId(SeriesDescrPK id) {
+		this.id = id;
+	}
+
+	public void setLangId(Lang langId) {
+		this.langId = langId;
+	}
+
+	public void setNotes(String notes) {
+		this.notes = notes;
+	}
+
+	public void setSubtitle(String subtitle) {
+		this.subtitle = subtitle;
+	}
+
+	public void setTimeCovered(String timeCovered) {
+		this.timeCovered = timeCovered;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
 	public String toJson() {
 		return new JSONSerializer().exclude("*.class").serialize(this);
 	}
 
-	public static SeriesDescr fromJsonToSeriesDescr(String json) {
-		return new JSONDeserializer<SeriesDescr>().use(null, SeriesDescr.class).deserialize(json);
+	public String toString() {
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
-	public static String toJsonArray(Collection<SeriesDescr> collection) {
-		return new JSONSerializer().exclude("*.class").serialize(collection);
+	@PostUpdate
+	@PostPersist
+	private void postPersistOrUpdate() {
+		indexSeriesDescr(this);
 	}
 
-	public static Collection<SeriesDescr> fromJsonArrayToSeriesDescrs(String json) {
-		return new JSONDeserializer<List<SeriesDescr>>().use(null, ArrayList.class).use("values", SeriesDescr.class)
-				.deserialize(json);
+	@PreRemove
+	private void preRemove() {
+		deleteIndex(this);
 	}
 }

@@ -17,6 +17,22 @@ import flexjson.JSONSerializer;
 @Configurable
 public final class InstanceRightTargetGroupPK implements Serializable {
 
+	private static final long serialVersionUID = 1L;
+
+	public static Collection<InstanceRightTargetGroupPK> fromJsonArrayToInstanceRightTargetGroupPKs(String json) {
+		return new JSONDeserializer<List<InstanceRightTargetGroupPK>>().use(null, ArrayList.class)
+				.use("values", InstanceRightTargetGroupPK.class).deserialize(json);
+	}
+
+	public static InstanceRightTargetGroupPK fromJsonToInstanceRightTargetGroupPK(String json) {
+		return new JSONDeserializer<InstanceRightTargetGroupPK>().use(null, InstanceRightTargetGroupPK.class)
+				.deserialize(json);
+	}
+
+	public static String toJsonArray(Collection<InstanceRightTargetGroupPK> collection) {
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
 	@Column(name = "instance_id", columnDefinition = "int4", nullable = false)
 	private Integer instanceId;
 
@@ -49,23 +65,7 @@ public final class InstanceRightTargetGroupPK implements Serializable {
 		return targetGroupId;
 	}
 
-	private static final long serialVersionUID = 1L;
-
 	public String toJson() {
 		return new JSONSerializer().exclude("*.class").serialize(this);
-	}
-
-	public static InstanceRightTargetGroupPK fromJsonToInstanceRightTargetGroupPK(String json) {
-		return new JSONDeserializer<InstanceRightTargetGroupPK>().use(null, InstanceRightTargetGroupPK.class)
-				.deserialize(json);
-	}
-
-	public static String toJsonArray(Collection<InstanceRightTargetGroupPK> collection) {
-		return new JSONSerializer().exclude("*.class").serialize(collection);
-	}
-
-	public static Collection<InstanceRightTargetGroupPK> fromJsonArrayToInstanceRightTargetGroupPKs(String json) {
-		return new JSONDeserializer<List<InstanceRightTargetGroupPK>>().use(null, ArrayList.class)
-				.use("values", InstanceRightTargetGroupPK.class).deserialize(json);
 	}
 }

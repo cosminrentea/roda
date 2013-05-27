@@ -40,61 +40,20 @@ import flexjson.JSONSerializer;
 @Audited
 public class Skip {
 
-	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+	public static long countSkips() {
+		return entityManager().createQuery("SELECT COUNT(o) FROM Skip o", Long.class).getSingleResult();
 	}
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "id", columnDefinition = "bigserial")
-	private Long id;
-
-	public Long getId() {
-		return this.id;
+	@Async
+	public static void deleteIndex(Skip skip) {
+		SolrServer solrServer = solrServer();
+		try {
+			solrServer.deleteById("skip_" + skip.getId());
+			solrServer.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	@ManyToOne
-	@JoinColumn(name = "next_variable_id", referencedColumnName = "id", nullable = false)
-	private Variable nextVariableId;
-
-	@ManyToOne
-	@JoinColumn(name = "variable_id", referencedColumnName = "id", nullable = false)
-	private Variable variableId;
-
-	@Column(name = "condition", columnDefinition = "text")
-	@NotNull
-	private String condition;
-
-	public Variable getNextVariableId() {
-		return nextVariableId;
-	}
-
-	public void setNextVariableId(Variable nextVariableId) {
-		this.nextVariableId = nextVariableId;
-	}
-
-	public Variable getVariableId() {
-		return variableId;
-	}
-
-	public void setVariableId(Variable variableId) {
-		this.variableId = variableId;
-	}
-
-	public String getCondition() {
-		return condition;
-	}
-
-	public void setCondition(String condition) {
-		this.condition = condition;
-	}
-
-	@PersistenceContext
-	transient EntityManager entityManager;
 
 	public static final EntityManager entityManager() {
 		EntityManager em = new Skip().entityManager;
@@ -102,10 +61,6 @@ public class Skip {
 			throw new IllegalStateException(
 					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
 		return em;
-	}
-
-	public static long countSkips() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM Skip o", Long.class).getSingleResult();
 	}
 
 	public static List<Skip> findAllSkips() {
@@ -123,80 +78,13 @@ public class Skip {
 				.setMaxResults(maxResults).getResultList();
 	}
 
-	@Transactional
-	public void persist() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.persist(this);
-	}
-
-	@Transactional
-	public void remove() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		if (this.entityManager.contains(this)) {
-			this.entityManager.remove(this);
-		} else {
-			Skip attached = Skip.findSkip(this.id);
-			this.entityManager.remove(attached);
-		}
-	}
-
-	@Transactional
-	public void flush() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.flush();
-	}
-
-	@Transactional
-	public void clear() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.clear();
-	}
-
-	@Transactional
-	public Skip merge() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		Skip merged = this.entityManager.merge(this);
-		this.entityManager.flush();
-		return merged;
-	}
-
-	public String toJson() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
-	}
-
-	public static Skip fromJsonToSkip(String json) {
-		return new JSONDeserializer<Skip>().use(null, Skip.class).deserialize(json);
-	}
-
-	public static String toJsonArray(Collection<Skip> collection) {
-		return new JSONSerializer().exclude("*.class").serialize(collection);
-	}
-
 	public static Collection<Skip> fromJsonArrayToSkips(String json) {
 		return new JSONDeserializer<List<Skip>>().use(null, ArrayList.class).use("values", Skip.class)
 				.deserialize(json);
 	}
 
-	@Autowired
-	transient SolrServer solrServer;
-
-	public static QueryResponse search(String queryString) {
-		String searchString = "Skip_solrsummary_t:" + queryString;
-		return search(new SolrQuery(searchString.toLowerCase()));
-	}
-
-	public static QueryResponse search(SolrQuery query) {
-		try {
-			return solrServer().query(query);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return new QueryResponse();
+	public static Skip fromJsonToSkip(String json) {
+		return new JSONDeserializer<Skip>().use(null, Skip.class).deserialize(json);
 	}
 
 	public static void indexSkip(Skip skip) {
@@ -226,15 +114,135 @@ public class Skip {
 		}
 	}
 
-	@Async
-	public static void deleteIndex(Skip skip) {
-		SolrServer solrServer = solrServer();
+	public static QueryResponse search(SolrQuery query) {
 		try {
-			solrServer.deleteById("skip_" + skip.getId());
-			solrServer.commit();
+			return solrServer().query(query);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return new QueryResponse();
+	}
+
+	public static QueryResponse search(String queryString) {
+		String searchString = "Skip_solrsummary_t:" + queryString;
+		return search(new SolrQuery(searchString.toLowerCase()));
+	}
+
+	public static SolrServer solrServer() {
+		SolrServer _solrServer = new Skip().solrServer;
+		if (_solrServer == null)
+			throw new IllegalStateException(
+					"Solr server has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return _solrServer;
+	}
+
+	public static String toJsonArray(Collection<Skip> collection) {
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	@Column(name = "condition", columnDefinition = "text")
+	@NotNull
+	private String condition;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id", columnDefinition = "bigserial")
+	private Long id;
+
+	@ManyToOne
+	@JoinColumn(name = "next_variable_id", referencedColumnName = "id", nullable = false)
+	private Variable nextVariableId;
+
+	@ManyToOne
+	@JoinColumn(name = "variable_id", referencedColumnName = "id", nullable = false)
+	private Variable variableId;
+
+	@PersistenceContext
+	transient EntityManager entityManager;
+
+	@Autowired
+	transient SolrServer solrServer;
+
+	@Transactional
+	public void clear() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.clear();
+	}
+
+	@Transactional
+	public void flush() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.flush();
+	}
+
+	public String getCondition() {
+		return condition;
+	}
+
+	public Long getId() {
+		return this.id;
+	}
+
+	public Variable getNextVariableId() {
+		return nextVariableId;
+	}
+
+	public Variable getVariableId() {
+		return variableId;
+	}
+
+	@Transactional
+	public Skip merge() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		Skip merged = this.entityManager.merge(this);
+		this.entityManager.flush();
+		return merged;
+	}
+
+	@Transactional
+	public void persist() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.persist(this);
+	}
+
+	@Transactional
+	public void remove() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		if (this.entityManager.contains(this)) {
+			this.entityManager.remove(this);
+		} else {
+			Skip attached = Skip.findSkip(this.id);
+			this.entityManager.remove(attached);
+		}
+	}
+
+	public void setCondition(String condition) {
+		this.condition = condition;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public void setNextVariableId(Variable nextVariableId) {
+		this.nextVariableId = nextVariableId;
+	}
+
+	public void setVariableId(Variable variableId) {
+		this.variableId = variableId;
+	}
+
+	public String toJson() {
+		return new JSONSerializer().exclude("*.class").serialize(this);
+	}
+
+	public String toString() {
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate
@@ -246,13 +254,5 @@ public class Skip {
 	@PreRemove
 	private void preRemove() {
 		deleteIndex(this);
-	}
-
-	public static SolrServer solrServer() {
-		SolrServer _solrServer = new Skip().solrServer;
-		if (_solrServer == null)
-			throw new IllegalStateException(
-					"Solr server has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-		return _solrServer;
 	}
 }

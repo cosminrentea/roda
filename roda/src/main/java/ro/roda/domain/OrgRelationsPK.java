@@ -19,6 +19,19 @@ public final class OrgRelationsPK implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	public static Collection<OrgRelationsPK> fromJsonArrayToOrgRelationsPKs(String json) {
+		return new JSONDeserializer<List<OrgRelationsPK>>().use(null, ArrayList.class)
+				.use("values", OrgRelationsPK.class).deserialize(json);
+	}
+
+	public static OrgRelationsPK fromJsonToOrgRelationsPK(String json) {
+		return new JSONDeserializer<OrgRelationsPK>().use(null, OrgRelationsPK.class).deserialize(json);
+	}
+
+	public static String toJsonArray(Collection<OrgRelationsPK> collection) {
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
 	@Column(name = "org_1_id", columnDefinition = "int4", nullable = false)
 	private Integer org1Id;
 
@@ -53,18 +66,5 @@ public final class OrgRelationsPK implements Serializable {
 
 	public String toJson() {
 		return new JSONSerializer().exclude("*.class").serialize(this);
-	}
-
-	public static OrgRelationsPK fromJsonToOrgRelationsPK(String json) {
-		return new JSONDeserializer<OrgRelationsPK>().use(null, OrgRelationsPK.class).deserialize(json);
-	}
-
-	public static String toJsonArray(Collection<OrgRelationsPK> collection) {
-		return new JSONSerializer().exclude("*.class").serialize(collection);
-	}
-
-	public static Collection<OrgRelationsPK> fromJsonArrayToOrgRelationsPKs(String json) {
-		return new JSONDeserializer<List<OrgRelationsPK>>().use(null, ArrayList.class)
-				.use("values", OrgRelationsPK.class).deserialize(json);
 	}
 }

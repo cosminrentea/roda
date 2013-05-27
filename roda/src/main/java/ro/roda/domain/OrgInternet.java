@@ -38,25 +38,51 @@ import flexjson.JSONSerializer;
 @Audited
 public class OrgInternet {
 
-	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+	public static long countOrgInternets() {
+		return entityManager().createQuery("SELECT COUNT(o) FROM OrgInternet o", Long.class).getSingleResult();
 	}
 
-	@Autowired
-	transient SolrServer solrServer;
-
-	public static QueryResponse search(String queryString) {
-		String searchString = "OrgInternet_solrsummary_t:" + queryString;
-		return search(new SolrQuery(searchString.toLowerCase()));
-	}
-
-	public static QueryResponse search(SolrQuery query) {
+	@Async
+	public static void deleteIndex(OrgInternet orgInternet) {
+		SolrServer solrServer = solrServer();
 		try {
-			return solrServer().query(query);
+			solrServer.deleteById("orginternet_" + orgInternet.getId());
+			solrServer.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return new QueryResponse();
+	}
+
+	public static final EntityManager entityManager() {
+		EntityManager em = new OrgInternet().entityManager;
+		if (em == null)
+			throw new IllegalStateException(
+					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return em;
+	}
+
+	public static List<OrgInternet> findAllOrgInternets() {
+		return entityManager().createQuery("SELECT o FROM OrgInternet o", OrgInternet.class).getResultList();
+	}
+
+	public static OrgInternet findOrgInternet(OrgInternetPK id) {
+		if (id == null)
+			return null;
+		return entityManager().find(OrgInternet.class, id);
+	}
+
+	public static List<OrgInternet> findOrgInternetEntries(int firstResult, int maxResults) {
+		return entityManager().createQuery("SELECT o FROM OrgInternet o", OrgInternet.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
+	}
+
+	public static Collection<OrgInternet> fromJsonArrayToOrgInternets(String json) {
+		return new JSONDeserializer<List<OrgInternet>>().use(null, ArrayList.class).use("values", OrgInternet.class)
+				.deserialize(json);
+	}
+
+	public static OrgInternet fromJsonToOrgInternet(String json) {
+		return new JSONDeserializer<OrgInternet>().use(null, OrgInternet.class).deserialize(json);
 	}
 
 	public static void indexOrgInternet(OrgInternet orgInternet) {
@@ -90,26 +116,18 @@ public class OrgInternet {
 		}
 	}
 
-	@Async
-	public static void deleteIndex(OrgInternet orgInternet) {
-		SolrServer solrServer = solrServer();
+	public static QueryResponse search(SolrQuery query) {
 		try {
-			solrServer.deleteById("orginternet_" + orgInternet.getId());
-			solrServer.commit();
+			return solrServer().query(query);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return new QueryResponse();
 	}
 
-	@PostUpdate
-	@PostPersist
-	private void postPersistOrUpdate() {
-		indexOrgInternet(this);
-	}
-
-	@PreRemove
-	private void preRemove() {
-		deleteIndex(this);
+	public static QueryResponse search(String queryString) {
+		String searchString = "OrgInternet_solrsummary_t:" + queryString;
+		return search(new SolrQuery(searchString.toLowerCase()));
 	}
 
 	public static SolrServer solrServer() {
@@ -120,98 +138,68 @@ public class OrgInternet {
 		return _solrServer;
 	}
 
+	public static String toJsonArray(Collection<OrgInternet> collection) {
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	@EmbeddedId
+	private OrgInternetPK id;
+
 	@ManyToOne
 	@JoinColumn(name = "internet_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
 	private Internet internetId;
-
-	@ManyToOne
-	@JoinColumn(name = "org_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
-	private Org orgId;
 
 	@Column(name = "main", columnDefinition = "bool")
 	@NotNull
 	private boolean main;
 
-	public Internet getInternetId() {
-		return internetId;
+	@ManyToOne
+	@JoinColumn(name = "org_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	private Org orgId;
+
+	@PersistenceContext
+	transient EntityManager entityManager;
+
+	@Autowired
+	transient SolrServer solrServer;
+
+	@Transactional
+	public void clear() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.clear();
 	}
 
-	public void setInternetId(Internet internetId) {
-		this.internetId = internetId;
+	@Transactional
+	public void flush() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.flush();
+	}
+
+	public OrgInternetPK getId() {
+		return this.id;
+	}
+
+	public Internet getInternetId() {
+		return internetId;
 	}
 
 	public Org getOrgId() {
 		return orgId;
 	}
 
-	public void setOrgId(Org orgId) {
-		this.orgId = orgId;
-	}
-
 	public boolean isMain() {
 		return main;
 	}
 
-	public void setMain(boolean main) {
-		this.main = main;
-	}
-
-	@EmbeddedId
-	private OrgInternetPK id;
-
-	public OrgInternetPK getId() {
-		return this.id;
-	}
-
-	public void setId(OrgInternetPK id) {
-		this.id = id;
-	}
-
-	public String toJson() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
-	}
-
-	public static OrgInternet fromJsonToOrgInternet(String json) {
-		return new JSONDeserializer<OrgInternet>().use(null, OrgInternet.class).deserialize(json);
-	}
-
-	public static String toJsonArray(Collection<OrgInternet> collection) {
-		return new JSONSerializer().exclude("*.class").serialize(collection);
-	}
-
-	public static Collection<OrgInternet> fromJsonArrayToOrgInternets(String json) {
-		return new JSONDeserializer<List<OrgInternet>>().use(null, ArrayList.class).use("values", OrgInternet.class)
-				.deserialize(json);
-	}
-
-	@PersistenceContext
-	transient EntityManager entityManager;
-
-	public static final EntityManager entityManager() {
-		EntityManager em = new OrgInternet().entityManager;
-		if (em == null)
-			throw new IllegalStateException(
-					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-		return em;
-	}
-
-	public static long countOrgInternets() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM OrgInternet o", Long.class).getSingleResult();
-	}
-
-	public static List<OrgInternet> findAllOrgInternets() {
-		return entityManager().createQuery("SELECT o FROM OrgInternet o", OrgInternet.class).getResultList();
-	}
-
-	public static OrgInternet findOrgInternet(OrgInternetPK id) {
-		if (id == null)
-			return null;
-		return entityManager().find(OrgInternet.class, id);
-	}
-
-	public static List<OrgInternet> findOrgInternetEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM OrgInternet o", OrgInternet.class)
-				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
+	@Transactional
+	public OrgInternet merge() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		OrgInternet merged = this.entityManager.merge(this);
+		this.entityManager.flush();
+		return merged;
 	}
 
 	@Transactional
@@ -233,26 +221,38 @@ public class OrgInternet {
 		}
 	}
 
-	@Transactional
-	public void flush() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.flush();
+	public void setId(OrgInternetPK id) {
+		this.id = id;
 	}
 
-	@Transactional
-	public void clear() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.clear();
+	public void setInternetId(Internet internetId) {
+		this.internetId = internetId;
 	}
 
-	@Transactional
-	public OrgInternet merge() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		OrgInternet merged = this.entityManager.merge(this);
-		this.entityManager.flush();
-		return merged;
+	public void setMain(boolean main) {
+		this.main = main;
+	}
+
+	public void setOrgId(Org orgId) {
+		this.orgId = orgId;
+	}
+
+	public String toJson() {
+		return new JSONSerializer().exclude("*.class").serialize(this);
+	}
+
+	public String toString() {
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+	}
+
+	@PostUpdate
+	@PostPersist
+	private void postPersistOrUpdate() {
+		indexOrgInternet(this);
+	}
+
+	@PreRemove
+	private void preRemove() {
+		deleteIndex(this);
 	}
 }

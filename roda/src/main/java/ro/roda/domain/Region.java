@@ -42,94 +42,20 @@ import flexjson.JSONSerializer;
 @Audited
 public class Region {
 
-	@ManyToMany(mappedBy = "regions")
-	private Set<City> cities;
-
-	@ManyToOne
-	@JoinColumn(name = "country_id", referencedColumnName = "id", nullable = false)
-	private Country countryId;
-
-	@ManyToOne
-	@JoinColumn(name = "regiontype_id", referencedColumnName = "id", nullable = false)
-	private Regiontype regiontypeId;
-
-	@Column(name = "name", columnDefinition = "text")
-	@NotNull
-	private String name;
-
-	@Column(name = "region_code", columnDefinition = "varchar", length = 50)
-	private String regionCode;
-
-	@Column(name = "region_code_name", columnDefinition = "varchar", length = 50)
-	private String regionCodeName;
-
-	public Set<City> getCities() {
-		return cities;
+	public static long countRegions() {
+		return entityManager().createQuery("SELECT COUNT(o) FROM Region o", Long.class).getSingleResult();
 	}
 
-	public void setCities(Set<City> cities) {
-		this.cities = cities;
+	@Async
+	public static void deleteIndex(Region region) {
+		SolrServer solrServer = solrServer();
+		try {
+			solrServer.deleteById("region_" + region.getId());
+			solrServer.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
-
-	public Country getCountryId() {
-		return countryId;
-	}
-
-	public void setCountryId(Country countryId) {
-		this.countryId = countryId;
-	}
-
-	public Regiontype getRegiontypeId() {
-		return regiontypeId;
-	}
-
-	public void setRegiontypeId(Regiontype regiontypeId) {
-		this.regiontypeId = regiontypeId;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getRegionCode() {
-		return regionCode;
-	}
-
-	public void setRegionCode(String regionCode) {
-		this.regionCode = regionCode;
-	}
-
-	public String getRegionCodeName() {
-		return regionCodeName;
-	}
-
-	public void setRegionCodeName(String regionCodeName) {
-		this.regionCodeName = regionCodeName;
-	}
-
-	public String toJson() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
-	}
-
-	public static Region fromJsonToRegion(String json) {
-		return new JSONDeserializer<Region>().use(null, Region.class).deserialize(json);
-	}
-
-	public static String toJsonArray(Collection<Region> collection) {
-		return new JSONSerializer().exclude("*.class").serialize(collection);
-	}
-
-	public static Collection<Region> fromJsonArrayToRegions(String json) {
-		return new JSONDeserializer<List<Region>>().use(null, ArrayList.class).use("values", Region.class)
-				.deserialize(json);
-	}
-
-	@PersistenceContext
-	transient EntityManager entityManager;
 
 	public static final EntityManager entityManager() {
 		EntityManager em = new Region().entityManager;
@@ -137,10 +63,6 @@ public class Region {
 			throw new IllegalStateException(
 					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
 		return em;
-	}
-
-	public static long countRegions() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM Region o", Long.class).getSingleResult();
 	}
 
 	public static List<Region> findAllRegions() {
@@ -158,67 +80,13 @@ public class Region {
 				.setMaxResults(maxResults).getResultList();
 	}
 
-	@Transactional
-	public void persist() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.persist(this);
+	public static Collection<Region> fromJsonArrayToRegions(String json) {
+		return new JSONDeserializer<List<Region>>().use(null, ArrayList.class).use("values", Region.class)
+				.deserialize(json);
 	}
 
-	@Transactional
-	public void remove() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		if (this.entityManager.contains(this)) {
-			this.entityManager.remove(this);
-		} else {
-			Region attached = Region.findRegion(this.id);
-			this.entityManager.remove(attached);
-		}
-	}
-
-	@Transactional
-	public void flush() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.flush();
-	}
-
-	@Transactional
-	public void clear() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.clear();
-	}
-
-	@Transactional
-	public Region merge() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		Region merged = this.entityManager.merge(this);
-		this.entityManager.flush();
-		return merged;
-	}
-
-	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
-	}
-
-	@Autowired
-	transient SolrServer solrServer;
-
-	public static QueryResponse search(String queryString) {
-		String searchString = "Region_solrsummary_t:" + queryString;
-		return search(new SolrQuery(searchString.toLowerCase()));
-	}
-
-	public static QueryResponse search(SolrQuery query) {
-		try {
-			return solrServer().query(query);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return new QueryResponse();
+	public static Region fromJsonToRegion(String json) {
+		return new JSONDeserializer<Region>().use(null, Region.class).deserialize(json);
 	}
 
 	public static void indexRegion(Region region) {
@@ -256,15 +124,168 @@ public class Region {
 		}
 	}
 
-	@Async
-	public static void deleteIndex(Region region) {
-		SolrServer solrServer = solrServer();
+	public static QueryResponse search(SolrQuery query) {
 		try {
-			solrServer.deleteById("region_" + region.getId());
-			solrServer.commit();
+			return solrServer().query(query);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return new QueryResponse();
+	}
+
+	public static QueryResponse search(String queryString) {
+		String searchString = "Region_solrsummary_t:" + queryString;
+		return search(new SolrQuery(searchString.toLowerCase()));
+	}
+
+	public static SolrServer solrServer() {
+		SolrServer _solrServer = new Region().solrServer;
+		if (_solrServer == null)
+			throw new IllegalStateException(
+					"Solr server has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return _solrServer;
+	}
+
+	public static String toJsonArray(Collection<Region> collection) {
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	@ManyToMany(mappedBy = "regions")
+	private Set<City> cities;
+
+	@ManyToOne
+	@JoinColumn(name = "country_id", referencedColumnName = "id", nullable = false)
+	private Country countryId;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id", columnDefinition = "serial")
+	private Integer id;
+
+	@Column(name = "name", columnDefinition = "text")
+	@NotNull
+	private String name;
+
+	@Column(name = "region_code", columnDefinition = "varchar", length = 50)
+	private String regionCode;
+
+	@Column(name = "region_code_name", columnDefinition = "varchar", length = 50)
+	private String regionCodeName;
+
+	@ManyToOne
+	@JoinColumn(name = "regiontype_id", referencedColumnName = "id", nullable = false)
+	private Regiontype regiontypeId;
+
+	@PersistenceContext
+	transient EntityManager entityManager;
+
+	@Autowired
+	transient SolrServer solrServer;
+
+	@Transactional
+	public void clear() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.clear();
+	}
+
+	@Transactional
+	public void flush() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.flush();
+	}
+
+	public Set<City> getCities() {
+		return cities;
+	}
+
+	public Country getCountryId() {
+		return countryId;
+	}
+
+	public Integer getId() {
+		return this.id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public String getRegionCode() {
+		return regionCode;
+	}
+
+	public String getRegionCodeName() {
+		return regionCodeName;
+	}
+
+	public Regiontype getRegiontypeId() {
+		return regiontypeId;
+	}
+
+	@Transactional
+	public Region merge() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		Region merged = this.entityManager.merge(this);
+		this.entityManager.flush();
+		return merged;
+	}
+
+	@Transactional
+	public void persist() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.persist(this);
+	}
+
+	@Transactional
+	public void remove() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		if (this.entityManager.contains(this)) {
+			this.entityManager.remove(this);
+		} else {
+			Region attached = Region.findRegion(this.id);
+			this.entityManager.remove(attached);
+		}
+	}
+
+	public void setCities(Set<City> cities) {
+		this.cities = cities;
+	}
+
+	public void setCountryId(Country countryId) {
+		this.countryId = countryId;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setRegionCode(String regionCode) {
+		this.regionCode = regionCode;
+	}
+
+	public void setRegionCodeName(String regionCodeName) {
+		this.regionCodeName = regionCodeName;
+	}
+
+	public void setRegiontypeId(Regiontype regiontypeId) {
+		this.regiontypeId = regiontypeId;
+	}
+
+	public String toJson() {
+		return new JSONSerializer().exclude("*.class").serialize(this);
+	}
+
+	public String toString() {
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate
@@ -276,26 +297,5 @@ public class Region {
 	@PreRemove
 	private void preRemove() {
 		deleteIndex(this);
-	}
-
-	public static SolrServer solrServer() {
-		SolrServer _solrServer = new Region().solrServer;
-		if (_solrServer == null)
-			throw new IllegalStateException(
-					"Solr server has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-		return _solrServer;
-	}
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "id", columnDefinition = "serial")
-	private Integer id;
-
-	public Integer getId() {
-		return this.id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
 	}
 }

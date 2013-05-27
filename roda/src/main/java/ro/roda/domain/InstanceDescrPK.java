@@ -19,6 +19,19 @@ public final class InstanceDescrPK implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	public static Collection<InstanceDescrPK> fromJsonArrayToInstanceDescrPKs(String json) {
+		return new JSONDeserializer<List<InstanceDescrPK>>().use(null, ArrayList.class)
+				.use("values", InstanceDescrPK.class).deserialize(json);
+	}
+
+	public static InstanceDescrPK fromJsonToInstanceDescrPK(String json) {
+		return new JSONDeserializer<InstanceDescrPK>().use(null, InstanceDescrPK.class).deserialize(json);
+	}
+
+	public static String toJsonArray(Collection<InstanceDescrPK> collection) {
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
 	@Column(name = "instance_id", columnDefinition = "int4", nullable = false)
 	private Integer instanceId;
 
@@ -45,18 +58,5 @@ public final class InstanceDescrPK implements Serializable {
 
 	public String toJson() {
 		return new JSONSerializer().exclude("*.class").serialize(this);
-	}
-
-	public static InstanceDescrPK fromJsonToInstanceDescrPK(String json) {
-		return new JSONDeserializer<InstanceDescrPK>().use(null, InstanceDescrPK.class).deserialize(json);
-	}
-
-	public static String toJsonArray(Collection<InstanceDescrPK> collection) {
-		return new JSONSerializer().exclude("*.class").serialize(collection);
-	}
-
-	public static Collection<InstanceDescrPK> fromJsonArrayToInstanceDescrPKs(String json) {
-		return new JSONDeserializer<List<InstanceDescrPK>>().use(null, ArrayList.class)
-				.use("values", InstanceDescrPK.class).deserialize(json);
 	}
 }

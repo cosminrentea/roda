@@ -40,25 +40,51 @@ import flexjson.JSONSerializer;
 @Audited
 public class Keyword {
 
-	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+	public static long countKeywords() {
+		return entityManager().createQuery("SELECT COUNT(o) FROM Keyword o", Long.class).getSingleResult();
 	}
 
-	@Autowired
-	transient SolrServer solrServer;
-
-	public static QueryResponse search(String queryString) {
-		String searchString = "Keyword_solrsummary_t:" + queryString;
-		return search(new SolrQuery(searchString.toLowerCase()));
-	}
-
-	public static QueryResponse search(SolrQuery query) {
+	@Async
+	public static void deleteIndex(Keyword keyword) {
+		SolrServer solrServer = solrServer();
 		try {
-			return solrServer().query(query);
+			solrServer.deleteById("keyword_" + keyword.getId());
+			solrServer.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return new QueryResponse();
+	}
+
+	public static final EntityManager entityManager() {
+		EntityManager em = new Keyword().entityManager;
+		if (em == null)
+			throw new IllegalStateException(
+					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return em;
+	}
+
+	public static List<Keyword> findAllKeywords() {
+		return entityManager().createQuery("SELECT o FROM Keyword o", Keyword.class).getResultList();
+	}
+
+	public static Keyword findKeyword(Integer id) {
+		if (id == null)
+			return null;
+		return entityManager().find(Keyword.class, id);
+	}
+
+	public static List<Keyword> findKeywordEntries(int firstResult, int maxResults) {
+		return entityManager().createQuery("SELECT o FROM Keyword o", Keyword.class).setFirstResult(firstResult)
+				.setMaxResults(maxResults).getResultList();
+	}
+
+	public static Collection<Keyword> fromJsonArrayToKeywords(String json) {
+		return new JSONDeserializer<List<Keyword>>().use(null, ArrayList.class).use("values", Keyword.class)
+				.deserialize(json);
+	}
+
+	public static Keyword fromJsonToKeyword(String json) {
+		return new JSONDeserializer<Keyword>().use(null, Keyword.class).deserialize(json);
 	}
 
 	public static void indexKeyword(Keyword keyword) {
@@ -90,26 +116,18 @@ public class Keyword {
 		}
 	}
 
-	@Async
-	public static void deleteIndex(Keyword keyword) {
-		SolrServer solrServer = solrServer();
+	public static QueryResponse search(SolrQuery query) {
 		try {
-			solrServer.deleteById("keyword_" + keyword.getId());
-			solrServer.commit();
+			return solrServer().query(query);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return new QueryResponse();
 	}
 
-	@PostUpdate
-	@PostPersist
-	private void postPersistOrUpdate() {
-		indexKeyword(this);
-	}
-
-	@PreRemove
-	private void preRemove() {
-		deleteIndex(this);
+	public static QueryResponse search(String queryString) {
+		String searchString = "Keyword_solrsummary_t:" + queryString;
+		return search(new SolrQuery(searchString.toLowerCase()));
 	}
 
 	public static SolrServer solrServer() {
@@ -120,87 +138,61 @@ public class Keyword {
 		return _solrServer;
 	}
 
+	public static String toJsonArray(Collection<Keyword> collection) {
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id", columnDefinition = "serial")
 	private Integer id;
 
-	public Integer getId() {
-		return this.id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public String toJson() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
-	}
-
-	public static Keyword fromJsonToKeyword(String json) {
-		return new JSONDeserializer<Keyword>().use(null, Keyword.class).deserialize(json);
-	}
-
-	public static String toJsonArray(Collection<Keyword> collection) {
-		return new JSONSerializer().exclude("*.class").serialize(collection);
-	}
-
-	public static Collection<Keyword> fromJsonArrayToKeywords(String json) {
-		return new JSONDeserializer<List<Keyword>>().use(null, ArrayList.class).use("values", Keyword.class)
-				.deserialize(json);
-	}
-
-	@OneToMany(mappedBy = "keywordId")
-	private Set<StudyKeyword> studyKeywords;
-
 	@Column(name = "name", columnDefinition = "text")
 	@NotNull
 	private String name;
 
-	public Set<StudyKeyword> getStudyKeywords() {
-		return studyKeywords;
+	@OneToMany(mappedBy = "keywordId")
+	private Set<StudyKeyword> studyKeywords;
+
+	@PersistenceContext
+	transient EntityManager entityManager;
+
+	@Autowired
+	transient SolrServer solrServer;
+
+	@Transactional
+	public void clear() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.clear();
 	}
 
-	public void setStudyKeywords(Set<StudyKeyword> studyKeywords) {
-		this.studyKeywords = studyKeywords;
+	@Transactional
+	public void flush() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.flush();
+	}
+
+	public Integer getId() {
+		return this.id;
 	}
 
 	public String getName() {
 		return name;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public Set<StudyKeyword> getStudyKeywords() {
+		return studyKeywords;
 	}
 
-	@PersistenceContext
-	transient EntityManager entityManager;
-
-	public static final EntityManager entityManager() {
-		EntityManager em = new Keyword().entityManager;
-		if (em == null)
-			throw new IllegalStateException(
-					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-		return em;
-	}
-
-	public static long countKeywords() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM Keyword o", Long.class).getSingleResult();
-	}
-
-	public static List<Keyword> findAllKeywords() {
-		return entityManager().createQuery("SELECT o FROM Keyword o", Keyword.class).getResultList();
-	}
-
-	public static Keyword findKeyword(Integer id) {
-		if (id == null)
-			return null;
-		return entityManager().find(Keyword.class, id);
-	}
-
-	public static List<Keyword> findKeywordEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM Keyword o", Keyword.class).setFirstResult(firstResult)
-				.setMaxResults(maxResults).getResultList();
+	@Transactional
+	public Keyword merge() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		Keyword merged = this.entityManager.merge(this);
+		this.entityManager.flush();
+		return merged;
 	}
 
 	@Transactional
@@ -222,26 +214,34 @@ public class Keyword {
 		}
 	}
 
-	@Transactional
-	public void flush() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.flush();
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
-	@Transactional
-	public void clear() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.clear();
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	@Transactional
-	public Keyword merge() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		Keyword merged = this.entityManager.merge(this);
-		this.entityManager.flush();
-		return merged;
+	public void setStudyKeywords(Set<StudyKeyword> studyKeywords) {
+		this.studyKeywords = studyKeywords;
+	}
+
+	public String toJson() {
+		return new JSONSerializer().exclude("*.class").serialize(this);
+	}
+
+	public String toString() {
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+	}
+
+	@PostUpdate
+	@PostPersist
+	private void postPersistOrUpdate() {
+		indexKeyword(this);
+	}
+
+	@PreRemove
+	private void preRemove() {
+		deleteIndex(this);
 	}
 }

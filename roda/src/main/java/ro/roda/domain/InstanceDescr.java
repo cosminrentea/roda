@@ -38,16 +38,42 @@ import flexjson.JSONSerializer;
 @Audited
 public class InstanceDescr {
 
-	public String toJson() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
+	public static long countInstanceDescrs() {
+		return entityManager().createQuery("SELECT COUNT(o) FROM InstanceDescr o", Long.class).getSingleResult();
 	}
 
-	public static InstanceDescr fromJsonToInstanceDescr(String json) {
-		return new JSONDeserializer<InstanceDescr>().use(null, InstanceDescr.class).deserialize(json);
+	@Async
+	public static void deleteIndex(InstanceDescr instanceDescr) {
+		SolrServer solrServer = solrServer();
+		try {
+			solrServer.deleteById("instancedescr_" + instanceDescr.getId());
+			solrServer.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
-	public static String toJsonArray(Collection<InstanceDescr> collection) {
-		return new JSONSerializer().exclude("*.class").serialize(collection);
+	public static final EntityManager entityManager() {
+		EntityManager em = new InstanceDescr().entityManager;
+		if (em == null)
+			throw new IllegalStateException(
+					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return em;
+	}
+
+	public static List<InstanceDescr> findAllInstanceDescrs() {
+		return entityManager().createQuery("SELECT o FROM InstanceDescr o", InstanceDescr.class).getResultList();
+	}
+
+	public static InstanceDescr findInstanceDescr(InstanceDescrPK id) {
+		if (id == null)
+			return null;
+		return entityManager().find(InstanceDescr.class, id);
+	}
+
+	public static List<InstanceDescr> findInstanceDescrEntries(int firstResult, int maxResults) {
+		return entityManager().createQuery("SELECT o FROM InstanceDescr o", InstanceDescr.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
 	}
 
 	public static Collection<InstanceDescr> fromJsonArrayToInstanceDescrs(String json) {
@@ -55,32 +81,8 @@ public class InstanceDescr {
 				.use("values", InstanceDescr.class).deserialize(json);
 	}
 
-	@EmbeddedId
-	private InstanceDescrPK id;
-
-	public InstanceDescrPK getId() {
-		return this.id;
-	}
-
-	public void setId(InstanceDescrPK id) {
-		this.id = id;
-	}
-
-	@Autowired
-	transient SolrServer solrServer;
-
-	public static QueryResponse search(String queryString) {
-		String searchString = "InstanceDescr_solrsummary_t:" + queryString;
-		return search(new SolrQuery(searchString.toLowerCase()));
-	}
-
-	public static QueryResponse search(SolrQuery query) {
-		try {
-			return solrServer().query(query);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return new QueryResponse();
+	public static InstanceDescr fromJsonToInstanceDescr(String json) {
+		return new JSONDeserializer<InstanceDescr>().use(null, InstanceDescr.class).deserialize(json);
 	}
 
 	public static void indexInstanceDescr(InstanceDescr instanceDescr) {
@@ -120,26 +122,18 @@ public class InstanceDescr {
 		}
 	}
 
-	@Async
-	public static void deleteIndex(InstanceDescr instanceDescr) {
-		SolrServer solrServer = solrServer();
+	public static QueryResponse search(SolrQuery query) {
 		try {
-			solrServer.deleteById("instancedescr_" + instanceDescr.getId());
-			solrServer.commit();
+			return solrServer().query(query);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return new QueryResponse();
 	}
 
-	@PostUpdate
-	@PostPersist
-	private void postPersistOrUpdate() {
-		indexInstanceDescr(this);
-	}
-
-	@PreRemove
-	private void preRemove() {
-		deleteIndex(this);
+	public static QueryResponse search(String queryString) {
+		String searchString = "InstanceDescr_solrsummary_t:" + queryString;
+		return search(new SolrQuery(searchString.toLowerCase()));
 	}
 
 	public static SolrServer solrServer() {
@@ -150,34 +144,90 @@ public class InstanceDescr {
 		return _solrServer;
 	}
 
+	public static String toJsonArray(Collection<InstanceDescr> collection) {
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	@Column(name = "access_conditions", columnDefinition = "text")
+	private String accessConditions;
+
+	@EmbeddedId
+	private InstanceDescrPK id;
+
+	@ManyToOne
+	@JoinColumn(name = "instance_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	private Instance instanceId;
+
+	@ManyToOne
+	@JoinColumn(name = "lang_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	private Lang langId;
+
+	@Column(name = "notes", columnDefinition = "text")
+	private String notes;
+
+	@Column(name = "original_title_language", columnDefinition = "bool")
+	@NotNull
+	private boolean originalTitleLanguage;
+
+	@Column(name = "title", columnDefinition = "text")
+	@NotNull
+	private String title;
+
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	public static final EntityManager entityManager() {
-		EntityManager em = new InstanceDescr().entityManager;
-		if (em == null)
-			throw new IllegalStateException(
-					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-		return em;
+	@Autowired
+	transient SolrServer solrServer;
+
+	@Transactional
+	public void clear() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.clear();
 	}
 
-	public static long countInstanceDescrs() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM InstanceDescr o", Long.class).getSingleResult();
+	@Transactional
+	public void flush() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.flush();
 	}
 
-	public static List<InstanceDescr> findAllInstanceDescrs() {
-		return entityManager().createQuery("SELECT o FROM InstanceDescr o", InstanceDescr.class).getResultList();
+	public String getAccessConditions() {
+		return accessConditions;
 	}
 
-	public static InstanceDescr findInstanceDescr(InstanceDescrPK id) {
-		if (id == null)
-			return null;
-		return entityManager().find(InstanceDescr.class, id);
+	public InstanceDescrPK getId() {
+		return this.id;
 	}
 
-	public static List<InstanceDescr> findInstanceDescrEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM InstanceDescr o", InstanceDescr.class)
-				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
+	public Instance getInstanceId() {
+		return instanceId;
+	}
+
+	public Lang getLangId() {
+		return langId;
+	}
+
+	public String getNotes() {
+		return notes;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public boolean isOriginalTitleLanguage() {
+		return originalTitleLanguage;
+	}
+
+	@Transactional
+	public InstanceDescr merge() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		InstanceDescr merged = this.entityManager.merge(this);
+		this.entityManager.flush();
+		return merged;
 	}
 
 	@Transactional
@@ -199,100 +249,50 @@ public class InstanceDescr {
 		}
 	}
 
-	@Transactional
-	public void flush() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.flush();
+	public void setAccessConditions(String accessConditions) {
+		this.accessConditions = accessConditions;
 	}
 
-	@Transactional
-	public void clear() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.clear();
-	}
-
-	@Transactional
-	public InstanceDescr merge() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		InstanceDescr merged = this.entityManager.merge(this);
-		this.entityManager.flush();
-		return merged;
-	}
-
-	@ManyToOne
-	@JoinColumn(name = "instance_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
-	private Instance instanceId;
-
-	@ManyToOne
-	@JoinColumn(name = "lang_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
-	private Lang langId;
-
-	@Column(name = "access_conditions", columnDefinition = "text")
-	private String accessConditions;
-
-	@Column(name = "notes", columnDefinition = "text")
-	private String notes;
-
-	@Column(name = "title", columnDefinition = "text")
-	@NotNull
-	private String title;
-
-	@Column(name = "original_title_language", columnDefinition = "bool")
-	@NotNull
-	private boolean originalTitleLanguage;
-
-	public Instance getInstanceId() {
-		return instanceId;
+	public void setId(InstanceDescrPK id) {
+		this.id = id;
 	}
 
 	public void setInstanceId(Instance instanceId) {
 		this.instanceId = instanceId;
 	}
 
-	public Lang getLangId() {
-		return langId;
-	}
-
 	public void setLangId(Lang langId) {
 		this.langId = langId;
-	}
-
-	public String getAccessConditions() {
-		return accessConditions;
-	}
-
-	public void setAccessConditions(String accessConditions) {
-		this.accessConditions = accessConditions;
-	}
-
-	public String getNotes() {
-		return notes;
 	}
 
 	public void setNotes(String notes) {
 		this.notes = notes;
 	}
 
-	public String getTitle() {
-		return title;
+	public void setOriginalTitleLanguage(boolean originalTitleLanguage) {
+		this.originalTitleLanguage = originalTitleLanguage;
 	}
 
 	public void setTitle(String title) {
 		this.title = title;
 	}
 
-	public boolean isOriginalTitleLanguage() {
-		return originalTitleLanguage;
-	}
-
-	public void setOriginalTitleLanguage(boolean originalTitleLanguage) {
-		this.originalTitleLanguage = originalTitleLanguage;
+	public String toJson() {
+		return new JSONSerializer().exclude("*.class").serialize(this);
 	}
 
 	public String toString() {
 		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+	}
+
+	@PostUpdate
+	@PostPersist
+	private void postPersistOrUpdate() {
+		indexInstanceDescr(this);
+	}
+
+	@PreRemove
+	private void preRemove() {
+		deleteIndex(this);
 	}
 }

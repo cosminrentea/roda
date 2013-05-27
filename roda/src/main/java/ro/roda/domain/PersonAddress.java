@@ -41,16 +41,42 @@ import flexjson.JSONSerializer;
 @Audited
 public class PersonAddress {
 
-	public String toJson() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
+	public static long countPersonAddresses() {
+		return entityManager().createQuery("SELECT COUNT(o) FROM PersonAddress o", Long.class).getSingleResult();
 	}
 
-	public static PersonAddress fromJsonToPersonAddress(String json) {
-		return new JSONDeserializer<PersonAddress>().use(null, PersonAddress.class).deserialize(json);
+	@Async
+	public static void deleteIndex(PersonAddress personAddress) {
+		SolrServer solrServer = solrServer();
+		try {
+			solrServer.deleteById("personaddress_" + personAddress.getId());
+			solrServer.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
-	public static String toJsonArray(Collection<PersonAddress> collection) {
-		return new JSONSerializer().exclude("*.class").serialize(collection);
+	public static final EntityManager entityManager() {
+		EntityManager em = new PersonAddress().entityManager;
+		if (em == null)
+			throw new IllegalStateException(
+					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return em;
+	}
+
+	public static List<PersonAddress> findAllPersonAddresses() {
+		return entityManager().createQuery("SELECT o FROM PersonAddress o", PersonAddress.class).getResultList();
+	}
+
+	public static PersonAddress findPersonAddress(PersonAddressPK id) {
+		if (id == null)
+			return null;
+		return entityManager().find(PersonAddress.class, id);
+	}
+
+	public static List<PersonAddress> findPersonAddressEntries(int firstResult, int maxResults) {
+		return entityManager().createQuery("SELECT o FROM PersonAddress o", PersonAddress.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
 	}
 
 	public static Collection<PersonAddress> fromJsonArrayToPersonAddresses(String json) {
@@ -58,82 +84,8 @@ public class PersonAddress {
 				.use("values", PersonAddress.class).deserialize(json);
 	}
 
-	@ManyToOne
-	@JoinColumn(name = "address_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
-	private Address addressId;
-
-	@ManyToOne
-	@JoinColumn(name = "person_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
-	private Person personId;
-
-	@Column(name = "date_start", columnDefinition = "date")
-	@Temporal(TemporalType.DATE)
-	@DateTimeFormat(style = "M-")
-	private Date dateStart;
-
-	@Column(name = "date_end", columnDefinition = "date")
-	@Temporal(TemporalType.DATE)
-	@DateTimeFormat(style = "M-")
-	private Date dateEnd;
-
-	public Address getAddressId() {
-		return addressId;
-	}
-
-	public void setAddressId(Address addressId) {
-		this.addressId = addressId;
-	}
-
-	public Person getPersonId() {
-		return personId;
-	}
-
-	public void setPersonId(Person personId) {
-		this.personId = personId;
-	}
-
-	public Date getDateStart() {
-		return dateStart;
-	}
-
-	public void setDateStart(Date dateStart) {
-		this.dateStart = dateStart;
-	}
-
-	public Date getDateEnd() {
-		return dateEnd;
-	}
-
-	public void setDateEnd(Date dateEnd) {
-		this.dateEnd = dateEnd;
-	}
-
-	@EmbeddedId
-	private PersonAddressPK id;
-
-	public PersonAddressPK getId() {
-		return this.id;
-	}
-
-	public void setId(PersonAddressPK id) {
-		this.id = id;
-	}
-
-	@Autowired
-	transient SolrServer solrServer;
-
-	public static QueryResponse search(String queryString) {
-		String searchString = "PersonAddress_solrsummary_t:" + queryString;
-		return search(new SolrQuery(searchString.toLowerCase()));
-	}
-
-	public static QueryResponse search(SolrQuery query) {
-		try {
-			return solrServer().query(query);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return new QueryResponse();
+	public static PersonAddress fromJsonToPersonAddress(String json) {
+		return new JSONDeserializer<PersonAddress>().use(null, PersonAddress.class).deserialize(json);
 	}
 
 	public static void indexPersonAddress(PersonAddress personAddress) {
@@ -169,26 +121,18 @@ public class PersonAddress {
 		}
 	}
 
-	@Async
-	public static void deleteIndex(PersonAddress personAddress) {
-		SolrServer solrServer = solrServer();
+	public static QueryResponse search(SolrQuery query) {
 		try {
-			solrServer.deleteById("personaddress_" + personAddress.getId());
-			solrServer.commit();
+			return solrServer().query(query);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return new QueryResponse();
 	}
 
-	@PostUpdate
-	@PostPersist
-	private void postPersistOrUpdate() {
-		indexPersonAddress(this);
-	}
-
-	@PreRemove
-	private void preRemove() {
-		deleteIndex(this);
+	public static QueryResponse search(String queryString) {
+		String searchString = "PersonAddress_solrsummary_t:" + queryString;
+		return search(new SolrQuery(searchString.toLowerCase()));
 	}
 
 	public static SolrServer solrServer() {
@@ -199,38 +143,78 @@ public class PersonAddress {
 		return _solrServer;
 	}
 
-	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+	public static String toJsonArray(Collection<PersonAddress> collection) {
+		return new JSONSerializer().exclude("*.class").serialize(collection);
 	}
+
+	@ManyToOne
+	@JoinColumn(name = "address_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	private Address addressId;
+
+	@Column(name = "date_end", columnDefinition = "date")
+	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(style = "M-")
+	private Date dateEnd;
+
+	@Column(name = "date_start", columnDefinition = "date")
+	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(style = "M-")
+	private Date dateStart;
+
+	@EmbeddedId
+	private PersonAddressPK id;
+
+	@ManyToOne
+	@JoinColumn(name = "person_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	private Person personId;
 
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	public static final EntityManager entityManager() {
-		EntityManager em = new PersonAddress().entityManager;
-		if (em == null)
-			throw new IllegalStateException(
-					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-		return em;
+	@Autowired
+	transient SolrServer solrServer;
+
+	@Transactional
+	public void clear() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.clear();
 	}
 
-	public static long countPersonAddresses() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM PersonAddress o", Long.class).getSingleResult();
+	@Transactional
+	public void flush() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.flush();
 	}
 
-	public static List<PersonAddress> findAllPersonAddresses() {
-		return entityManager().createQuery("SELECT o FROM PersonAddress o", PersonAddress.class).getResultList();
+	public Address getAddressId() {
+		return addressId;
 	}
 
-	public static PersonAddress findPersonAddress(PersonAddressPK id) {
-		if (id == null)
-			return null;
-		return entityManager().find(PersonAddress.class, id);
+	public Date getDateEnd() {
+		return dateEnd;
 	}
 
-	public static List<PersonAddress> findPersonAddressEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM PersonAddress o", PersonAddress.class)
-				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
+	public Date getDateStart() {
+		return dateStart;
+	}
+
+	public PersonAddressPK getId() {
+		return this.id;
+	}
+
+	public Person getPersonId() {
+		return personId;
+	}
+
+	@Transactional
+	public PersonAddress merge() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		PersonAddress merged = this.entityManager.merge(this);
+		this.entityManager.flush();
+		return merged;
 	}
 
 	@Transactional
@@ -252,26 +236,42 @@ public class PersonAddress {
 		}
 	}
 
-	@Transactional
-	public void flush() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.flush();
+	public void setAddressId(Address addressId) {
+		this.addressId = addressId;
 	}
 
-	@Transactional
-	public void clear() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.clear();
+	public void setDateEnd(Date dateEnd) {
+		this.dateEnd = dateEnd;
 	}
 
-	@Transactional
-	public PersonAddress merge() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		PersonAddress merged = this.entityManager.merge(this);
-		this.entityManager.flush();
-		return merged;
+	public void setDateStart(Date dateStart) {
+		this.dateStart = dateStart;
+	}
+
+	public void setId(PersonAddressPK id) {
+		this.id = id;
+	}
+
+	public void setPersonId(Person personId) {
+		this.personId = personId;
+	}
+
+	public String toJson() {
+		return new JSONSerializer().exclude("*.class").serialize(this);
+	}
+
+	public String toString() {
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+	}
+
+	@PostUpdate
+	@PostPersist
+	private void postPersistOrUpdate() {
+		indexPersonAddress(this);
+	}
+
+	@PreRemove
+	private void preRemove() {
+		deleteIndex(this);
 	}
 }

@@ -40,29 +40,42 @@ import flexjson.JSONSerializer;
 @Audited
 public class Suffix {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "id", columnDefinition = "serial")
-	private Integer id;
-
-	public Integer getId() {
-		return this.id;
+	public static long countSuffixes() {
+		return entityManager().createQuery("SELECT COUNT(o) FROM Suffix o", Long.class).getSingleResult();
 	}
 
-	public void setId(Integer id) {
-		this.id = id;
+	@Async
+	public static void deleteIndex(Suffix suffix) {
+		SolrServer solrServer = solrServer();
+		try {
+			solrServer.deleteById("suffix_" + suffix.getId());
+			solrServer.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
-	public String toJson() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
+	public static final EntityManager entityManager() {
+		EntityManager em = new Suffix().entityManager;
+		if (em == null)
+			throw new IllegalStateException(
+					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return em;
 	}
 
-	public static Suffix fromJsonToSuffix(String json) {
-		return new JSONDeserializer<Suffix>().use(null, Suffix.class).deserialize(json);
+	public static List<Suffix> findAllSuffixes() {
+		return entityManager().createQuery("SELECT o FROM Suffix o", Suffix.class).getResultList();
 	}
 
-	public static String toJsonArray(Collection<Suffix> collection) {
-		return new JSONSerializer().exclude("*.class").serialize(collection);
+	public static Suffix findSuffix(Integer id) {
+		if (id == null)
+			return null;
+		return entityManager().find(Suffix.class, id);
+	}
+
+	public static List<Suffix> findSuffixEntries(int firstResult, int maxResults) {
+		return entityManager().createQuery("SELECT o FROM Suffix o", Suffix.class).setFirstResult(firstResult)
+				.setMaxResults(maxResults).getResultList();
 	}
 
 	public static Collection<Suffix> fromJsonArrayToSuffixes(String json) {
@@ -70,25 +83,8 @@ public class Suffix {
 				.deserialize(json);
 	}
 
-	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
-	}
-
-	@Autowired
-	transient SolrServer solrServer;
-
-	public static QueryResponse search(String queryString) {
-		String searchString = "Suffix_solrsummary_t:" + queryString;
-		return search(new SolrQuery(searchString.toLowerCase()));
-	}
-
-	public static QueryResponse search(SolrQuery query) {
-		try {
-			return solrServer().query(query);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return new QueryResponse();
+	public static Suffix fromJsonToSuffix(String json) {
+		return new JSONDeserializer<Suffix>().use(null, Suffix.class).deserialize(json);
 	}
 
 	public static void indexSuffix(Suffix suffix) {
@@ -118,26 +114,18 @@ public class Suffix {
 		}
 	}
 
-	@Async
-	public static void deleteIndex(Suffix suffix) {
-		SolrServer solrServer = solrServer();
+	public static QueryResponse search(SolrQuery query) {
 		try {
-			solrServer.deleteById("suffix_" + suffix.getId());
-			solrServer.commit();
+			return solrServer().query(query);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return new QueryResponse();
 	}
 
-	@PostUpdate
-	@PostPersist
-	private void postPersistOrUpdate() {
-		indexSuffix(this);
-	}
-
-	@PreRemove
-	private void preRemove() {
-		deleteIndex(this);
+	public static QueryResponse search(String queryString) {
+		String searchString = "Suffix_solrsummary_t:" + queryString;
+		return search(new SolrQuery(searchString.toLowerCase()));
 	}
 
 	public static SolrServer solrServer() {
@@ -148,34 +136,61 @@ public class Suffix {
 		return _solrServer;
 	}
 
+	public static String toJsonArray(Collection<Suffix> collection) {
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id", columnDefinition = "serial")
+	private Integer id;
+
+	@Column(name = "name", columnDefinition = "varchar", length = 50)
+	@NotNull
+	private String name;
+
+	@OneToMany(mappedBy = "suffixId")
+	private Set<Person> people;
+
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	public static final EntityManager entityManager() {
-		EntityManager em = new Suffix().entityManager;
-		if (em == null)
-			throw new IllegalStateException(
-					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-		return em;
+	@Autowired
+	transient SolrServer solrServer;
+
+	@Transactional
+	public void clear() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.clear();
 	}
 
-	public static long countSuffixes() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM Suffix o", Long.class).getSingleResult();
+	@Transactional
+	public void flush() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.flush();
 	}
 
-	public static List<Suffix> findAllSuffixes() {
-		return entityManager().createQuery("SELECT o FROM Suffix o", Suffix.class).getResultList();
+	public Integer getId() {
+		return this.id;
 	}
 
-	public static Suffix findSuffix(Integer id) {
-		if (id == null)
-			return null;
-		return entityManager().find(Suffix.class, id);
+	public String getName() {
+		return name;
 	}
 
-	public static List<Suffix> findSuffixEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM Suffix o", Suffix.class).setFirstResult(firstResult)
-				.setMaxResults(maxResults).getResultList();
+	public Set<Person> getPeople() {
+		return people;
+	}
+
+	@Transactional
+	public Suffix merge() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		Suffix merged = this.entityManager.merge(this);
+		this.entityManager.flush();
+		return merged;
 	}
 
 	@Transactional
@@ -197,49 +212,34 @@ public class Suffix {
 		}
 	}
 
-	@Transactional
-	public void flush() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.flush();
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
-	@Transactional
-	public void clear() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.clear();
-	}
-
-	@Transactional
-	public Suffix merge() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		Suffix merged = this.entityManager.merge(this);
-		this.entityManager.flush();
-		return merged;
-	}
-
-	@OneToMany(mappedBy = "suffixId")
-	private Set<Person> people;
-
-	@Column(name = "name", columnDefinition = "varchar", length = 50)
-	@NotNull
-	private String name;
-
-	public Set<Person> getPeople() {
-		return people;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public void setPeople(Set<Person> people) {
 		this.people = people;
 	}
 
-	public String getName() {
-		return name;
+	public String toJson() {
+		return new JSONSerializer().exclude("*.class").serialize(this);
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public String toString() {
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+	}
+
+	@PostUpdate
+	@PostPersist
+	private void postPersistOrUpdate() {
+		indexSuffix(this);
+	}
+
+	@PreRemove
+	private void preRemove() {
+		deleteIndex(this);
 	}
 }

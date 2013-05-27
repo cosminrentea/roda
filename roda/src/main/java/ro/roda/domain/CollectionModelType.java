@@ -42,16 +42,43 @@ import flexjson.JSONSerializer;
 @Audited
 public class CollectionModelType {
 
-	public String toJson() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
+	public static long countCollectionModelTypes() {
+		return entityManager().createQuery("SELECT COUNT(o) FROM CollectionModelType o", Long.class).getSingleResult();
 	}
 
-	public static CollectionModelType fromJsonToCollectionModelType(String json) {
-		return new JSONDeserializer<CollectionModelType>().use(null, CollectionModelType.class).deserialize(json);
+	@Async
+	public static void deleteIndex(CollectionModelType collectionModelType) {
+		SolrServer solrServer = solrServer();
+		try {
+			solrServer.deleteById("collectionmodeltype_" + collectionModelType.getId());
+			solrServer.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
-	public static String toJsonArray(Collection<CollectionModelType> collection) {
-		return new JSONSerializer().exclude("*.class").serialize(collection);
+	public static final EntityManager entityManager() {
+		EntityManager em = new CollectionModelType().entityManager;
+		if (em == null)
+			throw new IllegalStateException(
+					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return em;
+	}
+
+	public static List<CollectionModelType> findAllCollectionModelTypes() {
+		return entityManager().createQuery("SELECT o FROM CollectionModelType o", CollectionModelType.class)
+				.getResultList();
+	}
+
+	public static CollectionModelType findCollectionModelType(Integer id) {
+		if (id == null)
+			return null;
+		return entityManager().find(CollectionModelType.class, id);
+	}
+
+	public static List<CollectionModelType> findCollectionModelTypeEntries(int firstResult, int maxResults) {
+		return entityManager().createQuery("SELECT o FROM CollectionModelType o", CollectionModelType.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
 	}
 
 	public static Collection<CollectionModelType> fromJsonArrayToCollectionModelTypes(String json) {
@@ -59,21 +86,8 @@ public class CollectionModelType {
 				.use("values", CollectionModelType.class).deserialize(json);
 	}
 
-	@Autowired
-	transient SolrServer solrServer;
-
-	public static QueryResponse search(String queryString) {
-		String searchString = "CollectionModelType_solrsummary_t:" + queryString;
-		return search(new SolrQuery(searchString.toLowerCase()));
-	}
-
-	public static QueryResponse search(SolrQuery query) {
-		try {
-			return solrServer().query(query);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return new QueryResponse();
+	public static CollectionModelType fromJsonToCollectionModelType(String json) {
+		return new JSONDeserializer<CollectionModelType>().use(null, CollectionModelType.class).deserialize(json);
 	}
 
 	public static void indexCollectionModelType(CollectionModelType collectionModelType) {
@@ -109,26 +123,18 @@ public class CollectionModelType {
 		}
 	}
 
-	@Async
-	public static void deleteIndex(CollectionModelType collectionModelType) {
-		SolrServer solrServer = solrServer();
+	public static QueryResponse search(SolrQuery query) {
 		try {
-			solrServer.deleteById("collectionmodeltype_" + collectionModelType.getId());
-			solrServer.commit();
+			return solrServer().query(query);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return new QueryResponse();
 	}
 
-	@PostUpdate
-	@PostPersist
-	private void postPersistOrUpdate() {
-		indexCollectionModelType(this);
-	}
-
-	@PreRemove
-	private void preRemove() {
-		deleteIndex(this);
+	public static QueryResponse search(String queryString) {
+		String searchString = "CollectionModelType_solrsummary_t:" + queryString;
+		return search(new SolrQuery(searchString.toLowerCase()));
 	}
 
 	public static SolrServer solrServer() {
@@ -139,83 +145,69 @@ public class CollectionModelType {
 		return _solrServer;
 	}
 
+	public static String toJsonArray(Collection<CollectionModelType> collection) {
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	@Column(name = "description", columnDefinition = "text")
+	private String description;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id", columnDefinition = "serial")
 	private Integer id;
 
-	public Integer getId() {
-		return this.id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
+	@Column(name = "name", columnDefinition = "varchar", length = 100)
+	@NotNull
+	private String name;
 
 	@ManyToMany
 	@JoinTable(name = "meth_coll_type", joinColumns = { @JoinColumn(name = "collection_model_id", nullable = false) }, inverseJoinColumns = { @JoinColumn(name = "study_id", nullable = false) })
 	private Set<Study> studies;
 
-	@Column(name = "name", columnDefinition = "varchar", length = 100)
-	@NotNull
-	private String name;
+	@PersistenceContext
+	transient EntityManager entityManager;
 
-	@Column(name = "description", columnDefinition = "text")
-	private String description;
+	@Autowired
+	transient SolrServer solrServer;
 
-	public Set<Study> getStudies() {
-		return studies;
+	@Transactional
+	public void clear() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.clear();
 	}
 
-	public void setStudies(Set<Study> studies) {
-		this.studies = studies;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
+	@Transactional
+	public void flush() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.flush();
 	}
 
 	public String getDescription() {
 		return description;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
+	public Integer getId() {
+		return this.id;
 	}
 
-	@PersistenceContext
-	transient EntityManager entityManager;
-
-	public static final EntityManager entityManager() {
-		EntityManager em = new CollectionModelType().entityManager;
-		if (em == null)
-			throw new IllegalStateException(
-					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-		return em;
+	public String getName() {
+		return name;
 	}
 
-	public static long countCollectionModelTypes() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM CollectionModelType o", Long.class).getSingleResult();
+	public Set<Study> getStudies() {
+		return studies;
 	}
 
-	public static List<CollectionModelType> findAllCollectionModelTypes() {
-		return entityManager().createQuery("SELECT o FROM CollectionModelType o", CollectionModelType.class)
-				.getResultList();
-	}
-
-	public static CollectionModelType findCollectionModelType(Integer id) {
-		if (id == null)
-			return null;
-		return entityManager().find(CollectionModelType.class, id);
-	}
-
-	public static List<CollectionModelType> findCollectionModelTypeEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM CollectionModelType o", CollectionModelType.class)
-				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
+	@Transactional
+	public CollectionModelType merge() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		CollectionModelType merged = this.entityManager.merge(this);
+		this.entityManager.flush();
+		return merged;
 	}
 
 	@Transactional
@@ -237,30 +229,38 @@ public class CollectionModelType {
 		}
 	}
 
-	@Transactional
-	public void flush() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.flush();
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
-	@Transactional
-	public void clear() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.clear();
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
-	@Transactional
-	public CollectionModelType merge() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		CollectionModelType merged = this.entityManager.merge(this);
-		this.entityManager.flush();
-		return merged;
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setStudies(Set<Study> studies) {
+		this.studies = studies;
+	}
+
+	public String toJson() {
+		return new JSONSerializer().exclude("*.class").serialize(this);
 	}
 
 	public String toString() {
 		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+	}
+
+	@PostUpdate
+	@PostPersist
+	private void postPersistOrUpdate() {
+		indexCollectionModelType(this);
+	}
+
+	@PreRemove
+	private void preRemove() {
+		deleteIndex(this);
 	}
 }

@@ -19,8 +19,9 @@ public final class PersonPhonePK implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	public String toJson() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
+	public static Collection<PersonPhonePK> fromJsonArrayToPersonPhonePKs(String json) {
+		return new JSONDeserializer<List<PersonPhonePK>>().use(null, ArrayList.class)
+				.use("values", PersonPhonePK.class).deserialize(json);
 	}
 
 	public static PersonPhonePK fromJsonToPersonPhonePK(String json) {
@@ -29,11 +30,6 @@ public final class PersonPhonePK implements Serializable {
 
 	public static String toJsonArray(Collection<PersonPhonePK> collection) {
 		return new JSONSerializer().exclude("*.class").serialize(collection);
-	}
-
-	public static Collection<PersonPhonePK> fromJsonArrayToPersonPhonePKs(String json) {
-		return new JSONDeserializer<List<PersonPhonePK>>().use(null, ArrayList.class)
-				.use("values", PersonPhonePK.class).deserialize(json);
 	}
 
 	@Column(name = "person_id", columnDefinition = "int4", nullable = false)
@@ -58,5 +54,9 @@ public final class PersonPhonePK implements Serializable {
 
 	public Integer getPhoneId() {
 		return phoneId;
+	}
+
+	public String toJson() {
+		return new JSONSerializer().exclude("*.class").serialize(this);
 	}
 }

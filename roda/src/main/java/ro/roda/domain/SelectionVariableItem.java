@@ -40,102 +40,53 @@ import flexjson.JSONSerializer;
 @Audited
 public class SelectionVariableItem {
 
-	@EmbeddedId
-	private SelectionVariableItemPK id;
-
-	public SelectionVariableItemPK getId() {
-		return this.id;
+	public static long countSelectionVariableItems() {
+		return entityManager().createQuery("SELECT COUNT(o) FROM SelectionVariableItem o", Long.class)
+				.getSingleResult();
 	}
 
-	public void setId(SelectionVariableItemPK id) {
-		this.id = id;
-	}
-
-	@OneToMany(mappedBy = "selectionVariableItem")
-	private Set<FormSelectionVar> formSelectionVars;
-
-	@ManyToOne
-	@JoinColumn(name = "response_card_file_id", referencedColumnName = "id")
-	private File responseCardFileId;
-
-	@ManyToOne
-	@JoinColumn(name = "item_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
-	private Item itemId;
-
-	@ManyToOne
-	@JoinColumn(name = "variable_id", referencedColumnName = "variable_id", nullable = false, insertable = false, updatable = false)
-	private SelectionVariable variableId;
-
-	@Column(name = "order_of_item_in_variable", columnDefinition = "int4", unique = true)
-	@NotNull
-	private Integer orderOfItemInVariable;
-
-	@Column(name = "frequency_value", columnDefinition = "float4", precision = 8, scale = 8)
-	private Float frequencyValue;
-
-	public Set<FormSelectionVar> getFormSelectionVars() {
-		return formSelectionVars;
-	}
-
-	public void setFormSelectionVars(Set<FormSelectionVar> formSelectionVars) {
-		this.formSelectionVars = formSelectionVars;
-	}
-
-	public File getResponseCardFileId() {
-		return responseCardFileId;
-	}
-
-	public void setResponseCardFileId(File responseCardFileId) {
-		this.responseCardFileId = responseCardFileId;
-	}
-
-	public Item getItemId() {
-		return itemId;
-	}
-
-	public void setItemId(Item itemId) {
-		this.itemId = itemId;
-	}
-
-	public SelectionVariable getVariableId() {
-		return variableId;
-	}
-
-	public void setVariableId(SelectionVariable variableId) {
-		this.variableId = variableId;
-	}
-
-	public Integer getOrderOfItemInVariable() {
-		return orderOfItemInVariable;
-	}
-
-	public void setOrderOfItemInVariable(Integer orderOfItemInVariable) {
-		this.orderOfItemInVariable = orderOfItemInVariable;
-	}
-
-	public Float getFrequencyValue() {
-		return frequencyValue;
-	}
-
-	public void setFrequencyValue(Float frequencyValue) {
-		this.frequencyValue = frequencyValue;
-	}
-
-	@Autowired
-	transient SolrServer solrServer;
-
-	public static QueryResponse search(String queryString) {
-		String searchString = "SelectionVariableItem_solrsummary_t:" + queryString;
-		return search(new SolrQuery(searchString.toLowerCase()));
-	}
-
-	public static QueryResponse search(SolrQuery query) {
+	@Async
+	public static void deleteIndex(SelectionVariableItem selectionVariableItem) {
+		SolrServer solrServer = solrServer();
 		try {
-			return solrServer().query(query);
+			solrServer.deleteById("selectionvariableitem_" + selectionVariableItem.getId());
+			solrServer.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return new QueryResponse();
+	}
+
+	public static final EntityManager entityManager() {
+		EntityManager em = new SelectionVariableItem().entityManager;
+		if (em == null)
+			throw new IllegalStateException(
+					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return em;
+	}
+
+	public static List<SelectionVariableItem> findAllSelectionVariableItems() {
+		return entityManager().createQuery("SELECT o FROM SelectionVariableItem o", SelectionVariableItem.class)
+				.getResultList();
+	}
+
+	public static SelectionVariableItem findSelectionVariableItem(SelectionVariableItemPK id) {
+		if (id == null)
+			return null;
+		return entityManager().find(SelectionVariableItem.class, id);
+	}
+
+	public static List<SelectionVariableItem> findSelectionVariableItemEntries(int firstResult, int maxResults) {
+		return entityManager().createQuery("SELECT o FROM SelectionVariableItem o", SelectionVariableItem.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
+	}
+
+	public static Collection<SelectionVariableItem> fromJsonArrayToSelectionVariableItems(String json) {
+		return new JSONDeserializer<List<SelectionVariableItem>>().use(null, ArrayList.class)
+				.use("values", SelectionVariableItem.class).deserialize(json);
+	}
+
+	public static SelectionVariableItem fromJsonToSelectionVariableItem(String json) {
+		return new JSONDeserializer<SelectionVariableItem>().use(null, SelectionVariableItem.class).deserialize(json);
 	}
 
 	public static void indexSelectionVariableItem(SelectionVariableItem selectionVariableItem) {
@@ -178,26 +129,18 @@ public class SelectionVariableItem {
 		}
 	}
 
-	@Async
-	public static void deleteIndex(SelectionVariableItem selectionVariableItem) {
-		SolrServer solrServer = solrServer();
+	public static QueryResponse search(SolrQuery query) {
 		try {
-			solrServer.deleteById("selectionvariableitem_" + selectionVariableItem.getId());
-			solrServer.commit();
+			return solrServer().query(query);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return new QueryResponse();
 	}
 
-	@PostUpdate
-	@PostPersist
-	private void postPersistOrUpdate() {
-		indexSelectionVariableItem(this);
-	}
-
-	@PreRemove
-	private void preRemove() {
-		deleteIndex(this);
+	public static QueryResponse search(String queryString) {
+		String searchString = "SelectionVariableItem_solrsummary_t:" + queryString;
+		return search(new SolrQuery(searchString.toLowerCase()));
 	}
 
 	public static SolrServer solrServer() {
@@ -208,57 +151,90 @@ public class SelectionVariableItem {
 		return _solrServer;
 	}
 
-	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
-	}
-
-	public String toJson() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
-	}
-
-	public static SelectionVariableItem fromJsonToSelectionVariableItem(String json) {
-		return new JSONDeserializer<SelectionVariableItem>().use(null, SelectionVariableItem.class).deserialize(json);
-	}
-
 	public static String toJsonArray(Collection<SelectionVariableItem> collection) {
 		return new JSONSerializer().exclude("*.class").serialize(collection);
 	}
 
-	public static Collection<SelectionVariableItem> fromJsonArrayToSelectionVariableItems(String json) {
-		return new JSONDeserializer<List<SelectionVariableItem>>().use(null, ArrayList.class)
-				.use("values", SelectionVariableItem.class).deserialize(json);
-	}
+	@OneToMany(mappedBy = "selectionVariableItem")
+	private Set<FormSelectionVar> formSelectionVars;
+
+	@Column(name = "frequency_value", columnDefinition = "float4", precision = 8, scale = 8)
+	private Float frequencyValue;
+
+	@EmbeddedId
+	private SelectionVariableItemPK id;
+
+	@ManyToOne
+	@JoinColumn(name = "item_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	private Item itemId;
+
+	@Column(name = "order_of_item_in_variable", columnDefinition = "int4", unique = true)
+	@NotNull
+	private Integer orderOfItemInVariable;
+
+	@ManyToOne
+	@JoinColumn(name = "response_card_file_id", referencedColumnName = "id")
+	private File responseCardFileId;
+
+	@ManyToOne
+	@JoinColumn(name = "variable_id", referencedColumnName = "variable_id", nullable = false, insertable = false, updatable = false)
+	private SelectionVariable variableId;
 
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	public static final EntityManager entityManager() {
-		EntityManager em = new SelectionVariableItem().entityManager;
-		if (em == null)
-			throw new IllegalStateException(
-					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-		return em;
+	@Autowired
+	transient SolrServer solrServer;
+
+	@Transactional
+	public void clear() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.clear();
 	}
 
-	public static long countSelectionVariableItems() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM SelectionVariableItem o", Long.class)
-				.getSingleResult();
+	@Transactional
+	public void flush() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.flush();
 	}
 
-	public static List<SelectionVariableItem> findAllSelectionVariableItems() {
-		return entityManager().createQuery("SELECT o FROM SelectionVariableItem o", SelectionVariableItem.class)
-				.getResultList();
+	public Set<FormSelectionVar> getFormSelectionVars() {
+		return formSelectionVars;
 	}
 
-	public static SelectionVariableItem findSelectionVariableItem(SelectionVariableItemPK id) {
-		if (id == null)
-			return null;
-		return entityManager().find(SelectionVariableItem.class, id);
+	public Float getFrequencyValue() {
+		return frequencyValue;
 	}
 
-	public static List<SelectionVariableItem> findSelectionVariableItemEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM SelectionVariableItem o", SelectionVariableItem.class)
-				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
+	public SelectionVariableItemPK getId() {
+		return this.id;
+	}
+
+	public Item getItemId() {
+		return itemId;
+	}
+
+	public Integer getOrderOfItemInVariable() {
+		return orderOfItemInVariable;
+	}
+
+	public File getResponseCardFileId() {
+		return responseCardFileId;
+	}
+
+	public SelectionVariable getVariableId() {
+		return variableId;
+	}
+
+	@Transactional
+	public SelectionVariableItem merge() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		SelectionVariableItem merged = this.entityManager.merge(this);
+		this.entityManager.flush();
+		return merged;
 	}
 
 	@Transactional
@@ -280,26 +256,50 @@ public class SelectionVariableItem {
 		}
 	}
 
-	@Transactional
-	public void flush() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.flush();
+	public void setFormSelectionVars(Set<FormSelectionVar> formSelectionVars) {
+		this.formSelectionVars = formSelectionVars;
 	}
 
-	@Transactional
-	public void clear() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.clear();
+	public void setFrequencyValue(Float frequencyValue) {
+		this.frequencyValue = frequencyValue;
 	}
 
-	@Transactional
-	public SelectionVariableItem merge() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		SelectionVariableItem merged = this.entityManager.merge(this);
-		this.entityManager.flush();
-		return merged;
+	public void setId(SelectionVariableItemPK id) {
+		this.id = id;
+	}
+
+	public void setItemId(Item itemId) {
+		this.itemId = itemId;
+	}
+
+	public void setOrderOfItemInVariable(Integer orderOfItemInVariable) {
+		this.orderOfItemInVariable = orderOfItemInVariable;
+	}
+
+	public void setResponseCardFileId(File responseCardFileId) {
+		this.responseCardFileId = responseCardFileId;
+	}
+
+	public void setVariableId(SelectionVariable variableId) {
+		this.variableId = variableId;
+	}
+
+	public String toJson() {
+		return new JSONSerializer().exclude("*.class").serialize(this);
+	}
+
+	public String toString() {
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+	}
+
+	@PostUpdate
+	@PostPersist
+	private void postPersistOrUpdate() {
+		indexSelectionVariableItem(this);
+	}
+
+	@PreRemove
+	private void preRemove() {
+		deleteIndex(this);
 	}
 }

@@ -40,97 +40,51 @@ import flexjson.JSONSerializer;
 @Audited
 public class AclEntry {
 
-	@Column(name = "ace_order", columnDefinition = "int4")
-	@NotNull
-	private Integer aceOrder;
-
-	@ManyToOne
-	@JoinColumn(name = "acl_object_identity", referencedColumnName = "id", nullable = false)
-	private AclObjectIdentity aclObjectIdentity;
-
-	@ManyToOne
-	@JoinColumn(name = "sid", referencedColumnName = "id", nullable = false)
-	private AclSid sid;
-
-	@Column(name = "mask", columnDefinition = "int4")
-	@NotNull
-	private Integer mask;
-
-	@Column(name = "granting", columnDefinition = "bool")
-	@NotNull
-	private boolean granting;
-
-	@Column(name = "audit_success", columnDefinition = "bool")
-	@NotNull
-	private boolean auditSuccess;
-
-	@Column(name = "audit_failure", columnDefinition = "bool")
-	@NotNull
-	private boolean auditFailure;
-
-	public AclObjectIdentity getAclObjectIdentity() {
-		return aclObjectIdentity;
+	public static long countAclEntrys() {
+		return entityManager().createQuery("SELECT COUNT(o) FROM AclEntry o", Long.class).getSingleResult();
 	}
 
-	public void setAclObjectIdentity(AclObjectIdentity aclObjectIdentity) {
-		this.aclObjectIdentity = aclObjectIdentity;
-	}
-
-	public AclSid getSid() {
-		return sid;
-	}
-
-	public void setSid(AclSid sid) {
-		this.sid = sid;
-	}
-
-	public Integer getMask() {
-		return mask;
-	}
-
-	public void setMask(Integer mask) {
-		this.mask = mask;
-	}
-
-	public boolean isGranting() {
-		return granting;
-	}
-
-	public void setGranting(boolean granting) {
-		this.granting = granting;
-	}
-
-	public boolean isAuditSuccess() {
-		return auditSuccess;
-	}
-
-	public void setAuditSuccess(boolean auditSuccess) {
-		this.auditSuccess = auditSuccess;
-	}
-
-	public boolean isAuditFailure() {
-		return auditFailure;
-	}
-
-	public void setAuditFailure(boolean auditFailure) {
-		this.auditFailure = auditFailure;
-	}
-
-	@Autowired
-	transient SolrServer solrServer;
-
-	public static QueryResponse search(String queryString) {
-		String searchString = "AclEntry_solrsummary_t:" + queryString;
-		return search(new SolrQuery(searchString.toLowerCase()));
-	}
-
-	public static QueryResponse search(SolrQuery query) {
+	@Async
+	public static void deleteIndex(AclEntry aclEntry) {
+		SolrServer solrServer = solrServer();
 		try {
-			return solrServer().query(query);
+			solrServer.deleteById("aclentry_" + aclEntry.getId());
+			solrServer.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return new QueryResponse();
+	}
+
+	public static final EntityManager entityManager() {
+		EntityManager em = new AclEntry().entityManager;
+		if (em == null)
+			throw new IllegalStateException(
+					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return em;
+	}
+
+	public static AclEntry findAclEntry(Long id) {
+		if (id == null)
+			return null;
+		return entityManager().find(AclEntry.class, id);
+	}
+
+	public static List<AclEntry> findAclEntryEntries(int firstResult, int maxResults) {
+		return entityManager().createQuery("SELECT o FROM AclEntry o", AclEntry.class).setFirstResult(firstResult)
+				.setMaxResults(maxResults).getResultList();
+	}
+
+	public static List<AclEntry> findAllAclEntrys() {
+		return entityManager().createQuery("SELECT o FROM AclEntry o", AclEntry.class).getResultList();
+	}
+
+	public static Collection<AclEntry> fromJsonArrayToAclEntrys(String json) {
+		return new JSONDeserializer<List<AclEntry>>().use(null, ArrayList.class).use("values", AclEntry.class)
+				.deserialize(json);
+	}
+
+	public static AclEntry fromJsonToAclEntry(String json) {
+		return new JSONDeserializer<AclEntry>().use(null, AclEntry.class).deserialize(json);
 	}
 
 	public static void indexAclEntry(AclEntry aclEntry) {
@@ -168,26 +122,18 @@ public class AclEntry {
 		}
 	}
 
-	@Async
-	public static void deleteIndex(AclEntry aclEntry) {
-		SolrServer solrServer = solrServer();
+	public static QueryResponse search(SolrQuery query) {
 		try {
-			solrServer.deleteById("aclentry_" + aclEntry.getId());
-			solrServer.commit();
+			return solrServer().query(query);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return new QueryResponse();
 	}
 
-	@PostUpdate
-	@PostPersist
-	private void postPersistOrUpdate() {
-		indexAclEntry(this);
-	}
-
-	@PreRemove
-	private void preRemove() {
-		deleteIndex(this);
+	public static QueryResponse search(String queryString) {
+		String searchString = "AclEntry_solrsummary_t:" + queryString;
+		return search(new SolrQuery(searchString.toLowerCase()));
 	}
 
 	public static SolrServer solrServer() {
@@ -198,55 +144,102 @@ public class AclEntry {
 		return _solrServer;
 	}
 
-	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
-	}
-
-	public String toJson() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
-	}
-
-	public static AclEntry fromJsonToAclEntry(String json) {
-		return new JSONDeserializer<AclEntry>().use(null, AclEntry.class).deserialize(json);
-	}
-
 	public static String toJsonArray(Collection<AclEntry> collection) {
 		return new JSONSerializer().exclude("*.class").serialize(collection);
 	}
 
-	public static Collection<AclEntry> fromJsonArrayToAclEntrys(String json) {
-		return new JSONDeserializer<List<AclEntry>>().use(null, ArrayList.class).use("values", AclEntry.class)
-				.deserialize(json);
-	}
+	@Column(name = "ace_order", columnDefinition = "int4")
+	@NotNull
+	private Integer aceOrder;
+
+	@ManyToOne
+	@JoinColumn(name = "acl_object_identity", referencedColumnName = "id", nullable = false)
+	private AclObjectIdentity aclObjectIdentity;
+
+	@Column(name = "audit_failure", columnDefinition = "bool")
+	@NotNull
+	private boolean auditFailure;
+
+	@Column(name = "audit_success", columnDefinition = "bool")
+	@NotNull
+	private boolean auditSuccess;
+
+	@Column(name = "granting", columnDefinition = "bool")
+	@NotNull
+	private boolean granting;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id", columnDefinition = "bigserial")
+	private Long id;
+
+	@Column(name = "mask", columnDefinition = "int4")
+	@NotNull
+	private Integer mask;
+
+	@ManyToOne
+	@JoinColumn(name = "sid", referencedColumnName = "id", nullable = false)
+	private AclSid sid;
 
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	public static final EntityManager entityManager() {
-		EntityManager em = new AclEntry().entityManager;
-		if (em == null)
-			throw new IllegalStateException(
-					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-		return em;
+	@Autowired
+	transient SolrServer solrServer;
+
+	@Transactional
+	public void clear() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.clear();
 	}
 
-	public static long countAclEntrys() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM AclEntry o", Long.class).getSingleResult();
+	@Transactional
+	public void flush() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.flush();
 	}
 
-	public static List<AclEntry> findAllAclEntrys() {
-		return entityManager().createQuery("SELECT o FROM AclEntry o", AclEntry.class).getResultList();
+	public Integer getAceOrder() {
+		return this.aceOrder;
 	}
 
-	public static AclEntry findAclEntry(Long id) {
-		if (id == null)
-			return null;
-		return entityManager().find(AclEntry.class, id);
+	public AclObjectIdentity getAclObjectIdentity() {
+		return aclObjectIdentity;
 	}
 
-	public static List<AclEntry> findAclEntryEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM AclEntry o", AclEntry.class).setFirstResult(firstResult)
-				.setMaxResults(maxResults).getResultList();
+	public Long getId() {
+		return this.id;
+	}
+
+	public Integer getMask() {
+		return mask;
+	}
+
+	public AclSid getSid() {
+		return sid;
+	}
+
+	public boolean isAuditFailure() {
+		return auditFailure;
+	}
+
+	public boolean isAuditSuccess() {
+		return auditSuccess;
+	}
+
+	public boolean isGranting() {
+		return granting;
+	}
+
+	@Transactional
+	public AclEntry merge() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		AclEntry merged = this.entityManager.merge(this);
+		this.entityManager.flush();
+		return merged;
 	}
 
 	@Transactional
@@ -268,47 +261,54 @@ public class AclEntry {
 		}
 	}
 
-	@Transactional
-	public void flush() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.flush();
+	public void setAceOrder(Integer aceOrder) {
+		this.aceOrder = aceOrder;
 	}
 
-	@Transactional
-	public void clear() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.clear();
+	public void setAclObjectIdentity(AclObjectIdentity aclObjectIdentity) {
+		this.aclObjectIdentity = aclObjectIdentity;
 	}
 
-	@Transactional
-	public AclEntry merge() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		AclEntry merged = this.entityManager.merge(this);
-		this.entityManager.flush();
-		return merged;
+	public void setAuditFailure(boolean auditFailure) {
+		this.auditFailure = auditFailure;
 	}
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "id", columnDefinition = "bigserial")
-	private Long id;
+	public void setAuditSuccess(boolean auditSuccess) {
+		this.auditSuccess = auditSuccess;
+	}
 
-	public Long getId() {
-		return this.id;
+	public void setGranting(boolean granting) {
+		this.granting = granting;
 	}
 
 	public void setId(Long id) {
 		this.id = id;
 	}
 
-	public Integer getAceOrder() {
-		return this.aceOrder;
+	public void setMask(Integer mask) {
+		this.mask = mask;
 	}
 
-	public void setAceOrder(Integer aceOrder) {
-		this.aceOrder = aceOrder;
+	public void setSid(AclSid sid) {
+		this.sid = sid;
+	}
+
+	public String toJson() {
+		return new JSONSerializer().exclude("*.class").serialize(this);
+	}
+
+	public String toString() {
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+	}
+
+	@PostUpdate
+	@PostPersist
+	private void postPersistOrUpdate() {
+		indexAclEntry(this);
+	}
+
+	@PreRemove
+	private void preRemove() {
+		deleteIndex(this);
 	}
 }

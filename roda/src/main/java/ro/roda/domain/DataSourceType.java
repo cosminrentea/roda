@@ -42,25 +42,51 @@ import flexjson.JSONSerializer;
 @Audited
 public class DataSourceType {
 
-	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+	public static long countDataSourceTypes() {
+		return entityManager().createQuery("SELECT COUNT(o) FROM DataSourceType o", Long.class).getSingleResult();
 	}
 
-	@Autowired
-	transient SolrServer solrServer;
-
-	public static QueryResponse search(String queryString) {
-		String searchString = "DataSourceType_solrsummary_t:" + queryString;
-		return search(new SolrQuery(searchString.toLowerCase()));
-	}
-
-	public static QueryResponse search(SolrQuery query) {
+	@Async
+	public static void deleteIndex(DataSourceType dataSourceType) {
+		SolrServer solrServer = solrServer();
 		try {
-			return solrServer().query(query);
+			solrServer.deleteById("datasourcetype_" + dataSourceType.getId());
+			solrServer.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return new QueryResponse();
+	}
+
+	public static final EntityManager entityManager() {
+		EntityManager em = new DataSourceType().entityManager;
+		if (em == null)
+			throw new IllegalStateException(
+					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return em;
+	}
+
+	public static List<DataSourceType> findAllDataSourceTypes() {
+		return entityManager().createQuery("SELECT o FROM DataSourceType o", DataSourceType.class).getResultList();
+	}
+
+	public static DataSourceType findDataSourceType(Integer id) {
+		if (id == null)
+			return null;
+		return entityManager().find(DataSourceType.class, id);
+	}
+
+	public static List<DataSourceType> findDataSourceTypeEntries(int firstResult, int maxResults) {
+		return entityManager().createQuery("SELECT o FROM DataSourceType o", DataSourceType.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
+	}
+
+	public static Collection<DataSourceType> fromJsonArrayToDataSourceTypes(String json) {
+		return new JSONDeserializer<List<DataSourceType>>().use(null, ArrayList.class)
+				.use("values", DataSourceType.class).deserialize(json);
+	}
+
+	public static DataSourceType fromJsonToDataSourceType(String json) {
+		return new JSONDeserializer<DataSourceType>().use(null, DataSourceType.class).deserialize(json);
 	}
 
 	public static void indexDataSourceType(DataSourceType dataSourceType) {
@@ -92,26 +118,18 @@ public class DataSourceType {
 		}
 	}
 
-	@Async
-	public static void deleteIndex(DataSourceType dataSourceType) {
-		SolrServer solrServer = solrServer();
+	public static QueryResponse search(SolrQuery query) {
 		try {
-			solrServer.deleteById("datasourcetype_" + dataSourceType.getId());
-			solrServer.commit();
+			return solrServer().query(query);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return new QueryResponse();
 	}
 
-	@PostUpdate
-	@PostPersist
-	private void postPersistOrUpdate() {
-		indexDataSourceType(this);
-	}
-
-	@PreRemove
-	private void preRemove() {
-		deleteIndex(this);
+	public static QueryResponse search(String queryString) {
+		String searchString = "DataSourceType_solrsummary_t:" + queryString;
+		return search(new SolrQuery(searchString.toLowerCase()));
 	}
 
 	public static SolrServer solrServer() {
@@ -122,64 +140,62 @@ public class DataSourceType {
 		return _solrServer;
 	}
 
+	public static String toJsonArray(Collection<DataSourceType> collection) {
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id", columnDefinition = "serial")
 	private Integer id;
 
-	public Integer getId() {
-		return this.id;
-	}
+	@Column(name = "name", columnDefinition = "text")
+	@NotNull
+	private String name;
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public String toJson() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
-	}
-
-	public static DataSourceType fromJsonToDataSourceType(String json) {
-		return new JSONDeserializer<DataSourceType>().use(null, DataSourceType.class).deserialize(json);
-	}
-
-	public static String toJsonArray(Collection<DataSourceType> collection) {
-		return new JSONSerializer().exclude("*.class").serialize(collection);
-	}
-
-	public static Collection<DataSourceType> fromJsonArrayToDataSourceTypes(String json) {
-		return new JSONDeserializer<List<DataSourceType>>().use(null, ArrayList.class)
-				.use("values", DataSourceType.class).deserialize(json);
-	}
+	@ManyToMany
+	@JoinTable(name = "study_data_source_type", joinColumns = { @JoinColumn(name = "data_source_type_id", nullable = false) }, inverseJoinColumns = { @JoinColumn(name = "study_id", nullable = false) })
+	private Set<Study> studies;
 
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	public static final EntityManager entityManager() {
-		EntityManager em = new DataSourceType().entityManager;
-		if (em == null)
-			throw new IllegalStateException(
-					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-		return em;
+	@Autowired
+	transient SolrServer solrServer;
+
+	@Transactional
+	public void clear() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.clear();
 	}
 
-	public static long countDataSourceTypes() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM DataSourceType o", Long.class).getSingleResult();
+	@Transactional
+	public void flush() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.flush();
 	}
 
-	public static List<DataSourceType> findAllDataSourceTypes() {
-		return entityManager().createQuery("SELECT o FROM DataSourceType o", DataSourceType.class).getResultList();
+	public Integer getId() {
+		return this.id;
 	}
 
-	public static DataSourceType findDataSourceType(Integer id) {
-		if (id == null)
-			return null;
-		return entityManager().find(DataSourceType.class, id);
+	public String getName() {
+		return name;
 	}
 
-	public static List<DataSourceType> findDataSourceTypeEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM DataSourceType o", DataSourceType.class)
-				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
+	public Set<Study> getStudies() {
+		return studies;
+	}
+
+	@Transactional
+	public DataSourceType merge() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		DataSourceType merged = this.entityManager.merge(this);
+		this.entityManager.flush();
+		return merged;
 	}
 
 	@Transactional
@@ -201,50 +217,34 @@ public class DataSourceType {
 		}
 	}
 
-	@Transactional
-	public void flush() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.flush();
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
-	@Transactional
-	public void clear() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.clear();
-	}
-
-	@Transactional
-	public DataSourceType merge() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		DataSourceType merged = this.entityManager.merge(this);
-		this.entityManager.flush();
-		return merged;
-	}
-
-	@ManyToMany
-	@JoinTable(name = "study_data_source_type", joinColumns = { @JoinColumn(name = "data_source_type_id", nullable = false) }, inverseJoinColumns = { @JoinColumn(name = "study_id", nullable = false) })
-	private Set<Study> studies;
-
-	@Column(name = "name", columnDefinition = "text")
-	@NotNull
-	private String name;
-
-	public Set<Study> getStudies() {
-		return studies;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public void setStudies(Set<Study> studies) {
 		this.studies = studies;
 	}
 
-	public String getName() {
-		return name;
+	public String toJson() {
+		return new JSONSerializer().exclude("*.class").serialize(this);
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public String toString() {
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+	}
+
+	@PostUpdate
+	@PostPersist
+	private void postPersistOrUpdate() {
+		indexDataSourceType(this);
+	}
+
+	@PreRemove
+	private void preRemove() {
+		deleteIndex(this);
 	}
 }

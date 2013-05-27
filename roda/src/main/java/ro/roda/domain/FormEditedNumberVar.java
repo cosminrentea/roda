@@ -39,27 +39,43 @@ import flexjson.JSONSerializer;
 @Audited
 public class FormEditedNumberVar {
 
-	@EmbeddedId
-	private FormEditedNumberVarPK id;
-
-	public FormEditedNumberVarPK getId() {
-		return this.id;
+	public static long countFormEditedNumberVars() {
+		return entityManager().createQuery("SELECT COUNT(o) FROM FormEditedNumberVar o", Long.class).getSingleResult();
 	}
 
-	public void setId(FormEditedNumberVarPK id) {
-		this.id = id;
+	@Async
+	public static void deleteIndex(FormEditedNumberVar formEditedNumberVar) {
+		SolrServer solrServer = solrServer();
+		try {
+			solrServer.deleteById("formeditednumbervar_" + formEditedNumberVar.getId());
+			solrServer.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
-	public String toJson() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
+	public static final EntityManager entityManager() {
+		EntityManager em = new FormEditedNumberVar().entityManager;
+		if (em == null)
+			throw new IllegalStateException(
+					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return em;
 	}
 
-	public static FormEditedNumberVar fromJsonToFormEditedNumberVar(String json) {
-		return new JSONDeserializer<FormEditedNumberVar>().use(null, FormEditedNumberVar.class).deserialize(json);
+	public static List<FormEditedNumberVar> findAllFormEditedNumberVars() {
+		return entityManager().createQuery("SELECT o FROM FormEditedNumberVar o", FormEditedNumberVar.class)
+				.getResultList();
 	}
 
-	public static String toJsonArray(Collection<FormEditedNumberVar> collection) {
-		return new JSONSerializer().exclude("*.class").serialize(collection);
+	public static FormEditedNumberVar findFormEditedNumberVar(FormEditedNumberVarPK id) {
+		if (id == null)
+			return null;
+		return entityManager().find(FormEditedNumberVar.class, id);
+	}
+
+	public static List<FormEditedNumberVar> findFormEditedNumberVarEntries(int firstResult, int maxResults) {
+		return entityManager().createQuery("SELECT o FROM FormEditedNumberVar o", FormEditedNumberVar.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
 	}
 
 	public static Collection<FormEditedNumberVar> fromJsonArrayToFormEditedNumberVars(String json) {
@@ -67,57 +83,8 @@ public class FormEditedNumberVar {
 				.use("values", FormEditedNumberVar.class).deserialize(json);
 	}
 
-	@ManyToOne
-	@JoinColumn(name = "form_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
-	private Form formId;
-
-	@ManyToOne
-	@JoinColumn(name = "variable_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
-	private Variable variableId;
-
-	@Column(name = "value", columnDefinition = "numeric", precision = 10, scale = 2)
-	@NotNull
-	private BigDecimal value;
-
-	public Form getFormId() {
-		return formId;
-	}
-
-	public void setFormId(Form formId) {
-		this.formId = formId;
-	}
-
-	public Variable getVariableId() {
-		return variableId;
-	}
-
-	public void setVariableId(Variable variableId) {
-		this.variableId = variableId;
-	}
-
-	public BigDecimal getValue() {
-		return value;
-	}
-
-	public void setValue(BigDecimal value) {
-		this.value = value;
-	}
-
-	@Autowired
-	transient SolrServer solrServer;
-
-	public static QueryResponse search(String queryString) {
-		String searchString = "FormEditedNumberVar_solrsummary_t:" + queryString;
-		return search(new SolrQuery(searchString.toLowerCase()));
-	}
-
-	public static QueryResponse search(SolrQuery query) {
-		try {
-			return solrServer().query(query);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return new QueryResponse();
+	public static FormEditedNumberVar fromJsonToFormEditedNumberVar(String json) {
+		return new JSONDeserializer<FormEditedNumberVar>().use(null, FormEditedNumberVar.class).deserialize(json);
 	}
 
 	public static void indexFormEditedNumberVar(FormEditedNumberVar formEditedNumberVar) {
@@ -154,26 +121,18 @@ public class FormEditedNumberVar {
 		}
 	}
 
-	@Async
-	public static void deleteIndex(FormEditedNumberVar formEditedNumberVar) {
-		SolrServer solrServer = solrServer();
+	public static QueryResponse search(SolrQuery query) {
 		try {
-			solrServer.deleteById("formeditednumbervar_" + formEditedNumberVar.getId());
-			solrServer.commit();
+			return solrServer().query(query);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return new QueryResponse();
 	}
 
-	@PostUpdate
-	@PostPersist
-	private void postPersistOrUpdate() {
-		indexFormEditedNumberVar(this);
-	}
-
-	@PreRemove
-	private void preRemove() {
-		deleteIndex(this);
+	public static QueryResponse search(String queryString) {
+		String searchString = "FormEditedNumberVar_solrsummary_t:" + queryString;
+		return search(new SolrQuery(searchString.toLowerCase()));
 	}
 
 	public static SolrServer solrServer() {
@@ -184,39 +143,68 @@ public class FormEditedNumberVar {
 		return _solrServer;
 	}
 
-	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+	public static String toJsonArray(Collection<FormEditedNumberVar> collection) {
+		return new JSONSerializer().exclude("*.class").serialize(collection);
 	}
+
+	@ManyToOne
+	@JoinColumn(name = "form_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	private Form formId;
+
+	@EmbeddedId
+	private FormEditedNumberVarPK id;
+
+	@Column(name = "value", columnDefinition = "numeric", precision = 10, scale = 2)
+	@NotNull
+	private BigDecimal value;
+
+	@ManyToOne
+	@JoinColumn(name = "variable_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	private Variable variableId;
 
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	public static final EntityManager entityManager() {
-		EntityManager em = new FormEditedNumberVar().entityManager;
-		if (em == null)
-			throw new IllegalStateException(
-					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-		return em;
+	@Autowired
+	transient SolrServer solrServer;
+
+	@Transactional
+	public void clear() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.clear();
 	}
 
-	public static long countFormEditedNumberVars() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM FormEditedNumberVar o", Long.class).getSingleResult();
+	@Transactional
+	public void flush() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.flush();
 	}
 
-	public static List<FormEditedNumberVar> findAllFormEditedNumberVars() {
-		return entityManager().createQuery("SELECT o FROM FormEditedNumberVar o", FormEditedNumberVar.class)
-				.getResultList();
+	public Form getFormId() {
+		return formId;
 	}
 
-	public static FormEditedNumberVar findFormEditedNumberVar(FormEditedNumberVarPK id) {
-		if (id == null)
-			return null;
-		return entityManager().find(FormEditedNumberVar.class, id);
+	public FormEditedNumberVarPK getId() {
+		return this.id;
 	}
 
-	public static List<FormEditedNumberVar> findFormEditedNumberVarEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM FormEditedNumberVar o", FormEditedNumberVar.class)
-				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
+	public BigDecimal getValue() {
+		return value;
+	}
+
+	public Variable getVariableId() {
+		return variableId;
+	}
+
+	@Transactional
+	public FormEditedNumberVar merge() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		FormEditedNumberVar merged = this.entityManager.merge(this);
+		this.entityManager.flush();
+		return merged;
 	}
 
 	@Transactional
@@ -238,26 +226,38 @@ public class FormEditedNumberVar {
 		}
 	}
 
-	@Transactional
-	public void flush() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.flush();
+	public void setFormId(Form formId) {
+		this.formId = formId;
 	}
 
-	@Transactional
-	public void clear() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.clear();
+	public void setId(FormEditedNumberVarPK id) {
+		this.id = id;
 	}
 
-	@Transactional
-	public FormEditedNumberVar merge() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		FormEditedNumberVar merged = this.entityManager.merge(this);
-		this.entityManager.flush();
-		return merged;
+	public void setValue(BigDecimal value) {
+		this.value = value;
+	}
+
+	public void setVariableId(Variable variableId) {
+		this.variableId = variableId;
+	}
+
+	public String toJson() {
+		return new JSONSerializer().exclude("*.class").serialize(this);
+	}
+
+	public String toString() {
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+	}
+
+	@PostUpdate
+	@PostPersist
+	private void postPersistOrUpdate() {
+		indexFormEditedNumberVar(this);
+	}
+
+	@PreRemove
+	private void preRemove() {
+		deleteIndex(this);
 	}
 }

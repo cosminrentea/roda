@@ -17,32 +17,11 @@ import flexjson.JSONSerializer;
 @Embeddable
 public final class SelectionVariableItemPK implements Serializable {
 
-	@Column(name = "variable_id", columnDefinition = "int8", nullable = false)
-	private Long variableId;
+	private static final long serialVersionUID = 1L;
 
-	@Column(name = "item_id", columnDefinition = "int8", nullable = false)
-	private Long itemId;
-
-	public SelectionVariableItemPK(Long variableId, Long itemId) {
-		super();
-		this.variableId = variableId;
-		this.itemId = itemId;
-	}
-
-	private SelectionVariableItemPK() {
-		super();
-	}
-
-	public Long getVariableId() {
-		return variableId;
-	}
-
-	public Long getItemId() {
-		return itemId;
-	}
-
-	public String toJson() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
+	public static Collection<SelectionVariableItemPK> fromJsonArrayToSelectionVariableItemPKs(String json) {
+		return new JSONDeserializer<List<SelectionVariableItemPK>>().use(null, ArrayList.class)
+				.use("values", SelectionVariableItemPK.class).deserialize(json);
 	}
 
 	public static SelectionVariableItemPK fromJsonToSelectionVariableItemPK(String json) {
@@ -54,10 +33,31 @@ public final class SelectionVariableItemPK implements Serializable {
 		return new JSONSerializer().exclude("*.class").serialize(collection);
 	}
 
-	public static Collection<SelectionVariableItemPK> fromJsonArrayToSelectionVariableItemPKs(String json) {
-		return new JSONDeserializer<List<SelectionVariableItemPK>>().use(null, ArrayList.class)
-				.use("values", SelectionVariableItemPK.class).deserialize(json);
+	@Column(name = "item_id", columnDefinition = "int8", nullable = false)
+	private Long itemId;
+
+	@Column(name = "variable_id", columnDefinition = "int8", nullable = false)
+	private Long variableId;
+
+	public SelectionVariableItemPK(Long variableId, Long itemId) {
+		super();
+		this.variableId = variableId;
+		this.itemId = itemId;
 	}
 
-	private static final long serialVersionUID = 1L;
+	private SelectionVariableItemPK() {
+		super();
+	}
+
+	public Long getItemId() {
+		return itemId;
+	}
+
+	public Long getVariableId() {
+		return variableId;
+	}
+
+	public String toJson() {
+		return new JSONSerializer().exclude("*.class").serialize(this);
+	}
 }

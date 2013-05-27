@@ -38,21 +38,51 @@ import flexjson.JSONSerializer;
 @Audited
 public class PersonEmail {
 
-	@Autowired
-	transient SolrServer solrServer;
-
-	public static QueryResponse search(String queryString) {
-		String searchString = "PersonEmail_solrsummary_t:" + queryString;
-		return search(new SolrQuery(searchString.toLowerCase()));
+	public static long countPersonEmails() {
+		return entityManager().createQuery("SELECT COUNT(o) FROM PersonEmail o", Long.class).getSingleResult();
 	}
 
-	public static QueryResponse search(SolrQuery query) {
+	@Async
+	public static void deleteIndex(PersonEmail personEmail) {
+		SolrServer solrServer = solrServer();
 		try {
-			return solrServer().query(query);
+			solrServer.deleteById("personemail_" + personEmail.getId());
+			solrServer.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return new QueryResponse();
+	}
+
+	public static final EntityManager entityManager() {
+		EntityManager em = new PersonEmail().entityManager;
+		if (em == null)
+			throw new IllegalStateException(
+					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return em;
+	}
+
+	public static List<PersonEmail> findAllPersonEmails() {
+		return entityManager().createQuery("SELECT o FROM PersonEmail o", PersonEmail.class).getResultList();
+	}
+
+	public static PersonEmail findPersonEmail(PersonEmailPK id) {
+		if (id == null)
+			return null;
+		return entityManager().find(PersonEmail.class, id);
+	}
+
+	public static List<PersonEmail> findPersonEmailEntries(int firstResult, int maxResults) {
+		return entityManager().createQuery("SELECT o FROM PersonEmail o", PersonEmail.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
+	}
+
+	public static Collection<PersonEmail> fromJsonArrayToPersonEmails(String json) {
+		return new JSONDeserializer<List<PersonEmail>>().use(null, ArrayList.class).use("values", PersonEmail.class)
+				.deserialize(json);
+	}
+
+	public static PersonEmail fromJsonToPersonEmail(String json) {
+		return new JSONDeserializer<PersonEmail>().use(null, PersonEmail.class).deserialize(json);
 	}
 
 	public static void indexPersonEmail(PersonEmail personEmail) {
@@ -82,26 +112,18 @@ public class PersonEmail {
 		}
 	}
 
-	@Async
-	public static void deleteIndex(PersonEmail personEmail) {
-		SolrServer solrServer = solrServer();
+	public static QueryResponse search(SolrQuery query) {
 		try {
-			solrServer.deleteById("personemail_" + personEmail.getId());
-			solrServer.commit();
+			return solrServer().query(query);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return new QueryResponse();
 	}
 
-	@PostUpdate
-	@PostPersist
-	private void postPersistOrUpdate() {
-		indexPersonEmail(this);
-	}
-
-	@PreRemove
-	private void preRemove() {
-		deleteIndex(this);
+	public static QueryResponse search(String queryString) {
+		String searchString = "PersonEmail_solrsummary_t:" + queryString;
+		return search(new SolrQuery(searchString.toLowerCase()));
 	}
 
 	public static SolrServer solrServer() {
@@ -112,34 +134,68 @@ public class PersonEmail {
 		return _solrServer;
 	}
 
+	public static String toJsonArray(Collection<PersonEmail> collection) {
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	@ManyToOne
+	@JoinColumn(name = "email_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	private Email emailId;
+
+	@EmbeddedId
+	private PersonEmailPK id;
+
+	@Column(name = "main", columnDefinition = "bool")
+	@NotNull
+	private boolean main;
+
+	@ManyToOne
+	@JoinColumn(name = "person_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	private Person personId;
+
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	public static final EntityManager entityManager() {
-		EntityManager em = new PersonEmail().entityManager;
-		if (em == null)
-			throw new IllegalStateException(
-					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-		return em;
+	@Autowired
+	transient SolrServer solrServer;
+
+	@Transactional
+	public void clear() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.clear();
 	}
 
-	public static long countPersonEmails() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM PersonEmail o", Long.class).getSingleResult();
+	@Transactional
+	public void flush() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.flush();
 	}
 
-	public static List<PersonEmail> findAllPersonEmails() {
-		return entityManager().createQuery("SELECT o FROM PersonEmail o", PersonEmail.class).getResultList();
+	public Email getEmailId() {
+		return emailId;
 	}
 
-	public static PersonEmail findPersonEmail(PersonEmailPK id) {
-		if (id == null)
-			return null;
-		return entityManager().find(PersonEmail.class, id);
+	public PersonEmailPK getId() {
+		return this.id;
 	}
 
-	public static List<PersonEmail> findPersonEmailEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM PersonEmail o", PersonEmail.class)
-				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
+	public Person getPersonId() {
+		return personId;
+	}
+
+	public boolean isMain() {
+		return main;
+	}
+
+	@Transactional
+	public PersonEmail merge() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		PersonEmail merged = this.entityManager.merge(this);
+		this.entityManager.flush();
+		return merged;
 	}
 
 	@Transactional
@@ -161,94 +217,38 @@ public class PersonEmail {
 		}
 	}
 
-	@Transactional
-	public void flush() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.flush();
-	}
-
-	@Transactional
-	public void clear() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.clear();
-	}
-
-	@Transactional
-	public PersonEmail merge() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		PersonEmail merged = this.entityManager.merge(this);
-		this.entityManager.flush();
-		return merged;
-	}
-
-	@ManyToOne
-	@JoinColumn(name = "email_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
-	private Email emailId;
-
-	@ManyToOne
-	@JoinColumn(name = "person_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
-	private Person personId;
-
-	@Column(name = "main", columnDefinition = "bool")
-	@NotNull
-	private boolean main;
-
-	public Email getEmailId() {
-		return emailId;
-	}
-
 	public void setEmailId(Email emailId) {
 		this.emailId = emailId;
 	}
 
-	public Person getPersonId() {
-		return personId;
-	}
-
-	public void setPersonId(Person personId) {
-		this.personId = personId;
-	}
-
-	public boolean isMain() {
-		return main;
+	public void setId(PersonEmailPK id) {
+		this.id = id;
 	}
 
 	public void setMain(boolean main) {
 		this.main = main;
 	}
 
+	public void setPersonId(Person personId) {
+		this.personId = personId;
+	}
+
 	public String toJson() {
 		return new JSONSerializer().exclude("*.class").serialize(this);
-	}
-
-	public static PersonEmail fromJsonToPersonEmail(String json) {
-		return new JSONDeserializer<PersonEmail>().use(null, PersonEmail.class).deserialize(json);
-	}
-
-	public static String toJsonArray(Collection<PersonEmail> collection) {
-		return new JSONSerializer().exclude("*.class").serialize(collection);
-	}
-
-	public static Collection<PersonEmail> fromJsonArrayToPersonEmails(String json) {
-		return new JSONDeserializer<List<PersonEmail>>().use(null, ArrayList.class).use("values", PersonEmail.class)
-				.deserialize(json);
 	}
 
 	public String toString() {
 		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
-	@EmbeddedId
-	private PersonEmailPK id;
-
-	public PersonEmailPK getId() {
-		return this.id;
+	@PostUpdate
+	@PostPersist
+	private void postPersistOrUpdate() {
+		indexPersonEmail(this);
 	}
 
-	public void setId(PersonEmailPK id) {
-		this.id = id;
+	@PreRemove
+	private void preRemove() {
+		deleteIndex(this);
 	}
 }

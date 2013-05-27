@@ -47,146 +47,20 @@ import flexjson.JSONSerializer;
 @Audited
 public class Instance {
 
-	@ManyToMany(mappedBy = "instances")
-	private Set<File> files;
-
-	@OneToMany(mappedBy = "instanceId")
-	private Set<InstanceDescr> instanceDescrs;
-
-	@OneToMany(mappedBy = "instanceId")
-	private Set<InstanceForm> instanceForms;
-
-	@OneToMany(mappedBy = "instanceId")
-	private Set<InstanceOrg> instanceOrgs;
-
-	@OneToMany(mappedBy = "instanceId")
-	private Set<InstancePerson> instancepeople;
-
-	@OneToMany(mappedBy = "instanceId")
-	private Set<InstanceRightTargetGroup> instanceRightTargetGroups;
-
-	@OneToMany(mappedBy = "instanceId")
-	private Set<InstanceVariable> instanceVariables;
-
-	@ManyToOne
-	@JoinColumn(name = "study_id", referencedColumnName = "id", nullable = false)
-	private Study studyId;
-
-	@ManyToOne
-	@JoinColumn(name = "added_by", referencedColumnName = "id", nullable = false)
-	private Users addedBy;
-
-	@Column(name = "added", columnDefinition = "timestamp")
-	@NotNull
-	@Temporal(TemporalType.TIMESTAMP)
-	@DateTimeFormat(style = "MM")
-	private Calendar added;
-
-	@Column(name = "disseminator_identifier", columnDefinition = "text")
-	private String disseminatorIdentifier;
-
-	@Column(name = "main", columnDefinition = "bool")
-	@NotNull
-	private boolean main;
-
-	public Set<File> getFiles() {
-		return files;
+	public static long countInstances() {
+		return entityManager().createQuery("SELECT COUNT(o) FROM Instance o", Long.class).getSingleResult();
 	}
 
-	public void setFiles(Set<File> files) {
-		this.files = files;
+	@Async
+	public static void deleteIndex(Instance instance) {
+		SolrServer solrServer = solrServer();
+		try {
+			solrServer.deleteById("instance_" + instance.getId());
+			solrServer.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
-
-	public Set<InstanceDescr> getInstanceDescrs() {
-		return instanceDescrs;
-	}
-
-	public void setInstanceDescrs(Set<InstanceDescr> instanceDescrs) {
-		this.instanceDescrs = instanceDescrs;
-	}
-
-	public Set<InstanceForm> getInstanceForms() {
-		return instanceForms;
-	}
-
-	public void setInstanceForms(Set<InstanceForm> instanceForms) {
-		this.instanceForms = instanceForms;
-	}
-
-	public Set<InstanceOrg> getInstanceOrgs() {
-		return instanceOrgs;
-	}
-
-	public void setInstanceOrgs(Set<InstanceOrg> instanceOrgs) {
-		this.instanceOrgs = instanceOrgs;
-	}
-
-	public Set<InstancePerson> getInstancepeople() {
-		return instancepeople;
-	}
-
-	public void setInstancepeople(Set<InstancePerson> instancepeople) {
-		this.instancepeople = instancepeople;
-	}
-
-	public Set<InstanceRightTargetGroup> getInstanceRightTargetGroups() {
-		return instanceRightTargetGroups;
-	}
-
-	public void setInstanceRightTargetGroups(Set<InstanceRightTargetGroup> instanceRightTargetGroups) {
-		this.instanceRightTargetGroups = instanceRightTargetGroups;
-	}
-
-	public Set<InstanceVariable> getInstanceVariables() {
-		return instanceVariables;
-	}
-
-	public void setInstanceVariables(Set<InstanceVariable> instanceVariables) {
-		this.instanceVariables = instanceVariables;
-	}
-
-	public Study getStudyId() {
-		return studyId;
-	}
-
-	public void setStudyId(Study studyId) {
-		this.studyId = studyId;
-	}
-
-	public Users getAddedBy() {
-		return addedBy;
-	}
-
-	public void setAddedBy(Users addedBy) {
-		this.addedBy = addedBy;
-	}
-
-	public Calendar getAdded() {
-		return added;
-	}
-
-	public void setAdded(Calendar added) {
-		this.added = added;
-	}
-
-	public String getDisseminatorIdentifier() {
-		return disseminatorIdentifier;
-	}
-
-	public void setDisseminatorIdentifier(String disseminatorIdentifier) {
-		this.disseminatorIdentifier = disseminatorIdentifier;
-	}
-
-	public boolean isMain() {
-		return main;
-	}
-
-	public void setMain(boolean main) {
-		this.main = main;
-	}
-
-	@PersistenceContext
-	transient EntityManager entityManager;
 
 	public static final EntityManager entityManager() {
 		EntityManager em = new Instance().entityManager;
@@ -194,10 +68,6 @@ public class Instance {
 			throw new IllegalStateException(
 					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
 		return em;
-	}
-
-	public static long countInstances() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM Instance o", Long.class).getSingleResult();
 	}
 
 	public static List<Instance> findAllInstances() {
@@ -215,97 +85,13 @@ public class Instance {
 				.setMaxResults(maxResults).getResultList();
 	}
 
-	@Transactional
-	public void persist() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.persist(this);
-	}
-
-	@Transactional
-	public void remove() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		if (this.entityManager.contains(this)) {
-			this.entityManager.remove(this);
-		} else {
-			Instance attached = Instance.findInstance(this.id);
-			this.entityManager.remove(attached);
-		}
-	}
-
-	@Transactional
-	public void flush() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.flush();
-	}
-
-	@Transactional
-	public void clear() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.clear();
-	}
-
-	@Transactional
-	public Instance merge() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		Instance merged = this.entityManager.merge(this);
-		this.entityManager.flush();
-		return merged;
-	}
-
-	public String toJson() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
-	}
-
-	public static Instance fromJsonToInstance(String json) {
-		return new JSONDeserializer<Instance>().use(null, Instance.class).deserialize(json);
-	}
-
-	public static String toJsonArray(Collection<Instance> collection) {
-		return new JSONSerializer().exclude("*.class").serialize(collection);
-	}
-
 	public static Collection<Instance> fromJsonArrayToInstances(String json) {
 		return new JSONDeserializer<List<Instance>>().use(null, ArrayList.class).use("values", Instance.class)
 				.deserialize(json);
 	}
 
-	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
-	}
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "id", columnDefinition = "serial")
-	private Integer id;
-
-	public Integer getId() {
-		return this.id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	@Autowired
-	transient SolrServer solrServer;
-
-	public static QueryResponse search(String queryString) {
-		String searchString = "Instance_solrsummary_t:" + queryString;
-		return search(new SolrQuery(searchString.toLowerCase()));
-	}
-
-	public static QueryResponse search(SolrQuery query) {
-		try {
-			return solrServer().query(query);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return new QueryResponse();
+	public static Instance fromJsonToInstance(String json) {
+		return new JSONDeserializer<Instance>().use(null, Instance.class).deserialize(json);
 	}
 
 	public static void indexInstance(Instance instance) {
@@ -341,15 +127,237 @@ public class Instance {
 		}
 	}
 
-	@Async
-	public static void deleteIndex(Instance instance) {
-		SolrServer solrServer = solrServer();
+	public static QueryResponse search(SolrQuery query) {
 		try {
-			solrServer.deleteById("instance_" + instance.getId());
-			solrServer.commit();
+			return solrServer().query(query);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return new QueryResponse();
+	}
+
+	public static QueryResponse search(String queryString) {
+		String searchString = "Instance_solrsummary_t:" + queryString;
+		return search(new SolrQuery(searchString.toLowerCase()));
+	}
+
+	public static SolrServer solrServer() {
+		SolrServer _solrServer = new Instance().solrServer;
+		if (_solrServer == null)
+			throw new IllegalStateException(
+					"Solr server has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return _solrServer;
+	}
+
+	public static String toJsonArray(Collection<Instance> collection) {
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	@Column(name = "added", columnDefinition = "timestamp")
+	@NotNull
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(style = "MM")
+	private Calendar added;
+
+	@ManyToOne
+	@JoinColumn(name = "added_by", referencedColumnName = "id", nullable = false)
+	private Users addedBy;
+
+	@Column(name = "disseminator_identifier", columnDefinition = "text")
+	private String disseminatorIdentifier;
+
+	@ManyToMany(mappedBy = "instances")
+	private Set<File> files;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id", columnDefinition = "serial")
+	private Integer id;
+
+	@OneToMany(mappedBy = "instanceId")
+	private Set<InstanceDescr> instanceDescrs;
+
+	@OneToMany(mappedBy = "instanceId")
+	private Set<InstanceForm> instanceForms;
+
+	@OneToMany(mappedBy = "instanceId")
+	private Set<InstanceOrg> instanceOrgs;
+
+	@OneToMany(mappedBy = "instanceId")
+	private Set<InstancePerson> instancepeople;
+
+	@OneToMany(mappedBy = "instanceId")
+	private Set<InstanceRightTargetGroup> instanceRightTargetGroups;
+
+	@OneToMany(mappedBy = "instanceId")
+	private Set<InstanceVariable> instanceVariables;
+
+	@Column(name = "main", columnDefinition = "bool")
+	@NotNull
+	private boolean main;
+
+	@ManyToOne
+	@JoinColumn(name = "study_id", referencedColumnName = "id", nullable = false)
+	private Study studyId;
+
+	@PersistenceContext
+	transient EntityManager entityManager;
+
+	@Autowired
+	transient SolrServer solrServer;
+
+	@Transactional
+	public void clear() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.clear();
+	}
+
+	@Transactional
+	public void flush() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.flush();
+	}
+
+	public Calendar getAdded() {
+		return added;
+	}
+
+	public Users getAddedBy() {
+		return addedBy;
+	}
+
+	public String getDisseminatorIdentifier() {
+		return disseminatorIdentifier;
+	}
+
+	public Set<File> getFiles() {
+		return files;
+	}
+
+	public Integer getId() {
+		return this.id;
+	}
+
+	public Set<InstanceDescr> getInstanceDescrs() {
+		return instanceDescrs;
+	}
+
+	public Set<InstanceForm> getInstanceForms() {
+		return instanceForms;
+	}
+
+	public Set<InstanceOrg> getInstanceOrgs() {
+		return instanceOrgs;
+	}
+
+	public Set<InstancePerson> getInstancepeople() {
+		return instancepeople;
+	}
+
+	public Set<InstanceRightTargetGroup> getInstanceRightTargetGroups() {
+		return instanceRightTargetGroups;
+	}
+
+	public Set<InstanceVariable> getInstanceVariables() {
+		return instanceVariables;
+	}
+
+	public Study getStudyId() {
+		return studyId;
+	}
+
+	public boolean isMain() {
+		return main;
+	}
+
+	@Transactional
+	public Instance merge() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		Instance merged = this.entityManager.merge(this);
+		this.entityManager.flush();
+		return merged;
+	}
+
+	@Transactional
+	public void persist() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.persist(this);
+	}
+
+	@Transactional
+	public void remove() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		if (this.entityManager.contains(this)) {
+			this.entityManager.remove(this);
+		} else {
+			Instance attached = Instance.findInstance(this.id);
+			this.entityManager.remove(attached);
+		}
+	}
+
+	public void setAdded(Calendar added) {
+		this.added = added;
+	}
+
+	public void setAddedBy(Users addedBy) {
+		this.addedBy = addedBy;
+	}
+
+	public void setDisseminatorIdentifier(String disseminatorIdentifier) {
+		this.disseminatorIdentifier = disseminatorIdentifier;
+	}
+
+	public void setFiles(Set<File> files) {
+		this.files = files;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public void setInstanceDescrs(Set<InstanceDescr> instanceDescrs) {
+		this.instanceDescrs = instanceDescrs;
+	}
+
+	public void setInstanceForms(Set<InstanceForm> instanceForms) {
+		this.instanceForms = instanceForms;
+	}
+
+	public void setInstanceOrgs(Set<InstanceOrg> instanceOrgs) {
+		this.instanceOrgs = instanceOrgs;
+	}
+
+	public void setInstancepeople(Set<InstancePerson> instancepeople) {
+		this.instancepeople = instancepeople;
+	}
+
+	public void setInstanceRightTargetGroups(Set<InstanceRightTargetGroup> instanceRightTargetGroups) {
+		this.instanceRightTargetGroups = instanceRightTargetGroups;
+	}
+
+	public void setInstanceVariables(Set<InstanceVariable> instanceVariables) {
+		this.instanceVariables = instanceVariables;
+	}
+
+	public void setMain(boolean main) {
+		this.main = main;
+	}
+
+	public void setStudyId(Study studyId) {
+		this.studyId = studyId;
+	}
+
+	public String toJson() {
+		return new JSONSerializer().exclude("*.class").serialize(this);
+	}
+
+	public String toString() {
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate
@@ -361,13 +369,5 @@ public class Instance {
 	@PreRemove
 	private void preRemove() {
 		deleteIndex(this);
-	}
-
-	public static SolrServer solrServer() {
-		SolrServer _solrServer = new Instance().solrServer;
-		if (_solrServer == null)
-			throw new IllegalStateException(
-					"Solr server has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-		return _solrServer;
 	}
 }

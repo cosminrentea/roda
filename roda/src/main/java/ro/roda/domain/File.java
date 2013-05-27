@@ -44,43 +44,51 @@ import flexjson.JSONSerializer;
 @Audited
 public class File {
 
-	@Transient
-	private byte[] content;
-
-	@Transient
-	private String url;
-
-	public byte[] getContent() {
-		return this.content;
+	public static long countFiles() {
+		return entityManager().createQuery("SELECT COUNT(o) FROM File o", Long.class).getSingleResult();
 	}
 
-	public void setContent(byte[] content) {
-		this.content = content;
-	}
-
-	public String getUrl() {
-		return this.url;
-	}
-
-	public void setUrl(String url) {
-		this.url = url;
-	}
-
-	@Autowired
-	transient SolrServer solrServer;
-
-	public static QueryResponse search(String queryString) {
-		String searchString = "File_solrsummary_t:" + queryString;
-		return search(new SolrQuery(searchString.toLowerCase()));
-	}
-
-	public static QueryResponse search(SolrQuery query) {
+	@Async
+	public static void deleteIndex(File file) {
+		SolrServer solrServer = solrServer();
 		try {
-			return solrServer().query(query);
+			solrServer.deleteById("file_" + file.getId());
+			solrServer.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return new QueryResponse();
+	}
+
+	public static final EntityManager entityManager() {
+		EntityManager em = new File().entityManager;
+		if (em == null)
+			throw new IllegalStateException(
+					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return em;
+	}
+
+	public static List<File> findAllFiles() {
+		return entityManager().createQuery("SELECT o FROM File o", File.class).getResultList();
+	}
+
+	public static File findFile(Integer id) {
+		if (id == null)
+			return null;
+		return entityManager().find(File.class, id);
+	}
+
+	public static List<File> findFileEntries(int firstResult, int maxResults) {
+		return entityManager().createQuery("SELECT o FROM File o", File.class).setFirstResult(firstResult)
+				.setMaxResults(maxResults).getResultList();
+	}
+
+	public static Collection<File> fromJsonArrayToFiles(String json) {
+		return new JSONDeserializer<List<File>>().use(null, ArrayList.class).use("values", File.class)
+				.deserialize(json);
+	}
+
+	public static File fromJsonToFile(String json) {
+		return new JSONDeserializer<File>().use(null, File.class).deserialize(json);
 	}
 
 	public static void indexFile(File file) {
@@ -115,26 +123,18 @@ public class File {
 		}
 	}
 
-	@Async
-	public static void deleteIndex(File file) {
-		SolrServer solrServer = solrServer();
+	public static QueryResponse search(SolrQuery query) {
 		try {
-			solrServer.deleteById("file_" + file.getId());
-			solrServer.commit();
+			return solrServer().query(query);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return new QueryResponse();
 	}
 
-	@PostUpdate
-	@PostPersist
-	private void postPersistOrUpdate() {
-		indexFile(this);
-	}
-
-	@PreRemove
-	private void preRemove() {
-		deleteIndex(this);
+	public static QueryResponse search(String queryString) {
+		String searchString = "File_solrsummary_t:" + queryString;
+		return search(new SolrQuery(searchString.toLowerCase()));
 	}
 
 	public static SolrServer solrServer() {
@@ -145,34 +145,133 @@ public class File {
 		return _solrServer;
 	}
 
+	public static String toJsonArray(Collection<File> collection) {
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	@Transient
+	private byte[] content;
+
+	@Column(name = "content_type", columnDefinition = "varchar", length = 100)
+	private String contentType;
+
+	@Column(name = "description", columnDefinition = "text")
+	private String description;
+
+	@Column(name = "full_path", columnDefinition = "text")
+	private String fullPath;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id", columnDefinition = "serial")
+	private Integer id;
+
+	@ManyToMany
+	@JoinTable(name = "instance_documents", joinColumns = { @JoinColumn(name = "document_id", nullable = false) }, inverseJoinColumns = { @JoinColumn(name = "instance_id", nullable = false) })
+	private Set<Instance> instances;
+
+	@Column(name = "name", columnDefinition = "text")
+	@NotNull
+	private String name;
+
+	@OneToMany(mappedBy = "responseCardFileId")
+	private Set<SelectionVariableItem> selectionVariableItems;
+
+	@Column(name = "size", columnDefinition = "int8")
+	private Long size;
+
+	@ManyToMany
+	@JoinTable(name = "study_file", joinColumns = { @JoinColumn(name = "file_id", nullable = false) }, inverseJoinColumns = { @JoinColumn(name = "study_id", nullable = false) })
+	private Set<Study> studies1;
+
+	@Column(name = "title", columnDefinition = "text")
+	private String title;
+
+	@Transient
+	private String url;
+
+	@OneToMany(mappedBy = "fileId")
+	private Set<Variable> variables;
+
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	public static final EntityManager entityManager() {
-		EntityManager em = new File().entityManager;
-		if (em == null)
-			throw new IllegalStateException(
-					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-		return em;
+	@Autowired
+	transient SolrServer solrServer;
+
+	@Transactional
+	public void clear() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.clear();
 	}
 
-	public static long countFiles() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM File o", Long.class).getSingleResult();
+	@Transactional
+	public void flush() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.flush();
 	}
 
-	public static List<File> findAllFiles() {
-		return entityManager().createQuery("SELECT o FROM File o", File.class).getResultList();
+	public byte[] getContent() {
+		return this.content;
 	}
 
-	public static File findFile(Integer id) {
-		if (id == null)
-			return null;
-		return entityManager().find(File.class, id);
+	public String getContentType() {
+		return contentType;
 	}
 
-	public static List<File> findFileEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM File o", File.class).setFirstResult(firstResult)
-				.setMaxResults(maxResults).getResultList();
+	public String getDescription() {
+		return description;
+	}
+
+	public String getFullPath() {
+		return fullPath;
+	}
+
+	public Integer getId() {
+		return this.id;
+	}
+
+	public Set<Instance> getInstances() {
+		return instances;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public Set<SelectionVariableItem> getSelectionVariableItems() {
+		return selectionVariableItems;
+	}
+
+	public Long getSize() {
+		return size;
+	}
+
+	public Set<Study> getStudies1() {
+		return studies1;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public String getUrl() {
+		return this.url;
+	}
+
+	public Set<Variable> getVariables() {
+		return variables;
+	}
+
+	@Transactional
+	public File merge() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		File merged = this.entityManager.merge(this);
+		this.entityManager.flush();
+		return merged;
 	}
 
 	@Transactional
@@ -194,173 +293,74 @@ public class File {
 		}
 	}
 
-	@Transactional
-	public void flush() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.flush();
-	}
-
-	@Transactional
-	public void clear() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.clear();
-	}
-
-	@Transactional
-	public File merge() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		File merged = this.entityManager.merge(this);
-		this.entityManager.flush();
-		return merged;
-	}
-
-	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
-	}
-
-	@ManyToMany
-	@JoinTable(name = "instance_documents", joinColumns = { @JoinColumn(name = "document_id", nullable = false) }, inverseJoinColumns = { @JoinColumn(name = "instance_id", nullable = false) })
-	private Set<Instance> instances;
-
-	@ManyToMany
-	@JoinTable(name = "study_file", joinColumns = { @JoinColumn(name = "file_id", nullable = false) }, inverseJoinColumns = { @JoinColumn(name = "study_id", nullable = false) })
-	private Set<Study> studies1;
-
-	@OneToMany(mappedBy = "responseCardFileId")
-	private Set<SelectionVariableItem> selectionVariableItems;
-
-	@OneToMany(mappedBy = "fileId")
-	private Set<Variable> variables;
-
-	@Column(name = "title", columnDefinition = "text")
-	private String title;
-
-	@Column(name = "description", columnDefinition = "text")
-	private String description;
-
-	@Column(name = "name", columnDefinition = "text")
-	@NotNull
-	private String name;
-
-	@Column(name = "size", columnDefinition = "int8")
-	private Long size;
-
-	@Column(name = "full_path", columnDefinition = "text")
-	private String fullPath;
-
-	@Column(name = "content_type", columnDefinition = "varchar", length = 100)
-	private String contentType;
-
-	public Set<Instance> getInstances() {
-		return instances;
-	}
-
-	public void setInstances(Set<Instance> instances) {
-		this.instances = instances;
-	}
-
-	public Set<Study> getStudies1() {
-		return studies1;
-	}
-
-	public void setStudies1(Set<Study> studies1) {
-		this.studies1 = studies1;
-	}
-
-	public Set<SelectionVariableItem> getSelectionVariableItems() {
-		return selectionVariableItems;
-	}
-
-	public void setSelectionVariableItems(Set<SelectionVariableItem> selectionVariableItems) {
-		this.selectionVariableItems = selectionVariableItems;
-	}
-
-	public Set<Variable> getVariables() {
-		return variables;
-	}
-
-	public void setVariables(Set<Variable> variables) {
-		this.variables = variables;
-	}
-
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public Long getSize() {
-		return size;
-	}
-
-	public void setSize(Long size) {
-		this.size = size;
-	}
-
-	public String getFullPath() {
-		return fullPath;
-	}
-
-	public void setFullPath(String fullPath) {
-		this.fullPath = fullPath;
-	}
-
-	public String getContentType() {
-		return contentType;
+	public void setContent(byte[] content) {
+		this.content = content;
 	}
 
 	public void setContentType(String contentType) {
 		this.contentType = contentType;
 	}
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "id", columnDefinition = "serial")
-	private Integer id;
+	public void setDescription(String description) {
+		this.description = description;
+	}
 
-	public Integer getId() {
-		return this.id;
+	public void setFullPath(String fullPath) {
+		this.fullPath = fullPath;
 	}
 
 	public void setId(Integer id) {
 		this.id = id;
 	}
 
+	public void setInstances(Set<Instance> instances) {
+		this.instances = instances;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setSelectionVariableItems(Set<SelectionVariableItem> selectionVariableItems) {
+		this.selectionVariableItems = selectionVariableItems;
+	}
+
+	public void setSize(Long size) {
+		this.size = size;
+	}
+
+	public void setStudies1(Set<Study> studies1) {
+		this.studies1 = studies1;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	public void setVariables(Set<Variable> variables) {
+		this.variables = variables;
+	}
+
 	public String toJson() {
 		return new JSONSerializer().exclude("*.class").serialize(this);
 	}
 
-	public static File fromJsonToFile(String json) {
-		return new JSONDeserializer<File>().use(null, File.class).deserialize(json);
+	public String toString() {
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
-	public static String toJsonArray(Collection<File> collection) {
-		return new JSONSerializer().exclude("*.class").serialize(collection);
+	@PostUpdate
+	@PostPersist
+	private void postPersistOrUpdate() {
+		indexFile(this);
 	}
 
-	public static Collection<File> fromJsonArrayToFiles(String json) {
-		return new JSONDeserializer<List<File>>().use(null, ArrayList.class).use("values", File.class)
-				.deserialize(json);
+	@PreRemove
+	private void preRemove() {
+		deleteIndex(this);
 	}
 }

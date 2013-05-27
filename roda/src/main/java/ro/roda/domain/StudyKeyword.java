@@ -42,21 +42,51 @@ import flexjson.JSONSerializer;
 @Audited
 public class StudyKeyword {
 
-	@Autowired
-	transient SolrServer solrServer;
-
-	public static QueryResponse search(String queryString) {
-		String searchString = "StudyKeyword_solrsummary_t:" + queryString;
-		return search(new SolrQuery(searchString.toLowerCase()));
+	public static long countStudyKeywords() {
+		return entityManager().createQuery("SELECT COUNT(o) FROM StudyKeyword o", Long.class).getSingleResult();
 	}
 
-	public static QueryResponse search(SolrQuery query) {
+	@Async
+	public static void deleteIndex(StudyKeyword studyKeyword) {
+		SolrServer solrServer = solrServer();
 		try {
-			return solrServer().query(query);
+			solrServer.deleteById("studykeyword_" + studyKeyword.getId());
+			solrServer.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return new QueryResponse();
+	}
+
+	public static final EntityManager entityManager() {
+		EntityManager em = new StudyKeyword().entityManager;
+		if (em == null)
+			throw new IllegalStateException(
+					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return em;
+	}
+
+	public static List<StudyKeyword> findAllStudyKeywords() {
+		return entityManager().createQuery("SELECT o FROM StudyKeyword o", StudyKeyword.class).getResultList();
+	}
+
+	public static StudyKeyword findStudyKeyword(StudyKeywordPK id) {
+		if (id == null)
+			return null;
+		return entityManager().find(StudyKeyword.class, id);
+	}
+
+	public static List<StudyKeyword> findStudyKeywordEntries(int firstResult, int maxResults) {
+		return entityManager().createQuery("SELECT o FROM StudyKeyword o", StudyKeyword.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
+	}
+
+	public static Collection<StudyKeyword> fromJsonArrayToStudyKeywords(String json) {
+		return new JSONDeserializer<List<StudyKeyword>>().use(null, ArrayList.class).use("values", StudyKeyword.class)
+				.deserialize(json);
+	}
+
+	public static StudyKeyword fromJsonToStudyKeyword(String json) {
+		return new JSONDeserializer<StudyKeyword>().use(null, StudyKeyword.class).deserialize(json);
 	}
 
 	public static void indexStudyKeyword(StudyKeyword studyKeyword) {
@@ -95,26 +125,18 @@ public class StudyKeyword {
 		}
 	}
 
-	@Async
-	public static void deleteIndex(StudyKeyword studyKeyword) {
-		SolrServer solrServer = solrServer();
+	public static QueryResponse search(SolrQuery query) {
 		try {
-			solrServer.deleteById("studykeyword_" + studyKeyword.getId());
-			solrServer.commit();
+			return solrServer().query(query);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return new QueryResponse();
 	}
 
-	@PostUpdate
-	@PostPersist
-	private void postPersistOrUpdate() {
-		indexStudyKeyword(this);
-	}
-
-	@PreRemove
-	private void preRemove() {
-		deleteIndex(this);
+	public static QueryResponse search(String queryString) {
+		String searchString = "StudyKeyword_solrsummary_t:" + queryString;
+		return search(new SolrQuery(searchString.toLowerCase()));
 	}
 
 	public static SolrServer solrServer() {
@@ -125,66 +147,78 @@ public class StudyKeyword {
 		return _solrServer;
 	}
 
-	public String toJson() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
-	}
-
-	public static StudyKeyword fromJsonToStudyKeyword(String json) {
-		return new JSONDeserializer<StudyKeyword>().use(null, StudyKeyword.class).deserialize(json);
-	}
-
 	public static String toJsonArray(Collection<StudyKeyword> collection) {
 		return new JSONSerializer().exclude("*.class").serialize(collection);
 	}
 
-	public static Collection<StudyKeyword> fromJsonArrayToStudyKeywords(String json) {
-		return new JSONDeserializer<List<StudyKeyword>>().use(null, ArrayList.class).use("values", StudyKeyword.class)
-				.deserialize(json);
-	}
+	@Column(name = "added", columnDefinition = "timestamp")
+	@NotNull
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(style = "MM")
+	private Calendar added;
+
+	@ManyToOne
+	@JoinColumn(name = "added_by", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	private Users addedBy;
 
 	@EmbeddedId
 	private StudyKeywordPK id;
+
+	@ManyToOne
+	@JoinColumn(name = "keyword_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	private Keyword keywordId;
+
+	@ManyToOne
+	@JoinColumn(name = "study_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	private Study studyId;
+
+	@PersistenceContext
+	transient EntityManager entityManager;
+
+	@Autowired
+	transient SolrServer solrServer;
+
+	@Transactional
+	public void clear() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.clear();
+	}
+
+	@Transactional
+	public void flush() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.flush();
+	}
+
+	public Calendar getAdded() {
+		return added;
+	}
+
+	public Users getAddedBy() {
+		return addedBy;
+	}
 
 	public StudyKeywordPK getId() {
 		return this.id;
 	}
 
-	public void setId(StudyKeywordPK id) {
-		this.id = id;
+	public Keyword getKeywordId() {
+		return keywordId;
 	}
 
-	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+	public Study getStudyId() {
+		return studyId;
 	}
 
-	@PersistenceContext
-	transient EntityManager entityManager;
-
-	public static final EntityManager entityManager() {
-		EntityManager em = new StudyKeyword().entityManager;
-		if (em == null)
-			throw new IllegalStateException(
-					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-		return em;
-	}
-
-	public static long countStudyKeywords() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM StudyKeyword o", Long.class).getSingleResult();
-	}
-
-	public static List<StudyKeyword> findAllStudyKeywords() {
-		return entityManager().createQuery("SELECT o FROM StudyKeyword o", StudyKeyword.class).getResultList();
-	}
-
-	public static StudyKeyword findStudyKeyword(StudyKeywordPK id) {
-		if (id == null)
-			return null;
-		return entityManager().find(StudyKeyword.class, id);
-	}
-
-	public static List<StudyKeyword> findStudyKeywordEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM StudyKeyword o", StudyKeyword.class)
-				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
+	@Transactional
+	public StudyKeyword merge() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		StudyKeyword merged = this.entityManager.merge(this);
+		this.entityManager.flush();
+		return merged;
 	}
 
 	@Transactional
@@ -206,76 +240,42 @@ public class StudyKeyword {
 		}
 	}
 
-	@Transactional
-	public void flush() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.flush();
-	}
-
-	@Transactional
-	public void clear() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.clear();
-	}
-
-	@Transactional
-	public StudyKeyword merge() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		StudyKeyword merged = this.entityManager.merge(this);
-		this.entityManager.flush();
-		return merged;
-	}
-
-	@ManyToOne
-	@JoinColumn(name = "keyword_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
-	private Keyword keywordId;
-
-	@ManyToOne
-	@JoinColumn(name = "study_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
-	private Study studyId;
-
-	@ManyToOne
-	@JoinColumn(name = "added_by", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
-	private Users addedBy;
-
-	@Column(name = "added", columnDefinition = "timestamp")
-	@NotNull
-	@Temporal(TemporalType.TIMESTAMP)
-	@DateTimeFormat(style = "MM")
-	private Calendar added;
-
-	public Keyword getKeywordId() {
-		return keywordId;
-	}
-
-	public void setKeywordId(Keyword keywordId) {
-		this.keywordId = keywordId;
-	}
-
-	public Study getStudyId() {
-		return studyId;
-	}
-
-	public void setStudyId(Study studyId) {
-		this.studyId = studyId;
-	}
-
-	public Users getAddedBy() {
-		return addedBy;
+	public void setAdded(Calendar added) {
+		this.added = added;
 	}
 
 	public void setAddedBy(Users addedBy) {
 		this.addedBy = addedBy;
 	}
 
-	public Calendar getAdded() {
-		return added;
+	public void setId(StudyKeywordPK id) {
+		this.id = id;
 	}
 
-	public void setAdded(Calendar added) {
-		this.added = added;
+	public void setKeywordId(Keyword keywordId) {
+		this.keywordId = keywordId;
+	}
+
+	public void setStudyId(Study studyId) {
+		this.studyId = studyId;
+	}
+
+	public String toJson() {
+		return new JSONSerializer().exclude("*.class").serialize(this);
+	}
+
+	public String toString() {
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+	}
+
+	@PostUpdate
+	@PostPersist
+	private void postPersistOrUpdate() {
+		indexStudyKeyword(this);
+	}
+
+	@PreRemove
+	private void preRemove() {
+		deleteIndex(this);
 	}
 }

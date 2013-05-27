@@ -41,66 +41,51 @@ import flexjson.JSONSerializer;
 @Audited
 public class Item {
 
-	@OneToOne(mappedBy = "item")
-	private Scale scale;
-
-	@OneToOne(mappedBy = "item")
-	private Value value;
-
-	@OneToMany(mappedBy = "itemId")
-	private Set<SelectionVariableItem> selectionVariableItems;
-
-	@Column(name = "name", columnDefinition = "varchar", length = 100)
-	@NotNull
-	private String name;
-
-	public Scale getScale() {
-		return scale;
+	public static long countItems() {
+		return entityManager().createQuery("SELECT COUNT(o) FROM Item o", Long.class).getSingleResult();
 	}
 
-	public void setScale(Scale scale) {
-		this.scale = scale;
-	}
-
-	public Value getValue() {
-		return value;
-	}
-
-	public void setValue(Value value) {
-		this.value = value;
-	}
-
-	public Set<SelectionVariableItem> getSelectionVariableItems() {
-		return selectionVariableItems;
-	}
-
-	public void setSelectionVariableItems(Set<SelectionVariableItem> selectionVariableItems) {
-		this.selectionVariableItems = selectionVariableItems;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	@Autowired
-	transient SolrServer solrServer;
-
-	public static QueryResponse search(String queryString) {
-		String searchString = "Item_solrsummary_t:" + queryString;
-		return search(new SolrQuery(searchString.toLowerCase()));
-	}
-
-	public static QueryResponse search(SolrQuery query) {
+	@Async
+	public static void deleteIndex(Item item) {
+		SolrServer solrServer = solrServer();
 		try {
-			return solrServer().query(query);
+			solrServer.deleteById("item_" + item.getId());
+			solrServer.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return new QueryResponse();
+	}
+
+	public static final EntityManager entityManager() {
+		EntityManager em = new Item().entityManager;
+		if (em == null)
+			throw new IllegalStateException(
+					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return em;
+	}
+
+	public static List<Item> findAllItems() {
+		return entityManager().createQuery("SELECT o FROM Item o", Item.class).getResultList();
+	}
+
+	public static Item findItem(Long id) {
+		if (id == null)
+			return null;
+		return entityManager().find(Item.class, id);
+	}
+
+	public static List<Item> findItemEntries(int firstResult, int maxResults) {
+		return entityManager().createQuery("SELECT o FROM Item o", Item.class).setFirstResult(firstResult)
+				.setMaxResults(maxResults).getResultList();
+	}
+
+	public static Collection<Item> fromJsonArrayToItems(String json) {
+		return new JSONDeserializer<List<Item>>().use(null, ArrayList.class).use("values", Item.class)
+				.deserialize(json);
+	}
+
+	public static Item fromJsonToItem(String json) {
+		return new JSONDeserializer<Item>().use(null, Item.class).deserialize(json);
 	}
 
 	public static void indexItem(Item item) {
@@ -136,26 +121,18 @@ public class Item {
 		}
 	}
 
-	@Async
-	public static void deleteIndex(Item item) {
-		SolrServer solrServer = solrServer();
+	public static QueryResponse search(SolrQuery query) {
 		try {
-			solrServer.deleteById("item_" + item.getId());
-			solrServer.commit();
+			return solrServer().query(query);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return new QueryResponse();
 	}
 
-	@PostUpdate
-	@PostPersist
-	private void postPersistOrUpdate() {
-		indexItem(this);
-	}
-
-	@PreRemove
-	private void preRemove() {
-		deleteIndex(this);
+	public static QueryResponse search(String queryString) {
+		String searchString = "Item_solrsummary_t:" + queryString;
+		return search(new SolrQuery(searchString.toLowerCase()));
 	}
 
 	public static SolrServer solrServer() {
@@ -166,21 +143,8 @@ public class Item {
 		return _solrServer;
 	}
 
-	public String toJson() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
-	}
-
-	public static Item fromJsonToItem(String json) {
-		return new JSONDeserializer<Item>().use(null, Item.class).deserialize(json);
-	}
-
 	public static String toJsonArray(Collection<Item> collection) {
 		return new JSONSerializer().exclude("*.class").serialize(collection);
-	}
-
-	public static Collection<Item> fromJsonArrayToItems(String json) {
-		return new JSONDeserializer<List<Item>>().use(null, ArrayList.class).use("values", Item.class)
-				.deserialize(json);
 	}
 
 	@Id
@@ -188,46 +152,66 @@ public class Item {
 	@Column(name = "id", columnDefinition = "bigserial")
 	private Long id;
 
-	public Long getId() {
-		return this.id;
-	}
+	@Column(name = "name", columnDefinition = "varchar", length = 100)
+	@NotNull
+	private String name;
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+	@OneToOne(mappedBy = "item")
+	private Scale scale;
 
-	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
-	}
+	@OneToMany(mappedBy = "itemId")
+	private Set<SelectionVariableItem> selectionVariableItems;
+
+	@OneToOne(mappedBy = "item")
+	private Value value;
 
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	public static final EntityManager entityManager() {
-		EntityManager em = new Item().entityManager;
-		if (em == null)
-			throw new IllegalStateException(
-					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-		return em;
+	@Autowired
+	transient SolrServer solrServer;
+
+	@Transactional
+	public void clear() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.clear();
 	}
 
-	public static long countItems() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM Item o", Long.class).getSingleResult();
+	@Transactional
+	public void flush() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.flush();
 	}
 
-	public static List<Item> findAllItems() {
-		return entityManager().createQuery("SELECT o FROM Item o", Item.class).getResultList();
+	public Long getId() {
+		return this.id;
 	}
 
-	public static Item findItem(Long id) {
-		if (id == null)
-			return null;
-		return entityManager().find(Item.class, id);
+	public String getName() {
+		return name;
 	}
 
-	public static List<Item> findItemEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM Item o", Item.class).setFirstResult(firstResult)
-				.setMaxResults(maxResults).getResultList();
+	public Scale getScale() {
+		return scale;
+	}
+
+	public Set<SelectionVariableItem> getSelectionVariableItems() {
+		return selectionVariableItems;
+	}
+
+	public Value getValue() {
+		return value;
+	}
+
+	@Transactional
+	public Item merge() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		Item merged = this.entityManager.merge(this);
+		this.entityManager.flush();
+		return merged;
 	}
 
 	@Transactional
@@ -249,26 +233,42 @@ public class Item {
 		}
 	}
 
-	@Transactional
-	public void flush() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.flush();
+	public void setId(Long id) {
+		this.id = id;
 	}
 
-	@Transactional
-	public void clear() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.clear();
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	@Transactional
-	public Item merge() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		Item merged = this.entityManager.merge(this);
-		this.entityManager.flush();
-		return merged;
+	public void setScale(Scale scale) {
+		this.scale = scale;
+	}
+
+	public void setSelectionVariableItems(Set<SelectionVariableItem> selectionVariableItems) {
+		this.selectionVariableItems = selectionVariableItems;
+	}
+
+	public void setValue(Value value) {
+		this.value = value;
+	}
+
+	public String toJson() {
+		return new JSONSerializer().exclude("*.class").serialize(this);
+	}
+
+	public String toString() {
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+	}
+
+	@PostUpdate
+	@PostPersist
+	private void postPersistOrUpdate() {
+		indexItem(this);
+	}
+
+	@PreRemove
+	private void preRemove() {
+		deleteIndex(this);
 	}
 }

@@ -40,20 +40,42 @@ import flexjson.JSONSerializer;
 @Audited
 public class UserMessage {
 
-	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+	public static long countUserMessages() {
+		return entityManager().createQuery("SELECT COUNT(o) FROM UserMessage o", Long.class).getSingleResult();
 	}
 
-	public String toJson() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
+	@Async
+	public static void deleteIndex(UserMessage userMessage) {
+		SolrServer solrServer = solrServer();
+		try {
+			solrServer.deleteById("usermessage_" + userMessage.getId());
+			solrServer.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
-	public static UserMessage fromJsonToUserMessage(String json) {
-		return new JSONDeserializer<UserMessage>().use(null, UserMessage.class).deserialize(json);
+	public static final EntityManager entityManager() {
+		EntityManager em = new UserMessage().entityManager;
+		if (em == null)
+			throw new IllegalStateException(
+					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return em;
 	}
 
-	public static String toJsonArray(Collection<UserMessage> collection) {
-		return new JSONSerializer().exclude("*.class").serialize(collection);
+	public static List<UserMessage> findAllUserMessages() {
+		return entityManager().createQuery("SELECT o FROM UserMessage o", UserMessage.class).getResultList();
+	}
+
+	public static UserMessage findUserMessage(Integer id) {
+		if (id == null)
+			return null;
+		return entityManager().find(UserMessage.class, id);
+	}
+
+	public static List<UserMessage> findUserMessageEntries(int firstResult, int maxResults) {
+		return entityManager().createQuery("SELECT o FROM UserMessage o", UserMessage.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
 	}
 
 	public static Collection<UserMessage> fromJsonArrayToUserMessages(String json) {
@@ -61,21 +83,8 @@ public class UserMessage {
 				.deserialize(json);
 	}
 
-	@Autowired
-	transient SolrServer solrServer;
-
-	public static QueryResponse search(String queryString) {
-		String searchString = "UserMessage_solrsummary_t:" + queryString;
-		return search(new SolrQuery(searchString.toLowerCase()));
-	}
-
-	public static QueryResponse search(SolrQuery query) {
-		try {
-			return solrServer().query(query);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return new QueryResponse();
+	public static UserMessage fromJsonToUserMessage(String json) {
+		return new JSONDeserializer<UserMessage>().use(null, UserMessage.class).deserialize(json);
 	}
 
 	public static void indexUserMessage(UserMessage userMessage) {
@@ -110,26 +119,18 @@ public class UserMessage {
 		}
 	}
 
-	@Async
-	public static void deleteIndex(UserMessage userMessage) {
-		SolrServer solrServer = solrServer();
+	public static QueryResponse search(SolrQuery query) {
 		try {
-			solrServer.deleteById("usermessage_" + userMessage.getId());
-			solrServer.commit();
+			return solrServer().query(query);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return new QueryResponse();
 	}
 
-	@PostUpdate
-	@PostPersist
-	private void postPersistOrUpdate() {
-		indexUserMessage(this);
-	}
-
-	@PreRemove
-	private void preRemove() {
-		deleteIndex(this);
+	public static QueryResponse search(String queryString) {
+		String searchString = "UserMessage_solrsummary_t:" + queryString;
+		return search(new SolrQuery(searchString.toLowerCase()));
 	}
 
 	public static SolrServer solrServer() {
@@ -140,83 +141,70 @@ public class UserMessage {
 		return _solrServer;
 	}
 
-	@ManyToOne
-	@JoinColumn(name = "to_user_id", referencedColumnName = "id", nullable = false)
-	private Users toUserId;
+	public static String toJsonArray(Collection<UserMessage> collection) {
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
 
 	@ManyToOne
 	@JoinColumn(name = "from_user_id", referencedColumnName = "id", nullable = false)
 	private Users fromUserId;
-
-	@Column(name = "message", columnDefinition = "text")
-	@NotNull
-	private String message;
-
-	public Users getToUserId() {
-		return toUserId;
-	}
-
-	public void setToUserId(Users toUserId) {
-		this.toUserId = toUserId;
-	}
-
-	public Users getFromUserId() {
-		return fromUserId;
-	}
-
-	public void setFromUserId(Users fromUserId) {
-		this.fromUserId = fromUserId;
-	}
-
-	public String getMessage() {
-		return message;
-	}
-
-	public void setMessage(String message) {
-		this.message = message;
-	}
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id", columnDefinition = "serial")
 	private Integer id;
 
-	public Integer getId() {
-		return this.id;
-	}
+	@Column(name = "message", columnDefinition = "text")
+	@NotNull
+	private String message;
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+	@ManyToOne
+	@JoinColumn(name = "to_user_id", referencedColumnName = "id", nullable = false)
+	private Users toUserId;
 
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	public static final EntityManager entityManager() {
-		EntityManager em = new UserMessage().entityManager;
-		if (em == null)
-			throw new IllegalStateException(
-					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-		return em;
+	@Autowired
+	transient SolrServer solrServer;
+
+	@Transactional
+	public void clear() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.clear();
 	}
 
-	public static long countUserMessages() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM UserMessage o", Long.class).getSingleResult();
+	@Transactional
+	public void flush() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.flush();
 	}
 
-	public static List<UserMessage> findAllUserMessages() {
-		return entityManager().createQuery("SELECT o FROM UserMessage o", UserMessage.class).getResultList();
+	public Users getFromUserId() {
+		return fromUserId;
 	}
 
-	public static UserMessage findUserMessage(Integer id) {
-		if (id == null)
-			return null;
-		return entityManager().find(UserMessage.class, id);
+	public Integer getId() {
+		return this.id;
 	}
 
-	public static List<UserMessage> findUserMessageEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM UserMessage o", UserMessage.class)
-				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
+	public String getMessage() {
+		return message;
+	}
+
+	public Users getToUserId() {
+		return toUserId;
+	}
+
+	@Transactional
+	public UserMessage merge() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		UserMessage merged = this.entityManager.merge(this);
+		this.entityManager.flush();
+		return merged;
 	}
 
 	@Transactional
@@ -238,26 +226,38 @@ public class UserMessage {
 		}
 	}
 
-	@Transactional
-	public void flush() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.flush();
+	public void setFromUserId(Users fromUserId) {
+		this.fromUserId = fromUserId;
 	}
 
-	@Transactional
-	public void clear() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.clear();
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
-	@Transactional
-	public UserMessage merge() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		UserMessage merged = this.entityManager.merge(this);
-		this.entityManager.flush();
-		return merged;
+	public void setMessage(String message) {
+		this.message = message;
+	}
+
+	public void setToUserId(Users toUserId) {
+		this.toUserId = toUserId;
+	}
+
+	public String toJson() {
+		return new JSONSerializer().exclude("*.class").serialize(this);
+	}
+
+	public String toString() {
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+	}
+
+	@PostUpdate
+	@PostPersist
+	private void postPersistOrUpdate() {
+		indexUserMessage(this);
+	}
+
+	@PreRemove
+	private void preRemove() {
+		deleteIndex(this);
 	}
 }

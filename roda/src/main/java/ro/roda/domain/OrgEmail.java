@@ -38,25 +38,51 @@ import flexjson.JSONSerializer;
 @Audited
 public class OrgEmail {
 
-	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+	public static long countOrgEmails() {
+		return entityManager().createQuery("SELECT COUNT(o) FROM OrgEmail o", Long.class).getSingleResult();
 	}
 
-	@Autowired
-	transient SolrServer solrServer;
-
-	public static QueryResponse search(String queryString) {
-		String searchString = "OrgEmail_solrsummary_t:" + queryString;
-		return search(new SolrQuery(searchString.toLowerCase()));
-	}
-
-	public static QueryResponse search(SolrQuery query) {
+	@Async
+	public static void deleteIndex(OrgEmail orgEmail) {
+		SolrServer solrServer = solrServer();
 		try {
-			return solrServer().query(query);
+			solrServer.deleteById("orgemail_" + orgEmail.getId());
+			solrServer.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return new QueryResponse();
+	}
+
+	public static final EntityManager entityManager() {
+		EntityManager em = new OrgEmail().entityManager;
+		if (em == null)
+			throw new IllegalStateException(
+					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return em;
+	}
+
+	public static List<OrgEmail> findAllOrgEmails() {
+		return entityManager().createQuery("SELECT o FROM OrgEmail o", OrgEmail.class).getResultList();
+	}
+
+	public static OrgEmail findOrgEmail(OrgEmailPK id) {
+		if (id == null)
+			return null;
+		return entityManager().find(OrgEmail.class, id);
+	}
+
+	public static List<OrgEmail> findOrgEmailEntries(int firstResult, int maxResults) {
+		return entityManager().createQuery("SELECT o FROM OrgEmail o", OrgEmail.class).setFirstResult(firstResult)
+				.setMaxResults(maxResults).getResultList();
+	}
+
+	public static Collection<OrgEmail> fromJsonArrayToOrgEmails(String json) {
+		return new JSONDeserializer<List<OrgEmail>>().use(null, ArrayList.class).use("values", OrgEmail.class)
+				.deserialize(json);
+	}
+
+	public static OrgEmail fromJsonToOrgEmail(String json) {
+		return new JSONDeserializer<OrgEmail>().use(null, OrgEmail.class).deserialize(json);
 	}
 
 	public static void indexOrgEmail(OrgEmail orgEmail) {
@@ -88,26 +114,18 @@ public class OrgEmail {
 		}
 	}
 
-	@Async
-	public static void deleteIndex(OrgEmail orgEmail) {
-		SolrServer solrServer = solrServer();
+	public static QueryResponse search(SolrQuery query) {
 		try {
-			solrServer.deleteById("orgemail_" + orgEmail.getId());
-			solrServer.commit();
+			return solrServer().query(query);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return new QueryResponse();
 	}
 
-	@PostUpdate
-	@PostPersist
-	private void postPersistOrUpdate() {
-		indexOrgEmail(this);
-	}
-
-	@PreRemove
-	private void preRemove() {
-		deleteIndex(this);
+	public static QueryResponse search(String queryString) {
+		String searchString = "OrgEmail_solrsummary_t:" + queryString;
+		return search(new SolrQuery(searchString.toLowerCase()));
 	}
 
 	public static SolrServer solrServer() {
@@ -118,34 +136,68 @@ public class OrgEmail {
 		return _solrServer;
 	}
 
+	public static String toJsonArray(Collection<OrgEmail> collection) {
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	@ManyToOne
+	@JoinColumn(name = "email_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	private Email emailId;
+
+	@EmbeddedId
+	private OrgEmailPK id;
+
+	@Column(name = "main", columnDefinition = "bool")
+	@NotNull
+	private boolean main;
+
+	@ManyToOne
+	@JoinColumn(name = "org_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	private Org orgId;
+
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	public static final EntityManager entityManager() {
-		EntityManager em = new OrgEmail().entityManager;
-		if (em == null)
-			throw new IllegalStateException(
-					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-		return em;
+	@Autowired
+	transient SolrServer solrServer;
+
+	@Transactional
+	public void clear() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.clear();
 	}
 
-	public static long countOrgEmails() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM OrgEmail o", Long.class).getSingleResult();
+	@Transactional
+	public void flush() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.flush();
 	}
 
-	public static List<OrgEmail> findAllOrgEmails() {
-		return entityManager().createQuery("SELECT o FROM OrgEmail o", OrgEmail.class).getResultList();
+	public Email getEmailId() {
+		return emailId;
 	}
 
-	public static OrgEmail findOrgEmail(OrgEmailPK id) {
-		if (id == null)
-			return null;
-		return entityManager().find(OrgEmail.class, id);
+	public OrgEmailPK getId() {
+		return this.id;
 	}
 
-	public static List<OrgEmail> findOrgEmailEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM OrgEmail o", OrgEmail.class).setFirstResult(firstResult)
-				.setMaxResults(maxResults).getResultList();
+	public Org getOrgId() {
+		return orgId;
+	}
+
+	public boolean isMain() {
+		return main;
+	}
+
+	@Transactional
+	public OrgEmail merge() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		OrgEmail merged = this.entityManager.merge(this);
+		this.entityManager.flush();
+		return merged;
 	}
 
 	@Transactional
@@ -167,90 +219,38 @@ public class OrgEmail {
 		}
 	}
 
-	@Transactional
-	public void flush() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.flush();
-	}
-
-	@Transactional
-	public void clear() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.clear();
-	}
-
-	@Transactional
-	public OrgEmail merge() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		OrgEmail merged = this.entityManager.merge(this);
-		this.entityManager.flush();
-		return merged;
-	}
-
-	@EmbeddedId
-	private OrgEmailPK id;
-
-	public OrgEmailPK getId() {
-		return this.id;
+	public void setEmailId(Email emailId) {
+		this.emailId = emailId;
 	}
 
 	public void setId(OrgEmailPK id) {
 		this.id = id;
 	}
 
-	public String toJson() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
-	}
-
-	public static OrgEmail fromJsonToOrgEmail(String json) {
-		return new JSONDeserializer<OrgEmail>().use(null, OrgEmail.class).deserialize(json);
-	}
-
-	public static String toJsonArray(Collection<OrgEmail> collection) {
-		return new JSONSerializer().exclude("*.class").serialize(collection);
-	}
-
-	public static Collection<OrgEmail> fromJsonArrayToOrgEmails(String json) {
-		return new JSONDeserializer<List<OrgEmail>>().use(null, ArrayList.class).use("values", OrgEmail.class)
-				.deserialize(json);
-	}
-
-	@ManyToOne
-	@JoinColumn(name = "email_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
-	private Email emailId;
-
-	@ManyToOne
-	@JoinColumn(name = "org_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
-	private Org orgId;
-
-	@Column(name = "main", columnDefinition = "bool")
-	@NotNull
-	private boolean main;
-
-	public Email getEmailId() {
-		return emailId;
-	}
-
-	public void setEmailId(Email emailId) {
-		this.emailId = emailId;
-	}
-
-	public Org getOrgId() {
-		return orgId;
+	public void setMain(boolean main) {
+		this.main = main;
 	}
 
 	public void setOrgId(Org orgId) {
 		this.orgId = orgId;
 	}
 
-	public boolean isMain() {
-		return main;
+	public String toJson() {
+		return new JSONSerializer().exclude("*.class").serialize(this);
 	}
 
-	public void setMain(boolean main) {
-		this.main = main;
+	public String toString() {
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+	}
+
+	@PostUpdate
+	@PostPersist
+	private void postPersistOrUpdate() {
+		indexOrgEmail(this);
+	}
+
+	@PreRemove
+	private void preRemove() {
+		deleteIndex(this);
 	}
 }

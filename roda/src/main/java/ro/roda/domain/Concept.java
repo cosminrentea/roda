@@ -42,16 +42,42 @@ import flexjson.JSONSerializer;
 @Audited
 public class Concept {
 
-	public String toJson() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
+	public static long countConcepts() {
+		return entityManager().createQuery("SELECT COUNT(o) FROM Concept o", Long.class).getSingleResult();
 	}
 
-	public static Concept fromJsonToConcept(String json) {
-		return new JSONDeserializer<Concept>().use(null, Concept.class).deserialize(json);
+	@Async
+	public static void deleteIndex(Concept concept) {
+		SolrServer solrServer = solrServer();
+		try {
+			solrServer.deleteById("concept_" + concept.getId());
+			solrServer.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
-	public static String toJsonArray(Collection<Concept> collection) {
-		return new JSONSerializer().exclude("*.class").serialize(collection);
+	public static final EntityManager entityManager() {
+		EntityManager em = new Concept().entityManager;
+		if (em == null)
+			throw new IllegalStateException(
+					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return em;
+	}
+
+	public static List<Concept> findAllConcepts() {
+		return entityManager().createQuery("SELECT o FROM Concept o", Concept.class).getResultList();
+	}
+
+	public static Concept findConcept(Long id) {
+		if (id == null)
+			return null;
+		return entityManager().find(Concept.class, id);
+	}
+
+	public static List<Concept> findConceptEntries(int firstResult, int maxResults) {
+		return entityManager().createQuery("SELECT o FROM Concept o", Concept.class).setFirstResult(firstResult)
+				.setMaxResults(maxResults).getResultList();
 	}
 
 	public static Collection<Concept> fromJsonArrayToConcepts(String json) {
@@ -59,21 +85,8 @@ public class Concept {
 				.deserialize(json);
 	}
 
-	@Autowired
-	transient SolrServer solrServer;
-
-	public static QueryResponse search(String queryString) {
-		String searchString = "Concept_solrsummary_t:" + queryString;
-		return search(new SolrQuery(searchString.toLowerCase()));
-	}
-
-	public static QueryResponse search(SolrQuery query) {
-		try {
-			return solrServer().query(query);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return new QueryResponse();
+	public static Concept fromJsonToConcept(String json) {
+		return new JSONDeserializer<Concept>().use(null, Concept.class).deserialize(json);
 	}
 
 	public static void indexConcept(Concept concept) {
@@ -105,26 +118,18 @@ public class Concept {
 		}
 	}
 
-	@Async
-	public static void deleteIndex(Concept concept) {
-		SolrServer solrServer = solrServer();
+	public static QueryResponse search(SolrQuery query) {
 		try {
-			solrServer.deleteById("concept_" + concept.getId());
-			solrServer.commit();
+			return solrServer().query(query);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return new QueryResponse();
 	}
 
-	@PostUpdate
-	@PostPersist
-	private void postPersistOrUpdate() {
-		indexConcept(this);
-	}
-
-	@PreRemove
-	private void preRemove() {
-		deleteIndex(this);
+	public static QueryResponse search(String queryString) {
+		String searchString = "Concept_solrsummary_t:" + queryString;
+		return search(new SolrQuery(searchString.toLowerCase()));
 	}
 
 	public static SolrServer solrServer() {
@@ -135,38 +140,69 @@ public class Concept {
 		return _solrServer;
 	}
 
-	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+	public static String toJsonArray(Collection<Concept> collection) {
+		return new JSONSerializer().exclude("*.class").serialize(collection);
 	}
+
+	@Column(name = "description", columnDefinition = "text")
+	private String description;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id", columnDefinition = "bigserial")
+	private Long id;
+
+	@Column(name = "name", columnDefinition = "text")
+	@NotNull
+	private String name;
+
+	@ManyToMany
+	@JoinTable(name = "concept_variable", joinColumns = { @JoinColumn(name = "concept_id", nullable = false) }, inverseJoinColumns = { @JoinColumn(name = "variable_id", nullable = false) })
+	private Set<Variable> variables;
 
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	public static final EntityManager entityManager() {
-		EntityManager em = new Concept().entityManager;
-		if (em == null)
-			throw new IllegalStateException(
-					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-		return em;
+	@Autowired
+	transient SolrServer solrServer;
+
+	@Transactional
+	public void clear() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.clear();
 	}
 
-	public static long countConcepts() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM Concept o", Long.class).getSingleResult();
+	@Transactional
+	public void flush() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.flush();
 	}
 
-	public static List<Concept> findAllConcepts() {
-		return entityManager().createQuery("SELECT o FROM Concept o", Concept.class).getResultList();
+	public String getDescription() {
+		return description;
 	}
 
-	public static Concept findConcept(Long id) {
-		if (id == null)
-			return null;
-		return entityManager().find(Concept.class, id);
+	public Long getId() {
+		return this.id;
 	}
 
-	public static List<Concept> findConceptEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM Concept o", Concept.class).setFirstResult(firstResult)
-				.setMaxResults(maxResults).getResultList();
+	public String getName() {
+		return name;
+	}
+
+	public Set<Variable> getVariables() {
+		return variables;
+	}
+
+	@Transactional
+	public Concept merge() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		Concept merged = this.entityManager.merge(this);
+		this.entityManager.flush();
+		return merged;
 	}
 
 	@Transactional
@@ -188,74 +224,38 @@ public class Concept {
 		}
 	}
 
-	@Transactional
-	public void flush() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.flush();
-	}
-
-	@Transactional
-	public void clear() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.clear();
-	}
-
-	@Transactional
-	public Concept merge() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		Concept merged = this.entityManager.merge(this);
-		this.entityManager.flush();
-		return merged;
-	}
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "id", columnDefinition = "bigserial")
-	private Long id;
-
-	public Long getId() {
-		return this.id;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public void setId(Long id) {
 		this.id = id;
 	}
 
-	@ManyToMany
-	@JoinTable(name = "concept_variable", joinColumns = { @JoinColumn(name = "concept_id", nullable = false) }, inverseJoinColumns = { @JoinColumn(name = "variable_id", nullable = false) })
-	private Set<Variable> variables;
-
-	@Column(name = "name", columnDefinition = "text")
-	@NotNull
-	private String name;
-
-	@Column(name = "description", columnDefinition = "text")
-	private String description;
-
-	public Set<Variable> getVariables() {
-		return variables;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public void setVariables(Set<Variable> variables) {
 		this.variables = variables;
 	}
 
-	public String getName() {
-		return name;
+	public String toJson() {
+		return new JSONSerializer().exclude("*.class").serialize(this);
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public String toString() {
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
-	public String getDescription() {
-		return description;
+	@PostUpdate
+	@PostPersist
+	private void postPersistOrUpdate() {
+		indexConcept(this);
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
+	@PreRemove
+	private void preRemove() {
+		deleteIndex(this);
 	}
 }

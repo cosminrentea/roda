@@ -17,8 +17,11 @@ import flexjson.JSONSerializer;
 @Embeddable
 public final class FormEditedNumberVarPK implements Serializable {
 
-	public String toJson() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
+	private static final long serialVersionUID = 1L;
+
+	public static Collection<FormEditedNumberVarPK> fromJsonArrayToFormEditedNumberVarPKs(String json) {
+		return new JSONDeserializer<List<FormEditedNumberVarPK>>().use(null, ArrayList.class)
+				.use("values", FormEditedNumberVarPK.class).deserialize(json);
 	}
 
 	public static FormEditedNumberVarPK fromJsonToFormEditedNumberVarPK(String json) {
@@ -28,13 +31,6 @@ public final class FormEditedNumberVarPK implements Serializable {
 	public static String toJsonArray(Collection<FormEditedNumberVarPK> collection) {
 		return new JSONSerializer().exclude("*.class").serialize(collection);
 	}
-
-	public static Collection<FormEditedNumberVarPK> fromJsonArrayToFormEditedNumberVarPKs(String json) {
-		return new JSONDeserializer<List<FormEditedNumberVarPK>>().use(null, ArrayList.class)
-				.use("values", FormEditedNumberVarPK.class).deserialize(json);
-	}
-
-	private static final long serialVersionUID = 1L;
 
 	@Column(name = "form_id", columnDefinition = "int8", nullable = false)
 	private Long formId;
@@ -58,5 +54,9 @@ public final class FormEditedNumberVarPK implements Serializable {
 
 	public Long getVariableId() {
 		return variableId;
+	}
+
+	public String toJson() {
+		return new JSONSerializer().exclude("*.class").serialize(this);
 	}
 }

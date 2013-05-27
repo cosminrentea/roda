@@ -45,105 +45,51 @@ import flexjson.JSONSerializer;
 @Audited
 public class Form {
 
-	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+	public static long countForms() {
+		return entityManager().createQuery("SELECT COUNT(o) FROM Form o", Long.class).getSingleResult();
 	}
 
-	@OneToMany(mappedBy = "formId")
-	private Set<FormEditedNumberVar> formEditedNumberVars;
-
-	@OneToMany(mappedBy = "formId")
-	private Set<FormEditedTextVar> formEditedTextVars;
-
-	@OneToMany(mappedBy = "formId")
-	private Set<FormSelectionVar> formSelectionVars;
-
-	@OneToMany(mappedBy = "formId")
-	private Set<InstanceForm> instanceForms;
-
-	@ManyToOne
-	@JoinColumn(name = "operator_id", referencedColumnName = "id")
-	private Person operatorId;
-
-	@Column(name = "operator_notes", columnDefinition = "text")
-	private String operatorNotes;
-
-	@Column(name = "form_filled_at", columnDefinition = "timestamp")
-	@Temporal(TemporalType.TIMESTAMP)
-	@DateTimeFormat(style = "MM")
-	private Calendar formFilledAt;
-
-	public Set<FormEditedNumberVar> getFormEditedNumberVars() {
-		return formEditedNumberVars;
-	}
-
-	public void setFormEditedNumberVars(Set<FormEditedNumberVar> formEditedNumberVars) {
-		this.formEditedNumberVars = formEditedNumberVars;
-	}
-
-	public Set<FormEditedTextVar> getFormEditedTextVars() {
-		return formEditedTextVars;
-	}
-
-	public void setFormEditedTextVars(Set<FormEditedTextVar> formEditedTextVars) {
-		this.formEditedTextVars = formEditedTextVars;
-	}
-
-	public Set<FormSelectionVar> getFormSelectionVars() {
-		return formSelectionVars;
-	}
-
-	public void setFormSelectionVars(Set<FormSelectionVar> formSelectionVars) {
-		this.formSelectionVars = formSelectionVars;
-	}
-
-	public Set<InstanceForm> getInstanceForms() {
-		return instanceForms;
-	}
-
-	public void setInstanceForms(Set<InstanceForm> instanceForms) {
-		this.instanceForms = instanceForms;
-	}
-
-	public Person getOperatorId() {
-		return operatorId;
-	}
-
-	public void setOperatorId(Person operatorId) {
-		this.operatorId = operatorId;
-	}
-
-	public String getOperatorNotes() {
-		return operatorNotes;
-	}
-
-	public void setOperatorNotes(String operatorNotes) {
-		this.operatorNotes = operatorNotes;
-	}
-
-	public Calendar getFormFilledAt() {
-		return formFilledAt;
-	}
-
-	public void setFormFilledAt(Calendar formFilledAt) {
-		this.formFilledAt = formFilledAt;
-	}
-
-	@Autowired
-	transient SolrServer solrServer;
-
-	public static QueryResponse search(String queryString) {
-		String searchString = "Form_solrsummary_t:" + queryString;
-		return search(new SolrQuery(searchString.toLowerCase()));
-	}
-
-	public static QueryResponse search(SolrQuery query) {
+	@Async
+	public static void deleteIndex(Form form) {
+		SolrServer solrServer = solrServer();
 		try {
-			return solrServer().query(query);
+			solrServer.deleteById("form_" + form.getId());
+			solrServer.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return new QueryResponse();
+	}
+
+	public static final EntityManager entityManager() {
+		EntityManager em = new Form().entityManager;
+		if (em == null)
+			throw new IllegalStateException(
+					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return em;
+	}
+
+	public static List<Form> findAllForms() {
+		return entityManager().createQuery("SELECT o FROM Form o", Form.class).getResultList();
+	}
+
+	public static Form findForm(Long id) {
+		if (id == null)
+			return null;
+		return entityManager().find(Form.class, id);
+	}
+
+	public static List<Form> findFormEntries(int firstResult, int maxResults) {
+		return entityManager().createQuery("SELECT o FROM Form o", Form.class).setFirstResult(firstResult)
+				.setMaxResults(maxResults).getResultList();
+	}
+
+	public static Collection<Form> fromJsonArrayToForms(String json) {
+		return new JSONDeserializer<List<Form>>().use(null, ArrayList.class).use("values", Form.class)
+				.deserialize(json);
+	}
+
+	public static Form fromJsonToForm(String json) {
+		return new JSONDeserializer<Form>().use(null, Form.class).deserialize(json);
 	}
 
 	public static void indexForm(Form form) {
@@ -177,26 +123,18 @@ public class Form {
 		}
 	}
 
-	@Async
-	public static void deleteIndex(Form form) {
-		SolrServer solrServer = solrServer();
+	public static QueryResponse search(SolrQuery query) {
 		try {
-			solrServer.deleteById("form_" + form.getId());
-			solrServer.commit();
+			return solrServer().query(query);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return new QueryResponse();
 	}
 
-	@PostUpdate
-	@PostPersist
-	private void postPersistOrUpdate() {
-		indexForm(this);
-	}
-
-	@PreRemove
-	private void preRemove() {
-		deleteIndex(this);
+	public static QueryResponse search(String queryString) {
+		String searchString = "Form_solrsummary_t:" + queryString;
+		return search(new SolrQuery(searchString.toLowerCase()));
 	}
 
 	public static SolrServer solrServer() {
@@ -207,64 +145,98 @@ public class Form {
 		return _solrServer;
 	}
 
+	public static String toJsonArray(Collection<Form> collection) {
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	@OneToMany(mappedBy = "formId")
+	private Set<FormEditedNumberVar> formEditedNumberVars;
+
+	@OneToMany(mappedBy = "formId")
+	private Set<FormEditedTextVar> formEditedTextVars;
+
+	@Column(name = "form_filled_at", columnDefinition = "timestamp")
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(style = "MM")
+	private Calendar formFilledAt;
+
+	@OneToMany(mappedBy = "formId")
+	private Set<FormSelectionVar> formSelectionVars;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id", columnDefinition = "bigserial")
 	private Long id;
 
-	public Long getId() {
-		return this.id;
-	}
+	@OneToMany(mappedBy = "formId")
+	private Set<InstanceForm> instanceForms;
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+	@ManyToOne
+	@JoinColumn(name = "operator_id", referencedColumnName = "id")
+	private Person operatorId;
 
-	public String toJson() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
-	}
-
-	public static Form fromJsonToForm(String json) {
-		return new JSONDeserializer<Form>().use(null, Form.class).deserialize(json);
-	}
-
-	public static String toJsonArray(Collection<Form> collection) {
-		return new JSONSerializer().exclude("*.class").serialize(collection);
-	}
-
-	public static Collection<Form> fromJsonArrayToForms(String json) {
-		return new JSONDeserializer<List<Form>>().use(null, ArrayList.class).use("values", Form.class)
-				.deserialize(json);
-	}
+	@Column(name = "operator_notes", columnDefinition = "text")
+	private String operatorNotes;
 
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	public static final EntityManager entityManager() {
-		EntityManager em = new Form().entityManager;
-		if (em == null)
-			throw new IllegalStateException(
-					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-		return em;
+	@Autowired
+	transient SolrServer solrServer;
+
+	@Transactional
+	public void clear() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.clear();
 	}
 
-	public static long countForms() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM Form o", Long.class).getSingleResult();
+	@Transactional
+	public void flush() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.flush();
 	}
 
-	public static List<Form> findAllForms() {
-		return entityManager().createQuery("SELECT o FROM Form o", Form.class).getResultList();
+	public Set<FormEditedNumberVar> getFormEditedNumberVars() {
+		return formEditedNumberVars;
 	}
 
-	public static Form findForm(Long id) {
-		if (id == null)
-			return null;
-		return entityManager().find(Form.class, id);
+	public Set<FormEditedTextVar> getFormEditedTextVars() {
+		return formEditedTextVars;
 	}
 
-	public static List<Form> findFormEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM Form o", Form.class).setFirstResult(firstResult)
-				.setMaxResults(maxResults).getResultList();
+	public Calendar getFormFilledAt() {
+		return formFilledAt;
+	}
+
+	public Set<FormSelectionVar> getFormSelectionVars() {
+		return formSelectionVars;
+	}
+
+	public Long getId() {
+		return this.id;
+	}
+
+	public Set<InstanceForm> getInstanceForms() {
+		return instanceForms;
+	}
+
+	public Person getOperatorId() {
+		return operatorId;
+	}
+
+	public String getOperatorNotes() {
+		return operatorNotes;
+	}
+
+	@Transactional
+	public Form merge() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		Form merged = this.entityManager.merge(this);
+		this.entityManager.flush();
+		return merged;
 	}
 
 	@Transactional
@@ -286,26 +258,54 @@ public class Form {
 		}
 	}
 
-	@Transactional
-	public void flush() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.flush();
+	public void setFormEditedNumberVars(Set<FormEditedNumberVar> formEditedNumberVars) {
+		this.formEditedNumberVars = formEditedNumberVars;
 	}
 
-	@Transactional
-	public void clear() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.clear();
+	public void setFormEditedTextVars(Set<FormEditedTextVar> formEditedTextVars) {
+		this.formEditedTextVars = formEditedTextVars;
 	}
 
-	@Transactional
-	public Form merge() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		Form merged = this.entityManager.merge(this);
-		this.entityManager.flush();
-		return merged;
+	public void setFormFilledAt(Calendar formFilledAt) {
+		this.formFilledAt = formFilledAt;
+	}
+
+	public void setFormSelectionVars(Set<FormSelectionVar> formSelectionVars) {
+		this.formSelectionVars = formSelectionVars;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public void setInstanceForms(Set<InstanceForm> instanceForms) {
+		this.instanceForms = instanceForms;
+	}
+
+	public void setOperatorId(Person operatorId) {
+		this.operatorId = operatorId;
+	}
+
+	public void setOperatorNotes(String operatorNotes) {
+		this.operatorNotes = operatorNotes;
+	}
+
+	public String toJson() {
+		return new JSONSerializer().exclude("*.class").serialize(this);
+	}
+
+	public String toString() {
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+	}
+
+	@PostUpdate
+	@PostPersist
+	private void postPersistOrUpdate() {
+		indexForm(this);
+	}
+
+	@PreRemove
+	private void preRemove() {
+		deleteIndex(this);
 	}
 }

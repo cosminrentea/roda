@@ -19,8 +19,9 @@ public final class OrgPhonePK implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	public String toJson() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
+	public static Collection<OrgPhonePK> fromJsonArrayToOrgPhonePKs(String json) {
+		return new JSONDeserializer<List<OrgPhonePK>>().use(null, ArrayList.class).use("values", OrgPhonePK.class)
+				.deserialize(json);
 	}
 
 	public static OrgPhonePK fromJsonToOrgPhonePK(String json) {
@@ -29,11 +30,6 @@ public final class OrgPhonePK implements Serializable {
 
 	public static String toJsonArray(Collection<OrgPhonePK> collection) {
 		return new JSONSerializer().exclude("*.class").serialize(collection);
-	}
-
-	public static Collection<OrgPhonePK> fromJsonArrayToOrgPhonePKs(String json) {
-		return new JSONDeserializer<List<OrgPhonePK>>().use(null, ArrayList.class).use("values", OrgPhonePK.class)
-				.deserialize(json);
 	}
 
 	@Column(name = "org_id", columnDefinition = "int4", nullable = false)
@@ -58,5 +54,9 @@ public final class OrgPhonePK implements Serializable {
 
 	public Integer getPhoneId() {
 		return phoneId;
+	}
+
+	public String toJson() {
+		return new JSONSerializer().exclude("*.class").serialize(this);
 	}
 }

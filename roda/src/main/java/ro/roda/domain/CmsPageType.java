@@ -40,55 +40,51 @@ import flexjson.JSONSerializer;
 @Audited
 public class CmsPageType {
 
-	@OneToMany(mappedBy = "cmsPageTypeId")
-	private Set<CmsPage> cmsPages;
-
-	@Column(name = "name", columnDefinition = "varchar", length = 200)
-	@NotNull
-	private String name;
-
-	@Column(name = "description", columnDefinition = "text")
-	private String description;
-
-	public Set<CmsPage> getCmsPages() {
-		return cmsPages;
+	public static long countCmsPageTypes() {
+		return entityManager().createQuery("SELECT COUNT(o) FROM CmsPageType o", Long.class).getSingleResult();
 	}
 
-	public void setCmsPages(Set<CmsPage> cmsPages) {
-		this.cmsPages = cmsPages;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	@Autowired
-	transient SolrServer solrServer;
-
-	public static QueryResponse search(String queryString) {
-		String searchString = "CmsPageType_solrsummary_t:" + queryString;
-		return search(new SolrQuery(searchString.toLowerCase()));
-	}
-
-	public static QueryResponse search(SolrQuery query) {
+	@Async
+	public static void deleteIndex(CmsPageType cmsPageType) {
+		SolrServer solrServer = solrServer();
 		try {
-			return solrServer().query(query);
+			solrServer.deleteById("cmspagetype_" + cmsPageType.getId());
+			solrServer.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return new QueryResponse();
+	}
+
+	public static final EntityManager entityManager() {
+		EntityManager em = new CmsPageType().entityManager;
+		if (em == null)
+			throw new IllegalStateException(
+					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return em;
+	}
+
+	public static List<CmsPageType> findAllCmsPageTypes() {
+		return entityManager().createQuery("SELECT o FROM CmsPageType o", CmsPageType.class).getResultList();
+	}
+
+	public static CmsPageType findCmsPageType(Integer id) {
+		if (id == null)
+			return null;
+		return entityManager().find(CmsPageType.class, id);
+	}
+
+	public static List<CmsPageType> findCmsPageTypeEntries(int firstResult, int maxResults) {
+		return entityManager().createQuery("SELECT o FROM CmsPageType o", CmsPageType.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
+	}
+
+	public static Collection<CmsPageType> fromJsonArrayToCmsPageTypes(String json) {
+		return new JSONDeserializer<List<CmsPageType>>().use(null, ArrayList.class).use("values", CmsPageType.class)
+				.deserialize(json);
+	}
+
+	public static CmsPageType fromJsonToCmsPageType(String json) {
+		return new JSONDeserializer<CmsPageType>().use(null, CmsPageType.class).deserialize(json);
 	}
 
 	public static void indexCmsPageType(CmsPageType cmsPageType) {
@@ -118,26 +114,18 @@ public class CmsPageType {
 		}
 	}
 
-	@Async
-	public static void deleteIndex(CmsPageType cmsPageType) {
-		SolrServer solrServer = solrServer();
+	public static QueryResponse search(SolrQuery query) {
 		try {
-			solrServer.deleteById("cmspagetype_" + cmsPageType.getId());
-			solrServer.commit();
+			return solrServer().query(query);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return new QueryResponse();
 	}
 
-	@PostUpdate
-	@PostPersist
-	private void postPersistOrUpdate() {
-		indexCmsPageType(this);
-	}
-
-	@PreRemove
-	private void preRemove() {
-		deleteIndex(this);
+	public static QueryResponse search(String queryString) {
+		String searchString = "CmsPageType_solrsummary_t:" + queryString;
+		return search(new SolrQuery(searchString.toLowerCase()));
 	}
 
 	public static SolrServer solrServer() {
@@ -148,34 +136,68 @@ public class CmsPageType {
 		return _solrServer;
 	}
 
+	public static String toJsonArray(Collection<CmsPageType> collection) {
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	@OneToMany(mappedBy = "cmsPageTypeId")
+	private Set<CmsPage> cmsPages;
+
+	@Column(name = "description", columnDefinition = "text")
+	private String description;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id", columnDefinition = "serial")
+	private Integer id;
+
+	@Column(name = "name", columnDefinition = "varchar", length = 200)
+	@NotNull
+	private String name;
+
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	public static final EntityManager entityManager() {
-		EntityManager em = new CmsPageType().entityManager;
-		if (em == null)
-			throw new IllegalStateException(
-					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-		return em;
+	@Autowired
+	transient SolrServer solrServer;
+
+	@Transactional
+	public void clear() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.clear();
 	}
 
-	public static long countCmsPageTypes() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM CmsPageType o", Long.class).getSingleResult();
+	@Transactional
+	public void flush() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.flush();
 	}
 
-	public static List<CmsPageType> findAllCmsPageTypes() {
-		return entityManager().createQuery("SELECT o FROM CmsPageType o", CmsPageType.class).getResultList();
+	public Set<CmsPage> getCmsPages() {
+		return cmsPages;
 	}
 
-	public static CmsPageType findCmsPageType(Integer id) {
-		if (id == null)
-			return null;
-		return entityManager().find(CmsPageType.class, id);
+	public String getDescription() {
+		return description;
 	}
 
-	public static List<CmsPageType> findCmsPageTypeEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM CmsPageType o", CmsPageType.class)
-				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
+	public Integer getId() {
+		return this.id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	@Transactional
+	public CmsPageType merge() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		CmsPageType merged = this.entityManager.merge(this);
+		this.entityManager.flush();
+		return merged;
 	}
 
 	@Transactional
@@ -197,60 +219,38 @@ public class CmsPageType {
 		}
 	}
 
-	@Transactional
-	public void flush() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.flush();
+	public void setCmsPages(Set<CmsPage> cmsPages) {
+		this.cmsPages = cmsPages;
 	}
 
-	@Transactional
-	public void clear() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.clear();
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
-	@Transactional
-	public CmsPageType merge() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		CmsPageType merged = this.entityManager.merge(this);
-		this.entityManager.flush();
-		return merged;
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
-	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String toJson() {
 		return new JSONSerializer().exclude("*.class").serialize(this);
 	}
 
-	public static CmsPageType fromJsonToCmsPageType(String json) {
-		return new JSONDeserializer<CmsPageType>().use(null, CmsPageType.class).deserialize(json);
+	public String toString() {
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
-	public static String toJsonArray(Collection<CmsPageType> collection) {
-		return new JSONSerializer().exclude("*.class").serialize(collection);
+	@PostUpdate
+	@PostPersist
+	private void postPersistOrUpdate() {
+		indexCmsPageType(this);
 	}
 
-	public static Collection<CmsPageType> fromJsonArrayToCmsPageTypes(String json) {
-		return new JSONDeserializer<List<CmsPageType>>().use(null, ArrayList.class).use("values", CmsPageType.class)
-				.deserialize(json);
-	}
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "id", columnDefinition = "serial")
-	private Integer id;
-
-	public Integer getId() {
-		return this.id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
+	@PreRemove
+	private void preRemove() {
+		deleteIndex(this);
 	}
 }

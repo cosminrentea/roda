@@ -19,8 +19,9 @@ public final class AuthoritiesPK implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	public String toJson() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
+	public static Collection<AuthoritiesPK> fromJsonArrayToAuthoritiesPKs(String json) {
+		return new JSONDeserializer<List<AuthoritiesPK>>().use(null, ArrayList.class)
+				.use("values", AuthoritiesPK.class).deserialize(json);
 	}
 
 	public static AuthoritiesPK fromJsonToAuthoritiesPK(String json) {
@@ -31,16 +32,11 @@ public final class AuthoritiesPK implements Serializable {
 		return new JSONSerializer().exclude("*.class").serialize(collection);
 	}
 
-	public static Collection<AuthoritiesPK> fromJsonArrayToAuthoritiesPKs(String json) {
-		return new JSONDeserializer<List<AuthoritiesPK>>().use(null, ArrayList.class)
-				.use("values", AuthoritiesPK.class).deserialize(json);
-	}
+	@Column(name = "authority", columnDefinition = "varchar", nullable = false, length = 64)
+	private String authority;
 
 	@Column(name = "username", columnDefinition = "varchar", nullable = false, length = 64)
 	private String username;
-
-	@Column(name = "authority", columnDefinition = "varchar", nullable = false, length = 64)
-	private String authority;
 
 	public AuthoritiesPK(String username, String authority) {
 		super();
@@ -52,11 +48,15 @@ public final class AuthoritiesPK implements Serializable {
 		super();
 	}
 
+	public String getAuthority() {
+		return authority;
+	}
+
 	public String getUsername() {
 		return username;
 	}
 
-	public String getAuthority() {
-		return authority;
+	public String toJson() {
+		return new JSONSerializer().exclude("*.class").serialize(this);
 	}
 }

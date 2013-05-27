@@ -47,21 +47,20 @@ import flexjson.JSONSerializer;
 @Audited
 public class Catalog {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "id", columnDefinition = "serial")
-	private Integer id;
-
-	public Integer getId() {
-		return this.id;
+	public static long countCatalogs() {
+		return entityManager().createQuery("SELECT COUNT(o) FROM Catalog o", Long.class).getSingleResult();
 	}
 
-	public void setId(Integer id) {
-		this.id = id;
+	@Async
+	public static void deleteIndex(Catalog catalog) {
+		SolrServer solrServer = solrServer();
+		try {
+			solrServer.deleteById("catalog_" + catalog.getId());
+			solrServer.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
-
-	@PersistenceContext
-	transient EntityManager entityManager;
 
 	public static final EntityManager entityManager() {
 		EntityManager em = new Catalog().entityManager;
@@ -69,10 +68,6 @@ public class Catalog {
 			throw new IllegalStateException(
 					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
 		return em;
-	}
-
-	public static long countCatalogs() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM Catalog o", Long.class).getSingleResult();
 	}
 
 	public static List<Catalog> findAllCatalogs() {
@@ -90,85 +85,13 @@ public class Catalog {
 				.setMaxResults(maxResults).getResultList();
 	}
 
-	@Transactional
-	public void persist() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.persist(this);
-	}
-
-	@Transactional
-	public void remove() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		if (this.entityManager.contains(this)) {
-			this.entityManager.remove(this);
-		} else {
-			Catalog attached = Catalog.findCatalog(this.id);
-			this.entityManager.remove(attached);
-		}
-	}
-
-	@Transactional
-	public void flush() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.flush();
-	}
-
-	@Transactional
-	public void clear() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.clear();
-	}
-
-	@Transactional
-	public Catalog merge() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		Catalog merged = this.entityManager.merge(this);
-		this.entityManager.flush();
-		return merged;
-	}
-
-	public String toString() {
-		return new ReflectionToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE).setExcludeFieldNames("parentId")
-				.toString();
-	}
-
-	public String toJson() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
-	}
-
-	public static Catalog fromJsonToCatalog(String json) {
-		return new JSONDeserializer<Catalog>().use(null, Catalog.class).deserialize(json);
-	}
-
-	public static String toJsonArray(Collection<Catalog> collection) {
-		return new JSONSerializer().exclude("*.class").serialize(collection);
-	}
-
 	public static Collection<Catalog> fromJsonArrayToCatalogs(String json) {
 		return new JSONDeserializer<List<Catalog>>().use(null, ArrayList.class).use("values", Catalog.class)
 				.deserialize(json);
 	}
 
-	@Autowired
-	transient SolrServer solrServer;
-
-	public static QueryResponse search(String queryString) {
-		String searchString = "Catalog_solrsummary_t:" + queryString;
-		return search(new SolrQuery(searchString.toLowerCase()));
-	}
-
-	public static QueryResponse search(SolrQuery query) {
-		try {
-			return solrServer().query(query);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return new QueryResponse();
+	public static Catalog fromJsonToCatalog(String json) {
+		return new JSONDeserializer<Catalog>().use(null, Catalog.class).deserialize(json);
 	}
 
 	public static void indexCatalog(Catalog catalog) {
@@ -210,15 +133,205 @@ public class Catalog {
 		}
 	}
 
-	@Async
-	public static void deleteIndex(Catalog catalog) {
-		SolrServer solrServer = solrServer();
+	public static QueryResponse search(SolrQuery query) {
 		try {
-			solrServer.deleteById("catalog_" + catalog.getId());
-			solrServer.commit();
+			return solrServer().query(query);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return new QueryResponse();
+	}
+
+	public static QueryResponse search(String queryString) {
+		String searchString = "Catalog_solrsummary_t:" + queryString;
+		return search(new SolrQuery(searchString.toLowerCase()));
+	}
+
+	public static SolrServer solrServer() {
+		SolrServer _solrServer = new Catalog().solrServer;
+		if (_solrServer == null)
+			throw new IllegalStateException(
+					"Solr server has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return _solrServer;
+	}
+
+	public static String toJsonArray(Collection<Catalog> collection) {
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	@Column(name = "added", columnDefinition = "timestamp")
+	@NotNull
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(style = "MM")
+	private Calendar added;
+
+	@OneToMany(mappedBy = "parentId")
+	private Set<Catalog> catalogs;
+
+	@OneToMany(mappedBy = "catalogId")
+	private Set<CatalogStudy> catalogStudies;
+
+	@Column(name = "description", columnDefinition = "text")
+	private String description;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id", columnDefinition = "serial")
+	private Integer id;
+
+	@Column(name = "name", columnDefinition = "varchar", length = 200)
+	@NotNull
+	private String name;
+
+	@ManyToOne
+	@JoinColumn(name = "owner", referencedColumnName = "id", nullable = false)
+	private Users owner;
+
+	@ManyToOne
+	@JoinColumn(name = "parent_id", referencedColumnName = "id", insertable = false, updatable = false)
+	private Catalog parentId;
+
+	@Column(name = "sequencenr", columnDefinition = "int4")
+	private Integer sequencenr;
+
+	@OneToOne(mappedBy = "catalog")
+	private Series series;
+
+	@PersistenceContext
+	transient EntityManager entityManager;
+
+	@Autowired
+	transient SolrServer solrServer;
+
+	@Transactional
+	public void clear() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.clear();
+	}
+
+	@Transactional
+	public void flush() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.flush();
+	}
+
+	public Calendar getAdded() {
+		return added;
+	}
+
+	public Set<Catalog> getCatalogs() {
+		return catalogs;
+	}
+
+	public Set<CatalogStudy> getCatalogStudies() {
+		return catalogStudies;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public Integer getId() {
+		return this.id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public Users getOwner() {
+		return owner;
+	}
+
+	public Catalog getParentId() {
+		return parentId;
+	}
+
+	public Integer getSequencenr() {
+		return sequencenr;
+	}
+
+	public Series getSeries() {
+		return series;
+	}
+
+	@Transactional
+	public Catalog merge() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		Catalog merged = this.entityManager.merge(this);
+		this.entityManager.flush();
+		return merged;
+	}
+
+	@Transactional
+	public void persist() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.persist(this);
+	}
+
+	@Transactional
+	public void remove() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		if (this.entityManager.contains(this)) {
+			this.entityManager.remove(this);
+		} else {
+			Catalog attached = Catalog.findCatalog(this.id);
+			this.entityManager.remove(attached);
+		}
+	}
+
+	public void setAdded(Calendar added) {
+		this.added = added;
+	}
+
+	public void setCatalogs(Set<Catalog> catalogs) {
+		this.catalogs = catalogs;
+	}
+
+	public void setCatalogStudies(Set<CatalogStudy> catalogStudies) {
+		this.catalogStudies = catalogStudies;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setOwner(Users owner) {
+		this.owner = owner;
+	}
+
+	public void setParentId(Catalog parentId) {
+		this.parentId = parentId;
+	}
+
+	public void setSequencenr(Integer sequencenr) {
+		this.sequencenr = sequencenr;
+	}
+
+	public void setSeries(Series series) {
+		this.series = series;
+	}
+
+	public String toJson() {
+		return new JSONSerializer().exclude("*.class").serialize(this);
+	}
+
+	public String toString() {
+		return new ReflectionToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE).setExcludeFieldNames("parentId")
+				.toString();
 	}
 
 	@PostUpdate
@@ -230,118 +343,5 @@ public class Catalog {
 	@PreRemove
 	private void preRemove() {
 		deleteIndex(this);
-	}
-
-	public static SolrServer solrServer() {
-		SolrServer _solrServer = new Catalog().solrServer;
-		if (_solrServer == null)
-			throw new IllegalStateException(
-					"Solr server has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-		return _solrServer;
-	}
-
-	@OneToOne(mappedBy = "catalog")
-	private Series series;
-
-	@OneToMany(mappedBy = "parentId")
-	private Set<Catalog> catalogs;
-
-	@OneToMany(mappedBy = "catalogId")
-	private Set<CatalogStudy> catalogStudies;
-
-	@ManyToOne
-	@JoinColumn(name = "parent_id", referencedColumnName = "id", insertable = false, updatable = false)
-	private Catalog parentId;
-
-	@ManyToOne
-	@JoinColumn(name = "owner", referencedColumnName = "id", nullable = false)
-	private Users owner;
-
-	@Column(name = "name", columnDefinition = "varchar", length = 200)
-	@NotNull
-	private String name;
-
-	@Column(name = "added", columnDefinition = "timestamp")
-	@NotNull
-	@Temporal(TemporalType.TIMESTAMP)
-	@DateTimeFormat(style = "MM")
-	private Calendar added;
-
-	@Column(name = "sequencenr", columnDefinition = "int4")
-	private Integer sequencenr;
-
-	@Column(name = "description", columnDefinition = "text")
-	private String description;
-
-	public Series getSeries() {
-		return series;
-	}
-
-	public void setSeries(Series series) {
-		this.series = series;
-	}
-
-	public Set<Catalog> getCatalogs() {
-		return catalogs;
-	}
-
-	public void setCatalogs(Set<Catalog> catalogs) {
-		this.catalogs = catalogs;
-	}
-
-	public Set<CatalogStudy> getCatalogStudies() {
-		return catalogStudies;
-	}
-
-	public void setCatalogStudies(Set<CatalogStudy> catalogStudies) {
-		this.catalogStudies = catalogStudies;
-	}
-
-	public Catalog getParentId() {
-		return parentId;
-	}
-
-	public void setParentId(Catalog parentId) {
-		this.parentId = parentId;
-	}
-
-	public Users getOwner() {
-		return owner;
-	}
-
-	public void setOwner(Users owner) {
-		this.owner = owner;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public Calendar getAdded() {
-		return added;
-	}
-
-	public void setAdded(Calendar added) {
-		this.added = added;
-	}
-
-	public Integer getSequencenr() {
-		return sequencenr;
-	}
-
-	public void setSequencenr(Integer sequencenr) {
-		this.sequencenr = sequencenr;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
 	}
 }

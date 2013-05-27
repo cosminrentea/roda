@@ -38,44 +38,20 @@ import flexjson.JSONSerializer;
 @Audited
 public class TranslatedTopic {
 
-	@ManyToOne
-	@JoinColumn(name = "lang_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
-	private Lang langId;
-
-	@ManyToOne
-	@JoinColumn(name = "topic_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
-	private Topic topicId;
-
-	@Column(name = "translation", columnDefinition = "text")
-	@NotNull
-	private String translation;
-
-	public Lang getLangId() {
-		return langId;
+	public static long countTranslatedTopics() {
+		return entityManager().createQuery("SELECT COUNT(o) FROM TranslatedTopic o", Long.class).getSingleResult();
 	}
 
-	public void setLangId(Lang langId) {
-		this.langId = langId;
+	@Async
+	public static void deleteIndex(TranslatedTopic translatedTopic) {
+		SolrServer solrServer = solrServer();
+		try {
+			solrServer.deleteById("translatedtopic_" + translatedTopic.getId());
+			solrServer.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
-
-	public Topic getTopicId() {
-		return topicId;
-	}
-
-	public void setTopicId(Topic topicId) {
-		this.topicId = topicId;
-	}
-
-	public String getTranslation() {
-		return translation;
-	}
-
-	public void setTranslation(String translation) {
-		this.translation = translation;
-	}
-
-	@PersistenceContext
-	transient EntityManager entityManager;
 
 	public static final EntityManager entityManager() {
 		EntityManager em = new TranslatedTopic().entityManager;
@@ -83,10 +59,6 @@ public class TranslatedTopic {
 			throw new IllegalStateException(
 					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
 		return em;
-	}
-
-	public static long countTranslatedTopics() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM TranslatedTopic o", Long.class).getSingleResult();
 	}
 
 	public static List<TranslatedTopic> findAllTranslatedTopics() {
@@ -104,63 +76,13 @@ public class TranslatedTopic {
 				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
 	}
 
-	@Transactional
-	public void persist() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.persist(this);
+	public static Collection<TranslatedTopic> fromJsonArrayToTranslatedTopics(String json) {
+		return new JSONDeserializer<List<TranslatedTopic>>().use(null, ArrayList.class)
+				.use("values", TranslatedTopic.class).deserialize(json);
 	}
 
-	@Transactional
-	public void remove() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		if (this.entityManager.contains(this)) {
-			this.entityManager.remove(this);
-		} else {
-			TranslatedTopic attached = TranslatedTopic.findTranslatedTopic(this.id);
-			this.entityManager.remove(attached);
-		}
-	}
-
-	@Transactional
-	public void flush() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.flush();
-	}
-
-	@Transactional
-	public void clear() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.clear();
-	}
-
-	@Transactional
-	public TranslatedTopic merge() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		TranslatedTopic merged = this.entityManager.merge(this);
-		this.entityManager.flush();
-		return merged;
-	}
-
-	@Autowired
-	transient SolrServer solrServer;
-
-	public static QueryResponse search(String queryString) {
-		String searchString = "TranslatedTopic_solrsummary_t:" + queryString;
-		return search(new SolrQuery(searchString.toLowerCase()));
-	}
-
-	public static QueryResponse search(SolrQuery query) {
-		try {
-			return solrServer().query(query);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return new QueryResponse();
+	public static TranslatedTopic fromJsonToTranslatedTopic(String json) {
+		return new JSONDeserializer<TranslatedTopic>().use(null, TranslatedTopic.class).deserialize(json);
 	}
 
 	public static void indexTranslatedTopic(TranslatedTopic translatedTopic) {
@@ -190,15 +112,133 @@ public class TranslatedTopic {
 		}
 	}
 
-	@Async
-	public static void deleteIndex(TranslatedTopic translatedTopic) {
-		SolrServer solrServer = solrServer();
+	public static QueryResponse search(SolrQuery query) {
 		try {
-			solrServer.deleteById("translatedtopic_" + translatedTopic.getId());
-			solrServer.commit();
+			return solrServer().query(query);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return new QueryResponse();
+	}
+
+	public static QueryResponse search(String queryString) {
+		String searchString = "TranslatedTopic_solrsummary_t:" + queryString;
+		return search(new SolrQuery(searchString.toLowerCase()));
+	}
+
+	public static SolrServer solrServer() {
+		SolrServer _solrServer = new TranslatedTopic().solrServer;
+		if (_solrServer == null)
+			throw new IllegalStateException(
+					"Solr server has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return _solrServer;
+	}
+
+	public static String toJsonArray(Collection<TranslatedTopic> collection) {
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	@EmbeddedId
+	private TranslatedTopicPK id;
+
+	@ManyToOne
+	@JoinColumn(name = "lang_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	private Lang langId;
+
+	@ManyToOne
+	@JoinColumn(name = "topic_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	private Topic topicId;
+
+	@Column(name = "translation", columnDefinition = "text")
+	@NotNull
+	private String translation;
+
+	@PersistenceContext
+	transient EntityManager entityManager;
+
+	@Autowired
+	transient SolrServer solrServer;
+
+	@Transactional
+	public void clear() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.clear();
+	}
+
+	@Transactional
+	public void flush() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.flush();
+	}
+
+	public TranslatedTopicPK getId() {
+		return this.id;
+	}
+
+	public Lang getLangId() {
+		return langId;
+	}
+
+	public Topic getTopicId() {
+		return topicId;
+	}
+
+	public String getTranslation() {
+		return translation;
+	}
+
+	@Transactional
+	public TranslatedTopic merge() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		TranslatedTopic merged = this.entityManager.merge(this);
+		this.entityManager.flush();
+		return merged;
+	}
+
+	@Transactional
+	public void persist() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.persist(this);
+	}
+
+	@Transactional
+	public void remove() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		if (this.entityManager.contains(this)) {
+			this.entityManager.remove(this);
+		} else {
+			TranslatedTopic attached = TranslatedTopic.findTranslatedTopic(this.id);
+			this.entityManager.remove(attached);
+		}
+	}
+
+	public void setId(TranslatedTopicPK id) {
+		this.id = id;
+	}
+
+	public void setLangId(Lang langId) {
+		this.langId = langId;
+	}
+
+	public void setTopicId(Topic topicId) {
+		this.topicId = topicId;
+	}
+
+	public void setTranslation(String translation) {
+		this.translation = translation;
+	}
+
+	public String toJson() {
+		return new JSONSerializer().exclude("*.class").serialize(this);
+	}
+
+	public String toString() {
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate
@@ -210,45 +250,5 @@ public class TranslatedTopic {
 	@PreRemove
 	private void preRemove() {
 		deleteIndex(this);
-	}
-
-	public static SolrServer solrServer() {
-		SolrServer _solrServer = new TranslatedTopic().solrServer;
-		if (_solrServer == null)
-			throw new IllegalStateException(
-					"Solr server has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-		return _solrServer;
-	}
-
-	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
-	}
-
-	@EmbeddedId
-	private TranslatedTopicPK id;
-
-	public TranslatedTopicPK getId() {
-		return this.id;
-	}
-
-	public void setId(TranslatedTopicPK id) {
-		this.id = id;
-	}
-
-	public String toJson() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
-	}
-
-	public static TranslatedTopic fromJsonToTranslatedTopic(String json) {
-		return new JSONDeserializer<TranslatedTopic>().use(null, TranslatedTopic.class).deserialize(json);
-	}
-
-	public static String toJsonArray(Collection<TranslatedTopic> collection) {
-		return new JSONSerializer().exclude("*.class").serialize(collection);
-	}
-
-	public static Collection<TranslatedTopic> fromJsonArrayToTranslatedTopics(String json) {
-		return new JSONDeserializer<List<TranslatedTopic>>().use(null, ArrayList.class)
-				.use("values", TranslatedTopic.class).deserialize(json);
 	}
 }

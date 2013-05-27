@@ -40,69 +40,42 @@ import flexjson.JSONSerializer;
 @Audited
 public class CmsSnippet {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "id", columnDefinition = "serial")
-	private Integer id;
-
-	public Integer getId() {
-		return this.id;
+	public static long countCmsSnippets() {
+		return entityManager().createQuery("SELECT COUNT(o) FROM CmsSnippet o", Long.class).getSingleResult();
 	}
 
-	public void setId(Integer id) {
-		this.id = id;
+	@Async
+	public static void deleteIndex(CmsSnippet cmsSnippet) {
+		SolrServer solrServer = solrServer();
+		try {
+			solrServer.deleteById("cmssnippet_" + cmsSnippet.getId());
+			solrServer.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
-	@ManyToOne
-	@JoinColumn(name = "cms_snippet_group_id", referencedColumnName = "id")
-	private CmsSnippetGroup cmsSnippetGroupId;
-
-	@Column(name = "name", columnDefinition = "varchar", length = 200)
-	@NotNull
-	private String name;
-
-	@Column(name = "snippet_content", columnDefinition = "text")
-	@NotNull
-	private String snippetContent;
-
-	public CmsSnippetGroup getCmsSnippetGroupId() {
-		return cmsSnippetGroupId;
+	public static final EntityManager entityManager() {
+		EntityManager em = new CmsSnippet().entityManager;
+		if (em == null)
+			throw new IllegalStateException(
+					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return em;
 	}
 
-	public void setCmsSnippetGroupId(CmsSnippetGroup cmsSnippetGroupId) {
-		this.cmsSnippetGroupId = cmsSnippetGroupId;
+	public static List<CmsSnippet> findAllCmsSnippets() {
+		return entityManager().createQuery("SELECT o FROM CmsSnippet o", CmsSnippet.class).getResultList();
 	}
 
-	public String getName() {
-		return name;
+	public static CmsSnippet findCmsSnippet(Integer id) {
+		if (id == null)
+			return null;
+		return entityManager().find(CmsSnippet.class, id);
 	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getSnippetContent() {
-		return snippetContent;
-	}
-
-	public void setSnippetContent(String snippetContent) {
-		this.snippetContent = snippetContent;
-	}
-
-	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
-	}
-
-	public String toJson() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
-	}
-
-	public static CmsSnippet fromJsonToCmsSnippet(String json) {
-		return new JSONDeserializer<CmsSnippet>().use(null, CmsSnippet.class).deserialize(json);
-	}
-
-	public static String toJsonArray(Collection<CmsSnippet> collection) {
-		return new JSONSerializer().exclude("*.class").serialize(collection);
+	public static List<CmsSnippet> findCmsSnippetEntries(int firstResult, int maxResults) {
+		return entityManager().createQuery("SELECT o FROM CmsSnippet o", CmsSnippet.class).setFirstResult(firstResult)
+				.setMaxResults(maxResults).getResultList();
 	}
 
 	public static Collection<CmsSnippet> fromJsonArrayToCmsSnippets(String json) {
@@ -110,21 +83,8 @@ public class CmsSnippet {
 				.deserialize(json);
 	}
 
-	@Autowired
-	transient SolrServer solrServer;
-
-	public static QueryResponse search(String queryString) {
-		String searchString = "CmsSnippet_solrsummary_t:" + queryString;
-		return search(new SolrQuery(searchString.toLowerCase()));
-	}
-
-	public static QueryResponse search(SolrQuery query) {
-		try {
-			return solrServer().query(query);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return new QueryResponse();
+	public static CmsSnippet fromJsonToCmsSnippet(String json) {
+		return new JSONDeserializer<CmsSnippet>().use(null, CmsSnippet.class).deserialize(json);
 	}
 
 	public static void indexCmsSnippet(CmsSnippet cmsSnippet) {
@@ -159,26 +119,18 @@ public class CmsSnippet {
 		}
 	}
 
-	@Async
-	public static void deleteIndex(CmsSnippet cmsSnippet) {
-		SolrServer solrServer = solrServer();
+	public static QueryResponse search(SolrQuery query) {
 		try {
-			solrServer.deleteById("cmssnippet_" + cmsSnippet.getId());
-			solrServer.commit();
+			return solrServer().query(query);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return new QueryResponse();
 	}
 
-	@PostUpdate
-	@PostPersist
-	private void postPersistOrUpdate() {
-		indexCmsSnippet(this);
-	}
-
-	@PreRemove
-	private void preRemove() {
-		deleteIndex(this);
+	public static QueryResponse search(String queryString) {
+		String searchString = "CmsSnippet_solrsummary_t:" + queryString;
+		return search(new SolrQuery(searchString.toLowerCase()));
 	}
 
 	public static SolrServer solrServer() {
@@ -189,34 +141,70 @@ public class CmsSnippet {
 		return _solrServer;
 	}
 
+	public static String toJsonArray(Collection<CmsSnippet> collection) {
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	@ManyToOne
+	@JoinColumn(name = "cms_snippet_group_id", referencedColumnName = "id")
+	private CmsSnippetGroup cmsSnippetGroupId;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id", columnDefinition = "serial")
+	private Integer id;
+
+	@Column(name = "name", columnDefinition = "varchar", length = 200)
+	@NotNull
+	private String name;
+
+	@Column(name = "snippet_content", columnDefinition = "text")
+	@NotNull
+	private String snippetContent;
+
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	public static final EntityManager entityManager() {
-		EntityManager em = new CmsSnippet().entityManager;
-		if (em == null)
-			throw new IllegalStateException(
-					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-		return em;
+	@Autowired
+	transient SolrServer solrServer;
+
+	@Transactional
+	public void clear() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.clear();
 	}
 
-	public static long countCmsSnippets() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM CmsSnippet o", Long.class).getSingleResult();
+	@Transactional
+	public void flush() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.flush();
 	}
 
-	public static List<CmsSnippet> findAllCmsSnippets() {
-		return entityManager().createQuery("SELECT o FROM CmsSnippet o", CmsSnippet.class).getResultList();
+	public CmsSnippetGroup getCmsSnippetGroupId() {
+		return cmsSnippetGroupId;
 	}
 
-	public static CmsSnippet findCmsSnippet(Integer id) {
-		if (id == null)
-			return null;
-		return entityManager().find(CmsSnippet.class, id);
+	public Integer getId() {
+		return this.id;
 	}
 
-	public static List<CmsSnippet> findCmsSnippetEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM CmsSnippet o", CmsSnippet.class).setFirstResult(firstResult)
-				.setMaxResults(maxResults).getResultList();
+	public String getName() {
+		return name;
+	}
+
+	public String getSnippetContent() {
+		return snippetContent;
+	}
+
+	@Transactional
+	public CmsSnippet merge() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		CmsSnippet merged = this.entityManager.merge(this);
+		this.entityManager.flush();
+		return merged;
 	}
 
 	@Transactional
@@ -238,26 +226,38 @@ public class CmsSnippet {
 		}
 	}
 
-	@Transactional
-	public void flush() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.flush();
+	public void setCmsSnippetGroupId(CmsSnippetGroup cmsSnippetGroupId) {
+		this.cmsSnippetGroupId = cmsSnippetGroupId;
 	}
 
-	@Transactional
-	public void clear() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.clear();
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
-	@Transactional
-	public CmsSnippet merge() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		CmsSnippet merged = this.entityManager.merge(this);
-		this.entityManager.flush();
-		return merged;
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setSnippetContent(String snippetContent) {
+		this.snippetContent = snippetContent;
+	}
+
+	public String toJson() {
+		return new JSONSerializer().exclude("*.class").serialize(this);
+	}
+
+	public String toString() {
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+	}
+
+	@PostUpdate
+	@PostPersist
+	private void postPersistOrUpdate() {
+		indexCmsSnippet(this);
+	}
+
+	@PreRemove
+	private void preRemove() {
+		deleteIndex(this);
 	}
 }

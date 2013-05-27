@@ -19,8 +19,9 @@ public final class StudyDocumentsPK implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	public String toJson() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
+	public static Collection<StudyDocumentsPK> fromJsonArrayToStudyDocumentsPKs(String json) {
+		return new JSONDeserializer<List<StudyDocumentsPK>>().use(null, ArrayList.class)
+				.use("values", StudyDocumentsPK.class).deserialize(json);
 	}
 
 	public static StudyDocumentsPK fromJsonToStudyDocumentsPK(String json) {
@@ -31,16 +32,11 @@ public final class StudyDocumentsPK implements Serializable {
 		return new JSONSerializer().exclude("*.class").serialize(collection);
 	}
 
-	public static Collection<StudyDocumentsPK> fromJsonArrayToStudyDocumentsPKs(String json) {
-		return new JSONDeserializer<List<StudyDocumentsPK>>().use(null, ArrayList.class)
-				.use("values", StudyDocumentsPK.class).deserialize(json);
-	}
+	@Column(name = "document_id", columnDefinition = "int4", nullable = false)
+	private Integer documentId;
 
 	@Column(name = "study_id", columnDefinition = "int4", nullable = false)
 	private Integer studyId;
-
-	@Column(name = "document_id", columnDefinition = "int4", nullable = false)
-	private Integer documentId;
 
 	public StudyDocumentsPK(Integer studyId, Integer documentId) {
 		super();
@@ -52,11 +48,15 @@ public final class StudyDocumentsPK implements Serializable {
 		super();
 	}
 
+	public Integer getDocumentId() {
+		return documentId;
+	}
+
 	public Integer getStudyId() {
 		return studyId;
 	}
 
-	public Integer getDocumentId() {
-		return documentId;
+	public String toJson() {
+		return new JSONSerializer().exclude("*.class").serialize(this);
 	}
 }

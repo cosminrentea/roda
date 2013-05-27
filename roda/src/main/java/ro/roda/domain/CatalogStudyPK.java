@@ -17,6 +17,21 @@ import flexjson.JSONSerializer;
 @Embeddable
 public final class CatalogStudyPK implements Serializable {
 
+	private static final long serialVersionUID = 1L;
+
+	public static Collection<CatalogStudyPK> fromJsonArrayToCatalogStudyPKs(String json) {
+		return new JSONDeserializer<List<CatalogStudyPK>>().use(null, ArrayList.class)
+				.use("values", CatalogStudyPK.class).deserialize(json);
+	}
+
+	public static CatalogStudyPK fromJsonToCatalogStudyPK(String json) {
+		return new JSONDeserializer<CatalogStudyPK>().use(null, CatalogStudyPK.class).deserialize(json);
+	}
+
+	public static String toJsonArray(Collection<CatalogStudyPK> collection) {
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
 	@Column(name = "catalog_id", columnDefinition = "int4", nullable = false)
 	private Integer catalogId;
 
@@ -41,22 +56,7 @@ public final class CatalogStudyPK implements Serializable {
 		return studyId;
 	}
 
-	private static final long serialVersionUID = 1L;
-
 	public String toJson() {
 		return new JSONSerializer().exclude("*.class").serialize(this);
-	}
-
-	public static CatalogStudyPK fromJsonToCatalogStudyPK(String json) {
-		return new JSONDeserializer<CatalogStudyPK>().use(null, CatalogStudyPK.class).deserialize(json);
-	}
-
-	public static String toJsonArray(Collection<CatalogStudyPK> collection) {
-		return new JSONSerializer().exclude("*.class").serialize(collection);
-	}
-
-	public static Collection<CatalogStudyPK> fromJsonArrayToCatalogStudyPKs(String json) {
-		return new JSONDeserializer<List<CatalogStudyPK>>().use(null, ArrayList.class)
-				.use("values", CatalogStudyPK.class).deserialize(json);
 	}
 }

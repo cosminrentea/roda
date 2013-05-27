@@ -44,8 +44,20 @@ import flexjson.JSONSerializer;
 @Audited
 public class City {
 
-	@PersistenceContext
-	transient EntityManager entityManager;
+	public static long countCitys() {
+		return entityManager().createQuery("SELECT COUNT(o) FROM City o", Long.class).getSingleResult();
+	}
+
+	@Async
+	public static void deleteIndex(City city) {
+		SolrServer solrServer = solrServer();
+		try {
+			solrServer.deleteById("city_" + city.getId());
+			solrServer.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	public static final EntityManager entityManager() {
 		EntityManager em = new City().entityManager;
@@ -53,10 +65,6 @@ public class City {
 			throw new IllegalStateException(
 					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
 		return em;
-	}
-
-	public static long countCitys() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM City o", Long.class).getSingleResult();
 	}
 
 	public static List<City> findAllCitys() {
@@ -74,210 +82,13 @@ public class City {
 				.setMaxResults(maxResults).getResultList();
 	}
 
-	@Transactional
-	public void persist() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.persist(this);
-	}
-
-	@Transactional
-	public void remove() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		if (this.entityManager.contains(this)) {
-			this.entityManager.remove(this);
-		} else {
-			City attached = City.findCity(this.id);
-			this.entityManager.remove(attached);
-		}
-	}
-
-	@Transactional
-	public void flush() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.flush();
-	}
-
-	@Transactional
-	public void clear() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.clear();
-	}
-
-	@Transactional
-	public City merge() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		City merged = this.entityManager.merge(this);
-		this.entityManager.flush();
-		return merged;
-	}
-
-	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
-	}
-
-	public String toJson() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
-	}
-
-	public static City fromJsonToCity(String json) {
-		return new JSONDeserializer<City>().use(null, City.class).deserialize(json);
-	}
-
-	public static String toJsonArray(Collection<City> collection) {
-		return new JSONSerializer().exclude("*.class").serialize(collection);
-	}
-
 	public static Collection<City> fromJsonArrayToCitys(String json) {
 		return new JSONDeserializer<List<City>>().use(null, ArrayList.class).use("values", City.class)
 				.deserialize(json);
 	}
 
-	@ManyToMany
-	@JoinTable(name = "region_city", joinColumns = { @JoinColumn(name = "city_id", nullable = false) }, inverseJoinColumns = { @JoinColumn(name = "region_id", nullable = false) })
-	private Set<Region> regions;
-
-	@OneToMany(mappedBy = "cityId")
-	private Set<Address> addresses;
-
-	@ManyToOne
-	@JoinColumn(name = "country_id", referencedColumnName = "id", nullable = false)
-	private Country countryId;
-
-	@Column(name = "name", columnDefinition = "text")
-	@NotNull
-	private String name;
-
-	@Column(name = "city_code", columnDefinition = "varchar", length = 50)
-	private String cityCode;
-
-	@Column(name = "city_code_name", columnDefinition = "varchar", length = 100)
-	private String cityCodeName;
-
-	@Column(name = "city_code_sup", columnDefinition = "varchar", length = 100)
-	private String cityCodeSup;
-
-	@Column(name = "prefix", columnDefinition = "varchar", length = 50)
-	private String prefix;
-
-	@Column(name = "city_type", columnDefinition = "varchar", length = 50)
-	private String cityType;
-
-	@Column(name = "city_type_system", columnDefinition = "varchar", length = 50)
-	private String cityTypeSystem;
-
-	public Set<Region> getRegions() {
-		return regions;
-	}
-
-	public void setRegions(Set<Region> regions) {
-		this.regions = regions;
-	}
-
-	public Set<Address> getAddresses() {
-		return addresses;
-	}
-
-	public void setAddresses(Set<Address> addresses) {
-		this.addresses = addresses;
-	}
-
-	public Country getCountryId() {
-		return countryId;
-	}
-
-	public void setCountryId(Country countryId) {
-		this.countryId = countryId;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getCityCode() {
-		return cityCode;
-	}
-
-	public void setCityCode(String cityCode) {
-		this.cityCode = cityCode;
-	}
-
-	public String getCityCodeName() {
-		return cityCodeName;
-	}
-
-	public void setCityCodeName(String cityCodeName) {
-		this.cityCodeName = cityCodeName;
-	}
-
-	public String getCityCodeSup() {
-		return cityCodeSup;
-	}
-
-	public void setCityCodeSup(String cityCodeSup) {
-		this.cityCodeSup = cityCodeSup;
-	}
-
-	public String getPrefix() {
-		return prefix;
-	}
-
-	public void setPrefix(String prefix) {
-		this.prefix = prefix;
-	}
-
-	public String getCityType() {
-		return cityType;
-	}
-
-	public void setCityType(String cityType) {
-		this.cityType = cityType;
-	}
-
-	public String getCityTypeSystem() {
-		return cityTypeSystem;
-	}
-
-	public void setCityTypeSystem(String cityTypeSystem) {
-		this.cityTypeSystem = cityTypeSystem;
-	}
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "id", columnDefinition = "serial")
-	private Integer id;
-
-	public Integer getId() {
-		return this.id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	@Autowired
-	transient SolrServer solrServer;
-
-	public static QueryResponse search(String queryString) {
-		String searchString = "City_solrsummary_t:" + queryString;
-		return search(new SolrQuery(searchString.toLowerCase()));
-	}
-
-	public static QueryResponse search(SolrQuery query) {
-		try {
-			return solrServer().query(query);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return new QueryResponse();
+	public static City fromJsonToCity(String json) {
+		return new JSONDeserializer<City>().use(null, City.class).deserialize(json);
 	}
 
 	public static void indexCity(City city) {
@@ -321,15 +132,212 @@ public class City {
 		}
 	}
 
-	@Async
-	public static void deleteIndex(City city) {
-		SolrServer solrServer = solrServer();
+	public static QueryResponse search(SolrQuery query) {
 		try {
-			solrServer.deleteById("city_" + city.getId());
-			solrServer.commit();
+			return solrServer().query(query);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return new QueryResponse();
+	}
+
+	public static QueryResponse search(String queryString) {
+		String searchString = "City_solrsummary_t:" + queryString;
+		return search(new SolrQuery(searchString.toLowerCase()));
+	}
+
+	public static SolrServer solrServer() {
+		SolrServer _solrServer = new City().solrServer;
+		if (_solrServer == null)
+			throw new IllegalStateException(
+					"Solr server has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return _solrServer;
+	}
+
+	public static String toJsonArray(Collection<City> collection) {
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	@OneToMany(mappedBy = "cityId")
+	private Set<Address> addresses;
+
+	@Column(name = "city_code", columnDefinition = "varchar", length = 50)
+	private String cityCode;
+
+	@Column(name = "city_code_name", columnDefinition = "varchar", length = 100)
+	private String cityCodeName;
+
+	@Column(name = "city_code_sup", columnDefinition = "varchar", length = 100)
+	private String cityCodeSup;
+
+	@Column(name = "city_type", columnDefinition = "varchar", length = 50)
+	private String cityType;
+
+	@Column(name = "city_type_system", columnDefinition = "varchar", length = 50)
+	private String cityTypeSystem;
+
+	@ManyToOne
+	@JoinColumn(name = "country_id", referencedColumnName = "id", nullable = false)
+	private Country countryId;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id", columnDefinition = "serial")
+	private Integer id;
+
+	@Column(name = "name", columnDefinition = "text")
+	@NotNull
+	private String name;
+
+	@Column(name = "prefix", columnDefinition = "varchar", length = 50)
+	private String prefix;
+
+	@ManyToMany
+	@JoinTable(name = "region_city", joinColumns = { @JoinColumn(name = "city_id", nullable = false) }, inverseJoinColumns = { @JoinColumn(name = "region_id", nullable = false) })
+	private Set<Region> regions;
+
+	@PersistenceContext
+	transient EntityManager entityManager;
+
+	@Autowired
+	transient SolrServer solrServer;
+
+	@Transactional
+	public void clear() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.clear();
+	}
+
+	@Transactional
+	public void flush() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.flush();
+	}
+
+	public Set<Address> getAddresses() {
+		return addresses;
+	}
+
+	public String getCityCode() {
+		return cityCode;
+	}
+
+	public String getCityCodeName() {
+		return cityCodeName;
+	}
+
+	public String getCityCodeSup() {
+		return cityCodeSup;
+	}
+
+	public String getCityType() {
+		return cityType;
+	}
+
+	public String getCityTypeSystem() {
+		return cityTypeSystem;
+	}
+
+	public Country getCountryId() {
+		return countryId;
+	}
+
+	public Integer getId() {
+		return this.id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public String getPrefix() {
+		return prefix;
+	}
+
+	public Set<Region> getRegions() {
+		return regions;
+	}
+
+	@Transactional
+	public City merge() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		City merged = this.entityManager.merge(this);
+		this.entityManager.flush();
+		return merged;
+	}
+
+	@Transactional
+	public void persist() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.persist(this);
+	}
+
+	@Transactional
+	public void remove() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		if (this.entityManager.contains(this)) {
+			this.entityManager.remove(this);
+		} else {
+			City attached = City.findCity(this.id);
+			this.entityManager.remove(attached);
+		}
+	}
+
+	public void setAddresses(Set<Address> addresses) {
+		this.addresses = addresses;
+	}
+
+	public void setCityCode(String cityCode) {
+		this.cityCode = cityCode;
+	}
+
+	public void setCityCodeName(String cityCodeName) {
+		this.cityCodeName = cityCodeName;
+	}
+
+	public void setCityCodeSup(String cityCodeSup) {
+		this.cityCodeSup = cityCodeSup;
+	}
+
+	public void setCityType(String cityType) {
+		this.cityType = cityType;
+	}
+
+	public void setCityTypeSystem(String cityTypeSystem) {
+		this.cityTypeSystem = cityTypeSystem;
+	}
+
+	public void setCountryId(Country countryId) {
+		this.countryId = countryId;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setPrefix(String prefix) {
+		this.prefix = prefix;
+	}
+
+	public void setRegions(Set<Region> regions) {
+		this.regions = regions;
+	}
+
+	public String toJson() {
+		return new JSONSerializer().exclude("*.class").serialize(this);
+	}
+
+	public String toString() {
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate
@@ -341,13 +349,5 @@ public class City {
 	@PreRemove
 	private void preRemove() {
 		deleteIndex(this);
-	}
-
-	public static SolrServer solrServer() {
-		SolrServer _solrServer = new City().solrServer;
-		if (_solrServer == null)
-			throw new IllegalStateException(
-					"Solr server has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-		return _solrServer;
 	}
 }

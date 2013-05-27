@@ -38,61 +38,20 @@ import flexjson.JSONSerializer;
 @Audited
 public class PersonInternet {
 
-	public String toJson() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
+	public static long countPersonInternets() {
+		return entityManager().createQuery("SELECT COUNT(o) FROM PersonInternet o", Long.class).getSingleResult();
 	}
 
-	public static PersonInternet fromJsonToPersonInternet(String json) {
-		return new JSONDeserializer<PersonInternet>().use(null, PersonInternet.class).deserialize(json);
+	@Async
+	public static void deleteIndex(PersonInternet personInternet) {
+		SolrServer solrServer = solrServer();
+		try {
+			solrServer.deleteById("personinternet_" + personInternet.getId());
+			solrServer.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
-
-	public static String toJsonArray(Collection<PersonInternet> collection) {
-		return new JSONSerializer().exclude("*.class").serialize(collection);
-	}
-
-	public static Collection<PersonInternet> fromJsonArrayToPersonInternets(String json) {
-		return new JSONDeserializer<List<PersonInternet>>().use(null, ArrayList.class)
-				.use("values", PersonInternet.class).deserialize(json);
-	}
-
-	@ManyToOne
-	@JoinColumn(name = "internet_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
-	private Internet internetId;
-
-	@ManyToOne
-	@JoinColumn(name = "person_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
-	private Person personId;
-
-	@Column(name = "main", columnDefinition = "bool")
-	@NotNull
-	private boolean main;
-
-	public Internet getInternetId() {
-		return internetId;
-	}
-
-	public void setInternetId(Internet internetId) {
-		this.internetId = internetId;
-	}
-
-	public Person getPersonId() {
-		return personId;
-	}
-
-	public void setPersonId(Person personId) {
-		this.personId = personId;
-	}
-
-	public boolean isMain() {
-		return main;
-	}
-
-	public void setMain(boolean main) {
-		this.main = main;
-	}
-
-	@PersistenceContext
-	transient EntityManager entityManager;
 
 	public static final EntityManager entityManager() {
 		EntityManager em = new PersonInternet().entityManager;
@@ -100,10 +59,6 @@ public class PersonInternet {
 			throw new IllegalStateException(
 					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
 		return em;
-	}
-
-	public static long countPersonInternets() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM PersonInternet o", Long.class).getSingleResult();
 	}
 
 	public static List<PersonInternet> findAllPersonInternets() {
@@ -121,74 +76,13 @@ public class PersonInternet {
 				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
 	}
 
-	@Transactional
-	public void persist() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.persist(this);
+	public static Collection<PersonInternet> fromJsonArrayToPersonInternets(String json) {
+		return new JSONDeserializer<List<PersonInternet>>().use(null, ArrayList.class)
+				.use("values", PersonInternet.class).deserialize(json);
 	}
 
-	@Transactional
-	public void remove() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		if (this.entityManager.contains(this)) {
-			this.entityManager.remove(this);
-		} else {
-			PersonInternet attached = PersonInternet.findPersonInternet(this.id);
-			this.entityManager.remove(attached);
-		}
-	}
-
-	@Transactional
-	public void flush() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.flush();
-	}
-
-	@Transactional
-	public void clear() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.clear();
-	}
-
-	@Transactional
-	public PersonInternet merge() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		PersonInternet merged = this.entityManager.merge(this);
-		this.entityManager.flush();
-		return merged;
-	}
-
-	@EmbeddedId
-	private PersonInternetPK id;
-
-	public PersonInternetPK getId() {
-		return this.id;
-	}
-
-	public void setId(PersonInternetPK id) {
-		this.id = id;
-	}
-
-	@Autowired
-	transient SolrServer solrServer;
-
-	public static QueryResponse search(String queryString) {
-		String searchString = "PersonInternet_solrsummary_t:" + queryString;
-		return search(new SolrQuery(searchString.toLowerCase()));
-	}
-
-	public static QueryResponse search(SolrQuery query) {
-		try {
-			return solrServer().query(query);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return new QueryResponse();
+	public static PersonInternet fromJsonToPersonInternet(String json) {
+		return new JSONDeserializer<PersonInternet>().use(null, PersonInternet.class).deserialize(json);
 	}
 
 	public static void indexPersonInternet(PersonInternet personInternet) {
@@ -218,15 +112,133 @@ public class PersonInternet {
 		}
 	}
 
-	@Async
-	public static void deleteIndex(PersonInternet personInternet) {
-		SolrServer solrServer = solrServer();
+	public static QueryResponse search(SolrQuery query) {
 		try {
-			solrServer.deleteById("personinternet_" + personInternet.getId());
-			solrServer.commit();
+			return solrServer().query(query);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return new QueryResponse();
+	}
+
+	public static QueryResponse search(String queryString) {
+		String searchString = "PersonInternet_solrsummary_t:" + queryString;
+		return search(new SolrQuery(searchString.toLowerCase()));
+	}
+
+	public static SolrServer solrServer() {
+		SolrServer _solrServer = new PersonInternet().solrServer;
+		if (_solrServer == null)
+			throw new IllegalStateException(
+					"Solr server has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return _solrServer;
+	}
+
+	public static String toJsonArray(Collection<PersonInternet> collection) {
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	@EmbeddedId
+	private PersonInternetPK id;
+
+	@ManyToOne
+	@JoinColumn(name = "internet_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	private Internet internetId;
+
+	@Column(name = "main", columnDefinition = "bool")
+	@NotNull
+	private boolean main;
+
+	@ManyToOne
+	@JoinColumn(name = "person_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	private Person personId;
+
+	@PersistenceContext
+	transient EntityManager entityManager;
+
+	@Autowired
+	transient SolrServer solrServer;
+
+	@Transactional
+	public void clear() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.clear();
+	}
+
+	@Transactional
+	public void flush() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.flush();
+	}
+
+	public PersonInternetPK getId() {
+		return this.id;
+	}
+
+	public Internet getInternetId() {
+		return internetId;
+	}
+
+	public Person getPersonId() {
+		return personId;
+	}
+
+	public boolean isMain() {
+		return main;
+	}
+
+	@Transactional
+	public PersonInternet merge() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		PersonInternet merged = this.entityManager.merge(this);
+		this.entityManager.flush();
+		return merged;
+	}
+
+	@Transactional
+	public void persist() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.persist(this);
+	}
+
+	@Transactional
+	public void remove() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		if (this.entityManager.contains(this)) {
+			this.entityManager.remove(this);
+		} else {
+			PersonInternet attached = PersonInternet.findPersonInternet(this.id);
+			this.entityManager.remove(attached);
+		}
+	}
+
+	public void setId(PersonInternetPK id) {
+		this.id = id;
+	}
+
+	public void setInternetId(Internet internetId) {
+		this.internetId = internetId;
+	}
+
+	public void setMain(boolean main) {
+		this.main = main;
+	}
+
+	public void setPersonId(Person personId) {
+		this.personId = personId;
+	}
+
+	public String toJson() {
+		return new JSONSerializer().exclude("*.class").serialize(this);
+	}
+
+	public String toString() {
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate
@@ -238,17 +250,5 @@ public class PersonInternet {
 	@PreRemove
 	private void preRemove() {
 		deleteIndex(this);
-	}
-
-	public static SolrServer solrServer() {
-		SolrServer _solrServer = new PersonInternet().solrServer;
-		if (_solrServer == null)
-			throw new IllegalStateException(
-					"Solr server has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-		return _solrServer;
-	}
-
-	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 }

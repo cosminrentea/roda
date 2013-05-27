@@ -42,21 +42,51 @@ import flexjson.JSONSerializer;
 @Audited
 public class CmsLayout {
 
-	@Autowired
-	transient SolrServer solrServer;
-
-	public static QueryResponse search(String queryString) {
-		String searchString = "CmsLayout_solrsummary_t:" + queryString;
-		return search(new SolrQuery(searchString.toLowerCase()));
+	public static long countCmsLayouts() {
+		return entityManager().createQuery("SELECT COUNT(o) FROM CmsLayout o", Long.class).getSingleResult();
 	}
 
-	public static QueryResponse search(SolrQuery query) {
+	@Async
+	public static void deleteIndex(CmsLayout cmsLayout) {
+		SolrServer solrServer = solrServer();
 		try {
-			return solrServer().query(query);
+			solrServer.deleteById("cmslayout_" + cmsLayout.getId());
+			solrServer.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return new QueryResponse();
+	}
+
+	public static final EntityManager entityManager() {
+		EntityManager em = new CmsLayout().entityManager;
+		if (em == null)
+			throw new IllegalStateException(
+					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return em;
+	}
+
+	public static List<CmsLayout> findAllCmsLayouts() {
+		return entityManager().createQuery("SELECT o FROM CmsLayout o", CmsLayout.class).getResultList();
+	}
+
+	public static CmsLayout findCmsLayout(Integer id) {
+		if (id == null)
+			return null;
+		return entityManager().find(CmsLayout.class, id);
+	}
+
+	public static List<CmsLayout> findCmsLayoutEntries(int firstResult, int maxResults) {
+		return entityManager().createQuery("SELECT o FROM CmsLayout o", CmsLayout.class).setFirstResult(firstResult)
+				.setMaxResults(maxResults).getResultList();
+	}
+
+	public static Collection<CmsLayout> fromJsonArrayToCmsLayouts(String json) {
+		return new JSONDeserializer<List<CmsLayout>>().use(null, ArrayList.class).use("values", CmsLayout.class)
+				.deserialize(json);
+	}
+
+	public static CmsLayout fromJsonToCmsLayout(String json) {
+		return new JSONDeserializer<CmsLayout>().use(null, CmsLayout.class).deserialize(json);
 	}
 
 	public static void indexCmsLayout(CmsLayout cmsLayout) {
@@ -86,26 +116,18 @@ public class CmsLayout {
 		}
 	}
 
-	@Async
-	public static void deleteIndex(CmsLayout cmsLayout) {
-		SolrServer solrServer = solrServer();
+	public static QueryResponse search(SolrQuery query) {
 		try {
-			solrServer.deleteById("cmslayout_" + cmsLayout.getId());
-			solrServer.commit();
+			return solrServer().query(query);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return new QueryResponse();
 	}
 
-	@PostUpdate
-	@PostPersist
-	private void postPersistOrUpdate() {
-		indexCmsLayout(this);
-	}
-
-	@PreRemove
-	private void preRemove() {
-		deleteIndex(this);
+	public static QueryResponse search(String queryString) {
+		String searchString = "CmsLayout_solrsummary_t:" + queryString;
+		return search(new SolrQuery(searchString.toLowerCase()));
 	}
 
 	public static SolrServer solrServer() {
@@ -116,51 +138,77 @@ public class CmsLayout {
 		return _solrServer;
 	}
 
-	public String toJson() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
-	}
-
-	public static CmsLayout fromJsonToCmsLayout(String json) {
-		return new JSONDeserializer<CmsLayout>().use(null, CmsLayout.class).deserialize(json);
-	}
-
 	public static String toJsonArray(Collection<CmsLayout> collection) {
 		return new JSONSerializer().exclude("*.class").serialize(collection);
 	}
 
-	public static Collection<CmsLayout> fromJsonArrayToCmsLayouts(String json) {
-		return new JSONDeserializer<List<CmsLayout>>().use(null, ArrayList.class).use("values", CmsLayout.class)
-				.deserialize(json);
-	}
+	@ManyToOne
+	@JoinColumn(name = "cms_layout_group_id", referencedColumnName = "id")
+	private CmsLayoutGroup cmsLayoutGroupId;
+
+	@OneToMany(mappedBy = "cmsLayoutId")
+	private Set<CmsPage> cmsPages;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id", columnDefinition = "serial")
+	private Integer id;
+
+	@Column(name = "layout_content", columnDefinition = "text")
+	@NotNull
+	private String layoutContent;
+
+	@Column(name = "name", columnDefinition = "varchar", length = 200)
+	@NotNull
+	private String name;
 
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	public static final EntityManager entityManager() {
-		EntityManager em = new CmsLayout().entityManager;
-		if (em == null)
-			throw new IllegalStateException(
-					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-		return em;
+	@Autowired
+	transient SolrServer solrServer;
+
+	@Transactional
+	public void clear() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.clear();
 	}
 
-	public static long countCmsLayouts() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM CmsLayout o", Long.class).getSingleResult();
+	@Transactional
+	public void flush() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.flush();
 	}
 
-	public static List<CmsLayout> findAllCmsLayouts() {
-		return entityManager().createQuery("SELECT o FROM CmsLayout o", CmsLayout.class).getResultList();
+	public CmsLayoutGroup getCmsLayoutGroupId() {
+		return cmsLayoutGroupId;
 	}
 
-	public static CmsLayout findCmsLayout(Integer id) {
-		if (id == null)
-			return null;
-		return entityManager().find(CmsLayout.class, id);
+	public Set<CmsPage> getCmsPages() {
+		return cmsPages;
 	}
 
-	public static List<CmsLayout> findCmsLayoutEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM CmsLayout o", CmsLayout.class).setFirstResult(firstResult)
-				.setMaxResults(maxResults).getResultList();
+	public Integer getId() {
+		return this.id;
+	}
+
+	public String getLayoutContent() {
+		return layoutContent;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	@Transactional
+	public CmsLayout merge() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		CmsLayout merged = this.entityManager.merge(this);
+		this.entityManager.flush();
+		return merged;
 	}
 
 	@Transactional
@@ -182,90 +230,42 @@ public class CmsLayout {
 		}
 	}
 
-	@Transactional
-	public void flush() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.flush();
-	}
-
-	@Transactional
-	public void clear() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.clear();
-	}
-
-	@Transactional
-	public CmsLayout merge() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		CmsLayout merged = this.entityManager.merge(this);
-		this.entityManager.flush();
-		return merged;
-	}
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "id", columnDefinition = "serial")
-	private Integer id;
-
-	public Integer getId() {
-		return this.id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	@OneToMany(mappedBy = "cmsLayoutId")
-	private Set<CmsPage> cmsPages;
-
-	@ManyToOne
-	@JoinColumn(name = "cms_layout_group_id", referencedColumnName = "id")
-	private CmsLayoutGroup cmsLayoutGroupId;
-
-	@Column(name = "name", columnDefinition = "varchar", length = 200)
-	@NotNull
-	private String name;
-
-	@Column(name = "layout_content", columnDefinition = "text")
-	@NotNull
-	private String layoutContent;
-
-	public Set<CmsPage> getCmsPages() {
-		return cmsPages;
+	public void setCmsLayoutGroupId(CmsLayoutGroup cmsLayoutGroupId) {
+		this.cmsLayoutGroupId = cmsLayoutGroupId;
 	}
 
 	public void setCmsPages(Set<CmsPage> cmsPages) {
 		this.cmsPages = cmsPages;
 	}
 
-	public CmsLayoutGroup getCmsLayoutGroupId() {
-		return cmsLayoutGroupId;
-	}
-
-	public void setCmsLayoutGroupId(CmsLayoutGroup cmsLayoutGroupId) {
-		this.cmsLayoutGroupId = cmsLayoutGroupId;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getLayoutContent() {
-		return layoutContent;
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 	public void setLayoutContent(String layoutContent) {
 		this.layoutContent = layoutContent;
 	}
 
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String toJson() {
+		return new JSONSerializer().exclude("*.class").serialize(this);
+	}
+
 	public String toString() {
 		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+	}
+
+	@PostUpdate
+	@PostPersist
+	private void postPersistOrUpdate() {
+		indexCmsLayout(this);
+	}
+
+	@PreRemove
+	private void preRemove() {
+		deleteIndex(this);
 	}
 }

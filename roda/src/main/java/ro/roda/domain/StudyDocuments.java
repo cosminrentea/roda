@@ -34,25 +34,51 @@ import flexjson.JSONSerializer;
 @Audited
 public class StudyDocuments {
 
-	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+	public static long countStudyDocumentses() {
+		return entityManager().createQuery("SELECT COUNT(o) FROM StudyDocuments o", Long.class).getSingleResult();
 	}
 
-	@Autowired
-	transient SolrServer solrServer;
-
-	public static QueryResponse search(String queryString) {
-		String searchString = "StudyDocuments_solrsummary_t:" + queryString;
-		return search(new SolrQuery(searchString.toLowerCase()));
-	}
-
-	public static QueryResponse search(SolrQuery query) {
+	@Async
+	public static void deleteIndex(StudyDocuments studyDocuments) {
+		SolrServer solrServer = solrServer();
 		try {
-			return solrServer().query(query);
+			solrServer.deleteById("studydocuments_" + studyDocuments.getId());
+			solrServer.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return new QueryResponse();
+	}
+
+	public static final EntityManager entityManager() {
+		EntityManager em = new StudyDocuments().entityManager;
+		if (em == null)
+			throw new IllegalStateException(
+					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return em;
+	}
+
+	public static List<StudyDocuments> findAllStudyDocumentses() {
+		return entityManager().createQuery("SELECT o FROM StudyDocuments o", StudyDocuments.class).getResultList();
+	}
+
+	public static StudyDocuments findStudyDocuments(StudyDocumentsPK id) {
+		if (id == null)
+			return null;
+		return entityManager().find(StudyDocuments.class, id);
+	}
+
+	public static List<StudyDocuments> findStudyDocumentsEntries(int firstResult, int maxResults) {
+		return entityManager().createQuery("SELECT o FROM StudyDocuments o", StudyDocuments.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
+	}
+
+	public static Collection<StudyDocuments> fromJsonArrayToStudyDocumentses(String json) {
+		return new JSONDeserializer<List<StudyDocuments>>().use(null, ArrayList.class)
+				.use("values", StudyDocuments.class).deserialize(json);
+	}
+
+	public static StudyDocuments fromJsonToStudyDocuments(String json) {
+		return new JSONDeserializer<StudyDocuments>().use(null, StudyDocuments.class).deserialize(json);
 	}
 
 	public static void indexStudyDocuments(StudyDocuments studyDocuments) {
@@ -81,26 +107,18 @@ public class StudyDocuments {
 		}
 	}
 
-	@Async
-	public static void deleteIndex(StudyDocuments studyDocuments) {
-		SolrServer solrServer = solrServer();
+	public static QueryResponse search(SolrQuery query) {
 		try {
-			solrServer.deleteById("studydocuments_" + studyDocuments.getId());
-			solrServer.commit();
+			return solrServer().query(query);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return new QueryResponse();
 	}
 
-	@PostUpdate
-	@PostPersist
-	private void postPersistOrUpdate() {
-		indexStudyDocuments(this);
-	}
-
-	@PreRemove
-	private void preRemove() {
-		deleteIndex(this);
+	public static QueryResponse search(String queryString) {
+		String searchString = "StudyDocuments_solrsummary_t:" + queryString;
+		return search(new SolrQuery(searchString.toLowerCase()));
 	}
 
 	public static SolrServer solrServer() {
@@ -111,34 +129,44 @@ public class StudyDocuments {
 		return _solrServer;
 	}
 
+	public static String toJsonArray(Collection<StudyDocuments> collection) {
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	@EmbeddedId
+	private StudyDocumentsPK id;
+
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	public static final EntityManager entityManager() {
-		EntityManager em = new StudyDocuments().entityManager;
-		if (em == null)
-			throw new IllegalStateException(
-					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-		return em;
+	@Autowired
+	transient SolrServer solrServer;
+
+	@Transactional
+	public void clear() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.clear();
 	}
 
-	public static long countStudyDocumentses() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM StudyDocuments o", Long.class).getSingleResult();
+	@Transactional
+	public void flush() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.flush();
 	}
 
-	public static List<StudyDocuments> findAllStudyDocumentses() {
-		return entityManager().createQuery("SELECT o FROM StudyDocuments o", StudyDocuments.class).getResultList();
+	public StudyDocumentsPK getId() {
+		return this.id;
 	}
 
-	public static StudyDocuments findStudyDocuments(StudyDocumentsPK id) {
-		if (id == null)
-			return null;
-		return entityManager().find(StudyDocuments.class, id);
-	}
-
-	public static List<StudyDocuments> findStudyDocumentsEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM StudyDocuments o", StudyDocuments.class)
-				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
+	@Transactional
+	public StudyDocuments merge() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		StudyDocuments merged = this.entityManager.merge(this);
+		this.entityManager.flush();
+		return merged;
 	}
 
 	@Transactional
@@ -160,36 +188,6 @@ public class StudyDocuments {
 		}
 	}
 
-	@Transactional
-	public void flush() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.flush();
-	}
-
-	@Transactional
-	public void clear() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.clear();
-	}
-
-	@Transactional
-	public StudyDocuments merge() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		StudyDocuments merged = this.entityManager.merge(this);
-		this.entityManager.flush();
-		return merged;
-	}
-
-	@EmbeddedId
-	private StudyDocumentsPK id;
-
-	public StudyDocumentsPK getId() {
-		return this.id;
-	}
-
 	public void setId(StudyDocumentsPK id) {
 		this.id = id;
 	}
@@ -198,16 +196,18 @@ public class StudyDocuments {
 		return new JSONSerializer().exclude("*.class").serialize(this);
 	}
 
-	public static StudyDocuments fromJsonToStudyDocuments(String json) {
-		return new JSONDeserializer<StudyDocuments>().use(null, StudyDocuments.class).deserialize(json);
+	public String toString() {
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
-	public static String toJsonArray(Collection<StudyDocuments> collection) {
-		return new JSONSerializer().exclude("*.class").serialize(collection);
+	@PostUpdate
+	@PostPersist
+	private void postPersistOrUpdate() {
+		indexStudyDocuments(this);
 	}
 
-	public static Collection<StudyDocuments> fromJsonArrayToStudyDocumentses(String json) {
-		return new JSONDeserializer<List<StudyDocuments>>().use(null, ArrayList.class)
-				.use("values", StudyDocuments.class).deserialize(json);
+	@PreRemove
+	private void preRemove() {
+		deleteIndex(this);
 	}
 }

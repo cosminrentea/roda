@@ -40,8 +40,20 @@ import flexjson.JSONSerializer;
 @Audited
 public class CmsFile {
 
-	@PersistenceContext
-	transient EntityManager entityManager;
+	public static long countCmsFiles() {
+		return entityManager().createQuery("SELECT COUNT(o) FROM CmsFile o", Long.class).getSingleResult();
+	}
+
+	@Async
+	public static void deleteIndex(CmsFile cmsFile) {
+		SolrServer solrServer = solrServer();
+		try {
+			solrServer.deleteById("cmsfile_" + cmsFile.getId());
+			solrServer.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	public static final EntityManager entityManager() {
 		EntityManager em = new CmsFile().entityManager;
@@ -49,10 +61,6 @@ public class CmsFile {
 			throw new IllegalStateException(
 					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
 		return em;
-	}
-
-	public static long countCmsFiles() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM CmsFile o", Long.class).getSingleResult();
 	}
 
 	public static List<CmsFile> findAllCmsFiles() {
@@ -70,144 +78,13 @@ public class CmsFile {
 				.setMaxResults(maxResults).getResultList();
 	}
 
-	@Transactional
-	public void persist() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.persist(this);
-	}
-
-	@Transactional
-	public void remove() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		if (this.entityManager.contains(this)) {
-			this.entityManager.remove(this);
-		} else {
-			CmsFile attached = CmsFile.findCmsFile(this.id);
-			this.entityManager.remove(attached);
-		}
-	}
-
-	@Transactional
-	public void flush() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.flush();
-	}
-
-	@Transactional
-	public void clear() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.clear();
-	}
-
-	@Transactional
-	public CmsFile merge() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		CmsFile merged = this.entityManager.merge(this);
-		this.entityManager.flush();
-		return merged;
-	}
-
-	@ManyToOne
-	@JoinColumn(name = "cms_folder_id", referencedColumnName = "id", nullable = false)
-	private CmsFolder cmsFolderId;
-
-	@Column(name = "filename", columnDefinition = "text")
-	@NotNull
-	private String filename;
-
-	@Column(name = "label", columnDefinition = "varchar", length = 100)
-	@NotNull
-	private String label;
-
-	@Column(name = "filesize", columnDefinition = "int8")
-	private Long filesize;
-
-	public CmsFolder getCmsFolderId() {
-		return cmsFolderId;
-	}
-
-	public void setCmsFolderId(CmsFolder cmsFolderId) {
-		this.cmsFolderId = cmsFolderId;
-	}
-
-	public String getFilename() {
-		return filename;
-	}
-
-	public void setFilename(String filename) {
-		this.filename = filename;
-	}
-
-	public String getLabel() {
-		return label;
-	}
-
-	public void setLabel(String label) {
-		this.label = label;
-	}
-
-	public Long getFilesize() {
-		return filesize;
-	}
-
-	public void setFilesize(Long filesize) {
-		this.filesize = filesize;
-	}
-
-	public String toJson() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
-	}
-
-	public static CmsFile fromJsonToCmsFile(String json) {
-		return new JSONDeserializer<CmsFile>().use(null, CmsFile.class).deserialize(json);
-	}
-
-	public static String toJsonArray(Collection<CmsFile> collection) {
-		return new JSONSerializer().exclude("*.class").serialize(collection);
-	}
-
 	public static Collection<CmsFile> fromJsonArrayToCmsFiles(String json) {
 		return new JSONDeserializer<List<CmsFile>>().use(null, ArrayList.class).use("values", CmsFile.class)
 				.deserialize(json);
 	}
 
-	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
-	}
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "id", columnDefinition = "serial")
-	private Integer id;
-
-	public Integer getId() {
-		return this.id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	@Autowired
-	transient SolrServer solrServer;
-
-	public static QueryResponse search(String queryString) {
-		String searchString = "CmsFile_solrsummary_t:" + queryString;
-		return search(new SolrQuery(searchString.toLowerCase()));
-	}
-
-	public static QueryResponse search(SolrQuery query) {
-		try {
-			return solrServer().query(query);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return new QueryResponse();
+	public static CmsFile fromJsonToCmsFile(String json) {
+		return new JSONDeserializer<CmsFile>().use(null, CmsFile.class).deserialize(json);
 	}
 
 	public static void indexCmsFile(CmsFile cmsFile) {
@@ -245,15 +122,146 @@ public class CmsFile {
 		}
 	}
 
-	@Async
-	public static void deleteIndex(CmsFile cmsFile) {
-		SolrServer solrServer = solrServer();
+	public static QueryResponse search(SolrQuery query) {
 		try {
-			solrServer.deleteById("cmsfile_" + cmsFile.getId());
-			solrServer.commit();
+			return solrServer().query(query);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return new QueryResponse();
+	}
+
+	public static QueryResponse search(String queryString) {
+		String searchString = "CmsFile_solrsummary_t:" + queryString;
+		return search(new SolrQuery(searchString.toLowerCase()));
+	}
+
+	public static SolrServer solrServer() {
+		SolrServer _solrServer = new CmsFile().solrServer;
+		if (_solrServer == null)
+			throw new IllegalStateException(
+					"Solr server has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return _solrServer;
+	}
+
+	public static String toJsonArray(Collection<CmsFile> collection) {
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	@ManyToOne
+	@JoinColumn(name = "cms_folder_id", referencedColumnName = "id", nullable = false)
+	private CmsFolder cmsFolderId;
+
+	@Column(name = "filename", columnDefinition = "text")
+	@NotNull
+	private String filename;
+
+	@Column(name = "filesize", columnDefinition = "int8")
+	private Long filesize;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id", columnDefinition = "serial")
+	private Integer id;
+
+	@Column(name = "label", columnDefinition = "varchar", length = 100)
+	@NotNull
+	private String label;
+
+	@PersistenceContext
+	transient EntityManager entityManager;
+
+	@Autowired
+	transient SolrServer solrServer;
+
+	@Transactional
+	public void clear() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.clear();
+	}
+
+	@Transactional
+	public void flush() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.flush();
+	}
+
+	public CmsFolder getCmsFolderId() {
+		return cmsFolderId;
+	}
+
+	public String getFilename() {
+		return filename;
+	}
+
+	public Long getFilesize() {
+		return filesize;
+	}
+
+	public Integer getId() {
+		return this.id;
+	}
+
+	public String getLabel() {
+		return label;
+	}
+
+	@Transactional
+	public CmsFile merge() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		CmsFile merged = this.entityManager.merge(this);
+		this.entityManager.flush();
+		return merged;
+	}
+
+	@Transactional
+	public void persist() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.persist(this);
+	}
+
+	@Transactional
+	public void remove() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		if (this.entityManager.contains(this)) {
+			this.entityManager.remove(this);
+		} else {
+			CmsFile attached = CmsFile.findCmsFile(this.id);
+			this.entityManager.remove(attached);
+		}
+	}
+
+	public void setCmsFolderId(CmsFolder cmsFolderId) {
+		this.cmsFolderId = cmsFolderId;
+	}
+
+	public void setFilename(String filename) {
+		this.filename = filename;
+	}
+
+	public void setFilesize(Long filesize) {
+		this.filesize = filesize;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public void setLabel(String label) {
+		this.label = label;
+	}
+
+	public String toJson() {
+		return new JSONSerializer().exclude("*.class").serialize(this);
+	}
+
+	public String toString() {
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate
@@ -265,13 +273,5 @@ public class CmsFile {
 	@PreRemove
 	private void preRemove() {
 		deleteIndex(this);
-	}
-
-	public static SolrServer solrServer() {
-		SolrServer _solrServer = new CmsFile().solrServer;
-		if (_solrServer == null)
-			throw new IllegalStateException(
-					"Solr server has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-		return _solrServer;
 	}
 }

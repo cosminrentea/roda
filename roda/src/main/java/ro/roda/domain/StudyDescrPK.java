@@ -19,6 +19,19 @@ public final class StudyDescrPK implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	public static Collection<StudyDescrPK> fromJsonArrayToStudyDescrPKs(String json) {
+		return new JSONDeserializer<List<StudyDescrPK>>().use(null, ArrayList.class).use("values", StudyDescrPK.class)
+				.deserialize(json);
+	}
+
+	public static StudyDescrPK fromJsonToStudyDescrPK(String json) {
+		return new JSONDeserializer<StudyDescrPK>().use(null, StudyDescrPK.class).deserialize(json);
+	}
+
+	public static String toJsonArray(Collection<StudyDescrPK> collection) {
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
 	@Column(name = "lang_id", columnDefinition = "int4", nullable = false)
 	private Integer langId;
 
@@ -45,18 +58,5 @@ public final class StudyDescrPK implements Serializable {
 
 	public String toJson() {
 		return new JSONSerializer().exclude("*.class").serialize(this);
-	}
-
-	public static StudyDescrPK fromJsonToStudyDescrPK(String json) {
-		return new JSONDeserializer<StudyDescrPK>().use(null, StudyDescrPK.class).deserialize(json);
-	}
-
-	public static String toJsonArray(Collection<StudyDescrPK> collection) {
-		return new JSONSerializer().exclude("*.class").serialize(collection);
-	}
-
-	public static Collection<StudyDescrPK> fromJsonArrayToStudyDescrPKs(String json) {
-		return new JSONDeserializer<List<StudyDescrPK>>().use(null, ArrayList.class).use("values", StudyDescrPK.class)
-				.deserialize(json);
 	}
 }

@@ -17,14 +17,29 @@ import flexjson.JSONSerializer;
 @Configurable
 public final class FormSelectionVarPK implements Serializable {
 
+	private static final long serialVersionUID = 1L;
+
+	public static Collection<FormSelectionVarPK> fromJsonArrayToFormSelectionVarPKs(String json) {
+		return new JSONDeserializer<List<FormSelectionVarPK>>().use(null, ArrayList.class)
+				.use("values", FormSelectionVarPK.class).deserialize(json);
+	}
+
+	public static FormSelectionVarPK fromJsonToFormSelectionVarPK(String json) {
+		return new JSONDeserializer<FormSelectionVarPK>().use(null, FormSelectionVarPK.class).deserialize(json);
+	}
+
+	public static String toJsonArray(Collection<FormSelectionVarPK> collection) {
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
 	@Column(name = "form_id", columnDefinition = "int8", nullable = false)
 	private Long formId;
 
-	@Column(name = "variable_id", columnDefinition = "int8", nullable = false)
-	private Long variableId;
-
 	@Column(name = "item_id", columnDefinition = "int8", nullable = false)
 	private Long itemId;
+
+	@Column(name = "variable_id", columnDefinition = "int8", nullable = false)
+	private Long variableId;
 
 	public FormSelectionVarPK(Long formId, Long variableId, Long itemId) {
 		super();
@@ -41,30 +56,15 @@ public final class FormSelectionVarPK implements Serializable {
 		return formId;
 	}
 
-	public Long getVariableId() {
-		return variableId;
-	}
-
 	public Long getItemId() {
 		return itemId;
+	}
+
+	public Long getVariableId() {
+		return variableId;
 	}
 
 	public String toJson() {
 		return new JSONSerializer().exclude("*.class").serialize(this);
 	}
-
-	public static FormSelectionVarPK fromJsonToFormSelectionVarPK(String json) {
-		return new JSONDeserializer<FormSelectionVarPK>().use(null, FormSelectionVarPK.class).deserialize(json);
-	}
-
-	public static String toJsonArray(Collection<FormSelectionVarPK> collection) {
-		return new JSONSerializer().exclude("*.class").serialize(collection);
-	}
-
-	public static Collection<FormSelectionVarPK> fromJsonArrayToFormSelectionVarPKs(String json) {
-		return new JSONDeserializer<List<FormSelectionVarPK>>().use(null, ArrayList.class)
-				.use("values", FormSelectionVarPK.class).deserialize(json);
-	}
-
-	private static final long serialVersionUID = 1L;
 }

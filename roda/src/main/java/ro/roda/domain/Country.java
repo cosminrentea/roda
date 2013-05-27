@@ -40,16 +40,42 @@ import flexjson.JSONSerializer;
 @Audited
 public class Country {
 
-	public String toJson() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
+	public static long countCountrys() {
+		return entityManager().createQuery("SELECT COUNT(o) FROM Country o", Long.class).getSingleResult();
 	}
 
-	public static Country fromJsonToCountry(String json) {
-		return new JSONDeserializer<Country>().use(null, Country.class).deserialize(json);
+	@Async
+	public static void deleteIndex(Country country) {
+		SolrServer solrServer = solrServer();
+		try {
+			solrServer.deleteById("country_" + country.getId());
+			solrServer.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
-	public static String toJsonArray(Collection<Country> collection) {
-		return new JSONSerializer().exclude("*.class").serialize(collection);
+	public static final EntityManager entityManager() {
+		EntityManager em = new Country().entityManager;
+		if (em == null)
+			throw new IllegalStateException(
+					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return em;
+	}
+
+	public static List<Country> findAllCountrys() {
+		return entityManager().createQuery("SELECT o FROM Country o", Country.class).getResultList();
+	}
+
+	public static Country findCountry(Integer id) {
+		if (id == null)
+			return null;
+		return entityManager().find(Country.class, id);
+	}
+
+	public static List<Country> findCountryEntries(int firstResult, int maxResults) {
+		return entityManager().createQuery("SELECT o FROM Country o", Country.class).setFirstResult(firstResult)
+				.setMaxResults(maxResults).getResultList();
 	}
 
 	public static Collection<Country> fromJsonArrayToCountrys(String json) {
@@ -57,21 +83,8 @@ public class Country {
 				.deserialize(json);
 	}
 
-	@Autowired
-	transient SolrServer solrServer;
-
-	public static QueryResponse search(String queryString) {
-		String searchString = "Country_solrsummary_t:" + queryString;
-		return search(new SolrQuery(searchString.toLowerCase()));
-	}
-
-	public static QueryResponse search(SolrQuery query) {
-		try {
-			return solrServer().query(query);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return new QueryResponse();
+	public static Country fromJsonToCountry(String json) {
+		return new JSONDeserializer<Country>().use(null, Country.class).deserialize(json);
 	}
 
 	public static void indexCountry(Country country) {
@@ -110,26 +123,18 @@ public class Country {
 		}
 	}
 
-	@Async
-	public static void deleteIndex(Country country) {
-		SolrServer solrServer = solrServer();
+	public static QueryResponse search(SolrQuery query) {
 		try {
-			solrServer.deleteById("country_" + country.getId());
-			solrServer.commit();
+			return solrServer().query(query);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return new QueryResponse();
 	}
 
-	@PostUpdate
-	@PostPersist
-	private void postPersistOrUpdate() {
-		indexCountry(this);
-	}
-
-	@PreRemove
-	private void preRemove() {
-		deleteIndex(this);
+	public static QueryResponse search(String queryString) {
+		String searchString = "Country_solrsummary_t:" + queryString;
+		return search(new SolrQuery(searchString.toLowerCase()));
 	}
 
 	public static SolrServer solrServer() {
@@ -140,38 +145,96 @@ public class Country {
 		return _solrServer;
 	}
 
-	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+	public static String toJsonArray(Collection<Country> collection) {
+		return new JSONSerializer().exclude("*.class").serialize(collection);
 	}
+
+	@OneToMany(mappedBy = "countryId")
+	private Set<City> cities;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id", columnDefinition = "serial")
+	private Integer id;
+
+	@Column(name = "iso3166", columnDefinition = "bpchar", length = 2, unique = true)
+	@NotNull
+	private String iso3166;
+
+	@Column(name = "iso3166_alpha3", columnDefinition = "bpchar", length = 3)
+	private String iso3166Alpha3;
+
+	@Column(name = "name_en", columnDefinition = "text")
+	private String nameEn;
+
+	@Column(name = "name_ro", columnDefinition = "text")
+	private String nameRo;
+
+	@Column(name = "name_self", columnDefinition = "text")
+	private String nameSelf;
+
+	@OneToMany(mappedBy = "countryId")
+	private Set<Region> regions;
 
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	public static final EntityManager entityManager() {
-		EntityManager em = new Country().entityManager;
-		if (em == null)
-			throw new IllegalStateException(
-					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-		return em;
+	@Autowired
+	transient SolrServer solrServer;
+
+	@Transactional
+	public void clear() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.clear();
 	}
 
-	public static long countCountrys() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM Country o", Long.class).getSingleResult();
+	@Transactional
+	public void flush() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.flush();
 	}
 
-	public static List<Country> findAllCountrys() {
-		return entityManager().createQuery("SELECT o FROM Country o", Country.class).getResultList();
+	public Set<City> getCities() {
+		return cities;
 	}
 
-	public static Country findCountry(Integer id) {
-		if (id == null)
-			return null;
-		return entityManager().find(Country.class, id);
+	public Integer getId() {
+		return this.id;
 	}
 
-	public static List<Country> findCountryEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM Country o", Country.class).setFirstResult(firstResult)
-				.setMaxResults(maxResults).getResultList();
+	public String getIso3166() {
+		return iso3166;
+	}
+
+	public String getIso3166Alpha3() {
+		return iso3166Alpha3;
+	}
+
+	public String getNameEn() {
+		return nameEn;
+	}
+
+	public String getNameRo() {
+		return nameRo;
+	}
+
+	public String getNameSelf() {
+		return nameSelf;
+	}
+
+	public Set<Region> getRegions() {
+		return regions;
+	}
+
+	@Transactional
+	public Country merge() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		Country merged = this.entityManager.merge(this);
+		this.entityManager.flush();
+		return merged;
 	}
 
 	@Transactional
@@ -193,117 +256,54 @@ public class Country {
 		}
 	}
 
-	@Transactional
-	public void flush() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.flush();
-	}
-
-	@Transactional
-	public void clear() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.clear();
-	}
-
-	@Transactional
-	public Country merge() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		Country merged = this.entityManager.merge(this);
-		this.entityManager.flush();
-		return merged;
-	}
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "id", columnDefinition = "serial")
-	private Integer id;
-
-	public Integer getId() {
-		return this.id;
+	public void setCities(Set<City> cities) {
+		this.cities = cities;
 	}
 
 	public void setId(Integer id) {
 		this.id = id;
 	}
 
-	@OneToMany(mappedBy = "countryId")
-	private Set<City> cities;
-
-	@OneToMany(mappedBy = "countryId")
-	private Set<Region> regions;
-
-	@Column(name = "name_ro", columnDefinition = "text")
-	private String nameRo;
-
-	@Column(name = "name_self", columnDefinition = "text")
-	private String nameSelf;
-
-	@Column(name = "name_en", columnDefinition = "text")
-	private String nameEn;
-
-	@Column(name = "iso3166", columnDefinition = "bpchar", length = 2, unique = true)
-	@NotNull
-	private String iso3166;
-
-	@Column(name = "iso3166_alpha3", columnDefinition = "bpchar", length = 3)
-	private String iso3166Alpha3;
-
-	public Set<City> getCities() {
-		return cities;
+	public void setIso3166(String iso3166) {
+		this.iso3166 = iso3166;
 	}
 
-	public void setCities(Set<City> cities) {
-		this.cities = cities;
-	}
-
-	public Set<Region> getRegions() {
-		return regions;
-	}
-
-	public void setRegions(Set<Region> regions) {
-		this.regions = regions;
-	}
-
-	public String getNameRo() {
-		return nameRo;
-	}
-
-	public void setNameRo(String nameRo) {
-		this.nameRo = nameRo;
-	}
-
-	public String getNameSelf() {
-		return nameSelf;
-	}
-
-	public void setNameSelf(String nameSelf) {
-		this.nameSelf = nameSelf;
-	}
-
-	public String getNameEn() {
-		return nameEn;
+	public void setIso3166Alpha3(String iso3166Alpha3) {
+		this.iso3166Alpha3 = iso3166Alpha3;
 	}
 
 	public void setNameEn(String nameEn) {
 		this.nameEn = nameEn;
 	}
 
-	public String getIso3166() {
-		return iso3166;
+	public void setNameRo(String nameRo) {
+		this.nameRo = nameRo;
 	}
 
-	public void setIso3166(String iso3166) {
-		this.iso3166 = iso3166;
+	public void setNameSelf(String nameSelf) {
+		this.nameSelf = nameSelf;
 	}
 
-	public String getIso3166Alpha3() {
-		return iso3166Alpha3;
+	public void setRegions(Set<Region> regions) {
+		this.regions = regions;
 	}
 
-	public void setIso3166Alpha3(String iso3166Alpha3) {
-		this.iso3166Alpha3 = iso3166Alpha3;
+	public String toJson() {
+		return new JSONSerializer().exclude("*.class").serialize(this);
+	}
+
+	public String toString() {
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+	}
+
+	@PostUpdate
+	@PostPersist
+	private void postPersistOrUpdate() {
+		indexCountry(this);
+	}
+
+	@PreRemove
+	private void preRemove() {
+		deleteIndex(this);
 	}
 }

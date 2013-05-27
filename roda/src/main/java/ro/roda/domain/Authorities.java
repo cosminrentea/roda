@@ -36,48 +36,51 @@ import flexjson.JSONSerializer;
 @Audited
 public class Authorities {
 
-	@EmbeddedId
-	private AuthoritiesPK id;
-
-	public AuthoritiesPK getId() {
-		return this.id;
+	public static long countAuthoritieses() {
+		return entityManager().createQuery("SELECT COUNT(o) FROM Authorities o", Long.class).getSingleResult();
 	}
 
-	public void setId(AuthoritiesPK id) {
-		this.id = id;
-	}
-
-	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
-	}
-
-	@ManyToOne
-	@JoinColumn(name = "username", referencedColumnName = "username", nullable = false, insertable = false, updatable = false)
-	private Users username;
-
-	public Users getUsername() {
-		return username;
-	}
-
-	public void setUsername(Users username) {
-		this.username = username;
-	}
-
-	@Autowired
-	transient SolrServer solrServer;
-
-	public static QueryResponse search(String queryString) {
-		String searchString = "Authorities_solrsummary_t:" + queryString;
-		return search(new SolrQuery(searchString.toLowerCase()));
-	}
-
-	public static QueryResponse search(SolrQuery query) {
+	@Async
+	public static void deleteIndex(Authorities authorities) {
+		SolrServer solrServer = solrServer();
 		try {
-			return solrServer().query(query);
+			solrServer.deleteById("authorities_" + authorities.getId());
+			solrServer.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return new QueryResponse();
+	}
+
+	public static final EntityManager entityManager() {
+		EntityManager em = new Authorities().entityManager;
+		if (em == null)
+			throw new IllegalStateException(
+					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return em;
+	}
+
+	public static List<Authorities> findAllAuthoritieses() {
+		return entityManager().createQuery("SELECT o FROM Authorities o", Authorities.class).getResultList();
+	}
+
+	public static Authorities findAuthorities(AuthoritiesPK id) {
+		if (id == null)
+			return null;
+		return entityManager().find(Authorities.class, id);
+	}
+
+	public static List<Authorities> findAuthoritiesEntries(int firstResult, int maxResults) {
+		return entityManager().createQuery("SELECT o FROM Authorities o", Authorities.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
+	}
+
+	public static Collection<Authorities> fromJsonArrayToAuthoritieses(String json) {
+		return new JSONDeserializer<List<Authorities>>().use(null, ArrayList.class).use("values", Authorities.class)
+				.deserialize(json);
+	}
+
+	public static Authorities fromJsonToAuthorities(String json) {
+		return new JSONDeserializer<Authorities>().use(null, Authorities.class).deserialize(json);
 	}
 
 	public static void indexAuthorities(Authorities authorities) {
@@ -109,26 +112,18 @@ public class Authorities {
 		}
 	}
 
-	@Async
-	public static void deleteIndex(Authorities authorities) {
-		SolrServer solrServer = solrServer();
+	public static QueryResponse search(SolrQuery query) {
 		try {
-			solrServer.deleteById("authorities_" + authorities.getId());
-			solrServer.commit();
+			return solrServer().query(query);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return new QueryResponse();
 	}
 
-	@PostUpdate
-	@PostPersist
-	private void postPersistOrUpdate() {
-		indexAuthorities(this);
-	}
-
-	@PreRemove
-	private void preRemove() {
-		deleteIndex(this);
+	public static QueryResponse search(String queryString) {
+		String searchString = "Authorities_solrsummary_t:" + queryString;
+		return search(new SolrQuery(searchString.toLowerCase()));
 	}
 
 	public static SolrServer solrServer() {
@@ -139,34 +134,52 @@ public class Authorities {
 		return _solrServer;
 	}
 
+	public static String toJsonArray(Collection<Authorities> collection) {
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	@EmbeddedId
+	private AuthoritiesPK id;
+
+	@ManyToOne
+	@JoinColumn(name = "username", referencedColumnName = "username", nullable = false, insertable = false, updatable = false)
+	private Users username;
+
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	public static final EntityManager entityManager() {
-		EntityManager em = new Authorities().entityManager;
-		if (em == null)
-			throw new IllegalStateException(
-					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-		return em;
+	@Autowired
+	transient SolrServer solrServer;
+
+	@Transactional
+	public void clear() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.clear();
 	}
 
-	public static long countAuthoritieses() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM Authorities o", Long.class).getSingleResult();
+	@Transactional
+	public void flush() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.flush();
 	}
 
-	public static List<Authorities> findAllAuthoritieses() {
-		return entityManager().createQuery("SELECT o FROM Authorities o", Authorities.class).getResultList();
+	public AuthoritiesPK getId() {
+		return this.id;
 	}
 
-	public static Authorities findAuthorities(AuthoritiesPK id) {
-		if (id == null)
-			return null;
-		return entityManager().find(Authorities.class, id);
+	public Users getUsername() {
+		return username;
 	}
 
-	public static List<Authorities> findAuthoritiesEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM Authorities o", Authorities.class)
-				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
+	@Transactional
+	public Authorities merge() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		Authorities merged = this.entityManager.merge(this);
+		this.entityManager.flush();
+		return merged;
 	}
 
 	@Transactional
@@ -188,43 +201,30 @@ public class Authorities {
 		}
 	}
 
-	@Transactional
-	public void flush() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.flush();
+	public void setId(AuthoritiesPK id) {
+		this.id = id;
 	}
 
-	@Transactional
-	public void clear() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.clear();
-	}
-
-	@Transactional
-	public Authorities merge() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		Authorities merged = this.entityManager.merge(this);
-		this.entityManager.flush();
-		return merged;
+	public void setUsername(Users username) {
+		this.username = username;
 	}
 
 	public String toJson() {
 		return new JSONSerializer().exclude("*.class").serialize(this);
 	}
 
-	public static Authorities fromJsonToAuthorities(String json) {
-		return new JSONDeserializer<Authorities>().use(null, Authorities.class).deserialize(json);
+	public String toString() {
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
-	public static String toJsonArray(Collection<Authorities> collection) {
-		return new JSONSerializer().exclude("*.class").serialize(collection);
+	@PostUpdate
+	@PostPersist
+	private void postPersistOrUpdate() {
+		indexAuthorities(this);
 	}
 
-	public static Collection<Authorities> fromJsonArrayToAuthoritieses(String json) {
-		return new JSONDeserializer<List<Authorities>>().use(null, ArrayList.class).use("values", Authorities.class)
-				.deserialize(json);
+	@PreRemove
+	private void preRemove() {
+		deleteIndex(this);
 	}
 }

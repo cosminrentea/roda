@@ -19,14 +19,27 @@ public final class StudyPersonPK implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	public static Collection<StudyPersonPK> fromJsonArrayToStudyPersonPKs(String json) {
+		return new JSONDeserializer<List<StudyPersonPK>>().use(null, ArrayList.class)
+				.use("values", StudyPersonPK.class).deserialize(json);
+	}
+
+	public static StudyPersonPK fromJsonToStudyPersonPK(String json) {
+		return new JSONDeserializer<StudyPersonPK>().use(null, StudyPersonPK.class).deserialize(json);
+	}
+
+	public static String toJsonArray(Collection<StudyPersonPK> collection) {
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	@Column(name = "assoctype_id", columnDefinition = "int4", nullable = false)
+	private Integer assoctypeId;
+
 	@Column(name = "person_id", columnDefinition = "int4", nullable = false)
 	private Integer personId;
 
 	@Column(name = "study_id", columnDefinition = "int4", nullable = false)
 	private Integer studyId;
-
-	@Column(name = "assoctype_id", columnDefinition = "int4", nullable = false)
-	private Integer assoctypeId;
 
 	public StudyPersonPK(Integer personId, Integer studyId, Integer assoctypeId) {
 		super();
@@ -39,6 +52,10 @@ public final class StudyPersonPK implements Serializable {
 		super();
 	}
 
+	public Integer getAssoctypeId() {
+		return assoctypeId;
+	}
+
 	public Integer getPersonId() {
 		return personId;
 	}
@@ -47,24 +64,7 @@ public final class StudyPersonPK implements Serializable {
 		return studyId;
 	}
 
-	public Integer getAssoctypeId() {
-		return assoctypeId;
-	}
-
 	public String toJson() {
 		return new JSONSerializer().exclude("*.class").serialize(this);
-	}
-
-	public static StudyPersonPK fromJsonToStudyPersonPK(String json) {
-		return new JSONDeserializer<StudyPersonPK>().use(null, StudyPersonPK.class).deserialize(json);
-	}
-
-	public static String toJsonArray(Collection<StudyPersonPK> collection) {
-		return new JSONSerializer().exclude("*.class").serialize(collection);
-	}
-
-	public static Collection<StudyPersonPK> fromJsonArrayToStudyPersonPKs(String json) {
-		return new JSONDeserializer<List<StudyPersonPK>>().use(null, ArrayList.class)
-				.use("values", StudyPersonPK.class).deserialize(json);
 	}
 }

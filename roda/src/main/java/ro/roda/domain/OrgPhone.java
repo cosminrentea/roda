@@ -38,8 +38,20 @@ import flexjson.JSONSerializer;
 @Audited
 public class OrgPhone {
 
-	@PersistenceContext
-	transient EntityManager entityManager;
+	public static long countOrgPhones() {
+		return entityManager().createQuery("SELECT COUNT(o) FROM OrgPhone o", Long.class).getSingleResult();
+	}
+
+	@Async
+	public static void deleteIndex(OrgPhone orgPhone) {
+		SolrServer solrServer = solrServer();
+		try {
+			solrServer.deleteById("orgphone_" + orgPhone.getId());
+			solrServer.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	public static final EntityManager entityManager() {
 		EntityManager em = new OrgPhone().entityManager;
@@ -47,10 +59,6 @@ public class OrgPhone {
 			throw new IllegalStateException(
 					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
 		return em;
-	}
-
-	public static long countOrgPhones() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM OrgPhone o", Long.class).getSingleResult();
 	}
 
 	public static List<OrgPhone> findAllOrgPhones() {
@@ -68,127 +76,13 @@ public class OrgPhone {
 				.setMaxResults(maxResults).getResultList();
 	}
 
-	@Transactional
-	public void persist() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.persist(this);
-	}
-
-	@Transactional
-	public void remove() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		if (this.entityManager.contains(this)) {
-			this.entityManager.remove(this);
-		} else {
-			OrgPhone attached = OrgPhone.findOrgPhone(this.id);
-			this.entityManager.remove(attached);
-		}
-	}
-
-	@Transactional
-	public void flush() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.flush();
-	}
-
-	@Transactional
-	public void clear() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.clear();
-	}
-
-	@Transactional
-	public OrgPhone merge() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		OrgPhone merged = this.entityManager.merge(this);
-		this.entityManager.flush();
-		return merged;
-	}
-
-	public String toJson() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
-	}
-
-	public static OrgPhone fromJsonToOrgPhone(String json) {
-		return new JSONDeserializer<OrgPhone>().use(null, OrgPhone.class).deserialize(json);
-	}
-
-	public static String toJsonArray(Collection<OrgPhone> collection) {
-		return new JSONSerializer().exclude("*.class").serialize(collection);
-	}
-
 	public static Collection<OrgPhone> fromJsonArrayToOrgPhones(String json) {
 		return new JSONDeserializer<List<OrgPhone>>().use(null, ArrayList.class).use("values", OrgPhone.class)
 				.deserialize(json);
 	}
 
-	@ManyToOne
-	@JoinColumn(name = "org_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
-	private Org orgId;
-
-	@ManyToOne
-	@JoinColumn(name = "phone_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
-	private Phone phoneId;
-
-	@Column(name = "main", columnDefinition = "bool")
-	@NotNull
-	private boolean main;
-
-	public Org getOrgId() {
-		return orgId;
-	}
-
-	public void setOrgId(Org orgId) {
-		this.orgId = orgId;
-	}
-
-	public Phone getPhoneId() {
-		return phoneId;
-	}
-
-	public void setPhoneId(Phone phoneId) {
-		this.phoneId = phoneId;
-	}
-
-	public boolean isMain() {
-		return main;
-	}
-
-	public void setMain(boolean main) {
-		this.main = main;
-	}
-
-	@EmbeddedId
-	private OrgPhonePK id;
-
-	public OrgPhonePK getId() {
-		return this.id;
-	}
-
-	public void setId(OrgPhonePK id) {
-		this.id = id;
-	}
-
-	@Autowired
-	transient SolrServer solrServer;
-
-	public static QueryResponse search(String queryString) {
-		String searchString = "OrgPhone_solrsummary_t:" + queryString;
-		return search(new SolrQuery(searchString.toLowerCase()));
-	}
-
-	public static QueryResponse search(SolrQuery query) {
-		try {
-			return solrServer().query(query);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return new QueryResponse();
+	public static OrgPhone fromJsonToOrgPhone(String json) {
+		return new JSONDeserializer<OrgPhone>().use(null, OrgPhone.class).deserialize(json);
 	}
 
 	public static void indexOrgPhone(OrgPhone orgPhone) {
@@ -218,15 +112,133 @@ public class OrgPhone {
 		}
 	}
 
-	@Async
-	public static void deleteIndex(OrgPhone orgPhone) {
-		SolrServer solrServer = solrServer();
+	public static QueryResponse search(SolrQuery query) {
 		try {
-			solrServer.deleteById("orgphone_" + orgPhone.getId());
-			solrServer.commit();
+			return solrServer().query(query);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return new QueryResponse();
+	}
+
+	public static QueryResponse search(String queryString) {
+		String searchString = "OrgPhone_solrsummary_t:" + queryString;
+		return search(new SolrQuery(searchString.toLowerCase()));
+	}
+
+	public static SolrServer solrServer() {
+		SolrServer _solrServer = new OrgPhone().solrServer;
+		if (_solrServer == null)
+			throw new IllegalStateException(
+					"Solr server has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return _solrServer;
+	}
+
+	public static String toJsonArray(Collection<OrgPhone> collection) {
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	@EmbeddedId
+	private OrgPhonePK id;
+
+	@Column(name = "main", columnDefinition = "bool")
+	@NotNull
+	private boolean main;
+
+	@ManyToOne
+	@JoinColumn(name = "org_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	private Org orgId;
+
+	@ManyToOne
+	@JoinColumn(name = "phone_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	private Phone phoneId;
+
+	@PersistenceContext
+	transient EntityManager entityManager;
+
+	@Autowired
+	transient SolrServer solrServer;
+
+	@Transactional
+	public void clear() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.clear();
+	}
+
+	@Transactional
+	public void flush() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.flush();
+	}
+
+	public OrgPhonePK getId() {
+		return this.id;
+	}
+
+	public Org getOrgId() {
+		return orgId;
+	}
+
+	public Phone getPhoneId() {
+		return phoneId;
+	}
+
+	public boolean isMain() {
+		return main;
+	}
+
+	@Transactional
+	public OrgPhone merge() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		OrgPhone merged = this.entityManager.merge(this);
+		this.entityManager.flush();
+		return merged;
+	}
+
+	@Transactional
+	public void persist() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.persist(this);
+	}
+
+	@Transactional
+	public void remove() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		if (this.entityManager.contains(this)) {
+			this.entityManager.remove(this);
+		} else {
+			OrgPhone attached = OrgPhone.findOrgPhone(this.id);
+			this.entityManager.remove(attached);
+		}
+	}
+
+	public void setId(OrgPhonePK id) {
+		this.id = id;
+	}
+
+	public void setMain(boolean main) {
+		this.main = main;
+	}
+
+	public void setOrgId(Org orgId) {
+		this.orgId = orgId;
+	}
+
+	public void setPhoneId(Phone phoneId) {
+		this.phoneId = phoneId;
+	}
+
+	public String toJson() {
+		return new JSONSerializer().exclude("*.class").serialize(this);
+	}
+
+	public String toString() {
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate
@@ -238,17 +250,5 @@ public class OrgPhone {
 	@PreRemove
 	private void preRemove() {
 		deleteIndex(this);
-	}
-
-	public static SolrServer solrServer() {
-		SolrServer _solrServer = new OrgPhone().solrServer;
-		if (_solrServer == null)
-			throw new IllegalStateException(
-					"Solr server has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-		return _solrServer;
-	}
-
-	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 }

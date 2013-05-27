@@ -41,34 +41,42 @@ import flexjson.JSONSerializer;
 @Audited
 public class Scale {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "item_id", columnDefinition = "int8")
-	private Long itemId;
-
-	public Long getItemId() {
-		return this.itemId;
+	public static long countScales() {
+		return entityManager().createQuery("SELECT COUNT(o) FROM Scale o", Long.class).getSingleResult();
 	}
 
-	public void setItemId(Long id) {
-		this.itemId = id;
+	@Async
+	public static void deleteIndex(Scale scale) {
+		SolrServer solrServer = solrServer();
+		try {
+			solrServer.deleteById("scale_" + scale.getItemId());
+			solrServer.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
-	public String toString() {
-		return new ReflectionToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE).setExcludeFieldNames("item")
-				.toString();
+	public static final EntityManager entityManager() {
+		EntityManager em = new Scale().entityManager;
+		if (em == null)
+			throw new IllegalStateException(
+					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return em;
 	}
 
-	public String toJson() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
+	public static List<Scale> findAllScales() {
+		return entityManager().createQuery("SELECT o FROM Scale o", Scale.class).getResultList();
 	}
 
-	public static Scale fromJsonToScale(String json) {
-		return new JSONDeserializer<Scale>().use(null, Scale.class).deserialize(json);
+	public static Scale findScale(Long itemId) {
+		if (itemId == null)
+			return null;
+		return entityManager().find(Scale.class, itemId);
 	}
 
-	public static String toJsonArray(Collection<Scale> collection) {
-		return new JSONSerializer().exclude("*.class").serialize(collection);
+	public static List<Scale> findScaleEntries(int firstResult, int maxResults) {
+		return entityManager().createQuery("SELECT o FROM Scale o", Scale.class).setFirstResult(firstResult)
+				.setMaxResults(maxResults).getResultList();
 	}
 
 	public static Collection<Scale> fromJsonArrayToScales(String json) {
@@ -76,21 +84,8 @@ public class Scale {
 				.deserialize(json);
 	}
 
-	@Autowired
-	transient SolrServer solrServer;
-
-	public static QueryResponse search(String queryString) {
-		String searchString = "Scale_solrsummary_t:" + queryString;
-		return search(new SolrQuery(searchString.toLowerCase()));
-	}
-
-	public static QueryResponse search(SolrQuery query) {
-		try {
-			return solrServer().query(query);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return new QueryResponse();
+	public static Scale fromJsonToScale(String json) {
+		return new JSONDeserializer<Scale>().use(null, Scale.class).deserialize(json);
 	}
 
 	public static void indexScale(Scale scale) {
@@ -128,26 +123,18 @@ public class Scale {
 		}
 	}
 
-	@Async
-	public static void deleteIndex(Scale scale) {
-		SolrServer solrServer = solrServer();
+	public static QueryResponse search(SolrQuery query) {
 		try {
-			solrServer.deleteById("scale_" + scale.getItemId());
-			solrServer.commit();
+			return solrServer().query(query);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return new QueryResponse();
 	}
 
-	@PostUpdate
-	@PostPersist
-	private void postPersistOrUpdate() {
-		indexScale(this);
-	}
-
-	@PreRemove
-	private void preRemove() {
-		deleteIndex(this);
+	public static QueryResponse search(String queryString) {
+		String searchString = "Scale_solrsummary_t:" + queryString;
+		return search(new SolrQuery(searchString.toLowerCase()));
 	}
 
 	public static SolrServer solrServer() {
@@ -158,34 +145,78 @@ public class Scale {
 		return _solrServer;
 	}
 
+	public static String toJsonArray(Collection<Scale> collection) {
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	@OneToOne
+	@JoinColumn(name = "item_id", nullable = false, insertable = false, updatable = false)
+	private Item item;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "item_id", columnDefinition = "int8")
+	private Long itemId;
+
+	@ManyToOne
+	@JoinColumn(name = "max_value_id", referencedColumnName = "item_id", nullable = false)
+	private Value maxValueId;
+
+	@ManyToOne
+	@JoinColumn(name = "min_value_id", referencedColumnName = "item_id", nullable = false)
+	private Value minValueId;
+
+	@Column(name = "units", columnDefinition = "int2")
+	@NotNull
+	private Short units;
+
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	public static final EntityManager entityManager() {
-		EntityManager em = new Scale().entityManager;
-		if (em == null)
-			throw new IllegalStateException(
-					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-		return em;
+	@Autowired
+	transient SolrServer solrServer;
+
+	@Transactional
+	public void clear() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.clear();
 	}
 
-	public static long countScales() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM Scale o", Long.class).getSingleResult();
+	@Transactional
+	public void flush() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.flush();
 	}
 
-	public static List<Scale> findAllScales() {
-		return entityManager().createQuery("SELECT o FROM Scale o", Scale.class).getResultList();
+	public Item getItem() {
+		return item;
 	}
 
-	public static Scale findScale(Long itemId) {
-		if (itemId == null)
-			return null;
-		return entityManager().find(Scale.class, itemId);
+	public Long getItemId() {
+		return this.itemId;
 	}
 
-	public static List<Scale> findScaleEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM Scale o", Scale.class).setFirstResult(firstResult)
-				.setMaxResults(maxResults).getResultList();
+	public Value getMaxValueId() {
+		return maxValueId;
+	}
+
+	public Value getMinValueId() {
+		return minValueId;
+	}
+
+	public Short getUnits() {
+		return units;
+	}
+
+	@Transactional
+	public Scale merge() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		Scale merged = this.entityManager.merge(this);
+		this.entityManager.flush();
+		return merged;
 	}
 
 	@Transactional
@@ -207,74 +238,43 @@ public class Scale {
 		}
 	}
 
-	@Transactional
-	public void flush() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.flush();
-	}
-
-	@Transactional
-	public void clear() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.clear();
-	}
-
-	@Transactional
-	public Scale merge() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		Scale merged = this.entityManager.merge(this);
-		this.entityManager.flush();
-		return merged;
-	}
-
-	@OneToOne
-	@JoinColumn(name = "item_id", nullable = false, insertable = false, updatable = false)
-	private Item item;
-
-	@ManyToOne
-	@JoinColumn(name = "max_value_id", referencedColumnName = "item_id", nullable = false)
-	private Value maxValueId;
-
-	@ManyToOne
-	@JoinColumn(name = "min_value_id", referencedColumnName = "item_id", nullable = false)
-	private Value minValueId;
-
-	@Column(name = "units", columnDefinition = "int2")
-	@NotNull
-	private Short units;
-
-	public Item getItem() {
-		return item;
-	}
-
 	public void setItem(Item item) {
 		this.item = item;
 	}
 
-	public Value getMaxValueId() {
-		return maxValueId;
+	public void setItemId(Long id) {
+		this.itemId = id;
 	}
 
 	public void setMaxValueId(Value maxValueId) {
 		this.maxValueId = maxValueId;
 	}
 
-	public Value getMinValueId() {
-		return minValueId;
-	}
-
 	public void setMinValueId(Value minValueId) {
 		this.minValueId = minValueId;
 	}
 
-	public Short getUnits() {
-		return units;
-	}
-
 	public void setUnits(Short units) {
 		this.units = units;
+	}
+
+	public String toJson() {
+		return new JSONSerializer().exclude("*.class").serialize(this);
+	}
+
+	public String toString() {
+		return new ReflectionToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE).setExcludeFieldNames("item")
+				.toString();
+	}
+
+	@PostUpdate
+	@PostPersist
+	private void postPersistOrUpdate() {
+		indexScale(this);
+	}
+
+	@PreRemove
+	private void preRemove() {
+		deleteIndex(this);
 	}
 }

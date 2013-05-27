@@ -37,68 +37,51 @@ import flexjson.JSONSerializer;
 @Audited
 public class StudyOrg {
 
-	@ManyToOne
-	@JoinColumn(name = "org_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
-	private Org orgId;
-
-	@ManyToOne
-	@JoinColumn(name = "study_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
-	private Study studyId;
-
-	@ManyToOne
-	@JoinColumn(name = "assoctype_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
-	private StudyOrgAssoc assoctypeId;
-
-	@Column(name = "assoc_details", columnDefinition = "text")
-	private String assocDetails;
-
-	public Org getOrgId() {
-		return orgId;
+	public static long countStudyOrgs() {
+		return entityManager().createQuery("SELECT COUNT(o) FROM StudyOrg o", Long.class).getSingleResult();
 	}
 
-	public void setOrgId(Org orgId) {
-		this.orgId = orgId;
-	}
-
-	public Study getStudyId() {
-		return studyId;
-	}
-
-	public void setStudyId(Study studyId) {
-		this.studyId = studyId;
-	}
-
-	public StudyOrgAssoc getAssoctypeId() {
-		return assoctypeId;
-	}
-
-	public void setAssoctypeId(StudyOrgAssoc assoctypeId) {
-		this.assoctypeId = assoctypeId;
-	}
-
-	public String getAssocDetails() {
-		return assocDetails;
-	}
-
-	public void setAssocDetails(String assocDetails) {
-		this.assocDetails = assocDetails;
-	}
-
-	@Autowired
-	transient SolrServer solrServer;
-
-	public static QueryResponse search(String queryString) {
-		String searchString = "StudyOrg_solrsummary_t:" + queryString;
-		return search(new SolrQuery(searchString.toLowerCase()));
-	}
-
-	public static QueryResponse search(SolrQuery query) {
+	@Async
+	public static void deleteIndex(StudyOrg studyOrg) {
+		SolrServer solrServer = solrServer();
 		try {
-			return solrServer().query(query);
+			solrServer.deleteById("studyorg_" + studyOrg.getId());
+			solrServer.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return new QueryResponse();
+	}
+
+	public static final EntityManager entityManager() {
+		EntityManager em = new StudyOrg().entityManager;
+		if (em == null)
+			throw new IllegalStateException(
+					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return em;
+	}
+
+	public static List<StudyOrg> findAllStudyOrgs() {
+		return entityManager().createQuery("SELECT o FROM StudyOrg o", StudyOrg.class).getResultList();
+	}
+
+	public static StudyOrg findStudyOrg(StudyOrgPK id) {
+		if (id == null)
+			return null;
+		return entityManager().find(StudyOrg.class, id);
+	}
+
+	public static List<StudyOrg> findStudyOrgEntries(int firstResult, int maxResults) {
+		return entityManager().createQuery("SELECT o FROM StudyOrg o", StudyOrg.class).setFirstResult(firstResult)
+				.setMaxResults(maxResults).getResultList();
+	}
+
+	public static Collection<StudyOrg> fromJsonArrayToStudyOrgs(String json) {
+		return new JSONDeserializer<List<StudyOrg>>().use(null, ArrayList.class).use("values", StudyOrg.class)
+				.deserialize(json);
+	}
+
+	public static StudyOrg fromJsonToStudyOrg(String json) {
+		return new JSONDeserializer<StudyOrg>().use(null, StudyOrg.class).deserialize(json);
 	}
 
 	public static void indexStudyOrg(StudyOrg studyOrg) {
@@ -136,26 +119,18 @@ public class StudyOrg {
 		}
 	}
 
-	@Async
-	public static void deleteIndex(StudyOrg studyOrg) {
-		SolrServer solrServer = solrServer();
+	public static QueryResponse search(SolrQuery query) {
 		try {
-			solrServer.deleteById("studyorg_" + studyOrg.getId());
-			solrServer.commit();
+			return solrServer().query(query);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return new QueryResponse();
 	}
 
-	@PostUpdate
-	@PostPersist
-	private void postPersistOrUpdate() {
-		indexStudyOrg(this);
-	}
-
-	@PreRemove
-	private void preRemove() {
-		deleteIndex(this);
+	public static QueryResponse search(String queryString) {
+		String searchString = "StudyOrg_solrsummary_t:" + queryString;
+		return search(new SolrQuery(searchString.toLowerCase()));
 	}
 
 	public static SolrServer solrServer() {
@@ -166,62 +141,75 @@ public class StudyOrg {
 		return _solrServer;
 	}
 
+	public static String toJsonArray(Collection<StudyOrg> collection) {
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	@Column(name = "assoc_details", columnDefinition = "text")
+	private String assocDetails;
+
+	@ManyToOne
+	@JoinColumn(name = "assoctype_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	private StudyOrgAssoc assoctypeId;
+
 	@EmbeddedId
 	private StudyOrgPK id;
+
+	@ManyToOne
+	@JoinColumn(name = "org_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	private Org orgId;
+
+	@ManyToOne
+	@JoinColumn(name = "study_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	private Study studyId;
+
+	@PersistenceContext
+	transient EntityManager entityManager;
+
+	@Autowired
+	transient SolrServer solrServer;
+
+	@Transactional
+	public void clear() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.clear();
+	}
+
+	@Transactional
+	public void flush() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.flush();
+	}
+
+	public String getAssocDetails() {
+		return assocDetails;
+	}
+
+	public StudyOrgAssoc getAssoctypeId() {
+		return assoctypeId;
+	}
 
 	public StudyOrgPK getId() {
 		return this.id;
 	}
 
-	public void setId(StudyOrgPK id) {
-		this.id = id;
+	public Org getOrgId() {
+		return orgId;
 	}
 
-	public String toJson() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
+	public Study getStudyId() {
+		return studyId;
 	}
 
-	public static StudyOrg fromJsonToStudyOrg(String json) {
-		return new JSONDeserializer<StudyOrg>().use(null, StudyOrg.class).deserialize(json);
-	}
-
-	public static String toJsonArray(Collection<StudyOrg> collection) {
-		return new JSONSerializer().exclude("*.class").serialize(collection);
-	}
-
-	public static Collection<StudyOrg> fromJsonArrayToStudyOrgs(String json) {
-		return new JSONDeserializer<List<StudyOrg>>().use(null, ArrayList.class).use("values", StudyOrg.class)
-				.deserialize(json);
-	}
-
-	@PersistenceContext
-	transient EntityManager entityManager;
-
-	public static final EntityManager entityManager() {
-		EntityManager em = new StudyOrg().entityManager;
-		if (em == null)
-			throw new IllegalStateException(
-					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-		return em;
-	}
-
-	public static long countStudyOrgs() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM StudyOrg o", Long.class).getSingleResult();
-	}
-
-	public static List<StudyOrg> findAllStudyOrgs() {
-		return entityManager().createQuery("SELECT o FROM StudyOrg o", StudyOrg.class).getResultList();
-	}
-
-	public static StudyOrg findStudyOrg(StudyOrgPK id) {
-		if (id == null)
-			return null;
-		return entityManager().find(StudyOrg.class, id);
-	}
-
-	public static List<StudyOrg> findStudyOrgEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM StudyOrg o", StudyOrg.class).setFirstResult(firstResult)
-				.setMaxResults(maxResults).getResultList();
+	@Transactional
+	public StudyOrg merge() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		StudyOrg merged = this.entityManager.merge(this);
+		this.entityManager.flush();
+		return merged;
 	}
 
 	@Transactional
@@ -243,30 +231,42 @@ public class StudyOrg {
 		}
 	}
 
-	@Transactional
-	public void flush() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.flush();
+	public void setAssocDetails(String assocDetails) {
+		this.assocDetails = assocDetails;
 	}
 
-	@Transactional
-	public void clear() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.clear();
+	public void setAssoctypeId(StudyOrgAssoc assoctypeId) {
+		this.assoctypeId = assoctypeId;
 	}
 
-	@Transactional
-	public StudyOrg merge() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		StudyOrg merged = this.entityManager.merge(this);
-		this.entityManager.flush();
-		return merged;
+	public void setId(StudyOrgPK id) {
+		this.id = id;
+	}
+
+	public void setOrgId(Org orgId) {
+		this.orgId = orgId;
+	}
+
+	public void setStudyId(Study studyId) {
+		this.studyId = studyId;
+	}
+
+	public String toJson() {
+		return new JSONSerializer().exclude("*.class").serialize(this);
 	}
 
 	public String toString() {
 		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+	}
+
+	@PostUpdate
+	@PostPersist
+	private void postPersistOrUpdate() {
+		indexStudyOrg(this);
+	}
+
+	@PreRemove
+	private void preRemove() {
+		deleteIndex(this);
 	}
 }

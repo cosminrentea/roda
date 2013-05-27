@@ -19,11 +19,24 @@ public final class OrgAddressPK implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@Column(name = "org_id", columnDefinition = "int4", nullable = false)
-	private Integer orgId;
+	public static Collection<OrgAddressPK> fromJsonArrayToOrgAddressPKs(String json) {
+		return new JSONDeserializer<List<OrgAddressPK>>().use(null, ArrayList.class).use("values", OrgAddressPK.class)
+				.deserialize(json);
+	}
+
+	public static OrgAddressPK fromJsonToOrgAddressPK(String json) {
+		return new JSONDeserializer<OrgAddressPK>().use(null, OrgAddressPK.class).deserialize(json);
+	}
+
+	public static String toJsonArray(Collection<OrgAddressPK> collection) {
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
 
 	@Column(name = "address_id", columnDefinition = "int4", nullable = false)
 	private Integer addressId;
+
+	@Column(name = "org_id", columnDefinition = "int4", nullable = false)
+	private Integer orgId;
 
 	public OrgAddressPK(Integer orgId, Integer addressId) {
 		super();
@@ -35,28 +48,15 @@ public final class OrgAddressPK implements Serializable {
 		super();
 	}
 
-	public Integer getOrgId() {
-		return orgId;
-	}
-
 	public Integer getAddressId() {
 		return addressId;
 	}
 
+	public Integer getOrgId() {
+		return orgId;
+	}
+
 	public String toJson() {
 		return new JSONSerializer().exclude("*.class").serialize(this);
-	}
-
-	public static OrgAddressPK fromJsonToOrgAddressPK(String json) {
-		return new JSONDeserializer<OrgAddressPK>().use(null, OrgAddressPK.class).deserialize(json);
-	}
-
-	public static String toJsonArray(Collection<OrgAddressPK> collection) {
-		return new JSONSerializer().exclude("*.class").serialize(collection);
-	}
-
-	public static Collection<OrgAddressPK> fromJsonArrayToOrgAddressPKs(String json) {
-		return new JSONDeserializer<List<OrgAddressPK>>().use(null, ArrayList.class).use("values", OrgAddressPK.class)
-				.deserialize(json);
 	}
 }

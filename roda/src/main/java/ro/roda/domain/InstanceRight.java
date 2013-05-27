@@ -40,21 +40,51 @@ import flexjson.JSONSerializer;
 @Audited
 public class InstanceRight {
 
-	@Autowired
-	transient SolrServer solrServer;
-
-	public static QueryResponse search(String queryString) {
-		String searchString = "InstanceRight_solrsummary_t:" + queryString;
-		return search(new SolrQuery(searchString.toLowerCase()));
+	public static long countInstanceRights() {
+		return entityManager().createQuery("SELECT COUNT(o) FROM InstanceRight o", Long.class).getSingleResult();
 	}
 
-	public static QueryResponse search(SolrQuery query) {
+	@Async
+	public static void deleteIndex(InstanceRight instanceRight) {
+		SolrServer solrServer = solrServer();
 		try {
-			return solrServer().query(query);
+			solrServer.deleteById("instanceright_" + instanceRight.getId());
+			solrServer.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return new QueryResponse();
+	}
+
+	public static final EntityManager entityManager() {
+		EntityManager em = new InstanceRight().entityManager;
+		if (em == null)
+			throw new IllegalStateException(
+					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return em;
+	}
+
+	public static List<InstanceRight> findAllInstanceRights() {
+		return entityManager().createQuery("SELECT o FROM InstanceRight o", InstanceRight.class).getResultList();
+	}
+
+	public static InstanceRight findInstanceRight(Integer id) {
+		if (id == null)
+			return null;
+		return entityManager().find(InstanceRight.class, id);
+	}
+
+	public static List<InstanceRight> findInstanceRightEntries(int firstResult, int maxResults) {
+		return entityManager().createQuery("SELECT o FROM InstanceRight o", InstanceRight.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
+	}
+
+	public static Collection<InstanceRight> fromJsonArrayToInstanceRights(String json) {
+		return new JSONDeserializer<List<InstanceRight>>().use(null, ArrayList.class)
+				.use("values", InstanceRight.class).deserialize(json);
+	}
+
+	public static InstanceRight fromJsonToInstanceRight(String json) {
+		return new JSONDeserializer<InstanceRight>().use(null, InstanceRight.class).deserialize(json);
 	}
 
 	public static void indexInstanceRight(InstanceRight instanceRight) {
@@ -84,26 +114,18 @@ public class InstanceRight {
 		}
 	}
 
-	@Async
-	public static void deleteIndex(InstanceRight instanceRight) {
-		SolrServer solrServer = solrServer();
+	public static QueryResponse search(SolrQuery query) {
 		try {
-			solrServer.deleteById("instanceright_" + instanceRight.getId());
-			solrServer.commit();
+			return solrServer().query(query);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return new QueryResponse();
 	}
 
-	@PostUpdate
-	@PostPersist
-	private void postPersistOrUpdate() {
-		indexInstanceRight(this);
-	}
-
-	@PreRemove
-	private void preRemove() {
-		deleteIndex(this);
+	public static QueryResponse search(String queryString) {
+		String searchString = "InstanceRight_solrsummary_t:" + queryString;
+		return search(new SolrQuery(searchString.toLowerCase()));
 	}
 
 	public static SolrServer solrServer() {
@@ -114,51 +136,75 @@ public class InstanceRight {
 		return _solrServer;
 	}
 
-	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+	public static String toJsonArray(Collection<InstanceRight> collection) {
+		return new JSONSerializer().exclude("*.class").serialize(collection);
 	}
+
+	@Column(name = "description", columnDefinition = "text")
+	private String description;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id", columnDefinition = "serial")
 	private Integer id;
 
-	public Integer getId() {
-		return this.id;
-	}
+	@OneToMany(mappedBy = "instanceRightId")
+	private Set<InstanceRightTargetGroup> instanceRightTargetGroups;
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+	@OneToMany(mappedBy = "instanceRightId")
+	private Set<InstanceRightValue> instanceRightValues;
+
+	@Column(name = "name", columnDefinition = "text")
+	@NotNull
+	private String name;
 
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	public static final EntityManager entityManager() {
-		EntityManager em = new InstanceRight().entityManager;
-		if (em == null)
-			throw new IllegalStateException(
-					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-		return em;
+	@Autowired
+	transient SolrServer solrServer;
+
+	@Transactional
+	public void clear() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.clear();
 	}
 
-	public static long countInstanceRights() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM InstanceRight o", Long.class).getSingleResult();
+	@Transactional
+	public void flush() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.flush();
 	}
 
-	public static List<InstanceRight> findAllInstanceRights() {
-		return entityManager().createQuery("SELECT o FROM InstanceRight o", InstanceRight.class).getResultList();
+	public String getDescription() {
+		return description;
 	}
 
-	public static InstanceRight findInstanceRight(Integer id) {
-		if (id == null)
-			return null;
-		return entityManager().find(InstanceRight.class, id);
+	public Integer getId() {
+		return this.id;
 	}
 
-	public static List<InstanceRight> findInstanceRightEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM InstanceRight o", InstanceRight.class)
-				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
+	public Set<InstanceRightTargetGroup> getInstanceRightTargetGroups() {
+		return instanceRightTargetGroups;
+	}
+
+	public Set<InstanceRightValue> getInstanceRightValues() {
+		return instanceRightValues;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	@Transactional
+	public InstanceRight merge() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		InstanceRight merged = this.entityManager.merge(this);
+		this.entityManager.flush();
+		return merged;
 	}
 
 	@Transactional
@@ -180,88 +226,42 @@ public class InstanceRight {
 		}
 	}
 
-	@Transactional
-	public void flush() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.flush();
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
-	@Transactional
-	public void clear() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.clear();
-	}
-
-	@Transactional
-	public InstanceRight merge() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		InstanceRight merged = this.entityManager.merge(this);
-		this.entityManager.flush();
-		return merged;
-	}
-
-	public String toJson() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
-	}
-
-	public static InstanceRight fromJsonToInstanceRight(String json) {
-		return new JSONDeserializer<InstanceRight>().use(null, InstanceRight.class).deserialize(json);
-	}
-
-	public static String toJsonArray(Collection<InstanceRight> collection) {
-		return new JSONSerializer().exclude("*.class").serialize(collection);
-	}
-
-	public static Collection<InstanceRight> fromJsonArrayToInstanceRights(String json) {
-		return new JSONDeserializer<List<InstanceRight>>().use(null, ArrayList.class)
-				.use("values", InstanceRight.class).deserialize(json);
-	}
-
-	@OneToMany(mappedBy = "instanceRightId")
-	private Set<InstanceRightTargetGroup> instanceRightTargetGroups;
-
-	@OneToMany(mappedBy = "instanceRightId")
-	private Set<InstanceRightValue> instanceRightValues;
-
-	@Column(name = "name", columnDefinition = "text")
-	@NotNull
-	private String name;
-
-	@Column(name = "description", columnDefinition = "text")
-	private String description;
-
-	public Set<InstanceRightTargetGroup> getInstanceRightTargetGroups() {
-		return instanceRightTargetGroups;
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 	public void setInstanceRightTargetGroups(Set<InstanceRightTargetGroup> instanceRightTargetGroups) {
 		this.instanceRightTargetGroups = instanceRightTargetGroups;
 	}
 
-	public Set<InstanceRightValue> getInstanceRightValues() {
-		return instanceRightValues;
-	}
-
 	public void setInstanceRightValues(Set<InstanceRightValue> instanceRightValues) {
 		this.instanceRightValues = instanceRightValues;
-	}
-
-	public String getName() {
-		return name;
 	}
 
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	public String getDescription() {
-		return description;
+	public String toJson() {
+		return new JSONSerializer().exclude("*.class").serialize(this);
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
+	public String toString() {
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+	}
+
+	@PostUpdate
+	@PostPersist
+	private void postPersistOrUpdate() {
+		indexInstanceRight(this);
+	}
+
+	@PreRemove
+	private void preRemove() {
+		deleteIndex(this);
 	}
 }

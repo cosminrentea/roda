@@ -41,91 +41,20 @@ import flexjson.JSONSerializer;
 @Audited
 public class PersonOrg {
 
-	@ManyToOne
-	@JoinColumn(name = "org_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
-	private Org orgId;
-
-	@ManyToOne
-	@JoinColumn(name = "person_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
-	private Person personId;
-
-	@ManyToOne
-	@JoinColumn(name = "role_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
-	private PersonRole roleId;
-
-	@Column(name = "date_start", columnDefinition = "date")
-	@Temporal(TemporalType.DATE)
-	@DateTimeFormat(style = "M-")
-	private Date dateStart;
-
-	@Column(name = "date_end", columnDefinition = "date")
-	@Temporal(TemporalType.DATE)
-	@DateTimeFormat(style = "M-")
-	private Date dateEnd;
-
-	public Org getOrgId() {
-		return orgId;
+	public static long countPersonOrgs() {
+		return entityManager().createQuery("SELECT COUNT(o) FROM PersonOrg o", Long.class).getSingleResult();
 	}
 
-	public void setOrgId(Org orgId) {
-		this.orgId = orgId;
+	@Async
+	public static void deleteIndex(PersonOrg personOrg) {
+		SolrServer solrServer = solrServer();
+		try {
+			solrServer.deleteById("personorg_" + personOrg.getId());
+			solrServer.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
-
-	public Person getPersonId() {
-		return personId;
-	}
-
-	public void setPersonId(Person personId) {
-		this.personId = personId;
-	}
-
-	public PersonRole getRoleId() {
-		return roleId;
-	}
-
-	public void setRoleId(PersonRole roleId) {
-		this.roleId = roleId;
-	}
-
-	public Date getDateStart() {
-		return dateStart;
-	}
-
-	public void setDateStart(Date dateStart) {
-		this.dateStart = dateStart;
-	}
-
-	public Date getDateEnd() {
-		return dateEnd;
-	}
-
-	public void setDateEnd(Date dateEnd) {
-		this.dateEnd = dateEnd;
-	}
-
-	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
-	}
-
-	public String toJson() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
-	}
-
-	public static PersonOrg fromJsonToPersonOrg(String json) {
-		return new JSONDeserializer<PersonOrg>().use(null, PersonOrg.class).deserialize(json);
-	}
-
-	public static String toJsonArray(Collection<PersonOrg> collection) {
-		return new JSONSerializer().exclude("*.class").serialize(collection);
-	}
-
-	public static Collection<PersonOrg> fromJsonArrayToPersonOrgs(String json) {
-		return new JSONDeserializer<List<PersonOrg>>().use(null, ArrayList.class).use("values", PersonOrg.class)
-				.deserialize(json);
-	}
-
-	@PersistenceContext
-	transient EntityManager entityManager;
 
 	public static final EntityManager entityManager() {
 		EntityManager em = new PersonOrg().entityManager;
@@ -133,10 +62,6 @@ public class PersonOrg {
 			throw new IllegalStateException(
 					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
 		return em;
-	}
-
-	public static long countPersonOrgs() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM PersonOrg o", Long.class).getSingleResult();
 	}
 
 	public static List<PersonOrg> findAllPersonOrgs() {
@@ -154,63 +79,13 @@ public class PersonOrg {
 				.setMaxResults(maxResults).getResultList();
 	}
 
-	@Transactional
-	public void persist() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.persist(this);
+	public static Collection<PersonOrg> fromJsonArrayToPersonOrgs(String json) {
+		return new JSONDeserializer<List<PersonOrg>>().use(null, ArrayList.class).use("values", PersonOrg.class)
+				.deserialize(json);
 	}
 
-	@Transactional
-	public void remove() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		if (this.entityManager.contains(this)) {
-			this.entityManager.remove(this);
-		} else {
-			PersonOrg attached = PersonOrg.findPersonOrg(this.id);
-			this.entityManager.remove(attached);
-		}
-	}
-
-	@Transactional
-	public void flush() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.flush();
-	}
-
-	@Transactional
-	public void clear() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.clear();
-	}
-
-	@Transactional
-	public PersonOrg merge() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		PersonOrg merged = this.entityManager.merge(this);
-		this.entityManager.flush();
-		return merged;
-	}
-
-	@Autowired
-	transient SolrServer solrServer;
-
-	public static QueryResponse search(String queryString) {
-		String searchString = "PersonOrg_solrsummary_t:" + queryString;
-		return search(new SolrQuery(searchString.toLowerCase()));
-	}
-
-	public static QueryResponse search(SolrQuery query) {
-		try {
-			return solrServer().query(query);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return new QueryResponse();
+	public static PersonOrg fromJsonToPersonOrg(String json) {
+		return new JSONDeserializer<PersonOrg>().use(null, PersonOrg.class).deserialize(json);
 	}
 
 	public static void indexPersonOrg(PersonOrg personOrg) {
@@ -248,15 +123,159 @@ public class PersonOrg {
 		}
 	}
 
-	@Async
-	public static void deleteIndex(PersonOrg personOrg) {
-		SolrServer solrServer = solrServer();
+	public static QueryResponse search(SolrQuery query) {
 		try {
-			solrServer.deleteById("personorg_" + personOrg.getId());
-			solrServer.commit();
+			return solrServer().query(query);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return new QueryResponse();
+	}
+
+	public static QueryResponse search(String queryString) {
+		String searchString = "PersonOrg_solrsummary_t:" + queryString;
+		return search(new SolrQuery(searchString.toLowerCase()));
+	}
+
+	public static SolrServer solrServer() {
+		SolrServer _solrServer = new PersonOrg().solrServer;
+		if (_solrServer == null)
+			throw new IllegalStateException(
+					"Solr server has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return _solrServer;
+	}
+
+	public static String toJsonArray(Collection<PersonOrg> collection) {
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	@Column(name = "date_end", columnDefinition = "date")
+	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(style = "M-")
+	private Date dateEnd;
+
+	@Column(name = "date_start", columnDefinition = "date")
+	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(style = "M-")
+	private Date dateStart;
+
+	@EmbeddedId
+	private PersonOrgPK id;
+
+	@ManyToOne
+	@JoinColumn(name = "org_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	private Org orgId;
+
+	@ManyToOne
+	@JoinColumn(name = "person_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	private Person personId;
+
+	@ManyToOne
+	@JoinColumn(name = "role_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	private PersonRole roleId;
+
+	@PersistenceContext
+	transient EntityManager entityManager;
+
+	@Autowired
+	transient SolrServer solrServer;
+
+	@Transactional
+	public void clear() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.clear();
+	}
+
+	@Transactional
+	public void flush() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.flush();
+	}
+
+	public Date getDateEnd() {
+		return dateEnd;
+	}
+
+	public Date getDateStart() {
+		return dateStart;
+	}
+
+	public PersonOrgPK getId() {
+		return this.id;
+	}
+
+	public Org getOrgId() {
+		return orgId;
+	}
+
+	public Person getPersonId() {
+		return personId;
+	}
+
+	public PersonRole getRoleId() {
+		return roleId;
+	}
+
+	@Transactional
+	public PersonOrg merge() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		PersonOrg merged = this.entityManager.merge(this);
+		this.entityManager.flush();
+		return merged;
+	}
+
+	@Transactional
+	public void persist() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.persist(this);
+	}
+
+	@Transactional
+	public void remove() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		if (this.entityManager.contains(this)) {
+			this.entityManager.remove(this);
+		} else {
+			PersonOrg attached = PersonOrg.findPersonOrg(this.id);
+			this.entityManager.remove(attached);
+		}
+	}
+
+	public void setDateEnd(Date dateEnd) {
+		this.dateEnd = dateEnd;
+	}
+
+	public void setDateStart(Date dateStart) {
+		this.dateStart = dateStart;
+	}
+
+	public void setId(PersonOrgPK id) {
+		this.id = id;
+	}
+
+	public void setOrgId(Org orgId) {
+		this.orgId = orgId;
+	}
+
+	public void setPersonId(Person personId) {
+		this.personId = personId;
+	}
+
+	public void setRoleId(PersonRole roleId) {
+		this.roleId = roleId;
+	}
+
+	public String toJson() {
+		return new JSONSerializer().exclude("*.class").serialize(this);
+	}
+
+	public String toString() {
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate
@@ -268,24 +287,5 @@ public class PersonOrg {
 	@PreRemove
 	private void preRemove() {
 		deleteIndex(this);
-	}
-
-	public static SolrServer solrServer() {
-		SolrServer _solrServer = new PersonOrg().solrServer;
-		if (_solrServer == null)
-			throw new IllegalStateException(
-					"Solr server has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-		return _solrServer;
-	}
-
-	@EmbeddedId
-	private PersonOrgPK id;
-
-	public PersonOrgPK getId() {
-		return this.id;
-	}
-
-	public void setId(PersonOrgPK id) {
-		this.id = id;
 	}
 }

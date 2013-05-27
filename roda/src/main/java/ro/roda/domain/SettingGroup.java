@@ -42,16 +42,42 @@ import flexjson.JSONSerializer;
 @Audited
 public class SettingGroup {
 
-	public String toJson() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
+	public static long countSettingGroups() {
+		return entityManager().createQuery("SELECT COUNT(o) FROM SettingGroup o", Long.class).getSingleResult();
 	}
 
-	public static SettingGroup fromJsonToSettingGroup(String json) {
-		return new JSONDeserializer<SettingGroup>().use(null, SettingGroup.class).deserialize(json);
+	@Async
+	public static void deleteIndex(SettingGroup settingGroup) {
+		SolrServer solrServer = solrServer();
+		try {
+			solrServer.deleteById("settinggroup_" + settingGroup.getId());
+			solrServer.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
-	public static String toJsonArray(Collection<SettingGroup> collection) {
-		return new JSONSerializer().exclude("*.class").serialize(collection);
+	public static final EntityManager entityManager() {
+		EntityManager em = new SettingGroup().entityManager;
+		if (em == null)
+			throw new IllegalStateException(
+					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return em;
+	}
+
+	public static List<SettingGroup> findAllSettingGroups() {
+		return entityManager().createQuery("SELECT o FROM SettingGroup o", SettingGroup.class).getResultList();
+	}
+
+	public static SettingGroup findSettingGroup(Integer id) {
+		if (id == null)
+			return null;
+		return entityManager().find(SettingGroup.class, id);
+	}
+
+	public static List<SettingGroup> findSettingGroupEntries(int firstResult, int maxResults) {
+		return entityManager().createQuery("SELECT o FROM SettingGroup o", SettingGroup.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
 	}
 
 	public static Collection<SettingGroup> fromJsonArrayToSettingGroups(String json) {
@@ -59,21 +85,8 @@ public class SettingGroup {
 				.deserialize(json);
 	}
 
-	@Autowired
-	transient SolrServer solrServer;
-
-	public static QueryResponse search(String queryString) {
-		String searchString = "SettingGroup_solrsummary_t:" + queryString;
-		return search(new SolrQuery(searchString.toLowerCase()));
-	}
-
-	public static QueryResponse search(SolrQuery query) {
-		try {
-			return solrServer().query(query);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return new QueryResponse();
+	public static SettingGroup fromJsonToSettingGroup(String json) {
+		return new JSONDeserializer<SettingGroup>().use(null, SettingGroup.class).deserialize(json);
 	}
 
 	public static void indexSettingGroup(SettingGroup settingGroup) {
@@ -107,26 +120,18 @@ public class SettingGroup {
 		}
 	}
 
-	@Async
-	public static void deleteIndex(SettingGroup settingGroup) {
-		SolrServer solrServer = solrServer();
+	public static QueryResponse search(SolrQuery query) {
 		try {
-			solrServer.deleteById("settinggroup_" + settingGroup.getId());
-			solrServer.commit();
+			return solrServer().query(query);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return new QueryResponse();
 	}
 
-	@PostUpdate
-	@PostPersist
-	private void postPersistOrUpdate() {
-		indexSettingGroup(this);
-	}
-
-	@PreRemove
-	private void preRemove() {
-		deleteIndex(this);
+	public static QueryResponse search(String queryString) {
+		String searchString = "SettingGroup_solrsummary_t:" + queryString;
+		return search(new SolrQuery(searchString.toLowerCase()));
 	}
 
 	public static SolrServer solrServer() {
@@ -137,108 +142,83 @@ public class SettingGroup {
 		return _solrServer;
 	}
 
-	@OneToMany(mappedBy = "settingGroupId")
-	private Set<Setting> settings;
-
-	@OneToMany(mappedBy = "parentId")
-	private Set<SettingGroup> settingGroups;
-
-	@ManyToOne
-	@JoinColumn(name = "parent_id", referencedColumnName = "id", insertable = false, updatable = false)
-	private SettingGroup parentId;
-
-	@Column(name = "name", columnDefinition = "text")
-	@NotNull
-	private String name;
+	public static String toJsonArray(Collection<SettingGroup> collection) {
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
 
 	@Column(name = "description", columnDefinition = "text")
 	private String description;
-
-	public Set<Setting> getSettings() {
-		return settings;
-	}
-
-	public void setSettings(Set<Setting> settings) {
-		this.settings = settings;
-	}
-
-	public Set<SettingGroup> getSettingGroups() {
-		return settingGroups;
-	}
-
-	public void setSettingGroups(Set<SettingGroup> settingGroups) {
-		this.settingGroups = settingGroups;
-	}
-
-	public SettingGroup getParentId() {
-		return parentId;
-	}
-
-	public void setParentId(SettingGroup parentId) {
-		this.parentId = parentId;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
-	}
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id", columnDefinition = "serial")
 	private Integer id;
 
-	public Integer getId() {
-		return this.id;
-	}
+	@Column(name = "name", columnDefinition = "text")
+	@NotNull
+	private String name;
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+	@ManyToOne
+	@JoinColumn(name = "parent_id", referencedColumnName = "id", insertable = false, updatable = false)
+	private SettingGroup parentId;
+
+	@OneToMany(mappedBy = "parentId")
+	private Set<SettingGroup> settingGroups;
+
+	@OneToMany(mappedBy = "settingGroupId")
+	private Set<Setting> settings;
 
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	public static final EntityManager entityManager() {
-		EntityManager em = new SettingGroup().entityManager;
-		if (em == null)
-			throw new IllegalStateException(
-					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-		return em;
+	@Autowired
+	transient SolrServer solrServer;
+
+	@Transactional
+	public void clear() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.clear();
 	}
 
-	public static long countSettingGroups() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM SettingGroup o", Long.class).getSingleResult();
+	@Transactional
+	public void flush() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.flush();
 	}
 
-	public static List<SettingGroup> findAllSettingGroups() {
-		return entityManager().createQuery("SELECT o FROM SettingGroup o", SettingGroup.class).getResultList();
+	public String getDescription() {
+		return description;
 	}
 
-	public static SettingGroup findSettingGroup(Integer id) {
-		if (id == null)
-			return null;
-		return entityManager().find(SettingGroup.class, id);
+	public Integer getId() {
+		return this.id;
 	}
 
-	public static List<SettingGroup> findSettingGroupEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM SettingGroup o", SettingGroup.class)
-				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
+	public String getName() {
+		return name;
+	}
+
+	public SettingGroup getParentId() {
+		return parentId;
+	}
+
+	public Set<SettingGroup> getSettingGroups() {
+		return settingGroups;
+	}
+
+	public Set<Setting> getSettings() {
+		return settings;
+	}
+
+	@Transactional
+	public SettingGroup merge() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		SettingGroup merged = this.entityManager.merge(this);
+		this.entityManager.flush();
+		return merged;
 	}
 
 	@Transactional
@@ -260,26 +240,46 @@ public class SettingGroup {
 		}
 	}
 
-	@Transactional
-	public void flush() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.flush();
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
-	@Transactional
-	public void clear() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.clear();
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
-	@Transactional
-	public SettingGroup merge() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		SettingGroup merged = this.entityManager.merge(this);
-		this.entityManager.flush();
-		return merged;
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setParentId(SettingGroup parentId) {
+		this.parentId = parentId;
+	}
+
+	public void setSettingGroups(Set<SettingGroup> settingGroups) {
+		this.settingGroups = settingGroups;
+	}
+
+	public void setSettings(Set<Setting> settings) {
+		this.settings = settings;
+	}
+
+	public String toJson() {
+		return new JSONSerializer().exclude("*.class").serialize(this);
+	}
+
+	public String toString() {
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+	}
+
+	@PostUpdate
+	@PostPersist
+	private void postPersistOrUpdate() {
+		indexSettingGroup(this);
+	}
+
+	@PreRemove
+	private void preRemove() {
+		deleteIndex(this);
 	}
 }

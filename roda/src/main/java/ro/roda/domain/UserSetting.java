@@ -42,82 +42,20 @@ import flexjson.JSONSerializer;
 @Audited
 public class UserSetting {
 
-	@OneToMany(mappedBy = "userSettingId")
-	private Set<UserSettingValue> userSettingValues;
-
-	@ManyToOne
-	@JoinColumn(name = "user_setting_group_id", referencedColumnName = "id", nullable = false)
-	private UserSettingGroup userSettingGroupId;
-
-	@Column(name = "name", columnDefinition = "text")
-	@NotNull
-	private String name;
-
-	@Column(name = "description", columnDefinition = "text")
-	private String description;
-
-	@Column(name = "default_value", columnDefinition = "text")
-	private String defaultValue;
-
-	public Set<UserSettingValue> getUserSettingValues() {
-		return userSettingValues;
+	public static long countUserSettings() {
+		return entityManager().createQuery("SELECT COUNT(o) FROM UserSetting o", Long.class).getSingleResult();
 	}
 
-	public void setUserSettingValues(Set<UserSettingValue> userSettingValues) {
-		this.userSettingValues = userSettingValues;
+	@Async
+	public static void deleteIndex(UserSetting userSetting) {
+		SolrServer solrServer = solrServer();
+		try {
+			solrServer.deleteById("usersetting_" + userSetting.getId());
+			solrServer.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
-
-	public UserSettingGroup getUserSettingGroupId() {
-		return userSettingGroupId;
-	}
-
-	public void setUserSettingGroupId(UserSettingGroup userSettingGroupId) {
-		this.userSettingGroupId = userSettingGroupId;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public String getDefaultValue() {
-		return defaultValue;
-	}
-
-	public void setDefaultValue(String defaultValue) {
-		this.defaultValue = defaultValue;
-	}
-
-	public String toJson() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
-	}
-
-	public static UserSetting fromJsonToUserSetting(String json) {
-		return new JSONDeserializer<UserSetting>().use(null, UserSetting.class).deserialize(json);
-	}
-
-	public static String toJsonArray(Collection<UserSetting> collection) {
-		return new JSONSerializer().exclude("*.class").serialize(collection);
-	}
-
-	public static Collection<UserSetting> fromJsonArrayToUserSettings(String json) {
-		return new JSONDeserializer<List<UserSetting>>().use(null, ArrayList.class).use("values", UserSetting.class)
-				.deserialize(json);
-	}
-
-	@PersistenceContext
-	transient EntityManager entityManager;
 
 	public static final EntityManager entityManager() {
 		EntityManager em = new UserSetting().entityManager;
@@ -125,10 +63,6 @@ public class UserSetting {
 			throw new IllegalStateException(
 					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
 		return em;
-	}
-
-	public static long countUserSettings() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM UserSetting o", Long.class).getSingleResult();
 	}
 
 	public static List<UserSetting> findAllUserSettings() {
@@ -146,80 +80,13 @@ public class UserSetting {
 				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
 	}
 
-	@Transactional
-	public void persist() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.persist(this);
+	public static Collection<UserSetting> fromJsonArrayToUserSettings(String json) {
+		return new JSONDeserializer<List<UserSetting>>().use(null, ArrayList.class).use("values", UserSetting.class)
+				.deserialize(json);
 	}
 
-	@Transactional
-	public void remove() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		if (this.entityManager.contains(this)) {
-			this.entityManager.remove(this);
-		} else {
-			UserSetting attached = UserSetting.findUserSetting(this.id);
-			this.entityManager.remove(attached);
-		}
-	}
-
-	@Transactional
-	public void flush() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.flush();
-	}
-
-	@Transactional
-	public void clear() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.clear();
-	}
-
-	@Transactional
-	public UserSetting merge() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		UserSetting merged = this.entityManager.merge(this);
-		this.entityManager.flush();
-		return merged;
-	}
-
-	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
-	}
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "id", columnDefinition = "serial")
-	private Integer id;
-
-	public Integer getId() {
-		return this.id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	@Autowired
-	transient SolrServer solrServer;
-
-	public static QueryResponse search(String queryString) {
-		String searchString = "UserSetting_solrsummary_t:" + queryString;
-		return search(new SolrQuery(searchString.toLowerCase()));
-	}
-
-	public static QueryResponse search(SolrQuery query) {
-		try {
-			return solrServer().query(query);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return new QueryResponse();
+	public static UserSetting fromJsonToUserSetting(String json) {
+		return new JSONDeserializer<UserSetting>().use(null, UserSetting.class).deserialize(json);
 	}
 
 	public static void indexUserSetting(UserSetting userSetting) {
@@ -256,15 +123,156 @@ public class UserSetting {
 		}
 	}
 
-	@Async
-	public static void deleteIndex(UserSetting userSetting) {
-		SolrServer solrServer = solrServer();
+	public static QueryResponse search(SolrQuery query) {
 		try {
-			solrServer.deleteById("usersetting_" + userSetting.getId());
-			solrServer.commit();
+			return solrServer().query(query);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return new QueryResponse();
+	}
+
+	public static QueryResponse search(String queryString) {
+		String searchString = "UserSetting_solrsummary_t:" + queryString;
+		return search(new SolrQuery(searchString.toLowerCase()));
+	}
+
+	public static SolrServer solrServer() {
+		SolrServer _solrServer = new UserSetting().solrServer;
+		if (_solrServer == null)
+			throw new IllegalStateException(
+					"Solr server has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return _solrServer;
+	}
+
+	public static String toJsonArray(Collection<UserSetting> collection) {
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	@Column(name = "default_value", columnDefinition = "text")
+	private String defaultValue;
+
+	@Column(name = "description", columnDefinition = "text")
+	private String description;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id", columnDefinition = "serial")
+	private Integer id;
+
+	@Column(name = "name", columnDefinition = "text")
+	@NotNull
+	private String name;
+
+	@ManyToOne
+	@JoinColumn(name = "user_setting_group_id", referencedColumnName = "id", nullable = false)
+	private UserSettingGroup userSettingGroupId;
+
+	@OneToMany(mappedBy = "userSettingId")
+	private Set<UserSettingValue> userSettingValues;
+
+	@PersistenceContext
+	transient EntityManager entityManager;
+
+	@Autowired
+	transient SolrServer solrServer;
+
+	@Transactional
+	public void clear() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.clear();
+	}
+
+	@Transactional
+	public void flush() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.flush();
+	}
+
+	public String getDefaultValue() {
+		return defaultValue;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public Integer getId() {
+		return this.id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public UserSettingGroup getUserSettingGroupId() {
+		return userSettingGroupId;
+	}
+
+	public Set<UserSettingValue> getUserSettingValues() {
+		return userSettingValues;
+	}
+
+	@Transactional
+	public UserSetting merge() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		UserSetting merged = this.entityManager.merge(this);
+		this.entityManager.flush();
+		return merged;
+	}
+
+	@Transactional
+	public void persist() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.persist(this);
+	}
+
+	@Transactional
+	public void remove() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		if (this.entityManager.contains(this)) {
+			this.entityManager.remove(this);
+		} else {
+			UserSetting attached = UserSetting.findUserSetting(this.id);
+			this.entityManager.remove(attached);
+		}
+	}
+
+	public void setDefaultValue(String defaultValue) {
+		this.defaultValue = defaultValue;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setUserSettingGroupId(UserSettingGroup userSettingGroupId) {
+		this.userSettingGroupId = userSettingGroupId;
+	}
+
+	public void setUserSettingValues(Set<UserSettingValue> userSettingValues) {
+		this.userSettingValues = userSettingValues;
+	}
+
+	public String toJson() {
+		return new JSONSerializer().exclude("*.class").serialize(this);
+	}
+
+	public String toString() {
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate
@@ -276,13 +284,5 @@ public class UserSetting {
 	@PreRemove
 	private void preRemove() {
 		deleteIndex(this);
-	}
-
-	public static SolrServer solrServer() {
-		SolrServer _solrServer = new UserSetting().solrServer;
-		if (_solrServer == null)
-			throw new IllegalStateException(
-					"Solr server has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-		return _solrServer;
 	}
 }

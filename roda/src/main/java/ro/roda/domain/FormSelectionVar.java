@@ -38,36 +38,20 @@ import flexjson.JSONSerializer;
 @Audited
 public class FormSelectionVar {
 
-	@EmbeddedId
-	private FormSelectionVarPK id;
-
-	public FormSelectionVarPK getId() {
-		return this.id;
+	public static long countFormSelectionVars() {
+		return entityManager().createQuery("SELECT COUNT(o) FROM FormSelectionVar o", Long.class).getSingleResult();
 	}
 
-	public void setId(FormSelectionVarPK id) {
-		this.id = id;
+	@Async
+	public static void deleteIndex(FormSelectionVar formSelectionVar) {
+		SolrServer solrServer = solrServer();
+		try {
+			solrServer.deleteById("formselectionvar_" + formSelectionVar.getId());
+			solrServer.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
-
-	public String toJson() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
-	}
-
-	public static FormSelectionVar fromJsonToFormSelectionVar(String json) {
-		return new JSONDeserializer<FormSelectionVar>().use(null, FormSelectionVar.class).deserialize(json);
-	}
-
-	public static String toJsonArray(Collection<FormSelectionVar> collection) {
-		return new JSONSerializer().exclude("*.class").serialize(collection);
-	}
-
-	public static Collection<FormSelectionVar> fromJsonArrayToFormSelectionVars(String json) {
-		return new JSONDeserializer<List<FormSelectionVar>>().use(null, ArrayList.class)
-				.use("values", FormSelectionVar.class).deserialize(json);
-	}
-
-	@PersistenceContext
-	transient EntityManager entityManager;
 
 	public static final EntityManager entityManager() {
 		EntityManager em = new FormSelectionVar().entityManager;
@@ -75,10 +59,6 @@ public class FormSelectionVar {
 			throw new IllegalStateException(
 					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
 		return em;
-	}
-
-	public static long countFormSelectionVars() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM FormSelectionVar o", Long.class).getSingleResult();
 	}
 
 	public static List<FormSelectionVar> findAllFormSelectionVars() {
@@ -96,104 +76,13 @@ public class FormSelectionVar {
 				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
 	}
 
-	@Transactional
-	public void persist() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.persist(this);
+	public static Collection<FormSelectionVar> fromJsonArrayToFormSelectionVars(String json) {
+		return new JSONDeserializer<List<FormSelectionVar>>().use(null, ArrayList.class)
+				.use("values", FormSelectionVar.class).deserialize(json);
 	}
 
-	@Transactional
-	public void remove() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		if (this.entityManager.contains(this)) {
-			this.entityManager.remove(this);
-		} else {
-			FormSelectionVar attached = FormSelectionVar.findFormSelectionVar(this.id);
-			this.entityManager.remove(attached);
-		}
-	}
-
-	@Transactional
-	public void flush() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.flush();
-	}
-
-	@Transactional
-	public void clear() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.clear();
-	}
-
-	@Transactional
-	public FormSelectionVar merge() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		FormSelectionVar merged = this.entityManager.merge(this);
-		this.entityManager.flush();
-		return merged;
-	}
-
-	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
-	}
-
-	@ManyToOne
-	@JoinColumn(name = "form_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
-	private Form formId;
-
-	@ManyToOne
-	@JoinColumns({
-			@JoinColumn(name = "variable_id", referencedColumnName = "variable_id", nullable = false, insertable = false, updatable = false),
-			@JoinColumn(name = "item_id", referencedColumnName = "item_id", nullable = false, insertable = false, updatable = false) })
-	private SelectionVariableItem selectionVariableItem;
-
-	@Column(name = "order_of_items_in_response", columnDefinition = "int4")
-	private Integer orderOfItemsInResponse;
-
-	public Form getFormId() {
-		return formId;
-	}
-
-	public void setFormId(Form formId) {
-		this.formId = formId;
-	}
-
-	public SelectionVariableItem getSelectionVariableItem() {
-		return selectionVariableItem;
-	}
-
-	public void setSelectionVariableItem(SelectionVariableItem selectionVariableItem) {
-		this.selectionVariableItem = selectionVariableItem;
-	}
-
-	public Integer getOrderOfItemsInResponse() {
-		return orderOfItemsInResponse;
-	}
-
-	public void setOrderOfItemsInResponse(Integer orderOfItemsInResponse) {
-		this.orderOfItemsInResponse = orderOfItemsInResponse;
-	}
-
-	@Autowired
-	transient SolrServer solrServer;
-
-	public static QueryResponse search(String queryString) {
-		String searchString = "FormSelectionVar_solrsummary_t:" + queryString;
-		return search(new SolrQuery(searchString.toLowerCase()));
-	}
-
-	public static QueryResponse search(SolrQuery query) {
-		try {
-			return solrServer().query(query);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return new QueryResponse();
+	public static FormSelectionVar fromJsonToFormSelectionVar(String json) {
+		return new JSONDeserializer<FormSelectionVar>().use(null, FormSelectionVar.class).deserialize(json);
 	}
 
 	public static void indexFormSelectionVar(FormSelectionVar formSelectionVar) {
@@ -231,15 +120,134 @@ public class FormSelectionVar {
 		}
 	}
 
-	@Async
-	public static void deleteIndex(FormSelectionVar formSelectionVar) {
-		SolrServer solrServer = solrServer();
+	public static QueryResponse search(SolrQuery query) {
 		try {
-			solrServer.deleteById("formselectionvar_" + formSelectionVar.getId());
-			solrServer.commit();
+			return solrServer().query(query);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return new QueryResponse();
+	}
+
+	public static QueryResponse search(String queryString) {
+		String searchString = "FormSelectionVar_solrsummary_t:" + queryString;
+		return search(new SolrQuery(searchString.toLowerCase()));
+	}
+
+	public static SolrServer solrServer() {
+		SolrServer _solrServer = new FormSelectionVar().solrServer;
+		if (_solrServer == null)
+			throw new IllegalStateException(
+					"Solr server has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return _solrServer;
+	}
+
+	public static String toJsonArray(Collection<FormSelectionVar> collection) {
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	@ManyToOne
+	@JoinColumn(name = "form_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	private Form formId;
+
+	@EmbeddedId
+	private FormSelectionVarPK id;
+
+	@Column(name = "order_of_items_in_response", columnDefinition = "int4")
+	private Integer orderOfItemsInResponse;
+
+	@ManyToOne
+	@JoinColumns({
+			@JoinColumn(name = "variable_id", referencedColumnName = "variable_id", nullable = false, insertable = false, updatable = false),
+			@JoinColumn(name = "item_id", referencedColumnName = "item_id", nullable = false, insertable = false, updatable = false) })
+	private SelectionVariableItem selectionVariableItem;
+
+	@PersistenceContext
+	transient EntityManager entityManager;
+
+	@Autowired
+	transient SolrServer solrServer;
+
+	@Transactional
+	public void clear() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.clear();
+	}
+
+	@Transactional
+	public void flush() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.flush();
+	}
+
+	public Form getFormId() {
+		return formId;
+	}
+
+	public FormSelectionVarPK getId() {
+		return this.id;
+	}
+
+	public Integer getOrderOfItemsInResponse() {
+		return orderOfItemsInResponse;
+	}
+
+	public SelectionVariableItem getSelectionVariableItem() {
+		return selectionVariableItem;
+	}
+
+	@Transactional
+	public FormSelectionVar merge() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		FormSelectionVar merged = this.entityManager.merge(this);
+		this.entityManager.flush();
+		return merged;
+	}
+
+	@Transactional
+	public void persist() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.persist(this);
+	}
+
+	@Transactional
+	public void remove() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		if (this.entityManager.contains(this)) {
+			this.entityManager.remove(this);
+		} else {
+			FormSelectionVar attached = FormSelectionVar.findFormSelectionVar(this.id);
+			this.entityManager.remove(attached);
+		}
+	}
+
+	public void setFormId(Form formId) {
+		this.formId = formId;
+	}
+
+	public void setId(FormSelectionVarPK id) {
+		this.id = id;
+	}
+
+	public void setOrderOfItemsInResponse(Integer orderOfItemsInResponse) {
+		this.orderOfItemsInResponse = orderOfItemsInResponse;
+	}
+
+	public void setSelectionVariableItem(SelectionVariableItem selectionVariableItem) {
+		this.selectionVariableItem = selectionVariableItem;
+	}
+
+	public String toJson() {
+		return new JSONSerializer().exclude("*.class").serialize(this);
+	}
+
+	public String toString() {
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate
@@ -251,13 +259,5 @@ public class FormSelectionVar {
 	@PreRemove
 	private void preRemove() {
 		deleteIndex(this);
-	}
-
-	public static SolrServer solrServer() {
-		SolrServer _solrServer = new FormSelectionVar().solrServer;
-		if (_solrServer == null)
-			throw new IllegalStateException(
-					"Solr server has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-		return _solrServer;
 	}
 }

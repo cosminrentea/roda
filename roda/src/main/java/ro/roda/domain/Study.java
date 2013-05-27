@@ -51,302 +51,51 @@ import flexjson.JSONSerializer;
 @Audited
 public class Study {
 
-	@ManyToMany
-	@JoinTable(name = "study_topic", joinColumns = { @JoinColumn(name = "study_id", nullable = false) }, inverseJoinColumns = { @JoinColumn(name = "topic_id", nullable = false) })
-	private Set<Topic> topics;
-
-	@ManyToMany(mappedBy = "studies")
-	private Set<SamplingProcedure> samplingProcedures;
-
-	@ManyToMany(mappedBy = "studies")
-	private Set<CollectionModelType> collectionModelTypes;
-
-	@ManyToMany(mappedBy = "studies")
-	private Set<DataSourceType> dataSourceTypes;
-
-	@ManyToMany(mappedBy = "studies1")
-	private Set<File> files1;
-
-	@ManyToMany(mappedBy = "studies")
-	private Set<Source> sources;
-
-	@OneToOne
-	@JoinColumn(name = "id", nullable = false, insertable = false, updatable = false)
-	private TimeMethType timeMethType;
-
-	@OneToMany(mappedBy = "studyId")
-	private Set<CatalogStudy> catalogStudies;
-
-	@OneToMany(mappedBy = "studyId")
-	private Set<Instance> instances;
-
-	@OneToMany(mappedBy = "studyId")
-	private Set<StudyDescr> studyDescrs;
-
-	@OneToMany(mappedBy = "studyId")
-	private Set<StudyKeyword> studyKeywords;
-
-	@OneToMany(mappedBy = "studyId")
-	private Set<StudyOrg> studyOrgs;
-
-	@OneToMany(mappedBy = "studyId")
-	private Set<StudyPerson> studypeople;
-
-	@ManyToOne
-	@JoinColumn(name = "unit_analysis_id", referencedColumnName = "id", nullable = false)
-	private UnitAnalysis unitAnalysisId;
-
-	@ManyToOne
-	@JoinColumn(name = "added_by", referencedColumnName = "id", nullable = false)
-	private Users addedBy;
-
-	@Column(name = "date_start", columnDefinition = "date")
-	@Temporal(TemporalType.DATE)
-	@DateTimeFormat(style = "M-")
-	private Date dateStart;
-
-	@Column(name = "date_end", columnDefinition = "date")
-	@Temporal(TemporalType.DATE)
-	@DateTimeFormat(style = "M-")
-	private Date dateEnd;
-
-	@Column(name = "insertion_status", columnDefinition = "int4")
-	@NotNull
-	private Integer insertionStatus;
-
-	@Column(name = "added", columnDefinition = "timestamp")
-	@NotNull
-	@Temporal(TemporalType.TIMESTAMP)
-	@DateTimeFormat(style = "MM")
-	private Calendar added;
-
-	@Column(name = "digitizable", columnDefinition = "bool")
-	@NotNull
-	private boolean digitizable;
-
-	@Column(name = "anonymous_usage", columnDefinition = "bool")
-	@NotNull
-	private boolean anonymousUsage;
-
-	@Column(name = "raw_data", columnDefinition = "bool")
-	@NotNull
-	private boolean rawData;
-
-	@Column(name = "raw_metadata", columnDefinition = "bool")
-	@NotNull
-	private boolean rawMetadata;
-
-	@Column(name = "time_meth_id", columnDefinition = "int4")
-	@NotNull
-	private Integer timeMethId;
-
-	public Set<Topic> getTopics() {
-		return topics;
+	public static long countStudys() {
+		return entityManager().createQuery("SELECT COUNT(o) FROM Study o", Long.class).getSingleResult();
 	}
 
-	public void setTopics(Set<Topic> topics) {
-		this.topics = topics;
-	}
-
-	public Set<SamplingProcedure> getSamplingProcedures() {
-		return samplingProcedures;
-	}
-
-	public void setSamplingProcedures(Set<SamplingProcedure> samplingProcedures) {
-		this.samplingProcedures = samplingProcedures;
-	}
-
-	public Set<CollectionModelType> getCollectionModelTypes() {
-		return collectionModelTypes;
-	}
-
-	public void setCollectionModelTypes(Set<CollectionModelType> collectionModelTypes) {
-		this.collectionModelTypes = collectionModelTypes;
-	}
-
-	public Set<DataSourceType> getDataSourceTypes() {
-		return dataSourceTypes;
-	}
-
-	public void setDataSourceTypes(Set<DataSourceType> dataSourceTypes) {
-		this.dataSourceTypes = dataSourceTypes;
-	}
-
-	public Set<File> getFiles1() {
-		return files1;
-	}
-
-	public void setFiles1(Set<File> files1) {
-		this.files1 = files1;
-	}
-
-	public Set<Source> getSources() {
-		return sources;
-	}
-
-	public void setSources(Set<Source> sources) {
-		this.sources = sources;
-	}
-
-	public TimeMethType getTimeMethType() {
-		return timeMethType;
-	}
-
-	public void setTimeMethType(TimeMethType timeMethType) {
-		this.timeMethType = timeMethType;
-	}
-
-	public Set<CatalogStudy> getCatalogStudies() {
-		return catalogStudies;
-	}
-
-	public void setCatalogStudies(Set<CatalogStudy> catalogStudies) {
-		this.catalogStudies = catalogStudies;
-	}
-
-	public Set<Instance> getInstances() {
-		return instances;
-	}
-
-	public void setInstances(Set<Instance> instances) {
-		this.instances = instances;
-	}
-
-	public Set<StudyDescr> getStudyDescrs() {
-		return studyDescrs;
-	}
-
-	public void setStudyDescrs(Set<StudyDescr> studyDescrs) {
-		this.studyDescrs = studyDescrs;
-	}
-
-	public Set<StudyKeyword> getStudyKeywords() {
-		return studyKeywords;
-	}
-
-	public void setStudyKeywords(Set<StudyKeyword> studyKeywords) {
-		this.studyKeywords = studyKeywords;
-	}
-
-	public Set<StudyOrg> getStudyOrgs() {
-		return studyOrgs;
-	}
-
-	public void setStudyOrgs(Set<StudyOrg> studyOrgs) {
-		this.studyOrgs = studyOrgs;
-	}
-
-	public Set<StudyPerson> getStudypeople() {
-		return studypeople;
-	}
-
-	public void setStudypeople(Set<StudyPerson> studypeople) {
-		this.studypeople = studypeople;
-	}
-
-	public UnitAnalysis getUnitAnalysisId() {
-		return unitAnalysisId;
-	}
-
-	public void setUnitAnalysisId(UnitAnalysis unitAnalysisId) {
-		this.unitAnalysisId = unitAnalysisId;
-	}
-
-	public Users getAddedBy() {
-		return addedBy;
-	}
-
-	public void setAddedBy(Users addedBy) {
-		this.addedBy = addedBy;
-	}
-
-	public Date getDateStart() {
-		return dateStart;
-	}
-
-	public void setDateStart(Date dateStart) {
-		this.dateStart = dateStart;
-	}
-
-	public Date getDateEnd() {
-		return dateEnd;
-	}
-
-	public void setDateEnd(Date dateEnd) {
-		this.dateEnd = dateEnd;
-	}
-
-	public Integer getInsertionStatus() {
-		return insertionStatus;
-	}
-
-	public void setInsertionStatus(Integer insertionStatus) {
-		this.insertionStatus = insertionStatus;
-	}
-
-	public Calendar getAdded() {
-		return added;
-	}
-
-	public void setAdded(Calendar added) {
-		this.added = added;
-	}
-
-	public boolean isDigitizable() {
-		return digitizable;
-	}
-
-	public void setDigitizable(boolean digitizable) {
-		this.digitizable = digitizable;
-	}
-
-	public boolean isAnonymousUsage() {
-		return anonymousUsage;
-	}
-
-	public void setAnonymousUsage(boolean anonymousUsage) {
-		this.anonymousUsage = anonymousUsage;
-	}
-
-	public boolean isRawData() {
-		return rawData;
-	}
-
-	public void setRawData(boolean rawData) {
-		this.rawData = rawData;
-	}
-
-	public boolean isRawMetadata() {
-		return rawMetadata;
-	}
-
-	public void setRawMetadata(boolean rawMetadata) {
-		this.rawMetadata = rawMetadata;
-	}
-
-	public Integer getTimeMethId() {
-		return timeMethId;
-	}
-
-	public void setTimeMethId(Integer timeMethId) {
-		this.timeMethId = timeMethId;
-	}
-
-	@Autowired
-	transient SolrServer solrServer;
-
-	public static QueryResponse search(String queryString) {
-		String searchString = "Study_solrsummary_t:" + queryString;
-		return search(new SolrQuery(searchString.toLowerCase()));
-	}
-
-	public static QueryResponse search(SolrQuery query) {
+	@Async
+	public static void deleteIndex(Study study) {
+		SolrServer solrServer = solrServer();
 		try {
-			return solrServer().query(query);
+			solrServer.deleteById("study_" + study.getId());
+			solrServer.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return new QueryResponse();
+	}
+
+	public static final EntityManager entityManager() {
+		EntityManager em = new Study().entityManager;
+		if (em == null)
+			throw new IllegalStateException(
+					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return em;
+	}
+
+	public static List<Study> findAllStudys() {
+		return entityManager().createQuery("SELECT o FROM Study o", Study.class).getResultList();
+	}
+
+	public static Study findStudy(Integer id) {
+		if (id == null)
+			return null;
+		return entityManager().find(Study.class, id);
+	}
+
+	public static List<Study> findStudyEntries(int firstResult, int maxResults) {
+		return entityManager().createQuery("SELECT o FROM Study o", Study.class).setFirstResult(firstResult)
+				.setMaxResults(maxResults).getResultList();
+	}
+
+	public static Collection<Study> fromJsonArrayToStudys(String json) {
+		return new JSONDeserializer<List<Study>>().use(null, ArrayList.class).use("values", Study.class)
+				.deserialize(json);
+	}
+
+	public static Study fromJsonToStudy(String json) {
+		return new JSONDeserializer<Study>().use(null, Study.class).deserialize(json);
 	}
 
 	public static void indexStudy(Study study) {
@@ -376,26 +125,18 @@ public class Study {
 		}
 	}
 
-	@Async
-	public static void deleteIndex(Study study) {
-		SolrServer solrServer = solrServer();
+	public static QueryResponse search(SolrQuery query) {
 		try {
-			solrServer.deleteById("study_" + study.getId());
-			solrServer.commit();
+			return solrServer().query(query);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return new QueryResponse();
 	}
 
-	@PostUpdate
-	@PostPersist
-	private void postPersistOrUpdate() {
-		indexStudy(this);
-	}
-
-	@PreRemove
-	private void preRemove() {
-		deleteIndex(this);
+	public static QueryResponse search(String queryString) {
+		String searchString = "Study_solrsummary_t:" + queryString;
+		return search(new SolrQuery(searchString.toLowerCase()));
 	}
 
 	public static SolrServer solrServer() {
@@ -406,34 +147,239 @@ public class Study {
 		return _solrServer;
 	}
 
+	public static String toJsonArray(Collection<Study> collection) {
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	@Column(name = "added", columnDefinition = "timestamp")
+	@NotNull
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(style = "MM")
+	private Calendar added;
+
+	@ManyToOne
+	@JoinColumn(name = "added_by", referencedColumnName = "id", nullable = false)
+	private Users addedBy;
+
+	@Column(name = "anonymous_usage", columnDefinition = "bool")
+	@NotNull
+	private boolean anonymousUsage;
+
+	@OneToMany(mappedBy = "studyId")
+	private Set<CatalogStudy> catalogStudies;
+
+	@ManyToMany(mappedBy = "studies")
+	private Set<CollectionModelType> collectionModelTypes;
+
+	@ManyToMany(mappedBy = "studies")
+	private Set<DataSourceType> dataSourceTypes;
+
+	@Column(name = "date_end", columnDefinition = "date")
+	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(style = "M-")
+	private Date dateEnd;
+
+	@Column(name = "date_start", columnDefinition = "date")
+	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(style = "M-")
+	private Date dateStart;
+
+	@Column(name = "digitizable", columnDefinition = "bool")
+	@NotNull
+	private boolean digitizable;
+
+	@ManyToMany(mappedBy = "studies1")
+	private Set<File> files1;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id", columnDefinition = "serial")
+	private Integer id;
+
+	@Column(name = "insertion_status", columnDefinition = "int4")
+	@NotNull
+	private Integer insertionStatus;
+
+	@OneToMany(mappedBy = "studyId")
+	private Set<Instance> instances;
+
+	@Column(name = "raw_data", columnDefinition = "bool")
+	@NotNull
+	private boolean rawData;
+
+	@Column(name = "raw_metadata", columnDefinition = "bool")
+	@NotNull
+	private boolean rawMetadata;
+
+	@ManyToMany(mappedBy = "studies")
+	private Set<SamplingProcedure> samplingProcedures;
+
+	@ManyToMany(mappedBy = "studies")
+	private Set<Source> sources;
+
+	@OneToMany(mappedBy = "studyId")
+	private Set<StudyDescr> studyDescrs;
+
+	@OneToMany(mappedBy = "studyId")
+	private Set<StudyKeyword> studyKeywords;
+
+	@OneToMany(mappedBy = "studyId")
+	private Set<StudyOrg> studyOrgs;
+
+	@OneToMany(mappedBy = "studyId")
+	private Set<StudyPerson> studypeople;
+
+	@Column(name = "time_meth_id", columnDefinition = "int4")
+	@NotNull
+	private Integer timeMethId;
+
+	@OneToOne
+	@JoinColumn(name = "id", nullable = false, insertable = false, updatable = false)
+	private TimeMethType timeMethType;
+
+	@ManyToMany
+	@JoinTable(name = "study_topic", joinColumns = { @JoinColumn(name = "study_id", nullable = false) }, inverseJoinColumns = { @JoinColumn(name = "topic_id", nullable = false) })
+	private Set<Topic> topics;
+
+	@ManyToOne
+	@JoinColumn(name = "unit_analysis_id", referencedColumnName = "id", nullable = false)
+	private UnitAnalysis unitAnalysisId;
+
+	@Version
+	@Column(name = "version")
+	private Integer version;
+
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	public static final EntityManager entityManager() {
-		EntityManager em = new Study().entityManager;
-		if (em == null)
-			throw new IllegalStateException(
-					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-		return em;
+	@Autowired
+	transient SolrServer solrServer;
+
+	@Transactional
+	public void clear() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.clear();
 	}
 
-	public static long countStudys() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM Study o", Long.class).getSingleResult();
+	@Transactional
+	public void flush() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.flush();
 	}
 
-	public static List<Study> findAllStudys() {
-		return entityManager().createQuery("SELECT o FROM Study o", Study.class).getResultList();
+	public Calendar getAdded() {
+		return added;
 	}
 
-	public static Study findStudy(Integer id) {
-		if (id == null)
-			return null;
-		return entityManager().find(Study.class, id);
+	public Users getAddedBy() {
+		return addedBy;
 	}
 
-	public static List<Study> findStudyEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM Study o", Study.class).setFirstResult(firstResult)
-				.setMaxResults(maxResults).getResultList();
+	public Set<CatalogStudy> getCatalogStudies() {
+		return catalogStudies;
+	}
+
+	public Set<CollectionModelType> getCollectionModelTypes() {
+		return collectionModelTypes;
+	}
+
+	public Set<DataSourceType> getDataSourceTypes() {
+		return dataSourceTypes;
+	}
+
+	public Date getDateEnd() {
+		return dateEnd;
+	}
+
+	public Date getDateStart() {
+		return dateStart;
+	}
+
+	public Set<File> getFiles1() {
+		return files1;
+	}
+
+	public Integer getId() {
+		return this.id;
+	}
+
+	public Integer getInsertionStatus() {
+		return insertionStatus;
+	}
+
+	public Set<Instance> getInstances() {
+		return instances;
+	}
+
+	public Set<SamplingProcedure> getSamplingProcedures() {
+		return samplingProcedures;
+	}
+
+	public Set<Source> getSources() {
+		return sources;
+	}
+
+	public Set<StudyDescr> getStudyDescrs() {
+		return studyDescrs;
+	}
+
+	public Set<StudyKeyword> getStudyKeywords() {
+		return studyKeywords;
+	}
+
+	public Set<StudyOrg> getStudyOrgs() {
+		return studyOrgs;
+	}
+
+	public Set<StudyPerson> getStudypeople() {
+		return studypeople;
+	}
+
+	public Integer getTimeMethId() {
+		return timeMethId;
+	}
+
+	public TimeMethType getTimeMethType() {
+		return timeMethType;
+	}
+
+	public Set<Topic> getTopics() {
+		return topics;
+	}
+
+	public UnitAnalysis getUnitAnalysisId() {
+		return unitAnalysisId;
+	}
+
+	public Integer getVersion() {
+		return this.version;
+	}
+
+	public boolean isAnonymousUsage() {
+		return anonymousUsage;
+	}
+
+	public boolean isDigitizable() {
+		return digitizable;
+	}
+
+	public boolean isRawData() {
+		return rawData;
+	}
+
+	public boolean isRawMetadata() {
+		return rawMetadata;
+	}
+
+	@Transactional
+	public Study merge() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		Study merged = this.entityManager.merge(this);
+		this.entityManager.flush();
+		return merged;
 	}
 
 	@Transactional
@@ -455,73 +401,127 @@ public class Study {
 		}
 	}
 
-	@Transactional
-	public void flush() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.flush();
+	public void setAdded(Calendar added) {
+		this.added = added;
 	}
 
-	@Transactional
-	public void clear() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.clear();
+	public void setAddedBy(Users addedBy) {
+		this.addedBy = addedBy;
 	}
 
-	@Transactional
-	public Study merge() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		Study merged = this.entityManager.merge(this);
-		this.entityManager.flush();
-		return merged;
+	public void setAnonymousUsage(boolean anonymousUsage) {
+		this.anonymousUsage = anonymousUsage;
 	}
 
-	public String toJson() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
+	public void setCatalogStudies(Set<CatalogStudy> catalogStudies) {
+		this.catalogStudies = catalogStudies;
 	}
 
-	public static Study fromJsonToStudy(String json) {
-		return new JSONDeserializer<Study>().use(null, Study.class).deserialize(json);
+	public void setCollectionModelTypes(Set<CollectionModelType> collectionModelTypes) {
+		this.collectionModelTypes = collectionModelTypes;
 	}
 
-	public static String toJsonArray(Collection<Study> collection) {
-		return new JSONSerializer().exclude("*.class").serialize(collection);
+	public void setDataSourceTypes(Set<DataSourceType> dataSourceTypes) {
+		this.dataSourceTypes = dataSourceTypes;
 	}
 
-	public static Collection<Study> fromJsonArrayToStudys(String json) {
-		return new JSONDeserializer<List<Study>>().use(null, ArrayList.class).use("values", Study.class)
-				.deserialize(json);
+	public void setDateEnd(Date dateEnd) {
+		this.dateEnd = dateEnd;
 	}
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "id", columnDefinition = "serial")
-	private Integer id;
+	public void setDateStart(Date dateStart) {
+		this.dateStart = dateStart;
+	}
 
-	@Version
-	@Column(name = "version")
-	private Integer version;
+	public void setDigitizable(boolean digitizable) {
+		this.digitizable = digitizable;
+	}
 
-	public Integer getId() {
-		return this.id;
+	public void setFiles1(Set<File> files1) {
+		this.files1 = files1;
 	}
 
 	public void setId(Integer id) {
 		this.id = id;
 	}
 
-	public Integer getVersion() {
-		return this.version;
+	public void setInsertionStatus(Integer insertionStatus) {
+		this.insertionStatus = insertionStatus;
+	}
+
+	public void setInstances(Set<Instance> instances) {
+		this.instances = instances;
+	}
+
+	public void setRawData(boolean rawData) {
+		this.rawData = rawData;
+	}
+
+	public void setRawMetadata(boolean rawMetadata) {
+		this.rawMetadata = rawMetadata;
+	}
+
+	public void setSamplingProcedures(Set<SamplingProcedure> samplingProcedures) {
+		this.samplingProcedures = samplingProcedures;
+	}
+
+	public void setSources(Set<Source> sources) {
+		this.sources = sources;
+	}
+
+	public void setStudyDescrs(Set<StudyDescr> studyDescrs) {
+		this.studyDescrs = studyDescrs;
+	}
+
+	public void setStudyKeywords(Set<StudyKeyword> studyKeywords) {
+		this.studyKeywords = studyKeywords;
+	}
+
+	public void setStudyOrgs(Set<StudyOrg> studyOrgs) {
+		this.studyOrgs = studyOrgs;
+	}
+
+	public void setStudypeople(Set<StudyPerson> studypeople) {
+		this.studypeople = studypeople;
+	}
+
+	public void setTimeMethId(Integer timeMethId) {
+		this.timeMethId = timeMethId;
+	}
+
+	public void setTimeMethType(TimeMethType timeMethType) {
+		this.timeMethType = timeMethType;
+	}
+
+	public void setTopics(Set<Topic> topics) {
+		this.topics = topics;
+	}
+
+	public void setUnitAnalysisId(UnitAnalysis unitAnalysisId) {
+		this.unitAnalysisId = unitAnalysisId;
 	}
 
 	public void setVersion(Integer version) {
 		this.version = version;
 	}
 
+	public String toJson() {
+		return new JSONSerializer().exclude("*.class").serialize(this);
+	}
+
 	public String toString() {
 		return new ReflectionToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE).setExcludeFieldNames(
 				"timeMethType").toString();
+	}
+
+	@PostUpdate
+	@PostPersist
+	private void postPersistOrUpdate() {
+		indexStudy(this);
+	}
+
+	@PreRemove
+	private void preRemove() {
+		deleteIndex(this);
 	}
 }

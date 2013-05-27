@@ -41,100 +41,42 @@ import flexjson.JSONSerializer;
 @Audited
 public class OrgRelations {
 
-	@ManyToOne
-	@JoinColumn(name = "org_2_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
-	private Org org2Id;
-
-	@ManyToOne
-	@JoinColumn(name = "org_1_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
-	private Org org1Id;
-
-	@ManyToOne
-	@JoinColumn(name = "org_relation_type_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
-	private OrgRelationType orgRelationTypeId;
-
-	@Column(name = "date_start", columnDefinition = "date")
-	@Temporal(TemporalType.DATE)
-	@DateTimeFormat(style = "M-")
-	private Date dateStart;
-
-	@Column(name = "date_end", columnDefinition = "date")
-	@Temporal(TemporalType.DATE)
-	@DateTimeFormat(style = "M-")
-	private Date dateEnd;
-
-	@Column(name = "details", columnDefinition = "text")
-	private String details;
-
-	public Org getOrg2Id() {
-		return org2Id;
+	public static long countOrgRelationses() {
+		return entityManager().createQuery("SELECT COUNT(o) FROM OrgRelations o", Long.class).getSingleResult();
 	}
 
-	public void setOrg2Id(Org org2Id) {
-		this.org2Id = org2Id;
+	@Async
+	public static void deleteIndex(OrgRelations orgRelations) {
+		SolrServer solrServer = solrServer();
+		try {
+			solrServer.deleteById("orgrelations_" + orgRelations.getId());
+			solrServer.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
-	public Org getOrg1Id() {
-		return org1Id;
+	public static final EntityManager entityManager() {
+		EntityManager em = new OrgRelations().entityManager;
+		if (em == null)
+			throw new IllegalStateException(
+					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return em;
 	}
 
-	public void setOrg1Id(Org org1Id) {
-		this.org1Id = org1Id;
+	public static List<OrgRelations> findAllOrgRelationses() {
+		return entityManager().createQuery("SELECT o FROM OrgRelations o", OrgRelations.class).getResultList();
 	}
 
-	public OrgRelationType getOrgRelationTypeId() {
-		return orgRelationTypeId;
+	public static OrgRelations findOrgRelations(OrgRelationsPK id) {
+		if (id == null)
+			return null;
+		return entityManager().find(OrgRelations.class, id);
 	}
 
-	public void setOrgRelationTypeId(OrgRelationType orgRelationTypeId) {
-		this.orgRelationTypeId = orgRelationTypeId;
-	}
-
-	public Date getDateStart() {
-		return dateStart;
-	}
-
-	public void setDateStart(Date dateStart) {
-		this.dateStart = dateStart;
-	}
-
-	public Date getDateEnd() {
-		return dateEnd;
-	}
-
-	public void setDateEnd(Date dateEnd) {
-		this.dateEnd = dateEnd;
-	}
-
-	public String getDetails() {
-		return details;
-	}
-
-	public void setDetails(String details) {
-		this.details = details;
-	}
-
-	@EmbeddedId
-	private OrgRelationsPK id;
-
-	public OrgRelationsPK getId() {
-		return this.id;
-	}
-
-	public void setId(OrgRelationsPK id) {
-		this.id = id;
-	}
-
-	public String toJson() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
-	}
-
-	public static OrgRelations fromJsonToOrgRelations(String json) {
-		return new JSONDeserializer<OrgRelations>().use(null, OrgRelations.class).deserialize(json);
-	}
-
-	public static String toJsonArray(Collection<OrgRelations> collection) {
-		return new JSONSerializer().exclude("*.class").serialize(collection);
+	public static List<OrgRelations> findOrgRelationsEntries(int firstResult, int maxResults) {
+		return entityManager().createQuery("SELECT o FROM OrgRelations o", OrgRelations.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
 	}
 
 	public static Collection<OrgRelations> fromJsonArrayToOrgRelationses(String json) {
@@ -142,21 +84,8 @@ public class OrgRelations {
 				.deserialize(json);
 	}
 
-	@Autowired
-	transient SolrServer solrServer;
-
-	public static QueryResponse search(String queryString) {
-		String searchString = "OrgRelations_solrsummary_t:" + queryString;
-		return search(new SolrQuery(searchString.toLowerCase()));
-	}
-
-	public static QueryResponse search(SolrQuery query) {
-		try {
-			return solrServer().query(query);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return new QueryResponse();
+	public static OrgRelations fromJsonToOrgRelations(String json) {
+		return new JSONDeserializer<OrgRelations>().use(null, OrgRelations.class).deserialize(json);
 	}
 
 	public static void indexOrgRelations(OrgRelations orgRelations) {
@@ -196,26 +125,18 @@ public class OrgRelations {
 		}
 	}
 
-	@Async
-	public static void deleteIndex(OrgRelations orgRelations) {
-		SolrServer solrServer = solrServer();
+	public static QueryResponse search(SolrQuery query) {
 		try {
-			solrServer.deleteById("orgrelations_" + orgRelations.getId());
-			solrServer.commit();
+			return solrServer().query(query);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return new QueryResponse();
 	}
 
-	@PostUpdate
-	@PostPersist
-	private void postPersistOrUpdate() {
-		indexOrgRelations(this);
-	}
-
-	@PreRemove
-	private void preRemove() {
-		deleteIndex(this);
+	public static QueryResponse search(String queryString) {
+		String searchString = "OrgRelations_solrsummary_t:" + queryString;
+		return search(new SolrQuery(searchString.toLowerCase()));
 	}
 
 	public static SolrServer solrServer() {
@@ -226,34 +147,93 @@ public class OrgRelations {
 		return _solrServer;
 	}
 
+	public static String toJsonArray(Collection<OrgRelations> collection) {
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	@Column(name = "date_end", columnDefinition = "date")
+	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(style = "M-")
+	private Date dateEnd;
+
+	@Column(name = "date_start", columnDefinition = "date")
+	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(style = "M-")
+	private Date dateStart;
+
+	@Column(name = "details", columnDefinition = "text")
+	private String details;
+
+	@EmbeddedId
+	private OrgRelationsPK id;
+
+	@ManyToOne
+	@JoinColumn(name = "org_1_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	private Org org1Id;
+
+	@ManyToOne
+	@JoinColumn(name = "org_2_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	private Org org2Id;
+
+	@ManyToOne
+	@JoinColumn(name = "org_relation_type_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	private OrgRelationType orgRelationTypeId;
+
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	public static final EntityManager entityManager() {
-		EntityManager em = new OrgRelations().entityManager;
-		if (em == null)
-			throw new IllegalStateException(
-					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-		return em;
+	@Autowired
+	transient SolrServer solrServer;
+
+	@Transactional
+	public void clear() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.clear();
 	}
 
-	public static long countOrgRelationses() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM OrgRelations o", Long.class).getSingleResult();
+	@Transactional
+	public void flush() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.flush();
 	}
 
-	public static List<OrgRelations> findAllOrgRelationses() {
-		return entityManager().createQuery("SELECT o FROM OrgRelations o", OrgRelations.class).getResultList();
+	public Date getDateEnd() {
+		return dateEnd;
 	}
 
-	public static OrgRelations findOrgRelations(OrgRelationsPK id) {
-		if (id == null)
-			return null;
-		return entityManager().find(OrgRelations.class, id);
+	public Date getDateStart() {
+		return dateStart;
 	}
 
-	public static List<OrgRelations> findOrgRelationsEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM OrgRelations o", OrgRelations.class)
-				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
+	public String getDetails() {
+		return details;
+	}
+
+	public OrgRelationsPK getId() {
+		return this.id;
+	}
+
+	public Org getOrg1Id() {
+		return org1Id;
+	}
+
+	public Org getOrg2Id() {
+		return org2Id;
+	}
+
+	public OrgRelationType getOrgRelationTypeId() {
+		return orgRelationTypeId;
+	}
+
+	@Transactional
+	public OrgRelations merge() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		OrgRelations merged = this.entityManager.merge(this);
+		this.entityManager.flush();
+		return merged;
 	}
 
 	@Transactional
@@ -275,30 +255,50 @@ public class OrgRelations {
 		}
 	}
 
-	@Transactional
-	public void flush() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.flush();
+	public void setDateEnd(Date dateEnd) {
+		this.dateEnd = dateEnd;
 	}
 
-	@Transactional
-	public void clear() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.clear();
+	public void setDateStart(Date dateStart) {
+		this.dateStart = dateStart;
 	}
 
-	@Transactional
-	public OrgRelations merge() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		OrgRelations merged = this.entityManager.merge(this);
-		this.entityManager.flush();
-		return merged;
+	public void setDetails(String details) {
+		this.details = details;
+	}
+
+	public void setId(OrgRelationsPK id) {
+		this.id = id;
+	}
+
+	public void setOrg1Id(Org org1Id) {
+		this.org1Id = org1Id;
+	}
+
+	public void setOrg2Id(Org org2Id) {
+		this.org2Id = org2Id;
+	}
+
+	public void setOrgRelationTypeId(OrgRelationType orgRelationTypeId) {
+		this.orgRelationTypeId = orgRelationTypeId;
+	}
+
+	public String toJson() {
+		return new JSONSerializer().exclude("*.class").serialize(this);
 	}
 
 	public String toString() {
 		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+	}
+
+	@PostUpdate
+	@PostPersist
+	private void postPersistOrUpdate() {
+		indexOrgRelations(this);
+	}
+
+	@PreRemove
+	private void preRemove() {
+		deleteIndex(this);
 	}
 }

@@ -40,29 +40,20 @@ import flexjson.JSONSerializer;
 @Audited
 public class OrgSufix {
 
-	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+	public static long countOrgSufixes() {
+		return entityManager().createQuery("SELECT COUNT(o) FROM OrgSufix o", Long.class).getSingleResult();
 	}
 
-	public String toJson() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
+	@Async
+	public static void deleteIndex(OrgSufix orgSufix) {
+		SolrServer solrServer = solrServer();
+		try {
+			solrServer.deleteById("orgsufix_" + orgSufix.getId());
+			solrServer.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
-
-	public static OrgSufix fromJsonToOrgSufix(String json) {
-		return new JSONDeserializer<OrgSufix>().use(null, OrgSufix.class).deserialize(json);
-	}
-
-	public static String toJsonArray(Collection<OrgSufix> collection) {
-		return new JSONSerializer().exclude("*.class").serialize(collection);
-	}
-
-	public static Collection<OrgSufix> fromJsonArrayToOrgSufixes(String json) {
-		return new JSONDeserializer<List<OrgSufix>>().use(null, ArrayList.class).use("values", OrgSufix.class)
-				.deserialize(json);
-	}
-
-	@PersistenceContext
-	transient EntityManager entityManager;
 
 	public static final EntityManager entityManager() {
 		EntityManager em = new OrgSufix().entityManager;
@@ -70,10 +61,6 @@ public class OrgSufix {
 			throw new IllegalStateException(
 					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
 		return em;
-	}
-
-	public static long countOrgSufixes() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM OrgSufix o", Long.class).getSingleResult();
 	}
 
 	public static List<OrgSufix> findAllOrgSufixes() {
@@ -91,110 +78,13 @@ public class OrgSufix {
 				.setMaxResults(maxResults).getResultList();
 	}
 
-	@Transactional
-	public void persist() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.persist(this);
+	public static Collection<OrgSufix> fromJsonArrayToOrgSufixes(String json) {
+		return new JSONDeserializer<List<OrgSufix>>().use(null, ArrayList.class).use("values", OrgSufix.class)
+				.deserialize(json);
 	}
 
-	@Transactional
-	public void remove() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		if (this.entityManager.contains(this)) {
-			this.entityManager.remove(this);
-		} else {
-			OrgSufix attached = OrgSufix.findOrgSufix(this.id);
-			this.entityManager.remove(attached);
-		}
-	}
-
-	@Transactional
-	public void flush() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.flush();
-	}
-
-	@Transactional
-	public void clear() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.clear();
-	}
-
-	@Transactional
-	public OrgSufix merge() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		OrgSufix merged = this.entityManager.merge(this);
-		this.entityManager.flush();
-		return merged;
-	}
-
-	@OneToMany(mappedBy = "orgSufixId")
-	private Set<Org> orgs;
-
-	@Column(name = "name", columnDefinition = "varchar", length = 100)
-	@NotNull
-	private String name;
-
-	@Column(name = "description", columnDefinition = "text")
-	private String description;
-
-	public Set<Org> getOrgs() {
-		return orgs;
-	}
-
-	public void setOrgs(Set<Org> orgs) {
-		this.orgs = orgs;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "id", columnDefinition = "serial")
-	private Integer id;
-
-	public Integer getId() {
-		return this.id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	@Autowired
-	transient SolrServer solrServer;
-
-	public static QueryResponse search(String queryString) {
-		String searchString = "OrgSufix_solrsummary_t:" + queryString;
-		return search(new SolrQuery(searchString.toLowerCase()));
-	}
-
-	public static QueryResponse search(SolrQuery query) {
-		try {
-			return solrServer().query(query);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return new QueryResponse();
+	public static OrgSufix fromJsonToOrgSufix(String json) {
+		return new JSONDeserializer<OrgSufix>().use(null, OrgSufix.class).deserialize(json);
 	}
 
 	public static void indexOrgSufix(OrgSufix orgSufix) {
@@ -228,15 +118,133 @@ public class OrgSufix {
 		}
 	}
 
-	@Async
-	public static void deleteIndex(OrgSufix orgSufix) {
-		SolrServer solrServer = solrServer();
+	public static QueryResponse search(SolrQuery query) {
 		try {
-			solrServer.deleteById("orgsufix_" + orgSufix.getId());
-			solrServer.commit();
+			return solrServer().query(query);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return new QueryResponse();
+	}
+
+	public static QueryResponse search(String queryString) {
+		String searchString = "OrgSufix_solrsummary_t:" + queryString;
+		return search(new SolrQuery(searchString.toLowerCase()));
+	}
+
+	public static SolrServer solrServer() {
+		SolrServer _solrServer = new OrgSufix().solrServer;
+		if (_solrServer == null)
+			throw new IllegalStateException(
+					"Solr server has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return _solrServer;
+	}
+
+	public static String toJsonArray(Collection<OrgSufix> collection) {
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	@Column(name = "description", columnDefinition = "text")
+	private String description;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id", columnDefinition = "serial")
+	private Integer id;
+
+	@Column(name = "name", columnDefinition = "varchar", length = 100)
+	@NotNull
+	private String name;
+
+	@OneToMany(mappedBy = "orgSufixId")
+	private Set<Org> orgs;
+
+	@PersistenceContext
+	transient EntityManager entityManager;
+
+	@Autowired
+	transient SolrServer solrServer;
+
+	@Transactional
+	public void clear() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.clear();
+	}
+
+	@Transactional
+	public void flush() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.flush();
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public Integer getId() {
+		return this.id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public Set<Org> getOrgs() {
+		return orgs;
+	}
+
+	@Transactional
+	public OrgSufix merge() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		OrgSufix merged = this.entityManager.merge(this);
+		this.entityManager.flush();
+		return merged;
+	}
+
+	@Transactional
+	public void persist() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.persist(this);
+	}
+
+	@Transactional
+	public void remove() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		if (this.entityManager.contains(this)) {
+			this.entityManager.remove(this);
+		} else {
+			OrgSufix attached = OrgSufix.findOrgSufix(this.id);
+			this.entityManager.remove(attached);
+		}
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setOrgs(Set<Org> orgs) {
+		this.orgs = orgs;
+	}
+
+	public String toJson() {
+		return new JSONSerializer().exclude("*.class").serialize(this);
+	}
+
+	public String toString() {
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate
@@ -248,13 +256,5 @@ public class OrgSufix {
 	@PreRemove
 	private void preRemove() {
 		deleteIndex(this);
-	}
-
-	public static SolrServer solrServer() {
-		SolrServer _solrServer = new OrgSufix().solrServer;
-		if (_solrServer == null)
-			throw new IllegalStateException(
-					"Solr server has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-		return _solrServer;
 	}
 }

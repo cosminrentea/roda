@@ -38,25 +38,52 @@ import flexjson.JSONSerializer;
 @Audited
 public class FormEditedTextVar {
 
-	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+	public static long countFormEditedTextVars() {
+		return entityManager().createQuery("SELECT COUNT(o) FROM FormEditedTextVar o", Long.class).getSingleResult();
 	}
 
-	@Autowired
-	transient SolrServer solrServer;
-
-	public static QueryResponse search(String queryString) {
-		String searchString = "FormEditedTextVar_solrsummary_t:" + queryString;
-		return search(new SolrQuery(searchString.toLowerCase()));
-	}
-
-	public static QueryResponse search(SolrQuery query) {
+	@Async
+	public static void deleteIndex(FormEditedTextVar formEditedTextVar) {
+		SolrServer solrServer = solrServer();
 		try {
-			return solrServer().query(query);
+			solrServer.deleteById("formeditedtextvar_" + formEditedTextVar.getId());
+			solrServer.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return new QueryResponse();
+	}
+
+	public static final EntityManager entityManager() {
+		EntityManager em = new FormEditedTextVar().entityManager;
+		if (em == null)
+			throw new IllegalStateException(
+					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return em;
+	}
+
+	public static List<FormEditedTextVar> findAllFormEditedTextVars() {
+		return entityManager().createQuery("SELECT o FROM FormEditedTextVar o", FormEditedTextVar.class)
+				.getResultList();
+	}
+
+	public static FormEditedTextVar findFormEditedTextVar(FormEditedTextVarPK id) {
+		if (id == null)
+			return null;
+		return entityManager().find(FormEditedTextVar.class, id);
+	}
+
+	public static List<FormEditedTextVar> findFormEditedTextVarEntries(int firstResult, int maxResults) {
+		return entityManager().createQuery("SELECT o FROM FormEditedTextVar o", FormEditedTextVar.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
+	}
+
+	public static Collection<FormEditedTextVar> fromJsonArrayToFormEditedTextVars(String json) {
+		return new JSONDeserializer<List<FormEditedTextVar>>().use(null, ArrayList.class)
+				.use("values", FormEditedTextVar.class).deserialize(json);
+	}
+
+	public static FormEditedTextVar fromJsonToFormEditedTextVar(String json) {
+		return new JSONDeserializer<FormEditedTextVar>().use(null, FormEditedTextVar.class).deserialize(json);
 	}
 
 	public static void indexFormEditedTextVar(FormEditedTextVar formEditedTextVar) {
@@ -91,26 +118,18 @@ public class FormEditedTextVar {
 		}
 	}
 
-	@Async
-	public static void deleteIndex(FormEditedTextVar formEditedTextVar) {
-		SolrServer solrServer = solrServer();
+	public static QueryResponse search(SolrQuery query) {
 		try {
-			solrServer.deleteById("formeditedtextvar_" + formEditedTextVar.getId());
-			solrServer.commit();
+			return solrServer().query(query);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return new QueryResponse();
 	}
 
-	@PostUpdate
-	@PostPersist
-	private void postPersistOrUpdate() {
-		indexFormEditedTextVar(this);
-	}
-
-	@PreRemove
-	private void preRemove() {
-		deleteIndex(this);
+	public static QueryResponse search(String queryString) {
+		String searchString = "FormEditedTextVar_solrsummary_t:" + queryString;
+		return search(new SolrQuery(searchString.toLowerCase()));
 	}
 
 	public static SolrServer solrServer() {
@@ -121,63 +140,68 @@ public class FormEditedTextVar {
 		return _solrServer;
 	}
 
-	public String toJson() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
-	}
-
-	public static FormEditedTextVar fromJsonToFormEditedTextVar(String json) {
-		return new JSONDeserializer<FormEditedTextVar>().use(null, FormEditedTextVar.class).deserialize(json);
-	}
-
 	public static String toJsonArray(Collection<FormEditedTextVar> collection) {
 		return new JSONSerializer().exclude("*.class").serialize(collection);
 	}
 
-	public static Collection<FormEditedTextVar> fromJsonArrayToFormEditedTextVars(String json) {
-		return new JSONDeserializer<List<FormEditedTextVar>>().use(null, ArrayList.class)
-				.use("values", FormEditedTextVar.class).deserialize(json);
-	}
+	@ManyToOne
+	@JoinColumn(name = "form_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	private Form formId;
 
 	@EmbeddedId
 	private FormEditedTextVarPK id;
+
+	@Column(name = "text", columnDefinition = "text")
+	@NotNull
+	private String text;
+
+	@ManyToOne
+	@JoinColumn(name = "variable_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	private Variable variableId;
+
+	@PersistenceContext
+	transient EntityManager entityManager;
+
+	@Autowired
+	transient SolrServer solrServer;
+
+	@Transactional
+	public void clear() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.clear();
+	}
+
+	@Transactional
+	public void flush() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.flush();
+	}
+
+	public Form getFormId() {
+		return formId;
+	}
 
 	public FormEditedTextVarPK getId() {
 		return this.id;
 	}
 
-	public void setId(FormEditedTextVarPK id) {
-		this.id = id;
+	public String getText() {
+		return text;
 	}
 
-	@PersistenceContext
-	transient EntityManager entityManager;
-
-	public static final EntityManager entityManager() {
-		EntityManager em = new FormEditedTextVar().entityManager;
-		if (em == null)
-			throw new IllegalStateException(
-					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-		return em;
+	public Variable getVariableId() {
+		return variableId;
 	}
 
-	public static long countFormEditedTextVars() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM FormEditedTextVar o", Long.class).getSingleResult();
-	}
-
-	public static List<FormEditedTextVar> findAllFormEditedTextVars() {
-		return entityManager().createQuery("SELECT o FROM FormEditedTextVar o", FormEditedTextVar.class)
-				.getResultList();
-	}
-
-	public static FormEditedTextVar findFormEditedTextVar(FormEditedTextVarPK id) {
-		if (id == null)
-			return null;
-		return entityManager().find(FormEditedTextVar.class, id);
-	}
-
-	public static List<FormEditedTextVar> findFormEditedTextVarEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM FormEditedTextVar o", FormEditedTextVar.class)
-				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
+	@Transactional
+	public FormEditedTextVar merge() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		FormEditedTextVar merged = this.entityManager.merge(this);
+		this.entityManager.flush();
+		return merged;
 	}
 
 	@Transactional
@@ -199,62 +223,38 @@ public class FormEditedTextVar {
 		}
 	}
 
-	@Transactional
-	public void flush() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.flush();
-	}
-
-	@Transactional
-	public void clear() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.clear();
-	}
-
-	@Transactional
-	public FormEditedTextVar merge() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		FormEditedTextVar merged = this.entityManager.merge(this);
-		this.entityManager.flush();
-		return merged;
-	}
-
-	@ManyToOne
-	@JoinColumn(name = "form_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
-	private Form formId;
-
-	@ManyToOne
-	@JoinColumn(name = "variable_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
-	private Variable variableId;
-
-	@Column(name = "text", columnDefinition = "text")
-	@NotNull
-	private String text;
-
-	public Form getFormId() {
-		return formId;
-	}
-
 	public void setFormId(Form formId) {
 		this.formId = formId;
 	}
 
-	public Variable getVariableId() {
-		return variableId;
+	public void setId(FormEditedTextVarPK id) {
+		this.id = id;
+	}
+
+	public void setText(String text) {
+		this.text = text;
 	}
 
 	public void setVariableId(Variable variableId) {
 		this.variableId = variableId;
 	}
 
-	public String getText() {
-		return text;
+	public String toJson() {
+		return new JSONSerializer().exclude("*.class").serialize(this);
 	}
 
-	public void setText(String text) {
-		this.text = text;
+	public String toString() {
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+	}
+
+	@PostUpdate
+	@PostPersist
+	private void postPersistOrUpdate() {
+		indexFormEditedTextVar(this);
+	}
+
+	@PreRemove
+	private void preRemove() {
+		deleteIndex(this);
 	}
 }

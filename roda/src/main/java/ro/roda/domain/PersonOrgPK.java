@@ -19,8 +19,9 @@ public final class PersonOrgPK implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	public String toJson() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
+	public static Collection<PersonOrgPK> fromJsonArrayToPersonOrgPKs(String json) {
+		return new JSONDeserializer<List<PersonOrgPK>>().use(null, ArrayList.class).use("values", PersonOrgPK.class)
+				.deserialize(json);
 	}
 
 	public static PersonOrgPK fromJsonToPersonOrgPK(String json) {
@@ -31,16 +32,11 @@ public final class PersonOrgPK implements Serializable {
 		return new JSONSerializer().exclude("*.class").serialize(collection);
 	}
 
-	public static Collection<PersonOrgPK> fromJsonArrayToPersonOrgPKs(String json) {
-		return new JSONDeserializer<List<PersonOrgPK>>().use(null, ArrayList.class).use("values", PersonOrgPK.class)
-				.deserialize(json);
-	}
+	@Column(name = "org_id", columnDefinition = "int4", nullable = false)
+	private Integer orgId;
 
 	@Column(name = "person_id", columnDefinition = "int4", nullable = false)
 	private Integer personId;
-
-	@Column(name = "org_id", columnDefinition = "int4", nullable = false)
-	private Integer orgId;
 
 	@Column(name = "role_id", columnDefinition = "int4", nullable = false)
 	private Integer roleId;
@@ -56,15 +52,19 @@ public final class PersonOrgPK implements Serializable {
 		super();
 	}
 
-	public Integer getPersonId() {
-		return personId;
-	}
-
 	public Integer getOrgId() {
 		return orgId;
 	}
 
+	public Integer getPersonId() {
+		return personId;
+	}
+
 	public Integer getRoleId() {
 		return roleId;
+	}
+
+	public String toJson() {
+		return new JSONSerializer().exclude("*.class").serialize(this);
 	}
 }

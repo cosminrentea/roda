@@ -19,11 +19,24 @@ public final class UserSettingValuePK implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@Column(name = "user_setting_id", columnDefinition = "int4", nullable = false)
-	private Integer userSettingId;
+	public static Collection<UserSettingValuePK> fromJsonArrayToUserSettingValuePKs(String json) {
+		return new JSONDeserializer<List<UserSettingValuePK>>().use(null, ArrayList.class)
+				.use("values", UserSettingValuePK.class).deserialize(json);
+	}
+
+	public static UserSettingValuePK fromJsonToUserSettingValuePK(String json) {
+		return new JSONDeserializer<UserSettingValuePK>().use(null, UserSettingValuePK.class).deserialize(json);
+	}
+
+	public static String toJsonArray(Collection<UserSettingValuePK> collection) {
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
 
 	@Column(name = "user_id", columnDefinition = "int4", nullable = false)
 	private Integer userId;
+
+	@Column(name = "user_setting_id", columnDefinition = "int4", nullable = false)
+	private Integer userSettingId;
 
 	public UserSettingValuePK(Integer userSettingId, Integer userId) {
 		super();
@@ -35,28 +48,15 @@ public final class UserSettingValuePK implements Serializable {
 		super();
 	}
 
-	public Integer getUserSettingId() {
-		return userSettingId;
-	}
-
 	public Integer getUserId() {
 		return userId;
 	}
 
+	public Integer getUserSettingId() {
+		return userSettingId;
+	}
+
 	public String toJson() {
 		return new JSONSerializer().exclude("*.class").serialize(this);
-	}
-
-	public static UserSettingValuePK fromJsonToUserSettingValuePK(String json) {
-		return new JSONDeserializer<UserSettingValuePK>().use(null, UserSettingValuePK.class).deserialize(json);
-	}
-
-	public static String toJsonArray(Collection<UserSettingValuePK> collection) {
-		return new JSONSerializer().exclude("*.class").serialize(collection);
-	}
-
-	public static Collection<UserSettingValuePK> fromJsonArrayToUserSettingValuePKs(String json) {
-		return new JSONDeserializer<List<UserSettingValuePK>>().use(null, ArrayList.class)
-				.use("values", UserSettingValuePK.class).deserialize(json);
 	}
 }

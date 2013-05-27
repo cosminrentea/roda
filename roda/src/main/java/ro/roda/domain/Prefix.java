@@ -40,42 +40,20 @@ import flexjson.JSONSerializer;
 @Audited
 public class Prefix {
 
-	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+	public static long countPrefixes() {
+		return entityManager().createQuery("SELECT COUNT(o) FROM Prefix o", Long.class).getSingleResult();
 	}
 
-	public String toJson() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
+	@Async
+	public static void deleteIndex(Prefix prefix) {
+		SolrServer solrServer = solrServer();
+		try {
+			solrServer.deleteById("prefix_" + prefix.getId());
+			solrServer.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
-
-	public static Prefix fromJsonToPrefix(String json) {
-		return new JSONDeserializer<Prefix>().use(null, Prefix.class).deserialize(json);
-	}
-
-	public static String toJsonArray(Collection<Prefix> collection) {
-		return new JSONSerializer().exclude("*.class").serialize(collection);
-	}
-
-	public static Collection<Prefix> fromJsonArrayToPrefixes(String json) {
-		return new JSONDeserializer<List<Prefix>>().use(null, ArrayList.class).use("values", Prefix.class)
-				.deserialize(json);
-	}
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "id", columnDefinition = "serial")
-	private Integer id;
-
-	public Integer getId() {
-		return this.id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	@PersistenceContext
-	transient EntityManager entityManager;
 
 	public static final EntityManager entityManager() {
 		EntityManager em = new Prefix().entityManager;
@@ -83,10 +61,6 @@ public class Prefix {
 			throw new IllegalStateException(
 					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
 		return em;
-	}
-
-	public static long countPrefixes() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM Prefix o", Long.class).getSingleResult();
 	}
 
 	public static List<Prefix> findAllPrefixes() {
@@ -104,63 +78,13 @@ public class Prefix {
 				.setMaxResults(maxResults).getResultList();
 	}
 
-	@Transactional
-	public void persist() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.persist(this);
+	public static Collection<Prefix> fromJsonArrayToPrefixes(String json) {
+		return new JSONDeserializer<List<Prefix>>().use(null, ArrayList.class).use("values", Prefix.class)
+				.deserialize(json);
 	}
 
-	@Transactional
-	public void remove() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		if (this.entityManager.contains(this)) {
-			this.entityManager.remove(this);
-		} else {
-			Prefix attached = Prefix.findPrefix(this.id);
-			this.entityManager.remove(attached);
-		}
-	}
-
-	@Transactional
-	public void flush() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.flush();
-	}
-
-	@Transactional
-	public void clear() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.clear();
-	}
-
-	@Transactional
-	public Prefix merge() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		Prefix merged = this.entityManager.merge(this);
-		this.entityManager.flush();
-		return merged;
-	}
-
-	@Autowired
-	transient SolrServer solrServer;
-
-	public static QueryResponse search(String queryString) {
-		String searchString = "Prefix_solrsummary_t:" + queryString;
-		return search(new SolrQuery(searchString.toLowerCase()));
-	}
-
-	public static QueryResponse search(SolrQuery query) {
-		try {
-			return solrServer().query(query);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return new QueryResponse();
+	public static Prefix fromJsonToPrefix(String json) {
+		return new JSONDeserializer<Prefix>().use(null, Prefix.class).deserialize(json);
 	}
 
 	public static void indexPrefix(Prefix prefix) {
@@ -192,15 +116,122 @@ public class Prefix {
 		}
 	}
 
-	@Async
-	public static void deleteIndex(Prefix prefix) {
-		SolrServer solrServer = solrServer();
+	public static QueryResponse search(SolrQuery query) {
 		try {
-			solrServer.deleteById("prefix_" + prefix.getId());
-			solrServer.commit();
+			return solrServer().query(query);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return new QueryResponse();
+	}
+
+	public static QueryResponse search(String queryString) {
+		String searchString = "Prefix_solrsummary_t:" + queryString;
+		return search(new SolrQuery(searchString.toLowerCase()));
+	}
+
+	public static SolrServer solrServer() {
+		SolrServer _solrServer = new Prefix().solrServer;
+		if (_solrServer == null)
+			throw new IllegalStateException(
+					"Solr server has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return _solrServer;
+	}
+
+	public static String toJsonArray(Collection<Prefix> collection) {
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id", columnDefinition = "serial")
+	private Integer id;
+
+	@Column(name = "name", columnDefinition = "varchar", length = 50)
+	@NotNull
+	private String name;
+
+	@OneToMany(mappedBy = "prefixId")
+	private Set<Person> people;
+
+	@PersistenceContext
+	transient EntityManager entityManager;
+
+	@Autowired
+	transient SolrServer solrServer;
+
+	@Transactional
+	public void clear() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.clear();
+	}
+
+	@Transactional
+	public void flush() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.flush();
+	}
+
+	public Integer getId() {
+		return this.id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public Set<Person> getPeople() {
+		return people;
+	}
+
+	@Transactional
+	public Prefix merge() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		Prefix merged = this.entityManager.merge(this);
+		this.entityManager.flush();
+		return merged;
+	}
+
+	@Transactional
+	public void persist() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.persist(this);
+	}
+
+	@Transactional
+	public void remove() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		if (this.entityManager.contains(this)) {
+			this.entityManager.remove(this);
+		} else {
+			Prefix attached = Prefix.findPrefix(this.id);
+			this.entityManager.remove(attached);
+		}
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setPeople(Set<Person> people) {
+		this.people = people;
+	}
+
+	public String toJson() {
+		return new JSONSerializer().exclude("*.class").serialize(this);
+	}
+
+	public String toString() {
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate
@@ -212,36 +243,5 @@ public class Prefix {
 	@PreRemove
 	private void preRemove() {
 		deleteIndex(this);
-	}
-
-	public static SolrServer solrServer() {
-		SolrServer _solrServer = new Prefix().solrServer;
-		if (_solrServer == null)
-			throw new IllegalStateException(
-					"Solr server has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-		return _solrServer;
-	}
-
-	@OneToMany(mappedBy = "prefixId")
-	private Set<Person> people;
-
-	@Column(name = "name", columnDefinition = "varchar", length = 50)
-	@NotNull
-	private String name;
-
-	public Set<Person> getPeople() {
-		return people;
-	}
-
-	public void setPeople(Set<Person> people) {
-		this.people = people;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 }

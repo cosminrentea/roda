@@ -44,21 +44,20 @@ import flexjson.JSONSerializer;
 @Audited
 public class Variable {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "id", columnDefinition = "bigserial")
-	private Long id;
-
-	public Long getId() {
-		return this.id;
+	public static long countVariables() {
+		return entityManager().createQuery("SELECT COUNT(o) FROM Variable o", Long.class).getSingleResult();
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	@Async
+	public static void deleteIndex(Variable variable) {
+		SolrServer solrServer = solrServer();
+		try {
+			solrServer.deleteById("variable_" + variable.getId());
+			solrServer.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
-
-	@PersistenceContext
-	transient EntityManager entityManager;
 
 	public static final EntityManager entityManager() {
 		EntityManager em = new Variable().entityManager;
@@ -66,10 +65,6 @@ public class Variable {
 			throw new IllegalStateException(
 					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
 		return em;
-	}
-
-	public static long countVariables() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM Variable o", Long.class).getSingleResult();
 	}
 
 	public static List<Variable> findAllVariables() {
@@ -87,242 +82,13 @@ public class Variable {
 				.setMaxResults(maxResults).getResultList();
 	}
 
-	@Transactional
-	public void persist() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.persist(this);
-	}
-
-	@Transactional
-	public void remove() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		if (this.entityManager.contains(this)) {
-			this.entityManager.remove(this);
-		} else {
-			Variable attached = Variable.findVariable(this.id);
-			this.entityManager.remove(attached);
-		}
-	}
-
-	@Transactional
-	public void flush() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.flush();
-	}
-
-	@Transactional
-	public void clear() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.clear();
-	}
-
-	@Transactional
-	public Variable merge() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		Variable merged = this.entityManager.merge(this);
-		this.entityManager.flush();
-		return merged;
-	}
-
-	public String toJson() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
-	}
-
-	public static Variable fromJsonToVariable(String json) {
-		return new JSONDeserializer<Variable>().use(null, Variable.class).deserialize(json);
-	}
-
-	public static String toJsonArray(Collection<Variable> collection) {
-		return new JSONSerializer().exclude("*.class").serialize(collection);
-	}
-
 	public static Collection<Variable> fromJsonArrayToVariables(String json) {
 		return new JSONDeserializer<List<Variable>>().use(null, ArrayList.class).use("values", Variable.class)
 				.deserialize(json);
 	}
 
-	@ManyToMany(mappedBy = "variables")
-	private Set<Concept> concepts;
-
-	@ManyToMany(mappedBy = "variables")
-	private Set<Vargroup> vargroups;
-
-	@OneToOne(mappedBy = "variable")
-	private SelectionVariable selectionVariable;
-
-	@OneToMany(mappedBy = "variableId")
-	private Set<FormEditedNumberVar> formEditedNumberVars;
-
-	@OneToMany(mappedBy = "variableId")
-	private Set<FormEditedTextVar> formEditedTextVars;
-
-	@OneToMany(mappedBy = "variableId")
-	private Set<InstanceVariable> instanceVariables;
-
-	@OneToMany(mappedBy = "variableId")
-	private Set<OtherStatistic> otherStatistics;
-
-	@OneToMany(mappedBy = "nextVariableId")
-	private Set<Skip> skips;
-
-	@OneToMany(mappedBy = "variableId")
-	private Set<Skip> skips1;
-
-	@ManyToOne
-	@JoinColumn(name = "file_id", referencedColumnName = "id")
-	private File fileId;
-
-	@Column(name = "label", columnDefinition = "text")
-	@NotNull
-	private String label;
-
-	@Column(name = "type", columnDefinition = "int2")
-	@NotNull
-	private Short type;
-
-	@Column(name = "operator_instructions", columnDefinition = "text")
-	private String operatorInstructions;
-
-	@Column(name = "variable_type", columnDefinition = "int2")
-	@NotNull
-	private Short variableType;
-
-	public Set<Concept> getConcepts() {
-		return concepts;
-	}
-
-	public void setConcepts(Set<Concept> concepts) {
-		this.concepts = concepts;
-	}
-
-	public Set<Vargroup> getVargroups() {
-		return vargroups;
-	}
-
-	public void setVargroups(Set<Vargroup> vargroups) {
-		this.vargroups = vargroups;
-	}
-
-	public SelectionVariable getSelectionVariable() {
-		return selectionVariable;
-	}
-
-	public void setSelectionVariable(SelectionVariable selectionVariable) {
-		this.selectionVariable = selectionVariable;
-	}
-
-	public Set<FormEditedNumberVar> getFormEditedNumberVars() {
-		return formEditedNumberVars;
-	}
-
-	public void setFormEditedNumberVars(Set<FormEditedNumberVar> formEditedNumberVars) {
-		this.formEditedNumberVars = formEditedNumberVars;
-	}
-
-	public Set<FormEditedTextVar> getFormEditedTextVars() {
-		return formEditedTextVars;
-	}
-
-	public void setFormEditedTextVars(Set<FormEditedTextVar> formEditedTextVars) {
-		this.formEditedTextVars = formEditedTextVars;
-	}
-
-	public Set<InstanceVariable> getInstanceVariables() {
-		return instanceVariables;
-	}
-
-	public void setInstanceVariables(Set<InstanceVariable> instanceVariables) {
-		this.instanceVariables = instanceVariables;
-	}
-
-	public Set<OtherStatistic> getOtherStatistics() {
-		return otherStatistics;
-	}
-
-	public void setOtherStatistics(Set<OtherStatistic> otherStatistics) {
-		this.otherStatistics = otherStatistics;
-	}
-
-	public Set<Skip> getSkips() {
-		return skips;
-	}
-
-	public void setSkips(Set<Skip> skips) {
-		this.skips = skips;
-	}
-
-	public Set<Skip> getSkips1() {
-		return skips1;
-	}
-
-	public void setSkips1(Set<Skip> skips1) {
-		this.skips1 = skips1;
-	}
-
-	public File getFileId() {
-		return fileId;
-	}
-
-	public void setFileId(File fileId) {
-		this.fileId = fileId;
-	}
-
-	public String getLabel() {
-		return label;
-	}
-
-	public void setLabel(String label) {
-		this.label = label;
-	}
-
-	public Short getType() {
-		return type;
-	}
-
-	public void setType(Short type) {
-		this.type = type;
-	}
-
-	public String getOperatorInstructions() {
-		return operatorInstructions;
-	}
-
-	public void setOperatorInstructions(String operatorInstructions) {
-		this.operatorInstructions = operatorInstructions;
-	}
-
-	public Short getVariableType() {
-		return variableType;
-	}
-
-	public void setVariableType(Short variableType) {
-		this.variableType = variableType;
-	}
-
-	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
-	}
-
-	@Autowired
-	transient SolrServer solrServer;
-
-	public static QueryResponse search(String queryString) {
-		String searchString = "Variable_solrsummary_t:" + queryString;
-		return search(new SolrQuery(searchString.toLowerCase()));
-	}
-
-	public static QueryResponse search(SolrQuery query) {
-		try {
-			return solrServer().query(query);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return new QueryResponse();
+	public static Variable fromJsonToVariable(String json) {
+		return new JSONDeserializer<Variable>().use(null, Variable.class).deserialize(json);
 	}
 
 	public static void indexVariable(Variable variable) {
@@ -362,15 +128,257 @@ public class Variable {
 		}
 	}
 
-	@Async
-	public static void deleteIndex(Variable variable) {
-		SolrServer solrServer = solrServer();
+	public static QueryResponse search(SolrQuery query) {
 		try {
-			solrServer.deleteById("variable_" + variable.getId());
-			solrServer.commit();
+			return solrServer().query(query);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return new QueryResponse();
+	}
+
+	public static QueryResponse search(String queryString) {
+		String searchString = "Variable_solrsummary_t:" + queryString;
+		return search(new SolrQuery(searchString.toLowerCase()));
+	}
+
+	public static SolrServer solrServer() {
+		SolrServer _solrServer = new Variable().solrServer;
+		if (_solrServer == null)
+			throw new IllegalStateException(
+					"Solr server has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return _solrServer;
+	}
+
+	public static String toJsonArray(Collection<Variable> collection) {
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	@ManyToMany(mappedBy = "variables")
+	private Set<Concept> concepts;
+
+	@ManyToOne
+	@JoinColumn(name = "file_id", referencedColumnName = "id")
+	private File fileId;
+
+	@OneToMany(mappedBy = "variableId")
+	private Set<FormEditedNumberVar> formEditedNumberVars;
+
+	@OneToMany(mappedBy = "variableId")
+	private Set<FormEditedTextVar> formEditedTextVars;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id", columnDefinition = "bigserial")
+	private Long id;
+
+	@OneToMany(mappedBy = "variableId")
+	private Set<InstanceVariable> instanceVariables;
+
+	@Column(name = "label", columnDefinition = "text")
+	@NotNull
+	private String label;
+
+	@Column(name = "operator_instructions", columnDefinition = "text")
+	private String operatorInstructions;
+
+	@OneToMany(mappedBy = "variableId")
+	private Set<OtherStatistic> otherStatistics;
+
+	@OneToOne(mappedBy = "variable")
+	private SelectionVariable selectionVariable;
+
+	@OneToMany(mappedBy = "nextVariableId")
+	private Set<Skip> skips;
+
+	@OneToMany(mappedBy = "variableId")
+	private Set<Skip> skips1;
+
+	@Column(name = "type", columnDefinition = "int2")
+	@NotNull
+	private Short type;
+
+	@ManyToMany(mappedBy = "variables")
+	private Set<Vargroup> vargroups;
+
+	@Column(name = "variable_type", columnDefinition = "int2")
+	@NotNull
+	private Short variableType;
+
+	@PersistenceContext
+	transient EntityManager entityManager;
+
+	@Autowired
+	transient SolrServer solrServer;
+
+	@Transactional
+	public void clear() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.clear();
+	}
+
+	@Transactional
+	public void flush() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.flush();
+	}
+
+	public Set<Concept> getConcepts() {
+		return concepts;
+	}
+
+	public File getFileId() {
+		return fileId;
+	}
+
+	public Set<FormEditedNumberVar> getFormEditedNumberVars() {
+		return formEditedNumberVars;
+	}
+
+	public Set<FormEditedTextVar> getFormEditedTextVars() {
+		return formEditedTextVars;
+	}
+
+	public Long getId() {
+		return this.id;
+	}
+
+	public Set<InstanceVariable> getInstanceVariables() {
+		return instanceVariables;
+	}
+
+	public String getLabel() {
+		return label;
+	}
+
+	public String getOperatorInstructions() {
+		return operatorInstructions;
+	}
+
+	public Set<OtherStatistic> getOtherStatistics() {
+		return otherStatistics;
+	}
+
+	public SelectionVariable getSelectionVariable() {
+		return selectionVariable;
+	}
+
+	public Set<Skip> getSkips() {
+		return skips;
+	}
+
+	public Set<Skip> getSkips1() {
+		return skips1;
+	}
+
+	public Short getType() {
+		return type;
+	}
+
+	public Set<Vargroup> getVargroups() {
+		return vargroups;
+	}
+
+	public Short getVariableType() {
+		return variableType;
+	}
+
+	@Transactional
+	public Variable merge() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		Variable merged = this.entityManager.merge(this);
+		this.entityManager.flush();
+		return merged;
+	}
+
+	@Transactional
+	public void persist() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.persist(this);
+	}
+
+	@Transactional
+	public void remove() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		if (this.entityManager.contains(this)) {
+			this.entityManager.remove(this);
+		} else {
+			Variable attached = Variable.findVariable(this.id);
+			this.entityManager.remove(attached);
+		}
+	}
+
+	public void setConcepts(Set<Concept> concepts) {
+		this.concepts = concepts;
+	}
+
+	public void setFileId(File fileId) {
+		this.fileId = fileId;
+	}
+
+	public void setFormEditedNumberVars(Set<FormEditedNumberVar> formEditedNumberVars) {
+		this.formEditedNumberVars = formEditedNumberVars;
+	}
+
+	public void setFormEditedTextVars(Set<FormEditedTextVar> formEditedTextVars) {
+		this.formEditedTextVars = formEditedTextVars;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public void setInstanceVariables(Set<InstanceVariable> instanceVariables) {
+		this.instanceVariables = instanceVariables;
+	}
+
+	public void setLabel(String label) {
+		this.label = label;
+	}
+
+	public void setOperatorInstructions(String operatorInstructions) {
+		this.operatorInstructions = operatorInstructions;
+	}
+
+	public void setOtherStatistics(Set<OtherStatistic> otherStatistics) {
+		this.otherStatistics = otherStatistics;
+	}
+
+	public void setSelectionVariable(SelectionVariable selectionVariable) {
+		this.selectionVariable = selectionVariable;
+	}
+
+	public void setSkips(Set<Skip> skips) {
+		this.skips = skips;
+	}
+
+	public void setSkips1(Set<Skip> skips1) {
+		this.skips1 = skips1;
+	}
+
+	public void setType(Short type) {
+		this.type = type;
+	}
+
+	public void setVargroups(Set<Vargroup> vargroups) {
+		this.vargroups = vargroups;
+	}
+
+	public void setVariableType(Short variableType) {
+		this.variableType = variableType;
+	}
+
+	public String toJson() {
+		return new JSONSerializer().exclude("*.class").serialize(this);
+	}
+
+	public String toString() {
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate
@@ -382,13 +390,5 @@ public class Variable {
 	@PreRemove
 	private void preRemove() {
 		deleteIndex(this);
-	}
-
-	public static SolrServer solrServer() {
-		SolrServer _solrServer = new Variable().solrServer;
-		if (_solrServer == null)
-			throw new IllegalStateException(
-					"Solr server has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-		return _solrServer;
 	}
 }

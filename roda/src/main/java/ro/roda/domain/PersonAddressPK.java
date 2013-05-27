@@ -19,8 +19,9 @@ public final class PersonAddressPK implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	public String toJson() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
+	public static Collection<PersonAddressPK> fromJsonArrayToPersonAddressPKs(String json) {
+		return new JSONDeserializer<List<PersonAddressPK>>().use(null, ArrayList.class)
+				.use("values", PersonAddressPK.class).deserialize(json);
 	}
 
 	public static PersonAddressPK fromJsonToPersonAddressPK(String json) {
@@ -31,16 +32,11 @@ public final class PersonAddressPK implements Serializable {
 		return new JSONSerializer().exclude("*.class").serialize(collection);
 	}
 
-	public static Collection<PersonAddressPK> fromJsonArrayToPersonAddressPKs(String json) {
-		return new JSONDeserializer<List<PersonAddressPK>>().use(null, ArrayList.class)
-				.use("values", PersonAddressPK.class).deserialize(json);
-	}
+	@Column(name = "address_id", columnDefinition = "int4", nullable = false)
+	private Integer addressId;
 
 	@Column(name = "person_id", columnDefinition = "int4", nullable = false)
 	private Integer personId;
-
-	@Column(name = "address_id", columnDefinition = "int4", nullable = false)
-	private Integer addressId;
 
 	public PersonAddressPK(Integer personId, Integer addressId) {
 		super();
@@ -52,11 +48,15 @@ public final class PersonAddressPK implements Serializable {
 		super();
 	}
 
+	public Integer getAddressId() {
+		return addressId;
+	}
+
 	public Integer getPersonId() {
 		return personId;
 	}
 
-	public Integer getAddressId() {
-		return addressId;
+	public String toJson() {
+		return new JSONSerializer().exclude("*.class").serialize(this);
 	}
 }

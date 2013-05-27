@@ -37,8 +37,20 @@ import flexjson.JSONSerializer;
 @Audited
 public class InstancePerson {
 
-	@PersistenceContext
-	transient EntityManager entityManager;
+	public static long countInstancepeople() {
+		return entityManager().createQuery("SELECT COUNT(o) FROM InstancePerson o", Long.class).getSingleResult();
+	}
+
+	@Async
+	public static void deleteIndex(InstancePerson instancePerson) {
+		SolrServer solrServer = solrServer();
+		try {
+			solrServer.deleteById("instanceperson_" + instancePerson.getId());
+			solrServer.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	public static final EntityManager entityManager() {
 		EntityManager em = new InstancePerson().entityManager;
@@ -46,10 +58,6 @@ public class InstancePerson {
 			throw new IllegalStateException(
 					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
 		return em;
-	}
-
-	public static long countInstancepeople() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM InstancePerson o", Long.class).getSingleResult();
 	}
 
 	public static List<InstancePerson> findAllInstancepeople() {
@@ -67,84 +75,13 @@ public class InstancePerson {
 				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
 	}
 
-	@Transactional
-	public void persist() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.persist(this);
+	public static Collection<InstancePerson> fromJsonArrayToInstancepeople(String json) {
+		return new JSONDeserializer<List<InstancePerson>>().use(null, ArrayList.class)
+				.use("values", InstancePerson.class).deserialize(json);
 	}
 
-	@Transactional
-	public void remove() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		if (this.entityManager.contains(this)) {
-			this.entityManager.remove(this);
-		} else {
-			InstancePerson attached = InstancePerson.findInstancePerson(this.id);
-			this.entityManager.remove(attached);
-		}
-	}
-
-	@Transactional
-	public void flush() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.flush();
-	}
-
-	@Transactional
-	public void clear() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.clear();
-	}
-
-	@Transactional
-	public InstancePerson merge() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		InstancePerson merged = this.entityManager.merge(this);
-		this.entityManager.flush();
-		return merged;
-	}
-
-	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
-	}
-
-	@EmbeddedId
-	private InstancePersonPK id;
-
-	public InstancePersonPK getId() {
-		return this.id;
-	}
-
-	public void setId(InstancePersonPK id) {
-		this.id = id;
-	}
-
-	@Autowired
-	transient SolrServer solrServer;
-
-	public static QueryResponse search(String queryString) {
-		String searchString = "InstancePerson_solrsummary_t:" + queryString;
-		return search(new SolrQuery(searchString.toLowerCase()));
-	}
-
-	public static QueryResponse search(SolrQuery query) {
-		try {
-			return solrServer().query(query);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return new QueryResponse();
-	}
-
-	public static void indexInstancePerson(InstancePerson instancePerson) {
-		List<InstancePerson> instancepeople = new ArrayList<InstancePerson>();
-		instancepeople.add(instancePerson);
-		indexInstancepeople(instancepeople);
+	public static InstancePerson fromJsonToInstancePerson(String json) {
+		return new JSONDeserializer<InstancePerson>().use(null, InstancePerson.class).deserialize(json);
 	}
 
 	@Async
@@ -177,15 +114,150 @@ public class InstancePerson {
 		}
 	}
 
-	@Async
-	public static void deleteIndex(InstancePerson instancePerson) {
-		SolrServer solrServer = solrServer();
+	public static void indexInstancePerson(InstancePerson instancePerson) {
+		List<InstancePerson> instancepeople = new ArrayList<InstancePerson>();
+		instancepeople.add(instancePerson);
+		indexInstancepeople(instancepeople);
+	}
+
+	public static QueryResponse search(SolrQuery query) {
 		try {
-			solrServer.deleteById("instanceperson_" + instancePerson.getId());
-			solrServer.commit();
+			return solrServer().query(query);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return new QueryResponse();
+	}
+
+	public static QueryResponse search(String queryString) {
+		String searchString = "InstancePerson_solrsummary_t:" + queryString;
+		return search(new SolrQuery(searchString.toLowerCase()));
+	}
+
+	public static SolrServer solrServer() {
+		SolrServer _solrServer = new InstancePerson().solrServer;
+		if (_solrServer == null)
+			throw new IllegalStateException(
+					"Solr server has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return _solrServer;
+	}
+
+	public static String toJsonArray(Collection<InstancePerson> collection) {
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	@Column(name = "assoc_details", columnDefinition = "text")
+	private String assocDetails;
+
+	@ManyToOne
+	@JoinColumn(name = "assoc_type_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	private InstancePersonAssoc assocTypeId;
+
+	@EmbeddedId
+	private InstancePersonPK id;
+
+	@ManyToOne
+	@JoinColumn(name = "instance_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	private Instance instanceId;
+
+	@ManyToOne
+	@JoinColumn(name = "person_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	private Person personId;
+
+	@PersistenceContext
+	transient EntityManager entityManager;
+
+	@Autowired
+	transient SolrServer solrServer;
+
+	@Transactional
+	public void clear() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.clear();
+	}
+
+	@Transactional
+	public void flush() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.flush();
+	}
+
+	public String getAssocDetails() {
+		return assocDetails;
+	}
+
+	public InstancePersonAssoc getAssocTypeId() {
+		return assocTypeId;
+	}
+
+	public InstancePersonPK getId() {
+		return this.id;
+	}
+
+	public Instance getInstanceId() {
+		return instanceId;
+	}
+
+	public Person getPersonId() {
+		return personId;
+	}
+
+	@Transactional
+	public InstancePerson merge() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		InstancePerson merged = this.entityManager.merge(this);
+		this.entityManager.flush();
+		return merged;
+	}
+
+	@Transactional
+	public void persist() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.persist(this);
+	}
+
+	@Transactional
+	public void remove() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		if (this.entityManager.contains(this)) {
+			this.entityManager.remove(this);
+		} else {
+			InstancePerson attached = InstancePerson.findInstancePerson(this.id);
+			this.entityManager.remove(attached);
+		}
+	}
+
+	public void setAssocDetails(String assocDetails) {
+		this.assocDetails = assocDetails;
+	}
+
+	public void setAssocTypeId(InstancePersonAssoc assocTypeId) {
+		this.assocTypeId = assocTypeId;
+	}
+
+	public void setId(InstancePersonPK id) {
+		this.id = id;
+	}
+
+	public void setInstanceId(Instance instanceId) {
+		this.instanceId = instanceId;
+	}
+
+	public void setPersonId(Person personId) {
+		this.personId = personId;
+	}
+
+	public String toJson() {
+		return new JSONSerializer().exclude("*.class").serialize(this);
+	}
+
+	public String toString() {
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate
@@ -197,77 +269,5 @@ public class InstancePerson {
 	@PreRemove
 	private void preRemove() {
 		deleteIndex(this);
-	}
-
-	public static SolrServer solrServer() {
-		SolrServer _solrServer = new InstancePerson().solrServer;
-		if (_solrServer == null)
-			throw new IllegalStateException(
-					"Solr server has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-		return _solrServer;
-	}
-
-	public String toJson() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
-	}
-
-	public static InstancePerson fromJsonToInstancePerson(String json) {
-		return new JSONDeserializer<InstancePerson>().use(null, InstancePerson.class).deserialize(json);
-	}
-
-	public static String toJsonArray(Collection<InstancePerson> collection) {
-		return new JSONSerializer().exclude("*.class").serialize(collection);
-	}
-
-	public static Collection<InstancePerson> fromJsonArrayToInstancepeople(String json) {
-		return new JSONDeserializer<List<InstancePerson>>().use(null, ArrayList.class)
-				.use("values", InstancePerson.class).deserialize(json);
-	}
-
-	@ManyToOne
-	@JoinColumn(name = "instance_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
-	private Instance instanceId;
-
-	@ManyToOne
-	@JoinColumn(name = "assoc_type_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
-	private InstancePersonAssoc assocTypeId;
-
-	@ManyToOne
-	@JoinColumn(name = "person_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
-	private Person personId;
-
-	@Column(name = "assoc_details", columnDefinition = "text")
-	private String assocDetails;
-
-	public Instance getInstanceId() {
-		return instanceId;
-	}
-
-	public void setInstanceId(Instance instanceId) {
-		this.instanceId = instanceId;
-	}
-
-	public InstancePersonAssoc getAssocTypeId() {
-		return assocTypeId;
-	}
-
-	public void setAssocTypeId(InstancePersonAssoc assocTypeId) {
-		this.assocTypeId = assocTypeId;
-	}
-
-	public Person getPersonId() {
-		return personId;
-	}
-
-	public void setPersonId(Person personId) {
-		this.personId = personId;
-	}
-
-	public String getAssocDetails() {
-		return assocDetails;
-	}
-
-	public void setAssocDetails(String assocDetails) {
-		this.assocDetails = assocDetails;
 	}
 }

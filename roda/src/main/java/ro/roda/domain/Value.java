@@ -42,8 +42,20 @@ import flexjson.JSONSerializer;
 @Audited
 public class Value {
 
-	@PersistenceContext
-	transient EntityManager entityManager;
+	public static long countValues() {
+		return entityManager().createQuery("SELECT COUNT(o) FROM Value o", Long.class).getSingleResult();
+	}
+
+	@Async
+	public static void deleteIndex(Value value) {
+		SolrServer solrServer = solrServer();
+		try {
+			solrServer.deleteById("value_" + value.getItemId());
+			solrServer.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	public static final EntityManager entityManager() {
 		EntityManager em = new Value().entityManager;
@@ -51,10 +63,6 @@ public class Value {
 			throw new IllegalStateException(
 					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
 		return em;
-	}
-
-	public static long countValues() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM Value o", Long.class).getSingleResult();
 	}
 
 	public static List<Value> findAllValues() {
@@ -72,144 +80,13 @@ public class Value {
 				.setMaxResults(maxResults).getResultList();
 	}
 
-	@Transactional
-	public void persist() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.persist(this);
-	}
-
-	@Transactional
-	public void remove() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		if (this.entityManager.contains(this)) {
-			this.entityManager.remove(this);
-		} else {
-			Value attached = Value.findValue(this.itemId);
-			this.entityManager.remove(attached);
-		}
-	}
-
-	@Transactional
-	public void flush() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.flush();
-	}
-
-	@Transactional
-	public void clear() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.clear();
-	}
-
-	@Transactional
-	public Value merge() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		Value merged = this.entityManager.merge(this);
-		this.entityManager.flush();
-		return merged;
-	}
-
-	@OneToOne
-	@JoinColumn(name = "item_id", nullable = false, insertable = false, updatable = false)
-	private Item item;
-
-	@OneToMany(mappedBy = "maxValueId")
-	private Set<Scale> scales;
-
-	@OneToMany(mappedBy = "minValueId")
-	private Set<Scale> scales1;
-
-	@Column(name = "value", columnDefinition = "int4")
-	@NotNull
-	private Integer value;
-
-	public Item getItem() {
-		return item;
-	}
-
-	public void setItem(Item item) {
-		this.item = item;
-	}
-
-	public Set<Scale> getScales() {
-		return scales;
-	}
-
-	public void setScales(Set<Scale> scales) {
-		this.scales = scales;
-	}
-
-	public Set<Scale> getScales1() {
-		return scales1;
-	}
-
-	public void setScales1(Set<Scale> scales1) {
-		this.scales1 = scales1;
-	}
-
-	public Integer getValue() {
-		return value;
-	}
-
-	public void setValue(Integer value) {
-		this.value = value;
-	}
-
-	public String toString() {
-		return new ReflectionToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE).setExcludeFieldNames("item")
-				.toString();
-	}
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "item_id", columnDefinition = "int8")
-	private Long itemId;
-
-	public Long getItemId() {
-		return this.itemId;
-	}
-
-	public void setItemId(Long id) {
-		this.itemId = id;
-	}
-
-	public String toJson() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
-	}
-
-	public static Value fromJsonToValue(String json) {
-		return new JSONDeserializer<Value>().use(null, Value.class).deserialize(json);
-	}
-
-	public static String toJsonArray(Collection<Value> collection) {
-		return new JSONSerializer().exclude("*.class").serialize(collection);
-	}
-
 	public static Collection<Value> fromJsonArrayToValues(String json) {
 		return new JSONDeserializer<List<Value>>().use(null, ArrayList.class).use("values", Value.class)
 				.deserialize(json);
 	}
 
-	@Autowired
-	transient SolrServer solrServer;
-
-	public static QueryResponse search(String queryString) {
-		String searchString = "Value_solrsummary_t:" + queryString;
-		return search(new SolrQuery(searchString.toLowerCase()));
-	}
-
-	public static QueryResponse search(SolrQuery query) {
-		try {
-			return solrServer().query(query);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return new QueryResponse();
+	public static Value fromJsonToValue(String json) {
+		return new JSONDeserializer<Value>().use(null, Value.class).deserialize(json);
 	}
 
 	public static void indexValue(Value value) {
@@ -243,15 +120,146 @@ public class Value {
 		}
 	}
 
-	@Async
-	public static void deleteIndex(Value value) {
-		SolrServer solrServer = solrServer();
+	public static QueryResponse search(SolrQuery query) {
 		try {
-			solrServer.deleteById("value_" + value.getItemId());
-			solrServer.commit();
+			return solrServer().query(query);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return new QueryResponse();
+	}
+
+	public static QueryResponse search(String queryString) {
+		String searchString = "Value_solrsummary_t:" + queryString;
+		return search(new SolrQuery(searchString.toLowerCase()));
+	}
+
+	public static SolrServer solrServer() {
+		SolrServer _solrServer = new Value().solrServer;
+		if (_solrServer == null)
+			throw new IllegalStateException(
+					"Solr server has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return _solrServer;
+	}
+
+	public static String toJsonArray(Collection<Value> collection) {
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	@OneToOne
+	@JoinColumn(name = "item_id", nullable = false, insertable = false, updatable = false)
+	private Item item;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "item_id", columnDefinition = "int8")
+	private Long itemId;
+
+	@OneToMany(mappedBy = "maxValueId")
+	private Set<Scale> scales;
+
+	@OneToMany(mappedBy = "minValueId")
+	private Set<Scale> scales1;
+
+	@Column(name = "value", columnDefinition = "int4")
+	@NotNull
+	private Integer value;
+
+	@PersistenceContext
+	transient EntityManager entityManager;
+
+	@Autowired
+	transient SolrServer solrServer;
+
+	@Transactional
+	public void clear() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.clear();
+	}
+
+	@Transactional
+	public void flush() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.flush();
+	}
+
+	public Item getItem() {
+		return item;
+	}
+
+	public Long getItemId() {
+		return this.itemId;
+	}
+
+	public Set<Scale> getScales() {
+		return scales;
+	}
+
+	public Set<Scale> getScales1() {
+		return scales1;
+	}
+
+	public Integer getValue() {
+		return value;
+	}
+
+	@Transactional
+	public Value merge() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		Value merged = this.entityManager.merge(this);
+		this.entityManager.flush();
+		return merged;
+	}
+
+	@Transactional
+	public void persist() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.persist(this);
+	}
+
+	@Transactional
+	public void remove() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		if (this.entityManager.contains(this)) {
+			this.entityManager.remove(this);
+		} else {
+			Value attached = Value.findValue(this.itemId);
+			this.entityManager.remove(attached);
+		}
+	}
+
+	public void setItem(Item item) {
+		this.item = item;
+	}
+
+	public void setItemId(Long id) {
+		this.itemId = id;
+	}
+
+	public void setScales(Set<Scale> scales) {
+		this.scales = scales;
+	}
+
+	public void setScales1(Set<Scale> scales1) {
+		this.scales1 = scales1;
+	}
+
+	public void setValue(Integer value) {
+		this.value = value;
+	}
+
+	public String toJson() {
+		return new JSONSerializer().exclude("*.class").serialize(this);
+	}
+
+	public String toString() {
+		return new ReflectionToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE).setExcludeFieldNames("item")
+				.toString();
 	}
 
 	@PostUpdate
@@ -263,13 +271,5 @@ public class Value {
 	@PreRemove
 	private void preRemove() {
 		deleteIndex(this);
-	}
-
-	public static SolrServer solrServer() {
-		SolrServer _solrServer = new Value().solrServer;
-		if (_solrServer == null)
-			throw new IllegalStateException(
-					"Solr server has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-		return _solrServer;
 	}
 }

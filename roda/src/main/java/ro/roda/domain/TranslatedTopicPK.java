@@ -17,8 +17,11 @@ import flexjson.JSONSerializer;
 @Configurable
 public final class TranslatedTopicPK implements Serializable {
 
-	public String toJson() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
+	private static final long serialVersionUID = 1L;
+
+	public static Collection<TranslatedTopicPK> fromJsonArrayToTranslatedTopicPKs(String json) {
+		return new JSONDeserializer<List<TranslatedTopicPK>>().use(null, ArrayList.class)
+				.use("values", TranslatedTopicPK.class).deserialize(json);
 	}
 
 	public static TranslatedTopicPK fromJsonToTranslatedTopicPK(String json) {
@@ -27,11 +30,6 @@ public final class TranslatedTopicPK implements Serializable {
 
 	public static String toJsonArray(Collection<TranslatedTopicPK> collection) {
 		return new JSONSerializer().exclude("*.class").serialize(collection);
-	}
-
-	public static Collection<TranslatedTopicPK> fromJsonArrayToTranslatedTopicPKs(String json) {
-		return new JSONDeserializer<List<TranslatedTopicPK>>().use(null, ArrayList.class)
-				.use("values", TranslatedTopicPK.class).deserialize(json);
 	}
 
 	@Column(name = "lang_id", columnDefinition = "int4", nullable = false)
@@ -58,5 +56,7 @@ public final class TranslatedTopicPK implements Serializable {
 		return topicId;
 	}
 
-	private static final long serialVersionUID = 1L;
+	public String toJson() {
+		return new JSONSerializer().exclude("*.class").serialize(this);
+	}
 }

@@ -42,16 +42,42 @@ import flexjson.JSONSerializer;
 @Audited
 public class CatalogStudy {
 
-	public String toJson() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
+	public static long countCatalogStudys() {
+		return entityManager().createQuery("SELECT COUNT(o) FROM CatalogStudy o", Long.class).getSingleResult();
 	}
 
-	public static CatalogStudy fromJsonToCatalogStudy(String json) {
-		return new JSONDeserializer<CatalogStudy>().use(null, CatalogStudy.class).deserialize(json);
+	@Async
+	public static void deleteIndex(CatalogStudy catalogStudy) {
+		SolrServer solrServer = solrServer();
+		try {
+			solrServer.deleteById("catalogstudy_" + catalogStudy.getId());
+			solrServer.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
-	public static String toJsonArray(Collection<CatalogStudy> collection) {
-		return new JSONSerializer().exclude("*.class").serialize(collection);
+	public static final EntityManager entityManager() {
+		EntityManager em = new CatalogStudy().entityManager;
+		if (em == null)
+			throw new IllegalStateException(
+					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return em;
+	}
+
+	public static List<CatalogStudy> findAllCatalogStudys() {
+		return entityManager().createQuery("SELECT o FROM CatalogStudy o", CatalogStudy.class).getResultList();
+	}
+
+	public static CatalogStudy findCatalogStudy(CatalogStudyPK id) {
+		if (id == null)
+			return null;
+		return entityManager().find(CatalogStudy.class, id);
+	}
+
+	public static List<CatalogStudy> findCatalogStudyEntries(int firstResult, int maxResults) {
+		return entityManager().createQuery("SELECT o FROM CatalogStudy o", CatalogStudy.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
 	}
 
 	public static Collection<CatalogStudy> fromJsonArrayToCatalogStudys(String json) {
@@ -59,63 +85,8 @@ public class CatalogStudy {
 				.deserialize(json);
 	}
 
-	@ManyToOne
-	@JoinColumn(name = "catalog_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
-	private Catalog catalogId;
-
-	@ManyToOne
-	@JoinColumn(name = "study_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
-	private Study studyId;
-
-	@Column(name = "added", columnDefinition = "timestamp")
-	@NotNull
-	@Temporal(TemporalType.TIMESTAMP)
-	@DateTimeFormat(style = "MM")
-	private Calendar added;
-
-	public Catalog getCatalogId() {
-		return catalogId;
-	}
-
-	public void setCatalogId(Catalog catalogId) {
-		this.catalogId = catalogId;
-	}
-
-	public Study getStudyId() {
-		return studyId;
-	}
-
-	public void setStudyId(Study studyId) {
-		this.studyId = studyId;
-	}
-
-	public Calendar getAdded() {
-		return added;
-	}
-
-	public void setAdded(Calendar added) {
-		this.added = added;
-	}
-
-	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
-	}
-
-	@Autowired
-	transient SolrServer solrServer;
-
-	public static QueryResponse search(String queryString) {
-		String searchString = "CatalogStudy_solrsummary_t:" + queryString;
-		return search(new SolrQuery(searchString.toLowerCase()));
-	}
-
-	public static QueryResponse search(SolrQuery query) {
-		try {
-			return solrServer().query(query);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return new QueryResponse();
+	public static CatalogStudy fromJsonToCatalogStudy(String json) {
+		return new JSONDeserializer<CatalogStudy>().use(null, CatalogStudy.class).deserialize(json);
 	}
 
 	public static void indexCatalogStudy(CatalogStudy catalogStudy) {
@@ -152,26 +123,18 @@ public class CatalogStudy {
 		}
 	}
 
-	@Async
-	public static void deleteIndex(CatalogStudy catalogStudy) {
-		SolrServer solrServer = solrServer();
+	public static QueryResponse search(SolrQuery query) {
 		try {
-			solrServer.deleteById("catalogstudy_" + catalogStudy.getId());
-			solrServer.commit();
+			return solrServer().query(query);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return new QueryResponse();
 	}
 
-	@PostUpdate
-	@PostPersist
-	private void postPersistOrUpdate() {
-		indexCatalogStudy(this);
-	}
-
-	@PreRemove
-	private void preRemove() {
-		deleteIndex(this);
+	public static QueryResponse search(String queryString) {
+		String searchString = "CatalogStudy_solrsummary_t:" + queryString;
+		return search(new SolrQuery(searchString.toLowerCase()));
 	}
 
 	public static SolrServer solrServer() {
@@ -182,34 +145,70 @@ public class CatalogStudy {
 		return _solrServer;
 	}
 
+	public static String toJsonArray(Collection<CatalogStudy> collection) {
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	@Column(name = "added", columnDefinition = "timestamp")
+	@NotNull
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(style = "MM")
+	private Calendar added;
+
+	@ManyToOne
+	@JoinColumn(name = "catalog_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	private Catalog catalogId;
+
+	@EmbeddedId
+	private CatalogStudyPK id;
+
+	@ManyToOne
+	@JoinColumn(name = "study_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	private Study studyId;
+
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	public static final EntityManager entityManager() {
-		EntityManager em = new CatalogStudy().entityManager;
-		if (em == null)
-			throw new IllegalStateException(
-					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-		return em;
+	@Autowired
+	transient SolrServer solrServer;
+
+	@Transactional
+	public void clear() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.clear();
 	}
 
-	public static long countCatalogStudys() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM CatalogStudy o", Long.class).getSingleResult();
+	@Transactional
+	public void flush() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.flush();
 	}
 
-	public static List<CatalogStudy> findAllCatalogStudys() {
-		return entityManager().createQuery("SELECT o FROM CatalogStudy o", CatalogStudy.class).getResultList();
+	public Calendar getAdded() {
+		return added;
 	}
 
-	public static CatalogStudy findCatalogStudy(CatalogStudyPK id) {
-		if (id == null)
-			return null;
-		return entityManager().find(CatalogStudy.class, id);
+	public Catalog getCatalogId() {
+		return catalogId;
 	}
 
-	public static List<CatalogStudy> findCatalogStudyEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM CatalogStudy o", CatalogStudy.class)
-				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
+	public CatalogStudyPK getId() {
+		return this.id;
+	}
+
+	public Study getStudyId() {
+		return studyId;
+	}
+
+	@Transactional
+	public CatalogStudy merge() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		CatalogStudy merged = this.entityManager.merge(this);
+		this.entityManager.flush();
+		return merged;
 	}
 
 	@Transactional
@@ -231,37 +230,38 @@ public class CatalogStudy {
 		}
 	}
 
-	@Transactional
-	public void flush() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.flush();
+	public void setAdded(Calendar added) {
+		this.added = added;
 	}
 
-	@Transactional
-	public void clear() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.clear();
-	}
-
-	@Transactional
-	public CatalogStudy merge() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		CatalogStudy merged = this.entityManager.merge(this);
-		this.entityManager.flush();
-		return merged;
-	}
-
-	@EmbeddedId
-	private CatalogStudyPK id;
-
-	public CatalogStudyPK getId() {
-		return this.id;
+	public void setCatalogId(Catalog catalogId) {
+		this.catalogId = catalogId;
 	}
 
 	public void setId(CatalogStudyPK id) {
 		this.id = id;
+	}
+
+	public void setStudyId(Study studyId) {
+		this.studyId = studyId;
+	}
+
+	public String toJson() {
+		return new JSONSerializer().exclude("*.class").serialize(this);
+	}
+
+	public String toString() {
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+	}
+
+	@PostUpdate
+	@PostPersist
+	private void postPersistOrUpdate() {
+		indexCatalogStudy(this);
+	}
+
+	@PreRemove
+	private void preRemove() {
+		deleteIndex(this);
 	}
 }

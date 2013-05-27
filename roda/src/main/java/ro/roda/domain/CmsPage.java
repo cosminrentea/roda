@@ -42,21 +42,51 @@ import flexjson.JSONSerializer;
 @Audited
 public class CmsPage {
 
-	@Autowired
-	transient SolrServer solrServer;
-
-	public static QueryResponse search(String queryString) {
-		String searchString = "CmsPage_solrsummary_t:" + queryString;
-		return search(new SolrQuery(searchString.toLowerCase()));
+	public static long countCmsPages() {
+		return entityManager().createQuery("SELECT COUNT(o) FROM CmsPage o", Long.class).getSingleResult();
 	}
 
-	public static QueryResponse search(SolrQuery query) {
+	@Async
+	public static void deleteIndex(CmsPage cmsPage) {
+		SolrServer solrServer = solrServer();
 		try {
-			return solrServer().query(query);
+			solrServer.deleteById("cmspage_" + cmsPage.getId());
+			solrServer.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return new QueryResponse();
+	}
+
+	public static final EntityManager entityManager() {
+		EntityManager em = new CmsPage().entityManager;
+		if (em == null)
+			throw new IllegalStateException(
+					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return em;
+	}
+
+	public static List<CmsPage> findAllCmsPages() {
+		return entityManager().createQuery("SELECT o FROM CmsPage o", CmsPage.class).getResultList();
+	}
+
+	public static CmsPage findCmsPage(Integer id) {
+		if (id == null)
+			return null;
+		return entityManager().find(CmsPage.class, id);
+	}
+
+	public static List<CmsPage> findCmsPageEntries(int firstResult, int maxResults) {
+		return entityManager().createQuery("SELECT o FROM CmsPage o", CmsPage.class).setFirstResult(firstResult)
+				.setMaxResults(maxResults).getResultList();
+	}
+
+	public static Collection<CmsPage> fromJsonArrayToCmsPages(String json) {
+		return new JSONDeserializer<List<CmsPage>>().use(null, ArrayList.class).use("values", CmsPage.class)
+				.deserialize(json);
+	}
+
+	public static CmsPage fromJsonToCmsPage(String json) {
+		return new JSONDeserializer<CmsPage>().use(null, CmsPage.class).deserialize(json);
 	}
 
 	public static void indexCmsPage(CmsPage cmsPage) {
@@ -93,26 +123,18 @@ public class CmsPage {
 		}
 	}
 
-	@Async
-	public static void deleteIndex(CmsPage cmsPage) {
-		SolrServer solrServer = solrServer();
+	public static QueryResponse search(SolrQuery query) {
 		try {
-			solrServer.deleteById("cmspage_" + cmsPage.getId());
-			solrServer.commit();
+			return solrServer().query(query);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return new QueryResponse();
 	}
 
-	@PostUpdate
-	@PostPersist
-	private void postPersistOrUpdate() {
-		indexCmsPage(this);
-	}
-
-	@PreRemove
-	private void preRemove() {
-		deleteIndex(this);
+	public static QueryResponse search(String queryString) {
+		String searchString = "CmsPage_solrsummary_t:" + queryString;
+		return search(new SolrQuery(searchString.toLowerCase()));
 	}
 
 	public static SolrServer solrServer() {
@@ -123,24 +145,29 @@ public class CmsPage {
 		return _solrServer;
 	}
 
-	@OneToMany(mappedBy = "cmsPageId")
-	private Set<CmsPageContent> cmsPageContents;
+	public static String toJsonArray(Collection<CmsPage> collection) {
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
 
 	@ManyToOne
 	@JoinColumn(name = "cms_layout_id", referencedColumnName = "id", nullable = false)
 	private CmsLayout cmsLayoutId;
 
+	@OneToMany(mappedBy = "cmsPageId")
+	private Set<CmsPageContent> cmsPageContents;
+
 	@ManyToOne
 	@JoinColumn(name = "cms_page_type_id", referencedColumnName = "id", nullable = false)
 	private CmsPageType cmsPageTypeId;
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id", columnDefinition = "serial")
+	private Integer id;
+
 	@Column(name = "name", columnDefinition = "text")
 	@NotNull
 	private String name;
-
-	@Column(name = "visible", columnDefinition = "bool")
-	@NotNull
-	private boolean visible;
 
 	@Column(name = "navigable", columnDefinition = "bool")
 	@NotNull
@@ -150,124 +177,69 @@ public class CmsPage {
 	@NotNull
 	private String url;
 
-	public Set<CmsPageContent> getCmsPageContents() {
-		return cmsPageContents;
+	@Column(name = "visible", columnDefinition = "bool")
+	@NotNull
+	private boolean visible;
+
+	@PersistenceContext
+	transient EntityManager entityManager;
+
+	@Autowired
+	transient SolrServer solrServer;
+
+	@Transactional
+	public void clear() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.clear();
 	}
 
-	public void setCmsPageContents(Set<CmsPageContent> cmsPageContents) {
-		this.cmsPageContents = cmsPageContents;
+	@Transactional
+	public void flush() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.flush();
 	}
 
 	public CmsLayout getCmsLayoutId() {
 		return cmsLayoutId;
 	}
 
-	public void setCmsLayoutId(CmsLayout cmsLayoutId) {
-		this.cmsLayoutId = cmsLayoutId;
+	public Set<CmsPageContent> getCmsPageContents() {
+		return cmsPageContents;
 	}
 
 	public CmsPageType getCmsPageTypeId() {
 		return cmsPageTypeId;
 	}
 
-	public void setCmsPageTypeId(CmsPageType cmsPageTypeId) {
-		this.cmsPageTypeId = cmsPageTypeId;
+	public Integer getId() {
+		return this.id;
 	}
 
 	public String getName() {
 		return name;
 	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public boolean isVisible() {
-		return visible;
-	}
-
-	public void setVisible(boolean visible) {
-		this.visible = visible;
+	public String getUrl() {
+		return url;
 	}
 
 	public boolean isNavigable() {
 		return navigable;
 	}
 
-	public void setNavigable(boolean navigable) {
-		this.navigable = navigable;
+	public boolean isVisible() {
+		return visible;
 	}
 
-	public String getUrl() {
-		return url;
-	}
-
-	public void setUrl(String url) {
-		this.url = url;
-	}
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "id", columnDefinition = "serial")
-	private Integer id;
-
-	public Integer getId() {
-		return this.id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
-	}
-
-	public String toJson() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
-	}
-
-	public static CmsPage fromJsonToCmsPage(String json) {
-		return new JSONDeserializer<CmsPage>().use(null, CmsPage.class).deserialize(json);
-	}
-
-	public static String toJsonArray(Collection<CmsPage> collection) {
-		return new JSONSerializer().exclude("*.class").serialize(collection);
-	}
-
-	public static Collection<CmsPage> fromJsonArrayToCmsPages(String json) {
-		return new JSONDeserializer<List<CmsPage>>().use(null, ArrayList.class).use("values", CmsPage.class)
-				.deserialize(json);
-	}
-
-	@PersistenceContext
-	transient EntityManager entityManager;
-
-	public static final EntityManager entityManager() {
-		EntityManager em = new CmsPage().entityManager;
-		if (em == null)
-			throw new IllegalStateException(
-					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-		return em;
-	}
-
-	public static long countCmsPages() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM CmsPage o", Long.class).getSingleResult();
-	}
-
-	public static List<CmsPage> findAllCmsPages() {
-		return entityManager().createQuery("SELECT o FROM CmsPage o", CmsPage.class).getResultList();
-	}
-
-	public static CmsPage findCmsPage(Integer id) {
-		if (id == null)
-			return null;
-		return entityManager().find(CmsPage.class, id);
-	}
-
-	public static List<CmsPage> findCmsPageEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM CmsPage o", CmsPage.class).setFirstResult(firstResult)
-				.setMaxResults(maxResults).getResultList();
+	@Transactional
+	public CmsPage merge() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		CmsPage merged = this.entityManager.merge(this);
+		this.entityManager.flush();
+		return merged;
 	}
 
 	@Transactional
@@ -289,26 +261,54 @@ public class CmsPage {
 		}
 	}
 
-	@Transactional
-	public void flush() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.flush();
+	public void setCmsLayoutId(CmsLayout cmsLayoutId) {
+		this.cmsLayoutId = cmsLayoutId;
 	}
 
-	@Transactional
-	public void clear() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.clear();
+	public void setCmsPageContents(Set<CmsPageContent> cmsPageContents) {
+		this.cmsPageContents = cmsPageContents;
 	}
 
-	@Transactional
-	public CmsPage merge() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		CmsPage merged = this.entityManager.merge(this);
-		this.entityManager.flush();
-		return merged;
+	public void setCmsPageTypeId(CmsPageType cmsPageTypeId) {
+		this.cmsPageTypeId = cmsPageTypeId;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setNavigable(boolean navigable) {
+		this.navigable = navigable;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	public void setVisible(boolean visible) {
+		this.visible = visible;
+	}
+
+	public String toJson() {
+		return new JSONSerializer().exclude("*.class").serialize(this);
+	}
+
+	public String toString() {
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+	}
+
+	@PostUpdate
+	@PostPersist
+	private void postPersistOrUpdate() {
+		indexCmsPage(this);
+	}
+
+	@PreRemove
+	private void preRemove() {
+		deleteIndex(this);
 	}
 }

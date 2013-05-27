@@ -38,8 +38,20 @@ import flexjson.JSONSerializer;
 @Audited
 public class StudyPersonAsoc {
 
-	@PersistenceContext
-	transient EntityManager entityManager;
+	public static long countStudyPersonAsocs() {
+		return entityManager().createQuery("SELECT COUNT(o) FROM StudyPersonAsoc o", Long.class).getSingleResult();
+	}
+
+	@Async
+	public static void deleteIndex(StudyPersonAsoc studyPersonAsoc) {
+		SolrServer solrServer = solrServer();
+		try {
+			solrServer.deleteById("studypersonasoc_" + studyPersonAsoc.getId());
+			solrServer.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	public static final EntityManager entityManager() {
 		EntityManager em = new StudyPersonAsoc().entityManager;
@@ -47,10 +59,6 @@ public class StudyPersonAsoc {
 			throw new IllegalStateException(
 					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
 		return em;
-	}
-
-	public static long countStudyPersonAsocs() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM StudyPersonAsoc o", Long.class).getSingleResult();
 	}
 
 	public static List<StudyPersonAsoc> findAllStudyPersonAsocs() {
@@ -68,120 +76,13 @@ public class StudyPersonAsoc {
 				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
 	}
 
-	@Transactional
-	public void persist() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.persist(this);
-	}
-
-	@Transactional
-	public void remove() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		if (this.entityManager.contains(this)) {
-			this.entityManager.remove(this);
-		} else {
-			StudyPersonAsoc attached = StudyPersonAsoc.findStudyPersonAsoc(this.id);
-			this.entityManager.remove(attached);
-		}
-	}
-
-	@Transactional
-	public void flush() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.flush();
-	}
-
-	@Transactional
-	public void clear() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.clear();
-	}
-
-	@Transactional
-	public StudyPersonAsoc merge() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		StudyPersonAsoc merged = this.entityManager.merge(this);
-		this.entityManager.flush();
-		return merged;
-	}
-
-	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
-	}
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "id", columnDefinition = "serial")
-	private Integer id;
-
-	public Integer getId() {
-		return this.id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	@Column(name = "asoc_name", columnDefinition = "varchar", length = 100)
-	@NotNull
-	private String asocName;
-
-	@Column(name = "asoc_description", columnDefinition = "text")
-	private String asocDescription;
-
-	public String getAsocName() {
-		return asocName;
-	}
-
-	public void setAsocName(String asocName) {
-		this.asocName = asocName;
-	}
-
-	public String getAsocDescription() {
-		return asocDescription;
-	}
-
-	public void setAsocDescription(String asocDescription) {
-		this.asocDescription = asocDescription;
-	}
-
-	public String toJson() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
-	}
-
-	public static StudyPersonAsoc fromJsonToStudyPersonAsoc(String json) {
-		return new JSONDeserializer<StudyPersonAsoc>().use(null, StudyPersonAsoc.class).deserialize(json);
-	}
-
-	public static String toJsonArray(Collection<StudyPersonAsoc> collection) {
-		return new JSONSerializer().exclude("*.class").serialize(collection);
-	}
-
 	public static Collection<StudyPersonAsoc> fromJsonArrayToStudyPersonAsocs(String json) {
 		return new JSONDeserializer<List<StudyPersonAsoc>>().use(null, ArrayList.class)
 				.use("values", StudyPersonAsoc.class).deserialize(json);
 	}
 
-	@Autowired
-	transient SolrServer solrServer;
-
-	public static QueryResponse search(String queryString) {
-		String searchString = "StudyPersonAsoc_solrsummary_t:" + queryString;
-		return search(new SolrQuery(searchString.toLowerCase()));
-	}
-
-	public static QueryResponse search(SolrQuery query) {
-		try {
-			return solrServer().query(query);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return new QueryResponse();
+	public static StudyPersonAsoc fromJsonToStudyPersonAsoc(String json) {
+		return new JSONDeserializer<StudyPersonAsoc>().use(null, StudyPersonAsoc.class).deserialize(json);
 	}
 
 	public static void indexStudyPersonAsoc(StudyPersonAsoc studyPersonAsoc) {
@@ -213,15 +114,122 @@ public class StudyPersonAsoc {
 		}
 	}
 
-	@Async
-	public static void deleteIndex(StudyPersonAsoc studyPersonAsoc) {
-		SolrServer solrServer = solrServer();
+	public static QueryResponse search(SolrQuery query) {
 		try {
-			solrServer.deleteById("studypersonasoc_" + studyPersonAsoc.getId());
-			solrServer.commit();
+			return solrServer().query(query);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return new QueryResponse();
+	}
+
+	public static QueryResponse search(String queryString) {
+		String searchString = "StudyPersonAsoc_solrsummary_t:" + queryString;
+		return search(new SolrQuery(searchString.toLowerCase()));
+	}
+
+	public static SolrServer solrServer() {
+		SolrServer _solrServer = new StudyPersonAsoc().solrServer;
+		if (_solrServer == null)
+			throw new IllegalStateException(
+					"Solr server has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return _solrServer;
+	}
+
+	public static String toJsonArray(Collection<StudyPersonAsoc> collection) {
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	@Column(name = "asoc_description", columnDefinition = "text")
+	private String asocDescription;
+
+	@Column(name = "asoc_name", columnDefinition = "varchar", length = 100)
+	@NotNull
+	private String asocName;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id", columnDefinition = "serial")
+	private Integer id;
+
+	@PersistenceContext
+	transient EntityManager entityManager;
+
+	@Autowired
+	transient SolrServer solrServer;
+
+	@Transactional
+	public void clear() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.clear();
+	}
+
+	@Transactional
+	public void flush() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.flush();
+	}
+
+	public String getAsocDescription() {
+		return asocDescription;
+	}
+
+	public String getAsocName() {
+		return asocName;
+	}
+
+	public Integer getId() {
+		return this.id;
+	}
+
+	@Transactional
+	public StudyPersonAsoc merge() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		StudyPersonAsoc merged = this.entityManager.merge(this);
+		this.entityManager.flush();
+		return merged;
+	}
+
+	@Transactional
+	public void persist() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.persist(this);
+	}
+
+	@Transactional
+	public void remove() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		if (this.entityManager.contains(this)) {
+			this.entityManager.remove(this);
+		} else {
+			StudyPersonAsoc attached = StudyPersonAsoc.findStudyPersonAsoc(this.id);
+			this.entityManager.remove(attached);
+		}
+	}
+
+	public void setAsocDescription(String asocDescription) {
+		this.asocDescription = asocDescription;
+	}
+
+	public void setAsocName(String asocName) {
+		this.asocName = asocName;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public String toJson() {
+		return new JSONSerializer().exclude("*.class").serialize(this);
+	}
+
+	public String toString() {
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate
@@ -233,13 +241,5 @@ public class StudyPersonAsoc {
 	@PreRemove
 	private void preRemove() {
 		deleteIndex(this);
-	}
-
-	public static SolrServer solrServer() {
-		SolrServer _solrServer = new StudyPersonAsoc().solrServer;
-		if (_solrServer == null)
-			throw new IllegalStateException(
-					"Solr server has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-		return _solrServer;
 	}
 }

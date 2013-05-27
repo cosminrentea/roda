@@ -45,127 +45,42 @@ import flexjson.JSONSerializer;
 @Audited
 public class PersonLinks {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "id", columnDefinition = "serial")
-	private Integer id;
-
-	public Integer getId() {
-		return this.id;
+	public static long countPersonLinkses() {
+		return entityManager().createQuery("SELECT COUNT(o) FROM PersonLinks o", Long.class).getSingleResult();
 	}
 
-	public void setId(Integer id) {
-		this.id = id;
+	@Async
+	public static void deleteIndex(PersonLinks personLinks) {
+		SolrServer solrServer = solrServer();
+		try {
+			solrServer.deleteById("personlinks_" + personLinks.getId());
+			solrServer.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
-	@ManyToOne
-	@JoinColumn(name = "person_id", referencedColumnName = "id", nullable = false)
-	private Person personId;
-
-	@ManyToOne
-	@JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
-	private Users userId;
-
-	@ManyToOne
-	@JoinColumn(name = "status_by", referencedColumnName = "id", nullable = false)
-	private Users statusBy;
-
-	@Column(name = "simscore", columnDefinition = "numeric", precision = 10, scale = 2)
-	@NotNull
-	private BigDecimal simscore;
-
-	@Column(name = "namescore", columnDefinition = "numeric", precision = 10, scale = 2)
-	@NotNull
-	private BigDecimal namescore;
-
-	@Column(name = "emailscore", columnDefinition = "numeric", precision = 10, scale = 2)
-	@NotNull
-	private BigDecimal emailscore;
-
-	@Column(name = "status", columnDefinition = "int4")
-	@NotNull
-	private Integer status;
-
-	@Column(name = "status_time", columnDefinition = "timestamp")
-	@NotNull
-	@Temporal(TemporalType.TIMESTAMP)
-	@DateTimeFormat(style = "MM")
-	private Calendar statusTime;
-
-	public Person getPersonId() {
-		return personId;
+	public static final EntityManager entityManager() {
+		EntityManager em = new PersonLinks().entityManager;
+		if (em == null)
+			throw new IllegalStateException(
+					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return em;
 	}
 
-	public void setPersonId(Person personId) {
-		this.personId = personId;
+	public static List<PersonLinks> findAllPersonLinkses() {
+		return entityManager().createQuery("SELECT o FROM PersonLinks o", PersonLinks.class).getResultList();
 	}
 
-	public Users getUserId() {
-		return userId;
+	public static PersonLinks findPersonLinks(Integer id) {
+		if (id == null)
+			return null;
+		return entityManager().find(PersonLinks.class, id);
 	}
 
-	public void setUserId(Users userId) {
-		this.userId = userId;
-	}
-
-	public Users getStatusBy() {
-		return statusBy;
-	}
-
-	public void setStatusBy(Users statusBy) {
-		this.statusBy = statusBy;
-	}
-
-	public BigDecimal getSimscore() {
-		return simscore;
-	}
-
-	public void setSimscore(BigDecimal simscore) {
-		this.simscore = simscore;
-	}
-
-	public BigDecimal getNamescore() {
-		return namescore;
-	}
-
-	public void setNamescore(BigDecimal namescore) {
-		this.namescore = namescore;
-	}
-
-	public BigDecimal getEmailscore() {
-		return emailscore;
-	}
-
-	public void setEmailscore(BigDecimal emailscore) {
-		this.emailscore = emailscore;
-	}
-
-	public Integer getStatus() {
-		return status;
-	}
-
-	public void setStatus(Integer status) {
-		this.status = status;
-	}
-
-	public Calendar getStatusTime() {
-		return statusTime;
-	}
-
-	public void setStatusTime(Calendar statusTime) {
-		this.statusTime = statusTime;
-	}
-
-	public String toJson() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
-	}
-
-	public static PersonLinks fromJsonToPersonLinks(String json) {
-		return new JSONDeserializer<PersonLinks>().use(null, PersonLinks.class).deserialize(json);
-	}
-
-	public static String toJsonArray(Collection<PersonLinks> collection) {
-		return new JSONSerializer().exclude("*.class").serialize(collection);
+	public static List<PersonLinks> findPersonLinksEntries(int firstResult, int maxResults) {
+		return entityManager().createQuery("SELECT o FROM PersonLinks o", PersonLinks.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
 	}
 
 	public static Collection<PersonLinks> fromJsonArrayToPersonLinkses(String json) {
@@ -173,21 +88,8 @@ public class PersonLinks {
 				.deserialize(json);
 	}
 
-	@Autowired
-	transient SolrServer solrServer;
-
-	public static QueryResponse search(String queryString) {
-		String searchString = "PersonLinks_solrsummary_t:" + queryString;
-		return search(new SolrQuery(searchString.toLowerCase()));
-	}
-
-	public static QueryResponse search(SolrQuery query) {
-		try {
-			return solrServer().query(query);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return new QueryResponse();
+	public static PersonLinks fromJsonToPersonLinks(String json) {
+		return new JSONDeserializer<PersonLinks>().use(null, PersonLinks.class).deserialize(json);
 	}
 
 	public static void indexPersonLinks(PersonLinks personLinks) {
@@ -232,26 +134,18 @@ public class PersonLinks {
 		}
 	}
 
-	@Async
-	public static void deleteIndex(PersonLinks personLinks) {
-		SolrServer solrServer = solrServer();
+	public static QueryResponse search(SolrQuery query) {
 		try {
-			solrServer.deleteById("personlinks_" + personLinks.getId());
-			solrServer.commit();
+			return solrServer().query(query);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return new QueryResponse();
 	}
 
-	@PostUpdate
-	@PostPersist
-	private void postPersistOrUpdate() {
-		indexPersonLinks(this);
-	}
-
-	@PreRemove
-	private void preRemove() {
-		deleteIndex(this);
+	public static QueryResponse search(String queryString) {
+		String searchString = "PersonLinks_solrsummary_t:" + queryString;
+		return search(new SolrQuery(searchString.toLowerCase()));
 	}
 
 	public static SolrServer solrServer() {
@@ -262,38 +156,112 @@ public class PersonLinks {
 		return _solrServer;
 	}
 
-	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+	public static String toJsonArray(Collection<PersonLinks> collection) {
+		return new JSONSerializer().exclude("*.class").serialize(collection);
 	}
+
+	@Column(name = "emailscore", columnDefinition = "numeric", precision = 10, scale = 2)
+	@NotNull
+	private BigDecimal emailscore;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id", columnDefinition = "serial")
+	private Integer id;
+
+	@Column(name = "namescore", columnDefinition = "numeric", precision = 10, scale = 2)
+	@NotNull
+	private BigDecimal namescore;
+
+	@ManyToOne
+	@JoinColumn(name = "person_id", referencedColumnName = "id", nullable = false)
+	private Person personId;
+
+	@Column(name = "simscore", columnDefinition = "numeric", precision = 10, scale = 2)
+	@NotNull
+	private BigDecimal simscore;
+
+	@Column(name = "status", columnDefinition = "int4")
+	@NotNull
+	private Integer status;
+
+	@ManyToOne
+	@JoinColumn(name = "status_by", referencedColumnName = "id", nullable = false)
+	private Users statusBy;
+
+	@Column(name = "status_time", columnDefinition = "timestamp")
+	@NotNull
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(style = "MM")
+	private Calendar statusTime;
+
+	@ManyToOne
+	@JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
+	private Users userId;
 
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	public static final EntityManager entityManager() {
-		EntityManager em = new PersonLinks().entityManager;
-		if (em == null)
-			throw new IllegalStateException(
-					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-		return em;
+	@Autowired
+	transient SolrServer solrServer;
+
+	@Transactional
+	public void clear() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.clear();
 	}
 
-	public static long countPersonLinkses() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM PersonLinks o", Long.class).getSingleResult();
+	@Transactional
+	public void flush() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.flush();
 	}
 
-	public static List<PersonLinks> findAllPersonLinkses() {
-		return entityManager().createQuery("SELECT o FROM PersonLinks o", PersonLinks.class).getResultList();
+	public BigDecimal getEmailscore() {
+		return emailscore;
 	}
 
-	public static PersonLinks findPersonLinks(Integer id) {
-		if (id == null)
-			return null;
-		return entityManager().find(PersonLinks.class, id);
+	public Integer getId() {
+		return this.id;
 	}
 
-	public static List<PersonLinks> findPersonLinksEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM PersonLinks o", PersonLinks.class)
-				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
+	public BigDecimal getNamescore() {
+		return namescore;
+	}
+
+	public Person getPersonId() {
+		return personId;
+	}
+
+	public BigDecimal getSimscore() {
+		return simscore;
+	}
+
+	public Integer getStatus() {
+		return status;
+	}
+
+	public Users getStatusBy() {
+		return statusBy;
+	}
+
+	public Calendar getStatusTime() {
+		return statusTime;
+	}
+
+	public Users getUserId() {
+		return userId;
+	}
+
+	@Transactional
+	public PersonLinks merge() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		PersonLinks merged = this.entityManager.merge(this);
+		this.entityManager.flush();
+		return merged;
 	}
 
 	@Transactional
@@ -315,26 +283,58 @@ public class PersonLinks {
 		}
 	}
 
-	@Transactional
-	public void flush() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.flush();
+	public void setEmailscore(BigDecimal emailscore) {
+		this.emailscore = emailscore;
 	}
 
-	@Transactional
-	public void clear() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.clear();
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
-	@Transactional
-	public PersonLinks merge() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		PersonLinks merged = this.entityManager.merge(this);
-		this.entityManager.flush();
-		return merged;
+	public void setNamescore(BigDecimal namescore) {
+		this.namescore = namescore;
+	}
+
+	public void setPersonId(Person personId) {
+		this.personId = personId;
+	}
+
+	public void setSimscore(BigDecimal simscore) {
+		this.simscore = simscore;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
+
+	public void setStatusBy(Users statusBy) {
+		this.statusBy = statusBy;
+	}
+
+	public void setStatusTime(Calendar statusTime) {
+		this.statusTime = statusTime;
+	}
+
+	public void setUserId(Users userId) {
+		this.userId = userId;
+	}
+
+	public String toJson() {
+		return new JSONSerializer().exclude("*.class").serialize(this);
+	}
+
+	public String toString() {
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+	}
+
+	@PostUpdate
+	@PostPersist
+	private void postPersistOrUpdate() {
+		indexPersonLinks(this);
+	}
+
+	@PreRemove
+	private void preRemove() {
+		deleteIndex(this);
 	}
 }

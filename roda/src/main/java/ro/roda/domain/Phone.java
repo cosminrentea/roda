@@ -40,8 +40,20 @@ import flexjson.JSONSerializer;
 @Audited
 public class Phone {
 
-	@PersistenceContext
-	transient EntityManager entityManager;
+	public static long countPhones() {
+		return entityManager().createQuery("SELECT COUNT(o) FROM Phone o", Long.class).getSingleResult();
+	}
+
+	@Async
+	public static void deleteIndex(Phone phone) {
+		SolrServer solrServer = solrServer();
+		try {
+			solrServer.deleteById("phone_" + phone.getId());
+			solrServer.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	public static final EntityManager entityManager() {
 		EntityManager em = new Phone().entityManager;
@@ -49,10 +61,6 @@ public class Phone {
 			throw new IllegalStateException(
 					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
 		return em;
-	}
-
-	public static long countPhones() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM Phone o", Long.class).getSingleResult();
 	}
 
 	public static List<Phone> findAllPhones() {
@@ -70,76 +78,13 @@ public class Phone {
 				.setMaxResults(maxResults).getResultList();
 	}
 
-	@Transactional
-	public void persist() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.persist(this);
+	public static Collection<Phone> fromJsonArrayToPhones(String json) {
+		return new JSONDeserializer<List<Phone>>().use(null, ArrayList.class).use("values", Phone.class)
+				.deserialize(json);
 	}
 
-	@Transactional
-	public void remove() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		if (this.entityManager.contains(this)) {
-			this.entityManager.remove(this);
-		} else {
-			Phone attached = Phone.findPhone(this.id);
-			this.entityManager.remove(attached);
-		}
-	}
-
-	@Transactional
-	public void flush() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.flush();
-	}
-
-	@Transactional
-	public void clear() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.clear();
-	}
-
-	@Transactional
-	public Phone merge() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		Phone merged = this.entityManager.merge(this);
-		this.entityManager.flush();
-		return merged;
-	}
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "id", columnDefinition = "serial")
-	private Integer id;
-
-	public Integer getId() {
-		return this.id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	@Autowired
-	transient SolrServer solrServer;
-
-	public static QueryResponse search(String queryString) {
-		String searchString = "Phone_solrsummary_t:" + queryString;
-		return search(new SolrQuery(searchString.toLowerCase()));
-	}
-
-	public static QueryResponse search(SolrQuery query) {
-		try {
-			return solrServer().query(query);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return new QueryResponse();
+	public static Phone fromJsonToPhone(String json) {
+		return new JSONDeserializer<Phone>().use(null, Phone.class).deserialize(json);
 	}
 
 	public static void indexPhone(Phone phone) {
@@ -173,26 +118,18 @@ public class Phone {
 		}
 	}
 
-	@Async
-	public static void deleteIndex(Phone phone) {
-		SolrServer solrServer = solrServer();
+	public static QueryResponse search(SolrQuery query) {
 		try {
-			solrServer.deleteById("phone_" + phone.getId());
-			solrServer.commit();
+			return solrServer().query(query);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return new QueryResponse();
 	}
 
-	@PostUpdate
-	@PostPersist
-	private void postPersistOrUpdate() {
-		indexPhone(this);
-	}
-
-	@PreRemove
-	private void preRemove() {
-		deleteIndex(this);
+	public static QueryResponse search(String queryString) {
+		String searchString = "Phone_solrsummary_t:" + queryString;
+		return search(new SolrQuery(searchString.toLowerCase()));
 	}
 
 	public static SolrServer solrServer() {
@@ -202,6 +139,15 @@ public class Phone {
 					"Solr server has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
 		return _solrServer;
 	}
+
+	public static String toJsonArray(Collection<Phone> collection) {
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id", columnDefinition = "serial")
+	private Integer id;
 
 	@OneToMany(mappedBy = "phoneId")
 	private Set<OrgPhone> orgPhones;
@@ -216,56 +162,110 @@ public class Phone {
 	@Column(name = "phone_type", columnDefinition = "varchar", length = 50)
 	private String phoneType;
 
-	public Set<OrgPhone> getOrgPhones() {
-		return orgPhones;
+	@PersistenceContext
+	transient EntityManager entityManager;
+
+	@Autowired
+	transient SolrServer solrServer;
+
+	@Transactional
+	public void clear() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.clear();
 	}
 
-	public void setOrgPhones(Set<OrgPhone> orgPhones) {
-		this.orgPhones = orgPhones;
+	@Transactional
+	public void flush() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.flush();
+	}
+
+	public Integer getId() {
+		return this.id;
+	}
+
+	public Set<OrgPhone> getOrgPhones() {
+		return orgPhones;
 	}
 
 	public Set<PersonPhone> getPersonPhones() {
 		return personPhones;
 	}
 
-	public void setPersonPhones(Set<PersonPhone> personPhones) {
-		this.personPhones = personPhones;
-	}
-
 	public String getPhone() {
 		return phone;
-	}
-
-	public void setPhone(String phone) {
-		this.phone = phone;
 	}
 
 	public String getPhoneType() {
 		return phoneType;
 	}
 
-	public void setPhoneType(String phoneType) {
-		this.phoneType = phoneType;
+	@Transactional
+	public Phone merge() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		Phone merged = this.entityManager.merge(this);
+		this.entityManager.flush();
+		return merged;
 	}
 
-	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+	@Transactional
+	public void persist() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.persist(this);
+	}
+
+	@Transactional
+	public void remove() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		if (this.entityManager.contains(this)) {
+			this.entityManager.remove(this);
+		} else {
+			Phone attached = Phone.findPhone(this.id);
+			this.entityManager.remove(attached);
+		}
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public void setOrgPhones(Set<OrgPhone> orgPhones) {
+		this.orgPhones = orgPhones;
+	}
+
+	public void setPersonPhones(Set<PersonPhone> personPhones) {
+		this.personPhones = personPhones;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	public void setPhoneType(String phoneType) {
+		this.phoneType = phoneType;
 	}
 
 	public String toJson() {
 		return new JSONSerializer().exclude("*.class").serialize(this);
 	}
 
-	public static Phone fromJsonToPhone(String json) {
-		return new JSONDeserializer<Phone>().use(null, Phone.class).deserialize(json);
+	public String toString() {
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
-	public static String toJsonArray(Collection<Phone> collection) {
-		return new JSONSerializer().exclude("*.class").serialize(collection);
+	@PostUpdate
+	@PostPersist
+	private void postPersistOrUpdate() {
+		indexPhone(this);
 	}
 
-	public static Collection<Phone> fromJsonArrayToPhones(String json) {
-		return new JSONDeserializer<List<Phone>>().use(null, ArrayList.class).use("values", Phone.class)
-				.deserialize(json);
+	@PreRemove
+	private void preRemove() {
+		deleteIndex(this);
 	}
 }

@@ -40,127 +40,20 @@ import flexjson.JSONSerializer;
 @Audited
 public class Lang {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "id", columnDefinition = "serial")
-	private Integer id;
-
-	public Integer getId() {
-		return this.id;
+	public static long countLangs() {
+		return entityManager().createQuery("SELECT COUNT(o) FROM Lang o", Long.class).getSingleResult();
 	}
 
-	public void setId(Integer id) {
-		this.id = id;
+	@Async
+	public static void deleteIndex(Lang lang) {
+		SolrServer solrServer = solrServer();
+		try {
+			solrServer.deleteById("lang_" + lang.getId());
+			solrServer.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
-
-	public String toJson() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
-	}
-
-	public static Lang fromJsonToLang(String json) {
-		return new JSONDeserializer<Lang>().use(null, Lang.class).deserialize(json);
-	}
-
-	public static String toJsonArray(Collection<Lang> collection) {
-		return new JSONSerializer().exclude("*.class").serialize(collection);
-	}
-
-	public static Collection<Lang> fromJsonArrayToLangs(String json) {
-		return new JSONDeserializer<List<Lang>>().use(null, ArrayList.class).use("values", Lang.class)
-				.deserialize(json);
-	}
-
-	@OneToMany(mappedBy = "langId")
-	private Set<InstanceDescr> instanceDescrs;
-
-	@OneToMany(mappedBy = "langId")
-	private Set<SeriesDescr> seriesDescrs;
-
-	@OneToMany(mappedBy = "langId")
-	private Set<StudyDescr> studyDescrs;
-
-	@OneToMany(mappedBy = "langId")
-	private Set<TranslatedTopic> translatedTopics;
-
-	@Column(name = "iso639", columnDefinition = "bpchar", length = 2, unique = true)
-	@NotNull
-	private String iso639;
-
-	@Column(name = "name_self", columnDefinition = "varchar", length = 50)
-	private String nameSelf;
-
-	@Column(name = "name_ro", columnDefinition = "varchar", length = 50)
-	private String nameRo;
-
-	@Column(name = "name_en", columnDefinition = "varchar", length = 50)
-	private String nameEn;
-
-	public Set<InstanceDescr> getInstanceDescrs() {
-		return instanceDescrs;
-	}
-
-	public void setInstanceDescrs(Set<InstanceDescr> instanceDescrs) {
-		this.instanceDescrs = instanceDescrs;
-	}
-
-	public Set<SeriesDescr> getSeriesDescrs() {
-		return seriesDescrs;
-	}
-
-	public void setSeriesDescrs(Set<SeriesDescr> seriesDescrs) {
-		this.seriesDescrs = seriesDescrs;
-	}
-
-	public Set<StudyDescr> getStudyDescrs() {
-		return studyDescrs;
-	}
-
-	public void setStudyDescrs(Set<StudyDescr> studyDescrs) {
-		this.studyDescrs = studyDescrs;
-	}
-
-	public Set<TranslatedTopic> getTranslatedTopics() {
-		return translatedTopics;
-	}
-
-	public void setTranslatedTopics(Set<TranslatedTopic> translatedTopics) {
-		this.translatedTopics = translatedTopics;
-	}
-
-	public String getIso639() {
-		return iso639;
-	}
-
-	public void setIso639(String iso639) {
-		this.iso639 = iso639;
-	}
-
-	public String getNameSelf() {
-		return nameSelf;
-	}
-
-	public void setNameSelf(String nameSelf) {
-		this.nameSelf = nameSelf;
-	}
-
-	public String getNameRo() {
-		return nameRo;
-	}
-
-	public void setNameRo(String nameRo) {
-		this.nameRo = nameRo;
-	}
-
-	public String getNameEn() {
-		return nameEn;
-	}
-
-	public void setNameEn(String nameEn) {
-		this.nameEn = nameEn;
-	}
-
-	@PersistenceContext
-	transient EntityManager entityManager;
 
 	public static final EntityManager entityManager() {
 		EntityManager em = new Lang().entityManager;
@@ -168,10 +61,6 @@ public class Lang {
 			throw new IllegalStateException(
 					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
 		return em;
-	}
-
-	public static long countLangs() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM Lang o", Long.class).getSingleResult();
 	}
 
 	public static List<Lang> findAllLangs() {
@@ -189,63 +78,13 @@ public class Lang {
 				.setMaxResults(maxResults).getResultList();
 	}
 
-	@Transactional
-	public void persist() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.persist(this);
+	public static Collection<Lang> fromJsonArrayToLangs(String json) {
+		return new JSONDeserializer<List<Lang>>().use(null, ArrayList.class).use("values", Lang.class)
+				.deserialize(json);
 	}
 
-	@Transactional
-	public void remove() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		if (this.entityManager.contains(this)) {
-			this.entityManager.remove(this);
-		} else {
-			Lang attached = Lang.findLang(this.id);
-			this.entityManager.remove(attached);
-		}
-	}
-
-	@Transactional
-	public void flush() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.flush();
-	}
-
-	@Transactional
-	public void clear() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.clear();
-	}
-
-	@Transactional
-	public Lang merge() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		Lang merged = this.entityManager.merge(this);
-		this.entityManager.flush();
-		return merged;
-	}
-
-	@Autowired
-	transient SolrServer solrServer;
-
-	public static QueryResponse search(String queryString) {
-		String searchString = "Lang_solrsummary_t:" + queryString;
-		return search(new SolrQuery(searchString.toLowerCase()));
-	}
-
-	public static QueryResponse search(SolrQuery query) {
-		try {
-			return solrServer().query(query);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return new QueryResponse();
+	public static Lang fromJsonToLang(String json) {
+		return new JSONDeserializer<Lang>().use(null, Lang.class).deserialize(json);
 	}
 
 	public static void indexLang(Lang lang) {
@@ -280,15 +119,188 @@ public class Lang {
 		}
 	}
 
-	@Async
-	public static void deleteIndex(Lang lang) {
-		SolrServer solrServer = solrServer();
+	public static QueryResponse search(SolrQuery query) {
 		try {
-			solrServer.deleteById("lang_" + lang.getId());
-			solrServer.commit();
+			return solrServer().query(query);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return new QueryResponse();
+	}
+
+	public static QueryResponse search(String queryString) {
+		String searchString = "Lang_solrsummary_t:" + queryString;
+		return search(new SolrQuery(searchString.toLowerCase()));
+	}
+
+	public static SolrServer solrServer() {
+		SolrServer _solrServer = new Lang().solrServer;
+		if (_solrServer == null)
+			throw new IllegalStateException(
+					"Solr server has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return _solrServer;
+	}
+
+	public static String toJsonArray(Collection<Lang> collection) {
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id", columnDefinition = "serial")
+	private Integer id;
+
+	@OneToMany(mappedBy = "langId")
+	private Set<InstanceDescr> instanceDescrs;
+
+	@Column(name = "iso639", columnDefinition = "bpchar", length = 2, unique = true)
+	@NotNull
+	private String iso639;
+
+	@Column(name = "name_en", columnDefinition = "varchar", length = 50)
+	private String nameEn;
+
+	@Column(name = "name_ro", columnDefinition = "varchar", length = 50)
+	private String nameRo;
+
+	@Column(name = "name_self", columnDefinition = "varchar", length = 50)
+	private String nameSelf;
+
+	@OneToMany(mappedBy = "langId")
+	private Set<SeriesDescr> seriesDescrs;
+
+	@OneToMany(mappedBy = "langId")
+	private Set<StudyDescr> studyDescrs;
+
+	@OneToMany(mappedBy = "langId")
+	private Set<TranslatedTopic> translatedTopics;
+
+	@PersistenceContext
+	transient EntityManager entityManager;
+
+	@Autowired
+	transient SolrServer solrServer;
+
+	@Transactional
+	public void clear() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.clear();
+	}
+
+	@Transactional
+	public void flush() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.flush();
+	}
+
+	public Integer getId() {
+		return this.id;
+	}
+
+	public Set<InstanceDescr> getInstanceDescrs() {
+		return instanceDescrs;
+	}
+
+	public String getIso639() {
+		return iso639;
+	}
+
+	public String getNameEn() {
+		return nameEn;
+	}
+
+	public String getNameRo() {
+		return nameRo;
+	}
+
+	public String getNameSelf() {
+		return nameSelf;
+	}
+
+	public Set<SeriesDescr> getSeriesDescrs() {
+		return seriesDescrs;
+	}
+
+	public Set<StudyDescr> getStudyDescrs() {
+		return studyDescrs;
+	}
+
+	public Set<TranslatedTopic> getTranslatedTopics() {
+		return translatedTopics;
+	}
+
+	@Transactional
+	public Lang merge() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		Lang merged = this.entityManager.merge(this);
+		this.entityManager.flush();
+		return merged;
+	}
+
+	@Transactional
+	public void persist() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.persist(this);
+	}
+
+	@Transactional
+	public void remove() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		if (this.entityManager.contains(this)) {
+			this.entityManager.remove(this);
+		} else {
+			Lang attached = Lang.findLang(this.id);
+			this.entityManager.remove(attached);
+		}
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public void setInstanceDescrs(Set<InstanceDescr> instanceDescrs) {
+		this.instanceDescrs = instanceDescrs;
+	}
+
+	public void setIso639(String iso639) {
+		this.iso639 = iso639;
+	}
+
+	public void setNameEn(String nameEn) {
+		this.nameEn = nameEn;
+	}
+
+	public void setNameRo(String nameRo) {
+		this.nameRo = nameRo;
+	}
+
+	public void setNameSelf(String nameSelf) {
+		this.nameSelf = nameSelf;
+	}
+
+	public void setSeriesDescrs(Set<SeriesDescr> seriesDescrs) {
+		this.seriesDescrs = seriesDescrs;
+	}
+
+	public void setStudyDescrs(Set<StudyDescr> studyDescrs) {
+		this.studyDescrs = studyDescrs;
+	}
+
+	public void setTranslatedTopics(Set<TranslatedTopic> translatedTopics) {
+		this.translatedTopics = translatedTopics;
+	}
+
+	public String toJson() {
+		return new JSONSerializer().exclude("*.class").serialize(this);
+	}
+
+	public String toString() {
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate
@@ -300,17 +312,5 @@ public class Lang {
 	@PreRemove
 	private void preRemove() {
 		deleteIndex(this);
-	}
-
-	public static SolrServer solrServer() {
-		SolrServer _solrServer = new Lang().solrServer;
-		if (_solrServer == null)
-			throw new IllegalStateException(
-					"Solr server has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-		return _solrServer;
-	}
-
-	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 }

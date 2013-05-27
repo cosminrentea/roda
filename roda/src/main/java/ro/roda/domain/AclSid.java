@@ -40,16 +40,20 @@ import flexjson.JSONSerializer;
 @Audited
 public class AclSid {
 
-	@Column(name = "principal", columnDefinition = "bool")
-	@NotNull
-	private boolean principal;
+	public static long countAclSids() {
+		return entityManager().createQuery("SELECT COUNT(o) FROM AclSid o", Long.class).getSingleResult();
+	}
 
-	@Column(name = "sid", columnDefinition = "text")
-	@NotNull
-	private String sid;
-
-	@PersistenceContext
-	transient EntityManager entityManager;
+	@Async
+	public static void deleteIndex(AclSid aclSid) {
+		SolrServer solrServer = solrServer();
+		try {
+			solrServer.deleteById("aclsid_" + aclSid.getId());
+			solrServer.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	public static final EntityManager entityManager() {
 		EntityManager em = new AclSid().entityManager;
@@ -57,14 +61,6 @@ public class AclSid {
 			throw new IllegalStateException(
 					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
 		return em;
-	}
-
-	public static long countAclSids() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM AclSid o", Long.class).getSingleResult();
-	}
-
-	public static List<AclSid> findAllAclSids() {
-		return entityManager().createQuery("SELECT o FROM AclSid o", AclSid.class).getResultList();
 	}
 
 	public static AclSid findAclSid(Long id) {
@@ -78,74 +74,8 @@ public class AclSid {
 				.setMaxResults(maxResults).getResultList();
 	}
 
-	@Transactional
-	public void persist() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.persist(this);
-	}
-
-	@Transactional
-	public void remove() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		if (this.entityManager.contains(this)) {
-			this.entityManager.remove(this);
-		} else {
-			AclSid attached = AclSid.findAclSid(this.id);
-			this.entityManager.remove(attached);
-		}
-	}
-
-	@Transactional
-	public void flush() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.flush();
-	}
-
-	@Transactional
-	public void clear() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.clear();
-	}
-
-	@Transactional
-	public AclSid merge() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		AclSid merged = this.entityManager.merge(this);
-		this.entityManager.flush();
-		return merged;
-	}
-
-	public boolean isPrincipal() {
-		return this.principal;
-	}
-
-	public void setPrincipal(boolean principal) {
-		this.principal = principal;
-	}
-
-	public String getSid() {
-		return this.sid;
-	}
-
-	public void setSid(String sid) {
-		this.sid = sid;
-	}
-
-	public String toJson() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
-	}
-
-	public static AclSid fromJsonToAclSid(String json) {
-		return new JSONDeserializer<AclSid>().use(null, AclSid.class).deserialize(json);
-	}
-
-	public static String toJsonArray(Collection<AclSid> collection) {
-		return new JSONSerializer().exclude("*.class").serialize(collection);
+	public static List<AclSid> findAllAclSids() {
+		return entityManager().createQuery("SELECT o FROM AclSid o", AclSid.class).getResultList();
 	}
 
 	public static Collection<AclSid> fromJsonArrayToAclSids(String json) {
@@ -153,60 +83,8 @@ public class AclSid {
 				.deserialize(json);
 	}
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "id", columnDefinition = "bigserial")
-	private Long id;
-
-	public Long getId() {
-		return this.id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
-	}
-
-	@OneToMany(mappedBy = "sid")
-	private Set<AclEntry> aclEntries;
-
-	@OneToMany(mappedBy = "ownerSid")
-	private Set<AclObjectIdentity> aclObjectIdentities;
-
-	public Set<AclEntry> getAclEntries() {
-		return aclEntries;
-	}
-
-	public void setAclEntries(Set<AclEntry> aclEntries) {
-		this.aclEntries = aclEntries;
-	}
-
-	public Set<AclObjectIdentity> getAclObjectIdentities() {
-		return aclObjectIdentities;
-	}
-
-	public void setAclObjectIdentities(Set<AclObjectIdentity> aclObjectIdentities) {
-		this.aclObjectIdentities = aclObjectIdentities;
-	}
-
-	@Autowired
-	transient SolrServer solrServer;
-
-	public static QueryResponse search(String queryString) {
-		String searchString = "AclSid_solrsummary_t:" + queryString;
-		return search(new SolrQuery(searchString.toLowerCase()));
-	}
-
-	public static QueryResponse search(SolrQuery query) {
-		try {
-			return solrServer().query(query);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return new QueryResponse();
+	public static AclSid fromJsonToAclSid(String json) {
+		return new JSONDeserializer<AclSid>().use(null, AclSid.class).deserialize(json);
 	}
 
 	public static void indexAclSid(AclSid aclSid) {
@@ -238,15 +116,145 @@ public class AclSid {
 		}
 	}
 
-	@Async
-	public static void deleteIndex(AclSid aclSid) {
-		SolrServer solrServer = solrServer();
+	public static QueryResponse search(SolrQuery query) {
 		try {
-			solrServer.deleteById("aclsid_" + aclSid.getId());
-			solrServer.commit();
+			return solrServer().query(query);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return new QueryResponse();
+	}
+
+	public static QueryResponse search(String queryString) {
+		String searchString = "AclSid_solrsummary_t:" + queryString;
+		return search(new SolrQuery(searchString.toLowerCase()));
+	}
+
+	public static SolrServer solrServer() {
+		SolrServer _solrServer = new AclSid().solrServer;
+		if (_solrServer == null)
+			throw new IllegalStateException(
+					"Solr server has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return _solrServer;
+	}
+
+	public static String toJsonArray(Collection<AclSid> collection) {
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	@OneToMany(mappedBy = "sid")
+	private Set<AclEntry> aclEntries;
+
+	@OneToMany(mappedBy = "ownerSid")
+	private Set<AclObjectIdentity> aclObjectIdentities;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id", columnDefinition = "bigserial")
+	private Long id;
+
+	@Column(name = "principal", columnDefinition = "bool")
+	@NotNull
+	private boolean principal;
+
+	@Column(name = "sid", columnDefinition = "text")
+	@NotNull
+	private String sid;
+
+	@PersistenceContext
+	transient EntityManager entityManager;
+
+	@Autowired
+	transient SolrServer solrServer;
+
+	@Transactional
+	public void clear() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.clear();
+	}
+
+	@Transactional
+	public void flush() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.flush();
+	}
+
+	public Set<AclEntry> getAclEntries() {
+		return aclEntries;
+	}
+
+	public Set<AclObjectIdentity> getAclObjectIdentities() {
+		return aclObjectIdentities;
+	}
+
+	public Long getId() {
+		return this.id;
+	}
+
+	public String getSid() {
+		return this.sid;
+	}
+
+	public boolean isPrincipal() {
+		return this.principal;
+	}
+
+	@Transactional
+	public AclSid merge() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		AclSid merged = this.entityManager.merge(this);
+		this.entityManager.flush();
+		return merged;
+	}
+
+	@Transactional
+	public void persist() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.persist(this);
+	}
+
+	@Transactional
+	public void remove() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		if (this.entityManager.contains(this)) {
+			this.entityManager.remove(this);
+		} else {
+			AclSid attached = AclSid.findAclSid(this.id);
+			this.entityManager.remove(attached);
+		}
+	}
+
+	public void setAclEntries(Set<AclEntry> aclEntries) {
+		this.aclEntries = aclEntries;
+	}
+
+	public void setAclObjectIdentities(Set<AclObjectIdentity> aclObjectIdentities) {
+		this.aclObjectIdentities = aclObjectIdentities;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public void setPrincipal(boolean principal) {
+		this.principal = principal;
+	}
+
+	public void setSid(String sid) {
+		this.sid = sid;
+	}
+
+	public String toJson() {
+		return new JSONSerializer().exclude("*.class").serialize(this);
+	}
+
+	public String toString() {
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate
@@ -258,13 +266,5 @@ public class AclSid {
 	@PreRemove
 	private void preRemove() {
 		deleteIndex(this);
-	}
-
-	public static SolrServer solrServer() {
-		SolrServer _solrServer = new AclSid().solrServer;
-		if (_solrServer == null)
-			throw new IllegalStateException(
-					"Solr server has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-		return _solrServer;
 	}
 }

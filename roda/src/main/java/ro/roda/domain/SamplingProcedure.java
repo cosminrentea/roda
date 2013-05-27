@@ -42,16 +42,43 @@ import flexjson.JSONSerializer;
 @Audited
 public class SamplingProcedure {
 
-	public String toJson() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
+	public static long countSamplingProcedures() {
+		return entityManager().createQuery("SELECT COUNT(o) FROM SamplingProcedure o", Long.class).getSingleResult();
 	}
 
-	public static SamplingProcedure fromJsonToSamplingProcedure(String json) {
-		return new JSONDeserializer<SamplingProcedure>().use(null, SamplingProcedure.class).deserialize(json);
+	@Async
+	public static void deleteIndex(SamplingProcedure samplingProcedure) {
+		SolrServer solrServer = solrServer();
+		try {
+			solrServer.deleteById("samplingprocedure_" + samplingProcedure.getId());
+			solrServer.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
-	public static String toJsonArray(Collection<SamplingProcedure> collection) {
-		return new JSONSerializer().exclude("*.class").serialize(collection);
+	public static final EntityManager entityManager() {
+		EntityManager em = new SamplingProcedure().entityManager;
+		if (em == null)
+			throw new IllegalStateException(
+					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return em;
+	}
+
+	public static List<SamplingProcedure> findAllSamplingProcedures() {
+		return entityManager().createQuery("SELECT o FROM SamplingProcedure o", SamplingProcedure.class)
+				.getResultList();
+	}
+
+	public static SamplingProcedure findSamplingProcedure(Integer id) {
+		if (id == null)
+			return null;
+		return entityManager().find(SamplingProcedure.class, id);
+	}
+
+	public static List<SamplingProcedure> findSamplingProcedureEntries(int firstResult, int maxResults) {
+		return entityManager().createQuery("SELECT o FROM SamplingProcedure o", SamplingProcedure.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
 	}
 
 	public static Collection<SamplingProcedure> fromJsonArrayToSamplingProcedures(String json) {
@@ -59,56 +86,8 @@ public class SamplingProcedure {
 				.use("values", SamplingProcedure.class).deserialize(json);
 	}
 
-	@ManyToMany
-	@JoinTable(name = "instance_sampling_procedure", joinColumns = { @JoinColumn(name = "sampling_procedure_id", nullable = false) }, inverseJoinColumns = { @JoinColumn(name = "study_id", nullable = false) })
-	private Set<Study> studies;
-
-	@Column(name = "name", columnDefinition = "varchar", length = 100)
-	@NotNull
-	private String name;
-
-	@Column(name = "description", columnDefinition = "text")
-	private String description;
-
-	public Set<Study> getStudies() {
-		return studies;
-	}
-
-	public void setStudies(Set<Study> studies) {
-		this.studies = studies;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	@Autowired
-	transient SolrServer solrServer;
-
-	public static QueryResponse search(String queryString) {
-		String searchString = "SamplingProcedure_solrsummary_t:" + queryString;
-		return search(new SolrQuery(searchString.toLowerCase()));
-	}
-
-	public static QueryResponse search(SolrQuery query) {
-		try {
-			return solrServer().query(query);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return new QueryResponse();
+	public static SamplingProcedure fromJsonToSamplingProcedure(String json) {
+		return new JSONDeserializer<SamplingProcedure>().use(null, SamplingProcedure.class).deserialize(json);
 	}
 
 	public static void indexSamplingProcedure(SamplingProcedure samplingProcedure) {
@@ -138,26 +117,18 @@ public class SamplingProcedure {
 		}
 	}
 
-	@Async
-	public static void deleteIndex(SamplingProcedure samplingProcedure) {
-		SolrServer solrServer = solrServer();
+	public static QueryResponse search(SolrQuery query) {
 		try {
-			solrServer.deleteById("samplingprocedure_" + samplingProcedure.getId());
-			solrServer.commit();
+			return solrServer().query(query);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return new QueryResponse();
 	}
 
-	@PostUpdate
-	@PostPersist
-	private void postPersistOrUpdate() {
-		indexSamplingProcedure(this);
-	}
-
-	@PreRemove
-	private void preRemove() {
-		deleteIndex(this);
+	public static QueryResponse search(String queryString) {
+		String searchString = "SamplingProcedure_solrsummary_t:" + queryString;
+		return search(new SolrQuery(searchString.toLowerCase()));
 	}
 
 	public static SolrServer solrServer() {
@@ -168,35 +139,69 @@ public class SamplingProcedure {
 		return _solrServer;
 	}
 
+	public static String toJsonArray(Collection<SamplingProcedure> collection) {
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	@Column(name = "description", columnDefinition = "text")
+	private String description;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id", columnDefinition = "serial")
+	private Integer id;
+
+	@Column(name = "name", columnDefinition = "varchar", length = 100)
+	@NotNull
+	private String name;
+
+	@ManyToMany
+	@JoinTable(name = "instance_sampling_procedure", joinColumns = { @JoinColumn(name = "sampling_procedure_id", nullable = false) }, inverseJoinColumns = { @JoinColumn(name = "study_id", nullable = false) })
+	private Set<Study> studies;
+
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	public static final EntityManager entityManager() {
-		EntityManager em = new SamplingProcedure().entityManager;
-		if (em == null)
-			throw new IllegalStateException(
-					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-		return em;
+	@Autowired
+	transient SolrServer solrServer;
+
+	@Transactional
+	public void clear() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.clear();
 	}
 
-	public static long countSamplingProcedures() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM SamplingProcedure o", Long.class).getSingleResult();
+	@Transactional
+	public void flush() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.flush();
 	}
 
-	public static List<SamplingProcedure> findAllSamplingProcedures() {
-		return entityManager().createQuery("SELECT o FROM SamplingProcedure o", SamplingProcedure.class)
-				.getResultList();
+	public String getDescription() {
+		return description;
 	}
 
-	public static SamplingProcedure findSamplingProcedure(Integer id) {
-		if (id == null)
-			return null;
-		return entityManager().find(SamplingProcedure.class, id);
+	public Integer getId() {
+		return this.id;
 	}
 
-	public static List<SamplingProcedure> findSamplingProcedureEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM SamplingProcedure o", SamplingProcedure.class)
-				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
+	public String getName() {
+		return name;
+	}
+
+	public Set<Study> getStudies() {
+		return studies;
+	}
+
+	@Transactional
+	public SamplingProcedure merge() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		SamplingProcedure merged = this.entityManager.merge(this);
+		this.entityManager.flush();
+		return merged;
 	}
 
 	@Transactional
@@ -218,43 +223,38 @@ public class SamplingProcedure {
 		}
 	}
 
-	@Transactional
-	public void flush() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.flush();
-	}
-
-	@Transactional
-	public void clear() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.clear();
-	}
-
-	@Transactional
-	public SamplingProcedure merge() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		SamplingProcedure merged = this.entityManager.merge(this);
-		this.entityManager.flush();
-		return merged;
-	}
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "id", columnDefinition = "serial")
-	private Integer id;
-
-	public Integer getId() {
-		return this.id;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public void setId(Integer id) {
 		this.id = id;
 	}
 
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setStudies(Set<Study> studies) {
+		this.studies = studies;
+	}
+
+	public String toJson() {
+		return new JSONSerializer().exclude("*.class").serialize(this);
+	}
+
 	public String toString() {
 		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+	}
+
+	@PostUpdate
+	@PostPersist
+	private void postPersistOrUpdate() {
+		indexSamplingProcedure(this);
+	}
+
+	@PreRemove
+	private void preRemove() {
+		deleteIndex(this);
 	}
 }

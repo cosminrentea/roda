@@ -40,25 +40,20 @@ import flexjson.JSONSerializer;
 @Audited
 public class UserSettingGroup {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "id", columnDefinition = "serial")
-	private Integer id;
-
-	public Integer getId() {
-		return this.id;
+	public static long countUserSettingGroups() {
+		return entityManager().createQuery("SELECT COUNT(o) FROM UserSettingGroup o", Long.class).getSingleResult();
 	}
 
-	public void setId(Integer id) {
-		this.id = id;
+	@Async
+	public static void deleteIndex(UserSettingGroup userSettingGroup) {
+		SolrServer solrServer = solrServer();
+		try {
+			solrServer.deleteById("usersettinggroup_" + userSettingGroup.getId());
+			solrServer.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
-
-	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
-	}
-
-	@PersistenceContext
-	transient EntityManager entityManager;
 
 	public static final EntityManager entityManager() {
 		EntityManager em = new UserSettingGroup().entityManager;
@@ -66,10 +61,6 @@ public class UserSettingGroup {
 			throw new IllegalStateException(
 					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
 		return em;
-	}
-
-	public static long countUserSettingGroups() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM UserSettingGroup o", Long.class).getSingleResult();
 	}
 
 	public static List<UserSettingGroup> findAllUserSettingGroups() {
@@ -87,114 +78,13 @@ public class UserSettingGroup {
 				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
 	}
 
-	@Transactional
-	public void persist() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.persist(this);
-	}
-
-	@Transactional
-	public void remove() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		if (this.entityManager.contains(this)) {
-			this.entityManager.remove(this);
-		} else {
-			UserSettingGroup attached = UserSettingGroup.findUserSettingGroup(this.id);
-			this.entityManager.remove(attached);
-		}
-	}
-
-	@Transactional
-	public void flush() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.flush();
-	}
-
-	@Transactional
-	public void clear() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		this.entityManager.clear();
-	}
-
-	@Transactional
-	public UserSettingGroup merge() {
-		if (this.entityManager == null)
-			this.entityManager = entityManager();
-		UserSettingGroup merged = this.entityManager.merge(this);
-		this.entityManager.flush();
-		return merged;
-	}
-
-	public String toJson() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
-	}
-
-	public static UserSettingGroup fromJsonToUserSettingGroup(String json) {
-		return new JSONDeserializer<UserSettingGroup>().use(null, UserSettingGroup.class).deserialize(json);
-	}
-
-	public static String toJsonArray(Collection<UserSettingGroup> collection) {
-		return new JSONSerializer().exclude("*.class").serialize(collection);
-	}
-
 	public static Collection<UserSettingGroup> fromJsonArrayToUserSettingGroups(String json) {
 		return new JSONDeserializer<List<UserSettingGroup>>().use(null, ArrayList.class)
 				.use("values", UserSettingGroup.class).deserialize(json);
 	}
 
-	@OneToMany(mappedBy = "userSettingGroupId")
-	private Set<UserSetting> userSettings;
-
-	@Column(name = "name", columnDefinition = "varchar", length = 100)
-	@NotNull
-	private String name;
-
-	@Column(name = "description", columnDefinition = "text")
-	private String description;
-
-	public Set<UserSetting> getUserSettings() {
-		return userSettings;
-	}
-
-	public void setUserSettings(Set<UserSetting> userSettings) {
-		this.userSettings = userSettings;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	@Autowired
-	transient SolrServer solrServer;
-
-	public static QueryResponse search(String queryString) {
-		String searchString = "UserSettingGroup_solrsummary_t:" + queryString;
-		return search(new SolrQuery(searchString.toLowerCase()));
-	}
-
-	public static QueryResponse search(SolrQuery query) {
-		try {
-			return solrServer().query(query);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return new QueryResponse();
+	public static UserSettingGroup fromJsonToUserSettingGroup(String json) {
+		return new JSONDeserializer<UserSettingGroup>().use(null, UserSettingGroup.class).deserialize(json);
 	}
 
 	public static void indexUserSettingGroup(UserSettingGroup userSettingGroup) {
@@ -227,15 +117,133 @@ public class UserSettingGroup {
 		}
 	}
 
-	@Async
-	public static void deleteIndex(UserSettingGroup userSettingGroup) {
-		SolrServer solrServer = solrServer();
+	public static QueryResponse search(SolrQuery query) {
 		try {
-			solrServer.deleteById("usersettinggroup_" + userSettingGroup.getId());
-			solrServer.commit();
+			return solrServer().query(query);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return new QueryResponse();
+	}
+
+	public static QueryResponse search(String queryString) {
+		String searchString = "UserSettingGroup_solrsummary_t:" + queryString;
+		return search(new SolrQuery(searchString.toLowerCase()));
+	}
+
+	public static SolrServer solrServer() {
+		SolrServer _solrServer = new UserSettingGroup().solrServer;
+		if (_solrServer == null)
+			throw new IllegalStateException(
+					"Solr server has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return _solrServer;
+	}
+
+	public static String toJsonArray(Collection<UserSettingGroup> collection) {
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	@Column(name = "description", columnDefinition = "text")
+	private String description;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id", columnDefinition = "serial")
+	private Integer id;
+
+	@Column(name = "name", columnDefinition = "varchar", length = 100)
+	@NotNull
+	private String name;
+
+	@OneToMany(mappedBy = "userSettingGroupId")
+	private Set<UserSetting> userSettings;
+
+	@PersistenceContext
+	transient EntityManager entityManager;
+
+	@Autowired
+	transient SolrServer solrServer;
+
+	@Transactional
+	public void clear() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.clear();
+	}
+
+	@Transactional
+	public void flush() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.flush();
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public Integer getId() {
+		return this.id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public Set<UserSetting> getUserSettings() {
+		return userSettings;
+	}
+
+	@Transactional
+	public UserSettingGroup merge() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		UserSettingGroup merged = this.entityManager.merge(this);
+		this.entityManager.flush();
+		return merged;
+	}
+
+	@Transactional
+	public void persist() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		this.entityManager.persist(this);
+	}
+
+	@Transactional
+	public void remove() {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		if (this.entityManager.contains(this)) {
+			this.entityManager.remove(this);
+		} else {
+			UserSettingGroup attached = UserSettingGroup.findUserSettingGroup(this.id);
+			this.entityManager.remove(attached);
+		}
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setUserSettings(Set<UserSetting> userSettings) {
+		this.userSettings = userSettings;
+	}
+
+	public String toJson() {
+		return new JSONSerializer().exclude("*.class").serialize(this);
+	}
+
+	public String toString() {
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate
@@ -247,13 +255,5 @@ public class UserSettingGroup {
 	@PreRemove
 	private void preRemove() {
 		deleteIndex(this);
-	}
-
-	public static SolrServer solrServer() {
-		SolrServer _solrServer = new UserSettingGroup().solrServer;
-		if (_solrServer == null)
-			throw new IllegalStateException(
-					"Solr server has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-		return _solrServer;
 	}
 }

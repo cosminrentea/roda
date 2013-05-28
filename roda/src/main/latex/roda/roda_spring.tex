@@ -44,7 +44,8 @@ Odata cu etapa 3 a proiectului, s-a trecut de la o aplicatie Spring Roo
 la o aplicatie Spring 'pura', 
 migrand functionalitatile din aspecte in codul Java; 
 procesul de generare este in acest moment inversat - 
-folosindu-se o abordare \emph{reverse-engineering}, respectiv: model -> baza de date. %TODO ??? sageata
+folosindu-se o abordare \emph{reverse-engineering}, respectiv: model -> baza de date. 
+%TODO ??? sageata
 
 Se folosesc in model adnotari specifice precum:
 \begin{itemize}
@@ -61,22 +62,15 @@ au fost generate in mod configurabil de catre Spring Roo.
 
 Fiecare clasa din model expune si metode conform pattern-ului de utilizare \emph{Active Record}. 
 
-\paragraph{Accesul aplicatiei la baza de date relationala}
-Implementarea JPA 2.0 selectata pentru proiect este \emph{Hibernate}. 
-%TODO versiunea in celalalt fisier ???
-Hibernate este un pachet complex de tip \emph{Object-Relational Mapping};
-in fisierul de configurare se specifica optiuni precum dialectul de SQL folosit
-(in cazul aplicatiei RODA: Postgresql), 
-clase ale modelului, 
-modul de lucru (validate, create, create-drop, update), 
-charset, 
-setari pentru logging si formatarea SQL etc.
+\subsubsection{Accesul aplicatiei la baza de date relationala}
+Implementarea JPA 2.0 selectata pentru proiect este \emph{Hibernate} - 
+un pachet software complex de tip \emph{Object-Relational Mapping}.
 
 \emph{Hibernate Envers} asigura auditarea/versionarea entitatilor/tabelelor din
 model (sunt create tabele specifice pentru auditare, intr-o alta schema a bazei
 de date).
 
-\paragraph{Datele disponibile initial in aplicatie}
+\subsubsection{Datele disponibile initial in aplicatie}
 Aplicatia poate fi configurata sa porneasca cu sau fara date initiale
 disponibile.
 Aceste date sunt importate din fisiere de tip \emph{comma-separated values} (CSV); 
@@ -151,7 +145,7 @@ fisiere de configurare pentru sabloane/layout-uri Apache Tiles:
 layouts.xml, views.xml in foldere.
 \item 
 fisiere de configurare pentru Hibernate si JPA (de ex. modul de lucru: update / create / create-drop /
-validate, auditare, setari logging, dialect SQL):
+validate, clase ale modelului, auditare, charset, setari logging si formatare SQL, dialect SQL - Postgresql):
 persistence.xml
 \item
 fisiere de tip 'properties', prin care pot suprascrie
@@ -164,9 +158,8 @@ database.properties
 log4j.properties
 \item[Conexiunea cu serverul Solr:]
 solr.properties
-\item[Configurarea aplicatiei web RODA], inclusiv setarile pentru connection-pooling, pentru serverul de indexare
-Solr, pentru integrarea R, pentru FileStore, pentru datele initiale disponibile
-in aplicatie etc.:
+\item[Configurarea aplicatiei web RODA], inclusiv setarile pentru: connection-pooling, serverul de indexare
+Solr, integrarea R, FileStore, datele initiale disponibile in aplicatie etc.:
 roda.properties
 \end{description}
 \end{itemize}
@@ -273,7 +266,7 @@ In job-ul Jenkins aferent proiectului exista si pasi optionali pentru:
 \begin{itemize}
 \item
 deployment al aplicatiei si remote pe un
-serviciu de tip 'cloud' (\url{http://cloudfoundry.com}) 
+serviciu de tip \emph{cloud} (\url{http://cloudfoundry.com}) 
 \item
 re-crearea schemei curente a bazei de date pe un server Postgresql intern,
 pentru referinta.

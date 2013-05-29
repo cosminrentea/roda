@@ -28,6 +28,10 @@ Ext.define('databrowser.model.CatalogDetailModel', {
         {
             name: 'author',
             type: 'string'
+        },
+        {
+            name: 'description',
+            type: 'string'
         }
     ]
 });

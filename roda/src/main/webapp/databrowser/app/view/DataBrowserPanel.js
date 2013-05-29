@@ -187,7 +187,7 @@ Ext.define('databrowser.view.DataBrowserPanel', {
         {
             var data = record.childNodes;
             var year;
-            var aut = "";
+            var aut = "", descr = "";
             var loadedInfo = [];
 
             gridPanel.store.removeAll();
@@ -209,11 +209,12 @@ Ext.define('databrowser.view.DataBrowserPanel', {
                         if (record.get('depth') >= 3) 
                         {
                             year = Ext.data.Model(data[i]).get('an');
-                            aut = Ext.data.Model(data[i]).get('author');                   
+                            aut = Ext.data.Model(data[i]).get('author');
+                            descr = Ext.data.Model(data[i]).get('description');
                         }
                     }
                     var title = Ext.data.Model(data[i]).get('name');
-                    loadedInfo[i] = {an: year, name: title, author: aut};
+                    loadedInfo[i] = {an: year, name: title, author: aut, description: descr};
                 }
 
                 //gridPanel.store.loadData(loadedInfo);
@@ -222,8 +223,6 @@ Ext.define('databrowser.view.DataBrowserPanel', {
                 gridPanel.store.proxy.data = loadedInfo;
                 gridPanel.store.load();
 
-                var preview = Ext.getCmp('DetailsGridView').getPlugin('preview');
-                preview.toggleExpanded(false);
             }
         }
         else

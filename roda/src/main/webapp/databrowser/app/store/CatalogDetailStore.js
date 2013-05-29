@@ -24,6 +24,7 @@ Ext.define('databrowser.store.CatalogDetailStore', {
         var me = this;
         cfg = cfg || {};
         me.callParent([Ext.apply({
+            autoLoad: true,
             model: 'databrowser.model.CatalogDetailModel',
             storeId: 'CatalogDetailStore',
             pageSize: 20,
@@ -37,7 +38,12 @@ Ext.define('databrowser.store.CatalogDetailStore', {
                     type: 'string'
                 },
                 {
-                    name: 'author'
+                    name: 'author',
+                    type: 'string'
+                },
+                {
+                    name: 'description',
+                    type: 'string'
                 }
             ],
             proxy: {

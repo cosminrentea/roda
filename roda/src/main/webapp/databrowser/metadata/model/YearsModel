@@ -78,6 +78,20 @@
                 "designer|userClassName": "MyField18"
             },
             "designerId": "4af09c73-e7b9-4b08-b632-6ba7e410751c"
+        },
+        {
+            "type": "Ext.data.Field",
+            "reference": {
+                "name": "fields",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "name": "description",
+                "type": "string",
+                "designer|userClassName": "MyField21"
+            },
+            "designerId": "3abf8933-a94e-4d3f-b53f-54d44f5d0b76"
         }
     ]
 }

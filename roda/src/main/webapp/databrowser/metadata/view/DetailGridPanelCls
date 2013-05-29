@@ -6,6 +6,7 @@
     },
     "codeClass": null,
     "userConfig": {
+        "autoRender": true,
         "height": 405,
         "id": "DetailsGridPanel",
         "itemId": "DetailsGridPanel",
@@ -13,76 +14,13 @@
         "width": 509,
         "designer|userClassName": "DetailGridPanelCls",
         "designer|userAlias": "detailgridpanelcls1",
+        "header": false,
         "title": null,
         "hideHeaders": true,
         "store": "CatalogDetailStore"
     },
     "designerId": "969dd0ad-9a3d-48ce-bee6-226d89f258db",
     "cn": [
-        {
-            "type": "Ext.grid.column.Number",
-            "reference": {
-                "name": "columns",
-                "type": "array"
-            },
-            "codeClass": null,
-            "userConfig": {
-                "designer|userClassName": "MyNumberColumn",
-                "dataIndex": "an",
-                "groupable": true,
-                "text": "An",
-                "format": "0000"
-            },
-            "designerId": "fba7e760-5673-46db-bc2b-9868c1e45683"
-        },
-        {
-            "type": "Ext.grid.column.Column",
-            "reference": {
-                "name": "columns",
-                "type": "array"
-            },
-            "codeClass": null,
-            "userConfig": {
-                "width": 235,
-                "designer|userClassName": "MyColumn",
-                "dataIndex": "name",
-                "groupable": true,
-                "text": "Titlu",
-                "flex": 1
-            },
-            "designerId": "3dac1795-c253-47bf-b2f8-ee9910483d98",
-            "cn": [
-                {
-                    "type": "fixedfunction",
-                    "reference": {
-                        "name": "items",
-                        "type": "array"
-                    },
-                    "codeClass": null,
-                    "userConfig": {
-                        "designer|userClassName": "renderer",
-                        "fn": "renderer",
-                        "designer|params": [
-                            "value",
-                            "metaData",
-                            "record",
-                            "rowIndex",
-                            "colIndex",
-                            "store",
-                            "view"
-                        ],
-                        "implHandler": [
-                            "return Ext.String.format(\r",
-                            "    '<b><a href=\"http://localhost:8080/roda\" target=\"_blank\">{0}</a></b>',\r",
-                            "    value,\r",
-                            "    record.data.name\r",
-                            ");"
-                        ]
-                    },
-                    "designerId": "6c6b3a78-7030-47ad-b41c-88d620d6f701"
-                }
-            ]
-        },
         {
             "type": "Ext.grid.View",
             "reference": {
@@ -98,7 +36,31 @@
                 "trackOver": false,
                 "stripeRows": false
             },
-            "designerId": "bcdaefd4-9b43-4847-864c-e8f181a53ef1"
+            "designerId": "bcdaefd4-9b43-4847-864c-e8f181a53ef1",
+            "cn": [
+                {
+                    "type": "fixedfunction",
+                    "reference": {
+                        "name": "items",
+                        "type": "array"
+                    },
+                    "codeClass": null,
+                    "userConfig": {
+                        "designer|userClassName": "getRowClass",
+                        "fn": "getRowClass",
+                        "designer|params": [
+                            "record",
+                            "rowIndex",
+                            "rowParams",
+                            "store"
+                        ],
+                        "implHandler": [
+                            "return 'x-hide-display';"
+                        ]
+                    },
+                    "designerId": "d03e6c34-04d4-4872-abb1-21ddcbc7bfc8"
+                }
+            ]
         },
         {
             "type": "Ext.toolbar.Toolbar",
@@ -193,7 +155,9 @@
                             "userConfig": {
                                 "id": "SButton",
                                 "designer|userClassName": "MyButton1",
-                                "text": "S"
+                                "enableToggle": true,
+                                "text": "S",
+                                "toggleGroup": "SMCButtonGroup"
                             },
                             "designerId": "bd59ab62-cca3-46fb-b651-54089adbfa15",
                             "cn": [
@@ -209,11 +173,9 @@
                                         "fn": "onSButtonClick",
                                         "implHandler": [
                                             "\r",
-                                            "//var gridPanel = Ext.getCmp('DetailsGridPanel');\r",
-                                            "//gridPanel.columns[2].hidden = true;\r",
+                                            "var gridPanel = Ext.getCmp('DetailsGridPanel');\r",
                                             "\r",
-                                            "var preview = Ext.getCmp('DetailsGridView').getPlugin('preview');\r",
-                                            "preview.toggleExpanded(false);\r",
+                                            "gridPanel.getView().refresh();\r",
                                             ""
                                         ],
                                         "name": "click",
@@ -233,7 +195,9 @@
                             "userConfig": {
                                 "id": "MButton",
                                 "designer|userClassName": "MyButton2",
-                                "text": "M"
+                                "enableToggle": true,
+                                "text": "M",
+                                "toggleGroup": "SMCButtonGroup"
                             },
                             "designerId": "66531436-affe-4fd5-a15c-d6a0827ef534",
                             "cn": [
@@ -249,26 +213,6 @@
                                         "fn": "onMButtonClick",
                                         "implHandler": [
                                             "var gridPanel = Ext.getCmp('DetailsGridPanel');\r",
-                                            "//gridPanel.columns[2].hidden = true;\r",
-                                            "\r",
-                                            "//var preview = Ext.getCmp('DetailsGridView').getPlugin('preview');\r",
-                                            "//preview.toggleExpanded(false);\r",
-                                            "//var previewAn = Ext.getCmp('DetailsGridView').getPlugin('previewAn');\r",
-                                            "//preview.toggleExpanded(false);\r",
-                                            "\r",
-                                            "gridPanel.features = [{\r",
-                                            "    ftype: 'rowbody',\r",
-                                            "    setupRowData: function(record, rowIndex, rowValues) {\r",
-                                            "        var headerCt = this.view.headerCt,\r",
-                                            "            colspan = headerCt.getColumnCount();\r",
-                                            "        // Usually you would style the my-body-class in CSS file\r",
-                                            "        return {\r",
-                                            "            rowBody: record.get(\"author\"),\r",
-                                            "            rowBodyCls: this.rowBodyCls,\r",
-                                            "            rowBodyColspan: colspan\r",
-                                            "        };\r",
-                                            "    }\r",
-                                            "}];\r",
                                             "\r",
                                             "gridPanel.getView().refresh();\r",
                                             "\r",
@@ -291,7 +235,9 @@
                             "userConfig": {
                                 "id": "CButton",
                                 "designer|userClassName": "MyButton3",
-                                "text": "C"
+                                "enableToggle": true,
+                                "text": "C",
+                                "toggleGroup": "SMCButtonGroup"
                             },
                             "designerId": "4e34ca55-6e9c-4b55-a599-b0fb3c41b9a7",
                             "cn": [
@@ -306,8 +252,9 @@
                                         "designer|userClassName": "onCButtonClick",
                                         "fn": "onCButtonClick",
                                         "implHandler": [
-                                            "var preview = Ext.getCmp('DetailsGridView').getPlugin('preview');\r",
-                                            "preview.toggleExpanded(true);"
+                                            "var gridPanel = Ext.getCmp('DetailsGridPanel');\r",
+                                            "\r",
+                                            "gridPanel.getView().refresh();"
                                         ],
                                         "name": "click",
                                         "scope": "me"
@@ -408,7 +355,7 @@
                                     "{\r",
                                     "    var gridPanel = Ext.getCmp('DetailsGridPanel');\r",
                                     "    gridPanel.store.pageSize = parseInt(field.value, 10);\r",
-                                    "    \r",
+                                    "\r",
                                     "    var pagingToolbar = Ext.getCmp('PagingToolbar');\r",
                                     "    pagingToolbar.doRefresh();\r",
                                     "}  "
@@ -421,6 +368,170 @@
                     ]
                 }
             ]
+        },
+        {
+            "type": "Ext.grid.feature.RowBody",
+            "reference": {
+                "name": "features",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "designer|userClassName": "MyRowBodyFeature"
+            },
+            "designerId": "cb88f14e-5214-43cf-b068-2a177aabfa89",
+            "cn": [
+                {
+                    "type": "fixedfunction",
+                    "reference": {
+                        "name": "items",
+                        "type": "array"
+                    },
+                    "codeClass": null,
+                    "userConfig": {
+                        "designer|userClassName": "getAdditionalData",
+                        "fn": "getAdditionalData",
+                        "designer|params": [
+                            "data",
+                            "idx",
+                            "record",
+                            "orig"
+                        ],
+                        "implHandler": [
+                            "var headerCt = this.view.headerCt,\r",
+                            "    colspan = headerCt.getColumnCount(); \r",
+                            "    var body;\r",
+                            "\t\r",
+                            "\tvar sButton = Ext.getCmp('SButton'),\r",
+                            "        mButton = Ext.getCmp('MButton'),\r",
+                            "        cButton = Ext.getCmp('CButton');\r",
+                            "if (cButton.pressed || mButton.pressed)\r",
+                            "{    \r",
+                            "    body = '' +\r",
+                            "'<div style=\"width: 100%\">' +\r",
+                            "  '<table style=\"table-layout: fixed; width: 100%\">' +\r",
+                            "    '<colgroup>' +\r",
+                            "      '<col style=\"width: 25%\" />' +\r",
+                            "      '<col style=\"width: 25%\" />' +\r",
+                            "      '<col style=\"width: 25%\" />' +\r",
+                            "      '<col style=\"width: 25%\" />' +\r",
+                            "    '</colgroup>' +\r",
+                            "    '<tr>' +\r",
+                            "      '<td colspan=\"3\" valign=\"top\">' +\r",
+                            "        '<div style=\"word-wrap: break-word\">' +\r",
+                            "          '<a href=\"\">' +\r",
+                            "            '<p style=\"font-size: 14px\">' +\r",
+                            "              record.get(\"name\") + '<br/>' +\r",
+                            "            '</p>' +\r",
+                            "          '</a>' +\r",
+                            "            '<p style=\"font-size: 10px\">' +\r",
+                            "              '<b>1994</b>&nbsp&nbsp&nbsp&nbsp&nbsp ICCV - Institutul de Cercetare a Calitatii Vietii' +\r",
+                            "            '</p>'+\r",
+                            "        '</div>'+\r",
+                            "      '</td>' +\r",
+                            "      '<td valign=\"top\">' +\r",
+                            "        '<div style=\"word-wrap: break-word\">' +\r",
+                            "          '<p style=\"font-size: 10px\">' +\r",
+                            "            '<b>Archive date:</b> 12-mar-2001<br/>' +\r",
+                            "            '<b>Metadata access:</b> Open<br/>' +\r",
+                            "            '<b>Data access:</b> Open<br/>' +\r",
+                            "            '<a href=\"\">' +\r",
+                            "              '<b>Adauga la catalog</b>' +\r",
+                            "            '</a>' +\r",
+                            "          '</p>' +\r",
+                            "        '</div>'+\r",
+                            "      '</td>'+\r",
+                            "    '</tr>' +\r",
+                            "    '<tr>' +\r",
+                            "      '<td colspan=\"4\" valign=\"middle\">' +\r",
+                            "        '<div style=\"width: 100%; word-wrap: break-word\">' +\r",
+                            "          '<p style=\"font-size: 10px\">' +\r",
+                            "            'Datorita amplorii si duratei ei de aproape patru decenii, activitatea de exploatare a lignitului din zona Olteniei si-a pus pecetea asupra tuturor componentelor calitatii vietii celor care traiesc aici. De aceea, si pentru a realiza o imagine cat mai elocventa a transformarilor produse, colectivul de cercetare si-a propus sa realizeze o diagnoza a calitatii vietii oamenilor din regiune. Problema generala urmarita a fost evaluarea din perspectiva socio-umana a oportunitatii continuarii activitatii miniere in zona.' +\r",
+                            "          '</p>' +\r",
+                            "        '</div>' +\r",
+                            "      '</td>' +\r",
+                            "    '</tr>' +\r",
+                            "    (mButton.pressed ? '' : ('<tr>' +\r",
+                            "      '<td valign=\"top\">' +\r",
+                            "        '<div style=\"word-wrap: break-word\">' +\r",
+                            "          '<p style=\"font-size: 10px\">' +\r",
+                            "            '<b>Countries:</b> Romania' +\r",
+                            "          '</p>' +\r",
+                            "        '</div>' +\r",
+                            "      '</td>' +\r",
+                            "      '<td valign=\"top\">' +\r",
+                            "        '<div style=\"word-wrap: break-word\">' +\r",
+                            "          '<p style=\"font-size: 10px\">' +\r",
+                            "            '<b>Geographic coverage:</b> Mehedinti, Dolj, Valcea' +\r",
+                            "          '</p>' +\r",
+                            "        '</div>' +\r",
+                            "      '</td>' +\r",
+                            "      '<td valign=\"top\">' +\r",
+                            "        '<div style=\"word-wrap: break-word\">' +\r",
+                            "          '<p style=\"font-size: 10px\">' +\r",
+                            "            '<b>Unitatea de analiza:</b> Individul' +\r",
+                            "          '</p>' +\r",
+                            "        '</div>' +\r",
+                            "      '</td>' +\r",
+                            "      '<td valign=\"top\">' +\r",
+                            "        '<div style=\"word-wrap: break-word\">' +\r",
+                            "          '<p style=\"font-size: 10px\">' +\r",
+                            "            '<b>Univers:</b> Adulti; Regional; Adulti (in varsta de peste 18 ani), cetateni romani cu drept de vot' +\r",
+                            "          '</p>' +\r",
+                            "        '</div>' +\r",
+                            "      '</td>' +\r",
+                            "    '</tr>')) +\r",
+                            "  '</table>' +\r",
+                            "'</div>';\r",
+                            "}\r",
+                            "else\r",
+                            "{\r",
+                            "    body = '' +\r",
+                            "'<div style=\"width: 100%\">' +\r",
+                            "  '<table style=\"table-layout: fixed; width: 100%\">' +\r",
+                            "    '<colgroup>' +\r",
+                            "      '<col style=\"width: 80%\" />' +\r",
+                            "      '<col style=\"width: 20%\" />' +      \r",
+                            "    '</colgroup>' +\r",
+                            "    '<tr>' +\r",
+                            "      '<td colspan=\"1\" valign=\"top\">' +\r",
+                            "        '<div style=\"word-wrap: break-word\">' +\r",
+                            "          '<p style=\"font-size: 12px\">' +\r",
+                            "              '<b>1994</b>&nbsp&nbsp&nbsp&nbsp&nbsp' +\r",
+                            "               '<a href=\"\">' +            \r",
+                            "               '<b>' + record.get(\"name\") + '</b>' +\r",
+                            "               '</a>' +\r",
+                            "          '</p>' +          \r",
+                            "        '</div>' +\r",
+                            "      '</td>' +      \r",
+                            "    '</tr>' +\r",
+                            "  '</table>' +\r",
+                            "'</div>';\r",
+                            "}\r",
+                            "return {\r",
+                            "    rowBody: body,\r",
+                            "    rowBodyCls: this.rowBodyCls,\r",
+                            "    rowBodyColspan: colspan\r",
+                            "};"
+                        ]
+                    },
+                    "designerId": "faf19ef7-bff3-422b-a0d1-6c4acb904013"
+                }
+            ]
+        },
+        {
+            "type": "Ext.grid.column.Column",
+            "reference": {
+                "name": "columns",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "width": 524,
+                "designer|userClassName": "MyColumn3",
+                "text": "DetailGridColumn"
+            },
+            "designerId": "0b5390f4-fa59-4378-a941-f7567f65239f"
         }
     ]
 }

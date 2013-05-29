@@ -9,21 +9,23 @@
 						name: 'Catalog1',
 						level: 2,
 						data: [{
-								name: 'Study11',
+								name: 'Diagnoza calitatii vietii',
 								an: 1999,
 								author: 'ICCV - Institutul de Cercetare a calitatii vietii',
+								description: 'Cercetarea urmareste analizarea calitatii vietii în România în anul 2010. Aceasta cuprinde date si concluzii pentru toate domeniile esen?iale ale calita?ii vie?ii: condi?iile de via?a, învatamântul, sanatatea, ocuparea, familia, mediul social si sansele de acces social, mediul politic, conditiile comunitare, starea de spirit a populatiei si preocuparile de timp liber. Obiectivul este de a crea o imagine cât mai completa asupra modului în care populatia României se raporteaza la diferitele componente ale calitatii vietii.',
 								leaf: true
 								},{
-								name: 'Study12', 
+								name: 'Sondaj de opinie publica', 
 								an: 2000,
 								author: 'ICCV - Institutul de Cercetare a calitatii vietii',
+								description: 'Description of Study 12',
 								leaf: true
 								}]
 						},{
 						name: 'Catalog2',
 						level: 2,
 						data: [{				
-								name: 'Study21', 
+								name: 'Impactul socio-uman al exploatarii lignitului in zona Olteniei', 
 								an: 2002,
 								leaf: true
 								}]

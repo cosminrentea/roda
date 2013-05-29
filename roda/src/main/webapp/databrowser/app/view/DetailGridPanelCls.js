@@ -17,14 +17,12 @@ Ext.define('databrowser.view.DetailGridPanelCls', {
     extend: 'Ext.grid.Panel',
     alias: 'widget.detailgridpanelcls1',
 
-    requires: [
-        'databrowser.view.override.DetailGridPanelCls'
-    ],
-
+    autoRender: true,
     height: 405,
     id: 'DetailsGridPanel',
     itemId: 'DetailsGridPanel',
     width: 509,
+    header: false,
     hideHeaders: true,
     store: 'CatalogDetailStore',
 
@@ -32,31 +30,10 @@ Ext.define('databrowser.view.DetailGridPanelCls', {
         var me = this;
 
         Ext.applyIf(me, {
-            columns: [
-                {
-                    xtype: 'numbercolumn',
-                    dataIndex: 'an',
-                    groupable: true,
-                    text: 'An',
-                    format: '0000'
-                },
-                {
-                    xtype: 'gridcolumn',
-                    renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
-                        return Ext.String.format(
-                        '<b><a href="http://localhost:8080/roda" target="_blank">{0}</a></b>',
-                        value,
-                        record.data.name
-                        );
-                    },
-                    width: 235,
-                    dataIndex: 'name',
-                    groupable: true,
-                    text: 'Titlu',
-                    flex: 1
-                }
-            ],
             viewConfig: {
+                getRowClass: function(record, rowIndex, rowParams, store) {
+                    return 'x-hide-display';
+                },
                 frame: true,
                 id: 'DetailsGridView',
                 trackOver: false,
@@ -96,7 +73,9 @@ Ext.define('databrowser.view.DetailGridPanelCls', {
                                 {
                                     xtype: 'button',
                                     id: 'SButton',
+                                    enableToggle: true,
                                     text: 'S',
+                                    toggleGroup: 'SMCButtonGroup',
                                     listeners: {
                                         click: {
                                             fn: me.onSButtonClick,
@@ -107,7 +86,9 @@ Ext.define('databrowser.view.DetailGridPanelCls', {
                                 {
                                     xtype: 'button',
                                     id: 'MButton',
+                                    enableToggle: true,
                                     text: 'M',
+                                    toggleGroup: 'SMCButtonGroup',
                                     listeners: {
                                         click: {
                                             fn: me.onMButtonClick,
@@ -118,7 +99,9 @@ Ext.define('databrowser.view.DetailGridPanelCls', {
                                 {
                                     xtype: 'button',
                                     id: 'CButton',
+                                    enableToggle: true,
                                     text: 'C',
+                                    toggleGroup: 'SMCButtonGroup',
                                     listeners: {
                                         click: {
                                             fn: me.onCButtonClick,
@@ -170,6 +153,135 @@ Ext.define('databrowser.view.DetailGridPanelCls', {
                         }
                     ]
                 }
+            ],
+            features: [
+                {
+                    ftype: 'rowbody',
+                    getAdditionalData: function(data, idx, record, orig) {
+                        var headerCt = this.view.headerCt,
+                            colspan = headerCt.getColumnCount(); 
+                            var body;
+
+                        var sButton = Ext.getCmp('SButton'),
+                            mButton = Ext.getCmp('MButton'),
+                            cButton = Ext.getCmp('CButton');
+                        if (cButton.pressed || mButton.pressed)
+                        {    
+                            body = '' +
+                            '<div style="width: 100%">' +
+                            '<table style="table-layout: fixed; width: 100%">' +
+                            '<colgroup>' +
+                            '<col style="width: 25%" />' +
+                            '<col style="width: 25%" />' +
+                            '<col style="width: 25%" />' +
+                            '<col style="width: 25%" />' +
+                            '</colgroup>' +
+                            '<tr>' +
+                            '<td colspan="3" valign="top">' +
+                            '<div style="word-wrap: break-word">' +
+                            '<a href="">' +
+                            '<p style="font-size: 14px">' +
+                            record.get("name") + '<br/>' +
+                            '</p>' +
+                            '</a>' +
+                            '<p style="font-size: 10px">' +
+                            '<b>1994</b>&nbsp&nbsp&nbsp&nbsp&nbsp ICCV - Institutul de Cercetare a Calitatii Vietii' +
+                            '</p>'+
+                            '</div>'+
+                            '</td>' +
+                            '<td valign="top">' +
+                            '<div style="word-wrap: break-word">' +
+                            '<p style="font-size: 10px">' +
+                            '<b>Archive date:</b> 12-mar-2001<br/>' +
+                            '<b>Metadata access:</b> Open<br/>' +
+                            '<b>Data access:</b> Open<br/>' +
+                            '<a href="">' +
+                            '<b>Adauga la catalog</b>' +
+                            '</a>' +
+                            '</p>' +
+                            '</div>'+
+                            '</td>'+
+                            '</tr>' +
+                            '<tr>' +
+                            '<td colspan="4" valign="middle">' +
+                            '<div style="width: 100%; word-wrap: break-word">' +
+                            '<p style="font-size: 10px">' +
+                            'Datorita amplorii si duratei ei de aproape patru decenii, activitatea de exploatare a lignitului din zona Olteniei si-a pus pecetea asupra tuturor componentelor calitatii vietii celor care traiesc aici. De aceea, si pentru a realiza o imagine cat mai elocventa a transformarilor produse, colectivul de cercetare si-a propus sa realizeze o diagnoza a calitatii vietii oamenilor din regiune. Problema generala urmarita a fost evaluarea din perspectiva socio-umana a oportunitatii continuarii activitatii miniere in zona.' +
+                            '</p>' +
+                            '</div>' +
+                            '</td>' +
+                            '</tr>' +
+                            (mButton.pressed ? '' : ('<tr>' +
+                            '<td valign="top">' +
+                            '<div style="word-wrap: break-word">' +
+                            '<p style="font-size: 10px">' +
+                            '<b>Countries:</b> Romania' +
+                            '</p>' +
+                            '</div>' +
+                            '</td>' +
+                            '<td valign="top">' +
+                            '<div style="word-wrap: break-word">' +
+                            '<p style="font-size: 10px">' +
+                            '<b>Geographic coverage:</b> Mehedinti, Dolj, Valcea' +
+                            '</p>' +
+                            '</div>' +
+                            '</td>' +
+                            '<td valign="top">' +
+                            '<div style="word-wrap: break-word">' +
+                            '<p style="font-size: 10px">' +
+                            '<b>Unitatea de analiza:</b> Individul' +
+                            '</p>' +
+                            '</div>' +
+                            '</td>' +
+                            '<td valign="top">' +
+                            '<div style="word-wrap: break-word">' +
+                            '<p style="font-size: 10px">' +
+                            '<b>Univers:</b> Adulti; Regional; Adulti (in varsta de peste 18 ani), cetateni romani cu drept de vot' +
+                            '</p>' +
+                            '</div>' +
+                            '</td>' +
+                            '</tr>')) +
+                            '</table>' +
+                            '</div>';
+                        }
+                        else
+                        {
+                            body = '' +
+                            '<div style="width: 100%">' +
+                            '<table style="table-layout: fixed; width: 100%">' +
+                            '<colgroup>' +
+                            '<col style="width: 80%" />' +
+                            '<col style="width: 20%" />' +      
+                            '</colgroup>' +
+                            '<tr>' +
+                            '<td colspan="1" valign="top">' +
+                            '<div style="word-wrap: break-word">' +
+                            '<p style="font-size: 12px">' +
+                            '<b>1994</b>&nbsp&nbsp&nbsp&nbsp&nbsp' +
+                            '<a href="">' +            
+                            '<b>' + record.get("name") + '</b>' +
+                            '</a>' +
+                            '</p>' +          
+                            '</div>' +
+                            '</td>' +      
+                            '</tr>' +
+                            '</table>' +
+                            '</div>';
+                        }
+                        return {
+                            rowBody: body,
+                            rowBodyCls: this.rowBodyCls,
+                            rowBodyColspan: colspan
+                        };
+                    }
+                }
+            ],
+            columns: [
+                {
+                    xtype: 'gridcolumn',
+                    width: 524,
+                    text: 'DetailGridColumn'
+                }
             ]
         });
 
@@ -178,36 +290,14 @@ Ext.define('databrowser.view.DetailGridPanelCls', {
 
     onSButtonClick: function(button, e, eOpts) {
 
-        //var gridPanel = Ext.getCmp('DetailsGridPanel');
-        //gridPanel.columns[2].hidden = true;
+        var gridPanel = Ext.getCmp('DetailsGridPanel');
 
-        var preview = Ext.getCmp('DetailsGridView').getPlugin('preview');
-        preview.toggleExpanded(false);
+        gridPanel.getView().refresh();
 
     },
 
     onMButtonClick: function(button, e, eOpts) {
         var gridPanel = Ext.getCmp('DetailsGridPanel');
-        //gridPanel.columns[2].hidden = true;
-
-        //var preview = Ext.getCmp('DetailsGridView').getPlugin('preview');
-        //preview.toggleExpanded(false);
-        //var previewAn = Ext.getCmp('DetailsGridView').getPlugin('previewAn');
-        //preview.toggleExpanded(false);
-
-        gridPanel.features = [{
-            ftype: 'rowbody',
-            setupRowData: function(record, rowIndex, rowValues) {
-                var headerCt = this.view.headerCt,
-                    colspan = headerCt.getColumnCount();
-                // Usually you would style the my-body-class in CSS file
-                return {
-                    rowBody: record.get("author"),
-                    rowBodyCls: this.rowBodyCls,
-                    rowBodyColspan: colspan
-                };
-            }
-        }];
 
         gridPanel.getView().refresh();
 
@@ -215,8 +305,9 @@ Ext.define('databrowser.view.DetailGridPanelCls', {
     },
 
     onCButtonClick: function(button, e, eOpts) {
-        var preview = Ext.getCmp('DetailsGridView').getPlugin('preview');
-        preview.toggleExpanded(true);
+        var gridPanel = Ext.getCmp('DetailsGridPanel');
+
+        gridPanel.getView().refresh();
     },
 
     onNumberOfRecordsBlur: function(component, e, eOpts) {

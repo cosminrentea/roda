@@ -35,6 +35,10 @@ Ext.define('databrowser.model.YearsModel', {
         {
             name: 'author',
             type: 'string'
+        },
+        {
+            name: 'description',
+            type: 'string'
         }
     ]
 });

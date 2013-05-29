@@ -21,7 +21,7 @@ Ext.define('databrowser.view.DetailGridPanelCls', {
     height: 405,
     id: 'DetailsGridPanel',
     itemId: 'DetailsGridPanel',
-    width: 509,
+    width: 465,
     header: false,
     hideHeaders: true,
     store: 'CatalogDetailStore',
@@ -168,16 +168,21 @@ Ext.define('databrowser.view.DetailGridPanelCls', {
                         if (cButton.pressed || mButton.pressed)
                         {    
                             body = '' +
-                            '<div style="width: 100%">' +
+                            '<div style="margin: 0px 0px 0px 0px; width: 100%">' +
                             '<table style="table-layout: fixed; width: 100%">' +
                             '<colgroup>' +
-                            '<col style="width: 25%" />' +
-                            '<col style="width: 25%" />' +
-                            '<col style="width: 25%" />' +
-                            '<col style="width: 25%" />' +
+                            '<col style="width: 11%" />' +
+                            '<col style="width: 11%" />' +
+                            '<col style="width: 11%" />' +
+                            '<col style="width: 11%" />' +
+                            '<col style="width: 11%" />' +
+                            '<col style="width: 11%" />' +
+                            '<col style="width: 11%" />' +
+                            '<col style="width: 11%" />' +
+                            '<col style="width: 12%" />' +    
                             '</colgroup>' +
                             '<tr>' +
-                            '<td colspan="3" valign="top">' +
+                            '<td colspan="6" valign="top">' +
                             '<div style="word-wrap: break-word">' +
                             '<a href="">' +
                             '<p style="font-size: 14px">' +
@@ -185,14 +190,14 @@ Ext.define('databrowser.view.DetailGridPanelCls', {
                             '</p>' +
                             '</a>' +
                             '<p style="font-size: 10px">' +
-                            '<b>1994</b>&nbsp&nbsp&nbsp&nbsp&nbsp ICCV - Institutul de Cercetare a Calitatii Vietii' +
+                            '<b>' + record.get("an") + '</b>&nbsp&nbsp&nbsp&nbsp&nbsp' + record.get("author") +
                             '</p>'+
                             '</div>'+
                             '</td>' +
-                            '<td valign="top">' +
+                            '<td colspan="3" valign="top">' +
                             '<div style="word-wrap: break-word">' +
                             '<p style="font-size: 10px">' +
-                            '<b>Archive date:</b> 12-mar-2001<br/>' +
+                            '<b>Archive date:</b> ' + record.get("an") + '<br/>' +
                             '<b>Metadata access:</b> Open<br/>' +
                             '<b>Data access:</b> Open<br/>' +
                             '<a href="">' +
@@ -203,51 +208,52 @@ Ext.define('databrowser.view.DetailGridPanelCls', {
                             '</td>'+
                             '</tr>' +
                             '<tr>' +
-                            '<td colspan="4" valign="middle">' +
+                            '<td colspan="9" valign="middle">' +
                             '<div style="width: 100%; word-wrap: break-word">' +
                             '<p style="font-size: 10px">' +
-                            'Datorita amplorii si duratei ei de aproape patru decenii, activitatea de exploatare a lignitului din zona Olteniei si-a pus pecetea asupra tuturor componentelor calitatii vietii celor care traiesc aici. De aceea, si pentru a realiza o imagine cat mai elocventa a transformarilor produse, colectivul de cercetare si-a propus sa realizeze o diagnoza a calitatii vietii oamenilor din regiune. Problema generala urmarita a fost evaluarea din perspectiva socio-umana a oportunitatii continuarii activitatii miniere in zona.' +
+                            record.get("description") +
                             '</p>' +
                             '</div>' +
                             '</td>' +
                             '</tr>' +
                             (mButton.pressed ? '' : ('<tr>' +
-                            '<td valign="top">' +
+                            '<td colspan="2" valign="top">' +
                             '<div style="word-wrap: break-word">' +
                             '<p style="font-size: 10px">' +
-                            '<b>Countries:</b> Romania' +
+                            '<b>Countries:</b> ' + record.get("countries") +
                             '</p>' +
                             '</div>' +
                             '</td>' +
-                            '<td valign="top">' +
+                            '<td colspan="2" valign="top">' +
                             '<div style="word-wrap: break-word">' +
                             '<p style="font-size: 10px">' +
-                            '<b>Geographic coverage:</b> Mehedinti, Dolj, Valcea' +
+                            '<b>Geographic coverage: </b>' + record.get("geo_coverage") +
                             '</p>' +
                             '</div>' +
                             '</td>' +
-                            '<td valign="top">' +
+                            '<td colspan="2" valign="top">' +
                             '<div style="word-wrap: break-word">' +
                             '<p style="font-size: 10px">' +
-                            '<b>Unitatea de analiza:</b> Individul' +
+                            '<b>Unitatea de analiza: </b>' + record.get("unit_analysis") +
                             '</p>' +
                             '</div>' +
                             '</td>' +
-                            '<td valign="top">' +
+                            '<td colspan="3" valign="top">' +
                             '<div style="word-wrap: break-word">' +
                             '<p style="font-size: 10px">' +
-                            '<b>Univers:</b> Adulti; Regional; Adulti (in varsta de peste 18 ani), cetateni romani cu drept de vot' +
+                            '<b>Univers:</b> ' + record.get("universe") + 
                             '</p>' +
                             '</div>' +
                             '</td>' +
                             '</tr>')) +
                             '</table>' +
-                            '</div>';
+                            '</div>' +
+                            '<hr style="width: 100%; border: 2px groove">';
                         }
                         else
                         {
                             body = '' +
-                            '<div style="width: 100%">' +
+                            '<div margin: 0px 0px 0px 0px style="width: 100%">' +
                             '<table style="table-layout: fixed; width: 100%">' +
                             '<colgroup>' +
                             '<col style="width: 80%" />' +
@@ -257,7 +263,7 @@ Ext.define('databrowser.view.DetailGridPanelCls', {
                             '<td colspan="1" valign="top">' +
                             '<div style="word-wrap: break-word">' +
                             '<p style="font-size: 12px">' +
-                            '<b>1994</b>&nbsp&nbsp&nbsp&nbsp&nbsp' +
+                            '<b>' + record.get("an") + '</b>&nbsp&nbsp&nbsp&nbsp&nbsp' +
                             '<a href="">' +            
                             '<b>' + record.get("name") + '</b>' +
                             '</a>' +
@@ -279,7 +285,7 @@ Ext.define('databrowser.view.DetailGridPanelCls', {
             columns: [
                 {
                     xtype: 'gridcolumn',
-                    width: 524,
+                    width: 465,
                     text: 'DetailGridColumn'
                 }
             ]

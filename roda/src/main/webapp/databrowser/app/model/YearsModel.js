@@ -39,6 +39,22 @@ Ext.define('databrowser.model.YearsModel', {
         {
             name: 'description',
             type: 'string'
+        },
+        {
+            name: 'countries',
+            type: 'string'
+        },
+        {
+            name: 'geo_coverage',
+            type: 'string'
+        },
+        {
+            name: 'unit_analysis',
+            type: 'string'
+        },
+        {
+            name: 'universe',
+            type: 'string'
         }
     ]
 });

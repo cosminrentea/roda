@@ -154,7 +154,7 @@ Ext.define('databrowser.view.DataBrowserPanel', {
                 {
                     xtype: 'detailgridpanelcls1',
                     height: 438,
-                    width: 465
+                    rowLines: true
                 }
             ]
         });
@@ -167,11 +167,22 @@ Ext.define('databrowser.view.DataBrowserPanel', {
 
         if (record.get('leaf') !== true && record.get('name') != 'RODA') 
         {
+            //este posibila doar afisarea simpla
+            var sButton = Ext.getCmp('SButton'),
+                mButton = Ext.getCmp('MButton'),
+                cButton = Ext.getCmp('CButton');
+
+            sButton.toggle(true);
+            mButton.disabled = true;
+            cButton.disabled = true;
+
             var studyYear = record.get('an');
             var studyTitle = record.get('name');
             var studyData = [{an: studyYear, name: studyTitle}];	
 
             gridPanel.store.loadData(studyData);
+
+
         }
         else
         {
@@ -187,8 +198,13 @@ Ext.define('databrowser.view.DataBrowserPanel', {
         {
             var data = record.childNodes;
             var year;
-            var aut = "", descr = "";
+            var aut = "", descr = "", tari = "", geo_cov = "", unit = "", univ = "";
             var loadedInfo = [];
+
+            //butoanele pentru afisarea simpla/medie/complexa
+            var sButton = Ext.getCmp('SButton'),
+                mButton = Ext.getCmp('MButton'),
+                cButton = Ext.getCmp('CButton');
 
             gridPanel.store.removeAll();
 
@@ -201,6 +217,11 @@ Ext.define('databrowser.view.DataBrowserPanel', {
                         // daca a fost selectat un an, in panel-ul cu detalii vor fi afisate
                         // cataloagele din anul respectiv	
                         year = record.get('name');
+
+                        // este posibila doar afisarea simpla
+                        sButton.toggle(true);
+                        mButton.disabled = true;
+                        cButton.disabled = true;
                     }
                     else 
                     {
@@ -211,10 +232,19 @@ Ext.define('databrowser.view.DataBrowserPanel', {
                             year = Ext.data.Model(data[i]).get('an');
                             aut = Ext.data.Model(data[i]).get('author');
                             descr = Ext.data.Model(data[i]).get('description');
+                            tari = Ext.data.Model(data[i]).get('countries');
+                            geo_cov = Ext.data.Model(data[i]).get('geo_coverage');
+                            unit = Ext.data.Model(data[i]).get('unit_analysis');
+                            univ = Ext.data.Model(data[i]).get('universe');
+
+                            //sunt posibile toate tipurile de afisare
+                            mButton.disabled = false;
+                            cButton.disabled = false;
                         }
                     }
                     var title = Ext.data.Model(data[i]).get('name');
-                    loadedInfo[i] = {an: year, name: title, author: aut, description: descr};
+                    loadedInfo[i] = {an: year, name: title, author: aut, description: descr, countries: tari,
+                    geo_coverage: geo_cov, unit_analysis: unit, universe: univ};
                 }
 
                 //gridPanel.store.loadData(loadedInfo);

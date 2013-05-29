@@ -1,0 +1,7839 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<codeBook version="1.2.2" ID="RODA019" xml-lang="en" xmlns="http://www.icpsr.umich.edu/DDI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.icpsr.umich.edu/DDI http://www.icpsr.umich.edu/DDI/Version1-2-2.xsd">
+  <docDscr>
+    <citation>
+      <titlStmt>
+        <titl>
+          Impactul socio-uman al exploatarii lignitului in zona Olteniei - 1994
+        </titl>
+        <IDNo>
+          019
+        </IDNo>
+      </titlStmt>
+      <rspStmt>
+        <AuthEnty affiliation="RODA">
+          Adrian Dusa
+        </AuthEnty>
+        <AuthEnty affiliation="RODA">
+          Cristina Bajenaru
+        </AuthEnty>
+      </rspStmt>
+      <prodStmt>
+        <producer abbr="RODA" affiliation="Facultatea de Sociologie si Asistenta Sociala, Universitatea Bucuresti">
+          Arhiva Romana de Date Sociale
+        </producer>
+        <copyright>
+          Copyright RODA, 2002
+        </copyright>
+        <prodPlac>
+          RODA, Bd. Schitu Magureanu nr.1, et.5, cam.15, Bucuresti sector 3
+        </prodPlac>
+        <software version="4.0.8" date="2012-05-14">
+          Nesstar Publisher
+        </software>
+        <fundAg abbr="ICCV" role="salarii">
+          Institutul de Cercetare a Calitatii Vietii
+        </fundAg>
+        <fundAg abbr="SAS" role="infrastructura, echipamente">
+          Facultatea de Sociologie si Asistenta Sociala
+        </fundAg>
+      </prodStmt>
+      <distStmt>
+        <distrbtr abbr="RODA" affiliation="Institutul de Cercetare a Calitatii Vietii" URI="http://www.roda.ro">
+          Arhiva Romana de Date Sociale
+        </distrbtr>
+        <contact affiliation="RODA" email="adi@roda.ro">
+          Adrian Dusa
+        </contact>
+        <contact affiliation="RODA" email="mari@roda.ro">
+          Mariana Dan
+        </contact>
+        <depositr/>
+      </distStmt>
+    </citation>
+    <docSrc>
+      <titlStmt>
+        <titl>
+          Temp#1
+        </titl>
+      </titlStmt>
+      <distStmt>
+        <depositr/>
+      </distStmt>
+    </docSrc>
+  </docDscr>
+  <stdyDscr>
+    <citation>
+      <titlStmt>
+        <titl>
+          Impactul socio-uman al exploatarii lignitului in zona Olteniei - 1994
+        </titl>
+        <IDNo>
+          019
+        </IDNo>
+      </titlStmt>
+      <rspStmt>
+        <AuthEnty>
+          ICCV - Institutul de Cercetare a Calitatii Vietii
+        </AuthEnty>
+        <AuthEnty>
+          coordonator: Gheorghe Socol
+        </AuthEnty>
+        <AuthEnty>
+          colectiv de cercetare: Gheorhe Barbu, Ana Balasa, Denisa Ghizaru
+        </AuthEnty>
+      </rspStmt>
+      <prodStmt>
+        <producer>
+          Institutul de Cercetare a Calitatii Vietii
+        </producer>
+        <copyright>
+          Copyright ICCV,1994
+        </copyright>
+        <prodPlac>
+          Calea 13 Septembrie, nr.13, Bucuresti
+        </prodPlac>
+        <software version="4.0.8" date="2012-05-14">
+          Nesstar Publisher
+        </software>
+        <fundAg>
+          Regia autonoma a lignitului
+        </fundAg>
+        <fundAg>
+          Institutul de Cercetari Miniere
+        </fundAg>
+      </prodStmt>
+      <distStmt>
+        <distrbtr abbr="RODA" affiliation="Facultatea de Sociologie si Asistenta Sociala, Universitatea Bucuresti" URI="http://www.roda.ro">
+          Arhiva Romana de Date Sociale
+        </distrbtr>
+        <contact>
+          Gheorghe Socol
+        </contact>
+        <depositr abbr="ICCV">
+          Institutul de Cercetare a Calitatii Vietii
+        </depositr>
+      </distStmt>
+    </citation>
+    <stdyInfo>
+      <subject>
+        <keyword>
+          aer
+        </keyword>
+        <keyword>
+          afectare
+        </keyword>
+        <keyword>
+          apa
+        </keyword>
+        <keyword>
+          apartament
+        </keyword>
+        <keyword>
+          apreciere
+        </keyword>
+        <keyword>
+          asistenta medicala
+        </keyword>
+        <keyword>
+          atasament
+        </keyword>
+        <keyword>
+          bunuri
+        </keyword>
+        <keyword>
+          calitate
+        </keyword>
+        <keyword>
+          camere
+        </keyword>
+        <keyword>
+          casa
+        </keyword>
+        <keyword>
+          cauza
+        </keyword>
+        <keyword>
+          circulatie
+        </keyword>
+        <keyword>
+          comert
+        </keyword>
+        <keyword>
+          comparatie
+        </keyword>
+        <keyword>
+          compensare
+        </keyword>
+        <keyword>
+          comunicatie
+        </keyword>
+        <keyword>
+          conditii de munca
+        </keyword>
+        <keyword>
+          conditii de viata
+        </keyword>
+        <keyword>
+          conducere
+        </keyword>
+        <keyword>
+          conflict
+        </keyword>
+        <keyword>
+          constructii
+        </keyword>
+        <keyword>
+          cultura
+        </keyword>
+        <keyword>
+          despagubire
+        </keyword>
+        <keyword>
+          dezafectare
+        </keyword>
+        <keyword>
+          dezvoltare
+        </keyword>
+        <keyword>
+          disconfort
+        </keyword>
+        <keyword>
+          domiciliu
+        </keyword>
+        <keyword>
+          dotare
+        </keyword>
+        <keyword>
+          drepturi
+        </keyword>
+        <keyword>
+          evaluare
+        </keyword>
+        <keyword>
+          exploatare
+        </keyword>
+        <keyword>
+          expropiere
+        </keyword>
+        <keyword>
+          firma
+        </keyword>
+        <keyword>
+          gospodarie
+        </keyword>
+        <keyword>
+          Guvern
+        </keyword>
+        <keyword>
+          impozit
+        </keyword>
+        <keyword>
+          informare
+        </keyword>
+        <keyword>
+          institutie
+        </keyword>
+        <keyword>
+          intreprindere
+        </keyword>
+        <keyword>
+          judet
+        </keyword>
+        <keyword>
+          lege
+        </keyword>
+        <keyword>
+          loc de munca
+        </keyword>
+        <keyword>
+          localitate
+        </keyword>
+        <keyword>
+          localnic
+        </keyword>
+        <keyword>
+          locuinta
+        </keyword>
+        <keyword>
+          locuire
+        </keyword>
+        <keyword>
+          lucrare miniera
+        </keyword>
+        <keyword>
+          mediu
+        </keyword>
+        <keyword>
+          membru
+        </keyword>
+        <keyword>
+          mina
+        </keyword>
+        <keyword>
+          minerit
+        </keyword>
+        <keyword>
+          multumire
+        </keyword>
+        <keyword>
+          mutare
+        </keyword>
+        <keyword>
+          necesitate
+        </keyword>
+        <keyword>
+          opinie
+        </keyword>
+        <keyword>
+          pamant
+        </keyword>
+        <keyword>
+          persoana
+        </keyword>
+        <keyword>
+          poluare
+        </keyword>
+        <keyword>
+          populatie
+        </keyword>
+        <keyword>
+          posesie
+        </keyword>
+        <keyword>
+          posibilitate
+        </keyword>
+        <keyword>
+          preocupare
+        </keyword>
+        <keyword>
+          presa
+        </keyword>
+        <keyword>
+          preturi
+        </keyword>
+        <keyword>
+          primar
+        </keyword>
+        <keyword>
+          Primarie
+        </keyword>
+        <keyword>
+          profesie
+        </keyword>
+        <keyword>
+          proprietar
+        </keyword>
+        <keyword>
+          proprietate
+        </keyword>
+        <keyword>
+          regie
+        </keyword>
+        <keyword>
+          reglementare
+        </keyword>
+        <keyword>
+          relatii
+        </keyword>
+        <keyword>
+          relief
+        </keyword>
+        <keyword>
+          respectare
+        </keyword>
+        <keyword>
+          rezolvare
+        </keyword>
+        <keyword>
+          rol
+        </keyword>
+        <keyword>
+          rude
+        </keyword>
+        <keyword>
+          salariat
+        </keyword>
+        <keyword>
+          sanatate
+        </keyword>
+        <keyword>
+          sat
+        </keyword>
+        <keyword>
+          scoala
+        </keyword>
+        <keyword>
+          servicii
+        </keyword>
+        <keyword>
+          silvicultura
+        </keyword>
+        <keyword>
+          Sindicat
+        </keyword>
+        <keyword>
+          sol
+        </keyword>
+        <keyword>
+          somaj
+        </keyword>
+        <keyword>
+          teama
+        </keyword>
+        <keyword>
+          tehnologie
+        </keyword>
+        <keyword>
+          tensiune
+        </keyword>
+        <keyword>
+          teren
+        </keyword>
+        <keyword>
+          transport
+        </keyword>
+        <keyword>
+          TV
+        </keyword>
+        <keyword>
+          utilitati
+        </keyword>
+        <keyword>
+          vecin
+        </keyword>
+        <keyword>
+          venetic
+        </keyword>
+        <keyword>
+          venit
+        </keyword>
+        <keyword>
+          viata
+        </keyword>
+        <keyword>
+          zona
+        </keyword>
+        <topcClas>
+          Calitatea vietii in zone defavorizate; Politici sociale
+        </topcClas>
+      </subject>
+      <abstract>
+        Datorita amplorii si duratei ei de aproape patru decenii, activitatea de exploatare a lignitului din zona Olteniei si-a pus pecetea asupra tuturor componentelor calitatii vietii celor care traiesc aici. De aceea, si pentru a realiza o imagine cat mai elocventa a transformarilor produse, colectivul de cercetare si-a propus sa realizeze o diagnoza a calitatatii vietii oamenilor din regiune. Problema generala urmarita a fost evaluarea din perspectiva socio - umana a oportunitatii continuarii activitatii miniere in zona.
+      </abstract>
+      <sumDscr>
+        <nation>
+          Romania
+        </nation>
+        <geogCover>
+          Regionala (judetele Mehedinti, Dolj, Valcea)
+        </geogCover>
+        <geogUnit>
+          a) regiune; b)judete; c) localitati miniere pe teritoriul Regiei Autonome a Lignitului Oltenia
+        </geogUnit>
+        <anlyUnit>
+          Individul
+        </anlyUnit>
+        <universe>
+          Adulti; Regional; Adulti (in varsta de peste 18 ani), cetateni romani cu drept de vot
+        </universe>
+      </sumDscr>
+    </stdyInfo>
+    <method>
+      <dataColl>
+        <dataCollector>
+          Institutul de Cercetare a Calitatii Vietii
+        </dataCollector>
+        <sampProc>
+          S-a realizat o esantionare probabilista. Din cadrul unitatilor miniere s-a facut o prima selectie, iar din totalul angajatilor din cadrul unitatilor miniere alese au fost selectati aleator subiectii. Esantionul a cuprins 400 de subiecti.
+        </sampProc>
+        <collMode>
+          Chestionar; studii de documente; convorbiri cu manageri ai unitatilor miniere.
+        </collMode>
+        <resInstru>
+          Chestionar semistructurat
+        </resInstru>
+        <sources/>
+        <weight>
+          Baza nu a fost ponderata.
+        </weight>
+      </dataColl>
+    </method>
+    <dataAccs>
+      <setAvail>
+        <accsPlac URI="http://www.roda.ro">
+          Arhiva Romana de Date Sociale
+        </accsPlac>
+        <origArch>
+          Arhiva Romana de Date Sociale
+        </origArch>
+      </setAvail>
+      <useStmt>
+        <specPerm required="yes">
+          Utilizatorul trebuie sa obtina permisiunea de utilizare din partea proprietarului si sa completeze un contract de confidentialitate.
+        </specPerm>
+        <contact email="adi@roda.ro">
+          Adrian Dusa
+        </contact>
+        <citReq>
+          Publicatiile bazate pe analiza seturilor de date distribuite de RODA trebuie sa mentioneze sursele acestuia prin citari bibliografice. Aceste citari trebuie sa apara in notele de subsol ori in sectiunile cu referinte bibliografice.
+        </citReq>
+        <deposReq>
+          Pentru a aduce la cunostinta finantatorilor informatii esentiale despre modul de folosire a resurselor arhivei si pentru a facilita schimbul de informatii despre activitatea utilizatorilor RODA, acestia sunt rugati sa trimita citari bibliografice din materialele scrise, sau copii ale capitolelor care mentioneaza folosirea setului de date, impreuna cu indicarea titlului materialului in care se pot gasi respectivele citari sau copii de capitole.
+        </deposReq>
+        <disclaimer>
+          Colectorul datelor, finantatorii si arhiva care gazduieste setul de date (RODA) nu-si asuma nici o responsabilitate pentru utilizarea eronata a seturilor de date sau pentru orice interpretari ori inferente in urma unor astfel de utilizari.
+        </disclaimer>
+      </useStmt>
+    </dataAccs>
+    <othrStdyMat>
+      <relMat>
+        <citation>
+          <titlStmt>
+            <titl>
+              Chestionar Word
+            </titl>
+          </titlStmt>
+          <holdings URI="http://www.roda.ro/documente/019.doc"/>
+        </citation>
+      </relMat>
+      <relMat>
+        <citation>
+          <titlStmt>
+            <titl>
+              Chestionar PDF
+            </titl>
+          </titlStmt>
+          <holdings URI="http://www.roda.ro/documente/019.pdf"/>
+        </citation>
+      </relMat>
+    </othrStdyMat>
+  </stdyDscr>
+  <fileDscr ID="F1" URI="Temp#1.~esstar?Index=0&amp;Name=019_F1">
+    <fileTxt>
+      <fileName>
+        019_F1.NSDstat
+      </fileName>
+      <dimensns>
+        <caseQnty>
+          150
+        </caseQnty>
+        <varQnty>
+          122
+        </varQnty>
+      </dimensns>
+      <fileType>
+        Nesstar 200801
+      </fileType>
+    </fileTxt>
+  </fileDscr>
+  <dataDscr>
+    <var ID="V1" name="NR_CHEST" files="F1" dcml="0" intrvl="contin">
+      <labl>
+        Numar chestionar
+      </labl>
+      <qstn>
+        <qstnLit>
+          Numar chestionar
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="51" max="403"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <sumStat type="min">
+        51
+      </sumStat>
+      <sumStat type="max">
+        403
+      </sumStat>
+      <sumStat type="mean">
+        154.86
+      </sumStat>
+      <sumStat type="stdev">
+        92.442
+      </sumStat>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V2" name="LOCALITA" files="F1" dcml="0" intrvl="contin">
+      <labl>
+        Localitate
+      </labl>
+      <qstn>
+        <qstnLit>
+          Localitatea
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="3" max="22"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <sumStat type="min">
+        3
+      </sumStat>
+      <sumStat type="max">
+        22
+      </sumStat>
+      <sumStat type="mean">
+        8.84
+      </sumStat>
+      <sumStat type="stdev">
+        5.6
+      </sumStat>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V3" name="JUD" files="F1" dcml="0" intrvl="contin">
+      <labl>
+        Judet
+      </labl>
+      <qstn>
+        <qstnLit>
+          Judetul
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="14"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <sumStat type="min">
+        1
+      </sumStat>
+      <sumStat type="max">
+        14
+      </sumStat>
+      <sumStat type="mean">
+        1.22
+      </sumStat>
+      <sumStat type="stdev">
+        1.164
+      </sumStat>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V4" name="SUCURS" files="F1" dcml="0" intrvl="contin">
+      <labl>
+        Sucursala
+      </labl>
+      <qstn>
+        <qstnLit>
+          Sucursala
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="5"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <sumStat type="min">
+        1
+      </sumStat>
+      <sumStat type="max">
+        5
+      </sumStat>
+      <sumStat type="mean">
+        1.56
+      </sumStat>
+      <sumStat type="stdev">
+        1.156
+      </sumStat>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V5" name="OP_TER" files="F1" dcml="0" intrvl="contin">
+      <labl>
+        Operator teren
+      </labl>
+      <qstn>
+        <qstnLit>
+          Operator
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="16" max="73"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <sumStat type="min">
+        16
+      </sumStat>
+      <sumStat type="max">
+        73
+      </sumStat>
+      <sumStat type="mean">
+        66.58
+      </sumStat>
+      <sumStat type="stdev">
+        14.729
+      </sumStat>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V6" name="OP_CALC" files="F1" dcml="0" intrvl="contin">
+      <labl>
+        Operator calculator
+      </labl>
+      <qstn>
+        <qstnLit>
+          Operator calcultaor
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="16" max="73"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <sumStat type="min">
+        16
+      </sumStat>
+      <sumStat type="max">
+        73
+      </sumStat>
+      <sumStat type="mean">
+        66.353
+      </sumStat>
+      <sumStat type="stdev">
+        15.982
+      </sumStat>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V7" name="I1" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Apreciere sanatate
+      </labl>
+      <qstn>
+        <qstnLit>
+          Viata noastra este determinata si caracterizata de mai multe conditii. Cum apreciati pe cele de mai jos?
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="99"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Sanatatea dvs.
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Foarte proasta(e)
+        </labl>
+        <catStat type="freq">
+          9
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Proasta(e)
+        </labl>
+        <catStat type="freq">
+          25
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Satisfacatoar(e)
+        </labl>
+        <catStat type="freq">
+          44
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          4
+        </catValu>
+        <labl>
+          Buna(e)
+        </labl>
+        <catStat type="freq">
+          63
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          5
+        </catValu>
+        <labl>
+          Foarte buna(e)
+        </labl>
+        <catStat type="freq">
+          8
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          99
+        </catValu>
+        <labl>
+          Non raspuns
+        </labl>
+        <catStat type="freq">
+          1
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V8" name="I2" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Apreciere relatiile de familie
+      </labl>
+      <qstn>
+        <qstnLit>
+          Viata noastra este determinata si caracterizata de mai multe conditii. Cum apreciati pe cele de mai jos?
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="99"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Relatiile din familia dvs.
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Foarte proasta(e)
+        </labl>
+        <catStat type="freq">
+          0
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Proasta(e)
+        </labl>
+        <catStat type="freq">
+          2
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Satisfacatoar(e)
+        </labl>
+        <catStat type="freq">
+          10
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          4
+        </catValu>
+        <labl>
+          Buna(e)
+        </labl>
+        <catStat type="freq">
+          97
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          5
+        </catValu>
+        <labl>
+          Foarte buna(e)
+        </labl>
+        <catStat type="freq">
+          35
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          6
+        </catValu>
+        <labl>
+          Nu este cazul
+        </labl>
+        <catStat type="freq">
+          5
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          99
+        </catValu>
+        <labl>
+          Non raspuns
+        </labl>
+        <catStat type="freq">
+          1
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V9" name="I3" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Apreciere conditiile de munca
+      </labl>
+      <qstn>
+        <qstnLit>
+          Viata noastra este determinata si caracterizata de mai multe conditii. Cum apreciati pe cele de mai jos?
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="99"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Conditiile de munca
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Foarte proasta(e)
+        </labl>
+        <catStat type="freq">
+          2
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Proasta(e)
+        </labl>
+        <catStat type="freq">
+          9
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Satisfacatoar(e)
+        </labl>
+        <catStat type="freq">
+          26
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          4
+        </catValu>
+        <labl>
+          Buna(e)
+        </labl>
+        <catStat type="freq">
+          33
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          5
+        </catValu>
+        <labl>
+          Foarte buna(e)
+        </labl>
+        <catStat type="freq">
+          8
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          6
+        </catValu>
+        <labl>
+          Nu este cazul
+        </labl>
+        <catStat type="freq">
+          70
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          99
+        </catValu>
+        <labl>
+          Non raspuns
+        </labl>
+        <catStat type="freq">
+          2
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V10" name="I4" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Apreciere dotarea localitatii cu unitati comerciale
+      </labl>
+      <qstn>
+        <qstnLit>
+          Viata noastra este determinata si caracterizata de mai multe conditii. Cum apreciati pe cele de mai jos?
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="99"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Dotarea localitatii cu unitati comerciale
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Foarte proasta(e)
+        </labl>
+        <catStat type="freq">
+          18
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Proasta(e)
+        </labl>
+        <catStat type="freq">
+          46
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Satisfacatoar(e)
+        </labl>
+        <catStat type="freq">
+          62
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          4
+        </catValu>
+        <labl>
+          Buna(e)
+        </labl>
+        <catStat type="freq">
+          19
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          5
+        </catValu>
+        <labl>
+          Foarte buna(e)
+        </labl>
+        <catStat type="freq">
+          3
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          99
+        </catValu>
+        <labl>
+          Non raspuns
+        </labl>
+        <catStat type="freq">
+          2
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V11" name="I5" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Apreciere dotarea localitatii cu unitati prestari servicii
+      </labl>
+      <qstn>
+        <qstnLit>
+          Viata noastra este determinata si caracterizata de mai multe conditii. Cum apreciati pe cele de mai jos?
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="99"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Dotarea localitatii cu unitati de prestari servicii
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Foarte proasta(e)
+        </labl>
+        <catStat type="freq">
+          44
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Proasta(e)
+        </labl>
+        <catStat type="freq">
+          79
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Satisfacatoar(e)
+        </labl>
+        <catStat type="freq">
+          18
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          4
+        </catValu>
+        <labl>
+          Buna(e)
+        </labl>
+        <catStat type="freq">
+          6
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          5
+        </catValu>
+        <labl>
+          Foarte buna(e)
+        </labl>
+        <catStat type="freq">
+          1
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          99
+        </catValu>
+        <labl>
+          Non raspuns
+        </labl>
+        <catStat type="freq">
+          2
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V12" name="I6" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Apreciere asistenta medicala
+      </labl>
+      <qstn>
+        <qstnLit>
+          Viata noastra este determinata si caracterizata de mai multe conditii. Cum apreciati pe cele de mai jos?
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="5"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Asistenta medicala
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Foarte proasta(e)
+        </labl>
+        <catStat type="freq">
+          10
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Proasta(e)
+        </labl>
+        <catStat type="freq">
+          20
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Satisfacatoar(e)
+        </labl>
+        <catStat type="freq">
+          40
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          4
+        </catValu>
+        <labl>
+          Buna(e)
+        </labl>
+        <catStat type="freq">
+          78
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          5
+        </catValu>
+        <labl>
+          Foarte buna(e)
+        </labl>
+        <catStat type="freq">
+          2
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V13" name="I7" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Apreciere transportul in comun
+      </labl>
+      <qstn>
+        <qstnLit>
+          Viata noastra este determinata si caracterizata de mai multe conditii. Cum apreciati pe cele de mai jos?
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="5"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Calitatea transportului in comun in localitate
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Foarte proasta(e)
+        </labl>
+        <catStat type="freq">
+          37
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Proasta(e)
+        </labl>
+        <catStat type="freq">
+          56
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Satisfacatoar(e)
+        </labl>
+        <catStat type="freq">
+          31
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          4
+        </catValu>
+        <labl>
+          Buna(e)
+        </labl>
+        <catStat type="freq">
+          25
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          5
+        </catValu>
+        <labl>
+          Foarte buna(e)
+        </labl>
+        <catStat type="freq">
+          1
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V14" name="I8" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Apreciere modul de administrare a primariei
+      </labl>
+      <qstn>
+        <qstnLit>
+          Viata noastra este determinata si caracterizata de mai multe conditii. Cum apreciati pe cele de mai jos?
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="99"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Modul in care primaria administreaza localitatea
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Foarte proasta(e)
+        </labl>
+        <catStat type="freq">
+          14
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Proasta(e)
+        </labl>
+        <catStat type="freq">
+          39
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Satisfacatoar(e)
+        </labl>
+        <catStat type="freq">
+          49
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          4
+        </catValu>
+        <labl>
+          Buna(e)
+        </labl>
+        <catStat type="freq">
+          42
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          5
+        </catValu>
+        <labl>
+          Foarte buna(e)
+        </labl>
+        <catStat type="freq">
+          5
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          99
+        </catValu>
+        <labl>
+          Non raspuns
+        </labl>
+        <catStat type="freq">
+          1
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V15" name="I9" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Apreciere starea mediului in localitate
+      </labl>
+      <qstn>
+        <qstnLit>
+          Viata noastra este determinata si caracterizata de mai multe conditii. Cum apreciati pe cele de mai jos?
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="5"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Starea mediului in localitatea dvs.
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Foarte proasta(e)
+        </labl>
+        <catStat type="freq">
+          34
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Proasta(e)
+        </labl>
+        <catStat type="freq">
+          52
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Satisfacatoar(e)
+        </labl>
+        <catStat type="freq">
+          45
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          4
+        </catValu>
+        <labl>
+          Buna(e)
+        </labl>
+        <catStat type="freq">
+          18
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          5
+        </catValu>
+        <labl>
+          Foarte buna(e)
+        </labl>
+        <catStat type="freq">
+          1
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V16" name="I9_1" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Apreciere starea apei in localitate
+      </labl>
+      <qstn>
+        <qstnLit>
+          Viata noastra este determinata si caracterizata de mai multe conditii. Cum apreciati pe cele de mai jos?
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="5"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Apa
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Foarte proasta(e)
+        </labl>
+        <catStat type="freq">
+          23
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Proasta(e)
+        </labl>
+        <catStat type="freq">
+          34
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Satisfacatoar(e)
+        </labl>
+        <catStat type="freq">
+          37
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          4
+        </catValu>
+        <labl>
+          Buna(e)
+        </labl>
+        <catStat type="freq">
+          53
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          5
+        </catValu>
+        <labl>
+          Foarte buna(e)
+        </labl>
+        <catStat type="freq">
+          3
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V17" name="I9_2" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Apreciere starea aerului in localitate
+      </labl>
+      <qstn>
+        <qstnLit>
+          Viata noastra este determinata si caracterizata de mai multe conditii. Cum apreciati pe cele de mai jos?
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="5"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Aerul
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Foarte proasta(e)
+        </labl>
+        <catStat type="freq">
+          28
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Proasta(e)
+        </labl>
+        <catStat type="freq">
+          63
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Satisfacatoar(e)
+        </labl>
+        <catStat type="freq">
+          42
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          4
+        </catValu>
+        <labl>
+          Buna(e)
+        </labl>
+        <catStat type="freq">
+          16
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          5
+        </catValu>
+        <labl>
+          Foarte buna(e)
+        </labl>
+        <catStat type="freq">
+          1
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V18" name="I9_3" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Apreciere starea solului in localitatea dumneavoastra
+      </labl>
+      <qstn>
+        <qstnLit>
+          Viata noastra este determinata si caracterizata de mai multe conditii. Cum apreciati pe cele de mai jos?
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="5"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Solul
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Foarte proasta(e)
+        </labl>
+        <catStat type="freq">
+          20
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Proasta(e)
+        </labl>
+        <catStat type="freq">
+          38
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Satisfacatoar(e)
+        </labl>
+        <catStat type="freq">
+          50
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          4
+        </catValu>
+        <labl>
+          Buna(e)
+        </labl>
+        <catStat type="freq">
+          41
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          5
+        </catValu>
+        <labl>
+          Foarte buna(e)
+        </labl>
+        <catStat type="freq">
+          1
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V19" name="I10" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Apreciere starea mediului in judet
+      </labl>
+      <qstn>
+        <qstnLit>
+          Viata noastra este determinata si caracterizata de mai multe conditii. Cum apreciati pe cele de mai jos?
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="99"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Starea mediului in zona (judetul dvs.) in ansamblu
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Foarte proasta(e)
+        </labl>
+        <catStat type="freq">
+          10
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Proasta(e)
+        </labl>
+        <catStat type="freq">
+          71
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Satisfacatoar(e)
+        </labl>
+        <catStat type="freq">
+          55
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          4
+        </catValu>
+        <labl>
+          Buna(e)
+        </labl>
+        <catStat type="freq">
+          10
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          5
+        </catValu>
+        <labl>
+          Foarte buna(e)
+        </labl>
+        <catStat type="freq">
+          0
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          99
+        </catValu>
+        <labl>
+          Non raspuns
+        </labl>
+        <catStat type="freq">
+          4
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V20" name="I11" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Opinie R posibilitatea de a se afirma
+      </labl>
+      <qstn>
+        <qstnLit>
+          Ce parere aveti despre:
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="6"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Posibilitatea de a va afirma
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Foarte scazuta
+        </labl>
+        <catStat type="freq">
+          9
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Scazuta
+        </labl>
+        <catStat type="freq">
+          36
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Satisfacatoare
+        </labl>
+        <catStat type="freq">
+          13
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          4
+        </catValu>
+        <labl>
+          Buna
+        </labl>
+        <catStat type="freq">
+          15
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          5
+        </catValu>
+        <labl>
+          Foarte buna
+        </labl>
+        <catStat type="freq">
+          0
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          6
+        </catValu>
+        <labl>
+          Nu e cazul
+        </labl>
+        <catStat type="freq">
+          77
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V21" name="I12" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Opinie R obtinerea unui serviciu
+      </labl>
+      <qstn>
+        <qstnLit>
+          Ce parere aveti despre:
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="6"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Posibilitatea de a obtine un loc de munca cum va doriti
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Foarte scazuta
+        </labl>
+        <catStat type="freq">
+          16
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Scazuta
+        </labl>
+        <catStat type="freq">
+          37
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Satisfacatoare
+        </labl>
+        <catStat type="freq">
+          12
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          4
+        </catValu>
+        <labl>
+          Buna
+        </labl>
+        <catStat type="freq">
+          9
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          5
+        </catValu>
+        <labl>
+          Foarte buna
+        </labl>
+        <catStat type="freq">
+          1
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          6
+        </catValu>
+        <labl>
+          Nu e cazul
+        </labl>
+        <catStat type="freq">
+          75
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V22" name="I13" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Opinie R resprectarea drepturilor in general
+      </labl>
+      <qstn>
+        <qstnLit>
+          Ce parere aveti despre:
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="5"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Masura in care sunt respectate drepturile dvs. in general
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Foarte scazuta
+        </labl>
+        <catStat type="freq">
+          9
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Scazuta
+        </labl>
+        <catStat type="freq">
+          23
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Satisfacatoare
+        </labl>
+        <catStat type="freq">
+          42
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          4
+        </catValu>
+        <labl>
+          Buna
+        </labl>
+        <catStat type="freq">
+          74
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          5
+        </catValu>
+        <labl>
+          Foarte buna
+        </labl>
+        <catStat type="freq">
+          2
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V23" name="I14" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Opinie R respectarea dreptului de proprietate a pamantului
+      </labl>
+      <qstn>
+        <qstnLit>
+          Ce parere aveti despre:
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="6"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Masura in care sunt respectate drepturile dvs. de proprietar de pamant
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Foarte scazuta
+        </labl>
+        <catStat type="freq">
+          20
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Scazuta
+        </labl>
+        <catStat type="freq">
+          57
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Satisfacatoare
+        </labl>
+        <catStat type="freq">
+          34
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          4
+        </catValu>
+        <labl>
+          Buna
+        </labl>
+        <catStat type="freq">
+          18
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          5
+        </catValu>
+        <labl>
+          Foarte buna
+        </labl>
+        <catStat type="freq">
+          1
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          6
+        </catValu>
+        <labl>
+          Nu e cazul
+        </labl>
+        <catStat type="freq">
+          20
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V24" name="I15" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Opinie R respectarea dreptului de proprietate a locuintei
+      </labl>
+      <qstn>
+        <qstnLit>
+          Ce parere aveti despre:
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="6"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Masura in care sunt respectate drepturile dvs. de proprietar de locuinta
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Foarte scazuta
+        </labl>
+        <catStat type="freq">
+          4
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Scazuta
+        </labl>
+        <catStat type="freq">
+          10
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Satisfacatoare
+        </labl>
+        <catStat type="freq">
+          14
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          4
+        </catValu>
+        <labl>
+          Buna
+        </labl>
+        <catStat type="freq">
+          96
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          5
+        </catValu>
+        <labl>
+          Foarte buna
+        </labl>
+        <catStat type="freq">
+          22
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          6
+        </catValu>
+        <labl>
+          Nu e cazul
+        </labl>
+        <catStat type="freq">
+          4
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V25" name="I16_1" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Legile slabe creeaza probleme de mediu
+      </labl>
+      <qstn>
+        <qstnLit>
+          Care credeti ca sunt principalele cauze care creeaza problemele de mediu in Bazinul carbonifer al Olteniei?
+        </qstnLit>
+        <ivuInstr>
+          (alegeti cel mult trei variante)
+        </ivuInstr>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="0" max="1"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Insuficienta severitate a legilor;
+      </txt>
+      <catgry>
+        <catValu>
+          0
+        </catValu>
+        <labl>
+          Nu
+        </labl>
+        <catStat type="freq">
+          113
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Da
+        </labl>
+        <catStat type="freq">
+          37
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V26" name="I16_2" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Nerespectarea legilor creeaza probleme de mediu
+      </labl>
+      <qstn>
+        <qstnLit>
+          Care credeti ca sunt principalele cauze care creeaza problemele de mediu in Bazinul carbonifer al Olteniei?
+        </qstnLit>
+        <ivuInstr>
+          (alegeti cel mult trei variante)
+        </ivuInstr>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="0" max="1"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Nerespectarea legilor existente;
+      </txt>
+      <catgry>
+        <catValu>
+          0
+        </catValu>
+        <labl>
+          Nu
+        </labl>
+        <catStat type="freq">
+          83
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Da
+        </labl>
+        <catStat type="freq">
+          67
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V27" name="I16_3" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Lipsa mijloacelor financiare creeaza probleme de mediu
+      </labl>
+      <qstn>
+        <qstnLit>
+          Care credeti ca sunt principalele cauze care creeaza problemele de mediu in Bazinul carbonifer al Olteniei?
+        </qstnLit>
+        <ivuInstr>
+          (alegeti cel mult trei variante)
+        </ivuInstr>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="0" max="1"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Lipsa mijloacelor financiare;
+      </txt>
+      <catgry>
+        <catValu>
+          0
+        </catValu>
+        <labl>
+          Nu
+        </labl>
+        <catStat type="freq">
+          71
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Da
+        </labl>
+        <catStat type="freq">
+          79
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V28" name="I16_4" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Tehnologia invechita creeaza probleme de mediu
+      </labl>
+      <qstn>
+        <qstnLit>
+          Care credeti ca sunt principalele cauze care creeaza problemele de mediu in Bazinul carbonifer al Olteniei?
+        </qstnLit>
+        <ivuInstr>
+          (alegeti cel mult trei variante)
+        </ivuInstr>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="0" max="1"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Tehnologia invechita folosita in activitatile industriale:
+      </txt>
+      <catgry>
+        <catValu>
+          0
+        </catValu>
+        <labl>
+          Nu
+        </labl>
+        <catStat type="freq">
+          99
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Da
+        </labl>
+        <catStat type="freq">
+          51
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V29" name="I16_5" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Incompetenta responsabililor creeaza probleme de mediu
+      </labl>
+      <qstn>
+        <qstnLit>
+          Care credeti ca sunt principalele cauze care creeaza problemele de mediu in Bazinul carbonifer al Olteniei?
+        </qstnLit>
+        <ivuInstr>
+          (alegeti cel mult trei variante)
+        </ivuInstr>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="0" max="1"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Incompetenta celor care se ocupa cu aceste probleme;
+      </txt>
+      <catgry>
+        <catValu>
+          0
+        </catValu>
+        <labl>
+          Nu
+        </labl>
+        <catStat type="freq">
+          105
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Da
+        </labl>
+        <catStat type="freq">
+          45
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V30" name="I16_6" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Nivelul de cultura scazut al locuitorilor creeaza probleme de mediu
+      </labl>
+      <qstn>
+        <qstnLit>
+          Care credeti ca sunt principalele cauze care creeaza problemele de mediu in Bazinul carbonifer al Olteniei?
+        </qstnLit>
+        <ivuInstr>
+          (alegeti cel mult trei variante)
+        </ivuInstr>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="0" max="1"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Nivelul redus de cultura al oamenilor;
+      </txt>
+      <catgry>
+        <catValu>
+          0
+        </catValu>
+        <labl>
+          Nu
+        </labl>
+        <catStat type="freq">
+          113
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Da
+        </labl>
+        <catStat type="freq">
+          37
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V31" name="I16_7" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Altceva creeaza probleme de mediu
+      </labl>
+      <qstn>
+        <qstnLit>
+          Care credeti ca sunt principalele cauze care creeaza problemele de mediu in Bazinul carbonifer al Olteniei?
+        </qstnLit>
+        <ivuInstr>
+          (alegeti cel mult trei variante)
+        </ivuInstr>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="0" max="1"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Altceva (ce anume?)...............................
+      </txt>
+      <catgry>
+        <catValu>
+          0
+        </catValu>
+        <labl>
+          Nu
+        </labl>
+        <catStat type="freq">
+          148
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Da
+        </labl>
+        <catStat type="freq">
+          2
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V32" name="I16_8" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Nu stiu ce creeaza probleme de mediu
+      </labl>
+      <qstn>
+        <qstnLit>
+          Care credeti ca sunt principalele cauze care creeaza problemele de mediu in Bazinul carbonifer al Olteniei?
+        </qstnLit>
+        <ivuInstr>
+          (alegeti cel mult trei variante)
+        </ivuInstr>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="0" max="1"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Nu stiu.
+      </txt>
+      <catgry>
+        <catValu>
+          0
+        </catValu>
+        <labl>
+          Nu
+        </labl>
+        <catStat type="freq">
+          131
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Da
+        </labl>
+        <catStat type="freq">
+          19
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V33" name="I17" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Atentia acordata de catre Guvern problemelor de mediu
+      </labl>
+      <qstn>
+        <qstnLit>
+          Cum apreciati atentia acordata, in prezent, problemelor mediului natural (aer, apa, sol, peisaj, etc.) de catre:
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="99"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Guvern
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Mare
+        </labl>
+        <catStat type="freq">
+          5
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Potrivita
+        </labl>
+        <catStat type="freq">
+          23
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Mica
+        </labl>
+        <catStat type="freq">
+          108
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          99
+        </catValu>
+        <labl>
+          Non raspuns
+        </labl>
+        <catStat type="freq">
+          14
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V34" name="I18" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Atentia acordata de catre conducerea Regiei problemelor de mediu
+      </labl>
+      <qstn>
+        <qstnLit>
+          Cum apreciati atentia acordata, in prezent, problemelor mediului natural (aer, apa, sol, peisaj, etc.) de catre:
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="99"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Conducerea Regiei Autonome a Lignitului (R.A.L.)
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Mare
+        </labl>
+        <catStat type="freq">
+          7
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Potrivita
+        </labl>
+        <catStat type="freq">
+          36
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Mica
+        </labl>
+        <catStat type="freq">
+          99
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          99
+        </catValu>
+        <labl>
+          Non raspuns
+        </labl>
+        <catStat type="freq">
+          8
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V35" name="I19" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Atentia acordata de catre conducerea altor intreprinderi problemelor de mediu
+      </labl>
+      <qstn>
+        <qstnLit>
+          Cum apreciati atentia acordata, in prezent, problemelor mediului natural (aer, apa, sol, peisaj, etc.) de catre:
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="99"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Conducerea altor intreprinderi, firme si institutii
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Mare
+        </labl>
+        <catStat type="freq">
+          1
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Potrivita
+        </labl>
+        <catStat type="freq">
+          17
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Mica
+        </labl>
+        <catStat type="freq">
+          120
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          99
+        </catValu>
+        <labl>
+          Non raspuns
+        </labl>
+        <catStat type="freq">
+          12
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V36" name="I20" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Atentia acordata de catre mijloacele de informare problemelor de mediu
+      </labl>
+      <qstn>
+        <qstnLit>
+          Cum apreciati atentia acordata, in prezent, problemelor mediului natural (aer, apa, sol, peisaj, etc.) de catre:
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="99"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Mijloacele de informare
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Mare
+        </labl>
+        <catStat type="freq">
+          12
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Potrivita
+        </labl>
+        <catStat type="freq">
+          67
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Mica
+        </labl>
+        <catStat type="freq">
+          52
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          99
+        </catValu>
+        <labl>
+          Non raspuns
+        </labl>
+        <catStat type="freq">
+          19
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V37" name="I21" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Atentia acordata de catre Primarie problemelor de mediu
+      </labl>
+      <qstn>
+        <qstnLit>
+          Cum apreciati atentia acordata, in prezent, problemelor mediului natural (aer, apa, sol, peisaj, etc.) de catre:
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="99"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Primaria din localitatea dvs.
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Mare
+        </labl>
+        <catStat type="freq">
+          13
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Potrivita
+        </labl>
+        <catStat type="freq">
+          64
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Mica
+        </labl>
+        <catStat type="freq">
+          70
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          99
+        </catValu>
+        <labl>
+          Non raspuns
+        </labl>
+        <catStat type="freq">
+          3
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V38" name="I22" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Atentia acordata de catre locuitori problemelor de mediu
+      </labl>
+      <qstn>
+        <qstnLit>
+          Cum apreciati atentia acordata, in prezent, problemelor mediului natural (aer, apa, sol, peisaj, etc.) de catre:
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="99"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Oamenii din localitatea dvs.
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Mare
+        </labl>
+        <catStat type="freq">
+          21
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Potrivita
+        </labl>
+        <catStat type="freq">
+          70
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Mica
+        </labl>
+        <catStat type="freq">
+          56
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          99
+        </catValu>
+        <labl>
+          Non raspuns
+        </labl>
+        <catStat type="freq">
+          3
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V39" name="I23" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Regia influenteaza conditiile de viata
+      </labl>
+      <qstn>
+        <qstnLit>
+          Cum credeti ca a influentat si infuenteaza activitatea Regiei Autonome a Lignitului conditiile de viata?
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="4"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          In bine
+        </labl>
+        <catStat type="freq">
+          38
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Nu le-a influentat
+        </labl>
+        <catStat type="freq">
+          20
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          In rau
+        </labl>
+        <catStat type="freq">
+          80
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          4
+        </catValu>
+        <labl>
+          Nu stiu
+        </labl>
+        <catStat type="freq">
+          12
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V40" name="I24" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Cum va influenta in viitor regia, conditiile de viata
+      </labl>
+      <qstn>
+        <qstnLit>
+          Cum credeti ca va influenta in anii care vin prezenta si activiitatea Regiei Autnome a Lignitului conditiile de viata?
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="4"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          In bine
+        </labl>
+        <catStat type="freq">
+          31
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Nu le va influenta
+        </labl>
+        <catStat type="freq">
+          13
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          In rau
+        </labl>
+        <catStat type="freq">
+          45
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          4
+        </catValu>
+        <labl>
+          Nu stiu
+        </labl>
+        <catStat type="freq">
+          61
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V41" name="I25" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Regia asigura de lucru locuitorilor
+      </labl>
+      <qstn>
+        <qstnLit>
+          Considerand urmatoarele afirmatii privind rolul R.A.L. in zona dvs., va rog sa indicati daca si in ce masura sunteti de acord cu ele:
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="6"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Asigurarea cu locuri de munca a populatiei din zona
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Hotarat de acord
+        </labl>
+        <catStat type="freq">
+          22
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          De acord
+        </labl>
+        <catStat type="freq">
+          69
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Nici, nici
+        </labl>
+        <catStat type="freq">
+          14
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          4
+        </catValu>
+        <labl>
+          Dezacord
+        </labl>
+        <catStat type="freq">
+          15
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          5
+        </catValu>
+        <labl>
+          Hotarat dezacord
+        </labl>
+        <catStat type="freq">
+          11
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          6
+        </catValu>
+        <labl>
+          Nu stiu
+        </labl>
+        <catStat type="freq">
+          19
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V42" name="I26" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Regia dezvolta retea de transporturi
+      </labl>
+      <qstn>
+        <qstnLit>
+          Considerand urmatoarele afirmatii privind rolul R.A.L. in zona dvs., va rog sa indicati daca si in ce masura sunteti de acord cu ele:
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="6"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Dezvoltarea retelei de transport si comunicatii
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Hotarat de acord
+        </labl>
+        <catStat type="freq">
+          11
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          De acord
+        </labl>
+        <catStat type="freq">
+          53
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Nici, nici
+        </labl>
+        <catStat type="freq">
+          27
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          4
+        </catValu>
+        <labl>
+          Dezacord
+        </labl>
+        <catStat type="freq">
+          26
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          5
+        </catValu>
+        <labl>
+          Hotarat dezacord
+        </labl>
+        <catStat type="freq">
+          22
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          6
+        </catValu>
+        <labl>
+          Nu stiu
+        </labl>
+        <catStat type="freq">
+          11
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V43" name="I27" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Regia doteaza localitatile cu unitati comerciale / servicii
+      </labl>
+      <qstn>
+        <qstnLit>
+          Considerand urmatoarele afirmatii privind rolul R.A.L. in zona dvs., va rog sa indicati daca si in ce masura sunteti de acord cu ele:
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="99"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Dotarea localitatilor cu unitati comerciale si servicii
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Hotarat de acord
+        </labl>
+        <catStat type="freq">
+          10
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          De acord
+        </labl>
+        <catStat type="freq">
+          15
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Nici, nici
+        </labl>
+        <catStat type="freq">
+          21
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          4
+        </catValu>
+        <labl>
+          Dezacord
+        </labl>
+        <catStat type="freq">
+          57
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          5
+        </catValu>
+        <labl>
+          Hotarat dezacord
+        </labl>
+        <catStat type="freq">
+          35
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          6
+        </catValu>
+        <labl>
+          Nu stiu
+        </labl>
+        <catStat type="freq">
+          11
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          99
+        </catValu>
+        <labl>
+          Non raspuns
+        </labl>
+        <catStat type="freq">
+          1
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V44" name="I28" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Regia asigura asistenta sanitara
+      </labl>
+      <qstn>
+        <qstnLit>
+          Considerand urmatoarele afirmatii privind rolul R.A.L. in zona dvs., va rog sa indicati daca si in ce masura sunteti de acord cu ele:
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="6"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Asistenta sanitara
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Hotarat de acord
+        </labl>
+        <catStat type="freq">
+          18
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          De acord
+        </labl>
+        <catStat type="freq">
+          42
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Nici, nici
+        </labl>
+        <catStat type="freq">
+          10
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          4
+        </catValu>
+        <labl>
+          Dezacord
+        </labl>
+        <catStat type="freq">
+          40
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          5
+        </catValu>
+        <labl>
+          Hotarat dezacord
+        </labl>
+        <catStat type="freq">
+          31
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          6
+        </catValu>
+        <labl>
+          Nu stiu
+        </labl>
+        <catStat type="freq">
+          9
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V45" name="I29" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Regia asigura utilitati de ordin general
+      </labl>
+      <qstn>
+        <qstnLit>
+          Considerand urmatoarele afirmatii privind rolul R.A.L. in zona dvs., va rog sa indicati daca si in ce masura sunteti de acord cu ele:
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="99"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Unitati de ordin general in zona (regularizari de rauri, constructii de poduri, etc.)
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Hotarat de acord
+        </labl>
+        <catStat type="freq">
+          19
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          De acord
+        </labl>
+        <catStat type="freq">
+          48
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Nici, nici
+        </labl>
+        <catStat type="freq">
+          17
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          4
+        </catValu>
+        <labl>
+          Dezacord
+        </labl>
+        <catStat type="freq">
+          28
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          5
+        </catValu>
+        <labl>
+          Hotarat dezacord
+        </labl>
+        <catStat type="freq">
+          24
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          6
+        </catValu>
+        <labl>
+          Nu stiu
+        </labl>
+        <catStat type="freq">
+          13
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          99
+        </catValu>
+        <labl>
+          Non raspuns
+        </labl>
+        <catStat type="freq">
+          1
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V46" name="I30" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Regia asigura popularea mediului natural
+      </labl>
+      <qstn>
+        <qstnLit>
+          Considerand urmatoarele afirmatii privind rolul R.A.L. in zona dvs., va rog sa indicati daca si in ce masura sunteti de acord cu ele:
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="99"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Popularea mediului natural (apa, aer, sol, relief, peisaj)
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Hotarat de acord
+        </labl>
+        <catStat type="freq">
+          61
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          De acord
+        </labl>
+        <catStat type="freq">
+          50
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Nici, nici
+        </labl>
+        <catStat type="freq">
+          9
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          4
+        </catValu>
+        <labl>
+          Dezacord
+        </labl>
+        <catStat type="freq">
+          7
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          5
+        </catValu>
+        <labl>
+          Hotarat dezacord
+        </labl>
+        <catStat type="freq">
+          11
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          6
+        </catValu>
+        <labl>
+          Nu stiu
+        </labl>
+        <catStat type="freq">
+          11
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          99
+        </catValu>
+        <labl>
+          Non raspuns
+        </labl>
+        <catStat type="freq">
+          1
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V47" name="I31" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Regia asigura scoaterea definitiva de teren din agricultura / silvicultura
+      </labl>
+      <qstn>
+        <qstnLit>
+          Considerand urmatoarele afirmatii privind rolul R.A.L. in zona dvs., va rog sa indicati daca si in ce masura sunteti de acord cu ele:
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="6"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Scoaterea definitiva din circuitul agricol si silvic a unor suprafete de pamant
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Hotarat de acord
+        </labl>
+        <catStat type="freq">
+          94
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          De acord
+        </labl>
+        <catStat type="freq">
+          25
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Nici, nici
+        </labl>
+        <catStat type="freq">
+          6
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          4
+        </catValu>
+        <labl>
+          Dezacord
+        </labl>
+        <catStat type="freq">
+          12
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          5
+        </catValu>
+        <labl>
+          Hotarat dezacord
+        </labl>
+        <catStat type="freq">
+          9
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          6
+        </catValu>
+        <labl>
+          Nu stiu
+        </labl>
+        <catStat type="freq">
+          4
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V48" name="I32" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Regia contribuie la disconfortul persoanelor riverane
+      </labl>
+      <qstn>
+        <qstnLit>
+          Considerand urmatoarele afirmatii privind rolul R.A.L. in zona dvs., va rog sa indicati daca si in ce masura sunteti de acord cu ele:
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="6"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Disconfort (neplaceri) pentru cei care locuiesc in apropiere de punctele de lucru
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Hotarat de acord
+        </labl>
+        <catStat type="freq">
+          61
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          De acord
+        </labl>
+        <catStat type="freq">
+          48
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Nici, nici
+        </labl>
+        <catStat type="freq">
+          11
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          4
+        </catValu>
+        <labl>
+          Dezacord
+        </labl>
+        <catStat type="freq">
+          13
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          5
+        </catValu>
+        <labl>
+          Hotarat dezacord
+        </labl>
+        <catStat type="freq">
+          8
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          6
+        </catValu>
+        <labl>
+          Nu stiu
+        </labl>
+        <catStat type="freq">
+          9
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V49" name="I33" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Regia creeaza tensiune, conflicte din cauza dezafectarii de locuinte/localitati
+      </labl>
+      <qstn>
+        <qstnLit>
+          Considerand urmatoarele afirmatii privind rolul R.A.L. in zona dvs., va rog sa indicati daca si in ce masura sunteti de acord cu ele:
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="6"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Crearea unei atmosfere de tensiuni si conflicte din cauza dezafectarii unor localitati si locuinte
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Hotarat de acord
+        </labl>
+        <catStat type="freq">
+          34
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          De acord
+        </labl>
+        <catStat type="freq">
+          55
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Nici, nici
+        </labl>
+        <catStat type="freq">
+          24
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          4
+        </catValu>
+        <labl>
+          Dezacord
+        </labl>
+        <catStat type="freq">
+          18
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          5
+        </catValu>
+        <labl>
+          Hotarat dezacord
+        </labl>
+        <catStat type="freq">
+          8
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          6
+        </catValu>
+        <labl>
+          Nu stiu
+        </labl>
+        <catStat type="freq">
+          11
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V50" name="I34" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Multumirea fata de profesia exercitata
+      </labl>
+      <qstn>
+        <qstnLit>
+          Cat de multumit sunteti de:
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="4"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Profesia pe care o exercitati
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Destul de multumit
+        </labl>
+        <catStat type="freq">
+          46
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Nici, nici
+        </labl>
+        <catStat type="freq">
+          26
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Nemultumit
+        </labl>
+        <catStat type="freq">
+          6
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          4
+        </catValu>
+        <labl>
+          Nu e cazul
+        </labl>
+        <catStat type="freq">
+          72
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V51" name="I35" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Multumirea fata de locul de munca efectiv
+      </labl>
+      <qstn>
+        <qstnLit>
+          Cat de multumit sunteti de:
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="4"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Locul de munca pe care il aveti
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Destul de multumit
+        </labl>
+        <catStat type="freq">
+          47
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Nici, nici
+        </labl>
+        <catStat type="freq">
+          29
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Nemultumit
+        </labl>
+        <catStat type="freq">
+          4
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          4
+        </catValu>
+        <labl>
+          Nu e cazul
+        </labl>
+        <catStat type="freq">
+          70
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V52" name="I36" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Multumirea fata de veniturile obtinute
+      </labl>
+      <qstn>
+        <qstnLit>
+          Cat de multumit sunteti de:
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="4"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Veniturile pe care le obtineti
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Destul de multumit
+        </labl>
+        <catStat type="freq">
+          33
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Nici, nici
+        </labl>
+        <catStat type="freq">
+          32
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Nemultumit
+        </labl>
+        <catStat type="freq">
+          80
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          4
+        </catValu>
+        <labl>
+          Nu e cazul
+        </labl>
+        <catStat type="freq">
+          5
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V53" name="I37" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Multumire R de viata pe care o duce
+      </labl>
+      <qstn>
+        <qstnLit>
+          Luand in considerare intreaga dvs. situatie, cat de multumit sunteti de viata pe care o duceti?
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="5"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Foarte multumit
+        </labl>
+        <catStat type="freq">
+          4
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Multumit
+        </labl>
+        <catStat type="freq">
+          46
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Nici, nici
+        </labl>
+        <catStat type="freq">
+          59
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          4
+        </catValu>
+        <labl>
+          Nemultumit
+        </labl>
+        <catStat type="freq">
+          36
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          5
+        </catValu>
+        <labl>
+          Foarte nemultumit
+        </labl>
+        <catStat type="freq">
+          5
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V54" name="I38_1" files="F1" dcml="0" intrvl="contin">
+      <labl>
+        Venituri luna trecuta/membru gospodarie 1
+      </labl>
+      <qstn>
+        <qstnLit>
+          Va rugam sa mentionati toate veniturile membrilor gospodariei dvs. din luna trecuta (salarii, alocatii, ajutoare de somaj sau sociale, castiguri din activitati ocazionale, venituri agricole etc.)
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="4000" max="570000"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <sumStat type="min">
+        4000
+      </sumStat>
+      <sumStat type="max">
+        570000
+      </sumStat>
+      <sumStat type="mean">
+        135343.407
+      </sumStat>
+      <sumStat type="stdev">
+        93013.595
+      </sumStat>
+      <txt>
+        Membru gospodarie 1
+      </txt>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V55" name="I38_2" files="F1" dcml="0" intrvl="contin">
+      <labl>
+        Venituri luna trecuta/membru gospodarie 2
+      </labl>
+      <qstn>
+        <qstnLit>
+          Va rugam sa mentionati toate veniturile membrilor gospodariei dvs. din luna trecuta (salarii, alocatii, ajutoare de somaj sau sociale, castiguri din activitati ocazionale, venituri agricole etc.)
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="500" max="362000"/>
+      </valrng>
+      <sumStat type="vald">
+        119
+      </sumStat>
+      <sumStat type="invd">
+        31
+      </sumStat>
+      <sumStat type="min">
+        500
+      </sumStat>
+      <sumStat type="max">
+        362000
+      </sumStat>
+      <sumStat type="mean">
+        102865.546
+      </sumStat>
+      <sumStat type="stdev">
+        73716.75
+      </sumStat>
+      <txt>
+        Membru gospodarie 2
+      </txt>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V56" name="I38_3" files="F1" dcml="0" intrvl="contin">
+      <labl>
+        Venituri luna trecuta/membru gospodarie 3
+      </labl>
+      <qstn>
+        <qstnLit>
+          Va rugam sa mentionati toate veniturile membrilor gospodariei dvs. din luna trecuta (salarii, alocatii, ajutoare de somaj sau sociale, castiguri din activitati ocazionale, venituri agricole etc.)
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="6000" max="210000"/>
+      </valrng>
+      <sumStat type="vald">
+        85
+      </sumStat>
+      <sumStat type="invd">
+        65
+      </sumStat>
+      <sumStat type="min">
+        6000
+      </sumStat>
+      <sumStat type="max">
+        210000
+      </sumStat>
+      <sumStat type="mean">
+        55212.941
+      </sumStat>
+      <sumStat type="stdev">
+        67414.893
+      </sumStat>
+      <txt>
+        Membru gospodarie 3
+      </txt>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V57" name="I38_4" files="F1" dcml="0" intrvl="contin">
+      <labl>
+        Venituri luna trecuta/membru gospodarie 4
+      </labl>
+      <qstn>
+        <qstnLit>
+          Va rugam sa mentionati toate veniturile membrilor gospodariei dvs. din luna trecuta (salarii, alocatii, ajutoare de somaj sau sociale, castiguri din activitati ocazionale, venituri agricole etc.)
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="2" max="185000"/>
+      </valrng>
+      <sumStat type="vald">
+        54
+      </sumStat>
+      <sumStat type="invd">
+        96
+      </sumStat>
+      <sumStat type="min">
+        2
+      </sumStat>
+      <sumStat type="max">
+        185000
+      </sumStat>
+      <sumStat type="mean">
+        34425.963
+      </sumStat>
+      <sumStat type="stdev">
+        55117.762
+      </sumStat>
+      <txt>
+        Membru gospodarie 4
+      </txt>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V58" name="I38_5" files="F1" dcml="0" intrvl="contin">
+      <labl>
+        Venituri luna trecuta/membru gospodarie 5
+      </labl>
+      <qstn>
+        <qstnLit>
+          Va rugam sa mentionati toate veniturile membrilor gospodariei dvs. din luna trecuta (salarii, alocatii, ajutoare de somaj sau sociale, castiguri din activitati ocazionale, venituri agricole etc.)
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="6000" max="300000"/>
+      </valrng>
+      <sumStat type="vald">
+        24
+      </sumStat>
+      <sumStat type="invd">
+        126
+      </sumStat>
+      <sumStat type="min">
+        6000
+      </sumStat>
+      <sumStat type="max">
+        300000
+      </sumStat>
+      <sumStat type="mean">
+        26220.833
+      </sumStat>
+      <sumStat type="stdev">
+        65705.509
+      </sumStat>
+      <txt>
+        Membru gospodarie 5
+      </txt>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V59" name="I38_6" files="F1" dcml="0" intrvl="contin">
+      <labl>
+        Venituri luna trecuta/membru gospodarie 6
+      </labl>
+      <qstn>
+        <qstnLit>
+          Va rugam sa mentionati toate veniturile membrilor gospodariei dvs. din luna trecuta (salarii, alocatii, ajutoare de somaj sau sociale, castiguri din activitati ocazionale, venituri agricole etc.)
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="6000" max="6400"/>
+      </valrng>
+      <sumStat type="vald">
+        10
+      </sumStat>
+      <sumStat type="invd">
+        140
+      </sumStat>
+      <sumStat type="min">
+        6000
+      </sumStat>
+      <sumStat type="max">
+        6400
+      </sumStat>
+      <sumStat type="mean">
+        6160
+      </sumStat>
+      <sumStat type="stdev">
+        177.639
+      </sumStat>
+      <txt>
+        Membru gospodarie 6
+      </txt>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V60" name="I38_7" files="F1" dcml="0" intrvl="contin">
+      <labl>
+        Venituri luna trecuta/membru gospodarie 7
+      </labl>
+      <qstn>
+        <qstnLit>
+          Va rugam sa mentionati toate veniturile membrilor gospodariei dvs. din luna trecuta (salarii, alocatii, ajutoare de somaj sau sociale, castiguri din activitati ocazionale, venituri agricole etc.)
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="6200" max="6400"/>
+      </valrng>
+      <sumStat type="vald">
+        3
+      </sumStat>
+      <sumStat type="invd">
+        147
+      </sumStat>
+      <sumStat type="min">
+        6200
+      </sumStat>
+      <sumStat type="max">
+        6400
+      </sumStat>
+      <sumStat type="mean">
+        6333.333
+      </sumStat>
+      <sumStat type="stdev">
+        115.47
+      </sumStat>
+      <txt>
+        Membru gospodarie 7
+      </txt>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V61" name="I38_8" files="F1" dcml="0" intrvl="contin">
+      <labl>
+        Venituri luna trecuta/membru gospodarie 8
+      </labl>
+      <qstn>
+        <qstnLit>
+          Va rugam sa mentionati toate veniturile membrilor gospodariei dvs. din luna trecuta (salarii, alocatii, ajutoare de somaj sau sociale, castiguri din activitati ocazionale, venituri agricole etc.)
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="500" max="6400"/>
+      </valrng>
+      <sumStat type="vald">
+        2
+      </sumStat>
+      <sumStat type="invd">
+        148
+      </sumStat>
+      <sumStat type="min">
+        500
+      </sumStat>
+      <sumStat type="max">
+        6400
+      </sumStat>
+      <sumStat type="mean">
+        3450
+      </sumStat>
+      <sumStat type="stdev">
+        4171.93
+      </sumStat>
+      <txt>
+        Membru gospodarie 8
+      </txt>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V62" name="I39" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Estimarea veniturilor
+      </labl>
+      <qstn>
+        <qstnLit>
+          Cum estimati veniturile totale ale familiei dvs. in raport cu necesitatile? (cititi toate variantele si alegeti raspunsul care vi se potriveste).
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="4"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Nu ajung nici pentru strictul necesar
+        </labl>
+        <catStat type="freq">
+          81
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Numai pentru strictul necesar
+        </labl>
+        <catStat type="freq">
+          56
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Depasesc strictul necesar, dar nu cu mult
+        </labl>
+        <catStat type="freq">
+          13
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          4
+        </catValu>
+        <labl>
+          Depasesc strictul necesar /pot obtine obiecte mai scumpe
+        </labl>
+        <catStat type="freq">
+          0
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V63" name="I40" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        In bazin exista conflicte intre salariati/conduceri
+      </labl>
+      <qstn>
+        <qstnLit>
+          In ce masura conflictele de mai jos sunt, dupa parerea dvs. prezente in bazinul carbonifer al Olteniei?
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="4"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Intre salariati si conducerile intreprinderilor
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Multe
+        </labl>
+        <catStat type="freq">
+          29
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Putine
+        </labl>
+        <catStat type="freq">
+          41
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Deloc
+        </labl>
+        <catStat type="freq">
+          5
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          4
+        </catValu>
+        <labl>
+          Nu stiu
+        </labl>
+        <catStat type="freq">
+          75
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V64" name="I41" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        In bazin exista conflicte intre sindicate/conduceri
+      </labl>
+      <qstn>
+        <qstnLit>
+          In ce masura conflictele de mai jos sunt, dupa parerea dvs. prezente in bazinul carbonifer al Olteniei?
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="4"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Intre sindicate si conducerile intreprinderilor
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Multe
+        </labl>
+        <catStat type="freq">
+          31
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Putine
+        </labl>
+        <catStat type="freq">
+          39
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Deloc
+        </labl>
+        <catStat type="freq">
+          5
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          4
+        </catValu>
+        <labl>
+          Nu stiu
+        </labl>
+        <catStat type="freq">
+          75
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V65" name="I42" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        In bazin exista conflicte intre regie/proprietarii terenurilor afectate
+      </labl>
+      <qstn>
+        <qstnLit>
+          In ce masura conflictele de mai jos sunt, dupa parerea dvs. prezente in bazinul carbonifer al Olteniei?
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="4"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Intre R.A.L. si proprietarii de terenuri afectate de lucrarile miniere
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Multe
+        </labl>
+        <catStat type="freq">
+          81
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Putine
+        </labl>
+        <catStat type="freq">
+          29
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Deloc
+        </labl>
+        <catStat type="freq">
+          5
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          4
+        </catValu>
+        <labl>
+          Nu stiu
+        </labl>
+        <catStat type="freq">
+          35
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V66" name="I43" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        In bazin exista conflicte intre regie/locuitorii satelor dezafectate
+      </labl>
+      <qstn>
+        <qstnLit>
+          In ce masura conflictele de mai jos sunt, dupa parerea dvs. prezente in bazinul carbonifer al Olteniei?
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="4"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Intre R.A.L. si locuitorii satelor ce se dezafecteaza datorita lucrarilor miniere
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Multe
+        </labl>
+        <catStat type="freq">
+          56
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Putine
+        </labl>
+        <catStat type="freq">
+          57
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Deloc
+        </labl>
+        <catStat type="freq">
+          7
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          4
+        </catValu>
+        <labl>
+          Nu stiu
+        </labl>
+        <catStat type="freq">
+          30
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V67" name="I44" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        In bazin exista conflicte intre regie/primarii
+      </labl>
+      <qstn>
+        <qstnLit>
+          In ce masura conflictele de mai jos sunt, dupa parerea dvs. prezente in bazinul carbonifer al Olteniei?
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="4"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Intre R.A.L. si primarii
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Multe
+        </labl>
+        <catStat type="freq">
+          17
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Putine
+        </labl>
+        <catStat type="freq">
+          36
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Deloc
+        </labl>
+        <catStat type="freq">
+          12
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          4
+        </catValu>
+        <labl>
+          Nu stiu
+        </labl>
+        <catStat type="freq">
+          85
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V68" name="I45" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        In bazin exista conflicte intre regie/alte intreprinderi
+      </labl>
+      <qstn>
+        <qstnLit>
+          In ce masura conflictele de mai jos sunt, dupa parerea dvs. prezente in bazinul carbonifer al Olteniei?
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="99"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Intre R.A.L. si alte institutii (intreprinderi)
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Multe
+        </labl>
+        <catStat type="freq">
+          10
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Putine
+        </labl>
+        <catStat type="freq">
+          13
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Deloc
+        </labl>
+        <catStat type="freq">
+          9
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          4
+        </catValu>
+        <labl>
+          Nu stiu
+        </labl>
+        <catStat type="freq">
+          117
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          99
+        </catValu>
+        <labl>
+          Non raspuns
+        </labl>
+        <catStat type="freq">
+          1
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V69" name="I46" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        In bazin exista conflicte intre localnic/proveniti din alte parti
+      </labl>
+      <qstn>
+        <qstnLit>
+          In ce masura conflictele de mai jos sunt, dupa parerea dvs. prezente in bazinul carbonifer al Olteniei?
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="99"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Intre localnici si cei veniti din alte parti
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Multe
+        </labl>
+        <catStat type="freq">
+          13
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Putine
+        </labl>
+        <catStat type="freq">
+          22
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Deloc
+        </labl>
+        <catStat type="freq">
+          78
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          4
+        </catValu>
+        <labl>
+          Nu stiu
+        </labl>
+        <catStat type="freq">
+          31
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          99
+        </catValu>
+        <labl>
+          Non raspuns
+        </labl>
+        <catStat type="freq">
+          6
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V70" name="I47_1" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Am frigider
+      </labl>
+      <qstn>
+        <qstnLit>
+          Pe care din bunurile urmatoare le posedati:
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="2"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Frigider
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Da
+        </labl>
+        <catStat type="freq">
+          115
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Nu
+        </labl>
+        <catStat type="freq">
+          35
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V71" name="I47_2" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Am congelator
+      </labl>
+      <qstn>
+        <qstnLit>
+          Pe care din bunurile urmatoare le posedati:
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="2"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Congelator
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Da
+        </labl>
+        <catStat type="freq">
+          19
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Nu
+        </labl>
+        <catStat type="freq">
+          131
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V72" name="I47_3" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Am aragaz
+      </labl>
+      <qstn>
+        <qstnLit>
+          Pe care din bunurile urmatoare le posedati:
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="2"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Aragaz (cu butelie sau gaze)
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Da
+        </labl>
+        <catStat type="freq">
+          126
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Nu
+        </labl>
+        <catStat type="freq">
+          24
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V73" name="I47_4" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Am masina de spalat
+      </labl>
+      <qstn>
+        <qstnLit>
+          Pe care din bunurile urmatoare le posedati:
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="2"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Masina de spalat
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Da
+        </labl>
+        <catStat type="freq">
+          87
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Nu
+        </labl>
+        <catStat type="freq">
+          63
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V74" name="I47_5" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Am aspirator
+      </labl>
+      <qstn>
+        <qstnLit>
+          Pe care din bunurile urmatoare le posedati:
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="2"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Aspirator de praf
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Da
+        </labl>
+        <catStat type="freq">
+          44
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Nu
+        </labl>
+        <catStat type="freq">
+          106
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V75" name="I47_6" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Am radio
+      </labl>
+      <qstn>
+        <qstnLit>
+          Pe care din bunurile urmatoare le posedati:
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="2"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Aparat de radio
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Da
+        </labl>
+        <catStat type="freq">
+          129
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Nu
+        </labl>
+        <catStat type="freq">
+          21
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V76" name="I47_7" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Am TV alb-negru
+      </labl>
+      <qstn>
+        <qstnLit>
+          Pe care din bunurile urmatoare le posedati:
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="2"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Aparat TV alb-negru
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Da
+        </labl>
+        <catStat type="freq">
+          99
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Nu
+        </labl>
+        <catStat type="freq">
+          51
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V77" name="I47_8" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Am TV color
+      </labl>
+      <qstn>
+        <qstnLit>
+          Pe care din bunurile urmatoare le posedati:
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="2"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Aparat TV color
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Da
+        </labl>
+        <catStat type="freq">
+          42
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Nu
+        </labl>
+        <catStat type="freq">
+          108
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V78" name="I47_9" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Am telefon
+      </labl>
+      <qstn>
+        <qstnLit>
+          Pe care din bunurile urmatoare le posedati:
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="2"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Telefon
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Da
+        </labl>
+        <catStat type="freq">
+          14
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Nu
+        </labl>
+        <catStat type="freq">
+          136
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V79" name="I47_10" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Am videocasetofon
+      </labl>
+      <qstn>
+        <qstnLit>
+          Pe care din bunurile urmatoare le posedati:
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="2"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Videocasetofon
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Da
+        </labl>
+        <catStat type="freq">
+          15
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Nu
+        </labl>
+        <catStat type="freq">
+          135
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V80" name="I47_11" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Am casetofon
+      </labl>
+      <qstn>
+        <qstnLit>
+          Pe care din bunurile urmatoare le posedati:
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="2"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Casetofon
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Da
+        </labl>
+        <catStat type="freq">
+          59
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Nu
+        </labl>
+        <catStat type="freq">
+          91
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V81" name="I47_12" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Am autoturism
+      </labl>
+      <qstn>
+        <qstnLit>
+          Pe care din bunurile urmatoare le posedati:
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="2"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Autoturism
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Da
+        </labl>
+        <catStat type="freq">
+          42
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Nu
+        </labl>
+        <catStat type="freq">
+          108
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V82" name="I47_13" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Am tractor
+      </labl>
+      <qstn>
+        <qstnLit>
+          Pe care din bunurile urmatoare le posedati:
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="2"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Tractor
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Da
+        </labl>
+        <catStat type="freq">
+          3
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Nu
+        </labl>
+        <catStat type="freq">
+          147
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V83" name="I47_14" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Am autocamion (autobuz, microbuz)
+      </labl>
+      <qstn>
+        <qstnLit>
+          Pe care din bunurile urmatoare le posedati:
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="2"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Autocamion (autobuz, microbuz)
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Da
+        </labl>
+        <catStat type="freq">
+          3
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Nu
+        </labl>
+        <catStat type="freq">
+          147
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V84" name="I4715_C1" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Am altceva
+      </labl>
+      <qstn>
+        <qstnLit>
+          Pe care din bunurile urmatoare le posedati:
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="2"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Altceva (ce?.........)
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Da
+        </labl>
+        <catStat type="freq">
+          2
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Nu
+        </labl>
+        <catStat type="freq">
+          148
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V85" name="I48" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Locuinta mea este
+      </labl>
+      <qstn>
+        <qstnLit>
+          Locuinta dvs. este:
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="2"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Este la curte
+        </labl>
+        <catStat type="freq">
+          132
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          La bloc
+        </labl>
+        <catStat type="freq">
+          18
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V86" name="I49" files="F1" dcml="0" intrvl="contin">
+      <labl>
+        Total camere
+      </labl>
+      <valrng>
+        <range UNITS="REAL" min="1" max="8"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <sumStat type="min">
+        1
+      </sumStat>
+      <sumStat type="max">
+        8
+      </sumStat>
+      <sumStat type="mean">
+        3.413
+      </sumStat>
+      <sumStat type="stdev">
+        1.312
+      </sumStat>
+      <txt>
+        Din cate camere se compune locuinta dvs.?
+      </txt>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V87" name="I50_1" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Locuinta are apa curenta
+      </labl>
+      <qstn>
+        <qstnLit>
+          Locuinta dvs. are:
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="2"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Apa curenta
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Da
+        </labl>
+        <catStat type="freq">
+          55
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Nu
+        </labl>
+        <catStat type="freq">
+          95
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V88" name="I50_2" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Locuinta are apa la fantana proprie
+      </labl>
+      <qstn>
+        <qstnLit>
+          Locuinta dvs. are:
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="2"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Apa la fantana proprie
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Da
+        </labl>
+        <catStat type="freq">
+          68
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Nu
+        </labl>
+        <catStat type="freq">
+          82
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V89" name="I50_3" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Locuinta are apa la fantana comunala
+      </labl>
+      <qstn>
+        <qstnLit>
+          Locuinta dvs. are:
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="2"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Apa la fantana comuna
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Da
+        </labl>
+        <catStat type="freq">
+          49
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Nu
+        </labl>
+        <catStat type="freq">
+          101
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V90" name="I50_4" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Locuinta are apa la retea pe strada
+      </labl>
+      <qstn>
+        <qstnLit>
+          Locuinta dvs. are:
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="2"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Apa de la retea pe strada
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Da
+        </labl>
+        <catStat type="freq">
+          20
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Nu
+        </labl>
+        <catStat type="freq">
+          130
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V91" name="I50_5" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Locuinta are baie
+      </labl>
+      <qstn>
+        <qstnLit>
+          Locuinta dvs. are:
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="2"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Baie
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Da
+        </labl>
+        <catStat type="freq">
+          55
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Nu
+        </labl>
+        <catStat type="freq">
+          95
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V92" name="I50_6" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Locuinta are WC in interior
+      </labl>
+      <qstn>
+        <qstnLit>
+          Locuinta dvs. are:
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="2"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        W.C. in interior
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Da
+        </labl>
+        <catStat type="freq">
+          47
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Nu
+        </labl>
+        <catStat type="freq">
+          103
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V93" name="I50_7" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Locuinta are WC in curte
+      </labl>
+      <qstn>
+        <qstnLit>
+          Locuinta dvs. are:
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="2"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        W.C. in curte
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Da
+        </labl>
+        <catStat type="freq">
+          110
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Nu
+        </labl>
+        <catStat type="freq">
+          40
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V94" name="I51_1" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        R are locuinta proprietate
+      </labl>
+      <qstn>
+        <qstnLit>
+          Ce proprietati (coproprietati) aveti (dvs. si familia)?
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="2"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Locuinta
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Da
+        </labl>
+        <catStat type="freq">
+          140
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Nu
+        </labl>
+        <catStat type="freq">
+          10
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V95" name="I51_2" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Nu are teren
+      </labl>
+      <qstn>
+        <qstnLit>
+          Ce proprietati (coproprietati) aveti (dvs. si familia)?
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="2"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Teren agricol
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Da
+        </labl>
+        <catStat type="freq">
+          101
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Nu
+        </labl>
+        <catStat type="freq">
+          49
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V96" name="I51_2_HA" files="F1" dcml="1" intrvl="contin">
+      <labl>
+        Total ha teren in proprietate
+      </labl>
+      <qstn>
+        <qstnLit>
+          Ce proprietati (coproprietati) aveti (dvs. si familia)?
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="0.1" max="97"/>
+      </valrng>
+      <invalrng>
+        <item UNITS="REAL" VALUE="97"/>
+      </invalrng>
+      <sumStat type="vald">
+        101
+      </sumStat>
+      <sumStat type="invd">
+        49
+      </sumStat>
+      <sumStat type="min">
+        0.1
+      </sumStat>
+      <sumStat type="max">
+        4
+      </sumStat>
+      <sumStat type="mean">
+        0.641
+      </sumStat>
+      <sumStat type="stdev">
+        0.703
+      </sumStat>
+      <txt>
+        Teren agricol
+      </txt>
+      <catgry missing="Y">
+        <catValu>
+          97
+        </catValu>
+        <labl>
+          Nu e cazul
+        </labl>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V97" name="I51_3" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        R are unitati productive
+      </labl>
+      <qstn>
+        <qstnLit>
+          Ce proprietati (coproprietati) aveti (dvs. si familia)?
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="2"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Unitati productive (ateliere, ferme etc.)
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Da
+        </labl>
+        <catStat type="freq">
+          1
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Nu
+        </labl>
+        <catStat type="freq">
+          149
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V98" name="I51_4" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        R are magazin, chiosc
+      </labl>
+      <qstn>
+        <qstnLit>
+          Ce proprietati (coproprietati) aveti (dvs. si familia)?
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="2"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Magazine (chioscuri)
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Da
+        </labl>
+        <catStat type="freq">
+          3
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Nu
+        </labl>
+        <catStat type="freq">
+          147
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V99" name="I51_5" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        R are gospodarie taraneasca
+      </labl>
+      <qstn>
+        <qstnLit>
+          Ce proprietati (coproprietati) aveti (dvs. si familia)?
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="2"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Gospodarie taraneasca
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Da
+        </labl>
+        <catStat type="freq">
+          126
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Nu
+        </labl>
+        <catStat type="freq">
+          24
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V100" name="I52" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        In viitor R se teme de somaj
+      </labl>
+      <qstn>
+        <qstnLit>
+          In perioada urmatoare, de ce anume va temeti cel mai mult, in ce va priveste?
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="99"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Somaj
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Mult
+        </labl>
+        <catStat type="freq">
+          43
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Putin
+        </labl>
+        <catStat type="freq">
+          16
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Deloc
+        </labl>
+        <catStat type="freq">
+          49
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          99
+        </catValu>
+        <labl>
+          Non raspuns
+        </labl>
+        <catStat type="freq">
+          42
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V101" name="I53" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        In viitor R se teme de cresterea preturilor
+      </labl>
+      <qstn>
+        <qstnLit>
+          In perioada urmatoare, de ce anume va temeti cel mai mult, in ce va priveste?
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="3"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Cresterea preturilor
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Mult
+        </labl>
+        <catStat type="freq">
+          138
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Putin
+        </labl>
+        <catStat type="freq">
+          11
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Deloc
+        </labl>
+        <catStat type="freq">
+          1
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V102" name="I54" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        In viitor R se teme de impozite
+      </labl>
+      <qstn>
+        <qstnLit>
+          In perioada urmatoare, de ce anume va temeti cel mai mult, in ce va priveste?
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="3"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Impozite
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Mult
+        </labl>
+        <catStat type="freq">
+          132
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Putin
+        </labl>
+        <catStat type="freq">
+          15
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Deloc
+        </labl>
+        <catStat type="freq">
+          3
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V103" name="I55" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        In viitor R se teme de expropierea pamantului / locuintei
+      </labl>
+      <qstn>
+        <qstnLit>
+          In perioada urmatoare, de ce anume va temeti cel mai mult, in ce va priveste?
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="99"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Exproprierea pamantului sau a locuintei din cauza activitatii miniere
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Mult
+        </labl>
+        <catStat type="freq">
+          37
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Putin
+        </labl>
+        <catStat type="freq">
+          28
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Deloc
+        </labl>
+        <catStat type="freq">
+          47
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          99
+        </catValu>
+        <labl>
+          Non raspuns
+        </labl>
+        <catStat type="freq">
+          38
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V104" name="I56" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        In viitor R se teme de poluarea mediului
+      </labl>
+      <qstn>
+        <qstnLit>
+          In perioada urmatoare, de ce anume va temeti cel mai mult, in ce va priveste?
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="3"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Poluarea mediului
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Mult
+        </labl>
+        <catStat type="freq">
+          97
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Putin
+        </labl>
+        <catStat type="freq">
+          50
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Deloc
+        </labl>
+        <catStat type="freq">
+          3
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V105" name="I57" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Are pamant afectat de activitatea miniera
+      </labl>
+      <qstn>
+        <qstnLit>
+          Dvs. (sau un membru al gospodariei dvs.) aveti suprafete de pamant afectate de activitatea miniera?
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="2"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Nu
+        </labl>
+        <catStat type="freq">
+          41
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Da
+        </labl>
+        <catStat type="freq">
+          109
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V106" name="I57_CAND" files="F1" dcml="0" intrvl="contin">
+      <labl>
+        Din ce an are pamant afectat de activitatea miniera
+      </labl>
+      <qstn>
+        <qstnLit>
+          Dvs. (sau un membru al gospodariei dvs.) aveti suprafete de pamant afectate de activitatea miniera?
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="97" max="1994"/>
+      </valrng>
+      <invalrng>
+        <item UNITS="REAL" VALUE="99"/>
+        <item UNITS="REAL" VALUE="97"/>
+      </invalrng>
+      <sumStat type="vald">
+        101
+      </sumStat>
+      <sumStat type="invd">
+        49
+      </sumStat>
+      <sumStat type="min">
+        1954
+      </sumStat>
+      <sumStat type="max">
+        1994
+      </sumStat>
+      <sumStat type="mean">
+        1976.535
+      </sumStat>
+      <sumStat type="stdev">
+        10.141
+      </sumStat>
+      <catgry missing="Y">
+        <catValu>
+          97
+        </catValu>
+        <labl>
+          Nu e cazul
+        </labl>
+      </catgry>
+      <catgry missing="Y">
+        <catValu>
+          99
+        </catValu>
+        <labl>
+          Non raspuns
+        </labl>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V107" name="I58" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Cum se rezolva problemele dintre regie/proprietari particulari
+      </labl>
+      <qstn>
+        <qstnLit>
+          Cum considerati ca se rezolva problemele care apar intre proprietarii de terenuri (case) si R.A.L.?
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="4"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Destul de corect
+        </labl>
+        <catStat type="freq">
+          10
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Partial corect
+        </labl>
+        <catStat type="freq">
+          39
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Incorect
+        </labl>
+        <catStat type="freq">
+          60
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          4
+        </catValu>
+        <labl>
+          Nu ma pot pronunta
+        </labl>
+        <catStat type="freq">
+          41
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V108" name="I59" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Apreciere R legislatia care regl rel dintre propr de teren. si RAL
+      </labl>
+      <qstn>
+        <qstnLit>
+          Cum vi se pare legislatia care reglementeaza relatiile dintre proprietarii de terenuri (gospodarii, case) si R.A.L.?
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="4"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Avantajeaza regia
+        </labl>
+        <catStat type="freq">
+          75
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Este impartiala
+        </labl>
+        <catStat type="freq">
+          17
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Avantajeaza propietarii
+        </labl>
+        <catStat type="freq">
+          0
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          4
+        </catValu>
+        <labl>
+          Nu ma pot pronunta
+        </labl>
+        <catStat type="freq">
+          58
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V109" name="I60" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Despagubirile acordate de regie proprietarilor de terenuri afectate sunt:
+      </labl>
+      <qstn>
+        <qstnLit>
+          Cum apreciati ca sunt despagubirile platite de regia carbunelui proprietarilor afectati de lucrarile miniere?
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="4"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Aproximative cu paguba
+        </labl>
+        <catStat type="freq">
+          7
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Mai mici decat se cuvin
+        </labl>
+        <catStat type="freq">
+          39
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Mult mai mici
+        </labl>
+        <catStat type="freq">
+          62
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          4
+        </catValu>
+        <labl>
+          Nu ma pot pronunta
+        </labl>
+        <catStat type="freq">
+          42
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V110" name="I62" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Mutat datorita lucrarilor miniere
+      </labl>
+      <qstn>
+        <qstnLit>
+          Dvs. ati fost mutat datorita lucrarilor miniere?
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="2"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Da
+        </labl>
+        <catStat type="freq">
+          48
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Nu
+        </labl>
+        <catStat type="freq">
+          102
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V111" name="I63" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Parerea despre noua locuinta unde a fost mutat
+      </labl>
+      <qstn>
+        <preQTxt>
+          Daca ati fost mutat datorita lucrarilor miniere ale regiei carbunelui, va rugam sa raspunde_i la intrebarile 63 - 65.
+        </preQTxt>
+        <qstnLit>
+          Ce parere aveti de noua locuinta?
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="97"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Este mai buna decat cea veche
+        </labl>
+        <catStat type="freq">
+          29
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Este la fel
+        </labl>
+        <catStat type="freq">
+          11
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Imi convine mai putin
+        </labl>
+        <catStat type="freq">
+          8
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          4
+        </catValu>
+        <labl>
+          Nu ma pot pronunta
+        </labl>
+        <catStat type="freq">
+          0
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          97
+        </catValu>
+        <labl>
+          Nu e cazul
+        </labl>
+        <catStat type="freq">
+          102
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V112" name="I66" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Opinia R privind dezafectarea locuintelor si localitatilor
+      </labl>
+      <qstn>
+        <qstnLit>
+          Avand in vedere modul in care se rezolva in prezent problema dezafectarii, locuintelor si localitatilor, cum considerati:
+        </qstnLit>
+        <ivuInstr>
+          Pentru toti respondentii:
+        </ivuInstr>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="99"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Este o problema grava
+        </labl>
+        <catStat type="freq">
+          49
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <catStat type="freq">
+          23
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <catStat type="freq">
+          30
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          4
+        </catValu>
+        <catStat type="freq">
+          32
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          5
+        </catValu>
+        <labl>
+          Nu este deloc grava
+        </labl>
+        <catStat type="freq">
+          13
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          99
+        </catValu>
+        <labl>
+          Non raspuns
+        </labl>
+        <catStat type="freq">
+          3
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V113" name="I67" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Exploatarea/punerea in posesie depind de legile necorespun
+      </labl>
+      <qstn>
+        <qstnLit>
+          In ce masura dificultatile privind exploatarea, respectiv, punerea in posesie, sunt legate de:
+        </qstnLit>
+        <ivuInstr>
+          Pentru toti respondentii:
+        </ivuInstr>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="99"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Reglementarile legale necorespunzatoare
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Mult
+        </labl>
+        <catStat type="freq">
+          60
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Putin
+        </labl>
+        <catStat type="freq">
+          68
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Deloc
+        </labl>
+        <catStat type="freq">
+          4
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          99
+        </catValu>
+        <labl>
+          Non raspuns
+        </labl>
+        <catStat type="freq">
+          18
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V114" name="I68" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Exploatarea/punerea in posesie depind de imposibilitatea de a obtine in compensatie pamant langa locuinta
+      </labl>
+      <qstn>
+        <qstnLit>
+          In ce masura dificultatile privind exploatarea, respectiv, punerea in posesie, sunt legate de:
+        </qstnLit>
+        <ivuInstr>
+          Pentru toti respondentii:
+        </ivuInstr>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="99"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Imposibilitatea de a obtine, in compensatie, pamant la fel de fertil si in apropierea locuntei
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Mult
+        </labl>
+        <catStat type="freq">
+          107
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Putin
+        </labl>
+        <catStat type="freq">
+          17
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Deloc
+        </labl>
+        <catStat type="freq">
+          8
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          99
+        </catValu>
+        <labl>
+          Non raspuns
+        </labl>
+        <catStat type="freq">
+          18
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V115" name="I69" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Exploatarea/punerea in posesie depind de atasamentul oamenilor fata de locuinta lor
+      </labl>
+      <qstn>
+        <qstnLit>
+          In ce masura dificultatile privind exploatarea, respectiv, punerea in posesie, sunt legate de:
+        </qstnLit>
+        <ivuInstr>
+          Pentru toti respondentii:
+        </ivuInstr>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="99"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Atasamentul oamenilor fata de propria locuinta
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Mult
+        </labl>
+        <catStat type="freq">
+          76
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Putin
+        </labl>
+        <catStat type="freq">
+          40
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Deloc
+        </labl>
+        <catStat type="freq">
+          16
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          99
+        </catValu>
+        <labl>
+          Non raspuns
+        </labl>
+        <catStat type="freq">
+          18
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V116" name="I70" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Exploatarea/punerea in posesie depind de tulburarea relatiilor dintre vecini/rude
+      </labl>
+      <qstn>
+        <qstnLit>
+          In ce masura dificultatile privind exploatarea, respectiv, punerea in posesie, sunt legate de:
+        </qstnLit>
+        <ivuInstr>
+          Pentru toti respondentii:
+        </ivuInstr>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="99"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Tulburarea relatiilor de vecinatate si dintre rude
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Mult
+        </labl>
+        <catStat type="freq">
+          42
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Putin
+        </labl>
+        <catStat type="freq">
+          53
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Deloc
+        </labl>
+        <catStat type="freq">
+          36
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          99
+        </catValu>
+        <labl>
+          Non raspuns
+        </labl>
+        <catStat type="freq">
+          19
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V117" name="I71" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Exploatarea/punerea in posesie depind de lipsa de preocupare a regiei de a multumi expropriatii
+      </labl>
+      <qstn>
+        <qstnLit>
+          In ce masura dificultatile privind exploatarea, respectiv, punerea in posesie, sunt legate de:
+        </qstnLit>
+        <ivuInstr>
+          Pentru toti respondentii:
+        </ivuInstr>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="99"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Insuficienta preocupare din partea R.A.L. de a multumi pe expropriati
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Mult
+        </labl>
+        <catStat type="freq">
+          58
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Putin
+        </labl>
+        <catStat type="freq">
+          61
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Deloc
+        </labl>
+        <catStat type="freq">
+          13
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          99
+        </catValu>
+        <labl>
+          Non raspuns
+        </labl>
+        <catStat type="freq">
+          18
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V118" name="I72" files="F1" dcml="0" intrvl="contin">
+      <labl>
+        Nr. persoane in familie
+      </labl>
+      <qstn>
+        <qstnLit>
+          Din cate persoane este compusa gospodaria dvs.?
+        </qstnLit>
+        <ivuInstr>
+          Pentru toti respondentii:
+        </ivuInstr>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="8"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <sumStat type="min">
+        1
+      </sumStat>
+      <sumStat type="max">
+        8
+      </sumStat>
+      <sumStat type="mean">
+        3.767
+      </sumStat>
+      <sumStat type="stdev">
+        1.743
+      </sumStat>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V119" name="I73" files="F1" dcml="0" intrvl="contin">
+      <labl>
+        Varsta R
+      </labl>
+      <qstn>
+        <qstnLit>
+          Varsta dvs. (in ani impliniti):
+        </qstnLit>
+        <ivuInstr>
+          Pentru toti respondentii:
+        </ivuInstr>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="27" max="90"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <sumStat type="min">
+        27
+      </sumStat>
+      <sumStat type="max">
+        90
+      </sumStat>
+      <sumStat type="mean">
+        52.987
+      </sumStat>
+      <sumStat type="stdev">
+        13.964
+      </sumStat>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V120" name="I74" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Sexul
+      </labl>
+      <qstn>
+        <qstnLit>
+          Sexul:
+        </qstnLit>
+        <ivuInstr>
+          Pentru toti respondentii:
+        </ivuInstr>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="2"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Masculin
+        </labl>
+        <catStat type="freq">
+          116
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Feminin
+        </labl>
+        <catStat type="freq">
+          34
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V121" name="I75" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Domiciliul actual
+      </labl>
+      <qstn>
+        <qstnLit>
+          Domiciliul actual:
+        </qstnLit>
+        <ivuInstr>
+          Pentru toti respondentii:
+        </ivuInstr>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="2"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Rural
+        </labl>
+        <catStat type="freq">
+          130
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Urban
+        </labl>
+        <catStat type="freq">
+          20
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V122" name="I76" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Starea civila
+      </labl>
+      <qstn>
+        <qstnLit>
+          Starea civila:
+        </qstnLit>
+        <ivuInstr>
+          Pentru toti respondentii:
+        </ivuInstr>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="5"/>
+      </valrng>
+      <sumStat type="vald">
+        150
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Necasatorit
+        </labl>
+        <catStat type="freq">
+          3
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Casatorit
+        </labl>
+        <catStat type="freq">
+          125
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Divortat
+        </labl>
+        <catStat type="freq">
+          1
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          4
+        </catValu>
+        <labl>
+          Vaduv
+        </labl>
+        <catStat type="freq">
+          20
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          5
+        </catValu>
+        <labl>
+          Alta situatie
+        </labl>
+        <catStat type="freq">
+          1
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+  </dataDscr>
+</codeBook>

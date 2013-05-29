@@ -1,0 +1,6729 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<codeBook version="1.2.2" ID="RODA044" xml-lang="en" xmlns="http://www.icpsr.umich.edu/DDI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.icpsr.umich.edu/DDI http://www.icpsr.umich.edu/DDI/Version1-2-2.xsd">
+  <docDscr>
+    <citation>
+      <titlStmt>
+        <titl>
+          Somajul si valorile psiho-sociale in ocuparea fortei de munca - 1992
+        </titl>
+        <altTitl>
+          Somaj - 1992
+        </altTitl>
+        <IDNo>
+          044
+        </IDNo>
+      </titlStmt>
+      <rspStmt>
+        <AuthEnty affiliation="RODA">
+          Adrian Dusa
+        </AuthEnty>
+        <AuthEnty affiliation="RODA">
+          Mariana Dan
+        </AuthEnty>
+      </rspStmt>
+      <prodStmt>
+        <producer abbr="RODA" affiliation="Facultatea de Sociologie si Asistenta Sociala, Universitatea din Bucuresti">
+          Arhiva Romana de Date Sociale
+        </producer>
+        <copyright>
+          Copyright RODA, 2002
+        </copyright>
+        <prodPlac>
+          RODA, Bd. Schitu Magureanu nr.1, et.5, cam.15, Bucuresti sector 3
+        </prodPlac>
+        <software version="4.0.8" date="2012-05-14">
+          Nesstar Publisher
+        </software>
+        <fundAg abbr="ICCV" role="salarii">
+          Institutul de Cercetare a Calitatii Vietii
+        </fundAg>
+        <fundAg abbr="SAS" role="infrastructura, echipamente">
+          Facultatea de Sociologie si Asistenta Sociala
+        </fundAg>
+      </prodStmt>
+      <distStmt>
+        <distrbtr abbr="RODA" affiliation="Institutul de Cercetare a Calitatii Vietii" URI="http://www.roda.ro">
+          Arhiva Romana de Date Sociale
+        </distrbtr>
+        <contact affiliation="RODA" email="adi@roda.ro">
+          Adrian Dusa
+        </contact>
+        <contact affiliation="RODA" email="mari@roda.ro">
+          Mariana Dan
+        </contact>
+        <depositr/>
+      </distStmt>
+    </citation>
+    <docSrc>
+      <titlStmt>
+        <titl>
+          Temp#1
+        </titl>
+      </titlStmt>
+      <distStmt>
+        <depositr/>
+      </distStmt>
+    </docSrc>
+  </docDscr>
+  <stdyDscr>
+    <citation>
+      <titlStmt>
+        <titl>
+          Somajul si valorile psiho-sociale in ocuparea fortei de munca - 1992
+        </titl>
+        <IDNo>
+          044
+        </IDNo>
+      </titlStmt>
+      <rspStmt>
+        <AuthEnty>
+          ICCV - Institutul de Cercetare a Calitatii Vietii
+        </AuthEnty>
+        <AuthEnty>
+          Coordonator: Garlan Mictat
+        </AuthEnty>
+        <AuthEnty>
+          Colectiv de cercetare: Garlan Mictat, Codim Mihaela, Dambeanu Mirela
+        </AuthEnty>
+      </rspStmt>
+      <prodStmt>
+        <producer>
+          Institutul de Cercetare a Calitatii Vietii
+        </producer>
+        <copyright>
+          Copyright ICCV, 2002
+        </copyright>
+        <prodPlac>
+          ICCV, Casa Academiei Romane: Calea 13 septembrie, nr 13, sector 5, Bucuresti
+        </prodPlac>
+        <software version="4.0.8" date="2012-05-14">
+          Nesstar Publisher
+        </software>
+        <fundAg>
+          Institutul de Cercetare a Calitatii Vietii
+        </fundAg>
+      </prodStmt>
+      <distStmt>
+        <distrbtr abbr="RODA" affiliation="Facultatea de Sociologie si Asistenta Sociala, Universitatea din Bucuresti" URI="http://www.roda.ro">
+          Arhiva Romana de Date Sociale
+        </distrbtr>
+        <contact>
+          Institutul de Cercetare a Calitatti Vietii
+        </contact>
+        <depositr abbr="ICCV">
+          Institutul de Cercetare a Calitatii Vietii
+        </depositr>
+      </distStmt>
+    </citation>
+    <stdyInfo>
+      <subject>
+        <keyword>
+          amenintare
+        </keyword>
+        <keyword>
+          apartenenta
+        </keyword>
+        <keyword>
+          apreciere
+        </keyword>
+        <keyword>
+          avantaj
+        </keyword>
+        <keyword>
+          bunuri
+        </keyword>
+        <keyword>
+          cantitate
+        </keyword>
+        <keyword>
+          casa
+        </keyword>
+        <keyword>
+          cetatean
+        </keyword>
+        <keyword>
+          cheltuieli
+        </keyword>
+        <keyword>
+          clasa sociala
+        </keyword>
+        <keyword>
+          colegi
+        </keyword>
+        <keyword>
+          comparatie
+        </keyword>
+        <keyword>
+          conditii de viata
+        </keyword>
+        <keyword>
+          consum
+        </keyword>
+        <keyword>
+          defavorizare
+        </keyword>
+        <keyword>
+          dezavantaj
+        </keyword>
+        <keyword>
+          domiciliu
+        </keyword>
+        <keyword>
+          facultate
+        </keyword>
+        <keyword>
+          favorizare
+        </keyword>
+        <keyword>
+          gospodarie
+        </keyword>
+        <keyword>
+          grup etnic
+        </keyword>
+        <keyword>
+          grup social
+        </keyword>
+        <keyword>
+          imprumuturi
+        </keyword>
+        <keyword>
+          locuinta
+        </keyword>
+        <keyword>
+          nationalitate
+        </keyword>
+        <keyword>
+          nivel de trai
+        </keyword>
+        <keyword>
+          numar camere
+        </keyword>
+        <keyword>
+          obicei
+        </keyword>
+        <keyword>
+          opinie
+        </keyword>
+        <keyword>
+          prezent
+        </keyword>
+        <keyword>
+          produse
+        </keyword>
+        <keyword>
+          produse agricole
+        </keyword>
+        <keyword>
+          profesie
+        </keyword>
+        <keyword>
+          profesii
+        </keyword>
+        <keyword>
+          relatii
+        </keyword>
+        <keyword>
+          reparatii
+        </keyword>
+        <keyword>
+          revolutie
+        </keyword>
+        <keyword>
+          schimbare
+        </keyword>
+        <keyword>
+          seminarii
+        </keyword>
+        <keyword>
+          serviciu
+        </keyword>
+        <keyword>
+          sex
+        </keyword>
+        <keyword>
+          sot
+        </keyword>
+        <keyword>
+          stare civila
+        </keyword>
+        <keyword>
+          tara
+        </keyword>
+        <keyword>
+          traditie
+        </keyword>
+        <keyword>
+          trecut
+        </keyword>
+        <keyword>
+          valoare
+        </keyword>
+        <keyword>
+          venit
+        </keyword>
+        <keyword>
+          viata
+        </keyword>
+        <topcClas>
+          Somaj
+        </topcClas>
+      </subject>
+      <abstract>
+        A fost un sondaj ancheta intre somerii din Bucuresti inregistrati la Oficiile Fortei de Munca din Capitala. Esantionul a cuprins 1005 cazuri. Principalele probleme avute in vedere au fost : a) Perceptia statutului propriu de somer; b) Comportamentul de cautare si de asteptare; c) Motivatia muncii si interesul fata de ea; d) Venitul minim actual si venitul minim acceptat; e) Motivatii personale privind pierdera locului de munca; f) Atitudini si aspecte fata de calificarea si recalificarea profesionala a somerilor; g) Atitudinea somerilor fata de Oficiile Fortei de Munca; h) Atitudini fata de desfacerea contractului de munca; i) Efectele somajului asupra cheltuielilor personale; j) Efectele somajului asupra calitatii vietii personale si de familie. Aceste capitole au fost prezentate distinct. S-au putut opera prin analiza tabelelor de contingenta cca. 12 tipologii psiho-sociale de someri
+      </abstract>
+      <sumDscr>
+        <nation>
+          Romania regional
+        </nation>
+        <geogCover>
+          Municipiul Bucuresti
+        </geogCover>
+        <geogUnit>
+          Localitatea Bucuresti
+        </geogUnit>
+        <anlyUnit>
+          Indivizi
+        </anlyUnit>
+        <universe>
+          Adulti peste 18 someri din Bucuresti inregistrati la Oficiile Fortei de Munca
+        </universe>
+      </sumDscr>
+    </stdyInfo>
+    <method>
+      <dataColl>
+        <dataCollector>
+          Institutul de Cercetare a Calitatii Vietii
+        </dataCollector>
+        <collMode>
+          Interviu fata-in-fata asistat
+        </collMode>
+        <resInstru>
+          Structurat; o parte din intrebari au caracter deschis
+        </resInstru>
+        <sources/>
+        <weight>
+          Nu s-au folosit ponderari
+        </weight>
+      </dataColl>
+    </method>
+    <dataAccs>
+      <setAvail>
+        <accsPlac URI="http://www.roda.ro">
+          Arhiva Romana de Date Sociale
+        </accsPlac>
+        <origArch>
+          Arhiva Romana de Date Sociale
+        </origArch>
+      </setAvail>
+      <useStmt>
+        <specPerm required="yes">
+          Utilizatorii trebuie sa semneze un 'Acord individual de acces' pentru a avea acces la aceasta baza de date.
+        </specPerm>
+        <contact affiliation="RODA" email="adi@roda.ro">
+          Adrian Dusa
+        </contact>
+        <citReq>
+          Publicatiile bazate pe analiza seturilor de date distribuite de RODA trebuie sa mentioneze sursele acestuia prin citari bibliografice. Aceste citari trebuie sa apara in notele de subsol ori in sectiunile cu referinte bibliografice.
+        </citReq>
+        <deposReq>
+          Pentru a aduce la cunostinta finantatorilor informatii esentiale despre modul de folosire a resurselor arhivei si pentru a facilita schimbul de informatii despre activitatea utilizatorilor RODA, acestia sunt rugati sa trimita citari bibliografice din materialele scrise, sau copii ale capitolelor care mentioneaza folosirea setului de date, impreuna cu indicarea titlului materialului in care se pot gasi respectivele citari sau copii de capitole.
+        </deposReq>
+        <disclaimer>
+          Colectorul datelor, finantatorii si arhiva care gazduieste setul de date (RODA) nu-si asuma nici o responsabilitate pentru utilizarea eronata a seturilor de date sau pentru orice interpretari ori inferente in urma unor astfel de utilizari.
+        </disclaimer>
+      </useStmt>
+    </dataAccs>
+    <othrStdyMat>
+      <relMat>
+        <citation>
+          <titlStmt>
+            <titl>
+              Chestionar Word
+            </titl>
+          </titlStmt>
+          <holdings URI="http://www.roda.ro/documente/044.doc"/>
+        </citation>
+      </relMat>
+      <relMat>
+        <citation>
+          <titlStmt>
+            <titl>
+              Chestionar PDF
+            </titl>
+          </titlStmt>
+          <holdings URI="http://www.roda.ro/documente/044.pdf"/>
+        </citation>
+      </relMat>
+    </othrStdyMat>
+  </stdyDscr>
+  <fileDscr ID="F1" URI="Temp#1.~esstar?Index=0&amp;Name=044_F1">
+    <fileTxt>
+      <fileName>
+        044_F1.NSDstat
+      </fileName>
+      <dimensns>
+        <caseQnty>
+          1005
+        </caseQnty>
+        <varQnty>
+          84
+        </varQnty>
+      </dimensns>
+      <fileType>
+        Nesstar 200801
+      </fileType>
+    </fileTxt>
+  </fileDscr>
+  <dataDscr>
+    <var ID="V1" name="NRCHEST" files="F1" dcml="0" intrvl="contin">
+      <labl>
+        Numar chestionar
+      </labl>
+      <qstn>
+        <qstnLit>
+          Numar chestionar.
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="1005"/>
+      </valrng>
+      <sumStat type="vald">
+        1005
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <sumStat type="min">
+        1
+      </sumStat>
+      <sumStat type="max">
+        1005
+      </sumStat>
+      <sumStat type="mean">
+        503
+      </sumStat>
+      <sumStat type="stdev">
+        290.263
+      </sumStat>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V2" name="V1_1" files="F1" dcml="0" intrvl="contin">
+      <labl>
+        Prima profesiune R
+      </labl>
+      <qstn>
+        <qstnLit>
+          Profesiunea dvs.:
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="7"/>
+      </valrng>
+      <sumStat type="vald">
+        1005
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <sumStat type="min">
+        1
+      </sumStat>
+      <sumStat type="max">
+        7
+      </sumStat>
+      <sumStat type="mean">
+        2.262
+      </sumStat>
+      <sumStat type="stdev">
+        0.926
+      </sumStat>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V3" name="V1_2" files="F1" dcml="0" intrvl="contin">
+      <labl>
+        A doua profesiune R
+      </labl>
+      <qstn>
+        <qstnLit>
+          Profesiunea dvs.:
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="0" max="57"/>
+      </valrng>
+      <sumStat type="vald">
+        1005
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <sumStat type="min">
+        0
+      </sumStat>
+      <sumStat type="max">
+        57
+      </sumStat>
+      <sumStat type="mean">
+        17.684
+      </sumStat>
+      <sumStat type="stdev">
+        15.212
+      </sumStat>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V4" name="V2" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Pregatirea scolara R
+      </labl>
+      <qstn>
+        <qstnLit>
+          Pregatirea dvs scolara:
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="99"/>
+      </valrng>
+      <sumStat type="vald">
+        1005
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Fara scoala
+        </labl>
+        <catStat type="freq">
+          4
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Scoala generala neterminata
+        </labl>
+        <catStat type="freq">
+          25
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Scoala generala (7-8 clase)
+        </labl>
+        <catStat type="freq">
+          133
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          4
+        </catValu>
+        <labl>
+          Scoala profesionala
+        </labl>
+        <catStat type="freq">
+          182
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          5
+        </catValu>
+        <labl>
+          Liceul neterminat
+        </labl>
+        <catStat type="freq">
+          113
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          6
+        </catValu>
+        <labl>
+          Liceul
+        </labl>
+        <catStat type="freq">
+          447
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          7
+        </catValu>
+        <labl>
+          Scoala postliceeala
+        </labl>
+        <catStat type="freq">
+          31
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          8
+        </catValu>
+        <labl>
+          Studii superioare
+        </labl>
+        <catStat type="freq">
+          67
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          99
+        </catValu>
+        <labl>
+          NR
+        </labl>
+        <catStat type="freq">
+          3
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V5" name="V3" files="F1" dcml="0" intrvl="contin">
+      <labl>
+        Vechimea in munca(ani) R
+      </labl>
+      <qstn>
+        <qstnLit>
+          Vechimea totala in munca:
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="0" max="99"/>
+      </valrng>
+      <invalrng>
+        <item UNITS="REAL" VALUE="99"/>
+        <item UNITS="REAL" VALUE="0"/>
+      </invalrng>
+      <sumStat type="vald">
+        859
+      </sumStat>
+      <sumStat type="invd">
+        146
+      </sumStat>
+      <sumStat type="min">
+        1
+      </sumStat>
+      <sumStat type="max">
+        39
+      </sumStat>
+      <sumStat type="mean">
+        12.333
+      </sumStat>
+      <sumStat type="stdev">
+        8.8
+      </sumStat>
+      <catgry missing="Y">
+        <catValu>
+          0
+        </catValu>
+        <labl>
+          Nici un an de vechime
+        </labl>
+      </catgry>
+      <catgry missing="Y">
+        <catValu>
+          99
+        </catValu>
+        <labl>
+          NR
+        </labl>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V6" name="V4" files="F1" dcml="0" intrvl="contin">
+      <labl>
+        Numarul intreprinderilor in care a lucrat R
+      </labl>
+      <qstn>
+        <qstnLit>
+          In cate intreprinderi ati lucrat pana acum?
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="99"/>
+      </valrng>
+      <invalrng>
+        <item UNITS="REAL" VALUE="99"/>
+        <item UNITS="REAL" VALUE="97"/>
+      </invalrng>
+      <sumStat type="vald">
+        860
+      </sumStat>
+      <sumStat type="invd">
+        145
+      </sumStat>
+      <sumStat type="min">
+        1
+      </sumStat>
+      <sumStat type="max">
+        15
+      </sumStat>
+      <sumStat type="mean">
+        1.955
+      </sumStat>
+      <sumStat type="stdev">
+        1.49
+      </sumStat>
+      <catgry missing="Y">
+        <catValu>
+          97
+        </catValu>
+        <labl>
+          NC
+        </labl>
+      </catgry>
+      <catgry missing="Y">
+        <catValu>
+          99
+        </catValu>
+        <labl>
+          NR
+        </labl>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V7" name="V5_1" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Ultima ocupatie 1
+      </labl>
+      <qstn>
+        <qstnLit>
+          Ultima ocupatie:
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="99"/>
+      </valrng>
+      <sumStat type="vald">
+        1005
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <catStat type="freq">
+          725
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <catStat type="freq">
+          274
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          99
+        </catValu>
+        <labl>
+          NR
+        </labl>
+        <catStat type="freq">
+          6
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V8" name="V5_2" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Ultima ocupatie 2
+      </labl>
+      <qstn>
+        <qstnLit>
+          Ultima ocupatie:
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="99"/>
+      </valrng>
+      <sumStat type="vald">
+        1005
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <catStat type="freq">
+          112
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <catStat type="freq">
+          557
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <catStat type="freq">
+          110
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          4
+        </catValu>
+        <catStat type="freq">
+          33
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          5
+        </catValu>
+        <catStat type="freq">
+          55
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          6
+        </catValu>
+        <catStat type="freq">
+          128
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          7
+        </catValu>
+        <catStat type="freq">
+          8
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          99
+        </catValu>
+        <labl>
+          NR
+        </labl>
+        <catStat type="freq">
+          2
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V9" name="V6" files="F1" dcml="0" intrvl="contin">
+      <labl>
+        Vechimea in ultimul loc de munca R
+      </labl>
+      <qstn>
+        <qstnLit>
+          Vechimea in ultimul loc de munca
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="0" max="99"/>
+      </valrng>
+      <invalrng>
+        <item UNITS="REAL" VALUE="99"/>
+        <item UNITS="REAL" VALUE="97"/>
+      </invalrng>
+      <sumStat type="vald">
+        865
+      </sumStat>
+      <sumStat type="invd">
+        140
+      </sumStat>
+      <sumStat type="min">
+        0
+      </sumStat>
+      <sumStat type="max">
+        38
+      </sumStat>
+      <sumStat type="mean">
+        7.718
+      </sumStat>
+      <sumStat type="stdev">
+        6.579
+      </sumStat>
+      <catgry missing="Y">
+        <catValu>
+          97
+        </catValu>
+        <labl>
+          NC
+        </labl>
+      </catgry>
+      <catgry missing="Y">
+        <catValu>
+          99
+        </catValu>
+        <labl>
+          NR
+        </labl>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V10" name="V7" files="F1" dcml="0" intrvl="contin">
+      <labl>
+        De cand este somer/luni
+      </labl>
+      <qstn>
+        <qstnLit>
+          De cat timp sunteti somer?
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="99"/>
+      </valrng>
+      <invalrng>
+        <item UNITS="REAL" VALUE="99"/>
+      </invalrng>
+      <sumStat type="vald">
+        993
+      </sumStat>
+      <sumStat type="invd">
+        12
+      </sumStat>
+      <sumStat type="min">
+        1
+      </sumStat>
+      <sumStat type="max">
+        24
+      </sumStat>
+      <sumStat type="mean">
+        4.652
+      </sumStat>
+      <sumStat type="stdev">
+        3.557
+      </sumStat>
+      <catgry missing="Y">
+        <catValu>
+          99
+        </catValu>
+        <labl>
+          NR
+        </labl>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V11" name="V8" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        De ce este R somer?
+      </labl>
+      <qstn>
+        <qstnLit>
+          Motivele disponibilitatii dvs
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="99"/>
+      </valrng>
+      <sumStat type="vald">
+        1005
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <catStat type="freq">
+          557
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <catStat type="freq">
+          6
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <catStat type="freq">
+          89
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          4
+        </catValu>
+        <catStat type="freq">
+          125
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          5
+        </catValu>
+        <catStat type="freq">
+          59
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          6
+        </catValu>
+        <catStat type="freq">
+          42
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          7
+        </catValu>
+        <catStat type="freq">
+          3
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          8
+        </catValu>
+        <catStat type="freq">
+          6
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          9
+        </catValu>
+        <catStat type="freq">
+          60
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          11
+        </catValu>
+        <catStat type="freq">
+          7
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          12
+        </catValu>
+        <catStat type="freq">
+          7
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          13
+        </catValu>
+        <catStat type="freq">
+          4
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          14
+        </catValu>
+        <catStat type="freq">
+          1
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          15
+        </catValu>
+        <catStat type="freq">
+          4
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          16
+        </catValu>
+        <catStat type="freq">
+          7
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          17
+        </catValu>
+        <catStat type="freq">
+          2
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          18
+        </catValu>
+        <catStat type="freq">
+          4
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          19
+        </catValu>
+        <catStat type="freq">
+          8
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          20
+        </catValu>
+        <catStat type="freq">
+          4
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          99
+        </catValu>
+        <labl>
+          NR
+        </labl>
+        <catStat type="freq">
+          10
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V12" name="V9" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        R ajutor de somaj
+      </labl>
+      <qstn>
+        <qstnLit>
+          Beneficiati de ajutor de somaj
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="99"/>
+      </valrng>
+      <sumStat type="vald">
+        1005
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Nu
+        </labl>
+        <catStat type="freq">
+          196
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Da
+        </labl>
+        <catStat type="freq">
+          804
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          99
+        </catValu>
+        <labl>
+          NR
+        </labl>
+        <catStat type="freq">
+          5
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V13" name="V10" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        R ar concedia un om intr-o situatie similara
+      </labl>
+      <qstn>
+        <qstnLit>
+          Daca ati fi in situatia de a hotari concedierea unor persoane ce decizie ati lua intr-un caz identic cu al dvs.?
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="99"/>
+      </valrng>
+      <sumStat type="vald">
+        1005
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Da
+        </labl>
+        <catStat type="freq">
+          241
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Nu
+        </labl>
+        <catStat type="freq">
+          666
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          99
+        </catValu>
+        <labl>
+          NR
+        </labl>
+        <catStat type="freq">
+          98
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V14" name="V11" files="F1" dcml="0" intrvl="contin">
+      <labl>
+        Motiv pentru care R ar concedia un om intr-o situatie similara
+      </labl>
+      <qstn>
+        <qstnLit>
+          Motivati raspunsul dvs.
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="99"/>
+      </valrng>
+      <sumStat type="vald">
+        1005
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <sumStat type="min">
+        1
+      </sumStat>
+      <sumStat type="max">
+        99
+      </sumStat>
+      <sumStat type="mean">
+        21.406
+      </sumStat>
+      <sumStat type="stdev">
+        34.641
+      </sumStat>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V15" name="V12" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        R va gasi de lucru in viitorul apropiat
+      </labl>
+      <qstn>
+        <qstnLit>
+          Dupa cum cunoasteti situatia actuala, credeti ca veti gasi vreun loc de munca in viitorul apropiat?
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="5"/>
+      </valrng>
+      <sumStat type="vald">
+        1005
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Cu siguranta
+        </labl>
+        <catStat type="freq">
+          148
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Destul de probabil
+        </labl>
+        <catStat type="freq">
+          174
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Putin probabil
+        </labl>
+        <catStat type="freq">
+          262
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          4
+        </catValu>
+        <labl>
+          Nu cred
+        </labl>
+        <catStat type="freq">
+          340
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          5
+        </catValu>
+        <labl>
+          Nu-mi dau seama
+        </labl>
+        <catStat type="freq">
+          81
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V16" name="V13" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        R modalitatea prin care va gasi de lucru
+      </labl>
+      <qstn>
+        <qstnLit>
+          Cum credeti ca veti gasi un loc de munca?
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="99"/>
+      </valrng>
+      <sumStat type="vald">
+        1005
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Prin Oficiul Fortei de Munca
+        </labl>
+        <catStat type="freq">
+          107
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Caut singur
+        </labl>
+        <catStat type="freq">
+          767
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Voi face ceva pe cont propriu
+        </labl>
+        <catStat type="freq">
+          70
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          4
+        </catValu>
+        <labl>
+          Altceva
+        </labl>
+        <catStat type="freq">
+          53
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          99
+        </catValu>
+        <labl>
+          NR
+        </labl>
+        <catStat type="freq">
+          8
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V17" name="V14" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Considerati necesar un curs de calificare
+      </labl>
+      <qstn>
+        <qstnLit>
+          Considerati ca pentru reintegrarea dvs, un curs de recalificare profesionala ar fi
+        </qstnLit>
+        <ivuInstr>
+          4.Inutil - treceti la întrebarea 16
+        </ivuInstr>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="99"/>
+      </valrng>
+      <sumStat type="vald">
+        1005
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Absolut necesar
+        </labl>
+        <catStat type="freq">
+          151
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Necesar
+        </labl>
+        <catStat type="freq">
+          423
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Putin necesar
+        </labl>
+        <catStat type="freq">
+          108
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          4
+        </catValu>
+        <labl>
+          Inutil
+        </labl>
+        <catStat type="freq">
+          320
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          99
+        </catValu>
+        <labl>
+          NR
+        </labl>
+        <catStat type="freq">
+          3
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V18" name="V15_1" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Daca da,in ce meserie
+      </labl>
+      <qstn>
+        <qstnLit>
+          In privinta acestui curs de recalificare:
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="99"/>
+      </valrng>
+      <sumStat type="vald">
+        1005
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Nu m-am gandit
+        </labl>
+        <catStat type="freq">
+          236
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Accept orice
+        </labl>
+        <catStat type="freq">
+          130
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Doresc o recalificare
+        </labl>
+        <catStat type="freq">
+          308
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          97
+        </catValu>
+        <labl>
+          NC
+        </labl>
+        <catStat type="freq">
+          323
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          99
+        </catValu>
+        <labl>
+          NR
+        </labl>
+        <catStat type="freq">
+          8
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V19" name="V15_2" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Recalificare 1
+      </labl>
+      <qstn>
+        <qstnLit>
+          In privinta acestui curs de recalificare:
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="99"/>
+      </valrng>
+      <sumStat type="vald">
+        1005
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        in meseria de: 1
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <catStat type="freq">
+          19
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <catStat type="freq">
+          41
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <catStat type="freq">
+          47
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          4
+        </catValu>
+        <catStat type="freq">
+          13
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          5
+        </catValu>
+        <catStat type="freq">
+          23
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          6
+        </catValu>
+        <catStat type="freq">
+          3
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          7
+        </catValu>
+        <catStat type="freq">
+          1
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          8
+        </catValu>
+        <catStat type="freq">
+          8
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          9
+        </catValu>
+        <catStat type="freq">
+          17
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          10
+        </catValu>
+        <catStat type="freq">
+          18
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          11
+        </catValu>
+        <catStat type="freq">
+          28
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          12
+        </catValu>
+        <catStat type="freq">
+          7
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          13
+        </catValu>
+        <catStat type="freq">
+          2
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          14
+        </catValu>
+        <catStat type="freq">
+          23
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          15
+        </catValu>
+        <catStat type="freq">
+          2
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          16
+        </catValu>
+        <catStat type="freq">
+          2
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          17
+        </catValu>
+        <catStat type="freq">
+          1
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          18
+        </catValu>
+        <catStat type="freq">
+          1
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          19
+        </catValu>
+        <catStat type="freq">
+          5
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          20
+        </catValu>
+        <catStat type="freq">
+          11
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          21
+        </catValu>
+        <catStat type="freq">
+          1
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          22
+        </catValu>
+        <catStat type="freq">
+          8
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          23
+        </catValu>
+        <catStat type="freq">
+          3
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          24
+        </catValu>
+        <catStat type="freq">
+          1
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          25
+        </catValu>
+        <catStat type="freq">
+          7
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          26
+        </catValu>
+        <catStat type="freq">
+          2
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          27
+        </catValu>
+        <catStat type="freq">
+          3
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          28
+        </catValu>
+        <catStat type="freq">
+          1
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          29
+        </catValu>
+        <catStat type="freq">
+          2
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          30
+        </catValu>
+        <catStat type="freq">
+          1
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          40
+        </catValu>
+        <catStat type="freq">
+          1
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          41
+        </catValu>
+        <catStat type="freq">
+          2
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          97
+        </catValu>
+        <labl>
+          NC
+        </labl>
+        <catStat type="freq">
+          689
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          99
+        </catValu>
+        <labl>
+          NR
+        </labl>
+        <catStat type="freq">
+          12
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V20" name="V15_3" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Recalificare 2
+      </labl>
+      <qstn>
+        <qstnLit>
+          In privinta acestui curs de recalificare::
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="99"/>
+      </valrng>
+      <sumStat type="vald">
+        1005
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        in meseria de: 2
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <catStat type="freq">
+          137
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <catStat type="freq">
+          99
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <catStat type="freq">
+          30
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          97
+        </catValu>
+        <labl>
+          NC
+        </labl>
+        <catStat type="freq">
+          689
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          99
+        </catValu>
+        <labl>
+          NR
+        </labl>
+        <catStat type="freq">
+          50
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V21" name="V16" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Ati intreprins ceva pentru a gasi de lucru
+      </labl>
+      <qstn>
+        <qstnLit>
+          Ce ati intreprins pana in prezent pentru a gasi un loc de munca?
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="99"/>
+      </valrng>
+      <sumStat type="vald">
+        1005
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Nu
+        </labl>
+        <catStat type="freq">
+          172
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Da
+        </labl>
+        <catStat type="freq">
+          826
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          99
+        </catValu>
+        <labl>
+          NR
+        </labl>
+        <catStat type="freq">
+          7
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V22" name="V16_2_1" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Am apelat la rude,prieteni
+      </labl>
+      <qstn>
+        <qstnLit>
+          Ce ati intreprins pana in prezent pentru a gasi un loc de munca?
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="0" max="99"/>
+      </valrng>
+      <sumStat type="vald">
+        1005
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Am apelat la cunostinte, rude, prieteni.
+      </txt>
+      <catgry>
+        <catValu>
+          0
+        </catValu>
+        <labl>
+          Nu
+        </labl>
+        <catStat type="freq">
+          106
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Da
+        </labl>
+        <catStat type="freq">
+          620
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          97
+        </catValu>
+        <labl>
+          NC
+        </labl>
+        <catStat type="freq">
+          172
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          99
+        </catValu>
+        <labl>
+          NR
+        </labl>
+        <catStat type="freq">
+          107
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V23" name="V16_2_2" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Prin anunturile din ziar
+      </labl>
+      <qstn>
+        <qstnLit>
+          Ce ati intreprins pana in prezent pentru a gasi un loc de munca?
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="0" max="99"/>
+      </valrng>
+      <sumStat type="vald">
+        1005
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Am urmarit anunturile din ziare.
+      </txt>
+      <catgry>
+        <catValu>
+          0
+        </catValu>
+        <labl>
+          Nu
+        </labl>
+        <catStat type="freq">
+          327
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Da
+        </labl>
+        <catStat type="freq">
+          505
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          97
+        </catValu>
+        <labl>
+          NC
+        </labl>
+        <catStat type="freq">
+          172
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          99
+        </catValu>
+        <labl>
+          NR
+        </labl>
+        <catStat type="freq">
+          1
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V24" name="V16_2_3" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Am dat eu anunt in ziar
+      </labl>
+      <qstn>
+        <qstnLit>
+          Ce ati intreprins pana in prezent pentru a gasi un loc de munca?
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="0" max="97"/>
+      </valrng>
+      <sumStat type="vald">
+        1005
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Am dat anunturi in ziare.
+      </txt>
+      <catgry>
+        <catValu>
+          0
+        </catValu>
+        <labl>
+          Nu
+        </labl>
+        <catStat type="freq">
+          775
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Da
+        </labl>
+        <catStat type="freq">
+          58
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          97
+        </catValu>
+        <labl>
+          NC
+        </labl>
+        <catStat type="freq">
+          172
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V25" name="V16_2_4" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Am cautat la intreprinderi
+      </labl>
+      <qstn>
+        <qstnLit>
+          Ce ati intreprins pana in prezent pentru a gasi un loc de munca?
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="0" max="97"/>
+      </valrng>
+      <sumStat type="vald">
+        1005
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Am mers la diferite intreprinderi, societati.
+      </txt>
+      <catgry>
+        <catValu>
+          0
+        </catValu>
+        <labl>
+          Nu
+        </labl>
+        <catStat type="freq">
+          468
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Da
+        </labl>
+        <catStat type="freq">
+          365
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          97
+        </catValu>
+        <labl>
+          NC
+        </labl>
+        <catStat type="freq">
+          172
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V26" name="V16_2_5" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Am depus cereri
+      </labl>
+      <qstn>
+        <qstnLit>
+          Ce ati intreprins pana in prezent pentru a gasi un loc de munca?
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="0" max="97"/>
+      </valrng>
+      <sumStat type="vald">
+        1005
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Am depus cereri de angajare.
+      </txt>
+      <catgry>
+        <catValu>
+          0
+        </catValu>
+        <labl>
+          Nu
+        </labl>
+        <catStat type="freq">
+          694
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Da
+        </labl>
+        <catStat type="freq">
+          139
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          97
+        </catValu>
+        <labl>
+          NC
+        </labl>
+        <catStat type="freq">
+          172
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V27" name="V16_2_6" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Am sustinut concurs
+      </labl>
+      <qstn>
+        <qstnLit>
+          Ce ati intreprins pana in prezent pentru a gasi un loc de munca?
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="0" max="97"/>
+      </valrng>
+      <sumStat type="vald">
+        1005
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Am sustinut concursuri pentru angajare.
+      </txt>
+      <catgry>
+        <catValu>
+          0
+        </catValu>
+        <labl>
+          Nu
+        </labl>
+        <catStat type="freq">
+          768
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Da
+        </labl>
+        <catStat type="freq">
+          65
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          97
+        </catValu>
+        <labl>
+          NC
+        </labl>
+        <catStat type="freq">
+          172
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V28" name="V16_2_7" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Am solicitat imprumut bancar
+      </labl>
+      <qstn>
+        <qstnLit>
+          Ce ati intreprins pana in prezent pentru a gasi un loc de munca?
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="0" max="97"/>
+      </valrng>
+      <sumStat type="vald">
+        1005
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Am solicitat un imprumut bancar.
+      </txt>
+      <catgry>
+        <catValu>
+          0
+        </catValu>
+        <labl>
+          Nu
+        </labl>
+        <catStat type="freq">
+          822
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Da
+        </labl>
+        <catStat type="freq">
+          11
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          97
+        </catValu>
+        <labl>
+          NC
+        </labl>
+        <catStat type="freq">
+          172
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V29" name="V16_2_8" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Am cautat un tern agricol
+      </labl>
+      <qstn>
+        <qstnLit>
+          Ce ati intreprins pana in prezent pentru a gasi un loc de munca?
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="0" max="97"/>
+      </valrng>
+      <sumStat type="vald">
+        1005
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Am cautat un teren agricol.
+      </txt>
+      <catgry>
+        <catValu>
+          0
+        </catValu>
+        <labl>
+          Nu
+        </labl>
+        <catStat type="freq">
+          824
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Da
+        </labl>
+        <catStat type="freq">
+          9
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          97
+        </catValu>
+        <labl>
+          NC
+        </labl>
+        <catStat type="freq">
+          172
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V30" name="V16_2_9" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Am vrut sa inchiriez un mijloc de productie
+      </labl>
+      <qstn>
+        <qstnLit>
+          Ce ati intreprins pana in prezent pentru a gasi un loc de munca?
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="0" max="97"/>
+      </valrng>
+      <sumStat type="vald">
+        1005
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Am vrut sa inchiriez un mijloc de productiei,care?
+      </txt>
+      <catgry>
+        <catValu>
+          0
+        </catValu>
+        <labl>
+          Nu
+        </labl>
+        <catStat type="freq">
+          822
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Da
+        </labl>
+        <catStat type="freq">
+          11
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          97
+        </catValu>
+        <labl>
+          NC
+        </labl>
+        <catStat type="freq">
+          172
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V31" name="V17_1" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Oficiul de munca v-a oferit un loc de munca
+      </labl>
+      <qstn>
+        <qstnLit>
+          Din momentul inscrierii la Oficiul Fortei de Munca, vi s-a oferit un nou loc de munca?
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="99"/>
+      </valrng>
+      <sumStat type="vald">
+        1005
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Nu
+        </labl>
+        <catStat type="freq">
+          940
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Da
+        </labl>
+        <catStat type="freq">
+          54
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          99
+        </catValu>
+        <labl>
+          NR
+        </labl>
+        <catStat type="freq">
+          11
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V32" name="V17_2" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Locul de munca oferit 1
+      </labl>
+      <qstn>
+        <qstnLit>
+          Pe ce post?
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="99"/>
+      </valrng>
+      <sumStat type="vald">
+        1005
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <catStat type="freq">
+          4
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <catStat type="freq">
+          2
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <catStat type="freq">
+          7
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          4
+        </catValu>
+        <catStat type="freq">
+          17
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          5
+        </catValu>
+        <catStat type="freq">
+          3
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          6
+        </catValu>
+        <catStat type="freq">
+          1
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          7
+        </catValu>
+        <catStat type="freq">
+          1
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          8
+        </catValu>
+        <catStat type="freq">
+          3
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          9
+        </catValu>
+        <catStat type="freq">
+          2
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          10
+        </catValu>
+        <catStat type="freq">
+          1
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          11
+        </catValu>
+        <catStat type="freq">
+          3
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          12
+        </catValu>
+        <catStat type="freq">
+          1
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          13
+        </catValu>
+        <catStat type="freq">
+          3
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          14
+        </catValu>
+        <catStat type="freq">
+          1
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          15
+        </catValu>
+        <catStat type="freq">
+          1
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          16
+        </catValu>
+        <catStat type="freq">
+          1
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          17
+        </catValu>
+        <catStat type="freq">
+          2
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          97
+        </catValu>
+        <labl>
+          NC
+        </labl>
+        <catStat type="freq">
+          940
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          99
+        </catValu>
+        <labl>
+          NR
+        </labl>
+        <catStat type="freq">
+          12
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V33" name="V17_3" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Locul de munca oferit 2
+      </labl>
+      <qstn>
+        <qstnLit>
+          Pe ce post?
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="99"/>
+      </valrng>
+      <sumStat type="vald">
+        1005
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <catStat type="freq">
+          40
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <catStat type="freq">
+          1
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <catStat type="freq">
+          11
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          97
+        </catValu>
+        <labl>
+          NC
+        </labl>
+        <catStat type="freq">
+          940
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          99
+        </catValu>
+        <labl>
+          NR
+        </labl>
+        <catStat type="freq">
+          13
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V34" name="V18" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Motivul refuzului locului de munca
+      </labl>
+      <qstn>
+        <qstnLit>
+          Din ce motive nu ati acceptat acest loc de munca?
+        </qstnLit>
+        <ivuInstr>
+          (Pentru cei care au raspuns "DA")
+        </ivuInstr>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="99"/>
+      </valrng>
+      <sumStat type="vald">
+        1005
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <catStat type="freq">
+          11
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <catStat type="freq">
+          4
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <catStat type="freq">
+          17
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          4
+        </catValu>
+        <catStat type="freq">
+          2
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          5
+        </catValu>
+        <catStat type="freq">
+          2
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          6
+        </catValu>
+        <catStat type="freq">
+          1
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          7
+        </catValu>
+        <catStat type="freq">
+          7
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          8
+        </catValu>
+        <catStat type="freq">
+          7
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          9
+        </catValu>
+        <catStat type="freq">
+          1
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          97
+        </catValu>
+        <labl>
+          NC
+        </labl>
+        <catStat type="freq">
+          940
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          99
+        </catValu>
+        <labl>
+          NR
+        </labl>
+        <catStat type="freq">
+          13
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V35" name="V19_1" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Vi s-a oferit un curs de recalificare
+      </labl>
+      <qstn>
+        <qstnLit>
+          Din momentul inscrierii la Oficiul Fortei de Munca, vi s-a oferit un curs de recalificare?
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="99"/>
+      </valrng>
+      <sumStat type="vald">
+        1005
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Nu
+        </labl>
+        <catStat type="freq">
+          850
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Da
+        </labl>
+        <catStat type="freq">
+          118
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          99
+        </catValu>
+        <labl>
+          NR
+        </labl>
+        <catStat type="freq">
+          37
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V36" name="V19_2" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Curs de recalificare 1
+      </labl>
+      <qstn>
+        <qstnLit>
+          Care?
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="99"/>
+      </valrng>
+      <sumStat type="vald">
+        1005
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <catStat type="freq">
+          16
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <catStat type="freq">
+          11
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <catStat type="freq">
+          20
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          4
+        </catValu>
+        <catStat type="freq">
+          8
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          5
+        </catValu>
+        <catStat type="freq">
+          7
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          6
+        </catValu>
+        <catStat type="freq">
+          4
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          7
+        </catValu>
+        <catStat type="freq">
+          4
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          8
+        </catValu>
+        <catStat type="freq">
+          9
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          9
+        </catValu>
+        <catStat type="freq">
+          7
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          10
+        </catValu>
+        <catStat type="freq">
+          3
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          11
+        </catValu>
+        <catStat type="freq">
+          3
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          12
+        </catValu>
+        <catStat type="freq">
+          1
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          13
+        </catValu>
+        <catStat type="freq">
+          7
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          14
+        </catValu>
+        <catStat type="freq">
+          3
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          15
+        </catValu>
+        <catStat type="freq">
+          1
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          16
+        </catValu>
+        <catStat type="freq">
+          4
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          17
+        </catValu>
+        <catStat type="freq">
+          1
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          18
+        </catValu>
+        <catStat type="freq">
+          1
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          19
+        </catValu>
+        <catStat type="freq">
+          1
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          97
+        </catValu>
+        <labl>
+          NC
+        </labl>
+        <catStat type="freq">
+          850
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          99
+        </catValu>
+        <labl>
+          NR
+        </labl>
+        <catStat type="freq">
+          44
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V37" name="V19_3" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Curs de recalificare 2
+      </labl>
+      <qstn>
+        <qstnLit>
+          Care?
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="99"/>
+      </valrng>
+      <sumStat type="vald">
+        1005
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <catStat type="freq">
+          50
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <catStat type="freq">
+          34
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <catStat type="freq">
+          23
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          97
+        </catValu>
+        <labl>
+          NC
+        </labl>
+        <catStat type="freq">
+          850
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          99
+        </catValu>
+        <labl>
+          NR
+        </labl>
+        <catStat type="freq">
+          48
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V38" name="V20_1" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Ati refuzat cursul
+      </labl>
+      <qstn>
+        <qstnLit>
+          Ati refuzat cursul oferit?
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="99"/>
+      </valrng>
+      <sumStat type="vald">
+        1005
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Nu
+        </labl>
+        <catStat type="freq">
+          238
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Da
+        </labl>
+        <catStat type="freq">
+          41
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          99
+        </catValu>
+        <labl>
+          NR
+        </labl>
+        <catStat type="freq">
+          726
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V39" name="V20_2" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Motivul pt care a refuzat cursul
+      </labl>
+      <qstn>
+        <qstnLit>
+          De ce?
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="99"/>
+      </valrng>
+      <sumStat type="vald">
+        1005
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <catStat type="freq">
+          12
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <catStat type="freq">
+          4
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          4
+        </catValu>
+        <catStat type="freq">
+          3
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          5
+        </catValu>
+        <catStat type="freq">
+          4
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          6
+        </catValu>
+        <catStat type="freq">
+          2
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          7
+        </catValu>
+        <catStat type="freq">
+          5
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          8
+        </catValu>
+        <catStat type="freq">
+          1
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          9
+        </catValu>
+        <catStat type="freq">
+          4
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          10
+        </catValu>
+        <catStat type="freq">
+          1
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          11
+        </catValu>
+        <catStat type="freq">
+          1
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          12
+        </catValu>
+        <catStat type="freq">
+          1
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          13
+        </catValu>
+        <catStat type="freq">
+          1
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          97
+        </catValu>
+        <labl>
+          NC
+        </labl>
+        <catStat type="freq">
+          238
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          99
+        </catValu>
+        <labl>
+          NR
+        </labl>
+        <catStat type="freq">
+          728
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V40" name="V21" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Varianta de munca pe care ar accepta-o
+      </labl>
+      <qstn>
+        <qstnLit>
+          In absenta locului de munca dorit, ce varianta ati accepta?
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="99"/>
+      </valrng>
+      <sumStat type="vald">
+        1005
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Prefer sa raman somer
+        </labl>
+        <catStat type="freq">
+          166
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Accept si ceva inferior calificarii
+        </labl>
+        <catStat type="freq">
+          235
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Accept si ceva departe de casa
+        </labl>
+        <catStat type="freq">
+          65
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          4
+        </catValu>
+        <labl>
+          Accept si ceva temporar
+        </labl>
+        <catStat type="freq">
+          344
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          99
+        </catValu>
+        <labl>
+          NR
+        </labl>
+        <catStat type="freq">
+          195
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V41" name="V22" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Unde ar prefera sa lucreze
+      </labl>
+      <qstn>
+        <qstnLit>
+          In cazul unei optiuni, ati alege un loc de munca:
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="99"/>
+      </valrng>
+      <sumStat type="vald">
+        1005
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          La stat
+        </labl>
+        <catStat type="freq">
+          273
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          La particular
+        </labl>
+        <catStat type="freq">
+          179
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Imi este indiferent
+        </labl>
+        <catStat type="freq">
+          552
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          99
+        </catValu>
+        <labl>
+          NR
+        </labl>
+        <catStat type="freq">
+          1
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V42" name="V23" files="F1" dcml="0" intrvl="contin">
+      <labl>
+        Salariul minim pe care l-ar accepta
+      </labl>
+      <qstn>
+        <qstnLit>
+          Care ar fi salariul minim pentru care ati accepta un nou loc de munca?
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="99" max="60000"/>
+      </valrng>
+      <invalrng>
+        <item UNITS="REAL" VALUE="99"/>
+      </invalrng>
+      <sumStat type="vald">
+        983
+      </sumStat>
+      <sumStat type="invd">
+        22
+      </sumStat>
+      <sumStat type="min">
+        4500
+      </sumStat>
+      <sumStat type="max">
+        60000
+      </sumStat>
+      <sumStat type="mean">
+        14140.065
+      </sumStat>
+      <sumStat type="stdev">
+        5711.386
+      </sumStat>
+      <catgry missing="Y">
+        <catValu>
+          99
+        </catValu>
+        <labl>
+          NR
+        </labl>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V43" name="V24" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Ajutor pentru ca R sa depaseasca situatia de somer
+      </labl>
+      <qstn>
+        <qstnLit>
+          Cum credeti ca ati putea fi ajutat pentru depasirea situatiei dvs. de somer?
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="99"/>
+      </valrng>
+      <sumStat type="vald">
+        1005
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <catStat type="freq">
+          292
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <catStat type="freq">
+          65
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <catStat type="freq">
+          3
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          4
+        </catValu>
+        <catStat type="freq">
+          159
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          5
+        </catValu>
+        <catStat type="freq">
+          4
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          6
+        </catValu>
+        <catStat type="freq">
+          14
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          7
+        </catValu>
+        <catStat type="freq">
+          18
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          8
+        </catValu>
+        <catStat type="freq">
+          61
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          9
+        </catValu>
+        <catStat type="freq">
+          46
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          10
+        </catValu>
+        <catStat type="freq">
+          33
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          11
+        </catValu>
+        <catStat type="freq">
+          9
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          12
+        </catValu>
+        <catStat type="freq">
+          51
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          13
+        </catValu>
+        <catStat type="freq">
+          7
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          14
+        </catValu>
+        <catStat type="freq">
+          3
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          99
+        </catValu>
+        <labl>
+          NR
+        </labl>
+        <catStat type="freq">
+          240
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V44" name="V25_1" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Influenta somajului asupra nivelului de trai la R
+      </labl>
+      <qstn>
+        <qstnLit>
+          Somajul a influentat negativ unele aspecte ale vietii dvs.? In ce masura?
+        </qstnLit>
+        <ivuInstr>
+          (Incercuiti numarul care corespunde aprecierii)
+        </ivuInstr>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="99"/>
+      </valrng>
+      <sumStat type="vald">
+        1005
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Nivelul de trai
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Deloc
+        </labl>
+        <catStat type="freq">
+          138
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Putin
+        </labl>
+        <catStat type="freq">
+          225
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Mult
+        </labl>
+        <catStat type="freq">
+          283
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          4
+        </catValu>
+        <labl>
+          Foarte mult
+        </labl>
+        <catStat type="freq">
+          351
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          99
+        </catValu>
+        <labl>
+          NR
+        </labl>
+        <catStat type="freq">
+          8
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V45" name="V25_2" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Influenta somajului asupra coeziunii familiale a R
+      </labl>
+      <qstn>
+        <qstnLit>
+          Somajul a influentat negativ unele aspecte ale vietii dvs.? In ce masura?
+        </qstnLit>
+        <ivuInstr>
+          (Incercuiti numarul care corespunde aprecierii)
+        </ivuInstr>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="99"/>
+      </valrng>
+      <sumStat type="vald">
+        1005
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Coeziunea familiei
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Deloc
+        </labl>
+        <catStat type="freq">
+          498
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Putin
+        </labl>
+        <catStat type="freq">
+          215
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Mult
+        </labl>
+        <catStat type="freq">
+          144
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          4
+        </catValu>
+        <labl>
+          Foarte mult
+        </labl>
+        <catStat type="freq">
+          121
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          99
+        </catValu>
+        <labl>
+          NR
+        </labl>
+        <catStat type="freq">
+          27
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V46" name="V25_3" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Influenta somajului asupra increderii in sine a lui R
+      </labl>
+      <qstn>
+        <qstnLit>
+          Somajul a influentat negativ unele aspecte ale vietii dvs.? In ce masura?
+        </qstnLit>
+        <ivuInstr>
+          (Incercuiti numarul care corespunde aprecierii)
+        </ivuInstr>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="99"/>
+      </valrng>
+      <sumStat type="vald">
+        1005
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Increderea in fortele proprii
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Deloc
+        </labl>
+        <catStat type="freq">
+          473
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Putin
+        </labl>
+        <catStat type="freq">
+          254
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Mult
+        </labl>
+        <catStat type="freq">
+          147
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          4
+        </catValu>
+        <labl>
+          Foarte mult
+        </labl>
+        <catStat type="freq">
+          113
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          99
+        </catValu>
+        <labl>
+          NR
+        </labl>
+        <catStat type="freq">
+          18
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V47" name="V25_4" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Influenta somajului asupra reactiei celorlalti fata de R
+      </labl>
+      <qstn>
+        <qstnLit>
+          Somajul a influentat negativ unele aspecte ale vietii dvs.? In ce masura?
+        </qstnLit>
+        <ivuInstr>
+          (Incercuiti numarul care corespunde aprecierii)
+        </ivuInstr>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="99"/>
+      </valrng>
+      <sumStat type="vald">
+        1005
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Reactia celorlalti fata de dvs.
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Deloc
+        </labl>
+        <catStat type="freq">
+          604
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Putin
+        </labl>
+        <catStat type="freq">
+          223
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Mult
+        </labl>
+        <catStat type="freq">
+          91
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          4
+        </catValu>
+        <labl>
+          Foarte mult
+        </labl>
+        <catStat type="freq">
+          63
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          99
+        </catValu>
+        <labl>
+          NR
+        </labl>
+        <catStat type="freq">
+          24
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V48" name="V25_5" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Influenta somajului asupra sanatatii lui R
+      </labl>
+      <qstn>
+        <qstnLit>
+          Somajul a influentat negativ unele aspecte ale vietii dvs.? In ce masura?
+        </qstnLit>
+        <ivuInstr>
+          (Incercuiti numarul care corespunde aprecierii)
+        </ivuInstr>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="99"/>
+      </valrng>
+      <sumStat type="vald">
+        1005
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Starea sanatatii dvs.
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Deloc
+        </labl>
+        <catStat type="freq">
+          582
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Putin
+        </labl>
+        <catStat type="freq">
+          159
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Mult
+        </labl>
+        <catStat type="freq">
+          116
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          4
+        </catValu>
+        <labl>
+          Foarte mult
+        </labl>
+        <catStat type="freq">
+          128
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          99
+        </catValu>
+        <labl>
+          NR
+        </labl>
+        <catStat type="freq">
+          20
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V49" name="V26" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Aprecierea veniturilor in raport cu nevoile
+      </labl>
+      <qstn>
+        <qstnLit>
+          Cum apreciati veniturile familiei dvs. in raport cu nevoile actuale?
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="99"/>
+      </valrng>
+      <sumStat type="vald">
+        1005
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Nici pentru strictul necesar
+        </labl>
+        <catStat type="freq">
+          432
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Doar pentru strictul necesar
+        </labl>
+        <catStat type="freq">
+          320
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Fac fata dar cu eforturi mari
+        </labl>
+        <catStat type="freq">
+          227
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          4
+        </catValu>
+        <labl>
+          Fac fata fara eforturi
+        </labl>
+        <catStat type="freq">
+          21
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          99
+        </catValu>
+        <labl>
+          NR
+        </labl>
+        <catStat type="freq">
+          5
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V50" name="V27_1" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Restrangerea cheltuelilor urmare a somajului: locuinta
+      </labl>
+      <qstn>
+        <qstnLit>
+          De cand sunteti somer, in ce domenii v-ati restrans cheltuielile?
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="99"/>
+      </valrng>
+      <sumStat type="vald">
+        1005
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Locuinta
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Putin
+        </labl>
+        <catStat type="freq">
+          197
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Mult
+        </labl>
+        <catStat type="freq">
+          172
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Am renuntat
+        </labl>
+        <catStat type="freq">
+          66
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          99
+        </catValu>
+        <labl>
+          NR
+        </labl>
+        <catStat type="freq">
+          570
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V51" name="V27_2" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Restrangerea cheltuelilor urmare a somajului: alimente
+      </labl>
+      <qstn>
+        <qstnLit>
+          De cand sunteti somer, in ce domenii v-ati restrans cheltuielile?
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="99"/>
+      </valrng>
+      <sumStat type="vald">
+        1005
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Alimente
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Putin
+        </labl>
+        <catStat type="freq">
+          331
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Mult
+        </labl>
+        <catStat type="freq">
+          414
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Am renuntat
+        </labl>
+        <catStat type="freq">
+          5
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          99
+        </catValu>
+        <labl>
+          NR
+        </labl>
+        <catStat type="freq">
+          255
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V52" name="V27_3" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Restrangerea cheltuelilor urmare a somajului: tigari
+      </labl>
+      <qstn>
+        <qstnLit>
+          De cand sunteti somer, in ce domenii v-ati restrans cheltuielile?
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="99"/>
+      </valrng>
+      <sumStat type="vald">
+        1005
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Tigari
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Putin
+        </labl>
+        <catStat type="freq">
+          160
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Mult
+        </labl>
+        <catStat type="freq">
+          202
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Am renuntat
+        </labl>
+        <catStat type="freq">
+          151
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          99
+        </catValu>
+        <labl>
+          NR
+        </labl>
+        <catStat type="freq">
+          492
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V53" name="V27_4" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Restrangerea cheltuelilor urmare a somajului: bauturi
+      </labl>
+      <qstn>
+        <qstnLit>
+          De cand sunteti somer, in ce domenii v-ati restrans cheltuielile?
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="99"/>
+      </valrng>
+      <sumStat type="vald">
+        1005
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Bauturi
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Putin
+        </labl>
+        <catStat type="freq">
+          116
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Mult
+        </labl>
+        <catStat type="freq">
+          157
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Am renuntat
+        </labl>
+        <catStat type="freq">
+          227
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          99
+        </catValu>
+        <labl>
+          NR
+        </labl>
+        <catStat type="freq">
+          505
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V54" name="V27_5" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Restrangerea cheltuelilor urmare a somajului: imbracaminte
+      </labl>
+      <qstn>
+        <qstnLit>
+          De cand sunteti somer, in ce domenii v-ati restrans cheltuielile?
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="99"/>
+      </valrng>
+      <sumStat type="vald">
+        1005
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Imbracaminte, incaltaminte
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Putin
+        </labl>
+        <catStat type="freq">
+          178
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Mult
+        </labl>
+        <catStat type="freq">
+          334
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Am renuntat
+        </labl>
+        <catStat type="freq">
+          388
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          99
+        </catValu>
+        <labl>
+          NR
+        </labl>
+        <catStat type="freq">
+          105
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V55" name="V27_6" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Restrangerea cheltuelilor urmare a somajului: transport
+      </labl>
+      <qstn>
+        <qstnLit>
+          De cand sunteti somer, in ce domenii v-ati restrans cheltuielile?
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="99"/>
+      </valrng>
+      <sumStat type="vald">
+        1005
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Transport
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Putin
+        </labl>
+        <catStat type="freq">
+          281
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Mult
+        </labl>
+        <catStat type="freq">
+          242
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Am renuntat
+        </labl>
+        <catStat type="freq">
+          136
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          99
+        </catValu>
+        <labl>
+          NR
+        </labl>
+        <catStat type="freq">
+          346
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V56" name="V27_7" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Restrangerea cheltuelilor urmare a somajului: ingrijirea medicala
+      </labl>
+      <qstn>
+        <qstnLit>
+          De cand sunteti somer, in ce domenii v-ati restrans cheltuielile?
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="99"/>
+      </valrng>
+      <sumStat type="vald">
+        1005
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Ingrijire medicala
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Putin
+        </labl>
+        <catStat type="freq">
+          158
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Mult
+        </labl>
+        <catStat type="freq">
+          137
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Am renuntat
+        </labl>
+        <catStat type="freq">
+          132
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          99
+        </catValu>
+        <labl>
+          NR
+        </labl>
+        <catStat type="freq">
+          578
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V57" name="V27_8" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Restrangerea cheltuelilor urmare a somajului: pregatirea copiilor
+      </labl>
+      <qstn>
+        <qstnLit>
+          De cand sunteti somer, in ce domenii v-ati restrans cheltuielile?
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="99"/>
+      </valrng>
+      <sumStat type="vald">
+        1005
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Pregatirea copiilor
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Putin
+        </labl>
+        <catStat type="freq">
+          110
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Mult
+        </labl>
+        <catStat type="freq">
+          136
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Am renuntat
+        </labl>
+        <catStat type="freq">
+          88
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          99
+        </catValu>
+        <labl>
+          NR
+        </labl>
+        <catStat type="freq">
+          671
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V58" name="V27_9" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Restrangerea cheltuelilor urmare a somajului: activitati culturale
+      </labl>
+      <qstn>
+        <qstnLit>
+          De cand sunteti somer, in ce domenii v-ati restrans cheltuielile?
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="99"/>
+      </valrng>
+      <sumStat type="vald">
+        1005
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Activittai culturale
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Putin
+        </labl>
+        <catStat type="freq">
+          146
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Mult
+        </labl>
+        <catStat type="freq">
+          136
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Am renuntat
+        </labl>
+        <catStat type="freq">
+          531
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          99
+        </catValu>
+        <labl>
+          NR
+        </labl>
+        <catStat type="freq">
+          192
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V59" name="V27_10" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Restrangerea cheltuelilor urmare a somajului: concedii,excursii
+      </labl>
+      <qstn>
+        <qstnLit>
+          De cand sunteti somer, in ce domenii v-ati restrans cheltuielile?
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="99"/>
+      </valrng>
+      <sumStat type="vald">
+        1005
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Concedii, excursii
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Putin
+        </labl>
+        <catStat type="freq">
+          72
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Mult
+        </labl>
+        <catStat type="freq">
+          114
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Am renuntat
+        </labl>
+        <catStat type="freq">
+          699
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          99
+        </catValu>
+        <labl>
+          NR
+        </labl>
+        <catStat type="freq">
+          120
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V60" name="V27_11" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Restrangerea cheltuelilor urmare a somajului: alte cheltueli
+      </labl>
+      <qstn>
+        <qstnLit>
+          De cand sunteti somer, in ce domenii v-ati restrans cheltuielile?
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="99"/>
+      </valrng>
+      <sumStat type="vald">
+        1005
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Alte cheltuieli
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Putin
+        </labl>
+        <catStat type="freq">
+          26
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Mult
+        </labl>
+        <catStat type="freq">
+          38
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Am renuntat
+        </labl>
+        <catStat type="freq">
+          218
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          99
+        </catValu>
+        <labl>
+          NR
+        </labl>
+        <catStat type="freq">
+          723
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V61" name="V29_1" files="F1" dcml="0" intrvl="contin">
+      <labl>
+        Ajutorul de somaj
+      </labl>
+      <qstn>
+        <qstnLit>
+          Care sunt veniturile lunare ale familiei dvs. (pe surse)?
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="0" max="54000"/>
+      </valrng>
+      <sumStat type="vald">
+        1005
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <sumStat type="min">
+        0
+      </sumStat>
+      <sumStat type="max">
+        54000
+      </sumStat>
+      <sumStat type="mean">
+        4503.614
+      </sumStat>
+      <sumStat type="stdev">
+        4300.309
+      </sumStat>
+      <txt>
+        Indemnizatia de somaj
+      </txt>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V62" name="V29_2" files="F1" dcml="0" intrvl="contin">
+      <labl>
+        Salariu
+      </labl>
+      <qstn>
+        <qstnLit>
+          Care sunt veniturile lunare ale familiei dvs. (pe surse)?
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="0" max="85000"/>
+      </valrng>
+      <sumStat type="vald">
+        1005
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <sumStat type="min">
+        0
+      </sumStat>
+      <sumStat type="max">
+        85000
+      </sumStat>
+      <sumStat type="mean">
+        5965.902
+      </sumStat>
+      <sumStat type="stdev">
+        7625.299
+      </sumStat>
+      <txt>
+        Salariul sotului (sotiei)
+      </txt>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V63" name="V29_3" files="F1" dcml="0" intrvl="contin">
+      <labl>
+        Venit din propietati,lei
+      </labl>
+      <qstn>
+        <qstnLit>
+          Care sunt veniturile lunare ale familiei dvs. (pe surse)?
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="0" max="20000"/>
+      </valrng>
+      <sumStat type="vald">
+        1005
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <sumStat type="min">
+        0
+      </sumStat>
+      <sumStat type="max">
+        20000
+      </sumStat>
+      <sumStat type="mean">
+        113.333
+      </sumStat>
+      <sumStat type="stdev">
+        1141.887
+      </sumStat>
+      <txt>
+        Venituri din proprietate
+      </txt>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V64" name="V29_4" files="F1" dcml="0" intrvl="contin">
+      <labl>
+        Venituri din activitati proprii,lei
+      </labl>
+      <qstn>
+        <qstnLit>
+          Care sunt veniturile lunare ale familiei dvs. (pe surse)?
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="0" max="20000"/>
+      </valrng>
+      <sumStat type="vald">
+        1005
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <sumStat type="min">
+        0
+      </sumStat>
+      <sumStat type="max">
+        20000
+      </sumStat>
+      <sumStat type="mean">
+        233.433
+      </sumStat>
+      <sumStat type="stdev">
+        1706.939
+      </sumStat>
+      <txt>
+        Venituri din afaceri sau prestari servicii pe cont propriu
+      </txt>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V65" name="V29_5" files="F1" dcml="0" intrvl="contin">
+      <labl>
+        Salarii,pensiile socrilor,parintilor,lei
+      </labl>
+      <qstn>
+        <qstnLit>
+          Care sunt veniturile lunare ale familiei dvs. (pe surse)?
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="0" max="95000"/>
+      </valrng>
+      <sumStat type="vald">
+        1005
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <sumStat type="min">
+        0
+      </sumStat>
+      <sumStat type="max">
+        95000
+      </sumStat>
+      <sumStat type="mean">
+        5756.021
+      </sumStat>
+      <sumStat type="stdev">
+        9409.045
+      </sumStat>
+      <txt>
+        Salarii, pensii ale parintilor sau ale socrilor
+      </txt>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V66" name="V29_6" files="F1" dcml="0" intrvl="contin">
+      <labl>
+        Alocatii,burse,lei
+      </labl>
+      <qstn>
+        <qstnLit>
+          Care sunt veniturile lunare ale familiei dvs. (pe surse)?
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="0" max="25000"/>
+      </valrng>
+      <sumStat type="vald">
+        1005
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <sumStat type="min">
+        0
+      </sumStat>
+      <sumStat type="max">
+        25000
+      </sumStat>
+      <sumStat type="mean">
+        389.637
+      </sumStat>
+      <sumStat type="stdev">
+        1354.634
+      </sumStat>
+      <txt>
+        Alocatii/burse
+      </txt>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V67" name="V29_7" files="F1" dcml="0" intrvl="contin">
+      <labl>
+        Alte venituri
+      </labl>
+      <qstn>
+        <qstnLit>
+          Care sunt veniturile lunare ale familiei dvs. (pe surse)?
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="0" max="48000"/>
+      </valrng>
+      <sumStat type="vald">
+        1005
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <sumStat type="min">
+        0
+      </sumStat>
+      <sumStat type="max">
+        48000
+      </sumStat>
+      <sumStat type="mean">
+        609.376
+      </sumStat>
+      <sumStat type="stdev">
+        2963.228
+      </sumStat>
+      <txt>
+        Notati alte surse
+      </txt>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V68" name="V29_T" files="F1" dcml="0" intrvl="contin">
+      <labl>
+        Total venituri ale familiei,lei
+      </labl>
+      <qstn>
+        <qstnLit>
+          Care sunt veniturile lunare ale familiei dvs. (pe surse)?
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="0" max="307003"/>
+      </valrng>
+      <sumStat type="vald">
+        1005
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <sumStat type="min">
+        0
+      </sumStat>
+      <sumStat type="max">
+        307003
+      </sumStat>
+      <sumStat type="mean">
+        17674.094
+      </sumStat>
+      <sumStat type="stdev">
+        14214.318
+      </sumStat>
+      <txt>
+        Total
+      </txt>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V69" name="V30" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Cu cine locuieste R
+      </labl>
+      <qstn>
+        <qstnLit>
+          Cu cine locuiti?
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="99"/>
+      </valrng>
+      <sumStat type="vald">
+        1005
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Singur
+        </labl>
+        <catStat type="freq">
+          60
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Cu parintii
+        </labl>
+        <catStat type="freq">
+          323
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Cu familia proprie
+        </labl>
+        <catStat type="freq">
+          595
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          4
+        </catValu>
+        <labl>
+          Alta situatie
+        </labl>
+        <catStat type="freq">
+          25
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          99
+        </catValu>
+        <labl>
+          NR
+        </labl>
+        <catStat type="freq">
+          2
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V70" name="V31" files="F1" dcml="0" intrvl="contin">
+      <labl>
+        Total membrii de familie
+      </labl>
+      <qstn>
+        <qstnLit>
+          Din cate persoane se compune familia dvs.?
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="99"/>
+      </valrng>
+      <invalrng>
+        <item UNITS="REAL" VALUE="99"/>
+      </invalrng>
+      <sumStat type="vald">
+        1001
+      </sumStat>
+      <sumStat type="invd">
+        4
+      </sumStat>
+      <sumStat type="min">
+        1
+      </sumStat>
+      <sumStat type="max">
+        17
+      </sumStat>
+      <sumStat type="mean">
+        3.537
+      </sumStat>
+      <sumStat type="stdev">
+        1.52
+      </sumStat>
+      <catgry missing="Y">
+        <catValu>
+          99
+        </catValu>
+        <labl>
+          NR
+        </labl>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V71" name="V32_1" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Are copii
+      </labl>
+      <qstn>
+        <qstnLit>
+          Numarul copiiilor si ocupatia lor
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="2"/>
+      </valrng>
+      <sumStat type="vald">
+        1005
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Nu
+        </labl>
+        <catStat type="freq">
+          472
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Da
+        </labl>
+        <catStat type="freq">
+          533
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V72" name="V32_2" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Daca da,ocupatia primului copil
+      </labl>
+      <qstn>
+        <qstnLit>
+          Numarul copiiilor si ocupatia lor
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="99"/>
+      </valrng>
+      <sumStat type="vald">
+        1005
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Primul
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Prescolar
+        </labl>
+        <catStat type="freq">
+          204
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Elev
+        </labl>
+        <catStat type="freq">
+          225
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Student
+        </labl>
+        <catStat type="freq">
+          10
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          4
+        </catValu>
+        <labl>
+          Salariat
+        </labl>
+        <catStat type="freq">
+          61
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          5
+        </catValu>
+        <labl>
+          Somer
+        </labl>
+        <catStat type="freq">
+          10
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          6
+        </catValu>
+        <labl>
+          Fara ocupatie
+        </labl>
+        <catStat type="freq">
+          9
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          97
+        </catValu>
+        <labl>
+          NC
+        </labl>
+        <catStat type="freq">
+          472
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          99
+        </catValu>
+        <labl>
+          NR
+        </labl>
+        <catStat type="freq">
+          14
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V73" name="V32_3" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Daca da,ocupatia celui de-al doilea copil
+      </labl>
+      <qstn>
+        <qstnLit>
+          Numarul copiiilor si ocupatia lor
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="99"/>
+      </valrng>
+      <sumStat type="vald">
+        1005
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Al 2-lea
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Prescolar
+        </labl>
+        <catStat type="freq">
+          87
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Elev
+        </labl>
+        <catStat type="freq">
+          135
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Student
+        </labl>
+        <catStat type="freq">
+          4
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          4
+        </catValu>
+        <labl>
+          Salariat
+        </labl>
+        <catStat type="freq">
+          22
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          5
+        </catValu>
+        <labl>
+          Somer
+        </labl>
+        <catStat type="freq">
+          7
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          6
+        </catValu>
+        <labl>
+          Fara ocupatie
+        </labl>
+        <catStat type="freq">
+          8
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          97
+        </catValu>
+        <labl>
+          NC
+        </labl>
+        <catStat type="freq">
+          739
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          99
+        </catValu>
+        <catStat type="freq">
+          3
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V74" name="V32_4" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Daca da,ocupatia celui de-al treilea copil
+      </labl>
+      <qstn>
+        <qstnLit>
+          Numarul copiiilor si ocupatia lor
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="97"/>
+      </valrng>
+      <sumStat type="vald">
+        1005
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Al 3-lea
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Prescolar
+        </labl>
+        <catStat type="freq">
+          40
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Elev
+        </labl>
+        <catStat type="freq">
+          38
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Student
+        </labl>
+        <catStat type="freq">
+          1
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          4
+        </catValu>
+        <labl>
+          Salariat
+        </labl>
+        <catStat type="freq">
+          8
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          5
+        </catValu>
+        <labl>
+          Somer
+        </labl>
+        <catStat type="freq">
+          0
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          6
+        </catValu>
+        <labl>
+          Fara ocupatie
+        </labl>
+        <catStat type="freq">
+          1
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          97
+        </catValu>
+        <labl>
+          NC
+        </labl>
+        <catStat type="freq">
+          917
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V75" name="V32_5" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Daca da,ocupatia celui de-al patrulea copil
+      </labl>
+      <qstn>
+        <qstnLit>
+          Numarul copiiilor si ocupatia lor
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="97"/>
+      </valrng>
+      <sumStat type="vald">
+        1005
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Al 4-lea
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Prescolar
+        </labl>
+        <catStat type="freq">
+          15
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Elev
+        </labl>
+        <catStat type="freq">
+          9
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Student
+        </labl>
+        <catStat type="freq">
+          0
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          4
+        </catValu>
+        <labl>
+          Salariat
+        </labl>
+        <catStat type="freq">
+          3
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          5
+        </catValu>
+        <labl>
+          Somer
+        </labl>
+        <catStat type="freq">
+          1
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          6
+        </catValu>
+        <labl>
+          Fara ocupatie
+        </labl>
+        <catStat type="freq">
+          1
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          97
+        </catValu>
+        <labl>
+          NC
+        </labl>
+        <catStat type="freq">
+          976
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V76" name="V32_6" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Daca da,ocupatia celui de-al cincelea copil
+      </labl>
+      <qstn>
+        <qstnLit>
+          Numarul copiiilor si ocupatia lor
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="97"/>
+      </valrng>
+      <sumStat type="vald">
+        1005
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Al 5-lea
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Prescolar
+        </labl>
+        <catStat type="freq">
+          10
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Elev
+        </labl>
+        <catStat type="freq">
+          1
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Student
+        </labl>
+        <catStat type="freq">
+          0
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          4
+        </catValu>
+        <labl>
+          Salariat
+        </labl>
+        <catStat type="freq">
+          0
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          5
+        </catValu>
+        <labl>
+          Somer
+        </labl>
+        <catStat type="freq">
+          0
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          6
+        </catValu>
+        <labl>
+          Fara ocupatie
+        </labl>
+        <catStat type="freq">
+          0
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          97
+        </catValu>
+        <labl>
+          NC
+        </labl>
+        <catStat type="freq">
+          994
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V77" name="V32_7" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Daca da,ocupatia celui de-al saselea copil
+      </labl>
+      <qstn>
+        <qstnLit>
+          Numarul copiiilor si ocupatia lor
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="97"/>
+      </valrng>
+      <sumStat type="vald">
+        1005
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        Al 6-lea
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Prescolar
+        </labl>
+        <catStat type="freq">
+          3
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Elev
+        </labl>
+        <catStat type="freq">
+          1
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Student
+        </labl>
+        <catStat type="freq">
+          0
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          4
+        </catValu>
+        <labl>
+          Salariat
+        </labl>
+        <catStat type="freq">
+          0
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          5
+        </catValu>
+        <labl>
+          Somer
+        </labl>
+        <catStat type="freq">
+          0
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          6
+        </catValu>
+        <labl>
+          Fara ocupatie
+        </labl>
+        <catStat type="freq">
+          0
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          97
+        </catValu>
+        <labl>
+          NC
+        </labl>
+        <catStat type="freq">
+          1001
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V78" name="V33" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Profesia tatalui (prezenta/fosta)
+      </labl>
+      <qstn>
+        <qstnLit>
+          Profesiunea tatalui dvs. este (a fost):
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="99"/>
+      </valrng>
+      <sumStat type="vald">
+        1005
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Taran
+        </labl>
+        <catStat type="freq">
+          127
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Muncitor
+        </labl>
+        <catStat type="freq">
+          589
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Functionar
+        </labl>
+        <catStat type="freq">
+          102
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          4
+        </catValu>
+        <labl>
+          Intelectual
+        </labl>
+        <catStat type="freq">
+          115
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          5
+        </catValu>
+        <labl>
+          Altceva
+        </labl>
+        <catStat type="freq">
+          60
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          99
+        </catValu>
+        <labl>
+          NR
+        </labl>
+        <catStat type="freq">
+          12
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V79" name="V34" files="F1" dcml="0" intrvl="contin">
+      <labl>
+        Varsta
+      </labl>
+      <qstn>
+        <qstnLit>
+          Varsta dvs.:
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="17" max="99"/>
+      </valrng>
+      <invalrng>
+        <item UNITS="REAL" VALUE="99"/>
+      </invalrng>
+      <sumStat type="vald">
+        1000
+      </sumStat>
+      <sumStat type="invd">
+        5
+      </sumStat>
+      <sumStat type="min">
+        17
+      </sumStat>
+      <sumStat type="max">
+        57
+      </sumStat>
+      <sumStat type="mean">
+        31.171
+      </sumStat>
+      <sumStat type="stdev">
+        9.882
+      </sumStat>
+      <catgry missing="Y">
+        <catValu>
+          99
+        </catValu>
+        <labl>
+          NR
+        </labl>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V80" name="V35_1" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Locul nasterii sat/oras
+      </labl>
+      <qstn>
+        <qstnLit>
+          Locul nasterii
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="99"/>
+      </valrng>
+      <sumStat type="vald">
+        1005
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        sat/oras
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Sat
+        </labl>
+        <catStat type="freq">
+          361
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Oras
+        </labl>
+        <catStat type="freq">
+          638
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          99
+        </catValu>
+        <labl>
+          NR
+        </labl>
+        <catStat type="freq">
+          6
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V81" name="V35_2" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Locul nasterii judet
+      </labl>
+      <qstn>
+        <qstnLit>
+          Locul nasterii
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="99"/>
+      </valrng>
+      <sumStat type="vald">
+        1005
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <txt>
+        judet
+      </txt>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <catStat type="freq">
+          4
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <catStat type="freq">
+          2
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <catStat type="freq">
+          11
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          4
+        </catValu>
+        <catStat type="freq">
+          14
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          5
+        </catValu>
+        <catStat type="freq">
+          1
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          6
+        </catValu>
+        <catStat type="freq">
+          2
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          7
+        </catValu>
+        <catStat type="freq">
+          12
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          8
+        </catValu>
+        <catStat type="freq">
+          2
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          9
+        </catValu>
+        <catStat type="freq">
+          13
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          10
+        </catValu>
+        <catStat type="freq">
+          12
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          11
+        </catValu>
+        <catStat type="freq">
+          4
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          12
+        </catValu>
+        <catStat type="freq">
+          40
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          13
+        </catValu>
+        <catStat type="freq">
+          3
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          14
+        </catValu>
+        <catStat type="freq">
+          5
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          15
+        </catValu>
+        <catStat type="freq">
+          1
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          16
+        </catValu>
+        <catStat type="freq">
+          22
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          17
+        </catValu>
+        <catStat type="freq">
+          7
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          18
+        </catValu>
+        <catStat type="freq">
+          9
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          19
+        </catValu>
+        <catStat type="freq">
+          34
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          20
+        </catValu>
+        <catStat type="freq">
+          3
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          21
+        </catValu>
+        <catStat type="freq">
+          1
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          22
+        </catValu>
+        <catStat type="freq">
+          7
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          23
+        </catValu>
+        <catStat type="freq">
+          22
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          24
+        </catValu>
+        <catStat type="freq">
+          10
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          26
+        </catValu>
+        <catStat type="freq">
+          3
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          27
+        </catValu>
+        <catStat type="freq">
+          2
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          28
+        </catValu>
+        <catStat type="freq">
+          2
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          29
+        </catValu>
+        <catStat type="freq">
+          15
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          30
+        </catValu>
+        <catStat type="freq">
+          13
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          31
+        </catValu>
+        <catStat type="freq">
+          1
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          33
+        </catValu>
+        <catStat type="freq">
+          2
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          34
+        </catValu>
+        <catStat type="freq">
+          4
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          35
+        </catValu>
+        <catStat type="freq">
+          47
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          36
+        </catValu>
+        <catStat type="freq">
+          1
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          37
+        </catValu>
+        <catStat type="freq">
+          3
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          38
+        </catValu>
+        <catStat type="freq">
+          12
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          39
+        </catValu>
+        <catStat type="freq">
+          10
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          40
+        </catValu>
+        <catStat type="freq">
+          12
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          41
+        </catValu>
+        <catStat type="freq">
+          413
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          42
+        </catValu>
+        <catStat type="freq">
+          3
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          99
+        </catValu>
+        <labl>
+          NR
+        </labl>
+        <catStat type="freq">
+          221
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V82" name="V36" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Starea civila
+      </labl>
+      <qstn>
+        <qstnLit>
+          Starea civila:
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="99"/>
+      </valrng>
+      <sumStat type="vald">
+        1005
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Necasatorit
+        </labl>
+        <catStat type="freq">
+          324
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Casatorit
+        </labl>
+        <catStat type="freq">
+          573
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          3
+        </catValu>
+        <labl>
+          Divortat
+        </labl>
+        <catStat type="freq">
+          80
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          4
+        </catValu>
+        <labl>
+          Vaduv
+        </labl>
+        <catStat type="freq">
+          11
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          5
+        </catValu>
+        <labl>
+          Concubinaj
+        </labl>
+        <catStat type="freq">
+          15
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          99
+        </catValu>
+        <labl>
+          NR
+        </labl>
+        <catStat type="freq">
+          2
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V83" name="V37" files="F1" dcml="0" intrvl="discrete">
+      <labl>
+        Sexul
+      </labl>
+      <qstn>
+        <qstnLit>
+          Sexul:
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="1" max="2"/>
+      </valrng>
+      <sumStat type="vald">
+        1005
+      </sumStat>
+      <sumStat type="invd">
+        0
+      </sumStat>
+      <catgry>
+        <catValu>
+          1
+        </catValu>
+        <labl>
+          Masculin
+        </labl>
+        <catStat type="freq">
+          398
+        </catStat>
+      </catgry>
+      <catgry>
+        <catValu>
+          2
+        </catValu>
+        <labl>
+          Feminin
+        </labl>
+        <catStat type="freq">
+          607
+        </catStat>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+    <var ID="V84" name="VENPERS" files="F1" dcml="0" intrvl="contin">
+      <labl>
+        Venitul personal
+      </labl>
+      <qstn>
+        <qstnLit>
+          Venitul personal
+        </qstnLit>
+      </qstn>
+      <valrng>
+        <range UNITS="REAL" min="0" max="35000"/>
+      </valrng>
+      <invalrng>
+        <item UNITS="REAL" VALUE="99"/>
+      </invalrng>
+      <sumStat type="vald">
+        1001
+      </sumStat>
+      <sumStat type="invd">
+        4
+      </sumStat>
+      <sumStat type="min">
+        0
+      </sumStat>
+      <sumStat type="max">
+        35000
+      </sumStat>
+      <sumStat type="mean">
+        5434.133
+      </sumStat>
+      <sumStat type="stdev">
+        3576.586
+      </sumStat>
+      <catgry missing="Y">
+        <catValu>
+          99
+        </catValu>
+        <labl>
+          NR
+        </labl>
+      </catgry>
+      <varFormat type="numeric" schema="other"/>
+    </var>
+  </dataDscr>
+</codeBook>

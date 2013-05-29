@@ -16,7 +16,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 @Component
-public class ApplicationListenerContextRefreshed implements ApplicationListener<ContextRefreshedEvent> {
+public class ApplicationListenerContextRefreshed implements
+		ApplicationListener<ContextRefreshedEvent> {
 
 	private final Log log = LogFactory.getLog(this.getClass());
 
@@ -26,44 +27,75 @@ public class ApplicationListenerContextRefreshed implements ApplicationListener<
 	@Autowired
 	DatabaseUtils du;
 
-	@Value("${roda.mode}")
-	private String rodaMode = "server-data";
+	@Value("${roda.data.csv}")
+	private String rodaDataCsv;
+
+	@Value("${roda.data.csv.dir}")
+	private String rodaDataCsvDir;
+
+	@Value("${roda.data.csv-extra}")
+	private String rodaDataCsvExtra;
+
+	@Value("${roda.data.csv-extra.dir}")
+	private String rodaDataCsvExtraDir;
+
+	@Value("${roda.data.ddi}")
+	private String rodaDataDdi;
+
+	@Value("${roda.data.ddi.dir}")
+	private String rodaDataDdiDir;
 
 	@Override
 	@Transactional
 	public void onApplicationEvent(ContextRefreshedEvent event) {
+		log.debug("> onApplicationEvent");
 		if (event.getApplicationContext().getParent() == null) {
 			// root context
-			log.info("event.getApplicationContext() = " + event.getApplicationContext());
+			log.trace("event.getApplicationContext() = "
+					+ event.getApplicationContext());
 
 			// check if we are in "test mode"
 			// (and the properties file has set a property)
 			try {
 				Resource resource = new ClassPathResource("roda.properties");
-				Properties props = PropertiesLoaderUtils.loadProperties(resource);
-				rodaMode = props.getProperty("roda.mode");
+				Properties props = PropertiesLoaderUtils
+						.loadProperties(resource);
+				rodaDataCsv = props.getProperty("roda.data.csv");
+				rodaDataCsvExtra = props.getProperty("roda.data.csv-extra");
+				rodaDataDdi = props.getProperty("roda.data.ddi");
 			} catch (IOException ignored) {
 			}
 
-			log.info("roda.mode = " + rodaMode);
+			log.trace("roda.data.csv = " + rodaDataCsv);
+			log.trace("roda.data.csv-extra = " + rodaDataCsvExtra);
+			log.trace("roda.data.ddi = " + rodaDataDdi);
 
+			// TODO make sure the following schemas are created BEFORE
+			// Hibernates uses the DB
 			du.executeUpdate("CREATE SCHEMA audit");
+			du.executeUpdate("CREATE SCHEMA ddi");
+
 			du.truncate();
 
 			rb.rnorm(4);
 
 			// to skip the initial actions,
-			// change "run.mode" property to another string
-			// (not "server-data")
-			if ("server-data".equals(rodaMode)) {
-				// log.error(dataSource.getUsername() + ":"
-				// + dataSource.getPassword() + ":" + dataSource.getUrl());
-
-				du.initData("csv/");
-				du.setSequence("hibernate_sequence", 1000, 1);
-				// du.changeData();
-				// du.saveXstream();
+			// change properties to another string
+			// (not "yes")
+			if ("yes".equals(rodaDataCsv)) {
+				du.importCsv(rodaDataCsvDir);
 			}
+			if ("yes".equals(rodaDataCsvExtra)) {
+				du.importCsv(rodaDataCsvExtraDir);
+			}
+			if ("yes".equals(rodaDataDdi)) {
+				du.importDdi(rodaDataDdiDir);
+			}
+
+			du.setSequence("hibernate_sequence", 1000, 1);
+			// du.changeDataDemo();
+			// du.saveXstream();
+
 		}
 	}
 

@@ -21,8 +21,7 @@ La specificarea in instructiunile de mai jos a sistemului de operare:
 \item[Ubuntu:]
 Se ruleaza urmatoarele comenzi, din shell:
 \begin{lstlisting}[breaklines=true]
-sudo apt-get install openjdk-6-jdk maven perl r-base r-base-dev pgadmin3
-libtest-www-selenium-perl htmldoc graphviz rubygems postgresql-server
+sudo apt-get install openjdk-6-jdk maven perl r-base r-base-dev pgadmin3 libtest-www-selenium-perl htmldoc graphviz rubygems postgresql-server
 
 sudo gem install vmc
 \end{lstlisting}
@@ -37,55 +36,88 @@ Test::WWW::Selenium se instaleaza din CPAN.
 
 Se ruleaza urmatoarele comenzi, din shell:
 \begin{lstlisting}[breaklines=true]
-sudo zypper in openjdk-7-jdk perl pgadmin3 htmldoc graphviz ruby ruby-devel
-rubygems postgresql
+sudo zypper in openjdk-6-jdk perl pgadmin3 htmldoc graphviz ruby ruby-devel rubygems postgresql
 
 sudo gem install vmc
 \end{lstlisting}
 
 \item[MacOSX:]
 
+Se instaleaza MacPorts si toate dependentele necesare (instructiuni complete la:
+\url{http://www.macports.org/install.php} ).
+
 Se ruleaza urmatoarele comenzi, din shell:
 \begin{lstlisting}[breaklines=true]
-sudo port install maven3 perl5 R pgadmin3 p5.12-test-www-selenium
-htmldoc graphviz rb-rubygems postgresql92
-
+sudo port install maven3 perl5 R pgadmin3 p5.12-test-www-selenium htmldoc graphviz rb-rubygems postgresql92
+	
 sudo gem install vmc
 \end{lstlisting}
 \end{description}
 
-\subsection{Postgresql}
+\subsection{LaTeX}
+O distributie LaTeX este necesara pentru generarea documentatiei:
+
+\begin{description}
+\item[Ubuntu:] 
+\begin{lstlisting}[breaklines=true]
+	sudo apt-get install texlive
+\end{lstlisting}
+\item[MacOSX:] 
+MacTeX, instalata de la \url{http://tug.org/mactex/} 
+\end{description}
+
+\subsection{Instalarea si configurarea serverului Postgresql local}
+\label{postgresql_configurare}
+
 \begin{description}
 \item[MacOSX:]
 
 Se instaleaza si ruleaza Postgres.app (descarcat de la \url{http://postgresapp.com} ).
 Se bifeaza in meniu optiunea 'Automatically Start at Login'.
 
-Se instaleaza MacPorts si toate dependentele necesare (instructiuni complete la:
-\url{http://www.macports.org/install.php} ).
-
 \item[orice alt sistem de operare:]
 
-Se configureaza Postgresql ca server pe statia locala (preferabil, pornit
-automat ca serviciu la bootare). 
-Se configureaza in fisierele de configurare ale Postgresql drepturile
-de acces ale clientilor la server, de ex. pentru a permite accesul prin
-internet, nu doar de la statia locala / reteaua locala.
+Se configureaza Postgresql ca server pe statia locala 
+(preferabil, pornit automat ca serviciu la bootare). 
+Se pot configura in fisierele de configurare ale Postgresql tipurile de autentificare ale clientilor la server 
+(de ex. pentru a permite accesul prin
+internet, nu doar de la statia locala / reteaua locala).
 % TODO mai precis ???
 \end{description}
 
-\subsection{LaTeX}
-O distributie LaTeX este necesara pentru generarea documentatiei:
-\begin{description}
-\item[Ubuntu:] 
-
-\begin{lstlisting}[breaklines=true]
-	sudo apt-get install texlive
+Folosind pentru conectarea la serverul Postgresql, in shell:
+\begin{lstlisting}
+	psql -h localhost
+\end{lstlisting}
+se dau apoi comenzile pentru crearea utilizatorului si a bazei de date ce vor fi folosite de aplicatie:
+\begin{lstlisting}
+	CREATE USER roda PASSWORD 'roda';
+	CREATE DATABASE roda OWNER roda ENCODING 'UTF8';
 \end{lstlisting}
 
-\item[MacOSX:] 
-MacTeX, instalata de la \url{http://tug.org/mactex/} 
+\subsection{Instalarea si configurarea serverului Solr local}
+\label{solr_configurare}
+
+Se instaleaza Solr:
+\begin{description}
+\item[MacOSX:]
+\begin{lstlisting}[breaklines=true]
+	sudo port install apache-solr4
+\end{lstlisting}
+Solr se porneste cu comanda:
+\begin{lstlisting}[breaklines=true]
+	sudo solr4
+\end{lstlisting}
+fiind disponibil la URL: \url{http://localhost:8983/solr/}
+
+\item[orice alt sistem de operare:]
+
+Se instaleaza Solr - versiunea indicata in preambulul acestui capitol.
+% TODO mai precis ???
 \end{description}
+
+Pentru configurarea Solr este folosita schema din subfolder-ul 'examples'. 
+% TODO mai precis ???
 
 \subsection{Maven si Java Virtual Machine (JVM)}
 Se creeaza in directorul \emph{\$HOME} al utilizatorului un fisier numit
@@ -129,15 +161,11 @@ Alegeti pentru descarcarea versiunea STS bazata pe Eclipse 3.8.2, extensia
 fisierului de salvat fiind '.sh', iar arhitectura cea stabilita de versiunea
 JVM (32 sau 64 bit, vezi \ref{java_version}); pe website, sectiunea respectiva
 este cea intitulata:
-\begin{verbatim}
-	Milestone Version - 
-	Spring Tool Suite 3.2.0.RELEASE - 
-	based on Eclipse Juno 3.8.2
-\end{verbatim}
+\begin{lstlisting}[breaklines=true]
+Milestone Version - Spring Tool Suite 3.2.0.RELEASE - based on Eclipse Juno 3.8.2
+\end{lstlisting}
 
-Instalati STS din shell (fara 'sudo'), cu optiunile default (se poate
-schimba eventual path-ul care este propus de wizard pentru instalarea STS,
-path-ul default este \emph{\$HOME/springsource} ):
+Instalati STS din shell (fara 'sudo'), cu optiunile default (path-ul default este \emph{\$HOME/springsource} ):
 'Next' -> ... -> 'Finish'.
 
 \subsection{Configurarea STS inainte de rulare}
@@ -159,7 +187,7 @@ trebuie modificata astfel:
 \end{lstlisting}
 \end{itemize}
 
-\subsection{Configurarea STS}
+\subsection{Configurarea plugin-urilor si extensiilor STS}
 
 Porniti STS, eventual din linia de comanda, in folder-ul radacina al instalarii STS:
 \begin{lstlisting}	
@@ -204,39 +232,14 @@ folosit:
 'SVNKit (pure Java) SVNKit v1.7....'
 \end{enumerate}
 
-Instalati plugin-ul IDE pentru Perl, prin meniu Help -> Install
-New Software:
+(Optional) Instalati plugin-ul IDE pentru Perl, prin meniu 'Help' -> 
+'Install New Software':
 \begin{itemize}
 \item 
 nume = Perl EPIC
 \item
 URL = \url{http://e-p-i-c.sf.net/updates/testing}
 \end{itemize}
-
-\subsection{Preluare proiecte din repository-ul Subversion}
-In STS, adaugati un SVN repository (in perspectiva 'SVN Repository
-Exploring'), 
-
-URL = \url{svn://fisiere.dyndns.org/roda}
-
-Faceti \emph{Checkout} din SVN repository (click-dreapta pe numele
-proiectului, apoi 'Checkout') ale urmatoarelor directoare:
-\begin{description}
-\item [roda:] aplicatia web Java / Spring / Roo
-\item [(OPTIONAL) dbwrench2-files:] fisierele dbWrench, SQL si scripturile asociate
-\item [(OPTIONAL) RODA-Model:] modelul Perl
-\end{description}
-
-\begin{comment}
-In STS, se face upgrade la Subversion 1.7 (pt. working copy) pentru fiecare din proiectele de mai sus: 
-in perspectiva 'Spring', 
-in view-ul 'Package Explorer' sau in view-ul 'Navigator', 
-click-dreapta pe numele proiectului respectiv,
-si apoi in meniul aparut:
-'Team' -> 'Upgrade' -> 'OK'. 
-Poate aparea un mesaj de eroare/warning, care indica
-faptul ca working-copy local este deja conform versiunii 1.7 a SVN.
-\end{comment}
 
 \subsection{Configurare Task Repository}
 In STS, in view-ul 'Task List', butonul 'Add Repository', de tipul 'Trac', 
@@ -259,46 +262,52 @@ Bifare 'Save password'
 La ultimul pas, se adauga un Query legat de acest Task-Repository (de exemplu,
 se completeaza doar un nume - precum 'ALL' - si se apasa 'Finish').
 
-\subsection{Setari STS pentru Java si Spring}
+\subsection{STS Preferences}
 In fereastra 'Preferences' a STS:
 \begin{itemize}
 \item
 in Java -> Editor -> Save Actions, se bifeaza: 'Perform the selected actions on save' ; ' Format source code' (format all lines).
 \item
-in Java -> Code Style -> Formatter, se selecteaza profilul 'Eclipse [built-in]', se apasa 'Edit', in tab-ul 'Line Wrapping' , campul 'Maximum line width' se completeaza cu '120' (in loc de 80).
-Se completeaza in partea de sus numele profilului: 'RODA' , se apasa 'OK'.
+in Java -> Code Style -> Formatter, se selecteaza profilul 'Eclipse [built-in]', se apasa 'Edit', in tab-ul 'Line Wrapping' , campul 'Maximum line width' se completeaza cu '120' (in loc de '80').
+Se completeaza in partea de sus numele profilului: 'RODA' , se apasa 'OK'. Se selecteaza
 \item
 (optional) in Java -> Appearance -> Members Sort Order, se bifeaza 'Sort member in same category by visibility'.
 \item
 (optional) in SpringSource -> Dashboard, se debifeaza 'Show Dashboard on Startup'.
 \end{itemize}
 
+\subsection{Preluare proiecte in STS din repository}
+In STS, adaugati un SVN repository 
+(in perspectiva 'SVN Repository Exploring'), 
+folosind URL: \url{svn://fisiere.dyndns.org/roda} .
+
+Faceti \emph{Checkout} succesiv din SVN repository 
+(click-dreapta pe numele proiectului / directorului, apoi 'Checkout') 
+pentru:
+\begin{description}
+\item [roda:] aplicatia web Java / Spring
+\item [(optional) dbwrench2-files:] fisierele dbWrench, SQL si scripturile asociate
+\item [(optional) RODA-Model:] modelul Perl
+\end{description}
+
+\begin{comment}
+In STS, se face upgrade la Subversion 1.7 (pt. working copy) pentru fiecare din proiectele de mai sus: 
+in perspectiva 'Spring', 
+in view-ul 'Package Explorer' sau in view-ul 'Navigator', 
+click-dreapta pe numele proiectului respectiv,
+si apoi in meniul aparut:
+'Team' -> 'Upgrade' -> 'OK'. 
+Poate aparea un mesaj de eroare/warning, care indica
+faptul ca working-copy local este deja conform versiunii 1.7 a SVN.
+\end{comment}
+
 \section{Configurarea locala a proiectului}
-
-\subsection{Configurarea serverului Postgresql local}
-Folosind pentru conectare in linia de comanda
-\begin{lstlisting}
-	psql -h localhost
-\end{lstlisting}
-se dau comenzile:
-\begin{lstlisting}
-	CREATE USER roda PASSWORD 'roda';
-	CREATE DATABASE roda OWNER roda ENCODING 'UTF8';
-\end{lstlisting}
-
-\section{Instalarea si configurarea serverului Solr local}
-
-Se instaleaza Solr in '/opt'.
-Pentru configurare se foloseste schema din subfolder-ul
-'examples'. 
-
 \subsection{Compilarea pentru prima data a proiectului}
 
 In linia de comanda, in folderul-radacina al proiectului 'roda':
 \begin{lstlisting}
 	mvn -e -X clean package
 \end{lstlisting}
-
 Toate pachetele necesare sunt descarcate atunci cand se face prima compilare - care poate dura mai mult.
 
 In STS, se alege perspectiva 'Spring', 
@@ -310,10 +319,6 @@ apoi 'OK'.
 
 % STS va deschide un view numit 'Roo shell' unde se pot da comenzi Roo referitoare la proiect.
 
-\subsection{Configurarea Serverului Local (in STS)}
-Se trage (drag-and-drop) proiectul 'roda' din view-ul 'Package Explorer' 
-peste serverul local prezent in view-ul 'Servers' (VMware vFabric tc Server ...).
-
 \subsection{Fisierele de configurare ale aplicatiei}
 Toate detaliile necesare se regasesc in sectiunea
 dedicata fisierelor de configurare din capitolul dedicat componentelor/arhitecturii aplicatiei: 
@@ -322,16 +327,23 @@ dedicata fisierelor de configurare din capitolul dedicat componentelor/arhitectu
 Configurarile \emph{default} din aceste fisiere nu trebuie neaparat
 schimbate, daca se urmeaza intocmai acest ghid de instalare/configurare.
 
+\subsection{Configurarea Serverului de Aplicatii local (in STS)}
+Se trage (drag-and-drop) proiectul 'roda' din view-ul 'Package Explorer' 
+peste serverul local prezent in view-ul 'Servers' (VMware vFabric tc Server ...).
+
 \section{Rularea locala a proiectului}
 
-De fiecare data, inainte de pornirea aplicatiei, trebuie sa fie pornit Solr ca un server standalone pe portul 8983, folosind Jetty.
-% TODO ???
+De fiecare data, inainte de pornirea aplicatiei, trebuie sa fie deja pornite:
+\begin{description}
+\item[Postgresql] ca un server local pe portul 5432 (vezi \ref{postgresql_configurare})
+\item[Solr] ca un server local pe portul 8983, folosind Jetty (vezi \ref{solr_configurare})
+\end{description}
 
 \subsection{Rularea din STS, pe Server Local}
 Se (re-)porneste serverul de aplicatii local folosind butoanele din view-ul
 'Servers'.
 
-Daca portul local 8080 era liber (portul se poate edita dupa dublu-click pe
+Daca portul local 8080 era liber (portul dorit se poate edita dupa dublu-click pe
 server, in lista din view-ul 'Servers'), aplicatia e disponibila la:
 
 \url{http://localhost:8080/roda}
@@ -403,6 +415,7 @@ Proiectul este disponibil online permanent la adresa:
 \end{comment}
 
 \section{Integrarea continua a aplicatiei}
+
 \subsection{Instalarea si configurarea Jenkins}
 
 Lista plugin-urilor Jenkins ce trebuie instalate:
@@ -458,3 +471,7 @@ Token Macro Plugin
 \end{itemize}
 
 % TODO ???
+
+\subsection{Instalarea si configurarea dependentelor folosite de job-urile Jenkins}
+%TODO ??? ruby gems, vmc
+

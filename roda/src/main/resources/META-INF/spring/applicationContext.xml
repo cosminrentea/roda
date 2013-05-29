@@ -130,7 +130,7 @@
 	<!-- Solr -->
 	<bean class="org.apache.solr.client.solrj.impl.CommonsHttpSolrServer"
 		id="solrServer">
-		<constructor-arg value="${solr.serverUrl}" />
+		<constructor-arg value="${roda.solr.serverUrl}" />
 	</bean>
 	
 	<!-- Cosmin: the component-scan must be after the "dataSource" bean declaration 

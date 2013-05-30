@@ -37,7 +37,7 @@ import flexjson.JSONSerializer;
 @Entity
 @Table(schema = "public", name = "cms_snippet")
 @Configurable
-@Audited
+
 public class CmsSnippet {
 
 	public static long countCmsSnippets() {

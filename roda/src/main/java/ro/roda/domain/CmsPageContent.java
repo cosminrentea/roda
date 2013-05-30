@@ -37,7 +37,7 @@ import flexjson.JSONSerializer;
 @Entity
 @Table(schema = "public", name = "cms_page_content")
 @Configurable
-@Audited
+
 public class CmsPageContent {
 
 	public static long countCmsPageContents() {

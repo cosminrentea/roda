@@ -41,7 +41,7 @@ import flexjson.JSONSerializer;
 @Entity
 @Table(schema = "public", name = "user_auth_log")
 @Configurable
-@Audited
+
 public class UserAuthLog {
 
 	public static long countUserAuthLogs() {

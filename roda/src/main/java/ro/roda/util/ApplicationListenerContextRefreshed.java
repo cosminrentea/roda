@@ -89,7 +89,7 @@ public class ApplicationListenerContextRefreshed implements
 				du.importCsv(rodaDataCsvExtraDir);
 			}
 			if ("yes".equals(rodaDataDdi)) {
-				du.importDdi(rodaDataDdiDir);
+				du.importAllDdi(rodaDataDdiDir);
 			}
 
 			du.setSequence("hibernate_sequence", 1000, 1);

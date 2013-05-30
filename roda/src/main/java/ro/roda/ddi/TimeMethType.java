@@ -64,8 +64,8 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "timeMethType")
-@Entity(name = "DdiTimeMethod")
-@Table(schema = "ddi", name = "TimeMethod")
+@Entity
+@Table(schema = "ddi", name = "time_meth_type")
 public class TimeMethType {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)

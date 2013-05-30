@@ -41,7 +41,7 @@ import flexjson.JSONSerializer;
 @Entity
 @Table(schema = "public", name = "file")
 @Configurable
-@Audited
+
 public class File {
 
 	public static long countFiles() {

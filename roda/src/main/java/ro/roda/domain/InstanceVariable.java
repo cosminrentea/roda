@@ -35,7 +35,7 @@ import flexjson.JSONSerializer;
 @Entity
 @Table(schema = "public", name = "instance_variable")
 @Configurable
-@Audited
+
 public class InstanceVariable {
 
 	public static long countInstanceVariables() {

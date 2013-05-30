@@ -39,7 +39,7 @@ import flexjson.JSONSerializer;
 @Configurable
 @Entity
 @Table(schema = "public", name = "sampling_procedure")
-@Audited
+
 public class SamplingProcedure {
 
 	public static long countSamplingProcedures() {

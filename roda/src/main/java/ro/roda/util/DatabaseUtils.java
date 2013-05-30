@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
+import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -46,12 +47,18 @@ import org.xml.sax.SAXException;
 import ro.roda.domain.Catalog;
 import ro.roda.domain.CatalogStudy;
 import ro.roda.domain.CatalogStudyPK;
+import ro.roda.domain.Lang;
 import ro.roda.domain.Person;
 import ro.roda.domain.Prefix;
 import ro.roda.domain.Study;
+import ro.roda.domain.StudyDescr;
+import ro.roda.domain.StudyDescrPK;
 import ro.roda.domain.Suffix;
+import ro.roda.domain.TimeMeth;
+import ro.roda.domain.UnitAnalysis;
 import ro.roda.domain.Users;
 import ro.roda.service.CatalogServiceImpl;
+import ro.roda.service.StudyServiceImpl;
 
 import ro.roda.ddi.CodeBook;
 
@@ -64,6 +71,9 @@ public class DatabaseUtils {
 
 	@Autowired
 	CatalogServiceImpl catalogService;
+
+	@Autowired
+	StudyServiceImpl studyService;
 
 	@Autowired
 	XStreamMarshaller xstreamMarshaller;
@@ -149,15 +159,9 @@ public class DatabaseUtils {
 	 *            the name of the directory containing DDI XML files (having
 	 *            .xml extensions)
 	 */
-	public void importDdi(String dirname) {
-		log.debug("> importDdi");
-		Connection con = null;
+	public void importAllDdi(String dirname) {
+		log.debug("> importAllDdi");
 		try {
-			Properties conProps = new Properties();
-			conProps.put("user", this.dbUsername);
-			conProps.put("password", this.dbPassword);
-			con = DriverManager.getConnection(this.dbUrl, conProps);
-
 			Resource ddiRes = new ClassPathResource(dirname);
 			File ddiDir = ddiRes.getFile();
 			File[] ddiFiles = ddiDir.listFiles();
@@ -176,24 +180,52 @@ public class DatabaseUtils {
 				log.trace("Title = "
 						+ cb.getDocDscr().get(0).getCitation().getTitlStmt()
 								.getTitl().getContent());
+
+				Study s = new Study();
+
+				s.setAdded(new GregorianCalendar());
+				s.setAnonymousUsage(true);
+				s.setDigitizable(true);
+				s.setRawData(true);
+				s.setRawMetadata(false);
+				s.setInsertionStatus(0);
+
+				Users u = Users.findUsers(1);
+				s.setAddedBy(u);
+				Set<Study> su = u.getStudies();
+				su.add(s);
+				u.setStudies(su);
+
+				TimeMeth tm = TimeMeth.findTimeMeth(1);
+				s.setTimeMethId(tm);
+				Set<Study> tms = tm.getStudies();
+				tms.add(s);
+				tm.setStudies(tms);
+
+				UnitAnalysis ua = UnitAnalysis.findUnitAnalysis(1);
+				s.setUnitAnalysisId(ua);
+				Set<Study> uas = ua.getStudies();
+				uas.add(s);
+				ua.setStudies(uas);
+
+				s.persist();
+
+				StudyDescr sd = new StudyDescr();
+				sd.setOriginalTitleLanguage(true);
+				StudyDescrPK sdId = new StudyDescrPK(new Integer(1), s.getId());
+				sd.setId(sdId);
+				sd.setTitle(cb.getDocDscr().get(0).getCitation().getTitlStmt()
+						.getTitl().getContent());
+				sd.persist();
+
 			}
 
-		} catch (SQLException e) {
-			log.error("SQLException:", e);
 		} catch (IOException e) {
 			log.error("IOException:", e);
 		} catch (JAXBException e) {
 			log.error("JAXBException:", e);
 		} catch (SAXException e) {
 			log.error("SAXException:", e);
-		} finally {
-			if (con != null) {
-				try {
-					con.close();
-				} catch (SQLException e) {
-					log.error("SQLException:", e);
-				}
-			}
 		}
 	}
 

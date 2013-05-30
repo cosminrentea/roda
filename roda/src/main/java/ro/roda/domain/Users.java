@@ -39,7 +39,7 @@ import flexjson.JSONSerializer;
 @Entity
 @Table(schema = "public", name = "users")
 @Configurable
-@Audited
+
 public class Users implements Serializable {
 
 	private static final long serialVersionUID = 1L;

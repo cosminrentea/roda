@@ -33,7 +33,7 @@ import flexjson.JSONSerializer;
 @Entity
 @Table(schema = "public", name = "instance_right_target_group")
 @Configurable
-@Audited
+
 public class InstanceRightTargetGroup {
 
 	public static long countInstanceRightTargetGroups() {

@@ -37,7 +37,7 @@ import ro.roda.service.StudyKeywordService;
 import ro.roda.service.StudyOrgService;
 import ro.roda.service.StudyPersonService;
 import ro.roda.service.StudyService;
-import ro.roda.service.TimeMethTypeService;
+import ro.roda.service.TimeMethService;
 import ro.roda.service.TopicService;
 import ro.roda.service.UnitAnalysisService;
 import ro.roda.service.UsersService;
@@ -83,7 +83,7 @@ public class StudyController {
 	StudyPersonService studyPersonService;
 
 	@Autowired
-	TimeMethTypeService timeMethTypeService;
+	TimeMethService timeMethTypeService;
 
 	@Autowired
 	TopicService topicService;
@@ -95,15 +95,17 @@ public class StudyController {
 	UsersService usersService;
 
 	@RequestMapping(method = RequestMethod.POST, produces = "text/html")
-	public String create(@Valid Study study, BindingResult bindingResult, Model uiModel,
-			HttpServletRequest httpServletRequest) {
+	public String create(@Valid Study study, BindingResult bindingResult,
+			Model uiModel, HttpServletRequest httpServletRequest) {
 		if (bindingResult.hasErrors()) {
 			populateEditForm(uiModel, study);
 			return "studys/create";
 		}
 		uiModel.asMap().clear();
 		studyService.saveStudy(study);
-		return "redirect:/studys/" + encodeUrlPathSegment(study.getId().toString(), httpServletRequest);
+		return "redirect:/studys/"
+				+ encodeUrlPathSegment(study.getId().toString(),
+						httpServletRequest);
 	}
 
 	@RequestMapping(params = "form", produces = "text/html")
@@ -121,15 +123,21 @@ public class StudyController {
 	}
 
 	@RequestMapping(produces = "text/html")
-	public String list(@RequestParam(value = "page", required = false) Integer page,
-			@RequestParam(value = "size", required = false) Integer size, Model uiModel) {
+	public String list(
+			@RequestParam(value = "page", required = false) Integer page,
+			@RequestParam(value = "size", required = false) Integer size,
+			Model uiModel) {
 		if (page != null || size != null) {
 			int sizeNo = size == null ? 10 : size.intValue();
-			final int firstResult = page == null ? 0 : (page.intValue() - 1) * sizeNo;
-			uiModel.addAttribute("studys", studyService.findStudyEntries(firstResult, sizeNo));
+			final int firstResult = page == null ? 0 : (page.intValue() - 1)
+					* sizeNo;
+			uiModel.addAttribute("studys",
+					studyService.findStudyEntries(firstResult, sizeNo));
 			float nrOfPages = (float) studyService.countAllStudys() / sizeNo;
-			uiModel.addAttribute("maxPages", (int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1
-					: nrOfPages));
+			uiModel.addAttribute(
+					"maxPages",
+					(int) ((nrOfPages > (int) nrOfPages || nrOfPages == 0.0) ? nrOfPages + 1
+							: nrOfPages));
 		} else {
 			uiModel.addAttribute("studys", studyService.findAllStudys());
 		}
@@ -138,15 +146,17 @@ public class StudyController {
 	}
 
 	@RequestMapping(method = RequestMethod.PUT, produces = "text/html")
-	public String update(@Valid Study study, BindingResult bindingResult, Model uiModel,
-			HttpServletRequest httpServletRequest) {
+	public String update(@Valid Study study, BindingResult bindingResult,
+			Model uiModel, HttpServletRequest httpServletRequest) {
 		if (bindingResult.hasErrors()) {
 			populateEditForm(uiModel, study);
 			return "studys/update";
 		}
 		uiModel.asMap().clear();
 		studyService.updateStudy(study);
-		return "redirect:/studys/" + encodeUrlPathSegment(study.getId().toString(), httpServletRequest);
+		return "redirect:/studys/"
+				+ encodeUrlPathSegment(study.getId().toString(),
+						httpServletRequest);
 	}
 
 	@RequestMapping(value = "/{id}", params = "form", produces = "text/html")
@@ -156,8 +166,10 @@ public class StudyController {
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "text/html")
-	public String delete(@PathVariable("id") Integer id, @RequestParam(value = "page", required = false) Integer page,
-			@RequestParam(value = "size", required = false) Integer size, Model uiModel) {
+	public String delete(@PathVariable("id") Integer id,
+			@RequestParam(value = "page", required = false) Integer page,
+			@RequestParam(value = "size", required = false) Integer size,
+			Model uiModel) {
 		Study study = studyService.findStudy(id);
 		studyService.deleteStudy(study);
 		uiModel.asMap().clear();
@@ -167,35 +179,51 @@ public class StudyController {
 	}
 
 	void addDateTimeFormatPatterns(Model uiModel) {
-		uiModel.addAttribute("study_datestart_date_format",
-				DateTimeFormat.patternForStyle("M-", LocaleContextHolder.getLocale()));
-		uiModel.addAttribute("study_dateend_date_format",
-				DateTimeFormat.patternForStyle("M-", LocaleContextHolder.getLocale()));
-		uiModel.addAttribute("study_added_date_format",
-				DateTimeFormat.patternForStyle("MM", LocaleContextHolder.getLocale()));
+		uiModel.addAttribute(
+				"study_datestart_date_format",
+				DateTimeFormat.patternForStyle("M-",
+						LocaleContextHolder.getLocale()));
+		uiModel.addAttribute(
+				"study_dateend_date_format",
+				DateTimeFormat.patternForStyle("M-",
+						LocaleContextHolder.getLocale()));
+		uiModel.addAttribute(
+				"study_added_date_format",
+				DateTimeFormat.patternForStyle("MM",
+						LocaleContextHolder.getLocale()));
 	}
 
 	void populateEditForm(Model uiModel, Study study) {
 		uiModel.addAttribute("study", study);
 		addDateTimeFormatPatterns(uiModel);
-		uiModel.addAttribute("catalogstudys", catalogStudyService.findAllCatalogStudys());
-		uiModel.addAttribute("collectionmodeltypes", collectionModelTypeService.findAllCollectionModelTypes());
-		uiModel.addAttribute("datasourcetypes", dataSourceTypeService.findAllDataSourceTypes());
+		uiModel.addAttribute("catalogstudys",
+				catalogStudyService.findAllCatalogStudys());
+		uiModel.addAttribute("collectionmodeltypes",
+				collectionModelTypeService.findAllCollectionModelTypes());
+		uiModel.addAttribute("datasourcetypes",
+				dataSourceTypeService.findAllDataSourceTypes());
 		uiModel.addAttribute("files", fileService.findAllFiles());
 		uiModel.addAttribute("instances", instanceService.findAllInstances());
-		uiModel.addAttribute("samplingprocedures", samplingProcedureService.findAllSamplingProcedures());
+		uiModel.addAttribute("samplingprocedures",
+				samplingProcedureService.findAllSamplingProcedures());
 		uiModel.addAttribute("sources", sourceService.findAllSources());
-		uiModel.addAttribute("studydescrs", studyDescrService.findAllStudyDescrs());
-		uiModel.addAttribute("studykeywords", studyKeywordService.findAllStudyKeywords());
+		uiModel.addAttribute("studydescrs",
+				studyDescrService.findAllStudyDescrs());
+		uiModel.addAttribute("studykeywords",
+				studyKeywordService.findAllStudyKeywords());
 		uiModel.addAttribute("studyorgs", studyOrgService.findAllStudyOrgs());
-		uiModel.addAttribute("studypeople", studyPersonService.findAllStudypeople());
-		uiModel.addAttribute("timemethtypes", timeMethTypeService.findAllTimeMethTypes());
+		uiModel.addAttribute("studypeople",
+				studyPersonService.findAllStudypeople());
+		uiModel.addAttribute("timemethtypes",
+				timeMethTypeService.findAllTimeMeths());
 		uiModel.addAttribute("topics", topicService.findAllTopics());
-		uiModel.addAttribute("unitanalyses", unitAnalysisService.findAllUnitAnalyses());
+		uiModel.addAttribute("unitanalyses",
+				unitAnalysisService.findAllUnitAnalyses());
 		uiModel.addAttribute("userses", usersService.findAllUserses());
 	}
 
-	String encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {
+	String encodeUrlPathSegment(String pathSegment,
+			HttpServletRequest httpServletRequest) {
 		String enc = httpServletRequest.getCharacterEncoding();
 		if (enc == null) {
 			enc = WebUtils.DEFAULT_CHARACTER_ENCODING;
@@ -216,7 +244,8 @@ public class StudyController {
 		if (study == null) {
 			return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
 		}
-		return new ResponseEntity<String>(study.toJson(), headers, HttpStatus.OK);
+		return new ResponseEntity<String>(study.toJson(), headers,
+				HttpStatus.OK);
 	}
 
 	@RequestMapping(headers = "Accept=application/json")
@@ -225,7 +254,8 @@ public class StudyController {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");
 		List<Study> result = studyService.findAllStudys();
-		return new ResponseEntity<String>(Study.toJsonArray(result), headers, HttpStatus.OK);
+		return new ResponseEntity<String>(Study.toJsonArray(result), headers,
+				HttpStatus.OK);
 	}
 
 	@RequestMapping(method = RequestMethod.POST, headers = "Accept=application/json")

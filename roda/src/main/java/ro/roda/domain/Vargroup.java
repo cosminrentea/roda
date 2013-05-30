@@ -39,7 +39,7 @@ import flexjson.JSONSerializer;
 @Entity
 @Table(schema = "public", name = "vargroup")
 @Configurable
-@Audited
+
 public class Vargroup {
 
 	public static long countVargroups() {

@@ -39,7 +39,7 @@ import flexjson.JSONSerializer;
 @Configurable
 @Entity
 @Table(schema = "public", name = "cms_folder")
-@Audited
+
 public class CmsFolder {
 
 	public static long countCmsFolders() {

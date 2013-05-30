@@ -35,7 +35,7 @@ import flexjson.JSONSerializer;
 @Entity
 @Table(schema = "public", name = "instance_descr")
 @Configurable
-@Audited
+
 public class InstanceDescr {
 
 	public static long countInstanceDescrs() {

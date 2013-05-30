@@ -37,7 +37,7 @@ import flexjson.JSONSerializer;
 @Entity
 @Table(schema = "public", name = "instance_right")
 @Configurable
-@Audited
+
 public class InstanceRight {
 
 	public static long countInstanceRights() {

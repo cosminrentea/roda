@@ -37,7 +37,7 @@ import flexjson.JSONSerializer;
 @Configurable
 @Entity
 @Table(schema = "public", name = "org_sufix")
-@Audited
+
 public class OrgSufix {
 
 	public static long countOrgSufixes() {

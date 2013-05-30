@@ -37,7 +37,7 @@ import flexjson.JSONSerializer;
 @Entity
 @Table(schema = "public", name = "acl_sid")
 @Configurable
-@Audited
+
 public class AclSid {
 
 	public static long countAclSids() {

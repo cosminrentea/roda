@@ -39,7 +39,7 @@ import flexjson.JSONSerializer;
 @Configurable
 @Entity
 @Table(schema = "public", name = "cms_layout")
-@Audited
+
 public class CmsLayout {
 
 	public static long countCmsLayouts() {

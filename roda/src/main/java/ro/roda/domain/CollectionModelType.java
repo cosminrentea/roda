@@ -39,7 +39,7 @@ import flexjson.JSONSerializer;
 @Entity
 @Table(schema = "public", name = "collection_model_type")
 @Configurable
-@Audited
+
 public class CollectionModelType {
 
 	public static long countCollectionModelTypes() {

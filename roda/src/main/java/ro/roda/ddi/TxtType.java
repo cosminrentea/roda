@@ -69,7 +69,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "txtType")
 @Entity
-@Table(schema = "ddi",name = "DescriptiveText")
+@Table(schema = "ddi", name = "DescriptiveText")
 public class TxtType {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -140,12 +140,12 @@ public class TxtType {
 	// @XmlAttribute
 	// protected String level;
 
-	@XmlAttribute
-	// TODO Cosmin commented IDREF annot.
-	// @XmlIDREF
-	@XmlSchemaType(name = "IDREFS")
-	@ElementCollection
-	protected List<String> sdatrefs;
+	// @XmlAttribute
+	// // TODO Cosmin commented IDREF annot.
+	// // @XmlIDREF
+	// @XmlSchemaType(name = "IDREFS")
+	// @ElementCollection
+	// protected List<String> sdatrefs;
 
 	/**
 	 * Gets the value of the id property.
@@ -190,11 +190,11 @@ public class TxtType {
 	 * 
 	 * 
 	 */
-	public List<String> getSdatrefs() {
-		if (sdatrefs == null) {
-			sdatrefs = new ArrayList<String>();
-		}
-		return this.sdatrefs;
-	}
+	// public List<String> getSdatrefs() {
+	// if (sdatrefs == null) {
+	// sdatrefs = new ArrayList<String>();
+	// }
+	// return this.sdatrefs;
+	// }
 
 }

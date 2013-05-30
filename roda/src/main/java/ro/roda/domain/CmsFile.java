@@ -37,7 +37,7 @@ import flexjson.JSONSerializer;
 @Entity
 @Table(schema = "public", name = "cms_file")
 @Configurable
-@Audited
+
 public class CmsFile {
 
 	public static long countCmsFiles() {

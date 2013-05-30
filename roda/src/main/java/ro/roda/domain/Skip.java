@@ -37,7 +37,7 @@ import flexjson.JSONSerializer;
 @Entity
 @Table(schema = "public", name = "skip")
 @Configurable
-@Audited
+
 public class Skip {
 
 	public static long countSkips() {

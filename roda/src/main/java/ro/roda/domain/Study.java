@@ -18,7 +18,6 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PostPersist;
 import javax.persistence.PostUpdate;
@@ -26,7 +25,6 @@ import javax.persistence.PreRemove;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -48,11 +46,12 @@ import flexjson.JSONSerializer;
 @Configurable
 @Entity
 @Table(schema = "public", name = "study")
-@Audited
+
 public class Study {
 
 	public static long countStudys() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM Study o", Long.class).getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM Study o",
+				Long.class).getSingleResult();
 	}
 
 	@Async
@@ -75,7 +74,9 @@ public class Study {
 	}
 
 	public static List<Study> findAllStudys() {
-		return entityManager().createQuery("SELECT o FROM Study o", Study.class).getResultList();
+		return entityManager()
+				.createQuery("SELECT o FROM Study o", Study.class)
+				.getResultList();
 	}
 
 	public static Study findStudy(Integer id) {
@@ -85,17 +86,20 @@ public class Study {
 	}
 
 	public static List<Study> findStudyEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM Study o", Study.class).setFirstResult(firstResult)
-				.setMaxResults(maxResults).getResultList();
+		return entityManager()
+				.createQuery("SELECT o FROM Study o", Study.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults)
+				.getResultList();
 	}
 
 	public static Collection<Study> fromJsonArrayToStudys(String json) {
-		return new JSONDeserializer<List<Study>>().use(null, ArrayList.class).use("values", Study.class)
-				.deserialize(json);
+		return new JSONDeserializer<List<Study>>().use(null, ArrayList.class)
+				.use("values", Study.class).deserialize(json);
 	}
 
 	public static Study fromJsonToStudy(String json) {
-		return new JSONDeserializer<Study>().use(null, Study.class).deserialize(json);
+		return new JSONDeserializer<Study>().use(null, Study.class)
+				.deserialize(json);
 	}
 
 	public static void indexStudy(Study study) {
@@ -113,7 +117,8 @@ public class Study {
 			sid.addField("study.id_i", study.getId());
 			// Add summary field to allow searching documents for objects of
 			// this type
-			sid.addField("study_solrsummary_t", new StringBuilder().append(study.getId()));
+			sid.addField("study_solrsummary_t",
+					new StringBuilder().append(study.getId()));
 			documents.add(sid);
 		}
 		try {
@@ -229,13 +234,9 @@ public class Study {
 	@OneToMany(mappedBy = "studyId")
 	private Set<StudyPerson> studypeople;
 
-	@Column(name = "time_meth_id", columnDefinition = "int4")
-	@NotNull
-	private Integer timeMethId;
-
-	@OneToOne
-	@JoinColumn(name = "id", nullable = false, insertable = false, updatable = false)
-	private TimeMethType timeMethType;
+	@ManyToOne
+	@JoinColumn(name = "time_meth_id", referencedColumnName = "id", nullable = false)
+	private TimeMeth timeMethId;
 
 	@ManyToMany
 	@JoinTable(name = "study_topic", joinColumns = { @JoinColumn(name = "study_id", nullable = false) }, inverseJoinColumns = { @JoinColumn(name = "topic_id", nullable = false) })
@@ -245,9 +246,8 @@ public class Study {
 	@JoinColumn(name = "unit_analysis_id", referencedColumnName = "id", nullable = false)
 	private UnitAnalysis unitAnalysisId;
 
-	@Version
-	@Column(name = "version")
-	private Integer version;
+	@Column(name = "study_version")
+	private Integer studyVersion;
 
 	@PersistenceContext
 	transient EntityManager entityManager;
@@ -337,12 +337,8 @@ public class Study {
 		return studypeople;
 	}
 
-	public Integer getTimeMethId() {
+	public TimeMeth getTimeMethId() {
 		return timeMethId;
-	}
-
-	public TimeMethType getTimeMethType() {
-		return timeMethType;
 	}
 
 	public Set<Topic> getTopics() {
@@ -353,8 +349,8 @@ public class Study {
 		return unitAnalysisId;
 	}
 
-	public Integer getVersion() {
-		return this.version;
+	public Integer getStudyVersion() {
+		return this.studyVersion;
 	}
 
 	public boolean isAnonymousUsage() {
@@ -417,7 +413,8 @@ public class Study {
 		this.catalogStudies = catalogStudies;
 	}
 
-	public void setCollectionModelTypes(Set<CollectionModelType> collectionModelTypes) {
+	public void setCollectionModelTypes(
+			Set<CollectionModelType> collectionModelTypes) {
 		this.collectionModelTypes = collectionModelTypes;
 	}
 
@@ -485,12 +482,8 @@ public class Study {
 		this.studypeople = studypeople;
 	}
 
-	public void setTimeMethId(Integer timeMethId) {
-		this.timeMethId = timeMethId;
-	}
-
-	public void setTimeMethType(TimeMethType timeMethType) {
-		this.timeMethType = timeMethType;
+	public void setTimeMethId(TimeMeth timeMeth) {
+		this.timeMethId = timeMeth;
 	}
 
 	public void setTopics(Set<Topic> topics) {
@@ -501,8 +494,8 @@ public class Study {
 		this.unitAnalysisId = unitAnalysisId;
 	}
 
-	public void setVersion(Integer version) {
-		this.version = version;
+	public void setStudyVersion(Integer studyVersion) {
+		this.studyVersion = studyVersion;
 	}
 
 	public String toJson() {
@@ -510,7 +503,8 @@ public class Study {
 	}
 
 	public String toString() {
-		return new ReflectionToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE).setExcludeFieldNames(
+		return new ReflectionToStringBuilder(this,
+				ToStringStyle.SHORT_PREFIX_STYLE).setExcludeFieldNames(
 				"timeMethType").toString();
 	}
 

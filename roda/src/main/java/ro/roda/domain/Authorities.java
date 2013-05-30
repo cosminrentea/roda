@@ -33,7 +33,7 @@ import flexjson.JSONSerializer;
 @Entity
 @Table(schema = "public", name = "authorities")
 @Configurable
-@Audited
+
 public class Authorities {
 
 	public static long countAuthoritieses() {

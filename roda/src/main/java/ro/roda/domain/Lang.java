@@ -37,7 +37,7 @@ import flexjson.JSONSerializer;
 @Entity
 @Table(schema = "public", name = "lang")
 @Configurable
-@Audited
+
 public class Lang {
 
 	public static long countLangs() {

@@ -37,7 +37,7 @@ import flexjson.JSONSerializer;
 @Configurable
 @Entity
 @Table(schema = "public", name = "suffix")
-@Audited
+
 public class Suffix {
 
 	public static long countSuffixes() {

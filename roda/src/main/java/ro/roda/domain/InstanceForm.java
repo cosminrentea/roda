@@ -35,7 +35,7 @@ import flexjson.JSONSerializer;
 @Entity
 @Table(schema = "public", name = "instance_form")
 @Configurable
-@Audited
+
 public class InstanceForm {
 
 	public static long countInstanceForms() {

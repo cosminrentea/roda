@@ -3,6 +3,7 @@ package ro.roda.domain;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,6 +11,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PostPersist;
@@ -36,15 +38,17 @@ import flexjson.JSONSerializer;
 @Configurable
 @Entity
 @Table(schema = "public", name = "time_meth_type")
-@Audited
-public class TimeMethType {
 
-	public static long countTimeMethTypes() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM TimeMethType o", Long.class).getSingleResult();
+public class TimeMeth {
+
+	public static long countTimeMeths() {
+		return entityManager().createQuery(
+				"SELECT COUNT(o) FROM TimeMethType o", Long.class)
+				.getSingleResult();
 	}
 
 	@Async
-	public static void deleteIndex(TimeMethType timeMethType) {
+	public static void deleteIndex(TimeMeth timeMethType) {
 		SolrServer solrServer = solrServer();
 		try {
 			solrServer.deleteById("timemethtype_" + timeMethType.getId());
@@ -55,58 +59,66 @@ public class TimeMethType {
 	}
 
 	public static final EntityManager entityManager() {
-		EntityManager em = new TimeMethType().entityManager;
+		EntityManager em = new TimeMeth().entityManager;
 		if (em == null)
 			throw new IllegalStateException(
 					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
 		return em;
 	}
 
-	public static List<TimeMethType> findAllTimeMethTypes() {
-		return entityManager().createQuery("SELECT o FROM TimeMethType o", TimeMethType.class).getResultList();
+	public static List<TimeMeth> findAllTimeMeths() {
+		return entityManager().createQuery("SELECT o FROM TimeMethType o",
+				TimeMeth.class).getResultList();
 	}
 
-	public static TimeMethType findTimeMethType(Integer id) {
+	public static TimeMeth findTimeMeth(Integer id) {
 		if (id == null)
 			return null;
-		return entityManager().find(TimeMethType.class, id);
+		return entityManager().find(TimeMeth.class, id);
 	}
 
-	public static List<TimeMethType> findTimeMethTypeEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM TimeMethType o", TimeMethType.class)
-				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
+	public static List<TimeMeth> findTimeMethEntries(int firstResult,
+			int maxResults) {
+		return entityManager()
+				.createQuery("SELECT o FROM TimeMethType o", TimeMeth.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults)
+				.getResultList();
 	}
 
-	public static Collection<TimeMethType> fromJsonArrayToTimeMethTypes(String json) {
-		return new JSONDeserializer<List<TimeMethType>>().use(null, ArrayList.class).use("values", TimeMethType.class)
+	public static Collection<TimeMeth> fromJsonArrayToTimeMeths(String json) {
+		return new JSONDeserializer<List<TimeMeth>>()
+				.use(null, ArrayList.class).use("values", TimeMeth.class)
 				.deserialize(json);
 	}
 
-	public static TimeMethType fromJsonToTimeMethType(String json) {
-		return new JSONDeserializer<TimeMethType>().use(null, TimeMethType.class).deserialize(json);
+	public static TimeMeth fromJsonToTimeMeth(String json) {
+		return new JSONDeserializer<TimeMeth>().use(null, TimeMeth.class)
+				.deserialize(json);
 	}
 
-	public static void indexTimeMethType(TimeMethType timeMethType) {
-		List<TimeMethType> timemethtypes = new ArrayList<TimeMethType>();
+	public static void indexTimeMeth(TimeMeth timeMethType) {
+		List<TimeMeth> timemethtypes = new ArrayList<TimeMeth>();
 		timemethtypes.add(timeMethType);
-		indexTimeMethTypes(timemethtypes);
+		indexTimeMeths(timemethtypes);
 	}
 
 	@Async
-	public static void indexTimeMethTypes(Collection<TimeMethType> timemethtypes) {
+	public static void indexTimeMeths(Collection<TimeMeth> timemethtypes) {
 		List<SolrInputDocument> documents = new ArrayList<SolrInputDocument>();
-		for (TimeMethType timeMethType : timemethtypes) {
+		for (TimeMeth timeMethType : timemethtypes) {
 			SolrInputDocument sid = new SolrInputDocument();
 			sid.addField("id", "timemethtype_" + timeMethType.getId());
-			sid.addField("timeMethType.study_t", timeMethType.getStudy());
 			sid.addField("timeMethType.name_s", timeMethType.getName());
-			sid.addField("timeMethType.description_s", timeMethType.getDescription());
+			sid.addField("timeMethType.description_s",
+					timeMethType.getDescription());
 			sid.addField("timeMethType.id_i", timeMethType.getId());
 			// Add summary field to allow searching documents for objects of
 			// this type
-			sid.addField("timemethtype_solrsummary_t", new StringBuilder().append(timeMethType.getStudy()).append(" ")
-					.append(timeMethType.getName()).append(" ").append(timeMethType.getDescription()).append(" ")
-					.append(timeMethType.getId()));
+			sid.addField(
+					"timemethtype_solrsummary_t",
+					new StringBuilder().append(timeMethType.getName())
+							.append(" ").append(timeMethType.getDescription())
+							.append(" ").append(timeMethType.getId()));
 			documents.add(sid);
 		}
 		try {
@@ -133,14 +145,14 @@ public class TimeMethType {
 	}
 
 	public static SolrServer solrServer() {
-		SolrServer _solrServer = new TimeMethType().solrServer;
+		SolrServer _solrServer = new TimeMeth().solrServer;
 		if (_solrServer == null)
 			throw new IllegalStateException(
 					"Solr server has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
 		return _solrServer;
 	}
 
-	public static String toJsonArray(Collection<TimeMethType> collection) {
+	public static String toJsonArray(Collection<TimeMeth> collection) {
 		return new JSONSerializer().exclude("*.class").serialize(collection);
 	}
 
@@ -156,8 +168,8 @@ public class TimeMethType {
 	@NotNull
 	private String name;
 
-	@OneToOne(mappedBy = "timeMethType")
-	private Study study;
+	@OneToMany(mappedBy = "timeMethId")
+	private Set<Study> studies;
 
 	@PersistenceContext
 	transient EntityManager entityManager;
@@ -191,15 +203,15 @@ public class TimeMethType {
 		return name;
 	}
 
-	public Study getStudy() {
-		return study;
+	public Set<Study> getStudies() {
+		return studies;
 	}
 
 	@Transactional
-	public TimeMethType merge() {
+	public TimeMeth merge() {
 		if (this.entityManager == null)
 			this.entityManager = entityManager();
-		TimeMethType merged = this.entityManager.merge(this);
+		TimeMeth merged = this.entityManager.merge(this);
 		this.entityManager.flush();
 		return merged;
 	}
@@ -218,7 +230,7 @@ public class TimeMethType {
 		if (this.entityManager.contains(this)) {
 			this.entityManager.remove(this);
 		} else {
-			TimeMethType attached = TimeMethType.findTimeMethType(this.id);
+			TimeMeth attached = TimeMeth.findTimeMeth(this.id);
 			this.entityManager.remove(attached);
 		}
 	}
@@ -235,8 +247,8 @@ public class TimeMethType {
 		this.name = name;
 	}
 
-	public void setStudy(Study study) {
-		this.study = study;
+	public void setStudies(Set<Study> studies) {
+		this.studies = studies;
 	}
 
 	public String toJson() {
@@ -244,13 +256,14 @@ public class TimeMethType {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this,
+				ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate
 	@PostPersist
 	private void postPersistOrUpdate() {
-		indexTimeMethType(this);
+		indexTimeMeth(this);
 	}
 
 	@PreRemove

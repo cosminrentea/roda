@@ -36,7 +36,7 @@ import flexjson.JSONSerializer;
 @Configurable
 @Entity
 @Table(schema = "public", name = "form_edited_number_var")
-@Audited
+
 public class FormEditedNumberVar {
 
 	public static long countFormEditedNumberVars() {

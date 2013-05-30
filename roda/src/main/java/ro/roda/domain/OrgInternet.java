@@ -35,7 +35,7 @@ import flexjson.JSONSerializer;
 @Entity
 @Table(schema = "public", name = "org_internet")
 @Configurable
-@Audited
+
 public class OrgInternet {
 
 	public static long countOrgInternets() {

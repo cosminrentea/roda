@@ -39,7 +39,7 @@ import flexjson.JSONSerializer;
 @Configurable
 @Entity
 @Table(schema = "public", name = "selection_variable")
-@Audited
+
 public class SelectionVariable {
 
 	public static long countSelectionVariables() {

@@ -9,8 +9,8 @@ La specificarea in instructiunile de mai jos a sistemului de operare:
 \item [STS =] Spring Tool Suite 3.2.0.RELEASE - based on Eclipse Juno 3.8.2
 \item [Maven =] Maven 3
 \item [JVM =] Java Virtual Machine (JVM) 1.6
-\item [Jenkins =] Jenkins 1.515
-\item [Solr =] Solr 4.2.1
+\item [Jenkins =] Jenkins 1.517
+\item [Solr =] Solr 4.3
 \item [Sencha Architect =] Sencha Architect 2.2.2
 \end{description}
 
@@ -471,6 +471,43 @@ Token Macro Plugin
 \end{itemize}
 
 % TODO ???
+\begin{comment}
+The installer sets up Jenkins as a launch daemon, listening on port 8080. (If you want to know more about launchd and daemons, see here and here.)
+Changing boot configuration
+
+The launch daemon picks up the command line options from a standard preferences file, /Library/Preferences/org.jenkins-ci.plist. If the file does not exist, built-in defaults are used. The preference files are manipulated using the standard utility defaults.
+
+    To view all settings in the file, run: defaults read /Library/Preferences/org.jenkins-ci
+    To get the value of a single setting, run: defaults read /Library/Preferences/org.jenkins-ci SETTING
+    To set the value of a setting, run: defaults write /Library/Preferences/org.jenkins-ci SETTING VALUE
+    For more information, see man defaults
+
+Supported Settings
+
+The list of settings supported by the Jenkins launch daemon (see documentation):
+
+    prefix
+    httpPort
+    httpListenAddress
+    httpsPort
+    httpsListenAddress
+    ajp13Port
+    ajp13ListenAddress
+
+Additionally, you can set also these:
+
+    war (Full path name to jenkins.war file.)
+    heapSize (Passed to java command-line -Xmx parameter.)
+    permGen (Passed to java command-line --XX:MaxPermSize parameter.)
+    JENKINS_HOME (Full path to JENKINS_HOME directory where Jenkins keeps its files)
+
+Starting/stopping the service
+    To manually start the daemon: sudo launchctl load /Library/LaunchDaemons/org.jenkins-ci.plist
+    To manually stop the daemon: sudo launchctl unload /Library/LaunchDaemons/org.jenkins-ci.plist
+
+Inheriting your existing Hudson/Jenkins installation
+    If you'd like your new installation to take over your existing Jenkins/Hudson data, copy your old data directory into the new JENKINS_HOME directory.
+\end{comment}
 
 \subsection{Instalarea si configurarea dependentelor folosite de job-urile Jenkins}
 %TODO ??? ruby gems, vmc

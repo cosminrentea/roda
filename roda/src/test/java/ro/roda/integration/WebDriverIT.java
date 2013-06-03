@@ -30,7 +30,7 @@ public class WebDriverIT {
 		driver.get("http://localhost:8080/roda/");
 		File scrFile = ((TakesScreenshot) driver)
 				.getScreenshotAs(OutputType.FILE);
-		FileUtils.copyFile(scrFile, new File("screenshot.png"));
+		FileUtils.copyFile(scrFile, new File("target/screenshot.png"));
 	}
 
 }

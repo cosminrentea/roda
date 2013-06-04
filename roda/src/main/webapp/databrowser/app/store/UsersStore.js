@@ -32,7 +32,11 @@ Ext.define('databrowser.store.UsersStore', {
                 url: '../../userses',
                 reader: {
                     type: 'json'
-                }
+                },
+                headers : {
+          		    'Content-type' : 'application/json',
+        		    'Accept': 'application/json'		    
+        		}
             },
             fields: [
                 {

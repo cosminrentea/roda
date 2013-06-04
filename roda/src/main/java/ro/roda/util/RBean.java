@@ -13,12 +13,12 @@ public class RBean {
 	private Rengine re;
 
 	public RBean(String[] arg0, boolean arg1, RMainLoopCallbacks arg2) {
-		log.debug(System.getProperties());
+		log.trace(System.getProperties());
 		if ("yes".equals(System.getProperty("jri.ignore.ule"))) {
 			re = null;
 		} else {
 			re = new Rengine(arg0, arg1, arg2);
-			log.debug("JRI Rengine.versionCheck() = " + Rengine.versionCheck());
+			log.trace("JRI Rengine.versionCheck() = " + Rengine.versionCheck());
 		}
 	}
 
@@ -54,7 +54,7 @@ public class RBean {
 		// an array of doubles, so we know what to convert to:
 		double[] rnd = rn.asDoubleArray();
 
-		log.debug("Obtained result from R");
+		log.trace("Obtained result from R");
 		for (int i = 0; i < rnd.length; i++) {
 			log.trace(rnd[i]);
 		}

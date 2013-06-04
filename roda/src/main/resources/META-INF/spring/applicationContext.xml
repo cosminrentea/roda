@@ -37,7 +37,13 @@
 		Edition annotations in your classes without needing to do any special configuration. 
 		The most commonly used annotation is @Autowired, which instructs Spring to 
 		dependency inject an object into your class. -->
-
+    
+    <!-- Cosmin: Generic Logger using AspectJ -->
+    <!-- 
+    <aop:aspectj-autoproxy />
+    <bean class="ro.roda.util.AspectLogger" />
+    -->
+     
 	<!-- Cosmin: add custom properties to the existing system properties -->
 	<bean id="systemProps"
 		class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">

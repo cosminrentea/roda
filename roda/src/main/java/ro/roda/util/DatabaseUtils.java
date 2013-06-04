@@ -65,7 +65,6 @@ public class DatabaseUtils {
 	 * associated sequences.
 	 */
 	public void truncate() {
-		log.debug("> truncate");
 		Connection con = null;
 		try {
 			Properties conProps = new Properties();
@@ -105,7 +104,6 @@ public class DatabaseUtils {
 	}
 
 	public void executeUpdate(String sqlCommand) {
-		log.debug("> executeUpdate");
 		Connection con = null;
 		try {
 			Properties conProps = new Properties();
@@ -147,7 +145,6 @@ public class DatabaseUtils {
 	 *            the final "increment" setting of the sequence
 	 */
 	public void setSequence(String sequence, int value, int increment) {
-		log.debug(">setSequence");
 		Connection con = null;
 		try {
 			Properties conProps = new Properties();
@@ -258,7 +255,6 @@ public class DatabaseUtils {
 	}
 
 	public void saveXstream() {
-		log.debug(">saveXstream");
 		for (Catalog c : catalogService.findAllCatalogs()) {
 			File file = new File(c.getId() + ".xml");
 			log.trace("Catalog XML Filename: " + file.getAbsolutePath());

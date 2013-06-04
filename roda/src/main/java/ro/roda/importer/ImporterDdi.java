@@ -54,8 +54,7 @@ public class ImporterDdi {
 	 *            the name of the directory containing DDI XML files (having
 	 *            .xml extensions)
 	 */
-	public void importAllDdi(String dirname) {
-		log.debug("> importAllDdi");
+	public void importDdiAll(String dirname) {
 		try {
 			Resource ddiRes = new ClassPathResource(dirname);
 			File ddiDir = ddiRes.getFile();
@@ -70,49 +69,8 @@ public class ImporterDdi {
 					xsdDdiRes.getFile()));
 
 			for (File ddiFile : ddiFiles) {
-				log.trace("File = " + ddiFile.getName());
-				CodeBook cb = (CodeBook) unmarshaller.unmarshal(ddiFile);
-				log.trace("Title = "
-						+ cb.getDocDscr().get(0).getCitation().getTitlStmt()
-								.getTitl().getContent());
-
-				Study s = new Study();
-
-				s.setAdded(new GregorianCalendar());
-				s.setAnonymousUsage(true);
-				s.setDigitizable(true);
-				s.setRawData(true);
-				s.setRawMetadata(false);
-				s.setInsertionStatus(0);
-
-				Users u = Users.findUsers(1);
-				s.setAddedBy(u);
-				Set<Study> su = u.getStudies();
-				su.add(s);
-				u.setStudies(su);
-
-				TimeMeth tm = TimeMeth.findTimeMeth(1);
-				s.setTimeMethId(tm);
-				Set<Study> tms = tm.getStudies();
-				tms.add(s);
-				tm.setStudies(tms);
-
-				UnitAnalysis ua = UnitAnalysis.findUnitAnalysis(1);
-				s.setUnitAnalysisId(ua);
-				Set<Study> uas = ua.getStudies();
-				uas.add(s);
-				ua.setStudies(uas);
-
-				s.persist();
-
-				StudyDescr sd = new StudyDescr();
-				sd.setOriginalTitleLanguage(true);
-				StudyDescrPK sdId = new StudyDescrPK(new Integer(1), s.getId());
-				sd.setId(sdId);
-				sd.setTitle(cb.getDocDscr().get(0).getCitation().getTitlStmt()
-						.getTitl().getContent());
-				sd.persist();
-
+				log.debug("File = " + ddiFile.getName());
+				importCodebook((CodeBook) unmarshaller.unmarshal(ddiFile));
 			}
 
 		} catch (IOException e) {
@@ -124,30 +82,47 @@ public class ImporterDdi {
 		}
 	}
 
-}
+	public void importCodebook(CodeBook cb) {
+		log.debug("Title = "
+				+ cb.getDocDscr().get(0).getCitation().getTitlStmt().getTitl()
+						.getContent());
 
-// public void populateJAXB () {
-// JAXBContext jc;
-// try {
-// jc = JAXBContext.newInstance("ro.roda.domain");
-// Marshaller marshaller = jc.createMarshaller();
-// // validate using DDI 1.2.2 XML Schema
-// // marshaller.setSchema(SchemaFactory.newInstance(
-// // XMLConstants.W3C_XML_SCHEMA_NS_URI).newSchema(
-// // new File(xsdDdi122)));
-//
-// // clean XML formatting
-// marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-//
-// for (Catalog u:catalogService.findAllCatalogs()) {
-//
-// String filename = u.getId() + ".xml";
-// File file = new File(filename);
-// log.error("Catalog XML Filename: " + file.getAbsolutePath());
-// // save the Catalog as XML
-// marshaller.marshal(u, file);
-// }
-// } catch (JAXBException e) {
-// log.error("SQLException:", e);
-// }
-// }
+		Study s = new Study();
+
+		s.setAdded(new GregorianCalendar());
+		s.setAnonymousUsage(true);
+		s.setDigitizable(true);
+		s.setRawData(true);
+		s.setRawMetadata(false);
+		s.setInsertionStatus(0);
+
+		Users u = Users.findUsers(1);
+		s.setAddedBy(u);
+		Set<Study> su = u.getStudies();
+		su.add(s);
+		u.setStudies(su);
+
+		TimeMeth tm = TimeMeth.findTimeMeth(1);
+		s.setTimeMethId(tm);
+		Set<Study> tms = tm.getStudies();
+		tms.add(s);
+		tm.setStudies(tms);
+
+		UnitAnalysis ua = UnitAnalysis.findUnitAnalysis(1);
+		s.setUnitAnalysisId(ua);
+		Set<Study> uas = ua.getStudies();
+		uas.add(s);
+		ua.setStudies(uas);
+
+		s.persist();
+
+		StudyDescr sd = new StudyDescr();
+		sd.setOriginalTitleLanguage(true);
+		StudyDescrPK sdId = new StudyDescrPK(new Integer(1), s.getId());
+		sd.setId(sdId);
+		sd.setTitle(cb.getDocDscr().get(0).getCitation().getTitlStmt()
+				.getTitl().getContent());
+		sd.persist();
+	}
+
+}

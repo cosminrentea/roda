@@ -66,59 +66,6 @@ O distributie LaTeX este necesara pentru generarea documentatiei:
 MacTeX, instalata de la \url{http://tug.org/mactex/} 
 \end{description}
 
-\subsection{Instalarea si configurarea serverului Postgresql local}
-\label{postgresql_configurare}
-
-\begin{description}
-\item[MacOSX:]
-
-Se instaleaza si ruleaza Postgres.app (descarcat de la \url{http://postgresapp.com} ).
-Se bifeaza in meniu optiunea 'Automatically Start at Login'.
-
-\item[orice alt sistem de operare:]
-
-Se configureaza Postgresql ca server pe statia locala 
-(preferabil, pornit automat ca serviciu la bootare). 
-Se pot configura in fisierele de configurare ale Postgresql tipurile de autentificare ale clientilor la server 
-(de ex. pentru a permite accesul prin
-internet, nu doar de la statia locala / reteaua locala).
-% TODO mai precis ???
-\end{description}
-
-Folosind pentru conectarea la serverul Postgresql, in shell:
-\begin{lstlisting}
-	psql -h localhost
-\end{lstlisting}
-se dau apoi comenzile pentru crearea utilizatorului si a bazei de date ce vor fi folosite de aplicatie:
-\begin{lstlisting}
-	CREATE USER roda PASSWORD 'roda';
-	CREATE DATABASE roda OWNER roda ENCODING 'UTF8';
-\end{lstlisting}
-
-\subsection{Instalarea si configurarea serverului Solr local}
-\label{solr_configurare}
-
-Se instaleaza Solr:
-\begin{description}
-\item[MacOSX:]
-\begin{lstlisting}[breaklines=true]
-	sudo port install apache-solr4
-\end{lstlisting}
-Solr se porneste cu comanda:
-\begin{lstlisting}[breaklines=true]
-	sudo solr4
-\end{lstlisting}
-fiind disponibil la URL: \url{http://localhost:8983/solr/}
-
-\item[orice alt sistem de operare:]
-
-Se instaleaza Solr - versiunea indicata in preambulul acestui capitol.
-% TODO mai precis ???
-\end{description}
-
-Pentru configurarea Solr este folosita schema din subfolder-ul 'examples'. 
-% TODO mai precis ???
-
 \subsection{Maven si Java Virtual Machine (JVM)}
 Se creeaza in directorul \emph{\$HOME} al utilizatorului un fisier numit
 '.mavenrc' 
@@ -286,7 +233,7 @@ Faceti \emph{Checkout} succesiv din SVN repository
 pentru:
 \begin{description}
 \item [roda:] aplicatia web Java / Spring
-\item [(optional) dbwrench2-files:] fisierele dbWrench, SQL si scripturile asociate
+\item [dbwrench2-files:] fisiere DbWrench (format XML + SQL), scripturi pentru operatii asupra bazei de date
 \item [(optional) RODA-Model:] modelul Perl
 \end{description}
 
@@ -330,6 +277,57 @@ schimbate, daca se urmeaza intocmai acest ghid de instalare/configurare.
 \subsection{Configurarea Serverului de Aplicatii local (in STS)}
 Se trage (drag-and-drop) proiectul 'roda' din view-ul 'Package Explorer' 
 peste serverul local prezent in view-ul 'Servers' (VMware vFabric tc Server ...).
+
+
+\subsection{Instalarea si configurarea serverului Postgresql local}
+\label{postgresql_configurare}
+
+\begin{description}
+\item[MacOSX:]
+
+Se instaleaza si ruleaza Postgres.app (descarcat de la \url{http://postgresapp.com} ).
+Se bifeaza in meniu optiunea 'Automatically Start at Login'.
+
+\item[orice alt sistem de operare:]
+
+Se configureaza Postgresql ca server pe statia locala 
+(preferabil, pornit automat ca serviciu la bootare). 
+Se pot configura in fisierele de configurare ale Postgresql tipurile de autentificare ale clientilor la server 
+(de ex. pentru a permite accesul prin
+internet, nu doar de la statia locala / reteaua locala).
+% TODO mai precis ???
+\end{description}
+
+In shell, din directorul 'dbwrench-files', 
+se ruleaza urmatoarea comanda
+(pentru crearea utilizatorului, a bazei de date si a schemelor auxiliare):
+\begin{lstlisting}
+	/bin/bash ./create-roda-db.sh
+\end{lstlisting}
+
+\subsection{Instalarea si configurarea serverului Solr local}
+\label{solr_configurare}
+
+Se instaleaza Solr:
+\begin{description}
+\item[MacOSX:]
+\begin{lstlisting}[breaklines=true]
+	sudo port install apache-solr4
+\end{lstlisting}
+Solr se porneste cu comanda:
+\begin{lstlisting}[breaklines=true]
+	sudo solr4
+\end{lstlisting}
+fiind disponibil la URL: \url{http://localhost:8983/solr/}
+
+\item[orice alt sistem de operare:]
+
+Se instaleaza Solr - versiunea indicata in preambulul acestui capitol.
+% TODO mai precis ???
+\end{description}
+
+Pentru configurarea Solr este folosita schema din subfolder-ul 'examples'. 
+% TODO mai precis ???
 
 \section{Rularea locala a proiectului}
 

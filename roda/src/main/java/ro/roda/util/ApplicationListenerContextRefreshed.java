@@ -15,6 +15,9 @@ import org.springframework.core.io.support.PropertiesLoaderUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import ro.roda.importer.ImporterCsv;
+import ro.roda.importer.ImporterDdi;
+
 @Component
 public class ApplicationListenerContextRefreshed implements
 		ApplicationListener<ContextRefreshedEvent> {
@@ -71,11 +74,11 @@ public class ApplicationListenerContextRefreshed implements
 			log.trace("roda.data.ddi = " + rodaDataDdi);
 
 			// TODO make sure the following schemas are created BEFORE
-			// Hibernates uses the DB
+			// Hibernate uses the DB
 			du.executeUpdate("CREATE SCHEMA audit");
 			du.executeUpdate("CREATE SCHEMA ddi");
 
-			du.truncate();
+			// du.truncate();
 
 			rb.rnorm(4);
 
@@ -83,13 +86,16 @@ public class ApplicationListenerContextRefreshed implements
 			// change properties to another string
 			// (not "yes")
 			if ("yes".equals(rodaDataCsv)) {
-				du.importCsv(rodaDataCsvDir);
+				ImporterCsv icsv = new ImporterCsv();
+				icsv.importCsvAll(rodaDataCsvDir);
+				if ("yes".equals(rodaDataCsvExtra)) {
+					icsv.importCsvAll(rodaDataCsvExtraDir);
+				}
 			}
-			if ("yes".equals(rodaDataCsvExtra)) {
-				du.importCsv(rodaDataCsvExtraDir);
-			}
+
 			if ("yes".equals(rodaDataDdi)) {
-				du.importAllDdi(rodaDataDdiDir);
+				ImporterDdi iddi = new ImporterDdi();
+				iddi.importAllDdi(rodaDataDdiDir);
 			}
 
 			du.setSequence("hibernate_sequence", 1000, 1);

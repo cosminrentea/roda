@@ -625,7 +625,7 @@
                 		</goals>
             		</execution>
         			<execution>
-        				<id>selenium</id>
+        				<id>selenium-start-server</id>
             			<phase>pre-integration-test</phase>
             			<goals>
             				<goal>start-server</goal>
@@ -634,6 +634,13 @@
                 			<background>true</background>
                 			<logOutput>true</logOutput>
             			</configuration>
+        			</execution>
+        			<execution>
+            			<id>selenium-stop-server</id>
+            			<phase>post-integration-test</phase>
+            			<goals>
+                			<goal>stop-server</goal>
+            			</goals>
         			</execution>
     			</executions>
 				<configuration>
@@ -652,7 +659,7 @@
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>exec-maven-plugin</artifactId>
 				<version>1.2.1</version>
-				
+				<!-- 
 				<executions>
     				<execution>
       					<id>perl-integration-tests</id>
@@ -662,7 +669,7 @@
       					</goals>
     				</execution>
   				</executions>
-  				
+  				-->
 				<configuration>
 					<executable>perl</executable>
 					<workingDirectory>src/test/perl</workingDirectory>

@@ -1,66 +1,39 @@
 package ro.roda.util;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.FileWriter;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Arrays;
-import java.util.Comparator;
 import java.util.GregorianCalendar;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
-import java.util.Set;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import javax.xml.XMLConstants;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
 import javax.xml.transform.Result;
 import javax.xml.transform.stream.StreamResult;
-import javax.xml.validation.SchemaFactory;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.postgresql.copy.CopyManager;
-import org.postgresql.core.BaseConnection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
 import org.springframework.oxm.XmlMappingException;
 import org.springframework.oxm.xstream.XStreamMarshaller;
 import org.springframework.stereotype.Component;
-import org.xml.sax.SAXException;
 
 import ro.roda.domain.Catalog;
 import ro.roda.domain.CatalogStudy;
 import ro.roda.domain.CatalogStudyPK;
-import ro.roda.domain.Lang;
 import ro.roda.domain.Person;
 import ro.roda.domain.Prefix;
 import ro.roda.domain.Study;
-import ro.roda.domain.StudyDescr;
-import ro.roda.domain.StudyDescrPK;
 import ro.roda.domain.Suffix;
-import ro.roda.domain.TimeMeth;
-import ro.roda.domain.UnitAnalysis;
 import ro.roda.domain.Users;
 import ro.roda.service.CatalogServiceImpl;
 import ro.roda.service.StudyServiceImpl;
-
-import ro.roda.ddi.CodeBook;
 
 import com.thoughtworks.xstream.XStream;
 
@@ -86,148 +59,6 @@ public class DatabaseUtils {
 
 	@Value("${database.url}")
 	private String dbUrl;
-
-	@Value("${roda.data.ddi.xsd}")
-	private String xsdDdi122;
-
-	private static final String jaxbContextPath = "ro.roda.ddi";
-
-	/**
-	 * Populates the database using data imported from a directory with CSV
-	 * files (which are ordered by name).
-	 */
-	public void importCsv(String dirname) {
-		Connection con = null;
-		try {
-			Properties conProps = new Properties();
-			conProps.put("user", this.dbUsername);
-			conProps.put("password", this.dbPassword);
-			con = DriverManager.getConnection(this.dbUrl, conProps);
-
-			Resource csvRes = new ClassPathResource(dirname);
-			File csvDir = csvRes.getFile();
-			File[] csvFiles = csvDir.listFiles();
-
-			// sort file list by file name, ascending
-			Arrays.sort(csvFiles, new Comparator<File>() {
-				public int compare(File f1, File f2) {
-					return f1.getName().compareTo(f2.getName());
-				}
-			});
-
-			CopyManager cm = ((BaseConnection) con).getCopyAPI();
-			for (File f : csvFiles) {
-				log.trace("File: " + f.getAbsolutePath());
-
-				// Postgresql requires a Reader for the COPY commands
-				BufferedReader br = new BufferedReader(new FileReader(f));
-
-				// read the first line, containing the enumeration of fields
-				String tableFields = br.readLine();
-
-				// obtain the table name from the file name
-				String tableName = f.getName().substring(2,
-						f.getName().length() - 4);
-
-				// bulk COPY the remaining lines (CSV data)
-				String copyQuery = "COPY " + tableName + "(" + tableFields
-						+ ") FROM stdin DELIMITERS ',' CSV";
-				log.trace(copyQuery);
-				cm.copyIn(copyQuery, br);
-				// br.close();
-			}
-		} catch (SQLException e) {
-			log.error("SQLException:", e);
-		} catch (IOException e) {
-			log.error("IOException:", e);
-		} finally {
-			if (con != null) {
-				try {
-					con.close();
-				} catch (SQLException e) {
-					log.error("SQLException:", e);
-				}
-			}
-		}
-	}
-
-	/**
-	 * Populates the database using data imported from a directory with DDI
-	 * files exported from Nesstar Publisher.
-	 * 
-	 * @param dirname
-	 *            the name of the directory containing DDI XML files (having
-	 *            .xml extensions)
-	 */
-	public void importAllDdi(String dirname) {
-		log.debug("> importAllDdi");
-		try {
-			Resource ddiRes = new ClassPathResource(dirname);
-			File ddiDir = ddiRes.getFile();
-			File[] ddiFiles = ddiDir.listFiles();
-
-			Resource xsdDdiRes = new ClassPathResource(xsdDdi122);
-			// validate using DDI 1.2.2 XML Schema
-			JAXBContext jc = JAXBContext.newInstance(jaxbContextPath);
-			Unmarshaller unmarshaller = jc.createUnmarshaller();
-			unmarshaller.setSchema(SchemaFactory.newInstance(
-					XMLConstants.W3C_XML_SCHEMA_NS_URI).newSchema(
-					xsdDdiRes.getFile()));
-
-			for (File ddiFile : ddiFiles) {
-				log.trace("File = " + ddiFile.getName());
-				CodeBook cb = (CodeBook) unmarshaller.unmarshal(ddiFile);
-				log.trace("Title = "
-						+ cb.getDocDscr().get(0).getCitation().getTitlStmt()
-								.getTitl().getContent());
-
-				Study s = new Study();
-
-				s.setAdded(new GregorianCalendar());
-				s.setAnonymousUsage(true);
-				s.setDigitizable(true);
-				s.setRawData(true);
-				s.setRawMetadata(false);
-				s.setInsertionStatus(0);
-
-				Users u = Users.findUsers(1);
-				s.setAddedBy(u);
-				Set<Study> su = u.getStudies();
-				su.add(s);
-				u.setStudies(su);
-
-				TimeMeth tm = TimeMeth.findTimeMeth(1);
-				s.setTimeMethId(tm);
-				Set<Study> tms = tm.getStudies();
-				tms.add(s);
-				tm.setStudies(tms);
-
-				UnitAnalysis ua = UnitAnalysis.findUnitAnalysis(1);
-				s.setUnitAnalysisId(ua);
-				Set<Study> uas = ua.getStudies();
-				uas.add(s);
-				ua.setStudies(uas);
-
-				s.persist();
-
-				StudyDescr sd = new StudyDescr();
-				sd.setOriginalTitleLanguage(true);
-				StudyDescrPK sdId = new StudyDescrPK(new Integer(1), s.getId());
-				sd.setId(sdId);
-				sd.setTitle(cb.getDocDscr().get(0).getCitation().getTitlStmt()
-						.getTitl().getContent());
-				sd.persist();
-
-			}
-
-		} catch (IOException e) {
-			log.error("IOException:", e);
-		} catch (JAXBException e) {
-			log.error("JAXBException:", e);
-		} catch (SAXException e) {
-			log.error("SAXException:", e);
-		}
-	}
 
 	/**
 	 * Truncates the existing data in all the database tables, and restarts the
@@ -316,6 +147,7 @@ public class DatabaseUtils {
 	 *            the final "increment" setting of the sequence
 	 */
 	public void setSequence(String sequence, int value, int increment) {
+		log.debug(">setSequence");
 		Connection con = null;
 		try {
 			Properties conProps = new Properties();
@@ -446,29 +278,3 @@ public class DatabaseUtils {
 	}
 
 }
-
-// public void populateJAXB () {
-// JAXBContext jc;
-// try {
-// jc = JAXBContext.newInstance("ro.roda.domain");
-// Marshaller marshaller = jc.createMarshaller();
-// // validate using DDI 1.2.2 XML Schema
-// // marshaller.setSchema(SchemaFactory.newInstance(
-// // XMLConstants.W3C_XML_SCHEMA_NS_URI).newSchema(
-// // new File(xsdDdi122)));
-//
-// // clean XML formatting
-// marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-//
-// for (Catalog u:catalogService.findAllCatalogs()) {
-//
-// String filename = u.getId() + ".xml";
-// File file = new File(filename);
-// log.error("Catalog XML Filename: " + file.getAbsolutePath());
-// // save the Catalog as XML
-// marshaller.marshal(u, file);
-// }
-// } catch (JAXBException e) {
-// log.error("SQLException:", e);
-// }
-// }

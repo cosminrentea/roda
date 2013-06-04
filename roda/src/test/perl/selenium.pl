@@ -15,10 +15,10 @@ use Test::Exception;
 my $sel = Test::WWW::Selenium->new( host => "localhost", 
                                     port => 4444, 
                                     browser => "*firefox", 
-                                    browser_url => "http://localhost:8080/" );
+                                    browser_url => "http://localhost:8080/roda/" );
 
 # authentication: user login + logout
-$sel->open_ok("/roda/");
+$sel->open_ok("roda/");
 $sel->wait_for_page_to_load_ok("30000");
 
 # admin

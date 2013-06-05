@@ -623,6 +623,16 @@
                 		<goals>
                     		<goal>xvfb</goal>
                 		</goals>
+                		<configuration>
+	                		<options>
+	                			<option>-screen</option>
+	                			<option>0</option>
+	                			<option>1920x1080x8</option>
+	                			<option>-extension</option>
+	                			<option>GLX</option>
+	        		        	<option>-ac</option>
+	                		</options>
+            			</configuration>
             		</execution>
         			<execution>
         				<id>selenium-start-server</id>
@@ -642,6 +652,7 @@
                 			<goal>stop-server</goal>
             			</goals>
         			</execution>
+        			
     			</executions>
     			<!-- 
 				<configuration>

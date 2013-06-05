@@ -37,21 +37,19 @@ import flexjson.JSONSerializer;
 
 @Configurable
 @Entity
-@Table(schema = "public", name = "time_meth_type")
-
+@Table(schema = "public", name = "time_meth")
 public class TimeMeth {
 
 	public static long countTimeMeths() {
-		return entityManager().createQuery(
-				"SELECT COUNT(o) FROM TimeMethType o", Long.class)
-				.getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM TimeMeth o",
+				Long.class).getSingleResult();
 	}
 
 	@Async
 	public static void deleteIndex(TimeMeth timeMethType) {
 		SolrServer solrServer = solrServer();
 		try {
-			solrServer.deleteById("timemethtype_" + timeMethType.getId());
+			solrServer.deleteById("timemeth_" + timeMethType.getId());
 			solrServer.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -67,7 +65,7 @@ public class TimeMeth {
 	}
 
 	public static List<TimeMeth> findAllTimeMeths() {
-		return entityManager().createQuery("SELECT o FROM TimeMethType o",
+		return entityManager().createQuery("SELECT o FROM TimeMeth o",
 				TimeMeth.class).getResultList();
 	}
 
@@ -80,7 +78,7 @@ public class TimeMeth {
 	public static List<TimeMeth> findTimeMethEntries(int firstResult,
 			int maxResults) {
 		return entityManager()
-				.createQuery("SELECT o FROM TimeMethType o", TimeMeth.class)
+				.createQuery("SELECT o FROM TimeMeth o", TimeMeth.class)
 				.setFirstResult(firstResult).setMaxResults(maxResults)
 				.getResultList();
 	}
@@ -107,15 +105,15 @@ public class TimeMeth {
 		List<SolrInputDocument> documents = new ArrayList<SolrInputDocument>();
 		for (TimeMeth timeMethType : timemethtypes) {
 			SolrInputDocument sid = new SolrInputDocument();
-			sid.addField("id", "timemethtype_" + timeMethType.getId());
-			sid.addField("timeMethType.name_s", timeMethType.getName());
-			sid.addField("timeMethType.description_s",
+			sid.addField("id", "timemeth_" + timeMethType.getId());
+			sid.addField("timeMeth.name_s", timeMethType.getName());
+			sid.addField("timeMeth.description_s",
 					timeMethType.getDescription());
-			sid.addField("timeMethType.id_i", timeMethType.getId());
+			sid.addField("timeMeth.id_i", timeMethType.getId());
 			// Add summary field to allow searching documents for objects of
 			// this type
 			sid.addField(
-					"timemethtype_solrsummary_t",
+					"timemeth_solrsummary_t",
 					new StringBuilder().append(timeMethType.getName())
 							.append(" ").append(timeMethType.getDescription())
 							.append(" ").append(timeMethType.getId()));
@@ -140,7 +138,7 @@ public class TimeMeth {
 	}
 
 	public static QueryResponse search(String queryString) {
-		String searchString = "TimeMethType_solrsummary_t:" + queryString;
+		String searchString = "TimeMeth_solrsummary_t:" + queryString;
 		return search(new SolrQuery(searchString.toLowerCase()));
 	}
 

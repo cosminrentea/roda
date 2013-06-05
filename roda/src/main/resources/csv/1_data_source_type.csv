@@ -1,0 +1,13 @@
+id,name
+1,Survey data
+2,Time budget diaries
+3,Clinical data
+4,Psychological test
+5,Observation data/ratings
+6,Census/enumeration data
+7,Aggregate data
+8,Administrative records data
+9,Process-produced data
+10,Event/transaction data
+11,Voting data
+12,Other

@@ -1,0 +1,13 @@
+Id,Name
+1,Longitudinal
+2,Longitudinal: Cohort/EventBased
+3,Longitudinal: Trend/Repeated cross-section
+4,Longitudinal: Panel
+5,Longitudinal: Panel:Continuous
+6,Longitudinal: Panel:Interval
+7,Time Series
+8,Time Series: Continuous
+9,Time Series: Discrete
+10,Cross-section
+11,Cross-section ad-hoc follow-up
+12,Other

@@ -26,6 +26,8 @@ public class WebDriverIT {
 
 	private static final String homepageUrl = "http://localhost:8080/roda/";
 
+	private static final String screenshotFilename = "target/screenshot.png";
+
 	@BeforeClass
 	public static void beforeClass() {
 		driver = new FirefoxDriver();
@@ -43,7 +45,7 @@ public class WebDriverIT {
 		driver.get(homepageUrl);
 		File scrFile = ((TakesScreenshot) driver)
 				.getScreenshotAs(OutputType.FILE);
-		FileUtils.copyFile(scrFile, new File("target/screenshot.png"));
+		FileUtils.copyFile(scrFile, new File(screenshotFilename));
 	}
 
 	@Test

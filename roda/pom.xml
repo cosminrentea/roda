@@ -643,12 +643,14 @@
             			</goals>
         			</execution>
     			</executions>
+    			<!-- 
 				<configuration>
 					<browser>*firefox</browser>
 					<suite>src/main/webapp/selenium/test-suite.xhtml</suite>
 					<results>${project.build.directory}/selenium.html</results>
 					<startURL>http://localhost:4444/</startURL>
 				</configuration>
+				-->
 			</plugin>
 			<plugin>
         		<groupId>org.codehaus.mojo</groupId>
@@ -659,7 +661,7 @@
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>exec-maven-plugin</artifactId>
 				<version>1.2.1</version>
-				<!-- 
+				<!-- -->
 				<executions>
     				<execution>
       					<id>perl-integration-tests</id>
@@ -669,9 +671,9 @@
       					</goals>
     				</execution>
   				</executions>
-  				-->
+  				<!-- -->
 				<configuration>
-					<executable>perl</executable>
+					<executable>/usr/bin/perl</executable>
 					<workingDirectory>src/test/perl</workingDirectory>
 					<arguments>
 						<argument>selenium.pl</argument>

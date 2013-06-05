@@ -14,7 +14,7 @@ use Test::Exception;
 # create Selenium browser 
 my $sel = Test::WWW::Selenium->new( host => "localhost", 
                                     port => 4444, 
-                                    browser => "*firefox", 
+                                    browser => "*firefox /opt/local/lib/firefox-x11/firefox-bin", 
                                     browser_url => "http://localhost:8080/roda/" );
 
 # authentication: user login + logout

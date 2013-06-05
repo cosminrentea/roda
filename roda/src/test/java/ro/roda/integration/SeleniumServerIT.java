@@ -9,24 +9,33 @@ import com.thoughtworks.selenium.DefaultSelenium;
 
 public class SeleniumServerIT {
 
-	private static DefaultSelenium selenium;
+	private static final int seleniumServerPort = 4444;
+
+	private static final String seleniumServerHost = "localhost";
+
+	private static final String browserOptions = "*firefox /opt/local/lib/firefox-x11/firefox-bin";
+
+	private static final String homepageUrl = "http://localhost:8080/roda/";
+
+	private static DefaultSelenium s;
 
 	@BeforeClass
 	public static void beforeClass() {
-		selenium = new DefaultSelenium("localhost", 4444, "*firefox",
-				"http://localhost:8080/");
-		selenium.start();
+		s = new DefaultSelenium(seleniumServerHost, seleniumServerPort,
+				browserOptions, homepageUrl);
+		s.start();
 	}
 
 	@AfterClass
 	public static void afterClass() {
-		selenium.stop();
+		s.stop();
 	}
 
 	@Test
 	public void homepage() throws Exception {
-		selenium.open("/roda/");
-		Assert.assertTrue(selenium.isTextPresent("RODA"));
+		s.open(homepageUrl);
+		Assert.assertTrue(s.isTextPresent("RODA"));
+		Assert.assertTrue("Welcome to RODA".equals(s.getTitle()));
 	}
 
 }

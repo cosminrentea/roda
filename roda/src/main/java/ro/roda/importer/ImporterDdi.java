@@ -2,8 +2,12 @@ package ro.roda.importer;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.xml.XMLConstants;
 import javax.xml.bind.JAXBContext;
@@ -83,13 +87,30 @@ public class ImporterDdi {
 	}
 
 	public void importCodebook(CodeBook cb) {
-		log.debug("Title = "
-				+ cb.getDocDscr().get(0).getCitation().getTitlStmt().getTitl()
-						.getContent());
+		String title = cb.getDocDscr().get(0).getCitation().getTitlStmt()
+				.getTitl().getContent();
+		log.debug("Title = " + title);
+
+		Date dateStart = null;
+		Date dateEnd = null;
+
+		Pattern pattern = Pattern.compile("\\d{4}");
+		Matcher matcher = pattern.matcher(title);
+		if (matcher.find()) {
+			Calendar cal = Calendar.getInstance();
+			cal.set(Integer.parseInt(matcher.group()), 0, 1, 0, 0, 0);
+			dateStart = cal.getTime();
+			cal.set(Integer.parseInt(matcher.group()), 11, 31, 23, 59, 59);
+			dateEnd = cal.getTime();
+		}
+		log.debug("dateStart = " + dateStart);
+		log.debug("dateEnd = " + dateEnd);
 
 		Study s = new Study();
 
 		s.setAdded(new GregorianCalendar());
+		s.setDateStart(dateStart);
+		s.setDateEnd(dateEnd);
 		s.setAnonymousUsage(true);
 		s.setDigitizable(true);
 		s.setRawData(true);
@@ -124,5 +145,4 @@ public class ImporterDdi {
 				.getTitl().getContent());
 		sd.persist();
 	}
-
 }

@@ -58,7 +58,7 @@ public class WebDriverIT {
 		// Assert.assertNotNull(driver.findElement(By.id("meniuri")));
 	}
 
-	@Test
+	// @Test
 	public void loginAdmin() throws Exception {
 		driver.get(homepageUrl);
 		WebElement loginLink = driver.findElement(By.partialLinkText("Login"));

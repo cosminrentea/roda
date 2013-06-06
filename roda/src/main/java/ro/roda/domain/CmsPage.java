@@ -150,14 +150,14 @@ public class CmsPage {
 	}
 
 	@ManyToOne
-	@JoinColumn(name = "cms_layout_id", referencedColumnName = "id", nullable = false)
+	@JoinColumn(name = "cms_layout_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false)
 	private CmsLayout cmsLayoutId;
 
 	@OneToMany(mappedBy = "cmsPageId")
 	private Set<CmsPageContent> cmsPageContents;
 
 	@ManyToOne
-	@JoinColumn(name = "cms_page_type_id", referencedColumnName = "id", nullable = false)
+	@JoinColumn(name = "cms_page_type_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false)
 	private CmsPageType cmsPageTypeId;
 
 	@Id

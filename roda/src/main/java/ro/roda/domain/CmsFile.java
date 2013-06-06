@@ -149,7 +149,7 @@ public class CmsFile {
 	}
 
 	@ManyToOne
-	@JoinColumn(name = "cms_folder_id", referencedColumnName = "id", nullable = false)
+	@JoinColumn(name = "cms_folder_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false)
 	private CmsFolder cmsFolderId;
 
 	@Column(name = "filename", columnDefinition = "text")

@@ -153,7 +153,7 @@ public class AclEntry {
 	private Integer aceOrder;
 
 	@ManyToOne
-	@JoinColumn(name = "acl_object_identity", referencedColumnName = "id", nullable = false)
+	@JoinColumn(name = "acl_object_identity", columnDefinition = "bigint", referencedColumnName = "id", nullable = false)
 	private AclObjectIdentity aclObjectIdentity;
 
 	@Column(name = "audit_failure", columnDefinition = "bool")
@@ -178,7 +178,7 @@ public class AclEntry {
 	private Integer mask;
 
 	@ManyToOne
-	@JoinColumn(name = "sid", referencedColumnName = "id", nullable = false)
+	@JoinColumn(name = "sid", columnDefinition = "bigint", referencedColumnName = "id", nullable = false)
 	private AclSid sid;
 
 	@PersistenceContext

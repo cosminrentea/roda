@@ -143,7 +143,7 @@ public class CmsLayout {
 	}
 
 	@ManyToOne
-	@JoinColumn(name = "cms_layout_group_id", referencedColumnName = "id")
+	@JoinColumn(name = "cms_layout_group_id", columnDefinition = "integer", referencedColumnName = "id")
 	private CmsLayoutGroup cmsLayoutGroupId;
 
 	@OneToMany(mappedBy = "cmsLayoutId")

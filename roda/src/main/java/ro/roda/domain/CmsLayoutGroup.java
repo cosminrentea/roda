@@ -166,7 +166,7 @@ public class CmsLayoutGroup {
 	private String name;
 
 	@ManyToOne
-	@JoinColumn(name = "parent_id", referencedColumnName = "id", insertable = false, updatable = false)
+	@JoinColumn(name = "parent_id", columnDefinition = "integer", referencedColumnName = "id", insertable = false, updatable = false)
 	private CmsLayoutGroup parentId;
 
 	@PersistenceContext

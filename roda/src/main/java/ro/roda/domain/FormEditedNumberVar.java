@@ -148,7 +148,7 @@ public class FormEditedNumberVar {
 	}
 
 	@ManyToOne
-	@JoinColumn(name = "form_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	@JoinColumn(name = "form_id", columnDefinition = "bigint", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
 	private Form formId;
 
 	@EmbeddedId
@@ -159,7 +159,7 @@ public class FormEditedNumberVar {
 	private BigDecimal value;
 
 	@ManyToOne
-	@JoinColumn(name = "variable_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	@JoinColumn(name = "variable_id", columnDefinition = "bigint", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
 	private Variable variableId;
 
 	@PersistenceContext

@@ -150,7 +150,7 @@ public class CmsPageContent {
 	}
 
 	@ManyToOne
-	@JoinColumn(name = "cms_page_id", referencedColumnName = "id", nullable = false)
+	@JoinColumn(name = "cms_page_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false)
 	private CmsPage cmsPageId;
 
 	@Column(name = "content_text", columnDefinition = "text")

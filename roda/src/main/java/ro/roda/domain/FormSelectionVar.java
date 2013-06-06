@@ -147,7 +147,7 @@ public class FormSelectionVar {
 	}
 
 	@ManyToOne
-	@JoinColumn(name = "form_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	@JoinColumn(name = "form_id", columnDefinition = "bigint", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
 	private Form formId;
 
 	@EmbeddedId
@@ -158,8 +158,8 @@ public class FormSelectionVar {
 
 	@ManyToOne
 	@JoinColumns({
-			@JoinColumn(name = "variable_id", referencedColumnName = "variable_id", nullable = false, insertable = false, updatable = false),
-			@JoinColumn(name = "item_id", referencedColumnName = "item_id", nullable = false, insertable = false, updatable = false) })
+			@JoinColumn(name = "variable_id", columnDefinition = "bigint", referencedColumnName = "variable_id", nullable = false, insertable = false, updatable = false),
+			@JoinColumn(name = "item_id", columnDefinition = "bigint", referencedColumnName = "item_id", nullable = false, insertable = false, updatable = false) })
 	private SelectionVariableItem selectionVariableItem;
 
 	@PersistenceContext

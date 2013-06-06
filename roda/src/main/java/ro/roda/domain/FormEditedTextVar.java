@@ -145,7 +145,7 @@ public class FormEditedTextVar {
 	}
 
 	@ManyToOne
-	@JoinColumn(name = "form_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	@JoinColumn(name = "form_id", columnDefinition = "bigint", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
 	private Form formId;
 
 	@EmbeddedId
@@ -156,7 +156,7 @@ public class FormEditedTextVar {
 	private String text;
 
 	@ManyToOne
-	@JoinColumn(name = "variable_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	@JoinColumn(name = "variable_id", columnDefinition = "bigint", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
 	private Variable variableId;
 
 	@PersistenceContext

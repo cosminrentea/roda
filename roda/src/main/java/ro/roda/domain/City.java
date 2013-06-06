@@ -177,7 +177,7 @@ public class City {
 	private String cityTypeSystem;
 
 	@ManyToOne
-	@JoinColumn(name = "country_id", referencedColumnName = "id", nullable = false)
+	@JoinColumn(name = "country_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false)
 	private Country countryId;
 
 	@Id

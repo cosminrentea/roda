@@ -146,7 +146,7 @@ public class CmsSnippet {
 	}
 
 	@ManyToOne
-	@JoinColumn(name = "cms_snippet_group_id", referencedColumnName = "id")
+	@JoinColumn(name = "cms_snippet_group_id", columnDefinition = "integer", referencedColumnName = "id")
 	private CmsSnippetGroup cmsSnippetGroupId;
 
 	@Id

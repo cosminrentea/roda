@@ -183,7 +183,7 @@ public class Address {
 	private String address2;
 
 	@ManyToOne
-	@JoinColumn(name = "city_id", referencedColumnName = "id", nullable = false)
+	@JoinColumn(name = "city_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false)
 	private City cityId;
 
 	@Id

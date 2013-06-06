@@ -156,14 +156,14 @@ public class CatalogStudy {
 	private Calendar added;
 
 	@ManyToOne
-	@JoinColumn(name = "catalog_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	@JoinColumn(name = "catalog_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
 	private Catalog catalogId;
 
 	@EmbeddedId
 	private CatalogStudyPK id;
 
 	@ManyToOne
-	@JoinColumn(name = "study_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	@JoinColumn(name = "study_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
 	private Study studyId;
 
 	@PersistenceContext

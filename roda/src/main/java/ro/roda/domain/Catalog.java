@@ -184,11 +184,11 @@ public class Catalog {
 	private String name;
 
 	@ManyToOne
-	@JoinColumn(name = "owner", referencedColumnName = "id", nullable = false)
+	@JoinColumn(name = "owner", columnDefinition = "integer", referencedColumnName = "id", nullable = false)
 	private Users owner;
 
 	@ManyToOne
-	@JoinColumn(name = "parent_id", referencedColumnName = "id", insertable = false, updatable = false)
+	@JoinColumn(name = "parent_id", columnDefinition = "integer", referencedColumnName = "id", nullable = true, insertable = true, updatable = true)
 	private Catalog parentId;
 
 	@Column(name = "sequencenr", columnDefinition = "int4")

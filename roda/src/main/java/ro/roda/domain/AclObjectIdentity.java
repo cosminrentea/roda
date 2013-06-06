@@ -167,7 +167,7 @@ public class AclObjectIdentity {
 	private Long id;
 
 	@ManyToOne
-	@JoinColumn(name = "object_id_class", referencedColumnName = "id", nullable = false)
+	@JoinColumn(name = "object_id_class", columnDefinition = "bigint", referencedColumnName = "id", nullable = false)
 	private AclClass objectIdClass;
 
 	@Column(name = "object_id_identity", columnDefinition = "int8")
@@ -175,11 +175,11 @@ public class AclObjectIdentity {
 	private Long objectIdIdentity;
 
 	@ManyToOne
-	@JoinColumn(name = "owner_sid", referencedColumnName = "id", nullable = false)
+	@JoinColumn(name = "owner_sid", columnDefinition = "bigint", referencedColumnName = "id", nullable = false)
 	private AclSid ownerSid;
 
 	@ManyToOne
-	@JoinColumn(name = "parent_object", referencedColumnName = "id", insertable = false, updatable = false)
+	@JoinColumn(name = "parent_object", columnDefinition = "bigint", referencedColumnName = "id", insertable = false, updatable = false)
 	private AclObjectIdentity parentObject;
 
 	@PersistenceContext

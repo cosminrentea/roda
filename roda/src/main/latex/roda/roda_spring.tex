@@ -237,25 +237,25 @@ folosind utilitarul \emph{htmldoc}.
 %TODO detaliere htmldoc
 
 \subsection{Testarea aplicatiei}
-Testarea este realizata in acest moment prin 3 metode:
+Testarea aplicatiei web la nivel de integrare este realizata in acest moment prin 4 metode:
 \begin{enumerate}
 \item
-testarea claselor din model, folosind \emph{JUnit} adaptat pentru Spring
+teste JUnit de integrare, ce utilizeaza interfata WebDriver a Selenium pentru a comanda direct browser-ul (Mozilla Firefox)
 \item
-testarea controller-elelor printr-o suita de teste pentru interfata web de tip CRUD, 
-teste ce au fost generate semi-automat
-in limbajul \emph{Selenese} 
-si executate prin \emph{Selenium}
+teste JUnit de integrare, ce interactioneaza cu \emph{Selenium Server}
 \item
-testarea aplicatiei web cu \emph{Selenium Server} si un client Perl executand
-scripturi de testare scrise de echipa de dezvoltare
+scripturi de testare scrise in Perl, ce interactioneaza cu \emph{Selenium Server}
+\item
+o suita de teste pentru interfata web de tip CRUD, 
+teste ce au fost generate semi-automat in limbajul \emph{Selenese} 
+si executate prin \emph{Selenium}.
 \end{enumerate}
 
 \subsection{Procese de Build}
 Procesele de build sunt realizate prin Maven;
 fisierul de build aferent (\emph{pom.xml})
 ce contine dependentele necesare pentru configurarea, compilarea,
-deployment-ul, rularea, testarea, documentarea proiectului.
+deployment-ul, rularea, testarea, documentarea codului-sursa (Javadoc) si a proiectului(LaTeX).
 
 Serviciul de tip continuous-build (\emph{Jenkins}) 
 realizeaza efectiv pasii descrisi mai sus 

@@ -1,6 +1,6 @@
 La specificarea in instructiunile de mai jos a sistemului de operare:
 \begin{description} 
-\item [MacOSX =] OS X version 10.8.3, 64 bit
+\item [MacOSX =] OS X version 10.8.4, 64 bit
 \item [Ubuntu =] Ubuntu 12.04LTS, kernel 3.2.0-39-generic-pae, 32bit
 \item [OpenSUSE = ] OpenSUSE 12.2
 \item [Postgresql =] Postgresql 9.2.4
@@ -21,11 +21,12 @@ La specificarea in instructiunile de mai jos a sistemului de operare:
 \item[Ubuntu:]
 Se ruleaza urmatoarele comenzi, din shell:
 \begin{lstlisting}[breaklines=true]
-sudo apt-get install openjdk-6-jdk maven perl r-base r-base-dev pgadmin3 libtest-www-selenium-perl htmldoc graphviz rubygems postgresql-server
+sudo apt-get install openjdk-6-jdk maven perl r-base r-base-dev pgadmin3 libtest-www-selenium-perl htmldoc graphviz rubygems postgresql-server firefox solr
 
 sudo gem install vmc
 \end{lstlisting}
 
+\begin {comment}
 \item[OpenSUSE:]
 % TODO ???
 Maven se instaleaza manual sau dintr-un repository non-standard.
@@ -40,6 +41,7 @@ sudo zypper in openjdk-6-jdk perl pgadmin3 htmldoc graphviz ruby ruby-devel ruby
 
 sudo gem install vmc
 \end{lstlisting}
+\end{comment}
 
 \item[MacOSX:]
 
@@ -48,7 +50,7 @@ Se instaleaza MacPorts si toate dependentele necesare (instructiuni complete la:
 
 Se ruleaza urmatoarele comenzi, din shell:
 \begin{lstlisting}[breaklines=true]
-sudo port install maven3 perl5 R pgadmin3 p5.12-test-www-selenium htmldoc graphviz rb-rubygems postgresql92
+sudo port install maven3 perl5 R pgadmin3 p5.12-test-www-selenium htmldoc graphviz rb-rubygems postgresql92 firefox-x11 apache-solr4
 	
 sudo gem install vmc
 \end{lstlisting}
@@ -65,6 +67,8 @@ O distributie LaTeX este necesara pentru generarea documentatiei:
 \item[MacOSX:] 
 MacTeX, instalata de la \url{http://tug.org/mactex/} 
 \end{description}
+
+Optional, se pot instala editoare de LaTeX - de ex., in MacOSX  se poate utiliza TeXShop (\url{http://pages.uoregon.edu/koch/texshop/}).
 
 \subsection{Maven si Java Virtual Machine (JVM)}
 Se creeaza in directorul \emph{\$HOME} al utilizatorului un fisier numit
@@ -285,8 +289,8 @@ peste serverul local prezent in view-ul 'Servers' (VMware vFabric tc Server ...)
 \begin{description}
 \item[MacOSX:]
 
-Se instaleaza si ruleaza Postgres.app (descarcat de la \url{http://postgresapp.com} ).
-Se bifeaza in meniu optiunea 'Automatically Start at Login'.
+Se instaleaza si ruleaza \emph{Postgres.app} (descarcat de la \url{http://postgresapp.com} ).
+Se bifeaza in meniul programului optiunea 'Automatically Start at Login'.
 
 \item[orice alt sistem de operare:]
 
@@ -298,33 +302,21 @@ internet, nu doar de la statia locala / reteaua locala).
 % TODO mai precis ???
 \end{description}
 
-In shell, din directorul 'dbwrench-files', 
+In shell, din directorul 'dbwrench-files' (dupe check-out-up din SVN), 
 se ruleaza urmatoarea comanda
 (pentru crearea utilizatorului, a bazei de date si a schemelor auxiliare):
 \begin{lstlisting}
-	/bin/bash ./create-roda-db.sh
+	./create-roda-db.sh
 \end{lstlisting}
 
-\subsection{Instalarea si configurarea serverului Solr local}
+\subsection{Configurarea serverului Solr local}
 \label{solr_configurare}
 
-Se instaleaza Solr:
-\begin{description}
-\item[MacOSX:]
-\begin{lstlisting}[breaklines=true]
-	sudo port install apache-solr4
-\end{lstlisting}
-Solr se porneste cu comanda:
+In MacOSX, Solr se porneste din shell cu comanda:
 \begin{lstlisting}[breaklines=true]
 	sudo solr4
 \end{lstlisting}
-fiind disponibil la URL: \url{http://localhost:8983/solr/}
-
-\item[orice alt sistem de operare:]
-
-Se instaleaza Solr - versiunea indicata in preambulul acestui capitol.
-% TODO mai precis ???
-\end{description}
+serverul fiind disponibil la URL: \url{http://localhost:8983/solr/}
 
 Pentru configurarea Solr este folosita schema din subfolder-ul 'examples'. 
 % TODO mai precis ???
@@ -333,7 +325,7 @@ Pentru configurarea Solr este folosita schema din subfolder-ul 'examples'.
 
 De fiecare data, inainte de pornirea aplicatiei, trebuie sa fie deja pornite:
 \begin{description}
-\item[Postgresql] ca un server local pe portul 5432 (vezi \ref{postgresql_configurare})
+\item[Postgresql] ca un server local pe portul 5432, utilizand baza de date creata (vezi \ref{postgresql_configurare})
 \item[Solr] ca un server local pe portul 8983, folosind Jetty (vezi \ref{solr_configurare})
 \end{description}
 
@@ -368,8 +360,7 @@ Din linia de comanda, in folder-ul radacina al proiectului 'roda', cu comanda:
 \section{Rularea proiectului din STS, pe CloudFoundry (NERECOMANDAT)}
 
 \paragraph{!!! ATENTIE !!!} 
-Accesul la acest cont/server este shared (e folosit
-inclusiv de catre Jenkins), 
+Accesul la acest cont/server este shared (e folosit inclusiv de catre Jenkins), 
 pot aparea suprapuneri nedorite intre variante diferite / dezvoltatori diferiti !!!
 
 Se adauga in view-ul 'Servers' un nou server remote: click-dreapta -> 'New'
@@ -509,4 +500,6 @@ Inheriting your existing Hudson/Jenkins installation
 
 \subsection{Instalarea si configurarea dependentelor folosite de job-urile Jenkins}
 %TODO ??? ruby gems, vmc
+
+% TODO ??? Chrome, Firefox, Firebug, Postman
 

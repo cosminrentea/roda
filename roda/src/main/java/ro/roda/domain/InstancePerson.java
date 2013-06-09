@@ -150,18 +150,18 @@ public class InstancePerson {
 	private String assocDetails;
 
 	@ManyToOne
-	@JoinColumn(name = "assoc_type_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	@JoinColumn(name = "assoc_type_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
 	private InstancePersonAssoc assocTypeId;
 
 	@EmbeddedId
 	private InstancePersonPK id;
 
 	@ManyToOne
-	@JoinColumn(name = "instance_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	@JoinColumn(name = "instance_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
 	private Instance instanceId;
 
 	@ManyToOne
-	@JoinColumn(name = "person_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	@JoinColumn(name = "person_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
 	private Person personId;
 
 	@PersistenceContext

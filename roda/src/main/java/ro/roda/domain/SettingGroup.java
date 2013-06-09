@@ -150,7 +150,7 @@ public class SettingGroup {
 	private String description;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id", columnDefinition = "serial")
 	private Integer id;
 
@@ -159,7 +159,7 @@ public class SettingGroup {
 	private String name;
 
 	@ManyToOne
-	@JoinColumn(name = "parent_id", referencedColumnName = "id", insertable = false, updatable = false)
+	@JoinColumn(name = "parent_id", columnDefinition = "integer", referencedColumnName = "id", insertable = false, updatable = false)
 	private SettingGroup parentId;
 
 	@OneToMany(mappedBy = "parentId")

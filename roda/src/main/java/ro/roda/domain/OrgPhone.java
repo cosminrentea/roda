@@ -146,11 +146,11 @@ public class OrgPhone {
 	private boolean main;
 
 	@ManyToOne
-	@JoinColumn(name = "org_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	@JoinColumn(name = "org_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
 	private Org orgId;
 
 	@ManyToOne
-	@JoinColumn(name = "phone_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	@JoinColumn(name = "phone_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
 	private Phone phoneId;
 
 	@PersistenceContext

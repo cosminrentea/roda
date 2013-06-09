@@ -165,7 +165,7 @@ public class SelectionVariableItem {
 	private SelectionVariableItemPK id;
 
 	@ManyToOne
-	@JoinColumn(name = "item_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	@JoinColumn(name = "item_id", columnDefinition = "bigint", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
 	private Item itemId;
 
 	@Column(name = "order_of_item_in_variable", columnDefinition = "int4", unique = true)
@@ -173,11 +173,11 @@ public class SelectionVariableItem {
 	private Integer orderOfItemInVariable;
 
 	@ManyToOne
-	@JoinColumn(name = "response_card_file_id", referencedColumnName = "id")
+	@JoinColumn(name = "response_card_file_id", columnDefinition = "integer", referencedColumnName = "id")
 	private File responseCardFileId;
 
 	@ManyToOne
-	@JoinColumn(name = "variable_id", referencedColumnName = "variable_id", nullable = false, insertable = false, updatable = false)
+	@JoinColumn(name = "variable_id", columnDefinition = "bigint", referencedColumnName = "variable_id", nullable = false, insertable = false, updatable = false)
 	private SelectionVariable variableId;
 
 	@PersistenceContext

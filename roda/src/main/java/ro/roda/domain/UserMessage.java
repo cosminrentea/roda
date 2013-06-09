@@ -146,11 +146,11 @@ public class UserMessage {
 	}
 
 	@ManyToOne
-	@JoinColumn(name = "from_user_id", referencedColumnName = "id", nullable = false)
+	@JoinColumn(name = "from_user_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false)
 	private Users fromUserId;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id", columnDefinition = "serial")
 	private Integer id;
 
@@ -159,7 +159,7 @@ public class UserMessage {
 	private String message;
 
 	@ManyToOne
-	@JoinColumn(name = "to_user_id", referencedColumnName = "id", nullable = false)
+	@JoinColumn(name = "to_user_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false)
 	private Users toUserId;
 
 	@PersistenceContext

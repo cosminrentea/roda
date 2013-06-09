@@ -150,7 +150,7 @@ public class Person {
 	private Set<Form> forms;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id", columnDefinition = "serial")
 	private Integer id;
 
@@ -183,14 +183,14 @@ public class Person {
 	private Set<PersonPhone> personPhones;
 
 	@ManyToOne
-	@JoinColumn(name = "prefix_id", referencedColumnName = "id")
+	@JoinColumn(name = "prefix_id", columnDefinition = "integer", referencedColumnName = "id")
 	private Prefix prefixId;
 
 	@OneToMany(mappedBy = "personId")
 	private Set<StudyPerson> studypeople;
 
 	@ManyToOne
-	@JoinColumn(name = "suffix_id", referencedColumnName = "id")
+	@JoinColumn(name = "suffix_id", columnDefinition = "integer", referencedColumnName = "id")
 	private Suffix suffixId;
 
 	@PersistenceContext

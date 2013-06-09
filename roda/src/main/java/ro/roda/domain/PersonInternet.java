@@ -142,7 +142,7 @@ public class PersonInternet {
 	private PersonInternetPK id;
 
 	@ManyToOne
-	@JoinColumn(name = "internet_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	@JoinColumn(name = "internet_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
 	private Internet internetId;
 
 	@Column(name = "main", columnDefinition = "bool")
@@ -150,7 +150,7 @@ public class PersonInternet {
 	private boolean main;
 
 	@ManyToOne
-	@JoinColumn(name = "person_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	@JoinColumn(name = "person_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
 	private Person personId;
 
 	@PersistenceContext

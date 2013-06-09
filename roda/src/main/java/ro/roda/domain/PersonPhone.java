@@ -149,11 +149,11 @@ public class PersonPhone {
 	private boolean main;
 
 	@ManyToOne
-	@JoinColumn(name = "person_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	@JoinColumn(name = "person_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
 	private Person personId;
 
 	@ManyToOne
-	@JoinColumn(name = "phone_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	@JoinColumn(name = "phone_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
 	private Phone phoneId;
 
 	@PersistenceContext

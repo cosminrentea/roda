@@ -155,11 +155,11 @@ public class InstanceDescr {
 	private InstanceDescrPK id;
 
 	@ManyToOne
-	@JoinColumn(name = "instance_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	@JoinColumn(name = "instance_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
 	private Instance instanceId;
 
 	@ManyToOne
-	@JoinColumn(name = "lang_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	@JoinColumn(name = "lang_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
 	private Lang langId;
 
 	@Column(name = "notes", columnDefinition = "text")

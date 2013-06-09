@@ -149,18 +149,18 @@ public class StudyOrg {
 	private String assocDetails;
 
 	@ManyToOne
-	@JoinColumn(name = "assoctype_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	@JoinColumn(name = "assoctype_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
 	private StudyOrgAssoc assoctypeId;
 
 	@EmbeddedId
 	private StudyOrgPK id;
 
 	@ManyToOne
-	@JoinColumn(name = "org_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	@JoinColumn(name = "org_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
 	private Org orgId;
 
 	@ManyToOne
-	@JoinColumn(name = "study_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	@JoinColumn(name = "study_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
 	private Study studyId;
 
 	@PersistenceContext

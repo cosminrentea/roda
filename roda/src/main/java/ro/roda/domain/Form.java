@@ -164,7 +164,7 @@ public class Form {
 	private Set<FormSelectionVar> formSelectionVars;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id", columnDefinition = "bigserial")
 	private Long id;
 

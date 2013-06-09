@@ -158,18 +158,18 @@ public class StudyKeyword {
 	private Calendar added;
 
 	@ManyToOne
-	@JoinColumn(name = "added_by", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	@JoinColumn(name = "added_by", columnDefinition = "integer", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
 	private Users addedBy;
 
 	@EmbeddedId
 	private StudyKeywordPK id;
 
 	@ManyToOne
-	@JoinColumn(name = "keyword_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	@JoinColumn(name = "keyword_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
 	private Keyword keywordId;
 
 	@ManyToOne
-	@JoinColumn(name = "study_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	@JoinColumn(name = "study_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
 	private Study studyId;
 
 	@PersistenceContext

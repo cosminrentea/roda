@@ -160,7 +160,7 @@ public class Instance {
 	private Calendar added;
 
 	@ManyToOne
-	@JoinColumn(name = "added_by", referencedColumnName = "id", nullable = false)
+	@JoinColumn(name = "added_by", columnDefinition = "integer", referencedColumnName = "id", nullable = false)
 	private Users addedBy;
 
 	@Column(name = "disseminator_identifier", columnDefinition = "text")
@@ -170,7 +170,7 @@ public class Instance {
 	private Set<File> files;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id", columnDefinition = "serial")
 	private Integer id;
 
@@ -197,7 +197,7 @@ public class Instance {
 	private boolean main;
 
 	@ManyToOne
-	@JoinColumn(name = "study_id", referencedColumnName = "id", nullable = false)
+	@JoinColumn(name = "study_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false)
 	private Study studyId;
 
 	@PersistenceContext

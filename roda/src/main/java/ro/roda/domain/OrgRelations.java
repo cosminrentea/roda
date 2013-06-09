@@ -168,15 +168,15 @@ public class OrgRelations {
 	private OrgRelationsPK id;
 
 	@ManyToOne
-	@JoinColumn(name = "org_1_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	@JoinColumn(name = "org_1_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
 	private Org org1Id;
 
 	@ManyToOne
-	@JoinColumn(name = "org_2_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	@JoinColumn(name = "org_2_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
 	private Org org2Id;
 
 	@ManyToOne
-	@JoinColumn(name = "org_relation_type_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	@JoinColumn(name = "org_relation_type_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
 	private OrgRelationType orgRelationTypeId;
 
 	@PersistenceContext

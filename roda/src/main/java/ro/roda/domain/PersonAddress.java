@@ -148,7 +148,7 @@ public class PersonAddress {
 	}
 
 	@ManyToOne
-	@JoinColumn(name = "address_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	@JoinColumn(name = "address_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
 	private Address addressId;
 
 	@Column(name = "date_end", columnDefinition = "date")
@@ -165,7 +165,7 @@ public class PersonAddress {
 	private PersonAddressPK id;
 
 	@ManyToOne
-	@JoinColumn(name = "person_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	@JoinColumn(name = "person_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
 	private Person personId;
 
 	@PersistenceContext

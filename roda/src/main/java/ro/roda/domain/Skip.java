@@ -145,16 +145,16 @@ public class Skip {
 	private String condition;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id", columnDefinition = "bigserial")
 	private Long id;
 
 	@ManyToOne
-	@JoinColumn(name = "next_variable_id", referencedColumnName = "id", nullable = false)
+	@JoinColumn(name = "next_variable_id", columnDefinition = "bigint", referencedColumnName = "id", nullable = false)
 	private Variable nextVariableId;
 
 	@ManyToOne
-	@JoinColumn(name = "variable_id", referencedColumnName = "id", nullable = false)
+	@JoinColumn(name = "variable_id", columnDefinition = "bigint", referencedColumnName = "id", nullable = false)
 	private Variable variableId;
 
 	@PersistenceContext

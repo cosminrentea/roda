@@ -158,7 +158,7 @@ public class Variable {
 	private Set<Concept> concepts;
 
 	@ManyToOne
-	@JoinColumn(name = "file_id", referencedColumnName = "id")
+	@JoinColumn(name = "file_id", columnDefinition = "integer", referencedColumnName = "id")
 	private File fileId;
 
 	@OneToMany(mappedBy = "variableId")
@@ -168,7 +168,7 @@ public class Variable {
 	private Set<FormEditedTextVar> formEditedTextVars;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id", columnDefinition = "bigserial")
 	private Long id;
 

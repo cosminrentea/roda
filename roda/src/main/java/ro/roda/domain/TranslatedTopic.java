@@ -142,11 +142,11 @@ public class TranslatedTopic {
 	private TranslatedTopicPK id;
 
 	@ManyToOne
-	@JoinColumn(name = "lang_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	@JoinColumn(name = "lang_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
 	private Lang langId;
 
 	@ManyToOne
-	@JoinColumn(name = "topic_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	@JoinColumn(name = "topic_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
 	private Topic topicId;
 
 	@Column(name = "translation", columnDefinition = "text")

@@ -161,7 +161,7 @@ public class SeriesDescr {
 	private String alternativeTitle;
 
 	@ManyToOne
-	@JoinColumn(name = "catalog_id", referencedColumnName = "catalog_id", nullable = false, insertable = false, updatable = false)
+	@JoinColumn(name = "catalog_id", columnDefinition = "integer", referencedColumnName = "catalog_id", nullable = false, insertable = false, updatable = false)
 	private Series catalogId;
 
 	@Column(name = "geographic_coverage", columnDefinition = "text")
@@ -171,7 +171,7 @@ public class SeriesDescr {
 	private SeriesDescrPK id;
 
 	@ManyToOne
-	@JoinColumn(name = "lang_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	@JoinColumn(name = "lang_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
 	private Lang langId;
 
 	@Column(name = "notes", columnDefinition = "text")

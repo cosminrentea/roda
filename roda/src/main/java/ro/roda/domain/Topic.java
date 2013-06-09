@@ -154,7 +154,7 @@ public class Topic {
 	private String description;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id", columnDefinition = "serial")
 	private Integer id;
 
@@ -163,11 +163,11 @@ public class Topic {
 	private String name;
 
 	@ManyToOne
-	@JoinColumn(name = "parent_id", referencedColumnName = "id", insertable = false, updatable = false)
+	@JoinColumn(name = "parent_id", columnDefinition = "integer", referencedColumnName = "id", insertable = false, updatable = false)
 	private Topic parentId;
 
 	@ManyToOne
-	@JoinColumn(name = "preferred_synonym_topic_id", referencedColumnName = "id", insertable = false, updatable = false)
+	@JoinColumn(name = "preferred_synonym_topic_id", columnDefinition = "integer", referencedColumnName = "id", insertable = false, updatable = false)
 	private Topic preferredSynonymTopicId;
 
 	@ManyToMany(mappedBy = "topics")

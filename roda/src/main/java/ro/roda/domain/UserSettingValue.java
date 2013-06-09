@@ -149,11 +149,11 @@ public class UserSettingValue {
 	private UserSettingValuePK id;
 
 	@ManyToOne
-	@JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	@JoinColumn(name = "user_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
 	private Users userId;
 
 	@ManyToOne
-	@JoinColumn(name = "user_setting_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	@JoinColumn(name = "user_setting_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
 	private UserSetting userSettingId;
 
 	@Column(name = "value", columnDefinition = "text")

@@ -150,7 +150,7 @@ public class Series {
 	private Catalog catalog;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "catalog_id", columnDefinition = "int4")
 	private Integer catalogId;
 

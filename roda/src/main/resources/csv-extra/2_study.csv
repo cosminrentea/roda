@@ -1,4 +1,4 @@
-id,date_start,date_end,insertion_status,added_by,added,digitizable,anonymous_usage
-1,now(),now(),0,1,now(),true,true
-2,now(),now(),0,1,now(),true,false
-3,now(),now(),0,1,now(),false,false
+added,anonymous_usage,date_end,date_start,digitizable,insertion_status,raw_data,raw_metadata,study_version,added_by,time_meth_id,unit_analysis_id
+now(),TRUE,now(),now(),TRUE,0,TRUE,TRUE,,1,1,2
+now(),FALSE,now(),now(),TRUE,0,TRUE,FALSE,,1,1,1
+now(),FALSE,now(),now(),FALSE,0,TRUE,TRUE,,1,1,2

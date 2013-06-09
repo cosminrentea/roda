@@ -141,7 +141,7 @@ public class OrgEmail {
 	}
 
 	@ManyToOne
-	@JoinColumn(name = "email_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	@JoinColumn(name = "email_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
 	private Email emailId;
 
 	@EmbeddedId
@@ -152,7 +152,7 @@ public class OrgEmail {
 	private boolean main;
 
 	@ManyToOne
-	@JoinColumn(name = "org_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	@JoinColumn(name = "org_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
 	private Org orgId;
 
 	@PersistenceContext

@@ -152,19 +152,19 @@ public class InstanceRightTargetGroup {
 	private InstanceRightTargetGroupPK id;
 
 	@ManyToOne
-	@JoinColumn(name = "instance_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	@JoinColumn(name = "instance_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
 	private Instance instanceId;
 
 	@ManyToOne
-	@JoinColumn(name = "instance_right_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	@JoinColumn(name = "instance_right_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
 	private InstanceRight instanceRightId;
 
 	@ManyToOne
-	@JoinColumn(name = "instance_right_value_id", referencedColumnName = "id", nullable = false)
+	@JoinColumn(name = "instance_right_value_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false)
 	private InstanceRightValue instanceRightValueId;
 
 	@ManyToOne
-	@JoinColumn(name = "target_group_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	@JoinColumn(name = "target_group_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
 	private TargetGroup targetGroupId;
 
 	@PersistenceContext

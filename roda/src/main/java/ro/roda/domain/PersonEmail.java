@@ -139,7 +139,7 @@ public class PersonEmail {
 	}
 
 	@ManyToOne
-	@JoinColumn(name = "email_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	@JoinColumn(name = "email_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
 	private Email emailId;
 
 	@EmbeddedId
@@ -150,7 +150,7 @@ public class PersonEmail {
 	private boolean main;
 
 	@ManyToOne
-	@JoinColumn(name = "person_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	@JoinColumn(name = "person_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
 	private Person personId;
 
 	@PersistenceContext

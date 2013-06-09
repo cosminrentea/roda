@@ -152,7 +152,7 @@ public class OtherStatistic {
 	private String description;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id", columnDefinition = "bigserial")
 	private Long id;
 
@@ -165,7 +165,7 @@ public class OtherStatistic {
 	private Float value;
 
 	@ManyToOne
-	@JoinColumn(name = "variable_id", referencedColumnName = "id", nullable = false)
+	@JoinColumn(name = "variable_id", columnDefinition = "bigint", referencedColumnName = "id", nullable = false)
 	private Variable variableId;
 
 	@PersistenceContext

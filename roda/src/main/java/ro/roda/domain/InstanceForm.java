@@ -144,14 +144,14 @@ public class InstanceForm {
 	}
 
 	@ManyToOne
-	@JoinColumn(name = "form_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	@JoinColumn(name = "form_id", columnDefinition = "bigint", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
 	private Form formId;
 
 	@EmbeddedId
 	private InstanceFormPK id;
 
 	@ManyToOne
-	@JoinColumn(name = "instance_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	@JoinColumn(name = "instance_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
 	private Instance instanceId;
 
 	@Column(name = "order_form_in_instance", columnDefinition = "int4", unique = true)

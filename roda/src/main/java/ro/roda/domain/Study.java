@@ -163,7 +163,7 @@ public class Study {
 	private Calendar added;
 
 	@ManyToOne
-	@JoinColumn(name = "added_by", referencedColumnName = "id", nullable = false)
+	@JoinColumn(name = "added_by", columnDefinition = "integer", referencedColumnName = "id", nullable = false)
 	private Users addedBy;
 
 	@Column(name = "anonymous_usage", columnDefinition = "bool")
@@ -197,7 +197,7 @@ public class Study {
 	private Set<File> files1;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id", columnDefinition = "serial")
 	private Integer id;
 
@@ -235,7 +235,7 @@ public class Study {
 	private Set<StudyPerson> studypeople;
 
 	@ManyToOne
-	@JoinColumn(name = "time_meth_id", referencedColumnName = "id", nullable = false)
+	@JoinColumn(name = "time_meth_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false)
 	private TimeMeth timeMethId;
 
 	@ManyToMany
@@ -243,7 +243,7 @@ public class Study {
 	private Set<Topic> topics;
 
 	@ManyToOne
-	@JoinColumn(name = "unit_analysis_id", referencedColumnName = "id", nullable = false)
+	@JoinColumn(name = "unit_analysis_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false)
 	private UnitAnalysis unitAnalysisId;
 
 	@Column(name = "study_version")

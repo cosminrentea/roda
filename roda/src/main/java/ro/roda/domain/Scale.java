@@ -154,7 +154,7 @@ public class Scale {
 	private Item item;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "item_id", columnDefinition = "int8")
 	private Long itemId;
 

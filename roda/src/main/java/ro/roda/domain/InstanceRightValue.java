@@ -153,12 +153,12 @@ public class InstanceRightValue {
 	private String feeCurrencyAbbr;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id", columnDefinition = "serial")
 	private Integer id;
 
 	@ManyToOne
-	@JoinColumn(name = "instance_right_id", referencedColumnName = "id", nullable = false)
+	@JoinColumn(name = "instance_right_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false)
 	private InstanceRight instanceRightId;
 
 	@OneToMany(mappedBy = "instanceRightValueId")

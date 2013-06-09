@@ -156,7 +156,7 @@ public class UserSetting {
 	private String description;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id", columnDefinition = "serial")
 	private Integer id;
 
@@ -165,7 +165,7 @@ public class UserSetting {
 	private String name;
 
 	@ManyToOne
-	@JoinColumn(name = "user_setting_group_id", referencedColumnName = "id", nullable = false)
+	@JoinColumn(name = "user_setting_group_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false)
 	private UserSettingGroup userSettingGroupId;
 
 	@OneToMany(mappedBy = "userSettingId")

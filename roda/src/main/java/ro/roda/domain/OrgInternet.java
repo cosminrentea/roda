@@ -146,7 +146,7 @@ public class OrgInternet {
 	private OrgInternetPK id;
 
 	@ManyToOne
-	@JoinColumn(name = "internet_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	@JoinColumn(name = "internet_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
 	private Internet internetId;
 
 	@Column(name = "main", columnDefinition = "bool")
@@ -154,7 +154,7 @@ public class OrgInternet {
 	private boolean main;
 
 	@ManyToOne
-	@JoinColumn(name = "org_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	@JoinColumn(name = "org_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
 	private Org orgId;
 
 	@PersistenceContext

@@ -142,7 +142,7 @@ public class OrgAddress {
 	}
 
 	@ManyToOne
-	@JoinColumn(name = "address_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	@JoinColumn(name = "address_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
 	private Address addressId;
 
 	@Column(name = "date_end", columnDefinition = "date")
@@ -159,7 +159,7 @@ public class OrgAddress {
 	private OrgAddressPK id;
 
 	@ManyToOne
-	@JoinColumn(name = "org_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	@JoinColumn(name = "org_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
 	private Org orgId;
 
 	@PersistenceContext

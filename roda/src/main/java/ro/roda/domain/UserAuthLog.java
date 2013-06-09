@@ -175,12 +175,12 @@ public class UserAuthLog {
 	private String errorMessage;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id", columnDefinition = "bigserial")
 	private Long id;
 
 	@ManyToOne
-	@JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
+	@JoinColumn(name = "user_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false)
 	private Users userId;
 
 	@PersistenceContext

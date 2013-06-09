@@ -165,7 +165,7 @@ public class PersonLinks {
 	private BigDecimal emailscore;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id", columnDefinition = "serial")
 	private Integer id;
 
@@ -174,7 +174,7 @@ public class PersonLinks {
 	private BigDecimal namescore;
 
 	@ManyToOne
-	@JoinColumn(name = "person_id", referencedColumnName = "id", nullable = false)
+	@JoinColumn(name = "person_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false)
 	private Person personId;
 
 	@Column(name = "simscore", columnDefinition = "numeric", precision = 10, scale = 2)
@@ -186,7 +186,7 @@ public class PersonLinks {
 	private Integer status;
 
 	@ManyToOne
-	@JoinColumn(name = "status_by", referencedColumnName = "id", nullable = false)
+	@JoinColumn(name = "status_by", columnDefinition = "integer", referencedColumnName = "id", nullable = false)
 	private Users statusBy;
 
 	@Column(name = "status_time", columnDefinition = "timestamp")
@@ -196,7 +196,7 @@ public class PersonLinks {
 	private Calendar statusTime;
 
 	@ManyToOne
-	@JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
+	@JoinColumn(name = "user_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false)
 	private Users userId;
 
 	@PersistenceContext

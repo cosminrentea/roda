@@ -153,7 +153,7 @@ public class Org {
 	private String fullName;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id", columnDefinition = "serial")
 	private Integer id;
 
@@ -173,7 +173,7 @@ public class Org {
 	private Set<OrgPhone> orgPhones;
 
 	@ManyToOne
-	@JoinColumn(name = "org_prefix_id", referencedColumnName = "id")
+	@JoinColumn(name = "org_prefix_id", columnDefinition = "integer", referencedColumnName = "id")
 	private OrgPrefix orgPrefixId;
 
 	@OneToMany(mappedBy = "org2Id")
@@ -183,7 +183,7 @@ public class Org {
 	private Set<OrgRelations> orgRelationss1;
 
 	@ManyToOne
-	@JoinColumn(name = "org_sufix_id", referencedColumnName = "id")
+	@JoinColumn(name = "org_sufix_id", columnDefinition = "integer", referencedColumnName = "id")
 	private OrgSufix orgSufixId;
 
 	@OneToMany(mappedBy = "orgId")

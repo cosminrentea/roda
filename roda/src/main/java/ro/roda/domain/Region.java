@@ -154,11 +154,11 @@ public class Region {
 	private Set<City> cities;
 
 	@ManyToOne
-	@JoinColumn(name = "country_id", referencedColumnName = "id", nullable = false)
+	@JoinColumn(name = "country_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false)
 	private Country countryId;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id", columnDefinition = "serial")
 	private Integer id;
 
@@ -173,7 +173,7 @@ public class Region {
 	private String regionCodeName;
 
 	@ManyToOne
-	@JoinColumn(name = "regiontype_id", referencedColumnName = "id", nullable = false)
+	@JoinColumn(name = "regiontype_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false)
 	private Regiontype regiontypeId;
 
 	@PersistenceContext

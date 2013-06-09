@@ -150,7 +150,7 @@ public class InstanceVariable {
 	private InstanceVariablePK id;
 
 	@ManyToOne
-	@JoinColumn(name = "instance_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	@JoinColumn(name = "instance_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
 	private Instance instanceId;
 
 	@Column(name = "order_variable_in_instance", columnDefinition = "int4", unique = true)
@@ -158,7 +158,7 @@ public class InstanceVariable {
 	private Integer orderVariableInInstance;
 
 	@ManyToOne
-	@JoinColumn(name = "variable_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	@JoinColumn(name = "variable_id", columnDefinition = "bigint", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
 	private Variable variableId;
 
 	@PersistenceContext

@@ -167,7 +167,7 @@ public class SelectionVariable {
 	private Variable variable;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "variable_id", columnDefinition = "int8")
 	private Long variableId;
 

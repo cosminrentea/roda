@@ -176,7 +176,7 @@ public class StudyDescr {
 	private StudyDescrPK id;
 
 	@ManyToOne
-	@JoinColumn(name = "lang_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	@JoinColumn(name = "lang_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
 	private Lang langId;
 
 	@Column(name = "notes", columnDefinition = "text")
@@ -193,7 +193,7 @@ public class StudyDescr {
 	private String scope;
 
 	@ManyToOne
-	@JoinColumn(name = "study_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	@JoinColumn(name = "study_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
 	private Study studyId;
 
 	@Column(name = "subtitle", columnDefinition = "text")

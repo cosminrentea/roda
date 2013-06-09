@@ -150,7 +150,7 @@ public class CmsLayout {
 	private Set<CmsPage> cmsPages;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id", columnDefinition = "serial")
 	private Integer id;
 

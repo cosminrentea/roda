@@ -1,5 +1,9 @@
 package ro.roda.integration;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
+
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -9,26 +13,40 @@ import com.thoughtworks.selenium.DefaultSelenium;
 
 public class SeleniumServerIT {
 
-	private static final int seleniumServerPort = 4444;
+	private static final String testProperties = "test.properties";
 
-	private static final String seleniumServerHost = "localhost";
-
-	private static final String browserOptions = "*firefox /opt/local/lib/firefox-x11/firefox-bin";
-
-	private static final String homepageUrl = "http://localhost:8080/roda/";
+	private static String homepageUrl;
 
 	private static DefaultSelenium s;
 
 	@BeforeClass
-	public static void beforeClass() {
-		s = new DefaultSelenium(seleniumServerHost, seleniumServerPort,
-				browserOptions, homepageUrl);
+	public static void beforeClass() throws IOException {
+
+		InputStream is = SeleniumServerIT.class.getClassLoader().getResourceAsStream(testProperties);
+		Assert.assertNotNull("Not found: " + testProperties, is);
+
+		Properties props = new Properties();
+		props.load(is);
+
+		String serverHost, browserOptions;
+		Assert.assertNotNull("Property not set in: " + testProperties,
+				serverHost = props.getProperty("selenium.ServerHost"));
+		Assert.assertNotNull("Property not set in: " + testProperties, props.getProperty("selenium.ServerPort"));
+		Assert.assertNotNull("Property not set in: " + testProperties,
+				browserOptions = props.getProperty("selenium.BrowserOptions"));
+		Assert.assertNotNull("Property not set in: " + testProperties,
+				homepageUrl = props.getProperty("selenium.HomepageUrl"));
+		int serverPort = Integer.parseInt(props.getProperty("selenium.ServerPort"));
+
+		s = new DefaultSelenium(serverHost, serverPort, browserOptions, homepageUrl);
 		s.start();
 	}
 
 	@AfterClass
 	public static void afterClass() {
-		s.stop();
+		if (s != null) {
+			s.stop();
+		}
 	}
 
 	@Test

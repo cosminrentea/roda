@@ -1,12 +1,14 @@
 package ro.roda.integration;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
 import java.util.concurrent.TimeUnit;
-
-import junit.framework.Assert;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.AfterClass;
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -21,33 +23,51 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class WebDriverIT {
 
+	private static final String testProperties = "test.properties";
+
 	private static WebDriver driver;
 
-	private static final int defaultTimeout = 10;
+	private static int defaultTimeout;
 
-	private static final String homepageUrl = "http://localhost:8080/roda/";
+	private static String homepageUrl;
 
-	private static final String firefoxPath = "/opt/local/lib/firefox-x11/firefox-bin";
-
-	private static final String defaultDisplay = ":20";
-
-	private static final String screenshotFilename = "target/screenshot.png";
+	private static String screenshotFilename;
 
 	@BeforeClass
-	public static void beforeClass() {
+	public static void beforeClass() throws IOException {
+
+		InputStream is = SeleniumServerIT.class.getClassLoader().getResourceAsStream(testProperties);
+		Assert.assertNotNull("Not found: " + testProperties, is);
+
+		Properties props = new Properties();
+		props.load(is);
+
+		String firefoxPath, displayNumber, useDisplayNumber;
+		Assert.assertNotNull("Property not set in: " + testProperties,
+				firefoxPath = props.getProperty("webdriver.FirefoxPath"));
+		Assert.assertNotNull("Property not set in: " + testProperties,
+				displayNumber = props.getProperty("webdriver.DisplayNumber"));
+		Assert.assertNotNull("Property not set in: " + testProperties,
+				useDisplayNumber = props.getProperty("webdriver.UseDisplayNumber"));
+		Assert.assertNotNull("Property not set in: " + testProperties,
+				homepageUrl = props.getProperty("webdriver.HomepageUrl"));
+		Assert.assertNotNull("Property not set in: " + testProperties,
+				screenshotFilename = props.getProperty("webdriver.ScreenshotFilename"));
+		Assert.assertNotNull("Property not set in: " + testProperties, props.getProperty("webdriver.DefaultTimeout"));
+		int defaultTimeout = Integer.parseInt(props.getProperty("webdriver.DefaultTimeout"));
 
 		// use a specific Firefox binary
 		FirefoxBinary fb = new FirefoxBinary(new File(firefoxPath));
 
-		// set the DISPLAY to be used by Firefox when testing (if Xvfb is
-		// running)
-		fb.setEnvironmentProperty("DISPLAY", defaultDisplay);
-
+		// when required, set the DISPLAY to be used by Firefox when testing
+		// (e.g. when Xvfb is running)
+		if ("yes".equalsIgnoreCase(useDisplayNumber)) {
+			fb.setEnvironmentProperty("DISPLAY", displayNumber);
+		}
 		driver = new FirefoxDriver(fb, null);
 
 		// set default timeout
-		driver.manage().timeouts()
-				.implicitlyWait(defaultTimeout, TimeUnit.SECONDS);
+		driver.manage().timeouts().implicitlyWait(defaultTimeout, TimeUnit.SECONDS);
 	}
 
 	@AfterClass
@@ -58,8 +78,7 @@ public class WebDriverIT {
 	@Test
 	public void screenshot() throws Exception {
 		driver.get(homepageUrl);
-		File scrFile = ((TakesScreenshot) driver)
-				.getScreenshotAs(OutputType.FILE);
+		File scrFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
 		FileUtils.copyFile(scrFile, new File(screenshotFilename));
 	}
 
@@ -70,7 +89,6 @@ public class WebDriverIT {
 		Assert.assertNotNull(driver.findElement(By.id("header")));
 		Assert.assertNotNull(driver.findElement(By.id("language")));
 		Assert.assertNotNull(driver.findElement(By.id("menu")));
-		// Assert.assertNotNull(driver.findElement(By.id("meniuri")));
 	}
 
 	@Test
@@ -79,9 +97,8 @@ public class WebDriverIT {
 		WebElement loginLink = driver.findElement(By.partialLinkText("Login"));
 		Assert.assertNotNull(loginLink);
 		loginLink.click();
-		WebElement submitButton = (new WebDriverWait(driver, defaultTimeout))
-				.until(ExpectedConditions.presenceOfElementLocated(By
-						.id("proceed")));
+		WebElement submitButton = (new WebDriverWait(driver, defaultTimeout)).until(ExpectedConditions
+				.presenceOfElementLocated(By.id("proceed")));
 		WebElement usernameInput = driver.findElement(By.id("j_username"));
 		WebElement passwordInput = driver.findElement(By.id("j_password"));
 		Assert.assertNotNull(usernameInput);
@@ -89,14 +106,12 @@ public class WebDriverIT {
 		usernameInput.sendKeys("admin");
 		passwordInput.sendKeys("admin");
 		submitButton.click();
-		WebElement logoutLink = (new WebDriverWait(driver, defaultTimeout))
-				.until(ExpectedConditions.presenceOfElementLocated(By
-						.partialLinkText("Logout")));
+		WebElement logoutLink = (new WebDriverWait(driver, defaultTimeout)).until(ExpectedConditions
+				.presenceOfElementLocated(By.partialLinkText("Logout")));
 		Assert.assertNotNull(logoutLink);
 		logoutLink.click();
-		loginLink = (new WebDriverWait(driver, defaultTimeout))
-				.until(ExpectedConditions.presenceOfElementLocated(By
-						.partialLinkText("Login")));
+		loginLink = (new WebDriverWait(driver, defaultTimeout)).until(ExpectedConditions.presenceOfElementLocated(By
+				.partialLinkText("Login")));
 		Assert.assertNotNull(loginLink);
 		Assert.assertEquals(homepageUrl, driver.getCurrentUrl());
 	}

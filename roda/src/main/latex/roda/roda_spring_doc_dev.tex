@@ -18,10 +18,23 @@ La specificarea in instructiunile de mai jos a sistemului de operare:
 
 \subsection{Instalarea pachetelor necesare}
 \begin{description}
+\item[MacOSX:]
+
+Se instaleaza MacPorts si toate dependentele necesare 
+(instructiuni complete la:
+\url{http://www.macports.org/install.php} ).
+
+Se ruleaza urmatoarele comenzi, din shell:
+\begin{lstlisting}[breaklines=true]
+sudo port install maven3 R postgresql92 pgadmin3  apache-solr4 htmldoc doxygen graphviz firefox-x11 rb-rubygems
+	
+sudo gem install vmc
+\end{lstlisting}
+
 \item[Ubuntu:]
 Se ruleaza urmatoarele comenzi, din shell:
 \begin{lstlisting}[breaklines=true]
-sudo apt-get install openjdk-6-jdk maven perl r-base r-base-dev pgadmin3 libtest-www-selenium-perl htmldoc graphviz rubygems postgresql-server firefox solr
+sudo apt-get install openjdk-6-jdk maven postgresql-server pgadmin3  firefox solr r-base r-base-dev perl libtest-www-selenium-perl htmldoc graphviz rubygems 
 
 sudo gem install vmc
 \end{lstlisting}
@@ -37,23 +50,12 @@ Test::WWW::Selenium se instaleaza din CPAN.
 
 Se ruleaza urmatoarele comenzi, din shell:
 \begin{lstlisting}[breaklines=true]
-sudo zypper in openjdk-6-jdk perl pgadmin3 htmldoc graphviz ruby ruby-devel rubygems postgresql
+sudo zypper in openjdk-6-jdk perl pgadmin3 htmldoc doxygen graphviz ruby ruby-devel rubygems postgresql
 
 sudo gem install vmc
 \end{lstlisting}
 \end{comment}
 
-\item[MacOSX:]
-
-Se instaleaza MacPorts si toate dependentele necesare (instructiuni complete la:
-\url{http://www.macports.org/install.php} ).
-
-Se ruleaza urmatoarele comenzi, din shell:
-\begin{lstlisting}[breaklines=true]
-sudo port install maven3 perl5 R pgadmin3 p5.12-test-www-selenium htmldoc graphviz rb-rubygems postgresql92 firefox-x11 apache-solr4
-	
-sudo gem install vmc
-\end{lstlisting}
 \end{description}
 
 \subsection{LaTeX}
@@ -68,7 +70,9 @@ O distributie LaTeX este necesara pentru generarea documentatiei:
 MacTeX, instalata de la \url{http://tug.org/mactex/} 
 \end{description}
 
-Optional, se pot instala editoare de LaTeX - de ex., in MacOSX  se poate utiliza TeXShop (\url{http://pages.uoregon.edu/koch/texshop/}).
+Optional, se pot instala editoare de LaTeX - de ex., 
+in MacOSX  se poate utiliza TeXShop 
+( \url{http://pages.uoregon.edu/koch/texshop/} ).
 
 \subsection{Maven si Java Virtual Machine (JVM)}
 Se creeaza in directorul \emph{\$HOME} al utilizatorului un fisier numit
@@ -87,14 +91,24 @@ utilizat (32 sau 64 bit), in shell:
 	java -version
 \end{lstlisting}
 
+\subsection{Perl si Selenium}
+\paragraph{In MacOSX:}
+Se instaleaza modulul Selenium din Perl, cu urmatoarele comenzi in shell si apoi in shell-ul CPAN
+(se alege in timpul instalarii site-mirror-ul folosit;
+se iese la final din shell-ul CPAN cu Ctrl+D):
+\begin{lstlisting}
+	sudo /usr/bin/cpan
+		install Test::WWW::Selenium
+\end{lstlisting}
+
 \subsection{rJava}
 Se instaleaza rJava in R, cu urmatoarele comenzi in shell si apoi in shell-ul R
-(se alege in timpul instalarii site-mirror-ul folosit, dintr-o fereastra;
+(se alege in timpul instalarii site-mirror-ul folosit;
 se iese la final din shell-ul R cu Ctrl+D):
 \begin{lstlisting}
 	sudo R CMD javareconf
 	R
-	install.packages('rJava')
+		install.packages('rJava')
 \end{lstlisting}
 
 \subsection{DbWrench}
@@ -116,7 +130,7 @@ este cea intitulata:
 Milestone Version - Spring Tool Suite 3.2.0.RELEASE - based on Eclipse Juno 3.8.2
 \end{lstlisting}
 
-Instalati STS din shell (fara 'sudo'), cu optiunile default (path-ul default este \emph{\$HOME/springsource} ):
+Instalati STS din shell (fara 'sudo'), cu optiunile default (path-ul default este in \emph{\$HOME/springsource} ):
 'Next' -> ... -> 'Finish'.
 
 \subsection{Configurarea STS inainte de rulare}
@@ -192,7 +206,7 @@ nume = Perl EPIC
 URL = \url{http://e-p-i-c.sf.net/updates/testing}
 \end{itemize}
 
-\subsection{Configurare Task Repository}
+\subsection{Configurare Task Repository [OPTIONAL]}
 In STS, in view-ul 'Task List', butonul 'Add Repository', de tipul 'Trac', 
 iar in pasul urmator:
 \begin{itemize}
@@ -217,7 +231,7 @@ se completeaza doar un nume - precum 'ALL' - si se apasa 'Finish').
 In fereastra 'Preferences' a STS:
 \begin{itemize}
 \item
-in Java -> Editor -> Save Actions, se bifeaza: 'Perform the selected actions on save' ; ' Format source code' (format all lines).
+in Java -> Editor -> Save Actions: se bifeaza 'Perform the selected actions on save' si ' Format source code' (format all lines); se debifeaza 'Organize imports'.
 \item
 in Java -> Code Style -> Formatter, se selecteaza profilul 'Eclipse [built-in]', se apasa 'Edit', in tab-ul 'Line Wrapping' , campul 'Maximum line width' se completeaza cu '120' (in loc de '80').
 Se completeaza in partea de sus numele profilului: 'RODA' , se apasa 'OK'. Se selecteaza
@@ -238,8 +252,11 @@ pentru:
 \begin{description}
 \item [roda:] aplicatia web Java / Spring
 \item [dbwrench2-files:] fisiere DbWrench (format XML + SQL), scripturi pentru operatii asupra bazei de date
-\item [(optional) RODA-Model:] modelul Perl
 \end{description}
+
+\begin{comment}
+\item [(optional) RODA-Model:] modelul Perl
+\end{comment}
 
 \begin{comment}
 In STS, se face upgrade la Subversion 1.7 (pt. working copy) pentru fiecare din proiectele de mai sus: 
@@ -253,35 +270,6 @@ faptul ca working-copy local este deja conform versiunii 1.7 a SVN.
 \end{comment}
 
 \section{Configurarea locala a proiectului}
-\subsection{Compilarea pentru prima data a proiectului}
-
-In linia de comanda, in folderul-radacina al proiectului 'roda':
-\begin{lstlisting}
-	mvn -e -X clean package
-\end{lstlisting}
-Toate pachetele necesare sunt descarcate atunci cand se face prima compilare - care poate dura mai mult.
-
-In STS, se alege perspectiva 'Spring', 
-apoi click-dreapta in view-ul 'Package
-Explorer' pe numele proiectului ('roda'), 
-apoi din meniul aparut:
-'Maven' -> 'Update Project', 
-apoi 'OK'.
-
-% STS va deschide un view numit 'Roo shell' unde se pot da comenzi Roo referitoare la proiect.
-
-\subsection{Fisierele de configurare ale aplicatiei}
-Toate detaliile necesare se regasesc in sectiunea
-dedicata fisierelor de configurare din capitolul dedicat componentelor/arhitecturii aplicatiei: 
-\ref{fisiere_configurare}.
-
-Configurarile \emph{default} din aceste fisiere nu trebuie neaparat
-schimbate, daca se urmeaza intocmai acest ghid de instalare/configurare.
-
-\subsection{Configurarea Serverului de Aplicatii local (in STS)}
-Se trage (drag-and-drop) proiectul 'roda' din view-ul 'Package Explorer' 
-peste serverul local prezent in view-ul 'Servers' (VMware vFabric tc Server ...).
-
 
 \subsection{Instalarea si configurarea serverului Postgresql local}
 \label{postgresql_configurare}
@@ -297,12 +285,12 @@ Se bifeaza in meniul programului optiunea 'Automatically Start at Login'.
 Se configureaza Postgresql ca server pe statia locala 
 (preferabil, pornit automat ca serviciu la bootare). 
 Se pot configura in fisierele de configurare ale Postgresql tipurile de autentificare ale clientilor la server 
-(de ex. pentru a permite accesul prin
+(de ex. pentru a permite accesul bazat pe parola de pe localhost / reteaua locala; sau pentru a permite si accesul prin
 internet, nu doar de la statia locala / reteaua locala).
 % TODO mai precis ???
 \end{description}
 
-In shell, din directorul 'dbwrench-files' (dupe check-out-up din SVN), 
+In shell, in directorul 'dbwrench-files' (dupe check-out-ul din SVN), 
 se ruleaza urmatoarea comanda
 (pentru crearea utilizatorului, a bazei de date si a schemelor auxiliare):
 \begin{lstlisting}
@@ -321,12 +309,50 @@ serverul fiind disponibil la URL: \url{http://localhost:8983/solr/}
 Pentru configurarea Solr este folosita schema din subfolder-ul 'examples'. 
 % TODO mai precis ???
 
+\subsection{Fisierele de configurare ale aplicatiei}
+Toate detaliile necesare se regasesc in sectiunea
+dedicata fisierelor de configurare din capitolul dedicat componentelor/arhitecturii aplicatiei: 
+\ref{fisiere_configurare}.
+
+Configurarile \emph{default} din aceste fisiere nu trebuie neaparat
+schimbate, daca se urmeaza intocmai acest ghid de instalare/configurare.
+
+\subsection{Compilarea pentru prima data a proiectului}
+
+In shell, in folderul-radacina al proiectului 'roda':
+\begin{lstlisting}
+	mvn -e -X clean package
+\end{lstlisting}
+Toate pachetele necesare sunt descarcate atunci cand se face prima compilare -- care poate dura mai mult.
+
+In STS, se alege perspectiva 'Spring', 
+apoi click-dreapta in view-ul 'Package Explorer' 
+pe numele proiectului ('roda'), 
+apoi din submeniul 'Maven' se aleg succesiv optiunile:
+\begin{enumerate}
+\item
+'Update Project', apoi click 'OK'.
+\item
+Download JavaDoc
+\item
+Download Sources
+\end{enumerate}
+
+% STS va deschide un view numit 'Roo shell' unde se pot da comenzi Roo referitoare la proiect.
+
+\subsection{Configurarea Serverului de Aplicatii local}
+In STS, se trage (drag-and-drop) proiectul 'roda' din view-ul 'Package Explorer' 
+peste serverul local prezent in view-ul 'Servers' (VMware vFabric tc Server ...).
+
 \section{Rularea locala a proiectului}
 
 De fiecare data, inainte de pornirea aplicatiei, trebuie sa fie deja pornite:
 \begin{description}
-\item[Postgresql] ca un server local pe portul 5432, utilizand baza de date creata (vezi \ref{postgresql_configurare})
-\item[Solr] ca un server local pe portul 8983, folosind Jetty (vezi \ref{solr_configurare})
+\item[Postgresql] 
+ca un server local pe portul 5432, avand deja create: 
+user-ul, baza de date, schemele (vezi \ref{postgresql_configurare})
+\item[Solr] 
+ca un server local pe portul 8983, folosind Jetty (vezi \ref{solr_configurare})
 \end{description}
 
 \subsection{Rularea din STS, pe Server Local}
@@ -349,14 +375,36 @@ aplicatia e disponibila la:
 
 \url{http://localhost:8080/roda}
 
+\subsection{Rularea automata a testelor de integrare}
+Din linia de comanda, in folder-ul radacina al proiectului 'roda', cu comanda:
+\begin{lstlisting}
+	mvn verify
+\end{lstlisting}
+Astfel, sunt pornite/oprite serviciile:
+\begin{itemize}
+\item
+Selenium Server
+\item
+Xvfb (pentru ecran virtual, folosit de Selenium)
+\item
+Tomcat (si aplicatia web)
+\end{itemize}
+%TODO start/stop Solr + Postgresql
+
+Sunt rulate atat testele scrise in Java 
+(folosind Selenium Server si Selenium WebDriver; browser: Mozilla Firefox), 
+cat si cele scrise in Perl (folosind Selenium Server).
+
+\begin{comment}
 \subsection{Rularea automata a testelor web (Selenium)}
 Din linia de comanda, in folder-ul radacina al proiectului 'roda', cu comanda:
 \begin{lstlisting}
 	mvn tomcat:run selenium:selenese
 \end{lstlisting}
+\end{comment}
+
 
 \begin{comment}
-
 \section{Rularea proiectului din STS, pe CloudFoundry (NERECOMANDAT)}
 
 \paragraph{!!! ATENTIE !!!} 
@@ -406,6 +454,28 @@ Proiectul este disponibil online permanent la adresa:
 \section{Integrarea continua a aplicatiei}
 
 \subsection{Instalarea si configurarea Jenkins}
+
+%TODO use 'Long-Term Support Release' ! 
+% using now : 'Release', 'Latest&Greatest'
+
+Se instaleaza Jenkins de la \url{http://jenkins-ci.org} : 
+din sectiunea 'Long-Term Support Release', 
+se salveaza si se instaleaza pachetul nativ pentru sistemul de operare.
+
+Pentru a seta portul folosit de Jenkins la altul decat 8080 (de exemplu 9999), se dau in shell comenzile:
+\begin{lstlisting}[breaklines=true]
+sudo defaults write /Library/Preferences/org.jenkins-ci httpPort 9999
+\end{lstlisting}
+
+Pentru a porni / opri manual serviciul Jenkins se folosesc in shell comenzile: 
+\begin{lstlisting}[breaklines=true]
+sudo launchctl load /Library/LaunchDaemons/org.jenkins-ci.plist
+sudo launchctl unload /Library/LaunchDaemons/org.jenkins-ci.plist
+\end{lstlisting}
+
+User-ul folosit de Jenkins pentru rularea job-urilor este de obicei numit 'jenkins'.
+
+Daca se doreste migrarea datelor/setarilor/plugin-urilor/job-urilor existente dintr-o alta instalare Jenkins, trebuie copiat directorul indicat de variabila de mediu JENKINS_HOME de pe vechiul server -> in directorul indicat de variabila de mediu JENKINS_HOME (de pe noul server); in cazul MacOSX, JENKINS_HOME = /Users/Shared/Jenkins/Home; directorul trebuie sa fie accesibil pentru utilizatorul folosit de Jenkins pentru rularea job-urilor (de obicei numit 'jenkins'). In configurarile Jenkins, dupa pornirea acestuia,  trebuie actualizate: URL-ul la care este accesibil Jenkins.
 
 Lista plugin-urilor Jenkins ce trebuie instalate:
 \begin{itemize}

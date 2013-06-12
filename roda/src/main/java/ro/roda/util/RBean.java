@@ -14,7 +14,7 @@ public class RBean {
 
 	public RBean(String[] arg0, boolean arg1, RMainLoopCallbacks arg2) {
 		log.trace(System.getProperties());
-		if ("yes".equals(System.getProperty("jri.ignore.ule"))) {
+		if ("yes".equalsIgnoreCase(System.getProperty("jri.ignore.ule"))) {
 			re = null;
 		} else {
 			re = new Rengine(arg0, arg1, arg2);

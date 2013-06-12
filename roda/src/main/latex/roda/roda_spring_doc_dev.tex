@@ -475,8 +475,9 @@ sudo launchctl unload /Library/LaunchDaemons/org.jenkins-ci.plist
 
 User-ul folosit de Jenkins pentru rularea job-urilor este de obicei numit 'jenkins'.
 
-Daca se doreste migrarea datelor/setarilor/plugin-urilor/job-urilor existente dintr-o alta instalare Jenkins, trebuie copiat directorul indicat de variabila de mediu JENKINS_HOME de pe vechiul server -> in directorul indicat de variabila de mediu JENKINS_HOME (de pe noul server); in cazul MacOSX, JENKINS_HOME = /Users/Shared/Jenkins/Home; directorul trebuie sa fie accesibil pentru utilizatorul folosit de Jenkins pentru rularea job-urilor (de obicei numit 'jenkins'). In configurarile Jenkins, dupa pornirea acestuia,  trebuie actualizate: URL-ul la care este accesibil Jenkins.
+Daca se doreste migrarea datelor/setarilor/plugin-urilor/job-urilor existente dintr-o alta instalare Jenkins, trebuie copiat directorul indicat de variabila de mediu JENKINS\_HOME de pe vechiul server -> in directorul indicat de variabila de mediu JENKINS\_HOME (de pe noul server); in cazul MacOSX, JENKINS\_HOME = /Users/Shared/Jenkins/Home; directorul trebuie sa fie accesibil pentru utilizatorul folosit de Jenkins pentru rularea job-urilor (de obicei numit 'jenkins'). In configurarile Jenkins, dupa pornirea acestuia,  trebuie actualizate: URL-ul la care este accesibil Jenkins.
 
+\subsection{Instalarea si configurarea plugin-urilor Jenkins}
 Lista plugin-urilor Jenkins ce trebuie instalate:
 \begin{itemize}
 \item 
@@ -529,7 +530,6 @@ SSH Credentials Plugin
 Token Macro Plugin
 \end{itemize}
 
-% TODO ???
 \begin{comment}
 The installer sets up Jenkins as a launch daemon, listening on port 8080. (If you want to know more about launchd and daemons, see here and here.)
 Changing boot configuration
@@ -568,8 +568,4 @@ Inheriting your existing Hudson/Jenkins installation
     If you'd like your new installation to take over your existing Jenkins/Hudson data, copy your old data directory into the new JENKINS_HOME directory.
 \end{comment}
 
-\subsection{Instalarea si configurarea dependentelor folosite de job-urile Jenkins}
-%TODO ??? ruby gems, vmc
-
 % TODO ??? Chrome, Firefox, Firebug, Postman
-

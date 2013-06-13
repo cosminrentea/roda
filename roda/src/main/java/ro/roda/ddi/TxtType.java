@@ -100,14 +100,14 @@ public class TxtType {
 	@ManyToOne
 	@JoinColumn(name = "Category_id")
 	@XmlTransient
-	private CatgryType category;
+	private CatgryType catgry;
 
-	public CatgryType getCategory() {
-		return category;
+	public CatgryType getCatgry() {
+		return catgry;
 	}
 
-	public void setCategory(CatgryType category) {
-		this.category = category;
+	public void setCategory(CatgryType catgry) {
+		this.catgry = catgry;
 	}
 
 	// @XmlElementRefs({

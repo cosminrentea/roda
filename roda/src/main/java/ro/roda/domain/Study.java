@@ -51,8 +51,7 @@ import flexjson.JSONSerializer;
 public class Study {
 
 	public static long countStudys() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM Study o",
-				Long.class).getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM Study o", Long.class).getSingleResult();
 	}
 
 	@Async
@@ -75,9 +74,7 @@ public class Study {
 	}
 
 	public static List<Study> findAllStudys() {
-		return entityManager()
-				.createQuery("SELECT o FROM Study o", Study.class)
-				.getResultList();
+		return entityManager().createQuery("SELECT o FROM Study o", Study.class).getResultList();
 	}
 
 	public static Study findStudy(Integer id) {
@@ -87,20 +84,17 @@ public class Study {
 	}
 
 	public static List<Study> findStudyEntries(int firstResult, int maxResults) {
-		return entityManager()
-				.createQuery("SELECT o FROM Study o", Study.class)
-				.setFirstResult(firstResult).setMaxResults(maxResults)
-				.getResultList();
+		return entityManager().createQuery("SELECT o FROM Study o", Study.class).setFirstResult(firstResult)
+				.setMaxResults(maxResults).getResultList();
 	}
 
 	public static Collection<Study> fromJsonArrayToStudys(String json) {
-		return new JSONDeserializer<List<Study>>().use(null, ArrayList.class)
-				.use("values", Study.class).deserialize(json);
+		return new JSONDeserializer<List<Study>>().use(null, ArrayList.class).use("values", Study.class)
+				.deserialize(json);
 	}
 
 	public static Study fromJsonToStudy(String json) {
-		return new JSONDeserializer<Study>().use(null, Study.class)
-				.deserialize(json);
+		return new JSONDeserializer<Study>().use(null, Study.class).deserialize(json);
 	}
 
 	public static void indexStudy(Study study) {
@@ -118,8 +112,7 @@ public class Study {
 			sid.addField("study.id_i", study.getId());
 			// Add summary field to allow searching documents for objects of
 			// this type
-			sid.addField("study_solrsummary_t",
-					new StringBuilder().append(study.getId()));
+			sid.addField("study_solrsummary_t", new StringBuilder().append(study.getId()));
 			documents.add(sid);
 		}
 		try {
@@ -174,11 +167,9 @@ public class Study {
 	 * @param timeMethId
 	 * @return
 	 */
-	public static Study checkStudy(Integer studyId, Date dateStart,
-			Date dateEnd, boolean insertionStatus, Integer addedBy,
-			Timestamp added, boolean digitizable, boolean anonymousUsage,
-			Integer unitAnalysisId, Integer version, boolean rawData,
-			boolean rawMetadata, Integer timeMethId) {
+	public static Study checkStudy(Integer studyId, Date dateStart, Date dateEnd, boolean insertionStatus,
+			Integer addedBy, Timestamp added, boolean digitizable, boolean anonymousUsage, Integer unitAnalysisId,
+			Integer version, boolean rawData, boolean rawMetadata, Integer timeMethId) {
 		// TODO
 		return null;
 	}
@@ -199,17 +190,16 @@ public class Study {
 	 * @param timeMethId
 	 * @return
 	 */
-	public static Study checkStudy(Integer studyId, boolean insertionStatus,
-			Integer addedBy, Timestamp added, boolean digitizable,
-			boolean anonymousUsage, Integer unitAnalysisId, boolean rawData,
-			boolean rawMetadata, Integer timeMethId) {
+	public static Study checkStudy(Integer studyId, boolean insertionStatus, Integer addedBy, Timestamp added,
+			boolean digitizable, boolean anonymousUsage, Integer unitAnalysisId, boolean rawData, boolean rawMetadata,
+			Integer timeMethId) {
 		// TODO
 		return null;
 	}
 
 	/**
-	 * Verifica existenta unui studiu; in cazul inexistentei, acesta poate
-	 * fi introdus furnizand informatii complete (inclusiv listele de persoane si
+	 * Verifica existenta unui studiu; in cazul inexistentei, acesta poate fi
+	 * introdus furnizand informatii complete (inclusiv listele de persoane si
 	 * organizatii corespunzatoare).
 	 * 
 	 * @param studyId
@@ -229,11 +219,9 @@ public class Study {
 	 * @param orgs
 	 * @return
 	 */
-	public static Study checkStudy(Integer studyId, Date dateStart,
-			Date dateEnd, boolean insertionStatus, Integer addedBy,
-			Timestamp added, boolean digitizable, boolean anonymousUsage,
-			Integer unitAnalysisId, Integer version, boolean rawData,
-			boolean rawMetadata, Integer timeMethId, List<Person> persons,
+	public static Study checkStudy(Integer studyId, Date dateStart, Date dateEnd, boolean insertionStatus,
+			Integer addedBy, Timestamp added, boolean digitizable, boolean anonymousUsage, Integer unitAnalysisId,
+			Integer version, boolean rawData, boolean rawMetadata, Integer timeMethId, List<Person> persons,
 			List<Org> orgs) {
 		// TODO
 		return null;
@@ -249,8 +237,7 @@ public class Study {
 	 * 
 	 * 
 	 */
-	public Study insertRootStudy(Date dateStart, Date dateEnd,
-			Integer insertionStatus, Integer addedBy, TimeStamp added) {
+	public Study insertRootStudy(Date dateStart, Date dateEnd, Integer insertionStatus, Integer addedBy, TimeStamp added) {
 		// TODO
 		return null;
 	}
@@ -287,6 +274,12 @@ public class Study {
 	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(style = "M-")
 	private Date dateStart;
+
+	@Column(name = "year_start", columnDefinition = "int4")
+	private Integer yearStart;
+
+	@Column(name = "year_end", columnDefinition = "int4")
+	private Integer yearEnd;
 
 	@Column(name = "digitizable", columnDefinition = "bool")
 	@NotNull
@@ -444,6 +437,14 @@ public class Study {
 		return topics;
 	}
 
+	public Integer getYearStart() {
+		return yearStart;
+	}
+
+	public Integer getYearEnd() {
+		return yearEnd;
+	}
+
 	public UnitAnalysis getUnitAnalysisId() {
 		return unitAnalysisId;
 	}
@@ -512,8 +513,7 @@ public class Study {
 		this.catalogStudies = catalogStudies;
 	}
 
-	public void setCollectionModelTypes(
-			Set<CollectionModelType> collectionModelTypes) {
+	public void setCollectionModelTypes(Set<CollectionModelType> collectionModelTypes) {
 		this.collectionModelTypes = collectionModelTypes;
 	}
 
@@ -585,6 +585,14 @@ public class Study {
 		this.timeMethId = timeMeth;
 	}
 
+	public void setYearStart(Integer yearStart) {
+		this.yearStart = yearStart;
+	}
+
+	public void setYearEnd(Integer yearEnd) {
+		this.yearEnd = yearEnd;
+	}
+
 	public void setTopics(Set<Topic> topics) {
 		this.topics = topics;
 	}
@@ -602,8 +610,7 @@ public class Study {
 	}
 
 	public String toString() {
-		return new ReflectionToStringBuilder(this,
-				ToStringStyle.SHORT_PREFIX_STYLE).setExcludeFieldNames(
+		return new ReflectionToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE).setExcludeFieldNames(
 				"timeMethType").toString();
 	}
 

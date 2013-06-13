@@ -12,8 +12,8 @@
 				but also drops tables when Hibernate closes; value="validate" makes no changes 
 				to the database -->
 			<!-- Cosmin: if using Roo, use value="update" here ! -->
-			<!-- Cosmin: if NOT using Roo, use value="create-drop" here ! -->
-			<property name="hibernate.hbm2ddl.auto" value="create-drop"/>
+			<!-- Cosmin: if NOT using Roo, use value="create-drop" or value="create" here ! -->
+			<property name="hibernate.hbm2ddl.auto" value="create"/>
 
 			<!-- Cosmin: logging SQL inside Hibernate ? -->
 			<!-- <property name="hibernate.show_sql" value="true"/> -->

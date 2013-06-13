@@ -68,20 +68,18 @@ public class ImporterCsv {
 				String tableFields = br.readLine();
 
 				// obtain the table name from the file name
-				String tableName = f.getName().substring(2,
-						f.getName().length() - 4);
+				String tableName = f.getName().substring(2, f.getName().length() - 4);
 
 				// bulk COPY the remaining lines (CSV data)
-				String copyQuery = "COPY " + tableName + "(" + tableFields
-						+ ") FROM stdin DELIMITERS ',' CSV";
+				String copyQuery = "COPY " + tableName + "(" + tableFields + ") FROM stdin DELIMITERS ',' CSV";
 				log.trace(copyQuery);
 				cm.copyIn(copyQuery, br);
 				// br.close();
 			}
 		} catch (SQLException e) {
-			log.error("SQLException:", e);
+			log.fatal("SQLException:", e);
 		} catch (IOException e) {
-			log.error("IOException:", e);
+			log.fatal("IOException:", e);
 		} finally {
 			if (con != null) {
 				try {

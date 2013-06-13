@@ -10,7 +10,7 @@ import javax.persistence.metamodel.StaticMetamodel;
 public class TxtType_ {
 	public static volatile SingularAttribute<TxtType, Long> id_;
 	public static volatile SingularAttribute<TxtType, VarType> vartype;
-	public static volatile SingularAttribute<TxtType, CatgryType> category;
+	public static volatile SingularAttribute<TxtType, CatgryType> catgry;
 	public static volatile SingularAttribute<TxtType, String> content;
 	public static volatile SingularAttribute<TxtType, String> id;
 	// public static volatile ListAttribute<TxtType, String> sdatrefs;

@@ -68,13 +68,12 @@ public class ImporterDdi {
 			// validate using DDI 1.2.2 XML Schema
 			JAXBContext jc = JAXBContext.newInstance(jaxbContextPath);
 			Unmarshaller unmarshaller = jc.createUnmarshaller();
-			unmarshaller.setSchema(SchemaFactory.newInstance(
-					XMLConstants.W3C_XML_SCHEMA_NS_URI).newSchema(
+			unmarshaller.setSchema(SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI).newSchema(
 					xsdDdiRes.getFile()));
 
 			for (File ddiFile : ddiFiles) {
 				log.debug("File = " + ddiFile.getName());
-				importCodebook((CodeBook) unmarshaller.unmarshal(ddiFile));
+				importCodebook((CodeBook) unmarshaller.unmarshal(ddiFile), true, true);
 			}
 
 		} catch (IOException e) {
@@ -86,37 +85,48 @@ public class ImporterDdi {
 		}
 	}
 
-	public void importCodebook(CodeBook cb) {
-		String title = cb.getDocDscr().get(0).getCitation().getTitlStmt()
-				.getTitl().getContent();
-		log.debug("Title = " + title);
-
-		Date dateStart = null;
-		Date dateEnd = null;
-
-		Pattern pattern = Pattern.compile("\\d{4}");
-		Matcher matcher = pattern.matcher(title);
-		if (matcher.find()) {
-			Calendar cal = Calendar.getInstance();
-			cal.set(Integer.parseInt(matcher.group()), 0, 1, 0, 0, 0);
-			dateStart = cal.getTime();
-			cal.set(Integer.parseInt(matcher.group()), 11, 31, 23, 59, 59);
-			dateEnd = cal.getTime();
-		}
-		log.debug("dateStart = " + dateStart);
-		log.debug("dateEnd = " + dateEnd);
+	public void importCodebook(CodeBook cb, boolean nesstarExported, boolean legacyDataRODA) {
 
 		Study s = new Study();
 
+		String title = cb.getDocDscr().get(0).getCitation().getTitlStmt().getTitl().getContent();
+		log.debug("Title = " + title);
+
+		if (nesstarExported && legacyDataRODA) {
+			Date dateStart = null, dateEnd = null;
+			Integer yearStart = null, yearEnd = null;
+
+			Pattern pattern = Pattern.compile("\\d{4}");
+			Matcher matcher = pattern.matcher(title);
+			if (matcher.find()) {
+				yearStart = new Integer(matcher.group());
+				yearEnd = yearStart;
+				Calendar cal = Calendar.getInstance();
+				cal.set(yearStart.intValue(), 0, 1, 0, 0, 0);
+				dateStart = cal.getTime();
+				cal.set(yearEnd.intValue(), 11, 31, 23, 59, 59);
+				dateEnd = cal.getTime();
+			}
+			s.setYearStart(yearStart);
+			s.setYearEnd(yearEnd);
+			s.setDateStart(dateStart);
+			s.setDateEnd(dateEnd);
+
+			log.debug("yearStart = " + yearStart);
+			log.debug("yearEnd = " + yearEnd);
+			log.debug("dateStart = " + dateStart);
+			log.debug("dateEnd = " + dateEnd);
+		}
 		s.setAdded(new GregorianCalendar());
-		s.setDateStart(dateStart);
-		s.setDateEnd(dateEnd);
+
+		// TODO check these default values
 		s.setAnonymousUsage(true);
 		s.setDigitizable(true);
 		s.setRawData(true);
 		s.setRawMetadata(false);
 		s.setInsertionStatus(0);
 
+		// user = admin
 		Users u = Users.findUsers(1);
 		s.setAddedBy(u);
 		Set<Study> su = u.getStudies();
@@ -138,11 +148,12 @@ public class ImporterDdi {
 		s.persist();
 
 		StudyDescr sd = new StudyDescr();
-		sd.setOriginalTitleLanguage(true);
+		// TODO get Romanian language, don't use ID = 1
 		StudyDescrPK sdId = new StudyDescrPK(new Integer(1), s.getId());
+		sd.setOriginalTitleLanguage(true);
 		sd.setId(sdId);
-		sd.setTitle(cb.getDocDscr().get(0).getCitation().getTitlStmt()
-				.getTitl().getContent());
+		sd.setTitle(title);
+
 		sd.persist();
 	}
 }

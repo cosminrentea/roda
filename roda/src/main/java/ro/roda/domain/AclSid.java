@@ -17,6 +17,7 @@ import javax.persistence.PostPersist;
 import javax.persistence.PostUpdate;
 import javax.persistence.PreRemove;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -35,9 +36,9 @@ import flexjson.JSONDeserializer;
 import flexjson.JSONSerializer;
 
 @Entity
-@Table(schema = "public", name = "acl_sid")
+@Table(schema = "public", name = "acl_sid", uniqueConstraints = @UniqueConstraint(columnNames = { "sid", "principal" }))
 @Configurable
-
+@Audited
 public class AclSid {
 
 	public static long countAclSids() {

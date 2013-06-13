@@ -64,7 +64,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "lablType")
 @Entity
-@Table(schema = "ddi",name = "Label")
+@Table(schema = "ddi", name = "Label")
 public class LablType {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -95,14 +95,14 @@ public class LablType {
 	@ManyToOne
 	@JoinColumn(name = "Category_id")
 	@XmlTransient
-	private CatgryType category;
+	private CatgryType catgry;
 
-	public CatgryType getCategory() {
-		return category;
+	public CatgryType getCatgry() {
+		return catgry;
 	}
 
-	public void setCategory(CatgryType category) {
-		this.category = category;
+	public void setCatgry(CatgryType catgry) {
+		this.catgry = catgry;
 	}
 
 	@ManyToOne

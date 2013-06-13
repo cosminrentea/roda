@@ -94,10 +94,9 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "catgryType", propOrder = { "catValu", "labl", "txt",
-		"catStat", "catgry" })
+@XmlType(name = "catgryType", propOrder = { "catValu", "labl", "txt", "catStat", "catgry" })
 @Entity
-@Table(schema = "ddi",name = "Category")
+@Table(schema = "ddi", name = "Category")
 public class CatgryType {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -128,17 +127,16 @@ public class CatgryType {
 	@OneToOne(cascade = { CascadeType.ALL })
 	protected CatValuType catValu;
 
-	@OneToMany(mappedBy = "category", cascade = { CascadeType.ALL })
+	@OneToMany(mappedBy = "catgry", cascade = { CascadeType.ALL })
 	protected List<LablType> labl;
 
-	@OneToMany(mappedBy = "category", cascade = { CascadeType.ALL })
+	@OneToMany(mappedBy = "catgry", cascade = { CascadeType.ALL })
 	protected List<TxtType> txt;
 
-	@OneToMany(mappedBy = "category", cascade = { CascadeType.ALL })
+	@OneToMany(mappedBy = "catgry", cascade = { CascadeType.ALL })
 	protected List<CatStatType> catStat;
 
 	// TODO Cosmin: a Category CONTAINS a list of other categories ?!
-	// commented out this field ?... though it may happen in practice
 	@OneToMany(cascade = { CascadeType.ALL })
 	protected List<CatgryType> catgry;
 

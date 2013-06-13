@@ -88,7 +88,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "catStatType")
 @Entity
-@Table(schema = "ddi",name = "CategoryStatistic")
+@Table(schema = "ddi", name = "CategoryStatistic")
 public class CatStatType {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -106,14 +106,14 @@ public class CatStatType {
 	@ManyToOne
 	@JoinColumn(name = "Category_id")
 	@XmlTransient
-	private CatgryType category;
+	private CatgryType catgry;
 
-	public CatgryType getCategory() {
-		return category;
+	public CatgryType getCatgry() {
+		return catgry;
 	}
 
-	public void setCategory(CatgryType category) {
-		this.category = category;
+	public void setCatgry(CatgryType catgry) {
+		this.catgry = catgry;
 	}
 
 	// @XmlElementRefs({

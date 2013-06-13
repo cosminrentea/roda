@@ -6,17 +6,26 @@ use Test::WWW::Selenium;
 use Test::More "no_plan";
 use Test::Exception;
 
-# Web Application must be already started at: http://localhost:8080/roda
+# ! Web Application must be already started at: http://localhost:8080/roda
 
-# Selenium Server must be already started on local port 4444
+# ! Selenium Server must be already started on local port 4444
 
 
-# create Selenium browser 
+# create browser through Selenium Server
+
+# MacOSX setup:
 my $sel = Test::WWW::Selenium->new( host => "localhost", 
                                     port => 4444, 
                                     browser => "*firefox /opt/local/lib/firefox-x11/firefox-bin", 
                                     browser_url => "http://localhost:8080/roda/" );
-my $timeout="10000";
+
+# Linux setup:
+#my $sel = Test::WWW::Selenium->new( host => "localhost", 
+#                                    port => 4444, 
+#                                    browser => "*firefox /usr/bin/firefox", 
+#                                    browser_url => "http://localhost:8080/roda/" );
+                                  
+my $timeout = "10000";
 
 # authentication: user login + logout
 $sel->open_ok("roda/");
@@ -51,5 +60,6 @@ $sel->click_ok("id=proceed");
 $sel->wait_for_page_to_load_ok($timeout);
 $sel->click_ok("link=Logout");
 $sel->wait_for_page_to_load_ok($timeout);
+
 
 #done_testing();

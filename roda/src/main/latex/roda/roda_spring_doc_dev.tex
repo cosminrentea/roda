@@ -34,7 +34,7 @@ sudo gem install vmc
 \item[Ubuntu:]
 Se ruleaza urmatoarele comenzi, din shell:
 \begin{lstlisting}[breaklines=true]
-sudo apt-get install openjdk-6-jdk maven postgresql-server pgadmin3  firefox solr r-base r-base-dev perl libtest-www-selenium-perl htmldoc graphviz rubygems 
+sudo apt-get install openjdk-6-jdk maven postgresql-server pgadmin3  firefox solr r-base r-base-dev perl libtest-www-selenium-perl htmldoc graphviz rubygems xvfb
 
 sudo gem install vmc
 \end{lstlisting}
@@ -364,9 +364,8 @@ server, in lista din view-ul 'Servers'), aplicatia e disponibila la:
 
 \url{http://localhost:8080/roda}
 
-\subsection{Rularea din linia de comanda, pe un Server Local ad-hoc de tip
-Tomcat}
-Din linia de comanda, in folder-ul radacina al proiectului 'roda', cu comanda:
+\subsection{Rularea pe un Server Local ad-hoc de tip Tomcat}
+Din shell, in folder-ul radacina al proiectului 'roda', cu comanda:
 \begin{lstlisting}
 	mvn tomcat:run
 \end{lstlisting}
@@ -375,12 +374,19 @@ aplicatia e disponibila la:
 
 \url{http://localhost:8080/roda}
 
+\subsection{Rularea locala a Selenium Server}
+Din shell, in folder-ul radacina al proiectului 'roda', cu comanda:
+\begin{lstlisting}
+	mvn selenium:start-server
+\end{lstlisting}
+Selenium Server porneste pe portul local 4444.
+
 \subsection{Rularea automata a testelor de integrare}
 Din linia de comanda, in folder-ul radacina al proiectului 'roda', cu comanda:
 \begin{lstlisting}
 	mvn verify
 \end{lstlisting}
-Astfel, sunt pornite/oprite serviciile:
+Astfel, sunt pornite/oprite automat:
 \begin{itemize}
 \item
 Selenium Server

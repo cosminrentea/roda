@@ -1,5 +1,6 @@
 package ro.roda.domain;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
@@ -33,12 +34,13 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrInputDocument;
-import org.hibernate.envers.Audited;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.sun.jna.platform.win32.Sspi.TimeStamp;
 
 import flexjson.JSONDeserializer;
 import flexjson.JSONSerializer;
@@ -46,7 +48,6 @@ import flexjson.JSONSerializer;
 @Configurable
 @Entity
 @Table(schema = "public", name = "study")
-
 public class Study {
 
 	public static long countStudys() {
@@ -154,6 +155,104 @@ public class Study {
 
 	public static String toJsonArray(Collection<Study> collection) {
 		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	/**
+	 * Verifica daca studiul furnizat prin intermediul parametrilor exista; in
+	 * caz contrar, acesta va fi inserat in baza de date.
+	 * 
+	 * @param dateStart
+	 * @param dateEnd
+	 * @param insertionStatus
+	 * @param addedBy
+	 * @param added
+	 * @param digitizable
+	 * @param anonymousUsage
+	 * @param unitAnalysisId
+	 * @param rawData
+	 * @param rawMetadata
+	 * @param timeMethId
+	 * @return
+	 */
+	public static Study checkStudy(Integer studyId, Date dateStart,
+			Date dateEnd, boolean insertionStatus, Integer addedBy,
+			Timestamp added, boolean digitizable, boolean anonymousUsage,
+			Integer unitAnalysisId, Integer version, boolean rawData,
+			boolean rawMetadata, Integer timeMethId) {
+		// TODO
+		return null;
+	}
+
+	/**
+	 * Verifica existenta unui studiu; in cazul inexistentei, acesta va fi
+	 * adaugat pe baza campurilor obligatorii.
+	 * 
+	 * @param studyId
+	 * @param insertionStatus
+	 * @param addedBy
+	 * @param added
+	 * @param digitizable
+	 * @param anonymousUsage
+	 * @param unitAnalysisId
+	 * @param rawData
+	 * @param rawMetadata
+	 * @param timeMethId
+	 * @return
+	 */
+	public static Study checkStudy(Integer studyId, boolean insertionStatus,
+			Integer addedBy, Timestamp added, boolean digitizable,
+			boolean anonymousUsage, Integer unitAnalysisId, boolean rawData,
+			boolean rawMetadata, Integer timeMethId) {
+		// TODO
+		return null;
+	}
+
+	/**
+	 * Verifica existenta unui studiu; in cazul inexistentei, acesta poate
+	 * fi introdus furnizand informatii complete (inclusiv listele de persoane si
+	 * organizatii corespunzatoare).
+	 * 
+	 * @param studyId
+	 * @param dateStart
+	 * @param dateEnd
+	 * @param insertionStatus
+	 * @param addedBy
+	 * @param added
+	 * @param digitizable
+	 * @param anonymousUsage
+	 * @param unitAnalysisId
+	 * @param version
+	 * @param rawData
+	 * @param rawMetadata
+	 * @param timeMethId
+	 * @param persons
+	 * @param orgs
+	 * @return
+	 */
+	public static Study checkStudy(Integer studyId, Date dateStart,
+			Date dateEnd, boolean insertionStatus, Integer addedBy,
+			Timestamp added, boolean digitizable, boolean anonymousUsage,
+			Integer unitAnalysisId, Integer version, boolean rawData,
+			boolean rawMetadata, Integer timeMethId, List<Person> persons,
+			List<Org> orgs) {
+		// TODO
+		return null;
+	}
+
+	/**
+	 * 
+	 * Insereaza un studiu radacina, introducand informatiile de baza pentru un
+	 * studiu (preluat prin valori ale parametrilor de intrare) in baza de date
+	 * si returnand obiectul corespunzator. Metoda este utila in contextul
+	 * interfetei pe baza de instrumente de tip wizard, in care datele sunt
+	 * furnizate in mai multi pasi.
+	 * 
+	 * 
+	 */
+	public Study insertRootStudy(Date dateStart, Date dateEnd,
+			Integer insertionStatus, Integer addedBy, TimeStamp added) {
+		// TODO
+		return null;
 	}
 
 	@Column(name = "added", columnDefinition = "timestamp")

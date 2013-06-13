@@ -39,11 +39,11 @@ import flexjson.JSONSerializer;
 @Configurable
 @Entity
 @Table(schema = "public", name = "person")
-
 public class Person {
 
 	public static long countPeople() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM Person o", Long.class).getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM Person o",
+				Long.class).getSingleResult();
 	}
 
 	@Async
@@ -66,7 +66,8 @@ public class Person {
 	}
 
 	public static List<Person> findAllPeople() {
-		return entityManager().createQuery("SELECT o FROM Person o", Person.class).getResultList();
+		return entityManager().createQuery("SELECT o FROM Person o",
+				Person.class).getResultList();
 	}
 
 	public static Person findPerson(Integer id) {
@@ -76,17 +77,20 @@ public class Person {
 	}
 
 	public static List<Person> findPersonEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM Person o", Person.class).setFirstResult(firstResult)
-				.setMaxResults(maxResults).getResultList();
+		return entityManager()
+				.createQuery("SELECT o FROM Person o", Person.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults)
+				.getResultList();
 	}
 
 	public static Collection<Person> fromJsonArrayToPeople(String json) {
-		return new JSONDeserializer<List<Person>>().use(null, ArrayList.class).use("values", Person.class)
-				.deserialize(json);
+		return new JSONDeserializer<List<Person>>().use(null, ArrayList.class)
+				.use("values", Person.class).deserialize(json);
 	}
 
 	public static Person fromJsonToPerson(String json) {
-		return new JSONDeserializer<Person>().use(null, Person.class).deserialize(json);
+		return new JSONDeserializer<Person>().use(null, Person.class)
+				.deserialize(json);
 	}
 
 	@Async
@@ -98,7 +102,8 @@ public class Person {
 			sid.addField("person.id_i", person.getId());
 			// Add summary field to allow searching documents for objects of
 			// this type
-			sid.addField("person_solrsummary_t", new StringBuilder().append(person.getId()));
+			sid.addField("person_solrsummary_t",
+					new StringBuilder().append(person.getId()));
 			documents.add(sid);
 		}
 		try {
@@ -140,6 +145,70 @@ public class Person {
 
 	public static String toJsonArray(Collection<Person> collection) {
 		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	/**
+	 * Verifica existenta unei persoane in baza de date; daca exista, returneaza
+	 * obiectul respectiv, altfel, il introduce si returneaza obiectul
+	 * corespunzator.
+	 * 
+	 * Criterii de unicitate:
+	 * 
+	 * fName + mName + lName
+	 * 
+	 * @param personId
+	 * @param fName
+	 * @param mName
+	 * @param lName
+	 * @param personPrefixId
+	 * @param personSufixId
+	 * @return
+	 */
+	public static Person checkPerson(Integer personId, String fName,
+			String mName, String lName, Integer personPrefixId,
+			Integer personSufixId) {
+		// TODO
+		return null;
+	}
+
+	/**
+	 * Verifica existenta unei persoane in baza de date; daca nu exista,
+	 * inserarea va avea loc doar pe baza campurilor obligatorii.
+	 * 
+	 * @param personId
+	 * @param fName
+	 * @param mName
+	 * @param lName
+	 * @return
+	 */
+	public static Person checkPerson(Integer personId, String fName,
+			String mName, String lName) {
+		// TODO
+		return null;
+	}
+
+	/**
+	 * Verifica existenta unei persoane; in cazul inexistentei, aceasta poate
+	 * fi introdusa furnizand informatii complete (inclusiv listele de adrese,
+	 * email-uri si adrese internet corespunzatoare).
+	 * 
+	 * @param personId
+	 * @param fName
+	 * @param mName
+	 * @param lName
+	 * @param personPrefixId
+	 * @param personSufixId
+	 * @param personAddresses
+	 * @param personEmails
+	 * @param personInternets
+	 * @return
+	 */
+	public static Person checkPerson(Integer personId, String fName,
+			String mName, String lName, Integer personPrefixId,
+			Integer personSufixId, List<Address> personAddresses,
+			List<Email> personEmails, List<Internet> personInternets) {
+		// TODO
+		return null;
 	}
 
 	@Column(name = "fname", columnDefinition = "varchar", length = 100)
@@ -210,7 +279,8 @@ public class Person {
 		boolean r = false;
 		if (o instanceof Person) {
 			Person p = (Person) o;
-			r = this.getFname().equalsIgnoreCase(p.getFname()) && this.getLname().equalsIgnoreCase(p.getLname());
+			r = this.getFname().equalsIgnoreCase(p.getFname())
+					&& this.getLname().equalsIgnoreCase(p.getLname());
 		}
 		return r;
 	}
@@ -375,7 +445,8 @@ public class Person {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this,
+				ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate

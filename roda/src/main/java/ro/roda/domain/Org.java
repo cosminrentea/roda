@@ -39,11 +39,11 @@ import flexjson.JSONSerializer;
 @Configurable
 @Entity
 @Table(schema = "public", name = "org")
-
 public class Org {
 
 	public static long countOrgs() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM Org o", Long.class).getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM Org o",
+				Long.class).getSingleResult();
 	}
 
 	@Async
@@ -66,7 +66,8 @@ public class Org {
 	}
 
 	public static List<Org> findAllOrgs() {
-		return entityManager().createQuery("SELECT o FROM Org o", Org.class).getResultList();
+		return entityManager().createQuery("SELECT o FROM Org o", Org.class)
+				.getResultList();
 	}
 
 	public static Org findOrg(Integer id) {
@@ -76,16 +77,19 @@ public class Org {
 	}
 
 	public static List<Org> findOrgEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM Org o", Org.class).setFirstResult(firstResult)
-				.setMaxResults(maxResults).getResultList();
+		return entityManager().createQuery("SELECT o FROM Org o", Org.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults)
+				.getResultList();
 	}
 
 	public static Collection<Org> fromJsonArrayToOrgs(String json) {
-		return new JSONDeserializer<List<Org>>().use(null, ArrayList.class).use("values", Org.class).deserialize(json);
+		return new JSONDeserializer<List<Org>>().use(null, ArrayList.class)
+				.use("values", Org.class).deserialize(json);
 	}
 
 	public static Org fromJsonToOrg(String json) {
-		return new JSONDeserializer<Org>().use(null, Org.class).deserialize(json);
+		return new JSONDeserializer<Org>().use(null, Org.class).deserialize(
+				json);
 	}
 
 	public static void indexOrg(Org org) {
@@ -107,9 +111,12 @@ public class Org {
 			sid.addField("org.id_i", org.getId());
 			// Add summary field to allow searching documents for objects of
 			// this type
-			sid.addField("org_solrsummary_t",
-					new StringBuilder().append(org.getOrgPrefixId()).append(" ").append(org.getOrgSufixId())
-							.append(" ").append(org.getShortName()).append(" ").append(org.getFullName()).append(" ")
+			sid.addField(
+					"org_solrsummary_t",
+					new StringBuilder().append(org.getOrgPrefixId())
+							.append(" ").append(org.getOrgSufixId())
+							.append(" ").append(org.getShortName()).append(" ")
+							.append(org.getFullName()).append(" ")
 							.append(org.getId()));
 			documents.add(sid);
 		}
@@ -146,6 +153,61 @@ public class Org {
 
 	public static String toJsonArray(Collection<Org> collection) {
 		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	/**
+	 * Verifica existenta unei organizatii in baza de date (pe baza parametrilor
+	 * furnizati); daca exista, returneaza obiectul respectiv, altfel il
+	 * introduce si returneaza obiectul corespunzator.
+	 * 
+	 * @param orgId
+	 * @param shortName
+	 * @param fullName
+	 * @param orgPrefixId
+	 * @param orgSufixId
+	 * @return
+	 */
+	public static Org checkOrg(Integer orgId, String shortName,
+			String fullName, Integer orgPrefixId, Integer orgSufixId) {
+		// TODO
+		return null;
+	}
+
+	/**
+	 * Verifica existenta unei organizatii in baza de date; daca nu exista,
+	 * adaugarea va avea loc doar pe baza campurilor obligatorii.
+	 * 
+	 * @param orgId
+	 * @param shortName
+	 * @param fullName
+	 * @return
+	 */
+	public static Org checkOrg(Integer orgId, String shortName, String fullName) {
+		// TODO
+		return null;
+	}
+
+	/**
+	 * Verifica existenta unei organizatii; in cazul inexistentei, aceasta poate
+	 * fi introdusa furnizand informatii complete (inclusiv listele de adrese,
+	 * email-uri si adrese internet corespunzatoare).
+	 * 
+	 * @param orgId
+	 * @param shortName
+	 * @param fullName
+	 * @param orgPrefixId
+	 * @param orgSufixId
+	 * @param orgAddresses
+	 * @param orgEmails
+	 * @param orgInternets
+	 * @return
+	 */
+	public static Org checkOrg(Integer orgId, String shortName,
+			String fullName, Integer orgPrefixId, Integer orgSufixId,
+			List<Address> orgAddresses, List<Email> orgEmails,
+			List<Internet> orgInternets) {
+		// TODO
+		return null;
 	}
 
 	@Column(name = "full_name", columnDefinition = "text")
@@ -361,7 +423,8 @@ public class Org {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this,
+				ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate

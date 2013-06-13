@@ -1,7 +1,9 @@
 package ro.roda.domain;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -35,11 +37,11 @@ import flexjson.JSONSerializer;
 @Configurable
 @Entity
 @Table(schema = "public", name = "study_descr")
-
 public class StudyDescr {
 
 	public static long countStudyDescrs() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM StudyDescr o", Long.class).getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM StudyDescr o",
+				Long.class).getSingleResult();
 	}
 
 	@Async
@@ -62,7 +64,8 @@ public class StudyDescr {
 	}
 
 	public static List<StudyDescr> findAllStudyDescrs() {
-		return entityManager().createQuery("SELECT o FROM StudyDescr o", StudyDescr.class).getResultList();
+		return entityManager().createQuery("SELECT o FROM StudyDescr o",
+				StudyDescr.class).getResultList();
 	}
 
 	public static StudyDescr findStudyDescr(StudyDescrPK id) {
@@ -71,18 +74,23 @@ public class StudyDescr {
 		return entityManager().find(StudyDescr.class, id);
 	}
 
-	public static List<StudyDescr> findStudyDescrEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM StudyDescr o", StudyDescr.class).setFirstResult(firstResult)
-				.setMaxResults(maxResults).getResultList();
+	public static List<StudyDescr> findStudyDescrEntries(int firstResult,
+			int maxResults) {
+		return entityManager()
+				.createQuery("SELECT o FROM StudyDescr o", StudyDescr.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults)
+				.getResultList();
 	}
 
 	public static Collection<StudyDescr> fromJsonArrayToStudyDescrs(String json) {
-		return new JSONDeserializer<List<StudyDescr>>().use(null, ArrayList.class).use("values", StudyDescr.class)
+		return new JSONDeserializer<List<StudyDescr>>()
+				.use(null, ArrayList.class).use("values", StudyDescr.class)
 				.deserialize(json);
 	}
 
 	public static StudyDescr fromJsonToStudyDescr(String json) {
-		return new JSONDeserializer<StudyDescr>().use(null, StudyDescr.class).deserialize(json);
+		return new JSONDeserializer<StudyDescr>().use(null, StudyDescr.class)
+				.deserialize(json);
 	}
 
 	public static void indexStudyDescr(StudyDescr studyDescr) {
@@ -100,29 +108,43 @@ public class StudyDescr {
 			sid.addField("studyDescr.langid_t", studyDescr.getLangId());
 			sid.addField("studyDescr.studyid_t", studyDescr.getStudyId());
 			sid.addField("studyDescr.abstract1_s", studyDescr.getAbstract1());
-			sid.addField("studyDescr.grantdetails_s", studyDescr.getGrantDetails());
+			sid.addField("studyDescr.grantdetails_s",
+					studyDescr.getGrantDetails());
 			sid.addField("studyDescr.title_s", studyDescr.getTitle());
 			sid.addField("studyDescr.notes_s", studyDescr.getNotes());
 			sid.addField("studyDescr.weighting_s", studyDescr.getWeighting());
-			sid.addField("studyDescr.researchinstrument_s", studyDescr.getResearchInstrument());
+			sid.addField("studyDescr.researchinstrument_s",
+					studyDescr.getResearchInstrument());
 			sid.addField("studyDescr.scope_s", studyDescr.getScope());
 			sid.addField("studyDescr.universe_s", studyDescr.getUniverse());
 			sid.addField("studyDescr.subtitle_s", studyDescr.getSubtitle());
-			sid.addField("studyDescr.alternativetitle_s", studyDescr.getAlternativeTitle());
-			sid.addField("studyDescr.timecovered_s", studyDescr.getTimeCovered());
-			sid.addField("studyDescr.geographiccoverage_s", studyDescr.getGeographicCoverage());
+			sid.addField("studyDescr.alternativetitle_s",
+					studyDescr.getAlternativeTitle());
+			sid.addField("studyDescr.timecovered_s",
+					studyDescr.getTimeCovered());
+			sid.addField("studyDescr.geographiccoverage_s",
+					studyDescr.getGeographicCoverage());
 			// Add summary field to allow searching documents for objects of
 			// this type
 			sid.addField(
 					"studydescr_solrsummary_t",
-					new StringBuilder().append(studyDescr.getLangId()).append(" ").append(studyDescr.getStudyId())
-							.append(" ").append(studyDescr.getAbstract1()).append(" ")
-							.append(studyDescr.getGrantDetails()).append(" ").append(studyDescr.getTitle()).append(" ")
-							.append(studyDescr.getNotes()).append(" ").append(studyDescr.getWeighting()).append(" ")
-							.append(studyDescr.getResearchInstrument()).append(" ").append(studyDescr.getScope())
-							.append(" ").append(studyDescr.getUniverse()).append(" ").append(studyDescr.getSubtitle())
-							.append(" ").append(studyDescr.getAlternativeTitle()).append(" ")
-							.append(studyDescr.getTimeCovered()).append(" ").append(studyDescr.getGeographicCoverage()));
+					new StringBuilder().append(studyDescr.getLangId())
+							.append(" ").append(studyDescr.getStudyId())
+							.append(" ").append(studyDescr.getAbstract1())
+							.append(" ").append(studyDescr.getGrantDetails())
+							.append(" ").append(studyDescr.getTitle())
+							.append(" ").append(studyDescr.getNotes())
+							.append(" ").append(studyDescr.getWeighting())
+							.append(" ")
+							.append(studyDescr.getResearchInstrument())
+							.append(" ").append(studyDescr.getScope())
+							.append(" ").append(studyDescr.getUniverse())
+							.append(" ").append(studyDescr.getSubtitle())
+							.append(" ")
+							.append(studyDescr.getAlternativeTitle())
+							.append(" ").append(studyDescr.getTimeCovered())
+							.append(" ")
+							.append(studyDescr.getGeographicCoverage()));
 			documents.add(sid);
 		}
 		try {
@@ -158,6 +180,53 @@ public class StudyDescr {
 
 	public static String toJsonArray(Collection<StudyDescr> collection) {
 		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	/**
+	 * Verifica existenta unei descrieri de studiu (preluat printr-o parte a
+	 * valorilor parametrilor de intrare) in baza de date; in caz afirmativ,
+	 * returneaza obiectul corespunzator, altfel, metoda introduce descrierea in
+	 * baza de date si apoi returneaza obiectul corespunzator. Verificarea
+	 * existentei in baza de date se realizeaza fie dupa valoarea cheii primare,
+	 * fie dupa un criteriu de unicitate.
+	 * 
+	 * 
+	 * @param langId
+	 * @param studyId
+	 * @param title
+	 * @param originalTitleLanguage
+	 * @return
+	 */
+	public static Study checkStudyDescr(Integer langId, Integer studyId,
+			String title, boolean originalTitleLanguage) {
+		return checkStudyDescr(langId, studyId, null, null, title, null, null,
+				null, null, null, null, null, originalTitleLanguage, null, null);
+	}
+
+	/**
+	 * Verifica existenta unei descrieri de studiu (preluat prin valorile
+	 * parametrilor de intrare) in baza de date; in caz afirmativ, returneaza
+	 * obiectul corespunzator, altfel, metoda introduce descrierea in baza de
+	 * date si apoi returneaza obiectul corespunzator. Verificarea existentei in
+	 * baza de date se realizeaza fie dupa valoarea cheii primare, fie dupa un
+	 * criteriu de unicitate.
+	 * 
+	 * Criteriu de unicitate: title + langId + datestart
+	 * 
+	 * @param langId
+	 * @param studyId
+	 * @param title
+	 * @param originalTitleLanguage
+	 * @return
+	 */
+	public static Study checkStudyDescr(Integer langId, Integer studyId,
+			String abstract1, String grantDetails, String title, String notes,
+			String weighting, String researchInstrument, String scope,
+			String universe, String subtitle, String alternativeTitle,
+			boolean originalTitleLanguage, String timeCovered,
+			String geographicCoverage) {
+		// TODO
+		return null;
 	}
 
 	@Column(name = "abstract", columnDefinition = "text")
@@ -393,7 +462,8 @@ public class StudyDescr {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this,
+				ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate

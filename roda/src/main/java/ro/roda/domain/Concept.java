@@ -39,11 +39,11 @@ import flexjson.JSONSerializer;
 @Configurable
 @Entity
 @Table(schema = "public", name = "concept")
-
 public class Concept {
 
 	public static long countConcepts() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM Concept o", Long.class).getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM Concept o",
+				Long.class).getSingleResult();
 	}
 
 	@Async
@@ -66,7 +66,8 @@ public class Concept {
 	}
 
 	public static List<Concept> findAllConcepts() {
-		return entityManager().createQuery("SELECT o FROM Concept o", Concept.class).getResultList();
+		return entityManager().createQuery("SELECT o FROM Concept o",
+				Concept.class).getResultList();
 	}
 
 	public static Concept findConcept(Long id) {
@@ -75,18 +76,22 @@ public class Concept {
 		return entityManager().find(Concept.class, id);
 	}
 
-	public static List<Concept> findConceptEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM Concept o", Concept.class).setFirstResult(firstResult)
-				.setMaxResults(maxResults).getResultList();
+	public static List<Concept> findConceptEntries(int firstResult,
+			int maxResults) {
+		return entityManager()
+				.createQuery("SELECT o FROM Concept o", Concept.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults)
+				.getResultList();
 	}
 
 	public static Collection<Concept> fromJsonArrayToConcepts(String json) {
-		return new JSONDeserializer<List<Concept>>().use(null, ArrayList.class).use("values", Concept.class)
-				.deserialize(json);
+		return new JSONDeserializer<List<Concept>>().use(null, ArrayList.class)
+				.use("values", Concept.class).deserialize(json);
 	}
 
 	public static Concept fromJsonToConcept(String json) {
-		return new JSONDeserializer<Concept>().use(null, Concept.class).deserialize(json);
+		return new JSONDeserializer<Concept>().use(null, Concept.class)
+				.deserialize(json);
 	}
 
 	public static void indexConcept(Concept concept) {
@@ -106,7 +111,8 @@ public class Concept {
 			// Add summary field to allow searching documents for objects of
 			// this type
 			sid.addField("concept_solrsummary_t",
-					new StringBuilder().append(concept.getName()).append(" ").append(concept.getDescription()));
+					new StringBuilder().append(concept.getName()).append(" ")
+							.append(concept.getDescription()));
 			documents.add(sid);
 		}
 		try {
@@ -142,6 +148,42 @@ public class Concept {
 
 	public static String toJsonArray(Collection<Concept> collection) {
 		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	/**
+	 * Verifica existenta unui concept (preluat prin valori ale parametrilor de
+	 * intrare) in baza de date; in caz afirmativ, returneaza obiectul
+	 * corespunzator, altfel, metoda introduce conceptul in baza de date si apoi
+	 * returneaza obiectul corespunzator. Verificarea existentei in baza de date
+	 * se realizeaza fie dupa valoarea cheii primare, fie dupa un criteriu de
+	 * unicitate.
+	 * 
+	 * Criterii de unicitate:
+	 * 
+	 * conceptName
+	 * 
+	 * @param conceptId
+	 * @param conceptName
+	 * @param conceptDescription
+	 * @return
+	 */
+	public static Concept checkConcept(Integer conceptId, String conceptName,
+			String conceptDescription) {
+		// TODO
+		return null;
+	}
+
+	/**
+	 * Verifica existenta unui concept dupa combinatiile de atribute
+	 * obligatorii.
+	 * 
+	 * @param conceptId
+	 * @param conceptName
+	 * @return
+	 */
+	public static Concept checkConcept(Integer conceptId, String conceptName) {
+		// TODO
+		return null;
 	}
 
 	@Column(name = "description", columnDefinition = "text")
@@ -245,7 +287,8 @@ public class Concept {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this,
+				ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate

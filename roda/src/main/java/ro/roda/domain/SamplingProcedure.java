@@ -39,18 +39,20 @@ import flexjson.JSONSerializer;
 @Configurable
 @Entity
 @Table(schema = "public", name = "sampling_procedure")
-
 public class SamplingProcedure {
 
 	public static long countSamplingProcedures() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM SamplingProcedure o", Long.class).getSingleResult();
+		return entityManager().createQuery(
+				"SELECT COUNT(o) FROM SamplingProcedure o", Long.class)
+				.getSingleResult();
 	}
 
 	@Async
 	public static void deleteIndex(SamplingProcedure samplingProcedure) {
 		SolrServer solrServer = solrServer();
 		try {
-			solrServer.deleteById("samplingprocedure_" + samplingProcedure.getId());
+			solrServer.deleteById("samplingprocedure_"
+					+ samplingProcedure.getId());
 			solrServer.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -66,8 +68,8 @@ public class SamplingProcedure {
 	}
 
 	public static List<SamplingProcedure> findAllSamplingProcedures() {
-		return entityManager().createQuery("SELECT o FROM SamplingProcedure o", SamplingProcedure.class)
-				.getResultList();
+		return entityManager().createQuery("SELECT o FROM SamplingProcedure o",
+				SamplingProcedure.class).getResultList();
 	}
 
 	public static SamplingProcedure findSamplingProcedure(Integer id) {
@@ -76,28 +78,36 @@ public class SamplingProcedure {
 		return entityManager().find(SamplingProcedure.class, id);
 	}
 
-	public static List<SamplingProcedure> findSamplingProcedureEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM SamplingProcedure o", SamplingProcedure.class)
-				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
+	public static List<SamplingProcedure> findSamplingProcedureEntries(
+			int firstResult, int maxResults) {
+		return entityManager()
+				.createQuery("SELECT o FROM SamplingProcedure o",
+						SamplingProcedure.class).setFirstResult(firstResult)
+				.setMaxResults(maxResults).getResultList();
 	}
 
-	public static Collection<SamplingProcedure> fromJsonArrayToSamplingProcedures(String json) {
-		return new JSONDeserializer<List<SamplingProcedure>>().use(null, ArrayList.class)
+	public static Collection<SamplingProcedure> fromJsonArrayToSamplingProcedures(
+			String json) {
+		return new JSONDeserializer<List<SamplingProcedure>>()
+				.use(null, ArrayList.class)
 				.use("values", SamplingProcedure.class).deserialize(json);
 	}
 
 	public static SamplingProcedure fromJsonToSamplingProcedure(String json) {
-		return new JSONDeserializer<SamplingProcedure>().use(null, SamplingProcedure.class).deserialize(json);
+		return new JSONDeserializer<SamplingProcedure>().use(null,
+				SamplingProcedure.class).deserialize(json);
 	}
 
-	public static void indexSamplingProcedure(SamplingProcedure samplingProcedure) {
+	public static void indexSamplingProcedure(
+			SamplingProcedure samplingProcedure) {
 		List<SamplingProcedure> samplingprocedures = new ArrayList<SamplingProcedure>();
 		samplingprocedures.add(samplingProcedure);
 		indexSamplingProcedures(samplingprocedures);
 	}
 
 	@Async
-	public static void indexSamplingProcedures(Collection<SamplingProcedure> samplingprocedures) {
+	public static void indexSamplingProcedures(
+			Collection<SamplingProcedure> samplingprocedures) {
 		List<SolrInputDocument> documents = new ArrayList<SolrInputDocument>();
 		for (SamplingProcedure samplingProcedure : samplingprocedures) {
 			SolrInputDocument sid = new SolrInputDocument();
@@ -105,7 +115,8 @@ public class SamplingProcedure {
 			sid.addField("samplingProcedure.id_i", samplingProcedure.getId());
 			// Add summary field to allow searching documents for objects of
 			// this type
-			sid.addField("samplingprocedure_solrsummary_t", new StringBuilder().append(samplingProcedure.getId()));
+			sid.addField("samplingprocedure_solrsummary_t",
+					new StringBuilder().append(samplingProcedure.getId()));
 			documents.add(sid);
 		}
 		try {
@@ -141,6 +152,43 @@ public class SamplingProcedure {
 
 	public static String toJsonArray(Collection<SamplingProcedure> collection) {
 		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	/**
+	 * Verifica existenta unei proceduri de esantionare (preluate prin valori
+	 * ale parametrilor de intrare) in baza de date; in caz afirmativ,
+	 * returneaza obiectul corespunzator, altfel, metoda introduce procedura de
+	 * esantionare in baza de date si apoi returneaza obiectul corespunzator.
+	 * Verificarea existentei in baza de date se realizeaza fie dupa valoarea
+	 * cheii primare, fie dupa un criteriu de unicitate.
+	 * 
+	 * Criterii de unicitate:
+	 * 
+	 * samplingProcedureName
+	 * 
+	 * @param samplingProcedure
+	 * @param samplingProcedureName
+	 * @param samplingProcedureDescription
+	 * @return
+	 */
+	public static UnitAnalysis checkUnitAnalysis(Integer samplingProcedureId,
+			String samplingProcedureName, String samplingProcedureDescription) {
+		// TODO
+		return null;
+	}
+
+	/**
+	 * Verifica existenta unei unitati de analiza; in cazul inexistentei,
+	 * aceasta este inserata pe baza campurilor sale obligatorii.
+	 * 
+	 * @param unitAnalysisId
+	 * @param unitAnalysisName
+	 * @return
+	 */
+	public static UnitAnalysis checkUnitAnalysis(Integer unitAnalysisId,
+			String unitAnalysisName) {
+		// TODO
+		return null;
 	}
 
 	@Column(name = "description", columnDefinition = "text")
@@ -218,7 +266,8 @@ public class SamplingProcedure {
 		if (this.entityManager.contains(this)) {
 			this.entityManager.remove(this);
 		} else {
-			SamplingProcedure attached = SamplingProcedure.findSamplingProcedure(this.id);
+			SamplingProcedure attached = SamplingProcedure
+					.findSamplingProcedure(this.id);
 			this.entityManager.remove(attached);
 		}
 	}
@@ -244,7 +293,8 @@ public class SamplingProcedure {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this,
+				ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate

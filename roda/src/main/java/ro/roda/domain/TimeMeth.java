@@ -153,6 +153,43 @@ public class TimeMeth {
 	public static String toJsonArray(Collection<TimeMeth> collection) {
 		return new JSONSerializer().exclude("*.class").serialize(collection);
 	}
+	
+	/**
+	 * Verifica existenta unei metode temporale
+	 * (preluata prin valori ale parametrilor de intrare) in baza de date; in caz
+	 * afirmativ, returneaza obiectul corespunzator, altfel, functia introduce
+	 * metoda temporala in baza de date si apoi returneaza obiectul
+	 * corespunzator. Verificarea existentei in baza de date se realizeaza fie
+	 * dupa valoarea cheii primare, fie dupa un criteriu de unicitate.
+	 * 
+	 * Criterii de unicitate:
+	 * 
+	 * timeMethName
+	 * 
+	 * @param timeMethId
+	 * @param timeMethName
+	 * @param timeMethDescription
+	 * @return
+	 */
+	public static TimeMeth checkTimeMeth(Integer timeMethId,
+			String timeMethName, String timeMethDescription) {
+		// TODO
+		return null;
+	}
+
+	/**
+	 * Verifica existenta unei metode temporale dupa unul dintre criteriile de
+	 * unicitate.
+	 * 
+	 * @param timeMethId
+	 * @param timeMethName
+	 * @return
+	 */
+	public static TimeMeth checkTimeMeth(Integer assocId,
+			String assocName) {
+		// TODO
+		return null;
+	}
 
 	@Column(name = "description", columnDefinition = "text")
 	private String description;

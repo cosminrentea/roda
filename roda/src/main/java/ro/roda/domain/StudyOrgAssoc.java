@@ -37,11 +37,12 @@ import flexjson.JSONSerializer;
 @Configurable
 @Entity
 @Table(schema = "public", name = "study_org_assoc")
-
 public class StudyOrgAssoc {
 
 	public static long countStudyOrgAssocs() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM StudyOrgAssoc o", Long.class).getSingleResult();
+		return entityManager().createQuery(
+				"SELECT COUNT(o) FROM StudyOrgAssoc o", Long.class)
+				.getSingleResult();
 	}
 
 	@Async
@@ -64,7 +65,8 @@ public class StudyOrgAssoc {
 	}
 
 	public static List<StudyOrgAssoc> findAllStudyOrgAssocs() {
-		return entityManager().createQuery("SELECT o FROM StudyOrgAssoc o", StudyOrgAssoc.class).getResultList();
+		return entityManager().createQuery("SELECT o FROM StudyOrgAssoc o",
+				StudyOrgAssoc.class).getResultList();
 	}
 
 	public static StudyOrgAssoc findStudyOrgAssoc(Integer id) {
@@ -73,18 +75,24 @@ public class StudyOrgAssoc {
 		return entityManager().find(StudyOrgAssoc.class, id);
 	}
 
-	public static List<StudyOrgAssoc> findStudyOrgAssocEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM StudyOrgAssoc o", StudyOrgAssoc.class)
-				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
+	public static List<StudyOrgAssoc> findStudyOrgAssocEntries(int firstResult,
+			int maxResults) {
+		return entityManager()
+				.createQuery("SELECT o FROM StudyOrgAssoc o",
+						StudyOrgAssoc.class).setFirstResult(firstResult)
+				.setMaxResults(maxResults).getResultList();
 	}
 
-	public static Collection<StudyOrgAssoc> fromJsonArrayToStudyOrgAssocs(String json) {
-		return new JSONDeserializer<List<StudyOrgAssoc>>().use(null, ArrayList.class)
-				.use("values", StudyOrgAssoc.class).deserialize(json);
+	public static Collection<StudyOrgAssoc> fromJsonArrayToStudyOrgAssocs(
+			String json) {
+		return new JSONDeserializer<List<StudyOrgAssoc>>()
+				.use(null, ArrayList.class).use("values", StudyOrgAssoc.class)
+				.deserialize(json);
 	}
 
 	public static StudyOrgAssoc fromJsonToStudyOrgAssoc(String json) {
-		return new JSONDeserializer<StudyOrgAssoc>().use(null, StudyOrgAssoc.class).deserialize(json);
+		return new JSONDeserializer<StudyOrgAssoc>().use(null,
+				StudyOrgAssoc.class).deserialize(json);
 	}
 
 	public static void indexStudyOrgAssoc(StudyOrgAssoc studyOrgAssoc) {
@@ -94,7 +102,8 @@ public class StudyOrgAssoc {
 	}
 
 	@Async
-	public static void indexStudyOrgAssocs(Collection<StudyOrgAssoc> studyorgassocs) {
+	public static void indexStudyOrgAssocs(
+			Collection<StudyOrgAssoc> studyorgassocs) {
 		List<SolrInputDocument> documents = new ArrayList<SolrInputDocument>();
 		for (StudyOrgAssoc studyOrgAssoc : studyorgassocs) {
 			SolrInputDocument sid = new SolrInputDocument();
@@ -102,7 +111,8 @@ public class StudyOrgAssoc {
 			sid.addField("studyOrgAssoc.id_i", studyOrgAssoc.getId());
 			// Add summary field to allow searching documents for objects of
 			// this type
-			sid.addField("studyorgassoc_solrsummary_t", new StringBuilder().append(studyOrgAssoc.getId()));
+			sid.addField("studyorgassoc_solrsummary_t",
+					new StringBuilder().append(studyOrgAssoc.getId()));
 			documents.add(sid);
 		}
 		try {
@@ -138,6 +148,43 @@ public class StudyOrgAssoc {
 
 	public static String toJsonArray(Collection<StudyOrgAssoc> collection) {
 		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	/**
+	 * Verifica existenta unui tip de asociere intre organizatie si studiu
+	 * (preluat prin valori ale parametrilor de intrare) in baza de date; in caz
+	 * afirmativ, returneaza obiectul corespunzator, altfel, metoda introduce
+	 * tipul de asociere in baza de date si apoi returneaza obiectul
+	 * corespunzator. Verificarea existentei in baza de date se realizeaza fie
+	 * dupa valoarea cheii primare, fie dupa un criteriu de unicitate.
+	 * 
+	 * Criterii de unicitate:
+	 * 
+	 * assocName
+	 * 
+	 * @param assocId
+	 * @param assocName
+	 * @param assocDescription
+	 * @return
+	 */
+	public static StudyOrgAssoc checkStudyOrgAssoc(Integer assocId,
+			String assocName, String assocDescription) {
+		// TODO
+		return null;
+	}
+
+	/**
+	 * Verifica existenta unui tip de asociere dupa unul dintre criteriile de
+	 * unicitate.
+	 * 
+	 * @param assocId
+	 * @param assocName
+	 * @return
+	 */
+	public static StudyOrgAssoc checkStudyOrgAssoc(Integer assocId,
+			String assocName) {
+		// TODO
+		return null;
 	}
 
 	@Column(name = "assoc_description", columnDefinition = "text")
@@ -240,7 +287,8 @@ public class StudyOrgAssoc {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this,
+				ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate

@@ -40,8 +40,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.sun.jna.platform.win32.Sspi.TimeStamp;
-
 import flexjson.JSONDeserializer;
 import flexjson.JSONSerializer;
 
@@ -237,7 +235,7 @@ public class Study {
 	 * 
 	 * 
 	 */
-	public Study insertRootStudy(Date dateStart, Date dateEnd, Integer insertionStatus, Integer addedBy, TimeStamp added) {
+	public Study insertRootStudy(Date dateStart, Date dateEnd, Integer insertionStatus, Integer addedBy, Timestamp added) {
 		// TODO
 		return null;
 	}

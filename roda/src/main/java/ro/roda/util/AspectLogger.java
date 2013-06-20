@@ -1,6 +1,7 @@
 package ro.roda.util;
 
 import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.slf4j.Logger;
@@ -18,10 +19,9 @@ public class AspectLogger {
 	public void beforeMethod(JoinPoint joinPoint) {
 		if (logger.isTraceEnabled()) {
 			// constructing a string of the method signature, method and
-			// parameters
+			// (optional) parameters
 			StringBuilder traceSB = new StringBuilder();
-			traceSB.append("> ")
-					.append(joinPoint.getSignature().getDeclaringTypeName())
+			traceSB.append("> ").append(joinPoint.getSignature().getDeclaringTypeName())
 					.append(joinPoint.getSignature().getName());
 
 			// Object[] args = joinPoint.getArgs();
@@ -41,4 +41,17 @@ public class AspectLogger {
 			logger.trace(traceSB.toString());
 		}
 	}
+
+	@After("execution(* ro.roda..*.*(..))")
+	public void afterMethod(JoinPoint joinPoint) {
+		if (logger.isTraceEnabled()) {
+			// constructing a string of the method signature, method and
+			// parameters
+			StringBuilder traceSB = new StringBuilder();
+			traceSB.append("< ").append(joinPoint.getSignature().getDeclaringTypeName())
+					.append(joinPoint.getSignature().getName());
+			logger.trace(traceSB.toString());
+		}
+	}
+
 }

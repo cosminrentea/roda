@@ -105,10 +105,10 @@
 	<task:scheduled-tasks scheduler="rodaScheduler">
 		
 		<!-- every 30 sec. -->
-    	<task:scheduled ref="rodaScheduledTask" method="maintenance" cron="*/30 * * * * *"/>
+    	<task:scheduled ref="rodaScheduledTask" method="maintenance" cron="${roda.scheduler.cron.maintenance}"/>
 
 		<!-- every hour -->
-    	<task:scheduled ref="rodaScheduledTask" method="backup" cron="0 0 * * * *"/>
+    	<task:scheduled ref="rodaScheduledTask" method="backup" cron="${roda.scheduler.cron.backup}"/>
     	
 	</task:scheduled-tasks>
 
@@ -134,9 +134,9 @@
 	</bean>
 
 	<!-- Solr -->
-	<bean class="org.apache.solr.client.solrj.impl.CommonsHttpSolrServer"
+	<bean class="org.apache.solr.client.solrj.impl.HttpSolrServer"
 		id="solrServer">
-		<constructor-arg value="${roda.solr.serverUrl}" />
+		<constructor-arg value="${solr.serverUrl}" />
 	</bean>
 	
 	<!-- Cosmin: the component-scan must be after the "dataSource" bean declaration 

@@ -26,6 +26,6 @@ public class VarType_ {
 	public static volatile SingularAttribute<VarType, String> id;
 	public static volatile SingularAttribute<VarType, String> name;
 	public static volatile SingularAttribute<VarType, String> wgt;
-	public static volatile ListAttribute<VarType, String> files;
+	public static volatile SingularAttribute<VarType, String> files;
 	public static volatile SingularAttribute<VarType, String> intrvl;
 }

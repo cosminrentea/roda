@@ -9,6 +9,8 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.xml.XMLConstants;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -21,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.stereotype.Component;
 import org.xml.sax.SAXException;
 
@@ -41,6 +44,9 @@ public class ImporterDdi {
 
 	private static final String jaxbContextPath = "ro.roda.ddi";
 
+	@PersistenceContext
+	transient EntityManager entityManager;
+
 	@Autowired
 	CatalogServiceImpl catalogService;
 
@@ -50,38 +56,56 @@ public class ImporterDdi {
 	@Value("${roda.data.ddi.xsd}")
 	private String xsdDdi122;
 
+	@Value("${roda.data.ddi.persist}")
+	private String ddiPersist;
+
+	@Value("${roda.data.ddi.files}")
+	private String rodaDataDdiFiles;
+
+	private static final String errorMessage = "Could not import DDI data";
+
 	/**
 	 * Populates the database using data imported from a directory with DDI
 	 * files exported from Nesstar Publisher.
-	 * 
-	 * @param dirname
-	 *            the name of the directory containing DDI XML files (having
-	 *            .xml extensions)
 	 */
-	public void importDdiAll(String dirname) {
+	public void importDdiAll() {
 		try {
-			Resource ddiRes = new ClassPathResource(dirname);
-			File ddiDir = ddiRes.getFile();
-			File[] ddiFiles = ddiDir.listFiles();
+			log.trace("roda.data.ddi.files = " + rodaDataDdiFiles);
 
-			Resource xsdDdiRes = new ClassPathResource(xsdDdi122);
 			// validate using DDI 1.2.2 XML Schema
+			Resource xsdDdiRes = new ClassPathResource(xsdDdi122);
 			JAXBContext jc = JAXBContext.newInstance(jaxbContextPath);
 			Unmarshaller unmarshaller = jc.createUnmarshaller();
 			unmarshaller.setSchema(SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI).newSchema(
 					xsdDdiRes.getFile()));
 
-			for (File ddiFile : ddiFiles) {
-				log.debug("File = " + ddiFile.getName());
-				importCodebook((CodeBook) unmarshaller.unmarshal(ddiFile), true, true);
+			PathMatchingResourcePatternResolver pmr = new PathMatchingResourcePatternResolver();
+			Resource[] resources = pmr.getResources("classpath*:" + rodaDataDdiFiles);
+			if (resources.length == 0) {
+				log.debug("No DDI files found for importing");
 			}
 
+			for (Resource ddiResource : resources) {
+				File ddiFile = ddiResource.getFile();
+				log.trace("Importing DDI File: " + ddiFile.getName());
+				CodeBook cb = (CodeBook) unmarshaller.unmarshal(ddiFile);
+				importCodebook(cb, true, true);
+				if ("yes".equalsIgnoreCase(ddiPersist)) {
+					if (this.entityManager == null) {
+						this.entityManager = entityManager();
+					}
+					this.entityManager.persist(cb);
+				}
+			}
 		} catch (IOException e) {
 			log.error("IOException:", e);
+			throw new IllegalStateException(errorMessage);
 		} catch (JAXBException e) {
 			log.error("JAXBException:", e);
+			throw new IllegalStateException(errorMessage);
 		} catch (SAXException e) {
 			log.error("SAXException:", e);
+			throw new IllegalStateException(errorMessage);
 		}
 	}
 
@@ -90,7 +114,7 @@ public class ImporterDdi {
 		Study s = new Study();
 
 		String title = cb.getDocDscr().get(0).getCitation().getTitlStmt().getTitl().getContent();
-		log.debug("Title = " + title);
+		log.trace("Title = " + title);
 
 		if (nesstarExported && legacyDataRODA) {
 			Date dateStart = null, dateEnd = null;
@@ -112,10 +136,10 @@ public class ImporterDdi {
 			s.setDateStart(dateStart);
 			s.setDateEnd(dateEnd);
 
-			log.debug("yearStart = " + yearStart);
-			log.debug("yearEnd = " + yearEnd);
-			log.debug("dateStart = " + dateStart);
-			log.debug("dateEnd = " + dateEnd);
+			log.trace("yearStart = " + yearStart);
+			log.trace("yearEnd = " + yearEnd);
+			log.trace("dateStart = " + dateStart);
+			log.trace("dateEnd = " + dateEnd);
 		}
 		s.setAdded(new GregorianCalendar());
 
@@ -126,7 +150,7 @@ public class ImporterDdi {
 		s.setRawMetadata(false);
 		s.setInsertionStatus(0);
 
-		// user = admin
+		// TODO replace user = admin ?
 		Users u = Users.findUsers(1);
 		s.setAddedBy(u);
 		Set<Study> su = u.getStudies();
@@ -155,5 +179,13 @@ public class ImporterDdi {
 		sd.setTitle(title);
 
 		sd.persist();
+	}
+
+	public static final EntityManager entityManager() {
+		EntityManager em = new ImporterDdi().entityManager;
+		if (em == null)
+			throw new IllegalStateException(
+					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return em;
 	}
 }

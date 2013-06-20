@@ -118,12 +118,11 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "varType", propOrder = { "location", "labl", "qstn", "valrng",
-		"invalrng", "universe", "sumStat", "txt", "catgry", "verStmt",
-		"varFormat" })
+@XmlType(name = "varType", propOrder = { "location", "labl", "qstn", "valrng", "invalrng", "universe", "sumStat",
+		"txt", "catgry", "verStmt", "varFormat" })
 @Entity
 // TODO Cosmin Change table name
-@Table(schema = "ddi",name = "VariableDDI")
+@Table(schema = "ddi", name = "VariableDDI")
 public class VarType {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -230,12 +229,12 @@ public class VarType {
 	// @ElementCollection
 	// protected List<String> qstnAttributeCosmin;
 
-	@XmlAttribute
-	// TODO Cosmin commented IDREF annot.
+	// TODO Cosmin commented following annotations
 	// @XmlIDREF
-	@XmlSchemaType(name = "IDREFS")
-	@ElementCollection
-	protected List<String> files;
+	// @XmlSchemaType(name = "IDREFS")
+	// @ElementCollection
+	@XmlAttribute
+	protected String files;
 
 	// @XmlAttribute
 	// protected String vendor;
@@ -682,10 +681,7 @@ public class VarType {
 	 * 
 	 * 
 	 */
-	public List<String> getFiles() {
-		if (files == null) {
-			files = new ArrayList<String>();
-		}
+	public String getFiles() {
 		return this.files;
 	}
 

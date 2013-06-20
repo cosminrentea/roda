@@ -94,9 +94,9 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "catgryType", propOrder = { "catValu", "labl", "txt", "catStat", "catgry" })
+@XmlType(name = "catgryType", propOrder = { "catValu", "labl", "txt", "catStat" })
 @Entity
-@Table(schema = "ddi", name = "Category")
+@Table(schema = "ddi")
 public class CatgryType {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -137,8 +137,8 @@ public class CatgryType {
 	protected List<CatStatType> catStat;
 
 	// TODO Cosmin: a Category CONTAINS a list of other categories ?!
-	@OneToMany(cascade = { CascadeType.ALL })
-	protected List<CatgryType> catgry;
+	// @OneToMany(cascade = { CascadeType.ALL })
+	// protected List<CatgryType> catgry;
 
 	@XmlAttribute(name = "ID")
 	@XmlJavaTypeAdapter(CollapsedStringAdapter.class)
@@ -312,12 +312,12 @@ public class CatgryType {
 	 * 
 	 * 
 	 */
-	public List<CatgryType> getCatgry() {
-		if (catgry == null) {
-			catgry = new ArrayList<CatgryType>();
-		}
-		return this.catgry;
-	}
+	// public List<CatgryType> getCatgry() {
+	// if (catgry == null) {
+	// catgry = new ArrayList<CatgryType>();
+	// }
+	// return this.catgry;
+	// }
 
 	/**
 	 * Gets the value of the id property.

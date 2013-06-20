@@ -34,11 +34,28 @@ public class ImporterCsv {
 	@Value("${database.url}")
 	private String dbUrl;
 
+	@Value("${roda.data.csv.dir}")
+	private String rodaDataCsvDir;
+
+	@Value("${roda.data.csv-extra.dir}")
+	private String rodaDataCsvExtraDir;
+
+	private static final String errorMessage = "Could not import CSV data";
+
+	public void importCsvAll() {
+		importCsvDir(rodaDataCsvDir);
+	}
+
+	public void importCsvAllExtra() {
+		importCsvDir(rodaDataCsvExtraDir);
+	}
+
 	/**
 	 * Populates the database using data imported from a directory with CSV
 	 * files (which are ordered by name).
 	 */
-	public void importCsvAll(String dirname) {
+	private void importCsvDir(String dirname) {
+		log.trace("Importing CSV from directory: " + dirname);
 		Connection con = null;
 		try {
 			Properties conProps = new Properties();
@@ -77,15 +94,18 @@ public class ImporterCsv {
 				// br.close();
 			}
 		} catch (SQLException e) {
-			log.fatal("SQLException:", e);
+			log.error("SQLException:", e);
+			throw new IllegalStateException(errorMessage);
 		} catch (IOException e) {
-			log.fatal("IOException:", e);
+			log.error("IOException:", e);
+			throw new IllegalStateException(errorMessage);
 		} finally {
 			if (con != null) {
 				try {
 					con.close();
 				} catch (SQLException e) {
 					log.error("SQLException:", e);
+					throw new IllegalStateException(errorMessage);
 				}
 			}
 		}

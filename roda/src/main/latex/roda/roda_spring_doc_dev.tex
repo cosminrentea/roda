@@ -381,8 +381,8 @@ Din shell, in folder-ul radacina al proiectului 'roda', cu comanda:
 \end{lstlisting}
 Selenium Server porneste pe portul local 4444.
 
-\subsection{Rularea automata a testelor de integrare}
-Din linia de comanda, in folder-ul radacina al proiectului 'roda', cu comanda:
+\subsection{Rularea automata a tuturor testelor de integrare}
+Din shell, in folder-ul radacina al proiectului 'roda', cu comanda:
 \begin{lstlisting}
 	mvn verify
 \end{lstlisting}
@@ -401,9 +401,20 @@ Sunt rulate atat testele scrise in Java
 (folosind Selenium Server si Selenium WebDriver; browser: Mozilla Firefox), 
 cat si cele scrise in Perl (folosind Selenium Server).
 
+\subsection{Rularea testelor de integrare scrise in Perl}
+Trebuie pornite inainte serviciile necesare - din shell, cu comanda:
+\begin{lstlisting}[breaklines=true]
+	mvn tomcat:run selenium:xvfb selenium:start-server
+\end{lstlisting}
+Apoi, se ruleaza testele in Perl, din shell, in 'src/test/perl' :
+\begin{lstlisting}[breaklines=true]
+	/usr/bin/perl selenium.pl
+\end{lstlisting}
+
+
 \begin{comment}
 \subsection{Rularea automata a testelor web (Selenium)}
-Din linia de comanda, in folder-ul radacina al proiectului 'roda', cu comanda:
+Din shell, in folder-ul radacina al proiectului 'roda', cu comanda:
 \begin{lstlisting}
 	mvn tomcat:run selenium:selenese
 \end{lstlisting}
@@ -572,6 +583,13 @@ Starting/stopping the service
 
 Inheriting your existing Hudson/Jenkins installation
     If you'd like your new installation to take over your existing Jenkins/Hudson data, copy your old data directory into the new JENKINS_HOME directory.
+\end{comment}
+
+\begin{comment}
+
+x11vnc, de la http://www.karlrunge.com/x11vnc/ :  x11vnc-0.9.13.tar.gz
+pasii de la instructiunile de instalare +
+    ./configure --without-x --with-jpeg=/opt/local
 \end{comment}
 
 % TODO ??? Chrome, Firefox, Firebug, Postman

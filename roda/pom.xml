@@ -144,6 +144,18 @@
 			<version>3.1</version>
 		</dependency>
 		
+		<!-- Cosmin: org.apache.httpcomponents are required by SOLRJ -->
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.2.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpmime</artifactId>
+			<version>4.2.1</version>
+		</dependency>
+		
 		<!-- ROO dependencies -->
 		<!-- 
 		<dependency>
@@ -153,7 +165,7 @@
 			<scope>provided</scope>
 		</dependency>
 		-->
-		 
+		
 		<!-- Spring dependencies -->
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -630,9 +642,7 @@
 	                		<options>
 	                			<option>-screen</option>
 	                			<option>0</option>
-	                			<option>1920x1080x8</option>
-	                			<option>-extension</option>
-	                			<option>GLX</option>
+	                			<option>1280x1024x16</option>
 	        		        	<option>-ac</option>
 	                		</options>
             			</configuration>

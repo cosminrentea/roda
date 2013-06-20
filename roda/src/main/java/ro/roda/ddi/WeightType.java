@@ -62,7 +62,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "weightType")
 @Entity
-@Table(schema = "ddi",name = "Weight")
+@Table(schema = "ddi", name = "Weight")
 public class WeightType {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -99,7 +99,7 @@ public class WeightType {
 	@Column(columnDefinition = "text")
 	@XmlJavaTypeAdapter(CollapsedStringAdapter.class)
 	@XmlValue
-	protected String content;
+	public String content;
 	@XmlAttribute(name = "ID")
 	@XmlJavaTypeAdapter(CollapsedStringAdapter.class)
 	@XmlID

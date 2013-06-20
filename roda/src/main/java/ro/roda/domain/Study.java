@@ -34,6 +34,7 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrInputDocument;
+import org.hibernate.envers.Audited;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -145,7 +146,11 @@ public class Study {
 	}
 
 	public static String toJsonArray(Collection<Study> collection) {
-		return new JSONSerializer().exclude("*.class").serialize(collection);
+		return new JSONSerializer()
+				.exclude("*.class")
+				.include("studyDescrs", "catalogStudies", "collectionModelTypes", "dataSourceTypes", "files1",
+						"instances", "samplingProcedures", "sources", "studyKeywords", "studyOrgs", "studypeople",
+						"topics").serialize(collection);
 	}
 
 	/**

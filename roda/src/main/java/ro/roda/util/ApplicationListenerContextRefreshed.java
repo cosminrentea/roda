@@ -24,6 +24,9 @@ public class ApplicationListenerContextRefreshed implements ApplicationListener<
 	DatabaseUtils du;
 
 	@Autowired
+	XmlUtils xu;
+
+	@Autowired
 	ImporterCsv icsv;
 
 	@Autowired
@@ -52,21 +55,21 @@ public class ApplicationListenerContextRefreshed implements ApplicationListener<
 			// change properties to another string
 			// (not "yes")
 			if ("yes".equalsIgnoreCase(rodaDataCsv)) {
-				icsv.importCsvAll();
+				icsv.importCsvFiles();
 				if ("yes".equalsIgnoreCase(rodaDataCsvExtra)) {
-					icsv.importCsvAllExtra();
+					icsv.importCsvFilesExtra();
 				}
 			}
 
 			if ("yes".equalsIgnoreCase(rodaDataDdi)) {
-				iddi.importDdiAll();
+				iddi.importDdiFiles();
 			}
 
 			// rb.rnorm(4);
 
 			// du.setSequence("hibernate_sequence", 1000, 1);
 			// du.changeDataDemo();
-			// du.saveXstream();
+			// xu.saveXstream();
 
 		}
 	}

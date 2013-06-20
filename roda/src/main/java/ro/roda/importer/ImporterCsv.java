@@ -42,11 +42,11 @@ public class ImporterCsv {
 
 	private static final String errorMessage = "Could not import CSV data";
 
-	public void importCsvAll() {
+	public void importCsvFiles() {
 		importCsvDir(rodaDataCsvDir);
 	}
 
-	public void importCsvAllExtra() {
+	public void importCsvFilesExtra() {
 		importCsvDir(rodaDataCsvExtraDir);
 	}
 

@@ -65,7 +65,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "resInstruType")
 @Entity
-@Table(schema = "ddi",name = "TypeOfResearchInstrument")
+@Table(schema = "ddi", name = "TypeOfResearchInstrument")
 public class ResInstruType {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -106,7 +106,7 @@ public class ResInstruType {
 	@Column(columnDefinition = "text")
 	@XmlJavaTypeAdapter(CollapsedStringAdapter.class)
 	@XmlValue
-	protected String content;
+	public String content;
 
 	@XmlAttribute(name = "ID")
 	@XmlJavaTypeAdapter(CollapsedStringAdapter.class)

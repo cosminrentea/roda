@@ -28,6 +28,13 @@ import org.springframework.stereotype.Component;
 import org.xml.sax.SAXException;
 
 import ro.roda.ddi.CodeBook;
+import ro.roda.ddi.DataCollType;
+import ro.roda.ddi.MethodType;
+import ro.roda.ddi.StdyDscrType;
+import ro.roda.ddi.StdyInfoType;
+import ro.roda.ddi.SumDscrType;
+import ro.roda.domain.CatalogStudy;
+import ro.roda.domain.CatalogStudyPK;
 import ro.roda.domain.Study;
 import ro.roda.domain.StudyDescr;
 import ro.roda.domain.StudyDescrPK;
@@ -64,11 +71,19 @@ public class ImporterDdi {
 
 	private static final String errorMessage = "Could not import DDI data";
 
+	public static final EntityManager entityManager() {
+		EntityManager em = new ImporterDdi().entityManager;
+		if (em == null)
+			throw new IllegalStateException(
+					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+		return em;
+	}
+
 	/**
 	 * Populates the database using data imported from a directory with DDI
 	 * files exported from Nesstar Publisher.
 	 */
-	public void importDdiAll() {
+	public void importDdiFiles() {
 		try {
 			log.trace("roda.data.ddi.files = " + rodaDataDdiFiles);
 
@@ -111,9 +126,22 @@ public class ImporterDdi {
 
 	public void importCodebook(CodeBook cb, boolean nesstarExported, boolean legacyDataRODA) {
 
+		StdyDscrType stdyDscrType = cb.getStdyDscr().get(0);
+		StdyInfoType stdyInfoType = null;
+		SumDscrType sumDscrType = null;
+		if (stdyDscrType.getStdyInfo().size() > 0) {
+			stdyInfoType = stdyDscrType.getStdyInfo().get(0);
+			sumDscrType = stdyInfoType.getSumDscr().get(0);
+		}
+
+		DataCollType dataCollType = null;
+		if (stdyDscrType.getMethod().size() > 0) {
+			dataCollType = stdyDscrType.getMethod().get(0).getDataColl().get(0);
+		}
+
 		Study s = new Study();
 
-		String title = cb.getDocDscr().get(0).getCitation().getTitlStmt().getTitl().getContent();
+		String title = cb.getStdyDscr().get(0).getCitation().get(0).getTitlStmt().getTitl().getContent();
 		log.trace("Title = " + title);
 
 		if (nesstarExported && legacyDataRODA) {
@@ -157,12 +185,16 @@ public class ImporterDdi {
 		su.add(s);
 		u.setStudies(su);
 
+		// TODO don't use directly ID = 1
+		// TODO replace TimeMeth with a field in StudyDescr ?
 		TimeMeth tm = TimeMeth.findTimeMeth(1);
 		s.setTimeMethId(tm);
 		Set<Study> tms = tm.getStudies();
 		tms.add(s);
 		tm.setStudies(tms);
 
+		// TODO don't use directly ID = 1
+		// TODO remove class UnitAnalysis ? (it is now a field in StudyDescr)
 		UnitAnalysis ua = UnitAnalysis.findUnitAnalysis(1);
 		s.setUnitAnalysisId(ua);
 		Set<Study> uas = ua.getStudies();
@@ -172,20 +204,44 @@ public class ImporterDdi {
 		s.persist();
 
 		StudyDescr sd = new StudyDescr();
-		// TODO get Romanian language, don't use ID = 1
+		// TODO get Romanian language, don't use directly ID = 1
 		StudyDescrPK sdId = new StudyDescrPK(new Integer(1), s.getId());
-		sd.setOriginalTitleLanguage(true);
 		sd.setId(sdId);
 		sd.setTitle(title);
+		sd.setOriginalTitleLanguage(true);
+
+		if (stdyInfoType != null && stdyInfoType.getAbstract().size() > 0) {
+			sd.setAbstract1(stdyInfoType.getAbstract().get(0).content);
+		}
+		if (sumDscrType != null && sumDscrType.getGeogCover().size() > 0) {
+			sd.setGeographicCoverage(sumDscrType.getGeogCover().get(0).content);
+		}
+		if (sumDscrType != null && sumDscrType.getGeogUnit().size() > 0) {
+			sd.setGeographicUnit(sumDscrType.getGeogUnit().get(0).content);
+		}
+		if (sumDscrType != null && sumDscrType.getUniverse().size() > 0) {
+			sd.setUniverse(sumDscrType.getUniverse().get(0).content);
+		}
+		if (sumDscrType != null && sumDscrType.getAnlyUnit().size() > 0) {
+			sd.setAnalysisUnit(sumDscrType.getAnlyUnit().get(0).content);
+		}
+		if (dataCollType != null && dataCollType.getWeight().size() > 0) {
+			sd.setWeighting(dataCollType.getWeight().get(0).content);
+		}
+		if (dataCollType != null && dataCollType.getResInstru().size() > 0) {
+			sd.setResearchInstrument(dataCollType.getResInstru().get(0).content);
+		}
 
 		sd.persist();
-	}
 
-	public static final EntityManager entityManager() {
-		EntityManager em = new ImporterDdi().entityManager;
-		if (em == null)
-			throw new IllegalStateException(
-					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-		return em;
+		// Add Study to an existing Catalog
+
+		// TODO don't use directly ID='1' for Catalog
+		CatalogStudy cs = new CatalogStudy();
+		CatalogStudyPK csid = new CatalogStudyPK(1, s.getId());
+		cs.setId(csid);
+		cs.setAdded(new GregorianCalendar());
+		cs.persist();
+
 	}
 }

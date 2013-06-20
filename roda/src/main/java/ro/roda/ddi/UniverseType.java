@@ -73,7 +73,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "universeType")
 @Entity
-@Table(schema = "ddi",name = "Universe")
+@Table(schema = "ddi", name = "Universe")
 public class UniverseType {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -127,7 +127,7 @@ public class UniverseType {
 	@Column(columnDefinition = "text")
 	@XmlJavaTypeAdapter(CollapsedStringAdapter.class)
 	@XmlValue
-	protected String content;
+	public String content;
 
 	@XmlAttribute(name = "ID")
 	@XmlJavaTypeAdapter(CollapsedStringAdapter.class)

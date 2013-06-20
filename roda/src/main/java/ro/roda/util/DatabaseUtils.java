@@ -1,8 +1,5 @@
 package ro.roda.util;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -13,15 +10,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
 
-import javax.xml.transform.Result;
-import javax.xml.transform.stream.StreamResult;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.oxm.XmlMappingException;
-import org.springframework.oxm.xstream.XStreamMarshaller;
 import org.springframework.stereotype.Component;
 
 import ro.roda.domain.Catalog;
@@ -35,8 +27,6 @@ import ro.roda.domain.Users;
 import ro.roda.service.CatalogServiceImpl;
 import ro.roda.service.StudyServiceImpl;
 
-import com.thoughtworks.xstream.XStream;
-
 @Component
 public class DatabaseUtils {
 
@@ -47,9 +37,6 @@ public class DatabaseUtils {
 
 	@Autowired
 	StudyServiceImpl studyService;
-
-	@Autowired
-	XStreamMarshaller xstreamMarshaller;
 
 	@Value("${database.username}")
 	private String dbUsername;
@@ -157,19 +144,15 @@ public class DatabaseUtils {
 				stmt = con.createStatement();
 
 				// set the current/next value
-				ResultSet rs = stmt.executeQuery("SELECT setval('" + sequence
-						+ "'," + value + ")");
+				ResultSet rs = stmt.executeQuery("SELECT setval('" + sequence + "'," + value + ")");
 				while (rs.next()) {
 					int newValue = rs.getInt(1);
-					log.trace("sequence new value: " + sequence + " = "
-							+ newValue);
+					log.trace("sequence new value: " + sequence + " = " + newValue);
 				}
 
 				// set the new increment
-				stmt.executeUpdate("ALTER SEQUENCE " + sequence
-						+ " INCREMENT BY " + increment);
-				log.trace("sequence new increment: " + sequence + " += "
-						+ increment);
+				stmt.executeUpdate("ALTER SEQUENCE " + sequence + " INCREMENT BY " + increment);
+				log.trace("sequence new increment: " + sequence + " += " + increment);
 			} finally {
 				if (stmt != null) {
 					stmt.close();
@@ -212,8 +195,7 @@ public class DatabaseUtils {
 		List<Study> ls = Study.findAllStudys();
 		for (Study study : ls) {
 			CatalogStudy cs = new CatalogStudy();
-			CatalogStudyPK csid = new CatalogStudyPK(newCatalog.getId(),
-					study.getId());
+			CatalogStudyPK csid = new CatalogStudyPK(newCatalog.getId(), study.getId());
 			cs.setId(csid);
 			cs.setAdded(new GregorianCalendar());
 			cs.persist();
@@ -251,25 +233,6 @@ public class DatabaseUtils {
 
 		if (resultPerson == null) {
 			p3.persist();
-		}
-	}
-
-	public void saveXstream() {
-		for (Catalog c : catalogService.findAllCatalogs()) {
-			File file = new File(c.getId() + ".xml");
-			log.trace("Catalog XML Filename: " + file.getAbsolutePath());
-			Result result;
-			try {
-				result = new StreamResult(new FileWriter(file));
-				xstreamMarshaller.setMode(XStream.XPATH_ABSOLUTE_REFERENCES);
-				xstreamMarshaller.marshal(c, result);
-			} catch (XmlMappingException e) {
-				// TODO Auto-generated catch block
-				log.error("XmlMappingException:", e);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				log.error("IOException:", e);
-			}
 		}
 	}
 

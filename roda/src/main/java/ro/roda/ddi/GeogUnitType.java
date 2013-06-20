@@ -64,7 +64,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "geogUnitType")
 @Entity
-@Table(schema = "ddi",name = "GeographicUnit")
+@Table(schema = "ddi", name = "GeographicUnit")
 public class GeogUnitType {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -105,7 +105,7 @@ public class GeogUnitType {
 	@Column(columnDefinition = "text")
 	@XmlJavaTypeAdapter(CollapsedStringAdapter.class)
 	@XmlValue
-	protected String content;
+	public String content;
 	@XmlAttribute(name = "ID")
 	@XmlJavaTypeAdapter(CollapsedStringAdapter.class)
 	@XmlID

@@ -63,7 +63,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "abstractType")
 @Entity
-@Table(schema = "ddi",name = "Abstract")
+@Table(schema = "ddi", name = "Abstract")
 public class AbstractType {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -99,7 +99,7 @@ public class AbstractType {
 	@Column(columnDefinition = "text")
 	@XmlJavaTypeAdapter(CollapsedStringAdapter.class)
 	@XmlValue
-	protected String content;
+	public String content;
 
 	@XmlAttribute(name = "ID")
 	@XmlJavaTypeAdapter(CollapsedStringAdapter.class)

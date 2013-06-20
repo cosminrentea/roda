@@ -33,13 +33,13 @@ import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.transaction.annotation.Transactional;
 
+import flexjson.JSON;
 import flexjson.JSONDeserializer;
 import flexjson.JSONSerializer;
 
 @Entity
 @Table(schema = "public", name = "users")
 @Configurable
-
 public class Users implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -204,6 +204,7 @@ public class Users implements Serializable {
 
 	@Column(name = "password", columnDefinition = "varchar", length = 64)
 	@NotNull
+	@JSON(include = false)
 	private String password;
 
 	@OneToMany(mappedBy = "userId")

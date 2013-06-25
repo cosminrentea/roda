@@ -1,14 +1,14 @@
 #!/bin/bash
 set -x
 
-source database.properties
+source ./database.properties
 
 # create temporary file for an SQL script
 TEMPSCRIPT=`mktemp roda-drop.XXXXXX`
 echo "${TEMPSCRIPT}"
 
 # get a list the "DROP" commands - for all the tables in schema "public"
-psql -a -w -t -o ${TEMPSCRIPT} -h ${RODA_HOST}  -c "SELECT 'DROP TABLE IF EXISTS ' || schemaname || '.' || tablename || ' cascade;' FROM pg_tables WHERE schemaname = 'public' OR schemaname='audit';" ${RODA_DB} ${RODA_USER}
+psql -a -w -t -o ${TEMPSCRIPT} -h ${RODA_HOST}  -c "SELECT 'DROP TABLE IF EXISTS ' || schemaname || '.' || tablename || ' cascade;' FROM pg_tables WHERE schemaname = 'public' OR schemaname='audit' OR schemaname='ddi';" ${RODA_DB} ${RODA_USER}
 
 # execute all the DROP TABLE commands
 psql -a -w -f "${TEMPSCRIPT}" -h ${RODA_HOST} ${RODA_DB} ${RODA_USER}

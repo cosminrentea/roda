@@ -1,7 +1,7 @@
 #!/bin/bash
 set -x
 
-source database.properties
+source ./database.properties
 
 # set filename; if no parameter is given use the default
 if [ -z $1 ]

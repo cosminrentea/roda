@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source database.properties
+source ./database.properties
 
 # create temporary file for an SQL script
 TEMPSCRIPT=`mktemp roda-truncate.XXXXXX`

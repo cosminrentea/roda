@@ -1,7 +1,7 @@
 #!/bin/bash
 set -x
 
-source database.properties
+source ./database.properties
 
 # drop DATABASE and ROLE
 psql -a -w -t -c "DROP DATABASE ${RODA_DB};" -h ${RODA_HOST}

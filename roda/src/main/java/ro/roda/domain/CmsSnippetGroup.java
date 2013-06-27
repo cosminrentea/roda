@@ -39,11 +39,12 @@ import flexjson.JSONSerializer;
 @Entity
 @Table(schema = "public", name = "cms_snippet_group")
 @Configurable
-
 public class CmsSnippetGroup {
 
 	public static long countCmsSnippetGroups() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM CmsSnippetGroup o", Long.class).getSingleResult();
+		return entityManager().createQuery(
+				"SELECT COUNT(o) FROM CmsSnippetGroup o", Long.class)
+				.getSingleResult();
 	}
 
 	@Async
@@ -66,7 +67,8 @@ public class CmsSnippetGroup {
 	}
 
 	public static List<CmsSnippetGroup> findAllCmsSnippetGroups() {
-		return entityManager().createQuery("SELECT o FROM CmsSnippetGroup o", CmsSnippetGroup.class).getResultList();
+		return entityManager().createQuery("SELECT o FROM CmsSnippetGroup o",
+				CmsSnippetGroup.class).getResultList();
 	}
 
 	public static CmsSnippetGroup findCmsSnippetGroup(Integer id) {
@@ -75,18 +77,24 @@ public class CmsSnippetGroup {
 		return entityManager().find(CmsSnippetGroup.class, id);
 	}
 
-	public static List<CmsSnippetGroup> findCmsSnippetGroupEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM CmsSnippetGroup o", CmsSnippetGroup.class)
-				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
+	public static List<CmsSnippetGroup> findCmsSnippetGroupEntries(
+			int firstResult, int maxResults) {
+		return entityManager()
+				.createQuery("SELECT o FROM CmsSnippetGroup o",
+						CmsSnippetGroup.class).setFirstResult(firstResult)
+				.setMaxResults(maxResults).getResultList();
 	}
 
-	public static Collection<CmsSnippetGroup> fromJsonArrayToCmsSnippetGroups(String json) {
-		return new JSONDeserializer<List<CmsSnippetGroup>>().use(null, ArrayList.class)
+	public static Collection<CmsSnippetGroup> fromJsonArrayToCmsSnippetGroups(
+			String json) {
+		return new JSONDeserializer<List<CmsSnippetGroup>>()
+				.use(null, ArrayList.class)
 				.use("values", CmsSnippetGroup.class).deserialize(json);
 	}
 
 	public static CmsSnippetGroup fromJsonToCmsSnippetGroup(String json) {
-		return new JSONDeserializer<CmsSnippetGroup>().use(null, CmsSnippetGroup.class).deserialize(json);
+		return new JSONDeserializer<CmsSnippetGroup>().use(null,
+				CmsSnippetGroup.class).deserialize(json);
 	}
 
 	public static void indexCmsSnippetGroup(CmsSnippetGroup cmsSnippetGroup) {
@@ -96,20 +104,27 @@ public class CmsSnippetGroup {
 	}
 
 	@Async
-	public static void indexCmsSnippetGroups(Collection<CmsSnippetGroup> cmssnippetgroups) {
+	public static void indexCmsSnippetGroups(
+			Collection<CmsSnippetGroup> cmssnippetgroups) {
 		List<SolrInputDocument> documents = new ArrayList<SolrInputDocument>();
 		for (CmsSnippetGroup cmsSnippetGroup : cmssnippetgroups) {
 			SolrInputDocument sid = new SolrInputDocument();
 			sid.addField("id", "cmssnippetgroup_" + cmsSnippetGroup.getId());
-			sid.addField("cmsSnippetGroup.parentid_t", cmsSnippetGroup.getParentId());
+			sid.addField("cmsSnippetGroup.parentid_t",
+					cmsSnippetGroup.getParentId());
 			sid.addField("cmsSnippetGroup.name_s", cmsSnippetGroup.getName());
-			sid.addField("cmsSnippetGroup.description_s", cmsSnippetGroup.getDescription());
+			sid.addField("cmsSnippetGroup.description_s",
+					cmsSnippetGroup.getDescription());
 			sid.addField("cmsSnippetGroup.id_i", cmsSnippetGroup.getId());
 			// Add summary field to allow searching documents for objects of
 			// this type
-			sid.addField("cmssnippetgroup_solrsummary_t", new StringBuilder().append(cmsSnippetGroup.getParentId())
-					.append(" ").append(cmsSnippetGroup.getName()).append(" ").append(cmsSnippetGroup.getDescription())
-					.append(" ").append(cmsSnippetGroup.getId()));
+			sid.addField(
+					"cmssnippetgroup_solrsummary_t",
+					new StringBuilder().append(cmsSnippetGroup.getParentId())
+							.append(" ").append(cmsSnippetGroup.getName())
+							.append(" ")
+							.append(cmsSnippetGroup.getDescription())
+							.append(" ").append(cmsSnippetGroup.getId()));
 			documents.add(sid);
 		}
 		try {
@@ -145,6 +160,70 @@ public class CmsSnippetGroup {
 
 	public static String toJsonArray(Collection<CmsSnippetGroup> collection) {
 		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	/**
+	 * Verifica existenta unui grup (preluat prin valori ale parametrilor de
+	 * intrare) in baza de date; in caz afirmativ, returneaza obiectul
+	 * corespunzator, altfel, metoda introduce grupul in baza de date si apoi
+	 * returneaza obiectul corespunzator. Verificarea existentei in baza de date
+	 * se realizeaza fie dupa valoarea cheii primare, fie dupa un criteriu de
+	 * unicitate.
+	 * 
+	 * <p>
+	 * Criterii de unicitate:
+	 * <p>
+	 * <ul>
+	 * <li>cmsSnippetGroupId
+	 * <li>cmsSnippetGroupName + parentId
+	 * <ul>
+	 * <p>
+	 * 
+	 * 
+	 * @param cmsSnipetGroupId
+	 *            - cheia primara a tipului din tabelul de tipuri de pagini
+	 * @param cmsSnippetGroupName
+	 *            - denumirea tipului de pagina
+	 * @param description
+	 *            - descrierea tipului de pagina
+	 * @param parentId
+	 *            - parintele grupului de snippet-uri
+	 * @return
+	 */
+	public static CmsSnippetGroup checkSnippetGroup(
+			Integer cmsSnippetGroupId, String cmsSnippetGroupName,
+			String description, Integer parentId) {
+		// TODO
+		return null;
+	}
+
+	/**
+	 * Verifica existenta unui grup (preluat prin valori ale parametrilor de
+	 * intrare) in baza de date; in caz afirmativ, returneaza obiectul
+	 * corespunzator, altfel, metoda introduce grupul in baza de date si apoi
+	 * returneaza obiectul corespunzator. Verificarea existentei in baza de date
+	 * se realizeaza fie dupa valoarea cheii primare, fie dupa un criteriu de
+	 * unicitate.
+	 * 
+	 * <p>
+	 * Criterii de unicitate:
+	 * <p>
+	 * <ul>
+	 * <li>cmsSnippetGroupId
+	 * <ul>
+	 * <p>
+	 * 
+	 * 
+	 * @param cmsSnipetGroupId
+	 *            - cheia primara a tipului din tabelul de tipuri de pagini
+	 * @param cmsSnippetGroupName
+	 *            - denumirea tipului de pagina
+	 * @return
+	 */
+	public static CmsSnippetGroup checkSnippetGroup(
+			Integer cmsSnippetGroupId, String cmsSnippetGroupName) {
+		// TODO
+		return null;
 	}
 
 	@OneToMany(mappedBy = "parentId")
@@ -236,7 +315,8 @@ public class CmsSnippetGroup {
 		if (this.entityManager.contains(this)) {
 			this.entityManager.remove(this);
 		} else {
-			CmsSnippetGroup attached = CmsSnippetGroup.findCmsSnippetGroup(this.id);
+			CmsSnippetGroup attached = CmsSnippetGroup
+					.findCmsSnippetGroup(this.id);
 			this.entityManager.remove(attached);
 		}
 	}
@@ -270,7 +350,8 @@ public class CmsSnippetGroup {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this,
+				ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate

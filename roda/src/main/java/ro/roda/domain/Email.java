@@ -37,11 +37,11 @@ import flexjson.JSONSerializer;
 @Configurable
 @Entity
 @Table(schema = "public", name = "email")
-
 public class Email {
 
 	public static long countEmails() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM Email o", Long.class).getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM Email o",
+				Long.class).getSingleResult();
 	}
 
 	@Async
@@ -64,7 +64,9 @@ public class Email {
 	}
 
 	public static List<Email> findAllEmails() {
-		return entityManager().createQuery("SELECT o FROM Email o", Email.class).getResultList();
+		return entityManager()
+				.createQuery("SELECT o FROM Email o", Email.class)
+				.getResultList();
 	}
 
 	public static Email findEmail(Integer id) {
@@ -74,17 +76,20 @@ public class Email {
 	}
 
 	public static List<Email> findEmailEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM Email o", Email.class).setFirstResult(firstResult)
-				.setMaxResults(maxResults).getResultList();
+		return entityManager()
+				.createQuery("SELECT o FROM Email o", Email.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults)
+				.getResultList();
 	}
 
 	public static Collection<Email> fromJsonArrayToEmails(String json) {
-		return new JSONDeserializer<List<Email>>().use(null, ArrayList.class).use("values", Email.class)
-				.deserialize(json);
+		return new JSONDeserializer<List<Email>>().use(null, ArrayList.class)
+				.use("values", Email.class).deserialize(json);
 	}
 
 	public static Email fromJsonToEmail(String json) {
-		return new JSONDeserializer<Email>().use(null, Email.class).deserialize(json);
+		return new JSONDeserializer<Email>().use(null, Email.class)
+				.deserialize(json);
 	}
 
 	public static void indexEmail(Email email) {
@@ -104,7 +109,8 @@ public class Email {
 			// Add summary field to allow searching documents for objects of
 			// this type
 			sid.addField("email_solrsummary_t",
-					new StringBuilder().append(email.getEmail()).append(" ").append(email.getId()));
+					new StringBuilder().append(email.getEmail()).append(" ")
+							.append(email.getId()));
 			documents.add(sid);
 		}
 		try {
@@ -140,6 +146,32 @@ public class Email {
 
 	public static String toJsonArray(Collection<Email> collection) {
 		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	/**
+	 * Verifica existenta unui email in baza de date; daca exista, returneaza
+	 * obiectul respectiv, altfel, il introduce in baza de date si returneaza
+	 * obiectul corespunzator.
+	 * 
+	 * <p>
+	 * Criterii de unicitate:
+	 * <p>
+	 * <ul>
+	 * <li>emailId
+	 * <li>email
+	 * <ul>
+	 * <p>
+	 * 
+	 * 
+	 * @param emailId
+	 *            - cheia primara a email-ului
+	 * @param email
+	 *            - adresa de email
+	 * @return
+	 */
+	public static Email checkEmail(Integer emailId, String email) {
+		// TODO
+		return null;
 	}
 
 	@Column(name = "email", columnDefinition = "varchar", length = 200)
@@ -242,7 +274,8 @@ public class Email {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this,
+				ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate

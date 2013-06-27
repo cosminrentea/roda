@@ -37,11 +37,11 @@ import flexjson.JSONSerializer;
 @Entity
 @Table(schema = "public", name = "lang")
 @Configurable
-
 public class Lang {
 
 	public static long countLangs() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM Lang o", Long.class).getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM Lang o",
+				Long.class).getSingleResult();
 	}
 
 	@Async
@@ -64,7 +64,8 @@ public class Lang {
 	}
 
 	public static List<Lang> findAllLangs() {
-		return entityManager().createQuery("SELECT o FROM Lang o", Lang.class).getResultList();
+		return entityManager().createQuery("SELECT o FROM Lang o", Lang.class)
+				.getResultList();
 	}
 
 	public static Lang findLang(Integer id) {
@@ -74,17 +75,19 @@ public class Lang {
 	}
 
 	public static List<Lang> findLangEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM Lang o", Lang.class).setFirstResult(firstResult)
-				.setMaxResults(maxResults).getResultList();
+		return entityManager().createQuery("SELECT o FROM Lang o", Lang.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults)
+				.getResultList();
 	}
 
 	public static Collection<Lang> fromJsonArrayToLangs(String json) {
-		return new JSONDeserializer<List<Lang>>().use(null, ArrayList.class).use("values", Lang.class)
-				.deserialize(json);
+		return new JSONDeserializer<List<Lang>>().use(null, ArrayList.class)
+				.use("values", Lang.class).deserialize(json);
 	}
 
 	public static Lang fromJsonToLang(String json) {
-		return new JSONDeserializer<Lang>().use(null, Lang.class).deserialize(json);
+		return new JSONDeserializer<Lang>().use(null, Lang.class).deserialize(
+				json);
 	}
 
 	public static void indexLang(Lang lang) {
@@ -105,9 +108,12 @@ public class Lang {
 			sid.addField("lang.nameen_s", lang.getNameEn());
 			// Add summary field to allow searching documents for objects of
 			// this type
-			sid.addField("lang_solrsummary_t",
-					new StringBuilder().append(lang.getIso639()).append(" ").append(lang.getNameSelf()).append(" ")
-							.append(lang.getNameRo()).append(" ").append(lang.getNameEn()));
+			sid.addField(
+					"lang_solrsummary_t",
+					new StringBuilder().append(lang.getIso639()).append(" ")
+							.append(lang.getNameSelf()).append(" ")
+							.append(lang.getNameRo()).append(" ")
+							.append(lang.getNameEn()));
 			documents.add(sid);
 		}
 		try {
@@ -143,6 +149,33 @@ public class Lang {
 
 	public static String toJsonArray(Collection<Lang> collection) {
 		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	/**
+	 * Verifica existenta unei limbi dupa nume si id. Utila in special pentru
+	 * import si initializarea bazei de date, vrem sa ne asiguram ca limba are
+	 * acelasi id indiferent de cate ori este refacuta baza de date in timpul
+	 * dezvoltarii.
+	 * 
+	 * <p>
+	 * Criterii de unicitate:
+	 * <p>
+	 * <ul>
+	 * <li>langId
+	 * <li>langName
+	 * <ul>
+	 * <p>
+	 * 
+	 * 
+	 * @param langId
+	 *            - cheia primara a limbii din tabelul de limbi
+	 * @param langName
+	 *            - denumirea limbii
+	 * @return
+	 */
+	public static Lang checkLang(Integer langId, String langName) {
+		// TODO
+		return null;
 	}
 
 	@Id
@@ -300,7 +333,8 @@ public class Lang {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this,
+				ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate

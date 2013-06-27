@@ -147,6 +147,39 @@ public class InstancePersonAssoc {
 		return new JSONSerializer().exclude("*.class").serialize(collection);
 	}
 
+	/**
+	 * Verifica existenta existenta unui tip de asociere intre persoana si
+	 * instanta (preluat prin valori ale parametrilor de intrare) in baza de
+	 * date; in caz afirmativ, returneaza obiectul corespunzator, altfel, metoda
+	 * introduce tipul de asociere in baza de date si apoi returneaza obiectul
+	 * corespunzator. Verificarea existentei in baza de date se realizeaza fie
+	 * dupa valoarea cheii primare, fie dupa un criteriu de unicitate.
+	 * 
+	 * <p>
+	 * Criterii de unicitate:
+	 * <p>
+	 * <ul>
+	 * <li>personAssocId
+	 * <li>personAssocName
+	 * <ul>
+	 * <p>
+	 * 
+	 * @param personAssocId
+	 *            - cheia primara a tipului de asociere in tabelul
+	 *            instance_person_assoc
+	 * @param personAssocName
+	 *            - denumirea tipului de asociere intre instanta si persoana
+	 * @param description
+	 *            - descrierea tipului de asociere intre instanta si persoana
+	 * 
+	 * @return
+	 */
+	public static InstancePersonAssoc checkInstancePersonAssoc(Integer personAssocId,
+			String personAssocName, String description) {
+		// TODO
+		return null;
+	}
+	
 	@Column(name = "assoc_description", columnDefinition = "text")
 	private String assocDescription;
 

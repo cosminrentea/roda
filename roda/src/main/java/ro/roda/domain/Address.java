@@ -1,6 +1,7 @@
 package ro.roda.domain;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -40,11 +41,11 @@ import flexjson.JSONSerializer;
 @Entity
 @Table(schema = "public", name = "address")
 @Configurable
-
 public class Address {
 
 	public static long countAddresses() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM Address o", Long.class).getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM Address o",
+				Long.class).getSingleResult();
 	}
 
 	@Async
@@ -72,54 +73,70 @@ public class Address {
 		return entityManager().find(Address.class, id);
 	}
 
-	public static List<Address> findAddressEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM Address o", Address.class).setFirstResult(firstResult)
-				.setMaxResults(maxResults).getResultList();
+	public static List<Address> findAddressEntries(int firstResult,
+			int maxResults) {
+		return entityManager()
+				.createQuery("SELECT o FROM Address o", Address.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults)
+				.getResultList();
 	}
 
 	public static TypedQuery<Address> findAddressesByCityId(City cityId) {
 		if (cityId == null)
-			throw new IllegalArgumentException("The cityId argument is required");
+			throw new IllegalArgumentException(
+					"The cityId argument is required");
 		EntityManager em = Address.entityManager();
-		TypedQuery<Address> q = em.createQuery("SELECT o FROM Address AS o WHERE o.cityId = :cityId", Address.class);
+		TypedQuery<Address> q = em.createQuery(
+				"SELECT o FROM Address AS o WHERE o.cityId = :cityId",
+				Address.class);
 		q.setParameter("cityId", cityId);
 		return q;
 	}
 
-	public static TypedQuery<Address> findAddressesByCityIdAndPostalCodeEquals(City cityId, String postalCode) {
+	public static TypedQuery<Address> findAddressesByCityIdAndPostalCodeEquals(
+			City cityId, String postalCode) {
 		if (cityId == null)
-			throw new IllegalArgumentException("The cityId argument is required");
+			throw new IllegalArgumentException(
+					"The cityId argument is required");
 		if (postalCode == null || postalCode.length() == 0)
-			throw new IllegalArgumentException("The postalCode argument is required");
+			throw new IllegalArgumentException(
+					"The postalCode argument is required");
 		EntityManager em = Address.entityManager();
-		TypedQuery<Address> q = em.createQuery(
-				"SELECT o FROM Address AS o WHERE o.cityId = :cityId AND o.postalCode = :postalCode", Address.class);
+		TypedQuery<Address> q = em
+				.createQuery(
+						"SELECT o FROM Address AS o WHERE o.cityId = :cityId AND o.postalCode = :postalCode",
+						Address.class);
 		q.setParameter("cityId", cityId);
 		q.setParameter("postalCode", postalCode);
 		return q;
 	}
 
-	public static TypedQuery<Address> findAddressesByPostalCodeEquals(String postalCode) {
+	public static TypedQuery<Address> findAddressesByPostalCodeEquals(
+			String postalCode) {
 		if (postalCode == null || postalCode.length() == 0)
-			throw new IllegalArgumentException("The postalCode argument is required");
+			throw new IllegalArgumentException(
+					"The postalCode argument is required");
 		EntityManager em = Address.entityManager();
-		TypedQuery<Address> q = em.createQuery("SELECT o FROM Address AS o WHERE o.postalCode = :postalCode",
+		TypedQuery<Address> q = em.createQuery(
+				"SELECT o FROM Address AS o WHERE o.postalCode = :postalCode",
 				Address.class);
 		q.setParameter("postalCode", postalCode);
 		return q;
 	}
 
 	public static List<Address> findAllAddresses() {
-		return entityManager().createQuery("SELECT o FROM Address o", Address.class).getResultList();
+		return entityManager().createQuery("SELECT o FROM Address o",
+				Address.class).getResultList();
 	}
 
 	public static Collection<Address> fromJsonArrayToAddresses(String json) {
-		return new JSONDeserializer<List<Address>>().use(null, ArrayList.class).use("values", Address.class)
-				.deserialize(json);
+		return new JSONDeserializer<List<Address>>().use(null, ArrayList.class)
+				.use("values", Address.class).deserialize(json);
 	}
 
 	public static Address fromJsonToAddress(String json) {
-		return new JSONDeserializer<Address>().use(null, Address.class).deserialize(json);
+		return new JSONDeserializer<Address>().use(null, Address.class)
+				.deserialize(json);
 	}
 
 	public static void indexAddress(Address address) {
@@ -137,7 +154,8 @@ public class Address {
 			sid.addField("address.id_i", address.getId());
 			// Add summary field to allow searching documents for objects of
 			// this type
-			sid.addField("address_solrsummary_t", new StringBuilder().append(address.getId()));
+			sid.addField("address_solrsummary_t",
+					new StringBuilder().append(address.getId()));
 			documents.add(sid);
 		}
 		try {
@@ -173,6 +191,104 @@ public class Address {
 
 	public static String toJsonArray(Collection<Address> collection) {
 		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	/**
+	 * Verifica existenta unei adrese (preluata prin combinatii ale parametrilor
+	 * de intrare) in baza de date; daca adresa exista, returneaza obiectul
+	 * corespunzator, altfel, metoda introduce adresa in baza de date si apoi
+	 * returneaza obiectul corespunzator. Verificarea existentei in baza de date
+	 * se realizeaza fie dupa valoarea cheii primare, fie dupa un criteriu de
+	 * unicitate.
+	 * 
+	 * <p>
+	 * Criterii de unicitate:
+	 * <p>
+	 * <ul>
+	 * <li>addressId
+	 * <li>(countryId || countryName) + postalCode + address1 + address2
+	 * (codurile postale sunt unice pe tari)
+	 * <li>(cityId || cityName) + postalCode + address1 + address2
+	 * <ul>
+	 * <p>
+	 * 
+	 * 
+	 * @param addressId
+	 *            - cheia primara a adresei din tabelul de adrese
+	 * @param countryName
+	 *            - numele tarii in care se gaseste adresa
+	 * @param countryId
+	 *            - cheia primara a tarii curente, din tabelul de tari
+	 * @param cityName
+	 *            - numele orasului in care se gaseste adresa
+	 * @param cityId
+	 *            - cheia primara corespunzatoare orasului curent, din tabelul
+	 *            de orase
+	 * @param postalCode
+	 *            - codul postal
+	 * @param address1
+	 *            - primele elemente ale adresei (de obicei strada si numar)
+	 * @param address2
+	 *            - elemente suplimentare ale adresei
+	 * @param subdivCode
+	 *            - codul subdiviziunii orasului in care se gaseste adresa. In
+	 *            cazul in care se foloseste acest parametru, el trebuie sa fie
+	 *            obligatoriu insotit de parametrul subdiv_type.
+	 * @param subdivType
+	 *            - tipul subdiviziunii orasului in care se gaseste adresa (ex:
+	 *            sector). In cazul in care se foloseste acest parametru, el
+	 *            trebuie sa fie obligatoriu insotit de parametrul subdiv_code.
+	 * @return
+	 */
+	public static Address checkAddress(Integer addressId, String countryName,
+			Integer countryId, String cityName, Integer cityId,
+			String postalCode, String address1, String address2,
+			Integer subdivCode, String subdivType) {
+		// TODO
+		return null;
+	}
+
+	/**
+	 * Verifica existenta unei adrese (preluata prin combinatii ale parametrilor
+	 * de intrare) in baza de date; daca adresa exista, returneaza obiectul
+	 * corespunzator, altfel, metoda introduce adresa in baza de date si apoi
+	 * returneaza obiectul corespunzator. Verificarea existentei in baza de date
+	 * se realizeaza fie dupa valoarea cheii primare, fie dupa un criteriu de
+	 * unicitate.
+	 * 
+	 * <p>
+	 * Criterii de unicitate:
+	 * <p>
+	 * <ul>
+	 * <li>addressId
+	 * <li>countryId + postalCode + address1 + address2 (codurile postale sunt
+	 * unice pe tari)
+	 * <li>cityId + postalCode + address1 + address2
+	 * <ul>
+	 * <p>
+	 * 
+	 * 
+	 * @param addressId
+	 *            - cheia primara a adresei din tabelul de adrese
+	 * @param countryId
+	 *            - cheia primara a tarii curente, din tabelul de tari
+	 * @param cityId
+	 *            - cheia primara corespunzatoare orasului curent, din tabelul
+	 *            de orase
+	 * @param postalCode
+	 *            - codul postal
+	 * @param address1
+	 *            - primele elemente ale adresei (de obicei strada si numar)
+	 * @param address2
+	 *            - elemente suplimentare ale adresei
+	 * 
+	 * @return
+	 */
+	public static Address checkAddress(Integer addressId, Integer countryId,
+			Integer cityId, String postalCode, String address1,
+			String address2) {
+		// TODO
+		return null;
 	}
 
 	@Column(name = "address1", columnDefinition = "text")
@@ -331,7 +447,8 @@ public class Address {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this,
+				ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate

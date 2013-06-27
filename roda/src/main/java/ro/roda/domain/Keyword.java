@@ -37,11 +37,11 @@ import flexjson.JSONSerializer;
 @Configurable
 @Entity
 @Table(schema = "public", name = "keyword")
-
 public class Keyword {
 
 	public static long countKeywords() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM Keyword o", Long.class).getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM Keyword o",
+				Long.class).getSingleResult();
 	}
 
 	@Async
@@ -64,7 +64,8 @@ public class Keyword {
 	}
 
 	public static List<Keyword> findAllKeywords() {
-		return entityManager().createQuery("SELECT o FROM Keyword o", Keyword.class).getResultList();
+		return entityManager().createQuery("SELECT o FROM Keyword o",
+				Keyword.class).getResultList();
 	}
 
 	public static Keyword findKeyword(Integer id) {
@@ -73,18 +74,22 @@ public class Keyword {
 		return entityManager().find(Keyword.class, id);
 	}
 
-	public static List<Keyword> findKeywordEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM Keyword o", Keyword.class).setFirstResult(firstResult)
-				.setMaxResults(maxResults).getResultList();
+	public static List<Keyword> findKeywordEntries(int firstResult,
+			int maxResults) {
+		return entityManager()
+				.createQuery("SELECT o FROM Keyword o", Keyword.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults)
+				.getResultList();
 	}
 
 	public static Collection<Keyword> fromJsonArrayToKeywords(String json) {
-		return new JSONDeserializer<List<Keyword>>().use(null, ArrayList.class).use("values", Keyword.class)
-				.deserialize(json);
+		return new JSONDeserializer<List<Keyword>>().use(null, ArrayList.class)
+				.use("values", Keyword.class).deserialize(json);
 	}
 
 	public static Keyword fromJsonToKeyword(String json) {
-		return new JSONDeserializer<Keyword>().use(null, Keyword.class).deserialize(json);
+		return new JSONDeserializer<Keyword>().use(null, Keyword.class)
+				.deserialize(json);
 	}
 
 	public static void indexKeyword(Keyword keyword) {
@@ -104,7 +109,8 @@ public class Keyword {
 			// Add summary field to allow searching documents for objects of
 			// this type
 			sid.addField("keyword_solrsummary_t",
-					new StringBuilder().append(keyword.getName()).append(" ").append(keyword.getId()));
+					new StringBuilder().append(keyword.getName()).append(" ")
+							.append(keyword.getId()));
 			documents.add(sid);
 		}
 		try {
@@ -114,6 +120,35 @@ public class Keyword {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	/**
+	 * Verifica existenta unui cuvant cheie (preluat prin valori ale
+	 * parametrilor de intrare) in baza de date; in caz afirmativ, returneaza
+	 * obiectul corespunzator, altfel, metoda introduce cuvantul cheie in baza
+	 * de date si apoi returneaza obiectul corespunzator. Verificarea existentei
+	 * in baza de date se realizeaza fie dupa valoarea cheii primare, fie dupa
+	 * un criteriu de unicitate.
+	 * 
+	 * <p>
+	 * Criterii de unicitate:
+	 * <p>
+	 * <ul>
+	 * <li>keywordId
+	 * <li>keyword
+	 * <ul>
+	 * <p>
+	 * 
+	 * @param keywordId
+	 *            - cheia primara a cuvantului cheie din tabelul de cuvinte
+	 *            cheie
+	 * @param keyword
+	 *            - denumirea cuvantului cheie
+	 * @return
+	 */
+	public static Keyword checkKeyword(Integer keywordId, String keyword) {
+		// TODO
+		return null;
 	}
 
 	public static QueryResponse search(SolrQuery query) {
@@ -231,7 +266,8 @@ public class Keyword {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this,
+				ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate

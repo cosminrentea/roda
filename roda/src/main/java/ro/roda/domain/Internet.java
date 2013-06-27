@@ -37,11 +37,11 @@ import flexjson.JSONSerializer;
 @Configurable
 @Entity
 @Table(schema = "public", name = "internet")
-
 public class Internet {
 
 	public static long countInternets() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM Internet o", Long.class).getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM Internet o",
+				Long.class).getSingleResult();
 	}
 
 	@Async
@@ -64,7 +64,8 @@ public class Internet {
 	}
 
 	public static List<Internet> findAllInternets() {
-		return entityManager().createQuery("SELECT o FROM Internet o", Internet.class).getResultList();
+		return entityManager().createQuery("SELECT o FROM Internet o",
+				Internet.class).getResultList();
 	}
 
 	public static Internet findInternet(Integer id) {
@@ -73,18 +74,23 @@ public class Internet {
 		return entityManager().find(Internet.class, id);
 	}
 
-	public static List<Internet> findInternetEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM Internet o", Internet.class).setFirstResult(firstResult)
-				.setMaxResults(maxResults).getResultList();
+	public static List<Internet> findInternetEntries(int firstResult,
+			int maxResults) {
+		return entityManager()
+				.createQuery("SELECT o FROM Internet o", Internet.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults)
+				.getResultList();
 	}
 
 	public static Collection<Internet> fromJsonArrayToInternets(String json) {
-		return new JSONDeserializer<List<Internet>>().use(null, ArrayList.class).use("values", Internet.class)
+		return new JSONDeserializer<List<Internet>>()
+				.use(null, ArrayList.class).use("values", Internet.class)
 				.deserialize(json);
 	}
 
 	public static Internet fromJsonToInternet(String json) {
-		return new JSONDeserializer<Internet>().use(null, Internet.class).deserialize(json);
+		return new JSONDeserializer<Internet>().use(null, Internet.class)
+				.deserialize(json);
 	}
 
 	public static void indexInternet(Internet internet) {
@@ -103,8 +109,9 @@ public class Internet {
 			sid.addField("internet.internet_s", internet.getInternet());
 			// Add summary field to allow searching documents for objects of
 			// this type
-			sid.addField("internet_solrsummary_t", new StringBuilder().append(internet.getInternetType()).append(" ")
-					.append(internet.getInternet()));
+			sid.addField("internet_solrsummary_t",
+					new StringBuilder().append(internet.getInternetType())
+							.append(" ").append(internet.getInternet()));
 			documents.add(sid);
 		}
 		try {
@@ -140,6 +147,34 @@ public class Internet {
 
 	public static String toJsonArray(Collection<Internet> collection) {
 		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	/**
+	 * Verifica existenta unei adrese Internet in baza de date; daca exista,
+	 * returneaza obiectul respectiv, altfel, il introduce in baza de date si
+	 * returneaza obiectul corespunzator.
+	 * 
+	 * <p>
+	 * Criterii de unicitate:
+	 * <p>
+	 * <ul>
+	 * <li>internetId
+	 * <li>internet
+	 * <ul>
+	 * <p>
+	 * 
+	 * 
+	 * @param internetId
+	 *            - cheia primara a adresei de Internet
+	 * @param internet
+	 *            - adresa de Internet
+	 * @param internetType
+	 *            - tipul adresei de Internet
+	 * @return
+	 */
+	public static Internet checkInternet(Integer internetId, String internet, String internetType) {
+		// TODO
+		return null;
 	}
 
 	@Id
@@ -253,7 +288,8 @@ public class Internet {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this,
+				ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate

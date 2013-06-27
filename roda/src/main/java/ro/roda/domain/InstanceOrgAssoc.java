@@ -37,18 +37,20 @@ import flexjson.JSONSerializer;
 @Entity
 @Table(schema = "public", name = "instance_org_assoc")
 @Configurable
-
 public class InstanceOrgAssoc {
 
 	public static long countInstanceOrgAssocs() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM InstanceOrgAssoc o", Long.class).getSingleResult();
+		return entityManager().createQuery(
+				"SELECT COUNT(o) FROM InstanceOrgAssoc o", Long.class)
+				.getSingleResult();
 	}
 
 	@Async
 	public static void deleteIndex(InstanceOrgAssoc instanceOrgAssoc) {
 		SolrServer solrServer = solrServer();
 		try {
-			solrServer.deleteById("instanceorgassoc_" + instanceOrgAssoc.getId());
+			solrServer.deleteById("instanceorgassoc_"
+					+ instanceOrgAssoc.getId());
 			solrServer.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -64,7 +66,8 @@ public class InstanceOrgAssoc {
 	}
 
 	public static List<InstanceOrgAssoc> findAllInstanceOrgAssocs() {
-		return entityManager().createQuery("SELECT o FROM InstanceOrgAssoc o", InstanceOrgAssoc.class).getResultList();
+		return entityManager().createQuery("SELECT o FROM InstanceOrgAssoc o",
+				InstanceOrgAssoc.class).getResultList();
 	}
 
 	public static InstanceOrgAssoc findInstanceOrgAssoc(Integer id) {
@@ -73,18 +76,24 @@ public class InstanceOrgAssoc {
 		return entityManager().find(InstanceOrgAssoc.class, id);
 	}
 
-	public static List<InstanceOrgAssoc> findInstanceOrgAssocEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM InstanceOrgAssoc o", InstanceOrgAssoc.class)
-				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
+	public static List<InstanceOrgAssoc> findInstanceOrgAssocEntries(
+			int firstResult, int maxResults) {
+		return entityManager()
+				.createQuery("SELECT o FROM InstanceOrgAssoc o",
+						InstanceOrgAssoc.class).setFirstResult(firstResult)
+				.setMaxResults(maxResults).getResultList();
 	}
 
-	public static Collection<InstanceOrgAssoc> fromJsonArrayToInstanceOrgAssocs(String json) {
-		return new JSONDeserializer<List<InstanceOrgAssoc>>().use(null, ArrayList.class)
+	public static Collection<InstanceOrgAssoc> fromJsonArrayToInstanceOrgAssocs(
+			String json) {
+		return new JSONDeserializer<List<InstanceOrgAssoc>>()
+				.use(null, ArrayList.class)
 				.use("values", InstanceOrgAssoc.class).deserialize(json);
 	}
 
 	public static InstanceOrgAssoc fromJsonToInstanceOrgAssoc(String json) {
-		return new JSONDeserializer<InstanceOrgAssoc>().use(null, InstanceOrgAssoc.class).deserialize(json);
+		return new JSONDeserializer<InstanceOrgAssoc>().use(null,
+				InstanceOrgAssoc.class).deserialize(json);
 	}
 
 	public static void indexInstanceOrgAssoc(InstanceOrgAssoc instanceOrgAssoc) {
@@ -93,22 +102,57 @@ public class InstanceOrgAssoc {
 		indexInstanceOrgAssocs(instanceorgassocs);
 	}
 
+	/**
+	 * Verifica existenta existenta unui tip de asociere intre organizatie si
+	 * instanta (preluat prin valori ale parametrilor de intrare) in baza de
+	 * date; in caz afirmativ, returneaza obiectul corespunzator, altfel, metoda
+	 * introduce tipul de asociere in baza de date si apoi returneaza obiectul
+	 * corespunzator. Verificarea existentei in baza de date se realizeaza fie
+	 * dupa valoarea cheii primare, fie dupa un criteriu de unicitate.
+	 * 
+	 * <p>
+	 * Criterii de unicitate:
+	 * <p>
+	 * <ul>
+	 * <li>orgAssocId
+	 * <li>orgAssocName
+	 * <ul>
+	 * <p>
+	 * 
+	 * @param orgAssocId
+	 *            - cheia primara a tipului de asociere in tabelul
+	 *            instance_org_assoc
+	 * @param orgAssocName
+	 *            - denumirea tipului de asociere intre instanta si organizatie
+	 * @param description
+	 *            - descrierea tipului de asociere intre instanta si organizatie
+	 * 
+	 * @return
+	 */
+	public static InstanceOrgAssoc checkInstanceOrgAssoc(Integer orgAssocId,
+			String orgAssocName, String description) {
+		// TODO
+		return null;
+	}
+
 	@Async
-	public static void indexInstanceOrgAssocs(Collection<InstanceOrgAssoc> instanceorgassocs) {
+	public static void indexInstanceOrgAssocs(
+			Collection<InstanceOrgAssoc> instanceorgassocs) {
 		List<SolrInputDocument> documents = new ArrayList<SolrInputDocument>();
 		for (InstanceOrgAssoc instanceOrgAssoc : instanceorgassocs) {
 			SolrInputDocument sid = new SolrInputDocument();
 			sid.addField("id", "instanceorgassoc_" + instanceOrgAssoc.getId());
-			sid.addField("instanceOrgAssoc.assocname_s", instanceOrgAssoc.getAssocName());
-			sid.addField("instanceOrgAssoc.assocdescription_s", instanceOrgAssoc.getAssocDescription());
+			sid.addField("instanceOrgAssoc.assocname_s",
+					instanceOrgAssoc.getAssocName());
+			sid.addField("instanceOrgAssoc.assocdescription_s",
+					instanceOrgAssoc.getAssocDescription());
 			sid.addField("instanceOrgAssoc.id_i", instanceOrgAssoc.getId());
 			// Add summary field to allow searching documents for objects of
 			// this type
-			sid.addField(
-					"instanceorgassoc_solrsummary_t",
-					new StringBuilder().append(instanceOrgAssoc.getAssocName()).append(" ")
-							.append(instanceOrgAssoc.getAssocDescription()).append(" ")
-							.append(instanceOrgAssoc.getId()));
+			sid.addField("instanceorgassoc_solrsummary_t", new StringBuilder()
+					.append(instanceOrgAssoc.getAssocName()).append(" ")
+					.append(instanceOrgAssoc.getAssocDescription()).append(" ")
+					.append(instanceOrgAssoc.getId()));
 			documents.add(sid);
 		}
 		try {
@@ -220,7 +264,8 @@ public class InstanceOrgAssoc {
 		if (this.entityManager.contains(this)) {
 			this.entityManager.remove(this);
 		} else {
-			InstanceOrgAssoc attached = InstanceOrgAssoc.findInstanceOrgAssoc(this.id);
+			InstanceOrgAssoc attached = InstanceOrgAssoc
+					.findInstanceOrgAssoc(this.id);
 			this.entityManager.remove(attached);
 		}
 	}
@@ -246,7 +291,8 @@ public class InstanceOrgAssoc {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this,
+				ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate

@@ -35,11 +35,12 @@ import flexjson.JSONSerializer;
 @Entity
 @Table(schema = "public", name = "instance_descr")
 @Configurable
-
 public class InstanceDescr {
 
 	public static long countInstanceDescrs() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM InstanceDescr o", Long.class).getSingleResult();
+		return entityManager().createQuery(
+				"SELECT COUNT(o) FROM InstanceDescr o", Long.class)
+				.getSingleResult();
 	}
 
 	@Async
@@ -62,7 +63,8 @@ public class InstanceDescr {
 	}
 
 	public static List<InstanceDescr> findAllInstanceDescrs() {
-		return entityManager().createQuery("SELECT o FROM InstanceDescr o", InstanceDescr.class).getResultList();
+		return entityManager().createQuery("SELECT o FROM InstanceDescr o",
+				InstanceDescr.class).getResultList();
 	}
 
 	public static InstanceDescr findInstanceDescr(InstanceDescrPK id) {
@@ -71,18 +73,24 @@ public class InstanceDescr {
 		return entityManager().find(InstanceDescr.class, id);
 	}
 
-	public static List<InstanceDescr> findInstanceDescrEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM InstanceDescr o", InstanceDescr.class)
-				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
+	public static List<InstanceDescr> findInstanceDescrEntries(int firstResult,
+			int maxResults) {
+		return entityManager()
+				.createQuery("SELECT o FROM InstanceDescr o",
+						InstanceDescr.class).setFirstResult(firstResult)
+				.setMaxResults(maxResults).getResultList();
 	}
 
-	public static Collection<InstanceDescr> fromJsonArrayToInstanceDescrs(String json) {
-		return new JSONDeserializer<List<InstanceDescr>>().use(null, ArrayList.class)
-				.use("values", InstanceDescr.class).deserialize(json);
+	public static Collection<InstanceDescr> fromJsonArrayToInstanceDescrs(
+			String json) {
+		return new JSONDeserializer<List<InstanceDescr>>()
+				.use(null, ArrayList.class).use("values", InstanceDescr.class)
+				.deserialize(json);
 	}
 
 	public static InstanceDescr fromJsonToInstanceDescr(String json) {
-		return new JSONDeserializer<InstanceDescr>().use(null, InstanceDescr.class).deserialize(json);
+		return new JSONDeserializer<InstanceDescr>().use(null,
+				InstanceDescr.class).deserialize(json);
 	}
 
 	public static void indexInstanceDescr(InstanceDescr instanceDescr) {
@@ -92,14 +100,17 @@ public class InstanceDescr {
 	}
 
 	@Async
-	public static void indexInstanceDescrs(Collection<InstanceDescr> instancedescrs) {
+	public static void indexInstanceDescrs(
+			Collection<InstanceDescr> instancedescrs) {
 		List<SolrInputDocument> documents = new ArrayList<SolrInputDocument>();
 		for (InstanceDescr instanceDescr : instancedescrs) {
 			SolrInputDocument sid = new SolrInputDocument();
 			sid.addField("id", "instancedescr_" + instanceDescr.getId());
-			sid.addField("instanceDescr.instanceid_t", instanceDescr.getInstanceId());
+			sid.addField("instanceDescr.instanceid_t",
+					instanceDescr.getInstanceId());
 			sid.addField("instanceDescr.langid_t", instanceDescr.getLangId());
-			sid.addField("instanceDescr.accessconditions_s", instanceDescr.getAccessConditions());
+			sid.addField("instanceDescr.accessconditions_s",
+					instanceDescr.getAccessConditions());
 			sid.addField("instanceDescr.notes_s", instanceDescr.getNotes());
 			sid.addField("instanceDescr.title_s", instanceDescr.getTitle());
 			sid.addField("instanceDescr.id_t", instanceDescr.getId());
@@ -107,9 +118,12 @@ public class InstanceDescr {
 			// this type
 			sid.addField(
 					"instancedescr_solrsummary_t",
-					new StringBuilder().append(instanceDescr.getInstanceId()).append(" ")
-							.append(instanceDescr.getLangId()).append(" ").append(instanceDescr.getAccessConditions())
-							.append(" ").append(instanceDescr.getNotes()).append(" ").append(instanceDescr.getTitle())
+					new StringBuilder().append(instanceDescr.getInstanceId())
+							.append(" ").append(instanceDescr.getLangId())
+							.append(" ")
+							.append(instanceDescr.getAccessConditions())
+							.append(" ").append(instanceDescr.getNotes())
+							.append(" ").append(instanceDescr.getTitle())
 							.append(" ").append(instanceDescr.getId()));
 			documents.add(sid);
 		}
@@ -146,6 +160,49 @@ public class InstanceDescr {
 
 	public static String toJsonArray(Collection<InstanceDescr> collection) {
 		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	/**
+	 * Verifica existenta unei descrieri de instanta (preluata prin valori ale
+	 * parametrilor de intrare) in baza de date; in caz afirmativ, returneaza
+	 * obiectul corespunzator, altfel, metoda introduce descrierea in baza de
+	 * date si apoi returneaza obiectul corespunzator. Verificarea existentei in
+	 * baza de date se realizeaza fie dupa valoarea cheii primare, fie dupa un
+	 * criteriu de unicitate.
+	 * 
+	 * <p>
+	 * Criterii de unicitate:
+	 * <p>
+	 * <ul>
+	 * <li>instanceId + title
+	 * <ul>
+	 * <p>
+	 * 
+	 * @param instanceId
+	 *            - cheia primara a instantei pentru care este furnizata
+	 *            descrierea curenta
+	 * @param langId
+	 *            - limba in care este furnizata descrierea curenta a instantei;
+	 *            daca limba nu exista, ea va fi adaugata in baza de date.
+	 * @param title
+	 *            - titlul instantei, in limba specificata prin parametrul lang
+	 * @param weighting
+	 *            - ponderea
+	 * @param universe
+	 *            - universul instantei
+	 * @param research_instrument
+	 *            - instrumentul de cercetare
+	 * @param scope
+	 *            - domeniul instantei
+	 * @param abstract - rezumatul instantei
+	 * 
+	 * @return
+	 */
+	public static InstanceDescr checkInstanceDescr(Integer instanceId,
+			Integer langId, String title, String weighting, String universe,
+			String researchInstrument, String scope, String instanceAbstract) {
+		// TODO
+		return null;
 	}
 
 	@Column(name = "access_conditions", columnDefinition = "text")
@@ -282,7 +339,8 @@ public class InstanceDescr {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this,
+				ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate

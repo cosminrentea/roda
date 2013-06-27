@@ -39,11 +39,11 @@ import flexjson.JSONSerializer;
 @Configurable
 @Entity
 @Table(schema = "public", name = "cms_folder")
-
 public class CmsFolder {
 
 	public static long countCmsFolders() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM CmsFolder o", Long.class).getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM CmsFolder o",
+				Long.class).getSingleResult();
 	}
 
 	@Async
@@ -66,7 +66,8 @@ public class CmsFolder {
 	}
 
 	public static List<CmsFolder> findAllCmsFolders() {
-		return entityManager().createQuery("SELECT o FROM CmsFolder o", CmsFolder.class).getResultList();
+		return entityManager().createQuery("SELECT o FROM CmsFolder o",
+				CmsFolder.class).getResultList();
 	}
 
 	public static CmsFolder findCmsFolder(Integer id) {
@@ -75,18 +76,23 @@ public class CmsFolder {
 		return entityManager().find(CmsFolder.class, id);
 	}
 
-	public static List<CmsFolder> findCmsFolderEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM CmsFolder o", CmsFolder.class).setFirstResult(firstResult)
-				.setMaxResults(maxResults).getResultList();
+	public static List<CmsFolder> findCmsFolderEntries(int firstResult,
+			int maxResults) {
+		return entityManager()
+				.createQuery("SELECT o FROM CmsFolder o", CmsFolder.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults)
+				.getResultList();
 	}
 
 	public static Collection<CmsFolder> fromJsonArrayToCmsFolders(String json) {
-		return new JSONDeserializer<List<CmsFolder>>().use(null, ArrayList.class).use("values", CmsFolder.class)
+		return new JSONDeserializer<List<CmsFolder>>()
+				.use(null, ArrayList.class).use("values", CmsFolder.class)
 				.deserialize(json);
 	}
 
 	public static CmsFolder fromJsonToCmsFolder(String json) {
-		return new JSONDeserializer<CmsFolder>().use(null, CmsFolder.class).deserialize(json);
+		return new JSONDeserializer<CmsFolder>().use(null, CmsFolder.class)
+				.deserialize(json);
 	}
 
 	public static void indexCmsFolder(CmsFolder cmsFolder) {
@@ -109,8 +115,10 @@ public class CmsFolder {
 			// this type
 			sid.addField(
 					"cmsfolder_solrsummary_t",
-					new StringBuilder().append(cmsFolder.getParentId()).append(" ").append(cmsFolder.getName())
-							.append(" ").append(cmsFolder.getDescription()).append(" ").append(cmsFolder.getId()));
+					new StringBuilder().append(cmsFolder.getParentId())
+							.append(" ").append(cmsFolder.getName())
+							.append(" ").append(cmsFolder.getDescription())
+							.append(" ").append(cmsFolder.getId()));
 			documents.add(sid);
 		}
 		try {
@@ -148,6 +156,66 @@ public class CmsFolder {
 		return new JSONSerializer().exclude("*.class").serialize(collection);
 	}
 
+	/**
+	 * Verifica existenta unui folder (preluat prin valori ale parametrilor de
+	 * intrare) in baza de date; in caz afirmativ, returneaza obiectul
+	 * corespunzator, altfel, metoda introduce folderul in baza de date si apoi
+	 * returneaza obiectul corespunzator. Verificarea existentei in baza de date
+	 * se realizeaza fie dupa valoarea cheii primare, fie dupa un criteriu de
+	 * unicitate.
+	 * 
+	 * <p>
+	 * Criterii de unicitate:
+	 * <p>
+	 * <ul>
+	 * <li> cmsFolderId
+	 * <li> cmsFolderName + parentId
+	 * <ul>
+	 * <p>
+	 *  
+	 * @param cmsFolderId
+	 *            - cheia primara a folder-ului CMS
+	 * @param cmsFolderName
+	 *            - numele folder-ului CMS
+	 * @param parentId
+	 *            - codul folder-ului CMS parinte
+	 * @param description
+	 *            - descrierea folder-ului CMS
+	 * @return
+	 */
+	public static CmsFolder checkCmsFolder(Integer cmsFolderId, String cmsFolderName,
+			Integer parentId, String description) {
+		// TODO
+		return null;
+	}
+
+	/**
+	 * Verifica existenta unui folder (preluat prin valori ale parametrilor de
+	 * intrare) in baza de date; in caz afirmativ, returneaza obiectul
+	 * corespunzator, altfel, metoda introduce folderul in baza de date si apoi
+	 * returneaza obiectul corespunzator. Verificarea existentei in baza de date
+	 * se realizeaza fie dupa valoarea cheii primare, fie dupa un criteriu de
+	 * unicitate.
+	 * 
+	 * <p>
+	 * Criterii de unicitate:
+	 * <p>
+	 * <ul>
+	 * <li> cmsFolderId	
+	 * <ul>
+	 * <p>
+	 *  
+	 * @param cmsFolderId
+	 *            - cheia primara a folder-ului CMS
+	 * @param cmsFolderName
+	 *            - numele folder-ului CMS
+	 * @return
+	 */
+	public static CmsFolder checkCmsFolder(Integer cmsFolderId, String cmsFolderName) {
+		// TODO
+		return null;
+	}
+	
 	@OneToMany(mappedBy = "cmsFolderId")
 	private Set<CmsFile> cmsFiles;
 
@@ -271,7 +339,8 @@ public class CmsFolder {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this,
+				ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate

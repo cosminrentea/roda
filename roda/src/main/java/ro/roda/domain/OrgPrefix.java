@@ -37,11 +37,11 @@ import flexjson.JSONSerializer;
 @Entity
 @Table(schema = "public", name = "org_prefix")
 @Configurable
-
 public class OrgPrefix {
 
 	public static long countOrgPrefixes() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM OrgPrefix o", Long.class).getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM OrgPrefix o",
+				Long.class).getSingleResult();
 	}
 
 	@Async
@@ -64,7 +64,8 @@ public class OrgPrefix {
 	}
 
 	public static List<OrgPrefix> findAllOrgPrefixes() {
-		return entityManager().createQuery("SELECT o FROM OrgPrefix o", OrgPrefix.class).getResultList();
+		return entityManager().createQuery("SELECT o FROM OrgPrefix o",
+				OrgPrefix.class).getResultList();
 	}
 
 	public static OrgPrefix findOrgPrefix(Integer id) {
@@ -73,18 +74,23 @@ public class OrgPrefix {
 		return entityManager().find(OrgPrefix.class, id);
 	}
 
-	public static List<OrgPrefix> findOrgPrefixEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM OrgPrefix o", OrgPrefix.class).setFirstResult(firstResult)
-				.setMaxResults(maxResults).getResultList();
+	public static List<OrgPrefix> findOrgPrefixEntries(int firstResult,
+			int maxResults) {
+		return entityManager()
+				.createQuery("SELECT o FROM OrgPrefix o", OrgPrefix.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults)
+				.getResultList();
 	}
 
 	public static Collection<OrgPrefix> fromJsonArrayToOrgPrefixes(String json) {
-		return new JSONDeserializer<List<OrgPrefix>>().use(null, ArrayList.class).use("values", OrgPrefix.class)
+		return new JSONDeserializer<List<OrgPrefix>>()
+				.use(null, ArrayList.class).use("values", OrgPrefix.class)
 				.deserialize(json);
 	}
 
 	public static OrgPrefix fromJsonToOrgPrefix(String json) {
-		return new JSONDeserializer<OrgPrefix>().use(null, OrgPrefix.class).deserialize(json);
+		return new JSONDeserializer<OrgPrefix>().use(null, OrgPrefix.class)
+				.deserialize(json);
 	}
 
 	public static void indexOrgPrefix(OrgPrefix orgPrefix) {
@@ -104,7 +110,8 @@ public class OrgPrefix {
 			// Add summary field to allow searching documents for objects of
 			// this type
 			sid.addField("orgprefix_solrsummary_t",
-					new StringBuilder().append(orgPrefix.getName()).append(" ").append(orgPrefix.getDescription()));
+					new StringBuilder().append(orgPrefix.getName()).append(" ")
+							.append(orgPrefix.getDescription()));
 			documents.add(sid);
 		}
 		try {
@@ -140,6 +147,36 @@ public class OrgPrefix {
 
 	public static String toJsonArray(Collection<OrgPrefix> collection) {
 		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	/**
+	 * Primeste ca parametri de intrare id-ul si numele prefixului de
+	 * organizatie, daca gaseste in tabel o intrare corespunzatoare, returneaza
+	 * obiectul respectiv, daca nu, creaza intrarea si returneaza obiectul
+	 * atasat.
+	 * 
+	 * <p>
+	 * Criterii de unicitate:
+	 * <p>
+	 * <ul>
+	 * <li>orgPrefixId
+	 * <li>orgPrefixName
+	 * <ul>
+	 * <p>
+	 * 
+	 * 
+	 * @param orgPrefixId
+	 *            - cheia primara a prefixului de organizatie
+	 * @param orgPrefixName
+	 *            - denumirea prefixului de organizatie
+	 * @param description
+	 *            - descrierea prefixului de organizatie
+	 * @return
+	 */
+	public static OrgPrefix checkOrgPrefix(Integer orgPrefixId,
+			String orgPrefixName, String description) {
+		// TODO
+		return null;
 	}
 
 	@Column(name = "description", columnDefinition = "text")
@@ -242,7 +279,8 @@ public class OrgPrefix {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this,
+				ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate

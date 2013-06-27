@@ -37,11 +37,12 @@ import flexjson.JSONSerializer;
 @Configurable
 @Entity
 @Table(schema = "public", name = "cms_page_type")
-
 public class CmsPageType {
 
 	public static long countCmsPageTypes() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM CmsPageType o", Long.class).getSingleResult();
+		return entityManager().createQuery(
+				"SELECT COUNT(o) FROM CmsPageType o", Long.class)
+				.getSingleResult();
 	}
 
 	@Async
@@ -64,7 +65,8 @@ public class CmsPageType {
 	}
 
 	public static List<CmsPageType> findAllCmsPageTypes() {
-		return entityManager().createQuery("SELECT o FROM CmsPageType o", CmsPageType.class).getResultList();
+		return entityManager().createQuery("SELECT o FROM CmsPageType o",
+				CmsPageType.class).getResultList();
 	}
 
 	public static CmsPageType findCmsPageType(Integer id) {
@@ -73,18 +75,24 @@ public class CmsPageType {
 		return entityManager().find(CmsPageType.class, id);
 	}
 
-	public static List<CmsPageType> findCmsPageTypeEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM CmsPageType o", CmsPageType.class)
-				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
+	public static List<CmsPageType> findCmsPageTypeEntries(int firstResult,
+			int maxResults) {
+		return entityManager()
+				.createQuery("SELECT o FROM CmsPageType o", CmsPageType.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults)
+				.getResultList();
 	}
 
-	public static Collection<CmsPageType> fromJsonArrayToCmsPageTypes(String json) {
-		return new JSONDeserializer<List<CmsPageType>>().use(null, ArrayList.class).use("values", CmsPageType.class)
+	public static Collection<CmsPageType> fromJsonArrayToCmsPageTypes(
+			String json) {
+		return new JSONDeserializer<List<CmsPageType>>()
+				.use(null, ArrayList.class).use("values", CmsPageType.class)
 				.deserialize(json);
 	}
 
 	public static CmsPageType fromJsonToCmsPageType(String json) {
-		return new JSONDeserializer<CmsPageType>().use(null, CmsPageType.class).deserialize(json);
+		return new JSONDeserializer<CmsPageType>().use(null, CmsPageType.class)
+				.deserialize(json);
 	}
 
 	public static void indexCmsPageType(CmsPageType cmsPageType) {
@@ -102,7 +110,8 @@ public class CmsPageType {
 			sid.addField("cmsPageType.id_i", cmsPageType.getId());
 			// Add summary field to allow searching documents for objects of
 			// this type
-			sid.addField("cmspagetype_solrsummary_t", new StringBuilder().append(cmsPageType.getId()));
+			sid.addField("cmspagetype_solrsummary_t",
+					new StringBuilder().append(cmsPageType.getId()));
 			documents.add(sid);
 		}
 		try {
@@ -140,6 +149,68 @@ public class CmsPageType {
 		return new JSONSerializer().exclude("*.class").serialize(collection);
 	}
 
+	/**
+	 * Verifica existenta unui tip de pagina (preluat prin valori ale
+	 * parametrilor de intrare) in baza de date; in caz afirmativ, returneaza
+	 * obiectul corespunzator, altfel, metoda introduce tipul de pagina in baza
+	 * de date si apoi returneaza obiectul corespunzator. Verificarea existentei
+	 * in baza de date se realizeaza fie dupa valoarea cheii primare, fie dupa
+	 * un criteriu de unicitate.
+	 * 
+	 * <p>
+	 * Criterii de unicitate:
+	 * <p>
+	 * <ul>
+	 * <li>cmsPageTypeId
+	 * <li>cmsPageTypeName
+	 * <ul>
+	 * <p>
+	 * 
+	 * 
+	 * @param cmsPageTypeId
+	 *            - cheia primara a tipului din tabelul de tipuri de pagini
+	 * @param cmsPageTypeName
+	 *            - denumirea tipului de pagina
+	 * @param description
+	 *            - descrierea tipului de pagina
+	 * @return
+	 */
+	public static CmsPageType checkCmsPageType(Integer cmsPageTypeId,
+			String cmsPageTypeName, String description) {
+		// TODO
+		return null;
+	}
+
+	/**
+	 * Verifica existenta unui tip de pagina (preluat prin valori ale
+	 * parametrilor de intrare) in baza de date; in caz afirmativ, returneaza
+	 * obiectul corespunzator, altfel, metoda introduce tipul de pagina in baza
+	 * de date si apoi returneaza obiectul corespunzator. Verificarea existentei
+	 * in baza de date se realizeaza fie dupa valoarea cheii primare, fie dupa
+	 * un criteriu de unicitate.
+	 * 
+	 * <p>
+	 * Criterii de unicitate:
+	 * <p>
+	 * <ul>
+	 * <li>cmsPageTypeId
+	 * <li>cmsPageTypeName
+	 * <ul>
+	 * <p>
+	 * 
+	 * 
+	 * @param cmsPageTypeId
+	 *            - cheia primara a tipului din tabelul de tipuri de pagini
+	 * @param cmsPageTypeName
+	 *            - denumirea tipului de pagina
+	 * @return
+	 */
+	public static CmsPageType checkCmsPageType(Integer cmsPageTypeId,
+			String cmsPageTypeName) {		
+		return checkCmsPageType(cmsPageTypeId, cmsPageTypeName, null);
+	}
+
+	
 	@OneToMany(mappedBy = "cmsPageTypeId")
 	private Set<CmsPage> cmsPages;
 
@@ -240,7 +311,8 @@ public class CmsPageType {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this,
+				ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate

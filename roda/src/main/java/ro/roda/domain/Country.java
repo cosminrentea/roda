@@ -37,11 +37,11 @@ import flexjson.JSONSerializer;
 @Configurable
 @Entity
 @Table(schema = "public", name = "country")
-
 public class Country {
 
 	public static long countCountrys() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM Country o", Long.class).getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM Country o",
+				Long.class).getSingleResult();
 	}
 
 	@Async
@@ -64,7 +64,8 @@ public class Country {
 	}
 
 	public static List<Country> findAllCountrys() {
-		return entityManager().createQuery("SELECT o FROM Country o", Country.class).getResultList();
+		return entityManager().createQuery("SELECT o FROM Country o",
+				Country.class).getResultList();
 	}
 
 	public static Country findCountry(Integer id) {
@@ -73,18 +74,22 @@ public class Country {
 		return entityManager().find(Country.class, id);
 	}
 
-	public static List<Country> findCountryEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM Country o", Country.class).setFirstResult(firstResult)
-				.setMaxResults(maxResults).getResultList();
+	public static List<Country> findCountryEntries(int firstResult,
+			int maxResults) {
+		return entityManager()
+				.createQuery("SELECT o FROM Country o", Country.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults)
+				.getResultList();
 	}
 
 	public static Collection<Country> fromJsonArrayToCountrys(String json) {
-		return new JSONDeserializer<List<Country>>().use(null, ArrayList.class).use("values", Country.class)
-				.deserialize(json);
+		return new JSONDeserializer<List<Country>>().use(null, ArrayList.class)
+				.use("values", Country.class).deserialize(json);
 	}
 
 	public static Country fromJsonToCountry(String json) {
-		return new JSONDeserializer<Country>().use(null, Country.class).deserialize(json);
+		return new JSONDeserializer<Country>().use(null, Country.class)
+				.deserialize(json);
 	}
 
 	public static void indexCountry(Country country) {
@@ -109,9 +114,12 @@ public class Country {
 			// this type
 			sid.addField(
 					"country_solrsummary_t",
-					new StringBuilder().append(country.getNameRo()).append(" ").append(country.getNameSelf())
-							.append(" ").append(country.getNameEn()).append(" ").append(country.getIso3166())
-							.append(" ").append(country.getIso3166Alpha3()).append(" ").append(country.getId()));
+					new StringBuilder().append(country.getNameRo()).append(" ")
+							.append(country.getNameSelf()).append(" ")
+							.append(country.getNameEn()).append(" ")
+							.append(country.getIso3166()).append(" ")
+							.append(country.getIso3166Alpha3()).append(" ")
+							.append(country.getId()));
 			documents.add(sid);
 		}
 		try {
@@ -147,6 +155,46 @@ public class Country {
 
 	public static String toJsonArray(Collection<Country> collection) {
 		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	/**
+	 * Verifica existenta unei tari in baza de date; in cazul existentei,
+	 * returneaza obiectul respectiv, altfel, introduce tara in baza de date si
+	 * returneaza obiectul corespunzator.
+	 * 
+	 * <p>
+	 * Criterii de unicitate:
+	 * <p>
+	 * <ul>
+	 * <li>countryId
+	 * <li>alpha3
+	 * <li>countryNameSelf
+	 * <li>countryNameEn
+	 * <li>countryNameRo
+	 * <ul>
+	 * <p>
+	 * 
+	 * 
+	 * @param countryId
+	 *            - cheia primara a tarii
+	 * @param countryNameRo
+	 *            - denumirea tarii in limba romana
+	 * @param countryNameSelf
+	 *            - denumirea tarii in limba respectiva
+	 * @param countryNameEn
+	 *            - denumirea tarii in limba engleza
+	 * @param alpha2
+	 *            - codul tarii in format de 2 litere (in format ISO 
+	 *            3166_alpha2)
+	 * @param alpha3
+	 *            - codul tarii in format de 3 litere (in format ISO 
+	 *            3166_alpha3)
+	 * @return
+	 */
+	public static Country checkCountry(Integer countryId, String countryNameRo,
+			String countryNameSelf, String countryNameEn) {
+		// TODO
+		return null;
 	}
 
 	@OneToMany(mappedBy = "countryId")
@@ -293,7 +341,8 @@ public class Country {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this,
+				ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate

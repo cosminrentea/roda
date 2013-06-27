@@ -39,11 +39,12 @@ import flexjson.JSONSerializer;
 @Entity
 @Table(schema = "public", name = "cms_layout_group")
 @Configurable
-
 public class CmsLayoutGroup {
 
 	public static long countCmsLayoutGroups() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM CmsLayoutGroup o", Long.class).getSingleResult();
+		return entityManager().createQuery(
+				"SELECT COUNT(o) FROM CmsLayoutGroup o", Long.class)
+				.getSingleResult();
 	}
 
 	@Async
@@ -66,7 +67,8 @@ public class CmsLayoutGroup {
 	}
 
 	public static List<CmsLayoutGroup> findAllCmsLayoutGroups() {
-		return entityManager().createQuery("SELECT o FROM CmsLayoutGroup o", CmsLayoutGroup.class).getResultList();
+		return entityManager().createQuery("SELECT o FROM CmsLayoutGroup o",
+				CmsLayoutGroup.class).getResultList();
 	}
 
 	public static CmsLayoutGroup findCmsLayoutGroup(Integer id) {
@@ -75,18 +77,24 @@ public class CmsLayoutGroup {
 		return entityManager().find(CmsLayoutGroup.class, id);
 	}
 
-	public static List<CmsLayoutGroup> findCmsLayoutGroupEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM CmsLayoutGroup o", CmsLayoutGroup.class)
-				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
+	public static List<CmsLayoutGroup> findCmsLayoutGroupEntries(
+			int firstResult, int maxResults) {
+		return entityManager()
+				.createQuery("SELECT o FROM CmsLayoutGroup o",
+						CmsLayoutGroup.class).setFirstResult(firstResult)
+				.setMaxResults(maxResults).getResultList();
 	}
 
-	public static Collection<CmsLayoutGroup> fromJsonArrayToCmsLayoutGroups(String json) {
-		return new JSONDeserializer<List<CmsLayoutGroup>>().use(null, ArrayList.class)
-				.use("values", CmsLayoutGroup.class).deserialize(json);
+	public static Collection<CmsLayoutGroup> fromJsonArrayToCmsLayoutGroups(
+			String json) {
+		return new JSONDeserializer<List<CmsLayoutGroup>>()
+				.use(null, ArrayList.class).use("values", CmsLayoutGroup.class)
+				.deserialize(json);
 	}
 
 	public static CmsLayoutGroup fromJsonToCmsLayoutGroup(String json) {
-		return new JSONDeserializer<CmsLayoutGroup>().use(null, CmsLayoutGroup.class).deserialize(json);
+		return new JSONDeserializer<CmsLayoutGroup>().use(null,
+				CmsLayoutGroup.class).deserialize(json);
 	}
 
 	public static void indexCmsLayoutGroup(CmsLayoutGroup cmsLayoutGroup) {
@@ -96,20 +104,26 @@ public class CmsLayoutGroup {
 	}
 
 	@Async
-	public static void indexCmsLayoutGroups(Collection<CmsLayoutGroup> cmslayoutgroups) {
+	public static void indexCmsLayoutGroups(
+			Collection<CmsLayoutGroup> cmslayoutgroups) {
 		List<SolrInputDocument> documents = new ArrayList<SolrInputDocument>();
 		for (CmsLayoutGroup cmsLayoutGroup : cmslayoutgroups) {
 			SolrInputDocument sid = new SolrInputDocument();
 			sid.addField("id", "cmslayoutgroup_" + cmsLayoutGroup.getId());
-			sid.addField("cmsLayoutGroup.parentid_t", cmsLayoutGroup.getParentId());
+			sid.addField("cmsLayoutGroup.parentid_t",
+					cmsLayoutGroup.getParentId());
 			sid.addField("cmsLayoutGroup.name_s", cmsLayoutGroup.getName());
-			sid.addField("cmsLayoutGroup.description_s", cmsLayoutGroup.getDescription());
+			sid.addField("cmsLayoutGroup.description_s",
+					cmsLayoutGroup.getDescription());
 			sid.addField("cmsLayoutGroup.id_i", cmsLayoutGroup.getId());
 			// Add summary field to allow searching documents for objects of
 			// this type
-			sid.addField("cmslayoutgroup_solrsummary_t", new StringBuilder().append(cmsLayoutGroup.getParentId())
-					.append(" ").append(cmsLayoutGroup.getName()).append(" ").append(cmsLayoutGroup.getDescription())
-					.append(" ").append(cmsLayoutGroup.getId()));
+			sid.addField("cmslayoutgroup_solrsummary_t",
+					new StringBuilder().append(cmsLayoutGroup.getParentId())
+							.append(" ").append(cmsLayoutGroup.getName())
+							.append(" ")
+							.append(cmsLayoutGroup.getDescription())
+							.append(" ").append(cmsLayoutGroup.getId()));
 			documents.add(sid);
 		}
 		try {
@@ -145,6 +159,69 @@ public class CmsLayoutGroup {
 
 	public static String toJsonArray(Collection<CmsLayoutGroup> collection) {
 		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	/**
+	 * Verifica existenta unui grup de layout-uri (preluat prin valori ale
+	 * parametrilor de intrare) in baza de date; in caz afirmativ, returneaza
+	 * obiectul corespunzator, altfel, metoda introduce grupul in baza de date
+	 * si apoi returneaza obiectul corespunzator. Verificarea existentei in baza
+	 * de date se realizeaza fie dupa valoarea cheii primare, fie dupa un
+	 * criteriu de unicitate.
+	 * 
+	 * <p>
+	 * Criterii de unicitate:
+	 * <p>
+	 * <ul>
+	 * <li>cmsLayoutGroupId
+	 * <li>cmsLayoutGroupName + parentId
+	 * <ul>
+	 * <p>
+	 * 
+	 * 
+	 * @param cmsLayoutGroupId
+	 *            - cheia primara a groupului de layout-uri
+	 * @param cmsLayoutGroupName
+	 *            - denumirea grupului de layout-uri
+	 * @param description
+	 *            - descrierea grupului de layout-uri
+	 * @param parentId
+	 *            - parintele grupului de layout-uri
+	 * @return
+	 */
+	public static CmsLayoutGroup checkCmsLayoutGroup(Integer cmsLayoutGroupId,
+			String cmsLayoutGroupName, Integer parentId, String description) {
+		// TODO
+		return null;
+	}
+
+	/**
+	 * Verifica existenta unui grup de layout-uri (preluat prin valori ale
+	 * parametrilor de intrare) in baza de date; in caz afirmativ, returneaza
+	 * obiectul corespunzator, altfel, metoda introduce grupul in baza de date
+	 * si apoi returneaza obiectul corespunzator. Verificarea existentei in baza
+	 * de date se realizeaza fie dupa valoarea cheii primare, fie dupa un
+	 * criteriu de unicitate.
+	 * 
+	 * <p>
+	 * Criterii de unicitate:
+	 * <p>
+	 * <ul>
+	 * <li>cmsLayoutGroupId
+	 * <ul>
+	 * <p>
+	 * 
+	 * 
+	 * @param cmsLayoutGroupId
+	 *            - cheia primara a groupului de layout-uri
+	 * @param cmsLayoutGroupName
+	 *            - denumirea grupului de layout-uri
+	 * @return
+	 */
+	public static CmsLayoutGroup checkCmsLayoutGroup(Integer cmsLayoutGroupId,
+			String cmsLayoutGroupName) {
+		// TODO
+		return null;
 	}
 
 	@OneToMany(mappedBy = "parentId")
@@ -236,7 +313,8 @@ public class CmsLayoutGroup {
 		if (this.entityManager.contains(this)) {
 			this.entityManager.remove(this);
 		} else {
-			CmsLayoutGroup attached = CmsLayoutGroup.findCmsLayoutGroup(this.id);
+			CmsLayoutGroup attached = CmsLayoutGroup
+					.findCmsLayoutGroup(this.id);
 			this.entityManager.remove(attached);
 		}
 	}
@@ -270,7 +348,8 @@ public class CmsLayoutGroup {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this,
+				ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate

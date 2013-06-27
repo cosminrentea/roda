@@ -39,11 +39,11 @@ import flexjson.JSONSerializer;
 @Configurable
 @Entity
 @Table(schema = "public", name = "cms_layout")
-
 public class CmsLayout {
 
 	public static long countCmsLayouts() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM CmsLayout o", Long.class).getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM CmsLayout o",
+				Long.class).getSingleResult();
 	}
 
 	@Async
@@ -66,7 +66,8 @@ public class CmsLayout {
 	}
 
 	public static List<CmsLayout> findAllCmsLayouts() {
-		return entityManager().createQuery("SELECT o FROM CmsLayout o", CmsLayout.class).getResultList();
+		return entityManager().createQuery("SELECT o FROM CmsLayout o",
+				CmsLayout.class).getResultList();
 	}
 
 	public static CmsLayout findCmsLayout(Integer id) {
@@ -75,18 +76,23 @@ public class CmsLayout {
 		return entityManager().find(CmsLayout.class, id);
 	}
 
-	public static List<CmsLayout> findCmsLayoutEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM CmsLayout o", CmsLayout.class).setFirstResult(firstResult)
-				.setMaxResults(maxResults).getResultList();
+	public static List<CmsLayout> findCmsLayoutEntries(int firstResult,
+			int maxResults) {
+		return entityManager()
+				.createQuery("SELECT o FROM CmsLayout o", CmsLayout.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults)
+				.getResultList();
 	}
 
 	public static Collection<CmsLayout> fromJsonArrayToCmsLayouts(String json) {
-		return new JSONDeserializer<List<CmsLayout>>().use(null, ArrayList.class).use("values", CmsLayout.class)
+		return new JSONDeserializer<List<CmsLayout>>()
+				.use(null, ArrayList.class).use("values", CmsLayout.class)
 				.deserialize(json);
 	}
 
 	public static CmsLayout fromJsonToCmsLayout(String json) {
-		return new JSONDeserializer<CmsLayout>().use(null, CmsLayout.class).deserialize(json);
+		return new JSONDeserializer<CmsLayout>().use(null, CmsLayout.class)
+				.deserialize(json);
 	}
 
 	public static void indexCmsLayout(CmsLayout cmsLayout) {
@@ -104,7 +110,8 @@ public class CmsLayout {
 			sid.addField("cmsLayout.id_i", cmsLayout.getId());
 			// Add summary field to allow searching documents for objects of
 			// this type
-			sid.addField("cmslayout_solrsummary_t", new StringBuilder().append(cmsLayout.getId()));
+			sid.addField("cmslayout_solrsummary_t",
+					new StringBuilder().append(cmsLayout.getId()));
 			documents.add(sid);
 		}
 		try {
@@ -140,6 +147,72 @@ public class CmsLayout {
 
 	public static String toJsonArray(Collection<CmsLayout> collection) {
 		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	/**
+	 * Verifica existenta unui layout (preluat prin valori ale
+	 * parametrilor de intrare) in baza de date; in caz afirmativ, returneaza
+	 * obiectul corespunzator, altfel, metoda introduce layoutul in baza de date
+	 * si apoi returneaza obiectul corespunzator. Verificarea existentei in baza
+	 * de date se realizeaza fie dupa valoarea cheii primare, fie dupa un
+	 * criteriu de unicitate.
+	 * 
+	 * <p>
+	 * Criterii de unicitate:
+	 * <p>
+	 * <ul>
+	 * <li>cmsLayoutId
+	 * <ul>
+	 * <p>
+	 * 
+	 * 
+	 * @param cmsLayoutId
+	 *            - cheia primara a layout-ului
+	 * @param cmsLayoutName
+	 *            - denumirea layout-ului
+	 * @param content
+	 *            - continutul layout-ului CMS
+	 * @return
+	 */
+	public static CmsLayout checkCmsLayout(Integer cmsLayoutId,
+			String cmsLayoutName, String content) {
+		// TODO
+		return null;
+	}
+
+	/**
+	 * Verifica existenta unui layout (preluat prin valori ale
+	 * parametrilor de intrare) in baza de date; in caz afirmativ, returneaza
+	 * obiectul corespunzator, altfel, metoda introduce layoutul in baza de date
+	 * si apoi returneaza obiectul corespunzator. Verificarea existentei in baza
+	 * de date se realizeaza fie dupa valoarea cheii primare, fie dupa un
+	 * criteriu de unicitate.
+	 * 
+	 * <p>
+	 * Criterii de unicitate:
+	 * <p>
+	 * <ul>
+	 * <li>cmsLayoutId
+	 * <li>cmsLayoutName + cmsLayoutGroupId
+	 * <ul>
+	 * <p>
+	 * 
+	 * 
+	 * @param cmsLayoutId
+	 *            - cheia primara a layout-ului
+	 * @param cmsLayoutName
+	 *            - denumirea layout-ului
+	 * @param cmsLayoutGroupId
+	 *            - codul grupului de layout-uri din care face parte layout-ul
+	 *            curent
+	 * @param content
+	 *            - continutul layout-ului CMS
+	 * @return
+	 */
+	public static CmsLayout checkCmsLayout(Integer cmsLayoutId,
+			String cmsLayoutName, Integer cmsLayoutGroupId, String content) {
+		// TODO
+		return null;
 	}
 
 	@ManyToOne
@@ -255,7 +328,8 @@ public class CmsLayout {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this,
+				ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate

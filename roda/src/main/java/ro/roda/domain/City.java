@@ -41,11 +41,11 @@ import flexjson.JSONSerializer;
 @Configurable
 @Entity
 @Table(schema = "public", name = "city")
-
 public class City {
 
 	public static long countCitys() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM City o", Long.class).getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM City o",
+				Long.class).getSingleResult();
 	}
 
 	@Async
@@ -68,7 +68,8 @@ public class City {
 	}
 
 	public static List<City> findAllCitys() {
-		return entityManager().createQuery("SELECT o FROM City o", City.class).getResultList();
+		return entityManager().createQuery("SELECT o FROM City o", City.class)
+				.getResultList();
 	}
 
 	public static City findCity(Integer id) {
@@ -78,17 +79,19 @@ public class City {
 	}
 
 	public static List<City> findCityEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM City o", City.class).setFirstResult(firstResult)
-				.setMaxResults(maxResults).getResultList();
+		return entityManager().createQuery("SELECT o FROM City o", City.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults)
+				.getResultList();
 	}
 
 	public static Collection<City> fromJsonArrayToCitys(String json) {
-		return new JSONDeserializer<List<City>>().use(null, ArrayList.class).use("values", City.class)
-				.deserialize(json);
+		return new JSONDeserializer<List<City>>().use(null, ArrayList.class)
+				.use("values", City.class).deserialize(json);
 	}
 
 	public static City fromJsonToCity(String json) {
-		return new JSONDeserializer<City>().use(null, City.class).deserialize(json);
+		return new JSONDeserializer<City>().use(null, City.class).deserialize(
+				json);
 	}
 
 	public static void indexCity(City city) {
@@ -116,10 +119,14 @@ public class City {
 			// this type
 			sid.addField(
 					"city_solrsummary_t",
-					new StringBuilder().append(city.getCountryId()).append(" ").append(city.getName()).append(" ")
-							.append(city.getCityCode()).append(" ").append(city.getCityCodeName()).append(" ")
-							.append(city.getCityCodeSup()).append(" ").append(city.getPrefix()).append(" ")
-							.append(city.getCityType()).append(" ").append(city.getCityTypeSystem()).append(" ")
+					new StringBuilder().append(city.getCountryId()).append(" ")
+							.append(city.getName()).append(" ")
+							.append(city.getCityCode()).append(" ")
+							.append(city.getCityCodeName()).append(" ")
+							.append(city.getCityCodeSup()).append(" ")
+							.append(city.getPrefix()).append(" ")
+							.append(city.getCityType()).append(" ")
+							.append(city.getCityTypeSystem()).append(" ")
 							.append(city.getId()));
 			documents.add(sid);
 		}
@@ -158,6 +165,85 @@ public class City {
 		return new JSONSerializer().exclude("*.class").serialize(collection);
 	}
 
+	/**
+	 * Verifica existenta unui oras in baza de date; daca orasul exista,
+	 * returneaza obiectul corespunzator, altfel, il introduce in baza de date
+	 * si apoi returneaza obiectul corespunzator. daca adresa exista, returneaza
+	 * obiectul Verificarea existentei in baza de date se realizeaza fie dupa
+	 * valoarea cheii primare, fie dupa un criteriu de unicitate.
+	 * 
+	 * <p>
+	 * Criterii de unicitate:
+	 * <p>
+	 * <ul>
+	 * <li>cityId
+	 * <ul>
+	 * <p>
+	 * 
+	 * @param cityId
+	 *            - cheia primara a orasului
+	 * @param cityName
+	 *            - numele orasului
+	 * @param countryName
+	 *            - numele tarii in care se gaseste orasul
+	 * @param countryId
+	 *            - cheia primara a tarii curente, din tabelul de tari
+	 * @param cityCode
+	 *            - codul orasului in cadrul sistemului de codificare a oraselor 
+	 * @param cityCodeName
+	 *            -numele sistemului de codificare a orasului (SIRUTA pentru
+	 *            Romania)
+	 * @param cityCodeSup
+	 *            - codul entitatii superioare orasului curent (nu e
+	 *            obligatoriu)
+	 * @param prefix
+	 *            - prefixul numelui orasului (ex: municipiu)
+	 * @param cityType
+	 *            - codul tipului orasului
+	 * @param cityTypeSystem
+	 *            - numele sistemului de codificare a tipului orasului (SIRUTA
+	 *            pentru Romania)
+	 * @return
+	 */
+	public static City checkCity(Integer cityId, String cityName,
+			Integer countryId, String countryName, String cityCode, String cityCodeName,
+			String cityCodeSup, String prefix, String cityType,
+			String cityTypeSystem) {
+		// TODO
+		return null;
+	}
+
+	/**
+	 * Verifica existenta unui oras in baza de date; daca orasul exista,
+	 * returneaza obiectul corespunzator, altfel, il introduce in baza de date
+	 * si apoi returneaza obiectul corespunzator. daca adresa exista, returneaza
+	 * obiectul Verificarea existentei in baza de date se realizeaza fie dupa
+	 * valoarea cheii primare, fie dupa un criteriu de unicitate.
+	 * 
+	 * <p>
+	 * Criterii de unicitate:
+	 * <p>
+	 * <ul>
+	 * <li>cityId
+	 * <ul>
+	 * <p>
+	 * 
+	 * @param cityId
+	 *            - cheia primara a orasului
+	 * @param cityName
+	 *            - numele orasului
+	 * @param countryId
+	 *            - cheia primara a tarii curente, din tabelul de tari
+	 * @param prefix
+	 *            - prefixul numelui orasului (ex: municipiu)
+	 * @return
+	 */
+	public static City checkCity(Integer cityId, String cityName,
+			Integer countryId, String prefix) {
+		// TODO
+		return null;
+	}
+	
 	@OneToMany(mappedBy = "cityId")
 	private Set<Address> addresses;
 
@@ -337,7 +423,8 @@ public class City {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this,
+				ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate

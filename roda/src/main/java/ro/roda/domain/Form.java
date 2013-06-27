@@ -42,11 +42,11 @@ import flexjson.JSONSerializer;
 @Configurable
 @Entity
 @Table(schema = "public", name = "form")
-
 public class Form {
 
 	public static long countForms() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM Form o", Long.class).getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM Form o",
+				Long.class).getSingleResult();
 	}
 
 	@Async
@@ -69,7 +69,8 @@ public class Form {
 	}
 
 	public static List<Form> findAllForms() {
-		return entityManager().createQuery("SELECT o FROM Form o", Form.class).getResultList();
+		return entityManager().createQuery("SELECT o FROM Form o", Form.class)
+				.getResultList();
 	}
 
 	public static Form findForm(Long id) {
@@ -79,17 +80,19 @@ public class Form {
 	}
 
 	public static List<Form> findFormEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM Form o", Form.class).setFirstResult(firstResult)
-				.setMaxResults(maxResults).getResultList();
+		return entityManager().createQuery("SELECT o FROM Form o", Form.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults)
+				.getResultList();
 	}
 
 	public static Collection<Form> fromJsonArrayToForms(String json) {
-		return new JSONDeserializer<List<Form>>().use(null, ArrayList.class).use("values", Form.class)
-				.deserialize(json);
+		return new JSONDeserializer<List<Form>>().use(null, ArrayList.class)
+				.use("values", Form.class).deserialize(json);
 	}
 
 	public static Form fromJsonToForm(String json) {
-		return new JSONDeserializer<Form>().use(null, Form.class).deserialize(json);
+		return new JSONDeserializer<Form>().use(null, Form.class).deserialize(
+				json);
 	}
 
 	public static void indexForm(Form form) {
@@ -106,12 +109,16 @@ public class Form {
 			sid.addField("id", "form_" + form.getId());
 			sid.addField("form.operatorid_t", form.getOperatorId());
 			sid.addField("form.operatornotes_s", form.getOperatorNotes());
-			sid.addField("form.formfilledat_dt", form.getFormFilledAt().getTime());
+			sid.addField("form.formfilledat_dt", form.getFormFilledAt()
+					.getTime());
 			// Add summary field to allow searching documents for objects of
 			// this type
-			sid.addField("form_solrsummary_t",
-					new StringBuilder().append(form.getOperatorId()).append(" ").append(form.getOperatorNotes())
-							.append(" ").append(form.getFormFilledAt().getTime()));
+			sid.addField(
+					"form_solrsummary_t",
+					new StringBuilder().append(form.getOperatorId())
+							.append(" ").append(form.getOperatorNotes())
+							.append(" ")
+							.append(form.getFormFilledAt().getTime()));
 			documents.add(sid);
 		}
 		try {
@@ -147,6 +154,68 @@ public class Form {
 
 	public static String toJsonArray(Collection<Form> collection) {
 		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	/**
+	 * Verifica existenta unui formular (daca este furnizata valoarea
+	 * identificatorului sau) in baza de date; in caz afirmativ, returneaza
+	 * obiectul corespunzator, altfel, metoda introduce formularul in baza de
+	 * date si apoi returneaza obiectul corespunzator.
+	 * 
+	 * <p>
+	 * Criterii de unicitate:
+	 * <p>
+	 * <ul>
+	 * <li>formId
+	 * <ul>
+	 * <p>
+	 * 
+	 * 
+	 * @param formId
+	 *            - cheia primara a formularului din tabelul de formulare de
+	 *            raspunsuri
+	 * @param instanceId
+	 *            - cheia primara a instantei in cadrul careia a fost completat
+	 *            formularul curent
+	 * @param orderInInstance
+	 *            - numarul de ordine al formularului in cadrul instantei
+	 * @param operatorId
+	 *            - operatorul care a completat formularul curent; acesta poate
+	 *            fi furnizat prin valoarea cheii primare a unei persoane sau
+	 *            prin informatiile minimale (nume si prenume) asociate
+	 *            operatorului. Daca persoana nu exista in baza de date, va fi
+	 *            adaugata cu aceste informatii.
+	 * @param operatorNotes
+	 *            - note, insemnari ale operatorului pe parcursul completarii
+	 *            formularului curent
+	 * @param edited_text_vars
+	 *            - lista de raspunsuri corespunzatoare formularului curent,
+	 *            asociate variabilelor de tip text editat; un element al
+	 *            acestei liste contine codul unei variabile de tip text editat
+	 *            si valoarea (textul) ce reprezinta raspunsul
+	 * @param edited_number_vars
+	 *            - lista de raspunsuri corespunzatoare formularului curent,
+	 *            asociate variabilelor de tip numeric editat; un element al
+	 *            acestei liste contine codul unei variabile de tip numeric
+	 *            editat si valoarea (numarul) ce reprezinta raspunsul
+	 * 
+	 * @param selection_vars
+	 *            - lista de raspunsuri corespunzatoare formularului curent,
+	 *            asociate variabilelor de selectie; un element al acestei liste
+	 *            contine codul unei variabile de tip selectie, codul
+	 *            elementului selectat ce reprezinta raspunsul si (optional)
+	 *            numarul de ordine al acestui element in cadrul raspunsului
+	 *            (relevant in cadrul selectiilor multiple, atunci cand ordinea
+	 *            rapunsurilor este importanta).
+	 * @return
+	 */
+	public static Form checkForm(Integer formId, Integer instanceId,
+			Integer orderInInstance, Integer operatorId, String operatorNotes,
+			List<FormEditedTextVar> formEditedTextVars,
+			List<FormEditedNumberVar> formEditedNumberVars,
+			List<FormSelectionVar> formSelectionVars) {
+		// TODO
+		return null;
 	}
 
 	@OneToMany(mappedBy = "formId")
@@ -258,7 +327,8 @@ public class Form {
 		}
 	}
 
-	public void setFormEditedNumberVars(Set<FormEditedNumberVar> formEditedNumberVars) {
+	public void setFormEditedNumberVars(
+			Set<FormEditedNumberVar> formEditedNumberVars) {
 		this.formEditedNumberVars = formEditedNumberVars;
 	}
 
@@ -295,7 +365,8 @@ public class Form {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this,
+				ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate

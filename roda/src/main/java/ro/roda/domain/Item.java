@@ -38,11 +38,11 @@ import flexjson.JSONSerializer;
 @Configurable
 @Entity
 @Table(schema = "public", name = "item")
-
 public class Item {
 
 	public static long countItems() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM Item o", Long.class).getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM Item o",
+				Long.class).getSingleResult();
 	}
 
 	@Async
@@ -65,7 +65,8 @@ public class Item {
 	}
 
 	public static List<Item> findAllItems() {
-		return entityManager().createQuery("SELECT o FROM Item o", Item.class).getResultList();
+		return entityManager().createQuery("SELECT o FROM Item o", Item.class)
+				.getResultList();
 	}
 
 	public static Item findItem(Long id) {
@@ -75,17 +76,19 @@ public class Item {
 	}
 
 	public static List<Item> findItemEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM Item o", Item.class).setFirstResult(firstResult)
-				.setMaxResults(maxResults).getResultList();
+		return entityManager().createQuery("SELECT o FROM Item o", Item.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults)
+				.getResultList();
 	}
 
 	public static Collection<Item> fromJsonArrayToItems(String json) {
-		return new JSONDeserializer<List<Item>>().use(null, ArrayList.class).use("values", Item.class)
-				.deserialize(json);
+		return new JSONDeserializer<List<Item>>().use(null, ArrayList.class)
+				.use("values", Item.class).deserialize(json);
 	}
 
 	public static Item fromJsonToItem(String json) {
-		return new JSONDeserializer<Item>().use(null, Item.class).deserialize(json);
+		return new JSONDeserializer<Item>().use(null, Item.class).deserialize(
+				json);
 	}
 
 	public static void indexItem(Item item) {
@@ -108,8 +111,10 @@ public class Item {
 			// this type
 			sid.addField(
 					"item_solrsummary_t",
-					new StringBuilder().append(item.getScale()).append(" ").append(item.getValue()).append(" ")
-							.append(item.getName()).append(" ").append(item.getId()));
+					new StringBuilder().append(item.getScale()).append(" ")
+							.append(item.getValue()).append(" ")
+							.append(item.getName()).append(" ")
+							.append(item.getId()));
 			documents.add(sid);
 		}
 		try {
@@ -145,6 +150,59 @@ public class Item {
 
 	public static String toJsonArray(Collection<Item> collection) {
 		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	/**
+	 * Verifica existenta unui element corespunzator unei variabile de selectie
+	 * (pe baza parametrilor furnizati); in caz afirmativ, returneaza obiectul
+	 * corespunzator, altfel, metoda introduce elementul in baza de date si apoi
+	 * returneaza obiectul respectiv. Verificarea elementului se realizeaza pe
+	 * baza criteriului de unicitate (nume item, valoare) daca este furnizat
+	 * parametrul <code>value</code>; altfel, sunt cautate elementele
+	 * corespunzatoare capetelor intervalului de selectie (care sunt, de
+	 * asemenea, elemente ce se regasesc in tabelul <code>item</code> din baza
+	 * de date). Daca nu sunt gasite, aceste elemente sunt inserate in tabelul
+	 * corespunzator.
+	 * 
+	 * <p>
+	 * Criterii de unicitate:
+	 * <p>
+	 * <ul>
+	 * <li>itemId
+	 * <li>item + value
+	 * <ul>
+	 * <p>
+	 * 
+	 * @param item_id
+	 *            - cheia primara a elementului din tabelul ce contine
+	 *            elementele posibile ale variabilelor de selectie
+	 * @param item
+	 *            - numele elementului corespunzator unei variabile de selectie
+	 * @param value
+	 *            - valoarea asociata elementului de selectie curent (in cazul
+	 *            selectiei simple)
+	 * @param minValue
+	 *            - valoarea asociata elementului minim al selectiei (in cazul
+	 *            selectiei de tip scala)
+	 * @param maxValue
+	 *            - valoarea asociata elementului maxim al selectiei (in cazul
+	 *            selectiei de tip scala)
+	 * @param minItem
+	 *            - eticheta corespunzatoare elementului minim al selectiei (in
+	 *            cazul selectiei de tip scala)
+	 * @param maxItem
+	 *            - eticheta corespunzatoare elementului maxim al selectiei (in
+	 *            cazul selectiei de tip scala)
+	 * @param units
+	 *            - numarul de unitati ale scalei (in cazul selectiei de tip
+	 *            scala)
+	 * @return
+	 */
+	public static Item checkItem(Integer itemId, String item, String value,
+			String minValue, String maxValue, String minItem, String maxItem,
+			Integer units) {
+		// TODO
+		return null;
 	}
 
 	@Id
@@ -245,7 +303,8 @@ public class Item {
 		this.scale = scale;
 	}
 
-	public void setSelectionVariableItems(Set<SelectionVariableItem> selectionVariableItems) {
+	public void setSelectionVariableItems(
+			Set<SelectionVariableItem> selectionVariableItems) {
 		this.selectionVariableItems = selectionVariableItems;
 	}
 
@@ -258,7 +317,8 @@ public class Item {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this,
+				ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate

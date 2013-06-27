@@ -26,7 +26,7 @@ Se instaleaza MacPorts si toate dependentele necesare
 
 Se ruleaza urmatoarele comenzi, din shell:
 \begin{lstlisting}[breaklines=true]
-sudo port install maven3 R postgresql92 pgadmin3  apache-solr4 htmldoc doxygen graphviz firefox-x11 rb-rubygems
+sudo port install maven3 R postgresql92 pgadmin3  apache-solr4 htmldoc doxygen graphviz firefox-x11 rb-rubygems tomcat6
 	
 sudo gem install vmc
 \end{lstlisting}
@@ -367,12 +367,14 @@ server, in lista din view-ul 'Servers'), aplicatia e disponibila la:
 \subsection{Rularea pe un Server Local ad-hoc de tip Tomcat}
 Din shell, in folder-ul radacina al proiectului 'roda', cu comanda:
 \begin{lstlisting}
-	mvn tomcat:run
+	mvn -Dmaven.tomcat.fork=false tomcat:run
 \end{lstlisting}
 Daca portul local 8080 era liber (portul se poate schimba in 'pom.xml'),
 aplicatia e disponibila la:
 
 \url{http://localhost:8080/roda}
+
+Serverul se opreste din shell, de ex. cu Ctrl + C.
 
 \subsection{Rularea locala a Selenium Server}
 Din shell, in folder-ul radacina al proiectului 'roda', cu comanda:

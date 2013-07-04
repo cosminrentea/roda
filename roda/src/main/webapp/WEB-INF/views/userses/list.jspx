@@ -3,6 +3,9 @@
     <jsp:directive.page contentType="text/html;charset=UTF-8"/>
     <jsp:output omit-xml-declaration="yes"/>
     <page:list id="pl_ro_roda_domain_Users" items="${userses}" z="m+kp+s9grs5OGfoBKu6KFCv4OGU=">
-        <table:table data="${userses}" id="l_ro_roda_domain_Users" path="/userses" z="UoU7GfrFOkuHLzrWMtgKzTel1m4="/>
+        <table:table data="${userses}" id="l_ro_roda_domain_Users" path="/userses" z="UoU7GfrFOkuHLzrWMtgKzTel1m4=">
+        <table:column id="c_ro_roda_domain_Users_enabled" property="enabled" z="7cJhGbijsvP6xnM2rgU/fH8f1Ps="/>
+        <table:column id="c_ro_roda_domain_Users_username" property="username" z="/7+2gfxmSvDY0jhYZbdb19vyj8k="/>
+ 	</table:table>
     </page:list>
 </div>

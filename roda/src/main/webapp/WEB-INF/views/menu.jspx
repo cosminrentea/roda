@@ -71,10 +71,6 @@
             <menu:item id="i_scale_new" messageCode="global_menu_new" url="/scales?form" z="nV2TgITeioo9wxQAu7daZUcFzlg="/>
             <menu:item id="i_scale_list" messageCode="global_menu_list" url="/scales?page=1&amp;size=${empty param.size ? 10 : param.size}" z="Iy+IV76xmqtbttKmN6IZgN0hllQ="/>
         </menu:category>
-        <menu:category id="c_instancekeyword" z="v4Vhsr2CkRMmDYdT45V4VLSu4J0=">
-            <menu:item id="i_instancekeyword_new" messageCode="global_menu_new" url="/instancekeywords?form" z="SSmOWU8286/gi3dVurWE2NJkzcw="/>
-            <menu:item id="i_instancekeyword_list" messageCode="global_menu_list" url="/instancekeywords?page=1&amp;size=${empty param.size ? 10 : param.size}" z="zmHIHtEiNnd4+xkx0kNcQs3V21w="/>
-        </menu:category>
         <menu:category id="c_usersettingvalue" z="BJ1zDUuNHFCz7WbehrkuUV8eb4s=">
             <menu:item id="i_usersettingvalue_new" messageCode="global_menu_new" url="/usersettingvalues?form" z="vhmofD4It1FnTZgDbkiZqbpbXhE="/>
             <menu:item id="i_usersettingvalue_list" messageCode="global_menu_list" url="/usersettingvalues?page=1&amp;size=${empty param.size ? 10 : param.size}" z="s5uX2/jCaEy8pU95UXACVTjTPsw="/>
@@ -251,10 +247,6 @@
             <menu:item id="i_person_new" messageCode="global_menu_new" url="/people?form" z="IlD8NFD64X8egaRrgHbQeWKT68I="/>
             <menu:item id="i_person_list" messageCode="global_menu_list" url="/people?page=1&amp;size=${empty param.size ? 10 : param.size}" z="MFjeqYeiMgVzk2P/OWfFpXZhhS4="/>
         </menu:category>
-        <menu:category id="c_titletype" z="i8Hln1r8PcUFlVYbHq5ArzyNm8A=">
-            <menu:item id="i_titletype_new" messageCode="global_menu_new" url="/titletypes?form" z="PU2W4ufsLvLQBKVkDjXMKlo4o8Y="/>
-            <menu:item id="i_titletype_list" messageCode="global_menu_list" url="/titletypes?page=1&amp;size=${empty param.size ? 10 : param.size}" z="2pcfnPw4rld46PiP6nF2P9/2ceo="/>
-        </menu:category>
         <menu:category id="c_form" z="li55QJ+F+IFotCv0M07wc1IZPic=">
             <menu:item id="i_form_new" messageCode="global_menu_new" url="/forms?form" z="OYKDlzsMN+er7C3TnPU8440yisI="/>
             <menu:item id="i_form_list" messageCode="global_menu_list" url="/forms?page=1&amp;size=${empty param.size ? 10 : param.size}" z="cOJvSrEy6Tsko27bMrr0Ql34ETo="/>
@@ -326,10 +318,6 @@
         <menu:category id="c_studypersonasoc" z="1S4d00JUs85rJT/847AoWpnNHaA=">
             <menu:item id="i_studypersonasoc_new" messageCode="global_menu_new" url="/studypersonasocs?form" z="VIEQOkLDVkJIyDRMT5OtK+UPR8Q="/>
             <menu:item id="i_studypersonasoc_list" messageCode="global_menu_list" url="/studypersonasocs?page=1&amp;size=${empty param.size ? 10 : param.size}" z="/AkfVF4+lXUGb4cAnKCdoTSZNIY="/>
-        </menu:category>
-        <menu:category id="c_studydocuments" z="cwPEElRpPwwbDbU+jQQqepDxT40=">
-            <menu:item id="i_studydocuments_new" messageCode="global_menu_new" url="/studydocumentses?form" z="8OgVHgOw7ZIynnbxk8O26v+G4qY="/>
-            <menu:item id="i_studydocuments_list" messageCode="global_menu_list" url="/studydocumentses?page=1&amp;size=${empty param.size ? 10 : param.size}" z="WJer771Dtq6idOeGEPHCrvS/H3I="/>
         </menu:category>
         <menu:category id="c_personinternet" z="fd+SwcwXKPFCSL0Z8zxMbgg6mHM=">
             <menu:item id="i_personinternet_new" messageCode="global_menu_new" url="/personinternets?form" z="vRENNYnxnmHNvG6Tf1PVw7AVaF0="/>

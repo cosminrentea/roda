@@ -9,6 +9,7 @@ import org.springframework.format.support.FormattingConversionServiceFactoryBean
 
 import ro.roda.domain.*;
 import ro.roda.service.*;
+import ro.roda.transformer.CatalogByYear;
 
 @Configurable
 public class ApplicationConversionServiceFactoryBean extends FormattingConversionServiceFactoryBean {
@@ -57,6 +58,9 @@ public class ApplicationConversionServiceFactoryBean extends FormattingConversio
 	@Autowired
 	CatalogService catalogService;
 
+	@Autowired
+	CatalogByYearService catalogByYearService;
+	
 	@Autowired
 	CatalogStudyService catalogStudyService;
 
@@ -485,6 +489,15 @@ public class ApplicationConversionServiceFactoryBean extends FormattingConversio
 		};
 	}
 
+	public Converter<Integer, CatalogByYear> getIdToCatalogByYearConverter() {
+		return new org.springframework.core.convert.converter.Converter<java.lang.Integer, ro.roda.transformer.CatalogByYear>() {
+			public ro.roda.transformer.CatalogByYear convert(java.lang.Integer id) {
+				return catalogByYearService.findCatalogByYear(id);
+			}
+		};
+	}
+
+	
 	public Converter<String, Catalog> getStringToCatalogConverter() {
 		return new org.springframework.core.convert.converter.Converter<java.lang.String, ro.roda.domain.Catalog>() {
 			public ro.roda.domain.Catalog convert(String id) {

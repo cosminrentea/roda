@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Logger;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -19,8 +21,13 @@ public class SeleniumServerIT {
 
 	private static DefaultSelenium s;
 
+	static Logger log = Logger.getLogger(SeleniumServerIT.class);
+
 	@BeforeClass
 	public static void beforeClass() throws IOException {
+
+		// Set up a simple configuration that logs on the console
+		BasicConfigurator.configure();
 
 		InputStream is = SeleniumServerIT.class.getClassLoader().getResourceAsStream(testProperties);
 		Assert.assertNotNull("Not found: " + testProperties, is);
@@ -37,6 +44,11 @@ public class SeleniumServerIT {
 		Assert.assertNotNull("Property not set in: " + testProperties,
 				homepageUrl = props.getProperty("selenium.HomepageUrl"));
 		int serverPort = Integer.parseInt(props.getProperty("selenium.ServerPort"));
+
+		log.trace(serverHost);
+		log.trace(serverPort);
+		log.trace(browserOptions);
+		log.trace(homepageUrl);
 
 		s = new DefaultSelenium(serverHost, serverPort, browserOptions, homepageUrl);
 		s.start();

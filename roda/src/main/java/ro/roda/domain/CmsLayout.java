@@ -150,67 +150,33 @@ public class CmsLayout {
 	}
 
 	/**
-	 * Verifica existenta unui layout (preluat prin valori ale
-	 * parametrilor de intrare) in baza de date; in caz afirmativ, returneaza
-	 * obiectul corespunzator, altfel, metoda introduce layoutul in baza de date
-	 * si apoi returneaza obiectul corespunzator. Verificarea existentei in baza
-	 * de date se realizeaza fie dupa valoarea cheii primare, fie dupa un
-	 * criteriu de unicitate.
+	 * Verifica existenta unui layout CMS in baza de date; in caz afirmativ,
+	 * returneaza obiectul corespunzator, altfel, metoda introduce layout-ul CMS
+	 * in baza de date si apoi returneaza obiectul corespunzator. Verificarea
+	 * existentei in baza de date se realizeaza fie dupa valoarea
+	 * identificatorului, fie dupa un criteriu de unicitate.
 	 * 
 	 * <p>
 	 * Criterii de unicitate:
-	 * <p>
 	 * <ul>
-	 * <li>cmsLayoutId
+	 * <li>id
+	 * <li>name + layoutGroupId
 	 * <ul>
+	 * 
 	 * <p>
 	 * 
-	 * 
-	 * @param cmsLayoutId
-	 *            - cheia primara a layout-ului
-	 * @param cmsLayoutName
-	 *            - denumirea layout-ului
+	 * @param id
+	 *            - identificatorul layout-ului CMS.
+	 * @param name
+	 *            - numele layout-ului CMS.
+	 * @param layoutGroupId
+	 *            - identificatorul grupului din care face parte layout-ul CMS.
 	 * @param content
-	 *            - continutul layout-ului CMS
+	 *            - continutul layout-ului CMS.
 	 * @return
 	 */
-	public static CmsLayout checkCmsLayout(Integer cmsLayoutId,
-			String cmsLayoutName, String content) {
-		// TODO
-		return null;
-	}
-
-	/**
-	 * Verifica existenta unui layout (preluat prin valori ale
-	 * parametrilor de intrare) in baza de date; in caz afirmativ, returneaza
-	 * obiectul corespunzator, altfel, metoda introduce layoutul in baza de date
-	 * si apoi returneaza obiectul corespunzator. Verificarea existentei in baza
-	 * de date se realizeaza fie dupa valoarea cheii primare, fie dupa un
-	 * criteriu de unicitate.
-	 * 
-	 * <p>
-	 * Criterii de unicitate:
-	 * <p>
-	 * <ul>
-	 * <li>cmsLayoutId
-	 * <li>cmsLayoutName + cmsLayoutGroupId
-	 * <ul>
-	 * <p>
-	 * 
-	 * 
-	 * @param cmsLayoutId
-	 *            - cheia primara a layout-ului
-	 * @param cmsLayoutName
-	 *            - denumirea layout-ului
-	 * @param cmsLayoutGroupId
-	 *            - codul grupului de layout-uri din care face parte layout-ul
-	 *            curent
-	 * @param content
-	 *            - continutul layout-ului CMS
-	 * @return
-	 */
-	public static CmsLayout checkCmsLayout(Integer cmsLayoutId,
-			String cmsLayoutName, Integer cmsLayoutGroupId, String content) {
+	public static CmsLayout checkCmsLayout(Integer id, String name,
+			Integer layoutGroupId, String content) {
 		// TODO
 		return null;
 	}

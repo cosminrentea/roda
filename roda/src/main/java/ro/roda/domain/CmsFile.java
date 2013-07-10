@@ -37,11 +37,11 @@ import flexjson.JSONSerializer;
 @Entity
 @Table(schema = "public", name = "cms_file")
 @Configurable
-
 public class CmsFile {
 
 	public static long countCmsFiles() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM CmsFile o", Long.class).getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM CmsFile o",
+				Long.class).getSingleResult();
 	}
 
 	@Async
@@ -64,7 +64,8 @@ public class CmsFile {
 	}
 
 	public static List<CmsFile> findAllCmsFiles() {
-		return entityManager().createQuery("SELECT o FROM CmsFile o", CmsFile.class).getResultList();
+		return entityManager().createQuery("SELECT o FROM CmsFile o",
+				CmsFile.class).getResultList();
 	}
 
 	public static CmsFile findCmsFile(Integer id) {
@@ -73,18 +74,22 @@ public class CmsFile {
 		return entityManager().find(CmsFile.class, id);
 	}
 
-	public static List<CmsFile> findCmsFileEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM CmsFile o", CmsFile.class).setFirstResult(firstResult)
-				.setMaxResults(maxResults).getResultList();
+	public static List<CmsFile> findCmsFileEntries(int firstResult,
+			int maxResults) {
+		return entityManager()
+				.createQuery("SELECT o FROM CmsFile o", CmsFile.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults)
+				.getResultList();
 	}
 
 	public static Collection<CmsFile> fromJsonArrayToCmsFiles(String json) {
-		return new JSONDeserializer<List<CmsFile>>().use(null, ArrayList.class).use("values", CmsFile.class)
-				.deserialize(json);
+		return new JSONDeserializer<List<CmsFile>>().use(null, ArrayList.class)
+				.use("values", CmsFile.class).deserialize(json);
 	}
 
 	public static CmsFile fromJsonToCmsFile(String json) {
-		return new JSONDeserializer<CmsFile>().use(null, CmsFile.class).deserialize(json);
+		return new JSONDeserializer<CmsFile>().use(null, CmsFile.class)
+				.deserialize(json);
 	}
 
 	public static void indexCmsFile(CmsFile cmsFile) {
@@ -108,9 +113,11 @@ public class CmsFile {
 			// this type
 			sid.addField(
 					"cmsfile_solrsummary_t",
-					new StringBuilder().append(cmsFile.getCmsFolderId()).append(" ").append(cmsFile.getFilename())
-							.append(" ").append(cmsFile.getLabel()).append(" ").append(cmsFile.getFilesize())
-							.append(" ").append(cmsFile.getId()));
+					new StringBuilder().append(cmsFile.getCmsFolderId())
+							.append(" ").append(cmsFile.getFilename())
+							.append(" ").append(cmsFile.getLabel()).append(" ")
+							.append(cmsFile.getFilesize()).append(" ")
+							.append(cmsFile.getId()));
 			documents.add(sid);
 		}
 		try {
@@ -146,6 +153,40 @@ public class CmsFile {
 
 	public static String toJsonArray(Collection<CmsFile> collection) {
 		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	/**
+	 * Verifica existenta unui fisier CMS in baza de date; in caz afirmativ,
+	 * returneaza obiectul corespunzator, altfel, metoda introduce fisierul CMS
+	 * in baza de date si apoi returneaza obiectul corespunzator. Verificarea
+	 * existentei in baza de date se realizeaza fie dupa valoarea
+	 * identificatorului, fie dupa un criteriu de unicitate.
+	 * 
+	 * <p>
+	 * Criterii de unicitate:
+	 * <ul>
+	 * <li>id
+	 * <li>fileName + folderId
+	 * <ul>
+	 * 
+	 * <p>
+	 * 
+	 * @param id
+	 *            - identificatorul fisierului CMS.
+	 * @param fileName
+	 *            - numele fisierului CMS.
+	 * @param label
+	 *            - eticheta sau aliasul fisierului CMS.
+	 * @param folderId
+	 *            - identificatorul directorului CMS parinte.
+	 * @param fileSize
+	 *            - marimea fisierului CMS in octeti.
+	 * @return
+	 */
+	public static CmsFile checkCmsFile(Integer id, String fileName,
+			String label, Integer folderId, Integer fileSize) {
+		// TODO
+		return null;
 	}
 
 	@ManyToOne
@@ -261,7 +302,8 @@ public class CmsFile {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this,
+				ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate

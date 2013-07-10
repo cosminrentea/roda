@@ -41,7 +41,8 @@ import flexjson.JSONSerializer;
 public class AclClass {
 
 	public static long countAclClasses() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM AclClass o", Long.class).getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM AclClass o",
+				Long.class).getSingleResult();
 	}
 
 	@Async
@@ -69,22 +70,28 @@ public class AclClass {
 		return entityManager().find(AclClass.class, id);
 	}
 
-	public static List<AclClass> findAclClassEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM AclClass o", AclClass.class).setFirstResult(firstResult)
-				.setMaxResults(maxResults).getResultList();
+	public static List<AclClass> findAclClassEntries(int firstResult,
+			int maxResults) {
+		return entityManager()
+				.createQuery("SELECT o FROM AclClass o", AclClass.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults)
+				.getResultList();
 	}
 
 	public static List<AclClass> findAllAclClasses() {
-		return entityManager().createQuery("SELECT o FROM AclClass o", AclClass.class).getResultList();
+		return entityManager().createQuery("SELECT o FROM AclClass o",
+				AclClass.class).getResultList();
 	}
 
 	public static Collection<AclClass> fromJsonArrayToAclClasses(String json) {
-		return new JSONDeserializer<List<AclClass>>().use(null, ArrayList.class).use("values", AclClass.class)
+		return new JSONDeserializer<List<AclClass>>()
+				.use(null, ArrayList.class).use("values", AclClass.class)
 				.deserialize(json);
 	}
 
 	public static AclClass fromJsonToAclClass(String json) {
-		return new JSONDeserializer<AclClass>().use(null, AclClass.class).deserialize(json);
+		return new JSONDeserializer<AclClass>().use(null, AclClass.class)
+				.deserialize(json);
 	}
 
 	public static void indexAclClass(AclClass aclClass) {
@@ -104,7 +111,8 @@ public class AclClass {
 			// Add summary field to allow searching documents for objects of
 			// this type
 			sid.addField("aclclass_solrsummary_t",
-					new StringBuilder().append(aclClass.getClass1()).append(" ").append(aclClass.getId()));
+					new StringBuilder().append(aclClass.getClass1())
+							.append(" ").append(aclClass.getId()));
 			documents.add(sid);
 		}
 		try {
@@ -140,6 +148,33 @@ public class AclClass {
 
 	public static String toJsonArray(Collection<AclClass> collection) {
 		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	/**
+	 * Verifica existenta unei clase ACL in baza de date; in caz afirmativ,
+	 * returneaza obiectul corespunzator, altfel, metoda introduce clasa ACL in
+	 * baza de date si apoi returneaza obiectul corespunzator. Verificarea
+	 * existentei in baza de date se realizeaza fie dupa valoarea
+	 * identificatorului, fie dupa un criteriu de unicitate.
+	 * 
+	 * <p>
+	 * Criterii de unicitate:
+	 * <ul>
+	 * <li>id
+	 * <li>cls
+	 * <ul>
+	 * 
+	 * <p>
+	 * 
+	 * @param id
+	 *            - identificatorul clasei.
+	 * @param cls
+	 *            - denumirea clasei.
+	 * @return
+	 */
+	public static AclClass checkAclClass(Integer id, String cls) {
+		// TODO
+		return null;
 	}
 
 	@OneToMany(mappedBy = "objectIdClass")
@@ -214,7 +249,8 @@ public class AclClass {
 		}
 	}
 
-	public void setAclObjectIdentities(Set<AclObjectIdentity> aclObjectIdentities) {
+	public void setAclObjectIdentities(
+			Set<AclObjectIdentity> aclObjectIdentities) {
 		this.aclObjectIdentities = aclObjectIdentities;
 	}
 
@@ -231,7 +267,8 @@ public class AclClass {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this,
+				ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate

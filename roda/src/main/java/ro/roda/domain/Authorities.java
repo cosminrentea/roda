@@ -33,11 +33,12 @@ import flexjson.JSONSerializer;
 @Entity
 @Table(schema = "public", name = "authorities")
 @Configurable
-
 public class Authorities {
 
 	public static long countAuthoritieses() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM Authorities o", Long.class).getSingleResult();
+		return entityManager().createQuery(
+				"SELECT COUNT(o) FROM Authorities o", Long.class)
+				.getSingleResult();
 	}
 
 	@Async
@@ -60,7 +61,8 @@ public class Authorities {
 	}
 
 	public static List<Authorities> findAllAuthoritieses() {
-		return entityManager().createQuery("SELECT o FROM Authorities o", Authorities.class).getResultList();
+		return entityManager().createQuery("SELECT o FROM Authorities o",
+				Authorities.class).getResultList();
 	}
 
 	public static Authorities findAuthorities(AuthoritiesPK id) {
@@ -69,18 +71,24 @@ public class Authorities {
 		return entityManager().find(Authorities.class, id);
 	}
 
-	public static List<Authorities> findAuthoritiesEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM Authorities o", Authorities.class)
-				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
+	public static List<Authorities> findAuthoritiesEntries(int firstResult,
+			int maxResults) {
+		return entityManager()
+				.createQuery("SELECT o FROM Authorities o", Authorities.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults)
+				.getResultList();
 	}
 
-	public static Collection<Authorities> fromJsonArrayToAuthoritieses(String json) {
-		return new JSONDeserializer<List<Authorities>>().use(null, ArrayList.class).use("values", Authorities.class)
+	public static Collection<Authorities> fromJsonArrayToAuthoritieses(
+			String json) {
+		return new JSONDeserializer<List<Authorities>>()
+				.use(null, ArrayList.class).use("values", Authorities.class)
 				.deserialize(json);
 	}
 
 	public static Authorities fromJsonToAuthorities(String json) {
-		return new JSONDeserializer<Authorities>().use(null, Authorities.class).deserialize(json);
+		return new JSONDeserializer<Authorities>().use(null, Authorities.class)
+				.deserialize(json);
 	}
 
 	public static void indexAuthorities(Authorities authorities) {
@@ -99,8 +107,9 @@ public class Authorities {
 			sid.addField("authorities.id_t", authorities.getId());
 			// Add summary field to allow searching documents for objects of
 			// this type
-			sid.addField("authorities_solrsummary_t", new StringBuilder().append(authorities.getUsername()).append(" ")
-					.append(authorities.getId()));
+			sid.addField("authorities_solrsummary_t",
+					new StringBuilder().append(authorities.getUsername())
+							.append(" ").append(authorities.getId()));
 			documents.add(sid);
 		}
 		try {
@@ -136,6 +145,32 @@ public class Authorities {
 
 	public static String toJsonArray(Collection<Authorities> collection) {
 		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	/**
+	 * Verifica existenta unei autorizatii in baza de date; daca adresa exista,
+	 * returneaza obiectul corespunzator, altfel, metoda introduce autorizatia
+	 * in baza de date si apoi returneaza obiectul corespunzator. Verificarea
+	 * existentei in baza de date se realizeaza fie dupa valoarea
+	 * identificatorului, fie dupa un criteriu de unicitate.
+	 * 
+	 * <p>
+	 * Criterii de unicitate:
+	 * <ul>
+	 * <li>userName + type
+	 * <ul>
+	 * 
+	 * <p>
+	 * 
+	 * @param userName
+	 *            - numele utilizatorului beneficiar.
+	 * @param type
+	 *            - tipul autorizatiei.
+	 * @return
+	 */
+	public static Authorities checkAuthorities(String userName, String type) {
+		// TODO
+		return null;
 	}
 
 	@EmbeddedId
@@ -214,7 +249,8 @@ public class Authorities {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this,
+				ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate

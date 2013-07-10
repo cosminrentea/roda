@@ -148,65 +148,36 @@ public class Person {
 	}
 
 	/**
-	 * Verifica existenta unei persoane in baza de date; daca exista, returneaza
-	 * obiectul respectiv, altfel, il introduce si returneaza obiectul
-	 * corespunzator.
+	 * Verifica existenta unei persoane in baza de date; in caz afirmativ,
+	 * returneaza obiectul corespunzator, altfel, metoda introduce persoana in
+	 * baza de date si apoi returneaza obiectul corespunzator. Verificarea
+	 * existentei in baza de date se realizeaza fie dupa valoarea
+	 * identificatorului, fie dupa un criteriu de unicitate.
 	 * 
+	 * <p>
 	 * Criterii de unicitate:
+	 * <ul>
+	 * <li>id
+	 * <ul>
 	 * 
-	 * fName + mName + lName
+	 * <p>
 	 * 
-	 * @param personId
+	 * @param id
+	 *            - identificatorul persoanei.
 	 * @param fName
+	 *            - primul nume al persoanei.
 	 * @param mName
+	 *            - al doilea nume al persoanei.
 	 * @param lName
-	 * @param personPrefixId
-	 * @param personSufixId
+	 *            - ultimul nume al persoanei.
+	 * @param prefixId
+	 *            - identificatorul prefixului persoanei.
+	 * @param sufixId
+	 *            - identificatorul sufixului persoanei.
 	 * @return
 	 */
-	public static Person checkPerson(Integer personId, String fName,
-			String mName, String lName, Integer personPrefixId,
-			Integer personSufixId) {
-		// TODO
-		return null;
-	}
-
-	/**
-	 * Verifica existenta unei persoane in baza de date; daca nu exista,
-	 * inserarea va avea loc doar pe baza campurilor obligatorii.
-	 * 
-	 * @param personId
-	 * @param fName
-	 * @param mName
-	 * @param lName
-	 * @return
-	 */
-	public static Person checkPerson(Integer personId, String fName,
-			String mName, String lName) {
-		// TODO
-		return null;
-	}
-
-	/**
-	 * Verifica existenta unei persoane; in cazul inexistentei, aceasta poate
-	 * fi introdusa furnizand informatii complete (inclusiv listele de adrese,
-	 * email-uri si adrese internet corespunzatoare).
-	 * 
-	 * @param personId
-	 * @param fName
-	 * @param mName
-	 * @param lName
-	 * @param personPrefixId
-	 * @param personSufixId
-	 * @param personAddresses
-	 * @param personEmails
-	 * @param personInternets
-	 * @return
-	 */
-	public static Person checkPerson(Integer personId, String fName,
-			String mName, String lName, Integer personPrefixId,
-			Integer personSufixId, List<Address> personAddresses,
-			List<Email> personEmails, List<Internet> personInternets) {
+	public static Person checkPerson(Integer id, String fName, String mName,
+			String lName, Integer prefixId, Integer sufixId) {
 		// TODO
 		return null;
 	}

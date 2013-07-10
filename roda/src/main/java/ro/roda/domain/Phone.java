@@ -37,11 +37,11 @@ import flexjson.JSONSerializer;
 @Entity
 @Table(schema = "public", name = "phone")
 @Configurable
-
 public class Phone {
 
 	public static long countPhones() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM Phone o", Long.class).getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM Phone o",
+				Long.class).getSingleResult();
 	}
 
 	@Async
@@ -64,7 +64,9 @@ public class Phone {
 	}
 
 	public static List<Phone> findAllPhones() {
-		return entityManager().createQuery("SELECT o FROM Phone o", Phone.class).getResultList();
+		return entityManager()
+				.createQuery("SELECT o FROM Phone o", Phone.class)
+				.getResultList();
 	}
 
 	public static Phone findPhone(Integer id) {
@@ -74,17 +76,20 @@ public class Phone {
 	}
 
 	public static List<Phone> findPhoneEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM Phone o", Phone.class).setFirstResult(firstResult)
-				.setMaxResults(maxResults).getResultList();
+		return entityManager()
+				.createQuery("SELECT o FROM Phone o", Phone.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults)
+				.getResultList();
 	}
 
 	public static Collection<Phone> fromJsonArrayToPhones(String json) {
-		return new JSONDeserializer<List<Phone>>().use(null, ArrayList.class).use("values", Phone.class)
-				.deserialize(json);
+		return new JSONDeserializer<List<Phone>>().use(null, ArrayList.class)
+				.use("values", Phone.class).deserialize(json);
 	}
 
 	public static Phone fromJsonToPhone(String json) {
-		return new JSONDeserializer<Phone>().use(null, Phone.class).deserialize(json);
+		return new JSONDeserializer<Phone>().use(null, Phone.class)
+				.deserialize(json);
 	}
 
 	public static void indexPhone(Phone phone) {
@@ -104,8 +109,10 @@ public class Phone {
 			sid.addField("phone.id_i", phone.getId());
 			// Add summary field to allow searching documents for objects of
 			// this type
-			sid.addField("phone_solrsummary_t",
-					new StringBuilder().append(phone.getPhone()).append(" ").append(phone.getPhoneType()).append(" ")
+			sid.addField(
+					"phone_solrsummary_t",
+					new StringBuilder().append(phone.getPhone()).append(" ")
+							.append(phone.getPhoneType()).append(" ")
 							.append(phone.getId()));
 			documents.add(sid);
 		}
@@ -142,6 +149,35 @@ public class Phone {
 
 	public static String toJsonArray(Collection<Phone> collection) {
 		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	/**
+	 * Verifica existenta unui abonament de telefon in baza de date; in caz
+	 * afirmativ, returneaza obiectul corespunzator, altfel, metoda introduce
+	 * abonamentul de telefon in baza de date si apoi returneaza obiectul
+	 * corespunzator. Verificarea existentei in baza de date se realizeaza fie
+	 * dupa valoarea identificatorului, fie dupa un criteriu de unicitate.
+	 * 
+	 * <p>
+	 * Criterii de unicitate:
+	 * <ul>
+	 * <li>id
+	 * <li>number
+	 * <ul>
+	 * 
+	 * <p>
+	 * 
+	 * @param id
+	 *            - identificatorul abonamentului de telefon.
+	 * @param number
+	 *            - numarul abonamentului de telefon.
+	 * @param type
+	 *            - tipul abonamentului de telefon (ex: mobil).
+	 * @return
+	 */
+	public static Phone checkPhone(Integer id, String number, String type) {
+		// TODO
+		return null;
 	}
 
 	@Id
@@ -255,7 +291,8 @@ public class Phone {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this,
+				ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate

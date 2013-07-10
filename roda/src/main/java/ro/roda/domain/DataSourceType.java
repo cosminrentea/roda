@@ -39,11 +39,12 @@ import flexjson.JSONSerializer;
 @Configurable
 @Entity
 @Table(schema = "public", name = "data_source_type")
-
 public class DataSourceType {
 
 	public static long countDataSourceTypes() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM DataSourceType o", Long.class).getSingleResult();
+		return entityManager().createQuery(
+				"SELECT COUNT(o) FROM DataSourceType o", Long.class)
+				.getSingleResult();
 	}
 
 	@Async
@@ -66,7 +67,8 @@ public class DataSourceType {
 	}
 
 	public static List<DataSourceType> findAllDataSourceTypes() {
-		return entityManager().createQuery("SELECT o FROM DataSourceType o", DataSourceType.class).getResultList();
+		return entityManager().createQuery("SELECT o FROM DataSourceType o",
+				DataSourceType.class).getResultList();
 	}
 
 	public static DataSourceType findDataSourceType(Integer id) {
@@ -75,18 +77,24 @@ public class DataSourceType {
 		return entityManager().find(DataSourceType.class, id);
 	}
 
-	public static List<DataSourceType> findDataSourceTypeEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM DataSourceType o", DataSourceType.class)
-				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
+	public static List<DataSourceType> findDataSourceTypeEntries(
+			int firstResult, int maxResults) {
+		return entityManager()
+				.createQuery("SELECT o FROM DataSourceType o",
+						DataSourceType.class).setFirstResult(firstResult)
+				.setMaxResults(maxResults).getResultList();
 	}
 
-	public static Collection<DataSourceType> fromJsonArrayToDataSourceTypes(String json) {
-		return new JSONDeserializer<List<DataSourceType>>().use(null, ArrayList.class)
-				.use("values", DataSourceType.class).deserialize(json);
+	public static Collection<DataSourceType> fromJsonArrayToDataSourceTypes(
+			String json) {
+		return new JSONDeserializer<List<DataSourceType>>()
+				.use(null, ArrayList.class).use("values", DataSourceType.class)
+				.deserialize(json);
 	}
 
 	public static DataSourceType fromJsonToDataSourceType(String json) {
-		return new JSONDeserializer<DataSourceType>().use(null, DataSourceType.class).deserialize(json);
+		return new JSONDeserializer<DataSourceType>().use(null,
+				DataSourceType.class).deserialize(json);
 	}
 
 	public static void indexDataSourceType(DataSourceType dataSourceType) {
@@ -96,7 +104,8 @@ public class DataSourceType {
 	}
 
 	@Async
-	public static void indexDataSourceTypes(Collection<DataSourceType> datasourcetypes) {
+	public static void indexDataSourceTypes(
+			Collection<DataSourceType> datasourcetypes) {
 		List<SolrInputDocument> documents = new ArrayList<SolrInputDocument>();
 		for (DataSourceType dataSourceType : datasourcetypes) {
 			SolrInputDocument sid = new SolrInputDocument();
@@ -106,7 +115,8 @@ public class DataSourceType {
 			// Add summary field to allow searching documents for objects of
 			// this type
 			sid.addField("datasourcetype_solrsummary_t",
-					new StringBuilder().append(dataSourceType.getName()).append(" ").append(dataSourceType.getId()));
+					new StringBuilder().append(dataSourceType.getName())
+							.append(" ").append(dataSourceType.getId()));
 			documents.add(sid);
 		}
 		try {
@@ -142,6 +152,33 @@ public class DataSourceType {
 
 	public static String toJsonArray(Collection<DataSourceType> collection) {
 		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	/**
+	 * Verifica existenta unui tip de sursa de date in baza de date; in caz
+	 * afirmativ, returneaza obiectul corespunzator, altfel, metoda introduce
+	 * tipul de sursa de date in baza de date si apoi returneaza obiectul
+	 * corespunzator. Verificarea existentei in baza de date se realizeaza fie
+	 * dupa valoarea identificatorului, fie dupa un criteriu de unicitate.
+	 * 
+	 * <p>
+	 * Criterii de unicitate:
+	 * <ul>
+	 * <li>id
+	 * <li>name
+	 * <ul>
+	 * 
+	 * <p>
+	 * 
+	 * @param id
+	 *            - identificatorul tipului de sursa de date.
+	 * @param name
+	 *            - numele tipului de sursa de date.
+	 * @return
+	 */
+	public static DataSourceType checkDataSourceType(Integer id, String name) {
+		// TODO
+		return null;
 	}
 
 	@Id
@@ -212,7 +249,8 @@ public class DataSourceType {
 		if (this.entityManager.contains(this)) {
 			this.entityManager.remove(this);
 		} else {
-			DataSourceType attached = DataSourceType.findDataSourceType(this.id);
+			DataSourceType attached = DataSourceType
+					.findDataSourceType(this.id);
 			this.entityManager.remove(attached);
 		}
 	}
@@ -234,7 +272,8 @@ public class DataSourceType {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this,
+				ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate

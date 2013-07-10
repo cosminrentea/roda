@@ -123,31 +123,31 @@ public class Keyword {
 	}
 
 	/**
-	 * Verifica existenta unui cuvant cheie (preluat prin valori ale
-	 * parametrilor de intrare) in baza de date; in caz afirmativ, returneaza
-	 * obiectul corespunzator, altfel, metoda introduce cuvantul cheie in baza
-	 * de date si apoi returneaza obiectul corespunzator. Verificarea existentei
-	 * in baza de date se realizeaza fie dupa valoarea cheii primare, fie dupa
-	 * un criteriu de unicitate.
+	 * Verifica existenta unui cuvant cheie folosit de studii in baza de date;
+	 * in caz afirmativ, returneaza obiectul corespunzator, altfel, metoda
+	 * introduce cuvantul cheie in baza de date si apoi returneaza obiectul
+	 * corespunzator. Verificarea existentei in baza de date se realizeaza fie
+	 * dupa valoarea identificatorului, fie dupa un criteriu de unicitate.
 	 * 
 	 * <p>
 	 * Criterii de unicitate:
-	 * <p>
 	 * <ul>
-	 * <li>keywordId
-	 * <li>keyword
+	 * <li>id
+	 * <li>name
 	 * <ul>
+	 * 
 	 * <p>
 	 * 
-	 * @param keywordId
-	 *            - cheia primara a cuvantului cheie din tabelul de cuvinte
-	 *            cheie
-	 * @param keyword
-	 *            - denumirea cuvantului cheie
+	 * @param id
+	 *            - identificatorul cuvantului cheie.
+	 * @param name
+	 *            - numele cuvantului cheie.
 	 * @return
 	 */
-	public static Keyword checkKeyword(Integer keywordId, String keyword) {
+	public static Keyword checkKeyword(Integer id, String name) {
 		// TODO
+		// use equals method to determine the existence of the keyword in the
+		// database
 		return null;
 	}
 
@@ -279,5 +279,21 @@ public class Keyword {
 	@PreRemove
 	private void preRemove() {
 		deleteIndex(this);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof Keyword) {
+			Keyword keywordDB = entityManager().createQuery(
+					"SELECT o FROM Keyword o WHERE lc(name)='"
+							+ ((Keyword) obj).getName().toLowerCase() + "'",
+					Keyword.class).getSingleResult();
+			if (keywordDB != null) {
+				return true;
+			}
+
+		}
+		return false;
+
 	}
 }

@@ -37,11 +37,12 @@ import flexjson.JSONSerializer;
 @Configurable
 @Entity
 @Table(schema = "public", name = "other_statistic")
-
 public class OtherStatistic {
 
 	public static long countOtherStatistics() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM OtherStatistic o", Long.class).getSingleResult();
+		return entityManager().createQuery(
+				"SELECT COUNT(o) FROM OtherStatistic o", Long.class)
+				.getSingleResult();
 	}
 
 	@Async
@@ -64,7 +65,8 @@ public class OtherStatistic {
 	}
 
 	public static List<OtherStatistic> findAllOtherStatistics() {
-		return entityManager().createQuery("SELECT o FROM OtherStatistic o", OtherStatistic.class).getResultList();
+		return entityManager().createQuery("SELECT o FROM OtherStatistic o",
+				OtherStatistic.class).getResultList();
 	}
 
 	public static OtherStatistic findOtherStatistic(Long id) {
@@ -73,18 +75,24 @@ public class OtherStatistic {
 		return entityManager().find(OtherStatistic.class, id);
 	}
 
-	public static List<OtherStatistic> findOtherStatisticEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM OtherStatistic o", OtherStatistic.class)
-				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
+	public static List<OtherStatistic> findOtherStatisticEntries(
+			int firstResult, int maxResults) {
+		return entityManager()
+				.createQuery("SELECT o FROM OtherStatistic o",
+						OtherStatistic.class).setFirstResult(firstResult)
+				.setMaxResults(maxResults).getResultList();
 	}
 
-	public static Collection<OtherStatistic> fromJsonArrayToOtherStatistics(String json) {
-		return new JSONDeserializer<List<OtherStatistic>>().use(null, ArrayList.class)
-				.use("values", OtherStatistic.class).deserialize(json);
+	public static Collection<OtherStatistic> fromJsonArrayToOtherStatistics(
+			String json) {
+		return new JSONDeserializer<List<OtherStatistic>>()
+				.use(null, ArrayList.class).use("values", OtherStatistic.class)
+				.deserialize(json);
 	}
 
 	public static OtherStatistic fromJsonToOtherStatistic(String json) {
-		return new JSONDeserializer<OtherStatistic>().use(null, OtherStatistic.class).deserialize(json);
+		return new JSONDeserializer<OtherStatistic>().use(null,
+				OtherStatistic.class).deserialize(json);
 	}
 
 	public static void indexOtherStatistic(OtherStatistic otherStatistic) {
@@ -94,23 +102,28 @@ public class OtherStatistic {
 	}
 
 	@Async
-	public static void indexOtherStatistics(Collection<OtherStatistic> otherstatistics) {
+	public static void indexOtherStatistics(
+			Collection<OtherStatistic> otherstatistics) {
 		List<SolrInputDocument> documents = new ArrayList<SolrInputDocument>();
 		for (OtherStatistic otherStatistic : otherstatistics) {
 			SolrInputDocument sid = new SolrInputDocument();
 			sid.addField("id", "otherstatistic_" + otherStatistic.getId());
-			sid.addField("otherStatistic.variableid_t", otherStatistic.getVariableId());
+			sid.addField("otherStatistic.variableid_t",
+					otherStatistic.getVariableId());
 			sid.addField("otherStatistic.name_s", otherStatistic.getName());
 			sid.addField("otherStatistic.value_f", otherStatistic.getValue());
-			sid.addField("otherStatistic.description_s", otherStatistic.getDescription());
+			sid.addField("otherStatistic.description_s",
+					otherStatistic.getDescription());
 			sid.addField("otherStatistic.id_l", otherStatistic.getId());
 			// Add summary field to allow searching documents for objects of
 			// this type
-			sid.addField(
-					"otherstatistic_solrsummary_t",
-					new StringBuilder().append(otherStatistic.getVariableId()).append(" ")
-							.append(otherStatistic.getName()).append(" ").append(otherStatistic.getValue()).append(" ")
-							.append(otherStatistic.getDescription()).append(" ").append(otherStatistic.getId()));
+			sid.addField("otherstatistic_solrsummary_t",
+					new StringBuilder().append(otherStatistic.getVariableId())
+							.append(" ").append(otherStatistic.getName())
+							.append(" ").append(otherStatistic.getValue())
+							.append(" ")
+							.append(otherStatistic.getDescription())
+							.append(" ").append(otherStatistic.getId()));
 			documents.add(sid);
 		}
 		try {
@@ -146,6 +159,40 @@ public class OtherStatistic {
 
 	public static String toJsonArray(Collection<OtherStatistic> collection) {
 		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	/**
+	 * Verifica existenta unei statistici asociate unei variabile in baza de
+	 * date; in caz afirmativ, returneaza obiectul corespunzator, altfel, metoda
+	 * introduce statistica in baza de date si apoi returneaza obiectul
+	 * corespunzator. Verificarea existentei in baza de date se realizeaza fie
+	 * dupa valoarea identificatorului, fie dupa un criteriu de unicitate.
+	 * 
+	 * <p>
+	 * Criterii de unicitate:
+	 * <ul>
+	 * <li>id
+	 * <li>name + variableId
+	 * <ul>
+	 * 
+	 * <p>
+	 * 
+	 * @param id
+	 *            - identificatorul statisticii.
+	 * @param variableId
+	 *            - identificatorul variabilei.
+	 * @param name
+	 *            - numele statisticii.
+	 * @param value
+	 *            - valoarea statisticii.
+	 * @param description
+	 *            - descrierea statisticii.
+	 * @return
+	 */
+	public static OtherStatistic checkOtherStatistic(Integer id,
+			Integer variableId, String name, Float value, String description) {
+		// TODO
+		return null;
 	}
 
 	@Column(name = "description", columnDefinition = "text")
@@ -231,7 +278,8 @@ public class OtherStatistic {
 		if (this.entityManager.contains(this)) {
 			this.entityManager.remove(this);
 		} else {
-			OtherStatistic attached = OtherStatistic.findOtherStatistic(this.id);
+			OtherStatistic attached = OtherStatistic
+					.findOtherStatistic(this.id);
 			this.entityManager.remove(attached);
 		}
 	}
@@ -261,7 +309,8 @@ public class OtherStatistic {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this,
+				ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate

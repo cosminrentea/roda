@@ -148,6 +148,34 @@ public class CollectionModelType {
 	public static String toJsonArray(Collection<CollectionModelType> collection) {
 		return new JSONSerializer().exclude("*.class").serialize(collection);
 	}
+	
+	/**
+	 * Verifica existenta unui tip de model de colectare in baza de date; in caz afirmativ, returneaza obiectul
+	 * corespunzator, altfel, metoda introduce tipul de model de colectare in baza de date si apoi
+	 * returneaza obiectul corespunzator. Verificarea existentei in baza de date
+	 * se realizeaza fie dupa valoarea identificatorului, fie dupa un criteriu de
+	 * unicitate.
+	 * 
+	 * <p>
+	 * Criterii de unicitate:
+	 * <ul>
+	 * 		<li> id
+	 * 		<li> name
+	 * <ul>
+	 *
+	 * <p>
+	 * @param id
+	 *            - identificatorul tipului de model de colectare.
+	 * @param name
+	 *            - numele tipului de model de colectare.
+	 * @param description
+	 *            - descrierea tipului de model de colectare.
+	 * @return
+	 */
+	public static CollectionModelType checkCollectionModelType(Integer id, String name, String description) {
+		//TODO
+		return null;
+	}
 
 	@Column(name = "description", columnDefinition = "text")
 	private String description;

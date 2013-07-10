@@ -157,63 +157,32 @@ public class Form {
 	}
 
 	/**
-	 * Verifica existenta unui formular (daca este furnizata valoarea
-	 * identificatorului sau) in baza de date; in caz afirmativ, returneaza
-	 * obiectul corespunzator, altfel, metoda introduce formularul in baza de
-	 * date si apoi returneaza obiectul corespunzator.
+	 * Verifica existenta unui formular in baza de date; in caz afirmativ,
+	 * returneaza obiectul corespunzator, altfel, metoda introduce formularul in
+	 * baza de date si apoi returneaza obiectul corespunzator. Verificarea
+	 * existentei in baza de date se realizeaza fie dupa valoarea
+	 * identificatorului, fie dupa un criteriu de unicitate.
 	 * 
 	 * <p>
 	 * Criterii de unicitate:
-	 * <p>
 	 * <ul>
-	 * <li>formId
+	 * <li>id
 	 * <ul>
+	 * 
 	 * <p>
 	 * 
-	 * 
-	 * @param formId
-	 *            - cheia primara a formularului din tabelul de formulare de
-	 *            raspunsuri
-	 * @param instanceId
-	 *            - cheia primara a instantei in cadrul careia a fost completat
-	 *            formularul curent
-	 * @param orderInInstance
-	 *            - numarul de ordine al formularului in cadrul instantei
+	 * @param id
+	 *            - identificatorul formularului.
 	 * @param operatorId
-	 *            - operatorul care a completat formularul curent; acesta poate
-	 *            fi furnizat prin valoarea cheii primare a unei persoane sau
-	 *            prin informatiile minimale (nume si prenume) asociate
-	 *            operatorului. Daca persoana nu exista in baza de date, va fi
-	 *            adaugata cu aceste informatii.
+	 *            - identificatorul operatorului care a creat formularul.
 	 * @param operatorNotes
-	 *            - note, insemnari ale operatorului pe parcursul completarii
-	 *            formularului curent
-	 * @param edited_text_vars
-	 *            - lista de raspunsuri corespunzatoare formularului curent,
-	 *            asociate variabilelor de tip text editat; un element al
-	 *            acestei liste contine codul unei variabile de tip text editat
-	 *            si valoarea (textul) ce reprezinta raspunsul
-	 * @param edited_number_vars
-	 *            - lista de raspunsuri corespunzatoare formularului curent,
-	 *            asociate variabilelor de tip numeric editat; un element al
-	 *            acestei liste contine codul unei variabile de tip numeric
-	 *            editat si valoarea (numarul) ce reprezinta raspunsul
-	 * 
-	 * @param selection_vars
-	 *            - lista de raspunsuri corespunzatoare formularului curent,
-	 *            asociate variabilelor de selectie; un element al acestei liste
-	 *            contine codul unei variabile de tip selectie, codul
-	 *            elementului selectat ce reprezinta raspunsul si (optional)
-	 *            numarul de ordine al acestui element in cadrul raspunsului
-	 *            (relevant in cadrul selectiilor multiple, atunci cand ordinea
-	 *            rapunsurilor este importanta).
+	 *            - observatiile operatorului.
+	 * @param filledAt
+	 *            - data cand a fost completat formularul.
 	 * @return
 	 */
-	public static Form checkForm(Integer formId, Integer instanceId,
-			Integer orderInInstance, Integer operatorId, String operatorNotes,
-			List<FormEditedTextVar> formEditedTextVars,
-			List<FormEditedNumberVar> formEditedNumberVars,
-			List<FormSelectionVar> formSelectionVars) {
+	public static Form checkForm(Integer id, Integer operatorId,
+			String operatorNotes, Calendar filledAt) {
 		// TODO
 		return null;
 	}

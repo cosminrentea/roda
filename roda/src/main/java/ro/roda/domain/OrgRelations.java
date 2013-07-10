@@ -1,6 +1,7 @@
 package ro.roda.domain;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -25,7 +26,6 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrInputDocument;
-import org.hibernate.envers.Audited;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -38,11 +38,12 @@ import flexjson.JSONSerializer;
 @Entity
 @Table(schema = "public", name = "org_relations")
 @Configurable
-
 public class OrgRelations {
 
 	public static long countOrgRelationses() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM OrgRelations o", Long.class).getSingleResult();
+		return entityManager().createQuery(
+				"SELECT COUNT(o) FROM OrgRelations o", Long.class)
+				.getSingleResult();
 	}
 
 	@Async
@@ -65,7 +66,8 @@ public class OrgRelations {
 	}
 
 	public static List<OrgRelations> findAllOrgRelationses() {
-		return entityManager().createQuery("SELECT o FROM OrgRelations o", OrgRelations.class).getResultList();
+		return entityManager().createQuery("SELECT o FROM OrgRelations o",
+				OrgRelations.class).getResultList();
 	}
 
 	public static OrgRelations findOrgRelations(OrgRelationsPK id) {
@@ -74,18 +76,24 @@ public class OrgRelations {
 		return entityManager().find(OrgRelations.class, id);
 	}
 
-	public static List<OrgRelations> findOrgRelationsEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM OrgRelations o", OrgRelations.class)
-				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
+	public static List<OrgRelations> findOrgRelationsEntries(int firstResult,
+			int maxResults) {
+		return entityManager()
+				.createQuery("SELECT o FROM OrgRelations o", OrgRelations.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults)
+				.getResultList();
 	}
 
-	public static Collection<OrgRelations> fromJsonArrayToOrgRelationses(String json) {
-		return new JSONDeserializer<List<OrgRelations>>().use(null, ArrayList.class).use("values", OrgRelations.class)
+	public static Collection<OrgRelations> fromJsonArrayToOrgRelationses(
+			String json) {
+		return new JSONDeserializer<List<OrgRelations>>()
+				.use(null, ArrayList.class).use("values", OrgRelations.class)
 				.deserialize(json);
 	}
 
 	public static OrgRelations fromJsonToOrgRelations(String json) {
-		return new JSONDeserializer<OrgRelations>().use(null, OrgRelations.class).deserialize(json);
+		return new JSONDeserializer<OrgRelations>().use(null,
+				OrgRelations.class).deserialize(json);
 	}
 
 	public static void indexOrgRelations(OrgRelations orgRelations) {
@@ -95,24 +103,30 @@ public class OrgRelations {
 	}
 
 	@Async
-	public static void indexOrgRelationses(Collection<OrgRelations> orgrelationses) {
+	public static void indexOrgRelationses(
+			Collection<OrgRelations> orgrelationses) {
 		List<SolrInputDocument> documents = new ArrayList<SolrInputDocument>();
 		for (OrgRelations orgRelations : orgrelationses) {
 			SolrInputDocument sid = new SolrInputDocument();
 			sid.addField("id", "orgrelations_" + orgRelations.getId());
 			sid.addField("orgRelations.org2id_t", orgRelations.getOrg2Id());
 			sid.addField("orgRelations.org1id_t", orgRelations.getOrg1Id());
-			sid.addField("orgRelations.orgrelationtypeid_t", orgRelations.getOrgRelationTypeId());
-			sid.addField("orgRelations.datestart_dt", orgRelations.getDateStart());
+			sid.addField("orgRelations.orgrelationtypeid_t",
+					orgRelations.getOrgRelationTypeId());
+			sid.addField("orgRelations.datestart_dt",
+					orgRelations.getDateStart());
 			sid.addField("orgRelations.dateend_dt", orgRelations.getDateEnd());
 			sid.addField("orgRelations.details_s", orgRelations.getDetails());
 			// Add summary field to allow searching documents for objects of
 			// this type
 			sid.addField(
 					"orgrelations_solrsummary_t",
-					new StringBuilder().append(orgRelations.getOrg2Id()).append(" ").append(orgRelations.getOrg1Id())
-							.append(" ").append(orgRelations.getOrgRelationTypeId()).append(" ")
-							.append(orgRelations.getDateStart()).append(" ").append(orgRelations.getDateEnd())
+					new StringBuilder().append(orgRelations.getOrg2Id())
+							.append(" ").append(orgRelations.getOrg1Id())
+							.append(" ")
+							.append(orgRelations.getOrgRelationTypeId())
+							.append(" ").append(orgRelations.getDateStart())
+							.append(" ").append(orgRelations.getDateEnd())
 							.append(" ").append(orgRelations.getDetails()));
 			documents.add(sid);
 		}
@@ -149,6 +163,48 @@ public class OrgRelations {
 
 	public static String toJsonArray(Collection<OrgRelations> collection) {
 		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	/**
+	 * Verifica existenta unei organizatii in baza de date (pe baza parametrilor
+	 * furnizati); daca exista, returneaza obiectul respectiv, altfel introduce
+	 * si returneaza obiectul corespunzator.
+	 * 
+	 * <p>
+	 * Criterii de unicitate:
+	 * <p>
+	 * <ul>
+	 * <li>orgRelationId
+	 * <li>org_1_id + org_2_id + relation_type + datestart + dateend
+	 * <ul>
+	 * <p>
+	 * 
+	 * 
+	 * @param org_1_id
+	 *            - cheia primara a unei organizatii din tabelul de organizatii,
+	 *            implicate in relatia curenta
+	 * @param org_2_id
+	 *            - cheia primara a celeilalte organizatii din tabelul de
+	 *            organizatii, implicate in relatia curenta
+	 * @param relation_type
+	 *            - tipul relatiei curente; existenta acestuia este verificata
+	 *            in baza de date (in tabelul OrgRelationType), iar in cazul
+	 *            inexistentei tipul relatiei este inserat in tabelul respectiv.
+	 * @param datestart
+	 *            - data de inceput a relatiei dintre cele doua organizatii
+	 * @param dateend
+	 *            - data de final a relatiei dintre cele doua organizatii
+	 * @param details
+	 *            - detalii referitoare la relatia curenta dintre cele doua
+	 *            organizatii
+	 * 
+	 * @return
+	 */
+	public static OrgRelations checkOrgRelations(Integer org1Id,
+			Integer org2Id, String relationType, Calendar dateStart,
+			Calendar dateEnd, String details) {
+		// TODO
+		return null;
 	}
 
 	@Column(name = "date_end", columnDefinition = "date")
@@ -288,7 +344,8 @@ public class OrgRelations {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this,
+				ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate

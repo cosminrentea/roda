@@ -157,65 +157,37 @@ public class CmsFolder {
 	}
 
 	/**
-	 * Verifica existenta unui folder (preluat prin valori ale parametrilor de
-	 * intrare) in baza de date; in caz afirmativ, returneaza obiectul
-	 * corespunzator, altfel, metoda introduce folderul in baza de date si apoi
-	 * returneaza obiectul corespunzator. Verificarea existentei in baza de date
-	 * se realizeaza fie dupa valoarea cheii primare, fie dupa un criteriu de
-	 * unicitate.
+	 * Verifica existenta unui director CMS in baza de date; in caz afirmativ,
+	 * returneaza obiectul corespunzator, altfel, metoda introduce directorul
+	 * CMS in baza de date si apoi returneaza obiectul corespunzator.
+	 * Verificarea existentei in baza de date se realizeaza fie dupa valoarea
+	 * identificatorului, fie dupa un criteriu de unicitate.
 	 * 
 	 * <p>
 	 * Criterii de unicitate:
-	 * <p>
 	 * <ul>
-	 * <li> cmsFolderId
-	 * <li> cmsFolderName + parentId
+	 * <li>id
+	 * <li>name + parentId
 	 * <ul>
+	 * 
 	 * <p>
-	 *  
-	 * @param cmsFolderId
-	 *            - cheia primara a folder-ului CMS
-	 * @param cmsFolderName
-	 *            - numele folder-ului CMS
+	 * 
+	 * @param id
+	 *            - identificatorul directorului CMS.
+	 * @param name
+	 *            - numele directorului CMS.
 	 * @param parentId
-	 *            - codul folder-ului CMS parinte
+	 *            - identificatorul directorului CMS parinte.
 	 * @param description
-	 *            - descrierea folder-ului CMS
+	 *            - descrierea directorului CMS.
 	 * @return
 	 */
-	public static CmsFolder checkCmsFolder(Integer cmsFolderId, String cmsFolderName,
+	public static CmsFolder checkCmsFolder(Integer id, String name,
 			Integer parentId, String description) {
 		// TODO
 		return null;
 	}
 
-	/**
-	 * Verifica existenta unui folder (preluat prin valori ale parametrilor de
-	 * intrare) in baza de date; in caz afirmativ, returneaza obiectul
-	 * corespunzator, altfel, metoda introduce folderul in baza de date si apoi
-	 * returneaza obiectul corespunzator. Verificarea existentei in baza de date
-	 * se realizeaza fie dupa valoarea cheii primare, fie dupa un criteriu de
-	 * unicitate.
-	 * 
-	 * <p>
-	 * Criterii de unicitate:
-	 * <p>
-	 * <ul>
-	 * <li> cmsFolderId	
-	 * <ul>
-	 * <p>
-	 *  
-	 * @param cmsFolderId
-	 *            - cheia primara a folder-ului CMS
-	 * @param cmsFolderName
-	 *            - numele folder-ului CMS
-	 * @return
-	 */
-	public static CmsFolder checkCmsFolder(Integer cmsFolderId, String cmsFolderName) {
-		// TODO
-		return null;
-	}
-	
 	@OneToMany(mappedBy = "cmsFolderId")
 	private Set<CmsFile> cmsFiles;
 

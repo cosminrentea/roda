@@ -163,65 +163,33 @@ public class CmsSnippetGroup {
 	}
 
 	/**
-	 * Verifica existenta unui grup (preluat prin valori ale parametrilor de
-	 * intrare) in baza de date; in caz afirmativ, returneaza obiectul
-	 * corespunzator, altfel, metoda introduce grupul in baza de date si apoi
-	 * returneaza obiectul corespunzator. Verificarea existentei in baza de date
-	 * se realizeaza fie dupa valoarea cheii primare, fie dupa un criteriu de
-	 * unicitate.
+	 * Verifica existenta unui grup de fragmente CMS in baza de date; in caz
+	 * afirmativ, returneaza obiectul corespunzator, altfel, metoda introduce
+	 * grupul de fragmente CMS in baza de date si apoi returneaza obiectul
+	 * corespunzator. Verificarea existentei in baza de date se realizeaza fie
+	 * dupa valoarea identificatorului, fie dupa un criteriu de unicitate.
 	 * 
 	 * <p>
 	 * Criterii de unicitate:
-	 * <p>
 	 * <ul>
-	 * <li>cmsSnippetGroupId
-	 * <li>cmsSnippetGroupName + parentId
+	 * <li>id
+	 * <li>name + parentId
 	 * <ul>
+	 * 
 	 * <p>
 	 * 
-	 * 
-	 * @param cmsSnipetGroupId
-	 *            - cheia primara a tipului din tabelul de tipuri de pagini
-	 * @param cmsSnippetGroupName
-	 *            - denumirea tipului de pagina
-	 * @param description
-	 *            - descrierea tipului de pagina
+	 * @param id
+	 *            - identificatorul grupului de fragmente CMS.
+	 * @param name
+	 *            - numele grupului de fragmente CMS.
 	 * @param parentId
-	 *            - parintele grupului de snippet-uri
+	 *            - identificatorul grupului de fragmente CMS parinte.
+	 * @param description
+	 *            - descrierea grupului de fragmente CMS.
 	 * @return
 	 */
-	public static CmsSnippetGroup checkSnippetGroup(
-			Integer cmsSnippetGroupId, String cmsSnippetGroupName,
-			String description, Integer parentId) {
-		// TODO
-		return null;
-	}
-
-	/**
-	 * Verifica existenta unui grup (preluat prin valori ale parametrilor de
-	 * intrare) in baza de date; in caz afirmativ, returneaza obiectul
-	 * corespunzator, altfel, metoda introduce grupul in baza de date si apoi
-	 * returneaza obiectul corespunzator. Verificarea existentei in baza de date
-	 * se realizeaza fie dupa valoarea cheii primare, fie dupa un criteriu de
-	 * unicitate.
-	 * 
-	 * <p>
-	 * Criterii de unicitate:
-	 * <p>
-	 * <ul>
-	 * <li>cmsSnippetGroupId
-	 * <ul>
-	 * <p>
-	 * 
-	 * 
-	 * @param cmsSnipetGroupId
-	 *            - cheia primara a tipului din tabelul de tipuri de pagini
-	 * @param cmsSnippetGroupName
-	 *            - denumirea tipului de pagina
-	 * @return
-	 */
-	public static CmsSnippetGroup checkSnippetGroup(
-			Integer cmsSnippetGroupId, String cmsSnippetGroupName) {
+	public static CmsSnippetGroup checkCmsSnippetGroup(Integer id, String name,
+			Integer parentId, String description) {
 		// TODO
 		return null;
 	}

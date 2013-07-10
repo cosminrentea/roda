@@ -37,11 +37,12 @@ import flexjson.JSONSerializer;
 @Entity
 @Table(schema = "public", name = "org_relation_type")
 @Configurable
-
 public class OrgRelationType {
 
 	public static long countOrgRelationTypes() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM OrgRelationType o", Long.class).getSingleResult();
+		return entityManager().createQuery(
+				"SELECT COUNT(o) FROM OrgRelationType o", Long.class)
+				.getSingleResult();
 	}
 
 	@Async
@@ -64,7 +65,8 @@ public class OrgRelationType {
 	}
 
 	public static List<OrgRelationType> findAllOrgRelationTypes() {
-		return entityManager().createQuery("SELECT o FROM OrgRelationType o", OrgRelationType.class).getResultList();
+		return entityManager().createQuery("SELECT o FROM OrgRelationType o",
+				OrgRelationType.class).getResultList();
 	}
 
 	public static OrgRelationType findOrgRelationType(Integer id) {
@@ -73,18 +75,24 @@ public class OrgRelationType {
 		return entityManager().find(OrgRelationType.class, id);
 	}
 
-	public static List<OrgRelationType> findOrgRelationTypeEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM OrgRelationType o", OrgRelationType.class)
-				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
+	public static List<OrgRelationType> findOrgRelationTypeEntries(
+			int firstResult, int maxResults) {
+		return entityManager()
+				.createQuery("SELECT o FROM OrgRelationType o",
+						OrgRelationType.class).setFirstResult(firstResult)
+				.setMaxResults(maxResults).getResultList();
 	}
 
-	public static Collection<OrgRelationType> fromJsonArrayToOrgRelationTypes(String json) {
-		return new JSONDeserializer<List<OrgRelationType>>().use(null, ArrayList.class)
+	public static Collection<OrgRelationType> fromJsonArrayToOrgRelationTypes(
+			String json) {
+		return new JSONDeserializer<List<OrgRelationType>>()
+				.use(null, ArrayList.class)
 				.use("values", OrgRelationType.class).deserialize(json);
 	}
 
 	public static OrgRelationType fromJsonToOrgRelationType(String json) {
-		return new JSONDeserializer<OrgRelationType>().use(null, OrgRelationType.class).deserialize(json);
+		return new JSONDeserializer<OrgRelationType>().use(null,
+				OrgRelationType.class).deserialize(json);
 	}
 
 	public static void indexOrgRelationType(OrgRelationType orgRelationType) {
@@ -94,7 +102,8 @@ public class OrgRelationType {
 	}
 
 	@Async
-	public static void indexOrgRelationTypes(Collection<OrgRelationType> orgrelationtypes) {
+	public static void indexOrgRelationTypes(
+			Collection<OrgRelationType> orgrelationtypes) {
 		List<SolrInputDocument> documents = new ArrayList<SolrInputDocument>();
 		for (OrgRelationType orgRelationType : orgrelationtypes) {
 			SolrInputDocument sid = new SolrInputDocument();
@@ -102,7 +111,8 @@ public class OrgRelationType {
 			sid.addField("orgRelationType.name_s", orgRelationType.getName());
 			// Add summary field to allow searching documents for objects of
 			// this type
-			sid.addField("orgrelationtype_solrsummary_t", new StringBuilder().append(orgRelationType.getName()));
+			sid.addField("orgrelationtype_solrsummary_t",
+					new StringBuilder().append(orgRelationType.getName()));
 			documents.add(sid);
 		}
 		try {
@@ -138,6 +148,33 @@ public class OrgRelationType {
 
 	public static String toJsonArray(Collection<OrgRelationType> collection) {
 		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	/**
+	 * Verifica existenta unui tip de relatie intre organizatii in baza de date;
+	 * in caz afirmativ, returneaza obiectul corespunzator, altfel, metoda
+	 * introduce tipul de relatie in baza de date si apoi returneaza obiectul
+	 * corespunzator. Verificarea existentei in baza de date se realizeaza fie
+	 * dupa valoarea identificatorului, fie dupa un criteriu de unicitate.
+	 * 
+	 * <p>
+	 * Criterii de unicitate:
+	 * <ul>
+	 * <li>id
+	 * <li>name
+	 * <ul>
+	 * 
+	 * <p>
+	 * 
+	 * @param id
+	 *            - identificatorul tipului de relatie.
+	 * @param name
+	 *            - numele tipului de relatie.
+	 * @return
+	 */
+	public static OrgRelationType checkOrgRelationType(Integer id, String name) {
+		// TODO
+		return null;
 	}
 
 	@Id
@@ -207,7 +244,8 @@ public class OrgRelationType {
 		if (this.entityManager.contains(this)) {
 			this.entityManager.remove(this);
 		} else {
-			OrgRelationType attached = OrgRelationType.findOrgRelationType(this.id);
+			OrgRelationType attached = OrgRelationType
+					.findOrgRelationType(this.id);
 			this.entityManager.remove(attached);
 		}
 	}
@@ -229,7 +267,8 @@ public class OrgRelationType {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this,
+				ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate

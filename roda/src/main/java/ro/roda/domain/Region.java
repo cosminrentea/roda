@@ -39,11 +39,11 @@ import flexjson.JSONSerializer;
 @Entity
 @Table(schema = "public", name = "region")
 @Configurable
-
 public class Region {
 
 	public static long countRegions() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM Region o", Long.class).getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM Region o",
+				Long.class).getSingleResult();
 	}
 
 	@Async
@@ -66,7 +66,8 @@ public class Region {
 	}
 
 	public static List<Region> findAllRegions() {
-		return entityManager().createQuery("SELECT o FROM Region o", Region.class).getResultList();
+		return entityManager().createQuery("SELECT o FROM Region o",
+				Region.class).getResultList();
 	}
 
 	public static Region findRegion(Integer id) {
@@ -76,17 +77,20 @@ public class Region {
 	}
 
 	public static List<Region> findRegionEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM Region o", Region.class).setFirstResult(firstResult)
-				.setMaxResults(maxResults).getResultList();
+		return entityManager()
+				.createQuery("SELECT o FROM Region o", Region.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults)
+				.getResultList();
 	}
 
 	public static Collection<Region> fromJsonArrayToRegions(String json) {
-		return new JSONDeserializer<List<Region>>().use(null, ArrayList.class).use("values", Region.class)
-				.deserialize(json);
+		return new JSONDeserializer<List<Region>>().use(null, ArrayList.class)
+				.use("values", Region.class).deserialize(json);
 	}
 
 	public static Region fromJsonToRegion(String json) {
-		return new JSONDeserializer<Region>().use(null, Region.class).deserialize(json);
+		return new JSONDeserializer<Region>().use(null, Region.class)
+				.deserialize(json);
 	}
 
 	public static void indexRegion(Region region) {
@@ -109,10 +113,14 @@ public class Region {
 			sid.addField("region.id_i", region.getId());
 			// Add summary field to allow searching documents for objects of
 			// this type
-			sid.addField("region_solrsummary_t",
-					new StringBuilder().append(region.getCountryId()).append(" ").append(region.getRegiontypeId())
-							.append(" ").append(region.getName()).append(" ").append(region.getRegionCode())
-							.append(" ").append(region.getRegionCodeName()).append(" ").append(region.getId()));
+			sid.addField(
+					"region_solrsummary_t",
+					new StringBuilder().append(region.getCountryId())
+							.append(" ").append(region.getRegiontypeId())
+							.append(" ").append(region.getName()).append(" ")
+							.append(region.getRegionCode()).append(" ")
+							.append(region.getRegionCodeName()).append(" ")
+							.append(region.getId()));
 			documents.add(sid);
 		}
 		try {
@@ -148,6 +156,42 @@ public class Region {
 
 	public static String toJsonArray(Collection<Region> collection) {
 		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	/**
+	 * Verifica existenta unei regiuni in baza de date; in caz afirmativ,
+	 * returneaza obiectul corespunzator, altfel, metoda introduce regiunea in
+	 * baza de date si apoi returneaza obiectul corespunzator. Verificarea
+	 * existentei in baza de date se realizeaza fie dupa valoarea
+	 * identificatorului, fie dupa un criteriu de unicitate.
+	 * 
+	 * <p>
+	 * Criterii de unicitate:
+	 * <ul>
+	 * <li>id
+	 * <li>countryId + typeId + name
+	 * <ul>
+	 * 
+	 * <p>
+	 * 
+	 * @param id
+	 *            - identificatorul regiunii.
+	 * @param name
+	 *            - numele regiunii.
+	 * @param typeId
+	 *            - identificatorul tipului de regiune.
+	 * @param countryId
+	 *            - identificatorul tarii.
+	 * @param code
+	 *            - TODO.
+	 * @param codeName
+	 *            - TODO.
+	 * @return
+	 */
+	public static Region checkRegion(Integer id, String name, Integer typeId,
+			Integer countryId, String code, String codeName) {
+		// TODO
+		return null;
 	}
 
 	@ManyToMany(mappedBy = "regions")
@@ -285,7 +329,8 @@ public class Region {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this,
+				ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate

@@ -37,11 +37,11 @@ import flexjson.JSONSerializer;
 @Entity
 @Table(schema = "public", name = "person_role")
 @Configurable
-
 public class PersonRole {
 
 	public static long countPersonRoles() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM PersonRole o", Long.class).getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM PersonRole o",
+				Long.class).getSingleResult();
 	}
 
 	@Async
@@ -64,7 +64,8 @@ public class PersonRole {
 	}
 
 	public static List<PersonRole> findAllPersonRoles() {
-		return entityManager().createQuery("SELECT o FROM PersonRole o", PersonRole.class).getResultList();
+		return entityManager().createQuery("SELECT o FROM PersonRole o",
+				PersonRole.class).getResultList();
 	}
 
 	public static PersonRole findPersonRole(Integer id) {
@@ -73,18 +74,23 @@ public class PersonRole {
 		return entityManager().find(PersonRole.class, id);
 	}
 
-	public static List<PersonRole> findPersonRoleEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM PersonRole o", PersonRole.class).setFirstResult(firstResult)
-				.setMaxResults(maxResults).getResultList();
+	public static List<PersonRole> findPersonRoleEntries(int firstResult,
+			int maxResults) {
+		return entityManager()
+				.createQuery("SELECT o FROM PersonRole o", PersonRole.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults)
+				.getResultList();
 	}
 
 	public static Collection<PersonRole> fromJsonArrayToPersonRoles(String json) {
-		return new JSONDeserializer<List<PersonRole>>().use(null, ArrayList.class).use("values", PersonRole.class)
+		return new JSONDeserializer<List<PersonRole>>()
+				.use(null, ArrayList.class).use("values", PersonRole.class)
 				.deserialize(json);
 	}
 
 	public static PersonRole fromJsonToPersonRole(String json) {
-		return new JSONDeserializer<PersonRole>().use(null, PersonRole.class).deserialize(json);
+		return new JSONDeserializer<PersonRole>().use(null, PersonRole.class)
+				.deserialize(json);
 	}
 
 	public static void indexPersonRole(PersonRole personRole) {
@@ -102,7 +108,8 @@ public class PersonRole {
 			sid.addField("personRole.name_s", personRole.getName());
 			// Add summary field to allow searching documents for objects of
 			// this type
-			sid.addField("personrole_solrsummary_t", new StringBuilder().append(personRole.getName()));
+			sid.addField("personrole_solrsummary_t",
+					new StringBuilder().append(personRole.getName()));
 			documents.add(sid);
 		}
 		try {
@@ -138,6 +145,33 @@ public class PersonRole {
 
 	public static String toJsonArray(Collection<PersonRole> collection) {
 		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	/**
+	 * Verifica existenta unui rol de persoana in baza de date; in caz
+	 * afirmativ, returneaza obiectul corespunzator, altfel, metoda introduce
+	 * rolul de persoana in baza de date si apoi returneaza obiectul
+	 * corespunzator. Verificarea existentei in baza de date se realizeaza fie
+	 * dupa valoarea identificatorului, fie dupa un criteriu de unicitate.
+	 * 
+	 * <p>
+	 * Criterii de unicitate:
+	 * <ul>
+	 * <li>id
+	 * <li>name
+	 * <ul>
+	 * 
+	 * <p>
+	 * 
+	 * @param id
+	 *            - identificatorul rolului de persoana.
+	 * @param name
+	 *            - numele rolului de persoana (ex: director).
+	 * @return
+	 */
+	public static PersonRole checkPersonRole(Integer id, String name) {
+		// TODO
+		return null;
 	}
 
 	@Id
@@ -229,7 +263,8 @@ public class PersonRole {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this,
+				ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate

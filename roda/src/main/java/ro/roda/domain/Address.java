@@ -1,7 +1,6 @@
 package ro.roda.domain;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -29,7 +28,6 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrInputDocument;
-import org.hibernate.envers.Audited;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.scheduling.annotation.Async;
@@ -194,99 +192,45 @@ public class Address {
 	}
 
 	/**
-	 * Verifica existenta unei adrese (preluata prin combinatii ale parametrilor
-	 * de intrare) in baza de date; daca adresa exista, returneaza obiectul
-	 * corespunzator, altfel, metoda introduce adresa in baza de date si apoi
-	 * returneaza obiectul corespunzator. Verificarea existentei in baza de date
-	 * se realizeaza fie dupa valoarea cheii primare, fie dupa un criteriu de
-	 * unicitate.
+	 * Verifica existenta unei adrese in baza de date; daca adresa exista,
+	 * returneaza obiectul corespunzator, altfel, metoda introduce adresa in
+	 * baza de date si apoi returneaza obiectul corespunzator. Verificarea
+	 * existentei in baza de date se realizeaza fie dupa valoarea
+	 * identificatorului, fie dupa un criteriu de unicitate.
 	 * 
 	 * <p>
 	 * Criterii de unicitate:
-	 * <p>
 	 * <ul>
-	 * <li>addressId
-	 * <li>(countryId || countryName) + postalCode + address1 + address2
-	 * (codurile postale sunt unice pe tari)
-	 * <li>(cityId || cityName) + postalCode + address1 + address2
+	 * <li>id
+	 * <li>cityId + postalCode + address1 + address2 (codurile postale sunt
+	 * unice pe tari)
 	 * <ul>
+	 * 
 	 * <p>
 	 * 
-	 * 
-	 * @param addressId
-	 *            - cheia primara a adresei din tabelul de adrese
-	 * @param countryName
-	 *            - numele tarii in care se gaseste adresa
-	 * @param countryId
-	 *            - cheia primara a tarii curente, din tabelul de tari
-	 * @param cityName
-	 *            - numele orasului in care se gaseste adresa
+	 * @param id
+	 *            - identificatorul adresei.
 	 * @param cityId
-	 *            - cheia primara corespunzatoare orasului curent, din tabelul
-	 *            de orase
+	 *            - identificatorul orasului in care se gaseste adresa.
 	 * @param postalCode
-	 *            - codul postal
+	 *            - codul postal.
 	 * @param address1
-	 *            - primele elemente ale adresei (de obicei strada si numar)
+	 *            - primele elemente ale adresei (ex: strada si numar).
 	 * @param address2
-	 *            - elemente suplimentare ale adresei
+	 *            - elemente suplimentare ale adresei.
 	 * @param subdivCode
 	 *            - codul subdiviziunii orasului in care se gaseste adresa. In
 	 *            cazul in care se foloseste acest parametru, el trebuie sa fie
-	 *            obligatoriu insotit de parametrul subdiv_type.
-	 * @param subdivType
-	 *            - tipul subdiviziunii orasului in care se gaseste adresa (ex:
+	 *            obligatoriu insotit de parametrul subdivName.
+	 * @param subdivName
+	 *            - numele subdiviziunii orasului in care se gaseste adresa (ex:
 	 *            sector). In cazul in care se foloseste acest parametru, el
-	 *            trebuie sa fie obligatoriu insotit de parametrul subdiv_code.
+	 *            trebuie sa fie obligatoriu insotit de parametrul subdivCode.
 	 * @return
 	 */
-	public static Address checkAddress(Integer addressId, String countryName,
-			Integer countryId, String cityName, Integer cityId,
+	public static Address checkAddress(Integer id, Integer cityId,
 			String postalCode, String address1, String address2,
-			Integer subdivCode, String subdivType) {
-		// TODO
-		return null;
-	}
-
-	/**
-	 * Verifica existenta unei adrese (preluata prin combinatii ale parametrilor
-	 * de intrare) in baza de date; daca adresa exista, returneaza obiectul
-	 * corespunzator, altfel, metoda introduce adresa in baza de date si apoi
-	 * returneaza obiectul corespunzator. Verificarea existentei in baza de date
-	 * se realizeaza fie dupa valoarea cheii primare, fie dupa un criteriu de
-	 * unicitate.
-	 * 
-	 * <p>
-	 * Criterii de unicitate:
-	 * <p>
-	 * <ul>
-	 * <li>addressId
-	 * <li>countryId + postalCode + address1 + address2 (codurile postale sunt
-	 * unice pe tari)
-	 * <li>cityId + postalCode + address1 + address2
-	 * <ul>
-	 * <p>
-	 * 
-	 * 
-	 * @param addressId
-	 *            - cheia primara a adresei din tabelul de adrese
-	 * @param countryId
-	 *            - cheia primara a tarii curente, din tabelul de tari
-	 * @param cityId
-	 *            - cheia primara corespunzatoare orasului curent, din tabelul
-	 *            de orase
-	 * @param postalCode
-	 *            - codul postal
-	 * @param address1
-	 *            - primele elemente ale adresei (de obicei strada si numar)
-	 * @param address2
-	 *            - elemente suplimentare ale adresei
-	 * 
-	 * @return
-	 */
-	public static Address checkAddress(Integer addressId, Integer countryId,
-			Integer cityId, String postalCode, String address1,
-			String address2) {
+			Integer subdivCode, String subdivName) {
 		// TODO
 		return null;
 	}

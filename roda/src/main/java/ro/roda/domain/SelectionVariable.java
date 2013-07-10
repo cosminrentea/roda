@@ -39,18 +39,20 @@ import flexjson.JSONSerializer;
 @Configurable
 @Entity
 @Table(schema = "public", name = "selection_variable")
-
 public class SelectionVariable {
 
 	public static long countSelectionVariables() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM SelectionVariable o", Long.class).getSingleResult();
+		return entityManager().createQuery(
+				"SELECT COUNT(o) FROM SelectionVariable o", Long.class)
+				.getSingleResult();
 	}
 
 	@Async
 	public static void deleteIndex(SelectionVariable selectionVariable) {
 		SolrServer solrServer = solrServer();
 		try {
-			solrServer.deleteById("selectionvariable_" + selectionVariable.getVariableId());
+			solrServer.deleteById("selectionvariable_"
+					+ selectionVariable.getVariableId());
 			solrServer.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -66,8 +68,8 @@ public class SelectionVariable {
 	}
 
 	public static List<SelectionVariable> findAllSelectionVariables() {
-		return entityManager().createQuery("SELECT o FROM SelectionVariable o", SelectionVariable.class)
-				.getResultList();
+		return entityManager().createQuery("SELECT o FROM SelectionVariable o",
+				SelectionVariable.class).getResultList();
 	}
 
 	public static SelectionVariable findSelectionVariable(Long variableId) {
@@ -76,44 +78,56 @@ public class SelectionVariable {
 		return entityManager().find(SelectionVariable.class, variableId);
 	}
 
-	public static List<SelectionVariable> findSelectionVariableEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM SelectionVariable o", SelectionVariable.class)
-				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
+	public static List<SelectionVariable> findSelectionVariableEntries(
+			int firstResult, int maxResults) {
+		return entityManager()
+				.createQuery("SELECT o FROM SelectionVariable o",
+						SelectionVariable.class).setFirstResult(firstResult)
+				.setMaxResults(maxResults).getResultList();
 	}
 
-	public static Collection<SelectionVariable> fromJsonArrayToSelectionVariables(String json) {
-		return new JSONDeserializer<List<SelectionVariable>>().use(null, ArrayList.class)
+	public static Collection<SelectionVariable> fromJsonArrayToSelectionVariables(
+			String json) {
+		return new JSONDeserializer<List<SelectionVariable>>()
+				.use(null, ArrayList.class)
 				.use("values", SelectionVariable.class).deserialize(json);
 	}
 
 	public static SelectionVariable fromJsonToSelectionVariable(String json) {
-		return new JSONDeserializer<SelectionVariable>().use(null, SelectionVariable.class).deserialize(json);
+		return new JSONDeserializer<SelectionVariable>().use(null,
+				SelectionVariable.class).deserialize(json);
 	}
 
-	public static void indexSelectionVariable(SelectionVariable selectionVariable) {
+	public static void indexSelectionVariable(
+			SelectionVariable selectionVariable) {
 		List<SelectionVariable> selectionvariables = new ArrayList<SelectionVariable>();
 		selectionvariables.add(selectionVariable);
 		indexSelectionVariables(selectionvariables);
 	}
 
 	@Async
-	public static void indexSelectionVariables(Collection<SelectionVariable> selectionvariables) {
+	public static void indexSelectionVariables(
+			Collection<SelectionVariable> selectionvariables) {
 		List<SolrInputDocument> documents = new ArrayList<SolrInputDocument>();
 		for (SelectionVariable selectionVariable : selectionvariables) {
 			SolrInputDocument sid = new SolrInputDocument();
-			sid.addField("id", "selectionvariable_" + selectionVariable.getVariableId());
-			sid.addField("selectionVariable.variable_t", selectionVariable.getVariable());
-			sid.addField("selectionVariable.mincount_t", selectionVariable.getMinCount());
-			sid.addField("selectionVariable.maxcount_t", selectionVariable.getMaxCount());
-			sid.addField("selectionVariable.variableid_l", selectionVariable.getVariableId());
+			sid.addField("id",
+					"selectionvariable_" + selectionVariable.getVariableId());
+			sid.addField("selectionVariable.variable_t",
+					selectionVariable.getVariable());
+			sid.addField("selectionVariable.mincount_t",
+					selectionVariable.getMinCount());
+			sid.addField("selectionVariable.maxcount_t",
+					selectionVariable.getMaxCount());
+			sid.addField("selectionVariable.variableid_l",
+					selectionVariable.getVariableId());
 			// Add summary field to allow searching documents for objects of
 			// this type
-			sid.addField(
-					"selectionvariable_solrsummary_t",
-					new StringBuilder().append(selectionVariable.getVariable()).append(" ")
-							.append(selectionVariable.getMinCount()).append(" ")
-							.append(selectionVariable.getMaxCount()).append(" ")
-							.append(selectionVariable.getVariableId()));
+			sid.addField("selectionvariable_solrsummary_t", new StringBuilder()
+					.append(selectionVariable.getVariable()).append(" ")
+					.append(selectionVariable.getMinCount()).append(" ")
+					.append(selectionVariable.getMaxCount()).append(" ")
+					.append(selectionVariable.getVariableId()));
 			documents.add(sid);
 		}
 		try {
@@ -149,6 +163,35 @@ public class SelectionVariable {
 
 	public static String toJsonArray(Collection<SelectionVariable> collection) {
 		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	/**
+	 * Verifica existenta unei variabile de tip selectie in baza de date; daca
+	 * exista, returneaza obiectul corespunzator, altfel, metoda introduce
+	 * variabila in baza de date si apoi returneaza obiectul corespunzator.
+	 * Verificarea existentei in baza de date se realizeaza fie dupa valoarea
+	 * identificatorului, fie dupa un criteriu de unicitate.
+	 * 
+	 * <p>
+	 * Criterii de unicitate:
+	 * <ul>
+	 * <li>variableId
+	 * <ul>
+	 * 
+	 * <p>
+	 * 
+	 * @param variableId
+	 *            - identificatorul variabilei.
+	 * @param minCount
+	 *            - numarul minim de elemente ce pot fi selectate.
+	 * @param maxCount
+	 *            - numarul maxim de elemente ce pot fi selectate.
+	 * @return
+	 */
+	public static SelectionVariable checkSelectionVariable(Integer variableId,
+			Integer minCount, Integer maxCount) {
+		// TODO
+		return null;
 	}
 
 	@Column(name = "max_count", columnDefinition = "int2")
@@ -234,7 +277,8 @@ public class SelectionVariable {
 		if (this.entityManager.contains(this)) {
 			this.entityManager.remove(this);
 		} else {
-			SelectionVariable attached = SelectionVariable.findSelectionVariable(this.variableId);
+			SelectionVariable attached = SelectionVariable
+					.findSelectionVariable(this.variableId);
 			this.entityManager.remove(attached);
 		}
 	}
@@ -247,7 +291,8 @@ public class SelectionVariable {
 		this.minCount = minCount;
 	}
 
-	public void setSelectionVariableItems(Set<SelectionVariableItem> selectionVariableItems) {
+	public void setSelectionVariableItems(
+			Set<SelectionVariableItem> selectionVariableItems) {
 		this.selectionVariableItems = selectionVariableItems;
 	}
 
@@ -264,8 +309,9 @@ public class SelectionVariable {
 	}
 
 	public String toString() {
-		return new ReflectionToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE).setExcludeFieldNames("variable")
-				.toString();
+		return new ReflectionToStringBuilder(this,
+				ToStringStyle.SHORT_PREFIX_STYLE).setExcludeFieldNames(
+				"variable").toString();
 	}
 
 	@PostUpdate

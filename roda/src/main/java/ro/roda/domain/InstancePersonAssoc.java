@@ -37,18 +37,20 @@ import flexjson.JSONSerializer;
 @Configurable
 @Entity
 @Table(schema = "public", name = "instance_person_assoc")
-
 public class InstancePersonAssoc {
 
 	public static long countInstancePersonAssocs() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM InstancePersonAssoc o", Long.class).getSingleResult();
+		return entityManager().createQuery(
+				"SELECT COUNT(o) FROM InstancePersonAssoc o", Long.class)
+				.getSingleResult();
 	}
 
 	@Async
 	public static void deleteIndex(InstancePersonAssoc instancePersonAssoc) {
 		SolrServer solrServer = solrServer();
 		try {
-			solrServer.deleteById("instancepersonassoc_" + instancePersonAssoc.getId());
+			solrServer.deleteById("instancepersonassoc_"
+					+ instancePersonAssoc.getId());
 			solrServer.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -64,8 +66,9 @@ public class InstancePersonAssoc {
 	}
 
 	public static List<InstancePersonAssoc> findAllInstancePersonAssocs() {
-		return entityManager().createQuery("SELECT o FROM InstancePersonAssoc o", InstancePersonAssoc.class)
-				.getResultList();
+		return entityManager().createQuery(
+				"SELECT o FROM InstancePersonAssoc o",
+				InstancePersonAssoc.class).getResultList();
 	}
 
 	public static InstancePersonAssoc findInstancePersonAssoc(Integer id) {
@@ -74,42 +77,56 @@ public class InstancePersonAssoc {
 		return entityManager().find(InstancePersonAssoc.class, id);
 	}
 
-	public static List<InstancePersonAssoc> findInstancePersonAssocEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM InstancePersonAssoc o", InstancePersonAssoc.class)
-				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
+	public static List<InstancePersonAssoc> findInstancePersonAssocEntries(
+			int firstResult, int maxResults) {
+		return entityManager()
+				.createQuery("SELECT o FROM InstancePersonAssoc o",
+						InstancePersonAssoc.class).setFirstResult(firstResult)
+				.setMaxResults(maxResults).getResultList();
 	}
 
-	public static Collection<InstancePersonAssoc> fromJsonArrayToInstancePersonAssocs(String json) {
-		return new JSONDeserializer<List<InstancePersonAssoc>>().use(null, ArrayList.class)
+	public static Collection<InstancePersonAssoc> fromJsonArrayToInstancePersonAssocs(
+			String json) {
+		return new JSONDeserializer<List<InstancePersonAssoc>>()
+				.use(null, ArrayList.class)
 				.use("values", InstancePersonAssoc.class).deserialize(json);
 	}
 
 	public static InstancePersonAssoc fromJsonToInstancePersonAssoc(String json) {
-		return new JSONDeserializer<InstancePersonAssoc>().use(null, InstancePersonAssoc.class).deserialize(json);
+		return new JSONDeserializer<InstancePersonAssoc>().use(null,
+				InstancePersonAssoc.class).deserialize(json);
 	}
 
-	public static void indexInstancePersonAssoc(InstancePersonAssoc instancePersonAssoc) {
+	public static void indexInstancePersonAssoc(
+			InstancePersonAssoc instancePersonAssoc) {
 		List<InstancePersonAssoc> instancepersonassocs = new ArrayList<InstancePersonAssoc>();
 		instancepersonassocs.add(instancePersonAssoc);
 		indexInstancePersonAssocs(instancepersonassocs);
 	}
 
 	@Async
-	public static void indexInstancePersonAssocs(Collection<InstancePersonAssoc> instancepersonassocs) {
+	public static void indexInstancePersonAssocs(
+			Collection<InstancePersonAssoc> instancepersonassocs) {
 		List<SolrInputDocument> documents = new ArrayList<SolrInputDocument>();
 		for (InstancePersonAssoc instancePersonAssoc : instancepersonassocs) {
 			SolrInputDocument sid = new SolrInputDocument();
-			sid.addField("id", "instancepersonassoc_" + instancePersonAssoc.getId());
-			sid.addField("instancePersonAssoc.assocname_s", instancePersonAssoc.getAssocName());
-			sid.addField("instancePersonAssoc.assocdescription_s", instancePersonAssoc.getAssocDescription());
-			sid.addField("instancePersonAssoc.id_i", instancePersonAssoc.getId());
+			sid.addField("id",
+					"instancepersonassoc_" + instancePersonAssoc.getId());
+			sid.addField("instancePersonAssoc.assocname_s",
+					instancePersonAssoc.getAssocName());
+			sid.addField("instancePersonAssoc.assocdescription_s",
+					instancePersonAssoc.getAssocDescription());
+			sid.addField("instancePersonAssoc.id_i",
+					instancePersonAssoc.getId());
 			// Add summary field to allow searching documents for objects of
 			// this type
 			sid.addField(
 					"instancepersonassoc_solrsummary_t",
-					new StringBuilder().append(instancePersonAssoc.getAssocName()).append(" ")
-							.append(instancePersonAssoc.getAssocDescription()).append(" ")
-							.append(instancePersonAssoc.getId()));
+					new StringBuilder()
+							.append(instancePersonAssoc.getAssocName())
+							.append(" ")
+							.append(instancePersonAssoc.getAssocDescription())
+							.append(" ").append(instancePersonAssoc.getId()));
 			documents.add(sid);
 		}
 		try {
@@ -131,7 +148,8 @@ public class InstancePersonAssoc {
 	}
 
 	public static QueryResponse search(String queryString) {
-		String searchString = "InstancePersonAssoc_solrsummary_t:" + queryString;
+		String searchString = "InstancePersonAssoc_solrsummary_t:"
+				+ queryString;
 		return search(new SolrQuery(searchString.toLowerCase()));
 	}
 
@@ -148,38 +166,36 @@ public class InstancePersonAssoc {
 	}
 
 	/**
-	 * Verifica existenta existenta unui tip de asociere intre persoana si
-	 * instanta (preluat prin valori ale parametrilor de intrare) in baza de
-	 * date; in caz afirmativ, returneaza obiectul corespunzator, altfel, metoda
-	 * introduce tipul de asociere in baza de date si apoi returneaza obiectul
-	 * corespunzator. Verificarea existentei in baza de date se realizeaza fie
-	 * dupa valoarea cheii primare, fie dupa un criteriu de unicitate.
+	 * Verifica existenta unui tip de asociere intre persoana si instanta in
+	 * baza de date; in caz afirmativ, returneaza obiectul corespunzator,
+	 * altfel, metoda introduce tipul de asociere in baza de date si apoi
+	 * returneaza obiectul corespunzator. Verificarea existentei in baza de date
+	 * se realizeaza fie dupa valoarea identificatorului, fie dupa un criteriu
+	 * de unicitate.
 	 * 
 	 * <p>
 	 * Criterii de unicitate:
-	 * <p>
 	 * <ul>
-	 * <li>personAssocId
-	 * <li>personAssocName
+	 * <li>id
+	 * <li>name
 	 * <ul>
+	 * 
 	 * <p>
 	 * 
-	 * @param personAssocId
-	 *            - cheia primara a tipului de asociere in tabelul
-	 *            instance_person_assoc
-	 * @param personAssocName
-	 *            - denumirea tipului de asociere intre instanta si persoana
+	 * @param id
+	 *            - identificatorul tipului de asociere.
+	 * @param name
+	 *            - numele tipului de asociere.
 	 * @param description
-	 *            - descrierea tipului de asociere intre instanta si persoana
-	 * 
+	 *            - descrierea tipului de asociere.
 	 * @return
 	 */
-	public static InstancePersonAssoc checkInstancePersonAssoc(Integer personAssocId,
-			String personAssocName, String description) {
+	public static InstancePersonAssoc checkInstancePersonAssoc(Integer id,
+			String name, String description) {
 		// TODO
 		return null;
 	}
-	
+
 	@Column(name = "assoc_description", columnDefinition = "text")
 	private String assocDescription;
 
@@ -254,7 +270,8 @@ public class InstancePersonAssoc {
 		if (this.entityManager.contains(this)) {
 			this.entityManager.remove(this);
 		} else {
-			InstancePersonAssoc attached = InstancePersonAssoc.findInstancePersonAssoc(this.id);
+			InstancePersonAssoc attached = InstancePersonAssoc
+					.findInstancePersonAssoc(this.id);
 			this.entityManager.remove(attached);
 		}
 	}
@@ -280,7 +297,8 @@ public class InstancePersonAssoc {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this,
+				ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate

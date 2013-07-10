@@ -156,115 +156,35 @@ public class Org {
 	}
 
 	/**
-	 * Verifica existenta unei organizatii in baza de date (pe baza parametrilor
-	 * furnizati); daca exista, returneaza obiectul respectiv, altfel il
-	 * introduce si returneaza obiectul corespunzator.
-	 * 
-	 * @param orgId
-	 * @param shortName
-	 * @param fullName
-	 * @param orgPrefixId
-	 * @param orgSufixId
-	 * @return
-	 */
-	public static Org checkOrg(Integer orgId, String shortName,
-			String fullName, Integer orgPrefixId, Integer orgSufixId) {
-		// TODO
-		return null;
-	}
-
-	/**
-	 * Verifica existenta unei organizatii in baza de date; daca nu exista,
-	 * adaugarea va avea loc doar pe baza campurilor obligatorii.
+	 * Verifica existenta unei organizatii in baza de date; in caz afirmativ,
+	 * returneaza obiectul corespunzator, altfel, metoda introduce organizatia
+	 * in baza de date si apoi returneaza obiectul corespunzator. Verificarea
+	 * existentei in baza de date se realizeaza fie dupa valoarea
+	 * identificatorului, fie dupa un criteriu de unicitate.
 	 * 
 	 * <p>
 	 * Criterii de unicitate:
-	 * <p>
 	 * <ul>
-	 * <li>fullname
+	 * <li>id
+	 * <li>fullName
 	 * <ul>
+	 * 
 	 * <p>
 	 * 
-	 * @param orgId
+	 * @param id
+	 *            - identificatorul organizatiei.
 	 * @param shortName
+	 *            - denumirea prescurtata a organizatiei (acronim).
 	 * @param fullName
+	 *            - denumirea completa a organizatiei.
+	 * @param prefixId
+	 *            - identificatorul prefixului organizatiei.
+	 * @param sufixId
+	 *            - identificatorul sufixului organizatiei.
 	 * @return
 	 */
-	public static Org checkOrg(Integer orgId, String shortName, String fullName) {
-		// TODO
-		return null;
-	}
-
-	/**
-	 * Verifica existenta unei organizatii; in cazul inexistentei, aceasta poate
-	 * fi introdusa furnizand informatii complete (inclusiv listele de adrese,
-	 * email-uri si adrese internet corespunzatoare).
-	 * 
-	 * <p>
-	 * Criterii de unicitate:
-	 * <p>
-	 * <ul>
-	 * <li>orgId
-	 * <li>fullname
-	 * <ul>
-	 * <p>
-	 * 
-	 * 
-	 * 
-	 * @param orgId
-	 *            - cheia primara a organizatiei din tabelul de organizatii
-	 * @param fullname
-	 *            - denumirea completa a organizatiei
-	 * @param shortname
-	 *            - denumirea abreviata a organizatiei
-	 * @param orgPrefix
-	 *            - prefixul organizatiei curente. Acesta va fi cautat in
-	 *            tabelul de prefixe pentru organizatii; daca nu este gasit, va
-	 *            fi introdus in acest tabel.
-	 * @param orgSufix
-	 *            - sufixul organizatiei curente. Acesta va fi cautat in tabelul
-	 *            de sufixe pentru organizatii; daca nu este gasit, va fi
-	 *            introdus in acest tabel.
-	 * @param orgAddresses
-	 *            - lista ce contine adresele postale ale organizatiei;
-	 *            existenta fiecarei adrese va fi verificata in baza de date,
-	 *            iar in cazul inexistentei va fi introdusa. Totodata, va fi
-	 *            inserata si asocierea dintre adresa postala gasita sau
-	 *            inserata si organizatia curenta.
-	 * @param orgEmails
-	 *            - lista ce contine adresele de email ale organizatiei;
-	 *            existenta fiecarei adrese de email va fi verificata in baza de
-	 *            date, iar in cazul inexistentei va fi introdusa. Totodata, va
-	 *            fi inserata si asocierea dintre adresa de email gasita sau
-	 *            inserata si organizatia curenta.
-	 * @param orgInternets
-	 *            - lista ce contine adresele de internet ale organizatiei;
-	 *            existenta fiecarei adrese de internet va fi verificata in baza
-	 *            de date, iar in cazul inexistentei va fi introdusa. Totodata,
-	 *            va fi inserata si asocierea dintre adresa de internet gasita
-	 *            sau inserata si organizatia curenta.
-	 * @param orgPhones
-	 *            - lista ce contine numerele de telefon ale organizatiei;
-	 *            existenta fiecarui numar de telefon va fi verificata in baza
-	 *            de date, iar in cazul inexistentei numarul respectiv va fi
-	 *            introdus. Totodata, va fi inserata si asocierea dintre numarul
-	 *            de telefon gasit sau inserat si organizatia curenta.
-	 * @param persons
-	 *            - lista de persone aflate in relatie cu organizatia curenta;
-	 *            existenta fiecarei persoane este verificata in baza de date,
-	 *            iar in cazul inexistentei persoanele sunt inserate in tabelul
-	 *            destinat lor. O persoana are un role in cadrul organizatiei;
-	 *            de asemenea, acesta este cautat in baza de date si inserat
-	 *            daca nu exista. Totodata, in baza de date va fi retinuta
-	 *            asocierea dintre persoana, role si organizatia curenta.
-	 * 
-	 * @return
-	 */
-	public static Org checkOrg(Integer orgId, String shortname,
-			String fullname, String orgPrefix, String orgSufix,
-			List<Address> orgAddresses, List<Email> orgEmails,
-			List<Internet> orgInternets, List<Phone> orgPhones,
-			List<Person> persons) {
+	public static Org checkOrg(Integer id, String shortName, String fullName,
+			Integer prefixId, Integer sufixId) {
 		// TODO
 		return null;
 	}

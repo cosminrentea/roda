@@ -150,29 +150,30 @@ public class Internet {
 	}
 
 	/**
-	 * Verifica existenta unei adrese Internet in baza de date; daca exista,
-	 * returneaza obiectul respectiv, altfel, il introduce in baza de date si
-	 * returneaza obiectul corespunzator.
+	 * Verifica existenta unui cont de internet in baza de date; in caz
+	 * afirmativ, returneaza obiectul corespunzator, altfel, metoda introduce
+	 * contul de internet in baza de date si apoi returneaza obiectul
+	 * corespunzator. Verificarea existentei in baza de date se realizeaza fie
+	 * dupa valoarea identificatorului, fie dupa un criteriu de unicitate.
 	 * 
 	 * <p>
 	 * Criterii de unicitate:
-	 * <p>
 	 * <ul>
-	 * <li>internetId
-	 * <li>internet
+	 * <li>id
+	 * <li>name
 	 * <ul>
+	 * 
 	 * <p>
 	 * 
-	 * 
-	 * @param internetId
-	 *            - cheia primara a adresei de Internet
-	 * @param internet
-	 *            - adresa de Internet
-	 * @param internetType
-	 *            - tipul adresei de Internet
+	 * @param id
+	 *            - identificatorul contului.
+	 * @param type
+	 *            - tipul contului.
+	 * @param name
+	 *            - adresa contului.
 	 * @return
 	 */
-	public static Internet checkInternet(Integer internetId, String internet, String internetType) {
+	public static Internet checkInternet(Integer id, String type, String name) {
 		// TODO
 		return null;
 	}

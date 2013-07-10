@@ -31,7 +31,6 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrInputDocument;
-import org.hibernate.envers.Audited;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -47,7 +46,8 @@ import flexjson.JSONSerializer;
 public class Catalog {
 
 	public static long countCatalogs() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM Catalog o", Long.class).getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM Catalog o",
+				Long.class).getSingleResult();
 	}
 
 	@Async
@@ -70,7 +70,8 @@ public class Catalog {
 	}
 
 	public static List<Catalog> findAllCatalogs() {
-		return entityManager().createQuery("SELECT o FROM Catalog o", Catalog.class).getResultList();
+		return entityManager().createQuery("SELECT o FROM Catalog o",
+				Catalog.class).getResultList();
 	}
 
 	public static Catalog findCatalog(Integer id) {
@@ -79,18 +80,22 @@ public class Catalog {
 		return entityManager().find(Catalog.class, id);
 	}
 
-	public static List<Catalog> findCatalogEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM Catalog o", Catalog.class).setFirstResult(firstResult)
-				.setMaxResults(maxResults).getResultList();
+	public static List<Catalog> findCatalogEntries(int firstResult,
+			int maxResults) {
+		return entityManager()
+				.createQuery("SELECT o FROM Catalog o", Catalog.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults)
+				.getResultList();
 	}
 
 	public static Collection<Catalog> fromJsonArrayToCatalogs(String json) {
-		return new JSONDeserializer<List<Catalog>>().use(null, ArrayList.class).use("values", Catalog.class)
-				.deserialize(json);
+		return new JSONDeserializer<List<Catalog>>().use(null, ArrayList.class)
+				.use("values", Catalog.class).deserialize(json);
 	}
 
 	public static Catalog fromJsonToCatalog(String json) {
-		return new JSONDeserializer<Catalog>().use(null, Catalog.class).deserialize(json);
+		return new JSONDeserializer<Catalog>().use(null, Catalog.class)
+				.deserialize(json);
 	}
 
 	public static void indexCatalog(Catalog catalog) {
@@ -117,10 +122,14 @@ public class Catalog {
 			// this type
 			sid.addField(
 					"catalog_solrsummary_t",
-					new StringBuilder().append(catalog.getSeries()).append(" ").append(catalog.getParentId())
-							.append(" ").append(catalog.getOwner()).append(" ").append(catalog.getName()).append(" ")
-							.append(catalog.getAdded().getTime()).append(" ").append(catalog.getSequencenr())
-							.append(" ").append(catalog.getDescription()).append(" ").append(catalog.getId()));
+					new StringBuilder().append(catalog.getSeries()).append(" ")
+							.append(catalog.getParentId()).append(" ")
+							.append(catalog.getOwner()).append(" ")
+							.append(catalog.getName()).append(" ")
+							.append(catalog.getAdded().getTime()).append(" ")
+							.append(catalog.getSequencenr()).append(" ")
+							.append(catalog.getDescription()).append(" ")
+							.append(catalog.getId()));
 			documents.add(sid);
 		}
 		try {
@@ -155,44 +164,46 @@ public class Catalog {
 	}
 
 	public static String toJsonArray(Collection<Catalog> collection) {
-		return new JSONSerializer().exclude("*.class").include("catalogs", "catalogsStudies").serialize(collection);
+		return new JSONSerializer().exclude("*.class")
+				.include("catalogs", "catalogsStudies").serialize(collection);
 	}
 
 	/**
-	 * Verifica existenta unui catalog (preluat prin combinatii ale parametrilor
-	 * de intrare) in baza de date; in caz afirmativ, returneaza obiectul
-	 * corespunzator, altfel, metoda introduce catalogul in baza de date si apoi
-	 * returneaza obiectul corespunzator. Verificarea existentei in baza de date
-	 * se realizeaza fie dupa valoarea cheii primare, fie dupa un criteriu de
-	 * unicitate.
+	 * Verifica existenta unui catalog in baza de date; in caz afirmativ,
+	 * returneaza obiectul corespunzator, altfel, metoda introduce catalogul in
+	 * baza de date si apoi returneaza obiectul corespunzator. Verificarea
+	 * existentei in baza de date se realizeaza fie dupa valoarea
+	 * identificatorului, fie dupa un criteriu de unicitate.
 	 * 
+	 * <p>
 	 * Criterii de unicitate:
+	 * <ul>
+	 * <li>id
+	 * <li>name + parentId + ownerId
+	 * <ul>
 	 * 
-	 * name + parentId
+	 * <p>
 	 * 
-	 * @param catalogId
+	 * @param id
+	 *            - identificatorul catalogului.
+	 * @param ownerId
+	 *            - identificatorul utilizatorului care detine catalogul.
 	 * @param parentId
+	 *            - identificatorul catalogului parinte.
+	 * @param name
+	 *            - numele catalogului.
+	 * @param added
+	 *            - data adaugarii catalogului.
 	 * @param sequenceNr
+	 *            - numarul de ordine al catalogului in secventa de cataloage
+	 *            din cadrul aceluiasi parinte.
 	 * @param description
+	 *            - descrierea catalogului.
 	 * @return
 	 */
-	public static Catalog checkCatalog(Integer catalogId, String catalogName, Integer parentId, Integer owner,
-			Calendar added, Integer sequenceNr, String description) {
-		// TODO
-		return null;
-	}
-
-	/**
-	 * Verifica existenta unui catalog preluat prin combinatii ale parametrilor
-	 * obligatorii de intrare.
-	 * 
-	 * @param catalogId
-	 * @param parentId
-	 * @param sequenceNr
-	 * @param description
-	 * @return
-	 */
-	public static Catalog checkCatalog(Integer catalogId, String name, Integer owner, Calendar added) {
+	public static Catalog checkCatalog(Integer id, Integer ownerId,
+			Integer parentId, String name, Calendar added, Integer sequenceNr,
+			String description) {
 		// TODO
 		return null;
 	}
@@ -234,6 +245,8 @@ public class Catalog {
 
 	@OneToOne(mappedBy = "catalog")
 	private Series series;
+
+	private Integer level;
 
 	@PersistenceContext
 	transient EntityManager entityManager;
@@ -363,13 +376,22 @@ public class Catalog {
 		this.series = series;
 	}
 
+	public Integer getLevel() {
+		return level;
+	}
+
+	public void setLevel(Integer level) {
+		this.level = level;
+	}
+
 	public String toJson() {
 		return new JSONSerializer().exclude("*.class").serialize(this);
 	}
 
 	public String toString() {
-		return new ReflectionToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE).setExcludeFieldNames("parentId")
-				.toString();
+		return new ReflectionToStringBuilder(this,
+				ToStringStyle.SHORT_PREFIX_STYLE).setExcludeFieldNames(
+				"parentId").toString();
 	}
 
 	@PostUpdate

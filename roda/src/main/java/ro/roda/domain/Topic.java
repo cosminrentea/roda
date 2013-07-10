@@ -40,11 +40,11 @@ import flexjson.JSONSerializer;
 @Configurable
 @Entity
 @Table(schema = "public", name = "topic")
-
 public class Topic {
 
 	public static long countTopics() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM Topic o", Long.class).getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM Topic o",
+				Long.class).getSingleResult();
 	}
 
 	@Async
@@ -67,7 +67,9 @@ public class Topic {
 	}
 
 	public static List<Topic> findAllTopics() {
-		return entityManager().createQuery("SELECT o FROM Topic o", Topic.class).getResultList();
+		return entityManager()
+				.createQuery("SELECT o FROM Topic o", Topic.class)
+				.getResultList();
 	}
 
 	public static Topic findTopic(Integer id) {
@@ -77,17 +79,20 @@ public class Topic {
 	}
 
 	public static List<Topic> findTopicEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM Topic o", Topic.class).setFirstResult(firstResult)
-				.setMaxResults(maxResults).getResultList();
+		return entityManager()
+				.createQuery("SELECT o FROM Topic o", Topic.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults)
+				.getResultList();
 	}
 
 	public static Collection<Topic> fromJsonArrayToTopics(String json) {
-		return new JSONDeserializer<List<Topic>>().use(null, ArrayList.class).use("values", Topic.class)
-				.deserialize(json);
+		return new JSONDeserializer<List<Topic>>().use(null, ArrayList.class)
+				.use("values", Topic.class).deserialize(json);
 	}
 
 	public static Topic fromJsonToTopic(String json) {
-		return new JSONDeserializer<Topic>().use(null, Topic.class).deserialize(json);
+		return new JSONDeserializer<Topic>().use(null, Topic.class)
+				.deserialize(json);
 	}
 
 	public static void indexTopic(Topic topic) {
@@ -103,7 +108,8 @@ public class Topic {
 			SolrInputDocument sid = new SolrInputDocument();
 			sid.addField("id", "topic_" + topic.getId());
 			sid.addField("topic.parentid_t", topic.getParentId());
-			sid.addField("topic.preferredsynonymtopicid_t", topic.getPreferredSynonymTopicId());
+			sid.addField("topic.preferredsynonymtopicid_t",
+					topic.getPreferredSynonymTopicId());
 			sid.addField("topic.name_s", topic.getName());
 			sid.addField("topic.description_s", topic.getDescription());
 			// Add summary field to allow searching documents for objects of
@@ -111,7 +117,8 @@ public class Topic {
 			sid.addField(
 					"topic_solrsummary_t",
 					new StringBuilder().append(topic.getParentId()).append(" ")
-							.append(topic.getPreferredSynonymTopicId()).append(" ").append(topic.getName()).append(" ")
+							.append(topic.getPreferredSynonymTopicId())
+							.append(" ").append(topic.getName()).append(" ")
 							.append(topic.getDescription()));
 			documents.add(sid);
 		}
@@ -148,6 +155,35 @@ public class Topic {
 
 	public static String toJsonArray(Collection<Topic> collection) {
 		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	/**
+	 * Verifica existenta unui topic (preluat prin valori ale parametrilor de
+	 * intrare) in baza de date; in caz afirmativ, returneaza obiectul
+	 * corespunzator, altfel, metoda va scrie in log mesajul. Verificarea
+	 * existentei in baza de date se realizeaza fie dupa valoarea cheii primare,
+	 * fie dupa un criteriu de unicitate.
+	 * 
+	 * <p>
+	 * Criterii de unicitate:
+	 * <p>
+	 * <ul>
+	 * <li>topicId
+	 * <li>name
+	 * <ul>
+	 * <p>
+	 * 
+	 * @param topicId
+	 *            - cheia primara a topic-ului din tabelul de topic-uri
+	 * @param name
+	 *            - denumirea topic-ului
+	 * @return
+	 */
+	public static Topic checkTopic(Integer topicId, String name) {
+		// TODO
+		// use equals method to determine the existence of the topic in the
+		// database
+		return null;
 	}
 
 	@Column(name = "description", columnDefinition = "text")
@@ -318,7 +354,8 @@ public class Topic {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this,
+				ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate
@@ -330,5 +367,21 @@ public class Topic {
 	@PreRemove
 	private void preRemove() {
 		deleteIndex(this);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof Topic) {
+			Topic topicDB = entityManager().createQuery(
+					"SELECT o FROM Topic o WHERE lc(name)='"
+							+ ((Topic) obj).getName().toLowerCase() + "'",
+					Topic.class).getSingleResult();
+			if (topicDB != null) {
+				return true;
+			}
+
+		}
+		return false;
+
 	}
 }

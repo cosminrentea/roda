@@ -155,38 +155,31 @@ public class SamplingProcedure {
 	}
 
 	/**
-	 * Verifica existenta unei proceduri de esantionare (preluate prin valori
-	 * ale parametrilor de intrare) in baza de date; in caz afirmativ,
-	 * returneaza obiectul corespunzator, altfel, metoda introduce procedura de
-	 * esantionare in baza de date si apoi returneaza obiectul corespunzator.
-	 * Verificarea existentei in baza de date se realizeaza fie dupa valoarea
-	 * cheii primare, fie dupa un criteriu de unicitate.
+	 * Verifica existenta unei proceduri de esantionare in baza de date; in caz
+	 * afirmativ, returneaza obiectul corespunzator, altfel, metoda introduce
+	 * procedura de esantionare in baza de date si apoi returneaza obiectul
+	 * corespunzator. Verificarea existentei in baza de date se realizeaza fie
+	 * dupa valoarea identificatorului, fie dupa un criteriu de unicitate.
 	 * 
+	 * <p>
 	 * Criterii de unicitate:
+	 * <ul>
+	 * <li>id
+	 * <li>name
+	 * <ul>
 	 * 
-	 * samplingProcedureName
+	 * <p>
 	 * 
-	 * @param samplingProcedure
-	 * @param samplingProcedureName
-	 * @param samplingProcedureDescription
+	 * @param id
+	 *            - identificatorul procedurii de esantionare.
+	 * @param name
+	 *            - numele procedurii de esantionare.
+	 * @param description
+	 *            - descrierea procedurii de esantionare.
 	 * @return
 	 */
-	public static UnitAnalysis checkUnitAnalysis(Integer samplingProcedureId,
-			String samplingProcedureName, String samplingProcedureDescription) {
-		// TODO
-		return null;
-	}
-
-	/**
-	 * Verifica existenta unei unitati de analiza; in cazul inexistentei,
-	 * aceasta este inserata pe baza campurilor sale obligatorii.
-	 * 
-	 * @param unitAnalysisId
-	 * @param unitAnalysisName
-	 * @return
-	 */
-	public static UnitAnalysis checkUnitAnalysis(Integer unitAnalysisId,
-			String unitAnalysisName) {
+	public static SamplingProcedure checkSamplingProcedure(Integer id,
+			String name, String description) {
 		// TODO
 		return null;
 	}

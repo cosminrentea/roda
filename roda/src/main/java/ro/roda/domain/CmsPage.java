@@ -39,11 +39,11 @@ import flexjson.JSONSerializer;
 @Entity
 @Table(schema = "public", name = "cms_page")
 @Configurable
-
 public class CmsPage {
 
 	public static long countCmsPages() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM CmsPage o", Long.class).getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM CmsPage o",
+				Long.class).getSingleResult();
 	}
 
 	@Async
@@ -66,7 +66,8 @@ public class CmsPage {
 	}
 
 	public static List<CmsPage> findAllCmsPages() {
-		return entityManager().createQuery("SELECT o FROM CmsPage o", CmsPage.class).getResultList();
+		return entityManager().createQuery("SELECT o FROM CmsPage o",
+				CmsPage.class).getResultList();
 	}
 
 	public static CmsPage findCmsPage(Integer id) {
@@ -75,18 +76,22 @@ public class CmsPage {
 		return entityManager().find(CmsPage.class, id);
 	}
 
-	public static List<CmsPage> findCmsPageEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM CmsPage o", CmsPage.class).setFirstResult(firstResult)
-				.setMaxResults(maxResults).getResultList();
+	public static List<CmsPage> findCmsPageEntries(int firstResult,
+			int maxResults) {
+		return entityManager()
+				.createQuery("SELECT o FROM CmsPage o", CmsPage.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults)
+				.getResultList();
 	}
 
 	public static Collection<CmsPage> fromJsonArrayToCmsPages(String json) {
-		return new JSONDeserializer<List<CmsPage>>().use(null, ArrayList.class).use("values", CmsPage.class)
-				.deserialize(json);
+		return new JSONDeserializer<List<CmsPage>>().use(null, ArrayList.class)
+				.use("values", CmsPage.class).deserialize(json);
 	}
 
 	public static CmsPage fromJsonToCmsPage(String json) {
-		return new JSONDeserializer<CmsPage>().use(null, CmsPage.class).deserialize(json);
+		return new JSONDeserializer<CmsPage>().use(null, CmsPage.class)
+				.deserialize(json);
 	}
 
 	public static void indexCmsPage(CmsPage cmsPage) {
@@ -108,9 +113,12 @@ public class CmsPage {
 			sid.addField("cmsPage.id_i", cmsPage.getId());
 			// Add summary field to allow searching documents for objects of
 			// this type
-			sid.addField("cmspage_solrsummary_t",
-					new StringBuilder().append(cmsPage.getCmsLayoutId()).append(" ").append(cmsPage.getCmsPageTypeId())
-							.append(" ").append(cmsPage.getName()).append(" ").append(cmsPage.getUrl()).append(" ")
+			sid.addField(
+					"cmspage_solrsummary_t",
+					new StringBuilder().append(cmsPage.getCmsLayoutId())
+							.append(" ").append(cmsPage.getCmsPageTypeId())
+							.append(" ").append(cmsPage.getName()).append(" ")
+							.append(cmsPage.getUrl()).append(" ")
 							.append(cmsPage.getId()));
 			documents.add(sid);
 		}
@@ -147,6 +155,45 @@ public class CmsPage {
 
 	public static String toJsonArray(Collection<CmsPage> collection) {
 		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	/**
+	 * Verifica existenta unei pagini CMS in baza de date; in caz afirmativ,
+	 * returneaza obiectul corespunzator, altfel, metoda introduce pagina CMS in
+	 * baza de date si apoi returneaza obiectul corespunzator. Verificarea
+	 * existentei in baza de date se realizeaza fie dupa valoarea
+	 * identificatorului, fie dupa un criteriu de unicitate.
+	 * 
+	 * <p>
+	 * Criterii de unicitate:
+	 * <ul>
+	 * <li>id
+	 * <li>url
+	 * <ul>
+	 * 
+	 * <p>
+	 * 
+	 * @param id
+	 *            - identificatorul paginii CMS.
+	 * @param name
+	 *            - numele paginii CMS.
+	 * @param layoutId
+	 *            - identificatorul layout-ului CMS.
+	 * @param pageTypeId
+	 *            - identificatorul tipului de pagina CMS.
+	 * @param visible
+	 *            - specifica daca pagina CMS este vizibila.
+	 * @param navigable
+	 *            - specifica daca pagina CMS este navigabila.
+	 * @param url
+	 *            - url-ul paginii CMS.
+	 * @return
+	 */
+	public static CmsPage checkCmsPage(Integer id, String name,
+			Integer layoutId, Integer pageTypeId, Boolean visible,
+			Boolean navigable, String url) {
+		// TODO
+		return null;
 	}
 
 	@ManyToOne
@@ -298,7 +345,8 @@ public class CmsPage {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this,
+				ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate

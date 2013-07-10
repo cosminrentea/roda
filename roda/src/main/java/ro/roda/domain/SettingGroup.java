@@ -39,11 +39,12 @@ import flexjson.JSONSerializer;
 @Entity
 @Table(schema = "public", name = "setting_group")
 @Configurable
-
 public class SettingGroup {
 
 	public static long countSettingGroups() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM SettingGroup o", Long.class).getSingleResult();
+		return entityManager().createQuery(
+				"SELECT COUNT(o) FROM SettingGroup o", Long.class)
+				.getSingleResult();
 	}
 
 	@Async
@@ -66,7 +67,8 @@ public class SettingGroup {
 	}
 
 	public static List<SettingGroup> findAllSettingGroups() {
-		return entityManager().createQuery("SELECT o FROM SettingGroup o", SettingGroup.class).getResultList();
+		return entityManager().createQuery("SELECT o FROM SettingGroup o",
+				SettingGroup.class).getResultList();
 	}
 
 	public static SettingGroup findSettingGroup(Integer id) {
@@ -75,18 +77,24 @@ public class SettingGroup {
 		return entityManager().find(SettingGroup.class, id);
 	}
 
-	public static List<SettingGroup> findSettingGroupEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM SettingGroup o", SettingGroup.class)
-				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
+	public static List<SettingGroup> findSettingGroupEntries(int firstResult,
+			int maxResults) {
+		return entityManager()
+				.createQuery("SELECT o FROM SettingGroup o", SettingGroup.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults)
+				.getResultList();
 	}
 
-	public static Collection<SettingGroup> fromJsonArrayToSettingGroups(String json) {
-		return new JSONDeserializer<List<SettingGroup>>().use(null, ArrayList.class).use("values", SettingGroup.class)
+	public static Collection<SettingGroup> fromJsonArrayToSettingGroups(
+			String json) {
+		return new JSONDeserializer<List<SettingGroup>>()
+				.use(null, ArrayList.class).use("values", SettingGroup.class)
 				.deserialize(json);
 	}
 
 	public static SettingGroup fromJsonToSettingGroup(String json) {
-		return new JSONDeserializer<SettingGroup>().use(null, SettingGroup.class).deserialize(json);
+		return new JSONDeserializer<SettingGroup>().use(null,
+				SettingGroup.class).deserialize(json);
 	}
 
 	public static void indexSettingGroup(SettingGroup settingGroup) {
@@ -103,11 +111,14 @@ public class SettingGroup {
 			sid.addField("id", "settinggroup_" + settingGroup.getId());
 			sid.addField("settingGroup.parentid_t", settingGroup.getParentId());
 			sid.addField("settingGroup.name_s", settingGroup.getName());
-			sid.addField("settingGroup.description_s", settingGroup.getDescription());
+			sid.addField("settingGroup.description_s",
+					settingGroup.getDescription());
 			// Add summary field to allow searching documents for objects of
 			// this type
-			sid.addField("settinggroup_solrsummary_t",
-					new StringBuilder().append(settingGroup.getParentId()).append(" ").append(settingGroup.getName())
+			sid.addField(
+					"settinggroup_solrsummary_t",
+					new StringBuilder().append(settingGroup.getParentId())
+							.append(" ").append(settingGroup.getName())
 							.append(" ").append(settingGroup.getDescription()));
 			documents.add(sid);
 		}
@@ -144,6 +155,38 @@ public class SettingGroup {
 
 	public static String toJsonArray(Collection<SettingGroup> collection) {
 		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	/**
+	 * Verifica existenta unui grup de setari de aplicatie in baza de date; daca
+	 * exista, returneaza obiectul corespunzator, altfel, metoda introduce
+	 * grupul de setari de aplicatie in baza de date si apoi returneaza obiectul
+	 * corespunzator. Verificarea existentei in baza de date se realizeaza fie
+	 * dupa valoarea identificatorului, fie dupa un criteriu de unicitate.
+	 * 
+	 * <p>
+	 * Criterii de unicitate:
+	 * <ul>
+	 * <li>id
+	 * <li>name + parentId
+	 * <ul>
+	 * 
+	 * <p>
+	 * 
+	 * @param id
+	 *            - identificatorul grupului de setari de aplicatie.
+	 * @param name
+	 *            - numele grupului de setari de aplicatie.
+	 * @param parentId
+	 *            - grupul de setari de aplicatie parinte.
+	 * @param description
+	 *            - descrierea grupului de setari de aplicatie.
+	 * @return
+	 */
+	public static SettingGroup checkSettingGroup(Integer id, String name,
+			Integer parentId, String description) {
+		// TODO
+		return null;
 	}
 
 	@Column(name = "description", columnDefinition = "text")
@@ -269,7 +312,8 @@ public class SettingGroup {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this,
+				ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate

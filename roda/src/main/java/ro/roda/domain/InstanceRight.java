@@ -37,11 +37,12 @@ import flexjson.JSONSerializer;
 @Entity
 @Table(schema = "public", name = "instance_right")
 @Configurable
-
 public class InstanceRight {
 
 	public static long countInstanceRights() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM InstanceRight o", Long.class).getSingleResult();
+		return entityManager().createQuery(
+				"SELECT COUNT(o) FROM InstanceRight o", Long.class)
+				.getSingleResult();
 	}
 
 	@Async
@@ -64,7 +65,8 @@ public class InstanceRight {
 	}
 
 	public static List<InstanceRight> findAllInstanceRights() {
-		return entityManager().createQuery("SELECT o FROM InstanceRight o", InstanceRight.class).getResultList();
+		return entityManager().createQuery("SELECT o FROM InstanceRight o",
+				InstanceRight.class).getResultList();
 	}
 
 	public static InstanceRight findInstanceRight(Integer id) {
@@ -73,18 +75,24 @@ public class InstanceRight {
 		return entityManager().find(InstanceRight.class, id);
 	}
 
-	public static List<InstanceRight> findInstanceRightEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM InstanceRight o", InstanceRight.class)
-				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
+	public static List<InstanceRight> findInstanceRightEntries(int firstResult,
+			int maxResults) {
+		return entityManager()
+				.createQuery("SELECT o FROM InstanceRight o",
+						InstanceRight.class).setFirstResult(firstResult)
+				.setMaxResults(maxResults).getResultList();
 	}
 
-	public static Collection<InstanceRight> fromJsonArrayToInstanceRights(String json) {
-		return new JSONDeserializer<List<InstanceRight>>().use(null, ArrayList.class)
-				.use("values", InstanceRight.class).deserialize(json);
+	public static Collection<InstanceRight> fromJsonArrayToInstanceRights(
+			String json) {
+		return new JSONDeserializer<List<InstanceRight>>()
+				.use(null, ArrayList.class).use("values", InstanceRight.class)
+				.deserialize(json);
 	}
 
 	public static InstanceRight fromJsonToInstanceRight(String json) {
-		return new JSONDeserializer<InstanceRight>().use(null, InstanceRight.class).deserialize(json);
+		return new JSONDeserializer<InstanceRight>().use(null,
+				InstanceRight.class).deserialize(json);
 	}
 
 	public static void indexInstanceRight(InstanceRight instanceRight) {
@@ -94,7 +102,8 @@ public class InstanceRight {
 	}
 
 	@Async
-	public static void indexInstanceRights(Collection<InstanceRight> instancerights) {
+	public static void indexInstanceRights(
+			Collection<InstanceRight> instancerights) {
 		List<SolrInputDocument> documents = new ArrayList<SolrInputDocument>();
 		for (InstanceRight instanceRight : instancerights) {
 			SolrInputDocument sid = new SolrInputDocument();
@@ -102,7 +111,8 @@ public class InstanceRight {
 			sid.addField("instanceRight.id_i", instanceRight.getId());
 			// Add summary field to allow searching documents for objects of
 			// this type
-			sid.addField("instanceright_solrsummary_t", new StringBuilder().append(instanceRight.getId()));
+			sid.addField("instanceright_solrsummary_t",
+					new StringBuilder().append(instanceRight.getId()));
 			documents.add(sid);
 		}
 		try {
@@ -138,6 +148,36 @@ public class InstanceRight {
 
 	public static String toJsonArray(Collection<InstanceRight> collection) {
 		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	/**
+	 * Verifica existenta unui drept de instanta in baza de date; in caz
+	 * afirmativ, returneaza obiectul corespunzator, altfel, metoda introduce
+	 * dreptul de instanta in baza de date si apoi returneaza obiectul
+	 * corespunzator. Verificarea existentei in baza de date se realizeaza fie
+	 * dupa valoarea identificatorului, fie dupa un criteriu de unicitate.
+	 * 
+	 * <p>
+	 * Criterii de unicitate:
+	 * <ul>
+	 * <li>id
+	 * <li>name
+	 * <ul>
+	 * 
+	 * <p>
+	 * 
+	 * @param id
+	 *            - identificatorul dreptului de instanta.
+	 * @param name
+	 *            - numele dreptului de instanta.
+	 * @param description
+	 *            - descrierea dreptului de instanta.
+	 * @return
+	 */
+	public static InstanceRight checkInstanceRight(Integer id, String name,
+			String description) {
+		// TODO
+		return null;
 	}
 
 	@Column(name = "description", columnDefinition = "text")
@@ -234,11 +274,13 @@ public class InstanceRight {
 		this.id = id;
 	}
 
-	public void setInstanceRightTargetGroups(Set<InstanceRightTargetGroup> instanceRightTargetGroups) {
+	public void setInstanceRightTargetGroups(
+			Set<InstanceRightTargetGroup> instanceRightTargetGroups) {
 		this.instanceRightTargetGroups = instanceRightTargetGroups;
 	}
 
-	public void setInstanceRightValues(Set<InstanceRightValue> instanceRightValues) {
+	public void setInstanceRightValues(
+			Set<InstanceRightValue> instanceRightValues) {
 		this.instanceRightValues = instanceRightValues;
 	}
 
@@ -251,7 +293,8 @@ public class InstanceRight {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this,
+				ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate

@@ -149,27 +149,28 @@ public class Email {
 	}
 
 	/**
-	 * Verifica existenta unui email in baza de date; daca exista, returneaza
-	 * obiectul respectiv, altfel, il introduce in baza de date si returneaza
-	 * obiectul corespunzator.
+	 * Verifica existenta unui email in baza de date; in caz afirmativ,
+	 * returneaza obiectul corespunzator, altfel, metoda introduce email-ul in
+	 * baza de date si apoi returneaza obiectul corespunzator. Verificarea
+	 * existentei in baza de date se realizeaza fie dupa valoarea
+	 * identificatorului, fie dupa un criteriu de unicitate.
 	 * 
 	 * <p>
 	 * Criterii de unicitate:
-	 * <p>
 	 * <ul>
-	 * <li>emailId
-	 * <li>email
+	 * <li>id
+	 * <li>address
 	 * <ul>
+	 * 
 	 * <p>
 	 * 
-	 * 
-	 * @param emailId
-	 *            - cheia primara a email-ului
-	 * @param email
-	 *            - adresa de email
+	 * @param id
+	 *            - identificatorul email-ului.
+	 * @param address
+	 *            - adresa email-ului.
 	 * @return
 	 */
-	public static Email checkEmail(Integer emailId, String email) {
+	public static Email checkEmail(Integer id, String address) {
 		// TODO
 		return null;
 	}

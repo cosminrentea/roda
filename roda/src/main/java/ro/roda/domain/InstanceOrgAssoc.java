@@ -103,34 +103,32 @@ public class InstanceOrgAssoc {
 	}
 
 	/**
-	 * Verifica existenta existenta unui tip de asociere intre organizatie si
-	 * instanta (preluat prin valori ale parametrilor de intrare) in baza de
-	 * date; in caz afirmativ, returneaza obiectul corespunzator, altfel, metoda
-	 * introduce tipul de asociere in baza de date si apoi returneaza obiectul
-	 * corespunzator. Verificarea existentei in baza de date se realizeaza fie
-	 * dupa valoarea cheii primare, fie dupa un criteriu de unicitate.
+	 * Verifica existenta unui tip de asociere intre organizatie si instanta in
+	 * baza de date; in caz afirmativ, returneaza obiectul corespunzator,
+	 * altfel, metoda introduce tipul de asociere in baza de date si apoi
+	 * returneaza obiectul corespunzator. Verificarea existentei in baza de date
+	 * se realizeaza fie dupa valoarea identificatorului, fie dupa un criteriu
+	 * de unicitate.
 	 * 
 	 * <p>
 	 * Criterii de unicitate:
-	 * <p>
 	 * <ul>
-	 * <li>orgAssocId
-	 * <li>orgAssocName
+	 * <li>id
+	 * <li>name
 	 * <ul>
+	 * 
 	 * <p>
 	 * 
-	 * @param orgAssocId
-	 *            - cheia primara a tipului de asociere in tabelul
-	 *            instance_org_assoc
-	 * @param orgAssocName
-	 *            - denumirea tipului de asociere intre instanta si organizatie
+	 * @param id
+	 *            - identificatorul tipului de asociere.
+	 * @param name
+	 *            - numele tipului de asociere.
 	 * @param description
-	 *            - descrierea tipului de asociere intre instanta si organizatie
-	 * 
+	 *            - descrierea tipului de asociere.
 	 * @return
 	 */
-	public static InstanceOrgAssoc checkInstanceOrgAssoc(Integer orgAssocId,
-			String orgAssocName, String description) {
+	public static InstanceOrgAssoc checkInstanceOrgAssoc(Integer id,
+			String name, String description) {
 		// TODO
 		return null;
 	}

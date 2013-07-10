@@ -37,11 +37,12 @@ import flexjson.JSONSerializer;
 @Entity
 @Table(schema = "public", name = "cms_page_content")
 @Configurable
-
 public class CmsPageContent {
 
 	public static long countCmsPageContents() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM CmsPageContent o", Long.class).getSingleResult();
+		return entityManager().createQuery(
+				"SELECT COUNT(o) FROM CmsPageContent o", Long.class)
+				.getSingleResult();
 	}
 
 	@Async
@@ -64,7 +65,8 @@ public class CmsPageContent {
 	}
 
 	public static List<CmsPageContent> findAllCmsPageContents() {
-		return entityManager().createQuery("SELECT o FROM CmsPageContent o", CmsPageContent.class).getResultList();
+		return entityManager().createQuery("SELECT o FROM CmsPageContent o",
+				CmsPageContent.class).getResultList();
 	}
 
 	public static CmsPageContent findCmsPageContent(Integer id) {
@@ -73,18 +75,24 @@ public class CmsPageContent {
 		return entityManager().find(CmsPageContent.class, id);
 	}
 
-	public static List<CmsPageContent> findCmsPageContentEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM CmsPageContent o", CmsPageContent.class)
-				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
+	public static List<CmsPageContent> findCmsPageContentEntries(
+			int firstResult, int maxResults) {
+		return entityManager()
+				.createQuery("SELECT o FROM CmsPageContent o",
+						CmsPageContent.class).setFirstResult(firstResult)
+				.setMaxResults(maxResults).getResultList();
 	}
 
-	public static Collection<CmsPageContent> fromJsonArrayToCmsPageContents(String json) {
-		return new JSONDeserializer<List<CmsPageContent>>().use(null, ArrayList.class)
-				.use("values", CmsPageContent.class).deserialize(json);
+	public static Collection<CmsPageContent> fromJsonArrayToCmsPageContents(
+			String json) {
+		return new JSONDeserializer<List<CmsPageContent>>()
+				.use(null, ArrayList.class).use("values", CmsPageContent.class)
+				.deserialize(json);
 	}
 
 	public static CmsPageContent fromJsonToCmsPageContent(String json) {
-		return new JSONDeserializer<CmsPageContent>().use(null, CmsPageContent.class).deserialize(json);
+		return new JSONDeserializer<CmsPageContent>().use(null,
+				CmsPageContent.class).deserialize(json);
 	}
 
 	public static void indexCmsPageContent(CmsPageContent cmsPageContent) {
@@ -94,23 +102,32 @@ public class CmsPageContent {
 	}
 
 	@Async
-	public static void indexCmsPageContents(Collection<CmsPageContent> cmspagecontents) {
+	public static void indexCmsPageContents(
+			Collection<CmsPageContent> cmspagecontents) {
 		List<SolrInputDocument> documents = new ArrayList<SolrInputDocument>();
 		for (CmsPageContent cmsPageContent : cmspagecontents) {
 			SolrInputDocument sid = new SolrInputDocument();
 			sid.addField("id", "cmspagecontent_" + cmsPageContent.getId());
-			sid.addField("cmsPageContent.cmspageid_t", cmsPageContent.getCmsPageId());
+			sid.addField("cmsPageContent.cmspageid_t",
+					cmsPageContent.getCmsPageId());
 			sid.addField("cmsPageContent.name_s", cmsPageContent.getName());
-			sid.addField("cmsPageContent.contenttitle_s", cmsPageContent.getContentTitle());
-			sid.addField("cmsPageContent.contenttext_s", cmsPageContent.getContentText());
-			sid.addField("cmsPageContent.orderinpage_i", cmsPageContent.getOrderInPage());
+			sid.addField("cmsPageContent.contenttitle_s",
+					cmsPageContent.getContentTitle());
+			sid.addField("cmsPageContent.contenttext_s",
+					cmsPageContent.getContentText());
+			sid.addField("cmsPageContent.orderinpage_i",
+					cmsPageContent.getOrderInPage());
 			// Add summary field to allow searching documents for objects of
 			// this type
 			sid.addField(
 					"cmspagecontent_solrsummary_t",
-					new StringBuilder().append(cmsPageContent.getCmsPageId()).append(" ")
-							.append(cmsPageContent.getName()).append(" ").append(cmsPageContent.getContentTitle())
-							.append(" ").append(cmsPageContent.getContentText()).append(" ")
+					new StringBuilder().append(cmsPageContent.getCmsPageId())
+							.append(" ").append(cmsPageContent.getName())
+							.append(" ")
+							.append(cmsPageContent.getContentTitle())
+							.append(" ")
+							.append(cmsPageContent.getContentText())
+							.append(" ")
 							.append(cmsPageContent.getOrderInPage()));
 			documents.add(sid);
 		}
@@ -147,6 +164,44 @@ public class CmsPageContent {
 
 	public static String toJsonArray(Collection<CmsPageContent> collection) {
 		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	/**
+	 * Verifica existenta unui continut de pagina CMS in baza de date; in caz
+	 * afirmativ, returneaza obiectul corespunzator, altfel, metoda introduce
+	 * continutul de pagina CMS in baza de date si apoi returneaza obiectul
+	 * corespunzator. Verificarea existentei in baza de date se realizeaza fie
+	 * dupa valoarea identificatorului, fie dupa un criteriu de unicitate.
+	 * 
+	 * <p>
+	 * Criterii de unicitate:
+	 * <ul>
+	 * <li>id
+	 * <li>name + pageId
+	 * <ul>
+	 * 
+	 * <p>
+	 * 
+	 * @param id
+	 *            - identificatorul continutului de pagina CMS.
+	 * @param name
+	 *            - numele continutului de pagina CMS.
+	 * @param pageId
+	 *            - identificatorul paginii CMS.
+	 * @param contentTitle
+	 *            - titlul continutului de pagina CMS.
+	 * @param contentText
+	 *            - corpul continutului de pagina CMS.
+	 * @param orderNr
+	 *            - numarul de ordine al continutului de pagina CMS in cadrul
+	 *            paginii.
+	 * @return
+	 */
+	public static CmsPageContent checkCmsPageContent(Integer id, String name,
+			Integer pageId, String contentTitle, String contentText,
+			Integer orderNr) {
+		// TODO
+		return null;
 	}
 
 	@ManyToOne
@@ -240,7 +295,8 @@ public class CmsPageContent {
 		if (this.entityManager.contains(this)) {
 			this.entityManager.remove(this);
 		} else {
-			CmsPageContent attached = CmsPageContent.findCmsPageContent(this.id);
+			CmsPageContent attached = CmsPageContent
+					.findCmsPageContent(this.id);
 			this.entityManager.remove(attached);
 		}
 	}
@@ -274,7 +330,8 @@ public class CmsPageContent {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this,
+				ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate

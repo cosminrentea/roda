@@ -37,11 +37,11 @@ import flexjson.JSONSerializer;
 @Configurable
 @Entity
 @Table(schema = "public", name = "setting")
-
 public class Setting {
 
 	public static long countSettings() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM Setting o", Long.class).getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM Setting o",
+				Long.class).getSingleResult();
 	}
 
 	@Async
@@ -64,7 +64,8 @@ public class Setting {
 	}
 
 	public static List<Setting> findAllSettings() {
-		return entityManager().createQuery("SELECT o FROM Setting o", Setting.class).getResultList();
+		return entityManager().createQuery("SELECT o FROM Setting o",
+				Setting.class).getResultList();
 	}
 
 	public static Setting findSetting(Integer id) {
@@ -73,18 +74,22 @@ public class Setting {
 		return entityManager().find(Setting.class, id);
 	}
 
-	public static List<Setting> findSettingEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM Setting o", Setting.class).setFirstResult(firstResult)
-				.setMaxResults(maxResults).getResultList();
+	public static List<Setting> findSettingEntries(int firstResult,
+			int maxResults) {
+		return entityManager()
+				.createQuery("SELECT o FROM Setting o", Setting.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults)
+				.getResultList();
 	}
 
 	public static Collection<Setting> fromJsonArrayToSettings(String json) {
-		return new JSONDeserializer<List<Setting>>().use(null, ArrayList.class).use("values", Setting.class)
-				.deserialize(json);
+		return new JSONDeserializer<List<Setting>>().use(null, ArrayList.class)
+				.use("values", Setting.class).deserialize(json);
 	}
 
 	public static Setting fromJsonToSetting(String json) {
-		return new JSONDeserializer<Setting>().use(null, Setting.class).deserialize(json);
+		return new JSONDeserializer<Setting>().use(null, Setting.class)
+				.deserialize(json);
 	}
 
 	public static void indexSetting(Setting setting) {
@@ -102,7 +107,8 @@ public class Setting {
 			sid.addField("setting.id_i", setting.getId());
 			// Add summary field to allow searching documents for objects of
 			// this type
-			sid.addField("setting_solrsummary_t", new StringBuilder().append(setting.getId()));
+			sid.addField("setting_solrsummary_t",
+					new StringBuilder().append(setting.getId()));
 			documents.add(sid);
 		}
 		try {
@@ -138,6 +144,42 @@ public class Setting {
 
 	public static String toJsonArray(Collection<Setting> collection) {
 		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	/**
+	 * Verifica existenta unei setari de aplicatie in baza de date; daca exista,
+	 * returneaza obiectul corespunzator, altfel, metoda introduce setarea de
+	 * aplicatie in baza de date si apoi returneaza obiectul corespunzator.
+	 * Verificarea existentei in baza de date se realizeaza fie dupa valoarea
+	 * identificatorului, fie dupa un criteriu de unicitate.
+	 * 
+	 * <p>
+	 * Criterii de unicitate:
+	 * <ul>
+	 * <li>id
+	 * <li>name + groupId
+	 * <ul>
+	 * 
+	 * <p>
+	 * 
+	 * @param id
+	 *            - identificatorul setarii de aplicatie.
+	 * @param name
+	 *            - numele setarii de aplicatie.
+	 * @param groupId
+	 *            - grupul de setari de aplicatie din care face parte setarea.
+	 * @param description
+	 *            - descrierea setarii de aplicatie.
+	 * @param defValue
+	 *            - valoarea implicita a setarii de aplicatie.
+	 * @param value
+	 *            - valoarea setarii de aplicatie.
+	 * @return
+	 */
+	public static Setting checkSetting(Integer id, String name,
+			Integer groupId, String description, String defValue, String value) {
+		// TODO
+		return null;
 	}
 
 	@Column(name = "default_value", columnDefinition = "text")
@@ -264,7 +306,8 @@ public class Setting {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this,
+				ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate

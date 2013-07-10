@@ -153,54 +153,27 @@ public class Item {
 	}
 
 	/**
-	 * Verifica existenta unui element corespunzator unei variabile de selectie
-	 * (pe baza parametrilor furnizati); in caz afirmativ, returneaza obiectul
-	 * corespunzator, altfel, metoda introduce elementul in baza de date si apoi
-	 * returneaza obiectul respectiv. Verificarea elementului se realizeaza pe
-	 * baza criteriului de unicitate (nume item, valoare) daca este furnizat
-	 * parametrul <code>value</code>; altfel, sunt cautate elementele
-	 * corespunzatoare capetelor intervalului de selectie (care sunt, de
-	 * asemenea, elemente ce se regasesc in tabelul <code>item</code> din baza
-	 * de date). Daca nu sunt gasite, aceste elemente sunt inserate in tabelul
-	 * corespunzator.
+	 * Verifica existenta unui element folosit de variabile in baza de date; in
+	 * caz afirmativ, returneaza obiectul corespunzator, altfel, metoda
+	 * introduce elementul in baza de date si apoi returneaza obiectul
+	 * corespunzator. Verificarea existentei in baza de date se realizeaza fie
+	 * dupa valoarea identificatorului, fie dupa un criteriu de unicitate.
 	 * 
 	 * <p>
 	 * Criterii de unicitate:
-	 * <p>
 	 * <ul>
-	 * <li>itemId
-	 * <li>item + value
+	 * <li>id
 	 * <ul>
+	 * 
 	 * <p>
 	 * 
-	 * @param item_id
-	 *            - cheia primara a elementului din tabelul ce contine
-	 *            elementele posibile ale variabilelor de selectie
-	 * @param item
-	 *            - numele elementului corespunzator unei variabile de selectie
-	 * @param value
-	 *            - valoarea asociata elementului de selectie curent (in cazul
-	 *            selectiei simple)
-	 * @param minValue
-	 *            - valoarea asociata elementului minim al selectiei (in cazul
-	 *            selectiei de tip scala)
-	 * @param maxValue
-	 *            - valoarea asociata elementului maxim al selectiei (in cazul
-	 *            selectiei de tip scala)
-	 * @param minItem
-	 *            - eticheta corespunzatoare elementului minim al selectiei (in
-	 *            cazul selectiei de tip scala)
-	 * @param maxItem
-	 *            - eticheta corespunzatoare elementului maxim al selectiei (in
-	 *            cazul selectiei de tip scala)
-	 * @param units
-	 *            - numarul de unitati ale scalei (in cazul selectiei de tip
-	 *            scala)
+	 * @param id
+	 *            - identificatorul elementului.
+	 * @param name
+	 *            - numele elementului.
 	 * @return
 	 */
-	public static Item checkItem(Integer itemId, String item, String value,
-			String minValue, String maxValue, String minItem, String maxItem,
-			Integer units) {
+	public static Item checkItem(Integer id, String name) {
 		// TODO
 		return null;
 	}

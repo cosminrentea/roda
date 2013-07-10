@@ -162,64 +162,33 @@ public class CmsLayoutGroup {
 	}
 
 	/**
-	 * Verifica existenta unui grup de layout-uri (preluat prin valori ale
-	 * parametrilor de intrare) in baza de date; in caz afirmativ, returneaza
-	 * obiectul corespunzator, altfel, metoda introduce grupul in baza de date
-	 * si apoi returneaza obiectul corespunzator. Verificarea existentei in baza
-	 * de date se realizeaza fie dupa valoarea cheii primare, fie dupa un
-	 * criteriu de unicitate.
+	 * Verifica existenta unui grup de layout-uri CMS in baza de date; in caz
+	 * afirmativ, returneaza obiectul corespunzator, altfel, metoda introduce
+	 * grupul de layout-uri CMS in baza de date si apoi returneaza obiectul
+	 * corespunzator. Verificarea existentei in baza de date se realizeaza fie
+	 * dupa valoarea identificatorului, fie dupa un criteriu de unicitate.
 	 * 
 	 * <p>
 	 * Criterii de unicitate:
-	 * <p>
 	 * <ul>
-	 * <li>cmsLayoutGroupId
-	 * <li>cmsLayoutGroupName + parentId
+	 * <li>id
+	 * <li>name + parentId
 	 * <ul>
+	 * 
 	 * <p>
 	 * 
-	 * 
-	 * @param cmsLayoutGroupId
-	 *            - cheia primara a groupului de layout-uri
-	 * @param cmsLayoutGroupName
-	 *            - denumirea grupului de layout-uri
-	 * @param description
-	 *            - descrierea grupului de layout-uri
+	 * @param id
+	 *            - identificatorul grupului de layout-uri CMS.
+	 * @param name
+	 *            - numele grupului de layout-uri CMS.
 	 * @param parentId
-	 *            - parintele grupului de layout-uri
+	 *            - identificatorul grupului de layout-uri CMS parinte.
+	 * @param description
+	 *            - descrierea grupului de layout-uri CMS.
 	 * @return
 	 */
-	public static CmsLayoutGroup checkCmsLayoutGroup(Integer cmsLayoutGroupId,
-			String cmsLayoutGroupName, Integer parentId, String description) {
-		// TODO
-		return null;
-	}
-
-	/**
-	 * Verifica existenta unui grup de layout-uri (preluat prin valori ale
-	 * parametrilor de intrare) in baza de date; in caz afirmativ, returneaza
-	 * obiectul corespunzator, altfel, metoda introduce grupul in baza de date
-	 * si apoi returneaza obiectul corespunzator. Verificarea existentei in baza
-	 * de date se realizeaza fie dupa valoarea cheii primare, fie dupa un
-	 * criteriu de unicitate.
-	 * 
-	 * <p>
-	 * Criterii de unicitate:
-	 * <p>
-	 * <ul>
-	 * <li>cmsLayoutGroupId
-	 * <ul>
-	 * <p>
-	 * 
-	 * 
-	 * @param cmsLayoutGroupId
-	 *            - cheia primara a groupului de layout-uri
-	 * @param cmsLayoutGroupName
-	 *            - denumirea grupului de layout-uri
-	 * @return
-	 */
-	public static CmsLayoutGroup checkCmsLayoutGroup(Integer cmsLayoutGroupId,
-			String cmsLayoutGroupName) {
+	public static CmsLayoutGroup checkCmsLayoutGroup(Integer id, String name,
+			Integer parentId, String description) {
 		// TODO
 		return null;
 	}

@@ -37,11 +37,11 @@ import flexjson.JSONSerializer;
 @Entity
 @Table(schema = "public", name = "cms_snippet")
 @Configurable
-
 public class CmsSnippet {
 
 	public static long countCmsSnippets() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM CmsSnippet o", Long.class).getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM CmsSnippet o",
+				Long.class).getSingleResult();
 	}
 
 	@Async
@@ -64,7 +64,8 @@ public class CmsSnippet {
 	}
 
 	public static List<CmsSnippet> findAllCmsSnippets() {
-		return entityManager().createQuery("SELECT o FROM CmsSnippet o", CmsSnippet.class).getResultList();
+		return entityManager().createQuery("SELECT o FROM CmsSnippet o",
+				CmsSnippet.class).getResultList();
 	}
 
 	public static CmsSnippet findCmsSnippet(Integer id) {
@@ -73,18 +74,23 @@ public class CmsSnippet {
 		return entityManager().find(CmsSnippet.class, id);
 	}
 
-	public static List<CmsSnippet> findCmsSnippetEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM CmsSnippet o", CmsSnippet.class).setFirstResult(firstResult)
-				.setMaxResults(maxResults).getResultList();
+	public static List<CmsSnippet> findCmsSnippetEntries(int firstResult,
+			int maxResults) {
+		return entityManager()
+				.createQuery("SELECT o FROM CmsSnippet o", CmsSnippet.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults)
+				.getResultList();
 	}
 
 	public static Collection<CmsSnippet> fromJsonArrayToCmsSnippets(String json) {
-		return new JSONDeserializer<List<CmsSnippet>>().use(null, ArrayList.class).use("values", CmsSnippet.class)
+		return new JSONDeserializer<List<CmsSnippet>>()
+				.use(null, ArrayList.class).use("values", CmsSnippet.class)
 				.deserialize(json);
 	}
 
 	public static CmsSnippet fromJsonToCmsSnippet(String json) {
-		return new JSONDeserializer<CmsSnippet>().use(null, CmsSnippet.class).deserialize(json);
+		return new JSONDeserializer<CmsSnippet>().use(null, CmsSnippet.class)
+				.deserialize(json);
 	}
 
 	public static void indexCmsSnippet(CmsSnippet cmsSnippet) {
@@ -99,15 +105,21 @@ public class CmsSnippet {
 		for (CmsSnippet cmsSnippet : cmssnippets) {
 			SolrInputDocument sid = new SolrInputDocument();
 			sid.addField("id", "cmssnippet_" + cmsSnippet.getId());
-			sid.addField("cmsSnippet.cmssnippetgroupid_t", cmsSnippet.getCmsSnippetGroupId());
+			sid.addField("cmsSnippet.cmssnippetgroupid_t",
+					cmsSnippet.getCmsSnippetGroupId());
 			sid.addField("cmsSnippet.name_s", cmsSnippet.getName());
-			sid.addField("cmsSnippet.snippetcontent_s", cmsSnippet.getSnippetContent());
+			sid.addField("cmsSnippet.snippetcontent_s",
+					cmsSnippet.getSnippetContent());
 			sid.addField("cmsSnippet.id_i", cmsSnippet.getId());
 			// Add summary field to allow searching documents for objects of
 			// this type
-			sid.addField("cmssnippet_solrsummary_t", new StringBuilder().append(cmsSnippet.getCmsSnippetGroupId())
-					.append(" ").append(cmsSnippet.getName()).append(" ").append(cmsSnippet.getSnippetContent())
-					.append(" ").append(cmsSnippet.getId()));
+			sid.addField(
+					"cmssnippet_solrsummary_t",
+					new StringBuilder()
+							.append(cmsSnippet.getCmsSnippetGroupId())
+							.append(" ").append(cmsSnippet.getName())
+							.append(" ").append(cmsSnippet.getSnippetContent())
+							.append(" ").append(cmsSnippet.getId()));
 			documents.add(sid);
 		}
 		try {
@@ -143,6 +155,38 @@ public class CmsSnippet {
 
 	public static String toJsonArray(Collection<CmsSnippet> collection) {
 		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	/**
+	 * Verifica existenta unui fragment CMS in baza de date; in caz afirmativ,
+	 * returneaza obiectul corespunzator, altfel, metoda introduce fragmentul
+	 * CMS in baza de date si apoi returneaza obiectul corespunzator.
+	 * Verificarea existentei in baza de date se realizeaza fie dupa valoarea
+	 * identificatorului, fie dupa un criteriu de unicitate.
+	 * 
+	 * <p>
+	 * Criterii de unicitate:
+	 * <ul>
+	 * <li>id
+	 * <li>name + groupId
+	 * <ul>
+	 * 
+	 * <p>
+	 * 
+	 * @param id
+	 *            - identificatorul fragmentului CMS.
+	 * @param name
+	 *            - numele fragmentului CMS.
+	 * @param groupId
+	 *            - identificatorul grupului din care face parte fragmentul CMS.
+	 * @param content
+	 *            - continutul fragmentului CMS.
+	 * @return
+	 */
+	public static CmsSnippet checkCmsSnippet(Integer id, String name,
+			Integer groupId, String content) {
+		// TODO
+		return null;
 	}
 
 	@ManyToOne
@@ -247,7 +291,8 @@ public class CmsSnippet {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this,
+				ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate

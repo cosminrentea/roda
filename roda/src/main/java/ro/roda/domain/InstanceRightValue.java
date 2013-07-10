@@ -39,18 +39,20 @@ import flexjson.JSONSerializer;
 @Entity
 @Table(schema = "public", name = "instance_right_value")
 @Configurable
-
 public class InstanceRightValue {
 
 	public static long countInstanceRightValues() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM InstanceRightValue o", Long.class).getSingleResult();
+		return entityManager().createQuery(
+				"SELECT COUNT(o) FROM InstanceRightValue o", Long.class)
+				.getSingleResult();
 	}
 
 	@Async
 	public static void deleteIndex(InstanceRightValue instanceRightValue) {
 		SolrServer solrServer = solrServer();
 		try {
-			solrServer.deleteById("instancerightvalue_" + instanceRightValue.getId());
+			solrServer.deleteById("instancerightvalue_"
+					+ instanceRightValue.getId());
 			solrServer.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -66,7 +68,8 @@ public class InstanceRightValue {
 	}
 
 	public static List<InstanceRightValue> findAllInstanceRightValues() {
-		return entityManager().createQuery("SELECT o FROM InstanceRightValue o", InstanceRightValue.class)
+		return entityManager().createQuery(
+				"SELECT o FROM InstanceRightValue o", InstanceRightValue.class)
 				.getResultList();
 	}
 
@@ -76,36 +79,46 @@ public class InstanceRightValue {
 		return entityManager().find(InstanceRightValue.class, id);
 	}
 
-	public static List<InstanceRightValue> findInstanceRightValueEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM InstanceRightValue o", InstanceRightValue.class)
-				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
+	public static List<InstanceRightValue> findInstanceRightValueEntries(
+			int firstResult, int maxResults) {
+		return entityManager()
+				.createQuery("SELECT o FROM InstanceRightValue o",
+						InstanceRightValue.class).setFirstResult(firstResult)
+				.setMaxResults(maxResults).getResultList();
 	}
 
-	public static Collection<InstanceRightValue> fromJsonArrayToInstanceRightValues(String json) {
-		return new JSONDeserializer<List<InstanceRightValue>>().use(null, ArrayList.class)
+	public static Collection<InstanceRightValue> fromJsonArrayToInstanceRightValues(
+			String json) {
+		return new JSONDeserializer<List<InstanceRightValue>>()
+				.use(null, ArrayList.class)
 				.use("values", InstanceRightValue.class).deserialize(json);
 	}
 
 	public static InstanceRightValue fromJsonToInstanceRightValue(String json) {
-		return new JSONDeserializer<InstanceRightValue>().use(null, InstanceRightValue.class).deserialize(json);
+		return new JSONDeserializer<InstanceRightValue>().use(null,
+				InstanceRightValue.class).deserialize(json);
 	}
 
-	public static void indexInstanceRightValue(InstanceRightValue instanceRightValue) {
+	public static void indexInstanceRightValue(
+			InstanceRightValue instanceRightValue) {
 		List<InstanceRightValue> instancerightvalues = new ArrayList<InstanceRightValue>();
 		instancerightvalues.add(instanceRightValue);
 		indexInstanceRightValues(instancerightvalues);
 	}
 
 	@Async
-	public static void indexInstanceRightValues(Collection<InstanceRightValue> instancerightvalues) {
+	public static void indexInstanceRightValues(
+			Collection<InstanceRightValue> instancerightvalues) {
 		List<SolrInputDocument> documents = new ArrayList<SolrInputDocument>();
 		for (InstanceRightValue instanceRightValue : instancerightvalues) {
 			SolrInputDocument sid = new SolrInputDocument();
-			sid.addField("id", "instancerightvalue_" + instanceRightValue.getId());
+			sid.addField("id",
+					"instancerightvalue_" + instanceRightValue.getId());
 			sid.addField("instanceRightValue.id_i", instanceRightValue.getId());
 			// Add summary field to allow searching documents for objects of
 			// this type
-			sid.addField("instancerightvalue_solrsummary_t", new StringBuilder().append(instanceRightValue.getId()));
+			sid.addField("instancerightvalue_solrsummary_t",
+					new StringBuilder().append(instanceRightValue.getId()));
 			documents.add(sid);
 		}
 		try {
@@ -141,6 +154,42 @@ public class InstanceRightValue {
 
 	public static String toJsonArray(Collection<InstanceRightValue> collection) {
 		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	/**
+	 * Verifica existenta unei valori pentru un drept de instanta in baza de
+	 * date; in caz afirmativ, returneaza obiectul corespunzator, altfel, metoda
+	 * introduce valoarea in baza de date si apoi returneaza obiectul
+	 * corespunzator. Verificarea existentei in baza de date se realizeaza fie
+	 * dupa valoarea identificatorului, fie dupa un criteriu de unicitate.
+	 * 
+	 * <p>
+	 * Criterii de unicitate:
+	 * <ul>
+	 * <li>id
+	 * <ul>
+	 * 
+	 * <p>
+	 * 
+	 * @param id
+	 *            - identificatorul valorii.
+	 * @param value
+	 *            - numarul ce reprezinta valoarea.
+	 * @param description
+	 *            - descrierea valorii.
+	 * @param rightId
+	 *            - identificatorul dreptului.
+	 * @param fee
+	 *            - TODO.
+	 * @param feeCurrencyAbbr
+	 *            - TODO.
+	 * @return
+	 */
+	public static InstanceRightValue checkInstanceRightValue(Integer id,
+			Integer value, String description, Integer rightId, Integer fee,
+			String feeCurrencyAbbr) {
+		// TODO
+		return null;
 	}
 
 	@Column(name = "description", columnDefinition = "text")
@@ -239,7 +288,8 @@ public class InstanceRightValue {
 		if (this.entityManager.contains(this)) {
 			this.entityManager.remove(this);
 		} else {
-			InstanceRightValue attached = InstanceRightValue.findInstanceRightValue(this.id);
+			InstanceRightValue attached = InstanceRightValue
+					.findInstanceRightValue(this.id);
 			this.entityManager.remove(attached);
 		}
 	}
@@ -264,7 +314,8 @@ public class InstanceRightValue {
 		this.instanceRightId = instanceRightId;
 	}
 
-	public void setInstanceRightTargetGroups(Set<InstanceRightTargetGroup> instanceRightTargetGroups) {
+	public void setInstanceRightTargetGroups(
+			Set<InstanceRightTargetGroup> instanceRightTargetGroups) {
 		this.instanceRightTargetGroups = instanceRightTargetGroups;
 	}
 
@@ -277,7 +328,8 @@ public class InstanceRightValue {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this,
+				ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate

@@ -37,11 +37,11 @@ import flexjson.JSONSerializer;
 @Entity
 @Table(schema = "public", name = "prefix")
 @Configurable
-
 public class Prefix {
 
 	public static long countPrefixes() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM Prefix o", Long.class).getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM Prefix o",
+				Long.class).getSingleResult();
 	}
 
 	@Async
@@ -64,7 +64,8 @@ public class Prefix {
 	}
 
 	public static List<Prefix> findAllPrefixes() {
-		return entityManager().createQuery("SELECT o FROM Prefix o", Prefix.class).getResultList();
+		return entityManager().createQuery("SELECT o FROM Prefix o",
+				Prefix.class).getResultList();
 	}
 
 	public static Prefix findPrefix(Integer id) {
@@ -74,17 +75,20 @@ public class Prefix {
 	}
 
 	public static List<Prefix> findPrefixEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM Prefix o", Prefix.class).setFirstResult(firstResult)
-				.setMaxResults(maxResults).getResultList();
+		return entityManager()
+				.createQuery("SELECT o FROM Prefix o", Prefix.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults)
+				.getResultList();
 	}
 
 	public static Collection<Prefix> fromJsonArrayToPrefixes(String json) {
-		return new JSONDeserializer<List<Prefix>>().use(null, ArrayList.class).use("values", Prefix.class)
-				.deserialize(json);
+		return new JSONDeserializer<List<Prefix>>().use(null, ArrayList.class)
+				.use("values", Prefix.class).deserialize(json);
 	}
 
 	public static Prefix fromJsonToPrefix(String json) {
-		return new JSONDeserializer<Prefix>().use(null, Prefix.class).deserialize(json);
+		return new JSONDeserializer<Prefix>().use(null, Prefix.class)
+				.deserialize(json);
 	}
 
 	public static void indexPrefix(Prefix prefix) {
@@ -104,7 +108,8 @@ public class Prefix {
 			// Add summary field to allow searching documents for objects of
 			// this type
 			sid.addField("prefix_solrsummary_t",
-					new StringBuilder().append(prefix.getName()).append(" ").append(prefix.getId()));
+					new StringBuilder().append(prefix.getName()).append(" ")
+							.append(prefix.getId()));
 			documents.add(sid);
 		}
 		try {
@@ -140,6 +145,33 @@ public class Prefix {
 
 	public static String toJsonArray(Collection<Prefix> collection) {
 		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	/**
+	 * Verifica existenta unui prefix de persoana in baza de date; in caz
+	 * afirmativ, returneaza obiectul corespunzator, altfel, metoda introduce
+	 * prefixul de persoana in baza de date si apoi returneaza obiectul
+	 * corespunzator. Verificarea existentei in baza de date se realizeaza fie
+	 * dupa valoarea identificatorului, fie dupa un criteriu de unicitate.
+	 * 
+	 * <p>
+	 * Criterii de unicitate:
+	 * <ul>
+	 * <li>id
+	 * <li>name
+	 * <ul>
+	 * 
+	 * <p>
+	 * 
+	 * @param id
+	 *            - identificatorul prefixului de persoana.
+	 * @param name
+	 *            - numele prefixului de persoana (ex: dl = domnul).
+	 * @return
+	 */
+	public static Prefix checkPrefix(Integer id, String name) {
+		// TODO
+		return null;
 	}
 
 	@Id
@@ -231,7 +263,8 @@ public class Prefix {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this,
+				ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate

@@ -38,11 +38,11 @@ import flexjson.JSONSerializer;
 @Entity
 @Table(schema = "public", name = "scale")
 @Configurable
-
 public class Scale {
 
 	public static long countScales() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM Scale o", Long.class).getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM Scale o",
+				Long.class).getSingleResult();
 	}
 
 	@Async
@@ -65,7 +65,9 @@ public class Scale {
 	}
 
 	public static List<Scale> findAllScales() {
-		return entityManager().createQuery("SELECT o FROM Scale o", Scale.class).getResultList();
+		return entityManager()
+				.createQuery("SELECT o FROM Scale o", Scale.class)
+				.getResultList();
 	}
 
 	public static Scale findScale(Long itemId) {
@@ -75,17 +77,20 @@ public class Scale {
 	}
 
 	public static List<Scale> findScaleEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM Scale o", Scale.class).setFirstResult(firstResult)
-				.setMaxResults(maxResults).getResultList();
+		return entityManager()
+				.createQuery("SELECT o FROM Scale o", Scale.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults)
+				.getResultList();
 	}
 
 	public static Collection<Scale> fromJsonArrayToScales(String json) {
-		return new JSONDeserializer<List<Scale>>().use(null, ArrayList.class).use("values", Scale.class)
-				.deserialize(json);
+		return new JSONDeserializer<List<Scale>>().use(null, ArrayList.class)
+				.use("values", Scale.class).deserialize(json);
 	}
 
 	public static Scale fromJsonToScale(String json) {
-		return new JSONDeserializer<Scale>().use(null, Scale.class).deserialize(json);
+		return new JSONDeserializer<Scale>().use(null, Scale.class)
+				.deserialize(json);
 	}
 
 	public static void indexScale(Scale scale) {
@@ -109,8 +114,10 @@ public class Scale {
 			// this type
 			sid.addField(
 					"scale_solrsummary_t",
-					new StringBuilder().append(scale.getItem()).append(" ").append(scale.getMaxValueId()).append(" ")
-							.append(scale.getMinValueId()).append(" ").append(scale.getUnits()).append(" ")
+					new StringBuilder().append(scale.getItem()).append(" ")
+							.append(scale.getMaxValueId()).append(" ")
+							.append(scale.getMinValueId()).append(" ")
+							.append(scale.getUnits()).append(" ")
 							.append(scale.getItemId()));
 			documents.add(sid);
 		}
@@ -147,6 +154,39 @@ public class Scale {
 
 	public static String toJsonArray(Collection<Scale> collection) {
 		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	/**
+	 * Verifica existenta unui element de tip scala in baza de date; daca
+	 * exista, returneaza obiectul corespunzator, altfel, metoda introduce
+	 * elementul in baza de date si apoi returneaza obiectul corespunzator.
+	 * Verificarea existentei in baza de date se realizeaza fie dupa valoarea
+	 * identificatorului, fie dupa un criteriu de unicitate.
+	 * 
+	 * <p>
+	 * Criterii de unicitate:
+	 * <ul>
+	 * <li>itemId
+	 * <ul>
+	 * 
+	 * <p>
+	 * 
+	 * @param itemId
+	 *            - identificatorul scalei.
+	 * @param minValueId
+	 *            - identificatorul elementului de tip valoare reprezentand
+	 *            partea inferioara a scalei.
+	 * @param maxValueId
+	 *            - identificatorul elementului de tip valoare reprezentand
+	 *            partea superioara a scalei.
+	 * @param units
+	 *            - unitatea scalei.
+	 * @return
+	 */
+	public static Scale checkScale(Integer itemId, Integer minValueId,
+			Integer maxValueId, Integer units) {
+		// TODO
+		return null;
 	}
 
 	@OneToOne
@@ -263,7 +303,8 @@ public class Scale {
 	}
 
 	public String toString() {
-		return new ReflectionToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE).setExcludeFieldNames("item")
+		return new ReflectionToStringBuilder(this,
+				ToStringStyle.SHORT_PREFIX_STYLE).setExcludeFieldNames("item")
 				.toString();
 	}
 

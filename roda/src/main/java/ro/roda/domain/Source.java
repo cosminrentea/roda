@@ -39,11 +39,11 @@ import flexjson.JSONSerializer;
 @Entity
 @Table(schema = "public", name = "source")
 @Configurable
-
 public class Source {
 
 	public static long countSources() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM Source o", Long.class).getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM Source o",
+				Long.class).getSingleResult();
 	}
 
 	@Async
@@ -66,7 +66,8 @@ public class Source {
 	}
 
 	public static List<Source> findAllSources() {
-		return entityManager().createQuery("SELECT o FROM Source o", Source.class).getResultList();
+		return entityManager().createQuery("SELECT o FROM Source o",
+				Source.class).getResultList();
 	}
 
 	public static Source findSource(Integer id) {
@@ -76,17 +77,20 @@ public class Source {
 	}
 
 	public static List<Source> findSourceEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM Source o", Source.class).setFirstResult(firstResult)
-				.setMaxResults(maxResults).getResultList();
+		return entityManager()
+				.createQuery("SELECT o FROM Source o", Source.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults)
+				.getResultList();
 	}
 
 	public static Collection<Source> fromJsonArrayToSources(String json) {
-		return new JSONDeserializer<List<Source>>().use(null, ArrayList.class).use("values", Source.class)
-				.deserialize(json);
+		return new JSONDeserializer<List<Source>>().use(null, ArrayList.class)
+				.use("values", Source.class).deserialize(json);
 	}
 
 	public static Source fromJsonToSource(String json) {
-		return new JSONDeserializer<Source>().use(null, Source.class).deserialize(json);
+		return new JSONDeserializer<Source>().use(null, Source.class)
+				.deserialize(json);
 	}
 
 	public static void indexSource(Source source) {
@@ -106,7 +110,8 @@ public class Source {
 			// Add summary field to allow searching documents for objects of
 			// this type
 			sid.addField("source_solrsummary_t",
-					new StringBuilder().append(source.getCitation()).append(" ").append(source.getId()));
+					new StringBuilder().append(source.getCitation())
+							.append(" ").append(source.getId()));
 			documents.add(sid);
 		}
 		try {
@@ -142,6 +147,32 @@ public class Source {
 
 	public static String toJsonArray(Collection<Source> collection) {
 		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	/**
+	 * Verifica existenta unei surse pentru studii in baza de date; daca exista,
+	 * returneaza obiectul corespunzator, altfel, metoda introduce sursa pentru
+	 * studii in baza de date si apoi returneaza obiectul corespunzator.
+	 * Verificarea existentei in baza de date se realizeaza fie dupa valoarea
+	 * identificatorului, fie dupa un criteriu de unicitate.
+	 * 
+	 * <p>
+	 * Criterii de unicitate:
+	 * <ul>
+	 * <li>id
+	 * <ul>
+	 * 
+	 * <p>
+	 * 
+	 * @param id
+	 *            - identificatorul sursei pentru studii.
+	 * @param citation
+	 *            - TODO.
+	 * @return
+	 */
+	public static Source checkSource(Integer id, String citation) {
+		// TODO
+		return null;
 	}
 
 	@Column(name = "citation", columnDefinition = "text")
@@ -234,7 +265,8 @@ public class Source {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this,
+				ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate

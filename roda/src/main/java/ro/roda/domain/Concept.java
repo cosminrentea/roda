@@ -151,37 +151,31 @@ public class Concept {
 	}
 
 	/**
-	 * Verifica existenta unui concept (preluat prin valori ale parametrilor de
-	 * intrare) in baza de date; in caz afirmativ, returneaza obiectul
-	 * corespunzator, altfel, metoda introduce conceptul in baza de date si apoi
-	 * returneaza obiectul corespunzator. Verificarea existentei in baza de date
-	 * se realizeaza fie dupa valoarea cheii primare, fie dupa un criteriu de
-	 * unicitate.
+	 * Verifica existenta unui concept in baza de date; in caz afirmativ,
+	 * returneaza obiectul corespunzator, altfel, metoda introduce conceptul in
+	 * baza de date si apoi returneaza obiectul corespunzator. Verificarea
+	 * existentei in baza de date se realizeaza fie dupa valoarea
+	 * identificatorului, fie dupa un criteriu de unicitate.
 	 * 
+	 * <p>
 	 * Criterii de unicitate:
+	 * <ul>
+	 * <li>id
+	 * <li>name
+	 * <ul>
 	 * 
-	 * conceptName
+	 * <p>
 	 * 
-	 * @param conceptId
-	 * @param conceptName
-	 * @param conceptDescription
+	 * @param id
+	 *            - identificatorul conceptului.
+	 * @param name
+	 *            - numele conceptului.
+	 * @param description
+	 *            - descrierea conceptului.
 	 * @return
 	 */
-	public static Concept checkConcept(Integer conceptId, String conceptName,
-			String conceptDescription) {
-		// TODO
-		return null;
-	}
-
-	/**
-	 * Verifica existenta unui concept dupa combinatiile de atribute
-	 * obligatorii.
-	 * 
-	 * @param conceptId
-	 * @param conceptName
-	 * @return
-	 */
-	public static Concept checkConcept(Integer conceptId, String conceptName) {
+	public static Concept checkConcept(Integer id, String name,
+			String description) {
 		// TODO
 		return null;
 	}

@@ -163,44 +163,37 @@ public class InstanceDescr {
 	}
 
 	/**
-	 * Verifica existenta unei descrieri de instanta (preluata prin valori ale
-	 * parametrilor de intrare) in baza de date; in caz afirmativ, returneaza
-	 * obiectul corespunzator, altfel, metoda introduce descrierea in baza de
-	 * date si apoi returneaza obiectul corespunzator. Verificarea existentei in
-	 * baza de date se realizeaza fie dupa valoarea cheii primare, fie dupa un
-	 * criteriu de unicitate.
+	 * Verifica existenta unei descrieri de instanta in baza de date; in caz
+	 * afirmativ, returneaza obiectul corespunzator, altfel, metoda introduce
+	 * descrierea in baza de date si apoi returneaza obiectul corespunzator.
+	 * Verificarea existentei in baza de date se realizeaza fie dupa valoarea
+	 * identificatorului, fie dupa un criteriu de unicitate.
 	 * 
 	 * <p>
 	 * Criterii de unicitate:
-	 * <p>
 	 * <ul>
 	 * <li>instanceId + title
 	 * <ul>
+	 * 
 	 * <p>
 	 * 
 	 * @param instanceId
-	 *            - cheia primara a instantei pentru care este furnizata
-	 *            descrierea curenta
-	 * @param langId
-	 *            - limba in care este furnizata descrierea curenta a instantei;
-	 *            daca limba nu exista, ea va fi adaugata in baza de date.
+	 *            - identificatorul instantei.
+	 * @param languageId
+	 *            - identificatorul limbii.
+	 * @param accessConditions
+	 *            - conditiile de acces la date.
+	 * @param notes
+	 *            - observatii.
 	 * @param title
-	 *            - titlul instantei, in limba specificata prin parametrul lang
-	 * @param weighting
-	 *            - ponderea
-	 * @param universe
-	 *            - universul instantei
-	 * @param research_instrument
-	 *            - instrumentul de cercetare
-	 * @param scope
-	 *            - domeniul instantei
-	 * @param abstract - rezumatul instantei
-	 * 
+	 *            - titlul descrierii.
+	 * @param original
+	 *            - TODO.
 	 * @return
 	 */
 	public static InstanceDescr checkInstanceDescr(Integer instanceId,
-			Integer langId, String title, String weighting, String universe,
-			String researchInstrument, String scope, String instanceAbstract) {
+			Integer languageId, String accessConditions, String notes,
+			String title, Boolean original) {
 		// TODO
 		return null;
 	}

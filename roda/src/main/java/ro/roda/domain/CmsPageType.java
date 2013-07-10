@@ -150,67 +150,35 @@ public class CmsPageType {
 	}
 
 	/**
-	 * Verifica existenta unui tip de pagina (preluat prin valori ale
-	 * parametrilor de intrare) in baza de date; in caz afirmativ, returneaza
-	 * obiectul corespunzator, altfel, metoda introduce tipul de pagina in baza
-	 * de date si apoi returneaza obiectul corespunzator. Verificarea existentei
-	 * in baza de date se realizeaza fie dupa valoarea cheii primare, fie dupa
-	 * un criteriu de unicitate.
+	 * Verifica existenta unui tip de pagina CMS in baza de date; in caz
+	 * afirmativ, returneaza obiectul corespunzator, altfel, metoda introduce
+	 * tipul de pagina CMS in baza de date si apoi returneaza obiectul
+	 * corespunzator. Verificarea existentei in baza de date se realizeaza fie
+	 * dupa valoarea identificatorului, fie dupa un criteriu de unicitate.
 	 * 
 	 * <p>
 	 * Criterii de unicitate:
-	 * <p>
 	 * <ul>
-	 * <li>cmsPageTypeId
-	 * <li>cmsPageTypeName
+	 * <li>id
+	 * <li>name
 	 * <ul>
+	 * 
 	 * <p>
 	 * 
-	 * 
-	 * @param cmsPageTypeId
-	 *            - cheia primara a tipului din tabelul de tipuri de pagini
-	 * @param cmsPageTypeName
-	 *            - denumirea tipului de pagina
+	 * @param id
+	 *            - identificatorul tipului de pagina CMS.
+	 * @param name
+	 *            - numele tipului de pagina CMS.
 	 * @param description
-	 *            - descrierea tipului de pagina
+	 *            - descrierea tipului de pagina CMS.
 	 * @return
 	 */
-	public static CmsPageType checkCmsPageType(Integer cmsPageTypeId,
-			String cmsPageTypeName, String description) {
+	public static CmsPageType checkCmsPageType(Integer id, String name,
+			String description) {
 		// TODO
 		return null;
 	}
 
-	/**
-	 * Verifica existenta unui tip de pagina (preluat prin valori ale
-	 * parametrilor de intrare) in baza de date; in caz afirmativ, returneaza
-	 * obiectul corespunzator, altfel, metoda introduce tipul de pagina in baza
-	 * de date si apoi returneaza obiectul corespunzator. Verificarea existentei
-	 * in baza de date se realizeaza fie dupa valoarea cheii primare, fie dupa
-	 * un criteriu de unicitate.
-	 * 
-	 * <p>
-	 * Criterii de unicitate:
-	 * <p>
-	 * <ul>
-	 * <li>cmsPageTypeId
-	 * <li>cmsPageTypeName
-	 * <ul>
-	 * <p>
-	 * 
-	 * 
-	 * @param cmsPageTypeId
-	 *            - cheia primara a tipului din tabelul de tipuri de pagini
-	 * @param cmsPageTypeName
-	 *            - denumirea tipului de pagina
-	 * @return
-	 */
-	public static CmsPageType checkCmsPageType(Integer cmsPageTypeId,
-			String cmsPageTypeName) {		
-		return checkCmsPageType(cmsPageTypeId, cmsPageTypeName, null);
-	}
-
-	
 	@OneToMany(mappedBy = "cmsPageTypeId")
 	private Set<CmsPage> cmsPages;
 

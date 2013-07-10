@@ -152,28 +152,38 @@ public class Lang {
 	}
 
 	/**
-	 * Verifica existenta unei limbi dupa nume si id. Utila in special pentru
-	 * import si initializarea bazei de date, vrem sa ne asiguram ca limba are
-	 * acelasi id indiferent de cate ori este refacuta baza de date in timpul
-	 * dezvoltarii.
+	 * Verifica existenta unei limbi in baza de date; in caz afirmativ,
+	 * returneaza obiectul corespunzator, altfel, metoda introduce limba in baza
+	 * de date si apoi returneaza obiectul corespunzator. Verificarea existentei
+	 * in baza de date se realizeaza fie dupa valoarea identificatorului, fie
+	 * dupa un criteriu de unicitate.
 	 * 
 	 * <p>
 	 * Criterii de unicitate:
-	 * <p>
 	 * <ul>
-	 * <li>langId
-	 * <li>langName
+	 * <li>id
+	 * <li>iso639
+	 * <li>name
+	 * <li>nameRO
+	 * <li>nameEN
 	 * <ul>
+	 * 
 	 * <p>
 	 * 
-	 * 
-	 * @param langId
-	 *            - cheia primara a limbii din tabelul de limbi
-	 * @param langName
-	 *            - denumirea limbii
+	 * @param id
+	 *            - identificatorul limbii.
+	 * @param iso639
+	 *            - codul limbii in ISO 639-1.
+	 * @param name
+	 *            - numele limbii (in limba respectiva).
+	 * @param nameRO
+	 *            - numele limbii (in limba romana).
+	 * @param name
+	 *            - numele limbii (in limba engleza).
 	 * @return
 	 */
-	public static Lang checkLang(Integer langId, String langName) {
+	public static Lang checkLang(Integer id, String iso639, String name,
+			String nameRO, String nameEN) {
 		// TODO
 		return null;
 	}

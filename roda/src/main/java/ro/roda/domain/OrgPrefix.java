@@ -150,31 +150,31 @@ public class OrgPrefix {
 	}
 
 	/**
-	 * Primeste ca parametri de intrare id-ul si numele prefixului de
-	 * organizatie, daca gaseste in tabel o intrare corespunzatoare, returneaza
-	 * obiectul respectiv, daca nu, creaza intrarea si returneaza obiectul
-	 * atasat.
+	 * Verifica existenta unui prefix de organizatie in baza de date; in caz
+	 * afirmativ, returneaza obiectul corespunzator, altfel, metoda introduce
+	 * prefixul de organizatie in baza de date si apoi returneaza obiectul
+	 * corespunzator. Verificarea existentei in baza de date se realizeaza fie
+	 * dupa valoarea identificatorului, fie dupa un criteriu de unicitate.
 	 * 
 	 * <p>
 	 * Criterii de unicitate:
-	 * <p>
 	 * <ul>
-	 * <li>orgPrefixId
-	 * <li>orgPrefixName
+	 * <li>id
+	 * <li>name
 	 * <ul>
+	 * 
 	 * <p>
 	 * 
-	 * 
-	 * @param orgPrefixId
-	 *            - cheia primara a prefixului de organizatie
-	 * @param orgPrefixName
-	 *            - denumirea prefixului de organizatie
+	 * @param id
+	 *            - identificatorul prefixului de organizatie.
+	 * @param name
+	 *            - numele prefixului de organizatie.
 	 * @param description
-	 *            - descrierea prefixului de organizatie
+	 *            - descrierea prefixului de organizatie.
 	 * @return
 	 */
-	public static OrgPrefix checkOrgPrefix(Integer orgPrefixId,
-			String orgPrefixName, String description) {
+	public static OrgPrefix checkOrgPrefix(Integer id, String name,
+			String description) {
 		// TODO
 		return null;
 	}

@@ -41,11 +41,11 @@ import flexjson.JSONSerializer;
 @Entity
 @Table(schema = "public", name = "file")
 @Configurable
-
 public class File {
 
 	public static long countFiles() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM File o", Long.class).getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM File o",
+				Long.class).getSingleResult();
 	}
 
 	@Async
@@ -68,7 +68,8 @@ public class File {
 	}
 
 	public static List<File> findAllFiles() {
-		return entityManager().createQuery("SELECT o FROM File o", File.class).getResultList();
+		return entityManager().createQuery("SELECT o FROM File o", File.class)
+				.getResultList();
 	}
 
 	public static File findFile(Integer id) {
@@ -78,17 +79,19 @@ public class File {
 	}
 
 	public static List<File> findFileEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM File o", File.class).setFirstResult(firstResult)
-				.setMaxResults(maxResults).getResultList();
+		return entityManager().createQuery("SELECT o FROM File o", File.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults)
+				.getResultList();
 	}
 
 	public static Collection<File> fromJsonArrayToFiles(String json) {
-		return new JSONDeserializer<List<File>>().use(null, ArrayList.class).use("values", File.class)
-				.deserialize(json);
+		return new JSONDeserializer<List<File>>().use(null, ArrayList.class)
+				.use("values", File.class).deserialize(json);
 	}
 
 	public static File fromJsonToFile(String json) {
-		return new JSONDeserializer<File>().use(null, File.class).deserialize(json);
+		return new JSONDeserializer<File>().use(null, File.class).deserialize(
+				json);
 	}
 
 	public static void indexFile(File file) {
@@ -110,7 +113,8 @@ public class File {
 			// this type
 			sid.addField(
 					"file_solrsummary_t",
-					new StringBuilder().append(file.getContent()).append(" ").append(file.getUrl()).append(" ")
+					new StringBuilder().append(file.getContent()).append(" ")
+							.append(file.getUrl()).append(" ")
 							.append(file.getId()));
 			documents.add(sid);
 		}
@@ -147,6 +151,45 @@ public class File {
 
 	public static String toJsonArray(Collection<File> collection) {
 		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	/**
+	 * Verifica existenta unui fisier in baza de date; in caz afirmativ,
+	 * returneaza obiectul corespunzator, altfel, metoda introduce fisierul in
+	 * baza de date si apoi returneaza obiectul corespunzator. Verificarea
+	 * existentei in baza de date se realizeaza fie dupa valoarea
+	 * identificatorului, fie dupa un criteriu de unicitate.
+	 * 
+	 * <p>
+	 * Criterii de unicitate:
+	 * <ul>
+	 * <li>id
+	 * <li>title
+	 * <ul>
+	 * 
+	 * <p>
+	 * 
+	 * @param id
+	 *            - identificatorul fisierului.
+	 * @param title
+	 *            - numele fisierului (nu cel de pe hard-disk).
+	 * @param name
+	 *            - numele fisierului (cel de pe hard-disk).
+	 * @param description
+	 *            - descrierea fisierului.
+	 * @param size
+	 *            - dimensiunea fisierului in octeti.
+	 * @param fullPath
+	 *            - calea completa a fisierului de pe hard-disk.
+	 * @param contentType
+	 *            - TODO.
+	 * @return
+	 */
+	public static File checkFile(Integer id, String title, String name,
+			String description, Integer size, String fullPath,
+			String contentType) {
+		// TODO
+		return null;
 	}
 
 	@Transient
@@ -321,7 +364,8 @@ public class File {
 		this.name = name;
 	}
 
-	public void setSelectionVariableItems(Set<SelectionVariableItem> selectionVariableItems) {
+	public void setSelectionVariableItems(
+			Set<SelectionVariableItem> selectionVariableItems) {
 		this.selectionVariableItems = selectionVariableItems;
 	}
 
@@ -350,7 +394,8 @@ public class File {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this,
+				ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate

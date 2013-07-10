@@ -167,83 +167,50 @@ public class City {
 
 	/**
 	 * Verifica existenta unui oras in baza de date; daca orasul exista,
-	 * returneaza obiectul corespunzator, altfel, il introduce in baza de date
-	 * si apoi returneaza obiectul corespunzator. daca adresa exista, returneaza
-	 * obiectul Verificarea existentei in baza de date se realizeaza fie dupa
-	 * valoarea cheii primare, fie dupa un criteriu de unicitate.
+	 * returneaza obiectul corespunzator, altfel, metoda introduce orasul in
+	 * baza de date si apoi returneaza obiectul corespunzator. Verificarea
+	 * existentei in baza de date se realizeaza fie dupa valoarea
+	 * identificatorului, fie dupa un criteriu de unicitate.
 	 * 
 	 * <p>
 	 * Criterii de unicitate:
-	 * <p>
 	 * <ul>
-	 * <li>cityId
+	 * <li>id
+	 * <li>name + countryId
 	 * <ul>
+	 * 
 	 * <p>
 	 * 
-	 * @param cityId
-	 *            - cheia primara a orasului
-	 * @param cityName
-	 *            - numele orasului
-	 * @param countryName
-	 *            - numele tarii in care se gaseste orasul
+	 * @param id
+	 *            - identificatorul orasului.
+	 * @param name
+	 *            - numele orasului.
 	 * @param countryId
-	 *            - cheia primara a tarii curente, din tabelul de tari
-	 * @param cityCode
-	 *            - codul orasului in cadrul sistemului de codificare a oraselor 
-	 * @param cityCodeName
-	 *            -numele sistemului de codificare a orasului (SIRUTA pentru
-	 *            Romania)
-	 * @param cityCodeSup
-	 *            - codul entitatii superioare orasului curent (nu e
-	 *            obligatoriu)
+	 *            - identificatorul tarii in care se gaseste orasul.
+	 * @param code
+	 *            - codul orasului in cadrul sistemului de codificare a
+	 *            oraselor.
+	 * @param codeName
+	 *            - numele sistemului de codificare a orasului (SIRUTA pentru
+	 *            Romania).
+	 * @param codeSup
+	 *            - codul entitatii superioare orasului curent.
 	 * @param prefix
-	 *            - prefixul numelui orasului (ex: municipiu)
-	 * @param cityType
-	 *            - codul tipului orasului
-	 * @param cityTypeSystem
+	 *            - prefixul numelui orasului (ex: municipiu).
+	 * @param type
+	 *            - tipul orasului.
+	 * @param typeSystem
 	 *            - numele sistemului de codificare a tipului orasului (SIRUTA
-	 *            pentru Romania)
+	 *            pentru Romania).
 	 * @return
 	 */
-	public static City checkCity(Integer cityId, String cityName,
-			Integer countryId, String countryName, String cityCode, String cityCodeName,
-			String cityCodeSup, String prefix, String cityType,
-			String cityTypeSystem) {
+	public static City checkCity(Integer id, String name, Integer countryId,
+			String code, String codeName, String codeSup, String prefix,
+			String type, String typeSystem) {
 		// TODO
 		return null;
 	}
 
-	/**
-	 * Verifica existenta unui oras in baza de date; daca orasul exista,
-	 * returneaza obiectul corespunzator, altfel, il introduce in baza de date
-	 * si apoi returneaza obiectul corespunzator. daca adresa exista, returneaza
-	 * obiectul Verificarea existentei in baza de date se realizeaza fie dupa
-	 * valoarea cheii primare, fie dupa un criteriu de unicitate.
-	 * 
-	 * <p>
-	 * Criterii de unicitate:
-	 * <p>
-	 * <ul>
-	 * <li>cityId
-	 * <ul>
-	 * <p>
-	 * 
-	 * @param cityId
-	 *            - cheia primara a orasului
-	 * @param cityName
-	 *            - numele orasului
-	 * @param countryId
-	 *            - cheia primara a tarii curente, din tabelul de tari
-	 * @param prefix
-	 *            - prefixul numelui orasului (ex: municipiu)
-	 * @return
-	 */
-	public static City checkCity(Integer cityId, String cityName,
-			Integer countryId, String prefix) {
-		// TODO
-		return null;
-	}
-	
 	@OneToMany(mappedBy = "cityId")
 	private Set<Address> addresses;
 

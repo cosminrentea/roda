@@ -158,41 +158,39 @@ public class Country {
 	}
 
 	/**
-	 * Verifica existenta unei tari in baza de date; in cazul existentei,
-	 * returneaza obiectul respectiv, altfel, introduce tara in baza de date si
-	 * returneaza obiectul corespunzator.
+	 * Verifica existenta unei tari in baza de date; in caz afirmativ,
+	 * returneaza obiectul corespunzator, altfel, metoda introduce tara in baza
+	 * de date si apoi returneaza obiectul corespunzator. Verificarea existentei
+	 * in baza de date se realizeaza fie dupa valoarea identificatorului, fie
+	 * dupa un criteriu de unicitate.
 	 * 
 	 * <p>
 	 * Criterii de unicitate:
-	 * <p>
 	 * <ul>
-	 * <li>countryId
-	 * <li>alpha3
-	 * <li>countryNameSelf
-	 * <li>countryNameEn
-	 * <li>countryNameRo
+	 * <li>id
+	 * <li>name
+	 * <li>nameRO
+	 * <li>nameEN
 	 * <ul>
+	 * 
 	 * <p>
 	 * 
-	 * 
-	 * @param countryId
-	 *            - cheia primara a tarii
-	 * @param countryNameRo
-	 *            - denumirea tarii in limba romana
-	 * @param countryNameSelf
-	 *            - denumirea tarii in limba respectiva
-	 * @param countryNameEn
-	 *            - denumirea tarii in limba engleza
-	 * @param alpha2
-	 *            - codul tarii in format de 2 litere (in format ISO 
-	 *            3166_alpha2)
-	 * @param alpha3
-	 *            - codul tarii in format de 3 litere (in format ISO 
-	 *            3166_alpha3)
+	 * @param id
+	 *            - identificatorul tarii.
+	 * @param name
+	 *            - numele tarii (in limba nationala).
+	 * @param nameRO
+	 *            - numele tarii (in limba romana).
+	 * @param nameEN
+	 *            - numele tarii (in limba engleza).
+	 * @param iso3166
+	 *            - TODO.
+	 * @param iso3166Alpha3
+	 *            - TODO.
 	 * @return
 	 */
-	public static Country checkCountry(Integer countryId, String countryNameRo,
-			String countryNameSelf, String countryNameEn) {
+	public static Country checkCountry(Integer id, String name, String nameRO,
+			String nameEN, String iso3166, String iso3166Alpha3) {
 		// TODO
 		return null;
 	}

@@ -37,11 +37,11 @@ import flexjson.JSONSerializer;
 @Entity
 @Table(schema = "public", name = "regiontype")
 @Configurable
-
 public class Regiontype {
 
 	public static long countRegiontypes() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM Regiontype o", Long.class).getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM Regiontype o",
+				Long.class).getSingleResult();
 	}
 
 	@Async
@@ -64,7 +64,8 @@ public class Regiontype {
 	}
 
 	public static List<Regiontype> findAllRegiontypes() {
-		return entityManager().createQuery("SELECT o FROM Regiontype o", Regiontype.class).getResultList();
+		return entityManager().createQuery("SELECT o FROM Regiontype o",
+				Regiontype.class).getResultList();
 	}
 
 	public static Regiontype findRegiontype(Integer id) {
@@ -73,18 +74,23 @@ public class Regiontype {
 		return entityManager().find(Regiontype.class, id);
 	}
 
-	public static List<Regiontype> findRegiontypeEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM Regiontype o", Regiontype.class).setFirstResult(firstResult)
-				.setMaxResults(maxResults).getResultList();
+	public static List<Regiontype> findRegiontypeEntries(int firstResult,
+			int maxResults) {
+		return entityManager()
+				.createQuery("SELECT o FROM Regiontype o", Regiontype.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults)
+				.getResultList();
 	}
 
 	public static Collection<Regiontype> fromJsonArrayToRegiontypes(String json) {
-		return new JSONDeserializer<List<Regiontype>>().use(null, ArrayList.class).use("values", Regiontype.class)
+		return new JSONDeserializer<List<Regiontype>>()
+				.use(null, ArrayList.class).use("values", Regiontype.class)
 				.deserialize(json);
 	}
 
 	public static Regiontype fromJsonToRegiontype(String json) {
-		return new JSONDeserializer<Regiontype>().use(null, Regiontype.class).deserialize(json);
+		return new JSONDeserializer<Regiontype>().use(null, Regiontype.class)
+				.deserialize(json);
 	}
 
 	public static void indexRegiontype(Regiontype regiontype) {
@@ -102,7 +108,8 @@ public class Regiontype {
 			sid.addField("regiontype.name_s", regiontype.getName());
 			// Add summary field to allow searching documents for objects of
 			// this type
-			sid.addField("regiontype_solrsummary_t", new StringBuilder().append(regiontype.getName()));
+			sid.addField("regiontype_solrsummary_t",
+					new StringBuilder().append(regiontype.getName()));
 			documents.add(sid);
 		}
 		try {
@@ -138,6 +145,33 @@ public class Regiontype {
 
 	public static String toJsonArray(Collection<Regiontype> collection) {
 		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	/**
+	 * Verifica existenta unui tip de regiune in baza de date; in caz afirmativ,
+	 * returneaza obiectul corespunzator, altfel, metoda introduce tipul de
+	 * regiune in baza de date si apoi returneaza obiectul corespunzator.
+	 * Verificarea existentei in baza de date se realizeaza fie dupa valoarea
+	 * identificatorului, fie dupa un criteriu de unicitate.
+	 * 
+	 * <p>
+	 * Criterii de unicitate:
+	 * <ul>
+	 * <li>id
+	 * <li>name
+	 * <ul>
+	 * 
+	 * <p>
+	 * 
+	 * @param id
+	 *            - identificatorul tipului de regiune.
+	 * @param name
+	 *            - numele tipului de regiune.
+	 * @return
+	 */
+	public static Regiontype checkRegiontype(Integer id, String name) {
+		// TODO
+		return null;
 	}
 
 	@Id
@@ -229,7 +263,8 @@ public class Regiontype {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this,
+				ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate

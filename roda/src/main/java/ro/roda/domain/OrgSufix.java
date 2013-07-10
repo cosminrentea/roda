@@ -37,11 +37,11 @@ import flexjson.JSONSerializer;
 @Configurable
 @Entity
 @Table(schema = "public", name = "org_sufix")
-
 public class OrgSufix {
 
 	public static long countOrgSufixes() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM OrgSufix o", Long.class).getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM OrgSufix o",
+				Long.class).getSingleResult();
 	}
 
 	@Async
@@ -64,7 +64,8 @@ public class OrgSufix {
 	}
 
 	public static List<OrgSufix> findAllOrgSufixes() {
-		return entityManager().createQuery("SELECT o FROM OrgSufix o", OrgSufix.class).getResultList();
+		return entityManager().createQuery("SELECT o FROM OrgSufix o",
+				OrgSufix.class).getResultList();
 	}
 
 	public static OrgSufix findOrgSufix(Integer id) {
@@ -73,18 +74,23 @@ public class OrgSufix {
 		return entityManager().find(OrgSufix.class, id);
 	}
 
-	public static List<OrgSufix> findOrgSufixEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM OrgSufix o", OrgSufix.class).setFirstResult(firstResult)
-				.setMaxResults(maxResults).getResultList();
+	public static List<OrgSufix> findOrgSufixEntries(int firstResult,
+			int maxResults) {
+		return entityManager()
+				.createQuery("SELECT o FROM OrgSufix o", OrgSufix.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults)
+				.getResultList();
 	}
 
 	public static Collection<OrgSufix> fromJsonArrayToOrgSufixes(String json) {
-		return new JSONDeserializer<List<OrgSufix>>().use(null, ArrayList.class).use("values", OrgSufix.class)
+		return new JSONDeserializer<List<OrgSufix>>()
+				.use(null, ArrayList.class).use("values", OrgSufix.class)
 				.deserialize(json);
 	}
 
 	public static OrgSufix fromJsonToOrgSufix(String json) {
-		return new JSONDeserializer<OrgSufix>().use(null, OrgSufix.class).deserialize(json);
+		return new JSONDeserializer<OrgSufix>().use(null, OrgSufix.class)
+				.deserialize(json);
 	}
 
 	public static void indexOrgSufix(OrgSufix orgSufix) {
@@ -105,8 +111,9 @@ public class OrgSufix {
 			// Add summary field to allow searching documents for objects of
 			// this type
 			sid.addField("orgsufix_solrsummary_t",
-					new StringBuilder().append(orgSufix.getName()).append(" ").append(orgSufix.getDescription())
-							.append(" ").append(orgSufix.getId()));
+					new StringBuilder().append(orgSufix.getName()).append(" ")
+							.append(orgSufix.getDescription()).append(" ")
+							.append(orgSufix.getId()));
 			documents.add(sid);
 		}
 		try {
@@ -142,6 +149,36 @@ public class OrgSufix {
 
 	public static String toJsonArray(Collection<OrgSufix> collection) {
 		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	/**
+	 * Verifica existenta unui sufix de organizatie in baza de date; in caz
+	 * afirmativ, returneaza obiectul corespunzator, altfel, metoda introduce
+	 * sufixul de organizatie in baza de date si apoi returneaza obiectul
+	 * corespunzator. Verificarea existentei in baza de date se realizeaza fie
+	 * dupa valoarea identificatorului, fie dupa un criteriu de unicitate.
+	 * 
+	 * <p>
+	 * Criterii de unicitate:
+	 * <ul>
+	 * <li>id
+	 * <li>name
+	 * <ul>
+	 * 
+	 * <p>
+	 * 
+	 * @param id
+	 *            - identificatorul sufixului de organizatie.
+	 * @param name
+	 *            - numele sufixului de organizatie.
+	 * @param description
+	 *            - descrierea sufixului de organizatie.
+	 * @return
+	 */
+	public static OrgSufix checkOrgSufix(Integer id, String name,
+			String description) {
+		// TODO
+		return null;
 	}
 
 	@Column(name = "description", columnDefinition = "text")
@@ -244,7 +281,8 @@ public class OrgSufix {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this,
+				ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate

@@ -39,11 +39,11 @@ import flexjson.JSONSerializer;
 @Configurable
 @Entity
 @Table(schema = "public", name = "news")
-
 public class News {
 
 	public static long countNewspieces() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM News o", Long.class).getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM News o",
+				Long.class).getSingleResult();
 	}
 
 	@Async
@@ -66,7 +66,8 @@ public class News {
 	}
 
 	public static List<News> findAllNewspieces() {
-		return entityManager().createQuery("SELECT o FROM News o", News.class).getResultList();
+		return entityManager().createQuery("SELECT o FROM News o", News.class)
+				.getResultList();
 	}
 
 	public static News findNews(Integer id) {
@@ -76,17 +77,19 @@ public class News {
 	}
 
 	public static List<News> findNewsEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM News o", News.class).setFirstResult(firstResult)
-				.setMaxResults(maxResults).getResultList();
+		return entityManager().createQuery("SELECT o FROM News o", News.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults)
+				.getResultList();
 	}
 
 	public static Collection<News> fromJsonArrayToNewspieces(String json) {
-		return new JSONDeserializer<List<News>>().use(null, ArrayList.class).use("values", News.class)
-				.deserialize(json);
+		return new JSONDeserializer<List<News>>().use(null, ArrayList.class)
+				.use("values", News.class).deserialize(json);
 	}
 
 	public static News fromJsonToNews(String json) {
-		return new JSONDeserializer<News>().use(null, News.class).deserialize(json);
+		return new JSONDeserializer<News>().use(null, News.class).deserialize(
+				json);
 	}
 
 	public static void indexNews(News news) {
@@ -106,8 +109,10 @@ public class News {
 			sid.addField("news.content_s", news.getContent());
 			// Add summary field to allow searching documents for objects of
 			// this type
-			sid.addField("news_solrsummary_t", new StringBuilder().append(news.getAdded().getTime()).append(" ")
-					.append(news.getTitle()).append(" ").append(news.getContent()));
+			sid.addField("news_solrsummary_t",
+					new StringBuilder().append(news.getAdded().getTime())
+							.append(" ").append(news.getTitle()).append(" ")
+							.append(news.getContent()));
 			documents.add(sid);
 		}
 		try {
@@ -143,6 +148,39 @@ public class News {
 
 	public static String toJsonArray(Collection<News> collection) {
 		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	/**
+	 * Verifica existenta unei stiri in baza de date; in caz afirmativ,
+	 * returneaza obiectul corespunzator, altfel, metoda introduce stirea in
+	 * baza de date si apoi returneaza obiectul corespunzator. Verificarea
+	 * existentei in baza de date se realizeaza fie dupa valoarea
+	 * identificatorului, fie dupa un criteriu de unicitate.
+	 * 
+	 * <p>
+	 * Criterii de unicitate:
+	 * <ul>
+	 * <li>id
+	 * <ul>
+	 * 
+	 * <p>
+	 * 
+	 * @param id
+	 *            - identificatorul stirii.
+	 * @param added
+	 *            - data cand a fost adaugata stirea.
+	 * @param visible
+	 *            - tipul de vizibilitate a stirii.
+	 * @param title
+	 *            - titlul stirii.
+	 * @param content
+	 *            - continutul stirii.
+	 * @return
+	 */
+	public static News checkNews(Integer id, Calendar added, Boolean visible,
+			String title, String content) {
+		// TODO
+		return null;
 	}
 
 	@Column(name = "added", columnDefinition = "timestamp")
@@ -260,7 +298,8 @@ public class News {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this,
+				ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate

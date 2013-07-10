@@ -60,7 +60,13 @@ public class FileServiceImpl implements FileService {
 		ContentStreamUpdateRequest up = new ContentStreamUpdateRequest("/update/extract");
 
 		try {
-			up.addFile(f);
+
+			// SOLRJ 3.6.1 API
+			// up.addFile(f);
+
+			// SOLRJ 4.3.1 API
+			up.addFile(f, content.getContentType());
+
 			up.setParam("literal.id", content.getOriginalFilename());
 			up.setParam("uprefix", "attr_");
 			up.setParam("fmap.content", "attr_content");

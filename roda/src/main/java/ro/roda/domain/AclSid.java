@@ -36,13 +36,15 @@ import flexjson.JSONDeserializer;
 import flexjson.JSONSerializer;
 
 @Entity
-@Table(schema = "public", name = "acl_sid", uniqueConstraints = @UniqueConstraint(columnNames = { "sid", "principal" }))
+@Table(schema = "public", name = "acl_sid", uniqueConstraints = @UniqueConstraint(columnNames = {
+		"sid", "principal" }))
 @Configurable
 @Audited
 public class AclSid {
 
 	public static long countAclSids() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM AclSid o", Long.class).getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM AclSid o",
+				Long.class).getSingleResult();
 	}
 
 	@Async
@@ -71,21 +73,25 @@ public class AclSid {
 	}
 
 	public static List<AclSid> findAclSidEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM AclSid o", AclSid.class).setFirstResult(firstResult)
-				.setMaxResults(maxResults).getResultList();
+		return entityManager()
+				.createQuery("SELECT o FROM AclSid o", AclSid.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults)
+				.getResultList();
 	}
 
 	public static List<AclSid> findAllAclSids() {
-		return entityManager().createQuery("SELECT o FROM AclSid o", AclSid.class).getResultList();
+		return entityManager().createQuery("SELECT o FROM AclSid o",
+				AclSid.class).getResultList();
 	}
 
 	public static Collection<AclSid> fromJsonArrayToAclSids(String json) {
-		return new JSONDeserializer<List<AclSid>>().use(null, ArrayList.class).use("values", AclSid.class)
-				.deserialize(json);
+		return new JSONDeserializer<List<AclSid>>().use(null, ArrayList.class)
+				.use("values", AclSid.class).deserialize(json);
 	}
 
 	public static AclSid fromJsonToAclSid(String json) {
-		return new JSONDeserializer<AclSid>().use(null, AclSid.class).deserialize(json);
+		return new JSONDeserializer<AclSid>().use(null, AclSid.class)
+				.deserialize(json);
 	}
 
 	public static void indexAclSid(AclSid aclSid) {
@@ -105,7 +111,8 @@ public class AclSid {
 			// Add summary field to allow searching documents for objects of
 			// this type
 			sid.addField("aclsid_solrsummary_t",
-					new StringBuilder().append(aclSid.getSid()).append(" ").append(aclSid.getId()));
+					new StringBuilder().append(aclSid.getSid()).append(" ")
+							.append(aclSid.getId()));
 			documents.add(sid);
 		}
 		try {
@@ -141,6 +148,36 @@ public class AclSid {
 
 	public static String toJsonArray(Collection<AclSid> collection) {
 		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	/**
+	 * Verifica existenta unui identificator de securitate ACL in baza de date;
+	 * in caz afirmativ, returneaza obiectul corespunzator, altfel, metoda
+	 * introduce identificator de securitate ACL in baza de date si apoi
+	 * returneaza obiectul corespunzator. Verificarea existentei in baza de date
+	 * se realizeaza fie dupa valoarea identificatorului, fie dupa un criteriu
+	 * de unicitate.
+	 * 
+	 * <p>
+	 * Criterii de unicitate:
+	 * <ul>
+	 * <li>id
+	 * <ul>
+	 * 
+	 * <p>
+	 * 
+	 * @param id
+	 *            - identificatorul identificatorului de securitate ACL.
+	 * @param representation
+	 *            - reprezentarea identificatorului de securitate ACL ca text.
+	 * @param principal
+	 *            - TODO.
+	 * @return
+	 */
+	public static AclSid checkAclSid(Integer id, String representation,
+			Boolean principal) {
+		// TODO
+		return null;
 	}
 
 	@OneToMany(mappedBy = "sid")
@@ -234,7 +271,8 @@ public class AclSid {
 		this.aclEntries = aclEntries;
 	}
 
-	public void setAclObjectIdentities(Set<AclObjectIdentity> aclObjectIdentities) {
+	public void setAclObjectIdentities(
+			Set<AclObjectIdentity> aclObjectIdentities) {
 		this.aclObjectIdentities = aclObjectIdentities;
 	}
 
@@ -255,7 +293,8 @@ public class AclSid {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this,
+				ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate

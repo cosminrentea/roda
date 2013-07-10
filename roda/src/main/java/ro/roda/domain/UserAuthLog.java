@@ -41,11 +41,12 @@ import flexjson.JSONSerializer;
 @Entity
 @Table(schema = "public", name = "user_auth_log")
 @Configurable
-
 public class UserAuthLog {
 
 	public static long countUserAuthLogs() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM UserAuthLog o", Long.class).getSingleResult();
+		return entityManager().createQuery(
+				"SELECT COUNT(o) FROM UserAuthLog o", Long.class)
+				.getSingleResult();
 	}
 
 	@Async
@@ -68,7 +69,8 @@ public class UserAuthLog {
 	}
 
 	public static List<UserAuthLog> findAllUserAuthLogs() {
-		return entityManager().createQuery("SELECT o FROM UserAuthLog o", UserAuthLog.class).getResultList();
+		return entityManager().createQuery("SELECT o FROM UserAuthLog o",
+				UserAuthLog.class).getResultList();
 	}
 
 	public static UserAuthLog findUserAuthLog(Long id) {
@@ -77,18 +79,24 @@ public class UserAuthLog {
 		return entityManager().find(UserAuthLog.class, id);
 	}
 
-	public static List<UserAuthLog> findUserAuthLogEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM UserAuthLog o", UserAuthLog.class)
-				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
+	public static List<UserAuthLog> findUserAuthLogEntries(int firstResult,
+			int maxResults) {
+		return entityManager()
+				.createQuery("SELECT o FROM UserAuthLog o", UserAuthLog.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults)
+				.getResultList();
 	}
 
-	public static Collection<UserAuthLog> fromJsonArrayToUserAuthLogs(String json) {
-		return new JSONDeserializer<List<UserAuthLog>>().use(null, ArrayList.class).use("values", UserAuthLog.class)
+	public static Collection<UserAuthLog> fromJsonArrayToUserAuthLogs(
+			String json) {
+		return new JSONDeserializer<List<UserAuthLog>>()
+				.use(null, ArrayList.class).use("values", UserAuthLog.class)
 				.deserialize(json);
 	}
 
 	public static UserAuthLog fromJsonToUserAuthLog(String json) {
-		return new JSONDeserializer<UserAuthLog>().use(null, UserAuthLog.class).deserialize(json);
+		return new JSONDeserializer<UserAuthLog>().use(null, UserAuthLog.class)
+				.deserialize(json);
 	}
 
 	public static void indexUserAuthLog(UserAuthLog userAuthLog) {
@@ -104,21 +112,30 @@ public class UserAuthLog {
 			SolrInputDocument sid = new SolrInputDocument();
 			sid.addField("id", "userauthlog_" + userAuthLog.getId());
 			sid.addField("userAuthLog.userid_t", userAuthLog.getUserId());
-			sid.addField("userAuthLog.authattemptedat_dt", userAuthLog.getAuthAttemptedAt().getTime());
+			sid.addField("userAuthLog.authattemptedat_dt", userAuthLog
+					.getAuthAttemptedAt().getTime());
 			sid.addField("userAuthLog.action_s", userAuthLog.getAction());
-			sid.addField("userAuthLog.credentialprovider_s", userAuthLog.getCredentialProvider());
-			sid.addField("userAuthLog.credentialidentifier_s", userAuthLog.getCredentialIdentifier());
-			sid.addField("userAuthLog.errormessage_s", userAuthLog.getErrorMessage());
+			sid.addField("userAuthLog.credentialprovider_s",
+					userAuthLog.getCredentialProvider());
+			sid.addField("userAuthLog.credentialidentifier_s",
+					userAuthLog.getCredentialIdentifier());
+			sid.addField("userAuthLog.errormessage_s",
+					userAuthLog.getErrorMessage());
 			sid.addField("userAuthLog.id_l", userAuthLog.getId());
 			// Add summary field to allow searching documents for objects of
 			// this type
 			sid.addField(
 					"userauthlog_solrsummary_t",
-					new StringBuilder().append(userAuthLog.getUserId()).append(" ")
-							.append(userAuthLog.getAuthAttemptedAt().getTime()).append(" ")
-							.append(userAuthLog.getAction()).append(" ").append(userAuthLog.getCredentialProvider())
-							.append(" ").append(userAuthLog.getCredentialIdentifier()).append(" ")
-							.append(userAuthLog.getErrorMessage()).append(" ").append(userAuthLog.getId()));
+					new StringBuilder().append(userAuthLog.getUserId())
+							.append(" ")
+							.append(userAuthLog.getAuthAttemptedAt().getTime())
+							.append(" ").append(userAuthLog.getAction())
+							.append(" ")
+							.append(userAuthLog.getCredentialProvider())
+							.append(" ")
+							.append(userAuthLog.getCredentialIdentifier())
+							.append(" ").append(userAuthLog.getErrorMessage())
+							.append(" ").append(userAuthLog.getId()));
 			documents.add(sid);
 		}
 		try {
@@ -154,6 +171,48 @@ public class UserAuthLog {
 
 	public static String toJsonArray(Collection<UserAuthLog> collection) {
 		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	/**
+	 * Verifica existenta unei incercari de autentificare in baza de date; in
+	 * caz afirmativ, returneaza obiectul corespunzator, altfel, metoda
+	 * introduce incercarea de autentificare in baza de date si apoi returneaza
+	 * obiectul corespunzator. Verificarea existentei in baza de date se
+	 * realizeaza fie dupa valoarea identificatorului, fie dupa un criteriu de
+	 * unicitate.
+	 * 
+	 * <p>
+	 * Criterii de unicitate:
+	 * <ul>
+	 * <li>id
+	 * <ul>
+	 * 
+	 * <p>
+	 * 
+	 * @param id
+	 *            - identificatorul incercarii de autentificare.
+	 * @param userId
+	 *            - identificatorul utilizatorului care a realizat incercarea de
+	 *            autentificare.
+	 * @param at
+	 *            - data incercarii de autentificare.
+	 * @param action
+	 *            - tipul de actiune realizata (login/logout/session expire).
+	 * @param credentialIdentifier
+	 *            - detalii despre incercarea de autentificare.
+	 * @param credentialProvider
+	 *            - tipul de furnizor de informatii pentru incercarea de
+	 *            autentificare.
+	 * @param errMsg
+	 *            - mesajul de eroare aparut in urma incercarii de
+	 *            autentificare.
+	 * @return
+	 */
+	public static UserAuthLog checkUserAuthLog(Integer id, Integer userId,
+			Calendar at, String action, String credentialIdentifier,
+			String credentialProvider, String errMsg) {
+		// TODO
+		return null;
 	}
 
 	@Column(name = "action", columnDefinition = "varchar", length = 30)
@@ -292,7 +351,8 @@ public class UserAuthLog {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this,
+				ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate

@@ -45,7 +45,8 @@ public class Users implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	public static long countUserses() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM Users o", Long.class).getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM Users o",
+				Long.class).getSingleResult();
 	}
 
 	@Async
@@ -68,7 +69,9 @@ public class Users implements Serializable {
 	}
 
 	public static List<Users> findAllUserses() {
-		return entityManager().createQuery("SELECT o FROM Users o", Users.class).getResultList();
+		return entityManager()
+				.createQuery("SELECT o FROM Users o", Users.class)
+				.getResultList();
 	}
 
 	public static Users findUsers(Integer id) {
@@ -78,13 +81,16 @@ public class Users implements Serializable {
 	}
 
 	public static List<Users> findUsersEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM Users o", Users.class).setFirstResult(firstResult)
-				.setMaxResults(maxResults).getResultList();
+		return entityManager()
+				.createQuery("SELECT o FROM Users o", Users.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults)
+				.getResultList();
 	}
 
 	public static TypedQuery<Users> findUsersesByUsernameLike(String username) {
 		if (username == null || username.length() == 0)
-			throw new IllegalArgumentException("The username argument is required");
+			throw new IllegalArgumentException(
+					"The username argument is required");
 		username = username.replace('*', '%');
 		if (username.charAt(0) != '%') {
 			username = "%" + username;
@@ -93,15 +99,19 @@ public class Users implements Serializable {
 			username = username + "%";
 		}
 		EntityManager em = Users.entityManager();
-		TypedQuery<Users> q = em.createQuery("SELECT o FROM Users AS o WHERE LOWER(o.username) LIKE LOWER(:username)",
-				Users.class);
+		TypedQuery<Users> q = em
+				.createQuery(
+						"SELECT o FROM Users AS o WHERE LOWER(o.username) LIKE LOWER(:username)",
+						Users.class);
 		q.setParameter("username", username);
 		return q;
 	}
 
-	public static TypedQuery<Users> findUsersesByUsernameLikeAndEnabled(String username, boolean enabled) {
+	public static TypedQuery<Users> findUsersesByUsernameLikeAndEnabled(
+			String username, boolean enabled) {
 		if (username == null || username.length() == 0)
-			throw new IllegalArgumentException("The username argument is required");
+			throw new IllegalArgumentException(
+					"The username argument is required");
 		username = username.replace('*', '%');
 		if (username.charAt(0) != '%') {
 			username = "%" + username;
@@ -110,21 +120,23 @@ public class Users implements Serializable {
 			username = username + "%";
 		}
 		EntityManager em = Users.entityManager();
-		TypedQuery<Users> q = em.createQuery(
-				"SELECT o FROM Users AS o WHERE LOWER(o.username) LIKE LOWER(:username)  AND o.enabled = :enabled",
-				Users.class);
+		TypedQuery<Users> q = em
+				.createQuery(
+						"SELECT o FROM Users AS o WHERE LOWER(o.username) LIKE LOWER(:username)  AND o.enabled = :enabled",
+						Users.class);
 		q.setParameter("username", username);
 		q.setParameter("enabled", enabled);
 		return q;
 	}
 
 	public static Collection<Users> fromJsonArrayToUserses(String json) {
-		return new JSONDeserializer<List<Users>>().use(null, ArrayList.class).use("values", Users.class)
-				.deserialize(json);
+		return new JSONDeserializer<List<Users>>().use(null, ArrayList.class)
+				.use("values", Users.class).deserialize(json);
 	}
 
 	public static Users fromJsonToUsers(String json) {
-		return new JSONDeserializer<Users>().use(null, Users.class).deserialize(json);
+		return new JSONDeserializer<Users>().use(null, Users.class)
+				.deserialize(json);
 	}
 
 	public static void indexUsers(Users users) {
@@ -144,8 +156,10 @@ public class Users implements Serializable {
 			sid.addField("users.id_i", users.getId());
 			// Add summary field to allow searching documents for objects of
 			// this type
-			sid.addField("users_solrsummary_t",
-					new StringBuilder().append(users.getUsername()).append(" ").append(users.getPassword()).append(" ")
+			sid.addField(
+					"users_solrsummary_t",
+					new StringBuilder().append(users.getUsername()).append(" ")
+							.append(users.getPassword()).append(" ")
 							.append(users.getId()));
 			documents.add(sid);
 		}
@@ -182,6 +196,38 @@ public class Users implements Serializable {
 
 	public static String toJsonArray(Collection<Users> collection) {
 		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	/**
+	 * Verifica existenta unui utilizator in baza de date; in caz afirmativ,
+	 * returneaza obiectul corespunzator, altfel, metoda introduce utilizatorul
+	 * in baza de date si apoi returneaza obiectul corespunzator. Verificarea
+	 * existentei in baza de date se realizeaza fie dupa valoarea
+	 * identificatorului, fie dupa un criteriu de unicitate.
+	 * 
+	 * <p>
+	 * Criterii de unicitate:
+	 * <ul>
+	 * <li>id
+	 * <li>userName
+	 * <ul>
+	 * 
+	 * <p>
+	 * 
+	 * @param id
+	 *            - identificatorul utilizatorului.
+	 * @param userName
+	 *            - numele utilizatorului.
+	 * @param passWord
+	 *            - parola utilizatorului.
+	 * @param enabled
+	 *            - specifica daca utilizatorul este activ.
+	 * @return
+	 */
+	public static Users checkUsers(Integer id, String userName,
+			String passWord, Boolean enabled) {
+		// TODO
+		return null;
 	}
 
 	@OneToMany(mappedBy = "username")
@@ -408,7 +454,8 @@ public class Users implements Serializable {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this,
+				ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate

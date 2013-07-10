@@ -40,11 +40,11 @@ import flexjson.JSONSerializer;
 @Entity
 @Table(schema = "public", name = "series")
 @Configurable
-
 public class Series {
 
 	public static long countSerieses() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM Series o", Long.class).getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM Series o",
+				Long.class).getSingleResult();
 	}
 
 	@Async
@@ -67,7 +67,8 @@ public class Series {
 	}
 
 	public static List<Series> findAllSerieses() {
-		return entityManager().createQuery("SELECT o FROM Series o", Series.class).getResultList();
+		return entityManager().createQuery("SELECT o FROM Series o",
+				Series.class).getResultList();
 	}
 
 	public static Series findSeries(Integer catalogId) {
@@ -77,17 +78,20 @@ public class Series {
 	}
 
 	public static List<Series> findSeriesEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM Series o", Series.class).setFirstResult(firstResult)
-				.setMaxResults(maxResults).getResultList();
+		return entityManager()
+				.createQuery("SELECT o FROM Series o", Series.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults)
+				.getResultList();
 	}
 
 	public static Collection<Series> fromJsonArrayToSerieses(String json) {
-		return new JSONDeserializer<List<Series>>().use(null, ArrayList.class).use("values", Series.class)
-				.deserialize(json);
+		return new JSONDeserializer<List<Series>>().use(null, ArrayList.class)
+				.use("values", Series.class).deserialize(json);
 	}
 
 	public static Series fromJsonToSeries(String json) {
-		return new JSONDeserializer<Series>().use(null, Series.class).deserialize(json);
+		return new JSONDeserializer<Series>().use(null, Series.class)
+				.deserialize(json);
 	}
 
 	public static void indexSeries(Series series) {
@@ -107,7 +111,8 @@ public class Series {
 			// Add summary field to allow searching documents for objects of
 			// this type
 			sid.addField("series_solrsummary_t",
-					new StringBuilder().append(series.getCatalog()).append(" ").append(series.getCatalogId()));
+					new StringBuilder().append(series.getCatalog()).append(" ")
+							.append(series.getCatalogId()));
 			documents.add(sid);
 		}
 		try {
@@ -143,6 +148,30 @@ public class Series {
 
 	public static String toJsonArray(Collection<Series> collection) {
 		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	/**
+	 * Verifica existenta unei serii de date in baza de date; in caz afirmativ,
+	 * returneaza obiectul corespunzator, altfel, metoda introduce seria de date
+	 * in baza de date si apoi returneaza obiectul corespunzator. Verificarea
+	 * existentei in baza de date se realizeaza fie dupa valoarea
+	 * identificatorului, fie dupa un criteriu de unicitate.
+	 * 
+	 * <p>
+	 * Criterii de unicitate:
+	 * <ul>
+	 * <li>catalogId
+	 * <ul>
+	 * 
+	 * <p>
+	 * 
+	 * @param catalogId
+	 *            - identificatorul catalogului.
+	 * @return
+	 */
+	public static Series checkSeries(Integer catalogId) {
+		// TODO
+		return null;
 	}
 
 	@OneToOne
@@ -246,8 +275,9 @@ public class Series {
 	}
 
 	public String toString() {
-		return new ReflectionToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE).setExcludeFieldNames("catalog")
-				.toString();
+		return new ReflectionToStringBuilder(this,
+				ToStringStyle.SHORT_PREFIX_STYLE).setExcludeFieldNames(
+				"catalog").toString();
 	}
 
 	@PostUpdate

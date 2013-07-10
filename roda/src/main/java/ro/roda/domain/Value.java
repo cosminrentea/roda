@@ -39,11 +39,11 @@ import flexjson.JSONSerializer;
 @Entity
 @Table(schema = "public", name = "value")
 @Configurable
-
 public class Value {
 
 	public static long countValues() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM Value o", Long.class).getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM Value o",
+				Long.class).getSingleResult();
 	}
 
 	@Async
@@ -66,7 +66,9 @@ public class Value {
 	}
 
 	public static List<Value> findAllValues() {
-		return entityManager().createQuery("SELECT o FROM Value o", Value.class).getResultList();
+		return entityManager()
+				.createQuery("SELECT o FROM Value o", Value.class)
+				.getResultList();
 	}
 
 	public static Value findValue(Long itemId) {
@@ -76,17 +78,20 @@ public class Value {
 	}
 
 	public static List<Value> findValueEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM Value o", Value.class).setFirstResult(firstResult)
-				.setMaxResults(maxResults).getResultList();
+		return entityManager()
+				.createQuery("SELECT o FROM Value o", Value.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults)
+				.getResultList();
 	}
 
 	public static Collection<Value> fromJsonArrayToValues(String json) {
-		return new JSONDeserializer<List<Value>>().use(null, ArrayList.class).use("values", Value.class)
-				.deserialize(json);
+		return new JSONDeserializer<List<Value>>().use(null, ArrayList.class)
+				.use("values", Value.class).deserialize(json);
 	}
 
 	public static Value fromJsonToValue(String json) {
-		return new JSONDeserializer<Value>().use(null, Value.class).deserialize(json);
+		return new JSONDeserializer<Value>().use(null, Value.class)
+				.deserialize(json);
 	}
 
 	public static void indexValue(Value value) {
@@ -106,8 +111,10 @@ public class Value {
 			sid.addField("value.itemid_l", value.getItemId());
 			// Add summary field to allow searching documents for objects of
 			// this type
-			sid.addField("value_solrsummary_t",
-					new StringBuilder().append(value.getItem()).append(" ").append(value.getValue()).append(" ")
+			sid.addField(
+					"value_solrsummary_t",
+					new StringBuilder().append(value.getItem()).append(" ")
+							.append(value.getValue()).append(" ")
 							.append(value.getItemId()));
 			documents.add(sid);
 		}
@@ -144,6 +151,32 @@ public class Value {
 
 	public static String toJsonArray(Collection<Value> collection) {
 		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	/**
+	 * Verifica existenta unui element de tip valoare in baza de date; in caz
+	 * afirmativ, returneaza obiectul corespunzator, altfel, metoda introduce
+	 * elementul in baza de date si apoi returneaza obiectul corespunzator.
+	 * Verificarea existentei in baza de date se realizeaza fie dupa valoarea
+	 * identificatorului, fie dupa un criteriu de unicitate.
+	 * 
+	 * <p>
+	 * Criterii de unicitate:
+	 * <ul>
+	 * <li>id
+	 * <ul>
+	 * 
+	 * <p>
+	 * 
+	 * @param id
+	 *            - identificatorul elementului.
+	 * @param value
+	 *            - valoarea elementului.
+	 * @return
+	 */
+	public static Value checkValue(Integer itemId, Integer value) {
+		// TODO
+		return null;
 	}
 
 	@OneToOne
@@ -258,7 +291,8 @@ public class Value {
 	}
 
 	public String toString() {
-		return new ReflectionToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE).setExcludeFieldNames("item")
+		return new ReflectionToStringBuilder(this,
+				ToStringStyle.SHORT_PREFIX_STYLE).setExcludeFieldNames("item")
 				.toString();
 	}
 

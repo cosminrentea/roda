@@ -158,40 +158,35 @@ public class StudyPersonAssoc {
 	}
 
 	/**
-	 * Verifica existenta unui tip de asociere intre persoana si studiu
-	 * (preluat prin valori ale parametrilor de intrare) in baza de date; in caz
-	 * afirmativ, returneaza obiectul corespunzator, altfel, metoda introduce
-	 * tipul de asociere in baza de date si apoi returneaza obiectul corespunzator.
-	 * Verificarea existentei in baza de date se realizeaza fie dupa valoarea
-	 * cheii primare, fie dupa un criteriu de unicitate.
+	 * Verifica existenta unei asocieri intre un studiu si o persoana in baza de
+	 * date; in caz afirmativ, returneaza obiectul corespunzator, altfel, metoda
+	 * introduce asocierea in baza de date si apoi returneaza obiectul
+	 * corespunzator. Verificarea existentei in baza de date se realizeaza fie
+	 * dupa valoarea identificatorului, fie dupa un criteriu de unicitate.
 	 * 
+	 * <p>
 	 * Criterii de unicitate:
+	 * <ul>
+	 * <li>id
+	 * <li>name
+	 * <ul>
 	 * 
-	 * assocName
+	 * <p>
 	 * 
-	 * @param assocId
-	 * @param assocName
-	 * @param assocDescription
+	 * @param id
+	 *            - identificatorul asocierii.
+	 * @param name
+	 *            - numele asocierii.
+	 * @param description
+	 *            - descrierea asocierii.
 	 * @return
 	 */
-	public static StudyPersonAssoc checkStudyPersonAssoc(Integer assocId, String assocName,
-			String assocDescription) {
+	public static StudyPersonAssoc checkStudyPersonAssoc(Integer id,
+			String name, String description) {
 		// TODO
 		return null;
 	}
 
-	/**
-	 * Verifica existenta unui tip de asociere dupa unul dintre criteriile de unicitate. 
-	 * 
-	 * @param assocId
-	 * @param assocName
-	 * @return
-	 */
-	public static StudyPersonAssoc checkStudyPersonAssoc(Integer assocId, String assocName) {
-		//TODO
-		return null;
-	}
-	
 	@Column(name = "asoc_description", columnDefinition = "text")
 	private String asocDescription;
 

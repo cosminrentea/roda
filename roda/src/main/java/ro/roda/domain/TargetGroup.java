@@ -142,6 +142,33 @@ public class TargetGroup {
 		return new JSONSerializer().exclude("*.class").serialize(collection);
 	}
 
+	/**
+	 * Verifica existenta unui grup tinta pentru drepturi in baza de date; in
+	 * caz afirmativ, returneaza obiectul corespunzator, altfel, metoda
+	 * introduce grupul tinta in baza de date si apoi returneaza obiectul
+	 * corespunzator. Verificarea existentei in baza de date se realizeaza fie
+	 * dupa valoarea identificatorului, fie dupa un criteriu de unicitate.
+	 * 
+	 * <p>
+	 * Criterii de unicitate:
+	 * <ul>
+	 * <li>id
+	 * <li>name
+	 * <ul>
+	 * 
+	 * <p>
+	 * 
+	 * @param id
+	 *            - identificatorul grupului tinta.
+	 * @param name
+	 *            - numele grupului tinta.
+	 * @return
+	 */
+	public static TargetGroup checkTargetGroup(Integer id, String name) {
+		//TODO
+		return null;
+	}
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id", columnDefinition = "serial")

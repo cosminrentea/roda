@@ -39,11 +39,12 @@ import flexjson.JSONSerializer;
 @Entity
 @Table(schema = "public", name = "user_setting")
 @Configurable
-
 public class UserSetting {
 
 	public static long countUserSettings() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM UserSetting o", Long.class).getSingleResult();
+		return entityManager().createQuery(
+				"SELECT COUNT(o) FROM UserSetting o", Long.class)
+				.getSingleResult();
 	}
 
 	@Async
@@ -66,7 +67,8 @@ public class UserSetting {
 	}
 
 	public static List<UserSetting> findAllUserSettings() {
-		return entityManager().createQuery("SELECT o FROM UserSetting o", UserSetting.class).getResultList();
+		return entityManager().createQuery("SELECT o FROM UserSetting o",
+				UserSetting.class).getResultList();
 	}
 
 	public static UserSetting findUserSetting(Integer id) {
@@ -75,18 +77,24 @@ public class UserSetting {
 		return entityManager().find(UserSetting.class, id);
 	}
 
-	public static List<UserSetting> findUserSettingEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM UserSetting o", UserSetting.class)
-				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
+	public static List<UserSetting> findUserSettingEntries(int firstResult,
+			int maxResults) {
+		return entityManager()
+				.createQuery("SELECT o FROM UserSetting o", UserSetting.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults)
+				.getResultList();
 	}
 
-	public static Collection<UserSetting> fromJsonArrayToUserSettings(String json) {
-		return new JSONDeserializer<List<UserSetting>>().use(null, ArrayList.class).use("values", UserSetting.class)
+	public static Collection<UserSetting> fromJsonArrayToUserSettings(
+			String json) {
+		return new JSONDeserializer<List<UserSetting>>()
+				.use(null, ArrayList.class).use("values", UserSetting.class)
 				.deserialize(json);
 	}
 
 	public static UserSetting fromJsonToUserSetting(String json) {
-		return new JSONDeserializer<UserSetting>().use(null, UserSetting.class).deserialize(json);
+		return new JSONDeserializer<UserSetting>().use(null, UserSetting.class)
+				.deserialize(json);
 	}
 
 	public static void indexUserSetting(UserSetting userSetting) {
@@ -101,17 +109,22 @@ public class UserSetting {
 		for (UserSetting userSetting : usersettings) {
 			SolrInputDocument sid = new SolrInputDocument();
 			sid.addField("id", "usersetting_" + userSetting.getId());
-			sid.addField("userSetting.usersettinggroupid_t", userSetting.getUserSettingGroupId());
+			sid.addField("userSetting.usersettinggroupid_t",
+					userSetting.getUserSettingGroupId());
 			sid.addField("userSetting.name_s", userSetting.getName());
-			sid.addField("userSetting.description_s", userSetting.getDescription());
-			sid.addField("userSetting.defaultvalue_s", userSetting.getDefaultValue());
+			sid.addField("userSetting.description_s",
+					userSetting.getDescription());
+			sid.addField("userSetting.defaultvalue_s",
+					userSetting.getDefaultValue());
 			// Add summary field to allow searching documents for objects of
 			// this type
 			sid.addField(
 					"usersetting_solrsummary_t",
-					new StringBuilder().append(userSetting.getUserSettingGroupId()).append(" ")
-							.append(userSetting.getName()).append(" ").append(userSetting.getDescription()).append(" ")
-							.append(userSetting.getDefaultValue()));
+					new StringBuilder()
+							.append(userSetting.getUserSettingGroupId())
+							.append(" ").append(userSetting.getName())
+							.append(" ").append(userSetting.getDescription())
+							.append(" ").append(userSetting.getDefaultValue()));
 			documents.add(sid);
 		}
 		try {
@@ -147,6 +160,40 @@ public class UserSetting {
 
 	public static String toJsonArray(Collection<UserSetting> collection) {
 		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	/**
+	 * Verifica existenta unei setari de utilizator in baza de date; in caz
+	 * afirmativ, returneaza obiectul corespunzator, altfel, metoda introduce
+	 * setarea in baza de date si apoi returneaza obiectul corespunzator.
+	 * Verificarea existentei in baza de date se realizeaza fie dupa valoarea
+	 * identificatorului, fie dupa un criteriu de unicitate.
+	 * 
+	 * <p>
+	 * Criterii de unicitate:
+	 * <ul>
+	 * <li>id
+	 * <li>name
+	 * <ul>
+	 * 
+	 * <p>
+	 * 
+	 * @param id
+	 *            - identificatorul setarii.
+	 * @param name
+	 *            - numele setarii.
+	 * @param description
+	 *            - descrierea setarii.
+	 * @param groupId
+	 *            - grupul de setari din care face parte setarea.
+	 * @param defValue
+	 *            - valoarea implicita a setarii.
+	 * @return
+	 */
+	public static UserSetting checkUserSetting(Integer id, String name,
+			String description, Integer groupId, String defValue) {
+		// TODO
+		return null;
 	}
 
 	@Column(name = "default_value", columnDefinition = "text")
@@ -272,7 +319,8 @@ public class UserSetting {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this,
+				ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate

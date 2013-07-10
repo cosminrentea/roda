@@ -39,11 +39,11 @@ import flexjson.JSONSerializer;
 @Entity
 @Table(schema = "public", name = "vargroup")
 @Configurable
-
 public class Vargroup {
 
 	public static long countVargroups() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM Vargroup o", Long.class).getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM Vargroup o",
+				Long.class).getSingleResult();
 	}
 
 	@Async
@@ -66,7 +66,8 @@ public class Vargroup {
 	}
 
 	public static List<Vargroup> findAllVargroups() {
-		return entityManager().createQuery("SELECT o FROM Vargroup o", Vargroup.class).getResultList();
+		return entityManager().createQuery("SELECT o FROM Vargroup o",
+				Vargroup.class).getResultList();
 	}
 
 	public static Vargroup findVargroup(Long id) {
@@ -75,18 +76,23 @@ public class Vargroup {
 		return entityManager().find(Vargroup.class, id);
 	}
 
-	public static List<Vargroup> findVargroupEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM Vargroup o", Vargroup.class).setFirstResult(firstResult)
-				.setMaxResults(maxResults).getResultList();
+	public static List<Vargroup> findVargroupEntries(int firstResult,
+			int maxResults) {
+		return entityManager()
+				.createQuery("SELECT o FROM Vargroup o", Vargroup.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults)
+				.getResultList();
 	}
 
 	public static Collection<Vargroup> fromJsonArrayToVargroups(String json) {
-		return new JSONDeserializer<List<Vargroup>>().use(null, ArrayList.class).use("values", Vargroup.class)
+		return new JSONDeserializer<List<Vargroup>>()
+				.use(null, ArrayList.class).use("values", Vargroup.class)
 				.deserialize(json);
 	}
 
 	public static Vargroup fromJsonToVargroup(String json) {
-		return new JSONDeserializer<Vargroup>().use(null, Vargroup.class).deserialize(json);
+		return new JSONDeserializer<Vargroup>().use(null, Vargroup.class)
+				.deserialize(json);
 	}
 
 	public static void indexVargroup(Vargroup vargroup) {
@@ -106,7 +112,8 @@ public class Vargroup {
 			// Add summary field to allow searching documents for objects of
 			// this type
 			sid.addField("vargroup_solrsummary_t",
-					new StringBuilder().append(vargroup.getName()).append(" ").append(vargroup.getId()));
+					new StringBuilder().append(vargroup.getName()).append(" ")
+							.append(vargroup.getId()));
 			documents.add(sid);
 		}
 		try {
@@ -142,6 +149,33 @@ public class Vargroup {
 
 	public static String toJsonArray(Collection<Vargroup> collection) {
 		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	/**
+	 * Verifica existenta unui grup de variabile in baza de date; in caz
+	 * afirmativ, returneaza obiectul corespunzator, altfel, metoda introduce
+	 * grupul de variabile in baza de date si apoi returneaza obiectul
+	 * corespunzator. Verificarea existentei in baza de date se realizeaza fie
+	 * dupa valoarea identificatorului, fie dupa un criteriu de unicitate.
+	 * 
+	 * <p>
+	 * Criterii de unicitate:
+	 * <ul>
+	 * <li>id
+	 * <li>name
+	 * <ul>
+	 * 
+	 * <p>
+	 * 
+	 * @param id
+	 *            - identificatorul grupului de variabile.
+	 * @param name
+	 *            - numele grupului de variabile.
+	 * @return
+	 */
+	public static Vargroup checkVargroup(Integer id, String name) {
+		// TODO
+		return null;
 	}
 
 	@Id
@@ -234,7 +268,8 @@ public class Vargroup {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this,
+				ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate

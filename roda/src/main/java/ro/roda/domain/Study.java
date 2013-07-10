@@ -50,7 +50,8 @@ import flexjson.JSONSerializer;
 public class Study {
 
 	public static long countStudys() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM Study o", Long.class).getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM Study o",
+				Long.class).getSingleResult();
 	}
 
 	@Async
@@ -73,7 +74,9 @@ public class Study {
 	}
 
 	public static List<Study> findAllStudys() {
-		return entityManager().createQuery("SELECT o FROM Study o", Study.class).getResultList();
+		return entityManager()
+				.createQuery("SELECT o FROM Study o", Study.class)
+				.getResultList();
 	}
 
 	public static Study findStudy(Integer id) {
@@ -83,17 +86,20 @@ public class Study {
 	}
 
 	public static List<Study> findStudyEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM Study o", Study.class).setFirstResult(firstResult)
-				.setMaxResults(maxResults).getResultList();
+		return entityManager()
+				.createQuery("SELECT o FROM Study o", Study.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults)
+				.getResultList();
 	}
 
 	public static Collection<Study> fromJsonArrayToStudys(String json) {
-		return new JSONDeserializer<List<Study>>().use(null, ArrayList.class).use("values", Study.class)
-				.deserialize(json);
+		return new JSONDeserializer<List<Study>>().use(null, ArrayList.class)
+				.use("values", Study.class).deserialize(json);
 	}
 
 	public static Study fromJsonToStudy(String json) {
-		return new JSONDeserializer<Study>().use(null, Study.class).deserialize(json);
+		return new JSONDeserializer<Study>().use(null, Study.class)
+				.deserialize(json);
 	}
 
 	public static void indexStudy(Study study) {
@@ -111,7 +117,8 @@ public class Study {
 			sid.addField("study.id_i", study.getId());
 			// Add summary field to allow searching documents for objects of
 			// this type
-			sid.addField("study_solrsummary_t", new StringBuilder().append(study.getId()));
+			sid.addField("study_solrsummary_t",
+					new StringBuilder().append(study.getId()));
 			documents.add(sid);
 		}
 		try {
@@ -148,99 +155,61 @@ public class Study {
 	public static String toJsonArray(Collection<Study> collection) {
 		return new JSONSerializer()
 				.exclude("*.class")
-				.include("studyDescrs", "catalogStudies", "collectionModelTypes", "dataSourceTypes", "files1",
-						"instances", "samplingProcedures", "sources", "studyKeywords", "studyOrgs", "studypeople",
-						"topics").serialize(collection);
+				.include("studyDescrs", "catalogStudies",
+						"collectionModelTypes", "dataSourceTypes", "files1",
+						"instances", "samplingProcedures", "sources",
+						"studyKeywords", "studyOrgs", "studypeople", "topics")
+				.serialize(collection);
 	}
 
 	/**
-	 * Verifica daca studiul furnizat prin intermediul parametrilor exista; in
-	 * caz contrar, acesta va fi inserat in baza de date.
+	 * Verifica existenta unui studiu in baza de date; in caz afirmativ,
+	 * returneaza obiectul corespunzator, altfel, metoda introduce studiul in
+	 * baza de date si apoi returneaza obiectul corespunzator. Verificarea
+	 * existentei in baza de date se realizeaza fie dupa valoarea
+	 * identificatorului, fie dupa un criteriu de unicitate.
 	 * 
+	 * <p>
+	 * Criterii de unicitate:
+	 * <ul>
+	 * <li>id
+	 * <ul>
+	 * 
+	 * <p>
+	 * 
+	 * @param id
+	 *            - identificatorul studiului.
 	 * @param dateStart
+	 *            - data de inceput a studiului.
 	 * @param dateEnd
-	 * @param insertionStatus
-	 * @param addedBy
+	 *            - data de sfarsit a studiului.
+	 * @param insertStatus
+	 *            - pasul din wizard-ul de introducere a metadatelor.
+	 * @param ownerId
+	 *            - identificatorul utilizatorului care a adaugat studiul.
 	 * @param added
+	 *            - data de adaugare a studiului in baza de date.
 	 * @param digitizable
+	 *            - TODO.
 	 * @param anonymousUsage
+	 *            - TODO.
 	 * @param unitAnalysisId
-	 * @param rawData
-	 * @param rawMetadata
-	 * @param timeMethId
-	 * @return
-	 */
-	public static Study checkStudy(Integer studyId, Date dateStart, Date dateEnd, boolean insertionStatus,
-			Integer addedBy, Timestamp added, boolean digitizable, boolean anonymousUsage, Integer unitAnalysisId,
-			Integer version, boolean rawData, boolean rawMetadata, Integer timeMethId) {
-		// TODO
-		return null;
-	}
-
-	/**
-	 * Verifica existenta unui studiu; in cazul inexistentei, acesta va fi
-	 * adaugat pe baza campurilor obligatorii.
-	 * 
-	 * @param studyId
-	 * @param insertionStatus
-	 * @param addedBy
-	 * @param added
-	 * @param digitizable
-	 * @param anonymousUsage
-	 * @param unitAnalysisId
-	 * @param rawData
-	 * @param rawMetadata
-	 * @param timeMethId
-	 * @return
-	 */
-	public static Study checkStudy(Integer studyId, boolean insertionStatus, Integer addedBy, Timestamp added,
-			boolean digitizable, boolean anonymousUsage, Integer unitAnalysisId, boolean rawData, boolean rawMetadata,
-			Integer timeMethId) {
-		// TODO
-		return null;
-	}
-
-	/**
-	 * Verifica existenta unui studiu; in cazul inexistentei, acesta poate fi
-	 * introdus furnizand informatii complete (inclusiv listele de persoane si
-	 * organizatii corespunzatoare).
-	 * 
-	 * @param studyId
-	 * @param dateStart
-	 * @param dateEnd
-	 * @param insertionStatus
-	 * @param addedBy
-	 * @param added
-	 * @param digitizable
-	 * @param anonymousUsage
-	 * @param unitAnalysisId
+	 *            - identificatorul unitatii de analiza specifica instantei.
 	 * @param version
+	 *            - versiunea studiului.
 	 * @param rawData
-	 * @param rawMetadata
-	 * @param timeMethId
-	 * @param persons
-	 * @param orgs
+	 *            - TODO.
+	 * @param rawMetaData
+	 *            - TODO.
+	 * @param timeMethodId
+	 *            - identificatorul tipului de metoda temporala.
 	 * @return
 	 */
-	public static Study checkStudy(Integer studyId, Date dateStart, Date dateEnd, boolean insertionStatus,
-			Integer addedBy, Timestamp added, boolean digitizable, boolean anonymousUsage, Integer unitAnalysisId,
-			Integer version, boolean rawData, boolean rawMetadata, Integer timeMethId, List<Person> persons,
-			List<Org> orgs) {
-		// TODO
-		return null;
-	}
-
-	/**
-	 * 
-	 * Insereaza un studiu radacina, introducand informatiile de baza pentru un
-	 * studiu (preluat prin valori ale parametrilor de intrare) in baza de date
-	 * si returnand obiectul corespunzator. Metoda este utila in contextul
-	 * interfetei pe baza de instrumente de tip wizard, in care datele sunt
-	 * furnizate in mai multi pasi.
-	 * 
-	 * 
-	 */
-	public Study insertRootStudy(Date dateStart, Date dateEnd, Integer insertionStatus, Integer addedBy, Timestamp added) {
+	public static Study checkStudy(Integer id, Calendar dateStart,
+			Calendar dateEnd, Integer insertStatus, Integer ownerId,
+			Calendar added, Boolean digitizable, Boolean anonymousUsage,
+			Integer unitAnalysisId, Integer version, Boolean rawData,
+			Boolean rawMetaData, Integer timeMethodId) {
 		// TODO
 		return null;
 	}
@@ -516,7 +485,8 @@ public class Study {
 		this.catalogStudies = catalogStudies;
 	}
 
-	public void setCollectionModelTypes(Set<CollectionModelType> collectionModelTypes) {
+	public void setCollectionModelTypes(
+			Set<CollectionModelType> collectionModelTypes) {
 		this.collectionModelTypes = collectionModelTypes;
 	}
 
@@ -613,7 +583,8 @@ public class Study {
 	}
 
 	public String toString() {
-		return new ReflectionToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE).setExcludeFieldNames(
+		return new ReflectionToStringBuilder(this,
+				ToStringStyle.SHORT_PREFIX_STYLE).setExcludeFieldNames(
 				"timeMethType").toString();
 	}
 

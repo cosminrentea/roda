@@ -6,10 +6,10 @@ La specificarea in instructiunile de mai jos a sistemului de operare:
 \item [Postgresql =] Postgresql 9.2.4
 \item [Hibernate =] Hibernate 4.1.8
 \item [DbWrench =] DbWrench 2.3.2
-\item [STS =] Spring Tool Suite 3.2.0.RELEASE - based on Eclipse Juno 3.8.2
+\item [STS =] Spring Tool Suite 3.3.0.RELEASE - based on Eclipse Juno 3.8.2
 \item [Maven =] Maven 3
 \item [JVM =] Java Virtual Machine (JVM) 1.6
-\item [Jenkins =] Jenkins 1.517
+\item [Jenkins =] Jenkins 1.522
 \item [Solr =] Solr 4.3
 \item [Sencha Architect =] Sencha Architect 2.2.2
 \end{description}
@@ -26,7 +26,7 @@ Se instaleaza MacPorts si toate dependentele necesare
 
 Se ruleaza urmatoarele comenzi, din shell:
 \begin{lstlisting}[breaklines=true]
-sudo port install maven3 R postgresql92 pgadmin3  apache-solr4 htmldoc doxygen graphviz firefox-x11 rb-rubygems tomcat6
+sudo port install maven3 R postgresql92 pgadmin3  apache-solr4 htmldoc doxygen graphviz firefox-x11 rb-rubygems
 	
 sudo gem install vmc
 \end{lstlisting}
@@ -122,15 +122,17 @@ Descarcati STS de pe pagina:
 \url{http://www.springsource.org/downloads/sts-ggts},
 facand click direct pe link-ul \emph{'Just take me to the download page'}.
 
-Alegeti pentru descarcarea versiunea STS bazata pe Eclipse 3.8.2, extensia
-fisierului de salvat fiind '.sh', iar arhitectura cea stabilita de versiunea
-JVM (32 sau 64 bit, vezi \ref{java_version}); pe website, sectiunea respectiva
-este cea intitulata:
-\begin{lstlisting}[breaklines=true]
-Milestone Version - Spring Tool Suite 3.2.0.RELEASE - based on Eclipse Juno 3.8.2
+Alegeti pentru descarcarea versiunea STS bazata pe Eclipse 3.8.2:
+\begin{description}
+\item[MacOSX, 64 bit:] 
+\begin{lstlisting}
+spring-tool-suite-3.3.0.RELEASE-e3.8.2-macosx-cocoa-x86_64-installer.dmg
 \end{lstlisting}
+\item[Ubuntu, 32 bit:]
+% TODO
+\end{description}
 
-Instalati STS din shell (fara 'sudo'), cu optiunile default (path-ul default este in \emph{\$HOME/springsource} ):
+Instalati STS cu optiunile default (path-ul default este in \emph{\$HOME/springsource} ):
 'Next' -> ... -> 'Finish'.
 
 \subsection{Configurarea STS inainte de rulare}
@@ -154,7 +156,8 @@ trebuie modificata astfel:
 
 \subsection{Configurarea plugin-urilor si extensiilor STS}
 
-Porniti STS, eventual din linia de comanda, in folder-ul radacina al instalarii STS:
+Porniti STS, eventual din linia de comanda, in folder-ul radacina al instalarii STS
+(de exemplu: 'springsource/sts-3.3.0.RELEASE' ):
 \begin{lstlisting}	
 	./STS &
 \end{lstlisting}
@@ -171,7 +174,8 @@ Edgewall Trac
 
 Restartati STS.
 
-Instalati in STS ultima versiune de Subclipse (cu suport pentru Subversion 1.7),
+Instalati in STS ultima versiune de Subclipse 
+(cu suport pentru Subversion versiunea 1.7),
 prin meniu 'Help' -> 'Install New Software':
 \begin{itemize}
 \item 
@@ -180,8 +184,7 @@ nume = Subclipse 1.8
 URL = \url{http://subclipse.tigris.org/update_1.8.x}
 \end{itemize}
 
-Selectati si instalati de la acest update-site ambele seturi de plugin-uri:
-'Subclipse' si 'SVNKit'.
+Selectati si instalati de la acest update-site toate seturile de plugin-uri din lista.
 
 Restartati STS.
 
@@ -580,8 +583,11 @@ Additionally, you can set also these:
     JENKINS_HOME (Full path to JENKINS_HOME directory where Jenkins keeps its files)
 
 Starting/stopping the service
-    To manually start the daemon: sudo launchctl load /Library/LaunchDaemons/org.jenkins-ci.plist
-    To manually stop the daemon: sudo launchctl unload /Library/LaunchDaemons/org.jenkins-ci.plist
+    To manually start the daemon: 
+    sudo launchctl load /Library/LaunchDaemons/org.jenkins-ci.plist
+    
+    To manually stop the daemon: 
+    sudo launchctl unload /Library/LaunchDaemons/org.jenkins-ci.plist
 
 Inheriting your existing Hudson/Jenkins installation
     If you'd like your new installation to take over your existing Jenkins/Hudson data, copy your old data directory into the new JENKINS_HOME directory.

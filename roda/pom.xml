@@ -771,6 +771,5 @@
 			</plugin>
 		</plugins>
 	</build>
-	
 	<description>The RODA web application.</description>
 </project>

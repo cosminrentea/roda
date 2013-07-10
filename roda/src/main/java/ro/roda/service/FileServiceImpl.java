@@ -22,13 +22,37 @@ import ro.roda.domain.File;
 @Transactional
 public class FileServiceImpl implements FileService {
 
-	@Autowired
-	SolrServer solrServer;
+	@Value("${R.filestore.dir}")
+	private final static String filestoreDir = "/tmp";
 
 	private final Log log = LogFactory.getLog(this.getClass());
 
-	@Value("${R.filestore.dir}")
-	private final static String filestoreDir = "/tmp";
+	@Autowired
+	SolrServer solrServer;
+
+	public long countAllFiles() {
+		return File.countFiles();
+	}
+
+	public void deleteFile(File file) {
+		file.remove();
+	}
+
+	public List<File> findAllFiles() {
+		return File.findAllFiles();
+	}
+
+	public File findFile(Integer id) {
+		return File.findFile(id);
+	}
+
+	public List<File> findFileEntries(int firstResult, int maxResults) {
+		return File.findFileEntries(firstResult, maxResults);
+	}
+
+	public void saveFile(File file) {
+		file.persist();
+	}
 
 	public void saveFile(File file, MultipartFile content) {
 		log.debug("> saveFile");
@@ -52,6 +76,10 @@ public class FileServiceImpl implements FileService {
 		log.debug("> saveFile > save JPA object");
 		saveFile(file);
 		log.trace("> saveFile > saved: " + file);
+	}
+
+	public File updateFile(File file) {
+		return file.merge();
 	}
 
 	@Async
@@ -90,33 +118,5 @@ public class FileServiceImpl implements FileService {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
-
-	public long countAllFiles() {
-		return File.countFiles();
-	}
-
-	public void deleteFile(File file) {
-		file.remove();
-	}
-
-	public File findFile(Integer id) {
-		return File.findFile(id);
-	}
-
-	public List<File> findAllFiles() {
-		return File.findAllFiles();
-	}
-
-	public List<File> findFileEntries(int firstResult, int maxResults) {
-		return File.findFileEntries(firstResult, maxResults);
-	}
-
-	public void saveFile(File file) {
-		file.persist();
-	}
-
-	public File updateFile(File file) {
-		return file.merge();
 	}
 }

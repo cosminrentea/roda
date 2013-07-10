@@ -30,7 +30,7 @@
                 <menu:item id="i_aclentry_new" messageCode="global_menu_new" url="/aclentrys?form" z="D5xtd5pH0Gkf35QXvjb1eNlWbEU="/>
                 <menu:item id="i_aclentry_list" messageCode="global_menu_list" url="/aclentrys?page=1&amp;size=${empty param.size ? 10 : param.size}" z="th/ZfGAnIjfW/Yl/IKleMm0+2Wo="/>
             </menu:category>
-        </sec:authorize>
+
         <menu:category id="c_catalog" z="/IwzZ/FhPYxAhzDNjL9QQjNnCHU=">
             <menu:item id="i_catalog_new" messageCode="global_menu_new" url="/catalogs?form" z="a6hixpJnjl/hCZKXAkVdLW874K4="/>
             <menu:item id="i_catalog_list" messageCode="global_menu_list" url="/catalogs?page=1&amp;size=${empty param.size ? 10 : param.size}" z="4Txa+T+L3VWl7nHTpDVypAEDxIw="/>
@@ -405,9 +405,14 @@
             <menu:item id="i_instanceright_new" messageCode="global_menu_new" url="/instancerights?form" z="VzGVR09M4By48xh1W+JsUdbqOhI="/>
             <menu:item id="i_instanceright_list" messageCode="global_menu_list" url="/instancerights?page=1&amp;size=${empty param.size ? 10 : param.size}" z="SJ9KYrKOZ1WMKn/2QM+wS/apnhg="/>
         </menu:category>
-        <!-- Selenium Test Suite -->
+		
+		</sec:authorize>
+        
+        <!-- Selenium Test Suite, using Selenese language -->
+        <!-- 
         <menu:category id="c_seleniumtests" z="PPLMd2yNB6/LSbjIWogAacRPU+Q=">
             <menu:item id="si_seleniumtests_test" messageCode="selenium_menu_test_suite" url="/resources/selenium/test-suite.xhtml" z="wwunW/IPDcunN97u41MvMJZQ2to="/>
         </menu:category>
+        -->
     </menu:menu>
 </div>

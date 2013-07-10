@@ -16,15 +16,22 @@
 			<spring:message code="welcome_text" />
 		</p>
 	</util:panel>
-
+<!-- 
 	<sec:authorize ifAllGranted="ROLE_ADMIN">
 		<util:panel id="databrowser" title="Data Browser">
-			<a href="resources/databrowser/app.html" target="_blank">Data
-				Browser</a>
+			<a href="resources/databrowser/app.html" target="_blank">Data Browser</a>
 		</util:panel>
 	</sec:authorize>
+-->
+
+	<sec:authorize ifAllGranted="ROLE_USER">
+	<util:panel id="databrowser" title="Data Browser">
+		<iframe src="resources/databrowser/app.html" name="databrowser_iframe" width="100%" height="800">
+		</iframe>
+	</util:panel>	
+	</sec:authorize>
 	
-	<!-- 	
+<!-- 	
 	<div id="usersgrid"></div>
 	
 	<script>

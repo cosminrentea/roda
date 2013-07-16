@@ -151,33 +151,58 @@ public class AclSid {
 	}
 
 	/**
-	 * Verifica existenta unui identificator de securitate ACL in baza de date;
-	 * in caz afirmativ, returneaza obiectul corespunzator, altfel, metoda
-	 * introduce identificator de securitate ACL in baza de date si apoi
-	 * returneaza obiectul corespunzator. Verificarea existentei in baza de date
-	 * se realizeaza fie dupa valoarea identificatorului, fie dupa un criteriu
-	 * de unicitate.
+	 * <b>Identificator de securitate ACL</b><br/>
+	 * 
+	 * Verifica existenta unui obiect in baza de date; in caz afirmativ il
+	 * returneaza, altfel, metoda il introduce in baza de date si apoi il
+	 * returneaza. Verificarea existentei in baza de date se realizeaza fie dupa
+	 * identificator, fie dupa un criteriu de unicitate.
 	 * 
 	 * <p>
 	 * Criterii de unicitate:
 	 * <ul>
-	 * <li>id
-	 * <ul>
+	 * <li>sid
+	 * </ul>
 	 * 
 	 * <p>
 	 * 
 	 * @param id
-	 *            - identificatorul identificatorului de securitate ACL.
-	 * @param representation
-	 *            - reprezentarea identificatorului de securitate ACL ca text.
+	 *            - identificatorul.
+	 * @param sid
+	 *            - reprezentarea ca text (numele).
 	 * @param principal
-	 *            - TODO.
 	 * @return
 	 */
-	public static AclSid checkAclSid(Integer id, String representation,
-			Boolean principal) {
-		// TODO
-		return null;
+	public static AclSid checkAclSid(Long id, String sid, Boolean principal) {
+		AclSid aclSid;
+
+		if (id != null) {
+			aclSid = findAclSid(id);
+
+			if (aclSid != null) {
+				return aclSid;
+			}
+		}
+
+		List<AclSid> queryResult;
+
+		if (sid != null) {
+			queryResult = entityManager().createQuery(
+					"SELECT o FROM AclSid o WHERE lower(o.sid) = \'"
+							+ sid.toLowerCase() + "\'", AclSid.class)
+					.getResultList();
+
+			if (queryResult.size() > 0) {
+				return queryResult.get(0);
+			}
+		}
+
+		aclSid = new AclSid();
+		aclSid.sid = sid;
+		aclSid.principal = principal;
+		aclSid.persist();
+
+		return aclSid;
 	}
 
 	@OneToMany(mappedBy = "sid")
@@ -306,5 +331,11 @@ public class AclSid {
 	@PreRemove
 	private void preRemove() {
 		deleteIndex(this);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return id.equals(((AclSid) obj).id)
+				|| sid.equalsIgnoreCase(((AclSid) obj).sid);
 	}
 }

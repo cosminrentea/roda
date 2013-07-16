@@ -151,30 +151,56 @@ public class AclClass {
 	}
 
 	/**
-	 * Verifica existenta unei clase ACL in baza de date; in caz afirmativ,
-	 * returneaza obiectul corespunzator, altfel, metoda introduce clasa ACL in
-	 * baza de date si apoi returneaza obiectul corespunzator. Verificarea
-	 * existentei in baza de date se realizeaza fie dupa valoarea
-	 * identificatorului, fie dupa un criteriu de unicitate.
+	 * <b>Clasa ACL</b><br/>
+	 * 
+	 * Verifica existenta unui obiect in baza de date; in caz afirmativ il
+	 * returneaza, altfel, metoda il introduce in baza de date si apoi il
+	 * returneaza. Verificarea existentei in baza de date se realizeaza fie dupa
+	 * identificator, fie dupa un criteriu de unicitate.
 	 * 
 	 * <p>
 	 * Criterii de unicitate:
 	 * <ul>
-	 * <li>id
-	 * <li>cls
-	 * <ul>
+	 * <li>class1
+	 * </ul>
 	 * 
 	 * <p>
 	 * 
 	 * @param id
-	 *            - identificatorul clasei.
-	 * @param cls
-	 *            - denumirea clasei.
+	 *            - identificatorul.
+	 * @param class1
+	 *            - denumirea (numele).
 	 * @return
 	 */
-	public static AclClass checkAclClass(Integer id, String cls) {
-		// TODO
-		return null;
+	public static AclClass checkAclClass(Long id, String class1) {
+		AclClass aclClass;
+
+		if (id != null) {
+			aclClass = findAclClass(id);
+
+			if (aclClass != null) {
+				return aclClass;
+			}
+		}
+
+		List<AclClass> queryResult;
+
+		if (class1 != null) {
+			queryResult = entityManager().createQuery(
+					"SELECT o FROM AclClass o WHERE lower(o.class1) = \'"
+							+ class1.toLowerCase() + "\'", AclClass.class)
+					.getResultList();
+
+			if (queryResult.size() > 0) {
+				return queryResult.get(0);
+			}
+		}
+
+		aclClass = new AclClass();
+		aclClass.class1 = class1;
+		aclClass.persist();
+
+		return aclClass;
 	}
 
 	@OneToMany(mappedBy = "objectIdClass")
@@ -280,5 +306,11 @@ public class AclClass {
 	@PreRemove
 	private void preRemove() {
 		deleteIndex(this);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return id.equals(((AclClass) obj).id)
+				|| class1.equalsIgnoreCase(((AclClass) obj).class1);
 	}
 }

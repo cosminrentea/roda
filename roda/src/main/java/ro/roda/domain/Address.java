@@ -20,6 +20,7 @@ import javax.persistence.PostUpdate;
 import javax.persistence.PreRemove;
 import javax.persistence.Table;
 import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -192,32 +193,32 @@ public class Address {
 	}
 
 	/**
-	 * Verifica existenta unei adrese in baza de date; daca adresa exista,
-	 * returneaza obiectul corespunzator, altfel, metoda introduce adresa in
-	 * baza de date si apoi returneaza obiectul corespunzator. Verificarea
-	 * existentei in baza de date se realizeaza fie dupa valoarea
-	 * identificatorului, fie dupa un criteriu de unicitate.
+	 * <b>Adresa</b><br/>
+	 * 
+	 * Verifica existenta unui obiect in baza de date; in caz afirmativ il
+	 * returneaza, altfel, metoda il introduce in baza de date si apoi il
+	 * returneaza. Verificarea existentei in baza de date se realizeaza fie dupa
+	 * identificator, fie dupa un criteriu de unicitate.
 	 * 
 	 * <p>
 	 * Criterii de unicitate:
 	 * <ul>
-	 * <li>id
 	 * <li>cityId + postalCode + address1 + address2 (codurile postale sunt
 	 * unice pe tari)
-	 * <ul>
+	 * </ul>
 	 * 
 	 * <p>
 	 * 
 	 * @param id
-	 *            - identificatorul adresei.
+	 *            - identificatorul.
 	 * @param cityId
-	 *            - identificatorul orasului in care se gaseste adresa.
+	 *            - orasul.
 	 * @param postalCode
 	 *            - codul postal.
 	 * @param address1
 	 *            - primele elemente ale adresei (ex: strada si numar).
 	 * @param address2
-	 *            - elemente suplimentare ale adresei.
+	 *            - elementele suplimentare ale adresei.
 	 * @param subdivCode
 	 *            - codul subdiviziunii orasului in care se gaseste adresa. In
 	 *            cazul in care se foloseste acest parametru, el trebuie sa fie
@@ -228,11 +229,49 @@ public class Address {
 	 *            trebuie sa fie obligatoriu insotit de parametrul subdivCode.
 	 * @return
 	 */
-	public static Address checkAddress(Integer id, Integer cityId,
+	public static Address checkAddress(Integer id, City cityId,
 			String postalCode, String address1, String address2,
-			Integer subdivCode, String subdivName) {
-		// TODO
-		return null;
+			String subdivCode, String subdivName) {
+		Address address;
+
+		if (id != null) {
+			address = findAddress(id);
+
+			if (address != null) {
+				return address;
+			}
+		}
+
+		List<Address> queryResult;
+
+		if (cityId != null && postalCode != null && address1 != null
+				&& address2 != null) {
+			TypedQuery<Address> query = entityManager().createQuery(
+					"SELECT o FROM Address o WHERE o.cityId = :cityId AND "
+							+ "lower(o.postalCode) = \'"
+							+ postalCode.toLowerCase() + "\' AND "
+							+ "lower(o.address1) = \'" + address1.toLowerCase()
+							+ "\' AND " + "lower(o.address2) = \'"
+							+ address2.toLowerCase() + "\'", Address.class);
+			query.setParameter("cityId", cityId);
+
+			queryResult = query.getResultList();
+
+			if (queryResult.size() > 0) {
+				return queryResult.get(0);
+			}
+		}
+
+		address = new Address();
+		address.cityId = cityId;
+		address.postalCode = postalCode;
+		address.address1 = address1;
+		address.address2 = address2;
+		address.subdivCode = subdivCode;
+		address.subdivName = subdivName;
+		address.persist();
+
+		return address;
 	}
 
 	@Column(name = "address1", columnDefinition = "text")
@@ -404,5 +443,15 @@ public class Address {
 	@PreRemove
 	private void preRemove() {
 		deleteIndex(this);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return id.equals(((Address) obj).id)
+				|| (cityId.equals(((Address) obj).cityId)
+						&& postalCode
+								.equalsIgnoreCase(((Address) obj).postalCode)
+						&& address1.equalsIgnoreCase(((Address) obj).address1) && address2
+							.equalsIgnoreCase(((Address) obj).address2));
 	}
 }

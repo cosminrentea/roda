@@ -17,6 +17,7 @@ import javax.persistence.PostPersist;
 import javax.persistence.PostUpdate;
 import javax.persistence.PreRemove;
 import javax.persistence.Table;
+import javax.persistence.TypedQuery;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -183,11 +184,13 @@ public class Keyword {
 		List<Keyword> queryResult;
 
 		if (name != null) {
-			queryResult = entityManager().createQuery(
-					"SELECT o FROM Keyword o WHERE lower(o.name) = \'"
-							+ name.toLowerCase() + "\'", Keyword.class)
-					.getResultList();
+			TypedQuery<Keyword> query = entityManager()
+					.createQuery(
+							"SELECT o FROM Keyword o WHERE lower(o.name) = lower(:name)",
+							Keyword.class);
+			query.setParameter("name", name);
 
+			queryResult = query.getResultList();
 			if (queryResult.size() > 0) {
 				return queryResult.get(0);
 			}
@@ -306,7 +309,7 @@ public class Keyword {
 
 	@Override
 	public boolean equals(Object obj) {
-		return id.equals(((Keyword) obj).id)
-				|| name.equalsIgnoreCase(((Keyword) obj).name);
+		return (id != null && id.equals(((Keyword) obj).id))
+				|| (name != null && name.equalsIgnoreCase(((Keyword) obj).name));
 	}
 }

@@ -19,6 +19,7 @@ import javax.persistence.PostPersist;
 import javax.persistence.PostUpdate;
 import javax.persistence.PreRemove;
 import javax.persistence.Table;
+import javax.persistence.TypedQuery;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -157,35 +158,64 @@ public class CmsFolder {
 	}
 
 	/**
-	 * Verifica existenta unui director CMS in baza de date; in caz afirmativ,
-	 * returneaza obiectul corespunzator, altfel, metoda introduce directorul
-	 * CMS in baza de date si apoi returneaza obiectul corespunzator.
-	 * Verificarea existentei in baza de date se realizeaza fie dupa valoarea
-	 * identificatorului, fie dupa un criteriu de unicitate.
+	 * Verifica existenta unui obiect de tip <code>CmsFolder</code> (director
+	 * CMS) in baza de date; in caz afirmativ il returneaza, altfel, metoda il
+	 * introduce in baza de date si apoi il returneaza. Verificarea existentei
+	 * in baza de date se realizeaza fie dupa identificator, fie dupa un
+	 * criteriu de unicitate.
 	 * 
 	 * <p>
 	 * Criterii de unicitate:
 	 * <ul>
-	 * <li>id
 	 * <li>name + parentId
-	 * <ul>
+	 * </ul>
 	 * 
 	 * <p>
 	 * 
 	 * @param id
-	 *            - identificatorul directorului CMS.
+	 *            - identificatorul directorului.
 	 * @param name
-	 *            - numele directorului CMS.
+	 *            - numele directorului.
 	 * @param parentId
-	 *            - identificatorul directorului CMS parinte.
+	 *            - directorul parinte al directorului.
 	 * @param description
-	 *            - descrierea directorului CMS.
+	 *            - descrierea directorului.
 	 * @return
 	 */
 	public static CmsFolder checkCmsFolder(Integer id, String name,
-			Integer parentId, String description) {
-		// TODO
-		return null;
+			CmsFolder parentId, String description) {
+		CmsFolder cmsFolder;
+
+		if (id != null) {
+			cmsFolder = findCmsFolder(id);
+
+			if (cmsFolder != null) {
+				return cmsFolder;
+			}
+		}
+
+		List<CmsFolder> queryResult;
+
+		if (name != null && parentId != null) {
+			TypedQuery<CmsFolder> query = entityManager().createQuery(
+					"SELECT o FROM CmsFolder o WHERE lower(o.name) = lower(:name) AND "
+							+ "o.parentId = :parentId", CmsFolder.class);
+			query.setParameter("name", name);
+			query.setParameter("parentId", parentId);
+
+			queryResult = query.getResultList();
+			if (queryResult.size() > 0) {
+				return queryResult.get(0);
+			}
+		}
+
+		cmsFolder = new CmsFolder();
+		cmsFolder.name = name;
+		cmsFolder.parentId = parentId;
+		cmsFolder.description = description;
+		cmsFolder.persist();
+
+		return cmsFolder;
 	}
 
 	@OneToMany(mappedBy = "cmsFolderId")
@@ -324,5 +354,12 @@ public class CmsFolder {
 	@PreRemove
 	private void preRemove() {
 		deleteIndex(this);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return (id != null && id.equals(((CmsFolder) obj).id))
+				|| ((name != null && name.equals(((CmsFolder) obj).name)) && (parentId != null && parentId
+						.equals(((CmsFolder) obj).parentId)));
 	}
 }

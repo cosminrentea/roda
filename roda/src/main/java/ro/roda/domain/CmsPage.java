@@ -19,6 +19,7 @@ import javax.persistence.PostPersist;
 import javax.persistence.PostUpdate;
 import javax.persistence.PreRemove;
 import javax.persistence.Table;
+import javax.persistence.TypedQuery;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -158,42 +159,87 @@ public class CmsPage {
 	}
 
 	/**
-	 * Verifica existenta unei pagini CMS in baza de date; in caz afirmativ,
-	 * returneaza obiectul corespunzator, altfel, metoda introduce pagina CMS in
-	 * baza de date si apoi returneaza obiectul corespunzator. Verificarea
-	 * existentei in baza de date se realizeaza fie dupa valoarea
-	 * identificatorului, fie dupa un criteriu de unicitate.
+	 * Verifica existenta unui obiect de tip <code>CmsPage</code> (pagina CMS)
+	 * in baza de date; in caz afirmativ il returneaza, altfel, metoda il
+	 * introduce in baza de date si apoi il returneaza. Verificarea existentei
+	 * in baza de date se realizeaza fie dupa identificator, fie dupa un
+	 * criteriu de unicitate.
 	 * 
 	 * <p>
 	 * Criterii de unicitate:
 	 * <ul>
-	 * <li>id
+	 * <li>name
 	 * <li>url
-	 * <ul>
+	 * </ul>
 	 * 
 	 * <p>
 	 * 
 	 * @param id
-	 *            - identificatorul paginii CMS.
+	 *            - identificatorul paginii.
 	 * @param name
-	 *            - numele paginii CMS.
-	 * @param layoutId
-	 *            - identificatorul layout-ului CMS.
-	 * @param pageTypeId
-	 *            - identificatorul tipului de pagina CMS.
+	 *            - numele paginii.
+	 * @param cmsLayoutId
+	 *            - aranjamentul CMS al paginii.
+	 * @param cmsPageTypeId
+	 *            - tipul de pagina CMS.
 	 * @param visible
-	 *            - specifica daca pagina CMS este vizibila.
+	 *            - specifica daca pagina este vizibila.
 	 * @param navigable
-	 *            - specifica daca pagina CMS este navigabila.
+	 *            - specifica daca pagina este navigabila.
 	 * @param url
-	 *            - url-ul paginii CMS.
+	 *            - adresa paginii.
 	 * @return
 	 */
 	public static CmsPage checkCmsPage(Integer id, String name,
-			Integer layoutId, Integer pageTypeId, Boolean visible,
+			CmsLayout cmsLayoutId, CmsPageType cmsPageTypeId, Boolean visible,
 			Boolean navigable, String url) {
-		// TODO
-		return null;
+		CmsPage cmsPage;
+
+		if (id != null) {
+			cmsPage = findCmsPage(id);
+
+			if (cmsPage != null) {
+				return cmsPage;
+			}
+		}
+
+		List<CmsPage> queryResult;
+
+		if (url != null) {
+			TypedQuery<CmsPage> query = entityManager().createQuery(
+					"SELECT o FROM CmsPage o WHERE lower(o.url) = lower(:url)",
+					CmsPage.class);
+			query.setParameter("url", url);
+
+			queryResult = query.getResultList();
+			if (queryResult.size() > 0) {
+				return queryResult.get(0);
+			}
+		}
+
+		if (name != null) {
+			TypedQuery<CmsPage> query = entityManager()
+					.createQuery(
+							"SELECT o FROM CmsPage o WHERE lower(o.name) = lower(:name)",
+							CmsPage.class);
+			query.setParameter("name", name);
+
+			queryResult = query.getResultList();
+			if (queryResult.size() > 0) {
+				return queryResult.get(0);
+			}
+		}
+
+		cmsPage = new CmsPage();
+		cmsPage.name = name;
+		cmsPage.cmsLayoutId = cmsLayoutId;
+		cmsPage.cmsPageTypeId = cmsPageTypeId;
+		cmsPage.visible = visible;
+		cmsPage.navigable = navigable;
+		cmsPage.url = url;
+		cmsPage.persist();
+
+		return cmsPage;
 	}
 
 	@ManyToOne
@@ -358,5 +404,12 @@ public class CmsPage {
 	@PreRemove
 	private void preRemove() {
 		deleteIndex(this);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return (id != null && id.equals(((CmsPage) obj).id))
+				|| (name != null && name.equals(((CmsPage) obj).name))
+				|| (url != null && url.equals(((CmsPage) obj).url));
 	}
 }

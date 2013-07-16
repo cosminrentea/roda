@@ -17,6 +17,7 @@ import javax.persistence.PostPersist;
 import javax.persistence.PostUpdate;
 import javax.persistence.PreRemove;
 import javax.persistence.Table;
+import javax.persistence.TypedQuery;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 
@@ -186,11 +187,12 @@ public class AclSid {
 		List<AclSid> queryResult;
 
 		if (sid != null) {
-			queryResult = entityManager().createQuery(
-					"SELECT o FROM AclSid o WHERE lower(o.sid) = \'"
-							+ sid.toLowerCase() + "\'", AclSid.class)
-					.getResultList();
+			TypedQuery<AclSid> query = entityManager().createQuery(
+					"SELECT o FROM AclSid o WHERE lower(o.sid) = lower(:sid)",
+					AclSid.class);
+			query.setParameter("sid", sid);
 
+			queryResult = query.getResultList();
 			if (queryResult.size() > 0) {
 				return queryResult.get(0);
 			}
@@ -334,7 +336,7 @@ public class AclSid {
 
 	@Override
 	public boolean equals(Object obj) {
-		return id.equals(((AclSid) obj).id)
-				|| sid.equalsIgnoreCase(((AclSid) obj).sid);
+		return (id != null && id.equals(((AclSid) obj).id))
+				|| (sid != null && sid.equalsIgnoreCase(((AclSid) obj).sid));
 	}
 }

@@ -20,6 +20,7 @@ import javax.persistence.PostPersist;
 import javax.persistence.PostUpdate;
 import javax.persistence.PreRemove;
 import javax.persistence.Table;
+import javax.persistence.TypedQuery;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -193,11 +194,12 @@ public class Topic {
 		List<Topic> queryResult;
 
 		if (name != null) {
-			queryResult = entityManager().createQuery(
-					"SELECT o FROM Topic o WHERE lower(o.name) = \'"
-							+ name.toLowerCase() + "\'", Topic.class)
-					.getResultList();
+			TypedQuery<Topic> query = entityManager().createQuery(
+					"SELECT o FROM Topic o WHERE lower(o.name) = lower(:name)",
+					Topic.class);
+			query.setParameter("name", name);
 
+			queryResult = query.getResultList();
 			if (queryResult.size() > 0) {
 				return queryResult.get(0);
 			}
@@ -391,7 +393,7 @@ public class Topic {
 
 	@Override
 	public boolean equals(Object obj) {
-		return id.equals(((Topic) obj).id)
-				|| name.equalsIgnoreCase(((Topic) obj).name);
+		return (id != null && id.equals(((Topic) obj).id))
+				|| (name != null && name.equalsIgnoreCase(((Topic) obj).name));
 	}
 }

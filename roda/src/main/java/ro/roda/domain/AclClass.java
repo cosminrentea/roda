@@ -17,6 +17,7 @@ import javax.persistence.PostPersist;
 import javax.persistence.PostUpdate;
 import javax.persistence.PreRemove;
 import javax.persistence.Table;
+import javax.persistence.TypedQuery;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -185,11 +186,13 @@ public class AclClass {
 		List<AclClass> queryResult;
 
 		if (class1 != null) {
-			queryResult = entityManager().createQuery(
-					"SELECT o FROM AclClass o WHERE lower(o.class1) = \'"
-							+ class1.toLowerCase() + "\'", AclClass.class)
-					.getResultList();
+			TypedQuery<AclClass> query = entityManager()
+					.createQuery(
+							"SELECT o FROM AclClass o WHERE lower(o.class1) = lower(:class1)",
+							AclClass.class);
+			query.setParameter("class1", class1);
 
+			queryResult = query.getResultList();
 			if (queryResult.size() > 0) {
 				return queryResult.get(0);
 			}
@@ -309,7 +312,8 @@ public class AclClass {
 
 	@Override
 	public boolean equals(Object obj) {
-		return id.equals(((AclClass) obj).id)
-				|| class1.equalsIgnoreCase(((AclClass) obj).class1);
+		return (id != null && id.equals(((AclClass) obj).id))
+				|| (class1 != null && class1
+						.equalsIgnoreCase(((AclClass) obj).class1));
 	}
 }

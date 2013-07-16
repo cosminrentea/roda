@@ -248,15 +248,16 @@ public class Address {
 				&& address2 != null) {
 			TypedQuery<Address> query = entityManager().createQuery(
 					"SELECT o FROM Address o WHERE o.cityId = :cityId AND "
-							+ "lower(o.postalCode) = \'"
-							+ postalCode.toLowerCase() + "\' AND "
-							+ "lower(o.address1) = \'" + address1.toLowerCase()
-							+ "\' AND " + "lower(o.address2) = \'"
-							+ address2.toLowerCase() + "\'", Address.class);
+							+ "lower(o.postalCode) = lower(:postalCode) AND "
+							+ "lower(o.address1) = lower(:address1) AND "
+							+ "lower(o.address2) = lower(:address2)",
+					Address.class);
 			query.setParameter("cityId", cityId);
+			query.setParameter("postalCode", postalCode);
+			query.setParameter("address1", address1);
+			query.setParameter("address2", address2);
 
 			queryResult = query.getResultList();
-
 			if (queryResult.size() > 0) {
 				return queryResult.get(0);
 			}
@@ -447,11 +448,12 @@ public class Address {
 
 	@Override
 	public boolean equals(Object obj) {
-		return id.equals(((Address) obj).id)
-				|| (cityId.equals(((Address) obj).cityId)
-						&& postalCode
-								.equalsIgnoreCase(((Address) obj).postalCode)
-						&& address1.equalsIgnoreCase(((Address) obj).address1) && address2
-							.equalsIgnoreCase(((Address) obj).address2));
+		return (id != null && id.equals(((Address) obj).id))
+				|| ((cityId != null && cityId.equals(((Address) obj).cityId))
+						&& (postalCode != null && postalCode
+								.equalsIgnoreCase(((Address) obj).postalCode))
+						&& (address1 != null && address1
+								.equalsIgnoreCase(((Address) obj).address1)) && (address2 != null && address2
+						.equalsIgnoreCase(((Address) obj).address2)));
 	}
 }

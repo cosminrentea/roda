@@ -21,6 +21,7 @@ import javax.persistence.PostPersist;
 import javax.persistence.PostUpdate;
 import javax.persistence.PreRemove;
 import javax.persistence.Table;
+import javax.persistence.TypedQuery;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -166,18 +167,16 @@ public class City {
 	}
 
 	/**
-	 * Verifica existenta unui oras in baza de date; daca orasul exista,
-	 * returneaza obiectul corespunzator, altfel, metoda introduce orasul in
-	 * baza de date si apoi returneaza obiectul corespunzator. Verificarea
-	 * existentei in baza de date se realizeaza fie dupa valoarea
-	 * identificatorului, fie dupa un criteriu de unicitate.
+	 * Verifica existenta unui obiect de tip <code>City</code> (oras) in baza de
+	 * date; in caz afirmativ il returneaza, altfel, metoda il introduce in baza
+	 * de date si apoi il returneaza. Verificarea existentei in baza de date se
+	 * realizeaza fie dupa identificator, fie dupa un criteriu de unicitate.
 	 * 
 	 * <p>
 	 * Criterii de unicitate:
 	 * <ul>
-	 * <li>id
 	 * <li>name + countryId
-	 * <ul>
+	 * </ul>
 	 * 
 	 * <p>
 	 * 
@@ -186,29 +185,64 @@ public class City {
 	 * @param name
 	 *            - numele orasului.
 	 * @param countryId
-	 *            - identificatorul tarii in care se gaseste orasul.
-	 * @param code
+	 *            - identificatorul tarii unde este situat orasul.
+	 * @param cityCode
 	 *            - codul orasului in cadrul sistemului de codificare a
 	 *            oraselor.
-	 * @param codeName
-	 *            - numele sistemului de codificare a orasului (SIRUTA pentru
-	 *            Romania).
-	 * @param codeSup
-	 *            - codul entitatii superioare orasului curent.
-	 * @param prefix
-	 *            - prefixul numelui orasului (ex: municipiu).
-	 * @param type
-	 *            - tipul orasului.
-	 * @param typeSystem
-	 *            - numele sistemului de codificare a tipului orasului (SIRUTA
+	 * @param cityCodeName
+	 *            - numele sistemului de codificare a orasului (exemplu: SIRUTA
 	 *            pentru Romania).
+	 * @param cityCodeSup
+	 *            - codul entitatii superioare orasului.
+	 * @param prefix
+	 *            - prefixul numelui orasului (exemplu: municipiu).
+	 * @param cityType
+	 *            - tipul orasului.
+	 * @param cityTypeSystem
+	 *            - numele sistemului de codificare a tipului orasului (exemplu:
+	 *            SIRUTA pentru Romania).
 	 * @return
 	 */
-	public static City checkCity(Integer id, String name, Integer countryId,
-			String code, String codeName, String codeSup, String prefix,
-			String type, String typeSystem) {
-		// TODO
-		return null;
+	public static City checkCity(Integer id, String name, Country countryId,
+			String cityCode, String cityCodeName, String cityCodeSup,
+			String prefix, String cityType, String cityTypeSystem) {
+		City city;
+
+		if (id != null) {
+			city = findCity(id);
+
+			if (city != null) {
+				return city;
+			}
+		}
+
+		List<City> queryResult;
+
+		if (name != null && countryId != null) {
+			TypedQuery<City> query = entityManager().createQuery(
+					"SELECT o FROM City o WHERE lower(o.name) = lower(:name) AND "
+							+ "o.countryId = :countryId", City.class);
+			query.setParameter("name", name);
+			query.setParameter("countryId", countryId);
+
+			queryResult = query.getResultList();
+			if (queryResult.size() > 0) {
+				return queryResult.get(0);
+			}
+		}
+
+		city = new City();
+		city.name = name;
+		city.countryId = countryId;
+		city.cityCode = cityCode;
+		city.cityCodeName = cityCodeName;
+		city.cityCodeSup = cityCodeSup;
+		city.prefix = prefix;
+		city.cityType = cityType;
+		city.cityTypeSystem = cityTypeSystem;
+		city.persist();
+
+		return city;
 	}
 
 	@OneToMany(mappedBy = "cityId")
@@ -403,5 +437,13 @@ public class City {
 	@PreRemove
 	private void preRemove() {
 		deleteIndex(this);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return (id != null && id.equals(((City) obj).id))
+				|| ((countryId != null && countryId
+						.equals(((City) obj).countryId)) && (name != null && name
+						.equals(((City) obj).name)));
 	}
 }

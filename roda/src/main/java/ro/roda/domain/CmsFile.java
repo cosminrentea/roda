@@ -17,6 +17,7 @@ import javax.persistence.PostPersist;
 import javax.persistence.PostUpdate;
 import javax.persistence.PreRemove;
 import javax.persistence.Table;
+import javax.persistence.TypedQuery;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -156,37 +157,67 @@ public class CmsFile {
 	}
 
 	/**
-	 * Verifica existenta unui fisier CMS in baza de date; in caz afirmativ,
-	 * returneaza obiectul corespunzator, altfel, metoda introduce fisierul CMS
-	 * in baza de date si apoi returneaza obiectul corespunzator. Verificarea
-	 * existentei in baza de date se realizeaza fie dupa valoarea
-	 * identificatorului, fie dupa un criteriu de unicitate.
+	 * Verifica existenta unui obiect de tip <code>CmsFile</code> (fisier CMS)
+	 * in baza de date; in caz afirmativ il returneaza, altfel, metoda il
+	 * introduce in baza de date si apoi il returneaza. Verificarea existentei
+	 * in baza de date se realizeaza fie dupa identificator, fie dupa un
+	 * criteriu de unicitate.
 	 * 
 	 * <p>
 	 * Criterii de unicitate:
 	 * <ul>
-	 * <li>id
-	 * <li>fileName + folderId
-	 * <ul>
+	 * <li>filename + cmsFolderId
+	 * </ul>
 	 * 
 	 * <p>
 	 * 
 	 * @param id
-	 *            - identificatorul fisierului CMS.
-	 * @param fileName
-	 *            - numele fisierului CMS.
+	 *            - identificatorul fisierului.
+	 * @param filename
+	 *            - numele fisierului.
 	 * @param label
-	 *            - eticheta sau aliasul fisierului CMS.
-	 * @param folderId
-	 *            - identificatorul directorului CMS parinte.
-	 * @param fileSize
-	 *            - marimea fisierului CMS in octeti.
+	 *            - eticheta sau aliasul fisierului.
+	 * @param cmsFolderId
+	 *            - directorul parinte al fisierului.
+	 * @param filesize
+	 *            - marimea fisierului in octeti.
 	 * @return
 	 */
-	public static CmsFile checkCmsFile(Integer id, String fileName,
-			String label, Integer folderId, Integer fileSize) {
-		// TODO
-		return null;
+	public static CmsFile checkCmsFile(Integer id, String filename,
+			String label, CmsFolder cmsFolderId, Long filesize) {
+		CmsFile cmsFile;
+
+		if (id != null) {
+			cmsFile = findCmsFile(id);
+
+			if (cmsFile != null) {
+				return cmsFile;
+			}
+		}
+
+		List<CmsFile> queryResult;
+
+		if (filename != null && cmsFolderId != null) {
+			TypedQuery<CmsFile> query = entityManager().createQuery(
+					"SELECT o FROM CmsFile o WHERE lower(o.filename) = lower(:filename) AND "
+							+ "o.cmsFolderId = :cmsFolderId", CmsFile.class);
+			query.setParameter("filename", filename);
+			query.setParameter("cmsFolderId", cmsFolderId);
+
+			queryResult = query.getResultList();
+			if (queryResult.size() > 0) {
+				return queryResult.get(0);
+			}
+		}
+
+		cmsFile = new CmsFile();
+		cmsFile.filename = filename;
+		cmsFile.label = label;
+		cmsFile.cmsFolderId = cmsFolderId;
+		cmsFile.filesize = filesize;
+		cmsFile.persist();
+
+		return cmsFile;
 	}
 
 	@ManyToOne
@@ -315,5 +346,13 @@ public class CmsFile {
 	@PreRemove
 	private void preRemove() {
 		deleteIndex(this);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return (id != null && id.equals(((CmsFile) obj).id))
+				|| ((filename != null && filename
+						.equals(((CmsFile) obj).filename)) && (cmsFolderId != null && cmsFolderId
+						.equals(((CmsFile) obj).cmsFolderId)));
 	}
 }

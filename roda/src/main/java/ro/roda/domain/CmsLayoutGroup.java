@@ -19,6 +19,7 @@ import javax.persistence.PostPersist;
 import javax.persistence.PostUpdate;
 import javax.persistence.PreRemove;
 import javax.persistence.Table;
+import javax.persistence.TypedQuery;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -162,35 +163,64 @@ public class CmsLayoutGroup {
 	}
 
 	/**
-	 * Verifica existenta unui grup de layout-uri CMS in baza de date; in caz
-	 * afirmativ, returneaza obiectul corespunzator, altfel, metoda introduce
-	 * grupul de layout-uri CMS in baza de date si apoi returneaza obiectul
-	 * corespunzator. Verificarea existentei in baza de date se realizeaza fie
-	 * dupa valoarea identificatorului, fie dupa un criteriu de unicitate.
+	 * Verifica existenta unui obiect de tip <code>CmsLayoutGroup</code> (grup
+	 * de aranjamente CMS) in baza de date; in caz afirmativ il returneaza,
+	 * altfel, metoda il introduce in baza de date si apoi il returneaza.
+	 * Verificarea existentei in baza de date se realizeaza fie dupa
+	 * identificator, fie dupa un criteriu de unicitate.
 	 * 
 	 * <p>
 	 * Criterii de unicitate:
 	 * <ul>
-	 * <li>id
 	 * <li>name + parentId
-	 * <ul>
+	 * </ul>
 	 * 
 	 * <p>
 	 * 
 	 * @param id
-	 *            - identificatorul grupului de layout-uri CMS.
+	 *            - identificatorul grupului.
 	 * @param name
-	 *            - numele grupului de layout-uri CMS.
+	 *            - numele grupului.
 	 * @param parentId
-	 *            - identificatorul grupului de layout-uri CMS parinte.
+	 *            - grupul parinte al grupului.
 	 * @param description
-	 *            - descrierea grupului de layout-uri CMS.
+	 *            - descrierea grupului.
 	 * @return
 	 */
 	public static CmsLayoutGroup checkCmsLayoutGroup(Integer id, String name,
-			Integer parentId, String description) {
-		// TODO
-		return null;
+			CmsLayoutGroup parentId, String description) {
+		CmsLayoutGroup cmsLayoutGroup;
+
+		if (id != null) {
+			cmsLayoutGroup = findCmsLayoutGroup(id);
+
+			if (cmsLayoutGroup != null) {
+				return cmsLayoutGroup;
+			}
+		}
+
+		List<CmsLayoutGroup> queryResult;
+
+		if (name != null && parentId != null) {
+			TypedQuery<CmsLayoutGroup> query = entityManager().createQuery(
+					"SELECT o FROM CmsLayoutGroup o WHERE lower(o.name) = lower(:name) AND "
+							+ "o.parentId = :parentId", CmsLayoutGroup.class);
+			query.setParameter("name", name);
+			query.setParameter("parentId", parentId);
+
+			queryResult = query.getResultList();
+			if (queryResult.size() > 0) {
+				return queryResult.get(0);
+			}
+		}
+
+		cmsLayoutGroup = new CmsLayoutGroup();
+		cmsLayoutGroup.name = name;
+		cmsLayoutGroup.parentId = parentId;
+		cmsLayoutGroup.description = description;
+		cmsLayoutGroup.persist();
+
+		return cmsLayoutGroup;
 	}
 
 	@OneToMany(mappedBy = "parentId")
@@ -330,5 +360,12 @@ public class CmsLayoutGroup {
 	@PreRemove
 	private void preRemove() {
 		deleteIndex(this);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return (id != null && id.equals(((CmsLayoutGroup) obj).id))
+				|| ((name != null && name.equals(((CmsLayoutGroup) obj).name)) && (parentId != null && parentId
+						.equals(((CmsLayoutGroup) obj).parentId)));
 	}
 }

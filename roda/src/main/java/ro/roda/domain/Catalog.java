@@ -217,15 +217,14 @@ public class Catalog {
 
 		if (name != null && parentId != null && owner != null) {
 			TypedQuery<Catalog> query = entityManager().createQuery(
-					"SELECT o FROM Catalog o WHERE lower(o.name) = \'"
-							+ name.toLowerCase() + "\' AND "
+					"SELECT o FROM Catalog o WHERE lower(o.name) = lower(:name) AND "
 							+ "o.parentId = :parentId AND o.owner = :owner",
 					Catalog.class);
+			query.setParameter("name", name);
 			query.setParameter("parentId", parentId);
 			query.setParameter("owner", owner);
 
 			queryResult = query.getResultList();
-
 			if (queryResult.size() > 0) {
 				return queryResult.get(0);
 			}
@@ -443,9 +442,11 @@ public class Catalog {
 
 	@Override
 	public boolean equals(Object obj) {
-		return id.equals(((Catalog) obj).id)
-				|| (parentId.equals(((Catalog) obj).parentId)
-						&& owner.equals(((Catalog) obj).owner) && name
-							.equalsIgnoreCase(((Catalog) obj).name));
+		return (id != null && id.equals(((Catalog) obj).id))
+				|| ((parentId != null && parentId
+						.equals(((Catalog) obj).parentId))
+						&& (owner != null && owner
+								.equals(((Catalog) obj).owner)) && (name != null && name
+						.equalsIgnoreCase(((Catalog) obj).name)));
 	}
 }

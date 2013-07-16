@@ -122,35 +122,6 @@ public class Keyword {
 		}
 	}
 
-	/**
-	 * Verifica existenta unui cuvant cheie folosit de studii in baza de date;
-	 * in caz afirmativ, returneaza obiectul corespunzator, altfel, metoda
-	 * introduce cuvantul cheie in baza de date si apoi returneaza obiectul
-	 * corespunzator. Verificarea existentei in baza de date se realizeaza fie
-	 * dupa valoarea identificatorului, fie dupa un criteriu de unicitate.
-	 * 
-	 * <p>
-	 * Criterii de unicitate:
-	 * <ul>
-	 * <li>id
-	 * <li>name
-	 * <ul>
-	 * 
-	 * <p>
-	 * 
-	 * @param id
-	 *            - identificatorul cuvantului cheie.
-	 * @param name
-	 *            - numele cuvantului cheie.
-	 * @return
-	 */
-	public static Keyword checkKeyword(Integer id, String name) {
-		// TODO
-		// use equals method to determine the existence of the keyword in the
-		// database
-		return null;
-	}
-
 	public static QueryResponse search(SolrQuery query) {
 		try {
 			return solrServer().query(query);
@@ -175,6 +146,58 @@ public class Keyword {
 
 	public static String toJsonArray(Collection<Keyword> collection) {
 		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	/**
+	 * Verifica existenta unui obiect de tip <code>Keyword</code> (cuvant cheie)
+	 * in baza de date; in caz afirmativ il returneaza, altfel, metoda il
+	 * introduce in baza de date si apoi il returneaza. Verificarea existentei
+	 * in baza de date se realizeaza fie dupa identificator, fie dupa un
+	 * criteriu de unicitate.
+	 * 
+	 * <p>
+	 * Criterii de unicitate:
+	 * <ul>
+	 * <li>name
+	 * </ul>
+	 * 
+	 * <p>
+	 * 
+	 * @param id
+	 *            - identificatorul cuvantului.
+	 * @param name
+	 *            - numele cuvantului.
+	 * @return
+	 */
+	public static Keyword checkKeyword(Integer id, String name) {
+		Keyword keyword;
+
+		if (id != null) {
+			keyword = findKeyword(id);
+
+			if (keyword != null) {
+				return keyword;
+			}
+		}
+
+		List<Keyword> queryResult;
+
+		if (name != null) {
+			queryResult = entityManager().createQuery(
+					"SELECT o FROM Keyword o WHERE lower(o.name) = \'"
+							+ name.toLowerCase() + "\'", Keyword.class)
+					.getResultList();
+
+			if (queryResult.size() > 0) {
+				return queryResult.get(0);
+			}
+		}
+
+		keyword = new Keyword();
+		keyword.name = name;
+		keyword.persist();
+
+		return keyword;
 	}
 
 	@Id
@@ -283,17 +306,7 @@ public class Keyword {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (obj instanceof Keyword) {
-			Keyword keywordDB = entityManager().createQuery(
-					"SELECT o FROM Keyword o WHERE lc(name)='"
-							+ ((Keyword) obj).getName().toLowerCase() + "'",
-					Keyword.class).getSingleResult();
-			if (keywordDB != null) {
-				return true;
-			}
-
-		}
-		return false;
-
+		return id.equals(((Keyword) obj).id)
+				|| name.equalsIgnoreCase(((Keyword) obj).name);
 	}
 }

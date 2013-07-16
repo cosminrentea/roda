@@ -147,32 +147,6 @@ public class Authorities {
 		return new JSONSerializer().exclude("*.class").serialize(collection);
 	}
 
-	/**
-	 * Verifica existenta unei autorizatii in baza de date; daca adresa exista,
-	 * returneaza obiectul corespunzator, altfel, metoda introduce autorizatia
-	 * in baza de date si apoi returneaza obiectul corespunzator. Verificarea
-	 * existentei in baza de date se realizeaza fie dupa valoarea
-	 * identificatorului, fie dupa un criteriu de unicitate.
-	 * 
-	 * <p>
-	 * Criterii de unicitate:
-	 * <ul>
-	 * <li>userName + type
-	 * <ul>
-	 * 
-	 * <p>
-	 * 
-	 * @param userName
-	 *            - numele utilizatorului beneficiar.
-	 * @param type
-	 *            - tipul autorizatiei.
-	 * @return
-	 */
-	public static Authorities checkAuthorities(String userName, String type) {
-		// TODO
-		return null;
-	}
-
 	@EmbeddedId
 	private AuthoritiesPK id;
 

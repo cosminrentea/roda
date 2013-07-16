@@ -158,31 +158,51 @@ public class Topic {
 	}
 
 	/**
-	 * Verifica existenta unui topic (preluat prin valori ale parametrilor de
-	 * intrare) in baza de date; in caz afirmativ, returneaza obiectul
-	 * corespunzator, altfel, metoda va scrie in log mesajul. Verificarea
-	 * existentei in baza de date se realizeaza fie dupa valoarea cheii primare,
-	 * fie dupa un criteriu de unicitate.
+	 * Verifica existenta unui obiect de tip <code>Topic</code> (subiect) in
+	 * baza de date; in caz afirmativ il returneaza, altfel, metoda returneaza
+	 * null. Verificarea existentei in baza de date se realizeaza fie dupa
+	 * identificator, fie dupa un criteriu de unicitate.
 	 * 
 	 * <p>
 	 * Criterii de unicitate:
-	 * <p>
 	 * <ul>
-	 * <li>topicId
 	 * <li>name
-	 * <ul>
+	 * </ul>
+	 * 
 	 * <p>
 	 * 
-	 * @param topicId
-	 *            - cheia primara a topic-ului din tabelul de topic-uri
+	 * @param id
+	 *            - identificatorul subiectului.
 	 * @param name
-	 *            - denumirea topic-ului
+	 *            - numele subiectului.
+	 * @param description
+	 *            - descrierea subiectului.
 	 * @return
 	 */
-	public static Topic checkTopic(Integer topicId, String name) {
-		// TODO
-		// use equals method to determine the existence of the topic in the
-		// database
+	public static Topic checkTopic(Integer id, String name, String description) {
+		Topic topic;
+
+		if (id != null) {
+			topic = findTopic(id);
+
+			if (topic != null) {
+				return topic;
+			}
+		}
+
+		List<Topic> queryResult;
+
+		if (name != null) {
+			queryResult = entityManager().createQuery(
+					"SELECT o FROM Topic o WHERE lower(o.name) = \'"
+							+ name.toLowerCase() + "\'", Topic.class)
+					.getResultList();
+
+			if (queryResult.size() > 0) {
+				return queryResult.get(0);
+			}
+		}
+
 		return null;
 	}
 
@@ -371,17 +391,7 @@ public class Topic {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (obj instanceof Topic) {
-			Topic topicDB = entityManager().createQuery(
-					"SELECT o FROM Topic o WHERE lc(name)='"
-							+ ((Topic) obj).getName().toLowerCase() + "'",
-					Topic.class).getSingleResult();
-			if (topicDB != null) {
-				return true;
-			}
-
-		}
-		return false;
-
+		return id.equals(((Topic) obj).id)
+				|| name.equalsIgnoreCase(((Topic) obj).name);
 	}
 }

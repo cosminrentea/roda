@@ -151,12 +151,11 @@ public class AclSid {
 	}
 
 	/**
-	 * <b>Identificator de securitate ACL</b><br/>
-	 * 
-	 * Verifica existenta unui obiect in baza de date; in caz afirmativ il
-	 * returneaza, altfel, metoda il introduce in baza de date si apoi il
-	 * returneaza. Verificarea existentei in baza de date se realizeaza fie dupa
-	 * identificator, fie dupa un criteriu de unicitate.
+	 * Verifica existenta unui obiect de tip <code>AclSid</code> (cod de
+	 * securitate ACL) in baza de date; in caz afirmativ il returneaza, altfel,
+	 * metoda il introduce in baza de date si apoi il returneaza. Verificarea
+	 * existentei in baza de date se realizeaza fie dupa identificator, fie dupa
+	 * un criteriu de unicitate.
 	 * 
 	 * <p>
 	 * Criterii de unicitate:
@@ -167,9 +166,9 @@ public class AclSid {
 	 * <p>
 	 * 
 	 * @param id
-	 *            - identificatorul.
+	 *            - identificatorul codului.
 	 * @param sid
-	 *            - reprezentarea ca text (numele).
+	 *            - numele codului.
 	 * @param principal
 	 * @return
 	 */

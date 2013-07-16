@@ -151,12 +151,11 @@ public class AclClass {
 	}
 
 	/**
-	 * <b>Clasa ACL</b><br/>
-	 * 
-	 * Verifica existenta unui obiect in baza de date; in caz afirmativ il
-	 * returneaza, altfel, metoda il introduce in baza de date si apoi il
-	 * returneaza. Verificarea existentei in baza de date se realizeaza fie dupa
-	 * identificator, fie dupa un criteriu de unicitate.
+	 * Verifica existenta unui obiect de tip <code>AclClass</code> (clasa ACL)
+	 * in baza de date; in caz afirmativ il returneaza, altfel, metoda il
+	 * introduce in baza de date si apoi il returneaza. Verificarea existentei
+	 * in baza de date se realizeaza fie dupa identificator, fie dupa un
+	 * criteriu de unicitate.
 	 * 
 	 * <p>
 	 * Criterii de unicitate:
@@ -167,9 +166,9 @@ public class AclClass {
 	 * <p>
 	 * 
 	 * @param id
-	 *            - identificatorul.
+	 *            - identificatorul clasei.
 	 * @param class1
-	 *            - denumirea (numele).
+	 *            - numele clasei.
 	 * @return
 	 */
 	public static AclClass checkAclClass(Long id, String class1) {

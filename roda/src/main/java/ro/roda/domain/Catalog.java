@@ -23,6 +23,7 @@ import javax.persistence.PreRemove;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.TypedQuery;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -169,43 +170,77 @@ public class Catalog {
 	}
 
 	/**
-	 * Verifica existenta unui catalog in baza de date; in caz afirmativ,
-	 * returneaza obiectul corespunzator, altfel, metoda introduce catalogul in
-	 * baza de date si apoi returneaza obiectul corespunzator. Verificarea
-	 * existentei in baza de date se realizeaza fie dupa valoarea
-	 * identificatorului, fie dupa un criteriu de unicitate.
+	 * Verifica existenta unui obiect de tip <code>Catalog</code> (catalog) in
+	 * baza de date; in caz afirmativ il returneaza, altfel, metoda il introduce
+	 * in baza de date si apoi il returneaza. Verificarea existentei in baza de
+	 * date se realizeaza fie dupa identificator, fie dupa un criteriu de
+	 * unicitate.
 	 * 
 	 * <p>
 	 * Criterii de unicitate:
 	 * <ul>
-	 * <li>id
-	 * <li>name + parentId + ownerId
+	 * <li>name + parentId + owner
 	 * <ul>
 	 * 
 	 * <p>
 	 * 
 	 * @param id
 	 *            - identificatorul catalogului.
-	 * @param ownerId
-	 *            - identificatorul utilizatorului care detine catalogul.
 	 * @param parentId
-	 *            - identificatorul catalogului parinte.
+	 *            - catalogul parinte al catalogului.
+	 * @param owner
+	 *            - utilizatorul posesor al catalogului.
 	 * @param name
 	 *            - numele catalogului.
 	 * @param added
 	 *            - data adaugarii catalogului.
-	 * @param sequenceNr
-	 *            - numarul de ordine al catalogului in secventa de cataloage
-	 *            din cadrul aceluiasi parinte.
+	 * @param sequencenr
+	 *            - numarul de ordine al catalogului in cadrul parintelui.
 	 * @param description
 	 *            - descrierea catalogului.
 	 * @return
 	 */
-	public static Catalog checkCatalog(Integer id, Integer ownerId,
-			Integer parentId, String name, Calendar added, Integer sequenceNr,
+	public static Catalog checkCatalog(Integer id, Catalog parentId,
+			Users owner, String name, Calendar added, Integer sequencenr,
 			String description) {
-		// TODO
-		return null;
+		Catalog catalog;
+
+		if (id != null) {
+			catalog = findCatalog(id);
+
+			if (catalog != null) {
+				return catalog;
+			}
+		}
+
+		List<Catalog> queryResult;
+
+		if (name != null && parentId != null && owner != null) {
+			TypedQuery<Catalog> query = entityManager().createQuery(
+					"SELECT o FROM Catalog o WHERE lower(o.name) = \'"
+							+ name.toLowerCase() + "\' AND "
+							+ "o.parentId = :parentId AND o.owner = :owner",
+					Catalog.class);
+			query.setParameter("parentId", parentId);
+			query.setParameter("owner", owner);
+
+			queryResult = query.getResultList();
+
+			if (queryResult.size() > 0) {
+				return queryResult.get(0);
+			}
+		}
+
+		catalog = new Catalog();
+		catalog.parentId = parentId;
+		catalog.owner = owner;
+		catalog.name = name;
+		catalog.added = added;
+		catalog.sequencenr = sequencenr;
+		catalog.description = description;
+		catalog.persist();
+
+		return catalog;
 	}
 
 	@Column(name = "added", columnDefinition = "timestamp")
@@ -246,6 +281,7 @@ public class Catalog {
 	@OneToOne(mappedBy = "catalog")
 	private Series series;
 
+	// necesar pentru JSON
 	private Integer level;
 
 	@PersistenceContext
@@ -403,5 +439,13 @@ public class Catalog {
 	@PreRemove
 	private void preRemove() {
 		deleteIndex(this);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return id.equals(((Catalog) obj).id)
+				|| (parentId.equals(((Catalog) obj).parentId)
+						&& owner.equals(((Catalog) obj).owner) && name
+							.equalsIgnoreCase(((Catalog) obj).name));
 	}
 }

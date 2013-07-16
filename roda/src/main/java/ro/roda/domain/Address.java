@@ -193,12 +193,11 @@ public class Address {
 	}
 
 	/**
-	 * <b>Adresa</b><br/>
-	 * 
-	 * Verifica existenta unui obiect in baza de date; in caz afirmativ il
-	 * returneaza, altfel, metoda il introduce in baza de date si apoi il
-	 * returneaza. Verificarea existentei in baza de date se realizeaza fie dupa
-	 * identificator, fie dupa un criteriu de unicitate.
+	 * Verifica existenta unui obiect de tip <code>Address</code> (adresa) in
+	 * baza de date; in caz afirmativ il returneaza, altfel, metoda il introduce
+	 * in baza de date si apoi il returneaza. Verificarea existentei in baza de
+	 * date se realizeaza fie dupa identificator, fie dupa un criteriu de
+	 * unicitate.
 	 * 
 	 * <p>
 	 * Criterii de unicitate:
@@ -210,13 +209,13 @@ public class Address {
 	 * <p>
 	 * 
 	 * @param id
-	 *            - identificatorul.
+	 *            - identificatorul adresei.
 	 * @param cityId
-	 *            - orasul.
+	 *            - orasul adresei.
 	 * @param postalCode
-	 *            - codul postal.
+	 *            - codul postal al adresei.
 	 * @param address1
-	 *            - primele elemente ale adresei (ex: strada si numar).
+	 *            - primele elemente ale adresei (exemplu: strada si numar).
 	 * @param address2
 	 *            - elementele suplimentare ale adresei.
 	 * @param subdivCode
@@ -224,9 +223,10 @@ public class Address {
 	 *            cazul in care se foloseste acest parametru, el trebuie sa fie
 	 *            obligatoriu insotit de parametrul subdivName.
 	 * @param subdivName
-	 *            - numele subdiviziunii orasului in care se gaseste adresa (ex:
-	 *            sector). In cazul in care se foloseste acest parametru, el
-	 *            trebuie sa fie obligatoriu insotit de parametrul subdivCode.
+	 *            - numele subdiviziunii orasului in care se gaseste adresa
+	 *            (exemplu: sector). In cazul in care se foloseste acest
+	 *            parametru, el trebuie sa fie obligatoriu insotit de parametrul
+	 *            subdivCode.
 	 * @return
 	 */
 	public static Address checkAddress(Integer id, City cityId,

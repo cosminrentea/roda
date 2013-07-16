@@ -1,11 +1,11 @@
-Id,Name
-1,no sampling (total universe)
-2,quota sample
-3,simple random sample
-4,one-stage stratified or systematic random sample
-5,one-stage cluster sample
-6,multi-stage stratified random sample
-7,quasi-random (e.g. random walk) sample
-8,purposive selection/case studies
-9,volunteer sample
-10,convenience sample
+Name
+no sampling (total universe)
+quota sample
+simple random sample
+one-stage stratified or systematic random sample
+one-stage cluster sample
+multi-stage stratified random sample
+quasi-random (e.g. random walk) sample
+purposive selection/case studies
+volunteer sample
+convenience sample

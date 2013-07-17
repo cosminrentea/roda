@@ -343,7 +343,8 @@ public class CmsLayout {
 	@Override
 	public boolean equals(Object obj) {
 		return (id != null && id.equals(((CmsLayout) obj).id))
-				|| ((name != null && name.equals(((CmsLayout) obj).name)) && (cmsLayoutGroupId != null && cmsLayoutGroupId
+				|| ((name != null && name
+						.equalsIgnoreCase(((CmsLayout) obj).name)) && (cmsLayoutGroupId != null && cmsLayoutGroupId
 						.equals(((CmsLayout) obj).cmsLayoutGroupId)));
 	}
 }

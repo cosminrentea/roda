@@ -346,6 +346,6 @@ public class CollectionModelType {
 	public boolean equals(Object obj) {
 		return (id != null && id.equals(((CollectionModelType) obj).id))
 				|| (name != null && name
-						.equals(((CollectionModelType) obj).name));
+						.equalsIgnoreCase(((CollectionModelType) obj).name));
 	}
 }

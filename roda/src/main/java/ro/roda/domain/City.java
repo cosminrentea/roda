@@ -444,6 +444,6 @@ public class City {
 		return (id != null && id.equals(((City) obj).id))
 				|| ((countryId != null && countryId
 						.equals(((City) obj).countryId)) && (name != null && name
-						.equals(((City) obj).name)));
+						.equalsIgnoreCase(((City) obj).name)));
 	}
 }

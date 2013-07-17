@@ -17,6 +17,7 @@ import javax.persistence.PostPersist;
 import javax.persistence.PostUpdate;
 import javax.persistence.PreRemove;
 import javax.persistence.Table;
+import javax.persistence.TypedQuery;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -152,21 +153,20 @@ public class Lang {
 	}
 
 	/**
-	 * Verifica existenta unei limbi in baza de date; in caz afirmativ,
-	 * returneaza obiectul corespunzator, altfel, metoda introduce limba in baza
-	 * de date si apoi returneaza obiectul corespunzator. Verificarea existentei
-	 * in baza de date se realizeaza fie dupa valoarea identificatorului, fie
-	 * dupa un criteriu de unicitate.
+	 * Verifica existenta unui obiect de tip <code>Lang</code> (limba) in baza
+	 * de date; in caz afirmativ il returneaza, altfel, metoda il introduce in
+	 * baza de date si apoi il returneaza. Verificarea existentei in baza de
+	 * date se realizeaza fie dupa identificator, fie dupa un criteriu de
+	 * unicitate.
 	 * 
 	 * <p>
 	 * Criterii de unicitate:
 	 * <ul>
-	 * <li>id
 	 * <li>iso639
-	 * <li>name
-	 * <li>nameRO
-	 * <li>nameEN
-	 * <ul>
+	 * <li>nameSelf
+	 * <li>nameRo
+	 * <li>nameEn
+	 * </ul>
 	 * 
 	 * <p>
 	 * 
@@ -174,18 +174,88 @@ public class Lang {
 	 *            - identificatorul limbii.
 	 * @param iso639
 	 *            - codul limbii in ISO 639-1.
-	 * @param name
+	 * @param nameSelf
 	 *            - numele limbii (in limba respectiva).
-	 * @param nameRO
+	 * @param nameRo
 	 *            - numele limbii (in limba romana).
-	 * @param name
+	 * @param nameEn
 	 *            - numele limbii (in limba engleza).
 	 * @return
 	 */
-	public static Lang checkLang(Integer id, String iso639, String name,
-			String nameRO, String nameEN) {
-		// TODO
-		return null;
+	public static Lang checkLang(Integer id, String iso639, String nameSelf,
+			String nameRo, String nameEn) {
+		Lang object;
+
+		if (id != null) {
+			object = findLang(id);
+
+			if (object != null) {
+				return object;
+			}
+		}
+
+		List<Lang> queryResult;
+
+		if (iso639 != null) {
+			TypedQuery<Lang> query = entityManager()
+					.createQuery(
+							"SELECT o FROM Lang o WHERE lower(o.iso639) = lower(:iso639)",
+							Lang.class);
+			query.setParameter("iso639", iso639);
+
+			queryResult = query.getResultList();
+			if (queryResult.size() > 0) {
+				return queryResult.get(0);
+			}
+		}
+
+		if (nameSelf != null) {
+			TypedQuery<Lang> query = entityManager()
+					.createQuery(
+							"SELECT o FROM Lang o WHERE lower(o.nameSelf) = lower(:nameSelf)",
+							Lang.class);
+			query.setParameter("nameSelf", nameSelf);
+
+			queryResult = query.getResultList();
+			if (queryResult.size() > 0) {
+				return queryResult.get(0);
+			}
+		}
+
+		if (nameRo != null) {
+			TypedQuery<Lang> query = entityManager()
+					.createQuery(
+							"SELECT o FROM Lang o WHERE lower(o.nameRo) = lower(:nameRo)",
+							Lang.class);
+			query.setParameter("nameRo", nameRo);
+
+			queryResult = query.getResultList();
+			if (queryResult.size() > 0) {
+				return queryResult.get(0);
+			}
+		}
+
+		if (nameEn != null) {
+			TypedQuery<Lang> query = entityManager()
+					.createQuery(
+							"SELECT o FROM Lang o WHERE lower(o.nameEn) = lower(:nameEn)",
+							Lang.class);
+			query.setParameter("nameEn", nameEn);
+
+			queryResult = query.getResultList();
+			if (queryResult.size() > 0) {
+				return queryResult.get(0);
+			}
+		}
+
+		object = new Lang();
+		object.nameSelf = nameSelf;
+		object.nameRo = nameRo;
+		object.nameEn = nameEn;
+		object.iso639 = iso639;
+		object.persist();
+
+		return object;
 	}
 
 	@Id
@@ -356,5 +426,18 @@ public class Lang {
 	@PreRemove
 	private void preRemove() {
 		deleteIndex(this);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return (id != null && id.equals(((Lang) obj).id))
+				|| (nameSelf != null && nameSelf
+						.equalsIgnoreCase(((Lang) obj).nameSelf))
+				|| (nameRo != null && nameRo
+						.equalsIgnoreCase(((Lang) obj).nameRo))
+				|| (nameEn != null && nameEn
+						.equalsIgnoreCase(((Lang) obj).nameEn))
+				|| (iso639 != null && iso639
+						.equalsIgnoreCase(((Lang) obj).iso639));
 	}
 }

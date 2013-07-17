@@ -171,13 +171,13 @@ public class Keyword {
 	 * @return
 	 */
 	public static Keyword checkKeyword(Integer id, String name) {
-		Keyword keyword;
+		Keyword object;
 
 		if (id != null) {
-			keyword = findKeyword(id);
+			object = findKeyword(id);
 
-			if (keyword != null) {
-				return keyword;
+			if (object != null) {
+				return object;
 			}
 		}
 
@@ -196,11 +196,11 @@ public class Keyword {
 			}
 		}
 
-		keyword = new Keyword();
-		keyword.name = name;
-		keyword.persist();
+		object = new Keyword();
+		object.name = name;
+		object.persist();
 
-		return keyword;
+		return object;
 	}
 
 	@Id

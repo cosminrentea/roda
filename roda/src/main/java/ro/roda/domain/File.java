@@ -443,6 +443,6 @@ public class File {
 	@Override
 	public boolean equals(Object obj) {
 		return (id != null && id.equals(((File) obj).id))
-				|| (title != null && title.equals(((File) obj).title));
+				|| (title != null && title.equalsIgnoreCase(((File) obj).title));
 	}
 }

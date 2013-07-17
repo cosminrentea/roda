@@ -414,8 +414,10 @@ public class Country {
 	public boolean equals(Object obj) {
 		return (id != null && id.equals(((Country) obj).id))
 				|| (nameSelf != null && nameSelf
-						.equals(((Country) obj).nameSelf))
-				|| (nameRo != null && nameRo.equals(((Country) obj).nameRo))
-				|| (nameEn != null && nameEn.equals(((Country) obj).nameEn));
+						.equalsIgnoreCase(((Country) obj).nameSelf))
+				|| (nameRo != null && nameRo
+						.equalsIgnoreCase(((Country) obj).nameRo))
+				|| (nameEn != null && nameEn
+						.equalsIgnoreCase(((Country) obj).nameEn));
 	}
 }

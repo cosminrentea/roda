@@ -318,6 +318,7 @@ public class DataSourceType {
 	@Override
 	public boolean equals(Object obj) {
 		return (id != null && id.equals(((DataSourceType) obj).id))
-				|| (name != null && name.equals(((DataSourceType) obj).name));
+				|| (name != null && name
+						.equalsIgnoreCase(((DataSourceType) obj).name));
 	}
 }

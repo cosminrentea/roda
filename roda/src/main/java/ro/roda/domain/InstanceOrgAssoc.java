@@ -336,6 +336,6 @@ public class InstanceOrgAssoc {
 	public boolean equals(Object obj) {
 		return (id != null && id.equals(((InstanceOrgAssoc) obj).id))
 				|| (assocName != null && assocName
-						.equals(((InstanceOrgAssoc) obj).assocName));
+						.equalsIgnoreCase(((InstanceOrgAssoc) obj).assocName));
 	}
 }

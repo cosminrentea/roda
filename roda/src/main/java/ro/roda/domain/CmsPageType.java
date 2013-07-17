@@ -326,6 +326,7 @@ public class CmsPageType {
 	@Override
 	public boolean equals(Object obj) {
 		return (id != null && id.equals(((CmsPageType) obj).id))
-				|| (name != null && name.equals(((CmsPageType) obj).name));
+				|| (name != null && name
+						.equalsIgnoreCase(((CmsPageType) obj).name));
 	}
 }

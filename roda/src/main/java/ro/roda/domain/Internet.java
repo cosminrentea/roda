@@ -17,6 +17,7 @@ import javax.persistence.PostPersist;
 import javax.persistence.PostUpdate;
 import javax.persistence.PreRemove;
 import javax.persistence.Table;
+import javax.persistence.TypedQuery;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -150,32 +151,61 @@ public class Internet {
 	}
 
 	/**
-	 * Verifica existenta unui cont de internet in baza de date; in caz
-	 * afirmativ, returneaza obiectul corespunzator, altfel, metoda introduce
-	 * contul de internet in baza de date si apoi returneaza obiectul
-	 * corespunzator. Verificarea existentei in baza de date se realizeaza fie
-	 * dupa valoarea identificatorului, fie dupa un criteriu de unicitate.
+	 * Verifica existenta unui obiect de tip <code>Internet</code> (cont de
+	 * internet) in baza de date; in caz afirmativ il returneaza, altfel, metoda
+	 * il introduce in baza de date si apoi il returneaza. Verificarea
+	 * existentei in baza de date se realizeaza fie dupa identificator, fie dupa
+	 * un criteriu de unicitate.
 	 * 
 	 * <p>
 	 * Criterii de unicitate:
 	 * <ul>
-	 * <li>id
-	 * <li>name
-	 * <ul>
+	 * <li>internet
+	 * </ul>
 	 * 
 	 * <p>
 	 * 
 	 * @param id
 	 *            - identificatorul contului.
-	 * @param type
+	 * @param internetType
 	 *            - tipul contului.
-	 * @param name
+	 * @param internet
 	 *            - adresa contului.
 	 * @return
 	 */
-	public static Internet checkInternet(Integer id, String type, String name) {
-		// TODO
-		return null;
+	public static Internet checkInternet(Integer id, String internetType,
+			String internet) {
+		Internet object;
+
+		if (id != null) {
+			object = findInternet(id);
+
+			if (object != null) {
+				return object;
+			}
+		}
+
+		List<Internet> queryResult;
+
+		if (internet != null) {
+			TypedQuery<Internet> query = entityManager()
+					.createQuery(
+							"SELECT o FROM Internet o WHERE lower(o.internet) = lower(:internet)",
+							Internet.class);
+			query.setParameter("internet", internet);
+
+			queryResult = query.getResultList();
+			if (queryResult.size() > 0) {
+				return queryResult.get(0);
+			}
+		}
+
+		object = new Internet();
+		object.internetType = internetType;
+		object.internet = internet;
+		object.persist();
+
+		return object;
 	}
 
 	@Id
@@ -302,5 +332,12 @@ public class Internet {
 	@PreRemove
 	private void preRemove() {
 		deleteIndex(this);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return (id != null && id.equals(((Internet) obj).id))
+				|| (internet != null && internet
+						.equalsIgnoreCase(((Internet) obj).internet));
 	}
 }

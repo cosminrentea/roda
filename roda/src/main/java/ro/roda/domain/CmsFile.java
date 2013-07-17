@@ -352,7 +352,7 @@ public class CmsFile {
 	public boolean equals(Object obj) {
 		return (id != null && id.equals(((CmsFile) obj).id))
 				|| ((filename != null && filename
-						.equals(((CmsFile) obj).filename)) && (cmsFolderId != null && cmsFolderId
+						.equalsIgnoreCase(((CmsFile) obj).filename)) && (cmsFolderId != null && cmsFolderId
 						.equals(((CmsFile) obj).cmsFolderId)));
 	}
 }

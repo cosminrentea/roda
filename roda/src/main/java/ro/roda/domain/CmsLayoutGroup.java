@@ -365,7 +365,8 @@ public class CmsLayoutGroup {
 	@Override
 	public boolean equals(Object obj) {
 		return (id != null && id.equals(((CmsLayoutGroup) obj).id))
-				|| ((name != null && name.equals(((CmsLayoutGroup) obj).name)) && (parentId != null && parentId
+				|| ((name != null && name
+						.equalsIgnoreCase(((CmsLayoutGroup) obj).name)) && (parentId != null && parentId
 						.equals(((CmsLayoutGroup) obj).parentId)));
 	}
 }

@@ -344,6 +344,6 @@ public class InstancePersonAssoc {
 	public boolean equals(Object obj) {
 		return (id != null && id.equals(((InstancePersonAssoc) obj).id))
 				|| (assocName != null && assocName
-						.equals(((InstancePersonAssoc) obj).assocName));
+						.equalsIgnoreCase(((InstancePersonAssoc) obj).assocName));
 	}
 }

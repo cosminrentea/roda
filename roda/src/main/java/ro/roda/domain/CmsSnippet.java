@@ -340,7 +340,8 @@ public class CmsSnippet {
 	@Override
 	public boolean equals(Object obj) {
 		return (id != null && id.equals(((CmsSnippet) obj).id))
-				|| ((name != null && name.equals(((CmsSnippet) obj).name)) && (cmsSnippetGroupId != null && cmsSnippetGroupId
+				|| ((name != null && name
+						.equalsIgnoreCase(((CmsSnippet) obj).name)) && (cmsSnippetGroupId != null && cmsSnippetGroupId
 						.equals(((CmsSnippet) obj).cmsSnippetGroupId)));
 	}
 }

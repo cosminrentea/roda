@@ -17,6 +17,7 @@ import javax.persistence.PostPersist;
 import javax.persistence.PostUpdate;
 import javax.persistence.PreRemove;
 import javax.persistence.Table;
+import javax.persistence.TypedQuery;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -162,25 +163,24 @@ public class OtherStatistic {
 	}
 
 	/**
-	 * Verifica existenta unei statistici asociate unei variabile in baza de
-	 * date; in caz afirmativ, returneaza obiectul corespunzator, altfel, metoda
-	 * introduce statistica in baza de date si apoi returneaza obiectul
-	 * corespunzator. Verificarea existentei in baza de date se realizeaza fie
-	 * dupa valoarea identificatorului, fie dupa un criteriu de unicitate.
+	 * Verifica existenta unui obiect de tip <code>OtherStatistic</code>
+	 * (statistica asociata unei variabile) in baza de date; in caz afirmativ il
+	 * returneaza, altfel, metoda il introduce in baza de date si apoi il
+	 * returneaza. Verificarea existentei in baza de date se realizeaza fie dupa
+	 * identificator, fie dupa un criteriu de unicitate.
 	 * 
 	 * <p>
 	 * Criterii de unicitate:
 	 * <ul>
-	 * <li>id
 	 * <li>name + variableId
-	 * <ul>
+	 * </ul>
 	 * 
 	 * <p>
 	 * 
 	 * @param id
 	 *            - identificatorul statisticii.
 	 * @param variableId
-	 *            - identificatorul variabilei.
+	 *            - variabila asociata statisticii.
 	 * @param name
 	 *            - numele statisticii.
 	 * @param value
@@ -189,10 +189,42 @@ public class OtherStatistic {
 	 *            - descrierea statisticii.
 	 * @return
 	 */
-	public static OtherStatistic checkOtherStatistic(Integer id,
-			Integer variableId, String name, Float value, String description) {
-		// TODO
-		return null;
+	public static OtherStatistic checkOtherStatistic(Long id,
+			Variable variableId, String name, Float value, String description) {
+		OtherStatistic object;
+
+		if (id != null) {
+			object = findOtherStatistic(id);
+
+			if (object != null) {
+				return object;
+			}
+		}
+
+		List<OtherStatistic> queryResult;
+
+		if (name != null && variableId != null) {
+			TypedQuery<OtherStatistic> query = entityManager().createQuery(
+					"SELECT o FROM OtherStatistic o WHERE lower(o.name) = lower(:name) AND "
+							+ "o.variableId = :variableId",
+					OtherStatistic.class);
+			query.setParameter("name", name);
+			query.setParameter("variableId", variableId);
+
+			queryResult = query.getResultList();
+			if (queryResult.size() > 0) {
+				return queryResult.get(0);
+			}
+		}
+
+		object = new OtherStatistic();
+		object.variableId = variableId;
+		object.name = name;
+		object.value = value;
+		object.description = description;
+		object.persist();
+
+		return object;
 	}
 
 	@Column(name = "description", columnDefinition = "text")
@@ -322,5 +354,13 @@ public class OtherStatistic {
 	@PreRemove
 	private void preRemove() {
 		deleteIndex(this);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return (id != null && id.equals(((OtherStatistic) obj).id))
+				|| ((name != null && name
+						.equalsIgnoreCase(((OtherStatistic) obj).name)) && (variableId != null && variableId
+						.equals(((OtherStatistic) obj).variableId)));
 	}
 }

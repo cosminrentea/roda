@@ -327,6 +327,6 @@ public class Concept {
 	@Override
 	public boolean equals(Object obj) {
 		return (id != null && id.equals(((Concept) obj).id))
-				|| (name != null && name.equals(((Concept) obj).name));
+				|| (name != null && name.equalsIgnoreCase(((Concept) obj).name));
 	}
 }

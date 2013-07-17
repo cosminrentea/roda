@@ -151,17 +151,16 @@ public class News {
 	}
 
 	/**
-	 * Verifica existenta unei stiri in baza de date; in caz afirmativ,
-	 * returneaza obiectul corespunzator, altfel, metoda introduce stirea in
-	 * baza de date si apoi returneaza obiectul corespunzator. Verificarea
-	 * existentei in baza de date se realizeaza fie dupa valoarea
-	 * identificatorului, fie dupa un criteriu de unicitate.
+	 * Verifica existenta unui obiect de tip <code>News</code> (stire) in baza
+	 * de date; in caz afirmativ il returneaza, altfel, metoda il introduce in
+	 * baza de date si apoi il returneaza. Verificarea existentei in baza de
+	 * date se realizeaza fie dupa identificator, fie dupa un criteriu de
+	 * unicitate.
 	 * 
 	 * <p>
 	 * Criterii de unicitate:
 	 * <ul>
-	 * <li>id
-	 * <ul>
+	 * </ul>
 	 * 
 	 * <p>
 	 * 
@@ -170,7 +169,7 @@ public class News {
 	 * @param added
 	 *            - data cand a fost adaugata stirea.
 	 * @param visible
-	 *            - tipul de vizibilitate a stirii.
+	 *            - specifica daca stirea este vizibila.
 	 * @param title
 	 *            - titlul stirii.
 	 * @param content
@@ -179,8 +178,24 @@ public class News {
 	 */
 	public static News checkNews(Integer id, Calendar added, Boolean visible,
 			String title, String content) {
-		// TODO
-		return null;
+		News object;
+
+		if (id != null) {
+			object = findNews(id);
+
+			if (object != null) {
+				return object;
+			}
+		}
+
+		object = new News();
+		object.added = added;
+		object.visible = visible;
+		object.title = title;
+		object.content = content;
+		object.persist();
+
+		return object;
 	}
 
 	@Column(name = "added", columnDefinition = "timestamp")
@@ -311,5 +326,10 @@ public class News {
 	@PreRemove
 	private void preRemove() {
 		deleteIndex(this);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return id != null && id.equals(((News) obj).id);
 	}
 }

@@ -181,13 +181,13 @@ public class Topic {
 	 * @return
 	 */
 	public static Topic checkTopic(Integer id, String name, String description) {
-		Topic topic;
+		Topic object;
 
 		if (id != null) {
-			topic = findTopic(id);
+			object = findTopic(id);
 
-			if (topic != null) {
-				return topic;
+			if (object != null) {
+				return object;
 			}
 		}
 

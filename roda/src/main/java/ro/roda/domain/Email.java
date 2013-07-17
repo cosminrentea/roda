@@ -321,6 +321,7 @@ public class Email {
 	@Override
 	public boolean equals(Object obj) {
 		return (id != null && id.equals(((Email) obj).id))
-				|| (email != null && email.equals(((Email) obj).email));
+				|| (email != null && email
+						.equalsIgnoreCase(((Email) obj).email));
 	}
 }

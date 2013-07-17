@@ -359,7 +359,8 @@ public class CmsFolder {
 	@Override
 	public boolean equals(Object obj) {
 		return (id != null && id.equals(((CmsFolder) obj).id))
-				|| ((name != null && name.equals(((CmsFolder) obj).name)) && (parentId != null && parentId
+				|| ((name != null && name
+						.equalsIgnoreCase(((CmsFolder) obj).name)) && (parentId != null && parentId
 						.equals(((CmsFolder) obj).parentId)));
 	}
 }

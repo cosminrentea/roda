@@ -340,6 +340,7 @@ public class InstanceRight {
 	@Override
 	public boolean equals(Object obj) {
 		return (id != null && id.equals(((InstanceRight) obj).id))
-				|| (name != null && name.equals(((InstanceRight) obj).name));
+				|| (name != null && name
+						.equalsIgnoreCase(((InstanceRight) obj).name));
 	}
 }

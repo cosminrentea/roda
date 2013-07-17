@@ -409,7 +409,7 @@ public class CmsPage {
 	@Override
 	public boolean equals(Object obj) {
 		return (id != null && id.equals(((CmsPage) obj).id))
-				|| (name != null && name.equals(((CmsPage) obj).name))
-				|| (url != null && url.equals(((CmsPage) obj).url));
+				|| (name != null && name.equalsIgnoreCase(((CmsPage) obj).name))
+				|| (url != null && url.equalsIgnoreCase(((CmsPage) obj).url));
 	}
 }

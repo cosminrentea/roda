@@ -366,7 +366,8 @@ public class CmsSnippetGroup {
 	@Override
 	public boolean equals(Object obj) {
 		return (id != null && id.equals(((CmsSnippetGroup) obj).id))
-				|| ((name != null && name.equals(((CmsSnippetGroup) obj).name)) && (parentId != null && parentId
+				|| ((name != null && name
+						.equalsIgnoreCase(((CmsSnippetGroup) obj).name)) && (parentId != null && parentId
 						.equals(((CmsSnippetGroup) obj).parentId)));
 	}
 }

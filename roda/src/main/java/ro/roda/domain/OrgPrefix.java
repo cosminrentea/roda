@@ -17,6 +17,7 @@ import javax.persistence.PostPersist;
 import javax.persistence.PostUpdate;
 import javax.persistence.PreRemove;
 import javax.persistence.Table;
+import javax.persistence.TypedQuery;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -150,33 +151,61 @@ public class OrgPrefix {
 	}
 
 	/**
-	 * Verifica existenta unui prefix de organizatie in baza de date; in caz
-	 * afirmativ, returneaza obiectul corespunzator, altfel, metoda introduce
-	 * prefixul de organizatie in baza de date si apoi returneaza obiectul
-	 * corespunzator. Verificarea existentei in baza de date se realizeaza fie
-	 * dupa valoarea identificatorului, fie dupa un criteriu de unicitate.
+	 * Verifica existenta unui obiect de tip <code>OrgPrefix</code> (prefix de
+	 * organizatie) in baza de date; in caz afirmativ il returneaza, altfel,
+	 * metoda il introduce in baza de date si apoi il returneaza. Verificarea
+	 * existentei in baza de date se realizeaza fie dupa identificator, fie dupa
+	 * un criteriu de unicitate.
 	 * 
 	 * <p>
 	 * Criterii de unicitate:
 	 * <ul>
-	 * <li>id
 	 * <li>name
-	 * <ul>
+	 * </ul>
 	 * 
 	 * <p>
 	 * 
 	 * @param id
-	 *            - identificatorul prefixului de organizatie.
+	 *            - identificatorul prefixului.
 	 * @param name
-	 *            - numele prefixului de organizatie.
+	 *            - numele prefixului.
 	 * @param description
-	 *            - descrierea prefixului de organizatie.
+	 *            - descrierea prefixului.
 	 * @return
 	 */
 	public static OrgPrefix checkOrgPrefix(Integer id, String name,
 			String description) {
-		// TODO
-		return null;
+		OrgPrefix object;
+
+		if (id != null) {
+			object = findOrgPrefix(id);
+
+			if (object != null) {
+				return object;
+			}
+		}
+
+		List<OrgPrefix> queryResult;
+
+		if (name != null) {
+			TypedQuery<OrgPrefix> query = entityManager()
+					.createQuery(
+							"SELECT o FROM OrgPrefix o WHERE lower(o.name) = lower(:name)",
+							OrgPrefix.class);
+			query.setParameter("name", name);
+
+			queryResult = query.getResultList();
+			if (queryResult.size() > 0) {
+				return queryResult.get(0);
+			}
+		}
+
+		object = new OrgPrefix();
+		object.name = name;
+		object.description = description;
+		object.persist();
+
+		return object;
 	}
 
 	@Column(name = "description", columnDefinition = "text")
@@ -292,5 +321,12 @@ public class OrgPrefix {
 	@PreRemove
 	private void preRemove() {
 		deleteIndex(this);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return (id != null && id.equals(((OrgPrefix) obj).id))
+				|| (name != null && name
+						.equalsIgnoreCase(((OrgPrefix) obj).name));
 	}
 }

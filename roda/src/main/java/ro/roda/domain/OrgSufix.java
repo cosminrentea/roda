@@ -17,6 +17,7 @@ import javax.persistence.PostPersist;
 import javax.persistence.PostUpdate;
 import javax.persistence.PreRemove;
 import javax.persistence.Table;
+import javax.persistence.TypedQuery;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -152,33 +153,61 @@ public class OrgSufix {
 	}
 
 	/**
-	 * Verifica existenta unui sufix de organizatie in baza de date; in caz
-	 * afirmativ, returneaza obiectul corespunzator, altfel, metoda introduce
-	 * sufixul de organizatie in baza de date si apoi returneaza obiectul
-	 * corespunzator. Verificarea existentei in baza de date se realizeaza fie
-	 * dupa valoarea identificatorului, fie dupa un criteriu de unicitate.
+	 * Verifica existenta unui obiect de tip <code>OrgSufix</code> (sufix de
+	 * organizatie) in baza de date; in caz afirmativ il returneaza, altfel,
+	 * metoda il introduce in baza de date si apoi il returneaza. Verificarea
+	 * existentei in baza de date se realizeaza fie dupa identificator, fie dupa
+	 * un criteriu de unicitate.
 	 * 
 	 * <p>
 	 * Criterii de unicitate:
 	 * <ul>
-	 * <li>id
 	 * <li>name
-	 * <ul>
+	 * </ul>
 	 * 
 	 * <p>
 	 * 
 	 * @param id
-	 *            - identificatorul sufixului de organizatie.
+	 *            - identificatorul sufixului.
 	 * @param name
-	 *            - numele sufixului de organizatie.
+	 *            - numele sufixului.
 	 * @param description
-	 *            - descrierea sufixului de organizatie.
+	 *            - descrierea sufixului.
 	 * @return
 	 */
 	public static OrgSufix checkOrgSufix(Integer id, String name,
 			String description) {
-		// TODO
-		return null;
+		OrgSufix object;
+
+		if (id != null) {
+			object = findOrgSufix(id);
+
+			if (object != null) {
+				return object;
+			}
+		}
+
+		List<OrgSufix> queryResult;
+
+		if (name != null) {
+			TypedQuery<OrgSufix> query = entityManager()
+					.createQuery(
+							"SELECT o FROM OrgSufix o WHERE lower(o.name) = lower(:name)",
+							OrgSufix.class);
+			query.setParameter("name", name);
+
+			queryResult = query.getResultList();
+			if (queryResult.size() > 0) {
+				return queryResult.get(0);
+			}
+		}
+
+		object = new OrgSufix();
+		object.name = name;
+		object.description = description;
+		object.persist();
+
+		return object;
 	}
 
 	@Column(name = "description", columnDefinition = "text")
@@ -294,5 +323,12 @@ public class OrgSufix {
 	@PreRemove
 	private void preRemove() {
 		deleteIndex(this);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return (id != null && id.equals(((OrgSufix) obj).id))
+				|| (name != null && name
+						.equalsIgnoreCase(((OrgSufix) obj).name));
 	}
 }

@@ -17,6 +17,7 @@ import javax.persistence.PostPersist;
 import javax.persistence.PostUpdate;
 import javax.persistence.PreRemove;
 import javax.persistence.Table;
+import javax.persistence.TypedQuery;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -149,30 +150,57 @@ public class Email {
 	}
 
 	/**
-	 * Verifica existenta unui email in baza de date; in caz afirmativ,
-	 * returneaza obiectul corespunzator, altfel, metoda introduce email-ul in
-	 * baza de date si apoi returneaza obiectul corespunzator. Verificarea
-	 * existentei in baza de date se realizeaza fie dupa valoarea
-	 * identificatorului, fie dupa un criteriu de unicitate.
+	 * Verifica existenta unui obiect de tip <code>Email</code> (cont de mail)
+	 * in baza de date; in caz afirmativ il returneaza, altfel, metoda il
+	 * introduce in baza de date si apoi il returneaza. Verificarea existentei
+	 * in baza de date se realizeaza fie dupa identificator, fie dupa un
+	 * criteriu de unicitate.
 	 * 
 	 * <p>
 	 * Criterii de unicitate:
 	 * <ul>
-	 * <li>id
-	 * <li>address
-	 * <ul>
+	 * <li>email
+	 * </ul>
 	 * 
 	 * <p>
 	 * 
 	 * @param id
-	 *            - identificatorul email-ului.
-	 * @param address
-	 *            - adresa email-ului.
+	 *            - identificatorul contului.
+	 * @param email
+	 *            - adresa contului.
 	 * @return
 	 */
-	public static Email checkEmail(Integer id, String address) {
-		// TODO
-		return null;
+	public static Email checkEmail(Integer id, String email) {
+		Email object;
+
+		if (id != null) {
+			object = findEmail(id);
+
+			if (object != null) {
+				return object;
+			}
+		}
+
+		List<Email> queryResult;
+
+		if (email != null) {
+			TypedQuery<Email> query = entityManager()
+					.createQuery(
+							"SELECT o FROM Email o WHERE lower(o.email) = lower(:email)",
+							Email.class);
+			query.setParameter("email", email);
+
+			queryResult = query.getResultList();
+			if (queryResult.size() > 0) {
+				return queryResult.get(0);
+			}
+		}
+
+		object = new Email();
+		object.email = email;
+		object.persist();
+
+		return object;
 	}
 
 	@Column(name = "email", columnDefinition = "varchar", length = 200)
@@ -288,5 +316,11 @@ public class Email {
 	@PreRemove
 	private void preRemove() {
 		deleteIndex(this);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return (id != null && id.equals(((Email) obj).id))
+				|| (email != null && email.equals(((Email) obj).email));
 	}
 }

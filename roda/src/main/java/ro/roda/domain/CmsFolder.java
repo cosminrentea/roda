@@ -184,13 +184,13 @@ public class CmsFolder {
 	 */
 	public static CmsFolder checkCmsFolder(Integer id, String name,
 			CmsFolder parentId, String description) {
-		CmsFolder cmsFolder;
+		CmsFolder object;
 
 		if (id != null) {
-			cmsFolder = findCmsFolder(id);
+			object = findCmsFolder(id);
 
-			if (cmsFolder != null) {
-				return cmsFolder;
+			if (object != null) {
+				return object;
 			}
 		}
 
@@ -209,13 +209,13 @@ public class CmsFolder {
 			}
 		}
 
-		cmsFolder = new CmsFolder();
-		cmsFolder.name = name;
-		cmsFolder.parentId = parentId;
-		cmsFolder.description = description;
-		cmsFolder.persist();
+		object = new CmsFolder();
+		object.name = name;
+		object.parentId = parentId;
+		object.description = description;
+		object.persist();
 
-		return cmsFolder;
+		return object;
 	}
 
 	@OneToMany(mappedBy = "cmsFolderId")

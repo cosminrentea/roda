@@ -17,6 +17,7 @@ import javax.persistence.PostPersist;
 import javax.persistence.PostUpdate;
 import javax.persistence.PreRemove;
 import javax.persistence.Table;
+import javax.persistence.TypedQuery;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -102,37 +103,6 @@ public class InstanceOrgAssoc {
 		indexInstanceOrgAssocs(instanceorgassocs);
 	}
 
-	/**
-	 * Verifica existenta unui tip de asociere intre organizatie si instanta in
-	 * baza de date; in caz afirmativ, returneaza obiectul corespunzator,
-	 * altfel, metoda introduce tipul de asociere in baza de date si apoi
-	 * returneaza obiectul corespunzator. Verificarea existentei in baza de date
-	 * se realizeaza fie dupa valoarea identificatorului, fie dupa un criteriu
-	 * de unicitate.
-	 * 
-	 * <p>
-	 * Criterii de unicitate:
-	 * <ul>
-	 * <li>id
-	 * <li>name
-	 * <ul>
-	 * 
-	 * <p>
-	 * 
-	 * @param id
-	 *            - identificatorul tipului de asociere.
-	 * @param name
-	 *            - numele tipului de asociere.
-	 * @param description
-	 *            - descrierea tipului de asociere.
-	 * @return
-	 */
-	public static InstanceOrgAssoc checkInstanceOrgAssoc(Integer id,
-			String name, String description) {
-		// TODO
-		return null;
-	}
-
 	@Async
 	public static void indexInstanceOrgAssocs(
 			Collection<InstanceOrgAssoc> instanceorgassocs) {
@@ -186,6 +156,64 @@ public class InstanceOrgAssoc {
 
 	public static String toJsonArray(Collection<InstanceOrgAssoc> collection) {
 		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	/**
+	 * Verifica existenta unui obiect de tip <code>InstanceOrgAssoc</code>
+	 * (asociere intre instanta si organizatie) in baza de date; in caz
+	 * afirmativ il returneaza, altfel, metoda il introduce in baza de date si
+	 * apoi il returneaza. Verificarea existentei in baza de date se realizeaza
+	 * fie dupa identificator, fie dupa un criteriu de unicitate.
+	 * 
+	 * <p>
+	 * Criterii de unicitate:
+	 * <ul>
+	 * <li>assocName
+	 * </ul>
+	 * 
+	 * <p>
+	 * 
+	 * @param id
+	 *            - identificatorul asocierii.
+	 * @param assocName
+	 *            - numele asocierii.
+	 * @param assocDescription
+	 *            - descrierea asocierii.
+	 * @return
+	 */
+	public static InstanceOrgAssoc checkInstanceOrgAssoc(Integer id,
+			String assocName, String assocDescription) {
+		InstanceOrgAssoc object;
+
+		if (id != null) {
+			object = findInstanceOrgAssoc(id);
+
+			if (object != null) {
+				return object;
+			}
+		}
+
+		List<InstanceOrgAssoc> queryResult;
+
+		if (assocName != null) {
+			TypedQuery<InstanceOrgAssoc> query = entityManager()
+					.createQuery(
+							"SELECT o FROM InstanceOrgAssoc o WHERE lower(o.assocName) = lower(:assocName)",
+							InstanceOrgAssoc.class);
+			query.setParameter("assocName", assocName);
+
+			queryResult = query.getResultList();
+			if (queryResult.size() > 0) {
+				return queryResult.get(0);
+			}
+		}
+
+		object = new InstanceOrgAssoc();
+		object.assocName = assocName;
+		object.assocDescription = assocDescription;
+		object.persist();
+
+		return object;
 	}
 
 	@Column(name = "assoc_description", columnDefinition = "text")
@@ -302,5 +330,12 @@ public class InstanceOrgAssoc {
 	@PreRemove
 	private void preRemove() {
 		deleteIndex(this);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return (id != null && id.equals(((InstanceOrgAssoc) obj).id))
+				|| (assocName != null && assocName
+						.equals(((InstanceOrgAssoc) obj).assocName));
 	}
 }

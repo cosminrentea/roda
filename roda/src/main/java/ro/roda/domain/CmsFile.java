@@ -185,13 +185,13 @@ public class CmsFile {
 	 */
 	public static CmsFile checkCmsFile(Integer id, String filename,
 			String label, CmsFolder cmsFolderId, Long filesize) {
-		CmsFile cmsFile;
+		CmsFile object;
 
 		if (id != null) {
-			cmsFile = findCmsFile(id);
+			object = findCmsFile(id);
 
-			if (cmsFile != null) {
-				return cmsFile;
+			if (object != null) {
+				return object;
 			}
 		}
 
@@ -210,14 +210,14 @@ public class CmsFile {
 			}
 		}
 
-		cmsFile = new CmsFile();
-		cmsFile.filename = filename;
-		cmsFile.label = label;
-		cmsFile.cmsFolderId = cmsFolderId;
-		cmsFile.filesize = filesize;
-		cmsFile.persist();
+		object = new CmsFile();
+		object.filename = filename;
+		object.label = label;
+		object.cmsFolderId = cmsFolderId;
+		object.filesize = filesize;
+		object.persist();
 
-		return cmsFile;
+		return object;
 	}
 
 	@ManyToOne

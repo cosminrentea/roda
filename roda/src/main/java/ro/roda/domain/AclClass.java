@@ -173,13 +173,13 @@ public class AclClass {
 	 * @return
 	 */
 	public static AclClass checkAclClass(Long id, String class1) {
-		AclClass aclClass;
+		AclClass object;
 
 		if (id != null) {
-			aclClass = findAclClass(id);
+			object = findAclClass(id);
 
-			if (aclClass != null) {
-				return aclClass;
+			if (object != null) {
+				return object;
 			}
 		}
 
@@ -198,11 +198,11 @@ public class AclClass {
 			}
 		}
 
-		aclClass = new AclClass();
-		aclClass.class1 = class1;
-		aclClass.persist();
+		object = new AclClass();
+		object.class1 = class1;
+		object.persist();
 
-		return aclClass;
+		return object;
 	}
 
 	@OneToMany(mappedBy = "objectIdClass")

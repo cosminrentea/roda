@@ -232,13 +232,13 @@ public class Address {
 	public static Address checkAddress(Integer id, City cityId,
 			String postalCode, String address1, String address2,
 			String subdivCode, String subdivName) {
-		Address address;
+		Address object;
 
 		if (id != null) {
-			address = findAddress(id);
+			object = findAddress(id);
 
-			if (address != null) {
-				return address;
+			if (object != null) {
+				return object;
 			}
 		}
 
@@ -263,16 +263,16 @@ public class Address {
 			}
 		}
 
-		address = new Address();
-		address.cityId = cityId;
-		address.postalCode = postalCode;
-		address.address1 = address1;
-		address.address2 = address2;
-		address.subdivCode = subdivCode;
-		address.subdivName = subdivName;
-		address.persist();
+		object = new Address();
+		object.cityId = cityId;
+		object.postalCode = postalCode;
+		object.address1 = address1;
+		object.address2 = address2;
+		object.subdivCode = subdivCode;
+		object.subdivName = subdivName;
+		object.persist();
 
-		return address;
+		return object;
 	}
 
 	@Column(name = "address1", columnDefinition = "text")

@@ -193,13 +193,13 @@ public class CmsPage {
 	public static CmsPage checkCmsPage(Integer id, String name,
 			CmsLayout cmsLayoutId, CmsPageType cmsPageTypeId, Boolean visible,
 			Boolean navigable, String url) {
-		CmsPage cmsPage;
+		CmsPage object;
 
 		if (id != null) {
-			cmsPage = findCmsPage(id);
+			object = findCmsPage(id);
 
-			if (cmsPage != null) {
-				return cmsPage;
+			if (object != null) {
+				return object;
 			}
 		}
 
@@ -230,16 +230,16 @@ public class CmsPage {
 			}
 		}
 
-		cmsPage = new CmsPage();
-		cmsPage.name = name;
-		cmsPage.cmsLayoutId = cmsLayoutId;
-		cmsPage.cmsPageTypeId = cmsPageTypeId;
-		cmsPage.visible = visible;
-		cmsPage.navigable = navigable;
-		cmsPage.url = url;
-		cmsPage.persist();
+		object = new CmsPage();
+		object.name = name;
+		object.cmsLayoutId = cmsLayoutId;
+		object.cmsPageTypeId = cmsPageTypeId;
+		object.visible = visible;
+		object.navigable = navigable;
+		object.url = url;
+		object.persist();
 
-		return cmsPage;
+		return object;
 	}
 
 	@ManyToOne

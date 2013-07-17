@@ -206,13 +206,13 @@ public class City {
 	public static City checkCity(Integer id, String name, Country countryId,
 			String cityCode, String cityCodeName, String cityCodeSup,
 			String prefix, String cityType, String cityTypeSystem) {
-		City city;
+		City object;
 
 		if (id != null) {
-			city = findCity(id);
+			object = findCity(id);
 
-			if (city != null) {
-				return city;
+			if (object != null) {
+				return object;
 			}
 		}
 
@@ -231,18 +231,18 @@ public class City {
 			}
 		}
 
-		city = new City();
-		city.name = name;
-		city.countryId = countryId;
-		city.cityCode = cityCode;
-		city.cityCodeName = cityCodeName;
-		city.cityCodeSup = cityCodeSup;
-		city.prefix = prefix;
-		city.cityType = cityType;
-		city.cityTypeSystem = cityTypeSystem;
-		city.persist();
+		object = new City();
+		object.name = name;
+		object.countryId = countryId;
+		object.cityCode = cityCode;
+		object.cityCodeName = cityCodeName;
+		object.cityCodeSup = cityCodeSup;
+		object.prefix = prefix;
+		object.cityType = cityType;
+		object.cityTypeSystem = cityTypeSystem;
+		object.persist();
 
-		return city;
+		return object;
 	}
 
 	@OneToMany(mappedBy = "cityId")

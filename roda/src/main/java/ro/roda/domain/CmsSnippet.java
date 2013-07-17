@@ -17,6 +17,7 @@ import javax.persistence.PostPersist;
 import javax.persistence.PostUpdate;
 import javax.persistence.PreRemove;
 import javax.persistence.Table;
+import javax.persistence.TypedQuery;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -158,35 +159,65 @@ public class CmsSnippet {
 	}
 
 	/**
-	 * Verifica existenta unui fragment CMS in baza de date; in caz afirmativ,
-	 * returneaza obiectul corespunzator, altfel, metoda introduce fragmentul
-	 * CMS in baza de date si apoi returneaza obiectul corespunzator.
-	 * Verificarea existentei in baza de date se realizeaza fie dupa valoarea
-	 * identificatorului, fie dupa un criteriu de unicitate.
+	 * Verifica existenta unui obiect de tip <code>CmsSnippet</code> (fragment
+	 * CMS) in baza de date; in caz afirmativ il returneaza, altfel, metoda il
+	 * introduce in baza de date si apoi il returneaza. Verificarea existentei
+	 * in baza de date se realizeaza fie dupa identificator, fie dupa un
+	 * criteriu de unicitate.
 	 * 
 	 * <p>
 	 * Criterii de unicitate:
 	 * <ul>
-	 * <li>id
-	 * <li>name + groupId
-	 * <ul>
+	 * <li>name + cmsSnippetGroupId
+	 * </ul>
 	 * 
 	 * <p>
 	 * 
 	 * @param id
-	 *            - identificatorul fragmentului CMS.
+	 *            - identificatorul fragmentului.
 	 * @param name
-	 *            - numele fragmentului CMS.
-	 * @param groupId
-	 *            - identificatorul grupului din care face parte fragmentul CMS.
-	 * @param content
-	 *            - continutul fragmentului CMS.
+	 *            - numele fragmentului.
+	 * @param cmsSnippetGroupId
+	 *            - grupul din care face parte fragmentul.
+	 * @param snippetContent
+	 *            - continutul fragmentului.
 	 * @return
 	 */
 	public static CmsSnippet checkCmsSnippet(Integer id, String name,
-			Integer groupId, String content) {
-		// TODO
-		return null;
+			CmsSnippetGroup cmsSnippetGroupId, String snippetContent) {
+		CmsSnippet object;
+
+		if (id != null) {
+			object = findCmsSnippet(id);
+
+			if (object != null) {
+				return object;
+			}
+		}
+
+		List<CmsSnippet> queryResult;
+
+		if (name != null && cmsSnippetGroupId != null) {
+			TypedQuery<CmsSnippet> query = entityManager().createQuery(
+					"SELECT o FROM CmsSnippet o WHERE lower(o.name) = lower(:name) AND "
+							+ "o.cmsSnippetGroupId = :cmsSnippetGroupId",
+					CmsSnippet.class);
+			query.setParameter("name", name);
+			query.setParameter("cmsSnippetGroupId", cmsSnippetGroupId);
+
+			queryResult = query.getResultList();
+			if (queryResult.size() > 0) {
+				return queryResult.get(0);
+			}
+		}
+
+		object = new CmsSnippet();
+		object.name = name;
+		object.cmsSnippetGroupId = cmsSnippetGroupId;
+		object.snippetContent = snippetContent;
+		object.persist();
+
+		return object;
 	}
 
 	@ManyToOne
@@ -304,5 +335,12 @@ public class CmsSnippet {
 	@PreRemove
 	private void preRemove() {
 		deleteIndex(this);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return (id != null && id.equals(((CmsSnippet) obj).id))
+				|| ((name != null && name.equals(((CmsSnippet) obj).name)) && (cmsSnippetGroupId != null && cmsSnippetGroupId
+						.equals(((CmsSnippet) obj).cmsSnippetGroupId)));
 	}
 }

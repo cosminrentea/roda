@@ -17,6 +17,7 @@ import javax.persistence.PostPersist;
 import javax.persistence.PostUpdate;
 import javax.persistence.PreRemove;
 import javax.persistence.Table;
+import javax.persistence.TypedQuery;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -167,41 +168,71 @@ public class CmsPageContent {
 	}
 
 	/**
-	 * Verifica existenta unui continut de pagina CMS in baza de date; in caz
-	 * afirmativ, returneaza obiectul corespunzator, altfel, metoda introduce
-	 * continutul de pagina CMS in baza de date si apoi returneaza obiectul
-	 * corespunzator. Verificarea existentei in baza de date se realizeaza fie
-	 * dupa valoarea identificatorului, fie dupa un criteriu de unicitate.
+	 * Verifica existenta unui obiect de tip <code>CmsPageContent</code>
+	 * (continut de pagina CMS) in baza de date; in caz afirmativ il returneaza,
+	 * altfel, metoda il introduce in baza de date si apoi il returneaza.
+	 * Verificarea existentei in baza de date se realizeaza fie dupa
+	 * identificator, fie dupa un criteriu de unicitate.
 	 * 
 	 * <p>
 	 * Criterii de unicitate:
 	 * <ul>
-	 * <li>id
-	 * <li>name + pageId
-	 * <ul>
+	 * <li>name + cmsPageId
+	 * </ul>
 	 * 
 	 * <p>
 	 * 
 	 * @param id
-	 *            - identificatorul continutului de pagina CMS.
+	 *            - identificatorul continutului.
 	 * @param name
-	 *            - numele continutului de pagina CMS.
-	 * @param pageId
-	 *            - identificatorul paginii CMS.
+	 *            - numele continutului.
+	 * @param cmsPageId
+	 *            - identificatorul paginii CMS a continutului.
 	 * @param contentTitle
-	 *            - titlul continutului de pagina CMS.
+	 *            - titlul continutului.
 	 * @param contentText
-	 *            - corpul continutului de pagina CMS.
-	 * @param orderNr
-	 *            - numarul de ordine al continutului de pagina CMS in cadrul
-	 *            paginii.
+	 *            - corpul continutului.
+	 * @param orderInPage
+	 *            - numarul de ordine al continutului in cadrul paginii.
 	 * @return
 	 */
 	public static CmsPageContent checkCmsPageContent(Integer id, String name,
-			Integer pageId, String contentTitle, String contentText,
-			Integer orderNr) {
-		// TODO
-		return null;
+			CmsPage cmsPageId, String contentTitle, String contentText,
+			Integer orderInPage) {
+		CmsPageContent object;
+
+		if (id != null) {
+			object = findCmsPageContent(id);
+
+			if (object != null) {
+				return object;
+			}
+		}
+
+		List<CmsPageContent> queryResult;
+
+		if (name != null && cmsPageId != null) {
+			TypedQuery<CmsPageContent> query = entityManager().createQuery(
+					"SELECT o FROM CmsPageContent o WHERE lower(o.name) = lower(:name) AND "
+							+ "o.cmsPageId = :cmsPageId", CmsPageContent.class);
+			query.setParameter("name", name);
+			query.setParameter("cmsPageId", cmsPageId);
+
+			queryResult = query.getResultList();
+			if (queryResult.size() > 0) {
+				return queryResult.get(0);
+			}
+		}
+
+		object = new CmsPageContent();
+		object.name = name;
+		object.cmsPageId = cmsPageId;
+		object.contentTitle = contentTitle;
+		object.contentText = contentText;
+		object.orderInPage = orderInPage;
+		object.persist();
+
+		return object;
 	}
 
 	@ManyToOne
@@ -343,5 +374,12 @@ public class CmsPageContent {
 	@PreRemove
 	private void preRemove() {
 		deleteIndex(this);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return (id != null && id.equals(((CmsPageContent) obj).id))
+				|| ((name != null && name.equals(((CmsPageContent) obj).name)) && (cmsPageId != null && cmsPageId
+						.equals(((CmsPageContent) obj).cmsPageId)));
 	}
 }

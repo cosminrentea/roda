@@ -19,6 +19,7 @@ import javax.persistence.PostPersist;
 import javax.persistence.PostUpdate;
 import javax.persistence.PreRemove;
 import javax.persistence.Table;
+import javax.persistence.TypedQuery;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -157,39 +158,53 @@ public class InstanceRightValue {
 	}
 
 	/**
-	 * Verifica existenta unei valori pentru un drept de instanta in baza de
-	 * date; in caz afirmativ, returneaza obiectul corespunzator, altfel, metoda
-	 * introduce valoarea in baza de date si apoi returneaza obiectul
-	 * corespunzator. Verificarea existentei in baza de date se realizeaza fie
-	 * dupa valoarea identificatorului, fie dupa un criteriu de unicitate.
+	 * Verifica existenta unui obiect de tip <code>InstanceRightValue</code>
+	 * (valoare pentru un drept de instanta) in baza de date; in caz afirmativ
+	 * il returneaza, altfel, metoda il introduce in baza de date si apoi il
+	 * returneaza. Verificarea existentei in baza de date se realizeaza fie dupa
+	 * identificator, fie dupa un criteriu de unicitate.
 	 * 
 	 * <p>
 	 * Criterii de unicitate:
 	 * <ul>
-	 * <li>id
-	 * <ul>
+	 * </ul>
 	 * 
 	 * <p>
 	 * 
 	 * @param id
 	 *            - identificatorul valorii.
 	 * @param value
-	 *            - numarul ce reprezinta valoarea.
+	 *            - reprezentarea valorii ca numar.
 	 * @param description
 	 *            - descrierea valorii.
-	 * @param rightId
-	 *            - identificatorul dreptului.
+	 * @param instanceRightId
+	 *            - dreptul de instanta asociat valorii.
 	 * @param fee
-	 *            - TODO.
 	 * @param feeCurrencyAbbr
-	 *            - TODO.
 	 * @return
 	 */
 	public static InstanceRightValue checkInstanceRightValue(Integer id,
-			Integer value, String description, Integer rightId, Integer fee,
-			String feeCurrencyAbbr) {
-		// TODO
-		return null;
+			Integer value, String description, InstanceRight instanceRightId,
+			Integer fee, String feeCurrencyAbbr) {
+		InstanceRightValue object;
+
+		if (id != null) {
+			object = findInstanceRightValue(id);
+
+			if (object != null) {
+				return object;
+			}
+		}
+
+		object = new InstanceRightValue();
+		object.value = value;
+		object.description = description;
+		object.instanceRightId = instanceRightId;
+		object.fee = fee;
+		object.feeCurrencyAbbr = feeCurrencyAbbr;
+		object.persist();
+
+		return object;
 	}
 
 	@Column(name = "description", columnDefinition = "text")
@@ -341,5 +356,10 @@ public class InstanceRightValue {
 	@PreRemove
 	private void preRemove() {
 		deleteIndex(this);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return id != null && id.equals(((InstanceRightValue) obj).id);
 	}
 }

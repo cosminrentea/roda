@@ -19,6 +19,7 @@ import javax.persistence.PostPersist;
 import javax.persistence.PostUpdate;
 import javax.persistence.PreRemove;
 import javax.persistence.Table;
+import javax.persistence.TypedQuery;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -39,18 +40,20 @@ import flexjson.JSONSerializer;
 @Entity
 @Table(schema = "public", name = "collection_model_type")
 @Configurable
-
 public class CollectionModelType {
 
 	public static long countCollectionModelTypes() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM CollectionModelType o", Long.class).getSingleResult();
+		return entityManager().createQuery(
+				"SELECT COUNT(o) FROM CollectionModelType o", Long.class)
+				.getSingleResult();
 	}
 
 	@Async
 	public static void deleteIndex(CollectionModelType collectionModelType) {
 		SolrServer solrServer = solrServer();
 		try {
-			solrServer.deleteById("collectionmodeltype_" + collectionModelType.getId());
+			solrServer.deleteById("collectionmodeltype_"
+					+ collectionModelType.getId());
 			solrServer.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -66,8 +69,9 @@ public class CollectionModelType {
 	}
 
 	public static List<CollectionModelType> findAllCollectionModelTypes() {
-		return entityManager().createQuery("SELECT o FROM CollectionModelType o", CollectionModelType.class)
-				.getResultList();
+		return entityManager().createQuery(
+				"SELECT o FROM CollectionModelType o",
+				CollectionModelType.class).getResultList();
 	}
 
 	public static CollectionModelType findCollectionModelType(Integer id) {
@@ -76,42 +80,55 @@ public class CollectionModelType {
 		return entityManager().find(CollectionModelType.class, id);
 	}
 
-	public static List<CollectionModelType> findCollectionModelTypeEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM CollectionModelType o", CollectionModelType.class)
-				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
+	public static List<CollectionModelType> findCollectionModelTypeEntries(
+			int firstResult, int maxResults) {
+		return entityManager()
+				.createQuery("SELECT o FROM CollectionModelType o",
+						CollectionModelType.class).setFirstResult(firstResult)
+				.setMaxResults(maxResults).getResultList();
 	}
 
-	public static Collection<CollectionModelType> fromJsonArrayToCollectionModelTypes(String json) {
-		return new JSONDeserializer<List<CollectionModelType>>().use(null, ArrayList.class)
+	public static Collection<CollectionModelType> fromJsonArrayToCollectionModelTypes(
+			String json) {
+		return new JSONDeserializer<List<CollectionModelType>>()
+				.use(null, ArrayList.class)
 				.use("values", CollectionModelType.class).deserialize(json);
 	}
 
 	public static CollectionModelType fromJsonToCollectionModelType(String json) {
-		return new JSONDeserializer<CollectionModelType>().use(null, CollectionModelType.class).deserialize(json);
+		return new JSONDeserializer<CollectionModelType>().use(null,
+				CollectionModelType.class).deserialize(json);
 	}
 
-	public static void indexCollectionModelType(CollectionModelType collectionModelType) {
+	public static void indexCollectionModelType(
+			CollectionModelType collectionModelType) {
 		List<CollectionModelType> collectionmodeltypes = new ArrayList<CollectionModelType>();
 		collectionmodeltypes.add(collectionModelType);
 		indexCollectionModelTypes(collectionmodeltypes);
 	}
 
 	@Async
-	public static void indexCollectionModelTypes(Collection<CollectionModelType> collectionmodeltypes) {
+	public static void indexCollectionModelTypes(
+			Collection<CollectionModelType> collectionmodeltypes) {
 		List<SolrInputDocument> documents = new ArrayList<SolrInputDocument>();
 		for (CollectionModelType collectionModelType : collectionmodeltypes) {
 			SolrInputDocument sid = new SolrInputDocument();
-			sid.addField("id", "collectionmodeltype_" + collectionModelType.getId());
-			sid.addField("collectionModelType.name_s", collectionModelType.getName());
-			sid.addField("collectionModelType.description_s", collectionModelType.getDescription());
-			sid.addField("collectionModelType.id_i", collectionModelType.getId());
+			sid.addField("id",
+					"collectionmodeltype_" + collectionModelType.getId());
+			sid.addField("collectionModelType.name_s",
+					collectionModelType.getName());
+			sid.addField("collectionModelType.description_s",
+					collectionModelType.getDescription());
+			sid.addField("collectionModelType.id_i",
+					collectionModelType.getId());
 			// Add summary field to allow searching documents for objects of
 			// this type
 			sid.addField(
 					"collectionmodeltype_solrsummary_t",
-					new StringBuilder().append(collectionModelType.getName()).append(" ")
-							.append(collectionModelType.getDescription()).append(" ")
-							.append(collectionModelType.getId()));
+					new StringBuilder().append(collectionModelType.getName())
+							.append(" ")
+							.append(collectionModelType.getDescription())
+							.append(" ").append(collectionModelType.getId()));
 			documents.add(sid);
 		}
 		try {
@@ -133,7 +150,8 @@ public class CollectionModelType {
 	}
 
 	public static QueryResponse search(String queryString) {
-		String searchString = "CollectionModelType_solrsummary_t:" + queryString;
+		String searchString = "CollectionModelType_solrsummary_t:"
+				+ queryString;
 		return search(new SolrQuery(searchString.toLowerCase()));
 	}
 
@@ -148,33 +166,63 @@ public class CollectionModelType {
 	public static String toJsonArray(Collection<CollectionModelType> collection) {
 		return new JSONSerializer().exclude("*.class").serialize(collection);
 	}
-	
+
 	/**
-	 * Verifica existenta unui tip de model de colectare in baza de date; in caz afirmativ, returneaza obiectul
-	 * corespunzator, altfel, metoda introduce tipul de model de colectare in baza de date si apoi
-	 * returneaza obiectul corespunzator. Verificarea existentei in baza de date
-	 * se realizeaza fie dupa valoarea identificatorului, fie dupa un criteriu de
-	 * unicitate.
+	 * Verifica existenta unui obiect de tip <code>CollectionModelType</code>
+	 * (tip de model de colectare) in baza de date; in caz afirmativ il
+	 * returneaza, altfel, metoda il introduce in baza de date si apoi il
+	 * returneaza. Verificarea existentei in baza de date se realizeaza fie dupa
+	 * identificator, fie dupa un criteriu de unicitate.
 	 * 
 	 * <p>
 	 * Criterii de unicitate:
 	 * <ul>
-	 * 		<li> id
-	 * 		<li> name
-	 * <ul>
-	 *
+	 * <li>name
+	 * </ul>
+	 * 
 	 * <p>
+	 * 
 	 * @param id
-	 *            - identificatorul tipului de model de colectare.
+	 *            - identificatorul tipului.
 	 * @param name
-	 *            - numele tipului de model de colectare.
+	 *            - numele tipului.
 	 * @param description
-	 *            - descrierea tipului de model de colectare.
+	 *            - descrierea tipului.
 	 * @return
 	 */
-	public static CollectionModelType checkCollectionModelType(Integer id, String name, String description) {
-		//TODO
-		return null;
+	public static CollectionModelType checkCollectionModelType(Integer id,
+			String name, String description) {
+		CollectionModelType object;
+
+		if (id != null) {
+			object = findCollectionModelType(id);
+
+			if (object != null) {
+				return object;
+			}
+		}
+
+		List<CollectionModelType> queryResult;
+
+		if (name != null) {
+			TypedQuery<CollectionModelType> query = entityManager()
+					.createQuery(
+							"SELECT o FROM CollectionModelType o WHERE lower(o.name) = lower(:name)",
+							CollectionModelType.class);
+			query.setParameter("name", name);
+
+			queryResult = query.getResultList();
+			if (queryResult.size() > 0) {
+				return queryResult.get(0);
+			}
+		}
+
+		object = new CollectionModelType();
+		object.name = name;
+		object.description = description;
+		object.persist();
+
+		return object;
 	}
 
 	@Column(name = "description", columnDefinition = "text")
@@ -252,7 +300,8 @@ public class CollectionModelType {
 		if (this.entityManager.contains(this)) {
 			this.entityManager.remove(this);
 		} else {
-			CollectionModelType attached = CollectionModelType.findCollectionModelType(this.id);
+			CollectionModelType attached = CollectionModelType
+					.findCollectionModelType(this.id);
 			this.entityManager.remove(attached);
 		}
 	}
@@ -278,7 +327,8 @@ public class CollectionModelType {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this,
+				ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate
@@ -290,5 +340,12 @@ public class CollectionModelType {
 	@PreRemove
 	private void preRemove() {
 		deleteIndex(this);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return (id != null && id.equals(((CollectionModelType) obj).id))
+				|| (name != null && name
+						.equals(((CollectionModelType) obj).name));
 	}
 }

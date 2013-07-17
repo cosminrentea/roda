@@ -177,13 +177,13 @@ public class CmsLayout {
 	 */
 	public static CmsLayout checkCmsLayout(Integer id, String name,
 			CmsLayoutGroup cmsLayoutGroupId, String layoutContent) {
-		CmsLayout cmsLayout;
+		CmsLayout object;
 
 		if (id != null) {
-			cmsLayout = findCmsLayout(id);
+			object = findCmsLayout(id);
 
-			if (cmsLayout != null) {
-				return cmsLayout;
+			if (object != null) {
+				return object;
 			}
 		}
 
@@ -203,13 +203,13 @@ public class CmsLayout {
 			}
 		}
 
-		cmsLayout = new CmsLayout();
-		cmsLayout.name = name;
-		cmsLayout.cmsLayoutGroupId = cmsLayoutGroupId;
-		cmsLayout.layoutContent = layoutContent;
-		cmsLayout.persist();
+		object = new CmsLayout();
+		object.name = name;
+		object.cmsLayoutGroupId = cmsLayoutGroupId;
+		object.layoutContent = layoutContent;
+		object.persist();
 
-		return cmsLayout;
+		return object;
 	}
 
 	@ManyToOne

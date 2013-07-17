@@ -19,6 +19,7 @@ import javax.persistence.PostPersist;
 import javax.persistence.PostUpdate;
 import javax.persistence.PreRemove;
 import javax.persistence.Table;
+import javax.persistence.TypedQuery;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -151,18 +152,17 @@ public class Concept {
 	}
 
 	/**
-	 * Verifica existenta unui concept in baza de date; in caz afirmativ,
-	 * returneaza obiectul corespunzator, altfel, metoda introduce conceptul in
-	 * baza de date si apoi returneaza obiectul corespunzator. Verificarea
-	 * existentei in baza de date se realizeaza fie dupa valoarea
-	 * identificatorului, fie dupa un criteriu de unicitate.
+	 * Verifica existenta unui obiect de tip <code>Concept</code> (concept) in
+	 * baza de date; in caz afirmativ il returneaza, altfel, metoda il introduce
+	 * in baza de date si apoi il returneaza. Verificarea existentei in baza de
+	 * date se realizeaza fie dupa identificator, fie dupa un criteriu de
+	 * unicitate.
 	 * 
 	 * <p>
 	 * Criterii de unicitate:
 	 * <ul>
-	 * <li>id
 	 * <li>name
-	 * <ul>
+	 * </ul>
 	 * 
 	 * <p>
 	 * 
@@ -174,10 +174,38 @@ public class Concept {
 	 *            - descrierea conceptului.
 	 * @return
 	 */
-	public static Concept checkConcept(Integer id, String name,
-			String description) {
-		// TODO
-		return null;
+	public static Concept checkConcept(Long id, String name, String description) {
+		Concept object;
+
+		if (id != null) {
+			object = findConcept(id);
+
+			if (object != null) {
+				return object;
+			}
+		}
+
+		List<Concept> queryResult;
+
+		if (name != null) {
+			TypedQuery<Concept> query = entityManager()
+					.createQuery(
+							"SELECT o FROM Concept o WHERE lower(o.name) = lower(:name)",
+							Concept.class);
+			query.setParameter("name", name);
+
+			queryResult = query.getResultList();
+			if (queryResult.size() > 0) {
+				return queryResult.get(0);
+			}
+		}
+
+		object = new Concept();
+		object.name = name;
+		object.description = description;
+		object.persist();
+
+		return object;
 	}
 
 	@Column(name = "description", columnDefinition = "text")
@@ -294,5 +322,11 @@ public class Concept {
 	@PreRemove
 	private void preRemove() {
 		deleteIndex(this);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return (id != null && id.equals(((Concept) obj).id))
+				|| (name != null && name.equals(((Concept) obj).name));
 	}
 }

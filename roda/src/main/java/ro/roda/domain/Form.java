@@ -22,6 +22,7 @@ import javax.persistence.PreRemove;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.TypedQuery;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -157,34 +158,48 @@ public class Form {
 	}
 
 	/**
-	 * Verifica existenta unui formular in baza de date; in caz afirmativ,
-	 * returneaza obiectul corespunzator, altfel, metoda introduce formularul in
-	 * baza de date si apoi returneaza obiectul corespunzator. Verificarea
-	 * existentei in baza de date se realizeaza fie dupa valoarea
-	 * identificatorului, fie dupa un criteriu de unicitate.
+	 * Verifica existenta unui obiect de tip <code>Form</code> (formular) in
+	 * baza de date; in caz afirmativ il returneaza, altfel, metoda il introduce
+	 * in baza de date si apoi il returneaza. Verificarea existentei in baza de
+	 * date se realizeaza fie dupa identificator, fie dupa un criteriu de
+	 * unicitate.
 	 * 
 	 * <p>
 	 * Criterii de unicitate:
 	 * <ul>
-	 * <li>id
-	 * <ul>
+	 * </ul>
 	 * 
 	 * <p>
 	 * 
 	 * @param id
 	 *            - identificatorul formularului.
 	 * @param operatorId
-	 *            - identificatorul operatorului care a creat formularul.
+	 *            - identificatorul operatorului care a transmis formularul.
 	 * @param operatorNotes
-	 *            - observatiile operatorului.
-	 * @param filledAt
+	 *            - observatiile operatorului care a transmis formularul.
+	 * @param formFilledAt
 	 *            - data cand a fost completat formularul.
 	 * @return
 	 */
-	public static Form checkForm(Integer id, Integer operatorId,
-			String operatorNotes, Calendar filledAt) {
-		// TODO
-		return null;
+	public static Form checkForm(Long id, Person operatorId,
+			String operatorNotes, Calendar formFilledAt) {
+		Form object;
+
+		if (id != null) {
+			object = findForm(id);
+
+			if (object != null) {
+				return object;
+			}
+		}
+
+		object = new Form();
+		object.operatorId = operatorId;
+		object.operatorNotes = operatorNotes;
+		object.formFilledAt = formFilledAt;
+		object.persist();
+
+		return object;
 	}
 
 	@OneToMany(mappedBy = "formId")
@@ -347,5 +362,10 @@ public class Form {
 	@PreRemove
 	private void preRemove() {
 		deleteIndex(this);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return id != null && id.equals(((Form) obj).id);
 	}
 }

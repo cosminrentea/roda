@@ -17,6 +17,7 @@ import javax.persistence.PostPersist;
 import javax.persistence.PostUpdate;
 import javax.persistence.PreRemove;
 import javax.persistence.Table;
+import javax.persistence.TypedQuery;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -158,41 +159,96 @@ public class Country {
 	}
 
 	/**
-	 * Verifica existenta unei tari in baza de date; in caz afirmativ,
-	 * returneaza obiectul corespunzator, altfel, metoda introduce tara in baza
-	 * de date si apoi returneaza obiectul corespunzator. Verificarea existentei
-	 * in baza de date se realizeaza fie dupa valoarea identificatorului, fie
-	 * dupa un criteriu de unicitate.
+	 * Verifica existenta unui obiect de tip <code>Country</code> (tara) in baza
+	 * de date; in caz afirmativ il returneaza, altfel, metoda il introduce in
+	 * baza de date si apoi il returneaza. Verificarea existentei in baza de
+	 * date se realizeaza fie dupa identificator, fie dupa un criteriu de
+	 * unicitate.
 	 * 
 	 * <p>
 	 * Criterii de unicitate:
 	 * <ul>
-	 * <li>id
 	 * <li>name
-	 * <li>nameRO
-	 * <li>nameEN
-	 * <ul>
+	 * <li>nameRo
+	 * <li>nameEn
+	 * </ul>
 	 * 
 	 * <p>
 	 * 
 	 * @param id
 	 *            - identificatorul tarii.
-	 * @param name
+	 * @param nameSelf
 	 *            - numele tarii (in limba nationala).
-	 * @param nameRO
+	 * @param nameRo
 	 *            - numele tarii (in limba romana).
-	 * @param nameEN
+	 * @param nameEn
 	 *            - numele tarii (in limba engleza).
 	 * @param iso3166
-	 *            - TODO.
 	 * @param iso3166Alpha3
-	 *            - TODO.
 	 * @return
 	 */
-	public static Country checkCountry(Integer id, String name, String nameRO,
-			String nameEN, String iso3166, String iso3166Alpha3) {
-		// TODO
-		return null;
+	public static Country checkCountry(Integer id, String nameSelf,
+			String nameRo, String nameEn, String iso3166, String iso3166Alpha3) {
+		Country object;
+
+		if (id != null) {
+			object = findCountry(id);
+
+			if (object != null) {
+				return object;
+			}
+		}
+
+		List<Country> queryResult;
+
+		if (nameSelf != null) {
+			TypedQuery<Country> query = entityManager()
+					.createQuery(
+							"SELECT o FROM Country o WHERE lower(o.nameSelf) = lower(:nameSelf)",
+							Country.class);
+			query.setParameter("nameSelf", nameSelf);
+
+			queryResult = query.getResultList();
+			if (queryResult.size() > 0) {
+				return queryResult.get(0);
+			}
+		}
+
+		if (nameRo != null) {
+			TypedQuery<Country> query = entityManager()
+					.createQuery(
+							"SELECT o FROM Country o WHERE lower(o.nameRo) = lower(:nameRo)",
+							Country.class);
+			query.setParameter("nameRo", nameRo);
+
+			queryResult = query.getResultList();
+			if (queryResult.size() > 0) {
+				return queryResult.get(0);
+			}
+		}
+
+		if (nameEn != null) {
+			TypedQuery<Country> query = entityManager()
+					.createQuery(
+							"SELECT o FROM Country o WHERE lower(o.nameEn) = lower(:nameEn)",
+							Country.class);
+			query.setParameter("nameEn", nameEn);
+
+			queryResult = query.getResultList();
+			if (queryResult.size() > 0) {
+				return queryResult.get(0);
+			}
+		}
+
+		object = new Country();
+		object.nameSelf = nameSelf;
+		object.nameRo = nameRo;
+		object.nameEn = nameEn;
+		object.iso3166 = iso3166;
+		object.iso3166Alpha3 = iso3166Alpha3;
+		object.persist();
+
+		return object;
 	}
 
 	@OneToMany(mappedBy = "countryId")
@@ -352,5 +408,14 @@ public class Country {
 	@PreRemove
 	private void preRemove() {
 		deleteIndex(this);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return (id != null && id.equals(((Country) obj).id))
+				|| (nameSelf != null && nameSelf
+						.equals(((Country) obj).nameSelf))
+				|| (nameRo != null && nameRo.equals(((Country) obj).nameRo))
+				|| (nameEn != null && nameEn.equals(((Country) obj).nameEn));
 	}
 }

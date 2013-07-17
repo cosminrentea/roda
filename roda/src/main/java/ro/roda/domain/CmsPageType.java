@@ -17,6 +17,7 @@ import javax.persistence.PostPersist;
 import javax.persistence.PostUpdate;
 import javax.persistence.PreRemove;
 import javax.persistence.Table;
+import javax.persistence.TypedQuery;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -150,33 +151,61 @@ public class CmsPageType {
 	}
 
 	/**
-	 * Verifica existenta unui tip de pagina CMS in baza de date; in caz
-	 * afirmativ, returneaza obiectul corespunzator, altfel, metoda introduce
-	 * tipul de pagina CMS in baza de date si apoi returneaza obiectul
-	 * corespunzator. Verificarea existentei in baza de date se realizeaza fie
-	 * dupa valoarea identificatorului, fie dupa un criteriu de unicitate.
+	 * Verifica existenta unui obiect de tip <code>CmsPageType</code> (tip de
+	 * pagina CMS) in baza de date; in caz afirmativ il returneaza, altfel,
+	 * metoda il introduce in baza de date si apoi il returneaza. Verificarea
+	 * existentei in baza de date se realizeaza fie dupa identificator, fie dupa
+	 * un criteriu de unicitate.
 	 * 
 	 * <p>
 	 * Criterii de unicitate:
 	 * <ul>
-	 * <li>id
 	 * <li>name
-	 * <ul>
+	 * </ul>
 	 * 
 	 * <p>
 	 * 
 	 * @param id
-	 *            - identificatorul tipului de pagina CMS.
+	 *            - identificatorul tipului.
 	 * @param name
-	 *            - numele tipului de pagina CMS.
+	 *            - numele tipului.
 	 * @param description
-	 *            - descrierea tipului de pagina CMS.
+	 *            - descrierea tipului.
 	 * @return
 	 */
 	public static CmsPageType checkCmsPageType(Integer id, String name,
 			String description) {
-		// TODO
-		return null;
+		CmsPageType object;
+
+		if (id != null) {
+			object = findCmsPageType(id);
+
+			if (object != null) {
+				return object;
+			}
+		}
+
+		List<CmsPageType> queryResult;
+
+		if (name != null) {
+			TypedQuery<CmsPageType> query = entityManager()
+					.createQuery(
+							"SELECT o FROM CmsPageType o WHERE lower(o.name) = lower(:name)",
+							CmsPageType.class);
+			query.setParameter("name", name);
+
+			queryResult = query.getResultList();
+			if (queryResult.size() > 0) {
+				return queryResult.get(0);
+			}
+		}
+
+		object = new CmsPageType();
+		object.name = name;
+		object.description = description;
+		object.persist();
+
+		return object;
 	}
 
 	@OneToMany(mappedBy = "cmsPageTypeId")
@@ -292,5 +321,11 @@ public class CmsPageType {
 	@PreRemove
 	private void preRemove() {
 		deleteIndex(this);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return (id != null && id.equals(((CmsPageType) obj).id))
+				|| (name != null && name.equals(((CmsPageType) obj).name));
 	}
 }

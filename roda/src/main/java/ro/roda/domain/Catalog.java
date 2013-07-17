@@ -203,13 +203,13 @@ public class Catalog {
 	public static Catalog checkCatalog(Integer id, Catalog parentId,
 			Users owner, String name, Calendar added, Integer sequencenr,
 			String description) {
-		Catalog catalog;
+		Catalog object;
 
 		if (id != null) {
-			catalog = findCatalog(id);
+			object = findCatalog(id);
 
-			if (catalog != null) {
-				return catalog;
+			if (object != null) {
+				return object;
 			}
 		}
 
@@ -230,16 +230,16 @@ public class Catalog {
 			}
 		}
 
-		catalog = new Catalog();
-		catalog.parentId = parentId;
-		catalog.owner = owner;
-		catalog.name = name;
-		catalog.added = added;
-		catalog.sequencenr = sequencenr;
-		catalog.description = description;
-		catalog.persist();
+		object = new Catalog();
+		object.parentId = parentId;
+		object.owner = owner;
+		object.name = name;
+		object.added = added;
+		object.sequencenr = sequencenr;
+		object.description = description;
+		object.persist();
 
-		return catalog;
+		return object;
 	}
 
 	@Column(name = "added", columnDefinition = "timestamp")

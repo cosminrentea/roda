@@ -189,13 +189,13 @@ public class CmsLayoutGroup {
 	 */
 	public static CmsLayoutGroup checkCmsLayoutGroup(Integer id, String name,
 			CmsLayoutGroup parentId, String description) {
-		CmsLayoutGroup cmsLayoutGroup;
+		CmsLayoutGroup object;
 
 		if (id != null) {
-			cmsLayoutGroup = findCmsLayoutGroup(id);
+			object = findCmsLayoutGroup(id);
 
-			if (cmsLayoutGroup != null) {
-				return cmsLayoutGroup;
+			if (object != null) {
+				return object;
 			}
 		}
 
@@ -214,13 +214,13 @@ public class CmsLayoutGroup {
 			}
 		}
 
-		cmsLayoutGroup = new CmsLayoutGroup();
-		cmsLayoutGroup.name = name;
-		cmsLayoutGroup.parentId = parentId;
-		cmsLayoutGroup.description = description;
-		cmsLayoutGroup.persist();
+		object = new CmsLayoutGroup();
+		object.name = name;
+		object.parentId = parentId;
+		object.description = description;
+		object.persist();
 
-		return cmsLayoutGroup;
+		return object;
 	}
 
 	@OneToMany(mappedBy = "parentId")

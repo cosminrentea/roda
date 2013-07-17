@@ -21,6 +21,7 @@ import javax.persistence.PostUpdate;
 import javax.persistence.PreRemove;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.persistence.TypedQuery;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -154,18 +155,17 @@ public class File {
 	}
 
 	/**
-	 * Verifica existenta unui fisier in baza de date; in caz afirmativ,
-	 * returneaza obiectul corespunzator, altfel, metoda introduce fisierul in
-	 * baza de date si apoi returneaza obiectul corespunzator. Verificarea
-	 * existentei in baza de date se realizeaza fie dupa valoarea
-	 * identificatorului, fie dupa un criteriu de unicitate.
+	 * Verifica existenta unui obiect de tip <code>File</code> (fisier) in baza
+	 * de date; in caz afirmativ il returneaza, altfel, metoda il introduce in
+	 * baza de date si apoi il returneaza. Verificarea existentei in baza de
+	 * date se realizeaza fie dupa identificator, fie dupa un criteriu de
+	 * unicitate.
 	 * 
 	 * <p>
 	 * Criterii de unicitate:
 	 * <ul>
-	 * <li>id
 	 * <li>title
-	 * <ul>
+	 * </ul>
 	 * 
 	 * <p>
 	 * 
@@ -182,14 +182,45 @@ public class File {
 	 * @param fullPath
 	 *            - calea completa a fisierului de pe hard-disk.
 	 * @param contentType
-	 *            - TODO.
 	 * @return
 	 */
 	public static File checkFile(Integer id, String title, String name,
-			String description, Integer size, String fullPath,
-			String contentType) {
-		// TODO
-		return null;
+			String description, Long size, String fullPath, String contentType) {
+		File object;
+
+		if (id != null) {
+			object = findFile(id);
+
+			if (object != null) {
+				return object;
+			}
+		}
+
+		List<File> queryResult;
+
+		if (title != null) {
+			TypedQuery<File> query = entityManager()
+					.createQuery(
+							"SELECT o FROM File o WHERE lower(o.title) = lower(:title)",
+							File.class);
+			query.setParameter("title", title);
+
+			queryResult = query.getResultList();
+			if (queryResult.size() > 0) {
+				return queryResult.get(0);
+			}
+		}
+
+		object = new File();
+		object.title = title;
+		object.name = name;
+		object.description = description;
+		object.size = size;
+		object.fullPath = fullPath;
+		object.contentType = contentType;
+		object.persist();
+
+		return object;
 	}
 
 	@Transient
@@ -407,5 +438,11 @@ public class File {
 	@PreRemove
 	private void preRemove() {
 		deleteIndex(this);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return (id != null && id.equals(((File) obj).id))
+				|| (title != null && title.equals(((File) obj).title));
 	}
 }

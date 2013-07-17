@@ -174,13 +174,13 @@ public class AclSid {
 	 * @return
 	 */
 	public static AclSid checkAclSid(Long id, String sid, Boolean principal) {
-		AclSid aclSid;
+		AclSid object;
 
 		if (id != null) {
-			aclSid = findAclSid(id);
+			object = findAclSid(id);
 
-			if (aclSid != null) {
-				return aclSid;
+			if (object != null) {
+				return object;
 			}
 		}
 
@@ -198,12 +198,12 @@ public class AclSid {
 			}
 		}
 
-		aclSid = new AclSid();
-		aclSid.sid = sid;
-		aclSid.principal = principal;
-		aclSid.persist();
+		object = new AclSid();
+		object.sid = sid;
+		object.principal = principal;
+		object.persist();
 
-		return aclSid;
+		return object;
 	}
 
 	@OneToMany(mappedBy = "sid")

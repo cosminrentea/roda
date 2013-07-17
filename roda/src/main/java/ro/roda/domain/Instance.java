@@ -24,6 +24,7 @@ import javax.persistence.PreRemove;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.TypedQuery;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -166,102 +167,53 @@ public class Instance {
 	}
 
 	/**
-	 * Verifica existenta unei instante (preluata prin valori ale parametrilor
-	 * de intrare sau combinatii ale acestora) in baza de date; in caz
-	 * afirmativ, returneaza obiectul corespunzator, altfel, metoda introduce
-	 * instanta in baza de date si apoi returneaza obiectul corespunzator.
-	 * Verificarea existentei in baza de date se realizeaza fie dupa valoarea
-	 * cheii primare, fie dupa un criteriu de unicitate.
+	 * Verifica existenta unui obiect de tip <code>Instance</code> (instanta) in
+	 * baza de date; in caz afirmativ il returneaza, altfel, metoda il introduce
+	 * in baza de date si apoi il returneaza. Verificarea existentei in baza de
+	 * date se realizeaza fie dupa identificator, fie dupa un criteriu de
+	 * unicitate.
 	 * 
 	 * <p>
 	 * Criterii de unicitate:
-	 * <p>
 	 * <ul>
-	 * <li>instanceId
-	 * <ul>
+	 * </ul>
+	 * 
 	 * <p>
 	 * 
-	 * 
-	 * @param instance_id
-	 *            - cheia primara a instantei din tabelul de instante
+	 * @param id
+	 *            - identificatorul instantei.
 	 * @param studyId
-	 *            - cheia primara a studiului din care face parte instanta
-	 * @param datestart
-	 *            - data de inceput a desfasurarii instantei curente
-	 * @param dateend
-	 *            - data de final a desfasurarii instantei curente
-	 * @param added_by
-	 *            - cheia primara a utilizatorului caruia ii apartine instanta
-	 *            curenta
+	 *            - studiul din care face parte instanta.
+	 * @param addedBy
+	 *            - utilizatorul care a creat instanta.
 	 * @param added
-	 *            - data si timpul la care a fost adaugata instanta curenta in
-	 *            baza de date
-	 * @param version
-	 *            - versiunea instantei
-	 * @param unit_analysis
-	 *            - denumirea unitatii de analiza specifice instantei curente;
-	 *            daca unitatea respectiva nu exista, va fi introdusa in baza de
-	 *            date.
-	 * @param time_meth
-	 *            - denumirea metodei temporale care se aplica instantei
-	 *            curente; daca metoda temporala respectiva nu exista, va fi
-	 *            introdusa in baza de date.
-	 * @param insertion_status
-	 *            - pasul din wizardul de introducere a metadatelor; atunci cand
-	 *            introducerea se face prin wizard, fiecare pas trebuie salvat
-	 *            in baza de date.
-	 * @param raw_data
-	 *            - parametru boolean ce indica daca datele sunt in forma
-	 *            digitizata (true) sau in forma de fisiere
-	 *            procesabile/editabile (false)
-	 * @param raw_metadata
-	 *            - parametru boolean ce indica daca metadatele sunt in forma
-	 *            digitizata (true) sau in forma de fisiere
-	 *            procesabile/editabile (false)
-	 * @param orgs
-	 *            - lista de organizatii aflate in relatie cu instanta curenta;
-	 *            un element al acestei liste contine o organizatie si codul
-	 *            asocierii care exista cu organizatia respectiva. O organizatie
-	 *            poate fi specificata atat prin codul sau, cat si prin
-	 *            informatiile complete ale acesteia. La randul ei, daca
-	 *            organizatia nu exista, va fi introdusa in baza de date.
-	 * @param persons
-	 *            - lista de persoane aflate in relatie cu instanta curenta; un
-	 *            element al acestei liste contine o persoana si codul asocierii
-	 *            care exista cu persoana respectiva. O persoana poate fi
-	 *            specificata atat prin codul sau, cat si prin informatiile
-	 *            complete ale acesteia. La randul ei, daca persoana nu exista,
-	 *            va fi introdusa in baza de date.
-	 * @param topics
-	 *            - lista de topicuri asociate instantei curente. Un topic poate
-	 *            fi specificat atat prin codul sau, cat si prin denumirea sa.
-	 *            La randul lui, daca topicul nu exista, va fi introdus in baza
-	 *            de date.
-	 * @param keywords
-	 *            - lista de cuvinte cheie asociate instantei curente. Un cuvant
-	 *            cheie poate fi specificat atat prin codul sau, cat si prin
-	 *            denumirea sa. La randul lui, daca nu exista cuvantul cheie, va
-	 *            fi introdus in baza de date.
-	 * @param variables
-	 *            - lista de variabile asociate instantei curente; un element al
-	 *            acestei liste contine informatiile specifice unei variabile.
-	 *            La randul ei, variabila va fi introdusa in baza de date.
-	 * @param forms
-	 *            - lista de formulare asociate instantei curente; un element al
-	 *            acestei liste contine informatiile specifice unui formular. La
-	 *            randul lui, formularul va fi introdus in baza de date.
-	 * 
+	 *            - data cand a fost adaugata instanta.
+	 * @param main
+	 * @param disseminatorIdentifier
 	 * @return
 	 */
-	public static Instance checkInstance(Integer instanceId, Integer studyId,
-			Calendar dateStart, Calendar dateEnd, Integer addedBy,
-			Timestamp added, Integer version, String unitAnalysis,
-			String timeMeth, Integer insertionStatus, Boolean rawData,
-			Boolean rawMetaData, List<Org> orgs, List<Person> persons,
-			List<Topic> topics, List<Keyword> keywords,
-			List<Variable> variables, List<Form> forms) {
-		// TODO
-		return null;
+	public static Instance checkInstance(Integer id, Study studyId,
+			Users addedBy, Calendar added, Boolean main,
+			String disseminatorIdentifier) {
+		Instance object;
+
+		if (id != null) {
+			object = findInstance(id);
+
+			if (object != null) {
+				return object;
+			}
+		}
+
+		object = new Instance();
+		object.studyId = studyId;
+		object.addedBy = addedBy;
+		object.added = added;
+		object.main = main;
+		object.disseminatorIdentifier = disseminatorIdentifier;
+		object.persist();
+
+		return object;
 	}
 
 	@Column(name = "added", columnDefinition = "timestamp")
@@ -482,5 +434,10 @@ public class Instance {
 	@PreRemove
 	private void preRemove() {
 		deleteIndex(this);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return id != null && id.equals(((Instance) obj).id);
 	}
 }

@@ -26,7 +26,7 @@
 
 	<sec:authorize ifAllGranted="ROLE_USER">
 	<util:panel id="databrowser" title="Data Browser">
-		<iframe src="resources/databrowser/app.html" name="databrowser_iframe" width="100%" height="800">
+		<iframe src="resources/root/index.html" name="databrowser_iframe" width="100%" height="800">
 		</iframe>
 	</util:panel>	
 	</sec:authorize>

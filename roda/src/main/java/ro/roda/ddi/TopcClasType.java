@@ -64,7 +64,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "topcClasType")
 @Entity
-@Table(schema = "ddi",name = "TopicClasification")
+@Table(schema = "ddi", name = "TopicClasification")
 public class TopcClasType {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -101,7 +101,8 @@ public class TopcClasType {
 	@Column(columnDefinition = "text")
 	@XmlJavaTypeAdapter(CollapsedStringAdapter.class)
 	@XmlValue
-	protected String content;
+	public String content;
+
 	@XmlAttribute(name = "ID")
 	@XmlJavaTypeAdapter(CollapsedStringAdapter.class)
 	@XmlID

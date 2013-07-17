@@ -127,7 +127,8 @@ public class LablType {
 	@Column(columnDefinition = "text")
 	@XmlJavaTypeAdapter(CollapsedStringAdapter.class)
 	@XmlValue
-	protected String content;
+	public String content;
+
 	@XmlAttribute(name = "ID")
 	@XmlJavaTypeAdapter(CollapsedStringAdapter.class)
 	@XmlID

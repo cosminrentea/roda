@@ -2,9 +2,12 @@ package ro.roda.importer;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -27,20 +30,40 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.stereotype.Component;
 import org.xml.sax.SAXException;
 
+import ro.roda.ddi.AuthEntyType;
+import ro.roda.ddi.CitationType;
 import ro.roda.ddi.CodeBook;
 import ro.roda.ddi.DataCollType;
+import ro.roda.ddi.DataDscrType;
+import ro.roda.ddi.DocDscrType;
+import ro.roda.ddi.KeywordType;
 import ro.roda.ddi.MethodType;
+import ro.roda.ddi.ProdPlacType;
+import ro.roda.ddi.ProdStmtType;
+import ro.roda.ddi.RspStmtType;
 import ro.roda.ddi.StdyDscrType;
 import ro.roda.ddi.StdyInfoType;
+import ro.roda.ddi.SubjectType;
 import ro.roda.ddi.SumDscrType;
+import ro.roda.ddi.TopcClasType;
+import ro.roda.ddi.VarType;
+import ro.roda.domain.Address;
 import ro.roda.domain.CatalogStudy;
 import ro.roda.domain.CatalogStudyPK;
+import ro.roda.domain.City;
+import ro.roda.domain.Instance;
+import ro.roda.domain.InstanceVariable;
+import ro.roda.domain.InstanceVariablePK;
+import ro.roda.domain.Keyword;
 import ro.roda.domain.Study;
 import ro.roda.domain.StudyDescr;
 import ro.roda.domain.StudyDescrPK;
+import ro.roda.domain.StudyKeyword;
+import ro.roda.domain.StudyKeywordPK;
 import ro.roda.domain.TimeMeth;
 import ro.roda.domain.UnitAnalysis;
 import ro.roda.domain.Users;
+import ro.roda.domain.Variable;
 import ro.roda.service.CatalogServiceImpl;
 import ro.roda.service.StudyServiceImpl;
 
@@ -102,7 +125,7 @@ public class ImporterDdi {
 
 			for (Resource ddiResource : resources) {
 				File ddiFile = ddiResource.getFile();
-				log.trace("Importing DDI File: " + ddiFile.getName());
+				log.debug("Importing DDI file: " + ddiFile.getName());
 				CodeBook cb = (CodeBook) unmarshaller.unmarshal(ddiFile);
 				importCodebook(cb, true, true);
 				if ("yes".equalsIgnoreCase(ddiPersist)) {
@@ -126,12 +149,48 @@ public class ImporterDdi {
 
 	public void importCodebook(CodeBook cb, boolean nesstarExported, boolean legacyDataRODA) {
 
+		DocDscrType docDscrType = null;
+		if (cb.getDocDscr().size() > 0) {
+			docDscrType = cb.getDocDscr().get(0);
+		}
+
+		DataDscrType dataDscrType = null;
+		if (cb.getDataDscr().size() > 0) {
+			dataDscrType = cb.getDataDscr().get(0);
+		}
+
 		StdyDscrType stdyDscrType = cb.getStdyDscr().get(0);
 		StdyInfoType stdyInfoType = null;
 		SumDscrType sumDscrType = null;
+		CitationType citationType = null;
 		if (stdyDscrType.getStdyInfo().size() > 0) {
 			stdyInfoType = stdyDscrType.getStdyInfo().get(0);
-			sumDscrType = stdyInfoType.getSumDscr().get(0);
+			if (stdyInfoType.getSumDscr().size() > 0) {
+				sumDscrType = stdyInfoType.getSumDscr().get(0);
+			}
+		}
+		if (stdyDscrType.getCitation().size() > 0) {
+			citationType = stdyDscrType.getCitation().get(0);
+			RspStmtType rspStmtType = citationType.getRspStmt();
+			ProdStmtType prodStmtType = citationType.getProdStmt();
+			if (rspStmtType != null) {
+				List<AuthEntyType> authEntyTypeList = rspStmtType.getAuthEnty();
+				// TODO use the list
+			}
+			if (prodStmtType != null) {
+				List<ProdPlacType> prodPlacTypeList = prodStmtType.getProdPlac();
+				for (ProdPlacType prodPlacType : prodPlacTypeList) {
+					log.trace("prodPlacType = " + prodPlacType.content);
+					// TODO parse imported address
+					// TODO check if address already exists
+					Address address = new Address();
+					// TODO replace id = 1
+					address.setCityId(City.findCity(1));
+					address.setAddress1(prodPlacType.content);
+					address.setImported(prodPlacType.content);
+					address.persist();
+				}
+			}
 		}
 
 		DataCollType dataCollType = null;
@@ -204,9 +263,8 @@ public class ImporterDdi {
 		s.persist();
 
 		StudyDescr sd = new StudyDescr();
-		// TODO get Romanian language, don't use directly ID = 1
-		StudyDescrPK sdId = new StudyDescrPK(new Integer(1), s.getId());
-		sd.setId(sdId);
+		// TODO obtain Romanian language, don't use directly ID = 1
+		sd.setId(new StudyDescrPK(new Integer(1), s.getId()));
 		sd.setTitle(title);
 		sd.setOriginalTitleLanguage(true);
 
@@ -234,6 +292,34 @@ public class ImporterDdi {
 
 		sd.persist();
 
+		if (stdyInfoType != null) {
+			SubjectType subjectType = stdyInfoType.getSubject();
+			if (subjectType != null) {
+				List<KeywordType> keywordTypeList = subjectType.getKeyword();
+				Set<StudyKeyword> skSet = new HashSet<StudyKeyword>();
+				for (KeywordType keywordType : keywordTypeList) {
+					log.trace("keyword = " + keywordType.content);
+					Keyword keyword = Keyword.checkKeyword(null, keywordType.content);
+					StudyKeyword sk = new StudyKeyword();
+					// TODO replace user id = 1
+					sk.setId(new StudyKeywordPK(s.getId(), keyword.getId(), 1));
+					// sk.setKeywordId(keyword);
+					// sk.setStudyId(s);
+
+					// TODO replace user id = 1
+					sk.setAddedBy(Users.findUsers(1));
+					sk.setAdded(new GregorianCalendar());
+					sk.persist();
+					skSet.add(sk);
+				}
+				List<TopcClasType> topcClasTypeList = subjectType.getTopcClas();
+				for (TopcClasType topcClasType : topcClasTypeList) {
+					log.trace("topic = " + topcClasType.content);
+					// TODO persist topics
+				}
+			}
+		}
+
 		// Add Study to an existing Catalog
 
 		// TODO don't use directly ID='1' for Catalog
@@ -243,5 +329,42 @@ public class ImporterDdi {
 		cs.setAdded(new GregorianCalendar());
 		cs.persist();
 
+		// create a new Instance / Dataset -> for this import
+		Instance instance = new Instance();
+		instance.setStudyId(s);
+		instance.setMain(true);
+		// TODO replace user id = 1
+		instance.setAddedBy(Users.findUsers(1));
+		instance.setAdded(new GregorianCalendar());
+		instance.persist();
+
+		// import Variables
+		Set<InstanceVariable> instanceVariableSet = new HashSet<InstanceVariable>();
+		if (dataDscrType != null) {
+			List<VarType> varTypeList = dataDscrType.getVar();
+			int counter = 0;
+			for (VarType varType : varTypeList) {
+				log.trace("variable = " + varType.getName());
+				Variable variable = new Variable();
+				variable.setName(varType.getName());
+				if (varType.getLabl().size() > 0) {
+					variable.setLabel(varType.getLabl().get(0).content);
+				}
+				// TODO check
+				variable.setVariableType((short) 0);
+				// TODO check
+				variable.setType((short) 0);
+				variable.persist();
+
+				InstanceVariable iv = new InstanceVariable();
+				iv.setId(new InstanceVariablePK(instance.getId(), variable.getId()));
+				iv.setOrderVariableInInstance(counter);
+				counter++;
+				iv.persist();
+				instanceVariableSet.add(iv);
+			}
+		}
+		instance.setInstanceVariables(instanceVariableSet);
+		instance.merge();
 	}
 }

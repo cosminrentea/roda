@@ -16,6 +16,7 @@ import javax.persistence.PostUpdate;
 import javax.persistence.PreRemove;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import javax.persistence.UniqueConstraint;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -33,9 +34,9 @@ import flexjson.JSONDeserializer;
 import flexjson.JSONSerializer;
 
 @Entity
-@Table(schema = "public", name = "instance_variable")
+@Table(schema = "public", name = "instance_variable", uniqueConstraints = { @UniqueConstraint(columnNames = {
+		"instance_id", "order_variable_in_instance" }) })
 @Configurable
-
 public class InstanceVariable {
 
 	public static long countInstanceVariables() {
@@ -153,7 +154,7 @@ public class InstanceVariable {
 	@JoinColumn(name = "instance_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
 	private Instance instanceId;
 
-	@Column(name = "order_variable_in_instance", columnDefinition = "int4", unique = true)
+	@Column(name = "order_variable_in_instance", columnDefinition = "int4")
 	@NotNull
 	private Integer orderVariableInInstance;
 

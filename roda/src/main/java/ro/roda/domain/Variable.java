@@ -44,8 +44,7 @@ import flexjson.JSONSerializer;
 public class Variable {
 
 	public static long countVariables() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM Variable o",
-				Long.class).getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM Variable o", Long.class).getSingleResult();
 	}
 
 	@Async
@@ -68,8 +67,7 @@ public class Variable {
 	}
 
 	public static List<Variable> findAllVariables() {
-		return entityManager().createQuery("SELECT o FROM Variable o",
-				Variable.class).getResultList();
+		return entityManager().createQuery("SELECT o FROM Variable o", Variable.class).getResultList();
 	}
 
 	public static Variable findVariable(Long id) {
@@ -78,23 +76,18 @@ public class Variable {
 		return entityManager().find(Variable.class, id);
 	}
 
-	public static List<Variable> findVariableEntries(int firstResult,
-			int maxResults) {
-		return entityManager()
-				.createQuery("SELECT o FROM Variable o", Variable.class)
-				.setFirstResult(firstResult).setMaxResults(maxResults)
-				.getResultList();
+	public static List<Variable> findVariableEntries(int firstResult, int maxResults) {
+		return entityManager().createQuery("SELECT o FROM Variable o", Variable.class).setFirstResult(firstResult)
+				.setMaxResults(maxResults).getResultList();
 	}
 
 	public static Collection<Variable> fromJsonArrayToVariables(String json) {
-		return new JSONDeserializer<List<Variable>>()
-				.use(null, ArrayList.class).use("values", Variable.class)
+		return new JSONDeserializer<List<Variable>>().use(null, ArrayList.class).use("values", Variable.class)
 				.deserialize(json);
 	}
 
 	public static Variable fromJsonToVariable(String json) {
-		return new JSONDeserializer<Variable>().use(null, Variable.class)
-				.deserialize(json);
+		return new JSONDeserializer<Variable>().use(null, Variable.class).deserialize(json);
 	}
 
 	public static void indexVariable(Variable variable) {
@@ -109,23 +102,19 @@ public class Variable {
 		for (Variable variable : variables) {
 			SolrInputDocument sid = new SolrInputDocument();
 			sid.addField("id", "variable_" + variable.getId());
-			sid.addField("variable.selectionvariable_t",
-					variable.getSelectionVariable());
+			sid.addField("variable.selectionvariable_t", variable.getSelectionVariable());
 			sid.addField("variable.fileid_t", variable.getFileId());
 			sid.addField("variable.label_s", variable.getLabel());
 			sid.addField("variable.type_t", variable.getType());
-			sid.addField("variable.operatorinstructions_s",
-					variable.getOperatorInstructions());
+			sid.addField("variable.operatorinstructions_s", variable.getOperatorInstructions());
 			sid.addField("variable.variabletype_t", variable.getVariableType());
 			// Add summary field to allow searching documents for objects of
 			// this type
 			sid.addField(
 					"variable_solrsummary_t",
-					new StringBuilder().append(variable.getSelectionVariable())
-							.append(" ").append(variable.getFileId())
-							.append(" ").append(variable.getLabel())
-							.append(" ").append(variable.getType()).append(" ")
-							.append(variable.getOperatorInstructions())
+					new StringBuilder().append(variable.getSelectionVariable()).append(" ")
+							.append(variable.getFileId()).append(" ").append(variable.getLabel()).append(" ")
+							.append(variable.getType()).append(" ").append(variable.getOperatorInstructions())
 							.append(" ").append(variable.getVariableType()));
 			documents.add(sid);
 		}
@@ -193,8 +182,8 @@ public class Variable {
 	 *            - fisierul din care provine variabila.
 	 * @return
 	 */
-	public static Variable checkVariable(Integer id, String label,
-			Integer type, String operatorInstructions, Integer fileId) {
+	public static Variable checkVariable(Integer id, String label, Integer type, String operatorInstructions,
+			Integer fileId) {
 		// TODO
 		return null;
 	}
@@ -223,6 +212,10 @@ public class Variable {
 	@Column(name = "label", columnDefinition = "text")
 	@NotNull
 	private String label;
+
+	@Column(name = "name", columnDefinition = "text")
+	@NotNull
+	private String name;
 
 	@Column(name = "operator_instructions", columnDefinition = "text")
 	private String operatorInstructions;
@@ -298,6 +291,14 @@ public class Variable {
 		return label;
 	}
 
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	public String getOperatorInstructions() {
 		return operatorInstructions;
 	}
@@ -366,8 +367,7 @@ public class Variable {
 		this.fileId = fileId;
 	}
 
-	public void setFormEditedNumberVars(
-			Set<FormEditedNumberVar> formEditedNumberVars) {
+	public void setFormEditedNumberVars(Set<FormEditedNumberVar> formEditedNumberVars) {
 		this.formEditedNumberVars = formEditedNumberVars;
 	}
 
@@ -424,8 +424,7 @@ public class Variable {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this,
-				ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate

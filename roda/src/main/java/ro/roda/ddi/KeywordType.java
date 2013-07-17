@@ -64,7 +64,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "keywordType")
 @Entity
-@Table(schema = "ddi",name = "Keyword")
+@Table(schema = "ddi", name = "Keyword")
 public class KeywordType {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -101,7 +101,8 @@ public class KeywordType {
 	@Column(columnDefinition = "text")
 	@XmlJavaTypeAdapter(CollapsedStringAdapter.class)
 	@XmlValue
-	protected String content;
+	public String content;
+
 	@XmlAttribute(name = "ID")
 	@XmlJavaTypeAdapter(CollapsedStringAdapter.class)
 	@XmlID

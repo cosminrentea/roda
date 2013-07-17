@@ -43,8 +43,7 @@ import flexjson.JSONSerializer;
 public class Address {
 
 	public static long countAddresses() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM Address o",
-				Long.class).getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM Address o", Long.class).getSingleResult();
 	}
 
 	@Async
@@ -72,70 +71,54 @@ public class Address {
 		return entityManager().find(Address.class, id);
 	}
 
-	public static List<Address> findAddressEntries(int firstResult,
-			int maxResults) {
-		return entityManager()
-				.createQuery("SELECT o FROM Address o", Address.class)
-				.setFirstResult(firstResult).setMaxResults(maxResults)
-				.getResultList();
+	public static List<Address> findAddressEntries(int firstResult, int maxResults) {
+		return entityManager().createQuery("SELECT o FROM Address o", Address.class).setFirstResult(firstResult)
+				.setMaxResults(maxResults).getResultList();
 	}
 
 	public static TypedQuery<Address> findAddressesByCityId(City cityId) {
 		if (cityId == null)
-			throw new IllegalArgumentException(
-					"The cityId argument is required");
+			throw new IllegalArgumentException("The cityId argument is required");
 		EntityManager em = Address.entityManager();
-		TypedQuery<Address> q = em.createQuery(
-				"SELECT o FROM Address AS o WHERE o.cityId = :cityId",
-				Address.class);
+		TypedQuery<Address> q = em.createQuery("SELECT o FROM Address AS o WHERE o.cityId = :cityId", Address.class);
 		q.setParameter("cityId", cityId);
 		return q;
 	}
 
-	public static TypedQuery<Address> findAddressesByCityIdAndPostalCodeEquals(
-			City cityId, String postalCode) {
+	public static TypedQuery<Address> findAddressesByCityIdAndPostalCodeEquals(City cityId, String postalCode) {
 		if (cityId == null)
-			throw new IllegalArgumentException(
-					"The cityId argument is required");
+			throw new IllegalArgumentException("The cityId argument is required");
 		if (postalCode == null || postalCode.length() == 0)
-			throw new IllegalArgumentException(
-					"The postalCode argument is required");
+			throw new IllegalArgumentException("The postalCode argument is required");
 		EntityManager em = Address.entityManager();
-		TypedQuery<Address> q = em
-				.createQuery(
-						"SELECT o FROM Address AS o WHERE o.cityId = :cityId AND o.postalCode = :postalCode",
-						Address.class);
+		TypedQuery<Address> q = em.createQuery(
+				"SELECT o FROM Address AS o WHERE o.cityId = :cityId AND o.postalCode = :postalCode", Address.class);
 		q.setParameter("cityId", cityId);
 		q.setParameter("postalCode", postalCode);
 		return q;
 	}
 
-	public static TypedQuery<Address> findAddressesByPostalCodeEquals(
-			String postalCode) {
+	public static TypedQuery<Address> findAddressesByPostalCodeEquals(String postalCode) {
 		if (postalCode == null || postalCode.length() == 0)
-			throw new IllegalArgumentException(
-					"The postalCode argument is required");
+			throw new IllegalArgumentException("The postalCode argument is required");
 		EntityManager em = Address.entityManager();
-		TypedQuery<Address> q = em.createQuery(
-				"SELECT o FROM Address AS o WHERE o.postalCode = :postalCode",
+		TypedQuery<Address> q = em.createQuery("SELECT o FROM Address AS o WHERE o.postalCode = :postalCode",
 				Address.class);
 		q.setParameter("postalCode", postalCode);
 		return q;
 	}
 
 	public static List<Address> findAllAddresses() {
-		return entityManager().createQuery("SELECT o FROM Address o",
-				Address.class).getResultList();
+		return entityManager().createQuery("SELECT o FROM Address o", Address.class).getResultList();
 	}
 
 	public static Collection<Address> fromJsonArrayToAddresses(String json) {
-		return new JSONDeserializer<List<Address>>().use(null, ArrayList.class)
-				.use("values", Address.class).deserialize(json);
+		return new JSONDeserializer<List<Address>>().use(null, ArrayList.class).use("values", Address.class)
+				.deserialize(json);
 	}
 
 	public static Address fromJsonToAddress(String json) {
-		return new JSONDeserializer<Address>().use(null, Address.class)
-				.deserialize(json);
+		return new JSONDeserializer<Address>().use(null, Address.class).deserialize(json);
 	}
 
 	public static void indexAddress(Address address) {
@@ -153,8 +136,7 @@ public class Address {
 			sid.addField("address.id_i", address.getId());
 			// Add summary field to allow searching documents for objects of
 			// this type
-			sid.addField("address_solrsummary_t",
-					new StringBuilder().append(address.getId()));
+			sid.addField("address_solrsummary_t", new StringBuilder().append(address.getId()));
 			documents.add(sid);
 		}
 		try {
@@ -229,8 +211,7 @@ public class Address {
 	 *            subdivCode.
 	 * @return
 	 */
-	public static Address checkAddress(Integer id, City cityId,
-			String postalCode, String address1, String address2,
+	public static Address checkAddress(Integer id, City cityId, String postalCode, String address1, String address2,
 			String subdivCode, String subdivName) {
 		Address object;
 
@@ -244,13 +225,11 @@ public class Address {
 
 		List<Address> queryResult;
 
-		if (cityId != null && postalCode != null && address1 != null
-				&& address2 != null) {
+		if (cityId != null && postalCode != null && address1 != null && address2 != null) {
 			TypedQuery<Address> query = entityManager().createQuery(
 					"SELECT o FROM Address o WHERE o.cityId = :cityId AND "
 							+ "lower(o.postalCode) = lower(:postalCode) AND "
-							+ "lower(o.address1) = lower(:address1) AND "
-							+ "lower(o.address2) = lower(:address2)",
+							+ "lower(o.address1) = lower(:address1) AND " + "lower(o.address2) = lower(:address2)",
 					Address.class);
 			query.setParameter("cityId", cityId);
 			query.setParameter("postalCode", postalCode);
@@ -274,6 +253,9 @@ public class Address {
 
 		return object;
 	}
+
+	@Column(name = "imported", columnDefinition = "text")
+	private String imported;
 
 	@Column(name = "address1", columnDefinition = "text")
 	@NotNull
@@ -324,6 +306,14 @@ public class Address {
 		if (this.entityManager == null)
 			this.entityManager = entityManager();
 		this.entityManager.flush();
+	}
+
+	public String getImported() {
+		return imported;
+	}
+
+	public void setImported(String imported) {
+		this.imported = imported;
 	}
 
 	public String getAddress1() {
@@ -431,8 +421,7 @@ public class Address {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this,
-				ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate
@@ -450,10 +439,8 @@ public class Address {
 	public boolean equals(Object obj) {
 		return (id != null && id.equals(((Address) obj).id))
 				|| ((cityId != null && cityId.equals(((Address) obj).cityId))
-						&& (postalCode != null && postalCode
-								.equalsIgnoreCase(((Address) obj).postalCode))
-						&& (address1 != null && address1
-								.equalsIgnoreCase(((Address) obj).address1)) && (address2 != null && address2
+						&& (postalCode != null && postalCode.equalsIgnoreCase(((Address) obj).postalCode))
+						&& (address1 != null && address1.equalsIgnoreCase(((Address) obj).address1)) && (address2 != null && address2
 						.equalsIgnoreCase(((Address) obj).address2)));
 	}
 }

@@ -2,13 +2,17 @@ package ro.roda.transformer;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Configurable;
 
 import ro.roda.domain.File;
+import ro.roda.domain.Instance;
 import ro.roda.domain.InstanceVariable;
 import ro.roda.domain.Study;
 import ro.roda.domain.StudyDescr;
@@ -20,34 +24,28 @@ public class StudyInfo {
 
 	public static String toJsonArray(Collection<StudyInfo> collection) {
 		JSONSerializer serializer = new JSONSerializer();
-		
+
 		serializer.exclude("variables", "files");
 		serializer.exclude("*.class", "id");
 
 		serializer.include("name", "an", "description", "universe", "geographicCoverage");
-		serializer.include("variables.id", "variables.label");
+		serializer.include("variables.id", "variables.name", "variables.label");
 		serializer.include("files.name", "files.contentType", "files.url", "files.description");
 
-		serializer.transform(
-				new FieldNameTransformer("geo_coverage"), "geographicCoverage");
-		serializer.transform(
-				new FieldNameTransformer("unit_analysis"), "unitAnalysis");
-		//TODO transform the fields name in variables and files
-		
+		serializer.transform(new FieldNameTransformer("geo_coverage"), "geographicCoverage");
+		serializer.transform(new FieldNameTransformer("unit_analysis"), "unitAnalysis");
+		// TODO transform the fields name in variables and files
+
 		return "{\"data\":" + serializer.serialize(collection) + "}";
 	}
 
 	public static List<StudyInfo> findAllStudyInfos() {
 		List<StudyInfo> result = null;
 		List<Study> studies = Study.findAllStudys();
-
 		Iterator<Study> it = studies.iterator();
-
 		result = new ArrayList<StudyInfo>();
-
 		while (it.hasNext()) {
 			Study study = (Study) it.next();
-
 			result.add(new StudyInfo(study));
 		}
 		return result;
@@ -58,6 +56,8 @@ public class StudyInfo {
 			return null;
 		return new StudyInfo(Study.entityManager().find(Study.class, id));
 	}
+
+	private final Log log = LogFactory.getLog(this.getClass());
 
 	private Integer id;
 
@@ -76,36 +76,39 @@ public class StudyInfo {
 	private String universe;
 
 	private Set<Variable> variables;
-	
+
 	private Set<File> files;
 
 	public StudyInfo(Study study) {
+		this.an = study.getYearStart();
+		this.unitAnalysis = study.getUnitAnalysisId().getName();
+		this.files = study.getFiles1();
+
+		// the variables of a study are those of its 'main' instance
+		this.variables = new HashSet<Variable>();
+		if (study.getInstances() != null) {
+			log.trace("Instances: " + study.getInstances().size());
+			for (Instance instance : study.getInstances()) {
+				if (instance.isMain()) {
+					for (InstanceVariable iv : instance.getInstanceVariables()) {
+						this.variables.add(iv.getVariableId());
+					}
+				}
+			}
+			log.trace("Variables: " + variables.size());
+		}
+
 		// TODO manage descriptions depending on language
 		// for the beginning, suppose there is only one description
 		StudyDescr studyDescr = null;
-	
 		if (study.getStudyDescrs() != null && study.getStudyDescrs().size() > 0) {
 			studyDescr = study.getStudyDescrs().iterator().next();
 		}
-	
-		an = study.getYearStart();
-		unitAnalysis = study.getUnitAnalysisId().getName();
-		files = study.getFiles1();
-		
-		//TODO suppose the variables of a study are those of its first instance
-		if (study.getInstances() != null && study.getInstances().size() > 0) {
-			Set<InstanceVariable> instanceVariables = study.getInstances().iterator().next().getInstanceVariables();
-			for (InstanceVariable iv: instanceVariables) {
-				variables.add(iv.getVariableId());
-			}
-		}
-	
 		if (studyDescr != null) {
-			name = studyDescr.getTitle();
-			description = studyDescr.getAbstract1();
-			geographicCoverage = studyDescr.getGeographicCoverage();
-			universe = studyDescr.getUniverse();
-	
+			this.name = studyDescr.getTitle();
+			this.description = studyDescr.getAbstract1();
+			this.geographicCoverage = studyDescr.getGeographicCoverage();
+			this.universe = studyDescr.getUniverse();
 		}
 	}
 

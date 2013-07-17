@@ -25,11 +25,16 @@ public class StudyInfo {
 	public static String toJsonArray(Collection<StudyInfo> collection) {
 		JSONSerializer serializer = new JSONSerializer();
 
-		serializer.exclude("variables", "files");
-		serializer.exclude("*.class", "id");
+		serializer.exclude("*.class");
+		serializer.exclude("variables.id", "variables.concepts", "variables.fileId", "variables.formEditedNumberVars",
+				"variables.instanceVariables", "variables.operatorInstructions", "variables.otherStatistics",
+				"variables.selectionVariable", "variables.skips", "variables.skips1", "variables.type",
+				"variables.vargroups", "variables.variableType");
+		serializer.exclude("files.content", "files.fullPath", "files.id", "files.instances",
+				"files.selectionVariableItems", "files.size", "files.studies1", "files.title", "files.variables");
 
-		serializer.include("name", "an", "description", "universe", "geographicCoverage");
-		serializer.include("variables.id", "variables.name", "variables.label");
+		serializer.include("id", "name", "an", "description", "universe", "geographicCoverage", "unitAnalysis");
+		serializer.include("variables.name", "variables.label");
 		serializer.include("files.name", "files.contentType", "files.url", "files.description");
 
 		serializer.transform(new FieldNameTransformer("geo_coverage"), "geographicCoverage");
@@ -80,6 +85,7 @@ public class StudyInfo {
 	private Set<File> files;
 
 	public StudyInfo(Study study) {
+		this.id = study.getId();
 		this.an = study.getYearStart();
 		this.unitAnalysis = study.getUnitAnalysisId().getName();
 		this.files = study.getFiles1();

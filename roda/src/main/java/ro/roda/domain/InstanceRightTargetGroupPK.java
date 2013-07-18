@@ -8,6 +8,8 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.springframework.beans.factory.annotation.Configurable;
 
 import flexjson.JSONDeserializer;
@@ -67,5 +69,21 @@ public final class InstanceRightTargetGroupPK implements Serializable {
 
 	public String toJson() {
 		return new JSONSerializer().exclude("*.class").serialize(this);
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		if (obj instanceof InstanceRightTargetGroupPK) {
+			final InstanceRightTargetGroupPK other = (InstanceRightTargetGroupPK) obj;
+			return new EqualsBuilder().append(instanceRightId, other.instanceRightId)
+					.append(instanceId, other.instanceId).append(targetGroupId, other.targetGroupId).isEquals();
+		} else {
+			return false;
+		}
+	}
+
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder().append(instanceRightId).append(instanceId).append(targetGroupId).toHashCode();
 	}
 }

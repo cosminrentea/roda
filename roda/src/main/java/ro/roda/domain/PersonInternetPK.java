@@ -8,6 +8,8 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.springframework.beans.factory.annotation.Configurable;
 
 import flexjson.JSONDeserializer;
@@ -58,5 +60,20 @@ public final class PersonInternetPK implements Serializable {
 
 	public String toJson() {
 		return new JSONSerializer().exclude("*.class").serialize(this);
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		if (obj instanceof PersonInternetPK) {
+			final PersonInternetPK other = (PersonInternetPK) obj;
+			return new EqualsBuilder().append(personId, other.personId).append(internetId, other.internetId).isEquals();
+		} else {
+			return false;
+		}
+	}
+
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder().append(personId).append(internetId).toHashCode();
 	}
 }

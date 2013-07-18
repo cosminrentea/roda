@@ -8,6 +8,8 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.springframework.beans.factory.annotation.Configurable;
 
 import flexjson.JSONDeserializer;
@@ -59,5 +61,20 @@ public final class SelectionVariableItemPK implements Serializable {
 
 	public String toJson() {
 		return new JSONSerializer().exclude("*.class").serialize(this);
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		if (obj instanceof SelectionVariableItemPK) {
+			final SelectionVariableItemPK other = (SelectionVariableItemPK) obj;
+			return new EqualsBuilder().append(variableId, other.variableId).append(itemId, other.itemId).isEquals();
+		} else {
+			return false;
+		}
+	}
+
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder().append(variableId).append(itemId).toHashCode();
 	}
 }

@@ -187,7 +187,7 @@ public class Suffix {
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	@Autowired
+	@Autowired(required=false)
 	transient SolrServer solrServer;
 
 	@Transactional

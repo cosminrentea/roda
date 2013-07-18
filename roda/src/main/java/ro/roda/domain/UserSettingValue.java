@@ -163,7 +163,7 @@ public class UserSettingValue {
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	@Autowired
+	@Autowired(required=false)
 	transient SolrServer solrServer;
 
 	@Transactional

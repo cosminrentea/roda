@@ -244,7 +244,7 @@ public class CollectionModelType {
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	@Autowired
+	@Autowired(required=false)
 	transient SolrServer solrServer;
 
 	@Transactional

@@ -226,7 +226,7 @@ public class CmsPageType {
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	@Autowired
+	@Autowired(required=false)
 	transient SolrServer solrServer;
 
 	@Transactional

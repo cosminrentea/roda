@@ -220,7 +220,7 @@ public class AclClass {
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	@Autowired
+	@Autowired(required=false)
 	transient SolrServer solrServer;
 
 	@Transactional

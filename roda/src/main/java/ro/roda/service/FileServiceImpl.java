@@ -27,7 +27,7 @@ public class FileServiceImpl implements FileService {
 
 	private final Log log = LogFactory.getLog(this.getClass());
 
-	@Autowired
+	@Autowired(required = false)
 	SolrServer solrServer;
 
 	public long countAllFiles() {
@@ -85,38 +85,39 @@ public class FileServiceImpl implements FileService {
 	@Async
 	private void updateSolrFile(java.io.File f, MultipartFile content) {
 		log.debug("> updateSolrFile");
-		ContentStreamUpdateRequest up = new ContentStreamUpdateRequest("/update/extract");
+		if (solrServer != null) {
+			ContentStreamUpdateRequest up = new ContentStreamUpdateRequest("/update/extract");
+			try {
 
-		try {
+				// SOLRJ 3.6.1 API
+				// up.addFile(f);
 
-			// SOLRJ 3.6.1 API
-			// up.addFile(f);
+				// SOLRJ 4.3.1 API
+				up.addFile(f, content.getContentType());
 
-			// SOLRJ 4.3.1 API
-			up.addFile(f, content.getContentType());
+				up.setParam("literal.id", content.getOriginalFilename());
+				up.setParam("uprefix", "attr_");
+				up.setParam("fmap.content", "attr_content");
+				up.setAction(ACTION.COMMIT, true, true);
 
-			up.setParam("literal.id", content.getOriginalFilename());
-			up.setParam("uprefix", "attr_");
-			up.setParam("fmap.content", "attr_content");
-			up.setAction(ACTION.COMMIT, true, true);
+				log.debug("> updateSolrFile > sending file to Solr for metadata indexing");
 
-			log.debug("> updateSolrFile > sending file to Solr for metadata indexing");
+				solrServer.request(up);
 
-			solrServer.request(up);
+				log.debug("> updateSolrFile > sent to Solr for metadata indexing");
 
-			log.debug("> updateSolrFile > sent to Solr for metadata indexing");
+				// log.debug("> saveFile > querying Solr");
+				// QueryResponse rsp = solrServer.query(new SolrQuery("id:" +
+				// content.getOriginalFilename()));
+				// log.trace(rsp);
 
-			// log.debug("> saveFile > querying Solr");
-			// QueryResponse rsp = solrServer.query(new SolrQuery("id:" +
-			// content.getOriginalFilename()));
-			// log.trace(rsp);
-
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SolrServerException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (SolrServerException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 }

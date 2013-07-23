@@ -59,7 +59,7 @@ public class StudyInfo {
 	public static StudyInfo findStudyInfo(Integer id) {
 		if (id == null)
 			return null;
-		return new StudyInfo(Study.entityManager().find(Study.class, id));
+		return new StudyInfo(Study.findStudy(id));
 	}
 
 	private final Log log = LogFactory.getLog(this.getClass());
@@ -191,6 +191,25 @@ public class StudyInfo {
 	}
 
 	public String toJson() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
+
+		JSONSerializer serializer = new JSONSerializer();
+
+		serializer.exclude("*.class");
+		serializer.exclude("variables.id", "variables.concepts", "variables.fileId", "variables.formEditedNumberVars",
+				"variables.instanceVariables", "variables.operatorInstructions", "variables.otherStatistics",
+				"variables.selectionVariable", "variables.skips", "variables.skips1", "variables.type",
+				"variables.vargroups", "variables.variableType");
+		serializer.exclude("files.content", "files.fullPath", "files.id", "files.instances",
+				"files.selectionVariableItems", "files.size", "files.studies1", "files.title", "files.variables");
+
+		serializer.include("id", "name", "an", "description", "universe", "geographicCoverage", "unitAnalysis");
+		serializer.include("variables.name", "variables.label");
+		serializer.include("files.name", "files.contentType", "files.url", "files.description");
+
+		serializer.transform(new FieldNameTransformer("geo_coverage"), "geographicCoverage");
+		serializer.transform(new FieldNameTransformer("unit_analysis"), "unitAnalysis");
+		// TODO transform the fields name in variables and files
+
+		return "{\"data\":" + serializer.serialize(this) + "}";
 	}
 }

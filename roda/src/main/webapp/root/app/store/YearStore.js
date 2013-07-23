@@ -1,9 +1,9 @@
 
-Ext.define('databrowser.store.CatalogStore', {
+Ext.define('databrowser.store.YearStore', {
     extend: 'Ext.data.Store',
 
     requires: [
-        'databrowser.model.CatalogsModel'
+        'databrowser.model.YearModel'
     ],
 
     constructor: function(cfg) {
@@ -11,11 +11,11 @@ Ext.define('databrowser.store.CatalogStore', {
         cfg = cfg || {};
         me.callParent([Ext.apply({
             autoLoad: true,
-            model: 'databrowser.model.CatalogsModel',
-            storeId: 'CatalogStore',
+            model: 'databrowser.model.YearModel',
+            storeId: 'YearStore',
             proxy: {
                 type: 'ajax',
-                url: 'data/catalogs.json',
+                url: 'data/years.json',
                 reader: {
                     type: 'json',
                     root: 'data'

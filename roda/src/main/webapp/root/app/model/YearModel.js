@@ -1,13 +1,13 @@
-Ext.define('databrowser.model.CatalogsModel', {
+Ext.define('databrowser.model.YearModel', {
     extend: 'Ext.data.Model',
         
     fields: [
              {
-                 name: 'name',
-                 type: 'string'
+                 name: 'year',
+                 type: 'integer'
              },             
              {
-                 name: 'index',
+                 name: 'nrstudies',
                  type: 'integer'
              },
              ],

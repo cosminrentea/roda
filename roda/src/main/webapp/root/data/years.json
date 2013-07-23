@@ -1,67 +1,79 @@
 {
-	data: [{
-		name: 'RODA',
-		level: 0,
-		data: [{			
-				name: '2000',
-				level: 1,
-				data: [{
-						name: 'Catalog1',
-						level: 2,
-						data: [{
-								name: 'Diagnoza calitatii vietii',
-								an: 1999,
-								author: 'ICCV - Institutul de Cercetare a calitatii vietii',
-								description: 'Cercetarea urmareste analizarea calitatii vietii in Romania in anul 2010. Aceasta cuprinde date si concluzii pentru toate domeniile esentiale ale calitatii vietii: conditiile de viata, invatamantul, sanatatea, ocuparea, familia, mediul social si sansele de acces social, mediul politic, conditiile comunitare, starea de spirit a populatiei si preocuparile de timp liber. Obiectivul este de a crea o imagine cat mai completa asupra modului in care populatia Romaniei se raporteaza la diferitele componente ale calitatii vietii.',
-								countries: 'Romania',
-								geo_coverage: 'Mehedinti, Dolj, Valcea',
-								unit_analysis: 'individ',
-								universe: 'Adulti; Regional; Adulti (in varsta de peste 18 ani), cetateni romani cu drept de vot',
-								leaf: true
-								},{
-								name: 'Sondaj de opinie publica', 
-								an: 2000,
-								author: 'ICCV - Institutul de Cercetare a calitatii vietii',
-								description: 'Description of Study 12',
-								countries: 'Romania',
-								geo_coverage: 'Brasov, Bistrita',
-								unit_analysis: 'individ',
-								universe: 'Adulti; Regional; Adulti (in varsta de peste 18 ani), cetateni romani cu drept de vot',
-								leaf: true
-								}]
-						},{
-						name: 'Catalog2',
-						level: 2,
-						data: [{				
-								name: 'Impactul socio-uman al exploatarii lignitului in zona Olteniei', 
-								an: 2002,
-								description: 'Datorita amplorii si duratei ei de aproape patru decenii, activitatea de exploatare a lignitului din zona Olteniei si-a pus pecetea asupra tuturor componentelor calitatii vietii celor care traiesc aici. De aceea, si pentru a realiza o imagine cat mai elocventa a transformarilor produse, colectivul de cercetare si-a propus sa realizeze o diagnoza a calitatii vietii oamenilor din regiune. Problema generala urmarita a fost evaluarea din perspectiva socio-umana a oportunitatii continuarii activitatii miniere in zona.',
-								countries: 'Romania',
-								geo_coverage: 'Mehedinti, Dolj, Valcea',
-								unit_analysis: 'individ',
-								universe: 'Adulti; Regional; Adulti (in varsta de peste 18 ani), cetateni romani cu drept de vot',
-								leaf: true
-								}]
-						}
-				]},
-				{
-				name: '2012',
-				level: 1,
-				data: [{
-						name: 'Catalog3',
-						level: 2,
-						data: [{
-								name: 'Studiu asupra nivelului de educatie al populatiei',
-								an: 2007,
-								description: 'Descrierea studiului asupra nivelului de educatie al populatiei.',
-								countries: 'Romania',
-								geo_coverage: 'Constanta',
-								unit_analysis: 'individ',
-								universe: 'Adulti; Regional; Adulti (in varsta de peste 18 ani), cetateni romani cu drept de vot',
-								leaf: true
-								}]
-						}]
-				}
-			]
-		}]
+    "data":[
+        {
+            "year":1992,
+            "nrstudies":7,
+            "studies":[
+                {
+                    "name":"Diagnoza calitatii vietii",
+                    "an":1992,
+                    "indice":29,
+                    "description":"Cercetarea este un demers sistematic de analiza a variatiei calitatii vietii ce utilizeaza peste 100 de indicatori subiectivi si obiectivi. Domeniile acoperite de acesti indicatori cuprind: venituri, cheltuieli, timp liber, viata politica, conflicte sociale, calitatea mediului, participare la decizii, sanatate personala, locuire, relatii sociale, servicii comunitare etc. Scopul cercetarii este de a descrie si explica perceptiile subiective ale oamenilor asupra calitatii vietii, de a identifica factorii care contribuie la variatia lor precum si urmarirea modului in care aceste perceptii variaza in timp.Pentru anii 1996-1997-1998 s-a realizat cercetare de tip longitudinal, un esantion panel de 717 persoane fiind extras pentru a permite comparatia in timp.",
+                    "countries":"Romania",
+                    "geo_coverage":"Romania",
+                    "unit_analysis":"Persoana, gospodaria",
+                    "univers":"Adulti peste 18 ani"
+                },
+                {
+                    "name":"Ancheta serviciilor publice",
+                    "an":1992,
+                    "indice":30,
+                    "description":"Obiective si ipoteze: a) evaluarea increderii si/sau a satisfactiei oferite de institutiile publice; b) variabilelel care influenteaza opiniile (mediu, varsta, sex, pregatire scolara); c) factori care au determinat aprecierile populatiei.",
+                    "countries":"Romania",
+                    "geo_coverage":"Bucuresti",
+                    "unit_analysis":"Indivizi",
+                    "univers":"Adulti peste 18 ani"
+                },
+                {
+                    "name":"Somajul si valorile psiho-sociale in ocuparea fortei de munca - 1992",
+                    "an":1992,
+                    "indice":32,
+                    "description":"A fost un sondaj ancheta intre somerii din Bucuresti inregistrati la Oficiile Fortei de Munca din Capitala. Esantionul a cuprins 1005 cazuri. Principalele probleme avute in vedere au fost : a) Perceptia statutului propriu de somer; b) Comportamentul de cautare si de asteptare; c) Motivatia muncii si interesul fata de ea; d) Venitul minim actual si venitul minim acceptat; e) Motivatii personale privind pierdera locului de munca; f) Atitudini si aspecte fata de calificarea si recalificarea profesionala a somerilor; g) Atitudinea somerilor fata de Oficiile Fortei de Munca; h) Atitudini fata de desfacerea contractului de munca; i) Efectele somajului asupra cheltuielilor personale; j) Efectele somajului asupra calitatii vietii personale si de familie. Aceste capitole au fost prezentate distinct. S-au putut opera prin analiza tabelelor de contingenta cca. 12 tipologii psiho-sociale de someri",
+                    "countries":"Romania",
+                    "geo_coverage":"Bucuresti",
+                    "unit_analysis":"Indivizi",
+                    "univers":"Adulti peste 18 ani"
+                },
+                {
+                    "name":"Calitatea relatiilor de munca - lideri sindicali - 1992",
+                    "an":1992,
+                    "indice":33,
+                    "description":"Obiectivele cercetarii: a) Diagnoza relatiilor industriale din Romania inainte de marea privatizare; b) Cunoasterea puterii de decizie a managementului si a relatiilor de putere in intreprinderile romanesti; c) Solutii concrete de imbunatatire a democratiei industriale.",
+                    "countries":"Romania",
+                    "geo_coverage":"(a) Orase; (b) Judete; (c) Sectii de votare",
+                    "unit_analysis":"Indivizi",
+                    "univers":"Adulti peste 18 ani ; National"
+                },
+                {
+                    "name":"Viata de familie. Stil de viata, valori familiale - 1992",
+                    "an":1992,
+                    "indice":34,
+                    "description":"Viata de familie. Stil de viata, valori familiale - 1992",
+                    "countries":"Romania",
+                    "geo_coverage":"Romania",
+                    "unit_analysis":""
+                },
+                {
+                    "name":"Experienta de viata a adolescentilor - 1992",
+                    "an":1992,
+                    "indice":35,
+                    "description":"Lucrarea a incercat sa realizeze o descriere a experientei de viata a adolescentilor in termenii satisfactiei generale in viata si a comportamentului suicidar. In functie de coordonatele elaboratepentru o teorie generala a experientei si de particularitatile specifice adolescentilor am derivat ipotezele pentru modelul teoretic al experientei de viata a adolescentilor. Ipoteza 1: Pentru experienta de viata a adolescentilor (competenta lor sociala) factorii explicativi cei mai importanti sunt conditiile materiale de viata si relatiile sociale care concura la socializarea lor (Ipoteza conditiilor socializarii) Ipoteza 2: Experienta de viata a adolescentilor este influentata de prin intermediul unei serii de factori care privesc satisfactia generala in viata di comportamentului defensiv (de tip suicidar) (Ipoteza reactiei fata de mediul). Ipoteza 3: Exista factori explicativi comuni pentru satisfactie si comportamentul suicidar. Chiar daca acesti factori sunt putin cunoscuti este de presupus experienta de viata poate sa fie inteleasa doar printr-o asociere simultana a satisfactiei si comportamentului defensiv.",
+                    "countries":"Romania",
+                    "geo_coverage":"Bucuresti si Sectorul Agricol Ilfov",
+                    "unit_analysis":"Adolescenti",
+                    "universe":"Adolescenti"
+                },
+                {
+                    "name":"Reteaua de observare sociala privind problemele populatiei de rromi - 1992",
+                    "an":1992,
+                    "indice":36,
+                    "description":"Analiza a pornit de la observatia ca populatia de rromi se afla la o rascruce: ea este supusa unor presiuni importante de schimbare a modelelor de viata, atat interne, cat si externe. Obiective care orienteaza analiza sunt: 1) Diagnoza starii actuale a populatiei de rromi; 2) Determinarea acestei stari produse sau asociate cu diferiti factori. Aceste variatii pot sa indicatii asupra directiei schimbarilor probabile, a ritmului si amplorii acestora. In urma anlizei datelor culese din teren s-au elaborat o serie de solutii posibile pentru abordarea acestei probleme.",
+                    "countries":"Romania",
+                    "geo_coverage":"Romania",
+                    "unit_analysis":"Cuplul familial sau parinte din familia monoparentala"
+                },
+                
+            ]
+        }
+    ]
 }

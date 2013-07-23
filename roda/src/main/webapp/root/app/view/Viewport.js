@@ -15,9 +15,5 @@
 
 Ext.define('databrowser.view.Viewport', {
     extend: 'databrowser.view.DataBrowserPanel',
-//  extend: 'databrowser.view.DetailsPanel',
-//  extend: 'databrowser.view.DBCard',
-  
-//    renderTo: Ext.getBody()
     renderTo: 'dbcontainer',
 });

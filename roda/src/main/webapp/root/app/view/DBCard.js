@@ -17,8 +17,13 @@ Ext.define('databrowser.view.DBCard', {
 	},     
     {
         id: 'catalogview',
-        xtype: 'detailgridpanelcls1',
-    },{
+        xtype: 'catalogview',
+    },
+    {
+        id: 'yearview',
+        xtype: 'yearview',
+    },    
+    {
         id: 'detailspanel',
         xtype: 'detailspanel',    
     },{
@@ -27,6 +32,9 @@ Ext.define('databrowser.view.DBCard', {
     },{
         id: 'seriesview',
         xtype: 'seriesview',
+    }, {
+        id: 'studyseriesview',
+        xtype: 'studyseriesview',    	
     }
     
     ],

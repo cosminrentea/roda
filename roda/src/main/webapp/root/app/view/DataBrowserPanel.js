@@ -21,8 +21,8 @@ Ext.define('databrowser.view.DataBrowserPanel', {
 //    ],
 
     frame: true,
-    height: 671,
-    width: 900,
+    height: 700,
+    width: 820,
     layout: {
         align: 'stretch',
         type: 'hbox'

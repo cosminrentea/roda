@@ -20,14 +20,14 @@ body {
 }
 
 #wrapper {
-	width:1200px;
+	width:1000px;
 	min-width: 800px;
-	max-width: 1200px;
+	max-width: 1000px;
 	margin-right: auto;
 	margin-left: auto;
 
 	/* fix max-width incompatibility in IE6 */
-	width:expression(document.body.clientWidth > 1200? "1200px": "auto" );
+	width:expression(document.body.clientWidth > 1000? "1000px": "auto" );
 	
 	overflow:hidden;
 	display:block;
@@ -45,7 +45,7 @@ body {
 	position:relative;
 	float:left;  	
 	left:0px;
-	width:240px;
+	width:300px;
 	margin-right:15px;
 }
 
@@ -68,12 +68,10 @@ body {
 }
 
 /* Original Green color: #648C1D */
-/* RODA Green: #1f5e32 */
-/* RODA reversed Green-Blue: #1f325e */
-/* extjs dark blue: 416da3 */
+
 #menu h2 {
 	color: #fff;
-	background: #416da3;
+	background: #1b5f30;
 	text-transform: uppercase;
 	font-weight:bold;
 	font-size: 12px;
@@ -86,13 +84,9 @@ body {
 	padding: 2px 12px;
 }
 
-/* RODA Green: #1b5f30 */
-/* RODA orange: #f57526 */
-/* Roo background: fff */
-/* extjs background: deecfd */
 #menu a:hover {
-	color: #f57526;
-	background: #deecfd;
+	color: #1b5f30;
+	background: #fff;
 }
 
 #footer {
@@ -106,9 +100,7 @@ body {
 	float:left;
 }
 
-/* extjs dark blue: 15498b */
-/* Roo original green: 7db223 */
-#footer a:link {color: #15498b;}
+#footer a:link {color: #7db223;}
 
 .quicklinks {
 	clear:both; 
@@ -158,13 +150,13 @@ div .box {
 
 /* menu elements*/
 
-a.menu, a.menu:link, a.menu:visited {display:block; width:300px; height:25px;} 
+a.menu, a.menu:link, a.menu:visited {display:block; width:150px; height:25px;} 
 	
 /* text styles */
 
 h1,h2,h3 {
 	font-family: Helvetica, sans-serif;
-	color: #15498b;
+	color: #7db223;
 }
 
 h1 {
@@ -214,7 +206,7 @@ tr:nth-child(even) {
 }
 
 a:link {
-	color: #15498b;
+	color: #7db223;
 }
 
 a:hover {
@@ -222,11 +214,11 @@ a:hover {
 }
 
 a:active {
-	color: #15498b;
+	color: #7db223;
 }
 
 a:visited {
-	color: #15498b;
+	color: #7db223;
 }
 
 li {

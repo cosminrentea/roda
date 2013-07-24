@@ -14,9 +14,8 @@
                             "type":"Sts",
                             "leaf":true,
                             "an":1990,
-                            "indice":121
-                        },
-                        
+                            "indice":38
+                        }                
                     ]
                 },
                 {
@@ -29,30 +28,29 @@
                             "leaf":true,
                             "type":"St",
                             "an":1991,
-                            "indice":121
+                            "indice":36
                         },
                         {
                             "name":"Mod de viata. Stil de viata ",
                             "type":"St",
                             "leaf":true,
                             "an":1991,                            
-                            "indice":121
+                            "indice":34
                         },
                         {
                             "name":"Diagnoza calitatii vietii",
                             "type":"Sts",
                             "leaf":true,
                             "an":1991,                            
-                            "indice":121
+                            "indice":35
                         },
                         {
                             "name":"Nivel de trai. Saracie",
                             "type":"St",
                             "leaf":true,
                             "an":1991,                            
-                            "indice":121
-                        },
-                        
+                            "indice":37
+                        }     
                     ]
                 },
                 {
@@ -65,51 +63,50 @@
                             "type":"Sts",
                             "leaf":true,
                             "an":1992,                            
-                            "indice":121
+                            "indice":26
                         },
                         {
                             "name":"Ancheta serviciilor publice ",
                             "type":"Sts",
                             "leaf":true,
                             "an":1992,                            
-                            "indice":121
+                            "indice":27
                         },
                         {
                             "name":"Somajul si valorile psiho-sociale in ocuparea fortei de munca ",
                             "type":"St",
                             "leaf":true,
                             "an":1992,                            
-                            "indice":121
+                            "indice":29
                         },
                         {
                             "name":"Calitatea relatiilor de munca - lideri sindicali ",
                             "type":"St",
                             "leaf":true,
                             "an":1992,                            
-                            "indice":121
+                            "indice":30
                         },
                         {
                             "name":"Viata de familie. Stil de viata, valori familiale ",
                             "type":"St",
                             "leaf":true,
                             "an":1992,                            
-                            "indice":121
+                            "indice":31
                         },
                         {
                             "name":"Experienta de viata a adolescentilor ",
                             "type":"St",
                             "leaf":true,
                             "an":1992,                            
-                            "indice":121
+                            "indice":32
                         },
                         {
                             "name":"Reteaua de observare sociala privind problemele populatiei de rromi ",
                             "type":"St",
                             "leaf":true,
                             "an":1992,                            
-                            "indice":121
-                        },
-                        
+                            "indice":33
+                        }                        
                     ]
                 },
                 {
@@ -122,58 +119,57 @@
                             "type":"Sts",
                             "leaf":true,
                             "an":1993,                            
-                            "indice":121
+                            "indice":19
                         },
                         {
                             "name":"Atitudinea fata de munca ",
                             "type":"St",
                             "leaf":true,
                             "an":1993,                            
-                            "indice":121
+                            "indice":20
                         },
                         {
                             "name":"Saracie - populatie ",
                             "type":"St",
                             "leaf":true,
                             "an":1993,                            
-                            "indice":121
+                            "indice":21
                         },
                         {
                             "name":"Saracie - someri ",
                             "type":"St",
                             "leaf":true,
                             "an":1993,                            
-                            "indice":121
+                            "indice":22
                         },
                         {
                             "name":"Satul romanesc in perioada de tranzitie ",
                             "type":"St",
                             "leaf":true,
                             "an":1993,                            
-                            "indice":121
+                            "indice":23
                         },
                         {
                             "name":"Atitudinea fata de reforma ",
                             "type":"St",
                             "leaf":true,
                             "an":1993,                            
-                            "indice":121
+                            "indice":24
                         },
                         {
                             "name":"Fenomenul lecturii in perioada de tranzitie ",
                             "type":"St",
                             "leaf":true,
                             "an":1993,                            
-                            "indice":121
+                            "indice":25
                         },
                         {
                             "name":"Valori fundamentale europene ",
                             "type":"St",
                             "leaf":true,
                             "an":1993,                            
-                            "indice":121
-                        },
-                        
+                            "indice":28
+                        }
                     ]
                 },
                 {
@@ -186,51 +182,50 @@
                             "type":"Sts",
                             "leaf":true,
                             "an":1994,                            
-                            "indice":121
+                            "indice":12
                         },
                         {
                             "name":"Calitatea vietii populatiei rurale din Rezervatia Biosferei Delta Dunarii ",
                             "type":"St",
                             "leaf":true,
                             "an":1994,                            
-                            "indice":121
+                            "indice":13
                         },
                         {
                             "name":"Impactul socio-uman al exploatarii lignitului in zona Olteniei ",
                             "type":"St",
                             "leaf":true,
                             "an":1994,                            
-                            "indice":121
+                            "indice":14
                         },
                         {
                             "name":"Diagnoza necesarului de formare manageriala. Studenti ",
                             "type":"St",
                             "leaf":true,
                             "an":1994,                            
-                            "indice":121
+                            "indice":15
                         },
                         {
                             "name":"Tineretul in Romania actuala ",
                             "type":"St",
                             "leaf":true,
                             "an":1994,                            
-                            "indice":121
+                            "indice":16
                         },
                         {
                             "name":"Perceptia populatiei privind serviciile sociale si autoritatile publice ",
                             "type":"St",
                             "leaf":true,
                             "an":1994,                            
-                            "indice":121
+                            "indice":17
                         },
                         {
                             "name":"Diagnoza necesarului de formare manageriala. Manageri ",
                             "type":"St",
                             "leaf":true,
                             "an":1994,                            
-                            "indice":121
-                        },
-                        
+                            "indice":18
+                        } 
                     ]
                 },
                 {
@@ -243,23 +238,22 @@
                             "type":"St",
                             "leaf":true,
                             "an":1995,                            
-                            "indice":121
+                            "indice":4
                         },
                         {
                             "name":"Diagnoza calitatii vietii ",
                             "type":"Sts",
                             "leaf":true,
                             "an":1995,                            
-                            "indice":121
+                            "indice":11
                         },
                         {
                             "name":"Ancheta serviciilor publice ",
                             "type":"Sts",
                             "leaf":true,
                             "an":1995,                            
-                            "indice":121
-                        },
-                        
+                            "indice":43
+                        }
                     ]
                 },
                 {
@@ -272,23 +266,22 @@
                             "type":"Sts",
                             "leaf":true,
                             "an":1996,  
-                            "indice":121
+                            "indice":9
                         },
                         {
                             "name":"Romania 10% - Evaluarea sistemului de ajutor social si analiza segmentului cel mai sarac in perioada de tranzitie ",
                             "type":"St",
                             "leaf":true,
                             "an":1996,  
-                            "indice":121
+                            "indice":10
                         },
                         {
                             "name":"Ancheta serviciilor publice ",
                             "type":"Sts",
                             "leaf":true,
                             "an":1996,  
-                            "indice":121
-                        },
-                        
+                            "indice":44
+                        }
                     ]
                 },
                 {
@@ -301,21 +294,21 @@
                             "type":"St",
                             "leaf":true,
                             "an":1997,                              
-                            "indice":121
+                            "indice":5
                         },
                         {
                             "name":"Ancheta serviciilor publice",
                             "type":"Sts",
                             "leaf":true,
                             "an":1997,                              
-                            "indice":121
+                            "indice":6
                         },
                         {
                             "name":"Diagnoza calitatii vietii",
                             "type":"Sts",
                             "leaf":true,
                             "an":1997,                              
-                            "indice":121
+                            "indice":7
                         }
                     ]
                 },
@@ -325,55 +318,47 @@
                     "type":"Y",
                     "data":[
                         {
-                            "name":"Sondaj de opinie publica � martie",
+                            "name":"Sondaj de opinie publica - martie",
                             "type":"St",
                             "leaf":true,
                             "an":1998,                              
-                            "indice":121
+                            "indice":3
                         },
                         {
                             "name":"Sondaj de opinie publica  - septembrie",
                             "type":"St",
                             "leaf":true,
                             "an":1998,                            
-                            "indice":121
+                            "indice":39
                         },
                         {
                             "name":"Probleme sociale si nivel de trai ",
                             "type":"St",
                             "leaf":true,
                             "an":1998,                            
-                            "indice":121
-                        },
-                        {
-                            "name":"Reteaua de observare sociala privind problemele populatiei de rromi ",
-                            "type":"St",
-                            "leaf":true,
-                            "an":1998,                            
-                            "indice":121
+                            "indice":41
                         },
                         {
                             "name":"Diagnoza calitatii vietii",
                             "type":"Sts",
                             "leaf":true,
                             "an":1998,                            
-                            "indice":121
+                            "indice":42
                         },
                         {
                             "name":"Ancheta serviciilor publice",
                             "type":"Sts",
                             "leaf":true,
                             "an":1998,                            
-                            "indice":121
+                            "indice":45
                         },
                         {
                             "name":"Indicatori de dezvoltare a satelor romanesti",
                             "type":"St",
                             "leaf":true,
                             "an":1998,                            
-                            "indice":121
-                        },
-                        
+                            "indice":47
+                        }
                     ]
                 },
                 {
@@ -386,30 +371,29 @@
                             "type":"Sts",
                             "leaf":true,
                             "an":1999,                            
-                            "indice":121
+                            "indice":1
                         },
                         {
                             "name":"Capital social si antreprenoriat in comunitatile rurale din Romania. Sate muntenesti",
                             "type":"St",
                             "leaf":true,
                             "an":1999,                            
-                            "indice":121
+                            "indice":2
                         },
                         {
                             "name":"Sondaj de opinie publica - mai",
                             "type":"St",
                             "leaf":true,
                             "an":1999,                            
-                            "indice":121
+                            "indice":40
                         },
                         {
                             "name":"Valori Europene - Romania",
                             "type":"St",
                             "leaf":true,
                             "an":1999,                            
-                            "indice":121
+                            "indice":46
                         },
-                        
                     ]
                 },
                 {
@@ -422,9 +406,8 @@
                             "type":"St",
                             "leaf":true,
                             "an":2003,                            
-                            "indice":121
+                            "indice":8
                         },
-                        
                     ]
                 },
                 {
@@ -437,14 +420,14 @@
                             "type":"St",
                             "leaf":true,
                             "an":2004,
-                            "indice":121
+                            "indice":48
                         },
                         {
                             "name":"Studiul Sanatatii Reproducerii - Barbati - Romania",
                             "type":"St",
                             "leaf":true,
                             "an":2004,                            
-                            "indice":121
+                            "indice":49
                         },
                         
                     ]

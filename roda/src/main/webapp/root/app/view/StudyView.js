@@ -38,7 +38,7 @@ Ext.define('databrowser.view.StudyView', {
     		  callback: function(records, operation, success){
     		    if(success){
     		    	var rec = sStore.first();
-   		    	console.log(rec.filesStore);
+ //  		    	console.log(rec.filesStore);
     		    	dtab.update(records[0].data);
     		    	variablesgrid.getView().bindStore(rec.variablesStore);
     		    	filestab.bindStore(rec.filesStore);

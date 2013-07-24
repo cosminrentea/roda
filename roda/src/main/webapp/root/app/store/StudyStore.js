@@ -13,8 +13,10 @@ Ext.define('databrowser.store.StudyStore', {
             model: 'databrowser.model.StudyModel',
             storeId: 'StudyStore',
             proxy: {
-                type: 'ajax',
-                url: 'data/study.json',
+                type: 'rest',
+                url: '../../studyinfo',  
+                appendId: true,
+//                url: 'data/study.json',
                 reader: {
                     type: 'json',
                     root: 'data'

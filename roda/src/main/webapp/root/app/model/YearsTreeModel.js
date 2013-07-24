@@ -9,6 +9,9 @@ fields : [ {
 }, {
 	name : 'year',
 	type : 'integer'
+}, {
+	name : 'indice',
+	type : 'integer'
 },
 {
 	name : 'children'

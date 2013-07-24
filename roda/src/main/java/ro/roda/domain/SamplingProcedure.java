@@ -19,6 +19,7 @@ import javax.persistence.PostPersist;
 import javax.persistence.PostUpdate;
 import javax.persistence.PreRemove;
 import javax.persistence.Table;
+import javax.persistence.TypedQuery;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -155,33 +156,61 @@ public class SamplingProcedure {
 	}
 
 	/**
-	 * Verifica existenta unei proceduri de esantionare in baza de date; in caz
-	 * afirmativ, returneaza obiectul corespunzator, altfel, metoda introduce
-	 * procedura de esantionare in baza de date si apoi returneaza obiectul
-	 * corespunzator. Verificarea existentei in baza de date se realizeaza fie
-	 * dupa valoarea identificatorului, fie dupa un criteriu de unicitate.
+	 * Verifica existenta unui obiect de tip <code>SamplingProcedure</code>
+	 * (procedura de esantionare) in baza de date; in caz afirmativ il
+	 * returneaza, altfel, metoda il introduce in baza de date si apoi il
+	 * returneaza. Verificarea existentei in baza de date se realizeaza fie dupa
+	 * identificator, fie dupa un criteriu de unicitate.
 	 * 
 	 * <p>
 	 * Criterii de unicitate:
 	 * <ul>
-	 * <li>id
 	 * <li>name
-	 * <ul>
+	 * </ul>
 	 * 
 	 * <p>
 	 * 
 	 * @param id
-	 *            - identificatorul procedurii de esantionare.
+	 *            - identificatorul procedurii.
 	 * @param name
-	 *            - numele procedurii de esantionare.
+	 *            - numele procedurii.
 	 * @param description
-	 *            - descrierea procedurii de esantionare.
+	 *            - descrierea procedurii.
 	 * @return
 	 */
 	public static SamplingProcedure checkSamplingProcedure(Integer id,
 			String name, String description) {
-		// TODO
-		return null;
+		SamplingProcedure object;
+
+		if (id != null) {
+			object = findSamplingProcedure(id);
+
+			if (object != null) {
+				return object;
+			}
+		}
+
+		List<SamplingProcedure> queryResult;
+
+		if (name != null) {
+			TypedQuery<SamplingProcedure> query = entityManager()
+					.createQuery(
+							"SELECT o FROM SamplingProcedure o WHERE lower(o.name) = lower(:name)",
+							SamplingProcedure.class);
+			query.setParameter("name", name);
+
+			queryResult = query.getResultList();
+			if (queryResult.size() > 0) {
+				return queryResult.get(0);
+			}
+		}
+
+		object = new SamplingProcedure();
+		object.name = name;
+		object.description = description;
+		object.persist();
+
+		return object;
 	}
 
 	@Column(name = "description", columnDefinition = "text")
@@ -203,7 +232,7 @@ public class SamplingProcedure {
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	@Autowired(required=false)
+	@Autowired(required = false)
 	transient SolrServer solrServer;
 
 	@Transactional
@@ -299,5 +328,12 @@ public class SamplingProcedure {
 	@PreRemove
 	private void preRemove() {
 		deleteIndex(this);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return (id != null && id.equals(((SamplingProcedure) obj).id))
+				|| (name != null && name
+						.equalsIgnoreCase(((SamplingProcedure) obj).name));
 	}
 }

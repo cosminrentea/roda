@@ -17,6 +17,7 @@ import javax.persistence.PostPersist;
 import javax.persistence.PostUpdate;
 import javax.persistence.PreRemove;
 import javax.persistence.Table;
+import javax.persistence.TypedQuery;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -159,33 +160,60 @@ public class UserSettingGroup {
 	}
 
 	/**
-	 * Verifica existenta unui grup de setari de utilizator in baza de date; in
-	 * caz afirmativ, returneaza obiectul corespunzator, altfel, metoda
-	 * introduce grupul de setari in baza de date si apoi returneaza obiectul
-	 * corespunzator. Verificarea existentei in baza de date se realizeaza fie
-	 * dupa valoarea identificatorului, fie dupa un criteriu de unicitate.
+	 * Verifica existenta unui obiect de tip <code>UserSettingGroup</code> (grup
+	 * de setari de utilizator) in baza de date; in caz afirmativ il returneaza,
+	 * altfel, metoda il introduce in baza de date si apoi il returneaza.
+	 * Verificarea existentei in baza de date se realizeaza fie dupa
+	 * identificator, fie dupa un criteriu de unicitate.
 	 * 
 	 * <p>
 	 * Criterii de unicitate:
 	 * <ul>
-	 * <li>id
 	 * <li>name
-	 * <ul>
+	 * </ul>
 	 * 
 	 * <p>
 	 * 
 	 * @param id
-	 *            - identificatorul grupului de setari.
+	 *            - identificatorul grupului.
 	 * @param name
-	 *            - numele grupului de setari.
+	 *            - numele grupului.
 	 * @param description
-	 *            - descrierea grupului de setari.
+	 *            - descrierea grupului.
 	 * @return
 	 */
 	public static UserSettingGroup checkUserSettingGroup(Integer id,
 			String name, String description) {
-		// TODO
-		return null;
+		UserSettingGroup object;
+
+		if (id != null) {
+			object = findUserSettingGroup(id);
+
+			if (object != null) {
+				return object;
+			}
+		}
+
+		List<UserSettingGroup> queryResult;
+
+		if (name != null) {
+			TypedQuery<UserSettingGroup> query = entityManager().createQuery(
+					"SELECT o FROM UserSettingGroup o WHERE o.name = :name",
+					UserSettingGroup.class);
+			query.setParameter("name", name);
+
+			queryResult = query.getResultList();
+			if (queryResult.size() > 0) {
+				return queryResult.get(0);
+			}
+		}
+
+		object = new UserSettingGroup();
+		object.name = name;
+		object.description = description;
+		object.persist();
+
+		return object;
 	}
 
 	@Column(name = "description", columnDefinition = "text")
@@ -206,7 +234,7 @@ public class UserSettingGroup {
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	@Autowired(required=false)
+	@Autowired(required = false)
 	transient SolrServer solrServer;
 
 	@Transactional
@@ -302,5 +330,12 @@ public class UserSettingGroup {
 	@PreRemove
 	private void preRemove() {
 		deleteIndex(this);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return (id != null && id.equals(((UserSettingGroup) obj).id))
+				|| (name != null && name
+						.equalsIgnoreCase(((UserSettingGroup) obj).name));
 	}
 }

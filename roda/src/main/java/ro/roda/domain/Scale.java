@@ -18,6 +18,7 @@ import javax.persistence.PostPersist;
 import javax.persistence.PostUpdate;
 import javax.persistence.PreRemove;
 import javax.persistence.Table;
+import javax.persistence.TypedQuery;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -157,36 +158,67 @@ public class Scale {
 	}
 
 	/**
-	 * Verifica existenta unui element de tip scala in baza de date; daca
-	 * exista, returneaza obiectul corespunzator, altfel, metoda introduce
-	 * elementul in baza de date si apoi returneaza obiectul corespunzator.
-	 * Verificarea existentei in baza de date se realizeaza fie dupa valoarea
-	 * identificatorului, fie dupa un criteriu de unicitate.
+	 * Verifica existenta unui obiect de tip <code>Scale</code> (scala) in baza
+	 * de date; in caz afirmativ il returneaza, altfel, metoda il introduce in
+	 * baza de date si apoi il returneaza. Verificarea existentei in baza de
+	 * date se realizeaza fie dupa identificator, fie dupa un criteriu de
+	 * unicitate.
 	 * 
 	 * <p>
 	 * Criterii de unicitate:
 	 * <ul>
-	 * <li>itemId
-	 * <ul>
+	 * <li>item
+	 * </ul>
 	 * 
 	 * <p>
 	 * 
-	 * @param itemId
+	 * @param id
 	 *            - identificatorul scalei.
+	 * @param item
+	 *            - elementul din care deriva scala.
 	 * @param minValueId
-	 *            - identificatorul elementului de tip valoare reprezentand
-	 *            partea inferioara a scalei.
+	 *            - elementul de tip valoare reprezentand partea inferioara a
+	 *            scalei.
 	 * @param maxValueId
-	 *            - identificatorul elementului de tip valoare reprezentand
-	 *            partea superioara a scalei.
+	 *            - elementul de tip valoare reprezentand partea superioara a
+	 *            scalei.
 	 * @param units
 	 *            - unitatea scalei.
 	 * @return
 	 */
-	public static Scale checkScale(Integer itemId, Integer minValueId,
-			Integer maxValueId, Integer units) {
-		// TODO
-		return null;
+	public static Scale checkScale(Long id, Item item, Value minValueId,
+			Value maxValueId, Short units) {
+		Scale object;
+
+		if (id != null) {
+			object = findScale(id);
+
+			if (object != null) {
+				return object;
+			}
+		}
+
+		List<Scale> queryResult;
+
+		if (item != null) {
+			TypedQuery<Scale> query = entityManager().createQuery(
+					"SELECT o FROM Scale o WHERE o.item = :item", Scale.class);
+			query.setParameter("item", item);
+
+			queryResult = query.getResultList();
+			if (queryResult.size() > 0) {
+				return queryResult.get(0);
+			}
+		}
+
+		object = new Scale();
+		object.item = item;
+		object.minValueId = minValueId;
+		object.maxValueId = maxValueId;
+		object.units = units;
+		object.persist();
+
+		return object;
 	}
 
 	@OneToOne
@@ -213,7 +245,7 @@ public class Scale {
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	@Autowired(required=false)
+	@Autowired(required = false)
 	transient SolrServer solrServer;
 
 	@Transactional
@@ -317,5 +349,11 @@ public class Scale {
 	@PreRemove
 	private void preRemove() {
 		deleteIndex(this);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return (itemId != null && itemId.equals(((Scale) obj).itemId))
+				|| (item != null && item.equals(((Scale) obj).item));
 	}
 }

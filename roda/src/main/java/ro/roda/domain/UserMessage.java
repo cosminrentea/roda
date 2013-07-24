@@ -157,17 +157,16 @@ public class UserMessage {
 	}
 
 	/**
-	 * Verifica existenta unui mesaj trimis intre utilizatori in baza de date;
-	 * in caz afirmativ, returneaza obiectul corespunzator, altfel, metoda
-	 * introduce mesajul in baza de date si apoi returneaza obiectul
-	 * corespunzator. Verificarea existentei in baza de date se realizeaza fie
-	 * dupa valoarea identificatorului, fie dupa un criteriu de unicitate.
+	 * Verifica existenta unui obiect de tip <code>UserMessage</code> (mesaj
+	 * trimis intre utilizatori) in baza de date; in caz afirmativ il
+	 * returneaza, altfel, metoda il introduce in baza de date si apoi il
+	 * returneaza. Verificarea existentei in baza de date se realizeaza fie dupa
+	 * identificator, fie dupa un criteriu de unicitate.
 	 * 
 	 * <p>
 	 * Criterii de unicitate:
 	 * <ul>
-	 * <li>id
-	 * <ul>
+	 * </ul>
 	 * 
 	 * <p>
 	 * 
@@ -175,16 +174,31 @@ public class UserMessage {
 	 *            - identificatorul mesajului.
 	 * @param message
 	 *            - corpul mesajului.
-	 * @param sourceId
-	 *            - identificatorul utilizatorului care a trimis mesajul.
-	 * @param destinationId
-	 *            - identificatorul utilizatorului care a primit mesajul.
+	 * @param fromUserId
+	 *            - utilizatorul care a trimis mesajul.
+	 * @param toUserId
+	 *            - utilizatorul care a primit mesajul.
 	 * @return
 	 */
 	public static UserMessage checkUserMessage(Integer id, String message,
-			Integer sourceId, Integer destinationId) {
-		// TODO
-		return null;
+			Users fromUserId, Users toUserId) {
+		UserMessage object;
+
+		if (id != null) {
+			object = findUserMessage(id);
+
+			if (object != null) {
+				return object;
+			}
+		}
+
+		object = new UserMessage();
+		object.message = message;
+		object.fromUserId = fromUserId;
+		object.toUserId = toUserId;
+		object.persist();
+
+		return object;
 	}
 
 	@ManyToOne
@@ -207,7 +221,7 @@ public class UserMessage {
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	@Autowired(required=false)
+	@Autowired(required = false)
 	transient SolrServer solrServer;
 
 	@Transactional
@@ -302,5 +316,10 @@ public class UserMessage {
 	@PreRemove
 	private void preRemove() {
 		deleteIndex(this);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return id != null && id.equals(((UserMessage) obj).id);
 	}
 }

@@ -19,6 +19,7 @@ import javax.persistence.PostPersist;
 import javax.persistence.PostUpdate;
 import javax.persistence.PreRemove;
 import javax.persistence.Table;
+import javax.persistence.TypedQuery;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -166,32 +167,64 @@ public class SelectionVariable {
 	}
 
 	/**
-	 * Verifica existenta unei variabile de tip selectie in baza de date; daca
-	 * exista, returneaza obiectul corespunzator, altfel, metoda introduce
-	 * variabila in baza de date si apoi returneaza obiectul corespunzator.
-	 * Verificarea existentei in baza de date se realizeaza fie dupa valoarea
-	 * identificatorului, fie dupa un criteriu de unicitate.
+	 * Verifica existenta unui obiect de tip <code>SelectionVariable</code>
+	 * (variabila de selectie) in baza de date; in caz afirmativ il returneaza,
+	 * altfel, metoda il introduce in baza de date si apoi il returneaza.
+	 * Verificarea existentei in baza de date se realizeaza fie dupa
+	 * identificator, fie dupa un criteriu de unicitate.
 	 * 
 	 * <p>
 	 * Criterii de unicitate:
 	 * <ul>
-	 * <li>variableId
-	 * <ul>
+	 * <li>variable
+	 * </ul>
 	 * 
 	 * <p>
 	 * 
-	 * @param variableId
+	 * @param id
 	 *            - identificatorul variabilei.
+	 * @param variable
+	 *            - variabila din care deriva aceasta variabila.
 	 * @param minCount
 	 *            - numarul minim de elemente ce pot fi selectate.
 	 * @param maxCount
 	 *            - numarul maxim de elemente ce pot fi selectate.
 	 * @return
 	 */
-	public static SelectionVariable checkSelectionVariable(Integer variableId,
-			Integer minCount, Integer maxCount) {
-		// TODO
-		return null;
+	public static SelectionVariable checkSelectionVariable(Long id,
+			Variable variable, Short minCount, Short maxCount) {
+		SelectionVariable object;
+
+		if (id != null) {
+			object = findSelectionVariable(id);
+
+			if (object != null) {
+				return object;
+			}
+		}
+
+		List<SelectionVariable> queryResult;
+
+		if (variable != null) {
+			TypedQuery<SelectionVariable> query = entityManager()
+					.createQuery(
+							"SELECT o FROM SelectionVariable o WHERE o.variable = :variable",
+							SelectionVariable.class);
+			query.setParameter("variable", variable);
+
+			queryResult = query.getResultList();
+			if (queryResult.size() > 0) {
+				return queryResult.get(0);
+			}
+		}
+
+		object = new SelectionVariable();
+		object.variable = variable;
+		object.minCount = minCount;
+		object.maxCount = maxCount;
+		object.persist();
+
+		return object;
 	}
 
 	@Column(name = "max_count", columnDefinition = "int2")
@@ -217,7 +250,7 @@ public class SelectionVariable {
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	@Autowired(required=false)
+	@Autowired(required = false)
 	transient SolrServer solrServer;
 
 	@Transactional
@@ -323,5 +356,13 @@ public class SelectionVariable {
 	@PreRemove
 	private void preRemove() {
 		deleteIndex(this);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return (variableId != null && variableId
+				.equals(((SelectionVariable) obj).variableId))
+				|| (variable != null && variable
+						.equals(((SelectionVariable) obj).variable));
 	}
 }

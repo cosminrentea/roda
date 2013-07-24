@@ -148,38 +148,54 @@ public class Person {
 	}
 
 	/**
-	 * Verifica existenta unei persoane in baza de date; in caz afirmativ,
-	 * returneaza obiectul corespunzator, altfel, metoda introduce persoana in
-	 * baza de date si apoi returneaza obiectul corespunzator. Verificarea
-	 * existentei in baza de date se realizeaza fie dupa valoarea
-	 * identificatorului, fie dupa un criteriu de unicitate.
+	 * Verifica existenta unui obiect de tip <code>Person</code> (persoana) in
+	 * baza de date; in caz afirmativ il returneaza, altfel, metoda il introduce
+	 * in baza de date si apoi il returneaza. Verificarea existentei in baza de
+	 * date se realizeaza fie dupa identificator, fie dupa un criteriu de
+	 * unicitate.
 	 * 
 	 * <p>
 	 * Criterii de unicitate:
 	 * <ul>
-	 * <li>id
-	 * <ul>
+	 * </ul>
 	 * 
 	 * <p>
 	 * 
 	 * @param id
 	 *            - identificatorul persoanei.
-	 * @param fName
+	 * @param fname
 	 *            - primul nume al persoanei.
-	 * @param mName
+	 * @param mname
 	 *            - al doilea nume al persoanei.
-	 * @param lName
+	 * @param lname
 	 *            - ultimul nume al persoanei.
 	 * @param prefixId
-	 *            - identificatorul prefixului persoanei.
+	 *            - prefixul persoanei.
 	 * @param sufixId
-	 *            - identificatorul sufixului persoanei.
+	 *            - sufixul persoanei.
 	 * @return
 	 */
-	public static Person checkPerson(Integer id, String fName, String mName,
-			String lName, Integer prefixId, Integer sufixId) {
-		// TODO
-		return null;
+	public static Person checkPerson(Integer id, String fname, String mname,
+			String lname, Prefix prefixId, Suffix suffixId) {
+		Person object;
+
+		if (id != null) {
+			object = findPerson(id);
+
+			if (object != null) {
+				return object;
+			}
+		}
+
+		object = new Person();
+		object.fname = fname;
+		object.mname = mname;
+		object.lname = lname;
+		object.prefixId = prefixId;
+		object.suffixId = suffixId;
+		object.persist();
+
+		return object;
 	}
 
 	@Column(name = "fname", columnDefinition = "varchar", length = 100)
@@ -236,7 +252,7 @@ public class Person {
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	@Autowired(required=false)
+	@Autowired(required = false)
 	transient SolrServer solrServer;
 
 	@Transactional
@@ -244,16 +260,6 @@ public class Person {
 		if (this.entityManager == null)
 			this.entityManager = entityManager();
 		this.entityManager.clear();
-	}
-
-	public boolean equals(Object o) {
-		boolean r = false;
-		if (o instanceof Person) {
-			Person p = (Person) o;
-			r = this.getFname().equalsIgnoreCase(p.getFname())
-					&& this.getLname().equalsIgnoreCase(p.getLname());
-		}
-		return r;
 	}
 
 	@Transactional
@@ -429,5 +435,10 @@ public class Person {
 	@PreRemove
 	private void preRemove() {
 		deleteIndex(this);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return id != null && id.equals(((Person) obj).id);
 	}
 }

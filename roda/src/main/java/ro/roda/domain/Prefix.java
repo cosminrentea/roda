@@ -17,6 +17,7 @@ import javax.persistence.PostPersist;
 import javax.persistence.PostUpdate;
 import javax.persistence.PreRemove;
 import javax.persistence.Table;
+import javax.persistence.TypedQuery;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -148,30 +149,57 @@ public class Prefix {
 	}
 
 	/**
-	 * Verifica existenta unui prefix de persoana in baza de date; in caz
-	 * afirmativ, returneaza obiectul corespunzator, altfel, metoda introduce
-	 * prefixul de persoana in baza de date si apoi returneaza obiectul
-	 * corespunzator. Verificarea existentei in baza de date se realizeaza fie
-	 * dupa valoarea identificatorului, fie dupa un criteriu de unicitate.
+	 * Verifica existenta unui obiect de tip <code>Prefix</code> (prefix de
+	 * persoana) in baza de date; in caz afirmativ il returneaza, altfel, metoda
+	 * il introduce in baza de date si apoi il returneaza. Verificarea
+	 * existentei in baza de date se realizeaza fie dupa identificator, fie dupa
+	 * un criteriu de unicitate.
 	 * 
 	 * <p>
 	 * Criterii de unicitate:
 	 * <ul>
-	 * <li>id
 	 * <li>name
-	 * <ul>
+	 * </ul>
 	 * 
 	 * <p>
 	 * 
 	 * @param id
-	 *            - identificatorul prefixului de persoana.
+	 *            - identificatorul prefixului.
 	 * @param name
-	 *            - numele prefixului de persoana (ex: dl = domnul).
+	 *            - numele prefixului (exemplu: dl = domnul).
 	 * @return
 	 */
 	public static Prefix checkPrefix(Integer id, String name) {
-		// TODO
-		return null;
+		Prefix object;
+
+		if (id != null) {
+			object = findPrefix(id);
+
+			if (object != null) {
+				return object;
+			}
+		}
+
+		List<Prefix> queryResult;
+
+		if (name != null) {
+			TypedQuery<Prefix> query = entityManager()
+					.createQuery(
+							"SELECT o FROM Prefix o WHERE lower(o.name) = lower(:name)",
+							Prefix.class);
+			query.setParameter("name", name);
+
+			queryResult = query.getResultList();
+			if (queryResult.size() > 0) {
+				return queryResult.get(0);
+			}
+		}
+
+		object = new Prefix();
+		object.name = name;
+		object.persist();
+
+		return object;
 	}
 
 	@Id
@@ -189,7 +217,7 @@ public class Prefix {
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	@Autowired(required=false)
+	@Autowired(required = false)
 	transient SolrServer solrServer;
 
 	@Transactional
@@ -276,5 +304,11 @@ public class Prefix {
 	@PreRemove
 	private void preRemove() {
 		deleteIndex(this);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return (id != null && id.equals(((Prefix) obj).id))
+				|| (name != null && name.equalsIgnoreCase(((Prefix) obj).name));
 	}
 }

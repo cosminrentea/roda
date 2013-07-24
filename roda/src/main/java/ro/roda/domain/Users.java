@@ -199,35 +199,63 @@ public class Users implements Serializable {
 	}
 
 	/**
-	 * Verifica existenta unui utilizator in baza de date; in caz afirmativ,
-	 * returneaza obiectul corespunzator, altfel, metoda introduce utilizatorul
-	 * in baza de date si apoi returneaza obiectul corespunzator. Verificarea
-	 * existentei in baza de date se realizeaza fie dupa valoarea
-	 * identificatorului, fie dupa un criteriu de unicitate.
+	 * Verifica existenta unui obiect de tip <code>Users</code> (utilizator) in
+	 * baza de date; in caz afirmativ il returneaza, altfel, metoda il introduce
+	 * in baza de date si apoi il returneaza. Verificarea existentei in baza de
+	 * date se realizeaza fie dupa identificator, fie dupa un criteriu de
+	 * unicitate.
 	 * 
 	 * <p>
 	 * Criterii de unicitate:
 	 * <ul>
-	 * <li>id
-	 * <li>userName
-	 * <ul>
+	 * <li>username
+	 * </ul>
 	 * 
 	 * <p>
 	 * 
 	 * @param id
 	 *            - identificatorul utilizatorului.
-	 * @param userName
+	 * @param username
 	 *            - numele utilizatorului.
-	 * @param passWord
+	 * @param password
 	 *            - parola utilizatorului.
 	 * @param enabled
 	 *            - specifica daca utilizatorul este activ.
 	 * @return
 	 */
-	public static Users checkUsers(Integer id, String userName,
-			String passWord, Boolean enabled) {
-		// TODO
-		return null;
+	public static Users checkUsers(Integer id, String username,
+			String password, Boolean enabled) {
+		Users object;
+
+		if (id != null) {
+			object = findUsers(id);
+
+			if (object != null) {
+				return object;
+			}
+		}
+
+		List<Users> queryResult;
+
+		if (username != null) {
+			TypedQuery<Users> query = entityManager().createQuery(
+					"SELECT o FROM Users o WHERE o.username = :username",
+					Users.class);
+			query.setParameter("username", username);
+
+			queryResult = query.getResultList();
+			if (queryResult.size() > 0) {
+				return queryResult.get(0);
+			}
+		}
+
+		object = new Users();
+		object.username = username;
+		object.password = password;
+		object.enabled = enabled;
+		object.persist();
+
+		return object;
 	}
 
 	@OneToMany(mappedBy = "username")
@@ -284,7 +312,7 @@ public class Users implements Serializable {
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	@Autowired(required=false)
+	@Autowired(required = false)
 	transient SolrServer solrServer;
 
 	@Transactional
@@ -467,5 +495,12 @@ public class Users implements Serializable {
 	@PreRemove
 	private void preRemove() {
 		deleteIndex(this);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return (id != null && id.equals(((Users) obj).id))
+				|| (username != null && username
+						.equalsIgnoreCase(((Users) obj).username));
 	}
 }

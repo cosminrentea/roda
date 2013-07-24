@@ -20,6 +20,7 @@ import javax.persistence.PreRemove;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.TypedQuery;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -174,27 +175,24 @@ public class UserAuthLog {
 	}
 
 	/**
-	 * Verifica existenta unei incercari de autentificare in baza de date; in
-	 * caz afirmativ, returneaza obiectul corespunzator, altfel, metoda
-	 * introduce incercarea de autentificare in baza de date si apoi returneaza
-	 * obiectul corespunzator. Verificarea existentei in baza de date se
-	 * realizeaza fie dupa valoarea identificatorului, fie dupa un criteriu de
-	 * unicitate.
+	 * Verifica existenta unui obiect de tip <code>UserAuthLog</code> (incercare
+	 * de autentificare) in baza de date; in caz afirmativ il returneaza,
+	 * altfel, metoda il introduce in baza de date si apoi il returneaza.
+	 * Verificarea existentei in baza de date se realizeaza fie dupa
+	 * identificator, fie dupa un criteriu de unicitate.
 	 * 
 	 * <p>
 	 * Criterii de unicitate:
 	 * <ul>
-	 * <li>id
-	 * <ul>
+	 * </ul>
 	 * 
 	 * <p>
 	 * 
 	 * @param id
 	 *            - identificatorul incercarii de autentificare.
 	 * @param userId
-	 *            - identificatorul utilizatorului care a realizat incercarea de
-	 *            autentificare.
-	 * @param at
+	 *            - utilizatorul care a realizat incercarea de autentificare.
+	 * @param authAttemptedAt
 	 *            - data incercarii de autentificare.
 	 * @param action
 	 *            - tipul de actiune realizata (login/logout/session expire).
@@ -203,16 +201,35 @@ public class UserAuthLog {
 	 * @param credentialProvider
 	 *            - tipul de furnizor de informatii pentru incercarea de
 	 *            autentificare.
-	 * @param errMsg
+	 * @param errorMessage
 	 *            - mesajul de eroare aparut in urma incercarii de
 	 *            autentificare.
 	 * @return
 	 */
-	public static UserAuthLog checkUserAuthLog(Integer id, Integer userId,
-			Calendar at, String action, String credentialIdentifier,
-			String credentialProvider, String errMsg) {
-		// TODO
-		return null;
+	public static UserAuthLog checkUserAuthLog(Long id, Users userId,
+			Calendar authAttemptedAt, String action,
+			String credentialIdentifier, String credentialProvider,
+			String errorMessage) {
+		UserAuthLog object;
+
+		if (id != null) {
+			object = findUserAuthLog(id);
+
+			if (object != null) {
+				return object;
+			}
+		}
+
+		object = new UserAuthLog();
+		object.userId = userId;
+		object.authAttemptedAt = authAttemptedAt;
+		object.action = action;
+		object.credentialIdentifier = credentialIdentifier;
+		object.credentialProvider = credentialProvider;
+		object.errorMessage = errorMessage;
+		object.persist();
+
+		return object;
 	}
 
 	@Column(name = "action", columnDefinition = "varchar", length = 30)
@@ -245,7 +262,7 @@ public class UserAuthLog {
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	@Autowired(required=false)
+	@Autowired(required = false)
 	transient SolrServer solrServer;
 
 	@Transactional
@@ -364,5 +381,10 @@ public class UserAuthLog {
 	@PreRemove
 	private void preRemove() {
 		deleteIndex(this);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return id != null && id.equals(((UserAuthLog) obj).id);
 	}
 }

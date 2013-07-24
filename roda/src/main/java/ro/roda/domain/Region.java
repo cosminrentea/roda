@@ -19,6 +19,7 @@ import javax.persistence.PostPersist;
 import javax.persistence.PostUpdate;
 import javax.persistence.PreRemove;
 import javax.persistence.Table;
+import javax.persistence.TypedQuery;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -159,18 +160,17 @@ public class Region {
 	}
 
 	/**
-	 * Verifica existenta unei regiuni in baza de date; in caz afirmativ,
-	 * returneaza obiectul corespunzator, altfel, metoda introduce regiunea in
-	 * baza de date si apoi returneaza obiectul corespunzator. Verificarea
-	 * existentei in baza de date se realizeaza fie dupa valoarea
-	 * identificatorului, fie dupa un criteriu de unicitate.
+	 * Verifica existenta unui obiect de tip <code>Region</code> (regiune) in
+	 * baza de date; in caz afirmativ il returneaza, altfel, metoda il introduce
+	 * in baza de date si apoi il returneaza. Verificarea existentei in baza de
+	 * date se realizeaza fie dupa identificator, fie dupa un criteriu de
+	 * unicitate.
 	 * 
 	 * <p>
 	 * Criterii de unicitate:
 	 * <ul>
-	 * <li>id
-	 * <li>countryId + typeId + name
-	 * <ul>
+	 * <li>countryId + regiontypeId + name
+	 * </ul>
 	 * 
 	 * <p>
 	 * 
@@ -178,20 +178,53 @@ public class Region {
 	 *            - identificatorul regiunii.
 	 * @param name
 	 *            - numele regiunii.
-	 * @param typeId
-	 *            - identificatorul tipului de regiune.
+	 * @param regiontypeId
+	 *            - tipul de regiune.
 	 * @param countryId
-	 *            - identificatorul tarii.
-	 * @param code
-	 *            - TODO.
-	 * @param codeName
-	 *            - TODO.
+	 *            - tara in care se afla regiunea.
+	 * @param regionCode
+	 * @param regionCodeName
 	 * @return
 	 */
-	public static Region checkRegion(Integer id, String name, Integer typeId,
-			Integer countryId, String code, String codeName) {
-		// TODO
-		return null;
+	public static Region checkRegion(Integer id, String name,
+			Regiontype regiontypeId, Country countryId, String regionCode,
+			String regionCodeName) {
+		Region object;
+
+		if (id != null) {
+			object = findRegion(id);
+
+			if (object != null) {
+				return object;
+			}
+		}
+
+		List<Region> queryResult;
+
+		if (countryId != null && regiontypeId != null && name != null) {
+			TypedQuery<Region> query = entityManager().createQuery(
+					"SELECT o FROM Region o WHERE countryId = :countryId AND "
+							+ "regiontypeId = :regiontypeId AND "
+							+ "lower(o.name) = lower(:name)", Region.class);
+			query.setParameter("countryId", countryId);
+			query.setParameter("regiontypeId", regiontypeId);
+			query.setParameter("name", name);
+
+			queryResult = query.getResultList();
+			if (queryResult.size() > 0) {
+				return queryResult.get(0);
+			}
+		}
+
+		object = new Region();
+		object.name = name;
+		object.regiontypeId = regiontypeId;
+		object.countryId = countryId;
+		object.regionCode = regionCode;
+		object.regionCodeName = regionCodeName;
+		object.persist();
+
+		return object;
 	}
 
 	@ManyToMany(mappedBy = "regions")
@@ -223,7 +256,7 @@ public class Region {
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	@Autowired(required=false)
+	@Autowired(required = false)
 	transient SolrServer solrServer;
 
 	@Transactional
@@ -342,5 +375,15 @@ public class Region {
 	@PreRemove
 	private void preRemove() {
 		deleteIndex(this);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return (id != null && id.equals(((Region) obj).id))
+				|| ((regiontypeId != null && regiontypeId
+						.equals(((Region) obj).regiontypeId))
+						&& (countryId != null && countryId
+								.equals(((Region) obj).countryId)) && (name != null && name
+						.equalsIgnoreCase(((Region) obj).name)));
 	}
 }

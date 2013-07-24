@@ -21,6 +21,7 @@ import javax.persistence.PostPersist;
 import javax.persistence.PostUpdate;
 import javax.persistence.PreRemove;
 import javax.persistence.Table;
+import javax.persistence.TypedQuery;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -151,27 +152,56 @@ public class Series {
 	}
 
 	/**
-	 * Verifica existenta unei serii de date in baza de date; in caz afirmativ,
-	 * returneaza obiectul corespunzator, altfel, metoda introduce seria de date
-	 * in baza de date si apoi returneaza obiectul corespunzator. Verificarea
-	 * existentei in baza de date se realizeaza fie dupa valoarea
-	 * identificatorului, fie dupa un criteriu de unicitate.
+	 * Verifica existenta unui obiect de tip <code>Series</code> (serie de date)
+	 * in baza de date; in caz afirmativ il returneaza, altfel, metoda il
+	 * introduce in baza de date si apoi il returneaza. Verificarea existentei
+	 * in baza de date se realizeaza fie dupa identificator, fie dupa un
+	 * criteriu de unicitate.
 	 * 
 	 * <p>
 	 * Criterii de unicitate:
 	 * <ul>
-	 * <li>catalogId
-	 * <ul>
+	 * <li>catalog
+	 * </ul>
 	 * 
 	 * <p>
 	 * 
-	 * @param catalogId
+	 * @param id
 	 *            - identificatorul catalogului.
+	 * @param catalog
+	 *            - catalogul din care deriva acest catalog.
 	 * @return
 	 */
-	public static Series checkSeries(Integer catalogId) {
-		// TODO
-		return null;
+	public static Series checkSeries(Integer id, Catalog catalog) {
+		Series object;
+
+		if (id != null) {
+			object = findSeries(id);
+
+			if (object != null) {
+				return object;
+			}
+		}
+
+		List<Series> queryResult;
+
+		if (catalog != null) {
+			TypedQuery<Series> query = entityManager().createQuery(
+					"SELECT o FROM Series o WHERE o.catalog = :catalog",
+					Series.class);
+			query.setParameter("catalog", catalog);
+
+			queryResult = query.getResultList();
+			if (queryResult.size() > 0) {
+				return queryResult.get(0);
+			}
+		}
+
+		object = new Series();
+		object.catalog = catalog;
+		object.persist();
+
+		return object;
 	}
 
 	@OneToOne
@@ -193,7 +223,7 @@ public class Series {
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	@Autowired(required=false)
+	@Autowired(required = false)
 	transient SolrServer solrServer;
 
 	@Transactional
@@ -289,5 +319,11 @@ public class Series {
 	@PreRemove
 	private void preRemove() {
 		deleteIndex(this);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return (catalogId != null && catalogId.equals(((Series) obj).catalogId))
+				|| (catalog != null && catalog.equals(((Series) obj).catalog));
 	}
 }

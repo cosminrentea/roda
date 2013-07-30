@@ -1,7 +1,0 @@
-username,authority
-admin,ROLE_ADMIN
-admin,ROLE_USER
-admin,ROLE_VISITOR
-user,ROLE_USER
-user,ROLE_VISITOR
-visitor,ROLE_VISITOR

@@ -4,14 +4,22 @@
     <jsp:output omit-xml-declaration="yes"/>
     <menu:menu id="_menu" z="nZaf43BjUg1iM0v70HJVEsXDopc=">
 
+		<!-- Spring Security Authentication -->
+        
         <sec:authorize ifAllGranted="ROLE_USER">
+<!-- 
         <menu:category id="c_study" z="PPLMd2yNB6/LSbjIWogAacRPU+Q=">
             <menu:item id="i_ddi_import" messageCode="ddi_import" url="TODO" z="wwunW/IPDcunN97u41MvMJZQ2to="/>
         </menu:category>
-        </sec:authorize>
-        
+-->        
+        <menu:category id="c_file" z="jLGFVLcV4vBWOX5oBU59VwojRJY=">
+            <menu:item id="i_file_new" messageCode="global_menu_new" url="/files?form" z="8AM56650bTAYyCYkB24ZUGdHXwE="/>
+            <menu:item id="i_file_list" messageCode="global_menu_list" url="/files?page=1&amp;size=${empty param.size ? 10 : param.size}" z="80usN9Zabmvl0MY2NgWjcjaceGY="/>
+        </menu:category>
+		</sec:authorize>
+
         <sec:authorize ifAllGranted="ROLE_ADMIN">
-            <!-- Spring Security Authentication -->
+
             <menu:category id="c_users" z="Ysam8XVhG5uotPoUGGxkia1RE/s=">
                 <menu:item id="i_users_new" messageCode="global_menu_new" url="/userses?form" z="utrdLkYms6xk5f4IDxc9zrg5FWs="/>
                 <menu:item id="i_users_list" messageCode="global_menu_list" url="/userses?page=1&amp;size=${empty param.size ? 10 : param.size}" z="tqSwojZmRduyx4xtHWcJzgbgtJk="/>
@@ -197,10 +205,6 @@
         <menu:category id="c_address" z="my5R1aInTRohGzWz9TL4j8LX/vE=">
             <menu:item id="i_address_new" messageCode="global_menu_new" url="/addresses?form" z="vg+UZ0neKcizSzKiVzXeI3oY1BA="/>
             <menu:item id="i_address_list" messageCode="global_menu_list" url="/addresses?page=1&amp;size=${empty param.size ? 10 : param.size}" z="u8ooCATbc0N+VHl1spo80t0zy+k="/>
-        </menu:category>
-        <menu:category id="c_file" z="jLGFVLcV4vBWOX5oBU59VwojRJY=">
-            <menu:item id="i_file_new" messageCode="global_menu_new" url="/files?form" z="8AM56650bTAYyCYkB24ZUGdHXwE="/>
-            <menu:item id="i_file_list" messageCode="global_menu_list" url="/files?page=1&amp;size=${empty param.size ? 10 : param.size}" z="80usN9Zabmvl0MY2NgWjcjaceGY="/>
         </menu:category>
         <menu:category id="c_instanceperson" z="JipBM4LdRk/IDatrW0exvA4xQUc=">
             <menu:item id="i_instanceperson_new" messageCode="global_menu_new" url="/instancepeople?form" z="xfFnVL65Fv+nfiIULdIMPSX2W2E="/>

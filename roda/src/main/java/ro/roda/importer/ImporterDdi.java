@@ -1,6 +1,7 @@
 package ro.roda.importer;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,7 +30,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import org.xml.sax.SAXException;
 
 import ro.roda.ddi.AuthEntyType;
@@ -73,7 +78,8 @@ import ro.roda.service.FileService;
 import ro.roda.service.StudyService;
 import ro.roda.service.StudyServiceImpl;
 
-@Component
+@Service
+@Transactional
 public class ImporterDdi {
 
 	private final Log log = LogFactory.getLog(this.getClass());
@@ -93,7 +99,7 @@ public class ImporterDdi {
 	FileService fileService;
 
 	@Value("${roda.data.ddi.xsd}")
-	private String xsdDdi122;
+	private static String xsdDdi122 = "xsd/ddi122.xsd";
 
 	@Value("${roda.data.ddi.persist}")
 	private String ddiPersist;
@@ -103,12 +109,36 @@ public class ImporterDdi {
 
 	private static final String errorMessage = "Could not import DDI data";
 
+	public static Unmarshaller unmarshaller = null;
+
 	public static final EntityManager entityManager() {
 		EntityManager em = new ImporterDdi().entityManager;
 		if (em == null)
 			throw new IllegalStateException(
 					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
 		return em;
+	}
+
+	public static final void setupUnmarshaller() {
+
+		if (unmarshaller == null) {
+			// validate using DDI 1.2.2 XML Schema
+			Resource xsdDdiRes = new ClassPathResource(xsdDdi122);
+			try {
+				unmarshaller = JAXBContext.newInstance(jaxbContextPath).createUnmarshaller();
+				unmarshaller.setSchema(SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI).newSchema(
+						xsdDdiRes.getFile()));
+			} catch (JAXBException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (SAXException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 
 	/**
@@ -119,12 +149,7 @@ public class ImporterDdi {
 		try {
 			log.trace("roda.data.ddi.files = " + rodaDataDdiFiles);
 
-			// validate using DDI 1.2.2 XML Schema
-			Resource xsdDdiRes = new ClassPathResource(xsdDdi122);
-			JAXBContext jc = JAXBContext.newInstance(jaxbContextPath);
-			Unmarshaller unmarshaller = jc.createUnmarshaller();
-			unmarshaller.setSchema(SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI).newSchema(
-					xsdDdiRes.getFile()));
+			setupUnmarshaller();
 
 			PathMatchingResourcePatternResolver pmr = new PathMatchingResourcePatternResolver();
 			Resource[] resources = pmr.getResources("classpath*:" + rodaDataDdiFiles);
@@ -141,16 +166,11 @@ public class ImporterDdi {
 
 			for (File ddiFile : ddiFiles) {
 				log.debug("Importing DDI file: " + ddiFile.getName());
+				MockMultipartFile mockMultipartFile = new MockMultipartFile(ddiFile.getName(), ddiFile.getName(),
+						"text/xml", new FileInputStream(ddiFile));
 				CodeBook cb = (CodeBook) unmarshaller.unmarshal(ddiFile);
-				importCodebook(cb, ddiFile, true, true);
-				if ("yes".equalsIgnoreCase(ddiPersist)) {
-					if (this.entityManager == null) {
-						this.entityManager = entityManager();
-					}
-					this.entityManager.persist(cb);
-				}
+				importCodebook(cb, mockMultipartFile, true, true);
 			}
-			this.entityManager.flush();
 			log.trace("Finished importing DDI files");
 
 		} catch (IOException e) {
@@ -159,13 +179,17 @@ public class ImporterDdi {
 		} catch (JAXBException e) {
 			log.error("JAXBException:", e);
 			throw new IllegalStateException(errorMessage);
-		} catch (SAXException e) {
-			log.error("SAXException:", e);
-			throw new IllegalStateException(errorMessage);
 		}
 	}
 
-	public void importCodebook(CodeBook cb, File srcFile, boolean nesstarExported, boolean legacyDataRODA) {
+	public void importCodebook(CodeBook cb, MultipartFile multipartFile, boolean nesstarExported, boolean legacyDataRODA) {
+
+		if ("yes".equalsIgnoreCase(ddiPersist)) {
+			if (this.entityManager == null) {
+				this.entityManager = entityManager();
+			}
+			this.entityManager.persist(cb);
+		}
 
 		DocDscrType docDscrType = null;
 		if (cb.getDocDscr().size() > 0) {
@@ -353,7 +377,8 @@ public class ImporterDdi {
 
 		// Add the imported DDI File to current Study's Files (in File-Store)
 
-		ro.roda.domain.File domainFile = fileService.saveFile(srcFile);
+		ro.roda.domain.File domainFile = new ro.roda.domain.File();
+		fileService.saveFile(domainFile, multipartFile, false);
 
 		HashSet<Study> sStudy = new HashSet<Study>();
 		sStudy.add(s);

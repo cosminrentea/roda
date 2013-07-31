@@ -50,8 +50,7 @@ import flexjson.JSONSerializer;
 public class Study {
 
 	public static long countStudys() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM Study o",
-				Long.class).getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM Study o", Long.class).getSingleResult();
 	}
 
 	@Async
@@ -74,9 +73,7 @@ public class Study {
 	}
 
 	public static List<Study> findAllStudys() {
-		return entityManager()
-				.createQuery("SELECT o FROM Study o", Study.class)
-				.getResultList();
+		return entityManager().createQuery("SELECT o FROM Study o", Study.class).getResultList();
 	}
 
 	public static Study findStudy(Integer id) {
@@ -86,20 +83,17 @@ public class Study {
 	}
 
 	public static List<Study> findStudyEntries(int firstResult, int maxResults) {
-		return entityManager()
-				.createQuery("SELECT o FROM Study o", Study.class)
-				.setFirstResult(firstResult).setMaxResults(maxResults)
-				.getResultList();
+		return entityManager().createQuery("SELECT o FROM Study o", Study.class).setFirstResult(firstResult)
+				.setMaxResults(maxResults).getResultList();
 	}
 
 	public static Collection<Study> fromJsonArrayToStudys(String json) {
-		return new JSONDeserializer<List<Study>>().use(null, ArrayList.class)
-				.use("values", Study.class).deserialize(json);
+		return new JSONDeserializer<List<Study>>().use(null, ArrayList.class).use("values", Study.class)
+				.deserialize(json);
 	}
 
 	public static Study fromJsonToStudy(String json) {
-		return new JSONDeserializer<Study>().use(null, Study.class)
-				.deserialize(json);
+		return new JSONDeserializer<Study>().use(null, Study.class).deserialize(json);
 	}
 
 	public static void indexStudy(Study study) {
@@ -117,8 +111,7 @@ public class Study {
 			sid.addField("study.id_i", study.getId());
 			// Add summary field to allow searching documents for objects of
 			// this type
-			sid.addField("study_solrsummary_t",
-					new StringBuilder().append(study.getId()));
+			sid.addField("study_solrsummary_t", new StringBuilder().append(study.getId()));
 			documents.add(sid);
 		}
 		try {
@@ -155,11 +148,9 @@ public class Study {
 	public static String toJsonArray(Collection<Study> collection) {
 		return new JSONSerializer()
 				.exclude("*.class")
-				.include("studyDescrs", "catalogStudies",
-						"collectionModelTypes", "dataSourceTypes", "files1",
-						"instances", "samplingProcedures", "sources",
-						"studyKeywords", "studyOrgs", "studypeople", "topics")
-				.serialize(collection);
+				.include("studyDescrs", "catalogStudies", "collectionModelTypes", "dataSourceTypes", "files1",
+						"instances", "samplingProcedures", "sources", "studyKeywords", "studyOrgs", "studypeople",
+						"topics").serialize(collection);
 	}
 
 	/**
@@ -204,11 +195,9 @@ public class Study {
 	 *            - anul de sfarsit al studiului.
 	 * @return
 	 */
-	public static Study checkStudy(Integer id, Date dateStart, Date dateEnd,
-			Integer insertionStatus, Users addedBy, Calendar added,
-			Boolean digitizable, Boolean anonymousUsage,
-			UnitAnalysis unitAnalysisId, Integer studyVersion, Boolean rawData,
-			Boolean rawMetadata, TimeMeth timeMethId, Integer yearStart,
+	public static Study checkStudy(Integer id, Date dateStart, Date dateEnd, Integer insertionStatus, Users addedBy,
+			Calendar added, Boolean digitizable, Boolean anonymousUsage, UnitAnalysis unitAnalysisId,
+			Integer studyVersion, Boolean rawData, Boolean rawMetadata, TimeMeth timeMethId, Integer yearStart,
 			Integer yearEnd) {
 		Study object;
 
@@ -511,8 +500,7 @@ public class Study {
 		this.catalogStudies = catalogStudies;
 	}
 
-	public void setCollectionModelTypes(
-			Set<CollectionModelType> collectionModelTypes) {
+	public void setCollectionModelTypes(Set<CollectionModelType> collectionModelTypes) {
 		this.collectionModelTypes = collectionModelTypes;
 	}
 
@@ -609,8 +597,7 @@ public class Study {
 	}
 
 	public String toString() {
-		return new ReflectionToStringBuilder(this,
-				ToStringStyle.SHORT_PREFIX_STYLE).setExcludeFieldNames(
+		return new ReflectionToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE).setExcludeFieldNames(
 				"timeMethType").toString();
 	}
 
@@ -626,7 +613,87 @@ public class Study {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		return id != null && id.equals(((Study) obj).id);
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((added == null) ? 0 : added.hashCode());
+		result = prime * result + ((addedBy == null) ? 0 : addedBy.hashCode());
+		result = prime * result + (anonymousUsage ? 1231 : 1237);
+		result = prime * result + ((dateEnd == null) ? 0 : dateEnd.hashCode());
+		result = prime * result + ((dateStart == null) ? 0 : dateStart.hashCode());
+		result = prime * result + (digitizable ? 1231 : 1237);
+		result = prime * result + ((insertionStatus == null) ? 0 : insertionStatus.hashCode());
+		result = prime * result + (rawData ? 1231 : 1237);
+		result = prime * result + (rawMetadata ? 1231 : 1237);
+		result = prime * result + ((studyVersion == null) ? 0 : studyVersion.hashCode());
+		result = prime * result + ((yearEnd == null) ? 0 : yearEnd.hashCode());
+		result = prime * result + ((yearStart == null) ? 0 : yearStart.hashCode());
+		return result;
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Study other = (Study) obj;
+		if (added == null) {
+			if (other.added != null)
+				return false;
+		} else if (!added.equals(other.added))
+			return false;
+		if (addedBy == null) {
+			if (other.addedBy != null)
+				return false;
+		} else if (!addedBy.equals(other.addedBy))
+			return false;
+		if (anonymousUsage != other.anonymousUsage)
+			return false;
+		if (dateEnd == null) {
+			if (other.dateEnd != null)
+				return false;
+		} else if (!dateEnd.equals(other.dateEnd))
+			return false;
+		if (dateStart == null) {
+			if (other.dateStart != null)
+				return false;
+		} else if (!dateStart.equals(other.dateStart))
+			return false;
+		if (digitizable != other.digitizable)
+			return false;
+		if (insertionStatus == null) {
+			if (other.insertionStatus != null)
+				return false;
+		} else if (!insertionStatus.equals(other.insertionStatus))
+			return false;
+		if (rawData != other.rawData)
+			return false;
+		if (rawMetadata != other.rawMetadata)
+			return false;
+		if (studyVersion == null) {
+			if (other.studyVersion != null)
+				return false;
+		} else if (!studyVersion.equals(other.studyVersion))
+			return false;
+		if (yearEnd == null) {
+			if (other.yearEnd != null)
+				return false;
+		} else if (!yearEnd.equals(other.yearEnd))
+			return false;
+		if (yearStart == null) {
+			if (other.yearStart != null)
+				return false;
+		} else if (!yearStart.equals(other.yearStart))
+			return false;
+		return true;
+	}
+
+	// @Override
+	// public boolean equals(Object obj) {
+	//
+	// return id != null && id.equals(((Study) obj).id);
+	// }
 }

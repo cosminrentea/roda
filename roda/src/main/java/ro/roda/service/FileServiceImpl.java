@@ -1,7 +1,10 @@
 package ro.roda.service;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.List;
+
+import javax.xml.bind.JAXBException;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.logging.Log;
@@ -12,12 +15,15 @@ import org.apache.solr.client.solrj.request.AbstractUpdateRequest.ACTION;
 import org.apache.solr.client.solrj.request.ContentStreamUpdateRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import ro.roda.ddi.CodeBook;
 import ro.roda.domain.File;
+import ro.roda.importer.ImporterDdi;
 
 @Service
 @Transactional
@@ -30,6 +36,9 @@ public class FileServiceImpl implements FileService {
 
 	@Autowired(required = false)
 	SolrServer solrServer;
+
+	@Autowired
+	ImporterDdi importerDdi;
 
 	public long countAllFiles() {
 		return File.countFiles();
@@ -55,57 +64,39 @@ public class FileServiceImpl implements FileService {
 		file.persist();
 	}
 
-	public void saveFile(File file, MultipartFile content) {
-		log.debug("> saveFile");
-		if (content != null) {
+	public void saveFile(File file, MultipartFile multipartFile, boolean importDdi) {
+		if (multipartFile != null) {
 			try {
-				log.debug("> saveFile > set properties");
-				file.setName(content.getOriginalFilename());
-				file.setSize(content.getSize());
-				String fullPath = filestoreDir + "/" + content.getOriginalFilename();
-				file.setFullPath(fullPath);
+				String fullPath = filestoreDir + "/" + multipartFile.getOriginalFilename();
+				if (importDdi) {
+					log.debug("> saveFile > move the file to the local Repository");
+					java.io.File f = new java.io.File(fullPath);
+					multipartFile.transferTo(f);
 
-				log.debug("> saveFile > transfering the uploaded file to local folder/repository");
-				java.io.File f = new java.io.File(fullPath);
-				content.transferTo(f);
-				updateSolrFile(f, content);
+					updateSolrFile(f, multipartFile);
+					if (multipartFile.getOriginalFilename().endsWith(".ddi")) {
+						ImporterDdi.setupUnmarshaller();
+						importerDdi.importCodebook((CodeBook) ImporterDdi.unmarshaller.unmarshal(f), multipartFile,
+								true, true);
+					}
+				} else {
+					log.debug("> saveFile > set properties");
+					file.setName(multipartFile.getOriginalFilename());
+					file.setSize(multipartFile.getSize());
+					file.setFullPath(fullPath);
 
-			} catch (Exception e) {
-				e.printStackTrace();
+					log.debug("> saveFile > save JPA object");
+					saveFile(file);
+				}
+			} catch (IllegalStateException e) {
+				log.error(e);
+			} catch (IOException e) {
+				log.error(e);
+			} catch (JAXBException e) {
+				log.error(e);
 			}
+
 		}
-		log.debug("> saveFile > save JPA object");
-		saveFile(file);
-		log.trace("> saveFile > saved: " + file);
-	}
-
-	public File saveFile(java.io.File srcFile) {
-		log.debug("> saveFile");
-		if (srcFile != null) {
-			try {
-				File file = new File();
-				log.debug("> saveFile > set properties");
-				file.setName(srcFile.getName());
-				file.setSize(srcFile.length());
-				String fullPath = filestoreDir + "/" + srcFile.getName();
-				file.setFullPath(fullPath);
-
-				log.debug("> saveFile > transfering the uploaded file to local folder/repository");
-				java.io.File destFile = new java.io.File(fullPath);
-				FileUtils.copyFile(srcFile, destFile);
-
-				// TODO upload to Solr ?
-				// updateSolrFile(f, content);
-
-				log.debug("> saveFile > save JPA object");
-				saveFile(file);
-				log.trace("> saveFile > saved: " + file);
-				return file;
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		return null;
 	}
 
 	public File updateFile(File file) {
@@ -124,6 +115,7 @@ public class FileServiceImpl implements FileService {
 
 				// SOLRJ 4.3.1 API
 				up.addFile(f, content.getContentType());
+				log.trace("content.getContentType() = " + content.getContentType());
 
 				up.setParam("literal.id", content.getOriginalFilename());
 				up.setParam("uprefix", "attr_");
@@ -143,10 +135,10 @@ public class FileServiceImpl implements FileService {
 
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				log.error(e);
 			} catch (SolrServerException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				log.error(e);
 			}
 		}
 	}

@@ -90,9 +90,9 @@ public class ImporterCsv {
 			}
 
 		} catch (FileNotFoundException e) {
-			log.error("FileNotFoundException:", e);
+			log.error(e);
 		} catch (IOException e) {
-			log.error("IOException:", e);
+			log.error(e);
 		}
 	}
 
@@ -140,17 +140,17 @@ public class ImporterCsv {
 				// br.close();
 			}
 		} catch (SQLException e) {
-			log.error("SQLException:", e);
+			log.error(e);
 			throw new IllegalStateException(errorMessage);
 		} catch (IOException e) {
-			log.error("IOException:", e);
+			log.error(e);
 			throw new IllegalStateException(errorMessage);
 		} finally {
 			if (con != null) {
 				try {
 					con.close();
 				} catch (SQLException e) {
-					log.error("SQLException:", e);
+					log.error(e);
 					throw new IllegalStateException(errorMessage);
 				}
 			}

@@ -48,8 +48,7 @@ import flexjson.JSONSerializer;
 public class Instance {
 
 	public static long countInstances() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM Instance o",
-				Long.class).getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM Instance o", Long.class).getSingleResult();
 	}
 
 	@Async
@@ -72,8 +71,7 @@ public class Instance {
 	}
 
 	public static List<Instance> findAllInstances() {
-		return entityManager().createQuery("SELECT o FROM Instance o",
-				Instance.class).getResultList();
+		return entityManager().createQuery("SELECT o FROM Instance o", Instance.class).getResultList();
 	}
 
 	public static Instance findInstance(Integer id) {
@@ -82,23 +80,18 @@ public class Instance {
 		return entityManager().find(Instance.class, id);
 	}
 
-	public static List<Instance> findInstanceEntries(int firstResult,
-			int maxResults) {
-		return entityManager()
-				.createQuery("SELECT o FROM Instance o", Instance.class)
-				.setFirstResult(firstResult).setMaxResults(maxResults)
-				.getResultList();
+	public static List<Instance> findInstanceEntries(int firstResult, int maxResults) {
+		return entityManager().createQuery("SELECT o FROM Instance o", Instance.class).setFirstResult(firstResult)
+				.setMaxResults(maxResults).getResultList();
 	}
 
 	public static Collection<Instance> fromJsonArrayToInstances(String json) {
-		return new JSONDeserializer<List<Instance>>()
-				.use(null, ArrayList.class).use("values", Instance.class)
+		return new JSONDeserializer<List<Instance>>().use(null, ArrayList.class).use("values", Instance.class)
 				.deserialize(json);
 	}
 
 	public static Instance fromJsonToInstance(String json) {
-		return new JSONDeserializer<Instance>().use(null, Instance.class)
-				.deserialize(json);
+		return new JSONDeserializer<Instance>().use(null, Instance.class).deserialize(json);
 	}
 
 	public static void indexInstance(Instance instance) {
@@ -116,19 +109,13 @@ public class Instance {
 			sid.addField("instance.studyid_t", instance.getStudyId());
 			sid.addField("instance.addedby_t", instance.getAddedBy());
 			sid.addField("instance.added_dt", instance.getAdded().getTime());
-			sid.addField("instance.disseminatoridentifier_s",
-					instance.getDisseminatorIdentifier());
+			sid.addField("instance.disseminatoridentifier_s", instance.getDisseminatorIdentifier());
 			sid.addField("instance.id_i", instance.getId());
 			// Add summary field to allow searching documents for objects of
 			// this type
-			sid.addField(
-					"instance_solrsummary_t",
-					new StringBuilder().append(instance.getStudyId())
-							.append(" ").append(instance.getAddedBy())
-							.append(" ").append(instance.getAdded().getTime())
-							.append(" ")
-							.append(instance.getDisseminatorIdentifier())
-							.append(" ").append(instance.getId()));
+			sid.addField("instance_solrsummary_t", new StringBuilder().append(instance.getStudyId()).append(" ")
+					.append(instance.getAddedBy()).append(" ").append(instance.getAdded().getTime()).append(" ")
+					.append(instance.getDisseminatorIdentifier()).append(" ").append(instance.getId()));
 			documents.add(sid);
 		}
 		try {
@@ -192,8 +179,7 @@ public class Instance {
 	 * @param disseminatorIdentifier
 	 * @return
 	 */
-	public static Instance checkInstance(Integer id, Study studyId,
-			Users addedBy, Calendar added, Boolean main,
+	public static Instance checkInstance(Integer id, Study studyId, Users addedBy, Calendar added, Boolean main,
 			String disseminatorIdentifier) {
 		Instance object;
 
@@ -266,7 +252,7 @@ public class Instance {
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	@Autowired(required=false)
+	@Autowired(required = false)
 	transient SolrServer solrServer;
 
 	@Transactional
@@ -399,8 +385,7 @@ public class Instance {
 		this.instancepeople = instancepeople;
 	}
 
-	public void setInstanceRightTargetGroups(
-			Set<InstanceRightTargetGroup> instanceRightTargetGroups) {
+	public void setInstanceRightTargetGroups(Set<InstanceRightTargetGroup> instanceRightTargetGroups) {
 		this.instanceRightTargetGroups = instanceRightTargetGroups;
 	}
 
@@ -421,8 +406,7 @@ public class Instance {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this,
-				ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate
@@ -437,7 +421,47 @@ public class Instance {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		return id != null && id.equals(((Instance) obj).id);
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((addedBy == null) ? 0 : addedBy.hashCode());
+		result = prime * result + ((disseminatorIdentifier == null) ? 0 : disseminatorIdentifier.hashCode());
+		result = prime * result + (main ? 1231 : 1237);
+		result = prime * result + ((studyId == null) ? 0 : studyId.hashCode());
+		return result;
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Instance other = (Instance) obj;
+		if (addedBy == null) {
+			if (other.addedBy != null)
+				return false;
+		} else if (!addedBy.equals(other.addedBy))
+			return false;
+		if (disseminatorIdentifier == null) {
+			if (other.disseminatorIdentifier != null)
+				return false;
+		} else if (!disseminatorIdentifier.equals(other.disseminatorIdentifier))
+			return false;
+		if (main != other.main)
+			return false;
+		if (studyId == null) {
+			if (other.studyId != null)
+				return false;
+		} else if (!studyId.equals(other.studyId))
+			return false;
+		return true;
+	}
+
+	// @Override
+	// public boolean equals(Object obj) {
+	// return id != null && id.equals(((Instance) obj).id);
+	// }
 }

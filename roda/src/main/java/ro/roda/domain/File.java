@@ -45,8 +45,7 @@ import flexjson.JSONSerializer;
 public class File {
 
 	public static long countFiles() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM File o",
-				Long.class).getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM File o", Long.class).getSingleResult();
 	}
 
 	@Async
@@ -69,8 +68,7 @@ public class File {
 	}
 
 	public static List<File> findAllFiles() {
-		return entityManager().createQuery("SELECT o FROM File o", File.class)
-				.getResultList();
+		return entityManager().createQuery("SELECT o FROM File o", File.class).getResultList();
 	}
 
 	public static File findFile(Integer id) {
@@ -80,19 +78,17 @@ public class File {
 	}
 
 	public static List<File> findFileEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM File o", File.class)
-				.setFirstResult(firstResult).setMaxResults(maxResults)
-				.getResultList();
+		return entityManager().createQuery("SELECT o FROM File o", File.class).setFirstResult(firstResult)
+				.setMaxResults(maxResults).getResultList();
 	}
 
 	public static Collection<File> fromJsonArrayToFiles(String json) {
-		return new JSONDeserializer<List<File>>().use(null, ArrayList.class)
-				.use("values", File.class).deserialize(json);
+		return new JSONDeserializer<List<File>>().use(null, ArrayList.class).use("values", File.class)
+				.deserialize(json);
 	}
 
 	public static File fromJsonToFile(String json) {
-		return new JSONDeserializer<File>().use(null, File.class).deserialize(
-				json);
+		return new JSONDeserializer<File>().use(null, File.class).deserialize(json);
 	}
 
 	public static void indexFile(File file) {
@@ -114,8 +110,7 @@ public class File {
 			// this type
 			sid.addField(
 					"file_solrsummary_t",
-					new StringBuilder().append(file.getContent()).append(" ")
-							.append(file.getUrl()).append(" ")
+					new StringBuilder().append(file.getContent()).append(" ").append(file.getUrl()).append(" ")
 							.append(file.getId()));
 			documents.add(sid);
 		}
@@ -184,8 +179,8 @@ public class File {
 	 * @param contentType
 	 * @return
 	 */
-	public static File checkFile(Integer id, String title, String name,
-			String description, Long size, String fullPath, String contentType) {
+	public static File checkFile(Integer id, String title, String name, String description, Long size, String fullPath,
+			String contentType) {
 		File object;
 
 		if (id != null) {
@@ -199,10 +194,8 @@ public class File {
 		List<File> queryResult;
 
 		if (title != null) {
-			TypedQuery<File> query = entityManager()
-					.createQuery(
-							"SELECT o FROM File o WHERE lower(o.title) = lower(:title)",
-							File.class);
+			TypedQuery<File> query = entityManager().createQuery(
+					"SELECT o FROM File o WHERE lower(o.title) = lower(:title)", File.class);
 			query.setParameter("title", title);
 
 			queryResult = query.getResultList();
@@ -270,7 +263,7 @@ public class File {
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	@Autowired(required=false)
+	@Autowired(required = false)
 	transient SolrServer solrServer;
 
 	@Transactional
@@ -395,8 +388,7 @@ public class File {
 		this.name = name;
 	}
 
-	public void setSelectionVariableItems(
-			Set<SelectionVariableItem> selectionVariableItems) {
+	public void setSelectionVariableItems(Set<SelectionVariableItem> selectionVariableItems) {
 		this.selectionVariableItems = selectionVariableItems;
 	}
 
@@ -425,8 +417,7 @@ public class File {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this,
-				ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate
@@ -441,8 +432,45 @@ public class File {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		return (id != null && id.equals(((File) obj).id))
-				|| (title != null && title.equalsIgnoreCase(((File) obj).title));
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((url == null) ? 0 : url.hashCode());
+		return result;
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		File other = (File) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		if (url == null) {
+			if (other.url != null)
+				return false;
+		} else if (!url.equals(other.url))
+			return false;
+		return true;
+	}
+
+	// @Override
+	// public boolean equals(Object obj) {
+	// return (id != null && id.equals(((File) obj).id))
+	// || (title != null && title.equalsIgnoreCase(((File) obj).title));
+	// }
 }

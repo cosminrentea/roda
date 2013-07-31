@@ -20,9 +20,7 @@ public interface FileService {
 
 	public abstract void saveFile(File file);
 
-	public abstract void saveFile(File file, MultipartFile mFile);
-
-	public abstract File saveFile(java.io.File srcFile);
+	public abstract void saveFile(File file, MultipartFile mFile, boolean importDdi);
 
 	public abstract File updateFile(File file);
 

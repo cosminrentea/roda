@@ -59,7 +59,7 @@ public class FileController {
 			@RequestParam("content") MultipartFile content, HttpServletRequest httpServletRequest) {
 		log.debug("> create");
 		uiModel.asMap().clear();
-		fileService.saveFile(file, content);
+		fileService.saveFile(file, content, true);
 		return "redirect:/files/" + encodeUrlPathSegment(file.getId().toString(), httpServletRequest);
 	}
 

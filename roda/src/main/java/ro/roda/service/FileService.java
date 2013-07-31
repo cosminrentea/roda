@@ -8,8 +8,6 @@ import ro.roda.domain.File;
 
 public interface FileService {
 
-	public abstract void saveFile(File file, MultipartFile mFile);
-
 	public abstract long countAllFiles();
 
 	public abstract void deleteFile(File file);
@@ -21,6 +19,10 @@ public interface FileService {
 	public abstract List<File> findFileEntries(int firstResult, int maxResults);
 
 	public abstract void saveFile(File file);
+
+	public abstract void saveFile(File file, MultipartFile mFile);
+
+	public abstract File saveFile(java.io.File srcFile);
 
 	public abstract File updateFile(File file);
 

@@ -1,5 +1,4 @@
 name,parent_id,owner,added,sequencenr,description
-"root",,1,now(),1,"Fake Root Folder"
-"catalog_nivel1_1",1,1,now(),2,"Catalog pentru testare 1"
-"catalog_nivel1_2",1,1,now(),3,"Catalog pentru testare 2"
-"catalog_nivel1_3",1,1,now(),4,"Catalog pentru testare 3"
+"root",,1,now(),1,"Root Folder"
+"catalog-1",,1,now(),1,"Used after DDI import"
+"catalog-2",,1,now(),1,"Used after DDI import"

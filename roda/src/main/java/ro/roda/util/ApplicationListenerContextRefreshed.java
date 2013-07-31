@@ -41,6 +41,9 @@ public class ApplicationListenerContextRefreshed implements ApplicationListener<
 	@Value("${roda.data.ddi}")
 	private String rodaDataDdi;
 
+	@Value("${roda.data.csv-after-ddi}")
+	private String rodaDataCsvAfterDdi;
+
 	@Override
 	@Transactional
 	public void onApplicationEvent(ContextRefreshedEvent event) {
@@ -50,19 +53,23 @@ public class ApplicationListenerContextRefreshed implements ApplicationListener<
 			log.trace("roda.data.csv = " + rodaDataCsv);
 			log.trace("roda.data.csv-extra = " + rodaDataCsvExtra);
 			log.trace("roda.data.ddi = " + rodaDataDdi);
+			log.trace("roda.data.csv-after-ddi = " + rodaDataCsvAfterDdi);
 
 			// to skip the initial actions,
 			// change properties to another string
 			// (not "yes")
 			if ("yes".equalsIgnoreCase(rodaDataCsv)) {
-				icsv.importCsvFiles();
+				icsv.importCsv();
 				if ("yes".equalsIgnoreCase(rodaDataCsvExtra)) {
-					icsv.importCsvFilesExtra();
+					icsv.importCsvExtra();
 				}
 			}
 
 			if ("yes".equalsIgnoreCase(rodaDataDdi)) {
 				iddi.importDdiFiles();
+				if ("yes".equalsIgnoreCase(rodaDataCsvAfterDdi)) {
+					icsv.importCsvAfterDdi();
+				}
 			}
 
 			// rb.rnorm(4);

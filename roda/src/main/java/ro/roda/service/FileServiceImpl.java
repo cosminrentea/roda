@@ -3,6 +3,7 @@ package ro.roda.service;
 import java.io.IOException;
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.solr.client.solrj.SolrServer;
@@ -76,6 +77,35 @@ public class FileServiceImpl implements FileService {
 		log.debug("> saveFile > save JPA object");
 		saveFile(file);
 		log.trace("> saveFile > saved: " + file);
+	}
+
+	public File saveFile(java.io.File srcFile) {
+		log.debug("> saveFile");
+		if (srcFile != null) {
+			try {
+				File file = new File();
+				log.debug("> saveFile > set properties");
+				file.setName(srcFile.getName());
+				file.setSize(srcFile.length());
+				String fullPath = filestoreDir + "/" + srcFile.getName();
+				file.setFullPath(fullPath);
+
+				log.debug("> saveFile > transfering the uploaded file to local folder/repository");
+				java.io.File destFile = new java.io.File(fullPath);
+				FileUtils.copyFile(srcFile, destFile);
+
+				// TODO upload to Solr ?
+				// updateSolrFile(f, content);
+
+				log.debug("> saveFile > save JPA object");
+				saveFile(file);
+				log.trace("> saveFile > saved: " + file);
+				return file;
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return null;
 	}
 
 	public File updateFile(File file) {

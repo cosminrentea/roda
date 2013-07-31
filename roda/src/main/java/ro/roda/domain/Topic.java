@@ -44,8 +44,7 @@ import flexjson.JSONSerializer;
 public class Topic {
 
 	public static long countTopics() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM Topic o",
-				Long.class).getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM Topic o", Long.class).getSingleResult();
 	}
 
 	@Async
@@ -68,9 +67,7 @@ public class Topic {
 	}
 
 	public static List<Topic> findAllTopics() {
-		return entityManager()
-				.createQuery("SELECT o FROM Topic o", Topic.class)
-				.getResultList();
+		return entityManager().createQuery("SELECT o FROM Topic o", Topic.class).getResultList();
 	}
 
 	public static Topic findTopic(Integer id) {
@@ -80,20 +77,17 @@ public class Topic {
 	}
 
 	public static List<Topic> findTopicEntries(int firstResult, int maxResults) {
-		return entityManager()
-				.createQuery("SELECT o FROM Topic o", Topic.class)
-				.setFirstResult(firstResult).setMaxResults(maxResults)
-				.getResultList();
+		return entityManager().createQuery("SELECT o FROM Topic o", Topic.class).setFirstResult(firstResult)
+				.setMaxResults(maxResults).getResultList();
 	}
 
 	public static Collection<Topic> fromJsonArrayToTopics(String json) {
-		return new JSONDeserializer<List<Topic>>().use(null, ArrayList.class)
-				.use("values", Topic.class).deserialize(json);
+		return new JSONDeserializer<List<Topic>>().use(null, ArrayList.class).use("values", Topic.class)
+				.deserialize(json);
 	}
 
 	public static Topic fromJsonToTopic(String json) {
-		return new JSONDeserializer<Topic>().use(null, Topic.class)
-				.deserialize(json);
+		return new JSONDeserializer<Topic>().use(null, Topic.class).deserialize(json);
 	}
 
 	public static void indexTopic(Topic topic) {
@@ -109,8 +103,7 @@ public class Topic {
 			SolrInputDocument sid = new SolrInputDocument();
 			sid.addField("id", "topic_" + topic.getId());
 			sid.addField("topic.parentid_t", topic.getParentId());
-			sid.addField("topic.preferredsynonymtopicid_t",
-					topic.getPreferredSynonymTopicId());
+			sid.addField("topic.preferredsynonymtopicid_t", topic.getPreferredSynonymTopicId());
 			sid.addField("topic.name_s", topic.getName());
 			sid.addField("topic.description_s", topic.getDescription());
 			// Add summary field to allow searching documents for objects of
@@ -118,8 +111,7 @@ public class Topic {
 			sid.addField(
 					"topic_solrsummary_t",
 					new StringBuilder().append(topic.getParentId()).append(" ")
-							.append(topic.getPreferredSynonymTopicId())
-							.append(" ").append(topic.getName()).append(" ")
+							.append(topic.getPreferredSynonymTopicId()).append(" ").append(topic.getName()).append(" ")
 							.append(topic.getDescription()));
 			documents.add(sid);
 		}
@@ -195,8 +187,7 @@ public class Topic {
 
 		if (name != null) {
 			TypedQuery<Topic> query = entityManager().createQuery(
-					"SELECT o FROM Topic o WHERE lower(o.name) = lower(:name)",
-					Topic.class);
+					"SELECT o FROM Topic o WHERE lower(o.name) = lower(:name)", Topic.class);
 			query.setParameter("name", name);
 
 			queryResult = query.getResultList();
@@ -216,7 +207,7 @@ public class Topic {
 	@Column(name = "id", columnDefinition = "serial")
 	private Integer id;
 
-	@Column(name = "name", columnDefinition = "varchar", length = 100)
+	@Column(name = "name", columnDefinition = "varchar", length = 100, unique = true)
 	@NotNull
 	private String name;
 
@@ -246,7 +237,7 @@ public class Topic {
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	@Autowired(required=false)
+	@Autowired(required = false)
 	transient SolrServer solrServer;
 
 	@Transactional
@@ -376,8 +367,7 @@ public class Topic {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this,
-				ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate

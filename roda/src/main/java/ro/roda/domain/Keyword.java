@@ -41,8 +41,7 @@ import flexjson.JSONSerializer;
 public class Keyword {
 
 	public static long countKeywords() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM Keyword o",
-				Long.class).getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM Keyword o", Long.class).getSingleResult();
 	}
 
 	@Async
@@ -65,8 +64,7 @@ public class Keyword {
 	}
 
 	public static List<Keyword> findAllKeywords() {
-		return entityManager().createQuery("SELECT o FROM Keyword o",
-				Keyword.class).getResultList();
+		return entityManager().createQuery("SELECT o FROM Keyword o", Keyword.class).getResultList();
 	}
 
 	public static Keyword findKeyword(Integer id) {
@@ -75,22 +73,18 @@ public class Keyword {
 		return entityManager().find(Keyword.class, id);
 	}
 
-	public static List<Keyword> findKeywordEntries(int firstResult,
-			int maxResults) {
-		return entityManager()
-				.createQuery("SELECT o FROM Keyword o", Keyword.class)
-				.setFirstResult(firstResult).setMaxResults(maxResults)
-				.getResultList();
+	public static List<Keyword> findKeywordEntries(int firstResult, int maxResults) {
+		return entityManager().createQuery("SELECT o FROM Keyword o", Keyword.class).setFirstResult(firstResult)
+				.setMaxResults(maxResults).getResultList();
 	}
 
 	public static Collection<Keyword> fromJsonArrayToKeywords(String json) {
-		return new JSONDeserializer<List<Keyword>>().use(null, ArrayList.class)
-				.use("values", Keyword.class).deserialize(json);
+		return new JSONDeserializer<List<Keyword>>().use(null, ArrayList.class).use("values", Keyword.class)
+				.deserialize(json);
 	}
 
 	public static Keyword fromJsonToKeyword(String json) {
-		return new JSONDeserializer<Keyword>().use(null, Keyword.class)
-				.deserialize(json);
+		return new JSONDeserializer<Keyword>().use(null, Keyword.class).deserialize(json);
 	}
 
 	public static void indexKeyword(Keyword keyword) {
@@ -110,8 +104,7 @@ public class Keyword {
 			// Add summary field to allow searching documents for objects of
 			// this type
 			sid.addField("keyword_solrsummary_t",
-					new StringBuilder().append(keyword.getName()).append(" ")
-							.append(keyword.getId()));
+					new StringBuilder().append(keyword.getName()).append(" ").append(keyword.getId()));
 			documents.add(sid);
 		}
 		try {
@@ -184,10 +177,8 @@ public class Keyword {
 		List<Keyword> queryResult;
 
 		if (name != null) {
-			TypedQuery<Keyword> query = entityManager()
-					.createQuery(
-							"SELECT o FROM Keyword o WHERE lower(o.name) = lower(:name)",
-							Keyword.class);
+			TypedQuery<Keyword> query = entityManager().createQuery(
+					"SELECT o FROM Keyword o WHERE lower(o.name) = lower(:name)", Keyword.class);
 			query.setParameter("name", name);
 
 			queryResult = query.getResultList();
@@ -208,7 +199,7 @@ public class Keyword {
 	@Column(name = "id", columnDefinition = "serial")
 	private Integer id;
 
-	@Column(name = "name", columnDefinition = "text")
+	@Column(name = "name", columnDefinition = "text", unique = true)
 	@NotNull
 	private String name;
 
@@ -218,7 +209,7 @@ public class Keyword {
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	@Autowired(required=false)
+	@Autowired(required = false)
 	transient SolrServer solrServer;
 
 	@Transactional
@@ -292,8 +283,7 @@ public class Keyword {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this,
-				ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate

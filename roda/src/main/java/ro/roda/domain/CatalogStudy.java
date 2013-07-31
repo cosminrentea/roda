@@ -14,6 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PostPersist;
 import javax.persistence.PostUpdate;
+import javax.persistence.PrePersist;
 import javax.persistence.PreRemove;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -26,6 +27,8 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrInputDocument;
+import org.hibernate.annotations.Generated;
+import org.hibernate.annotations.GenerationTime;
 import org.hibernate.envers.Audited;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -39,7 +42,6 @@ import flexjson.JSONSerializer;
 @Entity
 @Table(schema = "public", name = "catalog_study")
 @Configurable
-
 public class CatalogStudy {
 
 	public static long countCatalogStudys() {
@@ -149,10 +151,11 @@ public class CatalogStudy {
 		return new JSONSerializer().exclude("*.class").serialize(collection);
 	}
 
-	@Column(name = "added", columnDefinition = "timestamp")
-	@NotNull
+	@Column(name = "added", columnDefinition = "timestamp default now()", insertable = false)
+	// @NotNull
 	@Temporal(TemporalType.TIMESTAMP)
 	@DateTimeFormat(style = "MM")
+	@Generated(GenerationTime.INSERT)
 	private Calendar added;
 
 	@ManyToOne
@@ -169,7 +172,7 @@ public class CatalogStudy {
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	@Autowired(required=false)
+	@Autowired(required = false)
 	transient SolrServer solrServer;
 
 	@Transactional
@@ -264,4 +267,10 @@ public class CatalogStudy {
 	private void preRemove() {
 		deleteIndex(this);
 	}
+
+	// @PrePersist
+	// private void onCreate() {
+	// added = Calendar.getInstance();
+	// }
+
 }

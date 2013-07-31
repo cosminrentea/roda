@@ -3,7 +3,9 @@ package ro.roda.importer;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
@@ -61,10 +63,14 @@ import ro.roda.domain.StudyDescrPK;
 import ro.roda.domain.StudyKeyword;
 import ro.roda.domain.StudyKeywordPK;
 import ro.roda.domain.TimeMeth;
+import ro.roda.domain.Topic;
 import ro.roda.domain.UnitAnalysis;
 import ro.roda.domain.Users;
 import ro.roda.domain.Variable;
+import ro.roda.service.CatalogService;
 import ro.roda.service.CatalogServiceImpl;
+import ro.roda.service.FileService;
+import ro.roda.service.StudyService;
 import ro.roda.service.StudyServiceImpl;
 
 @Component
@@ -78,10 +84,13 @@ public class ImporterDdi {
 	transient EntityManager entityManager;
 
 	@Autowired
-	CatalogServiceImpl catalogService;
+	CatalogService catalogService;
 
 	@Autowired
-	StudyServiceImpl studyService;
+	StudyService studyService;
+
+	@Autowired
+	FileService fileService;
 
 	@Value("${roda.data.ddi.xsd}")
 	private String xsdDdi122;
@@ -123,11 +132,17 @@ public class ImporterDdi {
 				log.debug("No DDI files found for importing");
 			}
 
+			ArrayList<File> ddiFiles = new ArrayList<File>();
 			for (Resource ddiResource : resources) {
-				File ddiFile = ddiResource.getFile();
+				ddiFiles.add(ddiResource.getFile());
+			}
+			// sort files by name -> create predictable IDs for Studies
+			Collections.sort(ddiFiles);
+
+			for (File ddiFile : ddiFiles) {
 				log.debug("Importing DDI file: " + ddiFile.getName());
 				CodeBook cb = (CodeBook) unmarshaller.unmarshal(ddiFile);
-				importCodebook(cb, true, true);
+				importCodebook(cb, ddiFile, true, true);
 				if ("yes".equalsIgnoreCase(ddiPersist)) {
 					if (this.entityManager == null) {
 						this.entityManager = entityManager();
@@ -135,6 +150,9 @@ public class ImporterDdi {
 					this.entityManager.persist(cb);
 				}
 			}
+			this.entityManager.flush();
+			log.trace("Finished importing DDI files");
+
 		} catch (IOException e) {
 			log.error("IOException:", e);
 			throw new IllegalStateException(errorMessage);
@@ -147,7 +165,7 @@ public class ImporterDdi {
 		}
 	}
 
-	public void importCodebook(CodeBook cb, boolean nesstarExported, boolean legacyDataRODA) {
+	public void importCodebook(CodeBook cb, File srcFile, boolean nesstarExported, boolean legacyDataRODA) {
 
 		DocDscrType docDscrType = null;
 		if (cb.getDocDscr().size() > 0) {
@@ -295,30 +313,57 @@ public class ImporterDdi {
 		if (stdyInfoType != null) {
 			SubjectType subjectType = stdyInfoType.getSubject();
 			if (subjectType != null) {
+
+				// Keywords
 				List<KeywordType> keywordTypeList = subjectType.getKeyword();
-				Set<StudyKeyword> skSet = new HashSet<StudyKeyword>();
 				for (KeywordType keywordType : keywordTypeList) {
-					log.trace("keyword = " + keywordType.content);
+					log.trace("Keyword = " + keywordType.content);
 					Keyword keyword = Keyword.checkKeyword(null, keywordType.content);
 					StudyKeyword sk = new StudyKeyword();
 					// TODO replace user id = 1
 					sk.setId(new StudyKeywordPK(s.getId(), keyword.getId(), 1));
-					// sk.setKeywordId(keyword);
-					// sk.setStudyId(s);
-
-					// TODO replace user id = 1
-					sk.setAddedBy(Users.findUsers(1));
+					sk.setAddedBy(u);
 					sk.setAdded(new GregorianCalendar());
 					sk.persist();
-					skSet.add(sk);
 				}
+
+				// Topics / ELSST
 				List<TopcClasType> topcClasTypeList = subjectType.getTopcClas();
+				Set<Topic> tSet = new HashSet<Topic>();
 				for (TopcClasType topcClasType : topcClasTypeList) {
-					log.trace("topic = " + topcClasType.content);
-					// TODO persist topics
+					log.trace("Topic = " + topcClasType.content);
+					Topic topic = Topic.checkTopic(null, topcClasType.content, null);
+					if (topic == null) {
+						topic = new Topic();
+						topic.setName(topcClasType.content);
+						topic.setParentId(null);
+						topic.persist();
+					}
+					tSet.add(topic);
+					Set<Study> sStudy = topic.getStudies();
+					if (sStudy == null) {
+						sStudy = new HashSet<Study>();
+					}
+					sStudy.add(s);
+					topic.setStudies(sStudy);
 				}
+				s.setTopics(tSet);
 			}
 		}
+
+		// Add the imported DDI File to current Study's Files (in File-Store)
+
+		ro.roda.domain.File domainFile = fileService.saveFile(srcFile);
+
+		HashSet<Study> sStudy = new HashSet<Study>();
+		sStudy.add(s);
+		domainFile.setStudies1(sStudy);
+
+		HashSet<ro.roda.domain.File> sFile = new HashSet<ro.roda.domain.File>();
+		sFile.add(domainFile);
+		s.setFiles1(sFile);
+
+		domainFile.persist();
 
 		// Add Study to an existing Catalog
 
@@ -326,10 +371,9 @@ public class ImporterDdi {
 		CatalogStudy cs = new CatalogStudy();
 		CatalogStudyPK csid = new CatalogStudyPK(1, s.getId());
 		cs.setId(csid);
-		cs.setAdded(new GregorianCalendar());
 		cs.persist();
 
-		// create a new Instance / Dataset -> for this import
+		// create a new Instance / Dataset for this import
 		Instance instance = new Instance();
 		instance.setStudyId(s);
 		instance.setMain(true);
@@ -344,15 +388,15 @@ public class ImporterDdi {
 			List<VarType> varTypeList = dataDscrType.getVar();
 			int counter = 0;
 			for (VarType varType : varTypeList) {
-				log.trace("variable = " + varType.getName());
+				log.trace("Variable = " + varType.getName());
 				Variable variable = new Variable();
 				variable.setName(varType.getName());
 				if (varType.getLabl().size() > 0) {
 					variable.setLabel(varType.getLabl().get(0).content);
 				}
-				// TODO check
+				// TODO check semantics
 				variable.setVariableType((short) 0);
-				// TODO check
+				// TODO check semantics
 				variable.setType((short) 0);
 				variable.persist();
 

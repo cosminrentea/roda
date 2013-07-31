@@ -26,17 +26,13 @@ Se instaleaza MacPorts si toate dependentele necesare
 
 Se ruleaza urmatoarele comenzi, din shell:
 \begin{lstlisting}[breaklines=true]
-sudo port install maven3 R postgresql92 pgadmin3  apache-solr4 htmldoc doxygen graphviz firefox-x11 rb-rubygems
-	
-sudo gem install vmc
+sudo port install maven3 postgresql92 pgadmin3  apache-solr4 R htmldoc doxygen graphviz firefox-x11
 \end{lstlisting}
 
 \item[Ubuntu:]
 Se ruleaza urmatoarele comenzi, din shell:
 \begin{lstlisting}[breaklines=true]
-sudo apt-get install openjdk-6-jdk maven postgresql-server pgadmin3  firefox solr r-base r-base-dev perl libtest-www-selenium-perl htmldoc graphviz rubygems xvfb
-
-sudo gem install vmc
+sudo apt-get install openjdk-6-jdk xvfb maven postgresql-server pgadmin3 solr r-base r-base-dev perl htmldoc doxygen graphviz firefox
 \end{lstlisting}
 
 \begin {comment}
@@ -46,13 +42,9 @@ Maven se instaleaza manual sau dintr-un repository non-standard.
 
 R se instaleaza manual sau dintr-un repository non-standard.
 
-Test::WWW::Selenium se instaleaza din CPAN.
-
 Se ruleaza urmatoarele comenzi, din shell:
 \begin{lstlisting}[breaklines=true]
-sudo zypper in openjdk-6-jdk perl pgadmin3 htmldoc doxygen graphviz ruby ruby-devel rubygems postgresql
-
-sudo gem install vmc
+sudo zypper in openjdk-6-jdk postgresql pgadmin3 perl htmldoc doxygen graphviz firefox
 \end{lstlisting}
 \end{comment}
 
@@ -237,7 +229,7 @@ In fereastra 'Preferences' a STS:
 in Java -> Editor -> Save Actions: se bifeaza 'Perform the selected actions on save' si ' Format source code' (format all lines); se debifeaza 'Organize imports'.
 \item
 in Java -> Code Style -> Formatter, se selecteaza profilul 'Eclipse [built-in]', se apasa 'Edit', in tab-ul 'Line Wrapping' , campul 'Maximum line width' se completeaza cu '120' (in loc de '80').
-Se completeaza in partea de sus numele profilului: 'RODA' , se apasa 'OK'. Se selecteaza
+Se completeaza in partea de sus numele profilului: 'RODA' , se apasa 'OK'. Apoi, in fereastra 'Preferences' se selecteaza ca 'Active Profile' profilul creat ('RODA').
 \item
 (optional) in Java -> Appearance -> Members Sort Order, se bifeaza 'Sort member in same category by visibility'.
 \item
@@ -473,6 +465,19 @@ Proiectul este disponibil online permanent la adresa:
 
 \end{comment}
 
+\section{Web Development}
+Se instaleaza Mozilla Firefox; in Firefox se instaleaza:
+\begin{description}
+\item [Firebug]
+\item [Selenium IDE]
+\end{description}
+
+Se instaleaza Google Chrome; in Chrome se instaleaza:
+\begin{description}
+\item [Postman] de la \url{http://www.getpostman.com/}
+\end{description}
+
+
 \section{Integrarea continua a aplicatiei}
 
 \subsection{Instalarea si configurarea Jenkins}
@@ -600,4 +605,20 @@ pasii de la instructiunile de instalare +
     ./configure --without-x --with-jpeg=/opt/local
 \end{comment}
 
-% TODO ??? Chrome, Firefox, Firebug, Postman
+
+\subsection{Instalarea unor pachete necesare job-urilor Jenkins}
+\begin{description}
+\item[MacOSX:]
+Se ruleaza urmatoarele comenzi, din shell:
+\begin{lstlisting}[breaklines=true]
+sudo port install rb-rubygems
+sudo gem install vmc
+\end{lstlisting}
+
+\item[Ubuntu:]
+Se ruleaza urmatoarele comenzi, din shell:
+\begin{lstlisting}[breaklines=true]
+sudo apt-get install rubygems
+sudo gem install vmc
+\end{lstlisting}
+\end{description}

@@ -197,9 +197,10 @@ public class UserSettingGroup {
 		List<UserSettingGroup> queryResult;
 
 		if (name != null) {
-			TypedQuery<UserSettingGroup> query = entityManager().createQuery(
-					"SELECT o FROM UserSettingGroup o WHERE o.name = :name",
-					UserSettingGroup.class);
+			TypedQuery<UserSettingGroup> query = entityManager()
+					.createQuery(
+							"SELECT o FROM UserSettingGroup o WHERE lower(o.name) = lower(:name)",
+							UserSettingGroup.class);
 			query.setParameter("name", name);
 
 			queryResult = query.getResultList();

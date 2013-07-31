@@ -17,6 +17,7 @@ import javax.persistence.PostPersist;
 import javax.persistence.PostUpdate;
 import javax.persistence.PreRemove;
 import javax.persistence.Table;
+import javax.persistence.TypedQuery;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -37,11 +38,12 @@ import flexjson.JSONSerializer;
 @Entity
 @Table(schema = "public", name = "target_group")
 @Configurable
-
 public class TargetGroup {
 
 	public static long countTargetGroups() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM TargetGroup o", Long.class).getSingleResult();
+		return entityManager().createQuery(
+				"SELECT COUNT(o) FROM TargetGroup o", Long.class)
+				.getSingleResult();
 	}
 
 	@Async
@@ -64,7 +66,8 @@ public class TargetGroup {
 	}
 
 	public static List<TargetGroup> findAllTargetGroups() {
-		return entityManager().createQuery("SELECT o FROM TargetGroup o", TargetGroup.class).getResultList();
+		return entityManager().createQuery("SELECT o FROM TargetGroup o",
+				TargetGroup.class).getResultList();
 	}
 
 	public static TargetGroup findTargetGroup(Integer id) {
@@ -73,18 +76,24 @@ public class TargetGroup {
 		return entityManager().find(TargetGroup.class, id);
 	}
 
-	public static List<TargetGroup> findTargetGroupEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM TargetGroup o", TargetGroup.class)
-				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
+	public static List<TargetGroup> findTargetGroupEntries(int firstResult,
+			int maxResults) {
+		return entityManager()
+				.createQuery("SELECT o FROM TargetGroup o", TargetGroup.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults)
+				.getResultList();
 	}
 
-	public static Collection<TargetGroup> fromJsonArrayToTargetGroups(String json) {
-		return new JSONDeserializer<List<TargetGroup>>().use(null, ArrayList.class).use("values", TargetGroup.class)
+	public static Collection<TargetGroup> fromJsonArrayToTargetGroups(
+			String json) {
+		return new JSONDeserializer<List<TargetGroup>>()
+				.use(null, ArrayList.class).use("values", TargetGroup.class)
 				.deserialize(json);
 	}
 
 	public static TargetGroup fromJsonToTargetGroup(String json) {
-		return new JSONDeserializer<TargetGroup>().use(null, TargetGroup.class).deserialize(json);
+		return new JSONDeserializer<TargetGroup>().use(null, TargetGroup.class)
+				.deserialize(json);
 	}
 
 	public static void indexTargetGroup(TargetGroup targetGroup) {
@@ -103,8 +112,10 @@ public class TargetGroup {
 			sid.addField("targetGroup.id_i", targetGroup.getId());
 			// Add summary field to allow searching documents for objects of
 			// this type
-			sid.addField("targetgroup_solrsummary_t", new StringBuilder().append(targetGroup.getName()).append(" ")
-					.append(targetGroup.getId()));
+			sid.addField(
+					"targetgroup_solrsummary_t",
+					new StringBuilder().append(targetGroup.getName())
+							.append(" ").append(targetGroup.getId()));
 			documents.add(sid);
 		}
 		try {
@@ -143,30 +154,57 @@ public class TargetGroup {
 	}
 
 	/**
-	 * Verifica existenta unui grup tinta pentru drepturi in baza de date; in
-	 * caz afirmativ, returneaza obiectul corespunzator, altfel, metoda
-	 * introduce grupul tinta in baza de date si apoi returneaza obiectul
-	 * corespunzator. Verificarea existentei in baza de date se realizeaza fie
-	 * dupa valoarea identificatorului, fie dupa un criteriu de unicitate.
+	 * Verifica existenta unui obiect de tip <code>TargetGroup</code> (grup
+	 * tinta pentru drepturi) in baza de date; in caz afirmativ il returneaza,
+	 * altfel, metoda il introduce in baza de date si apoi il returneaza.
+	 * Verificarea existentei in baza de date se realizeaza fie dupa
+	 * identificator, fie dupa un criteriu de unicitate.
 	 * 
 	 * <p>
 	 * Criterii de unicitate:
 	 * <ul>
-	 * <li>id
 	 * <li>name
-	 * <ul>
+	 * </ul>
 	 * 
 	 * <p>
 	 * 
 	 * @param id
-	 *            - identificatorul grupului tinta.
+	 *            - identificatorul grupului.
 	 * @param name
-	 *            - numele grupului tinta.
+	 *            - numele grupului.
 	 * @return
 	 */
 	public static TargetGroup checkTargetGroup(Integer id, String name) {
-		//TODO
-		return null;
+		TargetGroup object;
+
+		if (id != null) {
+			object = findTargetGroup(id);
+
+			if (object != null) {
+				return object;
+			}
+		}
+
+		List<TargetGroup> queryResult;
+
+		if (name != null) {
+			TypedQuery<TargetGroup> query = entityManager()
+					.createQuery(
+							"SELECT o FROM TargetGroup o WHERE lower(o.name) = lower(:name)",
+							TargetGroup.class);
+			query.setParameter("name", name);
+
+			queryResult = query.getResultList();
+			if (queryResult.size() > 0) {
+				return queryResult.get(0);
+			}
+		}
+
+		object = new TargetGroup();
+		object.name = name;
+		object.persist();
+
+		return object;
 	}
 
 	@Id
@@ -184,7 +222,7 @@ public class TargetGroup {
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	@Autowired(required=false)
+	@Autowired(required = false)
 	transient SolrServer solrServer;
 
 	@Transactional
@@ -245,7 +283,8 @@ public class TargetGroup {
 		this.id = id;
 	}
 
-	public void setInstanceRightTargetGroups(Set<InstanceRightTargetGroup> instanceRightTargetGroups) {
+	public void setInstanceRightTargetGroups(
+			Set<InstanceRightTargetGroup> instanceRightTargetGroups) {
 		this.instanceRightTargetGroups = instanceRightTargetGroups;
 	}
 
@@ -258,7 +297,8 @@ public class TargetGroup {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this,
+				ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate
@@ -270,5 +310,12 @@ public class TargetGroup {
 	@PreRemove
 	private void preRemove() {
 		deleteIndex(this);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return (id != null && id.equals(((TargetGroup) obj).id))
+				|| (name != null && name
+						.equalsIgnoreCase(((TargetGroup) obj).name));
 	}
 }

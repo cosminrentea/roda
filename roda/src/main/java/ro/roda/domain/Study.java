@@ -163,17 +163,16 @@ public class Study {
 	}
 
 	/**
-	 * Verifica existenta unui studiu in baza de date; in caz afirmativ,
-	 * returneaza obiectul corespunzator, altfel, metoda introduce studiul in
-	 * baza de date si apoi returneaza obiectul corespunzator. Verificarea
-	 * existentei in baza de date se realizeaza fie dupa valoarea
-	 * identificatorului, fie dupa un criteriu de unicitate.
+	 * Verifica existenta unui obiect de tip <code>Study</code> (studiu) in baza
+	 * de date; in caz afirmativ il returneaza, altfel, metoda il introduce in
+	 * baza de date si apoi il returneaza. Verificarea existentei in baza de
+	 * date se realizeaza fie dupa identificator, fie dupa un criteriu de
+	 * unicitate.
 	 * 
 	 * <p>
 	 * Criterii de unicitate:
 	 * <ul>
-	 * <li>id
-	 * <ul>
+	 * </ul>
 	 * 
 	 * <p>
 	 * 
@@ -183,35 +182,62 @@ public class Study {
 	 *            - data de inceput a studiului.
 	 * @param dateEnd
 	 *            - data de sfarsit a studiului.
-	 * @param insertStatus
+	 * @param insertionStatus
 	 *            - pasul din wizard-ul de introducere a metadatelor.
-	 * @param ownerId
-	 *            - identificatorul utilizatorului care a adaugat studiul.
+	 * @param addedBy
+	 *            - utilizatorul care a adaugat studiul.
 	 * @param added
 	 *            - data de adaugare a studiului in baza de date.
 	 * @param digitizable
-	 *            - TODO.
 	 * @param anonymousUsage
-	 *            - TODO.
 	 * @param unitAnalysisId
-	 *            - identificatorul unitatii de analiza specifica instantei.
-	 * @param version
+	 *            - unitatea de analiza specifica instantei.
+	 * @param studyVersion
 	 *            - versiunea studiului.
 	 * @param rawData
-	 *            - TODO.
-	 * @param rawMetaData
-	 *            - TODO.
-	 * @param timeMethodId
-	 *            - identificatorul tipului de metoda temporala.
+	 * @param rawMetadata
+	 * @param timeMethId
+	 *            - tipul de metoda temporala.
+	 * @param yearStart
+	 *            - anul de inceput al studiului.
+	 * @param yearEnd
+	 *            - anul de sfarsit al studiului.
 	 * @return
 	 */
-	public static Study checkStudy(Integer id, Calendar dateStart,
-			Calendar dateEnd, Integer insertStatus, Integer ownerId,
-			Calendar added, Boolean digitizable, Boolean anonymousUsage,
-			Integer unitAnalysisId, Integer version, Boolean rawData,
-			Boolean rawMetaData, Integer timeMethodId) {
-		// TODO
-		return null;
+	public static Study checkStudy(Integer id, Date dateStart, Date dateEnd,
+			Integer insertionStatus, Users addedBy, Calendar added,
+			Boolean digitizable, Boolean anonymousUsage,
+			UnitAnalysis unitAnalysisId, Integer studyVersion, Boolean rawData,
+			Boolean rawMetadata, TimeMeth timeMethId, Integer yearStart,
+			Integer yearEnd) {
+		Study object;
+
+		if (id != null) {
+			object = findStudy(id);
+
+			if (object != null) {
+				return object;
+			}
+		}
+
+		object = new Study();
+		object.dateStart = dateStart;
+		object.dateEnd = dateEnd;
+		object.insertionStatus = insertionStatus;
+		object.addedBy = addedBy;
+		object.added = added;
+		object.digitizable = digitizable;
+		object.anonymousUsage = anonymousUsage;
+		object.unitAnalysisId = unitAnalysisId;
+		object.studyVersion = studyVersion;
+		object.rawData = rawData;
+		object.rawMetadata = rawMetadata;
+		object.timeMethId = timeMethId;
+		object.yearStart = yearStart;
+		object.yearEnd = yearEnd;
+		object.persist();
+
+		return object;
 	}
 
 	@Column(name = "added", columnDefinition = "timestamp")
@@ -316,7 +342,7 @@ public class Study {
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	@Autowired(required=false)
+	@Autowired(required = false)
 	transient SolrServer solrServer;
 
 	@Transactional
@@ -597,5 +623,10 @@ public class Study {
 	@PreRemove
 	private void preRemove() {
 		deleteIndex(this);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return id != null && id.equals(((Study) obj).id);
 	}
 }

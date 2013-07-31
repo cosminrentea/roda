@@ -19,6 +19,7 @@ import javax.persistence.PostPersist;
 import javax.persistence.PostUpdate;
 import javax.persistence.PreRemove;
 import javax.persistence.Table;
+import javax.persistence.TypedQuery;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -152,30 +153,57 @@ public class Vargroup {
 	}
 
 	/**
-	 * Verifica existenta unui grup de variabile in baza de date; in caz
-	 * afirmativ, returneaza obiectul corespunzator, altfel, metoda introduce
-	 * grupul de variabile in baza de date si apoi returneaza obiectul
-	 * corespunzator. Verificarea existentei in baza de date se realizeaza fie
-	 * dupa valoarea identificatorului, fie dupa un criteriu de unicitate.
+	 * Verifica existenta unui obiect de tip <code>Vargroup</code> (grup de
+	 * variabile) in baza de date; in caz afirmativ il returneaza, altfel,
+	 * metoda il introduce in baza de date si apoi il returneaza. Verificarea
+	 * existentei in baza de date se realizeaza fie dupa identificator, fie dupa
+	 * un criteriu de unicitate.
 	 * 
 	 * <p>
 	 * Criterii de unicitate:
 	 * <ul>
-	 * <li>id
 	 * <li>name
-	 * <ul>
+	 * </ul>
 	 * 
 	 * <p>
 	 * 
 	 * @param id
-	 *            - identificatorul grupului de variabile.
+	 *            - identificatorul grupului.
 	 * @param name
-	 *            - numele grupului de variabile.
+	 *            - numele grupului.
 	 * @return
 	 */
-	public static Vargroup checkVargroup(Integer id, String name) {
-		// TODO
-		return null;
+	public static Vargroup checkVargroup(Long id, String name) {
+		Vargroup object;
+
+		if (id != null) {
+			object = findVargroup(id);
+
+			if (object != null) {
+				return object;
+			}
+		}
+
+		List<Vargroup> queryResult;
+
+		if (name != null) {
+			TypedQuery<Vargroup> query = entityManager()
+					.createQuery(
+							"SELECT o FROM Vargroup o WHERE lower(o.name) = lower(:name)",
+							Vargroup.class);
+			query.setParameter("name", name);
+
+			queryResult = query.getResultList();
+			if (queryResult.size() > 0) {
+				return queryResult.get(0);
+			}
+		}
+
+		object = new Vargroup();
+		object.name = name;
+		object.persist();
+
+		return object;
 	}
 
 	@Id
@@ -194,7 +222,7 @@ public class Vargroup {
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	@Autowired(required=false)
+	@Autowired(required = false)
 	transient SolrServer solrServer;
 
 	@Transactional
@@ -281,5 +309,12 @@ public class Vargroup {
 	@PreRemove
 	private void preRemove() {
 		deleteIndex(this);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return (id != null && id.equals(((Vargroup) obj).id))
+				|| (name != null && name
+						.equalsIgnoreCase(((Vargroup) obj).name));
 	}
 }

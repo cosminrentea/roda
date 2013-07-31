@@ -19,6 +19,7 @@ import javax.persistence.PostPersist;
 import javax.persistence.PostUpdate;
 import javax.persistence.PreRemove;
 import javax.persistence.Table;
+import javax.persistence.TypedQuery;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -158,35 +159,64 @@ public class SettingGroup {
 	}
 
 	/**
-	 * Verifica existenta unui grup de setari de aplicatie in baza de date; daca
-	 * exista, returneaza obiectul corespunzator, altfel, metoda introduce
-	 * grupul de setari de aplicatie in baza de date si apoi returneaza obiectul
-	 * corespunzator. Verificarea existentei in baza de date se realizeaza fie
-	 * dupa valoarea identificatorului, fie dupa un criteriu de unicitate.
+	 * Verifica existenta unui obiect de tip <code>SettingGroup</code> (grup de
+	 * setari de aplicatie) in baza de date; in caz afirmativ il returneaza,
+	 * altfel, metoda il introduce in baza de date si apoi il returneaza.
+	 * Verificarea existentei in baza de date se realizeaza fie dupa
+	 * identificator, fie dupa un criteriu de unicitate.
 	 * 
 	 * <p>
 	 * Criterii de unicitate:
 	 * <ul>
-	 * <li>id
 	 * <li>name + parentId
-	 * <ul>
+	 * </ul>
 	 * 
 	 * <p>
 	 * 
 	 * @param id
-	 *            - identificatorul grupului de setari de aplicatie.
+	 *            - identificatorul grupului.
 	 * @param name
-	 *            - numele grupului de setari de aplicatie.
+	 *            - numele grupului.
 	 * @param parentId
-	 *            - grupul de setari de aplicatie parinte.
+	 *            - grupul parinte.
 	 * @param description
-	 *            - descrierea grupului de setari de aplicatie.
+	 *            - descrierea grupului.
 	 * @return
 	 */
 	public static SettingGroup checkSettingGroup(Integer id, String name,
-			Integer parentId, String description) {
-		// TODO
-		return null;
+			SettingGroup parentId, String description) {
+		SettingGroup object;
+
+		if (id != null) {
+			object = findSettingGroup(id);
+
+			if (object != null) {
+				return object;
+			}
+		}
+
+		List<SettingGroup> queryResult;
+
+		if (name != null && parentId != null) {
+			TypedQuery<SettingGroup> query = entityManager().createQuery(
+					"SELECT o FROM SettingGroup o WHERE lower(o.name) = lower(:name) AND "
+							+ "o.parentId = :parentId", SettingGroup.class);
+			query.setParameter("name", name);
+			query.setParameter("parentId", parentId);
+
+			queryResult = query.getResultList();
+			if (queryResult.size() > 0) {
+				return queryResult.get(0);
+			}
+		}
+
+		object = new SettingGroup();
+		object.name = name;
+		object.parentId = parentId;
+		object.description = description;
+		object.persist();
+
+		return object;
 	}
 
 	@Column(name = "description", columnDefinition = "text")
@@ -214,7 +244,7 @@ public class SettingGroup {
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	@Autowired(required=false)
+	@Autowired(required = false)
 	transient SolrServer solrServer;
 
 	@Transactional
@@ -325,5 +355,13 @@ public class SettingGroup {
 	@PreRemove
 	private void preRemove() {
 		deleteIndex(this);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return (id != null && id.equals(((SettingGroup) obj).id))
+				|| ((name != null && name
+						.equalsIgnoreCase(((SettingGroup) obj).name)) && (parentId != null && parentId
+						.equals(((SettingGroup) obj).parentId)));
 	}
 }

@@ -17,6 +17,7 @@ import javax.persistence.PostPersist;
 import javax.persistence.PostUpdate;
 import javax.persistence.PreRemove;
 import javax.persistence.Table;
+import javax.persistence.TypedQuery;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -147,39 +148,72 @@ public class Setting {
 	}
 
 	/**
-	 * Verifica existenta unei setari de aplicatie in baza de date; daca exista,
-	 * returneaza obiectul corespunzator, altfel, metoda introduce setarea de
-	 * aplicatie in baza de date si apoi returneaza obiectul corespunzator.
-	 * Verificarea existentei in baza de date se realizeaza fie dupa valoarea
-	 * identificatorului, fie dupa un criteriu de unicitate.
+	 * Verifica existenta unui obiect de tip <code>Setting</code> (setare de
+	 * aplicatie) in baza de date; in caz afirmativ il returneaza, altfel,
+	 * metoda il introduce in baza de date si apoi il returneaza. Verificarea
+	 * existentei in baza de date se realizeaza fie dupa identificator, fie dupa
+	 * un criteriu de unicitate.
 	 * 
 	 * <p>
 	 * Criterii de unicitate:
 	 * <ul>
-	 * <li>id
-	 * <li>name + groupId
-	 * <ul>
+	 * <li>name + settingGroupId
+	 * </ul>
 	 * 
 	 * <p>
 	 * 
 	 * @param id
-	 *            - identificatorul setarii de aplicatie.
+	 *            - identificatorul setarii.
 	 * @param name
-	 *            - numele setarii de aplicatie.
-	 * @param groupId
+	 *            - numele setarii.
+	 * @param settingGroupId
 	 *            - grupul de setari de aplicatie din care face parte setarea.
 	 * @param description
-	 *            - descrierea setarii de aplicatie.
-	 * @param defValue
-	 *            - valoarea implicita a setarii de aplicatie.
+	 *            - descrierea setarii.
+	 * @param defaultValue
+	 *            - valoarea implicita a setarii.
 	 * @param value
-	 *            - valoarea setarii de aplicatie.
+	 *            - valoarea setarii.
 	 * @return
 	 */
 	public static Setting checkSetting(Integer id, String name,
-			Integer groupId, String description, String defValue, String value) {
-		// TODO
-		return null;
+			SettingGroup settingGroupId, String description,
+			String defaultValue, String value) {
+		Setting object;
+
+		if (id != null) {
+			object = findSetting(id);
+
+			if (object != null) {
+				return object;
+			}
+		}
+
+		List<Setting> queryResult;
+
+		if (name != null && settingGroupId != null) {
+			TypedQuery<Setting> query = entityManager().createQuery(
+					"SELECT o FROM Setting o WHERE lower(o.name) = lower(:name) AND "
+							+ "o.settingGroupId = :settingGroupId",
+					Setting.class);
+			query.setParameter("name", name);
+			query.setParameter("settingGroupId", settingGroupId);
+
+			queryResult = query.getResultList();
+			if (queryResult.size() > 0) {
+				return queryResult.get(0);
+			}
+		}
+
+		object = new Setting();
+		object.name = name;
+		object.settingGroupId = settingGroupId;
+		object.description = description;
+		object.defaultValue = defaultValue;
+		object.value = value;
+		object.persist();
+
+		return object;
 	}
 
 	@Column(name = "default_value", columnDefinition = "text")
@@ -208,7 +242,7 @@ public class Setting {
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	@Autowired(required=false)
+	@Autowired(required = false)
 	transient SolrServer solrServer;
 
 	@Transactional
@@ -319,5 +353,13 @@ public class Setting {
 	@PreRemove
 	private void preRemove() {
 		deleteIndex(this);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return (id != null && id.equals(((Setting) obj).id))
+				|| ((name != null && name
+						.equalsIgnoreCase(((Setting) obj).name)) && (settingGroupId != null && settingGroupId
+						.equals(((Setting) obj).settingGroupId)));
 	}
 }

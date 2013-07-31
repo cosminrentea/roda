@@ -18,6 +18,7 @@ import javax.persistence.PostPersist;
 import javax.persistence.PostUpdate;
 import javax.persistence.PreRemove;
 import javax.persistence.Table;
+import javax.persistence.TypedQuery;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -155,33 +156,61 @@ public class TimeMeth {
 	}
 
 	/**
-	 * Verifica existenta unei metode temporale in baza de date; in caz
-	 * afirmativ, returneaza obiectul corespunzator, altfel, metoda introduce
-	 * metoda temporala in baza de date si apoi returneaza obiectul
-	 * corespunzator. Verificarea existentei in baza de date se realizeaza fie
-	 * dupa valoarea identificatorului, fie dupa un criteriu de unicitate.
+	 * Verifica existenta unui obiect de tip <code>TimeMeth</code> (metoda
+	 * temporala) in baza de date; in caz afirmativ il returneaza, altfel,
+	 * metoda il introduce in baza de date si apoi il returneaza. Verificarea
+	 * existentei in baza de date se realizeaza fie dupa identificator, fie dupa
+	 * un criteriu de unicitate.
 	 * 
 	 * <p>
 	 * Criterii de unicitate:
 	 * <ul>
-	 * <li>id
 	 * <li>name
-	 * <ul>
+	 * </ul>
 	 * 
 	 * <p>
 	 * 
 	 * @param id
-	 *            - identificatorul metodei temporale.
+	 *            - identificatorul metodei.
 	 * @param name
-	 *            - numele metodei temporale.
+	 *            - numele metodei.
 	 * @param description
-	 *            - descrierea metodei temporale.
+	 *            - descrierea metodei.
 	 * @return
 	 */
 	public static TimeMeth checkTimeMeth(Integer id, String name,
 			String description) {
-		// TODO
-		return null;
+		TimeMeth object;
+
+		if (id != null) {
+			object = findTimeMeth(id);
+
+			if (object != null) {
+				return object;
+			}
+		}
+
+		List<TimeMeth> queryResult;
+
+		if (name != null) {
+			TypedQuery<TimeMeth> query = entityManager()
+					.createQuery(
+							"SELECT o FROM TimeMeth o WHERE lower(o.name) = lower(:name)",
+							TimeMeth.class);
+			query.setParameter("name", name);
+
+			queryResult = query.getResultList();
+			if (queryResult.size() > 0) {
+				return queryResult.get(0);
+			}
+		}
+
+		object = new TimeMeth();
+		object.name = name;
+		object.description = description;
+		object.persist();
+
+		return object;
 	}
 
 	@Column(name = "description", columnDefinition = "text")
@@ -202,7 +231,7 @@ public class TimeMeth {
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	@Autowired(required=false)
+	@Autowired(required = false)
 	transient SolrServer solrServer;
 
 	@Transactional
@@ -297,5 +326,12 @@ public class TimeMeth {
 	@PreRemove
 	private void preRemove() {
 		deleteIndex(this);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return (id != null && id.equals(((TimeMeth) obj).id))
+				|| (name != null && name
+						.equalsIgnoreCase(((TimeMeth) obj).name));
 	}
 }

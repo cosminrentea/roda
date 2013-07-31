@@ -17,6 +17,7 @@ import javax.persistence.PostPersist;
 import javax.persistence.PostUpdate;
 import javax.persistence.PreRemove;
 import javax.persistence.Table;
+import javax.persistence.TypedQuery;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -146,30 +147,57 @@ public class Suffix {
 	}
 
 	/**
-	 * Verifica existenta unui sufix de persoana in baza de date; in caz
-	 * afirmativ, returneaza obiectul corespunzator, altfel, metoda introduce
-	 * sufixul de persoana in baza de date si apoi returneaza obiectul
-	 * corespunzator. Verificarea existentei in baza de date se realizeaza fie
-	 * dupa valoarea identificatorului, fie dupa un criteriu de unicitate.
+	 * Verifica existenta unui obiect de tip <code>Suffix</code> (sufix de
+	 * persoana) in baza de date; in caz afirmativ il returneaza, altfel, metoda
+	 * il introduce in baza de date si apoi il returneaza. Verificarea
+	 * existentei in baza de date se realizeaza fie dupa identificator, fie dupa
+	 * un criteriu de unicitate.
 	 * 
 	 * <p>
 	 * Criterii de unicitate:
 	 * <ul>
-	 * <li>id
 	 * <li>name
-	 * <ul>
+	 * </ul>
 	 * 
 	 * <p>
 	 * 
 	 * @param id
-	 *            - identificatorul sufixului de persoana.
+	 *            - identificatorul sufixului.
 	 * @param name
-	 *            - numele sufixului de persoana (ex: jr = junior).
+	 *            - numele sufixului (exemplu: jr = junior).
 	 * @return
 	 */
 	public static Suffix checkSuffix(Integer id, String name) {
-		// TODO
-		return null;
+		Suffix object;
+
+		if (id != null) {
+			object = findSuffix(id);
+
+			if (object != null) {
+				return object;
+			}
+		}
+
+		List<Suffix> queryResult;
+
+		if (name != null) {
+			TypedQuery<Suffix> query = entityManager()
+					.createQuery(
+							"SELECT o FROM Suffix o WHERE lower(o.name) = lower(:name)",
+							Suffix.class);
+			query.setParameter("name", name);
+
+			queryResult = query.getResultList();
+			if (queryResult.size() > 0) {
+				return queryResult.get(0);
+			}
+		}
+
+		object = new Suffix();
+		object.name = name;
+		object.persist();
+
+		return object;
 	}
 
 	@Id
@@ -187,7 +215,7 @@ public class Suffix {
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	@Autowired(required=false)
+	@Autowired(required = false)
 	transient SolrServer solrServer;
 
 	@Transactional
@@ -274,5 +302,11 @@ public class Suffix {
 	@PreRemove
 	private void preRemove() {
 		deleteIndex(this);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return (id != null && id.equals(((Suffix) obj).id))
+				|| (name != null && name.equalsIgnoreCase(((Suffix) obj).name));
 	}
 }

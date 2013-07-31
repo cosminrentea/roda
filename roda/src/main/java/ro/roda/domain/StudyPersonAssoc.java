@@ -17,6 +17,7 @@ import javax.persistence.PostPersist;
 import javax.persistence.PostUpdate;
 import javax.persistence.PreRemove;
 import javax.persistence.Table;
+import javax.persistence.TypedQuery;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -158,33 +159,61 @@ public class StudyPersonAssoc {
 	}
 
 	/**
-	 * Verifica existenta unei asocieri intre un studiu si o persoana in baza de
-	 * date; in caz afirmativ, returneaza obiectul corespunzator, altfel, metoda
-	 * introduce asocierea in baza de date si apoi returneaza obiectul
-	 * corespunzator. Verificarea existentei in baza de date se realizeaza fie
-	 * dupa valoarea identificatorului, fie dupa un criteriu de unicitate.
+	 * Verifica existenta unui obiect de tip <code>StudyOrgAssoc</code>
+	 * (asociere intre studiu si persoana) in baza de date; in caz afirmativ il
+	 * returneaza, altfel, metoda il introduce in baza de date si apoi il
+	 * returneaza. Verificarea existentei in baza de date se realizeaza fie dupa
+	 * identificator, fie dupa un criteriu de unicitate.
 	 * 
 	 * <p>
 	 * Criterii de unicitate:
 	 * <ul>
-	 * <li>id
-	 * <li>name
-	 * <ul>
+	 * <li>asocName
+	 * </ul>
 	 * 
 	 * <p>
 	 * 
 	 * @param id
 	 *            - identificatorul asocierii.
-	 * @param name
+	 * @param asocName
 	 *            - numele asocierii.
-	 * @param description
+	 * @param asocDescription
 	 *            - descrierea asocierii.
 	 * @return
 	 */
 	public static StudyPersonAssoc checkStudyPersonAssoc(Integer id,
-			String name, String description) {
-		// TODO
-		return null;
+			String asocName, String asocDescription) {
+		StudyPersonAssoc object;
+
+		if (id != null) {
+			object = findStudyPersonAssoc(id);
+
+			if (object != null) {
+				return object;
+			}
+		}
+
+		List<StudyPersonAssoc> queryResult;
+
+		if (asocName != null) {
+			TypedQuery<StudyPersonAssoc> query = entityManager()
+					.createQuery(
+							"SELECT o FROM StudyPersonAssoc o WHERE lower(o.asocName) = lower(:asocName)",
+							StudyPersonAssoc.class);
+			query.setParameter("asocName", asocName);
+
+			queryResult = query.getResultList();
+			if (queryResult.size() > 0) {
+				return queryResult.get(0);
+			}
+		}
+
+		object = new StudyPersonAssoc();
+		object.asocName = asocName;
+		object.asocDescription = asocDescription;
+		object.persist();
+
+		return object;
 	}
 
 	@Column(name = "asoc_description", columnDefinition = "text")
@@ -205,7 +234,7 @@ public class StudyPersonAssoc {
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	@Autowired(required=false)
+	@Autowired(required = false)
 	transient SolrServer solrServer;
 
 	@Transactional
@@ -301,5 +330,12 @@ public class StudyPersonAssoc {
 	@PreRemove
 	private void preRemove() {
 		deleteIndex(this);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return (id != null && id.equals(((StudyPersonAssoc) obj).id))
+				|| (asocName != null && asocName
+						.equalsIgnoreCase(((StudyPersonAssoc) obj).asocName));
 	}
 }

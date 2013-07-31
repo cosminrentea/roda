@@ -19,6 +19,7 @@ import javax.persistence.PostPersist;
 import javax.persistence.PostUpdate;
 import javax.persistence.PreRemove;
 import javax.persistence.Table;
+import javax.persistence.TypedQuery;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -154,29 +155,44 @@ public class Value {
 	}
 
 	/**
-	 * Verifica existenta unui element de tip valoare in baza de date; in caz
-	 * afirmativ, returneaza obiectul corespunzator, altfel, metoda introduce
-	 * elementul in baza de date si apoi returneaza obiectul corespunzator.
-	 * Verificarea existentei in baza de date se realizeaza fie dupa valoarea
-	 * identificatorului, fie dupa un criteriu de unicitate.
+	 * Verifica existenta unui obiect de tip <code>Value</code> (valoare) in
+	 * baza de date; in caz afirmativ il returneaza, altfel, metoda il introduce
+	 * in baza de date si apoi il returneaza. Verificarea existentei in baza de
+	 * date se realizeaza fie dupa identificator, fie dupa un criteriu de
+	 * unicitate.
 	 * 
 	 * <p>
 	 * Criterii de unicitate:
 	 * <ul>
-	 * <li>id
-	 * <ul>
+	 * </ul>
 	 * 
 	 * <p>
 	 * 
-	 * @param id
+	 * @param itemId
 	 *            - identificatorul elementului.
+	 * @param item
+	 *            - elementul din care deriva valoarea.
 	 * @param value
 	 *            - valoarea elementului.
 	 * @return
 	 */
-	public static Value checkValue(Integer itemId, Integer value) {
-		// TODO
-		return null;
+	public static Value checkValue(Long itemId, Item item, Integer value) {
+		Value object;
+
+		if (itemId != null) {
+			object = findValue(itemId);
+
+			if (object != null) {
+				return object;
+			}
+		}
+
+		object = new Value();
+		object.item = item;
+		object.value = value;
+		object.persist();
+
+		return object;
 	}
 
 	@OneToOne
@@ -201,7 +217,7 @@ public class Value {
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	@Autowired(required=false)
+	@Autowired(required = false)
 	transient SolrServer solrServer;
 
 	@Transactional
@@ -305,5 +321,10 @@ public class Value {
 	@PreRemove
 	private void preRemove() {
 		deleteIndex(this);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return itemId != null && itemId.equals(((Value) obj).itemId);
 	}
 }

@@ -19,6 +19,7 @@ import javax.persistence.PostPersist;
 import javax.persistence.PostUpdate;
 import javax.persistence.PreRemove;
 import javax.persistence.Table;
+import javax.persistence.TypedQuery;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -150,29 +151,40 @@ public class Source {
 	}
 
 	/**
-	 * Verifica existenta unei surse pentru studii in baza de date; daca exista,
-	 * returneaza obiectul corespunzator, altfel, metoda introduce sursa pentru
-	 * studii in baza de date si apoi returneaza obiectul corespunzator.
-	 * Verificarea existentei in baza de date se realizeaza fie dupa valoarea
-	 * identificatorului, fie dupa un criteriu de unicitate.
+	 * Verifica existenta unui obiect de tip <code>Source</code> (sursa pentru
+	 * studii) in baza de date; in caz afirmativ il returneaza, altfel, metoda
+	 * il introduce in baza de date si apoi il returneaza. Verificarea
+	 * existentei in baza de date se realizeaza fie dupa identificator, fie dupa
+	 * un criteriu de unicitate.
 	 * 
 	 * <p>
 	 * Criterii de unicitate:
 	 * <ul>
-	 * <li>id
-	 * <ul>
+	 * </ul>
 	 * 
 	 * <p>
 	 * 
 	 * @param id
-	 *            - identificatorul sursei pentru studii.
+	 *            - identificatorul sursei.
 	 * @param citation
-	 *            - TODO.
 	 * @return
 	 */
 	public static Source checkSource(Integer id, String citation) {
-		// TODO
-		return null;
+		Source object;
+
+		if (id != null) {
+			object = findSource(id);
+
+			if (object != null) {
+				return object;
+			}
+		}
+
+		object = new Source();
+		object.citation = citation;
+		object.persist();
+
+		return object;
 	}
 
 	@Column(name = "citation", columnDefinition = "text")
@@ -191,7 +203,7 @@ public class Source {
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	@Autowired(required=false)
+	@Autowired(required = false)
 	transient SolrServer solrServer;
 
 	@Transactional
@@ -278,5 +290,10 @@ public class Source {
 	@PreRemove
 	private void preRemove() {
 		deleteIndex(this);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return id != null && id.equals(((Source) obj).id);
 	}
 }

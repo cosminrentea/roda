@@ -2,10 +2,9 @@ package ro.roda.service;
 
 import java.util.List;
 
-import ro.roda.domain.Catalog;
-import ro.roda.transformer.CatalogByYear;
+import ro.roda.transformer.StudiesByYear;
 
-public interface CatalogByYearService {
+public interface StudiesByYearService {
 
 	/*
 	 * public abstract long countAllCatalogs();
@@ -28,10 +27,8 @@ public interface CatalogByYearService {
 	 * updateCatalog(Catalog catalog);
 	 */
 
-	
-	public abstract List<CatalogByYear> findAllCatalogsByYear();
-	
-	public abstract CatalogByYear findCatalogByYear(Integer id);
+	public abstract List<StudiesByYear> findAllStudiesByYear();
 
-	
+	public abstract StudiesByYear findStudiesByYear(Integer year);
+
 }

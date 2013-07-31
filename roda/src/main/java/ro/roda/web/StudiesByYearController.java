@@ -11,39 +11,38 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import ro.roda.domain.Catalog;
-import ro.roda.service.CatalogByYearService;
-import ro.roda.transformer.CatalogByYear;
+import ro.roda.service.StudiesByYearService;
+import ro.roda.transformer.StudiesByYear;
 
-@RequestMapping("/catalogsbyyear")
+@RequestMapping("/studiesbyyear")
 @Controller
-public class CatalogByYearController {
+public class StudiesByYearController {
 
 	@Autowired
-	CatalogByYearService catalogByYearService;
+	StudiesByYearService studiesByYearService;
 
-	//@Autowired
-	//CatalogStudyService catalogStudyService;
+	// @Autowired
+	// CatalogStudyService catalogStudyService;
 
-	//@Autowired
-	//SeriesService seriesService;
+	// @Autowired
+	// SeriesService seriesService;
 
-	//@Autowired
-	//UsersService usersService;
+	// @Autowired
+	// UsersService usersService;
 
 	@RequestMapping(headers = "Accept=application/json")
 	@ResponseBody
 	public ResponseEntity<String> listJson() {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");
-		List<CatalogByYear> result = catalogByYearService.findAllCatalogsByYear();
-		return new ResponseEntity<String>(CatalogByYear.toJsonArray(result), headers, HttpStatus.OK);
+		List<StudiesByYear> result = studiesByYearService.findAllStudiesByYear();
+		return new ResponseEntity<String>(StudiesByYear.toJsonArray(result), headers, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/{id}", headers = "Accept=application/json")
 	@ResponseBody
 	public ResponseEntity<String> showJson(@PathVariable("id") Integer id) {
-		CatalogByYear catalogByYear = catalogByYearService.findCatalogByYear(id);
+		StudiesByYear catalogByYear = studiesByYearService.findStudiesByYear(id);
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");
 		if (catalogByYear == null) {
@@ -51,5 +50,5 @@ public class CatalogByYearController {
 		}
 		return new ResponseEntity<String>(catalogByYear.toJson(), headers, HttpStatus.OK);
 	}
-	
+
 }

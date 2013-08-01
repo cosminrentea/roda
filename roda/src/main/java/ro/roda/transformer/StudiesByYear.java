@@ -37,31 +37,31 @@ public class StudiesByYear {
 	}
 
 	public static List<StudiesByYear> findAllStudiesByYear() {
-		List<StudiesByYear> result = null;
+		List<StudiesByYear> result = new ArrayList<StudiesByYear>();
 		List<Study> studies = Study.entityManager()
 				.createQuery("SELECT o FROM Study o ORDER BY o.yearStart ASC", Study.class).getResultList();
-		Set<StudyInfo> studiesByYearSet = null;
-		Iterator<Study> it = studies.iterator();
-		int yearPrev = 0;
 
-		result = new ArrayList<StudiesByYear>();
+		if (studies != null && studies.size() > 0) {
+			Set<StudyInfo> studiesByYearSet = null;
+			Integer oldYear = null;
+			Iterator<Study> studiesIterator = studies.iterator();
 
-		while (it.hasNext()) {
-			Study study = (Study) it.next();
-			int yearTmp = study.getYearStart();
-			if (yearTmp != yearPrev || !it.hasNext()) {
-				if (!it.hasNext()) {
-					studiesByYearSet.add(new StudyInfo(study));
+			while (studiesIterator.hasNext()) {
+				Study study = (Study) studiesIterator.next();
+
+				if (!study.getYearStart().equals(oldYear)) {
+					if (studiesByYearSet != null) {
+						result.add(new StudiesByYear(oldYear, studiesByYearSet.size(), studiesByYearSet));
+					}
+					studiesByYearSet = new HashSet<StudyInfo>();
+					oldYear = study.getYearStart();
 				}
-				if (studiesByYearSet != null) {
-					result.add(new StudiesByYear(yearPrev, studiesByYearSet.size(), studiesByYearSet));
-				}
-				studiesByYearSet = new HashSet<StudyInfo>();
-				yearPrev = yearTmp;
-			} else {
 				studiesByYearSet.add(new StudyInfo(study));
 			}
 
+			if (studiesByYearSet != null) {
+				result.add(new StudiesByYear(oldYear, studiesByYearSet.size(), studiesByYearSet));
+			}
 		}
 		return result;
 	}

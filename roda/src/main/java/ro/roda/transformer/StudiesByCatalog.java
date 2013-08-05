@@ -14,7 +14,7 @@ import ro.roda.domain.CatalogStudy;
 import flexjson.JSONSerializer;
 
 @Configurable
-public class StudiesByCatalog {
+public class StudiesByCatalog extends JsonInfo {
 
 	public static String toJsonArray(Collection<StudiesByCatalog> collection) {
 		JSONSerializer serializer = new JSONSerializer();

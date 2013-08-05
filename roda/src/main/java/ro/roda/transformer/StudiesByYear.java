@@ -13,7 +13,7 @@ import ro.roda.domain.Study;
 import flexjson.JSONSerializer;
 
 @Configurable
-public class StudiesByYear {
+public class StudiesByYear extends JsonInfo {
 
 	public static String toJsonArray(Collection<StudiesByYear> collection) {
 		JSONSerializer serializer = new JSONSerializer();

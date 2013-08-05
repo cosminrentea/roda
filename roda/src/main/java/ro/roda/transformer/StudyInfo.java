@@ -20,16 +20,16 @@ import ro.roda.domain.Variable;
 import flexjson.JSONSerializer;
 
 @Configurable
-public class StudyInfo {
+public class StudyInfo extends JsonInfo {
 
 	public static String toJsonArray(Collection<StudyInfo> collection) {
 		JSONSerializer serializer = new JSONSerializer();
 
 		serializer.exclude("*.class");
-		serializer.exclude("variables.id", "variables.concepts", "variables.fileId", "variables.formEditedNumberVars",
-				"variables.instanceVariables", "variables.operatorInstructions", "variables.otherStatistics",
-				"variables.selectionVariable", "variables.skips", "variables.skips1", "variables.type",
-				"variables.vargroups", "variables.variableType");
+		serializer.exclude("type", "leaf", "variables.id", "variables.concepts", "variables.fileId",
+				"variables.formEditedNumberVars", "variables.instanceVariables", "variables.operatorInstructions",
+				"variables.otherStatistics", "variables.selectionVariable", "variables.skips", "variables.skips1",
+				"variables.type", "variables.vargroups", "variables.variableType");
 		serializer.exclude("files.content", "files.fullPath", "files.id", "files.instances",
 				"files.selectionVariableItems", "files.size", "files.studies1", "files.title", "files.variables");
 
@@ -64,10 +64,6 @@ public class StudyInfo {
 
 	private final Log log = LogFactory.getLog(this.getClass());
 
-	private Integer id;
-
-	private String name;
-
 	private Integer an;
 
 	// private String author;
@@ -80,18 +76,22 @@ public class StudyInfo {
 
 	private String universe;
 
+	private Boolean leaf = true;
+
 	private Set<Variable> variables;
 
 	private Set<File> files;
 
 	public StudyInfo(Study study) {
-		this.id = study.getId();
+
+		setType("St");
 		this.an = study.getYearStart();
 		this.unitAnalysis = study.getUnitAnalysisId().getName();
 		this.files = study.getFiles1();
 
 		// the variables of a study are those of its 'main' instance
 		this.variables = new HashSet<Variable>();
+		setId(study.getId());
 		if (study.getInstances() != null) {
 			log.trace("Instances: " + study.getInstances().size());
 			for (Instance instance : study.getInstances()) {
@@ -111,27 +111,11 @@ public class StudyInfo {
 			studyDescr = study.getStudyDescrs().iterator().next();
 		}
 		if (studyDescr != null) {
-			this.name = studyDescr.getTitle();
+			setName(studyDescr.getTitle());
 			this.description = studyDescr.getAbstract1();
 			this.geographicCoverage = studyDescr.getGeographicCoverage();
 			this.universe = studyDescr.getUniverse();
 		}
-	}
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String pName) {
-		this.name = pName;
 	}
 
 	public Integer getAn() {
@@ -172,6 +156,14 @@ public class StudyInfo {
 
 	public void setUnitAnalysis(String unitAnalysis) {
 		this.unitAnalysis = unitAnalysis;
+	}
+
+	public Boolean getLeaf() {
+		return leaf;
+	}
+
+	public void setLeaf(Boolean leaf) {
+		this.leaf = leaf;
 	}
 
 	public Set<File> getFiles() {

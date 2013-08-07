@@ -465,6 +465,22 @@ Proiectul este disponibil online permanent la adresa:
 
 \end{comment}
 
+\section{Generarea documentatiei proiectului}
+Pentru generarea documentatiei JavaDoc a proiectului:
+\begin{lstlisting}
+	mvn javadoc:javadoc
+\end{lstlisting}
+
+Pentru generarea documentatiei proiectului in format PDF (din surse LaTeX):
+\begin{lstlisting}
+	mvn latex:latex
+\end{lstlisting}
+
+Pentru generarea site-ului proiectului in format HTML (cuprinzand JavaDoc, informatii si rapoarte):
+\begin{lstlisting}
+	mvn site
+\end{lstlisting}
+
 \section{Web Development}
 Se instaleaza Mozilla Firefox; in Firefox se instaleaza:
 \begin{description}
@@ -612,13 +628,13 @@ pasii de la instructiunile de instalare +
 Se ruleaza urmatoarele comenzi, din shell:
 \begin{lstlisting}[breaklines=true]
 sudo port install rb-rubygems
-sudo gem install vmc
+sudo gem install cf
 \end{lstlisting}
 
 \item[Ubuntu:]
 Se ruleaza urmatoarele comenzi, din shell:
 \begin{lstlisting}[breaklines=true]
 sudo apt-get install rubygems
-sudo gem install vmc
+sudo gem install cf
 \end{lstlisting}
 \end{description}

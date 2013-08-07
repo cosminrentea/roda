@@ -20,7 +20,7 @@ public class StudiesByCatalog extends JsonInfo {
 		JSONSerializer serializer = new JSONSerializer();
 
 		serializer.exclude("*.class");
-		serializer.exclude("studies.variables.concepts", "studies.variables.fileId",
+		serializer.exclude("studies.leaf", "studies.variables.concepts", "studies.variables.fileId",
 				"studies.variables.formEditedNumberVars", "studies.variables.instanceVariables",
 				"studies.variables.operatorInstructions", "studies.variables.otherStatistics",
 				"studies.variables.selectionVariable", "studies.variables.skips", "studies.variables.skips1",
@@ -45,6 +45,7 @@ public class StudiesByCatalog extends JsonInfo {
 		serializer.transform(new FieldNameTransformer("unit_analysis"), "studies.unitAnalysis");
 		serializer.transform(new FieldNameTransformer("univers"), "studies.universe");
 		serializer.transform(new FieldNameTransformer("indice"), "studies.id");
+		serializer.transform(new FieldNameTransformer("indice"), "studies.variables.id");
 		// TODO transform the fields name in variables and files
 
 		return "{\"data\":" + serializer.serialize(collection) + "}";
@@ -80,10 +81,27 @@ public class StudiesByCatalog extends JsonInfo {
 	}
 
 	public static StudiesByCatalog findStudiesByCatalog(Integer id) {
-		if (id == null)
-			return null;
-		// TODO
-		return new StudiesByCatalog(id);
+		StudiesByCatalog result = null;
+		Catalog catalog = Catalog.findCatalog(id);
+
+		if (catalog != null) {
+			Set<StudyInfo> studiesByCatalogSet = null;
+
+			Set<CatalogStudy> catalogStudies = catalog.getCatalogStudies();
+
+			if (catalogStudies != null && catalogStudies.size() > 0) {
+				studiesByCatalogSet = new HashSet<StudyInfo>();
+
+				Iterator<CatalogStudy> catalogStudiesIterator = catalogStudies.iterator();
+				while (catalogStudiesIterator.hasNext()) {
+					studiesByCatalogSet.add(new StudyInfo(catalogStudiesIterator.next().getStudyId()));
+				}
+
+				result = new StudiesByCatalog(catalog.getId(), catalog.getName(), studiesByCatalogSet.size(),
+						studiesByCatalogSet);
+			}
+		}
+		return result;
 	}
 
 	private Integer id;
@@ -144,6 +162,37 @@ public class StudiesByCatalog extends JsonInfo {
 	}
 
 	public String toJson() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
+		JSONSerializer serializer = new JSONSerializer();
+
+		serializer.exclude("*.class");
+		serializer.exclude("studies.leaf", "studies.variables.concepts", "studies.variables.fileId",
+				"studies.variables.formEditedNumberVars", "studies.variables.instanceVariables",
+				"studies.variables.operatorInstructions", "studies.variables.otherStatistics",
+				"studies.variables.selectionVariable", "studies.variables.skips", "studies.variables.skips1",
+				"studies.variables.type", "studies.variables.vargroups", "studies.variables.variableType");
+		serializer.exclude("studies.files.content", "studies.files.fullPath", "studies.files.id",
+				"studies.files.instances", "studies.files.selectionVariableItems", "studies.files.size",
+				"studies.files.studies1", "studies.files.title", "studies.files.variables");
+
+		serializer.include("id", "name", "studiesCount");
+		serializer.include("studies.name", "studies.id", "studies.yearStart", "studies.description",
+				"studies.geographicCoverage", "studies.unitAnalysis", "studies.universe");
+		serializer.include("studies.variables.id", "studies.variables.name", "studies.variables.label");
+		serializer.include("studies.files.name", "studies.files.contentType", "studies.files.url",
+				"studies.files.description");
+
+		// return "{\"data\":[{\"name\":\"RODA\",\"level\":0,\"data\":"
+		// + serializer.serialize(collection) + "}]}";
+
+		serializer.transform(new FieldNameTransformer("indice"), "id");
+		serializer.transform(new FieldNameTransformer("nrStudies"), "studiesCount");
+		serializer.transform(new FieldNameTransformer("geo_coverage"), "studies.geographicCoverage");
+		serializer.transform(new FieldNameTransformer("unit_analysis"), "studies.unitAnalysis");
+		serializer.transform(new FieldNameTransformer("univers"), "studies.universe");
+		serializer.transform(new FieldNameTransformer("indice"), "studies.id");
+		serializer.transform(new FieldNameTransformer("indice"), "studies.variables.id");
+		// TODO transform the fields name in variables and files
+
+		return "{\"data\":" + serializer.serialize(this) + "}";
 	}
 }

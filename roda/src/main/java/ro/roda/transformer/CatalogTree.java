@@ -35,8 +35,8 @@ public class CatalogTree extends JsonInfo {
 				includeData += ".";
 			}
 			includeData += "data";
-			serializer.exclude(includeData + ".variables", includeData + ".files", includeData + ".geographicCoverage",
-					includeData + ".unitAnalysis", includeData + ".universe");
+			serializer.exclude(includeData + ".depth", includeData + ".variables", includeData + ".files", includeData
+					+ ".geographicCoverage", includeData + ".unitAnalysis", includeData + ".universe");
 			serializer.include(includeData + ".name", includeData + ".id", includeData + ".yearStart", includeData
 					+ ".type", includeData + ".leaf");
 			serializer.transform(new FieldNameTransformer("indice"), includeData + ".id");
@@ -196,8 +196,8 @@ public class CatalogTree extends JsonInfo {
 				includeData += ".";
 			}
 			includeData += "data";
-			serializer.exclude(includeData + ".variables", includeData + ".files", includeData + ".geographicCoverage",
-					includeData + ".unitAnalysis", includeData + ".universe");
+			serializer.exclude(includeData + ".depth", includeData + ".variables", includeData + ".files", includeData
+					+ ".geographicCoverage", includeData + ".unitAnalysis", includeData + ".universe");
 			serializer.include(includeData + ".name", includeData + ".id", includeData + ".yearStart", includeData
 					+ ".type", includeData + ".leaf");
 			serializer.transform(new FieldNameTransformer("indice"), includeData + ".id");

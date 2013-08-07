@@ -8,6 +8,7 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
+import javax.persistence.FlushModeType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -26,7 +27,7 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrInputDocument;
-import org.hibernate.envers.Audited;
+import org.hibernate.annotations.Index;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.scheduling.annotation.Async;
@@ -174,16 +175,20 @@ public class Keyword {
 			}
 		}
 
-		List<Keyword> queryResult;
+		Keyword queryResult;
 
 		if (name != null) {
 			TypedQuery<Keyword> query = entityManager().createQuery(
 					"SELECT o FROM Keyword o WHERE lower(o.name) = lower(:name)", Keyword.class);
 			query.setParameter("name", name);
+			// copy to every other class
+			query.setMaxResults(1);
+			query.setFlushMode(FlushModeType.COMMIT);
 
-			queryResult = query.getResultList();
-			if (queryResult.size() > 0) {
-				return queryResult.get(0);
+			try {
+				queryResult = query.getSingleResult();
+				return queryResult;
+			} catch (Exception exception) {
 			}
 		}
 
@@ -199,8 +204,9 @@ public class Keyword {
 	@Column(name = "id", columnDefinition = "serial")
 	private Integer id;
 
-	@Column(name = "name", columnDefinition = "text", unique = true)
+	@Column(name = "name", columnDefinition = "text")
 	@NotNull
+	@Index(name = "KeywordNameIndex")
 	private String name;
 
 	@OneToMany(mappedBy = "keywordId")

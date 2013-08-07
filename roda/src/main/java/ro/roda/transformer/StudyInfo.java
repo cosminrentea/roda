@@ -34,12 +34,12 @@ public class StudyInfo extends JsonInfo {
 				"files.selectionVariableItems", "files.size", "files.studies1", "files.title", "files.variables");
 
 		serializer.include("id", "name", "an", "description", "universe", "geographicCoverage", "unitAnalysis");
-		serializer.include("variables.name", "variables.label");
+		serializer.include("variables.id", "variables.name", "variables.label");
 		serializer.include("files.name", "files.contentType", "files.url", "files.description");
 
 		serializer.transform(new FieldNameTransformer("geo_coverage"), "geographicCoverage");
 		serializer.transform(new FieldNameTransformer("unit_analysis"), "unitAnalysis");
-		// TODO transform the fields name in variables and files
+		serializer.transform(new FieldNameTransformer("indice"), "variables.id");
 
 		return "{\"data\":" + serializer.serialize(collection) + "}";
 	}
@@ -200,7 +200,7 @@ public class StudyInfo extends JsonInfo {
 
 		serializer.transform(new FieldNameTransformer("geo_coverage"), "geographicCoverage");
 		serializer.transform(new FieldNameTransformer("unit_analysis"), "unitAnalysis");
-		// TODO transform the fields name in variables and files
+		serializer.transform(new FieldNameTransformer("indice"), "variables.id");
 
 		return "{\"data\":" + serializer.serialize(this) + "}";
 	}

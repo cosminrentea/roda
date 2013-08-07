@@ -7,6 +7,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.TypedQuery;
+
 import org.springframework.beans.factory.annotation.Configurable;
 
 import ro.roda.domain.Study;
@@ -18,8 +20,8 @@ public class StudiesByYear extends JsonInfo {
 	public static String toJsonArray(Collection<StudiesByYear> collection) {
 		JSONSerializer serializer = new JSONSerializer();
 
-		serializer.exclude("*.class");
-		serializer.exclude("studies.variables", "studies.files");
+		serializer.exclude("*.class", "id", "name", "type");
+		serializer.exclude("studies.variables", "studies.files", "studies.leaf");
 		serializer.include("year", "studiesCount");
 		serializer.include("studies.name", "studies.id", "studies.description", "studies.geographicCoverage",
 				"studies.unitAnalysis", "studies.universe");
@@ -31,7 +33,6 @@ public class StudiesByYear extends JsonInfo {
 		serializer.transform(new FieldNameTransformer("unit_analysis"), "studies.unitAnalysis");
 		serializer.transform(new FieldNameTransformer("univers"), "studies.universe");
 		serializer.transform(new FieldNameTransformer("indice"), "studies.id");
-		// TODO transform the fields name in variables and files
 
 		return "{\"data\":" + serializer.serialize(collection) + "}";
 	}
@@ -67,10 +68,26 @@ public class StudiesByYear extends JsonInfo {
 	}
 
 	public static StudiesByYear findStudiesByYear(Integer year) {
-		if (year == null)
-			return null;
-		// TODO
-		return new StudiesByYear(year);
+		StudiesByYear result = null;
+		TypedQuery<Study> query = Study.entityManager().createQuery("SELECT o FROM Study o WHERE o.yearStart = :year",
+				Study.class);
+		query.setParameter("year", year);
+
+		List<Study> studies = query.getResultList();
+
+		if (studies != null && studies.size() > 0) {
+			Set<StudyInfo> studiesByYearSet = new HashSet<StudyInfo>();
+			Iterator<Study> studiesIterator = studies.iterator();
+
+			while (studiesIterator.hasNext()) {
+				studiesByYearSet.add(new StudyInfo(studiesIterator.next()));
+			}
+
+			if (studiesByYearSet.size() > 0) {
+				result = new StudiesByYear(year, studiesByYearSet);
+			}
+		}
+		return result;
 	}
 
 	private Integer year;
@@ -120,6 +137,22 @@ public class StudiesByYear extends JsonInfo {
 	}
 
 	public String toJson() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
+		JSONSerializer serializer = new JSONSerializer();
+
+		serializer.exclude("*.class", "id", "name", "type");
+		serializer.exclude("studies.variables", "studies.files", "studies.leaf");
+		serializer.include("year", "studiesCount");
+		serializer.include("studies.name", "studies.id", "studies.description", "studies.geographicCoverage",
+				"studies.unitAnalysis", "studies.universe");
+
+		// return "{\"data\":[{\"name\":\"RODA\",\"level\":0,\"data\":"
+		// + serializer.serialize(collection) + "}]}";
+
+		serializer.transform(new FieldNameTransformer("geo_coverage"), "studies.geographicCoverage");
+		serializer.transform(new FieldNameTransformer("unit_analysis"), "studies.unitAnalysis");
+		serializer.transform(new FieldNameTransformer("univers"), "studies.universe");
+		serializer.transform(new FieldNameTransformer("indice"), "studies.id");
+
+		return "{\"data\":" + serializer.serialize(this) + "}";
 	}
 }

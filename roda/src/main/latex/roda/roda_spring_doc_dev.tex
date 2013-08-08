@@ -466,23 +466,33 @@ Proiectul este disponibil online permanent la adresa:
 \end{comment}
 
 \section{Generarea documentatiei proiectului}
-Pentru generarea documentatiei JavaDoc a proiectului:
-\begin{lstlisting}
-	mvn javadoc:javadoc
-\end{lstlisting}
 
-Pentru generarea documentatiei proiectului in format PDF (din surse LaTeX):
+Pentru generarea in directorul 'target/' a documentatiei proiectului in format PDF (din sursele LaTeX):
+
 \begin{lstlisting}
 	mvn latex:latex
 \end{lstlisting}
 
-Pentru generarea site-ului proiectului in format HTML (cuprinzand JavaDoc, informatii si rapoarte):
+Pentru a forta re-generarea tuturor documentelor in format PDF, se sterge directorul 'target/latex/' din proiect:
+
+\begin{lstlisting}
+	rm -rf target/latex
+\end{lstlisting}
+
+Pentru generarea in directorul 'target/site/apidocs' a documentatiei JavaDoc a proiectului:
+
+\begin{lstlisting}
+	mvn javadoc:javadoc
+\end{lstlisting}
+
+Pentru generarea in directorul 'target/site' a website-ului proiectului in format HTML (cuprinzand JavaDoc, informatii si rapoarte):
+
 \begin{lstlisting}
 	mvn site
 \end{lstlisting}
 
 \section{Web Development}
-Se instaleaza Mozilla Firefox; in Firefox se instaleaza:
+Se instaleaza Mozilla Firefox; in Firefox se instaleaza urmatoarele add-on-uri:
 \begin{description}
 \item [Firebug]
 \item [Selenium IDE]

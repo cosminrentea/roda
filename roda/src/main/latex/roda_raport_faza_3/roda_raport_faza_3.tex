@@ -1,0 +1,44 @@
+\documentclass[11pt,twoside,romanian]{extbook}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{color}
+\usepackage{comment}
+\usepackage{times}
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr}
+\usepackage{lscape}
+\usepackage{float}
+\usepackage{listings}
+\usepackage{babel}
+\usepackage{amsmath}
+\usepackage{amssymb,amsfonts,textcomp}
+\usepackage{array}
+\usepackage{hhline}
+\usepackage[pdftex]{graphicx}
+\usepackage[pdftitle={ANEXE - Sistemul de acces la date}, pdfauthor={RODA}, colorlinks=true, linkcolor=blue]{hyperref}
+
+%\hypersetup{pdftex, colorlinks=true, linkcolor=blue, citecolor=blue, filecolor=blue, urlcolor=blue, pdftitle=, pdfauthor=, pdfsubject=, pdfkeywords=}
+\pagestyle{fancy}
+\DeclareGraphicsExtensions{.png,.gif,.jpg,.pdf}
+\addto\captionsromanian{\renewcommand{\chaptername}{Anexa}}
+
+\begin{document}
+
+\pagenumbering{arabic} 
+\cfoot{\tiny{RODA}\tiny}
+\fancyhead[LE,RO]{ANEXE - \leftmark}
+\fancyhead[RE,LO]{\thepage}
+\title{ANEXE.}
+\author{RODA}
+\date{\today}
+\maketitle
+\newpage
+\thispagestyle{plain}
+\tableofcontents{}
+\setcounter{page}{1}
+
+\chapter{PUNCTUL 5}
+%TODO change
+\include{roda_core_libraries}
+
+\end{document}

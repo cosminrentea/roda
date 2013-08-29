@@ -13,7 +13,7 @@
 
 %%%% Cosmin
 
-\usepackage[a4paper, margin=2.2cm]{geometry}
+\usepackage[a4paper, margin=2.5cm]{geometry}
 \renewcommand*{\familydefault}{\sfdefault} %Sans Serif font
 \renewcommand{\sfdefault}{phv} % Arial
 \setlength{\parindent}{0pt} % no indentation for paragraphs
@@ -148,9 +148,13 @@ Nr. III cu titlul
 \foreignlanguage{english}{Realizarea }\foreignlanguage{romanian}{unei arhive electronice integrate care s\u{a}
 con\c{t}in\u{a} \c{s}i s\u{a} distribuie c\^at mai multe dintre datele sociologice acumulate \^in Rom\^ania.}}
 
+\medskip
+
 Sistemul trebuie s\u{a} ofere cercet\u{a}torilor \^in domeniul \c{s}tiin\c{t}elor sociale instrumentele necesare pentru
 trecerea \^in revist\u{a}, compararea, sintetizarea, ad\u{a}ugarea datelor sociologice de interes. Operatorii interni
 ai arhivei vor c\u{a}uta, identifica \c{s}i acumula date sociologice disponibile \^in Rom\^ania.
+
+\medskip
 
 Arhiva va fi integrat\u{a} \^in Consiliul European al Arhivelor de Date Sociale (CESSDA) asigur\^andu-se un schimb
 continuu bidirec\c{t}ional de informa\c{t}ie.
@@ -211,7 +215,11 @@ Au fost definite controllere corespunzand unui sablon de interfata de tip \emph{
 In controllere se fac apeluri catre nivelul de servicii. 
 Au mai fost definite si controllere pentru a servi continut de baza in format JSON.
 
+\medskip
+
 Componentele dezvoltate in cadrul etapelor anterioare ale proiectului au fost completate cu functionalitati suplimentare, printre scopurile carora amintim furnizarea anumitor servicii si asigurarea suportului pentru activitatile viitoare. In acest sens, in clasele domeniului au fost implementate metode dintre care mentionam: verificarea egalitatii dintre instante, generarea unor valori hash corespunzatoare datelor stocate in cadrul instantelor si testarea existentei unor entitati in baza de date. Pe langa utilitatea lor in cadrul etapei curente, aceste metode vor servi ulterior componentei care va realiza importul de studii in baza de date si vor asigura unicitatea datelor in raport cu modelul conceptual. 
+
+\medskip
 
 Dintre elementele adaugate in cadrul nucleului aplicatiei se disting controller-erele si serviciile care asigura legatura dintre interfata aplicatiei si baza de date. Astfel, au fost implementate metode de recuperare a datelor corespunzatoare claselor domeniului, conform unor cerinte specifice, sub forma unor fisiere de tip JSON care servesc vizualizarii prin intermediul interfetei, intr-un mod care usureaza intelegerea lor de catre utilizator. Din categoria acestor servicii au fost implementate cele care sunt necesare functionarii componentei DataBrowser a interfetei. Ulterior, aceste servicii vor fi extinse cu cele prevazute in cadrul celorlalte componente ale aplicatiei. Pe langa partea de controller-e ce asigura legatura dintre nivelurile arhitecturale ale aplicatiei, bibliotecile nucleu vor fi extinse cu clase care vor gestiona relatia cu motorul statistic R si cu platforma de cautare Solr.
 
@@ -373,10 +381,12 @@ modulului de autentificare a utilizatorilor interfetei web,
 prototipul modulului de navigare prin arhiva de date)
 fiind in acest moment disponibile pentru implementarea urmatoarelor faze ale proiectului.
 
+\medskip
+
 Standardul international de stocare si transfer a datelor sociologice (DDI) este in curs de finalizare, la fel ca standardele de interoperabilitate ale CESSDA, iar pe durata proiectului arhiva RODA trebuie sa se sincronizeze cu aceste evolu\c{t}ii.
 De asemenea, studiile de utilizabilitate a interfetei cu utilizatorii si posibilele deviatii fata de standarde ale datelor structurate ce trebuie introduse vor putea determina modificari ale aplicatiei.
 
-\clearpage
+%\clearpage
 
 \bigskip
 
@@ -411,10 +421,18 @@ prof.univ.dr. Mircea Dumitru
 
 \bigskip
 
+\bigskip
+
+\bigskip
+
 {\bfseries
 DIRECTOR GENERAL ADMINISTRATIV,}
 
 ec. Adrian Albu
+
+\bigskip
+
+\bigskip
 
 \bigskip
 

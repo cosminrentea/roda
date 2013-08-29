@@ -7,9 +7,6 @@
 
 package ro.roda.ddi;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -127,7 +124,8 @@ public class CatStatType {
 	@Column(columnDefinition = "text")
 	@XmlJavaTypeAdapter(CollapsedStringAdapter.class)
 	@XmlValue
-	protected String content;
+	public String content;
+
 	@XmlAttribute(name = "ID")
 	@XmlJavaTypeAdapter(CollapsedStringAdapter.class)
 	@XmlID

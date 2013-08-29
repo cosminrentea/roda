@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
@@ -31,20 +30,19 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.xml.sax.SAXException;
 
 import ro.roda.ddi.AuthEntyType;
+import ro.roda.ddi.CatgryType;
 import ro.roda.ddi.CitationType;
 import ro.roda.ddi.CodeBook;
 import ro.roda.ddi.DataCollType;
 import ro.roda.ddi.DataDscrType;
 import ro.roda.ddi.DocDscrType;
 import ro.roda.ddi.KeywordType;
-import ro.roda.ddi.MethodType;
 import ro.roda.ddi.ProdPlacType;
 import ro.roda.ddi.ProdStmtType;
 import ro.roda.ddi.RspStmtType;
@@ -62,6 +60,7 @@ import ro.roda.domain.Instance;
 import ro.roda.domain.InstanceVariable;
 import ro.roda.domain.InstanceVariablePK;
 import ro.roda.domain.Keyword;
+import ro.roda.domain.OtherStatistic;
 import ro.roda.domain.Study;
 import ro.roda.domain.StudyDescr;
 import ro.roda.domain.StudyDescrPK;
@@ -73,10 +72,8 @@ import ro.roda.domain.UnitAnalysis;
 import ro.roda.domain.Users;
 import ro.roda.domain.Variable;
 import ro.roda.service.CatalogService;
-import ro.roda.service.CatalogServiceImpl;
 import ro.roda.service.FileService;
 import ro.roda.service.StudyService;
-import ro.roda.service.StudyServiceImpl;
 
 @Service
 @Transactional
@@ -390,7 +387,7 @@ public class ImporterDdi {
 
 		domainFile.persist();
 
-		// Add Study to an existing Catalog
+		// Add Study to an existing Catalog ("root" catalog)
 
 		// TODO don't use directly ID='1' for Catalog
 		CatalogStudy cs = new CatalogStudy();
@@ -424,6 +421,27 @@ public class ImporterDdi {
 				// TODO check semantics
 				variable.setType((short) 0);
 				variable.persist();
+
+				// Add categories names + their frequencies to
+				// "other_statistics" table
+				if (varType.getCatgry() != null) {
+					for (CatgryType catgryType : varType.getCatgry()) {
+						if (catgryType.getCatStat() != null
+								&& catgryType.getCatStat().size() > 0
+								&& (catgryType.getLabl() != null && catgryType.getLabl().size() > 0 || catgryType
+										.getCatValu() != null)) {
+							OtherStatistic os = new OtherStatistic();
+							os.setVariableId(variable);
+							os.setValue(new Float(catgryType.getCatStat().get(0).content));
+							if (catgryType.getLabl() != null && catgryType.getLabl().size() > 0) {
+								os.setName(catgryType.getLabl().get(0).content);
+							} else {
+								os.setName(catgryType.getCatValu().content);
+							}
+							os.persist();
+						}
+					}
+				}
 
 				InstanceVariable iv = new InstanceVariable();
 				iv.setId(new InstanceVariablePK(instance.getId(), variable.getId()));

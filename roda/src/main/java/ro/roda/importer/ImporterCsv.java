@@ -22,11 +22,8 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 
-import ro.roda.domain.Catalog;
 import ro.roda.domain.CatalogStudy;
 import ro.roda.domain.CatalogStudyPK;
-import ro.roda.domain.Study;
-
 import au.com.bytecode.opencsv.CSVReader;
 
 @Component
@@ -74,16 +71,6 @@ public class ImporterCsv {
 			csvLines = reader.readAll();
 			for (String[] csvLine : csvLines) {
 				log.trace("Catalog " + csvLine[0] + " -> Study " + csvLine[1]);
-				CatalogStudy cs = new CatalogStudy();
-				cs.setId(new CatalogStudyPK(Integer.valueOf(csvLine[0]), Integer.valueOf(csvLine[1])));
-				cs.persist();
-			}
-
-			// TODO finish code for adding Studies to Series
-			reader = new CSVReader(new FileReader(new ClassPathResource(rodaDataCsvAfterDdiSeriesStudy).getFile()));
-			csvLines = reader.readAll();
-			for (String[] csvLine : csvLines) {
-				log.trace("Series " + csvLine[0] + " -> Study " + csvLine[1]);
 				CatalogStudy cs = new CatalogStudy();
 				cs.setId(new CatalogStudyPK(Integer.valueOf(csvLine[0]), Integer.valueOf(csvLine[1])));
 				cs.persist();

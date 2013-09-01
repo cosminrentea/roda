@@ -39,7 +39,9 @@ Ext
 						cStore.load({
 							// id: indice, //set the id here
 							scope : this,
+
 							callback : function(records, operation, success) {
+								console.log(success);
 								if (success) {
 									var rec = cStore.first();
 									console.log(rec.studiesStore);

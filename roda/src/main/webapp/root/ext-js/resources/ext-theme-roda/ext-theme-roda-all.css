@@ -1540,20 +1540,20 @@ svg,vml {
 	border-width: 1px;
 	border-style: solid;
 	background-image: none;
-	background-color: #3892d3;
+	background-color: #1B5F30;
 	background-image: -webkit-gradient(linear, 50% 0, 50% 100%, color-stop(0%, #f7750e),
-		color-stop(50%, #3892d3), color-stop(51%, #358ac8),
-		color-stop(100%, #3892d3) );
-	background-image: -webkit-linear-gradient(top, #f7750e, #3892d3 50%, #358ac8 51%, #3892d3);
-	background-image: -moz-linear-gradient(top, #f7750e, #3892d3 50%, #358ac8 51%, #3892d3);
-	background-image: -o-linear-gradient(top, #f7750e, #3892d3 50%, #358ac8 51%, #3892d3);
-	background-image: linear-gradient(top, #f7750e, #3892d3 50%, #358ac8 51%, #3892d3)
+		color-stop(50%, #1B5F30), color-stop(51%, #358ac8),
+		color-stop(100%, #1B5F30) );
+	background-image: -webkit-linear-gradient(top, #f7750e, #1B5F30 50%, #358ac8 51%, #1B5F30);
+	background-image: -moz-linear-gradient(top, #f7750e, #1B5F30 50%, #358ac8 51%, #1B5F30);
+	background-image: -o-linear-gradient(top, #f7750e, #1B5F30 50%, #358ac8 51%, #1B5F30);
+	background-image: linear-gradient(top, #f7750e, #1B5F30 50%, #358ac8 51%, #1B5F30)
 }
 
 .x-btn-default-small-mc {
 	background-image: url(images/btn/btn-default-small-fbg.gif);
 	background-position: 0 top;
-	background-color: #3892d3
+	background-color: #1B5F30
 }
 
 .x-nlg .x-btn-default-small {
@@ -1954,20 +1954,20 @@ body.x-nbr .x-btn-default-small-frameInfo {
 	border-width: 1px;
 	border-style: solid;
 	background-image: none;
-	background-color: #3892d3;
+	background-color: #1B5F30;
 	background-image: -webkit-gradient(linear, 50% 0, 50% 100%, color-stop(0%, #f7750e),
-		color-stop(50%, #3892d3), color-stop(51%, #358ac8),
-		color-stop(100%, #3892d3) );
-	background-image: -webkit-linear-gradient(top, #f7750e, #3892d3 50%, #358ac8 51%, #3892d3);
-	background-image: -moz-linear-gradient(top, #f7750e, #3892d3 50%, #358ac8 51%, #3892d3);
-	background-image: -o-linear-gradient(top, #f7750e, #3892d3 50%, #358ac8 51%, #3892d3);
-	background-image: linear-gradient(top, #f7750e, #3892d3 50%, #358ac8 51%, #3892d3)
+		color-stop(50%, #1B5F30), color-stop(51%, #358ac8),
+		color-stop(100%, #1B5F30) );
+	background-image: -webkit-linear-gradient(top, #f7750e, #1B5F30 50%, #358ac8 51%, #1B5F30);
+	background-image: -moz-linear-gradient(top, #f7750e, #1B5F30 50%, #358ac8 51%, #1B5F30);
+	background-image: -o-linear-gradient(top, #f7750e, #1B5F30 50%, #358ac8 51%, #1B5F30);
+	background-image: linear-gradient(top, #f7750e, #1B5F30 50%, #358ac8 51%, #1B5F30)
 }
 
 .x-btn-default-medium-mc {
 	background-image: url(images/btn/btn-default-medium-fbg.gif);
 	background-position: 0 top;
-	background-color: #3892d3
+	background-color: #1B5F30
 }
 
 .x-nlg .x-btn-default-medium {
@@ -2369,20 +2369,20 @@ body.x-nbr .x-btn-default-medium-frameInfo {
 	border-width: 1px;
 	border-style: solid;
 	background-image: none;
-	background-color: #3892d3;
+	background-color: #1B5F30;
 	background-image: -webkit-gradient(linear, 50% 0, 50% 100%, color-stop(0%, #f7750e),
-		color-stop(50%, #3892d3), color-stop(51%, #358ac8),
-		color-stop(100%, #3892d3) );
-	background-image: -webkit-linear-gradient(top, #f7750e, #3892d3 50%, #358ac8 51%, #3892d3);
-	background-image: -moz-linear-gradient(top, #f7750e, #3892d3 50%, #358ac8 51%, #3892d3);
-	background-image: -o-linear-gradient(top, #f7750e, #3892d3 50%, #358ac8 51%, #3892d3);
-	background-image: linear-gradient(top, #f7750e, #3892d3 50%, #358ac8 51%, #3892d3)
+		color-stop(50%, #1B5F30), color-stop(51%, #358ac8),
+		color-stop(100%, #1B5F30) );
+	background-image: -webkit-linear-gradient(top, #f7750e, #1B5F30 50%, #358ac8 51%, #1B5F30);
+	background-image: -moz-linear-gradient(top, #f7750e, #1B5F30 50%, #358ac8 51%, #1B5F30);
+	background-image: -o-linear-gradient(top, #f7750e, #1B5F30 50%, #358ac8 51%, #1B5F30);
+	background-image: linear-gradient(top, #f7750e, #1B5F30 50%, #358ac8 51%, #1B5F30)
 }
 
 .x-btn-default-large-mc {
 	background-image: url(images/btn/btn-default-large-fbg.gif);
 	background-position: 0 top;
-	background-color: #3892d3
+	background-color: #1B5F30
 }
 
 .x-nlg .x-btn-default-large {
@@ -6560,7 +6560,7 @@ body.x-nbr .x-btn-group-default-framed-notitle-frameInfo {
 }
 
 .x-window-default {
-	border-color: #3892d3;
+	border-color: #1B5F30;
 	-webkit-border-radius: 4px;
 	-moz-border-radius: 4px;
 	-ms-border-radius: 4px;
@@ -6676,7 +6676,7 @@ body.x-nbr .x-window-default-frameInfo {
 }
 
 .x-window-body-default {
-	border-color: #3892d3;
+	border-color: #1B5F30;
 	border-width: 1px;
 	border-style: solid;
 	background: white;
@@ -6685,13 +6685,13 @@ body.x-nbr .x-window-default-frameInfo {
 
 .x-window-header-default {
 	font-size: 13px;
-	border-color: #3892d3;
+	border-color: #1B5F30;
 	zoom: 1;
-	background-color: #3892d3
+	background-color: #1B5F30
 }
 
 .x-window-header-default .x-tool-img {
-	background-color: #3892d3
+	background-color: #1B5F30
 }
 
 .x-window-header-default-vertical .x-window-header-text-container {
@@ -6707,9 +6707,9 @@ body.x-nbr .x-window-default-frameInfo {
 
 .x-ie9m .x-window-header-default-vertical .x-window-header-text-container
 	{
-	background-color: #3892d3;
+	background-color: #1B5F30;
 	filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1 ),
-		progid:DXImageTransform.Microsoft.Chroma(color=#3892d3 )
+		progid:DXImageTransform.Microsoft.Chroma(color=#1B5F30 )
 }
 
 .x-window-header-text-container-default {
@@ -6738,11 +6738,11 @@ body.x-nbr .x-window-default-frameInfo {
 	padding: 5px 5px 5px 5px;
 	border-width: 5px 5px 5px 5px;
 	border-style: solid;
-	background-color: #3892d3
+	background-color: #1B5F30
 }
 
 .x-window-header-default-top-mc {
-	background-color: #3892d3
+	background-color: #1B5F30
 }
 
 .x-nbr .x-window-header-default-top {
@@ -6856,11 +6856,11 @@ body.x-nbr .x-window-header-default-top-frameInfo {
 	padding: 5px 5px 5px 5px;
 	border-width: 5px 5px 5px 5px;
 	border-style: solid;
-	background-color: #3892d3
+	background-color: #1B5F30
 }
 
 .x-window-header-default-right-mc {
-	background-color: #3892d3
+	background-color: #1B5F30
 }
 
 .x-nbr .x-window-header-default-right {
@@ -6974,11 +6974,11 @@ body.x-nbr .x-window-header-default-right-frameInfo {
 	padding: 5px 5px 5px 5px;
 	border-width: 5px 5px 5px 5px;
 	border-style: solid;
-	background-color: #3892d3
+	background-color: #1B5F30
 }
 
 .x-window-header-default-bottom-mc {
-	background-color: #3892d3
+	background-color: #1B5F30
 }
 
 .x-nbr .x-window-header-default-bottom {
@@ -7092,11 +7092,11 @@ body.x-nbr .x-window-header-default-bottom-frameInfo {
 	padding: 5px 5px 5px 5px;
 	border-width: 5px 5px 5px 5px;
 	border-style: solid;
-	background-color: #3892d3
+	background-color: #1B5F30
 }
 
 .x-window-header-default-left-mc {
-	background-color: #3892d3
+	background-color: #1B5F30
 }
 
 .x-nbr .x-window-header-default-left {
@@ -7203,11 +7203,11 @@ body.x-nbr .x-window-header-default-left-frameInfo {
 	padding: 5px 5px 5px 5px;
 	border-width: 5px;
 	border-style: solid;
-	background-color: #3892d3
+	background-color: #1B5F30
 }
 
 .x-window-header-default-collapsed-top-mc {
-	background-color: #3892d3
+	background-color: #1B5F30
 }
 
 .x-nbr .x-window-header-default-collapsed-top {
@@ -7315,11 +7315,11 @@ body.x-nbr .x-window-header-default-collapsed-top-frameInfo {
 	padding: 5px 5px 5px 5px;
 	border-width: 5px;
 	border-style: solid;
-	background-color: #3892d3
+	background-color: #1B5F30
 }
 
 .x-window-header-default-collapsed-right-mc {
-	background-color: #3892d3
+	background-color: #1B5F30
 }
 
 .x-nbr .x-window-header-default-collapsed-right {
@@ -7427,11 +7427,11 @@ body.x-nbr .x-window-header-default-collapsed-right-frameInfo {
 	padding: 5px 5px 5px 5px;
 	border-width: 5px;
 	border-style: solid;
-	background-color: #3892d3
+	background-color: #1B5F30
 }
 
 .x-window-header-default-collapsed-bottom-mc {
-	background-color: #3892d3
+	background-color: #1B5F30
 }
 
 .x-nbr .x-window-header-default-collapsed-bottom {
@@ -7539,11 +7539,11 @@ body.x-nbr .x-window-header-default-collapsed-bottom-frameInfo {
 	padding: 5px 5px 5px 5px;
 	border-width: 5px;
 	border-style: solid;
-	background-color: #3892d3
+	background-color: #1B5F30
 }
 
 .x-window-header-default-collapsed-left-mc {
-	background-color: #3892d3
+	background-color: #1B5F30
 }
 
 .x-nbr .x-window-header-default-collapsed-left {
@@ -7743,105 +7743,105 @@ body.x-nbr .x-window-header-default-collapsed-left-frameInfo {
 }
 
 .x-window-default-outer-border-l {
-	border-left-color: #3892d3 !important;
+	border-left-color: #1B5F30 !important;
 	border-left-width: 1px !important
 }
 
 .x-window-default-outer-border-b {
-	border-bottom-color: #3892d3 !important;
+	border-bottom-color: #1B5F30 !important;
 	border-bottom-width: 1px !important
 }
 
 .x-window-default-outer-border-bl {
-	border-bottom-color: #3892d3 !important;
+	border-bottom-color: #1B5F30 !important;
 	border-bottom-width: 1px !important;
-	border-left-color: #3892d3 !important;
+	border-left-color: #1B5F30 !important;
 	border-left-width: 1px !important
 }
 
 .x-window-default-outer-border-r {
-	border-right-color: #3892d3 !important;
+	border-right-color: #1B5F30 !important;
 	border-right-width: 1px !important
 }
 
 .x-window-default-outer-border-rl {
-	border-right-color: #3892d3 !important;
+	border-right-color: #1B5F30 !important;
 	border-right-width: 1px !important;
-	border-left-color: #3892d3 !important;
+	border-left-color: #1B5F30 !important;
 	border-left-width: 1px !important
 }
 
 .x-window-default-outer-border-rb {
-	border-right-color: #3892d3 !important;
+	border-right-color: #1B5F30 !important;
 	border-right-width: 1px !important;
-	border-bottom-color: #3892d3 !important;
+	border-bottom-color: #1B5F30 !important;
 	border-bottom-width: 1px !important
 }
 
 .x-window-default-outer-border-rbl {
-	border-right-color: #3892d3 !important;
+	border-right-color: #1B5F30 !important;
 	border-right-width: 1px !important;
-	border-bottom-color: #3892d3 !important;
+	border-bottom-color: #1B5F30 !important;
 	border-bottom-width: 1px !important;
-	border-left-color: #3892d3 !important;
+	border-left-color: #1B5F30 !important;
 	border-left-width: 1px !important
 }
 
 .x-window-default-outer-border-t {
-	border-top-color: #3892d3 !important;
+	border-top-color: #1B5F30 !important;
 	border-top-width: 1px !important
 }
 
 .x-window-default-outer-border-tl {
-	border-top-color: #3892d3 !important;
+	border-top-color: #1B5F30 !important;
 	border-top-width: 1px !important;
-	border-left-color: #3892d3 !important;
+	border-left-color: #1B5F30 !important;
 	border-left-width: 1px !important
 }
 
 .x-window-default-outer-border-tb {
-	border-top-color: #3892d3 !important;
+	border-top-color: #1B5F30 !important;
 	border-top-width: 1px !important;
-	border-bottom-color: #3892d3 !important;
+	border-bottom-color: #1B5F30 !important;
 	border-bottom-width: 1px !important
 }
 
 .x-window-default-outer-border-tbl {
-	border-top-color: #3892d3 !important;
+	border-top-color: #1B5F30 !important;
 	border-top-width: 1px !important;
-	border-bottom-color: #3892d3 !important;
+	border-bottom-color: #1B5F30 !important;
 	border-bottom-width: 1px !important;
-	border-left-color: #3892d3 !important;
+	border-left-color: #1B5F30 !important;
 	border-left-width: 1px !important
 }
 
 .x-window-default-outer-border-tr {
-	border-top-color: #3892d3 !important;
+	border-top-color: #1B5F30 !important;
 	border-top-width: 1px !important;
-	border-right-color: #3892d3 !important;
+	border-right-color: #1B5F30 !important;
 	border-right-width: 1px !important
 }
 
 .x-window-default-outer-border-trl {
-	border-top-color: #3892d3 !important;
+	border-top-color: #1B5F30 !important;
 	border-top-width: 1px !important;
-	border-right-color: #3892d3 !important;
+	border-right-color: #1B5F30 !important;
 	border-right-width: 1px !important;
-	border-left-color: #3892d3 !important;
+	border-left-color: #1B5F30 !important;
 	border-left-width: 1px !important
 }
 
 .x-window-default-outer-border-trb {
-	border-top-color: #3892d3 !important;
+	border-top-color: #1B5F30 !important;
 	border-top-width: 1px !important;
-	border-right-color: #3892d3 !important;
+	border-right-color: #1B5F30 !important;
 	border-right-width: 1px !important;
-	border-bottom-color: #3892d3 !important;
+	border-bottom-color: #1B5F30 !important;
 	border-bottom-width: 1px !important
 }
 
 .x-window-default-outer-border-trbl {
-	border-color: #3892d3 !important;
+	border-color: #1B5F30 !important;
 	border-width: 1px !important
 }
 
@@ -7921,7 +7921,7 @@ div.x-lbl-top-err-icon {
 }
 
 .x-form-focus {
-	border-color: #3892d3
+	border-color: #1B5F30
 }
 
 .x-form-empty-field,textarea.x-form-empty-field {
@@ -8371,7 +8371,7 @@ a.x-datepicker-arrow:hover {
 }
 
 .x-datepicker-month .x-btn-inner {
-	color: #3892d3
+	color: #1B5F30
 }
 
 .x-datepicker-month .x-btn-split-right {
@@ -8415,7 +8415,7 @@ a.x-datepicker-date:hover {
 
 .x-datepicker-selected {
 	border-style: solid;
-	border-color: #3892d3
+	border-color: #1B5F30
 }
 
 .x-datepicker-selected .x-datepicker-date {
@@ -8504,7 +8504,7 @@ a.x-monthpicker-item-inner:hover {
 .x-monthpicker-selected {
 	background-color: #d6e8f6;
 	border-style: solid;
-	border-color: #3892d3
+	border-color: #1B5F30
 }
 
 .x-monthpicker-yearnav {
@@ -9578,7 +9578,7 @@ body.x-nbr .x-grid-row-editor-buttons-default-top-frameInfo {
 }
 
 .x-border-layout-ct {
-	background-color: #3892d3
+	background-color: #1B5F30
 }
 
 .x-menu {
@@ -14280,7 +14280,7 @@ body.x-nbr .x-panel-header-light-framed-collapsed-left-frameInfo {
 }
 
 .x-form-trigger-wrap-focus .x-form-trigger-wrap {
-	border-color: #3892d3
+	border-color: #1B5F30
 }
 
 .x-form-invalid .x-form-trigger-wrap {

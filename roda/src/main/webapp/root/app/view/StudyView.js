@@ -15,7 +15,6 @@
 
 Ext.define('databrowser.view.StudyView', {
     extend: 'Ext.tab.Panel',
-//    extend: 'Ext.grid.Panel',
     alias: 'widget.studyview',
     autoRender: true,
     id: 'studyview',
@@ -38,7 +37,7 @@ Ext.define('databrowser.view.StudyView', {
     		  callback: function(records, operation, success){
     		    if(success){
     		    	var rec = sStore.first();
- //  		    	console.log(rec.filesStore);
+     		    	console.log('study store loaded');
     		    	dtab.update(records[0].data);
     		    	variablesgrid.getView().bindStore(rec.variablesStore);
     		    	filestab.bindStore(rec.filesStore);
@@ -71,11 +70,16 @@ Ext.define('databrowser.view.StudyView', {
                             	width:'100%',
                             	autoScroll: true,
                             	remoteSort: false,                 	
-//                            	title: 'Members',
-                      //      	forceFit: true,
-//                            	store: 'SeriesStore',
-//                                header: false,
-     //                           hideHeaders: true,                        	
+                            	listeners : {
+                            		cellclick : function(gridView,htmlElement,columnIndex,dataRecord) {
+                            			if (columnIndex == 0) {
+                            				var varwin = Ext.create('databrowser.view.VariableView');
+                            				varwin.loaddata();
+                            				varwin.show();
+                            			}
+                            		}
+                            		
+                            	},
                             	columns: [
                                 {
                                     xtype: 'gridcolumn',
@@ -92,6 +96,7 @@ Ext.define('databrowser.view.StudyView', {
                                     text: 'label',
                                     flex:1
                                 },
+
                             ]
                 	}
                 	]
@@ -119,21 +124,11 @@ Ext.define('databrowser.view.StudyView', {
                     	'</tpl>',
                     	'</div>'	
                       ),
-
-            			
-            			
-            			//            			tpl: [
-//            			    '<tpl for=".">',  
-////                         	'<H2>{filename}</H2>',		
-////                        	'<H3>{filetype}</H3>',
-////                        	'<p>{filedescription}</p>'
-//                             ],          	
             	   }
             		]
             }
             ],    
-//    store: 'CatalogDetailStore',
-initComponent: function() {
+            initComponent: function() {
     var me = this;
     me.callParent(arguments);  
 }

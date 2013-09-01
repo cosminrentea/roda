@@ -13,7 +13,8 @@ Ext.application({
         'Ext.data.*',
         'Ext.util.*',
         'Ext.toolbar.Paging',
-        'Ext.ModelManager'
+        'Ext.ModelManager',
+        'databrowser.util.ChartTitleMixin'
     ],
     models: [
         'CatalogsTreeModel',
@@ -23,7 +24,8 @@ Ext.application({
         'SeriesModel',
         'VariableModel',
        'StudyFileModel',
-       'YearModel'
+       'YearModel',
+       'FrequencyModel'
      ],
     stores: [
         'StudyStore',
@@ -31,7 +33,8 @@ Ext.application({
         'CatalogStore',
         'CatalogTreeStore',
         'YearTreeStore',
-        'YearStore'
+        'YearStore',
+        'VariableStore'
     ],
     views: [
         'DataBrowserPanel',
@@ -42,7 +45,10 @@ Ext.application({
         'SeriesView',
         'YearView',
         'StudySeriesView',
-        'SeriesMembersView'
+        'SeriesMembersView',
+        'VariableView',
+        'FrequencyChart',
+        'VariableDetails'
     ],
     autoCreateViewport: true,
     name: 'databrowser',

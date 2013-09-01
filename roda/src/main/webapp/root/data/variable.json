@@ -3,7 +3,7 @@
 		{
 		"id" : 32,
 		"name": "variablename",
-		"description": "this is how we describe a variable in our little corner of the big old universe",
+		"label": "this is how we describe a variable in our little corner of the big old universe",
 		"nrfreq" : 12,
 		"frequencies" : [
 					{

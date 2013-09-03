@@ -82,9 +82,13 @@ public class StudyInfo extends JsonInfo {
 
 	private Set<File> files;
 
-	public StudyInfo(Study study) {
+	public StudyInfo(Study study, boolean isSeriesStudy) {
 
-		setType("St");
+		if (isSeriesStudy) {
+			setType("Sts");
+		} else {
+			setType("St");
+		}
 		this.an = study.getYearStart();
 		this.unitAnalysis = study.getUnitAnalysisId().getName();
 		this.files = study.getFiles1();
@@ -116,6 +120,10 @@ public class StudyInfo extends JsonInfo {
 			this.geographicCoverage = studyDescr.getGeographicCoverage();
 			this.universe = studyDescr.getUniverse();
 		}
+	}
+
+	public StudyInfo(Study study) {
+		this(study, false);
 	}
 
 	public Integer getAn() {

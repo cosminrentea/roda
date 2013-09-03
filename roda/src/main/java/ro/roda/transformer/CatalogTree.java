@@ -70,13 +70,14 @@ public class CatalogTree extends JsonInfo {
 		Catalog catalog = Catalog.findCatalog(id);
 
 		if (catalog != null) {
-			result = new CatalogTree(catalog.getId());
+			result = new CatalogTree(catalog);
 			result.setName(catalog.getName());
 
 			Set<JsonInfo> dataByCatalogSet = null;
 
 			Set<Catalog> children = catalog.getCatalogs();
 			Set<CatalogStudy> catalogStudies = catalog.getCatalogStudies();
+			boolean isSeries = (catalog.getSeries() != null);
 
 			int maxDepth = 0;
 			if (children != null && children.size() > 0) {
@@ -101,7 +102,7 @@ public class CatalogTree extends JsonInfo {
 
 				Iterator<CatalogStudy> catalogStudiesIterator = catalogStudies.iterator();
 				while (catalogStudiesIterator.hasNext()) {
-					dataByCatalogSet.add(new StudyInfo(catalogStudiesIterator.next().getStudyId()));
+					dataByCatalogSet.add(new StudyInfo(catalogStudiesIterator.next().getStudyId(), isSeries));
 				}
 			}
 			result.setData(dataByCatalogSet);
@@ -160,28 +161,24 @@ public class CatalogTree extends JsonInfo {
 		this.depth = depth;
 	}
 
-	public CatalogTree(Integer id) {
-		this.id = id;
-		this.type = "C";
-		data = new HashSet<JsonInfo>();
-	}
-
 	public CatalogTree(Catalog catalog) {
 		this.id = catalog.getId();
-		this.type = "C";
+		if (catalog.getSeries() == null) {
+			this.type = "C";
+		} else {
+			this.type = "S";
+		}
+		this.data = new HashSet<JsonInfo>();
 	}
 
-	public CatalogTree(Integer id, Set<JsonInfo> data) {
-		this.id = id;
-		this.type = "C";
+	public CatalogTree(Catalog catalog, Set<JsonInfo> data) {
+		this(catalog);
 		this.data = data;
 	}
 
-	public CatalogTree(Integer id, String name, Set<JsonInfo> data) {
-		this.id = id;
+	public CatalogTree(Catalog catalog, String name, Set<JsonInfo> data) {
+		this(catalog, data);
 		this.name = name;
-		this.type = "C";
-		this.data = data;
 	}
 
 	public String toJson() {

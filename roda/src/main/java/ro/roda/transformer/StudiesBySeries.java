@@ -28,9 +28,7 @@ public class StudiesBySeries extends JsonInfo {
 				"studies.variables.otherStatistics", "studies.variables.selectionVariable", "studies.variables.skips",
 				"studies.variables.skips1", "studies.variables.type", "studies.variables.vargroups",
 				"studies.variables.variableType");
-		serializer.exclude("studies.files.content", "studies.files.fullPath", "studies.files.id",
-				"studies.files.instances", "studies.files.selectionVariableItems", "studies.files.size",
-				"studies.files.studies1", "studies.files.title", "studies.files.variables");
+		serializer.exclude("studies.files");
 
 		serializer.include("id", "name", "studiesCount");
 		serializer.include("studies.name", "studies.id", "studies.yearStart", "studies.description",
@@ -64,6 +62,12 @@ public class StudiesBySeries extends JsonInfo {
 				Catalog seriesCatalog = series1.getCatalog();
 
 				Set<SeriesDescr> seriesDescrs = series1.getSeriesDescrs();
+				String seriesGeoCoverage = null;
+
+				if (seriesDescrs != null && seriesDescrs.size() > 0) {
+					SeriesDescr seriesDescr = seriesDescrs.iterator().next();
+					seriesGeoCoverage = seriesDescr.getGeographicCoverage();
+				}
 
 				if (seriesCatalog != null) {
 
@@ -79,8 +83,9 @@ public class StudiesBySeries extends JsonInfo {
 
 						// TODO What is the study's name? For now, it's the
 						// title found in its first description.
-						result.add(new StudiesBySeries(series1.getCatalogId(), seriesDescrs.iterator().next()
-								.getTitle(), studiesBySeriesSet.size(), studiesBySeriesSet));
+						result.add(new StudiesBySeries(series1.getCatalogId(), seriesCatalog.getName(),
+								studiesBySeriesSet.size(), studiesBySeriesSet, seriesGeoCoverage, seriesCatalog
+										.getDescription()));
 					}
 				}
 			}
@@ -97,6 +102,13 @@ public class StudiesBySeries extends JsonInfo {
 
 			Set<CatalogStudy> catalogStudies = series.getCatalog().getCatalogStudies();
 
+			String seriesGeoCoverage = null;
+
+			if (series.getSeriesDescrs() != null && series.getSeriesDescrs().size() > 0) {
+				SeriesDescr seriesDescr = series.getSeriesDescrs().iterator().next();
+				seriesGeoCoverage = seriesDescr.getGeographicCoverage();
+			}
+
 			if (catalogStudies != null && catalogStudies.size() > 0) {
 				studiesBySeriesSet = new HashSet<StudyInfo>();
 
@@ -105,8 +117,9 @@ public class StudiesBySeries extends JsonInfo {
 					studiesBySeriesSet.add(new StudyInfo(catalogStudiesIterator.next().getStudyId()));
 				}
 
-				result = new StudiesBySeries(series.getCatalogId(), series.getSeriesDescrs().iterator().next()
-						.getTitle(), studiesBySeriesSet.size(), studiesBySeriesSet);
+				result = new StudiesBySeries(series.getCatalogId(), series.getCatalog().getName(),
+						studiesBySeriesSet.size(), studiesBySeriesSet, seriesGeoCoverage, series.getCatalog()
+								.getDescription());
 			}
 		}
 		return result;
@@ -115,6 +128,12 @@ public class StudiesBySeries extends JsonInfo {
 	private Integer id;
 
 	private String name;
+
+	private String geoCoverage;
+
+	private String universe;
+
+	private String description;
 
 	private Integer studiesCount;
 
@@ -152,6 +171,30 @@ public class StudiesBySeries extends JsonInfo {
 		this.studies = studies;
 	}
 
+	public String getGeoCoverage() {
+		return geoCoverage;
+	}
+
+	public void setGeoCoverage(String geoCoverage) {
+		this.geoCoverage = geoCoverage;
+	}
+
+	public String getUniverse() {
+		return universe;
+	}
+
+	public void setUniverse(String universe) {
+		this.universe = universe;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
 	public StudiesBySeries(Integer id) {
 		this.id = id;
 		studies = new HashSet<StudyInfo>();
@@ -162,11 +205,14 @@ public class StudiesBySeries extends JsonInfo {
 		this.studies = studies;
 	}
 
-	public StudiesBySeries(Integer id, String name, Integer studiesCount, Set<StudyInfo> studies) {
+	public StudiesBySeries(Integer id, String name, Integer studiesCount, Set<StudyInfo> studies, String geoCoverage,
+			String description) {
 		this.id = id;
 		this.name = name;
 		this.studiesCount = studiesCount;
 		this.studies = studies;
+		this.geoCoverage = geoCoverage;
+		this.description = description;
 	}
 
 	public String toJson() {

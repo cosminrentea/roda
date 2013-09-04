@@ -25,11 +25,13 @@ import javax.xml.validation.SchemaFactory;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -55,7 +57,6 @@ import ro.roda.ddi.VarType;
 import ro.roda.domain.Address;
 import ro.roda.domain.CatalogStudy;
 import ro.roda.domain.CatalogStudyPK;
-import ro.roda.domain.City;
 import ro.roda.domain.Instance;
 import ro.roda.domain.InstanceVariable;
 import ro.roda.domain.InstanceVariablePK;
@@ -72,11 +73,13 @@ import ro.roda.domain.UnitAnalysis;
 import ro.roda.domain.Users;
 import ro.roda.domain.Variable;
 import ro.roda.service.CatalogService;
+import ro.roda.service.CityService;
 import ro.roda.service.FileService;
 import ro.roda.service.StudyService;
 
 @Service
 @Transactional
+@Configurable
 public class ImporterDdi {
 
 	private final Log log = LogFactory.getLog(this.getClass());
@@ -91,6 +94,9 @@ public class ImporterDdi {
 
 	@Autowired
 	StudyService studyService;
+
+	@Autowired
+	CityService cityService;
 
 	@Autowired
 	FileService fileService;
@@ -216,6 +222,7 @@ public class ImporterDdi {
 				List<AuthEntyType> authEntyTypeList = rspStmtType.getAuthEnty();
 				// TODO use the list
 			}
+
 			if (prodStmtType != null) {
 				List<ProdPlacType> prodPlacTypeList = prodStmtType.getProdPlac();
 				for (ProdPlacType prodPlacType : prodPlacTypeList) {
@@ -224,7 +231,7 @@ public class ImporterDdi {
 					// TODO check if address already exists
 					Address address = new Address();
 					// TODO replace id = 1
-					address.setCityId(City.findCity(1));
+					address.setCityId(cityService.findCity(1));
 					address.setAddress1(prodPlacType.content);
 					address.setImported(prodPlacType.content);
 					address.persist();

@@ -47,7 +47,12 @@ public class VariableController {
 		if (variable == null) {
 			return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
 		}
-		return new ResponseEntity<String>(variable.toJson(), headers, HttpStatus.OK);
+		// original
+		// return new ResponseEntity<String>(variable.toJsonWithFreq(), headers,
+		// HttpStatus.OK);
+
+		// Cosmin - includes Frequencies
+		return new ResponseEntity<String>(variable.toJsonWithFreq(), headers, HttpStatus.OK);
 	}
 
 	@RequestMapping(headers = "Accept=application/json")

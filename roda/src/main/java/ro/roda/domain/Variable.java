@@ -21,6 +21,7 @@ import javax.persistence.PostPersist;
 import javax.persistence.PostUpdate;
 import javax.persistence.PreRemove;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -35,6 +36,7 @@ import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.transaction.annotation.Transactional;
 
+import flexjson.JSON;
 import flexjson.JSONDeserializer;
 import flexjson.JSONSerializer;
 
@@ -44,8 +46,7 @@ import flexjson.JSONSerializer;
 public class Variable {
 
 	public static long countVariables() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM Variable o",
-				Long.class).getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM Variable o", Long.class).getSingleResult();
 	}
 
 	@Async
@@ -68,8 +69,7 @@ public class Variable {
 	}
 
 	public static List<Variable> findAllVariables() {
-		return entityManager().createQuery("SELECT o FROM Variable o",
-				Variable.class).getResultList();
+		return entityManager().createQuery("SELECT o FROM Variable o", Variable.class).getResultList();
 	}
 
 	public static Variable findVariable(Long id) {
@@ -78,23 +78,18 @@ public class Variable {
 		return entityManager().find(Variable.class, id);
 	}
 
-	public static List<Variable> findVariableEntries(int firstResult,
-			int maxResults) {
-		return entityManager()
-				.createQuery("SELECT o FROM Variable o", Variable.class)
-				.setFirstResult(firstResult).setMaxResults(maxResults)
-				.getResultList();
+	public static List<Variable> findVariableEntries(int firstResult, int maxResults) {
+		return entityManager().createQuery("SELECT o FROM Variable o", Variable.class).setFirstResult(firstResult)
+				.setMaxResults(maxResults).getResultList();
 	}
 
 	public static Collection<Variable> fromJsonArrayToVariables(String json) {
-		return new JSONDeserializer<List<Variable>>()
-				.use(null, ArrayList.class).use("values", Variable.class)
+		return new JSONDeserializer<List<Variable>>().use(null, ArrayList.class).use("values", Variable.class)
 				.deserialize(json);
 	}
 
 	public static Variable fromJsonToVariable(String json) {
-		return new JSONDeserializer<Variable>().use(null, Variable.class)
-				.deserialize(json);
+		return new JSONDeserializer<Variable>().use(null, Variable.class).deserialize(json);
 	}
 
 	public static void indexVariable(Variable variable) {
@@ -109,23 +104,19 @@ public class Variable {
 		for (Variable variable : variables) {
 			SolrInputDocument sid = new SolrInputDocument();
 			sid.addField("id", "variable_" + variable.getId());
-			sid.addField("variable.selectionvariable_t",
-					variable.getSelectionVariable());
+			sid.addField("variable.selectionvariable_t", variable.getSelectionVariable());
 			sid.addField("variable.fileid_t", variable.getFileId());
 			sid.addField("variable.label_s", variable.getLabel());
 			sid.addField("variable.type_t", variable.getType());
-			sid.addField("variable.operatorinstructions_s",
-					variable.getOperatorInstructions());
+			sid.addField("variable.operatorinstructions_s", variable.getOperatorInstructions());
 			sid.addField("variable.variabletype_t", variable.getVariableType());
 			// Add summary field to allow searching documents for objects of
 			// this type
 			sid.addField(
 					"variable_solrsummary_t",
-					new StringBuilder().append(variable.getSelectionVariable())
-							.append(" ").append(variable.getFileId())
-							.append(" ").append(variable.getLabel())
-							.append(" ").append(variable.getType()).append(" ")
-							.append(variable.getOperatorInstructions())
+					new StringBuilder().append(variable.getSelectionVariable()).append(" ")
+							.append(variable.getFileId()).append(" ").append(variable.getLabel()).append(" ")
+							.append(variable.getType()).append(" ").append(variable.getOperatorInstructions())
 							.append(" ").append(variable.getVariableType()));
 			documents.add(sid);
 		}
@@ -192,8 +183,7 @@ public class Variable {
 	 *            - fisierul din care provine variabila.
 	 * @return
 	 */
-	public static Variable checkVariable(Long id, String label, Short type,
-			String operatorInstructions, File fileId) {
+	public static Variable checkVariable(Long id, String label, Short type, String operatorInstructions, File fileId) {
 		Variable object;
 
 		if (id != null) {
@@ -248,6 +238,10 @@ public class Variable {
 
 	@OneToMany(mappedBy = "variableId")
 	private Set<OtherStatistic> otherStatistics;
+
+	@Transient
+	@JSON(name = "nrfreq")
+	private Long categoriesNumber;
 
 	@OneToOne(mappedBy = "variable")
 	private SelectionVariable selectionVariable;
@@ -393,8 +387,7 @@ public class Variable {
 		this.fileId = fileId;
 	}
 
-	public void setFormEditedNumberVars(
-			Set<FormEditedNumberVar> formEditedNumberVars) {
+	public void setFormEditedNumberVars(Set<FormEditedNumberVar> formEditedNumberVars) {
 		this.formEditedNumberVars = formEditedNumberVars;
 	}
 
@@ -446,13 +439,29 @@ public class Variable {
 		this.variableType = variableType;
 	}
 
+	public Long getCategoriesNumber() {
+		return categoriesNumber;
+	}
+
+	public void setCategoriesNumber(Long categoriesNumber) {
+		this.categoriesNumber = categoriesNumber;
+	}
+
 	public String toJson() {
 		return new JSONSerializer().exclude("*.class").serialize(this);
 	}
 
+	public String toJsonWithFreq() {
+		this.categoriesNumber = Long.valueOf(otherStatistics.size());
+		List<Variable> l = new ArrayList<Variable>();
+		l.add(this);
+		return new JSONSerializer().exclude("*.class")
+				.exclude("operatorInstructions", "selectionVariable", "type", "variableType", "fileId")
+				.include("otherStatistics").rootName("data").serialize(l);
+	}
+
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this,
-				ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate

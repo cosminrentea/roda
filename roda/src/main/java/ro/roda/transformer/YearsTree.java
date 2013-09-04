@@ -138,20 +138,20 @@ public class YearsTree extends JsonInfo {
 
 	public YearsTree(Integer year) {
 		this.year = year;
-		this.type = "Y";
+		this.type = JsonInfo.YEAR_TYPE;
 		data = new HashSet<JsonInfo>();
 	}
 
 	public YearsTree(Integer year, Set<JsonInfo> data) {
 		this.year = year;
-		this.type = "Y";
+		this.type = JsonInfo.YEAR_TYPE;
 		this.data = data;
 	}
 
 	public YearsTree(Integer year, String name, Set<JsonInfo> data) {
 		this.year = year;
 		this.name = name;
-		this.type = "Y";
+		this.type = JsonInfo.YEAR_TYPE;
 		this.data = data;
 	}
 

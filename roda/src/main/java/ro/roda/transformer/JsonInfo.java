@@ -11,6 +11,18 @@ public abstract class JsonInfo {
 
 	private final Log log = LogFactory.getLog(this.getClass());
 
+	public static final String CATALOG_TYPE = "C";
+
+	public static final String SERIES_TYPE = "S";
+
+	public static final String STUDY_TYPE = "St";
+
+	public static final String SERIES_STUDY_TYPE = "Sts";
+
+	public static final String YEAR_TYPE = "Y";
+
+	public static final String MAIN_TYPE = "M";
+
 	private Integer id;
 
 	private String name;

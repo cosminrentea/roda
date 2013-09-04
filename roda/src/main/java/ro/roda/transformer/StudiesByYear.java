@@ -52,7 +52,7 @@ public class StudiesByYear extends JsonInfo {
 
 				if (!study.getYearStart().equals(oldYear)) {
 					if (studiesByYearSet != null) {
-						result.add(new StudiesByYear(oldYear, studiesByYearSet.size(), studiesByYearSet));
+						result.add(new StudiesByYear(oldYear, studiesByYearSet));
 					}
 					studiesByYearSet = new HashSet<StudyInfo>();
 					oldYear = study.getYearStart();
@@ -61,7 +61,7 @@ public class StudiesByYear extends JsonInfo {
 			}
 
 			if (studiesByYearSet != null) {
-				result.add(new StudiesByYear(oldYear, studiesByYearSet.size(), studiesByYearSet));
+				result.add(new StudiesByYear(oldYear, studiesByYearSet));
 			}
 		}
 		return result;
@@ -128,12 +128,7 @@ public class StudiesByYear extends JsonInfo {
 	public StudiesByYear(Integer year, Set<StudyInfo> studies) {
 		this.year = year;
 		this.studies = studies;
-	}
-
-	public StudiesByYear(Integer year, Integer studiesCount, Set<StudyInfo> studies) {
-		this.year = year;
-		this.studiesCount = studiesCount;
-		this.studies = studies;
+		this.studiesCount = (studies != null ? studies.size() : null);
 	}
 
 	public String toJson() {

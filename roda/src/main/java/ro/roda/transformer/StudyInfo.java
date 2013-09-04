@@ -85,9 +85,9 @@ public class StudyInfo extends JsonInfo {
 	public StudyInfo(Study study, boolean isSeriesStudy) {
 
 		if (isSeriesStudy) {
-			setType("Sts");
+			setType(JsonInfo.SERIES_STUDY_TYPE);
 		} else {
-			setType("St");
+			setType(JsonInfo.STUDY_TYPE);
 		}
 		this.an = study.getYearStart();
 		this.unitAnalysis = study.getUnitAnalysisId().getName();

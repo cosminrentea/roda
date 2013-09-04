@@ -44,7 +44,8 @@ public class CatalogTree extends JsonInfo {
 
 		serializer.transform(new FieldNameTransformer("indice"), "id");
 
-		return "{\"data\":[{\"name\":\"RODA\",\"type\":\"M\",\"data\":" + serializer.serialize(collection) + "}]}";
+		return "{\"data\":[{\"name\":\"RODA\",\"type\":\"" + JsonInfo.MAIN_TYPE + "\",\"data\":"
+				+ serializer.serialize(collection) + "}]}";
 	}
 
 	public static List<CatalogTree> findAllCatalogTree() {
@@ -164,9 +165,9 @@ public class CatalogTree extends JsonInfo {
 	public CatalogTree(Catalog catalog) {
 		this.id = catalog.getId();
 		if (catalog.getSeries() == null) {
-			this.type = "C";
+			this.type = JsonInfo.CATALOG_TYPE;
 		} else {
-			this.type = "S";
+			this.type = JsonInfo.SERIES_TYPE;
 		}
 		this.data = new HashSet<JsonInfo>();
 	}
@@ -202,6 +203,7 @@ public class CatalogTree extends JsonInfo {
 
 		serializer.transform(new FieldNameTransformer("indice"), "id");
 
-		return "{\"data\":[{\"name\":\"RODA\",\"type\":\"M\",\"data\":" + serializer.serialize(this) + "}]}";
+		return "{\"data\":[{\"name\":\"RODA\",\"type\":\"" + JsonInfo.MAIN_TYPE + "\",\"data\":"
+				+ serializer.serialize(this) + "}]}";
 	}
 }

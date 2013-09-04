@@ -14,12 +14,17 @@ Ext.define('databrowser.store.VariableStore', {
             model: 'databrowser.model.VariableModel',
             storeId: 'VariableStore',
             proxy: {
-                type: 'ajax',
-                url: 'data/variable.json',
+                type: 'rest',
+                url: '../../variables',  
+                appendId: true,
                 reader: {
                     type: 'json',
                     root: 'data'
-                }
+                },
+                headers : {
+          		    'Content-type' : 'application/json',
+        		    'Accept': 'application/json'		    
+        		}
             }
         }, cfg)]);
     }

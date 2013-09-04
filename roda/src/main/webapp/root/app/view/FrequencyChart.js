@@ -35,19 +35,19 @@ Ext.define('databrowser.view.FrequencyChart', {
 	        	  width: 140,
 	        	  height: 28,
 	        	  renderer: function(storeItem, item) {
-	        		  this.setTitle(storeItem.get('name') + ': ' + storeItem.get('count'));
+	        		  this.setTitle(storeItem.get('name') + ': ' + storeItem.get('value'));
 	        	  }
 	          },
 	          label: {
 	        	  display: 'insideEnd',
 	        	  'text-anchor': 'middle',
-	        	  field: 'count',
+	        	  field: 'value',
 	        	  renderer: Ext.util.Format.numberRenderer('0'),
 	        	  orientation: 'horizontal',
 	        	  color: '#333'
 	          },
 	          xField: 'name',
-	          yField: 'count',
+	          yField: 'value',
 
 	 }],
 	 

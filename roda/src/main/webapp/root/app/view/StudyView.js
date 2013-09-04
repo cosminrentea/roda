@@ -74,7 +74,9 @@ Ext.define('databrowser.view.StudyView', {
                             		cellclick : function(gridView,htmlElement,columnIndex,dataRecord) {
                             			if (columnIndex == 0) {
                             				var varwin = Ext.create('databrowser.view.VariableView');
-                            				varwin.loaddata();
+
+                            				console.log('indice ' + dataRecord.data.indice);
+                            				varwin.loaddata(dataRecord.data.indice);
                             				varwin.show();
                             			}
                             		}

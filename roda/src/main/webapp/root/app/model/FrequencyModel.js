@@ -7,7 +7,7 @@ Ext.define('databrowser.model.FrequencyModel', {
                  type: 'string'
              },             
              {
-                 name: 'count',
+                 name: 'value',
                  type: 'integer'
              },
              ],

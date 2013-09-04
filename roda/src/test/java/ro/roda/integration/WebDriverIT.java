@@ -67,7 +67,7 @@ public class WebDriverIT {
 		Assert.assertNotNull("Property not set in: " + testProperties,
 				dataBrowserUrl = props.getProperty("webdriver.DataBrowserUrl"));
 		Assert.assertNotNull("Property not set in: " + testProperties, props.getProperty("webdriver.DefaultTimeout"));
-		int defaultTimeout = Integer.parseInt(props.getProperty("webdriver.DefaultTimeout"));
+		defaultTimeout = Integer.parseInt(props.getProperty("webdriver.DefaultTimeout"));
 
 		log.trace(firefoxPath);
 		log.trace(displayNumber);

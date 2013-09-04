@@ -26,10 +26,10 @@ public class StudyInfo extends JsonInfo {
 		JSONSerializer serializer = new JSONSerializer();
 
 		serializer.exclude("*.class");
-		serializer.exclude("type", "leaf", "variables.id", "variables.concepts", "variables.fileId",
-				"variables.formEditedNumberVars", "variables.instanceVariables", "variables.operatorInstructions",
-				"variables.otherStatistics", "variables.selectionVariable", "variables.skips", "variables.skips1",
-				"variables.type", "variables.vargroups", "variables.variableType");
+		serializer.exclude("type", "leaf", "variables.concepts", "variables.fileId", "variables.formEditedNumberVars",
+				"variables.instanceVariables", "variables.operatorInstructions", "variables.otherStatistics",
+				"variables.selectionVariable", "variables.skips", "variables.skips1", "variables.type",
+				"variables.vargroups", "variables.variableType");
 		serializer.exclude("files.content", "files.fullPath", "files.id", "files.instances",
 				"files.selectionVariableItems", "files.size", "files.studies1", "files.title", "files.variables");
 
@@ -195,7 +195,7 @@ public class StudyInfo extends JsonInfo {
 		JSONSerializer serializer = new JSONSerializer();
 
 		serializer.exclude("*.class");
-		serializer.exclude("variables.id", "variables.concepts", "variables.fileId", "variables.formEditedNumberVars",
+		serializer.exclude("variables.concepts", "variables.fileId", "variables.formEditedNumberVars",
 				"variables.instanceVariables", "variables.operatorInstructions", "variables.otherStatistics",
 				"variables.selectionVariable", "variables.skips", "variables.skips1", "variables.type",
 				"variables.vargroups", "variables.variableType");
@@ -203,7 +203,7 @@ public class StudyInfo extends JsonInfo {
 				"files.selectionVariableItems", "files.size", "files.studies1", "files.title", "files.variables");
 
 		serializer.include("id", "name", "an", "description", "universe", "geographicCoverage", "unitAnalysis");
-		serializer.include("variables.name", "variables.label");
+		serializer.include("variables.id", "variables.name", "variables.label");
 		serializer.include("files.name", "files.contentType", "files.url", "files.description");
 
 		serializer.transform(new FieldNameTransformer("geo_coverage"), "geographicCoverage");

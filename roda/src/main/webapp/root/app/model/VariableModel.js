@@ -26,7 +26,7 @@ Ext.define('databrowser.model.VariableModel', {
     ],
     hasMany: [{
         model: 'databrowser.model.FrequencyModel',
-        name: 'frequencies',
-        associationKey: 'otherStatistics'
+        name: 'otherStatistics',
+        associationKey: 'otherStatistics',
     }]
 });

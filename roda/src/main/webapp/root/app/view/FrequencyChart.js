@@ -1,9 +1,6 @@
 Ext.define('databrowser.view.FrequencyChart', {
 	extend : 'Ext.chart.Chart',
 	alias : 'widget.freqchart',
-	mixins: {
-		chartTitle: "databrowser.util.ChartTitleMixin"
-	},
 	animate: true,
 	shadow:true,
 	insetPadding : 60,
@@ -13,13 +10,13 @@ Ext.define('databrowser.view.FrequencyChart', {
 	       {
 	    	   type : 'Numeric',
 	    	   position: 'bottom',
-	    	   fields: ['count'],
+	    	   fields: ['value'],
 	    	   label: {
 	    		   renderer: Ext.util.Format.numberRenderer(0,0)
 	    	   		},
 	       		title: 'Cases',
 	       		grid: true,
-	       		minimum: 0
+	       		minimum: 0,
 	       },{
 	    	  type: 'Category',
 	    	  position: 'left',
@@ -52,7 +49,6 @@ Ext.define('databrowser.view.FrequencyChart', {
 	 }],
 	 
 	 initComponent: function () {
-		 this.mixins.chartTitle.initComponent.call(this);
 		 this.callParent(arguments);
 	}
 });

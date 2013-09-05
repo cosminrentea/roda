@@ -14,7 +14,7 @@ Ext.application({
         'Ext.util.*',
         'Ext.toolbar.Paging',
         'Ext.ModelManager',
-        'databrowser.util.ChartTitleMixin'
+        'databrowser.util.ChartTitleMixin',
     ],
     models: [
         'CatalogsTreeModel',
@@ -50,6 +50,7 @@ Ext.application({
         'FrequencyChart',
         'VariableDetails'
     ],
+	controllers : ['VariableView'],
     autoCreateViewport: true,
     name: 'databrowser',
 });

@@ -14,7 +14,6 @@ Ext
 					loadStudy : function(id) {
 						console.log(id);
 						var series = Ext.getCmp('sedetails').data.name;
-						// console.log(dtab.data.name);
 						var gridtab = Ext.getCmp('seriesstudies');
 						var stitle = gridtab.getView().store.findRecord('indice', id).data.name;
 						var san = gridtab.getView().store.findRecord('indice',id).data.an;

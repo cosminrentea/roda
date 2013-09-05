@@ -10,7 +10,7 @@ Ext.define('databrowser.store.VariableStore', {
         var me = this;
         cfg = cfg || {};
         me.callParent([Ext.apply({
-            autoLoad: true,
+            autoLoad: false,
             model: 'databrowser.model.VariableModel',
             storeId: 'VariableStore',
             proxy: {
@@ -22,7 +22,6 @@ Ext.define('databrowser.store.VariableStore', {
                     root: 'data'
                 },
                 headers : {
-          		    'Content-type' : 'application/json',
         		    'Accept': 'application/json'		    
         		}
             }

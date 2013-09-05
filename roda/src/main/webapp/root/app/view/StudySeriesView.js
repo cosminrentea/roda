@@ -24,7 +24,6 @@ Ext.define('databrowser.view.StudySeriesView', {
     		  callback: function(records, operation, success){
     		    if(success){
     		    	var rec = sStore.first();
-   		    	    console.log(rec.filesStore);
     		    	dtab.update(records[0].data);
     		    	variablesgrid.getView().bindStore(rec.variablesStore);
     		    	filestab.bindStore(rec.filesStore);
@@ -69,6 +68,24 @@ Ext.define('databrowser.view.StudySeriesView', {
                             	width:'100%',
                             	autoScroll: true,
                             	remoteSort: false,                 	
+                            	listeners : {
+                            		cellclick : function(gridView,htmlElement,columnIndex,dataRecord,htmlRow, rowIndex, e, eOpts) {
+                            			if (columnIndex == 0) {
+                            				var varwin = Ext.create('databrowser.view.VariableView');
+                            				var previndice;
+                            				var nextindice;
+                            				if (gridView.getRecord(rowIndex-1)) {
+                            					previndice = gridView.getRecord(rowIndex-1).data.indice;
+                            				}
+                            				if (gridView.getRecord(rowIndex+1)) {
+                            					nextindice = gridView.getRecord(rowIndex+1).data.indice;
+                            				}
+                            				varwin.setTitle(dataRecord.data.name + ' - ' + dataRecord.data.label);
+                            				varwin.loaddata(dataRecord.data.indice, previndice, nextindice);
+                            				varwin.show();
+                            			}
+                            		}
+                            	},
                             	columns: [
                                 {
                                     xtype: 'gridcolumn',
@@ -76,7 +93,7 @@ Ext.define('databrowser.view.StudySeriesView', {
                                     hideable: false,
                                     text: 'name',
                                     width:150,
-                                    fixed: true
+                                    fixed: true,
                                 },
                                 {
                                     xtype: 'gridcolumn',

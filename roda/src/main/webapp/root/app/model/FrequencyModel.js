@@ -10,5 +10,14 @@ Ext.define('databrowser.model.FrequencyModel', {
                  name: 'value',
                  type: 'integer'
              },
+             {
+                 name: 'id',
+                 type: 'integer'
+             },
+             {
+                 name: 'description',
+                 type: 'string'
+             },
+
              ],
 });

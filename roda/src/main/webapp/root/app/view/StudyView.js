@@ -71,12 +71,19 @@ Ext.define('databrowser.view.StudyView', {
                             	autoScroll: true,
                             	remoteSort: false,                 	
                             	listeners : {
-                            		cellclick : function(gridView,htmlElement,columnIndex,dataRecord) {
+                            		cellclick : function(gridView,htmlElement,columnIndex,dataRecord,htmlRow, rowIndex, e, eOpts) {
                             			if (columnIndex == 0) {
                             				var varwin = Ext.create('databrowser.view.VariableView');
-
-                            				console.log('indice ' + dataRecord.data.indice);
-                            				varwin.loaddata(dataRecord.data.indice);
+                            				var previndice;
+                            				var nextindice;
+                            				if (gridView.getRecord(rowIndex-1)) {
+                            					previndice = gridView.getRecord(rowIndex-1).data.indice;
+                            				}
+                            				if (gridView.getRecord(rowIndex+1)) {
+                            					nextindice = gridView.getRecord(rowIndex+1).data.indice;
+                            				}
+                            				varwin.setTitle(dataRecord.data.name + ' - ' + dataRecord.data.label);
+                            				varwin.loaddata(dataRecord.data.indice, previndice, nextindice);
                             				varwin.show();
                             			}
                             		}

@@ -11,9 +11,11 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Configurable;
 
+import ro.roda.domain.CatalogStudy;
 import ro.roda.domain.File;
 import ro.roda.domain.Instance;
 import ro.roda.domain.InstanceVariable;
+import ro.roda.domain.Series;
 import ro.roda.domain.Study;
 import ro.roda.domain.StudyDescr;
 import ro.roda.domain.Variable;
@@ -26,20 +28,22 @@ public class StudyInfo extends JsonInfo {
 		JSONSerializer serializer = new JSONSerializer();
 
 		serializer.exclude("*.class");
-		serializer.exclude("type", "leaf", "variables.concepts", "variables.fileId", "variables.formEditedNumberVars",
+		serializer.exclude("leaf", "variables.concepts", "variables.fileId", "variables.formEditedNumberVars",
 				"variables.instanceVariables", "variables.operatorInstructions", "variables.otherStatistics",
 				"variables.selectionVariable", "variables.skips", "variables.skips1", "variables.type",
 				"variables.vargroups", "variables.variableType");
 		serializer.exclude("files.content", "files.fullPath", "files.id", "files.instances",
 				"files.selectionVariableItems", "files.size", "files.studies1", "files.title", "files.variables");
 
-		serializer.include("id", "name", "an", "description", "universe", "geographicCoverage", "unitAnalysis");
+		serializer.include("id", "name", "an", "description", "universe", "geographicCoverage", "unitAnalysis", "type",
+				"seriesId");
 		serializer.include("variables.id", "variables.name", "variables.label");
 		serializer.include("files.name", "files.contentType", "files.url", "files.description");
 
 		serializer.transform(new FieldNameTransformer("geo_coverage"), "geographicCoverage");
 		serializer.transform(new FieldNameTransformer("unit_analysis"), "unitAnalysis");
 		serializer.transform(new FieldNameTransformer("indice"), "variables.id");
+		serializer.transform(new FieldNameTransformer("series"), "seriesId");
 
 		return "{\"data\":" + serializer.serialize(collection) + "}";
 	}
@@ -82,10 +86,23 @@ public class StudyInfo extends JsonInfo {
 
 	private Set<File> files;
 
-	public StudyInfo(Study study, boolean isSeriesStudy) {
+	private Integer seriesId;
 
-		if (isSeriesStudy) {
+	public StudyInfo(Study study) {
+		Series series = null;
+
+		// find the series of a study
+		Set<CatalogStudy> catalogs = study.getCatalogStudies();
+		if (catalogs != null && catalogs.size() > 0) {
+			Iterator<CatalogStudy> catalogsIterator = catalogs.iterator();
+			while (series == null && catalogsIterator.hasNext()) {
+				series = catalogsIterator.next().getCatalogId().getSeries();
+			}
+		}
+
+		if (series != null) {
 			setType(JsonInfo.SERIES_STUDY_TYPE);
+			setSeriesId(series.getCatalogId());
 		} else {
 			setType(JsonInfo.STUDY_TYPE);
 		}
@@ -97,7 +114,7 @@ public class StudyInfo extends JsonInfo {
 		this.variables = new HashSet<Variable>();
 		setId(study.getId());
 		if (study.getInstances() != null) {
-			// log.trace("Instances: " + study.getInstances().size());
+			log.trace("Instances: " + study.getInstances().size());
 			for (Instance instance : study.getInstances()) {
 				if (instance.isMain()) {
 					for (InstanceVariable iv : instance.getInstanceVariables()) {
@@ -105,7 +122,7 @@ public class StudyInfo extends JsonInfo {
 					}
 				}
 			}
-			// log.trace("Variables: " + variables.size());
+			log.trace("Variables: " + variables.size());
 		}
 
 		// TODO manage descriptions depending on language
@@ -120,10 +137,7 @@ public class StudyInfo extends JsonInfo {
 			this.geographicCoverage = studyDescr.getGeographicCoverage();
 			this.universe = studyDescr.getUniverse();
 		}
-	}
 
-	public StudyInfo(Study study) {
-		this(study, false);
 	}
 
 	public Integer getAn() {
@@ -190,25 +204,35 @@ public class StudyInfo extends JsonInfo {
 		this.variables = variables;
 	}
 
+	public Integer getSeriesId() {
+		return seriesId;
+	}
+
+	public void setSeriesId(Integer seriesId) {
+		this.seriesId = seriesId;
+	}
+
 	public String toJson() {
 
 		JSONSerializer serializer = new JSONSerializer();
 
 		serializer.exclude("*.class");
-		serializer.exclude("variables.concepts", "variables.fileId", "variables.formEditedNumberVars",
+		serializer.exclude("leaf", "variables.concepts", "variables.fileId", "variables.formEditedNumberVars",
 				"variables.instanceVariables", "variables.operatorInstructions", "variables.otherStatistics",
 				"variables.selectionVariable", "variables.skips", "variables.skips1", "variables.type",
 				"variables.vargroups", "variables.variableType");
 		serializer.exclude("files.content", "files.fullPath", "files.id", "files.instances",
 				"files.selectionVariableItems", "files.size", "files.studies1", "files.title", "files.variables");
 
-		serializer.include("id", "name", "an", "description", "universe", "geographicCoverage", "unitAnalysis");
+		serializer.include("id", "name", "an", "description", "universe", "geographicCoverage", "unitAnalysis", "type",
+				"seriesId");
 		serializer.include("variables.id", "variables.name", "variables.label");
 		serializer.include("files.name", "files.contentType", "files.url", "files.description");
 
 		serializer.transform(new FieldNameTransformer("geo_coverage"), "geographicCoverage");
 		serializer.transform(new FieldNameTransformer("unit_analysis"), "unitAnalysis");
 		serializer.transform(new FieldNameTransformer("indice"), "variables.id");
+		serializer.transform(new FieldNameTransformer("series"), "seriesId");
 
 		return "{\"data\":" + serializer.serialize(this) + "}";
 	}

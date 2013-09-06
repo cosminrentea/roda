@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Configurable;
 
 import ro.roda.domain.Catalog;
 import ro.roda.domain.CatalogStudy;
-import ro.roda.domain.Study;
 import flexjson.JSONSerializer;
 
 @Configurable
@@ -103,23 +102,7 @@ public class CatalogTree extends JsonInfo {
 
 				Iterator<CatalogStudy> catalogStudiesIterator = catalogStudies.iterator();
 				while (catalogStudiesIterator.hasNext()) {
-					boolean isSeries = (catalog.getSeries() != null);
-					Study study = catalogStudiesIterator.next().getStudyId();
-
-					// detect if the study belongs to a series, if the current
-					// catalog is not a series
-					// TO COMMENT if it should not work like that
-					if (!isSeries) {
-						Set<CatalogStudy> catalogs = study.getCatalogStudies();
-						if (catalogs != null && catalogs.size() > 0) {
-							Iterator<CatalogStudy> catalogsIterator = catalogs.iterator();
-							while (!isSeries && catalogsIterator.hasNext()) {
-								isSeries = (catalogsIterator.next().getCatalogId().getSeries() != null);
-							}
-						}
-					}
-
-					dataByCatalogSet.add(new StudyInfo(study, isSeries));
+					dataByCatalogSet.add(new StudyInfo(catalogStudiesIterator.next().getStudyId()));
 				}
 			}
 			result.setData(dataByCatalogSet);

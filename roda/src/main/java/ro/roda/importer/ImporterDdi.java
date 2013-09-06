@@ -387,6 +387,7 @@ public class ImporterDdi {
 		HashSet<Study> sStudy = new HashSet<Study>();
 		sStudy.add(s);
 		domainFile.setStudies1(sStudy);
+		domainFile.setContentType("application/xml");
 
 		HashSet<ro.roda.domain.File> sFile = new HashSet<ro.roda.domain.File>();
 		sFile.add(domainFile);

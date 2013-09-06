@@ -40,6 +40,7 @@ Ext.define('databrowser.view.StudyView', {
      		    	console.log('study store loaded');
     		    	dtab.update(records[0].data);
     		    	variablesgrid.getView().bindStore(rec.variablesStore);
+    		    	console.log(variablesgrid.getStore());
     		    	filestab.bindStore(rec.filesStore);
     		    }
     		  }

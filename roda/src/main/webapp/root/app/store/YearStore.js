@@ -13,14 +13,25 @@ Ext.define('databrowser.store.YearStore', {
             autoLoad: true,
             model: 'databrowser.model.YearModel',
             storeId: 'YearStore',
-            proxy: {
-                type: 'ajax',
-                url: 'data/years.json',
-                reader: {
-                    type: 'json',
-                    root: 'data'
-                }
+//            proxy: {
+//                type: 'ajax',
+//                url: 'data/years.json',
+//                reader: {
+//                    type: 'json',
+//                    root: 'data'
+//                }
+//            }
+        proxy: {
+            type: 'rest',
+            url: '../../studiesbyyear',  
+            appendId: true,
+            reader: {
+                type: 'json',
+                root: 'data'
             }
+        }  
+        
+        
         }, cfg)]);
     }
 });

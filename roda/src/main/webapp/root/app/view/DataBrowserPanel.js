@@ -108,6 +108,7 @@ Ext.define('databrowser.view.DataBrowserPanel', {
         	var cStore = Ext.StoreManager.get('CatalogStore');    
        	    var sButton = Ext.getCmp('SButton');
        	    sButton.toggle(true);
+       	    console.log(record.get('indice'));
         	catalogview.loaddata(record.get('indice'));
         } else if (record.get('type') == 'S') {
         	dbcard.layout.setActiveItem('seriesview');	        	

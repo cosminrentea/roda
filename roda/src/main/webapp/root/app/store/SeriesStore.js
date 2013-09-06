@@ -12,14 +12,24 @@ Ext.define('databrowser.store.SeriesStore', {
             autoLoad: true,
             model: 'databrowser.model.SeriesModel',
             storeId: 'SeriesStore',
-            proxy: {
-                type: 'ajax',
-                url: 'data/series.json',
-                reader: {
-                    type: 'json',
-                    root: 'data'
-                }
+//            proxy: {
+//                type: 'ajax',
+//                url: 'data/series.json',
+//                reader: {
+//                    type: 'json',
+//                    root: 'data'
+//                }
+//            }
+
+        proxy: {
+            type: 'rest',
+            url: '../../studiesbyseries',  
+            appendId: true,
+            reader: {
+                type: 'json',
+                root: 'data'
             }
+        }
         }, cfg)]);
     }
 });

@@ -30,7 +30,7 @@ Ext.define('databrowser.view.StudySeriesView', {
     		    	//aici trebuie sa incarcam storeul de serie
     		    	var seriesStore = Ext.StoreManager.get('SeriesStore');
     		    	seriesStore.load({
-    		    		  id: id, //set the id here,
+    		    		  id: records[0].data.series, //set the id here,
     		    		  callback: function(records, operation, success) {
     		    			  var sdetails = Ext.getCmp('studyseriesdetails');  
     		    			  var studyseriesstudies = Ext.getCmp('studyseriesstudies');

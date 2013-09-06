@@ -20,6 +20,7 @@ Ext.define('databrowser.view.YearView', {
     loaddata: function(id){
     	var cStore = Ext.StoreManager.get('YearStore');    	
     	cStore.load({
+    		id: id, //set the id here
     		  scope:this,
     		  callback: function(records, operation, success){
     		    if(success){

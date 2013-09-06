@@ -13,14 +13,23 @@ Ext.define('databrowser.store.CatalogStore', {
             autoLoad: true,
             model: 'databrowser.model.CatalogsModel',
             storeId: 'CatalogStore',
-            proxy: {
-                type: 'ajax',
-                url: 'data/catalogs.json',
-                reader: {
-                    type: 'json',
-                    root: 'data'
-                }
+//            proxy: {
+//                type: 'ajax',
+//                url: 'data/catalogs.json',
+//                reader: {
+//                    type: 'json',
+//                    root: 'data'
+//                }
+//            }
+        proxy: {
+            type: 'rest',
+            url: '../../studiesbycatalog',  
+            appendId: true,
+            reader: {
+                type: 'json',
+                root: 'data'
             }
+        }        
         }, cfg)]);
     }
 });

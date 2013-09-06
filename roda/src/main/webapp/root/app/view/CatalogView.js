@@ -37,7 +37,7 @@ Ext
 						// var gridtab = Ext.getCmp('seriesstudies');
 						var cStore = Ext.StoreManager.get('CatalogStore');
 						cStore.load({
-							// id: indice, //set the id here
+							id: id, //set the id here
 							scope : this,
 
 							callback : function(records, operation, success) {

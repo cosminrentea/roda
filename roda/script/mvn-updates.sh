@@ -1,1 +1,1 @@
-mvn versions:display-dependency-updates versions:display-plugin-updates
+mvn -f ../pom.xml versions:display-dependency-updates versions:display-plugin-updates

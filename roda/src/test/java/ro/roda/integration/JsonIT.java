@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -87,11 +88,10 @@ public class JsonIT {
 
 			// try to parse the received JSON as a list
 			try {
-				Map jsonObject = new JSONDeserializer<Map>().deserialize(new BufferedReader(new InputStreamReader(conn
-						.getInputStream())));
+				Collection jsonObject = new JSONDeserializer<Collection>().deserialize(new BufferedReader(
+						new InputStreamReader(conn.getInputStream())));
 
 				Assert.assertNotNull(jsonObject);
-				Assert.assertTrue(jsonObject.size() > 0);
 			} catch (Exception e2) {
 				// log.trace(e2);
 			}

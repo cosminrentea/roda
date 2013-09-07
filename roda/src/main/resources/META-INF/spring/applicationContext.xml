@@ -142,7 +142,7 @@
 		id="solrServer">
 		<constructor-arg value="${solr.serverUrl}" />
 	</bean>
-
+	
 	<!-- Cosmin: support for file-uploading -->
 	<bean id="multipartResolver"
 		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">

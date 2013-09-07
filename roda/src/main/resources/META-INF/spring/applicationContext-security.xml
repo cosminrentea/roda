@@ -2,8 +2,8 @@
 <beans:beans xmlns="http://www.springframework.org/schema/security" 
     xmlns:beans="http://www.springframework.org/schema/beans" 
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
-        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.1.xsd">
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.2.xsd">
     <!-- HTTP security configurations -->
     <http auto-config="true" use-expressions="true">
         <form-login login-processing-url="/resources/j_spring_security_check" login-page="/login" authentication-failure-url="/login?login_error=t" />
@@ -31,24 +31,6 @@
     <authentication-manager alias="authenticationManager">
         <!-- SHA-256 values can be produced using 'echo -n your_desired_password | sha256sum' (using normal *nix environments) -->
         <!-- Cosmin: SHA-256 values can be produced using 'echo -n your_desired_password | shasum -a 256' (MacOSX environments) -->
-        
-        <!-- 
-        Cosmin: 3 users + passwords: 
-		admin	admin
-		user	user
-        visitor	visitor
-        -->
-        
-        <!-- 
-        <authentication-provider>
-            <password-encoder hash="sha-256" />
-            <user-service>
-                <user name="admin" password="8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918" authorities="ROLE_ADMIN" />
-                <user name="user" password="04f8996da763b7a969b1028ee3007569eaf3a635486ddab211d512c85b9df8fb" authorities="ROLE_USER" />
-                <user name="visitor" password="5f14f9e6d80f802a65269804f2552ef9889f2c7ccec5067214e58a1e48e0b3ff" authorities="ROLE_VISITOR" />
-            </user-service>
-        </authentication-provider>
-         -->
         
     	<authentication-provider>
     		<password-encoder hash="sha-256">

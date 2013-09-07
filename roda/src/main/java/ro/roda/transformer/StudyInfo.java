@@ -114,15 +114,15 @@ public class StudyInfo extends JsonInfo {
 		this.variables = new HashSet<Variable>();
 		setId(study.getId());
 		if (study.getInstances() != null) {
-			log.trace("Instances: " + study.getInstances().size());
+			// log.trace("Instances: " + study.getInstances().size());
 			for (Instance instance : study.getInstances()) {
-				if (instance.isMain()) {
+				if (instance.isMain() && instance.getInstanceVariables() != null) {
 					for (InstanceVariable iv : instance.getInstanceVariables()) {
 						this.variables.add(iv.getVariableId());
 					}
 				}
 			}
-			log.trace("Variables: " + variables.size());
+			// log.trace("Variables: " + variables.size());
 		}
 
 		// TODO manage descriptions depending on language

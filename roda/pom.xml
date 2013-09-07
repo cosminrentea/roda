@@ -78,8 +78,8 @@
 		<license.licenseName>gpl_v3</license.licenseName>
 		
 		<!-- dependencies versions -->
-		<spring.version>3.2.3.RELEASE</spring.version> <!-- original: 3.2.0.RELEASE -->
-		<spring-security.version>3.1.0.RELEASE</spring-security.version> <!-- original: 3.1.0.RELEASE -->
+		<spring.version>3.2.4.RELEASE</spring.version> <!-- original: 3.2.0.RELEASE -->
+		<spring-security.version>3.2.0.M2</spring-security.version> <!-- original: 3.1.0.RELEASE -->
 		<spring-js-resources.version>2.4.0.M1</spring-js-resources.version> <!-- original: 2.2.1.RELEASE -->
 		<aspectj.version>1.7.0</aspectj.version> <!-- original: 1.7.0 -->
 		<slf4j.version>1.7.5</slf4j.version>
@@ -90,7 +90,7 @@
 		<flexjson.version>3.1</flexjson.version> <!-- original: 3.0 -->
 		<solr-solrj.version>4.4.0</solr-solrj.version> <!-- original: 4.3.1 -->
 		<tiles-jsp.version>2.2.2</tiles-jsp.version> <!-- original: 2.2.2 -->
-		<selenium.version>2.34.0</selenium.version> <!-- original: 2.33.0 -->
+		<selenium.version>2.35.0</selenium.version> <!-- original: 2.33.0 -->
 		<!-- 
 		<roo.version>1.2.3.RELEASE</roo.version>
 		-->
@@ -478,7 +478,7 @@
 		<dependency>
 			<groupId>joda-time</groupId>
 			<artifactId>joda-time</artifactId>
-			<version>2.2</version>
+			<version>2.3</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.servlet.jsp</groupId>

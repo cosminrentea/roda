@@ -36,14 +36,16 @@ public class StudyInfo extends JsonInfo {
 				"files.selectionVariableItems", "files.size", "files.studies1", "files.title", "files.variables");
 
 		serializer.include("id", "name", "an", "description", "universe", "geographicCoverage", "unitAnalysis", "type",
-				"seriesId");
+				"geographicUnit","researchInstrument","weighting","seriesId");
 		serializer.include("variables.id", "variables.name", "variables.label");
 		serializer.include("files.name", "files.contentType", "files.url", "files.description");
 
 		serializer.transform(new FieldNameTransformer("geo_coverage"), "geographicCoverage");
 		serializer.transform(new FieldNameTransformer("unit_analysis"), "unitAnalysis");
+		serializer.transform(new FieldNameTransformer("research_instrument"), "researchInstrument");
+		serializer.transform(new FieldNameTransformer("geo_unit"), "geographicUnit");
 		serializer.transform(new FieldNameTransformer("indice"), "variables.id");
-		serializer.transform(new FieldNameTransformer("series"), "seriesId");
+//		serializer.transform(new FieldNameTransformer("series"), "seriesId");
 
 		return "{\"data\":" + serializer.serialize(collection) + "}";
 	}
@@ -79,6 +81,12 @@ public class StudyInfo extends JsonInfo {
 	private String unitAnalysis;
 
 	private String universe;
+	
+	private String weighting;
+	
+	private String geographicUnit;
+	
+	private String researchInstrument;
 
 	private Boolean leaf = true;
 
@@ -136,6 +144,9 @@ public class StudyInfo extends JsonInfo {
 			this.description = studyDescr.getAbstract1();
 			this.geographicCoverage = studyDescr.getGeographicCoverage();
 			this.universe = studyDescr.getUniverse();
+			this.weighting = studyDescr.getWeighting();
+			this.geographicUnit = studyDescr.getGeographicUnit();
+			this.researchInstrument = studyDescr.getResearchInstrument();
 		}
 
 	}
@@ -160,6 +171,18 @@ public class StudyInfo extends JsonInfo {
 		return geographicCoverage;
 	}
 
+	public String getGeographicUnit() {
+		return geographicUnit;
+	}
+	
+	public String getWeighting() {
+		return weighting;
+	}
+
+	public String getResearchInstrument() {
+		return researchInstrument;
+	}
+	
 	public void setGeographicCoverage(String geographicCoverage) {
 		this.geographicCoverage = geographicCoverage;
 	}
@@ -225,14 +248,16 @@ public class StudyInfo extends JsonInfo {
 				"files.selectionVariableItems", "files.size", "files.studies1", "files.title", "files.variables");
 
 		serializer.include("id", "name", "an", "description", "universe", "geographicCoverage", "unitAnalysis", "type",
-				"seriesId");
+				"geographicUnit","researchInstrument","weighting","seriesId");
 		serializer.include("variables.id", "variables.name", "variables.label");
 		serializer.include("files.name", "files.contentType", "files.url", "files.description");
 
 		serializer.transform(new FieldNameTransformer("geo_coverage"), "geographicCoverage");
 		serializer.transform(new FieldNameTransformer("unit_analysis"), "unitAnalysis");
+		serializer.transform(new FieldNameTransformer("research_instrument"), "researchInstrument");	
+		serializer.transform(new FieldNameTransformer("geo_unit"), "geographicUnit");		
 		serializer.transform(new FieldNameTransformer("indice"), "variables.id");
-		serializer.transform(new FieldNameTransformer("series"), "seriesId");
+//		serializer.transform(new FieldNameTransformer("series"), "seriesId");
 
 		return "{\"data\":" + serializer.serialize(this) + "}";
 	}

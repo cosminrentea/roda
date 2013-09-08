@@ -26,7 +26,7 @@ Ext.define('databrowser.view.StudyView', {
     loaddata: function(id){
 
     	//asta e o varianta idioata determinata oarecum de incapacitatea autorilor extjs de a explica cum se fac rahaturile simple    	
-    	
+    	this.setActiveTab(0);
     	var dtab = Ext.getCmp('sdetails');
     	var variablesgrid = Ext.getCmp('studyvariables');    
     	var filestab = Ext.getCmp('studydocuments');
@@ -37,6 +37,7 @@ Ext.define('databrowser.view.StudyView', {
     		  callback: function(records, operation, success){
     		    if(success){
     		    	var rec = sStore.first();
+    		    	console.log(rec.filesStore);
      		    	console.log('study store loaded');
     		    	dtab.update(records[0].data);
     		    	variablesgrid.getView().bindStore(rec.variablesStore);
@@ -58,6 +59,14 @@ Ext.define('databrowser.view.StudyView', {
                     	'<H2>{name}</H2>',		
                     	'<H3>{author}</H3>',
                     	'<p>{description}</p>',
+                    	'<table width="100%" border="0" cellspacing="2" class="sdetailstbl"',
+                    	'<tr><th>Univers:</th><td> {universe}</td></tr>',
+                    	'<tr><th>Acoperire geografica:</th><td> {geo_coverage}</td></tr>',
+                    	'<tr><th>Unitate geografica:</th><td> {geo_unit}</td></tr>',
+                    	'<tr><th>Tipul cercetarii:</th><td> {research_instrument}</td></tr>',                    	
+                    	'<tr><th>Unitate de analiza:</th><td> {unit_analysis}</td></tr>',
+                    	'<tr><th>Ponderare:</th><td> {weighting}</td></tr>',
+                    	'</table>',
                     	'</div>'
                     	),
             },{
@@ -96,8 +105,12 @@ Ext.define('databrowser.view.StudyView', {
                                     dataIndex: 'name',
                                     hideable: false,
                                     text: 'name',
-                                    width:150,
-                                    fixed: true
+                                    width:100,
+                                    fixed: true,
+                                    renderer: function(value, metaData, record, rowIndex, colIndex, store) {
+                                    		metaData.css='freqchart';
+                                    		return value;
+                                    }
                                 },
                                 {
                                     xtype: 'gridcolumn',
@@ -127,9 +140,9 @@ Ext.define('databrowser.view.StudyView', {
                   		'<div class="studyfiles">',                   		  
                   		  '<tpl for=".">',  
                   		  '<div class="studyfiledl">',
-                    	'<H2 class="file-{filetype}">{filename}</H2>',		
+                    	'<H2>{filename}</H2>',		
                     	'<p>{filedescription}</p>',
-                    	'<a href="{fileurl}">Descarca fisierul</a>',
+                    	'<a  class="file-{filetype}" href="{fileurl}">Descarca fisierul</a>',
                     	'</div>',
                     	'</tpl>',
                     	'</div>'	

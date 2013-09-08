@@ -51,17 +51,7 @@ Ext.define('databrowser.view.VariableView', {
 			type : 'hbox',
 		},
 
-		items : [ {
-			xtype : 'button',
-			text : 'Anterior',
-			itemId : 'previousvar',
-			iconCls : 'previous-button'
-		}, {
-			xtype : 'button',
-			text : 'Next',
-			itemId : 'nextvar',
-			iconCls : 'next-button'
-		}, {
+		items : [  {
 			xtype : 'button',
 			text : 'Close',
 			itemId : 'close',

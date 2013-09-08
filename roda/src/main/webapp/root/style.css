@@ -52,6 +52,28 @@
 	border-right: 1px solid#fff;
 }
 
+.sdetailstbl th{
+	background:#A6C040;
+	width:160px;
+	color:#FFF;
+	padding-top:3px;
+	padding-botton:3px;
+	padding-right:5px;
+	padding-bottom:5px;
+	text-align:right;
+}
+
+.sdetailstbl td{
+	background:#ddd;
+	text-align:left;
+	padding-left:5px;
+}
+
+.freqchart {
+	background:url('img/chart.png') no-repeat left;
+	padding-left:18px;
+}
+
 #navigation li a:hover { background:#383; }
 
 #content
@@ -121,6 +143,11 @@
 .file-pdf {
 	background:url('img/pdficon.png') no-repeat left;
 	padding-left:40px;
-	
-	
+}
+
+.file-xml {
+	background:url('img/xmlicon.png') no-repeat left;
+	padding-left:40px;
+	padding-top:10px;
+	padding-bottom: 10px;
 }

@@ -12,7 +12,7 @@ Ext.define('databrowser.view.StudySeriesView', {
     loaddata: function(id){
 
     	//asta e o varianta idioata determinata oarecum de incapacitatea autorilor extjs de a explica cum se fac rahaturile simple    	
-    	
+    	this.setActiveTab(0);
     	var dtab = Ext.getCmp('ssdetails');
     	var variablesgrid = Ext.getCmp('studyseriesvariables');    
     	var filestab = Ext.getCmp('studyseriesdocuments');
@@ -27,10 +27,14 @@ Ext.define('databrowser.view.StudySeriesView', {
     		    	dtab.update(records[0].data);
     		    	variablesgrid.getView().bindStore(rec.variablesStore);
     		    	filestab.bindStore(rec.filesStore);
+    		    	this.setTitle(records[0].data.an + ' - '	+ records[0].data.name);    		    	
     		    	//aici trebuie sa incarcam storeul de serie
+    		    	console.log(records[0].data);
+    		    	console.log('name: ' + records[0].data.name);
+    		    	console.log('seriesId: ' + records[0].data.seriesId);	
     		    	var seriesStore = Ext.StoreManager.get('SeriesStore');
     		    	seriesStore.load({
-    		    		  id: records[0].data.series, //set the id here,
+    		    		  id: records[0].data.seriesId, //set the id here,
     		    		  callback: function(records, operation, success) {
     		    			  var sdetails = Ext.getCmp('studyseriesdetails');  
     		    			  var studyseriesstudies = Ext.getCmp('studyseriesstudies');
@@ -55,6 +59,14 @@ Ext.define('databrowser.view.StudySeriesView', {
                     	'<H2>{name}</H2>',		
                     	'<H3>{author}</H3>',
                     	'<p>{description}</p>',
+                    	'<table width="100%" border="0" cellspacing="2" class="sdetailstbl"',
+                    	'<tr><th>Univers:</th><td> {universe}</td></tr>',
+                    	'<tr><th>Acoperire geografica:</th><td> {geo_coverage}</td></tr>',
+                    	'<tr><th>Unitate geografica:</th><td> {geo_unit}</td></tr>',
+                    	'<tr><th>Tipul cercetarii:</th><td> {research_instrument}</td></tr>',                    	
+                    	'<tr><th>Unitate de analiza:</th><td> {unit_analysis}</td></tr>',
+                    	'<tr><th>Ponderare:</th><td> {weighting}</td></tr>',
+                    	'</table>',                    	
                     	'</div>'
                     	),
             },{
@@ -92,8 +104,12 @@ Ext.define('databrowser.view.StudySeriesView', {
                                     dataIndex: 'name',
                                     hideable: false,
                                     text: 'name',
-                                    width:150,
+                                    width:100,
                                     fixed: true,
+                                    renderer: function(value, metaData, record, rowIndex, colIndex, store) {
+                                		metaData.css='freqchart';
+                                		return value;
+                                    }
                                 },
                                 {
                                     xtype: 'gridcolumn',

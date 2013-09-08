@@ -13,14 +13,14 @@ Ext
 					store : 'SeriesStore',
 					loadStudy : function(id) {
 						console.log(id);
-						var series = Ext.getCmp('sedetails').data.name;
+//						var series = Ext.getCmp('sedetails').data.name;
 						var gridtab = Ext.getCmp('seriesstudies');
-						var stitle = gridtab.getView().store.findRecord('indice', id).data.name;
-						var san = gridtab.getView().store.findRecord('indice',id).data.an;
+//						var stitle = gridtab.getView().store.findRecord('indice', id).data.name;
+//						var san = gridtab.getView().store.findRecord('indice',id).data.an;
 						var dbcard = Ext.getCmp('dbcard');
-						dbcard.layout.setActiveItem('studyview');
-						var studyviewob = Ext.getCmp('studyview');
-						studyviewob.setTitle(series + ' -> ' + san + ' - '	+ stitle);
+						dbcard.layout.setActiveItem('studyseriesview');
+						var studyviewob = Ext.getCmp('studyseriesview');
+//						studyviewob.setTitle(series + ' -> ' + san + ' - '	+ stitle);
 						studyviewob.loaddata(id);
 					},
 					// asta pentru linkul de sus
@@ -33,7 +33,7 @@ Ext
 						// asta e o varianta idioata determinata oarecum de
 						// incapacitatea autorilor extjs de a explica cum se fac
 						// rahaturile simple
-
+				    	this.setActiveTab(0);
 						var dtab = Ext.getCmp('sedetails');
 						var gridtab = Ext.getCmp('seriesstudies');
 						var sStore = Ext.StoreManager.get(this.store);

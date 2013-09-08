@@ -5,11 +5,18 @@ Ext.define('databrowser.model.StudyFileModel', {
     fields: [
         {
             name: 'filename',
-            type: 'string'
+            type: 'string',
         },
         {
             name: 'filetype',
-            type: 'string'
+            type: 'string',
+                convert : function(v, r) {
+        				var str = r.get('contentType');
+        				var tstr = str.trim();
+        				console.log(tstr);
+        				var regex = /application\//;
+        				return tstr.replace(regex, "");
+        			}
         },
         {
             name: 'fileurl',
@@ -18,6 +25,10 @@ Ext.define('databrowser.model.StudyFileModel', {
         {
             name: 'filedescription',
             type: 'string'
+        },
+        {
+        	name: 'contentType',
+        	type: 'string',
         }
     ]
 });

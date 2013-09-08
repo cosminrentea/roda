@@ -30,20 +30,13 @@ Ext
 										},
 										{
 											xtype : 'gridcolumn',
-											dataIndex : 'countries',
-											hideable : false,
-											text : 'Country',
-											width : 100,
-											fixed : true
-										},
-										{
-											xtype : 'gridcolumn',
 											hideable : false,
 											text : 'Act',
 											width : 50,
 											fixed : true,
 											renderer : function(value, meta,
 													record, row, col) {
+												console.log('lepus');
 												console.log(record);
 												return '<a href=javascript:Ext.getCmp(\'seriesview\').loadStudy('
 														+ record.data.indice

@@ -37,7 +37,20 @@ Ext.define('databrowser.model.StudyModel', {
              {
                  name: 'universe',
                  type: 'string'
+             },
+             {
+                 name: 'weighting',
+                 type: 'string'
+             },
+             {
+                 name: 'geo_unit',
+                 type: 'string'
+             },
+             {
+                 name: 'seriesId',
+                 type: 'integer'
              }
+             
              ],
 		hasMany: [
 		          {

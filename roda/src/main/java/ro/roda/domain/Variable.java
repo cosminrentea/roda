@@ -440,11 +440,8 @@ public class Variable {
 	}
 
 	public Long getCategoriesNumber() {
+		this.categoriesNumber = Long.valueOf(otherStatistics.size());
 		return categoriesNumber;
-	}
-
-	public void setCategoriesNumber(Long categoriesNumber) {
-		this.categoriesNumber = categoriesNumber;
 	}
 
 	public String toJson() {
@@ -452,7 +449,6 @@ public class Variable {
 	}
 
 	public String toJsonWithFreq() {
-		this.categoriesNumber = Long.valueOf(otherStatistics.size());
 		List<Variable> l = new ArrayList<Variable>();
 		l.add(this);
 		return new JSONSerializer().exclude("*.class")

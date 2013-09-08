@@ -56,6 +56,22 @@ public class StudiesByCatalog extends JsonInfo {
 		List<Catalog> catalogs = Catalog.findAllCatalogs();
 
 		if (catalogs != null && catalogs.size() > 0) {
+
+			Iterator<Catalog> catalogsIterator = catalogs.iterator();
+			while (catalogsIterator.hasNext()) {
+				Catalog catalog = (Catalog) catalogsIterator.next();
+				result.add(findDirectStudiesByCatalog(catalog.getId()));
+			}
+		}
+
+		return result;
+	}
+
+	public static List<StudiesByCatalog> findAllDirectStudiesByCatalog() {
+		List<StudiesByCatalog> result = new ArrayList<StudiesByCatalog>();
+		List<Catalog> catalogs = Catalog.findAllCatalogs();
+
+		if (catalogs != null && catalogs.size() > 0) {
 			Set<StudyInfo> studiesByCatalogSet = null;
 			Iterator<Catalog> catalogIterator = catalogs.iterator();
 
@@ -81,6 +97,43 @@ public class StudiesByCatalog extends JsonInfo {
 	}
 
 	public static StudiesByCatalog findStudiesByCatalog(Integer id) {
+		Catalog targetCatalog = Catalog.findCatalog(id);
+		Set<StudyInfo> catalogSubstudies = new HashSet<StudyInfo>();
+
+		Set<Catalog> catalogs = new HashSet<Catalog>();
+		catalogs.add(targetCatalog);
+
+		while (catalogs.size() > 0) {
+			Set<Catalog> subcatalogs = new HashSet<Catalog>();
+
+			Iterator<Catalog> catalogsIterator = catalogs.iterator();
+			while (catalogsIterator.hasNext()) {
+				Catalog catalog = catalogsIterator.next();
+
+				Set<CatalogStudy> catalogStudies = catalog.getCatalogStudies();
+				if (catalogStudies != null && catalogStudies.size() > 0) {
+
+					Iterator<CatalogStudy> catalogStudiesIterator = catalogStudies.iterator();
+					while (catalogStudiesIterator.hasNext()) {
+						catalogSubstudies.add(new StudyInfo(catalogStudiesIterator.next().getStudyId()));
+					}
+				}
+
+				Set<Catalog> catalogCatalogs = catalog.getCatalogs();
+				if (catalogCatalogs != null && catalogCatalogs.size() > 0) {
+					subcatalogs.addAll(catalogCatalogs);
+				}
+			}
+
+			catalogs.clear();
+			catalogs.addAll(subcatalogs);
+		}
+
+		return new StudiesByCatalog(targetCatalog.getId(), targetCatalog.getName(), catalogSubstudies.size(),
+				catalogSubstudies);
+	}
+
+	public static StudiesByCatalog findDirectStudiesByCatalog(Integer id) {
 		StudiesByCatalog result = null;
 		Catalog catalog = Catalog.findCatalog(id);
 
@@ -89,6 +142,7 @@ public class StudiesByCatalog extends JsonInfo {
 
 			Set<CatalogStudy> catalogStudies = catalog.getCatalogStudies();
 
+			// direct studies under catalog
 			if (catalogStudies != null && catalogStudies.size() > 0) {
 				studiesByCatalogSet = new HashSet<StudyInfo>();
 

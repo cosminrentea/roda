@@ -137,11 +137,13 @@
 		</constructor-arg>
 	</bean>
 
-	<!-- Solr -->
+	<!-- Solr - disabled -->
+	<!--
 	<bean class="org.apache.solr.client.solrj.impl.HttpSolrServer"
 		id="solrServer">
 		<constructor-arg value="${solr.serverUrl}" />
 	</bean>
+	-->
 	
 	<!-- Cosmin: support for file-uploading -->
 	<bean id="multipartResolver"

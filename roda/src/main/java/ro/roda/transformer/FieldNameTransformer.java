@@ -13,8 +13,6 @@ public class FieldNameTransformer extends AbstractTransformer {
 
 	public void transform(Object object) {
 
-		if (object == null)
-			return;
 		TypeContext typeContext = getContext().peekTypeContext();
 
 		// virgula inainte de prima proprietate
@@ -27,7 +25,12 @@ public class FieldNameTransformer extends AbstractTransformer {
 		typeContext.increment();
 
 		getContext().writeName(getTransformedFieldName());
-		getContext().writeQuoted(object.toString());
+
+		if (object == null) {
+			getContext().write(null);
+		} else {
+			getContext().writeQuoted(object.toString());
+		}
 
 	}
 

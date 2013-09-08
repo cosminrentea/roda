@@ -24,14 +24,15 @@ public class StudiesByYear extends JsonInfo {
 		serializer.exclude("studies.variables", "studies.files", "studies.leaf");
 		serializer.include("year", "studiesCount");
 		serializer.include("studies.name", "studies.id", "studies.description", "studies.geographicCoverage",
-				"studies.unitAnalysis", "studies.universe");
-
+				"studies.unitAnalysis", "studies.universe", "studies.geographicUnit", "studies.researchInstrument", "studies.weighting");
+		
 		// return "{\"data\":[{\"name\":\"RODA\",\"level\":0,\"data\":"
 		// + serializer.serialize(collection) + "}]}";
 
 		serializer.transform(new FieldNameTransformer("geo_coverage"), "studies.geographicCoverage");
 		serializer.transform(new FieldNameTransformer("unit_analysis"), "studies.unitAnalysis");
-		serializer.transform(new FieldNameTransformer("univers"), "studies.universe");
+		serializer.transform(new FieldNameTransformer("research_instrument"), "researchInstrument");	
+		serializer.transform(new FieldNameTransformer("geo_unit"), "geographicUnit");		
 		serializer.transform(new FieldNameTransformer("indice"), "studies.id");
 
 		return "{\"data\":" + serializer.serialize(collection) + "}";
@@ -137,16 +138,19 @@ public class StudiesByYear extends JsonInfo {
 		serializer.exclude("*.class", "id", "name", "type");
 		serializer.exclude("studies.variables", "studies.files", "studies.leaf");
 		serializer.include("year", "studiesCount");
-		serializer.include("studies.name", "studies.id", "studies.description", "studies.geographicCoverage",
-				"studies.unitAnalysis", "studies.universe");
 
+		serializer.include("studies.name", "studies.id", "studies.description", "studies.geographicCoverage",
+				"studies.unitAnalysis", "studies.universe", "studies.geographicUnit", "studies.researchInstrument", "studies.weighting");		
+		
 		// return "{\"data\":[{\"name\":\"RODA\",\"level\":0,\"data\":"
 		// + serializer.serialize(collection) + "}]}";
 
+		
 		serializer.transform(new FieldNameTransformer("geo_coverage"), "studies.geographicCoverage");
 		serializer.transform(new FieldNameTransformer("unit_analysis"), "studies.unitAnalysis");
-		serializer.transform(new FieldNameTransformer("univers"), "studies.universe");
-		serializer.transform(new FieldNameTransformer("indice"), "studies.id");
+		serializer.transform(new FieldNameTransformer("research_instrument"), "researchInstrument");	
+		serializer.transform(new FieldNameTransformer("geo_unit"), "geographicUnit");		
+		serializer.transform(new FieldNameTransformer("indice"), "studies.id");		
 
 		return "{\"data\":" + serializer.serialize(this) + "}";
 	}

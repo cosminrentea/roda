@@ -8,6 +8,7 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
+import javax.persistence.FlushModeType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -23,6 +24,8 @@ import javax.persistence.Table;
 import javax.persistence.TypedQuery;
 import javax.validation.constraints.NotNull;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.apache.solr.client.solrj.SolrQuery;
@@ -172,7 +175,7 @@ public class Topic {
 	 *            - descrierea subiectului.
 	 * @return
 	 */
-	public static Topic checkTopic(Integer id, String name, String description) {
+	public static Topic checkTopic(Integer id, String name) {
 		Topic object;
 
 		if (id != null) {
@@ -183,19 +186,20 @@ public class Topic {
 			}
 		}
 
-		List<Topic> queryResult;
-
 		if (name != null) {
 			TypedQuery<Topic> query = entityManager().createQuery(
 					"SELECT o FROM Topic o WHERE lower(o.name) = lower(:name)", Topic.class);
 			query.setParameter("name", name);
+			
+			query.setMaxResults(1);
+			query.setFlushMode(FlushModeType.COMMIT);
 
-			queryResult = query.getResultList();
-			if (queryResult.size() > 0) {
-				return queryResult.get(0);
+			try {
+				Topic queryResult = query.getSingleResult();
+				return queryResult;
+			} catch (Exception exception) {
 			}
 		}
-
 		return null;
 	}
 
@@ -382,8 +386,17 @@ public class Topic {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		return (id != null && id.equals(((Topic) obj).id))
-				|| (name != null && name.equalsIgnoreCase(((Topic) obj).name));
+	public boolean equals(final Object obj) {
+		if (obj instanceof TranslatedTopicPK) {
+			final Topic other = (Topic) obj;
+			return new EqualsBuilder().append(name, other.name).isEquals();
+		} else {
+			return false;
+		}
+	}
+
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder().append(name).toHashCode();
 	}
 }

@@ -1,15 +1,24 @@
 package ro.roda.importer;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Properties;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -24,14 +33,16 @@ import javax.xml.validation.SchemaFactory;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.postgresql.copy.CopyManager;
+import org.postgresql.core.BaseConnection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -76,13 +87,43 @@ import ro.roda.service.CatalogService;
 import ro.roda.service.CityService;
 import ro.roda.service.FileService;
 import ro.roda.service.StudyService;
+import au.com.bytecode.opencsv.CSVReader;
 
 @Service
 @Transactional
-@Configurable
-public class ImporterDdi {
+public class ImporterServiceImpl implements ImporterService {
 
 	private final Log log = LogFactory.getLog(this.getClass());
+
+	@Value("${database.username}")
+	private String dbUsername;
+
+	@Value("${database.password}")
+	private String dbPassword;
+
+	@Value("${database.url}")
+	private String dbUrl;
+
+	@Value("${roda.data.csv.dir}")
+	private String rodaDataCsvDir;
+
+	@Value("${roda.data.csv-extra.dir}")
+	private String rodaDataCsvExtraDir;
+
+	@Value("${roda.data.elsst.dir}")
+	private String rodaDataElsstDir;
+
+	@Value("${roda.data.csv-after-ddi.catalog_study}")
+	private String rodaDataCsvAfterDdiCatalogStudy;
+
+	@Value("${roda.data.csv-after-ddi.series_study}")
+	private String rodaDataCsvAfterDdiSeriesStudy;
+
+	private static final String errorMessage = "Could not import data";
+
+	private static final String elsstEnTerms = "elsst_en_terms.csv";
+
+	private static final String elsstEnRelationships = "elsst_en_relationships.csv";
 
 	private static final String jaxbContextPath = "ro.roda.ddi";
 
@@ -101,6 +142,21 @@ public class ImporterDdi {
 	@Autowired
 	FileService fileService;
 
+	@Value("${roda.data.csv}")
+	private String rodaDataCsv;
+
+	@Value("${roda.data.csv-extra}")
+	private String rodaDataCsvExtra;
+
+	@Value("${roda.data.ddi}")
+	private String rodaDataDdi;
+
+	@Value("${roda.data.elsst}")
+	private String rodaDataElsst;
+
+	@Value("${roda.data.csv-after-ddi}")
+	private String rodaDataCsvAfterDdi;
+
 	@Value("${roda.data.ddi.xsd}")
 	private static String xsdDdi122 = "xsd/ddi122.xsd";
 
@@ -110,26 +166,26 @@ public class ImporterDdi {
 	@Value("${roda.data.ddi.files}")
 	private String rodaDataDdiFiles;
 
-	private static final String errorMessage = "Could not import DDI data";
-
-	public static Unmarshaller unmarshaller = null;
+	private Unmarshaller unmarshaller = null;
 
 	public static final EntityManager entityManager() {
-		EntityManager em = new ImporterDdi().entityManager;
+		EntityManager em = new ImporterServiceImpl().entityManager;
 		if (em == null)
 			throw new IllegalStateException(
 					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
 		return em;
 	}
 
-	public static final void setupUnmarshaller() {
+	public final Unmarshaller getUnmarshaller() {
 
 		if (unmarshaller == null) {
 			// validate using DDI 1.2.2 XML Schema
 			Resource xsdDdiRes = new ClassPathResource(xsdDdi122);
 			try {
-				unmarshaller = JAXBContext.newInstance(jaxbContextPath).createUnmarshaller();
-				unmarshaller.setSchema(SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI).newSchema(
+				unmarshaller = JAXBContext.newInstance(jaxbContextPath)
+						.createUnmarshaller();
+				unmarshaller.setSchema(SchemaFactory.newInstance(
+						XMLConstants.W3C_XML_SCHEMA_NS_URI).newSchema(
 						xsdDdiRes.getFile()));
 			} catch (JAXBException e) {
 				// TODO Auto-generated catch block
@@ -142,20 +198,189 @@ public class ImporterDdi {
 				e.printStackTrace();
 			}
 		}
+		return unmarshaller;
+	}
+
+	public void importAll() {
+		log.trace("roda.data.csv = " + rodaDataCsv);
+		log.trace("roda.data.csv-extra = " + rodaDataCsvExtra);
+		log.trace("roda.data.ddi = " + rodaDataDdi);
+		log.trace("roda.data.csv-after-ddi = " + rodaDataCsvAfterDdi);
+
+		// to skip the initial actions,
+		// change properties to another string
+		// (not "yes")
+		if ("yes".equalsIgnoreCase(rodaDataCsv)) {
+			importCsv();
+			if ("yes".equalsIgnoreCase(rodaDataCsvExtra)) {
+				importCsvExtra();
+			}
+		}
+
+		if ("yes".equalsIgnoreCase(rodaDataElsst)) {
+			importElsst();
+		}
+
+		if ("yes".equalsIgnoreCase(rodaDataDdi)) {
+			importDdiFiles();
+			if ("yes".equalsIgnoreCase(rodaDataCsvAfterDdi)) {
+				importCsvAfterDdi();
+			}
+		}
+
+	}
+
+	public void importElsst() {
+		CSVReader reader;
+		List<String[]> csvLines;
+		try {
+			reader = new CSVReader(new FileReader(new ClassPathResource(
+					rodaDataElsstDir + elsstEnTerms).getFile()));
+			csvLines = reader.readAll();
+			for (String[] csvLine : csvLines) {
+				log.trace("ELSST Term: " + csvLine[0]);
+				Topic t = new Topic();
+				t.setName(csvLine[0]);
+				t.persist();
+			}
+
+			reader = new CSVReader(new FileReader(new ClassPathResource(
+					rodaDataElsstDir + elsstEnRelationships).getFile()));
+			csvLines = reader.readAll();
+			for (String[] csvLine : csvLines) {
+				log.trace("ELSST Relationship: " + csvLine[0] + " "
+						+ csvLine[1] + " " + csvLine[2]);
+				Topic src = Topic.checkTopic(null, csvLine[0]);
+				Topic dst = Topic.checkTopic(null, csvLine[2]);
+				log.trace("ELSST Terms: " + src.getName() + " " + dst.getName());
+				if (Integer.parseInt(csvLine[1]) == 5) {
+					dst.setParentId(src);
+					Set<Topic> topicSet = src.getTopics();
+					if (topicSet == null) {
+						topicSet = new HashSet<Topic>();
+					}
+					topicSet.add(dst);
+					src.setTopics(topicSet);
+					dst.merge();
+					src.merge();
+				}
+
+				if (Integer.parseInt(csvLine[1]) == 8) {
+					// TODO set related terms
+				}
+
+			}
+
+		} catch (FileNotFoundException e) {
+			log.error(e);
+		} catch (IOException e) {
+			log.error(e);
+		}
+	}
+
+	public void importCsv() {
+		importCsvDir(rodaDataCsvDir);
+	}
+
+	public void importCsvExtra() {
+		importCsvDir(rodaDataCsvExtraDir);
+	}
+
+	public void importCsvAfterDdi() {
+		CSVReader reader;
+		try {
+			// add Studies to Catalogs
+			reader = new CSVReader(new FileReader(new ClassPathResource(
+					rodaDataCsvAfterDdiCatalogStudy).getFile()));
+			List<String[]> csvLines;
+			csvLines = reader.readAll();
+			for (String[] csvLine : csvLines) {
+				log.trace("Catalog " + csvLine[0] + " -> Study " + csvLine[1]);
+				CatalogStudy cs = new CatalogStudy();
+				cs.setId(new CatalogStudyPK(Integer.valueOf(csvLine[0]),
+						Integer.valueOf(csvLine[1])));
+				cs.persist();
+			}
+
+		} catch (FileNotFoundException e) {
+			log.error(e);
+		} catch (IOException e) {
+			log.error(e);
+		}
 	}
 
 	/**
-	 * Populates the database using data imported from a directory with DDI
-	 * files exported from Nesstar Publisher.
+	 * Populates the database using data imported from a directory with CSV
+	 * files (which are ordered by name).
 	 */
+	public void importCsvDir(String dirname) {
+		log.trace("Importing CSV from directory: " + dirname);
+		Connection con = null;
+		try {
+			Properties conProps = new Properties();
+			conProps.put("user", this.dbUsername);
+			conProps.put("password", this.dbPassword);
+			con = DriverManager.getConnection(this.dbUrl, conProps);
+
+			Resource csvRes = new ClassPathResource(dirname);
+			File csvDir = csvRes.getFile();
+			File[] csvFiles = csvDir.listFiles();
+
+			// sort file list by file name, ascending
+			Arrays.sort(csvFiles, new Comparator<File>() {
+				public int compare(File f1, File f2) {
+					return f1.getName().compareTo(f2.getName());
+				}
+			});
+
+			CopyManager cm = ((BaseConnection) con).getCopyAPI();
+			for (File f : csvFiles) {
+				log.trace("File: " + f.getAbsolutePath());
+
+				// Postgresql requires a Reader for the COPY commands
+				BufferedReader br = new BufferedReader(new FileReader(f));
+
+				// read the first line, containing the enumeration of fields
+				String tableFields = br.readLine();
+
+				// obtain the table name from the file name
+				String tableName = f.getName().substring(2,
+						f.getName().length() - 4);
+
+				// bulk COPY the remaining lines (CSV data)
+				String copyQuery = "COPY " + tableName + "(" + tableFields
+						+ ") FROM stdin DELIMITERS ',' CSV";
+				log.trace(copyQuery);
+				cm.copyIn(copyQuery, br);
+				// br.close();
+			}
+		} catch (SQLException e) {
+			log.error(e);
+			throw new IllegalStateException(errorMessage);
+		} catch (IOException e) {
+			log.error(e);
+			throw new IllegalStateException(errorMessage);
+		} finally {
+			if (con != null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					log.error(e);
+					throw new IllegalStateException(errorMessage);
+				}
+			}
+		}
+	}
+
 	public void importDdiFiles() {
 		try {
 			log.trace("roda.data.ddi.files = " + rodaDataDdiFiles);
 
-			setupUnmarshaller();
+			this.getUnmarshaller();
 
 			PathMatchingResourcePatternResolver pmr = new PathMatchingResourcePatternResolver();
-			Resource[] resources = pmr.getResources("classpath*:" + rodaDataDdiFiles);
+			Resource[] resources = pmr.getResources("classpath*:"
+					+ rodaDataDdiFiles);
 			if (resources.length == 0) {
 				log.debug("No DDI files found for importing");
 			}
@@ -169,8 +394,9 @@ public class ImporterDdi {
 
 			for (File ddiFile : ddiFiles) {
 				log.debug("Importing DDI file: " + ddiFile.getName());
-				MockMultipartFile mockMultipartFile = new MockMultipartFile(ddiFile.getName(), ddiFile.getName(),
-						"text/xml", new FileInputStream(ddiFile));
+				MockMultipartFile mockMultipartFile = new MockMultipartFile(
+						ddiFile.getName(), ddiFile.getName(), "text/xml",
+						new FileInputStream(ddiFile));
 				CodeBook cb = (CodeBook) unmarshaller.unmarshal(ddiFile);
 				importCodebook(cb, mockMultipartFile, true, true);
 			}
@@ -185,7 +411,8 @@ public class ImporterDdi {
 		}
 	}
 
-	public void importCodebook(CodeBook cb, MultipartFile multipartFile, boolean nesstarExported, boolean legacyDataRODA) {
+	public void importCodebook(CodeBook cb, MultipartFile multipartFile,
+			boolean nesstarExported, boolean legacyDataRODA) {
 
 		if ("yes".equalsIgnoreCase(ddiPersist)) {
 			if (this.entityManager == null) {
@@ -224,7 +451,8 @@ public class ImporterDdi {
 			}
 
 			if (prodStmtType != null) {
-				List<ProdPlacType> prodPlacTypeList = prodStmtType.getProdPlac();
+				List<ProdPlacType> prodPlacTypeList = prodStmtType
+						.getProdPlac();
 				for (ProdPlacType prodPlacType : prodPlacTypeList) {
 					log.trace("prodPlacType = " + prodPlacType.content);
 					// TODO parse imported address
@@ -246,7 +474,8 @@ public class ImporterDdi {
 
 		Study s = new Study();
 
-		String title = cb.getStdyDscr().get(0).getCitation().get(0).getTitlStmt().getTitl().getContent();
+		String title = cb.getStdyDscr().get(0).getCitation().get(0)
+				.getTitlStmt().getTitl().getContent();
 		log.trace("Title = " + title);
 
 		if (nesstarExported && legacyDataRODA) {
@@ -346,7 +575,8 @@ public class ImporterDdi {
 				List<KeywordType> keywordTypeList = subjectType.getKeyword();
 				for (KeywordType keywordType : keywordTypeList) {
 					log.trace("Keyword = " + keywordType.content);
-					Keyword keyword = Keyword.checkKeyword(null, keywordType.content);
+					Keyword keyword = Keyword.checkKeyword(null,
+							keywordType.content);
 					StudyKeyword sk = new StudyKeyword();
 					// TODO replace user id = 1
 					sk.setId(new StudyKeywordPK(s.getId(), keyword.getId(), 1));
@@ -360,7 +590,7 @@ public class ImporterDdi {
 				Set<Topic> tSet = new HashSet<Topic>();
 				for (TopcClasType topcClasType : topcClasTypeList) {
 					log.trace("Topic = " + topcClasType.content);
-					Topic topic = Topic.checkTopic(null, topcClasType.content, null);
+					Topic topic = Topic.checkTopic(null, topcClasType.content);
 					if (topic == null) {
 						topic = new Topic();
 						topic.setName(topcClasType.content);
@@ -436,12 +666,15 @@ public class ImporterDdi {
 					for (CatgryType catgryType : varType.getCatgry()) {
 						if (catgryType.getCatStat() != null
 								&& catgryType.getCatStat().size() > 0
-								&& (catgryType.getLabl() != null && catgryType.getLabl().size() > 0 || catgryType
+								&& (catgryType.getLabl() != null
+										&& catgryType.getLabl().size() > 0 || catgryType
 										.getCatValu() != null)) {
 							OtherStatistic os = new OtherStatistic();
 							os.setVariableId(variable);
-							os.setValue(new Float(catgryType.getCatStat().get(0).content));
-							if (catgryType.getLabl() != null && catgryType.getLabl().size() > 0) {
+							os.setValue(new Float(catgryType.getCatStat()
+									.get(0).content));
+							if (catgryType.getLabl() != null
+									&& catgryType.getLabl().size() > 0) {
 								os.setName(catgryType.getLabl().get(0).content);
 							} else {
 								os.setName(catgryType.getCatValu().content);
@@ -452,7 +685,8 @@ public class ImporterDdi {
 				}
 
 				InstanceVariable iv = new InstanceVariable();
-				iv.setId(new InstanceVariablePK(instance.getId(), variable.getId()));
+				iv.setId(new InstanceVariablePK(instance.getId(), variable
+						.getId()));
 				iv.setOrderVariableInInstance(counter);
 				counter++;
 				iv.persist();
@@ -462,4 +696,5 @@ public class ImporterDdi {
 		instance.setInstanceVariables(instanceVariableSet);
 		instance.merge();
 	}
+
 }

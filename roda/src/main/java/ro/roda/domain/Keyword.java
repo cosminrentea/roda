@@ -181,7 +181,7 @@ public class Keyword {
 			TypedQuery<Keyword> query = entityManager().createQuery(
 					"SELECT o FROM Keyword o WHERE lower(o.name) = lower(:name)", Keyword.class);
 			query.setParameter("name", name);
-			// copy to every other class
+			//TODO copy to every other domain class
 			query.setMaxResults(1);
 			query.setFlushMode(FlushModeType.COMMIT);
 

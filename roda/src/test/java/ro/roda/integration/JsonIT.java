@@ -76,27 +76,28 @@ public class JsonIT {
 			Assert.assertNotNull(jsonObject);
 		} catch (Exception e) {
 			// log.trace(e);
-			conn.disconnect();
 
-			conn = (HttpURLConnection) url.openConnection();
-			conn.setRequestProperty("Accept", "application/json");
+//			conn = (HttpURLConnection) url.openConnection();
+//			conn.setRequestProperty("Accept", "application/json");
+//
+//			conn.connect();
+//
+//			// HTTP OK response ?
+//			Assert.assertEquals(HttpURLConnection.HTTP_OK, conn.getResponseCode());
+//
+//			// try to parse the received JSON as a list
+//			try {
+//				Collection jsonObject = new JSONDeserializer<Collection>().deserialize(new BufferedReader(
+//						new InputStreamReader(conn.getInputStream())));
+//
+//				Assert.assertNotNull(jsonObject);
+//			} catch (Exception e2) {
+//				// log.trace(e2);
+//			}
 
-			conn.connect();
+		} 
 
-			// HTTP OK response ?
-			Assert.assertEquals(HttpURLConnection.HTTP_OK, conn.getResponseCode());
-
-			// try to parse the received JSON as a list
-			try {
-				Collection jsonObject = new JSONDeserializer<Collection>().deserialize(new BufferedReader(
-						new InputStreamReader(conn.getInputStream())));
-
-				Assert.assertNotNull(jsonObject);
-			} catch (Exception e2) {
-				// log.trace(e2);
-			}
-
-		}
+		conn.disconnect();
 
 	}
 

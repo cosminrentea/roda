@@ -23,7 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import ro.roda.ddi.CodeBook;
 import ro.roda.domain.File;
-import ro.roda.importer.ImporterDdi;
+import ro.roda.importer.ImporterService;
 
 @Service
 @Transactional
@@ -38,7 +38,7 @@ public class FileServiceImpl implements FileService {
 	SolrServer solrServer;
 
 	@Autowired
-	ImporterDdi importerDdi;
+	ImporterService importer;
 
 	public long countAllFiles() {
 		return File.countFiles();
@@ -75,8 +75,7 @@ public class FileServiceImpl implements FileService {
 
 					updateSolrFile(f, multipartFile);
 					if (multipartFile.getOriginalFilename().endsWith(".ddi")) {
-						ImporterDdi.setupUnmarshaller();
-						importerDdi.importCodebook((CodeBook) ImporterDdi.unmarshaller.unmarshal(f), multipartFile,
+						importer.importCodebook((CodeBook) importer.getUnmarshaller().unmarshal(f), multipartFile,
 								true, true);
 					}
 				} else {

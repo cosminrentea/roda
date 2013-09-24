@@ -348,12 +348,14 @@ public class OtherStatistic {
 	@PostUpdate
 	@PostPersist
 	private void postPersistOrUpdate() {
-		indexOtherStatistic(this);
+		//TODO temporarily disabled
+//		indexOtherStatistic(this);
 	}
 
 	@PreRemove
 	private void preRemove() {
-		deleteIndex(this);
+		//TODO temporarily disabled
+//		deleteIndex(this);
 	}
 
 	@Override

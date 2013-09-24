@@ -463,12 +463,14 @@ public class Variable {
 	@PostUpdate
 	@PostPersist
 	private void postPersistOrUpdate() {
-		indexVariable(this);
+		//TODO temporarily disabled
+//		indexVariable(this);
 	}
 
 	@PreRemove
 	private void preRemove() {
-		deleteIndex(this);
+		//TODO temporarily disabled
+//		deleteIndex(this);
 	}
 
 	@Override

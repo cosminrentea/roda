@@ -35,7 +35,8 @@ public class JsonIT {
 		// Set up a simple configuration that logs on the console
 		BasicConfigurator.configure();
 
-		InputStream is = SeleniumServerIT.class.getClassLoader().getResourceAsStream(testProperties);
+		InputStream is = SeleniumServerIT.class.getClassLoader()
+				.getResourceAsStream(testProperties);
 		Assert.assertNotNull("Not found: " + testProperties, is);
 
 		Properties props = new Properties();
@@ -70,32 +71,35 @@ public class JsonIT {
 
 		// try to parse the received JSON as a basic Java 'Object'
 		try {
-			Object jsonObject = new JSONDeserializer<Object>().deserialize(new BufferedReader(new InputStreamReader(
-					conn.getInputStream())), Object.class);
+			Object jsonObject = new JSONDeserializer<Object>().deserialize(
+					new BufferedReader(new InputStreamReader(conn
+							.getInputStream())), Object.class);
 
 			Assert.assertNotNull(jsonObject);
 		} catch (Exception e) {
 			// log.trace(e);
 
-//			conn = (HttpURLConnection) url.openConnection();
-//			conn.setRequestProperty("Accept", "application/json");
-//
-//			conn.connect();
-//
-//			// HTTP OK response ?
-//			Assert.assertEquals(HttpURLConnection.HTTP_OK, conn.getResponseCode());
-//
-//			// try to parse the received JSON as a list
-//			try {
-//				Collection jsonObject = new JSONDeserializer<Collection>().deserialize(new BufferedReader(
-//						new InputStreamReader(conn.getInputStream())));
-//
-//				Assert.assertNotNull(jsonObject);
-//			} catch (Exception e2) {
-//				// log.trace(e2);
-//			}
+			// conn = (HttpURLConnection) url.openConnection();
+			// conn.setRequestProperty("Accept", "application/json");
+			//
+			// conn.connect();
+			//
+			// // HTTP OK response ?
+			// Assert.assertEquals(HttpURLConnection.HTTP_OK,
+			// conn.getResponseCode());
+			//
+			// // try to parse the received JSON as a list
+			// try {
+			// Collection jsonObject = new
+			// JSONDeserializer<Collection>().deserialize(new BufferedReader(
+			// new InputStreamReader(conn.getInputStream())));
+			//
+			// Assert.assertNotNull(jsonObject);
+			// } catch (Exception e2) {
+			// // log.trace(e2);
+			// }
 
-		} 
+		}
 
 		conn.disconnect();
 
@@ -158,7 +162,10 @@ public class JsonIT {
 		checkJson("/orgrelationtypes");
 		checkJson("/orgrelationses");
 		checkJson("/orgsufixes");
-		checkJson("/otherstatistics");
+
+		// disabled due to large amount of data (imported)
+		// checkJson("/otherstatistics");
+
 		checkJson("/personaddresses");
 		checkJson("/people");
 		checkJson("/personemails");

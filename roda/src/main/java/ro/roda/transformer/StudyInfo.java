@@ -15,9 +15,15 @@ import ro.roda.domain.CatalogStudy;
 import ro.roda.domain.File;
 import ro.roda.domain.Instance;
 import ro.roda.domain.InstanceVariable;
+import ro.roda.domain.Keyword;
+import ro.roda.domain.Org;
+import ro.roda.domain.Person;
 import ro.roda.domain.Series;
 import ro.roda.domain.Study;
 import ro.roda.domain.StudyDescr;
+import ro.roda.domain.StudyKeyword;
+import ro.roda.domain.StudyOrg;
+import ro.roda.domain.StudyPerson;
 import ro.roda.domain.Variable;
 import flexjson.JSONSerializer;
 
@@ -34,11 +40,21 @@ public class StudyInfo extends JsonInfo {
 				"variables.vargroups", "variables.variableType");
 		serializer.exclude("files.content", "files.fullPath", "files.id", "files.instances",
 				"files.selectionVariableItems", "files.size", "files.studies1", "files.title", "files.variables");
+		serializer.exclude("persons.forms", "persons.instancepeople", "persons.personAddresses",
+				"persons.personEmails", "persons.personInternets", "persons.personLinkss", "persons.personOrgs",
+				"persons.personPhones", "persons.prefixId", "persons.studypeople", "persons.suffixId");
+		serializer.exclude("orgs.instanceOrgs", "orgs.orgAddresses", "orgs.orgEmails", "orgs.orgInternets",
+				"orgs.orgPhones", "orgs.orgPrefixId", "orgs.orgRelationss", "orgs.orgRelationss1", "orgs.orgSufixId",
+				"orgs.personOrgs", "orgs.shortName", "orgs.studyOrgs");
+		serializer.exclude("keywords.studyKeywords");
 
 		serializer.include("id", "name", "an", "description", "universe", "geographicCoverage", "unitAnalysis", "type",
 				"geographicUnit", "researchInstrument", "weighting", "seriesId");
 		serializer.include("variables.id", "variables.name", "variables.label");
 		serializer.include("files.name", "files.contentType", "files.url", "files.description");
+		serializer.include("persons.id", "persons.lname", "persons.fname", "persons.mname");
+		serializer.include("orgs.id", "orgs.fullName");
+		serializer.include("keywords.id", "keywords.name");
 
 		serializer.transform(new FieldNameTransformer("geo_coverage"), "geographicCoverage");
 		serializer.transform(new FieldNameTransformer("unit_analysis"), "unitAnalysis");
@@ -57,7 +73,7 @@ public class StudyInfo extends JsonInfo {
 		result = new ArrayList<StudyInfo>();
 		while (it.hasNext()) {
 			Study study = (Study) it.next();
-			result.add(new StudyInfo(study));
+			result.add(new StudyInfo(study, true, true, true, true, true));
 		}
 		return result;
 	}
@@ -65,7 +81,10 @@ public class StudyInfo extends JsonInfo {
 	public static StudyInfo findStudyInfo(Integer id) {
 		if (id == null)
 			return null;
-		return new StudyInfo(Study.findStudy(id));
+		Study study = Study.findStudy(id);
+		StudyInfo studyInfo = new StudyInfo(study, true, true, true, true, true);
+
+		return studyInfo;
 	}
 
 	private final Log log = LogFactory.getLog(this.getClass());
@@ -94,6 +113,12 @@ public class StudyInfo extends JsonInfo {
 
 	private Set<File> files;
 
+	private Set<Person> persons;
+
+	private Set<Org> orgs;
+
+	private Set<Keyword> keywords;
+
 	private Integer seriesId;
 
 	public StudyInfo(Study study) {
@@ -116,22 +141,30 @@ public class StudyInfo extends JsonInfo {
 		}
 		this.an = study.getYearStart();
 		this.unitAnalysis = study.getUnitAnalysisId().getName();
-		this.files = study.getFiles1();
+
+		setId(study.getId());
+
+		// setting of files and variables should be invoked separately (in find
+		// methods), due to
+		// the fact that the constructor of this class is invoked by classes
+		// that should not provide files and variables from the StudyInfo
+		// objects
+		// this.files = study.getFiles1();
 
 		// the variables of a study are those of its 'main' instance
-		this.variables = new HashSet<Variable>();
-		setId(study.getId());
-		if (study.getInstances() != null) {
-			// log.trace("Instances: " + study.getInstances().size());
-			for (Instance instance : study.getInstances()) {
-				if (instance.isMain() && instance.getInstanceVariables() != null) {
-					for (InstanceVariable iv : instance.getInstanceVariables()) {
-						this.variables.add(iv.getVariableId());
-					}
-				}
-			}
-			// log.trace("Variables: " + variables.size());
-		}
+		// this.variables = new HashSet<Variable>();
+
+		// if (study.getInstances() != null) {
+		// // log.trace("Instances: " + study.getInstances().size());
+		// for (Instance instance : study.getInstances()) {
+		// if (instance.isMain() && instance.getInstanceVariables() != null) {
+		// for (InstanceVariable iv : instance.getInstanceVariables()) {
+		// this.variables.add(iv.getVariableId());
+		// }
+		// }
+		// }
+		// // log.trace("Variables: " + variables.size());
+		// }
 
 		// TODO manage descriptions depending on language
 		// for the beginning, suppose there is only one description
@@ -147,6 +180,71 @@ public class StudyInfo extends JsonInfo {
 			this.weighting = studyDescr.getWeighting();
 			this.geographicUnit = studyDescr.getGeographicUnit();
 			this.researchInstrument = studyDescr.getResearchInstrument();
+		}
+
+	}
+
+	public StudyInfo(Study study, boolean hasVariables, boolean hasFiles, boolean hasPersons, boolean hasOrgs,
+			boolean hasKeywords) {
+		this(study);
+
+		// set the files
+		if (hasFiles) {
+			this.setFiles(study.getFiles1());
+		}
+
+		// set the variables
+		// variables of a study are those of its 'main' instance
+		// TODO what are the variables of an instance?
+		if (hasVariables) {
+			Set<Variable> variables = new HashSet<Variable>();
+
+			if (study.getInstances() != null) {
+				// log.trace("Instances: " + study.getInstances().size());
+				for (Instance instance : study.getInstances()) {
+					if (instance.isMain() && instance.getInstanceVariables() != null) {
+						for (InstanceVariable iv : instance.getInstanceVariables()) {
+							variables.add(iv.getVariableId());
+						}
+					}
+				}
+				// log.trace("Variables: " + variables.size());
+			}
+			this.setVariables(variables);
+		}
+
+		// set the persons and organizations
+		if (hasPersons) {
+			this.persons = new HashSet<Person>();
+			Set<StudyPerson> studyPersons = study.getStudypeople();
+			if (studyPersons != null && studyPersons.size() > 0) {
+				Iterator<StudyPerson> studyPersonIterator = studyPersons.iterator();
+				while (studyPersonIterator.hasNext()) {
+					this.persons.add(studyPersonIterator.next().getPersonId());
+				}
+			}
+		}
+
+		if (hasOrgs) {
+			this.orgs = new HashSet<Org>();
+			Set<StudyOrg> studyOrgs = study.getStudyOrgs();
+			if (studyOrgs != null && studyOrgs.size() > 0) {
+				Iterator<StudyOrg> studyOrgIterator = studyOrgs.iterator();
+				while (studyOrgIterator.hasNext()) {
+					this.orgs.add(studyOrgIterator.next().getOrgId());
+				}
+			}
+		}
+
+		if (hasKeywords) {
+			this.keywords = new HashSet<Keyword>();
+			Set<StudyKeyword> studyKeywords = study.getStudyKeywords();
+			if (studyKeywords != null && studyKeywords.size() > 0) {
+				Iterator<StudyKeyword> studyKeywordIterator = studyKeywords.iterator();
+				while (studyKeywordIterator.hasNext()) {
+					this.keywords.add(studyKeywordIterator.next().getKeywordId());
+				}
+			}
 		}
 
 	}
@@ -227,6 +325,30 @@ public class StudyInfo extends JsonInfo {
 		this.variables = variables;
 	}
 
+	public Set<Person> getPersons() {
+		return persons;
+	}
+
+	public void setPersons(Set<Person> persons) {
+		this.persons = persons;
+	}
+
+	public Set<Org> getOrgs() {
+		return orgs;
+	}
+
+	public void setOrgs(Set<Org> orgs) {
+		this.orgs = orgs;
+	}
+
+	public Set<Keyword> getKeywords() {
+		return keywords;
+	}
+
+	public void setKeywords(Set<Keyword> keywords) {
+		this.keywords = keywords;
+	}
+
 	public Integer getSeriesId() {
 		return seriesId;
 	}
@@ -246,11 +368,21 @@ public class StudyInfo extends JsonInfo {
 				"variables.vargroups", "variables.variableType");
 		serializer.exclude("files.content", "files.fullPath", "files.id", "files.instances",
 				"files.selectionVariableItems", "files.size", "files.studies1", "files.title", "files.variables");
+		serializer.exclude("persons.forms", "persons.instancepeople", "persons.personAddresses",
+				"persons.personEmails", "persons.personInternets", "persons.personLinkss", "persons.personOrgs",
+				"persons.personPhones", "persons.prefixId", "persons.studypeople", "persons.suffixId");
+		serializer.exclude("orgs.instanceOrgs", "orgs.orgAddresses", "orgs.orgEmails", "orgs.orgInternets",
+				"orgs.orgPhones", "orgs.orgPrefixId", "orgs.orgRelationss", "orgs.orgRelationss1", "orgs.orgSufixId",
+				"orgs.personOrgs", "orgs.shortName", "orgs.studyOrgs");
+		serializer.exclude("keywords.studyKeywords");
 
 		serializer.include("id", "name", "an", "description", "universe", "geographicCoverage", "unitAnalysis", "type",
 				"geographicUnit", "researchInstrument", "weighting", "seriesId");
 		serializer.include("variables.id", "variables.name", "variables.label");
 		serializer.include("files.name", "files.contentType", "files.url", "files.description");
+		serializer.include("persons.id", "persons.lname", "persons.fname", "persons.mname");
+		serializer.include("orgs.id", "orgs.fullName");
+		serializer.include("keywords.id", "keywords.name");
 
 		serializer.transform(new FieldNameTransformer("geo_coverage"), "geographicCoverage");
 		serializer.transform(new FieldNameTransformer("unit_analysis"), "unitAnalysis");

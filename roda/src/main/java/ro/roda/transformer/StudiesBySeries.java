@@ -22,18 +22,12 @@ public class StudiesBySeries extends JsonInfo {
 		JSONSerializer serializer = new JSONSerializer();
 
 		serializer.exclude("*.class");
-		serializer.exclude("studies.leaf", "studies.universe", "studies.variables.concepts",
-				"studies.variables.fileId", "studies.variables.formEditedNumberVars",
-				"studies.variables.instanceVariables", "studies.variables.operatorInstructions",
-				"studies.variables.otherStatistics", "studies.variables.selectionVariable", "studies.variables.skips",
-				"studies.variables.skips1", "studies.variables.type", "studies.variables.vargroups",
-				"studies.variables.variableType");
-		serializer.exclude("studies.files");
+		serializer.exclude("studies.leaf", "studies.universe", "studies.variables", "studies.files", "studies.persons",
+				"studies.orgs", "studies.keywords");
 
 		serializer.include("id", "name", "studiesCount");
 		serializer.include("studies.name", "studies.id", "studies.yearStart", "studies.description",
 				"studies.geographicCoverage", "studies.unitAnalysis");
-		serializer.include("studies.variables.id", "studies.variables.name", "studies.variables.label");
 
 		// return "{\"data\":[{\"name\":\"RODA\",\"level\":0,\"data\":"
 		// + serializer.serialize(collection) + "}]}";
@@ -44,7 +38,6 @@ public class StudiesBySeries extends JsonInfo {
 		serializer.transform(new FieldNameTransformer("unit_analysis"), "studies.unitAnalysis");
 		serializer.transform(new FieldNameTransformer("univers"), "studies.universe");
 		serializer.transform(new FieldNameTransformer("indice"), "studies.id");
-		serializer.transform(new FieldNameTransformer("indice"), "studies.variables.id");
 
 		return "{\"data\":" + serializer.serialize(collection) + "}";
 	}
@@ -219,20 +212,12 @@ public class StudiesBySeries extends JsonInfo {
 		JSONSerializer serializer = new JSONSerializer();
 
 		serializer.exclude("*.class");
-		serializer.exclude("studies.leaf", "studies.universe", "studies.variables.concepts",
-				"studies.variables.fileId", "studies.variables.formEditedNumberVars",
-				"studies.variables.instanceVariables", "studies.variables.operatorInstructions",
-				"studies.variables.otherStatistics", "studies.variables.selectionVariable", "studies.variables.skips",
-				"studies.variables.skips1", "studies.variables.type", "studies.variables.vargroups",
-				"studies.variables.variableType");
-		serializer.exclude("studies.files.content", "studies.files.fullPath", "studies.files.id",
-				"studies.files.instances", "studies.files.selectionVariableItems", "studies.files.size",
-				"studies.files.studies1", "studies.files.title", "studies.files.variables");
+		serializer.exclude("studies.leaf", "studies.universe", "studies.variables", "studies.files", "studies.persons",
+				"studies.orgs", "studies.keywords");
 
 		serializer.include("id", "name", "studiesCount");
 		serializer.include("studies.name", "studies.id", "studies.yearStart", "studies.description",
 				"studies.geographicCoverage", "studies.unitAnalysis");
-		serializer.include("studies.variables.id", "studies.variables.name", "studies.variables.label");
 
 		// return "{\"data\":[{\"name\":\"RODA\",\"level\":0,\"data\":"
 		// + serializer.serialize(collection) + "}]}";
@@ -243,7 +228,6 @@ public class StudiesBySeries extends JsonInfo {
 		serializer.transform(new FieldNameTransformer("unit_analysis"), "studies.unitAnalysis");
 		serializer.transform(new FieldNameTransformer("univers"), "studies.universe");
 		serializer.transform(new FieldNameTransformer("indice"), "studies.id");
-		serializer.transform(new FieldNameTransformer("indice"), "studies.variables.id");
 		// TODO transform the fields name in variables and files
 
 		return "{\"data\":" + serializer.serialize(this) + "}";

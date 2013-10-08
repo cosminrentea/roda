@@ -23,9 +23,10 @@ Ext.application({
         'StudyModel',
         'SeriesModel',
         'VariableModel',
-       'StudyFileModel',
-       'YearModel',
-       'FrequencyModel'
+        'StudyFileModel',
+        'YearModel',
+        'FrequencyModel',
+        'TopicTreeModel'
      ],
     stores: [
         'StudyStore',
@@ -34,7 +35,8 @@ Ext.application({
         'CatalogTreeStore',
         'YearTreeStore',
         'YearStore',
-        'VariableStore'
+        'VariableStore',
+        'TopicTreeStore'
     ],
     views: [
         'DataBrowserPanel',

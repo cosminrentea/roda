@@ -2,6 +2,7 @@ package ro.roda.domain;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -21,6 +22,7 @@ import javax.persistence.PostPersist;
 import javax.persistence.PostUpdate;
 import javax.persistence.PreRemove;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.persistence.TypedQuery;
 import javax.validation.constraints.NotNull;
 
@@ -38,6 +40,7 @@ import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.transaction.annotation.Transactional;
 
+import flexjson.JSON;
 import flexjson.JSONDeserializer;
 import flexjson.JSONSerializer;
 
@@ -153,6 +156,29 @@ public class Topic {
 		return new JSONSerializer().exclude("*.class").serialize(collection);
 	}
 
+	public static List<Topic> findAllTopTopics() {
+		List<Topic> result = new ArrayList<Topic>();
+
+		List<Topic> topics = Topic.entityManager()
+				.createQuery("SELECT o FROM Topic o WHERE o.parentId IS NULL", Topic.class).getResultList();
+
+		if (topics != null && topics.size() > 0) {
+			Iterator<Topic> topicIterator = topics.iterator();
+			while (topicIterator.hasNext()) {
+				Topic topic = (Topic) topicIterator.next();
+				result.add(findTopic(topic.getId()));
+			}
+		}
+		return result;
+	}
+
+	public static String toJsonTop() {
+		return new JSONSerializer()
+				.exclude("*.class", "*.studies", "*.series", "*.topics1", "*.translatedTopics", "*.parentId",
+						"*.preferredSynonymTopicId", "*.description").rootName("topics")
+				.deepSerialize(findAllTopTopics());
+	}
+
 	/**
 	 * Verifica existenta unui obiect de tip <code>Topic</code> (subiect) in
 	 * baza de date; in caz afirmativ il returneaza, altfel, metoda returneaza
@@ -171,8 +197,6 @@ public class Topic {
 	 *            - identificatorul subiectului.
 	 * @param name
 	 *            - numele subiectului.
-	 * @param description
-	 *            - descrierea subiectului.
 	 * @return
 	 */
 	public static Topic checkTopic(Integer id, String name) {
@@ -180,7 +204,6 @@ public class Topic {
 
 		if (id != null) {
 			object = findTopic(id);
-
 			if (object != null) {
 				return object;
 			}
@@ -190,10 +213,8 @@ public class Topic {
 			TypedQuery<Topic> query = entityManager().createQuery(
 					"SELECT o FROM Topic o WHERE lower(o.name) = lower(:name)", Topic.class);
 			query.setParameter("name", name);
-			
 			query.setMaxResults(1);
 			query.setFlushMode(FlushModeType.COMMIT);
-
 			try {
 				Topic queryResult = query.getSingleResult();
 				return queryResult;
@@ -202,6 +223,9 @@ public class Topic {
 		}
 		return null;
 	}
+
+	@Transient
+	private Boolean leaf;
 
 	@Column(name = "description", columnDefinition = "text")
 	private String description;
@@ -215,8 +239,9 @@ public class Topic {
 	@NotNull
 	private String name;
 
+	// Original: insertable = false, updatable = false
 	@ManyToOne
-	@JoinColumn(name = "parent_id", columnDefinition = "integer", referencedColumnName = "id", insertable = false, updatable = false)
+	@JoinColumn(name = "parent_id", columnDefinition = "integer", referencedColumnName = "id")
 	private Topic parentId;
 
 	@ManyToOne
@@ -308,6 +333,17 @@ public class Topic {
 	}
 
 	@Transactional
+	public Topic merge(boolean doFlush) {
+		if (this.entityManager == null)
+			this.entityManager = entityManager();
+		Topic merged = this.entityManager.merge(this);
+		if (doFlush) {
+			this.entityManager.flush();
+		}
+		return merged;
+	}
+
+	@Transactional
 	public void persist() {
 		if (this.entityManager == null)
 			this.entityManager = entityManager();
@@ -364,6 +400,10 @@ public class Topic {
 
 	public void setTranslatedTopics(Set<TranslatedTopic> translatedTopics) {
 		this.translatedTopics = translatedTopics;
+	}
+
+	public Boolean getLeaf() {
+		return new Boolean(topics == null || topics.size() == 0);
 	}
 
 	public String toJson() {

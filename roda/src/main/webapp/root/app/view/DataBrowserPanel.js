@@ -85,6 +85,37 @@ Ext.define('databrowser.view.DataBrowserPanel', {
                                 }
                             ]
                         }
+                        ,{
+                            xtype: 'panel',
+                            id: 'TopicPanel',
+                            autoScroll: true,
+                            layout:'fit',                            
+                            title: 'ELSST',
+                            tabConfig: {
+                                xtype: 'tab',
+                                id: 'TopicTabConfig'
+                            },
+                            items: [
+                                {
+                                    xtype: 'treepanel',
+                                    height: 389,
+                                    id: 'TopicTreePanel',
+                                    store: 'TopicTreeStore',
+                                    displayField: 'name',
+                                    viewConfig: {
+                                        id: 'TopicTreeView',
+                                        autoScroll: true,
+                                        rootVisible: false
+                                    },
+                                    listeners: {
+                                        select: {
+                                            fn: me.onTopicTreePanelSelect,
+                                            scope: me
+                                        }
+                                    }
+                                }
+                            ]
+                        }
                     ]
                 }
             ],
@@ -153,5 +184,10 @@ Ext.define('databrowser.view.DataBrowserPanel', {
         } else {
         	dbcard.layout.setActiveItem('initial');
         }
+    },
+    
+    onTopicTreePanelSelect: function(rowmodel, record, index, eOpts) {
+
     }
+
 });

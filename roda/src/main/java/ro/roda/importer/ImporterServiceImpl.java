@@ -182,10 +182,8 @@ public class ImporterServiceImpl implements ImporterService {
 			// validate using DDI 1.2.2 XML Schema
 			Resource xsdDdiRes = new ClassPathResource(xsdDdi122);
 			try {
-				unmarshaller = JAXBContext.newInstance(jaxbContextPath)
-						.createUnmarshaller();
-				unmarshaller.setSchema(SchemaFactory.newInstance(
-						XMLConstants.W3C_XML_SCHEMA_NS_URI).newSchema(
+				unmarshaller = JAXBContext.newInstance(jaxbContextPath).createUnmarshaller();
+				unmarshaller.setSchema(SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI).newSchema(
 						xsdDdiRes.getFile()));
 			} catch (JAXBException e) {
 				// TODO Auto-generated catch block
@@ -234,8 +232,7 @@ public class ImporterServiceImpl implements ImporterService {
 		CSVReader reader;
 		List<String[]> csvLines;
 		try {
-			reader = new CSVReader(new FileReader(new ClassPathResource(
-					rodaDataElsstDir + elsstEnTerms).getFile()));
+			reader = new CSVReader(new FileReader(new ClassPathResource(rodaDataElsstDir + elsstEnTerms).getFile()));
 			csvLines = reader.readAll();
 			for (String[] csvLine : csvLines) {
 				log.trace("ELSST Term: " + csvLine[0]);
@@ -244,18 +241,20 @@ public class ImporterServiceImpl implements ImporterService {
 				t.persist();
 			}
 
-			reader = new CSVReader(new FileReader(new ClassPathResource(
-					rodaDataElsstDir + elsstEnRelationships).getFile()));
+			reader = new CSVReader(new FileReader(
+					new ClassPathResource(rodaDataElsstDir + elsstEnRelationships).getFile()));
 			csvLines = reader.readAll();
 			for (String[] csvLine : csvLines) {
-				log.trace("ELSST Relationship: " + csvLine[0] + " "
-						+ csvLine[1] + " " + csvLine[2]);
+				log.trace("ELSST Relationship: " + csvLine[0] + " " + csvLine[1] + " " + csvLine[2]);
 				Topic src = Topic.checkTopic(null, csvLine[0]);
 				Topic dst = Topic.checkTopic(null, csvLine[2]);
-				log.trace("ELSST Terms: " + src.getName() + " " + dst.getName());
+				// log.trace("ELSST Terms: " + src.getName() + " " +
+				// dst.getName());
+
+				Set<Topic> topicSet = null;
 				if (Integer.parseInt(csvLine[1]) == 5) {
 					dst.setParentId(src);
-					Set<Topic> topicSet = src.getTopics();
+					topicSet = src.getTopics();
 					if (topicSet == null) {
 						topicSet = new HashSet<Topic>();
 					}
@@ -263,6 +262,8 @@ public class ImporterServiceImpl implements ImporterService {
 					src.setTopics(topicSet);
 					dst.merge();
 					src.merge();
+					// dst.merge(false);
+					// src.merge(false);
 				}
 
 				if (Integer.parseInt(csvLine[1]) == 8) {
@@ -276,6 +277,8 @@ public class ImporterServiceImpl implements ImporterService {
 		} catch (IOException e) {
 			log.error(e);
 		}
+
+		Topic.entityManager().flush();
 	}
 
 	public void importCsv() {
@@ -290,15 +293,13 @@ public class ImporterServiceImpl implements ImporterService {
 		CSVReader reader;
 		try {
 			// add Studies to Catalogs
-			reader = new CSVReader(new FileReader(new ClassPathResource(
-					rodaDataCsvAfterDdiCatalogStudy).getFile()));
+			reader = new CSVReader(new FileReader(new ClassPathResource(rodaDataCsvAfterDdiCatalogStudy).getFile()));
 			List<String[]> csvLines;
 			csvLines = reader.readAll();
 			for (String[] csvLine : csvLines) {
 				log.trace("Catalog " + csvLine[0] + " -> Study " + csvLine[1]);
 				CatalogStudy cs = new CatalogStudy();
-				cs.setId(new CatalogStudyPK(Integer.valueOf(csvLine[0]),
-						Integer.valueOf(csvLine[1])));
+				cs.setId(new CatalogStudyPK(Integer.valueOf(csvLine[0]), Integer.valueOf(csvLine[1])));
 				cs.persist();
 			}
 
@@ -344,12 +345,10 @@ public class ImporterServiceImpl implements ImporterService {
 				String tableFields = br.readLine();
 
 				// obtain the table name from the file name
-				String tableName = f.getName().substring(2,
-						f.getName().length() - 4);
+				String tableName = f.getName().substring(2, f.getName().length() - 4);
 
 				// bulk COPY the remaining lines (CSV data)
-				String copyQuery = "COPY " + tableName + "(" + tableFields
-						+ ") FROM stdin DELIMITERS ',' CSV";
+				String copyQuery = "COPY " + tableName + "(" + tableFields + ") FROM stdin DELIMITERS ',' CSV";
 				log.trace(copyQuery);
 				cm.copyIn(copyQuery, br);
 				// br.close();
@@ -379,8 +378,7 @@ public class ImporterServiceImpl implements ImporterService {
 			this.getUnmarshaller();
 
 			PathMatchingResourcePatternResolver pmr = new PathMatchingResourcePatternResolver();
-			Resource[] resources = pmr.getResources("classpath*:"
-					+ rodaDataDdiFiles);
+			Resource[] resources = pmr.getResources("classpath*:" + rodaDataDdiFiles);
 			if (resources.length == 0) {
 				log.debug("No DDI files found for importing");
 			}
@@ -394,9 +392,8 @@ public class ImporterServiceImpl implements ImporterService {
 
 			for (File ddiFile : ddiFiles) {
 				log.debug("Importing DDI file: " + ddiFile.getName());
-				MockMultipartFile mockMultipartFile = new MockMultipartFile(
-						ddiFile.getName(), ddiFile.getName(), "text/xml",
-						new FileInputStream(ddiFile));
+				MockMultipartFile mockMultipartFile = new MockMultipartFile(ddiFile.getName(), ddiFile.getName(),
+						"text/xml", new FileInputStream(ddiFile));
 				CodeBook cb = (CodeBook) unmarshaller.unmarshal(ddiFile);
 				importCodebook(cb, mockMultipartFile, true, true);
 			}
@@ -411,8 +408,7 @@ public class ImporterServiceImpl implements ImporterService {
 		}
 	}
 
-	public void importCodebook(CodeBook cb, MultipartFile multipartFile,
-			boolean nesstarExported, boolean legacyDataRODA) {
+	public void importCodebook(CodeBook cb, MultipartFile multipartFile, boolean nesstarExported, boolean legacyDataRODA) {
 
 		if ("yes".equalsIgnoreCase(ddiPersist)) {
 			if (this.entityManager == null) {
@@ -451,8 +447,7 @@ public class ImporterServiceImpl implements ImporterService {
 			}
 
 			if (prodStmtType != null) {
-				List<ProdPlacType> prodPlacTypeList = prodStmtType
-						.getProdPlac();
+				List<ProdPlacType> prodPlacTypeList = prodStmtType.getProdPlac();
 				for (ProdPlacType prodPlacType : prodPlacTypeList) {
 					log.trace("prodPlacType = " + prodPlacType.content);
 					// TODO parse imported address
@@ -474,8 +469,7 @@ public class ImporterServiceImpl implements ImporterService {
 
 		Study s = new Study();
 
-		String title = cb.getStdyDscr().get(0).getCitation().get(0)
-				.getTitlStmt().getTitl().getContent();
+		String title = cb.getStdyDscr().get(0).getCitation().get(0).getTitlStmt().getTitl().getContent();
 		log.trace("Title = " + title);
 
 		if (nesstarExported && legacyDataRODA) {
@@ -575,8 +569,7 @@ public class ImporterServiceImpl implements ImporterService {
 				List<KeywordType> keywordTypeList = subjectType.getKeyword();
 				for (KeywordType keywordType : keywordTypeList) {
 					log.trace("Keyword = " + keywordType.content);
-					Keyword keyword = Keyword.checkKeyword(null,
-							keywordType.content);
+					Keyword keyword = Keyword.checkKeyword(null, keywordType.content);
 					StudyKeyword sk = new StudyKeyword();
 					// TODO replace user id = 1
 					sk.setId(new StudyKeywordPK(s.getId(), keyword.getId(), 1));
@@ -666,15 +659,12 @@ public class ImporterServiceImpl implements ImporterService {
 					for (CatgryType catgryType : varType.getCatgry()) {
 						if (catgryType.getCatStat() != null
 								&& catgryType.getCatStat().size() > 0
-								&& (catgryType.getLabl() != null
-										&& catgryType.getLabl().size() > 0 || catgryType
+								&& (catgryType.getLabl() != null && catgryType.getLabl().size() > 0 || catgryType
 										.getCatValu() != null)) {
 							OtherStatistic os = new OtherStatistic();
 							os.setVariableId(variable);
-							os.setValue(new Float(catgryType.getCatStat()
-									.get(0).content));
-							if (catgryType.getLabl() != null
-									&& catgryType.getLabl().size() > 0) {
+							os.setValue(new Float(catgryType.getCatStat().get(0).content));
+							if (catgryType.getLabl() != null && catgryType.getLabl().size() > 0) {
 								os.setName(catgryType.getLabl().get(0).content);
 							} else {
 								os.setName(catgryType.getCatValu().content);
@@ -685,8 +675,7 @@ public class ImporterServiceImpl implements ImporterService {
 				}
 
 				InstanceVariable iv = new InstanceVariable();
-				iv.setId(new InstanceVariablePK(instance.getId(), variable
-						.getId()));
+				iv.setId(new InstanceVariablePK(instance.getId(), variable.getId()));
 				iv.setOrderVariableInInstance(counter);
 				counter++;
 				iv.persist();

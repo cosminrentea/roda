@@ -47,8 +47,8 @@ public class VariableController {
 		if (variable == null) {
 			return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
 		}
-		// original
-		// return new ResponseEntity<String>(variable.toJsonWithFreq(), headers,
+		// Original
+		// return new ResponseEntity<String>(variable.toJson(), headers,
 		// HttpStatus.OK);
 
 		// Cosmin - includes Frequencies

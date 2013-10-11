@@ -1,0 +1,49 @@
+In aceasta Anexa descriem aspectele legate de dezvoltarea in practica, intr-o
+maniera incrementala si cu asigurarea calitatii procesului de dezvoltare.
+
+\section{Documentare}
+Se folosesc in codul-sursa comentarii de tip Javadoc. 
+
+In procesul de build se genereaza automat documentatie de tip HTML;
+pornind de la aceasta documentatie in format HTML, se poate genera si documentatie in format PDF 
+folosind utilitarul \emph{htmldoc}.
+
+%TODO de scris despre "mvn site"
+
+\section{Testarea aplicatiei}
+Testarea aplicatiei web la nivel de integrare este realizata in acest moment prin 4 metode:
+\begin{enumerate}
+\item
+teste JUnit de integrare, ce utilizeaza interfata WebDriver a Selenium pentru a comanda direct browser-ul (Mozilla Firefox)
+\item
+teste JUnit de integrare, ce interactioneaza cu \emph{Selenium Server}
+\item
+scripturi de testare scrise in Perl, ce interactioneaza cu \emph{Selenium Server}
+\item
+o suita de teste pentru interfata web de tip CRUD, 
+teste ce au fost generate semi-automat in limbajul \emph{Selenese} 
+si executate prin \emph{Selenium}.
+\end{enumerate}
+
+\section{Procese de Build}
+Procesele de build sunt realizate prin Maven;
+fisierul de build aferent (\emph{pom.xml})
+ce contine dependentele necesare pentru configurarea, compilarea,
+deployment-ul, rularea, testarea, documentarea codului-sursa (Javadoc) si a proiectului(LaTeX).
+
+Serviciul de tip continuous-build (\emph{Jenkins}) 
+realizeaza efectiv pasii descrisi mai sus 
+atunci cand repository-ul SVN ce contine codul-sursa este modificat. 
+%TODO detaliere job-uri Jenkins
+
+In job-ul Jenkins aferent proiectului exista si pasi optionali pentru:
+\begin{itemize}
+\item
+deployment al aplicatiei si remote pe un
+serviciu de tip \emph{cloud} (\url{http://cloudfoundry.com}) 
+\item
+re-crearea schemei curente a bazei de date pe un server Postgresql intern,
+pentru referinta.
+\end{itemize}
+
+%TODO pot fi generate URL-uri corecte, de ex. catre fisierele de configurare ce sunt hostate pe github ?!

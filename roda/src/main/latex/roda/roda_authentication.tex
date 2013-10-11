@@ -1,0 +1,33 @@
+
+\medskip
+
+Pentru autentificare este utilizata si adaptata solutia propusa de Spring Security 3.2.x.
+Se foloseste un \c{s}ablon de tipul Users -- Roles.
+
+\medskip
+
+Utilizatorii precum si hash-urile parolelor lor (SHA-256) sunt stocate intr-un tabel specific din baza de date, care este folosit de implementari standard ale Spring Security (managerul de autentificare foloseste un provider de tip JDBC). 
+Din tabelul 'users' al bazei de date nu se sterg utilizatori (tabelul fiind referit de numeroase alte campuri din celelalte tabele ale bazei de date); acesti utilizatori pot fi insa dezactivati.
+Tabelul 'users' este relationat cu alte tabele ce corespunzand modelului, de ex. atunci cand este relevant sa se cunoasca cine a executat o anumita operatiune (import de studii, completare metadate, etc.).
+
+Tabelul 'authorities' listeaza toate rolurile care sunt permise unui anumit utilizator (de ex. administrator, operator date, operator backup, cercetator, vizitator etc.); lista de roluri este predefinita cf. raportului fazei 1.
+
+\medskip
+
+Interfata aplicatiei permite utilizatorilor cu rol de administrator sa creeze noi utilizatori, sa ii activeze/dezactiveze si sa le acorde acestora unul sau mai multe roluri in cadrul aplicatiei.
+
+Aplicatia web are definite interceptoare de URL-uri care permit accesul la anumite zone doar daca utilizatorul este autentificat si are un anumit rol.
+
+\medskip
+
+Spring Security are un design modular si permite extinderea modelului de securitate prin autentificarea cu LDAP, OpenID sau Shibboleth (SAML2).
+Aceasta solutie de autentificare permite ca in continuare pentru autorizare sa fie utilizata si adaptata solutia Spring Security ACL --
+se pot utiliza unele implementari standard din Spring Security (Access Control Lists ierarhice aplicate asupra diferitelor clase din model si servicii). 
+Serviciile ce permit accesul la model sunt adnotate folosind SpEL
+(Spring Expression Language).
+Pentru a mari viteza de decizie este utilizata o solutie de caching (ehcache). 
+Se face auditarea simpla a accesului (incercare, succes / esec). 
+
+\medskip
+
+

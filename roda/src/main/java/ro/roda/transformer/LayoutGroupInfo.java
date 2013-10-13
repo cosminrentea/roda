@@ -15,9 +15,9 @@ import ro.roda.domain.CmsPage;
 import flexjson.JSONSerializer;
 
 @Configurable
-public class GroupInfo extends LayoutList {
+public class LayoutGroupInfo extends LayoutList {
 
-	public static String toJsonArray(Collection<GroupInfo> collection) {
+	public static String toJsonArray(Collection<LayoutGroupInfo> collection) {
 		JSONSerializer serializer = new JSONSerializer();
 
 		serializer.exclude("*.class");
@@ -30,8 +30,8 @@ public class GroupInfo extends LayoutList {
 		return "{\"data\":" + serializer.serialize(collection) + "}";
 	}
 
-	public static List<GroupInfo> findAllGroupInfos() {
-		List<GroupInfo> result = new ArrayList<GroupInfo>();
+	public static List<LayoutGroupInfo> findAllGroupInfos() {
+		List<LayoutGroupInfo> result = new ArrayList<LayoutGroupInfo>();
 
 		List<CmsLayoutGroup> layoutGroups = CmsLayoutGroup.findAllCmsLayoutGroups();
 
@@ -43,7 +43,7 @@ public class GroupInfo extends LayoutList {
 
 				Integer parentId = layoutGroup.getParentId() == null ? null : layoutGroup.getParentId().getId();
 
-				result.add(new GroupInfo(layoutGroup.getId(), layoutGroup.getName(),
+				result.add(new LayoutGroupInfo(layoutGroup.getId(), layoutGroup.getName(),
 						layoutGroup.getCmsLayouts().size(), parentId, "layoutgroup", getLayoutGroupPath(layoutGroup),
 						"TODO",
 						(layoutGroup.getCmsLayouts().size() == 0 && layoutGroup.getCmsLayoutGroups().size() == 0)));
@@ -53,7 +53,7 @@ public class GroupInfo extends LayoutList {
 		return result;
 	}
 
-	public static GroupInfo findGroupInfo(Integer id) {
+	public static LayoutGroupInfo findGroupInfo(Integer id) {
 
 		LayoutList layoutList = findLayoutList(id);
 		boolean leaf;
@@ -65,7 +65,7 @@ public class GroupInfo extends LayoutList {
 				layoutsNumber = layoutGroup.getCmsLayouts().size();
 				leaf = (layoutsNumber == 0 && layoutGroup.getCmsLayoutGroups().size() == 0);
 
-				return new GroupInfo(layoutList.getId(), layoutList.getName(), layoutsNumber, layoutList.getGroupid(),
+				return new LayoutGroupInfo(layoutList.getId(), layoutList.getName(), layoutsNumber, layoutList.getGroupid(),
 						layoutList.getItemtype(), layoutList.getDirectory(), layoutList.getDescription(), leaf);
 			}
 
@@ -93,7 +93,7 @@ public class GroupInfo extends LayoutList {
 
 	private boolean leaf;
 
-	public GroupInfo(Integer id, String name, Integer layoutnumber, Integer groupid, String itemtype, String directory,
+	public LayoutGroupInfo(Integer id, String name, Integer layoutnumber, Integer groupid, String itemtype, String directory,
 			String description, boolean leaf) {
 		super(id, name, layoutnumber, groupid, itemtype, directory, description);
 		this.leaf = leaf;

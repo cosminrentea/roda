@@ -60,13 +60,13 @@ public class LayoutTree extends LayoutList {
 			while (layoutGroupsIterator.hasNext()) {
 				CmsLayoutGroup layoutGroup = (CmsLayoutGroup) layoutGroupsIterator.next();
 
-				result.add(findLayoutGroupTree(layoutGroup.getId()));
+				result.add(findLayoutTree(layoutGroup.getId()));
 			}
 		}
 		return result;
 	}
 
-	public static LayoutTree findLayoutGroupTree(Integer id) {
+	public static LayoutTree findLayoutTree(Integer id) {
 		LayoutTree result = null;
 		CmsLayoutGroup layoutGroup = CmsLayoutGroup.findCmsLayoutGroup(id);
 
@@ -86,7 +86,7 @@ public class LayoutTree extends LayoutList {
 				Iterator<CmsLayoutGroup> childrenIterator = children.iterator();
 				while (childrenIterator.hasNext()) {
 					CmsLayoutGroup childCmsLayoutGroup = childrenIterator.next();
-					LayoutTree layoutTree = findLayoutGroupTree(childCmsLayoutGroup.getId());
+					LayoutTree layoutTree = findLayoutTree(childCmsLayoutGroup.getId());
 					dataByLayoutGroupSet.add(layoutTree);
 					if (maxDepth < layoutTree.getDepth()) {
 						maxDepth = layoutTree.getDepth();

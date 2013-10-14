@@ -1,14 +1,34 @@
-%% LyX 2.0.3 created this file.  For more info, see http://www.lyx.org/.
-%% Do not edit unless you really know what you are doing.
-\documentclass[english]{article}
-\usepackage[T1]{fontenc}
-\usepackage[latin9]{inputenc}
-\usepackage{float}
-\usepackage{graphicx}
-\usepackage{babel}
-\begin{document}
+\section{Sistemul de template-uri}
+\label{template_system}
 
-\section{Introducere}
+Pentru sistemul de template-uri server-side am combinat framework-ul de template-uri Apache Tiles cu pagini si fragmente JSPX.
+
+Apache Tiles (\url{http://tiles.apache.org/}) este un framework software pentru templating construit pentru a simplifica dezvoltarea de aplicatii interfete web.
+Tiles permite dezvoltatorilor sa defineasca fragmente de pagini care pot fi asamblate intr-o pagina intreaga in timpul rularii. 
+Aceste fragmente, sau 'pl\u{a}cu\c{t}e', pot fi folosite la fel de simplu ca incluziuni/importuri (in scopul de a reduce redundanta elementelor comune de pagina) sau incorporate in alte pl\u{a}cu\c{t}e pentru a dezvolta o serie de \c{s}abloane reutilizabile. 
+Aceste template-uri simplific\u{a} realizarea unor aspecte vizuale \c{s}i de interac\c{t}iune consistente pentru intreaga aplicatie web.
+
+Fisierele JSPX din aplicatie (din directorul 'webapp/WEB-INF/views' ) sunt pagini JSP sau snippet-uri JSP (reprezentand fragmente de pagina) 
+ce utilizeaza suplimentar:
+\begin{itemize}
+\item
+mai multe librarii de tag-uri specifice Spring MVC si Spring Roo
+(de ex. pt. meniu si itemii sai, form-uri si actiuni asociate uzuale, campuri din form-uri, multi-language, themes, paginare)
+\item
+framework-ul Dojo Toolkit (\url{http://dojotoolkit.org/}) pentru anumite componente ale interfetei web (tabele, grid-uri si alte componente)
+\end{itemize}
+
+Sistemul de template-uri dezvoltat permite:
+\begin{description}
+\item [internationalizare] - realizarea interfetei in mai multe limbi intre care se poate alterna (cel putin rom\^{a}n\u{a} si englez\u{a})
+\item [theme-uri] - aspecte vizuale diferite (de ex. pt. rezolutii diferite ale dispozitivelor de vizualizare, pt. utilizatori cu deficiente vizuale etc.)
+\end{description}
+
+A fost realizata si o componenta de interfata care permite upload-ul de fisiere, aceasta bazandu-se pe un serviciu dezvoltat in aplicatia server 
+(cf. API-ului FileStore definit in faza II a proiectului).
+
+\section{DataBrowser - Introducere}
+\label{databrowser}
 
 DataBrowser este componentul central al interfetei publice RODA. Prin
 intermediul acestuia, utilizatorii vor interactiona cu baza de date
@@ -16,35 +36,61 @@ de studii, vor cauta datele care ii intereseaza si vor putea accesa
 datele identificate, in functie de drepturile pe care le au. 
 
 DataBrowser-ul va evolua pe toata durata dezvoltarii sistemului RODA,
-odata cu adaugarea noilor carac- teristici pe care le presupune procesul
+odata cu adaugarea noilor caracteristici pe care le presupune procesul
 de dezvoltare. In aceasta faza, componentul permite ordonarea studiilor
 dupa ani sau cataloage si vizualizarea datelor fiecarui studiu in
 parte. 
 
-DataBrowserul este o interfata dinamica construita cu ajutorul urmatoarelor
-principii si tehnologii: Intreaga interfata este scrisa in limbajul
-Javascript utilizand setul de librarii Ext Js. Ext JS este un set
-complet de instrumente special proiectat pentru programarea aplicatiilor
-dinamice care ruleaza in programele de navigare pe internet. Astfel,
-interfata DataBrowser este un program client care comunica cu serverul
-cu ajutorul apelurilor HTTP si primeste date in format JSON (JavaScript
-Object Notation)
+Intreaga interfata dinamica a componentei DataBrowser este scrisa in limbajul
+Javascript utilizand setul de librarii Ext JS (\url{http://www.sencha.com/products/extjs}). 
+Ext JS este un set complet de instrumente special proiectat pentru programarea aplicatiilor
+dinamice care ruleaza in programele de navigare pe internet.
+Utilizarea sa gratuita in aplicatii este permisa daca licenta acestora este una GPL (open-source). 
+
+Astfel, interfata DataBrowser este un program client care comunica cu serverul
+cu ajutorul apelurilor HTTP si primeste date in format JSON 
+(JavaScript Object Notation, vezi: \url{http://www.json.org/}).
 
 \begin{figure}[H]
 \begin{centering}
 \includegraphics[width=9cm]{img/db-server}
 \par\end{centering}
-
 \caption{Modul simplificat de comunicare intre databrowser si server}
 \end{figure}
 
+\section{Controller-e JSON - server-side}
 
+Controller-ele care stau la baza componentei Data Browser a aplicatiei utilizeaza servicii care, la randul lor, refera anumite clase speciale din domeniu. 
+Aceste clase extind o clasa de baza (\emph{JsonInfo}), ce contine atributele comune ale claselor utilizate pentru obtinerea rezultatelor in format JSON. 
+Pe langa acestea, atributul \emph{type} al clasei permite distinctia intre obiectele de diferite tipuri ce apar in ierarhii. 
+Astfel, vom avea elemente al caror tip este M (nod principal, radacina in cazul ierarhiilor), C (catalog), S (serie), St (studiu), Sts (studiu ce provine dintr-o serie), Y (an).  
+Subclasele lui \emph{JsonInfo} structureaza informatia necesara in rezultatul controller-elor, furnizand metode statice de generare a colectiilor corespunzatoare sau a obiectelor identificate cu ajutorul valorii cheii primare sau a altor campuri (de exemplu, valoarea anului pentru ierarhia de ani si studii). Cu ajutorul acestor metode, clasele ce extind \emph{JsonInfo} permit obtinerea de informatii complexe, care vizeaza mai multe clase ale domeniului de baza al aplicatiei.
+Transformarea colectiilor sau obiectelor in format JSON s-a efectuat cu ajutorul bibliotecii \emph{Flexjson} (\url{http://flexjson.sourceforge.net/}) care permite serializarea, respectiv deserializarea obiectelor Java in si din JSON.  
 
-\section{API}
+Ierarhia de clase ce deriva din \emph{JsonInfo} cuprinde urmatoarele clase:
+\begin{itemize}
+\item
+\emph{CatalogTree} - genereaza arborescenta de cataloage, pornind de la un nod principal (M), urmat de cataloagele radacina (care nu au un catalog parinte). La nivelul fiecarui catalog este indicat tipul acestuia (C sau S), iar la nivelul fiecarui studiu este indicat tipul acestuia (St sau Sts). Un studiu poate apartine si unui alt catalog, de tip serie; astfel, in cazul unui studiu de tip Sts este indicat si codul seriei care il contine. In frunzele arborelui se afla studiile.
+\item
+\emph{StudiesByCatalog} - prezinta studiile din cadrul fiecarui catalog din baza de date. La nivelul fiecarui catalog este indicat numarul studiilor sale, iar la nivelul fiecarui studiu este indicat tipul acestuia (St sau Sts). 
+\item
+\emph{StudiesBySeries} - prezinta studiile din seriile din baza de date; pentru fiecare serie, este specificat si numarul studiilor din cadrul sau. 
+\item
+\emph{StudiesByTopic} - prezinta studiile corespunzatoare fiecarui topic.
+\item
+\emph{StudiesByYear} - prezinta studiile corespunzatoare fiecarui an in care s-au realizat studii, precum si numarul acestora. La nivelul fiecarui studiu este specificat tipul (St sau Sts).
+\item
+\emph{StudyInfo} - genereaza informatii complete despre studiile din baza de date, incluzand variabilele, persoanele, organizatiile, fisierele si cuvintele cheie asociate) 
+\item
+\emph{YearsTree} - genereaza ierarhia corespunzatoare anilor, pornind de la un nod principal (M), ai carui fii (de tip Y) corespund anilor de realizare a studiilor din baza de date. La nivelul fiecarui studiu este indicat tipul acestuia (St sau Sts) 
+\end{itemize}
 
-In acest moment, interfata serverului pentru databrowser contine urmatoarele
+Fiecarei clase de mai sus ii corespunde un controller in pachetul 'ro.roda.web' (\emph{<NumeClasa>Controller}), ce utilizeaza un serviciu asociat in pachetul 'ro.roda.service' (\emph{<NumeClasa>Service}).
+
+\section{DataBrowser API}
+
+In acest moment, interfata serverului pentru DataBrowser contine urmatoarele
 apeluri si rezultate:
-
 
 \subsection{CatalogTree}
 
@@ -56,10 +102,7 @@ de container se numeste \textquotedbl{}data\textquotedbl{}
 \begin{centering}
 \includegraphics[width=9cm]{img/catalogtree}
 \par\end{centering}
-
 \caption{Etapele de procesare ale serverului necesare pentru returnarea raspunsului}
-
-
 \end{figure}
 
 \begin{itemize}
@@ -111,13 +154,8 @@ Structura este deschisa de un nod unic principal.
 \begin{centering}
 \includegraphics[width=4cm]{img/yearstree}
 \par\end{centering}
-
 \caption{Etapele de procesare ale serverului}
-
-
 \end{figure}
-
-
 
 \paragraph{Nodul principal}
 \begin{itemize}
@@ -165,10 +203,7 @@ Returneaza principalele componente ale structurii asociate unui studiu
 \begin{centering}
 \includegraphics[width=5cm]{img/studyinfo}
 \par\end{centering}
-
 \caption{Etapele de procesare ale serverului necesare pentru returnarea raspunsului}
-
-
 \end{figure}
 
 \begin{itemize}
@@ -217,10 +252,7 @@ acestea nu sunt returnate dar studiile asociate lor, da).
 \begin{centering}
 \includegraphics[width=4cm]{img/studiesbycatalog}
 \par\end{centering}
-
 \caption{Etapele de procesare ale serverului necesare pentru returnarea raspunsului}
-
-
 \end{figure}
 
 \begin{itemize}
@@ -262,10 +294,7 @@ parte din aceasta
 \begin{centering}
 \includegraphics[width=4cm]{img/series}
 \par\end{centering}
-
 \caption{Etapele de procesare ale serverului necesare pentru returnarea raspunsului}
-
-
 \end{figure}
 
 \begin{itemize}
@@ -307,19 +336,16 @@ panoul de detalii
 
 \subsection{StudiesbyYear}
 
-Lista tuturor studiilor din acelasi an
+Lista tuturor studiilor din acelasi an.
 
 Returneaza un nod principal de tip an impreuna cu toate studiile asociate
-acestuia
+acestuia:
 
 \begin{figure}[H]
 \begin{centering}
 \includegraphics[width=4cm]{img/studiesbyyear}
 \par\end{centering}
-
 \caption{Etapele de procesare ale serverului necesare pentru returnarea raspunsului}
-
-
 \end{figure}
 
 \begin{itemize}
@@ -366,16 +392,10 @@ selectat in zona de index.
 \begin{centering}
 \includegraphics[width=11cm]{screenshots/databrowser-general}
 \par\end{centering}
-
 \caption{Databrowser}
-
-
 \end{figure}
 
-
-
 \subsection{Ecranele din zona de index}
-
 
 \subsubsection{Cataloage}
 
@@ -397,8 +417,6 @@ cum ar fi tematica lor.
 \caption{Ecranul ``Cataloage''}
 \end{figure}
 
-
-
 \subsubsection{Ani}
 
 Ecranul ``Ani'' afiseaza o structura arborescenta in care studiile
@@ -411,17 +429,10 @@ ani diferiti.
 \begin{centering}
 \includegraphics[width=6cm]{screenshots/left-panel-ani}
 \par\end{centering}
-
 \caption{Ecranul ``Ani''}
-
-
 \end{figure}
 
-
-
 \subsection{Ecrane din zona de detaliu}
-
-
 \subsubsection{Catalog}
 
 Ecranul pentru vizualizarea catalogului afiseaza toate studiile din
@@ -438,12 +449,8 @@ utilizabilitatii interfetei.
 \begin{centering}
 \includegraphics[width=6cm]{screenshots/details-panel-catalog-simple}
 \par\end{centering}
-
 \caption{Ecranul de tip Catalog - densitate de informatie mica}
-
-
 \end{figure}
-
 
 Ecranul cu densitate de informatie mica afiseaza anul si titlul studiului.
 Titlul studiului este in acelasi timp si un link. La accesarea acestuia,
@@ -454,12 +461,8 @@ respectiv.
 \begin{centering}
 \includegraphics[width=6cm]{screenshots/details-panel-catalog-medium}
 \par\end{centering}
-
 \caption{Ecranul de tip Catalog - densitate de informatie medie}
-
-
 \end{figure}
-
 
 Ecranul cu densitate de informatie medie afiseaza titlul studiilor,
 anul, informatii despre accesibilitatea metadatelor si datelor si
@@ -470,18 +473,13 @@ optiunea de a adauga studiile la un catalog personal.
 \begin{centering}
 \includegraphics[width=6cm]{screenshots/details-panel-catalog-large}
 \par\end{centering}
-
 \caption{Ecranul de tip catalog - densitate de informatie mare}
-
-
 \end{figure}
-
 
 Ecranul cu densitate mare de informatie afiseaza toate informatiile
 pe care le afiseaza ecranul cu densitate medie la care se adauga si
 informatiile de localizare, unitatea de analiza, precum si alte elemente
 tehnice care sunt dependente de tipul studiului. 
-
 
 \subsection{Ani}
 
@@ -495,12 +493,8 @@ vizualizarea anului poate avea trei densitati de informatie diferite.
 \begin{centering}
 \includegraphics[width=6cm]{screenshots/details-panel-an-simple}
 \par\end{centering}
-
 \caption{Ecranul de tip an - densitate de informatie mica}
-
-
 \end{figure}
-
 
 Ecranul cu densitate de informatie mica afiseaza anul si titlul studiului.
 Titlul studiului este in acelasi timp si un link. La accesarea acestuia,
@@ -511,12 +505,8 @@ respectiv.
 \begin{centering}
 \includegraphics[width=6cm]{screenshots/details-panel-an-medium}
 \par\end{centering}
-
 \caption{Ecranul de tip an - densitate de informatie medie}
-
-
 \end{figure}
-
 
 Ecranul cu densitate de informatie medie afiseaza titlul studiilor,
 anul, informatii despre accesibilitatea metadatelor si datelor si
@@ -527,13 +517,8 @@ optiunea de a adauga studiile la un catalog personal.
 \begin{centering}
 \includegraphics[width=6cm]{screenshots/details-panel-an-large}
 \par\end{centering}
-
 \caption{Ecranul de tip an - densitate de informatie mare}
 \end{figure}
-
-
-\pagebreak{}
-
 
 \subsection{Studiu}
 
@@ -547,10 +532,8 @@ ecranului de studii se va modifica.
 \begin{centering}
 \includegraphics{screenshots/details-panel-study-detalii}
 \par\end{centering}
-
 \caption{Ecranul studiu, subecranul ``Detalii''}
 \end{figure}
-
 
 Subecranul ``detalii `` afiseaza titlul, descrierea si celelalte
 metadate asociate studiului respectiv. In functie de metadatele disponibile
@@ -562,12 +545,8 @@ diferitelor tipuri de studii.
 \begin{centering}
 \includegraphics[width=6cm]{screenshots/details-panel-study-variabile}
 \par\end{centering}
-
 \caption{Ecranul studiu, subecranul ``Variabile''}
-
-
 \end{figure}
-
 
 Subecranul ``Variabile'', tipic pentru cercetarile sociologice bazate
 pe chestionar, afiseaza un table cu toate variabilele (intrebarile)
@@ -580,12 +559,8 @@ valorile precalculate pot fi vizualizate prin apasarea pe acesta.
 \begin{centering}
 \includegraphics[width=11cm]{screenshots/details-panel-study-chart}
 \par\end{centering}
-
 \caption{Panoul care afiseaza valorile precalculate ale variabilelor}
-
-
 \end{figure}
-
 
 Panoul cu valori precalculate contine deocamdata graficul care afiseaza
 numarul de raspunsuri la fiecare varianta pusa la dispozitie de catre
@@ -597,22 +572,16 @@ carora este construit graficul.
 \begin{centering}
 \includegraphics[width=6cm]{screenshots/details-panel-study-documente}
 \par\end{centering}
-
 \caption{Ecranul ``Studiu'', subecranul ``Documente''}
-
-
 \end{figure}
-
 
 Subecranul ``documente'' afiseaza si ofera spre descarcare toate
 documentele atasate studiului curent. Acestea sunt dependente de modul
-in care studiul a fost predat arhivei, in cazul de fata exista doar
-sursa acestuia in format DDI (XML) dar in alte situatii pot exista
+in care studiul a fost predat arhivei; in cazul de fata exista 
+sursa acestuia in format DDI (XML), iar in alte situatii pot exista
 mult mai multe.
 
-
 \subsection{Serie}
-
 Ecranul ``Serie'' afiseaza informatii despre o serie. O serie este
 un grup de studii asemanatoare, executate, de exemplu, in ani diferiti,
 pentru a urmari evolutia anumitor indicatori in timp. Astfel, o serie
@@ -626,29 +595,19 @@ lista studiilor care fac parte din acea serie.
 \begin{centering}
 \includegraphics[width=6cm]{screenshots/details-panel-series-details}\includegraphics[width=6cm]{screenshots/details-panel-series-studies}
 \par\end{centering}
-
 \caption{Ecranul ``Serie'' subecranele ``Detalii'' si ``Studii''}
-
-
 \end{figure}
-
-
 
 \subsection{Membru al seriei}
 
 Ecranul pentru un membru al unei serii este asemanator cu ecranul
 unui studiu izolat. La el se adauga un subecran special care afiseaza
 proprietatile seriei, asa cum sunt afisate si in sectiunea anterioara,
-sub forma de meniu acrodeon.
+sub forma de meniu-acordeon.
 
 \begin{figure}[H]
 \begin{centering}
 \includegraphics[width=6cm]{screenshots/details-panel-series-member-series-details}\includegraphics[width=6cm]{screenshots/details-panel-series-member-series-studies}
 \par\end{centering}
-
 \caption{Subecranul suplimentar pentru un studiu membru al unel serii}
-
-
 \end{figure}
-
-\end{document}

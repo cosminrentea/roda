@@ -28,10 +28,20 @@
 \cfoot{\tiny{RODA}\tiny}
 \fancyhead[LE,RO]{ANEXE - \leftmark}
 \fancyhead[RE,LO]{\thepage}
-\title{ANEXE.}
-\author{RODA}
-\date{\today}
+
+%TODO Change it every time !
+\title{ANEXA 1.\\
+Faza nr. III 
+cu titlul:\\
+``Dezvoltarea software, pachet 2: biblioteci nucleu, sistem template, autentificare. Raport privind modernizarea dot\u{a}rilor''
+}
+
+\author{RODA -- Arhiva Rom\^{a}n\u{a} de Date Sociale}
+
+\date{ }
+
 \maketitle
+
 \newpage
 \thispagestyle{plain}
 \tableofcontents{}
@@ -40,14 +50,14 @@
 \chapter{Componente ale aplicatiei}
 \include{roda_spring}
 
-\chapter{Metodologia de dezvoltare si Testarea aplicatiei}
+\chapter{Metodologia de dezvoltare si testare a aplicatiei}
 \include{roda_methodology_testing}
-
-\chapter{Sistemul de template-uri} 
-\include{roda_template_system}
 
 \chapter{Autentificarea} 
 \include{roda_authentication}
+
+\chapter{Sistemul de template-uri si componenta DataBrowser}
+\include{roda_databrowser}
 
 \chapter{Importarea datelor}
 \include{roda_importer}
@@ -57,8 +67,5 @@
 
 \chapter{Servicii TIC destinate echipei proiectului}
 \include{roda_services}
-
-\chapter{Modernizarea dotarilor RODA}
-\include{roda_infrastructure}
 
 \end{document}

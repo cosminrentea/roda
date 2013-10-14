@@ -20,10 +20,10 @@ Initial, in primele etape ale proiectului a fost utilizat si Spring Roo
 interfete web tip CRUD, adaugarea de servicii si componente, structurarea proiectului si generarea de configuratii).
 
 Pentru mentinerea sincronizarii intre schema bazei de date si modelul generat
-in Java, s-a utilizat in primele etape ale proiectului metoda \emph{Forward-Engineering}: 
-pornindu-se de la un editor grafic al schemei bazei de date (DbWrench 2), %TODO URL ???
-se obtine scriptul de creare a bazei de date, 
-care este post-procesat si care este apoi folosit de Spring Roo pentru
+in Java, s-a utilizat in primele doua faze ale proiectului metoda \emph{Forward-Engineering}: 
+pornindu-se de la un editor grafic al schemei bazei de date (DbWrench 2, \url{http://www.dbwrench.com/}),
+se obtinea scriptul de creare a bazei de date, 
+care era post-procesat si care era apoi folosit de Spring Roo pentru
 actualizarea modelului domeniului.
 
 \subsection{Modelul domeniului}
@@ -44,8 +44,7 @@ Odata cu etapa 3 a proiectului, s-a trecut de la o aplicatie Spring Roo
 la o aplicatie Spring 'pura', 
 migrand functionalitatile din aspecte in codul Java; 
 procesul de generare este in acest moment inversat - 
-folosindu-se o abordare \emph{reverse-engineering}, respectiv: model JPA -> baza de date. 
-%TODO ??? sageata
+folosindu-se o abordare \emph{reverse-engineering}, respectiv: model JPA $\Rightarrow$ baza de date. 
 
 Se folosesc in model adnotari specifice precum:
 \begin{itemize}
@@ -53,14 +52,17 @@ Se folosesc in model adnotari specifice precum:
   \item @Table
   \item @Column
   \item @Transient
-  \item adnotari pentru tipuri de relatii intre entitati %TODO detalii ???
+  \item adnotari pentru tipuri de relatii intre entitati (de ex. OneToOne, OneToMany, ManyToOne, ManyToMany) %TODO detalii ???
 \end{itemize}
 
 Multe din aceste adnotari, metodele toString, 
 getter/setter pentru campurile claselor etc., 
 au fost generate in mod configurabil de catre Spring Roo.
 
-Fiecare clasa din model expune si metode conform pattern-ului de utilizare \emph{Active Record}. 
+Fiecare clasa din model expune si metode conform pattern-ului de utilizare \emph{Active Record}.
+ 
+Clasele din domeniu suprascriu cateva metode standard precum: toString(), hashCode(), equals().
+De asemenea, in mai multe clase au fost implementate metode noi (de ex.: helpers, getOrAdd(), attach() ).
 
 \subsubsection{Accesul aplicatiei la baza de date relationala}
 Implementarea JPA 2.0 selectata pentru proiect este \emph{Hibernate} - 
@@ -92,8 +94,6 @@ ramanand astfel izolat de adnotari specifice Spring.
 Serviciile (perechi de interfete si implementari) folosesc 
 metodele din pattern-ul \emph{Active Record} definite la nivelul modelului.
 
-%TODO ??? extinderea serviciilor cu alte metode - helper, checkin, attach
-
 \subsection{Controllere}
 Sunt definite controllere corespunzand unui sablon de interfata de tip \emph{CRUD}
 (Create / Read / Update / Delete), pentru fiecare clasa din model. 
@@ -101,19 +101,16 @@ In controllere se fac apeluri catre nivelul de servicii.
 
 Au mai fost definite si controllere pentru a servi continut in format JSON;
 aceste controllere sunt folosite de interfata ExtJS. 
-%TODO pachetul Java folosit pentru JSON; URL JSON
+Pachetul Java folosit pentru a interactiona cu interfata prin JSON este FlexJSON (\url{http://flexjson.sourceforge.net/}).
 
 \subsection{View-uri pe server}
-Se utilizeaza o combinatie intre framework-ul de template-uri Apache Tiles %TODO URL
-si pagini JSPX
-(pagini JSP ce utilizeaza si librarii de tag-uri specifice Spring si Spring Roo, 
-precum si framework-ul Dojo Toolkit pentru componente ale interfetei web).
+Se utilizeaza o combinatie intre framework-ul de templating Apache Tiles si pagini JSPX 
+(pagini sau fragmente JSP ce utilizeaza si librarii de tag-uri specifice Spring si Spring Roo, 
+precum si framework-ul Dojo Toolkit pentru componente ale interfetei web). 
+Mai multe detalii sunt oferite in sectiune \ref{template_system}.
 
 \subsection{Interfata ExtJS}
-
-%TODO despre interfata ???
-
-%TODO URL extjs + versiune - in celalalt fisier
+Interfata dinamica ExtJS este detaliata in sectiunea despre DataBrowser (\ref{databrowser}). 
 
 \section{Aspecte transversale in aplicatia Spring}
 In aceasta sectiune descriem care sunt aspectele care apar in mod repetat la mai
@@ -122,8 +119,6 @@ autentificare, servicii disponibile etc.).
 
 \subsection{Fisiere de configurare a aplicatiei}
 \label{fisiere_configurare}
-
-% TODO integrarea celor 2 bucati de text de mai jos
 
 Configurarea aplicatiei se face prin:
 \begin {itemize}
@@ -191,8 +186,9 @@ Pentru a mari viteza de decizie este utilizata o solutie de caching (ehcache).
 Se face auditarea simpla a accesului (incercare, succes / esec). 
 
 \subsection{Integrarea R}
-Pentru implementarea acestui serviciu este folosit pachetul 'rJava/JRI'. %TODO Link = ???
-Atunci cand acesta nu e disponibil pe host, serviciul care
+Pentru implementarea acestui serviciu este folosit pachetul 'rJava/JRI' (\url{http://rforge.net/rJava/}); 
+acesta trebuie instalat din R.
+Atunci cand acesta nu e disponibil local, serviciul care
 incapsuleaza functionalitatile R este dezactivat.
 
 \subsection{File Repository (FileStore)}

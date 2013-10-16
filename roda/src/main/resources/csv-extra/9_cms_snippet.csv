@@ -1,0 +1,6 @@
+name, cms_snippet_group_id, snippet_content
+"Tipography", 1, ".p { text-indent: 50px;letter-spacing: 2px; }"
+"Headers", 1, "H1 {font-family: Arial}"
+"Header", 4, "Bine ati venit pe site-ul RODA"
+"Header", 5, "Wellcome to RODA"
+"Contact form", 3, "<form><input type=text>"

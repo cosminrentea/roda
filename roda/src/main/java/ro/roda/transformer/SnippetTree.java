@@ -134,8 +134,8 @@ public class SnippetTree extends SnippetList {
 	}
 
 	public SnippetTree(CmsSnippetGroup snippetGroup) {
-		super(snippetGroup.getId(), snippetGroup.getName(), snippetGroup.getParentId().getId(), null,
-				getSnippetGroupPath(snippetGroup), null);
+		super(snippetGroup.getId(), snippetGroup.getName(), snippetGroup.getParentId() == null ? null : snippetGroup
+				.getParentId().getId(), null, getSnippetGroupPath(snippetGroup), null);
 
 		this.children = new HashSet<SnippetList>();
 	}

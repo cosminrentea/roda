@@ -17,7 +17,7 @@ public class SnippetList extends JsonInfo {
 	public static String toJsonArray(Collection<SnippetList> collection) {
 		JSONSerializer serializer = new JSONSerializer();
 
-		serializer.exclude("*.class");
+		serializer.exclude("*.class", "type");
 		serializer.include("id", "name", "groupid", "content", "directory");
 
 		return "{\"data\":" + serializer.serialize(collection) + "}";
@@ -37,8 +37,8 @@ public class SnippetList extends JsonInfo {
 				Integer groupId = snippet.getCmsSnippetGroupId() == null ? null : snippet.getCmsSnippetGroupId()
 						.getId();
 
-				result.add(new SnippetList(snippet.getId(), snippet.getName(), groupId, snippet.getSnippetContent(),
-						getSnippetPath(snippet), null));
+				result.add(new SnippetList(snippet.getId(), snippet.getName(), groupId, getSnippetPath(snippet),
+						snippet.getSnippetContent(), null));
 			}
 		}
 
@@ -66,7 +66,7 @@ public class SnippetList extends JsonInfo {
 
 		if (snippet != null) {
 			return new SnippetList(snippet.getId(), snippet.getName(), snippet.getCmsSnippetGroupId() != null ? snippet
-					.getCmsSnippetGroupId().getId() : null, snippet.getSnippetContent(), getSnippetPath(snippet), null);
+					.getCmsSnippetGroupId().getId() : null, getSnippetPath(snippet), snippet.getSnippetContent(), null);
 		}
 		return null;
 	}
@@ -149,7 +149,7 @@ public class SnippetList extends JsonInfo {
 	public String toJson() {
 		JSONSerializer serializer = new JSONSerializer();
 
-		serializer.exclude("*.class");
+		serializer.exclude("*.class", "type");
 		serializer.include("id", "name", "groupid", "content", "directory");
 
 		return "{\"data\":" + serializer.serialize(this) + "}";

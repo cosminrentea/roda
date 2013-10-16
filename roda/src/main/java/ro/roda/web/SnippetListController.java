@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import ro.roda.service.SnippetListService;
 import ro.roda.transformer.SnippetList;
 
-@RequestMapping("/snippetlist")
+@RequestMapping("/admin/cmssnippetlist")
 @Controller
 public class SnippetListController {
 

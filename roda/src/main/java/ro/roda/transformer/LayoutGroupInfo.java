@@ -20,10 +20,10 @@ public class LayoutGroupInfo extends LayoutList {
 	public static String toJsonArray(Collection<LayoutGroupInfo> collection) {
 		JSONSerializer serializer = new JSONSerializer();
 
-		serializer.exclude("*.class");
-		serializer.include("id", "name", "pagesnumber", "groupid", "itemtype", "directory", "description", "leaf");
+		serializer.exclude("*.class", "type", "expanded", "leaf");
+		serializer.include("id", "name", "pagesnumber", "groupid", "itemtype", "directory", "description");
 
-		serializer.transform(new FieldNameTransformer("layoutnumber"), "pagesnumber");
+		serializer.transform(new FieldNameTransformer("layoutsnumber"), "pagesnumber");
 		serializer.transform(new FieldNameTransformer("pagetypeid"), "pages.cmsPageTypeId.id");
 		serializer.transform(new FieldNameTransformer("pagetypename"), "pages.cmsPageTypeId.name");
 
@@ -43,10 +43,10 @@ public class LayoutGroupInfo extends LayoutList {
 
 				Integer parentId = layoutGroup.getParentId() == null ? null : layoutGroup.getParentId().getId();
 
-				result.add(new LayoutGroupInfo(layoutGroup.getId(), layoutGroup.getName(),
-						layoutGroup.getCmsLayouts().size(), parentId, "layoutgroup", getLayoutGroupPath(layoutGroup),
-						"TODO",
-						(layoutGroup.getCmsLayouts().size() == 0 && layoutGroup.getCmsLayoutGroups().size() == 0)));
+				result.add(new LayoutGroupInfo(layoutGroup.getId(), layoutGroup.getName(), layoutGroup.getCmsLayouts()
+						.size(), parentId, "layoutgroup", getLayoutGroupPath(layoutGroup),
+						layoutGroup.getDescription(), (layoutGroup.getCmsLayouts().size() == 0 && layoutGroup
+								.getCmsLayoutGroups().size() == 0)));
 			}
 		}
 
@@ -65,8 +65,9 @@ public class LayoutGroupInfo extends LayoutList {
 				layoutsNumber = layoutGroup.getCmsLayouts().size();
 				leaf = (layoutsNumber == 0 && layoutGroup.getCmsLayoutGroups().size() == 0);
 
-				return new LayoutGroupInfo(layoutList.getId(), layoutList.getName(), layoutsNumber, layoutList.getGroupid(),
-						layoutList.getItemtype(), layoutList.getDirectory(), layoutList.getDescription(), leaf);
+				return new LayoutGroupInfo(layoutList.getId(), layoutList.getName(), layoutsNumber,
+						layoutList.getGroupid(), layoutList.getItemtype(), layoutList.getDirectory(),
+						layoutList.getDescription(), leaf);
 			}
 
 		}
@@ -91,29 +92,29 @@ public class LayoutGroupInfo extends LayoutList {
 		return pages;
 	}
 
-	private boolean leaf;
+	private boolean expanded = true;
 
-	public LayoutGroupInfo(Integer id, String name, Integer layoutnumber, Integer groupid, String itemtype, String directory,
-			String description, boolean leaf) {
+	public LayoutGroupInfo(Integer id, String name, Integer layoutnumber, Integer groupid, String itemtype,
+			String directory, String description, boolean leaf) {
 		super(id, name, layoutnumber, groupid, itemtype, directory, description);
-		this.leaf = leaf;
+		setLeaf(leaf);
 	}
 
-	public boolean isLeaf() {
-		return leaf;
+	public boolean isExpanded() {
+		return expanded;
 	}
 
-	public void setLeaf(boolean leaf) {
-		this.leaf = leaf;
+	public void setExpanded(boolean expanded) {
+		this.expanded = expanded;
 	}
 
 	public String toJson() {
 		JSONSerializer serializer = new JSONSerializer();
 
-		serializer.exclude("*.class");
-		serializer.include("id", "name", "pagesnumber", "groupid", "itemtype", "directory", "description", "leaf");
+		serializer.exclude("*.class", "type", "expanded", "leaf");
+		serializer.include("id", "name", "pagesnumber", "groupid", "itemtype", "directory", "description");
 
-		serializer.transform(new FieldNameTransformer("layoutnumber"), "pagesnumber");
+		serializer.transform(new FieldNameTransformer("layoutsnumber"), "pagesnumber");
 		serializer.transform(new FieldNameTransformer("pagetypeid"), "pages.cmsPageTypeId.id");
 		serializer.transform(new FieldNameTransformer("pagetypename"), "pages.cmsPageTypeId.name");
 

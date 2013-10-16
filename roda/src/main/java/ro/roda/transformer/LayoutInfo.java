@@ -20,18 +20,23 @@ public class LayoutInfo extends LayoutList {
 	public static String toJsonArray(Collection<LayoutInfo> collection) {
 		JSONSerializer serializer = new JSONSerializer();
 
-		serializer.exclude("*.class");
+		serializer.exclude("*.class", "leaf", "type");
 		serializer.include("id", "name", "pagesnumber", "groupid", "itemtype", "directory", "description");
 
-		serializer.exclude("pages.cmsLayoutId", "pages.cmsPageContents", "pages.navigable");
+		serializer.exclude("layoutUsage.cmsLayoutId", "layoutUsage.cmsPageContents", "layoutUsage.navigable");
 
-		// TODO add "pages.lang"
-		serializer.include("pages.id", "pages.name", "pages.url", "pages.visible", "pages.cmsPageTypeId.id",
-				"pages.cmsPageTypeId.name");
+		serializer.transform(new FlatCmsPageTypeTransformer("pagetype"), "layoutUsage.cmsPageTypeId");
 
-		serializer.transform(new FieldNameTransformer("layoutusage"), "pages");
-		serializer.transform(new FieldNameTransformer("pagetypeid"), "pages.cmsPageTypeId.id");
-		serializer.transform(new FieldNameTransformer("pagetypename"), "pages.cmsPageTypeId.name");
+		// TODO add "layoutUsage.lang"
+		serializer.include("layoutUsage.id", "layoutUsage.name", "layoutUsage.url", "layoutUsage.visible",
+				"layoutUsage.cmsPageTypeId.id", "layoutUsage.cmsPageTypeId.name");
+
+		// serializer.transform(new FieldNameTransformer("layoutusage"),
+		// "pages");
+		// serializer.transform(new FieldNameTransformer("pagetypeid"),
+		// "layoutUsage.cmsPageTypeId.id");
+		// serializer.transform(new FieldNameTransformer("pagetypename"),
+		// "layoutUsage.cmsPageTypeId.name");
 
 		return "{\"data\":" + serializer.serialize(collection) + "}";
 	}
@@ -50,7 +55,7 @@ public class LayoutInfo extends LayoutList {
 				Integer groupId = layout.getCmsLayoutGroupId() == null ? null : layout.getCmsLayoutGroupId().getId();
 
 				result.add(new LayoutInfo(layout.getId(), layout.getName(), layout.getCmsPages().size(), groupId,
-						"layout", getLayoutPath(layout), "TODO", layout.getCmsPages()));
+						"layout", getLayoutPath(layout), layout.getDescription(), layout.getCmsPages()));
 			}
 		}
 
@@ -66,7 +71,7 @@ public class LayoutInfo extends LayoutList {
 
 				result.add(new LayoutInfo(layoutGroup.getId(), layoutGroup.getName(),
 						getLayoutGroupPagesNumber(layoutGroup), parentId, "layoutgroup",
-						getLayoutGroupPath(layoutGroup), "TODO", getLayoutGroupPages(layoutGroup)));
+						getLayoutGroupPath(layoutGroup), layoutGroup.getDescription(), getLayoutGroupPages(layoutGroup)));
 			}
 		}
 
@@ -111,37 +116,42 @@ public class LayoutInfo extends LayoutList {
 		return pages;
 	}
 
-	private Set<CmsPage> pages;
+	private Set<CmsPage> layoutUsage;
 
 	public LayoutInfo(Integer id, String name, Integer pagesnumber, Integer groupid, String itemtype, String directory,
 			String description, Set<CmsPage> pages) {
 		super(id, name, pagesnumber, groupid, itemtype, directory, description);
-		this.pages = pages;
+		this.layoutUsage = pages;
 	}
 
-	public Set<CmsPage> getPages() {
-		return pages;
+	public Set<CmsPage> getLayoutUsage() {
+		return layoutUsage;
 	}
 
-	public void setPages(Set<CmsPage> pages) {
-		this.pages = pages;
+	public void setLayoutUsage(Set<CmsPage> pages) {
+		this.layoutUsage = pages;
 	}
 
 	public String toJson() {
 		JSONSerializer serializer = new JSONSerializer();
 
-		serializer.exclude("*.class");
+		serializer.exclude("*.class", "type");
 		serializer.include("id", "name", "pagesnumber", "groupid", "itemtype", "directory", "description");
 
-		serializer.exclude("pages.cmsLayoutId", "pages.cmsPageContents", "pages.navigable");
+		serializer.exclude("layoutUsage.cmsLayoutId", "layoutUsage.cmsPageContents", "layoutUsage.navigable");
 
-		// TODO add "pages.lang"
-		serializer.include("pages.id", "pages.name", "pages.url", "pages.visible", "pages.cmsPageTypeId.id",
-				"pages.cmsPageTypeId.name");
+		serializer.transform(new FlatCmsPageTypeTransformer("pagetype"), "layoutUsage.cmsPageTypeId");
 
-		serializer.transform(new FieldNameTransformer("layoutusage"), "pages");
-		serializer.transform(new FieldNameTransformer("pagetypeid"), "pages.cmsPageTypeId.id");
-		serializer.transform(new FieldNameTransformer("pagetypename"), "pages.cmsPageTypeId.name");
+		// TODO add "layoutUsage.lang"
+		serializer.include("layoutUsage.id", "layoutUsage.name", "layoutUsage.url", "layoutUsage.visible",
+				"layoutUsage.cmsPageTypeId.id", "layoutUsage.cmsPageTypeId.name");
+
+		// serializer.transform(new FieldNameTransformer("layoutusage"),
+		// "pages");
+		// serializer.transform(new FieldNameTransformer("pagetypeid"),
+		// "layoutUsage.cmsPageTypeId.id");
+		// serializer.transform(new FieldNameTransformer("pagetypename"),
+		// "layoutUsage.cmsPageTypeId.name");
 
 		return "{\"data\":" + serializer.serialize(this) + "}";
 	}

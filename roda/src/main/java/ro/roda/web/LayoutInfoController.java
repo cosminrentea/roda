@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import ro.roda.service.LayoutInfoService;
 import ro.roda.transformer.LayoutInfo;
 
-@RequestMapping("/layoutinfo")
+@RequestMapping("/admin/cmslayoutinfo")
 @Controller
 public class LayoutInfoController {
 

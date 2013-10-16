@@ -28,7 +28,6 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrInputDocument;
-import org.hibernate.envers.Audited;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.scheduling.annotation.Async;
@@ -43,8 +42,7 @@ import flexjson.JSONSerializer;
 public class CmsLayout {
 
 	public static long countCmsLayouts() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM CmsLayout o",
-				Long.class).getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM CmsLayout o", Long.class).getSingleResult();
 	}
 
 	@Async
@@ -67,8 +65,7 @@ public class CmsLayout {
 	}
 
 	public static List<CmsLayout> findAllCmsLayouts() {
-		return entityManager().createQuery("SELECT o FROM CmsLayout o",
-				CmsLayout.class).getResultList();
+		return entityManager().createQuery("SELECT o FROM CmsLayout o", CmsLayout.class).getResultList();
 	}
 
 	public static CmsLayout findCmsLayout(Integer id) {
@@ -77,23 +74,18 @@ public class CmsLayout {
 		return entityManager().find(CmsLayout.class, id);
 	}
 
-	public static List<CmsLayout> findCmsLayoutEntries(int firstResult,
-			int maxResults) {
-		return entityManager()
-				.createQuery("SELECT o FROM CmsLayout o", CmsLayout.class)
-				.setFirstResult(firstResult).setMaxResults(maxResults)
-				.getResultList();
+	public static List<CmsLayout> findCmsLayoutEntries(int firstResult, int maxResults) {
+		return entityManager().createQuery("SELECT o FROM CmsLayout o", CmsLayout.class).setFirstResult(firstResult)
+				.setMaxResults(maxResults).getResultList();
 	}
 
 	public static Collection<CmsLayout> fromJsonArrayToCmsLayouts(String json) {
-		return new JSONDeserializer<List<CmsLayout>>()
-				.use(null, ArrayList.class).use("values", CmsLayout.class)
+		return new JSONDeserializer<List<CmsLayout>>().use(null, ArrayList.class).use("values", CmsLayout.class)
 				.deserialize(json);
 	}
 
 	public static CmsLayout fromJsonToCmsLayout(String json) {
-		return new JSONDeserializer<CmsLayout>().use(null, CmsLayout.class)
-				.deserialize(json);
+		return new JSONDeserializer<CmsLayout>().use(null, CmsLayout.class).deserialize(json);
 	}
 
 	public static void indexCmsLayout(CmsLayout cmsLayout) {
@@ -111,8 +103,7 @@ public class CmsLayout {
 			sid.addField("cmsLayout.id_i", cmsLayout.getId());
 			// Add summary field to allow searching documents for objects of
 			// this type
-			sid.addField("cmslayout_solrsummary_t",
-					new StringBuilder().append(cmsLayout.getId()));
+			sid.addField("cmslayout_solrsummary_t", new StringBuilder().append(cmsLayout.getId()));
 			documents.add(sid);
 		}
 		try {
@@ -175,8 +166,8 @@ public class CmsLayout {
 	 *            - continutul aranjamentului.
 	 * @return
 	 */
-	public static CmsLayout checkCmsLayout(Integer id, String name,
-			CmsLayoutGroup cmsLayoutGroupId, String layoutContent) {
+	public static CmsLayout checkCmsLayout(Integer id, String name, CmsLayoutGroup cmsLayoutGroupId,
+			String layoutContent) {
 		CmsLayout object;
 
 		if (id != null) {
@@ -192,8 +183,7 @@ public class CmsLayout {
 		if (name != null && cmsLayoutGroupId != null) {
 			TypedQuery<CmsLayout> query = entityManager().createQuery(
 					"SELECT o FROM CmsLayout o WHERE lower(o.name) = lower(:name) AND "
-							+ "o.cmsLayoutGroupId = :cmsLayoutGroupId",
-					CmsLayout.class);
+							+ "o.cmsLayoutGroupId = :cmsLayoutGroupId", CmsLayout.class);
 			query.setParameter("name", name);
 			query.setParameter("cmsLayoutGroupId", cmsLayoutGroupId);
 
@@ -232,10 +222,13 @@ public class CmsLayout {
 	@NotNull
 	private String name;
 
+	@Column(name = "description", columnDefinition = "text")
+	private String description;
+
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	@Autowired(required=false)
+	@Autowired(required = false)
 	transient SolrServer solrServer;
 
 	@Transactional
@@ -270,6 +263,10 @@ public class CmsLayout {
 
 	public String getName() {
 		return name;
+	}
+
+	public String getDescription() {
+		return description;
 	}
 
 	@Transactional
@@ -320,13 +317,16 @@ public class CmsLayout {
 		this.name = name;
 	}
 
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
 	public String toJson() {
 		return new JSONSerializer().exclude("*.class").serialize(this);
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this,
-				ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate
@@ -343,8 +343,7 @@ public class CmsLayout {
 	@Override
 	public boolean equals(Object obj) {
 		return (id != null && id.equals(((CmsLayout) obj).id))
-				|| ((name != null && name
-						.equalsIgnoreCase(((CmsLayout) obj).name)) && (cmsLayoutGroupId != null && cmsLayoutGroupId
+				|| ((name != null && name.equalsIgnoreCase(((CmsLayout) obj).name)) && (cmsLayoutGroupId != null && cmsLayoutGroupId
 						.equals(((CmsLayout) obj).cmsLayoutGroupId)));
 	}
 }

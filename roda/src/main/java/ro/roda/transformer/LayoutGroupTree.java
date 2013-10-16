@@ -18,7 +18,7 @@ public class LayoutGroupTree extends LayoutList {
 	public static String toJsonArray(Collection<LayoutGroupTree> collection) {
 		JSONSerializer serializer = new JSONSerializer();
 
-		serializer.exclude("*.class", "depth");
+		serializer.exclude("*.class", "depth", "leaf", "type", "pagesnumber");
 		serializer.include("id", "name", "itemtype", "expanded");
 
 		int maxDepth = 0;
@@ -35,8 +35,10 @@ public class LayoutGroupTree extends LayoutList {
 			}
 			includeData += "children";
 			serializer.exclude(includeData + ".depth", includeData + ".groupid", includeData + ".directory",
-					includeData + ".description", includeData + ".leaf");
-			serializer.include(includeData + ".name", includeData + ".id", includeData + ".itemtype");
+					includeData + ".description", includeData + ".leaf", includeData + ".pagesnumber", includeData
+							+ ".type");
+			serializer.include(includeData + ".name", includeData + ".id", includeData + ".itemtype", includeData
+					+ ".expanded");
 			serializer.transform(new FieldNameTransformer("indice"), includeData + ".id");
 		}
 
@@ -121,9 +123,17 @@ public class LayoutGroupTree extends LayoutList {
 		this.depth = depth;
 	}
 
+	public boolean isExpanded() {
+		return expanded;
+	}
+
+	public void setExpanded(boolean expanded) {
+		this.expanded = expanded;
+	}
+
 	public LayoutGroupTree(CmsLayoutGroup layoutGroup) {
-		super(layoutGroup.getId(), layoutGroup.getName(), null, layoutGroup.getParentId().getId(), "layoutgroup",
-				getLayoutGroupPath(layoutGroup), "TODO");
+		super(layoutGroup.getId(), layoutGroup.getName(), null, layoutGroup.getParentId() == null ? null : layoutGroup
+				.getParentId().getId(), "layoutgroup", getLayoutGroupPath(layoutGroup), layoutGroup.getDescription());
 
 		this.children = new HashSet<LayoutList>();
 	}
@@ -141,7 +151,7 @@ public class LayoutGroupTree extends LayoutList {
 	public String toJson() {
 		JSONSerializer serializer = new JSONSerializer();
 
-		serializer.exclude("*.class", "depth");
+		serializer.exclude("*.class", "depth", "leaf", "type", "pagesnumber");
 		serializer.include("id", "name", "itemtype", "expanded");
 
 		String includeData = "";
@@ -151,7 +161,8 @@ public class LayoutGroupTree extends LayoutList {
 			}
 			includeData += "children";
 			serializer.exclude(includeData + ".depth", includeData + ".groupid", includeData + ".directory",
-					includeData + ".description", includeData + ".leaf");
+					includeData + ".description", includeData + ".leaf", includeData + ".pagesnumber", includeData
+							+ ".type");
 			serializer.include(includeData + ".name", includeData + ".id", includeData + ".itemtype");
 			serializer.transform(new FieldNameTransformer("indice"), includeData + ".id");
 		}

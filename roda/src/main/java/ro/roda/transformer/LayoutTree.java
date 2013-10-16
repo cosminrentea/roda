@@ -19,7 +19,7 @@ public class LayoutTree extends LayoutList {
 	public static String toJsonArray(Collection<LayoutTree> collection) {
 		JSONSerializer serializer = new JSONSerializer();
 
-		serializer.exclude("*.class", "depth");
+		serializer.exclude("*.class", "depth", "type");
 		serializer.include("id", "name", "itemtype", "expanded");
 
 		int maxDepth = 0;
@@ -35,9 +35,10 @@ public class LayoutTree extends LayoutList {
 				includeData += ".";
 			}
 			includeData += "children";
-			serializer.exclude(includeData + ".depth");
+			serializer.exclude(includeData + ".depth", includeData + ".type");
 			serializer.include(includeData + ".name", includeData + ".id", includeData + ".itemtype", includeData
-					+ ".groupid", includeData + ".directory", includeData + ".description", includeData + ".leaf");
+					+ ".groupid", includeData + ".directory", includeData + ".description", includeData + ".leaf",
+					includeData + ".expanded");
 			serializer.transform(new FieldNameTransformer("indice"), includeData + ".id");
 		}
 
@@ -143,14 +144,24 @@ public class LayoutTree extends LayoutList {
 		this.depth = depth;
 	}
 
+	public boolean isExpanded() {
+		return expanded;
+	}
+
+	public void setExpanded(boolean expanded) {
+		this.expanded = expanded;
+	}
+
 	public LayoutTree(CmsLayoutGroup layoutGroup) {
-		super(layoutGroup.getId(), layoutGroup.getName(), null, layoutGroup.getParentId().getId(), "layoutgroup",
-				getLayoutGroupPath(layoutGroup), "TODO");
+		// super(layoutGroup.getId(), layoutGroup.getName(), null,
+		// layoutGroup.getParentId().getId(), "layoutgroup",
+		// getLayoutGroupPath(layoutGroup), layoutGroup.getDescription());
+		super(layoutGroup);
 		if ((layoutGroup.getCmsLayoutGroups() == null || layoutGroup.getCmsLayoutGroups().size() == 0)
 				&& (layoutGroup.getCmsLayouts() == null || layoutGroup.getCmsLayouts().size() == 0)) {
-			this.leaf = false;
-		} else {
 			this.leaf = true;
+		} else {
+			this.leaf = false;
 		}
 		this.children = new HashSet<LayoutList>();
 	}
@@ -168,7 +179,7 @@ public class LayoutTree extends LayoutList {
 	public String toJson() {
 		JSONSerializer serializer = new JSONSerializer();
 
-		serializer.exclude("*.class", "depth");
+		serializer.exclude("*.class", "depth", "type");
 		serializer.include("id", "name", "itemtype", "expanded");
 
 		String includeData = "";
@@ -177,9 +188,10 @@ public class LayoutTree extends LayoutList {
 				includeData += ".";
 			}
 			includeData += "children";
-			serializer.exclude(includeData + ".depth");
+			serializer.exclude(includeData + ".depth", includeData + ".type");
 			serializer.include(includeData + ".name", includeData + ".id", includeData + ".itemtype", includeData
-					+ ".groupid", includeData + ".directory", includeData + ".description", includeData + ".leaf");
+					+ ".groupid", includeData + ".directory", includeData + ".description", includeData + ".leaf",
+					includeData + ".expanded");
 			serializer.transform(new FieldNameTransformer("indice"), includeData + ".id");
 		}
 

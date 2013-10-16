@@ -17,7 +17,7 @@ public class LayoutList extends JsonInfo {
 	public static String toJsonArray(Collection<LayoutList> collection) {
 		JSONSerializer serializer = new JSONSerializer();
 
-		serializer.exclude("*.class");
+		serializer.exclude("*.class", "type", "leaf");
 		serializer.include("id", "name", "pagesnumber", "groupid", "itemtype", "directory", "description");
 
 		return "{\"data\":" + serializer.serialize(collection) + "}";
@@ -37,7 +37,7 @@ public class LayoutList extends JsonInfo {
 				Integer groupId = layout.getCmsLayoutGroupId() == null ? null : layout.getCmsLayoutGroupId().getId();
 
 				result.add(new LayoutList(layout.getId(), layout.getName(), layout.getCmsPages().size(), groupId,
-						"layout", getLayoutPath(layout), "TODO"));
+						"layout", getLayoutPath(layout), layout.getDescription()));
 			}
 		}
 
@@ -53,7 +53,7 @@ public class LayoutList extends JsonInfo {
 
 				result.add(new LayoutList(layoutGroup.getId(), layoutGroup.getName(),
 						getLayoutGroupPagesNumber(layoutGroup), parentId, "layoutgroup",
-						getLayoutGroupPath(layoutGroup), "TODO"));
+						getLayoutGroupPath(layoutGroup), layoutGroup.getDescription()));
 			}
 		}
 
@@ -100,7 +100,7 @@ public class LayoutList extends JsonInfo {
 		if (layout != null) {
 			return new LayoutList(layout.getId(), layout.getName(), layout.getCmsPages().size(),
 					layout.getCmsLayoutGroupId() != null ? layout.getCmsLayoutGroupId().getId() : null, "layout",
-					getLayoutPath(layout), "TODO");
+					getLayoutPath(layout), layout.getDescription());
 		} else {
 			CmsLayoutGroup layoutGroup = CmsLayoutGroup.findCmsLayoutGroup(id);
 
@@ -108,7 +108,7 @@ public class LayoutList extends JsonInfo {
 				return new LayoutList(layoutGroup.getId(), layoutGroup.getName(),
 						getLayoutGroupPagesNumber(layoutGroup), layout.getCmsLayoutGroupId() != null ? layout
 								.getCmsLayoutGroupId().getId() : null, "layoutgroup", getLayoutGroupPath(layoutGroup),
-						"TODO");
+						layoutGroup.getDescription());
 			}
 		}
 		return null;
@@ -126,8 +126,9 @@ public class LayoutList extends JsonInfo {
 
 	private String directory;
 
-	// TODO to be added in the database
 	private String description;
+
+	private boolean leaf = true;
 
 	public LayoutList(Integer id, String name, Integer pagesnumber, Integer groupid, String itemtype, String directory,
 			String description) {
@@ -141,13 +142,14 @@ public class LayoutList extends JsonInfo {
 	}
 
 	public LayoutList(CmsLayout layout) {
-		this(layout.getId(), layout.getName(), layout.getCmsPages().size(), layout.getCmsLayoutGroupId().getId(),
-				"layout", getLayoutPath(layout), "TO DO");
+		this(layout.getId(), layout.getName(), layout.getCmsPages().size(), layout.getCmsLayoutGroupId() == null ? null
+				: layout.getCmsLayoutGroupId().getId(), "layout", getLayoutPath(layout), layout.getDescription());
 	}
 
 	public LayoutList(CmsLayoutGroup layoutGroup) {
 		this(layoutGroup.getId(), layoutGroup.getName(), getLayoutGroupPagesNumber(layoutGroup), layoutGroup
-				.getParentId().getId(), "layoutgroup", getLayoutGroupPath(layoutGroup), "TO DO");
+				.getParentId() == null ? null : layoutGroup.getParentId().getId(), "layoutgroup",
+				getLayoutGroupPath(layoutGroup), layoutGroup.getDescription());
 
 	}
 
@@ -207,10 +209,18 @@ public class LayoutList extends JsonInfo {
 		this.description = description;
 	}
 
+	public boolean isLeaf() {
+		return leaf;
+	}
+
+	public void setLeaf(boolean leaf) {
+		this.leaf = leaf;
+	}
+
 	public String toJson() {
 		JSONSerializer serializer = new JSONSerializer();
 
-		serializer.exclude("*.class");
+		serializer.exclude("*.class", "type", "leaf");
 		serializer.include("id", "name", "pagesnumber", "groupid", "itemtype", "directory", "description");
 
 		return "{\"data\":" + serializer.serialize(this) + "}";

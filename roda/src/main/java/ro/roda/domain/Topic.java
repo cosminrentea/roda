@@ -158,10 +158,8 @@ public class Topic {
 
 	public static List<Topic> findAllTopTopics() {
 		List<Topic> result = new ArrayList<Topic>();
-
 		List<Topic> topics = Topic.entityManager()
 				.createQuery("SELECT o FROM Topic o WHERE o.parentId IS NULL", Topic.class).getResultList();
-
 		if (topics != null && topics.size() > 0) {
 			Iterator<Topic> topicIterator = topics.iterator();
 			while (topicIterator.hasNext()) {
@@ -172,7 +170,7 @@ public class Topic {
 		return result;
 	}
 
-	public static String toJsonTop() {
+	public static String toJsonTree() {
 		return new JSONSerializer()
 				.exclude("*.class", "*.studies", "*.series", "*.topics1", "*.translatedTopics", "*.parentId",
 						"*.preferredSynonymTopicId", "*.description").rootName("topics")

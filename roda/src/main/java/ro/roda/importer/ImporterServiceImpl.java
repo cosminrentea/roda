@@ -260,16 +260,14 @@ public class ImporterServiceImpl implements ImporterService {
 					}
 					topicSet.add(dst);
 					src.setTopics(topicSet);
-					dst.merge();
-					src.merge();
-					// dst.merge(false);
-					// src.merge(false);
+					// dst.merge();
+					// src.merge();
+					dst.merge(false);
+					src.merge(false);
 				}
-
 				if (Integer.parseInt(csvLine[1]) == 8) {
 					// TODO set related terms
 				}
-
 			}
 
 		} catch (FileNotFoundException e) {
@@ -277,7 +275,7 @@ public class ImporterServiceImpl implements ImporterService {
 		} catch (IOException e) {
 			log.error(e);
 		}
-
+		// flush all changes
 		Topic.entityManager().flush();
 	}
 

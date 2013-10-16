@@ -83,12 +83,13 @@
 		<spring-js-resources.version>2.4.0.M1</spring-js-resources.version> <!-- original: 2.2.1.RELEASE -->
 		<aspectj.version>1.7.2</aspectj.version> <!-- original: 1.7.0 -->
 		<slf4j.version>1.7.5</slf4j.version>
-		<httpcomponents.version>4.3</httpcomponents.version> <!-- original: 4.2.1 -->
+		<httpcomponents.version>4.3.1</httpcomponents.version> <!-- original: 4.3 -->
 		<hibernate.version>4.1.8.Final</hibernate.version> <!-- original: 4.1.8.Final -->
 		<hibernate-validator.version>4.3.1.Final</hibernate-validator.version> <!-- original: 4.3.1.Final -->
 		<umlgraph.version>5.6</umlgraph.version> <!-- original: 5.6 -->
 		<flexjson.version>3.1</flexjson.version> <!-- original: 3.0 -->
 		<solr-solrj.version>4.4.0</solr-solrj.version> <!-- original: 4.3.1 -->
+		<ehcache.version>2.7.4</ehcache.version> <!-- original: 2.7.2 -->
 		<tiles-jsp.version>3.0.1</tiles-jsp.version> <!-- original: 2.2.2 -->
 		<selenium.version>2.35.0</selenium.version> <!-- original: 2.33.0 -->
 		<!-- 
@@ -159,7 +160,7 @@
 		<dependency>
 			<groupId>net.sf.ehcache</groupId>
 			<artifactId>ehcache</artifactId>
-			<version>2.7.2</version>
+			<version>${ehcache.version}</version>
 <!-- 
 			<type>pom</type>
 -->
@@ -316,19 +317,16 @@
 		<dependency>
 			<groupId>com.thoughtworks.xstream</groupId>
 			<artifactId>xstream</artifactId>
-			<version>1.4.4</version>
+			<version>1.4.5</version>
 		</dependency>
 		<dependency>
 			<groupId>net.sf.opencsv</groupId>
 			<artifactId>opencsv</artifactId>
 			<version>2.3</version>
 		</dependency>
-
 		<dependency>
 			<groupId>postgresql</groupId>
 			<artifactId>postgresql</artifactId>
-			<!-- original version: 9.1-901.jdbc3 -->
-			<!-- Cosmin: latest version, JDBC 4 -->
 			<version>9.1-901-1.jdbc4</version>
 		</dependency>
 		<dependency>
@@ -696,10 +694,10 @@
 				</configuration>
 			</plugin>
 			
-			<!--  
+			<!--
 			<plugin>
 				<groupId>org.apache.tomcat.maven</groupId>
-				<artifactId>tomcat6-maven-plugin</artifactId>
+				<artifactId>tomcat7-maven-plugin</artifactId>
 				<version>2.1</version>
 				<configuration>
 					<fork>true</fork>
@@ -723,7 +721,7 @@
 				</executions>
 			</plugin>
 			-->
-			
+
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>tomcat-maven-plugin</artifactId>

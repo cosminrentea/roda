@@ -109,10 +109,7 @@ public class FileServiceImpl implements FileService {
 			ContentStreamUpdateRequest up = new ContentStreamUpdateRequest("/update/extract");
 			try {
 
-				// SOLRJ 3.6.1 API
-				// up.addFile(f);
-
-				// SOLRJ 4.3.1 API
+				// SOLRJ 4.x API
 				up.addFile(f, content.getContentType());
 				log.trace("content.getContentType() = " + content.getContentType());
 

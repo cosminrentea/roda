@@ -6,10 +6,6 @@
 		<put-attribute name="body" value="/WEB-INF/views/index.jspx" />
 	</definition>
 
-	<definition extends="extjs" name="index-extjs">
-		<put-attribute name="body" value="/WEB-INF/views/index-extjs.jspx" />
-	</definition>
-
 	<definition extends="public" name="dataAccessFailure">
 		<put-attribute name="body"
 			value="/WEB-INF/views/dataAccessFailure.jspx" />

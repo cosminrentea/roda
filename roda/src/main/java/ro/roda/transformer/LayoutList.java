@@ -41,21 +41,24 @@ public class LayoutList extends JsonInfo {
 			}
 		}
 
-		List<CmsLayoutGroup> layoutGroups = CmsLayoutGroup.findAllCmsLayoutGroups();
-
-		if (layoutGroups != null && layoutGroups.size() > 0) {
-
-			Iterator<CmsLayoutGroup> layoutGroupsIterator = layoutGroups.iterator();
-			while (layoutGroupsIterator.hasNext()) {
-				CmsLayoutGroup layoutGroup = (CmsLayoutGroup) layoutGroupsIterator.next();
-
-				Integer parentId = layoutGroup.getParentId() == null ? null : layoutGroup.getParentId().getId();
-
-				result.add(new LayoutList(layoutGroup.getId(), layoutGroup.getName(),
-						getLayoutGroupPagesNumber(layoutGroup), parentId, "layoutgroup",
-						getLayoutGroupPath(layoutGroup), layoutGroup.getDescription()));
-			}
-		}
+		/*
+		 * List<CmsLayoutGroup> layoutGroups =
+		 * CmsLayoutGroup.findAllCmsLayoutGroups();
+		 * 
+		 * if (layoutGroups != null && layoutGroups.size() > 0) {
+		 * 
+		 * Iterator<CmsLayoutGroup> layoutGroupsIterator =
+		 * layoutGroups.iterator(); while (layoutGroupsIterator.hasNext()) {
+		 * CmsLayoutGroup layoutGroup = (CmsLayoutGroup)
+		 * layoutGroupsIterator.next();
+		 * 
+		 * Integer parentId = layoutGroup.getParentId() == null ? null :
+		 * layoutGroup.getParentId().getId();
+		 * 
+		 * result.add(new LayoutList(layoutGroup.getId(), layoutGroup.getName(),
+		 * getLayoutGroupPagesNumber(layoutGroup), parentId, "layoutgroup",
+		 * getLayoutGroupPath(layoutGroup), layoutGroup.getDescription())); } }
+		 */
 
 		return result;
 	}

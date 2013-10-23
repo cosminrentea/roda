@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import ro.roda.service.FileListService;
 import ro.roda.transformer.FileList;
 
-@RequestMapping("/filelist")
+@RequestMapping("/admin/cmsfilelist")
 @Controller
 public class FileListController {
 

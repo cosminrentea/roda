@@ -8,6 +8,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Configurable;
 
 import ro.roda.domain.CmsFile;
+import ro.roda.domain.CmsFolder;
 import flexjson.JSONSerializer;
 
 @Configurable
@@ -49,6 +50,22 @@ public class FileList extends JsonInfo {
 		return null;
 	}
 
+	public static String getFilePath(CmsFile file) {
+		if (file.getCmsFolderId() != null) {
+			return getFolderPath(file.getCmsFolderId()) + "/" + file.getFilename();
+		} else {
+			return file.getFilename();
+		}
+	}
+
+	public static String getFolderPath(CmsFolder folder) {
+		if (folder.getParentId() != null) {
+			return getFolderPath(folder.getParentId()) + "/" + folder.getName();
+		} else {
+			return folder.getName();
+		}
+	}
+
 	private Integer id;
 
 	private String name;
@@ -78,7 +95,8 @@ public class FileList extends JsonInfo {
 
 	public FileList(CmsFile file) {
 		this(file.getId(), file.getFilename(), file.getLabel(), file.getFilesize(), file.getFilename().substring(
-				file.getFilename().lastIndexOf(".")), file.getCmsFolderId().getId(), file.getCmsFolderId().getName());
+				file.getFilename().lastIndexOf(".")), file.getCmsFolderId() == null ? null : file.getCmsFolderId()
+				.getId(), getFilePath(file));
 	}
 
 	public Integer getId() {

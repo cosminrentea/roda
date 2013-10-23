@@ -18,7 +18,7 @@ public class FolderTree extends FileList {
 	public static String toJsonArray(Collection<FolderTree> collection) {
 		JSONSerializer serializer = new JSONSerializer();
 
-		serializer.exclude("*.class", "depth");
+		serializer.exclude("*.class", "depth", "type");
 		serializer.include("id", "name", "expanded");
 
 		int maxDepth = 0;
@@ -72,6 +72,7 @@ public class FolderTree extends FileList {
 		if (folder != null) {
 			result = new FolderTree(folder);
 			result.setName(folder.getName());
+			result.setLeaf(true);
 
 			Set<FileList> dataByFolderSet = null;
 
@@ -80,6 +81,7 @@ public class FolderTree extends FileList {
 			int maxDepth = 0;
 			if (children != null && children.size() > 0) {
 				dataByFolderSet = new HashSet<FileList>();
+				result.setLeaf(false);
 
 				Iterator<CmsFolder> childrenIterator = children.iterator();
 				while (childrenIterator.hasNext()) {
@@ -148,7 +150,7 @@ public class FolderTree extends FileList {
 	public String toJson() {
 		JSONSerializer serializer = new JSONSerializer();
 
-		serializer.exclude("*.class", "depth");
+		serializer.exclude("*.class", "depth", "type");
 		serializer.include("id", "name", "expanded");
 
 		String includeData = "";

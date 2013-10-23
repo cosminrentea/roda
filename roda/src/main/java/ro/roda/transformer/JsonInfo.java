@@ -5,9 +5,9 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Configurable;
 
 @Configurable
-public abstract class JsonInfo {
+public class JsonInfo {
 
-	public abstract String toJson();
+	// public abstract String toJson();
 
 	private final Log log = LogFactory.getLog(this.getClass());
 
@@ -36,6 +36,12 @@ public abstract class JsonInfo {
 	public JsonInfo(Integer id, String name) {
 		this.id = id;
 		this.name = name;
+	}
+
+	public JsonInfo(Integer id, String name, String type) {
+		this.id = id;
+		this.name = name;
+		this.type = type;
 	}
 
 	public Integer getId() {

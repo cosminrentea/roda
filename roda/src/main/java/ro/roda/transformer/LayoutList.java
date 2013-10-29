@@ -20,6 +20,8 @@ public class LayoutList extends JsonInfo {
 		serializer.exclude("*.class", "type", "leaf");
 		serializer.include("id", "name", "pagesnumber", "groupid", "itemtype", "directory", "description");
 
+		serializer.transform(new FieldNameTransformer("indice"), "id");
+
 		return "{\"data\":" + serializer.serialize(collection) + "}";
 	}
 
@@ -225,6 +227,8 @@ public class LayoutList extends JsonInfo {
 
 		serializer.exclude("*.class", "type", "leaf");
 		serializer.include("id", "name", "pagesnumber", "groupid", "itemtype", "directory", "description");
+
+		serializer.transform(new FieldNameTransformer("indice"), "id");
 
 		return "{\"data\":" + serializer.serialize(this) + "}";
 	}

@@ -20,6 +20,8 @@ public class FileList extends JsonInfo {
 		serializer.exclude("*.class");
 		serializer.include("id", "name", "alias", "filesize", "filetype", "folderid", "directory", "leaf");
 
+		serializer.transform(new FieldNameTransformer("indice"), "id");
+
 		return "{\"data\":" + serializer.serialize(collection) + "}";
 	}
 
@@ -168,6 +170,8 @@ public class FileList extends JsonInfo {
 
 		serializer.exclude("*.class");
 		serializer.include("id", "name", "alias", "filesize", "filetype", "folderid", "directory", "leaf");
+
+		serializer.transform(new FieldNameTransformer("indice"), "id");
 
 		return "{\"data\":" + serializer.serialize(this) + "}";
 	}

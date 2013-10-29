@@ -20,6 +20,8 @@ public class SnippetList extends JsonInfo {
 		serializer.exclude("*.class", "type");
 		serializer.include("id", "name", "groupid", "content", "directory");
 
+		serializer.transform(new FieldNameTransformer("indice"), "id");
+
 		return "{\"data\":" + serializer.serialize(collection) + "}";
 	}
 
@@ -151,6 +153,8 @@ public class SnippetList extends JsonInfo {
 
 		serializer.exclude("*.class", "type");
 		serializer.include("id", "name", "groupid", "content", "directory");
+
+		serializer.transform(new FieldNameTransformer("indice"), "id");
 
 		return "{\"data\":" + serializer.serialize(this) + "}";
 	}

@@ -1,6 +1,0 @@
-name, description, parent_id
-"Main", "Descrierea directorului",
-"Secondary layouts", "Descrierea layouturilor secundare", 1
-"Forms", "Descrierea formularelor", 1
-"User layouts", "Descrierea layouturilor pentru utilizatori", 1
-"Test layout", "Layout group de test, fara layouturi",

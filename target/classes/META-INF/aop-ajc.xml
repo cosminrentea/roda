@@ -1,6 +1,0 @@
-<aspectj>
-<aspects>
-<aspect name="ro.roda.util.AspectLogger"/>
-</aspects>
-</aspectj>
-

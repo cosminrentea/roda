@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.1">
-    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
-    <jsp:output omit-xml-declaration="yes"/>
-    <page:show id="ps_ro_roda_domain_OrgSufix" object="${orgsufix}" path="/orgsufixes" z="RHboLbPZMWDsiLMea/dFStNXMaM=">
-        <field:display field="name" id="s_ro_roda_domain_OrgSufix_name" object="${orgsufix}" z="UU9V5rZx/c07TgY4XwIX/KoSzYo="/>
-        <field:display field="description" id="s_ro_roda_domain_OrgSufix_description" object="${orgsufix}" z="oNgQ7y90RZw1xsmZ2BMUODxAaU8="/>
-    </page:show>
-</div>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <form:update id="fu_ro_roda_domain_InstanceDescr" modelAttribute="instanceDescr" path="/instancedescrs" versionField="none" z="kZzJ3JMLt2FT4krpUk4c0AozVZI=">
+        <field:input field="accessConditions" id="c_ro_roda_domain_InstanceDescr_accessConditions" z="ZNywb9k1nFWrt7HSextcO/2lalQ="/>
+        <field:input field="notes" id="c_ro_roda_domain_InstanceDescr_notes" z="AhW/DFYfE+hUJhHkUPyQH4VzQEY="/>
+        <field:input field="title" id="c_ro_roda_domain_InstanceDescr_title" required="true" z="Oy1uJmgIgBpWtGfNUJdXNVchw+g="/>
+        <field:checkbox field="originalTitleLanguage" id="c_ro_roda_domain_InstanceDescr_originalTitleLanguage" z="dobMuyx+4vk2vx5yGVKz3lzBegM="/>
+    </form:update>
+</div>

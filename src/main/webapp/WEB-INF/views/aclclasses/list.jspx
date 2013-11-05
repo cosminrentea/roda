@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.1">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:list id="pl_ro_roda_domain_AclClass" items="${aclclasses}" z="Jugj3a1vo38JUdJXBOpdMwJv3rc=">
+        <table:table data="${aclclasses}" id="l_ro_roda_domain_AclClass" path="/aclclasses" z="s5/HjYJHub7CAQ/R4N6raL6DKUI=">
+            <table:column id="c_ro_roda_domain_AclClass_class1" property="class1" z="9xbcbdyObwQoGGP48oMYngCzdCQ="/>
+        </table:table>
+    </page:list>
+</div>

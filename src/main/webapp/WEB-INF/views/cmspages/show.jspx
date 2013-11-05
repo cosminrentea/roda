@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.1">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:show id="ps_ro_roda_domain_CmsPage" object="${cmspage}" path="/cmspages" z="4Irwze85umfvAhF+gMhbFEHJlpc=">
+        <field:display field="cmsLayoutId" id="s_ro_roda_domain_CmsPage_cmsLayoutId" object="${cmspage}" z="mumpsM5vROMQhHxd/n+lfHgWJJc="/>
+        <field:display field="cmsPageTypeId" id="s_ro_roda_domain_CmsPage_cmsPageTypeId" object="${cmspage}" z="Cw+VsR1JNnbDAEDku5ajLJgnA7o="/>
+        <field:display field="name" id="s_ro_roda_domain_CmsPage_name" object="${cmspage}" z="QhvW1tFKvcVIyMMMfkweUwxpIW0="/>
+        <field:display field="visible" id="s_ro_roda_domain_CmsPage_visible" object="${cmspage}" z="iBb8JLExFXbqFe5LN3h0CrVT16o="/>
+        <field:display field="navigable" id="s_ro_roda_domain_CmsPage_navigable" object="${cmspage}" z="pv41AAvuLggp+80Z44j7n1Q2JOU="/>
+        <field:display field="url" id="s_ro_roda_domain_CmsPage_url" object="${cmspage}" z="NMG5MRln4SnrvkbL/Q0LCxLV29w="/>
+    </page:show>
+</div>

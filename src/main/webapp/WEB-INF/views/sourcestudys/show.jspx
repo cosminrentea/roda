@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.1">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:show id="ps_ro_roda_domain_Sourcestudy" object="${sourcestudy}" path="/sourcestudys" z="tiKFgiryVHZ5kHIGf/nToiO8iZg=">
+        <field:display field="orgId" id="s_ro_roda_domain_Sourcestudy_orgId" object="${sourcestudy}" z="Z+jvvmWTx2L0KnhjwSiWuOg6A2I="/>
+        <field:display field="type" id="s_ro_roda_domain_Sourcestudy_type" object="${sourcestudy}" z="iu4pMe9r4dTGGBoeZiLjs2b9JE0="/>
+        <field:display field="name" id="s_ro_roda_domain_Sourcestudy_name" object="${sourcestudy}" z="sPrQiBm9e/6uQa8A86vkoL+ZYkc="/>
+        <field:display field="details" id="s_ro_roda_domain_Sourcestudy_details" object="${sourcestudy}" z="w+fnPSFpLDnR7qP5Oj+1LhvgPFs="/>
+    </page:show>
+</div>

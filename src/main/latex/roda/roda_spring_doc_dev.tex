@@ -1,0 +1,648 @@
+La specificarea in instructiunile de mai jos a sistemului de operare:
+\begin{description} 
+\item [MacOSX =] OS X version 10.8.4, 64 bit
+\item [Ubuntu =] Ubuntu 12.04LTS, kernel 3.2.0-39-generic-pae, 32bit
+\item [OpenSUSE = ] OpenSUSE 12.2
+\item [Postgresql =] Postgresql 9.2.4
+\item [Hibernate =] Hibernate 4.1.8
+\item [DbWrench =] DbWrench 2.3.2
+\item [STS =] Spring Tool Suite 3.4.0.RELEASE - based on Eclipse Juno 3.8.2
+\item [Maven =] Maven 3
+\item [JVM =] Java Virtual Machine (JVM) 1.6
+\item [Jenkins =] Jenkins 1.522
+\item [Solr =] Solr 4.4
+\item [Sencha Architect =] Sencha Architect 2.2.2
+\end{description}
+
+\section{Instalare si configurare - servicii si software aditional}
+
+\subsection{Instalarea pachetelor necesare}
+\begin{description}
+\item[MacOSX:]
+
+Se instaleaza MacPorts si toate dependentele necesare 
+(instructiuni complete la:
+\url{http://www.macports.org/install.php} ).
+
+Se ruleaza urmatoarele comenzi, din shell:
+\begin{lstlisting}[breaklines=true]
+sudo port install maven3 postgresql92 pgadmin3  apache-solr4 R htmldoc doxygen graphviz firefox-x11
+\end{lstlisting}
+
+\item[Ubuntu:]
+Se ruleaza urmatoarele comenzi, din shell:
+\begin{lstlisting}[breaklines=true]
+sudo apt-get install openjdk-6-jdk xvfb maven postgresql-server pgadmin3 solr r-base r-base-dev perl htmldoc doxygen graphviz firefox
+\end{lstlisting}
+
+\begin {comment}
+\item[OpenSUSE:]
+% TODO ???
+Maven se instaleaza manual sau dintr-un repository non-standard.
+
+R se instaleaza manual sau dintr-un repository non-standard.
+
+Se ruleaza urmatoarele comenzi, din shell:
+\begin{lstlisting}[breaklines=true]
+sudo zypper in openjdk-6-jdk postgresql pgadmin3 perl htmldoc doxygen graphviz firefox
+\end{lstlisting}
+\end{comment}
+
+\end{description}
+
+\subsection{LaTeX}
+O distributie LaTeX este necesara pentru generarea documentatiei:
+
+\begin{description}
+\item[Ubuntu:] 
+\begin{lstlisting}[breaklines=true]
+	sudo apt-get install texlive
+\end{lstlisting}
+\item[MacOSX:] 
+MacTeX, instalata de la \url{http://tug.org/mactex/} 
+\end{description}
+
+Optional, se pot instala editoare de LaTeX - de ex., 
+in MacOSX  se poate utiliza TeXShop 
+( \url{http://pages.uoregon.edu/koch/texshop/} ).
+
+\subsection{Maven si Java Virtual Machine (JVM)}
+Se creeaza in directorul \emph{\$HOME} al utilizatorului un fisier numit
+'.mavenrc' 
+(ce contine setarile generale pentru Maven, in acest caz legate de memoria utilizata);
+in fisier se scrie:
+\begin{lstlisting}[breaklines=true]
+	MAVEN_OPTS='-Xmx1024m -XX:MaxPermSize=256m'
+	export MAVEN_OPTS
+\end{lstlisting}
+
+\label{java_version}
+Se verifica instalarea Java (e necesar minim Java 1.6) si tipul de JVM
+utilizat (32 sau 64 bit), in shell:
+\begin{lstlisting}
+	java -version
+\end{lstlisting}
+
+\subsection{Perl si Selenium}
+\paragraph{In MacOSX:}
+Se instaleaza modulul Selenium din Perl, cu urmatoarele comenzi in shell si apoi in shell-ul CPAN
+(se alege in timpul instalarii site-mirror-ul folosit;
+se iese la final din shell-ul CPAN cu Ctrl+D):
+\begin{lstlisting}
+	sudo /usr/bin/cpan
+		install Test::WWW::Selenium
+\end{lstlisting}
+
+\subsection{rJava}
+Se instaleaza rJava in R, cu urmatoarele comenzi in shell si apoi in shell-ul R
+(se alege in timpul instalarii site-mirror-ul folosit;
+se iese la final din shell-ul R cu Ctrl+D):
+\begin{lstlisting}
+	sudo R CMD javareconf
+	R
+		install.packages('rJava')
+\end{lstlisting}
+
+\subsection{DbWrench}
+Se instaleaza DbWrench de pe site-ul producatorului:
+\url{http://www.dbwrench.com}.
+
+\section{Instalarea si configurarea IDE-ului si a proiectului}
+
+\subsection{Instalare Spring Tool Suite (STS)}
+Descarcati STS de pe pagina:
+\url{http://www.springsource.org/downloads/sts-ggts},
+facand click direct pe link-ul \emph{'Just take me to the download page'}.
+
+Alegeti pentru descarcarea versiunea STS bazata pe Eclipse 3.8.2:
+\begin{description}
+\item[MacOSX, 64 bit:] 
+\begin{lstlisting}
+spring-tool-suite-3.3.0.RELEASE-e3.8.2-macosx-cocoa-x86_64-installer.dmg
+\end{lstlisting}
+\item[Ubuntu, 32 bit:]
+% TODO
+\end{description}
+
+Instalati STS cu optiunile default (path-ul default este in \emph{\$HOME/springsource} ):
+'Next' -> ... -> 'Finish'.
+
+\subsection{Configurarea STS inainte de rulare}
+In fisierul \emph{STS.ini} (in Ubuntu/OpenSUSE, acesta este in folder-ul
+radacina al STS, ales la pasul anterior; in MacOS X, este in sub-folder-ul
+'STS.app/Contents/MacOS/'), se modifica memoria maxima utilizabila de STS.
+
+In \emph{STS.ini}, linia care incepe cu \emph{-Xmx} 
+(memoria maxima utilizabila de STS) 
+trebuie modificata astfel:
+\begin{itemize} 
+\item daca JVM este pe 64 biti:
+\begin{lstlisting}
+	-Xmx3072m
+\end{lstlisting}
+\item daca JVM este pe 32 biti:
+\begin{lstlisting}
+	-Xmx1536m
+\end{lstlisting}
+\end{itemize}
+
+\subsection{Configurarea plugin-urilor si extensiilor STS}
+
+Porniti STS, eventual din linia de comanda, in folder-ul radacina al instalarii STS
+(de exemplu: 'springsource/sts-3.3.0.RELEASE' ):
+\begin{lstlisting}	
+	./STS &
+\end{lstlisting}
+
+Din Dashboard (meniu Help -> Dashboard), click pe tab-ul 'Extensions'
+(pozitionat stanga-jos, in Dashboard), bifati in lista si apoi instalati
+(butonul 'Install', dreapta-jos) urmatoarele extensii:
+\begin{itemize}
+\item
+Cloud Foundry Eclipse Integration
+\item
+Edgewall Trac
+\end{itemize} 
+
+Restartati STS.
+
+Instalati in STS ultima versiune de Subclipse 
+(cu suport pentru Subversion versiunea 1.7),
+prin meniu 'Help' -> 'Install New Software':
+\begin{itemize}
+\item 
+nume = Subclipse 1.8
+\item
+URL = \url{http://subclipse.tigris.org/update_1.8.x}
+\end{itemize}
+
+Selectati si instalati de la acest update-site toate seturile de plugin-uri din lista.
+
+Restartati STS.
+
+Configurati Subclipse pentru a utiliza SVNKIT:
+\begin{enumerate}
+\item 
+click pe meniu 'Window' -> 'Preferences' -> alegere din lista 'Team' -> 'SVN'
+(pe MacOSX: meniu 'Spring Tool Suite' -> 'Preferences' -> 'Team' -> 'SVN')
+\item
+la 'SVN Interface' (mai jos in pagina de optiuni aparuta) se alege Clientul
+folosit:
+
+'SVNKit (pure Java) SVNKit v1.7....'
+\end{enumerate}
+
+(Optional) Instalati plugin-ul IDE pentru Perl, prin meniu 'Help' -> 
+'Install New Software':
+\begin{itemize}
+\item 
+nume = Perl EPIC
+\item
+URL = \url{http://e-p-i-c.sf.net/updates/testing}
+\end{itemize}
+
+\subsection{Configurare Task Repository [OPTIONAL]}
+In STS, in view-ul 'Task List', butonul 'Add Repository', de tipul 'Trac', 
+iar in pasul urmator:
+\begin{itemize}
+\item 
+Server URL:    \url{http://fisiere.dyndns.org:8888/roda}
+\item
+Debifare optiune 'Anonymous'
+\item
+Completare User si Parola (specifice)
+\item
+Bifare 'Save password'
+\item
+'Validate Settings'
+\item
+'Finish'
+\end{itemize}
+
+La ultimul pas, se adauga un Query legat de acest Task-Repository (de exemplu,
+se completeaza doar un nume - precum 'ALL' - si se apasa 'Finish').
+
+\subsection{STS Preferences}
+In fereastra 'Preferences' a STS:
+\begin{itemize}
+\item
+in Java -> Editor -> Save Actions: se bifeaza 'Perform the selected actions on save' si ' Format source code' (format all lines); se debifeaza 'Organize imports'.
+\item
+in Java -> Code Style -> Formatter, se selecteaza profilul 'Eclipse [built-in]', se apasa 'Edit', in tab-ul 'Line Wrapping' , campul 'Maximum line width' se completeaza cu '120' (in loc de '80').
+Se completeaza in partea de sus numele profilului: 'RODA' , se apasa 'OK'. Apoi, in fereastra 'Preferences' se selecteaza ca 'Active Profile' profilul creat ('RODA').
+\item
+(optional) in Java -> Appearance -> Members Sort Order, se bifeaza 'Sort member in same category by visibility'.
+\item
+(optional) in SpringSource -> Dashboard, se debifeaza 'Show Dashboard on Startup'.
+\end{itemize}
+
+\subsection{Preluare proiecte in STS din repository}
+In STS, adaugati un SVN repository 
+(in perspectiva 'SVN Repository Exploring'), 
+folosind URL: \url{svn://fisiere.dyndns.org/roda} .
+
+Faceti \emph{Checkout} succesiv din SVN repository 
+(click-dreapta pe numele proiectului / directorului, apoi 'Checkout') 
+pentru:
+\begin{description}
+\item [roda:] aplicatia web Java / Spring
+\item [dbwrench2-files:] fisiere DbWrench (format XML + SQL), scripturi pentru operatii asupra bazei de date
+\end{description}
+
+\begin{comment}
+\item [(optional) RODA-Model:] modelul Perl
+\end{comment}
+
+\begin{comment}
+In STS, se face upgrade la Subversion 1.7 (pt. working copy) pentru fiecare din proiectele de mai sus: 
+in perspectiva 'Spring', 
+in view-ul 'Package Explorer' sau in view-ul 'Navigator', 
+click-dreapta pe numele proiectului respectiv,
+si apoi in meniul aparut:
+'Team' -> 'Upgrade' -> 'OK'. 
+Poate aparea un mesaj de eroare/warning, care indica
+faptul ca working-copy local este deja conform versiunii 1.7 a SVN.
+\end{comment}
+
+\section{Configurarea locala a proiectului}
+
+\subsection{Instalarea si configurarea serverului Postgresql local}
+\label{postgresql_configurare}
+
+\begin{description}
+\item[MacOSX:]
+
+Se instaleaza si ruleaza \emph{Postgres.app} (descarcat de la \url{http://postgresapp.com} ).
+Se bifeaza in meniul programului optiunea 'Automatically Start at Login'.
+
+\item[orice alt sistem de operare:]
+
+Se configureaza Postgresql ca server pe statia locala 
+(preferabil, pornit automat ca serviciu la bootare). 
+Se pot configura in fisierele de configurare ale Postgresql tipurile de autentificare ale clientilor la server 
+(de ex. pentru a permite accesul bazat pe parola de pe localhost / reteaua locala; sau pentru a permite si accesul prin
+internet, nu doar de la statia locala / reteaua locala).
+% TODO mai precis ???
+\end{description}
+
+In shell, in directorul 'dbwrench-files' (dupe check-out-ul din SVN), 
+se ruleaza urmatoarea comanda
+(pentru crearea utilizatorului, a bazei de date si a schemelor auxiliare):
+\begin{lstlisting}
+	./create-roda-db.sh
+\end{lstlisting}
+
+\subsection{Configurarea serverului Solr local}
+\label{solr_configurare}
+
+In MacOSX, Solr se porneste din shell cu comanda:
+\begin{lstlisting}[breaklines=true]
+	sudo solr4
+\end{lstlisting}
+serverul fiind disponibil la URL: \url{http://localhost:8983/solr/}
+
+Pentru configurarea Solr este folosita schema din subfolder-ul 'examples'. 
+% TODO mai precis ???
+
+\subsection{Fisierele de configurare ale aplicatiei}
+Toate detaliile necesare se regasesc in sectiunea
+dedicata fisierelor de configurare din capitolul dedicat componentelor/arhitecturii aplicatiei: 
+\ref{fisiere_configurare}.
+
+Configurarile \emph{default} din aceste fisiere nu trebuie neaparat
+schimbate, daca se urmeaza intocmai acest ghid de instalare/configurare.
+
+\subsection{Compilarea pentru prima data a proiectului}
+
+In shell, in folderul-radacina al proiectului 'roda':
+\begin{lstlisting}
+	mvn -e -X clean package
+\end{lstlisting}
+Toate pachetele necesare sunt descarcate atunci cand se face prima compilare -- care poate dura mai mult.
+
+In STS, se alege perspectiva 'Spring', 
+apoi click-dreapta in view-ul 'Package Explorer' 
+pe numele proiectului ('roda'), 
+apoi din submeniul 'Maven' se aleg succesiv optiunile:
+\begin{enumerate}
+\item
+'Update Project', apoi click 'OK'.
+\item
+Download JavaDoc
+\item
+Download Sources
+\end{enumerate}
+
+% STS va deschide un view numit 'Roo shell' unde se pot da comenzi Roo referitoare la proiect.
+
+\subsection{Configurarea Serverului de Aplicatii local}
+In STS, se trage (drag-and-drop) proiectul 'roda' din view-ul 'Package Explorer' 
+peste serverul local prezent in view-ul 'Servers' (VMware vFabric tc Server ...).
+
+\section{Rularea locala a proiectului}
+
+De fiecare data, inainte de pornirea aplicatiei, trebuie sa fie deja pornite:
+\begin{description}
+\item[Postgresql] 
+ca un server local pe portul 5432, avand deja create: 
+user-ul, baza de date, schemele (vezi \ref{postgresql_configurare})
+\item[Solr] 
+ca un server local pe portul 8983, folosind Jetty (vezi \ref{solr_configurare})
+\end{description}
+
+\subsection{Rularea din STS, pe Server Local}
+Se (re-)porneste serverul de aplicatii local folosind butoanele din view-ul
+'Servers'.
+
+Daca portul local 8080 era liber (portul dorit se poate edita dupa dublu-click pe
+server, in lista din view-ul 'Servers'), aplicatia e disponibila la:
+
+\url{http://localhost:8080/roda}
+
+\subsection{Rularea pe un Server Local ad-hoc de tip Tomcat}
+Din shell, in folder-ul radacina al proiectului 'roda', cu comanda:
+\begin{lstlisting}
+	mvn -Dmaven.tomcat.fork=false tomcat:run
+\end{lstlisting}
+Daca portul local 8080 era liber (portul se poate schimba in 'pom.xml'),
+aplicatia e disponibila la:
+
+\url{http://localhost:8080/roda}
+
+Serverul se opreste din shell, de ex. cu Ctrl + C.
+
+\subsection{Rularea locala a Selenium Server}
+Din shell, in folder-ul radacina al proiectului 'roda', cu comanda:
+\begin{lstlisting}
+	mvn selenium:start-server
+\end{lstlisting}
+Selenium Server porneste pe portul local 4444.
+
+\subsection{Rularea automata a tuturor testelor de integrare}
+Din shell, in folder-ul radacina al proiectului 'roda', cu comanda:
+\begin{lstlisting}
+	mvn verify
+\end{lstlisting}
+Astfel, sunt pornite/oprite automat:
+\begin{itemize}
+\item
+Selenium Server
+\item
+Xvfb (pentru ecran virtual, folosit de Selenium)
+\item
+Tomcat (si aplicatia web)
+\end{itemize}
+
+%TODO trebuie facut start/stop al Postgresql + Solr
+
+Sunt rulate atat testele scrise in Java 
+(folosind Selenium Server si Selenium WebDriver; browser: Mozilla Firefox), 
+cat si cele scrise in Perl (folosind Selenium Server).
+
+\subsection{Rularea testelor de integrare scrise in Perl}
+Trebuie pornite inainte serviciile necesare - din shell, cu comanda:
+\begin{lstlisting}[breaklines=true]
+	mvn tomcat:run selenium:xvfb selenium:start-server
+\end{lstlisting}
+Apoi, se ruleaza testele in Perl, din shell, in 'src/test/perl' :
+\begin{lstlisting}[breaklines=true]
+	/usr/bin/perl selenium.pl
+\end{lstlisting}
+
+
+\begin{comment}
+\subsection{Rularea automata a testelor web (Selenium)}
+Din shell, in folder-ul radacina al proiectului 'roda', cu comanda:
+\begin{lstlisting}
+	mvn tomcat:run selenium:selenese
+\end{lstlisting}
+\end{comment}
+
+
+\begin{comment}
+\section{Rularea proiectului din STS, pe CloudFoundry (NERECOMANDAT)}
+
+\paragraph{!!! ATENTIE !!!} 
+Accesul la acest cont/server este shared (e folosit inclusiv de catre Jenkins), 
+pot aparea suprapuneri nedorite intre variante diferite / dezvoltatori diferiti !!!
+
+Se adauga in view-ul 'Servers' un nou server remote: click-dreapta -> 'New'
+-> 'Server' -> vendor 'VMware' -> tip 'Cloud Foundry' -> 'Next'.
+
+Se completeaza wizard-ul conform urmatorilor pasi:
+\begin{itemize}
+  \item 
+Email: roda.devel@gmail.com
+  \item 
+Parola: RodaAdor
+  \item 
+'Validate Account'
+  \item 
+'Next'
+  \item 
+Se muta proiectul 'roda' din lista 'Available' in lista 'Configured'
+  \item 
+'Next'
+  \item 
+In fereastra 'Application details', se selecteaza 'Application Type' = 'Spring'
+  \item 
+'Next'
+  \item 
+'Deployed URL': roda.cloudfoundry.com
+  \item 
+'Memory Reservation': 2048 M
+  \item 
+'Next'
+  \item 
+Se bifeaza serviciul 'roda-postgres' (baza de date Postgresql) in lista
+aparuta.
+  \item 
+'Finish'
+\end{itemize}
+
+Proiectul este disponibil online permanent la adresa:
+
+\url{http://roda.cloudfoundry.com}
+
+\end{comment}
+
+\section{Generarea documentatiei proiectului}
+
+Pentru generarea in directorul 'target/' a documentatiei proiectului in format PDF (din sursele LaTeX):
+
+\begin{lstlisting}
+	mvn latex:latex
+\end{lstlisting}
+
+Pentru a forta re-generarea tuturor documentelor in format PDF, se sterge directorul 'target/latex/' din proiect:
+
+\begin{lstlisting}
+	rm -rf target/latex
+\end{lstlisting}
+
+Pentru generarea in directorul 'target/site/apidocs' a documentatiei JavaDoc a proiectului:
+
+\begin{lstlisting}
+	mvn javadoc:javadoc
+\end{lstlisting}
+
+Pentru generarea in directorul 'target/site' a website-ului proiectului in format HTML (cuprinzand JavaDoc, informatii si rapoarte):
+
+\begin{lstlisting}
+	mvn site
+\end{lstlisting}
+
+\section{Web Development}
+Se instaleaza Mozilla Firefox; in Firefox se instaleaza urmatoarele add-on-uri:
+\begin{description}
+\item [Firebug]
+\item [Selenium IDE]
+\end{description}
+
+Se instaleaza Google Chrome; in Chrome se instaleaza:
+\begin{description}
+\item [Postman] de la \url{http://www.getpostman.com/}
+\end{description}
+
+
+\section{Integrarea continua a aplicatiei}
+
+\subsection{Instalarea si configurarea Jenkins}
+
+Se instaleaza Jenkins de la \url{http://jenkins-ci.org} : 
+din sectiunea 'Long-Term Support Release', 
+se salveaza si se instaleaza pachetul nativ pentru sistemul de operare.
+
+Pentru a seta portul folosit de Jenkins la altul decat 8080 (de exemplu 9999), se dau in shell comenzile:
+\begin{lstlisting}[breaklines=true]
+sudo defaults write /Library/Preferences/org.jenkins-ci httpPort 9999
+\end{lstlisting}
+
+Pentru a porni / opri manual serviciul Jenkins se folosesc in shell comenzile: 
+\begin{lstlisting}[breaklines=true]
+sudo launchctl load /Library/LaunchDaemons/org.jenkins-ci.plist
+sudo launchctl unload /Library/LaunchDaemons/org.jenkins-ci.plist
+\end{lstlisting}
+
+User-ul folosit de Jenkins pentru rularea job-urilor este de obicei numit 'jenkins'.
+
+Daca se doreste migrarea datelor/setarilor/plugin-urilor/job-urilor existente dintr-o alta instalare Jenkins, trebuie copiat directorul indicat de variabila de mediu JENKINS\_HOME de pe vechiul server -> in directorul indicat de variabila de mediu JENKINS\_HOME (de pe noul server); in cazul MacOSX, JENKINS\_HOME = /Users/Shared/Jenkins/Home; directorul trebuie sa fie accesibil pentru utilizatorul folosit de Jenkins pentru rularea job-urilor (de obicei numit 'jenkins'). In configurarile Jenkins, dupa pornirea acestuia,  trebuie actualizate: URL-ul la care este accesibil Jenkins.
+
+\subsection{Instalarea si configurarea plugin-urilor Jenkins}
+Lista plugin-urilor Jenkins ce trebuie instalate:
+\begin{itemize}
+\item 
+Ant Plugin
+\item
+conditional-buildstep
+\item
+Credentials Plugin
+\item
+External Monitor Job Type Plugin
+\item
+Flexible Publish Plugin
+\item
+GitHub API Plugin
+\item
+GitHub plugin
+\item
+Javadoc Plugin
+\item
+Jenkins CVS Plug-in
+\item
+Jenkins Email Extension Plugin
+\item
+Jenkins GIT client plugin
+\item
+Jenkins GIT plugin
+\item
+Jenkins Mailer Plugin
+\item
+Jenkins SSH Slaves plugin
+\item
+Jenkins Subversion Plug-in
+\item
+Jenkins Translation Assistance plugin
+\item
+Jenkins VirtualBox Plugin
+\item
+Jenkins Workspace Cleanup Plugin
+\item
+LDAP Plugin
+\item
+Maven 2 Project Plugin
+\item
+pam-auth
+\item
+Run Condition Plugin
+\item
+SSH Credentials Plugin
+\item
+Token Macro Plugin
+\end{itemize}
+
+\begin{comment}
+The installer sets up Jenkins as a launch daemon, listening on port 8080. (If you want to know more about launchd and daemons, see here and here.)
+Changing boot configuration
+
+The launch daemon picks up the command line options from a standard preferences file, /Library/Preferences/org.jenkins-ci.plist. If the file does not exist, built-in defaults are used. The preference files are manipulated using the standard utility defaults.
+
+    To view all settings in the file, run: defaults read /Library/Preferences/org.jenkins-ci
+    To get the value of a single setting, run: defaults read /Library/Preferences/org.jenkins-ci SETTING
+    To set the value of a setting, run: defaults write /Library/Preferences/org.jenkins-ci SETTING VALUE
+    For more information, see man defaults
+
+Supported Settings
+
+The list of settings supported by the Jenkins launch daemon (see documentation):
+
+    prefix
+    httpPort
+    httpListenAddress
+    httpsPort
+    httpsListenAddress
+    ajp13Port
+    ajp13ListenAddress
+
+Additionally, you can set also these:
+
+    war (Full path name to jenkins.war file.)
+    heapSize (Passed to java command-line -Xmx parameter.)
+    permGen (Passed to java command-line --XX:MaxPermSize parameter.)
+    JENKINS_HOME (Full path to JENKINS_HOME directory where Jenkins keeps its files)
+
+Starting/stopping the service
+    To manually start the daemon: 
+    sudo launchctl load /Library/LaunchDaemons/org.jenkins-ci.plist
+    
+    To manually stop the daemon: 
+    sudo launchctl unload /Library/LaunchDaemons/org.jenkins-ci.plist
+
+Inheriting your existing Hudson/Jenkins installation
+    If you'd like your new installation to take over your existing Jenkins/Hudson data, copy your old data directory into the new JENKINS_HOME directory.
+\end{comment}
+
+\begin{comment}
+
+x11vnc, de la http://www.karlrunge.com/x11vnc/ :  x11vnc-0.9.13.tar.gz
+pasii de la instructiunile de instalare +
+    ./configure --without-x --with-jpeg=/opt/local
+\end{comment}
+
+
+\subsection{Instalarea unor pachete necesare job-urilor Jenkins}
+\begin{description}
+\item[MacOSX:]
+Se ruleaza urmatoarele comenzi, din shell:
+\begin{lstlisting}[breaklines=true]
+sudo port install rb-rubygems
+sudo gem install cf
+\end{lstlisting}
+
+\item[Ubuntu:]
+Se ruleaza urmatoarele comenzi, din shell:
+\begin{lstlisting}[breaklines=true]
+sudo apt-get install rubygems
+sudo gem install cf
+\end{lstlisting}
+\end{description}

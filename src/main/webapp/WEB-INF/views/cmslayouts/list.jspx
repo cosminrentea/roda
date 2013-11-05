@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.1">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:list id="pl_ro_roda_domain_CmsLayout" items="${cmslayouts}" z="Wfn4+VPWR1uC/9Ff34i6jNCH8+Q=">
+        <table:table data="${cmslayouts}" id="l_ro_roda_domain_CmsLayout" path="/cmslayouts" z="15N9eFhOGFL+4akinCO3Nx4F7l8=">
+            <table:column id="c_ro_roda_domain_CmsLayout_cmsLayoutGroupId" property="cmsLayoutGroupId" z="ZIecF3l8yqHZ4dlBuqdrNzS7m2Q="/>
+            <table:column id="c_ro_roda_domain_CmsLayout_name" property="name" z="yLaQPKvAZqmAhTmQLHXrGfbDLBI="/>
+            <table:column id="c_ro_roda_domain_CmsLayout_layoutContent" property="layoutContent" z="ZkdaH5cLbuNZwGYnqSzMyKi8Or8="/>
+        </table:table>
+    </page:list>
+</div>

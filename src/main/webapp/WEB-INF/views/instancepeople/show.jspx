@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.1">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:show id="ps_ro_roda_domain_InstancePerson" object="${instanceperson}" path="/instancepeople" z="FshwhCJOm4TTRRgR+Brz0PhqEcU=">
+        <field:display field="instanceId" id="s_ro_roda_domain_InstancePerson_instanceId" object="${instanceperson}" z="HzpisF0QKfJmSw41k0eMr1ePJuc="/>
+        <field:display field="assocTypeId" id="s_ro_roda_domain_InstancePerson_assocTypeId" object="${instanceperson}" z="Rtkn0Y5ee++0hH+mHsHbCGra2z8="/>
+        <field:display field="personId" id="s_ro_roda_domain_InstancePerson_personId" object="${instanceperson}" z="TAleFd7lQv72mNAZFXoXRRnQvYg="/>
+        <field:display field="assocDetails" id="s_ro_roda_domain_InstancePerson_assocDetails" object="${instanceperson}" z="VwuuIlQEZwyRhDk0yH1Nr+JRwLY="/>
+    </page:show>
+</div>

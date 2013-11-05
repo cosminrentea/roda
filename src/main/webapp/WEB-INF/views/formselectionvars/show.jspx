@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.1">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:show id="ps_ro_roda_domain_FormSelectionVar" object="${formselectionvar}" path="/formselectionvars" z="w6VWQc9NC44KvSDZJtLp/I96/oo=">
+        <field:display field="formId" id="s_ro_roda_domain_FormSelectionVar_formId" object="${formselectionvar}" z="nDYfrtT6eB+zQQHoryyVYdr7EQA="/>
+        <field:display field="selectionVariableItem" id="s_ro_roda_domain_FormSelectionVar_selectionVariableItem" object="${formselectionvar}" z="nuG6tz/jevY8SlYp8JHaFxAA71k="/>
+        <field:display field="orderOfItemsInResponse" id="s_ro_roda_domain_FormSelectionVar_orderOfItemsInResponse" object="${formselectionvar}" z="UeVmU350xoS56aDptnf9JnhPSJM="/>
+    </page:show>
+</div>

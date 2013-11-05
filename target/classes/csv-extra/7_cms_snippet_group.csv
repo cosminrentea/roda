@@ -1,0 +1,8 @@
+name, description, parent_id
+"Main", "Descrierea grupului",
+"CSS", "CSS", 1
+"JavaScript", "Javascript", 2
+"Formulare", "Formulare", 3
+"HTML", "HTML", 2
+"Romana", "Romana", 5
+"Engleza", "Engleza", 5

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.1">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:show id="ps_ro_roda_domain_Variable" object="${variable}" path="/variables" z="vG2oKLKhhoPXevYfujmlBVXecjg=">
+        <field:display field="concepts" id="s_ro_roda_domain_Variable_concepts" object="${variable}" z="87bqoLASlB7T5BgH2kcSQCCEDWg="/>
+        <field:display field="vargroups" id="s_ro_roda_domain_Variable_vargroups" object="${variable}" z="rpdWARFQpnjxGZwdJUq7mgkabb4="/>
+        <field:display field="selectionVariable" id="s_ro_roda_domain_Variable_selectionVariable" object="${variable}" z="44Z5pqPw9WmOzbDWQP6V9+zA4O8="/>
+        <field:display field="fileId" id="s_ro_roda_domain_Variable_fileId" object="${variable}" z="F7hf+CeY53ilCkjqz0YzRAzFU88="/>
+        <field:display field="label" id="s_ro_roda_domain_Variable_label" object="${variable}" z="2z9DEeJuZWhFw3p1/AszLFCbNVo="/>
+        <field:display field="type" id="s_ro_roda_domain_Variable_type" object="${variable}" z="RSSheQ3/hUfZosrPtARJ4/paD30="/>
+        <field:display field="operatorInstructions" id="s_ro_roda_domain_Variable_operatorInstructions" object="${variable}" z="TYwXYhwgFxWdCA6R8awrG/gkUkM="/>
+        <field:display field="variableType" id="s_ro_roda_domain_Variable_variableType" object="${variable}" z="Hm7tCjum2vXj2jJBz2XsZEVrOMM="/>
+    </page:show>
+</div>

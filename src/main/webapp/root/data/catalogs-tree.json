@@ -1,0 +1,402 @@
+{    "data":[
+        {
+            "name":"RODA",
+            "type":"M",
+            "data":[
+                {
+                    "indice":2,
+                    "name":"Munca si sex",
+                    "type":"C",
+                    "data":[
+                        {
+                            "indice":3,
+                            "name":"Munca",
+                            "type":"C",
+                            "data":[
+                                {
+                                    "name":"Capital social si antreprenoriat in comunitatile rurale din Romania. Sate muntenesti",
+                                    "an":1999,
+                                    "type":"St",
+                                    "leaf":true,
+                                    "indice":2
+                                },
+                                {
+                                    "name":"Impactul socio-uman al exploatarii lignitului in zona Olteniei",
+                                    "an":1994,
+                                    "type":"St",
+                                    "leaf":true,
+                                    "indice":14
+                                },
+                                {
+                                    "name":"Calitatea relatiilor de munca - lideri sindicali",
+                                    "an":1992,
+                                    "type":"St",
+                                    "leaf":true,
+                                    "indice":30
+                                },
+                                {
+                                    "name":"Diagnoza necesarului de formare manageriala. Studenti",
+                                    "an":1994,
+                                    "type":"St",
+                                    "leaf":true,
+                                    "indice":15
+                                },
+                                {
+                                    "name":"Diagnoza necesarului de formare manageriala. Manageri",
+                                    "an":1994,
+                                    "type":"St",
+                                    "indice":18,
+                                    "leaf":true
+                                },
+                                {
+                                    "name":"Atitudinea fata de munca",
+                                    "an":1993,
+                                    "type":"St",
+                                    "indice":24,
+                                    "leaf":true
+                                },
+                                {
+                                    "name":"Somajul si valorile psiho-sociale in ocuparea fortei de munca",
+                                    "an":1992,
+                                    "type":"St",
+                                    "indice":29,
+                                    "leaf":true
+                                },
+                                {
+                                    "name":"Impactul socio-uman al exploatarii lignitului in zona Olteniei",
+                                    "an":1994,
+                                    "type":"St",
+                                    "indice":14,
+                                    "leaf":true
+                                }
+                            ]
+                        },
+                        {
+                            "name":"Sex",
+                            "indice":6,
+                            "type":"C",
+                            "data":[
+                                {
+                                    "name":"Studiul Sanatatii Reproducerii - Barbati - Romania - 2004",
+                                    "an":2004,
+                                    "type":"St",
+                                    "indice":48,
+                                    "leaf":true
+                                },
+                                {
+                                    "name":"Studiul Sanatatii Reproducerii - Femei - Romania - 2004",
+                                    "type":"St",
+                                    "an":2004,
+                                    "indice":49,
+                                    "leaf":true
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "indice":21,
+                    "name":"Diagnoza calitatii vietii",
+                    "type":"S",
+                    "data":[
+                        {
+                            "name":"Diagnoza calitatii vietii",
+                            "an":1997,
+                            "type":"Sts",
+                            "indice":7,
+                            "author":"ICCV - Institutul de Cercetare a calitatii vietii",
+                            "leaf":true
+                        },
+                        {
+                            "name":"Diagnoza calitatii vietii",
+                            "an":1999,
+                            "type":"Sts",
+                            "indice":1,
+                            "author":"ICCV - Institutul de Cercetare a calitatii vietii",
+                            "leaf":true
+                        },
+                        {
+                            "name":"Diagnoza calitatii vietii",
+                            "an":1992,
+                            "type":"Sts",
+                            "indice":26,
+                            "author":"ICCV - Institutul de Cercetare a calitatii vietii",
+                            "leaf":true
+                        },
+                        {
+                            "name":"Diagnoza calitatii vietii",
+                            "type":"Sts",
+                            "an":1996,
+                            "indice":9,
+                            "author":"ICCV - Institutul de Cercetare a calitatii vietii",
+                            "leaf":true
+                        },
+                        {
+                            "name":"Diagnoza calitatii vietii",
+                            "an":1990,
+                            "indice":38,
+                            "type":"Sts",
+                            "author":"ICCV - Institutul de Cercetare a calitatii vietii",
+                            "leaf":true
+                        },
+                        {
+                            "name":"Diagnoza calitatii vietii",
+                            "an":1995,
+                            "indice":11,
+                            "type":"Sts",
+                            "author":"ICCV - Institutul de Cercetare a calitatii vietii",
+                            "leaf":true
+                        },
+                        {
+                            "name":"Diagnoza calitatii vietii",
+                            "an":1991,
+                            "type":"Sts",
+                            "indice":35,
+                            "author":"ICCV - Institutul de Cercetare a calitatii vietii",
+                            "leaf":true
+                        },
+                        {
+                            "name":"Diagnoza calitatii vietii",
+                            "an":1994,
+                            "indice":12,
+                            "type":"Sts",
+                            "author":"ICCV - Institutul de Cercetare a calitatii vietii",
+                            "leaf":true
+                        },
+                        {
+                            "name":"Diagnoza calitatii vietii",
+                            "an":1993,
+                            "type":"Sts",
+                            "indice":19,
+                            "author":"ICCV - Institutul de Cercetare a calitatii vietii",
+                            "leaf":true
+                        }
+                    ]
+                },
+                {
+                    "indice":5,
+                    "name":"Ancheta serviciilor publice",
+                    "type":"S",
+                    "data":[
+                        {
+                            "name":"ancheta serviciilor publice",
+                            "an":1996,
+                            "indice":44,
+                            "type":"Sts",
+                            "leaf":true
+                        },
+                        {
+                            "name":"ancheta serviciilor publice",
+                            "indice":27,
+                            "an":1992,
+                            "type":"Sts",
+                            "leaf":true
+                        },
+                        {
+                            "name":"ancheta serviciilor publice",
+                            "type":"Sts",
+                            "indice":6,
+                            "an":1997,
+                            "leaf":true
+                        },
+                        {
+                            "name":"ancheta serviciilor publice",
+                            "an":1998,
+                            "indice":45,
+                            "type":"Sts",
+                            "leaf":true
+                        },
+                        {
+                            "name":"ancheta serviciilor publice",
+                            "type":"Sts",
+                            "indice":43,
+                            "an":1995,
+                            "leaf":true
+                        }
+                    ]
+                },
+                {
+                    "indice":9,
+                    "name":"Alte studii",
+                    "type":"C",
+                    "data":[
+                        {
+                            "name":"Experienta de viata a adolescentilor",
+                            "an":1992,
+                            "indice":32,
+                            "type":"St",
+                            "leaf":true
+                        },
+                        {
+                            "name":"Fenomenul lecturii in perioada de tranzitie",
+                            "indice":25,
+                            "type":"St",
+                            "an":1993,
+                            "leaf":true
+                        },
+                        {
+                            "name":"Mod de viata. Stil de viata",
+                            "an":1991,
+                            "indice":34,
+                            "type":"St",
+                            "leaf":true
+                        },
+                        {
+                            "name":"Atitudinea fata de reforma",
+                            "an":1993,
+                            "type":"St",
+                            "indice":24,
+                            "leaf":true
+                        },
+                        {
+                            "name":"Perceptia populatiei privind serviciile sociale si autoritatile publice",
+                            "an":1994,
+                            "indice":17,
+                            "type":"St",
+                            "leaf":true
+                        },
+                        {
+                            "name":"Tineretul in Romania actuala",
+                            "indice":16,
+                            "an":1994,
+                            "type":"St",
+                            "leaf":true
+                        },
+                        {
+                            "name":"Probleme sociale si nivel de trai",
+                            "an":1998,
+                            "indice":41,
+                            "type":"St",
+                            "leaf":true
+                        },
+                        {
+                            "name":"Reteaua de observare sociala privind problemele populatiei de rromi",
+                            "an":1992,
+                            "indice":33,
+                            "type":"St",
+                            "leaf":true
+                        },
+                        {
+                            "name":"Indicatori de dezvoltare a satelor romanesti",
+                            "an":1998,
+                            "indice":47,
+                            "type":"St",
+                            "leaf":true
+                        },
+                        {
+                            "name":"Viata de familie. Stil de viata, valori familiale",
+                            "an":1992,
+                            "indice":31,
+                            "type":"St",
+                            "leaf":true
+                        },
+                        {
+                            "name":"Sondajul de configurare SNMATV",
+                            "an":2003,
+                            "indice":8,
+                            "type":"St",
+                            "leaf":true
+                        },
+                        {
+                            "name":"Romania 10% - Evaluarea sistemului de ajutor social si analiza segmentului cel mai sarac in perioada de tranzitie",
+                            "indice":10,
+                            "an":1996,
+                            "type":"St",
+                            "leaf":true
+                        }, {
+                            "name":"Satul romanesc in perioada de tranzitie",
+                            "an":1993,
+                            "indice":23,
+                            "type":"St",
+                            "leaf":true
+                        }
+                    ]
+                },
+                {
+                    "indice":10,
+                    "name":"Sondaje de opinie",
+                    "type":"C",
+                    "data":[
+                        {
+                            "name":"Sondaj de opinie publica - septembrie",
+                            "indice":39,
+                            "an":1998,
+                            "type":"St",
+                            "leaf":true
+                        },
+                        {
+                            "name":"Sondaj de opinie publica - martie",
+                            "an":1998,
+                            "indice":3,
+                            "type":"St",
+                            "leaf":true
+                        },
+                        {
+                            "name":"Sondaj de opinie publica - mai",
+                            "indice":40,
+                            "an":1999,
+                            "type":"St",
+                            "leaf":true
+                        }
+                    ]
+                },
+                {
+                    "indice":11,
+                    "name":"Saracie",
+                    "type":"C",
+                    "data":[
+                        {
+                            "name":"Saracie - populatie",
+                            "an":1993,
+                            "indice":21,
+                            "type":"St",
+                            "leaf":true
+                        },
+                        {
+                            "name":"Saracie - someri",
+                            "an":1993,
+                            "indice":22,
+                            "type":"St",
+                            "leaf":true
+                        },
+                        {
+                            "name":"Nivel de trai. Saracie - 1991",
+                            "an":1991,
+                            "indice":37,
+                            "type":"St",
+                            "leaf":true
+                        }
+                    ]
+                },
+                {
+                    "indice":12,
+                    "name":"Valori",
+                    "type":"C",
+                    "data":[
+                        {
+                            "name":"Valori fundamentale ale democratiei",
+                            "indice":5,
+                            "an":1997,
+                            "type":"St",
+                            "leaf":true
+                        },
+                        {
+                            "name":"Valori Europene - Romania",
+                            "an":1999,
+                            "indice":46,
+                            "type":"St",
+                            "leaf":true
+                        },
+                        {
+                            "name":"Valori fundamentale europene",
+                            "an":1993,
+                            "indice":28,
+                            "type":"St",
+                            "leaf":true
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

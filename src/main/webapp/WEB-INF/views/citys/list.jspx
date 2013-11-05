@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.1">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:list id="pl_ro_roda_domain_City" items="${citys}" z="gRM0o4jO8Fugw0FMlRtO9tkkG2c=">
+        <table:table data="${citys}" id="l_ro_roda_domain_City" path="/citys" z="EoLzKSfkfULVHH6Z4uy1HDdhMrc=">
+            <table:column id="c_ro_roda_domain_City_regions" property="regions" z="zB4CYq4x073CBwNuhU/vPCyMsqc="/>
+            <table:column id="c_ro_roda_domain_City_countryId" property="countryId" z="Aa/a+t1461ySoFXqx7wFeuu3iSI="/>
+            <table:column id="c_ro_roda_domain_City_name" property="name" z="bgUQ/IQqsl+1ML9+T1HVZAlzWRg="/>
+            <table:column id="c_ro_roda_domain_City_cityCode" property="cityCode" z="EDO+rLIqjcUb+RIXouZGl6iVrvE="/>
+            <table:column id="c_ro_roda_domain_City_cityCodeName" property="cityCodeName" z="mpfhFTpr+O0XDpWfm/AVkso32mg="/>
+        </table:table>
+    </page:list>
+</div>

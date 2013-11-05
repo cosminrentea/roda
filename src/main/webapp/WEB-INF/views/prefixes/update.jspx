@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <form:update id="fu_ro_roda_domain_Prefix" modelAttribute="prefix" path="/prefixes" versionField="none" z="PsofTemM2TPiwH3C/J6SNeyANa4=">
+        <field:simple field="people" id="c_ro_roda_domain_Prefix_people" messageCode="entity_reference_not_managed" messageCodeAttribute="Person" z="4NusOPiz9+JGN948HAsCPSWjx8U="/>
+        <field:input field="name" id="c_ro_roda_domain_Prefix_name" required="true" z="c64/ANNCOGic/934iMm0wBU7M18="/>
+    </form:update>
+</div>

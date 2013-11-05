@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.1">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:list id="pl_ro_roda_domain_InstanceOrg" items="${instanceorgs}" z="yHqDn5jYsKA4BWqz82n3xTookmg=">
+        <table:table data="${instanceorgs}" id="l_ro_roda_domain_InstanceOrg" path="/instanceorgs" z="gUa5YFN9AeTVCLIq61OWN3Xy7Ro=">
+            <table:column id="c_ro_roda_domain_InstanceOrg_instanceId" property="instanceId" z="9cYnA6oL66z+wW0KLHau6omSxhs="/>
+            <table:column id="c_ro_roda_domain_InstanceOrg_assocTypeId" property="assocTypeId" z="kkPLqa6AR5QD9kc0s+29ZkUw444="/>
+            <table:column id="c_ro_roda_domain_InstanceOrg_orgId" property="orgId" z="oe3mIi03YuhkWgod716A7ZQkHSM="/>
+            <table:column id="c_ro_roda_domain_InstanceOrg_assocDetails" property="assocDetails" z="580OE817yHNuZ84hWZQsozTZv8k="/>
+        </table:table>
+    </page:list>
+</div>

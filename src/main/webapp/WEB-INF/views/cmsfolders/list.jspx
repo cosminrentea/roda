@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.1">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:list id="pl_ro_roda_domain_CmsFolder" items="${cmsfolders}" z="VaeweRWzWFRZflmXdPLWKL8ig1k=">
+        <table:table data="${cmsfolders}" id="l_ro_roda_domain_CmsFolder" path="/cmsfolders" z="Qbz7y7LAptE+AN3N4nfwF/d7H6k=">
+            <table:column id="c_ro_roda_domain_CmsFolder_name" property="name" z="vHqXt1VNNk9XWLcYV2NSPEZlkco="/>
+            <table:column id="c_ro_roda_domain_CmsFolder_parentId" property="parentId" z="PbynEW82fyLzyRdQhr9XnpEV2IY="/>
+            <table:column id="c_ro_roda_domain_CmsFolder_description" property="description" z="wlzMOY4TYKBtTWpGUlnJOU2Oq50="/>
+        </table:table>
+    </page:list>
+</div>

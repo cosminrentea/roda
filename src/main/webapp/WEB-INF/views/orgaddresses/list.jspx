@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.1">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:list id="pl_ro_roda_domain_OrgAddress" items="${orgaddresses}" z="zup30rT6masw+GDF0b9bblZ43WE=">
+        <table:table data="${orgaddresses}" id="l_ro_roda_domain_OrgAddress" path="/orgaddresses" z="5OBhM9W+KaJtD+GU9deZC9DG9B8=">
+            <table:column id="c_ro_roda_domain_OrgAddress_addressId" property="addressId" z="vAEmirBkpEwl4lixcb2KmtwfByo="/>
+            <table:column id="c_ro_roda_domain_OrgAddress_orgId" property="orgId" z="AVWYfuQVBm6CwDKmI/joVbYkwWo="/>
+            <table:column date="true" dateTimePattern="${orgAddress_datestart_date_format}" id="c_ro_roda_domain_OrgAddress_dateStart" property="dateStart" z="jWcaM706vmuL4f+yEGlphCcunr4="/>
+            <table:column date="true" dateTimePattern="${orgAddress_dateend_date_format}" id="c_ro_roda_domain_OrgAddress_dateEnd" property="dateEnd" z="q+5Wi8Oou9KQnufJ6gJKF/5grLQ="/>
+        </table:table>
+    </page:list>
+</div>

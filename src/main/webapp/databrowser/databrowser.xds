@@ -1,0 +1,140 @@
+{
+    "name": "databrowser",
+    "settings": {
+        "spacesToIndent": 4,
+        "lineEnding": "CRLF",
+        "genTimestamps": false,
+        "cacheBust": false,
+        "urlPrefix": "http://localhost:8080/roda/databrowser",
+        "exportPath": "",
+        "buildShouldOverwriteIndex": true
+    },
+    "xdsVersion": "2.2.1",
+    "xdsBuild": 951,
+    "schemaVersion": 1,
+    "upgradeVersion": 210000000500,
+    "framework": "ext42",
+    "topInstanceFileMap": {
+        "cdd283e3-4192-4b83-928d-27fc6114ed53": {
+            "paths": [
+                "metadata/resource/Library"
+            ],
+            "className": "Library"
+        },
+        "6a53e171-71fc-481c-ac3f-b33e9b9e996c": {
+            "paths": [
+                "metadata/store/CatalogStore",
+                "app/store/override/CatalogStore.js",
+                "app/store/CatalogStore.js"
+            ],
+            "className": "CatalogStore"
+        },
+        "9b5fa0d4-8b38-470a-ab0e-3ab2987af3ee": {
+            "paths": [
+                "metadata/model/CatalogsModel",
+                "app/model/override/CatalogsModel.js",
+                "app/model/CatalogsModel.js"
+            ],
+            "className": "CatalogsModel"
+        },
+        "0a591825-1e42-45f7-a5b3-4ae11e03608b": {
+            "paths": [
+                "metadata/store/CatalogTreeStore",
+                "app/store/override/CatalogTreeStore.js",
+                "app/store/CatalogTreeStore.js"
+            ],
+            "className": "CatalogTreeStore"
+        },
+        "240716ff-02cb-46fd-8d5f-32c20cc9cea8": {
+            "paths": [
+                "metadata/model/CatalogDetailModel",
+                "app/model/override/CatalogDetailModel.js",
+                "app/model/CatalogDetailModel.js"
+            ],
+            "className": "CatalogDetailModel"
+        },
+        "9378a02d-5862-4455-a05e-06380ef3539c": {
+            "paths": [
+                "metadata/store/UsersStore",
+                "app/store/override/UsersStore.js",
+                "app/store/UsersStore.js"
+            ],
+            "className": "UsersStore"
+        },
+        "2eb1d7a7-f76a-4655-8f2f-cb1097375b93": {
+            "paths": [
+                "metadata/view/DataBrowserPanel",
+                "app/view/override/DataBrowserPanel.js",
+                "app/view/DataBrowserPanel.js",
+                "app/view/Viewport.js"
+            ],
+            "className": "DataBrowserPanel"
+        },
+        "a4a18a1c-0b3c-4376-b1ab-2fd797b6c25c": {
+            "paths": [
+                "metadata/model/UsersModel",
+                "app/model/override/UsersModel.js",
+                "app/model/UsersModel.js"
+            ],
+            "className": "UsersModel"
+        },
+        "a50d51fc-cb08-45a0-8384-435b19703f15": {
+            "paths": [
+                "metadata/store/CatalogDetailStore",
+                "app/store/override/CatalogDetailStore.js",
+                "app/store/CatalogDetailStore.js"
+            ],
+            "className": "CatalogDetailStore"
+        },
+        "a34cbdf2-31ae-4294-97bd-de203d4aaa0e": {
+            "paths": [
+                "metadata/store/YearTreeStore",
+                "app/store/override/YearTreeStore.js",
+                "app/store/YearTreeStore.js"
+            ],
+            "className": "YearTreeStore"
+        },
+        "f5bdeb17-282f-4adf-aacd-ebac4fa202ca": {
+            "paths": [
+                "metadata/model/YearsModel",
+                "app/model/override/YearsModel.js",
+                "app/model/YearsModel.js"
+            ],
+            "className": "YearsModel"
+        },
+        "969dd0ad-9a3d-48ce-bee6-226d89f258db": {
+            "paths": [
+                "metadata/view/DetailGridPanelCls",
+                "app/view/override/DetailGridPanelCls.js",
+                "app/view/DetailGridPanelCls.js"
+            ],
+            "className": "DetailGridPanelCls"
+        }
+    },
+    "viewOrderMap": {
+        "view": [
+            "2eb1d7a7-f76a-4655-8f2f-cb1097375b93",
+            "969dd0ad-9a3d-48ce-bee6-226d89f258db"
+        ],
+        "store": [
+            "6a53e171-71fc-481c-ac3f-b33e9b9e996c",
+            "0a591825-1e42-45f7-a5b3-4ae11e03608b",
+            "a34cbdf2-31ae-4294-97bd-de203d4aaa0e",
+            "9378a02d-5862-4455-a05e-06380ef3539c",
+            "a50d51fc-cb08-45a0-8384-435b19703f15"
+        ],
+        "controller": [],
+        "model": [
+            "9b5fa0d4-8b38-470a-ab0e-3ab2987af3ee",
+            "f5bdeb17-282f-4adf-aacd-ebac4fa202ca",
+            "240716ff-02cb-46fd-8d5f-32c20cc9cea8",
+            "a4a18a1c-0b3c-4376-b1ab-2fd797b6c25c"
+        ],
+        "resource": [
+            "cdd283e3-4192-4b83-928d-27fc6114ed53"
+        ],
+        "app": [
+            "application"
+        ]
+    }
+}

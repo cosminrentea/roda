@@ -1,0 +1,126 @@
+{
+    "type": "Ext.data.Model",
+    "reference": {
+        "name": "items",
+        "type": "array"
+    },
+    "codeClass": null,
+    "userConfig": {
+        "designer|userClassName": "CatalogDetailModel"
+    },
+    "designerId": "240716ff-02cb-46fd-8d5f-32c20cc9cea8",
+    "cn": [
+        {
+            "type": "Ext.data.Field",
+            "reference": {
+                "name": "fields",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "name": "an",
+                "type": "int",
+                "designer|userClassName": "MyField2"
+            },
+            "designerId": "e024d791-858b-4040-af4f-ed25fe42cfd1"
+        },
+        {
+            "type": "Ext.data.Field",
+            "reference": {
+                "name": "fields",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "name": "name",
+                "type": "string",
+                "designer|userClassName": "MyField3"
+            },
+            "designerId": "f9a670a9-213c-4176-a43a-9e1194f23dd8"
+        },
+        {
+            "type": "Ext.data.Field",
+            "reference": {
+                "name": "fields",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "name": "author",
+                "type": "string",
+                "designer|userClassName": "MyField15"
+            },
+            "designerId": "7f67345a-cec3-4c18-b9f3-68a36283e8b0"
+        },
+        {
+            "type": "Ext.data.Field",
+            "reference": {
+                "name": "fields",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "name": "description",
+                "type": "string",
+                "designer|userClassName": "MyField20"
+            },
+            "designerId": "78586707-ddd6-45ca-818b-347b74b113a3"
+        },
+        {
+            "type": "Ext.data.Field",
+            "reference": {
+                "name": "fields",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "name": "countries",
+                "type": "string",
+                "designer|userClassName": "MyField22"
+            },
+            "designerId": "efc370d7-2887-4c95-908d-cf278f8a589b"
+        },
+        {
+            "type": "Ext.data.Field",
+            "reference": {
+                "name": "fields",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "name": "geo_coverage",
+                "type": "string",
+                "designer|userClassName": "MyField23"
+            },
+            "designerId": "e0955bbb-e588-4253-923c-d55e59f76e3b"
+        },
+        {
+            "type": "Ext.data.Field",
+            "reference": {
+                "name": "fields",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "name": "unit_analysis",
+                "type": "string",
+                "designer|userClassName": "MyField24"
+            },
+            "designerId": "a282a68d-0456-4612-8b64-034ef5fe4a14"
+        },
+        {
+            "type": "Ext.data.Field",
+            "reference": {
+                "name": "fields",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "name": "universe",
+                "type": "string",
+                "designer|userClassName": "MyField25"
+            },
+            "designerId": "143110cf-6bd0-4af4-b1a5-9b5a65e83cdf"
+        }
+    ]
+}

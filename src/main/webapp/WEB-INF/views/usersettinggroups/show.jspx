@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.1">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:show id="ps_ro_roda_domain_UserSettingGroup" object="${usersettinggroup}" path="/usersettinggroups" z="3tAbVjoCjCFiEia9xwBopA54PTU=">
+        <field:display field="name" id="s_ro_roda_domain_UserSettingGroup_name" object="${usersettinggroup}" z="LZhI99wL98Pga3L5cy6946s3o3k="/>
+        <field:display field="description" id="s_ro_roda_domain_UserSettingGroup_description" object="${usersettinggroup}" z="EdPdpznPq10RlbDkTJFZcGZ4aiY="/>
+    </page:show>
+</div>

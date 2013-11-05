@@ -1,0 +1,1 @@
+grep -h "@RequestMapping(\"" ../src/main/java/ro/roda/web/*.java | cut -f 2 -d '"'

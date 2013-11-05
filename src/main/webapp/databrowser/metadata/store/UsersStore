@@ -1,0 +1,72 @@
+{
+    "type": "jsonstore",
+    "reference": {
+        "name": "items",
+        "type": "array"
+    },
+    "codeClass": null,
+    "userConfig": {
+        "autoLoad": true,
+        "model": "UsersModel",
+        "storeId": "UsersStore",
+        "designer|userClassName": "UsersStore"
+    },
+    "designerId": "9378a02d-5862-4455-a05e-06380ef3539c",
+    "cn": [
+        {
+            "type": "Ext.data.proxy.Rest",
+            "reference": {
+                "name": "proxy",
+                "type": "object"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "designer|userClassName": "MyRestProxy",
+                "url": "../../userses",
+                "format": null
+            },
+            "designerId": "34aacbb5-167d-4979-8962-bb9d85713ff2",
+            "cn": [
+                {
+                    "type": "Ext.data.reader.Json",
+                    "reference": {
+                        "name": "reader",
+                        "type": "object"
+                    },
+                    "codeClass": null,
+                    "userConfig": {
+                        "root": null,
+                        "designer|userClassName": "MyJsonReader1"
+                    },
+                    "designerId": "ebdaec14-396b-428a-9902-3fbf5bba996d"
+                }
+            ]
+        },
+        {
+            "type": "Ext.data.Field",
+            "reference": {
+                "name": "fields",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "name": "username",
+                "designer|userClassName": "MyField5"
+            },
+            "designerId": "394ece80-6517-476c-b76d-8fd6b3d02560"
+        },
+        {
+            "type": "Ext.data.Field",
+            "reference": {
+                "name": "fields",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "name": "password",
+                "designer|userClassName": "MyField6"
+            },
+            "designerId": "0b581401-3349-4c61-85f5-59805e9873c5"
+        }
+    ]
+}

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <form:update id="fu_ro_roda_domain_Country" modelAttribute="country" path="/countrys" versionField="none" z="GDGJ2p1hvBfOHi4R8n/lgU1z7Ys=">
+        <field:simple field="cities" id="c_ro_roda_domain_Country_cities" messageCode="entity_reference_not_managed" messageCodeAttribute="City" z="1cxYwT+qn3jJ5YxxQjR1b0oX7lY="/>
+        <field:simple field="regions" id="c_ro_roda_domain_Country_regions" messageCode="entity_reference_not_managed" messageCodeAttribute="Region" z="S8UpTaWsRI0BRI5cck0YtuPGqZk="/>
+        <field:input field="nameRo" id="c_ro_roda_domain_Country_nameRo" z="6394DQb0UFNi+W4MImKMnHycMG4="/>
+        <field:input field="nameSelf" id="c_ro_roda_domain_Country_nameSelf" z="y88vCnfY21nM8NnuDqw69Qfu6ak="/>
+        <field:input field="nameEn" id="c_ro_roda_domain_Country_nameEn" z="c4RXMSQLdOw9CBqfIJxUN/oGc1I="/>
+        <field:input field="iso3166" id="c_ro_roda_domain_Country_iso3166" required="true" z="l3ibS+Ae3tP74n5BGZMpMDqisfg="/>
+        <field:input field="iso3166Alpha3" id="c_ro_roda_domain_Country_iso3166Alpha3" z="tqP1m1qbk6JBvsTOXOP/RgYzGPc="/>
+    </form:update>
+</div>

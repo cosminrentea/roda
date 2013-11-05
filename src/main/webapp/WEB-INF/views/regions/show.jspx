@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.1">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:show id="ps_ro_roda_domain_Region" object="${region}" path="/regions" z="Mfu0ql80pq6I5HYqkSitdxm5QC0=">
+        <field:display field="cities" id="s_ro_roda_domain_Region_cities" object="${region}" z="0iRHDA9ci9GaMEa4mbvmndqFudE="/>
+        <field:display field="countryId" id="s_ro_roda_domain_Region_countryId" object="${region}" z="UNbLHnZdEkhUMXl2k0r1qJllY7g="/>
+        <field:display field="regiontypeId" id="s_ro_roda_domain_Region_regiontypeId" object="${region}" z="MWv6J45OnboMDFbIXu+73K74V84="/>
+        <field:display field="name" id="s_ro_roda_domain_Region_name" object="${region}" z="e/SrGLviIprIXMKvLFEDgG2US6A="/>
+        <field:display field="regionCode" id="s_ro_roda_domain_Region_regionCode" object="${region}" z="BtvO/IdjDR8VEeDOfE2IV6CS59I="/>
+        <field:display field="regionCodeName" id="s_ro_roda_domain_Region_regionCodeName" object="${region}" z="7zyfTiBxpWGbLfmXleb92AOQ4pI="/>
+    </page:show>
+</div>

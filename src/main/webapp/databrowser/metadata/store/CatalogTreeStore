@@ -1,0 +1,51 @@
+{
+    "type": "Ext.data.TreeStore",
+    "reference": {
+        "name": "items",
+        "type": "array"
+    },
+    "codeClass": null,
+    "userConfig": {
+        "autoLoad": true,
+        "model": "CatalogsModel",
+        "storeId": "CatalogTreeStore",
+        "designer|userClassName": "CatalogTreeStore",
+        "defaultRootId": null,
+        "defaultRootProperty": null,
+        "defaultRootText": null,
+        "root": [
+            "{name: 'Root', expandable: true, children:{}}"
+        ]
+    },
+    "designerId": "0a591825-1e42-45f7-a5b3-4ae11e03608b",
+    "cn": [
+        {
+            "type": "Ext.data.proxy.Ajax",
+            "reference": {
+                "name": "proxy",
+                "type": "object"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "designer|userClassName": "MyAjaxProxy1",
+                "url": "data/catalogs.json"
+            },
+            "designerId": "ef7d58a3-7e21-431a-8eef-77205958c42f",
+            "cn": [
+                {
+                    "type": "Ext.data.reader.Json",
+                    "reference": {
+                        "name": "reader",
+                        "type": "object"
+                    },
+                    "codeClass": null,
+                    "userConfig": {
+                        "root": "data",
+                        "designer|userClassName": "MyJsonReader1"
+                    },
+                    "designerId": "dea6dcac-f998-4f4d-910d-6c3cee13a7f3"
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:spring="http://www.springframework.org/tags" version="2.1">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <form:create id="fc_ro_roda_domain_Org" modelAttribute="org" path="/orgs" render="${empty dependencies}" z="ng1weJFZ8rG7QDjTwauJho7YbRc=">
+        <field:simple field="instanceOrgs" id="c_ro_roda_domain_Org_instanceOrgs" messageCode="entity_reference_not_managed" messageCodeAttribute="Instance Org" z="9Z4vzgwZ0TK+ZQFaVDELJfw70YI="/>
+        <field:simple field="orgAddresses" id="c_ro_roda_domain_Org_orgAddresses" messageCode="entity_reference_not_managed" messageCodeAttribute="Org Address" z="XsrHBfNZNA97DrI4W1Fz6RAtHF0="/>
+        <field:simple field="orgEmails" id="c_ro_roda_domain_Org_orgEmails" messageCode="entity_reference_not_managed" messageCodeAttribute="Org Email" z="3c5yoS9C7KhAuFBEtx14Sn8s8O4="/>
+        <field:simple field="orgInternets" id="c_ro_roda_domain_Org_orgInternets" messageCode="entity_reference_not_managed" messageCodeAttribute="Org Internet" z="+khNrXMMoLmLVzJ8/0DeoDrOv+w="/>
+        <field:simple field="orgPhones" id="c_ro_roda_domain_Org_orgPhones" messageCode="entity_reference_not_managed" messageCodeAttribute="Org Phone" z="NjZl3Y2lrFBRuywA2+EgbU+4shw="/>
+        <field:simple field="orgRelationss" id="c_ro_roda_domain_Org_orgRelationss" messageCode="entity_reference_not_managed" messageCodeAttribute="Org Relations" z="Q67FJhmlNB2Ic4+25w6oSFVlRVs="/>
+        <field:simple field="orgRelationss1" id="c_ro_roda_domain_Org_orgRelationss1" messageCode="entity_reference_not_managed" messageCodeAttribute="Org Relations" z="UnzrOWEDl6K2OIsMP6WpoKBYkQ8="/>
+        <field:simple field="personOrgs" id="c_ro_roda_domain_Org_personOrgs" messageCode="entity_reference_not_managed" messageCodeAttribute="Person Org" z="XAx9ZhI1MEPAsrEOYs/yXEX84As="/>
+        <field:select field="orgPrefixId" id="c_ro_roda_domain_Org_orgPrefixId" itemValue="id" items="${orgprefixes}" path="/orgprefixes" z="bS5bCquSIvkPDOxF3f8cjFp4aL8="/>
+        <field:select field="orgSufixId" id="c_ro_roda_domain_Org_orgSufixId" itemValue="id" items="${orgsufixes}" path="/orgsufixes" z="qUBXQnlIqr9RRTrVgvdukD3HF9c="/>
+        <field:input field="shortName" id="c_ro_roda_domain_Org_shortName" required="true" z="JttCSu95hUAJevc3Jw0twGe+Ejk="/>
+        <field:input field="fullName" id="c_ro_roda_domain_Org_fullName" required="true" z="sHf766h73UEb/N831/SjViPmnKU="/>
+        <field:simple field="studyOrgs" id="c_ro_roda_domain_Org_studyOrgs" messageCode="entity_reference_not_managed" messageCodeAttribute="Study Org" z="Zug81uQAqMj7Gz2eXMudDWznba8="/>
+    </form:create>
+    <form:dependency dependencies="${dependencies}" id="d_ro_roda_domain_Org" render="${not empty dependencies}" z="J5RMKWek7dRcnL4Wlafn8jUGxv0="/>
+</div>

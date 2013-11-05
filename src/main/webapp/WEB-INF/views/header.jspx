@@ -1,0 +1,54 @@
+<div id="header" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:spring="http://www.springframework.org/tags" xmlns:util="urn:jsptagdir:/WEB-INF/tags/util" version="2.1">
+	<jsp:directive.page contentType="text/html;charset=UTF-8" />
+  	<jsp:output omit-xml-declaration="yes" />
+
+	<spring:url var="banner" value="/resources/images/banner-graphic-roda-original.png" />
+	<spring:url var="home" value="/" />
+	<spring:message code="button_home" var="home_label" htmlEscape="false" />
+	<a href="${home}" name="${fn:escapeXml(home_label)}" title="${fn:escapeXml(home_label)}">
+    	<img src="${banner}" />
+	</a>
+
+<!--   
+    <spring:url value="/" var="home"/>
+	<span>
+    <a href="${home}">
+    	<spring:message code="button_home"/>
+    </a>
+	</span>
+-->  
+  
+	<div id="header-right" >
+	
+	<span id="language">
+    <spring:message code="global_language"/>
+    <c:out value=": "/>
+    <util:language label="English" locale="en"/>
+    <util:language label="Deutsch" locale="de"/>
+    <util:language label="Romana" locale="ro"/>
+    </span>
+    
+	<c:if test="${pageContext['request'].userPrincipal == null}">
+    <c:out value=" | "/>
+    <span>
+      <spring:url value="/login" var="login"/>
+      <a href="${login}">
+        <spring:message code="security_login"/>
+      </a>
+    </span>
+	</c:if>
+  
+	<c:if test="${pageContext['request'].userPrincipal != null}">
+    <c:out value=" | "/>
+    <span>
+      <spring:url value="/resources/j_spring_security_logout" var="logout"/>
+      <c:out value="[${pageContext['request'].userPrincipal.name}] " />
+      <a href="${logout}">
+        <spring:message code="security_logout"/>
+      </a>
+    </span>
+	</c:if>
+	
+	</div>
+  
+</div> 

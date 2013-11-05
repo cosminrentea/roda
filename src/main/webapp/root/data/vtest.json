@@ -1,0 +1,36 @@
+{
+	"data":[
+		{
+			"nrfreq":4,
+			"id":229,
+			"label":"Cum ar trebui realizate schimbarile",
+			"name":"C94",
+			"otherStatistics":[
+				{
+					"description":null,
+					"id":871,
+					"name":"Gradual",
+					"value":355.0
+				},
+				{
+					"description":null,
+					"id":873,
+					"name":"NR",
+					"value":19.0
+				},
+				{
+					"description":null,
+					"id":872,
+					"name":"Nu stiu",
+					"value":290.0
+				},
+				{
+					"description":null,
+					"id":870,
+					"name":"Radical si rapid",
+					"value":531.0
+				}
+			]
+		}
+	]
+}

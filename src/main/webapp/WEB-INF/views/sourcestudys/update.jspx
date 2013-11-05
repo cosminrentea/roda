@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <form:update id="fu_ro_roda_domain_Sourcestudy" modelAttribute="sourcestudy" path="/sourcestudys" versionField="none" z="Pu+F2n7brdltzziOgMs/kPSi0Jg=">
+        <field:simple field="sourcestudyTypeHistories" id="c_ro_roda_domain_Sourcestudy_sourcestudyTypeHistories" messageCode="entity_reference_not_managed" messageCodeAttribute="Sourcestudy Type History" z="Y6O7Sy7SL6PXva/WL0drbucd3ks="/>
+        <field:select field="orgId" id="c_ro_roda_domain_Sourcestudy_orgId" itemValue="id" items="${sources}" path="/sources" z="5ovJccdwQnjeclqsDtIfioQBqak="/>
+        <field:select field="type" id="c_ro_roda_domain_Sourcestudy_type" itemValue="id" items="${sourcestudytypes}" path="/sourcestudytypes" z="hitJBBXlb0XLhF32T6okdlGWk70="/>
+        <field:input field="name" id="c_ro_roda_domain_Sourcestudy_name" required="true" z="eADmND/2dXuAk+BzXn5a19YBhTo="/>
+        <field:input field="details" id="c_ro_roda_domain_Sourcestudy_details" z="LWsBVCZ42/H1s9BmN9M41F70PYA="/>
+    </form:update>
+</div>

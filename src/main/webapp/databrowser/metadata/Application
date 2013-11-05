@@ -1,0 +1,75 @@
+{
+    "type": "Ext.app.Application",
+    "reference": {
+        "name": "items",
+        "type": "array"
+    },
+    "codeClass": null,
+    "userConfig": {
+        "models": [
+            "CatalogsModel",
+            "CatalogDetailModel",
+            "UsersModel",
+            "YearsModel"
+        ],
+        "stores": [
+            "CatalogStore",
+            "CatalogTreeStore",
+            "UsersStore",
+            "CatalogDetailStore",
+            "YearTreeStore"
+        ],
+        "views": [
+            "DataBrowserPanel",
+            "DetailGridPanelCls"
+        ],
+        "requires": [
+            "Ext.grid.*",
+            "Ext.ux.PreviewPlugin",
+            "Ext.data.*",
+            "Ext.util.*",
+            "Ext.toolbar.Paging",
+            "Ext.ModelManager"
+        ],
+        "autoCreateViewport": true,
+        "name": "databrowser"
+    },
+    "designerId": "application",
+    "cn": [
+        {
+            "type": "Ext.Loader",
+            "reference": {
+                "name": "loader",
+                "type": "object"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "enabled": true,
+                "paths": [
+                    "{'Ext.ux': 'ux/'}\r",
+                    ""
+                ],
+                "designer|userClassName": "Loader11"
+            },
+            "designerId": "7a4fae4b-7b91-4857-ad3d-c719e202bc1b"
+        },
+        {
+            "type": "fixedfunction",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "designer|userClassName": "launch",
+                "fn": "launch",
+                "implHandler": [
+                    "Ext.syncRequire([\r",
+                    "'Ext.ux.PreviewPlugin'\r",
+                    "]);"
+                ]
+            },
+            "designerId": "f23bad49-59d1-4896-92c5-6de1c346526c"
+        }
+    ]
+}

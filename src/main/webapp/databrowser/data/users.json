@@ -1,0 +1,10 @@
+{
+	data: [{
+		username: 'ion',
+		password: 'ion321'
+		},{
+		username: 'popa',
+		password: 'poppa'
+		}
+	]
+}

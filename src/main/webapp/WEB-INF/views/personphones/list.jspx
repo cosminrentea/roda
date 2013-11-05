@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.1">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:list id="pl_ro_roda_domain_PersonPhone" items="${personphones}" z="o889bnTIUUBgei0s2+TwCwOysNY=">
+        <table:table data="${personphones}" id="l_ro_roda_domain_PersonPhone" path="/personphones" z="mSsRlXEw4Oo2iz6efWKIwrPx4Nk=">
+            <table:column id="c_ro_roda_domain_PersonPhone_personId" property="personId" z="SDmtWWE1ngXPJWBG4UTHIcejCFA="/>
+            <table:column id="c_ro_roda_domain_PersonPhone_phoneId" property="phoneId" z="YonBvskSIpUtWkK8cDDZHcWdwmY="/>
+            <table:column id="c_ro_roda_domain_PersonPhone_main" property="main" z="cX2bQvokSe88m88UIV1Onk0kto8="/>
+        </table:table>
+    </page:list>
+</div>

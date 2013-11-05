@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" version="2.1">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:show id="ps_ro_roda_domain_AclClass" object="${aclclass}" path="/aclclasses" z="SZ7rJw5mgC0VV1mUkMFEKBaWGZk=">
+        <field:display field="class1" id="s_ro_roda_domain_AclClass_class1" object="${aclclass}" z="n3pT4UwyV9LDC5tEH1utNOtHOF4="/>
+    </page:show>
+</div>

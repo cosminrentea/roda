@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN" "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+<tiles-definitions>
+    <definition extends="default" name="skips/list">
+        <put-attribute name="body" value="/WEB-INF/views/skips/list.jspx"/>
+    </definition>
+<definition extends="default" name="skips/show">
+        <put-attribute name="body" value="/WEB-INF/views/skips/show.jspx"/>
+    </definition>
+<definition extends="default" name="skips/create">
+        <put-attribute name="body" value="/WEB-INF/views/skips/create.jspx"/>
+    </definition>
+<definition extends="default" name="skips/update">
+        <put-attribute name="body" value="/WEB-INF/views/skips/update.jspx"/>
+    </definition>
+</tiles-definitions>

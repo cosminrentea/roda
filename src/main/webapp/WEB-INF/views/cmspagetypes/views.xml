@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN" "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+<tiles-definitions>
+    <definition extends="default" name="cmspagetypes/list">
+        <put-attribute name="body" value="/WEB-INF/views/cmspagetypes/list.jspx"/>
+    </definition>
+<definition extends="default" name="cmspagetypes/show">
+        <put-attribute name="body" value="/WEB-INF/views/cmspagetypes/show.jspx"/>
+    </definition>
+<definition extends="default" name="cmspagetypes/create">
+        <put-attribute name="body" value="/WEB-INF/views/cmspagetypes/create.jspx"/>
+    </definition>
+<definition extends="default" name="cmspagetypes/update">
+        <put-attribute name="body" value="/WEB-INF/views/cmspagetypes/update.jspx"/>
+    </definition>
+</tiles-definitions>

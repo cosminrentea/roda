@@ -1,0 +1,8 @@
+name, cms_layout_group_id, description, "layout_content"
+"Main RODA layout", 1,  "Layoutul principal al site-ului folosit de majoritatea paginilor", "<html></html>"
+"Data browser layout", 1,  "Layoutul folosit pentru pagina databrowserului", "<html></html>"
+"Left column layout", 2,  "Layoutul folosit pentru paginile cu mult continut", "<html></html>"
+"Contact layout", 3, "Layoutul folosit pentru formularul de contact", "<html></html>"
+"Application", 3, "Layoutul folosit pentru formularul de solicitare de drepturi", "<html></html>"
+"User data browser", 4, "Layoutul folosit pentru databrowserul utilizatorului", "<html></html>"
+"User profile", 4, "Layoutul folosit pentru profilul utilizatorului", "<html></html>"

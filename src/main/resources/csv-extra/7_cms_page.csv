@@ -1,0 +1,5 @@
+name, cms_layout_id, url, cms_page_type_id, navigable, visible
+"Homepage", 1, "/ro/home", 1, "true", "true"
+"about", 1, "/ro/about", 1, "true", "true"
+"Obiective", 1, "/ro/obiective", 1, "true", "true"
+"Legaturi utile", 1, "/ro/legaturi", 1, "true", "true"

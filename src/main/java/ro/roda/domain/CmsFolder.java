@@ -28,7 +28,6 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrInputDocument;
-import org.hibernate.envers.Audited;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.scheduling.annotation.Async;
@@ -43,8 +42,7 @@ import flexjson.JSONSerializer;
 public class CmsFolder {
 
 	public static long countCmsFolders() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM CmsFolder o",
-				Long.class).getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM CmsFolder o", Long.class).getSingleResult();
 	}
 
 	@Async
@@ -67,8 +65,7 @@ public class CmsFolder {
 	}
 
 	public static List<CmsFolder> findAllCmsFolders() {
-		return entityManager().createQuery("SELECT o FROM CmsFolder o",
-				CmsFolder.class).getResultList();
+		return entityManager().createQuery("SELECT o FROM CmsFolder o", CmsFolder.class).getResultList();
 	}
 
 	public static CmsFolder findCmsFolder(Integer id) {
@@ -77,23 +74,18 @@ public class CmsFolder {
 		return entityManager().find(CmsFolder.class, id);
 	}
 
-	public static List<CmsFolder> findCmsFolderEntries(int firstResult,
-			int maxResults) {
-		return entityManager()
-				.createQuery("SELECT o FROM CmsFolder o", CmsFolder.class)
-				.setFirstResult(firstResult).setMaxResults(maxResults)
-				.getResultList();
+	public static List<CmsFolder> findCmsFolderEntries(int firstResult, int maxResults) {
+		return entityManager().createQuery("SELECT o FROM CmsFolder o", CmsFolder.class).setFirstResult(firstResult)
+				.setMaxResults(maxResults).getResultList();
 	}
 
 	public static Collection<CmsFolder> fromJsonArrayToCmsFolders(String json) {
-		return new JSONDeserializer<List<CmsFolder>>()
-				.use(null, ArrayList.class).use("values", CmsFolder.class)
+		return new JSONDeserializer<List<CmsFolder>>().use(null, ArrayList.class).use("values", CmsFolder.class)
 				.deserialize(json);
 	}
 
 	public static CmsFolder fromJsonToCmsFolder(String json) {
-		return new JSONDeserializer<CmsFolder>().use(null, CmsFolder.class)
-				.deserialize(json);
+		return new JSONDeserializer<CmsFolder>().use(null, CmsFolder.class).deserialize(json);
 	}
 
 	public static void indexCmsFolder(CmsFolder cmsFolder) {
@@ -116,10 +108,8 @@ public class CmsFolder {
 			// this type
 			sid.addField(
 					"cmsfolder_solrsummary_t",
-					new StringBuilder().append(cmsFolder.getParentId())
-							.append(" ").append(cmsFolder.getName())
-							.append(" ").append(cmsFolder.getDescription())
-							.append(" ").append(cmsFolder.getId()));
+					new StringBuilder().append(cmsFolder.getParentId()).append(" ").append(cmsFolder.getName())
+							.append(" ").append(cmsFolder.getDescription()).append(" ").append(cmsFolder.getId()));
 			documents.add(sid);
 		}
 		try {
@@ -182,8 +172,7 @@ public class CmsFolder {
 	 *            - descrierea directorului.
 	 * @return
 	 */
-	public static CmsFolder checkCmsFolder(Integer id, String name,
-			CmsFolder parentId, String description) {
+	public static CmsFolder checkCmsFolder(Integer id, String name, CmsFolder parentId, String description) {
 		CmsFolder object;
 
 		if (id != null) {
@@ -198,8 +187,8 @@ public class CmsFolder {
 
 		if (name != null && parentId != null) {
 			TypedQuery<CmsFolder> query = entityManager().createQuery(
-					"SELECT o FROM CmsFolder o WHERE lower(o.name) = lower(:name) AND "
-							+ "o.parentId = :parentId", CmsFolder.class);
+					"SELECT o FROM CmsFolder o WHERE lower(o.name) = lower(:name) AND " + "o.parentId = :parentId",
+					CmsFolder.class);
 			query.setParameter("name", name);
 			query.setParameter("parentId", parentId);
 
@@ -237,13 +226,13 @@ public class CmsFolder {
 	private String name;
 
 	@ManyToOne
-	@JoinColumn(name = "parent_id", columnDefinition = "integer", referencedColumnName = "id", insertable = false, updatable = false)
+	@JoinColumn(name = "parent_id", columnDefinition = "integer", referencedColumnName = "id", insertable = true, updatable = true)
 	private CmsFolder parentId;
 
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	@Autowired(required=false)
+	@Autowired(required = false)
 	transient SolrServer solrServer;
 
 	@Transactional
@@ -341,8 +330,7 @@ public class CmsFolder {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this,
-				ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate
@@ -359,8 +347,7 @@ public class CmsFolder {
 	@Override
 	public boolean equals(Object obj) {
 		return (id != null && id.equals(((CmsFolder) obj).id))
-				|| ((name != null && name
-						.equalsIgnoreCase(((CmsFolder) obj).name)) && (parentId != null && parentId
+				|| ((name != null && name.equalsIgnoreCase(((CmsFolder) obj).name)) && (parentId != null && parentId
 						.equals(((CmsFolder) obj).parentId)));
 	}
 }

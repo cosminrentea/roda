@@ -28,7 +28,6 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrInputDocument;
-import org.hibernate.envers.Audited;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.scheduling.annotation.Async;
@@ -43,9 +42,7 @@ import flexjson.JSONSerializer;
 public class CmsLayoutGroup {
 
 	public static long countCmsLayoutGroups() {
-		return entityManager().createQuery(
-				"SELECT COUNT(o) FROM CmsLayoutGroup o", Long.class)
-				.getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM CmsLayoutGroup o", Long.class).getSingleResult();
 	}
 
 	@Async
@@ -68,8 +65,7 @@ public class CmsLayoutGroup {
 	}
 
 	public static List<CmsLayoutGroup> findAllCmsLayoutGroups() {
-		return entityManager().createQuery("SELECT o FROM CmsLayoutGroup o",
-				CmsLayoutGroup.class).getResultList();
+		return entityManager().createQuery("SELECT o FROM CmsLayoutGroup o", CmsLayoutGroup.class).getResultList();
 	}
 
 	public static CmsLayoutGroup findCmsLayoutGroup(Integer id) {
@@ -78,24 +74,18 @@ public class CmsLayoutGroup {
 		return entityManager().find(CmsLayoutGroup.class, id);
 	}
 
-	public static List<CmsLayoutGroup> findCmsLayoutGroupEntries(
-			int firstResult, int maxResults) {
-		return entityManager()
-				.createQuery("SELECT o FROM CmsLayoutGroup o",
-						CmsLayoutGroup.class).setFirstResult(firstResult)
-				.setMaxResults(maxResults).getResultList();
+	public static List<CmsLayoutGroup> findCmsLayoutGroupEntries(int firstResult, int maxResults) {
+		return entityManager().createQuery("SELECT o FROM CmsLayoutGroup o", CmsLayoutGroup.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
 	}
 
-	public static Collection<CmsLayoutGroup> fromJsonArrayToCmsLayoutGroups(
-			String json) {
-		return new JSONDeserializer<List<CmsLayoutGroup>>()
-				.use(null, ArrayList.class).use("values", CmsLayoutGroup.class)
-				.deserialize(json);
+	public static Collection<CmsLayoutGroup> fromJsonArrayToCmsLayoutGroups(String json) {
+		return new JSONDeserializer<List<CmsLayoutGroup>>().use(null, ArrayList.class)
+				.use("values", CmsLayoutGroup.class).deserialize(json);
 	}
 
 	public static CmsLayoutGroup fromJsonToCmsLayoutGroup(String json) {
-		return new JSONDeserializer<CmsLayoutGroup>().use(null,
-				CmsLayoutGroup.class).deserialize(json);
+		return new JSONDeserializer<CmsLayoutGroup>().use(null, CmsLayoutGroup.class).deserialize(json);
 	}
 
 	public static void indexCmsLayoutGroup(CmsLayoutGroup cmsLayoutGroup) {
@@ -105,26 +95,20 @@ public class CmsLayoutGroup {
 	}
 
 	@Async
-	public static void indexCmsLayoutGroups(
-			Collection<CmsLayoutGroup> cmslayoutgroups) {
+	public static void indexCmsLayoutGroups(Collection<CmsLayoutGroup> cmslayoutgroups) {
 		List<SolrInputDocument> documents = new ArrayList<SolrInputDocument>();
 		for (CmsLayoutGroup cmsLayoutGroup : cmslayoutgroups) {
 			SolrInputDocument sid = new SolrInputDocument();
 			sid.addField("id", "cmslayoutgroup_" + cmsLayoutGroup.getId());
-			sid.addField("cmsLayoutGroup.parentid_t",
-					cmsLayoutGroup.getParentId());
+			sid.addField("cmsLayoutGroup.parentid_t", cmsLayoutGroup.getParentId());
 			sid.addField("cmsLayoutGroup.name_s", cmsLayoutGroup.getName());
-			sid.addField("cmsLayoutGroup.description_s",
-					cmsLayoutGroup.getDescription());
+			sid.addField("cmsLayoutGroup.description_s", cmsLayoutGroup.getDescription());
 			sid.addField("cmsLayoutGroup.id_i", cmsLayoutGroup.getId());
 			// Add summary field to allow searching documents for objects of
 			// this type
-			sid.addField("cmslayoutgroup_solrsummary_t",
-					new StringBuilder().append(cmsLayoutGroup.getParentId())
-							.append(" ").append(cmsLayoutGroup.getName())
-							.append(" ")
-							.append(cmsLayoutGroup.getDescription())
-							.append(" ").append(cmsLayoutGroup.getId()));
+			sid.addField("cmslayoutgroup_solrsummary_t", new StringBuilder().append(cmsLayoutGroup.getParentId())
+					.append(" ").append(cmsLayoutGroup.getName()).append(" ").append(cmsLayoutGroup.getDescription())
+					.append(" ").append(cmsLayoutGroup.getId()));
 			documents.add(sid);
 		}
 		try {
@@ -187,8 +171,8 @@ public class CmsLayoutGroup {
 	 *            - descrierea grupului.
 	 * @return
 	 */
-	public static CmsLayoutGroup checkCmsLayoutGroup(Integer id, String name,
-			CmsLayoutGroup parentId, String description) {
+	public static CmsLayoutGroup checkCmsLayoutGroup(Integer id, String name, CmsLayoutGroup parentId,
+			String description) {
 		CmsLayoutGroup object;
 
 		if (id != null) {
@@ -202,9 +186,10 @@ public class CmsLayoutGroup {
 		List<CmsLayoutGroup> queryResult;
 
 		if (name != null && parentId != null) {
-			TypedQuery<CmsLayoutGroup> query = entityManager().createQuery(
-					"SELECT o FROM CmsLayoutGroup o WHERE lower(o.name) = lower(:name) AND "
-							+ "o.parentId = :parentId", CmsLayoutGroup.class);
+			TypedQuery<CmsLayoutGroup> query = entityManager()
+					.createQuery(
+							"SELECT o FROM CmsLayoutGroup o WHERE lower(o.name) = lower(:name) AND "
+									+ "o.parentId = :parentId", CmsLayoutGroup.class);
 			query.setParameter("name", name);
 			query.setParameter("parentId", parentId);
 
@@ -242,13 +227,13 @@ public class CmsLayoutGroup {
 	private String name;
 
 	@ManyToOne
-	@JoinColumn(name = "parent_id", columnDefinition = "integer", referencedColumnName = "id", insertable = false, updatable = false)
+	@JoinColumn(name = "parent_id", columnDefinition = "integer", referencedColumnName = "id", insertable = true, updatable = true)
 	private CmsLayoutGroup parentId;
 
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	@Autowired(required=false)
+	@Autowired(required = false)
 	transient SolrServer solrServer;
 
 	@Transactional
@@ -312,8 +297,7 @@ public class CmsLayoutGroup {
 		if (this.entityManager.contains(this)) {
 			this.entityManager.remove(this);
 		} else {
-			CmsLayoutGroup attached = CmsLayoutGroup
-					.findCmsLayoutGroup(this.id);
+			CmsLayoutGroup attached = CmsLayoutGroup.findCmsLayoutGroup(this.id);
 			this.entityManager.remove(attached);
 		}
 	}
@@ -347,8 +331,7 @@ public class CmsLayoutGroup {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this,
-				ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate
@@ -365,8 +348,7 @@ public class CmsLayoutGroup {
 	@Override
 	public boolean equals(Object obj) {
 		return (id != null && id.equals(((CmsLayoutGroup) obj).id))
-				|| ((name != null && name
-						.equalsIgnoreCase(((CmsLayoutGroup) obj).name)) && (parentId != null && parentId
+				|| ((name != null && name.equalsIgnoreCase(((CmsLayoutGroup) obj).name)) && (parentId != null && parentId
 						.equals(((CmsLayoutGroup) obj).parentId)));
 	}
 }

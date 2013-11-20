@@ -28,7 +28,6 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrInputDocument;
-import org.hibernate.envers.Audited;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.scheduling.annotation.Async;
@@ -43,9 +42,7 @@ import flexjson.JSONSerializer;
 public class CmsSnippetGroup {
 
 	public static long countCmsSnippetGroups() {
-		return entityManager().createQuery(
-				"SELECT COUNT(o) FROM CmsSnippetGroup o", Long.class)
-				.getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM CmsSnippetGroup o", Long.class).getSingleResult();
 	}
 
 	@Async
@@ -68,8 +65,7 @@ public class CmsSnippetGroup {
 	}
 
 	public static List<CmsSnippetGroup> findAllCmsSnippetGroups() {
-		return entityManager().createQuery("SELECT o FROM CmsSnippetGroup o",
-				CmsSnippetGroup.class).getResultList();
+		return entityManager().createQuery("SELECT o FROM CmsSnippetGroup o", CmsSnippetGroup.class).getResultList();
 	}
 
 	public static CmsSnippetGroup findCmsSnippetGroup(Integer id) {
@@ -78,24 +74,18 @@ public class CmsSnippetGroup {
 		return entityManager().find(CmsSnippetGroup.class, id);
 	}
 
-	public static List<CmsSnippetGroup> findCmsSnippetGroupEntries(
-			int firstResult, int maxResults) {
-		return entityManager()
-				.createQuery("SELECT o FROM CmsSnippetGroup o",
-						CmsSnippetGroup.class).setFirstResult(firstResult)
-				.setMaxResults(maxResults).getResultList();
+	public static List<CmsSnippetGroup> findCmsSnippetGroupEntries(int firstResult, int maxResults) {
+		return entityManager().createQuery("SELECT o FROM CmsSnippetGroup o", CmsSnippetGroup.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
 	}
 
-	public static Collection<CmsSnippetGroup> fromJsonArrayToCmsSnippetGroups(
-			String json) {
-		return new JSONDeserializer<List<CmsSnippetGroup>>()
-				.use(null, ArrayList.class)
+	public static Collection<CmsSnippetGroup> fromJsonArrayToCmsSnippetGroups(String json) {
+		return new JSONDeserializer<List<CmsSnippetGroup>>().use(null, ArrayList.class)
 				.use("values", CmsSnippetGroup.class).deserialize(json);
 	}
 
 	public static CmsSnippetGroup fromJsonToCmsSnippetGroup(String json) {
-		return new JSONDeserializer<CmsSnippetGroup>().use(null,
-				CmsSnippetGroup.class).deserialize(json);
+		return new JSONDeserializer<CmsSnippetGroup>().use(null, CmsSnippetGroup.class).deserialize(json);
 	}
 
 	public static void indexCmsSnippetGroup(CmsSnippetGroup cmsSnippetGroup) {
@@ -105,27 +95,20 @@ public class CmsSnippetGroup {
 	}
 
 	@Async
-	public static void indexCmsSnippetGroups(
-			Collection<CmsSnippetGroup> cmssnippetgroups) {
+	public static void indexCmsSnippetGroups(Collection<CmsSnippetGroup> cmssnippetgroups) {
 		List<SolrInputDocument> documents = new ArrayList<SolrInputDocument>();
 		for (CmsSnippetGroup cmsSnippetGroup : cmssnippetgroups) {
 			SolrInputDocument sid = new SolrInputDocument();
 			sid.addField("id", "cmssnippetgroup_" + cmsSnippetGroup.getId());
-			sid.addField("cmsSnippetGroup.parentid_t",
-					cmsSnippetGroup.getParentId());
+			sid.addField("cmsSnippetGroup.parentid_t", cmsSnippetGroup.getParentId());
 			sid.addField("cmsSnippetGroup.name_s", cmsSnippetGroup.getName());
-			sid.addField("cmsSnippetGroup.description_s",
-					cmsSnippetGroup.getDescription());
+			sid.addField("cmsSnippetGroup.description_s", cmsSnippetGroup.getDescription());
 			sid.addField("cmsSnippetGroup.id_i", cmsSnippetGroup.getId());
 			// Add summary field to allow searching documents for objects of
 			// this type
-			sid.addField(
-					"cmssnippetgroup_solrsummary_t",
-					new StringBuilder().append(cmsSnippetGroup.getParentId())
-							.append(" ").append(cmsSnippetGroup.getName())
-							.append(" ")
-							.append(cmsSnippetGroup.getDescription())
-							.append(" ").append(cmsSnippetGroup.getId()));
+			sid.addField("cmssnippetgroup_solrsummary_t", new StringBuilder().append(cmsSnippetGroup.getParentId())
+					.append(" ").append(cmsSnippetGroup.getName()).append(" ").append(cmsSnippetGroup.getDescription())
+					.append(" ").append(cmsSnippetGroup.getId()));
 			documents.add(sid);
 		}
 		try {
@@ -188,8 +171,8 @@ public class CmsSnippetGroup {
 	 *            - descrierea grupului.
 	 * @return
 	 */
-	public static CmsSnippetGroup checkCmsSnippetGroup(Integer id, String name,
-			CmsSnippetGroup parentId, String description) {
+	public static CmsSnippetGroup checkCmsSnippetGroup(Integer id, String name, CmsSnippetGroup parentId,
+			String description) {
 		CmsSnippetGroup object;
 
 		if (id != null) {
@@ -243,13 +226,13 @@ public class CmsSnippetGroup {
 	private String name;
 
 	@ManyToOne
-	@JoinColumn(name = "parent_id", columnDefinition = "integer", referencedColumnName = "id", insertable = false, updatable = false)
+	@JoinColumn(name = "parent_id", columnDefinition = "integer", referencedColumnName = "id", insertable = true, updatable = true)
 	private CmsSnippetGroup parentId;
 
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	@Autowired(required=false)
+	@Autowired(required = false)
 	transient SolrServer solrServer;
 
 	@Transactional
@@ -313,8 +296,7 @@ public class CmsSnippetGroup {
 		if (this.entityManager.contains(this)) {
 			this.entityManager.remove(this);
 		} else {
-			CmsSnippetGroup attached = CmsSnippetGroup
-					.findCmsSnippetGroup(this.id);
+			CmsSnippetGroup attached = CmsSnippetGroup.findCmsSnippetGroup(this.id);
 			this.entityManager.remove(attached);
 		}
 	}
@@ -348,8 +330,7 @@ public class CmsSnippetGroup {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this,
-				ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate
@@ -366,8 +347,7 @@ public class CmsSnippetGroup {
 	@Override
 	public boolean equals(Object obj) {
 		return (id != null && id.equals(((CmsSnippetGroup) obj).id))
-				|| ((name != null && name
-						.equalsIgnoreCase(((CmsSnippetGroup) obj).name)) && (parentId != null && parentId
+				|| ((name != null && name.equalsIgnoreCase(((CmsSnippetGroup) obj).name)) && (parentId != null && parentId
 						.equals(((CmsSnippetGroup) obj).parentId)));
 	}
 }

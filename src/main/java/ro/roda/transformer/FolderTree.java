@@ -19,7 +19,7 @@ public class FolderTree extends FileList {
 		JSONSerializer serializer = new JSONSerializer();
 
 		serializer.exclude("*.class", "depth", "type");
-		serializer.include("id", "name", "expanded");
+		serializer.include("id", "name", "expanded", "iconCls");
 
 		int maxDepth = 0;
 		for (FolderTree fileTree : collection) {
@@ -35,9 +35,9 @@ public class FolderTree extends FileList {
 			}
 			includeData += "children";
 			serializer.exclude(includeData + ".depth", includeData + ".alias", includeData + ".directory", includeData
-					+ ".filesize", includeData + ".folderid");
+					+ ".filesize", includeData + ".folderid", includeData + ".type");
 			serializer.include(includeData + ".name", includeData + ".id", includeData + ".expanded", includeData
-					+ ".filetype");
+					+ ".filetype", includeData + ".iconCls");
 			serializer.transform(new FieldNameTransformer("indice"), includeData + ".id");
 		}
 
@@ -124,7 +124,7 @@ public class FolderTree extends FileList {
 	}
 
 	public FolderTree(CmsFolder folder) {
-		super(folder.getId(), folder.getName(), null, null, "folder", null, null);
+		super(folder.getId(), folder.getName(), null, null, "folder", null, null, "folder");
 
 		this.children = new HashSet<FileList>();
 	}
@@ -151,7 +151,7 @@ public class FolderTree extends FileList {
 		JSONSerializer serializer = new JSONSerializer();
 
 		serializer.exclude("*.class", "depth", "type");
-		serializer.include("id", "name", "expanded");
+		serializer.include("id", "name", "expanded", "iconCls");
 
 		String includeData = "";
 		for (int i = 0; i < getDepth() + 1; i++) {
@@ -160,9 +160,9 @@ public class FolderTree extends FileList {
 			}
 			includeData += "children";
 			serializer.exclude(includeData + ".depth", includeData + ".alias", includeData + ".directory", includeData
-					+ ".filesize", includeData + ".folderid");
+					+ ".filesize", includeData + ".folderid", includeData + ".type");
 			serializer.include(includeData + ".name", includeData + ".id", includeData + ".expanded", includeData
-					+ ".filetype");
+					+ ".filetype", includeData + ".iconCls");
 			serializer.transform(new FieldNameTransformer("indice"), includeData + ".id");
 		}
 

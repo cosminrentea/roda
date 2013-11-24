@@ -19,7 +19,7 @@ public class SnippetGroupTree extends SnippetList {
 		JSONSerializer serializer = new JSONSerializer();
 
 		serializer.exclude("*.class", "depth", "type");
-		serializer.include("id", "name", "expanded");
+		serializer.include("id", "name", "expanded", "iconCls");
 
 		int maxDepth = 0;
 		for (SnippetGroupTree snippetTree : collection) {
@@ -36,7 +36,8 @@ public class SnippetGroupTree extends SnippetList {
 			includeData += "children";
 			serializer.exclude(includeData + ".depth", includeData + ".groupid", includeData + ".directory",
 					includeData + ".content", includeData + ".n", includeData + ".type");
-			serializer.include(includeData + ".name", includeData + ".id", includeData + ".expanded");
+			serializer.include(includeData + ".name", includeData + ".id", includeData + ".expanded", includeData
+					+ ".iconCls");
 			serializer.transform(new FieldNameTransformer("indice"), includeData + ".id");
 		}
 
@@ -150,7 +151,7 @@ public class SnippetGroupTree extends SnippetList {
 		JSONSerializer serializer = new JSONSerializer();
 
 		serializer.exclude("*.class", "depth", "type");
-		serializer.include("id", "name", "expanded");
+		serializer.include("id", "name", "expanded", "iconCls");
 
 		String includeData = "";
 		for (int i = 0; i < getDepth() + 1; i++) {
@@ -160,7 +161,8 @@ public class SnippetGroupTree extends SnippetList {
 			includeData += "children";
 			serializer.exclude(includeData + ".depth", includeData + ".groupid", includeData + ".directory",
 					includeData + ".content", includeData + ".n", includeData + ".type");
-			serializer.include(includeData + ".name", includeData + ".id", includeData + ".expanded");
+			serializer.include(includeData + ".name", includeData + ".id", includeData + ".expanded", includeData
+					+ ".iconCls");
 			serializer.transform(new FieldNameTransformer("indice"), includeData + ".id");
 		}
 

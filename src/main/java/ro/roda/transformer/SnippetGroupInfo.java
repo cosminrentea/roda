@@ -18,7 +18,7 @@ public class SnippetGroupInfo extends SnippetList {
 
 		serializer.exclude("*.class", "expanded", "type");
 		serializer.include("id", "name", "pagesnumber", "groupid", "itemtype", "directory", "content", "leaf",
-				"itemtype");
+				"itemtype", "iconCls");
 
 		serializer.transform(new FieldNameTransformer("snippetsnumber"), "pagesnumber");
 		serializer.transform(new FieldNameTransformer("description"), "content");
@@ -72,7 +72,7 @@ public class SnippetGroupInfo extends SnippetList {
 
 	public SnippetGroupInfo(Integer id, String name, Integer snippetnumber, Integer groupid, String directory,
 			String content, boolean leaf) {
-		super(id, name, groupid, directory, null, "snippetgroup");
+		super(id, name, groupid, directory, null, "snippetgroup", "snippetgroup");
 		setContent(content);
 		setLeaf(leaf);
 		setSnippetsnumber(snippetnumber);
@@ -99,7 +99,7 @@ public class SnippetGroupInfo extends SnippetList {
 
 		serializer.exclude("*.class", "expanded", "type");
 		serializer.include("id", "name", "pagesnumber", "groupid", "itemtype", "directory", "content", "leaf",
-				"itemtype");
+				"itemtype", "iconCls");
 
 		serializer.transform(new FieldNameTransformer("snippetsnumber"), "pagesnumber");
 		serializer.transform(new FieldNameTransformer("description"), "content");

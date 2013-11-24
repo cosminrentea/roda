@@ -21,7 +21,7 @@ public class LayoutTree extends LayoutList {
 		JSONSerializer serializer = new JSONSerializer();
 
 		serializer.exclude("*.class", "depth", "type");
-		serializer.include("id", "name", "itemtype", "expanded");
+		serializer.include("id", "name", "itemtype", "expanded", "iconCls");
 
 		int maxDepth = 0;
 		for (LayoutTree layoutTree : collection) {
@@ -39,7 +39,7 @@ public class LayoutTree extends LayoutList {
 			serializer.exclude(includeData + ".depth", includeData + ".type");
 			serializer.include(includeData + ".name", includeData + ".id", includeData + ".itemtype", includeData
 					+ ".groupid", includeData + ".directory", includeData + ".description", includeData + ".leaf",
-					includeData + ".expanded");
+					includeData + ".expanded", includeData + ".iconCls");
 			serializer.transform(new FieldNameTransformer("indice"), includeData + ".id");
 		}
 
@@ -181,7 +181,7 @@ public class LayoutTree extends LayoutList {
 		JSONSerializer serializer = new JSONSerializer();
 
 		serializer.exclude("*.class", "depth", "type");
-		serializer.include("id", "name", "itemtype", "expanded");
+		serializer.include("id", "name", "itemtype", "expanded", "iconCls");
 
 		String includeData = "";
 		for (int i = 0; i < getDepth() + 1; i++) {
@@ -192,7 +192,7 @@ public class LayoutTree extends LayoutList {
 			serializer.exclude(includeData + ".depth", includeData + ".type");
 			serializer.include(includeData + ".name", includeData + ".id", includeData + ".itemtype", includeData
 					+ ".groupid", includeData + ".directory", includeData + ".description", includeData + ".leaf",
-					includeData + ".expanded");
+					includeData + ".expanded", includeData + ".iconCls");
 			serializer.transform(new FieldNameTransformer("indice"), includeData + ".id");
 		}
 

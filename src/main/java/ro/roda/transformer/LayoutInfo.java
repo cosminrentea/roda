@@ -56,7 +56,8 @@ public class LayoutInfo extends LayoutList {
 
 				result.add(new LayoutInfo(layout.getId(), layout.getName(), layout.getCmsPages().size(), groupId,
 						"layout", getLayoutPath(layout), layout.getDescription(), layout.getCmsPages(), layout
-								.getLayoutContent()));
+								.getLayoutContent(), "layout"));
+
 			}
 		}
 
@@ -102,7 +103,7 @@ public class LayoutInfo extends LayoutList {
 
 			return new LayoutInfo(layoutList.getId(), layoutList.getName(), layoutList.getPagesnumber(),
 					layoutList.getGroupid(), layoutList.getItemtype(), layoutList.getDirectory(),
-					layoutList.getDescription(), pages, content);
+					layoutList.getDescription(), pages, content, layoutList.getIconCls());
 		}
 
 		return null;
@@ -131,8 +132,8 @@ public class LayoutInfo extends LayoutList {
 	private String content;
 
 	public LayoutInfo(Integer id, String name, Integer pagesnumber, Integer groupid, String itemtype, String directory,
-			String description, Set<CmsPage> pages, String content) {
-		super(id, name, pagesnumber, groupid, itemtype, directory, description);
+			String description, Set<CmsPage> pages, String content, String iconCls) {
+		super(id, name, pagesnumber, groupid, itemtype, directory, description, iconCls);
 		this.layoutUsage = pages;
 		this.content = content;
 	}

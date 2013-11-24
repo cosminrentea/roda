@@ -21,7 +21,7 @@ public class LayoutGroupInfo extends LayoutList {
 		JSONSerializer serializer = new JSONSerializer();
 
 		serializer.exclude("*.class", "type", "expanded", "leaf");
-		serializer.include("id", "name", "pagesnumber", "groupid", "itemtype", "directory", "description");
+		serializer.include("id", "name", "pagesnumber", "groupid", "itemtype", "directory", "description", "iconCls");
 
 		serializer.transform(new FieldNameTransformer("layoutsnumber"), "pagesnumber");
 		serializer.transform(new FieldNameTransformer("pagetypeid"), "pages.cmsPageTypeId.id");
@@ -110,7 +110,7 @@ public class LayoutGroupInfo extends LayoutList {
 
 	public LayoutGroupInfo(Integer id, String name, Integer layoutnumber, Integer groupid, String itemtype,
 			String directory, String description, boolean leaf) {
-		super(id, name, layoutnumber, groupid, itemtype, directory, description);
+		super(id, name, layoutnumber, groupid, itemtype, directory, description, "layoutgroup");
 		setLeaf(leaf);
 	}
 
@@ -126,7 +126,7 @@ public class LayoutGroupInfo extends LayoutList {
 		JSONSerializer serializer = new JSONSerializer();
 
 		serializer.exclude("*.class", "type", "expanded", "leaf");
-		serializer.include("id", "name", "pagesnumber", "groupid", "itemtype", "directory", "description");
+		serializer.include("id", "name", "pagesnumber", "groupid", "itemtype", "directory", "description", "iconCls");
 
 		serializer.transform(new FieldNameTransformer("layoutsnumber"), "pagesnumber");
 		serializer.transform(new FieldNameTransformer("pagetypeid"), "pages.cmsPageTypeId.id");

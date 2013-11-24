@@ -98,25 +98,29 @@ public class SnippetList extends JsonInfo {
 	// TODO: configure
 	private Integer n;
 
-	public SnippetList(Integer id, String name, Integer groupid, String directory, Integer n, String itemtype) {
+	private String iconCls;
+
+	public SnippetList(Integer id, String name, Integer groupid, String directory, Integer n, String itemtype,
+			String iconCls) {
 		this.id = id;
 		this.name = name;
 		this.groupid = groupid;
 		this.directory = directory;
 		this.n = n;
 		this.itemtype = itemtype;
+		this.iconCls = iconCls;
 	}
 
 	public SnippetList(CmsSnippet snippet) {
 		this(snippet.getId(), snippet.getName(), snippet.getCmsSnippetGroupId() == null ? null : snippet
-				.getCmsSnippetGroupId().getId(), getSnippetPath(snippet), 200, "snippet");
+				.getCmsSnippetGroupId().getId(), getSnippetPath(snippet), 200, "snippet", "snippet");
 		this.content = snippet.getSnippetContent();
 		this.leaf = true;
 	}
 
 	public SnippetList(CmsSnippetGroup snippetGroup) {
 		this(snippetGroup.getId(), snippetGroup.getName(), snippetGroup.getParentId() == null ? null : snippetGroup
-				.getParentId().getId(), getSnippetGroupPath(snippetGroup), 200, "snippetgroup");
+				.getParentId().getId(), getSnippetGroupPath(snippetGroup), 200, "snippetgroup", "snippetgroup");
 		if ((snippetGroup.getCmsSnippetGroups() != null && snippetGroup.getCmsSnippetGroups().size() > 0)
 				|| (snippetGroup.getCmsSnippets() != null && snippetGroup.getCmsSnippets().size() > 0)) {
 			this.leaf = false;
@@ -187,6 +191,14 @@ public class SnippetList extends JsonInfo {
 
 	public void setLeaf(boolean leaf) {
 		this.leaf = leaf;
+	}
+
+	public String getIconCls() {
+		return iconCls;
+	}
+
+	public void setIconCls(String iconCls) {
+		this.iconCls = iconCls;
 	}
 
 	public String toJson() {

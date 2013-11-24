@@ -63,7 +63,7 @@ public class FolderInfo extends FileList {
 	private Integer filesnumber;
 
 	public FolderInfo(Integer id, String name, Integer filenumber, Integer groupid, String itemtype, String directory) {
-		super(id, name, null, null, null, groupid, directory);
+		super(id, name, null, null, null, groupid, directory, "folder");
 		setFilesnumber(filenumber);
 		setType(itemtype);
 	}

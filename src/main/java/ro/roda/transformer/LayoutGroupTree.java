@@ -19,7 +19,7 @@ public class LayoutGroupTree extends LayoutList {
 		JSONSerializer serializer = new JSONSerializer();
 
 		serializer.exclude("*.class", "depth", "type", "pagesnumber");
-		serializer.include("id", "name", "itemtype", "expanded", "leaf");
+		serializer.include("id", "name", "itemtype", "expanded", "leaf", "iconCls");
 
 		int maxDepth = 0;
 		for (LayoutGroupTree layoutTree : collection) {
@@ -37,7 +37,7 @@ public class LayoutGroupTree extends LayoutList {
 			serializer.exclude(includeData + ".depth", includeData + ".pagesnumber", includeData + ".type");
 			serializer.include(includeData + ".name", includeData + ".id", includeData + ".itemtype", includeData
 					+ ".expanded", includeData + ".groupid", includeData + ".directory", includeData + ".description",
-					includeData + ".leaf");
+					includeData + ".leaf", includeData + ".iconCls");
 			serializer.transform(new FieldNameTransformer("indice"), includeData + ".id");
 		}
 
@@ -135,7 +135,8 @@ public class LayoutGroupTree extends LayoutList {
 
 	public LayoutGroupTree(CmsLayoutGroup layoutGroup) {
 		super(layoutGroup.getId(), layoutGroup.getName(), null, layoutGroup.getParentId() == null ? null : layoutGroup
-				.getParentId().getId(), "layoutgroup", getLayoutGroupPath(layoutGroup), layoutGroup.getDescription());
+				.getParentId().getId(), "layoutgroup", getLayoutGroupPath(layoutGroup), layoutGroup.getDescription(),
+				"layoutgroup");
 
 		this.children = new HashSet<LayoutList>();
 	}
@@ -164,7 +165,8 @@ public class LayoutGroupTree extends LayoutList {
 			includeData += "children";
 			serializer.exclude(includeData + ".depth", includeData + ".pagesnumber", includeData + ".type");
 			serializer.include(includeData + ".name", includeData + ".id", includeData + ".itemtype", includeData
-					+ ".groupid", includeData + ".directory", includeData + ".description", includeData + ".leaf");
+					+ ".groupid", includeData + ".directory", includeData + ".description", includeData + ".leaf",
+					includeData + ".iconCls");
 			serializer.transform(new FieldNameTransformer("indice"), includeData + ".id");
 		}
 

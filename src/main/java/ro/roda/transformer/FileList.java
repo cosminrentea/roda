@@ -17,7 +17,7 @@ public class FileList extends JsonInfo {
 	public static String toJsonArray(Collection<FileList> collection) {
 		JSONSerializer serializer = new JSONSerializer();
 
-		serializer.exclude("*.class");
+		serializer.exclude("*.class", "type");
 		serializer.include("id", "name", "alias", "filesize", "filetype", "folderid", "directory", "leaf");
 
 		serializer.transform(new FieldNameTransformer("indice"), "id");
@@ -84,8 +84,10 @@ public class FileList extends JsonInfo {
 
 	private boolean leaf = true;
 
+	private String iconCls;
+
 	public FileList(Integer id, String name, String alias, Long filesize, String filetype, Integer folderid,
-			String directory) {
+			String directory, String iconCls) {
 		this.id = id;
 		this.name = name;
 		this.alias = alias;
@@ -93,12 +95,13 @@ public class FileList extends JsonInfo {
 		this.filesize = filesize;
 		this.filetype = filetype;
 		this.folderid = folderid;
+		this.iconCls = iconCls;
 	}
 
 	public FileList(CmsFile file) {
 		this(file.getId(), file.getFilename(), file.getLabel(), file.getFilesize(), file.getFilename().substring(
 				file.getFilename().lastIndexOf(".")), file.getCmsFolderId() == null ? null : file.getCmsFolderId()
-				.getId(), getFilePath(file));
+				.getId(), getFilePath(file), "file");
 	}
 
 	public Integer getId() {
@@ -165,10 +168,18 @@ public class FileList extends JsonInfo {
 		this.leaf = leaf;
 	}
 
+	public String getIconCls() {
+		return iconCls;
+	}
+
+	public void setIconCls(String iconCls) {
+		this.iconCls = iconCls;
+	}
+
 	public String toJson() {
 		JSONSerializer serializer = new JSONSerializer();
 
-		serializer.exclude("*.class");
+		serializer.exclude("*.class", "type");
 		serializer.include("id", "name", "alias", "filesize", "filetype", "folderid", "directory", "leaf");
 
 		serializer.transform(new FieldNameTransformer("indice"), "id");

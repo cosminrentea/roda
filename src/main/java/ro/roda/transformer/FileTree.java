@@ -19,8 +19,8 @@ public class FileTree extends FileList {
 	public static String toJsonArray(Collection<FileTree> collection) {
 		JSONSerializer serializer = new JSONSerializer();
 
-		serializer.exclude("*.class", "depth");
-		serializer.include("id", "name", "expanded");
+		serializer.exclude("*.class", "depth", "type");
+		serializer.include("id", "name", "expanded", "iconCls");
 
 		int maxDepth = 0;
 		for (FileTree fileTree : collection) {
@@ -35,9 +35,10 @@ public class FileTree extends FileList {
 				includeData += ".";
 			}
 			includeData += "children";
-			serializer.exclude(includeData + ".depth", includeData + ".folderid", includeData + ".directory");
+			serializer.exclude(includeData + ".depth", includeData + ".folderid", includeData + ".directory",
+					includeData + ".type");
 			serializer.include(includeData + ".name", includeData + ".id", includeData + ".alias", includeData
-					+ ".filesize", includeData + ".filetype", includeData + ".leaf");
+					+ ".filesize", includeData + ".filetype", includeData + ".leaf", includeData + ".iconCls");
 			serializer.transform(new FieldNameTransformer("indice"), includeData + ".id");
 		}
 
@@ -133,7 +134,7 @@ public class FileTree extends FileList {
 	}
 
 	public FileTree(CmsFolder folder) {
-		super(folder.getId(), folder.getName(), null, null, "folder", null, null);
+		super(folder.getId(), folder.getName(), null, null, "folder", null, null, "folder");
 
 		this.children = new HashSet<FileList>();
 		// TODO set leaf
@@ -153,8 +154,8 @@ public class FileTree extends FileList {
 	public String toJson() {
 		JSONSerializer serializer = new JSONSerializer();
 
-		serializer.exclude("*.class", "depth");
-		serializer.include("id", "name", "expanded");
+		serializer.exclude("*.class", "depth", "type");
+		serializer.include("id", "name", "expanded", "iconCls");
 
 		String includeData = "";
 		for (int i = 0; i < getDepth() + 1; i++) {
@@ -163,9 +164,10 @@ public class FileTree extends FileList {
 			}
 			includeData += "children";
 			serializer.exclude(includeData + ".depth");
-			serializer.exclude(includeData + ".depth", includeData + ".folderid", includeData + ".directory");
+			serializer.exclude(includeData + ".depth", includeData + ".folderid", includeData + ".directory",
+					includeData + ".type");
 			serializer.include(includeData + ".name", includeData + ".id", includeData + ".alias", includeData
-					+ ".filesize", includeData + ".filetype", includeData + ".leaf");
+					+ ".filesize", includeData + ".filetype", includeData + ".leaf", includeData + ".iconCls");
 		}
 
 		serializer.transform(new FieldNameTransformer("indice"), "id");

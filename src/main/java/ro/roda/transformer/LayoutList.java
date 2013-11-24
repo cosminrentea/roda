@@ -38,10 +38,13 @@ public class LayoutList extends JsonInfo implements Comparable<LayoutList> {
 			while (layoutsIterator.hasNext()) {
 				CmsLayout layout = (CmsLayout) layoutsIterator.next();
 
-				Integer groupId = layout.getCmsLayoutGroupId() == null ? null : layout.getCmsLayoutGroupId().getId();
+				// Integer groupId = layout.getCmsLayoutGroupId() == null ? null
+				// : layout.getCmsLayoutGroupId().getId();
 
-				result.add(new LayoutList(layout.getId(), layout.getName(), layout.getCmsPages().size(), groupId,
-						"layout", getLayoutPath(layout), layout.getDescription()));
+				// result.add(new LayoutList(layout.getId(), layout.getName(),
+				// layout.getCmsPages().size(), groupId,
+				// "layout", getLayoutPath(layout), layout.getDescription()));
+				result.add(new LayoutList(layout));
 			}
 		}
 
@@ -107,9 +110,12 @@ public class LayoutList extends JsonInfo implements Comparable<LayoutList> {
 		CmsLayout layout = CmsLayout.findCmsLayout(id);
 
 		if (layout != null) {
-			return new LayoutList(layout.getId(), layout.getName(), layout.getCmsPages().size(),
-					layout.getCmsLayoutGroupId() != null ? layout.getCmsLayoutGroupId().getId() : null, "layout",
-					getLayoutPath(layout), layout.getDescription());
+			// return new LayoutList(layout.getId(), layout.getName(),
+			// layout.getCmsPages().size(),
+			// layout.getCmsLayoutGroupId() != null ?
+			// layout.getCmsLayoutGroupId().getId() : null, "layout",
+			// getLayoutPath(layout), layout.getDescription());
+			return new LayoutList(layout);
 		}
 		// the below code is commented due to the fact that the Layout List
 		// should contain only layouts, not layout groups
@@ -142,8 +148,10 @@ public class LayoutList extends JsonInfo implements Comparable<LayoutList> {
 
 	private boolean leaf = true;
 
+	private String iconCls;
+
 	public LayoutList(Integer id, String name, Integer pagesnumber, Integer groupid, String itemtype, String directory,
-			String description) {
+			String description, String iconCls) {
 		this.id = id;
 		this.name = name;
 		this.pagesnumber = pagesnumber;
@@ -151,17 +159,19 @@ public class LayoutList extends JsonInfo implements Comparable<LayoutList> {
 		this.itemtype = itemtype;
 		this.directory = directory;
 		this.description = description;
+		this.iconCls = iconCls;
 	}
 
 	public LayoutList(CmsLayout layout) {
 		this(layout.getId(), layout.getName(), layout.getCmsPages().size(), layout.getCmsLayoutGroupId() == null ? null
-				: layout.getCmsLayoutGroupId().getId(), "layout", getLayoutPath(layout), layout.getDescription());
+				: layout.getCmsLayoutGroupId().getId(), "layout", getLayoutPath(layout), layout.getDescription(),
+				"layout");
 	}
 
 	public LayoutList(CmsLayoutGroup layoutGroup) {
 		this(layoutGroup.getId(), layoutGroup.getName(), getLayoutGroupPagesNumber(layoutGroup), layoutGroup
 				.getParentId() == null ? null : layoutGroup.getParentId().getId(), "layoutgroup",
-				getLayoutGroupPath(layoutGroup), layoutGroup.getDescription());
+				getLayoutGroupPath(layoutGroup), layoutGroup.getDescription(), "layoutGroup");
 
 	}
 
@@ -227,6 +237,14 @@ public class LayoutList extends JsonInfo implements Comparable<LayoutList> {
 
 	public void setLeaf(boolean leaf) {
 		this.leaf = leaf;
+	}
+
+	public String getIconCls() {
+		return iconCls;
+	}
+
+	public void setIconCls(String iconCls) {
+		this.iconCls = iconCls;
 	}
 
 	public String toJson() {

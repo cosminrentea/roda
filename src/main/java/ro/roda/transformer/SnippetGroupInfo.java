@@ -16,12 +16,12 @@ public class SnippetGroupInfo extends SnippetList {
 	public static String toJsonArray(Collection<SnippetGroupInfo> collection) {
 		JSONSerializer serializer = new JSONSerializer();
 
-		serializer.exclude("*.class", "expanded");
-		serializer.include("id", "name", "pagesnumber", "groupid", "type", "directory", "content", "leaf", "itemtype");
+		serializer.exclude("*.class", "expanded", "type");
+		serializer.include("id", "name", "pagesnumber", "groupid", "itemtype", "directory", "content", "leaf",
+				"itemtype");
 
 		serializer.transform(new FieldNameTransformer("snippetsnumber"), "pagesnumber");
 		serializer.transform(new FieldNameTransformer("description"), "content");
-		serializer.transform(new FieldNameTransformer("itemtype"), "type");
 
 		return "{\"data\":" + serializer.serialize(collection) + "}";
 	}
@@ -72,10 +72,10 @@ public class SnippetGroupInfo extends SnippetList {
 
 	public SnippetGroupInfo(Integer id, String name, Integer snippetnumber, Integer groupid, String directory,
 			String content, boolean leaf) {
-		super(id, name, groupid, directory, content, null);
+		super(id, name, groupid, directory, null, "snippetgroup");
+		setContent(content);
 		setLeaf(leaf);
 		setSnippetsnumber(snippetnumber);
-		setType("snippetgroup");
 	}
 
 	public boolean isLeaf() {
@@ -97,12 +97,12 @@ public class SnippetGroupInfo extends SnippetList {
 	public String toJson() {
 		JSONSerializer serializer = new JSONSerializer();
 
-		serializer.exclude("*.class", "expanded");
-		serializer.include("id", "name", "pagesnumber", "groupid", "type", "directory", "content", "leaf", "itemtype");
+		serializer.exclude("*.class", "expanded", "type");
+		serializer.include("id", "name", "pagesnumber", "groupid", "itemtype", "directory", "content", "leaf",
+				"itemtype");
 
 		serializer.transform(new FieldNameTransformer("snippetsnumber"), "pagesnumber");
 		serializer.transform(new FieldNameTransformer("description"), "content");
-		serializer.transform(new FieldNameTransformer("itemtype"), "type");
 
 		return "{\"data\":" + serializer.serialize(this) + "}";
 	}

@@ -21,7 +21,7 @@ public class LayoutInfo extends LayoutList {
 		JSONSerializer serializer = new JSONSerializer();
 
 		serializer.exclude("*.class", "leaf", "type");
-		serializer.include("id", "name", "pagesnumber", "groupid", "itemtype", "directory", "description");
+		serializer.include("id", "name", "pagesnumber", "groupid", "itemtype", "directory", "description", "content");
 
 		serializer.exclude("layoutUsage.cmsLayoutId", "layoutUsage.cmsPageContents", "layoutUsage.navigable");
 
@@ -55,25 +55,30 @@ public class LayoutInfo extends LayoutList {
 				Integer groupId = layout.getCmsLayoutGroupId() == null ? null : layout.getCmsLayoutGroupId().getId();
 
 				result.add(new LayoutInfo(layout.getId(), layout.getName(), layout.getCmsPages().size(), groupId,
-						"layout", getLayoutPath(layout), layout.getDescription(), layout.getCmsPages()));
+						"layout", getLayoutPath(layout), layout.getDescription(), layout.getCmsPages(), layout
+								.getLayoutContent()));
 			}
 		}
 
-		List<CmsLayoutGroup> layoutGroups = CmsLayoutGroup.findAllCmsLayoutGroups();
-
-		if (layoutGroups != null && layoutGroups.size() > 0) {
-
-			Iterator<CmsLayoutGroup> layoutGroupsIterator = layoutGroups.iterator();
-			while (layoutGroupsIterator.hasNext()) {
-				CmsLayoutGroup layoutGroup = (CmsLayoutGroup) layoutGroupsIterator.next();
-
-				Integer parentId = layoutGroup.getParentId() == null ? null : layoutGroup.getParentId().getId();
-
-				result.add(new LayoutInfo(layoutGroup.getId(), layoutGroup.getName(),
-						getLayoutGroupPagesNumber(layoutGroup), parentId, "layoutgroup",
-						getLayoutGroupPath(layoutGroup), layoutGroup.getDescription(), getLayoutGroupPages(layoutGroup)));
-			}
-		}
+		/*
+		 * List<CmsLayoutGroup> layoutGroups =
+		 * CmsLayoutGroup.findAllCmsLayoutGroups();
+		 * 
+		 * if (layoutGroups != null && layoutGroups.size() > 0) {
+		 * 
+		 * Iterator<CmsLayoutGroup> layoutGroupsIterator =
+		 * layoutGroups.iterator(); while (layoutGroupsIterator.hasNext()) {
+		 * CmsLayoutGroup layoutGroup = (CmsLayoutGroup)
+		 * layoutGroupsIterator.next();
+		 * 
+		 * Integer parentId = layoutGroup.getParentId() == null ? null :
+		 * layoutGroup.getParentId().getId();
+		 * 
+		 * result.add(new LayoutInfo(layoutGroup.getId(), layoutGroup.getName(),
+		 * getLayoutGroupPagesNumber(layoutGroup), parentId, "layoutgroup",
+		 * getLayoutGroupPath(layoutGroup), layoutGroup.getDescription(),
+		 * getLayoutGroupPages(layoutGroup))); } }
+		 */
 
 		return result;
 	}
@@ -82,17 +87,22 @@ public class LayoutInfo extends LayoutList {
 
 		LayoutList layoutList = findLayoutList(id);
 		Set<CmsPage> pages = null;
+		String content;
 
 		if (layoutList != null) {
-			if (layoutList.getItemtype().equals("layout")) {
-				pages = CmsLayout.findCmsLayout(layoutList.getId()).getCmsPages();
-			} else {
-				pages = getLayoutGroupPages(CmsLayoutGroup.findCmsLayoutGroup(layoutList.getId()));
-			}
+			// if (layoutList.getItemtype().equals("layout")) {
+			pages = CmsLayout.findCmsLayout(layoutList.getId()).getCmsPages();
+			content = CmsLayout.findCmsLayout(layoutList.getId()).getLayoutContent();
+			// }
+			/*
+			 * else { pages =
+			 * getLayoutGroupPages(CmsLayoutGroup.findCmsLayoutGroup
+			 * (layoutList.getId())); }
+			 */
 
 			return new LayoutInfo(layoutList.getId(), layoutList.getName(), layoutList.getPagesnumber(),
 					layoutList.getGroupid(), layoutList.getItemtype(), layoutList.getDirectory(),
-					layoutList.getDescription(), pages);
+					layoutList.getDescription(), pages, content);
 		}
 
 		return null;
@@ -118,10 +128,13 @@ public class LayoutInfo extends LayoutList {
 
 	private Set<CmsPage> layoutUsage;
 
+	private String content;
+
 	public LayoutInfo(Integer id, String name, Integer pagesnumber, Integer groupid, String itemtype, String directory,
-			String description, Set<CmsPage> pages) {
+			String description, Set<CmsPage> pages, String content) {
 		super(id, name, pagesnumber, groupid, itemtype, directory, description);
 		this.layoutUsage = pages;
+		this.content = content;
 	}
 
 	public Set<CmsPage> getLayoutUsage() {
@@ -132,11 +145,19 @@ public class LayoutInfo extends LayoutList {
 		this.layoutUsage = pages;
 	}
 
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
+	}
+
 	public String toJson() {
 		JSONSerializer serializer = new JSONSerializer();
 
 		serializer.exclude("*.class", "type");
-		serializer.include("id", "name", "pagesnumber", "groupid", "itemtype", "directory", "description");
+		serializer.include("id", "name", "pagesnumber", "groupid", "itemtype", "directory", "description", "content");
 
 		serializer.exclude("layoutUsage.cmsLayoutId", "layoutUsage.cmsPageContents", "layoutUsage.navigable");
 

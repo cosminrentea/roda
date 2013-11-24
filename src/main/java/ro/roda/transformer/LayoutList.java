@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.springframework.beans.factory.annotation.Configurable;
 
 import ro.roda.domain.CmsLayout;
@@ -12,7 +14,7 @@ import ro.roda.domain.CmsLayoutGroup;
 import flexjson.JSONSerializer;
 
 @Configurable
-public class LayoutList extends JsonInfo {
+public class LayoutList extends JsonInfo implements Comparable<LayoutList> {
 
 	public static String toJsonArray(Collection<LayoutList> collection) {
 		JSONSerializer serializer = new JSONSerializer();
@@ -43,6 +45,8 @@ public class LayoutList extends JsonInfo {
 			}
 		}
 
+		// the below code is commented due to the fact that the Layout List
+		// should contain only layouts, not layout groups
 		/*
 		 * List<CmsLayoutGroup> layoutGroups =
 		 * CmsLayoutGroup.findAllCmsLayoutGroups();
@@ -67,7 +71,7 @@ public class LayoutList extends JsonInfo {
 
 	public static String getLayoutPath(CmsLayout layout) {
 		if (layout.getCmsLayoutGroupId() != null) {
-			return getLayoutGroupPath(layout.getCmsLayoutGroupId()) + "/" + layout.getName();
+			return getLayoutGroupPath(layout.getCmsLayoutGroupId());
 		} else {
 			return layout.getName();
 		}
@@ -106,16 +110,19 @@ public class LayoutList extends JsonInfo {
 			return new LayoutList(layout.getId(), layout.getName(), layout.getCmsPages().size(),
 					layout.getCmsLayoutGroupId() != null ? layout.getCmsLayoutGroupId().getId() : null, "layout",
 					getLayoutPath(layout), layout.getDescription());
-		} else {
-			CmsLayoutGroup layoutGroup = CmsLayoutGroup.findCmsLayoutGroup(id);
-
-			if (layoutGroup != null) {
-				return new LayoutList(layoutGroup.getId(), layoutGroup.getName(),
-						getLayoutGroupPagesNumber(layoutGroup), layout.getCmsLayoutGroupId() != null ? layout
-								.getCmsLayoutGroupId().getId() : null, "layoutgroup", getLayoutGroupPath(layoutGroup),
-						layoutGroup.getDescription());
-			}
 		}
+		// the below code is commented due to the fact that the Layout List
+		// should contain only layouts, not layout groups
+		/*
+		 * else { CmsLayoutGroup layoutGroup =
+		 * CmsLayoutGroup.findCmsLayoutGroup(id);
+		 * 
+		 * if (layoutGroup != null) { return new LayoutList(layoutGroup.getId(),
+		 * layoutGroup.getName(), getLayoutGroupPagesNumber(layoutGroup),
+		 * layout.getCmsLayoutGroupId() != null ? layout
+		 * .getCmsLayoutGroupId().getId() : null, "layoutgroup",
+		 * getLayoutGroupPath(layoutGroup), layoutGroup.getDescription()); } }
+		 */
 		return null;
 	}
 
@@ -232,4 +239,35 @@ public class LayoutList extends JsonInfo {
 
 		return "{\"data\":" + serializer.serialize(this) + "}";
 	}
+
+	@Override
+	public int compareTo(LayoutList layoutList) {
+		System.out.println("Compare " + ((itemtype.equals("layout") ? "2" : "1") + " " + name + " " + groupid)
+				+ (layoutList.getItemtype().equals("layout") ? "2" : "1") + " " + layoutList.getName() + " "
+				+ layoutList.getGroupid());
+		return ((itemtype.equals("layout") ? "2" : "1") + " " + name + " " + groupid).compareTo((layoutList
+				.getItemtype().equals("layout") ? "2" : "1")
+				+ " "
+				+ layoutList.getName()
+				+ " "
+				+ layoutList.getGroupid());
+	}
+
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder().append(itemtype == null ? 0 : (itemtype.equals("layoutgroup") ? 1 : 2))
+				.append(groupid == null ? 0 : groupid.intValue()).append(name).toHashCode();
+	}
+
+	@Override
+	public boolean equals(Object other) {
+		if (other != null && other instanceof LayoutList) {
+			return new EqualsBuilder().append(this.getItemtype(), ((LayoutList) other).getItemtype())
+					.append(this.getGroupid(), ((LayoutList) other).getGroupid())
+					.append(this.getName(), ((LayoutList) other).getName()).isEquals();
+		} else {
+			return false;
+		}
+	}
+
 }

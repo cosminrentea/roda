@@ -18,8 +18,8 @@ public class LayoutGroupTree extends LayoutList {
 	public static String toJsonArray(Collection<LayoutGroupTree> collection) {
 		JSONSerializer serializer = new JSONSerializer();
 
-		serializer.exclude("*.class", "depth", "leaf", "type", "pagesnumber");
-		serializer.include("id", "name", "itemtype", "expanded");
+		serializer.exclude("*.class", "depth", "type", "pagesnumber");
+		serializer.include("id", "name", "itemtype", "expanded", "leaf");
 
 		int maxDepth = 0;
 		for (LayoutGroupTree layoutTree : collection) {
@@ -34,11 +34,10 @@ public class LayoutGroupTree extends LayoutList {
 				includeData += ".";
 			}
 			includeData += "children";
-			serializer.exclude(includeData + ".depth", includeData + ".groupid", includeData + ".directory",
-					includeData + ".description", includeData + ".leaf", includeData + ".pagesnumber", includeData
-							+ ".type");
+			serializer.exclude(includeData + ".depth", includeData + ".pagesnumber", includeData + ".type");
 			serializer.include(includeData + ".name", includeData + ".id", includeData + ".itemtype", includeData
-					+ ".expanded");
+					+ ".expanded", includeData + ".groupid", includeData + ".directory", includeData + ".description",
+					includeData + ".leaf");
 			serializer.transform(new FieldNameTransformer("indice"), includeData + ".id");
 		}
 
@@ -81,6 +80,7 @@ public class LayoutGroupTree extends LayoutList {
 
 			int maxDepth = 0;
 			if (children != null && children.size() > 0) {
+				result.setLeaf(false);
 				dataByLayoutGroupSet = new HashSet<LayoutList>();
 
 				Iterator<CmsLayoutGroup> childrenIterator = children.iterator();
@@ -93,6 +93,8 @@ public class LayoutGroupTree extends LayoutList {
 					}
 				}
 				result.setDepth(maxDepth + 1);
+			} else {
+				result.setLeaf(true);
 			}
 
 			result.setChildren(dataByLayoutGroupSet);
@@ -151,8 +153,8 @@ public class LayoutGroupTree extends LayoutList {
 	public String toJson() {
 		JSONSerializer serializer = new JSONSerializer();
 
-		serializer.exclude("*.class", "depth", "leaf", "type", "pagesnumber");
-		serializer.include("id", "name", "itemtype", "expanded");
+		serializer.exclude("*.class", "depth", "type", "pagesnumber");
+		serializer.include("id", "name", "itemtype", "expanded", "leaf");
 
 		String includeData = "";
 		for (int i = 0; i < getDepth() + 1; i++) {
@@ -160,10 +162,9 @@ public class LayoutGroupTree extends LayoutList {
 				includeData += ".";
 			}
 			includeData += "children";
-			serializer.exclude(includeData + ".depth", includeData + ".groupid", includeData + ".directory",
-					includeData + ".description", includeData + ".leaf", includeData + ".pagesnumber", includeData
-							+ ".type");
-			serializer.include(includeData + ".name", includeData + ".id", includeData + ".itemtype");
+			serializer.exclude(includeData + ".depth", includeData + ".pagesnumber", includeData + ".type");
+			serializer.include(includeData + ".name", includeData + ".id", includeData + ".itemtype", includeData
+					+ ".groupid", includeData + ".directory", includeData + ".description", includeData + ".leaf");
 			serializer.transform(new FieldNameTransformer("indice"), includeData + ".id");
 		}
 

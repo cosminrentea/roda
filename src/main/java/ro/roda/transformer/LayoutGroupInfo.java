@@ -55,22 +55,36 @@ public class LayoutGroupInfo extends LayoutList {
 
 	public static LayoutGroupInfo findGroupInfo(Integer id) {
 
-		LayoutList layoutList = findLayoutList(id);
+		// LayoutList layoutList = findLayoutList(id);
+		/*
+		 * boolean leaf; int layoutsNumber;
+		 * 
+		 * if (layoutList != null) { if
+		 * (layoutList.getItemtype().equals("layoutgroup")) { CmsLayoutGroup
+		 * layoutGroup = CmsLayoutGroup.findCmsLayoutGroup(layoutList.getId());
+		 * layoutsNumber = layoutGroup.getCmsLayouts().size(); leaf =
+		 * (layoutsNumber == 0 && layoutGroup.getCmsLayoutGroups().size() == 0);
+		 * 
+		 * return new LayoutGroupInfo(layoutList.getId(), layoutList.getName(),
+		 * layoutsNumber, layoutList.getGroupid(), layoutList.getItemtype(),
+		 * layoutList.getDirectory(), layoutList.getDescription(), leaf); }
+		 * 
+		 * } return null;
+		 */
+
+		CmsLayoutGroup layoutGroup = CmsLayoutGroup.findCmsLayoutGroup(id);
+
 		boolean leaf;
 		int layoutsNumber;
 
-		if (layoutList != null) {
-			if (layoutList.getItemtype().equals("layoutgroup")) {
-				CmsLayoutGroup layoutGroup = CmsLayoutGroup.findCmsLayoutGroup(layoutList.getId());
-				layoutsNumber = layoutGroup.getCmsLayouts().size();
-				leaf = (layoutsNumber == 0 && layoutGroup.getCmsLayoutGroups().size() == 0);
-
-				return new LayoutGroupInfo(layoutList.getId(), layoutList.getName(), layoutsNumber,
-						layoutList.getGroupid(), layoutList.getItemtype(), layoutList.getDirectory(),
-						layoutList.getDescription(), leaf);
-			}
-
+		if (layoutGroup != null) {
+			layoutsNumber = layoutGroup.getCmsLayouts().size();
+			leaf = (layoutsNumber == 0 && layoutGroup.getCmsLayoutGroups().size() == 0);
+			return new LayoutGroupInfo(layoutGroup.getId(), layoutGroup.getName(), layoutsNumber,
+					layoutGroup.getParentId() != null ? layoutGroup.getParentId().getId() : null, "layoutgroup",
+					getLayoutGroupPath(layoutGroup), layoutGroup.getDescription(), leaf);
 		}
+
 		return null;
 	}
 

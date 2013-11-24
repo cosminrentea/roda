@@ -39,8 +39,11 @@ public class SnippetList extends JsonInfo {
 				Integer groupId = snippet.getCmsSnippetGroupId() == null ? null : snippet.getCmsSnippetGroupId()
 						.getId();
 
-				result.add(new SnippetList(snippet.getId(), snippet.getName(), groupId, getSnippetPath(snippet),
-						snippet.getSnippetContent(), null));
+				// SnippetList newSnippetList = new SnippetList(snippet.getId(),
+				// snippet.getName(), groupId,
+				// getSnippetPath(snippet), null, "snippet");
+				// newSnippetList.setContent(snippet.getSnippetContent());
+				result.add(new SnippetList(snippet));
 			}
 		}
 
@@ -67,8 +70,13 @@ public class SnippetList extends JsonInfo {
 		CmsSnippet snippet = CmsSnippet.findCmsSnippet(id);
 
 		if (snippet != null) {
-			return new SnippetList(snippet.getId(), snippet.getName(), snippet.getCmsSnippetGroupId() != null ? snippet
-					.getCmsSnippetGroupId().getId() : null, getSnippetPath(snippet), snippet.getSnippetContent(), null);
+			// SnippetList newSnippetList = new SnippetList(snippet.getId(),
+			// snippet.getName(),
+			// snippet.getCmsSnippetGroupId() != null ?
+			// snippet.getCmsSnippetGroupId().getId() : null,
+			// getSnippetPath(snippet), null, "snippet");
+			// newSnippetList.setContent(snippet.getSnippetContent());
+			return new SnippetList(snippet);
 		}
 		return null;
 	}
@@ -83,21 +91,38 @@ public class SnippetList extends JsonInfo {
 
 	private String directory;
 
+	private String itemtype;
+
+	private boolean leaf;
+
 	// TODO: configure
 	private Integer n;
 
-	public SnippetList(Integer id, String name, Integer groupid, String directory, String content, Integer n) {
+	public SnippetList(Integer id, String name, Integer groupid, String directory, Integer n, String itemtype) {
 		this.id = id;
 		this.name = name;
 		this.groupid = groupid;
 		this.directory = directory;
-		this.content = content;
 		this.n = n;
+		this.itemtype = itemtype;
 	}
 
 	public SnippetList(CmsSnippet snippet) {
-		this(snippet.getId(), snippet.getName(), snippet.getCmsSnippetGroupId().getId(), getSnippetPath(snippet),
-				snippet.getSnippetContent(), null);
+		this(snippet.getId(), snippet.getName(), snippet.getCmsSnippetGroupId() == null ? null : snippet
+				.getCmsSnippetGroupId().getId(), getSnippetPath(snippet), 200, "snippet");
+		this.content = snippet.getSnippetContent();
+		this.leaf = true;
+	}
+
+	public SnippetList(CmsSnippetGroup snippetGroup) {
+		this(snippetGroup.getId(), snippetGroup.getName(), snippetGroup.getParentId() == null ? null : snippetGroup
+				.getParentId().getId(), getSnippetGroupPath(snippetGroup), 200, "snippetgroup");
+		if ((snippetGroup.getCmsSnippetGroups() != null && snippetGroup.getCmsSnippetGroups().size() > 0)
+				|| (snippetGroup.getCmsSnippets() != null && snippetGroup.getCmsSnippets().size() > 0)) {
+			this.leaf = false;
+		} else {
+			this.leaf = true;
+		}
 	}
 
 	public Integer getId() {
@@ -146,6 +171,22 @@ public class SnippetList extends JsonInfo {
 
 	public void setDirectory(String directory) {
 		this.directory = directory;
+	}
+
+	public String getItemtype() {
+		return itemtype;
+	}
+
+	public void setItemtype(String itemtype) {
+		this.itemtype = itemtype;
+	}
+
+	public boolean isLeaf() {
+		return leaf;
+	}
+
+	public void setLeaf(boolean leaf) {
+		this.leaf = leaf;
 	}
 
 	public String toJson() {

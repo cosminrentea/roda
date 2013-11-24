@@ -19,8 +19,8 @@ public class SnippetTree extends SnippetList {
 	public static String toJsonArray(Collection<SnippetTree> collection) {
 		JSONSerializer serializer = new JSONSerializer();
 
-		serializer.exclude("*.class", "depth");
-		serializer.include("id", "name", "expanded");
+		serializer.exclude("*.class", "depth", "type");
+		serializer.include("id", "name", "expanded", "itemtype", "leaf");
 
 		int maxDepth = 0;
 		for (SnippetTree snippetTree : collection) {
@@ -35,9 +35,9 @@ public class SnippetTree extends SnippetList {
 				includeData += ".";
 			}
 			includeData += "children";
-			serializer.exclude(includeData + ".depth");
+			serializer.exclude(includeData + ".depth", includeData + ".type");
 			serializer.include(includeData + ".name", includeData + ".id", includeData + ".groupid", includeData
-					+ ".directory", includeData + ".content");
+					+ ".directory", includeData + ".content", includeData + ".itemtype", includeData + ".leaf");
 			serializer.transform(new FieldNameTransformer("indice"), includeData + ".id");
 		}
 
@@ -134,9 +134,12 @@ public class SnippetTree extends SnippetList {
 	}
 
 	public SnippetTree(CmsSnippetGroup snippetGroup) {
-		super(snippetGroup.getId(), snippetGroup.getName(), snippetGroup.getParentId() == null ? null : snippetGroup
-				.getParentId().getId(), null, getSnippetGroupPath(snippetGroup), null);
+		// super(snippetGroup.getId(), snippetGroup.getName(),
+		// snippetGroup.getParentId() == null ? null : snippetGroup
+		// .getParentId().getId(), null, getSnippetGroupPath(snippetGroup),
+		// null);
 
+		super(snippetGroup);
 		this.children = new HashSet<SnippetList>();
 	}
 
@@ -153,8 +156,8 @@ public class SnippetTree extends SnippetList {
 	public String toJson() {
 		JSONSerializer serializer = new JSONSerializer();
 
-		serializer.exclude("*.class", "depth");
-		serializer.include("id", "name", "expanded");
+		serializer.exclude("*.class", "depth", "type");
+		serializer.include("id", "name", "expanded", "itemtype", "leaf");
 
 		String includeData = "";
 		for (int i = 0; i < getDepth() + 1; i++) {
@@ -162,9 +165,9 @@ public class SnippetTree extends SnippetList {
 				includeData += ".";
 			}
 			includeData += "children";
-			serializer.exclude(includeData + ".depth");
+			serializer.exclude(includeData + ".depth", includeData + ".type");
 			serializer.include(includeData + ".name", includeData + ".id", includeData + ".groupid", includeData
-					+ ".directory", includeData + ".content");
+					+ ".directory", includeData + ".content", includeData + ".itemtype", includeData + ".leaf");
 			serializer.transform(new FieldNameTransformer("indice"), includeData + ".id");
 		}
 

@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.springframework.beans.factory.annotation.Configurable;
 
@@ -82,7 +83,7 @@ public class LayoutTree extends LayoutList {
 
 			int maxDepth = 0;
 			if (children != null && children.size() > 0) {
-				dataByLayoutGroupSet = new HashSet<LayoutList>();
+				dataByLayoutGroupSet = new TreeSet<LayoutList>();
 
 				Iterator<CmsLayoutGroup> childrenIterator = children.iterator();
 				while (childrenIterator.hasNext()) {
@@ -98,7 +99,7 @@ public class LayoutTree extends LayoutList {
 
 			if (layouts != null && layouts.size() > 0) {
 				if (dataByLayoutGroupSet == null) {
-					dataByLayoutGroupSet = new HashSet<LayoutList>();
+					dataByLayoutGroupSet = new TreeSet<LayoutList>();
 				}
 
 				Iterator<CmsLayout> layoutsIterator = layouts.iterator();

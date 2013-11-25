@@ -14,7 +14,8 @@ public interface AdminJsonService {
 
 	public abstract AdminJson layoutDrop(Integer layoutId);
 
-	public abstract AdminJson layoutSave(Integer groupId, String content, String name, Integer layoutId);
+	public abstract AdminJson layoutSave(Integer groupId, String content, String name, String description,
+			Integer layoutId);
 
 	public abstract AdminJson snippetGroupSave(String groupname, Integer parentId, String description);
 

@@ -164,7 +164,8 @@ public class AdminJson {
 		return new AdminJson(true, "CMS Layout dropped successfully");
 	}
 
-	public static AdminJson layoutSave(Integer groupId, String content, String name, Integer layoutId) {
+	public static AdminJson layoutSave(Integer groupId, String content, String name, String description,
+			Integer layoutId) {
 
 		CmsLayout layout = null;
 		if (layoutId != null) {
@@ -177,6 +178,7 @@ public class AdminJson {
 
 		layout.setName(name);
 		layout.setLayoutContent(content);
+		layout.setDescription(description);
 
 		CmsLayoutGroup parentGroup = CmsLayoutGroup.findCmsLayoutGroup(groupId);
 		if (parentGroup != null) {

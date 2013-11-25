@@ -33,8 +33,8 @@ public class AdminJsonController {
 		// uiModel.asMap().clear();
 
 		// only for testing:
-		username = "admin";
-		password = "8c6976e5b5410415bde9 vvvvvvv m, mmmmmmm08bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a917";
+		// username = "admin";
+		// password = "e10adc3949ba59abbe56e057f20f883e";
 		AdminJson login = adminJsonService.findLogin(username, password);
 		// HttpHeaders headers = new HttpHeaders();
 		// headers.add("Content-Type", "application/json; charset=utf-8");
@@ -101,9 +101,10 @@ public class AdminJsonController {
 	@ResponseBody
 	public String layoutSave(@RequestParam(value = "group") Integer groupId,
 			@RequestParam(value = "content") String content, @RequestParam(value = "name") String name,
+			@RequestParam(value = "description", required = false) String description,
 			@RequestParam(value = "id", required = false) Integer layoutId) {
 
-		AdminJson layoutSave = adminJsonService.layoutSave(groupId, content, name, layoutId);
+		AdminJson layoutSave = adminJsonService.layoutSave(groupId, content, name, description, layoutId);
 
 		if (layoutSave == null) {
 			return null;

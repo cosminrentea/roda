@@ -29,8 +29,8 @@ public class AdminJsonServiceImpl implements AdminJsonService {
 		return AdminJson.layoutDrop(layoutId);
 	}
 
-	public AdminJson layoutSave(Integer groupId, String content, String name, Integer layoutId) {
-		return AdminJson.layoutSave(groupId, content, name, layoutId);
+	public AdminJson layoutSave(Integer groupId, String content, String name, String description, Integer layoutId) {
+		return AdminJson.layoutSave(groupId, content, name, description, layoutId);
 	}
 
 	public AdminJson snippetGroupSave(String groupname, Integer parentId, String description) {

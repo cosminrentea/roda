@@ -33,6 +33,14 @@ public class AdminJsonServiceImpl implements AdminJsonService {
 		return AdminJson.layoutSave(groupId, content, name, description, layoutId);
 	}
 
+	public AdminJson layoutMove(Integer groupId, Integer layoutId) {
+		return AdminJson.layoutMove(groupId, layoutId);
+	}
+
+	public AdminJson layoutGroupMove(Integer parentGroupId, Integer groupId) {
+		return AdminJson.layoutGroupMove(parentGroupId, groupId);
+	}
+
 	public AdminJson snippetGroupSave(String groupname, Integer parentId, String description) {
 		return AdminJson.snippetGroupSave(groupname, parentId, description);
 	}
@@ -53,6 +61,14 @@ public class AdminJsonServiceImpl implements AdminJsonService {
 		return AdminJson.snippetSave(groupId, content, name, snippetId);
 	}
 
+	public AdminJson snippetMove(Integer groupId, Integer snippetId) {
+		return AdminJson.snippetMove(groupId, snippetId);
+	}
+
+	public AdminJson snippetGroupMove(Integer parentGroupId, Integer groupId) {
+		return AdminJson.snippetGroupMove(parentGroupId, groupId);
+	}
+
 	public AdminJson folderSave(String foldername, Integer parentId, String description) {
 		return AdminJson.folderSave(foldername, parentId, description);
 	}
@@ -71,5 +87,13 @@ public class AdminJsonServiceImpl implements AdminJsonService {
 
 	public AdminJson fileSave(Integer folderId, String alias, Integer fileId) {
 		return AdminJson.fileSave(folderId, alias, fileId);
+	}
+
+	public AdminJson fileMove(Integer folderId, Integer fileId) {
+		return AdminJson.fileMove(folderId, fileId);
+	}
+
+	public AdminJson folderMove(Integer parentFolderId, Integer folderId) {
+		return AdminJson.folderMove(parentFolderId, folderId);
 	}
 }

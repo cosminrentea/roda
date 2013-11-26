@@ -171,7 +171,7 @@ public class LayoutList extends JsonInfo implements Comparable<LayoutList> {
 	public LayoutList(CmsLayoutGroup layoutGroup) {
 		this(layoutGroup.getId(), layoutGroup.getName(), getLayoutGroupPagesNumber(layoutGroup), layoutGroup
 				.getParentId() == null ? null : layoutGroup.getParentId().getId(), "layoutgroup",
-				getLayoutGroupPath(layoutGroup), layoutGroup.getDescription(), "layoutGroup");
+				getLayoutGroupPath(layoutGroup), layoutGroup.getDescription(), "layoutgroup");
 
 	}
 

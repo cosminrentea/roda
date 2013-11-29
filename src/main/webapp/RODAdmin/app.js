@@ -40,8 +40,8 @@ Ext.application({
 	stores : ['security.Permissions'],
 
 	controllers : ['Main', 'Login', 'TranslationManager', 'Menu',
-			'cms.Dashboard', 'cms.Layouts', 'cms.Snippets', 'cms.Files',
-			'cms.Pages', 'cron.Dashboard', 'cron.Actions', 'common.Audit',
+			'cms.Dashboard','cms.Layout', 'cms.layout.LayoutTree','cms.layout.LayoutList','cms.layout.LayoutEdit',  'cms.Snippets', 'cms.Files',
+			'cms.Pages','cms.page.PageTree',  'cron.Dashboard', 'cron.Actions', 'common.Audit',
 			'Abstract'],
 
 	splashscreen : {},

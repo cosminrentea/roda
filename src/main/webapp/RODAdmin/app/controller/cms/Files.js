@@ -57,7 +57,7 @@ Ext.define('RODAdmin.controller.cms.Files', {
 						selectionchange : this.onFolderviewSelectionChange,
 						itemcontextmenu : this.onIconviewContextMenu
 					},
-					"itemsview grid#iconview toolbar button#showfilterdata" : {
+        					"itemsview grid#iconview toolbar button#showfilterdata" : {
 						click : this.onShowFilterDataClick
 					},
 					"itemsview grid#iconview toolbar button#clearfilterdata" : {
@@ -227,7 +227,7 @@ Ext.define('RODAdmin.controller.cms.Files', {
 	},
 
 	onReloadTreeClick : function(button, e, options) {
-		console.log('onReloadTreeClick');
+//		console.log('onReloadTreeClick');
 		var currentNode = this.getFiletree().getSelectionModel()
 				.getLastSelected();
 		this.getFiletree().store.reload();

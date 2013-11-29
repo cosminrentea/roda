@@ -44,6 +44,9 @@ Ext.define('RODAdmin.view.cms.layout.details.LayoutProperties', {
 					'<div style="padding:10px;">',
 					'{data.description}',
 					'</div>',
+					'<div style="padding:10px;">',
+					'{data.content}',
+					'</div>',
 					'</tpl>'
 	]
 });

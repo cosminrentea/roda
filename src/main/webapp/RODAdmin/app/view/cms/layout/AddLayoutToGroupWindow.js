@@ -1,7 +1,7 @@
-Ext.define('RODAdmin.view.cms.layout.EditLayoutWindow', {
+Ext.define('RODAdmin.view.cms.layout.AddLayoutToGroupWindow', {
 	             
 	extend : 'RODAdmin.view.common.WindowForm',
-	alias : 'widget.layoutedit',
+	alias : 'widget.layoutgadd',
 
 	height : '90%',
 	width : '60%',
@@ -113,25 +113,6 @@ Ext.define('RODAdmin.view.cms.layout.EditLayoutWindow', {
 							}
 					]
 				}]
-			}, {
-				region : 'west',
-				collapsible : true,
-//				width : '50%',
-				flex:1,
-				split : true,
-				layout : 'fit',
-				items : [{
-							xtype : 'treepanel',
-							store : Ext.create('RODAdmin.store.cms.layout.GroupTree'),
-							itemId : 'groupselect',
-							displayField : 'name',
-							useArrows : true,
-							rootVisible : false,
-							multiSelect : false,
-							singleExpand : false,
-							allowDeselect : true,
-							autoheight : true
-						}]
 			}]
 		});
 		me.callParent(arguments);

@@ -9,7 +9,9 @@ Ext.define('RODAdmin.controller.cms.Snippets', {
     views: [
             'cms.snippet.Snippets', 'cms.snippet.SnippetItemsview',
             'cms.snippet.SnippetDetails', 'cms.snippet.details.SnippetProperties',
-            "cms.layout.EditLayoutWindow",
+//            "cms.layout.EditSnippetWindow",
+            'cms.snippet.SnippetGroupContextMenu',
+            'cms.snippet.SnippetContextMenu',
 // 'cms.files.filedetails.SpecificProperties',
 // 'cms.files.FileContextMenu',
 // 'cms.files.FolderContextMenu',
@@ -52,8 +54,8 @@ Ext.define('RODAdmin.controller.cms.Snippets', {
 init : function(application) {
 	this.control({
 				"snippetitemsview treepanel#snfolderview" : {
-					selectionchange : this.onSnFolderviewSelectionChange
-					// itemcontextmenu : this.onContextMenu
+					selectionchange : this.onSnFolderviewSelectionChange,
+					itemcontextmenu : this.onTreeContextMenu
 				},
 				// "itemsview treepanel#folderview > treeview" : {
 				// drop: this.onTreeDrop
@@ -88,10 +90,25 @@ onTreeViewClick : function(button, e, options) {
 	store.load();
 },
 
+onTreeContextMenu : function(component, record, item, index, e) {
+	e.stopEvent();
+	if (record.data.itemtype == 'snippetgroup') {
+		if (!this.foldermenu) {
+			this.groupmenu = Ext.create('widget.snippetgroupcontextmenu');
+		}
+		this.groupmenu.showAt(e.getXY());
+	} else {
+		if (!this.itemmenu) {
+			this.itemmenu = Ext.create('widget.snippetcontextmenu');
+		}
+		this.itemmenu.showAt(e.getXY());
+	}
+},
 
 onSnFolderviewSelectionChange : function(component, selected, event) {
 	console.log('folderviewselectionchange');
 	var record = selected[0];
+	console.log(record);
 	var snprop = this.getSnippetproperties();
 	var sndetails = this.getSndetailspanel();
 	var snusage = this.getSnusagepanel();

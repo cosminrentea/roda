@@ -64,8 +64,7 @@ Ext.define('RODAdmin.view.cms.page.PagesItemsview', {
 											}]
 								}]
 					}, {
-//						store : 'cms.page.PageTree',
-//						store : 'cms.files.FileTree',
+						store : 'cms.pages.PageTree',
 						itemId : 'pgfolderview',
 						xtype : 'treepanel',
 						useArrows : true,
@@ -82,17 +81,16 @@ Ext.define('RODAdmin.view.cms.page.PagesItemsview', {
 									items : [{
 												xtype : 'tbfill'
 											},
-											{
-												xtype : 'button',
-												itemId : 'showfilterdata',
-												text : 'All Filter Data',
-												tooltip : 'Get Filter Data for Grid'
-											}, {
-												text : 'Clear Filter Data',
-												xtype : 'button',
-												itemId : 'clearfilterdata'
-											},
-
+//											{
+//												xtype : 'button',
+//												itemId : 'showfilterdata',
+//												text : 'All Filter Data',
+//												tooltip : 'Get Filter Data for Grid'
+//											}, {
+//												text : 'Clear Filter Data',
+//												xtype : 'button',
+//												itemId : 'clearfilterdata'
+//											},
 											{
 												text : 'Reload Tree',
 												xtype : 'button',
@@ -133,10 +131,10 @@ Ext.define('RODAdmin.view.cms.page.PagesItemsview', {
 						columns : [{
 									xtype : 'treecolumn',
 									itemId : 'ft',
-									text : 'Layouts',
+									text : 'Pages',
 									flex : 2,
 									sortable : false,
-									dataIndex : 'name',
+									dataIndex : 'title',
 									editor : {
 										xtype : 'textfield'
 									},
@@ -144,11 +142,44 @@ Ext.define('RODAdmin.view.cms.page.PagesItemsview', {
 										type : 'string'
 									}
 								}, {
-									text : 'description',
+									xtype: 'templatecolumn',
+									text: 'lang',
+									tpl: '<div class="lang_{lang}">&nbsp;</div>',
 									flex : 1,
-									dataIndex : 'description',
+									sortable : false,
+									filterable : false,
+									width:'20'
+								},{
+									text : 'url',
+									flex : 2,
+									dataIndex : 'url',
 									sortable : false,
 									filterable : true
-								}]
+								},{
+									text : 'layout',
+									flex : 1,
+									dataIndex : 'layout',
+									sortable : false,
+									filterable : true
+								},{
+									text : 'cacheable',
+									flex : 1,
+									dataIndex : 'cacheable',
+									sortable : false,
+									filterable : true
+								},{
+					            	xtype: 'booleancolumn',	
+									text : 'searchable',
+						            trueText: 'Yes',
+						            falseText: 'No', 
+									flex : 1,
+									dataIndex : 'searchable',
+									sortable : false,
+									filterable : true
+								}
+								
+								
+								
+								]
 					}]
 		});

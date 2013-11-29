@@ -83,16 +83,18 @@ Ext.define('RODAdmin.view.cms.layout.LayoutItemsview', {
 									items : [{
 												xtype : 'tbfill'
 											},
-											{
-												xtype : 'button',
-												itemId : 'showfilterdata',
-												text : 'All Filter Data',
-												tooltip : 'Get Filter Data for Grid'
-											}, {
-												text : 'Clear Filter Data',
-												xtype : 'button',
-												itemId : 'clearfilterdata'
-											},
+
+//ascunse pana aflam cum se fac											
+//											{
+//												xtype : 'button',
+//												itemId : 'showfilterdata',
+//												text : 'All Filter Data',
+//												tooltip : 'Get Filter Data for Grid'
+//											}, {
+//												text : 'Clear Filter Data',
+//												xtype : 'button',
+//												itemId : 'clearfilterdata'
+//											},
 
 											{
 												text : 'Reload Tree',

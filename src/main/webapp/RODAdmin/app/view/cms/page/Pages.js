@@ -13,7 +13,7 @@ Ext.define('RODAdmin.view.cms.page.Pages', {
 			items : [{
 						region : 'west',
 						collapsible : true,
-						width : '30%',
+						width : '50%',
 						split : true,
 						layout : 'fit',
 						dockedItems : [{
@@ -40,7 +40,7 @@ Ext.define('RODAdmin.view.cms.page.Pages', {
 					}, {
 						region : 'center',
 						collapsible : false,
-						width : '70%',
+						width : '50%',
 						xtype : 'panel',
 						itemid : 'pgdetailscontainer',
 						id : 'pgdetailscontainer',
@@ -52,7 +52,7 @@ Ext.define('RODAdmin.view.cms.page.Pages', {
 							// align:'stretch'
 						},
 						items : [{
-		//							xtype : 'pagedetails'
+									xtype : 'pagedetails'
 								}]
 					}]
 		});

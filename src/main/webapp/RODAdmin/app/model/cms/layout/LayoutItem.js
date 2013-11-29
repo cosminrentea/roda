@@ -7,7 +7,7 @@ Ext.define('RODAdmin.model.cms.layout.LayoutItem', {
 		name : 'name',
 		type : 'string'
 	}, {
-		name : 'groupId',
+		name : 'groupid',
 		type : 'integer'
 	}, {
 		name : 'directory',
@@ -18,8 +18,10 @@ Ext.define('RODAdmin.model.cms.layout.LayoutItem', {
 	}, {
 		name : 'itemtype',
 		type : 'string'
-		},
-	{
+	}, {
+		name : 'content',
+		type : 'string'
+	}, {
 		name : 'pagesnumber',
 		type : 'integer'
 	}],

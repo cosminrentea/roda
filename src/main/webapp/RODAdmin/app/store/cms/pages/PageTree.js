@@ -1,15 +1,16 @@
-Ext.define('RODAdmin.store.cms.layout.GroupTree', {
+Ext.define('RODAdmin.store.cms.pages.PageTree', {
     extend: 'Ext.data.TreeStore',
 
     requires: [
-        'RODAdmin.model.cms.layout.Layout'
+        'RODAdmin.model.cms.pages.Page'
     ],
 
-    model: 'RODAdmin.model.cms.layout.Layout',
- //   folderSort: true,    
+    model: 'RODAdmin.model.cms.pages.Page',
+    autoload: true,    
     proxy: {
         type: 'ajax',
-		url: 'http://localhost:8080/roda/admin/cmslayoutgrouptree/',		
+ 		url: 'http://roda.apiary.io/admin/cmspagestree',    
+// 		url: 'http://localhost:8080/roda/admin/cmsfilelist',
          reader: {
                 type: 'json',
                 root: 'children'

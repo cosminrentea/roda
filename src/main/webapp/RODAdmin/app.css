@@ -1,8 +1,66 @@
 /** loading screen */
+
+.pagesynopsis {
+	padding:10px;
+	border-style:solid;
+	border-width:1px;
+	border-color:#000000;	
+	margin:10px;
+}
+
+.pagecontent {
+	padding:10px;
+	border-style:solid;
+	border-width:1px;
+	border-color:#000000;	
+	margin:10px;
+}
+
+
 .x-mask.splashscreen {
     background-color: white;
     opacity: 1;
 }
+
+.x-tree-icon.layoutgroup {
+	background-image: url("icons/layoutgroup.gif") !important;
+}
+
+.x-grid-tree-node-expanded .x-tree-icon.layoutgroup {
+	background-image: url("icons/layoutgroup-open.gif") !important;
+} 
+
+
+.x-tree-icon.snippetgroup {
+	background-image: url("icons/snippetgroup.gif") !important;
+}
+
+.x-grid-tree-node-expanded .x-tree-icon.snippetgroup {
+	background-image: url("icons/snippetgroup-open.gif") !important;
+} 
+
+
+.x-tree-icon.folder {
+	background-image: url("icons/folder.gif") !important;
+}
+
+.x-grid-tree-node-expanded .x-tree-icon.folder {
+	background-image: url("icons/folder-open.gif") !important;
+} 
+
+.x-tree-icon-leaf.layout {
+	background-image: url("icons/layout.gif") !important;
+}
+
+.x-tree-icon-leaf.snippet {
+	background-image: url("icons/snippet.gif") !important;
+}
+
+.x-tree-icon-leaf.file {
+	background-image: url("icons/file.gif") !important;
+}
+
+
 
 .x-mask-msg.splashscreen,
 .x-mask-msg.splashscreen div {
@@ -84,6 +142,14 @@
 
 .en {
   background-image:url('flags/us.png') !important;
+}
+
+.lang_en {
+  background-image:url('flags/us.png') !important;
+  background-repeat:no-repeat;
+  background-position:left;
+  width: 16px;
+  height: 11px;	
 }
 
 .es {

@@ -1,6 +1,6 @@
-Ext.define('RODAdmin.view.cms.FolderWindow', {
+Ext.define('RODAdmin.view.cms.layout.GroupWindow', {
 			extend : 'RODAdmin.view.common.WindowForm',
-			alias : 'widget.folderadd',
+			alias : 'widget.lygroupadd',
 
 			height : 250,
 			width : 550,
@@ -33,18 +33,21 @@ Ext.define('RODAdmin.view.cms.FolderWindow', {
 									},
 									items : [{
 												xtype : 'hiddenfield',
-												fieldLabel : 'folderid',
-												name : 'id',
+												fieldLabel : 'Parent',
+												name : 'parent',
 												value: '0'
 											}, {
-												fieldLabel : 'Folder name',
-												name : 'foldername'
+												fieldLabel : 'Group name',
+												name : 'groupname'
 											}, {
 												xtype : 'textarea',
 												fieldLabel : 'Description',
 												name : 'description',
 												allowBlank : true,
-											}]
+											}
+											
+											
+											]
 								}
 						]
 					}]

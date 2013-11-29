@@ -113,6 +113,34 @@ public class AdminJsonController {
 
 	}
 
+	@RequestMapping(value = "/layoutmove", method = RequestMethod.POST, produces = "application/json")
+	@ResponseBody
+	public String layoutMove(@RequestParam(value = "group") Integer groupId,
+			@RequestParam(value = "id") Integer layoutId) {
+
+		AdminJson layoutMove = adminJsonService.layoutMove(groupId, layoutId);
+
+		if (layoutMove == null) {
+			return null;
+		}
+		return layoutMove.toJson();
+
+	}
+
+	@RequestMapping(value = "/layoutgroupmove", method = RequestMethod.POST, produces = "application/json")
+	@ResponseBody
+	public String layoutGroupMove(@RequestParam(value = "parent") Integer parentGroupId,
+			@RequestParam(value = "group") Integer groupId) {
+
+		AdminJson layoutGroupMove = adminJsonService.layoutGroupMove(parentGroupId, groupId);
+
+		if (layoutGroupMove == null) {
+			return null;
+		}
+		return layoutGroupMove.toJson();
+
+	}
+
 	@RequestMapping(value = "/snippetgroupsave", method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody
 	public String snippetGroupSave(@RequestParam(value = "groupname") String groupname,
@@ -181,6 +209,34 @@ public class AdminJsonController {
 
 	}
 
+	@RequestMapping(value = "/snippetmove", method = RequestMethod.POST, produces = "application/json")
+	@ResponseBody
+	public String snippetMove(@RequestParam(value = "group") Integer groupId,
+			@RequestParam(value = "id") Integer snippetId) {
+
+		AdminJson snippetMove = adminJsonService.snippetMove(groupId, snippetId);
+
+		if (snippetMove == null) {
+			return null;
+		}
+		return snippetMove.toJson();
+
+	}
+
+	@RequestMapping(value = "/snippetgroupmove", method = RequestMethod.POST, produces = "application/json")
+	@ResponseBody
+	public String snippetGroupMove(@RequestParam(value = "parent") Integer parentGroupId,
+			@RequestParam(value = "group") Integer groupId) {
+
+		AdminJson snippetGroupMove = adminJsonService.snippetGroupMove(parentGroupId, groupId);
+
+		if (snippetGroupMove == null) {
+			return null;
+		}
+		return snippetGroupMove.toJson();
+
+	}
+
 	@RequestMapping(value = "/foldersave", method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody
 	public String folderSave(@RequestParam(value = "foldername") String foldername,
@@ -245,6 +301,33 @@ public class AdminJsonController {
 			return null;
 		}
 		return fileSave.toJson();
+
+	}
+
+	@RequestMapping(value = "/filemove", method = RequestMethod.POST, produces = "application/json")
+	@ResponseBody
+	public String fileMove(@RequestParam(value = "folder") Integer folderId, @RequestParam(value = "id") Integer fileId) {
+
+		AdminJson fileMove = adminJsonService.fileMove(folderId, fileId);
+
+		if (fileMove == null) {
+			return null;
+		}
+		return fileMove.toJson();
+
+	}
+
+	@RequestMapping(value = "/foldermove", method = RequestMethod.POST, produces = "application/json")
+	@ResponseBody
+	public String folderMove(@RequestParam(value = "parent") Integer parentGroupId,
+			@RequestParam(value = "folder") Integer folderId) {
+
+		AdminJson folderMove = adminJsonService.folderMove(parentGroupId, folderId);
+
+		if (folderMove == null) {
+			return null;
+		}
+		return folderMove.toJson();
 
 	}
 

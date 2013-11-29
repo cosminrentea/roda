@@ -198,12 +198,94 @@ public class AdminJson {
 		}
 
 		try {
-			CmsLayoutGroup.entityManager().persist(layout);
+			CmsLayout.entityManager().persist(layout);
 		} catch (EntityExistsException e) {
 			return new AdminJson(false, "Layout not created " + e.getMessage());
 		}
 
 		return new AdminJson(true, "CMS Layout created successfully");
+	}
+
+	public static AdminJson layoutMove(Integer groupId, Integer layoutId) {
+
+		CmsLayout layout = null;
+		if (layoutId != null) {
+			layout = CmsLayout.findCmsLayout(layoutId);
+		}
+
+		if (layout == null) {
+			return new AdminJson(false, "CMS Layout to be moved should exist");
+		}
+
+		CmsLayoutGroup parentGroup = CmsLayoutGroup.findCmsLayoutGroup(groupId);
+
+		if (groupId != null && parentGroup == null) {
+			return new AdminJson(false, "The CMS Layout group should exist");
+		}
+
+		if (groupId == (layout.getCmsLayoutGroupId() == null ? null : layout.getCmsLayoutGroupId().getId())) {
+			return new AdminJson(false, "The  group of the CMS Layout doesn't change");
+		}
+
+		try {
+			if (parentGroup != null) {
+				if (parentGroup.getCmsLayouts() == null) {
+					parentGroup.setCmsLayouts(new HashSet<CmsLayout>());
+					parentGroup.getCmsLayouts().add(layout);
+				} else {
+					parentGroup.getCmsLayouts().add(layout);
+				}
+				CmsLayoutGroup.entityManager().persist(parentGroup);
+			}
+			layout.setCmsLayoutGroupId(parentGroup);
+
+			CmsLayout.entityManager().persist(layout);
+		} catch (EntityExistsException e) {
+			return new AdminJson(false, "Layout not moved " + e.getMessage());
+		}
+
+		return new AdminJson(true, "CMS Layout moved successfully");
+	}
+
+	public static AdminJson layoutGroupMove(Integer parentGroupId, Integer groupId) {
+
+		CmsLayoutGroup layoutGroup = null;
+		if (groupId != null) {
+			layoutGroup = CmsLayoutGroup.findCmsLayoutGroup(groupId);
+		}
+
+		if (layoutGroup == null) {
+			return new AdminJson(false, "CMS Layout Group to be moved should exist");
+		}
+
+		CmsLayoutGroup parentGroup = CmsLayoutGroup.findCmsLayoutGroup(parentGroupId);
+
+		if (parentGroupId != null && parentGroup == null) {
+			return new AdminJson(false, "The CMS Layout group should exist");
+		}
+
+		if (parentGroupId == (layoutGroup.getParentId() == null ? null : layoutGroup.getParentId().getId())) {
+			return new AdminJson(false, "The parent of the CMS Layout group doesn't change");
+		}
+
+		try {
+			if (parentGroup != null) {
+				if (parentGroup.getCmsLayoutGroups() == null) {
+					parentGroup.setCmsLayoutGroups(new HashSet<CmsLayoutGroup>());
+					parentGroup.getCmsLayoutGroups().add(layoutGroup);
+				} else {
+					parentGroup.getCmsLayoutGroups().add(layoutGroup);
+				}
+				CmsLayoutGroup.entityManager().persist(parentGroup);
+			}
+			layoutGroup.setParentId(parentGroup);
+
+			CmsLayoutGroup.entityManager().persist(layoutGroup);
+		} catch (EntityExistsException e) {
+			return new AdminJson(false, "CMS Layout group not moved " + e.getMessage());
+		}
+
+		return new AdminJson(true, "CMS Layout group moved successfully");
 	}
 
 	// Methods for Snippets
@@ -355,6 +437,88 @@ public class AdminJson {
 		}
 
 		return new AdminJson(true, "CMS Snippet created successfully");
+	}
+
+	public static AdminJson snippetMove(Integer groupId, Integer snippetId) {
+
+		CmsSnippet snippet = null;
+		if (snippetId != null) {
+			snippet = CmsSnippet.findCmsSnippet(snippetId);
+		}
+
+		if (snippet == null) {
+			return new AdminJson(false, "CMS Snippet to be moved should exist");
+		}
+
+		CmsSnippetGroup parentGroup = CmsSnippetGroup.findCmsSnippetGroup(groupId);
+
+		if (groupId != null && parentGroup == null) {
+			return new AdminJson(false, "The CMS Snippet group should exist");
+		}
+
+		if (groupId == (snippet.getCmsSnippetGroupId() == null ? null : snippet.getCmsSnippetGroupId().getId())) {
+			return new AdminJson(false, "The  group of the CMS Snippet doesn't change");
+		}
+
+		try {
+			if (parentGroup != null) {
+				if (parentGroup.getCmsSnippets() == null) {
+					parentGroup.setCmsSnippets(new HashSet<CmsSnippet>());
+					parentGroup.getCmsSnippets().add(snippet);
+				} else {
+					parentGroup.getCmsSnippets().add(snippet);
+				}
+				CmsSnippetGroup.entityManager().persist(parentGroup);
+			}
+			snippet.setCmsSnippetGroupId(parentGroup);
+
+			CmsSnippet.entityManager().persist(snippet);
+		} catch (EntityExistsException e) {
+			return new AdminJson(false, "Snippet not moved " + e.getMessage());
+		}
+
+		return new AdminJson(true, "CMS Snippet moved successfully");
+	}
+
+	public static AdminJson snippetGroupMove(Integer parentGroupId, Integer groupId) {
+
+		CmsSnippetGroup snippetGroup = null;
+		if (groupId != null) {
+			snippetGroup = CmsSnippetGroup.findCmsSnippetGroup(groupId);
+		}
+
+		if (snippetGroup == null) {
+			return new AdminJson(false, "CMS Snippet Group to be moved should exist");
+		}
+
+		CmsSnippetGroup parentGroup = CmsSnippetGroup.findCmsSnippetGroup(parentGroupId);
+
+		if (parentGroupId != null && parentGroup == null) {
+			return new AdminJson(false, "The CMS Snippet group should exist");
+		}
+
+		if (parentGroupId == (snippetGroup.getParentId() == null ? null : snippetGroup.getParentId().getId())) {
+			return new AdminJson(false, "The parent of the CMS Snippet group doesn't change");
+		}
+
+		try {
+			if (parentGroup != null) {
+				if (parentGroup.getCmsSnippetGroups() == null) {
+					parentGroup.setCmsSnippetGroups(new HashSet<CmsSnippetGroup>());
+					parentGroup.getCmsSnippetGroups().add(snippetGroup);
+				} else {
+					parentGroup.getCmsSnippetGroups().add(snippetGroup);
+				}
+				CmsSnippetGroup.entityManager().persist(parentGroup);
+			}
+			snippetGroup.setParentId(parentGroup);
+
+			CmsSnippetGroup.entityManager().persist(snippetGroup);
+		} catch (EntityExistsException e) {
+			return new AdminJson(false, "CMS Snippet group not moved " + e.getMessage());
+		}
+
+		return new AdminJson(true, "CMS Snippet group moved successfully");
 	}
 
 	// Methods for CMS files and folders.
@@ -510,6 +674,88 @@ public class AdminJson {
 		}
 
 		return new AdminJson(true, "CMS File created successfully");
+	}
+
+	public static AdminJson fileMove(Integer folderId, Integer fileId) {
+
+		CmsFile file = null;
+		if (fileId != null) {
+			file = CmsFile.findCmsFile(fileId);
+		}
+
+		if (file == null) {
+			return new AdminJson(false, "CMS File to be moved should exist");
+		}
+
+		CmsFolder folder = CmsFolder.findCmsFolder(folderId);
+
+		if (folderId == null || folder == null) {
+			return new AdminJson(false, "The CMS Folder should exist");
+		}
+
+		if (folderId == (file.getCmsFolderId() == null ? null : file.getCmsFolderId().getId())) {
+			return new AdminJson(false, "The folder of the CMS File doesn't change");
+		}
+
+		try {
+			if (folder != null) {
+				if (folder.getCmsFiles() == null) {
+					folder.setCmsFiles(new HashSet<CmsFile>());
+					folder.getCmsFiles().add(file);
+				} else {
+					folder.getCmsFiles().add(file);
+				}
+				CmsFolder.entityManager().persist(folder);
+			}
+			file.setCmsFolderId(folder);
+
+			CmsFile.entityManager().persist(file);
+		} catch (EntityExistsException e) {
+			return new AdminJson(false, "File not moved " + e.getMessage());
+		}
+
+		return new AdminJson(true, "CMS File moved successfully");
+	}
+
+	public static AdminJson folderMove(Integer parentFolderId, Integer folderId) {
+
+		CmsFolder folder = null;
+		if (folderId != null) {
+			folder = CmsFolder.findCmsFolder(folderId);
+		}
+
+		if (folder == null) {
+			return new AdminJson(false, "CMS Folder to be moved should exist");
+		}
+
+		CmsFolder parentFolder = CmsFolder.findCmsFolder(parentFolderId);
+
+		if (parentFolderId == null || parentFolder == null) {
+			return new AdminJson(false, "The CMS Folder should exist");
+		}
+
+		if (parentFolderId == (folder.getParentId() == null ? null : folder.getParentId().getId())) {
+			return new AdminJson(false, "The parent of the CMS Folder doesn't change");
+		}
+
+		try {
+			if (parentFolder != null) {
+				if (parentFolder.getCmsFolders() == null) {
+					parentFolder.setCmsFolders(new HashSet<CmsFolder>());
+					parentFolder.getCmsFolders().add(folder);
+				} else {
+					parentFolder.getCmsFolders().add(folder);
+				}
+				CmsFolder.entityManager().persist(parentFolder);
+			}
+			folder.setParentId(parentFolder);
+
+			CmsFolder.entityManager().persist(folder);
+		} catch (EntityExistsException e) {
+			return new AdminJson(false, "CMS Folder not moved " + e.getMessage());
+		}
+
+		return new AdminJson(true, "CMS Folder moved successfully");
 	}
 
 	private final Log log = LogFactory.getLog(this.getClass());

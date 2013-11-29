@@ -17,6 +17,10 @@ public interface AdminJsonService {
 	public abstract AdminJson layoutSave(Integer groupId, String content, String name, String description,
 			Integer layoutId);
 
+	public abstract AdminJson layoutMove(Integer groupId, Integer layoutId);
+
+	public abstract AdminJson layoutGroupMove(Integer parentGroupId, Integer groupId);
+
 	public abstract AdminJson snippetGroupSave(String groupname, Integer parentId, String description);
 
 	public abstract AdminJson snippetGroupEmpty(Integer groupId);
@@ -27,6 +31,10 @@ public interface AdminJsonService {
 
 	public abstract AdminJson snippetSave(Integer groupId, String content, String name, Integer snippetId);
 
+	public abstract AdminJson snippetMove(Integer groupId, Integer snippetId);
+
+	public abstract AdminJson snippetGroupMove(Integer parentGroupId, Integer groupId);
+
 	public abstract AdminJson folderSave(String foldername, Integer parentId, String description);
 
 	public abstract AdminJson folderEmpty(Integer folderId);
@@ -36,4 +44,8 @@ public interface AdminJsonService {
 	public abstract AdminJson fileDrop(Integer fileId);
 
 	public abstract AdminJson fileSave(Integer folderId, String alias, Integer fileId);
+
+	public abstract AdminJson fileMove(Integer folderId, Integer fileId);
+
+	public abstract AdminJson folderMove(Integer parentFolderId, Integer folderId);
 }

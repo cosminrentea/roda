@@ -2,12 +2,12 @@ Ext.define('RODAdmin.view.cron.actions.CronDetails', {
 			extend : 'Ext.tab.Panel',
 			alias : 'widget.crondetails',
 			itemId: 'crondetails',
-			id: 'pagedetails',
+			id: 'crondetails',
 		    dockedItems : [
 		           	    {
 		           	        xtype : 'toolbar',
-		           	        itemid : 'pgproptoolbar',
-		           	        id : 'pgproptoolbar',
+		           	        itemid : 'cronproptoolbar',
+		           	        id : 'cronproptoolbar',
 		           	        dock : 'bottom',
 		           	        items : [
 		           	                {

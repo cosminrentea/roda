@@ -40,7 +40,16 @@ Ext.application({
 	stores : ['security.Permissions'],
 
 	controllers : ['Main', 'Login', 'TranslationManager', 'Menu',
-			'cms.Dashboard','cms.Layout', 'cms.layout.LayoutTree','cms.layout.LayoutList','cms.layout.LayoutEdit',  'cms.Snippets', 'cms.Files',
+			'cms.Dashboard',
+			'cms.Layout', 'cms.layout.LayoutTree','cms.layout.LayoutList','cms.layout.LayoutEdit',
+			'cms.Snippet',
+			'cms.snippet.SnippetTree',
+			'cms.snippet.SnippetList',
+			'cms.snippet.SnippetEdit',
+			'cms.file.FileEdit',
+			'cms.file.FileTree',
+			'cms.file.FileList',
+			'cms.Files',
 			'cms.Pages','cms.page.PageTree',  'cron.Dashboard', 'cron.Actions', 'common.Audit',
 			'Abstract'],
 

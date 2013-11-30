@@ -66,7 +66,6 @@ Ext.define('RODAdmin.view.cms.snippet.SnippetItemsview', {
 								}]
 					}, {
 						store : 'cms.snippet.SnippetTree',
-//						store : 'cms.files.FileTree',
 						itemId : 'snfolderview',
 						xtype : 'treepanel',
 						useArrows : true,
@@ -83,16 +82,16 @@ Ext.define('RODAdmin.view.cms.snippet.SnippetItemsview', {
 									items : [{
 												xtype : 'tbfill'
 											},
-											{
-												xtype : 'button',
-												itemId : 'showfilterdata',
-												text : 'All Filter Data',
-												tooltip : 'Get Filter Data for Grid'
-											}, {
-												text : 'Clear Filter Data',
-												xtype : 'button',
-												itemId : 'clearfilterdata'
-											},
+//											{
+//												xtype : 'button',
+//												itemId : 'showfilterdata',
+//												text : 'All Filter Data',
+//												tooltip : 'Get Filter Data for Grid'
+//											}, {
+//												text : 'Clear Filter Data',
+//												xtype : 'button',
+//												itemId : 'clearfilterdata'
+//											},
 
 											{
 												text : 'Reload Tree',
@@ -144,12 +143,6 @@ Ext.define('RODAdmin.view.cms.snippet.SnippetItemsview', {
 									filter : {
 										type : 'string'
 									}
-								}, {
-									text : 'description',
-									flex : 1,
-									dataIndex : 'description',
-									sortable : false,
-									filterable : true
 								}]
 					}]
 		});

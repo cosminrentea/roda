@@ -58,7 +58,7 @@ public class AdminJsonServiceImpl implements AdminJsonService {
 	}
 
 	public AdminJson snippetSave(Integer groupId, String content, String name, Integer snippetId) {
-		return AdminJson.snippetSave(groupId, content, name, snippetId);
+		return AdminJson.snippetSave(groupId, name, content, snippetId);
 	}
 
 	public AdminJson snippetMove(Integer groupId, Integer snippetId) {

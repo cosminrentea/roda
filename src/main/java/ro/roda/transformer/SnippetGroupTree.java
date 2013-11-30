@@ -34,10 +34,10 @@ public class SnippetGroupTree extends SnippetList {
 				includeData += ".";
 			}
 			includeData += "children";
-			serializer.exclude(includeData + ".depth", includeData + ".groupid", includeData + ".directory",
-					includeData + ".content", includeData + ".n", includeData + ".type");
+			serializer.exclude(includeData + ".depth", includeData + ".type");
 			serializer.include(includeData + ".name", includeData + ".id", includeData + ".expanded", includeData
-					+ ".iconCls");
+					+ ".iconCls", includeData + ".groupid", includeData + ".directory", includeData + ".content",
+					includeData + ".n");
 			serializer.transform(new FieldNameTransformer("indice"), includeData + ".id");
 		}
 
@@ -159,10 +159,10 @@ public class SnippetGroupTree extends SnippetList {
 				includeData += ".";
 			}
 			includeData += "children";
-			serializer.exclude(includeData + ".depth", includeData + ".groupid", includeData + ".directory",
-					includeData + ".content", includeData + ".n", includeData + ".type");
+			serializer.exclude(includeData + ".depth", includeData + ".type");
 			serializer.include(includeData + ".name", includeData + ".id", includeData + ".expanded", includeData
-					+ ".iconCls");
+					+ ".iconCls", includeData + ".groupid", includeData + ".directory", includeData + ".content",
+					includeData + ".n");
 			serializer.transform(new FieldNameTransformer("indice"), includeData + ".id");
 		}
 

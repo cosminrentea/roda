@@ -160,14 +160,6 @@ Ext.define('RODAdmin.controller.cms.layout.LayoutTree', {
 	    }
     },
 
-    onItemContextMenu : function(component, record, item, index, e) {
-	    e.stopEvent();
-	    if (!this.filemenu) {
-		    this.filemenu = Ext.create('widget.layoutitemviewcontextmenu');
-	    }
-	    this.filemenu.showAt(e.getXY());
-    },
-
     onCollapseTreeClick : function(button, e, options) {
 	    console.log('onCollapseTreeClick');
 	    this.getFolderview().collapseAll();
@@ -181,19 +173,15 @@ Ext.define('RODAdmin.controller.cms.layout.LayoutTree', {
     onReloadTreeClick : function(button, e, options) {
 	    var folderview = this.getFolderview();
 	    var currentNode = folderview.getSelectionModel().getLastSelected();
-	    // var currentNode =
-	    // this.getFolderview().getSelectionModel().getSelectedIndex();
 	    console.log(currentNode);
 	    this.getFolderview().store.reload({
 	        scope : this,
 	        callback : function(records, operation, success) {
 		        console.log('callback executed');
 		        console.log(currentNode.idField.originalIndex);
-		        // console.log(this.getFolderview().getSelectionModel());
 		        folderview.getSelectionModel().select(currentNode);
 	        }
 	    });
-	    // this.getFolderview().getSelectionModel().select(currentNode);
     },
 
     onFolderselectCellClick : function(component, td, cellIndex, record, tr, rowIndex, e, eOpts) {

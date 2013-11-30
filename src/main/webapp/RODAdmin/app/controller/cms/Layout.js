@@ -1,8 +1,6 @@
 Ext.define('RODAdmin.controller.cms.Layout', {
     extend : 'Ext.app.Controller',
 
-    // views : [ "cms.layout.EditLayoutWindow" ],
-
     refs : [
             {
                 ref : 'itemsview',
@@ -89,8 +87,6 @@ Ext.define('RODAdmin.controller.cms.Layout', {
 				        RODAdmin.util.Alert.msg('Success!', 'Deleted.');
 				        Ext.StoreManager.get('cms.layout.Layout').load();
 				        Ext.StoreManager.get('cms.layout.LayoutTree').load();
-				        //imediat ce aflam cum dracu se selecteaza un nod, trebuie sa invatam sa selectam nodul superior celui pe care l-am sters				        
-
 			        },
 			        failure : function(response, opts) {
 				        Ext.Msg.alert('Failure', response);
@@ -99,14 +95,10 @@ Ext.define('RODAdmin.controller.cms.Layout', {
 			    });
 		    }
 	    }, this);
-	    // event.stopEvent();
     },
 
     onlytoolbarAuditClick : function(button, e, options) {
 	    console.log('auditfile clicked, cool stuff ahead');
-
-	    // this.getController('RODAdmin.controller.cms.layout.LayoutTree').onReloadTreeClick();
-
 	    var fp = this.getLayoutproperties().data;
 	    var win = Ext.create('RODAdmin.view.common.AuditWindow');
 	    win.setTitle('Audit data for "' + fp.data.name + '" (id: ' + fp.data.id + ')');

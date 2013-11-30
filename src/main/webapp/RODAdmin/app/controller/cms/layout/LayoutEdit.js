@@ -76,8 +76,6 @@ Ext.define('RODAdmin.controller.cms.layout.LayoutEdit', {
 				        break;
 
 			        case Ext.form.action.Action.CONNECT_FAILURE:
-
-				        // Ext.Msg.alert('Failure', action.result.msg);
 				        Ext.Msg.alert('Failure', 'doesn\'t work');
 				        break;
 
@@ -91,13 +89,8 @@ Ext.define('RODAdmin.controller.cms.layout.LayoutEdit', {
     },
 
     onLayoutEditSaveClick : function(button, e, options) {
-	    // ok, now we're here. Let's save the little fucker.
-	    // first, we need to find the window
 	    var win = button.up('window');
-	    // then, the form
 	    var formPanel = win.down('form');
-	    // we will need to reload the store, this is tricky since we need to
-		// determine which view is active. But we'll leave this for later
 	    var currentNode = this.getFolderview().getSelectionModel().getLastSelected();
 	    var folderview = this.getFolderview()
 	    var me = this;
@@ -132,11 +125,8 @@ Ext.define('RODAdmin.controller.cms.layout.LayoutEdit', {
 				        break;
 
 			        case Ext.form.action.Action.CONNECT_FAILURE:
-
-				        // Ext.Msg.alert('Failure', action.result.msg);
 				        Ext.Msg.alert('Failure', 'doesn\'t work');
 				        break;
-
 			        case Ext.form.action.Action.SERVER.INVALID:
 				        Ext.Msg.alert('Failure', action.result.msg);
 				        break;
@@ -149,13 +139,8 @@ Ext.define('RODAdmin.controller.cms.layout.LayoutEdit', {
 
     onLayoutAddGroupSaveClick : function(button, e, options) {
 	    console.log('small step for man...');
-	    // ok, now we're here. Let's save the little fucker.
-	    // first, we need to find the window
 	    var win = button.up('window');
-	    // then, the form
 	    var formPanel = win.down('form');
-	    // we will need to reload the store, this is tricky since we need to
-		// determine which view is active. But we'll leave this for later
 	    var me = this;
 	    if (formPanel.getForm().isValid()) {
 		    formPanel.getForm().submit({
@@ -189,7 +174,6 @@ Ext.define('RODAdmin.controller.cms.layout.LayoutEdit', {
 				        break;
 
 			        case Ext.form.action.Action.CONNECT_FAILURE:
-				        // Ext.Msg.alert('Failure', action.result.msg);
 				        Ext.Msg.alert('Failure', 'doesn\'t work');
 				        break;
 
@@ -203,29 +187,8 @@ Ext.define('RODAdmin.controller.cms.layout.LayoutEdit', {
     },
 
     folderLoad : function(component, options) {
-
-	    console.log('folderload inside edit window');
-
 	    var active = this.getItemsview().layout.getActiveItem();
-
-	    console.log(active);
-
-	    console.log(active.itemId);
-
-	    // ?? :)
 	    var pnode = active.getSelectionModel().getLastSelected();
-
-	    // var pnode = this.getCurrentNode();
-	    // var gwin =Ext.ComponentQuery.query('fileedit')
-	    // var gwin = Ext.getCmp('fileedit');
-	    // console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
-	    // console.log(gwin);
-	    // console.log(gwin.cnode);
-	    // console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
-	    // var pnode = gwin.getCnode();
-	    // console.log(pnode);
-	    // console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
-
 	    var rnode = this.getFolderselect().getRootNode();
 	    var cnode = rnode.findChild('id', pnode.data.folderid, true);
 	    if (cnode != null) {
@@ -234,11 +197,8 @@ Ext.define('RODAdmin.controller.cms.layout.LayoutEdit', {
     },
 
     onGroupselectCellClick : function(component, td, cellIndex, record, tr, rowIndex, e, eOpts) {
-
 	    component.up('layoutedit').down('form').down('fieldset').query('displayfield')[0].setValue(record.data.name + '('+record.data.indice+')');
 	    component.up('layoutedit').down('hiddenfield#groupid').setValue(record.data.indice);
-//	    component.up('layoutedit').down('fieldset').query('hiddenfield#groupid')[0].setValue(record.data.id);
-    
     },
 
 });

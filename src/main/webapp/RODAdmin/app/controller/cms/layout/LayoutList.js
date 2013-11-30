@@ -42,33 +42,17 @@ Ext.define('RODAdmin.controller.cms.layout.LayoutList', {
 			},
 			"layoutitemviewcontextmenu menuitem#iceditlayout" : {
 				click : this.onEditLayoutClick
-			},
-//			"layoutedit treepanel#groupselect" : {
-//				load : this.folderLoad, // this is the only event fired
-//				// after loading the store in a
-//				// tree view, apparently. This
-//				// is REALLY stupid because it
-//				// is probabily fired multiple
-//				// times.
-//		//		cellclick : this.onGroupselectCellClick
-//			},
-
+			}
 		});
 	},
 
 	onEditLayoutClick : function(component, record, item, index, e) {
 		console.log('onEditLayoutClick');
 		var currentNode = this.getIconview().getSelectionModel().getLastSelected();
-		
-//		console.log(currentNode);
-		
 		var win = Ext.create('RODAdmin.view.cms.layout.EditLayoutWindow');
 		win.setTitle('Edit Layout');
 		var wtree = win.down('treepanel');
-
 		var layoutitemstore = Ext.create('RODAdmin.store.cms.layout.LayoutItem');
-
-	//		aici trebuie sa vedem daca putem sa legam formularul cu un store		
 		layoutitemstore.load({
 					id: currentNode.data.indice, //set the id here
 					scope : this,
@@ -80,7 +64,6 @@ Ext.define('RODAdmin.controller.cms.layout.LayoutList', {
 					}
 		});	
 		win.show();
-//		win.down('form').getForm().loadRecord(fp);
 	},
 
 	onDeleteLayoutClick : function(component, event) {
@@ -110,37 +93,6 @@ Ext.define('RODAdmin.controller.cms.layout.LayoutList', {
 				}, this);
 		event.stopEvent();
 	},
-	
-//	onIcEditLayoutClick : function(component, record, item, index, e) {
-//		console.log('onIcEditLayoutClick');
-////		console.log(component);
-//		var currentNode = this.getIconview().getSelectionModel().getLastSelected();
-//		
-////		console.log(currentNode);
-//		
-//		var win = Ext.create('RODAdmin.view.cms.layout.EditLayoutWindow');
-//		win.setTitle('Edit Layout');
-//		var wtree = win.down('treepanel');
-//
-//		var layoutitemstore = Ext.create('RODAdmin.store.cms.layout.LayoutItem');
-//
-//	//		aici trebuie sa vedem daca putem sa legam formularul cu un store		
-//		layoutitemstore.load({
-//					// id: id, //set the id here
-//					scope : this,
-//					callback : function(records, operation, success) {
-//						if (success) {
-////							console.log(records);
-////							var fileitem = layoutitemstore.first();
-//							win.down('form').getForm().loadRecord(records.first());
-//						}
-//					}
-//		});	
-//		win.show();
-////		win.down('form').getForm().loadRecord(fp);
-//	},	
-	
-	
 	onIconViewSelectionChange : function(component, selected, event) {
 		console.log('folderviewselectionchange');
 		var record = selected[0];

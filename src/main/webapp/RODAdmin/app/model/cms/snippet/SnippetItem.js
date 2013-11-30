@@ -13,16 +13,13 @@ Ext.define('RODAdmin.model.cms.snippet.SnippetItem', {
 		name : 'directory',
 		type : 'string'
 	}, {
-		name : 'description',
+		name : 'content',
 		type : 'string'
 	}, {
 		name : 'itemtype',
 		type : 'string'
-		},
-	{
-		name : 'pagesnumber',
-		type : 'integer'
-	}],
+		}
+	],
 	hasMany : [ {
 		model : 'RODAdmin.model.cms.snippet.SnippetUsage',
 		name : 'snippetusage',

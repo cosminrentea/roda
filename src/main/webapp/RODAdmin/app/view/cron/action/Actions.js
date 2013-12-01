@@ -1,4 +1,4 @@
-Ext.define('RODAdmin.view.cron.actions.Actions', {
+Ext.define('RODAdmin.view.cron.action.Actions', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.cronactions',
 	itemId : 'cronactions',

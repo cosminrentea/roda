@@ -1,22 +1,22 @@
-Ext.define('RODAdmin.view.cron.actions.details.ActionRuns', {
+Ext.define('RODAdmin.view.cron.action.details.ActionRuns', {
     extend : 'Ext.grid.Panel',
     alias : 'widget.actionruns',
     itemId : 'actionruns',
     title : 'Action Runs',
+    store: 'cron.ExecutionList',
     // id: 'fileproperties',
-    collapsible : true,
 
 	columns : [{
 		itemId : 'rtype',
 		text : 'Run type',
 		flex : 1,
 		sortable : true,
-		dataIndex : 'runtype',
+		dataIndex : 'type',
 		filterable : true
 	}, {
 		text : 'Start',
 		flex : 1,
-		dataIndex : 'start',
+		dataIndex : 'timestamp_start',
 		sortable : true,
 		filterable : true
 	}, {
@@ -26,23 +26,17 @@ Ext.define('RODAdmin.view.cron.actions.details.ActionRuns', {
 		sortable : true,
 		filterable : true
 	}, {
-		text : 'Success',
+		text : 'Result',
 		flex : 1,
-		dataIndex : 'success',
-		sortable : true,
-		filterable : true
-	}, {
-		text : 'Error type',
-		flex : 1,
-		dataIndex : 'status',
+		dataIndex : 'result',
 		sortable : true,
 		filterable : true
 	}, {
 		text : 'View',
-		flex : 1,
+  	    xtype: 'templatecolumn',
 		dataIndex : '',
-		sortable : true,
-		filterable : true
+		flex : 1,
+ 	    tpl: '<tpl if="result == 0">View</tpl>',
 	}
 	
 	

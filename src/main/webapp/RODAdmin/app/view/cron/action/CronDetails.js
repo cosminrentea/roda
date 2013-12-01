@@ -1,4 +1,4 @@
-Ext.define('RODAdmin.view.cron.actions.CronDetails', {
+Ext.define('RODAdmin.view.cron.action.CronDetails', {
 			extend : 'Ext.tab.Panel',
 			alias : 'widget.crondetails',
 			itemId: 'crondetails',

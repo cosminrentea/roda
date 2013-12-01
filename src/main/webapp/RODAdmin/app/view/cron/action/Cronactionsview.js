@@ -1,4 +1,4 @@
-Ext.define('RODAdmin.view.cron.actions.Cronactionsview', {
+Ext.define('RODAdmin.view.cron.action.Cronactionsview', {
 			extend : 'Ext.panel.Panel',
 			alias : 'widget.cronactionsview',
 			itemId : 'cronactionsview',
@@ -12,22 +12,17 @@ Ext.define('RODAdmin.view.cron.actions.Cronactionsview', {
 			items : [{
 						xtype : 'grid',
 						itemId : 'croniconview',
+						store : 'cron.ActionList',
 						itemSelector : 'div.thumb-wrap',
 						features : [Ext.create('Ext.ux.grid.FiltersFeature', {
 									local : true
 								})],
 						columns : [{
-									itemId : 'ft',
+									itemId : 'actionname',
 									text : 'Name',
 									flex : 1,
 									sortable : true,
 									dataIndex : 'name',
-									filterable : true
-								}, {
-									text : 'Type',
-									flex : 1,
-									dataIndex : 'type',
-									sortable : true,
 									filterable : true
 								}, {
 									text : 'Cron',
@@ -38,19 +33,19 @@ Ext.define('RODAdmin.view.cron.actions.Cronactionsview', {
 								}, {
 									text : 'Last execution time',
 									flex : 1,
-									dataIndex : 'lastextime',
+									dataIndex : 'timestamp_last_execution',
 									sortable : true,
 									filterable : true
 								}, {
 									text : 'Status',
 									flex : 1,
-									dataIndex : 'status',
+									dataIndex : 'enabled',
 									sortable : true,
 									filterable : true
 								}, {
 									text : 'Next execution',
 									flex : 1,
-									dataIndex : 'nextexec',
+									dataIndex : 'timestamp_next_execution',
 									sortable : true,
 									filterable : true
 								}
@@ -73,7 +68,13 @@ Ext.define('RODAdmin.view.cron.actions.Cronactionsview', {
 												text : 'Clear Filter Data',
 												xtype : 'button',
 												itemId : 'clearfilterdata'
-											}]
+											}, {
+												text : 'Refresh',
+												xtype : 'button',
+												itemId : 'refreshgrid'
+											}
+											
+											]
 								}]
 					
 					

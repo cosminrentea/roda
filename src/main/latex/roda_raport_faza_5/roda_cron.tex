@@ -1,0 +1,95 @@
+
+\section{Task-Scheduling in Spring}
+
+Spring 3.0 introduces a TaskScheduler with a variety of methods for scheduling tasks to run at some point in the future.
+\begin{lstlisting}
+public interface TaskScheduler {
+ScheduledFuture schedule(Runnable task, Trigger trigger);
+
+ScheduledFuture schedule(Runnable task, Date startTime);
+
+ScheduledFuture scheduleAtFixedRate(Runnable task, Date startTime, long period);
+
+ScheduledFuture scheduleAtFixedRate(Runnable task, long period);
+
+ScheduledFuture scheduleWithFixedDelay(Runnable task, Date startTime, long delay);
+
+ScheduledFuture scheduleWithFixedDelay(Runnable task, long delay);
+}
+\end{lstlisting}
+
+The simplest method is the one named 'schedule' that takes a Runnable and Date only. 
+That will cause the task to run once after the specified time. All of the other methods are capable of scheduling tasks to run repeatedly. 
+The fixed-rate and fixed-delay methods are for simple, periodic execution, but the method that accepts a Trigger is much more flexible.
+
+The Trigger interface is essentially inspired by JSR-236, which, as of Spring 3.0, has not yet been officially implemented. 
+The basic idea of the Trigger is that execution times may be determined based on past execution outcomes or even arbitrary conditions. 
+If these determinations do take into account the outcome of the preceding execution, that information is available within a TriggerContext.
+
+Spring provides two implementations of the Trigger interface. The most interesting one is the CronTrigger. 
+It enables the scheduling of tasks based on cron expressions. 
+
+For example the following task is being scheduled to run 15 minutes past each hour but only during the 9-to-5 "business hours" on weekdays:
+\begin{lstlisting}
+scheduler.schedule(task, new CronTrigger("* 15 9-17 * * MON-FRI"));
+\end{lstlisting}
+
+The other out-of-the-box implementation is a PeriodicTrigger that accepts a fixed period, an optional initial delay value, 
+and a boolean to indicate whether the period should be interpreted as a fixed-rate or a fixed-delay. 
+Since the TaskScheduler interface already defines methods for scheduling tasks at a fixed-rate or with a fixed-delay, 
+those methods should be used directly whenever possible. 
+The value of the PeriodicTrigger implementation is that it can be used within components that rely on the Trigger abstraction. 
+For example, it may be convenient to allow periodic triggers, cron-based triggers, and even custom trigger implementations to be used interchangeably. 
+Such a component could take advantage of dependency injection so that such Triggers could be configured externally.
+
+\section{Task-Scheduling in aplicatia RODA}
+
+In fisierul 'applicationContext.xml' este configurata componenta de scheduling (avand un pool de 5 thread-uri):
+
+\begin{lstlisting}
+<task:scheduler id="scheduler" pool-size="5"/>
+\end{lstlisting}
+
+Pachetul in care se afla componenta de scheduling este 'ro.roda.scheduler', iar task-urile definite sunt in pachetul 'ro.roda.scheduler.tasks'.
+Task-urile sunt implementari ale interfetelor Runnable sau RunnableFuture. 
+Executiile task-urilor pot fi programate ori declansate manual.
+
+Definitiile task-urilor sunt persistente in baza de date (si nu in fisiere de configuratie).
+Tabelul ce contine task-urile posibile se populeaza sau actualizeaza la pornirea aplicatiei, 
+dupa identificarea prin Java Reflection a tuturor task-urilor din pachetul mentionat.
+
+De asemenea, si detaliile despre executiile aferente unui anumit task sunt stocate in baza de date.
+
+Campurile acestor entitati sunt:
+\begin{enumerate}
+\item Task:
+\begin{itemize}
+\item id
+\item name: numele task-ului
+\item description: descrierea pe larg
+\item classname: Numele complet al clasei Java care implementeaza task-ul
+\item cron: string-ul in stil Cron care descrie regula de programare a executiei Task-ului; 
+poate cuprinde campuri simple sau cu reguli pe baza de frecvente si intervale pentru: secunde, minute, ore, zile ale lunii, luni, zi a saptamanii, an.
+\item enabled: daca task-ul este activat (sau dezactivat)
+\item timestamp\_next\_execution: data si ora la care Task-ul este planificat pentru a fi lansat in executie (momentul planificat al urmatoarei executii)
+\end{itemize}
+\item Executie:
+\begin{itemize}
+\item id
+\item task\_id : referinta la Task
+\item type: "scheduled" sau "manual" (daca executia a fost programata sau a fost declansata manual)
+\item result: rezultatul executiei (numar intreg, unde 0 reprezinta succes)
+\item timestamp\_start: Momentul la care a inceput aceasta executie a task-ului
+\item duration: durata acestei executii (in milisecunde)
+\item stacktrace:  detalii in caz de executie fara succes
+\end{itemize}
+\end{enumerate}
+
+Controlul sistemului de Task-Scheduling se realizeaza prin intermediul unor controllere care primesc comenzi
+\begin{itemize}
+\item de modificare a parametrilor task-urilor (dez-activare, modificare parametru stil Cron etc.)
+\item de declansare manuala a executiei unui anumit task
+\item de listare a tuturor task-urilor sau a unui anumit task
+\item de listare a tuturor executiilor sau a unei anumite executii (cu detalii sau fara)
+\item de listare filtrata a executiilor (de ex. dupa rezultat, sau dupa intervalul de timp in care a fost declansata, sau dupa durata)
+\end{itemize}

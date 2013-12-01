@@ -2,11 +2,11 @@ Ext.define('RODAdmin.controller.cron.Actions', {
     extend: 'Ext.app.Controller',
 
     views: [
-        'cron.actions.Actions',
-        'cron.actions.Cronactionsview',
-        'cron.actions.CronDetails',
-        'cron.actions.details.ActionProperties',
-        'cron.actions.details.ActionRuns',
+        'cron.action.Actions',
+        'cron.action.Cronactionsview',
+        'cron.action.CronDetails',
+        'cron.action.details.ActionProperties',
+        'cron.action.details.ActionRuns',
     ]
 
 });

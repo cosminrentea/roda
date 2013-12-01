@@ -51,7 +51,11 @@ Ext.application({
 			'cms.file.FileList',
 			'cms.Files',
 			'cms.Pages','cms.page.PageTree',  'cron.Dashboard', 'cron.Actions', 'common.Audit',
-			'Abstract'],
+			'Abstract',
+			'cron.Actions',
+			'cron.ActionList',
+			'cron.ActionEdit'
+			],
 
 	splashscreen : {},
 

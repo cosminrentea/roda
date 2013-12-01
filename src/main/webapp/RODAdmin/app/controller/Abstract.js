@@ -12,7 +12,9 @@ Ext.define('RODAdmin.controller.Abstract', {
              "auditwindow button[itemId=closewin]": {
                 click: this.onButtonClickCancel
             },
-            
+            "informationwindow  button[itemId=closewin]": {
+            click: this.onButtonClickCancel
+        },
         });
     },
 

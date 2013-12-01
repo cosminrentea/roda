@@ -2,7 +2,7 @@ Ext.define('RODAdmin.controller.cms.file.FileTree', {
     extend : 'Ext.app.Controller',
 
     stores : [
-            'cms.files.FileTree', 'cms.files.FileItem', 'cms.files.File',
+            'cms.files.FileTree', 'cms.files.FileItem', 'cms.files.File', 'cms.files.Folder',
             'common.Audit'
     ],
 
@@ -106,6 +106,22 @@ Ext.define('RODAdmin.controller.cms.file.FileTree', {
 		if (record.data.filetype == 'folder') {
 			fileusage.collapse(true);
 			filespecificprop.collapse(true);
+
+		    var folderstore = this.getCmsFilesFolderStore();
+
+		    folderstore.load({
+		        scope : this,
+		        id : record.data.indice, 
+		        callback : function(records, operation, success) {
+			        if (success) {
+				        var item = folderstore.first();
+				        fileprop.update(item);
+			        }
+		        }
+		    });
+			
+			
+			
 		} else {
 			console.log('else here');
 			fileusage.expand(true);

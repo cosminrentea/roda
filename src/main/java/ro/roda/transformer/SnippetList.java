@@ -52,9 +52,9 @@ public class SnippetList extends JsonInfo {
 
 	public static String getSnippetPath(CmsSnippet snippet) {
 		if (snippet.getCmsSnippetGroupId() != null) {
-			return getSnippetGroupPath(snippet.getCmsSnippetGroupId()) + "/" + snippet.getName();
+			return getSnippetGroupPath(snippet.getCmsSnippetGroupId());
 		} else {
-			return snippet.getName();
+			return null; // snippet.getName();
 		}
 	}
 

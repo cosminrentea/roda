@@ -76,7 +76,7 @@ public class LayoutList extends JsonInfo implements Comparable<LayoutList> {
 		if (layout.getCmsLayoutGroupId() != null) {
 			return getLayoutGroupPath(layout.getCmsLayoutGroupId());
 		} else {
-			return layout.getName();
+			return null; // layout.getName();
 		}
 	}
 

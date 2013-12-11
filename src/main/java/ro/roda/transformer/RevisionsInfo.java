@@ -10,6 +10,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.hibernate.envers.RevisionType;
+import org.hibernate.envers.query.AuditEntity;
 import org.hibernate.envers.query.AuditQuery;
 import org.springframework.beans.factory.annotation.Configurable;
 
@@ -97,6 +99,8 @@ public class RevisionsInfo extends Revisions {
 				Set<AuditRow> rows = new HashSet<AuditRow>();
 				while (iterator.hasNext()) {
 					Object object = iterator.next();
+					Integer objectId = Integer.parseInt(getid.invoke(object).toString());
+
 					Set<AuditField> auditedFields = new HashSet<AuditField>();
 					Field[] classFields = auditedClass.getDeclaredFields();
 					for (int j = 0; j < classFields.length; j++) {
@@ -112,8 +116,12 @@ public class RevisionsInfo extends Revisions {
 
 						}
 					}
-					rows.add(new AuditRow(Integer.parseInt(getid.invoke(object).toString()), "insert", auditedFields
-							.size(), auditedFields));
+
+					AuditQuery queryRev = revision.getAuditReader().createQuery()
+							.forRevisionsOfEntity(auditedClass, false, true).add(AuditEntity.id().eq(objectId));
+					RevisionType revType = (RevisionType) ((Object[]) queryRev.getResultList().get(0))[2];
+					rows.add(new AuditRow(objectId, revType != null ? revType.toString() : "", auditedFields.size(),
+							auditedFields));
 
 				}
 				if (rows.size() > 0) {
@@ -122,6 +130,7 @@ public class RevisionsInfo extends Revisions {
 			} catch (Exception e) {
 				// TODO
 				System.out.println("Exception thrown when getting revision info. " + e.getMessage());
+				e.printStackTrace();
 			}
 
 		}

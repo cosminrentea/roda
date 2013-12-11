@@ -5,38 +5,17 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.GregorianCalendar;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Properties;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-
-import ro.roda.domain.Catalog;
-import ro.roda.domain.CatalogStudy;
-import ro.roda.domain.CatalogStudyPK;
-import ro.roda.domain.Person;
-import ro.roda.domain.Prefix;
-import ro.roda.domain.Study;
-import ro.roda.domain.Suffix;
-import ro.roda.domain.Users;
-import ro.roda.service.CatalogServiceImpl;
-import ro.roda.service.StudyServiceImpl;
 
 @Component
 public class DatabaseUtils {
 
 	private final Log log = LogFactory.getLog(this.getClass());
-
-	@Autowired
-	CatalogServiceImpl catalogService;
-
-	@Autowired
-	StudyServiceImpl studyService;
 
 	@Value("${database.username}")
 	private String dbUsername;
@@ -168,71 +147,6 @@ public class DatabaseUtils {
 					log.error("SQLException:", e);
 				}
 			}
-		}
-	}
-
-	public void changeDataDemo() {
-
-		Catalog oldCatalog = catalogService.findCatalog(new Integer(2));
-
-		// add a new catalog
-		Catalog newCatalog = new Catalog();
-		newCatalog.setParentId(null);
-		newCatalog.setName("root 2");
-		newCatalog.setOwner(Users.findUsers(1));
-		newCatalog.setAdded(new GregorianCalendar());
-		newCatalog.persist();
-
-		// move the old/existing catalog in the new folder
-		oldCatalog.setParentId(newCatalog);
-		HashSet<Catalog> children = new HashSet<Catalog>();
-		children.add(oldCatalog);
-		newCatalog.setCatalogs(children);
-
-		oldCatalog.merge();
-
-		// add all existing studies to the new catalog
-		List<Study> ls = Study.findAllStudys();
-		for (Study study : ls) {
-			CatalogStudy cs = new CatalogStudy();
-			CatalogStudyPK csid = new CatalogStudyPK(newCatalog.getId(), study.getId());
-			cs.setId(csid);
-			cs.setAdded(new GregorianCalendar());
-			cs.persist();
-		}
-
-		// add the same Person entity: when there are similar fields -> only one
-		// insertion
-
-		Person p1 = new Person();
-		p1.setFname("Ion");
-		p1.setLname("VASILE");
-		p1.setPrefixId(Prefix.findPrefix(1));
-		p1.setSuffixId(Suffix.findSuffix(1));
-		p1.persist();
-
-		Person p2 = new Person();
-		p2.setFname("Ionel");
-		p2.setLname("Vasile");
-		p2.setPrefixId(Prefix.findPrefix(1));
-		p2.setSuffixId(Suffix.findSuffix(1));
-		p2.persist();
-
-		Person p3 = new Person();
-		p3.setFname("Ion");
-		p3.setLname("Vasile");
-		p3.setPrefixId(Prefix.findPrefix(1));
-		p3.setSuffixId(Suffix.findSuffix(1));
-
-		Person resultPerson = null;
-		for (Person p : Person.findAllPeople()) {
-			if (p.equals(p3)) {
-				resultPerson = p;
-			}
-		}
-
-		if (resultPerson == null) {
-			p3.persist();
 		}
 	}
 

@@ -79,7 +79,7 @@
 		
 		<!-- dependencies versions -->
 		<spring.version>3.2.4.RELEASE</spring.version> <!-- original: 3.2.0.RELEASE -->
-		<spring-security.version>3.2.0.M2</spring-security.version> <!-- original: 3.1.0.RELEASE -->
+		<spring-security.version>3.2.0.RC2</spring-security.version> <!-- original: 3.1.0.RELEASE -->
 		<spring-js-resources.version>2.4.0.M1</spring-js-resources.version> <!-- original: 2.2.1.RELEASE -->
 		<aspectj.version>1.7.2</aspectj.version> <!-- original: 1.7.0 -->
 		<slf4j.version>1.7.5</slf4j.version>
@@ -88,10 +88,11 @@
 		<hibernate-validator.version>4.3.1.Final</hibernate-validator.version> <!-- original: 4.3.1.Final -->
 		<umlgraph.version>5.6</umlgraph.version> <!-- original: 5.6 -->
 		<flexjson.version>3.1</flexjson.version> <!-- original: 3.0 -->
-		<solr-solrj.version>4.4.0</solr-solrj.version> <!-- original: 4.3.1 -->
+		<solr-solrj.version>4.5.1</solr-solrj.version> <!-- original: 4.3.1 -->
+		<jackrabbit.version>2.7.2</jackrabbit.version>
 		<ehcache.version>2.7.4</ehcache.version> <!-- original: 2.7.2 -->
-		<tiles-jsp.version>3.0.1</tiles-jsp.version> <!-- original: 2.2.2 -->
-		<selenium.version>2.35.0</selenium.version> <!-- original: 2.33.0 -->
+		<tiles-jsp.version>3.0.3</tiles-jsp.version> <!-- original: 2.2.2 -->
+		<selenium.version>2.37.1</selenium.version> <!-- original: 2.33.0 -->
 		<!-- 
 		<roo.version>1.2.3.RELEASE</roo.version>
 		-->
@@ -535,6 +536,18 @@
 			<artifactId>solr-solrj</artifactId>
 			<version>${solr-solrj.version}</version>
 		</dependency>
+		<!-- The JCR API --> 
+		<dependency> 
+			<groupId>javax.jcr</groupId> 
+			<artifactId>jcr</artifactId> 
+			<version>2.0</version> 
+		</dependency> 
+		<!-- Jackrabbit content repository --> 
+		<dependency> 
+			<groupId>org.apache.jackrabbit</groupId> 
+			<artifactId>jackrabbit-core</artifactId> 
+			<version>${jackrabbit.version}</version> 
+		</dependency> 
 	</dependencies>
 	<build>
 		<plugins>

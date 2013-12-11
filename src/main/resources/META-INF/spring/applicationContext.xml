@@ -108,22 +108,26 @@
 	
 	<bean class="ro.roda.util.ScheduledTask" id="rodaScheduledTask" />
 
+<!-- 
 	<task:scheduled-tasks scheduler="rodaScheduler">
 		
     	<task:scheduled ref="rodaScheduledTask" method="maintenance" cron="${roda.scheduler.cron.maintenance}"/>
 
     	<task:scheduled ref="rodaScheduledTask" method="backup" cron="${roda.scheduler.cron.backup}"/>
+
+    	<task:scheduled ref="rodaScheduledTask" method="vacuum" cron="${roda.scheduler.cron.vacuum}"/>
     	
 	</task:scheduled-tasks>
-
+ -->
 	<task:scheduler id="rodaScheduler" pool-size="${roda.scheduler.poolSize}"/>
 
 	<!-- Cosmin: Basic Object-to-XML Serialization -->
 	<bean id="xstreamMarshaller" class="org.springframework.oxm.xstream.XStreamMarshaller">
 	</bean>
 
-	<!-- Cosmin: R integration (JRI / RJava); uses the updated system properties 
-		! -->
+	<!-- Cosmin: R integration (JRI / RJava); 
+		uses the updated system properties - configured also in this file 
+	! -->
 	<bean id="rb" class="ro.roda.util.RBean" destroy-method="end"
 		depends-on="systemProps">
 		<constructor-arg index="0">
@@ -137,14 +141,21 @@
 		</constructor-arg>
 	</bean>
 
-	<!-- Solr - disabled -->
-	<!--
+	<!-- SolrJ  -->
 	<bean class="org.apache.solr.client.solrj.impl.HttpSolrServer"
 		id="solrServer">
 		<constructor-arg value="${solr.serverUrl}" />
 	</bean>
-	-->
 	
+	<!-- JackRabbit -->
+    <bean id="jackrabbitRepositoryConfig" class="org.apache.jackrabbit.core.config.RepositoryConfig" factory-method="create">
+        <constructor-arg index="0" value="${roda.jackrabbit.repository.xml}"/>
+        <constructor-arg index="1" value="${roda.jackrabbit.repository}" />
+    </bean>
+	<bean id="jackrabbitRepository" class="org.apache.jackrabbit.core.RepositoryImpl">
+        <constructor-arg index="0" ref="jackrabbitRepositoryConfig" />
+    </bean>
+    
 	<!-- Cosmin: support for file-uploading -->
 	<bean id="multipartResolver"
 		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">

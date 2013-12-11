@@ -1,29 +1,111 @@
 Datele initiale ale aplicatiei sunt importate chiar la pornirea serverului folosind un 'hook' al sistemului Spring MVC (ApplicationListener <ContextRefreshedEvent>).
 
-Functionalitatile de importare a datelor sunt grupate intr-un singur serviciu (interfata si implementare) aflat in pachetul 'ro.roda.importer'.
+Functionalitatile de importare a datelor sunt grupate intr-un singur serviciu (reprezentat de o interfata si implementare) aflat in pachetul 'ro.roda.importer'.
 
-Serviciul de import permite:
-\begin{description}
-\item
-[Importarea datelor initiale ale aplicatiei] 
+Serviciul de import permite importarea datelor initiale ale aplicatiei, precum si a celor folosite la testare.
 
-Aceste date cele ce vor fi folosite si in versiunea de productie a aplicatiei, precum: utilizatori si roluri, drepturi de acces standard, limbi, date geografice, thesaurus etc.
+\section{Importarea datelor initiale ale aplicatiei}
+
+Aceste date sunt cele ce vor fi folosite si in versiunea finala de productie a aplicatiei, precum: 
+utilizatori si roluri, drepturi de acces standard, limbi, date geografice, thesaurus din domeniul stiintelor sociale etc.
+
 Se importa din mai multe formate:
 \begin{itemize}
-\item din format CSV (Comma-Separated Values). Se folosesc fie pachetul OpenCSV, fie API-ul oferit de driverul JDBC al Postgresql pentru a importa fisiere CSV).
+\item din format CSV (Comma-Separated Values). Se folosesc pentru acest scop fie pachetul OpenCSV, fie API-ul oferit de driverul JDBC al Postgresql pentru a importa fisiere CSV).
 \item din format SQL. Se foloseste fisierul 'import.sql', pe care componenta ORM (Hibernate) este configurata sa il importe la initializarea sa.
 \item din thesaurus-ul ELSST. Se importa termenii si ulterior relatiile dintre ei din mai multe fisiere in format CSV, 
 populandu-se mai multe tabele (cele din zona 'Topics' din schema bazei de date).
-\item din formatul DDI-Codebook (Data Documentation Initiative, \url{http://www.ddialliance.org/Specification/DDI-Codebook/}).
+\item din formatul SPSS -- pentru datele propriu-zise aferente studiilor descrise prin fisierele DDI; a fost imbunatatit si adaptat un parser inceput de catre Open Data Foundation.
+\item din formatul DDI-Codebook (mai multe detalii mai jos)
 \end{itemize}
 
-\item
-[Importarea datelor suplimentare / de testare pentru aplicatie.]
+\section{Importarea datelor suplimentare / de testare pentru aplicatie}
 
-Aceste date sunt in format CSV. 
-Sunt populate cu date mai multe tabele mai putin importante, care nu trebuie populate si in versiunea de productie, ci doar in cea de development si testare. 
+Cu datele obtinute din fisiere format CSV sunt populatemai multe tabele mai putin importante, care nu trebuie populate si in versiunea de productie, ci doar in cea de development si testare;
+de exemplu, prefixe, sufixe, date despre persoane si organizatii, date folosite de catre sub-sistemul CMS, configurari pentru sub-sistemul de autorizare prin ACL etc.
+
+Un alt rol al acestor date suplimentare este acela de a efectua legaturi, agregari si corecturi de date, ce sunt necesar in special dupa faza de importare a fisierelor DDI legacy.
+
+\section{Detalii despre importarea datelor in format DDI}
+
+Importer-ul proceseaza si salveaza in baza de date fisiere XML ce corespund standardului DDI-Codebook (Data Documentation Initiative, \url{http://www.ddialliance.org/Specification/DDI-Codebook/}).
+
+Se foloseste un pachet de clase Java derivat de catre JAXB pornind de la definitia in format 'XML Schema' a DDI-Codebook; acest pachet se numeste 'ro.roda.ddi'.
+Este posibil sa se salveze si din formatul DDI nativ direct in baza de date (practic se parseaza si se construiesc la runtime tabelele corespunzand tag-urilor din formatul DDI).
+
+Cele mai importante tag-uri din fisierele DDI ce sunt procesate sunt:
+\begin{description}
+\item [docDscr] --
+consta in informatii bibliografice descriind documentul conform cu DDI ca un intreg. 
+Aceasta sectiune poate fi vazuta ca un "wrapper" / ambalaj al carui elemente descriu in mod unic intreg continutul fisierului conform cu DDI. 
+Aceasta sectiune trebuie sa fie cat mai completa posibil, si cuprinde informatii despre 
+autor, persoane si organizatii responsabile de continut si drepturile de proprietate intelectuala, producatorul, sursa fisierului (codebook-ul original). 
+Astfel, aceste campuri permit creatorului fisierului DDI sa produca descrieri ale versiunii, responsabilitatilor, 
+si alte descrieri care au legatura atat cu crearea acelui fisier DDI ca o versiune separata si reformatata a materialelor-sursa (fie ele print sau electronice) 
+cat si a materialelor-sursa propriu-zise.
+
+\item [stdyDscr] -- 
+informatii despre colectia de date, studiu, sau compilatie pe care o descrie documentatia DDI; 
+informatii despre cum ar trebui citat studiul, cine a colectat, corectat, agregat datele, cine distribuie datele, cuvinte-cheie despre continutul datelor, un rezumat al continutului datelor, metode de colectare si procesare a datelor etc.
+
+\item [fileDscr] --
+informatii despre fisierele cu date care formeaza o colectie; aceasta sectiune poate fi repetata pentru colectii cu fisiere multiple. 
+Aici se pot face si referinte la "summary data description" si la aspecte de metodologie anterior descrise, care se aplica unor anumite fisiere din colectie.
+
+\item [dataDscr] --
+descrierea variabilelor (si optional a unor calcule statistice pe baza valorilor acestora).
+
+\item [otherMat] -- 
+permite includerea si etichetarea altor materiale care sunt in legatura cu studiul;
+sectiunea poate servi si ca un "container" pentru alte materiale in format electronic (de ex. chestionare, note de codificare, SPSS/SAS/Stata fisiere de setup si altele, manuale pentru utilizatori, ghiduri pentru continuarea cercetarii, glosare, instructiuni pentru operatori, harti, scheme de baze de date, dictionare de date, informatii despre valorile-lipsa etc.).
+
 \end{description}
 
-Importer-ul din formatul DDI este realizat doar partial in aceasta faza a proiectului.
-Se va folosi un pachet de clase Java derivat de catre JAXB de la definitia XML Schema a formatului DDI.
-Aceasta componenta software va permite utilizarea integrala a datelor de tip legacy din arhiva electronica a RODA (50 studii sociale).
+Cele mai importante tabele din baza de date ce sunt populate in cadrul procesului de import sunt cele din
+zonele de Studii, Organizatii, Persoane, Adrese, Instante,  Fisiere, Variabile si Chestionare. 
+
+Aceasta componenta software permite preluarea si utilizarea integrala a datelor de tip legacy din arhiva electronica a RODA (50 studii sociale).
+
+Importer-ul din formatul DDI a fost finalizat in aceasta faza a proiectului.
+
+\section{Configurarea importerului}
+
+Importer-ul este configurat prin intermediul fisierului de proprietati 'roda.properties', prin setarea unor chei (avand de exemplu valorile de mai jos) 
+pentru a declansa importarea datelor in format CSV, DDI, SPSS:
+
+\begin{lstlisting}
+# Data, import etc.
+roda.data.csv=yes
+#roda.data.csv=no
+roda.data.csv.dir=csv/
+
+roda.data.csv-extra=yes
+#roda.data.csv-extra=no
+roda.data.csv-extra.dir=csv-extra/
+
+#roda.data.elsst=yes
+roda.data.elsst=no
+roda.data.elsst.dir=elsst/
+
+roda.data.ddi=no
+#roda.data.ddi=yes
+#roda.data.ddi.persist=yes
+roda.data.ddi.persist=no
+roda.data.ddi.xsd=xsd/ddi122.xsd
+
+# The file(s) to be imported (regular expressions can be used)
+
+#roda.data.ddi.files=ddi/073_F1.xml
+#roda.data.ddi.files=ddi/080_F1.xml
+roda.data.ddi.files=ddi/07*_F1.xml
+#roda.data.ddi.files=ddi/08*_F1.xml
+#roda.data.ddi.files=ddi/*.xml
+
+roda.data.spss=yes
+
+#roda.data.csv-after-ddi=no
+roda.data.csv-after-ddi=yes
+roda.data.csv-after-ddi.catalog_study=csv-after-ddi/catalog_study.csv
+roda.data.csv-after-ddi.series_study=csv-after-ddi/series_study.csv
+
+\end{lstlisting}

@@ -757,6 +757,11 @@ public class AdminJson {
 
 		return new AdminJson(true, "CMS Folder moved successfully");
 	}
+	
+	public static AdminJson addUserToGroup(Integer userId, Integer groupId) {
+		//TODO Cosmin
+		return new AdminJson(true, "User added to group");
+	}
 
 	private final Log log = LogFactory.getLog(this.getClass());
 

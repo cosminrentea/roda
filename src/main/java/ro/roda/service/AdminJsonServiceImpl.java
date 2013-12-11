@@ -96,4 +96,8 @@ public class AdminJsonServiceImpl implements AdminJsonService {
 	public AdminJson folderMove(Integer parentFolderId, Integer folderId) {
 		return AdminJson.folderMove(parentFolderId, folderId);
 	}
+
+	public AdminJson addUserToGroup(Integer userId, Integer groupId) {
+		return AdminJson.addUserToGroup(userId, groupId);
+	}
 }

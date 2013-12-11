@@ -48,4 +48,6 @@ public interface AdminJsonService {
 	public abstract AdminJson fileMove(Integer folderId, Integer fileId);
 
 	public abstract AdminJson folderMove(Integer parentFolderId, Integer folderId);
+
+	public abstract AdminJson addUserToGroup(Integer userId, Integer groupId);
 }

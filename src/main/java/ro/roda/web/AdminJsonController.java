@@ -2,6 +2,8 @@ package ro.roda.web;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,6 +23,8 @@ public class AdminJsonController {
 
 	@Autowired
 	AdminJsonService adminJsonService;
+	
+	private final Log log = LogFactory.getLog(this.getClass());
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody
@@ -330,5 +334,30 @@ public class AdminJsonController {
 		return folderMove.toJson();
 
 	}
+	
+	@RequestMapping(value = "/usersave", method = RequestMethod.POST, produces = "application/json")
+	@ResponseBody
+	public String userSave(@RequestParam(value = "id") Integer id,
+			@RequestParam(value = "username") String username, @RequestParam(value = "email") String email,
+			@RequestParam(value = "enabled") Boolean enabled) {
 
+
+		//TODO Cosmin
+		return null;
+
+	}
+
+	@RequestMapping(value = "/addusertogroup", method = RequestMethod.POST, produces = "application/json")
+	@ResponseBody
+	public String addUserToGroup(@RequestParam(value = "userid") Integer userId,
+			@RequestParam(value = "groupid") Integer groupId) {
+		
+		log.trace("addusertogroup: " + userId + " / " + groupId);
+		
+		AdminJson response = adminJsonService.addUserToGroup(userId, groupId);
+		if (response == null) {
+			return null;
+		}
+		return response.toJson();
+	}
 }

@@ -28,6 +28,10 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrInputDocument;
+import org.hibernate.envers.AuditReader;
+import org.hibernate.envers.AuditReaderFactory;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.scheduling.annotation.Async;
@@ -39,6 +43,7 @@ import flexjson.JSONSerializer;
 @Configurable
 @Entity
 @Table(schema = "public", name = "cms_layout")
+@Audited
 public class CmsLayout {
 
 	public static long countCmsLayouts() {
@@ -203,15 +208,17 @@ public class CmsLayout {
 	}
 
 	@ManyToOne
-	@JoinColumn(name = "cms_layout_group_id", columnDefinition = "integer", referencedColumnName = "id")
+	@JoinColumn(name = "cms_layout_group_id", columnDefinition = "integer", referencedColumnName = "id", nullable = true)
 	private CmsLayoutGroup cmsLayoutGroupId;
 
 	@OneToMany(mappedBy = "cmsLayoutId")
+	@NotAudited
 	private Set<CmsPage> cmsPages;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id", columnDefinition = "serial")
+	@Column(name = "id")
+	// , columnDefinition = "serial")
 	private Integer id;
 
 	@Column(name = "layout_content", columnDefinition = "text")
@@ -345,5 +352,9 @@ public class CmsLayout {
 		return (id != null && id.equals(((CmsLayout) obj).id))
 				|| ((name != null && name.equalsIgnoreCase(((CmsLayout) obj).name)) && (cmsLayoutGroupId != null && cmsLayoutGroupId
 						.equals(((CmsLayout) obj).cmsLayoutGroupId)));
+	}
+
+	public AuditReader getAuditReader() {
+		return AuditReaderFactory.get(entityManager);
 	}
 }

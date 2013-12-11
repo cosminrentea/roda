@@ -28,6 +28,7 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrInputDocument;
+import org.hibernate.envers.Audited;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.scheduling.annotation.Async;
@@ -39,6 +40,7 @@ import flexjson.JSONSerializer;
 @Entity
 @Table(schema = "public", name = "cms_layout_group")
 @Configurable
+@Audited
 public class CmsLayoutGroup {
 
 	public static long countCmsLayoutGroups() {
@@ -219,15 +221,18 @@ public class CmsLayoutGroup {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id", columnDefinition = "serial")
+	// @org.hibernate.annotations.GenericGenerator(name = "hilo-strategy",
+	// strategy = "hilo")
+	@Column(name = "id")
+	// , columnDefinition = "serial")
 	private Integer id;
 
 	@Column(name = "name", columnDefinition = "varchar", length = 200)
 	@NotNull
 	private String name;
 
-	@ManyToOne
-	@JoinColumn(name = "parent_id", columnDefinition = "integer", referencedColumnName = "id", insertable = true, updatable = true)
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "parent_id", columnDefinition = "integer", referencedColumnName = "id", insertable = true, updatable = true, nullable = true)
 	private CmsLayoutGroup parentId;
 
 	@PersistenceContext

@@ -237,7 +237,6 @@ public class CmsFile {
 	private Integer id;
 
 	@Column(name = "label", columnDefinition = "varchar", length = 100)
-	@NotNull
 	private String label;
 
 	@PersistenceContext

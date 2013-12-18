@@ -12,7 +12,9 @@ import javax.persistence.TypedQuery;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.web.multipart.MultipartFile;
 
 import ro.roda.domain.CmsFile;
 import ro.roda.domain.CmsFolder;
@@ -21,6 +23,7 @@ import ro.roda.domain.CmsLayoutGroup;
 import ro.roda.domain.CmsSnippet;
 import ro.roda.domain.CmsSnippetGroup;
 import ro.roda.domain.Users;
+import ro.roda.filestore.CmsFileStoreService;
 import flexjson.JSONSerializer;
 
 @Configurable
@@ -524,8 +527,7 @@ public class AdminJson {
 	// Methods for CMS files and folders.
 	public static AdminJson folderSave(String foldername, Integer parentId, String description) {
 		if (foldername == null)
-			return new AdminJson(false, "The folder must gave a name.");
-		;
+			return new AdminJson(false, "The folder must have a name.");
 
 		CmsFolder folder = new CmsFolder();
 		folder.setName(foldername);
@@ -539,16 +541,18 @@ public class AdminJson {
 				parentFolder.getCmsFolders().add(folder);
 			}
 		}
+
 		try {
 			CmsFolder.entityManager().persist(folder);
 			if (parentFolder != null) {
 				CmsFolder.entityManager().persist(parentFolder);
 			}
+			CmsFolder.entityManager().flush();
 		} catch (EntityExistsException e) {
-			return new AdminJson(false, "Folder not created " + e.getMessage());
+			return new AdminJson(false, "Folder not created; " + e.getMessage());
 		}
 
-		return new AdminJson(true, "Folder created successfully");
+		return new AdminJson(true, "Folder created", folder.getId());
 	}
 
 	public static AdminJson folderEmpty(Integer folderId) {
@@ -587,7 +591,7 @@ public class AdminJson {
 	public static AdminJson folderDrop(Integer folderId) {
 		CmsFolder folder = CmsFolder.findCmsFolder(folderId);
 		if (folder == null)
-			return new AdminJson(false, "The folder group does not exist.");
+			return new AdminJson(false, "The folder does not exist.");
 
 		Set<CmsFolder> childGroups = folder.getCmsFolders();
 		Iterator<CmsFolder> childGroupsIterator = childGroups.iterator();
@@ -611,7 +615,7 @@ public class AdminJson {
 			return new AdminJson(false, "Folder not dropped " + e.getMessage());
 		}
 
-		return new AdminJson(true, "CMS Folder group dropped successfully");
+		return new AdminJson(true, "CMS Folder dropped successfully");
 	}
 
 	public static AdminJson fileDrop(Integer fileId) {
@@ -637,7 +641,7 @@ public class AdminJson {
 	// TODO: file multipart
 	// TODO (also for the above methods): manage the files and folders in the
 	// repository
-	public static AdminJson fileSave(Integer folderId, String alias, Integer fileId) {
+	public static AdminJson fileSave(Integer folderId, MultipartFile content, String alias, Integer fileId) {
 
 		CmsFile file = null;
 		if (fileId != null) {
@@ -649,6 +653,9 @@ public class AdminJson {
 		}
 
 		file.setLabel(alias);
+		file.setFilename(content.getOriginalFilename());
+		file.setFilesize(content.getSize());
+
 
 		CmsFolder parentFolder = CmsFolder.findCmsFolder(folderId);
 		if (parentFolder != null) {
@@ -757,9 +764,9 @@ public class AdminJson {
 
 		return new AdminJson(true, "CMS Folder moved successfully");
 	}
-	
+
 	public static AdminJson addUserToGroup(Integer userId, Integer groupId) {
-		//TODO Cosmin
+		// TODO Cosmin
 		return new AdminJson(true, "User added to group");
 	}
 
@@ -769,10 +776,25 @@ public class AdminJson {
 
 	private String message;
 
+	private Integer id;
+
 	public AdminJson(boolean success, String message) {
 		this.success = success;
 		this.message = message;
+	}
 
+	public AdminJson(boolean success, String message, Integer id) {
+		this.success = success;
+		this.message = message;
+		this.id = id;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 	public boolean isSuccess() {

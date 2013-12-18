@@ -71,16 +71,6 @@ public class CmsFileController {
 		return new ResponseEntity<String>(headers, HttpStatus.CREATED);
 	}
 
-	@RequestMapping(value = "/file/{path}", method = RequestMethod.POST, headers = "Accept=application/json")
-	public String create(@RequestBody String json, @PathVariable("path") String path, @Valid CmsFile cmsFile, BindingResult bindingResult, Model uiModel,
-			@RequestParam("content") MultipartFile content, HttpServletRequest httpServletRequest) {
-		log.debug("> create");
-		uiModel.asMap().clear();
-		cmsFileStoreService.saveCmsFile(cmsFile, content, path);
-//		return "redirect:/files/" + encodeUrlPathSegment(cmsFile.getId().toString(), httpServletRequest);
-		return "redirect:/cmsfiles/" + encodeUrlPathSegment(cmsFile.getId().toString(), httpServletRequest);
-	}
-
 	@RequestMapping(value = "/jsonArray", method = RequestMethod.POST, headers = "Accept=application/json")
 	public ResponseEntity<String> createFromJsonArray(@RequestBody String json) {
 		for (CmsFile cmsFile : CmsFile.fromJsonArrayToCmsFiles(json)) {

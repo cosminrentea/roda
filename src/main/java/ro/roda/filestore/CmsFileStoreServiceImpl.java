@@ -25,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import ro.roda.ddi.CodeBook;
 import ro.roda.domain.CmsFile;
+import ro.roda.domain.CmsFolder;
 import ro.roda.importer.ImporterService;
 
 import java.io.File;
@@ -33,7 +34,9 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.jcr.Repository;
 
+import javax.jcr.ItemExistsException;
 import javax.jcr.LoginException;
+import javax.jcr.PathNotFoundException;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import javax.jcr.SimpleCredentials;
@@ -44,6 +47,7 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.jackrabbit.api.JackrabbitRepository;
 import org.apache.jackrabbit.core.config.RepositoryConfig;
 import org.apache.jackrabbit.core.RepositoryImpl;
+import org.apache.jackrabbit.commons.JcrUtils;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,6 +79,7 @@ public class CmsFileStoreServiceImpl implements CmsFileStoreService {
 		try {
 			log.debug("Jackrabbit initializing");
 			log.debug("Jackrabbit initialized");
+			// JcrUtils.
 		} catch (Exception e) {
 			log.error("Failed to initialize Jackrabbit", e);
 		}
@@ -95,89 +100,77 @@ public class CmsFileStoreServiceImpl implements CmsFileStoreService {
 		log.debug("Jackrabbit shutdown completed");
 	}
 
-	public long countAllCmsFiles() {
-		return CmsFile.countCmsFiles();
+	private static String getFullPath(CmsFile cmsFile) {
+		String folderPath = getFullPath(cmsFile.getCmsFolderId());
+		if (folderPath != null && !folderPath.endsWith("/")) {
+			folderPath += "/";
+		}
+		return folderPath + cmsFile.getFilename();
 	}
 
-	public void deleteCmsFile(CmsFile file) {
-		file.remove();
+	private static String getFullPath(CmsFolder cmsFolder) {
+		if (cmsFolder == null) {
+			return null;
+		}
+		String fullPath = cmsFolder.getName();
+		while (cmsFolder.getParentId() != null) {
+			cmsFolder = cmsFolder.getParentId();
+			fullPath =  cmsFolder.getName() + "/" + fullPath;
+		}
+		return fullPath;
 	}
 
-	public List<CmsFile> findAllCmsFiles() {
-		return CmsFile.findAllCmsFiles();
-	}
-
-	public CmsFile findCmsFile(Integer id) {
-		return CmsFile.findCmsFile(id);
-	}
-
-	public List<CmsFile> findCmsFileEntries(int firstResult, int maxResults) {
-		return CmsFile.findCmsFileEntries(firstResult, maxResults);
-	}
-
-	@Override
-	public File loadFile(String fileFullPath) {
+	public void saveCmsFolder(CmsFolder cmsFolder) {
 		Session session;
 		try {
-			session = repository.login();
+			SimpleCredentials adminCred = new SimpleCredentials("admin", new char[0]);
+			session = repository.login(adminCred);
 			try {
 				Node root = session.getRootNode();
-				Node node = root.getNode(fileFullPath);
-				System.out.println(node.getPath());
-				System.out.println(node.getProperty("message").getString());
+				root.addNode(getFullPath(cmsFolder), "nt:folder");
+			} catch (Exception e) {
+				log.error(e);
 			} finally {
 				session.logout();
 			}
-
-		} catch (LoginException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (RepositoryException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (LoginException e1) {
+			log.error(e1);
+		} catch (RepositoryException e1) {
+			log.error(e1);
 		}
-		return null;
 	}
 
-	public void removeCmsFile(CmsFile cmsFile) {
+	public void saveCmsFile(MultipartFile multipartFile, Integer cmsFolderId) {
+		CmsFolder cmsFolder = CmsFolder.findCmsFolder(cmsFolderId);
+		if (multipartFile == null) {
+			return;
+		}
 		Session session;
 		try {
-			session = repository.login();
+			SimpleCredentials adminCred = new SimpleCredentials("admin", new char[0]);
+			session = repository.login(adminCred);
 			try {
+				log.trace("> saveCmsFile > move the file to the Repository");
+
+				String fullPath = filestoreDir + "/" + multipartFile.getOriginalFilename();
+				File f = new File(fullPath);
+				multipartFile.transferTo(f);
+				
+				String folderName = getFullPath(cmsFolder);
+				
 				Node root = session.getRootNode();
-				root.getNode("hello").remove();
-				session.save();
-			} finally {
-				session.logout();
-			}
-		} catch (LoginException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (RepositoryException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
-	public void saveCmsFile(CmsFile cmsFile) {
-		cmsFile.persist();
-	}
-
-	public void saveCmsFile(CmsFile cmsFile, MultipartFile multipartFile, String folder) {
-		if (multipartFile != null) {
-			Session session;
-			try {
-				session = repository.login();
+				Node folderNode = null;
 				try {
-					log.trace("> saveCmsFile > move the file to the Repository");
-
-					String fullPath = filestoreDir + "/" + multipartFile.getOriginalFilename();
-					File f = new File(fullPath);
-					multipartFile.transferTo(f);
-
-					Node root = session.getRootNode();
-
-					Node folderNode = root.addNode("hello");
+					folderNode = root.getNode(folderName);
+				} catch (PathNotFoundException e) {
+					try {
+						folderNode = root.addNode(folderName, "nt:folder");
+					} catch (Exception e2) {
+						log.error(e2);
+					}
+				}
+	
+				if (folderNode != null) {
 					Node fileNode = folderNode.addNode(multipartFile.getOriginalFilename(), "nt:file");
 					// create the mandatory child node - jcr:content
 					Node resNode = fileNode.addNode("jcr:content", "nt:resource");
@@ -189,34 +182,23 @@ public class CmsFileStoreServiceImpl implements CmsFileStoreService {
 					resNode.setProperty("jcr:lastModified", lastModified);
 					session.save();
 					updateSolrFile(f, multipartFile);
-
-					log.trace("> saveCmsFile > set properties");
-					cmsFile.setFilename(multipartFile.getOriginalFilename());
-					cmsFile.setFilesize(multipartFile.getSize());
-
-					log.trace("> saveCmsFile > save JPA object");
-					saveCmsFile(cmsFile);
-
-				} catch (IllegalStateException e) {
-					log.error(e);
-				} catch (IOException e) {
-					log.error(e);
-				} finally {
-					session.logout();
 				}
-			} catch (LoginException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			} catch (RepositoryException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+	
+			} catch (IllegalStateException e) {
+				log.error(e);
+			} catch (IOException e) {
+				log.error(e);
+			} finally {
+				session.logout();
 			}
-
+		} catch (LoginException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (RepositoryException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
-	}
-
-	public CmsFile updateCmsFile(CmsFile cmsFile) {
-		return cmsFile.merge();
+	
 	}
 
 	@Async
@@ -225,32 +207,82 @@ public class CmsFileStoreServiceImpl implements CmsFileStoreService {
 		if (solrServer != null) {
 			ContentStreamUpdateRequest up = new ContentStreamUpdateRequest("/update/extract");
 			try {
-
+	
 				// SOLRJ 4.x API
 				up.addFile(f, content.getContentType());
 				log.trace("content.getContentType() = " + content.getContentType());
-
+	
 				up.setParam("literal.id", content.getOriginalFilename());
 				up.setParam("uprefix", "attr_");
 				up.setParam("fmap.content", "attr_content");
 				up.setAction(ACTION.COMMIT, true, true);
-
+	
 				log.trace("> updateSolrFile > sending file to Solr for metadata indexing");
-
+	
 				solrServer.request(up);
-
+	
 				log.trace("> updateSolrFile > sent to Solr for metadata indexing");
-
+	
 				// log.debug("> saveFile > querying Solr");
 				// QueryResponse rsp = solrServer.query(new SolrQuery("id:" +
 				// content.getOriginalFilename()));
 				// log.trace(rsp);
-
+	
 			} catch (IOException e) {
 				log.error(e);
 			} catch (SolrServerException e) {
 				log.error(e);
 			}
+		}
+	}
+
+	@Override
+	public File loadFile(String fileFullPath) {
+		Session session;
+		try {
+			SimpleCredentials adminCred = new SimpleCredentials("admin", new char[0]);
+			session = repository.login(adminCred);
+			try {
+				Node root = session.getRootNode();
+				Node node = root.getNode(fileFullPath);
+				log.trace(node.getPath());
+//				log.trace(node.getProperty("message").getString());
+			} finally {
+				session.logout();
+			}
+		} catch (LoginException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (RepositoryException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	@Override
+	public File loadFile(CmsFile cmsFile) {
+		return loadFile(getFullPath(cmsFile));
+	}
+
+	public void removeCmsFile(CmsFile cmsFile) {
+		Session session;
+		try {
+			SimpleCredentials adminCred = new SimpleCredentials("admin", new char[0]);
+			session = repository.login(adminCred);
+			try {
+				Node root = session.getRootNode();
+				root.getNode(cmsFile.getFilename()).remove();
+				session.save();
+			} finally {
+				session.logout();
+			}
+		} catch (LoginException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (RepositoryException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 

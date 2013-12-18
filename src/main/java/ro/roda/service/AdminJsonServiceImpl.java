@@ -1,13 +1,21 @@
 package ro.roda.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import ro.roda.domain.CmsFolder;
+import ro.roda.domain.CmsFile;
+import ro.roda.filestore.CmsFileStoreService;
 import ro.roda.transformer.AdminJson;
 
 @Service
 @Transactional
 public class AdminJsonServiceImpl implements AdminJsonService {
+
+	@Autowired
+	CmsFileStoreService fileStore;
 
 	public AdminJson findLogin(String username, String password) {
 		return AdminJson.findLogin(username, password);
@@ -70,7 +78,9 @@ public class AdminJsonServiceImpl implements AdminJsonService {
 	}
 
 	public AdminJson folderSave(String foldername, Integer parentId, String description) {
-		return AdminJson.folderSave(foldername, parentId, description);
+		AdminJson result = AdminJson.folderSave(foldername, parentId, description);
+		fileStore.saveCmsFolder(CmsFolder.findCmsFolder(result.getId()));
+		return result;
 	}
 
 	public AdminJson folderEmpty(Integer groupId) {
@@ -85,8 +95,10 @@ public class AdminJsonServiceImpl implements AdminJsonService {
 		return AdminJson.fileDrop(fileId);
 	}
 
-	public AdminJson fileSave(Integer folderId, String alias, Integer fileId) {
-		return AdminJson.fileSave(folderId, alias, fileId);
+	public AdminJson fileSave(Integer folderId, MultipartFile content, Integer fileId, String alias) {
+		AdminJson result = AdminJson.fileSave(folderId, content, alias, fileId);
+		fileStore.saveCmsFile(content, folderId);
+		return result;
 	}
 
 	public AdminJson fileMove(Integer folderId, Integer fileId) {

@@ -11,29 +11,29 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import ro.roda.service.RevisionsService;
-import ro.roda.transformer.RevisionsInfo;
+import ro.roda.service.AuditRevisionsService;
+import ro.roda.transformer.AuditRevisionsInfo;
 
 @RequestMapping("/admin/revisionsinfo")
 @Controller
-public class RevisionsInfoController {
+public class AuditRevisionsInfoController {
 
 	@Autowired
-	RevisionsService revisionsService;
+	AuditRevisionsService revisionsService;
 
 	@RequestMapping(headers = "Accept=application/json")
 	@ResponseBody
 	public ResponseEntity<String> listJson() {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");
-		List<RevisionsInfo> result = revisionsService.findAllRevisionsInfo();
-		return new ResponseEntity<String>(RevisionsInfo.toJsonArray(result), headers, HttpStatus.OK);
+		List<AuditRevisionsInfo> result = revisionsService.findAllRevisionsInfo();
+		return new ResponseEntity<String>(AuditRevisionsInfo.toJsonArray(result), headers, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/{id}", headers = "Accept=application/json")
 	@ResponseBody
 	public ResponseEntity<String> showJson(@PathVariable("id") Integer id) {
-		RevisionsInfo revisionsInfo = revisionsService.findRevisionsInfo(id);
+		AuditRevisionsInfo revisionsInfo = revisionsService.findRevisionsInfo(id);
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");
 		if (revisionsInfo == null) {

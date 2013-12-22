@@ -1,5 +1,6 @@
 package ro.roda.transformer;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -9,6 +10,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.hibernate.envers.RevisionType;
+import org.hibernate.envers.query.AuditEntity;
 import org.hibernate.envers.query.AuditQuery;
 import org.springframework.beans.factory.annotation.Configurable;
 
@@ -17,27 +20,27 @@ import flexjson.JSONSerializer;
 import flexjson.transformer.DateTransformer;
 
 @Configurable
-public class Revisions extends JsonInfo {
+public class AuditRevisionsInfo extends AuditRevisions {
 
-	public static String toJsonArray(Collection<Revisions> collection) {
+	public static String toJsonArray(Collection<AuditRevisionsInfo> collection) {
 		JSONSerializer serializer = new JSONSerializer();
 
 		serializer.exclude("*.class", "type", "id", "name");
-		serializer.include("revision", "timestamp", "nrobjects", "objects");
+		serializer.include("revision", "timestamp", "username", "userid", "nrobjects", "objects");
 
-		serializer.exclude("objects.nrrows", "objects.rows");
-		serializer.include("objects.objectname");
+		// serializer.exclude("objects.id", "objects.type");
+		serializer.include("objects.objname", "objects.nrrows", "objects.rows", "objects.rows.auditfields");
 
 		// serializer.transform(new FieldNameTransformer("indice"), "id");
 		// serializer.transform(new FieldNameTransformer("objname"),
-		// "object.objname");
+		// "objects.name");
 		serializer.transform(DATE_TRANSFORMER, Date.class);
 
 		return "{\"data\":" + serializer.serialize(collection) + "}";
 	}
 
-	public static List<Revisions> findAllRevisions() {
-		List<Revisions> result = new ArrayList<Revisions>();
+	public static List<AuditRevisionsInfo> findAllRevisionsInfo() {
+		List<AuditRevisionsInfo> result = new ArrayList<AuditRevisionsInfo>();
 
 		List<RodaRevisionEntity> revisions = RodaRevisionEntity.findAllRodaRevisionEntities();
 
@@ -46,45 +49,42 @@ public class Revisions extends JsonInfo {
 			Iterator<RodaRevisionEntity> revisionsIterator = revisions.iterator();
 			while (revisionsIterator.hasNext()) {
 				RodaRevisionEntity revision = (RodaRevisionEntity) revisionsIterator.next();
-				result.add(new Revisions(revision));
+				result.add(new AuditRevisionsInfo(revision));
 			}
 		}
 
 		return result;
 	}
 
-	public static Revisions findRevision(Integer id) {
+	public static AuditRevisionsInfo findRevisionInfo(Integer id) {
 		RodaRevisionEntity revision = RodaRevisionEntity.findRodaRevisionEntity(id);
 
 		if (revision != null) {
-			return new Revisions(revision);
+			return new AuditRevisionsInfo(revision);
 		}
 		return null;
 	}
 
 	private static final DateTransformer DATE_TRANSFORMER = new DateTransformer("MM/dd/yyyy hh:mm:ss");
 
-	protected static final String[] auditedClasses = { "ro.roda.domain.CmsLayout", "ro.roda.domain.CmsLayoutGroup" };
+	private String username;
 
-	private Integer revision;
+	private Integer userid;
 
-	private Date timestamp;
+	public AuditRevisionsInfo(Integer revision, Date timestamp, String username, Integer userid, Integer nrobj,
+			Set<AuditObject> objects) {
+		super(revision, timestamp, nrobj, objects);
+		this.username = username;
+		this.userid = userid;
 
-	private Integer nrobjects;
-
-	private Set<AuditObject> objects;
-
-	public Revisions() {
-		super();
 	}
 
-	public Revisions(Integer revision, Date timestamp, Integer nrobj, Set<AuditObject> objects) {
-		onConstructRevisions(revision, timestamp, nrobj, objects);
-	}
-
-	public Revisions(RodaRevisionEntity revision) {
+	public AuditRevisionsInfo(RodaRevisionEntity revision) {
 
 		Set<AuditObject> objects = new HashSet<AuditObject>();
+
+		String[] auditedClasses = getAuditedClasses("ro.roda.domain");
+
 		for (int i = 0; i < auditedClasses.length; i++) {
 			String auditedClassName = auditedClasses[i];
 
@@ -97,86 +97,93 @@ public class Revisions extends JsonInfo {
 
 				List<?> results = query.getResultList();
 
-				if (results.size() > 0) {
-					objects.add(new AuditObject(auditedClassName, results.size(), null));
+				Iterator<?> iterator = results.iterator();
+
+				Set<AuditRow> rows = new HashSet<AuditRow>();
+				while (iterator.hasNext()) {
+					Object object = iterator.next();
+					Integer objectId = Integer.parseInt(getid.invoke(object).toString());
+
+					Set<AuditField> auditedFields = new HashSet<AuditField>();
+					Field[] classFields = auditedClass.getDeclaredFields();
+					for (int j = 0; j < classFields.length; j++) {
+						Field classField = classFields[j];
+						// TODO get the fields correctly
+						try {
+							Method getAuditedField = auditedClass.getMethod("get"
+									+ classField.getName().substring(0, 1).toUpperCase()
+									+ classField.getName().substring(1));
+							auditedFields.add(new AuditField(classField.getName(), getAuditedField.invoke(object)
+									.toString()));
+						} catch (Exception e) {
+
+						}
+					}
+
+					AuditQuery queryRev = revision.getAuditReader().createQuery()
+							.forRevisionsOfEntity(auditedClass, false, true).add(AuditEntity.id().eq(objectId));
+					RevisionType revType = (RevisionType) ((Object[]) queryRev.getResultList().get(0))[2];
+					rows.add(new AuditRow(objectId, revType != null ? revType.toString() : "", auditedFields.size(),
+							auditedFields));
+
+				}
+				if (rows.size() > 0) {
+					objects.add(new AuditObject(auditedClassName, rows.size(), rows));
 				}
 			} catch (Exception e) {
 				// TODO
 				System.out.println("Exception thrown when getting revision info. " + e.getMessage());
+				// e.printStackTrace();
 			}
 
 		}
 
-		/*
-		 * AuditQuery query = revision.getAuditReader().createQuery()
-		 * .forEntitiesModifiedAtRevision(CmsLayout.class, revision.getId());
-		 * 
-		 * @SuppressWarnings("unchecked") List<CmsLayout> results =
-		 * (List<CmsLayout>) query.getResultList(); List<AuditObject> objects =
-		 * new ArrayList<AuditObject>();
-		 * 
-		 * Iterator<CmsLayout> iterator = results.iterator();
-		 * 
-		 * while (iterator.hasNext()) { CmsLayout object = iterator.next();
-		 * objects.add(new AuditObject(object.getClass().getSimpleName(), null,
-		 * null)); }
-		 */
-
-		onConstructRevisions(revision.getId(), revision.getRevisionDate(), objects.size(), new HashSet<AuditObject>(
-				objects));
+		// TODO: get the userid
+		onConstructRevisions(revision.getId(), revision.getRevisionDate(), revision.getUsername(), null,
+				objects.size(), objects);
 	}
 
-	private void onConstructRevisions(Integer revision, Date timestamp, Integer nrobj, Set<AuditObject> objects) {
-		this.revision = revision;
-		this.timestamp = timestamp;
-		this.nrobjects = nrobj;
-		this.objects = objects;
+	private void onConstructRevisions(Integer revision, Date timestamp, String username, Integer userid, Integer nrobj,
+			Set<AuditObject> objects) {
+
+		setRevision(revision);
+		setTimestamp(timestamp);
+		setNrobjects(nrobj);
+		setObjects(objects);
+
+		this.username = username;
+		this.userid = userid;
 	}
 
-	public Integer getRevision() {
-		return revision;
+	public String getUsername() {
+		return username;
 	}
 
-	public void setRevision(Integer revision) {
-		this.revision = revision;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
-	public Date getTimestamp() {
-		return timestamp;
+	public Integer getUserid() {
+		return userid;
 	}
 
-	public void setTimestamp(Date timestamp) {
-		this.timestamp = timestamp;
-	}
-
-	public Integer getNrobjects() {
-		return nrobjects;
-	}
-
-	public void setNrobjects(Integer nrobj) {
-		this.nrobjects = nrobj;
-	}
-
-	public Set<AuditObject> getObjects() {
-		return objects;
-	}
-
-	public void setObjects(Set<AuditObject> objects) {
-		this.objects = objects;
+	public void setUserid(Integer userid) {
+		this.userid = userid;
 	}
 
 	public String toJson() {
 		JSONSerializer serializer = new JSONSerializer();
 
 		serializer.exclude("*.class", "type", "id", "name");
-		serializer.include("revision", "timestamp", "nrobj", "objects");
+		serializer.include("revision", "timestamp", "username", "userid", "nrobjects", "objects");
 
-		serializer.exclude("objects.nrrows", "objects.rows");
-		serializer.include("objects.objname");
+		// serializer.exclude("objects.id", "objects.type");
+		// serializer.include("objects.objname");
+		serializer.include("objects.objname", "objects.nrrows", "objects.rows");
 
 		// serializer.transform(new FieldNameTransformer("indice"), "id");
 		// serializer.transform(new FieldNameTransformer("objname"),
-		// "object.objname");
+		// "objects.name");
 		serializer.transform(DATE_TRANSFORMER, Date.class);
 
 		return "{\"data\":" + serializer.serialize(this) + "}";

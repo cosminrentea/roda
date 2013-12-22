@@ -1,5 +1,11 @@
 package ro.roda.transformer;
 
+import java.io.File;
+import java.io.FilenameFilter;
+import java.net.URL;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -22,6 +28,9 @@ public class JsonInfo {
 	public static final String YEAR_TYPE = "Y";
 
 	public static final String MAIN_TYPE = "M";
+
+	// protected static final String[] auditedClasses = {
+	// "ro.roda.domain.CmsLayout", "ro.roda.domain.CmsLayoutGroup" };
 
 	private Integer id;
 
@@ -66,6 +75,37 @@ public class JsonInfo {
 
 	public void setType(String type) {
 		this.type = type;
+	}
+
+	protected static String[] getAuditedClasses(String packageName) {
+		// Prepare.
+		URL root = Thread.currentThread().getContextClassLoader().getResource(packageName.replace(".", "/"));
+
+		// Filter .class files.
+		File[] files = new File(root.getFile()).listFiles(new FilenameFilter() {
+			public boolean accept(File dir, String name) {
+				return name.endsWith(".class");
+			}
+		});
+
+		Set<String> classesSet = new HashSet<String>();
+		// Find classes.
+		for (File file : files) {
+			try {
+				String className = file.getName().replaceAll(".class$", "");
+				int indexOf$ = className.indexOf("$");
+				if (indexOf$ > -1) {
+					className = className.substring(0, indexOf$);
+				}
+				if (!className.endsWith("PK")) {
+					classesSet.add(packageName + "." + className);
+				}
+			} catch (Exception e) {
+				// TODO
+			}
+		}
+
+		return classesSet.toArray(new String[] {});
 	}
 
 }

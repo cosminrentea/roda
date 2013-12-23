@@ -1,3 +1,6 @@
+/**
+ * 
+ */
 Ext.define('RODAdmin.store.security.Groups', {
     extend: 'Ext.data.Store',
 

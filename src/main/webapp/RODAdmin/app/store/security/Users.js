@@ -1,3 +1,6 @@
+/**
+ * 
+ */
 Ext.define('RODAdmin.store.security.Users', {
     extend: 'Ext.data.Store',
 

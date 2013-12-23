@@ -1,3 +1,6 @@
+/**
+ * 
+ */
 Ext.define('RODAdmin.store.security.Permissions', {
     extend: 'Ext.data.TreeStore',
 

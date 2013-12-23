@@ -1,5 +1,8 @@
+/**
+ * 
+ */
 Ext.define('RODAdmin.store.common.Audit', {
-    extend: 'Ext.data.Store',
+    extend: 'RODAdmin.store.Base',	
 
     requires: [
         'RODAdmin.model.common.Audit',
@@ -7,25 +10,6 @@ Ext.define('RODAdmin.store.common.Audit', {
     ],
 
     model: 'RODAdmin.model.common.Audit',
-    
+    proxy: {type: 'main', url: 'http://roda.apiary.io/admin/audit/object/'},      
     autoload: true,
-    proxy: {
-        type: 'ajax',
-        url: 'data/fileaudit.json',
-        url: 'http://roda.apiary.io/admin/audit/object/',        
-         reader: {
-                type: 'json',
-                root: 'data'
-        },
-        listeners: {
-            exception: function(proxy, response, operation){
-                Ext.MessageBox.show({
-                    title: 'REMOTE EXCEPTION',
-                    msg: operation.getError(),
-                    icon: Ext.MessageBox.ERROR,
-                    buttons: Ext.Msg.OK
-                });
-            }
-        }
-    }
 });

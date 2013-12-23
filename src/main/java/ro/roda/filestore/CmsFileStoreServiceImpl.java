@@ -272,17 +272,15 @@ public class CmsFileStoreServiceImpl implements CmsFileStoreService {
 			session = repository.login(adminCred);
 			try {
 				Node root = session.getRootNode();
+				
+				//TODO getFilename() nu e corect aici !! este doar numele fisierului nu path-ul complet
 				root.getNode(cmsFile.getFilename()).remove();
 				session.save();
 			} finally {
 				session.logout();
 			}
-		} catch (LoginException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (RepositoryException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (Exception e) {
+			log.error(e);
 		}
 	}
 

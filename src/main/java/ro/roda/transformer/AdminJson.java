@@ -24,6 +24,7 @@ import ro.roda.domain.CmsSnippet;
 import ro.roda.domain.CmsSnippetGroup;
 import ro.roda.domain.Users;
 import ro.roda.filestore.CmsFileStoreService;
+import flexjson.JSON;
 import flexjson.JSONSerializer;
 
 @Configurable
@@ -776,6 +777,7 @@ public class AdminJson {
 
 	private String message;
 
+	@JSON(include = false)
 	private Integer id;
 
 	public AdminJson(boolean success, String message) {

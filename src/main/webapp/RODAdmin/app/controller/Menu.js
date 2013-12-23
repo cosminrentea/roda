@@ -1,3 +1,6 @@
+/**
+ * Menu controller
+ */
 Ext.define('RODAdmin.controller.Menu', {
     extend: 'Ext.app.Controller',
 
@@ -7,15 +10,15 @@ Ext.define('RODAdmin.controller.Menu', {
     ], 
 
     models: [
-        'menu.Root',
-        'menu.Item'
+        'RODAdmin.model.menu.Root',
+        'RODAdmin.model.menu.Item'
     ],
     stores: [
         'Menu'
     ],
     views: [
-        'menu.Accordion',
-        'menu.Item'
+        'RODAdmin.view.menu.Accordion',
+        'RODAdmin.view.menu.Item'
     ],
 
     refs: [
@@ -24,8 +27,12 @@ Ext.define('RODAdmin.controller.Menu', {
             selector: 'mainpanel'
         }
     ],
-
+   	/**
+   	 * @event
+   	 */
     onPanelRender: function(abstractcomponent, options) {
+    	console.log(this);
+//    	this.getMenuStore().getProxy().url = RODAdmin.Globals.baseurl;
         this.getMenuStore().load(function(records, op, success){
 
             var menuPanel = Ext.ComponentQuery.query('mainmenu')[0];
@@ -55,7 +62,9 @@ Ext.define('RODAdmin.controller.Menu', {
             }); 
         });
     },
-
+   	/**
+   	 * @method
+   	 */
     onTreepanelSelect: function(selModel, record, index, options) {
         //console.log(record.raw.className);
 
@@ -66,7 +75,7 @@ Ext.define('RODAdmin.controller.Menu', {
             return tab.title === record.get('text'); 
         });
 
-        //console.log(record.raw.className);
+        console.log(record.raw.className);
 
         if (!newTab){
             newTab = mainPanel.add({
@@ -79,11 +88,15 @@ Ext.define('RODAdmin.controller.Menu', {
 
         mainPanel.setActiveTab(newTab);
     },
-
+   	/**
+   	 * @method
+   	 */
     onTreepanelItemClick: function(view, record, item, index, event, options){
         this.onTreepanelSelect(view, record, index, options);
     },
-
+/**
+ * @method
+ */
     init: function(application) {
         this.control({
             "mainmenu": {
@@ -95,5 +108,4 @@ Ext.define('RODAdmin.controller.Menu', {
             }
         });
     }
-
 });

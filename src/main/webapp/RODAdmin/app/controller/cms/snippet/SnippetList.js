@@ -1,19 +1,20 @@
+/**
+Controller care se ocupa de lista de snippeturi {@link RODAdmin.view.cms.snippet.SnippetItemsview SnippetItemsview}
+ */
 Ext.define('RODAdmin.controller.cms.snippet.SnippetList', {
 	extend : 'Ext.app.Controller',
 
     stores : [
-              'cms.snippet.SnippetTree', 'cms.snippet.SnippetItem', 'cms.snippet.SnippetGroup', 'cms.snippet.Snippet',
+              'cms.snippet.SnippetTree',
+              'cms.snippet.SnippetItem',
+              'cms.snippet.SnippetGroup',
+              'cms.snippet.Snippet',
               'common.Audit'
 	      ],			
 
      views : [
-//          'cms.snippet.Snippets', 'cms.snippet.SnippetItemsview', 'cms.snippet.SnippetDetails',
-//          'cms.snippet.details.SnippetProperties', "cms.snippet.EditSnippetWindow", 'cms.snippet.SnippetContextMenu',
-//          'cms.snippet.SnippetGroupContextMenu', 'cms.snippet.AddSnippetToGroupWindow',
-          'cms.snippet.SnippetItemviewContextMenu',
-//          'cms.snippet.details.SnippetUsage'
+          'RODAdmin.view.cms.snippet.SnippetItemviewContextMenu',
 	       ],
-	      
 			
 	refs : [ 
 	        {
@@ -35,7 +36,19 @@ Ext.define('RODAdmin.controller.cms.snippet.SnippetList', {
    	init : function(application) {
         		this.control({
         			"snippetitemsview grid#sniconview" : {
+        	            /**
+        				 * @listener snippetitemsview-grid-sniconview-selectionchange triggered-by:
+        				 *           {@link RODAdmin.view.cms.snippet.SnippetItem SnippetItem}
+        				 *           grid#sniconview
+        				 *           {@link #onIconViewSelectionChange}
+        				 */	
         				selectionchange : this.onIconViewSelectionChange,
+        	            /**
+        				 * @listener snippetitemsview-grid-sniconview-itemcontextmenu triggered-by:
+        				 *           {@link RODAdmin.store.cms.snippet.SnippetItem SnippetItem}
+        				 *           grid#sniconview
+        				 *           {@link #onItemContextMenu}
+        				 */	
         				itemcontextmenu : this.onItemContextMenu
         			},
 //        			"snippetitemviewcontextmenu menuitem#icdeletesnippet" : {
@@ -47,6 +60,10 @@ Ext.define('RODAdmin.controller.cms.snippet.SnippetList', {
         		});
    	},
 
+   	/**
+   	 * @method
+   	 * Triggered at grid selection change.
+   	 */
 	onIconViewSelectionChange : function(component, selected, event) {
 		var record = selected[0];
 		var snprop = this.getSnippetproperties();
@@ -71,6 +88,15 @@ Ext.define('RODAdmin.controller.cms.snippet.SnippetList', {
 		});
 	},
 
+   	/**
+   	 * @method
+   	 * Triggered at context menu, loads {@link RODAdmin.view.cms.snippet.SnippetItemviewContextMenu SnippetItemviewContextMenu}
+   	 * @param {Ext.Component} component 
+   	 * @param {Ext.data.Model} record
+   	 * @param {HTMLElement} item
+   	 * @param {Number} index
+   	 * @param {Ext.EventObject} e
+   	 */
 	onItemContextMenu : function(component, record, item, index, e) {
 		e.stopEvent();
 		if (!this.contextmenu) {

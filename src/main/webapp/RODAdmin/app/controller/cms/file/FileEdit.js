@@ -1,8 +1,12 @@
+/**
+ * 
+ */
 Ext.define('RODAdmin.controller.cms.file.FileEdit', {
     extend : 'Ext.app.Controller',
 
     views : [
-	    "cms.files.EditFileWindow"
+	    "RODAdmin.view.cms.files.EditFileWindow",
+	    "RODAdmin.view.cms.files.FileWindow"
     ],
 
     refs : [
@@ -17,31 +21,63 @@ Ext.define('RODAdmin.controller.cms.file.FileEdit', {
                 selector : 'fileedit treepanel#folderselect'
             },
     ],
-
+/**
+ * @method
+ */
     init : function(application) {
 	    this.control({
 	        "fileedit treepanel#folderselect" : {
+	            /**
+				 * @listener fileedit-treepanel-folderselect-load triggered-by:
+				 *           {@link RODAdmin.view.cms.files.EditFileWindow EditFileWindow}
+				 *           treepanel#folderselect  
+				 *           this is the only event fired after loading the store in a tree view, apparently. This
+	             * 		  	 is REALLY stupid because it is probabily fired multiple times.  
+				 *           {@link #folderLoad}
+				 */	        	
 	            load : this.folderLoad, // this is the only event fired
-	            // after loading the store in a
-	            // tree view, apparently. This
-	            // is REALLY stupid because it
-	            // is probabily fired multimple
-	            // times.
+	            /**
+				 * @listener fileedit-treepanel-folderselect-cellclick triggered-by:
+				 *           {@link RODAdmin.view.cms.files.EditFileWindow EditFileWindow}
+				 *           treepanel#folderselect
+				 *           {@link #onFolderselectCellClick}
+				 */	
+
 	            cellclick : this.onFolderselectCellClick
 	        },
 	        "fileadd button#save" : {
-		        click : this.onButtonClickFileSave
+	            /**
+				 * @listener fileadd-button-save triggered-by:
+				 *           {@link RODAdmin.view.cms.files.FileWindow FileWindow}
+				 *           button#save
+				 *           {@link #onButtonClickFileSave}
+				 */	
+	        	click : this.onButtonClickFileSave
 	        },
 	        "folderadd button#save" : {
+	            /**
+				 * @listener folderadd-button-save-click triggered-by:
+				 *           {@link RODAdmin.view.cms.files.FolderWindow FolderWindow}
+				 *           button#save
+				 *           {@link #onButtonClickFolderSave}
+				 */	
 		        click : this.onButtonClickFolderSave
 	        },
 	        "fileedit cancelsave button#save" : {
+	            /**
+				 * @listener fileedit-cancelsave-button-save-click triggered-by:
+				 *           {@link RODAdmin.view.cms.files.EditFileWindow EditFileWindow}
+				 *           cancelsave button#save
+				 *           {@link #fileEditSave}
+				 */	
 		        click : this.fileEditSave
 	        }
 	    // groupadd here
 	    });
     },
-
+    /**
+	 * @method
+	 */
     folderLoad : function(component, options) {
 	    var pnode = this.getIconview().getSelectionModel().getLastSelected();
 	    var rnode = this.getFolderselect().getRootNode();
@@ -50,15 +86,27 @@ Ext.define('RODAdmin.controller.cms.file.FileEdit', {
 		    this.getFolderselect().getSelectionModel().select(cnode);
 	    }
     },
+    /**
+	 * @method
+	 */
     onFolderselectCellClick : function(component, td, cellIndex, record, tr, rowIndex, e, eOpts) {
 	    component.up('fileedit').down('form').down('fieldset').query('displayfield')[0].setValue(record.data.name);
 	    component.up('fileedit').down('fieldset').query('hiddenfield')[0].setValue(record.data.id);
     },
-
+    /**
+	 * @method
+	 */
     onButtonClickFileSave : function(button, e, options) {
 	    console.log('');
 	    var win = button.up('fileadd');
 	    form = win.down('form');
+	    /**
+	     * @todo StoreCall
+	     * Apel intern catre store
+	     * @todo Store 
+	     * Trebuie convertit la acces catre store, nu cu post ajax cum e acum.
+	     */
+
 	    var store = Ext.StoreManager.get('cms.files.FileTree');
 
 	    if (form.getForm().isValid()) {
@@ -100,6 +148,9 @@ Ext.define('RODAdmin.controller.cms.file.FileEdit', {
 
 	    }
     },
+    /**
+	 * @method
+	 */
     onButtonClickFolderSave : function(button, e, options) {
 	    var win = button.up('folderadd');
 	    form = win.down('form');
@@ -142,7 +193,9 @@ Ext.define('RODAdmin.controller.cms.file.FileEdit', {
 
 	    }
     },
-
+    /**
+	 * @method
+	 */
     fileEditSave : function(button, e, options) {
 	    console.log('');
 	    var win = button.up('fileedit');

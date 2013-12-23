@@ -1,3 +1,6 @@
+/**
+ * Controller care se ocupa de caseta de login
+ */
 Ext.define('RODAdmin.controller.Login', {
     extend: 'Ext.app.Controller',
 
@@ -6,13 +9,16 @@ Ext.define('RODAdmin.controller.Login', {
         'RODAdmin.util.Alert',
         'RODAdmin.view.MyViewport',
         'RODAdmin.util.Util',
-        'RODAdmin.util.SessionMonitor'
-    ],
+        'RODAdmin.util.SessionMonitor',
+        'RODAdmin.view.Login',
+        'RODAdmin.view.Header',
+        'RODAdmin.view.authentication.CapsLockTooltip'
+     ],
 
     views: [
-        'Login',
-        'Header',
-        'authentication.CapsLockTooltip'
+        'RODAdmin.view.Login',
+        'RODAdmin.view.Header',
+        'RODAdmin.view.authentication.CapsLockTooltip'
     ],
 
     refs: [
@@ -25,18 +31,48 @@ Ext.define('RODAdmin.controller.Login', {
     init: function(application) {
         this.control({
             "login form button#submit": {
+                /**
+     			 * @listener login form button#submit-click triggered-by:
+     			 *           {@link RODAdmin.view.Login Login}
+     			 *            form button#submit
+     			 *           {@link #onButtonClickSubmit}
+     			 */		        	
                 click: this.onButtonClickSubmit
             },
             "login form button#cancel": {
+                /**
+     			 * @listener login form button#cancel-click triggered-by:
+     			 *           {@link RODAdmin.view.Login Login}
+     			 *            form button#cancel
+     			 *           {@link #onButtonClickCancel}
+     			 */		        	
                 click: this.onButtonClickCancel
             },
             "login form textfield": {
+                /**
+     			 * @listener login form textfield-specialkey triggered-by:
+     			 *           {@link RODAdmin.view.Login Login}
+     			 *            form textfield
+     			 *           {@link #onTextfielSpecialKey}
+     			 */		        	
                 specialkey: this.onTextfielSpecialKey
             },
             "login form textfield[name=password]": {
+                /**
+     			 * @listener login form textfield[name=password]-keypress triggered-by:
+     			 *           {@link RODAdmin.view.Login Login}
+     			 *            form textfield[name=password]
+     			 *           {@link #onTextfielKeyPress}
+     			 */		        	
                 keypress: this.onTextfielKeyPress
             },
             "appheader button#logout": {
+                /**
+     			 * @listener appheader-button-logout-click triggered-by:
+     			 *           {@link RODAdmin.view.Header Header}
+     			 *            button#logout
+     			 *           {@link #onButtonClickLogout}
+     			 */		        	
                 click: this.onButtonClickLogout
             }
         });
@@ -52,6 +88,10 @@ Ext.define('RODAdmin.controller.Login', {
 
     },
 
+   	/**
+   	 * @method
+   	 */
+    
     onButtonClickSubmit: function(button, e, options) {
         var formPanel = button.up('form'),
             login = button.up('login'),
@@ -99,10 +139,18 @@ Ext.define('RODAdmin.controller.Login', {
         }    
     },    
 
+   	/**
+   	 * @method
+   	 */
+    
     onButtonClickCancel: function(button, e, options) {
         button.up('form').getForm().reset();
     },
 
+   	/**
+   	 * @method
+   	 */
+    
     onTextfielSpecialKey: function(field, e, options) {
         if (e.getKey() == e.ENTER){
             var submitBtn = field.up('form').down('button#submit');
@@ -110,6 +158,10 @@ Ext.define('RODAdmin.controller.Login', {
         }
     },
 
+   	/**
+   	 * @method
+   	 */
+    
     onTextfielKeyPress: function(field, e, options) {
         var charCode = e.getCharCode(); 
         
@@ -129,6 +181,10 @@ Ext.define('RODAdmin.controller.Login', {
             }
         }
     },
+
+   	/**
+   	 * @method
+   	 */
     
     onButtonClickLogout: function(button, e, options) {
 

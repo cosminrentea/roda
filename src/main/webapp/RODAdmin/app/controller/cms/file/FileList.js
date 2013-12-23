@@ -1,15 +1,30 @@
+/**
+ * 
+ */
 Ext.define('RODAdmin.controller.cms.file.FileList', {
     extend : 'Ext.app.Controller',
 
     stores : [
-            'cms.files.FileTree', 'cms.files.FileItem',  'cms.files.File', 'common.Audit'
+            'cms.files.FileTree',
+            'cms.files.FileItem',
+            'cms.files.File',
+            'common.Audit'
     ],
 
     views : [
-            'cms.files.Files', 'cms.files.Itemsview', 'cms.files.FileDetails', 'cms.files.filedetails.FileProperties',
-            'cms.files.filedetails.SpecificProperties', 'cms.files.FileContextMenu', 'cms.files.FolderContextMenu',
-            'cms.files.IconviewContextMenu', 'cms.files.FileWindow', 'cms.files.EditFileWindow',
-            'cms.files.FolderWindow', 'common.AuditWindow', 'cms.files.filedetails.FileUsage'
+            'RODAdmin.view.cms.files.Files',
+            'RODAdmin.view.cms.files.Itemsview',
+            'RODAdmin.view.cms.files.FileDetails',
+            'RODAdmin.view.cms.files.filedetails.FileProperties',
+            'RODAdmin.view.cms.files.filedetails.SpecificProperties',
+//            'RODAdmin.view.cms.files.FileContextMenu',
+//            'RODAdmin.view.cms.files.FolderContextMenu',
+            'RODAdmin.view.cms.files.IconviewContextMenu',
+            'RODAdmin.view.cms.files.FileWindow',
+            'RODAdmin.view.cms.files.EditFileWindow',
+            'RODAdmin.view.cms.files.FolderWindow',
+            'RODAdmin.view.common.AuditWindow',
+            'RODAdmin.view.cms.files.filedetails.FileUsage'
     ],
 
     refs : [
@@ -30,22 +45,50 @@ Ext.define('RODAdmin.controller.cms.file.FileList', {
                 selector : 'cmsfiles panel#fdetailscontainer '
             },
     ],
-
+/**
+ * @method
+ */
     init : function(application) {
 	    this.control({
 	        "itemsview grid#iconview" : {
+	            /**
+				 * @listener itemsview-grid-iconview-selectionchange triggered-by:
+				 *           {@link RODAdmin.view.cms.files.Itemsview Itemsview}
+				 *           grid#iconview
+				 *           {@link #onFolderviewSelectionChange}
+				 */	
 	            selectionchange : this.onFolderviewSelectionChange,
+	            /**
+				 * @listener itemsview-grid-iconview-itemscontextmenu triggered-by:
+				 *           {@link RODAdmin.view.cms.files.Itemsview Itemsview}
+				 *           grid#iconview
+				 *           {@link #onIconviewContextMenu}
+				 */	
 	            itemcontextmenu : this.onIconviewContextMenu
 	        },
 	        "iconviewcontextmenu menuitem#icdeletefile" : {
+	            /**
+				 * @listener iconviewcontextmenu-menuitem-icdeletefile-click triggered-by:
+				 *           {@link RODAdmin.view.cms.files.IconviewContextMenu IconviewContextMenu}
+				 *           menuitem#icdeletefile
+				 *           {@link #onDeleteFileClick}
+				 */	
 		        click : this.onDeleteFileClick
 	        },
 	        "iconviewcontextmenu menuitem#icEditFile" : {
-		        click : this.onEditFileClick
+	            /**
+				 * @listener iconviewcontextmenu-menuitem-icEditFile-click triggered-by:
+				 *           {@link RODAdmin.view.cms.files.IconviewContextMenu IconviewContextMenu}
+				 *           menuitem#icEditFile
+				 *           {@link #onDeleteFileClick}
+				 */	
+		        click : this.onDeleteFileClick
 	        },
 	    });
     },
-
+    /**
+	 * @method
+	 */
     onFolderviewSelectionChange : function(component, selected, event) {
 	    console.log('folderviewselectionchange');
 	    var record = selected[0];
@@ -82,6 +125,9 @@ Ext.define('RODAdmin.controller.cms.file.FileList', {
 	    }
 
     },
+    /**
+	 * @method
+	 */
     onIconviewContextMenu : function(component, record, item, index, e) {
 	    e.stopEvent();
 	    if (!this.filemenu) {
@@ -117,7 +163,9 @@ Ext.define('RODAdmin.controller.cms.file.FileList', {
 	    }, this);
 	    event.stopEvent();
     },
-
+    /**
+	 * @method
+	 */
     onEditFileClick : function(component, record, item, index, e) {
 	    console.log('onEditFileClick');
 	    var currentNode = this.getIconview().getSelectionModel().getLastSelected();

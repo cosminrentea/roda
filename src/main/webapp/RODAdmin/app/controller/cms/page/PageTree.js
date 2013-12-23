@@ -1,13 +1,20 @@
+/**
+ * 
+ */
 Ext.define('RODAdmin.controller.cms.page.PageTree', {
     extend : 'Ext.app.Controller',
 
     stores : [
-            'cms.pages.PageTree', 'cms.pages.PageItem', 'common.Audit'
+            'cms.pages.PageTree',
+            'cms.pages.PageItem',
+            'common.Audit'
     ],
 
     views : [
-            'cms.page.Pages', 'cms.page.PagesItemsview', 'cms.page.PageDetails',
-            'cms.page.details.PageProperties', 
+            'RODAdmin.view.cms.page.Pages',
+            'RODAdmin.view.cms.page.PagesItemsview',
+            'RODAdmin.view.cms.page.PageDetails',
+            'RODAdmin.view.cms.page.details.PageProperties', 
     ],
 
     refs : [
@@ -20,17 +27,27 @@ Ext.define('RODAdmin.controller.cms.page.PageTree', {
                 selector : 'pageproperties'
             },
     ],
-    
+    /**
+	 * @method
+	 */   
     init : function(application) {
 	    this.control({
 	        "pagesitemsview treepanel#pgfolderview" : {
+	            /**
+				 * @listener pagesitemsview-treepanel-pgfolderview triggered-by:
+				 *           {@link RODAdmin.view.cms.page.PagesItemsview PagesItemsview}
+				 *           treepanel#pgfolderview
+				 *           {@link #onPageviewSelectionChange}
+				 */	        	
 	            selectionchange : this.onPageviewSelectionChange,
 //	            itemcontextmenu : this.onTreeContextMenu
 	        },
 
 	    });
     },
-
+    /**
+	 * @method
+	 */
     onPageviewSelectionChange : function(component, selected, event) {
 	    console.log('pageviewselectionchange');
 	    var record = selected[0];

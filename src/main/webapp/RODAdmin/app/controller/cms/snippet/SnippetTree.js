@@ -1,20 +1,22 @@
+/**
+ * 
+ */
 Ext.define('RODAdmin.controller.cms.snippet.SnippetTree', {
     extend : 'Ext.app.Controller',
 
     stores : [
-            'cms.snippet.SnippetTree', 'cms.snippet.SnippetItem', 'cms.snippet.SnippetGroup', 'cms.snippet.Snippet',
+            'cms.snippet.SnippetTree',
+            'cms.snippet.SnippetItem',
+            'cms.snippet.SnippetGroup',
+            'cms.snippet.Snippet',
             'common.Audit'
     ],
 
      views : [
-    // 'cms.snippet.Snippets', 'cms.snippet.SnippetItemsview',
-	// 'cms.snippet.SnippetDetails',
-    // 'cms.snippet.details.SnippetProperties', "cms.snippet.EditSnippetWindow",
-	// 'cms.snippet.SnippetContextMenu',
-     'cms.snippet.SnippetGroupContextMenu',
-	// 'cms.snippet.AddSnippetToGroupWindow',
-     'cms.snippet.SnippetItemviewContextMenu',
-	// 'cms.snippet.details.SnippetUsage'
+     'RODAdmin.view.cms.snippet.SnippetGroupContextMenu',
+     'RODAdmin.view.cms.snippet.SnippetItemviewContextMenu',
+     'RODAdmin.view.cms.snippet.SnippetContextMenu',
+     'RODAdmin.view.cms.snippet.SnippetItemsview'
     ],
 
     refs : [
@@ -44,39 +46,97 @@ Ext.define('RODAdmin.controller.cms.snippet.SnippetTree', {
                 selector : 'snippetedit treepanel#folderselect'
             }
     ],
-
+    /**
+	 * @method
+	 */
     init : function(application) {
 	    this.control({
 		    "snippetitemsview treepanel#snfolderview" : {
-		        selectionchange : this.onSnFolderviewSelectionChange,
+	            /**
+				 * @listener snippetitemsview-treepanel-snfolderview-selectionchange triggered-by:
+				 *           {@link RODAdmin.view.cms.snippet.SnippetItemsview SnippetItemsview}
+				 *           treepanel#snfolderview
+				 *           {@link #onSnFolderviewSelectionChange}
+				 */	
+		    	selectionchange : this.onSnFolderviewSelectionChange,
+	            /**
+				 * @listener snippetitemsview-treepanel-snfolderview-itemcontextmenu triggered-by:
+				 *           {@link RODAdmin.view.cms.snippet.SnippetItemsview SnippetItemsview}
+				 *           treepanel#snfolderview
+				 *           {@link #onTreeContextMenu}
+				 */	
 		        itemcontextmenu : this.onTreeContextMenu
 		    },
 	        "snippetitemsview treepanel#snfolderview toolbar button#reloadtree" : {
-		        click : this.onReloadTreeClick
+	            /**
+				 * @listener snippetitemsview-treepanel-snfolderview-toolbar-button-reloadtree-click triggered-by:
+				 *           {@link RODAdmin.view.cms.snippet.SnippetItemsview SnippetItemsview}
+				 *           treepanel#snfolderview toolbar button#reloadtree
+				 *           {@link #onReloadTreeClick}
+				 */	
+	        	click : this.onReloadTreeClick
 	        },
 	        "snippetitemsview treepanel#snfolderview toolbar button#collapsetree" : {
+	            /**
+				 * @listener snippetitemsview-treepanel-snfolderview-toolbar-button-collapsetree-click triggered-by:
+				 *           {@link RODAdmin.view.cms.snippet.SnippetItemsview SnippetItemsview}
+				 *           treepanel#snfolderview toolbar button#collapsetree
+				 *           {@link #onCollapseTreeClick}
+				 */	
 		        click : this.onCollapseTreeClick
 	        },
 	        "snippetitemsview treepanel#snfolderview toolbar button#expandtree" : {
+	            /**
+				 * @listener snippetitemsview-treepanel-snfolderview-toolbar-button-expandtree-click triggered-by:
+				 *           {@link RODAdmin.view.cms.snippet.SnippetItemsview SnippetItemsview}
+				 *           treepanel#snfolderview toolbar button#expandtree
+				 *           {@link #onExpandTreeClick}
+				 */	
 		        click : this.onExpandTreeClick
 	        },		    
 	        "snippetcontextmenu menuitem#deletesnippet" : {
+	            /**
+				 * @listener snippetcontextmenu-menuitem-deletesnippet-click triggered-by:
+				 *           {@link RODAdmin.view.cms.snippet.SnippetContextMenu SnippetContextMenu}
+				 *           menuitem#deletesnippet
+				 *           {@link #onDeleteSnippetClick}
+				 */	
 		        click : this.onDeleteSnippetClick
 	        },
 	        "snippetcontextmenu menuitem#editsnippet" : {
-		        click : this.onEditSnippetClick
+	            /**
+				 * @listener snippetcontextmenu-menuitem-editsnippet-click triggered-by:
+				 *           {@link RODAdmin.view.cms.snippet.SnippetContextMenu SnippetContextMenu}
+				 *           menuitem#editsnippet
+				 *           {@link #onEditSnippetClick}
+				 */	
+	        	click : this.onEditSnippetClick
 	        },
 	        "snippetgroupcontextmenu menuitem#addsnippet" : {
+	            /**
+				 * @listener snippetgroupcontextmenu-menuitem-addsnippet-click triggered-by:
+				 *           {@link RODAdmin.view.cms.snippet.SnippetGroupContextMenu SnippetGroupContextMenu}
+				 *           menuitem#addsnippet
+				 *           {@link #onAddSnippetClick}
+				 */	
 		        click : this.onAddSnippetClick
 	        },
 	        "snippetgroupcontextmenu menuitem#newgroup" : {
-		        click : this.onNewGroupClick
+	            /**
+				 * @listener snippetgroupcontextmenu-menuitem-newgroup-click triggered-by:
+				 *           {@link RODAdmin.view.cms.snippet.SnippetGroupContextMenu SnippetGroupContextMenu}
+				 *           menuitem#newgroup
+				 *           {@link #onNewGroupClick}
+				 */	
+	        	click : this.onNewGroupClick
 	        },
 	        
 	        
 	    });
     },
-
+    /**
+	 * @method
+	 */
     onSnFolderviewSelectionChange : function(component, selected, event) {
 	    console.log('folderviewselectionchange');
 	    var record = selected[0];
@@ -120,7 +180,9 @@ Ext.define('RODAdmin.controller.cms.snippet.SnippetTree', {
 		    });
 	    }
     },
-
+    /**
+	 * @method
+	 */
   onTreeContextMenu : function(component, record, item, index, e) {
     e.stopEvent();
     if (record.data.itemtype == 'snippetgroup') {
@@ -136,7 +198,9 @@ Ext.define('RODAdmin.controller.cms.snippet.SnippetTree', {
 	    this.itemmenu.showAt(e.getXY());
     }
 },
-
+/**
+ * @method
+ */
 onNewGroupClick : function(component, event) {
     var currentNode = this.getFolderview().getSelectionModel().getLastSelected();
 
@@ -149,7 +213,9 @@ onNewGroupClick : function(component, event) {
     console.log(currentNode.data);
     win.show();
 },
-
+/**
+ * @method
+ */
 onAddSnippetClick : function(component, event) {
     var currentNode = this.getFolderview().getSelectionModel().getLastSelected();
     console.log(currentNode);
@@ -160,7 +226,9 @@ onAddSnippetClick : function(component, event) {
     win.down('form').down('fieldset').down('displayfield').setValue(currentNode.data.directory);
     win.show();
 },
-
+/**
+ * @method
+ */
 onDeleteSnippetClick : function(component, event) {
     var currentNode = this.getFolderview().getSelectionModel().getLastSelected();
    
@@ -188,7 +256,9 @@ onDeleteSnippetClick : function(component, event) {
     }, this);
     event.stopEvent();
 },
-
+/**
+ * @method
+ */
 onEditSnippetClick : function(component, record, item, index, e) {
 
     var currentNode = this.getFolderview().getSelectionModel().getLastSelected();
@@ -209,17 +279,23 @@ onEditSnippetClick : function(component, record, item, index, e) {
     });
     win.show();
 },
-
+/**
+ * @method
+ */
 onCollapseTreeClick : function(button, e, options) {
     console.log('onCollapseTreeClick');
     this.getFolderview().collapseAll();
 },
-
+/**
+ * @method
+ */
 onExpandTreeClick : function(button, e, options) {
     console.log('onExpandTreeClick');
     this.getFolderview().expandAll();
 },
-
+/**
+ * @method
+ */
 onReloadTreeClick : function(button, e, options) {
     var folderview = this.getFolderview();
     var currentNode = folderview.getSelectionModel().getLastSelected();

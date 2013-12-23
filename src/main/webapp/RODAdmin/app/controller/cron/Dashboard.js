@@ -1,8 +1,11 @@
+/**
+ * 
+ */
 Ext.define('RODAdmin.controller.cron.Dashboard', {
     extend: 'Ext.app.Controller',
 
     views: [
-        'cron.Dashboard',
+        'RODAdmin.view.cron.Dashboard',
     ]
 
 });

@@ -3,14 +3,16 @@ Ext.define('RODAdmin.controller.cms.Snippet', {
 
     
     views : [
-             'cms.snippet.Snippets', 'cms.snippet.SnippetItemsview', 'cms.snippet.SnippetDetails',
-             'cms.snippet.details.SnippetProperties',
+             'RODAdmin.view.cms.snippet.Snippets',
+             'RODAdmin.view.cms.snippet.SnippetItemsview',
+             'RODAdmin.view.cms.snippet.SnippetDetails',
+             'RODAdmin.view.cms.snippet.details.SnippetProperties',
 //             "cms.snippet.EditSnippetWindow",
-             'cms.snippet.SnippetContextMenu',
-             'cms.snippet.SnippetGroupContextMenu',
+             'RODAdmin.view.cms.snippet.SnippetContextMenu',
+             'RODAdmin.view.cms.snippet.SnippetGroupContextMenu',
 //             'cms.snippet.AddSnippetToGroupWindow',
 //             'cms.snippet.SnippetItemviewContextMenu',
-             'cms.snippet.details.SnippetUsage'
+             'RODAdmin.view.cms.snippet.details.SnippetUsage'
      ],
     
     refs : [
@@ -33,57 +35,74 @@ Ext.define('RODAdmin.controller.cms.Snippet', {
     init : function(application) {
 	    this.control({
 	        "cmssnippets toolbar button#icon-view" : {
+	            /**
+				 * @listener cmssnippets-toolbar-button-icon-view-click triggered-by:
+				 *           {@link RODAdmin.view.cms.snippet.Snippets Snippets}
+				 *           toolbar button#icon-view 
+				 *           {@link #onIconViewClick}
+				 */		        	
 		        click : this.onIconViewClick
 	        },
 	        "cmssnippets toolbar button#tree-view" : {
+	            /**
+				 * @listener cmssnippets-toolbar-button-tree-view-click triggered-by:
+				 *           {@link RODAdmin.view.cms.snippet.Snippets Snippets}
+				 *           toolbar button#tree-view 
+				 *           {@link #onTreeViewClick}
+				 */		        	
 		        click : this.onTreeViewClick
 	        },
 	        "snippetproperties toolbar#snproptoolbar button#editsnippet" : {
+	            /**
+				 * @listener snippetproperties-toolbar-snproptoolbar-button-editsnippet-click triggered-by:
+				 *           {@link RODAdmin.view.cms.snippet.details.SnippetProperties SnippetProperties}
+				 *           toolbar#snproptoolbar button#editsnippet 
+				 *           {@link #onsntoolbarEditClick}
+				 */		        	
 		        click : this.onsntoolbarEditClick
 	        },
 	        "snippetproperties toolbar#snproptoolbar button#deletesnippet" : {
+	            /**
+				 * @listener snippetproperties-toolbar-snproptoolbar-button-deletesnippet-click triggered-by:
+				 *           {@link RODAdmin.view.cms.snippet.details.SnippetProperties SnippetProperties}
+				 *           toolbar#snproptoolbar button#deletesnippet
+				 *           {@link #onsntoolbarDeleteClick}
+				 */		        	
 		        click : this.onsntoolbarDeleteClick
 	        },
 	        "layoutproperties toolbar#lyproptoolbar button#getsnippetaudit" : {
-		        click : this.onsntoolbarAuditClick
+	            /**
+				 * @listener snippetproperties-toolbar-snproptoolbar-button-getsnippetaudit-click triggered-by:
+				 *           {@link RODAdmin.view.cms.snippet.details.SnippetProperties SnippetProperties}
+				 *           toolbar#snproptoolbar button#getsnippetaudit
+				 *           {@link #onsntoolbarAuditClick}
+				 */		        	
+	        	click : this.onsntoolbarAuditClick
 	        },
 	    });
     },
 
-    init : function(application) {
-	    this.control({
-	        "cmssnippets toolbar button#icon-view" : {
-		        click : this.onIconViewClick
-	        },
-	        "cmssnippets toolbar button#tree-view" : {
-		        click : this.onTreeViewClick
-	        },
-	        "snippetproperties toolbar#snproptoolbar button#editsnippet" : {
-		        click : this.onsntoolbarEditClick
-	        },
-	        "snippetproperties toolbar#snproptoolbar button#deletesnippet" : {
-		        click : this.onsntoolbarDeleteClick
-	        },
-	        "snippetproperties toolbar#snproptoolbar button#getsnippetaudit" : {
-		        click : this.onsntoolbarAuditClick
-	        },
-
-	    });
-    },
-
+    /**
+	 * @method
+	 */
     onIconViewClick : function(button, e, options) {
 	    console.log('onIconviewClick');
 	    this.getItemsview().layout.setActiveItem('sniconview');
 	    var store = Ext.StoreManager.get('cms.snippet.Snippet');
 	    store.load();
     },
-
+    /**
+	 * @method
+	 */
     onTreeViewClick : function(button, e, options) {
 	    console.log('onfolderviewClick');
 	    this.getItemsview().layout.setActiveItem('snfolderview');
 	    var store = Ext.StoreManager.get('cms.snippet.SnippetTree');
 	    store.load();
     },
+    /**
+	 * @method
+	 */    
     onsntoolbarEditClick : function(button, e, options) {
 	    var fp = this.getSnippetproperties().data;
 	    var win = Ext.create('RODAdmin.view.cms.snippet.EditSnippetWindow');
@@ -92,9 +111,15 @@ Ext.define('RODAdmin.controller.cms.Snippet', {
 	    win.show();
 	    win.down('form').getForm().loadRecord(fp);
     },
-
+    /**
+	 * @method
+	 */
     onsntoolbarDeleteClick : function(button, e, options) {
 	    var fp = this.getSnippetproperties().data;
+	    /**
+	     * @todo Store 
+	     * Trebuie convertit la acces catre store, nu cu post ajax cum e acum.
+	     */	    
 
 	    Ext.Msg.confirm('Delete Requirement', 'Are you sure you want to delete the ' + fp.data.itemtype + ' '
 	            + fp.data.name + '?', function(id, value) {
@@ -130,7 +155,9 @@ Ext.define('RODAdmin.controller.cms.Snippet', {
 	    }, this);
 	    // event.stopEvent();
     },
-
+    /**
+	 * @method
+	 */
     onsntoolbarAuditClick : function(button, e, options) {
 	    console.log('auditfile clicked, cool stuff ahead');
 	    var fp = this.getSnippetproperties().data;
@@ -141,6 +168,4 @@ Ext.define('RODAdmin.controller.cms.Snippet', {
 	    auditgrid.store.load();
     },
 
-
-//
 });

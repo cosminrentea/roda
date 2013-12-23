@@ -1,5 +1,5 @@
 /**
- * Store pentru setari generale
+ * Store pentru setari generale, deocamdata nu foloseste proxy special
  */
 Ext.define('RODAdmin.store.common.Globals', {
     extend: 'Ext.data.Store',

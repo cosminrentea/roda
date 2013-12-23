@@ -57,18 +57,9 @@
 			-->
 		</developer>
 	</developers>
-	<scm>
-		<connection>scm:svn:svn://fisiere.dyndns.org/roda</connection>
-		<url>http://fisiere.dyndns.org:8888/roda/browser</url>
-	</scm>
 	<ciManagement>
-		<url>http://fisiere.dyndns.org:9999</url>
 		<system>Jenkins</system>
 	</ciManagement>
-	<issueManagement>
-		<url>http://fisiere.dyndns.org:8888/roda</url>
-		<system>Trac</system>
-	</issueManagement>
 	<prerequisites>
 		<maven>2.2.1</maven>
 	</prerequisites>
@@ -78,8 +69,8 @@
 		<license.licenseName>gpl_v3</license.licenseName>
 		
 		<!-- dependencies versions -->
-		<spring.version>3.2.4.RELEASE</spring.version> <!-- original: 3.2.0.RELEASE -->
-		<spring-security.version>3.2.0.M2</spring-security.version> <!-- original: 3.1.0.RELEASE -->
+		<spring.version>3.2.6.RELEASE</spring.version> <!-- original: 3.2.0.RELEASE -->
+		<spring-security.version>3.2.0.RELEASE</spring-security.version> <!-- original: 3.1.0.RELEASE -->
 		<spring-js-resources.version>2.4.0.M1</spring-js-resources.version> <!-- original: 2.2.1.RELEASE -->
 		<aspectj.version>1.7.2</aspectj.version> <!-- original: 1.7.0 -->
 		<slf4j.version>1.7.5</slf4j.version>
@@ -88,10 +79,12 @@
 		<hibernate-validator.version>4.3.1.Final</hibernate-validator.version> <!-- original: 4.3.1.Final -->
 		<umlgraph.version>5.6</umlgraph.version> <!-- original: 5.6 -->
 		<flexjson.version>3.1</flexjson.version> <!-- original: 3.0 -->
-		<solr-solrj.version>4.4.0</solr-solrj.version> <!-- original: 4.3.1 -->
+		<solr-solrj.version>4.6.0</solr-solrj.version> <!-- original: 4.3.1 -->
+		<jackrabbit.version>2.7.3</jackrabbit.version>
 		<ehcache.version>2.7.4</ehcache.version> <!-- original: 2.7.2 -->
-		<tiles-jsp.version>3.0.1</tiles-jsp.version> <!-- original: 2.2.2 -->
-		<selenium.version>2.35.0</selenium.version> <!-- original: 2.33.0 -->
+		<tiles-jsp.version>3.0.3</tiles-jsp.version> <!-- original: 2.2.2 -->
+		<selenium.version>2.39.0</selenium.version> <!-- original: 2.33.0 -->
+
 		<!-- 
 		<roo.version>1.2.3.RELEASE</roo.version>
 		-->
@@ -104,7 +97,7 @@
 		<maven-surefire-report-plugin.version>2.16</maven-surefire-report-plugin.version>
 		<maven-javadoc-plugin.version>2.9.1</maven-javadoc-plugin.version> <!-- original: 2.9 -->
 		<maven-war-plugin.version>2.4</maven-war-plugin.version> <!-- original: 2.2 -->
-		<maven-deploy-plugin.version>2.7</maven-deploy-plugin.version> <!-- original: 2.7 -->
+		<maven-deploy-plugin.version>2.8.1</maven-deploy-plugin.version> <!-- original: 2.7 -->
 		<maven-resources-plugin.version>2.6</maven-resources-plugin.version> <!-- original: 2.6 -->
 		<maven-eclipse-plugin.version>2.9</maven-eclipse-plugin.version> <!-- original: 2.7 -->
 		<maven-changelog-plugin.version>2.2</maven-changelog-plugin.version> <!-- original: 2.2 -->
@@ -115,7 +108,7 @@
 		<cobertura-maven-plugin.version>2.5.2</cobertura-maven-plugin.version>
 		<jdepend-maven-plugin.version>2.0-beta-2</jdepend-maven-plugin.version>
 		<javancss-maven-plugin.version>2.0</javancss-maven-plugin.version>
-		<findbugs-maven-plugin.version>2.5.2</findbugs-maven-plugin.version>
+		<findbugs-maven-plugin.version>2.5.3</findbugs-maven-plugin.version>
 		<taglist-maven-plugin.version>2.4</taglist-maven-plugin.version>
 		<selenium-maven-plugin.version>2.3</selenium-maven-plugin.version>
 		<latex-maven-plugin.version>1.1</latex-maven-plugin.version>
@@ -317,7 +310,7 @@
 		<dependency>
 			<groupId>com.thoughtworks.xstream</groupId>
 			<artifactId>xstream</artifactId>
-			<version>1.4.5</version>
+			<version>1.4.6</version>
 		</dependency>
 		<dependency>
 			<groupId>net.sf.opencsv</groupId>
@@ -535,6 +528,18 @@
 			<artifactId>solr-solrj</artifactId>
 			<version>${solr-solrj.version}</version>
 		</dependency>
+		<!-- The JCR API --> 
+		<dependency> 
+			<groupId>javax.jcr</groupId> 
+			<artifactId>jcr</artifactId> 
+			<version>2.0</version> 
+		</dependency> 
+		<!-- Jackrabbit content repository --> 
+		<dependency> 
+			<groupId>org.apache.jackrabbit</groupId> 
+			<artifactId>jackrabbit-core</artifactId> 
+			<version>${jackrabbit.version}</version> 
+		</dependency> 
 	</dependencies>
 	<build>
 		<plugins>
@@ -751,7 +756,7 @@
 			<plugin>
 				<groupId>org.mortbay.jetty</groupId>
 				<artifactId>jetty-maven-plugin</artifactId>
-				<version>8.1.12.v20130726</version>
+				<version>8.1.14.v20131031</version>
 				<configuration>
 					<webAppConfig>
 						<contextPath>/${project.name}</contextPath>

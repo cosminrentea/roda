@@ -1,5 +1,7 @@
 package ro.roda.service;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import ro.roda.transformer.AdminJson;
 
 public interface AdminJsonService {
@@ -43,9 +45,11 @@ public interface AdminJsonService {
 
 	public abstract AdminJson fileDrop(Integer fileId);
 
-	public abstract AdminJson fileSave(Integer folderId, String alias, Integer fileId);
+	public abstract AdminJson fileSave(Integer folderId, MultipartFile content, Integer fileId, String alias);
 
 	public abstract AdminJson fileMove(Integer folderId, Integer fileId);
 
 	public abstract AdminJson folderMove(Integer parentFolderId, Integer folderId);
+
+	public abstract AdminJson addUserToGroup(Integer userId, Integer groupId);
 }

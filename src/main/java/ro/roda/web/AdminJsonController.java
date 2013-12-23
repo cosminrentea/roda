@@ -1,17 +1,27 @@
 package ro.roda.web;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.support.ByteArrayMultipartFileEditor;
 
+import ro.roda.domain.CmsFile;
 import ro.roda.service.AdminJsonService;
 import ro.roda.transformer.AdminJson;
 
@@ -21,6 +31,13 @@ public class AdminJsonController {
 
 	@Autowired
 	AdminJsonService adminJsonService;
+	
+	private final Log log = LogFactory.getLog(this.getClass());
+
+	@InitBinder
+	public void initBinder(WebDataBinder binder) {
+		binder.registerCustomEditor(byte[].class, new ByteArrayMultipartFileEditor());
+	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody
@@ -292,16 +309,19 @@ public class AdminJsonController {
 
 	@RequestMapping(value = "/filesave", method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody
-	public String fileSave(@RequestParam(value = "parent") Integer folderId,
-			@RequestParam(value = "alias") String alias, @RequestParam(value = "id", required = false) Integer fileId) {
-
-		AdminJson fileSave = adminJsonService.fileSave(folderId, alias, fileId);
-
+	public String fileSave(@RequestParam("folderid") Integer folderId,
+			@RequestParam("content") MultipartFile content, 
+			@RequestParam(value = "alias", required=false) String alias, 
+			@RequestParam(value = "id", required = false) Integer fileId, 
+			HttpServletRequest httpServletRequest) {
+		log.trace("> fileSave controller");
+		AdminJson fileSave = adminJsonService.fileSave(folderId, content, fileId, alias);
+		
 		if (fileSave == null) {
 			return null;
 		}
+		
 		return fileSave.toJson();
-
 	}
 
 	@RequestMapping(value = "/filemove", method = RequestMethod.POST, produces = "application/json")
@@ -330,5 +350,30 @@ public class AdminJsonController {
 		return folderMove.toJson();
 
 	}
+	
+	@RequestMapping(value = "/usersave", method = RequestMethod.POST, produces = "application/json")
+	@ResponseBody
+	public String userSave(@RequestParam(value = "id") Integer id,
+			@RequestParam(value = "username") String username, @RequestParam(value = "email") String email,
+			@RequestParam(value = "enabled") Boolean enabled) {
 
+
+		//TODO Cosmin
+		return null;
+
+	}
+
+	@RequestMapping(value = "/addusertogroup", method = RequestMethod.POST, produces = "application/json")
+	@ResponseBody
+	public String addUserToGroup(@RequestParam(value = "userid") Integer userId,
+			@RequestParam(value = "groupid") Integer groupId) {
+		
+		log.trace("addusertogroup: " + userId + " / " + groupId);
+		
+		AdminJson response = adminJsonService.addUserToGroup(userId, groupId);
+		if (response == null) {
+			return null;
+		}
+		return response.toJson();
+	}
 }

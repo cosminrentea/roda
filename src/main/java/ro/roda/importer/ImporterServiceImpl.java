@@ -68,6 +68,7 @@ import ro.roda.ddi.VarType;
 import ro.roda.domain.Address;
 import ro.roda.domain.CatalogStudy;
 import ro.roda.domain.CatalogStudyPK;
+import ro.roda.domain.CmsFolder;
 import ro.roda.domain.Instance;
 import ro.roda.domain.InstanceVariable;
 import ro.roda.domain.InstanceVariablePK;
@@ -83,8 +84,10 @@ import ro.roda.domain.Topic;
 import ro.roda.domain.UnitAnalysis;
 import ro.roda.domain.Users;
 import ro.roda.domain.Variable;
+import ro.roda.filestore.CmsFileStoreService;
 import ro.roda.service.CatalogService;
 import ro.roda.service.CityService;
+import ro.roda.service.CmsFolderService;
 import ro.roda.service.FileService;
 import ro.roda.service.StudyService;
 import au.com.bytecode.opencsv.CSVReader;
@@ -141,6 +144,12 @@ public class ImporterServiceImpl implements ImporterService {
 
 	@Autowired
 	FileService fileService;
+
+	@Autowired
+	CmsFileStoreService cmsFileStoreService;
+
+	@Autowired
+	CmsFolderService cmsFolderService;
 
 	@Value("${roda.data.csv}")
 	private String rodaDataCsv;
@@ -349,7 +358,6 @@ public class ImporterServiceImpl implements ImporterService {
 				String copyQuery = "COPY " + tableName + "(" + tableFields + ") FROM stdin DELIMITERS ',' CSV";
 				log.trace(copyQuery);
 				cm.copyIn(copyQuery, br);
-				// br.close();
 			}
 		} catch (SQLException e) {
 			log.error(e);
@@ -366,6 +374,11 @@ public class ImporterServiceImpl implements ImporterService {
 					throw new IllegalStateException(errorMessage);
 				}
 			}
+		}
+
+		// update the FileStore to be synchronized with the DB
+		for (CmsFolder cmsFolder : cmsFolderService.findAllCmsFolders()) {
+			cmsFileStoreService.saveCmsFolder(cmsFolder);
 		}
 	}
 

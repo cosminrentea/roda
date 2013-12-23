@@ -49,4 +49,11 @@
 		<nature>org.eclipse.jem.workbench.JavaEMFNature</nature>
 		<nature>org.springframework.ide.eclipse.core.springnature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>src/main/resources/ddi</name>
+			<type>2</type>
+			<locationURI>WORKSPACE_LOC/roda-ddi</locationURI>
+		</link>
+	</linkedResources>
 </projectDescription>

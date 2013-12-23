@@ -3,7 +3,6 @@ package ro.roda.util;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
@@ -26,6 +25,9 @@ public class ApplicationListenerContextRefreshed implements ApplicationListener<
 	XmlUtils xu;
 
 	@Autowired
+	SolrUtils su;
+
+	@Autowired
 	ImporterService importer;
 
 	@Override
@@ -33,15 +35,17 @@ public class ApplicationListenerContextRefreshed implements ApplicationListener<
 	public void onApplicationEvent(ContextRefreshedEvent event) {
 		if (event.getApplicationContext().getParent() == null) {
 			// root context
-			log.trace("event.getApplicationContext() = "
-					+ event.getApplicationContext());
+			log.trace("event.getApplicationContext() = " + event.getApplicationContext());
 
+			// check if Solr is online and delete all its previous data
+			// su.pingSolr();
+			// su.deleteAll();
+
+			// import all data using the Importer service
 			importer.importAll();
-			
-			// rb.rnorm(4);
 
+			// rb.rnorm(4);
 			// du.setSequence("hibernate_sequence", 1000, 1);
-			// du.changeDataDemo();
 			// xu.saveXstream();
 
 		}

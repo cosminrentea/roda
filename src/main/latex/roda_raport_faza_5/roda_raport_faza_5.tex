@@ -32,10 +32,14 @@
 %TODO Trebuie schimbat la fiecare Faza !
 
 \title{ANEXA 1.\\
-Faza nr. IV 
-cu titlul:\\
-``???''
+Faza nr. IV
 }
+
+%\title{ANEXA 1.\\
+%Faza nr. IV 
+%cu titlul:\\
+%``???''
+%}
 
 \author{RODA -- Arhiva Rom\^{a}n\u{a} de Date Sociale}
 
@@ -48,11 +52,6 @@ cu titlul:\\
 \tableofcontents{}
 \setcounter{page}{1}
 
-\chapter{Componente ale aplicatiei}
-\include{roda_spring}
-
-\chapter{Metodologia de dezvoltare si testare a aplicatiei}
-\include{roda_methodology_testing}
 
 \chapter{Importarea datelor}
 \include{roda_importer}
@@ -60,16 +59,17 @@ cu titlul:\\
 \chapter{Exportarea datelor}
 \include{roda_exporter}
 
-\chapter{Jurnalizare}
-\include{roda_versioning}
+\chapter{Stocarea fisierelor}
+\include{roda_jackrabbit}
 
-\chapter{Sistemul de rulare programata a task-urilor ('cron')}
+\chapter{Jurnalizarea datelor}
+\include{roda_audit}
+
+\chapter{Sistemul de rulare programata a task-urilor ('Cron')}
 \include{roda_cron}
+\include{interfata_cron}
 
-\chapter{ELSST}
-\include{roda_elsst}
-
-\chapter{Documentatie pentru dezvoltatorii aplicatiei} 
-\include{roda_spring_doc_dev}
+\chapter{Interfata de programare}
+\include{API}
 
 \end{document}

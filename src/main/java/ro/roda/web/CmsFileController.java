@@ -6,6 +6,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -19,16 +21,25 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 
 import ro.roda.domain.CmsFile;
+import ro.roda.domain.File;
+import ro.roda.filestore.CmsFileStoreService;
 import ro.roda.service.CmsFileService;
 import ro.roda.service.CmsFolderService;
+import ro.roda.service.FileService;
 
 @RequestMapping("/cmsfiles")
 @Controller
 public class CmsFileController {
+
+	@Autowired
+	CmsFileStoreService cmsFileStoreService;
+
+	private final Log log = LogFactory.getLog(this.getClass());
 
 	@RequestMapping(value = "/{id}", headers = "Accept=application/json")
 	@ResponseBody

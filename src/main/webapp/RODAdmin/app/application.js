@@ -1,3 +1,5 @@
+/**
+ */
 Ext.define('RODAdmin.Application', {
     name: 'RODAdmin',
 

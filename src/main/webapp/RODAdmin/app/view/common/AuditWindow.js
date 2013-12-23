@@ -1,3 +1,6 @@
+/**
+ * 
+ */
 Ext.define('RODAdmin.view.common.AuditWindow', {
 			extend : 'RODAdmin.view.common.InformationWindow',			
 			alias : 'widget.auditwindow',

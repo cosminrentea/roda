@@ -1,3 +1,6 @@
+/**
+ * 
+ */
 Ext.define('RODAdmin.view.menu.Accordion', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.mainmenu',

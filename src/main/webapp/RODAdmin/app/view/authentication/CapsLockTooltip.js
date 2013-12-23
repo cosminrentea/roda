@@ -1,3 +1,6 @@
+/**
+ * 
+ */
 Ext.define('RODAdmin.view.authentication.CapsLockTooltip', {
     extend: 'Ext.tip.QuickTip',
     alias: 'widget.capslocktooltip',

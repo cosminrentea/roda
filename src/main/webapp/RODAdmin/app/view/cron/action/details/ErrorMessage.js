@@ -1,3 +1,6 @@
+/**
+ * 
+ */
 Ext.define('RODAdmin.view.cron.action.details.ErrorMessage', {
 	             
 	extend : 'RODAdmin.view.common.InformationWindow',

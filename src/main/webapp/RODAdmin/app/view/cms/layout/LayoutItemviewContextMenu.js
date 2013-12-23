@@ -1,3 +1,6 @@
+/**
+ * Meniu contextual pentru {@link RODAdmin.view.cms.layout.LayoutItemsview LayoutItemsviewgrid#lyiconview} lista de layouturi 
+ */
 Ext.define('RODAdmin.view.cms.layout.LayoutItemviewContextMenu', {
 extend: 'Ext.menu.Menu',
 hidden: true,

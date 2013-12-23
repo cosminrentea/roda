@@ -1,3 +1,6 @@
+/**
+ * 
+ */
 Ext.define('RODAdmin.view.common.Confirmation', {
 			extend : 'Ext.window.Window',
 			alias : 'widget.confirmation',

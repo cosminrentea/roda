@@ -1,3 +1,6 @@
+/**
+ * 
+ */
 Ext.define('RODAdmin.view.cms.layout.AddLayoutToGroupWindow', {
 	             
 	extend : 'RODAdmin.view.common.WindowForm',

@@ -1,3 +1,6 @@
+/**
+ * 
+ */
 Ext.define('RODAdmin.view.Main', {
     extend: 'Ext.container.Container',
     requires:[

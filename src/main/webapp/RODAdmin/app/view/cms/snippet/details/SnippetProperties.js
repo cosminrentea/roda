@@ -1,3 +1,6 @@
+/**
+ * 
+ */
 Ext.define('RODAdmin.view.cms.snippet.details.SnippetProperties', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.snippetproperties',

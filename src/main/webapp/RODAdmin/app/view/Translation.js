@@ -1,3 +1,6 @@
+/**
+ * 
+ */
 Ext.define('RODAdmin.view.Translation', {
     extend: 'Ext.button.Split',
     alias: 'widget.translation',

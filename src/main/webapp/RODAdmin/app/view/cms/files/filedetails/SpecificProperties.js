@@ -1,3 +1,6 @@
+/**
+ * 
+ */
 Ext.define('RODAdmin.view.cms.files.filedetails.SpecificProperties', {
     extend: 'Ext.grid.Panel',
     alias: 'widget.filespecificproperties',

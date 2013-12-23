@@ -1,3 +1,6 @@
+/**
+ * 
+ */
 Ext.define('RODAdmin.view.cms.files.IconviewContextMenu', {
 extend: 'Ext.menu.Menu',
 hidden: true,

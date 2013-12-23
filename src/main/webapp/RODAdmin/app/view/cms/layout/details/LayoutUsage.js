@@ -1,3 +1,6 @@
+/**
+ * 
+ */
 Ext.define('RODAdmin.view.cms.layout.details.LayoutUsage', {
     extend: 'Ext.grid.Panel',
     alias: 'widget.layoutusage',

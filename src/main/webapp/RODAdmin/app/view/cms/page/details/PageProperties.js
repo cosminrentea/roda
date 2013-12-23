@@ -1,3 +1,6 @@
+/**
+ * 
+ */
 Ext.define('RODAdmin.view.cms.page.details.PageProperties', {
     extend : 'Ext.panel.Panel',
     alias : 'widget.pageproperties',

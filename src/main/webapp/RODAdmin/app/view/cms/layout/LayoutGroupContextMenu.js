@@ -1,3 +1,6 @@
+/**
+ * 
+ */
 Ext.define('RODAdmin.view.cms.layout.LayoutGroupContextMenu', {
 extend: 'Ext.menu.Menu',
 hidden: true,

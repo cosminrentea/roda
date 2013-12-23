@@ -1,3 +1,6 @@
+/**
+ * 
+ */
 Ext.define('RODAdmin.view.cms.files.Files', {
 			extend : 'Ext.panel.Panel',
 			alias : 'widget.cmsfiles',
@@ -38,7 +41,10 @@ Ext.define('RODAdmin.view.cms.files.Files', {
 											}]
 								}],
 						items : [{
-									xtype : 'itemsview'
+							/**
+							 * @xtypes itemsview RODAdmin.view.cms.files.Itemsview
+							 */
+							xtype : 'itemsview'
 
 								}]
 					}, {
@@ -57,7 +63,10 @@ Ext.define('RODAdmin.view.cms.files.Files', {
 							// align:'stretch'
 						},
 						items : [{
-									xtype : 'filedetails'
+							/**
+							 * @xtypes filedetails RODAdmin.view.cms.files.FileDetails
+							 */
+							xtype : 'filedetails'
 								}]
 					}]
 

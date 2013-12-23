@@ -1,3 +1,6 @@
+/**
+ * 
+ */
 Ext.define('RODAdmin.view.cron.action.details.ActionRuns', {
     extend : 'Ext.grid.Panel',
     alias : 'widget.actionruns',

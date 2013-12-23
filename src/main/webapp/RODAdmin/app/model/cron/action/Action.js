@@ -1,3 +1,6 @@
+/**
+ * 
+ */
 Ext.define('RODAdmin.model.cron.action.Action', {
     extend: 'Ext.data.Model',
     fields: [

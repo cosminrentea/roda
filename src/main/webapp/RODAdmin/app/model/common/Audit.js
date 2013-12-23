@@ -1,3 +1,6 @@
+/**
+ * 
+ */
 Ext.define('RODAdmin.model.common.Audit', {
 			extend : 'Ext.data.Model',
 			fields : [{

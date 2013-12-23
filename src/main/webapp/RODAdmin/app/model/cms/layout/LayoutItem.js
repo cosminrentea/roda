@@ -1,3 +1,6 @@
+/**
+ * 
+ */
 Ext.define('RODAdmin.model.cms.layout.LayoutItem', {
 	extend : 'Ext.data.Model',
 	fields : [ {

@@ -1,3 +1,6 @@
+/**
+ * 
+ */
 Ext.define('RODAdmin.model.menu.Root', {
     extend: 'Ext.data.Model',
 

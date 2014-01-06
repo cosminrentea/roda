@@ -28,6 +28,8 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrInputDocument;
+import org.hibernate.envers.AuditReader;
+import org.hibernate.envers.AuditReaderFactory;
 import org.hibernate.envers.Audited;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -40,11 +42,11 @@ import flexjson.JSONSerializer;
 @Configurable
 @Entity
 @Table(schema = "public", name = "concept")
+@Audited
 public class Concept {
 
 	public static long countConcepts() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM Concept o",
-				Long.class).getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM Concept o", Long.class).getSingleResult();
 	}
 
 	@Async
@@ -67,8 +69,7 @@ public class Concept {
 	}
 
 	public static List<Concept> findAllConcepts() {
-		return entityManager().createQuery("SELECT o FROM Concept o",
-				Concept.class).getResultList();
+		return entityManager().createQuery("SELECT o FROM Concept o", Concept.class).getResultList();
 	}
 
 	public static Concept findConcept(Long id) {
@@ -77,22 +78,18 @@ public class Concept {
 		return entityManager().find(Concept.class, id);
 	}
 
-	public static List<Concept> findConceptEntries(int firstResult,
-			int maxResults) {
-		return entityManager()
-				.createQuery("SELECT o FROM Concept o", Concept.class)
-				.setFirstResult(firstResult).setMaxResults(maxResults)
-				.getResultList();
+	public static List<Concept> findConceptEntries(int firstResult, int maxResults) {
+		return entityManager().createQuery("SELECT o FROM Concept o", Concept.class).setFirstResult(firstResult)
+				.setMaxResults(maxResults).getResultList();
 	}
 
 	public static Collection<Concept> fromJsonArrayToConcepts(String json) {
-		return new JSONDeserializer<List<Concept>>().use(null, ArrayList.class)
-				.use("values", Concept.class).deserialize(json);
+		return new JSONDeserializer<List<Concept>>().use(null, ArrayList.class).use("values", Concept.class)
+				.deserialize(json);
 	}
 
 	public static Concept fromJsonToConcept(String json) {
-		return new JSONDeserializer<Concept>().use(null, Concept.class)
-				.deserialize(json);
+		return new JSONDeserializer<Concept>().use(null, Concept.class).deserialize(json);
 	}
 
 	public static void indexConcept(Concept concept) {
@@ -112,8 +109,7 @@ public class Concept {
 			// Add summary field to allow searching documents for objects of
 			// this type
 			sid.addField("concept_solrsummary_t",
-					new StringBuilder().append(concept.getName()).append(" ")
-							.append(concept.getDescription()));
+					new StringBuilder().append(concept.getName()).append(" ").append(concept.getDescription()));
 			documents.add(sid);
 		}
 		try {
@@ -188,10 +184,8 @@ public class Concept {
 		List<Concept> queryResult;
 
 		if (name != null) {
-			TypedQuery<Concept> query = entityManager()
-					.createQuery(
-							"SELECT o FROM Concept o WHERE lower(o.name) = lower(:name)",
-							Concept.class);
+			TypedQuery<Concept> query = entityManager().createQuery(
+					"SELECT o FROM Concept o WHERE lower(o.name) = lower(:name)", Concept.class);
 			query.setParameter("name", name);
 
 			queryResult = query.getResultList();
@@ -208,12 +202,17 @@ public class Concept {
 		return object;
 	}
 
+	public static AuditReader getClassAuditReader() {
+		return AuditReaderFactory.get(entityManager());
+	}
+
 	@Column(name = "description", columnDefinition = "text")
 	private String description;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id", columnDefinition = "bigserial")
+	@Column(name = "id")
+	// , columnDefinition = "bigserial")
 	private Long id;
 
 	@Column(name = "name", columnDefinition = "text")
@@ -227,7 +226,7 @@ public class Concept {
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	@Autowired(required=false)
+	@Autowired(required = false)
 	transient SolrServer solrServer;
 
 	@Transactional
@@ -309,8 +308,7 @@ public class Concept {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this,
-				ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate
@@ -328,5 +326,9 @@ public class Concept {
 	public boolean equals(Object obj) {
 		return (id != null && id.equals(((Concept) obj).id))
 				|| (name != null && name.equalsIgnoreCase(((Concept) obj).name));
+	}
+
+	public AuditReader getAuditReader() {
+		return AuditReaderFactory.get(entityManager);
 	}
 }

@@ -28,6 +28,8 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrInputDocument;
+import org.hibernate.envers.AuditReader;
+import org.hibernate.envers.AuditReaderFactory;
 import org.hibernate.envers.Audited;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -40,12 +42,11 @@ import flexjson.JSONSerializer;
 @Entity
 @Table(schema = "public", name = "setting_group")
 @Configurable
+@Audited
 public class SettingGroup {
 
 	public static long countSettingGroups() {
-		return entityManager().createQuery(
-				"SELECT COUNT(o) FROM SettingGroup o", Long.class)
-				.getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM SettingGroup o", Long.class).getSingleResult();
 	}
 
 	@Async
@@ -68,8 +69,7 @@ public class SettingGroup {
 	}
 
 	public static List<SettingGroup> findAllSettingGroups() {
-		return entityManager().createQuery("SELECT o FROM SettingGroup o",
-				SettingGroup.class).getResultList();
+		return entityManager().createQuery("SELECT o FROM SettingGroup o", SettingGroup.class).getResultList();
 	}
 
 	public static SettingGroup findSettingGroup(Integer id) {
@@ -78,24 +78,18 @@ public class SettingGroup {
 		return entityManager().find(SettingGroup.class, id);
 	}
 
-	public static List<SettingGroup> findSettingGroupEntries(int firstResult,
-			int maxResults) {
-		return entityManager()
-				.createQuery("SELECT o FROM SettingGroup o", SettingGroup.class)
-				.setFirstResult(firstResult).setMaxResults(maxResults)
-				.getResultList();
+	public static List<SettingGroup> findSettingGroupEntries(int firstResult, int maxResults) {
+		return entityManager().createQuery("SELECT o FROM SettingGroup o", SettingGroup.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
 	}
 
-	public static Collection<SettingGroup> fromJsonArrayToSettingGroups(
-			String json) {
-		return new JSONDeserializer<List<SettingGroup>>()
-				.use(null, ArrayList.class).use("values", SettingGroup.class)
+	public static Collection<SettingGroup> fromJsonArrayToSettingGroups(String json) {
+		return new JSONDeserializer<List<SettingGroup>>().use(null, ArrayList.class).use("values", SettingGroup.class)
 				.deserialize(json);
 	}
 
 	public static SettingGroup fromJsonToSettingGroup(String json) {
-		return new JSONDeserializer<SettingGroup>().use(null,
-				SettingGroup.class).deserialize(json);
+		return new JSONDeserializer<SettingGroup>().use(null, SettingGroup.class).deserialize(json);
 	}
 
 	public static void indexSettingGroup(SettingGroup settingGroup) {
@@ -112,14 +106,11 @@ public class SettingGroup {
 			sid.addField("id", "settinggroup_" + settingGroup.getId());
 			sid.addField("settingGroup.parentid_t", settingGroup.getParentId());
 			sid.addField("settingGroup.name_s", settingGroup.getName());
-			sid.addField("settingGroup.description_s",
-					settingGroup.getDescription());
+			sid.addField("settingGroup.description_s", settingGroup.getDescription());
 			// Add summary field to allow searching documents for objects of
 			// this type
-			sid.addField(
-					"settinggroup_solrsummary_t",
-					new StringBuilder().append(settingGroup.getParentId())
-							.append(" ").append(settingGroup.getName())
+			sid.addField("settinggroup_solrsummary_t",
+					new StringBuilder().append(settingGroup.getParentId()).append(" ").append(settingGroup.getName())
 							.append(" ").append(settingGroup.getDescription()));
 			documents.add(sid);
 		}
@@ -183,8 +174,7 @@ public class SettingGroup {
 	 *            - descrierea grupului.
 	 * @return
 	 */
-	public static SettingGroup checkSettingGroup(Integer id, String name,
-			SettingGroup parentId, String description) {
+	public static SettingGroup checkSettingGroup(Integer id, String name, SettingGroup parentId, String description) {
 		SettingGroup object;
 
 		if (id != null) {
@@ -199,8 +189,8 @@ public class SettingGroup {
 
 		if (name != null && parentId != null) {
 			TypedQuery<SettingGroup> query = entityManager().createQuery(
-					"SELECT o FROM SettingGroup o WHERE lower(o.name) = lower(:name) AND "
-							+ "o.parentId = :parentId", SettingGroup.class);
+					"SELECT o FROM SettingGroup o WHERE lower(o.name) = lower(:name) AND " + "o.parentId = :parentId",
+					SettingGroup.class);
 			query.setParameter("name", name);
 			query.setParameter("parentId", parentId);
 
@@ -219,12 +209,17 @@ public class SettingGroup {
 		return object;
 	}
 
+	public static AuditReader getClassAuditReader() {
+		return AuditReaderFactory.get(entityManager());
+	}
+
 	@Column(name = "description", columnDefinition = "text")
 	private String description;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id", columnDefinition = "serial")
+	@Column(name = "id")
+	// , columnDefinition = "serial")
 	private Integer id;
 
 	@Column(name = "name", columnDefinition = "text")
@@ -342,8 +337,7 @@ public class SettingGroup {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this,
-				ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate
@@ -360,8 +354,11 @@ public class SettingGroup {
 	@Override
 	public boolean equals(Object obj) {
 		return (id != null && id.equals(((SettingGroup) obj).id))
-				|| ((name != null && name
-						.equalsIgnoreCase(((SettingGroup) obj).name)) && (parentId != null && parentId
+				|| ((name != null && name.equalsIgnoreCase(((SettingGroup) obj).name)) && (parentId != null && parentId
 						.equals(((SettingGroup) obj).parentId)));
+	}
+
+	public AuditReader getAuditReader() {
+		return AuditReaderFactory.get(entityManager);
 	}
 }

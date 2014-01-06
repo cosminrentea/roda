@@ -31,7 +31,6 @@ import org.apache.solr.common.SolrInputDocument;
 import org.hibernate.envers.AuditReader;
 import org.hibernate.envers.AuditReaderFactory;
 import org.hibernate.envers.Audited;
-import org.hibernate.envers.NotAudited;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.scheduling.annotation.Async;
@@ -207,12 +206,15 @@ public class CmsLayout {
 		return object;
 	}
 
+	public static AuditReader getClassAuditReader() {
+		return AuditReaderFactory.get(entityManager());
+	}
+
 	@ManyToOne
 	@JoinColumn(name = "cms_layout_group_id", columnDefinition = "integer", referencedColumnName = "id", nullable = true)
 	private CmsLayoutGroup cmsLayoutGroupId;
 
 	@OneToMany(mappedBy = "cmsLayoutId")
-	@NotAudited
 	private Set<CmsPage> cmsPages;
 
 	@Id
@@ -357,4 +359,5 @@ public class CmsLayout {
 	public AuditReader getAuditReader() {
 		return AuditReaderFactory.get(entityManager);
 	}
+
 }

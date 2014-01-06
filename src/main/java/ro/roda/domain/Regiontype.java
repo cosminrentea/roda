@@ -26,6 +26,8 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrInputDocument;
+import org.hibernate.envers.AuditReader;
+import org.hibernate.envers.AuditReaderFactory;
 import org.hibernate.envers.Audited;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -38,11 +40,11 @@ import flexjson.JSONSerializer;
 @Entity
 @Table(schema = "public", name = "regiontype")
 @Configurable
+@Audited
 public class Regiontype {
 
 	public static long countRegiontypes() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM Regiontype o",
-				Long.class).getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM Regiontype o", Long.class).getSingleResult();
 	}
 
 	@Async
@@ -65,8 +67,7 @@ public class Regiontype {
 	}
 
 	public static List<Regiontype> findAllRegiontypes() {
-		return entityManager().createQuery("SELECT o FROM Regiontype o",
-				Regiontype.class).getResultList();
+		return entityManager().createQuery("SELECT o FROM Regiontype o", Regiontype.class).getResultList();
 	}
 
 	public static Regiontype findRegiontype(Integer id) {
@@ -75,23 +76,18 @@ public class Regiontype {
 		return entityManager().find(Regiontype.class, id);
 	}
 
-	public static List<Regiontype> findRegiontypeEntries(int firstResult,
-			int maxResults) {
-		return entityManager()
-				.createQuery("SELECT o FROM Regiontype o", Regiontype.class)
-				.setFirstResult(firstResult).setMaxResults(maxResults)
-				.getResultList();
+	public static List<Regiontype> findRegiontypeEntries(int firstResult, int maxResults) {
+		return entityManager().createQuery("SELECT o FROM Regiontype o", Regiontype.class).setFirstResult(firstResult)
+				.setMaxResults(maxResults).getResultList();
 	}
 
 	public static Collection<Regiontype> fromJsonArrayToRegiontypes(String json) {
-		return new JSONDeserializer<List<Regiontype>>()
-				.use(null, ArrayList.class).use("values", Regiontype.class)
+		return new JSONDeserializer<List<Regiontype>>().use(null, ArrayList.class).use("values", Regiontype.class)
 				.deserialize(json);
 	}
 
 	public static Regiontype fromJsonToRegiontype(String json) {
-		return new JSONDeserializer<Regiontype>().use(null, Regiontype.class)
-				.deserialize(json);
+		return new JSONDeserializer<Regiontype>().use(null, Regiontype.class).deserialize(json);
 	}
 
 	public static void indexRegiontype(Regiontype regiontype) {
@@ -109,8 +105,7 @@ public class Regiontype {
 			sid.addField("regiontype.name_s", regiontype.getName());
 			// Add summary field to allow searching documents for objects of
 			// this type
-			sid.addField("regiontype_solrsummary_t",
-					new StringBuilder().append(regiontype.getName()));
+			sid.addField("regiontype_solrsummary_t", new StringBuilder().append(regiontype.getName()));
 			documents.add(sid);
 		}
 		try {
@@ -183,10 +178,8 @@ public class Regiontype {
 		List<Regiontype> queryResult;
 
 		if (name != null) {
-			TypedQuery<Regiontype> query = entityManager()
-					.createQuery(
-							"SELECT o FROM Regiontype o WHERE lower(o.name) = lower(:name)",
-							Regiontype.class);
+			TypedQuery<Regiontype> query = entityManager().createQuery(
+					"SELECT o FROM Regiontype o WHERE lower(o.name) = lower(:name)", Regiontype.class);
 			query.setParameter("name", name);
 
 			queryResult = query.getResultList();
@@ -202,9 +195,14 @@ public class Regiontype {
 		return object;
 	}
 
+	public static AuditReader getClassAuditReader() {
+		return AuditReaderFactory.get(entityManager());
+	}
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id", columnDefinition = "serial")
+	@Column(name = "id")
+	// , columnDefinition = "serial")
 	private Integer id;
 
 	@Column(name = "name", columnDefinition = "text")
@@ -291,8 +289,7 @@ public class Regiontype {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this,
-				ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate
@@ -309,7 +306,10 @@ public class Regiontype {
 	@Override
 	public boolean equals(Object obj) {
 		return (id != null && id.equals(((Regiontype) obj).id))
-				|| (name != null && name
-						.equalsIgnoreCase(((Regiontype) obj).name));
+				|| (name != null && name.equalsIgnoreCase(((Regiontype) obj).name));
+	}
+
+	public AuditReader getAuditReader() {
+		return AuditReaderFactory.get(entityManager);
 	}
 }

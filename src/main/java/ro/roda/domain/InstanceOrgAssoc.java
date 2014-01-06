@@ -26,6 +26,8 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrInputDocument;
+import org.hibernate.envers.AuditReader;
+import org.hibernate.envers.AuditReaderFactory;
 import org.hibernate.envers.Audited;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -38,20 +40,18 @@ import flexjson.JSONSerializer;
 @Entity
 @Table(schema = "public", name = "instance_org_assoc")
 @Configurable
+@Audited
 public class InstanceOrgAssoc {
 
 	public static long countInstanceOrgAssocs() {
-		return entityManager().createQuery(
-				"SELECT COUNT(o) FROM InstanceOrgAssoc o", Long.class)
-				.getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM InstanceOrgAssoc o", Long.class).getSingleResult();
 	}
 
 	@Async
 	public static void deleteIndex(InstanceOrgAssoc instanceOrgAssoc) {
 		SolrServer solrServer = solrServer();
 		try {
-			solrServer.deleteById("instanceorgassoc_"
-					+ instanceOrgAssoc.getId());
+			solrServer.deleteById("instanceorgassoc_" + instanceOrgAssoc.getId());
 			solrServer.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -67,8 +67,7 @@ public class InstanceOrgAssoc {
 	}
 
 	public static List<InstanceOrgAssoc> findAllInstanceOrgAssocs() {
-		return entityManager().createQuery("SELECT o FROM InstanceOrgAssoc o",
-				InstanceOrgAssoc.class).getResultList();
+		return entityManager().createQuery("SELECT o FROM InstanceOrgAssoc o", InstanceOrgAssoc.class).getResultList();
 	}
 
 	public static InstanceOrgAssoc findInstanceOrgAssoc(Integer id) {
@@ -77,24 +76,18 @@ public class InstanceOrgAssoc {
 		return entityManager().find(InstanceOrgAssoc.class, id);
 	}
 
-	public static List<InstanceOrgAssoc> findInstanceOrgAssocEntries(
-			int firstResult, int maxResults) {
-		return entityManager()
-				.createQuery("SELECT o FROM InstanceOrgAssoc o",
-						InstanceOrgAssoc.class).setFirstResult(firstResult)
-				.setMaxResults(maxResults).getResultList();
+	public static List<InstanceOrgAssoc> findInstanceOrgAssocEntries(int firstResult, int maxResults) {
+		return entityManager().createQuery("SELECT o FROM InstanceOrgAssoc o", InstanceOrgAssoc.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
 	}
 
-	public static Collection<InstanceOrgAssoc> fromJsonArrayToInstanceOrgAssocs(
-			String json) {
-		return new JSONDeserializer<List<InstanceOrgAssoc>>()
-				.use(null, ArrayList.class)
+	public static Collection<InstanceOrgAssoc> fromJsonArrayToInstanceOrgAssocs(String json) {
+		return new JSONDeserializer<List<InstanceOrgAssoc>>().use(null, ArrayList.class)
 				.use("values", InstanceOrgAssoc.class).deserialize(json);
 	}
 
 	public static InstanceOrgAssoc fromJsonToInstanceOrgAssoc(String json) {
-		return new JSONDeserializer<InstanceOrgAssoc>().use(null,
-				InstanceOrgAssoc.class).deserialize(json);
+		return new JSONDeserializer<InstanceOrgAssoc>().use(null, InstanceOrgAssoc.class).deserialize(json);
 	}
 
 	public static void indexInstanceOrgAssoc(InstanceOrgAssoc instanceOrgAssoc) {
@@ -104,23 +97,21 @@ public class InstanceOrgAssoc {
 	}
 
 	@Async
-	public static void indexInstanceOrgAssocs(
-			Collection<InstanceOrgAssoc> instanceorgassocs) {
+	public static void indexInstanceOrgAssocs(Collection<InstanceOrgAssoc> instanceorgassocs) {
 		List<SolrInputDocument> documents = new ArrayList<SolrInputDocument>();
 		for (InstanceOrgAssoc instanceOrgAssoc : instanceorgassocs) {
 			SolrInputDocument sid = new SolrInputDocument();
 			sid.addField("id", "instanceorgassoc_" + instanceOrgAssoc.getId());
-			sid.addField("instanceOrgAssoc.assocname_s",
-					instanceOrgAssoc.getAssocName());
-			sid.addField("instanceOrgAssoc.assocdescription_s",
-					instanceOrgAssoc.getAssocDescription());
+			sid.addField("instanceOrgAssoc.assocname_s", instanceOrgAssoc.getAssocName());
+			sid.addField("instanceOrgAssoc.assocdescription_s", instanceOrgAssoc.getAssocDescription());
 			sid.addField("instanceOrgAssoc.id_i", instanceOrgAssoc.getId());
 			// Add summary field to allow searching documents for objects of
 			// this type
-			sid.addField("instanceorgassoc_solrsummary_t", new StringBuilder()
-					.append(instanceOrgAssoc.getAssocName()).append(" ")
-					.append(instanceOrgAssoc.getAssocDescription()).append(" ")
-					.append(instanceOrgAssoc.getId()));
+			sid.addField(
+					"instanceorgassoc_solrsummary_t",
+					new StringBuilder().append(instanceOrgAssoc.getAssocName()).append(" ")
+							.append(instanceOrgAssoc.getAssocDescription()).append(" ")
+							.append(instanceOrgAssoc.getId()));
 			documents.add(sid);
 		}
 		try {
@@ -181,8 +172,7 @@ public class InstanceOrgAssoc {
 	 *            - descrierea asocierii.
 	 * @return
 	 */
-	public static InstanceOrgAssoc checkInstanceOrgAssoc(Integer id,
-			String assocName, String assocDescription) {
+	public static InstanceOrgAssoc checkInstanceOrgAssoc(Integer id, String assocName, String assocDescription) {
 		InstanceOrgAssoc object;
 
 		if (id != null) {
@@ -196,10 +186,9 @@ public class InstanceOrgAssoc {
 		List<InstanceOrgAssoc> queryResult;
 
 		if (assocName != null) {
-			TypedQuery<InstanceOrgAssoc> query = entityManager()
-					.createQuery(
-							"SELECT o FROM InstanceOrgAssoc o WHERE lower(o.assocName) = lower(:assocName)",
-							InstanceOrgAssoc.class);
+			TypedQuery<InstanceOrgAssoc> query = entityManager().createQuery(
+					"SELECT o FROM InstanceOrgAssoc o WHERE lower(o.assocName) = lower(:assocName)",
+					InstanceOrgAssoc.class);
 			query.setParameter("assocName", assocName);
 
 			queryResult = query.getResultList();
@@ -216,6 +205,10 @@ public class InstanceOrgAssoc {
 		return object;
 	}
 
+	public static AuditReader getClassAuditReader() {
+		return AuditReaderFactory.get(entityManager());
+	}
+
 	@Column(name = "assoc_description", columnDefinition = "text")
 	private String assocDescription;
 
@@ -225,7 +218,8 @@ public class InstanceOrgAssoc {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id", columnDefinition = "serial")
+	@Column(name = "id")
+	// , columnDefinition = "serial")
 	private Integer id;
 
 	@OneToMany(mappedBy = "assocTypeId")
@@ -234,7 +228,7 @@ public class InstanceOrgAssoc {
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	@Autowired(required=false)
+	@Autowired(required = false)
 	transient SolrServer solrServer;
 
 	@Transactional
@@ -290,8 +284,7 @@ public class InstanceOrgAssoc {
 		if (this.entityManager.contains(this)) {
 			this.entityManager.remove(this);
 		} else {
-			InstanceOrgAssoc attached = InstanceOrgAssoc
-					.findInstanceOrgAssoc(this.id);
+			InstanceOrgAssoc attached = InstanceOrgAssoc.findInstanceOrgAssoc(this.id);
 			this.entityManager.remove(attached);
 		}
 	}
@@ -317,8 +310,7 @@ public class InstanceOrgAssoc {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this,
-				ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate
@@ -335,7 +327,10 @@ public class InstanceOrgAssoc {
 	@Override
 	public boolean equals(Object obj) {
 		return (id != null && id.equals(((InstanceOrgAssoc) obj).id))
-				|| (assocName != null && assocName
-						.equalsIgnoreCase(((InstanceOrgAssoc) obj).assocName));
+				|| (assocName != null && assocName.equalsIgnoreCase(((InstanceOrgAssoc) obj).assocName));
+	}
+
+	public AuditReader getAuditReader() {
+		return AuditReaderFactory.get(entityManager);
 	}
 }

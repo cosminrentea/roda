@@ -26,6 +26,8 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrInputDocument;
+import org.hibernate.envers.AuditReader;
+import org.hibernate.envers.AuditReaderFactory;
 import org.hibernate.envers.Audited;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -42,8 +44,7 @@ import flexjson.JSONSerializer;
 public class AclClass {
 
 	public static long countAclClasses() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM AclClass o",
-				Long.class).getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM AclClass o", Long.class).getSingleResult();
 	}
 
 	@Async
@@ -71,28 +72,22 @@ public class AclClass {
 		return entityManager().find(AclClass.class, id);
 	}
 
-	public static List<AclClass> findAclClassEntries(int firstResult,
-			int maxResults) {
-		return entityManager()
-				.createQuery("SELECT o FROM AclClass o", AclClass.class)
-				.setFirstResult(firstResult).setMaxResults(maxResults)
-				.getResultList();
+	public static List<AclClass> findAclClassEntries(int firstResult, int maxResults) {
+		return entityManager().createQuery("SELECT o FROM AclClass o", AclClass.class).setFirstResult(firstResult)
+				.setMaxResults(maxResults).getResultList();
 	}
 
 	public static List<AclClass> findAllAclClasses() {
-		return entityManager().createQuery("SELECT o FROM AclClass o",
-				AclClass.class).getResultList();
+		return entityManager().createQuery("SELECT o FROM AclClass o", AclClass.class).getResultList();
 	}
 
 	public static Collection<AclClass> fromJsonArrayToAclClasses(String json) {
-		return new JSONDeserializer<List<AclClass>>()
-				.use(null, ArrayList.class).use("values", AclClass.class)
+		return new JSONDeserializer<List<AclClass>>().use(null, ArrayList.class).use("values", AclClass.class)
 				.deserialize(json);
 	}
 
 	public static AclClass fromJsonToAclClass(String json) {
-		return new JSONDeserializer<AclClass>().use(null, AclClass.class)
-				.deserialize(json);
+		return new JSONDeserializer<AclClass>().use(null, AclClass.class).deserialize(json);
 	}
 
 	public static void indexAclClass(AclClass aclClass) {
@@ -112,8 +107,7 @@ public class AclClass {
 			// Add summary field to allow searching documents for objects of
 			// this type
 			sid.addField("aclclass_solrsummary_t",
-					new StringBuilder().append(aclClass.getClass1())
-							.append(" ").append(aclClass.getId()));
+					new StringBuilder().append(aclClass.getClass1()).append(" ").append(aclClass.getId()));
 			documents.add(sid);
 		}
 		try {
@@ -186,10 +180,8 @@ public class AclClass {
 		List<AclClass> queryResult;
 
 		if (class1 != null) {
-			TypedQuery<AclClass> query = entityManager()
-					.createQuery(
-							"SELECT o FROM AclClass o WHERE lower(o.class1) = lower(:class1)",
-							AclClass.class);
+			TypedQuery<AclClass> query = entityManager().createQuery(
+					"SELECT o FROM AclClass o WHERE lower(o.class1) = lower(:class1)", AclClass.class);
 			query.setParameter("class1", class1);
 
 			queryResult = query.getResultList();
@@ -205,6 +197,10 @@ public class AclClass {
 		return object;
 	}
 
+	public static AuditReader getClassAuditReader() {
+		return AuditReaderFactory.get(entityManager());
+	}
+
 	@OneToMany(mappedBy = "objectIdClass")
 	private Set<AclObjectIdentity> aclObjectIdentities;
 
@@ -214,13 +210,14 @@ public class AclClass {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id", columnDefinition = "bigserial")
+	@Column(name = "id")
+	// , columnDefinition = "bigserial")
 	private Long id;
 
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	@Autowired(required=false)
+	@Autowired(required = false)
 	transient SolrServer solrServer;
 
 	@Transactional
@@ -277,8 +274,7 @@ public class AclClass {
 		}
 	}
 
-	public void setAclObjectIdentities(
-			Set<AclObjectIdentity> aclObjectIdentities) {
+	public void setAclObjectIdentities(Set<AclObjectIdentity> aclObjectIdentities) {
 		this.aclObjectIdentities = aclObjectIdentities;
 	}
 
@@ -295,8 +291,7 @@ public class AclClass {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this,
-				ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate
@@ -313,7 +308,10 @@ public class AclClass {
 	@Override
 	public boolean equals(Object obj) {
 		return (id != null && id.equals(((AclClass) obj).id))
-				|| (class1 != null && class1
-						.equalsIgnoreCase(((AclClass) obj).class1));
+				|| (class1 != null && class1.equalsIgnoreCase(((AclClass) obj).class1));
+	}
+
+	public AuditReader getAuditReader() {
+		return AuditReaderFactory.get(entityManager);
 	}
 }

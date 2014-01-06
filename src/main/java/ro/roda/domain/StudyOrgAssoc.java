@@ -26,6 +26,8 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrInputDocument;
+import org.hibernate.envers.AuditReader;
+import org.hibernate.envers.AuditReaderFactory;
 import org.hibernate.envers.Audited;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -38,12 +40,11 @@ import flexjson.JSONSerializer;
 @Configurable
 @Entity
 @Table(schema = "public", name = "study_org_assoc")
+@Audited
 public class StudyOrgAssoc {
 
 	public static long countStudyOrgAssocs() {
-		return entityManager().createQuery(
-				"SELECT COUNT(o) FROM StudyOrgAssoc o", Long.class)
-				.getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM StudyOrgAssoc o", Long.class).getSingleResult();
 	}
 
 	@Async
@@ -66,8 +67,7 @@ public class StudyOrgAssoc {
 	}
 
 	public static List<StudyOrgAssoc> findAllStudyOrgAssocs() {
-		return entityManager().createQuery("SELECT o FROM StudyOrgAssoc o",
-				StudyOrgAssoc.class).getResultList();
+		return entityManager().createQuery("SELECT o FROM StudyOrgAssoc o", StudyOrgAssoc.class).getResultList();
 	}
 
 	public static StudyOrgAssoc findStudyOrgAssoc(Integer id) {
@@ -76,24 +76,18 @@ public class StudyOrgAssoc {
 		return entityManager().find(StudyOrgAssoc.class, id);
 	}
 
-	public static List<StudyOrgAssoc> findStudyOrgAssocEntries(int firstResult,
-			int maxResults) {
-		return entityManager()
-				.createQuery("SELECT o FROM StudyOrgAssoc o",
-						StudyOrgAssoc.class).setFirstResult(firstResult)
-				.setMaxResults(maxResults).getResultList();
+	public static List<StudyOrgAssoc> findStudyOrgAssocEntries(int firstResult, int maxResults) {
+		return entityManager().createQuery("SELECT o FROM StudyOrgAssoc o", StudyOrgAssoc.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
 	}
 
-	public static Collection<StudyOrgAssoc> fromJsonArrayToStudyOrgAssocs(
-			String json) {
-		return new JSONDeserializer<List<StudyOrgAssoc>>()
-				.use(null, ArrayList.class).use("values", StudyOrgAssoc.class)
-				.deserialize(json);
+	public static Collection<StudyOrgAssoc> fromJsonArrayToStudyOrgAssocs(String json) {
+		return new JSONDeserializer<List<StudyOrgAssoc>>().use(null, ArrayList.class)
+				.use("values", StudyOrgAssoc.class).deserialize(json);
 	}
 
 	public static StudyOrgAssoc fromJsonToStudyOrgAssoc(String json) {
-		return new JSONDeserializer<StudyOrgAssoc>().use(null,
-				StudyOrgAssoc.class).deserialize(json);
+		return new JSONDeserializer<StudyOrgAssoc>().use(null, StudyOrgAssoc.class).deserialize(json);
 	}
 
 	public static void indexStudyOrgAssoc(StudyOrgAssoc studyOrgAssoc) {
@@ -103,8 +97,7 @@ public class StudyOrgAssoc {
 	}
 
 	@Async
-	public static void indexStudyOrgAssocs(
-			Collection<StudyOrgAssoc> studyorgassocs) {
+	public static void indexStudyOrgAssocs(Collection<StudyOrgAssoc> studyorgassocs) {
 		List<SolrInputDocument> documents = new ArrayList<SolrInputDocument>();
 		for (StudyOrgAssoc studyOrgAssoc : studyorgassocs) {
 			SolrInputDocument sid = new SolrInputDocument();
@@ -112,8 +105,7 @@ public class StudyOrgAssoc {
 			sid.addField("studyOrgAssoc.id_i", studyOrgAssoc.getId());
 			// Add summary field to allow searching documents for objects of
 			// this type
-			sid.addField("studyorgassoc_solrsummary_t",
-					new StringBuilder().append(studyOrgAssoc.getId()));
+			sid.addField("studyorgassoc_solrsummary_t", new StringBuilder().append(studyOrgAssoc.getId()));
 			documents.add(sid);
 		}
 		try {
@@ -174,8 +166,7 @@ public class StudyOrgAssoc {
 	 *            - descrierea asocierii.
 	 * @return
 	 */
-	public static StudyOrgAssoc checkStudyOrgAssoc(Integer id,
-			String assocName, String assocDescription) {
+	public static StudyOrgAssoc checkStudyOrgAssoc(Integer id, String assocName, String assocDescription) {
 		StudyOrgAssoc object;
 
 		if (id != null) {
@@ -189,10 +180,8 @@ public class StudyOrgAssoc {
 		List<StudyOrgAssoc> queryResult;
 
 		if (assocName != null) {
-			TypedQuery<StudyOrgAssoc> query = entityManager()
-					.createQuery(
-							"SELECT o FROM StudyOrgAssoc o WHERE lower(o.assocName) = lower(:assocName)",
-							StudyOrgAssoc.class);
+			TypedQuery<StudyOrgAssoc> query = entityManager().createQuery(
+					"SELECT o FROM StudyOrgAssoc o WHERE lower(o.assocName) = lower(:assocName)", StudyOrgAssoc.class);
 			query.setParameter("assocName", assocName);
 
 			queryResult = query.getResultList();
@@ -209,6 +198,10 @@ public class StudyOrgAssoc {
 		return object;
 	}
 
+	public static AuditReader getClassAuditReader() {
+		return AuditReaderFactory.get(entityManager());
+	}
+
 	@Column(name = "assoc_description", columnDefinition = "text")
 	private String assocDescription;
 
@@ -218,7 +211,8 @@ public class StudyOrgAssoc {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id", columnDefinition = "serial")
+	@Column(name = "id")
+	// , columnDefinition = "serial")
 	private Integer id;
 
 	@OneToMany(mappedBy = "assoctypeId")
@@ -309,8 +303,7 @@ public class StudyOrgAssoc {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this,
-				ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate
@@ -327,7 +320,10 @@ public class StudyOrgAssoc {
 	@Override
 	public boolean equals(Object obj) {
 		return (id != null && id.equals(((StudyOrgAssoc) obj).id))
-				|| (assocName != null && assocName
-						.equalsIgnoreCase(((StudyOrgAssoc) obj).assocName));
+				|| (assocName != null && assocName.equalsIgnoreCase(((StudyOrgAssoc) obj).assocName));
+	}
+
+	public AuditReader getAuditReader() {
+		return AuditReaderFactory.get(entityManager);
 	}
 }

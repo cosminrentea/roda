@@ -28,6 +28,9 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrInputDocument;
+import org.hibernate.envers.AuditReader;
+import org.hibernate.envers.AuditReaderFactory;
+import org.hibernate.envers.Audited;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.scheduling.annotation.Async;
@@ -39,6 +42,7 @@ import flexjson.JSONSerializer;
 @Configurable
 @Entity
 @Table(schema = "public", name = "cms_folder")
+@Audited
 public class CmsFolder {
 
 	public static long countCmsFolders() {
@@ -207,6 +211,10 @@ public class CmsFolder {
 		return object;
 	}
 
+	public static AuditReader getClassAuditReader() {
+		return AuditReaderFactory.get(entityManager());
+	}
+
 	@OneToMany(mappedBy = "cmsFolderId")
 	private Set<CmsFile> cmsFiles;
 
@@ -218,7 +226,8 @@ public class CmsFolder {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id", columnDefinition = "serial")
+	@Column(name = "id")
+	// , columnDefinition = "serial")
 	private Integer id;
 
 	@Column(name = "name", columnDefinition = "text")
@@ -226,7 +235,7 @@ public class CmsFolder {
 	private String name;
 
 	@ManyToOne
-	@JoinColumn(name = "parent_id", columnDefinition = "integer", referencedColumnName = "id", insertable = true, updatable = true)
+	@JoinColumn(name = "parent_id", columnDefinition = "integer", referencedColumnName = "id", insertable = false, updatable = false)
 	private CmsFolder parentId;
 
 	@PersistenceContext
@@ -349,5 +358,9 @@ public class CmsFolder {
 		return (id != null && id.equals(((CmsFolder) obj).id))
 				|| ((name != null && name.equalsIgnoreCase(((CmsFolder) obj).name)) && (parentId != null && parentId
 						.equals(((CmsFolder) obj).parentId)));
+	}
+
+	public AuditReader getAuditReader() {
+		return AuditReaderFactory.get(entityManager);
 	}
 }

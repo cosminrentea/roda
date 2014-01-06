@@ -28,6 +28,9 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrInputDocument;
+import org.hibernate.envers.AuditReader;
+import org.hibernate.envers.AuditReaderFactory;
+import org.hibernate.envers.Audited;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.scheduling.annotation.Async;
@@ -39,6 +42,7 @@ import flexjson.JSONSerializer;
 @Entity
 @Table(schema = "public", name = "cms_snippet_group")
 @Configurable
+@Audited
 public class CmsSnippetGroup {
 
 	public static long countCmsSnippetGroups() {
@@ -207,6 +211,10 @@ public class CmsSnippetGroup {
 		return object;
 	}
 
+	public static AuditReader getClassAuditReader() {
+		return AuditReaderFactory.get(entityManager());
+	}
+
 	@OneToMany(mappedBy = "parentId")
 	private Set<CmsSnippetGroup> cmsSnippetGroups;
 
@@ -218,7 +226,8 @@ public class CmsSnippetGroup {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id", columnDefinition = "serial")
+	@Column(name = "id")
+	// , columnDefinition = "serial")
 	private Integer id;
 
 	@Column(name = "name", columnDefinition = "varchar", length = 200)
@@ -226,7 +235,7 @@ public class CmsSnippetGroup {
 	private String name;
 
 	@ManyToOne
-	@JoinColumn(name = "parent_id", columnDefinition = "integer", referencedColumnName = "id", insertable = true, updatable = true)
+	@JoinColumn(name = "parent_id", columnDefinition = "integer", referencedColumnName = "id", insertable = false, updatable = false)
 	private CmsSnippetGroup parentId;
 
 	@PersistenceContext
@@ -349,5 +358,9 @@ public class CmsSnippetGroup {
 		return (id != null && id.equals(((CmsSnippetGroup) obj).id))
 				|| ((name != null && name.equalsIgnoreCase(((CmsSnippetGroup) obj).name)) && (parentId != null && parentId
 						.equals(((CmsSnippetGroup) obj).parentId)));
+	}
+
+	public AuditReader getAuditReader() {
+		return AuditReaderFactory.get(entityManager);
 	}
 }

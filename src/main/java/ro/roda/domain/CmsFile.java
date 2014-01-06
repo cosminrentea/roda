@@ -26,6 +26,8 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrInputDocument;
+import org.hibernate.envers.AuditReader;
+import org.hibernate.envers.AuditReaderFactory;
 import org.hibernate.envers.Audited;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -38,11 +40,11 @@ import flexjson.JSONSerializer;
 @Entity
 @Table(schema = "public", name = "cms_file")
 @Configurable
+@Audited
 public class CmsFile {
 
 	public static long countCmsFiles() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM CmsFile o",
-				Long.class).getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM CmsFile o", Long.class).getSingleResult();
 	}
 
 	@Async
@@ -65,8 +67,7 @@ public class CmsFile {
 	}
 
 	public static List<CmsFile> findAllCmsFiles() {
-		return entityManager().createQuery("SELECT o FROM CmsFile o",
-				CmsFile.class).getResultList();
+		return entityManager().createQuery("SELECT o FROM CmsFile o", CmsFile.class).getResultList();
 	}
 
 	public static CmsFile findCmsFile(Integer id) {
@@ -75,22 +76,18 @@ public class CmsFile {
 		return entityManager().find(CmsFile.class, id);
 	}
 
-	public static List<CmsFile> findCmsFileEntries(int firstResult,
-			int maxResults) {
-		return entityManager()
-				.createQuery("SELECT o FROM CmsFile o", CmsFile.class)
-				.setFirstResult(firstResult).setMaxResults(maxResults)
-				.getResultList();
+	public static List<CmsFile> findCmsFileEntries(int firstResult, int maxResults) {
+		return entityManager().createQuery("SELECT o FROM CmsFile o", CmsFile.class).setFirstResult(firstResult)
+				.setMaxResults(maxResults).getResultList();
 	}
 
 	public static Collection<CmsFile> fromJsonArrayToCmsFiles(String json) {
-		return new JSONDeserializer<List<CmsFile>>().use(null, ArrayList.class)
-				.use("values", CmsFile.class).deserialize(json);
+		return new JSONDeserializer<List<CmsFile>>().use(null, ArrayList.class).use("values", CmsFile.class)
+				.deserialize(json);
 	}
 
 	public static CmsFile fromJsonToCmsFile(String json) {
-		return new JSONDeserializer<CmsFile>().use(null, CmsFile.class)
-				.deserialize(json);
+		return new JSONDeserializer<CmsFile>().use(null, CmsFile.class).deserialize(json);
 	}
 
 	public static void indexCmsFile(CmsFile cmsFile) {
@@ -114,11 +111,9 @@ public class CmsFile {
 			// this type
 			sid.addField(
 					"cmsfile_solrsummary_t",
-					new StringBuilder().append(cmsFile.getCmsFolderId())
-							.append(" ").append(cmsFile.getFilename())
-							.append(" ").append(cmsFile.getLabel()).append(" ")
-							.append(cmsFile.getFilesize()).append(" ")
-							.append(cmsFile.getId()));
+					new StringBuilder().append(cmsFile.getCmsFolderId()).append(" ").append(cmsFile.getFilename())
+							.append(" ").append(cmsFile.getLabel()).append(" ").append(cmsFile.getFilesize())
+							.append(" ").append(cmsFile.getId()));
 			documents.add(sid);
 		}
 		try {
@@ -183,8 +178,7 @@ public class CmsFile {
 	 *            - marimea fisierului in octeti.
 	 * @return
 	 */
-	public static CmsFile checkCmsFile(Integer id, String filename,
-			String label, CmsFolder cmsFolderId, Long filesize) {
+	public static CmsFile checkCmsFile(Integer id, String filename, String label, CmsFolder cmsFolderId, Long filesize) {
 		CmsFile object;
 
 		if (id != null) {
@@ -220,8 +214,12 @@ public class CmsFile {
 		return object;
 	}
 
+	public static AuditReader getClassAuditReader() {
+		return AuditReaderFactory.get(entityManager());
+	}
+
 	@ManyToOne
-	@JoinColumn(name = "cms_folder_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false)
+	@JoinColumn(name = "cms_folder_id", columnDefinition = "integer", referencedColumnName = "id", nullable = true)
 	private CmsFolder cmsFolderId;
 
 	@Column(name = "filename", columnDefinition = "text")
@@ -233,7 +231,8 @@ public class CmsFile {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id", columnDefinition = "serial")
+	@Column(name = "id")
+	// , columnDefinition = "serial")
 	private Integer id;
 
 	@Column(name = "label", columnDefinition = "varchar", length = 100)
@@ -243,7 +242,7 @@ public class CmsFile {
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	@Autowired(required=false)
+	@Autowired(required = false)
 	transient SolrServer solrServer;
 
 	@Transactional
@@ -333,8 +332,7 @@ public class CmsFile {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this,
-				ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate
@@ -351,8 +349,11 @@ public class CmsFile {
 	@Override
 	public boolean equals(Object obj) {
 		return (id != null && id.equals(((CmsFile) obj).id))
-				|| ((filename != null && filename
-						.equalsIgnoreCase(((CmsFile) obj).filename)) && (cmsFolderId != null && cmsFolderId
+				|| ((filename != null && filename.equalsIgnoreCase(((CmsFile) obj).filename)) && (cmsFolderId != null && cmsFolderId
 						.equals(((CmsFile) obj).cmsFolderId)));
+	}
+
+	public AuditReader getAuditReader() {
+		return AuditReaderFactory.get(entityManager);
 	}
 }

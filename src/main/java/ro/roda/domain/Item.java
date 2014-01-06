@@ -18,7 +18,6 @@ import javax.persistence.PostPersist;
 import javax.persistence.PostUpdate;
 import javax.persistence.PreRemove;
 import javax.persistence.Table;
-import javax.persistence.TypedQuery;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -27,6 +26,8 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrInputDocument;
+import org.hibernate.envers.AuditReader;
+import org.hibernate.envers.AuditReaderFactory;
 import org.hibernate.envers.Audited;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -39,11 +40,11 @@ import flexjson.JSONSerializer;
 @Configurable
 @Entity
 @Table(schema = "public", name = "item")
+@Audited
 public class Item {
 
 	public static long countItems() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM Item o",
-				Long.class).getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM Item o", Long.class).getSingleResult();
 	}
 
 	@Async
@@ -66,8 +67,7 @@ public class Item {
 	}
 
 	public static List<Item> findAllItems() {
-		return entityManager().createQuery("SELECT o FROM Item o", Item.class)
-				.getResultList();
+		return entityManager().createQuery("SELECT o FROM Item o", Item.class).getResultList();
 	}
 
 	public static Item findItem(Long id) {
@@ -77,19 +77,17 @@ public class Item {
 	}
 
 	public static List<Item> findItemEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM Item o", Item.class)
-				.setFirstResult(firstResult).setMaxResults(maxResults)
-				.getResultList();
+		return entityManager().createQuery("SELECT o FROM Item o", Item.class).setFirstResult(firstResult)
+				.setMaxResults(maxResults).getResultList();
 	}
 
 	public static Collection<Item> fromJsonArrayToItems(String json) {
-		return new JSONDeserializer<List<Item>>().use(null, ArrayList.class)
-				.use("values", Item.class).deserialize(json);
+		return new JSONDeserializer<List<Item>>().use(null, ArrayList.class).use("values", Item.class)
+				.deserialize(json);
 	}
 
 	public static Item fromJsonToItem(String json) {
-		return new JSONDeserializer<Item>().use(null, Item.class).deserialize(
-				json);
+		return new JSONDeserializer<Item>().use(null, Item.class).deserialize(json);
 	}
 
 	public static void indexItem(Item item) {
@@ -112,10 +110,8 @@ public class Item {
 			// this type
 			sid.addField(
 					"item_solrsummary_t",
-					new StringBuilder().append(item.getScale()).append(" ")
-							.append(item.getValue()).append(" ")
-							.append(item.getName()).append(" ")
-							.append(item.getId()));
+					new StringBuilder().append(item.getScale()).append(" ").append(item.getValue()).append(" ")
+							.append(item.getName()).append(" ").append(item.getId()));
 			documents.add(sid);
 		}
 		try {
@@ -191,9 +187,14 @@ public class Item {
 		return object;
 	}
 
+	public static AuditReader getClassAuditReader() {
+		return AuditReaderFactory.get(entityManager());
+	}
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id", columnDefinition = "bigserial")
+	@Column(name = "id")
+	// , columnDefinition = "bigserial")
 	private Long id;
 
 	@Column(name = "name", columnDefinition = "varchar", length = 100)
@@ -212,7 +213,7 @@ public class Item {
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	@Autowired(required=false)
+	@Autowired(required = false)
 	transient SolrServer solrServer;
 
 	@Transactional
@@ -289,8 +290,7 @@ public class Item {
 		this.scale = scale;
 	}
 
-	public void setSelectionVariableItems(
-			Set<SelectionVariableItem> selectionVariableItems) {
+	public void setSelectionVariableItems(Set<SelectionVariableItem> selectionVariableItems) {
 		this.selectionVariableItems = selectionVariableItems;
 	}
 
@@ -303,8 +303,7 @@ public class Item {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this,
-				ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate
@@ -321,5 +320,9 @@ public class Item {
 	@Override
 	public boolean equals(Object obj) {
 		return id != null && id.equals(((Item) obj).id);
+	}
+
+	public AuditReader getAuditReader() {
+		return AuditReaderFactory.get(entityManager);
 	}
 }

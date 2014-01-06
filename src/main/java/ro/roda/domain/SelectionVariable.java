@@ -28,6 +28,8 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrInputDocument;
+import org.hibernate.envers.AuditReader;
+import org.hibernate.envers.AuditReaderFactory;
 import org.hibernate.envers.Audited;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -40,20 +42,18 @@ import flexjson.JSONSerializer;
 @Configurable
 @Entity
 @Table(schema = "public", name = "selection_variable")
+@Audited
 public class SelectionVariable {
 
 	public static long countSelectionVariables() {
-		return entityManager().createQuery(
-				"SELECT COUNT(o) FROM SelectionVariable o", Long.class)
-				.getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM SelectionVariable o", Long.class).getSingleResult();
 	}
 
 	@Async
 	public static void deleteIndex(SelectionVariable selectionVariable) {
 		SolrServer solrServer = solrServer();
 		try {
-			solrServer.deleteById("selectionvariable_"
-					+ selectionVariable.getVariableId());
+			solrServer.deleteById("selectionvariable_" + selectionVariable.getVariableId());
 			solrServer.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -69,8 +69,8 @@ public class SelectionVariable {
 	}
 
 	public static List<SelectionVariable> findAllSelectionVariables() {
-		return entityManager().createQuery("SELECT o FROM SelectionVariable o",
-				SelectionVariable.class).getResultList();
+		return entityManager().createQuery("SELECT o FROM SelectionVariable o", SelectionVariable.class)
+				.getResultList();
 	}
 
 	public static SelectionVariable findSelectionVariable(Long variableId) {
@@ -79,56 +79,44 @@ public class SelectionVariable {
 		return entityManager().find(SelectionVariable.class, variableId);
 	}
 
-	public static List<SelectionVariable> findSelectionVariableEntries(
-			int firstResult, int maxResults) {
-		return entityManager()
-				.createQuery("SELECT o FROM SelectionVariable o",
-						SelectionVariable.class).setFirstResult(firstResult)
-				.setMaxResults(maxResults).getResultList();
+	public static List<SelectionVariable> findSelectionVariableEntries(int firstResult, int maxResults) {
+		return entityManager().createQuery("SELECT o FROM SelectionVariable o", SelectionVariable.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
 	}
 
-	public static Collection<SelectionVariable> fromJsonArrayToSelectionVariables(
-			String json) {
-		return new JSONDeserializer<List<SelectionVariable>>()
-				.use(null, ArrayList.class)
+	public static Collection<SelectionVariable> fromJsonArrayToSelectionVariables(String json) {
+		return new JSONDeserializer<List<SelectionVariable>>().use(null, ArrayList.class)
 				.use("values", SelectionVariable.class).deserialize(json);
 	}
 
 	public static SelectionVariable fromJsonToSelectionVariable(String json) {
-		return new JSONDeserializer<SelectionVariable>().use(null,
-				SelectionVariable.class).deserialize(json);
+		return new JSONDeserializer<SelectionVariable>().use(null, SelectionVariable.class).deserialize(json);
 	}
 
-	public static void indexSelectionVariable(
-			SelectionVariable selectionVariable) {
+	public static void indexSelectionVariable(SelectionVariable selectionVariable) {
 		List<SelectionVariable> selectionvariables = new ArrayList<SelectionVariable>();
 		selectionvariables.add(selectionVariable);
 		indexSelectionVariables(selectionvariables);
 	}
 
 	@Async
-	public static void indexSelectionVariables(
-			Collection<SelectionVariable> selectionvariables) {
+	public static void indexSelectionVariables(Collection<SelectionVariable> selectionvariables) {
 		List<SolrInputDocument> documents = new ArrayList<SolrInputDocument>();
 		for (SelectionVariable selectionVariable : selectionvariables) {
 			SolrInputDocument sid = new SolrInputDocument();
-			sid.addField("id",
-					"selectionvariable_" + selectionVariable.getVariableId());
-			sid.addField("selectionVariable.variable_t",
-					selectionVariable.getVariable());
-			sid.addField("selectionVariable.mincount_t",
-					selectionVariable.getMinCount());
-			sid.addField("selectionVariable.maxcount_t",
-					selectionVariable.getMaxCount());
-			sid.addField("selectionVariable.variableid_l",
-					selectionVariable.getVariableId());
+			sid.addField("id", "selectionvariable_" + selectionVariable.getVariableId());
+			sid.addField("selectionVariable.variable_t", selectionVariable.getVariable());
+			sid.addField("selectionVariable.mincount_t", selectionVariable.getMinCount());
+			sid.addField("selectionVariable.maxcount_t", selectionVariable.getMaxCount());
+			sid.addField("selectionVariable.variableid_l", selectionVariable.getVariableId());
 			// Add summary field to allow searching documents for objects of
 			// this type
-			sid.addField("selectionvariable_solrsummary_t", new StringBuilder()
-					.append(selectionVariable.getVariable()).append(" ")
-					.append(selectionVariable.getMinCount()).append(" ")
-					.append(selectionVariable.getMaxCount()).append(" ")
-					.append(selectionVariable.getVariableId()));
+			sid.addField(
+					"selectionvariable_solrsummary_t",
+					new StringBuilder().append(selectionVariable.getVariable()).append(" ")
+							.append(selectionVariable.getMinCount()).append(" ")
+							.append(selectionVariable.getMaxCount()).append(" ")
+							.append(selectionVariable.getVariableId()));
 			documents.add(sid);
 		}
 		try {
@@ -191,8 +179,7 @@ public class SelectionVariable {
 	 *            - numarul maxim de elemente ce pot fi selectate.
 	 * @return
 	 */
-	public static SelectionVariable checkSelectionVariable(Long id,
-			Variable variable, Short minCount, Short maxCount) {
+	public static SelectionVariable checkSelectionVariable(Long id, Variable variable, Short minCount, Short maxCount) {
 		SelectionVariable object;
 
 		if (id != null) {
@@ -206,10 +193,8 @@ public class SelectionVariable {
 		List<SelectionVariable> queryResult;
 
 		if (variable != null) {
-			TypedQuery<SelectionVariable> query = entityManager()
-					.createQuery(
-							"SELECT o FROM SelectionVariable o WHERE o.variable = :variable",
-							SelectionVariable.class);
+			TypedQuery<SelectionVariable> query = entityManager().createQuery(
+					"SELECT o FROM SelectionVariable o WHERE o.variable = :variable", SelectionVariable.class);
 			query.setParameter("variable", variable);
 
 			queryResult = query.getResultList();
@@ -225,6 +210,10 @@ public class SelectionVariable {
 		object.persist();
 
 		return object;
+	}
+
+	public static AuditReader getClassAuditReader() {
+		return AuditReaderFactory.get(entityManager());
 	}
 
 	@Column(name = "max_count", columnDefinition = "int2")
@@ -310,8 +299,7 @@ public class SelectionVariable {
 		if (this.entityManager.contains(this)) {
 			this.entityManager.remove(this);
 		} else {
-			SelectionVariable attached = SelectionVariable
-					.findSelectionVariable(this.variableId);
+			SelectionVariable attached = SelectionVariable.findSelectionVariable(this.variableId);
 			this.entityManager.remove(attached);
 		}
 	}
@@ -324,8 +312,7 @@ public class SelectionVariable {
 		this.minCount = minCount;
 	}
 
-	public void setSelectionVariableItems(
-			Set<SelectionVariableItem> selectionVariableItems) {
+	public void setSelectionVariableItems(Set<SelectionVariableItem> selectionVariableItems) {
 		this.selectionVariableItems = selectionVariableItems;
 	}
 
@@ -342,9 +329,8 @@ public class SelectionVariable {
 	}
 
 	public String toString() {
-		return new ReflectionToStringBuilder(this,
-				ToStringStyle.SHORT_PREFIX_STYLE).setExcludeFieldNames(
-				"variable").toString();
+		return new ReflectionToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE).setExcludeFieldNames("variable")
+				.toString();
 	}
 
 	@PostUpdate
@@ -360,9 +346,11 @@ public class SelectionVariable {
 
 	@Override
 	public boolean equals(Object obj) {
-		return (variableId != null && variableId
-				.equals(((SelectionVariable) obj).variableId))
-				|| (variable != null && variable
-						.equals(((SelectionVariable) obj).variable));
+		return (variableId != null && variableId.equals(((SelectionVariable) obj).variableId))
+				|| (variable != null && variable.equals(((SelectionVariable) obj).variable));
+	}
+
+	public AuditReader getAuditReader() {
+		return AuditReaderFactory.get(entityManager);
 	}
 }

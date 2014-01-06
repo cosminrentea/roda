@@ -26,6 +26,8 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrInputDocument;
+import org.hibernate.envers.AuditReader;
+import org.hibernate.envers.AuditReaderFactory;
 import org.hibernate.envers.Audited;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -38,11 +40,11 @@ import flexjson.JSONSerializer;
 @Configurable
 @Entity
 @Table(schema = "public", name = "suffix")
+@Audited
 public class Suffix {
 
 	public static long countSuffixes() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM Suffix o",
-				Long.class).getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM Suffix o", Long.class).getSingleResult();
 	}
 
 	@Async
@@ -65,8 +67,7 @@ public class Suffix {
 	}
 
 	public static List<Suffix> findAllSuffixes() {
-		return entityManager().createQuery("SELECT o FROM Suffix o",
-				Suffix.class).getResultList();
+		return entityManager().createQuery("SELECT o FROM Suffix o", Suffix.class).getResultList();
 	}
 
 	public static Suffix findSuffix(Integer id) {
@@ -76,20 +77,17 @@ public class Suffix {
 	}
 
 	public static List<Suffix> findSuffixEntries(int firstResult, int maxResults) {
-		return entityManager()
-				.createQuery("SELECT o FROM Suffix o", Suffix.class)
-				.setFirstResult(firstResult).setMaxResults(maxResults)
-				.getResultList();
+		return entityManager().createQuery("SELECT o FROM Suffix o", Suffix.class).setFirstResult(firstResult)
+				.setMaxResults(maxResults).getResultList();
 	}
 
 	public static Collection<Suffix> fromJsonArrayToSuffixes(String json) {
-		return new JSONDeserializer<List<Suffix>>().use(null, ArrayList.class)
-				.use("values", Suffix.class).deserialize(json);
+		return new JSONDeserializer<List<Suffix>>().use(null, ArrayList.class).use("values", Suffix.class)
+				.deserialize(json);
 	}
 
 	public static Suffix fromJsonToSuffix(String json) {
-		return new JSONDeserializer<Suffix>().use(null, Suffix.class)
-				.deserialize(json);
+		return new JSONDeserializer<Suffix>().use(null, Suffix.class).deserialize(json);
 	}
 
 	public static void indexSuffix(Suffix suffix) {
@@ -107,8 +105,7 @@ public class Suffix {
 			sid.addField("suffix.id_i", suffix.getId());
 			// Add summary field to allow searching documents for objects of
 			// this type
-			sid.addField("suffix_solrsummary_t",
-					new StringBuilder().append(suffix.getId()));
+			sid.addField("suffix_solrsummary_t", new StringBuilder().append(suffix.getId()));
 			documents.add(sid);
 		}
 		try {
@@ -181,10 +178,8 @@ public class Suffix {
 		List<Suffix> queryResult;
 
 		if (name != null) {
-			TypedQuery<Suffix> query = entityManager()
-					.createQuery(
-							"SELECT o FROM Suffix o WHERE lower(o.name) = lower(:name)",
-							Suffix.class);
+			TypedQuery<Suffix> query = entityManager().createQuery(
+					"SELECT o FROM Suffix o WHERE lower(o.name) = lower(:name)", Suffix.class);
 			query.setParameter("name", name);
 
 			queryResult = query.getResultList();
@@ -200,9 +195,14 @@ public class Suffix {
 		return object;
 	}
 
+	public static AuditReader getClassAuditReader() {
+		return AuditReaderFactory.get(entityManager());
+	}
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id", columnDefinition = "serial")
+	@Column(name = "id")
+	// , columnDefinition = "serial")
 	private Integer id;
 
 	@Column(name = "name", columnDefinition = "varchar", length = 50)
@@ -289,8 +289,7 @@ public class Suffix {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this,
-				ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate
@@ -308,5 +307,9 @@ public class Suffix {
 	public boolean equals(Object obj) {
 		return (id != null && id.equals(((Suffix) obj).id))
 				|| (name != null && name.equalsIgnoreCase(((Suffix) obj).name));
+	}
+
+	public AuditReader getAuditReader() {
+		return AuditReaderFactory.get(entityManager);
 	}
 }

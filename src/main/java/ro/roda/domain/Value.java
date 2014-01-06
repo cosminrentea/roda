@@ -19,7 +19,6 @@ import javax.persistence.PostPersist;
 import javax.persistence.PostUpdate;
 import javax.persistence.PreRemove;
 import javax.persistence.Table;
-import javax.persistence.TypedQuery;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -28,6 +27,8 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrInputDocument;
+import org.hibernate.envers.AuditReader;
+import org.hibernate.envers.AuditReaderFactory;
 import org.hibernate.envers.Audited;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -40,11 +41,11 @@ import flexjson.JSONSerializer;
 @Entity
 @Table(schema = "public", name = "value")
 @Configurable
+@Audited
 public class Value {
 
 	public static long countValues() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM Value o",
-				Long.class).getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM Value o", Long.class).getSingleResult();
 	}
 
 	@Async
@@ -67,9 +68,7 @@ public class Value {
 	}
 
 	public static List<Value> findAllValues() {
-		return entityManager()
-				.createQuery("SELECT o FROM Value o", Value.class)
-				.getResultList();
+		return entityManager().createQuery("SELECT o FROM Value o", Value.class).getResultList();
 	}
 
 	public static Value findValue(Long itemId) {
@@ -79,20 +78,17 @@ public class Value {
 	}
 
 	public static List<Value> findValueEntries(int firstResult, int maxResults) {
-		return entityManager()
-				.createQuery("SELECT o FROM Value o", Value.class)
-				.setFirstResult(firstResult).setMaxResults(maxResults)
-				.getResultList();
+		return entityManager().createQuery("SELECT o FROM Value o", Value.class).setFirstResult(firstResult)
+				.setMaxResults(maxResults).getResultList();
 	}
 
 	public static Collection<Value> fromJsonArrayToValues(String json) {
-		return new JSONDeserializer<List<Value>>().use(null, ArrayList.class)
-				.use("values", Value.class).deserialize(json);
+		return new JSONDeserializer<List<Value>>().use(null, ArrayList.class).use("values", Value.class)
+				.deserialize(json);
 	}
 
 	public static Value fromJsonToValue(String json) {
-		return new JSONDeserializer<Value>().use(null, Value.class)
-				.deserialize(json);
+		return new JSONDeserializer<Value>().use(null, Value.class).deserialize(json);
 	}
 
 	public static void indexValue(Value value) {
@@ -112,10 +108,8 @@ public class Value {
 			sid.addField("value.itemid_l", value.getItemId());
 			// Add summary field to allow searching documents for objects of
 			// this type
-			sid.addField(
-					"value_solrsummary_t",
-					new StringBuilder().append(value.getItem()).append(" ")
-							.append(value.getValue()).append(" ")
+			sid.addField("value_solrsummary_t",
+					new StringBuilder().append(value.getItem()).append(" ").append(value.getValue()).append(" ")
 							.append(value.getItemId()));
 			documents.add(sid);
 		}
@@ -193,6 +187,10 @@ public class Value {
 		object.persist();
 
 		return object;
+	}
+
+	public static AuditReader getClassAuditReader() {
+		return AuditReaderFactory.get(entityManager());
 	}
 
 	@OneToOne
@@ -307,8 +305,7 @@ public class Value {
 	}
 
 	public String toString() {
-		return new ReflectionToStringBuilder(this,
-				ToStringStyle.SHORT_PREFIX_STYLE).setExcludeFieldNames("item")
+		return new ReflectionToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE).setExcludeFieldNames("item")
 				.toString();
 	}
 
@@ -326,5 +323,9 @@ public class Value {
 	@Override
 	public boolean equals(Object obj) {
 		return itemId != null && itemId.equals(((Value) obj).itemId);
+	}
+
+	public AuditReader getAuditReader() {
+		return AuditReaderFactory.get(entityManager);
 	}
 }

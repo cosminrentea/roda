@@ -31,7 +31,7 @@ public class AuditRevisionsByUsername extends JsonInfo {
 		serializer.exclude("*.class", "type", "id", "name");
 		serializer.include("username", "userid", "nrrev", "lastrevision", "revisions");
 
-		serializer.include("revisions.objects", "revisions.objects.rows");
+		serializer.include("revisions.objects", "revisions.objects.rows", "revisions.objects.rows.auditfields");
 		serializer.exclude("revisions.username", "revisions.userid", "revisions.rows");
 
 		serializer.transform(DATE_TRANSFORMER, Date.class);
@@ -268,7 +268,7 @@ public class AuditRevisionsByUsername extends JsonInfo {
 		serializer.exclude("*.class", "type", "id", "name");
 		serializer.include("username", "userid", "nrrev", "lastrevision", "revisions");
 
-		serializer.include("revisions.objects", "revisions.objects.rows");
+		serializer.include("revisions.objects", "revisions.objects.rows", "revisions.objects.rows.auditfields");
 		serializer.exclude("revisions.username", "revisions.userid", "revisions.rows");
 
 		serializer.transform(DATE_TRANSFORMER, Date.class);

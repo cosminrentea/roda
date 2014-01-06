@@ -26,6 +26,8 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrInputDocument;
+import org.hibernate.envers.AuditReader;
+import org.hibernate.envers.AuditReaderFactory;
 import org.hibernate.envers.Audited;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -38,11 +40,11 @@ import flexjson.JSONSerializer;
 @Entity
 @Table(schema = "public", name = "org_prefix")
 @Configurable
+@Audited
 public class OrgPrefix {
 
 	public static long countOrgPrefixes() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM OrgPrefix o",
-				Long.class).getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM OrgPrefix o", Long.class).getSingleResult();
 	}
 
 	@Async
@@ -65,8 +67,7 @@ public class OrgPrefix {
 	}
 
 	public static List<OrgPrefix> findAllOrgPrefixes() {
-		return entityManager().createQuery("SELECT o FROM OrgPrefix o",
-				OrgPrefix.class).getResultList();
+		return entityManager().createQuery("SELECT o FROM OrgPrefix o", OrgPrefix.class).getResultList();
 	}
 
 	public static OrgPrefix findOrgPrefix(Integer id) {
@@ -75,23 +76,18 @@ public class OrgPrefix {
 		return entityManager().find(OrgPrefix.class, id);
 	}
 
-	public static List<OrgPrefix> findOrgPrefixEntries(int firstResult,
-			int maxResults) {
-		return entityManager()
-				.createQuery("SELECT o FROM OrgPrefix o", OrgPrefix.class)
-				.setFirstResult(firstResult).setMaxResults(maxResults)
-				.getResultList();
+	public static List<OrgPrefix> findOrgPrefixEntries(int firstResult, int maxResults) {
+		return entityManager().createQuery("SELECT o FROM OrgPrefix o", OrgPrefix.class).setFirstResult(firstResult)
+				.setMaxResults(maxResults).getResultList();
 	}
 
 	public static Collection<OrgPrefix> fromJsonArrayToOrgPrefixes(String json) {
-		return new JSONDeserializer<List<OrgPrefix>>()
-				.use(null, ArrayList.class).use("values", OrgPrefix.class)
+		return new JSONDeserializer<List<OrgPrefix>>().use(null, ArrayList.class).use("values", OrgPrefix.class)
 				.deserialize(json);
 	}
 
 	public static OrgPrefix fromJsonToOrgPrefix(String json) {
-		return new JSONDeserializer<OrgPrefix>().use(null, OrgPrefix.class)
-				.deserialize(json);
+		return new JSONDeserializer<OrgPrefix>().use(null, OrgPrefix.class).deserialize(json);
 	}
 
 	public static void indexOrgPrefix(OrgPrefix orgPrefix) {
@@ -111,8 +107,7 @@ public class OrgPrefix {
 			// Add summary field to allow searching documents for objects of
 			// this type
 			sid.addField("orgprefix_solrsummary_t",
-					new StringBuilder().append(orgPrefix.getName()).append(" ")
-							.append(orgPrefix.getDescription()));
+					new StringBuilder().append(orgPrefix.getName()).append(" ").append(orgPrefix.getDescription()));
 			documents.add(sid);
 		}
 		try {
@@ -173,8 +168,7 @@ public class OrgPrefix {
 	 *            - descrierea prefixului.
 	 * @return
 	 */
-	public static OrgPrefix checkOrgPrefix(Integer id, String name,
-			String description) {
+	public static OrgPrefix checkOrgPrefix(Integer id, String name, String description) {
 		OrgPrefix object;
 
 		if (id != null) {
@@ -188,10 +182,8 @@ public class OrgPrefix {
 		List<OrgPrefix> queryResult;
 
 		if (name != null) {
-			TypedQuery<OrgPrefix> query = entityManager()
-					.createQuery(
-							"SELECT o FROM OrgPrefix o WHERE lower(o.name) = lower(:name)",
-							OrgPrefix.class);
+			TypedQuery<OrgPrefix> query = entityManager().createQuery(
+					"SELECT o FROM OrgPrefix o WHERE lower(o.name) = lower(:name)", OrgPrefix.class);
 			query.setParameter("name", name);
 
 			queryResult = query.getResultList();
@@ -206,6 +198,10 @@ public class OrgPrefix {
 		object.persist();
 
 		return object;
+	}
+
+	public static AuditReader getClassAuditReader() {
+		return AuditReaderFactory.get(entityManager());
 	}
 
 	@Column(name = "description", columnDefinition = "text")
@@ -226,7 +222,7 @@ public class OrgPrefix {
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	@Autowired(required=false)
+	@Autowired(required = false)
 	transient SolrServer solrServer;
 
 	@Transactional
@@ -308,8 +304,7 @@ public class OrgPrefix {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this,
-				ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate
@@ -326,7 +321,10 @@ public class OrgPrefix {
 	@Override
 	public boolean equals(Object obj) {
 		return (id != null && id.equals(((OrgPrefix) obj).id))
-				|| (name != null && name
-						.equalsIgnoreCase(((OrgPrefix) obj).name));
+				|| (name != null && name.equalsIgnoreCase(((OrgPrefix) obj).name));
+	}
+
+	public AuditReader getAuditReader() {
+		return AuditReaderFactory.get(entityManager);
 	}
 }

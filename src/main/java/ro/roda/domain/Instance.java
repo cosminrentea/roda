@@ -1,6 +1,5 @@
 package ro.roda.domain;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
@@ -24,7 +23,6 @@ import javax.persistence.PreRemove;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.TypedQuery;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -33,6 +31,9 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrInputDocument;
+import org.hibernate.envers.AuditReader;
+import org.hibernate.envers.AuditReaderFactory;
+import org.hibernate.envers.Audited;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -45,6 +46,7 @@ import flexjson.JSONSerializer;
 @Configurable
 @Entity
 @Table(schema = "public", name = "instance")
+@Audited
 public class Instance {
 
 	public static long countInstances() {
@@ -202,6 +204,10 @@ public class Instance {
 		return object;
 	}
 
+	public static AuditReader getClassAuditReader() {
+		return AuditReaderFactory.get(entityManager());
+	}
+
 	@Column(name = "added", columnDefinition = "timestamp")
 	@NotNull
 	@Temporal(TemporalType.TIMESTAMP)
@@ -220,7 +226,8 @@ public class Instance {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id", columnDefinition = "serial")
+	@Column(name = "id")
+	// , columnDefinition = "serial")
 	private Integer id;
 
 	@OneToMany(mappedBy = "instanceId")
@@ -464,4 +471,8 @@ public class Instance {
 	// public boolean equals(Object obj) {
 	// return id != null && id.equals(((Instance) obj).id);
 	// }
+
+	public AuditReader getAuditReader() {
+		return AuditReaderFactory.get(entityManager);
+	}
 }

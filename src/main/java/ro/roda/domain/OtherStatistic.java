@@ -26,6 +26,8 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrInputDocument;
+import org.hibernate.envers.AuditReader;
+import org.hibernate.envers.AuditReaderFactory;
 import org.hibernate.envers.Audited;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -38,12 +40,11 @@ import flexjson.JSONSerializer;
 @Configurable
 @Entity
 @Table(schema = "public", name = "other_statistic")
+@Audited
 public class OtherStatistic {
 
 	public static long countOtherStatistics() {
-		return entityManager().createQuery(
-				"SELECT COUNT(o) FROM OtherStatistic o", Long.class)
-				.getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM OtherStatistic o", Long.class).getSingleResult();
 	}
 
 	@Async
@@ -66,8 +67,7 @@ public class OtherStatistic {
 	}
 
 	public static List<OtherStatistic> findAllOtherStatistics() {
-		return entityManager().createQuery("SELECT o FROM OtherStatistic o",
-				OtherStatistic.class).getResultList();
+		return entityManager().createQuery("SELECT o FROM OtherStatistic o", OtherStatistic.class).getResultList();
 	}
 
 	public static OtherStatistic findOtherStatistic(Long id) {
@@ -76,24 +76,18 @@ public class OtherStatistic {
 		return entityManager().find(OtherStatistic.class, id);
 	}
 
-	public static List<OtherStatistic> findOtherStatisticEntries(
-			int firstResult, int maxResults) {
-		return entityManager()
-				.createQuery("SELECT o FROM OtherStatistic o",
-						OtherStatistic.class).setFirstResult(firstResult)
-				.setMaxResults(maxResults).getResultList();
+	public static List<OtherStatistic> findOtherStatisticEntries(int firstResult, int maxResults) {
+		return entityManager().createQuery("SELECT o FROM OtherStatistic o", OtherStatistic.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
 	}
 
-	public static Collection<OtherStatistic> fromJsonArrayToOtherStatistics(
-			String json) {
-		return new JSONDeserializer<List<OtherStatistic>>()
-				.use(null, ArrayList.class).use("values", OtherStatistic.class)
-				.deserialize(json);
+	public static Collection<OtherStatistic> fromJsonArrayToOtherStatistics(String json) {
+		return new JSONDeserializer<List<OtherStatistic>>().use(null, ArrayList.class)
+				.use("values", OtherStatistic.class).deserialize(json);
 	}
 
 	public static OtherStatistic fromJsonToOtherStatistic(String json) {
-		return new JSONDeserializer<OtherStatistic>().use(null,
-				OtherStatistic.class).deserialize(json);
+		return new JSONDeserializer<OtherStatistic>().use(null, OtherStatistic.class).deserialize(json);
 	}
 
 	public static void indexOtherStatistic(OtherStatistic otherStatistic) {
@@ -103,28 +97,23 @@ public class OtherStatistic {
 	}
 
 	@Async
-	public static void indexOtherStatistics(
-			Collection<OtherStatistic> otherstatistics) {
+	public static void indexOtherStatistics(Collection<OtherStatistic> otherstatistics) {
 		List<SolrInputDocument> documents = new ArrayList<SolrInputDocument>();
 		for (OtherStatistic otherStatistic : otherstatistics) {
 			SolrInputDocument sid = new SolrInputDocument();
 			sid.addField("id", "otherstatistic_" + otherStatistic.getId());
-			sid.addField("otherStatistic.variableid_t",
-					otherStatistic.getVariableId());
+			sid.addField("otherStatistic.variableid_t", otherStatistic.getVariableId());
 			sid.addField("otherStatistic.name_s", otherStatistic.getName());
 			sid.addField("otherStatistic.value_f", otherStatistic.getValue());
-			sid.addField("otherStatistic.description_s",
-					otherStatistic.getDescription());
+			sid.addField("otherStatistic.description_s", otherStatistic.getDescription());
 			sid.addField("otherStatistic.id_l", otherStatistic.getId());
 			// Add summary field to allow searching documents for objects of
 			// this type
-			sid.addField("otherstatistic_solrsummary_t",
-					new StringBuilder().append(otherStatistic.getVariableId())
-							.append(" ").append(otherStatistic.getName())
-							.append(" ").append(otherStatistic.getValue())
-							.append(" ")
-							.append(otherStatistic.getDescription())
-							.append(" ").append(otherStatistic.getId()));
+			sid.addField(
+					"otherstatistic_solrsummary_t",
+					new StringBuilder().append(otherStatistic.getVariableId()).append(" ")
+							.append(otherStatistic.getName()).append(" ").append(otherStatistic.getValue()).append(" ")
+							.append(otherStatistic.getDescription()).append(" ").append(otherStatistic.getId()));
 			documents.add(sid);
 		}
 		try {
@@ -189,8 +178,8 @@ public class OtherStatistic {
 	 *            - descrierea statisticii.
 	 * @return
 	 */
-	public static OtherStatistic checkOtherStatistic(Long id,
-			Variable variableId, String name, Float value, String description) {
+	public static OtherStatistic checkOtherStatistic(Long id, Variable variableId, String name, Float value,
+			String description) {
 		OtherStatistic object;
 
 		if (id != null) {
@@ -206,8 +195,7 @@ public class OtherStatistic {
 		if (name != null && variableId != null) {
 			TypedQuery<OtherStatistic> query = entityManager().createQuery(
 					"SELECT o FROM OtherStatistic o WHERE lower(o.name) = lower(:name) AND "
-							+ "o.variableId = :variableId",
-					OtherStatistic.class);
+							+ "o.variableId = :variableId", OtherStatistic.class);
 			query.setParameter("name", name);
 			query.setParameter("variableId", variableId);
 
@@ -227,12 +215,17 @@ public class OtherStatistic {
 		return object;
 	}
 
+	public static AuditReader getClassAuditReader() {
+		return AuditReaderFactory.get(entityManager());
+	}
+
 	@Column(name = "description", columnDefinition = "text")
 	private String description;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id", columnDefinition = "bigserial")
+	@Column(name = "id")
+	// , columnDefinition = "bigserial")
 	private Long id;
 
 	@Column(name = "name", columnDefinition = "varchar", length = 100)
@@ -250,7 +243,7 @@ public class OtherStatistic {
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	@Autowired(required=false)
+	@Autowired(required = false)
 	transient SolrServer solrServer;
 
 	@Transactional
@@ -310,8 +303,7 @@ public class OtherStatistic {
 		if (this.entityManager.contains(this)) {
 			this.entityManager.remove(this);
 		} else {
-			OtherStatistic attached = OtherStatistic
-					.findOtherStatistic(this.id);
+			OtherStatistic attached = OtherStatistic.findOtherStatistic(this.id);
 			this.entityManager.remove(attached);
 		}
 	}
@@ -341,28 +333,30 @@ public class OtherStatistic {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this,
-				ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate
 	@PostPersist
 	private void postPersistOrUpdate() {
-		//TODO temporarily disabled
-//		indexOtherStatistic(this);
+		// TODO temporarily disabled
+		// indexOtherStatistic(this);
 	}
 
 	@PreRemove
 	private void preRemove() {
-		//TODO temporarily disabled
-//		deleteIndex(this);
+		// TODO temporarily disabled
+		// deleteIndex(this);
 	}
 
 	@Override
 	public boolean equals(Object obj) {
 		return (id != null && id.equals(((OtherStatistic) obj).id))
-				|| ((name != null && name
-						.equalsIgnoreCase(((OtherStatistic) obj).name)) && (variableId != null && variableId
+				|| ((name != null && name.equalsIgnoreCase(((OtherStatistic) obj).name)) && (variableId != null && variableId
 						.equals(((OtherStatistic) obj).variableId)));
+	}
+
+	public AuditReader getAuditReader() {
+		return AuditReaderFactory.get(entityManager);
 	}
 }

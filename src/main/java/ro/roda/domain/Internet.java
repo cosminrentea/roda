@@ -26,6 +26,8 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrInputDocument;
+import org.hibernate.envers.AuditReader;
+import org.hibernate.envers.AuditReaderFactory;
 import org.hibernate.envers.Audited;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -38,11 +40,11 @@ import flexjson.JSONSerializer;
 @Configurable
 @Entity
 @Table(schema = "public", name = "internet")
+@Audited
 public class Internet {
 
 	public static long countInternets() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM Internet o",
-				Long.class).getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM Internet o", Long.class).getSingleResult();
 	}
 
 	@Async
@@ -65,8 +67,7 @@ public class Internet {
 	}
 
 	public static List<Internet> findAllInternets() {
-		return entityManager().createQuery("SELECT o FROM Internet o",
-				Internet.class).getResultList();
+		return entityManager().createQuery("SELECT o FROM Internet o", Internet.class).getResultList();
 	}
 
 	public static Internet findInternet(Integer id) {
@@ -75,23 +76,18 @@ public class Internet {
 		return entityManager().find(Internet.class, id);
 	}
 
-	public static List<Internet> findInternetEntries(int firstResult,
-			int maxResults) {
-		return entityManager()
-				.createQuery("SELECT o FROM Internet o", Internet.class)
-				.setFirstResult(firstResult).setMaxResults(maxResults)
-				.getResultList();
+	public static List<Internet> findInternetEntries(int firstResult, int maxResults) {
+		return entityManager().createQuery("SELECT o FROM Internet o", Internet.class).setFirstResult(firstResult)
+				.setMaxResults(maxResults).getResultList();
 	}
 
 	public static Collection<Internet> fromJsonArrayToInternets(String json) {
-		return new JSONDeserializer<List<Internet>>()
-				.use(null, ArrayList.class).use("values", Internet.class)
+		return new JSONDeserializer<List<Internet>>().use(null, ArrayList.class).use("values", Internet.class)
 				.deserialize(json);
 	}
 
 	public static Internet fromJsonToInternet(String json) {
-		return new JSONDeserializer<Internet>().use(null, Internet.class)
-				.deserialize(json);
+		return new JSONDeserializer<Internet>().use(null, Internet.class).deserialize(json);
 	}
 
 	public static void indexInternet(Internet internet) {
@@ -110,9 +106,8 @@ public class Internet {
 			sid.addField("internet.internet_s", internet.getInternet());
 			// Add summary field to allow searching documents for objects of
 			// this type
-			sid.addField("internet_solrsummary_t",
-					new StringBuilder().append(internet.getInternetType())
-							.append(" ").append(internet.getInternet()));
+			sid.addField("internet_solrsummary_t", new StringBuilder().append(internet.getInternetType()).append(" ")
+					.append(internet.getInternet()));
 			documents.add(sid);
 		}
 		try {
@@ -173,8 +168,7 @@ public class Internet {
 	 *            - adresa contului.
 	 * @return
 	 */
-	public static Internet checkInternet(Integer id, String internetType,
-			String internet) {
+	public static Internet checkInternet(Integer id, String internetType, String internet) {
 		Internet object;
 
 		if (id != null) {
@@ -188,10 +182,8 @@ public class Internet {
 		List<Internet> queryResult;
 
 		if (internet != null) {
-			TypedQuery<Internet> query = entityManager()
-					.createQuery(
-							"SELECT o FROM Internet o WHERE lower(o.internet) = lower(:internet)",
-							Internet.class);
+			TypedQuery<Internet> query = entityManager().createQuery(
+					"SELECT o FROM Internet o WHERE lower(o.internet) = lower(:internet)", Internet.class);
 			query.setParameter("internet", internet);
 
 			queryResult = query.getResultList();
@@ -208,9 +200,14 @@ public class Internet {
 		return object;
 	}
 
+	public static AuditReader getClassAuditReader() {
+		return AuditReaderFactory.get(entityManager());
+	}
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id", columnDefinition = "serial")
+	@Column(name = "id")
+	// , columnDefinition = "serial")
 	private Integer id;
 
 	@Column(name = "internet", columnDefinition = "text")
@@ -229,7 +226,7 @@ public class Internet {
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	@Autowired(required=false)
+	@Autowired(required = false)
 	transient SolrServer solrServer;
 
 	@Transactional
@@ -319,8 +316,7 @@ public class Internet {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this,
-				ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate
@@ -337,7 +333,10 @@ public class Internet {
 	@Override
 	public boolean equals(Object obj) {
 		return (id != null && id.equals(((Internet) obj).id))
-				|| (internet != null && internet
-						.equalsIgnoreCase(((Internet) obj).internet));
+				|| (internet != null && internet.equalsIgnoreCase(((Internet) obj).internet));
+	}
+
+	public AuditReader getAuditReader() {
+		return AuditReaderFactory.get(entityManager);
 	}
 }

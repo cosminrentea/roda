@@ -25,6 +25,8 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrInputDocument;
+import org.hibernate.envers.AuditReader;
+import org.hibernate.envers.AuditReaderFactory;
 import org.hibernate.envers.Audited;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -38,7 +40,7 @@ import flexjson.JSONSerializer;
 @Entity
 @Table(schema = "public", name = "person_address")
 @Configurable
-
+@Audited
 public class PersonAddress {
 
 	public static long countPersonAddresses() {
@@ -147,6 +149,10 @@ public class PersonAddress {
 		return new JSONSerializer().exclude("*.class").serialize(collection);
 	}
 
+	public static AuditReader getClassAuditReader() {
+		return AuditReaderFactory.get(entityManager());
+	}
+
 	@ManyToOne
 	@JoinColumn(name = "address_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
 	private Address addressId;
@@ -171,7 +177,7 @@ public class PersonAddress {
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	@Autowired(required=false)
+	@Autowired(required = false)
 	transient SolrServer solrServer;
 
 	@Transactional
@@ -262,6 +268,10 @@ public class PersonAddress {
 
 	public String toString() {
 		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+	}
+
+	public AuditReader getAuditReader() {
+		return AuditReaderFactory.get(entityManager);
 	}
 
 	@PostUpdate

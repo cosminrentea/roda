@@ -28,6 +28,8 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrInputDocument;
+import org.hibernate.envers.AuditReader;
+import org.hibernate.envers.AuditReaderFactory;
 import org.hibernate.envers.Audited;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -210,6 +212,10 @@ public class CmsLayoutGroup {
 		return object;
 	}
 
+	public static AuditReader getClassAuditReader() {
+		return AuditReaderFactory.get(entityManager());
+	}
+
 	@OneToMany(mappedBy = "parentId")
 	private Set<CmsLayoutGroup> cmsLayoutGroups;
 
@@ -221,8 +227,6 @@ public class CmsLayoutGroup {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	// @org.hibernate.annotations.GenericGenerator(name = "hilo-strategy",
-	// strategy = "hilo")
 	@Column(name = "id")
 	// , columnDefinition = "serial")
 	private Integer id;
@@ -232,7 +236,7 @@ public class CmsLayoutGroup {
 	private String name;
 
 	@ManyToOne(optional = true)
-	@JoinColumn(name = "parent_id", columnDefinition = "integer", referencedColumnName = "id", insertable = true, updatable = true, nullable = true)
+	@JoinColumn(name = "parent_id", columnDefinition = "integer", referencedColumnName = "id", insertable = false, updatable = false, nullable = true)
 	private CmsLayoutGroup parentId;
 
 	@PersistenceContext
@@ -355,5 +359,9 @@ public class CmsLayoutGroup {
 		return (id != null && id.equals(((CmsLayoutGroup) obj).id))
 				|| ((name != null && name.equalsIgnoreCase(((CmsLayoutGroup) obj).name)) && (parentId != null && parentId
 						.equals(((CmsLayoutGroup) obj).parentId)));
+	}
+
+	public AuditReader getAuditReader() {
+		return AuditReaderFactory.get(entityManager);
 	}
 }

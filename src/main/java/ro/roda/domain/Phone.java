@@ -26,6 +26,8 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrInputDocument;
+import org.hibernate.envers.AuditReader;
+import org.hibernate.envers.AuditReaderFactory;
 import org.hibernate.envers.Audited;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -38,11 +40,11 @@ import flexjson.JSONSerializer;
 @Entity
 @Table(schema = "public", name = "phone")
 @Configurable
+@Audited
 public class Phone {
 
 	public static long countPhones() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM Phone o",
-				Long.class).getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM Phone o", Long.class).getSingleResult();
 	}
 
 	@Async
@@ -65,9 +67,7 @@ public class Phone {
 	}
 
 	public static List<Phone> findAllPhones() {
-		return entityManager()
-				.createQuery("SELECT o FROM Phone o", Phone.class)
-				.getResultList();
+		return entityManager().createQuery("SELECT o FROM Phone o", Phone.class).getResultList();
 	}
 
 	public static Phone findPhone(Integer id) {
@@ -77,20 +77,17 @@ public class Phone {
 	}
 
 	public static List<Phone> findPhoneEntries(int firstResult, int maxResults) {
-		return entityManager()
-				.createQuery("SELECT o FROM Phone o", Phone.class)
-				.setFirstResult(firstResult).setMaxResults(maxResults)
-				.getResultList();
+		return entityManager().createQuery("SELECT o FROM Phone o", Phone.class).setFirstResult(firstResult)
+				.setMaxResults(maxResults).getResultList();
 	}
 
 	public static Collection<Phone> fromJsonArrayToPhones(String json) {
-		return new JSONDeserializer<List<Phone>>().use(null, ArrayList.class)
-				.use("values", Phone.class).deserialize(json);
+		return new JSONDeserializer<List<Phone>>().use(null, ArrayList.class).use("values", Phone.class)
+				.deserialize(json);
 	}
 
 	public static Phone fromJsonToPhone(String json) {
-		return new JSONDeserializer<Phone>().use(null, Phone.class)
-				.deserialize(json);
+		return new JSONDeserializer<Phone>().use(null, Phone.class).deserialize(json);
 	}
 
 	public static void indexPhone(Phone phone) {
@@ -110,10 +107,8 @@ public class Phone {
 			sid.addField("phone.id_i", phone.getId());
 			// Add summary field to allow searching documents for objects of
 			// this type
-			sid.addField(
-					"phone_solrsummary_t",
-					new StringBuilder().append(phone.getPhone()).append(" ")
-							.append(phone.getPhoneType()).append(" ")
+			sid.addField("phone_solrsummary_t",
+					new StringBuilder().append(phone.getPhone()).append(" ").append(phone.getPhoneType()).append(" ")
 							.append(phone.getId()));
 			documents.add(sid);
 		}
@@ -189,10 +184,8 @@ public class Phone {
 		List<Phone> queryResult;
 
 		if (phone != null) {
-			TypedQuery<Phone> query = entityManager()
-					.createQuery(
-							"SELECT o FROM Phone o WHERE lower(o.phone) = lower(:phone)",
-							Phone.class);
+			TypedQuery<Phone> query = entityManager().createQuery(
+					"SELECT o FROM Phone o WHERE lower(o.phone) = lower(:phone)", Phone.class);
 			query.setParameter("phone", phone);
 
 			queryResult = query.getResultList();
@@ -209,9 +202,14 @@ public class Phone {
 		return object;
 	}
 
+	public static AuditReader getClassAuditReader() {
+		return AuditReaderFactory.get(entityManager());
+	}
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id", columnDefinition = "serial")
+	@Column(name = "id")
+	// , columnDefinition = "serial")
 	private Integer id;
 
 	@OneToMany(mappedBy = "phoneId")
@@ -320,8 +318,7 @@ public class Phone {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this,
-				ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate
@@ -338,7 +335,10 @@ public class Phone {
 	@Override
 	public boolean equals(Object obj) {
 		return (id != null && id.equals(((Phone) obj).id))
-				|| (phone != null && phone
-						.equalsIgnoreCase(((Phone) obj).phone));
+				|| (phone != null && phone.equalsIgnoreCase(((Phone) obj).phone));
+	}
+
+	public AuditReader getAuditReader() {
+		return AuditReaderFactory.get(entityManager);
 	}
 }

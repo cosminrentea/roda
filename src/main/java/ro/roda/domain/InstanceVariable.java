@@ -15,8 +15,8 @@ import javax.persistence.PostPersist;
 import javax.persistence.PostUpdate;
 import javax.persistence.PreRemove;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -24,6 +24,8 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrInputDocument;
+import org.hibernate.envers.AuditReader;
+import org.hibernate.envers.AuditReaderFactory;
 import org.hibernate.envers.Audited;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -37,6 +39,7 @@ import flexjson.JSONSerializer;
 @Table(schema = "public", name = "instance_variable", uniqueConstraints = { @UniqueConstraint(columnNames = {
 		"instance_id", "order_variable_in_instance" }) })
 @Configurable
+@Audited
 public class InstanceVariable {
 
 	public static long countInstanceVariables() {
@@ -147,6 +150,10 @@ public class InstanceVariable {
 		return new JSONSerializer().exclude("*.class").serialize(collection);
 	}
 
+	public static AuditReader getClassAuditReader() {
+		return AuditReaderFactory.get(entityManager());
+	}
+
 	@EmbeddedId
 	private InstanceVariablePK id;
 
@@ -165,7 +172,7 @@ public class InstanceVariable {
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	@Autowired(required=false)
+	@Autowired(required = false)
 	transient SolrServer solrServer;
 
 	@Transactional
@@ -248,6 +255,10 @@ public class InstanceVariable {
 
 	public String toString() {
 		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+	}
+
+	public AuditReader getAuditReader() {
+		return AuditReaderFactory.get(entityManager);
 	}
 
 	@PostUpdate

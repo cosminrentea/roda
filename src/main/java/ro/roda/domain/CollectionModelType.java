@@ -28,6 +28,8 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrInputDocument;
+import org.hibernate.envers.AuditReader;
+import org.hibernate.envers.AuditReaderFactory;
 import org.hibernate.envers.Audited;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -40,20 +42,18 @@ import flexjson.JSONSerializer;
 @Entity
 @Table(schema = "public", name = "collection_model_type")
 @Configurable
+@Audited
 public class CollectionModelType {
 
 	public static long countCollectionModelTypes() {
-		return entityManager().createQuery(
-				"SELECT COUNT(o) FROM CollectionModelType o", Long.class)
-				.getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM CollectionModelType o", Long.class).getSingleResult();
 	}
 
 	@Async
 	public static void deleteIndex(CollectionModelType collectionModelType) {
 		SolrServer solrServer = solrServer();
 		try {
-			solrServer.deleteById("collectionmodeltype_"
-					+ collectionModelType.getId());
+			solrServer.deleteById("collectionmodeltype_" + collectionModelType.getId());
 			solrServer.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -69,9 +69,8 @@ public class CollectionModelType {
 	}
 
 	public static List<CollectionModelType> findAllCollectionModelTypes() {
-		return entityManager().createQuery(
-				"SELECT o FROM CollectionModelType o",
-				CollectionModelType.class).getResultList();
+		return entityManager().createQuery("SELECT o FROM CollectionModelType o", CollectionModelType.class)
+				.getResultList();
 	}
 
 	public static CollectionModelType findCollectionModelType(Integer id) {
@@ -80,55 +79,42 @@ public class CollectionModelType {
 		return entityManager().find(CollectionModelType.class, id);
 	}
 
-	public static List<CollectionModelType> findCollectionModelTypeEntries(
-			int firstResult, int maxResults) {
-		return entityManager()
-				.createQuery("SELECT o FROM CollectionModelType o",
-						CollectionModelType.class).setFirstResult(firstResult)
-				.setMaxResults(maxResults).getResultList();
+	public static List<CollectionModelType> findCollectionModelTypeEntries(int firstResult, int maxResults) {
+		return entityManager().createQuery("SELECT o FROM CollectionModelType o", CollectionModelType.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
 	}
 
-	public static Collection<CollectionModelType> fromJsonArrayToCollectionModelTypes(
-			String json) {
-		return new JSONDeserializer<List<CollectionModelType>>()
-				.use(null, ArrayList.class)
+	public static Collection<CollectionModelType> fromJsonArrayToCollectionModelTypes(String json) {
+		return new JSONDeserializer<List<CollectionModelType>>().use(null, ArrayList.class)
 				.use("values", CollectionModelType.class).deserialize(json);
 	}
 
 	public static CollectionModelType fromJsonToCollectionModelType(String json) {
-		return new JSONDeserializer<CollectionModelType>().use(null,
-				CollectionModelType.class).deserialize(json);
+		return new JSONDeserializer<CollectionModelType>().use(null, CollectionModelType.class).deserialize(json);
 	}
 
-	public static void indexCollectionModelType(
-			CollectionModelType collectionModelType) {
+	public static void indexCollectionModelType(CollectionModelType collectionModelType) {
 		List<CollectionModelType> collectionmodeltypes = new ArrayList<CollectionModelType>();
 		collectionmodeltypes.add(collectionModelType);
 		indexCollectionModelTypes(collectionmodeltypes);
 	}
 
 	@Async
-	public static void indexCollectionModelTypes(
-			Collection<CollectionModelType> collectionmodeltypes) {
+	public static void indexCollectionModelTypes(Collection<CollectionModelType> collectionmodeltypes) {
 		List<SolrInputDocument> documents = new ArrayList<SolrInputDocument>();
 		for (CollectionModelType collectionModelType : collectionmodeltypes) {
 			SolrInputDocument sid = new SolrInputDocument();
-			sid.addField("id",
-					"collectionmodeltype_" + collectionModelType.getId());
-			sid.addField("collectionModelType.name_s",
-					collectionModelType.getName());
-			sid.addField("collectionModelType.description_s",
-					collectionModelType.getDescription());
-			sid.addField("collectionModelType.id_i",
-					collectionModelType.getId());
+			sid.addField("id", "collectionmodeltype_" + collectionModelType.getId());
+			sid.addField("collectionModelType.name_s", collectionModelType.getName());
+			sid.addField("collectionModelType.description_s", collectionModelType.getDescription());
+			sid.addField("collectionModelType.id_i", collectionModelType.getId());
 			// Add summary field to allow searching documents for objects of
 			// this type
 			sid.addField(
 					"collectionmodeltype_solrsummary_t",
-					new StringBuilder().append(collectionModelType.getName())
-							.append(" ")
-							.append(collectionModelType.getDescription())
-							.append(" ").append(collectionModelType.getId()));
+					new StringBuilder().append(collectionModelType.getName()).append(" ")
+							.append(collectionModelType.getDescription()).append(" ")
+							.append(collectionModelType.getId()));
 			documents.add(sid);
 		}
 		try {
@@ -150,8 +136,7 @@ public class CollectionModelType {
 	}
 
 	public static QueryResponse search(String queryString) {
-		String searchString = "CollectionModelType_solrsummary_t:"
-				+ queryString;
+		String searchString = "CollectionModelType_solrsummary_t:" + queryString;
 		return search(new SolrQuery(searchString.toLowerCase()));
 	}
 
@@ -190,8 +175,7 @@ public class CollectionModelType {
 	 *            - descrierea tipului.
 	 * @return
 	 */
-	public static CollectionModelType checkCollectionModelType(Integer id,
-			String name, String description) {
+	public static CollectionModelType checkCollectionModelType(Integer id, String name, String description) {
 		CollectionModelType object;
 
 		if (id != null) {
@@ -206,8 +190,7 @@ public class CollectionModelType {
 
 		if (name != null) {
 			TypedQuery<CollectionModelType> query = entityManager()
-					.createQuery(
-							"SELECT o FROM CollectionModelType o WHERE lower(o.name) = lower(:name)",
+					.createQuery("SELECT o FROM CollectionModelType o WHERE lower(o.name) = lower(:name)",
 							CollectionModelType.class);
 			query.setParameter("name", name);
 
@@ -225,12 +208,17 @@ public class CollectionModelType {
 		return object;
 	}
 
+	public static AuditReader getClassAuditReader() {
+		return AuditReaderFactory.get(entityManager());
+	}
+
 	@Column(name = "description", columnDefinition = "text")
 	private String description;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id", columnDefinition = "serial")
+	@Column(name = "id")
+	// , columnDefinition = "serial")
 	private Integer id;
 
 	@Column(name = "name", columnDefinition = "varchar", length = 100)
@@ -244,7 +232,7 @@ public class CollectionModelType {
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	@Autowired(required=false)
+	@Autowired(required = false)
 	transient SolrServer solrServer;
 
 	@Transactional
@@ -300,8 +288,7 @@ public class CollectionModelType {
 		if (this.entityManager.contains(this)) {
 			this.entityManager.remove(this);
 		} else {
-			CollectionModelType attached = CollectionModelType
-					.findCollectionModelType(this.id);
+			CollectionModelType attached = CollectionModelType.findCollectionModelType(this.id);
 			this.entityManager.remove(attached);
 		}
 	}
@@ -327,8 +314,7 @@ public class CollectionModelType {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this,
-				ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate
@@ -345,7 +331,10 @@ public class CollectionModelType {
 	@Override
 	public boolean equals(Object obj) {
 		return (id != null && id.equals(((CollectionModelType) obj).id))
-				|| (name != null && name
-						.equalsIgnoreCase(((CollectionModelType) obj).name));
+				|| (name != null && name.equalsIgnoreCase(((CollectionModelType) obj).name));
+	}
+
+	public AuditReader getAuditReader() {
+		return AuditReaderFactory.get(entityManager);
 	}
 }

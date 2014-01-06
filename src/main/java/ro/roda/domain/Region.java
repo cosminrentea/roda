@@ -28,6 +28,8 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrInputDocument;
+import org.hibernate.envers.AuditReader;
+import org.hibernate.envers.AuditReaderFactory;
 import org.hibernate.envers.Audited;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -40,11 +42,11 @@ import flexjson.JSONSerializer;
 @Entity
 @Table(schema = "public", name = "region")
 @Configurable
+@Audited
 public class Region {
 
 	public static long countRegions() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM Region o",
-				Long.class).getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM Region o", Long.class).getSingleResult();
 	}
 
 	@Async
@@ -67,8 +69,7 @@ public class Region {
 	}
 
 	public static List<Region> findAllRegions() {
-		return entityManager().createQuery("SELECT o FROM Region o",
-				Region.class).getResultList();
+		return entityManager().createQuery("SELECT o FROM Region o", Region.class).getResultList();
 	}
 
 	public static Region findRegion(Integer id) {
@@ -78,20 +79,17 @@ public class Region {
 	}
 
 	public static List<Region> findRegionEntries(int firstResult, int maxResults) {
-		return entityManager()
-				.createQuery("SELECT o FROM Region o", Region.class)
-				.setFirstResult(firstResult).setMaxResults(maxResults)
-				.getResultList();
+		return entityManager().createQuery("SELECT o FROM Region o", Region.class).setFirstResult(firstResult)
+				.setMaxResults(maxResults).getResultList();
 	}
 
 	public static Collection<Region> fromJsonArrayToRegions(String json) {
-		return new JSONDeserializer<List<Region>>().use(null, ArrayList.class)
-				.use("values", Region.class).deserialize(json);
+		return new JSONDeserializer<List<Region>>().use(null, ArrayList.class).use("values", Region.class)
+				.deserialize(json);
 	}
 
 	public static Region fromJsonToRegion(String json) {
-		return new JSONDeserializer<Region>().use(null, Region.class)
-				.deserialize(json);
+		return new JSONDeserializer<Region>().use(null, Region.class).deserialize(json);
 	}
 
 	public static void indexRegion(Region region) {
@@ -114,14 +112,10 @@ public class Region {
 			sid.addField("region.id_i", region.getId());
 			// Add summary field to allow searching documents for objects of
 			// this type
-			sid.addField(
-					"region_solrsummary_t",
-					new StringBuilder().append(region.getCountryId())
-							.append(" ").append(region.getRegiontypeId())
-							.append(" ").append(region.getName()).append(" ")
-							.append(region.getRegionCode()).append(" ")
-							.append(region.getRegionCodeName()).append(" ")
-							.append(region.getId()));
+			sid.addField("region_solrsummary_t",
+					new StringBuilder().append(region.getCountryId()).append(" ").append(region.getRegiontypeId())
+							.append(" ").append(region.getName()).append(" ").append(region.getRegionCode())
+							.append(" ").append(region.getRegionCodeName()).append(" ").append(region.getId()));
 			documents.add(sid);
 		}
 		try {
@@ -186,9 +180,8 @@ public class Region {
 	 * @param regionCodeName
 	 * @return
 	 */
-	public static Region checkRegion(Integer id, String name,
-			Regiontype regiontypeId, Country countryId, String regionCode,
-			String regionCodeName) {
+	public static Region checkRegion(Integer id, String name, Regiontype regiontypeId, Country countryId,
+			String regionCode, String regionCodeName) {
 		Region object;
 
 		if (id != null) {
@@ -203,8 +196,7 @@ public class Region {
 
 		if (countryId != null && regiontypeId != null && name != null) {
 			TypedQuery<Region> query = entityManager().createQuery(
-					"SELECT o FROM Region o WHERE countryId = :countryId AND "
-							+ "regiontypeId = :regiontypeId AND "
+					"SELECT o FROM Region o WHERE countryId = :countryId AND " + "regiontypeId = :regiontypeId AND "
 							+ "lower(o.name) = lower(:name)", Region.class);
 			query.setParameter("countryId", countryId);
 			query.setParameter("regiontypeId", regiontypeId);
@@ -227,6 +219,10 @@ public class Region {
 		return object;
 	}
 
+	public static AuditReader getClassAuditReader() {
+		return AuditReaderFactory.get(entityManager());
+	}
+
 	@ManyToMany(mappedBy = "regions")
 	private Set<City> cities;
 
@@ -236,7 +232,8 @@ public class Region {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id", columnDefinition = "serial")
+	@Column(name = "id")
+	// , columnDefinition = "serial")
 	private Integer id;
 
 	@Column(name = "name", columnDefinition = "text")
@@ -362,8 +359,7 @@ public class Region {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this,
-				ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate
@@ -380,10 +376,12 @@ public class Region {
 	@Override
 	public boolean equals(Object obj) {
 		return (id != null && id.equals(((Region) obj).id))
-				|| ((regiontypeId != null && regiontypeId
-						.equals(((Region) obj).regiontypeId))
-						&& (countryId != null && countryId
-								.equals(((Region) obj).countryId)) && (name != null && name
+				|| ((regiontypeId != null && regiontypeId.equals(((Region) obj).regiontypeId))
+						&& (countryId != null && countryId.equals(((Region) obj).countryId)) && (name != null && name
 						.equalsIgnoreCase(((Region) obj).name)));
+	}
+
+	public AuditReader getAuditReader() {
+		return AuditReaderFactory.get(entityManager);
 	}
 }

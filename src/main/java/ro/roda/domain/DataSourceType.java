@@ -28,6 +28,8 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrInputDocument;
+import org.hibernate.envers.AuditReader;
+import org.hibernate.envers.AuditReaderFactory;
 import org.hibernate.envers.Audited;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -40,12 +42,11 @@ import flexjson.JSONSerializer;
 @Configurable
 @Entity
 @Table(schema = "public", name = "data_source_type")
+@Audited
 public class DataSourceType {
 
 	public static long countDataSourceTypes() {
-		return entityManager().createQuery(
-				"SELECT COUNT(o) FROM DataSourceType o", Long.class)
-				.getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM DataSourceType o", Long.class).getSingleResult();
 	}
 
 	@Async
@@ -68,8 +69,7 @@ public class DataSourceType {
 	}
 
 	public static List<DataSourceType> findAllDataSourceTypes() {
-		return entityManager().createQuery("SELECT o FROM DataSourceType o",
-				DataSourceType.class).getResultList();
+		return entityManager().createQuery("SELECT o FROM DataSourceType o", DataSourceType.class).getResultList();
 	}
 
 	public static DataSourceType findDataSourceType(Integer id) {
@@ -78,24 +78,18 @@ public class DataSourceType {
 		return entityManager().find(DataSourceType.class, id);
 	}
 
-	public static List<DataSourceType> findDataSourceTypeEntries(
-			int firstResult, int maxResults) {
-		return entityManager()
-				.createQuery("SELECT o FROM DataSourceType o",
-						DataSourceType.class).setFirstResult(firstResult)
-				.setMaxResults(maxResults).getResultList();
+	public static List<DataSourceType> findDataSourceTypeEntries(int firstResult, int maxResults) {
+		return entityManager().createQuery("SELECT o FROM DataSourceType o", DataSourceType.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
 	}
 
-	public static Collection<DataSourceType> fromJsonArrayToDataSourceTypes(
-			String json) {
-		return new JSONDeserializer<List<DataSourceType>>()
-				.use(null, ArrayList.class).use("values", DataSourceType.class)
-				.deserialize(json);
+	public static Collection<DataSourceType> fromJsonArrayToDataSourceTypes(String json) {
+		return new JSONDeserializer<List<DataSourceType>>().use(null, ArrayList.class)
+				.use("values", DataSourceType.class).deserialize(json);
 	}
 
 	public static DataSourceType fromJsonToDataSourceType(String json) {
-		return new JSONDeserializer<DataSourceType>().use(null,
-				DataSourceType.class).deserialize(json);
+		return new JSONDeserializer<DataSourceType>().use(null, DataSourceType.class).deserialize(json);
 	}
 
 	public static void indexDataSourceType(DataSourceType dataSourceType) {
@@ -105,8 +99,7 @@ public class DataSourceType {
 	}
 
 	@Async
-	public static void indexDataSourceTypes(
-			Collection<DataSourceType> datasourcetypes) {
+	public static void indexDataSourceTypes(Collection<DataSourceType> datasourcetypes) {
 		List<SolrInputDocument> documents = new ArrayList<SolrInputDocument>();
 		for (DataSourceType dataSourceType : datasourcetypes) {
 			SolrInputDocument sid = new SolrInputDocument();
@@ -116,8 +109,7 @@ public class DataSourceType {
 			// Add summary field to allow searching documents for objects of
 			// this type
 			sid.addField("datasourcetype_solrsummary_t",
-					new StringBuilder().append(dataSourceType.getName())
-							.append(" ").append(dataSourceType.getId()));
+					new StringBuilder().append(dataSourceType.getName()).append(" ").append(dataSourceType.getId()));
 			documents.add(sid);
 		}
 		try {
@@ -190,10 +182,8 @@ public class DataSourceType {
 		List<DataSourceType> queryResult;
 
 		if (name != null) {
-			TypedQuery<DataSourceType> query = entityManager()
-					.createQuery(
-							"SELECT o FROM DataSourceType o WHERE lower(o.name) = lower(:name)",
-							DataSourceType.class);
+			TypedQuery<DataSourceType> query = entityManager().createQuery(
+					"SELECT o FROM DataSourceType o WHERE lower(o.name) = lower(:name)", DataSourceType.class);
 			query.setParameter("name", name);
 
 			queryResult = query.getResultList();
@@ -209,9 +199,14 @@ public class DataSourceType {
 		return object;
 	}
 
+	public static AuditReader getClassAuditReader() {
+		return AuditReaderFactory.get(entityManager());
+	}
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id", columnDefinition = "serial")
+	@Column(name = "id")
+	// , columnDefinition = "serial")
 	private Integer id;
 
 	@Column(name = "name", columnDefinition = "text")
@@ -225,7 +220,7 @@ public class DataSourceType {
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	@Autowired(required=false)
+	@Autowired(required = false)
 	transient SolrServer solrServer;
 
 	@Transactional
@@ -277,8 +272,7 @@ public class DataSourceType {
 		if (this.entityManager.contains(this)) {
 			this.entityManager.remove(this);
 		} else {
-			DataSourceType attached = DataSourceType
-					.findDataSourceType(this.id);
+			DataSourceType attached = DataSourceType.findDataSourceType(this.id);
 			this.entityManager.remove(attached);
 		}
 	}
@@ -300,8 +294,7 @@ public class DataSourceType {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this,
-				ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate
@@ -318,7 +311,10 @@ public class DataSourceType {
 	@Override
 	public boolean equals(Object obj) {
 		return (id != null && id.equals(((DataSourceType) obj).id))
-				|| (name != null && name
-						.equalsIgnoreCase(((DataSourceType) obj).name));
+				|| (name != null && name.equalsIgnoreCase(((DataSourceType) obj).name));
+	}
+
+	public AuditReader getAuditReader() {
+		return AuditReaderFactory.get(entityManager);
 	}
 }

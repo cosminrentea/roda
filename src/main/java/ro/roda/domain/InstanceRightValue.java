@@ -19,7 +19,6 @@ import javax.persistence.PostPersist;
 import javax.persistence.PostUpdate;
 import javax.persistence.PreRemove;
 import javax.persistence.Table;
-import javax.persistence.TypedQuery;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -28,6 +27,8 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrInputDocument;
+import org.hibernate.envers.AuditReader;
+import org.hibernate.envers.AuditReaderFactory;
 import org.hibernate.envers.Audited;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -40,20 +41,18 @@ import flexjson.JSONSerializer;
 @Entity
 @Table(schema = "public", name = "instance_right_value")
 @Configurable
+@Audited
 public class InstanceRightValue {
 
 	public static long countInstanceRightValues() {
-		return entityManager().createQuery(
-				"SELECT COUNT(o) FROM InstanceRightValue o", Long.class)
-				.getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM InstanceRightValue o", Long.class).getSingleResult();
 	}
 
 	@Async
 	public static void deleteIndex(InstanceRightValue instanceRightValue) {
 		SolrServer solrServer = solrServer();
 		try {
-			solrServer.deleteById("instancerightvalue_"
-					+ instanceRightValue.getId());
+			solrServer.deleteById("instancerightvalue_" + instanceRightValue.getId());
 			solrServer.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -69,8 +68,7 @@ public class InstanceRightValue {
 	}
 
 	public static List<InstanceRightValue> findAllInstanceRightValues() {
-		return entityManager().createQuery(
-				"SELECT o FROM InstanceRightValue o", InstanceRightValue.class)
+		return entityManager().createQuery("SELECT o FROM InstanceRightValue o", InstanceRightValue.class)
 				.getResultList();
 	}
 
@@ -80,46 +78,36 @@ public class InstanceRightValue {
 		return entityManager().find(InstanceRightValue.class, id);
 	}
 
-	public static List<InstanceRightValue> findInstanceRightValueEntries(
-			int firstResult, int maxResults) {
-		return entityManager()
-				.createQuery("SELECT o FROM InstanceRightValue o",
-						InstanceRightValue.class).setFirstResult(firstResult)
-				.setMaxResults(maxResults).getResultList();
+	public static List<InstanceRightValue> findInstanceRightValueEntries(int firstResult, int maxResults) {
+		return entityManager().createQuery("SELECT o FROM InstanceRightValue o", InstanceRightValue.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
 	}
 
-	public static Collection<InstanceRightValue> fromJsonArrayToInstanceRightValues(
-			String json) {
-		return new JSONDeserializer<List<InstanceRightValue>>()
-				.use(null, ArrayList.class)
+	public static Collection<InstanceRightValue> fromJsonArrayToInstanceRightValues(String json) {
+		return new JSONDeserializer<List<InstanceRightValue>>().use(null, ArrayList.class)
 				.use("values", InstanceRightValue.class).deserialize(json);
 	}
 
 	public static InstanceRightValue fromJsonToInstanceRightValue(String json) {
-		return new JSONDeserializer<InstanceRightValue>().use(null,
-				InstanceRightValue.class).deserialize(json);
+		return new JSONDeserializer<InstanceRightValue>().use(null, InstanceRightValue.class).deserialize(json);
 	}
 
-	public static void indexInstanceRightValue(
-			InstanceRightValue instanceRightValue) {
+	public static void indexInstanceRightValue(InstanceRightValue instanceRightValue) {
 		List<InstanceRightValue> instancerightvalues = new ArrayList<InstanceRightValue>();
 		instancerightvalues.add(instanceRightValue);
 		indexInstanceRightValues(instancerightvalues);
 	}
 
 	@Async
-	public static void indexInstanceRightValues(
-			Collection<InstanceRightValue> instancerightvalues) {
+	public static void indexInstanceRightValues(Collection<InstanceRightValue> instancerightvalues) {
 		List<SolrInputDocument> documents = new ArrayList<SolrInputDocument>();
 		for (InstanceRightValue instanceRightValue : instancerightvalues) {
 			SolrInputDocument sid = new SolrInputDocument();
-			sid.addField("id",
-					"instancerightvalue_" + instanceRightValue.getId());
+			sid.addField("id", "instancerightvalue_" + instanceRightValue.getId());
 			sid.addField("instanceRightValue.id_i", instanceRightValue.getId());
 			// Add summary field to allow searching documents for objects of
 			// this type
-			sid.addField("instancerightvalue_solrsummary_t",
-					new StringBuilder().append(instanceRightValue.getId()));
+			sid.addField("instancerightvalue_solrsummary_t", new StringBuilder().append(instanceRightValue.getId()));
 			documents.add(sid);
 		}
 		try {
@@ -183,9 +171,8 @@ public class InstanceRightValue {
 	 * @param feeCurrencyAbbr
 	 * @return
 	 */
-	public static InstanceRightValue checkInstanceRightValue(Integer id,
-			Integer value, String description, InstanceRight instanceRightId,
-			Integer fee, String feeCurrencyAbbr) {
+	public static InstanceRightValue checkInstanceRightValue(Integer id, Integer value, String description,
+			InstanceRight instanceRightId, Integer fee, String feeCurrencyAbbr) {
 		InstanceRightValue object;
 
 		if (id != null) {
@@ -207,6 +194,10 @@ public class InstanceRightValue {
 		return object;
 	}
 
+	public static AuditReader getClassAuditReader() {
+		return AuditReaderFactory.get(entityManager());
+	}
+
 	@Column(name = "description", columnDefinition = "text")
 	private String description;
 
@@ -218,7 +209,8 @@ public class InstanceRightValue {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id", columnDefinition = "serial")
+	@Column(name = "id")
+	// , columnDefinition = "serial")
 	private Integer id;
 
 	@ManyToOne
@@ -235,7 +227,7 @@ public class InstanceRightValue {
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	@Autowired(required=false)
+	@Autowired(required = false)
 	transient SolrServer solrServer;
 
 	@Transactional
@@ -303,8 +295,7 @@ public class InstanceRightValue {
 		if (this.entityManager.contains(this)) {
 			this.entityManager.remove(this);
 		} else {
-			InstanceRightValue attached = InstanceRightValue
-					.findInstanceRightValue(this.id);
+			InstanceRightValue attached = InstanceRightValue.findInstanceRightValue(this.id);
 			this.entityManager.remove(attached);
 		}
 	}
@@ -329,8 +320,7 @@ public class InstanceRightValue {
 		this.instanceRightId = instanceRightId;
 	}
 
-	public void setInstanceRightTargetGroups(
-			Set<InstanceRightTargetGroup> instanceRightTargetGroups) {
+	public void setInstanceRightTargetGroups(Set<InstanceRightTargetGroup> instanceRightTargetGroups) {
 		this.instanceRightTargetGroups = instanceRightTargetGroups;
 	}
 
@@ -343,8 +333,7 @@ public class InstanceRightValue {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this,
-				ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate
@@ -361,5 +350,9 @@ public class InstanceRightValue {
 	@Override
 	public boolean equals(Object obj) {
 		return id != null && id.equals(((InstanceRightValue) obj).id);
+	}
+
+	public AuditReader getAuditReader() {
+		return AuditReaderFactory.get(entityManager);
 	}
 }

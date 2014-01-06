@@ -8,8 +8,6 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -29,6 +27,8 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrInputDocument;
+import org.hibernate.envers.AuditReader;
+import org.hibernate.envers.AuditReaderFactory;
 import org.hibernate.envers.Audited;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -41,6 +41,7 @@ import flexjson.JSONSerializer;
 @Entity
 @Table(schema = "public", name = "series")
 @Configurable
+@Audited
 public class Series {
 
 	public static long countSerieses() {
@@ -197,6 +198,10 @@ public class Series {
 		return object;
 	}
 
+	public static AuditReader getClassAuditReader() {
+		return AuditReaderFactory.get(entityManager());
+	}
+
 	@OneToOne
 	@JoinColumn(name = "catalog_id", nullable = false, insertable = false, updatable = false)
 	private Catalog catalog;
@@ -319,5 +324,9 @@ public class Series {
 	public boolean equals(Object obj) {
 		return (catalogId != null && catalogId.equals(((Series) obj).catalogId))
 				|| (catalog != null && catalog.equals(((Series) obj).catalog));
+	}
+
+	public AuditReader getAuditReader() {
+		return AuditReaderFactory.get(entityManager);
 	}
 }

@@ -20,7 +20,6 @@ import javax.persistence.PreRemove;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.TypedQuery;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -29,6 +28,8 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrInputDocument;
+import org.hibernate.envers.AuditReader;
+import org.hibernate.envers.AuditReaderFactory;
 import org.hibernate.envers.Audited;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -42,12 +43,11 @@ import flexjson.JSONSerializer;
 @Entity
 @Table(schema = "public", name = "user_auth_log")
 @Configurable
+@Audited
 public class UserAuthLog {
 
 	public static long countUserAuthLogs() {
-		return entityManager().createQuery(
-				"SELECT COUNT(o) FROM UserAuthLog o", Long.class)
-				.getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM UserAuthLog o", Long.class).getSingleResult();
 	}
 
 	@Async
@@ -70,8 +70,7 @@ public class UserAuthLog {
 	}
 
 	public static List<UserAuthLog> findAllUserAuthLogs() {
-		return entityManager().createQuery("SELECT o FROM UserAuthLog o",
-				UserAuthLog.class).getResultList();
+		return entityManager().createQuery("SELECT o FROM UserAuthLog o", UserAuthLog.class).getResultList();
 	}
 
 	public static UserAuthLog findUserAuthLog(Long id) {
@@ -80,24 +79,18 @@ public class UserAuthLog {
 		return entityManager().find(UserAuthLog.class, id);
 	}
 
-	public static List<UserAuthLog> findUserAuthLogEntries(int firstResult,
-			int maxResults) {
-		return entityManager()
-				.createQuery("SELECT o FROM UserAuthLog o", UserAuthLog.class)
-				.setFirstResult(firstResult).setMaxResults(maxResults)
-				.getResultList();
+	public static List<UserAuthLog> findUserAuthLogEntries(int firstResult, int maxResults) {
+		return entityManager().createQuery("SELECT o FROM UserAuthLog o", UserAuthLog.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
 	}
 
-	public static Collection<UserAuthLog> fromJsonArrayToUserAuthLogs(
-			String json) {
-		return new JSONDeserializer<List<UserAuthLog>>()
-				.use(null, ArrayList.class).use("values", UserAuthLog.class)
+	public static Collection<UserAuthLog> fromJsonArrayToUserAuthLogs(String json) {
+		return new JSONDeserializer<List<UserAuthLog>>().use(null, ArrayList.class).use("values", UserAuthLog.class)
 				.deserialize(json);
 	}
 
 	public static UserAuthLog fromJsonToUserAuthLog(String json) {
-		return new JSONDeserializer<UserAuthLog>().use(null, UserAuthLog.class)
-				.deserialize(json);
+		return new JSONDeserializer<UserAuthLog>().use(null, UserAuthLog.class).deserialize(json);
 	}
 
 	public static void indexUserAuthLog(UserAuthLog userAuthLog) {
@@ -113,30 +106,21 @@ public class UserAuthLog {
 			SolrInputDocument sid = new SolrInputDocument();
 			sid.addField("id", "userauthlog_" + userAuthLog.getId());
 			sid.addField("userAuthLog.userid_t", userAuthLog.getUserId());
-			sid.addField("userAuthLog.authattemptedat_dt", userAuthLog
-					.getAuthAttemptedAt().getTime());
+			sid.addField("userAuthLog.authattemptedat_dt", userAuthLog.getAuthAttemptedAt().getTime());
 			sid.addField("userAuthLog.action_s", userAuthLog.getAction());
-			sid.addField("userAuthLog.credentialprovider_s",
-					userAuthLog.getCredentialProvider());
-			sid.addField("userAuthLog.credentialidentifier_s",
-					userAuthLog.getCredentialIdentifier());
-			sid.addField("userAuthLog.errormessage_s",
-					userAuthLog.getErrorMessage());
+			sid.addField("userAuthLog.credentialprovider_s", userAuthLog.getCredentialProvider());
+			sid.addField("userAuthLog.credentialidentifier_s", userAuthLog.getCredentialIdentifier());
+			sid.addField("userAuthLog.errormessage_s", userAuthLog.getErrorMessage());
 			sid.addField("userAuthLog.id_l", userAuthLog.getId());
 			// Add summary field to allow searching documents for objects of
 			// this type
 			sid.addField(
 					"userauthlog_solrsummary_t",
-					new StringBuilder().append(userAuthLog.getUserId())
-							.append(" ")
-							.append(userAuthLog.getAuthAttemptedAt().getTime())
-							.append(" ").append(userAuthLog.getAction())
-							.append(" ")
-							.append(userAuthLog.getCredentialProvider())
-							.append(" ")
-							.append(userAuthLog.getCredentialIdentifier())
-							.append(" ").append(userAuthLog.getErrorMessage())
-							.append(" ").append(userAuthLog.getId()));
+					new StringBuilder().append(userAuthLog.getUserId()).append(" ")
+							.append(userAuthLog.getAuthAttemptedAt().getTime()).append(" ")
+							.append(userAuthLog.getAction()).append(" ").append(userAuthLog.getCredentialProvider())
+							.append(" ").append(userAuthLog.getCredentialIdentifier()).append(" ")
+							.append(userAuthLog.getErrorMessage()).append(" ").append(userAuthLog.getId()));
 			documents.add(sid);
 		}
 		try {
@@ -206,10 +190,8 @@ public class UserAuthLog {
 	 *            autentificare.
 	 * @return
 	 */
-	public static UserAuthLog checkUserAuthLog(Long id, Users userId,
-			Calendar authAttemptedAt, String action,
-			String credentialIdentifier, String credentialProvider,
-			String errorMessage) {
+	public static UserAuthLog checkUserAuthLog(Long id, Users userId, Calendar authAttemptedAt, String action,
+			String credentialIdentifier, String credentialProvider, String errorMessage) {
 		UserAuthLog object;
 
 		if (id != null) {
@@ -232,6 +214,10 @@ public class UserAuthLog {
 		return object;
 	}
 
+	public static AuditReader getClassAuditReader() {
+		return AuditReaderFactory.get(entityManager());
+	}
+
 	@Column(name = "action", columnDefinition = "varchar", length = 30)
 	private String action;
 
@@ -252,7 +238,8 @@ public class UserAuthLog {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id", columnDefinition = "bigserial")
+	@Column(name = "id")
+	// , columnDefinition = "bigserial")
 	private Long id;
 
 	@ManyToOne
@@ -368,8 +355,7 @@ public class UserAuthLog {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this,
-				ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate
@@ -386,5 +372,9 @@ public class UserAuthLog {
 	@Override
 	public boolean equals(Object obj) {
 		return id != null && id.equals(((UserAuthLog) obj).id);
+	}
+
+	public AuditReader getAuditReader() {
+		return AuditReaderFactory.get(entityManager);
 	}
 }

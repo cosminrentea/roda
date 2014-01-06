@@ -27,6 +27,8 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrInputDocument;
+import org.hibernate.envers.AuditReader;
+import org.hibernate.envers.AuditReaderFactory;
 import org.hibernate.envers.Audited;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -39,11 +41,11 @@ import flexjson.JSONSerializer;
 @Configurable
 @Entity
 @Table(schema = "public", name = "person")
+@Audited
 public class Person {
 
 	public static long countPeople() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM Person o",
-				Long.class).getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM Person o", Long.class).getSingleResult();
 	}
 
 	@Async
@@ -66,8 +68,7 @@ public class Person {
 	}
 
 	public static List<Person> findAllPeople() {
-		return entityManager().createQuery("SELECT o FROM Person o",
-				Person.class).getResultList();
+		return entityManager().createQuery("SELECT o FROM Person o", Person.class).getResultList();
 	}
 
 	public static Person findPerson(Integer id) {
@@ -77,20 +78,17 @@ public class Person {
 	}
 
 	public static List<Person> findPersonEntries(int firstResult, int maxResults) {
-		return entityManager()
-				.createQuery("SELECT o FROM Person o", Person.class)
-				.setFirstResult(firstResult).setMaxResults(maxResults)
-				.getResultList();
+		return entityManager().createQuery("SELECT o FROM Person o", Person.class).setFirstResult(firstResult)
+				.setMaxResults(maxResults).getResultList();
 	}
 
 	public static Collection<Person> fromJsonArrayToPeople(String json) {
-		return new JSONDeserializer<List<Person>>().use(null, ArrayList.class)
-				.use("values", Person.class).deserialize(json);
+		return new JSONDeserializer<List<Person>>().use(null, ArrayList.class).use("values", Person.class)
+				.deserialize(json);
 	}
 
 	public static Person fromJsonToPerson(String json) {
-		return new JSONDeserializer<Person>().use(null, Person.class)
-				.deserialize(json);
+		return new JSONDeserializer<Person>().use(null, Person.class).deserialize(json);
 	}
 
 	@Async
@@ -102,8 +100,7 @@ public class Person {
 			sid.addField("person.id_i", person.getId());
 			// Add summary field to allow searching documents for objects of
 			// this type
-			sid.addField("person_solrsummary_t",
-					new StringBuilder().append(person.getId()));
+			sid.addField("person_solrsummary_t", new StringBuilder().append(person.getId()));
 			documents.add(sid);
 		}
 		try {
@@ -175,8 +172,8 @@ public class Person {
 	 *            - sufixul persoanei.
 	 * @return
 	 */
-	public static Person checkPerson(Integer id, String fname, String mname,
-			String lname, Prefix prefixId, Suffix suffixId) {
+	public static Person checkPerson(Integer id, String fname, String mname, String lname, Prefix prefixId,
+			Suffix suffixId) {
 		Person object;
 
 		if (id != null) {
@@ -198,6 +195,10 @@ public class Person {
 		return object;
 	}
 
+	public static AuditReader getClassAuditReader() {
+		return AuditReaderFactory.get(entityManager());
+	}
+
 	@Column(name = "fname", columnDefinition = "varchar", length = 100)
 	@NotNull
 	private String fname;
@@ -207,7 +208,8 @@ public class Person {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id", columnDefinition = "serial")
+	@Column(name = "id")
+	// , columnDefinition = "serial")
 	private Integer id;
 
 	@OneToMany(mappedBy = "personId")
@@ -422,8 +424,7 @@ public class Person {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this,
-				ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate
@@ -440,5 +441,9 @@ public class Person {
 	@Override
 	public boolean equals(Object obj) {
 		return id != null && id.equals(((Person) obj).id);
+	}
+
+	public AuditReader getAuditReader() {
+		return AuditReaderFactory.get(entityManager);
 	}
 }

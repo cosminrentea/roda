@@ -26,6 +26,8 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrInputDocument;
+import org.hibernate.envers.AuditReader;
+import org.hibernate.envers.AuditReaderFactory;
 import org.hibernate.envers.Audited;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -38,11 +40,11 @@ import flexjson.JSONSerializer;
 @Entity
 @Table(schema = "public", name = "cms_snippet")
 @Configurable
+@Audited
 public class CmsSnippet {
 
 	public static long countCmsSnippets() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM CmsSnippet o",
-				Long.class).getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM CmsSnippet o", Long.class).getSingleResult();
 	}
 
 	@Async
@@ -65,8 +67,7 @@ public class CmsSnippet {
 	}
 
 	public static List<CmsSnippet> findAllCmsSnippets() {
-		return entityManager().createQuery("SELECT o FROM CmsSnippet o",
-				CmsSnippet.class).getResultList();
+		return entityManager().createQuery("SELECT o FROM CmsSnippet o", CmsSnippet.class).getResultList();
 	}
 
 	public static CmsSnippet findCmsSnippet(Integer id) {
@@ -75,23 +76,18 @@ public class CmsSnippet {
 		return entityManager().find(CmsSnippet.class, id);
 	}
 
-	public static List<CmsSnippet> findCmsSnippetEntries(int firstResult,
-			int maxResults) {
-		return entityManager()
-				.createQuery("SELECT o FROM CmsSnippet o", CmsSnippet.class)
-				.setFirstResult(firstResult).setMaxResults(maxResults)
-				.getResultList();
+	public static List<CmsSnippet> findCmsSnippetEntries(int firstResult, int maxResults) {
+		return entityManager().createQuery("SELECT o FROM CmsSnippet o", CmsSnippet.class).setFirstResult(firstResult)
+				.setMaxResults(maxResults).getResultList();
 	}
 
 	public static Collection<CmsSnippet> fromJsonArrayToCmsSnippets(String json) {
-		return new JSONDeserializer<List<CmsSnippet>>()
-				.use(null, ArrayList.class).use("values", CmsSnippet.class)
+		return new JSONDeserializer<List<CmsSnippet>>().use(null, ArrayList.class).use("values", CmsSnippet.class)
 				.deserialize(json);
 	}
 
 	public static CmsSnippet fromJsonToCmsSnippet(String json) {
-		return new JSONDeserializer<CmsSnippet>().use(null, CmsSnippet.class)
-				.deserialize(json);
+		return new JSONDeserializer<CmsSnippet>().use(null, CmsSnippet.class).deserialize(json);
 	}
 
 	public static void indexCmsSnippet(CmsSnippet cmsSnippet) {
@@ -106,21 +102,15 @@ public class CmsSnippet {
 		for (CmsSnippet cmsSnippet : cmssnippets) {
 			SolrInputDocument sid = new SolrInputDocument();
 			sid.addField("id", "cmssnippet_" + cmsSnippet.getId());
-			sid.addField("cmsSnippet.cmssnippetgroupid_t",
-					cmsSnippet.getCmsSnippetGroupId());
+			sid.addField("cmsSnippet.cmssnippetgroupid_t", cmsSnippet.getCmsSnippetGroupId());
 			sid.addField("cmsSnippet.name_s", cmsSnippet.getName());
-			sid.addField("cmsSnippet.snippetcontent_s",
-					cmsSnippet.getSnippetContent());
+			sid.addField("cmsSnippet.snippetcontent_s", cmsSnippet.getSnippetContent());
 			sid.addField("cmsSnippet.id_i", cmsSnippet.getId());
 			// Add summary field to allow searching documents for objects of
 			// this type
-			sid.addField(
-					"cmssnippet_solrsummary_t",
-					new StringBuilder()
-							.append(cmsSnippet.getCmsSnippetGroupId())
-							.append(" ").append(cmsSnippet.getName())
-							.append(" ").append(cmsSnippet.getSnippetContent())
-							.append(" ").append(cmsSnippet.getId()));
+			sid.addField("cmssnippet_solrsummary_t", new StringBuilder().append(cmsSnippet.getCmsSnippetGroupId())
+					.append(" ").append(cmsSnippet.getName()).append(" ").append(cmsSnippet.getSnippetContent())
+					.append(" ").append(cmsSnippet.getId()));
 			documents.add(sid);
 		}
 		try {
@@ -183,8 +173,8 @@ public class CmsSnippet {
 	 *            - continutul fragmentului.
 	 * @return
 	 */
-	public static CmsSnippet checkCmsSnippet(Integer id, String name,
-			CmsSnippetGroup cmsSnippetGroupId, String snippetContent) {
+	public static CmsSnippet checkCmsSnippet(Integer id, String name, CmsSnippetGroup cmsSnippetGroupId,
+			String snippetContent) {
 		CmsSnippet object;
 
 		if (id != null) {
@@ -200,8 +190,7 @@ public class CmsSnippet {
 		if (name != null && cmsSnippetGroupId != null) {
 			TypedQuery<CmsSnippet> query = entityManager().createQuery(
 					"SELECT o FROM CmsSnippet o WHERE lower(o.name) = lower(:name) AND "
-							+ "o.cmsSnippetGroupId = :cmsSnippetGroupId",
-					CmsSnippet.class);
+							+ "o.cmsSnippetGroupId = :cmsSnippetGroupId", CmsSnippet.class);
 			query.setParameter("name", name);
 			query.setParameter("cmsSnippetGroupId", cmsSnippetGroupId);
 
@@ -220,13 +209,18 @@ public class CmsSnippet {
 		return object;
 	}
 
+	public static AuditReader getClassAuditReader() {
+		return AuditReaderFactory.get(entityManager());
+	}
+
 	@ManyToOne
 	@JoinColumn(name = "cms_snippet_group_id", columnDefinition = "integer", referencedColumnName = "id")
 	private CmsSnippetGroup cmsSnippetGroupId;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id", columnDefinition = "serial")
+	@Column(name = "id")
+	// , columnDefinition = "serial")
 	private Integer id;
 
 	@Column(name = "name", columnDefinition = "varchar", length = 200)
@@ -240,7 +234,7 @@ public class CmsSnippet {
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	@Autowired(required=false)
+	@Autowired(required = false)
 	transient SolrServer solrServer;
 
 	@Transactional
@@ -322,8 +316,7 @@ public class CmsSnippet {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this,
-				ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate
@@ -340,8 +333,11 @@ public class CmsSnippet {
 	@Override
 	public boolean equals(Object obj) {
 		return (id != null && id.equals(((CmsSnippet) obj).id))
-				|| ((name != null && name
-						.equalsIgnoreCase(((CmsSnippet) obj).name)) && (cmsSnippetGroupId != null && cmsSnippetGroupId
+				|| ((name != null && name.equalsIgnoreCase(((CmsSnippet) obj).name)) && (cmsSnippetGroupId != null && cmsSnippetGroupId
 						.equals(((CmsSnippet) obj).cmsSnippetGroupId)));
+	}
+
+	public AuditReader getAuditReader() {
+		return AuditReaderFactory.get(entityManager);
 	}
 }

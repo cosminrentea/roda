@@ -27,6 +27,8 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrInputDocument;
+import org.hibernate.envers.AuditReader;
+import org.hibernate.envers.AuditReaderFactory;
 import org.hibernate.envers.Audited;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -40,13 +42,13 @@ import flexjson.JSONSerializer;
 @Entity
 @Table(schema = "public", name = "users")
 @Configurable
+@Audited
 public class Users implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	public static long countUserses() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM Users o",
-				Long.class).getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM Users o", Long.class).getSingleResult();
 	}
 
 	@Async
@@ -69,9 +71,7 @@ public class Users implements Serializable {
 	}
 
 	public static List<Users> findAllUserses() {
-		return entityManager()
-				.createQuery("SELECT o FROM Users o", Users.class)
-				.getResultList();
+		return entityManager().createQuery("SELECT o FROM Users o", Users.class).getResultList();
 	}
 
 	public static Users findUsers(Integer id) {
@@ -81,16 +81,13 @@ public class Users implements Serializable {
 	}
 
 	public static List<Users> findUsersEntries(int firstResult, int maxResults) {
-		return entityManager()
-				.createQuery("SELECT o FROM Users o", Users.class)
-				.setFirstResult(firstResult).setMaxResults(maxResults)
-				.getResultList();
+		return entityManager().createQuery("SELECT o FROM Users o", Users.class).setFirstResult(firstResult)
+				.setMaxResults(maxResults).getResultList();
 	}
 
 	public static TypedQuery<Users> findUsersesByUsernameLike(String username) {
 		if (username == null || username.length() == 0)
-			throw new IllegalArgumentException(
-					"The username argument is required");
+			throw new IllegalArgumentException("The username argument is required");
 		username = username.replace('*', '%');
 		if (username.charAt(0) != '%') {
 			username = "%" + username;
@@ -99,19 +96,15 @@ public class Users implements Serializable {
 			username = username + "%";
 		}
 		EntityManager em = Users.entityManager();
-		TypedQuery<Users> q = em
-				.createQuery(
-						"SELECT o FROM Users AS o WHERE LOWER(o.username) LIKE LOWER(:username)",
-						Users.class);
+		TypedQuery<Users> q = em.createQuery("SELECT o FROM Users AS o WHERE LOWER(o.username) LIKE LOWER(:username)",
+				Users.class);
 		q.setParameter("username", username);
 		return q;
 	}
 
-	public static TypedQuery<Users> findUsersesByUsernameLikeAndEnabled(
-			String username, boolean enabled) {
+	public static TypedQuery<Users> findUsersesByUsernameLikeAndEnabled(String username, boolean enabled) {
 		if (username == null || username.length() == 0)
-			throw new IllegalArgumentException(
-					"The username argument is required");
+			throw new IllegalArgumentException("The username argument is required");
 		username = username.replace('*', '%');
 		if (username.charAt(0) != '%') {
 			username = "%" + username;
@@ -120,23 +113,21 @@ public class Users implements Serializable {
 			username = username + "%";
 		}
 		EntityManager em = Users.entityManager();
-		TypedQuery<Users> q = em
-				.createQuery(
-						"SELECT o FROM Users AS o WHERE LOWER(o.username) LIKE LOWER(:username)  AND o.enabled = :enabled",
-						Users.class);
+		TypedQuery<Users> q = em.createQuery(
+				"SELECT o FROM Users AS o WHERE LOWER(o.username) LIKE LOWER(:username)  AND o.enabled = :enabled",
+				Users.class);
 		q.setParameter("username", username);
 		q.setParameter("enabled", enabled);
 		return q;
 	}
 
 	public static Collection<Users> fromJsonArrayToUserses(String json) {
-		return new JSONDeserializer<List<Users>>().use(null, ArrayList.class)
-				.use("values", Users.class).deserialize(json);
+		return new JSONDeserializer<List<Users>>().use(null, ArrayList.class).use("values", Users.class)
+				.deserialize(json);
 	}
 
 	public static Users fromJsonToUsers(String json) {
-		return new JSONDeserializer<Users>().use(null, Users.class)
-				.deserialize(json);
+		return new JSONDeserializer<Users>().use(null, Users.class).deserialize(json);
 	}
 
 	public static void indexUsers(Users users) {
@@ -156,10 +147,8 @@ public class Users implements Serializable {
 			sid.addField("users.id_i", users.getId());
 			// Add summary field to allow searching documents for objects of
 			// this type
-			sid.addField(
-					"users_solrsummary_t",
-					new StringBuilder().append(users.getUsername()).append(" ")
-							.append(users.getPassword()).append(" ")
+			sid.addField("users_solrsummary_t",
+					new StringBuilder().append(users.getUsername()).append(" ").append(users.getPassword()).append(" ")
 							.append(users.getId()));
 			documents.add(sid);
 		}
@@ -223,8 +212,7 @@ public class Users implements Serializable {
 	 *            - specifica daca utilizatorul este activ.
 	 * @return
 	 */
-	public static Users checkUsers(Integer id, String username,
-			String password, Boolean enabled) {
+	public static Users checkUsers(Integer id, String username, String password, Boolean enabled) {
 		Users object;
 
 		if (id != null) {
@@ -238,8 +226,7 @@ public class Users implements Serializable {
 		List<Users> queryResult;
 
 		if (username != null) {
-			TypedQuery<Users> query = entityManager().createQuery(
-					"SELECT o FROM Users o WHERE o.username = :username",
+			TypedQuery<Users> query = entityManager().createQuery("SELECT o FROM Users o WHERE o.username = :username",
 					Users.class);
 			query.setParameter("username", username);
 
@@ -258,6 +245,10 @@ public class Users implements Serializable {
 		return object;
 	}
 
+	public static AuditReader getClassAuditReader() {
+		return AuditReaderFactory.get(entityManager());
+	}
+
 	@OneToMany(mappedBy = "username")
 	private Set<Authorities> authoritieses;
 
@@ -270,7 +261,8 @@ public class Users implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id", columnDefinition = "serial")
+	@Column(name = "id")
+	// , columnDefinition = "serial")
 	private Integer id;
 
 	@OneToMany(mappedBy = "addedBy")
@@ -482,8 +474,7 @@ public class Users implements Serializable {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this,
-				ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate
@@ -500,7 +491,10 @@ public class Users implements Serializable {
 	@Override
 	public boolean equals(Object obj) {
 		return (id != null && id.equals(((Users) obj).id))
-				|| (username != null && username
-						.equalsIgnoreCase(((Users) obj).username));
+				|| (username != null && username.equalsIgnoreCase(((Users) obj).username));
+	}
+
+	public AuditReader getAuditReader() {
+		return AuditReaderFactory.get(entityManager);
 	}
 }

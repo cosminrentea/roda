@@ -11,6 +11,7 @@ import ro.roda.transformer.AuditRevisionsByDate;
 import ro.roda.transformer.AuditRevisionsByObject;
 import ro.roda.transformer.AuditRevisionsByUsername;
 import ro.roda.transformer.AuditRevisionsInfo;
+import ro.roda.transformer.AuditSimplifiedRevisionsByObject;
 
 @Service
 @Transactional
@@ -54,5 +55,17 @@ public class AuditRevisionsServiceImpl implements AuditRevisionsService {
 
 	public AuditRevisionsByUsername findAuditRevisionsByUsername(String username) {
 		return AuditRevisionsByUsername.findRevisionsByUsername(username);
+	}
+
+	public List<AuditSimplifiedRevisionsByObject> findAllAuditSimplifiedRevisionsByObject() {
+		return AuditSimplifiedRevisionsByObject.findAllAuditSimplifiedRevisionsByObject();
+	}
+
+	public List<AuditSimplifiedRevisionsByObject> findAllAuditSimplifiedRevisionsByObject(String object) {
+		return AuditSimplifiedRevisionsByObject.findAllAuditSimplifiedRevisionsByObject(object);
+	}
+
+	public AuditSimplifiedRevisionsByObject findAuditSimplifiedRevisionsByObject(String objectName, Integer id) {
+		return AuditSimplifiedRevisionsByObject.findAuditSimplifiedRevisionsByObject(objectName, id);
 	}
 }

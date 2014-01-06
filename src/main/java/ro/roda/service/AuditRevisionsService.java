@@ -8,6 +8,7 @@ import ro.roda.transformer.AuditRevisionsByDate;
 import ro.roda.transformer.AuditRevisionsByObject;
 import ro.roda.transformer.AuditRevisionsByUsername;
 import ro.roda.transformer.AuditRevisionsInfo;
+import ro.roda.transformer.AuditSimplifiedRevisionsByObject;
 
 public interface AuditRevisionsService {
 
@@ -30,5 +31,11 @@ public interface AuditRevisionsService {
 	public abstract List<AuditRevisionsByUsername> findAllAuditRevisionsByUsername();
 
 	public abstract AuditRevisionsByUsername findAuditRevisionsByUsername(String username);
+
+	public abstract List<AuditSimplifiedRevisionsByObject> findAllAuditSimplifiedRevisionsByObject();
+
+	public abstract List<AuditSimplifiedRevisionsByObject> findAllAuditSimplifiedRevisionsByObject(String object);
+
+	public abstract AuditSimplifiedRevisionsByObject findAuditSimplifiedRevisionsByObject(String objectName, Integer id);
 
 }

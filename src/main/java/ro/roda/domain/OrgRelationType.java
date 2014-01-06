@@ -26,6 +26,8 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrInputDocument;
+import org.hibernate.envers.AuditReader;
+import org.hibernate.envers.AuditReaderFactory;
 import org.hibernate.envers.Audited;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -38,12 +40,11 @@ import flexjson.JSONSerializer;
 @Entity
 @Table(schema = "public", name = "org_relation_type")
 @Configurable
+@Audited
 public class OrgRelationType {
 
 	public static long countOrgRelationTypes() {
-		return entityManager().createQuery(
-				"SELECT COUNT(o) FROM OrgRelationType o", Long.class)
-				.getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM OrgRelationType o", Long.class).getSingleResult();
 	}
 
 	@Async
@@ -66,8 +67,7 @@ public class OrgRelationType {
 	}
 
 	public static List<OrgRelationType> findAllOrgRelationTypes() {
-		return entityManager().createQuery("SELECT o FROM OrgRelationType o",
-				OrgRelationType.class).getResultList();
+		return entityManager().createQuery("SELECT o FROM OrgRelationType o", OrgRelationType.class).getResultList();
 	}
 
 	public static OrgRelationType findOrgRelationType(Integer id) {
@@ -76,24 +76,18 @@ public class OrgRelationType {
 		return entityManager().find(OrgRelationType.class, id);
 	}
 
-	public static List<OrgRelationType> findOrgRelationTypeEntries(
-			int firstResult, int maxResults) {
-		return entityManager()
-				.createQuery("SELECT o FROM OrgRelationType o",
-						OrgRelationType.class).setFirstResult(firstResult)
-				.setMaxResults(maxResults).getResultList();
+	public static List<OrgRelationType> findOrgRelationTypeEntries(int firstResult, int maxResults) {
+		return entityManager().createQuery("SELECT o FROM OrgRelationType o", OrgRelationType.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
 	}
 
-	public static Collection<OrgRelationType> fromJsonArrayToOrgRelationTypes(
-			String json) {
-		return new JSONDeserializer<List<OrgRelationType>>()
-				.use(null, ArrayList.class)
+	public static Collection<OrgRelationType> fromJsonArrayToOrgRelationTypes(String json) {
+		return new JSONDeserializer<List<OrgRelationType>>().use(null, ArrayList.class)
 				.use("values", OrgRelationType.class).deserialize(json);
 	}
 
 	public static OrgRelationType fromJsonToOrgRelationType(String json) {
-		return new JSONDeserializer<OrgRelationType>().use(null,
-				OrgRelationType.class).deserialize(json);
+		return new JSONDeserializer<OrgRelationType>().use(null, OrgRelationType.class).deserialize(json);
 	}
 
 	public static void indexOrgRelationType(OrgRelationType orgRelationType) {
@@ -103,8 +97,7 @@ public class OrgRelationType {
 	}
 
 	@Async
-	public static void indexOrgRelationTypes(
-			Collection<OrgRelationType> orgrelationtypes) {
+	public static void indexOrgRelationTypes(Collection<OrgRelationType> orgrelationtypes) {
 		List<SolrInputDocument> documents = new ArrayList<SolrInputDocument>();
 		for (OrgRelationType orgRelationType : orgrelationtypes) {
 			SolrInputDocument sid = new SolrInputDocument();
@@ -112,8 +105,7 @@ public class OrgRelationType {
 			sid.addField("orgRelationType.name_s", orgRelationType.getName());
 			// Add summary field to allow searching documents for objects of
 			// this type
-			sid.addField("orgrelationtype_solrsummary_t",
-					new StringBuilder().append(orgRelationType.getName()));
+			sid.addField("orgrelationtype_solrsummary_t", new StringBuilder().append(orgRelationType.getName()));
 			documents.add(sid);
 		}
 		try {
@@ -186,10 +178,8 @@ public class OrgRelationType {
 		List<OrgRelationType> queryResult;
 
 		if (name != null) {
-			TypedQuery<OrgRelationType> query = entityManager()
-					.createQuery(
-							"SELECT o FROM OrgRelationType o WHERE lower(o.name) = lower(:name)",
-							OrgRelationType.class);
+			TypedQuery<OrgRelationType> query = entityManager().createQuery(
+					"SELECT o FROM OrgRelationType o WHERE lower(o.name) = lower(:name)", OrgRelationType.class);
 			query.setParameter("name", name);
 
 			queryResult = query.getResultList();
@@ -205,9 +195,14 @@ public class OrgRelationType {
 		return object;
 	}
 
+	public static AuditReader getClassAuditReader() {
+		return AuditReaderFactory.get(entityManager());
+	}
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id", columnDefinition = "serial")
+	@Column(name = "id")
+	// , columnDefinition = "serial")
 	private Integer id;
 
 	@Column(name = "name", columnDefinition = "varchar", length = 100)
@@ -220,7 +215,7 @@ public class OrgRelationType {
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	@Autowired(required=false)
+	@Autowired(required = false)
 	transient SolrServer solrServer;
 
 	@Transactional
@@ -272,8 +267,7 @@ public class OrgRelationType {
 		if (this.entityManager.contains(this)) {
 			this.entityManager.remove(this);
 		} else {
-			OrgRelationType attached = OrgRelationType
-					.findOrgRelationType(this.id);
+			OrgRelationType attached = OrgRelationType.findOrgRelationType(this.id);
 			this.entityManager.remove(attached);
 		}
 	}
@@ -295,8 +289,7 @@ public class OrgRelationType {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this,
-				ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate
@@ -313,7 +306,10 @@ public class OrgRelationType {
 	@Override
 	public boolean equals(Object obj) {
 		return (id != null && id.equals(((OrgRelationType) obj).id))
-				|| (name != null && name
-						.equalsIgnoreCase(((OrgRelationType) obj).name));
+				|| (name != null && name.equalsIgnoreCase(((OrgRelationType) obj).name));
+	}
+
+	public AuditReader getAuditReader() {
+		return AuditReaderFactory.get(entityManager);
 	}
 }

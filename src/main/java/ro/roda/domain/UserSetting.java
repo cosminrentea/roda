@@ -28,6 +28,8 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrInputDocument;
+import org.hibernate.envers.AuditReader;
+import org.hibernate.envers.AuditReaderFactory;
 import org.hibernate.envers.Audited;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -40,12 +42,11 @@ import flexjson.JSONSerializer;
 @Entity
 @Table(schema = "public", name = "user_setting")
 @Configurable
+@Audited
 public class UserSetting {
 
 	public static long countUserSettings() {
-		return entityManager().createQuery(
-				"SELECT COUNT(o) FROM UserSetting o", Long.class)
-				.getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM UserSetting o", Long.class).getSingleResult();
 	}
 
 	@Async
@@ -68,8 +69,7 @@ public class UserSetting {
 	}
 
 	public static List<UserSetting> findAllUserSettings() {
-		return entityManager().createQuery("SELECT o FROM UserSetting o",
-				UserSetting.class).getResultList();
+		return entityManager().createQuery("SELECT o FROM UserSetting o", UserSetting.class).getResultList();
 	}
 
 	public static UserSetting findUserSetting(Integer id) {
@@ -78,24 +78,18 @@ public class UserSetting {
 		return entityManager().find(UserSetting.class, id);
 	}
 
-	public static List<UserSetting> findUserSettingEntries(int firstResult,
-			int maxResults) {
-		return entityManager()
-				.createQuery("SELECT o FROM UserSetting o", UserSetting.class)
-				.setFirstResult(firstResult).setMaxResults(maxResults)
-				.getResultList();
+	public static List<UserSetting> findUserSettingEntries(int firstResult, int maxResults) {
+		return entityManager().createQuery("SELECT o FROM UserSetting o", UserSetting.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
 	}
 
-	public static Collection<UserSetting> fromJsonArrayToUserSettings(
-			String json) {
-		return new JSONDeserializer<List<UserSetting>>()
-				.use(null, ArrayList.class).use("values", UserSetting.class)
+	public static Collection<UserSetting> fromJsonArrayToUserSettings(String json) {
+		return new JSONDeserializer<List<UserSetting>>().use(null, ArrayList.class).use("values", UserSetting.class)
 				.deserialize(json);
 	}
 
 	public static UserSetting fromJsonToUserSetting(String json) {
-		return new JSONDeserializer<UserSetting>().use(null, UserSetting.class)
-				.deserialize(json);
+		return new JSONDeserializer<UserSetting>().use(null, UserSetting.class).deserialize(json);
 	}
 
 	public static void indexUserSetting(UserSetting userSetting) {
@@ -110,22 +104,17 @@ public class UserSetting {
 		for (UserSetting userSetting : usersettings) {
 			SolrInputDocument sid = new SolrInputDocument();
 			sid.addField("id", "usersetting_" + userSetting.getId());
-			sid.addField("userSetting.usersettinggroupid_t",
-					userSetting.getUserSettingGroupId());
+			sid.addField("userSetting.usersettinggroupid_t", userSetting.getUserSettingGroupId());
 			sid.addField("userSetting.name_s", userSetting.getName());
-			sid.addField("userSetting.description_s",
-					userSetting.getDescription());
-			sid.addField("userSetting.defaultvalue_s",
-					userSetting.getDefaultValue());
+			sid.addField("userSetting.description_s", userSetting.getDescription());
+			sid.addField("userSetting.defaultvalue_s", userSetting.getDefaultValue());
 			// Add summary field to allow searching documents for objects of
 			// this type
 			sid.addField(
 					"usersetting_solrsummary_t",
-					new StringBuilder()
-							.append(userSetting.getUserSettingGroupId())
-							.append(" ").append(userSetting.getName())
-							.append(" ").append(userSetting.getDescription())
-							.append(" ").append(userSetting.getDefaultValue()));
+					new StringBuilder().append(userSetting.getUserSettingGroupId()).append(" ")
+							.append(userSetting.getName()).append(" ").append(userSetting.getDescription()).append(" ")
+							.append(userSetting.getDefaultValue()));
 			documents.add(sid);
 		}
 		try {
@@ -190,9 +179,8 @@ public class UserSetting {
 	 *            - valoarea implicita a setarii.
 	 * @return
 	 */
-	public static UserSetting checkUserSetting(Integer id, String name,
-			String description, UserSettingGroup userSettingGroupId,
-			String defaultValue) {
+	public static UserSetting checkUserSetting(Integer id, String name, String description,
+			UserSettingGroup userSettingGroupId, String defaultValue) {
 		UserSetting object;
 
 		if (id != null) {
@@ -207,8 +195,7 @@ public class UserSetting {
 
 		if (name != null) {
 			TypedQuery<UserSetting> query = entityManager().createQuery(
-					"SELECT o FROM UserSetting o WHERE o.name = :name",
-					UserSetting.class);
+					"SELECT o FROM UserSetting o WHERE o.name = :name", UserSetting.class);
 			query.setParameter("name", name);
 
 			queryResult = query.getResultList();
@@ -227,6 +214,10 @@ public class UserSetting {
 		return object;
 	}
 
+	public static AuditReader getClassAuditReader() {
+		return AuditReaderFactory.get(entityManager());
+	}
+
 	@Column(name = "default_value", columnDefinition = "text")
 	private String defaultValue;
 
@@ -235,7 +226,8 @@ public class UserSetting {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id", columnDefinition = "serial")
+	@Column(name = "id")
+	// , columnDefinition = "serial")
 	private Integer id;
 
 	@Column(name = "name", columnDefinition = "text")
@@ -350,8 +342,7 @@ public class UserSetting {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this,
-				ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate
@@ -368,7 +359,10 @@ public class UserSetting {
 	@Override
 	public boolean equals(Object obj) {
 		return (id != null && id.equals(((UserSetting) obj).id))
-				|| (name != null && name
-						.equalsIgnoreCase(((UserSetting) obj).name));
+				|| (name != null && name.equalsIgnoreCase(((UserSetting) obj).name));
+	}
+
+	public AuditReader getAuditReader() {
+		return AuditReaderFactory.get(entityManager);
 	}
 }

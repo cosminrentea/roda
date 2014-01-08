@@ -87,7 +87,7 @@ public class AuditSimplifiedRevisionsByObject extends JsonInfo {
 		} catch (Exception e) {
 			// TODO catch
 			System.out.println("Error in findAllAuditSimplifiedRevisionsByObject(String object)");
-			e.printStackTrace();
+			// e.printStackTrace();
 		}
 
 		return result;
@@ -125,7 +125,6 @@ public class AuditSimplifiedRevisionsByObject extends JsonInfo {
 
 			if (auditedClass != null) {
 				Method getAuditReaderMethod = auditedClass.getMethod("getClassAuditReader");
-				// Method getid = auditedClass.getMethod("getId");
 
 				if (getAuditReaderMethod != null) {
 					AuditReader auditReader = (AuditReader) getAuditReaderMethod.invoke(null);
@@ -151,40 +150,6 @@ public class AuditSimplifiedRevisionsByObject extends JsonInfo {
 
 							RodaRevisionEntity revision = (RodaRevisionEntity) ((Object[]) o)[1];
 
-							// get the entities modified at the revision, for
-							// the
-							// given class
-							// AuditQuery queryEntities =
-							// revision.getAuditReader().createQuery()
-							// .forEntitiesModifiedAtRevision(auditedClass,
-							// revision.getId());
-							// List<?> resultEntities =
-							// queryEntities.getResultList();
-							// Iterator<?> iteratorEntities =
-							// resultEntities.iterator();
-
-							// Set<AuditRow> auditRows = new
-							// HashSet<AuditRow>();
-							// while (iteratorEntities.hasNext()) {
-							// Object object = iteratorEntities.next();
-							//
-							// Integer objectId =
-							// Integer.parseInt(getid.invoke(object).toString());
-							//
-							// // get the revision type (insert, update or
-							// delete)
-							// AuditQuery queryRev =
-							// revision.getAuditReader().createQuery()
-							// .forRevisionsOfEntity(auditedClass, false,
-							// true).add(AuditEntity.id().eq(objectId));
-							// RevisionType revType = (RevisionType) ((Object[])
-							// queryRev.getResultList().get(0))[2];
-							// auditRows
-							// .add(new AuditRow(objectId, revType != null ?
-							// revType.toString() : "", null, null));
-							//
-							// }
-							// if (auditRows.size() > 0) {
 							// TODO: get the correct userid
 							revisions.add(new AuditRevision(revision.getId(), revision.getRevisionDate(), revision
 									.getUsername(), null, null, null, null));
@@ -202,7 +167,6 @@ public class AuditSimplifiedRevisionsByObject extends JsonInfo {
 
 						nrRev = revisions.size();
 
-						// TODO: get the userid
 						onConstructRevisionsByObject(objectName, nrRev, lastRevision, revisions);
 					}
 				}
@@ -210,7 +174,7 @@ public class AuditSimplifiedRevisionsByObject extends JsonInfo {
 		} catch (Exception e) {
 			// TODO
 			System.out.println("Exception thrown when getting revision info. " + e.getMessage());
-			// e.printStackTrace();
+			e.printStackTrace();
 		}
 	}
 

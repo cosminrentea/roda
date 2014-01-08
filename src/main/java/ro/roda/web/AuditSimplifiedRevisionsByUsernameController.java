@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import ro.roda.service.AuditRevisionsService;
-import ro.roda.transformer.AuditRevisionsByUsername;
+import ro.roda.transformer.AuditSimplifiedRevisionsByUsername;
 
-@RequestMapping("/admin/revisions-by-user")
+@RequestMapping("/admin/simple-revisions-by-user")
 @Controller
-public class AuditRevisionsByUsernameController {
+public class AuditSimplifiedRevisionsByUsernameController {
 
 	@Autowired
 	AuditRevisionsService revisionsService;
@@ -26,20 +26,22 @@ public class AuditRevisionsByUsernameController {
 	public ResponseEntity<String> listJson() {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");
-		List<AuditRevisionsByUsername> result = revisionsService.findAllAuditRevisionsByUsername();
-		return new ResponseEntity<String>(AuditRevisionsByUsername.toJsonArray(result), headers, HttpStatus.OK);
+		List<AuditSimplifiedRevisionsByUsername> result = revisionsService.findAllAuditSimplifiedRevisionsByUsername();
+		return new ResponseEntity<String>(AuditSimplifiedRevisionsByUsername.toJsonArray(result), headers,
+				HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/{username}", headers = "Accept=application/json")
 	@ResponseBody
 	public ResponseEntity<String> showJson(@PathVariable("username") String username) {
-		AuditRevisionsByUsername auditRevisionsByUsername = revisionsService.findAuditRevisionsByUsername(username);
+		AuditSimplifiedRevisionsByUsername auditSimplifiedRevisionsByUsername = revisionsService
+				.findAuditSimplifiedRevisionsByUsername(username);
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");
-		if (auditRevisionsByUsername == null) {
+		if (auditSimplifiedRevisionsByUsername == null) {
 			return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
 		}
-		return new ResponseEntity<String>(auditRevisionsByUsername.toJson(), headers, HttpStatus.OK);
+		return new ResponseEntity<String>(auditSimplifiedRevisionsByUsername.toJson(), headers, HttpStatus.OK);
 	}
 
 }

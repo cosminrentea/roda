@@ -1,6 +1,14 @@
+/**
+ * 
+ */
 Ext.define('RODAdmin.controller.cms.Layout', {
     extend : 'Ext.app.Controller',
 
+    views :[
+            'RODAdmin.view.cms.layout.Layouts'            
+            
+            ],
+    
     refs : [
             {
                 ref : 'itemsview',
@@ -21,37 +29,73 @@ Ext.define('RODAdmin.controller.cms.Layout', {
     init : function(application) {
 	    this.control({
 	        "cmslayouts toolbar button#icon-view" : {
+	            /**
+				 * @listener cmslayouts-toolbar-button-icon-view-click triggered-by:
+				 *           {@link RODAdmin.view.cms.layout.Layouts Layouts}
+				 *           toolbar button#icon-view
+				 *           {@link #onIconViewClick}
+				 */	
 		        click : this.onIconViewClick
 	        },
 	        "cmslayouts toolbar button#tree-view" : {
+	            /**
+				 * @listener cmslayouts-toolbar-button-tree-view-click triggered-by:
+				 *           {@link RODAdmin.view.cms.layout.Layouts Layouts}
+				 *           toolbar button#tree-view
+				 *           {@link #onTreeViewClick}
+				 */	
 		        click : this.onTreeViewClick
 	        },
 	        "layoutproperties toolbar#lyproptoolbar button#editlayout" : {
+	            /**
+				 * @listener layoutproperties-toolbar-lyproptoolbar-button-editlayout-click triggered-by:
+				 *           {@link RODAdmin.view.cms.layout.details.LayoutProperties LayoutProperties}
+				 *           toolbar#lyproptoolbar button#editlayout
+				 *           {@link #onlytoolbarEditClick}
+				 */	
 		        click : this.onlytoolbarEditClick
 	        },
 	        "layoutproperties toolbar#lyproptoolbar button#deletelayout" : {
+	            /**
+				 * @listener layoutproperties-toolbar-lyproptoolbar-button-deletelayout-click triggered-by:
+				 *           {@link RODAdmin.view.cms.layout.details.LayoutProperties LayoutProperties}
+				 *           toolbar#lyproptoolbar button#deletelayout
+				 *           {@link #onlytoolbarDeleteClick}
+				 */	
 		        click : this.onlytoolbarDeleteClick
 	        },
 	        "layoutproperties toolbar#lyproptoolbar button#getlayoutaudit" : {
+	            /**
+				 * @listener layoutproperties-toolbar-lyproptoolbar-button-getlayoutaudit-click triggered-by:
+				 *           {@link RODAdmin.view.cms.layout.details.LayoutProperties LayoutProperties}
+				 *           toolbar#lyproptoolbar button#getlayoutaudit
+				 *           {@link #onlytoolbarAuditClick}
+				 */	
 		        click : this.onlytoolbarAuditClick
 	        },
 	    });
     },
-
+    /**
+	 * @method
+	 */
     onIconViewClick : function(button, e, options) {
 	    console.log('onIconviewClick new controller');
 	    this.getItemsview().layout.setActiveItem('lyiconview');
 	    var store = Ext.StoreManager.get('cms.layout.Layout');
 	    store.load();
     },
-
+    /**
+	 * @method
+	 */
     onTreeViewClick : function(button, e, options) {
 	    console.log('onfolderviewClick new controller');
 	    this.getItemsview().layout.setActiveItem('lyfolderview');
 	    var store = Ext.StoreManager.get('cms.layout.LayoutTree');
 	    store.load();
     },
-
+    /**
+	 * @method
+	 */
     onlytoolbarEditClick : function(button, e, options) {
 	    var fp = this.getLayoutproperties().data;
 	    var win = Ext.create('RODAdmin.view.cms.layout.EditLayoutWindow');
@@ -60,10 +104,17 @@ Ext.define('RODAdmin.controller.cms.Layout', {
 	    win.show();
 	    win.down('form').getForm().loadRecord(fp);
     },
-
+    /**
+	 * @method
+	 */
     onlytoolbarDeleteClick : function(button, e, options) {
 	    console.log('editfile clicked');
 	    var fp = this.getLayoutproperties().data;
+
+	    /**
+	     * @todo Store 
+	     * Trebuie convertit la acces catre store, nu cu post ajax cum e acum.
+	     */	    
 
 	    Ext.Msg.confirm('Delete Requirement', 'Are you sure you want to delete the ' + fp.data.itemtype + ' '
 	            + fp.data.name + '?', function(id, value) {
@@ -96,7 +147,9 @@ Ext.define('RODAdmin.controller.cms.Layout', {
 		    }
 	    }, this);
     },
-
+    /**
+	 * @method
+	 */
     onlytoolbarAuditClick : function(button, e, options) {
 	    console.log('auditfile clicked, cool stuff ahead');
 	    var fp = this.getLayoutproperties().data;

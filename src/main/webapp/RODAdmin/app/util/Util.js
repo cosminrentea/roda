@@ -1,3 +1,6 @@
+/**
+ * 
+ */
 Ext.define('RODAdmin.util.Util', {
 
     statics : {

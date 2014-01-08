@@ -1,3 +1,6 @@
+/**
+ * 
+ */
 Ext.define('RODAdmin.view.common.WindowForm', {
 			extend : 'Ext.window.Window',
 			alias : 'widget.windowform',

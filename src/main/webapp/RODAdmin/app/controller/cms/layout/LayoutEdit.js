@@ -1,10 +1,19 @@
+/**
+ * 
+ */
 Ext.define('RODAdmin.controller.cms.layout.LayoutEdit', {
     extend : 'Ext.app.Controller',
-
+    /**
+	 * @cfg
+	 */
     views : [
-	    "cms.layout.EditLayoutWindow"
+	    "RODAdmin.view.cms.layout.EditLayoutWindow",
+	    "RODAdmin.view.cms.layout.AddLayoutToGroupWindow",
+	    "RODAdmin.view.cms.layout.GroupWindow"
     ],
-
+    /**
+	 * @cfg
+	 */
     refs : [
             {
                 ref : 'itemsview',
@@ -17,35 +26,70 @@ Ext.define('RODAdmin.controller.cms.layout.LayoutEdit', {
                 selector : 'layoutedit treepanel#groupselect'
             }
     ],
-
+    /**
+	 * @method
+	 */
     init : function(application) {
 	    this.control({
 	        "layoutedit treepanel#groupselect" : {
+	        	 /**
+				 * @listener groupselect-load triggered-by:
+				 *           {@link RODAdmin.view.cms.layout.EditLayoutWindow EditLayoutWindow} treepanel#groupselect    
+				 *           executes {@link #folderLoad}  
+				 */
 	            load : this.folderLoad, // this is the only event fired
 	            // after loading the store in a
 	            // tree view, apparently. This
 	            // is REALLY stupid because it
 	            // is probabily fired multiple
 	            // times.
+	        	 /**
+				 * @listener groupselect-cellclick triggered-by:
+				 *           {@link RODAdmin.view.cms.layout.EditLayoutWindow EditLayoutWindow} treepanel#groupselect    
+				 *           executes {@link #onGroupselectCellClick}  
+				 */
 	            cellclick : this.onGroupselectCellClick
 	        },
 	        "layoutedit button#save" : {
+	        	 /**
+				 * @listener button-save-click triggered-by:
+				 *           {@link RODAdmin.view.cms.layout.EditLayoutWindow EditLayoutWindow} button#save    
+				 *           executes {@link #onLayoutEditSaveClick}  
+				 */	        	
 		        click : this.onLayoutEditSaveClick
 	        },
 	        "layoutgadd button#save" : {
-		        click : this.onLayoutAddGroupSaveClick
+	        	 /**
+				 * @listener layoutgadd-button-save-click triggered-by:
+				 *           {@link RODAdmin.view.cms.layout.AddLayoutToGroupWindow AddLayoutToGroupWindow} button#save    
+				 *           executes {@link #onLayoutAddGroupSaveClick}  
+				 */	
+	        	click : this.onLayoutAddGroupSaveClick
 	        },
 	        "lygroupadd button#save" : {
-		        click : this.onGroupSaveClick
+	        	 /**
+				 * @listener lygroupadd-button-save-click triggered-by:
+				 *           {@link RODAdmin.view.cms.layout.GroupWindow GroupWindow} button#save    
+				 *           executes {@link #onGroupSaveClick}  
+				 */	
+	        	click : this.onGroupSaveClick
 
 	        }
 	    });
     },
-
+    /**
+	 * @method
+	 * Se ocupa de scrierea unui grup modificat.  
+	 */
     onGroupSaveClick : function(button, e, options) {
 	    var win = button.up('window');
 	    var formPanel = win.down('form');
 	    var me = this;
+/**
+ * @todo Store 
+ * Trebuie convertit la acces catre store, nu cu post ajax cum e acum.
+ */
+	    
 	    if (formPanel.getForm().isValid()) {
 		    formPanel.getForm().submit({
 		        clientValidation : true,
@@ -87,6 +131,9 @@ Ext.define('RODAdmin.controller.cms.layout.LayoutEdit', {
 		    });
 	    }
     },
+    /**
+	 * @method
+	 */
 
     onLayoutEditSaveClick : function(button, e, options) {
 	    var win = button.up('window');
@@ -136,6 +183,9 @@ Ext.define('RODAdmin.controller.cms.layout.LayoutEdit', {
 	    }
 
     },
+    /**
+	 * @method
+	 */
 
     onLayoutAddGroupSaveClick : function(button, e, options) {
 	    console.log('small step for man...');
@@ -185,6 +235,9 @@ Ext.define('RODAdmin.controller.cms.layout.LayoutEdit', {
 		    });
 	    }
     },
+    /**
+	 * @method
+	 */
 
     folderLoad : function(component, options) {
 	    var active = this.getItemsview().layout.getActiveItem();
@@ -195,6 +248,9 @@ Ext.define('RODAdmin.controller.cms.layout.LayoutEdit', {
 		    this.getFolderselect().getSelectionModel().select(cnode);
 	    }
     },
+    /**
+	 * @method
+	 */
 
     onGroupselectCellClick : function(component, td, cellIndex, record, tr, rowIndex, e, eOpts) {
 	    component.up('layoutedit').down('form').down('fieldset').query('displayfield')[0].setValue(record.data.name + '('+record.data.indice+')');

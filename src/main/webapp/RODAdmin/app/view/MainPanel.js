@@ -1,3 +1,6 @@
+/**
+ * 
+ */
 Ext.define('RODAdmin.view.MainPanel', {
     extend: 'Ext.tab.Panel',
     alias: 'widget.mainpanel',

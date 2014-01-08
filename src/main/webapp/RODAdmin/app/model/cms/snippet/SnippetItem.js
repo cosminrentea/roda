@@ -1,3 +1,6 @@
+/**
+ * 
+ */
 Ext.define('RODAdmin.model.cms.snippet.SnippetItem', {
 	extend : 'Ext.data.Model',
 	fields : [ {

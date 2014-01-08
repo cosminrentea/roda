@@ -1,3 +1,6 @@
+/**
+ * 
+ */
 Ext.define('RODAdmin.view.cms.snippet.SnippetGroupContextMenu', {
 extend: 'Ext.menu.Menu',
 hidden: true,

@@ -1,3 +1,6 @@
+/**
+ * 
+ */
 Ext.define('RODAdmin.view.cms.layout.GroupWindow', {
 			extend : 'RODAdmin.view.common.WindowForm',
 			alias : 'widget.lygroupadd',

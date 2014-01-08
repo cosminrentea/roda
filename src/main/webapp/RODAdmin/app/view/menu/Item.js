@@ -1,3 +1,6 @@
+/**
+ * 
+ */
 Ext.define('RODAdmin.view.menu.Item', {
     extend: 'Ext.tree.Panel',
     alias: 'widget.mainmenuitem',

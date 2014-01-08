@@ -1,8 +1,13 @@
+/**
+ * 
+ */
 Ext.define('RODAdmin.controller.cms.snippet.SnippetEdit', {
     extend : 'Ext.app.Controller',
 
     views : [
-	    "cms.snippet.EditSnippetWindow"
+	    "RODAdmin.view.cms.snippet.EditSnippetWindow",
+	    "RODAdmin.view.cms.snippet.AddSnippetToGroupWindow",
+	    "RODAdmin.view.cms.snippet.GroupWindow"
     ],
 
     refs : [
@@ -17,36 +22,67 @@ Ext.define('RODAdmin.controller.cms.snippet.SnippetEdit', {
                 selector : 'snippetedit treepanel#groupselect'
             }
     ],
-
+    /**
+	 * @method
+	 */
     init : function(application) {
 	    this.control({
 	        "snippetedit treepanel#groupselect" : {
-	            load : this.folderLoad, // this is the only event fired
-	            // after loading the store in a
-	            // tree view, apparently. This
-	            // is REALLY stupid because it
-	            // is probabily fired multiple
-	            // times.
+	            /**
+				 * @listener snippetedit-treepanel-groupselect triggered-by:
+				 *           {@link RODAdmin.view.cms.snippet.EditSnippetWindow EditSnippetWindow}
+				 *           treepanel#groupselect  
+				 *           this is the only event fired after loading the store in a tree view, apparently. This
+	             * 		  	 is REALLY stupid because it is probabily fired multiple times.  
+				 *           {@link #folderLoad}
+				 */		        	
+	            load : this.folderLoad, 
 	            cellclick : this.onGroupselectCellClick
 	        },
 	        "snippetedit button#save" : {
-		        click : this.onSnippetEditSaveClick
+	            /**
+				 * @listener snippetedit-button-save triggered-by:
+				 *           {@link RODAdmin.view.cms.snippet.EditSnippetWindow EditSnippetWindow}
+				 *           button#save
+				 *           {@link #onSnippetEditSaveClick}
+				 */	
+	        	click : this.onSnippetEditSaveClick
 	        },
 	        "snippetgadd button#save" : {
-		        click : this.onSnippetAddGroupSaveClick
+	            /**
+				 * @listener snippetgadd-button-save triggered-by:
+				 *           {@link RODAdmin.view.cms.snippet.AddSnippetToGroupWindow AddSnippetToGroupWindow}
+				 *           button#save
+				 *           {@link #onSnippetAddGroupSaveClick}
+				 */	
+	        	click : this.onSnippetAddGroupSaveClick
 	        },
 	        "sngroupadd button#save" : {
+	            /**
+				 * @listener sngroupadd-button-save triggered-by:
+				 *           {@link RODAdmin.view.cms.snippet.GroupWindow GroupWindow}
+				 *           button#save
+				 *           {@link #onGroupSaveClick}
+				 */	
 		        click : this.onGroupSaveClick
 
 	        }
 	    });
     },
-
+    /**
+	 * @method
+	 */
     
     onSnippetAddGroupSaveClick : function(button, e, options) {
 	    var win = button.up('window');
 	    var formPanel = win.down('form');
 	    var me = this;
+
+	    /**
+	     * @todo Store1 
+	     * Trebuie convertit la acces catre store, nu cu post ajax cum e acum.
+	     */	    
+	    
 	    if (formPanel.getForm().isValid()) {
 		    formPanel.getForm().submit({
 		        clientValidation : true,
@@ -91,12 +127,20 @@ Ext.define('RODAdmin.controller.cms.snippet.SnippetEdit', {
 	    }
     },
 
-    
+    /**
+	 * @method
+	 */    
     
     onGroupSaveClick : function(button, e, options) {
 	    var win = button.up('window');
 	    var formPanel = win.down('form');
 	    var me = this;
+	    
+	    /**
+	     * @todo Store2 
+	     * Trebuie convertit la acces catre store, nu cu post ajax cum e acum.
+	     */	    
+	    
 	    if (formPanel.getForm().isValid()) {
 		    formPanel.getForm().submit({
 		        clientValidation : true,
@@ -140,7 +184,9 @@ Ext.define('RODAdmin.controller.cms.snippet.SnippetEdit', {
 		    });
 	    }
     },    
-    
+    /**
+	 * @method
+	 */   
     onSnippetEditSaveClick : function(button, e, options) {
 	    // ok, now we're here. Let's save the little fucker.
 	    // first, we need to find the window
@@ -152,6 +198,12 @@ Ext.define('RODAdmin.controller.cms.snippet.SnippetEdit', {
 	    var currentNode = this.getFolderview().getSelectionModel().getLastSelected();
 	    var folderview = this.getFolderview()
 	    var me = this;
+
+	    /**
+	     * @todo Store3 
+	     * Trebuie convertit la acces catre store, nu cu post ajax cum e acum.
+	     */
+	    
 	    if (formPanel.getForm().isValid()) {
 		    formPanel.getForm().submit({
 		        clientValidation : true,
@@ -198,7 +250,9 @@ Ext.define('RODAdmin.controller.cms.snippet.SnippetEdit', {
 
     },
 
-   
+    /**
+	 * @method
+	 */   
     
     folderLoad : function(component, options) {
 	    var active = this.getItemsview().layout.getActiveItem();
@@ -209,7 +263,9 @@ Ext.define('RODAdmin.controller.cms.snippet.SnippetEdit', {
 		    this.getFolderselect().getSelectionModel().select(cnode);
 	    }
     },
- 
+    /**
+	 * @method
+	 */
     onGroupselectCellClick : function(component, td, cellIndex, record, tr, rowIndex, e, eOpts) {
 	    component.up('snippetedit').down('form').down('fieldset').query('displayfield')[0].setValue(record.data.name + '('+record.data.indice+')');
 	    component.up('snippetedit').down('hiddenfield#groupid').setValue(record.data.indice);

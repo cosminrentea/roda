@@ -1,3 +1,6 @@
+/**
+ * 
+ */
 Ext.define('RODAdmin.view.toolbar.CloselTb', {
     extend: 'Ext.toolbar.Toolbar',
     alias: 'widget.closetb',

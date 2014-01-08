@@ -1,3 +1,6 @@
+/**
+ * 
+ */
 Ext.define('RODAdmin.model.cms.files.FileItem', {
 	extend : 'Ext.data.Model',
 	fields : [ {

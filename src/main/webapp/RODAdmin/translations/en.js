@@ -20,6 +20,11 @@ translations = {
 	menu13 : 'Profile',
 	menu_cms : 'Content Management',
 	menu_cron : 'Automated actions',
+	menu_audit : 'Audit',
+	audit_main : 'Audit Main',
+	users_main : 'Users Main',
+	admins_main : 'Admins Main',
+	menu_users : 'User Management',	
 	cms_dashboard : 'CMS Dashboard',
 	cms_layouts : 'Layouts',
 	cms_snippets : 'Snippets',
@@ -27,6 +32,8 @@ translations = {
 	cms_pages : 'Pages',
 	cron_dashboard : 'Actions Dashboard',
 	cron_actions : 'Actions',
+
+
 	
 	
 	staticData: 'Static Data',

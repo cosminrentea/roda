@@ -1,5 +1,11 @@
+/**
+ * 
+ */
 Ext.define('RODAdmin.view.cms.layout.LayoutItemsview', {
 			extend : 'Ext.panel.Panel',
+			/**
+			 * @config
+			 */
 			alias : 'widget.layoutitemsview',
 			itemId : 'layoutitemsview',
 			activeItem : 1,
@@ -66,7 +72,6 @@ Ext.define('RODAdmin.view.cms.layout.LayoutItemsview', {
 								}]
 					}, {
 						store : 'cms.layout.LayoutTree',
-//						store : 'cms.files.FileTree',
 						itemId : 'lyfolderview',
 						xtype : 'treepanel',
 						useArrows : true,

@@ -1,3 +1,6 @@
+/**
+ * 
+ */
 Ext.define('RODAdmin.view.cms.layout.LayoutDetails', {
 			extend : 'Ext.panel.Panel',
 			alias : 'widget.layoutdetails',

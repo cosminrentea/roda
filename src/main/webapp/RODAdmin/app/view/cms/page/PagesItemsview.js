@@ -1,3 +1,6 @@
+/**
+ * 
+ */
 Ext.define('RODAdmin.view.cms.page.PagesItemsview', {
 			extend : 'Ext.panel.Panel',
 			alias : 'widget.pagesitemsview',

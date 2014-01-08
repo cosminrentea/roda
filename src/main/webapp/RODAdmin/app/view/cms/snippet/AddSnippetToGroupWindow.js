@@ -1,3 +1,6 @@
+/**
+ * 
+ */
 Ext.define('RODAdmin.view.cms.snippet.AddSnippetToGroupWindow', {
 	             
 	extend : 'RODAdmin.view.common.WindowForm',

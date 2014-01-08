@@ -1,3 +1,6 @@
+/**
+ * 
+ */
 Ext.define('RODAdmin.view.toolbar.CancelSave', {
     extend: 'Ext.toolbar.Toolbar',
     alias: 'widget.cancelsave',

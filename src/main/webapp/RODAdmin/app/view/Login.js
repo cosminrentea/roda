@@ -1,3 +1,8 @@
+/**
+ * Afiseaza caseta de login. 
+ * @uses RODAdmin.view.Translation
+ * @uses RODAdmin.controller.Login
+ */
 Ext.define('RODAdmin.view.Login', {
     extend: 'Ext.window.Window',
     alias: 'widget.login',

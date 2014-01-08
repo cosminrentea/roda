@@ -1,3 +1,6 @@
+/**
+ Meniu contextual pentru {@link RODAdmin.controller.cms.snippet.SnippetList}
+ */
 Ext.define('RODAdmin.view.cms.snippet.SnippetItemviewContextMenu', {
 extend: 'Ext.menu.Menu',
 hidden: true,

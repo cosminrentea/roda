@@ -1,3 +1,6 @@
+/**
+ * 
+ */
 Ext.define('RODAdmin.view.MyViewport', {
     extend: 'Ext.container.Viewport',
     alias: 'widget.mainviewport',

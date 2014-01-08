@@ -1,3 +1,6 @@
+/**
+ * 
+ */
 Ext.define('RODAdmin.util.TreeGridFilter', {
     extend: 'Ext.grid.feature.Feature',
     alias: 'feature.treeGridFilter',
@@ -5,7 +8,7 @@ Ext.define('RODAdmin.util.TreeGridFilter', {
     allowParentFolders: false,                                             // allow nodes not designated as 'leaf' (and their child items) to  be matched by the filter
 
     init: function (tree) {
-        console.log('init');
+//        console.log('init');
         console.log(tree);
         var me = this;
         me.tree = tree;

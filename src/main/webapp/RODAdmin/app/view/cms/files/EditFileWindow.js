@@ -1,3 +1,6 @@
+/**
+ * 
+ */
 Ext.define('RODAdmin.view.cms.files.EditFileWindow', {
 	extend : 'RODAdmin.view.common.WindowForm',
 	alias : 'widget.fileedit',

@@ -1,8 +1,11 @@
+/**
+ * 
+ */
 Ext.define('RODAdmin.controller.TranslationManager', {
     extend: 'Ext.app.Controller',
 
     views: [
-        'Translation'
+        'RODAdmin.view.Translation'
     ],
 
     refs: [
@@ -11,7 +14,9 @@ Ext.define('RODAdmin.controller.TranslationManager', {
             selector: 'translation'
         }
     ],
-
+   	/**
+   	 * @event
+   	 */
     onMenuitemClick: function(item, e, options) {
         var menu = this.getTranslation();
 
@@ -22,7 +27,9 @@ Ext.define('RODAdmin.controller.TranslationManager', {
 
         window.location.reload();
     },
-
+   	/**
+   	 * @event
+   	 */
     onSplitbuttonBeforeRender: function(abstractcomponent, options) {
         var lang = localStorage ? (localStorage.getItem('user-lang') || 'en') : 'en';
         abstractcomponent.iconCls = lang;
@@ -35,7 +42,9 @@ Ext.define('RODAdmin.controller.TranslationManager', {
             abstractcomponent.text = 'Português';
         }
     },
-
+/**
+ * @method
+ */
     init: function(application) {
         this.control({
             "translation menuitem": {

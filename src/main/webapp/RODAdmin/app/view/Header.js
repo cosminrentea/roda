@@ -1,3 +1,6 @@
+/**
+ * 
+ */
 Ext.define('RODAdmin.view.Header', {
     extend: 'Ext.toolbar.Toolbar',
     alias: 'widget.appheader',

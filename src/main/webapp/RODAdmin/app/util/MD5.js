@@ -1,4 +1,7 @@
-﻿Ext.define('RODAdmin.util.MD5',{
+﻿/**
+ * 
+ */
+Ext.define('RODAdmin.util.MD5',{
 	
 	statics: {
 		encode: function(s,raw,hexcase,chrsz) {

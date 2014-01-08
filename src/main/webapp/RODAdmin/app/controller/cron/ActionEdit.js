@@ -1,8 +1,11 @@
+/**
+ * 
+ */
 Ext.define('RODAdmin.controller.cron.ActionEdit', {
     extend : 'Ext.app.Controller',
 
     views : [
-	    "cron.action.EditCronActionWindow"
+	    "RODAdmin.view.cron.action.EditCronActionWindow"
     ],
 
     refs : [
@@ -14,25 +17,39 @@ Ext.define('RODAdmin.controller.cron.ActionEdit', {
                 selector : 'layoutedit treepanel#groupselect'
             }
     ],
-
+    /**
+	 * @method
+	 */
     init : function(application) {
 	    this.control({
-	        "cronactionedit button#save" : {
-		        click : this.onEditSaveClick
-	        },
+		    "cronactionedit button#save" : {
+	            /**
+				 * @listener cronactionedit-button-save-click triggered-by:
+				 *           {@link RODAdmin.view.cron.action.EditCronActionWindow EditCronActionWindow}
+				 *           button#save
+				 *           {@link #onEditSaveClick}
+				 */		        	
+			    click : this.onEditSaveClick
+		    },
 	    });
     },
-
+    /**
+	 * @method
+	 */
     onEditSaveClick : function(button, e, options) {
 	    var win = button.up('window');
 	    var formPanel = win.down('form');
 	    var currentNode = this.getItemsview().getSelectionModel().getLastSelected();
 	    var itemsview = this.getItemsview()
 	    var me = this;
+	    /**
+	     * @todo Store 
+	     * Trebuie convertit la acces catre store, nu cu post ajax cum e acum.
+	     */	    
 	    if (formPanel.getForm().isValid()) {
 		    formPanel.getForm().submit({
 		        clientValidation : true,
-//		        url : 'http://localhost:8080/roda/admin/layoutsave',
+		        // url : 'http://localhost:8080/roda/admin/layoutsave',
 
 		        success : function(form, action) {
 			        var result = action.result;
@@ -65,5 +82,5 @@ Ext.define('RODAdmin.controller.cron.ActionEdit', {
 	    }
 
     },
-    
+
 });

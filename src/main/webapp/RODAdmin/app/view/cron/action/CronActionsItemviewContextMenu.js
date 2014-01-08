@@ -1,3 +1,6 @@
+/**
+ * 
+ */
 Ext.define('RODAdmin.view.cron.action.CronActionsItemviewContextMenu', {
 extend: 'Ext.menu.Menu',
 hidden: true,

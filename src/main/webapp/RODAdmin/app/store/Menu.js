@@ -1,29 +1,14 @@
+/**
+ * 
+ */
 Ext.define('RODAdmin.store.Menu', {
-    extend: 'Ext.data.Store',
+    extend: 'RODAdmin.store.Base',
 
     requires: [
-        'RODAdmin.model.menu.Root'
+        'RODAdmin.model.menu.Root',
     ],
 
     model: 'RODAdmin.model.menu.Root',
-    
-    proxy: {
-        type: 'ajax',
-//        url: 'data/menu.json',
-  		url: 'http://roda.apiary.io/admin/menu',	      
-        reader: {
-            type: 'json',
-            root: 'items'
-        },
-        listeners: {
-            exception: function(proxy, response, operation){
-                Ext.MessageBox.show({
-                    title: 'REMOTE EXCEPTION',
-                    msg: operation.getError(),
-                    icon: Ext.MessageBox.ERROR,
-                    buttons: Ext.Msg.OK
-                });
-            }
-        }
-    }
+    proxy: {type: 'main', url: 'http://roda.apiary.io/admin/menu',reader:{root:'items'}},
+
 });

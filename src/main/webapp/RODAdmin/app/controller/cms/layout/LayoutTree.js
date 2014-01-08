@@ -1,16 +1,33 @@
+/**
+ * 
+ */
 Ext.define('RODAdmin.controller.cms.layout.LayoutTree', {
     extend : 'Ext.app.Controller',
 
+    /**
+     * @todo getstores
+     * De convertit toate apelurile catre store-uri spre getStore.
+     */
+    
     stores : [
-            'cms.layout.LayoutTree', 'cms.layout.LayoutItem', 'cms.layout.LayoutGroup', 'cms.layout.Layout',
+            'cms.layout.LayoutTree',
+            'cms.layout.LayoutItem',
+            'cms.layout.LayoutGroup',
+            'cms.layout.Layout',
             'common.Audit'
     ],
 
     views : [
-            'cms.layout.Layouts', 'cms.layout.LayoutItemsview', 'cms.layout.LayoutDetails',
-            'cms.layout.details.LayoutProperties', "cms.layout.EditLayoutWindow", 'cms.layout.LayoutContextMenu',
-            'cms.layout.LayoutGroupContextMenu', 'cms.layout.AddLayoutToGroupWindow',
-            'cms.layout.LayoutItemviewContextMenu', 'cms.layout.details.LayoutUsage'
+            'RODAdmin.view.cms.layout.Layouts',
+            'RODAdmin.view.cms.layout.LayoutItemsview',
+            'RODAdmin.view.cms.layout.LayoutDetails',
+            'RODAdmin.view.cms.layout.details.LayoutProperties',
+            "RODAdmin.view.cms.layout.EditLayoutWindow",
+            'RODAdmin.view.cms.layout.LayoutContextMenu',
+            'RODAdmin.view.cms.layout.LayoutGroupContextMenu',
+            'RODAdmin.view.cms.layout.AddLayoutToGroupWindow',
+            'RODAdmin.view.cms.layout.LayoutItemviewContextMenu',
+            'RODAdmin.view.cms.layout.details.LayoutUsage'
     ],
 
     refs : [
@@ -34,49 +51,109 @@ Ext.define('RODAdmin.controller.cms.layout.LayoutTree', {
                 selector : 'layoutedit treepanel#groupselect'
             }
     ],
+    
 
+    
+    /**
+	 * @method
+	 */
     init : function(application) {
 	    this.control({
 	        "layoutitemsview treepanel#lyfolderview" : {
+	            /**
+				 * @listener layoutitemsview-treepanel-folderview-selectionchange triggered-by:
+				 *           {@link RODAdmin.view.cms.layout.LayoutItemview LayoutItemsview}
+				 *           treepanel#lyfolderview executes
+				 *           {@link #onFolderviewSelectionChange}
+				 */
 	            selectionchange : this.onFolderviewSelectionChange,
+	            /**
+				 * @listener layoutitemsview-treepanel-folderview-itemcontextmenu triggered-by:
+				 *           {@link RODAdmin.view.cms.layout.LayoutItemview LayoutItemsview}
+				 *           treepanel#lyfolderview executes
+				 *           {@link #onTreeContextMenu}
+				 */
 	            itemcontextmenu : this.onTreeContextMenu
 	        },
 	        "layoutitemsview treepanel#lyfolderview toolbar button#reloadtree" : {
+	            /**
+				 * @listener layoutitemsview-treepanel-lyfolderview-toolbar-button-reloadtree triggered-by:
+				 *           {@link RODAdmin.view.cms.layout.LayoutItemview LayoutItemsview}
+				 *           treepanel#lyfolderview toolbar button#reloadtree
+				 *           {@link #onReloadTreeClick}
+				 */
 		        click : this.onReloadTreeClick
 	        },
 	        "layoutitemsview treepanel#lyfolderview toolbar button#collapsetree" : {
+	            /**
+				 * @listener layoutitemsview-treepanel-lyfolderview-toolbar-button-collapsetree triggered-by:
+				 *           {@link RODAdmin.view.cms.layout.LayoutItemview LayoutItemsview}
+				 *           treepanel#lyfolderview toolbar button#collapsetree
+				 *           {@link #onCollapseTreeClick}
+				 */
 		        click : this.onCollapseTreeClick
 	        },
 	        "layoutitemsview treepanel#lyfolderview toolbar button#expandtree" : {
+	            /**
+				 * @listener layoutitemsview-treepanel-lyfolderview-toolbar-button-expandtree triggered-by:
+				 *           {@link RODAdmin.view.cms.layout.LayoutItemview LayoutItemsview}
+				 *           treepanel#lyfolderview toolbar button#expandtree
+				 *           {@link #onExpandTreeClick}
+				 */	        	
 		        click : this.onExpandTreeClick
 	        },
 	        "layoutcontextmenu menuitem#deletelayout" : {
+	            /**
+				 * @listener layoutcontextmenu-menuitem-deletelayout triggered-by:
+				 *           {@link RODAdmin.view.cms.layout.LayoutContextMenu LayoutContextMenu}
+				 *           menuitem#deletelayout
+				 *           {@link #onDeleteLayoutClick}
+				 */	        	
 		        click : this.onDeleteLayoutClick
 	        },
 	        "layoutcontextmenu menuitem#editlayout" : {
+	            /**
+				 * @listener layoutcontextmenu-menuitem-editlayout triggered-by:
+				 *           {@link RODAdmin.view.cms.layout.LayoutContextMenu LayoutContextMenu}
+				 *           menuitem#editlayout
+				 *           {@link #onEditLayoutClick}
+				 */	        	
 		        click : this.onEditLayoutClick
 	        },
 	        "layoutgroupcontextmenu menuitem#addlayout" : {
+	            /**
+				 * @listener layoutgroupcontextmenu-menuitem-addlayout triggered-by:
+				 *           {@link RODAdmin.view.cms.layout.LayoutGroupContextMenu LayoutGroupContextMenu}
+				 *           menuitem#addlayout
+				 *           {@link #onAddLayoutClick}
+				 */	        	
 		        click : this.onAddLayoutClick
 	        },
 	        "layoutgroupcontextmenu menuitem#newgroup" : {
+	            /**
+				 * @listener layoutgroupcontextmenu-menuitem-newgriup triggered-by:
+				 *           {@link RODAdmin.view.cms.layout.LayoutGroupContextMenu LayoutGroupContextMenu}
+				 *           menuitem#newgroup
+				 *           {@link #onNewGroupClick}
+				 */	        	
 		        click : this.onNewGroupClick
 	        },
 
 	    });
     },
-
+    /**
+	 * @method
+	 */
     onGroupselectCellClick : function(component, td, cellIndex, record, tr, rowIndex, e, eOpts) {
 	    console.log('were here');
 	    component.up('layoutedit').down('form').down('fieldset').query('displayfield')[0].setValue(record.data.name);
 	    component.up('layoutedit').down('fieldset').query('hiddenfield')[0].setValue(record.data.id);
     },
-
+    /**
+	 * @method
+	 */
     onNewGroupClick : function(component, event) {
 	    var currentNode = this.getFolderview().getSelectionModel().getLastSelected();
-
-	    console.log(currentNode);
-
 	    var win = Ext.create('RODAdmin.view.cms.layout.GroupWindow');
 	    win.setTitle('Add a new subgroup to "' + currentNode.data.name + '" (id: ' + currentNode.data.indice + ')');
 	    win.setIconCls('group_add');
@@ -84,7 +161,9 @@ Ext.define('RODAdmin.controller.cms.layout.LayoutTree', {
 	    console.log(currentNode.data);
 	    win.show();
     },
-
+    /**
+	 * @method
+	 */
     onAddLayoutClick : function(component, event) {
 	    var currentNode = this.getFolderview().getSelectionModel().getLastSelected();
 	    console.log(currentNode);
@@ -95,7 +174,9 @@ Ext.define('RODAdmin.controller.cms.layout.LayoutTree', {
 	    win.down('form').down('fieldset').down('displayfield').setValue(currentNode.data.directory);
 	    win.show();
     },
-
+    /**
+	 * @method
+	 */
     onDeleteLayoutClick : function(component, event) {
 	    var currentNode = this.getFolderview().getSelectionModel().getLastSelected();
 	    var store = Ext.StoreManager.get('cms.layout.Layout');
@@ -122,7 +203,9 @@ Ext.define('RODAdmin.controller.cms.layout.LayoutTree', {
 	    }, this);
 	    event.stopEvent();
     },
-
+    /**
+	 * @method
+	 */
     onEditLayoutClick : function(component, record, item, index, e) {
 	    console.log('onEditLayoutClick');
 	    var currentNode = this.getFolderview().getSelectionModel().getLastSelected();
@@ -143,7 +226,9 @@ Ext.define('RODAdmin.controller.cms.layout.LayoutTree', {
 	    });
 	    win.show();
     },
-
+    /**
+	 * @method
+	 */
     onTreeContextMenu : function(component, record, item, index, e) {
 	    e.stopEvent();
 	    if (record.data.itemtype == 'layoutgroup') {
@@ -159,17 +244,23 @@ Ext.define('RODAdmin.controller.cms.layout.LayoutTree', {
 		    this.itemmenu.showAt(e.getXY());
 	    }
     },
-
+    /**
+	 * @method
+	 */
     onCollapseTreeClick : function(button, e, options) {
 	    console.log('onCollapseTreeClick');
 	    this.getFolderview().collapseAll();
     },
-
+    /**
+	 * @method
+	 */
     onExpandTreeClick : function(button, e, options) {
 	    console.log('onExpandTreeClick');
 	    this.getFolderview().expandAll();
     },
-
+    /**
+	 * @method
+	 */
     onReloadTreeClick : function(button, e, options) {
 	    var folderview = this.getFolderview();
 	    var currentNode = folderview.getSelectionModel().getLastSelected();
@@ -183,14 +274,19 @@ Ext.define('RODAdmin.controller.cms.layout.LayoutTree', {
 	        }
 	    });
     },
-
+    /**
+	 * @method
+	 */
     onFolderselectCellClick : function(component, td, cellIndex, record, tr, rowIndex, e, eOpts) {
 	    component.up('layoutedit').down('form').down('fieldset').query('displayfield')[0].setValue(record.data.name);
 	    component.up('layoutedit').down('fieldset').query('hiddenfield')[0].setValue(record.data.id);
     },
-
+    /**
+	 * @method
+	 */
     onFolderviewSelectionChange : function(component, selected, event) {
 	    console.log('folderviewselectionchange');
+	    console.log(RODAdmin.util.Globals.stare);
 	    var record = selected[0];
 	    var lyprop = this.getLayoutproperties();
 	    var lydetails = this.getLydetailspanel();

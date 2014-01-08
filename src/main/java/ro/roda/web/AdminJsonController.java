@@ -31,7 +31,7 @@ public class AdminJsonController {
 
 	@Autowired
 	AdminJsonService adminJsonService;
-	
+
 	private final Log log = LogFactory.getLog(this.getClass());
 
 	@InitBinder
@@ -254,6 +254,54 @@ public class AdminJsonController {
 
 	}
 
+	@RequestMapping(value = "/filegrid", produces = "application/json")
+	@ResponseBody
+	public String fileGrid() {
+		AdminJson response = adminJsonService.fileGrid();
+		if (response == null) {
+			return null;
+		}
+		return response.toJson();
+	}
+
+	@RequestMapping(value = "/filetree", produces = "application/json")
+	@ResponseBody
+	public String fileTree() {
+		AdminJson response = adminJsonService.fileTree();
+		if (response == null) {
+			return null;
+		}
+		return response.toJson();
+	}
+
+	@RequestMapping(value = "/foldertree", produces = "application/json")
+	@ResponseBody
+	public String folderTree() {
+		AdminJson response = adminJsonService.folderTree();
+		if (response == null) {
+			return null;
+		}
+		return response.toJson();
+	}
+
+	@RequestMapping(value = "fileinfo/{id}", produces = "application/json")
+	public String fileInfo(@PathVariable("id") Integer id) {
+		AdminJson response = adminJsonService.fileInfo(id);
+		if (response == null) {
+			return null;
+		}
+		return response.toJson();
+	}
+
+	@RequestMapping(value = "folderinfo/{id}", produces = "application/json")
+	public String folderInfo(@PathVariable("id") Integer id) {
+		AdminJson response = adminJsonService.folderInfo(id);
+		if (response == null) {
+			return null;
+		}
+		return response.toJson();
+	}
+
 	@RequestMapping(value = "/foldersave", method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody
 	public String folderSave(@RequestParam(value = "foldername") String foldername,
@@ -309,18 +357,16 @@ public class AdminJsonController {
 
 	@RequestMapping(value = "/filesave", method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody
-	public String fileSave(@RequestParam("folderid") Integer folderId,
-			@RequestParam("content") MultipartFile content, 
-			@RequestParam(value = "alias", required=false) String alias, 
-			@RequestParam(value = "id", required = false) Integer fileId, 
-			HttpServletRequest httpServletRequest) {
+	public String fileSave(@RequestParam("folderid") Integer folderId, @RequestParam("content") MultipartFile content,
+			@RequestParam(value = "alias", required = false) String alias,
+			@RequestParam(value = "id", required = false) Integer fileId, HttpServletRequest httpServletRequest) {
 		log.trace("> fileSave controller");
 		AdminJson fileSave = adminJsonService.fileSave(folderId, content, fileId, alias);
-		
+
 		if (fileSave == null) {
 			return null;
 		}
-		
+
 		return fileSave.toJson();
 	}
 
@@ -341,39 +387,121 @@ public class AdminJsonController {
 	@ResponseBody
 	public String folderMove(@RequestParam(value = "parent") Integer parentGroupId,
 			@RequestParam(value = "folder") Integer folderId) {
-
 		AdminJson folderMove = adminJsonService.folderMove(parentGroupId, folderId);
-
 		if (folderMove == null) {
 			return null;
 		}
 		return folderMove.toJson();
-
 	}
-	
+
+	// User management
+
 	@RequestMapping(value = "/usersave", method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody
-	public String userSave(@RequestParam(value = "id") Integer id,
-			@RequestParam(value = "username") String username, @RequestParam(value = "email") String email,
-			@RequestParam(value = "enabled") Boolean enabled) {
+	public String userSave(@RequestParam(value = "id") Integer id, @RequestParam(value = "username") String username,
+			@RequestParam(value = "email") String email, @RequestParam(value = "enabled") Boolean enabled) {
+		AdminJson response = adminJsonService.userSave(id, username, email, enabled);
+		if (response == null) {
+			return null;
+		}
+		return response.toJson();
+	}
 
-
-		//TODO Cosmin
-		return null;
-
+	@RequestMapping(value = "/groupsave", method = RequestMethod.POST, produces = "application/json")
+	@ResponseBody
+	public String groupSave(@RequestParam(value = "id") Integer id, @RequestParam(value = "name") String name,
+			@RequestParam(value = "description") String description) {
+		AdminJson response = adminJsonService.groupSave(id, name, description);
+		if (response == null) {
+			return null;
+		}
+		return response.toJson();
 	}
 
 	@RequestMapping(value = "/addusertogroup", method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody
 	public String addUserToGroup(@RequestParam(value = "userid") Integer userId,
 			@RequestParam(value = "groupid") Integer groupId) {
-		
-		log.trace("addusertogroup: " + userId + " / " + groupId);
-		
 		AdminJson response = adminJsonService.addUserToGroup(userId, groupId);
 		if (response == null) {
 			return null;
 		}
 		return response.toJson();
 	}
+
+	@RequestMapping(value = "/deleteuserfromgroup", method = RequestMethod.POST, produces = "application/json")
+	@ResponseBody
+	public String deleteUserFromGroup(@RequestParam(value = "userid") Integer userId,
+			@RequestParam(value = "groupid") Integer groupId) {
+		AdminJson response = adminJsonService.deleteUserFromGroup(userId, groupId);
+		if (response == null) {
+			return null;
+		}
+		return response.toJson();
+	}
+
+	@RequestMapping(value = "/enableuser", method = RequestMethod.POST, produces = "application/json")
+	@ResponseBody
+	public String enableUser(@RequestParam(value = "userid") Integer userId) {
+		AdminJson response = adminJsonService.enableUser(userId);
+		if (response == null) {
+			return null;
+		}
+		return response.toJson();
+	}
+
+	@RequestMapping(value = "/disableuser", method = RequestMethod.POST, produces = "application/json")
+	@ResponseBody
+	public String disableUser(@RequestParam(value = "userid") Integer userId) {
+		AdminJson response = adminJsonService.disableUser(userId);
+		if (response == null) {
+			return null;
+		}
+		return response.toJson();
+	}
+
+	@RequestMapping(value = "/dropuser", method = RequestMethod.POST, produces = "application/json")
+	@ResponseBody
+	public String dropUser(@RequestParam(value = "userid") Integer userId) {
+		AdminJson response = adminJsonService.dropUser(userId);
+		if (response == null) {
+			return null;
+		}
+		return response.toJson();
+	}
+
+	@RequestMapping(value = "/changepassworduser", method = RequestMethod.POST, produces = "application/json")
+	@ResponseBody
+	public String changePasswordUser(@RequestParam(value = "userid") Integer userId,
+			@RequestParam(value = "password") String password,
+			@RequestParam(value = "controlpassword") String controlPassword) {
+		AdminJson response = adminJsonService.changePasswordUser(userId, password, controlPassword);
+		if (response == null) {
+			return null;
+		}
+		return response.toJson();
+	}
+
+	@RequestMapping(value = "/messageuser", method = RequestMethod.POST, produces = "application/json")
+	@ResponseBody
+	public String messageUser(@RequestParam(value = "userid") Integer userId,
+			@RequestParam(value = "subject") String subject, @RequestParam(value = "message") String message) {
+		AdminJson response = adminJsonService.messageUser(userId, subject, message);
+		if (response == null) {
+			return null;
+		}
+		return response.toJson();
+	}
+
+	@RequestMapping(value = "/messagegroup", method = RequestMethod.POST, produces = "application/json")
+	@ResponseBody
+	public String messageGroup(@RequestParam(value = "groupid") Integer groupId,
+			@RequestParam(value = "subject") String subject, @RequestParam(value = "message") String message) {
+		AdminJson response = adminJsonService.messageGroup(groupId, subject, message);
+		if (response == null) {
+			return null;
+		}
+		return response.toJson();
+	}
+
 }

@@ -77,39 +77,130 @@ public class AdminJsonServiceImpl implements AdminJsonService {
 		return AdminJson.snippetGroupMove(parentGroupId, groupId);
 	}
 
+	// CMS FILE
+
+	public AdminJson fileGrid() {
+		// TODO Cosmin fileStore.fileGrid();
+		// AdminJson result = AdminJson.fileGrid();
+		return new AdminJson(true, "");
+	}
+
+	public AdminJson fileTree() {
+		// TODO Cosmin fileStore.fileTree();
+		// AdminJson result = AdminJson.fileTree();
+		return new AdminJson(true, "");
+	}
+
+	public AdminJson folderTree() {
+		// TODO Cosmin fileStore.folderTree();
+		// AdminJson result = AdminJson.folderTree();
+		return new AdminJson(true, "");
+	}
+
+	public AdminJson fileInfo(Integer id) {
+		// TODO Cosmin fileStore.fileInfo();
+		// AdminJson result = AdminJson.fileInfo();
+		return new AdminJson(true, "");
+	}
+
+	public AdminJson folderInfo(Integer id) {
+		// TODO Cosmin
+		// fileStore.folderInfo();
+		// AdminJson result = AdminJson.folderInfo();
+		return new AdminJson(true, "");
+	}
+
 	public AdminJson folderSave(String foldername, Integer parentId, String description) {
 		AdminJson result = AdminJson.folderSave(foldername, parentId, description);
 		fileStore.saveCmsFolder(CmsFolder.findCmsFolder(result.getId()));
 		return result;
 	}
 
-	public AdminJson folderEmpty(Integer groupId) {
-		return AdminJson.folderEmpty(groupId);
+	public AdminJson folderEmpty(Integer folderId) {
+		AdminJson result = AdminJson.folderEmpty(folderId);
+		fileStore.folderEmpty(CmsFolder.findCmsFolder(folderId));
+		return result;
 	}
 
-	public AdminJson folderDrop(Integer groupId) {
-		return AdminJson.folderDrop(groupId);
+	public AdminJson folderDrop(Integer folderId) {
+		AdminJson result = AdminJson.folderDrop(folderId);
+		fileStore.folderDrop(CmsFolder.findCmsFolder(folderId));
+		return result;
 	}
 
 	public AdminJson fileDrop(Integer fileId) {
-		return AdminJson.fileDrop(fileId);
+		AdminJson result = AdminJson.folderDrop(fileId);
+		fileStore.fileDrop(CmsFile.findCmsFile(fileId));
+		return result;
 	}
 
 	public AdminJson fileSave(Integer folderId, MultipartFile content, Integer fileId, String alias) {
 		AdminJson result = AdminJson.fileSave(folderId, content, alias, fileId);
-		fileStore.saveCmsFile(content, folderId);
+		fileStore.saveCmsFile(content, CmsFolder.findCmsFolder(folderId));
 		return result;
 	}
 
 	public AdminJson fileMove(Integer folderId, Integer fileId) {
-		return AdminJson.fileMove(folderId, fileId);
+		AdminJson result = AdminJson.fileMove(folderId, fileId);
+		fileStore.fileMove(CmsFolder.findCmsFolder(folderId), CmsFile.findCmsFile(fileId));
+		return result;
 	}
 
 	public AdminJson folderMove(Integer parentFolderId, Integer folderId) {
-		return AdminJson.folderMove(parentFolderId, folderId);
+		AdminJson result = AdminJson.fileMove(parentFolderId, folderId);
+		fileStore.folderMove(CmsFolder.findCmsFolder(parentFolderId), CmsFolder.findCmsFolder(folderId));
+		return result;
+	}
+
+	// USER MANAGEMENT
+
+	@Override
+	public AdminJson userSave(Integer id, String username, String email, Boolean enabled) {
+		return AdminJson.userSave(id, username, email, enabled);
+	}
+
+	@Override
+	public AdminJson groupSave(Integer id, String name, String description) {
+		return AdminJson.groupSave(id, name, description);
 	}
 
 	public AdminJson addUserToGroup(Integer userId, Integer groupId) {
 		return AdminJson.addUserToGroup(userId, groupId);
 	}
+
+	@Override
+	public AdminJson deleteUserFromGroup(Integer userId, Integer groupId) {
+		return AdminJson.deleteUserFromGroup(userId, groupId);
+	}
+
+	@Override
+	public AdminJson enableUser(Integer userId) {
+		return AdminJson.enableUser(userId);
+	}
+
+	@Override
+	public AdminJson disableUser(Integer userId) {
+		return AdminJson.disableUser(userId);
+	}
+
+	@Override
+	public AdminJson dropUser(Integer userId) {
+		return AdminJson.dropUser(userId);
+	}
+
+	@Override
+	public AdminJson changePasswordUser(Integer userId, String password, String controlPassword) {
+		return AdminJson.changePasswordUser(userId, password, controlPassword);
+	}
+
+	@Override
+	public AdminJson messageUser(Integer userId, String subject, String message) {
+		return AdminJson.messageUser(userId, subject, message);
+	}
+
+	@Override
+	public AdminJson messageGroup(Integer groupId, String subject, String message) {
+		return AdminJson.messageGroup(groupId, subject, message);
+	}
+
 }

@@ -140,9 +140,8 @@ public class CmsFileStoreServiceImpl implements CmsFileStoreService {
 		}
 	}
 
-	public void saveCmsFile(MultipartFile multipartFile, Integer cmsFolderId) {
-		CmsFolder cmsFolder = CmsFolder.findCmsFolder(cmsFolderId);
-		if (multipartFile == null) {
+	public void saveCmsFile(MultipartFile multipartFile, CmsFolder cmsFolder) {
+		if (multipartFile == null || cmsFolder == null) {
 			return;
 		}
 		Session session;
@@ -265,23 +264,55 @@ public class CmsFileStoreServiceImpl implements CmsFileStoreService {
 		return loadFile(getFullPath(cmsFile));
 	}
 
-	public void removeCmsFile(CmsFile cmsFile) {
+	@Override
+	public void folderEmpty(CmsFolder cmsFolder) {
+		// TODO Cosmin Auto-generated method stub
+	}
+
+	@Override
+	public void folderDrop(CmsFolder cmsFolder) {
 		Session session;
 		try {
 			SimpleCredentials adminCred = new SimpleCredentials("admin", new char[0]);
 			session = repository.login(adminCred);
 			try {
 				Node root = session.getRootNode();
-				
-				//TODO getFilename() nu e corect aici !! este doar numele fisierului nu path-ul complet
-				root.getNode(cmsFile.getFilename()).remove();
+				root.getNode(getFullPath(cmsFolder)).remove();
 				session.save();
 			} finally {
 				session.logout();
 			}
 		} catch (Exception e) {
 			log.error(e);
-		}
+		}				
+	}
+
+	@Override
+	public void fileDrop(CmsFile cmsFile) {
+		Session session;
+		try {
+			SimpleCredentials adminCred = new SimpleCredentials("admin", new char[0]);
+			session = repository.login(adminCred);
+			try {
+				Node root = session.getRootNode();
+				root.getNode(getFullPath(cmsFile)).remove();
+				session.save();
+			} finally {
+				session.logout();
+			}
+		} catch (Exception e) {
+			log.error(e);
+		}		
+	}
+
+	@Override
+	public void fileMove(CmsFolder cmsFolder, CmsFile cmsFile) {
+		// TODO Cosmin Auto-generated method stub
+	}
+
+	@Override
+	public void folderMove(CmsFolder cmsFolderParent, CmsFolder cmsFolder) {
+		// TODO Cosmin Auto-generated method stub
 	}
 
 }

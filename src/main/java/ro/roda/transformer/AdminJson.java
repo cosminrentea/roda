@@ -766,9 +766,54 @@ public class AdminJson {
 		return new AdminJson(true, "CMS Folder moved successfully");
 	}
 
+	public static AdminJson userSave(Integer id, String username, String email, Boolean enabled) {
+		// TODO Cosmin
+		return new AdminJson(true, "");
+	}
+
+	public static AdminJson groupSave(Integer id, String name, String description) {
+		// TODO Cosmin
+		return new AdminJson(true, "");
+	}
+	
 	public static AdminJson addUserToGroup(Integer userId, Integer groupId) {
 		// TODO Cosmin
-		return new AdminJson(true, "User added to group");
+		return new AdminJson(true, "");
+	}
+
+	public static AdminJson deleteUserFromGroup(Integer userId, Integer groupId) {
+		// TODO Cosmin
+		return new AdminJson(true, "");
+	}
+
+	public static AdminJson enableUser(Integer userId) {
+		// TODO Cosmin
+		return new AdminJson(true, "");
+	}
+
+	public static AdminJson disableUser(Integer userId) {
+		// TODO Cosmin
+		return new AdminJson(true, "");
+	}
+
+	public static AdminJson dropUser(Integer userId) {
+		// TODO Cosmin
+		return new AdminJson(true, "");
+	}
+
+	public static AdminJson changePasswordUser(Integer userId, String password, String controlPassword) {
+		// TODO Cosmin
+		return new AdminJson(true, "");
+	}
+
+	public static AdminJson messageUser(Integer userId, String subject, String message) {
+		// TODO Cosmin
+		return new AdminJson(true, "");
+	}
+
+	public static AdminJson messageGroup(Integer groupId, String subject, String message) {
+		// TODO Cosmin
+		return new AdminJson(true, "");
 	}
 
 	private final Log log = LogFactory.getLog(this.getClass());

@@ -1,5 +1,7 @@
 package ro.roda.service;
 
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import ro.roda.transformer.AdminJson;
@@ -37,6 +39,18 @@ public interface AdminJsonService {
 
 	public abstract AdminJson snippetGroupMove(Integer parentGroupId, Integer groupId);
 
+	// CMS FILES
+
+	public abstract AdminJson fileGrid();
+
+	public abstract AdminJson fileTree();
+
+	public abstract AdminJson folderTree();
+
+	public abstract AdminJson fileInfo(Integer id);
+
+	public abstract AdminJson folderInfo(Integer id);
+
 	public abstract AdminJson folderSave(String foldername, Integer parentId, String description);
 
 	public abstract AdminJson folderEmpty(Integer folderId);
@@ -51,5 +65,26 @@ public interface AdminJsonService {
 
 	public abstract AdminJson folderMove(Integer parentFolderId, Integer folderId);
 
+	// USER MANAGEMENT
+
+	public abstract AdminJson userSave(Integer id, String username, String email, Boolean enabled);
+
+	public abstract AdminJson groupSave(Integer id, String name, String description);
+
 	public abstract AdminJson addUserToGroup(Integer userId, Integer groupId);
+
+	public abstract AdminJson deleteUserFromGroup(Integer userId, Integer groupId);
+
+	public abstract AdminJson enableUser(Integer userId);
+
+	public abstract AdminJson disableUser(Integer userId);
+
+	public abstract AdminJson dropUser(Integer userId);
+
+	public abstract AdminJson changePasswordUser(Integer userId, String password, String controlPassword);
+
+	public abstract AdminJson messageUser(Integer userId, String subject, String message);
+
+	public abstract AdminJson messageGroup(Integer groupId, String subject, String message);
+
 }

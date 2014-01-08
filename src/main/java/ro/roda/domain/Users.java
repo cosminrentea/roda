@@ -301,6 +301,9 @@ public class Users implements Serializable {
 	@OneToMany(mappedBy = "userId")
 	private Set<UserSettingValue> userSettingValues;
 
+	@OneToMany(mappedBy = "userId")
+	private Set<UserGroupUser> userGroupUsers;
+
 	@PersistenceContext
 	transient EntityManager entityManager;
 
@@ -375,6 +378,10 @@ public class Users implements Serializable {
 
 	public Set<UserSettingValue> getUserSettingValues() {
 		return userSettingValues;
+	}
+
+	public Set<UserGroupUser> getUserGroupUsers() {
+		return userGroupUsers;
 	}
 
 	public boolean isEnabled() {
@@ -467,6 +474,10 @@ public class Users implements Serializable {
 
 	public void setUserSettingValues(Set<UserSettingValue> userSettingValues) {
 		this.userSettingValues = userSettingValues;
+	}
+
+	public void setUserGroupUsers(Set<UserGroupUser> userGroupUsers) {
+		this.userGroupUsers = userGroupUsers;
 	}
 
 	public String toJson() {

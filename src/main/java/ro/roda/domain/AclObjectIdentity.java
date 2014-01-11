@@ -28,6 +28,8 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrInputDocument;
+import org.hibernate.envers.AuditReader;
+import org.hibernate.envers.AuditReaderFactory;
 import org.hibernate.envers.Audited;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -153,6 +155,10 @@ public class AclObjectIdentity {
 		return new JSONSerializer().exclude("*.class").serialize(collection);
 	}
 
+	public static AuditReader getClassAuditReader() {
+		return AuditReaderFactory.get(entityManager());
+	}
+
 	@OneToMany(mappedBy = "aclObjectIdentity")
 	private Set<AclEntry> aclEntries;
 
@@ -165,11 +171,12 @@ public class AclObjectIdentity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id", columnDefinition = "bigserial")
+	@Column(name = "id")
+	// , columnDefinition = "bigserial")
 	private Long id;
 
 	@ManyToOne
-	@JoinColumn(name = "object_id_class", columnDefinition = "bigint", referencedColumnName = "id", nullable = false)
+	@JoinColumn(name = "object_id_class", columnDefinition = "bigint", referencedColumnName = "id", nullable = true)
 	private AclClass objectIdClass;
 
 	@Column(name = "object_id_identity", columnDefinition = "int8")
@@ -177,7 +184,7 @@ public class AclObjectIdentity {
 	private Long objectIdIdentity;
 
 	@ManyToOne
-	@JoinColumn(name = "owner_sid", columnDefinition = "bigint", referencedColumnName = "id", nullable = false)
+	@JoinColumn(name = "owner_sid", columnDefinition = "bigint", referencedColumnName = "id", nullable = true)
 	private AclSid ownerSid;
 
 	@ManyToOne
@@ -187,7 +194,7 @@ public class AclObjectIdentity {
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	@Autowired(required=false)
+	@Autowired(required = false)
 	transient SolrServer solrServer;
 
 	@Transactional
@@ -302,6 +309,10 @@ public class AclObjectIdentity {
 
 	public String toString() {
 		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+	}
+
+	public AuditReader getAuditReader() {
+		return AuditReaderFactory.get(entityManager);
 	}
 
 	@PostUpdate

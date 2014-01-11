@@ -26,6 +26,8 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrInputDocument;
+import org.hibernate.envers.AuditReader;
+import org.hibernate.envers.AuditReaderFactory;
 import org.hibernate.envers.Audited;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -38,11 +40,11 @@ import flexjson.JSONSerializer;
 @Configurable
 @Entity
 @Table(schema = "public", name = "org_sufix")
+@Audited
 public class OrgSufix {
 
 	public static long countOrgSufixes() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM OrgSufix o",
-				Long.class).getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM OrgSufix o", Long.class).getSingleResult();
 	}
 
 	@Async
@@ -65,8 +67,7 @@ public class OrgSufix {
 	}
 
 	public static List<OrgSufix> findAllOrgSufixes() {
-		return entityManager().createQuery("SELECT o FROM OrgSufix o",
-				OrgSufix.class).getResultList();
+		return entityManager().createQuery("SELECT o FROM OrgSufix o", OrgSufix.class).getResultList();
 	}
 
 	public static OrgSufix findOrgSufix(Integer id) {
@@ -75,23 +76,18 @@ public class OrgSufix {
 		return entityManager().find(OrgSufix.class, id);
 	}
 
-	public static List<OrgSufix> findOrgSufixEntries(int firstResult,
-			int maxResults) {
-		return entityManager()
-				.createQuery("SELECT o FROM OrgSufix o", OrgSufix.class)
-				.setFirstResult(firstResult).setMaxResults(maxResults)
-				.getResultList();
+	public static List<OrgSufix> findOrgSufixEntries(int firstResult, int maxResults) {
+		return entityManager().createQuery("SELECT o FROM OrgSufix o", OrgSufix.class).setFirstResult(firstResult)
+				.setMaxResults(maxResults).getResultList();
 	}
 
 	public static Collection<OrgSufix> fromJsonArrayToOrgSufixes(String json) {
-		return new JSONDeserializer<List<OrgSufix>>()
-				.use(null, ArrayList.class).use("values", OrgSufix.class)
+		return new JSONDeserializer<List<OrgSufix>>().use(null, ArrayList.class).use("values", OrgSufix.class)
 				.deserialize(json);
 	}
 
 	public static OrgSufix fromJsonToOrgSufix(String json) {
-		return new JSONDeserializer<OrgSufix>().use(null, OrgSufix.class)
-				.deserialize(json);
+		return new JSONDeserializer<OrgSufix>().use(null, OrgSufix.class).deserialize(json);
 	}
 
 	public static void indexOrgSufix(OrgSufix orgSufix) {
@@ -112,9 +108,8 @@ public class OrgSufix {
 			// Add summary field to allow searching documents for objects of
 			// this type
 			sid.addField("orgsufix_solrsummary_t",
-					new StringBuilder().append(orgSufix.getName()).append(" ")
-							.append(orgSufix.getDescription()).append(" ")
-							.append(orgSufix.getId()));
+					new StringBuilder().append(orgSufix.getName()).append(" ").append(orgSufix.getDescription())
+							.append(" ").append(orgSufix.getId()));
 			documents.add(sid);
 		}
 		try {
@@ -175,8 +170,7 @@ public class OrgSufix {
 	 *            - descrierea sufixului.
 	 * @return
 	 */
-	public static OrgSufix checkOrgSufix(Integer id, String name,
-			String description) {
+	public static OrgSufix checkOrgSufix(Integer id, String name, String description) {
 		OrgSufix object;
 
 		if (id != null) {
@@ -190,10 +184,8 @@ public class OrgSufix {
 		List<OrgSufix> queryResult;
 
 		if (name != null) {
-			TypedQuery<OrgSufix> query = entityManager()
-					.createQuery(
-							"SELECT o FROM OrgSufix o WHERE lower(o.name) = lower(:name)",
-							OrgSufix.class);
+			TypedQuery<OrgSufix> query = entityManager().createQuery(
+					"SELECT o FROM OrgSufix o WHERE lower(o.name) = lower(:name)", OrgSufix.class);
 			query.setParameter("name", name);
 
 			queryResult = query.getResultList();
@@ -208,6 +200,10 @@ public class OrgSufix {
 		object.persist();
 
 		return object;
+	}
+
+	public static AuditReader getClassAuditReader() {
+		return AuditReaderFactory.get(entityManager());
 	}
 
 	@Column(name = "description", columnDefinition = "text")
@@ -228,7 +224,7 @@ public class OrgSufix {
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	@Autowired(required=false)
+	@Autowired(required = false)
 	transient SolrServer solrServer;
 
 	@Transactional
@@ -310,8 +306,7 @@ public class OrgSufix {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this,
-				ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate
@@ -328,7 +323,10 @@ public class OrgSufix {
 	@Override
 	public boolean equals(Object obj) {
 		return (id != null && id.equals(((OrgSufix) obj).id))
-				|| (name != null && name
-						.equalsIgnoreCase(((OrgSufix) obj).name));
+				|| (name != null && name.equalsIgnoreCase(((OrgSufix) obj).name));
+	}
+
+	public AuditReader getAuditReader() {
+		return AuditReaderFactory.get(entityManager);
 	}
 }

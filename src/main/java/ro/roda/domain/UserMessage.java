@@ -25,6 +25,8 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrInputDocument;
+import org.hibernate.envers.AuditReader;
+import org.hibernate.envers.AuditReaderFactory;
 import org.hibernate.envers.Audited;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -37,12 +39,11 @@ import flexjson.JSONSerializer;
 @Configurable
 @Entity
 @Table(schema = "public", name = "user_message")
+@Audited
 public class UserMessage {
 
 	public static long countUserMessages() {
-		return entityManager().createQuery(
-				"SELECT COUNT(o) FROM UserMessage o", Long.class)
-				.getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM UserMessage o", Long.class).getSingleResult();
 	}
 
 	@Async
@@ -65,8 +66,7 @@ public class UserMessage {
 	}
 
 	public static List<UserMessage> findAllUserMessages() {
-		return entityManager().createQuery("SELECT o FROM UserMessage o",
-				UserMessage.class).getResultList();
+		return entityManager().createQuery("SELECT o FROM UserMessage o", UserMessage.class).getResultList();
 	}
 
 	public static UserMessage findUserMessage(Integer id) {
@@ -75,24 +75,18 @@ public class UserMessage {
 		return entityManager().find(UserMessage.class, id);
 	}
 
-	public static List<UserMessage> findUserMessageEntries(int firstResult,
-			int maxResults) {
-		return entityManager()
-				.createQuery("SELECT o FROM UserMessage o", UserMessage.class)
-				.setFirstResult(firstResult).setMaxResults(maxResults)
-				.getResultList();
+	public static List<UserMessage> findUserMessageEntries(int firstResult, int maxResults) {
+		return entityManager().createQuery("SELECT o FROM UserMessage o", UserMessage.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
 	}
 
-	public static Collection<UserMessage> fromJsonArrayToUserMessages(
-			String json) {
-		return new JSONDeserializer<List<UserMessage>>()
-				.use(null, ArrayList.class).use("values", UserMessage.class)
+	public static Collection<UserMessage> fromJsonArrayToUserMessages(String json) {
+		return new JSONDeserializer<List<UserMessage>>().use(null, ArrayList.class).use("values", UserMessage.class)
 				.deserialize(json);
 	}
 
 	public static UserMessage fromJsonToUserMessage(String json) {
-		return new JSONDeserializer<UserMessage>().use(null, UserMessage.class)
-				.deserialize(json);
+		return new JSONDeserializer<UserMessage>().use(null, UserMessage.class).deserialize(json);
 	}
 
 	public static void indexUserMessage(UserMessage userMessage) {
@@ -108,17 +102,14 @@ public class UserMessage {
 			SolrInputDocument sid = new SolrInputDocument();
 			sid.addField("id", "usermessage_" + userMessage.getId());
 			sid.addField("userMessage.touserid_t", userMessage.getToUserId());
-			sid.addField("userMessage.fromuserid_t",
-					userMessage.getFromUserId());
+			sid.addField("userMessage.fromuserid_t", userMessage.getFromUserId());
 			sid.addField("userMessage.message_s", userMessage.getMessage());
 			sid.addField("userMessage.id_i", userMessage.getId());
 			// Add summary field to allow searching documents for objects of
 			// this type
-			sid.addField("usermessage_solrsummary_t",
-					new StringBuilder().append(userMessage.getToUserId())
-							.append(" ").append(userMessage.getFromUserId())
-							.append(" ").append(userMessage.getMessage())
-							.append(" ").append(userMessage.getId()));
+			sid.addField("usermessage_solrsummary_t", new StringBuilder().append(userMessage.getToUserId()).append(" ")
+					.append(userMessage.getFromUserId()).append(" ").append(userMessage.getMessage()).append(" ")
+					.append(userMessage.getId()));
 			documents.add(sid);
 		}
 		try {
@@ -180,8 +171,7 @@ public class UserMessage {
 	 *            - utilizatorul care a primit mesajul.
 	 * @return
 	 */
-	public static UserMessage checkUserMessage(Integer id, String message,
-			Users fromUserId, Users toUserId) {
+	public static UserMessage checkUserMessage(Integer id, String message, Users fromUserId, Users toUserId) {
 		UserMessage object;
 
 		if (id != null) {
@@ -201,13 +191,18 @@ public class UserMessage {
 		return object;
 	}
 
+	public static AuditReader getClassAuditReader() {
+		return AuditReaderFactory.get(entityManager());
+	}
+
 	@ManyToOne
 	@JoinColumn(name = "from_user_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false)
 	private Users fromUserId;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id", columnDefinition = "serial")
+	@Column(name = "id")
+	// , columnDefinition = "serial")
 	private Integer id;
 
 	@Column(name = "message", columnDefinition = "text")
@@ -303,8 +298,7 @@ public class UserMessage {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this,
-				ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate
@@ -321,5 +315,9 @@ public class UserMessage {
 	@Override
 	public boolean equals(Object obj) {
 		return id != null && id.equals(((UserMessage) obj).id);
+	}
+
+	public AuditReader getAuditReader() {
+		return AuditReaderFactory.get(entityManager);
 	}
 }

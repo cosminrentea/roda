@@ -28,6 +28,8 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrInputDocument;
+import org.hibernate.envers.AuditReader;
+import org.hibernate.envers.AuditReaderFactory;
 import org.hibernate.envers.Audited;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -40,11 +42,11 @@ import flexjson.JSONSerializer;
 @Entity
 @Table(schema = "public", name = "vargroup")
 @Configurable
+@Audited
 public class Vargroup {
 
 	public static long countVargroups() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM Vargroup o",
-				Long.class).getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM Vargroup o", Long.class).getSingleResult();
 	}
 
 	@Async
@@ -67,8 +69,7 @@ public class Vargroup {
 	}
 
 	public static List<Vargroup> findAllVargroups() {
-		return entityManager().createQuery("SELECT o FROM Vargroup o",
-				Vargroup.class).getResultList();
+		return entityManager().createQuery("SELECT o FROM Vargroup o", Vargroup.class).getResultList();
 	}
 
 	public static Vargroup findVargroup(Long id) {
@@ -77,23 +78,18 @@ public class Vargroup {
 		return entityManager().find(Vargroup.class, id);
 	}
 
-	public static List<Vargroup> findVargroupEntries(int firstResult,
-			int maxResults) {
-		return entityManager()
-				.createQuery("SELECT o FROM Vargroup o", Vargroup.class)
-				.setFirstResult(firstResult).setMaxResults(maxResults)
-				.getResultList();
+	public static List<Vargroup> findVargroupEntries(int firstResult, int maxResults) {
+		return entityManager().createQuery("SELECT o FROM Vargroup o", Vargroup.class).setFirstResult(firstResult)
+				.setMaxResults(maxResults).getResultList();
 	}
 
 	public static Collection<Vargroup> fromJsonArrayToVargroups(String json) {
-		return new JSONDeserializer<List<Vargroup>>()
-				.use(null, ArrayList.class).use("values", Vargroup.class)
+		return new JSONDeserializer<List<Vargroup>>().use(null, ArrayList.class).use("values", Vargroup.class)
 				.deserialize(json);
 	}
 
 	public static Vargroup fromJsonToVargroup(String json) {
-		return new JSONDeserializer<Vargroup>().use(null, Vargroup.class)
-				.deserialize(json);
+		return new JSONDeserializer<Vargroup>().use(null, Vargroup.class).deserialize(json);
 	}
 
 	public static void indexVargroup(Vargroup vargroup) {
@@ -113,8 +109,7 @@ public class Vargroup {
 			// Add summary field to allow searching documents for objects of
 			// this type
 			sid.addField("vargroup_solrsummary_t",
-					new StringBuilder().append(vargroup.getName()).append(" ")
-							.append(vargroup.getId()));
+					new StringBuilder().append(vargroup.getName()).append(" ").append(vargroup.getId()));
 			documents.add(sid);
 		}
 		try {
@@ -187,10 +182,8 @@ public class Vargroup {
 		List<Vargroup> queryResult;
 
 		if (name != null) {
-			TypedQuery<Vargroup> query = entityManager()
-					.createQuery(
-							"SELECT o FROM Vargroup o WHERE lower(o.name) = lower(:name)",
-							Vargroup.class);
+			TypedQuery<Vargroup> query = entityManager().createQuery(
+					"SELECT o FROM Vargroup o WHERE lower(o.name) = lower(:name)", Vargroup.class);
 			query.setParameter("name", name);
 
 			queryResult = query.getResultList();
@@ -206,9 +199,14 @@ public class Vargroup {
 		return object;
 	}
 
+	public static AuditReader getClassAuditReader() {
+		return AuditReaderFactory.get(entityManager());
+	}
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id", columnDefinition = "bigserial")
+	@Column(name = "id")
+	// , columnDefinition = "bigserial")
 	private Long id;
 
 	@Column(name = "name", columnDefinition = "text")
@@ -296,8 +294,7 @@ public class Vargroup {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this,
-				ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate
@@ -314,7 +311,10 @@ public class Vargroup {
 	@Override
 	public boolean equals(Object obj) {
 		return (id != null && id.equals(((Vargroup) obj).id))
-				|| (name != null && name
-						.equalsIgnoreCase(((Vargroup) obj).name));
+				|| (name != null && name.equalsIgnoreCase(((Vargroup) obj).name));
+	}
+
+	public AuditReader getAuditReader() {
+		return AuditReaderFactory.get(entityManager);
 	}
 }

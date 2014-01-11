@@ -30,6 +30,8 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrInputDocument;
+import org.hibernate.envers.AuditReader;
+import org.hibernate.envers.AuditReaderFactory;
 import org.hibernate.envers.Audited;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -43,6 +45,7 @@ import flexjson.JSONSerializer;
 @Entity
 @Table(schema = "public", name = "variable")
 @Configurable
+@Audited
 public class Variable {
 
 	public static long countVariables() {
@@ -204,6 +207,10 @@ public class Variable {
 		return object;
 	}
 
+	public static AuditReader getClassAuditReader() {
+		return AuditReaderFactory.get(entityManager());
+	}
+
 	@ManyToMany(mappedBy = "variables")
 	private Set<Concept> concepts;
 
@@ -219,7 +226,8 @@ public class Variable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id", columnDefinition = "bigserial")
+	@Column(name = "id")
+	// , columnDefinition = "bigserial")
 	private Long id;
 
 	@OneToMany(mappedBy = "variableId")
@@ -463,18 +471,22 @@ public class Variable {
 	@PostUpdate
 	@PostPersist
 	private void postPersistOrUpdate() {
-		//TODO temporarily disabled
-//		indexVariable(this);
+		// TODO temporarily disabled
+		// indexVariable(this);
 	}
 
 	@PreRemove
 	private void preRemove() {
-		//TODO temporarily disabled
-//		deleteIndex(this);
+		// TODO temporarily disabled
+		// deleteIndex(this);
 	}
 
 	@Override
 	public boolean equals(Object obj) {
 		return id != null && id.equals(((Variable) obj).id);
+	}
+
+	public AuditReader getAuditReader() {
+		return AuditReaderFactory.get(entityManager);
 	}
 }

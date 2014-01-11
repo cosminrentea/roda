@@ -14,12 +14,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PostPersist;
 import javax.persistence.PostUpdate;
-import javax.persistence.PrePersist;
 import javax.persistence.PreRemove;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -29,6 +27,8 @@ import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrInputDocument;
 import org.hibernate.annotations.Generated;
 import org.hibernate.annotations.GenerationTime;
+import org.hibernate.envers.AuditReader;
+import org.hibernate.envers.AuditReaderFactory;
 import org.hibernate.envers.Audited;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -42,6 +42,7 @@ import flexjson.JSONSerializer;
 @Entity
 @Table(schema = "public", name = "catalog_study")
 @Configurable
+@Audited
 public class CatalogStudy {
 
 	public static long countCatalogStudys() {
@@ -151,6 +152,10 @@ public class CatalogStudy {
 		return new JSONSerializer().exclude("*.class").serialize(collection);
 	}
 
+	public static AuditReader getClassAuditReader() {
+		return AuditReaderFactory.get(entityManager());
+	}
+
 	@Column(name = "added", columnDefinition = "timestamp default now()", insertable = false)
 	// @NotNull
 	@Temporal(TemporalType.TIMESTAMP)
@@ -159,14 +164,14 @@ public class CatalogStudy {
 	private Calendar added;
 
 	@ManyToOne
-	@JoinColumn(name = "catalog_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	@JoinColumn(name = "catalog_id", columnDefinition = "integer", referencedColumnName = "id", nullable = true, insertable = false, updatable = false)
 	private Catalog catalogId;
 
 	@EmbeddedId
 	private CatalogStudyPK id;
 
 	@ManyToOne
-	@JoinColumn(name = "study_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	@JoinColumn(name = "study_id", columnDefinition = "integer", referencedColumnName = "id", nullable = true, insertable = false, updatable = false)
 	private Study studyId;
 
 	@PersistenceContext
@@ -255,6 +260,10 @@ public class CatalogStudy {
 
 	public String toString() {
 		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+	}
+
+	public AuditReader getAuditReader() {
+		return AuditReaderFactory.get(entityManager);
 	}
 
 	@PostUpdate

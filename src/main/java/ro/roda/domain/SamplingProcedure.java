@@ -28,6 +28,8 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrInputDocument;
+import org.hibernate.envers.AuditReader;
+import org.hibernate.envers.AuditReaderFactory;
 import org.hibernate.envers.Audited;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -40,20 +42,18 @@ import flexjson.JSONSerializer;
 @Configurable
 @Entity
 @Table(schema = "public", name = "sampling_procedure")
+@Audited
 public class SamplingProcedure {
 
 	public static long countSamplingProcedures() {
-		return entityManager().createQuery(
-				"SELECT COUNT(o) FROM SamplingProcedure o", Long.class)
-				.getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM SamplingProcedure o", Long.class).getSingleResult();
 	}
 
 	@Async
 	public static void deleteIndex(SamplingProcedure samplingProcedure) {
 		SolrServer solrServer = solrServer();
 		try {
-			solrServer.deleteById("samplingprocedure_"
-					+ samplingProcedure.getId());
+			solrServer.deleteById("samplingprocedure_" + samplingProcedure.getId());
 			solrServer.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -69,8 +69,8 @@ public class SamplingProcedure {
 	}
 
 	public static List<SamplingProcedure> findAllSamplingProcedures() {
-		return entityManager().createQuery("SELECT o FROM SamplingProcedure o",
-				SamplingProcedure.class).getResultList();
+		return entityManager().createQuery("SELECT o FROM SamplingProcedure o", SamplingProcedure.class)
+				.getResultList();
 	}
 
 	public static SamplingProcedure findSamplingProcedure(Integer id) {
@@ -79,36 +79,28 @@ public class SamplingProcedure {
 		return entityManager().find(SamplingProcedure.class, id);
 	}
 
-	public static List<SamplingProcedure> findSamplingProcedureEntries(
-			int firstResult, int maxResults) {
-		return entityManager()
-				.createQuery("SELECT o FROM SamplingProcedure o",
-						SamplingProcedure.class).setFirstResult(firstResult)
-				.setMaxResults(maxResults).getResultList();
+	public static List<SamplingProcedure> findSamplingProcedureEntries(int firstResult, int maxResults) {
+		return entityManager().createQuery("SELECT o FROM SamplingProcedure o", SamplingProcedure.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
 	}
 
-	public static Collection<SamplingProcedure> fromJsonArrayToSamplingProcedures(
-			String json) {
-		return new JSONDeserializer<List<SamplingProcedure>>()
-				.use(null, ArrayList.class)
+	public static Collection<SamplingProcedure> fromJsonArrayToSamplingProcedures(String json) {
+		return new JSONDeserializer<List<SamplingProcedure>>().use(null, ArrayList.class)
 				.use("values", SamplingProcedure.class).deserialize(json);
 	}
 
 	public static SamplingProcedure fromJsonToSamplingProcedure(String json) {
-		return new JSONDeserializer<SamplingProcedure>().use(null,
-				SamplingProcedure.class).deserialize(json);
+		return new JSONDeserializer<SamplingProcedure>().use(null, SamplingProcedure.class).deserialize(json);
 	}
 
-	public static void indexSamplingProcedure(
-			SamplingProcedure samplingProcedure) {
+	public static void indexSamplingProcedure(SamplingProcedure samplingProcedure) {
 		List<SamplingProcedure> samplingprocedures = new ArrayList<SamplingProcedure>();
 		samplingprocedures.add(samplingProcedure);
 		indexSamplingProcedures(samplingprocedures);
 	}
 
 	@Async
-	public static void indexSamplingProcedures(
-			Collection<SamplingProcedure> samplingprocedures) {
+	public static void indexSamplingProcedures(Collection<SamplingProcedure> samplingprocedures) {
 		List<SolrInputDocument> documents = new ArrayList<SolrInputDocument>();
 		for (SamplingProcedure samplingProcedure : samplingprocedures) {
 			SolrInputDocument sid = new SolrInputDocument();
@@ -116,8 +108,7 @@ public class SamplingProcedure {
 			sid.addField("samplingProcedure.id_i", samplingProcedure.getId());
 			// Add summary field to allow searching documents for objects of
 			// this type
-			sid.addField("samplingprocedure_solrsummary_t",
-					new StringBuilder().append(samplingProcedure.getId()));
+			sid.addField("samplingprocedure_solrsummary_t", new StringBuilder().append(samplingProcedure.getId()));
 			documents.add(sid);
 		}
 		try {
@@ -178,8 +169,7 @@ public class SamplingProcedure {
 	 *            - descrierea procedurii.
 	 * @return
 	 */
-	public static SamplingProcedure checkSamplingProcedure(Integer id,
-			String name, String description) {
+	public static SamplingProcedure checkSamplingProcedure(Integer id, String name, String description) {
 		SamplingProcedure object;
 
 		if (id != null) {
@@ -193,10 +183,8 @@ public class SamplingProcedure {
 		List<SamplingProcedure> queryResult;
 
 		if (name != null) {
-			TypedQuery<SamplingProcedure> query = entityManager()
-					.createQuery(
-							"SELECT o FROM SamplingProcedure o WHERE lower(o.name) = lower(:name)",
-							SamplingProcedure.class);
+			TypedQuery<SamplingProcedure> query = entityManager().createQuery(
+					"SELECT o FROM SamplingProcedure o WHERE lower(o.name) = lower(:name)", SamplingProcedure.class);
 			query.setParameter("name", name);
 
 			queryResult = query.getResultList();
@@ -213,12 +201,17 @@ public class SamplingProcedure {
 		return object;
 	}
 
+	public static AuditReader getClassAuditReader() {
+		return AuditReaderFactory.get(entityManager());
+	}
+
 	@Column(name = "description", columnDefinition = "text")
 	private String description;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id", columnDefinition = "serial")
+	@Column(name = "id")
+	// , columnDefinition = "serial")
 	private Integer id;
 
 	@Column(name = "name", columnDefinition = "varchar", length = 100)
@@ -288,8 +281,7 @@ public class SamplingProcedure {
 		if (this.entityManager.contains(this)) {
 			this.entityManager.remove(this);
 		} else {
-			SamplingProcedure attached = SamplingProcedure
-					.findSamplingProcedure(this.id);
+			SamplingProcedure attached = SamplingProcedure.findSamplingProcedure(this.id);
 			this.entityManager.remove(attached);
 		}
 	}
@@ -315,8 +307,7 @@ public class SamplingProcedure {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this,
-				ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate
@@ -333,7 +324,10 @@ public class SamplingProcedure {
 	@Override
 	public boolean equals(Object obj) {
 		return (id != null && id.equals(((SamplingProcedure) obj).id))
-				|| (name != null && name
-						.equalsIgnoreCase(((SamplingProcedure) obj).name));
+				|| (name != null && name.equalsIgnoreCase(((SamplingProcedure) obj).name));
+	}
+
+	public AuditReader getAuditReader() {
+		return AuditReaderFactory.get(entityManager);
 	}
 }

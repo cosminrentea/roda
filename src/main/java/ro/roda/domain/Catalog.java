@@ -32,6 +32,9 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrInputDocument;
+import org.hibernate.envers.AuditReader;
+import org.hibernate.envers.AuditReaderFactory;
+import org.hibernate.envers.Audited;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -44,11 +47,11 @@ import flexjson.JSONSerializer;
 @Configurable
 @Entity
 @Table(schema = "public", name = "catalog")
+@Audited
 public class Catalog {
 
 	public static long countCatalogs() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM Catalog o",
-				Long.class).getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM Catalog o", Long.class).getSingleResult();
 	}
 
 	@Async
@@ -71,8 +74,7 @@ public class Catalog {
 	}
 
 	public static List<Catalog> findAllCatalogs() {
-		return entityManager().createQuery("SELECT o FROM Catalog o",
-				Catalog.class).getResultList();
+		return entityManager().createQuery("SELECT o FROM Catalog o", Catalog.class).getResultList();
 	}
 
 	public static Catalog findCatalog(Integer id) {
@@ -81,22 +83,18 @@ public class Catalog {
 		return entityManager().find(Catalog.class, id);
 	}
 
-	public static List<Catalog> findCatalogEntries(int firstResult,
-			int maxResults) {
-		return entityManager()
-				.createQuery("SELECT o FROM Catalog o", Catalog.class)
-				.setFirstResult(firstResult).setMaxResults(maxResults)
-				.getResultList();
+	public static List<Catalog> findCatalogEntries(int firstResult, int maxResults) {
+		return entityManager().createQuery("SELECT o FROM Catalog o", Catalog.class).setFirstResult(firstResult)
+				.setMaxResults(maxResults).getResultList();
 	}
 
 	public static Collection<Catalog> fromJsonArrayToCatalogs(String json) {
-		return new JSONDeserializer<List<Catalog>>().use(null, ArrayList.class)
-				.use("values", Catalog.class).deserialize(json);
+		return new JSONDeserializer<List<Catalog>>().use(null, ArrayList.class).use("values", Catalog.class)
+				.deserialize(json);
 	}
 
 	public static Catalog fromJsonToCatalog(String json) {
-		return new JSONDeserializer<Catalog>().use(null, Catalog.class)
-				.deserialize(json);
+		return new JSONDeserializer<Catalog>().use(null, Catalog.class).deserialize(json);
 	}
 
 	public static void indexCatalog(Catalog catalog) {
@@ -123,14 +121,10 @@ public class Catalog {
 			// this type
 			sid.addField(
 					"catalog_solrsummary_t",
-					new StringBuilder().append(catalog.getSeries()).append(" ")
-							.append(catalog.getParentId()).append(" ")
-							.append(catalog.getOwner()).append(" ")
-							.append(catalog.getName()).append(" ")
-							.append(catalog.getAdded().getTime()).append(" ")
-							.append(catalog.getSequencenr()).append(" ")
-							.append(catalog.getDescription()).append(" ")
-							.append(catalog.getId()));
+					new StringBuilder().append(catalog.getSeries()).append(" ").append(catalog.getParentId())
+							.append(" ").append(catalog.getOwner()).append(" ").append(catalog.getName()).append(" ")
+							.append(catalog.getAdded().getTime()).append(" ").append(catalog.getSequencenr())
+							.append(" ").append(catalog.getDescription()).append(" ").append(catalog.getId()));
 			documents.add(sid);
 		}
 		try {
@@ -165,8 +159,7 @@ public class Catalog {
 	}
 
 	public static String toJsonArray(Collection<Catalog> collection) {
-		return new JSONSerializer().exclude("*.class")
-				.include("catalogs", "catalogsStudies").serialize(collection);
+		return new JSONSerializer().exclude("*.class").include("catalogs", "catalogsStudies").serialize(collection);
 	}
 
 	/**
@@ -200,9 +193,8 @@ public class Catalog {
 	 *            - descrierea catalogului.
 	 * @return
 	 */
-	public static Catalog checkCatalog(Integer id, Catalog parentId,
-			Users owner, String name, Calendar added, Integer sequencenr,
-			String description) {
+	public static Catalog checkCatalog(Integer id, Catalog parentId, Users owner, String name, Calendar added,
+			Integer sequencenr, String description) {
 		Catalog object;
 
 		if (id != null) {
@@ -218,8 +210,7 @@ public class Catalog {
 		if (name != null && parentId != null && owner != null) {
 			TypedQuery<Catalog> query = entityManager().createQuery(
 					"SELECT o FROM Catalog o WHERE lower(o.name) = lower(:name) AND "
-							+ "o.parentId = :parentId AND o.owner = :owner",
-					Catalog.class);
+							+ "o.parentId = :parentId AND o.owner = :owner", Catalog.class);
 			query.setParameter("name", name);
 			query.setParameter("parentId", parentId);
 			query.setParameter("owner", owner);
@@ -242,6 +233,10 @@ public class Catalog {
 		return object;
 	}
 
+	public static AuditReader getClassAuditReader() {
+		return AuditReaderFactory.get(entityManager());
+	}
+
 	@Column(name = "added", columnDefinition = "timestamp")
 	@NotNull
 	@Temporal(TemporalType.TIMESTAMP)
@@ -259,7 +254,8 @@ public class Catalog {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id", columnDefinition = "serial")
+	@Column(name = "id")
+	// , columnDefinition = "serial")
 	private Integer id;
 
 	@Column(name = "name", columnDefinition = "varchar", length = 200)
@@ -271,7 +267,7 @@ public class Catalog {
 	private Users owner;
 
 	@ManyToOne
-	@JoinColumn(name = "parent_id", columnDefinition = "integer", referencedColumnName = "id", nullable = true, insertable = true, updatable = true)
+	@JoinColumn(name = "parent_id", columnDefinition = "integer", referencedColumnName = "id", nullable = true, insertable = false, updatable = false)
 	private Catalog parentId;
 
 	@Column(name = "sequencenr", columnDefinition = "int4")
@@ -286,7 +282,7 @@ public class Catalog {
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	@Autowired(required=false)
+	@Autowired(required = false)
 	transient SolrServer solrServer;
 
 	@Transactional
@@ -424,9 +420,8 @@ public class Catalog {
 	}
 
 	public String toString() {
-		return new ReflectionToStringBuilder(this,
-				ToStringStyle.SHORT_PREFIX_STYLE).setExcludeFieldNames(
-				"parentId").toString();
+		return new ReflectionToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE).setExcludeFieldNames("parentId")
+				.toString();
 	}
 
 	@PostUpdate
@@ -443,10 +438,12 @@ public class Catalog {
 	@Override
 	public boolean equals(Object obj) {
 		return (id != null && id.equals(((Catalog) obj).id))
-				|| ((parentId != null && parentId
-						.equals(((Catalog) obj).parentId))
-						&& (owner != null && owner
-								.equals(((Catalog) obj).owner)) && (name != null && name
+				|| ((parentId != null && parentId.equals(((Catalog) obj).parentId))
+						&& (owner != null && owner.equals(((Catalog) obj).owner)) && (name != null && name
 						.equalsIgnoreCase(((Catalog) obj).name)));
+	}
+
+	public AuditReader getAuditReader() {
+		return AuditReaderFactory.get(entityManager);
 	}
 }

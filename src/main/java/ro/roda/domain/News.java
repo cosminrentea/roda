@@ -26,6 +26,8 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrInputDocument;
+import org.hibernate.envers.AuditReader;
+import org.hibernate.envers.AuditReaderFactory;
 import org.hibernate.envers.Audited;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -39,11 +41,11 @@ import flexjson.JSONSerializer;
 @Configurable
 @Entity
 @Table(schema = "public", name = "news")
+@Audited
 public class News {
 
 	public static long countNewspieces() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM News o",
-				Long.class).getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM News o", Long.class).getSingleResult();
 	}
 
 	@Async
@@ -66,8 +68,7 @@ public class News {
 	}
 
 	public static List<News> findAllNewspieces() {
-		return entityManager().createQuery("SELECT o FROM News o", News.class)
-				.getResultList();
+		return entityManager().createQuery("SELECT o FROM News o", News.class).getResultList();
 	}
 
 	public static News findNews(Integer id) {
@@ -77,19 +78,17 @@ public class News {
 	}
 
 	public static List<News> findNewsEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM News o", News.class)
-				.setFirstResult(firstResult).setMaxResults(maxResults)
-				.getResultList();
+		return entityManager().createQuery("SELECT o FROM News o", News.class).setFirstResult(firstResult)
+				.setMaxResults(maxResults).getResultList();
 	}
 
 	public static Collection<News> fromJsonArrayToNewspieces(String json) {
-		return new JSONDeserializer<List<News>>().use(null, ArrayList.class)
-				.use("values", News.class).deserialize(json);
+		return new JSONDeserializer<List<News>>().use(null, ArrayList.class).use("values", News.class)
+				.deserialize(json);
 	}
 
 	public static News fromJsonToNews(String json) {
-		return new JSONDeserializer<News>().use(null, News.class).deserialize(
-				json);
+		return new JSONDeserializer<News>().use(null, News.class).deserialize(json);
 	}
 
 	public static void indexNews(News news) {
@@ -109,10 +108,8 @@ public class News {
 			sid.addField("news.content_s", news.getContent());
 			// Add summary field to allow searching documents for objects of
 			// this type
-			sid.addField("news_solrsummary_t",
-					new StringBuilder().append(news.getAdded().getTime())
-							.append(" ").append(news.getTitle()).append(" ")
-							.append(news.getContent()));
+			sid.addField("news_solrsummary_t", new StringBuilder().append(news.getAdded().getTime()).append(" ")
+					.append(news.getTitle()).append(" ").append(news.getContent()));
 			documents.add(sid);
 		}
 		try {
@@ -176,8 +173,7 @@ public class News {
 	 *            - continutul stirii.
 	 * @return
 	 */
-	public static News checkNews(Integer id, Calendar added, Boolean visible,
-			String title, String content) {
+	public static News checkNews(Integer id, Calendar added, Boolean visible, String title, String content) {
 		News object;
 
 		if (id != null) {
@@ -198,6 +194,10 @@ public class News {
 		return object;
 	}
 
+	public static AuditReader getClassAuditReader() {
+		return AuditReaderFactory.get(entityManager());
+	}
+
 	@Column(name = "added", columnDefinition = "timestamp")
 	@NotNull
 	@Temporal(TemporalType.TIMESTAMP)
@@ -209,7 +209,8 @@ public class News {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id", columnDefinition = "serial")
+	@Column(name = "id")
+	// , columnDefinition = "serial")
 	private Integer id;
 
 	@Column(name = "title", columnDefinition = "text")
@@ -223,7 +224,7 @@ public class News {
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	@Autowired(required=false)
+	@Autowired(required = false)
 	transient SolrServer solrServer;
 
 	@Transactional
@@ -313,8 +314,7 @@ public class News {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this,
-				ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate
@@ -331,5 +331,9 @@ public class News {
 	@Override
 	public boolean equals(Object obj) {
 		return id != null && id.equals(((News) obj).id);
+	}
+
+	public AuditReader getAuditReader() {
+		return AuditReaderFactory.get(entityManager);
 	}
 }

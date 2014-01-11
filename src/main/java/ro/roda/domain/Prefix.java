@@ -26,6 +26,8 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrInputDocument;
+import org.hibernate.envers.AuditReader;
+import org.hibernate.envers.AuditReaderFactory;
 import org.hibernate.envers.Audited;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -38,11 +40,11 @@ import flexjson.JSONSerializer;
 @Entity
 @Table(schema = "public", name = "prefix")
 @Configurable
+@Audited
 public class Prefix {
 
 	public static long countPrefixes() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM Prefix o",
-				Long.class).getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM Prefix o", Long.class).getSingleResult();
 	}
 
 	@Async
@@ -65,8 +67,7 @@ public class Prefix {
 	}
 
 	public static List<Prefix> findAllPrefixes() {
-		return entityManager().createQuery("SELECT o FROM Prefix o",
-				Prefix.class).getResultList();
+		return entityManager().createQuery("SELECT o FROM Prefix o", Prefix.class).getResultList();
 	}
 
 	public static Prefix findPrefix(Integer id) {
@@ -76,20 +77,17 @@ public class Prefix {
 	}
 
 	public static List<Prefix> findPrefixEntries(int firstResult, int maxResults) {
-		return entityManager()
-				.createQuery("SELECT o FROM Prefix o", Prefix.class)
-				.setFirstResult(firstResult).setMaxResults(maxResults)
-				.getResultList();
+		return entityManager().createQuery("SELECT o FROM Prefix o", Prefix.class).setFirstResult(firstResult)
+				.setMaxResults(maxResults).getResultList();
 	}
 
 	public static Collection<Prefix> fromJsonArrayToPrefixes(String json) {
-		return new JSONDeserializer<List<Prefix>>().use(null, ArrayList.class)
-				.use("values", Prefix.class).deserialize(json);
+		return new JSONDeserializer<List<Prefix>>().use(null, ArrayList.class).use("values", Prefix.class)
+				.deserialize(json);
 	}
 
 	public static Prefix fromJsonToPrefix(String json) {
-		return new JSONDeserializer<Prefix>().use(null, Prefix.class)
-				.deserialize(json);
+		return new JSONDeserializer<Prefix>().use(null, Prefix.class).deserialize(json);
 	}
 
 	public static void indexPrefix(Prefix prefix) {
@@ -109,8 +107,7 @@ public class Prefix {
 			// Add summary field to allow searching documents for objects of
 			// this type
 			sid.addField("prefix_solrsummary_t",
-					new StringBuilder().append(prefix.getName()).append(" ")
-							.append(prefix.getId()));
+					new StringBuilder().append(prefix.getName()).append(" ").append(prefix.getId()));
 			documents.add(sid);
 		}
 		try {
@@ -183,10 +180,8 @@ public class Prefix {
 		List<Prefix> queryResult;
 
 		if (name != null) {
-			TypedQuery<Prefix> query = entityManager()
-					.createQuery(
-							"SELECT o FROM Prefix o WHERE lower(o.name) = lower(:name)",
-							Prefix.class);
+			TypedQuery<Prefix> query = entityManager().createQuery(
+					"SELECT o FROM Prefix o WHERE lower(o.name) = lower(:name)", Prefix.class);
 			query.setParameter("name", name);
 
 			queryResult = query.getResultList();
@@ -202,9 +197,14 @@ public class Prefix {
 		return object;
 	}
 
+	public static AuditReader getClassAuditReader() {
+		return AuditReaderFactory.get(entityManager());
+	}
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id", columnDefinition = "serial")
+	@Column(name = "id")
+	// , columnDefinition = "serial")
 	private Integer id;
 
 	@Column(name = "name", columnDefinition = "varchar", length = 50)
@@ -291,8 +291,7 @@ public class Prefix {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this,
-				ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate
@@ -310,5 +309,9 @@ public class Prefix {
 	public boolean equals(Object obj) {
 		return (id != null && id.equals(((Prefix) obj).id))
 				|| (name != null && name.equalsIgnoreCase(((Prefix) obj).name));
+	}
+
+	public AuditReader getAuditReader() {
+		return AuditReaderFactory.get(entityManager);
 	}
 }

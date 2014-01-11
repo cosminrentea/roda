@@ -26,6 +26,8 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrInputDocument;
+import org.hibernate.envers.AuditReader;
+import org.hibernate.envers.AuditReaderFactory;
 import org.hibernate.envers.Audited;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -38,12 +40,11 @@ import flexjson.JSONSerializer;
 @Entity
 @Table(schema = "public", name = "cms_page_content")
 @Configurable
+@Audited
 public class CmsPageContent {
 
 	public static long countCmsPageContents() {
-		return entityManager().createQuery(
-				"SELECT COUNT(o) FROM CmsPageContent o", Long.class)
-				.getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM CmsPageContent o", Long.class).getSingleResult();
 	}
 
 	@Async
@@ -66,8 +67,7 @@ public class CmsPageContent {
 	}
 
 	public static List<CmsPageContent> findAllCmsPageContents() {
-		return entityManager().createQuery("SELECT o FROM CmsPageContent o",
-				CmsPageContent.class).getResultList();
+		return entityManager().createQuery("SELECT o FROM CmsPageContent o", CmsPageContent.class).getResultList();
 	}
 
 	public static CmsPageContent findCmsPageContent(Integer id) {
@@ -76,24 +76,18 @@ public class CmsPageContent {
 		return entityManager().find(CmsPageContent.class, id);
 	}
 
-	public static List<CmsPageContent> findCmsPageContentEntries(
-			int firstResult, int maxResults) {
-		return entityManager()
-				.createQuery("SELECT o FROM CmsPageContent o",
-						CmsPageContent.class).setFirstResult(firstResult)
-				.setMaxResults(maxResults).getResultList();
+	public static List<CmsPageContent> findCmsPageContentEntries(int firstResult, int maxResults) {
+		return entityManager().createQuery("SELECT o FROM CmsPageContent o", CmsPageContent.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
 	}
 
-	public static Collection<CmsPageContent> fromJsonArrayToCmsPageContents(
-			String json) {
-		return new JSONDeserializer<List<CmsPageContent>>()
-				.use(null, ArrayList.class).use("values", CmsPageContent.class)
-				.deserialize(json);
+	public static Collection<CmsPageContent> fromJsonArrayToCmsPageContents(String json) {
+		return new JSONDeserializer<List<CmsPageContent>>().use(null, ArrayList.class)
+				.use("values", CmsPageContent.class).deserialize(json);
 	}
 
 	public static CmsPageContent fromJsonToCmsPageContent(String json) {
-		return new JSONDeserializer<CmsPageContent>().use(null,
-				CmsPageContent.class).deserialize(json);
+		return new JSONDeserializer<CmsPageContent>().use(null, CmsPageContent.class).deserialize(json);
 	}
 
 	public static void indexCmsPageContent(CmsPageContent cmsPageContent) {
@@ -103,32 +97,23 @@ public class CmsPageContent {
 	}
 
 	@Async
-	public static void indexCmsPageContents(
-			Collection<CmsPageContent> cmspagecontents) {
+	public static void indexCmsPageContents(Collection<CmsPageContent> cmspagecontents) {
 		List<SolrInputDocument> documents = new ArrayList<SolrInputDocument>();
 		for (CmsPageContent cmsPageContent : cmspagecontents) {
 			SolrInputDocument sid = new SolrInputDocument();
 			sid.addField("id", "cmspagecontent_" + cmsPageContent.getId());
-			sid.addField("cmsPageContent.cmspageid_t",
-					cmsPageContent.getCmsPageId());
+			sid.addField("cmsPageContent.cmspageid_t", cmsPageContent.getCmsPageId());
 			sid.addField("cmsPageContent.name_s", cmsPageContent.getName());
-			sid.addField("cmsPageContent.contenttitle_s",
-					cmsPageContent.getContentTitle());
-			sid.addField("cmsPageContent.contenttext_s",
-					cmsPageContent.getContentText());
-			sid.addField("cmsPageContent.orderinpage_i",
-					cmsPageContent.getOrderInPage());
+			sid.addField("cmsPageContent.contenttitle_s", cmsPageContent.getContentTitle());
+			sid.addField("cmsPageContent.contenttext_s", cmsPageContent.getContentText());
+			sid.addField("cmsPageContent.orderinpage_i", cmsPageContent.getOrderInPage());
 			// Add summary field to allow searching documents for objects of
 			// this type
 			sid.addField(
 					"cmspagecontent_solrsummary_t",
-					new StringBuilder().append(cmsPageContent.getCmsPageId())
-							.append(" ").append(cmsPageContent.getName())
-							.append(" ")
-							.append(cmsPageContent.getContentTitle())
-							.append(" ")
-							.append(cmsPageContent.getContentText())
-							.append(" ")
+					new StringBuilder().append(cmsPageContent.getCmsPageId()).append(" ")
+							.append(cmsPageContent.getName()).append(" ").append(cmsPageContent.getContentTitle())
+							.append(" ").append(cmsPageContent.getContentText()).append(" ")
 							.append(cmsPageContent.getOrderInPage()));
 			documents.add(sid);
 		}
@@ -196,9 +181,8 @@ public class CmsPageContent {
 	 *            - numarul de ordine al continutului in cadrul paginii.
 	 * @return
 	 */
-	public static CmsPageContent checkCmsPageContent(Integer id, String name,
-			CmsPage cmsPageId, String contentTitle, String contentText,
-			Integer orderInPage) {
+	public static CmsPageContent checkCmsPageContent(Integer id, String name, CmsPage cmsPageId, String contentTitle,
+			String contentText, Integer orderInPage) {
 		CmsPageContent object;
 
 		if (id != null) {
@@ -235,6 +219,10 @@ public class CmsPageContent {
 		return object;
 	}
 
+	public static AuditReader getClassAuditReader() {
+		return AuditReaderFactory.get(entityManager());
+	}
+
 	@ManyToOne
 	@JoinColumn(name = "cms_page_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false)
 	private CmsPage cmsPageId;
@@ -248,7 +236,8 @@ public class CmsPageContent {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id", columnDefinition = "serial")
+	@Column(name = "id")
+	// , columnDefinition = "serial")
 	private Integer id;
 
 	@Column(name = "name", columnDefinition = "varchar", length = 200)
@@ -262,7 +251,7 @@ public class CmsPageContent {
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	@Autowired(required=false)
+	@Autowired(required = false)
 	transient SolrServer solrServer;
 
 	@Transactional
@@ -326,8 +315,7 @@ public class CmsPageContent {
 		if (this.entityManager.contains(this)) {
 			this.entityManager.remove(this);
 		} else {
-			CmsPageContent attached = CmsPageContent
-					.findCmsPageContent(this.id);
+			CmsPageContent attached = CmsPageContent.findCmsPageContent(this.id);
 			this.entityManager.remove(attached);
 		}
 	}
@@ -361,8 +349,7 @@ public class CmsPageContent {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this,
-				ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate
@@ -379,8 +366,11 @@ public class CmsPageContent {
 	@Override
 	public boolean equals(Object obj) {
 		return (id != null && id.equals(((CmsPageContent) obj).id))
-				|| ((name != null && name
-						.equalsIgnoreCase(((CmsPageContent) obj).name)) && (cmsPageId != null && cmsPageId
+				|| ((name != null && name.equalsIgnoreCase(((CmsPageContent) obj).name)) && (cmsPageId != null && cmsPageId
 						.equals(((CmsPageContent) obj).cmsPageId)));
+	}
+
+	public AuditReader getAuditReader() {
+		return AuditReaderFactory.get(entityManager);
 	}
 }

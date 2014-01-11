@@ -20,7 +20,6 @@ import javax.persistence.PostUpdate;
 import javax.persistence.PreRemove;
 import javax.persistence.Table;
 import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -29,6 +28,9 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrInputDocument;
+import org.hibernate.envers.AuditReader;
+import org.hibernate.envers.AuditReaderFactory;
+import org.hibernate.envers.Audited;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.scheduling.annotation.Async;
@@ -40,6 +42,7 @@ import flexjson.JSONSerializer;
 @Entity
 @Table(schema = "public", name = "address")
 @Configurable
+@Audited
 public class Address {
 
 	public static long countAddresses() {
@@ -254,6 +257,10 @@ public class Address {
 		return object;
 	}
 
+	public static AuditReader getClassAuditReader() {
+		return AuditReaderFactory.get(entityManager());
+	}
+
 	@Column(name = "imported", columnDefinition = "text")
 	private String imported;
 
@@ -265,12 +272,13 @@ public class Address {
 	private String address2;
 
 	@ManyToOne
-	@JoinColumn(name = "city_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false)
+	@JoinColumn(name = "city_id", columnDefinition = "integer", referencedColumnName = "id", nullable = true)
 	private City cityId;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id", columnDefinition = "serial")
+	@Column(name = "id")
+	// , columnDefinition = "serial")
 	private Integer id;
 
 	@OneToMany(mappedBy = "addressId")
@@ -442,5 +450,9 @@ public class Address {
 						&& (postalCode != null && postalCode.equalsIgnoreCase(((Address) obj).postalCode))
 						&& (address1 != null && address1.equalsIgnoreCase(((Address) obj).address1)) && (address2 != null && address2
 						.equalsIgnoreCase(((Address) obj).address2)));
+	}
+
+	public AuditReader getAuditReader() {
+		return AuditReaderFactory.get(entityManager);
 	}
 }

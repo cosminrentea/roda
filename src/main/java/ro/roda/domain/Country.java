@@ -26,6 +26,8 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrInputDocument;
+import org.hibernate.envers.AuditReader;
+import org.hibernate.envers.AuditReaderFactory;
 import org.hibernate.envers.Audited;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -38,11 +40,11 @@ import flexjson.JSONSerializer;
 @Configurable
 @Entity
 @Table(schema = "public", name = "country")
+@Audited
 public class Country {
 
 	public static long countCountrys() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM Country o",
-				Long.class).getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM Country o", Long.class).getSingleResult();
 	}
 
 	@Async
@@ -65,8 +67,7 @@ public class Country {
 	}
 
 	public static List<Country> findAllCountrys() {
-		return entityManager().createQuery("SELECT o FROM Country o",
-				Country.class).getResultList();
+		return entityManager().createQuery("SELECT o FROM Country o", Country.class).getResultList();
 	}
 
 	public static Country findCountry(Integer id) {
@@ -75,22 +76,18 @@ public class Country {
 		return entityManager().find(Country.class, id);
 	}
 
-	public static List<Country> findCountryEntries(int firstResult,
-			int maxResults) {
-		return entityManager()
-				.createQuery("SELECT o FROM Country o", Country.class)
-				.setFirstResult(firstResult).setMaxResults(maxResults)
-				.getResultList();
+	public static List<Country> findCountryEntries(int firstResult, int maxResults) {
+		return entityManager().createQuery("SELECT o FROM Country o", Country.class).setFirstResult(firstResult)
+				.setMaxResults(maxResults).getResultList();
 	}
 
 	public static Collection<Country> fromJsonArrayToCountrys(String json) {
-		return new JSONDeserializer<List<Country>>().use(null, ArrayList.class)
-				.use("values", Country.class).deserialize(json);
+		return new JSONDeserializer<List<Country>>().use(null, ArrayList.class).use("values", Country.class)
+				.deserialize(json);
 	}
 
 	public static Country fromJsonToCountry(String json) {
-		return new JSONDeserializer<Country>().use(null, Country.class)
-				.deserialize(json);
+		return new JSONDeserializer<Country>().use(null, Country.class).deserialize(json);
 	}
 
 	public static void indexCountry(Country country) {
@@ -115,12 +112,9 @@ public class Country {
 			// this type
 			sid.addField(
 					"country_solrsummary_t",
-					new StringBuilder().append(country.getNameRo()).append(" ")
-							.append(country.getNameSelf()).append(" ")
-							.append(country.getNameEn()).append(" ")
-							.append(country.getIso3166()).append(" ")
-							.append(country.getIso3166Alpha3()).append(" ")
-							.append(country.getId()));
+					new StringBuilder().append(country.getNameRo()).append(" ").append(country.getNameSelf())
+							.append(" ").append(country.getNameEn()).append(" ").append(country.getIso3166())
+							.append(" ").append(country.getIso3166Alpha3()).append(" ").append(country.getId()));
 			documents.add(sid);
 		}
 		try {
@@ -187,8 +181,8 @@ public class Country {
 	 * @param iso3166Alpha3
 	 * @return
 	 */
-	public static Country checkCountry(Integer id, String nameSelf,
-			String nameRo, String nameEn, String iso3166, String iso3166Alpha3) {
+	public static Country checkCountry(Integer id, String nameSelf, String nameRo, String nameEn, String iso3166,
+			String iso3166Alpha3) {
 		Country object;
 
 		if (id != null) {
@@ -202,10 +196,8 @@ public class Country {
 		List<Country> queryResult;
 
 		if (nameSelf != null) {
-			TypedQuery<Country> query = entityManager()
-					.createQuery(
-							"SELECT o FROM Country o WHERE lower(o.nameSelf) = lower(:nameSelf)",
-							Country.class);
+			TypedQuery<Country> query = entityManager().createQuery(
+					"SELECT o FROM Country o WHERE lower(o.nameSelf) = lower(:nameSelf)", Country.class);
 			query.setParameter("nameSelf", nameSelf);
 
 			queryResult = query.getResultList();
@@ -215,10 +207,8 @@ public class Country {
 		}
 
 		if (nameRo != null) {
-			TypedQuery<Country> query = entityManager()
-					.createQuery(
-							"SELECT o FROM Country o WHERE lower(o.nameRo) = lower(:nameRo)",
-							Country.class);
+			TypedQuery<Country> query = entityManager().createQuery(
+					"SELECT o FROM Country o WHERE lower(o.nameRo) = lower(:nameRo)", Country.class);
 			query.setParameter("nameRo", nameRo);
 
 			queryResult = query.getResultList();
@@ -228,10 +218,8 @@ public class Country {
 		}
 
 		if (nameEn != null) {
-			TypedQuery<Country> query = entityManager()
-					.createQuery(
-							"SELECT o FROM Country o WHERE lower(o.nameEn) = lower(:nameEn)",
-							Country.class);
+			TypedQuery<Country> query = entityManager().createQuery(
+					"SELECT o FROM Country o WHERE lower(o.nameEn) = lower(:nameEn)", Country.class);
 			query.setParameter("nameEn", nameEn);
 
 			queryResult = query.getResultList();
@@ -251,12 +239,17 @@ public class Country {
 		return object;
 	}
 
+	public static AuditReader getClassAuditReader() {
+		return AuditReaderFactory.get(entityManager());
+	}
+
 	@OneToMany(mappedBy = "countryId")
 	private Set<City> cities;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id", columnDefinition = "serial")
+	@Column(name = "id")
+	// , columnDefinition = "serial")
 	private Integer id;
 
 	@Column(name = "iso3166", columnDefinition = "bpchar", length = 2, unique = true)
@@ -281,7 +274,7 @@ public class Country {
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	@Autowired(required=false)
+	@Autowired(required = false)
 	transient SolrServer solrServer;
 
 	@Transactional
@@ -395,8 +388,7 @@ public class Country {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this,
-				ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate
@@ -413,11 +405,12 @@ public class Country {
 	@Override
 	public boolean equals(Object obj) {
 		return (id != null && id.equals(((Country) obj).id))
-				|| (nameSelf != null && nameSelf
-						.equalsIgnoreCase(((Country) obj).nameSelf))
-				|| (nameRo != null && nameRo
-						.equalsIgnoreCase(((Country) obj).nameRo))
-				|| (nameEn != null && nameEn
-						.equalsIgnoreCase(((Country) obj).nameEn));
+				|| (nameSelf != null && nameSelf.equalsIgnoreCase(((Country) obj).nameSelf))
+				|| (nameRo != null && nameRo.equalsIgnoreCase(((Country) obj).nameRo))
+				|| (nameEn != null && nameEn.equalsIgnoreCase(((Country) obj).nameEn));
+	}
+
+	public AuditReader getAuditReader() {
+		return AuditReaderFactory.get(entityManager);
 	}
 }

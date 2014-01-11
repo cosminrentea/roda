@@ -19,7 +19,6 @@ import javax.persistence.PostPersist;
 import javax.persistence.PostUpdate;
 import javax.persistence.PreRemove;
 import javax.persistence.Table;
-import javax.persistence.TypedQuery;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -28,6 +27,8 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrInputDocument;
+import org.hibernate.envers.AuditReader;
+import org.hibernate.envers.AuditReaderFactory;
 import org.hibernate.envers.Audited;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -40,11 +41,11 @@ import flexjson.JSONSerializer;
 @Entity
 @Table(schema = "public", name = "source")
 @Configurable
+@Audited
 public class Source {
 
 	public static long countSources() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM Source o",
-				Long.class).getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM Source o", Long.class).getSingleResult();
 	}
 
 	@Async
@@ -67,8 +68,7 @@ public class Source {
 	}
 
 	public static List<Source> findAllSources() {
-		return entityManager().createQuery("SELECT o FROM Source o",
-				Source.class).getResultList();
+		return entityManager().createQuery("SELECT o FROM Source o", Source.class).getResultList();
 	}
 
 	public static Source findSource(Integer id) {
@@ -78,20 +78,17 @@ public class Source {
 	}
 
 	public static List<Source> findSourceEntries(int firstResult, int maxResults) {
-		return entityManager()
-				.createQuery("SELECT o FROM Source o", Source.class)
-				.setFirstResult(firstResult).setMaxResults(maxResults)
-				.getResultList();
+		return entityManager().createQuery("SELECT o FROM Source o", Source.class).setFirstResult(firstResult)
+				.setMaxResults(maxResults).getResultList();
 	}
 
 	public static Collection<Source> fromJsonArrayToSources(String json) {
-		return new JSONDeserializer<List<Source>>().use(null, ArrayList.class)
-				.use("values", Source.class).deserialize(json);
+		return new JSONDeserializer<List<Source>>().use(null, ArrayList.class).use("values", Source.class)
+				.deserialize(json);
 	}
 
 	public static Source fromJsonToSource(String json) {
-		return new JSONDeserializer<Source>().use(null, Source.class)
-				.deserialize(json);
+		return new JSONDeserializer<Source>().use(null, Source.class).deserialize(json);
 	}
 
 	public static void indexSource(Source source) {
@@ -111,8 +108,7 @@ public class Source {
 			// Add summary field to allow searching documents for objects of
 			// this type
 			sid.addField("source_solrsummary_t",
-					new StringBuilder().append(source.getCitation())
-							.append(" ").append(source.getId()));
+					new StringBuilder().append(source.getCitation()).append(" ").append(source.getId()));
 			documents.add(sid);
 		}
 		try {
@@ -187,13 +183,18 @@ public class Source {
 		return object;
 	}
 
+	public static AuditReader getClassAuditReader() {
+		return AuditReaderFactory.get(entityManager());
+	}
+
 	@Column(name = "citation", columnDefinition = "text")
 	@NotNull
 	private String citation;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id", columnDefinition = "serial")
+	@Column(name = "id")
+	// , columnDefinition = "serial")
 	private Integer id;
 
 	@ManyToMany
@@ -277,8 +278,7 @@ public class Source {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this,
-				ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate
@@ -295,5 +295,9 @@ public class Source {
 	@Override
 	public boolean equals(Object obj) {
 		return id != null && id.equals(((Source) obj).id);
+	}
+
+	public AuditReader getAuditReader() {
+		return AuditReaderFactory.get(entityManager);
 	}
 }

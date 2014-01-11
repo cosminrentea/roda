@@ -26,6 +26,8 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrInputDocument;
+import org.hibernate.envers.AuditReader;
+import org.hibernate.envers.AuditReaderFactory;
 import org.hibernate.envers.Audited;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -38,11 +40,11 @@ import flexjson.JSONSerializer;
 @Configurable
 @Entity
 @Table(schema = "public", name = "email")
+@Audited
 public class Email {
 
 	public static long countEmails() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM Email o",
-				Long.class).getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM Email o", Long.class).getSingleResult();
 	}
 
 	@Async
@@ -65,9 +67,7 @@ public class Email {
 	}
 
 	public static List<Email> findAllEmails() {
-		return entityManager()
-				.createQuery("SELECT o FROM Email o", Email.class)
-				.getResultList();
+		return entityManager().createQuery("SELECT o FROM Email o", Email.class).getResultList();
 	}
 
 	public static Email findEmail(Integer id) {
@@ -77,20 +77,17 @@ public class Email {
 	}
 
 	public static List<Email> findEmailEntries(int firstResult, int maxResults) {
-		return entityManager()
-				.createQuery("SELECT o FROM Email o", Email.class)
-				.setFirstResult(firstResult).setMaxResults(maxResults)
-				.getResultList();
+		return entityManager().createQuery("SELECT o FROM Email o", Email.class).setFirstResult(firstResult)
+				.setMaxResults(maxResults).getResultList();
 	}
 
 	public static Collection<Email> fromJsonArrayToEmails(String json) {
-		return new JSONDeserializer<List<Email>>().use(null, ArrayList.class)
-				.use("values", Email.class).deserialize(json);
+		return new JSONDeserializer<List<Email>>().use(null, ArrayList.class).use("values", Email.class)
+				.deserialize(json);
 	}
 
 	public static Email fromJsonToEmail(String json) {
-		return new JSONDeserializer<Email>().use(null, Email.class)
-				.deserialize(json);
+		return new JSONDeserializer<Email>().use(null, Email.class).deserialize(json);
 	}
 
 	public static void indexEmail(Email email) {
@@ -110,8 +107,7 @@ public class Email {
 			// Add summary field to allow searching documents for objects of
 			// this type
 			sid.addField("email_solrsummary_t",
-					new StringBuilder().append(email.getEmail()).append(" ")
-							.append(email.getId()));
+					new StringBuilder().append(email.getEmail()).append(" ").append(email.getId()));
 			documents.add(sid);
 		}
 		try {
@@ -184,10 +180,8 @@ public class Email {
 		List<Email> queryResult;
 
 		if (email != null) {
-			TypedQuery<Email> query = entityManager()
-					.createQuery(
-							"SELECT o FROM Email o WHERE lower(o.email) = lower(:email)",
-							Email.class);
+			TypedQuery<Email> query = entityManager().createQuery(
+					"SELECT o FROM Email o WHERE lower(o.email) = lower(:email)", Email.class);
 			query.setParameter("email", email);
 
 			queryResult = query.getResultList();
@@ -203,13 +197,18 @@ public class Email {
 		return object;
 	}
 
+	public static AuditReader getClassAuditReader() {
+		return AuditReaderFactory.get(entityManager());
+	}
+
 	@Column(name = "email", columnDefinition = "varchar", length = 200)
 	@NotNull
 	private String email;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id", columnDefinition = "serial")
+	@Column(name = "id")
+	// , columnDefinition = "serial")
 	private Integer id;
 
 	@OneToMany(mappedBy = "emailId")
@@ -221,7 +220,7 @@ public class Email {
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	@Autowired(required=false)
+	@Autowired(required = false)
 	transient SolrServer solrServer;
 
 	@Transactional
@@ -303,8 +302,7 @@ public class Email {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this,
-				ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate
@@ -321,7 +319,10 @@ public class Email {
 	@Override
 	public boolean equals(Object obj) {
 		return (id != null && id.equals(((Email) obj).id))
-				|| (email != null && email
-						.equalsIgnoreCase(((Email) obj).email));
+				|| (email != null && email.equalsIgnoreCase(((Email) obj).email));
+	}
+
+	public AuditReader getAuditReader() {
+		return AuditReaderFactory.get(entityManager);
 	}
 }

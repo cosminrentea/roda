@@ -26,6 +26,8 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrInputDocument;
+import org.hibernate.envers.AuditReader;
+import org.hibernate.envers.AuditReaderFactory;
 import org.hibernate.envers.Audited;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -38,11 +40,11 @@ import flexjson.JSONSerializer;
 @Entity
 @Table(schema = "public", name = "lang")
 @Configurable
+@Audited
 public class Lang {
 
 	public static long countLangs() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM Lang o",
-				Long.class).getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM Lang o", Long.class).getSingleResult();
 	}
 
 	@Async
@@ -65,8 +67,7 @@ public class Lang {
 	}
 
 	public static List<Lang> findAllLangs() {
-		return entityManager().createQuery("SELECT o FROM Lang o", Lang.class)
-				.getResultList();
+		return entityManager().createQuery("SELECT o FROM Lang o", Lang.class).getResultList();
 	}
 
 	public static Lang findLang(Integer id) {
@@ -76,19 +77,17 @@ public class Lang {
 	}
 
 	public static List<Lang> findLangEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM Lang o", Lang.class)
-				.setFirstResult(firstResult).setMaxResults(maxResults)
-				.getResultList();
+		return entityManager().createQuery("SELECT o FROM Lang o", Lang.class).setFirstResult(firstResult)
+				.setMaxResults(maxResults).getResultList();
 	}
 
 	public static Collection<Lang> fromJsonArrayToLangs(String json) {
-		return new JSONDeserializer<List<Lang>>().use(null, ArrayList.class)
-				.use("values", Lang.class).deserialize(json);
+		return new JSONDeserializer<List<Lang>>().use(null, ArrayList.class).use("values", Lang.class)
+				.deserialize(json);
 	}
 
 	public static Lang fromJsonToLang(String json) {
-		return new JSONDeserializer<Lang>().use(null, Lang.class).deserialize(
-				json);
+		return new JSONDeserializer<Lang>().use(null, Lang.class).deserialize(json);
 	}
 
 	public static void indexLang(Lang lang) {
@@ -109,12 +108,9 @@ public class Lang {
 			sid.addField("lang.nameen_s", lang.getNameEn());
 			// Add summary field to allow searching documents for objects of
 			// this type
-			sid.addField(
-					"lang_solrsummary_t",
-					new StringBuilder().append(lang.getIso639()).append(" ")
-							.append(lang.getNameSelf()).append(" ")
-							.append(lang.getNameRo()).append(" ")
-							.append(lang.getNameEn()));
+			sid.addField("lang_solrsummary_t",
+					new StringBuilder().append(lang.getIso639()).append(" ").append(lang.getNameSelf()).append(" ")
+							.append(lang.getNameRo()).append(" ").append(lang.getNameEn()));
 			documents.add(sid);
 		}
 		try {
@@ -182,8 +178,7 @@ public class Lang {
 	 *            - numele limbii (in limba engleza).
 	 * @return
 	 */
-	public static Lang checkLang(Integer id, String iso639, String nameSelf,
-			String nameRo, String nameEn) {
+	public static Lang checkLang(Integer id, String iso639, String nameSelf, String nameRo, String nameEn) {
 		Lang object;
 
 		if (id != null) {
@@ -197,10 +192,8 @@ public class Lang {
 		List<Lang> queryResult;
 
 		if (iso639 != null) {
-			TypedQuery<Lang> query = entityManager()
-					.createQuery(
-							"SELECT o FROM Lang o WHERE lower(o.iso639) = lower(:iso639)",
-							Lang.class);
+			TypedQuery<Lang> query = entityManager().createQuery(
+					"SELECT o FROM Lang o WHERE lower(o.iso639) = lower(:iso639)", Lang.class);
 			query.setParameter("iso639", iso639);
 
 			queryResult = query.getResultList();
@@ -210,10 +203,8 @@ public class Lang {
 		}
 
 		if (nameSelf != null) {
-			TypedQuery<Lang> query = entityManager()
-					.createQuery(
-							"SELECT o FROM Lang o WHERE lower(o.nameSelf) = lower(:nameSelf)",
-							Lang.class);
+			TypedQuery<Lang> query = entityManager().createQuery(
+					"SELECT o FROM Lang o WHERE lower(o.nameSelf) = lower(:nameSelf)", Lang.class);
 			query.setParameter("nameSelf", nameSelf);
 
 			queryResult = query.getResultList();
@@ -223,10 +214,8 @@ public class Lang {
 		}
 
 		if (nameRo != null) {
-			TypedQuery<Lang> query = entityManager()
-					.createQuery(
-							"SELECT o FROM Lang o WHERE lower(o.nameRo) = lower(:nameRo)",
-							Lang.class);
+			TypedQuery<Lang> query = entityManager().createQuery(
+					"SELECT o FROM Lang o WHERE lower(o.nameRo) = lower(:nameRo)", Lang.class);
 			query.setParameter("nameRo", nameRo);
 
 			queryResult = query.getResultList();
@@ -236,10 +225,8 @@ public class Lang {
 		}
 
 		if (nameEn != null) {
-			TypedQuery<Lang> query = entityManager()
-					.createQuery(
-							"SELECT o FROM Lang o WHERE lower(o.nameEn) = lower(:nameEn)",
-							Lang.class);
+			TypedQuery<Lang> query = entityManager().createQuery(
+					"SELECT o FROM Lang o WHERE lower(o.nameEn) = lower(:nameEn)", Lang.class);
 			query.setParameter("nameEn", nameEn);
 
 			queryResult = query.getResultList();
@@ -258,9 +245,14 @@ public class Lang {
 		return object;
 	}
 
+	public static AuditReader getClassAuditReader() {
+		return AuditReaderFactory.get(entityManager());
+	}
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id", columnDefinition = "serial")
+	@Column(name = "id")
+	// , columnDefinition = "serial")
 	private Integer id;
 
 	@OneToMany(mappedBy = "langId")
@@ -291,7 +283,7 @@ public class Lang {
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	@Autowired(required=false)
+	@Autowired(required = false)
 	transient SolrServer solrServer;
 
 	@Transactional
@@ -413,8 +405,7 @@ public class Lang {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this,
-				ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate
@@ -431,13 +422,13 @@ public class Lang {
 	@Override
 	public boolean equals(Object obj) {
 		return (id != null && id.equals(((Lang) obj).id))
-				|| (nameSelf != null && nameSelf
-						.equalsIgnoreCase(((Lang) obj).nameSelf))
-				|| (nameRo != null && nameRo
-						.equalsIgnoreCase(((Lang) obj).nameRo))
-				|| (nameEn != null && nameEn
-						.equalsIgnoreCase(((Lang) obj).nameEn))
-				|| (iso639 != null && iso639
-						.equalsIgnoreCase(((Lang) obj).iso639));
+				|| (nameSelf != null && nameSelf.equalsIgnoreCase(((Lang) obj).nameSelf))
+				|| (nameRo != null && nameRo.equalsIgnoreCase(((Lang) obj).nameRo))
+				|| (nameEn != null && nameEn.equalsIgnoreCase(((Lang) obj).nameEn))
+				|| (iso639 != null && iso639.equalsIgnoreCase(((Lang) obj).iso639));
+	}
+
+	public AuditReader getAuditReader() {
+		return AuditReaderFactory.get(entityManager);
 	}
 }

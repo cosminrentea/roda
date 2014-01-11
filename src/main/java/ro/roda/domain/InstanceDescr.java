@@ -23,6 +23,8 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrInputDocument;
+import org.hibernate.envers.AuditReader;
+import org.hibernate.envers.AuditReaderFactory;
 import org.hibernate.envers.Audited;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -35,12 +37,11 @@ import flexjson.JSONSerializer;
 @Entity
 @Table(schema = "public", name = "instance_descr")
 @Configurable
+@Audited
 public class InstanceDescr {
 
 	public static long countInstanceDescrs() {
-		return entityManager().createQuery(
-				"SELECT COUNT(o) FROM InstanceDescr o", Long.class)
-				.getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM InstanceDescr o", Long.class).getSingleResult();
 	}
 
 	@Async
@@ -63,8 +64,7 @@ public class InstanceDescr {
 	}
 
 	public static List<InstanceDescr> findAllInstanceDescrs() {
-		return entityManager().createQuery("SELECT o FROM InstanceDescr o",
-				InstanceDescr.class).getResultList();
+		return entityManager().createQuery("SELECT o FROM InstanceDescr o", InstanceDescr.class).getResultList();
 	}
 
 	public static InstanceDescr findInstanceDescr(InstanceDescrPK id) {
@@ -73,24 +73,18 @@ public class InstanceDescr {
 		return entityManager().find(InstanceDescr.class, id);
 	}
 
-	public static List<InstanceDescr> findInstanceDescrEntries(int firstResult,
-			int maxResults) {
-		return entityManager()
-				.createQuery("SELECT o FROM InstanceDescr o",
-						InstanceDescr.class).setFirstResult(firstResult)
-				.setMaxResults(maxResults).getResultList();
+	public static List<InstanceDescr> findInstanceDescrEntries(int firstResult, int maxResults) {
+		return entityManager().createQuery("SELECT o FROM InstanceDescr o", InstanceDescr.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
 	}
 
-	public static Collection<InstanceDescr> fromJsonArrayToInstanceDescrs(
-			String json) {
-		return new JSONDeserializer<List<InstanceDescr>>()
-				.use(null, ArrayList.class).use("values", InstanceDescr.class)
-				.deserialize(json);
+	public static Collection<InstanceDescr> fromJsonArrayToInstanceDescrs(String json) {
+		return new JSONDeserializer<List<InstanceDescr>>().use(null, ArrayList.class)
+				.use("values", InstanceDescr.class).deserialize(json);
 	}
 
 	public static InstanceDescr fromJsonToInstanceDescr(String json) {
-		return new JSONDeserializer<InstanceDescr>().use(null,
-				InstanceDescr.class).deserialize(json);
+		return new JSONDeserializer<InstanceDescr>().use(null, InstanceDescr.class).deserialize(json);
 	}
 
 	public static void indexInstanceDescr(InstanceDescr instanceDescr) {
@@ -100,17 +94,14 @@ public class InstanceDescr {
 	}
 
 	@Async
-	public static void indexInstanceDescrs(
-			Collection<InstanceDescr> instancedescrs) {
+	public static void indexInstanceDescrs(Collection<InstanceDescr> instancedescrs) {
 		List<SolrInputDocument> documents = new ArrayList<SolrInputDocument>();
 		for (InstanceDescr instanceDescr : instancedescrs) {
 			SolrInputDocument sid = new SolrInputDocument();
 			sid.addField("id", "instancedescr_" + instanceDescr.getId());
-			sid.addField("instanceDescr.instanceid_t",
-					instanceDescr.getInstanceId());
+			sid.addField("instanceDescr.instanceid_t", instanceDescr.getInstanceId());
 			sid.addField("instanceDescr.langid_t", instanceDescr.getLangId());
-			sid.addField("instanceDescr.accessconditions_s",
-					instanceDescr.getAccessConditions());
+			sid.addField("instanceDescr.accessconditions_s", instanceDescr.getAccessConditions());
 			sid.addField("instanceDescr.notes_s", instanceDescr.getNotes());
 			sid.addField("instanceDescr.title_s", instanceDescr.getTitle());
 			sid.addField("instanceDescr.id_t", instanceDescr.getId());
@@ -118,12 +109,9 @@ public class InstanceDescr {
 			// this type
 			sid.addField(
 					"instancedescr_solrsummary_t",
-					new StringBuilder().append(instanceDescr.getInstanceId())
-							.append(" ").append(instanceDescr.getLangId())
-							.append(" ")
-							.append(instanceDescr.getAccessConditions())
-							.append(" ").append(instanceDescr.getNotes())
-							.append(" ").append(instanceDescr.getTitle())
+					new StringBuilder().append(instanceDescr.getInstanceId()).append(" ")
+							.append(instanceDescr.getLangId()).append(" ").append(instanceDescr.getAccessConditions())
+							.append(" ").append(instanceDescr.getNotes()).append(" ").append(instanceDescr.getTitle())
 							.append(" ").append(instanceDescr.getId()));
 			documents.add(sid);
 		}
@@ -191,11 +179,14 @@ public class InstanceDescr {
 	 *            - TODO.
 	 * @return
 	 */
-	public static InstanceDescr checkInstanceDescr(Integer instanceId,
-			Integer languageId, String accessConditions, String notes,
-			String title, Boolean original) {
+	public static InstanceDescr checkInstanceDescr(Integer instanceId, Integer languageId, String accessConditions,
+			String notes, String title, Boolean original) {
 		// TODO
 		return null;
+	}
+
+	public static AuditReader getClassAuditReader() {
+		return AuditReaderFactory.get(entityManager());
 	}
 
 	@Column(name = "access_conditions", columnDefinition = "text")
@@ -209,7 +200,7 @@ public class InstanceDescr {
 	private Instance instanceId;
 
 	@ManyToOne
-	@JoinColumn(name = "lang_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	@JoinColumn(name = "lang_id", columnDefinition = "integer", referencedColumnName = "id", nullable = true, insertable = false, updatable = false)
 	private Lang langId;
 
 	@Column(name = "notes", columnDefinition = "text")
@@ -226,7 +217,7 @@ public class InstanceDescr {
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	@Autowired(required=false)
+	@Autowired(required = false)
 	transient SolrServer solrServer;
 
 	@Transactional
@@ -332,8 +323,11 @@ public class InstanceDescr {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this,
-				ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+	}
+
+	public AuditReader getAuditReader() {
+		return AuditReaderFactory.get(entityManager);
 	}
 
 	@PostUpdate

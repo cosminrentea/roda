@@ -27,6 +27,8 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrInputDocument;
+import org.hibernate.envers.AuditReader;
+import org.hibernate.envers.AuditReaderFactory;
 import org.hibernate.envers.Audited;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -39,11 +41,11 @@ import flexjson.JSONSerializer;
 @Entity
 @Table(schema = "public", name = "scale")
 @Configurable
+@Audited
 public class Scale {
 
 	public static long countScales() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM Scale o",
-				Long.class).getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM Scale o", Long.class).getSingleResult();
 	}
 
 	@Async
@@ -66,9 +68,7 @@ public class Scale {
 	}
 
 	public static List<Scale> findAllScales() {
-		return entityManager()
-				.createQuery("SELECT o FROM Scale o", Scale.class)
-				.getResultList();
+		return entityManager().createQuery("SELECT o FROM Scale o", Scale.class).getResultList();
 	}
 
 	public static Scale findScale(Long itemId) {
@@ -78,20 +78,17 @@ public class Scale {
 	}
 
 	public static List<Scale> findScaleEntries(int firstResult, int maxResults) {
-		return entityManager()
-				.createQuery("SELECT o FROM Scale o", Scale.class)
-				.setFirstResult(firstResult).setMaxResults(maxResults)
-				.getResultList();
+		return entityManager().createQuery("SELECT o FROM Scale o", Scale.class).setFirstResult(firstResult)
+				.setMaxResults(maxResults).getResultList();
 	}
 
 	public static Collection<Scale> fromJsonArrayToScales(String json) {
-		return new JSONDeserializer<List<Scale>>().use(null, ArrayList.class)
-				.use("values", Scale.class).deserialize(json);
+		return new JSONDeserializer<List<Scale>>().use(null, ArrayList.class).use("values", Scale.class)
+				.deserialize(json);
 	}
 
 	public static Scale fromJsonToScale(String json) {
-		return new JSONDeserializer<Scale>().use(null, Scale.class)
-				.deserialize(json);
+		return new JSONDeserializer<Scale>().use(null, Scale.class).deserialize(json);
 	}
 
 	public static void indexScale(Scale scale) {
@@ -115,10 +112,8 @@ public class Scale {
 			// this type
 			sid.addField(
 					"scale_solrsummary_t",
-					new StringBuilder().append(scale.getItem()).append(" ")
-							.append(scale.getMaxValueId()).append(" ")
-							.append(scale.getMinValueId()).append(" ")
-							.append(scale.getUnits()).append(" ")
+					new StringBuilder().append(scale.getItem()).append(" ").append(scale.getMaxValueId()).append(" ")
+							.append(scale.getMinValueId()).append(" ").append(scale.getUnits()).append(" ")
 							.append(scale.getItemId()));
 			documents.add(sid);
 		}
@@ -186,8 +181,7 @@ public class Scale {
 	 *            - unitatea scalei.
 	 * @return
 	 */
-	public static Scale checkScale(Long id, Item item, Value minValueId,
-			Value maxValueId, Short units) {
+	public static Scale checkScale(Long id, Item item, Value minValueId, Value maxValueId, Short units) {
 		Scale object;
 
 		if (id != null) {
@@ -201,8 +195,8 @@ public class Scale {
 		List<Scale> queryResult;
 
 		if (item != null) {
-			TypedQuery<Scale> query = entityManager().createQuery(
-					"SELECT o FROM Scale o WHERE o.item = :item", Scale.class);
+			TypedQuery<Scale> query = entityManager().createQuery("SELECT o FROM Scale o WHERE o.item = :item",
+					Scale.class);
 			query.setParameter("item", item);
 
 			queryResult = query.getResultList();
@@ -219,6 +213,10 @@ public class Scale {
 		object.persist();
 
 		return object;
+	}
+
+	public static AuditReader getClassAuditReader() {
+		return AuditReaderFactory.get(entityManager());
 	}
 
 	@OneToOne
@@ -335,8 +333,7 @@ public class Scale {
 	}
 
 	public String toString() {
-		return new ReflectionToStringBuilder(this,
-				ToStringStyle.SHORT_PREFIX_STYLE).setExcludeFieldNames("item")
+		return new ReflectionToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE).setExcludeFieldNames("item")
 				.toString();
 	}
 
@@ -355,5 +352,9 @@ public class Scale {
 	public boolean equals(Object obj) {
 		return (itemId != null && itemId.equals(((Scale) obj).itemId))
 				|| (item != null && item.equals(((Scale) obj).item));
+	}
+
+	public AuditReader getAuditReader() {
+		return AuditReaderFactory.get(entityManager);
 	}
 }

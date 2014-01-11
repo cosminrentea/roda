@@ -26,6 +26,8 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrInputDocument;
+import org.hibernate.envers.AuditReader;
+import org.hibernate.envers.AuditReaderFactory;
 import org.hibernate.envers.Audited;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -38,11 +40,11 @@ import flexjson.JSONSerializer;
 @Configurable
 @Entity
 @Table(schema = "public", name = "setting")
+@Audited
 public class Setting {
 
 	public static long countSettings() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM Setting o",
-				Long.class).getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM Setting o", Long.class).getSingleResult();
 	}
 
 	@Async
@@ -65,8 +67,7 @@ public class Setting {
 	}
 
 	public static List<Setting> findAllSettings() {
-		return entityManager().createQuery("SELECT o FROM Setting o",
-				Setting.class).getResultList();
+		return entityManager().createQuery("SELECT o FROM Setting o", Setting.class).getResultList();
 	}
 
 	public static Setting findSetting(Integer id) {
@@ -75,22 +76,18 @@ public class Setting {
 		return entityManager().find(Setting.class, id);
 	}
 
-	public static List<Setting> findSettingEntries(int firstResult,
-			int maxResults) {
-		return entityManager()
-				.createQuery("SELECT o FROM Setting o", Setting.class)
-				.setFirstResult(firstResult).setMaxResults(maxResults)
-				.getResultList();
+	public static List<Setting> findSettingEntries(int firstResult, int maxResults) {
+		return entityManager().createQuery("SELECT o FROM Setting o", Setting.class).setFirstResult(firstResult)
+				.setMaxResults(maxResults).getResultList();
 	}
 
 	public static Collection<Setting> fromJsonArrayToSettings(String json) {
-		return new JSONDeserializer<List<Setting>>().use(null, ArrayList.class)
-				.use("values", Setting.class).deserialize(json);
+		return new JSONDeserializer<List<Setting>>().use(null, ArrayList.class).use("values", Setting.class)
+				.deserialize(json);
 	}
 
 	public static Setting fromJsonToSetting(String json) {
-		return new JSONDeserializer<Setting>().use(null, Setting.class)
-				.deserialize(json);
+		return new JSONDeserializer<Setting>().use(null, Setting.class).deserialize(json);
 	}
 
 	public static void indexSetting(Setting setting) {
@@ -108,8 +105,7 @@ public class Setting {
 			sid.addField("setting.id_i", setting.getId());
 			// Add summary field to allow searching documents for objects of
 			// this type
-			sid.addField("setting_solrsummary_t",
-					new StringBuilder().append(setting.getId()));
+			sid.addField("setting_solrsummary_t", new StringBuilder().append(setting.getId()));
 			documents.add(sid);
 		}
 		try {
@@ -176,8 +172,7 @@ public class Setting {
 	 *            - valoarea setarii.
 	 * @return
 	 */
-	public static Setting checkSetting(Integer id, String name,
-			SettingGroup settingGroupId, String description,
+	public static Setting checkSetting(Integer id, String name, SettingGroup settingGroupId, String description,
 			String defaultValue, String value) {
 		Setting object;
 
@@ -194,8 +189,7 @@ public class Setting {
 		if (name != null && settingGroupId != null) {
 			TypedQuery<Setting> query = entityManager().createQuery(
 					"SELECT o FROM Setting o WHERE lower(o.name) = lower(:name) AND "
-							+ "o.settingGroupId = :settingGroupId",
-					Setting.class);
+							+ "o.settingGroupId = :settingGroupId", Setting.class);
 			query.setParameter("name", name);
 			query.setParameter("settingGroupId", settingGroupId);
 
@@ -216,6 +210,10 @@ public class Setting {
 		return object;
 	}
 
+	public static AuditReader getClassAuditReader() {
+		return AuditReaderFactory.get(entityManager());
+	}
+
 	@Column(name = "default_value", columnDefinition = "text")
 	private String defaultValue;
 
@@ -224,7 +222,8 @@ public class Setting {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id", columnDefinition = "serial")
+	@Column(name = "id")
+	// , columnDefinition = "serial")
 	private Integer id;
 
 	@Column(name = "name", columnDefinition = "text")
@@ -340,8 +339,7 @@ public class Setting {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this,
-				ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate
@@ -358,8 +356,11 @@ public class Setting {
 	@Override
 	public boolean equals(Object obj) {
 		return (id != null && id.equals(((Setting) obj).id))
-				|| ((name != null && name
-						.equalsIgnoreCase(((Setting) obj).name)) && (settingGroupId != null && settingGroupId
+				|| ((name != null && name.equalsIgnoreCase(((Setting) obj).name)) && (settingGroupId != null && settingGroupId
 						.equals(((Setting) obj).settingGroupId)));
+	}
+
+	public AuditReader getAuditReader() {
+		return AuditReaderFactory.get(entityManager);
 	}
 }

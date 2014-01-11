@@ -12,7 +12,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PostPersist;
 import javax.persistence.PostUpdate;
@@ -27,6 +26,8 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrInputDocument;
+import org.hibernate.envers.AuditReader;
+import org.hibernate.envers.AuditReaderFactory;
 import org.hibernate.envers.Audited;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -39,11 +40,11 @@ import flexjson.JSONSerializer;
 @Configurable
 @Entity
 @Table(schema = "public", name = "time_meth")
+@Audited
 public class TimeMeth {
 
 	public static long countTimeMeths() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM TimeMeth o",
-				Long.class).getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM TimeMeth o", Long.class).getSingleResult();
 	}
 
 	@Async
@@ -66,8 +67,7 @@ public class TimeMeth {
 	}
 
 	public static List<TimeMeth> findAllTimeMeths() {
-		return entityManager().createQuery("SELECT o FROM TimeMeth o",
-				TimeMeth.class).getResultList();
+		return entityManager().createQuery("SELECT o FROM TimeMeth o", TimeMeth.class).getResultList();
 	}
 
 	public static TimeMeth findTimeMeth(Integer id) {
@@ -76,23 +76,18 @@ public class TimeMeth {
 		return entityManager().find(TimeMeth.class, id);
 	}
 
-	public static List<TimeMeth> findTimeMethEntries(int firstResult,
-			int maxResults) {
-		return entityManager()
-				.createQuery("SELECT o FROM TimeMeth o", TimeMeth.class)
-				.setFirstResult(firstResult).setMaxResults(maxResults)
-				.getResultList();
+	public static List<TimeMeth> findTimeMethEntries(int firstResult, int maxResults) {
+		return entityManager().createQuery("SELECT o FROM TimeMeth o", TimeMeth.class).setFirstResult(firstResult)
+				.setMaxResults(maxResults).getResultList();
 	}
 
 	public static Collection<TimeMeth> fromJsonArrayToTimeMeths(String json) {
-		return new JSONDeserializer<List<TimeMeth>>()
-				.use(null, ArrayList.class).use("values", TimeMeth.class)
+		return new JSONDeserializer<List<TimeMeth>>().use(null, ArrayList.class).use("values", TimeMeth.class)
 				.deserialize(json);
 	}
 
 	public static TimeMeth fromJsonToTimeMeth(String json) {
-		return new JSONDeserializer<TimeMeth>().use(null, TimeMeth.class)
-				.deserialize(json);
+		return new JSONDeserializer<TimeMeth>().use(null, TimeMeth.class).deserialize(json);
 	}
 
 	public static void indexTimeMeth(TimeMeth timeMethType) {
@@ -108,16 +103,12 @@ public class TimeMeth {
 			SolrInputDocument sid = new SolrInputDocument();
 			sid.addField("id", "timemeth_" + timeMethType.getId());
 			sid.addField("timeMeth.name_s", timeMethType.getName());
-			sid.addField("timeMeth.description_s",
-					timeMethType.getDescription());
+			sid.addField("timeMeth.description_s", timeMethType.getDescription());
 			sid.addField("timeMeth.id_i", timeMethType.getId());
 			// Add summary field to allow searching documents for objects of
 			// this type
-			sid.addField(
-					"timemeth_solrsummary_t",
-					new StringBuilder().append(timeMethType.getName())
-							.append(" ").append(timeMethType.getDescription())
-							.append(" ").append(timeMethType.getId()));
+			sid.addField("timemeth_solrsummary_t", new StringBuilder().append(timeMethType.getName()).append(" ")
+					.append(timeMethType.getDescription()).append(" ").append(timeMethType.getId()));
 			documents.add(sid);
 		}
 		try {
@@ -178,8 +169,7 @@ public class TimeMeth {
 	 *            - descrierea metodei.
 	 * @return
 	 */
-	public static TimeMeth checkTimeMeth(Integer id, String name,
-			String description) {
+	public static TimeMeth checkTimeMeth(Integer id, String name, String description) {
 		TimeMeth object;
 
 		if (id != null) {
@@ -193,10 +183,8 @@ public class TimeMeth {
 		List<TimeMeth> queryResult;
 
 		if (name != null) {
-			TypedQuery<TimeMeth> query = entityManager()
-					.createQuery(
-							"SELECT o FROM TimeMeth o WHERE lower(o.name) = lower(:name)",
-							TimeMeth.class);
+			TypedQuery<TimeMeth> query = entityManager().createQuery(
+					"SELECT o FROM TimeMeth o WHERE lower(o.name) = lower(:name)", TimeMeth.class);
 			query.setParameter("name", name);
 
 			queryResult = query.getResultList();
@@ -213,12 +201,17 @@ public class TimeMeth {
 		return object;
 	}
 
+	public static AuditReader getClassAuditReader() {
+		return AuditReaderFactory.get(entityManager());
+	}
+
 	@Column(name = "description", columnDefinition = "text")
 	private String description;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id", columnDefinition = "serial")
+	@Column(name = "id")
+	// , columnDefinition = "serial")
 	private Integer id;
 
 	@Column(name = "name", columnDefinition = "varchar", length = 100)
@@ -313,8 +306,7 @@ public class TimeMeth {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this,
-				ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate
@@ -331,7 +323,10 @@ public class TimeMeth {
 	@Override
 	public boolean equals(Object obj) {
 		return (id != null && id.equals(((TimeMeth) obj).id))
-				|| (name != null && name
-						.equalsIgnoreCase(((TimeMeth) obj).name));
+				|| (name != null && name.equalsIgnoreCase(((TimeMeth) obj).name));
+	}
+
+	public AuditReader getAuditReader() {
+		return AuditReaderFactory.get(entityManager);
 	}
 }

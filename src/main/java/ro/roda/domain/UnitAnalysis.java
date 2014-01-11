@@ -26,6 +26,8 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrInputDocument;
+import org.hibernate.envers.AuditReader;
+import org.hibernate.envers.AuditReaderFactory;
 import org.hibernate.envers.Audited;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -38,12 +40,11 @@ import flexjson.JSONSerializer;
 @Entity
 @Table(schema = "public", name = "unit_analysis")
 @Configurable
+@Audited
 public class UnitAnalysis {
 
 	public static long countUnitAnalyses() {
-		return entityManager().createQuery(
-				"SELECT COUNT(o) FROM UnitAnalysis o", Long.class)
-				.getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM UnitAnalysis o", Long.class).getSingleResult();
 	}
 
 	@Async
@@ -66,8 +67,7 @@ public class UnitAnalysis {
 	}
 
 	public static List<UnitAnalysis> findAllUnitAnalyses() {
-		return entityManager().createQuery("SELECT o FROM UnitAnalysis o",
-				UnitAnalysis.class).getResultList();
+		return entityManager().createQuery("SELECT o FROM UnitAnalysis o", UnitAnalysis.class).getResultList();
 	}
 
 	public static UnitAnalysis findUnitAnalysis(Integer id) {
@@ -76,24 +76,18 @@ public class UnitAnalysis {
 		return entityManager().find(UnitAnalysis.class, id);
 	}
 
-	public static List<UnitAnalysis> findUnitAnalysisEntries(int firstResult,
-			int maxResults) {
-		return entityManager()
-				.createQuery("SELECT o FROM UnitAnalysis o", UnitAnalysis.class)
-				.setFirstResult(firstResult).setMaxResults(maxResults)
-				.getResultList();
+	public static List<UnitAnalysis> findUnitAnalysisEntries(int firstResult, int maxResults) {
+		return entityManager().createQuery("SELECT o FROM UnitAnalysis o", UnitAnalysis.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
 	}
 
-	public static Collection<UnitAnalysis> fromJsonArrayToUnitAnalyses(
-			String json) {
-		return new JSONDeserializer<List<UnitAnalysis>>()
-				.use(null, ArrayList.class).use("values", UnitAnalysis.class)
+	public static Collection<UnitAnalysis> fromJsonArrayToUnitAnalyses(String json) {
+		return new JSONDeserializer<List<UnitAnalysis>>().use(null, ArrayList.class).use("values", UnitAnalysis.class)
 				.deserialize(json);
 	}
 
 	public static UnitAnalysis fromJsonToUnitAnalysis(String json) {
-		return new JSONDeserializer<UnitAnalysis>().use(null,
-				UnitAnalysis.class).deserialize(json);
+		return new JSONDeserializer<UnitAnalysis>().use(null, UnitAnalysis.class).deserialize(json);
 	}
 
 	@Async
@@ -103,16 +97,12 @@ public class UnitAnalysis {
 			SolrInputDocument sid = new SolrInputDocument();
 			sid.addField("id", "unitanalysis_" + unitAnalysis.getId());
 			sid.addField("unitAnalysis.name_s", unitAnalysis.getName());
-			sid.addField("unitAnalysis.description_s",
-					unitAnalysis.getDescription());
+			sid.addField("unitAnalysis.description_s", unitAnalysis.getDescription());
 			sid.addField("unitAnalysis.id_i", unitAnalysis.getId());
 			// Add summary field to allow searching documents for objects of
 			// this type
-			sid.addField(
-					"unitanalysis_solrsummary_t",
-					new StringBuilder().append(unitAnalysis.getName())
-							.append(" ").append(unitAnalysis.getDescription())
-							.append(" ").append(unitAnalysis.getId()));
+			sid.addField("unitanalysis_solrsummary_t", new StringBuilder().append(unitAnalysis.getName()).append(" ")
+					.append(unitAnalysis.getDescription()).append(" ").append(unitAnalysis.getId()));
 			documents.add(sid);
 		}
 		try {
@@ -178,8 +168,7 @@ public class UnitAnalysis {
 	 *            - descrierea unitatii.
 	 * @return
 	 */
-	public static UnitAnalysis checkUnitAnalysis(Integer id, String name,
-			String description) {
+	public static UnitAnalysis checkUnitAnalysis(Integer id, String name, String description) {
 		UnitAnalysis object;
 
 		if (id != null) {
@@ -193,10 +182,8 @@ public class UnitAnalysis {
 		List<UnitAnalysis> queryResult;
 
 		if (name != null) {
-			TypedQuery<UnitAnalysis> query = entityManager()
-					.createQuery(
-							"SELECT o FROM UnitAnalysis o WHERE lower(o.name) = lower(:name)",
-							UnitAnalysis.class);
+			TypedQuery<UnitAnalysis> query = entityManager().createQuery(
+					"SELECT o FROM UnitAnalysis o WHERE lower(o.name) = lower(:name)", UnitAnalysis.class);
 			query.setParameter("name", name);
 
 			queryResult = query.getResultList();
@@ -213,12 +200,17 @@ public class UnitAnalysis {
 		return object;
 	}
 
+	public static AuditReader getClassAuditReader() {
+		return AuditReaderFactory.get(entityManager());
+	}
+
 	@Column(name = "description", columnDefinition = "text")
 	private String description;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id", columnDefinition = "serial")
+	@Column(name = "id")
+	// , columnDefinition = "serial")
 	private Integer id;
 
 	@Column(name = "name", columnDefinition = "varchar", length = 100)
@@ -313,8 +305,7 @@ public class UnitAnalysis {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this,
-				ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate
@@ -331,7 +322,10 @@ public class UnitAnalysis {
 	@Override
 	public boolean equals(Object obj) {
 		return (id != null && id.equals(((UnitAnalysis) obj).id))
-				|| (name != null && name
-						.equalsIgnoreCase(((UnitAnalysis) obj).name));
+				|| (name != null && name.equalsIgnoreCase(((UnitAnalysis) obj).name));
+	}
+
+	public AuditReader getAuditReader() {
+		return AuditReaderFactory.get(entityManager);
 	}
 }

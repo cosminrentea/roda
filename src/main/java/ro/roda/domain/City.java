@@ -30,6 +30,8 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrInputDocument;
+import org.hibernate.envers.AuditReader;
+import org.hibernate.envers.AuditReaderFactory;
 import org.hibernate.envers.Audited;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -42,11 +44,11 @@ import flexjson.JSONSerializer;
 @Configurable
 @Entity
 @Table(schema = "public", name = "city")
+@Audited
 public class City {
 
 	public static long countCitys() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM City o",
-				Long.class).getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM City o", Long.class).getSingleResult();
 	}
 
 	@Async
@@ -69,8 +71,7 @@ public class City {
 	}
 
 	public static List<City> findAllCitys() {
-		return entityManager().createQuery("SELECT o FROM City o", City.class)
-				.getResultList();
+		return entityManager().createQuery("SELECT o FROM City o", City.class).getResultList();
 	}
 
 	public static City findCity(Integer id) {
@@ -80,19 +81,17 @@ public class City {
 	}
 
 	public static List<City> findCityEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM City o", City.class)
-				.setFirstResult(firstResult).setMaxResults(maxResults)
-				.getResultList();
+		return entityManager().createQuery("SELECT o FROM City o", City.class).setFirstResult(firstResult)
+				.setMaxResults(maxResults).getResultList();
 	}
 
 	public static Collection<City> fromJsonArrayToCitys(String json) {
-		return new JSONDeserializer<List<City>>().use(null, ArrayList.class)
-				.use("values", City.class).deserialize(json);
+		return new JSONDeserializer<List<City>>().use(null, ArrayList.class).use("values", City.class)
+				.deserialize(json);
 	}
 
 	public static City fromJsonToCity(String json) {
-		return new JSONDeserializer<City>().use(null, City.class).deserialize(
-				json);
+		return new JSONDeserializer<City>().use(null, City.class).deserialize(json);
 	}
 
 	public static void indexCity(City city) {
@@ -120,14 +119,10 @@ public class City {
 			// this type
 			sid.addField(
 					"city_solrsummary_t",
-					new StringBuilder().append(city.getCountryId()).append(" ")
-							.append(city.getName()).append(" ")
-							.append(city.getCityCode()).append(" ")
-							.append(city.getCityCodeName()).append(" ")
-							.append(city.getCityCodeSup()).append(" ")
-							.append(city.getPrefix()).append(" ")
-							.append(city.getCityType()).append(" ")
-							.append(city.getCityTypeSystem()).append(" ")
+					new StringBuilder().append(city.getCountryId()).append(" ").append(city.getName()).append(" ")
+							.append(city.getCityCode()).append(" ").append(city.getCityCodeName()).append(" ")
+							.append(city.getCityCodeSup()).append(" ").append(city.getPrefix()).append(" ")
+							.append(city.getCityType()).append(" ").append(city.getCityTypeSystem()).append(" ")
 							.append(city.getId()));
 			documents.add(sid);
 		}
@@ -203,9 +198,8 @@ public class City {
 	 *            SIRUTA pentru Romania).
 	 * @return
 	 */
-	public static City checkCity(Integer id, String name, Country countryId,
-			String cityCode, String cityCodeName, String cityCodeSup,
-			String prefix, String cityType, String cityTypeSystem) {
+	public static City checkCity(Integer id, String name, Country countryId, String cityCode, String cityCodeName,
+			String cityCodeSup, String prefix, String cityType, String cityTypeSystem) {
 		City object;
 
 		if (id != null) {
@@ -220,8 +214,8 @@ public class City {
 
 		if (name != null && countryId != null) {
 			TypedQuery<City> query = entityManager().createQuery(
-					"SELECT o FROM City o WHERE lower(o.name) = lower(:name) AND "
-							+ "o.countryId = :countryId", City.class);
+					"SELECT o FROM City o WHERE lower(o.name) = lower(:name) AND " + "o.countryId = :countryId",
+					City.class);
 			query.setParameter("name", name);
 			query.setParameter("countryId", countryId);
 
@@ -243,6 +237,10 @@ public class City {
 		object.persist();
 
 		return object;
+	}
+
+	public static AuditReader getClassAuditReader() {
+		return AuditReaderFactory.get(entityManager());
 	}
 
 	@OneToMany(mappedBy = "cityId")
@@ -269,7 +267,8 @@ public class City {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id", columnDefinition = "serial")
+	@Column(name = "id")
+	// , columnDefinition = "serial")
 	private Integer id;
 
 	@Column(name = "name", columnDefinition = "text")
@@ -286,7 +285,7 @@ public class City {
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	@Autowired(required=false)
+	@Autowired(required = false)
 	transient SolrServer solrServer;
 
 	@Transactional
@@ -424,8 +423,7 @@ public class City {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this,
-				ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@PostUpdate
@@ -442,8 +440,11 @@ public class City {
 	@Override
 	public boolean equals(Object obj) {
 		return (id != null && id.equals(((City) obj).id))
-				|| ((countryId != null && countryId
-						.equals(((City) obj).countryId)) && (name != null && name
+				|| ((countryId != null && countryId.equals(((City) obj).countryId)) && (name != null && name
 						.equalsIgnoreCase(((City) obj).name)));
+	}
+
+	public AuditReader getAuditReader() {
+		return AuditReaderFactory.get(entityManager);
 	}
 }

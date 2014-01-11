@@ -30,6 +30,8 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrInputDocument;
+import org.hibernate.envers.AuditReader;
+import org.hibernate.envers.AuditReaderFactory;
 import org.hibernate.envers.Audited;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -42,6 +44,7 @@ import flexjson.JSONSerializer;
 @Entity
 @Table(schema = "public", name = "file")
 @Configurable
+@Audited
 public class File {
 
 	public static long countFiles() {
@@ -216,6 +219,10 @@ public class File {
 		return object;
 	}
 
+	public static AuditReader getClassAuditReader() {
+		return AuditReaderFactory.get(entityManager());
+	}
+
 	@Transient
 	private byte[] content;
 
@@ -230,7 +237,8 @@ public class File {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id", columnDefinition = "serial")
+	@Column(name = "id")
+	// , columnDefinition = "serial")
 	private Integer id;
 
 	@ManyToMany
@@ -473,4 +481,8 @@ public class File {
 	// return (id != null && id.equals(((File) obj).id))
 	// || (title != null && title.equalsIgnoreCase(((File) obj).title));
 	// }
+
+	public AuditReader getAuditReader() {
+		return AuditReaderFactory.get(entityManager);
+	}
 }

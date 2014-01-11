@@ -28,6 +28,9 @@ import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrInputDocument;
 import org.hibernate.annotations.Index;
+import org.hibernate.envers.AuditReader;
+import org.hibernate.envers.AuditReaderFactory;
+import org.hibernate.envers.Audited;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.scheduling.annotation.Async;
@@ -39,6 +42,7 @@ import flexjson.JSONSerializer;
 @Configurable
 @Entity
 @Table(schema = "public", name = "keyword")
+@Audited
 public class Keyword {
 
 	public static long countKeywords() {
@@ -181,7 +185,7 @@ public class Keyword {
 			TypedQuery<Keyword> query = entityManager().createQuery(
 					"SELECT o FROM Keyword o WHERE lower(o.name) = lower(:name)", Keyword.class);
 			query.setParameter("name", name);
-			//TODO copy to every other domain class
+			// TODO copy to every other domain class
 			query.setMaxResults(1);
 			query.setFlushMode(FlushModeType.COMMIT);
 
@@ -199,9 +203,14 @@ public class Keyword {
 		return object;
 	}
 
+	public static AuditReader getClassAuditReader() {
+		return AuditReaderFactory.get(entityManager());
+	}
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id", columnDefinition = "serial")
+	@Column(name = "id")
+	// , columnDefinition = "serial")
 	private Integer id;
 
 	@Column(name = "name", columnDefinition = "text")
@@ -307,5 +316,9 @@ public class Keyword {
 	public boolean equals(Object obj) {
 		return (id != null && id.equals(((Keyword) obj).id))
 				|| (name != null && name.equalsIgnoreCase(((Keyword) obj).name));
+	}
+
+	public AuditReader getAuditReader() {
+		return AuditReaderFactory.get(entityManager);
 	}
 }

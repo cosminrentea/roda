@@ -21,6 +21,8 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrInputDocument;
+import org.hibernate.envers.AuditReader;
+import org.hibernate.envers.AuditReaderFactory;
 import org.hibernate.envers.Audited;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -33,12 +35,11 @@ import flexjson.JSONSerializer;
 @Entity
 @Table(schema = "public", name = "authorities")
 @Configurable
+@Audited
 public class Authorities {
 
 	public static long countAuthoritieses() {
-		return entityManager().createQuery(
-				"SELECT COUNT(o) FROM Authorities o", Long.class)
-				.getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM Authorities o", Long.class).getSingleResult();
 	}
 
 	@Async
@@ -61,8 +62,7 @@ public class Authorities {
 	}
 
 	public static List<Authorities> findAllAuthoritieses() {
-		return entityManager().createQuery("SELECT o FROM Authorities o",
-				Authorities.class).getResultList();
+		return entityManager().createQuery("SELECT o FROM Authorities o", Authorities.class).getResultList();
 	}
 
 	public static Authorities findAuthorities(AuthoritiesPK id) {
@@ -71,24 +71,18 @@ public class Authorities {
 		return entityManager().find(Authorities.class, id);
 	}
 
-	public static List<Authorities> findAuthoritiesEntries(int firstResult,
-			int maxResults) {
-		return entityManager()
-				.createQuery("SELECT o FROM Authorities o", Authorities.class)
-				.setFirstResult(firstResult).setMaxResults(maxResults)
-				.getResultList();
+	public static List<Authorities> findAuthoritiesEntries(int firstResult, int maxResults) {
+		return entityManager().createQuery("SELECT o FROM Authorities o", Authorities.class)
+				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
 	}
 
-	public static Collection<Authorities> fromJsonArrayToAuthoritieses(
-			String json) {
-		return new JSONDeserializer<List<Authorities>>()
-				.use(null, ArrayList.class).use("values", Authorities.class)
+	public static Collection<Authorities> fromJsonArrayToAuthoritieses(String json) {
+		return new JSONDeserializer<List<Authorities>>().use(null, ArrayList.class).use("values", Authorities.class)
 				.deserialize(json);
 	}
 
 	public static Authorities fromJsonToAuthorities(String json) {
-		return new JSONDeserializer<Authorities>().use(null, Authorities.class)
-				.deserialize(json);
+		return new JSONDeserializer<Authorities>().use(null, Authorities.class).deserialize(json);
 	}
 
 	public static void indexAuthorities(Authorities authorities) {
@@ -107,9 +101,8 @@ public class Authorities {
 			sid.addField("authorities.id_t", authorities.getId());
 			// Add summary field to allow searching documents for objects of
 			// this type
-			sid.addField("authorities_solrsummary_t",
-					new StringBuilder().append(authorities.getUsername())
-							.append(" ").append(authorities.getId()));
+			sid.addField("authorities_solrsummary_t", new StringBuilder().append(authorities.getUsername()).append(" ")
+					.append(authorities.getId()));
 			documents.add(sid);
 		}
 		try {
@@ -147,17 +140,21 @@ public class Authorities {
 		return new JSONSerializer().exclude("*.class").serialize(collection);
 	}
 
+	public static AuditReader getClassAuditReader() {
+		return AuditReaderFactory.get(entityManager());
+	}
+
 	@EmbeddedId
 	private AuthoritiesPK id;
 
 	@ManyToOne
-	@JoinColumn(name = "username", referencedColumnName = "username", nullable = false, insertable = false, updatable = false)
+	@JoinColumn(name = "username", referencedColumnName = "username", nullable = true, insertable = false, updatable = false)
 	private Users username;
 
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	@Autowired(required=false)
+	@Autowired(required = false)
 	transient SolrServer solrServer;
 
 	@Transactional
@@ -223,8 +220,11 @@ public class Authorities {
 	}
 
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this,
-				ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+	}
+
+	public AuditReader getAuditReader() {
+		return AuditReaderFactory.get(entityManager);
 	}
 
 	@PostUpdate

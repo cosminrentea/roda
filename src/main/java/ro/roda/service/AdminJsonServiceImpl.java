@@ -112,7 +112,7 @@ public class AdminJsonServiceImpl implements AdminJsonService {
 
 	public AdminJson folderSave(String foldername, Integer parentId, String description) {
 		AdminJson result = AdminJson.folderSave(foldername, parentId, description);
-		fileStore.saveCmsFolder(CmsFolder.findCmsFolder(result.getId()));
+		fileStore.folderSave(CmsFolder.findCmsFolder(result.getId()));
 		return result;
 	}
 
@@ -136,7 +136,7 @@ public class AdminJsonServiceImpl implements AdminJsonService {
 
 	public AdminJson fileSave(Integer folderId, MultipartFile content, Integer fileId, String alias) {
 		AdminJson result = AdminJson.fileSave(folderId, content, alias, fileId);
-		fileStore.saveCmsFile(content, CmsFolder.findCmsFolder(folderId));
+		fileStore.fileSave(content, CmsFolder.findCmsFolder(folderId));
 		return result;
 	}
 

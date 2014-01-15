@@ -378,7 +378,7 @@ public class ImporterServiceImpl implements ImporterService {
 
 		// update the FileStore to be synchronized with the DB
 		for (CmsFolder cmsFolder : cmsFolderService.findAllCmsFolders()) {
-			cmsFileStoreService.saveCmsFolder(cmsFolder);
+			cmsFileStoreService.folderSave(cmsFolder);
 		}
 	}
 

@@ -1,0 +1,21 @@
+\section{Exportarea ca fisiere DDI}
+Aplicatiei software a RODA i-a fost utila o componenta care sa exporte datele din baza de date a RODA in formatul DDI (format care evolueaza in timp, fiind poate necesara re-exportarea lor periodica).
+Componenta de export poate exporta datele din tabelele bazei de date a RODA in doua formate:
+\begin{itemize}
+\item DDI-Codebook 1.2.2
+\item DDI-Codebook 2.5
+\end{itemize}
+
+Procesul de export al fisierelor DDI este, ca schema de principiu, unul invers celui de import.
+Pentru serializarea datelor in format XML compatibil cu schemele DDI (exprimate in XML Schema) 
+am folosit una din solutiile OXM (Object-to-XML Mapping) ce sunt integrate in platforma Spring, respectiv componenta JAXB (Java-to-XML Binding, \url{https://jaxb.java.net/}).
+Am utilizand din nou, ca si la import, pachetul 'ro.roda.ddi' (cuprinzand clase Java generate din XML Schema a standardului DDI), de data aceasta pentru a serializa obiectele in XML. 
+Configurarea componentei de export se face prin fisierele 'applicationContext.xml' si 'roda.properties', iar pachetul care contine exporterul este 'ro.roda.exporter'.
+
+\section{Exportarea altor tipuri de fisiere}
+Celelate tipuri de fisiere utilizate pentru popularea bazei de date (toate cele in afara de fisierele DDI) sunt deja in format binar sau text/CSV, 
+fiind salvate in repository-ul 'FileStore' / JCR ca date aferente la importarea de studii in format DDI.
+
+Pentru componenta JCR (JackRabbit), 
+se poate folosi pentru exportarea selectiva a datelor de tip fisiere utilitarul numit 'JcrImportExportTool' 
+(care poate face filtrare dupa tipul de noduri, namespace-uri, versiuni etc.).

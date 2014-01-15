@@ -36,6 +36,7 @@ import javax.jcr.Repository;
 
 import javax.jcr.ItemExistsException;
 import javax.jcr.LoginException;
+import javax.jcr.NodeIterator;
 import javax.jcr.PathNotFoundException;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
@@ -115,32 +116,47 @@ public class CmsFileStoreServiceImpl implements CmsFileStoreService {
 		String fullPath = cmsFolder.getName();
 		while (cmsFolder.getParentId() != null) {
 			cmsFolder = cmsFolder.getParentId();
-			fullPath =  cmsFolder.getName() + "/" + fullPath;
+			fullPath = cmsFolder.getName() + "/" + fullPath;
 		}
 		return fullPath;
 	}
 
-	public void saveCmsFolder(CmsFolder cmsFolder) {
-		Session session;
-		try {
-			SimpleCredentials adminCred = new SimpleCredentials("admin", new char[0]);
-			session = repository.login(adminCred);
+	@Async
+	private void updateSolrFile(File f, MultipartFile content) {
+		log.trace("> updateSolrFile");
+		if (solrServer != null) {
+			ContentStreamUpdateRequest up = new ContentStreamUpdateRequest("/update/extract");
 			try {
-				Node root = session.getRootNode();
-				root.addNode(getFullPath(cmsFolder), "nt:folder");
-			} catch (Exception e) {
+
+				// SOLRJ 4.x API
+				up.addFile(f, content.getContentType());
+				log.trace("content.getContentType() = " + content.getContentType());
+
+				up.setParam("literal.id", content.getOriginalFilename());
+				up.setParam("uprefix", "attr_");
+				up.setParam("fmap.content", "attr_content");
+				up.setAction(ACTION.COMMIT, true, true);
+
+				log.trace("> updateSolrFile > sending file to Solr for metadata indexing");
+
+				solrServer.request(up);
+
+				log.trace("> updateSolrFile > sent to Solr for metadata indexing");
+
+				// log.debug("> saveFile > querying Solr");
+				// QueryResponse rsp = solrServer.query(new SolrQuery("id:" +
+				// content.getOriginalFilename()));
+				// log.trace(rsp);
+
+			} catch (IOException e) {
 				log.error(e);
-			} finally {
-				session.logout();
+			} catch (SolrServerException e) {
+				log.error(e);
 			}
-		} catch (LoginException e1) {
-			log.error(e1);
-		} catch (RepositoryException e1) {
-			log.error(e1);
 		}
 	}
 
-	public void saveCmsFile(MultipartFile multipartFile, CmsFolder cmsFolder) {
+	public void fileSave(MultipartFile multipartFile, CmsFolder cmsFolder) {
 		if (multipartFile == null || cmsFolder == null) {
 			return;
 		}
@@ -154,9 +170,9 @@ public class CmsFileStoreServiceImpl implements CmsFileStoreService {
 				String fullPath = filestoreDir + "/" + multipartFile.getOriginalFilename();
 				File f = new File(fullPath);
 				multipartFile.transferTo(f);
-				
+
 				String folderName = getFullPath(cmsFolder);
-				
+
 				Node root = session.getRootNode();
 				Node folderNode = null;
 				try {
@@ -168,7 +184,7 @@ public class CmsFileStoreServiceImpl implements CmsFileStoreService {
 						log.error(e2);
 					}
 				}
-	
+
 				if (folderNode != null) {
 					Node fileNode = folderNode.addNode(multipartFile.getOriginalFilename(), "nt:file");
 					// create the mandatory child node - jcr:content
@@ -176,13 +192,10 @@ public class CmsFileStoreServiceImpl implements CmsFileStoreService {
 					resNode.setProperty("jcr:data",
 							session.getValueFactory().createBinary(new AutoCloseInputStream(new FileInputStream(f))));
 					resNode.setProperty("jcr:mimeType", multipartFile.getContentType());
-					Calendar lastModified = Calendar.getInstance();
-					lastModified.setTimeInMillis(f.lastModified());
-					resNode.setProperty("jcr:lastModified", lastModified);
 					session.save();
 					updateSolrFile(f, multipartFile);
 				}
-	
+
 			} catch (IllegalStateException e) {
 				log.error(e);
 			} catch (IOException e) {
@@ -197,46 +210,31 @@ public class CmsFileStoreServiceImpl implements CmsFileStoreService {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-	
+
 	}
 
-	@Async
-	private void updateSolrFile(File f, MultipartFile content) {
-		log.trace("> updateSolrFile");
-		if (solrServer != null) {
-			ContentStreamUpdateRequest up = new ContentStreamUpdateRequest("/update/extract");
+	public void folderSave(CmsFolder cmsFolder) {
+		Session session;
+		try {
+			SimpleCredentials adminCred = new SimpleCredentials("admin", new char[0]);
+			session = repository.login(adminCred);
 			try {
-	
-				// SOLRJ 4.x API
-				up.addFile(f, content.getContentType());
-				log.trace("content.getContentType() = " + content.getContentType());
-	
-				up.setParam("literal.id", content.getOriginalFilename());
-				up.setParam("uprefix", "attr_");
-				up.setParam("fmap.content", "attr_content");
-				up.setAction(ACTION.COMMIT, true, true);
-	
-				log.trace("> updateSolrFile > sending file to Solr for metadata indexing");
-	
-				solrServer.request(up);
-	
-				log.trace("> updateSolrFile > sent to Solr for metadata indexing");
-	
-				// log.debug("> saveFile > querying Solr");
-				// QueryResponse rsp = solrServer.query(new SolrQuery("id:" +
-				// content.getOriginalFilename()));
-				// log.trace(rsp);
-	
-			} catch (IOException e) {
+				Node root = session.getRootNode();
+				root.addNode(getFullPath(cmsFolder), "nt:folder");
+				session.save();
+			} catch (Exception e) {
 				log.error(e);
-			} catch (SolrServerException e) {
-				log.error(e);
+			} finally {
+				session.logout();
 			}
+		} catch (LoginException e1) {
+			log.error(e1);
+		} catch (RepositoryException e1) {
+			log.error(e1);
 		}
 	}
 
-	@Override
-	public File loadFile(String fileFullPath) {
+	private File fileLoad(String fileFullPath) {
 		Session session;
 		try {
 			SimpleCredentials adminCred = new SimpleCredentials("admin", new char[0]);
@@ -245,7 +243,7 @@ public class CmsFileStoreServiceImpl implements CmsFileStoreService {
 				Node root = session.getRootNode();
 				Node node = root.getNode(fileFullPath);
 				log.trace(node.getPath());
-//				log.trace(node.getProperty("message").getString());
+				// log.trace(node.getProperty("message").getString());
 			} finally {
 				session.logout();
 			}
@@ -260,13 +258,32 @@ public class CmsFileStoreServiceImpl implements CmsFileStoreService {
 	}
 
 	@Override
-	public File loadFile(CmsFile cmsFile) {
-		return loadFile(getFullPath(cmsFile));
+	public File fileLoad(CmsFile cmsFile) {
+		return fileLoad(getFullPath(cmsFile));
 	}
 
 	@Override
 	public void folderEmpty(CmsFolder cmsFolder) {
-		// TODO Cosmin Auto-generated method stub
+		// TODO Cosmin
+		Session session;
+		try {
+			SimpleCredentials adminCred = new SimpleCredentials("admin", new char[0]);
+			session = repository.login(adminCred);
+			try {
+				Node root = session.getRootNode();
+				NodeIterator ni = root.getNode(getFullPath(cmsFolder)).getNodes();
+				while (ni.hasNext()) {
+					ni.nextNode().remove();
+					ni = (NodeIterator) ni.next();
+				}
+				root.getNode(getFullPath(cmsFolder)).remove();
+				session.save();
+			} finally {
+				session.logout();
+			}
+		} catch (Exception e) {
+			log.error(e);
+		}
 	}
 
 	@Override
@@ -284,7 +301,7 @@ public class CmsFileStoreServiceImpl implements CmsFileStoreService {
 			}
 		} catch (Exception e) {
 			log.error(e);
-		}				
+		}
 	}
 
 	@Override
@@ -302,7 +319,7 @@ public class CmsFileStoreServiceImpl implements CmsFileStoreService {
 			}
 		} catch (Exception e) {
 			log.error(e);
-		}		
+		}
 	}
 
 	@Override

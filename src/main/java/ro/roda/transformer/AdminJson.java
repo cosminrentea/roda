@@ -539,14 +539,16 @@ public class AdminJson {
 			parentFolder = CmsFolder.findCmsFolder(parentId);
 			if (parentFolder != null) {
 				folder.setParentId(parentFolder);
-				parentFolder.getCmsFolders().add(folder);
+				Set<CmsFolder> children = parentFolder.getCmsFolders();
+				children.add(folder);
+				parentFolder.setCmsFolders(children);
 			}
 		}
 
 		try {
 			CmsFolder.entityManager().persist(folder);
 			if (parentFolder != null) {
-				CmsFolder.entityManager().persist(parentFolder);
+				CmsFolder.entityManager().merge(parentFolder);
 			}
 			CmsFolder.entityManager().flush();
 		} catch (EntityExistsException e) {

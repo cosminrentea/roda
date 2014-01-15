@@ -1,0 +1,173 @@
+Auditul reprezinta inregistrarea tuturor operatiilor efectuate asupra obiectelor ce persista in baza de date. Componenta de audit ocupa un rol important intr-un sistem informatic complex, atat din punct de vedere al posibilitatii crearii unui istoric al datelor, al versionarii, cat si pentru asigurarea consistentei acestora, a securitatii sau a asumarii raspunderii utilizatorilor.
+
+\bigskip
+
+Dintre metodele disponibile pentru implementarea unui sistem de audit putem mentiona:
+
+\begin{itemize}
+\item crearea de triggeri in baza de date (metoda al carei dezavantaj este dependenta de baza de date)
+\item utilizarea de interceptori pe partea de ORM
+\item utilizarea de obiecte de tip listener asupra evenimentelor.
+\end{itemize}
+
+\bigskip
+
+Sistemul utilizat in aplicatia informatica RODA este Hibernate Envers. Alegerea acestui sistem pentru asigurarea auditului se bazeaza, in primul rand, pe faptul ca aplicatia utilizeaza tehnologia Hibernate pentru maparea nivelului obiectual al aplicatiei in baza de date relationala. Hibernate furnizeaza biblioteca Envers, acum parte a nucleului sau, ce permite integrarea functionalitatii de audit. \ 
+
+
+\bigskip
+
+Printre avantajele utilizarii acestei biblioteci putem aminti:
+
+\begin{itemize}
+\item independenta de baza de date utilizata
+\item impact redus asupra codului sursa existent
+\item eficienta intr-un mediu de productie
+\item interogarea in Envers este similara interogarii datelor din baza de date utilizand Hibernate Criteria
+\item existenta unor metode built-in pentru obtinerea istoricului obiectelor.
+\end{itemize}
+
+\bigskip
+
+Fiecarei tranzactii ii este asociat un numar al reviziei (revision number) global care poate fi utilizat pentru a identifica grupurile de modificari si a interoga diferitele entitati din cadrul respectivei revizii. Astfel, se poate obtine o vizualizare a bazei de date la o anumita revizie. \ 
+
+
+\bigskip
+
+Tabelele de audit ale RODA se afla intr-o schema a bazei de date (audit), separata de schema in care se afla tabelele corespunzatoare entitatilor modelului. Acest lucru este specificat in fisierul de configurare persistence.xml:
+
+
+\bigskip
+
+\begin{lstlisting}[breaklines=true]
+<property name="org.hibernate.envers.default_schema" value="audit"/>
+\end{lstlisting}
+
+\bigskip
+
+La nivelul codului aplicatiei, auditul se implementeaza cu ajutorul unor adnotari si al unor listener-i in fisierul de configurare.
+
+\bigskip
+
+Vom considera ca exemplu clasa CmsLayout a proiectului. 
+Faptul ca acest tabel va fi auditat este indicat prin adnotarea @Audited specificata la nivelul intregii clase:
+
+\bigskip
+
+\begin{lstlisting}[breaklines=true]
+@Entity
+@Audited
+public class CmsLayout {
+
+...
+
+}
+\end{lstlisting}
+
+\bigskip
+
+Clasele referite de aceasta clasa vor trebui sa fie, de asemenea, auditate. In cazul coloanelor care nu fac obiectul auditului, acestea vor fi adnotate prin @NotAudited. De exemplu, daca nu dorim inregistrarea informatiilor de audit referitoare la paginile sistemului CMS, vom indica acest lucru prin:
+
+\bigskip
+
+\begin{lstlisting}[breaklines=true]
+@OneToMany(mappedBy = "cmsLayoutId")
+@NotAudited
+private Set<CmsPage> cmsPages;
+\end{lstlisting}
+
+Pentru fiecare entitate supusa procesului de audit este creat un nou tabel, al carui nume contine sufixul implicit AUD\_ (de exemplu, cms\_layout\_aud). 
+Acest tabel va stoca istoricul inregistrarilor din tabel, ori de cate ori o tranzactie este salvata (\textbf{commit}). 
+Sufixul tabelelor de audit poate fi configurat in fisierul persistence.xml cu ajutorul proprietatii \textbf{org.hibernate.envers.audit\_table\_prefix}.
+
+\bigskip
+
+Informatia de audit specifica unei entitati poate fi accesata utilizand interfata \textbf{AuditReader,} 
+care poate fi obtinuta pe baza unui obiect \textbf{EntityManager} sau \textbf{Session}{, prin intermediul \textbf{AuditReaderFactory}.
+Exemplul urmator determina continutul unui \textbf{layout} din sistemul CMS al aplicatiei la revizia 2:
+
+\bigskip
+
+\begin{lstlisting}[breaklines=true]
+AuditReader reader = AuditReaderFactory.get(entityManager);
+CmsLayout cmsLayout_rev2 = reader.find(CmsLayout.class, cmsLayout.getId(), 2);
+String layoutContent_rev2 = cmsLayout_rev2.getLayoutContent();
+\end{lstlisting}
+
+\bigskip
+
+\textbf{Fiecare tabel de audit contine cateva coloane specifice:}
+
+\begin{itemize}
+\item \textbf{id}\textbf{ -- cheia primara a entitatii originale (poate contine mai multe coloane, in cazul cheilor primare compuse)}
+\item \textbf{revision number}\textbf{ -- un numar intreg, ce reprezinta numarul reviziei din tabelul de revizii}
+\item \textbf{revision type}\textbf{ -- un numar intreg reprezentand tipul reviziei}
+\item \textbf{coloanele auditate din tabelul original.}
+\end{itemize}
+
+\bigskip
+
+Cheia primara a tabelului de audit este compusa din cheia primara a entitatii originale si numarul reviziei; poate exista cel mult o inregistrare de audit pentru o instanta de entitate data la o anumita revizie.
+
+Entitatea curenta este stocata atat in tabelul original, cat si in cel de audit. 
+Astfel, sistemul de interogare furnizat de aceasta solutie de audit este foarte puternic. 
+O linie din tabelul de audit, avand cheia primara \textbf{id}, revizia \textbf{n} si valoarea unui camp \textbf{v} are urmatoarea semnificatie: 
+entitatea al carei cod este \textbf{id} are valoarea}\textbf{v} pentru campul specificat incepand de la revizia \textbf{n}.
+Astfel, daca dorim sa gasim o entitate la revizia \textbf{m}, 
+trebuie sa cautam linia din tabelul de audit al carei numar al reviziei cel mai apropiat numar mai mic sau egal decat \textbf{m}. 
+Daca nu este gasita o astfel de linie, sau daca este gasita o linie marcata \textbf{deleted}, atunci entitatea nu exista la revizia respectiva.
+
+Tipul reviziei poate avea trei valori: 0, 1 sau 2. Acestea reprezinta operatiile de adaugare, modificare si stergere. 
+O linie al carei tip al reviziei este 2 va contine doar cheia primara a entitatii, dar nu si date ale acesteia, 
+deoarece reprezinta doar o marcare a faptului ca entitatea a fost stearsa (\textbf{deleted}) la revizia respectiva.
+
+\bigskip
+
+Pe langa tabelele de audit, exista un tabel ce contine informatii despre reviziile globale. 
+Implicit, numele acestui tabel este \textbf{revinfo} si contine doua coloane: \textbf{id} si \textbf{timestamp. }
+O linie este adaugata in acest tabel la fiecare noua revizie, adica la fiecare operatie de \textbf{commit} a unei tranzactii ce modifica datele supuse procesului de auditare.
+
+\bigskip
+
+Pentru a obtine informatii suplimentare in cadrul procesului de audit, este necesara crearea unor obiecte \textbf{listener}. 
+De exemplu, pentru cunoasterea utilizatorului care a efectuat modificarile corespunzatoare inregistrarilor de audit, in pachetul \textbf{ro.roda.audit}
+ al aplicatiei a fost extinsa clasa \textbf{org.hibernate.envers.DefaultRevisionEntity}, astfel:
+
+\bigskip
+
+\begin{lstlisting}[breaklines=true]
+@RevisionEntity(RodaRevisionListener.class)
+@Table (schema = "audit", name = "revinfo")
+public class RodaRevisionEntity extends DefaultRevisionEntity{
+
+	private String username;
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+}
+
+\end{lstlisting}
+Clasa \textbf{listener} implementeaza interfata \textbf{org.hibernate.envers.RevisionListener} in modul urmator:
+
+\begin{lstlisting}[breaklines=true]
+
+public class RodaRevisionListener implements RevisionListener {
+
+	@Autowired
+	UsersService usersService;
+
+	@Override
+	public void newRevision(Object revisionEntity) {
+		RodaRevisionEntity rodaRevisionEntity = 
+                           (RodaRevisionEntity) revisionEntity;
+		User user = (User) SecurityContextHolder.getContext()
+                        .getAuthentication().getPrincipal();
+		rodaRevisionEntity.setUsername(user.getUsername());
+	}
+}
+\end{lstlisting}

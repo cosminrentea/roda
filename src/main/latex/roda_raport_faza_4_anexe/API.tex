@@ -1,0 +1,1341 @@
+
+\section{Scheduler / Cron}
+
+API pentru sistemul de programare a executiei task-urilor (Cron / Scheduler). Task-urile sunt implementari ale interfetelor Runnable sau RunnableFuture. \subsection*{GET: /admin/scheduler/tasks}
+
+\paragraph{Parametri de intrare si iesire:}
+\begin{itemize}
+\item \textbf{classname}
+ Numele complet al clasei Java care implementeaza task-ul
+\item\textbf{cron}
+ String-ul specific in format Cron, ce permite definirea de regulii de programare a executiilor, si este format din campuri pentru: \begin{itemize}
+\item 1.Seconds
+\item 2.Minutes
+\item 3.Hours
+\item 4.Day-of-Month
+\item 5.Month
+\item 6.Day-of-Week
+\item 7.Year (optional field)
+ \end{itemize}
+\item \textbf{enabled}
+ daca task-ul este activat (sau dezactivat)
+\item \textbf{timestamp\_next\_execution}
+ - data si ora la care Task-ul este planificat pentru a fi lansat in executie (momentul planificat al urmatoarei executii)
+\item \textbf{type}
+: "scheduled"/"manual" (daca executia a fost programata sau a fost declansata manual)
+\item \textbf{timestamp\_start}
+ Momentul la care a inceput aceasta executie a task-ului
+\item \textbf{result}
+ rezultatul executiei (numar intreg, unde 0 reprezinta succes)
+\item \textbf{duration}
+ durata acestei executii (in milisecunde)
+\item \textbf{stacktrace}
+ detalii in caz de executie fara succes
+\item \textbf{execute\_now}
+ daca se declanseaza o executie a task-ului chiar in momentul update-ului curent
+\item \textbf{execution\_result}
+ rezultatul unei executii (folosit pentru obtinerea unei liste filtrate)
+\item \textbf{timestamp\_begin}
+ timestamp (folosit pentru obtinerea unei liste filtrate)
+ \end{itemize}
+ \subsection*{GET: /admin/scheduler/executions}
+
+ \subsection*{GET: /admin/scheduler/executionsbytask/\{id\}}
+
+ \subsection*{GET: /admin/scheduler/executions-full}
+
+ \subsection*{GET: /admin/scheduler/tasks/\{id\}}
+
+ \subsection*{GET: /admin/scheduler/executions/\{id\}}
+
+ \subsection*{GET: /admin/scheduler/executions/filter-timestamp/\{timestamp\_begin\}}
+
+ \subsection*{GET: /admin/scheduler/executions/filter-result/\{execution\_result\}}
+
+ \subsection*{GET: /admin/scheduler/executions/filter-timestamp/\{timestamp\}}
+
+ \subsection*{POST: /admin/scheduler/task-update}
+
+ 
+
+\section{Audit}
+
+API pentru componenta de audit a aplicatiei.  \subsection*{GET: /admin/audit/revisioninfo/\{revision\}}
+
+\paragraph{Parametri}
+\begin{itemize}
+\item \textbf{\{revision\}}
+ revizia ale carei informatii de audit sunt obtinute
+ \end{itemize}
+\paragraph{Returneaza:}
+\begin{itemize}
+\item \textbf{timestamp}
+ Data si ora modificarii
+\item \textbf{revision}
+ Versiunea (revizia) modificarii curente
+\item \textbf{username}
+ Numele utilizatorului care a facut modificarea
+\item \textbf{userid}
+ Id-ul utilizatorului care a facut modificarea
+\item \textbf{modtype}
+ Tipul modificarii (update, delete, insert)
+\item \textbf{nrobjects}
+ Numarul de tabele afectate de modificare
+\item\textbf{objects}
+ Obiectele (tabelele) modificate \begin{itemize}
+\item \textbf{objectname}
+ Numele tabelului
+\item \textbf{nrrows}
+ Numarul de inregistrari modificate in cadrul tabelului, la revizia respectiva
+\item\textbf{rows}
+ Inregistrarile modificate la revizia respectiva \begin{itemize}
+\item \textbf{indice}
+ Cheia primara a inregistrarii modificate
+\item \textbf{modtype}
+ Tipul modificarii (insert, update, delete)
+\item \textbf{nrfields}
+ Numarul de campuri afectate de modificare 
+\item\textbf{auditfields}
+ Cheie multipla pentru campurile modificate \begin{itemize}
+\item \textbf{auditfield}
+ Numele campului
+\item \textbf{auditvalue}
+ Valoarea campului la revizia curenta
+ \end{itemize}
+ \end{itemize}
+ \end{itemize}
+ \end{itemize}
+ \subsection*{GET: /admin/audit/revisions-by-object/\{object\}/\{id\}}
+
+\paragraph{Parametri}
+\begin{itemize}
+\item \textbf{\{object\}}
+ tabelul din care face parte
+\item \textbf{\{id\}}
+ id-ul elementului pentru care se cer elementele de audit
+ \end{itemize}
+\paragraph{Returneaza:}
+\begin{itemize}
+\item \textbf{object}
+ Numele tabelului din care face parte inregistrarea pentru care sunt solicitate informatiile de audit
+\item \textbf{indice}
+ Cheia primara a inregistrarii
+\item \textbf{nrrev}
+ Numarul de revizii care au afectat elementul \{id\} din tabelul \{object\}
+\item\textbf{revisions}
+ Reviziile care au afectat elementul \{id\} din tabelul \{object\} \begin{itemize}
+\item \textbf{revision}
+ Versiunea (revizia) corespunzatoare modificarii
+\item \textbf{timestamp}
+ Data si ora modificarii
+\item \textbf{username}
+ Numele utilizatorului care a efectuat revizia
+\item \textbf{userid}
+ Id-ul utilizatorului care a efectuat revizia
+\item \textbf{modtype}
+ Tipul modificarii (update, delete, insert)
+\item\textbf{nrfields}
+ Numarul de campuri afectate de modificare \begin{itemize}
+\item\textbf{auditfields}
+ Cheie multipla pentru campurile modificate \begin{itemize}
+\item \textbf{auditfield}
+ Numele campului
+\item \textbf{auditvalue}
+ Valoarea campului la revizia curenta
+ \end{itemize}
+ \end{itemize}
+ \end{itemize}
+ \end{itemize}
+ \subsection*{GET: /admin/audit/revisions-after-timestamp/\{timestamp\}}
+
+\paragraph{Parametri}
+\begin{itemize}
+\item \textbf{\{timestamp\}}
+ data si ora dupa care au avut loc reviziile ale caror informatii de audit sunt obtinute
+ \end{itemize}
+\paragraph{Returneaza:}
+\begin{itemize}
+\item \textbf{timestamp}
+ Data si ora modificarii
+\item \textbf{revision}
+ Versiunea (revizia) modificarii curente
+\item \textbf{username}
+ Numele utilizatorului care a facut modificarea
+\item \textbf{userid}
+ Id-ul utilizatorului care a facut modificarea
+\item \textbf{nrobjects}
+ Numarul de tabele afectate de modificare
+ \end{itemize}
+ \subsection*{GET: /admin/audit/revisions-by-user/\{username\}/\{object\}}
+
+\paragraph{Parametri}
+\begin{itemize}
+\item \textbf{\{username\}}
+ numele utilizatorului
+\item \textbf{\{object\}}
+ obiectul (tabelul) modificat de catre utilizator
+ \end{itemize}
+\paragraph{Returneaza:}
+\begin{itemize}
+\item \textbf{username}
+ Numele utilizatorului care a facut modificarea
+\item \textbf{userid}
+ Id-ul utilizatorului care a facut modificarea
+\item \textbf{object}
+ Tabelul modificat de catre utilizator
+\item \textbf{nrrev}
+ Numarul de revizii efectuate de catre utilizator asupra tabelului
+\item\textbf{revisions}
+ Reviziile efectuate de catre utilizator asupra tabelului \begin{itemize}
+\item \textbf{revision}
+ Versiunea (revizia) corespunzatoare modificarii 
+\item \textbf{timestamp}
+ Data si ora reviziei
+\item \textbf{nrrows}
+ Numarul de inregistrari modificate in cadrul reviziei
+ \end{itemize}
+ \end{itemize}
+ 
+
+\section{CMS Dashboard}
+
+API pentru componenta Dashboard a sistemului CMS. Aceasta componenta va fi dezvoltata ulterior celorlalte; pentru moment, introducem doar placeholders pentru metodele corespunzatoare. 
+
+\section{CMS Layout Management}
+
+API pentru modulul CMS, submodulul Layouts. Un layout este un fragment de cod HTML care poate contine una sau mai multe referinte catre snippet-uri sau fisiere. In functie de cum este realizata implementarea designului, layout-ul poate fi foarte simplu sau foarte complicat. La nivel de interfata de administrare, este important faptul ca un layout este un fragment de text. Odata implementat site-ul public, numarul de layout-uri ale acestuia va fi egal cu numarul de pagini diferite care vor exista. \subsection*{GET: /admin/layout/layoutlist}
+
+\paragraph{Returneaza:}
+\begin{itemize}
+\item \textbf{name}
+ Numele layout-ului (fara cale)
+\item \textbf{id}
+ Id-ul layout-ului din tabelul din baza de date
+\item \textbf{groupid}
+ Id-ul grupului din care face parte layout-ul
+\item \textbf{itemtype}
+ Tipul inregistrarii: layout
+\item \textbf{directory}
+ Calea (grupurile concatenate) din care face parte layout-ul.
+\item \textbf{description}
+ Scurta descriere a layout-ului<br />
+\item \textbf{nrpagesusing}
+ Numarul de pagini care folosesc acest layout
+ \end{itemize}
+ \subsection*{GET: /admin/layout/layoutinfo/\{id\}}
+
+\paragraph{Returneaza:}
+\begin{itemize}
+\item \textbf{name}
+ Numele layout-ului din baza de date
+\item \textbf{id}
+ Id-ul layout-ului din baza de date
+\item \textbf{description}
+ Descrierea layout-ului respectiv
+\item \textbf{groupid}
+ Id-ul grupului din care face parte layout-ul
+\item \textbf{itemtype}
+ Tipul inregistrarii (layout)
+\item \textbf{directory}
+ Calea (grupurile concatenate) din care face parte layout-ul.
+\item \textbf{pagesnumber}
+ Numarul de pagini care folosesc acest layout
+\item \textit{layoutusage}
+ Paginile care utilizeaza layout-ul. \begin{itemize}
+\item \textbf{id}
+ Id-ul paginii respective
+\item \textbf{name}
+ Numele paginii 
+\item \textbf{url}
+ Url-ul paginii (specificat in tabel)
+\item \textbf{lang}
+ Limba in care este scrisa pagina
+\item \textbf{visible}
+ Pagina este sau nu vizibila
+\item \textbf{pagetypeid}
+ Id-ul tipului de pagina din tabelul cms\_page\_type
+\item \textbf{pagetypename}
+ Numele tipului de pagina corespunzator
+ \end{itemize}
+ \end{itemize}
+ \subsection*{GET: /admin/layout/groupinfo/\{id\}}
+
+\begin{itemize}
+\item \textbf{name}
+ Numele elementului (layout sau grup)
+\item \textbf{id}
+ Id-ul din baza de date. 
+\item \textbf{groupid}
+ Grupul din care face parte grupul curent 
+\item \textbf{directory}
+ Calea catre grupul curent (de exemplu, Main/Secondary Layouts)
+\item \textbf{itemtype}
+ Tipul inregistrarii (layoutgroup)
+\item \textbf{leaf}
+ True, daca grupul este gol
+\item \textbf{icon-cls}
+ Determina tipul de pictograma folosita la nodul respectiv 
+\item \textbf{description}
+ Descrierea grupului (din baza de date)
+\item \textbf{layoutsnumber}
+ Numarul de layout-uri din acest grup
+ \end{itemize}
+ \subsection*{GET: /admin/layout/layouttree/}
+
+\paragraph{Returneaza o structura de date recursiva, cu urmatoarele proprietati:}
+\begin{itemize}
+\item \textbf{name}
+ Numele elementului (layout sau grup)
+\item \textbf{indice}
+ Id-ul din baza de date. 
+\item \textbf{expanded}
+ True sau false; va fi utilizat atunci cand va fi folosita sesiunea, pentru a indica daca arborescenta apare sau nu desfasurata
+\item \textbf{itemtype}
+ Tipul inregistrarii (layout sau layoutgroup)
+\item \textbf{children}
+ referinta catre un array de obiecte cu aceeasi structura care reprezinta copiii.
+\item \textbf{leaf}
+ True, daca elementul este un grup gol sau un layout
+\item \textbf{icon-cls}
+ Determina tipul de pictograma folosita la nodul respectiv
+ \end{itemize}
+ \subsection*{GET: /admin/layout/grouptree}
+
+\paragraph{Returneaza o structura de date recursiva, cu urmatoarele proprietati:}
+\begin{itemize}
+\item \textbf{name}
+ Numele elementului
+\item \textbf{indice}
+ Id-ul din baza de date
+\item \textbf{expanded}
+ True sau false; va fi utilizat atunci cand va fi folosita sesiunea, pentru a indica daca arborescenta apare sau nu desfasurata 
+\item \textbf{children}
+ Referinta catre un array de obiecte cu aceeasi structura care reprezinta copiii
+\item \textbf{leaf}
+ True, daca grupul este gol
+\item \textbf{icon-cls}
+ Determina tipul de pictograma folosita la nodul respectiv
+ \end{itemize}
+ \subsection*{POST: /admin/layout/groupsave}
+
+\paragraph{Parametri:}
+\begin{itemize}
+\item \textbf{groupname}
+ Numele noului grup
+\item \textbf{parent}
+ Id-ul parintelui grupului nou creat
+\item \textbf{description}
+ Descrierea grupului respectiv
+ \end{itemize}
+ \subsection*{POST: /admin/layout/groupempty}
+
+\paragraph{Parametri:}
+\begin{itemize}
+\item \textbf{groupid}
+ Id-ul grupului al carui continut trebuie sters
+ \end{itemize}
+ \subsection*{POST: /admin/layout/groupdrop}
+
+\paragraph{Parametri:}
+\begin{itemize}
+\item \textbf{grupid}
+ Id-ul grupului care trebuie sters
+ \end{itemize}
+ \subsection*{POST: /admin/layout/layoutdrop}
+
+\paragraph{Parametri:}
+\begin{itemize}
+\item \textbf{layoutid}
+ Id-ul layout-ului care trebuie sters
+ \end{itemize}
+ \subsection*{POST: /admin/layout/layoutsave}
+
+\paragraph{Parametri:}
+\begin{itemize}
+\item \textbf{group}
+ Grupul in care trebuie adaugat layout-ul
+\item \textbf{content}
+ Continutul layout-ului respectiv
+\item \textbf{name}
+ Numele layout-ului
+\item \textbf{id}
+ Parametru optional; daca nu exista, inseamna ca trebuie creat un layout nou, altfel se modifica layout-ul existent
+ \end{itemize}
+ \subsection*{POST: /admin/layout/move}
+
+\paragraph{Parametri:}
+\begin{itemize}
+\item \textbf{group}
+ Grupul in care trebuie pus layoutul
+\item \textbf{id}
+ Id-ul layoutului care trebuie mutat
+ \end{itemize}
+ \subsection*{POST: /admin/layout/groupmove}
+
+\paragraph{Parametri:}
+\begin{itemize}
+\item \textbf{parent}
+ Grupul in care trebuie pus grupul (noul parinte)
+\item \textbf{group}
+ Id-ul grupului care trebuie mutat
+ \end{itemize}
+ 
+
+\section{CMS Snippet Management}
+
+API pentru modulul CMS, submodulul Snippets. Un snippet este un fragment refolosibil de text, cod HTML, Javascript etc., care poate contine una sau mai multe referinte catre alte snippet-uri sau fisiere. Snippet-urile sunt grupate in grupuri care alcatuiesc o arborescenta. \subsection*{GET: /admin/snippet/snippetlist}
+
+\paragraph{Returneaza un array de elemente avand urmatoarea structura:}
+\begin{itemize}
+\item \textbf{name}
+ Numele snippet-ului
+\item \textbf{id}
+ Id-ul snippet-ului
+\item \textbf{groupid}
+ Id-ul grupului din care face parte snippet-ul
+\item \textbf{directory}
+ Calea (grupurile concatenate) din care face parte snippet-ul.
+\item \textbf{content}
+ Primele \{n\} caractere din snippet, cu javascript, html filtrate (de exemplu, tag-urile html vor fi transformate cu ajutorul \&gt; si \&lt;). N va fi configurabil
+ \end{itemize}
+ \subsection*{GET: /admin/snippet/snippetinfo/\{id\}}
+
+\paragraph{Returneaza:}
+\begin{itemize}
+\item \textbf{name}
+ Numele snippet-ului din baza de date
+\item \textbf{id}
+ Id-ul snippet-ului din baza de date
+\item \textbf{content}
+ Continutul snippet-ului respectiv
+\item \textbf{groupid}
+ Id-ul grupului din care face parte snippet-ul
+\item \textbf{directory}
+ Calea (grupurile concatenate) din care face parte snippet-ul
+\item\textbf{snippetusage}
+ Elementele care utilizeaza snippet-ul (array) \begin{itemize}
+\item \textbf{id}
+ Id-ul elementului respectiv
+\item \textbf{name}
+ Numele elementului respectiv
+\item \textbf{type}
+ Tipul elementului respectiv (pagina, layout, alt snippet)
+ \end{itemize}
+ \end{itemize}
+ \subsection*{GET: /admin/snippet/groupinfo/\{id\}}
+
+\begin{itemize}
+\item \textbf{name}
+ Numele elementului (layout sau grup)
+\item \textbf{id}
+ Id-ul din baza de date. 
+\item \textbf{groupid}
+ Grupul din care face parte grupul curent 
+\item \textbf{directory}
+ Calea catre grupul curent (Main/First snippets)
+\item \textbf{itemtype}
+ Tipul inregistrarii (snippetgroup)
+\item \textbf{leaf}
+ True, daca grupul de snippet-uri este gol
+\item \textbf{icon-cls}
+ Determina tipul de pictograma folosita la nodul respectiv.<br />
+\item \textbf{description}
+ Descrierea grupului (din baza de date)
+\item \textbf{snippetsnumber}
+ Numarul de snippet-uri din acest grup
+ \end{itemize}
+ \subsection*{GET: /admin/snippet/snippettree}
+
+\paragraph{Returneaza o structura de date recursiva, cu urmatoarele proprietati:}
+\begin{itemize}
+\item \textbf{name}
+ Numele elementului (snippet sau grup)
+\item \textbf{indice}
+ Id-ul din baza de date
+\item \textbf{expanded}
+ True sau false; va fi utilizat atunci cand va fi folosita sesiunea, pentru a indica daca arborescenta apare sau nu desfasurata 
+\item \textbf{children}
+ Referinta catre un array de obiecte cu aceeasi structura care reprezinta copiii.
+\item \textbf{leaf}
+ True, daca grupul este vid
+\item \textbf{icon-cls}
+ Determina tipul de pictograma folosita la nodul respectiv
+\item \textbf{content}
+ Fragment de continut (200 de caractere, configurabil)
+ \end{itemize}
+ \subsection*{GET: /admin/snippet/grouptree}
+
+\paragraph{Returneaza o structura de date recursiva, cu urmatoarele proprietati:}
+\begin{itemize}
+\item \textbf{name}
+ Numele elementului
+\item \textbf{indice}
+ Id-ul din baza de date
+\item \textbf{expanded}
+ True sau false; va fi utilizat atunci cand va fi folosita sesiunea, pentru a indica daca arborescenta apare sau nu desfasurata 
+\item \textbf{children}
+ Referinta catre un array de obiecte cu aceeasi structura care reprezinta copiii.
+\item \textbf{leaf}
+ True, daca elementul este snippet sau grup vid
+\item \textbf{icon-cls}
+ Determina tipul de pictograma folosita la nodul respectiv
+ \end{itemize}
+ \subsection*{POST: /admin/snippet/groupsave}
+
+\paragraph{Parametri:}
+\begin{itemize}
+\item \textbf{groupname}
+ Numele noului grup
+\item \textbf{parent}
+ Id-ul parintelui grupului nou creat
+\item \textbf{description}
+ Descrierea grupului respectiv
+ \end{itemize}
+ \subsection*{POST: /admin/snippet/groupempty}
+
+\paragraph{Parametri:}
+\begin{itemize}
+\item \textbf{groupid}
+ Id-ul grupului al carui continut trebuie sters
+ \end{itemize}
+ \subsection*{POST: /admin/snippet/groupdrop}
+
+\paragraph{Parametri:}
+\begin{itemize}
+\item \textbf{grupid}
+ Id-ul grupului de snippet-uri care trebuie sters
+ \end{itemize}
+ \subsection*{POST: /admin/snippet/snippetdrop}
+
+\paragraph{Parametri:}
+\begin{itemize}
+\item \textbf{snippetid}
+ Id-ul snippet-ului care trebuie sters
+ \end{itemize}
+ \subsection*{POST: /admin/snippet/snippetsave}
+
+\paragraph{Parametri:}
+\begin{itemize}
+\item \textbf{group}
+ Grupul in care trebuie pus snippet-ul
+\item \textbf{content}
+ Continutul snippet-ului respectiv
+\item \textbf{name}
+ Numele snippet-ului
+\item \textbf{id}
+ Parametru optional; daca nu exista, va fi creat un snippet nou, altfel modificam snippet-ul existent
+ \end{itemize}
+ \subsection*{POST: /admin/snippet/move}
+
+\paragraph{Parametri:}
+\begin{itemize}
+\item \textbf{group}
+ Grupul in care trebuie pus snippet-ul
+\item \textbf{id}
+ Id-ul snippet-ului care trebuie mutat
+ \end{itemize}
+ \subsection*{POST: /admin/snippet/groupmove}
+
+\paragraph{Parametri:}
+\begin{itemize}
+\item \textbf{parent}
+ Grupul in care trebuie pus grupul (noul parinte)
+\item \textbf{group}
+ Id-ul grupului care trebuie mutat
+ \end{itemize}
+ 
+
+\section{CMS File Management}
+
+API pentru modulul CMS, submodulul Files \subsection*{GET: /admin/file/filegrid}
+
+\paragraph{Returneaza:}
+\begin{itemize}
+\item \textbf{name}
+ Numele fisierului (fara cale)
+\item \textbf{alias}
+ Alias-ul fisierului respectiv
+\item \textbf{filesize}
+ Dimensiunea fisierului, din baza de date
+\item \textbf{id}
+ Id-ul fisierului din tabelul din baza de date
+\item \textbf{filetype}
+ Clasa generala din care face parte fisierul
+\item \textbf{folderid}
+ Id-ul folderului din care face parte fisierul
+\item \textbf{directory}
+ Calea (directorul) din care face parte fisierul (obtinuta din baza de date).
+ \end{itemize}
+ \subsection*{GET: /admin/cms/fileinfo/\{id\}}
+
+\paragraph{Returneaza:}
+\begin{itemize}
+\item \textbf{filename}
+ Numele fisierului din baza de date
+\item \textbf{filetype}
+ Tipul fisierului
+\item \textbf{id}
+ Id-ul fisierului din baza de date
+\item \textbf{filesize}
+ Dimensiunea fisierului, exprimata in kb
+\item \textbf{filepath}
+ Calea reala a fisierului pe sistemul de fisiere
+\item \textbf{alias}
+ Aliasul fisierului
+\item \textbf{fileurl}
+ Url-ul cu care poate fi accesat fisierul
+\item\textbf{fileproperties}
+ Proprietatile fisierului din tabelul de proprietati. Acestea sunt perechi cheie - valoare care depind de tipul fisierului \begin{itemize}
+\item \textbf{name}
+ Numele proprietatii (cheia)
+\item \textbf{value}
+ Valoarea proprietatii
+ \end{itemize}
+\item\textbf{fileusage}
+ Componenetele in care este utilizat fisierul. Fisierele vor fi specificate prin alias cu ajutorul unei expresii de tip macro (de exemplu, \{\{File:alias\}\}) in corpul componentelor de continut. \begin{itemize}
+\item \textbf{type}
+ Tipul de element de continut in care este utilizat fisierul (layout, snippet, etc.)
+\item \textbf{text}
+ Numele elementului respectiv<br />
+\item \textbf{id}
+ Id-ul elementului
+ \end{itemize}
+ \end{itemize}
+ \subsection*{GET: /admin/file/folderinfo/\{id\}}
+
+\begin{itemize}
+\item \textbf{name}
+ Numele folderului
+\item \textbf{id}
+ Id-ul din baza de date. 
+\item \textbf{groupid}
+ Folderul din care face parte folderul curent 
+\item \textbf{directory}
+ Calea catre folderul curent (de exemplu, Main/Secondary Layouts)
+\item \textbf{itemtype}
+ Tipul inregistrarii (folder)
+\item \textbf{filesnumber}
+ Numarul de fisiere din acest grup
+ \end{itemize}
+ \subsection*{GET: /admin/file/filetree/}
+
+\paragraph{Returneaza o structura de date recursiva, cu urmatoarele proprietati:}
+\begin{itemize}
+\item \textbf{name}
+ Numele elementului
+\item \textbf{indice}
+ Id-ul din baza de date
+\item \textbf{expanded}
+ True sau false; va fi utilizat atunci cand va fi folosita sesiunea, pentru a indica daca arborescenta apare sau nu desfasurata 
+\item \textbf{children}
+ Referinta catre un array de obiecte cu aceeasi structura care reprezinta copiii.
+\item \textbf{alias}
+ Alias-ul fisierului (valabil doar pentru intrarile care sunt fisiere)
+\item \textbf{leaf}
+ True, daca elementul este un fisier sau un folder gol
+\item \textbf{icon-cls}
+ Determina tipul de pictograma folosita la nodul respectiv
+\item \textbf{filesize}
+ Dimensiunea fisierului (doar pentru nodurile care sunt fisiere).
+ \end{itemize}
+ \subsection*{GET: /admin/file/foldertree}
+
+\paragraph{Returneaza o structura de date recursiva, cu urmatoarele proprietati:}
+\begin{itemize}
+\item \textbf{name}
+ Numele elementului
+\item \textbf{indice}
+ Id-ul din baza de date
+\item \textbf{expanded}
+ True sau false; va fi utilizat atunci cand va fi folosita sesiunea, pentru a indica daca arborescenta apare sau nu desfasurata 
+\item \textbf{children}
+ Referinta catre un array de obiecte cu aceeasi structura care reprezinta copiii
+\item \textbf{alias}
+ Alias-ul fisierului (valabil doar pentru intrarile care sunt fisiere)
+\item \textbf{leaf}
+ True, daca elementul este un fisier sau un folder gol
+\item \textbf{icon-cls}
+ Determina tipul de pictograma folosita la nodul respectiv
+\item \textbf{filesize}
+ Dimensiunea fisierului (doar pentru nodurile care sunt fisiere).
+ \end{itemize}
+ \subsection*{POST: /admin/file/foldersave}
+
+\paragraph{Parametri:}
+\begin{itemize}
+\item \textbf{foldername}
+ Numele noului folder
+\item \textbf{parent}
+ Id-ul parintelui folderului nou creat
+\item \textbf{description}
+ Descrierea folderului respectiv
+ \end{itemize}
+ \subsection*{POST: /admin/file/folderempty}
+
+\paragraph{Parametri:}
+\begin{itemize}
+\item \textbf{folderid}
+ Id-ul folderului care trebuie sters
+ \end{itemize}
+ \subsection*{POST: /admin/file/folderdrop}
+
+\paragraph{Parametri:}
+\begin{itemize}
+\item \textbf{folderid}
+ Id-ul folderului care trebuie sters
+ \end{itemize}
+ \subsection*{POST: /admin/file/drop}
+
+\paragraph{Parametri:}
+\begin{itemize}
+\item \textbf{fileid}
+ Id-ul fisierului care trebuie sters
+ \end{itemize}
+ \subsection*{POST: /admin/file/save}
+
+\paragraph{Parametri:}
+\begin{itemize}
+\item \textbf{parent}
+ Folderul in care trebuie pus fisierul
+\item \textbf{fileAlias}
+ Alias-ul fisierului respectiv
+\item \textbf{id}
+ Parametru optional; daca nu exista, va trebui creat un fisier nou, altfel se va modifica fisierul existent
+\item \textbf{file}
+ Fisierul respectiv - multipart
+ \end{itemize}
+ \subsection*{POST: /admin/file/move}
+
+\paragraph{Parametri:}
+\begin{itemize}
+\item \textbf{folder}
+ Folderul in care trebuie pus fisierul
+\item \textbf{id}
+ Id-ul fisierului care trebuie mutat
+ \end{itemize}
+ \subsection*{POST: /admin/layout/foldermove}
+
+\paragraph{Parametri:}
+\begin{itemize}
+\item \textbf{parent}
+ Folderul in care trebuie pus folderul dat (noul parinte)
+\item \textbf{folder}
+ Id-ul folderului care trebuie mutat
+ \end{itemize}
+ 
+
+\section{CMS Page Management}
+
+API pentru modulul CMS, submodulul Pages \subsection*{GET: /admin/cmspagestree}
+
+\paragraph{Returneaza:}
+\begin{itemize}
+\item \textbf{title}
+ Titlul paginii
+\item \textbf{indice}
+ Id-ul paginii
+\item \textbf{lang}
+ Limba paginii
+\item \textbf{menutitle}
+ Titlul alternativ pentru meniuri. 
+\item \textbf{synopsis}
+ Camp de tip text in care va intra un scurt rezumat al paginii, cu scopul afisarii<br />
+\item \textbf{target}
+ none, \_blank, parent, \_self sau \_top
+\item \textbf{url}
+ Fragmentul de url al paginii
+\item \textbf{default}
+ True sau false; true inseamna ca pagina este implicita (cea care se afiseaza cand nu se solicita o pagina specifica)
+\item \textbf{externalredirect}
+ Full url. Daca este completat, pagina apelata va redirecta catre acest url 
+\item \textbf{internalredirect}
+ Internal url. Redirectare catre una dintre paginile interne
+\item \textbf{layout}
+ Layout-ul folosit de pagina curenta
+\item \textbf{cacheable}
+ Integer mai mare decat 0 daca pagina va fi tinuta in cache n minute
+\item \textbf{published}
+ True sau false; true, daca pagina este publicata
+\item \textbf{pagetype}
+ tipul de pagina (variante: content, error404)
+ \end{itemize}
+ \subsection*{GET: /admin/cmspageinfo/\{id\}}
+
+\paragraph{Parametri:}
+\begin{itemize}
+\item \textbf{id}
+ Id-ul paginii respective
+ \end{itemize}
+\paragraph{Returneaza:}
+\begin{itemize}
+\item \textbf{title}
+ Titlul paginii
+\item \textbf{id}
+ Id-ul paginii
+\item \textbf{lang}
+ Limba paginii
+\item \textbf{menutitle}
+ Titlul alternativ pentru meniuri
+\item \textbf{synopsis}
+ Camp de tip text in care va intra un scurt rezumat al paginii, cu scopul afisarii<br />
+\item \textbf{target}
+ none, \_blank, parent, \_self sau \_top
+\item \textbf{url}
+ Fragmentul de url al paginii
+\item \textbf{default}
+ True sau false; true inseamna ca pagina este implicita (cea care se afiseaza cand nu se solicita o pagina specifica)
+\item \textbf{externalredirect}
+ Full url. Daca este completat, pagina apelata va redirecta catre acest url 
+\item \textbf{internalredirect}
+ Internal url. Redirectare catre una dintre paginile interne
+\item \textbf{layout}
+ Layout-ul folosit de pagina curenta (numele)
+\item \textbf{layoutid}
+ Id-ul layout-ului utilizat de pagina
+\item \textbf{layoutdirectory}
+ Grupurile din care face parte layout-ul, concatenate
+\item \textbf{cacheable}
+ Integer mai mare decat 0 daca pagina va fi tinuta in cache n minute
+\item \textbf{published}
+ True sau false; true, daca pagina este publicata
+\item \textbf{pagetype}
+ Tipul de pagina (variante: content, error404)
+\item \textbf{parentid}
+ Id-ul paginii supraordonate
+\item \textbf{parenttitle}
+ Titlul paginii supraordonate
+\item \textbf{parentpath}
+ Calea completa a paginii subordonate (obtinuta prin concatenarea numelor tuturor parintilor)
+\item \textbf{content}
+ continutul paginii
+ \end{itemize}
+ \subsection*{GET: /admin/cmspageaccess/\{id\}}
+
+\paragraph{Parametri:}
+\begin{itemize}
+\item \textbf{timestamp}
+ Data si ora la care a fost facuta solicitarea curenta
+\item \textbf{ipaddr}
+ Adresa de IP de la care a fost facuta solicitarea
+\item \textbf{userid}
+ Id-ul utilizatorului care a facut solicitarea, daca exista (solicitarile pot fi si anonime daca nu este autentificat)
+\item \textbf{username}
+ Numele utilizatorului care a facut autentificarea, daca exista
+\item \textbf{referer}
+ Pagina care a trimis catre pagina curenta
+\item \textbf{useragent}
+ Identificatorul programului folosit pentru navigatie
+ \end{itemize}
+ \subsection*{GET: /admin/cmspagepreview/\{id\}}
+
+\paragraph{Returneaza:}
+\begin{itemize}
+\item \textbf{url}
+ url-ul unde se gaseste copia temporara a paginii
+ \end{itemize}
+ \subsection*{POST: /admin/cmspagesave}
+
+\paragraph{Parametri:}
+\begin{itemize}
+\item \textbf{title}
+ Titlul paginii
+\item \textbf{id}
+ Id-ul paginii
+\item \textbf{lang}
+ Limba paginii
+\item \textbf{menutitle}
+ Titlul alternativ pentru meniuri. 
+\item \textbf{synopsis}
+ Camp de tip text in care va intra un scurt rezumat al paginii, cu scopul afisarii<br />
+\item \textbf{target}
+ none, \_blank, parent, \_self sau \_top
+\item \textbf{url}
+ Fragmentul de url al paginii
+\item \textbf{default}
+ True sau false; true inseamna ca pagina este default (cea care se afiseaza cand nu se solicita o pagina specifica)
+\item \textbf{externalredirect}
+ Full url. Daca este completat, pagina apelata va redirecta catre acest url 
+\item \textbf{internalredirect}
+ Internal url. Redirectare catre una dintre paginile interne
+\item \textbf{layout}
+ Layout-ul folosit de pagina curenta (id-ul)
+\item \textbf{cacheable}
+ Integer mai mare decat 0 daca pagina va fi tinuta in cache n minute
+\item \textbf{published}
+ True sau false; true, daca pagina este publicata
+\item \textbf{pagetype}
+ Tipul de pagina (variante: content, error404)
+\item \textbf{parentid}
+ Id-ul paginii supraordonate
+\item \textbf{content}
+ Continutul paginii
+ \end{itemize}
+ \subsection*{POST: /admin/cmspagemove}
+
+\paragraph{Parametri:}
+\begin{itemize}
+\item \textbf{parent}
+ Noua pagina supraordonata
+\item \textbf{id}
+ Id-ul paginii de mutat
+ \end{itemize}
+ \subsection*{POST: /admin/cmspagedelete}
+
+\paragraph{Parametri}
+\begin{itemize}
+\item \textbf{id}
+ id-ul paginii care trebuie stearsa. Nu se accepta decat stergerea unei pagini care nu are pagini subordonate.
+ \end{itemize}
+ 
+
+\section{USER Management}
+
+API pentru modulul User ManagementModulul User Management face parte din interfata de administrare a arhivei RODA si se ocupa de gestiunea utilizatorilor acesteia, atat de administratorii sistemului care au acces la interfata de administrare cat si de utilizatorii care au acces la site-ul public si la arhiva de date.Administratorii sistemului vor fi cuprinsi in categoria "administrators" in timp ce utilizatorii normali vor fi cuprinsi in categoria "users". \subsection*{GET: /admin/grouplist}
+
+\paragraph{Returneaza o lista de elemente, fiecare dintre ele caracterizate de urmatoarele atribute:}
+\begin{itemize}
+\item \textbf{id}
+ Id-ul grupului corespunzator
+\item \textbf{name}
+ Numele grupului respectiv
+\item \textbf{nrusers}
+ Numarul de utilizatori din grupul respectiv
+\item \textbf{description}
+ Descrierea grupului respectiv
+ \end{itemize}
+ \subsection*{GET: /admin/groupinfo/\{id\}}
+
+\paragraph{Returneaza un singur element, care contine urmatoarele:}
+\begin{itemize}
+\item \textbf{id}
+ Id-ul grupului corespunzator
+\item \textbf{name}
+ Numele grupului respectiv
+\item \textbf{nrusers}
+ Numarul de utilizatori din grupul respectiv
+\item \textbf{description}
+ Descrierea grupului respectiv
+ \end{itemize}
+ \subsection*{GET: /admin/userslist/\{id\}}
+
+\paragraph{Returneaza o colectie de structuri de tip utilizator, fiecare dintre ele continand urmatoarele:}
+\begin{itemize}
+\item \textbf{id}
+ Id-ul utilizatorului respectiv
+\item \textbf{username}
+ Username-ul utilizatorului respectiv
+\item \textbf{firstname}
+ Prenumele utilizatorului respectiv
+\item \textbf{lastname}
+ Numele utilizatorului respectiv
+\item \textbf{email}
+ Adresa de email a utilizatorului
+\item \textbf{enabled}
+ True daca utilizatorul este activ, false daca este blocat. 
+ \end{itemize}
+ \subsection*{GET: /admin/usersbygroup/\{id\}}
+
+\paragraph{Returneaza o colectie de structuri de tip utilizator, fiecare dintre ele continand urmatoarele:}
+\begin{itemize}
+\item \textbf{id}
+ Id-ul utilizatorului respectiv
+\item \textbf{username}
+ Username-ul utilizatorului respectiv
+\item \textbf{email}
+ Adresa de email a utilizatorului
+\item \textbf{enabled}
+ True daca utilizatorul este activ, false daca este blocat. 
+ \end{itemize}
+ \subsection*{GET: /admin/userinfo/\{id\}}
+
+\paragraph{Returneaza datele unui singur utilizator, impreuna cu o serie de colectii adiacente (profil, activitate, setari).}
+\begin{itemize}
+\item \textbf{id}
+ Id-ul utilizatorului respectiv
+\item \textbf{username}
+ Username-ul utilizatorului respectiv
+\item \textbf{email}
+ Adresa de email a utilizatorului
+\item \textbf{enabled}
+ True daca utilizatorul este activ, false daca este blocat. 
+\item\textbf{groups}
+ Grupurile din care face parte utilizatorul. Structura identica cu cea de la groupinfo \begin{itemize}
+\item \textbf{id}
+ Id-ul grupului corespunzator
+\item \textbf{name}
+ Numele grupului respectiv
+\item \textbf{nrusers}
+ Numarul de utilizatori din grupul respectiv
+\item \textbf{description}
+ Descrierea grupului respectiv
+ \end{itemize}
+\item\textbf{profile}
+ Elementele profilului utilizatorului \begin{itemize}
+\item \textbf{salutation}
+ domnul, doamna, domnisoara, in functie de caz
+\item \textbf{firstname}
+ Prenumele
+\item \textbf{lastname}
+ Numele
+\item \textbf{middlename}
+ Alt prenume 
+\item \textbf{title}
+ Titlul, daca este cazul
+\item \textbf{image}
+ Fotografia
+\item \textbf{address1}
+ Adresa
+\item \textbf{address2}
+ Adresa
+\item \textbf{city}
+ Orasul
+\item \textbf{country}
+ Tara utilizatorului
+\item \textbf{phone}
+ nNmarul de telefon al utilizatorului
+\item \textbf{sex}
+ Sexul utilizatorului
+\item \textbf{birthdate}
+ Data nasterii utilizatorului (este posibil sa existe date care nu sunt accesibile decat utilizatorilor peste 18 ani)
+ \end{itemize}
+\item\textbf{lastmessages}
+ Ultimele 10 mesaje trimise sau primite de utilizator pe site-ul RODA \begin{itemize}
+\item \textbf{timestamp}
+ Data si ora mesajului
+\item \textbf{subject}
+ Subiectul mesajului
+\item \textbf{direction}
+ Trimis sau primit
+\item \textbf{read}
+ True daca mesajul a fost citit, false daca nu
+\item \textbf{message}
+ Corpul mesajului
+ \end{itemize}
+\item\textbf{activity}
+ Ultimele 50 de operatii pe care utilizatorul le-a executat pe sitepul RODA \begin{itemize}
+\item \textbf{timestamp}
+ Data si ora activitatii
+\item \textbf{type}
+ Tipul activitatii (login, logout, download, vizionare date, etc.)
+\item \textbf{details}
+ Tn functie de activitate este posibil sa existe detalii, de exemplu la autentificare se vor inregistra IP-ul de pe care a fost accesat site-ul, tipul de navigator, sistemul de operare
+\item \textbf{error}
+ True sau false daca activitatea respectiva a produs o eroare
+\item \textbf{errormessage}
+ Mesajul de eroare
+\item \textbf{errordetails}
+ Detalii ale erorii, daca exista
+ \end{itemize}
+ \end{itemize}
+ \subsection*{GET: /admin/usermessages/\{id\}}
+
+\paragraph{Returneaza toate mesajele trimise sau primite de utilizator, in sistem paginat}
+\begin{itemize}
+\item \textbf{timestamp}
+ data si ora mesajului
+\item \textbf{subject}
+ subiectul mesajului
+\item \textbf{direction}
+ trimis sau primit
+\item \textbf{read}
+ true daca mesajul a fost citit, false daca nu
+\item \textbf{message}
+ corpul mesajului
+ \end{itemize}
+ \subsection*{GET: /admin/useractivity/\{id\}}
+
+\paragraph{Returneaza toate activitatile utilizatorului, in sistem paginat}
+\begin{itemize}
+\item \textbf{timestamp}
+ data si ora activitatii
+\item \textbf{type}
+ tipul activitatii (login, logout, download, vizionare date, etc.)
+\item \textbf{details}
+ in functie de activitate este posibil sa existe detalii, de exemplu la autentificare se vor inregistra IP-ul de pe care a fost accesat site-ul, tipul de navigator, sistemul de operare
+\item \textbf{error}
+ true sau false daca activitatea respectiva a produs o eroare
+\item \textbf{errormessage}
+ mesajul de eroare
+\item \textbf{errordetails}
+ detalii ale erorii, daca exista
+ \end{itemize}
+ \subsection*{GET: /admin/adminlist}
+
+\paragraph{Returneaza lista tuturor administratorilor sistemului. O colectie de structuri de tip administrator, fiecare dintre ele continand urmatoarele:}
+\begin{itemize}
+\item \textbf{id}
+ id-ul administratorului respectiv
+\item \textbf{username}
+ numele administratorului respectiv
+\item \textbf{firstname}
+ prenumele administratorului respectiv
+\item \textbf{lastname}
+ numele administratorului respectiv
+\item \textbf{email}
+ adresa de email a administratorului
+\item \textbf{enabled}
+ true daca administratorului este activ, false daca este blocat. 
+\item \textbf{lastlogin}
+ ultima autentificare a administratorului
+ \end{itemize}
+ \subsection*{GET: /admin/admininfo}
+
+\paragraph{Returneaza datele unui singur administrator, impreuna cu o serie de colectii adiacente (activitate, setari).}
+\begin{itemize}
+\item \textbf{id}
+ id-ul administratorului respectiv
+\item \textbf{username}
+ numele administratorului respectiv
+\item \textbf{email}
+ adresa de email a administratorului
+\item \textbf{enabled}
+ true daca administratorulu este activ, false daca este blocat. 
+\item \textbf{firstname}
+ prenumele
+\item \textbf{lastname}
+ numele
+\item \textbf{middlename}
+ alt prenume 
+\item \textbf{image}
+ fotografia
+\item \textbf{phone}
+ numarul de telefon al administratorului
+\item\textbf{lastmessages}
+ ultimele 10 mesaje trimise sau primite de administrator pe site-ul RODA \begin{itemize}
+\item \textbf{timestamp}
+ data si ora mesajului
+\item \textbf{subject}
+ subiectul mesajului
+\item \textbf{direction}
+ trimis sau primit
+\item \textbf{read}
+ true daca mesajul a fost citit, false daca nu
+\item \textbf{message}
+ corpul mesajului
+ \end{itemize}
+\item\textbf{activity}
+ ultimele 50 de operatii pe care administratorul le-a executat pe sitepul RODA \begin{itemize}
+\item \textbf{timestamp}
+ data si ora activitatii
+\item \textbf{type}
+ tipul activitatii (login, logout, download, vizionare date, etc.)
+\item \textbf{details}
+ in functie de activitate este posibil sa existe detalii, de exemplu la autentificare se vor inregistra IP-ul de pe care a fost accesat site-ul, tipul de navigator, sistemul de operare
+\item \textbf{error}
+ true sau false daca activitatea respectiva a produs o eroare
+\item \textbf{errormessage}
+ mesajul de eroare
+\item \textbf{errordetails}
+ detalii ale erorii, daca exista
+ \end{itemize}
+ \end{itemize}
+ \subsection*{GET: /admin/adminmessages/\{id\}}
+
+\paragraph{Returneaza toate mesajele trimise sau primite de administrator, in sistem paginat.}
+\begin{itemize}
+\item \textbf{timestamp}
+ data si ora mesajului
+\item \textbf{subject}
+ subiectul mesajului
+\item \textbf{direction}
+ trimis sau primit
+\item \textbf{read}
+ true daca mesajul a fost citit, false daca nu
+\item \textbf{message}
+ corpul mesajului
+ \end{itemize}
+ \subsection*{GET: /admin/adminactivity/\{id\}}
+
+\paragraph{Returneaza toate activitatile administratorului, in sistem paginat}
+\begin{itemize}
+\item \textbf{timestamp}
+ Data si ora activitatii
+\item \textbf{type}
+ Tipul activitatii (login, logout, download, vizionare date, etc.)
+\item \textbf{details}
+ In functie de activitate este posibil sa existe detalii, de exemplu la autentificare se vor inregistra IP-ul de pe care a fost accesat site-ul, tipul de navigator, sistemul de operare
+\item \textbf{error}
+ True sau false daca activitatea respectiva a produs o eroare
+\item \textbf{errormessage}
+ Mesajul de eroare
+\item \textbf{errordetails}
+ Detalii ale erorii, daca exista
+ \end{itemize}
+ \subsection*{GET: /admin/adminrights/\{id\}}
+
+\paragraph{Returneaza toate permisiunile administratorului curent.}
+\begin{itemize}
+\item \textbf{rgroup}
+ Categoria de drepturi 
+\item \textbf{raction}
+ Actiunea propriu-zisa, descrisa printr-un token de maximum 10 caractere fara spatii
+\item \textbf{description}
+ Descrierea actiunii
+\item \textbf{rstatus}
+ Permisiunile pe actiunea curenta
+ \end{itemize}
+ \subsection*{GET: /admin/admincheckperm/\{id\}}
+
+\paragraph{Returneaza starea unei anumite permisiuni acordate sau nu administratorului}
+\paragraph{Returneaza}
+\begin{itemize}
+\item \textbf{rgroup}
+ Categoria de drepturi 
+\item \textbf{raction}
+ Actiunea propriu-zisa
+\item \textbf{description}
+ Descrierea actiunii
+\item \textbf{raccess}
+ True sau false in functie de stare
+ \end{itemize}
+ \subsection*{POST: /admin/usersave/\{id\}}
+
+\paragraph{Parametri:}
+\begin{itemize}
+\item \textbf{id}
+ Id-ul utilizatorului respectiv
+\item \textbf{username}
+ Username-ul utilizatorului respectiv
+\item \textbf{email}
+ Adresa de email a utilizatorului
+\item \textbf{enabled}
+ True daca utilizatorul este activ, false daca este blocat. 
+ \end{itemize}
+ \subsection*{POST: /admin/groupsave/\{id\}}
+
+\paragraph{Parametri:}
+\begin{itemize}
+\item \textbf{name}
+ Numele noului grup
+\item \textbf{email}
+ Adresa de email a utilizatorului
+\item \textbf{description}
+ Descrierea grupului respectiv
+ \end{itemize}
+ \subsection*{POST: /admin/addusertogroup/}
+
+\paragraph{Parametri:}
+\begin{itemize}
+\item \textbf{groupid}
+ Id-ul grupului 
+\item \textbf{userid}
+ Id-ul utilizatorului
+ \end{itemize}
+ \subsection*{POST: /admin/deleteuserfromgroup/}
+
+\paragraph{Parametri:}
+\begin{itemize}
+\item \textbf{groupid}
+ Id-ul grupului 
+\item \textbf{userid}
+ Id-ul utilizatorului
+ \end{itemize}
+ \subsection*{POST: /admin/deactivateuser/\{id\}}
+
+\paragraph{Parametri:}
+\begin{itemize}
+\item \textbf{userid}
+ Id-ul utilizatorului
+ \end{itemize}
+ \subsection*{POST: /admin/activateuser/\{id\}}
+
+\paragraph{Parametri:}
+\begin{itemize}
+\item \textbf{userid}
+ Id-ul utilizatorului
+ \end{itemize}
+ \subsection*{POST: /admin/dropuser/\{id\}}
+
+\paragraph{Parametri:}
+\begin{itemize}
+\item \textbf{userid}
+ Id-ul utilizatorului
+ \end{itemize}
+ \subsection*{POST: /admin/changeuserpassword/\{id\}}
+
+\paragraph{Parametri:}
+\begin{itemize}
+\item \textbf{userid}
+ Id-ul utilizatorului
+\item \textbf{password}
+ Parola utilizatorului
+\item \textbf{controlpassword}
+ Parola de control, trebuie sa fie identica cu cealalta parola
+ \end{itemize}
+ \subsection*{POST: /admin/messageuser/\{id\}}
+
+\paragraph{Parametri:}
+\begin{itemize}
+\item \textbf{userid}
+ Id-ul utilizatorului
+\item \textbf{subject}
+ Subiectul mesajului 
+\item \textbf{message}
+ Corpul mesajului
+ \end{itemize}
+ \subsection*{POST: /admin/messagegroup/\{id\}}
+
+\paragraph{Parametri:}
+\begin{itemize}
+\item \textbf{groupid}
+ Id-ul grupului
+\item \textbf{subject}
+ Subiectul mesajului 
+\item \textbf{message}
+ Corpul mesajului
+ \end{itemize}
+ \subsection*{POST: /admin/adminsave/\{id\}}
+
+\paragraph{Modifica sau introduce in sistem un nou administrator. Daca se specifica parametrul id, inregistrarea existenta este modificata conform apelului, daca nu, se va crea o noua inregistrare}
+\paragraph{Parametri:}
+\begin{itemize}
+\item \textbf{id}
+ Id-ul administratorului respectiv
+\item \textbf{username}
+ Username-ul administratorului respectiv
+\item \textbf{email}
+ Adresa de email a administratorului
+\item \textbf{enabled}
+ True daca administratorulu este activ, false daca este blocat. 
+\item \textbf{firstname}
+ Prenumele
+\item \textbf{lastname}
+ Numele
+\item \textbf{middlename}
+ Alt prenume 
+\item \textbf{image}
+ Fotografia
+\item \textbf{phone}
+ Numarul de telefon al administratorului
+ \end{itemize}
+ \subsection*{POST: /admin/deactivateuser/\{id\}}
+
+\paragraph{Parametri:}
+\begin{itemize}
+\item \textbf{adminid}
+ Id-ul administratorului
+ \end{itemize}
+ \subsection*{POST: /admin/activateuser/\{id\}}
+
+\paragraph{Parametri:}
+\begin{itemize}
+\item \textbf{admin}
+ Id-ul utilizatorului
+ \end{itemize}
+ \subsection*{POST: /admin/changeadminpassword/\{id\}}
+
+\paragraph{Parametri:}
+\begin{itemize}
+\item \textbf{adminid}
+ Id-ul administratorului
+\item \textbf{password}
+ Parola administratorului
+\item \textbf{controlpassword}
+ Parola de control, trebuie sa fie identica cu cealalta parola
+ \end{itemize}
+ \subsection*{POST: /admin/addadminpermissions/\{id\}}
+
+\paragraph{Adauga o anumita permisiune administratorului. }
+ \subsection*{POST: /admin/dropadminpermissions/\{id\}}
+
+\paragraph{Revoca o anumita permisiune administratorului. }

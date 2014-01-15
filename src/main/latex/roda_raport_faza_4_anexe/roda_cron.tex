@@ -1,0 +1,93 @@
+\section{Task-Scheduling in Spring}
+
+Spring 3.0 introduce un TaskScheduler cu o varietate de metode pentru programarea task-urilor pentru a rula la un anumit moment in viitor.
+\begin{lstlisting}[breaklines=true]
+public interface TaskScheduler {
+ScheduledFuture schedule(Runnable task, Trigger trigger);
+
+ScheduledFuture schedule(Runnable task, Date startTime);
+
+ScheduledFuture scheduleAtFixedRate(Runnable task, Date startTime, long period);
+
+ScheduledFuture scheduleAtFixedRate(Runnable task, long period);
+
+ScheduledFuture scheduleWithFixedDelay(Runnable task, Date startTime, long delay);
+
+ScheduledFuture scheduleWithFixedDelay(Runnable task, long delay);
+}
+\end{lstlisting}
+
+Cea mai simpla metoda este cea numita 'schedule' care primeste doar un Runnable (task de rulat) si o Data (moment de timp).
+Aceasta face ca task-ul sa ruleze o singura data dupa trecerea timpului specificat.
+Toate celelalte metode sunt capabile sa programeze task-urile pentru a rula in mod repetat.
+Metodele '...FixedRate' si '...FixedDelay' sunt pentru executii simple periodice, dar metoda care accepta un Trigger este mult mai flexibila.
+
+Interfata Trigger este in esenta inspirata de catre JSR-236 (care nu fusese implementata oficial la momentul lansarii Spring 3.0).
+Ideea de baza este accea ca momentele de executie pot fi determinate de rezultatele executiilor din trecut sau chiar alte conditii arbirare.
+Daca aceste constrangeri iau in calcul rezultatele executiilor precedente, aceasta informatie e disponibila in cadrul unui TriggerContext.
+
+Spring ofera doua implementari ale interfetei Trigger, cea mai interesanta dintre ele fiind CronTrigger, care permite programarea task-urilor pe baza unor expresii in stil 'cron'.
+De exemplu, urmatorul task este programat sa ruleze la minutul 15 al fiecarei ore dar doar in intervalul orar 9-17 in timpul zilelor de lucru ale saptamanii:
+\begin{lstlisting}
+scheduler.schedule(task, new CronTrigger("* 15 9-17 * * MON-FRI"));
+\end{lstlisting}
+
+Cealalta implementare oferita este PeriodicTrigger, care accepta o perioada fixa, o intarziere initiala (optionala), 
+si un flag boolean care sa indice daca perioada trebuie interpretata ca fiind 'fixed-rate' sau 'fixed-delay'.
+Deoarece interfata TaskScheduler ofera deja metode pentru programarea task-urilor la o rata fixa sau cu o intarziere fixata intre executiile lor,
+acele metode ar trebui folosite in mod direct atunci cand se poate.
+Valoarea adusa de implementarea PeriodicTrigger este ca poate fi utilizat in cadrul unor componente care se bazeaza pe conceptul abstract de Trigger
+(de exemplu, poate fi avantajos sa fie permisa utilizarea intersanjabila de triggere periodice, triggere bazate pe cron, sau chiar implementari customizate de Triggere;
+o asemenea componenta poate beneficia de avantajul injectiei de dependente oferite de Spring, pentru a configura din exterior astfel de Triggere).
+
+\section{Task-Scheduling in aplicatia RODA}
+
+In fisierul 'applicationContext.xml' este configurata componenta de scheduling (avand un pool de 5 thread-uri):
+
+\begin{lstlisting}
+<task:scheduler id="scheduler" pool-size="5"/>
+\end{lstlisting}
+
+Pachetul in care se afla componenta de scheduling este 'ro.roda.scheduler', iar task-urile definite sunt in pachetul 'ro.roda.scheduler.tasks'.
+Task-urile sunt implementari ale interfetelor Runnable sau RunnableFuture. 
+Executiile task-urilor pot fi programate ori declansate manual.
+
+Definitiile task-urilor sunt persistente in baza de date (si nu in fisiere de configuratie).
+Tabelul ce contine task-urile posibile se populeaza sau actualizeaza la pornirea aplicatiei, 
+dupa identificarea prin Java Reflection a tuturor task-urilor din pachetul mentionat.
+
+De asemenea, si detaliile despre executiile aferente unui anumit task sunt stocate in baza de date.
+
+Campurile acestor entitati sunt:
+\begin{enumerate}
+\item Task:
+\begin{itemize}
+\item id
+\item name: numele task-ului
+\item description: descrierea pe larg
+\item classname: Numele complet al clasei Java care implementeaza task-ul
+\item cron: string-ul in stil Cron care descrie regula de programare a executiei Task-ului; 
+poate cuprinde campuri simple sau cu reguli pe baza de frecvente si intervale pentru: secunde, minute, ore, zile ale lunii, luni, zi a saptamanii, an.
+\item enabled: daca task-ul este activat (sau dezactivat)
+\item timestamp\_next\_execution: data si ora la care Task-ul este planificat pentru a fi lansat in executie (momentul planificat al urmatoarei executii)
+\end{itemize}
+\item Executie:
+\begin{itemize}
+\item id
+\item task\_id : referinta la Task
+\item type: "scheduled" sau "manual" (daca executia a fost programata sau a fost declansata manual)
+\item result: rezultatul executiei (numar intreg, unde 0 reprezinta succes)
+\item timestamp\_start: Momentul la care a inceput aceasta executie a task-ului
+\item duration: durata acestei executii (in milisecunde)
+\item stacktrace:  detalii in caz de executie fara succes
+\end{itemize}
+\end{enumerate}
+
+Controlul sistemului de Task-Scheduling se realizeaza prin intermediul unor controllere care primesc comenzi
+\begin{itemize}
+\item de modificare a parametrilor task-urilor (dez-activare, modificare parametru stil Cron etc.)
+\item de declansare manuala a executiei unui anumit task
+\item de listare a tuturor task-urilor sau a unui anumit task
+\item de listare a tuturor executiilor sau a unei anumite executii (cu detalii sau fara)
+\item de listare filtrata a executiilor (de ex. dupa rezultat, sau dupa intervalul de timp in care a fost declansata, sau dupa durata)
+\end{itemize}

@@ -10,13 +10,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface CmsFileStoreService {
 		
-	public abstract void saveCmsFolder(CmsFolder cmsFolder);
+	public abstract void folderSave(CmsFolder cmsFolder);
 
-	public abstract void saveCmsFile(MultipartFile mFile, CmsFolder cmsFolder);
+	public abstract void fileSave(MultipartFile mFile, CmsFolder cmsFolder);
 	
-	public abstract File loadFile(String fileFullPath);
+//	public abstract File fileLoad(String fileFullPath);
 
-	public abstract File loadFile(CmsFile file);
+	public abstract File fileLoad(CmsFile file);
 	
 	public abstract void folderEmpty(CmsFolder cmsFolder);
 

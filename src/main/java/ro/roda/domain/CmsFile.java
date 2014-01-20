@@ -229,6 +229,15 @@ public class CmsFile {
 	@Column(name = "filesize", columnDefinition = "int8")
 	private Long filesize;
 
+	@Column(name = "content_type", columnDefinition = "varchar", length = 100)
+	private String contentType;
+
+	@Column(name = "description", columnDefinition = "text")
+	private String description;
+
+//	@Column(name = "full_path", columnDefinition = "text")
+//	private String fullPath;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
@@ -268,6 +277,14 @@ public class CmsFile {
 
 	public Long getFilesize() {
 		return filesize;
+	}
+
+	public String getContentType() {
+		return contentType;
+	}
+
+	public String getDescription() {
+		return description;
 	}
 
 	public Integer getId() {
@@ -316,6 +333,14 @@ public class CmsFile {
 
 	public void setFilesize(Long filesize) {
 		this.filesize = filesize;
+	}
+
+	public void setContentType(String contentType) {
+		this.contentType = contentType;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public void setId(Integer id) {

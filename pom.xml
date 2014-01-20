@@ -65,7 +65,7 @@
 	</prerequisites>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<java.version>6</java.version>
+		<java.version>7</java.version>
 		<license.licenseName>gpl_v3</license.licenseName>
 		
 		<!-- dependencies versions -->
@@ -75,8 +75,9 @@
 		<aspectj.version>1.7.2</aspectj.version> <!-- original: 1.7.0 -->
 		<slf4j.version>1.7.5</slf4j.version>
 		<httpcomponents.version>4.3.1</httpcomponents.version> <!-- original: 4.3 -->
-		<hibernate.version>4.1.8.Final</hibernate.version> <!-- original: 4.1.8.Final -->
-		<hibernate-validator.version>4.3.1.Final</hibernate-validator.version> <!-- original: 4.3.1.Final -->
+		<hibernate.version>4.3.0.Final</hibernate.version> <!-- original: 4.1.8.Final -->
+		<hibernate-validator.version>5.0.2.Final</hibernate-validator.version> <!-- original: 4.3.1.Final -->
+		<javax-validation.version>1.1.0.Final</javax-validation.version> <!-- original version: 1.0.0.GA -->
 		<umlgraph.version>5.6</umlgraph.version> <!-- original: 5.6 -->
 		<flexjson.version>3.1</flexjson.version> <!-- original: 3.0 -->
 		<solr-solrj.version>4.6.0</solr-solrj.version> <!-- original: 4.3.1 -->
@@ -378,8 +379,7 @@
 		<dependency>
 			<groupId>javax.validation</groupId>
 			<artifactId>validation-api</artifactId>
-			<version>1.0.0.GA</version>
-			<!-- original version: 1.0.0.GA -->
+			<version>${javax-validation.version}</version>
 		</dependency>
 		<!--
 		<dependency>

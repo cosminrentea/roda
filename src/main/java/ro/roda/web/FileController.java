@@ -57,7 +57,7 @@ public class FileController {
 	@RequestMapping(method = RequestMethod.POST, produces = "text/html")
 	public String create(@Valid File file, BindingResult bindingResult, Model uiModel,
 			@RequestParam("content") MultipartFile content, HttpServletRequest httpServletRequest) {
-		log.debug("> create");
+		log.trace("> create");
 		uiModel.asMap().clear();
 		fileService.saveFile(file, content, true);
 		return "redirect:/files/" + encodeUrlPathSegment(file.getId().toString(), httpServletRequest);
@@ -65,7 +65,7 @@ public class FileController {
 
 	@RequestMapping(value = "/{id}", produces = "text/html")
 	public String show(@PathVariable("id") Integer id, Model uiModel) {
-		log.debug("> show");
+		log.trace("> show");
 		File file = fileService.findFile(id);
 		file.setUrl("showfile/" + id);
 		uiModel.addAttribute("file", fileService.findFile(id));
@@ -75,7 +75,7 @@ public class FileController {
 
 	@RequestMapping(value = "/showfile/{id}", method = RequestMethod.GET)
 	public String showfile(@PathVariable("id") Integer id, HttpServletResponse response, Model model) {
-		log.debug("> showfile");
+		log.trace("> showfile");
 		File file = fileService.findFile(id);
 		try {
 			response.setHeader("Content-Disposition", "inline;filename=\"" + file.getName() + "\"");

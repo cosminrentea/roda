@@ -641,7 +641,6 @@ public class AdminJson {
 		return new AdminJson(true, "CMS File dropped successfully");
 	}
 
-	// TODO: file multipart
 	// TODO (also for the above methods): manage the files and folders in the
 	// repository
 	public static AdminJson fileSave(Integer folderId, MultipartFile content, String alias, Integer fileId) {
@@ -657,8 +656,8 @@ public class AdminJson {
 
 		file.setLabel(alias);
 		file.setFilename(content.getOriginalFilename());
+		file.setContentType(content.getContentType());
 		file.setFilesize(content.getSize());
-
 
 		CmsFolder parentFolder = CmsFolder.findCmsFolder(folderId);
 		if (parentFolder != null) {

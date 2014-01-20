@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import ro.roda.domain.CmsFile;
+import ro.roda.filestore.CmsFileStoreService;
 import ro.roda.service.FileListService;
 import ro.roda.transformer.FileList;
 
@@ -18,6 +20,9 @@ import ro.roda.transformer.FileList;
 @Controller
 public class FileListController {
 
+	@Autowired
+	CmsFileStoreService cmsFileStoreService;
+	
 	@Autowired
 	FileListService fileListService;
 
@@ -34,12 +39,15 @@ public class FileListController {
 	@ResponseBody
 	public ResponseEntity<String> showJson(@PathVariable("id") Integer id) {
 		FileList fileList = fileListService.findFileList(id);
+		fileList.setFileproperties(cmsFileStoreService.getFileProperties(CmsFile.findCmsFile(id)));
+		
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");
 		if (fileList == null) {
 			return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
 		}
-		return new ResponseEntity<String>(fileList.toJson(), headers, HttpStatus.OK);
+//		return new ResponseEntity<String>(fileList.toJson(), headers, HttpStatus.OK);
+		return new ResponseEntity<String>(fileList.toJsonDetailed(), headers, HttpStatus.OK);
 	}
 
 }

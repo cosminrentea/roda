@@ -41,12 +41,6 @@ public interface AdminJsonService {
 
 	// CMS FILES
 
-	public abstract AdminJson fileGrid();
-
-	public abstract AdminJson fileTree();
-
-	public abstract AdminJson folderTree();
-
 	public abstract AdminJson fileInfo(Integer id);
 
 	public abstract AdminJson folderInfo(Integer id);
@@ -71,20 +65,20 @@ public interface AdminJsonService {
 
 	public abstract AdminJson groupSave(Integer id, String name, String description);
 
-	public abstract AdminJson addUserToGroup(Integer userId, Integer groupId);
+	public abstract AdminJson userAddToGroup(Integer userId, Integer groupId);
 
-	public abstract AdminJson deleteUserFromGroup(Integer userId, Integer groupId);
+	public abstract AdminJson userRemoveFromGroup(Integer userId, Integer groupId);
 
-	public abstract AdminJson enableUser(Integer userId);
+	public abstract AdminJson userEnable(Integer userId);
 
-	public abstract AdminJson disableUser(Integer userId);
+	public abstract AdminJson userDisable(Integer userId);
 
-	public abstract AdminJson dropUser(Integer userId);
+	public abstract AdminJson userDrop(Integer userId);
 
-	public abstract AdminJson changePasswordUser(Integer userId, String password, String controlPassword);
+	public abstract AdminJson userChangePassword(Integer userId, String password, String controlPassword);
 
-	public abstract AdminJson messageUser(Integer userId, String subject, String message);
+	public abstract AdminJson userMessage(Integer userId, String subject, String message);
 
-	public abstract AdminJson messageGroup(Integer groupId, String subject, String message);
+	public abstract AdminJson groupMessage(Integer groupId, String subject, String message);
 
 }

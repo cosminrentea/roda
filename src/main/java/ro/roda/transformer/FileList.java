@@ -2,14 +2,19 @@ package ro.roda.transformer;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 
 import ro.roda.domain.CmsFile;
 import ro.roda.domain.CmsFolder;
+import ro.roda.filestore.CmsFileStoreService;
 import flexjson.JSONSerializer;
+import flexjson.transformer.MapTransformer;
 
 @Configurable
 public class FileList extends JsonInfo {
@@ -59,7 +64,6 @@ public class FileList extends JsonInfo {
 			return file.getFilename();
 		}
 	}
-
 	public static String getFolderPath(CmsFolder folder) {
 		if (folder.getParentId() != null) {
 			return getFolderPath(folder.getParentId()) + "/" + folder.getName();
@@ -78,6 +82,8 @@ public class FileList extends JsonInfo {
 
 	private String filetype;
 
+	private Map<String, String> fileproperties;
+
 	private Integer folderid;
 
 	private String directory;
@@ -94,13 +100,13 @@ public class FileList extends JsonInfo {
 		this.directory = directory;
 		this.filesize = filesize;
 		this.filetype = filetype;
+		this.fileproperties = new HashMap<String, String>();
 		this.folderid = folderid;
 		this.iconCls = iconCls;
 	}
 
 	public FileList(CmsFile file) {
-		this(file.getId(), file.getFilename(), file.getLabel(), file.getFilesize(), file.getFilename().substring(
-				file.getFilename().lastIndexOf(".")), file.getCmsFolderId() == null ? null : file.getCmsFolderId()
+		this(file.getId(), file.getFilename(), file.getLabel(), file.getFilesize(), file.getContentType(), file.getCmsFolderId() == null ? null : file.getCmsFolderId()
 				.getId(), getFilePath(file), "file");
 	}
 
@@ -152,6 +158,14 @@ public class FileList extends JsonInfo {
 		this.filetype = filetype;
 	}
 
+	public Map<String, String> getFileproperties() {
+		return fileproperties;
+	}
+
+	public void setFileproperties(Map<String, String> fileproperties) {
+		this.fileproperties = fileproperties;
+	}
+
 	public Integer getFolderid() {
 		return folderid;
 	}
@@ -186,4 +200,17 @@ public class FileList extends JsonInfo {
 
 		return "{\"data\":" + serializer.serialize(this) + "}";
 	}
+
+	public String toJsonDetailed() {
+		JSONSerializer serializer = new JSONSerializer();
+
+		serializer.exclude("*.class", "type");
+		serializer.include("id", "name", "alias", "filesize", "filetype", "fileproperties", "folderid", "directory", "leaf");
+
+		serializer.transform(new FieldNameTransformer("indice"), "id");
+		serializer.transform(new MapTransformer(), "fileproperties");
+
+		return "{\"data\":" + serializer.serialize(this) + "}";
+	}
+
 }

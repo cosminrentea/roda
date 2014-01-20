@@ -79,24 +79,6 @@ public class AdminJsonServiceImpl implements AdminJsonService {
 
 	// CMS FILE
 
-	public AdminJson fileGrid() {
-		// TODO Cosmin fileStore.fileGrid();
-		// AdminJson result = AdminJson.fileGrid();
-		return new AdminJson(true, "");
-	}
-
-	public AdminJson fileTree() {
-		// TODO Cosmin fileStore.fileTree();
-		// AdminJson result = AdminJson.fileTree();
-		return new AdminJson(true, "");
-	}
-
-	public AdminJson folderTree() {
-		// TODO Cosmin fileStore.folderTree();
-		// AdminJson result = AdminJson.folderTree();
-		return new AdminJson(true, "");
-	}
-
 	public AdminJson fileInfo(Integer id) {
 		// TODO Cosmin fileStore.fileInfo();
 		// AdminJson result = AdminJson.fileInfo();
@@ -164,42 +146,42 @@ public class AdminJsonServiceImpl implements AdminJsonService {
 		return AdminJson.groupSave(id, name, description);
 	}
 
-	public AdminJson addUserToGroup(Integer userId, Integer groupId) {
+	public AdminJson userAddToGroup(Integer userId, Integer groupId) {
 		return AdminJson.addUserToGroup(userId, groupId);
 	}
 
 	@Override
-	public AdminJson deleteUserFromGroup(Integer userId, Integer groupId) {
+	public AdminJson userRemoveFromGroup(Integer userId, Integer groupId) {
 		return AdminJson.deleteUserFromGroup(userId, groupId);
 	}
 
 	@Override
-	public AdminJson enableUser(Integer userId) {
+	public AdminJson userEnable(Integer userId) {
 		return AdminJson.enableUser(userId);
 	}
 
 	@Override
-	public AdminJson disableUser(Integer userId) {
+	public AdminJson userDisable(Integer userId) {
 		return AdminJson.disableUser(userId);
 	}
 
 	@Override
-	public AdminJson dropUser(Integer userId) {
+	public AdminJson userDrop(Integer userId) {
 		return AdminJson.dropUser(userId);
 	}
 
 	@Override
-	public AdminJson changePasswordUser(Integer userId, String password, String controlPassword) {
+	public AdminJson userChangePassword(Integer userId, String password, String controlPassword) {
 		return AdminJson.changePasswordUser(userId, password, controlPassword);
 	}
 
 	@Override
-	public AdminJson messageUser(Integer userId, String subject, String message) {
+	public AdminJson userMessage(Integer userId, String subject, String message) {
 		return AdminJson.messageUser(userId, subject, message);
 	}
 
 	@Override
-	public AdminJson messageGroup(Integer groupId, String subject, String message) {
+	public AdminJson groupMessage(Integer groupId, String subject, String message) {
 		return AdminJson.messageGroup(groupId, subject, message);
 	}
 

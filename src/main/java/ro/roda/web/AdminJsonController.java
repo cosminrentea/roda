@@ -345,7 +345,7 @@ public class AdminJsonController {
 	public String fileSave(@RequestParam("folderid") Integer folderId, @RequestParam("content") MultipartFile content,
 			@RequestParam(value = "alias", required = false) String alias,
 			@RequestParam(value = "id", required = false) Integer fileId, HttpServletRequest httpServletRequest) {
-		log.trace("> fileSave controller");
+		log.trace("> fileSave controller: " + folderId + " ; " + fileId + " ; " + alias);
 		AdminJson fileSave = adminJsonService.fileSave(folderId, content, fileId, alias);
 
 		if (fileSave == null) {
@@ -379,14 +379,16 @@ public class AdminJsonController {
 		return folderMove.toJson();
 	}
 
-	// User management
+	// User management - POST methods
 
 	@RequestMapping(value = "/usersave", method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody
 	public String userSave(@RequestParam(value = "id") Integer id, @RequestParam(value = "username") String username,
+			@RequestParam(value = "password") String password,
+			@RequestParam(value = "password2") String passwordCheck,
 			@RequestParam(value = "email", defaultValue = "") String email,
-			@RequestParam(value = "enabled") Boolean enabled) {
-		AdminJson response = adminJsonService.userSave(id, username, email, enabled);
+			@RequestParam(value = "enabled", defaultValue = "true") Boolean enabled) {
+		AdminJson response = adminJsonService.userSave(id, username, password, passwordCheck, email, enabled);
 		if (response == null) {
 			return null;
 		}
@@ -396,8 +398,8 @@ public class AdminJsonController {
 	@RequestMapping(value = "/groupsave", method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody
 	public String groupSave(@RequestParam(value = "id") Integer id, @RequestParam(value = "name") String name,
-			@RequestParam(value = "description", defaultValue = "") String description) {
-		AdminJson response = adminJsonService.groupSave(id, name, description);
+			@RequestParam(value = "description", defaultValue = "") String description, @RequestParam(value = "enabled") Boolean enabled) {
+		AdminJson response = adminJsonService.groupSave(id, name, description, enabled);
 		if (response == null) {
 			return null;
 		}

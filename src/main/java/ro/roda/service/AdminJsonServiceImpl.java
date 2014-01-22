@@ -79,19 +79,6 @@ public class AdminJsonServiceImpl implements AdminJsonService {
 
 	// CMS FILE
 
-	public AdminJson fileInfo(Integer id) {
-		// TODO Cosmin fileStore.fileInfo();
-		// AdminJson result = AdminJson.fileInfo();
-		return new AdminJson(true, "");
-	}
-
-	public AdminJson folderInfo(Integer id) {
-		// TODO Cosmin
-		// fileStore.folderInfo();
-		// AdminJson result = AdminJson.folderInfo();
-		return new AdminJson(true, "");
-	}
-
 	public AdminJson folderSave(String foldername, Integer parentId, String description) {
 		AdminJson result = AdminJson.folderSave(foldername, parentId, description);
 		fileStore.folderSave(CmsFolder.findCmsFolder(result.getId()));
@@ -111,13 +98,13 @@ public class AdminJsonServiceImpl implements AdminJsonService {
 	}
 
 	public AdminJson fileDrop(Integer fileId) {
-		AdminJson result = AdminJson.folderDrop(fileId);
+		AdminJson result = AdminJson.fileDrop(fileId);
 		fileStore.fileDrop(CmsFile.findCmsFile(fileId));
 		return result;
 	}
 
 	public AdminJson fileSave(Integer folderId, MultipartFile content, Integer fileId, String alias) {
-		AdminJson result = AdminJson.fileSave(folderId, content, alias, fileId);
+		AdminJson result = AdminJson.fileSave(folderId, content, fileId, alias);
 		fileStore.fileSave(content, CmsFolder.findCmsFolder(folderId));
 		return result;
 	}
@@ -137,13 +124,13 @@ public class AdminJsonServiceImpl implements AdminJsonService {
 	// USER MANAGEMENT
 
 	@Override
-	public AdminJson userSave(Integer id, String username, String email, Boolean enabled) {
-		return AdminJson.userSave(id, username, email, enabled);
+	public AdminJson userSave(Integer id, String username, String password, String passwordCheck, String email, Boolean enabled) {
+		return AdminJson.userSave(id, username, password, passwordCheck, email, enabled);
 	}
 
 	@Override
-	public AdminJson groupSave(Integer id, String name, String description) {
-		return AdminJson.groupSave(id, name, description);
+	public AdminJson groupSave(Integer id, String name, String description, Boolean enabled) {
+		return AdminJson.groupSave(id, name, description, enabled);
 	}
 
 	public AdminJson userAddToGroup(Integer userId, Integer groupId) {

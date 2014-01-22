@@ -22,6 +22,7 @@ import ro.roda.domain.CmsLayout;
 import ro.roda.domain.CmsLayoutGroup;
 import ro.roda.domain.CmsSnippet;
 import ro.roda.domain.CmsSnippetGroup;
+import ro.roda.domain.UserGroup;
 import ro.roda.domain.Users;
 import ro.roda.filestore.CmsFileStoreService;
 import flexjson.JSON;
@@ -641,9 +642,7 @@ public class AdminJson {
 		return new AdminJson(true, "CMS File dropped successfully");
 	}
 
-	// TODO (also for the above methods): manage the files and folders in the
-	// repository
-	public static AdminJson fileSave(Integer folderId, MultipartFile content, String alias, Integer fileId) {
+	public static AdminJson fileSave(Integer folderId, MultipartFile content, Integer fileId, String alias) {
 
 		CmsFile file = null;
 		if (fileId != null) {
@@ -659,6 +658,9 @@ public class AdminJson {
 		file.setContentType(content.getContentType());
 		file.setFilesize(content.getSize());
 
+		//TODO Cosmin: check the use-case: file with the same name is added to the same folder
+		// should overwrite the existing row in DB, OR throw ERROR
+		
 		CmsFolder parentFolder = CmsFolder.findCmsFolder(folderId);
 		if (parentFolder != null) {
 			file.setCmsFolderId(parentFolder);
@@ -767,16 +769,33 @@ public class AdminJson {
 		return new AdminJson(true, "CMS Folder moved successfully");
 	}
 
-	public static AdminJson userSave(Integer id, String username, String email, Boolean enabled) {
-		// TODO Cosmin
-		return new AdminJson(true, "");
+	public static AdminJson userSave(Integer id, String username, String password, String passwordCheck, String email, Boolean enabled) {
+		if (username == null) {
+			return new AdminJson(false, "The User must have a name!");
+		}
+		if (password == null || !password.equals(passwordCheck)) {
+			return new AdminJson(false, "The User password is not correct!");
+		}
+		try {
+			Users u = Users.checkUsers(id, username, password, enabled);
+		} catch (Exception e) {
+			return new AdminJson(false, "Exception saving User: " + e.getMessage());
+		}
+		return new AdminJson(true, "User created/saved");
 	}
 
-	public static AdminJson groupSave(Integer id, String name, String description) {
-		// TODO Cosmin
-		return new AdminJson(true, "");
+	public static AdminJson groupSave(Integer id, String name, String description, Boolean enabled) {
+		if (name == null) {
+			return new AdminJson(false, "The User Group must have a name!");
+		}
+		try {
+			UserGroup ug = UserGroup.checkUserGroup(id, name, description, enabled);
+		} catch (Exception e) {
+			return new AdminJson(false, "Exception saving User Group: " + e.getMessage());
+		}
+		return new AdminJson(true, "User Group created/saved");
 	}
-	
+
 	public static AdminJson addUserToGroup(Integer userId, Integer groupId) {
 		// TODO Cosmin
 		return new AdminJson(true, "");

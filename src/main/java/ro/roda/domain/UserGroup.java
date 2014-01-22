@@ -168,7 +168,7 @@ public class UserGroup {
 	 *            - numele grupului.
 	 * @return
 	 */
-	public static UserGroup checkUserGroup(Integer id, String userGroup, String userGroupType) {
+	public static UserGroup checkUserGroup(Integer id, String userGroup, String userGroupType, Boolean enabled) {
 		UserGroup object;
 
 		if (id != null) {
@@ -195,6 +195,7 @@ public class UserGroup {
 		object = new UserGroup();
 		object.name = userGroup;
 		object.description = userGroupType;
+		object.enabled = enabled;
 		object.persist();
 
 		return object;
@@ -213,7 +214,7 @@ public class UserGroup {
 	@OneToMany(mappedBy = "userGroupId")
 	private Set<UserGroupUser> userGroupUsers;
 
-	@Column(name = "name", columnDefinition = "varchar", length = 30)
+	@Column(name = "name", columnDefinition = "varchar", length = 30, unique=true)
 	@NotNull
 	private String name;
 

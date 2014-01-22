@@ -41,10 +41,6 @@ public interface AdminJsonService {
 
 	// CMS FILES
 
-	public abstract AdminJson fileInfo(Integer id);
-
-	public abstract AdminJson folderInfo(Integer id);
-
 	public abstract AdminJson folderSave(String foldername, Integer parentId, String description);
 
 	public abstract AdminJson folderEmpty(Integer folderId);
@@ -61,9 +57,9 @@ public interface AdminJsonService {
 
 	// USER MANAGEMENT
 
-	public abstract AdminJson userSave(Integer id, String username, String email, Boolean enabled);
+	public abstract AdminJson userSave(Integer id, String username, String password, String passwordCheck, String email, Boolean enabled);
 
-	public abstract AdminJson groupSave(Integer id, String name, String description);
+	public abstract AdminJson groupSave(Integer id, String name, String description, Boolean enabled);
 
 	public abstract AdminJson userAddToGroup(Integer userId, Integer groupId);
 

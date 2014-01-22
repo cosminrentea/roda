@@ -18,6 +18,7 @@ import javax.persistence.PostUpdate;
 import javax.persistence.PreRemove;
 import javax.persistence.Table;
 import javax.persistence.TypedQuery;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -38,7 +39,8 @@ import flexjson.JSONDeserializer;
 import flexjson.JSONSerializer;
 
 @Entity
-@Table(schema = "public", name = "cms_file")
+@Table(schema = "public", name = "cms_file", uniqueConstraints = @UniqueConstraint(columnNames = {
+		"cms_folder_id", "filename" }))
 @Configurable
 @Audited
 public class CmsFile {

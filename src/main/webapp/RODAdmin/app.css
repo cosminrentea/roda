@@ -85,7 +85,7 @@
 }
 
 /** message box */
-.msg .x-box-mc {
+.msg .msgerr .x-box-mc {
     font-size:14px;
 }
 #msg-div {
@@ -104,7 +104,19 @@
     padding: 10px 15px;
     color: #555;
 }
-#msg-div .msg h3 {
+
+#msg-div .msgerr {
+    border-radius: 8px;
+    -moz-border-radius: 8px;
+    background: #ff3333;
+    border: 2px solid #ccc;
+    margin-top: 2px;
+    padding: 10px 15px;
+    color: #555;
+}
+
+
+#msg-div .msg h3 .msgerr h3{
     margin: 0 0 8px;
     font-weight: bold;
     font-size: 15px;

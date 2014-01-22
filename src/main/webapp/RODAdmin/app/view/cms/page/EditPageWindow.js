@@ -254,6 +254,10 @@ Ext.define('RODAdmin.view.cms.page.EditPageWindow', {
 			                                xtype : 'htmleditor',
 			                                anchor : '-18 -80',
 			                                name : 'content',
+			                                plugins: [
+					                                 Ext.create('Ext.ux.form.HtmlEditor.RButtons')
+						                           ],
+
 			                            }
 			                    ]
 			                }

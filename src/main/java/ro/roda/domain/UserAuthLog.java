@@ -233,8 +233,17 @@ public class UserAuthLog {
 	@Column(name = "credential_provider", columnDefinition = "text")
 	private String credentialProvider;
 
+	@Column(name = "details", columnDefinition = "text")
+	private String details;
+
+	@Column(name = "error", columnDefinition = "text")
+	private String error;
+
 	@Column(name = "error_message", columnDefinition = "text")
 	private String errorMessage;
+
+	@Column(name = "error_details", columnDefinition = "text")
+	private String errorDetails;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -294,6 +303,18 @@ public class UserAuthLog {
 		return userId;
 	}
 
+	public String getDetails() {
+		return details;
+	}
+
+	public String getError() {
+		return error;
+	}
+
+	public String getErrorDetails() {
+		return errorDetails;
+	}
+
 	@Transactional
 	public UserAuthLog merge() {
 		if (this.entityManager == null)
@@ -348,6 +369,18 @@ public class UserAuthLog {
 
 	public void setUserId(Users userId) {
 		this.userId = userId;
+	}
+
+	public void setDetails(String details) {
+		this.details = details;
+	}
+
+	public void setError(String error) {
+		this.error = error;
+	}
+
+	public void setErrorDetails(String errorDetails) {
+		this.errorDetails = errorDetails;
 	}
 
 	public String toJson() {

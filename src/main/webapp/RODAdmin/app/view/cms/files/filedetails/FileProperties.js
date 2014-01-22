@@ -18,14 +18,12 @@ Ext.define('RODAdmin.view.cms.files.filedetails.FileProperties', {
 			{xtype: 'tbfill'},
 					{
 						xtype: 'button',
-//						id: 'editfile',
 						itemId: 'editfile',
 						text : 'Edit File',
 						tooltip : 'Edit this file'
 					},
 					{
 						xtype: 'button',
-//						id: 'deletefile',
 						itemId: 'deletefile',
 						text : 'Delete File',
 						tooltip : 'Deletes the file'

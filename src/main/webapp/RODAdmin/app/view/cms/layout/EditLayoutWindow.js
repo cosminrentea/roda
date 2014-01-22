@@ -85,6 +85,9 @@ Ext.define('RODAdmin.view.cms.layout.EditLayoutWindow', {
         									name: 'content',
 											//colspan: 2,
         									flex:1,
+			                                plugins: [
+						                                 Ext.create('Ext.ux.form.HtmlEditor.RButtons')
+							                           ],        									
         									value: ''
 										},	{
 											xtype : 'hiddenfield',

@@ -76,7 +76,9 @@ Ext.define('RODAdmin.view.cms.snippet.EditSnippetWindow', {
 											anchor: '100%, 70%',
         									itemId: 'content',
         									name: 'content',
-											//colspan: 2,
+			                                plugins: [
+						                                 Ext.create('Ext.ux.form.HtmlEditor.RButtons')
+							                           ], 
         									flex:1,
         									value: ''
 										},	{

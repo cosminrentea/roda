@@ -18,7 +18,6 @@ import org.springframework.beans.factory.annotation.Configurable;
 
 import ro.roda.audit.RodaRevisionEntity;
 import flexjson.JSONSerializer;
-import flexjson.transformer.DateTransformer;
 
 @Configurable
 public class AuditRevisionsByDate extends JsonInfo {
@@ -57,9 +56,6 @@ public class AuditRevisionsByDate extends JsonInfo {
 
 		return new AuditRevisionsByDate(date);
 	}
-
-	private static final DateTransformer DATE_TRANSFORMER = new DateTransformer("MM/dd/yyyy hh:mm:ss");
-	private static final DateTransformer DATE_TRANSFORMER2 = new DateTransformer("MM/dd/yyyy");
 
 	private Date data;
 

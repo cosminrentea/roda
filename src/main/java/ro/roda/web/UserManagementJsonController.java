@@ -12,9 +12,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import ro.roda.service.UserManagementService;
+import ro.roda.transformer.UserActivities;
 import ro.roda.transformer.UserGroupInfo;
 import ro.roda.transformer.UserGroupList;
 import ro.roda.transformer.UserList;
+import ro.roda.transformer.UserMessages;
 import ro.roda.transformer.UsersByGroup;
 
 @RequestMapping("/admin")
@@ -64,4 +66,21 @@ public class UserManagementJsonController {
 		return new ResponseEntity<String>(UsersByGroup.toJsonArray(result), headers, HttpStatus.OK);
 	}
 
+	@RequestMapping(value = "/usermessages/{id}", headers = "Accept=application/json")
+	@ResponseBody
+	public ResponseEntity<String> listUserMessagesJson(@PathVariable("id") Integer id) {
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Type", "application/json; charset=utf-8");
+		List<UserMessages> result = userManagementService.findUserMessages(id);
+		return new ResponseEntity<String>(UserMessages.toJsonArray(result), headers, HttpStatus.OK);
+	}
+
+	@RequestMapping(value = "/useractivity/{id}", headers = "Accept=application/json")
+	@ResponseBody
+	public ResponseEntity<String> listUserActivitiesJson(@PathVariable("id") Integer id) {
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Type", "application/json; charset=utf-8");
+		List<UserActivities> result = userManagementService.findUserActivities(id);
+		return new ResponseEntity<String>(UserActivities.toJsonArray(result), headers, HttpStatus.OK);
+	}
 }

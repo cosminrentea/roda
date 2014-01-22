@@ -10,6 +10,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Configurable;
 
+import flexjson.transformer.DateTransformer;
+
 @Configurable
 public class JsonInfo {
 
@@ -28,6 +30,10 @@ public class JsonInfo {
 	public static final String YEAR_TYPE = "Y";
 
 	public static final String MAIN_TYPE = "M";
+
+	public static final DateTransformer DATE_TRANSFORMER = new DateTransformer("MM/dd/yyyy hh:mm:ss");
+
+	public static final DateTransformer DATE_TRANSFORMER2 = new DateTransformer("MM/dd/yyyy");
 
 	// protected static final String[] auditedClasses = {
 	// "ro.roda.domain.CmsLayout", "ro.roda.domain.CmsLayoutGroup" };

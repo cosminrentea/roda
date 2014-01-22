@@ -232,12 +232,13 @@ Ext.define('RODAdmin.controller.cms.file.FileTree', {
 						id: record.data.indice, //set the id here
 						scope : this,
 						callback : function(records, operation, success) {
+							console.log('callback in fileview');
 							if (success) {
 								var fileitem = fileitemstore.first();
-//								console.log(fileitem);
-								fileusage.bindStore(fileitem.fileusageStore);
-								filespecificprop.bindStore(fileitem.filepropertiesStore);
 								fileprop.update(fileitem);
+								filespecificprop.bindStore(fileitem.filepropertiesStore);
+								fileusage.bindStore(fileitem.fileusageStore);
+
 							}
 						}
 					});
@@ -324,15 +325,22 @@ Ext.define('RODAdmin.controller.cms.file.FileTree', {
 					if (id === 'yes') {
 						console.log('we will delete');
 						Ext.Ajax.request({
-									url : 'http://roda.apiary.io/admin/cms/filedrop',
+									url : '/roda/admin/cmsfiledrop',
 									method : "POST",
 									params : {
 										fileid : currentNode.data.indice
 									},
-									success : function() {
-										RODAdmin.util.Alert.msg('Success!', 'Folder emptied.');										
-										store.load;
-									},
+									success : function(response) {
+							           var responseJson = Ext.decode(response.responseText);
+								            if (responseJson.success === true) {
+								                // whatever stuff needs to happen on success
+								            	RODAdmin.util.Alert.msg('Success!', 'File dropped.');
+												store.load();
+								            } else {
+								            	RODAdmin.util.Alert.msg('Failure!', responseJson.message, true);
+
+								            }
+								     },
 									failure : function(response, opts) {
 										Ext.Msg.alert('Failure', response);
 
@@ -347,7 +355,7 @@ Ext.define('RODAdmin.controller.cms.file.FileTree', {
 	 */
 	onEditFileClick : function(component, record, item, index, e) {
 		console.log('onEditFileClick');
-		var currentNode = this.getFiletree().getSelectionModel().getLastSelected();
+		var currentNode = this.getFolderview().getSelectionModel().getLastSelected();
 		
 //		console.log(currentNode);
 		
@@ -401,29 +409,26 @@ Ext.define('RODAdmin.controller.cms.file.FileTree', {
 	 * @method
 	 */
 	onNewFolderClick : function(component, event) {
-		var currentNode = this.getFiletree().getSelectionModel()
+		var currentNode = this.getFolderview().getSelectionModel()
 				.getLastSelected();
 		var win = Ext.create('RODAdmin.view.cms.files.FolderWindow');
 		win.setTitle('Add a new subfolder to "' + currentNode.data.name
-				+ '" (id: ' + currentNode.data.id + ')');
+				+ '" (id: ' + currentNode.data.indice + ')');
 		win.setIconCls('folder_add');
-		win.down('form').down('fieldset').down('hiddenfield')
-				.setValue(currentNode.data.id);
-		// letse.setValue(currentNode.data.id);
+		win.down('form').down('fieldset').down("hiddenfield[name='parent']").setValue(currentNode.data.indice);
 		win.show();
 	},
     /**
 	 * @method
 	 */
 	onAddFileClick : function(component, event) {
-		var currentNode = this.getFiletree().getSelectionModel()
+		var currentNode = this.getFolderview().getSelectionModel()
 				.getLastSelected();
 		var win = Ext.create('RODAdmin.view.cms.files.FileWindow');
 		win.setTitle('Add a new file to "' + currentNode.data.name + '" (id: '
-				+ currentNode.data.id + ')');
+				+ currentNode.data.indice + ')');
 		win.setIconCls('file_add');
-		win.down('form').down('fieldset').down('hiddenfield')
-				.setValue(currentNode.data.id);
+		win.down('form').down('fieldset').down("hiddenfield[name='folderid']").setValue(currentNode.data.indice);
 		win.show();
 	},
     /**
@@ -431,7 +436,7 @@ Ext.define('RODAdmin.controller.cms.file.FileTree', {
 	 */
 	onEmptyFolderClick : function(component, event) {
 		console.log('onEmptyFolderClick');
-		var currentNode = this.getFiletree().getSelectionModel()
+		var currentNode = this.getFolderview().getSelectionModel()
 				.getLastSelected();
 		console.log(currentNode);		
 		var store = Ext.StoreManager.get('cms.files.FileTree');
@@ -463,7 +468,7 @@ Ext.define('RODAdmin.controller.cms.file.FileTree', {
 	 * @method
 	 */
 	onDeleteFolderClick : function(component, record, item, index, e) {
-		var currentNode = this.getFiletree().getSelectionModel()
+		var currentNode = this.getFolderview().getSelectionModel()
 				.getLastSelected();
 		var store = Ext.StoreManager.get('cms.files.FileTree');
 		Ext.Msg.confirm('Delete Folder',
@@ -471,15 +476,17 @@ Ext.define('RODAdmin.controller.cms.file.FileTree', {
 						+ currentNode.data.name + '?', function(id, value) {
 					if (id === 'yes') {
 						Ext.Ajax.request({
-									url : 'http://roda.apiary.io/admin/cms/folderdrop',
+									url : '/roda/admin/cmsfolderdrop',
 									method : "POST",
 									params : {
-										folderid : currentNode.data.id
+										folderid : currentNode.data.indice
 									},
 									success : function() {
 										RODAdmin.util.Alert.msg('Success!', 'Folder deleted.');
-//										console.log("ok");
-										store.load;
+										console.log("ok");
+										var store = Ext.StoreManager.get('cms.files.FileTree');
+										console.log(store);
+										store.load();
 									},
 									failure : function(response, opts) {
 										Ext.Msg.alert('Failure', response);

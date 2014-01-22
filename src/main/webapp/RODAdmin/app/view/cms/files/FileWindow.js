@@ -42,10 +42,15 @@ Ext.define('RODAdmin.view.cms.files.FileWindow', {
 											}, {
 												fieldLabel : 'Alias',
 												name : 'fileAlias'
-											}, {
+											},{
+												xtype : 'hiddenfield',
+												fieldLabel : 'Parent',
+												name : 'folderid',
+												value : '',
+											},{
 												xtype : 'filefield',
 												fieldLabel : 'File',
-												name : 'file',
+												name : 'content',
 												allowBlank : true,
 												afterLabelTextTpl : ''
 

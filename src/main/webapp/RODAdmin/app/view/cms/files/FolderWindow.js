@@ -39,7 +39,14 @@ Ext.define('RODAdmin.view.cms.files.FolderWindow', {
 												fieldLabel : 'folderid',
 												name : 'id',
 												value: '0'
-											}, {
+											},
+											{
+												xtype : 'hiddenfield',
+												fieldLabel : 'parent',
+												name : 'parent',
+												value: '0'
+											},
+											{
 												fieldLabel : 'Folder name',
 												name : 'foldername'
 											}, {

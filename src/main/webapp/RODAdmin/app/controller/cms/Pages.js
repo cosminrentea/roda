@@ -59,8 +59,7 @@ Ext.define('RODAdmin.controller.cms.Pages', {
     onpagetoolbarEditClick : function(button, e, options) {
 	    var fp = this.getPageproperties().data;
 	    var win = Ext.create('RODAdmin.view.cms.page.EditPageWindow');
-	    win.setTitle('Edit Page "' + fp.data.name + '" (id: ' + fp.data.id + ')');
-//	    var wtree = win.down('treepanel');
+	    win.setTitle('Edit Page "' + fp.data.title + '" (id: ' + fp.data.id + ')');
 	    win.show();
 	    win.down('form').getForm().loadRecord(fp);
     },

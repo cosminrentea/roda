@@ -2,6 +2,7 @@ package ro.roda.domain;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -205,6 +206,15 @@ public class UserMessage {
 	// , columnDefinition = "serial")
 	private Integer id;
 
+	@Column(name = "subject", columnDefinition = "text")
+	private String subject;
+
+	@Column(name = "timestamp", columnDefinition = "date")
+	private Date timestamp;
+
+	@Column(name = "read", columnDefinition = "bool")
+	private boolean read;
+
 	@Column(name = "message", columnDefinition = "text")
 	@NotNull
 	private String message;
@@ -291,6 +301,30 @@ public class UserMessage {
 
 	public void setToUserId(Users toUserId) {
 		this.toUserId = toUserId;
+	}
+
+	public String getSubject() {
+		return subject;
+	}
+
+	public void setSubject(String subject) {
+		this.subject = subject;
+	}
+
+	public Date getTimestamp() {
+		return timestamp;
+	}
+
+	public void setTimestamp(Date timestamp) {
+		this.timestamp = timestamp;
+	}
+
+	public boolean isRead() {
+		return read;
+	}
+
+	public void setRead(boolean read) {
+		this.read = read;
 	}
 
 	public String toJson() {

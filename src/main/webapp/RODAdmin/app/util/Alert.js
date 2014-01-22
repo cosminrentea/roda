@@ -23,7 +23,7 @@ Ext.define('RODAdmin.util.Alert', {
             var s = Ext.String.format.apply(String, Array.prototype.slice.call(arguments, 1));
             var m = Ext.DomHelper.append(RODAdmin.util.Alert.msgCt, createBox(title, s, err), true);
             m.hide();
-            m.slideIn('t').ghost("t", { delay: 30000, remove: true});
+            m.slideIn('t').ghost("t", { delay: 3000, remove: true});
         }
     }
 });

@@ -17,7 +17,7 @@ import flexjson.JSONSerializer;
 @Configurable
 public class LayoutTree extends LayoutList {
 
-	public static String toJsonArray(Collection<LayoutTree> collection) {
+	public static String toJsonArr(Collection<LayoutTree> collection) {
 		JSONSerializer serializer = new JSONSerializer();
 
 		serializer.exclude("*.class", "depth", "type");

@@ -27,7 +27,7 @@ public class FolderInfoController {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");
 		List<FolderInfo> result = folderInfoService.findAllFolderInfos();
-		return new ResponseEntity<String>(FolderInfo.toJsonArray(result), headers, HttpStatus.OK);
+		return new ResponseEntity<String>(FolderInfo.toJsonArr(result), headers, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/{id}", headers = "Accept=application/json")

@@ -13,7 +13,7 @@ import flexjson.JSONSerializer;
 @Configurable
 public class FolderInfo extends FileList {
 
-	public static String toJsonArray(Collection<FolderInfo> collection) {
+	public static String toJsonArr(Collection<FolderInfo> collection) {
 		JSONSerializer serializer = new JSONSerializer();
 
 		serializer.exclude("*.class", "expanded", "leaf", "alias", "filesize", "filetype");

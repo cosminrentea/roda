@@ -15,7 +15,7 @@ import flexjson.JSONSerializer;
 @Configurable
 public class SnippetGroupTree extends SnippetList {
 
-	public static String toJsonArray(Collection<SnippetGroupTree> collection) {
+	public static String toJsonArr(Collection<SnippetGroupTree> collection) {
 		JSONSerializer serializer = new JSONSerializer();
 
 		serializer.exclude("*.class", "depth", "type");

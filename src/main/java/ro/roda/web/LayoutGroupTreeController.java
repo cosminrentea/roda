@@ -27,7 +27,7 @@ public class LayoutGroupTreeController {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");
 		List<LayoutGroupTree> result = layoutGroupTreeService.findAllLayoutGroupTrees();
-		return new ResponseEntity<String>(LayoutGroupTree.toJsonArray(result), headers, HttpStatus.OK);
+		return new ResponseEntity<String>(LayoutGroupTree.toJsonArr(result), headers, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/{id}", headers = "Accept=application/json")

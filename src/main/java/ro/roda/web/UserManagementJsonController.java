@@ -32,7 +32,7 @@ public class UserManagementJsonController {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");
 		List<UserGroupList> result = userManagementService.findAllUserGroupLists();
-		return new ResponseEntity<String>(UserGroupList.toJsonArray(result), headers, HttpStatus.OK);
+		return new ResponseEntity<String>(UserGroupList.toJsonArr(result), headers, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/groupinfo/{id}", headers = "Accept=application/json")
@@ -63,7 +63,7 @@ public class UserManagementJsonController {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");
 		List<UsersByGroup> result = userManagementService.findUsersByGroup(id);
-		return new ResponseEntity<String>(UsersByGroup.toJsonArray(result), headers, HttpStatus.OK);
+		return new ResponseEntity<String>(UsersByGroup.toJsonArr(result), headers, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/usermessages/{id}", headers = "Accept=application/json")

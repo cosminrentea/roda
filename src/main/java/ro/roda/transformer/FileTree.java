@@ -16,7 +16,7 @@ import flexjson.JSONSerializer;
 @Configurable
 public class FileTree extends FileList {
 
-	public static String toJsonArray(Collection<FileTree> collection) {
+	public static String toJsonArr(Collection<FileTree> collection) {
 		JSONSerializer serializer = new JSONSerializer();
 
 		serializer.exclude("*.class", "depth", "type");

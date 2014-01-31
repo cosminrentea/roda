@@ -13,7 +13,7 @@ import flexjson.JSONSerializer;
 @Configurable
 public class SnippetGroupInfo extends SnippetList {
 
-	public static String toJsonArray(Collection<SnippetGroupInfo> collection) {
+	public static String toJsonArr(Collection<SnippetGroupInfo> collection) {
 		JSONSerializer serializer = new JSONSerializer();
 
 		serializer.exclude("*.class", "expanded", "type");

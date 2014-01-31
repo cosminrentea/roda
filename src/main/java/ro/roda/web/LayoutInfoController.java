@@ -27,7 +27,7 @@ public class LayoutInfoController {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");
 		List<LayoutInfo> result = layoutInfoService.findAllLayoutInfos();
-		return new ResponseEntity<String>(LayoutInfo.toJsonArray(result), headers, HttpStatus.OK);
+		return new ResponseEntity<String>(LayoutInfo.toJsonArr(result), headers, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/{id}", headers = "Accept=application/json")

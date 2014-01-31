@@ -22,7 +22,7 @@ import flexjson.transformer.DateTransformer;
 @Configurable
 public class AuditRevisionsInfo extends AuditRevisions {
 
-	public static String toJsonArray(Collection<AuditRevisionsInfo> collection) {
+	public static String toJsonArr(Collection<AuditRevisionsInfo> collection) {
 		JSONSerializer serializer = new JSONSerializer();
 
 		serializer.exclude("*.class", "type", "id", "name");

@@ -27,7 +27,7 @@ public class LayoutTreeController {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");
 		List<LayoutTree> result = layoutTreeService.findAllLayoutTrees();
-		return new ResponseEntity<String>(LayoutTree.toJsonArray(result), headers, HttpStatus.OK);
+		return new ResponseEntity<String>(LayoutTree.toJsonArr(result), headers, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/{id}", headers = "Accept=application/json")

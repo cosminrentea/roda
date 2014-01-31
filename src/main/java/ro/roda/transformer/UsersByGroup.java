@@ -16,7 +16,7 @@ import flexjson.JSONSerializer;
 @Configurable
 public class UsersByGroup extends UserList {
 
-	public static String toJsonArray(Collection<UsersByGroup> collection) {
+	public static String toJsonArr(Collection<UsersByGroup> collection) {
 		JSONSerializer serializer = new JSONSerializer();
 
 		serializer.exclude("*.class", "type", "firstname", "lastname");

@@ -27,7 +27,7 @@ public class FileTreeController {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");
 		List<FileTree> result = fileTreeService.findAllFileTrees();
-		return new ResponseEntity<String>(FileTree.toJsonArray(result), headers, HttpStatus.OK);
+		return new ResponseEntity<String>(FileTree.toJsonArr(result), headers, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/{id}", headers = "Accept=application/json")

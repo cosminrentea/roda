@@ -27,7 +27,7 @@ public class SnippetGroupInfoController {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");
 		List<SnippetGroupInfo> result = snippetGroupInfoService.findAllSnippetGroupInfos();
-		return new ResponseEntity<String>(SnippetGroupInfo.toJsonArray(result), headers, HttpStatus.OK);
+		return new ResponseEntity<String>(SnippetGroupInfo.toJsonArr(result), headers, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/{id}", headers = "Accept=application/json")

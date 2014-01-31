@@ -27,7 +27,7 @@ public class SnippetGroupTreeController {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");
 		List<SnippetGroupTree> result = snippetGroupTreeService.findAllSnippetGroupTrees();
-		return new ResponseEntity<String>(SnippetGroupTree.toJsonArray(result), headers, HttpStatus.OK);
+		return new ResponseEntity<String>(SnippetGroupTree.toJsonArr(result), headers, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/{id}", headers = "Accept=application/json")

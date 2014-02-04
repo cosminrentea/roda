@@ -3,9 +3,11 @@ package ro.roda.transformer;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -14,10 +16,25 @@ import ro.roda.domain.CmsFile;
 import ro.roda.domain.CmsFolder;
 import ro.roda.filestore.CmsFileStoreService;
 import flexjson.JSONSerializer;
+import flexjson.transformer.IterableTransformer;
 import flexjson.transformer.MapTransformer;
 
 @Configurable
 public class FileList extends JsonInfo {
+
+	@Autowired
+	CmsFileStoreService cmsFileStoreService;
+
+	public class NameValuePair {
+		public String name;
+		public String value;
+
+		public NameValuePair(String name, String value) {
+			super();
+			this.name = name;
+			this.value = value;
+		}
+	}
 
 	public static String toJsonArray(Collection<FileList> collection) {
 		JSONSerializer serializer = new JSONSerializer();
@@ -64,6 +81,7 @@ public class FileList extends JsonInfo {
 			return file.getFilename();
 		}
 	}
+
 	public static String getFolderPath(CmsFolder folder) {
 		if (folder.getParentId() != null) {
 			return getFolderPath(folder.getParentId()) + "/" + folder.getName();
@@ -82,7 +100,7 @@ public class FileList extends JsonInfo {
 
 	private String filetype;
 
-	private Map<String, String> fileproperties;
+	private Set<NameValuePair> filepropertiesset;
 
 	private Integer folderid;
 
@@ -100,14 +118,14 @@ public class FileList extends JsonInfo {
 		this.directory = directory;
 		this.filesize = filesize;
 		this.filetype = filetype;
-		this.fileproperties = new HashMap<String, String>();
+		this.filepropertiesset = null;
 		this.folderid = folderid;
 		this.iconCls = iconCls;
 	}
 
 	public FileList(CmsFile file) {
-		this(file.getId(), file.getFilename(), file.getLabel(), file.getFilesize(), file.getContentType(), file.getCmsFolderId() == null ? null : file.getCmsFolderId()
-				.getId(), getFilePath(file), "file");
+		this(file.getId(), file.getFilename(), file.getLabel(), file.getFilesize(), file.getContentType(), file
+				.getCmsFolderId() == null ? null : file.getCmsFolderId().getId(), getFilePath(file), "file");
 	}
 
 	public Integer getId() {
@@ -142,6 +160,15 @@ public class FileList extends JsonInfo {
 		this.alias = alias;
 	}
 
+	public Set<NameValuePair> getFilepropertiesset() {
+		Map<String, String> fp = cmsFileStoreService.getFileProperties(CmsFile.findCmsFile(id));
+		filepropertiesset = new HashSet<NameValuePair>();
+		for (Map.Entry<String, String> p : fp.entrySet()) {
+			filepropertiesset.add(new NameValuePair(p.getKey(), p.getValue()));
+		}
+		return filepropertiesset;
+	}
+
 	public Long getFilesize() {
 		return filesize;
 	}
@@ -156,14 +183,6 @@ public class FileList extends JsonInfo {
 
 	public void setFiletype(String filetype) {
 		this.filetype = filetype;
-	}
-
-	public Map<String, String> getFileproperties() {
-		return fileproperties;
-	}
-
-	public void setFileproperties(Map<String, String> fileproperties) {
-		this.fileproperties = fileproperties;
 	}
 
 	public Integer getFolderid() {
@@ -205,12 +224,13 @@ public class FileList extends JsonInfo {
 		JSONSerializer serializer = new JSONSerializer();
 
 		serializer.exclude("*.class", "type");
-		serializer.include("id", "name", "alias", "filesize", "filetype", "fileproperties", "folderid", "directory", "leaf");
+		serializer.include("id", "name", "alias", "filesize", "filetype", "filepropertiesset", "folderid",
+				"directory", "leaf");
 
 		serializer.transform(new FieldNameTransformer("indice"), "id");
-		serializer.transform(new MapTransformer(), "fileproperties");
+//		serializer.transform(new IterableTransformer(), "filepropertiesset");
 
-		return "{\"data\":" + serializer.serialize(this) + "}";
+		return "{\"data\":" + serializer.deepSerialize(this) + "}";
 	}
 
 }

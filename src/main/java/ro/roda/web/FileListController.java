@@ -38,9 +38,7 @@ public class FileListController {
 	@RequestMapping(value = "/{id}", headers = "Accept=application/json")
 	@ResponseBody
 	public ResponseEntity<String> showJson(@PathVariable("id") Integer id) {
-		FileList fileList = fileListService.findFileList(id);
-		fileList.setFileproperties(cmsFileStoreService.getFileProperties(CmsFile.findCmsFile(id)));
-		
+		FileList fileList = fileListService.findFileList(id);		
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");
 		if (fileList == null) {

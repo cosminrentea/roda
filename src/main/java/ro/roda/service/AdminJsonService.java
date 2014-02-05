@@ -1,7 +1,5 @@
 package ro.roda.service;
 
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import ro.roda.transformer.AdminJson;
@@ -57,7 +55,8 @@ public interface AdminJsonService {
 
 	// USER MANAGEMENT
 
-	public abstract AdminJson userSave(Integer id, String username, String password, String passwordCheck, String email, Boolean enabled);
+	public abstract AdminJson userSave(Integer id, String username, String password, String passwordCheck,
+			String email, Boolean enabled);
 
 	public abstract AdminJson groupSave(Integer id, String name, String description, Boolean enabled);
 
@@ -76,5 +75,15 @@ public interface AdminJsonService {
 	public abstract AdminJson userMessage(Integer userId, String subject, String message);
 
 	public abstract AdminJson groupMessage(Integer groupId, String subject, String message);
+
+	// CMS PAGE
+	public abstract AdminJson cmsPageSave(Integer cmsPageParentId, String name, String lang, String menutitle,
+			String synopsis, String target, String url, boolean defaultPage, String externalredirect,
+			String internalredirect, String layout, Integer cacheable, boolean published, String pagetype,
+			Integer cmsPageId);
+
+	public abstract AdminJson cmsPageMove(Integer cmsPageParentId, Integer cmsPageId);
+
+	public abstract AdminJson cmsPageDrop(Integer cmsPageId);
 
 }

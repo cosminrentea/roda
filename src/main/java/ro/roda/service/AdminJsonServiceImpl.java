@@ -5,8 +5,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import ro.roda.domain.CmsFolder;
 import ro.roda.domain.CmsFile;
+import ro.roda.domain.CmsFolder;
 import ro.roda.filestore.CmsFileStoreService;
 import ro.roda.transformer.AdminJson;
 
@@ -124,7 +124,8 @@ public class AdminJsonServiceImpl implements AdminJsonService {
 	// USER MANAGEMENT
 
 	@Override
-	public AdminJson userSave(Integer id, String username, String password, String passwordCheck, String email, Boolean enabled) {
+	public AdminJson userSave(Integer id, String username, String password, String passwordCheck, String email,
+			Boolean enabled) {
 		return AdminJson.userSave(id, username, password, passwordCheck, email, enabled);
 	}
 
@@ -170,6 +171,22 @@ public class AdminJsonServiceImpl implements AdminJsonService {
 	@Override
 	public AdminJson groupMessage(Integer groupId, String subject, String message) {
 		return AdminJson.messageGroup(groupId, subject, message);
+	}
+
+	// CMS PAGE
+	public AdminJson cmsPageSave(Integer cmsPageParentId, String name, String lang, String menutitle, String synopsis,
+			String target, String url, boolean defaultPage, String externalredirect, String internalredirect,
+			String layout, Integer cacheable, boolean published, String pagetype, Integer cmsPageId) {
+		return AdminJson.cmsPageSave(cmsPageParentId, name, lang, menutitle, synopsis, target, url, defaultPage,
+				externalredirect, internalredirect, layout, cacheable, published, pagetype, cmsPageId);
+	}
+
+	public AdminJson cmsPageMove(Integer cmsPageParentId, Integer cmsPageId) {
+		return AdminJson.cmsPageMove(cmsPageParentId, cmsPageId);
+	}
+
+	public AdminJson cmsPageDrop(Integer cmsPageId) {
+		return AdminJson.cmsPageDrop(cmsPageId);
 	}
 
 }

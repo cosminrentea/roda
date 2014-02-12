@@ -23,6 +23,10 @@ public class CmsPageServiceImpl implements CmsPageService {
 		return CmsPage.findCmsPage(id);
 	}
 
+	public CmsPage findCmsPage(String url) {
+		return CmsPage.findCmsPage(url);
+	}
+
 	public List<CmsPage> findAllCmsPages() {
 		return CmsPage.findAllCmsPages();
 	}
@@ -38,4 +42,5 @@ public class CmsPageServiceImpl implements CmsPageService {
 	public CmsPage updateCmsPage(CmsPage cmsPage) {
 		return cmsPage.merge();
 	}
+
 }

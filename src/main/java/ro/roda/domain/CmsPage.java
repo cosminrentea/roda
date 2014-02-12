@@ -78,6 +78,14 @@ public class CmsPage {
 		return entityManager().find(CmsPage.class, id);
 	}
 
+	public static CmsPage findCmsPage(String url) {
+		if (url == null)
+			return null;
+
+		String pageByUrlQuery = "SELECT o FROM CmsPage o WHERE url = ?1";
+		return entityManager().createQuery(pageByUrlQuery, CmsPage.class).setParameter(1, url).getSingleResult();
+	}
+
 	public static List<CmsPage> findCmsPageEntries(int firstResult, int maxResults) {
 		return entityManager().createQuery("SELECT o FROM CmsPage o", CmsPage.class).setFirstResult(firstResult)
 				.setMaxResults(maxResults).getResultList();

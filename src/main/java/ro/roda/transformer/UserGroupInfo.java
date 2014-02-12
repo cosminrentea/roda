@@ -60,7 +60,7 @@ public class UserGroupInfo extends JsonInfo {
 	}
 
 	public UserGroupInfo(UserGroup userGroup) {
-		this(userGroup.getId(), userGroup.getName(), userGroup.getDescription(),
+		this(userGroup.getId(), userGroup.getGroupname(), userGroup.getDescription(),
 				userGroup.getUserGroupUsers() != null ? userGroup.getUserGroupUsers().size() : 0);
 	}
 

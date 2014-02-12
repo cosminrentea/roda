@@ -102,13 +102,13 @@ public class UserGroup {
 		for (UserGroup userGroup : userGroups) {
 			SolrInputDocument sid = new SolrInputDocument();
 			sid.addField("id", "usergroup_" + userGroup.getId());
-			sid.addField("userGroup.name_s", userGroup.getName());
+			sid.addField("userGroup.name_s", userGroup.getGroupname());
 			sid.addField("userGroup.description_s", userGroup.getDescription());
 			sid.addField("userGroup.id_i", userGroup.getId());
 			// Add summary field to allow searching documents for objects of
 			// this type
 			sid.addField("userGroup_solrsummary_t",
-					new StringBuilder().append(userGroup.getName()).append(" ").append(userGroup.getDescription())
+					new StringBuilder().append(userGroup.getGroupname()).append(" ").append(userGroup.getDescription())
 							.append(" ").append(userGroup.getId()));
 			documents.add(sid);
 		}
@@ -193,7 +193,7 @@ public class UserGroup {
 		}
 
 		object = new UserGroup();
-		object.name = userGroup;
+		object.groupname = userGroup;
 		object.description = userGroupType;
 		object.enabled = enabled;
 		object.persist();
@@ -214,9 +214,12 @@ public class UserGroup {
 	@OneToMany(mappedBy = "userGroupId")
 	private Set<UserGroupUser> userGroupUsers;
 
-	@Column(name = "name", columnDefinition = "varchar", length = 30, unique=true)
+	@OneToMany(mappedBy = "groupname")
+	private Set<Authorities> authorities;
+
+	@Column(name = "groupname", columnDefinition = "varchar", length = 30, unique=true)
 	@NotNull
-	private String name;
+	private String groupname;
 
 	@Column(name = "description", columnDefinition = "varchar", length = 100)
 	private String description;
@@ -253,8 +256,8 @@ public class UserGroup {
 		return userGroupUsers;
 	}
 
-	public String getName() {
-		return name;
+	public String getGroupname() {
+		return groupname;
 	}
 
 	public String getDescription() {
@@ -301,8 +304,8 @@ public class UserGroup {
 		this.userGroupUsers = userGroupUsers;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setGroupname(String groupname) {
+		this.groupname = groupname;
 	}
 
 	public void setDescription(String description) {
@@ -335,7 +338,7 @@ public class UserGroup {
 	@Override
 	public boolean equals(Object obj) {
 		return (id != null && id.equals(((UserGroup) obj).id))
-				|| (name != null && name.equalsIgnoreCase(((UserGroup) obj).name));
+				|| (groupname != null && groupname.equalsIgnoreCase(((UserGroup) obj).groupname));
 	}
 
 	public AuditReader getAuditReader() {

@@ -56,7 +56,7 @@ public class UserGroupList extends UserGroupInfo {
 	}
 
 	public UserGroupList(UserGroup userGroup) {
-		this(userGroup.getId(), userGroup.getName(), userGroup.getDescription(), userGroup.isEnabled(), userGroup
+		this(userGroup.getId(), userGroup.getGroupname(), userGroup.getDescription(), userGroup.isEnabled(), userGroup
 				.getUserGroupUsers() != null ? userGroup.getUserGroupUsers().size() : 0);
 	}
 

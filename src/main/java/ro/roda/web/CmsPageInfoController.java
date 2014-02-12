@@ -11,43 +11,35 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import ro.roda.filestore.CmsFileStoreService;
-import ro.roda.service.FileListService;
-import ro.roda.transformer.FileList;
+import ro.roda.service.CmsPageInfoService;
+import ro.roda.transformer.CmsPageInfo;
 
-@RequestMapping("/admin/cmsfilelist")
+@RequestMapping("/admin/pageinfo")
 @Controller
-public class FileListController {
+public class CmsPageInfoController {
 
 	@Autowired
-	CmsFileStoreService cmsFileStoreService;
-
-	@Autowired
-	FileListService fileListService;
+	CmsPageInfoService cmsPageInfoService;
 
 	@RequestMapping(headers = "Accept=application/json")
 	@ResponseBody
-	public ResponseEntity<String> listJson() {
+	public ResponseEntity<String> listCmsPageInfoJson() {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");
-		List<FileList> result = fileListService.findAllFileLists();
-		return new ResponseEntity<String>(FileList.toJsonArray(result), headers, HttpStatus.OK);
+		List<CmsPageInfo> result = cmsPageInfoService.findAllCmsPageInfos();
+		return new ResponseEntity<String>(CmsPageInfo.toJsonArray(result), headers, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/{id}", headers = "Accept=application/json")
 	@ResponseBody
-	public ResponseEntity<String> showJson(@PathVariable("id") Integer id) {
-		FileList fileList = fileListService.findFileList(id);
-		// fileList.setFileproperties(cmsFileStoreService.getFileProperties(CmsFile.findCmsFile(id)));
-
+	public ResponseEntity<String> showCmsPageInfoJson(@PathVariable("id") Integer id) {
+		CmsPageInfo cmsPageInfo = cmsPageInfoService.findCmsPageInfo(id);
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");
-		if (fileList == null) {
+		if (cmsPageInfo == null) {
 			return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
 		}
-		// return new ResponseEntity<String>(fileList.toJson(), headers,
-		// HttpStatus.OK);
-		return new ResponseEntity<String>(fileList.toJsonDetailed(), headers, HttpStatus.OK);
+		return new ResponseEntity<String>(cmsPageInfo.toJson(), headers, HttpStatus.OK);
 	}
 
 }

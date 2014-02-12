@@ -33,20 +33,20 @@ import flexjson.JSONDeserializer;
 import flexjson.JSONSerializer;
 
 @Entity
-@Table(schema = "public", name = "authorities")
+@Table(schema = "public", name = "cms_page_lang")
 @Configurable
 @Audited
-public class Authorities {
+public class CmsPageLang {
 
-	public static long countAuthoritieses() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM Authorities o", Long.class).getSingleResult();
+	public static long countCmsPageLangs() {
+		return entityManager().createQuery("SELECT COUNT(o) FROM CmsPageLang o", Long.class).getSingleResult();
 	}
 
 	@Async
-	public static void deleteIndex(Authorities authorities) {
+	public static void deleteIndex(CmsPageLang cmsPageLang) {
 		SolrServer solrServer = solrServer();
 		try {
-			solrServer.deleteById("authorities_" + authorities.getId());
+			solrServer.deleteById("cmspagelang_" + cmsPageLang.getId());
 			solrServer.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -54,55 +54,55 @@ public class Authorities {
 	}
 
 	public static final EntityManager entityManager() {
-		EntityManager em = new Authorities().entityManager;
+		EntityManager em = new CmsPageLang().entityManager;
 		if (em == null)
 			throw new IllegalStateException(
 					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
 		return em;
 	}
 
-	public static List<Authorities> findAllAuthoritieses() {
-		return entityManager().createQuery("SELECT o FROM Authorities o", Authorities.class).getResultList();
+	public static List<CmsPageLang> findAllCmsPageLangs() {
+		return entityManager().createQuery("SELECT o FROM CmsPageLang o", CmsPageLang.class).getResultList();
 	}
 
-	public static Authorities findAuthorities(AuthoritiesPK id) {
+	public static CmsPageLang findCmsPageLang(CmsPageLangPK id) {
 		if (id == null)
 			return null;
-		return entityManager().find(Authorities.class, id);
+		return entityManager().find(CmsPageLang.class, id);
 	}
 
-	public static List<Authorities> findAuthoritiesEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM Authorities o", Authorities.class)
+	public static List<CmsPageLang> findCmsPageLangEntries(int firstResult, int maxResults) {
+		return entityManager().createQuery("SELECT o FROM CmsPageLang o", CmsPageLang.class)
 				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
 	}
 
-	public static Collection<Authorities> fromJsonArrayToAuthoritieses(String json) {
-		return new JSONDeserializer<List<Authorities>>().use(null, ArrayList.class).use("values", Authorities.class)
+	public static Collection<CmsPageLang> fromJsonArrayToCmsPageLangs(String json) {
+		return new JSONDeserializer<List<CmsPageLang>>().use(null, ArrayList.class).use("values", CmsPageLang.class)
 				.deserialize(json);
 	}
 
-	public static Authorities fromJsonToAuthorities(String json) {
-		return new JSONDeserializer<Authorities>().use(null, Authorities.class).deserialize(json);
+	public static CmsPageLang fromJsonToCmsPageLang(String json) {
+		return new JSONDeserializer<CmsPageLang>().use(null, CmsPageLang.class).deserialize(json);
 	}
 
-	public static void indexAuthorities(Authorities authorities) {
-		List<Authorities> authoritieses = new ArrayList<Authorities>();
-		authoritieses.add(authorities);
-		indexAuthoritieses(authoritieses);
+	public static void indexCmsPageLang(CmsPageLang cmsPageLang) {
+		List<CmsPageLang> cmspagelangs = new ArrayList<CmsPageLang>();
+		cmspagelangs.add(cmsPageLang);
+		indexCmsPageLangs(cmspagelangs);
 	}
 
 	@Async
-	public static void indexAuthoritieses(Collection<Authorities> authoritieses) {
+	public static void indexCmsPageLangs(Collection<CmsPageLang> cmspagelangs) {
 		List<SolrInputDocument> documents = new ArrayList<SolrInputDocument>();
-		for (Authorities authorities : authoritieses) {
+		for (CmsPageLang cmsPageLang : cmspagelangs) {
 			SolrInputDocument sid = new SolrInputDocument();
-			sid.addField("id", "authorities_" + authorities.getId());
-			sid.addField("authorities.username_t", authorities.getUsername());
-			sid.addField("authorities.id_t", authorities.getId());
+			sid.addField("id", "cmspagelang_" + cmsPageLang.getId());
+			sid.addField("cmsPageLang.langid_t", cmsPageLang.getLangId());
+			sid.addField("cmsPageLang.cmspageid_t", cmsPageLang.getId());
 			// Add summary field to allow searching documents for objects of
 			// this type
-			sid.addField("authorities_solrsummary_t", new StringBuilder().append(authorities.getUsername()).append(" ")
-					.append(authorities.getId()));
+			sid.addField("cmspagelang_solrsummary_t", new StringBuilder().append(cmsPageLang.getLangId()).append(" ")
+					.append(cmsPageLang.getCmsPageId()));
 			documents.add(sid);
 		}
 		try {
@@ -124,19 +124,19 @@ public class Authorities {
 	}
 
 	public static QueryResponse search(String queryString) {
-		String searchString = "Authorities_solrsummary_t:" + queryString;
+		String searchString = "CmsPageLang_solrsummary_t:" + queryString;
 		return search(new SolrQuery(searchString.toLowerCase()));
 	}
 
 	public static SolrServer solrServer() {
-		SolrServer _solrServer = new Authorities().solrServer;
+		SolrServer _solrServer = new CmsPageLang().solrServer;
 		if (_solrServer == null)
 			throw new IllegalStateException(
 					"Solr server has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
 		return _solrServer;
 	}
 
-	public static String toJsonArray(Collection<Authorities> collection) {
+	public static String toJsonArray(Collection<CmsPageLang> collection) {
 		return new JSONSerializer().exclude("*.class").serialize(collection);
 	}
 
@@ -144,16 +144,16 @@ public class Authorities {
 		return AuditReaderFactory.get(entityManager());
 	}
 
+	@ManyToOne
+	@JoinColumn(name = "lang_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	private Lang langId;
+
 	@EmbeddedId
-	private AuthoritiesPK id;
+	private CmsPageLangPK id;
 
 	@ManyToOne
-	@JoinColumn(name = "username", referencedColumnName = "username", nullable = false, insertable = false, updatable = false)
-	private Users username;
-
-	@ManyToOne
-	@JoinColumn(name = "groupname", referencedColumnName = "groupname", nullable = false, insertable = false, updatable = false)
-	private UserGroup groupname;
+	@JoinColumn(name = "cms_page_id", columnDefinition = "integer", referencedColumnName = "id", nullable = true, insertable = false, updatable = false)
+	private CmsPage cmsPageId;
 
 	@PersistenceContext
 	transient EntityManager entityManager;
@@ -175,23 +175,23 @@ public class Authorities {
 		this.entityManager.flush();
 	}
 
-	public AuthoritiesPK getId() {
+	public Lang getLangId() {
+		return langId;
+	}
+
+	public CmsPageLangPK getId() {
 		return this.id;
 	}
 
-	public Users getUsername() {
-		return username;
-	}
-
-	public UserGroup getGroupname() {
-		return groupname;
+	public CmsPage getCmsPageId() {
+		return cmsPageId;
 	}
 
 	@Transactional
-	public Authorities merge() {
+	public CmsPageLang merge() {
 		if (this.entityManager == null)
 			this.entityManager = entityManager();
-		Authorities merged = this.entityManager.merge(this);
+		CmsPageLang merged = this.entityManager.merge(this);
 		this.entityManager.flush();
 		return merged;
 	}
@@ -210,21 +210,21 @@ public class Authorities {
 		if (this.entityManager.contains(this)) {
 			this.entityManager.remove(this);
 		} else {
-			Authorities attached = Authorities.findAuthorities(this.id);
+			CmsPageLang attached = CmsPageLang.findCmsPageLang(this.id);
 			this.entityManager.remove(attached);
 		}
 	}
 
-	public void setId(AuthoritiesPK id) {
+	public void setLangId(Lang langId) {
+		this.langId = langId;
+	}
+
+	public void setId(CmsPageLangPK id) {
 		this.id = id;
 	}
 
-	public void setUsername(Users username) {
-		this.username = username;
-	}
-
-	public void setGroupname(UserGroup groupname) {
-		this.groupname = groupname;
+	public void setCmsPageId(CmsPage cmsPageId) {
+		this.cmsPageId = cmsPageId;
 	}
 
 	public String toJson() {
@@ -242,7 +242,7 @@ public class Authorities {
 	@PostUpdate
 	@PostPersist
 	private void postPersistOrUpdate() {
-		indexAuthorities(this);
+		indexCmsPageLang(this);
 	}
 
 	@PreRemove

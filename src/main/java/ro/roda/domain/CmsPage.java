@@ -78,6 +78,14 @@ public class CmsPage {
 		return entityManager().find(CmsPage.class, id);
 	}
 
+	public static CmsPage findCmsPage(String url) {
+		if (url == null)
+			return null;
+
+		String pageByUrlQuery = "SELECT o FROM CmsPage o WHERE url = ?1";
+		return entityManager().createQuery(pageByUrlQuery, CmsPage.class).setParameter(1, url).getSingleResult();
+	}
+
 	public static List<CmsPage> findCmsPageEntries(int firstResult, int maxResults) {
 		return entityManager().createQuery("SELECT o FROM CmsPage o", CmsPage.class).setFirstResult(firstResult)
 				.setMaxResults(maxResults).getResultList();
@@ -185,7 +193,8 @@ public class CmsPage {
 	 * @return
 	 */
 	public static CmsPage checkCmsPage(Integer id, String name, CmsLayout cmsLayoutId, CmsPageType cmsPageTypeId,
-			Boolean visible, Boolean navigable, String url) {
+			Boolean visible, Boolean navigable, String url, String synopsis, String target, Boolean defaultPage,
+			String externalRedirect, String internalRedirect, Integer cacheable) {
 		CmsPage object;
 
 		if (id != null) {
@@ -227,6 +236,12 @@ public class CmsPage {
 		object.visible = visible;
 		object.navigable = navigable;
 		object.url = url;
+		object.synopsis = synopsis;
+		object.target = target;
+		object.defaultPage = defaultPage;
+		object.externalRedirect = externalRedirect;
+		object.internalRedirect = internalRedirect;
+		object.cacheable = cacheable;
 		object.persist();
 
 		return object;
@@ -246,6 +261,16 @@ public class CmsPage {
 	@ManyToOne
 	@JoinColumn(name = "cms_page_type_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false)
 	private CmsPageType cmsPageTypeId;
+
+	@OneToMany(mappedBy = "cmsPageId")
+	private Set<CmsPageLang> cmsPageLangId;
+
+	@OneToMany(mappedBy = "cmsPageId")
+	private Set<CmsPage> cmsPages;
+
+	@ManyToOne
+	@JoinColumn(name = "cms_page_id", columnDefinition = "integer", referencedColumnName = "id", nullable = true)
+	private CmsPage cmsPageId;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -268,6 +293,24 @@ public class CmsPage {
 	@Column(name = "visible", columnDefinition = "bool")
 	@NotNull
 	private boolean visible;
+
+	@Column(name = "default_page", columnDefinition = "bool")
+	private boolean defaultPage;
+
+	@Column(name = "synopsis", columnDefinition = "text")
+	private String synopsis;
+
+	@Column(name = "target", columnDefinition = "text")
+	private String target;
+
+	@Column(name = "internal_redirect", columnDefinition = "text")
+	private String internalRedirect;
+
+	@Column(name = "external_redirect", columnDefinition = "text")
+	private String externalRedirect;
+
+	@Column(name = "cacheable", columnDefinition = "int")
+	private Integer cacheable;
 
 	@PersistenceContext
 	transient EntityManager entityManager;
@@ -319,6 +362,42 @@ public class CmsPage {
 
 	public boolean isVisible() {
 		return visible;
+	}
+
+	public Set<CmsPageLang> getCmsPageLangId() {
+		return cmsPageLangId;
+	}
+
+	public boolean isDefaultPage() {
+		return defaultPage;
+	}
+
+	public String getSynopsis() {
+		return synopsis;
+	}
+
+	public String getInternalRedirect() {
+		return internalRedirect;
+	}
+
+	public String getExternalRedirect() {
+		return externalRedirect;
+	}
+
+	public Integer getCacheable() {
+		return cacheable;
+	}
+
+	public String getTarget() {
+		return target;
+	}
+
+	public Set<CmsPage> getCmsPages() {
+		return cmsPages;
+	}
+
+	public CmsPage getCmsPageId() {
+		return cmsPageId;
 	}
 
 	@Transactional
@@ -379,6 +458,42 @@ public class CmsPage {
 
 	public void setVisible(boolean visible) {
 		this.visible = visible;
+	}
+
+	public void setCmsPageLangId(Set<CmsPageLang> cmsPageLangId) {
+		this.cmsPageLangId = cmsPageLangId;
+	}
+
+	public void setDefaultPage(boolean defaultPage) {
+		this.defaultPage = defaultPage;
+	}
+
+	public void setSynopsis(String synopsis) {
+		this.synopsis = synopsis;
+	}
+
+	public void setInternalRedirect(String internalRedirect) {
+		this.internalRedirect = internalRedirect;
+	}
+
+	public void setExternalRedirect(String externalRedirect) {
+		this.externalRedirect = externalRedirect;
+	}
+
+	public void setCacheable(Integer cacheable) {
+		this.cacheable = cacheable;
+	}
+
+	public void setCmsPages(Set<CmsPage> cmsPages) {
+		this.cmsPages = cmsPages;
+	}
+
+	public void setCmsPageId(CmsPage cmsPageId) {
+		this.cmsPageId = cmsPageId;
+	}
+
+	public void setTarget(String target) {
+		this.target = target;
 	}
 
 	public String toJson() {

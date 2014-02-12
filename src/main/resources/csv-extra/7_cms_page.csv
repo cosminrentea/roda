@@ -1,5 +1,15 @@
-name, cms_layout_id, url, cms_page_type_id, navigable, visible
-"Homepage", 1, "/ro/home", 1, "true", "true"
-"about", 1, "/ro/about", 1, "true", "true"
-"Obiective", 1, "/ro/obiective", 1, "true", "true"
-"Legaturi utile", 1, "/ro/legaturi", 1, "true", "true"
+name, cms_layout_id, url, cms_page_type_id, navigable, visible, synopsis, target, default_page, external_redirect, internal_redirect, cacheable, cms_page_id
+"Home", 1,"home", 1, true, true,,"", false, "", "", 30,
+"Introduction", 1,"introduction", 1, true, true,, "", false, "", "", 30, 1
+"About RODA", 1,"about_roda", 1, true, true, , "", false, "", "", 30, 1
+"Objectives", 1,"objectives", 1, true, true, , "", false, "", "", 30, 1
+"Contact", 4,"contact", 1, true, true, , "", false, "", "", 30, 1
+"Ordering Data", 1,"ordering_data", 1, true, true, , "", false, "", "", 30, 1
+"Introduction", 1,"introduction_ordering_data", 1, true, true, , "", false, "", "", 30, 6
+"User categories", 1,"ordering_data_user_categories", 1, true, true, , "", false, "", "", 30, 6
+"Access Levels", 1,"ordering_data_access_levels", 1, true, true, , "", false, "", "", 30, 6
+"Access Agreement", 1,"ordering_data_access_agreement", 1, true, true, , "_blank", false, "", "", 30, 6
+"Free access", 1,"free_access", 1, true, true, , "", false, "", "", 30, 9
+"Free for academic use", 1,"free_academic", 1, true, false, , "", false, "", "", 30, 9
+"Restricted by owner", 1,"free_academic", 1, true, true, , "", false, "", "", 30, 9
+"Commercial data", 1,"commercial_data", 1, true, false, , "", false, "", "", 30, 9

@@ -12,6 +12,8 @@ public interface CmsPageService {
 
 	public abstract CmsPage findCmsPage(Integer id);
 
+	public abstract CmsPage findCmsPage(String url);
+
 	public abstract List<CmsPage> findAllCmsPages();
 
 	public abstract List<CmsPage> findCmsPageEntries(int firstResult, int maxResults);

@@ -12,19 +12,21 @@ import javax.persistence.TypedQuery;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.web.multipart.MultipartFile;
 
+import ro.roda.domain.Authorities;
+import ro.roda.domain.AuthoritiesPK;
 import ro.roda.domain.CmsFile;
 import ro.roda.domain.CmsFolder;
 import ro.roda.domain.CmsLayout;
 import ro.roda.domain.CmsLayoutGroup;
+import ro.roda.domain.CmsPage;
 import ro.roda.domain.CmsSnippet;
 import ro.roda.domain.CmsSnippetGroup;
 import ro.roda.domain.UserGroup;
+import ro.roda.domain.UserMessage;
 import ro.roda.domain.Users;
-import ro.roda.filestore.CmsFileStoreService;
 import flexjson.JSON;
 import flexjson.JSONSerializer;
 
@@ -658,9 +660,10 @@ public class AdminJson {
 		file.setContentType(content.getContentType());
 		file.setFilesize(content.getSize());
 
-		//TODO Cosmin: check the use-case: file with the same name is added to the same folder
+		// TODO Cosmin: check the use-case: file with the same name is added to
+		// the same folder
 		// should overwrite the existing row in DB, OR throw ERROR
-		
+
 		CmsFolder parentFolder = CmsFolder.findCmsFolder(folderId);
 		if (parentFolder != null) {
 			file.setCmsFolderId(parentFolder);
@@ -769,7 +772,9 @@ public class AdminJson {
 		return new AdminJson(true, "CMS Folder moved successfully");
 	}
 
-	public static AdminJson userSave(Integer id, String username, String password, String passwordCheck, String email, Boolean enabled) {
+
+	public static AdminJson userSave(Integer id, String username, String password, String passwordCheck, String email,
+			Boolean enabled) {
 		if (username == null) {
 			return new AdminJson(false, "The User must have a name!");
 		}
@@ -797,43 +802,120 @@ public class AdminJson {
 	}
 
 	public static AdminJson addUserToGroup(Integer userId, Integer groupId) {
-		// TODO Cosmin
-		return new AdminJson(true, "");
+		Users u = Users.findUsers(userId);
+		UserGroup ug = UserGroup.findUserGroup(groupId);
+		if (u == null) {
+			return new AdminJson(false, "User does not exist");
+		}
+		if (ug == null) {
+			return new AdminJson(false, "User Group does not exist");
+		}
+
+		Authorities a = Authorities.findAuthorities(new AuthoritiesPK(u.getUsername(), ug.getGroupname()));
+		if (a == null) {
+			// add user to group
+			a = new Authorities();
+			a.setUsername(u);
+			a.setGroupname(ug);
+			Authorities.entityManager().persist(a);
+		}
+
+		return new AdminJson(true, "User added to Group");
 	}
 
 	public static AdminJson deleteUserFromGroup(Integer userId, Integer groupId) {
-		// TODO Cosmin
-		return new AdminJson(true, "");
+		Users u = Users.findUsers(userId);
+		UserGroup ug = UserGroup.findUserGroup(groupId);
+		if (u == null) {
+			return new AdminJson(false, "User does not exist");
+		}
+		if (ug == null) {
+			return new AdminJson(false, "User Group does not exist");
+		}
+
+		Authorities a = Authorities.findAuthorities(new AuthoritiesPK(u.getUsername(), ug.getGroupname()));
+		if (a != null) {
+			Authorities.entityManager().remove(a);
+		}
+
+		return new AdminJson(true, "User removed from Group");
 	}
 
 	public static AdminJson enableUser(Integer userId) {
-		// TODO Cosmin
-		return new AdminJson(true, "");
+		Users u = Users.findUsers(userId);
+		if (u == null) {
+			return new AdminJson(false, "User does not exist");
+		}
+		u.setEnabled(true);
+		Users.entityManager().merge(u);
+		return new AdminJson(true, "User enabled");
 	}
 
 	public static AdminJson disableUser(Integer userId) {
-		// TODO Cosmin
-		return new AdminJson(true, "");
+		Users u = Users.findUsers(userId);
+		if (u == null) {
+			return new AdminJson(false, "User does not exist");
+		}
+		u.setEnabled(false);
+		Users.entityManager().merge(u);
+		return new AdminJson(true, "User disabled");
 	}
 
 	public static AdminJson dropUser(Integer userId) {
-		// TODO Cosmin
-		return new AdminJson(true, "");
+		Users u = Users.findUsers(userId);
+		if (u == null) {
+			return new AdminJson(false, "User does not exist");
+		}
+		Users.entityManager().remove(u);
+		return new AdminJson(true, "User deleted");
 	}
 
 	public static AdminJson changePasswordUser(Integer userId, String password, String controlPassword) {
-		// TODO Cosmin
-		return new AdminJson(true, "");
+		if (password == null || password.equals(controlPassword)) {
+			return new AdminJson(false, "Passwords do not match");
+		}
+		Users u = Users.findUsers(userId);
+		if (u == null) {
+			return new AdminJson(false, "User does not exist");
+		}
+		u.setPassword(password);
+		Users.entityManager().merge(u);
+		return new AdminJson(true, "User - changed password");
 	}
 
 	public static AdminJson messageUser(Integer userId, String subject, String message) {
-		// TODO Cosmin
-		return new AdminJson(true, "");
+		Users u = Users.findUsers(userId);
+		if (u == null) {
+			return new AdminJson(false, "User does not exist");
+		}
+
+		UserMessage um = new UserMessage();
+
+		um.setSubject(subject);
+		um.setMessage(message);
+		um.setRead(false);
+		um.setToUserId(u);
+		// TODO is it ok to use here as sender the user with ID=1 (admin) ?
+		um.setFromUserId(Users.findUsers(new Integer(1)));
+
+		Authorities.entityManager().persist(um);
+
+		return new AdminJson(true, "User message sent (from Admin)");
 	}
 
 	public static AdminJson messageGroup(Integer groupId, String subject, String message) {
-		// TODO Cosmin
-		return new AdminJson(true, "");
+		UserGroup ug = UserGroup.findUserGroup(groupId);
+		if (ug == null) {
+			return new AdminJson(false, "User Group does not exist");
+		}
+
+		for (Authorities a : Authorities.findAllAuthoritieses()) {
+			if (ug.equals(a.getGroupname())) {
+				messageUser(a.getUsername().getId(), subject, message);
+			}
+		}
+		
+		return new AdminJson(true, "Message sent to all users in group (from Admin");
 	}
 
 	private final Log log = LogFactory.getLog(this.getClass());
@@ -888,4 +970,109 @@ public class AdminJson {
 
 		return serializer.serialize(this);
 	}
+
+	// Cms Page Management Methods
+	public static AdminJson cmsPageSave(Integer cmsPageParentId, String name, String lang, String menutitle,
+			String synopsis, String target, String url, boolean defaultPage, String externalredirect,
+			String internalredirect, String layout, Integer cacheable, boolean published, String pagetype,
+			Integer cmsPageId) {
+
+		// TODO: add lang
+		CmsPage page = null;
+		if (cmsPageId != null) {
+			page = CmsPage.findCmsPage(cmsPageId);
+		}
+
+		if (page == null) {
+			page = new CmsPage();
+		}
+
+		page.setName(name);
+		// TODO: other set methods
+
+		try {
+			CmsPage parentPage = CmsPage.findCmsPage(cmsPageParentId);
+			if (parentPage != null) {
+				// layout.setCmsLayoutGroupId(parentGroup);
+				if (parentPage.getCmsPages() != null && parentPage.getCmsPages().contains(page)) {
+					// do nothing
+				} else {
+					if (parentPage.getCmsPages() == null) {
+						parentPage.setCmsPages(new HashSet<CmsPage>());
+						parentPage.getCmsPages().add(page);
+					} else {
+						parentPage.getCmsPages().add(page);
+					}
+					CmsPage.entityManager().persist(parentPage);
+				}
+				page.setCmsPageId(parentPage);
+			}
+
+			CmsLayout.entityManager().persist(page);
+		} catch (EntityExistsException e) {
+			return new AdminJson(false, "Layout not created " + e.getMessage());
+		}
+
+		return new AdminJson(true, "CMS Layout created successfully");
+	}
+
+	public static AdminJson cmsPageMove(Integer cmsPageParentId, Integer cmsPageId) {
+
+		CmsPage cmsPage = null;
+		if (cmsPageId != null) {
+			cmsPage = CmsPage.findCmsPage(cmsPageId);
+		}
+
+		if (cmsPage == null) {
+			return new AdminJson(false, "CMS Page to be moved should exist");
+		}
+
+		CmsPage parentPage = CmsPage.findCmsPage(cmsPageParentId);
+
+		if (cmsPageParentId != null && parentPage == null) {
+			return new AdminJson(false, "The CMS Page parent should exist");
+		}
+
+		if (cmsPageParentId == (cmsPage.getCmsPageId() == null ? null : cmsPage.getCmsPageId().getId())) {
+			return new AdminJson(false, "The  parent of the CMS Page doesn't change");
+		}
+
+		try {
+			if (parentPage != null) {
+				if (parentPage.getCmsPages() == null) {
+					parentPage.setCmsPages(new HashSet<CmsPage>());
+					parentPage.getCmsPages().add(cmsPage);
+				} else {
+					parentPage.getCmsPages().add(cmsPage);
+				}
+				CmsPage.entityManager().persist(parentPage);
+			}
+			cmsPage.setCmsPageId(parentPage);
+
+			CmsPage.entityManager().persist(cmsPage);
+		} catch (EntityExistsException e) {
+			return new AdminJson(false, "CMS Page not moved " + e.getMessage());
+		}
+
+		return new AdminJson(true, "CMS Page moved successfully");
+	}
+
+	public static AdminJson cmsPageDrop(Integer cmsPageId) {
+		CmsPage cmsPage = CmsPage.findCmsPage(cmsPageId);
+		if (cmsPage == null)
+			return new AdminJson(false, "The cms page does not exist.");
+		try {
+			CmsPage parentPage = cmsPage.getCmsPageId();
+			if (parentPage.getCmsPages() != null && parentPage.getCmsPages().contains(cmsPage)) {
+				parentPage.getCmsPages().remove(cmsPage);
+			}
+
+			CmsPage.entityManager().remove(cmsPage);
+		} catch (Exception e) {
+			return new AdminJson(false, "CMS Page not dropped" + e.getMessage());
+		}
+
+		return new AdminJson(true, "CMS Page dropped successfully");
+	}
+
 }

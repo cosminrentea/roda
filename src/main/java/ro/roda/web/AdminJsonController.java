@@ -1,15 +1,11 @@
 package ro.roda.web;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import javax.jcr.Node;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
@@ -22,7 +18,6 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -31,8 +26,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.support.ByteArrayMultipartFileEditor;
 
 import ro.roda.domain.CmsFile;
-import ro.roda.service.AdminJsonService;
 import ro.roda.filestore.CmsFileStoreService;
+import ro.roda.service.AdminJsonService;
 import ro.roda.transformer.AdminJson;
 
 @RequestMapping("/admin")
@@ -384,8 +379,7 @@ public class AdminJsonController {
 	@RequestMapping(value = "/usersave", method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody
 	public String userSave(@RequestParam(value = "id") Integer id, @RequestParam(value = "username") String username,
-			@RequestParam(value = "password") String password,
-			@RequestParam(value = "password2") String passwordCheck,
+			@RequestParam(value = "password") String password, @RequestParam(value = "password2") String passwordCheck,
 			@RequestParam(value = "email", defaultValue = "") String email,
 			@RequestParam(value = "enabled", defaultValue = "true") Boolean enabled) {
 		AdminJson response = adminJsonService.userSave(id, username, password, passwordCheck, email, enabled);
@@ -398,7 +392,8 @@ public class AdminJsonController {
 	@RequestMapping(value = "/groupsave", method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody
 	public String groupSave(@RequestParam(value = "id") Integer id, @RequestParam(value = "name") String name,
-			@RequestParam(value = "description", defaultValue = "") String description, @RequestParam(value = "enabled") Boolean enabled) {
+			@RequestParam(value = "description", defaultValue = "") String description,
+			@RequestParam(value = "enabled") Boolean enabled) {
 		AdminJson response = adminJsonService.groupSave(id, name, description, enabled);
 		if (response == null) {
 			return null;
@@ -513,6 +508,52 @@ public class AdminJsonController {
 			return null;
 		}
 		return response.toJson();
+	}
+
+	@RequestMapping(value = "/cmspagesave", method = RequestMethod.POST, produces = "application/json")
+	@ResponseBody
+	public String cmspageSave(@RequestParam(value = "group") Integer groupId,
+			@RequestParam(value = "content") String content, @RequestParam(value = "name") String name,
+			@RequestParam(value = "description", required = false) String description,
+			@RequestParam(value = "id", required = false) Integer cmspageId) {
+
+		// TODO: add all parameters
+		AdminJson cmspageSave = null; // = adminJsonService.cmspageSave(groupId,
+										// content, name, description,
+										// cmspageId);
+
+		if (cmspageSave == null) {
+			return null;
+		}
+		return cmspageSave.toJson();
+
+	}
+
+	@RequestMapping(value = "/cmspagemove", method = RequestMethod.POST, produces = "application/json")
+	@ResponseBody
+	public String cmspageMove(@RequestParam(value = "group") Integer groupId,
+			@RequestParam(value = "id") Integer cmspageId) {
+
+		AdminJson cmspageMove = adminJsonService.cmsPageMove(groupId, cmspageId);
+
+		if (cmspageMove == null) {
+			return null;
+		}
+		return cmspageMove.toJson();
+
+	}
+
+	@RequestMapping(value = "/cmspagedrop", method = RequestMethod.POST, produces = "application/json")
+	@ResponseBody
+	public String cmspageDrop(@RequestParam(value = "cmspageid") Integer cmspageId) {
+
+		AdminJson cmspageDrop = adminJsonService.cmsPageDrop(cmspageId);
+
+		if (cmspageDrop == null) {
+			return null;
+		}
+		return cmspageDrop.toJson();
+
 	}
 
 }

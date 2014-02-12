@@ -194,6 +194,7 @@ public class AuditRevisionsByUsername extends JsonInfo {
 
 				Integer key = keysIterator.next();
 				RodaRevisionEntity revision = (RodaRevisionEntity) objectsByRevision.get(key)[0];
+				// FIXME Letitia: type safety warning
 				Set<AuditObject> objects = (Set<AuditObject>) objectsByRevision.get(key)[1];
 
 				revisions.add(new AuditRevision(key, revision.getRevisionDate(), null, null, objects.size(), null,

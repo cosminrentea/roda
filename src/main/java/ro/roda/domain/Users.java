@@ -250,7 +250,7 @@ public class Users implements Serializable {
 	}
 
 	@OneToMany(mappedBy = "username")
-	private Set<Authorities> authoritieses;
+	private Set<Authorities> authorities;
 
 	@OneToMany(mappedBy = "owner")
 	private Set<Catalog> catalogs;
@@ -325,7 +325,7 @@ public class Users implements Serializable {
 	}
 
 	public Set<Authorities> getAuthoritieses() {
-		return authoritieses;
+		return authorities;
 	}
 
 	public Set<Catalog> getCatalogs() {
@@ -417,7 +417,7 @@ public class Users implements Serializable {
 	}
 
 	public void setAuthoritieses(Set<Authorities> authoritieses) {
-		this.authoritieses = authoritieses;
+		this.authorities = authoritieses;
 	}
 
 	public void setCatalogs(Set<Catalog> catalogs) {

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pagedata>
+	<title>Despre RODA</title>
+	<menutitle>Despre RODA</menutitle>
+	<synopsis><![CDATA[<b>Arhiva Romana de Date Sociale</b> a fost infiintata in anul 2001, ca dezvoltare la nivel national al departamentului de baze de date a Institutului de Cercetare a Calitatii Vietii, in colaborare cu Universitatea Bucuresti, catedra de Sociologie.]]></synopsis>
+	<lang>ro</lang>
+	<content><![CDATA[
+	<H1>Despre RODA</H1>
+	<p>
+	<font face="Arial, Helvetica, sans-serif" size="2"><b>Arhiva Romana de Date Sociale</b> a fost infiintata in anul 2001, ca dezvoltare la nivel national al departamentului de baze de date a Institutului de Cercetare a Calitatii Vietii, in colaborare cu Universitatea Bucuresti, catedra de Sociologie.</font></p>
+<p align="justify">
+	<font face="Arial, Helvetica, sans-serif" size="2">Arhiva a fost creata pentru a sprijini si impulsiona cercetarea cantitativa bazata pe analiza secundara si analiza comparativa. Arhiva intretine o colectie de baze de date electronice si documentatiile aferente, coordoneaza achizitia de noi date din surse variate, si pune la dispozitie accesul nemijlocit la datele publice.</font></p>
+<p align="justify">
+	<font face="Arial, Helvetica, sans-serif" size="2">Initiativa construirii arhivei a inceput in 1996, cu un grant CNCSIS, initiatori prof. Catalin Zamfir si conf. Poliana Stefanescu. Proiectul s-a continuat cu un grant de initiere al Bancii Mondiale, director de grant prof. Ioan Marginean, si cu un grant CNCSIS coordonat de lector Lucian Pop. Din anul 2002 coordonatorul proiectului este Adrian Dusa, continuandu-l cu o finantare INFOSOC.<br />
+	Multumim colegilor din Institut care, de-a lungul anilor, au contribuit la pregatirea arhivei si a seturilor de date: Manuela Stanculescu, Iuliana Precupetu, Narcisa Tambrea, Ana Maria Preoteasa, Malina Voicu, Bogdan Voicu.</font></p>
+<p align="justify">
+	<font face="Arial, Helvetica, sans-serif" size="2">RODA aduce un plus de valoare fiecarui set de date prin curatare, documentare si copierea pentru siguranta, ferindu-le de riscul pierderii sau deteriorarii.</font></p>
+<p align="justify">
+	<font face="Arial, Helvetica, sans-serif" size="2">Arhiva mentine un contact strans cu cercetatorii si furnizorii de date, pentru a fi la curent cu aparitia noilor seturi de date, tehnici de management al informatiilor si tehnologii computationale.</font></p>
+<p align="justify">
+	<font face="Arial, Helvetica, sans-serif" size="2">Datele din colectia RODA se bazeaza in cea mai mare parte pe bazele de date ale ICCV, insa exista si date provenite de la alte institutii de cercetare, si avem in vedere colectarea a cat mai multe seturi de date de la toate institutiile cu profil de cercetare din Romania.</font></p>
+<p align="justify">
+	<font face="Arial, Helvetica, sans-serif" size="2">Arhiva acorda asistenta in localizarea variabilelor, seturilor de date si documentatiilor, in functie de nevoile particulare ale cercetatorilor, studentilor si profesorilor. Utilizatorii pot consulta <a href="http://roda.ro/public/RO/template.php?url=4">personalul Arhivei</a> in identificarea intereselor de cercetare si in selectarea datelor potrivite pentru proiecte de cercetare specifice.</font></p>
+	]]>
+	</content>
+	<cms_layout>roda-main-ro</cms_layout>
+	<pagetype>content</pagetype>
+	<cacheable>3600</cacheable>
+	<default_page>0</default_page>
+	<external_redirect></external_redirect>
+	<internal_redirect></internal_redirect>
+	<navigable>true</navigable>
+	<published>true</published>
+	<target></target>
+	<visible>true</visible>
+</pagedata>

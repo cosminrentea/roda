@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pagedata>
+	<title>Niveluri de acces</title>
+	<menutitle>Niveluri de acces</menutitle>
+	<synopsis><![CDATA[Proprietarii datelor sunt aceia care iau decizia incadrarii unei baze de date intr-un nivel de acces sau altul.]]></synopsis>
+	<lang>ro</lang>
+	<content><![CDATA[
+	<p align="justify">
+	<font face="Arial, Helvetica, sans-serif" size="2"><b>Proprietarii datelor</b> sunt aceia care iau decizia incadrarii unei baze de date intr-un nivel de acces sau altul.</font></p>
+<p align="justify">
+	<font face="Arial, Helvetica, sans-serif" size="2"><b>Noutatea absoluta</b> a sistemului nostru este aceea ca proprietarii datelor pot stabili oricand nivelul de acces la baza de date, direct in pagina de web, pe baza unei parole stabilita in prealabil. In felul acesta, proprietarii au controlul direct si total asupra bazelor de date, implicandu-se activ in gestionarea acestora impreuna cu arhiva noastra. Ori de cate ori proprietarul datelor seteaza sau modifica nivelul de acces la o anumita baza de date, acest lucru va fi anuntat automat in pagina noastra de stiri; in mod similar, va fi generat un e-mail automat prin care utilizatorii care s-au inscris in lista vor primi aceasta stire.</font></p>
+<table border="1" style="border-style:solid; border-width:2px; border-color:black;" width="548">
+	<tbody>
+		<tr>
+			<td width="125">
+				<div align="center">
+					<font face="Arial, Helvetica, sans-serif" size="2"><b>Nivel de acces</b></font></div>
+			</td>
+			<td>
+				<div align="center">
+					<font face="Arial, Helvetica, sans-serif" size="2"><b>Descriere</b></font></div>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<div align="center">
+					<font color="#FF0000"><b>0</b></font></div>
+			</td>
+			<td>
+				<div align="left">
+					<font face="Arial, Helvetica, sans-serif" size="2">Acces liber la seturile de date pentru toata lumea, indiferent ca sunt utilizatori academici sau neacademici. In aceasta categorie vor intra seturile de date total publice, asupra carora proprietarii datelor nu au impus nici un fel de restrictii.</font></div>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<div align="center">
+					<font color="#FF0000"><b>A</b></font></div>
+			</td>
+			<td>
+				<font face="Arial, Helvetica, sans-serif" size="2">Acces liber la seturile de date pentru utilizatorii din domeniul academic (categoria <font color="#FF0000"><b><a href="http://roda.ro/public/RO/template.php?url=7">I</a></b></font>); acestia nu sunt supusi altor costuri decat celor legate de mediul de stocare prin care se trimite setul de date (ex. discheta, CD, etc.); RODA este libera sa distribuie seturile de date fara a cere acordul proprietarului.</font></td>
+		</tr>
+		<tr>
+			<td>
+				<div align="center">
+					<font color="#FF0000"><b>B</b></font></div>
+			</td>
+			<td>
+				<font face="Arial, Helvetica, sans-serif" size="2">Acces la date conditionat de acordul scris al proprietarului, prin care acesta se implica in activitatea de control asupra accesului la setul de date, luand decizia finala in ceea ce priveste accesul unei persoane sau alteia la setul de date.</font></td>
+		</tr>
+		<tr>
+			<td>
+				<div align="center">
+					<font color="#FF0000"><b>C</b></font></div>
+			</td>
+			<td>
+				<font face="Arial, Helvetica, sans-serif" size="2">Acces restrictionat de proprietar pe baza unui contract de confidentialitate, setul de date fiind disponibil numai in masura in care utilizatorul va plati o anumita suma de bani specificata de proprietar.</font></td>
+		</tr>
+	</tbody>
+</table>
+<p>
+	&nbsp;</p>
+	
+	
+	
+	]]>
+	</content>
+	<cms_layout>roda-main-ro</cms_layout>
+	<pagetype>content</pagetype>
+	<cacheable>3600</cacheable>
+	<default_page>0</default_page>
+	<external_redirect></external_redirect>
+	<internal_redirect></internal_redirect>
+	<navigable>true</navigable>
+	<published>true</published>
+	<target></target>
+	<visible>true</visible>
+</pagedata>

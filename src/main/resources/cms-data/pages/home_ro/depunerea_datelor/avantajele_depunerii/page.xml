@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pagedata>
+	<title>Avantajele depunerii</title>
+	<menutitle>Avantajele depunerii</menutitle>
+	<synopsis><![CDATA[Avantajele depunerii datelor in arhiva RODA]]></synopsis>
+	<lang>ro</lang>
+	<content><![CDATA[
+	<p align="justify">
+	<font face="Arial, Helvetica, sans-serif" size="2">De ce ati dori sa depuneti datele?</font></p>
+<div align="justify">
+	<ul>
+		<li>
+			<font face="Arial, Helvetica, sans-serif" size="2"><font color="#FF0000"><b>Pentru imbunatatirea setului de date</b></font><br />
+			RODA nu face doar o simpla arhivare a setului de date, ci aduce un plus de valoare prin curatarea acestora, prin documentarea si indexarea lor in conformitate cu cele mai noi standarde internationale. </font></li>
+	</ul>
+</div>
+<div align="justify">
+	<ul>
+		<li>
+			<font face="Arial, Helvetica, sans-serif" size="2"><font face="Arial, Helvetica, sans-serif" size="2"><font color="#FF0000"><b>Pentru asigurarea integritatii setului de date in timp</b></font><br />
+			Odata depuse la arhiva, aveti siguranta si certitudinea ca seturile de date sunt protejate de uzura morala si fizica. RODA asigura migrarea seturilor de date in cele mai noi versiuni (de Word, Excel, Access, SPSS, etc.), astfel ca datele vor ramane utilizabile cat mai mult timp posibil. </font></font></li>
+	</ul>
+</div>
+<div align="justify">
+	<ul>
+		<li>
+			<font face="Arial, Helvetica, sans-serif" size="2"><font face="Arial, Helvetica, sans-serif" size="2"><font face="Arial, Helvetica, sans-serif" size="2"><b><font color="#FF0000">Pentru o recunoastere oficiala</font></b><br />
+			De multe ori, dorim anumite date dar nu stim unde sa le gasim; inscrierea setului de date in catalogul RODA va aduce o recunoastere oficiala a existentei datelor respective, iar indexarea setului de date va aduce posibilitatea gasirii unor variabile de interes in procesul de cautare initiat de utilizatori.<br />
+			De asemenea, este posibila afisarea informatiilor despre producatori si proprietari, aducandu-le astfel o recunoastere oficiala.<br />
+			In acelasi timp, procesul de utilizare a datelor va fi conditionat de cerinta citarii bibliografice a datelor respective. </font></font></font></li>
+	</ul>
+</div>
+<div align="justify">
+	<ul>
+		<li>
+			<font face="Arial, Helvetica, sans-serif" size="2"><font face="Arial, Helvetica, sans-serif" size="2"><font face="Arial, Helvetica, sans-serif" size="2"><font face="Arial, Helvetica, sans-serif" size="2"><font color="#FF0000"><b>Pentru a contribui la folosul intregii comunitati academice</b></font><br />
+			Nu in ultimul rand, va puteti aduce o insemnata contributie la dezvoltarea comunitatii ai largi, prin incurajarea analizei secundare si analizei comparative, prin facilitarea omunicarii dintre cercetatori si societate. </font></font></font></font></li>
+	</ul>
+</div>
+	
+	]]>
+	</content>
+	<cms_layout>roda-main-ro</cms_layout>
+	<pagetype>content</pagetype>
+	<cacheable>3600</cacheable>
+	<default_page>0</default_page>
+	<external_redirect></external_redirect>
+	<internal_redirect></internal_redirect>
+	<navigable>true</navigable>
+	<published>true</published>
+	<target></target>
+	<visible>true</visible>
+</pagedata>

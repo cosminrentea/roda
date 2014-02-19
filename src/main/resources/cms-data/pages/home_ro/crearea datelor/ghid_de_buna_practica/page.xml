@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pagedata>
+	<title>Ghid de buna practica</title>
+	<menutitle>Ghid de buna practica</menutitle>
+	<synopsis><![CDATA[O buna documentare a datelor are o importanta cruciala atat pentru pastrarea datelor pentru viitor, cat si pentru analiza secundara curenta. Orice persoana care foloseste un set de date are nevoie de toate informatiile disponibile pentru a produce tabele relevante si pentru a trage concluzii consistente.]]></synopsis>
+	<lang>ro</lang>
+	<content><![CDATA[
+	<p align="justify">
+	<font face="Arial, Helvetica, sans-serif" size="2">O buna documentare a datelor are o importanta cruciala atat pentru pastrarea datelor pentru viitor, cat si pentru analiza secundara curenta. Orice persoana care foloseste un set de date are nevoie de toate informatiile disponibile pentru a produce tabele relevante si pentru a trage concluzii consistente.</font></p>
+<p align="justify">
+	<font face="Arial, Helvetica, sans-serif" size="2">Pentru un buna documentare a setului de date, producatori datelor pot pregati:</font></p>
+<div align="justify">
+	<ul>
+		<li>
+			<font face="Arial, Helvetica, sans-serif" size="2">Setul de date: curatat, variabilele si valorile lor etichetate</font></li>
+		<li>
+			<font face="Arial, Helvetica, sans-serif" size="2">Chestionarul in original (atat o forma printata cat si una electronica)</font></li>
+		<li>
+			<font face="Arial, Helvetica, sans-serif" size="2">Informatii despre cercetarea in urma careia a fost produs setul de date</font></li>
+	</ul>
+</div>
+<p align="justify">
+	<font color="#FF0000" face="Arial, Helvetica, sans-serif" size="2"><b>Setul de date</b></font></p>
+<p align="justify">
+	<font face="Arial, Helvetica, sans-serif" size="2">Foarte important pentru utilizatorii unui set de date este claritatea acestuia, concordanta variabilelor din baza cu intrebarile din chestionar, precum si masura in care variabilele se pot &lsquo;explica&rsquo; prin ele insele. Sunt nenumarate exemple in care variabile potential valoroase nu mai pot fi folosite din lipsa de informatii asupra valorilor (ex. in variabilele deschise). Dupa o perioada, aceste informatii se pierd pentru totdeauna. Trebuie pregatite informatii legate de structura setului de date, cu o lista completa a variabilelor si descrierea acestora, inclusiv detalii legate de procesul de codificare si a clasificarilor folosite.</font></p>
+<p align="justify">
+	<font face="Arial, Helvetica, sans-serif" size="2">La fel de folositoare sunt informatiile legate de variabilele derivate din cele culese. Trebuie explicat in detaliu algoritmul de derivare, eventual cu formula utilizata (acolo unde este cazul).</font></p>
+<p align="justify">
+	<font color="#FF0000" face="Arial, Helvetica, sans-serif" size="2"><b>Chestionarul</b></font></p>
+<p align="justify">
+	<font face="Arial, Helvetica, sans-serif" size="2">Desi unele variabile sunt auto-explicative, sunt multe cazuri in are o mai buna intelegere poate fi adusa de citirea intrebarii corespondente din chestionar.</font></p>
+<p align="justify">
+	<font face="Arial, Helvetica, sans-serif" size="2">Pentru cercetarile relativ recente, pentru care exista o forma electronica a chestionarului, ar fi de mare ajutor pregatirea acestuia intr-o varianta recenta de Microsoft Word, cu paginarea originala. Preferabil ar fi ca versiunea electronica sa contina si caracterele diacritice.</font></p>
+<p align="justify">
+	<font face="Arial, Helvetica, sans-serif" size="2">Pentru cercetarile mai putin recente, putem scana o copie fizica a chestionarului si sa incercam transformarea acestuia in text prin utilizarea unui program de recunoastere optica a caracterelor.</font></p>
+<p align="justify">
+	<font color="#FF0000" face="Arial, Helvetica, sans-serif" size="2"><b>Informatii despre cercetarea in sine</b></font></p>
+<p align="justify">
+	<font face="Arial, Helvetica, sans-serif" size="2">Aceste informatii sunt esentiale pentru utilizatori; o intelegere completa a setului de date si a continutului acestuia nu poate fi atinsa fara pregatirea acestor informatii.</font></p>
+<p align="justify">
+	<font face="Arial, Helvetica, sans-serif" size="2">Pentru fiecare set de date, RODA completeaza un formular de descriere a studiului. Acest formular este utilizat de toate arhivele de date cu prestigiu din lume si se bazeaza pe structura <a href="http://www.icpsr.umich.edu/DDI/">DDI</a> (Data Documentation Initiative), un proiect promovat de <a href="http://www.icpsr.umich.edu/">ICPSR</a>, Michigan SUA.</font></p>
+<p align="justify">
+	<font face="Arial, Helvetica, sans-serif" size="2">Este necesara pregatirea detaliata a informatiilor legate de metodele de culegere a datelor, a instructiunilor pentru operatorii de teren, proceduri de esantionare, proceduri de ponderare.</font></p>
+<p align="justify">
+	<font face="Arial, Helvetica, sans-serif" size="2">Persoanele interesate pot consulta <a href="[[FileUrl: depunere]]">Formularul de depunere</a> pentru completarea informatiilor relevante.</font></p>
+	
+	]]>
+	</content>
+	<cms_layout>roda-main-ro</cms_layout>
+	<pagetype>content</pagetype>
+	<cacheable>3600</cacheable>
+	<default_page>0</default_page>
+	<external_redirect></external_redirect>
+	<internal_redirect></internal_redirect>
+	<navigable>true</navigable>
+	<published>true</published>
+	<target></target>
+	<visible>true</visible>
+</pagedata>

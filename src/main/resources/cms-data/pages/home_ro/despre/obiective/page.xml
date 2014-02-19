@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pagedata>
+	<title>Obiectivele RODA</title>
+	<menutitle>Obiectivele RODA</menutitle>
+	<synopsis><![CDATA[]]></synopsis>
+	<lang>ro</lang>
+	<content><![CDATA[
+	<div align="left">
+	<ul>
+		<li>
+			<font face="Arial, Helvetica, sans-serif" size="2">faciliteaza folosirea datelor existente;<br />
+			</font></li>
+		<li>
+			<font face="Arial, Helvetica, sans-serif" size="2">promoveaza analiza secundara a datelor;<br />
+			</font></li>
+		<li>
+			<font face="Arial, Helvetica, sans-serif" size="2">sprijina pregatirea metodologica a studentilor din stiintele sociale;<br />
+			</font></li>
+		<li>
+			<font face="Arial, Helvetica, sans-serif" size="2">pastreaza datele provenite din cercetarea sociala si le protejeaza impotriva pierderii sau deteriorarii;<br />
+			</font></li>
+		<li>
+			<font face="Arial, Helvetica, sans-serif" size="2">acorda informatii si expertiza creatorilor si utilizatorilor bazelor de date, cu privire la standardele documentarii datelor.</font></li>
+	</ul>
+</div>
+	]]>
+	</content>
+	<cms_layout>roda-main-ro</cms_layout>
+	<pagetype>content</pagetype>
+	<cacheable>3600</cacheable>
+	<default_page>0</default_page>
+	<external_redirect></external_redirect>
+	<internal_redirect></internal_redirect>
+	<navigable>true</navigable>
+	<published>true</published>
+	<target></target>
+	<visible>true</visible>
+</pagedata>

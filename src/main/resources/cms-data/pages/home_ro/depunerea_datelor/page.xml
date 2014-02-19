@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pagedata>
+	<title>Depunerea datelor</title>
+	<menutitle>Depunerea datelor</menutitle>
+	<synopsis></synopsis>
+	<lang>ro</lang>
+	<content><![CDATA[
+	
+	<p align="justify">
+	<font face="Arial, Helvetica, sans-serif" size="2">O arhiva de date sociale este o institutie benefica pentru intreaga comunitate academica, atat in folosul utilizatorilor, dar in egala masura si in folosul celor care vor sa depuna datele.</font></p>
+<p align="justify">
+	<font face="Arial, Helvetica, sans-serif" size="2">In toata lumea, si Romania nu face exceptie, producatorii datelor cauta sa le protejeze, fie de concurenta, fie si numai pentru faptul ca pentru strangerea lor s-au cheltuit sume ridicate de bani. Depunerea datelor la RODA ar parea, la o prima vedere, o pierdere a controlului, proprietarul devenind nesigur de destinatia finala a datelor.</font></p>
+<p align="justify">
+	<font face="Arial, Helvetica, sans-serif" size="2">RODA vine in intampinarea proprietarilor care doresc sa arhiveze date, prin doua solutii complementare:</font></p>
+<div align="left">
+	<ul>
+		<li>
+			<font face="Arial, Helvetica, sans-serif" size="2">incheierea de contracte de confidentialitate;</font></li>
+		<li>
+			<font face="Arial, Helvetica, sans-serif" size="2">proprietarii pot sa-si foloseasca parola pentru a controla in mod direct nivelul de acces la o baza de date sau alta.</font></li>
+	</ul>
+</div>
+<p align="justify">
+	<font face="Arial, Helvetica, sans-serif" size="2">Ceea ce trebuie inteles de la bun inceput este ca depunerea datelor nu inseamna pierderea controlului asupra acestora. Dimpotriva, toate drepturile raman ale proprietarilor, care le stipuleaza in conditiile de acces; arhiva nu face altceva decat sa administreze datele in folosul proprietarilor. RODA isi asuma astfel doar un rol de mediator intre proprietarii si utilizatorii datelor.</font></p>
+<p align="justify">
+	<font face="Arial, Helvetica, sans-serif" size="2">Daca aveti baze de date in stiintele sociale, care pot fi utilizate (cu conditiile specificate in prealabil), atunci va rugam sa luati in considerare depunerea acestor date la RODA.</font></p>
+	
+	
+	]]>
+	</content>
+	<cms_layout>roda-main-ro</cms_layout>
+	<pagetype>content</pagetype>
+	<cacheable>3600</cacheable>
+	<default_page>0</default_page>
+	<external_redirect></external_redirect>
+	<internal_redirect></internal_redirect>
+	<navigable>true</navigable>
+	<published>true</published>
+	<target></target>
+	<visible>true</visible>
+</pagedata>

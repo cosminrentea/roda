@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pagedata>
+	<title>Costuri</title>
+	<menutitle>Costuri</menutitle>
+	<synopsis><![CDATA[Pentru utilizatorii din domeniul academic care inregistreaza un proiect de cercetare academic, seturile de date vor fi gratuite, singurele costuri fiind legate de mediile de stocare (discheta, CD-ul) si de cele postale. Gratuitatea absoluta se realizeaza numai in cazul descarcarii directe de pe pagina de web.]]></synopsis>
+	<lang>ro</lang>
+	<content><![CDATA[
+	<p align="justify">
+	<font face="Arial, Helvetica, sans-serif" size="2">Pentru utilizatorii din domeniul academic care inregistreaza un proiect de cercetare academic, seturile de date vor fi gratuite, singurele costuri fiind legate de mediile de stocare (discheta, CD-ul) si de cele postale. Gratuitatea absoluta se realizeaza numai in cazul descarcarii directe de pe pagina de web.</font></p>
+<p align="justify">
+	<font face="Arial, Helvetica, sans-serif" size="2">Pentru celelalte categorii de utilizatori si anumite seturi de date, insa, anumite costuri vor trebui suportate.<br />
+	Costurile legate de livrarea seturilor de date se calculeaza in functie de finantarea proiectului pentru care se cer datele respective. Spre exemplu, un utilizator academic care lucreaza pentru un proiect cu finantare comerciala va fi facturat la fel ca si un utilizator comercial. Tipurile de finantare a proiectelor sunt legate de categoriile de utilizatori, insa ele nu trebuie confundate.</font></p>
+<p align="justify">
+	<font face="Arial, Helvetica, sans-serif" size="2">Pentru a descarca seturi de date din catalogul de date, utilizatorii inregistrati vor trebui sa specifice proiectul de cercetare in cadrul caruia vor fi folosite datele. Dupa intrarea in sistem pe baza de parola, utilizatorul va dispune de un nou meniu, special, unde pot fi inregistrate proiecte de cercetare.</font></p>
+<p align="justify">
+	<font face="Arial, Helvetica, sans-serif" size="2">Mai jos sunt prezentate tipurile de finantare a proiectelor in functie de care se calculeaza costul livrarii unui set de date sau altul.</font></p>
+<table border="1" style="border-style:solid; border-width:2px; border-color:black;" width="100%">
+	<tbody>
+		<tr>
+			<td height="23" width="20%">
+				<div align="center">
+					<font color="#FF0000" face="Arial, Helvetica, sans-serif" size="2"><b>Categoria<br />
+					de finantare</b></font></div>
+			</td>
+			<td height="23" width="80%">
+				<div align="center">
+					<font color="#FF0000" face="Arial, Helvetica, sans-serif" size="2"><b>Descriere</b></font></div>
+			</td>
+		</tr>
+		<tr>
+			<td height="106" width="20%">
+				<div align="center">
+					<font color="#0000FF" face="Arial, Helvetica, sans-serif" size="2"><b>Academica</b></font></div>
+			</td>
+			<td height="106" width="80%">
+				<ul>
+					<li>
+						<font face="Arial, Helvetica, sans-serif" size="2">Proiecte de cercetare ale Universitatilor</font></li>
+					<li>
+						<font face="Arial, Helvetica, sans-serif" size="2">Proiecte de cercetare ale Academiei Romane</font></li>
+					<li>
+						<font face="Arial, Helvetica, sans-serif" size="2">Proiecte de cercetare ale institutelor de cercetare fundamentala (inclusiv cele universitare)</font></li>
+					<li>
+						<font face="Arial, Helvetica, sans-serif" size="2">Date cerute de studenti, pentru scrierea unui referat sau a unei teze</font></li>
+					<li>
+						<font face="Arial, Helvetica, sans-serif" size="2">Date cerute pentru scopuri didactice</font></li>
+				</ul>
+			</td>
+		</tr>
+		<tr>
+			<td height="75" width="20%">
+				<div align="center">
+					<font color="#0000FF" face="Arial, Helvetica, sans-serif" size="2"><b>Guvernamentala /<br />
+					Non-profit</b></font></div>
+			</td>
+			<td height="75" width="80%">
+				<ul>
+					<li>
+						<font face="Arial, Helvetica, sans-serif" size="2">Proiectul de cercetare este comandat si finantat de un departament guvernamental</font></li>
+					<li>
+						<font face="Arial, Helvetica, sans-serif" size="2">Proiectul de cercetare este finantat de o organizatie de caritate sau non-profit</font></li>
+				</ul>
+			</td>
+		</tr>
+		<tr>
+			<td height="24" width="20%">
+				<div align="center">
+					<font color="#0000FF" face="Arial, Helvetica, sans-serif" size="2"><b>Comerciala</b></font></div>
+			</td>
+			<td height="24" width="80%">
+				<ul>
+					<li>
+						<font face="Arial, Helvetica, sans-serif" size="2">Proiectul de cercetare este finantat de o organizatie comerciala</font></li>
+				</ul>
+			</td>
+		</tr>
+		<tr>
+			<td height="76" width="20%">
+				<div align="center">
+					<font color="#0000FF" face="Arial, Helvetica, sans-serif" size="2"><b>Personala</b></font></div>
+			</td>
+			<td height="76" width="80%">
+				<ul>
+					<li>
+						<font face="Arial, Helvetica, sans-serif" size="2">Datele cerute sunt exclusiv pentru uz individual, legate de istorii locale sau date genealogice (in masura in care arhiva detine asemenea seturi de date). Datele cerute nu pot fi legate de ocupare pe piata fortei de munca sau de orice alte aspecte institutionale. In acelasi timp, proiectul de cercetare nu poate fi finantat din alte surse decat cele proprii.</font></li>
+				</ul>
+			</td>
+		</tr>
+	</tbody>
+</table>
+<p>
+	&nbsp;</p>
+	
+	]]>
+	</content>
+	<cms_layout>roda-main-ro</cms_layout>
+	<pagetype>content</pagetype>
+	<cacheable>3600</cacheable>
+	<default_page>0</default_page>
+	<external_redirect></external_redirect>
+	<internal_redirect></internal_redirect>
+	<navigable>true</navigable>
+	<published>true</published>
+	<target></target>
+	<visible>true</visible>
+</pagedata>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pagedata>
+	<title>Acasa</title>
+	<menutitle>Acasa</menutitle>
+	<synopsis><![CDATA[RODA este institutia nationala din Romania specializata in arhivarea colectiilor de date electronice provenite din cercetarea sociala.]]></synopsis>
+	<lang>ro</lang>
+	<content><![CDATA[
+	<H1>Bine ati venit la RODA - Arhiva Romana de Date Sociale</H1>
+	<p align="justify">
+	<font face="Arial, Helvetica, sans-serif" size="2">RODA este institutia nationala din Romania specializata in arhivarea colectiilor de date electronice provenite din cercetarea sociala.</font></p>
+<p align="justify">
+	<font face="Arial, Helvetica, sans-serif" size="2">Arhiva detine o colectie computerizata de date accesibila comunitatii academice si unui public interesat, pentru analiza secundara si analiza comparativa, sub anumite <a href="http://roda.ro/public/RO/template.php?url=8">categorii de acces</a> care variaza de la acces liber pana la acces restrictionat de catre proprietarul datelor. Arhiva serveste ca intermediar intre proprietarii datelor si utilizatorii acestora.</font></p>
+<p align="justify">
+	<font face="Arial, Helvetica, sans-serif" size="2">RODA se integreaza intr-o retea globala de arhive, fiind afiliata din februarie 2002 la <a href="http://www.nsd.uib.no/cessda/"><b>CESSDA</b></a> (Council of European Social Science Data Archives) si din decembrie 2002 la <a href="http://www.ifdo.org/"><b>IFDO</b></a> (International Federation of Data Organizations). Prin aceste legaturi, se faciliteaza posibilitatea schimburilor internationale de date; prin intermediul RODA, utilizatorii au acces la baze de date nationale si internationale ale altor arhive din Europa.</font></p>
+<p align="justify">
+	<font face="Arial, Helvetica, sans-serif" size="2">RODA este finantata de <a href="http://www.iccv.ro/" target="_blank">Institutul de Cercetare a Calitatii Vietii</a> si de <a href="http://www.sas.unibuc.ro/" target="_blank">Facultatea de Sociologie si Asistenta Sociala</a> a <a href="http://www.unibuc.ro/" target="_blank">Universitatii din Bucuresti</a>.</font></p>
+<p align="justify">
+	<font face="Arial, Helvetica, sans-serif" size="2">Din acest consortiu mai fac parte, ca institutii asociate: Institutul de Sociologie &quot;Dimitrie Gusti&quot;, <a href="http://asis.ubbcluj.ro/" target="_blank">Facultatea de Sociologie si Asistenta Sociala</a> a <a href="http://www.ubbcluj.ro/" target="_blank">Universitatii Babes-Bolyiai</a>, <a href="http://www.uoradea.ro/romanian/topic/28/Facultatea$de$Stiinte$Socio-Umane.html">Facultatea de Stiinte Socio-Umane</a> a <a href="http://www.uoradea.ro/romanian/">Universitatii din Oradea</a>, <a href="http://www.curs.ro/" target="_blank">CURS - Centrul de Sociologie Urbana si Regionala</a> si <a href="http://www.mmt.ro/" target="_blank">MMT - Metro Media Transilvania</a>.</font></p>
+	]]>
+	</content>
+	<cms_layout>roda-main-ro</cms_layout>
+	<pagetype>content</pagetype>
+	<cacheable>3600</cacheable>
+	<default_page>0</default_page>
+	<external_redirect></external_redirect>
+	<internal_redirect></internal_redirect>
+	<navigable>true</navigable>
+	<published>true</published>
+	<target></target>
+	<visible>true</visible>
+</pagedata>

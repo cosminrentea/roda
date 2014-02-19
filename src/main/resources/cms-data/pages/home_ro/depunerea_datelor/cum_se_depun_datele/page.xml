@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pagedata>
+	<title>Cum se depun datele</title>
+	<menutitle>Cum se depun datele</menutitle>
+	<synopsis><![CDATA[Procesul de depunere a datelor este foarte important, odata pentru a intelege foarte clar doleantele proprietarilor de date, precum si pentru o integrare cat mai rapida si mai corecta a seturilor de date in arhiva noastra.]]></!></synopsis>
+	<lang>ro</lang>
+	<content><![CDATA[
+	<p align="justify">
+	<font face="Arial, Helvetica, sans-serif" size="2">Procesul de depunere a datelor este foarte important, odata pentru a intelege foarte clar doleantele proprietarilor de date, precum si pentru o integrare cat mai rapida si mai corecta a seturilor de date in arhiva noastra.</font></p>
+<p align="justify">
+	<font face="Arial, Helvetica, sans-serif" size="2">In informatiile de mai jos, puteti afla care sunt etapele procesului de depunere, cum trebuie sa fie pregatite datele pentru depunere, cum ajung datele la RODA si ce se va intampla cu datele dupa ce ajung la noi. Daca aveti orice nedumeriri sau intrebari, nu ezitati sa ne <a href="http://roda.ro/public/RO/template.php?url=4">contactati</a> pentru lamuriri suplimentare.</font></p>
+<p align="justify">
+	<font face="Arial, Helvetica, sans-serif" size="2">Pentru ca setul de date sa fie complet utilizabil, orice cercetator sau persoana interesata va avea nevoie de niste informatii suplimentare. Fara o documentatie bine structurata, baza de date nu poate fi folosita. Pentru a putea depune setul de date, va invitam:</font></p>
+<div align="justify">
+	<ul>
+		<li>
+			<font face="Arial, Helvetica, sans-serif" size="2">sa completati <a href="[[FileUrl: depunere]]">Formularul de depunere</a> (cu detalii despre setul de date depus);</font></li>
+		<li>
+			<font face="Arial, Helvetica, sans-serif" size="2">sa completati si sa semnati <a href="licents">Acordul de licentiere</a>, unde se vor specifica conditiile si restrictiile in care datele vor fi distribuite utilizatorilor;</font></li>
+		<li>
+			<font face="Arial, Helvetica, sans-serif" size="2">sa ne trimiteti aceste acte, odata cu setul de date si documentatia aferenta.</font></li>
+	</ul>
+</div>
+<div align="justify">
+	<ul>
+		Daca doriti sa completati aceste informatii in format electronic, puteti descarca fisierele in format Word de mai jos<br />
+		(atentie insa, Acordul de licentiere trebuie semnat in format fizic):
+		<li>
+			<font face="Arial, Helvetica, sans-serif" size="2"><a href="[[FileUrl: depuneredoc]]">Formularul de depunere in format Word</a></font></li>
+		<li>
+			<font face="Arial, Helvetica, sans-serif" size="2"><a href="[[FileUrl: licentadoc]]">Acordul de licentiere in format Word</a></font></li>
+	</ul>
+</div>
+<p align="justify">
+	<font face="Arial, Helvetica, sans-serif" size="2">Putem folosi baze de date construite in ASCII (de preferinta delimitate prin tab), R, Access, Excel, SPSS, SAS, STATA.<br />
+	Informatiile pentru documentarea setului de date pot fi trimise in format OpenOffice, Word, RTF, Acrobat PDF, atat in format electronic cat si in forma tiparita.<br />
+	Descrierile variabilelor si a valorilor pot fi trimise in orice format (SPSS Syntax, Excel, R sau in format simplu ASCII).</font></p>
+<p align="justify">
+	<b><font color="#FF0000" face="Arial, Helvetica, sans-serif" size="2">Va sugeram sa pregatiti:</font></b></p>
+<p align="justify">
+	<font face="Arial, Helvetica, sans-serif" size="2">- o copie a setului de date;<br />
+	- o copie a chestionarului, pe cat posibil cu numele variabilelor care sa fie identice cu cele din baza de date;<br />
+	- detalii despre schema de esantionare folosita si modul de culegere a datelor;<br />
+	- o copie a instructiunilor pentru operatorii de teren;<br />
+	- informatii despre variabile si valorile acestora, codificarea si schemele de clasificare folosite;<br />
+	- informatii despre variabilele construite;<br />
+	- detalii despre ponderarile folosite si variabilele de ponderare.</font></p>
+<p align="justify">
+	<font face="Arial, Helvetica, sans-serif" size="2">Mediile de stocare pe care le putem folosi sunt discheta si CD-ul, insa putem transfera fisierele si prin FTP.</font></p>
+	
+	]]>
+	</content>
+	<cms_layout>roda-main-ro</cms_layout>
+	<pagetype>content</pagetype>
+	<cacheable>3600</cacheable>
+	<default_page>0</default_page>
+	<external_redirect></external_redirect>
+	<internal_redirect></internal_redirect>
+	<navigable>true</navigable>
+	<published>true</published>
+	<target></target>
+	<visible>true</visible>
+</pagedata>

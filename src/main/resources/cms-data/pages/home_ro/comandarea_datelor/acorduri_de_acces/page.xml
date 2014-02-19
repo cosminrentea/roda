@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pagedata>
+	<title>Acordul de acces</title>
+	<menutitle>Acordul de acces</menutitle>
+	<synopsis></synopsis>
+	<lang></lang>
+	<content><![CDATA[
+	<p align="justify">
+	<font face="Arial, Helvetica, sans-serif" size="2">Acordul de acces este un document pe care orice utilizator trebuie sa il semneze pentru a obtine validarea contului RODA. Acest document trebuie semnat ***doar o singura data***, dupa care utilizatorul isi poate folosi contul pentru descarcarea seturilor de date accesibile categoriei din care face parte.</font></p>
+<p align="left">
+	<font face="Arial, Helvetica, sans-serif" size="2">Acordul de acces pentru utilizarea datelor il puteti obtine:</font></p>
+<div align="left">
+	<ul>
+		<li>
+			<font face="Arial, Helvetica, sans-serif" size="2">prin posta, la adresa pe care ne-o specificati;</font></li>
+		<li>
+			<font face="Arial, Helvetica, sans-serif" size="2">direct de la sediul arhivei;</font></li>
+		<li>
+			<font face="Arial, Helvetica, sans-serif" size="2">prin descarcarea de pe pagina noastra web.</font></li>
+	</ul>
+</div>
+<p align="justify">
+	<font face="Arial, Helvetica, sans-serif" size="2">Formularul este diferit, in functie de scopul folosirii datelor comandate.<br />
+	<br />
+	Pentru utilizarea individuala, puteti descarca acest <a href="[[FileUrl: individual]]">Acord de acces individual</a>.<br />
+	<br />
+	Pentru utilizarea datelor in scop didactic, atat profesorul cat si studentii vor trebui sa semneze un <a href="[[FileUrl: didactic]]">Acord de acces didactic</a>.<br />
+	Deoarece studentii se schimba anual, acest document trebuie actualizat, semnat si trimis arhivei in luna iulie a fiecarui an.</font></p>
+	
+	]]>
+	</content>
+	<cms_layout>roda-main-ro</cms_layout>
+	<pagetype>content</pagetype>
+	<cacheable>3600</cacheable>
+	<default_page>0</default_page>
+	<external_redirect></external_redirect>
+	<internal_redirect></internal_redirect>
+	<navigable>true</navigable>
+	<published>true</published>
+	<target></target>
+	<visible></visible>
+</pagedata>

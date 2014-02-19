@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pagedata>
+	<title>Crearea datelor</title>
+	<menutitle>Crearea datelor</menutitle>
+	<synopsis><![CDATA[Un set de date bine documentat are mai multe sanse de a fi gasit in procesul de cautare; de aceea, noi punem un accent deosebit pe documentare si depunem un efort sustinut sa culegem toate informatiile disponibile pentru fiecare set de date.]]></synopsis>
+	<lang>ro</lang>
+	<content><![CDATA[
+	<p align="justify">
+	<font face="Arial, Helvetica, sans-serif" size="2">Pentru persoanele sau institutiile care doresc sa creeze date la standarde inalte, si pentru pregatirea datelor pentru arhivare, RODA pune la dispozitie un <a href="[[Code: PageLinkbyUrl('ghid_de_buna_practica')]]">ghid de buna practica</a>.</font></p>
+<p align="justify">
+	<font face="Arial, Helvetica, sans-serif" size="2">Un set de date bine documentat are mai multe sanse de a fi gasit in procesul de cautare; de aceea, noi punem un accent deosebit pe documentare si depunem un efort sustinut sa culegem toate informatiile disponibile pentru fiecare set de date.</font></p>
+<p align="justify">
+	<font face="Arial, Helvetica, sans-serif" size="2">Ne-ar ajuta foarte mult ca producatorii datelor sa aduca aceste informatii de la bun inceput, economisind timp si efort. In plus, pot fi prevenite orice interpretari eronate legate de informatiile insuficiente.</font></p>
+<p align="justify">
+	<font face="Arial, Helvetica, sans-serif" size="2">O buna documentare poate sa usureze atingerea unor standarde comune si sa mentina calitatea inalta a cercetarii primare si secundare.</font></p>
+	
+	]]>
+	</content>
+	<cms_layout>roda-main-ro</cms_layout>
+	<pagetype>content</pagetype>
+	<cacheable>3600</cacheable>
+	<default_page>0</default_page>
+	<external_redirect></external_redirect>
+	<internal_redirect></internal_redirect>
+	<navigable>true</navigable>
+	<published>true</published>
+	<target></target>
+	<visible>true</visible>
+</pagedata>

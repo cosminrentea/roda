@@ -1,0 +1,115 @@
+<style>
+
+body{
+	padding:0px;
+	margin:0px;
+	background: url([[FileURL:background]]);
+	padding-bottom:30px;
+}
+
+#large_box{
+	width:1020px;
+	margin:0px auto;
+	background:white;
+	-webkit-box-shadow: 0px 0px 9px 0px rgba(50, 50, 50, 0.75);
+-moz-box-shadow:    0px 0px 9px 0px rgba(50, 50, 50, 0.75);
+box-shadow:         0px 0px 9px 0px rgba(50, 50, 50, 0.75);
+}
+
+.box_logo{
+	background: #a0cfaf;
+	width:250px;
+	text-align:center;
+	padding:10px;
+}
+
+.box_header{
+	background:url('[[FileURL:header_en]]') bottom left no-repeat;
+}
+
+.footer{
+	background: url('[[FileURL:footer_en]]') no-repeat top right #a0cfaf;
+	min-height:85px;
+}
+
+#menuwrapper{
+	background: url([[FileURL:umbra]]) top left repeat-x #6ba562;
+	padding:10px 0px 20px;
+}
+
+#menuwrapper ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    margin-left:20px;
+}
+#menuwrapper ul li, .menu_sidebar ul li {
+    border-bottom: 1px dotted #C5C5C5;
+    font-size: 14px;
+    padding: 10px 17px;
+    position: relative;
+}
+#menuwrapper ul li a {
+    color: white;
+    display: block;
+    text-decoration: none;
+}
+#menuwrapper ul li a:hover {
+    color: #444;
+}
+#menuwrapper ul ul {
+    display: none;
+    position: absolute;
+    z-index: 500;
+    margin-left:0px;
+    background:#6ba562;
+}
+#menuwrapper ul li:hover ul {
+    display: block;
+    left: 218px;
+    position: absolute;
+    top: 0;
+    width: 80%;
+}
+#menuwrapper ul ul li ul {
+    display: none !important;
+}
+
+#menuwrapper ul li ul li a{
+	padding:3px 10px;
+}
+
+#cont_right{
+background: url([[FileURL:umbra]]) top left repeat-x;
+	color:#222;
+	font-family: Arial;
+	margin:0px auto;
+	padding:20px;
+	font-size:13px;
+padding-bottom:40px;
+}
+
+#cont_right a{
+	color:#6BA562;
+}
+
+#cont_right h1{
+	font-size:24px;
+	text-align:center;
+	font-weight:normal;
+	padding-bottom:10px;
+	border-bottom:3px solid #e7f2eb;
+	margin-bottom:30px;
+}
+
+#box_login{
+	background:url([[FileURL:umbra]]) top left repeat-x #f99e56;
+width:100%;
+padding-top:10px;
+text-align:center;
+}
+
+.left_sidebar{
+padding-bottom:50px;
+}
+</style>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pagedata>
+	<title>Comandarea datelor</title>
+	<menutitle>Comandarea datelor</menutitle>
+	<synopsis><![CDATA[Arhiva sprijina activitatea de cercetare, oferind accesul la baze de date sociale pentru analiza secundara, respectand cerintele de confidentialitate impuse de proprietarii datelor.]]></synopsis>
+	<lang></lang>
+	<content><![CDATA[<p align="justify">
+	<font face="Arial, Helvetica, sans-serif" size="2">Arhiva sprijina activitatea de cercetare, oferind accesul la baze de date sociale pentru analiza secundara, respectand cerintele de confidentialitate impuse de proprietarii datelor.</font></p>
+<p align="justify">
+	<font face="Arial, Helvetica, sans-serif" size="2">Arhiva isi propune sa asigure un acces la date cat se poate de liber, deschis si usor, insa proprietarii datelor sunt aceia care stabilesc conditiile de acces. Din aceste motive, utilizatorii vor fi impartiti in patru <a href="[[Code: PageLinkbyUrl('categorii_de_utilizatori')]]">categorii</a>, iar seturile de date vor avea patru <a href="[[Code: PageLinkbyUrl('niveluri_de_access')]]">niveluri de acces</a>.</font></p>
+<p align="justify">
+	<font face="Arial, Helvetica, sans-serif" size="2">Incepand cu luna iulie 2004, RODA a lansat un nou sistem de control al accesului; odata inregistrati cu nume de cont si parola, utilizatorii pot incepe descarcarea seturilor de date pe diferite niveluri de acces.</font></p>
+<p align="justify">
+	<font face="Arial, Helvetica, sans-serif" size="2">Seturile de date pentru care utilizatorii nu au suficiente drepturi pentru a le descarca pot fi comandate offline sau printr-un e-mail la adresa <a href="mailto:roda@roda.ro">roda@roda.ro</a>; cererea va ajunge la proprietarul datelor care va decide raspunsul.</font></p>
+<p align="justify">
+	<font face="Arial, Helvetica, sans-serif" size="2">Utilizatorii care nu au acces la internet pot sa comande seturile de date:</font></p>
+<div align="justify">
+	<ul>
+		<li>
+			<font face="Arial, Helvetica, sans-serif" size="2">direct la sediul arhivei</font></li>
+		<li>
+			<font face="Arial, Helvetica, sans-serif" size="2">printr-o scrisoare trimisa prin posta pe <a href="[[Code: PageLinkbyUrl('contact')]]">adresa noastra</a></font></li>
+	</ul>
+</div>
+<p align="justify">
+	<font face="Arial, Helvetica, sans-serif" size="2">Datele si documentatiile pot fi puse la dispozitia utilizatorilor pe orice mediu de stocare disponibil sau transfer electronic, in functie de numarul sau marimea seturilor de date cerute:</font></p>
+<div align="justify">
+	<ul>
+		<li>
+			<font face="Arial, Helvetica, sans-serif" size="2">discheta</font></li>
+		<li>
+			<font face="Arial, Helvetica, sans-serif" size="2">CD</font></li>
+		<li>
+			<font face="Arial, Helvetica, sans-serif" size="2">FTP</font></li>
+		<li>
+			<font face="Arial, Helvetica, sans-serif" size="2">descarcare directa de pe pagina de web</font></li>
+	</ul>
+</div>
+	]]>
+	</content>
+	<cms_layout>roda-main-ro</cms_layout>
+	<pagetype>content</pagetype>
+	<cacheable>3600</cacheable>
+	<default_page>0</default_page>
+	<external_redirect></external_redirect>
+	<internal_redirect></internal_redirect>
+	<navigable>true</navigable>
+	<published>true</published>
+	<target></target>
+	<visible></visible>
+</pagedata>

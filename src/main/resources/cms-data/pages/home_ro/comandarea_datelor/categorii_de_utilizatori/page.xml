@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pagedata>
+	<title>Categorii de utilizatori</title>
+	<menutitle>Categorii de utilizatori</menutitle>
+	<synopsis><![CDATA[Descrierea categoriilor de utilizatori]]></synopsis>
+	<lang>ro</lang>
+	<content><![CDATA[
+	<p align="justify">
+	<font face="Arial, Helvetica, sans-serif" size="2">Problema accesului la seturile de date este una foarte delicata. In acest proces sunt implicate doua tipuri de actori: utilizatorii si proprietarii seturilor de date. </font></p>
+<p align="justify">
+	<font face="Arial, Helvetica, sans-serif" size="2">Pe de o parte, utilizatorii isi doresc un acces liber si nerestrictionat la date, pe cat posibil gratis pentru toate seturile de date. </font></p>
+<p align="justify">
+	<font face="Arial, Helvetica, sans-serif" size="2">Pe de alta parte, proprietarii doresc pastrarea confidentialitatii asupra bazelor de date, si distribuirea acestora numai pe baza unui acord prestabilit; acesti actori sunt indreptatiti sa astepte o anumita forma de recompensa pentru ca au acceptat distribuirea bazelor de date. </font></p>
+<p align="justify">
+	<font face="Arial, Helvetica, sans-serif" size="2">Aceasta forma de recompensa poate lua diferite aspecte, de la asteptarea unui anumit raport scris, citari bibliografice, etc. pana la un aspect pecuniar, proprietarii acceptand distribuirea datelor contra cost. </font></p>
+<div align="left">
+	<table border="1" style="border-style:solid; border-width:2px; border-color:black;padding:10">
+		<tbody>
+			<tr>
+				<td style="padding:5">
+					<b><font color="#FF0000" face="Arial, Helvetica, sans-serif" size="2">I.</font><font face="Arial, Helvetica, sans-serif" size="2"><font color="#0000FF"> Utilizatori din <font color="#009900">domeniul<br />
+					academic</font>: </font><br />
+					</font></b><font face="Arial, Helvetica, sans-serif" size="2">cercetatori, profesori, studenti.</font><br />
+					<b><font face="Arial, Helvetica, sans-serif" size="2"> </font></b></td>
+				<td style="padding:5">
+					<p align="justify">
+						<font face="Arial, Helvetica, sans-serif" size="2">Acesti utilizatori vor putea consulta liber seturile de date aflate in categoriile de acces <a href="http://roda.ro/public/RO/template.php?url=8"><b>0</b></a> si <a href="http://roda.ro/public/RO/template.php?url=8"><b>A</b></a>; unele date (categoria de acces <a href="http://roda.ro/public/RO/template.php?url=8"><strong>B</strong></a>) vor putea fi accesate fara alte costuri suplimentare doar in masura in care proprietarul datelor isi exprima acordul iar datele din categoria <a href="http://roda.ro/public/RO/template.php?url=8"><strong>C</strong></a> nu sunt disponibile decat contra cost, conditionat de contractele de confidentialitate incheiate intre RODA si proprietarii datelor.<br />
+						</font><font face="Arial, Helvetica, sans-serif" size="2">Este posibila folosirea seturilor de date in scop didactic, prin prezentare acestora in suporturile de curs ori seminar; in acest caz, atat profesorii cat si studentii vor trebui sa semneze un <a href="http://roda.ro/public/RO/template.php?url=10">acord de acces didactic</a> al folosirii seturilor de date.</font></p>
+				</td>
+			</tr>
+			<tr>
+				<td style="padding:5">
+					<b><font color="#FF0000" face="Arial, Helvetica, sans-serif" size="2">II.</font><font face="Arial, Helvetica, sans-serif" size="2"> <font color="#0000FF">Utilizatori din <font color="#009900">domeniul</font></font> <font color="#009900">guvernamental / non-profit</font><br />
+					</font></b></td>
+				<td style="padding:5">
+					<p align="justify">
+						<font face="Arial, Helvetica, sans-serif" size="2">Acces liber seturile de date din categoria <a href="http://roda.ro/public/RO/template.php?url=8"><strong>0</strong></a><font color="#000000">. Pentru acesti utilizatori, seturile de date <a href="http://roda.ro/public/RO/template.php?url=8"><strong>A</strong></a> si <a href="http://roda.ro/public/RO/template.php?url=8"><strong>B</strong></a> vor fi considerate in categoria <a href="http://roda.ro/public/RO/template.php?url=8"><strong>B</strong></a>: accesul la date este asigurat doar in masura in care proprietarii datelor isi exprima acordul. In plus, datele vor trebui utilizate doar in scopuri necomerciale; proiectul de cercetare trebuie sa se refere doar la cercetarea fundamentala ori imbunatatirea sistemului social.<br />
+						Datele din categoria <a href="http://roda.ro/public/RO/template.php?url=8"><strong>C</strong></a> vor fi obtinute doar in functie de achitarea sumei specificate de proprietari. Unele date din categoria <a href="http://roda.ro/public/RO/template.php?url=8"><strong>A</strong></a> sau <a href="http://roda.ro/public/RO/template.php?url=8"><strong>B</strong></a> pot fi considerate in categoria <a href="http://roda.ro/public/RO/template.php?url=8"><strong>C</strong></a> daca proprietarul solicita acest lucru.</font></font></p>
+				</td>
+			</tr>
+			<tr>
+				<td style="padding:5">
+					<b><font color="#FF0000" face="Arial, Helvetica, sans-serif" size="2">III.</font><font face="Arial, Helvetica, sans-serif" size="2"> <font color="#0000FF">Utilizatori</font> <font color="#009900">individuali</font> </font></b></td>
+				<td style="padding:5">
+					<p align="justify">
+						<font face="Arial, Helvetica, sans-serif" size="2">Acces liber la seturile de date din categoria <a href="http://roda.ro/public/RO/template.php?url=8"><strong>0</strong></a>. Toate celelalte seturi de date sunt considerate a fi in categoria <a href="http://roda.ro/public/RO/template.php?url=8"> <strong>B</strong></a> sau <a href="http://roda.ro/public/RO/template.php?url=8"><strong>C</strong></a>, in functie de decizia de moment a proprietarului. Avand in vedere slaba credibilitate pe care o prezinta o persoana individuala, sunt destul de putine sanse ca acele date sa fie obtinute in mod gratuit. In masura in care utilizatorul este un cercetator recunoscut insa neafiliat profesional, care doreste sa foloseasca datele in cercetare fundamentala iar proprietarul datelor este de acord, accesul la date ar putea fi asigurat fara nici un cost.</font></p>
+				</td>
+			</tr>
+			<tr>
+				<td style="padding:5">
+					<b><font color="#FF0000" face="Arial, Helvetica, sans-serif" size="2">IV.</font><font face="Arial, Helvetica, sans-serif" size="2"> <font color="#0000FF">Utilizatori din </font><br />
+					<font color="#009900">domeniul comercial</font><br />
+					</font></b></td>
+				<td style="padding:5">
+					<p align="justify">
+						<font face="Arial, Helvetica, sans-serif" size="2">Acces liber la seturile de date din categoria <a href="http://roda.ro/public/RO/template.php?url=8"><strong>0</strong></a>. Toate celelalte seturi de date sunt considerate in categoria <a href="http://roda.ro/public/RO/template.php?url=8"> <strong>C</strong></a>, si pot fi obtinute numai dupa achitarea sumei specificate de proprietari, cu acordul acestora.</font></p>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<p align="justify">
+	<font face="Arial, Helvetica, sans-serif" size="2">Utilizatorii care doresc seturi de date aflate in categoriile <a href="http://roda.ro/public/RO/template.php?url=8"><strong>A</strong></a> si <strong><a href="http://roda.ro/public/RO/template.php?url=8">B</a></strong> vor trebui sa specifice numele proiectului de cercetare in cadrul caruia solicita datele, domeniul de aplicare al acestui proiect precum si procentele de finantare din diferitele surse. In acest sens, utilizatorul ca trebui mai intai sa inregistreze un proiect, sau sa aleaga unul din lista proiectelor deja inregistrare.<br />
+	Pentru a putea diferentia persoanele pe tipuri de utilizatori, este necesara mai intai o <a href="http://roda.ro/public/RO/template.php?url=9">inregistrare a utilizatorilor</a>, in urma careia personalul arhivei se asigura de validitatea datelor furnizate. </font></p>
+<p align="justify">
+	<font face="Arial, Helvetica, Sans-serif" size="2">Trebuie mentionat ca aceasta impartire a drepturilor de folosire a bazelor de date este propunerea RODA. Proprietarii datelor sunt aceia care hotarasc ce destinatie finala au datele, ce categorii de utilizatori au dreptul sa le foloseasca si in ce conditii. Spre exemplu, daca proprietarul datelor decide, unele date pot fi trebute in categoria <font color="#0000FF"><strong><a href="http://roda.ro/public/RO/template.php?url=8">B</a></strong></font> pentru utilizatorii comerciali (adica acestia pot folosi datele numai cu conditia ca proprietarul datelor sa-si dea acordul in prealabil). Pentru fiecare baza de date din catalogul RODA, vor fi prezentate nivelurile de acces specificate de proprietari, pentru fiecare categorie de utilizatori.</font></p>
+	
+	]]>
+	</content>
+	<cms_layout>roda-main-ro</cms_layout>
+	<pagetype>content</pagetype>
+	<cacheable>3600</cacheable>
+	<default_page>0</default_page>
+	<external_redirect></external_redirect>
+	<internal_redirect></internal_redirect>
+	<navigable>true</navigable>
+	<published>true</published>
+	<target></target>
+	<visible>true</visible>
+</pagedata>

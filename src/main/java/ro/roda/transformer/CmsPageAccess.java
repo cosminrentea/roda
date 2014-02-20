@@ -30,6 +30,7 @@ public class CmsPageAccess extends JsonInfo {
 
 		@SuppressWarnings("deprecation")
 		// TODO; Date.parse(request.getHeader("timestamp")) + userid, username
+		// TODO: getRemoteAddr
 		CmsPageAccess access = new CmsPageAccess(null, request.getHeader("Ipaddr"), null, null,
 				request.getHeader("Referer"), request.getHeader("User-Agent"));
 

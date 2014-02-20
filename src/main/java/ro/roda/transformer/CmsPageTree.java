@@ -79,18 +79,22 @@ public class CmsPageTree extends CmsPageInfo {
 			result = new CmsPageTree(page);
 			result.setName(page.getName());
 
-			Set<CmsPageInfo> dataByCmsPageSet = null;
+			Set<CmsPageTree> dataByCmsPageSet = null;
 
 			Set<CmsPage> children = page.getCmsPages();
-			Set<CmsPage> pages = page.getCmsPages();
+			// Set<CmsPage> pages = page.getCmsPages();
 
 			int maxDepth = 0;
 			if (children != null && children.size() > 0) {
-				dataByCmsPageSet = new TreeSet<CmsPageInfo>();
+
+				System.out.println("The number of children of the page " + id + " is " + children.size());
+
+				dataByCmsPageSet = new TreeSet<CmsPageTree>();
 
 				Iterator<CmsPage> childrenIterator = children.iterator();
 				while (childrenIterator.hasNext()) {
 					CmsPage childCmsPage = childrenIterator.next();
+					System.out.println("Getting tree for page; " + childCmsPage.getId());
 					CmsPageTree cmsPageTree = findCmsPageTree(childCmsPage.getId());
 					dataByCmsPageSet.add(cmsPageTree);
 					if (maxDepth < cmsPageTree.getDepth()) {
@@ -100,86 +104,13 @@ public class CmsPageTree extends CmsPageInfo {
 				result.setDepth(maxDepth + 1);
 			}
 
-			if (pages != null && pages.size() > 0) {
-				if (dataByCmsPageSet == null) {
-					dataByCmsPageSet = new TreeSet<CmsPageInfo>();
-				}
-
-				Iterator<CmsPage> pagesIterator = pages.iterator();
-				while (pagesIterator.hasNext()) {
-					dataByCmsPageSet.add(new CmsPageInfo(pagesIterator.next()));
-				}
-			}
 			result.setChildren(dataByCmsPageSet);
 		}
 		return result;
 
 	}
 
-	// List<CmsPage> cmsPages = CmsPage.entityManager()
-	// .createQuery("SELECT o FROM CmsPage o WHERE o.parentId IS NULL",
-	// CmsLayoutGroup.class)
-	// .getResultList();
-	//
-	// if (layoutGroups != null && layoutGroups.size() > 0) {
-	// Iterator<CmsLayoutGroup> layoutGroupsIterator = layoutGroups.iterator();
-	//
-	// while (layoutGroupsIterator.hasNext()) {
-	// CmsLayoutGroup layoutGroup = (CmsLayoutGroup)
-	// layoutGroupsIterator.next();
-	//
-	// result.add(findLayoutTree(layoutGroup.getId()));
-	// }
-	// }
-	// return result;
-	// }
-	//
-	// public static CmsPageTree findCmsPageTree(Integer id) {
-	// CmsPageTree result = null;
-	// CmsLayoutGroup layoutGroup = CmsLayoutGroup.findCmsLayoutGroup(id);
-	//
-	// if (layoutGroup != null) {
-	// result = new CmsPageTree(layoutGroup);
-	// result.setName(layoutGroup.getName());
-	//
-	// Set<LayoutList> dataByLayoutGroupSet = null;
-	//
-	// Set<CmsLayoutGroup> children = layoutGroup.getCmsLayoutGroups();
-	// Set<CmsLayout> layouts = layoutGroup.getCmsLayouts();
-	//
-	// int maxDepth = 0;
-	// if (children != null && children.size() > 0) {
-	// dataByLayoutGroupSet = new TreeSet<LayoutList>();
-	//
-	// Iterator<CmsLayoutGroup> childrenIterator = children.iterator();
-	// while (childrenIterator.hasNext()) {
-	// CmsLayoutGroup childCmsLayoutGroup = childrenIterator.next();
-	// CmsPageTree layoutTree = findLayoutTree(childCmsLayoutGroup.getId());
-	// dataByLayoutGroupSet.add(layoutTree);
-	// if (maxDepth < layoutTree.getDepth()) {
-	// maxDepth = layoutTree.getDepth();
-	// }
-	// }
-	// result.setDepth(maxDepth + 1);
-	// }
-	//
-	// if (layouts != null && layouts.size() > 0) {
-	// if (dataByLayoutGroupSet == null) {
-	// dataByLayoutGroupSet = new TreeSet<LayoutList>();
-	// }
-	//
-	// Iterator<CmsLayout> layoutsIterator = layouts.iterator();
-	// while (layoutsIterator.hasNext()) {
-	// dataByLayoutGroupSet.add(new LayoutList(layoutsIterator.next()));
-	// }
-	// }
-	// result.setChildren(dataByLayoutGroupSet);
-	// }
-	// return result;
-	//
-	// }
-
-	private Set<CmsPageInfo> children;
+	private Set<CmsPageTree> children;
 
 	private boolean leaf;
 
@@ -187,11 +118,11 @@ public class CmsPageTree extends CmsPageInfo {
 
 	private boolean expanded = true;
 
-	public Set<CmsPageInfo> getChildren() {
+	public Set<CmsPageTree> getChildren() {
 		return children;
 	}
 
-	public void setChildren(Set<CmsPageInfo> children) {
+	public void setChildren(Set<CmsPageTree> children) {
 		this.children = children;
 	}
 
@@ -229,15 +160,15 @@ public class CmsPageTree extends CmsPageInfo {
 		} else {
 			this.leaf = false;
 		}
-		this.children = new HashSet<CmsPageInfo>();
+		this.children = new HashSet<CmsPageTree>();
 	}
 
-	public CmsPageTree(CmsPage cmsPage, Set<CmsPageInfo> children) {
+	public CmsPageTree(CmsPage cmsPage, Set<CmsPageTree> children) {
 		this(cmsPage);
 		this.children = children;
 	}
 
-	public CmsPageTree(CmsPage cmsPage, String name, Set<CmsPageInfo> children) {
+	public CmsPageTree(CmsPage cmsPage, String name, Set<CmsPageTree> children) {
 		this(cmsPage, children);
 		this.setName(name);
 	}

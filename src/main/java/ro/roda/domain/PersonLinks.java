@@ -185,19 +185,20 @@ public class PersonLinks {
 	private Person personId;
 
 	@Column(name = "simscore", columnDefinition = "numeric", precision = 10, scale = 2)
-	@NotNull
+	// @NotNull
 	private BigDecimal simscore;
 
 	@Column(name = "status", columnDefinition = "int4")
-	@NotNull
+	// @NotNull
 	private Integer status;
 
 	@ManyToOne
-	@JoinColumn(name = "status_by", columnDefinition = "integer", referencedColumnName = "id", nullable = false)
+	@JoinColumn(name = "status_by", columnDefinition = "integer", referencedColumnName = "id", nullable = true)
+	// nullable = false)
 	private Users statusBy;
 
 	@Column(name = "status_time", columnDefinition = "timestamp")
-	@NotNull
+	// @NotNull
 	@Temporal(TemporalType.TIMESTAMP)
 	@DateTimeFormat(style = "MM")
 	private Calendar statusTime;

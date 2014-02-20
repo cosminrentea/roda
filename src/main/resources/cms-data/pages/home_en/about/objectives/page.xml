@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pagedata>
+	<title>RODA objectives</title>
+	<menutitle>RODA objectives</menutitle>
+	<synopsis><![CDATA[]]></synopsis>
+	<lang>en</lang>
+	<content><![CDATA[<ul>
+	<li>
+		<div align="left">
+			<font face="Arial, Helvetica, sans-serif" size="2">enables the use of the existing data;</font></div>
+	</li>
+</ul>
+<ul>
+	<li>
+		<div align="left">
+			<font face="Arial, Helvetica, sans-serif" size="2">promotes the data secondary analysis; </font></div>
+	</li>
+</ul>
+<ul>
+	<li>
+		<div align="left">
+			<font face="Arial, Helvetica, sans-serif" size="2">supports the methodological training of social science students; </font></div>
+	</li>
+</ul>
+<ul>
+	<li>
+		<div align="left">
+			<font face="Arial, Helvetica, sans-serif" size="2">preserves the data obtained from social research and prevents them from being lost or damaged;</font></div>
+	</li>
+</ul>
+<ul>
+	<li>
+		<div align="left">
+			<font face="Arial, Helvetica, sans-serif" size="2">ensures information and expert services to the database creators and users, regarding the data documentation standards. </font></div>
+	</li>
+</ul>
+	]]>
+	</content>
+	<cms_layout>roda-main-en</cms_layout>
+	<pagetype>content</pagetype>
+	<cacheable>3600</cacheable>
+	<default_page>0</default_page>
+	<external_redirect></external_redirect>
+	<internal_redirect></internal_redirect>
+	<navigable>true</navigable>
+	<published>true</published>
+	<target></target>
+	<visible>true</visible>
+</pagedata>

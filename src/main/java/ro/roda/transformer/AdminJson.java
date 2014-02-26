@@ -772,7 +772,6 @@ public class AdminJson {
 		return new AdminJson(true, "CMS Folder moved successfully");
 	}
 
-
 	public static AdminJson userSave(Integer id, String username, String password, String passwordCheck, String email,
 			Boolean enabled) {
 		if (username == null) {
@@ -816,7 +815,7 @@ public class AdminJson {
 			// add user to group
 			a = new Authorities();
 			a.setUsername(u);
-			a.setGroupname(ug);
+			a.setAuthority(ug);
 			Authorities.entityManager().persist(a);
 		}
 
@@ -910,11 +909,11 @@ public class AdminJson {
 		}
 
 		for (Authorities a : Authorities.findAllAuthoritieses()) {
-			if (ug.equals(a.getGroupname())) {
+			if (ug.equals(a.getAuthority())) {
 				messageUser(a.getUsername().getId(), subject, message);
 			}
 		}
-		
+
 		return new AdminJson(true, "Message sent to all users in group (from Admin");
 	}
 

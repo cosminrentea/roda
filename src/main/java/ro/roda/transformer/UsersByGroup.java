@@ -8,8 +8,8 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Configurable;
 
+import ro.roda.domain.Authorities;
 import ro.roda.domain.UserGroup;
-import ro.roda.domain.UserGroupUser;
 import ro.roda.domain.Users;
 import flexjson.JSONSerializer;
 
@@ -42,12 +42,13 @@ public class UsersByGroup extends UserList {
 
 		if (userGroup != null) {
 			result = new ArrayList<UsersByGroup>();
-			Set<UserGroupUser> userGroupUsers = userGroup.getUserGroupUsers();
+			Set<Authorities> userGroupUsers = userGroup.getAuthorities();
 
 			if (userGroupUsers != null && userGroupUsers.size() > 0) {
-				Iterator<UserGroupUser> usersIterator = userGroupUsers.iterator();
+				Iterator<Authorities> usersIterator = userGroupUsers.iterator();
 				while (usersIterator.hasNext()) {
-					Users user = usersIterator.next().getUserId();
+					Users user = usersIterator.next().getUsername();
+
 					// TODO: what is the email associated to a username???
 					result.add(new UsersByGroup(user));
 				}

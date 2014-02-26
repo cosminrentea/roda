@@ -1,5 +1,6 @@
 package ro.roda.domain;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -41,7 +42,7 @@ import flexjson.JSONSerializer;
 @Table(schema = "public", name = "user_group")
 @Configurable
 @Audited
-public class UserGroup {
+public class UserGroup implements Serializable {
 
 	public static long countUserGroups() {
 		return entityManager().createQuery("SELECT COUNT(o) FROM UserGroup o", Long.class).getSingleResult();
@@ -107,9 +108,8 @@ public class UserGroup {
 			sid.addField("userGroup.id_i", userGroup.getId());
 			// Add summary field to allow searching documents for objects of
 			// this type
-			sid.addField("userGroup_solrsummary_t",
-					new StringBuilder().append(userGroup.getGroupname()).append(" ").append(userGroup.getDescription())
-							.append(" ").append(userGroup.getId()));
+			sid.addField("userGroup_solrsummary_t", new StringBuilder().append(userGroup.getGroupname()).append(" ")
+					.append(userGroup.getDescription()).append(" ").append(userGroup.getId()));
 			documents.add(sid);
 		}
 		try {
@@ -211,13 +211,13 @@ public class UserGroup {
 	// , columnDefinition = "serial")
 	private Integer id;
 
-	@OneToMany(mappedBy = "userGroupId")
-	private Set<UserGroupUser> userGroupUsers;
+	// @OneToMany(mappedBy = "userGroupId")
+	// private Set<UserGroupUser> userGroupUsers;
 
-	@OneToMany(mappedBy = "groupname")
+	@OneToMany(mappedBy = "authority")
 	private Set<Authorities> authorities;
 
-	@Column(name = "groupname", columnDefinition = "varchar", length = 30, unique=true)
+	@Column(name = "groupname", columnDefinition = "varchar", length = 30, unique = true)
 	@NotNull
 	private String groupname;
 
@@ -252,9 +252,9 @@ public class UserGroup {
 		return this.id;
 	}
 
-	public Set<UserGroupUser> getUserGroupUsers() {
-		return userGroupUsers;
-	}
+	// public Set<UserGroupUser> getUserGroupUsers() {
+	// return userGroupUsers;
+	// }
 
 	public String getGroupname() {
 		return groupname;
@@ -300,9 +300,9 @@ public class UserGroup {
 		this.id = id;
 	}
 
-	public void setUserGroupUsers(Set<UserGroupUser> userGroupUsers) {
-		this.userGroupUsers = userGroupUsers;
-	}
+	// public void setUserGroupUsers(Set<UserGroupUser> userGroupUsers) {
+	// this.userGroupUsers = userGroupUsers;
+	// }
 
 	public void setGroupname(String groupname) {
 		this.groupname = groupname;
@@ -314,6 +314,14 @@ public class UserGroup {
 
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
+	}
+
+	public Set<Authorities> getAuthorities() {
+		return authorities;
+	}
+
+	public void setAuthorities(Set<Authorities> authorities) {
+		this.authorities = authorities;
 	}
 
 	public String toJson() {

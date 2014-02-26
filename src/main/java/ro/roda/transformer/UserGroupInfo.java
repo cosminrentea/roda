@@ -61,7 +61,7 @@ public class UserGroupInfo extends JsonInfo {
 
 	public UserGroupInfo(UserGroup userGroup) {
 		this(userGroup.getId(), userGroup.getGroupname(), userGroup.getDescription(),
-				userGroup.getUserGroupUsers() != null ? userGroup.getUserGroupUsers().size() : 0);
+				userGroup.getAuthorities() != null ? userGroup.getAuthorities().size() : 0);
 	}
 
 	public String getDescription() {

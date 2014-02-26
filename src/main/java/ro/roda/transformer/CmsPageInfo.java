@@ -6,7 +6,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.springframework.beans.factory.annotation.Configurable;
 
 import ro.roda.domain.CmsPage;
@@ -22,9 +21,10 @@ public class CmsPageInfo extends JsonInfo implements Comparable<CmsPageInfo> {
 		serializer.include("id", "name", "lang", "menutitle", "synopsis", "target", "url", "defaultPage",
 				"externalredirect", "internalredirect", "layout", "cacheable", "published", "pagetype");
 
-		serializer.transform(new FieldNameTransformer("indice"), "id");
-		serializer.transform(new FieldNameTransformer("title"), "name");
-		serializer.transform(new FieldNameTransformer("default"), "defaultPage");
+		// serializer.transform(new FieldNameTransformer("indice"), "id");
+		// serializer.transform(new FieldNameTransformer("title"), "name");
+		// serializer.transform(new FieldNameTransformer("default"),
+		// "defaultPage");
 
 		return "{\"data\":" + serializer.serialize(collection) + "}";
 	}
@@ -256,20 +256,14 @@ public class CmsPageInfo extends JsonInfo implements Comparable<CmsPageInfo> {
 	@Override
 	public int compareTo(CmsPageInfo cmsPageInfo) {
 		// TODO
-		return name.equals(cmsPageInfo.getName()) ? 1 : 0;
-	}
-
-	@Override
-	public int hashCode() {
-		// TODO
-		return new HashCodeBuilder().append(name).toHashCode();
+		return id < cmsPageInfo.getId() ? -1 : (id > cmsPageInfo.getId() ? 1 : 0);
 	}
 
 	@Override
 	public boolean equals(Object other) {
 		// TODO
 		if (other != null && other instanceof CmsPageInfo) {
-			return new EqualsBuilder().append(this.getName(), ((CmsPageInfo) other).getName()).isEquals();
+			return new EqualsBuilder().append(this.getId(), ((CmsPageInfo) other).getId()).isEquals();
 		} else {
 			return false;
 		}

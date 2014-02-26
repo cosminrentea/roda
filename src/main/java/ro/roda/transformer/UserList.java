@@ -89,10 +89,10 @@ public class UserList extends JsonInfo {
 	public UserList(Users user, Person person) {
 
 		// TODO: get the main mail, instead of the first one
-		this(user.getId(), user.getUsername(), person != null ? person.getFname() : null,
-				person.getLname() != null ? person.getLname() : null, (person != null
-						&& person.getPersonEmails() != null && person.getPersonEmails().size() > 0) ? person
-						.getPersonEmails().iterator().next().getEmailId().getEmail() : null, user.isEnabled());
+		this(user.getId(), user.getUsername(), person != null ? person.getFname() : null, person != null ? person
+				.getLname() : null, (person != null && person.getPersonEmails() != null && person.getPersonEmails()
+				.size() > 0) ? person.getPersonEmails().iterator().next().getEmailId().getEmail() : null, user
+				.isEnabled());
 	}
 
 	public String getFirstname() {

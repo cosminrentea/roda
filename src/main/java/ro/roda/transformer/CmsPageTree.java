@@ -82,19 +82,15 @@ public class CmsPageTree extends CmsPageInfo {
 			Set<CmsPageTree> dataByCmsPageSet = null;
 
 			Set<CmsPage> children = page.getCmsPages();
-			// Set<CmsPage> pages = page.getCmsPages();
 
 			int maxDepth = 0;
 			if (children != null && children.size() > 0) {
-
-				System.out.println("The number of children of the page " + id + " is " + children.size());
 
 				dataByCmsPageSet = new TreeSet<CmsPageTree>();
 
 				Iterator<CmsPage> childrenIterator = children.iterator();
 				while (childrenIterator.hasNext()) {
 					CmsPage childCmsPage = childrenIterator.next();
-					System.out.println("Getting tree for page; " + childCmsPage.getId());
 					CmsPageTree cmsPageTree = findCmsPageTree(childCmsPage.getId());
 					dataByCmsPageSet.add(cmsPageTree);
 					if (maxDepth < cmsPageTree.getDepth()) {
@@ -151,9 +147,6 @@ public class CmsPageTree extends CmsPageInfo {
 	}
 
 	public CmsPageTree(CmsPage cmsPage) {
-		// super(layoutGroup.getId(), layoutGroup.getName(), null,
-		// layoutGroup.getParentId().getId(), "layoutgroup",
-		// getLayoutGroupPath(layoutGroup), layoutGroup.getDescription());
 		super(cmsPage);
 		if (cmsPage.getCmsPages() == null || cmsPage.getCmsPages().size() == 0) {
 			this.leaf = true;

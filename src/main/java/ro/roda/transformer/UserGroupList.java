@@ -57,7 +57,7 @@ public class UserGroupList extends UserGroupInfo {
 
 	public UserGroupList(UserGroup userGroup) {
 		this(userGroup.getId(), userGroup.getGroupname(), userGroup.getDescription(), userGroup.isEnabled(), userGroup
-				.getUserGroupUsers() != null ? userGroup.getUserGroupUsers().size() : 0);
+				.getAuthorities() != null ? userGroup.getAuthorities().size() : 0);
 	}
 
 	public String toJson() {

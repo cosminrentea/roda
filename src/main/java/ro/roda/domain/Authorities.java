@@ -152,8 +152,8 @@ public class Authorities {
 	private Users username;
 
 	@ManyToOne
-	@JoinColumn(name = "groupname", referencedColumnName = "groupname", nullable = false, insertable = false, updatable = false)
-	private UserGroup groupname;
+	@JoinColumn(name = "authority", referencedColumnName = "groupname", nullable = false, insertable = false, updatable = false)
+	private UserGroup authority;
 
 	@PersistenceContext
 	transient EntityManager entityManager;
@@ -183,8 +183,8 @@ public class Authorities {
 		return username;
 	}
 
-	public UserGroup getGroupname() {
-		return groupname;
+	public UserGroup getAuthority() {
+		return authority;
 	}
 
 	@Transactional
@@ -223,8 +223,8 @@ public class Authorities {
 		this.username = username;
 	}
 
-	public void setGroupname(UserGroup groupname) {
-		this.groupname = groupname;
+	public void setAuthority(UserGroup groupname) {
+		this.authority = groupname;
 	}
 
 	public String toJson() {

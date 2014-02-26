@@ -260,9 +260,11 @@ public class LayoutList extends JsonInfo implements Comparable<LayoutList> {
 
 	@Override
 	public int compareTo(LayoutList layoutList) {
-		System.out.println("Compare " + ((itemtype.equals("layout") ? "2" : "1") + " " + name + " " + groupid)
-				+ (layoutList.getItemtype().equals("layout") ? "2" : "1") + " " + layoutList.getName() + " "
-				+ layoutList.getGroupid());
+		// System.out.println("Compare " + ((itemtype.equals("layout") ? "2" :
+		// "1") + " " + name + " " + groupid)
+		// + (layoutList.getItemtype().equals("layout") ? "2" : "1") + " " +
+		// layoutList.getName() + " "
+		// + layoutList.getGroupid());
 		return ((itemtype.equals("layout") ? "2" : "1") + " " + name + " " + groupid).compareTo((layoutList
 				.getItemtype().equals("layout") ? "2" : "1")
 				+ " "

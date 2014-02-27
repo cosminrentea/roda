@@ -543,6 +543,13 @@
 			<artifactId>jackrabbit-core</artifactId> 
 			<version>${jackrabbit.version}</version> 
 		</dependency> 
+		
+		<!-- Plugin framework for Java -->
+		<dependency>
+    	<groupId>ro.fortsoft.pf4j</groupId>
+   			<artifactId>pf4j</artifactId>
+    		<version>0.6</version> <!--  define ${pf4j.version} -->
+			</dependency>    
 	</dependencies>
 	<build>
 		<plugins>

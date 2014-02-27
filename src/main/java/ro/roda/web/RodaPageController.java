@@ -1,11 +1,16 @@
 package ro.roda.web;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import ro.fortsoft.pf4j.DefaultPluginManager;
+import ro.fortsoft.pf4j.PluginManager;
+import ro.roda.plugin.RodaPagePlugin;
 import ro.roda.service.RodaPageService;
 
 @RequestMapping("/page")
@@ -29,5 +34,30 @@ public class RodaPageController {
 		uiModel.addAttribute("pageHead", pageHead);
 
 		return "rodapage/show";
+	}
+
+	// version of the previous function using the plugin:
+	@RequestMapping(value = "/plugin/{url}", produces = "text/html")
+	public String showFromPlugin(@PathVariable("url") String url, Model uiModel) {
+		// load RODA plugins
+		// create the plugin manager
+		final PluginManager pluginManager = new DefaultPluginManager();
+
+		// load and start (active/resolved) the plugins
+		pluginManager.loadPlugins();
+		pluginManager.startPlugins();
+
+		// retrieves the extensions for extension point
+		List<RodaPagePlugin> pagePlugins = pluginManager.getExtensions(RodaPagePlugin.class);
+		for (RodaPagePlugin pagePlugin : pagePlugins) {
+			// TODO
+			// System.out.println(">>> " + pagePlugin.getPageContent(url));
+		}
+
+		// stop the plugins
+		pluginManager.stopPlugins();
+
+		// TODO
+		return "";
 	}
 }

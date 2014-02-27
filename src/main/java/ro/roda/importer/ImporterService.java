@@ -12,6 +12,8 @@ public interface ImporterService {
 
 	public abstract void importAll();
 
+	public abstract void importCms();
+
 	public abstract void importElsst();
 
 	public abstract void importCsv();

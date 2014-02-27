@@ -87,6 +87,7 @@ import ro.roda.domain.Variable;
 import ro.roda.filestore.CmsFileStoreService;
 import ro.roda.service.CatalogService;
 import ro.roda.service.CityService;
+import ro.roda.service.CmsFileService;
 import ro.roda.service.CmsFolderService;
 import ro.roda.service.FileService;
 import ro.roda.service.StudyService;
@@ -106,6 +107,9 @@ public class ImporterServiceImpl implements ImporterService {
 
 	@Value("${database.url}")
 	private String dbUrl;
+
+	@Value("${roda.data.cms.dir}")
+	private String rodaDataCmsDir;
 
 	@Value("${roda.data.csv.dir}")
 	private String rodaDataCsvDir;
@@ -150,6 +154,12 @@ public class ImporterServiceImpl implements ImporterService {
 
 	@Autowired
 	CmsFolderService cmsFolderService;
+
+	@Autowired
+	CmsFileService cmsFileService;
+
+	@Value("${roda.data.cms}")
+	private String rodaDataCms;
 
 	@Value("${roda.data.csv}")
 	private String rodaDataCsv;
@@ -213,6 +223,7 @@ public class ImporterServiceImpl implements ImporterService {
 		log.trace("roda.data.csv-extra = " + rodaDataCsvExtra);
 		log.trace("roda.data.ddi = " + rodaDataDdi);
 		log.trace("roda.data.csv-after-ddi = " + rodaDataCsvAfterDdi);
+		log.trace("roda.data.cms = " + rodaDataCms);
 
 		// to skip the initial actions,
 		// change properties to another string
@@ -235,6 +246,46 @@ public class ImporterServiceImpl implements ImporterService {
 			}
 		}
 
+		if ("yes".equalsIgnoreCase(rodaDataCms)) {
+			importCms();
+		}
+	}
+
+	public void importCms() {
+		importCmsFiles("files");
+	}
+
+	public void importCmsFiles(String folderName) {
+		try {
+			Resource cmsRes = new ClassPathResource(rodaDataCmsDir + folderName);
+			File cmsDir = cmsRes.getFile();
+			importCmsFilesRec(cmsDir, null);
+		} catch (IOException e) {
+			log.error(e);
+		}
+	}
+
+	private void importCmsFilesRec(File dir, CmsFolder cmsFolder) {
+		try {
+			File[] files = dir.listFiles();
+			for (File file : files) {
+				if (file.isDirectory()) {
+					CmsFolder newFolder = new CmsFolder();
+					newFolder.setName(file.getName());
+					newFolder.setParentId(cmsFolder);
+					newFolder.persist();
+					cmsFileStoreService.folderSave(newFolder);
+					importCmsFilesRec(file, newFolder);
+				} else {
+					// TODO set content-type to a real value
+					MockMultipartFile mockMultipartFile = new MockMultipartFile(file.getName(), file.getName(), "",
+							new FileInputStream(file));
+					cmsFileStoreService.fileSave(mockMultipartFile, cmsFolder);
+				}
+			}
+		} catch (IOException e) {
+			log.error(e);
+		}
 	}
 
 	public void importElsst() {

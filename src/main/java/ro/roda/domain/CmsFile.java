@@ -39,8 +39,8 @@ import flexjson.JSONDeserializer;
 import flexjson.JSONSerializer;
 
 @Entity
-@Table(schema = "public", name = "cms_file", uniqueConstraints = @UniqueConstraint(columnNames = {
-		"cms_folder_id", "filename" }))
+@Table(schema = "public", name = "cms_file", uniqueConstraints = @UniqueConstraint(columnNames = { "cms_folder_id",
+		"filename" }))
 @Configurable
 @Audited
 public class CmsFile {
@@ -76,6 +76,13 @@ public class CmsFile {
 		if (id == null)
 			return null;
 		return entityManager().find(CmsFile.class, id);
+	}
+
+	public static CmsFile findCmsFile(String label) {
+		if (label == null)
+			return null;
+		return entityManager().createQuery("SELECT o FROM CmsFile o WHERE label = " + label, CmsFile.class)
+				.getSingleResult();
 	}
 
 	public static List<CmsFile> findCmsFileEntries(int firstResult, int maxResults) {
@@ -237,8 +244,8 @@ public class CmsFile {
 	@Column(name = "description", columnDefinition = "text")
 	private String description;
 
-//	@Column(name = "full_path", columnDefinition = "text")
-//	private String fullPath;
+	// @Column(name = "full_path", columnDefinition = "text")
+	// private String fullPath;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -248,6 +255,9 @@ public class CmsFile {
 
 	@Column(name = "label", columnDefinition = "varchar", length = 100)
 	private String label;
+
+	@Column(name = "url", columnDefinition = "varchar", length = 200)
+	private String url;
 
 	@PersistenceContext
 	transient EntityManager entityManager;
@@ -295,6 +305,10 @@ public class CmsFile {
 
 	public String getLabel() {
 		return label;
+	}
+
+	public String getUrl() {
+		return url;
 	}
 
 	@Transactional
@@ -351,6 +365,10 @@ public class CmsFile {
 
 	public void setLabel(String label) {
 		this.label = label;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
 	}
 
 	public String toJson() {

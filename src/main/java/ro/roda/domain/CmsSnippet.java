@@ -76,6 +76,13 @@ public class CmsSnippet {
 		return entityManager().find(CmsSnippet.class, id);
 	}
 
+	public static CmsSnippet findCmsSnippet(String name) {
+		if (name == null)
+			return null;
+		return entityManager().createQuery("SELECT o FROM CmsSnippet o WHERE name = " + name, CmsSnippet.class)
+				.getSingleResult();
+	}
+
 	public static List<CmsSnippet> findCmsSnippetEntries(int firstResult, int maxResults) {
 		return entityManager().createQuery("SELECT o FROM CmsSnippet o", CmsSnippet.class).setFirstResult(firstResult)
 				.setMaxResults(maxResults).getResultList();

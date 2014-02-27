@@ -312,6 +312,9 @@ public class CmsPage {
 	@Column(name = "cacheable", columnDefinition = "int")
 	private Integer cacheable;
 
+	@Column(name = "menu_title", columnDefinition = "text")
+	private String menuTitle;
+
 	@PersistenceContext
 	transient EntityManager entityManager;
 
@@ -398,6 +401,10 @@ public class CmsPage {
 
 	public CmsPage getCmsPageId() {
 		return cmsPageId;
+	}
+
+	public String getMenuTitle() {
+		return menuTitle;
 	}
 
 	@Transactional
@@ -494,6 +501,10 @@ public class CmsPage {
 
 	public void setTarget(String target) {
 		this.target = target;
+	}
+
+	public void setMenuTitle(String menuTitle) {
+		this.menuTitle = menuTitle;
 	}
 
 	public String toJson() {

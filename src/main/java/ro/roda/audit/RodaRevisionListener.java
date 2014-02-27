@@ -14,8 +14,12 @@ public class RodaRevisionListener implements RevisionListener {
 	@Override
 	public void newRevision(Object revisionEntity) {
 		RodaRevisionEntity rodaRevisionEntity = (RodaRevisionEntity) revisionEntity;
+		try {
+			rodaRevisionEntity.setUsername(SecurityContextHolder.getContext().getAuthentication().getPrincipal()
+					.toString());
+		} catch (Exception e) {
+			rodaRevisionEntity.setUsername("admin");
+		}
 
-		rodaRevisionEntity
-				.setUsername(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
 	}
 }

@@ -68,6 +68,7 @@ import ro.roda.ddi.VarType;
 import ro.roda.domain.Address;
 import ro.roda.domain.CatalogStudy;
 import ro.roda.domain.CatalogStudyPK;
+import ro.roda.domain.CmsFile;
 import ro.roda.domain.CmsFolder;
 import ro.roda.domain.Instance;
 import ro.roda.domain.InstanceVariable;
@@ -91,6 +92,7 @@ import ro.roda.service.CmsFileService;
 import ro.roda.service.CmsFolderService;
 import ro.roda.service.FileService;
 import ro.roda.service.StudyService;
+import ro.roda.transformer.AdminJson;
 import au.com.bytecode.opencsv.CSVReader;
 
 @Service
@@ -253,13 +255,20 @@ public class ImporterServiceImpl implements ImporterService {
 
 	public void importCms() {
 		importCmsFiles("files");
+		importCmsLayouts("layouts");
+		importCmsPages("pages");
+		importCmsSnippets("snippets");
 	}
 
 	public void importCmsFiles(String folderName) {
 		try {
 			Resource cmsRes = new ClassPathResource(rodaDataCmsDir + folderName);
 			File cmsDir = cmsRes.getFile();
-			importCmsFilesRec(cmsDir, null);
+			
+			AdminJson result = AdminJson.folderSave(folderName, null, "CMS Files");
+			CmsFolder cmsFolder = CmsFolder.findCmsFolder(result.getId());
+			cmsFileStoreService.folderSave(cmsFolder);
+			importCmsFilesRec(cmsDir, cmsFolder);
 		} catch (IOException e) {
 			log.error(e);
 		}
@@ -280,12 +289,22 @@ public class ImporterServiceImpl implements ImporterService {
 					// TODO set content-type to a real value
 					MockMultipartFile mockMultipartFile = new MockMultipartFile(file.getName(), file.getName(), "",
 							new FileInputStream(file));
+					AdminJson.fileSave(cmsFolder.getId(), mockMultipartFile, null, null);
 					cmsFileStoreService.fileSave(mockMultipartFile, cmsFolder);
 				}
 			}
 		} catch (IOException e) {
 			log.error(e);
 		}
+	}
+
+	public void importCmsLayouts(String folderName) {
+	}
+
+	public void importCmsPages(String folderName) {
+	}
+
+	public void importCmsSnippets(String folderName) {
 	}
 
 	public void importElsst() {

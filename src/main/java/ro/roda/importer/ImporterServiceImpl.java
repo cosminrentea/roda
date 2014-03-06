@@ -31,6 +31,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.validation.SchemaFactory;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.postgresql.copy.CopyManager;
@@ -70,6 +71,9 @@ import ro.roda.domain.CatalogStudy;
 import ro.roda.domain.CatalogStudyPK;
 import ro.roda.domain.CmsFile;
 import ro.roda.domain.CmsFolder;
+import ro.roda.domain.CmsLayout;
+import ro.roda.domain.CmsLayoutGroup;
+import ro.roda.domain.CmsSnippetGroup;
 import ro.roda.domain.Instance;
 import ro.roda.domain.InstanceVariable;
 import ro.roda.domain.InstanceVariablePK;
@@ -264,7 +268,7 @@ public class ImporterServiceImpl implements ImporterService {
 		try {
 			Resource cmsRes = new ClassPathResource(rodaDataCmsDir + folderName);
 			File cmsDir = cmsRes.getFile();
-			
+
 			AdminJson result = AdminJson.folderSave(folderName, null, "CMS Files");
 			CmsFolder cmsFolder = CmsFolder.findCmsFolder(result.getId());
 			cmsFileStoreService.folderSave(cmsFolder);
@@ -299,12 +303,65 @@ public class ImporterServiceImpl implements ImporterService {
 	}
 
 	public void importCmsLayouts(String folderName) {
+		try {
+			Resource cmsRes = new ClassPathResource(rodaDataCmsDir + folderName);
+			File cmsDir = cmsRes.getFile();
+			importCmsLayoutsRec(cmsDir, null);
+		} catch (IOException e) {
+			log.error(e);
+		}
 	}
 
-	public void importCmsPages(String folderName) {
+	private void importCmsLayoutsRec(File dir, CmsLayoutGroup cmsLayoutGroup) {
+		try {
+			File[] files = dir.listFiles();
+			for (File file : files) {
+				if (file.isDirectory()) {
+					AdminJson result = AdminJson.layoutGroupSave(file.getName(),
+							(cmsLayoutGroup != null) ? cmsLayoutGroup.getId() : null,
+							(cmsLayoutGroup != null) ? cmsLayoutGroup.getDescription() : null);
+					CmsLayoutGroup newLayoutGroup = CmsLayoutGroup.findCmsLayoutGroup(result.getId());
+					importCmsLayoutsRec(file, newLayoutGroup);
+				} else {
+					AdminJson.layoutSave((cmsLayoutGroup != null) ? cmsLayoutGroup.getId() : null,
+							IOUtils.toString(new FileReader(file)), file.getName(), null, null);
+				}
+			}
+		} catch (IOException e) {
+			log.error(e);
+		}
 	}
 
 	public void importCmsSnippets(String folderName) {
+		try {
+			Resource cmsRes = new ClassPathResource(rodaDataCmsDir + folderName);
+			File cmsDir = cmsRes.getFile();
+			importCmsSnippetsRec(cmsDir, null);
+		} catch (IOException e) {
+			log.error(e);
+		}
+	}
+
+	private void importCmsSnippetsRec(File dir, CmsSnippetGroup cmsSnippetGroup) {
+		try {
+			File[] files = dir.listFiles();
+			for (File file : files) {
+				if (file.isDirectory()) {
+					AdminJson result = AdminJson.snippetGroupSave(file.getName(),
+							(cmsSnippetGroup != null) ? cmsSnippetGroup.getId() : null, null);
+					CmsSnippetGroup newSnippetGroup = CmsSnippetGroup.findCmsSnippetGroup(result.getId());
+					importCmsSnippetsRec(file, newSnippetGroup);
+				} else {
+					AdminJson.snippetSave((cmsSnippetGroup != null) ? cmsSnippetGroup.getId() : null, file.getName(),
+							IOUtils.toString(new FileReader(file)), null);
+				}
+			}
+		} catch (IOException e) {
+			log.error(e);
+		}
+	}
+
+	public void importCmsPages(String folderName) {
 	}
 
 	public void importElsst() {

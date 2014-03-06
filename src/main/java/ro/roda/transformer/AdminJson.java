@@ -62,9 +62,9 @@ public class AdminJson {
 	}
 
 	public static AdminJson layoutGroupSave(String groupname, Integer parentId, String description) {
-		if (groupname == null)
+		if (groupname == null) {
 			return new AdminJson(false, "The layout group must gave a name.");
-		;
+		}
 
 		CmsLayoutGroup layoutGroup = new CmsLayoutGroup();
 		layoutGroup.setName(groupname);
@@ -87,7 +87,7 @@ public class AdminJson {
 			return new AdminJson(false, "Layout group not created " + e.getMessage());
 		}
 
-		return new AdminJson(true, "Layout group created successfully");
+		return new AdminJson(true, "Layout group created successfully", layoutGroup.getId());
 	}
 
 	public static AdminJson layoutGroupEmpty(Integer groupId) {
@@ -297,32 +297,39 @@ public class AdminJson {
 
 	// Methods for Snippets
 	public static AdminJson snippetGroupSave(String groupname, Integer parentId, String description) {
-		if (groupname == null)
+		if (groupname == null) {
 			return new AdminJson(false, "The snippet group must gave a name.");
-		;
+		}
 
 		CmsSnippetGroup snippetGroup = new CmsSnippetGroup();
 		snippetGroup.setName(groupname);
 		snippetGroup.setDescription(description);
 
-		CmsSnippetGroup parentGroup = null;
-		if (parentId != null) {
-			parentGroup = CmsSnippetGroup.findCmsSnippetGroup(parentId);
-			if (parentGroup != null) {
-				snippetGroup.setParentId(parentGroup);
-				parentGroup.getCmsSnippetGroups().add(snippetGroup);
-			}
-		}
 		try {
-			CmsSnippetGroup.entityManager().persist(snippetGroup);
+			CmsSnippetGroup parentGroup = null;
+			if (parentId != null) {
+				parentGroup = CmsSnippetGroup.findCmsSnippetGroup(parentId);
+			}
+			snippetGroup.setParentId(parentGroup);
+			
 			if (parentGroup != null) {
-				CmsSnippetGroup.entityManager().persist(parentGroup);
+				Set<CmsSnippetGroup> subGroups = parentGroup.getCmsSnippetGroups();
+				if (subGroups == null) {
+					subGroups = new HashSet<CmsSnippetGroup>();
+				}
+				subGroups.add(snippetGroup);
+				parentGroup.setCmsSnippetGroups(subGroups);
+			}
+
+			snippetGroup.persist();
+			if (parentGroup != null) {
+				parentGroup.merge();
 			}
 		} catch (EntityExistsException e) {
 			return new AdminJson(false, "Snippet group not created " + e.getMessage());
 		}
 
-		return new AdminJson(true, "Snippet group created successfully");
+		return new AdminJson(true, "Snippet group created successfully", snippetGroup.getId());
 	}
 
 	public static AdminJson snippetGroupEmpty(Integer groupId) {

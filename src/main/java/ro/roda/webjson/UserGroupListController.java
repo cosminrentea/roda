@@ -1,4 +1,4 @@
-package ro.roda.web.json;
+package ro.roda.webjson;
 
 import java.util.List;
 
@@ -11,21 +11,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import ro.roda.service.UserManagementService;
-import ro.roda.transformer.UserList;
+import ro.roda.transformer.UserGroupList;
 
-@RequestMapping("/admin/userslist")
+@RequestMapping("/admin/grouplist")
 @Controller
-public class UsersListController {
+public class UserGroupListController {
 
 	@Autowired
 	UserManagementService userManagementService;
 
 	@RequestMapping(headers = "Accept=application/json")
 	@ResponseBody
-	public ResponseEntity<String> listUserListJson() {
+	public ResponseEntity<String> listUserGroupListJson() {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");
-		List<UserList> result = userManagementService.findAllUserLists();
-		return new ResponseEntity<String>(UserList.toJsonArray(result), headers, HttpStatus.OK);
+		List<UserGroupList> result = userManagementService.findAllUserGroupLists();
+		return new ResponseEntity<String>(UserGroupList.toJsonArr(result), headers, HttpStatus.OK);
 	}
+
 }

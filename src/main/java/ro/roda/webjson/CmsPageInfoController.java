@@ -1,4 +1,4 @@
-package ro.roda.web.json;
+package ro.roda.webjson;
 
 import java.util.List;
 
@@ -11,35 +11,35 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import ro.roda.service.CmsPageTreeService;
-import ro.roda.transformer.CmsPageTree;
+import ro.roda.service.CmsPageInfoService;
+import ro.roda.transformer.CmsPageInfo;
 
-@RequestMapping("/admin/pagestree")
+@RequestMapping("/admin/pageinfo")
 @Controller
-public class CmsPageTreeController {
+public class CmsPageInfoController {
 
 	@Autowired
-	CmsPageTreeService cmsPageJsonService;
+	CmsPageInfoService cmsPageInfoService;
 
 	@RequestMapping(headers = "Accept=application/json")
 	@ResponseBody
-	public ResponseEntity<String> listCmsPageTreeJson() {
+	public ResponseEntity<String> listCmsPageInfoJson() {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");
-		List<CmsPageTree> result = cmsPageJsonService.findAllCmsPageTrees();
-		return new ResponseEntity<String>(CmsPageTree.toJsonArr(result), headers, HttpStatus.OK);
+		List<CmsPageInfo> result = cmsPageInfoService.findAllCmsPageInfos();
+		return new ResponseEntity<String>(CmsPageInfo.toJsonArray(result), headers, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/{id}", headers = "Accept=application/json")
 	@ResponseBody
-	public ResponseEntity<String> showCmsPageTreeJson(@PathVariable("id") Integer id) {
-		CmsPageTree cmsPageTree = cmsPageJsonService.findCmsPageTree(id);
+	public ResponseEntity<String> showCmsPageInfoJson(@PathVariable("id") Integer id) {
+		CmsPageInfo cmsPageInfo = cmsPageInfoService.findCmsPageInfo(id);
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");
-		if (cmsPageTree == null) {
+		if (cmsPageInfo == null) {
 			return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
 		}
-		return new ResponseEntity<String>(cmsPageTree.toJson(), headers, HttpStatus.OK);
+		return new ResponseEntity<String>(cmsPageInfo.toJson(), headers, HttpStatus.OK);
 	}
 
 }

@@ -1,4 +1,4 @@
-package ro.roda.web.json;
+package ro.roda.webjson;
 
 import java.util.List;
 
@@ -7,27 +7,25 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import ro.roda.service.UserManagementService;
-import ro.roda.transformer.UsersByGroup;
+import ro.roda.transformer.UserList;
 
-@RequestMapping("/admin/usersbygroup")
+@RequestMapping("/admin/userslist")
 @Controller
-public class UsersByGroupController {
+public class UsersListController {
 
 	@Autowired
 	UserManagementService userManagementService;
 
-	@RequestMapping(value = "/{id}", headers = "Accept=application/json")
+	@RequestMapping(headers = "Accept=application/json")
 	@ResponseBody
-	public ResponseEntity<String> listUsersByGroupJson(@PathVariable("id") Integer id) {
+	public ResponseEntity<String> listUserListJson() {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");
-		List<UsersByGroup> result = userManagementService.findUsersByGroup(id);
-		return new ResponseEntity<String>(UsersByGroup.toJsonArr(result), headers, HttpStatus.OK);
+		List<UserList> result = userManagementService.findAllUserLists();
+		return new ResponseEntity<String>(UserList.toJsonArray(result), headers, HttpStatus.OK);
 	}
-
 }

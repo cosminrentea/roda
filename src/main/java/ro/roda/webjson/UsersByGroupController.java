@@ -1,4 +1,6 @@
-package ro.roda.web.json;
+package ro.roda.webjson;
+
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -10,25 +12,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import ro.roda.service.UserManagementService;
-import ro.roda.transformer.UserGroupInfo;
+import ro.roda.transformer.UsersByGroup;
 
-@RequestMapping("/admin/groupinfo")
+@RequestMapping("/admin/usersbygroup")
 @Controller
-public class UserGroupInfoController {
+public class UsersByGroupController {
 
 	@Autowired
 	UserManagementService userManagementService;
 
 	@RequestMapping(value = "/{id}", headers = "Accept=application/json")
 	@ResponseBody
-	public ResponseEntity<String> showUserGroupInfoJson(@PathVariable("id") Integer id) {
-
-		UserGroupInfo userGroupInfo = userManagementService.findUserGroupInfo(id);
+	public ResponseEntity<String> listUsersByGroupJson(@PathVariable("id") Integer id) {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");
-		if (userGroupInfo == null) {
-			return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
-		}
-		return new ResponseEntity<String>(userGroupInfo.toJson(), headers, HttpStatus.OK);
+		List<UsersByGroup> result = userManagementService.findUsersByGroup(id);
+		return new ResponseEntity<String>(UsersByGroup.toJsonArr(result), headers, HttpStatus.OK);
 	}
+
 }

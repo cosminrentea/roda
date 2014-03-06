@@ -1,6 +1,4 @@
-package ro.roda.web.json;
-
-import java.util.List;
+package ro.roda.webjson;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -12,22 +10,25 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import ro.roda.service.UserManagementService;
-import ro.roda.transformer.UserMessages;
+import ro.roda.transformer.UserGroupInfo;
 
-@RequestMapping("/admin/usermessages")
+@RequestMapping("/admin/groupinfo")
 @Controller
-public class UserMessagesController {
+public class UserGroupInfoController {
 
 	@Autowired
 	UserManagementService userManagementService;
 
 	@RequestMapping(value = "/{id}", headers = "Accept=application/json")
 	@ResponseBody
-	public ResponseEntity<String> listUserMessagesJson(@PathVariable("id") Integer id) {
+	public ResponseEntity<String> showUserGroupInfoJson(@PathVariable("id") Integer id) {
+
+		UserGroupInfo userGroupInfo = userManagementService.findUserGroupInfo(id);
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");
-		List<UserMessages> result = userManagementService.findUserMessages(id);
-		return new ResponseEntity<String>(UserMessages.toJsonArray(result), headers, HttpStatus.OK);
+		if (userGroupInfo == null) {
+			return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<String>(userGroupInfo.toJson(), headers, HttpStatus.OK);
 	}
-
 }

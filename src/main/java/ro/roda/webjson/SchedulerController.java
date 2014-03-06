@@ -1,5 +1,6 @@
-package ro.roda.web;
+package ro.roda.webjson;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
@@ -26,7 +27,7 @@ import ro.roda.scheduler.Execution;
 import ro.roda.scheduler.Task;
 import ro.roda.service.SchedulerService;
 
-@RequestMapping("/admin/scheduler")
+@RequestMapping("/scheduler")
 @Controller
 public class SchedulerController {
 
@@ -45,7 +46,7 @@ public class SchedulerController {
 		return new ResponseEntity<String>(s.toJson(), headers, HttpStatus.OK);
 	}
 
-	@RequestMapping(value="/tasks", headers = "Accept=application/json")
+	@RequestMapping(value = "/tasks", headers = "Accept=application/json")
 	@ResponseBody
 	public ResponseEntity<String> listTasks() {
 		HttpHeaders headers = new HttpHeaders();
@@ -54,7 +55,22 @@ public class SchedulerController {
 		return new ResponseEntity<String>(Task.toJsonArray(result), headers, HttpStatus.OK);
 	}
 
-	@RequestMapping(value="/executions", headers = "Accept=application/json")
+	@RequestMapping(value = "/exception", headers = "Accept=application/json")
+	@ResponseBody
+	public ResponseEntity<String> retException() {
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Type", "application/json; charset=utf-8");
+
+		List<Task> result = schedulerService.findTasksAll();
+
+		if (true) {
+			throw new RuntimeException("e un test de exceptie");
+		}
+
+		return new ResponseEntity<String>(Task.toJsonArray(result), headers, HttpStatus.OK);
+	}
+
+	@RequestMapping(value = "/executions", headers = "Accept=application/json")
 	@ResponseBody
 	public ResponseEntity<String> listExecutions() {
 		HttpHeaders headers = new HttpHeaders();
@@ -65,8 +81,8 @@ public class SchedulerController {
 
 	@RequestMapping(method = RequestMethod.POST, headers = "Accept=application/json")
 	public ResponseEntity<String> createFromJson(@RequestBody String json) {
-//		AclClass aclClass = AclClass.fromJsonToAclClass(json);
-//		aclClassService.saveAclClass(aclClass);
+		// AclClass aclClass = AclClass.fromJsonToAclClass(json);
+		// aclClassService.saveAclClass(aclClass);
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json");
 		return new ResponseEntity<String>(headers, HttpStatus.CREATED);
@@ -74,47 +90,39 @@ public class SchedulerController {
 
 	@RequestMapping(value = "/jsonArray", method = RequestMethod.POST, headers = "Accept=application/json")
 	public ResponseEntity<String> createFromJsonArray(@RequestBody String json) {
-//		for (AclClass aclClass : AclClass.fromJsonArrayToAclClasses(json)) {
-//			aclClassService.saveAclClass(aclClass);
-//		}
+		// for (AclClass aclClass : AclClass.fromJsonArrayToAclClasses(json)) {
+		// aclClassService.saveAclClass(aclClass);
+		// }
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json");
 		return new ResponseEntity<String>(headers, HttpStatus.CREATED);
 	}
-/*
-	@RequestMapping(method = RequestMethod.PUT, headers = "Accept=application/json")
-	public ResponseEntity<String> updateFromJson(@RequestBody String json) {
-		HttpHeaders headers = new HttpHeaders();
-		headers.add("Content-Type", "application/json");
-		AclClass aclClass = AclClass.fromJsonToAclClass(json);
-		if (aclClassService.updateAclClass(aclClass) == null) {
-			return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
-		}
-		return new ResponseEntity<String>(headers, HttpStatus.OK);
-	}
-
-	@RequestMapping(value = "/jsonArray", method = RequestMethod.PUT, headers = "Accept=application/json")
-	public ResponseEntity<String> updateFromJsonArray(@RequestBody String json) {
-		HttpHeaders headers = new HttpHeaders();
-		headers.add("Content-Type", "application/json");
-		for (AclClass aclClass : AclClass.fromJsonArrayToAclClasses(json)) {
-			if (aclClassService.updateAclClass(aclClass) == null) {
-				return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
-			}
-		}
-		return new ResponseEntity<String>(headers, HttpStatus.OK);
-	}
-
-	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE, headers = "Accept=application/json")
-	public ResponseEntity<String> deleteFromJson(@PathVariable("id") Long id) {
-		AclClass aclClass = aclClassService.findAclClass(id);
-		HttpHeaders headers = new HttpHeaders();
-		headers.add("Content-Type", "application/json");
-		if (aclClass == null) {
-			return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
-		}
-		aclClassService.deleteAclClass(aclClass);
-		return new ResponseEntity<String>(headers, HttpStatus.OK);
-	}
-*/	
+	/*
+	 * @RequestMapping(method = RequestMethod.PUT, headers =
+	 * "Accept=application/json") public ResponseEntity<String>
+	 * updateFromJson(@RequestBody String json) { HttpHeaders headers = new
+	 * HttpHeaders(); headers.add("Content-Type", "application/json"); AclClass
+	 * aclClass = AclClass.fromJsonToAclClass(json); if
+	 * (aclClassService.updateAclClass(aclClass) == null) { return new
+	 * ResponseEntity<String>(headers, HttpStatus.NOT_FOUND); } return new
+	 * ResponseEntity<String>(headers, HttpStatus.OK); }
+	 * 
+	 * @RequestMapping(value = "/jsonArray", method = RequestMethod.PUT, headers
+	 * = "Accept=application/json") public ResponseEntity<String>
+	 * updateFromJsonArray(@RequestBody String json) { HttpHeaders headers = new
+	 * HttpHeaders(); headers.add("Content-Type", "application/json"); for
+	 * (AclClass aclClass : AclClass.fromJsonArrayToAclClasses(json)) { if
+	 * (aclClassService.updateAclClass(aclClass) == null) { return new
+	 * ResponseEntity<String>(headers, HttpStatus.NOT_FOUND); } } return new
+	 * ResponseEntity<String>(headers, HttpStatus.OK); }
+	 * 
+	 * @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, headers =
+	 * "Accept=application/json") public ResponseEntity<String>
+	 * deleteFromJson(@PathVariable("id") Long id) { AclClass aclClass =
+	 * aclClassService.findAclClass(id); HttpHeaders headers = new
+	 * HttpHeaders(); headers.add("Content-Type", "application/json"); if
+	 * (aclClass == null) { return new ResponseEntity<String>(headers,
+	 * HttpStatus.NOT_FOUND); } aclClassService.deleteAclClass(aclClass); return
+	 * new ResponseEntity<String>(headers, HttpStatus.OK); }
+	 */
 }

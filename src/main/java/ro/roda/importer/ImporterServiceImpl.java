@@ -29,6 +29,9 @@ import javax.xml.XMLConstants;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.validation.SchemaFactory;
 
 import org.apache.commons.io.IOUtils;
@@ -47,6 +50,12 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import org.w3c.dom.CDATASection;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.Text;
 import org.xml.sax.SAXException;
 
 import ro.roda.ddi.AuthEntyType;
@@ -73,6 +82,10 @@ import ro.roda.domain.CmsFile;
 import ro.roda.domain.CmsFolder;
 import ro.roda.domain.CmsLayout;
 import ro.roda.domain.CmsLayoutGroup;
+import ro.roda.domain.CmsPage;
+import ro.roda.domain.CmsPageContent;
+import ro.roda.domain.CmsPageLang;
+import ro.roda.domain.CmsPageType;
 import ro.roda.domain.CmsSnippetGroup;
 import ro.roda.domain.Instance;
 import ro.roda.domain.InstanceVariable;
@@ -139,6 +152,8 @@ public class ImporterServiceImpl implements ImporterService {
 	private static final String elsstEnRelationships = "elsst_en_relationships.csv";
 
 	private static final String jaxbContextPath = "ro.roda.ddi";
+
+	private static final String pageXmlFile = "page.xml";
 
 	@PersistenceContext
 	transient EntityManager entityManager;
@@ -362,6 +377,116 @@ public class ImporterServiceImpl implements ImporterService {
 	}
 
 	public void importCmsPages(String folderName) {
+		try {
+			Resource cmsRes = new ClassPathResource(rodaDataCmsDir + folderName);
+			File cmsDir = cmsRes.getFile();
+			importCmsPagesRec(cmsDir, null);
+		} catch (IOException e) {
+			log.error(e);
+		}
+	}
+
+	private void importCmsPagesRec(File dir, CmsPage cmsPage) {
+		try {
+			File[] files = dir.listFiles();
+
+			for (File file : files) {
+				if (file.isDirectory()) {
+					importCmsPagesRec(file, null);
+				}
+				if (file.getName().equalsIgnoreCase(pageXmlFile)) {
+
+					// we assume there is a "page.xml" file inside every folder
+
+					// Get the DOM Builder Factory
+					DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+
+					// Get the DOM Builder
+					DocumentBuilder builder = factory.newDocumentBuilder();
+
+					// Load and Parse the XML document
+					// document contains the complete XML as a Tree.
+					Document document = builder.parse(file);
+
+					CmsPage p = new CmsPage();
+
+					NodeList childNodes = document.getDocumentElement().getChildNodes();
+					for (int j = 0; j < childNodes.getLength(); j++) {
+						Node cNode = childNodes.item(j);
+						if (cNode instanceof Element) {
+							String content = null;
+							if (cNode.getLastChild() instanceof CDATASection) {
+								content = ((CDATASection) cNode.getLastChild()).getData();
+							}
+							if (cNode.getLastChild() instanceof Text) {
+								content = cNode.getLastChild().getTextContent().trim();
+							}
+							
+//							log.error(content);
+							
+							switch (cNode.getNodeName()) {
+							case "title":
+								//TODO check if meaning of "title" = name
+								p.setName(content);
+								break;
+							case "menutitle":
+								p.setMenuTitle(content);
+								break;
+							case "synopsis":
+								p.setMenuTitle(content);
+								break;
+							case "lang":
+								//TODO set CmsPageLang
+								break;
+							case "content":
+								//TODO implement saving the "content" to CmsPageContent
+								break;
+							case "cacheable":
+								p.setCacheable(Integer.parseInt(content));
+								break;
+							case "default_page":
+								p.setDefaultPage(Boolean.parseBoolean(content));
+								break;
+							case "external_redirect":
+								p.setExternalRedirect(content);
+								break;								
+							case "internal_redirect":
+								p.setInternalRedirect(content);
+								break;
+							case "navigable":
+								p.setNavigable(Boolean.parseBoolean(content));
+								break;
+							case "published":
+								//TODO there is no "published" column/attribute in CmsPage
+								break;
+							case "target":
+								p.setTarget(content);
+								break;
+							case "visible":
+								p.setVisible(Boolean.parseBoolean(content));
+								break;
+							case "cms_layout":
+								//TODO fix Layout ID !
+								p.setCmsLayoutId(CmsLayout.findCmsLayout(1));
+								break;
+							case "pagetype":
+								p.setCmsPageTypeId(CmsPageType.checkCmsPageType(null, content, null));
+								break;
+							}
+						}
+					}
+					//TODO fix URL !
+					p.setUrl(".");
+					p.persist();
+				}
+			}
+		} catch (IOException e) {
+			log.error(e);
+		} catch (ParserConfigurationException e) {
+			log.error(e);
+		} catch (SAXException e) {
+			log.error(e);
+		}
 	}
 
 	public void importElsst() {

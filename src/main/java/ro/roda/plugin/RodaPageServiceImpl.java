@@ -27,6 +27,7 @@ public class RodaPageServiceImpl implements RodaPageService {
 
 		layoutContent = replacePageTitle(layoutContent, cmsPage.getMenuTitle());
 		layoutContent = replacePageLinkByUrl(layoutContent);
+		layoutContent = replacePageUrlLink(layoutContent);
 		layoutContent = replaceFileUrl(layoutContent);
 
 		layoutContent = replaceSnippets(layoutContent);
@@ -35,7 +36,7 @@ public class RodaPageServiceImpl implements RodaPageService {
 	}
 
 	private String replacePageTitle(String content, String pageTitle) {
-		return content.replace("[[Code:PageTitle]]", pageTitle);
+		return content.replace("[[Code: PageTitle]]", pageTitle != null ? pageTitle : "");
 	}
 
 	private String replacePageLinkByUrl(String content) {
@@ -50,14 +51,28 @@ public class RodaPageServiceImpl implements RodaPageService {
 		return result;
 	}
 
+	private String replacePageUrlLink(String content) {
+		int fromIndex = content.indexOf("[[PageURLLink:", 0);
+		String result = content;
+		while (fromIndex > -1) {
+			String url = result.substring(fromIndex + "[[PageURLLink:".length(),
+					result.indexOf("]]", fromIndex + "[[PageURLLink:".length()));
+			System.out.println("URL = " + url);
+			result = result.replaceAll("[[PageURLLink:" + url + "]]",
+					"<a href=\"" + url + "\">" + CmsPage.findCmsPage(url).getName() + "</a>");
+			fromIndex = result.indexOf("[[PageURLLink:", fromIndex);
+		}
+		return result;
+	}
+
 	private String replaceFileUrl(String content) {
 		int fromIndex = content.indexOf("[[FileURL:", 0);
 		String result = content;
 		while (fromIndex > -1) {
-			String faviconpng = result.substring(fromIndex + "[[FileURL:".length(),
-					result.indexOf("]]", fromIndex + "[[FileURL:".length()));
-			result = result.replaceAll("[[FileURL:" + faviconpng + "]]", CmsFile.findCmsFile(faviconpng).getUrl());
-			fromIndex = result.indexOf("[[FileURL:", fromIndex);
+			String faviconpng = result.substring(fromIndex + "[[FileURL: ".length(),
+					result.indexOf("]]", fromIndex + "[[FileURL: ".length()));
+			result = result.replaceAll("[[FileURL: " + faviconpng + "]]", CmsFile.findCmsFile(faviconpng).getUrl());
+			fromIndex = result.indexOf("[[FileURL: ", fromIndex);
 		}
 		return result;
 	}
@@ -66,13 +81,13 @@ public class RodaPageServiceImpl implements RodaPageService {
 		String snippetsReplaced = content;
 
 		int index = 0;
-		while ((index = snippetsReplaced.indexOf("[[Snippet:", index)) > -1) {
-			int snippetNameIndex = index + "[[Snippet:".length();
+		while ((index = snippetsReplaced.indexOf("[[Snippet: ", index)) > -1) {
+			int snippetNameIndex = index + "[[Snippet: ".length();
 			String snippetName = snippetsReplaced.substring(snippetNameIndex,
 					snippetsReplaced.indexOf("]]", snippetNameIndex));
 
 			String snippetContent = replaceSnippets(CmsSnippet.findCmsSnippet(snippetName).getSnippetContent());
-			snippetsReplaced = snippetsReplaced.replace("[[Snippet:" + snippetName + "]]", snippetContent);
+			snippetsReplaced = snippetsReplaced.replace("[[Snippet: " + snippetName + "]]", snippetContent);
 		}
 
 		return snippetsReplaced;

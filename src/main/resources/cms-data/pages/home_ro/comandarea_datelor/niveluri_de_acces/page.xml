@@ -62,8 +62,7 @@
 	
 	
 	
-	]]>
-	</content>
+	]]></content>
 	<cms_layout>roda-main-ro</cms_layout>
 	<pagetype>content</pagetype>
 	<cacheable>3600</cacheable>

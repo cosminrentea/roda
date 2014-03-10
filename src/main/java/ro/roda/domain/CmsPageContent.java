@@ -18,7 +18,6 @@ import javax.persistence.PostUpdate;
 import javax.persistence.PreRemove;
 import javax.persistence.Table;
 import javax.persistence.TypedQuery;
-import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -231,7 +230,7 @@ public class CmsPageContent {
 	private String contentText;
 
 	@Column(name = "content_title", columnDefinition = "varchar", length = 250)
-	@NotNull
+	// @NotNull
 	private String contentTitle;
 
 	@Id
@@ -241,11 +240,11 @@ public class CmsPageContent {
 	private Integer id;
 
 	@Column(name = "name", columnDefinition = "varchar", length = 200)
-	@NotNull
+	// @NotNull
 	private String name;
 
 	@Column(name = "order_in_page", columnDefinition = "int4", unique = true)
-	@NotNull
+	// @NotNull
 	private Integer orderInPage;
 
 	@PersistenceContext

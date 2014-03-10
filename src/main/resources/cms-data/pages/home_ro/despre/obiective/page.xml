@@ -23,8 +23,7 @@
 			<font face="Arial, Helvetica, sans-serif" size="2">acorda informatii si expertiza creatorilor si utilizatorilor bazelor de date, cu privire la standardele documentarii datelor.</font></li>
 	</ul>
 </div>
-	]]>
-	</content>
+	]]></content>
 	<cms_layout>roda-main-ro</cms_layout>
 	<pagetype>content</pagetype>
 	<cacheable>3600</cacheable>

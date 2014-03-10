@@ -48,8 +48,7 @@
 <p align="justify">
 	<font face="Arial, Helvetica, sans-serif" size="2">Mediile de stocare pe care le putem folosi sunt discheta si CD-ul, insa putem transfera fisierele si prin FTP.</font></p>
 	
-	]]>
-	</content>
+	]]></content>
 	<cms_layout>roda-main-ro</cms_layout>
 	<pagetype>content</pagetype>
 	<cacheable>3600</cacheable>

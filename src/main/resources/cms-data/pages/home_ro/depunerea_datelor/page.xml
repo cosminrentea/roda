@@ -26,8 +26,7 @@
 	<font face="Arial, Helvetica, sans-serif" size="2">Daca aveti baze de date in stiintele sociale, care pot fi utilizate (cu conditiile specificate in prealabil), atunci va rugam sa luati in considerare depunerea acestor date la RODA.</font></p>
 	
 	
-	]]>
-	</content>
+	]]></content>
 	<cms_layout>roda-main-ro</cms_layout>
 	<pagetype>content</pagetype>
 	<cacheable>3600</cacheable>

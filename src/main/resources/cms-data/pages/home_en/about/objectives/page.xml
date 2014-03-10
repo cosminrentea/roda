@@ -34,8 +34,7 @@
 			<font face="Arial, Helvetica, sans-serif" size="2">ensures information and expert services to the database creators and users, regarding the data documentation standards. </font></div>
 	</li>
 </ul>
-	]]>
-	</content>
+	]]></content>
 	<cms_layout>roda-main-en</cms_layout>
 	<pagetype>content</pagetype>
 	<cacheable>3600</cacheable>

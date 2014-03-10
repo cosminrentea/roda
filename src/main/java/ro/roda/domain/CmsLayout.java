@@ -83,6 +83,14 @@ public class CmsLayout {
 				.setMaxResults(maxResults).getResultList();
 	}
 
+	public static CmsLayout findCmsLayout(String name) {
+		if (name == null)
+			return null;
+
+		String layoutByNameQuery = "SELECT o FROM CmsLayout o WHERE name = ?1";
+		return entityManager().createQuery(layoutByNameQuery, CmsLayout.class).setParameter(1, name).getSingleResult();
+	}
+
 	public static Collection<CmsLayout> fromJsonArrayToCmsLayouts(String json) {
 		return new JSONDeserializer<List<CmsLayout>>().use(null, ArrayList.class).use("values", CmsLayout.class)
 				.deserialize(json);

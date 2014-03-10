@@ -44,8 +44,7 @@
 <p align="justify">
 	<font face="Arial, Helvetica, sans-serif" size="2">Persoanele interesate pot consulta <a href="[[FileUrl: depunere]]">Formularul de depunere</a> pentru completarea informatiilor relevante.</font></p>
 	
-	]]>
-	</content>
+	]]></content>
 	<cms_layout>roda-main-ro</cms_layout>
 	<pagetype>content</pagetype>
 	<cacheable>3600</cacheable>

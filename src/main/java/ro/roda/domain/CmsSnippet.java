@@ -79,7 +79,9 @@ public class CmsSnippet {
 	public static CmsSnippet findCmsSnippet(String name) {
 		if (name == null)
 			return null;
-		return entityManager().createQuery("SELECT o FROM CmsSnippet o WHERE name = " + name, CmsSnippet.class)
+
+		String snippetByNameQuery = "SELECT o FROM CmsSnippet o WHERE name = ?1";
+		return entityManager().createQuery(snippetByNameQuery, CmsSnippet.class).setParameter(1, name)
 				.getSingleResult();
 	}
 

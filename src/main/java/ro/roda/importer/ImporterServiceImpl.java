@@ -381,6 +381,7 @@ public class ImporterServiceImpl implements ImporterService {
 					Document document = builder.parse(file);
 
 					CmsPage p = new CmsPage();
+					CmsPageContent pContent = null;
 
 					NodeList childNodes = document.getDocumentElement().getChildNodes();
 					for (int j = 0; j < childNodes.getLength(); j++) {
@@ -405,7 +406,7 @@ public class ImporterServiceImpl implements ImporterService {
 								p.setMenuTitle(content);
 								break;
 							case "synopsis":
-								p.setMenuTitle(content);
+								p.setSynopsis(content);
 								break;
 							case "lang":
 								// TODO set CmsPageLang
@@ -413,6 +414,8 @@ public class ImporterServiceImpl implements ImporterService {
 							case "content":
 								// TODO implement saving the "content" to
 								// CmsPageContent
+								pContent = new CmsPageContent();
+								pContent.setContentText(content);
 								break;
 							case "cacheable":
 								p.setCacheable(Integer.parseInt(content));
@@ -432,6 +435,8 @@ public class ImporterServiceImpl implements ImporterService {
 							case "published":
 								// TODO there is no "published" column/attribute
 								// in CmsPage
+								// Comment LV: "visible" should stand for
+								// "published" (?)
 								break;
 							case "target":
 								p.setTarget(content);
@@ -440,8 +445,7 @@ public class ImporterServiceImpl implements ImporterService {
 								p.setVisible(Boolean.parseBoolean(content));
 								break;
 							case "cms_layout":
-								// TODO fix Layout ID !
-								p.setCmsLayoutId(CmsLayout.findCmsLayout(1));
+								p.setCmsLayoutId(CmsLayout.findCmsLayout(content));
 								break;
 							case "pagetype":
 								p.setCmsPageTypeId(CmsPageType.checkCmsPageType(null, content, null));
@@ -451,6 +455,11 @@ public class ImporterServiceImpl implements ImporterService {
 					}
 					p.setUrl(path);
 					p.persist();
+
+					if (pContent != null) {
+						pContent.setCmsPageId(p);
+						pContent.persist();
+					}
 				}
 			}
 		} catch (IOException e) {

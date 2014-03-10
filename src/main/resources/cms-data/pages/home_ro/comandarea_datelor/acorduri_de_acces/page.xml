@@ -27,8 +27,7 @@
 	Pentru utilizarea datelor in scop didactic, atat profesorul cat si studentii vor trebui sa semneze un <a href="[[FileUrl: didactic]]">Acord de acces didactic</a>.<br />
 	Deoarece studentii se schimba anual, acest document trebuie actualizat, semnat si trimis arhivei in luna iulie a fiecarui an.</font></p>
 	
-	]]>
-	</content>
+	]]></content>
 	<cms_layout>roda-main-ro</cms_layout>
 	<pagetype>content</pagetype>
 	<cacheable>3600</cacheable>

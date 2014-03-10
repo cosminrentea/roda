@@ -40,9 +40,7 @@ import org.apache.commons.logging.LogFactory;
 import org.postgresql.copy.CopyManager;
 import org.postgresql.core.BaseConnection;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
@@ -75,33 +73,7 @@ import ro.roda.ddi.SubjectType;
 import ro.roda.ddi.SumDscrType;
 import ro.roda.ddi.TopcClasType;
 import ro.roda.ddi.VarType;
-import ro.roda.domain.Address;
-import ro.roda.domain.CatalogStudy;
-import ro.roda.domain.CatalogStudyPK;
-import ro.roda.domain.CmsFile;
-import ro.roda.domain.CmsFolder;
-import ro.roda.domain.CmsLayout;
-import ro.roda.domain.CmsLayoutGroup;
-import ro.roda.domain.CmsPage;
-import ro.roda.domain.CmsPageContent;
-import ro.roda.domain.CmsPageLang;
-import ro.roda.domain.CmsPageType;
-import ro.roda.domain.CmsSnippetGroup;
-import ro.roda.domain.Instance;
-import ro.roda.domain.InstanceVariable;
-import ro.roda.domain.InstanceVariablePK;
-import ro.roda.domain.Keyword;
-import ro.roda.domain.OtherStatistic;
-import ro.roda.domain.Study;
-import ro.roda.domain.StudyDescr;
-import ro.roda.domain.StudyDescrPK;
-import ro.roda.domain.StudyKeyword;
-import ro.roda.domain.StudyKeywordPK;
-import ro.roda.domain.TimeMeth;
-import ro.roda.domain.Topic;
-import ro.roda.domain.UnitAnalysis;
-import ro.roda.domain.Users;
-import ro.roda.domain.Variable;
+import ro.roda.domain.*;
 import ro.roda.filestore.CmsFileStoreService;
 import ro.roda.service.CatalogService;
 import ro.roda.service.CityService;
@@ -380,19 +352,19 @@ public class ImporterServiceImpl implements ImporterService {
 		try {
 			Resource cmsRes = new ClassPathResource(rodaDataCmsDir + folderName);
 			File cmsDir = cmsRes.getFile();
-			importCmsPagesRec(cmsDir, null);
+			importCmsPagesRec(cmsDir, null, new String());
 		} catch (IOException e) {
 			log.error(e);
 		}
 	}
 
-	private void importCmsPagesRec(File dir, CmsPage cmsPage) {
+	private void importCmsPagesRec(File dir, CmsPage cmsPage, String path) {
 		try {
 			File[] files = dir.listFiles();
 
 			for (File file : files) {
 				if (file.isDirectory()) {
-					importCmsPagesRec(file, null);
+					importCmsPagesRec(file, null, path + "/" + file.getName());
 				}
 				if (file.getName().equalsIgnoreCase(pageXmlFile)) {
 
@@ -421,12 +393,12 @@ public class ImporterServiceImpl implements ImporterService {
 							if (cNode.getLastChild() instanceof Text) {
 								content = cNode.getLastChild().getTextContent().trim();
 							}
-							
-//							log.error(content);
-							
+
+							// log.error(content);
+
 							switch (cNode.getNodeName()) {
 							case "title":
-								//TODO check if meaning of "title" = name
+								// TODO check if meaning of "title" = name
 								p.setName(content);
 								break;
 							case "menutitle":
@@ -436,10 +408,11 @@ public class ImporterServiceImpl implements ImporterService {
 								p.setMenuTitle(content);
 								break;
 							case "lang":
-								//TODO set CmsPageLang
+								// TODO set CmsPageLang
 								break;
 							case "content":
-								//TODO implement saving the "content" to CmsPageContent
+								// TODO implement saving the "content" to
+								// CmsPageContent
 								break;
 							case "cacheable":
 								p.setCacheable(Integer.parseInt(content));
@@ -449,7 +422,7 @@ public class ImporterServiceImpl implements ImporterService {
 								break;
 							case "external_redirect":
 								p.setExternalRedirect(content);
-								break;								
+								break;
 							case "internal_redirect":
 								p.setInternalRedirect(content);
 								break;
@@ -457,7 +430,8 @@ public class ImporterServiceImpl implements ImporterService {
 								p.setNavigable(Boolean.parseBoolean(content));
 								break;
 							case "published":
-								//TODO there is no "published" column/attribute in CmsPage
+								// TODO there is no "published" column/attribute
+								// in CmsPage
 								break;
 							case "target":
 								p.setTarget(content);
@@ -466,7 +440,7 @@ public class ImporterServiceImpl implements ImporterService {
 								p.setVisible(Boolean.parseBoolean(content));
 								break;
 							case "cms_layout":
-								//TODO fix Layout ID !
+								// TODO fix Layout ID !
 								p.setCmsLayoutId(CmsLayout.findCmsLayout(1));
 								break;
 							case "pagetype":
@@ -475,8 +449,7 @@ public class ImporterServiceImpl implements ImporterService {
 							}
 						}
 					}
-					//TODO fix URL !
-					p.setUrl(".");
+					p.setUrl(path);
 					p.persist();
 				}
 			}

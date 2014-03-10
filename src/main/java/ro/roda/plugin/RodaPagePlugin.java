@@ -3,7 +3,6 @@ package ro.roda.plugin;
 import ro.fortsoft.pf4j.Extension;
 import ro.fortsoft.pf4j.Plugin;
 import ro.fortsoft.pf4j.PluginWrapper;
-import ro.roda.service.RodaPageService;
 
 public class RodaPagePlugin extends Plugin {
 
@@ -19,7 +18,5 @@ public class RodaPagePlugin extends Plugin {
 		public String getPageContent(String url) {
 			return rodaPageService.generatePage(url);
 		}
-
 	}
-
 }

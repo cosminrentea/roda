@@ -27,10 +27,10 @@ public class RodaPageServiceImpl implements RodaPageService {
 
 		layoutContent = replacePageTitle(layoutContent, cmsPage.getMenuTitle());
 		layoutContent = replacePageLinkByUrl(layoutContent);
-		layoutContent = replacePageUrlLink(layoutContent);
 		layoutContent = replaceFileUrl(layoutContent);
 
 		layoutContent = replaceSnippets(layoutContent);
+		layoutContent = replacePageUrlLink(layoutContent);
 
 		return layoutContent;
 	}
@@ -58,15 +58,21 @@ public class RodaPageServiceImpl implements RodaPageService {
 			String url = result.substring(fromIndex + "[[PageURLLink:".length(),
 					result.indexOf("]]", fromIndex + "[[PageURLLink:".length()));
 			System.out.println("URL = " + url);
-			result = result.replaceAll("[[PageURLLink:" + url + "]]",
-					"<a href=\"" + url + "\">" + CmsPage.findCmsPage(url).getName() + "</a>");
-			fromIndex = result.indexOf("[[PageURLLink:", fromIndex);
+			// The following code has issues due to the interference with
+			// regular expressions syntax:
+			// result = result.replaceAll("[[PageURLLink:" + url + "]]",
+			// "<a href=\"" + url + "\">" + CmsPage.findCmsPage(url).getName() +
+			// "</a>");
+			result = result.substring(0, fromIndex) + "<a href=\"" + url + "\">" + CmsPage.findCmsPage(url).getName()
+					+ "</a>"
+					+ result.substring(result.indexOf("]]", fromIndex + "[[PageURLLink:".length()) + "]]".length());
+			fromIndex = result.indexOf("[[PageURLLink:", fromIndex + "[[PageURLLink:".length());
 		}
 		return result;
 	}
 
 	private String replaceFileUrl(String content) {
-		int fromIndex = content.indexOf("[[FileURL:", 0);
+		int fromIndex = content.indexOf("[[FileURL: ", 0);
 		String result = content;
 		while (fromIndex > -1) {
 			String faviconpng = result.substring(fromIndex + "[[FileURL: ".length(),
@@ -95,7 +101,7 @@ public class RodaPageServiceImpl implements RodaPageService {
 
 	private String replacePageContent(String content, CmsPage page) {
 		String result = content;
-		if (result.indexOf("[[PageContent]]") > -1) {
+		if (result.indexOf("[[Code: PageContent]]") > -1) {
 			// We suppose that a CmsPage has a single CmsPageContent
 			String pageContent = page.getCmsPageContents().iterator().next().getContentText();
 			pageContent = replacePageTitle(pageContent, page.getMenuTitle());
@@ -103,7 +109,7 @@ public class RodaPageServiceImpl implements RodaPageService {
 			pageContent = replaceFileUrl(pageContent);
 			pageContent = replaceSnippets(pageContent);
 
-			result.replace("[[PageContent]]", pageContent);
+			result = result.replace("[[Code: PageContent]]", pageContent);
 		}
 		return result;
 	}

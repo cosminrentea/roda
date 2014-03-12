@@ -1,5 +1,6 @@
 package ro.roda.plugin;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,16 +17,17 @@ public class RodaPageServiceImpl implements RodaPageService {
 		CmsPage page = CmsPage.findCmsPage(url);
 		StringBuilder sb = new StringBuilder();
 
-		String pageContent = replacePageContent(getLayout(page), page);
-		pageContent = pageContent.replaceAll("\\", "\\\\").replaceAll("\"", "\\\"");
-		System.out.println("Escaped quotes:\n" + pageContent);
+		String pageContent = replacePageContent(getLayout(page, url), page);
+
+		// pageContent = StringUtils.replace(pageContent, "\\", "\\\\");
+		// pageContent = StringUtils.replace(pageContent, "\"", "\\\"");
 
 		sb.append(pageContent);
 
 		return sb.toString();
 	}
 
-	private String getLayout(CmsPage cmsPage) {
+	private String getLayout(CmsPage cmsPage, String url) {
 		CmsLayout pageLayout = cmsPage.getCmsLayoutId();
 		String layoutContent = pageLayout.getLayoutContent();
 
@@ -35,7 +37,7 @@ public class RodaPageServiceImpl implements RodaPageService {
 		layoutContent = replaceSnippets(layoutContent);
 		layoutContent = replacePageUrlLink(layoutContent);
 		layoutContent = replaceFileUrl(layoutContent);
-		layoutContent = replaceImgLink(layoutContent);
+		layoutContent = replaceImgLink(layoutContent, url);
 
 		return layoutContent;
 	}
@@ -91,7 +93,7 @@ public class RodaPageServiceImpl implements RodaPageService {
 		return result;
 	}
 
-	private String replaceImgLink(String content) {
+	private String replaceImgLink(String content, String url) {
 		int fromIndex = content.indexOf("[[ImgLink: ", 0);
 		String result = content;
 		while (fromIndex > -1) {
@@ -99,8 +101,13 @@ public class RodaPageServiceImpl implements RodaPageService {
 					result.indexOf("]]", fromIndex + "[[ImgLink: ".length()));
 			CmsFile cmsFile = CmsFile.findCmsFile(alias);
 
-			result = result.substring(0, fromIndex) + "<img src=\"" + (cmsFile != null ? cmsFile.getUrl() : "")
-					+ "\" />"
+			StringBuilder relativePath = new StringBuilder();
+			for (int i = 0; i < StringUtils.countMatches(url, "/"); i++) {
+				relativePath.append("../");
+			}
+
+			result = result.substring(0, fromIndex) + "<img src=\""
+					+ (cmsFile != null ? relativePath.toString() + cmsFile.getUrl() : "") + "\" />"
 					+ result.substring(result.indexOf("]]", fromIndex + "[[ImgLink: ".length()) + "]]".length());
 			fromIndex = result.indexOf("[[ImgLink: ", fromIndex + "[[ImgLink: ".length());
 		}

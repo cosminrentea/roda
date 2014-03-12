@@ -259,13 +259,13 @@ public class ImporterServiceImpl implements ImporterService {
 			AdminJson result = AdminJson.folderSave(folderName, null, "CMS Files");
 			CmsFolder cmsFolder = CmsFolder.findCmsFolder(result.getId());
 			cmsFileStoreService.folderSave(cmsFolder);
-			importCmsFilesRec(cmsDir, cmsFolder);
+			importCmsFilesRec(cmsDir, cmsFolder, rodaDataCmsDir + folderName);
 		} catch (IOException e) {
 			log.error(e);
 		}
 	}
 
-	private void importCmsFilesRec(File dir, CmsFolder cmsFolder) {
+	private void importCmsFilesRec(File dir, CmsFolder cmsFolder, String path) {
 		try {
 			File[] files = dir.listFiles();
 			for (File file : files) {
@@ -275,16 +275,20 @@ public class ImporterServiceImpl implements ImporterService {
 					newFolder.setParentId(cmsFolder);
 					newFolder.persist();
 					cmsFileStoreService.folderSave(newFolder);
-					importCmsFilesRec(file, newFolder);
+					importCmsFilesRec(file, newFolder, path + "/" + file.getName());
 				} else {
 					// TODO set content-type to a real value
 					MockMultipartFile mockMultipartFile = new MockMultipartFile(file.getName(), file.getName(), "",
 							new FileInputStream(file));
+
 					// TODO what is the alias of a file? for the moment, it is
 					// its name (without extension)
+					// TODO decide if the URL should be the one above (useful
+					// for ImgLink) of this one:
+					// "file://" + file.getAbsolutePath()
 					AdminJson.fileSave(cmsFolder.getId(), mockMultipartFile, null,
-							file.getName().substring(0, file.getName().lastIndexOf(".")),
-							"file://" + file.getAbsolutePath());
+							file.getName().substring(0, file.getName().lastIndexOf(".")), path + "/" + file.getName());
+
 					cmsFileStoreService.fileSave(mockMultipartFile, cmsFolder);
 				}
 			}

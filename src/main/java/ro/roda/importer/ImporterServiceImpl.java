@@ -280,7 +280,11 @@ public class ImporterServiceImpl implements ImporterService {
 					// TODO set content-type to a real value
 					MockMultipartFile mockMultipartFile = new MockMultipartFile(file.getName(), file.getName(), "",
 							new FileInputStream(file));
-					AdminJson.fileSave(cmsFolder.getId(), mockMultipartFile, null, null);
+					// TODO what is the alias of a file? for the moment, it is
+					// its name (without extension)
+					AdminJson.fileSave(cmsFolder.getId(), mockMultipartFile, null,
+							file.getName().substring(0, file.getName().lastIndexOf(".")),
+							"file://" + file.getAbsolutePath());
 					cmsFileStoreService.fileSave(mockMultipartFile, cmsFolder);
 				}
 			}

@@ -103,8 +103,8 @@ public class AdminJsonServiceImpl implements AdminJsonService {
 		return result;
 	}
 
-	public AdminJson fileSave(Integer folderId, MultipartFile content, Integer fileId, String alias) {
-		AdminJson result = AdminJson.fileSave(folderId, content, fileId, alias);
+	public AdminJson fileSave(Integer folderId, MultipartFile content, Integer fileId, String alias, String url) {
+		AdminJson result = AdminJson.fileSave(folderId, content, fileId, alias, url);
 		fileStore.fileSave(content, CmsFolder.findCmsFolder(folderId));
 		return result;
 	}

@@ -16,7 +16,11 @@ public class RodaPageServiceImpl implements RodaPageService {
 		CmsPage page = CmsPage.findCmsPage(url);
 		StringBuilder sb = new StringBuilder();
 
-		sb.append(replacePageContent(getLayout(page), page));
+		String pageContent = replacePageContent(getLayout(page), page);
+		pageContent = pageContent.replaceAll("\\", "\\\\").replaceAll("\"", "\\\"");
+		System.out.println("Escaped quotes:\n" + pageContent);
+
+		sb.append(pageContent);
 
 		return sb.toString();
 	}
@@ -27,10 +31,11 @@ public class RodaPageServiceImpl implements RodaPageService {
 
 		layoutContent = replacePageTitle(layoutContent, cmsPage.getMenuTitle());
 		layoutContent = replacePageLinkByUrl(layoutContent);
-		layoutContent = replaceFileUrl(layoutContent);
 
 		layoutContent = replaceSnippets(layoutContent);
 		layoutContent = replacePageUrlLink(layoutContent);
+		layoutContent = replaceFileUrl(layoutContent);
+		layoutContent = replaceImgLink(layoutContent);
 
 		return layoutContent;
 	}
@@ -72,13 +77,32 @@ public class RodaPageServiceImpl implements RodaPageService {
 	}
 
 	private String replaceFileUrl(String content) {
-		int fromIndex = content.indexOf("[[FileURL: ", 0);
+		int fromIndex = content.indexOf("[[FileURL:", 0);
 		String result = content;
 		while (fromIndex > -1) {
-			String faviconpng = result.substring(fromIndex + "[[FileURL: ".length(),
-					result.indexOf("]]", fromIndex + "[[FileURL: ".length()));
-			result = result.replaceAll("[[FileURL: " + faviconpng + "]]", CmsFile.findCmsFile(faviconpng).getUrl());
-			fromIndex = result.indexOf("[[FileURL: ", fromIndex);
+			String alias = result.substring(fromIndex + "[[FileURL:".length(),
+					result.indexOf("]]", fromIndex + "[[FileURL:".length()));
+			CmsFile cmsFile = CmsFile.findCmsFile(alias);
+
+			result = result.substring(0, fromIndex) + (cmsFile != null ? cmsFile.getUrl() : "")
+					+ result.substring(result.indexOf("]]", fromIndex + "[[FileURL:".length()) + "]]".length());
+			fromIndex = result.indexOf("[[FileURL:", fromIndex + "[[FileURL:".length());
+		}
+		return result;
+	}
+
+	private String replaceImgLink(String content) {
+		int fromIndex = content.indexOf("[[ImgLink: ", 0);
+		String result = content;
+		while (fromIndex > -1) {
+			String alias = result.substring(fromIndex + "[[ImgLink: ".length(),
+					result.indexOf("]]", fromIndex + "[[ImgLink: ".length()));
+			CmsFile cmsFile = CmsFile.findCmsFile(alias);
+
+			result = result.substring(0, fromIndex) + "<img src=\"" + (cmsFile != null ? cmsFile.getUrl() : "")
+					+ "\" />"
+					+ result.substring(result.indexOf("]]", fromIndex + "[[ImgLink: ".length()) + "]]".length());
+			fromIndex = result.indexOf("[[ImgLink: ", fromIndex + "[[ImgLink: ".length());
 		}
 		return result;
 	}

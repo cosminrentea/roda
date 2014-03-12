@@ -311,7 +311,7 @@ public class AdminJson {
 				parentGroup = CmsSnippetGroup.findCmsSnippetGroup(parentId);
 			}
 			snippetGroup.setParentId(parentGroup);
-			
+
 			if (parentGroup != null) {
 				Set<CmsSnippetGroup> subGroups = parentGroup.getCmsSnippetGroups();
 				if (subGroups == null) {
@@ -651,7 +651,7 @@ public class AdminJson {
 		return new AdminJson(true, "CMS File dropped successfully");
 	}
 
-	public static AdminJson fileSave(Integer folderId, MultipartFile content, Integer fileId, String alias) {
+	public static AdminJson fileSave(Integer folderId, MultipartFile content, Integer fileId, String alias, String url) {
 
 		CmsFile file = null;
 		if (fileId != null) {
@@ -666,6 +666,8 @@ public class AdminJson {
 		file.setFilename(content.getOriginalFilename());
 		file.setContentType(content.getContentType());
 		file.setFilesize(content.getSize());
+		file.setLabel(alias);
+		file.setUrl(url);
 
 		// TODO Cosmin: check the use-case: file with the same name is added to
 		// the same folder

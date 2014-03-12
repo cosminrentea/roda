@@ -47,7 +47,7 @@ public interface AdminJsonService {
 
 	public abstract AdminJson fileDrop(Integer fileId);
 
-	public abstract AdminJson fileSave(Integer folderId, MultipartFile content, Integer fileId, String alias);
+	public abstract AdminJson fileSave(Integer folderId, MultipartFile content, Integer fileId, String alias, String url);
 
 	public abstract AdminJson fileMove(Integer folderId, Integer fileId);
 

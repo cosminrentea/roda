@@ -339,9 +339,10 @@ public class AdminJsonController {
 	@ResponseBody
 	public String fileSave(@RequestParam("folderid") Integer folderId, @RequestParam("content") MultipartFile content,
 			@RequestParam(value = "alias", required = false) String alias,
-			@RequestParam(value = "id", required = false) Integer fileId, HttpServletRequest httpServletRequest) {
+			@RequestParam(value = "id", required = false) Integer fileId,
+			@RequestParam(value = "url", required = false) String url, HttpServletRequest httpServletRequest) {
 		log.trace("> fileSave controller: " + folderId + " ; " + fileId + " ; " + alias);
-		AdminJson fileSave = adminJsonService.fileSave(folderId, content, fileId, alias);
+		AdminJson fileSave = adminJsonService.fileSave(folderId, content, fileId, alias, url);
 
 		if (fileSave == null) {
 			return null;

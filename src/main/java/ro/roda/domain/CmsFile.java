@@ -81,8 +81,14 @@ public class CmsFile {
 	public static CmsFile findCmsFile(String label) {
 		if (label == null)
 			return null;
-		return entityManager().createQuery("SELECT o FROM CmsFile o WHERE label = " + label, CmsFile.class)
-				.getSingleResult();
+
+		TypedQuery<CmsFile> query = entityManager().createQuery("SELECT o FROM CmsFile o WHERE label = ?1",
+				CmsFile.class).setParameter(1, label);
+		if (query.getResultList().size() > 0) {
+			return query.getResultList().get(0);
+		}
+
+		return null;
 	}
 
 	public static List<CmsFile> findCmsFileEntries(int firstResult, int maxResults) {

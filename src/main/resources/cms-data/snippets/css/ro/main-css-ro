@@ -3,7 +3,7 @@
 body{
 	padding:0px;
 	margin:0px;
-	background: url([[FileURL:background]]);
+	background: url('[[FileURL:background]]');
 	padding-bottom:30px;
 }
 
@@ -33,7 +33,7 @@ box-shadow:         0px 0px 9px 0px rgba(50, 50, 50, 0.75);
 }
 
 #menuwrapper{
-	background: url([[FileURL:umbra]]) top left repeat-x #6ba562;
+	background: url('[[FileURL:umbra]]') top left repeat-x #6ba562;
 	padding:10px 0px 20px;
 }
 
@@ -80,7 +80,7 @@ box-shadow:         0px 0px 9px 0px rgba(50, 50, 50, 0.75);
 }
 
 #cont_right{
-background: url([[FileURL:umbra]]) top left repeat-x;
+background: url('[[FileURL:umbra]]') top left repeat-x;
 	color:#222;
 	font-family: Arial;
 	margin:0px auto;
@@ -103,7 +103,7 @@ padding-bottom:40px;
 }
 
 #box_login{
-	background:url([[FileURL:umbra]]) top left repeat-x #f99e56;
+	background:url('[[FileURL:umbra]]') top left repeat-x #f99e56;
 width:100%;
 padding-top:10px;
 text-align:center;

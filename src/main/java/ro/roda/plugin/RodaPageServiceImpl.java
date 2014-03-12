@@ -52,7 +52,9 @@ public class RodaPageServiceImpl implements RodaPageService {
 		while (fromIndex > -1) {
 			String name = result.substring(fromIndex + "[[Code: PageLinkbyUrl('".length(),
 					result.indexOf("']]", fromIndex + "[[Code: PageLinkbyUrl('".length()));
-			result = result.replaceAll("[[Code: PageLinkbyUrl('" + name + "']]", CmsFile.findCmsFile(name).getUrl());
+			CmsFile cmsFile = CmsFile.findCmsFile(name);
+			result = result.replaceAll("[[Code: PageLinkbyUrl('" + name + "']]", cmsFile != null ? cmsFile.getUrl()
+					: "");
 			fromIndex = result.indexOf("[[Code: PageLinkbyUrl('", fromIndex);
 		}
 		return result;
@@ -70,8 +72,8 @@ public class RodaPageServiceImpl implements RodaPageService {
 			// result = result.replaceAll("[[PageURLLink:" + url + "]]",
 			// "<a href=\"" + url + "\">" + CmsPage.findCmsPage(url).getName() +
 			// "</a>");
-			result = result.substring(0, fromIndex) + "<a href=\"" + url + "\">" + CmsPage.findCmsPage(url).getName()
-					+ "</a>"
+			result = result.substring(0, fromIndex) + "<a href=\"" + "/roda/page" + url + "\">"
+					+ CmsPage.findCmsPage(url).getName() + "</a>"
 					+ result.substring(result.indexOf("]]", fromIndex + "[[PageURLLink:".length()) + "]]".length());
 			fromIndex = result.indexOf("[[PageURLLink:", fromIndex + "[[PageURLLink:".length());
 		}

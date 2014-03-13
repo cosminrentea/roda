@@ -83,7 +83,12 @@ public class CmsPage {
 			return null;
 
 		String pageByUrlQuery = "SELECT o FROM CmsPage o WHERE url = ?1";
-		return entityManager().createQuery(pageByUrlQuery, CmsPage.class).setParameter(1, url).getSingleResult();
+		TypedQuery<CmsPage> query = entityManager().createQuery(pageByUrlQuery, CmsPage.class).setParameter(1, url);
+		if (query.getResultList().size() > 0) {
+			return query.getResultList().get(0);
+		}
+
+		return null;
 	}
 
 	public static List<CmsPage> findCmsPageEntries(int firstResult, int maxResults) {
@@ -528,9 +533,12 @@ public class CmsPage {
 
 	@Override
 	public boolean equals(Object obj) {
-		return (id != null && id.equals(((CmsPage) obj).id))
-				|| (name != null && name.equalsIgnoreCase(((CmsPage) obj).name))
-				|| (url != null && url.equalsIgnoreCase(((CmsPage) obj).url));
+		if (obj instanceof CmsPage) {
+			return (id != null && id.equals(((CmsPage) obj).id))
+					|| (name != null && name.equalsIgnoreCase(((CmsPage) obj).name))
+					|| (url != null && url.equalsIgnoreCase(((CmsPage) obj).url));
+		}
+		return false;
 	}
 
 	public AuditReader getAuditReader() {

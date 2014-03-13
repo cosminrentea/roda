@@ -3,7 +3,7 @@ name, cms_layout_id, url, cms_page_type_id, navigable, visible, synopsis, target
 "Introduction", 1,"introduction", 1, true, true,, "", false, "", "", 30, 1
 "About RODA", 1,"about_roda", 1, true, true, , "", false, "", "", 30, 1
 "Objectives", 1,"objectives", 1, true, true, , "", false, "", "", 30, 1
-"Contact", 4,"contact", 1, true, true, , "", false, "", "", 30, 1
+"Contact", 4,"contacts", 1, true, true, , "", false, "", "", 30, 1
 "Ordering Data", 1,"ordering_data", 1, true, true, , "", false, "", "", 30, 1
 "Introduction", 1,"introduction_ordering_data", 1, true, true, , "", false, "", "", 30, 6
 "User categories", 1,"ordering_data_user_categories", 1, true, true, , "", false, "", "", 30, 6

@@ -13,6 +13,14 @@ import ro.roda.domain.CmsSnippet;
 @Transactional
 public class RodaPageServiceImpl implements RodaPageService {
 
+	private static String PAGE_TITLE_CODE = "[[Code: PageTitle]]";
+	private static String PAGE_LINK_BY_URL_CODE = "[[Code: PageLinkbyUrl('";
+	private static String PAGE_URL_LINK_CODE = "[[PageURLLink:";
+	private static String FILE_URL_LINK_CODE = "[[FileURL:";
+	private static String IMG_LINK_CODE = "[[ImgLink: ";
+	private static String SNIPPET_CODE = "[[Snippet: ";
+	private static String PAGE_CONTENT_CODE = "[[Code: PageContent]]";
+
 	public String generatePage(String url) {
 		CmsPage page = CmsPage.findCmsPage(url);
 		StringBuilder sb = new StringBuilder();
@@ -32,75 +40,96 @@ public class RodaPageServiceImpl implements RodaPageService {
 		String layoutContent = pageLayout.getLayoutContent();
 
 		layoutContent = replacePageTitle(layoutContent, cmsPage.getMenuTitle());
-		layoutContent = replacePageLinkByUrl(layoutContent);
+		layoutContent = replacePageLinkByUrl(layoutContent, url);
 
 		layoutContent = replaceSnippets(layoutContent);
 		layoutContent = replacePageUrlLink(layoutContent);
-		layoutContent = replaceFileUrl(layoutContent);
+		layoutContent = replaceFileUrl(layoutContent, url);
 		layoutContent = replaceImgLink(layoutContent, url);
 
 		return layoutContent;
 	}
 
 	private String replacePageTitle(String content, String pageTitle) {
-		return content.replace("[[Code: PageTitle]]", pageTitle != null ? pageTitle : "");
+		return content.replace(PAGE_TITLE_CODE, pageTitle != null ? pageTitle : "");
 	}
 
-	private String replacePageLinkByUrl(String content) {
-		int fromIndex = content.indexOf("[[Code: PageLinkbyUrl('", 0);
+	private String replacePageLinkByUrl(String content, String pageUrl) {
+		int fromIndex = content.indexOf(PAGE_LINK_BY_URL_CODE, 0);
 		String result = content;
 		while (fromIndex > -1) {
-			String name = result.substring(fromIndex + "[[Code: PageLinkbyUrl('".length(),
-					result.indexOf("']]", fromIndex + "[[Code: PageLinkbyUrl('".length()));
-			CmsFile cmsFile = CmsFile.findCmsFile(name);
-			result = result.replaceAll("[[Code: PageLinkbyUrl('" + name + "']]", cmsFile != null ? cmsFile.getUrl()
-					: "");
-			fromIndex = result.indexOf("[[Code: PageLinkbyUrl('", fromIndex);
+			String url = result.substring(fromIndex + PAGE_LINK_BY_URL_CODE.length(),
+					result.indexOf("')]]", fromIndex + PAGE_LINK_BY_URL_CODE.length()));
+			CmsPage cmsPage = CmsPage.findCmsPage(url);
+
+			String modifiedUrl = "";
+			String relativeUrl = pageUrl;
+			int depth = 0;
+			while (cmsPage == null && depth < StringUtils.countMatches(pageUrl, "/")) {
+				// try to build a URL relative to the one of the page
+				modifiedUrl = relativeUrl + "/" + url;
+				cmsPage = CmsPage.findCmsPage(modifiedUrl);
+
+				if (cmsPage == null) {
+					relativeUrl = relativeUrl.substring(0, relativeUrl.lastIndexOf("/"));
+				}
+				depth++;
+			}
+
+			result = StringUtils.replace(result, PAGE_LINK_BY_URL_CODE + url + "')]]", "/roda/page" + modifiedUrl);
+			fromIndex = result.indexOf(PAGE_LINK_BY_URL_CODE, fromIndex + PAGE_LINK_BY_URL_CODE.length());
 		}
 		return result;
 	}
 
 	private String replacePageUrlLink(String content) {
-		int fromIndex = content.indexOf("[[PageURLLink:", 0);
+		int fromIndex = content.indexOf(PAGE_URL_LINK_CODE, 0);
 		String result = content;
 		while (fromIndex > -1) {
-			String url = result.substring(fromIndex + "[[PageURLLink:".length(),
-					result.indexOf("]]", fromIndex + "[[PageURLLink:".length()));
-			System.out.println("URL = " + url);
+			String url = result.substring(fromIndex + PAGE_URL_LINK_CODE.length(),
+					result.indexOf("]]", fromIndex + PAGE_URL_LINK_CODE.length()));
+
 			// The following code has issues due to the interference with
 			// regular expressions syntax:
 			// result = result.replaceAll("[[PageURLLink:" + url + "]]",
 			// "<a href=\"" + url + "\">" + CmsPage.findCmsPage(url).getName() +
 			// "</a>");
-			result = result.substring(0, fromIndex) + "<a href=\"" + "/roda/page" + url + "\">"
-					+ CmsPage.findCmsPage(url).getName() + "</a>"
-					+ result.substring(result.indexOf("]]", fromIndex + "[[PageURLLink:".length()) + "]]".length());
-			fromIndex = result.indexOf("[[PageURLLink:", fromIndex + "[[PageURLLink:".length());
+			CmsPage cmsPage = CmsPage.findCmsPage(url);
+			result = result.substring(0, fromIndex) + "<a href=\"" + "/roda/page" + url + "\">" + cmsPage.getName()
+					+ "</a>"
+					+ result.substring(result.indexOf("]]", fromIndex + PAGE_URL_LINK_CODE.length()) + "]]".length());
+			fromIndex = result.indexOf(PAGE_URL_LINK_CODE, fromIndex + PAGE_URL_LINK_CODE.length());
 		}
 		return result;
 	}
 
-	private String replaceFileUrl(String content) {
-		int fromIndex = content.indexOf("[[FileURL:", 0);
+	private String replaceFileUrl(String content, String url) {
+		int fromIndex = content.indexOf(FILE_URL_LINK_CODE, 0);
 		String result = content;
 		while (fromIndex > -1) {
-			String alias = result.substring(fromIndex + "[[FileURL:".length(),
-					result.indexOf("]]", fromIndex + "[[FileURL:".length()));
+			String alias = result.substring(fromIndex + FILE_URL_LINK_CODE.length(),
+					result.indexOf("]]", fromIndex + FILE_URL_LINK_CODE.length()));
 			CmsFile cmsFile = CmsFile.findCmsFile(alias);
 
-			result = result.substring(0, fromIndex) + (cmsFile != null ? cmsFile.getUrl() : "")
-					+ result.substring(result.indexOf("]]", fromIndex + "[[FileURL:".length()) + "]]".length());
-			fromIndex = result.indexOf("[[FileURL:", fromIndex + "[[FileURL:".length());
+			StringBuilder relativePath = new StringBuilder();
+			for (int i = 0; i < StringUtils.countMatches(url, "/"); i++) {
+				relativePath.append("../");
+			}
+
+			result = result.substring(0, fromIndex)
+					+ (cmsFile != null ? relativePath.toString() + cmsFile.getUrl() : "")
+					+ result.substring(result.indexOf("]]", fromIndex + FILE_URL_LINK_CODE.length()) + "]]".length());
+			fromIndex = result.indexOf(FILE_URL_LINK_CODE, fromIndex + FILE_URL_LINK_CODE.length());
 		}
 		return result;
 	}
 
 	private String replaceImgLink(String content, String url) {
-		int fromIndex = content.indexOf("[[ImgLink: ", 0);
+		int fromIndex = content.indexOf(IMG_LINK_CODE, 0);
 		String result = content;
 		while (fromIndex > -1) {
-			String alias = result.substring(fromIndex + "[[ImgLink: ".length(),
-					result.indexOf("]]", fromIndex + "[[ImgLink: ".length()));
+			String alias = result.substring(fromIndex + IMG_LINK_CODE.length(),
+					result.indexOf("]]", fromIndex + IMG_LINK_CODE.length()));
 			CmsFile cmsFile = CmsFile.findCmsFile(alias);
 
 			StringBuilder relativePath = new StringBuilder();
@@ -110,8 +139,8 @@ public class RodaPageServiceImpl implements RodaPageService {
 
 			result = result.substring(0, fromIndex) + "<img src=\""
 					+ (cmsFile != null ? relativePath.toString() + cmsFile.getUrl() : "") + "\" />"
-					+ result.substring(result.indexOf("]]", fromIndex + "[[ImgLink: ".length()) + "]]".length());
-			fromIndex = result.indexOf("[[ImgLink: ", fromIndex + "[[ImgLink: ".length());
+					+ result.substring(result.indexOf("]]", fromIndex + IMG_LINK_CODE.length()) + "]]".length());
+			fromIndex = result.indexOf(IMG_LINK_CODE, fromIndex + IMG_LINK_CODE.length());
 		}
 		return result;
 	}
@@ -120,13 +149,13 @@ public class RodaPageServiceImpl implements RodaPageService {
 		String snippetsReplaced = content;
 
 		int index = 0;
-		while ((index = snippetsReplaced.indexOf("[[Snippet: ", index)) > -1) {
-			int snippetNameIndex = index + "[[Snippet: ".length();
+		while ((index = snippetsReplaced.indexOf(SNIPPET_CODE, index)) > -1) {
+			int snippetNameIndex = index + SNIPPET_CODE.length();
 			String snippetName = snippetsReplaced.substring(snippetNameIndex,
 					snippetsReplaced.indexOf("]]", snippetNameIndex));
 
 			String snippetContent = replaceSnippets(CmsSnippet.findCmsSnippet(snippetName).getSnippetContent());
-			snippetsReplaced = snippetsReplaced.replace("[[Snippet: " + snippetName + "]]", snippetContent);
+			snippetsReplaced = snippetsReplaced.replace(SNIPPET_CODE + snippetName + "]]", snippetContent);
 		}
 
 		return snippetsReplaced;
@@ -134,15 +163,18 @@ public class RodaPageServiceImpl implements RodaPageService {
 
 	private String replacePageContent(String content, CmsPage page) {
 		String result = content;
-		if (result.indexOf("[[Code: PageContent]]") > -1) {
+		if (result.indexOf(PAGE_CONTENT_CODE) > -1) {
 			// We suppose that a CmsPage has a single CmsPageContent
 			String pageContent = page.getCmsPageContents().iterator().next().getContentText();
 			pageContent = replacePageTitle(pageContent, page.getMenuTitle());
-			pageContent = replacePageLinkByUrl(pageContent);
-			pageContent = replaceFileUrl(pageContent);
+			pageContent = replacePageLinkByUrl(pageContent, page.getUrl());
 			pageContent = replaceSnippets(pageContent);
 
-			result = result.replace("[[Code: PageContent]]", pageContent);
+			pageContent = replacePageUrlLink(pageContent);
+			pageContent = replaceFileUrl(pageContent, page.getUrl());
+			pageContent = replaceImgLink(pageContent, page.getUrl());
+
+			result = result.replace(PAGE_CONTENT_CODE, pageContent);
 		}
 		return result;
 	}

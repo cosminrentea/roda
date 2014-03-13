@@ -364,9 +364,12 @@ public class CmsPageContent {
 
 	@Override
 	public boolean equals(Object obj) {
-		return (id != null && id.equals(((CmsPageContent) obj).id))
-				|| ((name != null && name.equalsIgnoreCase(((CmsPageContent) obj).name)) && (cmsPageId != null && cmsPageId
-						.equals(((CmsPageContent) obj).cmsPageId)));
+		if (obj instanceof CmsPageContent) {
+			return (id != null && id.equals(((CmsPageContent) obj).id))
+					|| ((name != null && name.equalsIgnoreCase(((CmsPageContent) obj).name)) && (cmsPageId != null && cmsPageId
+							.equals(((CmsPageContent) obj).cmsPageId)));
+		}
+		return false;
 	}
 
 	public AuditReader getAuditReader() {

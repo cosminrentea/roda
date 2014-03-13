@@ -356,9 +356,12 @@ public class CmsLayoutGroup {
 
 	@Override
 	public boolean equals(Object obj) {
-		return (id != null && id.equals(((CmsLayoutGroup) obj).id))
-				|| ((name != null && name.equalsIgnoreCase(((CmsLayoutGroup) obj).name)) && (parentId != null && parentId
-						.equals(((CmsLayoutGroup) obj).parentId)));
+		if (obj instanceof CmsLayoutGroup) {
+			return (id != null && id.equals(((CmsLayoutGroup) obj).id))
+					|| ((name != null && name.equalsIgnoreCase(((CmsLayoutGroup) obj).name)) && (parentId != null && parentId
+							.equals(((CmsLayoutGroup) obj).parentId)));
+		}
+		return false;
 	}
 
 	public AuditReader getAuditReader() {

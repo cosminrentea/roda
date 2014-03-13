@@ -22,9 +22,9 @@
 <p align="justify">
 	<font face="Arial, Helvetica, sans-serif" size="2">Formularul este diferit, in functie de scopul folosirii datelor comandate.<br />
 	<br />
-	Pentru utilizarea individuala, puteti descarca acest <a href="[[FileUrl: individual]]">Acord de acces individual</a>.<br />
+	Pentru utilizarea individuala, puteti descarca acest <a href="[[FileURL:individual]]">Acord de acces individual</a>.<br />
 	<br />
-	Pentru utilizarea datelor in scop didactic, atat profesorul cat si studentii vor trebui sa semneze un <a href="[[FileUrl: didactic]]">Acord de acces didactic</a>.<br />
+	Pentru utilizarea datelor in scop didactic, atat profesorul cat si studentii vor trebui sa semneze un <a href="[[FileURL:didactic]]">Acord de acces didactic</a>.<br />
 	Deoarece studentii se schimba anual, acest document trebuie actualizat, semnat si trimis arhivei in luna iulie a fiecarui an.</font></p>
 	
 	]]></content>

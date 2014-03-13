@@ -468,6 +468,10 @@ public class ImporterServiceImpl implements ImporterService {
 						pContent.setCmsPageId(p);
 						pContent.persist();
 					}
+
+					Set<CmsPageContent> pageContents = new HashSet<CmsPageContent>();
+					pageContents.add(pContent);
+					p.setCmsPageContents(pageContents);
 				}
 			}
 		} catch (IOException e) {

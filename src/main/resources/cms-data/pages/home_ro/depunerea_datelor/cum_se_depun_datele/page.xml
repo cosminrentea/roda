@@ -14,7 +14,7 @@
 <div align="justify">
 	<ul>
 		<li>
-			<font face="Arial, Helvetica, sans-serif" size="2">sa completati <a href="[[FileUrl: depunere]]">Formularul de depunere</a> (cu detalii despre setul de date depus);</font></li>
+			<font face="Arial, Helvetica, sans-serif" size="2">sa completati <a href="[[FileURL:Depunere]]">Formularul de depunere</a> (cu detalii despre setul de date depus);</font></li>
 		<li>
 			<font face="Arial, Helvetica, sans-serif" size="2">sa completati si sa semnati <a href="licents">Acordul de licentiere</a>, unde se vor specifica conditiile si restrictiile in care datele vor fi distribuite utilizatorilor;</font></li>
 		<li>
@@ -26,9 +26,9 @@
 		Daca doriti sa completati aceste informatii in format electronic, puteti descarca fisierele in format Word de mai jos<br />
 		(atentie insa, Acordul de licentiere trebuie semnat in format fizic):
 		<li>
-			<font face="Arial, Helvetica, sans-serif" size="2"><a href="[[FileUrl: depuneredoc]]">Formularul de depunere in format Word</a></font></li>
+			<font face="Arial, Helvetica, sans-serif" size="2"><a href="[[FileURL:Depuneredoc]]">Formularul de depunere in format Word</a></font></li>
 		<li>
-			<font face="Arial, Helvetica, sans-serif" size="2"><a href="[[FileUrl: licentadoc]]">Acordul de licentiere in format Word</a></font></li>
+			<font face="Arial, Helvetica, sans-serif" size="2"><a href="[[FileURL:Licentadoc]]">Acordul de licentiere in format Word</a></font></li>
 	</ul>
 </div>
 <p align="justify">

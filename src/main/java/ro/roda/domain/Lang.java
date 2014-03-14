@@ -76,6 +76,19 @@ public class Lang {
 		return entityManager().find(Lang.class, id);
 	}
 
+	public static Lang findLang(String iso639) {
+		if (iso639 == null)
+			return null;
+
+		TypedQuery<Lang> query = entityManager().createQuery("SELECT o FROM Lang o WHERE iso639 = ?1", Lang.class)
+				.setParameter(1, iso639);
+		if (query.getResultList().size() > 0) {
+			return query.getResultList().get(0);
+		}
+
+		return null;
+	}
+
 	public static List<Lang> findLangEntries(int firstResult, int maxResults) {
 		return entityManager().createQuery("SELECT o FROM Lang o", Lang.class).setFirstResult(firstResult)
 				.setMaxResults(maxResults).getResultList();

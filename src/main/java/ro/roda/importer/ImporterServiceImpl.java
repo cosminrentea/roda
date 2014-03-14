@@ -390,6 +390,7 @@ public class ImporterServiceImpl implements ImporterService {
 
 					CmsPage p = new CmsPage();
 					CmsPageContent pContent = null;
+					CmsPageLang pLang = null;
 
 					NodeList childNodes = document.getDocumentElement().getChildNodes();
 					for (int j = 0; j < childNodes.getLength(); j++) {
@@ -418,6 +419,13 @@ public class ImporterServiceImpl implements ImporterService {
 								break;
 							case "lang":
 								// TODO set CmsPageLang
+								if (content != null) {
+									Lang lang = Lang.findLang(content.toLowerCase());
+									if (lang != null) {
+										pLang = new CmsPageLang();
+										pLang.setLangId(lang);
+									}
+								}
 								break;
 							case "content":
 								// TODO implement saving the "content" to
@@ -467,11 +475,21 @@ public class ImporterServiceImpl implements ImporterService {
 					if (pContent != null) {
 						pContent.setCmsPageId(p);
 						pContent.persist();
+
+						Set<CmsPageContent> pageContents = new HashSet<CmsPageContent>();
+						pageContents.add(pContent);
+						p.setCmsPageContents(pageContents);
 					}
 
-					Set<CmsPageContent> pageContents = new HashSet<CmsPageContent>();
-					pageContents.add(pContent);
-					p.setCmsPageContents(pageContents);
+					if (pLang != null) {
+						pLang.setCmsPageId(p);
+						pLang.setId(new CmsPageLangPK(pLang.getLangId().getId(), p.getId()));
+						pLang.persist();
+
+						Set<CmsPageLang> pageLangs = new HashSet<CmsPageLang>();
+						pageLangs.add(pLang);
+						p.setCmsPageLangId(pageLangs);
+					}
 				}
 			}
 		} catch (IOException e) {

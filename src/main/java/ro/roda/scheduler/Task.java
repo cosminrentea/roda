@@ -27,6 +27,7 @@ import javax.persistence.Transient;
 import javax.persistence.TypedQuery;
 import javax.validation.constraints.NotNull;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.apache.solr.client.solrj.SolrQuery;
@@ -299,7 +300,7 @@ public class Task {
 	}
 
 	public Calendar getNextExecution() {
-		//TODO implement "next execution" timestamp
+		// TODO implement "next execution" timestamp
 		return nextExecution;
 	}
 
@@ -332,8 +333,12 @@ public class Task {
 
 	@Override
 	public boolean equals(Object obj) {
-		// FIXME
-		// TODO
-		return true;
+		if (obj instanceof Task) {
+			final Task other = (Task) obj;
+			return new EqualsBuilder().append(name, other.name).append(classname, other.classname)
+					.append(cron, other.cron).append(enabled, other.enabled).isEquals();
+		} else {
+			return false;
+		}
 	}
 }

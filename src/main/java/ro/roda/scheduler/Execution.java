@@ -23,6 +23,7 @@ import javax.persistence.TemporalType;
 import javax.persistence.TypedQuery;
 import javax.validation.constraints.NotNull;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.apache.solr.client.solrj.SolrQuery;
@@ -107,12 +108,14 @@ public class Execution {
 			sid.addField("Execution.id_i", execution.getId());
 			// Add summary field to allow searching documents for objects of
 			// this type
-/*			sid.addField(
-					"Execution_solrsummary_t",
-					new StringBuilder().append(execution.getTask()).append(" ").append(execution.getFilename())
-							.append(" ").append(execution.getLabel()).append(" ").append(execution.getFilesize())
-							.append(" ").append(execution.getId()));
-*/
+			/*
+			 * sid.addField( "Execution_solrsummary_t", new
+			 * StringBuilder().append
+			 * (execution.getTask()).append(" ").append(execution.getFilename())
+			 * .
+			 * append(" ").append(execution.getLabel()).append(" ").append(execution
+			 * .getFilesize()) .append(" ").append(execution.getId()));
+			 */
 			documents.add(sid);
 		}
 		try {
@@ -240,7 +243,6 @@ public class Execution {
 		this.id = id;
 	}
 
-
 	public String getExecType() {
 		return execType;
 	}
@@ -276,6 +278,7 @@ public class Execution {
 	public void setTask(Task task) {
 		this.task = task;
 	}
+
 	public String toJson() {
 		return new JSONSerializer().exclude("*.class").serialize(this);
 	}
@@ -297,9 +300,12 @@ public class Execution {
 
 	@Override
 	public boolean equals(Object obj) {
-		// FIXME
-		// TODO
-		return true;
-
+		if (obj instanceof Execution) {
+			final Execution other = (Execution) obj;
+			return new EqualsBuilder().append(task, other.task).append(execType, other.execType)
+					.append(execStarted, other.execStarted).append(result, other.result).isEquals();
+		} else {
+			return false;
+		}
 	}
 }

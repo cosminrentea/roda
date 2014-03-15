@@ -360,22 +360,25 @@ public class ImporterServiceImpl implements ImporterService {
 		try {
 			Resource cmsRes = new ClassPathResource(rodaDataCmsDir + folderName);
 			File cmsDir = cmsRes.getFile();
-			importCmsPagesRec(cmsDir, null, new String());
+			importCmsPagesRec(cmsDir, null, "");
 		} catch (IOException e) {
 			log.error(e);
 		}
 	}
 
-	private void importCmsPagesRec(File dir, CmsPage cmsPage, String path) {
+	private void importCmsPagesRec(File dir, CmsPage cmsPage, String parentUrl) {
 		try {
 			File[] files = dir.listFiles();
+			List<File> directories = new ArrayList<File>();
 
+			CmsPage p = null;
 			for (File file : files) {
-				if (file.isDirectory()) {
-					importCmsPagesRec(file, null, path + "/" + file.getName());
-				}
-				if (file.getName().equalsIgnoreCase(pageXmlFile)) {
+				// first, process the page.xml file; secondly, iterate through
+				// the subdirectories
 
+				if (file.isDirectory()) {
+					directories.add(file);
+				} else if (file.getName().equalsIgnoreCase(pageXmlFile)) {
 					// we assume there is a "page.xml" file inside every folder
 
 					// Get the DOM Builder Factory
@@ -388,7 +391,7 @@ public class ImporterServiceImpl implements ImporterService {
 					// document contains the complete XML as a Tree.
 					Document document = builder.parse(file);
 
-					CmsPage p = new CmsPage();
+					p = new CmsPage();
 					CmsPageContent pContent = null;
 					CmsPageLang pLang = null;
 
@@ -418,7 +421,8 @@ public class ImporterServiceImpl implements ImporterService {
 								p.setSynopsis(content);
 								break;
 							case "lang":
-								// TODO set CmsPageLang
+								// TODO set CmsPageLang - should we use the
+								// check method instead of find?
 								if (content != null) {
 									Lang lang = Lang.findLang(content.toLowerCase());
 									if (lang != null) {
@@ -468,10 +472,17 @@ public class ImporterServiceImpl implements ImporterService {
 								break;
 							}
 						}
+
 					}
-					p.setUrl(path);
+
+					p.setUrl(processPageUrl(p.getName()));
+
+					// set the parent of the page
+					p.setCmsPageId(CmsPage.findCmsPage(parentUrl));
+
 					p.persist();
 
+					// set the page content
 					if (pContent != null) {
 						pContent.setCmsPageId(p);
 						pContent.persist();
@@ -481,6 +492,7 @@ public class ImporterServiceImpl implements ImporterService {
 						p.setCmsPageContents(pageContents);
 					}
 
+					// set the page language
 					if (pLang != null) {
 						pLang.setCmsPageId(p);
 						pLang.setId(new CmsPageLangPK(pLang.getLangId().getId(), p.getId()));
@@ -490,8 +502,13 @@ public class ImporterServiceImpl implements ImporterService {
 						pageLangs.add(pLang);
 						p.setCmsPageLangId(pageLangs);
 					}
+
 				}
 			}
+			for (File directory : directories) {
+				importCmsPagesRec(directory, null, p != null ? p.getUrl() : "");
+			}
+
 		} catch (IOException e) {
 			log.error(e);
 		} catch (ParserConfigurationException e) {
@@ -499,6 +516,28 @@ public class ImporterServiceImpl implements ImporterService {
 		} catch (SAXException e) {
 			log.error(e);
 		}
+
+	}
+
+	private String processPageUrl(String pageTitle) {
+		String result = null;
+		if (pageTitle != null) {
+			result = pageTitle.toLowerCase().trim();
+			// replace (multiple) spaces with a (single) "-"
+			result = result.replaceAll("\\s+", "-");
+			result = result.replaceAll("-+", "-");
+		}
+
+		// generate a new name
+		if (CmsPage.findCmsPage(result) != null) {
+			int i = 1;
+			while (CmsPage.findCmsPage(result + "_" + i) != null) {
+				i++;
+			}
+			result = result + "_" + i;
+		}
+
+		return result;
 	}
 
 	public void importElsst() {

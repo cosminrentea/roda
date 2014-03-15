@@ -179,42 +179,4 @@ public class RodaPageServiceImpl implements RodaPageService {
 		return result;
 	}
 
-	// private String mergeLayoutAndContents(CmsPage cmsPage) {
-	//
-	// if (cmsPage.getCmsPageContents() != null) {
-	//
-	// // TODO: multiple page contents
-	// List<CmsPageContent> unusedContents = new
-	// ArrayList<CmsPageContent>(cmsPage.getCmsPageContents());
-	//
-	// CmsLayout pageLayout = cmsPage.getCmsLayoutId();
-	// String pageLayoutContent = "";
-	//
-	// if (pageLayout != null) {
-	// pageLayoutContent = pageLayout.getLayoutContent();
-	// pageLayoutContent = pageLayoutContent.replaceAll("<html>", "");
-	// pageLayoutContent = pageLayoutContent.replaceAll("</html>", "");
-	// for (int i = 0; i < unusedContents.size(); i++) {
-	// CmsPageContent unusedContent = unusedContents.get(i);
-	// String searchIdString = "[[" + unusedContent.getId() + "]]";
-	// if (pageLayoutContent.indexOf(searchIdString) > -1) {
-	// pageLayoutContent.replaceAll(searchIdString,
-	// unusedContent.getContentText());
-	// unusedContents.remove(i);
-	// i--;
-	// }
-	// }
-	// }
-	//
-	// // for the contents that were not referred in layout
-	// for (int i = 0; i < unusedContents.size(); i++) {
-	// CmsPageContent unusedContent = unusedContents.get(i);
-	// pageLayoutContent += unusedContent.getContentText();
-	// }
-	//
-	// return pageLayoutContent;
-	// }
-	// return "";
-	// }
-
 }

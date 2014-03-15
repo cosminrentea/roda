@@ -21,11 +21,6 @@ public class CmsPageInfo extends JsonInfo implements Comparable<CmsPageInfo> {
 		serializer.include("id", "name", "lang", "menutitle", "synopsis", "target", "url", "defaultPage",
 				"externalredirect", "internalredirect", "layout", "cacheable", "published", "pagetype");
 
-		// serializer.transform(new FieldNameTransformer("indice"), "id");
-		// serializer.transform(new FieldNameTransformer("title"), "name");
-		// serializer.transform(new FieldNameTransformer("default"),
-		// "defaultPage");
-
 		return "{\"data\":" + serializer.serialize(collection) + "}";
 	}
 
@@ -112,11 +107,12 @@ public class CmsPageInfo extends JsonInfo implements Comparable<CmsPageInfo> {
 	}
 
 	public CmsPageInfo(CmsPage cmsPage) {
-		this(cmsPage.getId(), cmsPage.getName(), cmsPage.getCmsPageLangId() == null ? null : cmsPage.getCmsPageLangId()
-				.iterator().next().getLangId().getIso639(), cmsPage.getName(), cmsPage.getSynopsis(), cmsPage
-				.getTarget(), cmsPage.getUrl(), cmsPage.isDefaultPage(), cmsPage.getExternalRedirect(), cmsPage
-				.getInternalRedirect(), cmsPage.getCmsLayoutId().getName(), cmsPage.getCacheable(),
-				cmsPage.isVisible(), cmsPage.getCmsPageId() == null ? null : cmsPage.getCmsPageId().getName());
+		this(cmsPage.getId(), cmsPage.getName(), (cmsPage.getCmsPageLangId() != null && cmsPage.getCmsPageLangId()
+				.size() > 0) ? cmsPage.getCmsPageLangId().iterator().next().getLangId().getIso639() : null, cmsPage
+				.getName(), cmsPage.getSynopsis(), cmsPage.getTarget(), cmsPage.getUrl(), cmsPage.isDefaultPage(),
+				cmsPage.getExternalRedirect(), cmsPage.getInternalRedirect(), cmsPage.getCmsLayoutId().getName(),
+				cmsPage.getCacheable(), cmsPage.isVisible(), cmsPage.getCmsPageId() == null ? null : cmsPage
+						.getCmsPageId().getName());
 	}
 
 	public Integer getId() {

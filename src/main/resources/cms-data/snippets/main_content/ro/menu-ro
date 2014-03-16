@@ -1,37 +1,37 @@
 <ul id="navmenu">
-<li>[[PageURLLink:/home_ro]]</li>
-<li class="more">[[PageURLLink:/home_ro/despre]]
+<li>[[PageURLLink:acasa]]</li>
+<li class="more">[[PageURLLink:despre-roda]]
 <ul>
-<li>[[PageURLLink:/home_ro/despre/obiective]]
+<li>[[PageURLLink:obiectivele-roda]]
 </li>
 </ul>
-<li>[[PageURLLink:/home_ro/cautarea_datelor]]
+<li>[[PageURLLink:cautarea-datelor]]
 </li>
-<li class="more">[[PageURLLink:/home_ro/comandarea_datelor]]
+<li class="more">[[PageURLLink:comandarea-datelor]]
 <ul>
-<li>[[PageURLLink:/home_ro/comandarea_datelor/categorii_de_utilizatori]]
+<li>[[PageURLLink:categorii-de-utilizatori]]
 </li>
-<li>[[PageURLLink:/home_ro/comandarea_datelor/niveluri_de_acces]]
+<li>[[PageURLLink:niveluri-de-acces]]
 </li>
-<li>[[PageURLLink:/home_ro/comandarea_datelor/acorduri_de_acces]]
+<li>[[PageURLLink:acordul-de-acces]]
 </li>
-<li>[[PageURLLink:/home_ro/comandarea_datelor/costuri]]
+<li>[[PageURLLink:costuri]]
 </li>
 </ul>
-<li class="more">[[PageURLLink:/home_ro/crearea_datelor]]
+<li class="more">[[PageURLLink:crearea-datelor]]
 <ul>
-<li>[[PageURLLink:/home_ro/crearea_datelor/ghid_de_buna_practica]]
+<li>[[PageURLLink:ghid-de-buna-practica]]
 </li>
 </ul>
-<li class="more">[[PageURLLink:/home_ro/depunerea_datelor]]
+<li class="more">[[PageURLLink:depunerea-datelor]]
 <ul>
-<li>[[PageURLLink:/home_ro/depunerea_datelor/avantajele_depunerii]]
+<li>[[PageURLLink:avantajele-depunerii]]
 </li>
-<li>[[PageURLLink:/home_ro/depunerea_datelor/cum_se_depun_datele]]
+<li>[[PageURLLink:cum-se-depun-datele]]
 </li>
 </ul>
-<li>[[PageURLLink:/home_ro/catalogul_datelor]]
+<li>[[PageURLLink:catalogul-de-date]]
 </li>
-<li>[[PageURLLink:/home_ro/contact]]
+<li>[[PageURLLink:contact]]
 </li>
 </ul> 

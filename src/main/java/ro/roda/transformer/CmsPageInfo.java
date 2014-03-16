@@ -19,7 +19,7 @@ public class CmsPageInfo extends JsonInfo implements Comparable<CmsPageInfo> {
 
 		serializer.exclude("*.class", "type", "leaf");
 		serializer.include("id", "name", "lang", "menutitle", "synopsis", "target", "url", "defaultPage",
-				"externalredirect", "internalredirect", "layout", "cacheable", "published", "pagetype");
+				"externalredirect", "internalredirect", "layout", "cacheable", "published", "pagetype", "content");
 
 		return "{\"data\":" + serializer.serialize(collection) + "}";
 	}
@@ -85,11 +85,13 @@ public class CmsPageInfo extends JsonInfo implements Comparable<CmsPageInfo> {
 
 	private String pagetype;
 
+	private String content;
+
 	private boolean leaf;
 
 	public CmsPageInfo(Integer id, String name, String lang, String menutitle, String synopsis, String target,
 			String url, boolean defaultPage, String externalredirect, String internalredirect, String layout,
-			Integer cacheable, boolean published, String pagetype) {
+			Integer cacheable, boolean published, String pagetype, String content) {
 		this.id = id;
 		this.name = name;
 		this.lang = lang;
@@ -104,6 +106,7 @@ public class CmsPageInfo extends JsonInfo implements Comparable<CmsPageInfo> {
 		this.cacheable = cacheable;
 		this.published = published;
 		this.pagetype = pagetype;
+		this.content = content;
 	}
 
 	public CmsPageInfo(CmsPage cmsPage) {
@@ -112,7 +115,9 @@ public class CmsPageInfo extends JsonInfo implements Comparable<CmsPageInfo> {
 				.getName(), cmsPage.getSynopsis(), cmsPage.getTarget(), cmsPage.getUrl(), cmsPage.isDefaultPage(),
 				cmsPage.getExternalRedirect(), cmsPage.getInternalRedirect(), cmsPage.getCmsLayoutId().getName(),
 				cmsPage.getCacheable(), cmsPage.isVisible(), cmsPage.getCmsPageId() == null ? null : cmsPage
-						.getCmsPageId().getName());
+						.getCmsPageId().getName(), (cmsPage.getCmsPageContents() != null && cmsPage
+						.getCmsPageContents().size() > 0) ? cmsPage.getCmsPageContents().iterator().next()
+						.getContentText() : null);
 	}
 
 	public Integer getId() {
@@ -235,12 +240,20 @@ public class CmsPageInfo extends JsonInfo implements Comparable<CmsPageInfo> {
 		this.pagetype = pagetype;
 	}
 
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
+	}
+
 	public String toJson() {
 		JSONSerializer serializer = new JSONSerializer();
 
 		serializer.exclude("*.class", "type", "leaf");
 		serializer.include("id", "name", "lang", "menutitle", "synopsis", "target", "url", "defaultPage",
-				"externalredirect", "internalredirect", "layout", "cacheable", "published", "pagetype");
+				"externalredirect", "internalredirect", "layout", "cacheable", "published", "pagetype", "content");
 
 		serializer.transform(new FieldNameTransformer("indice"), "id");
 		serializer.transform(new FieldNameTransformer("title"), "name");

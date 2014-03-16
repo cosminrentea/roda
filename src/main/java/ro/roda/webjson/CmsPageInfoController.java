@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import ro.roda.service.CmsPageInfoService;
 import ro.roda.transformer.CmsPageInfo;
 
-@RequestMapping("/admin/pageinfo")
+@RequestMapping("/admin/cmspageinfo")
 @Controller
 public class CmsPageInfoController {
 

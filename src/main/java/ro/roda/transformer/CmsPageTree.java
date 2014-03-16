@@ -20,7 +20,7 @@ public class CmsPageTree extends CmsPageInfo {
 	public static String toJsonArr(Collection<CmsPageTree> collection) {
 		JSONSerializer serializer = new JSONSerializer();
 
-		serializer.exclude("*.class", "depth", "type");
+		serializer.exclude("*.class", "depth", "type", "content");
 		serializer.include("id", "name", "lang", "menutitle", "synopsis", "target", "url", "default",
 				"externalredirect", "internalredirect", "layout", "cacheable", "published", "pagetype");
 
@@ -37,7 +37,7 @@ public class CmsPageTree extends CmsPageInfo {
 				includeData += ".";
 			}
 			includeData += "children";
-			serializer.exclude(includeData + ".depth", includeData + ".type");
+			serializer.exclude(includeData + ".depth", includeData + ".type", includeData + ".content");
 			serializer.include(includeData + ".name", includeData + ".id", includeData + ".lang", includeData
 					+ ".menutitle", includeData + ".synopsis", includeData + ".target", includeData + ".url",
 					includeData + ".default", includeData + ".externalredirect", includeData + ".internalredirect",
@@ -169,7 +169,7 @@ public class CmsPageTree extends CmsPageInfo {
 	public String toJson() {
 		JSONSerializer serializer = new JSONSerializer();
 
-		serializer.exclude("*.class", "depth", "type");
+		serializer.exclude("*.class", "depth", "type", "content");
 		serializer.include("id", "name", "lang", "menutitle", "synopsis", "target", "url", "default",
 				"externalredirect", "internalredirect", "layout", "cacheable", "published", "pagetype");
 
@@ -179,7 +179,7 @@ public class CmsPageTree extends CmsPageInfo {
 				includeData += ".";
 			}
 			includeData += "children";
-			serializer.exclude(includeData + ".depth", includeData + ".type");
+			serializer.exclude(includeData + ".depth", includeData + ".type", includeData + ".content");
 			serializer.include(includeData + ".name", includeData + ".id", includeData + ".lang", includeData
 					+ ".menutitle", includeData + ".synopsis", includeData + ".target", includeData + ".url",
 					includeData + ".default", includeData + ".externalredirect", includeData + ".internalredirect",

@@ -19,7 +19,8 @@ public class CmsPageInfo extends JsonInfo implements Comparable<CmsPageInfo> {
 
 		serializer.exclude("*.class", "type", "leaf");
 		serializer.include("id", "name", "lang", "menutitle", "synopsis", "target", "url", "defaultPage",
-				"externalredirect", "internalredirect", "layout", "cacheable", "published", "pagetype", "content");
+				"externalredirect", "internalredirect", "layout", "layoutid", "cacheable", "published", "pagetype",
+				"parent", "parentid", "navigable", "searchable", "content");
 
 		return "{\"data\":" + serializer.serialize(collection) + "}";
 	}
@@ -79,6 +80,8 @@ public class CmsPageInfo extends JsonInfo implements Comparable<CmsPageInfo> {
 
 	private String layout;
 
+	private Integer layoutid;
+
 	private Integer cacheable;
 
 	private boolean published;
@@ -87,11 +90,20 @@ public class CmsPageInfo extends JsonInfo implements Comparable<CmsPageInfo> {
 
 	private String content;
 
+	private String parent;
+
+	private Integer parentid;
+
+	private boolean navigable;
+
+	private boolean searchable;
+
 	private boolean leaf;
 
 	public CmsPageInfo(Integer id, String name, String lang, String menutitle, String synopsis, String target,
 			String url, boolean defaultPage, String externalredirect, String internalredirect, String layout,
-			Integer cacheable, boolean published, String pagetype, String content) {
+			Integer layoutid, Integer cacheable, boolean published, String pagetype, String parent, Integer parentid,
+			boolean navigable, boolean searchable, String content) {
 		this.id = id;
 		this.name = name;
 		this.lang = lang;
@@ -103,21 +115,30 @@ public class CmsPageInfo extends JsonInfo implements Comparable<CmsPageInfo> {
 		this.externalredirect = externalredirect;
 		this.internalredirect = internalredirect;
 		this.layout = layout;
+		this.layoutid = layoutid;
 		this.cacheable = cacheable;
 		this.published = published;
 		this.pagetype = pagetype;
+		this.parent = parent;
+		this.parentid = parentid;
+		this.navigable = navigable;
+		this.searchable = searchable;
 		this.content = content;
 	}
 
 	public CmsPageInfo(CmsPage cmsPage) {
 		this(cmsPage.getId(), cmsPage.getName(), (cmsPage.getCmsPageLangId() != null && cmsPage.getCmsPageLangId()
 				.size() > 0) ? cmsPage.getCmsPageLangId().iterator().next().getLangId().getIso639() : null, cmsPage
-				.getName(), cmsPage.getSynopsis(), cmsPage.getTarget(), cmsPage.getUrl(), cmsPage.isDefaultPage(),
-				cmsPage.getExternalRedirect(), cmsPage.getInternalRedirect(), cmsPage.getCmsLayoutId().getName(),
-				cmsPage.getCacheable(), cmsPage.isVisible(), cmsPage.getCmsPageId() == null ? null : cmsPage
-						.getCmsPageId().getName(), (cmsPage.getCmsPageContents() != null && cmsPage
-						.getCmsPageContents().size() > 0) ? cmsPage.getCmsPageContents().iterator().next()
-						.getContentText() : null);
+				.getMenuTitle(), cmsPage.getSynopsis(), cmsPage.getTarget(), cmsPage.getUrl(), cmsPage.isDefaultPage(),
+				cmsPage.getExternalRedirect(), cmsPage.getInternalRedirect(),
+				(cmsPage.getCmsLayoutId() != null ? cmsPage.getCmsLayoutId().getName() : null), (cmsPage
+						.getCmsLayoutId() != null ? cmsPage.getCmsLayoutId().getId() : null), cmsPage.getCacheable(),
+				cmsPage.isVisible(), cmsPage.getCmsPageTypeId() == null ? null : cmsPage.getCmsPageTypeId().getName(),
+				cmsPage.getCmsPageId() == null ? null : cmsPage.getCmsPageId().getName(),
+				cmsPage.getCmsPageId() == null ? null : cmsPage.getCmsPageId().getId(), cmsPage.isNavigable(), cmsPage
+						.isSearchable(),
+				(cmsPage.getCmsPageContents() != null && cmsPage.getCmsPageContents().size() > 0) ? cmsPage
+						.getCmsPageContents().iterator().next().getContentText() : null);
 	}
 
 	public Integer getId() {
@@ -248,12 +269,53 @@ public class CmsPageInfo extends JsonInfo implements Comparable<CmsPageInfo> {
 		this.content = content;
 	}
 
+	public Integer getLayoutid() {
+		return layoutid;
+	}
+
+	public void setLayoutid(Integer layoutid) {
+		this.layoutid = layoutid;
+	}
+
+	public String getParent() {
+		return parent;
+	}
+
+	public void setParent(String parent) {
+		this.parent = parent;
+	}
+
+	public Integer getParentid() {
+		return parentid;
+	}
+
+	public void setParentid(Integer parentId) {
+		this.parentid = parentId;
+	}
+
+	public boolean isNavigable() {
+		return navigable;
+	}
+
+	public void setNavigable(boolean navigable) {
+		this.navigable = navigable;
+	}
+
+	public boolean isSearchable() {
+		return searchable;
+	}
+
+	public void setSearchable(boolean searchable) {
+		this.searchable = searchable;
+	}
+
 	public String toJson() {
 		JSONSerializer serializer = new JSONSerializer();
 
 		serializer.exclude("*.class", "type", "leaf");
 		serializer.include("id", "name", "lang", "menutitle", "synopsis", "target", "url", "defaultPage",
-				"externalredirect", "internalredirect", "layout", "cacheable", "published", "pagetype", "content");
+				"externalredirect", "internalredirect", "layout", "layoutid", "cacheable", "published", "pagetype",
+				"parent", "parentid", "navigable", "searchable", "content");
 
 		serializer.transform(new FieldNameTransformer("indice"), "id");
 		serializer.transform(new FieldNameTransformer("title"), "name");

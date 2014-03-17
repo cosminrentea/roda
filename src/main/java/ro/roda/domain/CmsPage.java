@@ -289,7 +289,11 @@ public class CmsPage {
 
 	@Column(name = "navigable", columnDefinition = "bool")
 	@NotNull
-	private boolean navigable;
+	private boolean navigable = true;
+
+	@Column(name = "searchable", columnDefinition = "bool")
+	@NotNull
+	private boolean searchable = true;
 
 	@Column(name = "url", columnDefinition = "text")
 	@NotNull
@@ -366,6 +370,10 @@ public class CmsPage {
 
 	public boolean isNavigable() {
 		return navigable;
+	}
+
+	public boolean isSearchable() {
+		return searchable;
 	}
 
 	public boolean isVisible() {
@@ -462,6 +470,10 @@ public class CmsPage {
 
 	public void setNavigable(boolean navigable) {
 		this.navigable = navigable;
+	}
+
+	public void setSearchable(boolean searchable) {
+		this.searchable = searchable;
 	}
 
 	public void setUrl(String url) {

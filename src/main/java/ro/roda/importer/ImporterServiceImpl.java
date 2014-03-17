@@ -452,6 +452,9 @@ public class ImporterServiceImpl implements ImporterService {
 							case "navigable":
 								p.setNavigable(Boolean.parseBoolean(content));
 								break;
+							case "searchable":
+								p.setSearchable(Boolean.parseBoolean(content));
+								break;
 							case "published":
 								// TODO there is no "published" column/attribute
 								// in CmsPage

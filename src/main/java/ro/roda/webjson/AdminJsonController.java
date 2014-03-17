@@ -513,15 +513,25 @@ public class AdminJsonController {
 
 	@RequestMapping(value = "/cmspagesave", method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody
-	public String cmspageSave(@RequestParam(value = "group") Integer groupId,
-			@RequestParam(value = "content") String content, @RequestParam(value = "name") String name,
-			@RequestParam(value = "description", required = false) String description,
-			@RequestParam(value = "id", required = false) Integer cmspageId) {
+	public String cmspageSave(@RequestParam(value = "title") String title,
+			@RequestParam(value = "id", required = false) Integer id,
+			@RequestParam(value = "lang", required = false) String lang,
+			@RequestParam(value = "menutitle", required = false) String menutitle,
+			@RequestParam(value = "synopsis", required = false) String synopsis,
+			@RequestParam(value = "target", required = false) String target,
+			@RequestParam(value = "url", required = false) String url,
+			@RequestParam(value = "default", required = false) boolean defaultPage,
+			@RequestParam(value = "externalredirect", required = false) String externalredirect,
+			@RequestParam(value = "internalredirect", required = false) String internalredirect,
+			@RequestParam(value = "layout", required = false) Integer layoutId,
+			@RequestParam(value = "cacheable", required = false) Integer cacheable,
+			@RequestParam(value = "published", required = false) boolean published,
+			@RequestParam(value = "pagetype", required = false) String pageType,
+			@RequestParam(value = "parentid", required = false) Integer parent,
+			@RequestParam(value = "content", required = false) String content) {
 
-		// TODO: add all parameters
-		AdminJson cmspageSave = null; // = adminJsonService.cmspageSave(groupId,
-										// content, name, description,
-										// cmspageId);
+		AdminJson cmspageSave = adminJsonService.cmsPageSave(parent, title, lang, menutitle, synopsis, target, url,
+				defaultPage, externalredirect, internalredirect, layoutId, cacheable, published, pageType, id, content);
 
 		if (cmspageSave == null) {
 			return null;

@@ -79,8 +79,8 @@ public interface AdminJsonService {
 	// CMS PAGE
 	public abstract AdminJson cmsPageSave(Integer cmsPageParentId, String name, String lang, String menutitle,
 			String synopsis, String target, String url, boolean defaultPage, String externalredirect,
-			String internalredirect, String layout, Integer cacheable, boolean published, String pagetype,
-			Integer cmsPageId);
+			String internalredirect, Integer layoutId, Integer cacheable, boolean published, String pagetype,
+			Integer cmsPageId, String pageContent);
 
 	public abstract AdminJson cmsPageMove(Integer cmsPageParentId, Integer cmsPageId);
 

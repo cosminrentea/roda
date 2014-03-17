@@ -22,8 +22,13 @@ import ro.roda.domain.CmsFolder;
 import ro.roda.domain.CmsLayout;
 import ro.roda.domain.CmsLayoutGroup;
 import ro.roda.domain.CmsPage;
+import ro.roda.domain.CmsPageContent;
+import ro.roda.domain.CmsPageLang;
+import ro.roda.domain.CmsPageLangPK;
+import ro.roda.domain.CmsPageType;
 import ro.roda.domain.CmsSnippet;
 import ro.roda.domain.CmsSnippetGroup;
+import ro.roda.domain.Lang;
 import ro.roda.domain.UserGroup;
 import ro.roda.domain.UserMessage;
 import ro.roda.domain.Users;
@@ -982,10 +987,9 @@ public class AdminJson {
 	// Cms Page Management Methods
 	public static AdminJson cmsPageSave(Integer cmsPageParentId, String name, String lang, String menutitle,
 			String synopsis, String target, String url, boolean defaultPage, String externalredirect,
-			String internalredirect, String layout, Integer cacheable, boolean published, String pagetype,
-			Integer cmsPageId) {
+			String internalredirect, Integer layoutId, Integer cacheable, boolean published, String pagetype,
+			Integer cmsPageId, String pageContent) {
 
-		// TODO: add lang
 		CmsPage page = null;
 		if (cmsPageId != null) {
 			page = CmsPage.findCmsPage(cmsPageId);
@@ -995,8 +999,22 @@ public class AdminJson {
 			page = new CmsPage();
 		}
 
+		page.setCmsPageId(CmsPage.findCmsPage(cmsPageParentId));
 		page.setName(name);
-		// TODO: other set methods
+		page.setMenuTitle(menutitle);
+		page.setSynopsis(synopsis);
+		page.setTarget(target);
+		page.setUrl(url);
+		page.setDefaultPage(defaultPage);
+		page.setExternalRedirect(externalredirect);
+		page.setInternalRedirect(internalredirect);
+		page.setCmsLayoutId(CmsLayout.findCmsLayout(layoutId));
+		page.setCacheable(cacheable);
+
+		// TODO check if visible = published
+		page.setVisible(published);
+
+		page.setCmsPageTypeId(CmsPageType.checkCmsPageType(null, pagetype, null));
 
 		try {
 			CmsPage parentPage = CmsPage.findCmsPage(cmsPageParentId);
@@ -1017,6 +1035,38 @@ public class AdminJson {
 			}
 
 			CmsLayout.entityManager().persist(page);
+
+			// set the page content
+			if (pageContent != null) {
+				CmsPageContent cmsPageContent = new CmsPageContent();
+				cmsPageContent.setContentText(pageContent);
+
+				cmsPageContent.setCmsPageId(page);
+				cmsPageContent.persist();
+
+				Set<CmsPageContent> pageContents = new HashSet<CmsPageContent>();
+				pageContents.add(cmsPageContent);
+				page.setCmsPageContents(pageContents);
+			}
+
+			// set the page language
+			if (lang != null) {
+				// TODO decide if it is "find" or "check"
+				Lang pageLang = Lang.findLang(lang);
+				if (pageLang != null) {
+
+					CmsPageLang cmsPageLang = new CmsPageLang();
+
+					cmsPageLang.setLangId(pageLang);
+					cmsPageLang.setCmsPageId(page);
+					cmsPageLang.setId(new CmsPageLangPK(cmsPageLang.getLangId().getId(), page.getId()));
+					cmsPageLang.persist();
+
+					Set<CmsPageLang> cmsPageLangs = new HashSet<CmsPageLang>();
+					cmsPageLangs.add(cmsPageLang);
+					page.setCmsPageLangId(cmsPageLangs);
+				}
+			}
 		} catch (EntityExistsException e) {
 			return new AdminJson(false, "Layout not created " + e.getMessage());
 		}

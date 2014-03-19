@@ -25,6 +25,7 @@ The Archive was created in order to support and impel the quantitative research 
 	<cms_layout>roda-main-en</cms_layout>
 	<pagetype>content</pagetype>
 	<cacheable>3600</cacheable>
+	<searchable>true</searchable>		
 	<default_page>0</default_page>
 	<external_redirect></external_redirect>
 	<internal_redirect></internal_redirect>

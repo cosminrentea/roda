@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pagedata>
+	<title>Data Creation</title>
+	<menutitle>Data Creation</menutitle>
+	<synopsis><![CDATA[]]></synopsis>
+	<lang>en</lang>
+	<content><![CDATA[
+<p align="right"><font color="#336666" face="Arial, Helvetica, sans-serif" size="4">
+	<b>Introduction</b></font></p>
+
+<p align="justify"><font face="Arial, Helvetica, sans-serif" size="2">For any persons 
+	or institutions wanting to create high-standard dataset and with a view to preparing 
+	the data for archiving, RODA makes available a <a href="template.php?url=13">guide 
+	to good practice</a>.</font></p>
+
+<p align="justify"><font face="Arial, Helvetica, sans-serif" size="2">A well-documented 
+	data set is more likely to be found during the searching process; that is why we 
+	especially focus on documentation and make every effort to gather all available 
+	information for each data set.</font></p>
+
+<p align="justify"><font face="Arial, Helvetica, sans-serif" size="2">Our job will be much 
+	easier if the data producers bring such information from the very beginning, thus 
+	saving both time and effort. Moreover, any wrong interpretations as to insufficient 
+	information may be avoided.</font></p>
+
+<p align="justify"><font face="Arial, Helvetica, sans-serif" size="2">A good documentation 
+	may facilitate reaching joint standards and maintain the high quality of both primary 
+	and secondary research.</font></p>				
+	]]></content>
+	<cms_layout>roda-main-en</cms_layout>
+	<pagetype>content</pagetype>
+	<cacheable>3600</cacheable>
+	<searchable>true</searchable>	
+	<default_page>0</default_page>
+	<external_redirect></external_redirect>
+	<internal_redirect></internal_redirect>
+	<navigable>true</navigable>
+	<published>true</published>
+	<target></target>
+	<visible>true</visible>
+</pagedata>

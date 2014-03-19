@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pagedata>
+	<title>Access agreements</title>
+	<menutitle>Access agreements</menutitle>
+	<synopsis><![CDATA[]]></synopsis>
+	<lang>en</lang>
+	<content><![CDATA[
+<p align="right"><font color="#336666" face="Arial, Helvetica, sans-serif" size="4"><b>Access agreement</b></font></p>
+<p align="justify"><font face="Arial, Helvetica, sans-serif" size="2">The access agreement
+	is a document that all users have to sign in order to get their accounts validated.
+	This document has to be signed ***only once***, after which the user can start using
+	the account for downloading datasets available for the user's category.</font></p>
+<p align="left"><font face="Arial, Helvetica, sans-serif" size="2">Users can obtain the 
+	access agreement:</font></p>
+<div align="left"><font face="Arial, Helvetica, sans-serif" size="2"><ul>
+	<li>by mail, to the specified address;</li>
+	<li>directly from the RODA's office;</li>
+	<li>by downloading it from our web page.</li>
+</ul></font></div>
+
+<p align="justify"><font face="Arial, Helvetica, sans-serif" size="2">The access agreement
+	varies according to the purpose for which the data ordered will be used.<br><br>
+
+	For individual use, you can download the
+	<a href="http://www.roda.ro/documente/Individual.pdf">Individual access agreement</a>.<br><br>
+
+	For teaching purposes, both professors and students will have to sign a 
+	<a href="http://www.roda.ro/documente/Didactic.pdf">Teaching access agreement</a>.<br>
+	Because there are different students each year, this document has to be updated, signed and
+	sent to the archive yearly, in July.</font></p>
+	]]></content>
+	<cms_layout>roda-main-en</cms_layout>
+	<pagetype>content</pagetype>
+	<cacheable>3600</cacheable>
+	<searchable>true</searchable>	
+	<default_page>0</default_page>
+	<external_redirect></external_redirect>
+	<internal_redirect></internal_redirect>
+	<navigable>true</navigable>
+	<published>true</published>
+	<target></target>
+	<visible>true</visible>
+</pagedata>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pagedata>
+	<title></title>
+	<menutitle></menutitle>
+	<synopsis><![CDATA[
+	
+	]]></synopsis>
+	<lang>en</lang>
+	<content><![CDATA[
+	<p align="right"><font color="#336666" face="Arial, Helvetica, sans-serif" size="4"><b>Personnel and contact</b></font></p>
+            <p align="left"><font face="Arial, Helvetica, sans-serif" size="2"><strong>General questions:</strong><br>
+             roda AT roda DOT ro </font></p>
+            <p align="left"> </p>
+            <p align="left"> </p>
+            <p align="left"><strong><font face="Arial, Helvetica, sans-serif" size="2">Address:</font></strong><font face="Arial, Helvetica, sans-serif" size="2"><br>
+              Romanian Social Data Archive<br>
+              1 Schitu Magureanu Bd.<br>
+              5th floor, room 15<br>
+              050025 Bucharest<br>
+              sector 5<br>
+              Romania</font></p>
+
+            <table border="0" cellpadding="0" cellspacing="0" width="229" align="left">
+              <tbody><tr> 
+                <td width="57"><font face="Arial, Helvetica, sans-serif" size="2">Tel./Fax:</font></td>
+                <td width="53"><font face="Arial, Helvetica, sans-serif" size="2">+40 (21)</font></td>
+                <td width="119"><font face="Arial, Helvetica, sans-serif" size="2">312.66.18\</font></td>
+              </tr>
+              <tr> 
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td><font face="Arial, Helvetica, sans-serif" size="2">312.02.10/ 
+                  int.101</font></td>
+              </tr>
+            </tbody></table>
+
+		<br>
+		<br>
+		<br>
+	<font face="Arial, Helvetica, sans-serif" size="2">The e-mail addresses below are completed with "@roda.ro"</font>
+               <br>
+               <br>
+            <table style="border-style:solid; border-width:2px; border-color:black;" border="1" width="548" align="left">
+              <tbody><tr> 
+                <td><b><font face="Arial, Helvetica, sans-serif" size="2">Name</font></b></td>
+                <td><b><font face="Arial, Helvetica, sans-serif" size="2">Position</font></b></td>
+                <td><b><font face="Arial, Helvetica, sans-serif" size="2">e-mail</font></b></td>
+              </tr>
+              <tr> 
+                <td><font face="Arial, Helvetica, sans-serif" size="2">Adrian Dusa</font></td>
+                <td><font face="Arial, Helvetica, sans-serif" size="2">director</font></td>
+                <td><font face="Arial, Helvetica, sans-serif" size="2">adi</font></td>
+              </tr>
+              <tr> 
+                <td><font face="Arial, Helvetica, sans-serif" size="2">Dana Nitulescu</font></td>
+                <td><font face="Arial, Helvetica, sans-serif" size="2">user services</font></td>
+                <td><font face="Arial, Helvetica, sans-serif" size="2">danan</font></td>
+              </tr>
+              <tr> 
+                <td><font face="Arial, Helvetica, sans-serif" size="2">Mariana Dan</font></td>
+                <td><font face="Arial, Helvetica, sans-serif" size="2">data depositing</font></td>
+                <td><font face="Arial, Helvetica, sans-serif" size="2">mari</font></td>
+              </tr>
+              <tr> 
+                <td><font face="Arial, Helvetica, sans-serif" size="2">Cristina Bajenaru </font></td>
+                <td><font face="Arial, Helvetica, sans-serif" size="2">data preservation</font></td>
+                <td><font face="Arial, Helvetica, sans-serif" size="2">cristina</font></td>
+              </tr>
+            </tbody></table>
+	
+	]]></content>
+	<cms_layout>roda-main-en</cms_layout>
+	<pagetype>content</pagetype>
+	<cacheable>3600</cacheable>
+	<searchable>true</searchable>	
+	<default_page>0</default_page>
+	<external_redirect></external_redirect>
+	<internal_redirect></internal_redirect>
+	<navigable>true</navigable>
+	<published>true</published>
+	<target></target>
+	<visible>true</visible>
+</pagedata>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pagedata>
+	<title>Data depositing</title>
+	<menutitle>Data depositing</menutitle>
+	<synopsis><![CDATA[]]></synopsis>
+	<lang>en</lang>
+	<content><![CDATA[
+<p align="right"><font color="#336666" face="Arial, Helvetica, sans-serif" size="4">
+	<b>Data depositing</b></font></p>
+
+<p align="justify"><font face="Arial, Helvetica, sans-serif" size="2">A social data archive 
+	is an institution beneficial for the entire academic community, both for the users and 
+	equally also for any persons or institutions wanting to deposit the data.</font></p>
+
+<p align="justify"><font face="Arial, Helvetica, sans-serif" size="2">Throughout the world, and 
+	Romania makes no exception, the data producers try to protect them, either from the competition 
+	or simply because large amounts of money were spent to collect them. Depositing data to RODA
+	would look at the first sight a loss of control, the owner becoming uncertain about the final 
+	destination of data.</font></p>
+
+<p align="justify"><font face="Arial, Helvetica, sans-serif" size="2">RODA helps the data owners 
+	who want to deposit them, by two complementary solutions:</font></p>
+
+<div align="left"><font face="Arial, Helvetica, sans-serif" size="2"><ul>
+	<li>confidentiality contracts;</li>
+	<li>the owners can use their passwords to directly control the access level for one dataset
+		or another.</li>
+</ul></font></div>
+
+<p align="justify"><font face="Arial, Helvetica, sans-serif" size="2">What should be understood from 
+	the very beginning is that depositing the data does not mean losing their control. On the 
+	contrary, all rights will remain to the owners who will mention them in the access conditions; 
+	the archive does nothing else but administrating the data in favour of the owner, serving as 
+	a mediator between the data owner and the data user.</font></p>
+
+<p align="justify"><font face="Arial, Helvetica, sans-serif" size="2">If you have social science 
+	databases that can be used (subject to the previously mentioned conditions), please consider 
+	depositing such data to RODA.</font></p>				
+	]]></content>
+	<cms_layout>roda-main-en</cms_layout>
+	<pagetype>content</pagetype>
+	<cacheable>3600</cacheable>
+	<searchable>true</searchable>	
+	<default_page>0</default_page>
+	<external_redirect></external_redirect>
+	<internal_redirect></internal_redirect>
+	<navigable>true</navigable>
+	<published>true</published>
+	<target></target>
+	<visible>true</visible>
+</pagedata>

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pagedata>
+	<title>Costs</title>
+	<menutitle>Costs</menutitle>
+	<synopsis><![CDATA[]]></synopsis>
+	<lang>en</lang>
+	<content><![CDATA[
+
+				<p align="right"><font color="#336666" face="Arial, Helvetica, sans-serif" size="4"><b>Costs</b></font></p>
+
+<p align="justify"><font face="Arial, Helvetica, sans-serif" size="2">For the academic users who register
+	an academic research project, the datasets will be free of charge, and the only costs the users will 
+	have to pay are related to the media (Floppy disks, CD's etc) and mailing costs. Absolute gratuity 
+	is granted only for the direct download from our web page.</font></p>
+
+<p align="justify"><font face="Arial, Helvetica, sans-serif" size="2">Fro the other user categories and some
+	datasets, though, there will be additional charges.<br>
+	The costs related to sending the datasets will be calculated according to the project's funding source.
+	For instance, an academic user working for a commerciallly funded project will be charged in the same 
+	way as a commercial user. The project funding sources are linked to the user categories, but thet must 
+	not be mistaken.</font></p>
+
+<p align="justify"><font face="Arial, Helvetica, sans-serif" size="2">below you can see four different
+	funding sources according to which the cost of delivering one dataset or another is calculated.</font></p>
+
+
+<table style="border-style:solid; border-width:2px; border-color:black;padding:10" border="1" width="100%">
+	<tbody><tr>
+		<td width="20%"><div align="center">
+			<font color="#FF0000" face="Arial, Helvetica, sans-serif" size="2">
+				<b>Funding<br>source</b></font>
+		</div></td>
+		<td width="80%"><div align="center">
+			<font color="#FF0000" face="Arial, Helvetica, sans-serif" size="2">
+				<b>Description</b></font>
+		</div></td>
+	</tr>
+	<tr> 
+		<td width="20%"><div align="center">
+                    <font color="#0000FF" face="Arial, Helvetica, sans-serif" size="2">
+				<b>Academic</b></font>
+		</div></td>
+		<td width="80%"><font face="Arial, Helvetica, sans-serif" size="2"><ul>
+			<li>Research projects undertaken by Universities</li>
+			<li>Research projects undertaken by Romanian Academy of Sciences</li>
+			<li>Research projects undertaken by fundamental research institutes (including 
+				those belonging to universities)</li>
+			<li>Data required by students for their papers or theses</li>
+			<li>Data required for teaching purposes</li>
+		</ul></font></td>
+	</tr>
+	<tr> 
+		<td width="20%"><div align="center">
+                    <font color="#0000FF" face="Arial, Helvetica, sans-serif" size="2">
+				<b>Government /<br>Non-profit</b><br></font>
+		</div></td>
+		<td width="80%"><ul><font face="Arial, Helvetica, sans-serif" size="2">
+			<li>Research projects funded by a Government department/agency</li>
+			<li>Research projects funded by a charity or non-profit organisation</li>
+		</font></ul></td>      
+	</tr>
+	<tr> 
+		<td width="20%"><div align="center">
+                    <font color="#0000FF" face="Arial, Helvetica, sans-serif" size="2">
+				<b>Comercial</b></font>
+		</div></td>
+		<td width="80%"><ul><font face="Arial, Helvetica, sans-serif" size="2">
+			<li>Research projects funded by a comercial organisation</li>
+		</font></ul></td>
+	</tr>
+	<tr> 
+		<td width="20%"><div align="center"> 
+			<font color="#0000FF" face="Arial, Helvetica, sans-serif" size="2"><b>Personala</b></font>
+		</div></td>
+		<td width="80%"><font face="Arial, Helvetica, sans-serif" size="2"><ul>
+			<li>The data required are destined exclusively for private use, being local 
+				history or genealogical data. They cannot be related to employment or 
+				any other institutional aspects. The research project may also be 
+				financed from sources other than the own ones .</li>
+		</ul></font></td>
+	</tr>
+</tbody></table>
+				
+	]]></content>
+	<cms_layout>roda-main-en</cms_layout>
+	<pagetype>content</pagetype>
+	<cacheable>3600</cacheable>
+	<searchable>true</searchable>	
+	<default_page>0</default_page>
+	<external_redirect></external_redirect>
+	<internal_redirect></internal_redirect>
+	<navigable>true</navigable>
+	<published>true</published>
+	<target></target>
+	<visible>true</visible>
+</pagedata>

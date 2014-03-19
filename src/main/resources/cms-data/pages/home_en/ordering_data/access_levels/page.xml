@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pagedata>
+	<title>Access Levels</title>
+	<menutitle>Access Levels</menutitle>
+	<synopsis><![CDATA[]]></synopsis>
+	<lang>en</lang>
+	<content><![CDATA[
+
+				<p align="right"><font face="Arial, Helvetica, sans-serif" size="2"><b><font color="#336666" size="4">Levels of access to data</font></b></font></p>
+		<p align="left"> </p>
+		<div align="left"> 
+		<p align="justify"><font face="Arial, Helvetica, sans-serif" size="2"><b>The data owners</b> decide the access level for each dataset.</font></p>
+		<p align="justify"><font face="Arial, Helvetica, sans-serif" size="2"><b>The absolute novelty</b> of our system is that the data 
+			owners can always set the desired access level, directly in the web page, after logging in with a proper password. 
+			This way, the owners have total and direct control over their datasets, getting actively involved in managing those 
+			datasets together wiht our data archive. Whenever the owners sets or modifies the level of access to a specific dataset, 
+			this will be automatically notified on our news page; similarly, an automatic e-mail will be generated whereby the users 
+			in the list will receive such news.</font></p>
+
+		<br>
+
+              <table style="border-style:solid; border-width:2px; border-color:black;" border="1" width="548">
+                <tbody><tr> 
+                  <td width="125"><div align="center"><font face="Arial, Helvetica, sans-serif" size="2"><b>Level of access</b></font></div></td>
+                  <td width="407"><div align="center"><font face="Arial, Helvetica, sans-serif" size="2"><b>Description</b></font></div></td>
+                </tr>
+                <tr> 
+                  <td height="39" width="125"><div align="center"><font color="#FF0000"><b>0</b></font></div></td>
+                  <td height="39" width="407"><div align="left"><font face="Arial, Helvetica, sans-serif" size="2">Free 
+                      access and download for any type of user, whether registrated or not, whether academic or non-academic. This category 
+                      will contain totally public datasets, over which the owners have not imposed any restriction.</font></div></td>
+                </tr>
+                <tr> 
+                  <td height="42" width="125"><div align="center"><font color="#FF0000"><b><font face="Arial, Helvetica, sans-serif" size="2">&nbsp;&nbsp;&nbsp;A&nbsp;&nbsp;&nbsp;</font></b></font></div></td>
+                  <td height="42" width="407"><font face="Arial, Helvetica, sans-serif" size="2">Free access to the datasets for academic 
+                    users (category <font color="#FF0000"><b><a href="template.php?url=7">I</a></b></font>); the users will only have to 
+			pay the costs related the storage media used for sending the data set (e.g. floppy disk, CD etc.); RODA may 
+			distribute the datasets without asking for the owner’s approval.</font></td>
+                </tr>
+                <tr> 
+                  <td height="39" width="125"><div align="center"><font color="#FF0000"><b><font face="Arial, Helvetica, sans-serif" size="2">&nbsp;&nbsp;&nbsp;B&nbsp;&nbsp;&nbsp;</font></b></font></div></td>
+                  <td height="39" width="407"><font face="Arial, Helvetica, sans-serif" size="2">Data access restricted by the owner's 
+			written approval, whereby the owner gets involved in the data set access control activity, taking the final decision 
+			as to any person's access to the data set.</font></td>
+                </tr>
+                <tr> 
+                  <td height="17" width="125"><div align="center"><font color="#FF0000"><b><font face="Arial, Helvetica, sans-serif" size="2">&nbsp;&nbsp;&nbsp;C&nbsp;&nbsp;&nbsp;</font></b></font></div></td>
+                  <td height="17" width="407"><font face="Arial, Helvetica, sans-serif" size="2">Owner-restricted access based on a 
+			confidentiality contract; the data set can only be accessed against payment by the user of a certain amount 
+			specified by the owner.</font></td>
+                </tr>
+              </tbody></table>
+            </div>				
+	]]></content>
+	<cms_layout>roda-main-en</cms_layout>
+	<pagetype>content</pagetype>
+	<cacheable>3600</cacheable>
+	<searchable>true</searchable>	
+	<default_page>0</default_page>
+	<external_redirect></external_redirect>
+	<internal_redirect></internal_redirect>
+	<navigable>true</navigable>
+	<published>true</published>
+	<target></target>
+	<visible>true</visible>
+</pagedata>

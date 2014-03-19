@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pagedata>
+	<title>How to submit data</title>
+	<menutitle>How to submit data</menutitle>
+	<synopsis><![CDATA[]]></synopsis>
+	<lang>en</lang>
+	<content><![CDATA[
+<p align="right"><font color="#336666" face="Arial, Helvetica, sans-serif" size="4"><b>Data 
+	depositing procedure</b></font></p>
+
+<p align="justify"><font face="Arial, Helvetica, sans-serif" size="2">The depositing procedure 
+	is very important, both for clearly understanding the data owners' requests and for 
+	quickly and accurately integrating the data sets in our archive.</font></p>
+
+<p align="justify"><font face="Arial, Helvetica, sans-serif" size="2">The information below 
+	guide you through the depositing procedure steps, how the data should be prepared for 
+	depositing, how the data reach RODA and what happen to them afterwards. If you have any 
+	questions, please <a href="template.php?url=4">contact</a> us for further explanations.</font></p>
+
+<p align="justify"><font face="Arial, Helvetica, sans-serif" size="2">In order for the data set 	
+	to be fully usable, any researcher or interested person will need additional information. 
+	The data set is useful to no one unless provided with a well-structured documentation. 
+	With a view to depositing data, please:</font></p>
+
+<div align="justify"><ul><font face="Arial, Helvetica, sans-serif" size="2">
+	<li>fill in the <a href="http://www.roda.ro/documente/Depunere.pdf">Depositing form</a> 
+		(giving details about the dataset);</li>
+	<li>fill in and the sign the <a href="http://www.roda.ro/documente/Licenta.pdf">License 
+		agreement</a>, mentioning the conditions and restrictions regarding the dissemination 
+		of data;</li>
+	<li>send these documents to us, with the data set and the related documentation.</li>
+</font></ul></div>
+
+<p align="justify"><b><font color="#FF0000" face="Arial, Helvetica, sans-serif" size="2">Please 
+	prepare:</font></b></p>
+
+<p align="justify"><font face="Arial, Helvetica, sans-serif" size="2">
+	- a copy of the dataset;<br>
+	- a copy of the questionnaire, if possible bearing the name of the variables - they 
+		should be the identical with the database variables;<br>
+	- detailes about sampling data collection methods;<br>
+	- a copy of the instructions to the field operators;<br>
+	- information on variables and their values, coding and classification schemes used;<br>
+	- information on the newly-created variables;<br>
+	- details on the weighting procedures (if any) and weighting variables.</font></p>
+
+<p align="justify"><font face="Arial, Helvetica, sans-serif" size="2">We can use databases created 
+	in Access, Excel, SPSS, SAS, STATA, as well as the information on the data set documentation 
+	in Word, RTF, Acrobat PDF, both on electronic and printed format, if they can be scanned.</font></p>
+
+<p align="justify"><font face="Arial, Helvetica, sans-serif" size="2">The current storage media we 
+	can use are floppy disks, CDs and electronic transfer by FTP.</font></p>
+	
+	]]></content>
+	<cms_layout>roda-main-en</cms_layout>
+	<pagetype>content</pagetype>
+	<cacheable>3600</cacheable>
+	<searchable>true</searchable>	
+	<default_page>0</default_page>
+	<external_redirect></external_redirect>
+	<internal_redirect></internal_redirect>
+	<navigable>true</navigable>
+	<published>true</published>
+	<target></target>
+	<visible>true</visible>
+</pagedata>

@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pagedata>
+	<title>User Categories</title>
+	<menutitle>User Categories</menutitle>
+	<synopsis><![CDATA[]]></synopsis>
+	<lang>en</lang>
+	<content><![CDATA[
+<p align="right"><font color="#336666" face="Arial, Helvetica, sans-serif" size="4"><b>User categories</b></font></p>
+            
+<p align="justify"><font face="Arial, Helvetica, sans-serif" size="2">Access to data is a 
+	very delicate problem. Two kinds of actors are involved in this process: the users 
+	and the data set owners.</font></p>
+
+<p align="justify"><font face="Arial, Helvetica, sans-serif" size="2">On the one hand, the 
+	users want a free and unrestricted data access, to the maximum extent free of charge 
+	for all data sets.</font></p>
+
+<p align="justify"><font face="Arial, Helvetica, sans-serif" size="2">On the other hand, 
+	the owners wish for the databases to be kept confident and distributed only based on
+	a previous agreement; these actors are entitled to expect a certain type of reward 
+	for having agreed to the data dissemination.</font></p>
+
+<p align="justify"><font face="Arial, Helvetica, sans-serif" size="2">Various types of rewards 
+	may be possible, ranging from expecting a certain written report (bibliographic citation 
+	etc.) to money rewards, the owners agreeing to the data dissemination against cost.</font></p>
+
+<div align="left"> 
+<table style="border-style:solid; border-width:2px; border-color:black;padding:10" border="1">
+	<tbody><tr>
+		<td style="padding:10"><font color="#FF0000" face="Arial, Helvetica, sans-serif" size="2"><b>I.</b></font><b>
+			<font color="#0000FF" face="Arial, Helvetica, sans-serif" size="2">Academic 
+			<font color="#009900" face="Arial, Helvetica, sans-serif" size="2">users</font>:</font></b>
+			<font researchers,="" professors,="" students.<="" font="" face="Arial, Helvetica, sans-serif" size="2"></font></td>
+		<td style="padding:10"><p align="justify"> 
+			<font face="Arial, Helvetica, sans-serif" size="2">Such users will be able 	
+				to freely refer to the data sets of access levels 
+				<a href="template.php?url=8"><b>0</b></a> and <a href="template.php?url=8"><b>A</b></a>; 
+				some data (access level <a href="template.php?url=8"><strong>B</strong></a>) 
+				can be accessed with no further costs only if the data onwer agrees to, 
+				and data from level <a href="template.php?url=8"><strong>C</strong></a> 
+				are available only against payment, being restricted by the confidentiality 
+				contracts signed between RODA and the data owners.<br></font>
+			<font face="Arial, Helvetica, sans-serif" size="2">The datasets may be used for 
+				educational purposes, by presenting them in the syllabus; in this case, 
+				both professors and students will have to sign a 
+				<a href="template.php?url=10">teaching access form</a> in order to use the data.</font></p></td>
+	</tr>
+	<tr> 
+		<td style="padding:10"><font color="#FF0000" face="Arial, Helvetica, sans-serif" size="2"><b>II.</b></font><b>
+			<font color="#0000FF" face="Arial, Helvetica, sans-serif" size="2">Government / non-profit 
+			<font color="#009900">users</font><br></font></b></td>
+		<td style="padding:10"><p align="justify"><font face="Arial, Helvetica, sans-serif" size="2">These 
+			users will freely refer to the data in level <a href="template.php?url=8"><strong>0</strong></a>
+			<font color="#000000">. The datasets in levels <a href="template.php?url=8"><strong>A</strong></a>
+			and <a href="template.php?url=8"><strong>B</strong></a> will be considered as level 
+			<a href="template.php?url=8"><strong>B</strong></a>: access in granted only if the owners 
+			agree to. Aditionally, the datasets will only be used in non-comercial purposes; the research 
+			project will only refer to fundamental research or to improvement of the social system.<br>
+			Access to data in level <a href="template.php?url=8"><strong>C</strong></a> will be granted 
+			only after the user has payed the amount specified by the data owner. Some data from levels 
+			<a href="template.php?url=8"><strong>A</strong></a> or <a href="template.php?url=8">
+			<strong>B</strong></a> can be considered as level <a href="template.php?url=8">
+			<strong>C</strong></a> if the owner requires to.</font></font></p></td>
+	</tr>
+	<tr> 
+		<td style="padding:10"><b><font color="#FF0000" face="Arial, Helvetica, sans-serif" size="2">III.</font>
+			<font color="#0000FF" face="Arial, Helvetica, sans-serif" size="2">Individual</font>
+			<font color="#009900">users</font></b></td>
+		<td style="padding:10"><p align="justify"><font face="Arial, Helvetica, sans-serif" size="2">Free 
+			access to datasets in level <a href="template.php?url=8"><strong>0</strong></a>. All other 
+			datasets are considered in level <a href="template.php?url=8"><strong>B</strong></a> or 
+			<a href="template.php?url=8"><strong>C</strong></a>, depending on the owner's decision. 
+			Considering the low credibility of an individual, there are rather few chances to access the 
+			data freely. If the user is a widely recognized researcher but currently unaffiliated 
+			professionally, who wishes to use the data for fundamental research and the data owner 
+			agrees to, access could be granted with no further costs.</font></p></td>
+	</tr>
+	<tr> 
+		<td style="padding:10"><b><font color="#FF0000" face="Arial, Helvetica, sans-serif" size="2">IV.</font>
+			<font color="#0000FF" face="Arial, Helvetica, sans-serif" size="2">Comercial </font><br>
+			<font color="#009900">users</font></b></td>
+		<td style="padding:10"><p align="justify"><font face="Arial, Helvetica, sans-serif" size="2">Free 
+			access to datasets in level <a href="template.php?url=8"><strong>0</strong></a>. All other 
+			datasets are considered in level <a href="template.php?url=8"><strong>C</strong></a>, and 
+			can be accessed only after the user has payed the amount specified by the data owner.</font></p></td>
+	</tr>
+</tbody></table></div>
+              
+<p align="justify"><font face="Arial, Helvetica, sans-serif" size="2">The users who wish to access data in levels 
+	<a href="template.php?url=8"><strong>A</strong></a> and <strong><a href="template.php?url=8">B</a></strong> 
+	will have to specify the project they are going to use the data for, the application field of the project 
+	as well as the funding percents from varioues funding sources. In order to do that, the users will have 
+	to register projects, or choose one from the list of already registered ones.<br> In order to discriminate 
+	between types of users, they will have to firstly <a href="template.php?url=9">register</a>, and the 
+	archive's personnel will make sure of the validity of the registration data.</font></p>
+
+<p align="justify"><font face="Arial, Helvetica, Sans-serif" size="2">It is neccesary to mention that this 
+	classification is only RODA's proposal. The data owners are the ones who finally decide the destination 
+	of their data, what user categories have the right to use it and under what conditions. For example, 
+	if the owner decides to, some data may be set to level <font color="#0000FF"><strong>
+	<a href="template.php?url=8">B</a></strong></font> for commercial users (so that they can use the date 
+	if the owner agrees to).</font></p>
+ 
+<p align="justify"><font face="Arial, Helvetica, Sans-serif" size="2">Each dataset in the RODA catalog will be presented with its actual access 
+	level, specified by the data owner.</font></p>				
+	]]></content>
+	<cms_layout>roda-main-en</cms_layout>
+	<pagetype>content</pagetype>
+	<cacheable>3600</cacheable>
+	<searchable>true</searchable>	
+	<default_page>0</default_page>
+	<external_redirect></external_redirect>
+	<internal_redirect></internal_redirect>
+	<navigable>true</navigable>
+	<published>true</published>
+	<target></target>
+	<visible>true</visible>
+</pagedata>

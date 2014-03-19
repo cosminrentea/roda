@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pagedata>
+	<title>Avantages</title>
+	<menutitle>Avantages</menutitle>
+	<synopsis><![CDATA[]]></synopsis>
+	<lang>en</lang>
+	<content><![CDATA[
+<p align="right"><font color="#336666" face="Arial, Helvetica, sans-serif" size="4"><b>Depositing 
+	advantages </b></font></p>
+
+<p align="justify"><font face="Arial, Helvetica, sans-serif" size="2">First of all, why would 
+	you like to deposit the data?</font></p>
+
+<div align="justify"><ul><li>
+	<font face="Arial, Helvetica, sans-serif" size="2"><font color="#FF0000"><b>In order  
+	to improve the data set</b></font><br>
+	RODA does not just simply archive the data set, it also adds value by cleaning, 
+	documenting and indexing them according to the latest international standards.
+</font></li></ul></div><font face="Arial, Helvetica, sans-serif" size="2">
+
+<div align="justify"><ul><li>
+	<font face="Arial, Helvetica, sans-serif" size="2"><font color="#FF0000"><b>In order 
+	to ensure the dataset's integrity</b></font><br>
+	Once the data sets deposited to the archive, you can be certain they are protected from 
+	the physical and moral wear. RODA ensures the data set migration into the latest versions 
+	(of Word, Excel, Access, SPSS etc.) so that the data may be used for as long as possible.
+</font></li></ul></div><font face="Arial, Helvetica, sans-serif" size="2">
+
+<div align="justify"><ul><li>
+	<font face="Arial, Helvetica, sans-serif" size="2"><b><font color="#FF0000">In order 
+	to obtain an official acknowledgement</font></b><br>
+	Many times we want particular data but we don't know where to find them; registering the 
+	data set in the RODA catalogue will bring an official acknowledgement of the relevant 
+	data existence, and indexing the data set will make it possible to find variables useful 
+	for the searching procedure initiated by the users.<br>
+	Moreover, it is possible to display information on the producers and the owners, thus 
+	offering them an official acknowledgement.<br>
+	At the same time, the data usage will be conditioned by the requirement of bibliographic citation.
+</font></li></ul></div><font face="Arial, Helvetica, sans-serif" size="2">
+
+<div align="justify"><ul><li>
+	<font face="Arial, Helvetica, sans-serif" size="2"><font color="#FF0000"><b>In order 
+	to support the entire academic community </b></font><br>
+	Last, but not least, you can significantly contribute to the development of the larger 
+	community, by encouraging the secondary and the comparative analyses and enabling the 
+	communication between researchers and the society.
+</font></li></ul></div><font face="Arial, Helvetica, sans-serif" size="2">			</font></font></font></font>	
+	]]></content>
+	<cms_layout>roda-main-en</cms_layout>
+	<pagetype>content</pagetype>
+	<cacheable>3600</cacheable>
+	<searchable>true</searchable>	
+	<default_page>0</default_page>
+	<external_redirect></external_redirect>
+	<internal_redirect></internal_redirect>
+	<navigable>true</navigable>
+	<published>true</published>
+	<target></target>
+	<visible>true</visible>
+</pagedata>

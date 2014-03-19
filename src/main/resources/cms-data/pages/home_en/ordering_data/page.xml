@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pagedata>
+	<title>Ordering data</title>
+	<menutitle>Ordering data</menutitle>
+	<synopsis><![CDATA[]]></synopsis>
+	<lang>en</lang>
+	<content><![CDATA[
+<p align="right"><font color="#336666" face="Arial, Helvetica, sans-serif" size="4"><b>Data orders</b></font></p>
+<p align="left"><font face="Arial, Helvetica, sans-serif" size="2">The archive supports 
+	the research activity, offering access to social database for secondary analysis, 
+	in accordance with the confidentiality requirements imposed by the data owners.</font></p>
+<p align="justify"><font face="Arial, Helvetica, sans-serif" size="2">The archive commits 
+	itself to ensure an as free, open and easy access as possible, but it is up the 
+	data owners to set the access conditions. For these reasons, there will be four 
+	<a href="template.php?url=7">user categories</a>, and the data sets will have four 
+	<a href="template.php?url=8">access levels</a>.</font></p>
+<p align="justify"><font face="Arial, Helvetica, sans-serif" size="2">Starting with July 
+	2004, RODA has launched a brand new access control system; once registered with a 
+	username and a password, our users can start downloading data on different access 
+	levels.</font></p>
+<p align="justify"><font face="Arial, Helvetica, sans-serif" size="2">If one user does not 
+	have enough download rights for certain datasets, it is still possible to order data 
+	offline or by an e-mail to our address <a href="mailto:roda@roda.ro">roda@roda.ro</a>; 
+	the request will be directed to the owner who will decide the answer.</font></p>
+<p align="justify"><font face="Arial, Helvetica, sans-serif" size="2">The users who do not 
+	have access to Internet can order data:</font></p>
+<div align="justify"><ul><font face="Arial, Helvetica, sans-serif" size="2">
+	<li>directly to our office</li>
+	<li>by mail to <a href="template.php?url=4">our address</a></li>
+</font></ul></div>
+<p align="justify"><font face="Arial, Helvetica, sans-serif" size="2">Data and documentation 
+	will be provided on every available storage media or electronic transfer, depending 
+	on the number or size of the datasets ordered:</font></p>
+<div align="justify"><ul><font face="Arial, Helvetica, sans-serif" size="2">
+	<li>Floppy-disk</li>
+	<li>CD</li>
+	<li>FTP</li>
+	<li>direct download</li>
+</font></ul></div>				
+	]]></content>
+	<cms_layout>roda-main-en</cms_layout>
+	<pagetype>content</pagetype>
+	<cacheable>3600</cacheable>
+	<searchable>true</searchable>	
+	<default_page>0</default_page>
+	<external_redirect></external_redirect>
+	<internal_redirect></internal_redirect>
+	<navigable>true</navigable>
+	<published>true</published>
+	<target></target>
+	<visible>true</visible>
+</pagedata>

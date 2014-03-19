@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pagedata>
+	<title>Best practices</title>
+	<menutitle>Best practices</menutitle>
+	<synopsis><![CDATA[]]></synopsis>
+	<lang>en</lang>
+	<content><![CDATA[
+<p align="right"><font color="#336666" face="Arial, Helvetica, sans-serif" size="4"><b>Guide 
+	to good practice in data documentation</b></font></p>
+
+<p align="justify"><font face="Arial, Helvetica, sans-serif" size="2">Good data documentation 
+	is of a crucial importance both for preserving data for the future use, and for secondary 
+	research. Any person working with a dataset needs to have all the information available 
+	in order to produce relevant tables and draw consistent conclusions.</font></p>
+
+<p align="justify"><font face="Arial, Helvetica, sans-serif" size="2">For a well documented 
+	dataset, the data producers should prepare:</font></p>
+
+<div align="justify"><font face="Arial, Helvetica, sans-serif" size="2"><ul>
+	<li>The dataset: cleaned, with both the variables and their values labelled </li>
+ 	<li>The questionnaire (in original, both printed and electronic versions)</li>
+	<li>Information about the research that yielded the dataset</li>
+</ul></font></div>
+
+<p align="justify"><font color="#FF0000" face="Arial, Helvetica, sans-serif" size="2">
+	<b>Dataset</b></font></p>
+
+<p align="justify"><font face="Arial, Helvetica, sans-serif" size="2">The important factors 
+	for the users of a dataset are the clarity, variables in the database in conformity 
+	with the questions in the questionnaire and the extent to which the variables are 
+	‘self explained’. There are many cases when potentially valuable variables can no longer 
+	be used due to the lack of information about their value (e.g. for open ended questions). 
+	After a while, such information will be permanently lost. Information regarding the 
+	dataset's structure should be prepared, with a complete list of all variables and their 
+	description, includind details on the coding process and the classifications used.</font></p>
+
+<p align="justify"><font face="Arial, Helvetica, sans-serif" size="2">Equally useful is the 
+	information related newly computed variables. The computation algorithm should be explained, 
+	if possible together with the formula that has been used (if any).</font></p>
+
+<p align="justify"><font color="#FF0000" face="Arial, Helvetica, sans-serif" size="2">
+	<b>Questionnaire</b></font></p>
+
+<p align="justify"><font face="Arial, Helvetica, sans-serif" size="2">Although some variables 
+	are self-explanatory, there are many cases when reading the corresponding question in the 
+	questionnaire helps to a better understanding.</font></p>
+
+<p align="justify"><font face="Arial, Helvetica, sans-serif" size="2">In case of quite recent 
+	researches for which there are questionnaire electronic forms, preparing such forms in a 
+	recent Microsoft Word version, with the original page layout, would be of much help. The 
+	electronic version should preferably contain diacritical marks, too.</font></p>
+
+<p align="justify"><font face="Arial, Helvetica, sans-serif" size="2">For the less recent studies,
+	we can scan a physical copy of the questionnaire ant try to transform it into a text 
+	using a optical character recognition program.</font></p>
+
+<p align="justify"><font color="#FF0000" face="Arial, Helvetica, sans-serif" size="2">
+	<b>Information about the research</b></font></p>
+
+<p align="justify"><font face="Arial, Helvetica, sans-serif" size="2">Such information is 
+	essential for users; the data set and its contents cannot be fully understood unless 
+	having prepared this information.</font></p>
+
+<p align="justify"><font face="Arial, Helvetica, sans-serif" size="2">For each dataset, RODA 
+	fills in a study description form. This form is used by all major data archives in  
+	the world and it is based on the <a href="http://www.icpsr.umich.edu/DDI/">DDI</a>  
+	(Data Documentation Initiative) structure, a project promoted by 
+	<a href="http://www.icpsr.umich.edu/">ICPSR</a>, Michigan SUA.</font></p>
+
+<p align="justify"><font face="Arial, Helvetica, sans-serif" size="2">It is necessary to prepare 
+	detailed information on the data gathering methods and instructions for the field 
+	operators, sampling procedures and weighting procedures.</font></p>
+
+<p align="justify"><font face="Arial, Helvetica, sans-serif" size="2">The interested persons
+	can consult our <a href="Depunere.pdf">Depositing form</a> in order to fill in the
+	relevant information.</font></p>				
+	]]></content>
+	<cms_layout>roda-main-en</cms_layout>
+	<pagetype>content</pagetype>
+	<cacheable>3600</cacheable>
+	<searchable>true</searchable>	
+	<default_page>0</default_page>
+	<external_redirect></external_redirect>
+	<internal_redirect></internal_redirect>
+	<navigable>true</navigable>
+	<published>true</published>
+	<target></target>
+	<visible>true</visible>
+</pagedata>

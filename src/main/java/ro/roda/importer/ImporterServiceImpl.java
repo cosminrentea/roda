@@ -456,10 +456,7 @@ public class ImporterServiceImpl implements ImporterService {
 								p.setSearchable(Boolean.parseBoolean(content));
 								break;
 							case "published":
-								// TODO there is no "published" column/attribute
-								// in CmsPage
-								// Comment LV: "visible" should stand for
-								// "published" (?)
+								p.setPublished(Boolean.parseBoolean(content));
 								break;
 							case "target":
 								p.setTarget(content);

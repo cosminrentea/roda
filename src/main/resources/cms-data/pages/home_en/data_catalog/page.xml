@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <pagedata>
-	<title></title>
-	<menutitle></menutitle>
+	<title>Data catalog</title>
+	<menutitle>Data catalog</menutitle>
 	<synopsis><![CDATA[]]></synopsis>
 	<lang>en</lang>
 	<content><![CDATA[
@@ -18,7 +18,6 @@
 	<pagetype>content</pagetype>
 	<cacheable>3600</cacheable>
 	<searchable>true</searchable>		
-	<searchable>true</searchable>	
 	<default_page>0</default_page>
 	<external_redirect></external_redirect>
 	<internal_redirect></internal_redirect>

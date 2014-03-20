@@ -303,6 +303,10 @@ public class CmsPage {
 	@NotNull
 	private boolean visible;
 
+	@Column(name = "published", columnDefinition = "bool")
+	@NotNull
+	private boolean published = true;
+
 	@Column(name = "default_page", columnDefinition = "bool")
 	private boolean defaultPage;
 
@@ -370,6 +374,10 @@ public class CmsPage {
 
 	public boolean isNavigable() {
 		return navigable;
+	}
+
+	public boolean isPublished() {
+		return published;
 	}
 
 	public boolean isSearchable() {
@@ -470,6 +478,10 @@ public class CmsPage {
 
 	public void setNavigable(boolean navigable) {
 		this.navigable = navigable;
+	}
+
+	public void setPublished(boolean published) {
+		this.published = published;
 	}
 
 	public void setSearchable(boolean searchable) {

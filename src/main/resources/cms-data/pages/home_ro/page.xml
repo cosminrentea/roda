@@ -21,7 +21,7 @@
 	<pagetype>content</pagetype>
 	<cacheable>3600</cacheable>
 	<searchable>true</searchable>		
-	<default_page>0</default_page>
+	<default_page>true</default_page>
 	<external_redirect></external_redirect>
 	<internal_redirect></internal_redirect>
 	<navigable>true</navigable>

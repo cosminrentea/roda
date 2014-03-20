@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pagedata>
+	<title>RO</title>
+	<menutitle>RO</menutitle>
+	<synopsis>
+	</synopsis>
+	<lang>ro</lang>
+	<content><![CDATA[]]></content>
+	<cms_layout>roda-main-ro</cms_layout>
+	<pagetype>content</pagetype>
+	<cacheable>3600</cacheable>
+	<searchable>false</searchable>		
+	<default_page>true</default_page>
+	<external_redirect></external_redirect>
+	<internal_redirect>/ro/home</internal_redirect>
+	<navigable>false</navigable>
+	<published>true</published>
+	<target></target>
+	<visible>true</visible>
+</pagedata>

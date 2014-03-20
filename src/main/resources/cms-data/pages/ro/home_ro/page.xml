@@ -4,6 +4,7 @@
 	<menutitle>Acasa</menutitle>
 	<synopsis><![CDATA[RODA este institutia nationala din Romania specializata in arhivarea colectiilor de date electronice provenite din cercetarea sociala.]]></synopsis>
 	<lang>ro</lang>
+	<url>home</url>
 	<content><![CDATA[
 	<H1>Bine ati venit la RODA - Arhiva Romana de Date Sociale</H1>
 	<p align="justify">
@@ -20,7 +21,8 @@
 	<cms_layout>roda-main-ro</cms_layout>
 	<pagetype>content</pagetype>
 	<cacheable>3600</cacheable>
-	<searchable>true</searchable>		
+	<searchable>true</searchable>
+	<sequence>1</sequence>		
 	<default_page>true</default_page>
 	<external_redirect></external_redirect>
 	<internal_redirect></internal_redirect>

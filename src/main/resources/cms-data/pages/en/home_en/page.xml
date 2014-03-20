@@ -2,7 +2,7 @@
 <pagedata>
 	<title>Welcome to RODA - the Romanian Social Data Archive</title>
 	<menutitle>Welcome to RODA - the Romanian Social Data Archive</menutitle>
-	<url>home-en</url>
+	<url>home</url>
 	<synopsis><![CDATA[RODA is the national Romanian institution specialised in archiving electronic data collections obtained by social research.]]></synopsis>
 	<lang>en</lang>
 	<content><![CDATA[<p align="justify">
@@ -21,6 +21,7 @@
 	<cacheable>3600</cacheable>
 	<searchable>true</searchable>		
 	<default_page>0</default_page>
+	<sequence>1</sequence>
 	<external_redirect></external_redirect>
 	<internal_redirect></internal_redirect>
 	<navigable>true</navigable>

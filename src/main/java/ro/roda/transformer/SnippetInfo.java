@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Configurable;
 
 import ro.roda.domain.CmsLayout;
@@ -86,7 +87,8 @@ public class SnippetInfo extends SnippetList {
 			Iterator<CmsPageContent> pageContentsIterator = page.getCmsPageContents().iterator();
 			while (pageContentsIterator.hasNext()) {
 				CmsPageContent pageContent = (CmsPageContent) pageContentsIterator.next();
-				if (pageContent.getContentText().toLowerCase().contains(snippetContent.toLowerCase())) {
+				if (StringUtils.containsIgnoreCase(pageContent.getContentText(), snippetContent)) {
+					System.out.println("Adding usage");
 					this.snippetUsage.add(new JsonInfo(page.getId(), page.getName(), "page"));
 				}
 			}
@@ -96,7 +98,7 @@ public class SnippetInfo extends SnippetList {
 		Iterator<CmsLayout> layoutIterator = CmsLayout.findAllCmsLayouts().iterator();
 		while (layoutIterator.hasNext()) {
 			CmsLayout layout = (CmsLayout) layoutIterator.next();
-			if (layout.getLayoutContent().toLowerCase().contains(snippetContent.toLowerCase())) {
+			if (StringUtils.containsIgnoreCase(layout.getLayoutContent(), snippetContent)) {
 				this.snippetUsage.add(new JsonInfo(layout.getId(), layout.getName(), "layout"));
 			}
 		}
@@ -106,7 +108,7 @@ public class SnippetInfo extends SnippetList {
 		while (snippetIterator.hasNext()) {
 			CmsSnippet otherSnippet = (CmsSnippet) snippetIterator.next();
 			if (otherSnippet.getId() != snippet.getId()
-					&& otherSnippet.getSnippetContent().toLowerCase().contains(snippetContent.toLowerCase())) {
+					&& StringUtils.containsIgnoreCase(otherSnippet.getSnippetContent(), snippetContent.toLowerCase())) {
 				this.snippetUsage.add(new JsonInfo(otherSnippet.getId(), otherSnippet.getName(), "snippet"));
 			}
 		}

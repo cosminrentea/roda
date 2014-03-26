@@ -1,7 +1,5 @@
 package ro.roda.plugin;
 
-import java.util.StringTokenizer;
-
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,19 +25,22 @@ public class RodaPageServiceImpl implements RodaPageService {
 	public String generatePage(String url) {
 		StringBuilder sb = new StringBuilder();
 
-		if (checkFullRelativeUrl(url)) {
-			String dbUrl = url.substring((url.lastIndexOf("/") + 1));
+		// if (checkFullRelativeUrl(url)) {
 
-			CmsPage page = CmsPage.findCmsPage(dbUrl);
+		// the URL fragment is no longer unique, but the full URL is
+		// TODO remove the commented code below if definitive
+		// String dbUrl = url.substring((url.lastIndexOf("/") + 1));
+		// CmsPage page = CmsPage.findCmsPage(dbUrl);
 
-			if (page != null) {
-				String pageContent = replacePageContent(getLayout(page, url), page);
+		CmsPage page = CmsPage.findCmsPageByFullUrl(url);
 
-				// pageContent = StringUtils.replace(pageContent, "\\", "\\\\");
-				// pageContent = StringUtils.replace(pageContent, "\"", "\\\"");
+		if (page != null) {
+			String pageContent = replacePageContent(getLayout(page, url), page);
 
-				sb.append(pageContent);
-			}
+			// pageContent = StringUtils.replace(pageContent, "\\", "\\\\");
+			// pageContent = StringUtils.replace(pageContent, "\"", "\\\"");
+
+			sb.append(pageContent);
 		} else {
 			sb.append("<html><div> The page you requested does not exist. (url: " + url + ")</div></html>");
 		}
@@ -51,10 +52,10 @@ public class RodaPageServiceImpl implements RodaPageService {
 		String layoutContent = pageLayout.getLayoutContent();
 
 		layoutContent = replacePageTitle(layoutContent, cmsPage.getMenuTitle());
-		layoutContent = replacePageLinkByUrl(layoutContent);
+		layoutContent = replacePageLinkByUrl(layoutContent, cmsPage);
 
 		layoutContent = replaceSnippets(layoutContent);
-		layoutContent = replacePageUrlLink(layoutContent);
+		layoutContent = replacePageUrlLink(layoutContent, cmsPage);
 		layoutContent = replaceFileUrl(layoutContent, url);
 		layoutContent = replaceImgLink(layoutContent, url);
 
@@ -65,7 +66,7 @@ public class RodaPageServiceImpl implements RodaPageService {
 		return content.replace(PAGE_TITLE_CODE, pageTitle != null ? pageTitle : "");
 	}
 
-	private String replacePageLinkByUrl(String content) {
+	private String replacePageLinkByUrl(String content, CmsPage cmsPage) {
 		int fromIndex = content.indexOf(PAGE_LINK_BY_URL_CODE, 0);
 		String result = content;
 		while (fromIndex > -1) {
@@ -73,14 +74,14 @@ public class RodaPageServiceImpl implements RodaPageService {
 					result.indexOf("')]]", fromIndex + PAGE_LINK_BY_URL_CODE.length()));
 
 			result = StringUtils.replace(result, PAGE_LINK_BY_URL_CODE + url + "')]]", RODA_PAGE_URL
-					+ generateFullRelativeUrl(CmsPage.findCmsPage(url)));
+					+ generateFullRelativeUrl(url, cmsPage));
 			fromIndex = result.indexOf(PAGE_LINK_BY_URL_CODE, fromIndex + PAGE_LINK_BY_URL_CODE.length());
 		}
 
 		return result;
 	}
 
-	private String replacePageUrlLink(String content) {
+	private String replacePageUrlLink(String content, CmsPage cmsPage) {
 		int fromIndex = content.indexOf(PAGE_URL_LINK_CODE, 0);
 		String result = content;
 		while (fromIndex > -1) {
@@ -92,10 +93,12 @@ public class RodaPageServiceImpl implements RodaPageService {
 			// result = result.replaceAll("[[PageURLLink:" + url + "]]",
 			// "<a href=\"" + url + "\">" + CmsPage.findCmsPage(url).getName() +
 			// "</a>");
-			CmsPage cmsPage = CmsPage.findCmsPage(url);
+			// CmsPage cmsPage = CmsPage.findCmsPage(url);
 
-			result = result.substring(0, fromIndex) + "<a href=\"" + RODA_PAGE_URL + generateFullRelativeUrl(cmsPage)
-					+ "\">" + (cmsPage != null ? cmsPage.getName() : url) + "</a>"
+			CmsPage page = findRelativePage(url, cmsPage);
+
+			result = result.substring(0, fromIndex) + "<a href=\"" + RODA_PAGE_URL + generateFullRelativeUrl(page)
+					+ "\">" + (page != null ? page.getName() : url) + "</a>"
 					+ result.substring(result.indexOf("]]", fromIndex + PAGE_URL_LINK_CODE.length()) + "]]".length());
 
 			fromIndex = result.indexOf(PAGE_URL_LINK_CODE, fromIndex + PAGE_URL_LINK_CODE.length());
@@ -173,10 +176,10 @@ public class RodaPageServiceImpl implements RodaPageService {
 			// We suppose that a CmsPage has a single CmsPageContent
 			String pageContent = page.getCmsPageContents().iterator().next().getContentText();
 			pageContent = replacePageTitle(pageContent, page.getMenuTitle());
-			pageContent = replacePageLinkByUrl(pageContent);
+			pageContent = replacePageLinkByUrl(pageContent, page);
 			pageContent = replaceSnippets(pageContent);
 
-			pageContent = replacePageUrlLink(pageContent);
+			pageContent = replacePageUrlLink(pageContent, page);
 			pageContent = replaceFileUrl(pageContent, generateFullRelativeUrl(page));
 			pageContent = replaceImgLink(pageContent, generateFullRelativeUrl(page));
 
@@ -201,30 +204,75 @@ public class RodaPageServiceImpl implements RodaPageService {
 		return result;
 	}
 
-	private boolean checkFullRelativeUrl(String url) {
+	private String generateFullRelativeUrl(String url, CmsPage cmsPage) {
 
-		// checks if the components of the url and the parent-child relationship
-		// exist in the database
-		if (url != null) {
-			StringTokenizer tokenizer = new StringTokenizer(url, "/");
-			CmsPage prevPage = null;
-			while (tokenizer.hasMoreTokens()) {
-				String pathUrl = tokenizer.nextToken();
+		// returns the full relative url of the closest page with the given url
+		// fragment
 
-				CmsPage pathPage = CmsPage.findCmsPage(pathUrl);
+		String result = "";
 
-				if (pathPage == null) {
-					return false;
+		CmsPage tempPage = cmsPage;
+		CmsPage resultPage = null;
+
+		if (cmsPage != null) {
+			while (tempPage != null) {
+				resultPage = CmsPage.findCmsPageByParent(url, tempPage);
+				if (resultPage != null) {
+					return generateFullRelativeUrl(resultPage);
 				} else {
-					if (pathPage.getCmsPageId() != prevPage) {
-						return false;
-					}
-					prevPage = pathPage;
+					tempPage = tempPage.getCmsPageId();
 				}
+
 			}
-			return true;
 		}
-		return false;
+		return result;
 	}
+
+	private CmsPage findRelativePage(String url, CmsPage cmsPage) {
+
+		// returns the closest page with the given url
+		// fragment
+		CmsPage tempPage = cmsPage;
+		CmsPage resultPage = null;
+
+		if (cmsPage != null) {
+			while (tempPage != null) {
+				resultPage = CmsPage.findCmsPageByParent(url, tempPage);
+				if (resultPage != null) {
+					return resultPage;
+				} else {
+					tempPage = tempPage.getCmsPageId();
+				}
+
+			}
+		}
+		return resultPage;
+	}
+
+	// private boolean checkFullRelativeUrl(String url) {
+	//
+	// // checks if the components of the url and the parent-child relationship
+	// // exist in the database
+	// if (url != null) {
+	// StringTokenizer tokenizer = new StringTokenizer(url, "/");
+	// CmsPage prevPage = null;
+	// while (tokenizer.hasMoreTokens()) {
+	// String pathUrl = tokenizer.nextToken();
+	//
+	// CmsPage pathPage = CmsPage.findCmsPage(pathUrl);
+	//
+	// if (pathPage == null) {
+	// return false;
+	// } else {
+	// if (pathPage.getCmsPageId() != prevPage) {
+	// return false;
+	// }
+	// prevPage = pathPage;
+	// }
+	// }
+	// return true;
+	// }
+	// return false;
+	// }
 
 }

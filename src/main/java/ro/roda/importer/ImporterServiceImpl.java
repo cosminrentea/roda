@@ -360,13 +360,13 @@ public class ImporterServiceImpl implements ImporterService {
 		try {
 			Resource cmsRes = new ClassPathResource(rodaDataCmsDir + folderName);
 			File cmsDir = cmsRes.getFile();
-			importCmsPagesRec(cmsDir, null, "");
+			importCmsPagesRec(cmsDir, null, null);
 		} catch (IOException e) {
 			log.error(e);
 		}
 	}
 
-	private void importCmsPagesRec(File dir, CmsPage cmsPage, String parentUrl) {
+	private void importCmsPagesRec(File dir, CmsPage cmsPage, CmsPage parent) {
 		try {
 			File[] files = dir.listFiles();
 			List<File> directories = new ArrayList<File>();
@@ -475,10 +475,10 @@ public class ImporterServiceImpl implements ImporterService {
 
 					}
 
-					p.setUrl(processPageUrl(p.getName()));
-
 					// set the parent of the page
-					p.setCmsPageId(CmsPage.findCmsPage(parentUrl));
+					p.setCmsPageId(parent);
+
+					p.setUrl(processPageUrl(p.getName(), parent));
 
 					p.persist();
 
@@ -506,7 +506,7 @@ public class ImporterServiceImpl implements ImporterService {
 				}
 			}
 			for (File directory : directories) {
-				importCmsPagesRec(directory, null, p != null ? p.getUrl() : "");
+				importCmsPagesRec(directory, null, p);
 			}
 
 		} catch (IOException e) {
@@ -519,7 +519,7 @@ public class ImporterServiceImpl implements ImporterService {
 
 	}
 
-	private String processPageUrl(String pageTitle) {
+	private String processPageUrl(String pageTitle, CmsPage parent) {
 		String result = null;
 		if (pageTitle != null) {
 			result = pageTitle.toLowerCase().trim();
@@ -529,7 +529,12 @@ public class ImporterServiceImpl implements ImporterService {
 		}
 
 		// generate a new name
-		if (CmsPage.findCmsPage(result) != null) {
+		// TODO: if definitive, remove the folllowing commented code OR generate
+		// a new name relative to a full URL
+
+		List<CmsPage> resultPages = CmsPage.findCmsPage(result);
+
+		if (resultPages != null && resultPages.size() > 0) {
 			int i = 1;
 			while (CmsPage.findCmsPage(result + "_" + i) != null) {
 				i++;

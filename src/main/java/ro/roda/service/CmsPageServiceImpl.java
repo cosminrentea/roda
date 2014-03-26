@@ -23,8 +23,16 @@ public class CmsPageServiceImpl implements CmsPageService {
 		return CmsPage.findCmsPage(id);
 	}
 
-	public CmsPage findCmsPage(String url) {
+	public List<CmsPage> findCmsPage(String url) {
 		return CmsPage.findCmsPage(url);
+	}
+
+	public CmsPage findCmsPageByParent(String url, CmsPage parent) {
+		return CmsPage.findCmsPageByParent(url, parent);
+	}
+
+	public CmsPage findCmsPageByFullUrl(String url) {
+		return CmsPage.findCmsPageByFullUrl(url);
 	}
 
 	public List<CmsPage> findAllCmsPages() {

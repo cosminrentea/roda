@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
+import java.util.StringTokenizer;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -78,17 +79,64 @@ public class CmsPage {
 		return entityManager().find(CmsPage.class, id);
 	}
 
-	public static CmsPage findCmsPage(String url) {
+	public static List<CmsPage> findCmsPage(String url) {
 		if (url == null)
 			return null;
 
 		String pageByUrlQuery = "SELECT o FROM CmsPage o WHERE url = ?1";
 		TypedQuery<CmsPage> query = entityManager().createQuery(pageByUrlQuery, CmsPage.class).setParameter(1, url);
 		if (query.getResultList().size() > 0) {
+			return query.getResultList();
+		}
+
+		return null;
+	}
+
+	public static CmsPage findCmsPageByParent(String url, CmsPage parent) {
+		if (url == null)
+			return null;
+
+		String pageByUrlQuery = "";
+		TypedQuery<CmsPage> query;
+		if (parent != null) {
+			pageByUrlQuery = "SELECT o FROM CmsPage o WHERE url = ?1 and cmsPageId = ?2";
+
+			query = entityManager().createQuery(pageByUrlQuery, CmsPage.class).setParameter(1, url)
+					.setParameter(2, parent);
+		} else {
+			pageByUrlQuery = "SELECT o FROM CmsPage o WHERE url = ?1 and cmsPageId = NULL";
+
+			query = entityManager().createQuery(pageByUrlQuery, CmsPage.class).setParameter(1, url);
+		}
+
+		// the query returns only one result, because the import does not allow
+		// two identical full URLs
+		if (query != null && query.getResultList().size() > 0) {
 			return query.getResultList().get(0);
 		}
 
 		return null;
+	}
+
+	public static CmsPage findCmsPageByFullUrl(String url) {
+		if (url == null)
+			return null;
+
+		StringTokenizer tokenizer = new StringTokenizer(url, "/");
+		CmsPage prevPage = null;
+
+		while (tokenizer.hasMoreTokens()) {
+			String pathUrl = tokenizer.nextToken();
+
+			prevPage = findCmsPageByParent(pathUrl, prevPage);
+
+			if (prevPage == null) {
+				return null;
+			}
+		}
+
+		return prevPage;
+
 	}
 
 	public static List<CmsPage> findCmsPageEntries(int firstResult, int maxResults) {

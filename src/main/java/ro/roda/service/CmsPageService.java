@@ -12,7 +12,11 @@ public interface CmsPageService {
 
 	public abstract CmsPage findCmsPage(Integer id);
 
-	public abstract CmsPage findCmsPage(String url);
+	public abstract List<CmsPage> findCmsPage(String url);
+
+	public abstract CmsPage findCmsPageByParent(String url, CmsPage parent);
+
+	public abstract CmsPage findCmsPageByFullUrl(String url);
 
 	public abstract List<CmsPage> findAllCmsPages();
 

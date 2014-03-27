@@ -21,6 +21,7 @@ public class RodaPageServiceImpl implements RodaPageService {
 	private static String IMG_LINK_CODE = "[[ImgLink: ";
 	private static String SNIPPET_CODE = "[[Snippet: ";
 	private static String PAGE_CONTENT_CODE = "[[Code: PageContent]]";
+	private static String PAGE_TREE_BY_URL_CODE = "[[Code: PageTreeByUrl('";
 
 	public String generatePage(String url) {
 		StringBuilder sb = new StringBuilder();
@@ -55,6 +56,7 @@ public class RodaPageServiceImpl implements RodaPageService {
 		layoutContent = replacePageLinkByUrl(layoutContent, cmsPage);
 
 		layoutContent = replaceSnippets(layoutContent);
+		layoutContent = replacePageTreeByUrl(layoutContent, cmsPage);
 		layoutContent = replacePageUrlLink(layoutContent, cmsPage);
 		layoutContent = replaceFileUrl(layoutContent, url);
 		layoutContent = replaceImgLink(layoutContent, url);
@@ -75,6 +77,31 @@ public class RodaPageServiceImpl implements RodaPageService {
 
 			result = StringUtils.replace(result, PAGE_LINK_BY_URL_CODE + url + "')]]", RODA_PAGE_URL
 					+ generateFullRelativeUrl(url, cmsPage));
+			fromIndex = result.indexOf(PAGE_LINK_BY_URL_CODE, fromIndex + PAGE_LINK_BY_URL_CODE.length());
+		}
+
+		return result;
+	}
+
+	private String replacePageTreeByUrl(String content, CmsPage cmsPage) {
+		int fromIndex = content.indexOf(PAGE_TREE_BY_URL_CODE, 0);
+		String result = content;
+		while (fromIndex > -1) {
+			String arg = result.substring(fromIndex + PAGE_TREE_BY_URL_CODE.length(),
+					result.indexOf(")]]", fromIndex + PAGE_TREE_BY_URL_CODE.length()));
+
+			String args[] = arg.split("',");
+			String url = args[0].trim();
+			Integer depth = null;
+			if (args.length > 1) {
+				depth = Integer.parseInt(args[1].trim());
+			}
+
+			System.out.println("The url is " + url);
+			System.out.println("The depth is " + depth);
+
+			result = StringUtils.replace(result, PAGE_LINK_BY_URL_CODE + url + "')]]",
+					generatePageTreeMenu(CmsPage.findCmsPageByParent(url, cmsPage), depth));
 			fromIndex = result.indexOf(PAGE_LINK_BY_URL_CODE, fromIndex + PAGE_LINK_BY_URL_CODE.length());
 		}
 
@@ -178,7 +205,7 @@ public class RodaPageServiceImpl implements RodaPageService {
 			pageContent = replacePageTitle(pageContent, page.getMenuTitle());
 			pageContent = replacePageLinkByUrl(pageContent, page);
 			pageContent = replaceSnippets(pageContent);
-
+			pageContent = replacePageTreeByUrl(pageContent, page);
 			pageContent = replacePageUrlLink(pageContent, page);
 			pageContent = replaceFileUrl(pageContent, generateFullRelativeUrl(page));
 			pageContent = replaceImgLink(pageContent, generateFullRelativeUrl(page));
@@ -232,6 +259,7 @@ public class RodaPageServiceImpl implements RodaPageService {
 
 		// returns the closest page with the given url
 		// fragment
+
 		CmsPage tempPage = cmsPage;
 		CmsPage resultPage = null;
 
@@ -247,6 +275,52 @@ public class RodaPageServiceImpl implements RodaPageService {
 			}
 		}
 		return resultPage;
+	}
+
+	private String generatePageTreeMenu(CmsPage cmsPage, Integer depth) {
+
+		StringBuilder result = new StringBuilder();
+		// TODO what is the id of the menu? maybe another parameter of the
+		// function?
+		result.append("<ul id=\"navmenu\">");
+
+		if (cmsPage != null && cmsPage.getCmsPages() != null && cmsPage.getCmsPages().size() > 0) {
+			for (CmsPage child : cmsPage.getCmsPages()) {
+				result.append(generatePageTreeMenuRec(child, depth));
+			}
+		}
+
+		result.append("</ul>");
+
+		System.out.println("The menu is: \n" + result.toString());
+
+		return result.toString();
+	}
+
+	private String generatePageTreeMenuRec(CmsPage cmsPage, Integer depth) {
+		// TODO treat depth
+		StringBuilder result = new StringBuilder();
+
+		if (cmsPage != null) {
+
+			if (cmsPage.getCmsPages() != null && cmsPage.getCmsPages().size() > 0) {
+				result.append("<li class=\"more\">");
+				result.append(PAGE_URL_LINK_CODE + cmsPage.getUrl() + "]]");
+				result.append("<ul>");
+
+				for (CmsPage child : cmsPage.getCmsPages()) {
+					result.append(generatePageTreeMenuRec(child, depth).toString());
+				}
+
+				result.append("</ul>");
+			} else {
+				result.append("<li>");
+				result.append(PAGE_URL_LINK_CODE + cmsPage.getUrl() + "]]");
+				result.append("</li>");
+			}
+		}
+
+		return result.toString();
 	}
 
 	// private boolean checkFullRelativeUrl(String url) {

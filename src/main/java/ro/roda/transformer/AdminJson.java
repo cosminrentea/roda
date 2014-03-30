@@ -1119,18 +1119,24 @@ public class AdminJson {
 		CmsPage cmsPage = CmsPage.findCmsPage(cmsPageId);
 		if (cmsPage == null)
 			return new AdminJson(false, "The cms page does not exist.");
-		try {
-			CmsPage parentPage = cmsPage.getCmsPageId();
-			if (parentPage.getCmsPages() != null && parentPage.getCmsPages().contains(cmsPage)) {
-				parentPage.getCmsPages().remove(cmsPage);
+
+		if (cmsPage.getCmsPages() == null || cmsPage.getCmsPages().size() == 0) {
+
+			try {
+				CmsPage parentPage = cmsPage.getCmsPageId();
+				if (parentPage.getCmsPages() != null && parentPage.getCmsPages().contains(cmsPage)) {
+					parentPage.getCmsPages().remove(cmsPage);
+				}
+
+				CmsPage.entityManager().remove(cmsPage);
+			} catch (Exception e) {
+				return new AdminJson(false, "CMS Page not dropped" + e.getMessage());
 			}
 
-			CmsPage.entityManager().remove(cmsPage);
-		} catch (Exception e) {
-			return new AdminJson(false, "CMS Page not dropped" + e.getMessage());
+			return new AdminJson(true, "CMS Page dropped successfully");
+		} else {
+			return new AdminJson(false, "CMS Page not dropped because it has child pages");
 		}
-
-		return new AdminJson(true, "CMS Page dropped successfully");
 	}
 
 }

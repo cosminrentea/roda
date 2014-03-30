@@ -23,6 +23,10 @@ public class CmsFileServiceImpl implements CmsFileService {
 		return CmsFile.findCmsFile(id);
 	}
 
+	public CmsFile findCmsFile(String alias) {
+		return CmsFile.findCmsFile(alias);
+	}
+
 	public List<CmsFile> findAllCmsFiles() {
 		return CmsFile.findAllCmsFiles();
 	}

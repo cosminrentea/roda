@@ -12,6 +12,8 @@ public interface CmsFileService {
 
 	public abstract CmsFile findCmsFile(Integer id);
 
+	public abstract CmsFile findCmsFile(String alias);
+
 	public abstract List<CmsFile> findAllCmsFiles();
 
 	public abstract List<CmsFile> findCmsFileEntries(int firstResult, int maxResults);

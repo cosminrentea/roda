@@ -179,7 +179,7 @@ public class AuditRevisionsInfo extends AuditRevisions {
 
 		// serializer.exclude("objects.id", "objects.type");
 		// serializer.include("objects.objname");
-		serializer.include("objects.objname", "objects.nrrows", "objects.rows");
+		serializer.include("objects.objname", "objects.nrrows", "objects.rows", "objects.rows.auditfields");
 
 		// serializer.transform(new FieldNameTransformer("indice"), "id");
 		// serializer.transform(new FieldNameTransformer("objname"),

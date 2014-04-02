@@ -118,8 +118,8 @@ cercet\u{a}rile sociale ''}}
 %TODO Titlul fazei !
 {
 \textbf{Faza: }
-Nr. VI cu titlul
-\textit{`` Dezvoltare software, pachet 4: jurnalizare, modul CMS, modul management utilizatori. ''}}
+Nr. V cu titlul
+\textit{``Dezvoltare software, pachet 4: jurnalizare, modul CMS, modul management utilizatori''}}
 
 {\textbf{Termen:} 10.04.2014}
 
@@ -176,10 +176,10 @@ interna\c{t}ional beneficiile sistemului implementat ca urmare a derul\u{a}rii s
 
 \begin{itemize}
 \item
-Modulului de management de continut (CMS).
+Modulul de management de continut (CMS).
 
 \item
-Interfata de administrare a utilizatorilior sistemului.
+Interfata de administrare a utilizatorilor sistemului.
 
 \item
 Interfata de administrare pentru sistemul de jurnalizare.
@@ -191,11 +191,11 @@ Interfata de administrare pentru sistemul de jurnalizare.
 Urmatoarele sisteme ale aplicatiei au fost realizate:
 \begin{itemize}
 \item
-Modulul de management de continut (CMS).
+Modulul de management de continut (CMS);
 \item
-Interfata de administrare pentru utilizatorii sistemului
+Interfata de administrare pentru utilizatorii sistemului;
 \item
-Interfata de administrare pentru sistemul de jurnalizare
+Interfata de administrare pentru sistemul de jurnalizare.
 \end{itemize}
 
 \section{Rezumatul fazei}
@@ -212,7 +212,7 @@ Sistemul de management de continut (CMS) este acea parte a aplicatiei RODA care 
 
 \begin{itemize}
 \item
-Front-end - sistemul de acumulare a continutului, constructia paginilor distributia url-urilor.
+Front-end - sistemul de acumulare a continutului, constructia paginilor distributia URL-urilor.
 \item
 Back-end - interfata de administrare care permite modificarea continutului, adaugarea paginilor, a fisierelor. 
 \end{itemize}
@@ -234,19 +234,22 @@ Structura unei pagini in CMS-ul RODA este prezentata in figura urmatoare:
 
 
 
-\textbf{Layout-ul} este ansamblul de elemente HTML care nu se modifica foarte mult de la o pagina la alta si care imprima o mare parte din designul general al acesteia. De asemnea, layoutul poate contine meniuri, headere, footere si alte elemente care se mentin la trecerea de la o pagina la alta. Site-ul poate avea oricate layout-uri iar acestea pot fi modificare din interfata de administrare din sectiunea special dedicata acestora.
+\textbf{Layout-ul} este ansamblul de elemente HTML care nu se modifica foarte mult de la o pagina la alta si care imprima o mare parte din designul general al acesteia. 
+De asemenea, layout-ul poate contine meniuri, headere, footere si alte elemente care se mentin la trecerea de la o pagina la alta. 
+Site-ul poate avea oricate layout-uri iar acestea pot fi modificate din interfata de administrare din sectiunea special dedicata acestora.
 
 
 
 \bigskip
 
-In interiorul layoutului se pozitioneaza \textbf{continutul paginii}. Acesta este de asemenea editabil din sectiunea special dedicata in itnerfata de administrare. 
+In interiorul layout-ului se pozitioneaza \textbf{continutul paginii}. Acesta este de asemenea editabil din sectiunea special dedicata in interfata de administrare. 
 
 
 
 \bigskip
 
-\textbf{Snippet-ul} este un fragment de continut reutilizabil care poate fi inserat atat in layout cat si in continutul paginii. Conceput pentru fragmente de cod care se pot refolosi fie in interiorul layouturilor, fie in continutul paginilor, snippet-urile se pot adauga sau modifica in sectiunea speciala din interfata de administrare. 
+\textbf{Snippet-ul} este un fragment de continut reutilizabil care poate fi inserat atat in layout cat si in continutul paginii. 
+Conceput pentru fragmente de cod care se pot refolosi fie in interiorul layout-urilor, fie in continutul paginilor, snippet-urile se pot adauga sau modifica in sectiunea speciala din interfata de administrare. 
 
 
 
@@ -257,8 +260,7 @@ In interiorul layoutului se pozitioneaza \textbf{continutul paginii}. Acesta est
 \bigskip
 
 
-\subsubsection*{Distributia adreselor (url dispatching)}
-
+\subsubsection*{Distributia adreselor (URL dispatching)}
 
 Distributia adreselor este operatia de transformare a unei adrese URL solicitate serverului intr-un component software care se executa si care returneaza continutul corespunzator. RODA implementeaza sistemul de controller unic pentru generarea paginilor, controller care la primirea unui URL care incepe cu /page/ va executa urmatoarele operatii:
 
@@ -268,7 +270,7 @@ va solicita bazei de date toate informatiile despre pagina respectiva.
 \item
 va cauta layout-ul paginii respective.
 \item
-va executa (recursiv) toate macro-urile din layout + pagina, incluzand toate elementele solicitate de acestea.
+va executa (recursiv) toate macro-urile din layout si pagina, incluzand toate elementele solicitate de acestea.
 \item
 va returna pagina astfel compusa. 
 \end{itemize}
@@ -289,13 +291,14 @@ Modulul pentru administrarea fisierelor statice
 
 \bigskip
 
-Aceste module sunt prezentate in detaliu in Anexa 1. In figura urmatoare se poate vedea aspectul interfetei de administrare al paginilor.
+Aceste module sunt prezentate in detaliu in Anexa 1. 
+In figura urmatoare se poate vedea aspectul interfetei de administrare al paginilor.
 
 \begin{center}
 \includegraphics[width=16.1cm,height=8.1cm]{cmspages.png}
 \end{center}
 
-\subsection*{Interfata de administrare a utilizatorilior sistemului}
+\subsection*{Interfata de administrare a utilizatorilor sistemului}
 
 Modulul pentru managementul utilizatorilor este componentul interfetei de administrare care permite adaugarea, stergerea, modificarea precum si alte operatii asupra utilizatorilor sistemului RODA. Utilizatorii sunt impartiti in grupuri iar permisiunile sunt determinate de apartenenta la unul sau mai multe grupuri. 
 
@@ -319,11 +322,11 @@ Trimiterea mesajelor catre grupuri de utilizator
 
 \bigskip
 
-In anexa 1 sunt prezentate detalii despre modulul de management al utilizatorilor.
+In Anexa 1 sunt prezentate detalii despre modulul de management al utilizatorilor.
 
 
 
-\subsection*{Interfata de administrare pentru sistemul de jurnalizare.}
+\subsection*{Interfata de administrare pentru sistemul de jurnalizare}
 
 
 Interfata de administrare pentru modulul de jurnalizare permite urmarirea tuturor modificarilor aduse de utilizatori asupra datelor aflate in baza de date. 
@@ -343,7 +346,7 @@ Pentru fiecare revizie se pot vedea toate obiectele modificate, toate randurile 
 \end{center}
 
 
-Mai multe detalii cu privire la interfata si functionarea acestui modul se afla in Anexa 1
+Mai multe detalii cu privire la interfata si functionarea acestui modul se afla in Anexa 1.
 
 
 \bigskip
@@ -359,7 +362,7 @@ Mai multe detalii cu privire la interfata si functionarea acestui modul se afla 
 \medskip
 
 Obiectivele pentru aceasta faza au fost indeplinite, fiind implementate sistemul de management de continut, utilizatori precum si al jurnalizarii. 
-Implementarile sunt corecte si complete, modele de lucru cunoscute iar interfetele de management permit executia tuturor operatiilor necesare pentru o buna functionare a managementului de continut, utilizatori precum si urmarire a modificarilor datelor (jurnalizare). 
+Implementarile sunt corecte si complete, modelele de lucru cunoscute, iar interfetele de management permit executia tuturor operatiilor necesare pentru o buna functionare a managementului de continut, utilizatori precum si urmarire a modificarilor datelor (jurnalizare). 
 
 %\clearpage
 

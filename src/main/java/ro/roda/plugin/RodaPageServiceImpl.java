@@ -3,6 +3,7 @@ package ro.roda.plugin;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +29,7 @@ public class RodaPageServiceImpl implements RodaPageService {
 
 	private final Log log = LogFactory.getLog(this.getClass());
 
+	@Cacheable(value = "pages")
 	public String generatePage(String url) {
 		StringBuilder sb = new StringBuilder();
 

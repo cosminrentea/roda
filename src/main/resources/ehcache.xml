@@ -1,0 +1,27 @@
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="ehcache.xsd" updateCheck="true"
+	monitoring="autodetect" dynamicConfig="true">
+
+	<diskStore path="java.io.tmpdir" />
+
+	<cache name="pages" eternal="false"  maxBytesLocalHeap="16M"
+		timeToIdleSeconds="300" overflowToDisk="true" maxEntriesLocalDisk="1000"
+		memoryStoreEvictionPolicy="LRU" />
+
+	<cache name="thumbnails" eternal="false"  maxBytesLocalHeap="64M"
+		timeToIdleSeconds="300" overflowToDisk="true" maxEntriesLocalDisk="1000"
+		memoryStoreEvictionPolicy="LRU" />
+	
+	<!-- 
+		<cache name="referenceData" maxBytesLocalHeap="5M" eternal="true" memoryStoreEvictionPolicy="LRU"> 
+		<pinning store="localMemory" /> </cache> 
+		
+		<cache name="newestAndRecommended" 
+		maxBytesLocalHeap="3M" eternal="true" memoryStoreEvictionPolicy="LRU"> <pinning 
+		store="localMemory" /> </cache> 
+		
+		<cache name="randomAndTopRated" maxBytesLocalHeap="1M" 
+		timeToLiveSeconds="300" memoryStoreEvictionPolicy="LRU"> </cache> 
+	-->
+
+</ehcache>

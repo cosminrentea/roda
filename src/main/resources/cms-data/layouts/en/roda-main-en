@@ -20,10 +20,14 @@
 		    <div id="box_login">[[ImgLink: login]]</div>
 		  </td>
 		  <td valign="top" align="left" style="vertical-align:top; width:770px;" class="box_content">
+		  	<div id="breadcrumbs">
+				[[Code: PageBreadcrumbs(' > ')]]
+				<div class="clear"></div>
+		    </div>
 		    <div id="cont_right">
-			<h1>[[Code: PageTitle]]</h1>
-			[[Code: PageContent]]
-		      <div class="clear"></div>
+				<h1>[[Code: PageTitle]]</h1>
+				[[Code: PageContent]]
+		    	<div class="clear"></div>
 		    </div>
 		  </div>
 	</td>							

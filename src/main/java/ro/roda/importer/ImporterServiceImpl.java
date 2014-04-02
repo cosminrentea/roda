@@ -407,8 +407,6 @@ public class ImporterServiceImpl implements ImporterService {
 								content = cNode.getLastChild().getTextContent().trim();
 							}
 
-							// log.error(content);
-
 							switch (cNode.getNodeName()) {
 							case "title":
 								// TODO check if meaning of "title" = name
@@ -432,8 +430,6 @@ public class ImporterServiceImpl implements ImporterService {
 								}
 								break;
 							case "content":
-								// TODO implement saving the "content" to
-								// CmsPageContent
 								pContent = new CmsPageContent();
 								pContent.setContentText(content);
 								break;
@@ -529,7 +525,7 @@ public class ImporterServiceImpl implements ImporterService {
 		}
 
 		// generate a new name
-		// TODO: if definitive, remove the folllowing commented code OR generate
+		// TODO: if definitive, remove the following commented code OR generate
 		// a new name relative to a full URL
 
 		List<CmsPage> resultPages = CmsPage.findCmsPage(result);
@@ -651,26 +647,28 @@ public class ImporterServiceImpl implements ImporterService {
 
 			CopyManager cm = ((BaseConnection) con).getCopyAPI();
 			for (File f : csvFiles) {
-				log.trace("File: " + f.getAbsolutePath());
+				try {
+					log.trace("File: " + f.getAbsolutePath());
 
-				// Postgresql requires a Reader for the COPY commands
-				BufferedReader br = new BufferedReader(new FileReader(f));
+					// Postgresql requires a Reader for the COPY commands
+					BufferedReader br = new BufferedReader(new FileReader(f));
 
-				// read the first line, containing the enumeration of fields
-				String tableFields = br.readLine();
+					// read the first line, containing the enumeration of fields
+					String tableFields = br.readLine();
 
-				// obtain the table name from the file name
-				String tableName = f.getName().substring(2, f.getName().length() - 4);
+					// obtain the table name from the file name
+					String tableName = f.getName().substring(2, f.getName().length() - 4);
 
-				// bulk COPY the remaining lines (CSV data)
-				String copyQuery = "COPY " + tableName + "(" + tableFields + ") FROM stdin DELIMITERS ',' CSV";
-				log.trace(copyQuery);
-				cm.copyIn(copyQuery, br);
+					// bulk COPY the remaining lines (CSV data)
+					String copyQuery = "COPY " + tableName + "(" + tableFields + ") FROM stdin DELIMITERS ',' CSV";
+					log.trace(copyQuery);
+					cm.copyIn(copyQuery, br);
+				} catch (Exception e) {
+					log.error(e);
+					throw new IllegalStateException(errorMessage);
+				}
 			}
-		} catch (SQLException e) {
-			log.error(e);
-			throw new IllegalStateException(errorMessage);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			log.error(e);
 			throw new IllegalStateException(errorMessage);
 		} finally {

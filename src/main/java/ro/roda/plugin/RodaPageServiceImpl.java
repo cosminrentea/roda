@@ -1,6 +1,8 @@
 package ro.roda.plugin;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +24,9 @@ public class RodaPageServiceImpl implements RodaPageService {
 	private static String SNIPPET_CODE = "[[Snippet: ";
 	private static String PAGE_CONTENT_CODE = "[[Code: PageContent]]";
 	private static String PAGE_TREE_BY_URL_CODE = "[[Code: PageTreeByUrl('";
+	private static String PAGE_BREADCRUMBS = "[[Code: PageBreadcrumbs('";
+
+	private final Log log = LogFactory.getLog(this.getClass());
 
 	public String generatePage(String url) {
 		StringBuilder sb = new StringBuilder();
@@ -54,7 +59,7 @@ public class RodaPageServiceImpl implements RodaPageService {
 
 		layoutContent = replacePageTitle(layoutContent, cmsPage.getMenuTitle());
 		layoutContent = replacePageLinkByUrl(layoutContent, cmsPage);
-
+		layoutContent = replacePageBreadcrumbs(layoutContent, cmsPage);
 		layoutContent = replaceSnippets(layoutContent);
 		layoutContent = replacePageTreeByUrl(layoutContent, cmsPage);
 		layoutContent = replacePageUrlLink(layoutContent, cmsPage);
@@ -97,8 +102,8 @@ public class RodaPageServiceImpl implements RodaPageService {
 				depth = Integer.parseInt(args[1].trim());
 			}
 
-			System.out.println("The url is " + url);
-			System.out.println("The depth is " + depth);
+			log.debug("URL =" + url);
+			log.debug("Depth = " + depth);
 
 			result = StringUtils.replace(result, PAGE_LINK_BY_URL_CODE + url + "')]]",
 					generatePageTreeMenu(CmsPage.findCmsPageByParent(url, cmsPage), depth));
@@ -106,6 +111,23 @@ public class RodaPageServiceImpl implements RodaPageService {
 		}
 
 		return result;
+	}
+
+	private String replacePageBreadcrumbs(String content, CmsPage cmsPage) {
+		int fromIndex = content.indexOf(PAGE_BREADCRUMBS, 0);
+		while (fromIndex > -1) {
+			String sep = content.substring(fromIndex + PAGE_BREADCRUMBS.length(),
+					content.indexOf("')]]", fromIndex + PAGE_BREADCRUMBS.length()));
+
+			log.debug("Breadcrumbs separator = " + sep);
+
+			content = StringUtils.replace(content, PAGE_BREADCRUMBS + sep + "')]]",
+					generatePageBreadcrumbs(cmsPage, sep));
+
+			fromIndex = content.indexOf(PAGE_BREADCRUMBS, fromIndex + PAGE_BREADCRUMBS.length());
+		}
+
+		return content;
 	}
 
 	private String replacePageUrlLink(String content, CmsPage cmsPage) {
@@ -200,10 +222,11 @@ public class RodaPageServiceImpl implements RodaPageService {
 	private String replacePageContent(String content, CmsPage page) {
 		String result = content;
 		if (result.indexOf(PAGE_CONTENT_CODE) > -1) {
-			// We suppose that a CmsPage has a single CmsPageContent
+			// We assume that a CmsPage has a single CmsPageContent
 			String pageContent = page.getCmsPageContents().iterator().next().getContentText();
 			pageContent = replacePageTitle(pageContent, page.getMenuTitle());
 			pageContent = replacePageLinkByUrl(pageContent, page);
+			pageContent = replacePageBreadcrumbs(pageContent, page);
 			pageContent = replaceSnippets(pageContent);
 			pageContent = replacePageTreeByUrl(pageContent, page);
 			pageContent = replacePageUrlLink(pageContent, page);
@@ -277,6 +300,18 @@ public class RodaPageServiceImpl implements RodaPageService {
 		return resultPage;
 	}
 
+	private String generatePageBreadcrumbs(CmsPage cmsPage, String separator) {
+		StringBuilder result = new StringBuilder();
+		while (cmsPage != null) {
+			result = result.insert(0,
+					"<a href=\"" + RODA_PAGE_URL + generateFullRelativeUrl(cmsPage) + "\">" + cmsPage.getName()
+							+ "</a>" + separator);
+			cmsPage = cmsPage.getCmsPageId();
+		}
+		// log.debug("Breadcrumbs = " + result);
+		return result.toString();
+	}
+
 	private String generatePageTreeMenu(CmsPage cmsPage, Integer depth) {
 
 		StringBuilder result = new StringBuilder();
@@ -292,7 +327,7 @@ public class RodaPageServiceImpl implements RodaPageService {
 
 		result.append("</ul>");
 
-		System.out.println("The menu is: \n" + result.toString());
+		// log.debug("The menu is:" + result);
 
 		return result.toString();
 	}

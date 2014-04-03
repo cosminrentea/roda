@@ -1,0 +1,65 @@
+\documentclass[11pt,twoside,romanian]{extbook}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{color}
+\usepackage{comment}
+\usepackage{times}
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr}
+\usepackage{lscape}
+\usepackage{float}
+\usepackage{listings}
+\usepackage{babel}
+\usepackage{amsmath}
+\usepackage{amssymb,amsfonts,textcomp}
+\usepackage{array}
+\usepackage{hhline}
+\usepackage[pdftex]{graphicx}
+\usepackage[pdftitle={ANEXE - Sistemul de acces la date}, pdfauthor={RODA}, colorlinks=true, linkcolor=blue]{hyperref}
+
+%\hypersetup{pdftex, colorlinks=true, linkcolor=blue, citecolor=blue, filecolor=blue, urlcolor=blue, pdftitle=, pdfauthor=, pdfsubject=, pdfkeywords=}
+\pagestyle{fancy}
+\DeclareGraphicsExtensions{.png,.gif,.jpg,.pdf}
+\addto\captionsromanian{\renewcommand{\chaptername}{Sec\c{t}iunea}}
+
+\begin{document}
+
+\pagenumbering{arabic} 
+\cfoot{\tiny{RODA}\tiny}
+\fancyhead[LE,RO]{ANEXE - \leftmark}
+\fancyhead[RE,LO]{\thepage}
+
+%TODO Trebuie schimbat la fiecare Faza !
+
+\title{ANEXA 1.\\
+Faza nr. VI 
+cu titlul:\\
+``Dezvoltare software, pachet 6: jurnalizare, modul CMS, modul management utilizatori.''
+}
+
+\author{RODA -- Arhiva Rom\^{a}n\u{a} de Date Sociale}
+
+\date{ }
+
+\maketitle
+
+\newpage
+\thispagestyle{plain}
+\tableofcontents{}
+\setcounter{page}{1}
+
+\chapter{Modulul de management de continut (CMS)}
+\section{Front-end}
+\include{url-dispatching}
+\include{generare-pagini}
+\include{cache}
+\include{thumbnails}
+\include{macro}
+
+\include{cmsbackend}
+
+\include{usersbackend}
+
+\include{audit}
+
+\end{document}

@@ -8,7 +8,10 @@ import java.net.URL;
 
 import javax.imageio.ImageIO;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.imgscalr.Scalr;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,10 +21,13 @@ import ro.roda.domain.CmsFile;
 @Transactional
 public class ThumbnailsServiceImpl implements ThumbnailsService {
 
+	private final Log log = LogFactory.getLog(this.getClass());
+
 	public byte[] generateThumbnailByHeight(String url, String alias, Integer height) {
 		return generateThumbnailByHeightAndWidth(url, alias, height, height);
 	}
 
+	@Cacheable(value = "thumbnails", key = "{#root.methodName, #url, #alias, #height, #width}")
 	public byte[] generateThumbnailByHeightAndWidth(String url, String alias, Integer height, Integer width) {
 		byte[] thumbnailBytes = null;
 		try {
@@ -58,8 +64,7 @@ public class ThumbnailsServiceImpl implements ThumbnailsService {
 				baos.close();
 			}
 		} catch (Exception e) {
-			System.out.println("Error appeared when generating cropped thumbnail: " + e.getMessage());
-			// e.printStackTrace();
+			log.error("Exception when generating cropped thumbnail: " + e.getMessage());
 		}
 
 		return thumbnailBytes;
@@ -74,6 +79,7 @@ public class ThumbnailsServiceImpl implements ThumbnailsService {
 		return generateThumbnailProportional(url, alias, height, null);
 	}
 
+	@Cacheable(value = "thumbnails", key = "{#root.methodName, #url, #alias, #height, #width}")
 	private byte[] generateThumbnailProportional(String url, String alias, Integer height, Integer width) {
 		byte[] thumbnailBytes = null;
 		try {
@@ -115,8 +121,7 @@ public class ThumbnailsServiceImpl implements ThumbnailsService {
 				baos.close();
 			}
 		} catch (Exception e) {
-			System.out.println("Error appeared when generating scaled thumbnail: " + e.getMessage());
-			// e.printStackTrace();
+			log.error("Exception when generating scaled thumbnail: " + e.getMessage());
 		}
 
 		return thumbnailBytes;

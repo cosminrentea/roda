@@ -32,9 +32,9 @@
 %TODO Trebuie schimbat la fiecare Faza !
 
 \title{ANEXA 1.\\
-Faza nr. VI 
+Faza nr. V 
 cu titlul:\\
-``Dezvoltare software, pachet 6: jurnalizare, modul CMS, modul management utilizatori.''
+``Dezvoltare software, pachet 5: jurnalizare, modul CMS, modul management utilizatori.''
 }
 
 \author{RODA -- Arhiva Rom\^{a}n\u{a} de Date Sociale}
@@ -49,17 +49,42 @@ cu titlul:\\
 \setcounter{page}{1}
 
 \chapter{Modulul de management de continut (CMS)}
+
 \section{Front-end}
-\include{url-dispatching}
+
+\include{URL-dispatching}
+% Cosmin - schema si poze chiar si din docs. Spring, de ce sunt 2 dispatchere (web si json), de ce s-au structurat URL-urile in acest fel (/admin ... etc.)
+% Letitia - controller '/page'
+
+% Cosmin! e nevoie de '/admin' realizat in server
+
+% later:  /resources/root => sa fie accesibil la:   /databrowser
+
 \include{generare-pagini}
-\include{cache}
-\include{thumbnails}
+% Letitia
+
 \include{macro}
+% Cosmin - pornind de la GoogleDocs + breadcrumbs + menu
+
+\include{thumbnails}
+% Letitia
+
+\include{cache} 
+%Cosmin - ehcache, de ce aceasta solutie, scalabilitate, configurare manager si cache-uri individuale, implementare
 
 \include{cmsbackend}
+% Sorin - interfata de administrare a CMS
 
+\chapter{Modulul de management al utilizatorilor}
 \include{usersbackend}
+% Sorin
+
+\chapter{Sistemul de jurnalizare}
 
 \include{audit}
+% Sorin - interfata
+
+\include{audit-server}
+% Letitia - serviciile implementate, legate de audit
 
 \end{document}

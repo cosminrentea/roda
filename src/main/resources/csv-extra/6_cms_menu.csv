@@ -3,13 +3,10 @@
 "menu_audit","menu_audit",,
 "menu_users","menu_users",,
 "menu_cron","menu_cron",,
-"cms_dashboard","menu_cms_dashboard",1,"cmsdashboard"
 "cms_layouts","menu_cms_layout",1,"cmslayouts"
 "cms_snippets","menu_cms_snippet",1,"cmssnippets"
 "cms_files","menu_cms_files",1,"cmsfiles"
 "cms_pages","menu_cms_pages",1,"cmspages"
 "audit_main","menu_audit_main",2,"auditmain"
 "users_main","menu_users_main",3,"usersmain"
-"admins_main","menu_admins_main",3,"adminsmain"
-"cron_dashboard","menu_cron_dashboard",4,"crondashboard"
 "cron_actions","cron_actions",4,"cronactions"

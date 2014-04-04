@@ -39,18 +39,31 @@ Ext.application({
     ],
 
     controllers : [
-            'Main', 'Login', 'TranslationManager', 'Menu', 'cms.Dashboard', 'cms.Layout', 'cms.layout.LayoutTree',
-            'cms.layout.LayoutList', 'cms.layout.LayoutEdit', 'cms.Snippet', 'cms.snippet.SnippetTree',
+            'Main', 'Login', 'TranslationManager', 'Menu', 'cms.Dashboard', 'cms.Cmslayouts', 'cms.layout.LayoutTree',
+            'cms.layout.LayoutList', 'cms.layout.LayoutEdit', 'cms.Cmssnippet', 'cms.snippet.SnippetTree',
             'cms.snippet.SnippetList', 'cms.snippet.SnippetEdit', 'cms.file.FileEdit', 'cms.file.FileTree',
-            'cms.file.FileList', 'cms.Files', 'cms.Pages', 'cms.page.PageTree', 'cron.Dashboard', 'cron.Actions',
-            'common.Audit', 'Abstract', 'cron.Actions', 'cron.ActionList', 'cron.ActionEdit', 'audit.Audit',
-            'user.User', 'user.UserList', 'user.GroupList'
+            'cms.file.FileList', 'cms.Cmsfiles', 'cms.Cmspages', 'cms.page.PageTree', 'cron.Dashboard', 'cron.Actions',
+            'common.Audit', 'Abstract', 'cron.Actions', 'cron.ActionList', 'cron.ActionEdit', 'audit.AuditMain',
+            'user.User', 'user.UserList', 'user.GroupList','cms.page.PageEdit'
     ],
 
     splashscreen : {},
 
     init : function() {
 
+    	  /**
+	     * @todo Reference
+	     * Nu merge referinta this.getCommonGlobalsStore()
+	     */
+	    var cgstore = Ext.StoreManager.get('common.Globals');
+	    cgstore.load(function(records, op, success){
+	    	cgstore.each(function(setting){
+	    		RODAdmin.util.Globals[setting.get("name")] = setting.get("value");
+	    		console.log('load settings: ' + setting.get("name") + '' + setting.get("value"));
+	    	});
+	    });	
+    	
+    	
 	    // Start the mask on the body and get a reference to the mask
 	    splashscreen = Ext.getBody().mask('Loading RODA Admin', 'splashscreen');
 
@@ -89,16 +102,17 @@ Ext.application({
 		        remove : true
 		    });
 
-		    /**
-		     * @todo Reference
-		     * Nu merge referinta this.getCommonGlobalsStore()
-		     */
-		    var cgstore = Ext.StoreManager.get('common.Globals');
-		    cgstore.load(function(records, op, success){
-		    	cgstore.each(function(setting){
-		    		RODAdmin.util.Globals[setting.get("name")] = setting.get("value");
-		    	});
-		    });		    
+//		    /**
+//		     * @todo Reference
+//		     * Nu merge referinta this.getCommonGlobalsStore()
+//		     */
+//		    var cgstore = Ext.StoreManager.get('common.Globals');
+//		    cgstore.load(function(records, op, success){
+//		    	cgstore.each(function(setting){
+//		    		RODAdmin.util.Globals[setting.get("name")] = setting.get("value");
+//		    		console.log('load settings: ' + setting.get("name") + '' + setting.get("value"));
+//		    	});
+//		    });		    
 
 		    // Fade out the icon and message
 		    splashscreen.next().fadeOut({

@@ -17,7 +17,7 @@ Ext.define('RODAdmin.view.audit.Audit', {
 			items : [{
 						region : 'center',
 						collapsible : false,
-						width : '50%',
+						width : '30%',
 						split : true,
 						layout : 'fit',
 						dockedItems : [{
@@ -60,11 +60,11 @@ Ext.define('RODAdmin.view.audit.Audit', {
 					}, {
 						region : 'east',
 						collapsible : true,
-						width : '50%',
+						width : '70%',
 						xtype : 'panel',
 						itemid : 'adetailscontainer',
 						id : 'adetailscontainer',
-						title : 'dontinkso',
+						title : '',
 						layout : {
 							type : 'fit'
 							,
@@ -73,7 +73,8 @@ Ext.define('RODAdmin.view.audit.Audit', {
 							// align:'stretch'
 						},
 						items : [{
-//									xtype : 'filedetails'
+//									xtype : 'auditdetails'
+								xtype : 'revisionproperties'
 								}]
 					}]
 

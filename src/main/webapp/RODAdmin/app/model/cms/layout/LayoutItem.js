@@ -30,7 +30,7 @@ Ext.define('RODAdmin.model.cms.layout.LayoutItem', {
 	}],
 	hasMany : [ {
 		model : 'RODAdmin.model.cms.layout.LayoutUsage',
-		name : 'layoutusage',
-		associationKey : 'layoutusage'
+		name : 'usage',
+		associationKey : 'layoutUsage'
 	}]
 });

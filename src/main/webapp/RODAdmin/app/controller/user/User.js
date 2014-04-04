@@ -3,7 +3,7 @@
  */
 Ext.define('RODAdmin.controller.user.User', {
     extend : 'Ext.app.Controller',
-
+    id: 'User',
     views : [
             'RODAdmin.view.user.User',
             'RODAdmin.view.user.Admin',
@@ -30,18 +30,10 @@ Ext.define('RODAdmin.controller.user.User', {
             }
     ],
     init : function(application) {
+    	
 	    this.control({
-	        "useritemsview grid#usergrid" : {
-	            /**
-				 * @listener useritemsview-grid-usergrid-selectionchange triggered-by:
-				 *           {@link RODAdmin.view.user.UserItemsview UserItemsview}
-				 *           grid#usergrid
-				 *           {@link #onListSelectionChange}
-				 */		        	
-		        selectionchange : this.onListSelectionChange,
-	        // itemcontextmenu : this.onItemContextMenu
-	        },
-	        "usersmain toolbar button#users" : {
+	       
+	        "users toolbar button#users" : {
 	            /**
 				 * @listener usersmain-toolbar-button-users-click triggered-by:
 				 *           {@link RODAdmin.view.user.User User}
@@ -50,7 +42,7 @@ Ext.define('RODAdmin.controller.user.User', {
 				 */		        	
 		        click : this.onUsersClick
 	        },
-	        "usersmain toolbar button#groups" : {
+	        "users toolbar button#groups" : {
 	            /**
 				 * @listener usersmain-toolbar-button-groups-click triggered-by:
 				 *           {@link RODAdmin.view.user.User User}
@@ -60,11 +52,32 @@ Ext.define('RODAdmin.controller.user.User', {
 		        click : this.onGroupsClick
 	        },
 	    });
+    	this.listen({
+            controller: {
+                '*': {
+                    controllerUsersInitView: this.initView
+                }
+            }
+    	 });
+
+	    
+	    
+    },
+    
+    /**
+	 * @method
+	 */
+    initView : function() {
+    	console.log('Init View, baby');	
+    	 this.getUsersgrid().store.load();
+    	 this.getGroupsgrid().store.load();
     },
     /**
 	 * @method
 	 */
     onUsersClick : function(button, e, options) {
+    	
+    	console.log('users click');
 	    this.getUseritemsview().layout.setActiveItem('usergrid');
 	    // var store = Ext.StoreManager.get('cms.layout.Layout');
 	    // store.load();
@@ -73,9 +86,8 @@ Ext.define('RODAdmin.controller.user.User', {
 	 * @method
 	 */
     onGroupsClick : function(button, e, options) {
-	    this.getUseritemsview().layout.setActiveItem('usergroups');
-	    // var store = Ext.StoreManager.get('cms.layout.Layout');
-	    // store.load();
+    	console.log('groups click');
+    	this.getUseritemsview().layout.setActiveItem('usergroups');
     },
     /**
 	 * @method

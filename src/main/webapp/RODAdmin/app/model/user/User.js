@@ -5,7 +5,7 @@ Ext.define('RODAdmin.model.user.User', {
     extend: 'Ext.data.Model',
     fields: [
     {    
-    	name: 'indice',
+    	name: 'id',
     	type : 'int'
 	}, {
         name: 'username',

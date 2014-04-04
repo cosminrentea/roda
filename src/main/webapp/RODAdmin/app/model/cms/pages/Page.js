@@ -41,6 +41,12 @@ Ext.define('RODAdmin.model.cms.pages.Page', {
         name: 'published',
         type: 'boolean'
     },{
+        name: 'parent',
+        type: 'string'
+    },{
+        name: 'parentid',
+        type: 'integer'
+    },{
         name: 'target',
         type: 'string'
     },{

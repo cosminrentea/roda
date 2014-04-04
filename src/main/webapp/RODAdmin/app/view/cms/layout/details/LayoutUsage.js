@@ -26,7 +26,9 @@ Ext.define('RODAdmin.view.cms.layout.details.LayoutUsage', {
         },
         {
             text: 'Language',
+            xtype: 'templatecolumn',            
             flex: 1,
+			tpl: '<div class="lang_{lang}">&nbsp;</div>',
             dataIndex: 'lang'
         },
         {
@@ -37,7 +39,7 @@ Ext.define('RODAdmin.view.cms.layout.details.LayoutUsage', {
         {
             text: 'Page Type',
             flex: 1,
-            dataIndex: 'pagetypename'
+            dataIndex: 'pagetype'
         }
         
         ]	

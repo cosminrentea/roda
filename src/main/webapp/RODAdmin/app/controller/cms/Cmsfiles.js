@@ -1,7 +1,7 @@
 /**
  * 
  */
-Ext.define('RODAdmin.controller.cms.Files', {
+Ext.define('RODAdmin.controller.cms.Cmsfiles', {
     extend : 'Ext.app.Controller',
 
     // stores : ['cms.files.FileTree', 'cms.files.FileItem', 'cms.files.File',
@@ -97,8 +97,20 @@ Ext.define('RODAdmin.controller.cms.Files', {
 	        },
 
 	    });
+    	this.listen({
+            controller: {
+                '*': {
+                    controllerCmsfilesInitView: this.initView
+                }
+            }
+    	 });
     },
-
+    /**
+	 * @method
+	 */
+    initView : function() {
+    	console.log('CMSFiles InitView');	
+    },
     /**
 	 * @method
 	 */

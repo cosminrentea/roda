@@ -1,7 +1,7 @@
 /**
  * 
  */
-Ext.define('RODAdmin.controller.cms.Layout', {
+Ext.define('RODAdmin.controller.cms.Cmslayouts', {
     extend : 'Ext.app.Controller',
 
     views :[
@@ -13,7 +13,12 @@ Ext.define('RODAdmin.controller.cms.Layout', {
             {
                 ref : 'itemsview',
                 selector : 'layoutitemsview'
-            }, {
+            }, 
+            {
+                ref : 'layoutgrid',
+                selector : 'layoutitemsview grid#lyiconview'
+            }, 
+            {
                 ref : "folderview",
                 selector : "layoutitemsview treepanel#lyfolderview"
             }, {
@@ -21,7 +26,8 @@ Ext.define('RODAdmin.controller.cms.Layout', {
                 selector : 'layoutedit treepanel#groupselect'
             }, {
                 ref : 'layoutproperties',
-                selector : 'layoutproperties'
+                selector : 'layoutproperties panel#lydata '                
+//                selector : 'layoutproperties panel#lycontent'
             }
 
     ],
@@ -74,6 +80,22 @@ Ext.define('RODAdmin.controller.cms.Layout', {
 		        click : this.onlytoolbarAuditClick
 	        },
 	    });
+    	this.listen({
+            controller: {
+                '*': {
+                    controllerCmslayoutsInitView: this.initView
+                }
+            }
+    	 });
+    },
+
+    /**
+	 * @method
+	 */
+    initView : function() {
+    	console.log('InitView, baby');	
+    	 this.getLayoutgrid().store.load();
+ //   	 this.getFolderview().store.reload(); not loading
     },
     /**
 	 * @method
@@ -98,6 +120,8 @@ Ext.define('RODAdmin.controller.cms.Layout', {
 	 */
     onlytoolbarEditClick : function(button, e, options) {
 	    var fp = this.getLayoutproperties().data;
+	    var llp = this.getLayoutproperties();
+	    console.log(llp);
 	    var win = Ext.create('RODAdmin.view.cms.layout.EditLayoutWindow');
 	    win.setTitle('Edit File "' + fp.data.name + '" (id: ' + fp.data.id + ')');
 	    var wtree = win.down('treepanel');
@@ -122,11 +146,11 @@ Ext.define('RODAdmin.controller.cms.Layout', {
 			    console.log('we will delete');
 			    var url = '';
 			    if (fp.data.itemtype == 'layoutgroup') {
-				    url = 'http://localhost:8080/roda/admin/layoutgroupdrop';
+				    url = '/roda/admin/layoutgroupdrop';
 				    parms = {'groupid' : fp.data.id };
 			    }
 			    else {
-				    url = 'http://localhost:8080/roda/admin/layoutdrop';
+				    url = '/roda/admin/layoutdrop';
 				    parms = {'layoutid' : fp.data.id };
 			    }
 

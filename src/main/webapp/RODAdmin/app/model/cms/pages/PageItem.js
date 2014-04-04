@@ -31,7 +31,12 @@ Ext.define('RODAdmin.model.cms.pages.PageItem', {
              }, {
                  name: 'layout',
                  type: 'string'
-             },  {
+             }, 
+             {
+                 name: 'layoutid',
+                 type: 'integer'
+             },             
+             {
                  name: 'cacheable',
                  type: 'integer'
              }, {
@@ -46,12 +51,23 @@ Ext.define('RODAdmin.model.cms.pages.PageItem', {
              },{
                  name: 'pagetype',
                  type: 'string'
-             },{
+             },
+             {
+                 name: 'pagetypeid',
+                 type: 'integer'
+             },
+             {
             	 name: 'content',
             	 type: 'string'
              },{
             	 name: 'synopsis',
             	 type: 'string'
+             },{
+            	 name: 'parent',
+            	 type: 'string'
+             },{
+            	 name: 'parentid',
+            	 type: 'integer'
              }
              ]
 });

@@ -19,10 +19,10 @@ Ext.define('RODAdmin.model.cms.layout.LayoutUsage', {
     	name: 'visible',
     	type: 'boolean'
     },{
-    	name: 'pagetypeid',
-    	type: 'integer'
+    	name: 'parent',
+    	type: 'string'
     },{
-    	name: 'pagetypename',
+    	name: 'pagetype',
     	type: 'string'
     }]
 });

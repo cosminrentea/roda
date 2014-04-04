@@ -47,7 +47,7 @@ Ext.define('RODAdmin.view.cms.page.Pages', {
 						xtype : 'panel',
 						itemid : 'pgdetailscontainer',
 						id : 'pgdetailscontainer',
-						title : 'dontinkso',
+						title : 'Page details',
 						layout : {
 							type : 'fit'
 							// padding:'5',

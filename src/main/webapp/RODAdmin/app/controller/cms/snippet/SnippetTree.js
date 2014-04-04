@@ -30,17 +30,20 @@ Ext.define('RODAdmin.controller.cms.snippet.SnippetTree', {
             }, {
                 ref : 'snusagepanel',
                 selector : 'snippetusage'
-            }, {
+            },
+            {
                 ref : 'snippetproperties',
-                selector : 'snippetproperties'
+                selector : 'snippetproperties panel#sndata '
             }, {
+                ref : 'sncontent',
+                 selector : 'snippetproperties panel#snenvelope codemirror#sncontent'
+            },{
+                ref : 'snenvelope',
+                 selector : 'snippetproperties panel#snenvelope'
+            },{
                 ref : 'itemsview',
                 selector : 'snippetitemsview'
             }, 
-//            {
-//                ref : 'iconview',
-//                selector : 'snippetitemsview grid#sniconview'
-//            },
             {
                 ref : 'folderselect',
                 selector : 'snippetedit treepanel#folderselect'
@@ -137,20 +140,23 @@ Ext.define('RODAdmin.controller.cms.snippet.SnippetTree', {
     /**
 	 * @method
 	 */
+    
     onSnFolderviewSelectionChange : function(component, selected, event) {
-	    console.log('folderviewselectionchange');
 	    var record = selected[0];
 	    console.log(record);
 	    var snprop = this.getSnippetproperties();
+	    var sncontent = this.getSncontent();
+	    var snenvelope = this.getSnenvelope();
 	    var sndetails = this.getSndetailspanel();
 	    var snusage = this.getSnusagepanel();
 
 	    sndetails.setTitle(record.data.name);
-	    console.log(record.data.itemtype);
+
 	    if (record.data.itemtype == 'snippetgroup') {
 		    snusage.collapse(true);
 		    var sngroupstore = Ext.StoreManager.get('cms.snippet.SnippetGroup');
-
+		    sncontent.setValue('');  
+		    snenvelope.collapse();	
 		    sngroupstore.load({
 		        scope : this,
 		        id : record.data.indice,
@@ -164,7 +170,8 @@ Ext.define('RODAdmin.controller.cms.snippet.SnippetTree', {
 
 	    }
 	    else {
-		    snusage.expand(true);
+		    snusage.expand();
+		    snenvelope.expand(); 
 		    var snitemstore = Ext.StoreManager.get('cms.snippet.SnippetItem');
 		    snitemstore.load({
 		        id : record.data.indice,
@@ -172,9 +179,12 @@ Ext.define('RODAdmin.controller.cms.snippet.SnippetTree', {
 		        callback : function(records, operation, success) {
 			        if (success) {
 				        var snitem = snitemstore.first();
+				        sncontent.setValue(snitem.data.content);
 				        snprop.update(snitem);
-				        snusage.bindStore(snitem.snippetusageStore);
-
+				        console.log(snitem.usage());
+				        if (typeof snitem.usageStore === 'object') {
+				        	snusage.bindStore(snitem.usageStore);	
+				        }
 			        }
 		        }
 		    });
@@ -231,21 +241,22 @@ onAddSnippetClick : function(component, event) {
  */
 onDeleteSnippetClick : function(component, event) {
     var currentNode = this.getFolderview().getSelectionModel().getLastSelected();
-   
-    var store = Ext.StoreManager.get('cms.snippet.Snippet');
+    var me = this;
+//    var store = Ext.StoreManager.get('cms.snippet.Snippet');
     Ext.Msg.confirm('Delete Requirement', 'Are you sure you want to delete the snippet ' + currentNode.data.name
             + '?', function(id, value) {
 	    if (id === 'yes') {
 		    console.log('we will delete');
 		    Ext.Ajax.request({
-		        url : 'http://localhost:8080/roda/admin/snippetdrop',
+		        url : '/roda/admin/snippetdrop',
 		        method : "POST",
 		        params : {
 			        snippetid : currentNode.data.indice
 		        },
 		        success : function() {
-			        RODAdmin.util.Alert.msg('Success!', 'Snippet deleted.');
-			        store.load;
+		        	me.getFolderview().store.load();
+		        	RODAdmin.util.Alert.msg('Success!', 'Snippet deleted.');
+
 		        },
 		        failure : function(response, opts) {
 			        Ext.Msg.alert('Failure', response);
@@ -260,37 +271,24 @@ onDeleteSnippetClick : function(component, event) {
  * @method
  */
 onEditSnippetClick : function(component, record, item, index, e) {
-
-    var currentNode = this.getFolderview().getSelectionModel().getLastSelected();
+    var fp = this.getSnippetproperties().data;
     var win = Ext.create('RODAdmin.view.cms.snippet.EditSnippetWindow');
-    win.setTitle('Edit Snippet');
+    win.setTitle('Edit File "' + fp.data.name + '" (id: ' + fp.data.id + ')');
     var wtree = win.down('treepanel');
-    var snippetitemstore = Ext.create('RODAdmin.store.cms.snippet.SnippetItem');
-    snippetitemstore.load({
-        id : currentNode.data.indice, // set the id here
-        scope : this,
-        callback : function(records, operation, success) {
-	        if (success) {
-		        var item = snippetitemstore.first();
-		        win.down('form').getForm().loadRecord(item);
-		        win.down('form').down('hiddenfield#groupid').setValue(item.data.groupid);
-	        }
-        }
-    });
+    wtree.expandAll();
     win.show();
+    win.down('form').getForm().loadRecord(fp);
 },
 /**
  * @method
  */
 onCollapseTreeClick : function(button, e, options) {
-    console.log('onCollapseTreeClick');
     this.getFolderview().collapseAll();
 },
 /**
  * @method
  */
 onExpandTreeClick : function(button, e, options) {
-    console.log('onExpandTreeClick');
     this.getFolderview().expandAll();
 },
 /**
@@ -301,14 +299,21 @@ onReloadTreeClick : function(button, e, options) {
     var currentNode = folderview.getSelectionModel().getLastSelected();
     // var currentNode =
     // this.getFolderview().getSelectionModel().getSelectedIndex();
+    console.log('current node');
     console.log(currentNode);
+    var me = this;
     this.getFolderview().store.reload({
         scope : this,
         callback : function(records, operation, success) {
 	        console.log('callback executed');
-	        console.log(currentNode.idField.originalIndex);
-	        // console.log(this.getFolderview().getSelectionModel());
-	        folderview.getSelectionModel().select(currentNode);
+//	        console.log(currentNode.idField.originalIndex);
+			   var root = me.getFolderview().store.getRootNode();
+			   var myid = root.findChild('indice', currentNode.data.indice, true);
+			   console.log(myid);
+			   if (myid != null) {
+				   console.log(myid);
+				   folderview.getSelectionModel().select(myid);
+			   }
         }
     });
     // this.getFolderview().getSelectionModel().select(currentNode);

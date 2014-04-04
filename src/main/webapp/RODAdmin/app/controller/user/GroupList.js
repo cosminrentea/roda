@@ -33,7 +33,18 @@ Ext.define('RODAdmin.controller.user.GroupList', {
 				 *           {@link #onReloadGridClick}
 				 */		        	
 			    click : this.onReloadGridClick
-		    }
+		    },
+			 "useritemsview grid#usergroups" : {
+		            /**
+					 * @listener useritemsview-grid-usergrid-selectionchange triggered-by:
+					 *           {@link RODAdmin.view.user.UserItemsview UserItemsview}
+					 *           grid#usergrid
+					 *           {@link #onListSelectionChange}
+					 */		        	
+			        selectionchange : this.onListSelectionChange,
+		        // itemcontextmenu : this.onItemContextMenu
+		        },
+
 	    });
     },
 
@@ -53,5 +64,9 @@ Ext.define('RODAdmin.controller.user.GroupList', {
 	        }
 	    });
     },
+    onListSelectionChange : function(component, selected, event) {
+        console.log('selectionchange');
+
+    }
 
 });

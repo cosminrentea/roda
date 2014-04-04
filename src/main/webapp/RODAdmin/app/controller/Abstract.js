@@ -9,7 +9,7 @@ Ext.define('RODAdmin.controller.Abstract', {
              'RODAdmin.view.common.WindowForm',
              'RODAdmin.view.common.AuditWindow',
              'RODAdmin.view.common.Confirmation',
-             'RODAdmin.view.common.InformationWindow'
+             'RODAdmin.view.common.InformationWindow',
              ],
     
     

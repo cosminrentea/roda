@@ -7,7 +7,7 @@ Ext.define('RODAdmin.store.cms.snippet.SnippetTree', {
     requires: [
         'RODAdmin.model.cms.snippet.Snippet'
     ],
-
+    autoLoad: false,
     model: 'RODAdmin.model.cms.snippet.Snippet',
     proxy: {type: 'mainajax', url: 'cmssnippettree'},    
     folderSort: true,    

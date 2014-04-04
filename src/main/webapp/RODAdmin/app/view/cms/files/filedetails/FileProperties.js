@@ -48,6 +48,7 @@ Ext.define('RODAdmin.view.cms.files.filedetails.FileProperties', {
 					'Alias: {data.alias}<br>',
 					'Filepath: {data.filepath}<br>',
 					'File Type: {data.filetype}<br>',
+					'Directory: {data.directory}<br>',
 					'</td></tr></table>',
 					'</tpl>'
 	]

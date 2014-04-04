@@ -10,7 +10,7 @@ Ext.define('RODAdmin.view.cms.snippet.details.SnippetUsage', {
 	collapsible: true,
 	   columns: [
         {
-            text: 'Page Id',
+            text: 'Id',
             width: 100,
             dataIndex: 'id'
         },
@@ -20,25 +20,9 @@ Ext.define('RODAdmin.view.cms.snippet.details.SnippetUsage', {
             dataIndex: 'name'
         },
         {
-            text: 'Url',
+            text: 'Type',
             flex: 1,
-            dataIndex: 'url'
-        },
-        {
-            text: 'Language',
-            flex: 1,
-            dataIndex: 'lang'
-        },
-        {
-            text: 'Visible',
-            flex: 1,
-            dataIndex: 'visible'
-        },
-        {
-            text: 'Page Type',
-            flex: 1,
-            dataIndex: 'pagetypename'
+            dataIndex: 'type'
         }
-        
         ]	
 });

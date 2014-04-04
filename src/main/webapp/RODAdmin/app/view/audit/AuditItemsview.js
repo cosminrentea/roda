@@ -17,7 +17,7 @@ Ext.define('RODAdmin.view.audit.AuditItemsview', {
 						id : 'auditrevisions',
 						itemId : 'auditrevisions',
 						itemSelector : 'div.thumb-wrap',
-					//	store : 'audit.revisions',
+						store : 'audit.Revisions',
 						features : [Ext.create('Ext.ux.grid.FiltersFeature', {
 									local : true
 								})],
@@ -26,12 +26,21 @@ Ext.define('RODAdmin.view.audit.AuditItemsview', {
 									text : 'Revision',
 									flex : 1,
 									sortable : true,
-									dataIndex : 'name',
+									dataIndex : 'revision',
 									filterable : true
-								}, {
+								}, 
+								{
+									itemId : 'timestamp',
+									text : 'Timestamp',
+									flex : 2,
+									sortable : true,
+									dataIndex : 'timestamp',
+									filterable : true
+								}, 
+								{
 									text : 'Objects modified',
 									flex : 1,
-									//dataIndex : 'modobj',
+									dataIndex : 'nrobjects',
 									sortable : true,
 									filter : {
 										type : 'integer'
@@ -54,208 +63,7 @@ Ext.define('RODAdmin.view.audit.AuditItemsview', {
 												itemId : 'clearfilterdata'
 											}]
 								}]
-					}, {
-						store : 'cms.files.FileTree',
-						itemId : 'auditobjects',
-						xtype : 'treepanel',
-						useArrows : true,
-						loadMask:true,
-						rootVisible : false,
-						multiSelect : false,
-						singleExpand : false,
-						allowDeselect : true,
-						autoheight : true,
-						dockedItems : [{
-									xtype : 'toolbar',
-									itemid : 'auditobjectstoolbar',
-									dock : 'bottom',
-									items : [{
-												xtype : 'tbfill'
-											},
-											{
-												text : 'Reload Tree',
-												xtype : 'button',
-												itemId : 'reloadtree'
-											}, {
-												text : 'Collapse Tree',
-												xtype : 'button',
-												itemId : 'collapsetree'
-											}, {
-												text : 'Expand Tree',
-												xtype : 'button',
-												itemId : 'expandtree'
-											}]
-								}],
-						features : [{
-									ftype : 'treeGridFilter'
-								}],
-						plugins : [Ext.create('Ext.grid.plugin.CellEditing', {
-									clicksToEdit : 2,
-									listeners : {
-										beforeedit : function(editor, e) {
-											console.log(e.record.data.filetype);
-											if (e.record.data.filetype == 'folder') {
-												return true;
-											} else {
-												return false;
-											}
-										}
-									}
-								})
-						],
-						columns : [{
-									xtype : 'treecolumn',
-									itemId : 'ft',
-									text : 'Object',
-									flex : 2,
-									sortable : false,
-									dataIndex : 'name',
-									filter : {
-										type : 'string'
-									}
-								}, {
-									text : 'revisions',
-									flex : 1,
-									dataIndex : 'revisions',
-									sortable : false,
-									filterable : true
-								}]
-					}, {
-//						store : 'cms.files.FileTree',
-						itemId : 'auditusers',
-						xtype : 'treepanel',
-						useArrows : true,
-						loadMask:true,
-						rootVisible : false,
-						multiSelect : false,
-						singleExpand : false,
-						allowDeselect : true,
-						autoheight : true,
-						dockedItems : [{
-									xtype : 'toolbar',
-									itemid : 'audituserstoolbar',
-									dock : 'bottom',
-									items : [{
-												xtype : 'tbfill'
-											},
-											{
-												text : 'Reload Tree',
-												xtype : 'button',
-												itemId : 'reloadtree'
-											}, {
-												text : 'Collapse Tree',
-												xtype : 'button',
-												itemId : 'collapsetree'
-											}, {
-												text : 'Expand Tree',
-												xtype : 'button',
-												itemId : 'expandtree'
-											}]
-								}],
-						features : [{
-									ftype : 'treeGridFilter'
-								}],
-						plugins : [Ext.create('Ext.grid.plugin.CellEditing', {
-									clicksToEdit : 2,
-									listeners : {
-										beforeedit : function(editor, e) {
-											console.log(e.record.data.filetype);
-											if (e.record.data.filetype == 'folder') {
-												return true;
-											} else {
-												return false;
-											}
-										}
-									}
-								})
-						],
-						columns : [{
-									xtype : 'treecolumn',
-									itemId : 'ft',
-									text : 'Object',
-									flex : 2,
-									sortable : false,
-									dataIndex : 'name',
-									filter : {
-										type : 'string'
-									}
-								}, {
-									text : 'revisions',
-									flex : 1,
-									dataIndex : 'revisions',
-									sortable : false,
-									filterable : true
-								}]
-					}, {
-//						store : 'cms.files.FileTree',
-						itemId : 'auditdates',
-						xtype : 'treepanel',
-						useArrows : true,
-						loadMask:true,
-						rootVisible : false,
-						multiSelect : false,
-						singleExpand : false,
-						allowDeselect : true,
-						autoheight : true,
-						dockedItems : [{
-									xtype : 'toolbar',
-									itemid : 'auditobjectstoolbar',
-									dock : 'bottom',
-									items : [{
-												xtype : 'tbfill'
-											},
-											{
-												text : 'Reload Tree',
-												xtype : 'button',
-												itemId : 'reloadtree'
-											}, {
-												text : 'Collapse Tree',
-												xtype : 'button',
-												itemId : 'collapsetree'
-											}, {
-												text : 'Expand Tree',
-												xtype : 'button',
-												itemId : 'expandtree'
-											}]
-								}],
-						features : [{
-									ftype : 'treeGridFilter'
-								}],
-						plugins : [Ext.create('Ext.grid.plugin.CellEditing', {
-									clicksToEdit : 2,
-									listeners : {
-										beforeedit : function(editor, e) {
-											console.log(e.record.data.filetype);
-											if (e.record.data.filetype == 'folder') {
-												return true;
-											} else {
-												return false;
-											}
-										}
-									}
-								})
-						],
-						columns : [{
-									xtype : 'treecolumn',
-									itemId : 'ft',
-									text : 'Object',
-									flex : 2,
-									sortable : false,
-									dataIndex : 'name',
-									filter : {
-										type : 'string'
-									}
-								}, {
-									text : 'revisions',
-									flex : 1,
-									dataIndex : 'revisions',
-									sortable : false,
-									filterable : true
-								}]
 					}
-
-
-					
 					
 					
 					

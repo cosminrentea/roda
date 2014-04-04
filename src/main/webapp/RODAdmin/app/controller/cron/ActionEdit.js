@@ -49,8 +49,6 @@ Ext.define('RODAdmin.controller.cron.ActionEdit', {
 	    if (formPanel.getForm().isValid()) {
 		    formPanel.getForm().submit({
 		        clientValidation : true,
-		        // url : 'http://localhost:8080/roda/admin/layoutsave',
-
 		        success : function(form, action) {
 			        var result = action.result;
 			        if (result.success) {

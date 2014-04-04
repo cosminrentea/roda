@@ -236,6 +236,8 @@ Ext.define('RODAdmin.controller.cms.file.FileTree', {
 							if (success) {
 								var fileitem = fileitemstore.first();
 								fileprop.update(fileitem);
+								console.log('fileprop');
+								console.log(fileitem.filepropertiesStore);
 								filespecificprop.bindStore(fileitem.filepropertiesStore);
 								fileusage.bindStore(fileitem.fileusageStore);
 

@@ -29,14 +29,22 @@ Ext.define('RODAdmin.controller.cms.layout.LayoutList', {
                 selector : 'layoutitemsview grid#lyiconview'
             }, {
                 ref : 'layoutproperties',
-                selector : 'layoutproperties'
+                selector : 'layoutproperties panel#lydata'
             }, {
                 ref : 'lydetailspanel',
                 selector : 'cmslayouts panel#lydetailscontainer '
             }, {
                 ref : 'lyusagepanel',
                 selector : 'layoutusage'
-            }
+            },
+            {
+                ref : 'lyenvelope',
+                 selector : 'layoutproperties panel#lyenvelope'
+            },
+            {
+                ref : 'lycontent',
+                selector : 'layoutproperties panel#lyenvelope codemirror#lycontent'
+            }            
 
     ],
     /**
@@ -77,7 +85,16 @@ Ext.define('RODAdmin.controller.cms.layout.LayoutList', {
 				 * 
 				 */
 		        click : this.onEditLayoutClick
-	        }
+	        },
+	        "layoutitemsview grid#lyiconview toolbar button#reloadgrid" : {
+	            /**
+				 * @listener layoutitemsview-treepanel-lyfolderview-toolbar-button-reloadtree triggered-by:
+				 *           {@link RODAdmin.view.cms.layout.LayoutItemview LayoutItemsview}
+				 *           treepanel#lyfolderview toolbar button#reloadtree
+				 *           {@link #onReloadTreeClick}
+				 */
+		        click : this.onReloadGridClick
+	        }, 
 	    });
     },
     /**
@@ -86,7 +103,11 @@ Ext.define('RODAdmin.controller.cms.layout.LayoutList', {
     onEditLayoutClick : function(component, record, item, index, e) {
 	    console.log('onEditLayoutClick');
 	    var currentNode = this.getIconview().getSelectionModel().getLastSelected();
-	    var win = Ext.create('RODAdmin.view.cms.layout.EditLayoutWindow');
+	    win = Ext.WindowMgr.get('layoutedit');
+	    console.log(win);
+	    if (!win) {
+	    	win = Ext.create('RODAdmin.view.cms.layout.EditLayoutWindow');
+	    }	    
 	    win.setTitle('Edit Layout');
 	    var wtree = win.down('treepanel');
 	    var layoutitemstore = Ext.create('RODAdmin.store.cms.layout.LayoutItem');
@@ -113,7 +134,7 @@ Ext.define('RODAdmin.controller.cms.layout.LayoutList', {
 		    if (id === 'yes') {
 			    console.log('we will delete');
 			    Ext.Ajax.request({
-			        url : 'http://localhost:8080/roda/admin/layoutdrop',
+			        url : '/roda/admin/layoutdrop',
 			        method : "POST",
 			        params : {
 				        layoutid : currentNode.data.indice
@@ -137,15 +158,17 @@ Ext.define('RODAdmin.controller.cms.layout.LayoutList', {
     onIconViewSelectionChange : function(component, selected, event) {
 	    console.log('folderviewselectionchange');
 	    var record = selected[0];
+	    if (record != null) {
+	    console.log(record);
 	    var lyprop = this.getLayoutproperties();
 	    var lydetails = this.getLydetailspanel();
 	    var lyusage = this.getLyusagepanel();
-
-	    console.log(record.data.indice);
-
+	    var lycontent = this.getLycontent();
+	    var lyenvelope = this.getLyenvelope();	    
 	    lydetails.setTitle(record.data.name);
 
-	    lyusage.expand(true);
+	    lyusage.expand();
+	    lyenvelope.expand();  
 	    var lyitemstore = Ext.StoreManager.get('cms.layout.LayoutItem');
 	    lyitemstore.load({
 	        id : record.data.indice, // set the id here
@@ -153,14 +176,15 @@ Ext.define('RODAdmin.controller.cms.layout.LayoutList', {
 	        callback : function(records, operation, success) {
 		        if (success) {
 			        var lyitem = lyitemstore.first();
+			        lycontent.setValue(lyitem.data.content);
 			        lyprop.update(lyitem);
-			        if (!typeof lyitem.layoutusageStore === 'undefined') {
+			        if (typeof lyitem.layoutusageStore === 'object') {
 				        lyusage.bindStore(lyitem.layoutusageStore);
 			        }
 		        }
 	        }
 	    });
-
+	    }
     },
     /**
 	 * @method
@@ -172,5 +196,27 @@ Ext.define('RODAdmin.controller.cms.layout.LayoutList', {
 	    }
 	    this.contextmenu.showAt(e.getXY());
     },
-
+    /**
+	 * @method
+	 */
+    onReloadGridClick : function(button, e, options) {
+	    console.log('reloading grid');
+	    var iconview = this.getIconview();
+	    var currentNode = iconview.getSelectionModel().getLastSelected();
+	    console.log(currentNode);
+	    var mmstore = this.getIconview().store;
+	    var me = this;
+	    mmstore.reload({
+	        callback : function(records, operation, success) {
+//		        var root = me.getFolderview().store.getRootNode();
+//		        var myid = root.findChild('indice', currentNode.data.indice, true);
+//			    if (myid != null) {
+	        	console.log(currentNode);
+	        	var mrr = mmstore.find('indice', currentNode.data.indice);
+	        	console.log('selecting current node');
+		    	iconview.getSelectionModel().select(mrr);
+// }
+	        }
+	    });
+    },
 });

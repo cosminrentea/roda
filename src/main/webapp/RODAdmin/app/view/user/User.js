@@ -3,9 +3,9 @@
  */
 Ext.define('RODAdmin.view.user.User', {
 			extend : 'Ext.panel.Panel',
-			alias : 'widget.usersmain',
-			itemId : 'usersmain',
-			id : 'usersmain',
+			alias : 'widget.users',
+			itemId : 'users',
+			id : 'users',
 			layout : {
 				type : 'border',
 				padding : 5

@@ -85,7 +85,9 @@ Ext.define('RODAdmin.controller.Menu', {
                 title: record.get('text')
             });
         }
-
+        var controller = RODAdmin.util.Util.capitalize(record.raw.className);
+        console.log('Firing event: controller'+controller+'InitView');
+        this.fireEvent('controller'+controller+'InitView');
         mainPanel.setActiveTab(newTab);
     },
    	/**

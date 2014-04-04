@@ -59,7 +59,13 @@ Ext.define('RODAdmin.view.cms.layout.LayoutItemsview', {
 									dock : 'bottom',
 									items : [{
 												xtype : 'tbfill'
-											}, {
+											},{
+												text : 'Reload Grid',
+												xtype : 'button',
+												itemId : 'reloadgrid'
+											}, 
+											
+											{
 												xtype : 'button',
 												itemId : 'showfilterdata',
 												text : 'All Filter Data',

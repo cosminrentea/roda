@@ -11,6 +11,6 @@ Ext.define('RODAdmin.store.cms.layout.LayoutItem', {
 
     model: 'RODAdmin.model.cms.layout.LayoutItem',
 
-    autoload: true,
+    autoLoad: false,
     proxy: {type: 'main', url: 'cmslayoutinfo'},    
 });

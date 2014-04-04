@@ -9,7 +9,7 @@ Ext.define('RODAdmin.store.user.User', {
     ],
 
     model: 'RODAdmin.model.user.User',
-    autoLoad: true,    
-    proxy: {type: 'main', url: 'http://roda.apiary.io/admin/userslist/'},      
+    autoLoad: false,    
+    proxy: {type: 'main', url: 'userslist/'},      
 
 });

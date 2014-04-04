@@ -24,14 +24,19 @@ Ext.define('RODAdmin.controller.cms.snippet.SnippetList', {
 	    	 {
                 ref : 'sndetailspanel',
                 selector : 'cmssnippets panel#sndetailscontainer '
-            }, {
+            },{
                 ref : 'snusagepanel',
                 selector : 'snippetusage'
-            }, {
+            },{
                 ref : 'snippetproperties',
-                selector : 'snippetproperties'
+                selector : 'snippetproperties panel#sndata '
+            },{
+                ref : 'sncontent',
+                 selector : 'snippetproperties panel#snenvelope codemirror#sncontent'
+            },{
+                ref : 'snenvelope',
+                 selector : 'snippetproperties panel#snenvelope'
             }
-
             ],
    	init : function(application) {
         		this.control({
@@ -68,9 +73,12 @@ Ext.define('RODAdmin.controller.cms.snippet.SnippetList', {
 		var record = selected[0];
 		var snprop = this.getSnippetproperties();
 		var sndetails = this.getSndetailspanel();
+		var sncontent = this.getSncontent();
+	    var snenvelope = this.getSnenvelope();
 		var snusage = this.getSnusagepanel();
 		sndetails.setTitle(record.data.name);
-		snusage.expand(true);
+		snusage.expand();
+		snenvelope.expand();
 		var snitemstore = this.getCmsSnippetSnippetItemStore();
 		
 		snitemstore.load({
@@ -80,7 +88,8 @@ Ext.define('RODAdmin.controller.cms.snippet.SnippetList', {
 				if (success) {
 					var snitem = snitemstore.first();
 					snprop.update(snitem);
-					if (!typeof snitem.snippetusageStore === 'undefined') {
+					sncontent.setValue(snitem.data.content);
+					if (typeof snitem.snippetusageStore === 'object') {
 						snusage.bindStore(snitem.snippetusageStore);
 					}
 				}

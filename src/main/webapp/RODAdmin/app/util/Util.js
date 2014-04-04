@@ -28,6 +28,11 @@ Ext.define('RODAdmin.util.Util', {
                 icon: Ext.Msg.ERROR,
                 buttons: Ext.Msg.OK
             });
+        },
+        
+        capitalize : function(text) {
+        	return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
         }
+        
     }
 });

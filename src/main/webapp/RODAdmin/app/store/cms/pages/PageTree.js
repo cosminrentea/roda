@@ -9,7 +9,7 @@ Ext.define('RODAdmin.store.cms.pages.PageTree', {
     ],
 
     model: 'RODAdmin.model.cms.pages.Page',
-    autoload: true,   
+    autoLoad: false,   
     //proxy: {type: 'mainajax', url: 'http://roda.apiary.io/admin/cmspagestree'},   
     proxy: {type: 'mainajax', url: 'cmspagestree'}
 });

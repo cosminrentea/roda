@@ -7,7 +7,7 @@ Ext.define('RODAdmin.view.cms.page.EditPageWindow', {
     alias : 'widget.pageedit',
 
     height : '90%',
-    width : '60%',
+    width : '80%',
 
     requires : [
 	    'RODAdmin.util.Util'
@@ -43,8 +43,17 @@ Ext.define('RODAdmin.view.cms.page.EditPageWindow', {
 			                            {
 			                                fieldLabel : 'Parent',
 			                                xtype : 'displayfield',
+			                                name : 'parent',
 			                                anchor : '-18',
-			                            }, {
+			                            },
+			                            {
+											xtype : 'hiddenfield',
+											fieldLabel : 'Parent',
+											name : 'parentid',
+//											value : '',
+//											itemId : 'groupid'
+										},
+			                            {
 			                                fieldLabel : 'Title',
 			                                xtype : 'textfield',
 			                                anchor : '-18',
@@ -81,11 +90,15 @@ Ext.define('RODAdmin.view.cms.page.EditPageWindow', {
 				                                            {
 				                                                xtype : 'combo',
 				                                                labelWidth : 60,
+				                                                name : 'layout',
 				                                                fieldLabel : 'Layout',
 				                                                anchor : '100%',
-				                                                store : [
-				                                                        'Item 1', 'Item 2'
-				                                                ]
+				                                                displayField: 'name',
+				                                            //    forceSelection : true,
+				                                                typeAhead: true,
+				                                                valueField: 'indice',
+				                                                tpl: '<tpl for="."><div class="x-boundlist-item">{directory}/<strong>{name}</strong><br><i>{description}</i><hr></div></tpl>',
+				                                                store : 'cms.layout.Layout'
 				                                            }
 			                                            ]
 			                                        }, {
@@ -95,6 +108,7 @@ Ext.define('RODAdmin.view.cms.page.EditPageWindow', {
 				                                            {
 				                                                xtype : 'combo',
 				                                                labelWidth : 60,
+				                                                name: 'lang',
 				                                                fieldLabel : 'Language',
 				                                                anchor : '100%',
 				                                                store : [
@@ -109,11 +123,14 @@ Ext.define('RODAdmin.view.cms.page.EditPageWindow', {
 				                                            {
 				                                                xtype : 'combo',
 				                                                labelWidth : 60,
+				                                                name: 'published',
+//				                                                queryMode: 'local',
 				                                                fieldLabel : 'Published',
+				                                                displayField: 'name',
+				                                                valueField: 'published',
 				                                                anchor : '100%',
-				                                                store : [
-				                                                        'Yes', 'No'
-				                                                ]
+				                                                store : 'local.PagePublished'
+//				                                                store : [["fname":"Yes","value":"true"},{"fname":"No","value":"false"}]
 				                                            }
 			                                            ]
 			                                        }
@@ -145,7 +162,7 @@ Ext.define('RODAdmin.view.cms.page.EditPageWindow', {
 				                                                        {
 				                                                            xtype : 'textfield',
 				                                                            labelWidth : 90,
-				                                                            fieldLabel : 'Externalredirect',
+				                                                            fieldLabel : 'External Redirect',
 				                                                            anchor : '100%',
 				                                                        }
 			                                                        ]
@@ -156,7 +173,7 @@ Ext.define('RODAdmin.view.cms.page.EditPageWindow', {
 				                                                        {
 				                                                            xtype : 'textfield',
 				                                                            labelWidth : 90,
-				                                                            fieldLabel : 'Internalredirect',
+				                                                            fieldLabel : 'Internal Redirect',
 				                                                            anchor : '100%',
 				                                                        }
 			                                                        ]
@@ -181,6 +198,7 @@ Ext.define('RODAdmin.view.cms.page.EditPageWindow', {
 				                                                            xtype : 'combo',
 				                                                            labelWidth : 50,
 				                                                            fieldLabel : 'Default',
+				                                                            name: 'default',
 				                                                            anchor : '100%',
 				                                                            store : [
 				                                                                    'Yes', 'No'
@@ -193,8 +211,9 @@ Ext.define('RODAdmin.view.cms.page.EditPageWindow', {
 			                                                        items : [
 				                                                        {
 				                                                            xtype : 'textfield',
+				                                                            name : 'cacheable',
 				                                                            labelWidth : 65,
-				                                                            fieldLabel : 'Cacheable',
+				                                                            fieldLabel : 'Cache',
 				                                                            anchor : '100%',
 				                                                        }
 			                                                        ]
@@ -205,7 +224,8 @@ Ext.define('RODAdmin.view.cms.page.EditPageWindow', {
 				                                                        {
 				                                                            xtype : 'combo',
 				                                                            labelWidth : 65,
-				                                                            fieldLabel : 'Searchable',
+				                                                            name : 'searchable',
+				                                                            fieldLabel : 'Search',
 				                                                            anchor : '100%',
 				                                                            store : [
 				                                                                    'Yes', 'No'
@@ -230,15 +250,34 @@ Ext.define('RODAdmin.view.cms.page.EditPageWindow', {
 			                                                        columnWidth : 0.2,
 			                                                        margin : '0 0 0 10px',
 			                                                        items : [
-				                                                        {
-				                                                            xtype : 'textfield',
-				                                                            labelWidth : 60,
-				                                                            fieldLabel : 'Pagetype',
-				                                                            anchor : '100%',
-				                                                            store : [
-				                                                                    'Content', 'Static', '404'
-				                                                            ]
-				                                                        }
+
+
+			                                                                 {
+			     				                                                xtype : 'combo',
+			     				                                                labelWidth : 60,
+			     				                                                name : 'pagetype',
+			     				                                                fieldLabel : 'Type',
+			     				                                                anchor : '100%',
+			     				                                                displayField: 'name',
+			     				                                            //    forceSelection : true,
+			     				                                                typeAhead: true,
+			     				                                                valueField: 'indice',
+			     				                                                tpl: '<tpl for="."><div class="x-boundlist-item"><strong>{name}</strong><br><i>{description}</i><hr></div></tpl>',
+			     				                                                store : 'cms.pages.PageType'
+			     				                                            }			                                                                 
+//			                                                                 
+//			                                                                 
+//			                                                                 {
+//				                                                            xtype : 'textfield',
+//				                                                            name : 'pagetype',
+//				                                                            labelWidth : 60,
+//				                                                            //queryMode: 'local',
+//				                                                            fieldLabel : 'Type',
+//				                                                            anchor : '100%',
+//				                                                            store : [
+//				                                                                    'Content', 'Static', '404'
+//				                                                            ]
+//				                                                        }
 			                                                        ]
 			                                                    }
 			                                            ]
@@ -249,16 +288,22 @@ Ext.define('RODAdmin.view.cms.page.EditPageWindow', {
 			                                xtype : 'textarea',
 			                                anchor : '-18',
 			                                name : 'synopsis'
-			                            }, {
-			                                fieldLabel : 'Content',
-			                                xtype : 'htmleditor',
-			                                anchor : '-18 -80',
-			                                name : 'content',
-			                                plugins: [
-					                                 Ext.create('Ext.ux.form.HtmlEditor.RButtons')
-						                           ],
-
-			                            }
+			                            },
+			                            {
+									        xtype: 'codemirror',
+        									fieldLabel: 'Content',
+			                                anchor : '-98 70%',
+        									itemId: 'content',
+        									name: 'content',
+        									mode: 'htmlmixed',
+        									listModes:'',
+        									showModes: false,
+        									pathModes: 'CodeMirror-2.02/mode',
+        									pathExtensions: 'CodeMirror-2.02/lib/util',
+        									flex:1,
+        									value: ''
+										}
+			                            
 			                    ]
 			                }
 		                ]

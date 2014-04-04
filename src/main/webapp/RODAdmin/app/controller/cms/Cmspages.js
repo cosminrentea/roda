@@ -1,7 +1,7 @@
 /**
  * 
  */
-Ext.define('RODAdmin.controller.cms.Pages', {
+Ext.define('RODAdmin.controller.cms.Cmspages', {
     extend: 'Ext.app.Controller',
 
     stores : [
@@ -18,7 +18,14 @@ Ext.define('RODAdmin.controller.cms.Pages', {
         {
             ref : 'pageproperties',
             selector : 'pageproperties'
+        },
+        {	
+        	ref : 'pagetree',
+        	selector: 'pagesitemsview treepanel#pgfolderview'
+        	
         }
+        
+        
 
         ],
 
@@ -52,16 +59,42 @@ Ext.define('RODAdmin.controller.cms.Pages', {
 	        click : this.onpagetoolbarAuditClick
         },
     });
+   	this.listen({
+          controller: {
+              '*': {
+                   controllerCmspagesInitView: this.initView
+              }
+          }
+  	 });
 	},
+
     /**
 	 * @method
 	 */
+    initView : function() {
+    	console.log('InitView, baby');	
+  //  	 this.getPagetree().store.load();
+    },
+	
+	/**
+	 * @method
+	 */
     onpagetoolbarEditClick : function(button, e, options) {
+    	console.log('see ma famly again onpagetoolbarEditClick');
 	    var fp = this.getPageproperties().data;
+	    console.log(fp);
 	    var win = Ext.create('RODAdmin.view.cms.page.EditPageWindow');
 	    win.setTitle('Edit Page "' + fp.data.title + '" (id: ' + fp.data.id + ')');
 	    win.show();
 	    win.down('form').getForm().loadRecord(fp);
+	    console.log(fp.data);
+	    win.down('form').down('combobox[name=layout]').store.load();
+	    win.down('form').down('combobox[name=layout]').setValue(fp.data.layoutid);
+	    win.down('form').down('combobox[name=published]').store.load();
+	    win.down('form').down('combobox[name=published]').setValue(fp.data.published);
+	    win.down('form').down('combobox[name=pagetype]').store.load();
+	    console.log('pagetypeid' + fp.data.pagetypeid);
+	    win.down('form').down('combobox[name=pagetype]').setValue(fp.data.pagetypeid);
     },
     /**
 	 * @method

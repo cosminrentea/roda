@@ -10,7 +10,7 @@ Ext.define('RODAdmin.store.cms.pages.PageItem', {
 
     model: 'RODAdmin.model.cms.pages.PageItem',
     
-    autoload: true,
+    autoLoad: false,
     //proxy: {type: 'main', url: 'http://roda.apiary.io/admin/cmspageinfo/'},
     proxy: {type: 'main', url: 'cmspageinfo/'},
 

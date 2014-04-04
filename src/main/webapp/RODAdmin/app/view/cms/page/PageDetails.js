@@ -45,6 +45,11 @@ Ext.define('RODAdmin.view.cms.page.PageDetails', {
 				height: '100%',
 			},
 			{
+				title: 'Page code',	
+				xtype: 'pagecode',
+				height: '100%',
+			},
+			{
 				title: 'Page preview',
 				
 			},

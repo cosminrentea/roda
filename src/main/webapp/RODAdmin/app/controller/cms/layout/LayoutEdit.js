@@ -93,7 +93,7 @@ Ext.define('RODAdmin.controller.cms.layout.LayoutEdit', {
 	    if (formPanel.getForm().isValid()) {
 		    formPanel.getForm().submit({
 		        clientValidation : true,
-		        url : 'http://localhost:8080/roda/admin/layoutgroupsave',
+		        url : '/roda/admin/layoutgroupsave',
 		        success : function(form, action) {
 			        var result = action.result;
 			        if (result.success) {
@@ -137,6 +137,7 @@ Ext.define('RODAdmin.controller.cms.layout.LayoutEdit', {
 
     onLayoutEditSaveClick : function(button, e, options) {
 	    var win = button.up('window');
+	    var bt = button;
 	    var formPanel = win.down('form');
 	    var currentNode = this.getFolderview().getSelectionModel().getLastSelected();
 	    var folderview = this.getFolderview()
@@ -144,8 +145,7 @@ Ext.define('RODAdmin.controller.cms.layout.LayoutEdit', {
 	    if (formPanel.getForm().isValid()) {
 		    formPanel.getForm().submit({
 		        clientValidation : true,
-		        url : 'http://localhost:8080/roda/admin/layoutsave',
-
+		        url : '/roda/admin/layoutsave',
 		        success : function(form, action) {
 			        var result = action.result;
 			        if (result.success) {
@@ -156,7 +156,7 @@ Ext.define('RODAdmin.controller.cms.layout.LayoutEdit', {
 					        me.getController('RODAdmin.controller.cms.layout.LayoutTree').onReloadTreeClick();
 				        }
 				        else if (active.itemId == 'lyiconview') {
-					        me.getController('RODAdmin.controller.cms.layout.LayoutList').onReloadTreeClick();
+					        me.getController('RODAdmin.controller.cms.layout.LayoutList').onReloadGridClick();
 				        }
 			        }
 			        else {
@@ -168,7 +168,7 @@ Ext.define('RODAdmin.controller.cms.layout.LayoutEdit', {
 			        console.log(action);
 			        switch (action.failureType) {
 			        case Ext.form.action.Action.CLIENT_INVALID:
-				        Ext.Msg.alert('Failure', 'Form fields may mot be submitted with invalid values');
+				        Ext.Msg.alert('Failure', 'Form fields may must be submitted with invalid values');
 				        break;
 
 			        case Ext.form.action.Action.CONNECT_FAILURE:
@@ -195,11 +195,13 @@ Ext.define('RODAdmin.controller.cms.layout.LayoutEdit', {
 	    if (formPanel.getForm().isValid()) {
 		    formPanel.getForm().submit({
 		        clientValidation : true,
-		        url : 'http://localhost:8080/roda/admin/layoutsave',
+		        url : '/roda/admin/layoutsave',
 		        success : function(form, action) {
 			        var result = action.result;
 			        if (result.success) {
-				        RODAdmin.util.Alert.msg('Success!', 'Layout saved.');
+				        console.log('closing');
+				        console.log(win);
+			        	RODAdmin.util.Alert.msg('Success!', 'Layout saved on the server.');
 				        // store.load();
 				        win.close();
 				        var active = me.getItemsview().layout.getActiveItem();
@@ -243,7 +245,8 @@ Ext.define('RODAdmin.controller.cms.layout.LayoutEdit', {
 	    var active = this.getItemsview().layout.getActiveItem();
 	    var pnode = active.getSelectionModel().getLastSelected();
 	    var rnode = this.getFolderselect().getRootNode();
-	    var cnode = rnode.findChild('id', pnode.data.folderid, true);
+	    var cnode = rnode.findChild('indice', pnode.data.groupid, true);
+	    
 	    if (cnode != null) {
 		    this.getFolderselect().getSelectionModel().select(cnode);
 	    }

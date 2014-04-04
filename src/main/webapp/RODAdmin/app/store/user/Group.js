@@ -9,6 +9,6 @@ Ext.define('RODAdmin.store.user.Group', {
     ],
 
     model: 'RODAdmin.model.user.Group',
-    autoLoad: true,  
-    proxy: {type: 'main', url: 'http://roda.apiary.io/admin/grouplist/'},     
+    autoLoad: false,  
+    proxy: {type: 'main', url: 'grouplist/'},     
 });

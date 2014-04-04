@@ -86,7 +86,7 @@ Ext.define('RODAdmin.controller.cms.snippet.SnippetEdit', {
 	    if (formPanel.getForm().isValid()) {
 		    formPanel.getForm().submit({
 		        clientValidation : true,
-		        url : 'http://localhost:8080/roda/admin/snippetsave',
+		        url : '/roda/admin/snippetsave',
 		        success : function(form, action) {
 			        var result = action.result;
 			        if (result.success) {
@@ -144,7 +144,7 @@ Ext.define('RODAdmin.controller.cms.snippet.SnippetEdit', {
 	    if (formPanel.getForm().isValid()) {
 		    formPanel.getForm().submit({
 		        clientValidation : true,
-		        url : 'http://localhost:8080/roda/admin/snippetgroupsave',
+		        url : '/roda/admin/snippetgroupsave',
 		        success : function(form, action) {
 			        var result = action.result;
 			        if (result.success) {
@@ -207,7 +207,7 @@ Ext.define('RODAdmin.controller.cms.snippet.SnippetEdit', {
 	    if (formPanel.getForm().isValid()) {
 		    formPanel.getForm().submit({
 		        clientValidation : true,
-		        url : 'http://localhost:8080/roda/admin/snippetsave',
+		        url : '/roda/admin/snippetsave',
 
 		        success : function(form, action) {
 			        var result = action.result;

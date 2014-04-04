@@ -1,4 +1,4 @@
-Ext.define('RODAdmin.controller.cms.Snippet', {
+Ext.define('RODAdmin.controller.cms.Cmssnippet', {
     extend : 'Ext.app.Controller',
 
     
@@ -27,7 +27,7 @@ Ext.define('RODAdmin.controller.cms.Snippet', {
                 selector : 'snippetedit treepanel#folderselect'
             }, {
                 ref : 'snippetproperties',
-                selector : 'snippetproperties'
+                selector : 'snippetproperties panel#sndata '
             }
 
     ],
@@ -80,8 +80,17 @@ Ext.define('RODAdmin.controller.cms.Snippet', {
 	        	click : this.onsntoolbarAuditClick
 	        },
 	    });
+    	this.listen({
+            controller: {
+                '*': {
+                    controllerCmssnippetsInitView: this.initView
+                }
+            }
+    	 });
     },
-
+    initView : function() {
+    	console.log('InitView, baby');	
+    },
     /**
 	 * @method
 	 */
@@ -108,6 +117,7 @@ Ext.define('RODAdmin.controller.cms.Snippet', {
 	    var win = Ext.create('RODAdmin.view.cms.snippet.EditSnippetWindow');
 	    win.setTitle('Edit File "' + fp.data.name + '" (id: ' + fp.data.id + ')');
 	    var wtree = win.down('treepanel');
+	    wtree.expandAll();
 	    win.show();
 	    win.down('form').getForm().loadRecord(fp);
     },
@@ -127,11 +137,11 @@ Ext.define('RODAdmin.controller.cms.Snippet', {
 			    console.log('we will delete');
 			    var url = '';
 			    if (fp.data.itemtype == 'layoutgroup') {
-				    url = 'http://localhost:8080/roda/admin/layoutgroupdrop';
+				    url = '/roda/admin/layoutgroupdrop';
 				    parms = {'groupid' : fp.data.id };
 			    }
 			    else {
-				    url = 'http://localhost:8080/roda/admin/layoutdrop';
+				    url = '/roda/admin/layoutdrop';
 				    parms = {'layoutid' : fp.data.id };
 			    }
 

@@ -70,18 +70,20 @@ Ext.define('RODAdmin.view.cms.snippet.EditSnippetWindow', {
 											name : 'name',
 											itemId: 'snippetname',
 											value : ''
-										},{
-									        xtype: 'htmleditor',
+										}, {
+									        xtype: 'codemirror',
         									fieldLabel: 'Content',
-											anchor: '100%, 70%',
+											anchor: '-98, 80%',
         									itemId: 'content',
         									name: 'content',
-			                                plugins: [
-						                                 Ext.create('Ext.ux.form.HtmlEditor.RButtons')
-							                           ], 
+        									mode: 'htmlmixed',
+        									listModes:'',
+        									showModes: false,
+        									pathModes: 'CodeMirror-2.02/mode',
+        									pathExtensions: 'CodeMirror-2.02/lib/util',
         									flex:1,
         									value: ''
-										},	{
+										},{
 											xtype : 'hiddenfield',
 											fieldLabel : 'Label',
 											name : 'group',
@@ -93,20 +95,6 @@ Ext.define('RODAdmin.view.cms.snippet.EditSnippetWindow', {
 											name : 'id',
 											value : '',
 											itemId : 'id'
-										},		
-										{
-										xtype: 'button',
-										text: 'Insert collateral',
-										listeners : {
-										click: function(button,e,eOpts) {
-//											button.up('fieldset').add({xtype:'filefield', name: 'file', label:'File'});
-//											var toremove = button.up('fieldset').query('displayfield')[1];
-//											button.up('fieldset').remove(toremove);
-//											button.hide();
-//											var values = this.form.getFieldValues();
-											RODAdmin.util.Alert.msg('We try here');
-											}
-										}
 										}]
 							}
 					]

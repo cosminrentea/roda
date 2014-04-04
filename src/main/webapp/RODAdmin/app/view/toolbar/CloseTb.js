@@ -1,7 +1,7 @@
 /**
  * 
  */
-Ext.define('RODAdmin.view.toolbar.CloselTb', {
+Ext.define('RODAdmin.view.toolbar.CloseTb', {
     extend: 'Ext.toolbar.Toolbar',
     alias: 'widget.closetb',
 

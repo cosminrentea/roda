@@ -8,11 +8,11 @@ Ext.define('RODAdmin.view.cms.layout.EditLayoutWindow', {
 
 	height : '90%',
 	width : '60%',
-
-
-
+//	singleton:true,
+	closeAction: 'destroy',
+	id:'layoutedit',
 	
-	requires : ['RODAdmin.util.Util'],
+	requires : ['RODAdmin.util.Util','Ext.ux.form.field.CodeMirror'],
 
 	layout : {
 		type : 'border'
@@ -78,16 +78,17 @@ Ext.define('RODAdmin.view.cms.layout.EditLayoutWindow', {
 											colspan: 2,
         									value: ''
 										},{
-									        xtype: 'htmleditor',
+									        xtype: 'codemirror',
         									fieldLabel: 'Content',
-											anchor: '100%, 70%',
+        									anchor : '-98 80%',
         									itemId: 'content',
         									name: 'content',
-											//colspan: 2,
+        									mode: 'htmlmixed',
+        									listModes:'',
+        									showModes: false,
+        									pathModes: 'CodeMirror-2.02/mode',
+        									pathExtensions: 'CodeMirror-2.02/lib/util',
         									flex:1,
-			                                plugins: [
-						                                 Ext.create('Ext.ux.form.HtmlEditor.RButtons')
-							                           ],        									
         									value: ''
 										},	{
 											xtype : 'hiddenfield',
@@ -101,20 +102,8 @@ Ext.define('RODAdmin.view.cms.layout.EditLayoutWindow', {
 											name : 'id',
 											value : '',
 											itemId : 'id'
-										},		
-										{
-										xtype: 'button',
-										text: 'Insert collateral',
-										listeners : {
-										click: function(button,e,eOpts) {
-//											button.up('fieldset').add({xtype:'filefield', name: 'file', label:'File'});
-//											var toremove = button.up('fieldset').query('displayfield')[1];
-//											button.up('fieldset').remove(toremove);
-//											button.hide();
-//											var values = this.form.getFieldValues();
-											RODAdmin.util.Alert.msg('We try here');
-											}
-										}
+		
+										
 										}]
 							}
 					]

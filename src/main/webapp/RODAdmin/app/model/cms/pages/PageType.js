@@ -1,7 +1,7 @@
 /**
  * 
  */
-Ext.define('RODAdmin.model.user.Group', {
+Ext.define('RODAdmin.model.cms.pages.PageType', {
     extend: 'Ext.data.Model',
     fields: [
     {    
@@ -13,11 +13,7 @@ Ext.define('RODAdmin.model.user.Group', {
     }, {
         name: 'description',
         type: 'string'
-    }, {
-        name: 'nrusers',
-        type: 'integer'
-    }
-    ]
+    }]
 });
 
 

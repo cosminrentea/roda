@@ -25,7 +25,7 @@ Ext.define('RODAdmin.model.cms.snippet.SnippetItem', {
 	],
 	hasMany : [ {
 		model : 'RODAdmin.model.cms.snippet.SnippetUsage',
-		name : 'snippetusage',
-		associationKey : 'snippetusage'
+		name : 'usage',
+		associationKey : 'snippetUsage'
 	}]
 });

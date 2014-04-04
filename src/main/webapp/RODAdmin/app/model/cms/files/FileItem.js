@@ -28,7 +28,7 @@ Ext.define('RODAdmin.model.cms.files.FileItem', {
 	hasMany : [ {
 		model : 'RODAdmin.model.cms.files.FileProperties',
 		name : 'fileproperties',
-		associationKey : 'fileproperties'
+		associationKey : 'filepropertiesset'
 	}, {
 		model : 'RODAdmin.model.cms.files.FileUsage',
 		name : 'fileusage',

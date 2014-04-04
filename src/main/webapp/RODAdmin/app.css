@@ -1,5 +1,12 @@
 /** loading screen */
 
+
+.CodeMirror{
+	background-color:#FFF;
+	height: 80% !important;
+}
+
+
 .pagesynopsis {
 	padding:10px;
 	border-style:solid;
@@ -14,6 +21,24 @@
 	border-width:1px;
 	border-color:#000000;	
 	margin:10px;
+}
+
+.auditfield {
+	padding:10px;
+	border-style:solid;
+	border-width:1px;
+	border-color:#000000;	
+	margin:10px;
+	background-color:#fee476;
+}
+
+.auditvalue {
+	padding:10px;
+	border-style:solid;
+	border-width:1px;
+	border-color:#000000;	
+	margin:10px;
+	background-color: #9fcea9;
 }
 
 
@@ -163,6 +188,15 @@
   width: 16px;
   height: 11px;	
 }
+
+.lang_ro {
+  background-image:url('flags/ro.png') !important;
+  background-repeat:no-repeat;
+  background-position:left;
+  width: 16px;
+  height: 11px;	
+}
+
 
 .es {
   background-image:url('flags/es.png') !important;

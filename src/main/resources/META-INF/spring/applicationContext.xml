@@ -102,6 +102,14 @@
 		id="entityManagerFactory">
 		<property name="persistenceUnitName" value="persistenceUnit" />
 		<property name="dataSource" ref="dataSource" />
+		<!-- 
+		<property name="jpaProperties">
+            <map>
+                <entry key="hibernate.cache.use_second_level_cache" value="true"/>
+                <entry key="hibernate.cache.use_query_cache" value="true"/>               
+            </map>
+        </property>
+        -->
 	</bean>
 
 	<task:annotation-driven executor="asyncExecutor"

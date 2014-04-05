@@ -30,7 +30,11 @@ public class ThumbnailsServiceImpl implements ThumbnailsService {
 	@Cacheable(value = "thumbnails", key = "{#root.methodName, #url, #alias, #height, #width}")
 	public byte[] generateThumbnailByHeightAndWidth(String url, String alias, Integer height, Integer width) {
 		byte[] thumbnailBytes = null;
+
 		try {
+			if (width <= 0 || height <= 0) {
+				throw new Exception("Invalid parameters for image width and height");
+			}
 			CmsFile imageFile = CmsFile.findCmsFile(alias);
 			String fileUrlString = url + imageFile.getUrl();
 
@@ -44,10 +48,34 @@ public class ThumbnailsServiceImpl implements ThumbnailsService {
 
 			BufferedImage bufferedImage = ImageIO.read(inputUrl);
 			if (bufferedImage != null) {
-				BufferedImage croppedImage = Scalr.crop(bufferedImage, bufferedImage.getWidth() > width ? width
-						: bufferedImage.getWidth(),
-						bufferedImage.getHeight() > height ? height : bufferedImage.getHeight(),
-						(BufferedImageOp[]) null);
+
+				float heightRatio = (float) bufferedImage.getHeight() / (float) height;
+				float widthRatio = (float) bufferedImage.getWidth() / (float) width;
+
+				boolean ratioH = false;
+
+				if (heightRatio > widthRatio) {
+					ratioH = true;
+				}
+
+				float fitHeight, fitWidth, x, y;
+				if (ratioH) {
+					fitHeight = height * widthRatio;
+					fitWidth = bufferedImage.getWidth();
+					x = 0;
+					y = (bufferedImage.getHeight() - fitHeight) / 2;
+				} else {
+					fitHeight = bufferedImage.getHeight();
+					fitWidth = width * heightRatio;
+					x = (bufferedImage.getWidth() - fitWidth) / 2;
+					y = 0;
+				}
+
+				BufferedImage resultImage = Scalr.crop(bufferedImage, (int) x, (int) y, (int) fitWidth,
+						(int) fitHeight, (BufferedImageOp[]) null);
+
+				resultImage = Scalr.resize(resultImage, width, height, (BufferedImageOp[]) null);
+
 				ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
 				String fileType = "";
@@ -58,7 +86,7 @@ public class ThumbnailsServiceImpl implements ThumbnailsService {
 				}
 				fileType = fileType.toLowerCase();
 
-				ImageIO.write(croppedImage, fileType, baos);
+				ImageIO.write(resultImage, fileType, baos);
 				baos.flush();
 				thumbnailBytes = baos.toByteArray();
 				baos.close();

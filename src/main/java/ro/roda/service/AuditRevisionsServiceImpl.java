@@ -2,6 +2,7 @@ package ro.roda.service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,7 +11,10 @@ import ro.roda.transformer.AuditRevisions;
 import ro.roda.transformer.AuditRevisionsByDate;
 import ro.roda.transformer.AuditRevisionsByObject;
 import ro.roda.transformer.AuditRevisionsByUsername;
+import ro.roda.transformer.AuditRevisionsDate;
 import ro.roda.transformer.AuditRevisionsInfo;
+import ro.roda.transformer.AuditRevisionsObject;
+import ro.roda.transformer.AuditRevisionsUser;
 import ro.roda.transformer.AuditSimplifiedRevisionsByObject;
 import ro.roda.transformer.AuditSimplifiedRevisionsByUsername;
 
@@ -76,6 +80,18 @@ public class AuditRevisionsServiceImpl implements AuditRevisionsService {
 
 	public AuditSimplifiedRevisionsByUsername findAuditSimplifiedRevisionsByUsername(String username) {
 		return AuditSimplifiedRevisionsByUsername.findAuditSimplifiedRevisionsByUsername(username);
+	}
+
+	public Set<AuditRevisionsObject> findAllAuditRevisionsObjects() {
+		return AuditRevisionsObject.findAllAuditRevisionsObjects();
+	}
+
+	public Set<AuditRevisionsUser> findAllAuditRevisionsUsers() {
+		return AuditRevisionsUser.findAllAuditRevisionsObjects();
+	}
+
+	public Set<AuditRevisionsDate> findAllAuditRevisionsDates() {
+		return AuditRevisionsDate.findAllAuditRevisionsDates();
 	}
 
 }

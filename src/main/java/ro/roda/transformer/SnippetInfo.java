@@ -87,7 +87,8 @@ public class SnippetInfo extends SnippetList {
 			Iterator<CmsPageContent> pageContentsIterator = page.getCmsPageContents().iterator();
 			while (pageContentsIterator.hasNext()) {
 				CmsPageContent pageContent = (CmsPageContent) pageContentsIterator.next();
-				if (StringUtils.containsIgnoreCase(pageContent.getContentText(), snippetContent)) {
+				if (StringUtils.containsIgnoreCase(pageContent.getContentText(), "[[Snippet: " + snippet.getName())
+						|| StringUtils.containsIgnoreCase(pageContent.getContentText(), snippetContent)) {
 					System.out.println("Adding usage");
 					this.snippetUsage.add(new JsonInfo(page.getId(), page.getName(), "page"));
 				}
@@ -98,7 +99,8 @@ public class SnippetInfo extends SnippetList {
 		Iterator<CmsLayout> layoutIterator = CmsLayout.findAllCmsLayouts().iterator();
 		while (layoutIterator.hasNext()) {
 			CmsLayout layout = (CmsLayout) layoutIterator.next();
-			if (StringUtils.containsIgnoreCase(layout.getLayoutContent(), snippetContent)) {
+			if (StringUtils.containsIgnoreCase(layout.getLayoutContent(), "[[Snippet: " + snippet.getName())
+					|| StringUtils.containsIgnoreCase(layout.getLayoutContent(), snippetContent)) {
 				this.snippetUsage.add(new JsonInfo(layout.getId(), layout.getName(), "layout"));
 			}
 		}
@@ -108,7 +110,9 @@ public class SnippetInfo extends SnippetList {
 		while (snippetIterator.hasNext()) {
 			CmsSnippet otherSnippet = (CmsSnippet) snippetIterator.next();
 			if (otherSnippet.getId() != snippet.getId()
-					&& StringUtils.containsIgnoreCase(otherSnippet.getSnippetContent(), snippetContent.toLowerCase())) {
+					&& (StringUtils.containsIgnoreCase(otherSnippet.getSnippetContent(),
+							"[[Snippet: " + snippet.getName()) || StringUtils.containsIgnoreCase(
+							otherSnippet.getSnippetContent(), snippetContent.toLowerCase()))) {
 				this.snippetUsage.add(new JsonInfo(otherSnippet.getId(), otherSnippet.getName(), "snippet"));
 			}
 		}

@@ -206,7 +206,9 @@ public class CmsFileStoreServiceImpl implements CmsFileStoreService {
 		if (multipartFile == null || cmsFolder == null) {
 			return;
 		}
-		Session session;
+		Session session = null;
+		log.trace("File name = " + multipartFile.getOriginalFilename());
+		log.trace("File mime-type = " + multipartFile.getContentType());
 		try {
 			SimpleCredentials adminCred = new SimpleCredentials("admin", new char[0]);
 			session = repository.login(adminCred);
@@ -239,7 +241,8 @@ public class CmsFileStoreServiceImpl implements CmsFileStoreService {
 							session.getValueFactory().createBinary(new AutoCloseInputStream(new FileInputStream(f))));
 					resNode.setProperty("jcr:mimeType", multipartFile.getContentType());
 					session.save();
-					updateSolrFile(f, multipartFile);
+					
+//					updateSolrFile(f, multipartFile);
 				}
 
 			} catch (IllegalStateException e) {

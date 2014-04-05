@@ -37,6 +37,7 @@ import javax.xml.validation.SchemaFactory;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.tika.Tika;
 import org.postgresql.copy.CopyManager;
 import org.postgresql.core.BaseConnection;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -267,6 +268,7 @@ public class ImporterServiceImpl implements ImporterService {
 
 	private void importCmsFilesRec(File dir, CmsFolder cmsFolder, String path) {
 		try {
+			Tika tika= new Tika();
 			File[] files = dir.listFiles();
 			for (File file : files) {
 				if (file.isDirectory()) {
@@ -278,7 +280,7 @@ public class ImporterServiceImpl implements ImporterService {
 					importCmsFilesRec(file, newFolder, path + "/" + file.getName());
 				} else {
 					// TODO set content-type to a real value
-					MockMultipartFile mockMultipartFile = new MockMultipartFile(file.getName(), file.getName(), "",
+					MockMultipartFile mockMultipartFile = new MockMultipartFile(file.getName(), file.getName(), tika.detect(file),
 							new FileInputStream(file));
 
 					// TODO what is the alias of a file? for the moment, it is

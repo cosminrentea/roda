@@ -13,6 +13,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PostPersist;
 import javax.persistence.PostUpdate;
@@ -301,6 +302,9 @@ public class Users implements Serializable {
 	@OneToMany(mappedBy = "userId")
 	private Set<UserSettingValue> userSettingValues;
 
+	@OneToOne(mappedBy = "user")
+	private UserProfile userProfile;
+
 	// @OneToMany(mappedBy = "userId")
 	// private Set<UserGroupUser> userGroupUsers;
 
@@ -374,6 +378,10 @@ public class Users implements Serializable {
 
 	public String getUsername() {
 		return username;
+	}
+
+	public UserProfile getUserProfile() {
+		return userProfile;
 	}
 
 	public Set<UserSettingValue> getUserSettingValues() {
@@ -470,6 +478,10 @@ public class Users implements Serializable {
 
 	public void setUsername(String username) {
 		this.username = username;
+	}
+
+	public void setUserProfile(UserProfile userProfile) {
+		this.userProfile = userProfile;
 	}
 
 	public void setUserSettingValues(Set<UserSettingValue> userSettingValues) {

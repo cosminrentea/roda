@@ -1,1 +1,305 @@
 \section{Administrare CMS}
+
+Administrarea modulului de management de continut trebuie sa permita
+efectuarea tuturor operatiilor de modificare, adaugare si intretinere
+a continutului site-ului care prezinta informatia stocata de RODA.
+Acest component este deosebit de important pentru ca aici se construieste
+informatia pe care o veede orice vizitator sau utilizator al arhivei
+care avveseaza pagina acesteia. Chiar daca o parte insemnata din informatia
+transmisa prin acest site este produsa si administrata cu ajutorul
+altor module (ex: databrowser), chiar si aceasta va trebui sa fie
+integrata intr-o pagina web iar aceasta integrare se face in modulul
+de administrare a continutului. 
+
+Administrarea continutului presupune operatii de vizualizare, modificare
+si stergere a urmatoarelor tipuri de informatie: layout, snippet,
+fisiere si pagini, dispuse in structura unei pagini ca in figura urmatoare:
+
+\includegraphics[width=7cm]{cms/roda-page}
+
+
+\subsection{Administrarea layout-urilor}
+
+Layout-ul reprezinta ansamblul de elemente html, css si javascript
+care inconjoara continutul fiecarei pagini. Astfel, layoutul este
+un fel de sablon care se aplica asupra continutului paginii in procesul
+de constructie a acesteia. Existenta layoutului permite separarea
+elementelor de design de elementele de continut, in mare parte a cazurilor,
+modificarea informatiei afisata in paginile RODA se va putea face
+fara a afecta elementele de design datorita existentei conceptului
+de layout. 
+
+Lista layouturilor si proprietatile acestora se pot vedea impreuna
+pe acelasi ecran pentru a putea identifica rapid ce este de modificat,
+daca este cazul. De asemenea, fiecare layout este insotit de o lista
+a paginilor care il folosesc, pentru a se vedea ce pagini vor fi afectate
+de eventualele modificari efectuate. 
+
+\includegraphics[width=15cm]{cms/backend/layout/cmslayout1}
+
+Pentru a putea ordona mai usor colectia de layouturi acestea pot fi
+grupate in grupuri. Grupurile sunt dispuse intr-o structura arborescenta,
+ca un fel de foldere. In panoul din stanga ecranului se vede structura
+ierarhica alcatuita din grupuri si layouturile prezente in fiecare
+din acestea. La selectia unui element din arborele principal, in partea
+dreapta a ecranului sunt incarcate elementele acestuia, nume, descriere,
+continut, paginile utilizate. In cazul in care este selectat un folder,
+panourile dedicate continutului si paginilor se retrag pentru ca nu
+sunt necesare. 
+
+Intrucat layouturile constau in principal din cod HTML, a fost implementat
+un component special pentru vizualizarea acestuia, component care
+coloreaza anumite parti ale textului. 
+
+Operatiile de modificare, stergere, sunt disponibile atat din bara
+din partea dreapta a ecranului cat si prin folosirea meniurilor contextuale
+disponibile la click pe butonul drept al mouseului, asa cum se poate
+vedea in figura urmatoare:
+
+\includegraphics[width=10cm]{cms/backend/layout/cmslayout2}
+
+Modificarea grupurilor presupune schimbarea denumirii precum si eventual
+a descrierii lor, ca si repozitionarea lor pe ierarhia acestora. Aceste
+operatii sunt disponibile prin intermediul unui dialog modal care
+se poate vedea in figura urmatoare:
+
+\includegraphics[width=10cm]{cms/backend/layout/cmslayout4}
+
+In partea stanga a dialogului se poate vedea ierarhia de grupuri.
+Grupul curent este direct subordonat radacinii. Daca se doreste mutarea
+acestuia in alt grup, se selecteaza noul parinte din aceasta coloana.
+In partea dreapta se pot modifica numele si descrierea grupului.
+
+Operatiile de modificare ale layouturilor sunt de asemenea disponibile
+prin intermediul unui dialog modal care arata ca in figura urmatoare:
+
+\includegraphics[width=15cm]{cms/backend/layout/cmslayout5}
+
+Coloana din partea stanga este de asemenea menita selectiei grupului
+in care se gaseste layoutul curent. Coloana din partea dreapta permite
+modificarea numelui, descrierii precum si a continutului layoutului.
+Intrucat in marea majoritate a cazurilor layoutul contine in principal
+cod HTML, a fost implementat un editor special care permite o vizualizare
+mult mai clara a elementelor de continut si adauga numerotarea liniilor. 
+
+Interfata de management al layouturilor permite multiple variante
+de aranjare pentru a putea acomoda toate tipurile de rezolutie ale
+monitoarelor, fara a forta afisarea unei cantitati mai reduse de continut.
+Astfel, diversele panouri ale acesteia pot fi minimizate, asa cum
+se poate vedea in figura urmatoare:
+
+\includegraphics[width=15cm]{cms/backend/layout/cmslayout7}
+
+Se poate observa ca lista grupurilor si a layouturilor a fost redusa
+obtinandu-se astfel un spatiu mult mai mare pentru a putea urmari
+continutul si lista paginilor care utilizeaza layoutul. In egala masura,
+daca operatorul doreste sa consulte lista paginilor utilizate pe o
+suprafata mai mare, proprietatile layoutului (nume, descriere si continut)
+pot fi de asemenea minimizate, lista de pagini care folosesc layoutul
+curent umpland intreaga zona, dupa cum se poate vedea in figura urmatoare:
+
+\includegraphics[width=15cm]{cms/backend/layout/cmslayout8}
+
+Structurile arborescente sunt foarte utile in organizarea informatiei
+dar in anumite situatii, cand devin prea stufoase, acestea pot fi
+dificil de utilizat. Pentru situatiile in care operatorul poate identifica
+layoutul care il intereseaza fara sa traverseze intreaga structura
+arborescenta, panoul arborescent poate fi inlocuit cu un panou tabelar,
+panou in care nu apar si grupurile, dupa cum se vede in figura urmatoare:
+
+\includegraphics[width=15cm]{cms/backend/layout/cmslayout9}
+
+Ca si in cazul panoului arborescent, la selectia unui layout din tabelul
+din stanga, acesta va fi incarcat in panoul din dreapta unde vor fi
+disponibile toate optiunile care puteau fi accesate si in cazul panoului
+arborescent. 
+
+Atat panoul arborescent cat si cel tabelar permit operatii de sortare
+si filtrare care permit navigarea mai usoara prin listele stufoase:
+
+\includegraphics[width=10cm]{cms/backend/layout/cmslayout10}
+
+
+\subsection{Administrarea snippet-urilor}
+
+Orice informatie prezentata pe web prin folosirea standardelor obisnuite
+presupune, de obicei, foarte multe fragmente repetabile. Fragmente
+care se gasesc nemodificate in layouturi sau in pagini si a caror
+includere directa ar determina cresterea continutului acestora si
+urmarirea mult mai dificila a informatiei. De aceea au fost implementat
+submodulul de administrare a snippet-urilor, care sunt astfel de fragmente
+reutilizabile pe care editorii le au la dispozitie oricand prin intermediul
+unul macro special dezvoltat pentru acestea, {[}{[}Snippet{]}{]}.
+Trebuie mentionat ca, spre deosebire de celelalte elemente de continut
+prezentate aici, un snippet poate include alte snippeturi.
+
+Interfata de administrare a snippeturilor este, ca si cea prezentata
+mai sus, dispusa intr-un singur ecran cu elemente interschimbabile,
+destul de asemenatoare cu cea de la layouturi, evident, cu particularitati
+specifice:
+
+\includegraphics[width=15cm]{cms/backend/snippet/snippet1}
+
+Ca si layoutile, snippet-urile sunt distribuite intr-o structura arborescenta
+de grupuri. Acestea sunt utile exclusiv pentru ordonare, mutarea unui
+snippet dintr-un grup intr-altul nu afecteaza elementele de continut
+superioare care il utilizeaza. Ca si in cazul layouturilor, se poate
+observa ca interfata contine un arbore de grupuri cu snippet-urile
+corespunzatoare in partea stanga, insotit de un panou de detalii in
+partea dreapta in care sunt prezentate proprietatiile elementului
+selectat in panoul din stanga. Si aici exista o sectiune speciala
+pentru utilizarea snippetului, care prezinta lista elementelor de
+continut in care a fost apelat. Acestea pot fie layouturi, pagini
+sau chiar alte snippet-uri.
+
+Modificarea grupurilor se face prin intermediul unui dialog modal
+care permite atat selectia parintelui in ierarhia arborescenta a grupurilor
+cat si modificarea numelui sau a descrierii acestuia:
+
+\includegraphics[width=12cm]{cms/backend/snippet/snippet2}
+
+Modificarea snippetului (sau adaugarea unui snippet nou) se face tot
+prin intermediul unui dialog modal care contine o structura similara
+de panouri, unul in partea stanga pentru alegerea grupului din care
+va face parte acesta si unul in partea dreapta unde se pot modifica
+numele sau continutul acestuia:
+
+\includegraphics[width=15cm]{cms/backend/snippet/snippet3}
+
+Si in cazul snippet-urilor este de asteptat ca in mare masura acestea
+sa contina elemente specifice limbajului internetului, HTML, CSS,
+javascript. De aceea, a fost implementat si aici acelasi editor care
+evidentiaza elementele standard prin culori diferite. 
+
+Panoul de administrare a snippet-urilor permite aceeasi flexibilitate
+ca si cel de la layout-uri in privinta aranjarii componentelor pentru
+diferite moduri de lucru sau rezolutii de monitoare. In figura urmatoare
+se vede cum elementele descriptive ale snippetului au fost minimizate
+ramanand intreg spatiu la dispozitia listei de elemente care utilizeaza
+snippet-ul curent:
+
+\includegraphics[width=15cm]{cms/backend/snippet/snippet5}
+
+Pentru cazurile in care operatorul prefera ca lista de snippeturi
+sa fie tabelara, ca si interfata pentru layouturi, si aceasta ofera
+posibilitatea de a schimba lista arborescenta, asa cum se vede in
+imaginea urmatoare:
+
+\includegraphics[width=15cm]{cms/backend/snippet/snippet6}
+
+Si aici, elementele selectate in panoul tabelar sunt disponibile in
+panoul de detalii. 
+
+Modificarile se pot apela si aici din butoanele disbonibile la baza
+panourilor cat si din meniuri contextuale disponibile la apelarea
+butonului din dreapta al mouseului. 
+
+\includegraphics[width=15cm]{cms/backend/snippet/snippet7}
+
+
+\subsection{Administrarea fisierelor }
+
+Toate site-urile contin, pe langa fragmente de text sau HTML si imagini
+sau alt fel de documente (pdf, doc, etc.). Ca si celelalte tipuri
+de continut care se vor folosi in interfata RODA, si acestea vor fi
+supuse diferitelor tipuri de modificari. Pentru aceasta, a fost implementata
+o sectiune speciala a modulului CMS care permite operatiile cu fisiere. 
+
+Arhiva RODA va contine mai multe tipuri de fisiere. O parte dintre
+acestea sunt folosite doar pentru CMS (imagini care apar pe site,
+documente utile vizitatorilor cum ar fi acorduri de acces si altele)
+iar o parte vor fi componente ale datelor sociologice pe care RODA
+le arhiveaza. Modulul prezentat in continuare NU are acces la cele
+din urma, serverul are doua zone complet independente de stocare a
+fisierelor iar acest modul poate accesa doar zona destinata operatiilor
+de modificare a informatiei WEB. 
+
+Panoul de administrare a fisierelor este prezentat intr-o singura
+pagina, cu elemente interschimbabile. 
+
+\includegraphics[width=15cm]{cms/backend/files/files1}
+
+Fisierele sunt grupate pe foldere, la fel ca si in sistemele de fisiere
+clasice. Aici scopul gruparii pe foldere este insa mai putin critic,
+prin stocarea lor duala, atat intr-un repository dedicat cat si ca
+referinte in baza de date, nu este nevoie de parcurgerea arborelui
+de directoare pentru identificarea unui fisier, asa cum cer sistemele
+de fisiere clasice. Astfel, aici fisierul va putea fi apelat direct,
+la fel ca in cazul snippet-ului. Pentru a face posibil acest lucru,
+fiecare fisier are un alias, un nume alternativ, diferit de numele
+sau propriu-zis. In cele mai multe situatii fisierele vor fi apelate
+din alte elemente de continut prin intermediul acestui alias care
+este unic. 
+
+La selectia unui fisier din panoul din stanga apar informatiile de
+detaliu ale acestuia. Acestea sunt impartite in trei zone. Zona de
+proprietati comune (proprietati pe care le va avea orice fisier) cum
+ar fi aliasul prezentat mai sus, pozitia sa in structura de foldere,
+dimensiune, etc. Zona de proprietati specifice contine elementele
+specifice tipului de fisier selectat precum si informatii tipice repositoriului
+JackRabbitt in care este stocat acesta. In cel de-al treilea panou,
+dedicat utilizarii fisierului se vad toate elementele de continut
+(pagini, layout-uri, snippet-uri, etc.) care au apelat acest fisier
+si l-au inclus in structura lor. 
+
+Ca si in cazurile precedente, exista situatii in care structura de
+foldere mai mult incurca decat ajuta. Datorita modului dual de stocare,
+se poate si aici inlocui panoul arborescent cu unul tabelar in care
+fisierele sunt prezentate impreuna:
+
+\includegraphics[width=15cm]{cms/backend/files/files2}
+
+Ecranul permite modificarea fisierelor si a folderelor, adaugarea
+acestora, stergerea lor precum si mutarea lor in alta parte a structurii
+arborescente. 
+
+\includegraphics[width=14cm]{cms/backend/files/files3}
+
+\includegraphics[width=8cm]{cms/backend/files/files4}
+
+
+\subsection{Administrarea paginilor}
+
+Paginile sunt cele mai importante elemente de continut. Paginile sunt
+de fapt cele care sunt apelate de catre utilizatori prin intermediul
+URL-urilor si cele care poarta informatia. Spre deosebire de elementele
+prezentate mai sus, unde ierarhia era doar un mod de ordonare fara
+impact direct asupra vizitatorilor, ierarhia paginilor este importanta
+pentru ca ea determina adresa finala a acestora. 
+
+Administrarea paginilor se face dintr-un singur ecran cu elemente
+care se pot schimba intre ele, ca si la elementele anterioare. 
+
+\includegraphics[width=15cm]{cms/backend/pages/cmspages1}
+
+In partea stanga a ecranului se vede arborele de pagini, impreuna
+cu o serie de informatii ajutatoare cum ar fi limba, url-ul acesteia
+sau layoutul pe care il utilizeaza. La selectarea uneia dintre paginile
+din structura, in partea din dreapta a ecranului se incarca proprietatile
+acesteia. Panoul de proprietati contine doua taburi, unul care prezinta
+codul paginii in limbaj HTML, celalalt care prezinta proprietatile
+paginii si imaginea acesteia asa cum se va vedea in site, fara insa
+sa se adauge si layoutul corespunzator:
+
+\includegraphics[width=15cm]{cms/backend/pages/cmspages2}
+
+Editarea proprietatilor paginii, sau adaugarea unei pagini noi se
+face prin intermediul unui dialog modal care permite reasezarea paginii
+in structura precum si modificarea proprietatilor acesteia:
+
+\includegraphics[width=15cm]{cms/backend/pages/cmspages3}
+
+Ca si pentru celelalte elemente de continut, si in cazul paginii a
+fost implementat acelasi editor special pentru evidentierea elementelor
+HTML si css. Cantitatea semnificativ mai mare de optiuni necesare
+pentru precizarea proprietatilor unei pagini a facut necesara introducerea
+unui panou suplimentar care contine optiuni pe care operatorii nu
+au nevoie sa le modifice frecvent:
+
+\includegraphics[width=15cm]{cms/backend/pages/cmspages6}
+
+Ca si in cazul elementelor de mai sus, exista o serie de componente
+ajutatoare care permit sortarea si filtrarea paginilor pentru gasirea
+mai usoara a acestora:
+
+\includegraphics[width=10cm]{cms/backend/pages/cmspages5}

@@ -29,12 +29,13 @@ Ext.define('RODAdmin.view.cms.page.PageDetails', {
 		           	                    itemId : 'deletepage',
 		           	                    text : 'Delete',
 		           	                    tooltip : 'Deletes the page'
-		           	                }, {
-		           	                    xtype : 'button',
-		           	                    itemId : 'getpageaudit',
-		           	                    text : 'Page History',
-		           	                    tooltip : 'Get Page History'
 		           	                }
+//		           	                , {
+//		           	                    xtype : 'button',
+//		           	                    itemId : 'getpageaudit',
+//		           	                    text : 'Page History',
+//		           	                    tooltip : 'Get Page History'
+//		           	                }
 		           	        ]
 		           	    }
 		               ],
@@ -49,14 +50,14 @@ Ext.define('RODAdmin.view.cms.page.PageDetails', {
 				xtype: 'pagecode',
 				height: '100%',
 			},
-			{
-				title: 'Page preview',
-				
-			},
-			{
-				title: 'Page Access',
-				
-			}
+//			{
+//				title: 'Page preview',
+//				
+//			},
+//			{
+//				title: 'Page Access',
+//				
+//			}
 
 			]
 	});

@@ -54,7 +54,7 @@ Ext.define('RODAdmin.view.cms.files.Files', {
 						xtype : 'panel',
 						itemid : 'fdetailscontainer',
 						id : 'fdetailscontainer',
-						title : 'dontinkso',
+//						title : 'dontinkso',
 						layout : {
 							type : 'fit'
 							,

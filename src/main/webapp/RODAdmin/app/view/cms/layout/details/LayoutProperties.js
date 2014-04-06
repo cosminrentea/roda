@@ -50,7 +50,7 @@ Ext.define('RODAdmin.view.cms.layout.details.LayoutProperties', {
                 id : 'lydata',
                 tpl : [
                         '<tpl if="data.filetype == \'folder\'">', '<h1> {data.name}', '</tpl>',
-                        '<tpl if="data.filetype != \'folder\'">', '<H1>{data.name}</H1>', '<H2>{data.directory}</H2>',
+                        '<tpl if="data.filetype != \'folder\'">', '<H1>{data.name}</H1>', '<H2>Folder: {data.directory}</H2>',
                         '<div style="padding:10px;">', '{data.description}', '</div>', '</tpl>'
                 ]
             }, {
@@ -67,7 +67,8 @@ Ext.define('RODAdmin.view.cms.layout.details.LayoutProperties', {
                 items : [
 	                {
 	                    xtype : 'codemirror',
-	                    id : 'lycontent',
+//	                    id : 'lycontent',
+	                    itemId : 'lycontent',	                    
 	                    mode : 'htmlmixed',
 	                    readOnly : true,
 	                    enableFixedGutter : true,

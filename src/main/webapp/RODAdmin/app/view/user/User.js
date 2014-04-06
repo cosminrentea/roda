@@ -51,17 +51,26 @@ Ext.define('RODAdmin.view.user.User', {
 						xtype : 'panel',
 						itemid : 'udetailscontainer',
 						id : 'udetailscontainer',
-						title : 'wtf',
+					//	title : 'wtf',
 						layout : {
-							type : 'fit'
-							,
-							// padding:'5',
-							// align:'center',
-							// align:'stretch'
+							type : 'card',
+							
 						},
 						items : [{
 									xtype : 'userdetails'
-								}]
+								},
+								{
+									xtype : 'groupdetails'
+//									xtype: 'panel',
+//									id: 'groupdetails',
+//									html: 'group',
+//								    tpl : ['<tpl if="data.filetype == \'folder\'">',
+//								           
+//								           ]
+									
+								}
+						
+						]
 					}]
 
 		});

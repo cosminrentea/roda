@@ -20,6 +20,7 @@ translations = {
 	menu13 : 'Profil',
 	menu_cms : 'Management de continut',
 	menu_cron : 'Operatii automate',
+	users : 'Utilizatori',	
 	cms_dashboard : 'Sumarul continutului',
 	cms_layouts : 'Aranjamente',
 	cms_snippets : 'Fragmente',

@@ -157,7 +157,7 @@ Ext.define('RODAdmin.view.cms.files.Itemsview', {
 								}, {
 									text : 'ID',
 									flex : 1,
-									dataIndex : 'id',
+									dataIndex : 'indice',
 									sortable : false
 								}, {
 									text : 'type',

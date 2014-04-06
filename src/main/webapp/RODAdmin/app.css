@@ -1,6 +1,54 @@
 /** loading screen */
 
 
+.useractive {
+	padding:10px;
+}
+
+.userinactive {
+	background-color:#f88;
+	padding:10px;
+}
+
+.useractive img {
+	float:left;
+}
+
+.userinactive img {
+	float:left;
+}
+
+.userimage {
+	float:left;
+    background-image: url('/roda/images/userdefault.png') !important;
+    background-repeat: no-repeat;
+	width:128px;
+	height: 128px;
+}
+
+.uprofile {
+	border-collapse:collapse;
+	margin-left:20px;
+	margin-top:5px;
+}
+
+.uprofile tr {
+	border-bottom-width:1px;
+	border-bottom-style:solid;
+	border-bottom-color:black;	
+}
+
+.uprofile td {
+	padding:10px;
+}
+
+.uprofilelabel {
+	font-weight:900;
+}
+
+.username {float:left;margin-left:40px; font-size:20px;width:100%}
+.useremail {float:left;margin-left:40px; font-size:20px;width:100%}
+
 .CodeMirror{
 	background-color:#FFF;
 	height: 80% !important;

@@ -24,6 +24,12 @@ Ext.define('RODAdmin.controller.cms.layout.LayoutEdit', {
             }, {
                 ref : 'folderselect',
                 selector : 'layoutedit treepanel#groupselect'
+            }, {
+                ref : 'gfolderselect',
+                selector : 'layoutgroupedit treepanel#groupselect'
+            }, {
+                ref : 'groupedit',
+                selector : 'layoutgroupedit'
             }
     ],
     /**
@@ -57,6 +63,35 @@ Ext.define('RODAdmin.controller.cms.layout.LayoutEdit', {
 				 *           executes {@link #onLayoutEditSaveClick}  
 				 */	        	
 		        click : this.onLayoutEditSaveClick
+	        },
+	        
+	        
+	        "layoutgroupedit treepanel#groupselect" : {
+	        	 /**
+				 * @listener groupselect-load triggered-by:
+				 *           {@link RODAdmin.view.cms.layout.EditLayoutWindow EditLayoutWindow} treepanel#groupselect    
+				 *           executes {@link #folderLoad}  
+				 */
+	            load : this.GfolderLoad, // this is the only event fired
+	            // after loading the store in a
+	            // tree view, apparently. This
+	            // is REALLY stupid because it
+	            // is probabily fired multiple
+	            // times.
+	        	 /**
+				 * @listener groupselect-cellclick triggered-by:
+				 *           {@link RODAdmin.view.cms.layout.EditLayoutWindow EditLayoutWindow} treepanel#groupselect    
+				 *           executes {@link #onGroupselectCellClick}  
+				 */
+	            cellclick : this.onGGroupselectCellClick
+	        },
+	        "layoutgroupedit button#save" : {
+	        	 /**
+				 * @listener button-save-click triggered-by:
+				 *           {@link RODAdmin.view.cms.layout.EditLayoutWindow EditLayoutWindow} button#save    
+				 *           executes {@link #onLayoutEditSaveClick}  
+				 */	        	
+		        click : this.onLayoutGroupEditSaveClick
 	        },
 	        "layoutgadd button#save" : {
 	        	 /**
@@ -237,10 +272,64 @@ Ext.define('RODAdmin.controller.cms.layout.LayoutEdit', {
 		    });
 	    }
     },
+    
     /**
 	 * @method
 	 */
+    
+    onLayoutGroupEditSaveClick : function(button, e, options) {
+	    console.log('group save...');
+	    var win = button.up('window');
+	    var formPanel = win.down('form');
+	    var me = this;
+	    if (formPanel.getForm().isValid()) {
+		    formPanel.getForm().submit({
+		        clientValidation : true,
+		        url : '/roda/admin/layoutgroupsave',
+		        success : function(form, action) {
+			        var result = action.result;
+			        if (result.success) {
+				        console.log('closing');
+				        console.log(win);
+			        	RODAdmin.util.Alert.msg('Success!', 'Layout saved on the server.');
+				        // store.load();
+				        win.close();
+				        var active = me.getItemsview().layout.getActiveItem();
+				        if (active.itemId == 'lyfolderview') {
+					        me.getController('RODAdmin.controller.cms.layout.LayoutTree').onReloadTreeClick();
+				        }
+				        else if (active.itemId == 'lyiconview') {
+					        me.getController('RODAdmin.controller.cms.layout.LayoutList').onReloadTreeClick();
+				        }
 
+			        }
+			        else {
+				        RODAdmin.util.Util.showErrorMsg(result.msg);
+			        }
+		        },
+		        failure : function(form, action) {
+			        console.log(action.failureType);
+			        console.log(action);
+			        switch (action.failureType) {
+			        case Ext.form.action.Action.CLIENT_INVALID:
+				        Ext.Msg.alert('Failure', 'Form fields may mot be submitted with invalid values');
+				        break;
+
+			        case Ext.form.action.Action.CONNECT_FAILURE:
+				        Ext.Msg.alert('Failure', 'doesn\'t work');
+				        break;
+
+			        case Ext.form.action.Action.SERVER.INVALID:
+				        Ext.Msg.alert('Failure', action.result.msg);
+				        break;
+			        }
+		        }
+		    });
+	    }
+    },
+    /**
+	 * @method
+	 */
     folderLoad : function(component, options) {
 	    var active = this.getItemsview().layout.getActiveItem();
 	    var pnode = active.getSelectionModel().getLastSelected();
@@ -251,6 +340,32 @@ Ext.define('RODAdmin.controller.cms.layout.LayoutEdit', {
 		    this.getFolderselect().getSelectionModel().select(cnode);
 	    }
     },
+    
+    /**
+	 * @method
+	 */
+
+    GfolderLoad : function(a, b, c, d, e, f) {
+    	
+    	console.log('gfolderload');
+//    	var groupid = this.getGroupedit().down('form').query('hiddenfield[name=group]').value;
+//
+//    	console.log(this.getGroupedit().down('form').query('hiddenfield[name=group]'));
+//	    console.log(groupid);
+	    var active = this.getItemsview().layout.getActiveItem();
+	    console.log(active);
+	    var pnode = active.getSelectionModel().getLastSelected();
+	    var rnode = this.getGfolderselect().getRootNode();
+	    console.log(pnode);
+	    var cnode = rnode.findChild('indice', pnode.data.groupid, true);
+	    console.log(cnode);	    
+	    if (cnode != null) {
+		    this.getGfolderselect().getSelectionModel().select(cnode);
+	    } else {
+	    	this.getGfolderselect().getSelectionModel().select(rnode);
+	    }
+    },
+    
     /**
 	 * @method
 	 */
@@ -260,4 +375,15 @@ Ext.define('RODAdmin.controller.cms.layout.LayoutEdit', {
 	    component.up('layoutedit').down('hiddenfield#groupid').setValue(record.data.indice);
     },
 
+    onGGroupselectCellClick : function(component, td, cellIndex, record, tr, rowIndex, e, eOpts) {
+    	
+	    component.up('layoutgroupedit').down('form').query('displayfield')[0].setValue(record.data.name + '('+record.data.indice+')');
+	    
+	    
+	    
+	    component.up('layoutgroupedit').down('hiddenfield#groupid').setValue(record.data.indice);
+    },
+    
+    
+    
 });

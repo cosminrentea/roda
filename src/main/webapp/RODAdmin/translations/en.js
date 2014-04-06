@@ -22,7 +22,7 @@ translations = {
 	menu_cron : 'Automated actions',
 	menu_audit : 'Audit',
 	audit_main : 'Audit Main',
-	users_main : 'Users Main',
+	users : 'Users',
 	admins_main : 'Admins Main',
 	menu_users : 'User Management',	
 	cms_dashboard : 'CMS Dashboard',

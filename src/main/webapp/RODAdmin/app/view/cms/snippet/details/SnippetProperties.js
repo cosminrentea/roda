@@ -70,7 +70,7 @@ Ext.define('RODAdmin.view.cms.snippet.details.SnippetProperties', {
 		                items : [
 			                {
 			                    xtype : 'codemirror',
-			                    id : 'sncontent',
+			                    itemId : 'sncontent',
 			                    mode : 'htmlmixed',
 			                    readOnly : true,
 			                    enableFixedGutter : true,

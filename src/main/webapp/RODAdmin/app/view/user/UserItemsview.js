@@ -4,7 +4,7 @@ Ext.define('RODAdmin.view.user.UserItemsview', {
 			extend : 'Ext.panel.Panel',
 			alias : 'widget.useritemsview',
 			itemId : 'useritemsview',
-			activeItem : 1,
+			activeItem : 0,
 			width : '100%',
 			layout : {
 				type : 'card',
@@ -13,8 +13,8 @@ Ext.define('RODAdmin.view.user.UserItemsview', {
 			},
 			items : [{
 						xtype : 'grid',
-						id : 'usergrid',
-						itemId : 'usergrid',
+						id : 'usersgrid',
+						itemId : 'usersgrid',
 						itemSelector : 'div.thumb-wrap',
 						store : 'user.User',
 						features : [Ext.create('Ext.ux.grid.FiltersFeature', {

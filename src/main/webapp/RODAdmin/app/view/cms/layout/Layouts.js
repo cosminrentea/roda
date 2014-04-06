@@ -53,7 +53,7 @@ Ext.define('RODAdmin.view.cms.layout.Layouts', {
 						/**
 						 * @xtypes layoutitemsview RODAdmin.view.cms.layout.LayoutItemsview
 						 */
-	                	xtype : 'layoutitemsview'
+	                	 xtype : 'layoutitemsview'
 	                }
                 ]
             }, {
@@ -63,7 +63,7 @@ Ext.define('RODAdmin.view.cms.layout.Layouts', {
                 xtype : 'panel',
                 itemid : 'lydetailscontainer',
                 id : 'lydetailscontainer',
-                title : 'dontinkso',
+//                title : 'dontinkso',
                 layout : {
 	                type : 'fit'
                 // padding:'5',

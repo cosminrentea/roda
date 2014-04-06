@@ -178,9 +178,9 @@ Ext.define('RODAdmin.controller.cms.layout.LayoutList', {
 			        var lyitem = lyitemstore.first();
 			        lycontent.setValue(lyitem.data.content);
 			        lyprop.update(lyitem);
-			        if (typeof lyitem.layoutusageStore === 'object') {
-				        lyusage.bindStore(lyitem.layoutusageStore);
-			        }
+			        if (typeof lyitem.usageStore === 'object') {
+						   lyusage.bindStore(lyitem.usage());
+					   }
 		        }
 	        }
 	    });

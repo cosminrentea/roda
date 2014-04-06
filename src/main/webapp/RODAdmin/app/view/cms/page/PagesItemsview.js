@@ -51,7 +51,7 @@ Ext.define('RODAdmin.view.cms.page.PagesItemsview', {
 						dockedItems : [{
 									xtype : 'toolbar',
 									itemid : 'pgiconviewtoolbar',
-									id : 'pgiconviewtoolbar',
+								//	id : 'pgiconviewtoolbar',
 									dock : 'bottom',
 									items : [{
 												xtype : 'tbfill'

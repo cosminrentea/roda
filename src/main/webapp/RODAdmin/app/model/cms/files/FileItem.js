@@ -4,7 +4,7 @@
 Ext.define('RODAdmin.model.cms.files.FileItem', {
 	extend : 'Ext.data.Model',
 	fields : [ {
-		name : 'id',
+		name : 'indice',
 		type : 'int'
 	}, {
 		name : 'filename',

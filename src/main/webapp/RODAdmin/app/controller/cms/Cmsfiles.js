@@ -116,17 +116,74 @@ Ext.define('RODAdmin.controller.cms.Cmsfiles', {
 	 */
 
     onfptoolbarEditClick : function(button, e, options) {
-	    var fp = this.getFileproperties().data;
+//	    var fp = this.getFileproperties().data;
+//
+//	    var win = Ext.create('RODAdmin.view.cms.files.EditFileWindow');
+//	    win.setTitle('Edit File "' + fp.data.name + '" (id: ' + fp.data.id + ')');
+//	    var wtree = win.down('treepanel');
+//	    win.show();
+//	    win.down('form').down('fieldset').query('displayfield')[0].setValue(fp.data.filename);
+//	    win.down('form').down('fieldset').query('displayfield')[1].setValue(fp.data.fileurl);
+//	    win.down('form').down('fieldset').query('textfield')[0].setValue(fp.data.alias);
+//	    win.down('form').down('fieldset').query('hiddenfield')[0].setValue(fp.data.id);
+//	    win.down('form').down('fieldset').query('hiddenfield')[1].setValue(fp.data.id);
 
-	    var win = Ext.create('RODAdmin.view.cms.files.EditFileWindow');
-	    win.setTitle('Edit File "' + fp.data.name + '" (id: ' + fp.data.id + ')');
-	    var wtree = win.down('treepanel');
-	    win.show();
-	    win.down('form').down('fieldset').query('displayfield')[0].setValue(fp.data.filename);
-	    win.down('form').down('fieldset').query('displayfield')[1].setValue(fp.data.fileurl);
-	    win.down('form').down('fieldset').query('textfield')[0].setValue(fp.data.alias);
-	    win.down('form').down('fieldset').query('hiddenfield')[0].setValue(fp.data.id);
-	    win.down('form').down('fieldset').query('hiddenfield')[1].setValue(fp.data.id);
+	    
+	    var fp = this.getFileproperties().data;
+	    var llp = this.getFileproperties();
+	    
+	   console.log('edit file smth');
+    	console.log(fp.data.indice);
+		   
+		   if (fp.data.filetype == 'folder') {	        
+    		   console.log('edit file group');
+        	   win = Ext.WindowMgr.get('folderedit');
+        	   console.log(win);
+        	   if (!win) {
+        		   win = Ext.create('RODAdmin.view.cms.files.EditFolderWindow');
+        	   }
+        	   win.setTitle('Edit Folder Group');
+        	   var wtree = win.down('treepanel');
+        	   var folderstore = Ext.create('RODAdmin.store.cms.files.Folder');
+        	   folderstore.load({
+        		   id : fp.data.indice, // set the id here
+        		   scope : this,
+        		   callback : function(records, operation, success) {
+        			   if (success) {
+        				   var folder = folderstore.first();
+        				   win.down('form').getForm().loadRecord(folder);
+        				   win.down('form').down('hiddenfield#folder').setValue(folder.data.indice);
+        			   }
+        		   }
+        	   });
+        	   win.show();
+    	   } else {	   
+		   console.log('edit file');	                        		   
+    	   console.log(fp.indice);
+		   win = Ext.WindowMgr.get('fileadd');
+    	   if (!win) {
+    		   win = Ext.create('RODAdmin.view.cms.files.EditFileWindow');
+    	   }
+    	   win.setTitle('Edit File');
+    	   var wtree = win.down('treepanel');
+    	   var fileitemstore = Ext.create('RODAdmin.store.cms.files.FileItem');
+    	   
+    	   
+    	   fileitemstore.load({
+    		   id : fp.data.indice, // set the id here
+    		   scope : this,
+    		   callback : function(records, operation, success) {
+    			   if (success) {
+    				   var fileitem = fileitemstore.first();
+    				   console.log(fileitem);
+    				   win.down('form').getForm().loadRecord(fileitem);
+    		//		   win.down('form').down('fieldset').down('hiddenfield#folderid').setValue(fileitem.data.folderid);
+    			   }
+    		   }
+    	   });
+    	   win.show();
+    	   }
+	    
     },
     /**
 	 * @method

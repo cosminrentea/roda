@@ -21,7 +21,17 @@ Ext.define('RODAdmin.view.cms.snippet.SnippetItemsview', {
 						features : [Ext.create('Ext.ux.grid.FiltersFeature', {
 									local : true
 								})],
-						columns : [{
+						columns : [
+						           	{	
+						           		text : 'id',
+						           		flex : 1,
+						           		dataIndex : 'indice',
+						           		sortable : true,
+						           		filter : {
+						           			type : 'integer'
+						           		}
+						           	},
+						           {
 									itemId : 'ft',
 									text : 'Layout',
 									flex : 1,
@@ -29,23 +39,9 @@ Ext.define('RODAdmin.view.cms.snippet.SnippetItemsview', {
 									dataIndex : 'name',
 									filterable : true
 								}, {
-									text : 'id',
-									flex : 1,
-									dataIndex : 'id',
-									sortable : true,
-									filter : {
-										type : 'integer'
-									}
-								}, {
 									text : 'Group',
 									flex : 1,
 									dataIndex : 'directory',
-									sortable : true,
-									filterable : true
-								}, {
-									text : 'Pages',
-									flex : 1,
-									dataIndex : 'pagesnumber',
 									sortable : true,
 									filterable : true
 								}],
@@ -136,7 +132,7 @@ Ext.define('RODAdmin.view.cms.snippet.SnippetItemsview', {
 						columns : [{
 									xtype : 'treecolumn',
 									itemId : 'ft',
-									text : 'Layouts',
+									text : 'Snippets',
 									flex : 2,
 									sortable : false,
 									dataIndex : 'name',

@@ -89,9 +89,9 @@ Ext.define('RODAdmin.controller.cms.snippet.SnippetList', {
 					var snitem = snitemstore.first();
 					snprop.update(snitem);
 					sncontent.setValue(snitem.data.content);
-					if (typeof snitem.snippetusageStore === 'object') {
-						snusage.bindStore(snitem.snippetusageStore);
-					}
+			        if (typeof snitem.usageStore === 'object') {
+			        	snusage.bindStore(snitem.usageStore);	
+			        }					
 				}
 			}
 		});

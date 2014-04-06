@@ -73,8 +73,8 @@ Ext.define('RODAdmin.view.audit.Audit', {
 							// align:'stretch'
 						},
 						items : [{
-//									xtype : 'auditdetails'
-								xtype : 'revisionproperties'
+									xtype : 'auditdetails'
+//								xtype : 'revisionproperties'
 								}]
 					}]
 

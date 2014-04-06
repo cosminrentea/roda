@@ -49,7 +49,7 @@ Ext.define('RODAdmin.view.cms.snippet.Snippets', {
 						xtype : 'panel',
 						itemid : 'sndetailscontainer',
 						id : 'sndetailscontainer',
-						title : 'dontinkso',
+//						title : 'dontinkso',
 						layout : {
 							type : 'fit'
 							// padding:'5',

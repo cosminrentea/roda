@@ -122,11 +122,52 @@ Ext.define('RODAdmin.controller.cms.Cmslayouts', {
 	    var fp = this.getLayoutproperties().data;
 	    var llp = this.getLayoutproperties();
 	    console.log(llp);
-	    var win = Ext.create('RODAdmin.view.cms.layout.EditLayoutWindow');
-	    win.setTitle('Edit File "' + fp.data.name + '" (id: ' + fp.data.id + ')');
-	    var wtree = win.down('treepanel');
-	    win.show();
-	    win.down('form').getForm().loadRecord(fp);
+	    console.log(fp);
+		   console.log('edit layout smth');
+    	   if (fp.data.itemtype == 'layoutgroup') {	        
+    		   console.log('edit layout group');
+        	   win = Ext.WindowMgr.get('layoutgroupedit');
+        	   console.log(win);
+        	   if (!win) {
+        		   win = Ext.create('RODAdmin.view.cms.layout.EditLayoutGroupWindow');
+        	   }
+        	   win.setTitle('Edit Layout Group');
+        	   var wtree = win.down('treepanel');
+        	   var layoutgroupstore = Ext.create('RODAdmin.store.cms.layout.LayoutGroup');
+        	   layoutgroupstore.load({
+        		   id : fp.data.id, // set the id here
+        		   scope : this,
+        		   callback : function(records, operation, success) {
+        			   if (success) {
+        				   var layoutgroup = layoutgroupstore.first();
+        				   win.down('form').getForm().loadRecord(layoutgroup);
+        				   win.down('form').down('hiddenfield#groupid').setValue(layoutgroup.data.groupid);
+        			   }
+        		   }
+        	   });
+        	   win.show();
+    	   } else {	   
+		   console.log('edit layout');	                        		   
+    	   win = Ext.WindowMgr.get('layoutedit');
+    	   if (!win) {
+    		   win = Ext.create('RODAdmin.view.cms.layout.EditLayoutWindow');
+    	   }
+    	   win.setTitle('Edit Layout');
+    	   var wtree = win.down('treepanel');
+    	   var layoutitemstore = Ext.create('RODAdmin.store.cms.layout.LayoutItem');
+    	   layoutitemstore.load({
+    		   id : fp.data.id, // set the id here
+    		   scope : this,
+    		   callback : function(records, operation, success) {
+    			   if (success) {
+    				   var layoutitem = layoutitemstore.first();
+    				   win.down('form').getForm().loadRecord(layoutitem);
+    				   win.down('form').down('hiddenfield#groupid').setValue(layoutitem.data.groupid);
+    			   }
+    		   }
+    	   });
+    	   win.show();
+    	   }
     },
     /**
 	 * @method

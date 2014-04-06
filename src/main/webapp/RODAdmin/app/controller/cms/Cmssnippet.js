@@ -113,13 +113,85 @@ Ext.define('RODAdmin.controller.cms.Cmssnippet', {
 	 * @method
 	 */    
     onsntoolbarEditClick : function(button, e, options) {
+//	    var fp = this.getSnippetproperties().data;
+//	    var llp = this.getSnippetproperties();
+//	    var win = Ext.create('RODAdmin.view.cms.snippet.EditSnippetWindow');
+//	    win.setTitle('Edit File "' + fp.data.name + '" (id: ' + fp.data.id + ')');
+//	    var wtree = win.down('treepanel');
+//	    wtree.expandAll();
+//	    win.show();
+//	    win.down('form').getForm().loadRecord(fp);
+//	    
+	    
+	    
 	    var fp = this.getSnippetproperties().data;
-	    var win = Ext.create('RODAdmin.view.cms.snippet.EditSnippetWindow');
-	    win.setTitle('Edit File "' + fp.data.name + '" (id: ' + fp.data.id + ')');
-	    var wtree = win.down('treepanel');
-	    wtree.expandAll();
-	    win.show();
-	    win.down('form').getForm().loadRecord(fp);
+	    var llp = this.getSnippetproperties();
+
+	    	console.log('edit layout smth');
+    	   if (fp.data.itemtype == 'snippetgroup') {	        
+    		   console.log('edit snippet group');
+        	   win = Ext.WindowMgr.get('snippetgroupedit');
+        	   console.log(win);
+        	   if (!win) {
+        		   win = Ext.create('RODAdmin.view.cms.snippet.EditSnippetGroupWindow');
+        	   }
+        	   win.setTitle('Edit Snippet Group');
+        	   var wtree = win.down('treepanel');
+        	   var snippetgroupstore = Ext.create('RODAdmin.store.cms.snippet.SnippetGroup');
+        	   snippetgroupstore.load({
+        		   id : fp.data.id, // set the id here
+        		   scope : this,
+        		   callback : function(records, operation, success) {
+        			   if (success) {
+        				   var snippetgroup = snippetgroupstore.first();
+        				   win.down('form').getForm().loadRecord(snippetgroup);
+        				   win.down('form').down('hiddenfield#groupid').setValue(snippetgroup.data.groupid);
+        			   }
+        		   }
+        	   });
+        	   win.show();
+    	   } else {	   
+		   console.log('edit snippet');	                        		   
+    	   win = Ext.WindowMgr.get('snippetedit');
+    	   if (!win) {
+    		   win = Ext.create('RODAdmin.view.cms.snippet.EditSnippetWindow');
+    	   }
+    	   win.setTitle('Edit Snippet');
+    	   var wtree = win.down('treepanel');
+    	   var snippetitemstore = Ext.create('RODAdmin.store.cms.snippet.SnippetItem');
+    	   snippetitemstore.load({
+    		   id : fp.data.id, // set the id here
+    		   scope : this,
+    		   callback : function(records, operation, success) {
+    			   if (success) {
+    				   var snippetitem = snippetitemstore.first();
+    				   win.down('form').getForm().loadRecord(snippetitem);
+    				   win.down('form').down('hiddenfield#groupid').setValue(snippetitem.data.groupid);
+    			   }
+    		   }
+    	   });
+    	   win.show();
+    	   }	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
     },
     /**
 	 * @method

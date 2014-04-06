@@ -220,8 +220,32 @@ Ext.define('RODAdmin.controller.cms.layout.LayoutTree', {
 	                            * @method
 	                            */
 	                           onEditLayoutClick : function(component, record, item, index, e) {
-	                        	   console.log('onEditLayoutClick');
+                        		   console.log('edit layout smth');
 	                        	   var currentNode = this.getFolderview().getSelectionModel().getLastSelected();
+	                        	   if (record.data.itemtype == 'layoutgroup') {	        
+	                        		   console.log('edit layout group');
+		                        	   win = Ext.WindowMgr.get('layoutgroupedit');
+		                        	   console.log(win);
+		                        	   if (!win) {
+		                        		   win = Ext.create('RODAdmin.view.cms.layout.EditLayoutGroupWindow');
+		                        	   }
+		                        	   win.setTitle('Edit Layout Group');
+//		                        	   var wtree = win.down('treepanel');
+//		                        	   var layoutitemstore = Ext.create('RODAdmin.store.cms.layout.LayoutItem');
+//		                        	   layoutitemstore.load({
+//		                        		   id : currentNode.data.indice, // set the id here
+//		                        		   scope : this,
+//		                        		   callback : function(records, operation, success) {
+//		                        			   if (success) {
+//		                        				   var layoutitem = layoutitemstore.first();
+//		                        				   win.down('form').getForm().loadRecord(layoutitem);
+//		                        				   win.down('form').down('hiddenfield#groupid').setValue(layoutitem.data.groupid);
+//		                        			   }
+//		                        		   }
+//		                        	   });
+		                        	   win.show();
+	                        	   } else {	   
+                        		   console.log('edit layout group');	                        		   
 	                        	   win = Ext.WindowMgr.get('layoutedit');
 	                        	   console.log(win);
 	                        	   if (!win) {
@@ -242,6 +266,7 @@ Ext.define('RODAdmin.controller.cms.layout.LayoutTree', {
 	                        		   }
 	                        	   });
 	                        	   win.show();
+	                        	   }
 	                           },
 	                           /**
 	                            * @method

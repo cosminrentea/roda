@@ -1,13 +1,9 @@
 /**
  * 
  */
-Ext.define('RODAdmin.model.audit.RevisionObject', {
+Ext.define('RODAdmin.model.audit.ObjectRevisions', {
 	extend : 'Ext.data.Model',
 	fields : [ 
-			{
-        		name: 'objname', 
-        		type: 'string'
-    		},
     		{	
     			name: 'nrrows',
     			type: 'integer'
@@ -23,8 +19,8 @@ Ext.define('RODAdmin.model.audit.RevisionObject', {
     		},
     		],
    	hasMany : [{
-				model : 'RODAdmin.model.audit.RevisionRow',
-				name : 'rows',
-				associationKey : 'rows'
+				model : 'RODAdmin.model.audit.RevisionsforObject',
+				name : 'revisions',
+				associationKey : 'revisions'
 			}]
 });

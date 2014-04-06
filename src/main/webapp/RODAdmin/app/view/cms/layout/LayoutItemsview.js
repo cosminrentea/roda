@@ -24,21 +24,23 @@ Ext.define('RODAdmin.view.cms.layout.LayoutItemsview', {
 						features : [Ext.create('Ext.ux.grid.FiltersFeature', {
 									local : true
 								})],
-						columns : [{
+						columns : [
+						           	{
+						           		text : 'id',
+						           		flex : 1,
+						           		dataIndex : 'indice',
+						           		sortable : true,
+						           		filter : {
+						           			type : 'integer'
+						           		}
+						           	},
+						           {
 									itemId : 'ft',
 									text : 'Layout',
 									flex : 1,
 									sortable : true,
 									dataIndex : 'name',
 									filterable : true
-								}, {
-									text : 'id',
-									flex : 1,
-									dataIndex : 'id',
-									sortable : true,
-									filter : {
-										type : 'integer'
-									}
 								}, {
 									text : 'Group',
 									flex : 1,

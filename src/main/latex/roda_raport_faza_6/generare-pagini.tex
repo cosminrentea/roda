@@ -1,1 +1,33 @@
 \subsection{Generarea paginilor}
+
+Controller-ul care primeste solicitarea pentru pagina apeleaza metoda \textbf{generatePage(url)} a serviciului RodaPageService. Aceasta metoda include efectuarea urmatoarelor actiuni:
+
+\begin{enumerate}
+\item{In functie de parametrul primit (url), cauta inregistrarea corespunzatoare din tabelul de pagini al bazei de date.}
+\item{Cu informatia despre pagina curenta, apeleaza metoda getLayout(cmsPage, url). Aceasta:}
+\begin{itemize}
+\item{regaseste continutul layout-ului in baza de date}
+\item{inlocuieste toate codurile din continutul layout-ului, cu exceptia lui [[Code: PageContent]]}
+\item{returneaza continutul layout-ului.}
+\end {itemize}
+\item{Pe baza paginii curente si a layout-ului obtinut anterior, este apelata metoda replacePageContent(layoutContent, cmsPage). Aceasta determina daca exista codul [[Code: PageContent]] in continutul layout-ului, iar in caz afirmativ realizeaza urmatoarele actiuni:}
+\begin{itemize}
+\item {regaseste continutul paginii in baza de date}
+\item{inlocuieste toate codurile din continutul paginii}
+\item {inlocuieste codul [[Code: PageContent]] cu continutul paginii, astfel prelucrat.}
+\end{itemize}
+\end{enumerate}
+
+\bigskip
+
+Prelucrarea continutului layout-ului si a continutului paginii prevede inlocuirea codurilor care apar. Aceste inlocuiri sunt realizate de catre urmatoarele metode private ale serviciului RodaPageService:
+\begin{itemize}
+\item{replacePageTitle(content, pageTitle) - inlocuieste aparitia codului [[Code: PageTitle]] in continutul layout-ului sau al paginii cu titlul paginii respective;}
+\item{replacePageLinkByUrl(content, cmsPage) - inlocuieste aparitia codului [[Code: PageLinkbyUrl('url')]] cu URL-ul (relativ la baza URL-ului aplicatiei) corespunzator paginii celei mai apropiate de pagina curenta, avand fragmentul URL specificat in codul prelucrat;} 
+\item{replacePageTreeByUrl(content, cmsPage) - inlocuieste aparitia codului [[Code: PageTreeByUrl('url', 'depth')]] cu meniul dinamic generat pornind de la pagina avand fragmentul URL specificat in cod; adancimea acestui meniu este specificata in cadrul celui de-al doilea argument al codului;
+\item{replacePageBreadcrumbs(content, cmsPage) - inlocuieste aparitia codului [[Code: PageBreadcrumbs('separator')]]} cu breadcrumb-ul (succesiunea ierarhica de pagini) pana la pagina curenta; separatorul acestor pagini este specificat ca argument al codului;
+\item{replacePageUrlLink(content, cmsPage)}  - inlocuieste aparitia codului [[PageURLLink: url]] cu un element <a href="pageUrl">pageName</a>, unde pageUrl este URL-ul relativ la baza URL-ului aplicatiei) corespunzator paginii celei mai apropiate de pagina curenta, avand fragmentul URL specificat in codul prelucrat, iar pageName este numele acestei pagini};
+\item{replaceFileUrl(content, url) - inlocuieste codul [[FileURL:url]] cu URL-ul fisierului specificat, obtinut relativ la pagina curenta;}
+\item{replaceImgLink(content, url) - inlocuieste codul [[ImgLink: url]] cu un element <img src="imgUrl"/>, unde imgUrl este URL-ul fisierului imagine specificat, obtinut relativ la pagina curenta;}
+\item{replaceSnippets(content) -inlocuieste recursiv codul [[Snippet:snippetName]] cu continutul snippet-ului (fragmentului) obtinut din baza de date in functie de numele specificat.}
+\end{itemize}

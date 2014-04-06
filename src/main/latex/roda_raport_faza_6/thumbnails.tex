@@ -1,8 +1,8 @@
 \subsection{Thumbnails}
 
-Un element important al unei interfete de administrare evoluate il constituie imaginile de tip thumbnail, care ofera mai mult control si posibilitatea unei gestiuni mai usoare a unei parti a interfetei grafice. Astfel, imaginile care vor fi inserate pot fi previzualizate chiar in interfata.
+Un element important al unei interfete de administrare evoluate il constituie imaginile de tip thumbnail, care ofera mai mult control si posibilitatea unei gestiuni mai usoare a unor elemente ale interfetei grafice. Astfel, imaginile care vor fi inserate pot fi previzualizate chiar in interfata.
 
-Aceasta functionalitate a fost implementantata printr-un controller special pentru thumbnail-uri. Acesta raspunde cererilor corespunzatoare urmatoarelor URL-uri:
+Aceasta functionalitate a fost implementata printr-un controller special pentru thumbnail-uri. Acesta raspunde solicitarilor corespunzatoare urmatoarelor URL-uri:
 
 \begin{itemize}
 \item{/admin/thumbnail/alias/[alias]/h/[h] - returneaza o copie a imaginii corespunzatoare aliasului [alias] taiata astfel incat sa fie un patrat cu dimensiunea [h]}
@@ -37,17 +37,21 @@ Thumbnail-urile corespunzatoare primelor doua URL-uri enumerate anterior presupu
 \item{o operate de tip scale asupra imaginii obtinute anterior, astfel incat aceasta sa fie adusa la dimensiunea ceruta.}
 \end{itemize}  
 
-Metodele principale ale servicului ThumbnailsService, care sunt utilizate si de catre celelalte metode oferite de acest serviciu, sunt urmatoarele:
+Thumbnail-urile corespunzatoare ultimelor doua URL-uri enumerate anterior presupun doar o operatie de tip scale asupra imaginii initiale.
+
+\bigskip
+
+Metodele principale ale servicului ThumbnailsService, care sunt invocate si de catre celelalte metode oferite de acest serviciu, sunt urmatoarele:
 
 \begin{itemize}
-\item{generateThumbnailByHeightAndWidth(url, alias, height, width) - primeste ca parametri URL-ul raportat la care URL-ul imaginii initiale este relativ, alias-ul fisierului imagine (in functie de care acesta va fi gasit in baza de date, precum si dimensiunile noii imagini. Metoda determina dimensiunea imaginii care se incadreaza optim in imaginea initiala, astfel incat sa fie proportionala cu dimensiunile cerute, apoi utilizeaza una dintre metodele de redimensionare (resize) ale librariei imgscalr pentru a obtine thumbnail-ul dorit.)}
-\item{generateThumbnailProportional(url, alias, height, width) - parametrii sunt similari celor ai metodei anterioare. Metodele publice care o vor apela au unul dintre parametri null, urmand ca imaginea obtinuta sa respecte dimensiunea nenula, cealalta dimensiune fiind determinata proportional cu aceasta, relativ la dimensiunile imaginii originale.}
+\item{generateThumbnailByHeightAndWidth(url, alias, height, width) - primeste ca parametri: URL-ul fata de care este relativ URL-ul imaginii initiale, alias-ul fisierului imagine (in functie de acesta, fisierul va fi gasit in baza de date), precum si dimensiunile noii imagini. Metoda determina dimensiunea imaginii care se incadreaza optim in imaginea initiala, astfel incat sa fie proportionala cu dimensiunile cerute, apoi utilizeaza una dintre metodele de redimensionare (resize) ale librariei imgscalr pentru a obtine thumbnail-ul dorit.)}
+\item{generateThumbnailProportional(url, alias, height, width) - parametrii sunt similari celor ai metodei anterioare. Aceasta metoda va fi apelata cu valoarea null pentru unul dintre parametrii corespunzatori dimensiunii, urmand ca imaginea obtinuta sa respecte dimensiunea nenula, cealalta dimensiune fiind determinata proportional cu aceasta, relativ la dimensiunile imaginii originale.}
 \end{itemize}
 
 \bigskip
 
 Imgscalr este o librarie pentru scalare de imagini, care se bazeaza atat pe tehnicile eficiente oferite de pachetul Java2D (referitoare la accelerarea hardware de pe toate platformele), cat si pe implementarea unui algoritm optimizat de scalare incrementala. 
-Aceasta librarie a fost aleasa datorita simplitatii si eficientei realizarii operatiilor necesare obtinerii thumbnail-urilor pentru interfata de administrare, avand in vedere ca aceasta permite redimensionarea rapida a imaginilor.
+Alegerea acestei librarii spre a fi utilizata in proiect a avut drept motivatie simplitatea si eficienta realizarii operatiilor necesare obtinerii thumbnail-urilor pentru interfata de administrare. Un aspect important al acestei optiuni a avut in vedere faptul ca libraria imgscalr permite redimensionarea rapida a imaginilor.
 Libraria imgscalr constituie, de fapt, o multime  de operatii grafice optimizate. Utilizarea acesteia in cadrul metodelor din serviciul ThumbnailsService a presupus apeluri statice precum cel din urmatorul exemplu:
 
 \begin{lstlisting}[breaklines=true]

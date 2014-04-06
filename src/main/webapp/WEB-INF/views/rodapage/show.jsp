@@ -8,3 +8,8 @@
 
 ${pageBody}
 
+<script>
+	document.title = "${pageTitle}";	
+</script>
+
+

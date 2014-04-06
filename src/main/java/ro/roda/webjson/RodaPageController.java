@@ -33,15 +33,14 @@ public class RodaPageController {
 
 		// "url" now is the full URL with a trailing slash "/..."
 
-		String pageBody = rodaPageService.generatePage(url);
-		// TODO
-		String pageHead = "Test head";
+		String pageBody = rodaPageService.generatePage(url)[0];
+		String pageTitle = rodaPageService.generatePage(url)[1];
 
 		// uiModel.addAttribute("rodapage", page);
 		// uiModel.addAttribute("pageUrl", url);
 
 		uiModel.addAttribute("pageBody", pageBody);
-		uiModel.addAttribute("pageHead", pageHead);
+		uiModel.addAttribute("pageTitle", pageTitle);
 
 		return "rodapage/show";
 	}

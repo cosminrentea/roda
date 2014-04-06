@@ -16,7 +16,7 @@ public class RodaPagePlugin extends Plugin {
 	public static class RodaPage implements Page {
 
 		public String getPageContent(String url) {
-			return rodaPageService.generatePage(url);
+			return rodaPageService.generatePage(url)[1];
 		}
 	}
 }

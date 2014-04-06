@@ -30,7 +30,8 @@ public class RodaPageServiceImpl implements RodaPageService {
 	private final Log log = LogFactory.getLog(this.getClass());
 
 	@Cacheable(value = "pages")
-	public String generatePage(String url) {
+	public String[] generatePage(String url) {
+		String[] pageContentAndTitle = new String[2];
 		StringBuilder sb = new StringBuilder();
 
 		// if (checkFullRelativeUrl(url)) {
@@ -41,6 +42,7 @@ public class RodaPageServiceImpl implements RodaPageService {
 		// CmsPage page = CmsPage.findCmsPage(dbUrl);
 
 		CmsPage page = CmsPage.findCmsPageByFullUrl(url);
+		String pageTitle;
 
 		if (page != null) {
 			String pageContent = replacePageContent(getLayout(page, url), page);
@@ -49,10 +51,15 @@ public class RodaPageServiceImpl implements RodaPageService {
 			// pageContent = StringUtils.replace(pageContent, "\"", "\\\"");
 
 			sb.append(pageContent);
+			pageTitle = page.getName();
 		} else {
 			sb.append("<html><div> The page you requested does not exist. (url: " + url + ")</div></html>");
+			pageTitle = "Error";
 		}
-		return sb.toString();
+		pageContentAndTitle[0] = sb.toString();
+		pageContentAndTitle[1] = pageTitle;
+
+		return pageContentAndTitle;
 	}
 
 	private String getLayout(CmsPage cmsPage, String url) {

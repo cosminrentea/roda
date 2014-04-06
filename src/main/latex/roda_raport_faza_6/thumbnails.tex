@@ -51,9 +51,8 @@ Aceasta librarie a fost aleasa datorita simplitatii si eficientei realizarii ope
 Libraria imgscalr constituie, de fapt, o multime  de operatii grafice optimizate. Utilizarea acesteia in cadrul metodelor din serviciul ThumbnailsService a presupus apeluri statice precum cel din urmatorul exemplu:
 
 \begin{lstlisting}[breaklines=true]
-BufferedImage resultImage = Scalr.crop(bufferedImage, (int) x, (int) y, (int) fitWidth,
-						(int) fitHeight, (BufferedImageOp[]) null);
-\begin{lstlisting}[breaklines=true]
+BufferedImage resultImage = Scalr.crop(bufferedImage, (int) x, (int) y, (int) fitWidth, (int) fitHeight, (BufferedImageOp[]) null);
+\end{lstlisting}	
 
 Imaginea (obtinuta relativ la URL-ul curent si pe baza aliasului fisierului respectiv) este trimisa librariei, pentru a fi taiata relativ la punctul de coodonate (x, y), astfel incat sa se obtina o imagine de dimensiuni fitWidth, fitHeight.
 
@@ -61,7 +60,7 @@ Imaginea obtinuta anterior poate fi apoi redimensionata cu ajutorul librariei im
 
 \begin{lstlisting}[breaklines=true]
 resultImage = Scalr.resize(resultImage, width, height, (BufferedImageOp[]) null);  
-\begin{lstlisting}[breaklines=true]
+\end{lstlisting}	
 
 
 

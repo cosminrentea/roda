@@ -1,1 +1,68 @@
 \subsection{Thumbnails}
+
+Un element important al unei interfete de administrare evoluate il constituie imaginile de tip thumbnail, care ofera mai mult control si posibilitatea unei gestiuni mai usoare a unei parti a interfetei grafice. Astfel, imaginile care vor fi inserate pot fi previzualizate chiar in interfata.
+
+Aceasta functionalitate a fost implementantata printr-un controller special pentru thumbnail-uri. Acesta raspunde cererilor corespunzatoare urmatoarelor URL-uri:
+
+\begin{itemize}
+\item{/admin/thumbnail/alias/[alias]/h/[h] - returneaza o copie a imaginii corespunzatoare aliasului [alias] taiata astfel incat sa fie un patrat cu dimensiunea [h]}
+
+\item{/admin/thumbnail/alias/[alias]/h/[h]/w/[w] - returneaza o copie a imaginii corespunzatoare aliasului [alias] taiata astfel incat sa fie un dreptunghi cu inaltimea [h] si latimea [w]}
+
+\item{/admin/thumbnail/alias/[alias]/x/[x] - returneaza o copie a imaginii corespunzatoare aliasului [alias] redimensionata astfel incat latimea sa fie de [x] pixeli si inaltimea dependenta de imaginea originala}
+
+\item{thumbnail/alias/[alias]/y/[y] - returneaza o copie a imaginii corespunzatoare aliasului [alias] redimensionata astfel incat inaltimea sa fie de [y] pixeli si latimea dependenta de imaginea originala.}
+
+\end{itemize}
+
+Cele 4 tipuri de thumbnail-uri sunt obtinute de catre controller apeland metodele serviciului ThumbnailsService. Acest servciu utilizeaza libraria grafica imgscalr:
+
+\url{http://www.thebuzzmedia.com/software/imgscalr-java-image-scaling-library/}, 
+
+specificata ca dependenta Maven a aplicatiei:
+
+\begin{lstlisting}[breaklines=true]
+<dependency>
+	<groupId>org.imgscalr</groupId>
+	<artifactId>imgscalr-lib</artifactId>
+    	<version>4.2</version> 
+</dependency> 
+\end{lstlisting}	
+
+\bigskip
+
+Thumbnail-urile corespunzatoare primelor doua URL-uri enumerate anterior presupun doua operatii asupra imaginii initiale: 
+\begin{itemize}
+\item {o operatie de tip crop, in urma careia se obtine cel mai mare dreptunghi, care pastreaza fie latimea, fie inaltimea imaginii initiale, cu proprietatea ca este proportional cu dimensiunile imaginii cerute}
+\item{o operate de tip scale asupra imaginii obtinute anterior, astfel incat aceasta sa fie adusa la dimensiunea ceruta.}
+\end{itemize}  
+
+Metodele principale ale servicului ThumbnailsService, care sunt utilizate si de catre celelalte metode oferite de acest serviciu, sunt urmatoarele:
+
+\begin{itemize}
+\item{generateThumbnailByHeightAndWidth(url, alias, height, width) - primeste ca parametri URL-ul raportat la care URL-ul imaginii initiale este relativ, alias-ul fisierului imagine (in functie de care acesta va fi gasit in baza de date, precum si dimensiunile noii imagini. Metoda determina dimensiunea imaginii care se incadreaza optim in imaginea initiala, astfel incat sa fie proportionala cu dimensiunile cerute, apoi utilizeaza una dintre metodele de redimensionare (resize) ale librariei imgscalr pentru a obtine thumbnail-ul dorit.)}
+\item{generateThumbnailProportional(url, alias, height, width) - parametrii sunt similari celor ai metodei anterioare. Metodele publice care o vor apela au unul dintre parametri null, urmand ca imaginea obtinuta sa respecte dimensiunea nenula, cealalta dimensiune fiind determinata proportional cu aceasta, relativ la dimensiunile imaginii originale.}
+\end{itemize}
+
+\bigskip
+
+Imgscalr este o librarie pentru scalare de imagini, care se bazeaza atat pe tehnicile eficiente oferite de pachetul Java2D (referitoare la accelerarea hardware de pe toate platformele), cat si pe implementarea unui algoritm optimizat de scalare incrementala. 
+Aceasta librarie a fost aleasa datorita simplitatii si eficientei realizarii operatiilor necesare obtinerii thumbnail-urilor pentru interfata de administrare, avand in vedere ca aceasta permite redimensionarea rapida a imaginilor.
+Libraria imgscalr constituie, de fapt, o multime  de operatii grafice optimizate. Utilizarea acesteia in cadrul metodelor din serviciul ThumbnailsService a presupus apeluri statice precum cel din urmatorul exemplu:
+
+\begin{lstlisting}[breaklines=true]
+BufferedImage resultImage = Scalr.crop(bufferedImage, (int) x, (int) y, (int) fitWidth,
+						(int) fitHeight, (BufferedImageOp[]) null);
+\begin{lstlisting}[breaklines=true]
+
+Imaginea (obtinuta relativ la URL-ul curent si pe baza aliasului fisierului respectiv) este trimisa librariei, pentru a fi taiata relativ la punctul de coodonate (x, y), astfel incat sa se obtina o imagine de dimensiuni fitWidth, fitHeight.
+
+Imaginea obtinuta anterior poate fi apoi redimensionata cu ajutorul librariei imgscalr, astfel:
+
+\begin{lstlisting}[breaklines=true]
+resultImage = Scalr.resize(resultImage, width, height, (BufferedImageOp[]) null);  
+\begin{lstlisting}[breaklines=true]
+
+
+
+

@@ -1,6 +1,11 @@
 \subsection{Generarea paginilor}
 
-Controller-ul care primeste solicitarea pentru pagina apeleaza metoda \textbf{generatePage(url)} a serviciului RodaPageService. Aceasta metoda include efectuarea urmatoarelor actiuni:
+Controller-ul care primeste solicitarea pentru pagina, prin intermediul unei cereri prefixate de "/page", apeleaza metoda \textbf{generatePage(url)} a serviciului RodaPageService. Portiunea de URL care urmeaza lui "/page" va specifica, de fapt, o succesiune de fragmente de URL corespunzatoare unei ierarhii de pagini din baza de date. Pentru o pagina din baza de date, campul url contine, de fapt, doar fragmentul final al URL-ului paginii. Identificarea URL-ului integral (unic) al paginii se realizeaza prin parcurgerea bottom-up a ierarhiei, pana la pagina radacina de pe drumul respectiv. De regula, pagina radacina va fi "ro" sau "en", corespunzator limbii paginilor din arborescenta de sub acestea. De exemplu, <server>:8080/roda/page/ro/acasa va genera si returna pagina al carei camp url din baza de date are valoarea "acasa", si este subordonata paginii "ro". 
+
+Referitor la generarea unei pagini solicitate, trebuie mentionat ca sistemul de cache, descris in cadrul acestui raport, permite stocarea unei pagini pe o perioada determinata si evitarea generarii acesteia la fiecare solicitare din intervalul respectiv. Ulterior stergerii din cache a unei pagini, aceasta este regenerata la urmatoarea cerere a sa.
+
+
+Metoda generatePage(url) include efectuarea urmatoarelor actiuni:
 
 \begin{enumerate}
 \item{In functie de parametrul primit (url), cauta inregistrarea corespunzatoare din tabelul de pagini al bazei de date.}
@@ -20,7 +25,7 @@ Controller-ul care primeste solicitarea pentru pagina apeleaza metoda \textbf{ge
 
 \bigskip
 
-Prelucrarea continutului layout-ului si a continutului paginii prevede inlocuirea codurilor care apar. Aceste inlocuiri sunt realizate de catre urmatoarele metode private ale serviciului RodaPageService:
+Prelucrarea continutului layout-ului si a continutului paginii prevede inlocuirea codurilor care apar. Aceste inlocuiri sunt realizate, in ordinea in care sunt enumerate, de catre urmatoarele metode private ale serviciului RodaPageService:
 \begin{itemize}
 \item{replacePageTitle(content, pageTitle) - inlocuieste aparitia codului [[Code: PageTitle]] in continutul layout-ului sau al paginii cu titlul paginii respective;}
 \item{replacePageLinkByUrl(content, cmsPage) - inlocuieste aparitia codului [[Code: PageLinkbyUrl('url')]] cu URL-ul (relativ la baza URL-ului aplicatiei) corespunzator paginii celei mai apropiate de pagina curenta, avand fragmentul URL specificat in codul prelucrat;} 
@@ -31,3 +36,7 @@ Prelucrarea continutului layout-ului si a continutului paginii prevede inlocuire
 \item{replaceImgLink(content, url) - inlocuieste codul [[ImgLink: url]] cu un element <img src="imgUrl"/>, unde imgUrl este URL-ul fisierului imagine specificat, obtinut relativ la pagina curenta;}
 \item{replaceSnippets(content) -inlocuieste recursiv codul [[Snippet:snippetName]] cu continutul snippet-ului (fragmentului) obtinut din baza de date in functie de numele specificat.}
 \end{itemize}
+
+\bigskip
+
+

@@ -1,1 +1,29 @@
-\subsection{Macro}
+\subsection{Macro-uri utilizabile in cadrul paginilor CMS}
+
+Prelucrarea continutului layout-ului si a continutului paginii prevede inlocuirea macro-urilor care sunt mentionate in codul-sursa al layout-ului / paginii.
+
+Aceste inlocuiri sunt realizate, in ordinea in care sunt enumerate, de catre urmatoarele metode private ale serviciului \emph{RodaPageService}:
+\begin{itemize}
+\item{replacePageTitle(content, pageTitle) -- 
+inlocuieste aparitia codului \emph{[[Code: PageTitle]]} in continutul layout-ului sau al paginii cu titlul paginii respective;}
+\item{replacePageLinkByUrl(content, cmsPage) -- 
+inlocuieste aparitia codului \emph{[[Code: PageLinkbyUrl('URL')]]} cu URL-ul (relativ la baza URL-ului aplicatiei) corespunzator paginii celei mai apropiate de pagina curenta, avand fragmentul URL specificat in codul prelucrat;} 
+\item{replacePageTreeByUrl(content, cmsPage) -- 
+inlocuieste aparitia codului \emph{[[Code: PageTreeByUrl('URL', 'depth')]]} cu meniul dinamic generat pornind de la pagina avand fragmentul URL specificat in cod; adancimea acestui meniu este specificata in cadrul celui de-al doilea argument al codului;}
+\item{replacePageBreadcrumbs(content, cmsPage) -- 
+inlocuieste aparitia codului \emph{[[Code: PageBreadcrumbs('separator')]]} cu breadcrumb-ul (succesiunea ierarhica a link-urilor/numelor paginilor pana la pagina curenta); separatorul acestor pagini este specificat ca argument al codului;}
+\item{replacePageUrlLink(content, cmsPage) -- 
+inlocuieste aparitia codului \emph{[[PageURLLink: url]]} cu un element <a href="pageUrl">pageName</a>, unde pageUrl este URL-ul relativ la baza URL-ului aplicatiei) corespunzator paginii celei mai apropiate de pagina curenta, avand fragmentul URL specificat in codul prelucrat, iar pageName este numele acestei pagini;}
+\item{replaceFileUrl(content, url) -- 
+inlocuieste codul \emph{[[FileURL:url]]} cu URL-ul fisierului specificat, obtinut relativ la pagina curenta;}
+\item{replaceImgLink(content, url) -- 
+inlocuieste codul \emph{[[ImgLink: url]]} cu un element <img src="imgUrl"/>, unde imgUrl este URL-ul fisierului imagine specificat, obtinut relativ la pagina curenta;}
+\item{replaceSnippets(content) -- 
+inlocuieste recursiv codul \emph{[[Snippet:snippetName]]} cu continutul snippet-ului (fragmentului) obtinut din baza de date in functie de numele specificat.}
+\end{itemize}
+
+Folosit o singura data la fiecare pagina, in layouturi, macro-ul \emph{[[PageContent]]} este inlocuit cu continutul paginii curente, dupa ce toate celelalte coduri au fost procesate. 
+
+\bigskip
+
+

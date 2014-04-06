@@ -1,49 +1,36 @@
 \subsection{Generarea paginilor}
+\label{generarea_paginilor}
 
-Controller-ul care primeste solicitarea pentru pagina, prin intermediul unui URL prefixat de "/page", apeleaza metoda \textbf{generatePage(url)} a serviciului RodaPageService. Portiunea de URL care urmeaza lui "/page" va specifica, de fapt, o succesiune de fragmente de URL corespunzatoare unei ierarhii de pagini din baza de date. Pentru o pagina din baza de date, campul url contine, de fapt, doar fragmentul final al URL-ului paginii. Identificarea URL-ului integral (unic) al paginii se realizeaza prin parcurgerea bottom-up a ierarhiei, pana la pagina radacina de pe drumul respectiv. De regula, pagina radacina va fi "ro" sau "en", corespunzator limbii paginilor din arborescenta de sub acestea. De exemplu, <server>:8080/roda/page/ro/acasa va genera si returna pagina al carei camp url din baza de date are valoarea "acasa" si este subordonata paginii "ro". Mentionam ca "ro" si "en" nu sunt pagini navigabile.
+Controller-ul care primeste solicitarea pentru pagina, prin intermediul unei cereri prefixate de "/page", apeleaza metoda \textbf{generatePage(url)} a serviciului \emph{RodaPageService}. 
+Portiunea de URL care urmeaza lui "/page" va specifica, de fapt, o succesiune de fragmente de URL corespunzatoare unei ierarhii de pagini din baza de date. 
+Pentru o pagina din baza de date, campul "url" contine, de fapt, doar fragmentul final al URL-ului paginii. 
+Identificarea URL-ului integral (unic) al paginii se realizeaza prin parcurgerea bottom-up a ierarhiei, pana la pagina radacina de pe drumul respectiv. 
+De regula, pagina radacina va fi "ro" sau "en", corespunzator limbii paginilor din arborescenta de sub acestea. 
+De exemplu, \emph{<server>:8080/roda/page/ro/acasa} va genera si returna pagina al carei camp URL din baza de date are valoarea "acasa", si este subordonata paginii "ro". 
 
-Referitor la generarea unei pagini solicitate, trebuie mentionat ca sistemul de cache, descris in cadrul acestui raport, permite stocarea unei pagini pe o perioada determinata si evitarea generarii acesteia la fiecare solicitare din intervalul respectiv. Ulterior stergerii din cache a unei pagini, aceasta este regenerata la urmatoarea cerere a sa.
-
-O pagina este compusa dintr-un layout in care este inclus continutul paginii. Atat layout-ul cat si continutul paginii pot referi diferite macro-uri si snippet-uri. Acestea vor fi procesate in cadrul metodei de generare a paginii.
-
-\bigskip
-
-Metoda generatePage(url) include efectuarea urmatoarelor actiuni:
+Metoda \textbf{generatePage(URL)} include efectuarea urmatoarelor actiuni:
 
 \begin{enumerate}
-\item{In functie de parametrul primit (url), cauta inregistrarea corespunzatoare din tabelul de pagini al bazei de date.}
+\item{In functie de parametrul primit (URL), cauta inregistrarea corespunzatoare din tabelul de pagini al bazei de date.}
 \item{Cu informatia despre pagina curenta, apeleaza metoda getLayout(cmsPage, url). Aceasta:}
 \begin{itemize}
 \item{regaseste continutul layout-ului in baza de date}
-\item{inlocuieste toate codurile din continutul layout-ului, cu exceptia lui [[Code: PageContent]]}
+\item{inlocuieste toate codurile din continutul layout-ului, cu exceptia lui \emph{[[Code: PageContent]]}}
 \item{returneaza continutul layout-ului.}
 \end {itemize}
-\item{Pe baza paginii curente si a layout-ului obtinut anterior, este apelata metoda replacePageContent(layoutContent, cmsPage). Aceasta determina daca exista codul [[Code: PageContent]] in continutul layout-ului, iar in caz afirmativ realizeaza urmatoarele actiuni:}
+\item{Pe baza paginii curente si a layout-ului obtinut anterior, este apelata metoda replacePageContent(layoutContent, cmsPage). Aceasta determina daca exista codul \emph{[[Code: PageContent]]} in continutul layout-ului, iar in caz afirmativ realizeaza urmatoarele actiuni:}
 \begin{itemize}
 \item {regaseste continutul paginii in baza de date}
 \item{inlocuieste toate codurile din continutul paginii}
-\item {inlocuieste codul [[Code: PageContent]] cu continutul paginii, astfel prelucrat.}
+\item {inlocuieste codul \emph{[[Code: PageContent]]} cu continutul paginii, astfel prelucrat.}
 \end{itemize}
 \end{enumerate}
 
 \bigskip
 
-Prelucrarea continutului layout-ului si a continutului paginii prevede inlocuirea codurilor (macro-urilor) care apar. Aceste inlocuiri sunt realizate, in ordinea in care sunt enumerate mai jos, de catre urmatoarele metode private ale serviciului RodaPageService:
-\begin{itemize}
-\item{replacePageTitle(content, pageTitle) - inlocuieste aparitia codului [[Code: PageTitle]] in continutul layout-ului sau al paginii cu titlul paginii respective;}
-\item{replacePageLinkByUrl(content, cmsPage) - inlocuieste aparitia codului [[Code: PageLinkbyUrl('url')]] cu URL-ul (relativ la baza URL-ului aplicatiei) corespunzator paginii celei mai apropiate de pagina curenta, avand fragmentul URL specificat in codul prelucrat;} 
-\item{replacePageTreeByUrl(content, cmsPage) - inlocuieste aparitia codului [[Code: PageTreeByUrl('url', 'depth')]] cu meniul dinamic generat pornind de la pagina avand fragmentul URL specificat in primul argument al codului; adancimea acestui meniu este specificata in cadrul celui de-al doilea argument al codului, fiind generat intregul meniu daca adancimea nu este precizata;
-\item{replacePageBreadcrumbs(content, cmsPage) - inlocuieste aparitia codului [[Code: PageBreadcrumbs('separator')]]} cu breadcrumb-ul (succesiunea ierarhica de pagini) pana la pagina curenta; separatorul acestor pagini este specificat ca argument al codului;
-\item{replacePageUrlLink(content, cmsPage)}  - inlocuieste aparitia codului [[PageURLLink: url]] cu un element <a href="pageUrl">pageName</a>, unde pageUrl este URL-ul relativ la baza URL-ului aplicatiei) corespunzator paginii celei mai apropiate de pagina curenta, avand fragmentul URL specificat in codul prelucrat, iar pageName este numele acestei pagini};
-\item{replaceFileUrl(content, url) - inlocuieste codul [[FileURL:url]] cu URL-ul fisierului specificat, obtinut relativ la pagina curenta;}
-\item{replaceImgLink(content, url) - inlocuieste codul [[ImgLink: url]] cu un element <img src="imgUrl"/>, unde imgUrl este URL-ul fisierului imagine specificat, obtinut relativ la pagina curenta;}
-\item{replaceSnippets(content) -inlocuieste recursiv codul [[Snippet:snippetName]] cu continutul snippet-ului (fragmentului) obtinut din baza de date in functie de numele specificat.}
-\end{itemize}
-
-\bigskip
-
-
-Pagina astfel generata este trimisa, ca atribut al modelului, unui fisier show.jsp; in acest fisier, codul generat al paginii va corespunde sectiunii body. Calea (referinta) catre fisierul show.jsp este returnata de catre metoda de afisare din controller-ul de pagina, RodaPageController.
+Pagina astfel generata este trimisa, ca atribut al modelului, unui fisier show.jsp; 
+in acest fisier, codul generat al paginii va corespunde sectiunii /emph{body}.
+Calea (referinta) catre fisierul show.jsp este returnata de catre metoda de afisare din controller-ul de pagina, \emph{RodaPageController}.
 
 O portiune a codului sursa al acestei metode este urmatorul:
 

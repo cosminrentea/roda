@@ -1,5 +1,9 @@
 package ro.roda.plugin;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -292,21 +296,56 @@ public class RodaPageServiceImpl implements RodaPageService {
 		// returns the closest page with the given url
 		// fragment
 
-		CmsPage tempPage = cmsPage;
 		CmsPage resultPage = null;
+
+		CmsPage previousPage = null;
+		CmsPage tempPage = cmsPage;
 
 		if (cmsPage != null) {
 			while (tempPage != null) {
-				resultPage = CmsPage.findCmsPageByParent(url, tempPage);
+				resultPage = findClosestRelativePage(url, tempPage, previousPage);
 				if (resultPage != null) {
 					return resultPage;
 				} else {
+					previousPage = tempPage;
 					tempPage = tempPage.getCmsPageId();
 				}
-
 			}
 		}
 		return resultPage;
+	}
+
+	private CmsPage findClosestRelativePage(String url, CmsPage cmsPage, CmsPage previousPage) {
+		// find the closest relative page searching top-down from the current
+		// page
+
+		if (cmsPage.getUrl().equals(url)) {
+			return cmsPage;
+		}
+
+		Set<CmsPage> children = cmsPage.getCmsPages();
+		List<CmsPage> unvisitedChildren = new ArrayList<CmsPage>();
+		unvisitedChildren.addAll(children);
+		if (previousPage != null) {
+			unvisitedChildren.remove(previousPage);
+		}
+
+		while (unvisitedChildren.size() > 0) {
+			List<CmsPage> added = new ArrayList<CmsPage>();
+			List<CmsPage> removed = new ArrayList<CmsPage>();
+			for (CmsPage child : unvisitedChildren) {
+				if (child.getUrl().equals(url)) {
+					return child;
+				}
+				if (child.getCmsPages() != null && child.getCmsPages().size() > 0) {
+					added.addAll(child.getCmsPages());
+				}
+				removed.add(child);
+			}
+			unvisitedChildren.removeAll(removed);
+			unvisitedChildren.addAll(added);
+		}
+		return null;
 	}
 
 	private String generatePageBreadcrumbs(CmsPage cmsPage, String separator) {

@@ -1124,8 +1124,20 @@ public class AdminJson {
 
 			try {
 				CmsPage parentPage = cmsPage.getCmsPageId();
-				if (parentPage.getCmsPages() != null && parentPage.getCmsPages().contains(cmsPage)) {
+				if (parentPage.getCmsPages() != null) {
 					parentPage.getCmsPages().remove(cmsPage);
+				}
+
+				if (cmsPage.getCmsPageContents() != null && cmsPage.getCmsPageContents().size() > 0) {
+					for (CmsPageContent content : cmsPage.getCmsPageContents()) {
+						CmsPageContent.entityManager().remove(content);
+					}
+				}
+
+				if (cmsPage.getCmsPageLangId() != null && cmsPage.getCmsPageLangId().size() > 0) {
+					for (CmsPageLang pageLang : cmsPage.getCmsPageLangId()) {
+						CmsPageLang.entityManager().remove(pageLang);
+					}
 				}
 
 				CmsPage.entityManager().remove(cmsPage);

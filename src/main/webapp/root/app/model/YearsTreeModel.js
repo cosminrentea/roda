@@ -33,11 +33,11 @@ fields : [ {
 	type : 'string',
 	convert : function(v, r) {
 		if (r.get('type') == 'Sts') {
-			return 'img/series-member.png';
+			return '/roda/resources/root/img/series-member.png';
 		} else if (r.get('type') == 'M') {
-			return 'img/roda-m.png';			
+			return '/roda/resources/root/img/roda-m.png';			
 		} else if (r.get('type') == 'St') {
-			return 'img/study.png';
+			return '/roda/resources/root/img/study.png';
 		}
 	}
 },{

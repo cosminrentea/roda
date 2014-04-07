@@ -115,17 +115,17 @@
 }*/
 
 #catalogview_header_hd-textEl {
-	background:url('img/catalog.png') no-repeat left;
+	background:url('/roda/resources/root/img/catalog.png') no-repeat left;
 	padding-left:30px;
 }
 
 #seriesview_header_hd-textEl {
-	background:url('img/series.png') no-repeat left;
+	background:url('/roda/resources/root/img/series.png') no-repeat left;
 	padding-left:30px;
 }
 
 #studyview_header_hd-textEl {
-	background:url('img/study.png') no-repeat left;
+	background:url('/roda/resources/root/img/study.png') no-repeat left;
 	padding-left:30px;
 }
 
@@ -141,12 +141,12 @@
 }
 
 .file-pdf {
-	background:url('img/pdficon.png') no-repeat left;
+	background:url('/roda/resources/root/img/pdficon.png') no-repeat left;
 	padding-left:40px;
 }
 
 .file-xml {
-	background:url('img/xmlicon.png') no-repeat left;
+	background:url('/roda/resources/root/img/xmlicon.png') no-repeat left;
 	padding-left:40px;
 	padding-top:10px;
 	padding-bottom: 10px;

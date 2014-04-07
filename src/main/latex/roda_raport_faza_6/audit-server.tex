@@ -1,4 +1,4 @@
-\subsection{Servicii de jurnalizare pe partea de server}
+\section{Servicii de jurnalizare pe partea de server}
 
 In etapa precedenta a proiectului a fost realizat sistemul de jurnalizare al aplicatiei. Detaliile referitoare la tehnologia folosita si la implementarea acesteia au fost descrise in anexa raportului corespunzator etapei a patra a proiectului.
 
@@ -21,7 +21,7 @@ Controller-ele dezvoltate permit lansarea de solicitari sub forma URL-urilor de 
 
 Rezultatele solicitarilor exprimate prin intermediul acestor URL-uri sunt obtinute in format JSON. Pentru determinarea lor a fost necesara implementarea unor clase in pachetul ro.roda.transformer (de exemplu, AuditRevisionsInfo sau AuditRevisionsByObject), ale caror metode sunt apelate de catre o clasa speciala de servicii ale aplicatiei, AuditRevisionsService. La randul lor, metodele acestui serviciu sunt apelate de catre controller-ele corespunzatoare URL-urilor prezentate mai sus. 
 
-Modul de functionare a URL-urilor pentru obtinerea informatiilor de jurnalizare corespunde, de fapt, schemei prezentate in cadrul sectiunii de URL dispatching a acestui raport.
+Modul de functionare a URL-urilor pentru obtinerea informatiilor de jurnalizare corespunde, de fapt, schemei prezentate in cadrul sectiunii \ref{url_dispatching} a acestui raport.
 
 
 

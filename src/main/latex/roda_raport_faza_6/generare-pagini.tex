@@ -1,7 +1,8 @@
 \subsection{Generarea paginilor}
 \label{generarea_paginilor}
 
-Controller-ul care primeste solicitarea pentru pagina, prin intermediul unei cereri prefixate de "/page", apeleaza metoda \textbf{generatePage(url)} a serviciului \emph{RodaPageService}. 
+Controller-ul care primeste solicitarea pentru pagina, prin intermediul unei cereri prefixate de "/page", 
+apeleaza metoda \textbf{generatePage(url)} a serviciului \emph{RodaPageService}. 
 Portiunea de URL care urmeaza lui "/page" va specifica, de fapt, o succesiune de fragmente de URL corespunzatoare unei ierarhii de pagini din baza de date. 
 Pentru o pagina din baza de date, campul "url" contine, de fapt, doar fragmentul final al URL-ului paginii. 
 Identificarea URL-ului integral (unic) al paginii se realizeaza prin parcurgerea bottom-up a ierarhiei, pana la pagina radacina de pe drumul respectiv. 
@@ -12,13 +13,14 @@ Metoda \textbf{generatePage(URL)} include efectuarea urmatoarelor actiuni:
 
 \begin{enumerate}
 \item{In functie de parametrul primit (URL), cauta inregistrarea corespunzatoare din tabelul de pagini al bazei de date.}
-\item{Cu informatia despre pagina curenta, apeleaza metoda getLayout(cmsPage, url). Aceasta:}
+\item{Cu informatia despre pagina curenta, apeleaza metoda \emph{getLayout(cmsPage, URL)}. Aceasta:}
 \begin{itemize}
 \item{regaseste continutul layout-ului in baza de date}
 \item{inlocuieste toate codurile din continutul layout-ului, cu exceptia lui \emph{[[Code: PageContent]]}}
 \item{returneaza continutul layout-ului.}
 \end {itemize}
-\item{Pe baza paginii curente si a layout-ului obtinut anterior, este apelata metoda replacePageContent(layoutContent, cmsPage). Aceasta determina daca exista codul \emph{[[Code: PageContent]]} in continutul layout-ului, iar in caz afirmativ realizeaza urmatoarele actiuni:}
+\item{Pe baza paginii curente si a layout-ului obtinut anterior, este apelata metoda \emph{replacePageContent(layoutContent, cmsPage)}. 
+Aceasta determina daca exista codul \emph{[[Code: PageContent]]} in continutul layout-ului, iar in caz afirmativ realizeaza urmatoarele actiuni:}
 \begin{itemize}
 \item {regaseste continutul paginii in baza de date}
 \item{inlocuieste toate codurile din continutul paginii}
@@ -28,9 +30,9 @@ Metoda \textbf{generatePage(URL)} include efectuarea urmatoarelor actiuni:
 
 \bigskip
 
-Pagina astfel generata este trimisa, ca atribut al modelului, unui fisier show.jsp; 
+Pagina astfel generata este trimisa, ca atribut al modelului, unui fisier tip JSP (show.jsp); 
 in acest fisier, codul generat al paginii va corespunde sectiunii /emph{body}.
-Calea (referinta) catre fisierul show.jsp este returnata de catre metoda de afisare din controller-ul de pagina, \emph{RodaPageController}.
+Calea (referinta) catre fisierul \emph{show.jsp} este returnata de catre metoda de afisare din controller-ul de pagina, \emph{RodaPageController}.
 
 O portiune a codului sursa al acestei metode este urmatorul:
 

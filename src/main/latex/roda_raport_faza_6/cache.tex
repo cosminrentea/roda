@@ -1,7 +1,54 @@
 \subsection{Sistemul de Cache}
 
-Sistemul de cache permite stocarea unei pagini web generate de sistemul CMS (vezi sectiunea \ref{generarea_paginilor}) 
-pe o perioada determinata de timp, evitandu-se generarea acesteia la fiecare solicitare din intervalul respectiv. 
-Ulterior stergerii din cache a unei pagini, aceasta este regenerata si introdusa in cache in momentul urmatoarei cereri de accesare.
+EhCache (\url{http://www.ehcache.org}) este un software utilizat pentru caching. 
+Este o librarie Java care este distribuita atat sub o licenta open-source (pentru functionalitatile uzuale) cat si sub o licenta proprietara (pentru functionalitatile avansate).
 
-Un alt cache este definit pentru stocarea imaginilor de tip \emph{"thumbnails"}, indiferent cum sunt acestea procesate/obtinute (dimensiuni, algoritm).
+Ehcache consta dintr-un CacheManager, care gestioneaza mai multe Cache-uri. 
+Un Cache contine Elemente, care sunt in esenta perechi de tip nume-valoare. 
+Cache-urile sunt implementate fizic, in memorie si/sau pe disc.
+
+Ehcache poate fi folosit in urmatoarele topologii:
+\begin{description}
+\item 
+[Standalone] 
+--  
+Setul de date din cache este tinut in  nodul pe care ruleaza aplicatia.
+Orice alte noduri sunt independente , cu nici o comunicare intre ele.
+Daca caching-ul independent este utilizat, în cazul în care exista mai multe noduri de aplicatii care ruleaza aceeasi aplicatie, atunci există între ele "weak-consistency".
+Ele contin valori consistente de date imuabile sau dupa "timpul de a trai" al unui element a expirat si elementul trebuie sa fie reincarcat. 
+Nodurile independente pot fi rulate folosind Ehcache open-source.
+
+\item
+[Distributed]
+--
+Datele sunt tinute într-un Array Terracotta Server, cu un subset de date utilizate recent retinut in fiecare nod cache aplicatie. 
+Topologia distribuita, disponibila cu BigMemory Max, sustine un set foarte bogat de moduri de consistenta.
+
+\item
+[Replicated]
+-–
+Setul de date din cache este tinut in fiecare nod aplicatie si date sunt copiate sau invalidate in cluster fara locking.
+Replicarea poate fi fie asincrona sau sincrona, unde thread-urile de scriere se blocheaza cat timp se intampla propagarea.
+Singurul mod consistenta disponibil în aceasta topologie este "weak-consistency". Nodurile pot fi rulate cu Ehcache open-source.
+\end{description}
+
+In framework-ul Spring, EhCache este cea mai complexa alternativa ce poate fi folosita in layer-ul de "cache abstraction" \footnote{\url{http://docs.spring.io/spring/docs/3.2.x/spring-framework-reference/html/cache.html}}.
+Se utilizeaza adnotari pentru acele metode ale caror procesari/rezultate pot fi cache-uite. 
+SpEL (Spring Expression language) poate fi folosit in interiorul adnotarilor pentru definirea cheilor sau a altor parametri ai cache-urilor.
+
+Aplicatia web a RODA foloseste pentru moment 2 instante de cache-uri: pentru paginile generate de CMS si pentru thumbnail-uri.
+
+Astfel, este permisa stocarea unei pagini web generate de sistemul CMS (vezi sectiunea \ref{generarea_paginilor}) 
+pe o perioada determinata de timp, evitandu-se generarea acesteia la fiecare solicitare din intervalul respectiv. 
+Ulterior stergerii din cache a unei pagini, in momentul urmatoarei cereri de accesare aceasta este regenerata si introdusa in cache-ul dedicat.
+
+Un alt cache este definit pentru stocarea imaginilor de tip \emph{"thumbnails"} (vezi sectiunea \ref{thumbnails}), 
+indiferent cum sunt acestea procesate/obtinute (dimensiuni, algoritm).
+Intrucat metode diferite genereaza thumbnail-uri diferite, cheia unica definita pentru acest cache include si numele metodei pe langa numele fisierului si dimensiunile sale:
+\begin{lstlisting}[breaklines=true]
+@Cacheable(value = "thumbnails", key = "{#root.methodName, #url, #alias, #height, #width}")
+\end{lstlisting}
+
+Cele 2 cache-uri descrise mai sus sunt configurate in fisierul "ehcache.xml" cu parametri precum timpul de viata / expirare, dimensiunea cache-ului (in memorie, pe disk), strategia de caching (de ex. LRU), strategia de overflow etc.
+
+EhCache (manager-ul de cache-uri) este incarcat in aplicatia Spring in ca un Bean in fisierul de configurare "applicationContext.xml".

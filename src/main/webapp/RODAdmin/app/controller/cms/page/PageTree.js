@@ -62,6 +62,32 @@ Ext.define('RODAdmin.controller.cms.page.PageTree', {
 				 */
 		        click : this.onEditPageClick
 	        },
+	        "pagecontextmenudisabled menuitem#editpage" : {
+		        /**
+				 * @listener layoutcontextmenu-menuitem-editpage triggered-by:
+				 *           {@link RODAdmin.view.cms.page.PageContextMenu PageContextMenu}
+				 *           menuitem#editpage {@link #onEditPageClick}
+				 */
+		        click : this.onEditPageClick
+	        },
+	        
+	        "pagecontextmenu menuitem#addpage" : {
+		        /**
+				 * @listener layoutcontextmenu-menuitem-editpage triggered-by:
+				 *           {@link RODAdmin.view.cms.page.PageContextMenu PageContextMenu}
+				 *           menuitem#editpage {@link #onEditPageClick}
+				 */
+		        click : this.onAddPageClick
+	        },
+	        "pagecontextmenudisabled menuitem#addpage" : {
+		        /**
+				 * @listener layoutcontextmenu-menuitem-editpage triggered-by:
+				 *           {@link RODAdmin.view.cms.page.PageContextMenu PageContextMenu}
+				 *           menuitem#editpage {@link #onEditPageClick}
+				 */
+		        click : this.onAddPageClick
+	        },
+
 	        "pagesitemsview treepanel#pgfolderview toolbar button#reloadtree" : {
 		        /**
 				 * @listener layoutitemsview-treepanel-lyfolderview-toolbar-button-reloadtree
@@ -153,19 +179,27 @@ Ext.define('RODAdmin.controller.cms.page.PageTree', {
 	 */
     onDeletePageClick : function(component, event) {
 	    var currentNode = this.getFolderview().getSelectionModel().getLastSelected();
-	    var store = Ext.StoreManager.get('cms.page.Page');
-	    Ext.Msg.confirm('Delete Requirement', 'Are you sure you want to delete the page ' + currentNode.data.title
+	    var pgtitle = currentNode.data.title;
+	    var store = Ext.StoreManager.get('cms.pages.PageTree');
+	    Ext.Msg.confirm('Delete Requirement', 'Are you sure you want to delete the page ' + pgtitle
 	            + '?', function(id, value) {
 		    if (id === 'yes') {
 			    Ext.Ajax.request({
-			        url : '/roda/admin/pagedrop',
+			        url : '/roda/admin/cmspagedrop',
 			        method : "POST",
 			        params : {
-				        id : currentNode.data.indice
+				        cmspageid : currentNode.data.indice
 			        },
-			        success : function() {
-				        RODAdmin.util.Alert.msg('Success!', 'Layout deleted.');
-				        store.load;
+			        success : function(response,request) {
+				           var responseJson = Ext.decode(response.responseText);
+				            if (responseJson.success === true) {
+				                // whatever stuff needs to happen on success
+				            	RODAdmin.util.Alert.msg('Success!', 'Page '+ pgtitle +' dropped.');
+								store.load();
+				            } else {
+				            	RODAdmin.util.Alert.msg('Failure!', responseJson.message, true);
+
+				            }
 			        },
 			        failure : function(response, opts) {
 				        Ext.Msg.alert('Failure', response);
@@ -179,12 +213,54 @@ Ext.define('RODAdmin.controller.cms.page.PageTree', {
     /**
 	 * @method
 	 */
+    onAddPageClick : function(button, e, options) {
+    	console.log('see ma famly again onpagetoolbarEditClick');
+	    var fp = this.getPageproperties().data;
+	    var win = Ext.WindowMgr.get('pageadd');
+	    if (!win) {
+ 		    win = Ext.create('RODAdmin.view.cms.page.AddPageWindow');
+ 	   	}
+	    win.setTitle('Add Page');
+//set defaults and parent
+	    win.down('form').down('hiddenfield[name=parentid]').setValue(fp.data.indice);
+	    win.down('form').down('displayfield[name=parent]').setValue(fp.data.menutitle);
+	    win.down('form').down('combobox[name=layout]').store.load();
+	    win.down('form').down('combobox[name=layout]').setValue(fp.data.layoutid);
+	    win.down('form').down('combobox[name=published]').store.load();
+	    win.down('form').down('combobox[name=published]').setValue(fp.data.published);
+	    win.down('form').down('combobox[name=lang]').setValue(fp.data.lang);
+	    win.down('form').down('combobox[name=default]').setValue('No');
+	    win.down('form').down('combobox[name=searchable]').setValue('Yes');
+	    win.down('form').down('textfield[name=cacheable]').setValue('3600');	    
+	    win.down('form').down('combobox[name=target]').setValue('_self');
+	    
+	    win.down('form').down('combobox[name=pagetype]').store.load();
+	    console.log('pagetypeid' + fp.data.pagetypeid);
+	    win.down('form').down('combobox[name=pagetype]').setValue(fp.data.pagetypeid);	    
+	    win.show();
+    },
+    /**
+	 * @method
+	 */
     onEditPageClick : function(button, e, options) {
 	    var fp = this.getPageproperties().data;
-	    var win = Ext.create('RODAdmin.view.cms.page.EditPageWindow');
+	    console.log(fp);
+	    var win = Ext.WindowMgr.get('pageedit');
+	    if (!win) {
+		    win = Ext.create('RODAdmin.view.cms.page.EditPageWindow');
+ 	   	}	    
 	    win.setTitle('Edit Page "' + fp.data.title + '" (id: ' + fp.data.id + ')');
-	    win.show();
 	    win.down('form').getForm().loadRecord(fp);
+	    console.log(fp.data);
+	    win.down('form').down('hiddenfield[name=id]').setValue(fp.data.indice);	    
+	    win.down('form').down('combobox[name=layout]').store.load();
+	    win.down('form').down('combobox[name=layout]').setValue(fp.data.layoutid);
+	    win.down('form').down('combobox[name=published]').store.load();
+	    win.down('form').down('combobox[name=published]').setValue(fp.data.published);
+	    win.down('form').down('combobox[name=pagetype]').store.load();
+	    console.log('pagetypeid' + fp.data.pagetypeid);
+	    win.down('form').down('combobox[name=pagetype]').setValue(fp.data.pagetypeid);	    
+	    win.show();
     },
     /**
 	 * @method

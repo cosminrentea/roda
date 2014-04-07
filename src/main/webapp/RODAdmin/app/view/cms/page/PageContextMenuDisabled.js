@@ -17,7 +17,7 @@ initComponent: function() {
                 xtype: 'menuitem',
                 itemId: 'deletepage',
                 disabled: true,
-                text: 'Delete Tree',
+                text: 'Delete Page',
                 tooltip: 'Deletes the current page'
             },
             {
@@ -25,7 +25,14 @@ initComponent: function() {
                 itemId: 'editpage',
                 text: 'Edit Page',
                 tooltip: 'Allows modifications of the page'
+            },
+            {
+                xtype: 'menuitem',
+                itemId: 'addpage',
+                text: 'Add Page',
+                tooltip: 'Adds a page'
             }
+
         ]
     });
     me.callParent(arguments);

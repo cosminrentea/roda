@@ -83,18 +83,21 @@ Ext.define('RODAdmin.controller.cms.Cmspages', {
     	console.log('see ma famly again onpagetoolbarEditClick');
 	    var fp = this.getPageproperties().data;
 	    console.log(fp);
-	    var win = Ext.create('RODAdmin.view.cms.page.EditPageWindow');
-	    win.setTitle('Edit Page "' + fp.data.title + '" (id: ' + fp.data.id + ')');
-	    win.show();
+	    var win = Ext.WindowMgr.get('pageedit');
+	    if (!win) {
+		    win = Ext.create('RODAdmin.view.cms.page.EditPageWindow');
+ 	   	}	    
+	    win.setTitle('Edit Page "' + fp.data.title + '" (id: ' + fp.data.indice + ')');
 	    win.down('form').getForm().loadRecord(fp);
 	    console.log(fp.data);
+	    win.down('form').down('hiddenfield[name=id]').setValue(fp.data.indice);	    
 	    win.down('form').down('combobox[name=layout]').store.load();
 	    win.down('form').down('combobox[name=layout]').setValue(fp.data.layoutid);
 	    win.down('form').down('combobox[name=published]').store.load();
 	    win.down('form').down('combobox[name=published]').setValue(fp.data.published);
 	    win.down('form').down('combobox[name=pagetype]').store.load();
-	    console.log('pagetypeid' + fp.data.pagetypeid);
 	    win.down('form').down('combobox[name=pagetype]').setValue(fp.data.pagetypeid);
+	    win.show();
     },
     /**
 	 * @method

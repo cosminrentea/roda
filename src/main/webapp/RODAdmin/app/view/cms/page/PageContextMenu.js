@@ -24,7 +24,14 @@ initComponent: function() {
                 itemId: 'editpage',
                 text: 'Edit Page',
                 tooltip: 'Allows modifications of the page'
+            },
+            {
+                xtype: 'menuitem',
+                itemId: 'addpage',
+                text: 'Add Page',
+                tooltip: 'Adds a page'
             }
+
         ]
     });
     me.callParent(arguments);

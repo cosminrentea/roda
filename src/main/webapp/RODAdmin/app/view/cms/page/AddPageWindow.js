@@ -1,21 +1,21 @@
 /**
  * 
  */
-Ext.define('RODAdmin.view.cms.page.EditPageWindow', {
+Ext.define('RODAdmin.view.cms.page.AddPageWindow', {
 
     extend : 'RODAdmin.view.common.WindowForm',
-    alias : 'widget.pageedit',
+    alias : 'widget.pageadd',
 
     height : '90%',
-    width : '80%',
+    width : '60%',
 
     requires : [
 	    'RODAdmin.util.Util'
     ],
-
-    layout : {
-	    type : 'border'
-    },
+//
+//    layout : {
+//	    type : 'border'
+//    },
 
     config : {
 	    cnode : {}
@@ -24,13 +24,7 @@ Ext.define('RODAdmin.view.cms.page.EditPageWindow', {
     initComponent : function() {
 	    var me = this;
 	    Ext.applyIf(me, {
-		    items : [
-		            {
-		                region : 'center',
-		                collapsible : false,
-		                flex : 3,
-		                split : true,
-		                layout : 'fit',
+
 		                items : [
 			                {
 			                    xtype : 'form',
@@ -46,12 +40,6 @@ Ext.define('RODAdmin.view.cms.page.EditPageWindow', {
 			                                name : 'parent',
 			                                anchor : '-18',
 			                            },
-			                            {
-											xtype : 'hiddenfield',
-											fieldLabel : 'Id',
-											name : 'id',
-//											value : '',
-										},
 			                            {
 											xtype : 'hiddenfield',
 											fieldLabel : 'Parent',
@@ -180,7 +168,7 @@ Ext.define('RODAdmin.view.cms.page.EditPageWindow', {
 				                                                        {
 				                                                            xtype : 'textfield',
 				                                                            labelWidth : 90,
-				                                                            name : 'internalredirect',
+				                                                            name: 'internalredirect',
 				                                                            fieldLabel : 'Internal Redirect',
 				                                                            anchor : '100%',
 				                                                        }
@@ -247,10 +235,11 @@ Ext.define('RODAdmin.view.cms.page.EditPageWindow', {
 				                                                        {
 				                                                            xtype : 'combo',
 				                                                            labelWidth : 50,
+				                                                            name : 'target',
 				                                                            fieldLabel : 'Target',
 				                                                            anchor : '100%',
 				                                                            store : [
-				                                                                    '_blonk', '_top'
+				                                                                    '_self', '_blank', '_top'
 				                                                            ]
 				                                                        }
 			                                                        ]
@@ -312,31 +301,8 @@ Ext.define('RODAdmin.view.cms.page.EditPageWindow', {
         									value: ''
 										}
 			                            
-			                    ]
-			                }
 		                ]
-		            }, {
-		                region : 'west',
-		                collapsible : true,
-		                flex : 1,
-		                split : true,
-		                layout : 'fit',
-		                items : [
-			                {
-			                    xtype : 'treepanel',
-			                    store : Ext.create('RODAdmin.store.cms.pages.PageTree'),
-			                    itemId : 'parentselect',
-			                    displayField : 'title',
-			                    useArrows : true,
-			                    rootVisible : false,
-			                    multiSelect : false,
-			                    singleExpand : false,
-			                    allowDeselect : true,
-			                    autoheight : true
-			                }
-		                ]
-		            }
-		    ]
+		            }]
 	    });
 	    me.callParent(arguments);
 	    me.initConfig(arguments)

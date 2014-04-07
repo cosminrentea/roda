@@ -38,6 +38,15 @@ Ext.define('RODAdmin.controller.cms.page.PageEdit', {
   				 */	        	
   		        click : this.onPageEditSaveClick
   	        },
+  	        "pageadd button#save" : {
+ 	        	 /**
+ 				 * @listener button-save-click triggered-by:
+ 				 *           {@link RODAdmin.view.cms.layout.EditLayoutWindow EditLayoutWindow} button#save    
+ 				 *           executes {@link #onLayoutEditSaveClick}  
+ 				 */	        	
+ 		        click : this.onPageAddSaveClick
+ 	        },
+  	        
 	        "pageedit treepanel#parentselect" : {
 	        	 /**
 				 * @listener groupselect-load triggered-by:
@@ -59,9 +68,9 @@ Ext.define('RODAdmin.controller.cms.page.PageEdit', {
 	        },
   	    });
       },     
-      
-      
-      
+     /**
+   	 * @method
+   	 */
       onPageEditSaveClick : function(button, e, options) {
   	    var win = button.up('window');
   	    var formPanel = win.down('form');
@@ -76,13 +85,7 @@ Ext.define('RODAdmin.controller.cms.page.PageEdit', {
   			        if (result.success) {
   				        RODAdmin.util.Alert.msg('Success!', 'Page saved.');
   				        win.close();
-//  				        var active = me.getItemsview().layout.getActiveItem();
-//  				        if (active.itemId == 'lyfolderview') {
-//  					        me.getController('RODAdmin.controller.cms.layout.LayoutTree').onReloadTreeClick();
-//  				        }
-//  				        else if (active.itemId == 'lyiconview') {
-//  					        me.getController('RODAdmin.controller.cms.layout.LayoutList').onReloadTreeClick();
-//  				        }
+  				        me.getController('RODAdmin.controller.cms.page.PageTree').onReloadTreeClick();
   			        }
   			        else {
   				        RODAdmin.util.Util.showErrorMsg(result.msg);
@@ -108,6 +111,60 @@ Ext.define('RODAdmin.controller.cms.page.PageEdit', {
   	    }
 
       },
+
+      /**
+     	 * @method
+     	 */
+      onPageAddSaveClick : function(button, e, options) {
+    	    var win = button.up('window');
+    	    var formPanel = win.down('form');
+
+    	    var me = this;
+    	    if (formPanel.getForm().isValid()) {
+    		    formPanel.getForm().submit({
+    		        clientValidation : true,
+    		        url : '/roda/admin/cmspagesave',
+    		        success : function(form, action) {
+    			        var result = action.result;
+    			        if (result.success) {
+    				        RODAdmin.util.Alert.msg('Success!', 'Page saved.');
+    				        win.close();
+    				        me.getController('RODAdmin.controller.cms.page.PageTree').onReloadTreeClick();
+
+//    				        var active = me.getItemsview().layout.getActiveItem();
+//    				        if (active.itemId == 'lyfolderview') {
+//    					        me.getController('RODAdmin.controller.cms.layout.LayoutTree').onReloadTreeClick();
+//    				        }
+//    				        else if (active.itemId == 'lyiconview') {
+//    					        me.getController('RODAdmin.controller.cms.layout.LayoutList').onReloadTreeClick();
+//    				        }
+    			        }
+    			        else {
+    				        RODAdmin.util.Util.showErrorMsg(result.msg);
+    			        }
+    		        },
+    		        failure : function(form, action) {
+    			        console.log(action.failureType);
+    			        console.log(action);
+    			        switch (action.failureType) {
+    			        case Ext.form.action.Action.CLIENT_INVALID:
+    				        Ext.Msg.alert('Failure', 'Form fields may not be submitted with invalid values');
+    				        break;
+
+    			        case Ext.form.action.Action.CONNECT_FAILURE:
+    				        Ext.Msg.alert('Failure', 'doesn\'t work');
+    				        break;
+    			        case Ext.form.action.Action.SERVER.INVALID:
+    				        Ext.Msg.alert('Failure', action.result.msg);
+    				        break;
+    			        }
+    		        }
+    		    });
+    	    }
+
+        },
+      
+      
       
       /**
   	 * @method

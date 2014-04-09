@@ -10,4 +10,6 @@ public interface ThumbnailsService {
 
 	public abstract byte[] generateThumbnailProportionalToHeight(String url, String alias, Integer height);
 
+	public abstract void evictAll();
+
 }

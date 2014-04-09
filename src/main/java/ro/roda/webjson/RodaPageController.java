@@ -29,7 +29,7 @@ public class RodaPageController {
 		String url = (String) request.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE);
 
 		url = url.substring(requestMapping.length());
-		log.debug(url);
+//		log.trace(url);
 
 		// "url" now is the full URL with a trailing slash "/..."
 

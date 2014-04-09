@@ -11,6 +11,7 @@ import javax.imageio.ImageIO;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.imgscalr.Scalr;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +23,11 @@ import ro.roda.domain.CmsFile;
 public class ThumbnailsServiceImpl implements ThumbnailsService {
 
 	private final Log log = LogFactory.getLog(this.getClass());
+
+	@CacheEvict(value = "thumbnails", allEntries = true)
+	public void evictAll() {
+	
+	}
 
 	public byte[] generateThumbnailByHeight(String url, String alias, Integer height) {
 		return generateThumbnailByHeightAndWidth(url, alias, height, height);

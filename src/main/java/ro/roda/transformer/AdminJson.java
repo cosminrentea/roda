@@ -986,8 +986,8 @@ public class AdminJson {
 
 	// Cms Page Management Methods
 	public static AdminJson cmsPageSave(Integer cmsPageParentId, String name, String lang, String menutitle,
-			String synopsis, String target, String url, boolean defaultPage, String externalredirect,
-			String internalredirect, Integer layoutId, Integer cacheable, boolean published, String pagetype,
+			String synopsis, String target, String url, Boolean defaultPage, String externalredirect,
+			String internalredirect, Integer layoutId, Integer cacheable, Boolean published, String pagetype,
 			Integer cmsPageId, String pageContent) {
 
 		CmsPage page = null;
@@ -999,45 +999,82 @@ public class AdminJson {
 			page = new CmsPage();
 		}
 
-		page.setCmsPageId(CmsPage.findCmsPage(cmsPageParentId));
-		page.setName(name);
-		page.setMenuTitle(menutitle);
-		page.setSynopsis(synopsis);
-		page.setTarget(target);
-		page.setUrl(url);
-		page.setDefaultPage(defaultPage);
-		page.setExternalRedirect(externalredirect);
-		page.setInternalRedirect(internalredirect);
-		page.setCmsLayoutId(CmsLayout.findCmsLayout(layoutId));
-		page.setCacheable(cacheable);
+		if (cmsPageParentId != null) {
+			page.setCmsPageId(CmsPage.findCmsPage(cmsPageParentId));
+		}
+		if (name != null) {
+			page.setName(name);
+		}
+		if (menutitle != null) {
+			page.setMenuTitle(menutitle);
+		}
+		if (synopsis != null) {
+			page.setSynopsis(synopsis);
+		}
+		if (target != null) {
+			page.setTarget(target);
+		}
+		if (url != null) {
+			page.setUrl(url);
+		}
+		if (defaultPage != null) {
+			page.setDefaultPage(defaultPage);
+		}
+		if (externalredirect != null) {
+			page.setExternalRedirect(externalredirect);
+		}
+		if (internalredirect != null) {
+			page.setInternalRedirect(internalredirect);
+		}
+		if (layoutId != null) {
+			page.setCmsLayoutId(CmsLayout.findCmsLayout(layoutId));
+		}
+		if (cacheable != null) {
+			page.setCacheable(cacheable);
+		}
 
 		// TODO check if visible = published
-		page.setVisible(published);
+		if (published != null) {
+			page.setVisible(published);
+		}
 
-		page.setCmsPageTypeId(CmsPageType.checkCmsPageType(null, pagetype, null));
+		if (pagetype != null) {
+			page.setCmsPageTypeId(CmsPageType.checkCmsPageType(null, pagetype, null));
+		}
 
 		try {
-			CmsPage parentPage = CmsPage.findCmsPage(cmsPageParentId);
-			if (parentPage != null) {
-				// layout.setCmsLayoutGroupId(parentGroup);
-				if (parentPage.getCmsPages() != null && parentPage.getCmsPages().contains(page)) {
-					// do nothing
-				} else {
-					if (parentPage.getCmsPages() == null) {
-						parentPage.setCmsPages(new HashSet<CmsPage>());
-						parentPage.getCmsPages().add(page);
+			if (cmsPageParentId != null) {
+				CmsPage parentPage = CmsPage.findCmsPage(cmsPageParentId);
+				if (parentPage != null) {
+					// layout.setCmsLayoutGroupId(parentGroup);
+					if (parentPage.getCmsPages() != null && parentPage.getCmsPages().contains(page)) {
+						// do nothing
 					} else {
-						parentPage.getCmsPages().add(page);
+						if (parentPage.getCmsPages() == null) {
+							parentPage.setCmsPages(new HashSet<CmsPage>());
+							parentPage.getCmsPages().add(page);
+						} else {
+							parentPage.getCmsPages().add(page);
+						}
+						CmsPage.entityManager().persist(parentPage);
 					}
-					CmsPage.entityManager().persist(parentPage);
+					page.setCmsPageId(parentPage);
 				}
-				page.setCmsPageId(parentPage);
-			}
 
-			CmsLayout.entityManager().persist(page);
+				CmsLayout.entityManager().persist(page);
+			}
 
 			// set the page content
 			if (pageContent != null) {
+
+				Set<CmsPageContent> oldContent = page.getCmsPageContents();
+
+				if (oldContent != null) {
+					for (CmsPageContent cpc : oldContent) {
+						cpc.remove();
+					}
+				}
+
 				CmsPageContent cmsPageContent = new CmsPageContent();
 				cmsPageContent.setContentText(pageContent);
 
@@ -1055,6 +1092,14 @@ public class AdminJson {
 				Lang pageLang = Lang.findLang(lang);
 				if (pageLang != null) {
 
+					Set<CmsPageLang> oldLang = page.getCmsPageLangId();
+
+					if (oldLang != null) {
+						for (CmsPageLang cpl : oldLang) {
+							cpl.remove();
+						}
+					}
+
 					CmsPageLang cmsPageLang = new CmsPageLang();
 
 					cmsPageLang.setLangId(pageLang);
@@ -1068,10 +1113,10 @@ public class AdminJson {
 				}
 			}
 		} catch (EntityExistsException e) {
-			return new AdminJson(false, "Layout not created " + e.getMessage());
+			return new AdminJson(false, "Cms Page not created or modified" + e.getMessage());
 		}
 
-		return new AdminJson(true, "CMS Layout created successfully");
+		return new AdminJson(true, "CMS Page created or modified successfully");
 	}
 
 	public static AdminJson cmsPageMove(Integer cmsPageParentId, Integer cmsPageId) {

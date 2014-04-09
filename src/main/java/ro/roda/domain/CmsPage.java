@@ -366,7 +366,7 @@ public class CmsPage {
 
 	@Column(name = "visible", columnDefinition = "bool")
 	@NotNull
-	private boolean visible;
+	private boolean visible = true;
 
 	@Column(name = "published", columnDefinition = "bool")
 	@NotNull
@@ -627,9 +627,11 @@ public class CmsPage {
 	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof CmsPage) {
-			return (id != null && id.equals(((CmsPage) obj).id))
-					|| (name != null && name.equalsIgnoreCase(((CmsPage) obj).name))
-					|| (url != null && url.equalsIgnoreCase(((CmsPage) obj).url));
+			return (id != null && id.equals(((CmsPage) obj).id));
+			// TODO decide the uniqueness conditions (finally, the url and the
+			// name ar no longer unique)
+			// || (name != null && name.equalsIgnoreCase(((CmsPage) obj).name))
+			// || (url != null && url.equalsIgnoreCase(((CmsPage) obj).url));
 		}
 		return false;
 	}

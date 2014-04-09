@@ -1,6 +1,9 @@
 package ro.roda.webjson;
 
+import java.io.IOException;
+
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -23,18 +26,33 @@ public class RodaPageController {
 	@Autowired
 	RodaPageService rodaPageService;
 
+	@RequestMapping(produces = "text/html")
+	public void showDefaultPage(HttpServletRequest request, HttpServletResponse response, Model uiModel) {
+
+		log.trace("Computing default page.");
+
+		try {
+			response.sendRedirect(request.getRequestURL().toString() + rodaPageService.generateDefaultPageUrl());
+		} catch (IOException ioe) {
+			// TODO log
+		}
+
+	}
+
 	@RequestMapping(value = "/**", produces = "text/html")
 	public String show(HttpServletRequest request, Model uiModel) {
 
 		String url = (String) request.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE);
 
 		url = url.substring(requestMapping.length());
-//		log.trace(url);
+		log.trace("Computing page:: " + url);
 
 		// "url" now is the full URL with a trailing slash "/..."
 
-		String pageBody = rodaPageService.generatePage(url)[0];
-		String pageTitle = rodaPageService.generatePage(url)[1];
+		String[] generatedPage = rodaPageService.generatePage(url);
+
+		String pageBody = generatedPage[0];
+		String pageTitle = generatedPage[1];
 
 		// uiModel.addAttribute("rodapage", page);
 		// uiModel.addAttribute("pageUrl", url);

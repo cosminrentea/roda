@@ -36,19 +36,16 @@ public class RodaPageServiceImpl implements RodaPageService {
 
 	@CacheEvict(value = "pages")
 	public void evict(String url) {
-	
+
 	}
 
 	@CacheEvict(value = "pages", allEntries = true)
 	public void evictAll() {
-	
+
 	}
 
 	@Cacheable(value = "pages")
 	public String[] generatePage(String url) {
-		String[] pageContentAndTitle = new String[2];
-		StringBuilder sb = new StringBuilder();
-
 		// if (checkFullRelativeUrl(url)) {
 
 		// the URL fragment is no longer unique, but the full URL is
@@ -57,16 +54,28 @@ public class RodaPageServiceImpl implements RodaPageService {
 		// CmsPage page = CmsPage.findCmsPage(dbUrl);
 
 		CmsPage page = CmsPage.findCmsPageByFullUrl(url);
-		String pageTitle;
 
-		if (page != null) {
-			String pageContent = replacePageContent(getLayout(page, url), page);
+		return generatePage(page, url);
+	}
+
+	public String generateDefaultPageUrl() {
+		CmsPage defaultPage = CmsPage.findCmsPageDefault();
+		return generateFullRelativeUrl(defaultPage);
+	}
+
+	private String[] generatePage(CmsPage cmsPage, String url) {
+		String pageTitle;
+		String[] pageContentAndTitle = new String[2];
+		StringBuilder sb = new StringBuilder();
+
+		if (cmsPage != null) {
+			String pageContent = replacePageContent(getLayout(cmsPage, url), cmsPage);
 
 			// pageContent = StringUtils.replace(pageContent, "\\", "\\\\");
 			// pageContent = StringUtils.replace(pageContent, "\"", "\\\"");
 
 			sb.append(pageContent);
-			pageTitle = page.getName();
+			pageTitle = cmsPage.getName();
 		} else {
 			sb.append("<html><div> The page you requested does not exist. (url: " + url + ")</div></html>");
 			pageTitle = "Error";
@@ -299,6 +308,7 @@ public class RodaPageServiceImpl implements RodaPageService {
 
 			}
 		}
+
 		return result;
 	}
 

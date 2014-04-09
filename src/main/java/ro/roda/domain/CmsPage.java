@@ -118,6 +118,23 @@ public class CmsPage {
 		return null;
 	}
 
+	public static CmsPage findCmsPageDefault() {
+		TypedQuery<CmsPage> query = entityManager().createQuery("SELECT o FROM CmsPage o WHERE defaultPage = true",
+				CmsPage.class);
+
+		// the query returns only one result, as there should be only one
+		// default page at a moment
+		try {
+			if (query != null) {
+				return query.getSingleResult();
+			}
+		} catch (Exception e) {
+			// TODO log
+		}
+
+		return null;
+	}
+
 	public static CmsPage findCmsPageByFullUrl(String url) {
 		if (url == null)
 			return null;
@@ -549,6 +566,10 @@ public class CmsPage {
 	}
 
 	public void setDefaultPage(boolean defaultPage) {
+		CmsPage existantDefaultPage = findCmsPageDefault();
+		if (existantDefaultPage != null) {
+			existantDefaultPage.defaultPage = false;
+		}
 		this.defaultPage = defaultPage;
 	}
 

@@ -268,7 +268,7 @@ public class ImporterServiceImpl implements ImporterService {
 
 	private void importCmsFilesRec(File dir, CmsFolder cmsFolder, String path) {
 		try {
-			Tika tika= new Tika();
+			Tika tika = new Tika();
 			File[] files = dir.listFiles();
 			for (File file : files) {
 				if (file.isDirectory()) {
@@ -280,8 +280,8 @@ public class ImporterServiceImpl implements ImporterService {
 					importCmsFilesRec(file, newFolder, path + "/" + file.getName());
 				} else {
 					// TODO set content-type to a real value
-					MockMultipartFile mockMultipartFile = new MockMultipartFile(file.getName(), file.getName(), tika.detect(file),
-							new FileInputStream(file));
+					MockMultipartFile mockMultipartFile = new MockMultipartFile(file.getName(), file.getName(),
+							tika.detect(file), new FileInputStream(file));
 
 					// TODO what is the alias of a file? for the moment, it is
 					// its name (without extension)
@@ -417,6 +417,9 @@ public class ImporterServiceImpl implements ImporterService {
 							case "menutitle":
 								p.setMenuTitle(content);
 								break;
+							case "url":
+								p.setUrl(content);
+								break;
 							case "synopsis":
 								p.setSynopsis(content);
 								break;
@@ -476,7 +479,9 @@ public class ImporterServiceImpl implements ImporterService {
 					// set the parent of the page
 					p.setCmsPageId(parent);
 
-					p.setUrl(processPageUrl(p.getName(), parent));
+					if (p.getUrl() == null || p.getUrl().trim().equals("")) {
+						p.setUrl(processPageUrl(p.getName(), parent));
+					}
 
 					p.persist();
 

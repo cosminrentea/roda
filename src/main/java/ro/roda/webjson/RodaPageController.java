@@ -32,7 +32,7 @@ public class RodaPageController {
 		log.trace("Computing default page.");
 
 		try {
-			response.sendRedirect(request.getRequestURL().toString() + rodaPageService.generateDefaultPageUrl());
+			response.sendRedirect(request.getContextPath() + requestMapping + rodaPageService.generateDefaultPageUrl());
 		} catch (IOException ioe) {
 			// TODO log
 		}
@@ -40,7 +40,7 @@ public class RodaPageController {
 	}
 
 	@RequestMapping(value = "/**", produces = "text/html")
-	public String show(HttpServletRequest request, Model uiModel) {
+	public String show(HttpServletRequest request, HttpServletResponse response, Model uiModel) {
 
 		String url = (String) request.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE);
 
@@ -51,6 +51,32 @@ public class RodaPageController {
 
 		String[] generatedPage = rodaPageService.generatePage(url);
 
+		// if the fields externalredirect and internalredirect are
+		// specified, then externalredirect has greater priority
+		if (generatedPage[2] != null) {
+			// the page should be redirected externally
+			try {
+				// external redirect
+				response.sendRedirect(generatedPage[2]);
+			} catch (IOException ioeExternalRedirect) {
+				// TODO log
+			}
+
+		} else if (generatedPage[3] != null) {
+			// the page should be redirected internally
+			try {
+				// internal redirect
+				response.sendRedirect(request.getContextPath() + requestMapping + generatedPage[3]);
+			} catch (IOException ioeInternalRedirect) {
+				// TODO log
+			}
+		} else {
+			return show(generatedPage, uiModel);
+		}
+		return null;
+	}
+
+	private String show(String[] generatedPage, Model uiModel) {
 		String pageBody = generatedPage[0];
 		String pageTitle = generatedPage[1];
 

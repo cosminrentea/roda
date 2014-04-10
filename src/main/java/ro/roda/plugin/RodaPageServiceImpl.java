@@ -63,12 +63,33 @@ public class RodaPageServiceImpl implements RodaPageService {
 		return generateFullRelativeUrl(defaultPage);
 	}
 
+	/**
+	 * Returns an array of 4 Strings, as follows: if the page is redirected, the
+	 * array will contain [null, null, redirectExternalUrl, redrectInternalUrl];
+	 * otherwise, the array will contain [pageContent, pageTitle, null, null].
+	 * 
+	 * @param cmsPage
+	 * @param url
+	 * @return
+	 */
 	private String[] generatePage(CmsPage cmsPage, String url) {
 		String pageTitle;
-		String[] pageContentAndTitle = new String[2];
+		String[] pageContentAndTitle = new String[4];
 		StringBuilder sb = new StringBuilder();
 
 		if (cmsPage != null) {
+
+			if (cmsPage.getExternalRedirect() != null && !cmsPage.getExternalRedirect().trim().equals("")) {
+				pageContentAndTitle[2] = cmsPage.getExternalRedirect();
+			}
+			if (cmsPage.getInternalRedirect() != null && !cmsPage.getInternalRedirect().trim().equals("")) {
+				pageContentAndTitle[3] = cmsPage.getInternalRedirect();
+			}
+
+			if (pageContentAndTitle[2] != null || pageContentAndTitle[3] != null) {
+				return pageContentAndTitle;
+			}
+
 			String pageContent = replacePageContent(getLayout(cmsPage, url), cmsPage);
 
 			// pageContent = StringUtils.replace(pageContent, "\\", "\\\\");

@@ -1,0 +1,92 @@
+\documentclass[11pt,twoside,romanian]{extbook}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{color}
+\usepackage{comment}
+\usepackage{times}
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr}
+\usepackage{lscape}
+\usepackage{float}
+\usepackage{listings}
+\usepackage{babel}
+\usepackage{amsmath}
+\usepackage{amssymb,amsfonts,textcomp}
+\usepackage{array}
+\usepackage{hhline}
+\usepackage[pdftex]{graphicx}
+\PassOptionsToPackage{hyphens}{url}\usepackage[pdftitle={ANEXE - Sistemul de acces la date}, pdfauthor={RODA}, colorlinks=true, linkcolor=blue]{hyperref}
+
+%\hypersetup{pdftex, colorlinks=true, linkcolor=blue, citecolor=blue, filecolor=blue, urlcolor=blue, pdftitle=, pdfauthor=, pdfsubject=, pdfkeywords=}
+\pagestyle{fancy}
+\DeclareGraphicsExtensions{.png,.gif,.jpg,.pdf}
+\addto\captionsromanian{\renewcommand{\chaptername}{Sec\c{t}iunea}}
+
+\begin{document}
+
+\pagenumbering{arabic} 
+\cfoot{\tiny{RODA}\tiny}
+\fancyhead[LE,RO]{ANEXE - \leftmark}
+\fancyhead[RE,LO]{\thepage}
+
+%TODO Trebuie schimbat la fiecare Faza !
+
+\title{ANEXA 1.\\
+Faza nr. V 
+cu titlul:\\
+``Dezvoltare software, pachet 5: jurnalizare, modul CMS, modul management utilizatori.''
+}
+
+\author{RODA -- Arhiva Rom\^{a}n\u{a} de Date Sociale}
+
+\date{ }
+
+\maketitle
+
+\newpage
+\thispagestyle{plain}
+\tableofcontents{}
+\setcounter{page}{1}
+
+\begin{comment}
+\chapter{Modulul de management de continut (CMS)}
+
+\section{Front-end CMS}
+
+\include{URL-dispatching}
+% Cosmin - schema si poze chiar si din docs. Spring, de ce sunt 2 dispatchere (web si json), de ce s-au structurat URL-urile in acest fel (/admin ... etc.)
+% Letitia - controller '/page'
+
+% Cosmin! e nevoie de '/admin' realizat in server
+
+% later:  /resources/root => sa fie accesibil la:   /databrowser
+
+\include{generare-pagini}
+% Letitia
+
+\include{macro}
+% Cosmin - pornind de la GoogleDocs + breadcrumbs + menu
+
+\include{thumbnails}
+% Letitia
+
+\include{cache} 
+%Cosmin - ehcache, de ce aceasta solutie, scalabilitate, configurare manager si cache-uri individuale, implementare
+
+\include{cmsbackend}
+% Sorin - interfata de administrare a CMS
+
+\chapter{Modulul de management al utilizatorilor}
+\include{usersbackend}
+% Sorin
+
+\chapter{Sistemul de jurnalizare}
+
+\include{audit}
+% Sorin - interfata
+
+\include{audit-server}
+% Letitia - serviciile implementate, legate de audit
+\end{comment}
+
+\end{document}

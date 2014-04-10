@@ -69,7 +69,7 @@ service postgresql initdb
 chkconfig postgresql on
 \end{lstlisting}
 
-Trebuie editat fisierul \emph{ /var/lib/pgsql/data/pg_hba.conf}, 
+Trebuie editat fisierul \emph{ /var/lib/pgsql/data/pg\_hba.conf}, 
 dezactivand/comentand toate liniile continand "ident" si adaugand urmatoarele linii: 
 \begin{lstlisting}[breaklines=true]
 local	all	all	trust

@@ -29,14 +29,13 @@
 				[[Code: PageContent]]
 		    	<div class="clear"></div>
 		    </div>
-		  </div>
-	</td>							
+		  </td>							
 		</tr>
 		<tr>
 			<td colspan="2" valign="top" align="left" style="vertical-align:top" class="footer">
-			<br /><br /><br /><br />
+				<br /><br /><br /><br />
 			</td>							
-			</tr>
+		</tr>
 		</table>
     </div>
 </td>

@@ -390,12 +390,13 @@ public class AdminJsonController {
 			@RequestParam(value = "layout", required = false) Integer layoutId,
 			@RequestParam(value = "cacheable", required = false) Integer cacheable,
 			@RequestParam(value = "published", required = false) boolean published,
+			@RequestParam(value = "navigable", required = false) boolean navigable,
 			@RequestParam(value = "pagetype", required = false) String pageType,
 			@RequestParam(value = "parentid", required = false) Integer parent,
 			@RequestParam(value = "content", required = false) String content) {
 
-		AdminJson cmspageSave = adminJsonService.cmsPageSave(parent, title, lang, menutitle, synopsis, target, url,
-				defaultPage, externalredirect, internalredirect, layoutId, cacheable, published, pageType, id, content);
+		AdminJson cmspageSave = adminJsonService.cmsPageSave(true, parent, title, lang, menutitle, synopsis, target, url,
+				defaultPage, externalredirect, internalredirect, layoutId, cacheable, published, navigable, pageType, id, content);
 
 		if (cmspageSave == null) {
 			return null;
@@ -404,6 +405,35 @@ public class AdminJsonController {
 
 	}
 
+	@RequestMapping(value = "/cmspagepreview", method = RequestMethod.POST, produces = "application/json")
+	@ResponseBody
+	public String cmspagePreview(@RequestParam(value = "title") String title,
+			@RequestParam(value = "id", required = false) Integer id,
+			@RequestParam(value = "lang", required = false) String lang,
+			@RequestParam(value = "menutitle", required = false) String menutitle,
+			@RequestParam(value = "synopsis", required = false) String synopsis,
+			@RequestParam(value = "target", required = false) String target,
+			@RequestParam(value = "url", required = false) String url,
+			@RequestParam(value = "default", required = false) boolean defaultPage,
+			@RequestParam(value = "externalredirect", required = false) String externalredirect,
+			@RequestParam(value = "internalredirect", required = false) String internalredirect,
+			@RequestParam(value = "layout", required = false) Integer layoutId,
+			@RequestParam(value = "cacheable", required = false) Integer cacheable,
+			@RequestParam(value = "published", required = false) boolean published,
+			@RequestParam(value = "navigable", required = false) boolean navigable,
+			@RequestParam(value = "pagetype", required = false) String pageType,
+			@RequestParam(value = "parentid", required = false) Integer parent,
+			@RequestParam(value = "content", required = false) String content) {
+
+		AdminJson cmspageSave = adminJsonService.cmsPageSave(false, parent, title, lang, menutitle, synopsis, target, url,
+				defaultPage, externalredirect, internalredirect, layoutId, cacheable, published, navigable, pageType, id, content);
+
+		if (cmspageSave == null) {
+			return null;
+		}
+		return cmspageSave.toJson();
+
+	}
 	@RequestMapping(value = "/cmspagemove", method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody
 	public String cmspageMove(@RequestParam(value = "group") Integer groupId,

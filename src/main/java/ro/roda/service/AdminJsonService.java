@@ -77,10 +77,10 @@ public interface AdminJsonService {
 	public abstract AdminJson groupMessage(Integer groupId, String subject, String message);
 
 	// CMS PAGE
-	public abstract AdminJson cmsPageSave(Integer cmsPageParentId, String name, String lang, String menutitle,
+	public abstract AdminJson cmsPageSave(boolean preview, Integer cmsPageParentId, String name, String lang, String menutitle,
 			String synopsis, String target, String url, boolean defaultPage, String externalredirect,
-			String internalredirect, Integer layoutId, Integer cacheable, boolean published, String pagetype,
-			Integer cmsPageId, String pageContent);
+			String internalredirect, Integer layoutId, Integer cacheable, boolean published, boolean navigable,
+			String pagetype, Integer cmsPageId, String pageContent);
 
 	public abstract AdminJson cmsPageMove(Integer cmsPageParentId, Integer cmsPageId);
 

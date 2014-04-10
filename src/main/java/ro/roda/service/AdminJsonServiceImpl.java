@@ -174,12 +174,12 @@ public class AdminJsonServiceImpl implements AdminJsonService {
 	}
 
 	// CMS PAGE
-	public AdminJson cmsPageSave(Integer cmsPageParentId, String name, String lang, String menutitle, String synopsis,
+	public AdminJson cmsPageSave(boolean preview, Integer cmsPageParentId, String name, String lang, String menutitle, String synopsis,
 			String target, String url, boolean defaultPage, String externalredirect, String internalredirect,
-			Integer layoutId, Integer cacheable, boolean published, String pagetype, Integer cmsPageId,
+			Integer layoutId, Integer cacheable, boolean published, boolean navigable, String pagetype, Integer cmsPageId,
 			String pageContent) {
-		return AdminJson.cmsPageSave(cmsPageParentId, name, lang, menutitle, synopsis, target, url, defaultPage,
-				externalredirect, internalredirect, layoutId, cacheable, published, pagetype, cmsPageId, pageContent);
+		return AdminJson.cmsPageSave(preview, cmsPageParentId, name, lang, menutitle, synopsis, target, url, defaultPage,
+				externalredirect, internalredirect, layoutId, cacheable, published, navigable, pagetype, cmsPageId, pageContent);
 	}
 
 	public AdminJson cmsPageMove(Integer cmsPageParentId, Integer cmsPageId) {

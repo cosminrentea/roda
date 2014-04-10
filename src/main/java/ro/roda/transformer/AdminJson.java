@@ -985,10 +985,10 @@ public class AdminJson {
 	}
 
 	// Cms Page Management Methods
-	public static AdminJson cmsPageSave(Integer cmsPageParentId, String name, String lang, String menutitle,
+	public static AdminJson cmsPageSave(Boolean preview, Integer cmsPageParentId, String name, String lang, String menutitle,
 			String synopsis, String target, String url, Boolean defaultPage, String externalredirect,
-			String internalredirect, Integer layoutId, Integer cacheable, Boolean published, String pagetype,
-			Integer cmsPageId, String pageContent) {
+			String internalredirect, Integer layoutId, Integer cacheable, Boolean published, Boolean navigable,
+			String pagetype, Integer cmsPageId, String pageContent) {
 
 		CmsPage page = null;
 		if (cmsPageId != null) {
@@ -1033,6 +1033,10 @@ public class AdminJson {
 		// TODO check if visible = published
 		if (published != null) {
 			page.setVisible(published);
+		}
+
+		if (navigable != null) {
+			page.setNavigable(navigable);
 		}
 
 		if (pagetype != null) {

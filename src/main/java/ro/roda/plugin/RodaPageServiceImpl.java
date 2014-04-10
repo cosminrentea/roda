@@ -328,7 +328,7 @@ public class RodaPageServiceImpl implements RodaPageService {
 		return result;
 	}
 
-	private String generateFullRelativeUrl(CmsPage cmsPage) {
+	public String generateFullRelativeUrl(CmsPage cmsPage) {
 		String result = "";
 		if (cmsPage != null) {
 			result = cmsPage.getUrl();
@@ -478,7 +478,7 @@ public class RodaPageServiceImpl implements RodaPageService {
 				}
 
 				result.append("</ul>");
-			} else {
+			} else if (cmsPage.isNavigable()) {
 				result.append("<li>");
 				result.append(PAGE_URL_LINK_CODE + cmsPage.getUrl() + "]]");
 				result.append("</li>");

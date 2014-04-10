@@ -9,9 +9,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.HandlerMapping;
 
+import ro.roda.domain.CmsPage;
 import ro.roda.plugin.RodaPageService;
 import ro.roda.thumbnails.ThumbnailsService;
 import ro.roda.transformer.AdminJson;
@@ -34,26 +36,37 @@ public class CacheController {
 	@ResponseBody
 	public String evictThumbnails() {
 		thumbnailsService.evictAll();
-		return new AdminJson(true, "Cache evicted - Thumbnails - ALL").toJson();
+		return new AdminJson(true, "Cache evicted - Thumbnails: ALL").toJson();
 	}
 
 	@RequestMapping(value = "/evict-pages", method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody
 	public String evictPages() {
 		rodaPageService.evictAll();
-		return new AdminJson(true, "Cache evicted - Pages - ALL").toJson();
+		return new AdminJson(true, "Cache evicted - Pages: ALL").toJson();
 	}
 
-	@RequestMapping(value = "/evict-page/**", method = RequestMethod.POST, produces = "application/json")
+	@RequestMapping(value = "/evict-page-url/**", method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody
-	public String show(HttpServletRequest request, Model uiModel) {
+	public String evictPageUrl(HttpServletRequest request, Model uiModel) {
 		String url = (String) request.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE);
 		url = url.substring(evictPageMapping.length());
-		log.trace(url);
-		
+		log.trace("Evict from pages cache: " + url);
+
 		rodaPageService.evict(url);
-		
-		return new AdminJson(true, "Cache evicted - Pages - " + url).toJson();
+
+		return new AdminJson(true, "Cache evicted - Pages: URL = " + url).toJson();
+	}
+
+	@RequestMapping(value = "/evict-page-id/{id}", method = RequestMethod.POST, produces = "application/json")
+	@ResponseBody
+	public String evictPageId(@RequestParam(value = "id") Integer pageId) {
+		// TODO obtain URL from pageId
+		String url = rodaPageService.generateFullRelativeUrl(CmsPage.findCmsPage(pageId));
+		log.trace("Evict from pages cache: " + url);
+		rodaPageService.evict(url);
+
+		return new AdminJson(true, "Cache evicted - Pages: ID = " + pageId + " ; URL = " + url).toJson();
 	}
 
 }

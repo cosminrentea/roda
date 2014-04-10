@@ -44,7 +44,7 @@ Ext.define('RODAdmin.controller.cms.page.PageTree', {
 				 *           {@link #onPageviewSelectionChange}
 				 */
 	            selectionchange : this.onPageviewSelectionChange,
-	            itemcontextmenu : this.onTreeContextMenu
+	            itemcontextmenu : this.onTreeContextMenu,
 	        },
 	        "pagecontextmenu menuitem#deletepage" : {
 		        /**
@@ -118,9 +118,24 @@ Ext.define('RODAdmin.controller.cms.page.PageTree', {
 				 */
 		        click : this.onExpandTreeClick
 	        },
+	        "pagesitemsview treepanel#pgfolderview > treeview" : {
+				drop: this.onTreeMDrop
+			},
+	        
 
 	    });
     },
+    /**
+	 * @method 
+	 * 
+	 * drop event for page tree
+	 */
+    onTreeMDrop : function(node,data,overModel,dropPosition) {
+    	console.log('moved ' + data.records[0].data.title + ' to ' + overModel.data.title + ' ' + dropPosition );
+		//  	 this.getPagetree().store.load();
+    },
+    
+    
     /**
 	 * @method
 	 */

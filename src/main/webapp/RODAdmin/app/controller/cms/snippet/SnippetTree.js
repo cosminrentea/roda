@@ -96,7 +96,16 @@ Ext.define('RODAdmin.controller.cms.snippet.SnippetTree', {
 				 *           {@link #onExpandTreeClick}
 				 */	
 		        click : this.onExpandTreeClick
-	        },		    
+	        },	
+			"snippetitemsview treepanel#snfolderview > treeview" : {
+		            /**
+					 * @listener snippetitemsview treepanel#snfolderview > treeview triggered-by:
+					 *           {@link RODAdmin.view.cms.snippet.Itemsview Itemsview}
+					 *           treepanel#folderview > treeview  
+					 *           {@link #onTreeDrop}
+					 */	        	
+					drop: this.onTreeDrop
+			},	        
 	        "snippetcontextmenu menuitem#deletesnippet" : {
 	            /**
 				 * @listener snippetcontextmenu-menuitem-deletesnippet-click triggered-by:
@@ -137,6 +146,12 @@ Ext.define('RODAdmin.controller.cms.snippet.SnippetTree', {
 	        
 	    });
     },
+
+    onTreeDrop : function(node, data,overModel,dropPosition) {
+    	console.log('moved ' + data.records[0].data.indice + ' to ' + overModel.data.indice + ' ' + dropPosition );
+		//  	 this.getPagetree().store.load();
+    },
+    
     /**
 	 * @method
 	 */

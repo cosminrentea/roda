@@ -179,16 +179,12 @@ Ext.define('RODAdmin.controller.cms.file.FileTree', {
 					},
 				});
 	},
+	
     /**
 	 * @method
 	 */    
 	onTreeDrop : function (node, data, overModel, dropPosition, eOpts) {
-	 	console.log('first, were here');
-		console.log(node);
-		console.log(data);
-		console.log(overModel);
-		console.log(dropPosition);
-		//din toate astea scoatem date pentru un url de tip changeparent
+    	console.log('moved ' + data.records[0].data.indice + ' to ' + overModel.data.indice + ' ' + dropPosition );		
 	},
 	
     /**

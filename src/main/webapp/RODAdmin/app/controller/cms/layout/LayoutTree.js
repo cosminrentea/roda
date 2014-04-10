@@ -115,6 +115,15 @@ Ext.define('RODAdmin.controller.cms.layout.LayoutTree', {
 	                        			    */	        	
 	                        			   click : this.onExpandTreeClick
 	                        		   },
+	               					"layoutitemsview treepanel#lyfolderview > treeview" : {
+	            			            /**
+	            						 * @listener itemsview-treepanel-folderview-treeview-drop triggered-by:
+	            						 *           {@link RODAdmin.view.cms.files.Itemsview Itemsview}
+	            						 *           treepanel#folderview > treeview  
+	            						 *           {@link #onTreeDrop}
+	            						 */	        	
+	            						drop: this.onTreeDrop
+	            					},
 	                        		   "layoutcontextmenu menuitem#deletelayout" : {
 	                        			   /**
 	                        			    * @listener layoutcontextmenu-menuitem-deletelayout
@@ -150,9 +159,15 @@ Ext.define('RODAdmin.controller.cms.layout.LayoutTree', {
 	                        			    */	        	
 	                        			   click : this.onNewGroupClick
 	                        		   },
+	                        		   
 
 	                        	   });
 	                           },
+	                           
+	                           onTreeDrop : function(node,data,overModel,dropPosition) {
+	                           	console.log('moved ' + data.records[0].data.name + ' to ' + overModel.data.name + ' ' + dropPosition );
+	                           },
+	                           
 	                           /**
 	                            * @method
 	                            */

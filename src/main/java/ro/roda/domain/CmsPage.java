@@ -118,6 +118,25 @@ public class CmsPage {
 		return null;
 	}
 
+	public static List<CmsPage> findCmsPageByLangAndType(Lang lang, CmsPageType pageType) {
+		if (lang == null || pageType == null)
+			return null;
+
+		String pageByLangAndTypeQuery = "";
+		TypedQuery<CmsPage> query;
+
+		pageByLangAndTypeQuery = "SELECT o FROM CmsPage o INNER JOIN o.cmsPageLangId l WHERE l.langId = ?1 and o.cmsPageTypeId = ?2";
+
+		query = entityManager().createQuery(pageByLangAndTypeQuery, CmsPage.class).setParameter(1, lang)
+				.setParameter(2, pageType);
+
+		if (query != null && query.getResultList().size() > 0) {
+			return query.getResultList();
+		}
+
+		return null;
+	}
+
 	public static CmsPage findCmsPageDefault() {
 		TypedQuery<CmsPage> query = entityManager().createQuery("SELECT o FROM CmsPage o WHERE defaultPage = true",
 				CmsPage.class);

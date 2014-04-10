@@ -45,7 +45,7 @@ public class RodaPageController {
 		String url = (String) request.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE);
 
 		url = url.substring(requestMapping.length());
-		log.trace("Computing page:: " + url);
+		log.trace("Computing page: " + url);
 
 		// "url" now is the full URL with a trailing slash "/..."
 
@@ -67,7 +67,8 @@ public class RodaPageController {
 			try {
 				// internal redirect
 				response.sendRedirect(request.getContextPath() + requestMapping + generatedPage[3]);
-			} catch (IOException ioeInternalRedirect) {
+
+			} catch (Exception internalRedirectException) {
 				// TODO log
 			}
 		} else {

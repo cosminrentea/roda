@@ -1014,9 +1014,6 @@ public class AdminJson {
 		if (target != null) {
 			page.setTarget(target);
 		}
-		if (url != null) {
-			page.setUrl(url);
-		}
 		if (defaultPage != null) {
 			page.setDefaultPage(defaultPage);
 		}
@@ -1060,9 +1057,13 @@ public class AdminJson {
 					}
 					page.setCmsPageId(parentPage);
 				}
-
-				CmsLayout.entityManager().persist(page);
 			}
+
+			if (url != null) {
+				page.setUrl(processPageUrl(url, page.getName(), page, page.getCmsPageId()));
+			}
+
+			CmsPage.entityManager().persist(page);
 
 			// set the page content
 			if (pageContent != null) {
@@ -1112,6 +1113,7 @@ public class AdminJson {
 					page.setCmsPageLangId(cmsPageLangs);
 				}
 			}
+
 		} catch (EntityExistsException e) {
 			return new AdminJson(false, "Cms Page not created or modified" + e.getMessage());
 		}
@@ -1196,4 +1198,35 @@ public class AdminJson {
 		}
 	}
 
+	private static String processPageUrl(String url, String pageTitle, CmsPage page, CmsPage parent) {
+		String result = null;
+
+		if (url != null && !url.trim().equals("")) {
+			result = url;
+		} else {
+
+			if (pageTitle != null) {
+				result = pageTitle.toLowerCase().trim();
+				// replace (multiple) spaces with a (single) "-"
+				result = result.replaceAll("\\s+", "-");
+				result = result.replaceAll("-+", "-");
+			}
+		}
+
+		// generate a new name, relative to the parent page
+
+		// check if there is already a child of the current parent having the
+		// same url
+		CmsPage resultPage = CmsPage.findCmsPageByParent(result, parent);
+
+		if (resultPage != null && resultPage != page) {
+			int i = 1;
+			while (CmsPage.findCmsPageByParent(result + "_" + i, parent) != null) {
+				i++;
+			}
+			result = result + "_" + i;
+		}
+
+		return result;
+	}
 }

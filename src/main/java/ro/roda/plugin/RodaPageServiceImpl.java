@@ -15,7 +15,9 @@ import org.springframework.transaction.annotation.Transactional;
 import ro.roda.domain.CmsFile;
 import ro.roda.domain.CmsLayout;
 import ro.roda.domain.CmsPage;
+import ro.roda.domain.CmsPageType;
 import ro.roda.domain.CmsSnippet;
+import ro.roda.domain.Lang;
 
 @Service
 @Transactional
@@ -31,6 +33,8 @@ public class RodaPageServiceImpl implements RodaPageService {
 	private static String PAGE_CONTENT_CODE = "[[Code: PageContent]]";
 	private static String PAGE_TREE_BY_URL_CODE = "[[Code: PageTreeByUrl('";
 	private static String PAGE_BREADCRUMBS = "[[Code: PageBreadcrumbs('";
+
+	private static String DEFAULT_ERROR_PAGE_LANG = "en";
 
 	private final Log log = LogFactory.getLog(this.getClass());
 
@@ -65,28 +69,27 @@ public class RodaPageServiceImpl implements RodaPageService {
 
 	/**
 	 * Returns an array of 4 Strings, as follows: if the page is redirected, the
-	 * array will contain [null, null, redirectExternalUrl, redrectInternalUrl];
-	 * otherwise, the array will contain [pageContent, pageTitle, null, null].
+	 * array will contain [null, null, redirectExternalUrl, null] or [null,
+	 * null, null, redirectInternalUrl]; otherwise, the array will contain
+	 * [pageContent, pageTitle, null, null].
 	 * 
 	 * @param cmsPage
 	 * @param url
 	 * @return
 	 */
 	private String[] generatePage(CmsPage cmsPage, String url) {
-		String pageTitle;
-		String[] pageContentAndTitle = new String[4];
+		String pageTitle = "";
+		String[] pageContentAndTitle = new String[5];
 		StringBuilder sb = new StringBuilder();
 
 		if (cmsPage != null) {
 
 			if (cmsPage.getExternalRedirect() != null && !cmsPage.getExternalRedirect().trim().equals("")) {
 				pageContentAndTitle[2] = cmsPage.getExternalRedirect();
+				return pageContentAndTitle;
 			}
 			if (cmsPage.getInternalRedirect() != null && !cmsPage.getInternalRedirect().trim().equals("")) {
 				pageContentAndTitle[3] = cmsPage.getInternalRedirect();
-			}
-
-			if (pageContentAndTitle[2] != null || pageContentAndTitle[3] != null) {
 				return pageContentAndTitle;
 			}
 
@@ -98,8 +101,37 @@ public class RodaPageServiceImpl implements RodaPageService {
 			sb.append(pageContent);
 			pageTitle = cmsPage.getName();
 		} else {
-			sb.append("<html><div> The page you requested does not exist. (url: " + url + ")</div></html>");
-			pageTitle = "Error";
+			String requestLang = null;
+
+			// the first fragment of the url might be the requested language
+			if (url.indexOf("/", 1) > 0) {
+				requestLang = url.substring(1, url.indexOf("/", 1));
+			}
+
+			Lang lang = Lang.findLang(requestLang);
+			if (lang == null) {
+				lang = Lang.findLang(DEFAULT_ERROR_PAGE_LANG);
+			}
+
+			List<CmsPage> errorPages = CmsPage.findCmsPageByLangAndType(lang,
+					CmsPageType.checkCmsPageType(null, "error404", null));
+
+			if (errorPages != null && errorPages.size() > 0) {
+				String pageContent = replacePageContent(getLayout(errorPages.get(0), url), errorPages.get(0));
+
+				sb.append(pageContent);
+				pageTitle = errorPages.get(0).getName();
+
+				// internal redirect to the error page
+				// pageContentAndTitle[3] =
+				// generateFullRelativeUrl(errorPages.get(0));
+				// return pageContentAndTitle;
+			}
+
+			// if there is no error page defined, then:
+			// sb.append("<html><div> The page you requested does not exist. (url: "
+			// + url + ")</div></html>");
+			// pageTitle = "Error";
 		}
 		pageContentAndTitle[0] = sb.toString();
 		pageContentAndTitle[1] = pageTitle;

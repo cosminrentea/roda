@@ -479,9 +479,7 @@ public class ImporterServiceImpl implements ImporterService {
 					// set the parent of the page
 					p.setCmsPageId(parent);
 
-					if (p.getUrl() == null || p.getUrl().trim().equals("")) {
-						p.setUrl(processPageUrl(p.getName(), parent));
-					}
+					p.setUrl(processPageUrl(p.getUrl(), p.getName(), parent));
 
 					p.persist();
 
@@ -522,24 +520,30 @@ public class ImporterServiceImpl implements ImporterService {
 
 	}
 
-	private String processPageUrl(String pageTitle, CmsPage parent) {
+	private String processPageUrl(String url, String pageTitle, CmsPage parent) {
 		String result = null;
-		if (pageTitle != null) {
-			result = pageTitle.toLowerCase().trim();
-			// replace (multiple) spaces with a (single) "-"
-			result = result.replaceAll("\\s+", "-");
-			result = result.replaceAll("-+", "-");
+
+		if (url != null && !url.trim().equals("")) {
+			result = url;
+		} else {
+
+			if (pageTitle != null) {
+				result = pageTitle.toLowerCase().trim();
+				// replace (multiple) spaces with a (single) "-"
+				result = result.replaceAll("\\s+", "-");
+				result = result.replaceAll("-+", "-");
+			}
 		}
 
-		// generate a new name
-		// TODO: if definitive, remove the following commented code OR generate
-		// a new name relative to a full URL
+		// generate a new name, relative to the parent page
 
-		List<CmsPage> resultPages = CmsPage.findCmsPage(result);
+		// check if there is already a child of the current parent having the
+		// same url
+		CmsPage resultPage = CmsPage.findCmsPageByParent(result, parent);
 
-		if (resultPages != null && resultPages.size() > 0) {
+		if (resultPage != null) {
 			int i = 1;
-			while (CmsPage.findCmsPage(result + "_" + i) != null) {
+			while (CmsPage.findCmsPageByParent(result + "_" + i, parent) != null) {
 				i++;
 			}
 			result = result + "_" + i;

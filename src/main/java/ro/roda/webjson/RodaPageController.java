@@ -28,13 +28,11 @@ public class RodaPageController {
 
 	@RequestMapping(produces = "text/html")
 	public void showDefaultPage(HttpServletRequest request, HttpServletResponse response, Model uiModel) {
-
-		log.trace("Computing default page.");
-
+		log.trace("Computing default page");
 		try {
 			response.sendRedirect(request.getContextPath() + requestMapping + rodaPageService.generateDefaultPageUrl());
 		} catch (IOException ioe) {
-			// TODO log
+			log.error("Default page exception : ", ioe);
 		}
 
 	}

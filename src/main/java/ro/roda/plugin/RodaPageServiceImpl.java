@@ -424,13 +424,17 @@ public class RodaPageServiceImpl implements RodaPageService {
 
 	private String generatePageBreadcrumbs(CmsPage cmsPage, String separator) {
 		StringBuilder result = new StringBuilder();
+		// current page title - as text
+		result.append(cmsPage.getMenuTitle());
+		// the hierarchy of parents - as links
+		cmsPage = cmsPage.getCmsPageId();
 		while (cmsPage != null) {
 			result = result.insert(0,
-					"<a href=\"" + RODA_PAGE_URL + generateFullRelativeUrl(cmsPage) + "\">" + cmsPage.getName()
+					"<a href=\"" + RODA_PAGE_URL + generateFullRelativeUrl(cmsPage) + "\">" + cmsPage.getMenuTitle()
 							+ "</a>" + separator);
 			cmsPage = cmsPage.getCmsPageId();
 		}
-		// log.debug("Breadcrumbs = " + result);
+		// log.trace("Breadcrumbs = " + result);
 		return result.toString();
 	}
 

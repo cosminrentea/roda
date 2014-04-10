@@ -17,7 +17,10 @@
 		Also registers default Formatters and Validators for use across all @Controllers -->
 	<mvc:annotation-driven conversion-service="applicationConversionService" />
 
-
+	<!-- Handles HTTP GET requests for /admin/** by efficiently serving 
+		up static resources (RODA Admin ExtJS app)-->
+	<mvc:resources location="/RODAdmin/" mapping="/admin/**" />
+		
 	<!-- Handles HTTP GET requests for /resources/** by efficiently serving 
 		up static resources -->
 	<mvc:resources location="/, classpath:/META-INF/web-resources/"

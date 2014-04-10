@@ -7,6 +7,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -52,21 +53,17 @@ public class CacheController {
 		String url = (String) request.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE);
 		url = url.substring(evictPageMapping.length());
 		log.trace("Evict from pages cache: " + url);
-
 		rodaPageService.evict(url);
-
 		return new AdminJson(true, "Cache evicted - Pages: URL = " + url).toJson();
 	}
 
 	@RequestMapping(value = "/evict-page-id/{id}", method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody
-	public String evictPageId(@RequestParam(value = "id") Integer pageId) {
-		// TODO obtain URL from pageId
+	public String evictPageId(@PathVariable("id") Integer pageId) {
 		String url = rodaPageService.generateFullRelativeUrl(CmsPage.findCmsPage(pageId));
-		log.trace("Evict from pages cache: " + url);
+		log.trace("Evict from pages cache: ID =" + pageId + " , URL = " + url);
 		rodaPageService.evict(url);
-
-		return new AdminJson(true, "Cache evicted - Pages: ID = " + pageId + " ; URL = " + url).toJson();
+		return new AdminJson(true, "Cache evicted - Pages: ID = " + pageId + " , URL = " + url).toJson();
 	}
 
 }

@@ -191,9 +191,13 @@ public class RodaPageServiceImpl implements RodaPageService {
 			log.debug("URL =" + url);
 			log.debug("Depth = " + depth);
 
-			result = StringUtils.replace(result, PAGE_LINK_BY_URL_CODE + url + "')]]",
-					generatePageTreeMenu(CmsPage.findCmsPageByParent(url, cmsPage), depth));
-			fromIndex = result.indexOf(PAGE_LINK_BY_URL_CODE, fromIndex + PAGE_LINK_BY_URL_CODE.length());
+			CmsPage rootPage = CmsPage.findCmsPage(url).get(0);
+
+			log.debug("Replaced code is: " + PAGE_TREE_BY_URL_CODE + url + "'," + depth + ")]]");
+
+			result = StringUtils.replace(result, PAGE_TREE_BY_URL_CODE + url + "'," + depth + ")]]",
+					generatePageTreeMenu(rootPage, depth));
+			fromIndex = result.indexOf(PAGE_TREE_BY_URL_CODE, fromIndex + PAGE_TREE_BY_URL_CODE.length());
 		}
 
 		return result;
@@ -453,7 +457,7 @@ public class RodaPageServiceImpl implements RodaPageService {
 
 		result.append("</ul>");
 
-		// log.debug("The menu is:" + result);
+		log.debug("The menu is:" + result);
 
 		return result.toString();
 	}

@@ -1,22 +1,23 @@
 La specificarea in instructiunile de mai jos a sistemului de operare:
 \begin{description} 
 \item [MacOSX =] OS X version 10.8.4, 64 bit
-\item [Ubuntu =] Ubuntu 12.04LTS, kernel 3.2.0-39-generic-pae, 32bit
+\item [Ubuntu =] Ubuntu 12.04LTS, kernel 3.2.0-60-generic-pae, 32 bit
 \item [OpenSUSE = ] OpenSUSE 12.2
+\item [CentOS = ] CentOS 6, 64 bit
 \item [Postgresql =] Postgresql 9.2.4
-\item [Hibernate =] Hibernate 4.1.8
 \item [DbWrench =] DbWrench 2.3.2
-\item [STS =] Spring Tool Suite 3.4.0.RELEASE - based on Eclipse Juno 3.8.2
+\item [STS =] Spring Tool Suite 3.5.0.RELEASE - based on Eclipse 3.8.2
 \item [Maven =] Maven 3
-\item [JVM =] Java Virtual Machine (JVM) 1.6
+\item [Tomcat = ] Tomcat 6 sau Tomcat 7
+\item [JVM =] Java Virtual Machine (JVM) 1.7
 \item [Jenkins =] Jenkins 1.522
-\item [Solr =] Solr 4.4
+\item [Solr =] Solr 4.7
 \item [Sencha Architect =] Sencha Architect 2.2.2
 \end{description}
 
 \section{Instalare si configurare - servicii si software aditional}
 
-\subsection{Instalarea pachetelor necesare}
+\subsection{Instalarea pachetelor necesare pentru development}
 \begin{description}
 \item[MacOSX:]
 
@@ -32,7 +33,7 @@ sudo port install maven3 postgresql92 pgadmin3  apache-solr4 R htmldoc doxygen g
 \item[Ubuntu:]
 Se ruleaza urmatoarele comenzi, din shell:
 \begin{lstlisting}[breaklines=true]
-sudo apt-get install openjdk-6-jdk xvfb maven postgresql-server pgadmin3 solr r-base r-base-dev perl htmldoc doxygen graphviz firefox
+sudo apt-get install openjdk-7-jdk xvfb maven postgresql-server pgadmin3 solr r-base r-base-dev perl htmldoc doxygen graphviz firefox
 \end{lstlisting}
 
 \begin {comment}
@@ -49,6 +50,71 @@ sudo zypper in openjdk-6-jdk postgresql pgadmin3 perl htmldoc doxygen graphviz f
 \end{comment}
 
 \end{description}
+
+\subsection{Instalarea pachetelor necesare pentru deployment pe Server}
+
+\begin{description}
+\item[CentOS, deployment pe Server (nu pentru development):]
+Se ruleaza urmatoarele comenzi, din shell:
+\begin{lstlisting}[breaklines=true]
+yum install java-1.7.0-openjdk-devel git
+\end{lstlisting}
+
+Pentru instalarea Postgresql:
+\begin{lstlisting}[breaklines=true]
+yum install postgresql 
+
+service postgresql initdb
+
+chkconfig postgresql on
+\end{lstlisting}
+
+Trebuie editat fisierul \emph{ /var/lib/pgsql/data/pg_hba.conf}, 
+dezactivand/comentand toate liniile continand "ident" si adaugand urmatoarele linii: 
+\begin{lstlisting}[breaklines=true]
+local	all	all	trust
+host	all	127.0.0.1/32	trust
+\end{lstlisting}
+
+Se (re)starteaza Postgresql:
+\begin{lstlisting}[breaklines=true]
+service postgresql restart
+\end{lstlisting}
+
+Pentru instalarea Maven:
+\begin{lstlisting}[breaklines=true]
+wget http://repos.fedorapeople.org/repos/dchen/apache-maven/epel-apache-maven.repo -O /etc/yum.repos.d/epel-apache-maven.repo
+
+yum install apache-maven
+\end{lstlisting}
+
+Pentru instalarea R:
+\begin{lstlisting}[breaklines=true]
+rpm -Uvh http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
+
+yum install R
+\end{lstlisting}
+
+Pentru instalarea Tomcat 6:
+\begin{lstlisting}[breaklines=true]
+yum install tomcat6 tomcat6-webapps tomcat6-admin-webapps
+
+chkconfig tomcat6 on
+
+service tomcat6 restart
+\end{lstlisting}
+
+Pentru instalarea Solr (4.7.1):
+\begin{lstlisting}[breaklines=true]
+wget http://mirrors.hostingromania.ro/apache.org/lucene/solr/4.7.1/solr-4.7.1.tgz
+
+tar -xzf solr-4.7.1.tgz
+
+??? TODO NEXT
+\end{lstlisting}
+
+\end{description}
+
 
 \subsection{LaTeX}
 O distributie LaTeX este necesara pentru generarea documentatiei:
@@ -77,12 +143,13 @@ in fisier se scrie:
 \end{lstlisting}
 
 \label{java_version}
-Se verifica instalarea Java (e necesar minim Java 1.6) si tipul de JVM
+Se verifica instalarea Java (e necesar minim Java 1.7) si tipul de JVM
 utilizat (32 sau 64 bit), in shell:
 \begin{lstlisting}
 	java -version
 \end{lstlisting}
 
+\begin{comment}
 \subsection{Perl si Selenium}
 \paragraph{In MacOSX:}
 Se instaleaza modulul Selenium din Perl, cu urmatoarele comenzi in shell si apoi in shell-ul CPAN
@@ -92,6 +159,7 @@ se iese la final din shell-ul CPAN cu Ctrl+D):
 	sudo /usr/bin/cpan
 		install Test::WWW::Selenium
 \end{lstlisting}
+\end{comment}
 
 \subsection{rJava}
 Se instaleaza rJava in R, cu urmatoarele comenzi in shell si apoi in shell-ul R
@@ -111,18 +179,9 @@ Se instaleaza DbWrench de pe site-ul producatorului:
 
 \subsection{Instalare Spring Tool Suite (STS)}
 Descarcati STS de pe pagina:
-\url{http://www.springsource.org/downloads/sts-ggts},
-facand click direct pe link-ul \emph{'Just take me to the download page'}.
+\url{http://spring.io/tools}.
 
-Alegeti pentru descarcarea versiunea STS bazata pe Eclipse 3.8.2:
-\begin{description}
-\item[MacOSX, 64 bit:] 
-\begin{lstlisting}
-spring-tool-suite-3.3.0.RELEASE-e3.8.2-macosx-cocoa-x86_64-installer.dmg
-\end{lstlisting}
-\item[Ubuntu, 32 bit:]
-% TODO
-\end{description}
+Alegeti pentru descarcarea versiunea STS bazata pe Eclipse 3.8.2.
 
 Instalati STS cu optiunile default (path-ul default este in \emph{\$HOME/springsource} ):
 'Next' -> ... -> 'Finish'.

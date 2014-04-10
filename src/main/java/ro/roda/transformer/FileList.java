@@ -25,6 +25,8 @@ public class FileList extends JsonInfo {
 	@Autowired
 	CmsFileStoreService cmsFileStoreService;
 
+	private final static String urlDownload = "/admin/cmsfilecontent/";
+	
 	public class NameValuePair {
 		public String name;
 		public String value;
@@ -100,6 +102,8 @@ public class FileList extends JsonInfo {
 
 	private String filetype;
 
+	private String url;
+
 	private Set<NameValuePair> filepropertiesset;
 
 	private Integer folderid;
@@ -110,11 +114,12 @@ public class FileList extends JsonInfo {
 
 	private String iconCls;
 
-	public FileList(Integer id, String name, String alias, Long filesize, String filetype, Integer folderid,
-			String directory, String iconCls) {
+	public FileList(Integer id, String name, String alias, Long filesize, String filetype,
+			Integer folderid, String directory, String iconCls) {
 		this.id = id;
 		this.name = name;
 		this.alias = alias;
+		this.url =  urlDownload + id;
 		this.directory = directory;
 		this.filesize = filesize;
 		this.filetype = filetype;
@@ -124,8 +129,9 @@ public class FileList extends JsonInfo {
 	}
 
 	public FileList(CmsFile file) {
-		this(file.getId(), file.getFilename(), file.getLabel(), file.getFilesize(), file.getContentType(), file
-				.getCmsFolderId() == null ? null : file.getCmsFolderId().getId(), getFilePath(file), "file");
+		this(file.getId(), file.getFilename(), file.getLabel(), file
+				.getFilesize(), file.getContentType(), file.getCmsFolderId() == null ? null : file.getCmsFolderId()
+				.getId(), getFilePath(file), "file");
 	}
 
 	public Integer getId() {
@@ -177,6 +183,14 @@ public class FileList extends JsonInfo {
 		this.filesize = filesize;
 	}
 
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
 	public String getFiletype() {
 		return filetype;
 	}
@@ -224,11 +238,11 @@ public class FileList extends JsonInfo {
 		JSONSerializer serializer = new JSONSerializer();
 
 		serializer.exclude("*.class", "type");
-		serializer.include("id", "name", "alias", "filesize", "filetype", "filepropertiesset", "folderid",
+		serializer.include("id", "name", "alias", "url", "filesize", "filetype", "filepropertiesset", "folderid",
 				"directory", "leaf");
 
 		serializer.transform(new FieldNameTransformer("indice"), "id");
-//		serializer.transform(new IterableTransformer(), "filepropertiesset");
+		// serializer.transform(new IterableTransformer(), "filepropertiesset");
 
 		return "{\"data\":" + serializer.deepSerialize(this) + "}";
 	}

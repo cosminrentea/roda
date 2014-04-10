@@ -1,0 +1,261 @@
+\documentclass[a4paper, 10pt]{article}
+\usepackage[ascii]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[romanian,english,ngerman]{babel}
+\usepackage{amsmath}
+\usepackage{amssymb,amsfonts,textcomp}
+\usepackage{color}
+\usepackage{array}
+\usepackage{hhline}
+\usepackage{hyperref}
+\hypersetup{pdftex, colorlinks=true, linkcolor=blue, citecolor=blue, filecolor=blue, urlcolor=blue, pdftitle=, pdfauthor=, pdfsubject=, pdfkeywords=}
+\usepackage[pdftex]{graphicx}
+
+%%%% Cosmin
+
+\usepackage[a4paper, margin=2.3cm]{geometry}
+\renewcommand*{\familydefault}{\sfdefault} %Sans Serif font
+\renewcommand{\sfdefault}{phv} % Arial
+\setlength{\parindent}{0pt} % no indentation for paragraphs
+\setlength{\tabcolsep}{70pt} % table inter-column spacing
+
+%%%%
+
+% List styles
+\newcommand\liststyleLv{%
+\renewcommand\theenumi{\arabic{enumi}}
+\renewcommand\theenumii{\arabic{enumii}}
+\renewcommand\theenumiii{\arabic{enumiii}}
+\renewcommand\theenumiv{\arabic{enumiv}}
+\renewcommand\labelenumi{\theenumi.}
+\renewcommand\labelenumii{\theenumii.}
+\renewcommand\labelenumiii{\theenumiii.}
+\renewcommand\labelenumiv{\theenumiv.}
+}
+\newcommand\liststyleLSi{%
+\renewcommand\theenumi{\arabic{enumi}}
+\renewcommand\theenumii{\arabic{enumii}}
+\renewcommand\theenumiii{\arabic{enumiii}}
+\renewcommand\theenumiv{\arabic{enumiv}}
+\renewcommand\labelenumi{\theenumi.}
+\renewcommand\labelenumii{\theenumii.}
+\renewcommand\labelenumiii{\theenumiii.}
+\renewcommand\labelenumiv{\theenumiv.}
+}
+
+% Footnote rule
+\setlength{\skip\footins}{0.047in}
+\renewcommand\footnoterule{\vspace*{-0.0071in}\setlength\leftskip{0pt}\setlength\rightskip{0pt plus 1fil}\noindent\textcolor{black}{\rule{0.25\columnwidth}{0.0071in}}\vspace*{0.0398in}}
+
+% Pages styles
+\makeatletter
+\newcommand\ps@Standard{
+  \renewcommand\@oddhead{}
+  \renewcommand\@evenhead{}
+  \renewcommand\@oddfoot{}
+  \renewcommand\@evenfoot{}
+  \renewcommand\thepage{\arabic{page}}
+}
+
+\makeatother
+\pagestyle{plain}
+\title{}
+\author{}
+\date{2013-04-08}
+
+\begin{document}
+{\raggedleft\bfseries
+MACHETA 3
+\par}
+
+{\bfseries
+Contractor: Universitatea din Bucure\c{s}ti}
+
+{\textbf{Cod fiscal: 45055002}
+
+\bigskip
+
+
+\begin{tabular}{@{}l l}
+\textbf{Avizat,}&\textbf{De acord,}\\
+\textbf{Comisia de monitorizare}&\textbf{DIRECTOR PLAN SECTORIAL}\\
+\\
+\textbf{PRE\c{S}EDINTE:}&\\
+Rolanda Predescu&\\
+\\
+\\
+\textbf{MEMBRII:}&\textbf{MONITOR PROIECT}\\
+Marioara Iordan&Daniela Dinic\u{a}\\
+\\
+\\
+Valentina Vasile&\\
+\\
+\\
+Speran\c{t}a P\^{a}rciog\\
+\\
+\\
+\end{tabular}
+
+\bigskip
+
+\bigskip
+
+{\centering\bfseries
+RAPORT DE ACTIVITATE AL FAZEI
+\par}
+
+\bigskip
+
+{\bfseries
+Contractul nr.: 5S / 27.07.2012}
+
+{
+\textbf{Proiectul: }
+\textit{`` Sistem informatic integrat pentru identificarea, arhivarea \c{s}i diseminarea bazelor de date \c{s}i a indicatorilor din
+cercet\u{a}rile sociale ''}}
+
+%TODO Numarul fazei !
+%TODO Titlul fazei !
+{
+\textbf{Faza: }
+Nr. VI cu titlul
+\textit{`` ??? ''}}
+
+{\textbf{Termen:} 10.08.2014}
+
+\medskip
+
+\section{Obiectivul proiectului}
+
+Realizarea unei arhive electronice integrate care s\u{a}
+con\c{t}in\u{a} \c{s}i s\u{a} distribuie c\^at mai multe dintre 
+datele sociologice acumulate \^in Rom\^ania.
+
+\medskip
+
+Sistemul trebuie s\u{a} ofere cercet\u{a}torilor \^in domeniul \c{s}tiin\c{t}elor sociale instrumentele necesare pentru
+trecerea \^in revist\u{a}, compararea, sintetizarea, ad\u{a}ugarea datelor sociologice de interes. 
+Operatorii interni ai arhivei vor c\u{a}uta, 
+identifica \c{s}i acumula date sociologice disponibile \^in Rom\^ania.
+
+\medskip
+
+Arhiva va fi integrat\u{a} \^in Consiliul European al Arhivelor de Date Sociale (CESSDA) asigur\^andu-se un schimb
+continuu bidirec\c{t}ional de informa\c{t}ie.
+
+\section{Rezultate preconizate pentru atingerea obiectivului}
+
+\begin{enumerate}
+\item {
+Sistem informatic de arhivare (stocare, catalogare plus proceduri \c{s}i capacit\u{a}\c{t}i de identificare \c{s}i
+accesare) \foreignlanguage{romanian}{\c{s}}i diseminare a datelor sociale produse de pia\c{t}a cercet\u{a}rii sociale
+din Rom\^ania.}
+\item {
+Asigurarea procedurilor de securizare a accesului la datele arhivate, ca urmare a investi\c{t}iilor \^in hardware
+\foreignlanguage{romanian}{\c{s}}i software pe parcursul proiectului;}
+\item {
+\foreignlanguage{romanian}{Arhiva }va func\c{t}iona inclusiv ca o banc\u{a} de date sociale, dat fiind faptul c\u{a}
+produc\u{a}torii de date nu au nici capacit\u{a}\c{t}ile tehnice nici \foreignlanguage{romanian}{cunoa\c{s}terea}
+necesar\u{a} depozit\u{a}rii, catalog\u{a}rii \c{s}i acces\u{a}rii cercet\u{a}rilor realizate, pe termen lung;}
+\item {
+Facilitarea accesului comunit\u{a}\c{t}ii de cercetare din Rom\^ania la datele produse \^in ultimii 20 de ani pe
+pia\c{t}a na\c{t}ional\u{a} de profil, dar \c{s}i la cele europene, ca urmare a conect\u{a}rii arhivei la CESSDA-ERIC
+(arhiva fiind deja membru al CESSDA);}
+\item {
+Facilitarea accesului comunit\u{a}\c{t}ii de cercetare interna\c{t}ionale la datele produse \^in Rom\^ania prin
+intermediul CESSDA va aduce de asemenea mari beneficii interna\c{t}ionaliz\u{a}rii cercet\u{a}rii sociale din
+Rom\^ania;}
+\item {
+Articole de specialitate/comunic\u{a}ri \c{s}tiin\c{t}ifice menite a face cunoscute pe plan na\c{t}ional \c{s}i
+interna\c{t}ional beneficiile sistemului implementat ca urmare a derul\u{a}rii sale.}
+\end{enumerate}
+
+\section{Obiectivul fazei}
+
+%TODO Obiectivul fazei, cf. documentatiei proiectului 
+
+
+\section{Rezultate preconizate pentru atingerea obiectivului fazei}
+
+\section{Rezumatul fazei}
+
+\bigskip
+
+% \subsection*{Modulul de management de continut (CMS)}
+
+
+\clearpage
+
+\section{Rezultate, stadiul realiz\u{a}rii obiectivului, concluzii si propuneri pentru continuarea proiectului}
+
+%TODO de completat la fiecare faza
+
+\bigskip
+
+
+%\clearpage
+
+\bigskip
+
+\bigskip
+
+\bigskip
+
+\bigskip
+
+\bigskip
+
+\bigskip
+
+\bigskip
+
+\bigskip
+
+{\bfseries
+RECTOR,}
+
+prof.univ.dr. Mircea Dumitru
+
+\bigskip
+
+\bigskip
+
+\bigskip
+
+\bigskip
+
+\bigskip
+
+\bigskip
+
+\bigskip
+
+\bigskip
+
+{\bfseries
+DIRECTOR GENERAL ADMINISTRATIV,}
+
+ec. Adrian Albu
+
+\bigskip
+
+\bigskip
+
+\bigskip
+
+\bigskip
+
+\bigskip
+
+\bigskip
+
+\bigskip
+
+\bigskip
+
+{\bfseries
+RESPONSABIL PROIECT,}
+
+lect.univ.dr. Adrian Du\c{s}a
+
+\end{document}

@@ -395,8 +395,9 @@ public class AdminJsonController {
 			@RequestParam(value = "parentid", required = false) Integer parent,
 			@RequestParam(value = "content", required = false) String content) {
 
-		AdminJson cmspageSave = adminJsonService.cmsPageSave(true, parent, title, lang, menutitle, synopsis, target, url,
-				defaultPage, externalredirect, internalredirect, layoutId, cacheable, published, navigable, pageType, id, content);
+		AdminJson cmspageSave = adminJsonService.cmsPageSave(true, parent, title, lang, menutitle, synopsis, target,
+				url, defaultPage, externalredirect, internalredirect, layoutId, cacheable, published, navigable,
+				pageType, id, content);
 
 		if (cmspageSave == null) {
 			return null;
@@ -425,8 +426,9 @@ public class AdminJsonController {
 			@RequestParam(value = "parentid", required = false) Integer parent,
 			@RequestParam(value = "content", required = false) String content) {
 
-		AdminJson cmspageSave = adminJsonService.cmsPageSave(false, parent, title, lang, menutitle, synopsis, target, url,
-				defaultPage, externalredirect, internalredirect, layoutId, cacheable, published, navigable, pageType, id, content);
+		AdminJson cmspageSave = adminJsonService.cmsPageSave(false, parent, title, lang, menutitle, synopsis, target,
+				url, defaultPage, externalredirect, internalredirect, layoutId, cacheable, published, navigable,
+				pageType, id, content);
 
 		if (cmspageSave == null) {
 			return null;
@@ -434,12 +436,14 @@ public class AdminJsonController {
 		return cmspageSave.toJson();
 
 	}
+
 	@RequestMapping(value = "/cmspagemove", method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody
-	public String cmspageMove(@RequestParam(value = "group") Integer groupId,
-			@RequestParam(value = "id") Integer cmspageId) {
+	public String cmspageMove(@RequestParam(value = "group", required = true) Integer groupId,
+			@RequestParam(value = "id", required = true) Integer cmspageId,
+			@RequestParam(value = "mode", required = true) String mode) {
 
-		AdminJson cmspageMove = adminJsonService.cmsPageMove(groupId, cmspageId);
+		AdminJson cmspageMove = adminJsonService.cmsPageMove(groupId, cmspageId, mode);
 
 		if (cmspageMove == null) {
 			return null;

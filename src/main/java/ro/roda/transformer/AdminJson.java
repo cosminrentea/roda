@@ -38,6 +38,10 @@ import flexjson.JSONSerializer;
 @Configurable
 public class AdminJson {
 
+	private static String PAGE_MOVE_APPEND_MODE = "append";
+	private static String PAGE_MOVE_AFTER_MODE = "after";
+	private static String PAGE_MOVE_BEFORE_MODE = "before";
+
 	public static String toJsonArray(Collection<AdminJson> collection) {
 		JSONSerializer serializer = new JSONSerializer();
 
@@ -1125,7 +1129,12 @@ public class AdminJson {
 		return new AdminJson(true, "CMS Page created or modified successfully");
 	}
 
-	public static AdminJson cmsPageMove(Integer cmsPageParentId, Integer cmsPageId) {
+	public static AdminJson cmsPageMove(Integer cmsPageGroupId, Integer cmsPageId, String mode) {
+
+		if (mode != null && !mode.equals(PAGE_MOVE_AFTER_MODE) && !mode.equals(PAGE_MOVE_BEFORE_MODE)
+				&& !mode.equals(PAGE_MOVE_APPEND_MODE)) {
+			return new AdminJson(false, "CMS Page not moved because the specified mode isn't valid");
+		}
 
 		CmsPage cmsPage = null;
 		if (cmsPageId != null) {
@@ -1136,27 +1145,34 @@ public class AdminJson {
 			return new AdminJson(false, "CMS Page to be moved should exist");
 		}
 
-		CmsPage parentPage = CmsPage.findCmsPage(cmsPageParentId);
+		CmsPage groupPage = CmsPage.findCmsPage(cmsPageGroupId);
 
-		if (cmsPageParentId != null && parentPage == null) {
-			return new AdminJson(false, "The CMS Page parent should exist");
+		if (cmsPageGroupId != null && groupPage == null) {
+			return new AdminJson(false, "The specified CMS Page parent or sibling should exist");
 		}
 
-		if (cmsPageParentId == (cmsPage.getCmsPageId() == null ? null : cmsPage.getCmsPageId().getId())) {
-			return new AdminJson(false, "The  parent of the CMS Page doesn't change");
+		if (!mode.equals(PAGE_MOVE_APPEND_MODE) && groupPage != null) {
+			// in the mode "before" or "after", the page is moved at the same
+			// level as the page (group) specified in the first parameter
+			groupPage = groupPage.getCmsPageId();
+		}
+
+		if (mode.equals(PAGE_MOVE_APPEND_MODE)
+				&& cmsPageGroupId == (cmsPage.getCmsPageId() == null ? null : cmsPage.getCmsPageId().getId())
+				|| !mode.equals(PAGE_MOVE_APPEND_MODE) && groupPage != null
+				&& groupPage.getId() == (cmsPage.getCmsPageId() == null ? null : cmsPage.getCmsPageId().getId())) {
+			return new AdminJson(false, "The  parent or sibling of the CMS Page doesn't change");
 		}
 
 		try {
-			if (parentPage != null) {
-				if (parentPage.getCmsPages() == null) {
-					parentPage.setCmsPages(new HashSet<CmsPage>());
-					parentPage.getCmsPages().add(cmsPage);
-				} else {
-					parentPage.getCmsPages().add(cmsPage);
-				}
-				CmsPage.entityManager().persist(parentPage);
-			}
-			cmsPage.setCmsPageId(parentPage);
+			// if (groupPage != null) {
+			// if (groupPage.getCmsPages() == null) {
+			// groupPage.setCmsPages(new HashSet<CmsPage>());
+			// }
+			// groupPage.getCmsPages().add(cmsPage);
+			// CmsPage.entityManager().persist(groupPage);
+			// }
+			cmsPage.setCmsPageId(groupPage);
 
 			CmsPage.entityManager().persist(cmsPage);
 		} catch (EntityExistsException e) {

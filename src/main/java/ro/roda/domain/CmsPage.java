@@ -44,7 +44,7 @@ import flexjson.JSONSerializer;
 @Table(schema = "public", name = "cms_page")
 @Configurable
 @Audited
-public class CmsPage {
+public class CmsPage implements Comparable {
 
 	public static long countCmsPages() {
 		return entityManager().createQuery("SELECT COUNT(o) FROM CmsPage o", Long.class).getSingleResult();
@@ -653,6 +653,12 @@ public class CmsPage {
 			// || (url != null && url.equalsIgnoreCase(((CmsPage) obj).url));
 		}
 		return false;
+	}
+
+	@Override
+	public int compareTo(Object obj) {
+		// TODO to be completed, if necessary
+		return (id.compareTo(((CmsPage) obj).getId()));
 	}
 
 	public AuditReader getAuditReader() {

@@ -13,7 +13,7 @@
 	<default_page>true</default_page>
 	<external_redirect></external_redirect>
 	<internal_redirect></internal_redirect>
-	<navigable>true</navigable>
+	<navigable>false</navigable>
 	<published>true</published>
 	<target></target>
 	<visible>true</visible>

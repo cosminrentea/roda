@@ -3,6 +3,8 @@ package ro.roda.plugin;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
@@ -450,7 +452,9 @@ public class RodaPageServiceImpl implements RodaPageService {
 		result.append("<ul id=\"navmenu\">");
 
 		if (cmsPage != null && cmsPage.getCmsPages() != null && cmsPage.getCmsPages().size() > 0) {
-			for (CmsPage child : cmsPage.getCmsPages()) {
+			SortedSet<CmsPage> sortedChildren = new TreeSet<CmsPage>();
+			sortedChildren.addAll(cmsPage.getCmsPages());
+			for (CmsPage child : sortedChildren) {
 				result.append(generatePageTreeMenuRec(child, depth));
 			}
 		}
@@ -463,18 +467,21 @@ public class RodaPageServiceImpl implements RodaPageService {
 	}
 
 	private String generatePageTreeMenuRec(CmsPage cmsPage, Integer depth) {
-		// TODO treat depth
+		// TODO validate depth
 		StringBuilder result = new StringBuilder();
 
-		if (cmsPage != null) {
+		if (cmsPage != null && depth > 0) {
 
 			if (cmsPage.getCmsPages() != null && cmsPage.getCmsPages().size() > 0) {
 				result.append("<li class=\"more\">");
 				result.append(PAGE_URL_LINK_CODE + cmsPage.getUrl() + "]]");
 				result.append("<ul>");
 
-				for (CmsPage child : cmsPage.getCmsPages()) {
-					result.append(generatePageTreeMenuRec(child, depth).toString());
+				SortedSet<CmsPage> sortedChildren = new TreeSet<CmsPage>();
+				sortedChildren.addAll(cmsPage.getCmsPages());
+
+				for (CmsPage child : sortedChildren) {
+					result.append(generatePageTreeMenuRec(child, depth - 1).toString());
 				}
 
 				result.append("</ul>");

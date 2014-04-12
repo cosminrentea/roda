@@ -452,10 +452,10 @@ public class AdminJson {
 		try {
 			CmsSnippetGroup.entityManager().persist(snippet);
 		} catch (EntityExistsException e) {
-			return new AdminJson(false, "Snippet not created " + e.getMessage());
+			return new AdminJson(false, "CMS Snippet not created or modified" + e.getMessage());
 		}
 
-		return new AdminJson(true, "CMS Snippet created successfully");
+		return new AdminJson(true, "CMS Snippet created or modified successfully");
 	}
 
 	public static AdminJson snippetMove(Integer groupId, Integer snippetId) {
@@ -985,8 +985,8 @@ public class AdminJson {
 	}
 
 	// Cms Page Management Methods
-	public static AdminJson cmsPageSave(Boolean preview, Integer cmsPageParentId, String name, String lang, String menutitle,
-			String synopsis, String target, String url, Boolean defaultPage, String externalredirect,
+	public static AdminJson cmsPageSave(Boolean preview, Integer cmsPageParentId, String name, String lang,
+			String menutitle, String synopsis, String target, String url, Boolean defaultPage, String externalredirect,
 			String internalredirect, Integer layoutId, Integer cacheable, Boolean published, Boolean navigable,
 			String pagetype, Integer cmsPageId, String pageContent) {
 

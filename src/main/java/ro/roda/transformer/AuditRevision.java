@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Configurable;
 import flexjson.JSONSerializer;
 
 @Configurable
-public class AuditRevision {
+public class AuditRevision implements Comparable<AuditRevision> {
 
 	public static String toJsonArray(Collection<AuditRevision> collection) {
 		JSONSerializer serializer = new JSONSerializer();
@@ -125,10 +125,10 @@ public class AuditRevision {
 		return serializer.serialize(this);
 	}
 
-	// @Override
-	// public int compareTo(AuditRevision revision) {
-	// return this.revision.compareTo(revision.getRevision());
-	// }
+	@Override
+	public int compareTo(AuditRevision revision) {
+		return this.revision.compareTo(revision.getRevision());
+	}
 	//
 	// @Override
 	// public int hashCode() {

@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.hibernate.envers.AuditReader;
 import org.hibernate.envers.RevisionType;
@@ -29,7 +30,7 @@ public class AuditRevisionsByObject extends JsonInfo {
 		serializer.exclude("*.class", "type", "id", "name");
 		serializer.include("object", "nrrev", "lastrevision", "revisions");
 
-		serializer.include("revisions.rows");
+		serializer.include("revisions.rows", "revisions.rows.auditfields");
 		serializer.exclude("revisions.objects");
 
 		serializer.transform(DATE_TRANSFORMER, Date.class);
@@ -59,15 +60,6 @@ public class AuditRevisionsByObject extends JsonInfo {
 	}
 
 	public static AuditRevisionsByObject findRevisionsByObject(String object) {
-
-		/*
-		 * RodaRevisionEntity revision =
-		 * RodaRevisionEntity.findRodaRevisionEntity(id);
-		 * 
-		 * if (revision != null) { return new AuditRevisionsByObject(revision);
-		 * } return null;
-		 */
-
 		return new AuditRevisionsByObject(object);
 	}
 
@@ -101,6 +93,13 @@ public class AuditRevisionsByObject extends JsonInfo {
 					AuditReader auditReader = (AuditReader) getAuditReaderMethod.invoke(null);
 
 					// get the revisions for the object
+
+					// TODO find why the following query returns duplicates for
+					// a revision (i.e. it returns a revision as many times as
+					// the number of rows affected by that revision);
+					// this is no longer a problem, as a TreeSet is used instead
+					// of a HashSet, but there might exist a significant
+					// processing time in the iterations below
 					AuditQuery queryRevisions = auditReader.createQuery().forRevisionsOfEntity(auditedClass, false,
 							true);
 
@@ -108,7 +107,7 @@ public class AuditRevisionsByObject extends JsonInfo {
 
 					Iterator<?> iteratorRevisions = resultRevisions.iterator();
 
-					Set<AuditRevision> revisions = new HashSet<AuditRevision>();
+					Set<AuditRevision> revisions = new TreeSet<AuditRevision>();
 					while (iteratorRevisions.hasNext()) {
 
 						Object o = iteratorRevisions.next();
@@ -227,7 +226,7 @@ public class AuditRevisionsByObject extends JsonInfo {
 		serializer.exclude("*.class", "type", "id", "name");
 		serializer.include("object", "nrrev", "lastrevision", "revisions");
 
-		serializer.include("revisions.rows");
+		serializer.include("revisions.rows", "revisions.rows.auditfields");
 		serializer.exclude("revisions.objects");
 
 		serializer.transform(DATE_TRANSFORMER, Date.class);

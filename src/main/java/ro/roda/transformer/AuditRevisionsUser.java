@@ -25,7 +25,7 @@ public class AuditRevisionsUser extends JsonInfo {
 		Set<AuditRevisionsUser> result = new HashSet<AuditRevisionsUser>();
 
 		for (String username : RodaRevisionEntity.entityManager()
-				.createQuery("SELECT username FROM RodaRevisionEntity o", String.class).getResultList()) {
+				.createQuery("SELECT DISTINCT username FROM RodaRevisionEntity o", String.class).getResultList()) {
 			result.add(new AuditRevisionsUser(username));
 		}
 

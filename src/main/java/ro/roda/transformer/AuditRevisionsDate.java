@@ -1,18 +1,20 @@
 package ro.roda.transformer;
 
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 
+import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Configurable;
 
 import ro.roda.audit.RodaRevisionEntity;
 import flexjson.JSONSerializer;
 
 @Configurable
-public class AuditRevisionsDate extends JsonInfo {
+public class AuditRevisionsDate extends JsonInfo implements Comparable<AuditRevisionsDate> {
 
 	public static String toJsonArray(Collection<AuditRevisionsDate> collection) {
 		JSONSerializer serializer = new JSONSerializer();
@@ -26,7 +28,7 @@ public class AuditRevisionsDate extends JsonInfo {
 	}
 
 	public static Set<AuditRevisionsDate> findAllAuditRevisionsDates() {
-		Set<AuditRevisionsDate> result = new HashSet<AuditRevisionsDate>();
+		Set<AuditRevisionsDate> result = new TreeSet<AuditRevisionsDate>();
 
 		List<RodaRevisionEntity> rre = RodaRevisionEntity.findAllRodaRevisionEntities();
 
@@ -40,7 +42,7 @@ public class AuditRevisionsDate extends JsonInfo {
 	private Date date;
 
 	public AuditRevisionsDate(Date date) {
-		this.date = date;
+		this.date = DateUtils.truncate(date, Calendar.DATE);
 	}
 
 	public Date getDate() {
@@ -60,4 +62,8 @@ public class AuditRevisionsDate extends JsonInfo {
 		return "{\"data\":" + serializer.serialize(this) + "}";
 	}
 
+	@Override
+	public int compareTo(AuditRevisionsDate o) {
+		return this.date.compareTo(o.date);
+	}
 }

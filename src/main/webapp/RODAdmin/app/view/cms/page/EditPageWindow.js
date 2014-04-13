@@ -3,8 +3,9 @@
  */
 Ext.define('RODAdmin.view.cms.page.EditPageWindow', {
 
-    extend : 'RODAdmin.view.common.WindowForm',
-    alias : 'widget.pageedit',
+//    extend : 'RODAdmin.view.common.WindowForm',
+  extend : 'Ext.window.Window',
+	alias : 'widget.pageedit',
 
     height : '90%',
     width : '80%',
@@ -24,7 +25,7 @@ Ext.define('RODAdmin.view.cms.page.EditPageWindow', {
     initComponent : function() {
 	    var me = this;
 	    Ext.applyIf(me, {
-		    items : [
+	    	items : [
 		            {
 		                region : 'center',
 		                collapsible : false,
@@ -336,7 +337,35 @@ Ext.define('RODAdmin.view.cms.page.EditPageWindow', {
 			                }
 		                ]
 		            }
-		    ]
+		    ],
+			dockedItems : 
+			{
+				dock : 'top',
+				xtype : 'toolbar',
+//				itemid : 'audittoolbar',
+					items : [{
+							xtype : 'tbfill'
+							},
+							{
+					            xtype: 'button',
+					            text: 'Preview',
+					            itemId: 'pagepreview',
+					            iconCls: 'pagepreview'
+							},
+							{
+					            xtype: 'button',
+					            text: 'Cancel',
+					            itemId: 'cancel',
+					            iconCls: 'cancel'
+					        },
+					        {
+					            xtype: 'button',
+					            text: 'Save',
+					            itemId: 'save',
+					            iconCls: 'save'
+					        }	               
+			               ]
+			}
 	    });
 	    me.callParent(arguments);
 	    me.initConfig(arguments)

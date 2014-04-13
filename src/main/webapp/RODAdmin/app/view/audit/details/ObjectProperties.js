@@ -19,6 +19,7 @@ Ext.define('RODAdmin.view.audit.details.ObjectProperties', {
 //                itemId : 'revisions',
                 flex : 1,
 				xtype : 'grid',
+				loadMask: true, 
 				title : 'revisions',
 				itemId : 'revisiondata',
 				store : '',
@@ -54,6 +55,7 @@ Ext.define('RODAdmin.view.audit.details.ObjectProperties', {
             {
                 region : 'center',
                 collapsible : false,
+                loadMask: true, 
                 resizable : true,
                 width : '70%',
 //                split : true,

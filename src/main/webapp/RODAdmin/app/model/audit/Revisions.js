@@ -5,9 +5,9 @@ Ext.define('RODAdmin.model.audit.Revisions', {
 			extend : 'Ext.data.Model',
 			fields : [{
 						name : 'timestamp',
-						useNull : true,
-						type : 'date',
-						dateFormat : 'd/m/Y H:i:s'
+//						useNull : true,
+						type : 'string',
+//						dateFormat : 'd/m/Y H:i:s'
 					}, {
 						name : 'revision',
 						type : 'integer'

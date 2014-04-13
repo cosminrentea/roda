@@ -50,7 +50,18 @@ Ext.define('RODAdmin.view.audit.AuditItemsview', {
 									filter : {
 										type : 'integer'
 									}
-								} ],
+								},
+								{
+									text : 'User',
+									flex : 1,
+									dataIndex : 'username',
+									sortable : true,
+									filter : {
+										type : 'string'
+									}
+								}
+								
+								],
 						dockedItems : [{
 									xtype : 'toolbar',
 									itemid : 'auditiconviewtoolbar',
@@ -88,7 +99,23 @@ Ext.define('RODAdmin.view.audit.AuditItemsview', {
 									sortable : true,
 									dataIndex : 'object',
 									filterable : true,
-								}],
+								},
+								{
+									text : 'Last revision',
+									flex : 1,
+									sortable : true,
+									dataIndex : 'lastrevision',
+									filterable : true,
+								},
+								{
+									text : 'Nr. revisions',
+									flex : 1,
+									sortable : true,
+									dataIndex : 'nrrev',
+									filterable : true,
+								}
+						
+						],
 						dockedItems : [{
 									xtype : 'toolbar',
 									itemid : 'auditiconviewtoolbar',

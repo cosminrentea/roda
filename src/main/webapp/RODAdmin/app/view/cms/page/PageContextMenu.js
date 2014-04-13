@@ -30,7 +30,14 @@ initComponent: function() {
                 itemId: 'addpage',
                 text: 'Add Page',
                 tooltip: 'Adds a page'
+            },
+            {
+                xtype: 'menuitem',
+                itemId: 'clearcache',
+                text: 'Clear cache',
+                tooltip: 'Clears page cache'
             }
+
 
         ]
     });

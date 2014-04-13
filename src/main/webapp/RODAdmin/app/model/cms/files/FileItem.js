@@ -21,7 +21,20 @@ Ext.define('RODAdmin.model.cms.files.FileItem', {
 	}, {
 		name : 'alias',
 		type : 'string'
-	}, {
+	}, 
+	{
+		name : 'contenttype',
+		type : 'string',
+		convert : function(v, r) {
+			if (r.get('filetype').match(/image/ig)) {
+				return 'image';
+			} else if (r.get('filetype').match(/pdf/ig)) {
+				return 'download';
+			}
+		}
+	},
+	
+	{
 		name : 'fileurl',
 		type : 'string'
 	} ],

@@ -17,6 +17,8 @@ Ext.define('RODAdmin.view.audit.AuditDetails', {
                 xtype : 'revisionproperties',
             }, {
 	            xtype : 'objectproperties',
+            }, {
+            	xtype : 'userproperties',
             }
 
     ]

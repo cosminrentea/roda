@@ -32,22 +32,27 @@ Ext.define('RODAdmin.view.audit.Audit', {
 												xtype : 'button',
 												itemId : 'bauditrevisions',
 												iconCls : 'auditrevisions',
-												text : 'revisions'
+												pressed : true,
+												enableToggle: true,
+												text : 'revisions',
 											}, {
 												xtype : 'button',
 												itemId : 'bauditobjects',
 												iconCls : 'auditobjects',
-												text : 'objects'
+												text : 'objects',
+													enableToggle: true,
 											}, {
 												xtype : 'button',
 												itemId : 'bauditusers',
 												iconCls : 'auditusers',
-												text : 'users'
+												enableToggle: true,
+												text : 'users',
 											}, {
 												xtype : 'button',
 												itemId : 'bauditdates',
 												iconCls : 'auditdates',
-												text : 'days'
+												enableToggle: true,											
+												text : 'days',
 											}
 											
 											

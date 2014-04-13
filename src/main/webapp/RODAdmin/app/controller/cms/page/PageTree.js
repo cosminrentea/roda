@@ -88,6 +88,22 @@ Ext.define('RODAdmin.controller.cms.page.PageTree', {
 		        click : this.onAddPageClick
 	        },
 
+	        "pagecontextmenu menuitem#clearcache" : {
+		        /**
+				 * @listener layoutcontextmenu-menuitem-editpage triggered-by:
+				 *           {@link RODAdmin.view.cms.page.PageContextMenu PageContextMenu}
+				 *           menuitem#editpage {@link #onEditPageClick}
+				 */
+		        click : this.onClearCacheClick
+	        },
+	        "pagecontextmenudisabled menuitem#clearcache" : {
+		        /**
+				 * @listener layoutcontextmenu-menuitem-editpage triggered-by:
+				 *           {@link RODAdmin.view.cms.page.PageContextMenu PageContextMenu}
+				 *           menuitem#editpage {@link #onEditPageClick}
+				 */
+		        click : this.onClearCacheClick
+	        },	        
 	        "pagesitemsview treepanel#pgfolderview toolbar button#reloadtree" : {
 		        /**
 				 * @listener layoutitemsview-treepanel-lyfolderview-toolbar-button-reloadtree
@@ -125,14 +141,80 @@ Ext.define('RODAdmin.controller.cms.page.PageTree', {
 
 	    });
     },
+    
+    /**
+	 * @method 
+	 * 
+	 * drop event for page tree
+	 */
+    onClearCacheClick : function(button, e, options) {
+	    var currentNode = this.getFolderview().getSelectionModel().getLastSelected();
+	    var pgtitle = currentNode.data.title;
+	    var store = Ext.StoreManager.get('cms.pages.PageTree');
+	    Ext.Msg.confirm('Clear Cache', 'Are you sure you want to clear the cache for ' + pgtitle
+	            + '?', function(id, value) {
+		    if (id === 'yes') {
+		    	console.log('what?' + currentNode.data.indice);
+			    Ext.Ajax.request({
+			        url : '/roda/admin/cache/evict-page-id/'+currentNode.data.indice,
+			        method : "POST",
+			        success : function(response,request) {
+				           var responseJson = Ext.decode(response.responseText);
+				            if (responseJson.success === true) {
+				            	RODAdmin.util.Alert.msg('Success!', 'Cache for '+ pgtitle +' has been purged.');
+								store.load();
+				            } else {
+				            	RODAdmin.util.Alert.msg('Failure!', responseJson.message, true);
+
+				            }
+			        },
+			        failure : function(response, opts) {
+				        Ext.Msg.alert('Failure', response);
+
+			        }
+			    });
+		    }
+	    }, this);
+//	    event.stopEvent();
+    
+    },
+    
     /**
 	 * @method 
 	 * 
 	 * drop event for page tree
 	 */
     onTreeMDrop : function(node,data,overModel,dropPosition) {
-    	console.log('moved ' + data.records[0].data.title + ' to ' + overModel.data.title + ' ' + dropPosition );
-		//  	 this.getPagetree().store.load();
+    	console.log('id ' + data.records[0].data.indice + ' group ' + overModel.data.indice + ' ' + dropPosition );
+    	var pgtitle = data.records[0].data.title;
+    	var pgid = 	data.records[0].data.indice;
+    	var groupid = overModel.data.indice;
+    	var mode = dropPosition;
+    	Ext.Ajax.request({
+	        url : '/roda/admin/cmspagemove/',
+	        method : "POST",
+	        params : {
+	            id : pgid,
+	            group: groupid,
+	            mode: mode,
+	        },
+	        success : function(response,request) {
+		           var responseJson = Ext.decode(response.responseText);
+		            if (responseJson.success === true) {
+		                // whatever stuff needs to happen on success
+		            	RODAdmin.util.Alert.msg('Success!', 'Page '+ pgtitle +' moved.');
+//						store.load();
+		            } else {
+		            	RODAdmin.util.Alert.msg('Failure!', responseJson.message, true);
+
+		            }
+	        },
+	        failure : function(response, opts) {
+		        Ext.Msg.alert('Failure', response);
+
+	        }
+	    });		
+    	this.getFolderview().store.load();
     },
     
     

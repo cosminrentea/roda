@@ -1,13 +1,13 @@
 /**
  * 
  */
-Ext.define('RODAdmin.model.audit.RevisionsforObject', {
+Ext.define('RODAdmin.model.audit.RevisionsforUser', {
 			extend : 'Ext.data.Model',
 			fields : [{
 						name : 'timestamp',
-						useNull : true,
-						type : 'date',
-						dateFormat : 'd/m/Y H:i:s'
+//						useNull : true,
+						type : 'string',
+//						dateFormat : 'd/m/Y H:i:s'
 					}, {
 						name : 'revision',
 						type : 'integer'
@@ -22,8 +22,8 @@ Ext.define('RODAdmin.model.audit.RevisionsforObject', {
 						type : 'integer'
 					}],
 			hasMany : [{
-						model : 'RODAdmin.model.audit.RevisionRow',
-						name : 'rows',
-						associationKey : 'rows'
+						model : 'RODAdmin.model.audit.RevisionObject',
+						name : 'objects',
+						associationKey : 'objects'
 					}]
 		});

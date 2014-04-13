@@ -77,7 +77,7 @@ public interface AdminJsonService {
 	public abstract AdminJson groupMessage(Integer groupId, String subject, String message);
 
 	// CMS PAGE
-	public abstract AdminJson cmsPageSave(boolean preview, Integer cmsPageParentId, String name, String lang,
+	public abstract AdminJson cmsPageSave(boolean save, Integer cmsPageParentId, String name, String lang,
 			String menutitle, String synopsis, String target, String url, boolean defaultPage, String externalredirect,
 			String internalredirect, Integer layoutId, Integer cacheable, boolean published, boolean navigable,
 			String pagetype, Integer cmsPageId, String pageContent);

@@ -1,5 +1,7 @@
 package ro.roda.service;
 
+import java.util.concurrent.atomic.AtomicReference;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -7,7 +9,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import ro.roda.domain.CmsFile;
 import ro.roda.domain.CmsFolder;
+import ro.roda.domain.CmsLayout;
+import ro.roda.domain.CmsPage;
 import ro.roda.filestore.CmsFileStoreService;
+import ro.roda.plugin.RodaPageService;
 import ro.roda.transformer.AdminJson;
 
 @Service
@@ -16,6 +21,9 @@ public class AdminJsonServiceImpl implements AdminJsonService {
 
 	@Autowired
 	CmsFileStoreService fileStore;
+
+	@Autowired
+	RodaPageService rodaPageService;
 
 	public AdminJson findLogin(String username, String password) {
 		return AdminJson.findLogin(username, password);
@@ -174,13 +182,24 @@ public class AdminJsonServiceImpl implements AdminJsonService {
 	}
 
 	// CMS PAGE
-	public AdminJson cmsPageSave(boolean preview, Integer cmsPageParentId, String name, String lang, String menutitle,
+	public AdminJson cmsPageSave(boolean save, Integer cmsPageParentId, String name, String lang, String menutitle,
 			String synopsis, String target, String url, boolean defaultPage, String externalredirect,
 			String internalredirect, Integer layoutId, Integer cacheable, boolean published, boolean navigable,
 			String pagetype, Integer cmsPageId, String pageContent) {
-		return AdminJson.cmsPageSave(preview, cmsPageParentId, name, lang, menutitle, synopsis, target, url,
-				defaultPage, externalredirect, internalredirect, layoutId, cacheable, published, navigable, pagetype,
-				cmsPageId, pageContent);
+		AtomicReference<CmsPage> cmsPageRef = new AtomicReference<CmsPage>();
+		AdminJson adminJson = AdminJson.cmsPageSave(save, cmsPageParentId, name, lang, menutitle, synopsis, target,
+				url, defaultPage, externalredirect, internalredirect, layoutId, cacheable, published, navigable,
+				pagetype, cmsPageId, pageContent, cmsPageRef);
+		CmsPage cmsPage = cmsPageRef.get();
+
+		if (!save) {
+			adminJson.setMessage(rodaPageService.generatePreviewPage(cmsPage, CmsLayout.findCmsLayout(layoutId)
+					.getLayoutContent(), pageContent,
+					rodaPageService.generateFullRelativeUrl(cmsPage != null ? cmsPage.getCmsPageId() : null)
+							+ (url != null ? "/" + url : "/preview"))[0]);
+		}
+
+		return adminJson;
 	}
 
 	public AdminJson cmsPageMove(Integer cmsPageParentId, Integer cmsPageId, String mode) {

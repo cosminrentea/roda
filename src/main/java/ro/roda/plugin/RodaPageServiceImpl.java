@@ -79,9 +79,9 @@ public class RodaPageServiceImpl implements RodaPageService {
 	 * @param url
 	 * @return
 	 */
-	private String[] generatePage(CmsPage cmsPage, String url) {
+	public String[] generatePage(CmsPage cmsPage, String url) {
 		String pageTitle = "";
-		String[] pageContentAndTitle = new String[5];
+		String[] pageContentAndTitle = new String[4];
 		StringBuilder sb = new StringBuilder();
 
 		if (cmsPage != null) {
@@ -141,6 +141,62 @@ public class RodaPageServiceImpl implements RodaPageService {
 		return pageContentAndTitle;
 	}
 
+	public String[] generatePreviewPage(CmsPage cmsPage, String layoutContent, String pageContent, String url) {
+		String pageTitle = "";
+		String[] pageContentAndTitle = new String[4];
+		StringBuilder sb = new StringBuilder();
+
+		if (cmsPage != null) {
+			String resultPageContent = replacePageContent(getLayout(cmsPage, layoutContent, url), pageContent, cmsPage);
+
+			sb.append(resultPageContent);
+			pageTitle = cmsPage.getName();
+		} else {
+			String requestLang = null;
+
+			// the first fragment of the url might be the requested language
+			if (url.indexOf("/", 1) > 0) {
+				requestLang = url.substring(1, url.indexOf("/", 1));
+			}
+
+			Lang lang = Lang.findLang(requestLang);
+			if (lang == null) {
+				lang = Lang.findLang(DEFAULT_ERROR_PAGE_LANG);
+			}
+
+			List<CmsPage> errorPages = CmsPage.findCmsPageByLangAndType(lang,
+					CmsPageType.checkCmsPageType(null, "error404", null));
+
+			if (errorPages != null && errorPages.size() > 0) {
+				String resultPageContent = replacePageContent(getLayout(errorPages.get(0), url), pageContent,
+						errorPages.get(0));
+
+				sb.append(resultPageContent);
+				pageTitle = errorPages.get(0).getName();
+			}
+		}
+		pageContentAndTitle[0] = sb.toString();
+		pageContentAndTitle[1] = pageTitle;
+
+		return pageContentAndTitle;
+	}
+
+	public String generateFullRelativeUrl(CmsPage cmsPage) {
+		String result = "";
+		if (cmsPage != null) {
+			result = cmsPage.getUrl();
+			CmsPage parentPage = cmsPage.getCmsPageId();
+			while (parentPage != null) {
+				result = parentPage.getUrl() + "/" + result;
+				parentPage = parentPage.getCmsPageId();
+			}
+
+			result = "/" + result;
+		}
+
+		return result;
+	}
+
 	private String getLayout(CmsPage cmsPage, String url) {
 		CmsLayout pageLayout = cmsPage.getCmsLayoutId();
 		String layoutContent = pageLayout.getLayoutContent();
@@ -155,6 +211,21 @@ public class RodaPageServiceImpl implements RodaPageService {
 		layoutContent = replaceImgLink(layoutContent, url);
 
 		return layoutContent;
+	}
+
+	private String getLayout(CmsPage cmsPage, String layoutContent, String url) {
+		String resultLayoutContent = layoutContent;
+
+		resultLayoutContent = replacePageTitle(resultLayoutContent, cmsPage.getMenuTitle());
+		resultLayoutContent = replacePageLinkByUrl(resultLayoutContent, cmsPage);
+		resultLayoutContent = replacePageBreadcrumbs(resultLayoutContent, cmsPage);
+		resultLayoutContent = replaceSnippets(resultLayoutContent);
+		resultLayoutContent = replacePageTreeByUrl(resultLayoutContent, cmsPage);
+		resultLayoutContent = replacePageUrlLink(resultLayoutContent, cmsPage);
+		resultLayoutContent = replaceFileUrl(resultLayoutContent, url);
+		resultLayoutContent = replaceImgLink(resultLayoutContent, url);
+
+		return resultLayoutContent;
 	}
 
 	private String replacePageTitle(String content, String pageTitle) {
@@ -330,19 +401,22 @@ public class RodaPageServiceImpl implements RodaPageService {
 		return result;
 	}
 
-	public String generateFullRelativeUrl(CmsPage cmsPage) {
-		String result = "";
-		if (cmsPage != null) {
-			result = cmsPage.getUrl();
-			CmsPage parentPage = cmsPage.getCmsPageId();
-			while (parentPage != null) {
-				result = parentPage.getUrl() + "/" + result;
-				parentPage = parentPage.getCmsPageId();
-			}
+	private String replacePageContent(String content, String pageContent, CmsPage page) {
+		String result = content;
+		if (result.indexOf(PAGE_CONTENT_CODE) > -1) {
+			// We assume that a CmsPage has a single CmsPageContent
+			String resultContent = pageContent;
+			resultContent = replacePageTitle(pageContent, page.getMenuTitle());
+			resultContent = replacePageLinkByUrl(pageContent, page);
+			resultContent = replacePageBreadcrumbs(pageContent, page);
+			resultContent = replaceSnippets(pageContent);
+			resultContent = replacePageTreeByUrl(pageContent, page);
+			resultContent = replacePageUrlLink(pageContent, page);
+			resultContent = replaceFileUrl(pageContent, generateFullRelativeUrl(page));
+			resultContent = replaceImgLink(pageContent, generateFullRelativeUrl(page));
 
-			result = "/" + result;
+			result = result.replace(PAGE_CONTENT_CODE, resultContent);
 		}
-
 		return result;
 	}
 

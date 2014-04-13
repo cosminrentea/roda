@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Configurable;
 
 import ro.roda.domain.Person;
 import ro.roda.domain.PersonLinks;
+import ro.roda.domain.UserProfile;
 import ro.roda.domain.Users;
 import flexjson.JSONSerializer;
 
@@ -51,18 +52,17 @@ public class UserList extends JsonInfo {
 		List<UserList> result = new ArrayList<UserList>();
 
 		if (user != null) {
-			// return new UserList(user);
 			Set<PersonLinks> personLinks = user.getPersonLinkss();
-			if (personLinks != null) {
-				Iterator<PersonLinks> personLinksIterator = personLinks.iterator();
-				while (personLinksIterator.hasNext()) {
-					PersonLinks personLink = personLinksIterator.next();
-					Person person = personLink.getPersonId();
-					result.add(new UserList(user, person));
-				}
-
+			if (personLinks != null && personLinks.size() > 0) {
+				// TODO a user should have only one PersonLink in the database,
+				// too
+				PersonLinks personLink = personLinks.iterator().next();
+				Person person = personLink.getPersonId();
+				result.add(new UserList(user, person));
 			} else {
-				result.add(new UserList(user, null));
+				// use the profile information
+				UserProfile userProfile = UserProfile.findUserProfile(user.getId());
+				result.add(new UserList(user, userProfile));
 			}
 			return result;
 		}
@@ -93,6 +93,13 @@ public class UserList extends JsonInfo {
 				.getLname() : null, (person != null && person.getPersonEmails() != null && person.getPersonEmails()
 				.size() > 0) ? person.getPersonEmails().iterator().next().getEmailId().getEmail() : null, user
 				.isEnabled());
+	}
+
+	public UserList(Users user, UserProfile userProfile) {
+
+		// TODO: email for UserProfile
+		this(user.getId(), user.getUsername(), userProfile != null ? userProfile.getFirstname() : null,
+				userProfile != null ? userProfile.getLastname() : null, null, user.isEnabled());
 	}
 
 	public String getFirstname() {

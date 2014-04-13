@@ -42,29 +42,9 @@ public class UserInfo extends UserList {
 		List<Users> users = Users.findAllUserses();
 
 		if (users != null && users.size() > 0) {
-
 			Iterator<Users> usersIterator = users.iterator();
 			while (usersIterator.hasNext()) {
-				Users user = (Users) usersIterator.next();
-
-				UserInfo userInfo;
-				Set<PersonLinks> personLinks = user.getPersonLinkss();
-				if (personLinks != null && personLinks.size() > 0) {
-					userInfo = new UserInfo(user, personLinks.iterator().next().getPersonId());
-				} else {
-					userInfo = new UserInfo(user, null);
-				}
-
-				UserProfile profile = user.getUserProfile();
-				Set<UserMessage> userMessages = new HashSet<UserMessage>();
-
-				if (profile != null) {
-					userInfo.setProfile(new UserProfileInfo(profile));
-				}
-				userInfo.setMessages(userMessages);
-
-				result.add(userInfo);
-
+				result.add(findUserInfo(usersIterator.next().getId()));
 			}
 		}
 
@@ -77,16 +57,32 @@ public class UserInfo extends UserList {
 		Users user = Users.findUsers(id);
 
 		if (user != null) {
+			UserProfile profile = user.getUserProfile();
 			Set<PersonLinks> personLinks = user.getPersonLinkss();
 			if (personLinks != null && personLinks.size() > 0) {
-				result = new UserInfo(user, personLinks.iterator().next().getPersonId());
+				Person person = personLinks.iterator().next().getPersonId();
+				result = new UserInfo(user, person);
+				// ensure that there are no differences between the information
+				// in Person (if it exists) and the one in the UserProfile; the
+				// information in the Person table has greater priority
+				if (profile != null) {
+					profile.setLastname(person.getLname());
+					profile.setFirstname(person.getFname());
+
+					// the field mname is nullable in the table Person; if null,
+					// take the one in UserProfile
+					if (person.getMname() != null) {
+						profile.setMiddlename(person.getMname());
+					}
+				}
 			} else {
-				result = new UserInfo(user, null);
+				// use the userProfile information
+				result = new UserInfo(user, profile);
 			}
 
-			UserProfile profile = user.getUserProfile();
 			Set<UserMessage> userMessages = new HashSet<UserMessage>();
 
+			// set the remaining information from the profile
 			if (profile != null) {
 				result.setProfile(new UserProfileInfo(profile));
 			}
@@ -130,10 +126,21 @@ public class UserInfo extends UserList {
 
 	public UserInfo(Users user, Person person) {
 		// TODO: get the main mail, instead of the first one
-		super(user.getId(), user.getUsername(), person != null ? person.getFname() : null, person != null ? person
-				.getLname() : null, (person != null && person.getPersonEmails() != null && person.getPersonEmails()
-				.size() > 0) ? person.getPersonEmails().iterator().next().getEmailId().getEmail() : null, user
-				.isEnabled());
+		super(user, person);
+		// super(user.getId(), user.getUsername(), person != null ?
+		// person.getFname() : null, person != null ? person
+		// .getLname() : null, (person != null && person.getPersonEmails() !=
+		// null
+		// && person.getPersonEmails()
+		// .size() > 0) ?
+		// person.getPersonEmails().iterator().next().getEmailId().getEmail() :
+		// null, user
+		// .isEnabled());
+	}
+
+	public UserInfo(Users user, UserProfile profile) {
+		// TODO: email in the UserProfile
+		super(user, profile);
 	}
 
 	public Set<UserGroupInfo> getGroups() {

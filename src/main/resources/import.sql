@@ -21,7 +21,8 @@ insert into authorities(username,authority) values ('user','ROLE_VISITOR');
 insert into authorities(username,authority) values ('visitor','ROLE_VISITOR');
 
 --user_profile
-insert into user_profile(user_id, firstname, middlename, lastname, title, salutation, sex, birthdate, image, city, country, address1, phone) values (1, 'Petrica', 'T.', 'Ionescu', 'inginer', 'domnul', 'M', '11-10-1980', 'default-user-m', 'Bucuresti', 'Romania', 'bd. Magheru nr. 7', '0765432100');
-insert into user_profile(user_id, firstname, middlename, lastname, title, salutation, sex, birthdate, image, city, country, address1, phone) values (2, 'Ion', 'T.', 'Popescu', 'doctor', 'domnul', 'M', '12-07-1970', 'default-user-m', 'Ploiesti', 'Romania', 'str. Lalelelor nr. 25', '0745678907');
+insert into user_profile(user_id, firstname, middlename, lastname, title, salutation, sex, birthdate, image, city, country, address1, phone) values (1, 'Ionica', 'V.', 'Ion', 'inginer', 'domnul', 'M', '11-10-1980', 'default-user-m', 'Bucuresti', 'Romania', 'bd. Magheru nr. 7', '0765432100');
+insert into user_profile(user_id, firstname, middlename, lastname, title, salutation, sex, birthdate, image, city, country, address1, phone) values (2, 'Vasile', 'V.', 'Vasilica', 'doctor', 'domnul', 'M', '12-07-1970', 'default-user-m', 'Ploiesti', 'Romania', 'str. Lalelelor nr. 25', '0745678907');
+insert into user_profile(user_id, firstname, middlename, lastname, title, salutation, sex, birthdate, image, city, country, address1, phone) values (3, 'Ion', 'T.', 'Popescu', 'doctor', 'domnul', 'M', '03-11-1975', 'default-user-m', 'Bucuresti', 'Romania', 'str. Traian nr. 48', '0729789678');
 
 

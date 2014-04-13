@@ -9,6 +9,7 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Configurable;
 
 import ro.roda.domain.Authorities;
+import ro.roda.domain.Person;
 import ro.roda.domain.UserGroup;
 import ro.roda.domain.Users;
 import flexjson.JSONSerializer;
@@ -59,7 +60,7 @@ public class UsersByGroup extends UserList {
 	}
 
 	public UsersByGroup(Users user) {
-		super(user, null);
+		super(user, (Person) null);
 	}
 
 	public String toJson() {

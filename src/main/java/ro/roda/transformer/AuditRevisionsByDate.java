@@ -5,12 +5,12 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 import org.hibernate.envers.AuditReader;
 import org.hibernate.envers.query.AuditQuery;
@@ -73,6 +73,9 @@ public class AuditRevisionsByDate extends JsonInfo {
 
 		String[] auditedClasses = getAuditedClasses("ro.roda.domain");
 
+		Map<Integer, AuditRevision> revisions = new TreeMap<Integer, AuditRevision>();
+		Date lastRevision = null;
+
 		for (int i = 0; i < auditedClasses.length; i++) {
 			String auditedClassName = auditedClasses[i];
 
@@ -86,8 +89,6 @@ public class AuditRevisionsByDate extends JsonInfo {
 				} catch (Exception e) {
 					// TODO catch
 				}
-
-				Date lastRevision = null;
 
 				if (getAuditReaderMethod != null) {
 					AuditReader auditReader = (AuditReader) getAuditReaderMethod.invoke(null);
@@ -103,18 +104,26 @@ public class AuditRevisionsByDate extends JsonInfo {
 
 					List<?> resultRevisions = queryRevisions.getResultList();
 
+					System.out.println("The number of revisions for the object " + auditedClassName + " is "
+							+ resultRevisions.size());
+
 					Iterator<?> iteratorRevisions = resultRevisions.iterator();
 
-					Map<Integer, AuditRevision> revisions = new TreeMap<Integer, AuditRevision>();
 					while (iteratorRevisions.hasNext()) {
 
 						Object o = iteratorRevisions.next();
 
 						RodaRevisionEntity revision = (RodaRevisionEntity) ((Object[]) o)[1];
 
+						System.out.println("Revision found for object: " + auditedClassName + " at date "
+								+ revision.getRevisionDate());
+
 						// TODO: another solution would be to make a join query
 						// (not supported by Hibernate Envers)
-						if (revision.getRevisionDate().after(date) && revision.getRevisionDate().before(dateEnd)) {
+						if (revision.getRevisionDate().equals(date) || revision.getRevisionDate().after(date)
+								&& revision.getRevisionDate().before(dateEnd)) {
+							System.out.println("Date is good");
+
 							// add new revision, without any information about
 							// the
 							// revision rows or objects
@@ -133,8 +142,8 @@ public class AuditRevisionsByDate extends JsonInfo {
 						}
 					}
 					// TODO: get the userid
-					onConstructRevisionsByDate(date, revisions.values().size(), lastRevision,
-							new HashSet<AuditRevision>(revisions.values()));
+
+					System.out.println("nr of revisions: " + revisions.size() + " " + revisions.values().size());
 
 				}
 
@@ -145,6 +154,9 @@ public class AuditRevisionsByDate extends JsonInfo {
 			}
 
 		}
+
+		onConstructRevisionsByDate(date, revisions.values().size(), lastRevision,
+				new TreeSet<AuditRevision>(revisions.values()));
 
 	}
 

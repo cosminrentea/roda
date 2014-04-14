@@ -224,10 +224,10 @@ public class RodaPageServiceImpl implements RodaPageService {
 		resultLayoutContent = replacePageTreeByUrl(resultLayoutContent, cmsPage);
 		resultLayoutContent = replacePageUrlLink(resultLayoutContent, cmsPage);
 		
-		resultLayoutContent = replaceFileUrl(resultLayoutContent, url);
+		//resultLayoutContent = replaceFileUrl(resultLayoutContent, url);
 		//resultLayoutContent = replaceImgLinkPrev(resultLayoutContent, url);
 		
-//		resultLayoutContent = replaceFileUrl(resultLayoutContent, ADMIN_URL);
+		resultLayoutContent = replaceFileUrl(resultLayoutContent, ADMIN_URL);
 		resultLayoutContent = replaceImgLinkPrev(resultLayoutContent, ADMIN_URL);
 
 		return resultLayoutContent;

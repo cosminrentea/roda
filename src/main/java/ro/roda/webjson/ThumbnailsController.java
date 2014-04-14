@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.HandlerMapping;
 
 import ro.roda.domain.CmsFile;
+import ro.roda.filestore.CmsFileStoreService;
 import ro.roda.service.CmsFileService;
 import ro.roda.thumbnails.ThumbnailsService;
 
@@ -33,6 +34,10 @@ public class ThumbnailsController {
 
 	@Autowired
 	CmsFileService cmsFileService;
+	
+	@Autowired
+	CmsFileStoreService cmsFileStoreService;
+
 
 	@RequestMapping(value = "/{alias}/h/{h}")
 	@ResponseBody
@@ -49,7 +54,7 @@ public class ThumbnailsController {
 
 		HttpHeaders headers = getHttpHeaders(alias);
 		try {
-			byte[] bytes = thumbnailsService.generateThumbnailByHeightAndWidth(getBaseUrl(request), alias, height,
+			byte[] bytes = thumbnailsService.generateThumbnailByHeightAndWidth(alias, height,
 					width);
 			if (bytes == null) {
 				return new ResponseEntity<byte[]>(headers, HttpStatus.NOT_FOUND);
@@ -68,7 +73,7 @@ public class ThumbnailsController {
 
 		HttpHeaders headers = getHttpHeaders(alias);
 		try {
-			byte[] bytes = thumbnailsService.generateThumbnailProportionalToWidth(getBaseUrl(request), alias, width);
+			byte[] bytes = thumbnailsService.generateThumbnailProportionalToWidth(alias, width);
 			if (bytes == null) {
 				return new ResponseEntity<byte[]>(headers, HttpStatus.NOT_FOUND);
 			}
@@ -86,7 +91,7 @@ public class ThumbnailsController {
 
 		HttpHeaders headers = getHttpHeaders(alias);
 		try {
-			byte[] bytes = thumbnailsService.generateThumbnailProportionalToHeight(getBaseUrl(request), alias, height);
+			byte[] bytes = thumbnailsService.generateThumbnailProportionalToHeight(alias, height);
 			if (bytes == null) {
 				return new ResponseEntity<byte[]>(headers, HttpStatus.NOT_FOUND);
 			}

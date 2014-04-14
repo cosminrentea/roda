@@ -37,6 +37,7 @@ public class RodaPageServiceImpl implements RodaPageService {
 	private static String PAGE_BREADCRUMBS = "[[Code: PageBreadcrumbs('";
 
 	private static String DEFAULT_ERROR_PAGE_LANG = "en";
+	private static String ADMIN_URL ="admin/index.html";
 
 	private final Log log = LogFactory.getLog(this.getClass());
 
@@ -222,8 +223,12 @@ public class RodaPageServiceImpl implements RodaPageService {
 		resultLayoutContent = replaceSnippets(resultLayoutContent);
 		resultLayoutContent = replacePageTreeByUrl(resultLayoutContent, cmsPage);
 		resultLayoutContent = replacePageUrlLink(resultLayoutContent, cmsPage);
+		
 		resultLayoutContent = replaceFileUrl(resultLayoutContent, url);
-		resultLayoutContent = replaceImgLink(resultLayoutContent, url);
+		//resultLayoutContent = replaceImgLinkPrev(resultLayoutContent, url);
+		
+//		resultLayoutContent = replaceFileUrl(resultLayoutContent, ADMIN_URL);
+		resultLayoutContent = replaceImgLinkPrev(resultLayoutContent, ADMIN_URL);
 
 		return resultLayoutContent;
 	}
@@ -350,6 +355,8 @@ public class RodaPageServiceImpl implements RodaPageService {
 					result.indexOf("]]", fromIndex + IMG_LINK_CODE.length()));
 			CmsFile cmsFile = CmsFile.findCmsFile(alias);
 
+			System.out.println("The URL in replaceImgLink is " + url);
+			
 			StringBuilder relativePath = new StringBuilder();
 
 			if (url != null) {
@@ -366,6 +373,32 @@ public class RodaPageServiceImpl implements RodaPageService {
 		return result;
 	}
 
+	private String replaceImgLinkPrev(String content, String url) {
+		int fromIndex = content.indexOf(IMG_LINK_CODE, 0);
+		String result = content;
+		while (fromIndex > -1) {
+			String alias = result.substring(fromIndex + IMG_LINK_CODE.length(),
+					result.indexOf("]]", fromIndex + IMG_LINK_CODE.length()));
+			CmsFile cmsFile = CmsFile.findCmsFile(alias);
+
+			System.out.println("The URL in replaceImgLink is " + url);
+			
+			StringBuilder relativePath = new StringBuilder();
+			
+			if (url != null) {
+				for (int i = 0; i < StringUtils.countMatches(url, "/"); i++) {
+					relativePath.append("../");
+				}
+			}
+
+			result = result.substring(0, fromIndex) + "<img src=\""
+					+ (cmsFile != null ? relativePath.toString() + cmsFile.getUrl() : "") + "\" />"
+					+ result.substring(result.indexOf("]]", fromIndex + IMG_LINK_CODE.length()) + "]]".length());
+			fromIndex = result.indexOf(IMG_LINK_CODE, fromIndex + IMG_LINK_CODE.length());
+		}
+		return result;
+	}
+	
 	private String replaceSnippets(String content) {
 		String snippetsReplaced = content;
 
@@ -412,9 +445,13 @@ public class RodaPageServiceImpl implements RodaPageService {
 			resultContent = replaceSnippets(pageContent);
 			resultContent = replacePageTreeByUrl(pageContent, page);
 			resultContent = replacePageUrlLink(pageContent, page);
-			resultContent = replaceFileUrl(pageContent, generateFullRelativeUrl(page));
-			resultContent = replaceImgLink(pageContent, generateFullRelativeUrl(page));
+			
+//			resultContent = replaceFileUrl(pageContent, generateFullRelativeUrl(page));
+//			resultContent = replaceImgLink(pageContent, generateFullRelativeUrl(page));
 
+			resultContent = replaceFileUrl(pageContent, ADMIN_URL);
+			resultContent = replaceImgLinkPrev(pageContent, ADMIN_URL);
+			
 			result = result.replace(PAGE_CONTENT_CODE, resultContent);
 		}
 		return result;

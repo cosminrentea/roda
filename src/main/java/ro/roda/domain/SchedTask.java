@@ -159,7 +159,7 @@ public class SchedTask {
 		return new JSONSerializer().exclude("*.class").serialize(collection);
 	}
 
-	@OneToMany(mappedBy = "task")
+	@OneToMany(mappedBy = "schedTask")
 	private Set<SchedExecution> schedExecutions;
 
 	/*

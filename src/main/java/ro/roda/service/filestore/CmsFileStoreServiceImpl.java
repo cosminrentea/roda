@@ -56,6 +56,7 @@ public class CmsFileStoreServiceImpl implements CmsFileStoreService {
 	@Autowired
 	ImporterService importer;
 
+	@SuppressWarnings("unused")
 	@PostConstruct
 	private void onStart() {
 		try {

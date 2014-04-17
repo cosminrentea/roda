@@ -149,6 +149,7 @@ public class ThumbnailsController {
 			headers.setContentType(MediaType.IMAGE_PNG);
 			break;
 		case "jpg":
+		case "jpeg":
 			headers.setContentType(MediaType.IMAGE_JPEG);
 			break;
 		}

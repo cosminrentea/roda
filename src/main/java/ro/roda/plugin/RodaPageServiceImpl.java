@@ -37,7 +37,8 @@ public class RodaPageServiceImpl implements RodaPageService {
 	private static String PAGE_BREADCRUMBS = "[[Code: PageBreadcrumbs('";
 
 	private static String DEFAULT_ERROR_PAGE_LANG = "en";
-	private static String ADMIN_URL ="admin/index.html";
+	private static String ADMIN_URL = "admin/index.html";
+	private static String CMS_FILE_CONTENT_URL = "admin/cmsfilecontent/";
 
 	private final Log log = LogFactory.getLog(this.getClass());
 
@@ -124,11 +125,6 @@ public class RodaPageServiceImpl implements RodaPageService {
 
 				sb.append(pageContent);
 				pageTitle = errorPages.get(0).getName();
-
-				// internal redirect to the error page
-				// pageContentAndTitle[3] =
-				// generateFullRelativeUrl(errorPages.get(0));
-				// return pageContentAndTitle;
 			}
 
 			// if there is no error page defined, then:
@@ -215,6 +211,8 @@ public class RodaPageServiceImpl implements RodaPageService {
 	}
 
 	private String getLayout(CmsPage cmsPage, String layoutContent, String url) {
+		// This method is to be invoked mainly from the page preview generator.
+
 		String resultLayoutContent = layoutContent;
 
 		resultLayoutContent = replacePageTitle(resultLayoutContent, cmsPage.getMenuTitle());
@@ -223,12 +221,9 @@ public class RodaPageServiceImpl implements RodaPageService {
 		resultLayoutContent = replaceSnippets(resultLayoutContent);
 		resultLayoutContent = replacePageTreeByUrl(resultLayoutContent, cmsPage);
 		resultLayoutContent = replacePageUrlLink(resultLayoutContent, cmsPage);
-		
-		//resultLayoutContent = replaceFileUrl(resultLayoutContent, url);
-		//resultLayoutContent = replaceImgLinkPrev(resultLayoutContent, url);
-		
+
 		resultLayoutContent = replaceFileUrl(resultLayoutContent, ADMIN_URL);
-		resultLayoutContent = replaceImgLinkPrev(resultLayoutContent, ADMIN_URL);
+		resultLayoutContent = replaceImgLink(resultLayoutContent, ADMIN_URL);
 
 		return resultLayoutContent;
 	}
@@ -340,7 +335,7 @@ public class RodaPageServiceImpl implements RodaPageService {
 			}
 
 			result = result.substring(0, fromIndex)
-					+ (cmsFile != null ? relativePath.toString() + cmsFile.getUrl() : "")
+					+ (cmsFile != null ? relativePath.toString() + CMS_FILE_CONTENT_URL + cmsFile.getId() : "")
 					+ result.substring(result.indexOf("]]", fromIndex + FILE_URL_LINK_CODE.length()) + "]]".length());
 			fromIndex = result.indexOf(FILE_URL_LINK_CODE, fromIndex + FILE_URL_LINK_CODE.length());
 		}
@@ -356,7 +351,7 @@ public class RodaPageServiceImpl implements RodaPageService {
 			CmsFile cmsFile = CmsFile.findCmsFile(alias);
 
 			System.out.println("The URL in replaceImgLink is " + url);
-			
+
 			StringBuilder relativePath = new StringBuilder();
 
 			if (url != null) {
@@ -366,39 +361,14 @@ public class RodaPageServiceImpl implements RodaPageService {
 			}
 
 			result = result.substring(0, fromIndex) + "<img src=\""
-					+ (cmsFile != null ? relativePath.toString() + cmsFile.getUrl() : "") + "\" />"
+					+ (cmsFile != null ? relativePath.toString() + CMS_FILE_CONTENT_URL + cmsFile.getId() : "")
+					+ "\" />"
 					+ result.substring(result.indexOf("]]", fromIndex + IMG_LINK_CODE.length()) + "]]".length());
 			fromIndex = result.indexOf(IMG_LINK_CODE, fromIndex + IMG_LINK_CODE.length());
 		}
 		return result;
 	}
 
-	private String replaceImgLinkPrev(String content, String url) {
-		int fromIndex = content.indexOf(IMG_LINK_CODE, 0);
-		String result = content;
-		while (fromIndex > -1) {
-			String alias = result.substring(fromIndex + IMG_LINK_CODE.length(),
-					result.indexOf("]]", fromIndex + IMG_LINK_CODE.length()));
-			CmsFile cmsFile = CmsFile.findCmsFile(alias);
-
-			System.out.println("The URL in replaceImgLink is " + url);
-			
-			StringBuilder relativePath = new StringBuilder();
-			
-			if (url != null) {
-				for (int i = 0; i < StringUtils.countMatches(url, "/"); i++) {
-					relativePath.append("../");
-				}
-			}
-
-			result = result.substring(0, fromIndex) + "<img src=\""
-					+ (cmsFile != null ? relativePath.toString() + cmsFile.getUrl() : "") + "\" />"
-					+ result.substring(result.indexOf("]]", fromIndex + IMG_LINK_CODE.length()) + "]]".length());
-			fromIndex = result.indexOf(IMG_LINK_CODE, fromIndex + IMG_LINK_CODE.length());
-		}
-		return result;
-	}
-	
 	private String replaceSnippets(String content) {
 		String snippetsReplaced = content;
 
@@ -435,6 +405,8 @@ public class RodaPageServiceImpl implements RodaPageService {
 	}
 
 	private String replacePageContent(String content, String pageContent, CmsPage page) {
+		// This method is to be invoked mainly from the page preview generator.
+
 		String result = content;
 		if (result.indexOf(PAGE_CONTENT_CODE) > -1) {
 			// We assume that a CmsPage has a single CmsPageContent
@@ -445,13 +417,10 @@ public class RodaPageServiceImpl implements RodaPageService {
 			resultContent = replaceSnippets(pageContent);
 			resultContent = replacePageTreeByUrl(pageContent, page);
 			resultContent = replacePageUrlLink(pageContent, page);
-			
-//			resultContent = replaceFileUrl(pageContent, generateFullRelativeUrl(page));
-//			resultContent = replaceImgLink(pageContent, generateFullRelativeUrl(page));
 
 			resultContent = replaceFileUrl(pageContent, ADMIN_URL);
-			resultContent = replaceImgLinkPrev(pageContent, ADMIN_URL);
-			
+			resultContent = replaceImgLink(pageContent, ADMIN_URL);
+
 			result = result.replace(PAGE_CONTENT_CODE, resultContent);
 		}
 		return result;
@@ -605,31 +574,5 @@ public class RodaPageServiceImpl implements RodaPageService {
 
 		return result.toString();
 	}
-
-	// private boolean checkFullRelativeUrl(String url) {
-	//
-	// // checks if the components of the url and the parent-child relationship
-	// // exist in the database
-	// if (url != null) {
-	// StringTokenizer tokenizer = new StringTokenizer(url, "/");
-	// CmsPage prevPage = null;
-	// while (tokenizer.hasMoreTokens()) {
-	// String pathUrl = tokenizer.nextToken();
-	//
-	// CmsPage pathPage = CmsPage.findCmsPage(pathUrl);
-	//
-	// if (pathPage == null) {
-	// return false;
-	// } else {
-	// if (pathPage.getCmsPageId() != prevPage) {
-	// return false;
-	// }
-	// prevPage = pathPage;
-	// }
-	// }
-	// return true;
-	// }
-	// return false;
-	// }
 
 }

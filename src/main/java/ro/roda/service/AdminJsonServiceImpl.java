@@ -192,7 +192,11 @@ public class AdminJsonServiceImpl implements AdminJsonService {
 				pagetype, cmsPageId, pageContent, cmsPageRef);
 		CmsPage cmsPage = cmsPageRef.get();
 
-		if (!save) {
+		if (save) {
+			// evict page from cache (because it was just saved/updated)
+			rodaPageService.evict(rodaPageService.generateFullRelativeUrl(cmsPage));
+		} else {
+			// generate preview page
 			adminJson.setMessage(rodaPageService.generatePreviewPage(cmsPage, CmsLayout.findCmsLayout(layoutId)
 					.getLayoutContent(), pageContent,
 					rodaPageService.generateFullRelativeUrl(cmsPage != null ? cmsPage.getCmsPageId() : null)

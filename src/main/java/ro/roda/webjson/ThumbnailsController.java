@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import ro.roda.domain.CmsFile;
-import ro.roda.filestore.CmsFileStoreService;
 import ro.roda.service.CmsFileService;
-import ro.roda.thumbnails.ThumbnailsService;
+import ro.roda.service.filestore.CmsFileStoreService;
+import ro.roda.service.thumbnails.ThumbnailsService;
 
 @RequestMapping("/admin/thumbnail/alias")
 @Controller

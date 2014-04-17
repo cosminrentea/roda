@@ -1,4 +1,4 @@
-package ro.roda.plugin;
+package ro.roda.service.page;
 
 import java.util.ArrayList;
 import java.util.List;

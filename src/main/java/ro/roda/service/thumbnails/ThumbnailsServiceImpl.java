@@ -1,4 +1,4 @@
-package ro.roda.thumbnails;
+package ro.roda.service.thumbnails;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.BufferedImageOp;

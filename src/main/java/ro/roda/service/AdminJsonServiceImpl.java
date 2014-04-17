@@ -11,8 +11,8 @@ import ro.roda.domain.CmsFile;
 import ro.roda.domain.CmsFolder;
 import ro.roda.domain.CmsLayout;
 import ro.roda.domain.CmsPage;
-import ro.roda.filestore.CmsFileStoreService;
-import ro.roda.plugin.RodaPageService;
+import ro.roda.service.filestore.CmsFileStoreService;
+import ro.roda.service.page.RodaPageService;
 import ro.roda.transformer.AdminJson;
 
 @Service

@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Configurable;
 
 import ro.roda.domain.CmsFile;
 import ro.roda.domain.CmsFolder;
-import ro.roda.filestore.CmsFileStoreService;
+import ro.roda.service.filestore.CmsFileStoreService;
 import flexjson.JSONSerializer;
 import flexjson.transformer.IterableTransformer;
 import flexjson.transformer.MapTransformer;

@@ -1,4 +1,4 @@
-package ro.roda.importer;
+package ro.roda.service.importer;
 
 import javax.xml.bind.Unmarshaller;
 

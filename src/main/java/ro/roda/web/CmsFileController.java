@@ -27,10 +27,10 @@ import org.springframework.web.util.WebUtils;
 
 import ro.roda.domain.CmsFile;
 import ro.roda.domain.File;
-import ro.roda.filestore.CmsFileStoreService;
 import ro.roda.service.CmsFileService;
 import ro.roda.service.CmsFolderService;
 import ro.roda.service.FileService;
+import ro.roda.service.filestore.CmsFileStoreService;
 
 @RequestMapping("/cmsfiles")
 @Controller

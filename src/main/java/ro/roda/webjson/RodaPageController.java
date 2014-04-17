@@ -13,7 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.HandlerMapping;
 
-import ro.roda.plugin.RodaPageService;
+import ro.roda.service.page.RodaPageService;
 
 @RequestMapping("/page")
 @Controller

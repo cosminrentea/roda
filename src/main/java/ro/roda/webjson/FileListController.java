@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import ro.roda.filestore.CmsFileStoreService;
 import ro.roda.service.FileListService;
+import ro.roda.service.filestore.CmsFileStoreService;
 import ro.roda.transformer.FileList;
 
 @RequestMapping("/admin/cmsfilelist")

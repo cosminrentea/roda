@@ -26,8 +26,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.support.ByteArrayMultipartFileEditor;
 
 import ro.roda.domain.CmsFile;
-import ro.roda.filestore.CmsFileStoreService;
 import ro.roda.service.AdminJsonService;
+import ro.roda.service.filestore.CmsFileStoreService;
 import ro.roda.transformer.AdminJson;
 
 @RequestMapping("/admin")

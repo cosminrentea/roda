@@ -1,4 +1,4 @@
-package ro.roda.filestore;
+package ro.roda.service.filestore;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -36,7 +36,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import ro.roda.domain.CmsFile;
 import ro.roda.domain.CmsFolder;
-import ro.roda.importer.ImporterService;
+import ro.roda.service.importer.ImporterService;
 
 @Service
 @Transactional

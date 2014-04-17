@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.HandlerMapping;
 
 import ro.roda.domain.CmsPage;
-import ro.roda.plugin.RodaPageService;
-import ro.roda.thumbnails.ThumbnailsService;
+import ro.roda.service.page.RodaPageService;
+import ro.roda.service.thumbnails.ThumbnailsService;
 import ro.roda.transformer.AdminJson;
 
 @RequestMapping("/admin/cache")

@@ -1,4 +1,4 @@
-package ro.roda.plugin;
+package ro.roda.service.page;
 
 import ro.roda.domain.CmsPage;
 

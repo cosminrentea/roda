@@ -1,4 +1,4 @@
-package ro.roda.filestore;
+package ro.roda.service.filestore;
 
 import java.io.InputStream;
 import java.util.Map;

@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import ro.fortsoft.pf4j.DefaultPluginManager;
 import ro.fortsoft.pf4j.PluginManager;
-import ro.roda.plugin.RodaPagePlugin;
-import ro.roda.plugin.RodaPageService;
+import ro.roda.service.page.RodaPagePlugin;
+import ro.roda.service.page.RodaPageService;
 
 @RequestMapping("/plugin")
 @Controller

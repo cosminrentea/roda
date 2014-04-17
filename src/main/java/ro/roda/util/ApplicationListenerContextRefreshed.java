@@ -8,7 +8,7 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import ro.roda.importer.ImporterService;
+import ro.roda.service.importer.ImporterService;
 
 @Component
 public class ApplicationListenerContextRefreshed implements ApplicationListener<ContextRefreshedEvent> {

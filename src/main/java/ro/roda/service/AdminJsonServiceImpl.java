@@ -46,6 +46,10 @@ public class AdminJsonServiceImpl implements AdminJsonService {
 	}
 
 	public AdminJson layoutSave(Integer groupId, String content, String name, String description, Integer layoutId) {
+
+		// invalidate ALL CMS Pages in cache when one of the layouts is changed/added/saved
+		rodaPageService.evictAll();
+		
 		return AdminJson.layoutSave(groupId, content, name, description, layoutId);
 	}
 
@@ -74,6 +78,10 @@ public class AdminJsonServiceImpl implements AdminJsonService {
 	}
 
 	public AdminJson snippetSave(Integer groupId, String content, String name, Integer snippetId) {
+
+		// invalidate ALL CMS Pages in cache when one of the snippets is changed/added/saved
+		rodaPageService.evictAll();
+
 		return AdminJson.snippetSave(groupId, name, content, snippetId);
 	}
 

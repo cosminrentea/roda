@@ -6,8 +6,8 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import ro.roda.scheduler.Execution;
-import ro.roda.scheduler.Task;
+import ro.roda.domain.SchedExecution;
+import ro.roda.domain.SchedTask;
 
 @Service
 @Transactional
@@ -20,37 +20,37 @@ public class SchedulerServiceImpl implements SchedulerService {
 	}
 
 	@Override
-	public Task findTask(Integer id) {
+	public SchedTask findTask(Integer id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<Task> findTasksAll() {
+	public List<SchedTask> findTasksAll() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<Task> findTasks(int firstResult, int maxResults) {
+	public List<SchedTask> findTasks(int firstResult, int maxResults) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public void saveTask(Task task) {
+	public void saveTask(SchedTask schedTask) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public Task updateTask(Task task) {
+	public SchedTask updateTask(SchedTask schedTask) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public void deleteTask(Task task) {
+	public void deleteTask(SchedTask schedTask) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -62,43 +62,43 @@ public class SchedulerServiceImpl implements SchedulerService {
 	}
 
 	@Override
-	public Execution findExecution(Integer id) {
+	public SchedExecution findExecution(Integer id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<Execution> findExecutionsAll() {
+	public List<SchedExecution> findExecutionsAll() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<Execution> findExecutions(int firstResult, int maxResults) {
+	public List<SchedExecution> findExecutions(int firstResult, int maxResults) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<Execution> findExecutionsFiltered(Integer taskId, Date date, Integer result) {
+	public List<SchedExecution> findExecutionsFiltered(Integer taskId, Date date, Integer result) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public void saveExecution(Execution execution) {
+	public void saveExecution(SchedExecution schedExecution) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public Execution updateExecution(Execution execution) {
+	public SchedExecution updateExecution(SchedExecution schedExecution) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public void deleteExecution(Execution execution) {
+	public void deleteExecution(SchedExecution schedExecution) {
 		// TODO Auto-generated method stub
 		
 	}

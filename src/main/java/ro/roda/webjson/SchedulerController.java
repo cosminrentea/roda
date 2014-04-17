@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import ro.roda.scheduler.Execution;
-import ro.roda.scheduler.Task;
+import ro.roda.domain.SchedExecution;
+import ro.roda.domain.SchedTask;
 import ro.roda.service.SchedulerService;
 
 @RequestMapping("/scheduler")
@@ -27,14 +27,14 @@ public class SchedulerController {
 	public ResponseEntity<String> listTasks() {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");
-		List<Task> result = schedulerService.findTasksAll();
-		return new ResponseEntity<String>(Task.toJsonArray(result), headers, HttpStatus.OK);
+		List<SchedTask> result = schedulerService.findTasksAll();
+		return new ResponseEntity<String>(SchedTask.toJsonArray(result), headers, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/tasks/{id}", headers = "Accept=application/json")
 	@ResponseBody
 	public ResponseEntity<String> showTask(@PathVariable("id") Integer id) {
-		Task s = schedulerService.findTask(id);
+		SchedTask s = schedulerService.findTask(id);
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");
 		if (s == null) {
@@ -48,14 +48,14 @@ public class SchedulerController {
 	public ResponseEntity<String> listExecutions() {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");
-		List<Execution> result = schedulerService.findExecutionsAll();
-		return new ResponseEntity<String>(Execution.toJsonArray(result), headers, HttpStatus.OK);
+		List<SchedExecution> result = schedulerService.findExecutionsAll();
+		return new ResponseEntity<String>(SchedExecution.toJsonArray(result), headers, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/executions/{id}", headers = "Accept=application/json")
 	@ResponseBody
 	public ResponseEntity<String> showExecution(@PathVariable("id") Integer id) {
-		Execution e = schedulerService.findExecution(id);
+		SchedExecution e = schedulerService.findExecution(id);
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");
 		if (e == null) {

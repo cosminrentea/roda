@@ -1,4 +1,4 @@
-package ro.roda.scheduler;
+package ro.roda.domain;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -43,17 +43,17 @@ import flexjson.JSONSerializer;
 @Entity
 @Table(schema = "public", name = "sched_execution")
 @Configurable
-public class Execution {
+public class SchedExecution {
 
 	public static long countExecutions() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM Execution o", Long.class).getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM SchedExecution o", Long.class).getSingleResult();
 	}
 
 	@Async
-	public static void deleteIndex(Execution execution) {
+	public static void deleteIndex(SchedExecution schedExecution) {
 		SolrServer solrServer = solrServer();
 		try {
-			solrServer.deleteById("Execution_" + execution.getId());
+			solrServer.deleteById("Execution_" + schedExecution.getId());
 			solrServer.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -61,51 +61,51 @@ public class Execution {
 	}
 
 	public static final EntityManager entityManager() {
-		EntityManager em = new Execution().entityManager;
+		EntityManager em = new SchedExecution().entityManager;
 		if (em == null)
 			throw new IllegalStateException(
 					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
 		return em;
 	}
 
-	public static List<Execution> findAllExecutions() {
-		return entityManager().createQuery("SELECT o FROM Execution o", Execution.class).getResultList();
+	public static List<SchedExecution> findAllExecutions() {
+		return entityManager().createQuery("SELECT o FROM SchedExecution o", SchedExecution.class).getResultList();
 	}
 
-	public static Execution findExecution(Integer id) {
+	public static SchedExecution findExecution(Integer id) {
 		if (id == null)
 			return null;
-		return entityManager().find(Execution.class, id);
+		return entityManager().find(SchedExecution.class, id);
 	}
 
-	public static List<Execution> findExecutionEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM Execution o", Execution.class).setFirstResult(firstResult)
+	public static List<SchedExecution> findExecutionEntries(int firstResult, int maxResults) {
+		return entityManager().createQuery("SELECT o FROM SchedExecution o", SchedExecution.class).setFirstResult(firstResult)
 				.setMaxResults(maxResults).getResultList();
 	}
 
-	public static Collection<Execution> fromJsonArrayToExecutions(String json) {
-		return new JSONDeserializer<List<Execution>>().use(null, ArrayList.class).use("values", Execution.class)
+	public static Collection<SchedExecution> fromJsonArrayToExecutions(String json) {
+		return new JSONDeserializer<List<SchedExecution>>().use(null, ArrayList.class).use("values", SchedExecution.class)
 				.deserialize(json);
 	}
 
-	public static Execution fromJsonToExecution(String json) {
-		return new JSONDeserializer<Execution>().use(null, Execution.class).deserialize(json);
+	public static SchedExecution fromJsonToExecution(String json) {
+		return new JSONDeserializer<SchedExecution>().use(null, SchedExecution.class).deserialize(json);
 	}
 
-	public static void indexExecution(Execution execution) {
-		List<Execution> Executions = new ArrayList<Execution>();
-		Executions.add(execution);
-		indexExecutions(Executions);
+	public static void indexExecution(SchedExecution schedExecution) {
+		List<SchedExecution> schedExecutions = new ArrayList<SchedExecution>();
+		schedExecutions.add(schedExecution);
+		indexExecutions(schedExecutions);
 	}
 
 	@Async
-	public static void indexExecutions(Collection<Execution> Executions) {
+	public static void indexExecutions(Collection<SchedExecution> schedExecutions) {
 		List<SolrInputDocument> documents = new ArrayList<SolrInputDocument>();
-		for (Execution execution : Executions) {
+		for (SchedExecution schedExecution : schedExecutions) {
 			SolrInputDocument sid = new SolrInputDocument();
-			sid.addField("id", "Execution_" + execution.getId());
-			sid.addField("Execution.cmsfolderid_t", execution.getTask());
-			sid.addField("Execution.id_i", execution.getId());
+			sid.addField("id", "Execution_" + schedExecution.getId());
+			sid.addField("Execution.cmsfolderid_t", schedExecution.getTask());
+			sid.addField("Execution.id_i", schedExecution.getId());
 			// Add summary field to allow searching documents for objects of
 			// this type
 			/*
@@ -142,14 +142,14 @@ public class Execution {
 	}
 
 	public static SolrServer solrServer() {
-		SolrServer _solrServer = new Execution().solrServer;
+		SolrServer _solrServer = new SchedExecution().solrServer;
 		if (_solrServer == null)
 			throw new IllegalStateException(
 					"Solr server has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
 		return _solrServer;
 	}
 
-	public static String toJsonArray(Collection<Execution> collection) {
+	public static String toJsonArray(Collection<SchedExecution> collection) {
 		return new JSONSerializer().exclude("*.class").serialize(collection);
 	}
 
@@ -160,7 +160,7 @@ public class Execution {
 
 	@ManyToOne
 	@JoinColumn(name = "task_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false)
-	private Task task;
+	private SchedTask schedTask;
 
 	@Column(name = "exec_type", columnDefinition = "text")
 	@NotNull
@@ -199,8 +199,8 @@ public class Execution {
 		this.entityManager.flush();
 	}
 
-	public Task getTask() {
-		return task;
+	public SchedTask getTask() {
+		return schedTask;
 	}
 
 	public Integer getId() {
@@ -208,10 +208,10 @@ public class Execution {
 	}
 
 	@Transactional
-	public Execution merge() {
+	public SchedExecution merge() {
 		if (this.entityManager == null)
 			this.entityManager = entityManager();
-		Execution merged = this.entityManager.merge(this);
+		SchedExecution merged = this.entityManager.merge(this);
 		this.entityManager.flush();
 		return merged;
 	}
@@ -230,13 +230,13 @@ public class Execution {
 		if (this.entityManager.contains(this)) {
 			this.entityManager.remove(this);
 		} else {
-			Execution attached = Execution.findExecution(this.id);
+			SchedExecution attached = SchedExecution.findExecution(this.id);
 			this.entityManager.remove(attached);
 		}
 	}
 
-	public void setCmsFolderId(Task task) {
-		this.task = task;
+	public void setCmsFolderId(SchedTask schedTask) {
+		this.schedTask = schedTask;
 	}
 
 	public void setId(Integer id) {
@@ -275,8 +275,8 @@ public class Execution {
 		this.stacktrace = stacktrace;
 	}
 
-	public void setTask(Task task) {
-		this.task = task;
+	public void setTask(SchedTask schedTask) {
+		this.schedTask = schedTask;
 	}
 
 	public String toJson() {
@@ -300,9 +300,9 @@ public class Execution {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (obj instanceof Execution) {
-			final Execution other = (Execution) obj;
-			return new EqualsBuilder().append(task, other.task).append(execType, other.execType)
+		if (obj instanceof SchedExecution) {
+			final SchedExecution other = (SchedExecution) obj;
+			return new EqualsBuilder().append(schedTask, other.schedTask).append(execType, other.execType)
 					.append(execStarted, other.execStarted).append(result, other.result).isEquals();
 		} else {
 			return false;

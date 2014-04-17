@@ -1,44 +1,16 @@
 package ro.roda.filestore;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Calendar;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-
-import javax.xml.bind.JAXBException;
-
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.input.AutoCloseInputStream;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.solr.client.solrj.SolrServer;
-import org.apache.solr.client.solrj.SolrServerException;
-import org.apache.solr.client.solrj.request.AbstractUpdateRequest.ACTION;
-import org.apache.solr.client.solrj.request.ContentStreamUpdateRequest;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
-
-import ro.roda.ddi.CodeBook;
-import ro.roda.domain.CmsFile;
-import ro.roda.domain.CmsFolder;
-import ro.roda.importer.ImporterService;
-
-import java.io.File;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import javax.jcr.Repository;
-
-import javax.jcr.ItemExistsException;
 import javax.jcr.LoginException;
+import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.PathNotFoundException;
 import javax.jcr.Property;
@@ -46,21 +18,25 @@ import javax.jcr.PropertyIterator;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import javax.jcr.SimpleCredentials;
-import javax.jcr.Node;
 
+import org.apache.commons.io.input.AutoCloseInputStream;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.jackrabbit.api.JackrabbitRepository;
-import org.apache.jackrabbit.core.config.RepositoryConfig;
-import org.apache.jackrabbit.core.RepositoryImpl;
-import org.apache.jackrabbit.commons.JcrUtils;
-
-import org.springframework.beans.BeansException;
+import org.apache.solr.client.solrj.SolrServer;
+import org.apache.solr.client.solrj.SolrServerException;
+import org.apache.solr.client.solrj.request.AbstractUpdateRequest.ACTION;
+import org.apache.solr.client.solrj.request.ContentStreamUpdateRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+
+import ro.roda.domain.CmsFile;
+import ro.roda.domain.CmsFolder;
+import ro.roda.importer.ImporterService;
 
 @Service
 @Transactional

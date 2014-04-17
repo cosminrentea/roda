@@ -1,4 +1,4 @@
-package ro.roda.scheduler;
+package ro.roda.domain;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -41,7 +41,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.transaction.annotation.Transactional;
 
-import ro.roda.domain.CmsFile;
 
 import flexjson.JSONDeserializer;
 import flexjson.JSONSerializer;
@@ -49,17 +48,17 @@ import flexjson.JSONSerializer;
 @Entity
 @Table(schema = "public", name = "sched_task")
 @Configurable
-public class Task {
+public class SchedTask {
 
 	public static long countTasks() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM Task o", Long.class).getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM SchedTask o", Long.class).getSingleResult();
 	}
 
 	@Async
-	public static void deleteIndex(Task task) {
+	public static void deleteIndex(SchedTask schedTask) {
 		SolrServer solrServer = solrServer();
 		try {
-			solrServer.deleteById("Task_" + task.getId());
+			solrServer.deleteById("Task_" + schedTask.getId());
 			solrServer.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -67,52 +66,52 @@ public class Task {
 	}
 
 	public static final EntityManager entityManager() {
-		EntityManager em = new Task().entityManager;
+		EntityManager em = new SchedTask().entityManager;
 		if (em == null)
 			throw new IllegalStateException(
 					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
 		return em;
 	}
 
-	public static List<Task> findAllTasks() {
-		return entityManager().createQuery("SELECT o FROM Task o", Task.class).getResultList();
+	public static List<SchedTask> findAllTasks() {
+		return entityManager().createQuery("SELECT o FROM SchedTask o", SchedTask.class).getResultList();
 	}
 
-	public static Task findTask(Integer id) {
+	public static SchedTask findTask(Integer id) {
 		if (id == null)
 			return null;
-		return entityManager().find(Task.class, id);
+		return entityManager().find(SchedTask.class, id);
 	}
 
-	public static List<Task> findTaskEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM Task o", Task.class).setFirstResult(firstResult)
+	public static List<SchedTask> findTaskEntries(int firstResult, int maxResults) {
+		return entityManager().createQuery("SELECT o FROM SchedTask o", SchedTask.class).setFirstResult(firstResult)
 				.setMaxResults(maxResults).getResultList();
 	}
 
-	public static Collection<Task> fromJsonArrayToTasks(String json) {
-		return new JSONDeserializer<List<Task>>().use(null, ArrayList.class).use("values", Task.class)
+	public static Collection<SchedTask> fromJsonArrayToTasks(String json) {
+		return new JSONDeserializer<List<SchedTask>>().use(null, ArrayList.class).use("values", SchedTask.class)
 				.deserialize(json);
 	}
 
-	public static Task fromJsonToTask(String json) {
-		return new JSONDeserializer<Task>().use(null, Task.class).deserialize(json);
+	public static SchedTask fromJsonToTask(String json) {
+		return new JSONDeserializer<SchedTask>().use(null, SchedTask.class).deserialize(json);
 	}
 
-	public static void indexTask(Task task) {
-		List<Task> Tasks = new ArrayList<Task>();
-		Tasks.add(task);
-		indexTasks(Tasks);
+	public static void indexTask(SchedTask schedTask) {
+		List<SchedTask> SchedTasks = new ArrayList<SchedTask>();
+		SchedTasks.add(schedTask);
+		indexTasks(SchedTasks);
 	}
 
 	@Async
-	public static void indexTasks(Collection<Task> Tasks) {
+	public static void indexTasks(Collection<SchedTask> SchedTasks) {
 		List<SolrInputDocument> documents = new ArrayList<SolrInputDocument>();
-		for (Task task : Tasks) {
+		for (SchedTask schedTask : SchedTasks) {
 			SolrInputDocument sid = new SolrInputDocument();
-			sid.addField("id", "Task_" + task.getId());
-			sid.addField("Task.filename_s", task.getFilename());
-			sid.addField("Task.label_s", task.getDescription());
-			sid.addField("Task.id_i", task.getId());
+			sid.addField("id", "Task_" + schedTask.getId());
+			sid.addField("Task.filename_s", schedTask.getFilename());
+			sid.addField("Task.label_s", schedTask.getDescription());
+			sid.addField("Task.id_i", schedTask.getId());
 			// Add summary field to allow searching documents for objects of
 			// this type
 			/*
@@ -149,19 +148,19 @@ public class Task {
 	}
 
 	public static SolrServer solrServer() {
-		SolrServer _solrServer = new Task().solrServer;
+		SolrServer _solrServer = new SchedTask().solrServer;
 		if (_solrServer == null)
 			throw new IllegalStateException(
 					"Solr server has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
 		return _solrServer;
 	}
 
-	public static String toJsonArray(Collection<Task> collection) {
+	public static String toJsonArray(Collection<SchedTask> collection) {
 		return new JSONSerializer().exclude("*.class").serialize(collection);
 	}
 
 	@OneToMany(mappedBy = "task")
-	private Set<Execution> executions;
+	private Set<SchedExecution> schedExecutions;
 
 	/*
 	 * "id" : "1", "name" : "Vacuum", "description" :
@@ -228,10 +227,10 @@ public class Task {
 	}
 
 	@Transactional
-	public Task merge() {
+	public SchedTask merge() {
 		if (this.entityManager == null)
 			this.entityManager = entityManager();
-		Task merged = this.entityManager.merge(this);
+		SchedTask merged = this.entityManager.merge(this);
 		this.entityManager.flush();
 		return merged;
 	}
@@ -250,7 +249,7 @@ public class Task {
 		if (this.entityManager.contains(this)) {
 			this.entityManager.remove(this);
 		} else {
-			Task attached = Task.findTask(this.id);
+			SchedTask attached = SchedTask.findTask(this.id);
 			this.entityManager.remove(attached);
 		}
 	}
@@ -259,12 +258,12 @@ public class Task {
 		this.name = filename;
 	}
 
-	public Set<Execution> getExecutions() {
-		return executions;
+	public Set<SchedExecution> getExecutions() {
+		return schedExecutions;
 	}
 
-	public void setExecutions(Set<Execution> executions) {
-		this.executions = executions;
+	public void setExecutions(Set<SchedExecution> schedExecutions) {
+		this.schedExecutions = schedExecutions;
 	}
 
 	public String getName() {
@@ -333,8 +332,8 @@ public class Task {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (obj instanceof Task) {
-			final Task other = (Task) obj;
+		if (obj instanceof SchedTask) {
+			final SchedTask other = (SchedTask) obj;
 			return new EqualsBuilder().append(name, other.name).append(classname, other.classname)
 					.append(cron, other.cron).append(enabled, other.enabled).isEquals();
 		} else {

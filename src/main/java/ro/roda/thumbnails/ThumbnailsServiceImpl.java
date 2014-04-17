@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 import java.awt.image.BufferedImageOp;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+
 import javax.imageio.ImageIO;
 
 import org.apache.commons.logging.Log;
@@ -14,47 +15,29 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import ro.roda.domain.CmsFile;
-import ro.roda.filestore.CmsFileStoreService;
-
 @Service
 @Transactional
 public class ThumbnailsServiceImpl implements ThumbnailsService {
 
 	private final Log log = LogFactory.getLog(this.getClass());
 
-	private CmsFileStoreService cmsFileStoreService;
-	
 	@CacheEvict(value = "thumbnails", allEntries = true)
 	public void evictAll() {
-	
+
 	}
 
-	public byte[] generateThumbnailByHeight(String alias, Integer height) {
-		return generateThumbnailByHeightAndWidth( alias, height, height);
+	public byte[] generateThumbnailByHeight(InputStream inputStream, String fileType, Integer height) {
+		return generateThumbnailByHeightAndWidth(inputStream, fileType, height, height);
 	}
 
-	@Cacheable(value = "thumbnails", key = "{#root.methodName, #url, #alias, #height, #width}")
-	public byte[] generateThumbnailByHeightAndWidth(String alias, Integer height, Integer width) {
+	@Cacheable(value = "thumbnails", key = "{#root.methodName, #inputStream, #fileType, #height, #width}")
+	public byte[] generateThumbnailByHeightAndWidth(InputStream inputStream, String fileType, Integer height,
+			Integer width) {
 		byte[] thumbnailBytes = null;
 
 		try {
 			if (width <= 0 || height <= 0) {
 				throw new Exception("Invalid parameters for image width and height");
-			}
-			CmsFile imageFile = CmsFile.findCmsFile(alias);
-			//String fileUrlString = url + imageFile.getUrl();
-
-			InputStream inputStream = null;
-
-			try {
-				//inputUrl = new URL(fileUrlString).openStream();
-			
-				inputStream = cmsFileStoreService.fileLoad(imageFile);
-				
-								
-			} catch (Exception e) {
-				e.printStackTrace();
 			}
 
 			BufferedImage bufferedImage = ImageIO.read(inputStream);
@@ -89,14 +72,6 @@ public class ThumbnailsServiceImpl implements ThumbnailsService {
 
 				ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
-				String fileType = "";
-				if (imageFile != null) {
-					// TODO use the content_type field
-					String fileName = imageFile.getFilename();
-					fileType = fileName.substring(fileName.lastIndexOf(".") + 1);
-				}
-				fileType = fileType.toLowerCase();
-
 				ImageIO.write(resultImage, fileType, baos);
 				baos.flush();
 				thumbnailBytes = baos.toByteArray();
@@ -110,28 +85,18 @@ public class ThumbnailsServiceImpl implements ThumbnailsService {
 
 	}
 
-	public byte[] generateThumbnailProportionalToWidth(String alias, Integer width) {
-		return generateThumbnailProportional(alias, null, width);
+	public byte[] generateThumbnailProportionalToWidth(InputStream inputStream, String fileType, Integer width) {
+		return generateThumbnailProportional(inputStream, fileType, null, width);
 	}
 
-	public byte[] generateThumbnailProportionalToHeight(String alias, Integer height) {
-		return generateThumbnailProportional(alias, height, null);
+	public byte[] generateThumbnailProportionalToHeight(InputStream inputStream, String fileType, Integer height) {
+		return generateThumbnailProportional(inputStream, fileType, height, null);
 	}
 
-	@Cacheable(value = "thumbnails", key = "{#root.methodName, #url, #alias, #height, #width}")
-	private byte[] generateThumbnailProportional(String alias, Integer height, Integer width) {
+	@Cacheable(value = "thumbnails", key = "{#root.methodName, #inputStream, #fileType, #height, #width}")
+	private byte[] generateThumbnailProportional(InputStream inputStream, String fileType, Integer height, Integer width) {
 		byte[] thumbnailBytes = null;
 		try {
-			CmsFile imageFile = CmsFile.findCmsFile(alias);
-			//String fileUrlString = url + imageFile.getUrl();
-
-			InputStream inputStream = null;
-
-			try {
-				inputStream = cmsFileStoreService.fileLoad(imageFile);;
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
 
 			BufferedImage bufferedImage = ImageIO.read(inputStream);
 			if (bufferedImage != null) {
@@ -145,14 +110,6 @@ public class ThumbnailsServiceImpl implements ThumbnailsService {
 				}
 				BufferedImage scaledImage = Scalr.resize(bufferedImage, w, h, (BufferedImageOp[]) null);
 				ByteArrayOutputStream baos = new ByteArrayOutputStream();
-
-				String fileType = "";
-				if (imageFile != null) {
-					// TODO use the content_type field
-					String fileName = imageFile.getFilename();
-					fileType = fileName.substring(fileName.lastIndexOf(".") + 1);
-				}
-				fileType = fileType.toLowerCase();
 
 				ImageIO.write(scaledImage, fileType, baos);
 				baos.flush();

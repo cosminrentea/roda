@@ -1,10 +1,9 @@
 package ro.roda.webjson;
 
-import java.net.URL;
+import java.io.InputStream;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +15,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.HandlerMapping;
 
 import ro.roda.domain.CmsFile;
 import ro.roda.filestore.CmsFileStoreService;
@@ -34,10 +32,9 @@ public class ThumbnailsController {
 
 	@Autowired
 	CmsFileService cmsFileService;
-	
+
 	@Autowired
 	CmsFileStoreService cmsFileStoreService;
-
 
 	@RequestMapping(value = "/{alias}/h/{h}")
 	@ResponseBody
@@ -53,9 +50,20 @@ public class ThumbnailsController {
 			@PathVariable("alias") String alias, @PathVariable("h") Integer height, @PathVariable("w") Integer width) {
 
 		HttpHeaders headers = getHttpHeaders(alias);
+		byte[] bytes = null;
 		try {
-			byte[] bytes = thumbnailsService.generateThumbnailByHeightAndWidth(alias, height,
-					width);
+
+			CmsFile imageFile = CmsFile.findCmsFile(alias);
+
+			String fileType = "";
+			InputStream inputStream = null;
+			if (imageFile != null) {
+				String contentType = imageFile.getContentType();
+				fileType = contentType.substring(contentType.lastIndexOf("/") + 1);
+				inputStream = cmsFileStoreService.fileLoad(imageFile);
+
+				bytes = thumbnailsService.generateThumbnailByHeightAndWidth(inputStream, fileType, height, width);
+			}
 			if (bytes == null) {
 				return new ResponseEntity<byte[]>(headers, HttpStatus.NOT_FOUND);
 			}
@@ -72,8 +80,20 @@ public class ThumbnailsController {
 			@PathVariable("alias") String alias, @PathVariable("x") Integer width) {
 
 		HttpHeaders headers = getHttpHeaders(alias);
+		byte[] bytes = null;
 		try {
-			byte[] bytes = thumbnailsService.generateThumbnailProportionalToWidth(alias, width);
+
+			CmsFile imageFile = CmsFile.findCmsFile(alias);
+
+			String fileType = "";
+			InputStream inputStream = null;
+			if (imageFile != null) {
+				String contentType = imageFile.getContentType();
+				fileType = contentType.substring(contentType.lastIndexOf("/") + 1);
+				inputStream = cmsFileStoreService.fileLoad(imageFile);
+
+				bytes = thumbnailsService.generateThumbnailProportionalToWidth(inputStream, fileType, width);
+			}
 			if (bytes == null) {
 				return new ResponseEntity<byte[]>(headers, HttpStatus.NOT_FOUND);
 			}
@@ -90,40 +110,27 @@ public class ThumbnailsController {
 			@PathVariable("alias") String alias, @PathVariable("y") Integer height) {
 
 		HttpHeaders headers = getHttpHeaders(alias);
+		byte[] bytes = null;
 		try {
-			byte[] bytes = thumbnailsService.generateThumbnailProportionalToHeight(alias, height);
-			if (bytes == null) {
-				return new ResponseEntity<byte[]>(headers, HttpStatus.NOT_FOUND);
-			}
 
+			CmsFile imageFile = CmsFile.findCmsFile(alias);
+
+			String fileType = "";
+			InputStream inputStream = null;
+			if (imageFile != null) {
+				String contentType = imageFile.getContentType();
+				fileType = contentType.substring(contentType.lastIndexOf("/") + 1);
+				inputStream = cmsFileStoreService.fileLoad(imageFile);
+
+				bytes = thumbnailsService.generateThumbnailProportionalToHeight(inputStream, fileType, height);
+				if (bytes == null) {
+					return new ResponseEntity<byte[]>(headers, HttpStatus.NOT_FOUND);
+				}
+			}
 			return new ResponseEntity<byte[]>(bytes, headers, HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<byte[]>(headers, HttpStatus.NOT_FOUND);
 		}
-	}
-
-	private String getBaseUrl(HttpServletRequest request) {
-		String url = (String) request.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE);
-
-		StringBuilder relativePath = new StringBuilder();
-		if (url != null) {
-			for (int i = 0; i < StringUtils.countMatches(url.substring(1), "/"); i++) {
-				// the URL starts with a "/"; this first "/" has to be ignored
-				relativePath.append("../");
-			}
-		}
-
-		URL baseUrl = null;
-		try {
-			// the base URL to whom the image file URL is relative to (ex:
-			// http://localhost:8080/roda/)
-			baseUrl = new URL(new URL(request.getRequestURL().toString()), relativePath.toString());
-			return baseUrl.toString();
-		} catch (Exception e) {
-			log.error(e);
-			e.printStackTrace();
-		}
-		return null;
 	}
 
 	private HttpHeaders getHttpHeaders(String alias) {
@@ -131,9 +138,8 @@ public class ThumbnailsController {
 
 		String fileType = "";
 		if (imageFile != null) {
-			// TODO use the content_type field
-			String fileName = imageFile.getFilename();
-			fileType = fileName.substring(fileName.lastIndexOf(".") + 1);
+			String contentType = imageFile.getContentType();
+			fileType = contentType.substring(contentType.lastIndexOf("/") + 1);
 		}
 
 		HttpHeaders headers = new HttpHeaders();

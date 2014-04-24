@@ -32,7 +32,7 @@ public class AuditRevisionsObject extends JsonInfo implements Comparable<AuditRe
 	public static Set<AuditRevisionsObject> findAllAuditRevisionsObjects() {
 		Set<AuditRevisionsObject> result = new TreeSet<AuditRevisionsObject>();
 
-		String[] auditedClassNames = getAuditedClasses("ro.roda.domain");
+		String[] auditedClassNames = findAuditedClasses("ro.roda.domain");
 
 		Map<String, Integer> objectRevisionsCount = new HashMap<String, Integer>();
 		Map<String, Date> objectRevisionsLastDate = new HashMap<String, Date>();

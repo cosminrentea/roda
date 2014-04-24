@@ -83,7 +83,7 @@ public class AuditRevisions extends JsonInfo {
 
 		Set<AuditObject> objects = new HashSet<AuditObject>();
 
-		String[] auditedClasses = getAuditedClasses("ro.roda.domain");
+		String[] auditedClasses = findAuditedClasses("ro.roda.domain");
 
 		for (int i = 0; i < auditedClasses.length; i++) {
 			String auditedClassName = auditedClasses[i];

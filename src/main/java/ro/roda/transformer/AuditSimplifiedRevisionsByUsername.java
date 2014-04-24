@@ -80,7 +80,7 @@ public class AuditSimplifiedRevisionsByUsername extends JsonInfo {
 	@SuppressWarnings("unchecked")
 	public AuditSimplifiedRevisionsByUsername(String userName) {
 
-		String[] auditedClasses = getAuditedClasses("ro.roda.domain");
+		String[] auditedClasses = findAuditedClasses("ro.roda.domain");
 		Map<Integer, Object[]> objectsByRevision = new TreeMap<Integer, Object[]>();
 
 		for (int i = 0; i < auditedClasses.length; i++) {

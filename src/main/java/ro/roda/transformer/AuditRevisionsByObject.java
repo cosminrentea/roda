@@ -1,19 +1,15 @@
 package ro.roda.transformer;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
 import org.hibernate.envers.AuditReader;
-import org.hibernate.envers.RevisionType;
-import org.hibernate.envers.query.AuditEntity;
 import org.hibernate.envers.query.AuditQuery;
 import org.springframework.beans.factory.annotation.Configurable;
 
@@ -87,7 +83,6 @@ public class AuditRevisionsByObject extends JsonInfo {
 
 			if (auditedClass != null) {
 				Method getAuditReaderMethod = auditedClass.getMethod("getClassAuditReader");
-				Method getid = auditedClass.getMethod("getId");
 
 				if (getAuditReaderMethod != null) {
 					AuditReader auditReader = (AuditReader) getAuditReaderMethod.invoke(null);
@@ -114,43 +109,8 @@ public class AuditRevisionsByObject extends JsonInfo {
 
 						RodaRevisionEntity revision = (RodaRevisionEntity) ((Object[]) o)[1];
 
-						// get the entities modified at the revision, for the
-						// given class
-						AuditQuery queryEntities = revision.getAuditReader().createQuery()
-								.forEntitiesModifiedAtRevision(auditedClass, revision.getId());
-						List<?> resultEntities = queryEntities.getResultList();
-						Iterator<?> iteratorEntities = resultEntities.iterator();
+						Set<AuditRow> auditRows = findModifiedEntities(auditedClass, revision);
 
-						Set<AuditRow> auditRows = new HashSet<AuditRow>();
-						while (iteratorEntities.hasNext()) {
-							Object object = iteratorEntities.next();
-
-							Integer objectId = Integer.parseInt(getid.invoke(object).toString());
-
-							Set<AuditField> auditedFields = new HashSet<AuditField>();
-							Field[] classFields = auditedClass.getDeclaredFields();
-							for (int j = 0; j < classFields.length; j++) {
-								Field classField = classFields[j];
-								// TODO get the fields correctly
-								try {
-									Method getAuditedField = auditedClass.getMethod("get"
-											+ classField.getName().substring(0, 1).toUpperCase()
-											+ classField.getName().substring(1));
-									auditedFields.add(new AuditField(classField.getName(), getAuditedField.invoke(
-											object).toString()));
-								} catch (Exception e) {
-									// TODO
-								}
-							}
-
-							// get the revision type (insert, update or delete)
-							AuditQuery queryRev = revision.getAuditReader().createQuery()
-									.forRevisionsOfEntity(auditedClass, false, true).add(AuditEntity.id().eq(objectId));
-							RevisionType revType = (RevisionType) ((Object[]) queryRev.getResultList().get(0))[2];
-							auditRows.add(new AuditRow(objectId, revType != null ? revType.toString() : "",
-									auditedFields.size(), auditedFields));
-
-						}
 						if (auditRows.size() > 0) {
 							// TODO: get the correct userid
 							revisions.add(new AuditRevision(revision.getId(), revision.getRevisionDate(), revision

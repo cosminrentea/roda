@@ -10,8 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import ro.roda.domainjson.AuditRevisionsObject;
 import ro.roda.service.AuditRevisionsService;
-import ro.roda.transformer.AuditRevisionsObject;
 
 @RequestMapping("/admin/revised-objects")
 @Controller

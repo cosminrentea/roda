@@ -2,7 +2,7 @@ package ro.roda.service;
 
 import java.util.List;
 
-import ro.roda.transformer.StudyInfo;
+import ro.roda.domainjson.StudyInfo;
 
 public interface StudyInfoService {
 

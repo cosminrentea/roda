@@ -2,7 +2,7 @@ package ro.roda.service;
 
 import java.util.List;
 
-import ro.roda.transformer.CatalogTree;
+import ro.roda.domainjson.CatalogTree;
 
 public interface CatalogTreeService {
 

@@ -2,7 +2,7 @@ package ro.roda.service;
 
 import java.util.List;
 
-import ro.roda.transformer.SnippetList;
+import ro.roda.domainjson.SnippetList;
 
 public interface SnippetListService {
 

@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import ro.roda.domainjson.CmsPageTypeInfo;
 import ro.roda.service.CmsPageTypeInfoService;
-import ro.roda.transformer.CmsPageTypeInfo;
 
 @RequestMapping("/admin/cmspagetypeinfo")
 @Controller

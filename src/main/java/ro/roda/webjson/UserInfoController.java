@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import ro.roda.domainjson.UserInfo;
 import ro.roda.service.UserInfoService;
-import ro.roda.transformer.UserInfo;
 
 @RequestMapping("/admin/userinfo")
 @Controller

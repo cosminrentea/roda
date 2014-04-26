@@ -2,7 +2,7 @@ package ro.roda.service;
 
 import java.util.List;
 
-import ro.roda.transformer.FileList;
+import ro.roda.domainjson.FileList;
 
 public interface FileListService {
 

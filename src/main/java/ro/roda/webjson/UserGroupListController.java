@@ -10,8 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import ro.roda.domainjson.UserGroupList;
 import ro.roda.service.UserManagementService;
-import ro.roda.transformer.UserGroupList;
 
 @RequestMapping("/admin/grouplist")
 @Controller

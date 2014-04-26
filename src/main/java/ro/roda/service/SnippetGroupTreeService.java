@@ -2,7 +2,7 @@ package ro.roda.service;
 
 import java.util.List;
 
-import ro.roda.transformer.SnippetGroupTree;
+import ro.roda.domainjson.SnippetGroupTree;
 
 public interface SnippetGroupTreeService {
 

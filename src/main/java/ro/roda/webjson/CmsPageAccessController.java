@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import ro.roda.domainjson.CmsPageAccess;
 import ro.roda.service.CmsPageInfoService;
-import ro.roda.transformer.CmsPageAccess;
 
 @RequestMapping("/admin/pageaccess")
 @Controller

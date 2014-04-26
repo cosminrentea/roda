@@ -2,12 +2,12 @@ package ro.roda.service;
 
 import java.util.List;
 
-import ro.roda.transformer.UserActivities;
-import ro.roda.transformer.UserGroupInfo;
-import ro.roda.transformer.UserGroupList;
-import ro.roda.transformer.UserList;
-import ro.roda.transformer.UserMessages;
-import ro.roda.transformer.UsersByGroup;
+import ro.roda.domainjson.UserActivities;
+import ro.roda.domainjson.UserGroupInfo;
+import ro.roda.domainjson.UserGroupList;
+import ro.roda.domainjson.UserList;
+import ro.roda.domainjson.UserMessages;
+import ro.roda.domainjson.UsersByGroup;
 
 public interface UserManagementService {
 

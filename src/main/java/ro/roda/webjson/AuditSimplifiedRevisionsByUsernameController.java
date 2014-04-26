@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import ro.roda.domainjson.AuditSimplifiedRevisionsByUsername;
 import ro.roda.service.AuditRevisionsService;
-import ro.roda.transformer.AuditSimplifiedRevisionsByUsername;
 
 @RequestMapping("/admin/simple-revisions-by-user")
 @Controller

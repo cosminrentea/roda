@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import ro.roda.transformer.LanguageList;
+import ro.roda.domainjson.LanguageList;
 
 @Service
 @Transactional

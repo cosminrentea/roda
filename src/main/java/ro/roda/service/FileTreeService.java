@@ -2,7 +2,7 @@ package ro.roda.service;
 
 import java.util.List;
 
-import ro.roda.transformer.FileTree;
+import ro.roda.domainjson.FileTree;
 
 public interface FileTreeService {
 

@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import ro.roda.domainjson.CmsMenuTree;
 import ro.roda.service.CmsMenuTreeService;
-import ro.roda.transformer.CmsMenuTree;
 
 @RequestMapping("/admin/menu")
 @Controller

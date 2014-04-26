@@ -2,7 +2,7 @@ package ro.roda.service;
 
 import java.util.List;
 
-import ro.roda.transformer.UserInfo;
+import ro.roda.domainjson.UserInfo;
 
 public interface UserInfoService {
 

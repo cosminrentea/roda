@@ -26,8 +26,7 @@ public interface ImporterService {
 
 	public abstract void importDdiFiles();
 
-	public abstract void importCodebook(CodeBook cb,
-			MultipartFile multipartFile, boolean nesstarExported,
+	public abstract void importCodebook(CodeBook cb, MultipartFile multipartFile, boolean nesstarExported,
 			boolean legacyDataRODA);
 
 }

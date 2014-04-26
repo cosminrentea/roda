@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import ro.roda.domainjson.GroupSave;
 import ro.roda.service.PostCmsService;
-import ro.roda.transformer.GroupSave;
 
 @RequestMapping("/admin/cmslayoutgroupsave")
 @Controller

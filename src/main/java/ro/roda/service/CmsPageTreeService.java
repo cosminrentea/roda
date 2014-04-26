@@ -2,7 +2,7 @@ package ro.roda.service;
 
 import java.util.List;
 
-import ro.roda.transformer.CmsPageTree;
+import ro.roda.domainjson.CmsPageTree;
 
 public interface CmsPageTreeService {
 

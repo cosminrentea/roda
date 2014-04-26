@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import ro.roda.domainjson.YearsTree;
 import ro.roda.service.YearsTreeService;
-import ro.roda.transformer.YearsTree;
 
 @RequestMapping("/yearstree")
 @Controller

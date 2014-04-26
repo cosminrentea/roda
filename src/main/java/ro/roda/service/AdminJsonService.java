@@ -2,7 +2,7 @@ package ro.roda.service;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import ro.roda.transformer.AdminJson;
+import ro.roda.domainjson.AdminJson;
 
 public interface AdminJsonService {
 

@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import ro.roda.domainjson.LayoutList;
 import ro.roda.service.LayoutListService;
-import ro.roda.transformer.LayoutList;
 
 @RequestMapping("/admin/cmslayoutlist")
 @Controller

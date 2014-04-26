@@ -3,7 +3,7 @@ package ro.roda.service;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import ro.roda.transformer.GroupSave;
+import ro.roda.domainjson.GroupSave;
 
 @Service
 @Transactional

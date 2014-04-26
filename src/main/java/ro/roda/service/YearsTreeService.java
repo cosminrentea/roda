@@ -2,7 +2,7 @@ package ro.roda.service;
 
 import java.util.List;
 
-import ro.roda.transformer.YearsTree;
+import ro.roda.domainjson.YearsTree;
 
 public interface YearsTreeService {
 

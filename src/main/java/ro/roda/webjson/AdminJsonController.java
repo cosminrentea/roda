@@ -12,11 +12,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -26,9 +23,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.support.ByteArrayMultipartFileEditor;
 
 import ro.roda.domain.CmsFile;
+import ro.roda.domainjson.AdminJson;
 import ro.roda.service.AdminJsonService;
 import ro.roda.service.filestore.CmsFileStoreService;
-import ro.roda.transformer.AdminJson;
 
 @RequestMapping("/admin")
 @Controller
@@ -45,28 +42,6 @@ public class AdminJsonController {
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
 		binder.registerCustomEditor(byte[].class, new ByteArrayMultipartFileEditor());
-	}
-
-	@RequestMapping(value = "/login", method = RequestMethod.POST, produces = "application/json")
-	@ResponseBody
-	public String login(@ModelAttribute("username") String username, @ModelAttribute("password") String password,
-			BindingResult bindingResult, Model uiModel, HttpServletRequest httpServletRequest) {
-		// if (bindingResult.hasErrors()) {
-		// populateEditForm(uiModel, cmsFolder);
-		// return "admin/login";
-		// }
-		// uiModel.asMap().clear();
-
-		// only for testing:
-		// username = "admin";
-		// password = "e10adc3949ba59abbe56e057f20f883e";
-		AdminJson login = adminJsonService.findLogin(username, password);
-		// HttpHeaders headers = new HttpHeaders();
-		// headers.add("Content-Type", "application/json; charset=utf-8");
-		if (login == null) {
-			return null;
-		}
-		return login.toJson();
 	}
 
 	@RequestMapping(value = "/layoutgroupsave", method = RequestMethod.POST, produces = "application/json")

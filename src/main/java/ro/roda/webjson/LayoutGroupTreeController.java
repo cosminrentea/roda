@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import ro.roda.domainjson.LayoutGroupTree;
 import ro.roda.service.LayoutGroupTreeService;
-import ro.roda.transformer.LayoutGroupTree;
 
 @RequestMapping("/admin/cmslayoutgrouptree")
 @Controller

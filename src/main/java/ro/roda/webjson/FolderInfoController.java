@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import ro.roda.domainjson.FolderInfo;
 import ro.roda.service.FolderInfoService;
-import ro.roda.transformer.FolderInfo;
 
 @RequestMapping("/admin/cmsfolderinfo")
 @Controller

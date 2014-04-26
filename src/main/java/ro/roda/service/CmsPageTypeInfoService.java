@@ -2,7 +2,7 @@ package ro.roda.service;
 
 import java.util.List;
 
-import ro.roda.transformer.CmsPageTypeInfo;
+import ro.roda.domainjson.CmsPageTypeInfo;
 
 public interface CmsPageTypeInfoService {
 

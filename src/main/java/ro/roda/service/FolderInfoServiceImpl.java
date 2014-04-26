@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import ro.roda.transformer.FolderInfo;
+import ro.roda.domainjson.FolderInfo;
 
 @Service
 @Transactional

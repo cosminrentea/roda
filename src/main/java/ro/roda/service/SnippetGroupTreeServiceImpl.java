@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import ro.roda.transformer.SnippetGroupTree;
+import ro.roda.domainjson.SnippetGroupTree;
 
 @Service
 @Transactional

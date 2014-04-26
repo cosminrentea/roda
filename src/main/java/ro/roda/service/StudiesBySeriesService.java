@@ -2,7 +2,7 @@ package ro.roda.service;
 
 import java.util.List;
 
-import ro.roda.transformer.StudiesBySeries;
+import ro.roda.domainjson.StudiesBySeries;
 
 public interface StudiesBySeriesService {
 

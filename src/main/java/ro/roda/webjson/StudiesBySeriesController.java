@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import ro.roda.domainjson.StudiesBySeries;
 import ro.roda.service.StudiesBySeriesService;
-import ro.roda.transformer.StudiesBySeries;
 
 @RequestMapping("/studiesbyseries")
 @Controller

@@ -2,7 +2,7 @@ package ro.roda.service;
 
 import java.util.List;
 
-import ro.roda.transformer.LayoutGroupInfo;
+import ro.roda.domainjson.LayoutGroupInfo;
 
 public interface LayoutGroupInfoService {
 

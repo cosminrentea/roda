@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import ro.roda.transformer.LayoutTree;
+import ro.roda.domainjson.LayoutTree;
 
 @Service
 @Transactional

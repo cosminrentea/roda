@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import ro.roda.domainjson.AuditRevisionsByDate;
 import ro.roda.service.AuditRevisionsService;
-import ro.roda.transformer.AuditRevisionsByDate;
 
 @RequestMapping("/admin/revisions-by-date")
 @Controller

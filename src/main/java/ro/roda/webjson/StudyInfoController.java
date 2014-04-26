@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import ro.roda.domainjson.StudyInfo;
 import ro.roda.service.StudyInfoService;
-import ro.roda.transformer.StudyInfo;
 
 @RequestMapping("/studyinfo")
 @Controller
@@ -36,8 +36,7 @@ public class StudyInfoController {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");
 		List<StudyInfo> result = studyInfoService.findAllStudyInfos();
-		return new ResponseEntity<String>(StudyInfo.toJsonArray(result),
-				headers, HttpStatus.OK);
+		return new ResponseEntity<String>(StudyInfo.toJsonArray(result), headers, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/{id}", headers = "Accept=application/json")
@@ -49,8 +48,7 @@ public class StudyInfoController {
 		if (studyInfo == null) {
 			return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
 		}
-		return new ResponseEntity<String>(studyInfo.toJson(), headers,
-				HttpStatus.OK);
+		return new ResponseEntity<String>(studyInfo.toJson(), headers, HttpStatus.OK);
 	}
 
 }

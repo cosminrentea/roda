@@ -4,8 +4,8 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import ro.roda.transformer.CmsPageAccess;
-import ro.roda.transformer.CmsPageInfo;
+import ro.roda.domainjson.CmsPageAccess;
+import ro.roda.domainjson.CmsPageInfo;
 
 public interface CmsPageInfoService {
 

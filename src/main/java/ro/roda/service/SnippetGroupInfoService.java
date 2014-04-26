@@ -2,7 +2,7 @@ package ro.roda.service;
 
 import java.util.List;
 
-import ro.roda.transformer.SnippetGroupInfo;
+import ro.roda.domainjson.SnippetGroupInfo;
 
 public interface SnippetGroupInfoService {
 

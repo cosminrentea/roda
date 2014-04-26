@@ -218,8 +218,8 @@ public class CmsFileStoreServiceImpl implements CmsFileStoreService {
 							session.getValueFactory().createBinary(new AutoCloseInputStream(new FileInputStream(f))));
 					resNode.setProperty("jcr:mimeType", multipartFile.getContentType());
 					session.save();
-					
-//					updateSolrFile(f, multipartFile);
+
+					// updateSolrFile(f, multipartFile);
 				}
 
 			} catch (IllegalStateException e) {

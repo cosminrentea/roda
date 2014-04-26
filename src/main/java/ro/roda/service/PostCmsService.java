@@ -1,6 +1,6 @@
 package ro.roda.service;
 
-import ro.roda.transformer.GroupSave;
+import ro.roda.domainjson.GroupSave;
 
 public interface PostCmsService {
 

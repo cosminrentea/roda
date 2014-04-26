@@ -2,7 +2,7 @@ package ro.roda.service;
 
 import java.util.List;
 
-import ro.roda.transformer.LanguageList;
+import ro.roda.domainjson.LanguageList;
 
 public interface LanguageListService {
 

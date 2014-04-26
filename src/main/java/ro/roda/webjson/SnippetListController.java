@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import ro.roda.domainjson.SnippetList;
 import ro.roda.service.SnippetListService;
-import ro.roda.transformer.SnippetList;
 
 @RequestMapping("/admin/cmssnippetlist")
 @Controller

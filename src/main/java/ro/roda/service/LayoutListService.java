@@ -2,7 +2,7 @@ package ro.roda.service;
 
 import java.util.List;
 
-import ro.roda.transformer.LayoutList;
+import ro.roda.domainjson.LayoutList;
 
 public interface LayoutListService {
 

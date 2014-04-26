@@ -4,16 +4,16 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
-import ro.roda.transformer.AuditRevisions;
-import ro.roda.transformer.AuditRevisionsByDate;
-import ro.roda.transformer.AuditRevisionsByObject;
-import ro.roda.transformer.AuditRevisionsByUsername;
-import ro.roda.transformer.AuditRevisionsDate;
-import ro.roda.transformer.AuditRevisionsInfo;
-import ro.roda.transformer.AuditRevisionsObject;
-import ro.roda.transformer.AuditRevisionsUser;
-import ro.roda.transformer.AuditSimplifiedRevisionsByObject;
-import ro.roda.transformer.AuditSimplifiedRevisionsByUsername;
+import ro.roda.domainjson.AuditRevisions;
+import ro.roda.domainjson.AuditRevisionsByDate;
+import ro.roda.domainjson.AuditRevisionsByObject;
+import ro.roda.domainjson.AuditRevisionsByUsername;
+import ro.roda.domainjson.AuditRevisionsDate;
+import ro.roda.domainjson.AuditRevisionsInfo;
+import ro.roda.domainjson.AuditRevisionsObject;
+import ro.roda.domainjson.AuditRevisionsUser;
+import ro.roda.domainjson.AuditSimplifiedRevisionsByObject;
+import ro.roda.domainjson.AuditSimplifiedRevisionsByUsername;
 
 public interface AuditRevisionsService {
 

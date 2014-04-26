@@ -7,8 +7,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import ro.roda.transformer.CmsPageAccess;
-import ro.roda.transformer.CmsPageInfo;
+import ro.roda.domainjson.CmsPageAccess;
+import ro.roda.domainjson.CmsPageInfo;
 
 @Service
 @Transactional

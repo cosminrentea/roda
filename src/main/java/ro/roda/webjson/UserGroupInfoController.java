@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import ro.roda.domainjson.UserGroupInfo;
 import ro.roda.service.UserManagementService;
-import ro.roda.transformer.UserGroupInfo;
 
 @RequestMapping("/admin/groupinfo")
 @Controller

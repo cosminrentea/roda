@@ -2,7 +2,7 @@ package ro.roda.service;
 
 import java.util.List;
 
-import ro.roda.transformer.LayoutGroupTree;
+import ro.roda.domainjson.LayoutGroupTree;
 
 public interface LayoutGroupTreeService {
 

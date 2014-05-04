@@ -157,7 +157,7 @@ public class AdminJson {
 		try {
 			CmsLayoutGroup.entityManager().remove(layoutGroup);
 		} catch (EntityExistsException e) {
-			return new AdminJson(false, "Layout group not dropped " + e.getMessage());
+			return new AdminJson(false, "Layout group not dropped: " + e.getMessage());
 		}
 
 		return new AdminJson(true, "CMS Layout group dropped successfully");
@@ -166,16 +166,21 @@ public class AdminJson {
 	public static AdminJson layoutDrop(Integer layoutId) {
 		CmsLayout layout = CmsLayout.findCmsLayout(layoutId);
 		if (layout == null)
-			return new AdminJson(false, "The layout does not exist.");
+			return new AdminJson(false, "The layout does not exist");
+		if (layout.getCmsPages() != null && layout.getCmsPages().size() > 0) {
+			return new AdminJson(false, "The layout could not be dropped because some pages are using it");
+		}
+
 		try {
 			CmsLayoutGroup parentGroup = layout.getCmsLayoutGroupId();
-			if (parentGroup.getCmsLayouts() != null && parentGroup.getCmsLayouts().contains(layout)) {
+			if (parentGroup != null && parentGroup.getCmsLayouts() != null
+					&& parentGroup.getCmsLayouts().contains(layout)) {
 				parentGroup.getCmsLayouts().remove(layout);
 			}
 
 			CmsLayout.entityManager().remove(layout);
 		} catch (Exception e) {
-			return new AdminJson(false, "CMS Layout not dropped" + e.getMessage());
+			return new AdminJson(false, "CMS Layout not dropped: " + e.getMessage());
 		}
 
 		return new AdminJson(true, "CMS Layout dropped successfully");
@@ -409,9 +414,17 @@ public class AdminJson {
 		CmsSnippet snippet = CmsSnippet.findCmsSnippet(snippetId);
 		if (snippet == null)
 			return new AdminJson(false, "The snippet does not exist.");
+
+		Set<JsonInfo> snippetUsage = SnippetInfo.findSnippetInfo(snippet.getId()).getSnippetUsage();
+		if (snippetUsage != null && snippetUsage.size() > 0) {
+			return new AdminJson(false,
+					"The snippet could not be dropped because it is used in pages, layouts or other snippets.");
+		}
+
 		try {
 			CmsSnippetGroup parentGroup = snippet.getCmsSnippetGroupId();
-			if (parentGroup.getCmsSnippets() != null && parentGroup.getCmsSnippets().contains(snippet)) {
+			if (parentGroup != null && parentGroup.getCmsSnippets() != null
+					&& parentGroup.getCmsSnippets().contains(snippet)) {
 				parentGroup.getCmsSnippets().remove(snippet);
 			}
 
@@ -445,17 +458,15 @@ public class AdminJson {
 			} else {
 				if (parentGroup.getCmsSnippets() == null) {
 					parentGroup.setCmsSnippets(new HashSet<CmsSnippet>());
-					parentGroup.getCmsSnippets().add(snippet);
-				} else {
-					parentGroup.getCmsSnippets().add(snippet);
 				}
+				parentGroup.getCmsSnippets().add(snippet);
+
 				CmsSnippetGroup.entityManager().persist(parentGroup);
 			}
-			snippet.setCmsSnippetGroupId(parentGroup);
 		}
 
 		try {
-			CmsSnippetGroup.entityManager().persist(snippet);
+			CmsSnippet.entityManager().persist(snippet);
 		} catch (EntityExistsException e) {
 			return new AdminJson(false, "CMS Snippet not created or modified" + e.getMessage());
 		}

@@ -5,6 +5,7 @@ import java.io.FilenameFilter;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.net.URL;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -152,7 +153,7 @@ public class JsonInfo {
 
 						Object auditValue = getAuditedField.invoke(object);
 
-						if (classField.getName().endsWith("Id")) {
+						if (auditValue.getClass().getPackage().getName().equals("ro.roda.domain")) {
 							// The id's fields (corresponding to
 							// foreign
 							// keys in the data model) are actually
@@ -162,7 +163,8 @@ public class JsonInfo {
 							// them as follows.
 							auditedFields.add(new AuditField(classField.getName(), auditValue.getClass()
 									.getMethod("getId").invoke(auditValue)));
-						} else {
+							// exclude collections from audit
+						} else if (!(Collection.class.isAssignableFrom(classField.getType()))) {
 							auditedFields.add(new AuditField(classField.getName(), auditValue.toString()));
 						}
 					} catch (Exception e) {

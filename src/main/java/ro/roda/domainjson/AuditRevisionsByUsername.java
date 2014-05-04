@@ -1,6 +1,5 @@
 package ro.roda.domainjson;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -13,12 +12,11 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import org.hibernate.envers.AuditReader;
-import org.hibernate.envers.RevisionType;
-import org.hibernate.envers.query.AuditEntity;
 import org.hibernate.envers.query.AuditQuery;
 import org.springframework.beans.factory.annotation.Configurable;
 
 import ro.roda.audit.RodaRevisionEntity;
+import ro.roda.domain.Users;
 import ro.roda.transformer.FieldNameTransformer;
 import flexjson.JSONSerializer;
 import flexjson.transformer.DateTransformer;
@@ -73,6 +71,7 @@ public class AuditRevisionsByUsername extends JsonInfo {
 		onConstructRevisionsByUsername(username, userid, nrRev, lastRevision, revisions);
 	}
 
+	@SuppressWarnings("unchecked")
 	public AuditRevisionsByUsername(String userName) {
 
 		String[] auditedClasses = findAuditedClasses("ro.roda.domain");
@@ -103,8 +102,6 @@ public class AuditRevisionsByUsername extends JsonInfo {
 					List<?> resultRevisions = queryRevisions.getResultList();
 					Iterator<?> iteratorRevisions = resultRevisions.iterator();
 
-					Method getId = auditedClass.getMethod("getId");
-
 					while (iteratorRevisions.hasNext()) {
 
 						Object o = iteratorRevisions.next();
@@ -120,46 +117,8 @@ public class AuditRevisionsByUsername extends JsonInfo {
 						usedRevisionIds.add(revision.getId());
 
 						if (revision.getUsername().equals(userName)) {
-							// get the entities modified at the revision, for
-							// the
-							// given class
-							AuditQuery queryEntities = revision.getAuditReader().createQuery()
-									.forEntitiesModifiedAtRevision(auditedClass, revision.getId());
-							List<?> resultEntities = queryEntities.getResultList();
-							Iterator<?> iteratorEntities = resultEntities.iterator();
 
-							Set<AuditRow> auditRows = new HashSet<AuditRow>();
-							while (iteratorEntities.hasNext()) {
-								Object object = iteratorEntities.next();
-
-								Integer objectId = Integer.parseInt(getId.invoke(object).toString());
-
-								Set<AuditField> auditedFields = new HashSet<AuditField>();
-								Field[] classFields = auditedClass.getDeclaredFields();
-								for (int j = 0; j < classFields.length; j++) {
-									Field classField = classFields[j];
-									// TODO get the fields correctly
-									try {
-										Method getAuditedField = auditedClass.getMethod("get"
-												+ classField.getName().substring(0, 1).toUpperCase()
-												+ classField.getName().substring(1));
-										auditedFields.add(new AuditField(classField.getName(), getAuditedField.invoke(
-												object).toString()));
-									} catch (Exception e) {
-										// TODO
-									}
-								}
-
-								// get the revision type (insert, update or
-								// delete)
-								AuditQuery queryRev = revision.getAuditReader().createQuery()
-										.forRevisionsOfEntity(auditedClass, false, true)
-										.add(AuditEntity.id().eq(objectId));
-								RevisionType revType = (RevisionType) ((Object[]) queryRev.getResultList().get(0))[2];
-								auditRows.add(new AuditRow(objectId, revType != null ? revType.toString() : "",
-										auditedFields.size(), auditedFields));
-
-							}
+							Set<AuditRow> auditRows = findModifiedEntities(auditedClass, revision);
 
 							if (!objectsByRevision.containsKey(revision.getId())) {
 								objectsByRevision.put(revision.getId(), new Object[] { revision,
@@ -168,12 +127,8 @@ public class AuditRevisionsByUsername extends JsonInfo {
 
 							((HashSet<AuditObject>) objectsByRevision.get(revision.getId())[1]).add(new AuditObject(
 									auditedClassName, auditRows.size(), auditRows));
-
 						}
-
 					}
-					System.out.println();
-
 				}
 			} catch (Exception e) {
 				// TODO
@@ -195,7 +150,7 @@ public class AuditRevisionsByUsername extends JsonInfo {
 
 				Integer key = keysIterator.next();
 				RodaRevisionEntity revision = (RodaRevisionEntity) objectsByRevision.get(key)[0];
-				// FIXME Letitia: type safety warning
+
 				Set<AuditObject> objects = (Set<AuditObject>) objectsByRevision.get(key)[1];
 
 				revisions.add(new AuditRevision(key, revision.getRevisionDate(), null, null, objects.size(), null,
@@ -210,8 +165,8 @@ public class AuditRevisionsByUsername extends JsonInfo {
 				}
 			}
 
-			// TODO: get the userid
-			onConstructRevisionsByUsername(userName, null, revisions.size(), lastRevision, revisions);
+			onConstructRevisionsByUsername(userName, Users.findUsersesByUsernameLike(userName).getFirstResult(),
+					revisions.size(), lastRevision, revisions);
 		}
 	}
 

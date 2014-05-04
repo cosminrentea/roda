@@ -55,41 +55,4 @@ public class AuditField {
 
 		return serializer.serialize(this);
 	}
-
-	// @Override
-	// public int compareTo(Revisions layoutList) {
-	// System.out.println("Compare " + ((itemtype.equals("layout") ? "2" : "1")
-	// + " " + name + " " + groupid)
-	// + (layoutList.getItemtype().equals("layout") ? "2" : "1") + " " +
-	// layoutList.getName() + " "
-	// + layoutList.getGroupid());
-	// return ((itemtype.equals("layout") ? "2" : "1") + " " + name + " " +
-	// groupid).compareTo((layoutList
-	// .getItemtype().equals("layout") ? "2" : "1")
-	// + " "
-	// + layoutList.getName()
-	// + " "
-	// + layoutList.getGroupid());
-	// }
-
-	// @Override
-	// public int hashCode() {
-	// return new HashCodeBuilder().append(itemtype == null ? 0 :
-	// (itemtype.equals("layoutgroup") ? 1 : 2))
-	// .append(groupid == null ? 0 :
-	// groupid.intValue()).append(name).toHashCode();
-	// }
-	//
-	// @Override
-	// public boolean equals(Object other) {
-	// if (other != null && other instanceof Revisions) {
-	// return new EqualsBuilder().append(this.getItemtype(), ((Revisions)
-	// other).getItemtype())
-	// .append(this.getGroupid(), ((Revisions) other).getGroupid())
-	// .append(this.getName(), ((Revisions) other).getName()).isEquals();
-	// } else {
-	// return false;
-	// }
-	// }
-
 }

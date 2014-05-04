@@ -25,6 +25,12 @@ public class RodaRevisionEntity extends DefaultRevisionEntity {
 
 	private String username;
 
+	private Integer userid;
+
+	public Integer getUserid() {
+		return userid;
+	}
+
 	public String getUsername() {
 		return username;
 	}
@@ -51,6 +57,10 @@ public class RodaRevisionEntity extends DefaultRevisionEntity {
 
 	public void setUsername(String username) {
 		this.username = username;
+	}
+
+	public void setUserid(Integer userid) {
+		this.userid = userid;
 	}
 
 	public static final EntityManager entityManager() {

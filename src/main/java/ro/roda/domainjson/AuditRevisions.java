@@ -90,7 +90,6 @@ public class AuditRevisions extends JsonInfo {
 
 			try {
 				Class<?> auditedClass = Class.forName(auditedClassName);
-				// Method getid = auditedClass.getMethod("getId");
 
 				AuditQuery query = revision.getAuditReader().createQuery()
 						.forEntitiesModifiedAtRevision(auditedClass, revision.getId());
@@ -106,21 +105,6 @@ public class AuditRevisions extends JsonInfo {
 			}
 
 		}
-
-		/*
-		 * AuditQuery query = revision.getAuditReader().createQuery()
-		 * .forEntitiesModifiedAtRevision(CmsLayout.class, revision.getId());
-		 * 
-		 * @SuppressWarnings("unchecked") List<CmsLayout> results =
-		 * (List<CmsLayout>) query.getResultList(); List<AuditObject> objects =
-		 * new ArrayList<AuditObject>();
-		 * 
-		 * Iterator<CmsLayout> iterator = results.iterator();
-		 * 
-		 * while (iterator.hasNext()) { CmsLayout object = iterator.next();
-		 * objects.add(new AuditObject(object.getClass().getSimpleName(), null,
-		 * null)); }
-		 */
 
 		onConstructRevisions(revision.getId(), revision.getRevisionDate(), objects.size(), new HashSet<AuditObject>(
 				objects));
@@ -181,41 +165,4 @@ public class AuditRevisions extends JsonInfo {
 
 		return "{\"data\":" + serializer.serialize(this) + "}";
 	}
-
-	// @Override
-	// public int compareTo(Revisions layoutList) {
-	// System.out.println("Compare " + ((itemtype.equals("layout") ? "2" : "1")
-	// + " " + name + " " + groupid)
-	// + (layoutList.getItemtype().equals("layout") ? "2" : "1") + " " +
-	// layoutList.getName() + " "
-	// + layoutList.getGroupid());
-	// return ((itemtype.equals("layout") ? "2" : "1") + " " + name + " " +
-	// groupid).compareTo((layoutList
-	// .getItemtype().equals("layout") ? "2" : "1")
-	// + " "
-	// + layoutList.getName()
-	// + " "
-	// + layoutList.getGroupid());
-	// }
-
-	// @Override
-	// public int hashCode() {
-	// return new HashCodeBuilder().append(itemtype == null ? 0 :
-	// (itemtype.equals("layoutgroup") ? 1 : 2))
-	// .append(groupid == null ? 0 :
-	// groupid.intValue()).append(name).toHashCode();
-	// }
-	//
-	// @Override
-	// public boolean equals(Object other) {
-	// if (other != null && other instanceof Revisions) {
-	// return new EqualsBuilder().append(this.getItemtype(), ((Revisions)
-	// other).getItemtype())
-	// .append(this.getGroupid(), ((Revisions) other).getGroupid())
-	// .append(this.getName(), ((Revisions) other).getName()).isEquals();
-	// } else {
-	// return false;
-	// }
-	// }
-
 }

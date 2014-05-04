@@ -112,9 +112,8 @@ public class AuditRevisionsByObject extends JsonInfo {
 						Set<AuditRow> auditRows = findModifiedEntities(auditedClass, revision);
 
 						if (auditRows.size() > 0) {
-							// TODO: get the correct userid
 							revisions.add(new AuditRevision(revision.getId(), revision.getRevisionDate(), revision
-									.getUsername(), null, auditRows.size(), auditRows, null));
+									.getUsername(), revision.getUserid(), auditRows.size(), auditRows, null));
 
 							if (lastRevision == null) {
 								lastRevision = revision.getRevisionDate();

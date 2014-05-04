@@ -29,6 +29,9 @@
 			<!-- http://docs.jboss.org/hibernate/core/4.0/devguide/en-US/html/ch15.html -->
 			<property name="org.hibernate.envers.default_schema" value="audit"/>
 			<property name="org.hibernate.envers.revision_listener" value="ro.roda.audit.RodaRevisionListener"/>
+			<!-- Letitia: Changes in the not-owning end of a one-to-many relationship (i.e., a collection) 
+				would not generate audit information for the corresponding table-->
+			<property name="org.hibernate.envers.revision_on_collection_change" value="false"/>
 
 			<!-- Uncomment the following two properties for JBoss only -->
 			<!-- property name="hibernate.validator.apply_to_ddl" value="false" / -->

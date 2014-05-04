@@ -5,18 +5,19 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.TreeSet;
 
 import org.hibernate.envers.AuditReader;
 import org.hibernate.envers.query.AuditQuery;
 import org.springframework.beans.factory.annotation.Configurable;
 
 import ro.roda.audit.RodaRevisionEntity;
+import ro.roda.transformer.FieldNameTransformer;
 import flexjson.JSONSerializer;
 
 @Configurable
@@ -28,9 +29,11 @@ public class AuditRevisionsByDate extends JsonInfo {
 		serializer.exclude("*.class", "type", "id", "name");
 		serializer.include("data", "nrrev", "lastrevision", "revisions");
 
-		serializer.include("revisions.nrrows", "revisions.rows", "revisions.rows.auditfields");
-		serializer.exclude("revisions.objects");
+		serializer.include("revisions.objects", "revisions.objects.rows", "revisions.objects.rows.auditfields");
+		serializer.include("revisions.username", "revisions.userid");
+		serializer.exclude("revisions.rows");
 
+		serializer.transform(new FieldNameTransformer("nrobj"), "revisions.nrrows");
 		serializer.transform(DATE_TRANSFORMER, Date.class);
 		serializer.transform(DATE_TRANSFORMER2, "data");
 
@@ -61,22 +64,22 @@ public class AuditRevisionsByDate extends JsonInfo {
 		onConstructRevisionsByDate(data, nrRev, lastRevision, revisions);
 	}
 
+	@SuppressWarnings("unchecked")
 	public AuditRevisionsByDate(Date date) {
-		try {
-			String[] auditedClasses = findAuditedClasses("ro.roda.domain");
 
-			Map<Integer, AuditRevision> revisions = new TreeMap<Integer, AuditRevision>();
-			Date lastRevision = null;
+		String[] auditedClasses = findAuditedClasses("ro.roda.domain");
+		Map<Integer, Object[]> objectsByRevision = new TreeMap<Integer, Object[]>();
 
-			for (int i = 0; i < auditedClasses.length; i++) {
-				String auditedClassName = auditedClasses[i];
+		for (int i = 0; i < auditedClasses.length; i++) {
+			String auditedClassName = auditedClasses[i];
 
+			try {
 				Class<?> auditedClass = Class.forName(auditedClassName);
 
 				Method getAuditReaderMethod = null;
-
 				try {
 					getAuditReaderMethod = auditedClass.getMethod("getClassAuditReader");
+					System.out.println("Audit class: " + auditedClassName);
 				} catch (Exception e) {
 					// TODO catch
 				}
@@ -89,62 +92,79 @@ public class AuditRevisionsByDate extends JsonInfo {
 					c.add(Calendar.DATE, 1);
 					Date dateEnd = c.getTime();
 
-					// get the revisions for the date
+					// get the revisions for the object
 					AuditQuery queryRevisions = auditReader.createQuery().forRevisionsOfEntity(auditedClass, false,
 							true);
+					Set<Integer> usedRevisionIds = new HashSet<Integer>();
 
 					List<?> resultRevisions = queryRevisions.getResultList();
-
 					Iterator<?> iteratorRevisions = resultRevisions.iterator();
 
 					while (iteratorRevisions.hasNext()) {
 
 						Object o = iteratorRevisions.next();
-
 						RodaRevisionEntity revision = (RodaRevisionEntity) ((Object[]) o)[1];
 
-						// TODO: another solution would be to make a join query
-						// (not supported by Hibernate Envers)
+						// workaround for the following situation: the query
+						// returns the revisions of the related classes, which
+						// will also be retrieved subsequently, leading to
+						// duplicates in the result
+						if (usedRevisionIds.contains(revision.getId())) {
+							continue;
+						}
+						usedRevisionIds.add(revision.getId());
+
 						if (revision.getRevisionDate().equals(date) || revision.getRevisionDate().after(date)
 								&& revision.getRevisionDate().before(dateEnd)) {
-							// add new revision, with information about
-							// the
-							// revision rows and objects
 
-							Set<AuditRow> auditRows = null;
-							try {
-								auditRows = findModifiedEntities(auditedClass, revision);
-							} catch (Exception e) {
-								// TODO
+							Set<AuditRow> auditRows = findModifiedEntities(auditedClass, revision);
+
+							if (!objectsByRevision.containsKey(revision.getId())) {
+								objectsByRevision.put(revision.getId(), new Object[] { revision,
+										new HashSet<AuditObject>() });
 							}
 
-							if (auditRows != null && auditRows.size() > 0) {
-								// TODO: get the userid
-								revisions.put(
-										revision.getId(),
-										new AuditRevision(revision.getId(), revision.getRevisionDate(), revision
-												.getUsername(), null, auditRows.size(), auditRows, null));
-
-								if (lastRevision == null) {
-									lastRevision = revision.getRevisionDate();
-								} else {
-									if (revision.getRevisionDate().after(lastRevision)) {
-										lastRevision = revision.getRevisionDate();
-									}
-								}
-							}
+							((HashSet<AuditObject>) objectsByRevision.get(revision.getId())[1]).add(new AuditObject(
+									auditedClassName, auditRows.size(), auditRows));
 						}
 					}
-
 				}
-				onConstructRevisionsByDate(date, revisions.values().size(), lastRevision, new TreeSet<AuditRevision>(
-						revisions.values()));
+			} catch (Exception e) {
+				// TODO
+				System.out.println("Exception thrown when getting revision info. " + e.getMessage());
+				// e.printStackTrace();
 			}
 
-		} catch (Exception e) {
-			// TODO
-			System.out.println("Exception thrown when getting revision info. " + e.getMessage());
-			// e.printStackTrace();
+		}
+
+		Set<AuditRevision> revisions = new HashSet<AuditRevision>();
+		Date lastRevision = null;
+
+		if (objectsByRevision.size() > 0) {
+
+			Set<Integer> keys = objectsByRevision.keySet();
+			Iterator<Integer> keysIterator = keys.iterator();
+
+			while (keysIterator.hasNext()) {
+
+				Integer key = keysIterator.next();
+				RodaRevisionEntity revision = (RodaRevisionEntity) objectsByRevision.get(key)[0];
+
+				Set<AuditObject> objects = (Set<AuditObject>) objectsByRevision.get(key)[1];
+
+				revisions.add(new AuditRevision(key, revision.getRevisionDate(), null, null, objects.size(), null,
+						objects));
+
+				if (lastRevision == null) {
+					lastRevision = revision.getRevisionDate();
+				} else {
+					if (revision.getRevisionDate().after(lastRevision)) {
+						lastRevision = revision.getRevisionDate();
+					}
+				}
+			}
+
+			onConstructRevisionsByDate(date, revisions.size(), lastRevision, revisions);
 		}
 	}
 
@@ -193,9 +213,11 @@ public class AuditRevisionsByDate extends JsonInfo {
 		serializer.exclude("*.class", "type", "id", "name");
 		serializer.include("data", "nrrev", "lastrevision", "revisions");
 
-		serializer.include("revisions.nrrows", "revisions.rows", "revisions.rows.auditfields");
-		serializer.exclude("revisions.objects");
+		serializer.include("revisions.objects", "revisions.objects.rows", "revisions.objects.rows.auditfields");
+		serializer.include("revisions.username", "revisions.userid");
+		serializer.exclude("revisions.rows");
 
+		serializer.transform(new FieldNameTransformer("nrobj"), "revisions.nrrows");
 		serializer.transform(DATE_TRANSFORMER, Date.class);
 		serializer.transform(DATE_TRANSFORMER2, "data");
 

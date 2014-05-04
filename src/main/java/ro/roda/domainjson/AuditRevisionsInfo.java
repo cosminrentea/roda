@@ -3,10 +3,10 @@ package ro.roda.domainjson;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.springframework.beans.factory.annotation.Configurable;
 
@@ -76,7 +76,7 @@ public class AuditRevisionsInfo extends AuditRevisions {
 
 	public AuditRevisionsInfo(RodaRevisionEntity revision) {
 
-		Set<AuditObject> objects = new HashSet<AuditObject>();
+		Set<AuditObject> objects = new TreeSet<AuditObject>();
 
 		String[] auditedClasses = findAuditedClasses("ro.roda.domain");
 

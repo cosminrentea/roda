@@ -2,12 +2,13 @@ package ro.roda.domainjson;
 
 import java.util.Collection;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.springframework.beans.factory.annotation.Configurable;
 
 import flexjson.JSONSerializer;
 
 @Configurable
-public class AuditField {
+public class AuditField implements Comparable<AuditField> {
 
 	public static String toJsonArray(Collection<AuditField> collection) {
 		JSONSerializer serializer = new JSONSerializer();
@@ -45,6 +46,22 @@ public class AuditField {
 
 	public void setAuditvalue(Object auditvalue) {
 		this.auditvalue = auditvalue;
+	}
+
+	@Override
+	public int compareTo(AuditField otherAuditField) {
+		// TODO
+		return auditfield.compareTo(otherAuditField.getAuditfield());
+	}
+
+	@Override
+	public boolean equals(Object other) {
+		// TODO
+		if (other != null && other instanceof AuditField) {
+			return new EqualsBuilder().append(this.getAuditfield(), ((AuditField) other).getAuditfield()).isEquals();
+		} else {
+			return false;
+		}
 	}
 
 	public String toJson() {

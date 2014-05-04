@@ -3,12 +3,13 @@ package ro.roda.domainjson;
 import java.util.Collection;
 import java.util.Set;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.springframework.beans.factory.annotation.Configurable;
 
 import flexjson.JSONSerializer;
 
 @Configurable
-public class AuditObject {
+public class AuditObject implements Comparable<AuditObject> {
 
 	public static String toJsonArray(Collection<AuditObject> collection) {
 		JSONSerializer serializer = new JSONSerializer();
@@ -59,6 +60,22 @@ public class AuditObject {
 
 	public void setRows(Set<AuditRow> rows) {
 		this.rows = rows;
+	}
+
+	@Override
+	public int compareTo(AuditObject auditObject) {
+		// TODO
+		return objname.compareTo(auditObject.getObjname());
+	}
+
+	@Override
+	public boolean equals(Object other) {
+		// TODO
+		if (other != null && other instanceof AuditObject) {
+			return new EqualsBuilder().append(this.getObjname(), ((AuditObject) other).getObjname()).isEquals();
+		} else {
+			return false;
+		}
 	}
 
 	public String toJson() {

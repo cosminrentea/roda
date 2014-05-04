@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -126,7 +127,7 @@ public class JsonInfo {
 	protected static Set<AuditRow> findModifiedEntities(Class<?> auditedClass, RodaRevisionEntity revision) {
 		// get the entities modified at the revision, for the
 		// given class
-		Set<AuditRow> auditRows = new HashSet<AuditRow>();
+		Set<AuditRow> auditRows = new TreeSet<AuditRow>();
 		try {
 			AuditQuery queryEntities = revision.getAuditReader().createQuery()
 					.forEntitiesModifiedAtRevision(auditedClass, revision.getId());
@@ -140,7 +141,7 @@ public class JsonInfo {
 
 				Integer objectId = Integer.parseInt(getid.invoke(object).toString());
 
-				Set<AuditField> auditedFields = new HashSet<AuditField>();
+				Set<AuditField> auditedFields = new TreeSet<AuditField>();
 				Field[] classFields = auditedClass.getDeclaredFields();
 				for (int j = 0; j < classFields.length; j++) {
 					Field classField = classFields[j];

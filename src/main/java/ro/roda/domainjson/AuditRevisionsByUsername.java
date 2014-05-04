@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 import org.hibernate.envers.AuditReader;
 import org.hibernate.envers.query.AuditQuery;
@@ -122,10 +123,10 @@ public class AuditRevisionsByUsername extends JsonInfo {
 
 							if (!objectsByRevision.containsKey(revision.getId())) {
 								objectsByRevision.put(revision.getId(), new Object[] { revision,
-										new HashSet<AuditObject>() });
+										new TreeSet<AuditObject>() });
 							}
 
-							((HashSet<AuditObject>) objectsByRevision.get(revision.getId())[1]).add(new AuditObject(
+							((TreeSet<AuditObject>) objectsByRevision.get(revision.getId())[1]).add(new AuditObject(
 									auditedClassName, auditRows.size(), auditRows));
 						}
 					}

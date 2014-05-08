@@ -1182,7 +1182,11 @@ public class AdminJson {
 			return new AdminJson(false, "The specified CMS Page parent or sibling should exist");
 		}
 
+		int position = -1;
 		if (!mode.equals(PAGE_MOVE_APPEND_MODE) && groupPage != null) {
+			if (groupPage.getSequenceNumber() != null) {
+				position = groupPage.getSequenceNumber();
+			}
 			// in the mode "before" or "after", the page is moved at the same
 			// level as the page (group) specified in the first parameter
 			groupPage = groupPage.getCmsPageId();
@@ -1190,20 +1194,37 @@ public class AdminJson {
 
 		if (mode.equals(PAGE_MOVE_APPEND_MODE)
 				&& cmsPageGroupId == (cmsPage.getCmsPageId() == null ? null : cmsPage.getCmsPageId().getId())
-				|| !mode.equals(PAGE_MOVE_APPEND_MODE) && groupPage != null
-				&& groupPage.getId() == (cmsPage.getCmsPageId() == null ? null : cmsPage.getCmsPageId().getId())) {
+		// || !mode.equals(PAGE_MOVE_APPEND_MODE) && groupPage != null
+		// && groupPage.getId() == (cmsPage.getCmsPageId() == null ? null :
+		// cmsPage.getCmsPageId().getId())
+		) {
 			return new AdminJson(false, "The  parent or sibling of the CMS Page doesn't change");
 		}
 
 		try {
-			// if (groupPage != null) {
-			// if (groupPage.getCmsPages() == null) {
-			// groupPage.setCmsPages(new HashSet<CmsPage>());
-			// }
-			// groupPage.getCmsPages().add(cmsPage);
-			// CmsPage.entityManager().persist(groupPage);
-			// }
+			if (groupPage != null) {
+				if (groupPage.getCmsPages() == null) {
+					groupPage.setCmsPages(new HashSet<CmsPage>());
+				}
+				groupPage.getCmsPages().add(cmsPage);
+				CmsPage.entityManager().persist(groupPage);
+			}
+
 			cmsPage.setCmsPageId(groupPage);
+
+			if (mode.equals(PAGE_MOVE_BEFORE_MODE)) {
+				if (position > 0) {
+					cmsPage.move(position - 1);
+				} else {
+					cmsPage.moveFirst();
+				}
+			} else if (mode.equals(PAGE_MOVE_AFTER_MODE)) {
+				if (position > 0) {
+					cmsPage.move(position + 1);
+				} else {
+					cmsPage.moveLast();
+				}
+			}
 
 			CmsPage.entityManager().persist(cmsPage);
 		} catch (EntityExistsException e) {

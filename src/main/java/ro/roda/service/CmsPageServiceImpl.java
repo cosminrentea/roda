@@ -43,6 +43,10 @@ public class CmsPageServiceImpl implements CmsPageService {
 		return CmsPage.findCmsPageEntries(firstResult, maxResults);
 	}
 
+	public void reorderAllCmsPages() {
+		CmsPage.reorderAllCmsPages();
+	}
+
 	public void saveCmsPage(CmsPage cmsPage) {
 		cmsPage.persist();
 	}

@@ -22,6 +22,8 @@ public interface CmsPageService {
 
 	public abstract List<CmsPage> findCmsPageEntries(int firstResult, int maxResults);
 
+	public abstract void reorderAllCmsPages();
+
 	public abstract void saveCmsPage(CmsPage cmsPage);
 
 	public abstract CmsPage updateCmsPage(CmsPage cmsPage);

@@ -1,0 +1,37 @@
+<ul id="navmenu">
+<li>[[PageURLLink:home]]</li>
+<li class="more">[[PageURLLink:despre-roda]]
+<ul>
+<li>[[PageURLLink:obiectivele-roda]]
+</li>
+</ul>
+<li>[[PageURLLink:cautarea-datelor]]
+</li>
+<li class="more">[[PageURLLink:comandarea-datelor]]
+<ul>
+<li>[[PageURLLink:categorii-de-utilizatori]]
+</li>
+<li>[[PageURLLink:niveluri-de-acces]]
+</li>
+<li>[[PageURLLink:acordul-de-acces]]
+</li>
+<li>[[PageURLLink:costuri]]
+</li>
+</ul>
+<li class="more">[[PageURLLink:crearea-datelor]]
+<ul>
+<li>[[PageURLLink:ghid-de-buna-practica]]
+</li>
+</ul>
+<li class="more">[[PageURLLink:depunerea-datelor]]
+<ul>
+<li>[[PageURLLink:avantajele-depunerii]]
+</li>
+<li>[[PageURLLink:cum-se-depun-datele]]
+</li>
+</ul>
+<li>[[PageURLLink:catalogul-de-date]]
+</li>
+<li>[[PageURLLink:contact]]
+</li>
+</ul> 

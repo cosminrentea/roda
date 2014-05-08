@@ -532,6 +532,8 @@ public class RodaPageServiceImpl implements RodaPageService {
 		result.append("<ul id=\"navmenu\">");
 
 		if (cmsPage != null && cmsPage.getCmsPages() != null && cmsPage.getCmsPages().size() > 0) {
+			// cmsPage.reorderCmsPages();
+
 			SortedSet<CmsPage> sortedChildren = new TreeSet<CmsPage>();
 			sortedChildren.addAll(cmsPage.getCmsPages());
 			for (CmsPage child : sortedChildren) {
@@ -553,6 +555,8 @@ public class RodaPageServiceImpl implements RodaPageService {
 		if (cmsPage != null && depth > 0) {
 
 			if (cmsPage.getCmsPages() != null && cmsPage.getCmsPages().size() > 0) {
+				// cmsPage.reorderCmsPages();
+
 				result.append("<li class=\"more\">");
 				result.append(PAGE_URL_LINK_CODE + cmsPage.getUrl() + "]]");
 				result.append("<ul>");

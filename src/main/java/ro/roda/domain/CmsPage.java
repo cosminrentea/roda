@@ -340,6 +340,13 @@ public class CmsPage implements Comparable<CmsPage> {
 		return AuditReaderFactory.get(entityManager());
 	}
 
+	public static void reorderAllCmsPages() {
+		// reorders the child pages
+		for (CmsPage page : findAllCmsPages()) {
+			page.reorderCmsPages();
+		}
+	}
+
 	@ManyToOne
 	@JoinColumn(name = "cms_layout_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false)
 	private CmsLayout cmsLayoutId;
@@ -411,6 +418,9 @@ public class CmsPage implements Comparable<CmsPage> {
 
 	@Column(name = "menu_title", columnDefinition = "text")
 	private String menuTitle;
+
+	@Column(name = "sequence_number", columnDefinition = "int")
+	private Integer sequenceNumber;
 
 	@PersistenceContext
 	transient EntityManager entityManager;
@@ -510,6 +520,10 @@ public class CmsPage implements Comparable<CmsPage> {
 
 	public String getMenuTitle() {
 		return menuTitle;
+	}
+
+	public Integer getSequenceNumber() {
+		return sequenceNumber;
 	}
 
 	@Transactional
@@ -624,6 +638,62 @@ public class CmsPage implements Comparable<CmsPage> {
 		this.menuTitle = menuTitle;
 	}
 
+	public void setSequenceNumber(Integer sequenceNumber) {
+		this.sequenceNumber = sequenceNumber;
+	}
+
+	public void move(Integer position) {
+		// moves a page on the specified position under the current parent; the
+		// position of the pages having a greater or equal sequence number will
+		// be increased by 1
+		if (cmsPageId != null) {
+			TypedQuery<CmsPage> query;
+			query = entityManager()
+					.createQuery("SELECT o FROM CmsPage o WHERE sequenceNumber >= ?1 and cmsPageId = ?2", CmsPage.class)
+					.setParameter(1, position).setParameter(2, cmsPageId);
+			List<CmsPage> subsequentPages = query.getResultList();
+			for (CmsPage page : subsequentPages) {
+				page.setSequenceNumber(page.getSequenceNumber() + 1);
+				page.persist();
+			}
+		}
+		this.sequenceNumber = position;
+	}
+
+	public void moveFirst() {
+		move(0);
+		if (cmsPageId != null) {
+			cmsPageId.reorderCmsPages();
+		}
+	}
+
+	public void moveLast() {
+		move(1000);
+		if (cmsPageId != null) {
+			cmsPageId.reorderCmsPages();
+		}
+	}
+
+	public void reorderCmsPages() {
+		// reorders the child pages of the current page
+		if (cmsPages != null && cmsPages.size() > 0) {
+			TypedQuery<CmsPage> query;
+			query = entityManager()
+					.createQuery(
+							"SELECT o FROM CmsPage o WHERE sequenceNumber IS NOT NULL AND cmsPageId = ?1 ORDER BY sequenceNumber",
+							CmsPage.class).setParameter(1, this);
+			List<CmsPage> orderedPages = query.getResultList();
+			Integer nb = 1;
+			for (CmsPage page : orderedPages) {
+				if (page.getSequenceNumber() != nb) {
+					page.setSequenceNumber(nb);
+					page.persist();
+				}
+				nb++;
+			}
+		}
+	}
+
 	public String toJson() {
 		return new JSONSerializer().exclude("*.class").serialize(this);
 	}
@@ -657,7 +727,11 @@ public class CmsPage implements Comparable<CmsPage> {
 
 	@Override
 	public int compareTo(CmsPage cmsPage) {
-		// TODO to be completed, if necessary
+		// if the pages have the same parent, they are compared by their
+		// sequence number; otherwise, they are compared by their ids
+		if (cmsPageId != null && cmsPage.getCmsPageId() != null && cmsPageId.getId() == cmsPage.getCmsPageId().getId()
+				&& sequenceNumber != null && cmsPage.getSequenceNumber() != null)
+			return sequenceNumber.compareTo(cmsPage.getSequenceNumber());
 		return id.compareTo(cmsPage.getId());
 	}
 

@@ -13,7 +13,7 @@ Ext.define('RODAdmin.store.Base', {
 				console.log('initial url ' + purl);	
 				console.log('add base url ' + RODAdmin.util.Globals.baseurl);
 				console.log('final url ' + RODAdmin.util.Globals.baseurl + purl);
-				if (purl.match(/\/roda\/admin/)) {
+				if (purl.match(/\/roda\/j\/admin/)) {
 					store.getProxy().url = purl;
 				} else {
 					store.getProxy().url = RODAdmin.util.Globals.baseurl + purl;

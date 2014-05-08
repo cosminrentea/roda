@@ -95,11 +95,12 @@ Ext.define('RODAdmin.controller.Login', {
     onButtonClickSubmit: function(button, e, options) {
         var formPanel = button.up('form'),
             login = button.up('login'),
-            user = formPanel.down('textfield[name=user]').getValue(),
-            pass = formPanel.down('textfield[name=password]').getValue();   
+            user = formPanel.down('textfield[name=j_username]').getValue(),
+            pass = formPanel.down('textfield[name=j_password]').getValue();   
 
         if (formPanel.getForm().isValid()) {
 
+/*        	
             pass = RODAdmin.util.MD5.encode(pass); 
             
             //Ext.get(login.getEl()).mask("Authenticating... Please wait...", 'loading');
@@ -107,35 +108,75 @@ Ext.define('RODAdmin.controller.Login', {
             login.close();
             Ext.create('RODAdmin.view.MyViewport');
             RODAdmin.util.SessionMonitor.start();
+*/
 
-//            Ext.Ajax.request({
-//				url: 'data/login.json',
-//            	params: {
-//                    user: user,
-//                    password: pass
-//                },
-//                success: function(conn, response, options, eOpts) {
-//                    
+/*        	
+            Ext.Ajax.request({
+				url: '/roda/auth/login',
+            	params: {
+                    username: user,
+                    password: pass
+                },
+                success: function(conn, response, options, eOpts) {
+                    
+                    Ext.get(login.getEl()).unmask();
+
+                    var result = RODAdmin.util.Util.decodeJSON(conn.responseText);
+
+                    if (result.success) {
+                        login.close();
+                        Ext.create('RODAdmin.view.MyViewport');
+                        RODAdmin.util.SessionMonitor.start();
+
+                    } else {
+                        RODAdmin.util.Util.showErrorMsg(conn.responseText);
+                    }
+                },
+                failure: function(conn, response, options, eOpts) {
+
+                    Ext.get(login.getEl()).unmask();
+                
+                    RODAdmin.util.Util.showErrorMsg(conn.responseText);
+                }
+            });
+*/
+
+//            formPanel.getForm().submit({
+            Ext.Ajax.request({
+                url: '/roda/resources/j_spring_security_check',
+            	method:'POST',
+            	params: {
+                    j_username: user,
+                    j_password: pass
+                },
+                success: function(conn, response, options, eOpts) {
+
+                	console.log('Authenticated');
+                	
 //                    Ext.get(login.getEl()).unmask();
-//
-//                    var result = RODAdmin.util.Util.decodeJSON(conn.responseText);
-//
-//                    if (result.success) {
-//                        login.close();
-//                        Ext.create('RODAdmin.view.MyViewport');
-//                        RODAdmin.util.SessionMonitor.start();
-//
-//                    } else {
-//                        RODAdmin.util.Util.showErrorMsg(conn.responseText);
-//                    }
-//                },
-//                failure: function(conn, response, options, eOpts) {
-//
+
+                    var result = RODAdmin.util.Util.decodeJSON(conn.responseText);
+
+                    if (result.success) {
+                        login.close();
+                        Ext.create('RODAdmin.view.MyViewport');
+                        RODAdmin.util.SessionMonitor.start();
+                    } else {
+                        RODAdmin.util.Util.showErrorMsg(conn.responseText);
+                    }
+
+                },
+                failure: function(conn, response, options, eOpts) {
+
 //                    Ext.get(login.getEl()).unmask();
-//                
-//                    RODAdmin.util.Util.showErrorMsg(conn.responseText);
-//                }
-//            });
+                
+                	console.log('NOT Authenticated !');
+                	
+                    RODAdmin.util.Util.showErrorMsg(conn.responseText);
+                }
+            });
+
+            
         }    
     },    
 
@@ -189,7 +230,7 @@ Ext.define('RODAdmin.controller.Login', {
     onButtonClickLogout: function(button, e, options) {
 
         Ext.Ajax.request({
-            url: 'http://localhost/masteringextjs/php/logout.php',
+            url: '/roda/resources/j_spring_security_logout',
             success: function(conn, response, options, eOpts){
                 var result = RODAdmin.util.Util.decodeJSON(conn.responseText);
                 if (result.success) {

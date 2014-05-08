@@ -21,11 +21,14 @@ Ext.define('RODAdmin.view.Login', {
     title: translations.login,
     closeAction: 'hide',
     closable: false,
-
+    
     items: [
         {
             xtype: 'form',
+            name: 'loginform',
+            url: '/roda/resources/j_spring_security_check',
             frame: false,
+            standardSubmit: true,
             bodyPadding: 15,
             defaults: {
                 xtype: 'textfield',
@@ -38,19 +41,19 @@ Ext.define('RODAdmin.view.Login', {
             },
             items: [
                 {
-                    name: 'user',
+                    name: 'j_username',
                     fieldLabel: translations.user,
                     maxLength: 25,
-                    value: 'sorin'
+                    value: 'admin'
                 },
                 {
                     inputType: 'password',
-                    name: 'password',
+                    name: 'j_password',
                     fieldLabel: translations.password,
                     enableKeyEvents: true,
-                    id: 'password',
-                    maxLength: 15,
-                    value: '123456',
+                    id: 'j_password',
+                    maxLength: 32,
+                    value: 'admin',
                     //vtype: 'customPass',
                     msgTarget: 'side'
                 }
@@ -77,7 +80,8 @@ Ext.define('RODAdmin.view.Login', {
                             itemId: 'submit',
                             formBind: true,
                             iconCls: 'key-go',
-                            text: translations.submit
+                            text: translations.submit,
+                            type : 'submit'
                         }
                     ]
                 }

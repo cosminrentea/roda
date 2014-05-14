@@ -256,9 +256,6 @@ public class ApplicationConversionServiceFactoryBean extends FormattingConversio
 	SettingService settingService;
 
 	@Autowired
-	SettingGroupService settingGroupService;
-
-	@Autowired
 	SkipService skipService;
 
 	@Autowired
@@ -2124,31 +2121,6 @@ public class ApplicationConversionServiceFactoryBean extends FormattingConversio
 		};
 	}
 
-	public Converter<SettingGroup, String> getSettingGroupToStringConverter() {
-		return new org.springframework.core.convert.converter.Converter<ro.roda.domain.SettingGroup, java.lang.String>() {
-			public String convert(SettingGroup settingGroup) {
-				return new StringBuilder().append(settingGroup.getName()).append(' ')
-						.append(settingGroup.getDescription()).toString();
-			}
-		};
-	}
-
-	public Converter<Integer, SettingGroup> getIdToSettingGroupConverter() {
-		return new org.springframework.core.convert.converter.Converter<java.lang.Integer, ro.roda.domain.SettingGroup>() {
-			public ro.roda.domain.SettingGroup convert(java.lang.Integer id) {
-				return settingGroupService.findSettingGroup(id);
-			}
-		};
-	}
-
-	public Converter<String, SettingGroup> getStringToSettingGroupConverter() {
-		return new org.springframework.core.convert.converter.Converter<java.lang.String, ro.roda.domain.SettingGroup>() {
-			public ro.roda.domain.SettingGroup convert(String id) {
-				return getObject().convert(getObject().convert(id, Integer.class), SettingGroup.class);
-			}
-		};
-	}
-
 	public Converter<Skip, String> getSkipToStringConverter() {
 		return new org.springframework.core.convert.converter.Converter<ro.roda.domain.Skip, java.lang.String>() {
 			public String convert(Skip skip) {
@@ -3411,9 +3383,6 @@ public class ApplicationConversionServiceFactoryBean extends FormattingConversio
 		registry.addConverter(getSettingToStringConverter());
 		registry.addConverter(getIdToSettingConverter());
 		registry.addConverter(getStringToSettingConverter());
-		registry.addConverter(getSettingGroupToStringConverter());
-		registry.addConverter(getIdToSettingGroupConverter());
-		registry.addConverter(getStringToSettingGroupConverter());
 		registry.addConverter(getSkipToStringConverter());
 		registry.addConverter(getIdToSkipConverter());
 		registry.addConverter(getStringToSkipConverter());

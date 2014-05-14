@@ -6,30 +6,32 @@
         http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.2.xsd">
     <!-- HTTP security configurations -->
     <http auto-config="true" use-expressions="true">
+    
+    	<!-- Cosmin: login for ExtJS, using handlers-->
         <form-login login-processing-url="/resources/j_spring_security_check" login-page="/admin/index.html" authentication-success-handler-ref="rodaAuthenticationSuccessHandler" authentication-failure-handler-ref="rodaAuthenticationFailureHandler"/>
 <!-- 
         <form-login login-processing-url="/resources/j_spring_security_check" login-page="/login" authentication-failure-url="/login?login_error=t"/>
 -->
-        <logout logout-url="/resources/j_spring_security_logout"  success-handler-ref="rodaLogoutSuccessHandler" />
-<!-- 
-logout-success-url="/admin/index.html"
--->
+
+    	<!-- Cosmin: logout for ExtJS, using handlers-->
+        <logout logout-url="/resources/j_spring_security_logout"  success-handler-ref="rodaLogoutSuccessHandler"/>
 
         <!-- Configure these elements to secure URIs in your application -->
-         
-<!--
+
+		<!-- Cosmin: secure the "admin" JSON controllers - to be accessible only for "admin" -->
+        <intercept-url pattern="/j/admin/**" access="hasRole('ROLE_ADMIN')"/>
+<!--        
         <intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')"/>
 -->
-
         <!-- original settings -->
-        <intercept-url pattern="/member/**" access="isAuthenticated()" />
+        <intercept-url pattern="/user/**" access="isAuthenticated()" />
         <intercept-url pattern="/resources/**" access="permitAll" />
 
 		<intercept-url pattern="/**" access="permitAll" />  
 
 <!-- TODO Cosmin: set the session timeout page -->
 		<session-management invalid-session-url="/admin/index.html" />
-    </http>
+	</http>
     
     <!-- Configure Authentication mechanism -->
     <authentication-manager alias="authenticationManager">

@@ -23,7 +23,6 @@ import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 
 import ro.roda.domain.Setting;
-import ro.roda.service.SettingGroupService;
 import ro.roda.service.SettingService;
 
 @RequestMapping("/settings")
@@ -32,9 +31,6 @@ public class SettingController {
 
 	@Autowired
 	SettingService settingService;
-
-	@Autowired
-	SettingGroupService settingGroupService;
 
 	@RequestMapping(method = RequestMethod.POST, produces = "text/html")
 	public String create(@Valid Setting setting, BindingResult bindingResult, Model uiModel,
@@ -108,7 +104,6 @@ public class SettingController {
 
 	void populateEditForm(Model uiModel, Setting setting) {
 		uiModel.addAttribute("setting", setting);
-		uiModel.addAttribute("settinggroups", settingGroupService.findAllSettingGroups());
 	}
 
 	String encodeUrlPathSegment(String pathSegment, HttpServletRequest httpServletRequest) {

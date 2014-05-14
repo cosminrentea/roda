@@ -34,6 +34,9 @@ import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.transaction.annotation.Transactional;
 
+import ro.roda.domainjson.AuditSimplifiedRevisionsByUsername;
+import ro.roda.transformer.FieldNameTransformer;
+
 import flexjson.JSONDeserializer;
 import flexjson.JSONSerializer;
 
@@ -90,6 +93,14 @@ public class Setting {
 		return new JSONDeserializer<Setting>().use(null, Setting.class).deserialize(json);
 	}
 
+	public static String toJsonArray(Collection<Setting> collection) {
+		JSONSerializer serializer = new JSONSerializer().exclude("*.class").exclude("defaultValue", "description");
+
+		serializer.transform(new FieldNameTransformer("indice"), "id");
+
+		return "{\"success\": true, \"data\":" + serializer.serialize(collection) + "}";
+	}
+
 	public static void indexSetting(Setting setting) {
 		List<Setting> settings = new ArrayList<Setting>();
 		settings.add(setting);
@@ -139,10 +150,6 @@ public class Setting {
 		return _solrServer;
 	}
 
-	public static String toJsonArray(Collection<Setting> collection) {
-		return new JSONSerializer().exclude("*.class").serialize(collection);
-	}
-
 	/**
 	 * Verifica existenta unui obiect de tip <code>Setting</code> (setare de
 	 * aplicatie) in baza de date; in caz afirmativ il returneaza, altfel,
@@ -162,8 +169,6 @@ public class Setting {
 	 *            - identificatorul setarii.
 	 * @param name
 	 *            - numele setarii.
-	 * @param settingGroupId
-	 *            - grupul de setari de aplicatie din care face parte setarea.
 	 * @param description
 	 *            - descrierea setarii.
 	 * @param defaultValue
@@ -172,8 +177,7 @@ public class Setting {
 	 *            - valoarea setarii.
 	 * @return
 	 */
-	public static Setting checkSetting(Integer id, String name, SettingGroup settingGroupId, String description,
-			String defaultValue, String value) {
+	public static Setting checkSetting(Integer id, String name, String description, String defaultValue, String value) {
 		Setting object;
 
 		if (id != null) {
@@ -186,12 +190,10 @@ public class Setting {
 
 		List<Setting> queryResult;
 
-		if (name != null && settingGroupId != null) {
+		if (name != null) {
 			TypedQuery<Setting> query = entityManager().createQuery(
-					"SELECT o FROM Setting o WHERE lower(o.name) = lower(:name) AND "
-							+ "o.settingGroupId = :settingGroupId", Setting.class);
+					"SELECT o FROM Setting o WHERE lower(o.name) = lower(:name)", Setting.class);
 			query.setParameter("name", name);
-			query.setParameter("settingGroupId", settingGroupId);
 
 			queryResult = query.getResultList();
 			if (queryResult.size() > 0) {
@@ -201,7 +203,6 @@ public class Setting {
 
 		object = new Setting();
 		object.name = name;
-		object.settingGroupId = settingGroupId;
 		object.description = description;
 		object.defaultValue = defaultValue;
 		object.value = value;
@@ -226,13 +227,9 @@ public class Setting {
 	// , columnDefinition = "serial")
 	private Integer id;
 
-	@Column(name = "name", columnDefinition = "text")
+	@Column(name = "name", columnDefinition = "text", unique = true)
 	@NotNull
 	private String name;
-
-	@ManyToOne
-	@JoinColumn(name = "setting_group_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false)
-	private SettingGroup settingGroupId;
 
 	@Column(name = "value", columnDefinition = "text")
 	@NotNull
@@ -272,10 +269,6 @@ public class Setting {
 
 	public String getName() {
 		return name;
-	}
-
-	public SettingGroup getSettingGroupId() {
-		return settingGroupId;
 	}
 
 	public String getValue() {
@@ -326,10 +319,6 @@ public class Setting {
 		this.name = name;
 	}
 
-	public void setSettingGroupId(SettingGroup settingGroupId) {
-		this.settingGroupId = settingGroupId;
-	}
-
 	public void setValue(String value) {
 		this.value = value;
 	}
@@ -356,11 +345,11 @@ public class Setting {
 	@Override
 	public boolean equals(Object obj) {
 		return (id != null && id.equals(((Setting) obj).id))
-				|| ((name != null && name.equalsIgnoreCase(((Setting) obj).name)) && (settingGroupId != null && settingGroupId
-						.equals(((Setting) obj).settingGroupId)));
+				|| ((name != null && name.equalsIgnoreCase(((Setting) obj).name)));
 	}
 
-	public AuditReader getAuditReader() {
-		return AuditReaderFactory.get(entityManager);
-	}
+	// public AuditReader getAuditReader() {
+	// return AuditReaderFactory.get(entityManager);
+	// }
+
 }

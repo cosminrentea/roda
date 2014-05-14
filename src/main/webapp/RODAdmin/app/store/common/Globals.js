@@ -13,8 +13,9 @@ Ext.define('RODAdmin.store.common.Globals', {
     autoload: true,
     proxy: {
         type: 'ajax',
-        url: 'http://roda.apiary.io/admin/settings',        
-         reader: {
+//        url: 'http://roda.apiary.io/admin/settings/list',        
+        url: 'settings/list',        
+        reader: {
                 type: 'json',
                 root: 'data'
         },

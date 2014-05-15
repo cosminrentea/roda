@@ -20,7 +20,7 @@ public class RodaLogoutSuccessHandler implements LogoutSuccessHandler {
 		response.setContentType("application/json");
 		response.setStatus(HttpServletResponse.SC_OK);
 		PrintWriter pw = response.getWriter();
-		pw.print(new AdminJson(true, "Logged out").toJson());
+		pw.print(new AdminJson(true, "Logout Success").toJson());
 		pw.flush();
 	}
 

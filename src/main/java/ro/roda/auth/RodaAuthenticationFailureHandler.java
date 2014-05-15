@@ -17,8 +17,10 @@ public class RodaAuthenticationFailureHandler implements AuthenticationFailureHa
 	@Override
 	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
 			AuthenticationException exception) throws IOException, ServletException {
+		response.setContentType("application/json");
+		response.setStatus(HttpServletResponse.SC_OK);
 		PrintWriter pw = response.getWriter();
-		pw.print(new AdminJson(false, "NOT Authenticated").toJson());
+		pw.print(new AdminJson(false, "Authentication Failure").toJson());
 		pw.flush();
 	}
 

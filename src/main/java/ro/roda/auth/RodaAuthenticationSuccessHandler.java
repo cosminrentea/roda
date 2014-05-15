@@ -20,7 +20,7 @@ public class RodaAuthenticationSuccessHandler implements AuthenticationSuccessHa
 		response.setContentType("application/json");
 		response.setStatus(HttpServletResponse.SC_OK);
 		PrintWriter pw = response.getWriter();
-		pw.print(new AdminJson(true, "Authenticated").toJson());
+		pw.print(new AdminJson(true, "Authentication Success").toJson());
 		pw.flush();
 	}
 

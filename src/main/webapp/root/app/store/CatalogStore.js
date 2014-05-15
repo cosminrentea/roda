@@ -23,7 +23,7 @@ Ext.define('databrowser.store.CatalogStore', {
 //            }
         proxy: {
             type: 'rest',
-            url: '../../studiesbycatalog',  
+            url: '../../j/studiesbycatalog',  
             appendId: true,
             reader: {
                 type: 'json',

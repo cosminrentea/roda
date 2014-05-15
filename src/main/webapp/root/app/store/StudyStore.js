@@ -14,7 +14,7 @@ Ext.define('databrowser.store.StudyStore', {
             storeId: 'StudyStore',
             proxy: {
                 type: 'rest',
-                url: '../../studyinfo',  
+                url: '../../j/studyinfo',  
                 appendId: true,
 //                url: 'data/study.json',
                 reader: {

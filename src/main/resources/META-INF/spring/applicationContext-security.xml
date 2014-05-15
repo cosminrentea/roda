@@ -19,8 +19,9 @@
         <!-- Configure these elements to secure URIs in your application -->
 
 		<!-- Cosmin: secure the "admin" JSON controllers - to be accessible only for "admin" -->
+<!--
+		<intercept-url pattern="/admin/index.html" access="permitAll" />  
         <intercept-url pattern="/j/admin/**" access="hasRole('ROLE_ADMIN')"/>
-<!--        
         <intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')"/>
 -->
         <!-- original settings -->

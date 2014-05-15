@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import ro.roda.domain.Setting;
 import ro.roda.service.SettingService;
 
-@RequestMapping("/admin/settings")
+@RequestMapping("/settings")
 @Controller
 public class SettingsController {
 

@@ -1,4 +1,4 @@
-package ro.roda.webjson;
+package ro.roda.web;
 
 import java.io.IOException;
 

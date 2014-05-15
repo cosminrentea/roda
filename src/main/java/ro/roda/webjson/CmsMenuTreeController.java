@@ -19,21 +19,21 @@ import ro.roda.service.CmsMenuTreeService;
 public class CmsMenuTreeController {
 
 	@Autowired
-	CmsMenuTreeService layoutTreeService;
+	CmsMenuTreeService menuTreeService;
 
 	@RequestMapping(headers = "Accept=application/json")
 	@ResponseBody
 	public ResponseEntity<String> listJson() {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");
-		List<CmsMenuTree> result = layoutTreeService.findAllCmsMenuTrees();
+		List<CmsMenuTree> result = menuTreeService.findAllCmsMenuTrees();
 		return new ResponseEntity<String>(CmsMenuTree.toJsonArray(result), headers, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/{id}", headers = "Accept=application/json")
 	@ResponseBody
 	public ResponseEntity<String> showJson(@PathVariable("id") Integer id) {
-		CmsMenuTree layoutTree = layoutTreeService.findCmsMenuTree(id);
+		CmsMenuTree layoutTree = menuTreeService.findCmsMenuTree(id);
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");
 		if (layoutTree == null) {

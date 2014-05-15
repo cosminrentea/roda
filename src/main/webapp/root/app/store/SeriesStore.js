@@ -23,7 +23,7 @@ Ext.define('databrowser.store.SeriesStore', {
 
         proxy: {
             type: 'rest',
-            url: '../../studiesbyseries',  
+            url: '../../j/studiesbyseries',  
             appendId: true,
             reader: {
                 type: 'json',

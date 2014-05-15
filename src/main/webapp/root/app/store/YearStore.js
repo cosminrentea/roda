@@ -23,7 +23,7 @@ Ext.define('databrowser.store.YearStore', {
 //            }
         proxy: {
             type: 'rest',
-            url: '../../studiesbyyear',  
+            url: '../../j/studiesbyyear',  
             appendId: true,
             reader: {
                 type: 'json',

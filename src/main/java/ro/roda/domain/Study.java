@@ -25,6 +25,7 @@ import javax.persistence.PreRemove;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.TypedQuery;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -231,6 +232,21 @@ public class Study {
 		return object;
 	}
 
+	public static Study findFirstStudyWithFilename(String filename) {
+		Study result = null;
+		if (filename == null || filename.length() == 0)
+			throw new IllegalArgumentException("The filename argument is required");
+		EntityManager em = Study.entityManager();
+		TypedQuery<Study> q = em.createQuery("SELECT o FROM Study AS o WHERE o.importedFilename = :importedFilename",
+				Study.class);
+		q.setParameter("importedFilename", filename);
+		List<Study> results = q.getResultList();
+		if (results.size() > 0) {
+			result = results.get(0);
+		}
+		return result;
+	}
+
 	public static AuditReader getClassAuditReader() {
 		return AuditReaderFactory.get(entityManager());
 	}
@@ -248,6 +264,9 @@ public class Study {
 	@Column(name = "anonymous_usage", columnDefinition = "bool")
 	@NotNull
 	private boolean anonymousUsage;
+
+	@Column(name = "imported_filename", columnDefinition = "text")
+	private String importedFilename;
 
 	@OneToMany(mappedBy = "studyId")
 	private Set<CatalogStudy> catalogStudies;
@@ -361,6 +380,10 @@ public class Study {
 
 	public Users getAddedBy() {
 		return addedBy;
+	}
+
+	public String getImportedFilename() {
+		return importedFilename;
 	}
 
 	public Set<CatalogStudy> getCatalogStudies() {
@@ -501,6 +524,10 @@ public class Study {
 
 	public void setAnonymousUsage(boolean anonymousUsage) {
 		this.anonymousUsage = anonymousUsage;
+	}
+
+	public void setImportedFilename(String importedFilename) {
+		this.importedFilename = importedFilename;
 	}
 
 	public void setCatalogStudies(Set<CatalogStudy> catalogStudies) {
@@ -698,13 +725,8 @@ public class Study {
 		return true;
 	}
 
-	// @Override
-	// public boolean equals(Object obj) {
-	//
-	// return id != null && id.equals(((Study) obj).id);
-	// }
-
 	public AuditReader getAuditReader() {
 		return AuditReaderFactory.get(entityManager);
 	}
+
 }

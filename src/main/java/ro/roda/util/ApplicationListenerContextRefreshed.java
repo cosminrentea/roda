@@ -1,5 +1,7 @@
 package ro.roda.util;
 
+import java.io.IOException;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +44,15 @@ public class ApplicationListenerContextRefreshed implements ApplicationListener<
 			// su.deleteAll();
 
 			// import all data using the Importer service
-			importer.importAll();
+			try {
+				importer.importAll();
+			} catch (Exception e) {
+				log.error("Import Error", e);
+
+				// if importing some data failed,
+				// then abort launching the application
+				throw new IllegalStateException("Could not import data");
+			}
 
 			// rb.rnorm(4);
 			// du.setSequence("hibernate_sequence", 1000, 1);

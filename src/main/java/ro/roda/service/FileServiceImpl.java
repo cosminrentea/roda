@@ -20,6 +20,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import org.xml.sax.SAXException;
 
 import ro.roda.ddi.CodeBook;
 import ro.roda.domain.File;
@@ -87,14 +88,9 @@ public class FileServiceImpl implements FileService {
 					log.debug("> saveFile > save JPA object");
 					saveFile(file);
 				}
-			} catch (IllegalStateException e) {
-				log.error(e);
-			} catch (IOException e) {
-				log.error(e);
-			} catch (JAXBException e) {
+			} catch (Exception e) {
 				log.error(e);
 			}
-
 		}
 	}
 

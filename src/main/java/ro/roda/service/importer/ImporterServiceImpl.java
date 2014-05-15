@@ -118,8 +118,6 @@ public class ImporterServiceImpl implements ImporterService {
 	@Value("${roda.data.csv-after-ddi.series_study}")
 	private String rodaDataCsvAfterDdiSeriesStudy;
 
-	private static final String errorMessage = "Could not import data";
-
 	private static final String elsstEnTerms = "elsst_en_terms.csv";
 
 	private static final String elsstEnRelationships = "elsst_en_relationships.csv";
@@ -167,6 +165,8 @@ public class ImporterServiceImpl implements ImporterService {
 	@Value("${roda.data.elsst}")
 	private String rodaDataElsst;
 
+	private Tika tika = new Tika();
+
 	@Value("${roda.data.csv-after-ddi}")
 	private String rodaDataCsvAfterDdi;
 
@@ -189,30 +189,18 @@ public class ImporterServiceImpl implements ImporterService {
 		return em;
 	}
 
-	public final Unmarshaller getUnmarshaller() {
-
+	public final Unmarshaller getUnmarshaller() throws JAXBException, SAXException, IOException {
 		if (unmarshaller == null) {
 			// validate using DDI 1.2.2 XML Schema
 			Resource xsdDdiRes = new ClassPathResource(xsdDdi122);
-			try {
-				unmarshaller = JAXBContext.newInstance(jaxbContextPath).createUnmarshaller();
-				unmarshaller.setSchema(SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI).newSchema(
-						xsdDdiRes.getFile()));
-			} catch (JAXBException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (SAXException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			unmarshaller = JAXBContext.newInstance(jaxbContextPath).createUnmarshaller();
+			unmarshaller.setSchema(SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI).newSchema(
+					xsdDdiRes.getFile()));
 		}
 		return unmarshaller;
 	}
 
-	public void importAll() {
+	public void importAll() throws IOException, SQLException, JAXBException, SAXException {
 		log.trace("roda.data.csv = " + rodaDataCsv);
 		log.trace("roda.data.csv-extra = " + rodaDataCsvExtra);
 		log.trace("roda.data.ddi = " + rodaDataDdi);
@@ -245,30 +233,25 @@ public class ImporterServiceImpl implements ImporterService {
 		}
 	}
 
-	public void importCms() {
+	public void importCms() throws IOException {
 		importCmsFiles("files");
 		importCmsLayouts("layouts");
 		importCmsPages("pages");
 		importCmsSnippets("snippets");
 	}
 
-	public void importCmsFiles(String folderName) {
-		try {
-			Resource cmsRes = new ClassPathResource(rodaDataCmsDir + folderName);
-			File cmsDir = cmsRes.getFile();
+	public void importCmsFiles(String folderName) throws IOException {
+		Resource cmsRes = new ClassPathResource(rodaDataCmsDir + folderName);
+		File cmsDir = cmsRes.getFile();
 
-			AdminJson result = AdminJson.folderSave(folderName, null, "CMS Files");
-			CmsFolder cmsFolder = CmsFolder.findCmsFolder(result.getId());
-			cmsFileStoreService.folderSave(cmsFolder);
-			importCmsFilesRec(cmsDir, cmsFolder, rodaDataCmsDir + folderName);
-		} catch (IOException e) {
-			log.error(e);
-		}
+		AdminJson result = AdminJson.folderSave(folderName, null, "CMS Files");
+		CmsFolder cmsFolder = CmsFolder.findCmsFolder(result.getId());
+		cmsFileStoreService.folderSave(cmsFolder);
+		importCmsFilesRec(cmsDir, cmsFolder, rodaDataCmsDir + folderName);
 	}
 
 	private void importCmsFilesRec(File dir, CmsFolder cmsFolder, String path) {
 		try {
-			Tika tika = new Tika();
 			File[] files = dir.listFiles();
 			for (File file : files) {
 				if (file.isDirectory()) {
@@ -279,7 +262,6 @@ public class ImporterServiceImpl implements ImporterService {
 					cmsFileStoreService.folderSave(newFolder);
 					importCmsFilesRec(file, newFolder, path + "/" + file.getName());
 				} else {
-					// TODO set content-type to a real value
 					MockMultipartFile mockMultipartFile = new MockMultipartFile(file.getName(), file.getName(),
 							tika.detect(file), new FileInputStream(file));
 
@@ -554,145 +536,132 @@ public class ImporterServiceImpl implements ImporterService {
 		return result;
 	}
 
-	public void importElsst() {
-		CSVReader reader;
+	public void importElsst() throws FileNotFoundException, IOException {
 		List<String[]> csvLines;
-		try {
-			reader = new CSVReader(new FileReader(new ClassPathResource(rodaDataElsstDir + elsstEnTerms).getFile()));
-			csvLines = reader.readAll();
-			for (String[] csvLine : csvLines) {
-				log.trace("ELSST Term: " + csvLine[0]);
-				Topic t = new Topic();
-				t.setName(csvLine[0]);
-				t.persist();
-			}
+		CSVReader reader = new CSVReader(new FileReader(
+				new ClassPathResource(rodaDataElsstDir + elsstEnTerms).getFile()));
+		csvLines = reader.readAll();
+		reader.close();
 
-			reader = new CSVReader(new FileReader(
-					new ClassPathResource(rodaDataElsstDir + elsstEnRelationships).getFile()));
-			csvLines = reader.readAll();
-			for (String[] csvLine : csvLines) {
-				log.trace("ELSST Relationship: " + csvLine[0] + " " + csvLine[1] + " " + csvLine[2]);
-				Topic src = Topic.checkTopic(null, csvLine[0]);
-				Topic dst = Topic.checkTopic(null, csvLine[2]);
-				// log.trace("ELSST Terms: " + src.getName() + " " +
-				// dst.getName());
-
-				Set<Topic> topicSet = null;
-				if (Integer.parseInt(csvLine[1]) == 5) {
-					dst.setParentId(src);
-					topicSet = src.getTopics();
-					if (topicSet == null) {
-						topicSet = new HashSet<Topic>();
-					}
-					topicSet.add(dst);
-					src.setTopics(topicSet);
-					// dst.merge();
-					// src.merge();
-					dst.merge(false);
-					src.merge(false);
-				}
-				if (Integer.parseInt(csvLine[1]) == 8) {
-					// TODO set related terms
-				}
-			}
-
-		} catch (FileNotFoundException e) {
-			log.error(e);
-		} catch (IOException e) {
-			log.error(e);
+		for (String[] csvLine : csvLines) {
+			log.trace("ELSST Term: " + csvLine[0]);
+			Topic t = new Topic();
+			t.setName(csvLine[0]);
+			t.persist();
 		}
+
+		reader = new CSVReader(new FileReader(new ClassPathResource(rodaDataElsstDir + elsstEnRelationships).getFile()));
+		csvLines = reader.readAll();
+		reader.close();
+
+		for (String[] csvLine : csvLines) {
+			log.trace("ELSST Relationship: " + csvLine[0] + " " + csvLine[1] + " " + csvLine[2]);
+			Topic src = Topic.checkTopic(null, csvLine[0]);
+			Topic dst = Topic.checkTopic(null, csvLine[2]);
+			// log.trace("ELSST Terms: " + src.getName() + " " +
+			// dst.getName());
+
+			Set<Topic> topicSet = null;
+			if (Integer.parseInt(csvLine[1]) == 5) {
+				dst.setParentId(src);
+				topicSet = src.getTopics();
+				if (topicSet == null) {
+					topicSet = new HashSet<Topic>();
+				}
+				topicSet.add(dst);
+				src.setTopics(topicSet);
+				// dst.merge();
+				// src.merge();
+				dst.merge(false);
+				src.merge(false);
+			}
+			if (Integer.parseInt(csvLine[1]) == 8) {
+				// TODO set related terms
+			}
+		}
+
 		// flush all changes
 		Topic.entityManager().flush();
 	}
 
-	public void importCsv() {
+	public void importCsv() throws SQLException, IOException {
 		importCsvDir(rodaDataCsvDir);
 	}
 
-	public void importCsvExtra() {
+	public void importCsvExtra() throws SQLException, IOException {
 		importCsvDir(rodaDataCsvExtraDir);
 	}
 
-	public void importCsvAfterDdi() {
-		CSVReader reader;
-		try {
-			// add Studies to Catalogs
-			reader = new CSVReader(new FileReader(new ClassPathResource(rodaDataCsvAfterDdiCatalogStudy).getFile()));
-			List<String[]> csvLines;
-			csvLines = reader.readAll();
-			for (String[] csvLine : csvLines) {
-				log.trace("Catalog " + csvLine[0] + " -> Study " + csvLine[1]);
-				CatalogStudy cs = new CatalogStudy();
-				cs.setId(new CatalogStudyPK(Integer.valueOf(csvLine[0]), Integer.valueOf(csvLine[1])));
-				cs.persist();
-			}
+	public void importCsvAfterDdi() throws FileNotFoundException, IOException {
+		// add Studies to Catalogs
+		CSVReader reader = new CSVReader(new FileReader(
+				new ClassPathResource(rodaDataCsvAfterDdiCatalogStudy).getFile()));
+		List<String[]> csvLines;
+		csvLines = reader.readAll();
+		reader.close();
 
-		} catch (FileNotFoundException e) {
-			log.error(e);
-		} catch (IOException e) {
-			log.error(e);
+		for (String[] csvLine : csvLines) {
+			log.trace("Catalog: " + csvLine[0] + " -- Study Filename: " + csvLine[1]);
+			Study study = Study.findFirstStudyWithFilename(csvLine[1]);
+			if (study == null) {
+				String errorMessage = "Study cannot be added to Catalog because its filename was not found: "
+						+ csvLine[1];
+				log.error(errorMessage);
+				throw new IllegalStateException(errorMessage);
+			}
+			CatalogStudy cs = new CatalogStudy();
+			cs.setId(new CatalogStudyPK(Integer.valueOf(csvLine[0]), study.getId()));
+			cs.persist();
 		}
+
+		// TODO add Studies to Series
+
 	}
 
 	/**
 	 * Populates the database using data imported from a directory with CSV
 	 * files (which are ordered by name).
+	 * 
+	 * @throws SQLException
+	 * @throws IOException
 	 */
-	public void importCsvDir(String dirname) {
+	public void importCsvDir(String dirname) throws SQLException, IOException {
 		log.trace("Importing CSV from directory: " + dirname);
 		Connection con = null;
-		try {
-			Properties conProps = new Properties();
-			conProps.put("user", this.dbUsername);
-			conProps.put("password", this.dbPassword);
-			con = DriverManager.getConnection(this.dbUrl, conProps);
+		Properties conProps = new Properties();
+		conProps.put("user", this.dbUsername);
+		conProps.put("password", this.dbPassword);
+		con = DriverManager.getConnection(this.dbUrl, conProps);
 
-			Resource csvRes = new ClassPathResource(dirname);
-			File csvDir = csvRes.getFile();
-			File[] csvFiles = csvDir.listFiles();
+		Resource csvRes = new ClassPathResource(dirname);
+		File csvDir = csvRes.getFile();
+		File[] csvFiles = csvDir.listFiles();
 
-			// sort file list by file name, ascending
-			Arrays.sort(csvFiles, new Comparator<File>() {
-				public int compare(File f1, File f2) {
-					return f1.getName().compareTo(f2.getName());
-				}
-			});
-
-			CopyManager cm = ((BaseConnection) con).getCopyAPI();
-			for (File f : csvFiles) {
-				try {
-					log.trace("File: " + f.getAbsolutePath());
-
-					// Postgresql requires a Reader for the COPY commands
-					BufferedReader br = new BufferedReader(new FileReader(f));
-
-					// read the first line, containing the enumeration of fields
-					String tableFields = br.readLine();
-
-					// obtain the table name from the file name
-					String tableName = f.getName().substring(2, f.getName().length() - 4);
-
-					// bulk COPY the remaining lines (CSV data)
-					String copyQuery = "COPY " + tableName + "(" + tableFields + ") FROM stdin DELIMITERS ',' CSV";
-					log.trace(copyQuery);
-					cm.copyIn(copyQuery, br);
-				} catch (Exception e) {
-					log.error(e);
-					throw new IllegalStateException(errorMessage);
-				}
+		// sort file list by file name, ascending
+		Arrays.sort(csvFiles, new Comparator<File>() {
+			public int compare(File f1, File f2) {
+				return f1.getName().compareTo(f2.getName());
 			}
-		} catch (Exception e) {
-			log.error(e);
-			throw new IllegalStateException(errorMessage);
-		} finally {
-			if (con != null) {
-				try {
-					con.close();
-				} catch (SQLException e) {
-					log.error(e);
-					throw new IllegalStateException(errorMessage);
-				}
-			}
+		});
+
+		CopyManager cm = ((BaseConnection) con).getCopyAPI();
+		for (File f : csvFiles) {
+			log.trace("File: " + f.getAbsolutePath());
+
+			// Postgresql requires a Reader for the COPY commands
+			BufferedReader br = new BufferedReader(new FileReader(f));
+
+			// read the first line, containing the enumeration of fields
+			String tableFields = br.readLine();
+
+			// obtain the table name from the file name
+			String tableName = f.getName().substring(2, f.getName().length() - 4);
+
+			// bulk COPY the remaining lines (CSV data)
+			String copyQuery = "COPY " + tableName + "(" + tableFields + ") FROM stdin DELIMITERS ',' CSV";
+			log.trace(copyQuery);
+
+			cm.copyIn(copyQuery, br);
 		}
 
 		// update the FileStore to be synchronized with the DB
@@ -701,41 +670,32 @@ public class ImporterServiceImpl implements ImporterService {
 		}
 	}
 
-	public void importDdiFiles() {
-		try {
-			log.trace("roda.data.ddi.files = " + rodaDataDdiFiles);
+	public void importDdiFiles() throws IOException, JAXBException, SAXException {
+		log.trace("roda.data.ddi.files = " + rodaDataDdiFiles);
 
-			this.getUnmarshaller();
+		this.getUnmarshaller();
 
-			PathMatchingResourcePatternResolver pmr = new PathMatchingResourcePatternResolver();
-			Resource[] resources = pmr.getResources("classpath*:" + rodaDataDdiFiles);
-			if (resources.length == 0) {
-				log.debug("No DDI files found for importing");
-			}
-
-			ArrayList<File> ddiFiles = new ArrayList<File>();
-			for (Resource ddiResource : resources) {
-				ddiFiles.add(ddiResource.getFile());
-			}
-			// sort files by name -> create predictable IDs for Studies
-			Collections.sort(ddiFiles);
-
-			for (File ddiFile : ddiFiles) {
-				log.debug("Importing DDI file: " + ddiFile.getName());
-				MockMultipartFile mockMultipartFile = new MockMultipartFile(ddiFile.getName(), ddiFile.getName(),
-						"text/xml", new FileInputStream(ddiFile));
-				CodeBook cb = (CodeBook) unmarshaller.unmarshal(ddiFile);
-				importCodebook(cb, mockMultipartFile, true, true);
-			}
-			log.trace("Finished importing DDI files");
-
-		} catch (IOException e) {
-			log.error("IOException:", e);
-			throw new IllegalStateException(errorMessage);
-		} catch (JAXBException e) {
-			log.error("JAXBException:", e);
-			throw new IllegalStateException(errorMessage);
+		PathMatchingResourcePatternResolver pmr = new PathMatchingResourcePatternResolver();
+		Resource[] resources = pmr.getResources("classpath*:" + rodaDataDdiFiles);
+		if (resources.length == 0) {
+			log.info("No DDI files found for importing");
 		}
+
+		ArrayList<File> ddiFiles = new ArrayList<File>();
+		for (Resource ddiResource : resources) {
+			ddiFiles.add(ddiResource.getFile());
+		}
+		// sort files by name -> create predictable IDs for Studies
+		Collections.sort(ddiFiles);
+
+		for (File ddiFile : ddiFiles) {
+			log.debug("Importing DDI file: " + ddiFile.getName());
+			MockMultipartFile mockMultipartFile = new MockMultipartFile(ddiFile.getName(), ddiFile.getName(),
+					"text/xml", new FileInputStream(ddiFile));
+			CodeBook cb = (CodeBook) unmarshaller.unmarshal(ddiFile);
+			importCodebook(cb, mockMultipartFile, true, true);
+		}
+		log.trace("Finished importing DDI files");
 	}
 
 	public void importCodebook(CodeBook cb, MultipartFile multipartFile, boolean nesstarExported, boolean legacyDataRODA) {
@@ -797,6 +757,7 @@ public class ImporterServiceImpl implements ImporterService {
 			dataCollType = stdyDscrType.getMethod().get(0).getDataColl().get(0);
 		}
 
+		// create the new Study
 		Study s = new Study();
 
 		String title = cb.getStdyDscr().get(0).getCitation().get(0).getTitlStmt().getTitl().getContent();
@@ -835,6 +796,7 @@ public class ImporterServiceImpl implements ImporterService {
 		s.setRawData(true);
 		s.setRawMetadata(false);
 		s.setInsertionStatus(0);
+		s.setImportedFilename(multipartFile.getName());
 
 		// TODO replace user = admin ?
 		Users u = Users.findUsers(1);
@@ -948,13 +910,13 @@ public class ImporterServiceImpl implements ImporterService {
 
 		domainFile.persist();
 
-		// Add Study to an existing Catalog ("root" catalog)
+		// add Study to an existing Catalog ("root" catalog)
 
 		// TODO don't use directly ID='1' for Catalog
-		CatalogStudy cs = new CatalogStudy();
-		CatalogStudyPK csid = new CatalogStudyPK(1, s.getId());
-		cs.setId(csid);
-		cs.persist();
+		// CatalogStudy cs = new CatalogStudy();
+		// CatalogStudyPK csid = new CatalogStudyPK(1, s.getId());
+		// cs.setId(csid);
+		// cs.persist();
 
 		// create a new Instance / Dataset for this import
 		Instance instance = new Instance();
@@ -1015,5 +977,4 @@ public class ImporterServiceImpl implements ImporterService {
 		instance.setInstanceVariables(instanceVariableSet);
 		instance.merge();
 	}
-
 }

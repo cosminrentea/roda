@@ -22,7 +22,7 @@ Ext.define('databrowser.store.YearTreeStore', {
             },
             proxy: {
                 type: 'ajax',
-                url: '../../yearstree',  
+                url: '../../j/yearstree',  
 //                url: 'data/years-tree.json',
                 reader: {
                     type: 'json',

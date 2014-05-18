@@ -1,8 +1,8 @@
 package ro.roda.domain;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -173,7 +173,7 @@ public class News {
 	 *            - continutul stirii.
 	 * @return
 	 */
-	public static News checkNews(Integer id, Calendar added, Boolean visible, String title, String content) {
+	public static News checkNews(Integer id, Date added, Boolean visible, String title, String content) {
 		News object;
 
 		if (id != null) {
@@ -202,7 +202,7 @@ public class News {
 	@NotNull
 	@Temporal(TemporalType.TIMESTAMP)
 	@DateTimeFormat(style = "MM")
-	private Calendar added;
+	private Date added;
 
 	@Column(name = "content", columnDefinition = "text")
 	private String content;
@@ -241,7 +241,7 @@ public class News {
 		this.entityManager.flush();
 	}
 
-	public Calendar getAdded() {
+	public Date getAdded() {
 		return added;
 	}
 
@@ -289,7 +289,7 @@ public class News {
 		}
 	}
 
-	public void setAdded(Calendar added) {
+	public void setAdded(Date added) {
 		this.added = added;
 	}
 

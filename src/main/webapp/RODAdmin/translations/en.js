@@ -30,6 +30,7 @@ translations = {
 	cms_snippets : 'Snippets',
 	cms_files : 'Files',
 	cms_pages : 'Pages',
+	cms_news: 'News',
 	cron_dashboard : 'Actions Dashboard',
 	cron_actions : 'Actions',
 

@@ -27,7 +27,7 @@ Ext.application({
             'Ext.util.History','RODAdmin.proxy.Main','RODAdmin.proxy.MainAjax', 'RODAdmin.util.Globals',
             'RODAdmin.util.TreeGridFilter', 'Ext.menu.Menu', 'Ext.window.Window', 'Ext.form.Panel',
             'Ext.layout.container.Accordion', 'RODAdmin.util.Util', 'Ext.form.FieldSet', 'Ext.form.field.Hidden',
-            'Ext.form.field.ComboBox', 'Ext.form.Label', 'Ext.form.field.File', 'Ext.grid.Panel',
+            'Ext.form.field.ComboBox', 'Ext.form.Label', 'Ext.form.field.File', 'Ext.grid.Panel','Ext.ux.grid.FiltersFeature'
     ],
 
     views : [
@@ -44,7 +44,7 @@ Ext.application({
             'cms.snippet.SnippetList', 'cms.snippet.SnippetEdit', 'cms.file.FileEdit', 'cms.file.FileTree',
             'cms.file.FileList', 'cms.Cmsfiles', 'cms.Cmspages', 'cms.page.PageTree', 'cron.Dashboard', 'cron.Actions',
             'common.Audit', 'Abstract', 'cron.Actions', 'cron.ActionList', 'cron.ActionEdit', 'audit.AuditMain',
-            'user.User', 'user.UserList', 'user.GroupList','cms.page.PageEdit'
+            'user.User', 'user.UserList', 'user.GroupList','cms.page.PageEdit', 'cms.Cmsnews', 'cms.news.NewsList', 'cms.news.NewsEdit' 
     ],
 
     splashscreen : {},

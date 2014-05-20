@@ -38,7 +38,15 @@ Ext.define('RODAdmin.view.cms.news.NewsItemsview', {
 									dataIndex : 'added',
 									sortable : true,
 									filterable : true
-								}],
+								}, {
+									text : 'Language',
+									flex : 1,
+									xtype: 'templatecolumn',
+									tpl: '<div class="lang_{langCode}">&nbsp;</div>',
+									sortable : true,
+//									filterable : true
+								}
+								],
 						dockedItems : [{
 									xtype : 'toolbar',
 									itemid : 'newsiconviewtoolbar',

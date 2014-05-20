@@ -1,3 +1,3 @@
-id,added,content,title,visible
-1,'2014-02-02',content,title,true
-2,'2014-02-03',stire de dimineata,stire,true
+id,added,content,title,visible,lang_id
+1,'2014-02-02',content,title,true,1
+2,'2014-02-03',this morning is not good,morning news,true,2

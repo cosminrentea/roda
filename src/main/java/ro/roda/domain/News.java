@@ -11,6 +11,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PostPersist;
 import javax.persistence.PostUpdate;
@@ -18,6 +20,7 @@ import javax.persistence.PreRemove;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.TypedQuery;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -173,7 +176,7 @@ public class News {
 	 *            - continutul stirii.
 	 * @return
 	 */
-	public static News checkNews(Integer id, Date added, Boolean visible, String title, String content) {
+	public static News checkNews(Integer id, Date added, Boolean visible, String title, Lang langId, String content) {
 		News object;
 
 		if (id != null) {
@@ -183,10 +186,25 @@ public class News {
 				return object;
 			}
 		}
+		List<News> queryResult;
+		
+		if (title != null && langId != null) {
+			TypedQuery<News> query = entityManager().createQuery(
+					"SELECT o FROM News o WHERE lower(o.title) = lower(:title) AND "
+							+ "o.langId = :langId", News.class);
+			query.setParameter("title", title);
+			query.setParameter("langId", langId);
 
+			queryResult = query.getResultList();
+			if (queryResult.size() > 0) {
+				return queryResult.get(0);
+			}
+		}
+		
 		object = new News();
 		object.added = added;
 		object.visible = visible;
+		object.langId = langId;		
 		object.title = title;
 		object.content = content;
 		object.persist();
@@ -198,6 +216,11 @@ public class News {
 		return AuditReaderFactory.get(entityManager());
 	}
 
+	@ManyToOne
+	@JoinColumn(name = "lang_id", columnDefinition = "integer", referencedColumnName = "id")
+	private Lang langId;	
+	
+	
 	@Column(name = "added", columnDefinition = "timestamp")
 	@NotNull
 	@Temporal(TemporalType.TIMESTAMP)
@@ -241,6 +264,10 @@ public class News {
 		this.entityManager.flush();
 	}
 
+	public Lang getLangId() {
+		return langId;
+	}	
+	
 	public Date getAdded() {
 		return added;
 	}
@@ -289,6 +316,10 @@ public class News {
 		}
 	}
 
+	public void setLangId(Lang langId) {
+		this.langId = langId;
+	}	
+	
 	public void setAdded(Date added) {
 		this.added = added;
 	}

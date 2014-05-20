@@ -21,7 +21,7 @@ public class NewsList extends JsonInfo {
 		JSONSerializer serializer = new JSONSerializer();
 
 		serializer.exclude("*.class", "type");
-		serializer.include("id", "added", "title", "content", "visible");
+		serializer.include("id", "added", "title", "content", "visible", "langId", "langCode");
 
 		// serializer.transform(new FieldNameTransformer("indice"), "id");
 
@@ -38,6 +38,9 @@ public class NewsList extends JsonInfo {
 			Iterator<News> newsIterator = news.iterator();
 			while (newsIterator.hasNext()) {
 				News newsitem = (News) newsIterator.next();
+
+				Integer langId = newsitem.getLangId() == null ? null : newsitem.getLangId().getId();				
+				String langCode = newsitem.getLangId() == null ? null : newsitem.getLangId().getIso639();	
 				result.add(new NewsList(newsitem));
 			}
 		}
@@ -55,6 +58,10 @@ public class NewsList extends JsonInfo {
 	}
 
 	private Integer id;
+	
+	private Integer langId;
+	
+	private String langCode;
 
 	private Boolean visible;
 
@@ -64,17 +71,20 @@ public class NewsList extends JsonInfo {
 
 	private String title;
 
-	public NewsList(Integer id, Boolean visible, Date added, String title, String content) {
+	public NewsList(Integer id, Boolean visible, Date added, String title, String content, Integer langId, String langCode) {
 		this.id = id;
 		this.visible = visible;
 		this.added = added;
 		this.title = title;
 		this.content = content;
+		this.langId=langId;
+		this.langCode=langCode;
 	}
 
 	public NewsList(News news) {
 
-		this(news.getId(), news.isVisible(), news.getAdded(), news.getTitle(), news.getContent());
+		this(news.getId(), news.isVisible(), news.getAdded(), news.getTitle(), news.getContent(), news.getLangId() == null ? null : news
+				.getLangId().getId(), news.getLangId() == null ? null : news.getLangId().getIso639());
 		// this.content = news.getContent();
 	}
 
@@ -98,6 +108,23 @@ public class NewsList extends JsonInfo {
 		return visible;
 	}
 
+	public Integer getLangId() {
+		return langId;
+	}
+	
+	public void setLangId(Integer langId) {
+		this.langId = langId;
+	}	
+
+	public String getLangCode() {
+		return langCode;
+	}
+	
+	public void setLangCode(String langCode) {
+		this.langCode = langCode;
+	}	
+	
+	
 	public void setVisible(Boolean visible) {
 		this.visible = visible;
 	}
@@ -122,7 +149,7 @@ public class NewsList extends JsonInfo {
 		JSONSerializer serializer = new JSONSerializer();
 
 		serializer.exclude("*.class", "type");
-		serializer.include("id", "added", "title", "content", "visible");
+		serializer.include("id", "added", "title", "content", "visible", "langId", "langCode");
 
 		// serializer.transform(new FieldNameTransformer("indice"), "id");
 

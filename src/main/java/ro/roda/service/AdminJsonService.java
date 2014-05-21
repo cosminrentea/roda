@@ -1,6 +1,7 @@
 package ro.roda.service;
 
 import org.springframework.web.multipart.MultipartFile;
+import java.util.Date;
 
 import ro.roda.domainjson.AdminJson;
 
@@ -85,5 +86,7 @@ public interface AdminJsonService {
 	public abstract AdminJson cmsPageMove(Integer cmsPageParentId, Integer cmsPageId, String mode);
 
 	public abstract AdminJson cmsPageDrop(Integer cmsPageId);
+	
+	public abstract AdminJson newsSave(Integer id, Integer langId, String title, String content, Date added);
 
 }

@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.support.ByteArrayMultipartFileEditor;
-
+import java.util.Date;
 import ro.roda.domain.CmsFile;
 import ro.roda.domainjson.AdminJson;
 import ro.roda.service.AdminJsonService;
@@ -440,4 +440,29 @@ public class AdminJsonController {
 
 	}
 
+	@RequestMapping(value = "/newssave", method = RequestMethod.POST, produces = "application/json")
+	@ResponseBody
+	public String newsSave(@RequestParam(value = "id", required = false) Integer id,
+						   @RequestParam(value = "langId", required = true) Integer langId, 
+						   @RequestParam(value = "title", required = true) String title,
+						   @RequestParam(value = "content", required = true) String content,
+						   @RequestParam(value = "added", required = true) String added)
+						   {
+
+		
+		Date addate = new Date(Long.parseLong(added) * 1000);
+
+		
+		
+		AdminJson newsSave = adminJsonService.newsSave(id, langId, title, content, addate);
+
+		if (newsSave == null) {
+			return null;
+		}
+		return newsSave.toJson();
+
+	}
+
+	
+	
 }

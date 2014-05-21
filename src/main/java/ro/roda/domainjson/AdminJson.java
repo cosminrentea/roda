@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.Date;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
@@ -33,6 +34,7 @@ import ro.roda.domain.Lang;
 import ro.roda.domain.UserGroup;
 import ro.roda.domain.UserMessage;
 import ro.roda.domain.Users;
+import ro.roda.domain.News;
 import flexjson.JSON;
 import flexjson.JSONSerializer;
 
@@ -1301,4 +1303,44 @@ public class AdminJson {
 
 		return result;
 	}
+	
+	// Methods for Snippets
+	public static AdminJson newsSave(Integer id, Integer langId, String title, String content, Date added) {
+		if (title == null) {
+			return new AdminJson(false, "Title must not be empty.");
+		}
+		if (langId == null) {
+			return new AdminJson(false, "Language is required.");
+		}
+		if (content == null) {
+			return new AdminJson(false, "No news without content");
+		}
+
+		News newsitem = null;
+		if (id != null) {
+			newsitem = News.findNews(id);
+		}
+
+		if (newsitem == null) {
+			newsitem = new News();
+		}
+
+		newsitem.setTitle(title);
+		newsitem.setContent(content);
+		newsitem.setAdded(added);	
+		newsitem.setVisible(true);
+		
+		if (langId != null) {
+			Lang newsLang = Lang.findLang(langId);
+			if (newsLang != null) {
+				newsitem.setLangId(newsLang);
+
+			}
+		}
+		News.entityManager().persist(newsitem);
+
+		return new AdminJson(true, "News item saved");
+	}
+
+	
 }

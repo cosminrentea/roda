@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-
+import java.util.Date;
 import ro.roda.domain.CmsFile;
 import ro.roda.domain.CmsFolder;
 import ro.roda.domain.CmsLayout;
@@ -220,6 +220,9 @@ public class AdminJsonServiceImpl implements AdminJsonService {
 
 	public AdminJson cmsPageDrop(Integer cmsPageId) {
 		return AdminJson.cmsPageDrop(cmsPageId);
+	}
+	public AdminJson newsSave(Integer id, Integer langId, String title, String content, Date added) {
+		return AdminJson.newsSave(id, langId, title, content, added);
 	}
 
 }

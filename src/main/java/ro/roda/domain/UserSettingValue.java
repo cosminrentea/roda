@@ -254,9 +254,9 @@ public class UserSettingValue {
 		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
-	public AuditReader getAuditReader() {
-		return AuditReaderFactory.get(entityManager);
-	}
+	// public AuditReader getAuditReader() {
+	// return AuditReaderFactory.get(entityManager);
+	// }
 
 	@PostUpdate
 	@PostPersist

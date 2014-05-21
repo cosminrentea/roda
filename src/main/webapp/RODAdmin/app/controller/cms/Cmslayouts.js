@@ -187,11 +187,11 @@ Ext.define('RODAdmin.controller.cms.Cmslayouts', {
 			    console.log('we will delete');
 			    var url = '';
 			    if (fp.data.itemtype == 'layoutgroup') {
-				    url = '/roda/admin/layoutgroupdrop';
+				    url = '/roda/j/admin/layoutgroupdrop';
 				    parms = {'groupid' : fp.data.id };
 			    }
 			    else {
-				    url = '/roda/admin/layoutdrop';
+				    url = '/roda/j/admin/layoutdrop';
 				    parms = {'layoutid' : fp.data.id };
 			    }
 

@@ -35,7 +35,7 @@ Ext.application({
     ],
 
     stores : [
-	    'security.Permissions', 'common.Globals'
+	    'security.Permissions', 'common.Globals','common.Language'
     ],
 
     controllers : [

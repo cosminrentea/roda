@@ -263,7 +263,7 @@ onDeleteSnippetClick : function(component, event) {
 	    if (id === 'yes') {
 		    console.log('we will delete');
 		    Ext.Ajax.request({
-		        url : '/roda/admin/snippetdrop',
+		        url : '/roda/j/admin/snippetdrop',
 		        method : "POST",
 		        params : {
 			        snippetid : currentNode.data.indice

@@ -323,7 +323,7 @@ Ext.define('RODAdmin.controller.cms.file.FileTree', {
 					if (id === 'yes') {
 						console.log('we will delete');
 						Ext.Ajax.request({
-									url : '/roda/admin/cmsfiledrop',
+									url : '/roda/j/admin/cmsfiledrop',
 									method : "POST",
 									params : {
 										fileid : currentNode.data.indice
@@ -443,7 +443,7 @@ Ext.define('RODAdmin.controller.cms.file.FileTree', {
 						+ currentNode.data.name + '?', function(id, value) {
 					if (id === 'yes') {
 						Ext.Ajax.request({
-									url : 'http://roda.apiary.io/admin/cms/folderempty',
+									url : '/roda/j/admin/cmsfolderempty',
 									method : "POST",
 									params : {
 										folderid : currentNode.data.indice
@@ -474,7 +474,7 @@ Ext.define('RODAdmin.controller.cms.file.FileTree', {
 						+ currentNode.data.name + '?', function(id, value) {
 					if (id === 'yes') {
 						Ext.Ajax.request({
-									url : '/roda/admin/cmsfolderdrop',
+									url : '/roda/j/admin/cmsfolderdrop',
 									method : "POST",
 									params : {
 										folderid : currentNode.data.indice

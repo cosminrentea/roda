@@ -7,7 +7,8 @@ Ext.define('RODAdmin.controller.cms.news.NewsList', {
     stores : [
               'cms.news.NewsItem',
               'cms.news.News',
-              'common.Audit'
+              'common.Audit',
+
 	      ],			
 
      views : [
@@ -63,6 +64,9 @@ Ext.define('RODAdmin.controller.cms.news.NewsList', {
         			},
         			"newsitemsview grid#newsiconview toolbar button#addnews" : {
         	        	click : this.onAddNewsClick
+        	        },
+        			"newsitemsview grid#newsiconview toolbar button#reload" : {
+        				click : this.onReloadGridClick
         	        },
         	        
         			
@@ -160,6 +164,7 @@ Ext.define('RODAdmin.controller.cms.news.NewsList', {
  	   	}
 	    win.setTitle('Edit News Item "' + currentNode.data.title + '" (id: ' + currentNode.data.id + ')');
 	    win.show();
+	    win.down('form').down('combobox[name=langId]').store.load();
 	    win.down('form').getForm().loadRecord(currentNode);
 	},	
 	/**
@@ -173,6 +178,22 @@ Ext.define('RODAdmin.controller.cms.news.NewsList', {
 	    win.setTitle('Add News Item');
 	    win.show();
 	},	
-	
+    /**
+	 * @method
+	 */
+    onReloadGridClick : function(button, e, options) {
+	    var iconview = this.getIconview();
+	    var currentNode = iconview.getSelectionModel().getLastSelected();
+	    console.log(currentNode);
+	    var mmstore = this.getIconview().store;
+	    var me = this;
+	    mmstore.reload({
+	        callback : function(records, operation, success) {
+	        	console.log(currentNode);
+	        	var mrr = mmstore.find('id', currentNode.data.id);
+		    	iconview.getSelectionModel().select(mrr);
+	        }
+	    });
+    },
 	
 });

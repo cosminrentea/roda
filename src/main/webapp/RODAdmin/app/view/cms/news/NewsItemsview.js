@@ -54,7 +54,14 @@ Ext.define('RODAdmin.view.cms.news.NewsItemsview', {
 									dock : 'bottom',
 									items : [{
 												xtype : 'tbfill'
-											},{
+											},
+											{
+												xtype : 'button',
+												itemId : 'reload',
+												text : 'Refresh Grid',
+												tooltip : 'Refresh grid '
+											},
+											{
 												xtype : 'button',
 												itemId : 'addnews',
 												text : 'Add news Item',

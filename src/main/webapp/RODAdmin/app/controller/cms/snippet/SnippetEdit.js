@@ -86,7 +86,7 @@ Ext.define('RODAdmin.controller.cms.snippet.SnippetEdit', {
 	    if (formPanel.getForm().isValid()) {
 		    formPanel.getForm().submit({
 		        clientValidation : true,
-		        url : '/roda/admin/snippetsave',
+		        url : '/roda/j/admin/snippetsave',
 		        success : function(form, action) {
 			        var result = action.result;
 			        if (result.success) {
@@ -96,7 +96,7 @@ Ext.define('RODAdmin.controller.cms.snippet.SnippetEdit', {
 				        if (active.itemId == 'snfolderview') {
 					        me.getController('RODAdmin.controller.cms.snippet.SnippetTree').onReloadTreeClick();
 				        }
-				        else if (active.itemId == 'lyiconview') {
+				        else if (active.itemId == 'sniconview') {
 					        me.getController('RODAdmin.controller.cms.snippet.SnippetList').onReloadTreeClick();
 				        }
 
@@ -144,7 +144,7 @@ Ext.define('RODAdmin.controller.cms.snippet.SnippetEdit', {
 	    if (formPanel.getForm().isValid()) {
 		    formPanel.getForm().submit({
 		        clientValidation : true,
-		        url : '/roda/admin/snippetgroupsave',
+		        url : '/roda/j/admin/snippetgroupsave',
 		        success : function(form, action) {
 			        var result = action.result;
 			        if (result.success) {
@@ -207,7 +207,7 @@ Ext.define('RODAdmin.controller.cms.snippet.SnippetEdit', {
 	    if (formPanel.getForm().isValid()) {
 		    formPanel.getForm().submit({
 		        clientValidation : true,
-		        url : '/roda/admin/snippetsave',
+		        url : '/roda/j/admin/snippetsave',
 
 		        success : function(form, action) {
 			        var result = action.result;

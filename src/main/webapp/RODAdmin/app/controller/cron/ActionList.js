@@ -158,7 +158,7 @@ onDeleteClick : function(component, event) {
 				if (id === 'yes') {
 					console.log('we will delete');
 					Ext.Ajax.request({
-								url : 'http://localhost:8080/roda/admin/layoutdrop',
+								url : '/roda/j/admin/crondrop',
 								method : "POST",
 								params : {
 									layoutid : currentNode.data.indice

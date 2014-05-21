@@ -57,7 +57,28 @@ Ext.define('RODAdmin.view.cms.news.EditNewsWindow', {
 					        	 name : 'id',
 					        	 value : '',
 					        	 itemId : 'id'
-					         },{
+					         },
+					         {
+					        	 xtype : 'hiddenfield',
+					        	 fieldLabel : 'Added',
+					        	 name : 'added',
+					        	 value : '',
+					        	 itemId : 'added'
+					         },
+					         {
+                                 xtype : 'combo',
+                                 labelWidth : 60,
+                                 name : 'langId',
+                                 fieldLabel : 'Language',
+                                 anchor : '100%',
+                                 displayField: 'nameSelf',
+                             //    forceSelection : true,
+                                 typeAhead: true,
+                                 valueField: 'indice',
+                                 tpl: '<tpl for="."><div class="text_{iso639}">{nameSelf}</div></tpl>',
+                                 store : 'common.Language'
+                             },
+					         {
 					        	 xtype : 'textarea',
 					        	 fieldLabel : 'Content',
 					        	 name : 'content',

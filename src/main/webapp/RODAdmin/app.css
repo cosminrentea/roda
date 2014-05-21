@@ -245,6 +245,20 @@
   height: 11px;	
 }
 
+.text_en {
+  background-image:url('flags/us.png') !important;
+  background-repeat:no-repeat;
+  background-position:left;
+  padding-left: 20px;  
+}
+
+.text_ro {
+  background-image:url('flags/ro.png') !important;
+  background-repeat:no-repeat;
+  background-position:left;
+  padding-left: 20px;
+}
+
 
 .es {
   background-image:url('flags/es.png') !important;

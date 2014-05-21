@@ -15,6 +15,13 @@ Ext.define('RODAdmin.model.cms.news.NewsItem', {
 	}, {
 		name : 'added',
 		type : 'string'
-		}
+	}, {
+		name : 'langId',
+		type : 'int'
+	}, {
+		name : 'langCode',
+		type : 'String'
+	}
+		
 	]
 });

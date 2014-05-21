@@ -9,6 +9,8 @@
     
     	<!-- Cosmin: login for ExtJS, using handlers-->
         <form-login login-processing-url="/resources/j_spring_security_check" login-page="/admin/index.html" authentication-success-handler-ref="rodaAuthenticationSuccessHandler" authentication-failure-handler-ref="rodaAuthenticationFailureHandler"/>
+
+        <form-login login-processing-url="/resources/j_spring_security_check" login-page="/login" authentication-failure-url="/login?login_error=t"/>
 <!-- 
         <form-login login-processing-url="/resources/j_spring_security_check" login-page="/login" authentication-failure-url="/login?login_error=t"/>
 -->
@@ -18,20 +20,25 @@
 
         <!-- Configure these elements to secure URIs in your application -->
 
-		<!-- Cosmin: secure the "admin" JSON controllers - to be accessible only for "admin" -->
+		<!-- secure the "admin" JSON controllers - to be accessible only for "admin" -->
 <!--
 		<intercept-url pattern="/admin/index.html" access="permitAll" />  
         <intercept-url pattern="/j/admin/**" access="hasRole('ROLE_ADMIN')"/>
         <intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')"/>
 -->
-        <!-- original settings -->
+
+		<!-- secure the User's controllers, including JSON - to be accessible only for authenticated Users -->
         <intercept-url pattern="/user/**" access="isAuthenticated()" />
+        <intercept-url pattern="/j/user/**" access="isAuthenticated()" />
+
         <intercept-url pattern="/resources/**" access="permitAll" />
 
 		<intercept-url pattern="/**" access="permitAll" />  
 
-<!-- TODO Cosmin: set the session timeout page -->
-		<session-management invalid-session-url="/admin/index.html" />
+		<!-- TODO Cosmin: setup session management -->
+		<session-management invalid-session-url="/admin/index.html" >
+			<concurrency-control max-sessions="1" />
+		</session-management>
 	</http>
     
     <!-- Configure Authentication mechanism -->

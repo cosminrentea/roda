@@ -218,9 +218,6 @@ public class UserSettingGroup {
 	@NotNull
 	private String name;
 
-	@OneToMany(mappedBy = "userSettingGroupId")
-	private Set<UserSetting> userSettings;
-
 	@PersistenceContext
 	transient EntityManager entityManager;
 
@@ -251,10 +248,6 @@ public class UserSettingGroup {
 
 	public String getName() {
 		return name;
-	}
-
-	public Set<UserSetting> getUserSettings() {
-		return userSettings;
 	}
 
 	@Transactional
@@ -295,10 +288,6 @@ public class UserSettingGroup {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public void setUserSettings(Set<UserSetting> userSettings) {
-		this.userSettings = userSettings;
 	}
 
 	public String toJson() {

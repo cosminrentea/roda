@@ -432,7 +432,7 @@ public class Topic {
 
 	@Override
 	public boolean equals(final Object obj) {
-		if (obj instanceof TranslatedTopicPK) {
+		if (obj instanceof Topic) {
 			final Topic other = (Topic) obj;
 			return new EqualsBuilder().append(name, other.name).isEquals();
 		} else {

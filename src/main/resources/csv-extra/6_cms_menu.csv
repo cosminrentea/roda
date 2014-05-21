@@ -7,6 +7,7 @@
 "cms_snippets","menu_cms_snippet",1,"cmssnippets"
 "cms_files","menu_cms_files",1,"cmsfiles"
 "cms_pages","menu_cms_pages",1,"cmspages"
+"cms_news","menu_cms_news",1,"cmsnews"
 "audit_main","menu_audit_main",2,"auditmain"
 "users","menu_users",3,"users"
 "cron_actions","cron_actions",4,"cronactions"

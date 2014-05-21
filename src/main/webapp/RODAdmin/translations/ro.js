@@ -26,6 +26,7 @@ translations = {
 	cms_snippets : 'Fragmente',
 	cms_files : 'Fisiere',
 	cms_pages : 'Pagini',
+	cms_news: 'Stiri',
 	cron_dashboard : 'Sumarul Operatiilor Automate',
 	cron_actions : 'Operatii automate',
 	

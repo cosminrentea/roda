@@ -21,6 +21,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.support.ByteArrayMultipartFileEditor;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import ro.roda.domain.CmsFile;
 import ro.roda.domainjson.AdminJson;
@@ -449,8 +452,16 @@ public class AdminJsonController {
 						   @RequestParam(value = "added", required = true) String added)
 						   {
 
+		SimpleDateFormat inputFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
+		Date addate = null;
+
+		try {
+			addate = inputFormat.parse(added);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 		
-		Date addate = new Date(Long.parseLong(added) * 1000);
+		//Date addate = new Date(Long.parseLong(added) * 1000);
 
 		
 		

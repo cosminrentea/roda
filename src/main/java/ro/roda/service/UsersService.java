@@ -12,6 +12,8 @@ public interface UsersService {
 
 	public abstract Users findUsers(Integer id);
 
+	public List<Users> findUsersByUsernameAndEnabled(String username);
+
 	public abstract List<Users> findAllUserses();
 
 	public abstract List<Users> findUsersEntries(int firstResult, int maxResults);

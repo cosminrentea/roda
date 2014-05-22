@@ -15,6 +15,7 @@ import javax.persistence.PostPersist;
 import javax.persistence.PostUpdate;
 import javax.persistence.PreRemove;
 import javax.persistence.Table;
+import javax.persistence.TypedQuery;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -30,6 +31,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.thoughtworks.selenium.webdriven.commands.GetValue;
 
 import flexjson.JSONDeserializer;
 import flexjson.JSONSerializer;
@@ -65,6 +68,35 @@ public class UserSettingValue {
 
 	public static List<UserSettingValue> findAllUserSettingValues() {
 		return entityManager().createQuery("SELECT o FROM UserSettingValue o", UserSettingValue.class).getResultList();
+	}
+
+	public static List<UserSettingValue> findAllUserSettingValuesByUser(Users user) {
+		TypedQuery<UserSettingValue> query = Study.entityManager().createQuery(
+				"SELECT o FROM UserSettingValue o WHERE o.userId = :userId", UserSettingValue.class);
+		query.setParameter("userId", user);
+		return query.getResultList();
+	}
+
+	public static List<UserSettingValue> findUserSettingValueByUserAndSettingName(String username,
+			String userSettingName) {
+		List<UserSettingValue> results = null;
+		if (username != null || userSettingName != null) {
+
+			String queryString = "SELECT o FROM UserSettingValue o INNER JOIN o.userId u INNER JOIN o.userSettingId s WHERE u.username = ?1 and s.name = ?2";
+
+			TypedQuery<UserSettingValue> query = entityManager().createQuery(queryString, UserSettingValue.class)
+					.setParameter(1, username).setParameter(2, userSettingName);
+
+			if (query.getResultList().size() > 0) {
+				results = query.getResultList();
+			}
+		}
+		return results;
+	}
+
+	public static List<UserSettingValue> setUserSettingValue(String username, String userSettingName) {
+		// TODO Cosmin
+		return null;
 	}
 
 	public static UserSettingValue findUserSettingValue(UserSettingValuePK id) {
@@ -141,6 +173,21 @@ public class UserSettingValue {
 			throw new IllegalStateException(
 					"Solr server has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
 		return _solrServer;
+	}
+
+	public static String toJsonArraySettingsOfUser(Collection<UserSettingValue> collection) {
+		StringBuilder sb = new StringBuilder();
+		if (collection != null) {
+			for (UserSettingValue userSettingValue : collection) {
+				sb.append("{\"name\" : \"").append(userSettingValue.getUserSettingId().getName())
+						.append("\", \"value\" : \"").append(userSettingValue.getValue()).append("\"},");
+			}
+			// eliminate last "," if present
+			if (sb.length() > 0) {
+				sb.deleteCharAt(sb.length() - 1);
+			}
+		}
+		return "{\"success\" : true, \"data\" : [" + sb.toString() + "]}";
 	}
 
 	public static String toJsonArray(Collection<UserSettingValue> collection) {
@@ -254,9 +301,9 @@ public class UserSettingValue {
 		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
-	// public AuditReader getAuditReader() {
-	// return AuditReaderFactory.get(entityManager);
-	// }
+	public AuditReader getAuditReader() {
+		return AuditReaderFactory.get(entityManager);
+	}
 
 	@PostUpdate
 	@PostPersist
@@ -268,4 +315,5 @@ public class UserSettingValue {
 	private void preRemove() {
 		deleteIndex(this);
 	}
+
 }

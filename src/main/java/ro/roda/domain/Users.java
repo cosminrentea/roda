@@ -122,6 +122,18 @@ public class Users implements Serializable {
 		return q;
 	}
 
+	public static TypedQuery<Users> findUsersesByUsernameAndEnabled(String username, boolean enabled) {
+		if (username == null || username.length() == 0)
+			throw new IllegalArgumentException("The username argument is required");
+		EntityManager em = Users.entityManager();
+		TypedQuery<Users> q = em.createQuery(
+				"SELECT o FROM Users AS o WHERE LOWER(o.username) = LOWER(:username)  AND o.enabled = :enabled",
+				Users.class);
+		q.setParameter("username", username);
+		q.setParameter("enabled", enabled);
+		return q;
+	}
+
 	public static Collection<Users> fromJsonArrayToUserses(String json) {
 		return new JSONDeserializer<List<Users>>().use(null, ArrayList.class).use("values", Users.class)
 				.deserialize(json);

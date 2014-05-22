@@ -2,8 +2,10 @@ package ro.roda.service;
 
 import java.util.List;
 
+import ro.roda.domain.UserSetting;
 import ro.roda.domain.UserSettingValue;
 import ro.roda.domain.UserSettingValuePK;
+import ro.roda.domain.Users;
 
 public interface UserSettingValueService {
 
@@ -12,6 +14,13 @@ public interface UserSettingValueService {
 	public abstract void deleteUserSettingValue(UserSettingValue userSettingValue);
 
 	public abstract UserSettingValue findUserSettingValue(UserSettingValuePK id);
+
+	public abstract List<UserSettingValue> findAllUserSettingValuesByUser(Users user);
+
+	public abstract List<UserSettingValue> findUserSettingValueByUserAndSettingName(String username,
+			String userSettingName);
+
+	public abstract List<UserSettingValue> setUserSettingValue(String username, String userSettingName);
 
 	public abstract List<UserSettingValue> findAllUserSettingValues();
 

@@ -5,8 +5,8 @@ Ext.define('RODAdmin.controller.studies.Studies', {
     extend : 'Ext.app.Controller',
 
     views :[
-            'RODAdmin.view.studies.Studies'            
-            
+            'RODAdmin.view.studies.Studies',            
+            'RODAdmin.view.studies.StudyItemsview'
             ],
     
     refs : [

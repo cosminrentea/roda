@@ -68,10 +68,10 @@ Ext.define('RODAdmin.view.studies.StudyItemsview', {
 											}]
 								}]
 					}
-//					, {
-//						store : 'cms.layout.LayoutTree',
-//						itemId : 'lyfolderview',
-//						xtype : 'treepanel',
+					, {
+//						store : 'studies.Study',
+						itemId : 'studyfolderview',
+						xtype : 'treepanel',
 //						useArrows : true,
 //						loadMask:true,
 //						rootVisible : false,
@@ -79,25 +79,23 @@ Ext.define('RODAdmin.view.studies.StudyItemsview', {
 //						singleExpand : false,
 //						allowDeselect : true,
 //						autoheight : true,
-//						dockedItems : [{
-//									xtype : 'toolbar',
-//									itemid : 'lyfolderviewtoolbar',
-//									dock : 'bottom',
-//									items : [{
-//												xtype : 'tbfill'
-//											},
-
-//ascunse pana aflam cum se fac											
-//											{
-//												xtype : 'button',
-//												itemId : 'showfilterdata',
-//												text : 'All Filter Data',
-//												tooltip : 'Get Filter Data for Grid'
-//											}, {
-//												text : 'Clear Filter Data',
-//												xtype : 'button',
-//												itemId : 'clearfilterdata'
-//											},
+						dockedItems : [{
+									xtype : 'toolbar',
+									itemid : 'lyfolderviewtoolbar',
+									dock : 'bottom',
+									items : [{
+												xtype : 'tbfill'
+											},
+											{
+												xtype : 'button',
+												itemId : 'showfilterdata',
+												text : 'All Filter Data',
+												tooltip : 'Get Filter Data for Grid'
+											}, {
+												text : 'Clear Filter Data',
+												xtype : 'button',
+												itemId : 'clearfilterdata'
+											},
 
 											{
 												text : 'Reload Tree',

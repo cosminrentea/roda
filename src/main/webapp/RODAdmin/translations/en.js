@@ -34,6 +34,8 @@ translations = {
 	cron_dashboard : 'Actions Dashboard',
 	cron_actions : 'Actions',
 
+	menu_studies : 'Studies',
+	studies_main : 'Studies Main',
 
 	
 	

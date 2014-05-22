@@ -30,6 +30,8 @@ translations = {
 	cron_dashboard : 'Sumarul Operatiilor Automate',
 	cron_actions : 'Operatii automate',
 	
+	menu_studies : 'Studii',
+	studies_main : 'Studii',
 	
 	staticData: 'Static Data',
 	actors: 'Actors',

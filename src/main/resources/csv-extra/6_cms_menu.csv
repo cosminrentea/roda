@@ -1,5 +1,6 @@
 "text", "icon_cls", "parent_id", "class_name"
 "menu_cms","menu_cms",,
+"menu_studies","menu_studies",,
 "menu_audit","menu_audit",,
 "menu_users","menu_users",,
 "menu_cron","menu_cron",,
@@ -8,6 +9,7 @@
 "cms_files","menu_cms_files",1,"cmsfiles"
 "cms_pages","menu_cms_pages",1,"cmspages"
 "cms_news","menu_cms_news",1,"cmsnews"
-"audit_main","menu_audit_main",2,"auditmain"
-"users","menu_users",3,"users"
-"cron_actions","cron_actions",4,"cronactions"
+"studies_main","menu_studies_main",2,"studiesmain"
+"audit_main","menu_audit_main",3,"auditmain"
+"users","menu_users",4,"users"
+"cron_actions","cron_actions",5,"cronactions"

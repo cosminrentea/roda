@@ -20,6 +20,7 @@ import javax.persistence.PostUpdate;
 import javax.persistence.PreRemove;
 import javax.persistence.Table;
 import javax.persistence.TypedQuery;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -224,7 +225,7 @@ public class UserSetting {
 	// , columnDefinition = "serial")
 	private Integer id;
 
-	@Column(name = "name", columnDefinition = "text")
+	@Column(name = "name", columnDefinition = "text", unique = true)
 	@NotNull
 	private String name;
 
@@ -344,7 +345,7 @@ public class UserSetting {
 				|| (name != null && name.equalsIgnoreCase(((UserSetting) obj).name));
 	}
 
-	// public AuditReader getAuditReader() {
-	// return AuditReaderFactory.get(entityManager);
-	// }
+	public AuditReader getAuditReader() {
+		return AuditReaderFactory.get(entityManager);
+	}
 }

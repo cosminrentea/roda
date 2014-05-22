@@ -23,6 +23,10 @@ public class UsersServiceImpl implements UsersService {
 		return Users.findUsers(id);
 	}
 
+	public List<Users> findUsersByUsernameAndEnabled(String username) {
+		return Users.findUsersesByUsernameAndEnabled(username, true).getResultList();
+	}
+
 	public List<Users> findAllUserses() {
 		return Users.findAllUserses();
 	}

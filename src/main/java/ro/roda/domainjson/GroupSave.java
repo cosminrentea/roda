@@ -39,9 +39,9 @@ public class GroupSave {
 
 		List<CmsLayoutGroup> queryResult = q.getResultList();
 		if (queryResult.size() > 0) {
-			return new GroupSave(true, "Grup creat cu succes");
+			return new GroupSave(true, "Group created");
 		} else {
-			return new GroupSave(false, "Grupul nu a fost creat");
+			return new GroupSave(false, "Group NOT created");
 		}
 	}
 

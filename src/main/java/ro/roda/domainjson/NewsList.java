@@ -17,10 +17,11 @@ public class NewsList extends JsonInfo {
 	public static String toJsonArray(Collection<NewsList> collection) {
 		JSONSerializer serializer = new JSONSerializer();
 
-		serializer.exclude("*.class", "type");
+		serializer.exclude("*.class", "type", "name");
 		serializer.include("id", "added", "title", "content", "visible", "langId", "langCode");
 
 		// serializer.transform(new FieldNameTransformer("indice"), "id");
+		serializer.transform(DATE_TRANSFORMER, "added");
 
 		return "{\"data\":" + serializer.serialize(collection) + "}";
 	}
@@ -146,10 +147,11 @@ public class NewsList extends JsonInfo {
 	public String toJson() {
 		JSONSerializer serializer = new JSONSerializer();
 
-		serializer.exclude("*.class", "type");
+		serializer.exclude("*.class", "type", "name");
 		serializer.include("id", "added", "title", "content", "visible", "langId", "langCode");
 
 		// serializer.transform(new FieldNameTransformer("indice"), "id");
+		serializer.transform(DATE_TRANSFORMER, "added");
 
 		return "{\"data\":" + serializer.serialize(this) + "}";
 	}

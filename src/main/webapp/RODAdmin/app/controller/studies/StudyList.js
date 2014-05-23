@@ -2,23 +2,20 @@
  * Layoutlist - controller care se ocupa de lista de layouturi din
  * {@link RODAdmin.view.cms.layout.LayoutItemsview LayoutItemsview}
  */
-Ext.define('RODAdmin.controller.cms.layout.LayoutList', {
+Ext.define('RODAdmin.controller.studies.StudyList', {
     extend : 'Ext.app.Controller',
 
   
     stores : [
-              'cms.layout.LayoutItem', 
-              'cms.layout.Layout', 
+              'studies.Study', 
               'common.Audit'],
 
     
     views : [
-            'RODAdmin.view.cms.layout.LayoutItemsview', 
-            'RODAdmin.view.cms.layout.LayoutDetails',
-            'RODAdmin.view.cms.layout.details.LayoutProperties', 
-            "RODAdmin.view.cms.layout.EditLayoutWindow",
-            'RODAdmin.view.cms.layout.LayoutItemviewContextMenu', 
-            'RODAdmin.view.cms.layout.details.LayoutUsage'
+            'RODAdmin.view.studies.StudyItemsview',
+            'RODAdmin.view.studies.StudyDetails',
+            'RODAdmin.view.studies.details.StudyProperties',
+            'RODAdmin.view.studies.details.StudyVariables'
     ],
     /**
 	 * @cfg

@@ -1,7 +1,7 @@
 /**
  * 
  */
-Ext.define('RODAdmin.model.cms.layout.Layout', {
+Ext.define('RODAdmin.model.studies.Study', {
     extend: 'Ext.data.Model',
     fields: [
     {    

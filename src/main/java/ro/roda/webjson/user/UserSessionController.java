@@ -40,7 +40,7 @@ public class UserSessionController {
 				HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/setAttribute", method = RequestMethod.POST, produces = "application/json")
+	@RequestMapping(value = "/set", method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody
 	public ResponseEntity<String> setSessionAttribute(HttpSession session,
 			@RequestParam(value = "name") String attributeName, @RequestParam(value = "value") String attributeValue) {
@@ -51,7 +51,7 @@ public class UserSessionController {
 		return new ResponseEntity<String>("{\"success\": true}", headers, HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/getAttribute", method = RequestMethod.POST, produces = "application/json")
+	@RequestMapping(value = "/get", method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody
 	public ResponseEntity<String> getSessionAttribute(HttpSession session,
 			@RequestParam(value = "name") String attributeName) {
@@ -66,7 +66,7 @@ public class UserSessionController {
 	}
 
 	// A negative interval value => session does not expire !
-	@RequestMapping(value = "/setInterval", method = RequestMethod.POST, produces = "application/json")
+	@RequestMapping(value = "/set-interval", method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody
 	public ResponseEntity<String> setInterval(HttpSession session, @RequestParam(value = "interval") Integer interval) {
 		HttpHeaders headers = new HttpHeaders();

@@ -20,7 +20,7 @@ public interface UserSettingValueService {
 	public abstract List<UserSettingValue> findUserSettingValueByUserAndSettingName(String username,
 			String userSettingName);
 
-	public abstract List<UserSettingValue> setUserSettingValue(String username, String userSettingName);
+	public abstract void setOrAddUserSettingValue(String username, String userSettingName, String userSettingValue);
 
 	public abstract List<UserSettingValue> findAllUserSettingValues();
 

@@ -52,7 +52,7 @@ public class UserSettingValueServiceImpl implements UserSettingValueService {
 	}
 
 	@Override
-	public List<UserSettingValue> setUserSettingValue(String username, String userSettingName) {
-		return UserSettingValue.setUserSettingValue(username, userSettingName);
+	public void setOrAddUserSettingValue(String username, String userSettingName, String userSettingValue) {
+		UserSettingValue.setOrAddUserSettingValue(username, userSettingName, userSettingValue);
 	}
 }

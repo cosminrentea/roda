@@ -94,9 +94,22 @@ public class UserSettingValue {
 		return results;
 	}
 
-	public static List<UserSettingValue> setUserSettingValue(String username, String userSettingName) {
+	public static void setOrAddUserSettingValue(String username, String userSettingName, String userSettingValue) {
+		UserSetting us = UserSetting.checkUserSetting(null, userSettingName, null, null);
 		// TODO Cosmin
-		return null;
+		List<Users> users = Users.findUsersesByUsernameLikeAndEnabled(username, true).getResultList();
+		if (users != null && users.size() == 1) {
+			UserSettingValue usv = findUserSettingValue(new UserSettingValuePK(us.getId(), users.get(0).getId()));
+			if (usv == null) {
+				usv = new UserSettingValue();
+				usv.setId(new UserSettingValuePK(us.getId(), users.get(0).getId()));
+				usv.setValue(userSettingValue);
+				usv.persist();
+			} else {
+				usv.setValue(userSettingValue);
+				usv.merge();
+			}
+		}
 	}
 
 	public static UserSettingValue findUserSettingValue(UserSettingValuePK id) {

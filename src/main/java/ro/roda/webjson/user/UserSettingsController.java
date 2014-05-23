@@ -79,18 +79,9 @@ public class UserSettingsController {
 
 		String username = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
 		log.trace(username);
-		userSettingValueService.setUserSettingValue(username, settingName);
+		userSettingValueService.setOrAddUserSettingValue(username, settingName, settingValue);
 
 		return new ResponseEntity<String>("{\"success\": true}", headers, HttpStatus.OK);
-
-		// return new
-		// ResponseEntity<String>(UserSettingValue.toJsonArraySettingsOfUser(results),
-		// headers, HttpStatus.OK);
-
-		// TODO !!!
-
-		// log.trace(attributeName + " : " + attributeValue);
-		// session.setAttribute(attributeName, attributeValue);
 
 	}
 

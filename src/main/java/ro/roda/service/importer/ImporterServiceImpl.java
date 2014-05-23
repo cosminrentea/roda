@@ -657,6 +657,9 @@ public class ImporterServiceImpl implements ImporterService {
 			// obtain the table name from the file name
 			String tableName = f.getName().substring(2, f.getName().length() - 4);
 
+			// TODO de facut importul sa mearga cu UTF8 -
+			// SET CLIENT ENCODING UTF8 ...
+
 			// bulk COPY the remaining lines (CSV data)
 			String copyQuery = "COPY " + tableName + "(" + tableFields + ") FROM stdin DELIMITERS ',' CSV";
 			log.trace(copyQuery);

@@ -1,5 +1,5 @@
 /**
- * Layoutlist - controller care se ocupa de lista de layouturi din
+ * Studylist - controller care se ocupa de lista de studii din
  * {@link RODAdmin.view.cms.layout.LayoutItemsview LayoutItemsview}
  */
 Ext.define('RODAdmin.controller.studies.StudyList', {
@@ -23,24 +23,21 @@ Ext.define('RODAdmin.controller.studies.StudyList', {
     refs : [
             {
                 ref : 'iconview',
-                selector : 'layoutitemsview grid#lyiconview'
+                selector : 'studyitemsview grid#sticonview'
             }, {
-                ref : 'layoutproperties',
-                selector : 'layoutproperties panel#lydata'
+                ref : 'studyproperties',
+                selector : 'studyproperties panel#stdata'
             }, {
-                ref : 'lydetailspanel',
-                selector : 'cmslayouts panel#lydetailscontainer '
-            }, {
-                ref : 'lyusagepanel',
-                selector : 'layoutusage'
+                ref : 'stdetailspanel',
+                selector : 'studies panel#stdetailscontainer '
+            }, 
+            {
+                ref : 'stenvelope',
+                 selector : 'studyproperties panel#stenvelope'
             },
             {
-                ref : 'lyenvelope',
-                 selector : 'layoutproperties panel#lyenvelope'
-            },
-            {
-                ref : 'lycontent',
-                selector : 'layoutproperties panel#lyenvelope codemirror#lycontent'
+                ref : 'stcontent',
+                selector : 'studyproperties panel#stenvelope codemirror#stcontent'
             }            
 
     ],
@@ -49,7 +46,7 @@ Ext.define('RODAdmin.controller.studies.StudyList', {
 	 */
     init : function(application) {
 	    this.control({
-	        "layoutitemsview grid#lyiconview" : {
+	        "studyitemsview grid#sticonview" : {
 	            /**
 				 * @listener layoutitemsview-selectionchabge triggered-by:
 				 *           {@link RODAdmin.view.cms.layout.LayoutItemsview LayoutItemsview}
@@ -64,16 +61,16 @@ Ext.define('RODAdmin.controller.studies.StudyList', {
 				 */
 	            itemcontextmenu : this.onItemContextMenu
 	        },
-	        "layoutitemviewcontextmenu menuitem#icdeletelayout" : {
+	        "studyitemviewcontextmenu menuitem#icdeletelayout" : {
 		        /**
 				 * @listener icdeletelayout-click triggered-by:
 				 *           {@link RODAdmin.view.cms.layout.LayoutItemviewContextMenu LayoutItemsviewContextMenu}
 				 *           menuitem#icdeletelayout executes
 				 *           {@link #onDeleteLayoutClick}
 				 */
-		        click : this.onDeleteLayoutClick
+		        click : this.onDeleteStudyClick
 	        },
-	        "layoutitemviewcontextmenu menuitem#iceditlayout" : {
+	        "studyitemviewcontextmenu menuitem#iceditlayout" : {
 		        /**
 				 * @listener iceditlayout-click triggered-by:
 				 *           {@link RODAdmin.view.cms.layout.LayoutItemviewContextMenu LayoutItemsviewContextMenu}
@@ -81,9 +78,9 @@ Ext.define('RODAdmin.controller.studies.StudyList', {
 				 *           {@link #onEditLayoutClick}
 				 * 
 				 */
-		        click : this.onEditLayoutClick
+		        click : this.onEditStudyClick
 	        },
-	        "layoutitemsview grid#lyiconview toolbar button#reloadgrid" : {
+	        "studyitemsview grid#sticonview toolbar button#reloadgrid" : {
 	            /**
 				 * @listener layoutitemsview-treepanel-lyfolderview-toolbar-button-reloadtree triggered-by:
 				 *           {@link RODAdmin.view.cms.layout.LayoutItemview LayoutItemsview}
@@ -97,24 +94,24 @@ Ext.define('RODAdmin.controller.studies.StudyList', {
     /**
 	 * @method
 	 */
-    onEditLayoutClick : function(component, record, item, index, e) {
-	    console.log('onEditLayoutClick');
+    onEditStudyClick : function(component, record, item, index, e) {
+	    console.log('onEditStudyClick');
 	    var currentNode = this.getIconview().getSelectionModel().getLastSelected();
-	    win = Ext.WindowMgr.get('layoutedit');
+	    win = Ext.WindowMgr.get('studyedit');
 	    console.log(win);
 	    if (!win) {
-	    	win = Ext.create('RODAdmin.view.cms.layout.EditLayoutWindow');
+	    	win = Ext.create('RODAdmin.view.studies.EditStudyWindow');
 	    }	    
-	    win.setTitle('Edit Layout');
+	    win.setTitle('Edit Study');
 	    var wtree = win.down('treepanel');
-	    var layoutitemstore = Ext.create('RODAdmin.store.cms.layout.LayoutItem');
-	    layoutitemstore.load({
+	    var studyitemstore = Ext.create('RODAdmin.store.studies.StudyItem');
+	    studyitemstore.load({
 	        id : currentNode.data.indice, // set the id here
 	        scope : this,
 	        callback : function(records, operation, success) {
 		        if (success) {
-			        var layoutitem = layoutitemstore.first();
-			        win.down('form').getForm().loadRecord(layoutitem);
+			        var studyitem = studyitemstore.first();
+			        win.down('form').getForm().loadRecord(studyitem);
 		        }
 	        }
 	    });
@@ -123,21 +120,21 @@ Ext.define('RODAdmin.controller.studies.StudyList', {
     /**
 	 * @method
 	 */
-    onDeleteLayoutClick : function(component, event) {
+    onDeleteStudyClick : function(component, event) {
 	    var currentNode = this.getIconview().getSelectionModel().getLastSelected();
-	    var store = Ext.StoreManager.get('cms.layout.Layout');
-	    Ext.Msg.confirm('Delete Requirement', 'Are you sure you want to delete the layout ' + currentNode.data.name
+	    var store = Ext.StoreManager.get('studies.Study');
+	    Ext.Msg.confirm('Delete Requirement', 'Are you sure you want to delete the study ' + currentNode.data.name
 	            + '?', function(id, value) {
 		    if (id === 'yes') {
 			    console.log('we will delete');
 			    Ext.Ajax.request({
-			        url : '/roda/j/admin/layoutdrop',
+			        url : '/roda/j/admin/studydrop',
 			        method : "POST",
 			        params : {
-				        layoutid : currentNode.data.indice
+				        studyid : currentNode.data.indice
 			        },
 			        success : function() {
-				        RODAdmin.util.Alert.msg('Success!', 'Layout deleted.');
+				        RODAdmin.util.Alert.msg('Success!', 'Study deleted.');
 				        store.load;
 			        },
 			        failure : function(response, opts) {
@@ -157,27 +154,27 @@ Ext.define('RODAdmin.controller.studies.StudyList', {
 	    var record = selected[0];
 	    if (record != null) {
 	    console.log(record);
-	    var lyprop = this.getLayoutproperties();
-	    var lydetails = this.getLydetailspanel();
-	    var lyusage = this.getLyusagepanel();
-	    var lycontent = this.getLycontent();
-	    var lyenvelope = this.getLyenvelope();	    
-	    lydetails.setTitle(record.data.name);
+	    var stprop = this.getStudyproperties();
+	    var stdetails = this.getStdetailspanel();
+	    //variabilele!
+	    var stcontent = this.getStcontent();
+	    var stenvelope = this.getStenvelope();	    
+	    stdetails.setTitle(record.data.name);
 
-	    lyusage.expand();
-	    lyenvelope.expand();  
-	    var lyitemstore = Ext.StoreManager.get('cms.layout.LayoutItem');
-	    lyitemstore.load({
+	    
+	    stenvelope.expand();  
+	    var stitemstore = Ext.StoreManager.get('studies.StudyItem');
+	    stitemstore.load({
 	        id : record.data.indice, // set the id here
 	        scope : this,
 	        callback : function(records, operation, success) {
 		        if (success) {
-			        var lyitem = lyitemstore.first();
-			        lycontent.setValue(lyitem.data.content);
-			        lyprop.update(lyitem);
-			        if (typeof lyitem.usageStore === 'object') {
+			        var stitem = stitemstore.first();
+			        stcontent.setValue(stitem.data.content);
+			        stprop.update(stitem);
+			        /*if (typeof stitem.usageStore === 'object') {
 						   lyusage.bindStore(lyitem.usage());
-					   }
+					   }*/
 		        }
 	        }
 	    });
@@ -189,7 +186,7 @@ Ext.define('RODAdmin.controller.studies.StudyList', {
     onItemContextMenu : function(component, record, item, index, e) {
 	    e.stopEvent();
 	    if (!this.contextmenu) {
-		    this.contextmenu = Ext.create('widget.layoutitemviewcontextmenu');
+		    this.contextmenu = Ext.create('widget.studyitemviewcontextmenu');
 	    }
 	    this.contextmenu.showAt(e.getXY());
     },

@@ -20,7 +20,7 @@ Ext.define('RODAdmin.controller.studies.Studies', {
             }, 
             {
                 ref : "folderview",
-                selector : "studyitemsview treepanel#stfolderview"
+                selector : "studyitemsview treepanel#studyfolderview"
             }, {
                 ref : 'folderselect',
                 selector : 'studyedit treepanel#groupselect'
@@ -82,7 +82,7 @@ Ext.define('RODAdmin.controller.studies.Studies', {
     	this.listen({
             controller: {
                 '*': {
-                    controllerStudiesInitView: this.initView
+                    controllerStudiesmainInitView: this.initView
                 }
             }
     	 });
@@ -94,7 +94,7 @@ Ext.define('RODAdmin.controller.studies.Studies', {
     initView : function() {
     	console.log('InitView');	
     	 this.getStudygrid().store.load();
- //   	 this.getFolderview().store.reload(); not loading
+    	 this.getFolderview().store.reload(); 
     },
     /**
 	 * @method

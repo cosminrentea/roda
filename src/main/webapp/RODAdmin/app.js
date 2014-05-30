@@ -43,7 +43,7 @@ Ext.application({
             'cms.layout.LayoutList', 'cms.layout.LayoutEdit', 'cms.Cmssnippet', 'cms.snippet.SnippetTree',
             'cms.snippet.SnippetList', 'cms.snippet.SnippetEdit', 'cms.file.FileEdit', 'cms.file.FileTree',
             'cms.file.FileList', 'cms.Cmsfiles', 'cms.Cmspages', 'cms.page.PageTree', 'cron.Dashboard', 'cron.Actions',
-            'common.Audit', 'Abstract', 'cron.Actions', 'cron.ActionList', 'cron.ActionEdit', 'audit.AuditMain', 'studies.Studies','studies.StudyList',
+            'common.Audit', 'Abstract', 'cron.Actions', 'cron.ActionList', 'cron.ActionEdit', 'audit.AuditMain', 'studies.Studies','studies.StudyList', 'studies.StudyEdit', 'studies.StudyTree',
             'user.User', 'user.UserList', 'user.GroupList','cms.page.PageEdit', 'cms.Cmsnews', 'cms.news.NewsList', 'cms.news.NewsEdit' 
     ],
 

@@ -11,35 +11,35 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import ro.roda.domainjson.StudiesByCatalog;
-import ro.roda.service.StudiesByCatalogService;
+import ro.roda.domainjson.CatalogInfo;
+import ro.roda.service.CatalogInfoService;
 
-@RequestMapping("/admin/studiesbycatalog")
+@RequestMapping("/admin/cataloginfo")
 @Controller
-public class StudiesByCatalogController {
+public class CatalogInfoController {
 
 	@Autowired
-	StudiesByCatalogService studiesByCatalogService;
+	CatalogInfoService catalogInfoService;
 
 	@RequestMapping(headers = "Accept=application/json")
 	@ResponseBody
 	public ResponseEntity<String> listJson() {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");
-		List<StudiesByCatalog> result = studiesByCatalogService.findAllStudiesByCatalog();
-		return new ResponseEntity<String>(StudiesByCatalog.toJsonArray(result), headers, HttpStatus.OK);
+		List<CatalogInfo> result = catalogInfoService.findAllCatalogInfos();
+		return new ResponseEntity<String>(CatalogInfo.toJsonArr(result), headers, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/{id}", headers = "Accept=application/json")
 	@ResponseBody
 	public ResponseEntity<String> showJson(@PathVariable("id") Integer id) {
-		StudiesByCatalog studiesByCatalog = studiesByCatalogService.findStudiesByCatalog(id);
+		CatalogInfo catalogInfo = catalogInfoService.findCatalogInfo(id);
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");
-		if (studiesByCatalog == null) {
+		if (catalogInfo == null) {
 			return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
 		}
-		return new ResponseEntity<String>(studiesByCatalog.toJson(), headers, HttpStatus.OK);
+		return new ResponseEntity<String>(catalogInfo.toJson(), headers, HttpStatus.OK);
 	}
 
 }

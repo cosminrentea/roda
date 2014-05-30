@@ -12,69 +12,68 @@ Ext.define('RODAdmin.controller.studies.Studies', {
     refs : [
             {
                 ref : 'itemsview',
-                selector : 'layoutitemsview'
+                selector : 'studyitemsview'
             }, 
             {
-                ref : 'layoutgrid',
-                selector : 'layoutitemsview grid#lyiconview'
+                ref : 'studygrid',
+                selector : 'studyitemsview grid#sticonview'
             }, 
             {
                 ref : "folderview",
-                selector : "layoutitemsview treepanel#lyfolderview"
+                selector : "studyitemsview treepanel#studyfolderview"
             }, {
                 ref : 'folderselect',
-                selector : 'layoutedit treepanel#groupselect'
+                selector : 'studyedit treepanel#groupselect'
             }, {
-                ref : 'layoutproperties',
-                selector : 'layoutproperties panel#lydata '                
-//                selector : 'layoutproperties panel#lycontent'
+                ref : 'studyproperties',
+                selector : 'studyproperties panel#stdata ' 
             }
 
     ],
 
     init : function(application) {
 	    this.control({
-	        "cmslayouts toolbar button#icon-view" : {
+	        "studies toolbar button#icon-view" : {
 	            /**
-				 * @listener cmslayouts-toolbar-button-icon-view-click triggered-by:
-				 *           {@link RODAdmin.view.cms.layout.Layouts Layouts}
+				 * @listener studies-toolbar-button-icon-view-click triggered-by:
+				 *           {@link RODAdmin.view.studies.Studies Studies}
 				 *           toolbar button#icon-view
 				 *           {@link #onIconViewClick}
 				 */	
 		        click : this.onIconViewClick
 	        },
-	        "cmslayouts toolbar button#tree-view" : {
+	        "studies toolbar button#tree-view" : {
 	            /**
-				 * @listener cmslayouts-toolbar-button-tree-view-click triggered-by:
-				 *           {@link RODAdmin.view.cms.layout.Layouts Layouts}
+				 * @listener studies-toolbar-button-tree-view-click triggered-by:
+				 *           {@link RODAdmin.view.studies.Studies Studies}
 				 *           toolbar button#tree-view
 				 *           {@link #onTreeViewClick}
 				 */	
 		        click : this.onTreeViewClick
 	        },
-	        "layoutproperties toolbar#lyproptoolbar button#editlayout" : {
+	        "studyproperties toolbar#stproptoolbar button#editstudy" : {
 	            /**
-				 * @listener layoutproperties-toolbar-lyproptoolbar-button-editlayout-click triggered-by:
-				 *           {@link RODAdmin.view.cms.layout.details.LayoutProperties LayoutProperties}
-				 *           toolbar#lyproptoolbar button#editlayout
+				 * @listener studyproperties-toolbar-stproptoolbar-button-editstudy-click triggered-by:
+				 *           {@link RODAdmin.view.studies.details.StudyProperties StudyProperties}
+				 *           toolbar#stproptoolbar button#editstudy
 				 *           {@link #onlytoolbarEditClick}
 				 */	
 		        click : this.onlytoolbarEditClick
 	        },
-	        "layoutproperties toolbar#lyproptoolbar button#deletelayout" : {
+	        "studyproperties toolbar#stproptoolbar button#deletestudy" : {
 	            /**
-				 * @listener layoutproperties-toolbar-lyproptoolbar-button-deletelayout-click triggered-by:
-				 *           {@link RODAdmin.view.cms.layout.details.LayoutProperties LayoutProperties}
-				 *           toolbar#lyproptoolbar button#deletelayout
+				 * @listener studyproperties-toolbar-stproptoolbar-button-deletestudy-click triggered-by:
+				 *           {@link RODAdmin.view.studies.details.StudyProperties StudyProperties}
+				 *           toolbar#stproptoolbar button#deletestudy
 				 *           {@link #onlytoolbarDeleteClick}
 				 */	
 		        click : this.onlytoolbarDeleteClick
 	        },
-	        "layoutproperties toolbar#lyproptoolbar button#getlayoutaudit" : {
+	        "studyproperties toolbar#stproptoolbar button#getstudyaudit" : {
 	            /**
-				 * @listener layoutproperties-toolbar-lyproptoolbar-button-getlayoutaudit-click triggered-by:
-				 *           {@link RODAdmin.view.cms.layout.details.LayoutProperties LayoutProperties}
-				 *           toolbar#lyproptoolbar button#getlayoutaudit
+				 * @listener studyproperties-toolbar-stproptoolbar-button-getstudyaudit-click triggered-by:
+				 *           {@link RODAdmin.view.studies.details.StudyProperties StudyProperties}
+				 *           toolbar#stproptoolbar button#getstudyaudit
 				 *           {@link #onlytoolbarAuditClick}
 				 */	
 		        click : this.onlytoolbarAuditClick
@@ -83,7 +82,7 @@ Ext.define('RODAdmin.controller.studies.Studies', {
     	this.listen({
             controller: {
                 '*': {
-                    controllerCmslayoutsInitView: this.initView
+                    controllerStudiesmainInitView: this.initView
                 }
             }
     	 });
@@ -93,17 +92,17 @@ Ext.define('RODAdmin.controller.studies.Studies', {
 	 * @method
 	 */
     initView : function() {
-    	console.log('InitView, baby');	
-    	 this.getLayoutgrid().store.load();
- //   	 this.getFolderview().store.reload(); not loading
+    	console.log('InitView');	
+    	 this.getStudygrid().store.load();
+    	 this.getFolderview().store.reload(); 
     },
     /**
 	 * @method
 	 */
     onIconViewClick : function(button, e, options) {
 	    console.log('onIconviewClick new controller');
-	    this.getItemsview().layout.setActiveItem('lyiconview');
-	    var store = Ext.StoreManager.get('cms.layout.Layout');
+	    this.getItemsview().study.setActiveItem('sticonview');
+	    var store = Ext.StoreManager.get('studies.Study');
 	    store.load();
     },
     /**
@@ -111,58 +110,58 @@ Ext.define('RODAdmin.controller.studies.Studies', {
 	 */
     onTreeViewClick : function(button, e, options) {
 	    console.log('onfolderviewClick new controller');
-	    this.getItemsview().layout.setActiveItem('lyfolderview');
-	    var store = Ext.StoreManager.get('cms.layout.LayoutTree');
+	    this.getItemsview().study.setActiveItem('stfolderview');
+	    var store = Ext.StoreManager.get('studies.StudyTree');
 	    store.load();
     },
     /**
 	 * @method
 	 */
     onlytoolbarEditClick : function(button, e, options) {
-	    var fp = this.getLayoutproperties().data;
-	    var llp = this.getLayoutproperties();
+	    var fp = this.getStudyproperties().data;
+	    var llp = this.getStudyproperties();
 	    console.log(llp);
 	    console.log(fp);
-		   console.log('edit layout smth');
-    	   if (fp.data.itemtype == 'layoutgroup') {	        
-    		   console.log('edit layout group');
-        	   win = Ext.WindowMgr.get('layoutgroupedit');
+		   console.log('edit study smth');
+    	   if (fp.data.itemtype == 'catalog') {	        
+    		   console.log('edit catalog');
+        	   win = Ext.WindowMgr.get('catalogedit');
         	   console.log(win);
         	   if (!win) {
-        		   win = Ext.create('RODAdmin.view.cms.layout.EditLayoutGroupWindow');
+        		   win = Ext.create('RODAdmin.view.studies.EditCatalogWindow');
         	   }
-        	   win.setTitle('Edit Layout Group');
+        	   win.setTitle('Edit Catalog');
         	   var wtree = win.down('treepanel');
-        	   var layoutgroupstore = Ext.create('RODAdmin.store.cms.layout.LayoutGroup');
-        	   layoutgroupstore.load({
+        	   var catalogstore = Ext.create('RODAdmin.store.studies.Catalog');
+        	   catalogstore.load({
         		   id : fp.data.id, // set the id here
         		   scope : this,
         		   callback : function(records, operation, success) {
         			   if (success) {
-        				   var layoutgroup = layoutgroupstore.first();
+        				   var catalog = catalogstore.first();
         				   win.down('form').getForm().loadRecord(layoutgroup);
-        				   win.down('form').down('hiddenfield#groupid').setValue(layoutgroup.data.groupid);
+        				   win.down('form').down('hiddenfield#groupid').setValue(catalog.data.groupid);
         			   }
         		   }
         	   });
         	   win.show();
     	   } else {	   
-		   console.log('edit layout');	                        		   
-    	   win = Ext.WindowMgr.get('layoutedit');
+		   console.log('edit study');	                        		   
+    	   win = Ext.WindowMgr.get('studyedit');
     	   if (!win) {
-    		   win = Ext.create('RODAdmin.view.cms.layout.EditLayoutWindow');
+    		   win = Ext.create('RODAdmin.view.studies.EditStudyWindow');
     	   }
-    	   win.setTitle('Edit Layout');
+    	   win.setTitle('Edit Study');
     	   var wtree = win.down('treepanel');
-    	   var layoutitemstore = Ext.create('RODAdmin.store.cms.layout.LayoutItem');
-    	   layoutitemstore.load({
+    	   var studyitemstore = Ext.create('RODAdmin.store.studies.StudyItem');
+    	   studyitemstore.load({
     		   id : fp.data.id, // set the id here
     		   scope : this,
     		   callback : function(records, operation, success) {
     			   if (success) {
-    				   var layoutitem = layoutitemstore.first();
-    				   win.down('form').getForm().loadRecord(layoutitem);
-    				   win.down('form').down('hiddenfield#groupid').setValue(layoutitem.data.groupid);
+    				   var studyitem = studyitemstore.first();
+    				   win.down('form').getForm().loadRecord(studyitem);
+    				   win.down('form').down('hiddenfield#groupid').setValue(studyitem.data.groupid);
     			   }
     		   }
     	   });
@@ -174,7 +173,7 @@ Ext.define('RODAdmin.controller.studies.Studies', {
 	 */
     onlytoolbarDeleteClick : function(button, e, options) {
 	    console.log('editfile clicked');
-	    var fp = this.getLayoutproperties().data;
+	    var fp = this.getStudyproperties().data;
 
 	    /**
 	     * @todo Store 
@@ -186,13 +185,13 @@ Ext.define('RODAdmin.controller.studies.Studies', {
 		    if (id === 'yes') {
 			    console.log('we will delete');
 			    var url = '';
-			    if (fp.data.itemtype == 'layoutgroup') {
-				    url = '/roda/j/admin/layoutgroupdrop';
+			    if (fp.data.itemtype == 'catalog') {
+				    url = '/roda/j/admin/catalogdrop';
 				    parms = {'groupid' : fp.data.id };
 			    }
 			    else {
-				    url = '/roda/j/admin/layoutdrop';
-				    parms = {'layoutid' : fp.data.id };
+				    url = '/roda/j/admin/studydrop';
+				    parms = {'studyid' : fp.data.id };
 			    }
 
 			    Ext.Ajax.request({
@@ -201,8 +200,8 @@ Ext.define('RODAdmin.controller.studies.Studies', {
 			        params : parms,	
 			        success : function() {
 				        RODAdmin.util.Alert.msg('Success!', 'Deleted.');
-				        Ext.StoreManager.get('cms.layout.Layout').load();
-				        Ext.StoreManager.get('cms.layout.LayoutTree').load();
+				        Ext.StoreManager.get('studies.Study').load();
+				        Ext.StoreManager.get('studies.StudyTree').load();
 			        },
 			        failure : function(response, opts) {
 				        Ext.Msg.alert('Failure', response);
@@ -217,7 +216,7 @@ Ext.define('RODAdmin.controller.studies.Studies', {
 	 */
     onlytoolbarAuditClick : function(button, e, options) {
 	    console.log('auditfile clicked, cool stuff ahead');
-	    var fp = this.getLayoutproperties().data;
+	    var fp = this.getStudyproperties().data;
 	    var win = Ext.create('RODAdmin.view.common.AuditWindow');
 	    win.setTitle('Audit data for "' + fp.data.name + '" (id: ' + fp.data.id + ')');
 	    win.show();

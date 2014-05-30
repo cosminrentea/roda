@@ -4,7 +4,7 @@
 Ext.define('RODAdmin.view.studies.details.StudyProperties', {
     extend : 'Ext.panel.Panel',
     alias : 'widget.studyproperties',
-    itemId : 'layoutproperties',
+    itemId : 'studyproperties',
     title : 'Study Properties',
     width : "100%",
     height : "100%",

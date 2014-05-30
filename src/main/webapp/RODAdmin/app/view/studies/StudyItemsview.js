@@ -69,7 +69,7 @@ Ext.define('RODAdmin.view.studies.StudyItemsview', {
 								}]
 					}
 					, {
-//						store : 'studies.Study',
+						store : 'studies.StudyTree',
 						itemId : 'studyfolderview',
 						xtype : 'treepanel',
 //						useArrows : true,

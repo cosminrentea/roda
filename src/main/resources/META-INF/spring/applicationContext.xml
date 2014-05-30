@@ -10,7 +10,7 @@
 		within your classpath, provided they fall under the META-INF/spring directory. 
 		The located property files are parsed and their values can then be used within 
 		application context files in the form of ${propertyKey}. -->
-	<context:property-placeholder location="classpath*:META-INF/spring/*.properties" />
+	<context:property-placeholder  location="classpath*:META-INF/spring/*-${spring.profiles.active}.properties" />
 	
 	<!-- Turn on AspectJ @Configurable support. As a result, any time you instantiate 
 		an object, Spring will attempt to perform dependency injection on that object. 
@@ -102,14 +102,26 @@
 		id="entityManagerFactory">
 		<property name="persistenceUnitName" value="persistenceUnit" />
 		<property name="dataSource" ref="dataSource" />
-		<!-- 
+		<property name="packagesToScan" >
+            <list>
+                <value>ro.roda.domain.*</value>
+			</list>
+        </property>		
 		<property name="jpaProperties">
-            <map>
-                <entry key="hibernate.cache.use_second_level_cache" value="true"/>
-                <entry key="hibernate.cache.use_query_cache" value="true"/>               
-            </map>
+            <props>
+                <prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
+				<prop key="hibernate.dialect">${hibernate.dialect}</prop>
+                <prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
+                <prop key="hibernate.ejb.naming_strategy">${hibernate.ejb.naming_strategy}</prop>
+                <prop key="hibernate.connection.charSet">${hibernate.connection.charSet}</prop>
+                <prop key="hibernate.format_sql">${hibernate.format_sql}</prop>
+                <prop key="hibernate.cache.use_second_level_cache">${hibernate.cache.use_second_level_cache}</prop>
+                <prop key="hibernate.cache.use_query_cache">${hibernate.cache.use_query_cache}</prop>
+                <prop key="org.hibernate.envers.default_schema">${org.hibernate.envers.default_schema}</prop>
+				<prop key="org.hibernate.envers.revision_listener">${org.hibernate.envers.revision_listener}</prop>                
+				<prop key="org.hibernate.envers.revision_on_collection_change">${org.hibernate.envers.revision_on_collection_change}</prop>                                     
+            </props>            
         </property>
-        -->
 	</bean>
 
 	<task:annotation-driven executor="asyncExecutor"

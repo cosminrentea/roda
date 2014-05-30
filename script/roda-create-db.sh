@@ -11,7 +11,7 @@ else
     SCRIPTNAME=$1
 fi
 
-# create ROLE and DATABASE
+# create ROLE and DATABASEs
 psql -a -w -t  -h ${RODA_HOST} -c "CREATE USER ${RODA_USER} PASSWORD '${RODA_PASSWORD}';"
 psql -a -w -t  -h ${RODA_HOST} -c "CREATE DATABASE ${RODA_DB} OWNER ${RODA_USER} ENCODING 'UTF8';"
 

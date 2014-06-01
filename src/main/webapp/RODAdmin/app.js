@@ -120,7 +120,9 @@ Ext.application({
 		        remove : true,
 		        listeners : {
 			        afteranimate : function(el, startTime, eOpts) {
-				        Ext.widget('login');
+                        Ext.create('RODAdmin.view.MyViewport');
+                        RODAdmin.util.SessionMonitor.start();
+//				        Ext.widget('login');
 			        }
 		        }
 		    });

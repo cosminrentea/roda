@@ -8,7 +8,7 @@
     <http auto-config="true" use-expressions="true">
     
     	<!-- Cosmin: login for ExtJS, using handlers-->
-        <form-login login-processing-url="/resources/j_spring_security_check" login-page="/admin/index.html" authentication-success-handler-ref="rodaAuthenticationSuccessHandler" authentication-failure-handler-ref="rodaAuthenticationFailureHandler"/>
+        <form-login login-processing-url="/resources/j_spring_security_check" login-page="/admin/login.html" authentication-success-handler-ref="rodaAuthenticationSuccessHandler" authentication-failure-handler-ref="rodaAuthenticationFailureHandler"/>
 
         <form-login login-processing-url="/resources/j_spring_security_check" login-page="/login" authentication-failure-url="/login?login_error=t"/>
 <!-- 
@@ -21,11 +21,18 @@
         <!-- Configure these elements to secure URIs in your application -->
 
 		<!-- secure the "admin" JSON controllers - to be accessible only for "admin" -->
-<!--
-		<intercept-url pattern="/admin/index.html" access="permitAll" />  
+
+		<intercept-url pattern="/admin/login.html" access="permitAll" />
+		<intercept-url pattern="/admin/login.js" access="permitAll" />
+		<intercept-url pattern="/admin/ext/ext-all-dev.js" access="permitAll" />
+		<intercept-url pattern="/admin/bootstrap.css" access="permitAll" />
+		<intercept-url pattern="/admin/app.css" access="permitAll" />
+		<intercept-url pattern="/admin/ext/packages/ext-theme-classic/build/resources/ext-theme-classic-all.css" access="permitAll" />	
+		<intercept-url pattern="/admin/index.html" access="hasRole('ROLE_ADMIN')" />
+		<intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')" />
         <intercept-url pattern="/j/admin/**" access="hasRole('ROLE_ADMIN')"/>
         <intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')"/>
--->
+
 
 		<!-- secure the User's controllers, including JSON - to be accessible only for authenticated Users -->
         <intercept-url pattern="/user/**" access="isAuthenticated()" />

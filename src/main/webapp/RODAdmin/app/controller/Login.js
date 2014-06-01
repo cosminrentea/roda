@@ -160,7 +160,18 @@ Ext.define('RODAdmin.controller.Login', {
                     if (result.success) {
                         login.close();
                         Ext.create('RODAdmin.view.MyViewport');
-                        RODAdmin.util.SessionMonitor.start();
+//                        RODAdmin.util.SessionMonitor.start();
+                        Ext.Ajax.request({
+                            url: '/roda/j/user/session/set-interval?interval=-1',
+                        	method:'POST',
+                            success: function(conn, response, options, eOpts) {
+                            	console.log('session set to infinity');
+                            }
+                        });
+                        
+                        
+                        
+                        
                     } else {
                         RODAdmin.util.Util.showErrorMsg(conn.responseText);
                     }

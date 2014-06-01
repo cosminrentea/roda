@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import ro.roda.domainjson.StudyList;
 import ro.roda.service.StudyListService;
 
-@RequestMapping("/admin/studylist")
+@RequestMapping("/studylist")
 @Controller
 public class StudyListController {
 

@@ -21,7 +21,7 @@ public class CatalogTree extends JsonInfo {
 		JSONSerializer serializer = new JSONSerializer();
 
 		serializer.exclude("*.class", "depth");
-		serializer.include("id", "name", "type");
+		serializer.include("id", "name", "type", "leaf");
 
 		int maxDepth = 0;
 		for (CatalogTree catalogTree : collection) {
@@ -120,6 +120,8 @@ public class CatalogTree extends JsonInfo {
 
 	private Set<JsonInfo> data;
 
+	private boolean leaf;
+
 	private int depth;
 
 	public Integer getId() {
@@ -146,6 +148,14 @@ public class CatalogTree extends JsonInfo {
 		this.type = type;
 	}
 
+	public boolean isLeaf() {
+		return leaf;
+	}
+
+	public void setLeaf(boolean leaf) {
+		this.leaf = leaf;
+	}
+
 	public Set<JsonInfo> getData() {
 		return data;
 	}
@@ -164,6 +174,13 @@ public class CatalogTree extends JsonInfo {
 
 	public CatalogTree(Catalog catalog) {
 		this.id = catalog.getId();
+		if ((catalog.getCatalogs() == null || catalog.getCatalogs().size() == 0)
+				&& (catalog.getCatalogStudies() == null || catalog.getCatalogStudies().size() == 0)) {
+			this.leaf = true;
+		} else {
+			this.leaf = false;
+		}
+
 		if (catalog.getSeries() == null) {
 			this.type = JsonInfo.CATALOG_TYPE;
 		} else {
@@ -186,7 +203,7 @@ public class CatalogTree extends JsonInfo {
 		JSONSerializer serializer = new JSONSerializer();
 
 		serializer.exclude("*.class", "depth");
-		serializer.include("id", "name", "type");
+		serializer.include("id", "name", "type", "leaf");
 
 		String includeData = "";
 		for (int i = 0; i < getDepth() + 1; i++) {

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import ro.roda.domainjson.CatalogTree;
 import ro.roda.service.CatalogTreeService;
 
-@RequestMapping("/admin/catalogtree")
+@RequestMapping("/catalogtree")
 @Controller
 public class CatalogTreeController {
 

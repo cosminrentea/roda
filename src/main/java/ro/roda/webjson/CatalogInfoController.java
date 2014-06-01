@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import ro.roda.domainjson.CatalogInfo;
 import ro.roda.service.CatalogInfoService;
 
-@RequestMapping("/admin/cataloginfo")
+@RequestMapping("/cataloginfo")
 @Controller
 public class CatalogInfoController {
 

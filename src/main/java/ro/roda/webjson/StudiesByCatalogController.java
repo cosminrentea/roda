@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import ro.roda.domainjson.StudiesByCatalog;
 import ro.roda.service.StudiesByCatalogService;
 
-@RequestMapping("/admin/studiesbycatalog")
+@RequestMapping("/studiesbycatalog")
 @Controller
 public class StudiesByCatalogController {
 

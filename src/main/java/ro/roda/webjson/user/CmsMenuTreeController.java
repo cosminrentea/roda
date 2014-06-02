@@ -1,4 +1,4 @@
-package ro.roda.webjson;
+package ro.roda.webjson.user;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import ro.roda.domainjson.CmsMenuTree;
 import ro.roda.service.CmsMenuTreeService;
 
-@RequestMapping("/admin/menu")
+@RequestMapping("/user/menu")
 @Controller
 public class CmsMenuTreeController {
 

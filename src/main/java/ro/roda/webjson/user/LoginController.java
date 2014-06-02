@@ -1,4 +1,4 @@
-package ro.roda.webjson;
+package ro.roda.webjson.user;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import ro.roda.domainjson.AdminJson;
 import ro.roda.service.AdminJsonService;
 
-@RequestMapping("/auth")
+@RequestMapping("/user")
 @Controller
 public class LoginController {
 

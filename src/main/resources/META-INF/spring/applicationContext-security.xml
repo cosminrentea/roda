@@ -18,9 +18,9 @@
     	<!-- Cosmin: logout for ExtJS, using handlers-->
         <logout logout-url="/resources/j_spring_security_logout"  success-handler-ref="rodaLogoutSuccessHandler"/>
 
-        <!-- Configure these elements to secure URIs in your application -->
+        <!-- Configure these elements to secure URIs in the application -->
 
-		<!-- secure the "admin" JSON controllers - to be accessible only for "admin" -->
+		<!-- Secure the "admin" JSON controllers - to be accessible only for "admin" -->
 
 		<intercept-url pattern="/admin/login.html" access="permitAll" />
 		<intercept-url pattern="/admin/login.js" access="permitAll" />
@@ -28,22 +28,23 @@
 		<intercept-url pattern="/admin/bootstrap.css" access="permitAll" />
 		<intercept-url pattern="/admin/app.css" access="permitAll" />
 		<intercept-url pattern="/admin/ext/packages/ext-theme-classic/build/resources/ext-theme-classic-all.css" access="permitAll" />	
-		<intercept-url pattern="/admin/index.html" access="hasRole('ROLE_ADMIN')" />
-		<intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')" />
+		<intercept-url pattern="/admin/index.html" access="hasRole('ROLE_USER')" />
+        <intercept-url pattern="/admin/**" access="hasRole('ROLE_USER')"/>
         <intercept-url pattern="/j/admin/**" access="hasRole('ROLE_ADMIN')"/>
-        <intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')"/>
-
 
 		<!-- secure the User's controllers, including JSON - to be accessible only for authenticated Users -->
         <intercept-url pattern="/user/**" access="isAuthenticated()" />
         <intercept-url pattern="/j/user/**" access="isAuthenticated()" />
 
+		<!-- redundant, so commented out -->
+		<!--
         <intercept-url pattern="/resources/**" access="permitAll" />
-
+		-->
+		
 		<intercept-url pattern="/**" access="permitAll" />  
 
 		<!-- TODO Cosmin: setup session management -->
-		<session-management invalid-session-url="/admin/index.html" >
+		<session-management invalid-session-url="/admin/login.html" >
 			<concurrency-control max-sessions="1" />
 		</session-management>
 	</http>

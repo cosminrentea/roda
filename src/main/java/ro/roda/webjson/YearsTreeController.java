@@ -1,4 +1,4 @@
-package ro.roda.web;
+package ro.roda.webjson;
 
 import java.util.List;
 

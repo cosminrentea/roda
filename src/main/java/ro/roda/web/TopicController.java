@@ -32,13 +32,6 @@ import ro.roda.service.TranslatedTopicService;
 @Controller
 public class TopicController {
 
-	@RequestMapping(value = "/tree", headers = "Accept=application/json")
-	public ResponseEntity<String> createFromJsonArray() {
-		HttpHeaders headers = new HttpHeaders();
-		headers.add("Content-Type", "application/json");
-		return new ResponseEntity<String>(Topic.toJsonTree(), headers, HttpStatus.OK);
-	}
-
 	@RequestMapping(value = "/{id}", headers = "Accept=application/json")
 	@ResponseBody
 	public ResponseEntity<String> showJson(@PathVariable("id") Integer id) {

@@ -10,7 +10,7 @@ import javax.persistence.Table;
 import org.apache.solr.client.solrj.SolrServer;
 import org.hibernate.envers.AuditReader;
 import org.hibernate.envers.AuditReaderFactory;
-import org.hibernate.envers.DefaultRevisionEntity;
+import org.hibernate.envers.DefaultTrackingModifiedEntitiesRevisionEntity;
 import org.hibernate.envers.RevisionEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -21,7 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 @SuppressWarnings("serial")
 @RevisionEntity(RodaRevisionListener.class)
 @Table(schema = "audit", name = "revinfo")
-public class RodaRevisionEntity extends DefaultRevisionEntity {
+public class RodaRevisionEntity extends DefaultTrackingModifiedEntitiesRevisionEntity {
 
 	private String username;
 

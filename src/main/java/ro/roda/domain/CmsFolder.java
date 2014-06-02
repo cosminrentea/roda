@@ -150,7 +150,7 @@ public class CmsFolder {
 	}
 
 	public static String toJsonArray(Collection<CmsFolder> collection) {
-		return new JSONSerializer().exclude("*.class").serialize(collection);
+		return new JSONSerializer().exclude("*.class").exclude("classAuditReader", "auditReader").serialize(collection);
 	}
 
 	/**
@@ -337,7 +337,7 @@ public class CmsFolder {
 	}
 
 	public String toJson() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
+		return new JSONSerializer().exclude("*.class").exclude("classAuditReader", "auditReader").serialize(this);
 	}
 
 	public String toString() {

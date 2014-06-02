@@ -149,7 +149,7 @@ public class File {
 	}
 
 	public static String toJsonArray(Collection<File> collection) {
-		return new JSONSerializer().exclude("*.class").serialize(collection);
+		return new JSONSerializer().exclude("*.class").exclude("classAuditReader", "auditReader").serialize(collection);
 	}
 
 	/**
@@ -421,7 +421,7 @@ public class File {
 	}
 
 	public String toJson() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
+		return new JSONSerializer().exclude("*.class").exclude("classAuditReader", "auditReader").serialize(this);
 	}
 
 	public String toString() {

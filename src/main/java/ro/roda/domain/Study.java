@@ -153,7 +153,7 @@ public class Study {
 				.exclude("*.class")
 				.include("studyDescrs", "catalogStudies", "collectionModelTypes", "dataSourceTypes", "files1",
 						"instances", "samplingProcedures", "sources", "studyKeywords", "studyOrgs", "studypeople",
-						"topics").serialize(collection);
+						"topics").exclude("classAuditReader", "auditReader").serialize(collection);
 	}
 
 	/**
@@ -627,7 +627,7 @@ public class Study {
 	}
 
 	public String toJson() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
+		return new JSONSerializer().exclude("*.class").exclude("classAuditReader", "auditReader").serialize(this);
 	}
 
 	public String toString() {

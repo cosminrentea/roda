@@ -31,7 +31,7 @@ public final class PersonEmailPK implements Serializable {
 	}
 
 	public static String toJsonArray(Collection<PersonEmailPK> collection) {
-		return new JSONSerializer().exclude("*.class").serialize(collection);
+		return new JSONSerializer().exclude("*.class").exclude("classAuditReader", "auditReader").serialize(collection);
 	}
 
 	@Column(name = "email_id", columnDefinition = "int4", nullable = false)
@@ -59,7 +59,7 @@ public final class PersonEmailPK implements Serializable {
 	}
 
 	public String toJson() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
+		return new JSONSerializer().exclude("*.class").exclude("classAuditReader", "auditReader").serialize(this);
 	}
 
 	@Override

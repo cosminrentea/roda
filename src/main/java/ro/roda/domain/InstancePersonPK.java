@@ -31,7 +31,7 @@ public final class InstancePersonPK implements Serializable {
 	}
 
 	public static String toJsonArray(Collection<InstancePersonPK> collection) {
-		return new JSONSerializer().exclude("*.class").serialize(collection);
+		return new JSONSerializer().exclude("*.class").exclude("classAuditReader", "auditReader").serialize(collection);
 	}
 
 	@Column(name = "assoc_type_id", columnDefinition = "int4", nullable = false)
@@ -67,7 +67,7 @@ public final class InstancePersonPK implements Serializable {
 	}
 
 	public String toJson() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
+		return new JSONSerializer().exclude("*.class").exclude("classAuditReader", "auditReader").serialize(this);
 	}
 
 	@Override

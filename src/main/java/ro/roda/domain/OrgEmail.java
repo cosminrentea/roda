@@ -139,7 +139,7 @@ public class OrgEmail {
 	}
 
 	public static String toJsonArray(Collection<OrgEmail> collection) {
-		return new JSONSerializer().exclude("*.class").serialize(collection);
+		return new JSONSerializer().exclude("*.class").exclude("classAuditReader", "auditReader").serialize(collection);
 	}
 
 	public static AuditReader getClassAuditReader() {
@@ -242,7 +242,7 @@ public class OrgEmail {
 	}
 
 	public String toJson() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
+		return new JSONSerializer().exclude("*.class").exclude("classAuditReader", "auditReader").serialize(this);
 	}
 
 	public String toString() {

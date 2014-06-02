@@ -31,7 +31,7 @@ public final class AuthoritiesPK implements Serializable {
 	}
 
 	public static String toJsonArray(Collection<AuthoritiesPK> collection) {
-		return new JSONSerializer().exclude("*.class").serialize(collection);
+		return new JSONSerializer().exclude("*.class").exclude("classAuditReader", "auditReader").serialize(collection);
 	}
 
 	@Column(name = "authority", columnDefinition = "varchar", nullable = false, length = 64)
@@ -59,7 +59,7 @@ public final class AuthoritiesPK implements Serializable {
 	}
 
 	public String toJson() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
+		return new JSONSerializer().exclude("*.class").exclude("classAuditReader", "auditReader").serialize(this);
 	}
 
 	@Override

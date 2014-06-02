@@ -98,7 +98,7 @@ public class Setting {
 
 		serializer.transform(new FieldNameTransformer("indice"), "id");
 
-		return "{\"success\": true, \"data\":" + serializer.serialize(collection) + "}";
+		return "{\"success\": true, \"data\":" + serializer.exclude("classAuditReader", "auditReader").serialize(collection) + "}";
 	}
 
 	public static void indexSetting(Setting setting) {
@@ -324,7 +324,7 @@ public class Setting {
 	}
 
 	public String toJson() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
+		return new JSONSerializer().exclude("*.class").exclude("classAuditReader", "auditReader").serialize(this);
 	}
 
 	public String toString() {

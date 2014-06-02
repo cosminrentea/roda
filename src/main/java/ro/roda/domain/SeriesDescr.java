@@ -153,7 +153,7 @@ public class SeriesDescr {
 	}
 
 	public static String toJsonArray(Collection<SeriesDescr> collection) {
-		return new JSONSerializer().exclude("*.class").serialize(collection);
+		return new JSONSerializer().exclude("*.class").exclude("classAuditReader", "auditReader").serialize(collection);
 	}
 
 	public static AuditReader getClassAuditReader() {
@@ -322,7 +322,7 @@ public class SeriesDescr {
 	}
 
 	public String toJson() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
+		return new JSONSerializer().exclude("*.class").exclude("classAuditReader", "auditReader").serialize(this);
 	}
 
 	public String toString() {

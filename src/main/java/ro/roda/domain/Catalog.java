@@ -159,7 +159,8 @@ public class Catalog {
 	}
 
 	public static String toJsonArray(Collection<Catalog> collection) {
-		return new JSONSerializer().exclude("*.class").include("catalogs", "catalogsStudies").serialize(collection);
+		return new JSONSerializer().exclude("*.class").exclude("classAuditReader", "auditReader")
+				.exclude("catalogs", "catalogStudies", "parentId", "owner", "series").serialize(collection);
 	}
 
 	/**
@@ -416,7 +417,8 @@ public class Catalog {
 	}
 
 	public String toJson() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
+		return new JSONSerializer().exclude("*.class").exclude("classAuditReader", "auditReader")
+				.exclude("catalogs", "catalogStudies", "parentId", "owner", "series").serialize(this);
 	}
 
 	public String toString() {

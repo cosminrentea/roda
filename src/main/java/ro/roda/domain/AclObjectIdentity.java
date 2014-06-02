@@ -152,7 +152,7 @@ public class AclObjectIdentity {
 	}
 
 	public static String toJsonArray(Collection<AclObjectIdentity> collection) {
-		return new JSONSerializer().exclude("*.class").serialize(collection);
+		return new JSONSerializer().exclude("*.class").exclude("classAuditReader", "auditReader").serialize(collection);
 	}
 
 	public static AuditReader getClassAuditReader() {
@@ -304,7 +304,7 @@ public class AclObjectIdentity {
 	}
 
 	public String toJson() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
+		return new JSONSerializer().exclude("*.class").exclude("classAuditReader", "auditReader").serialize(this);
 	}
 
 	public String toString() {

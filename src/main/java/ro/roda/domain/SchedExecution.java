@@ -150,7 +150,7 @@ public class SchedExecution {
 	}
 
 	public static String toJsonArray(Collection<SchedExecution> collection) {
-		return new JSONSerializer().exclude("*.class").serialize(collection);
+		return new JSONSerializer().exclude("*.class").exclude("classAuditReader", "auditReader").serialize(collection);
 	}
 
 	@Id
@@ -280,7 +280,7 @@ public class SchedExecution {
 	}
 
 	public String toJson() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
+		return new JSONSerializer().exclude("*.class").exclude("classAuditReader", "auditReader").serialize(this);
 	}
 
 	public String toString() {

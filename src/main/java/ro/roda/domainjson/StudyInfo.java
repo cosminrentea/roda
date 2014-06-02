@@ -12,6 +12,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Configurable;
 
 import ro.roda.domain.CatalogStudy;
+import ro.roda.domain.File;
 import ro.roda.domain.Instance;
 import ro.roda.domain.InstanceVariable;
 import ro.roda.domain.Keyword;
@@ -34,17 +35,13 @@ public class StudyInfo extends JsonInfo {
 		JSONSerializer serializer = new JSONSerializer();
 
 		serializer.exclude("*.class");
-
-		// serializer.exclude("files", "variables", "persons", "orgs");
-
 		serializer.exclude("leaf", "variables.concepts", "variables.fileId", "variables.formEditedNumberVars",
 				"variables.instanceVariables", "variables.operatorInstructions", "variables.otherStatistics",
 				"variables.selectionVariable", "variables.skips", "variables.skips1", "variables.type",
 				"variables.vargroups", "variables.variableType", "variables.auditReader", "variables.classAuditReader");
-		// serializer.exclude("files.content", "files.fullPath", "files.id",
-		// "files.instances",
-		// "files.selectionVariableItems", "files.size", "files.studies1",
-		// "files.title", "files.variables");
+		serializer.exclude("files.content", "files.fullPath", "files.id", "files.instances",
+				"files.selectionVariableItems", "files.size", "files.studies1", "files.title", "files.variables",
+				"files.auditReader", "files.classAuditReader");
 		serializer.exclude("persons.forms", "persons.instancepeople", "persons.personAddresses",
 				"persons.personEmails", "persons.personInternets", "persons.personLinkss", "persons.personOrgs",
 				"persons.personPhones", "persons.prefixId", "persons.studypeople", "persons.suffixId",
@@ -117,7 +114,7 @@ public class StudyInfo extends JsonInfo {
 
 	private Set<Variable> variables;
 
-	// private Set<File> files;
+	private Set<File> files;
 
 	private Set<Person> persons;
 
@@ -195,9 +192,9 @@ public class StudyInfo extends JsonInfo {
 		this(study);
 
 		// set the files
-		// if (hasFiles) {
-		// this.setFiles(study.getFiles1());
-		// }
+		if (hasFiles) {
+			this.setFiles(study.getFiles1());
+		}
 
 		// set the variables
 		// variables of a study are those of its 'main' instance
@@ -315,13 +312,13 @@ public class StudyInfo extends JsonInfo {
 		this.leaf = leaf;
 	}
 
-	// public Set<File> getFiles() {
-	// return files;
-	// }
-	//
-	// public void setFiles(Set<File> files) {
-	// this.files = files;
-	// }
+	public Set<File> getFiles() {
+		return files;
+	}
+
+	public void setFiles(Set<File> files) {
+		this.files = files;
+	}
 
 	public Set<Variable> getVariables() {
 		return variables;
@@ -368,41 +365,29 @@ public class StudyInfo extends JsonInfo {
 		JSONSerializer serializer = new JSONSerializer();
 
 		serializer.exclude("*.class");
-		serializer.exclude("files", "variables", "persons", "orgs", "keywords");
-		// serializer.exclude("leaf", "variables.concepts", "variables.fileId",
-		// "variables.formEditedNumberVars",
-		// "variables.instanceVariables", "variables.operatorInstructions",
-		// "variables.otherStatistics",
-		// "variables.selectionVariable", "variables.skips", "variables.skips1",
-		// "variables.type",
-		// "variables.vargroups", "variables.variableType");
-		// serializer.exclude("files.content", "files.fullPath", "files.id",
-		// "files.instances",
-		// "files.selectionVariableItems", "files.size", "files.studies1",
-		// "files.title", "files.variables");
-		// serializer.exclude("persons.forms", "persons.instancepeople",
-		// "persons.personAddresses",
-		// "persons.personEmails", "persons.personInternets",
-		// "persons.personLinkss", "persons.personOrgs",
-		// "persons.personPhones", "persons.prefixId", "persons.studypeople",
-		// "persons.suffixId");
-		// serializer.exclude("orgs.instanceOrgs", "orgs.orgAddresses",
-		// "orgs.orgEmails", "orgs.orgInternets",
-		// "orgs.orgPhones", "orgs.orgPrefixId", "orgs.orgRelationss",
-		// "orgs.orgRelationss1", "orgs.orgSufixId",
-		// "orgs.personOrgs", "orgs.shortName", "orgs.studyOrgs");
-		// serializer.exclude("keywords.studyKeywords");
+		serializer.exclude("leaf", "variables.concepts", "variables.fileId", "variables.formEditedNumberVars",
+				"variables.instanceVariables", "variables.operatorInstructions", "variables.otherStatistics",
+				"variables.selectionVariable", "variables.skips", "variables.skips1", "variables.type",
+				"variables.vargroups", "variables.variableType", "variables.auditReader", "variables.classAuditReader");
+		serializer.exclude("files.content", "files.fullPath", "files.id", "files.instances",
+				"files.selectionVariableItems", "files.size", "files.studies1", "files.title", "files.variables",
+				"files.auditReader", "files.classAuditReader");
+		serializer.exclude("persons.forms", "persons.instancepeople", "persons.personAddresses",
+				"persons.personEmails", "persons.personInternets", "persons.personLinkss", "persons.personOrgs",
+				"persons.personPhones", "persons.prefixId", "persons.studypeople", "persons.suffixId",
+				"persons.auditReader", "persons.classAuditReader");
+		serializer.exclude("orgs.instanceOrgs", "orgs.orgAddresses", "orgs.orgEmails", "orgs.orgInternets",
+				"orgs.orgPhones", "orgs.orgPrefixId", "orgs.orgRelationss", "orgs.orgRelationss1", "orgs.orgSufixId",
+				"orgs.personOrgs", "orgs.shortName", "orgs.studyOrgs", "orgs.auditReader", "orgs.classAuditReader");
+		serializer.exclude("keywords.studyKeywords", "keywords.auditReader", "keywords.classAuditReader");
 
 		serializer.include("id", "name", "an", "description", "universe", "geographicCoverage", "unitAnalysis", "type",
 				"geographicUnit", "researchInstrument", "weighting", "seriesId");
-		// serializer.include("variables.id", "variables.name",
-		// "variables.label");
-		// serializer.include("files.name", "files.contentType", "files.url",
-		// "files.description");
-		// serializer.include("persons.id", "persons.lname", "persons.fname",
-		// "persons.mname");
-		// serializer.include("orgs.id", "orgs.fullName");
-		// serializer.include("keywords.id", "keywords.name");
+		serializer.include("variables.id", "variables.name", "variables.label");
+		serializer.include("files.name", "files.contentType", "files.url", "files.description");
+		serializer.include("persons.id", "persons.lname", "persons.fname", "persons.mname");
+		serializer.include("orgs.id", "orgs.fullName");
+		serializer.include("keywords.id", "keywords.name");
 
 		serializer.transform(new FieldNameTransformer("geo_coverage"), "geographicCoverage");
 		serializer.transform(new FieldNameTransformer("unit_analysis"), "unitAnalysis");

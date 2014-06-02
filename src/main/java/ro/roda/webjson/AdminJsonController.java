@@ -240,26 +240,6 @@ public class AdminJsonController {
 
 	}
 
-	@RequestMapping(value = "/cmsfilecontent/{id}", method = RequestMethod.GET)
-	public String fileContent(@PathVariable("id") Integer id, HttpServletResponse response) {
-		CmsFile cmsFile = CmsFile.findCmsFile(id);
-		InputStream is = cmsFileStoreService.fileLoad(cmsFile);
-		try {
-			if (is != null) {
-				response.setHeader("Content-Disposition", "inline;filename=\"" + cmsFile.getFilename() + "\"");
-				OutputStream out = response.getOutputStream();
-				response.setContentType(cmsFile.getContentType());
-				IOUtils.copy(is, out);
-				out.flush();
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
 	@RequestMapping(value = "/cmsfoldersave", method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody
 	public String folderSave(@RequestParam(value = "foldername") String foldername,

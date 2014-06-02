@@ -38,7 +38,7 @@ public class RodaPageServiceImpl implements RodaPageService {
 
 	private static String DEFAULT_ERROR_PAGE_LANG = "en";
 	private static String ADMIN_URL = "admin/index.html";
-	private static String CMS_FILE_CONTENT_URL = "admin/cmsfilecontent/";
+	private static String CMS_FILE_CONTENT_URL = "cmsfilecontent/";
 
 	private final Log log = LogFactory.getLog(this.getClass());
 

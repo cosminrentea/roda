@@ -23,7 +23,7 @@ public class FileList extends JsonInfo {
 	@Autowired
 	CmsFileStoreService cmsFileStoreService;
 
-	private final static String urlDownload = "/admin/cmsfilecontent/";
+	private final static String urlDownload = "/cmsfilecontent/";
 
 	public class NameValuePair {
 		public String name;

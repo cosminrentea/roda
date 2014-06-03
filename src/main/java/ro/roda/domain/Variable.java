@@ -155,7 +155,15 @@ public class Variable {
 	}
 
 	public static String toJsonArray(Collection<Variable> collection) {
-		return new JSONSerializer().exclude("*.class").exclude("classAuditReader", "auditReader").serialize(collection);
+		return new JSONSerializer()
+				.exclude("*.class")
+				.exclude("classAuditReader", "auditReader", "instanceVariables.auditReader",
+						"instanceVariables.classAuditReader", "otherStatistics.auditReader",
+						"otherStatistics.classAuditReader", "selectionVariable.auditReader",
+						"selectionVariable.classAuditReader", "skips.auditReader", "skips.classAuditReader",
+						"skips1.auditReader", "skips1.classAuditReader", "vargroups.auditReader",
+						"vargroups.classAuditReader", "concepts", "formEditedNumberVars", "formEditedTextVars",
+						"fileId").serialize(collection);
 	}
 
 	/**
@@ -453,15 +461,29 @@ public class Variable {
 	}
 
 	public String toJson() {
-		return new JSONSerializer().exclude("*.class").exclude("classAuditReader", "auditReader").serialize(this);
+		return new JSONSerializer()
+				.exclude("*.class")
+				.exclude("classAuditReader", "auditReader", "instanceVariables.auditReader",
+						"instanceVariables.classAuditReader", "otherStatistics.auditReader",
+						"otherStatistics.classAuditReader", "selectionVariable.auditReader",
+						"selectionVariable.classAuditReader", "skips.auditReader", "skips.classAuditReader",
+						"skips1.auditReader", "skips1.classAuditReader", "vargroups.auditReader",
+						"vargroups.classAuditReader", "concepts", "formEditedNumberVars", "formEditedTextVars",
+						"fileId").serialize(this);
 	}
 
 	public String toJsonWithFreq() {
 		List<Variable> l = new ArrayList<Variable>();
 		l.add(this);
-		return new JSONSerializer().exclude("*.class")
-				.exclude("operatorInstructions", "selectionVariable", "type", "variableType", "fileId")
-				.include("otherStatistics").rootName("data").serialize(l);
+		return new JSONSerializer()
+				.exclude("*.class")
+				.exclude("operatorInstructions", "selectionVariable", "type", "variableType", "fileId",
+						"classAuditReader", "auditReader", "instanceVariables", "otherStatistics.auditReader",
+						"otherStatistics.classAuditReader", "otherStatistics.variableId.classAuditReader",
+						"otherStatistics.variableId.auditReader", "skips", "skips1", "vargroups", "concepts",
+						"formEditedNumberVars", "formEditedTextVars")
+				.include("otherStatistics.id", "otherStatistics.name", "otherStatistics.value",
+						"otherStatistics.variableId.id").rootName("data").serialize(l);
 	}
 
 	public String toString() {

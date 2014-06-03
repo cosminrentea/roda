@@ -144,7 +144,9 @@ public class Vargroup {
 	}
 
 	public static String toJsonArray(Collection<Vargroup> collection) {
-		return new JSONSerializer().exclude("*.class").exclude("classAuditReader", "auditReader").serialize(collection);
+		return new JSONSerializer().exclude("*.class")
+				.exclude("classAuditReader", "auditReader", "variables.classAuditReader", "variables.auditReader")
+				.serialize(collection);
 	}
 
 	/**
@@ -290,7 +292,9 @@ public class Vargroup {
 	}
 
 	public String toJson() {
-		return new JSONSerializer().exclude("*.class").exclude("classAuditReader", "auditReader").serialize(this);
+		return new JSONSerializer().exclude("*.class")
+				.exclude("classAuditReader", "auditReader", "variables.classAuditReader", "variables.auditReader")
+				.serialize(this);
 	}
 
 	public String toString() {

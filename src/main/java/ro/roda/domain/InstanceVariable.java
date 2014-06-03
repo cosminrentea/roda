@@ -147,7 +147,10 @@ public class InstanceVariable {
 	}
 
 	public static String toJsonArray(Collection<InstanceVariable> collection) {
-		return new JSONSerializer().exclude("*.class").exclude("id", "classAuditReader", "auditReader")
+		return new JSONSerializer()
+				.exclude("*.class")
+				.exclude("id", "classAuditReader", "auditReader", "instanceId.classAuditReader",
+						"instanceId.auditReader", "variableId.classAuditReader", "variableId.auditReader")
 				.serialize(collection);
 	}
 
@@ -251,7 +254,11 @@ public class InstanceVariable {
 	}
 
 	public String toJson() {
-		return new JSONSerializer().exclude("*.class").exclude("id", "classAuditReader", "auditReader").serialize(this);
+		return new JSONSerializer()
+				.exclude("*.class")
+				.exclude("id", "classAuditReader", "auditReader", "instanceId.classAuditReader",
+						"instanceId.auditReader", "variableId.classAuditReader", "variableId.auditReader")
+				.serialize(this);
 	}
 
 	public String toString() {

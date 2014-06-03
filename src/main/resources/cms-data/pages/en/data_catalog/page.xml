@@ -14,7 +14,7 @@
 
 
 	]]></content>
-	<cms_layout>roda-main-en</cms_layout>
+	<cms_layout>roda-databrowser-en</cms_layout>
 	<pagetype>content</pagetype>
 	<cacheable>3600</cacheable>
 	<searchable>true</searchable>		

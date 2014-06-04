@@ -4,8 +4,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeMap;
+import java.util.TreeSet;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -200,17 +205,27 @@ public class StudyInfo extends JsonInfo {
 		// variables of a study are those of its 'main' instance
 		// TODO what are the variables of an instance?
 		if (hasVariables) {
-			Set<Variable> variables = new HashSet<Variable>();
+
+			Map<Integer, Variable> orderVar = new TreeMap<Integer, Variable>();
+			Set<Variable> variables = new LinkedHashSet<Variable>();
 
 			if (study.getInstances() != null && study.getInstances().size() > 0) {
 				// log.trace("Instances: " + study.getInstances().size());
 				for (Instance instance : study.getInstances()) {
 					if (instance.isMain() && instance.getInstanceVariables() != null) {
 						for (InstanceVariable iv : instance.getInstanceVariables()) {
-							variables.add(iv.getVariableId());
+							// variables.add(iv.getVariableId());
+							orderVar.put(iv.getOrderVariableInInstance(), iv.getVariableId());
 						}
 					}
 				}
+
+				SortedSet<Integer> keys = new TreeSet<Integer>(orderVar.keySet());
+				for (Integer key : keys) {
+					System.out.println("Adding variable " + key);
+					variables.add(orderVar.get(key));
+				}
+
 				// log.trace("Variables: " + variables.size());
 			}
 			this.setVariables(variables);

@@ -28,7 +28,7 @@ Ext.define('RODAdmin.view.studies.Studies', {
 	                {
 	                    dock : 'top',
 	                    xtype : 'toolbar',
-	                    itemid : 'layouttoolbar',
+	                    itemid : 'studytoolbar',
 	                    items : [
 	                            {
 	                            	xtype : 'tbfill'
@@ -51,7 +51,7 @@ Ext.define('RODAdmin.view.studies.Studies', {
                 items : [
 	                {
 						/**
-						 * @xtypes layoutitemsview RODAdmin.view.cms.layout.LayoutItemsview
+						 * @xtypes studyitemsview RODAdmin.view.studies.StudyItemsview
 						 */
 	                	 xtype : 'studyitemsview'
 	                }
@@ -73,7 +73,7 @@ Ext.define('RODAdmin.view.studies.Studies', {
                 items : [
 	                {
 						/**
-						 * @xtypes layoutdetails RODAdmin.view.cms.layout.LayoutDetails
+						 * @xtypes studydetails RODAdmin.view.studies.StudyDetails
 						 */
 	                	xtype : 'studydetails'
 	                }

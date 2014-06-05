@@ -56,27 +56,27 @@ Ext.define('RODAdmin.controller.studies.Studies', {
 				 * @listener studyproperties-toolbar-stproptoolbar-button-editstudy-click triggered-by:
 				 *           {@link RODAdmin.view.studies.details.StudyProperties StudyProperties}
 				 *           toolbar#stproptoolbar button#editstudy
-				 *           {@link #onlytoolbarEditClick}
+				 *           {@link #onsttoolbarEditClick}
 				 */	
-		        click : this.onlytoolbarEditClick
+		        click : this.onsttoolbarEditClick
 	        },
 	        "studyproperties toolbar#stproptoolbar button#deletestudy" : {
 	            /**
 				 * @listener studyproperties-toolbar-stproptoolbar-button-deletestudy-click triggered-by:
 				 *           {@link RODAdmin.view.studies.details.StudyProperties StudyProperties}
 				 *           toolbar#stproptoolbar button#deletestudy
-				 *           {@link #onlytoolbarDeleteClick}
+				 *           {@link #onsttoolbarDeleteClick}
 				 */	
-		        click : this.onlytoolbarDeleteClick
+		        click : this.onsttoolbarDeleteClick
 	        },
 	        "studyproperties toolbar#stproptoolbar button#getstudyaudit" : {
 	            /**
 				 * @listener studyproperties-toolbar-stproptoolbar-button-getstudyaudit-click triggered-by:
 				 *           {@link RODAdmin.view.studies.details.StudyProperties StudyProperties}
 				 *           toolbar#stproptoolbar button#getstudyaudit
-				 *           {@link #onlytoolbarAuditClick}
+				 *           {@link #onsttoolbarAuditClick}
 				 */	
-		        click : this.onlytoolbarAuditClick
+		        click : this.onsttoolbarAuditClick
 	        },
 	    });
     	this.listen({
@@ -117,13 +117,13 @@ Ext.define('RODAdmin.controller.studies.Studies', {
     /**
 	 * @method
 	 */
-    onlytoolbarEditClick : function(button, e, options) {
+    onsttoolbarEditClick : function(button, e, options) {
 	    var fp = this.getStudyproperties().data;
 	    var llp = this.getStudyproperties();
 	    console.log(llp);
 	    console.log(fp);
 		   console.log('edit study smth');
-    	   if (fp.data.itemtype == 'catalog') {	        
+    	   if (fp.data.itemtype == 'studygroup') {	        
     		   console.log('edit catalog');
         	   win = Ext.WindowMgr.get('catalogedit');
         	   console.log(win);
@@ -139,7 +139,7 @@ Ext.define('RODAdmin.controller.studies.Studies', {
         		   callback : function(records, operation, success) {
         			   if (success) {
         				   var catalog = catalogstore.first();
-        				   win.down('form').getForm().loadRecord(layoutgroup);
+        				   win.down('form').getForm().loadRecord(catalog);
         				   win.down('form').down('hiddenfield#groupid').setValue(catalog.data.groupid);
         			   }
         		   }
@@ -171,7 +171,7 @@ Ext.define('RODAdmin.controller.studies.Studies', {
     /**
 	 * @method
 	 */
-    onlytoolbarDeleteClick : function(button, e, options) {
+    onsttoolbarDeleteClick : function(button, e, options) {
 	    console.log('editfile clicked');
 	    var fp = this.getStudyproperties().data;
 
@@ -185,7 +185,7 @@ Ext.define('RODAdmin.controller.studies.Studies', {
 		    if (id === 'yes') {
 			    console.log('we will delete');
 			    var url = '';
-			    if (fp.data.itemtype == 'catalog') {
+			    if (fp.data.itemtype == 'studygroup') {
 				    url = '/roda/j/admin/catalogdrop';
 				    parms = {'groupid' : fp.data.id };
 			    }
@@ -214,7 +214,7 @@ Ext.define('RODAdmin.controller.studies.Studies', {
     /**
 	 * @method
 	 */
-    onlytoolbarAuditClick : function(button, e, options) {
+    onsttoolbarAuditClick : function(button, e, options) {
 	    console.log('auditfile clicked, cool stuff ahead');
 	    var fp = this.getStudyproperties().data;
 	    var win = Ext.create('RODAdmin.view.common.AuditWindow');

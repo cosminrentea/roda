@@ -5,7 +5,7 @@ Ext.define('RODAdmin.model.studies.Study', {
     extend: 'Ext.data.Model',
     fields: [
     {    
-    	name: 'id',
+    	name: 'indice',
     	type : 'int'
 	}, {
         name: 'name',
@@ -17,16 +17,31 @@ Ext.define('RODAdmin.model.studies.Study', {
         name: 'description',
         type: 'string'
     }, {
-        name: 'geographicCoverage',
+        name: 'geo_coverage',
         type: 'string'
     }, {
-		name : 'unitAnalysis',
+        name: 'geographicUnit',
+        type: 'string'
+    }, {
+		name : 'unit_analysis',
 		type : 'string'
 	},	{
-		name : 'universe',
+		name : 'univers',
 		type : 'string'
 	},{
 		name : 'researchInstrument',
+		type : 'string'
+	},{
+		name : 'seriesId',
+		type : 'int'
+	},{
+		name : 'type',
+		type : 'string'
+	},{
+		name : 'groupid',
+		type : 'int'
+	},{
+		name : 'itemtype',
 		type : 'string'
 	}
     

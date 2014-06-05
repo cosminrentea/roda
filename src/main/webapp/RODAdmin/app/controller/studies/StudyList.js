@@ -48,43 +48,43 @@ Ext.define('RODAdmin.controller.studies.StudyList', {
 	    this.control({
 	        "studyitemsview grid#sticonview" : {
 	            /**
-				 * @listener layoutitemsview-selectionchabge triggered-by:
-				 *           {@link RODAdmin.view.cms.layout.LayoutItemsview LayoutItemsview}
-				 *           grid#lyiconview executes
-				 *           {@link #onDeleteLayoutClick}
+				 * @listener studyitemsview-selectionchange triggered-by:
+				 *           {@link RODAdmin.view.studies.StudyItemsview StudyItemsview}
+				 *           grid#sticonview executes
+				 *           {@link #onDeleteStudyClick}
 				 */
 	            selectionchange : this.onIconViewSelectionChange,
 	            /**
-				 * @listener icdeletelayout-itemcontextmenu triggered-by:
-				 *           {@link RODAdmin.view.cms.layout.LayoutItemsview LayoutItemsview}
-				 *           grid#lyiconview executes {@link #onItemContextMenu}
+				 * @listener icdeletestudy-itemcontextmenu triggered-by:
+				 *           {@link RODAdmin.view.studies.StudyItemsview StudyItemsview}
+				 *           grid#sticonview executes {@link #onItemContextMenu}
 				 */
 	            itemcontextmenu : this.onItemContextMenu
 	        },
-	        "studyitemviewcontextmenu menuitem#icdeletelayout" : {
+	        "studyitemviewcontextmenu menuitem#icdeletestudy" : {
 		        /**
-				 * @listener icdeletelayout-click triggered-by:
-				 *           {@link RODAdmin.view.cms.layout.LayoutItemviewContextMenu LayoutItemsviewContextMenu}
-				 *           menuitem#icdeletelayout executes
-				 *           {@link #onDeleteLayoutClick}
+				 * @listener icdeletestudy-click triggered-by:
+				 *           {@link RODAdmin.view.studies.StudyItemviewContextMenu StudyItemsviewContextMenu}
+				 *           menuitem#icdeletestudy executes
+				 *           {@link #onDeleteStudyClick}
 				 */
 		        click : this.onDeleteStudyClick
 	        },
-	        "studyitemviewcontextmenu menuitem#iceditlayout" : {
+	        "studyitemviewcontextmenu menuitem#iceditstudy" : {
 		        /**
-				 * @listener iceditlayout-click triggered-by:
-				 *           {@link RODAdmin.view.cms.layout.LayoutItemviewContextMenu LayoutItemsviewContextMenu}
-				 *           menuitem#iceditlayout executes
-				 *           {@link #onEditLayoutClick}
+				 * @listener iceditstudy-click triggered-by:
+				 *           {@link RODAdmin.view.studies.StudyItemviewContextMenu StudyItemsviewContextMenu}
+				 *           menuitem#iceditstudy executes
+				 *           {@link #onEditStudyClick}
 				 * 
 				 */
 		        click : this.onEditStudyClick
 	        },
 	        "studyitemsview grid#sticonview toolbar button#reloadgrid" : {
 	            /**
-				 * @listener layoutitemsview-treepanel-lyfolderview-toolbar-button-reloadtree triggered-by:
-				 *           {@link RODAdmin.view.cms.layout.LayoutItemview LayoutItemsview}
-				 *           treepanel#lyfolderview toolbar button#reloadtree
+				 * @listener studyitemsview-treepanel-stfolderview-toolbar-button-reloadtree triggered-by:
+				 *           {@link RODAdmin.view.studies.StudyItemsview StudyItemsview}
+				 *           treepanel#stfolderview toolbar button#reloadtree
 				 *           {@link #onReloadTreeClick}
 				 */
 		        click : this.onReloadGridClick
@@ -157,7 +157,7 @@ Ext.define('RODAdmin.controller.studies.StudyList', {
 	    var stprop = this.getStudyproperties();
 	    var stdetails = this.getStdetailspanel();
 	    //variabilele!
-	    var stcontent = this.getStcontent();
+	    //var stcontent = this.getStcontent();
 	    var stenvelope = this.getStenvelope();	    
 	    stdetails.setTitle(record.data.name);
 
@@ -170,11 +170,11 @@ Ext.define('RODAdmin.controller.studies.StudyList', {
 	        callback : function(records, operation, success) {
 		        if (success) {
 			        var stitem = stitemstore.first();
-			        stcontent.setValue(stitem.data.content);
+			    //    stcontent.setValue(stitem.data.content);
 			        stprop.update(stitem);
-			        /*if (typeof stitem.usageStore === 'object') {
-						   lyusage.bindStore(lyitem.usage());
-					   }*/
+//			        if (typeof stitem.usageStore === 'object') {
+//						   lyusage.bindStore(lyitem.usage());
+//					   }
 		        }
 	        }
 	    });
@@ -202,14 +202,14 @@ Ext.define('RODAdmin.controller.studies.StudyList', {
 	    var me = this;
 	    mmstore.reload({
 	        callback : function(records, operation, success) {
-//		        var root = me.getFolderview().store.getRootNode();
-//		        var myid = root.findChild('indice', currentNode.data.indice, true);
-//			    if (myid != null) {
+		        var root = me.getFolderview().store.getRootNode();
+		        var myid = root.findChild('indice', currentNode.data.indice, true);
+			    if (myid != null) {
 	        	console.log(currentNode);
 	        	var mrr = mmstore.find('indice', currentNode.data.indice);
 	        	console.log('selecting current node');
 		    	iconview.getSelectionModel().select(mrr);
-// }
+ }
 	        }
 	    });
     },

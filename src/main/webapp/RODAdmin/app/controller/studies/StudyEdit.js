@@ -91,11 +91,11 @@ Ext.define('RODAdmin.controller.studies.StudyEdit', {
 				 *           {@link RODAdmin.view.studies.EditStudyWindow EditStudyWindow} button#save    
 				 *           executes {@link #onStudyEditSaveClick}  
 				 */	        	
-		        click : this.onStudyGroupEditSaveClick
+		        click : this.onCatalogEditSaveClick
 	        },
 	        "studygadd button#save" : {
 	        	 /**
-				 * @listener layoutgadd-button-save-click triggered-by:
+				 * @listener studygadd-button-save-click triggered-by:
 				 *           {@link RODAdmin.view.studies.AddStudyToGroupWindow AddStudyToGroupWindow} button#save    
 				 *           executes {@link #onStudyAddGroupSaveClick}  
 				 */	
@@ -103,7 +103,7 @@ Ext.define('RODAdmin.controller.studies.StudyEdit', {
 	        },
 	        "stgroupadd button#save" : {
 	        	 /**
-				 * @listener lygroupadd-button-save-click triggered-by:
+				 * @listener stgroupadd-button-save-click triggered-by:
 				 *           {@link RODAdmin.view.studies.GroupWindow GroupWindow} button#save    
 				 *           executes {@link #onGroupSaveClick}  
 				 */	
@@ -277,7 +277,7 @@ Ext.define('RODAdmin.controller.studies.StudyEdit', {
 	 * @method
 	 */
     
-    onStudyGroupEditSaveClick : function(button, e, options) {
+    onCatalogEditSaveClick : function(button, e, options) {
 	    console.log('group save...');
 	    var win = button.up('window');
 	    var formPanel = win.down('form');

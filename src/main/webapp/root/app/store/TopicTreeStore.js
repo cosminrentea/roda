@@ -21,6 +21,7 @@ Ext.define('databrowser.store.TopicTreeStore', {
             },
             proxy: {
                 type: 'ajax',
+                timeout:200000,
 //                url: 'data/topics.json',             
                 url: '../../topics/tree',
                 reader: {

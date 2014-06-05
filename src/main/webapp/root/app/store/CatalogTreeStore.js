@@ -21,7 +21,8 @@ Ext.define('databrowser.store.CatalogTreeStore', {
             },
             proxy: {
                 type: 'ajax',
-                url: '../../j/catalogtree',                  
+                url: '../../j/catalogtree',  
+                timeout: 200000,
 //                url: 'data/catalogs-tree.json',
                 reader: {
                     type: 'json',

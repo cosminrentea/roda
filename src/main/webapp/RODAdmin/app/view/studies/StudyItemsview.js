@@ -81,7 +81,7 @@ Ext.define('RODAdmin.view.studies.StudyItemsview', {
 //						autoheight : true,
 						dockedItems : [{
 									xtype : 'toolbar',
-									itemid : 'lyfolderviewtoolbar',
+									itemid : 'stfolderviewtoolbar',
 									dock : 'bottom',
 									items : [{
 												xtype : 'tbfill'

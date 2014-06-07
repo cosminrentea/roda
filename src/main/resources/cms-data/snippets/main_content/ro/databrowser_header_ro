@@ -9,7 +9,7 @@
   	  <script type="text/javascript" src="/roda/resources/root/app.js"></script>      
       <link rel="icon" href="[[FileURL:faviconpng]]" type="image/png" />
        <style>
-	[[Snippet: main-css-en]]  
+	[[Snippet: main-css-ro]]  
       </style>
       <link rel="SHORTCUT ICON" href="[[FileURL:faviconico]]" />
   </head>

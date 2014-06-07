@@ -175,7 +175,7 @@ public class Topic {
 	public static String toJsonTree() {
 		return new JSONSerializer()
 				.exclude("*.class", "*.studies", "*.series", "*.topics1", "*.translatedTopics", "*.parentId",
-						"*.preferredSynonymTopicId", "*.description").exclude("classAuditReader", "auditReader")
+						"*.preferredSynonymTopicId", "*.description", "*.topics").exclude("classAuditReader", "auditReader")
 				.rootName("topics").deepSerialize(findAllTopTopics());
 	}
 

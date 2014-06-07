@@ -7,16 +7,34 @@ Ext.define('RODAdmin.model.studies.StudyItem', {
 		name : 'id',
 		type : 'int'
 	}, {
+		name : 'seriesId',
+		type : 'int'
+	},{
+		name : 'an',
+		type : 'int'
+	}, {
 		name : 'name',
 		type : 'string'
-	}, {
-		name : 'groupid',
-		type : 'integer'
 	}, {
 		name : 'description',
 		type : 'string'
 	}, {
-		name : 'itemtype',
+		name : 'type',
+		type : 'string'
+	}, {
+		name : 'geo_coverage',
+		type : 'string'
+	}, {
+		name : 'geo_unit',
+		type : 'string'
+	}, {
+		name : 'research_instrument',
+		type : 'string'
+	}, {
+		name : 'unit_analysis',
+		type : 'string'
+	}, {
+		name : 'universe',
 		type : 'string'
 	}],
 	hasMany : [ {

@@ -139,7 +139,10 @@ public class Skip {
 	}
 
 	public static String toJsonArray(Collection<Skip> collection) {
-		return new JSONSerializer().exclude("*.class").exclude("classAuditReader", "auditReader").serialize(collection);
+		return new JSONSerializer()
+				.exclude("*.class")
+				.exclude("classAuditReader", "auditReader", "variableId.classAuditReader", "variableId.auditReader",
+						"nextVariableId.classAuditReader", "nextVariableId.auditReader").serialize(collection);
 	}
 
 	public static AuditReader getClassAuditReader() {
@@ -245,7 +248,10 @@ public class Skip {
 	}
 
 	public String toJson() {
-		return new JSONSerializer().exclude("*.class").exclude("classAuditReader", "auditReader").serialize(this);
+		return new JSONSerializer()
+				.exclude("*.class")
+				.exclude("classAuditReader", "auditReader", "variableId.classAuditReader", "variableId.auditReader",
+						"nextVariableId.classAuditReader", "nextVariableId.auditReader").serialize(this);
 	}
 
 	public String toString() {

@@ -151,7 +151,11 @@ public class SelectionVariable {
 	}
 
 	public static String toJsonArray(Collection<SelectionVariable> collection) {
-		return new JSONSerializer().exclude("*.class").exclude("classAuditReader", "auditReader").serialize(collection);
+		return new JSONSerializer()
+				.exclude("*.class")
+				.exclude("classAuditReader", "auditReader", "selectionVariableItems.classAuditReader",
+						"selectionVariableItems.auditReader", "variable.classAuditReader", "variable.auditReader")
+				.serialize(collection);
 	}
 
 	/**
@@ -325,7 +329,11 @@ public class SelectionVariable {
 	}
 
 	public String toJson() {
-		return new JSONSerializer().exclude("*.class").exclude("classAuditReader", "auditReader").serialize(this);
+		return new JSONSerializer()
+				.exclude("*.class")
+				.exclude("classAuditReader", "auditReader", "selectionVariableItems.classAuditReader",
+						"selectionVariableItems.auditReader", "variable.classAuditReader", "variable.auditReader")
+				.serialize(this);
 	}
 
 	public String toString() {

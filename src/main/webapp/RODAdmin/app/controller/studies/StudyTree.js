@@ -31,28 +31,31 @@ Ext.define('RODAdmin.controller.studies.StudyTree', {
 
 	                   refs : [
 	                           {
-	                        	   ref : 'lydetailspanel',
-	                        	   selector : 'cmsstudys panel#lydetailscontainer '
-	                           }, {
-	                        	   ref : 'lyusagepanel',
-	                        	   selector : 'studyusage'
-	                           }, {
-	                        	   ref : 'studyproperties',
-	                        	   selector : 'studyproperties panel#lydata '
-	                           }, {
-	                        	   ref : 'lycontent',
-	                        	   selector : 'studyproperties panel#lyenvelope codemirror#lycontent'
-	                           },
+	                        	   ref : 'stdetailspanel',
+	                        	   selector : 'studies panel#stdetailscontainer '
+	                           }, 
+//	                           {
+//	                        	   ref : 'stusagepanel',
+//	                        	   selector : 'studyusage'
+//	                           }, 
 	                           {
-	                        	   ref : 'lyenvelope',
-	                        	   selector : 'studyproperties panel#lyenvelope'
+	                        	   ref : 'studyproperties',
+	                        	   selector : 'studyproperties panel#stdata '
+	                           }, 
+//	                           {
+//	                        	   ref : 'stcontent',
+//	                        	   selector : 'studyproperties panel#lyenvelope codemirror#lycontent'
+//	                           },
+	                           {
+	                        	   ref : 'stenvelope',
+	                        	   selector : 'studyproperties panel#stenvelope'
 	                           },
 	                           {
 	                        	   ref : 'itemsview',
 	                        	   selector : 'studyitemsview'
 	                           }, {
 	                        	   ref : "folderview",
-	                        	   selector : "studyitemsview treepanel#lyfolderview"
+	                        	   selector : "studyitemsview treepanel#stfolderview"
 	                           }, {
 	                        	   ref : 'folderselect',
 	                        	   selector : 'studyedit treepanel#groupselect'
@@ -66,12 +69,12 @@ Ext.define('RODAdmin.controller.studies.StudyTree', {
 	                            */
 	                           init : function(application) {
 	                        	   this.control({
-	                        		   "studyitemsview treepanel#lyfolderview" : {
+	                        		   "studyitemsview treepanel#stfolderview" : {
 	                        			   /**
 	                        			    * @listener studyitemsview-treepanel-folderview-selectionchange
 	                        			    *           triggered-by:
 	                        			    *           {@link RODAdmin.view.studies.StudyItemview StudyItemsview}
-	                        			    *           treepanel#lyfolderview executes
+	                        			    *           treepanel#stfolderview executes
 	                        			    *           {@link #onFolderviewSelectionChange}
 	                        			    */
 	                        			   selectionchange : this.onFolderviewSelectionChange,
@@ -79,45 +82,45 @@ Ext.define('RODAdmin.controller.studies.StudyTree', {
 	                        			    * @listener studyitemsview-treepanel-folderview-itemcontextmenu
 	                        			    *           triggered-by:
 	                        			    *           {@link RODAdmin.view.studies.StudyItemview StudyItemsview}
-	                        			    *           treepanel#lyfolderview executes
+	                        			    *           treepanel#stfolderview executes
 	                        			    *           {@link #onTreeContextMenu}
 	                        			    */
 	                        			   itemcontextmenu : this.onTreeContextMenu
 	                        		   },
-	                        		   "studyitemsview treepanel#lyfolderview toolbar button#reloadtree" : {
+	                        		   "studyitemsview treepanel#stfolderview toolbar button#reloadtree" : {
 	                        			   /**
-	                        			    * @listener studyitemsview-treepanel-lyfolderview-toolbar-button-reloadtree
+	                        			    * @listener studyitemsview-treepanel-stfolderview-toolbar-button-reloadtree
 	                        			    *           triggered-by:
 	                        			    *           {@link RODAdmin.view.studies.StudyItemview StudyItemsview}
-	                        			    *           treepanel#lyfolderview toolbar button#reloadtree
+	                        			    *           treepanel#stfolderview toolbar button#reloadtree
 	                        			    *           {@link #onReloadTreeClick}
 	                        			    */
 	                        			   click : this.onReloadTreeClick
 	                        		   },
-	                        		   "studyitemsview treepanel#lyfolderview toolbar button#collapsetree" : {
+	                        		   "studyitemsview treepanel#stfolderview toolbar button#collapsetree" : {
 	                        			   /**
-	                        			    * @listener studyitemsview-treepanel-lyfolderview-toolbar-button-collapsetree
+	                        			    * @listener studyitemsview-treepanel-stfolderview-toolbar-button-collapsetree
 	                        			    *           triggered-by:
 	                        			    *           {@link RODAdmin.view.studies.StudyItemview StudyItemsview}
-	                        			    *           treepanel#lyfolderview toolbar button#collapsetree
+	                        			    *           treepanel#stfolderview toolbar button#collapsetree
 	                        			    *           {@link #onCollapseTreeClick}
 	                        			    */
 	                        			   click : this.onCollapseTreeClick
 	                        		   },
-	                        		   "studyitemsview treepanel#lyfolderview toolbar button#expandtree" : {
+	                        		   "studyitemsview treepanel#stfolderview toolbar button#expandtree" : {
 	                        			   /**
-	                        			    * @listener studyitemsview-treepanel-lyfolderview-toolbar-button-expandtree
+	                        			    * @listener studyitemsview-treepanel-stfolderview-toolbar-button-expandtree
 	                        			    *           triggered-by:
-	                        			    *           {@link RODAdmin.view.studies.StudyItemview StudyItemsview}
-	                        			    *           treepanel#lyfolderview toolbar button#expandtree
+	                        			    *           {@link RODAdmin.view.studies.StudyItemsview StudyItemsview}
+	                        			    *           treepanel#stfolderview toolbar button#expandtree
 	                        			    *           {@link #onExpandTreeClick}
 	                        			    */	        	
 	                        			   click : this.onExpandTreeClick
 	                        		   },
-	               					"studyitemsview treepanel#lyfolderview > treeview" : {
+	               					"studyitemsview treepanel#stfolderview > treeview" : {
 	            			            /**
 	            						 * @listener itemsview-treepanel-folderview-treeview-drop triggered-by:
-	            						 *           {@link RODAdmin.view.cms.files.Itemsview Itemsview}
+	            						 *           {@link RODAdmin.view.studies.StudyItemsview StudyItemsview}
 	            						 *           treepanel#folderview > treeview  
 	            						 *           {@link #onTreeDrop}
 	            						 */	        	
@@ -140,18 +143,18 @@ Ext.define('RODAdmin.controller.studies.StudyTree', {
 	                        			    */	        	
 	                        			   click : this.onEditStudyClick
 	                        		   },
-	                        		   "studygroupcontextmenu menuitem#addstudy" : {
+	                        		   "catalogcontextmenu menuitem#addstudy" : {
 	                        			   /**
-	                        			    * @listener studygroupcontextmenu-menuitem-addstudy
+	                        			    * @listener catalogcontextmenu-menuitem-addstudy
 	                        			    *           triggered-by:
 	                        			    *           {@link RODAdmin.view.studies.CatalogContextMenu CatalogContextMenu}
 	                        			    *           menuitem#addstudy {@link #onAddStudyClick}
 	                        			    */	        	
 	                        			   click : this.onAddStudyClick
 	                        		   },
-	                        		   "studygroupcontextmenu menuitem#newgroup" : {
+	                        		   "catalogcontextmenu menuitem#newgroup" : {
 	                        			   /**
-	                        			    * @listener studygroupcontextmenu-menuitem-newgriup
+	                        			    * @listener catalogcontextmenu-menuitem-newgriup
 	                        			    *           triggered-by:
 	                        			    *           {@link RODAdmin.view.studies.CatalogContextMenu CatalogContextMenu}
 	                        			    *           menuitem#newgroup {@link #onNewGroupClick}
@@ -238,25 +241,25 @@ Ext.define('RODAdmin.controller.studies.StudyTree', {
 	                        	   var currentNode = this.getFolderview().getSelectionModel().getLastSelected();
 	                        	   if (record.data.itemtype == 'studygroup') {	        
 	                        		   console.log('edit study group');
-		                        	   win = Ext.WindowMgr.get('studygroupedit');
+		                        	   win = Ext.WindowMgr.get('catalogedit');
 		                        	   console.log(win);
 		                        	   if (!win) {
 		                        		   win = Ext.create('RODAdmin.view.studies.EditCatalogWindow');
 		                        	   }
 		                        	   win.setTitle('Edit Study Group');
-//		                        	   var wtree = win.down('treepanel');
-//		                        	   var studyitemstore = Ext.create('RODAdmin.store.studies.StudyItem');
-//		                        	   studyitemstore.load({
-//		                        		   id : currentNode.data.indice, // set the id here
-//		                        		   scope : this,
-//		                        		   callback : function(records, operation, success) {
-//		                        			   if (success) {
-//		                        				   var studyitem = studyitemstore.first();
-//		                        				   win.down('form').getForm().loadRecord(studyitem);
-//		                        				   win.down('form').down('hiddenfield#groupid').setValue(studyitem.data.groupid);
-//		                        			   }
-//		                        		   }
-//		                        	   });
+		                        	   var wtree = win.down('treepanel');
+		                        	   var studyitemstore = Ext.create('RODAdmin.store.studies.StudyItem');
+		                        	   studyitemstore.load({
+		                        		   id : currentNode.data.indice, // set the id here
+		                        		   scope : this,
+		                        		   callback : function(records, operation, success) {
+		                        			   if (success) {
+		                        				   var studyitem = studyitemstore.first();
+		                        				   win.down('form').getForm().loadRecord(studyitem);
+		                        				   win.down('form').down('hiddenfield#groupid').setValue(studyitem.data.groupid);
+		                        			   }
+		                        		   }
+		                        	   });
 		                        	   win.show();
 	                        	   } else {	   
                         		   console.log('edit study group');	                        		   
@@ -289,7 +292,7 @@ Ext.define('RODAdmin.controller.studies.StudyTree', {
 	                        	   e.stopEvent();
 	                        	   if (record.data.itemtype == 'studygroup') {
 	                        		   if (!this.foldermenu) {
-	                        			   this.groupmenu = Ext.create('widget.studygroupcontextmenu');
+	                        			   this.groupmenu = Ext.create('widget.catalogcontextmenu');
 	                        		   }
 	                        		   this.groupmenu.showAt(e.getXY());
 	                        	   }
@@ -348,45 +351,46 @@ Ext.define('RODAdmin.controller.studies.StudyTree', {
 	                        	   console.log('folderviewselectionchange');
 	                        	   console.log(RODAdmin.util.Globals.stare);
 	                        	   var record = selected[0];
-	                        	   var lydetails = this.getLydetailspanel();
-                        		   var lyusage = this.getLyusagepanel();
-                        		   var lyprop = this.getStudyproperties();
-                        		   var lycontent = this.getLycontent(); 
+	                        	   var stdetails = this.getStdetailspanel();
+                        		   //Variables!!!!
+	                        	   //var stusage = this.getLyusagepanel();
+                        		   var stprop = this.getStudyproperties();
+                        		   //var stcontent = this.getLycontent(); 
 	                        	   if (record != null) {	    
-	                        		   var lyenvelope = this.getLyenvelope();
-	                        		   lydetails.setTitle(record.data.name);
+	                        		   var stenvelope = this.getStenvelope();
+	                        		   stdetails.setTitle(record.data.name);
 
 	                        		   if (record.data.itemtype == 'studygroup') {
-	                        			   lyusage.collapse(true);
-	                        			   var lygroupstore = Ext.StoreManager.get('studies.Catalog');
-	                        			   lycontent.setValue('');  
-	                        			   lyenvelope.collapse();	
-	                        			   lygroupstore.load({
+	                        			   //lyusage.collapse(true);
+	                        			   var stgroupstore = Ext.StoreManager.get('studies.Catalog');
+	                        			   //stcontent.setValue('');  
+	                        			   stenvelope.collapse();	
+	                        			   stgroupstore.load({
 	                        				   scope : this,
-	                        				   id : record.data.indice, 
+	                        				   id : record.data.id, 
 	                        				   callback : function(records, operation, success) {
 	                        					   if (success) {
-	                        						   var lyitem = lygroupstore.first();
-	                        						   lyprop.update(lyitem);
+	                        						   var stitem = stgroupstore.first();
+	                        						   stprop.update(stitem);
 	                        					   }
 	                        				   }
 	                        			   });
 	                        		   }
 	                        		   else {
-	                        			   lyusage.expand();
-	                        			   lyenvelope.expand();  
-	                        			   var lyitemstore = Ext.StoreManager.get('studies.StudyItem');
-	                        			   lyitemstore.load({
-	                        				   id : record.data.indice, 
+	                        			   //stusage.expand();
+	                        			   stenvelope.expand();  
+	                        			   var stitemstore = Ext.StoreManager.get('studies.StudyItem');
+	                        			   stitemstore.load({
+	                        				   id : record.data.id, 
 	                        				   scope : this,
 	                        				   callback : function(records, operation, success) {
 	                        					   if (success) {
-	                        						   var lyitem = lyitemstore.first();
-	                        						   lycontent.setValue(lyitem.data.content);
-	                        						   lyprop.update(lyitem);
-	                        						   if (typeof lyitem.usageStore === 'object') {
-	                        							   lyusage.bindStore(lyitem.usage());
-	                        						   }
+	                        						   var stitem = stitemstore.first();
+	                        						   //stcontent.setValue(stitem.data.content);
+	                        						   stprop.update(stitem);
+//	                        						   if (typeof stitem.usageStore === 'object') {
+//	                        							   lyusage.bindStore(lyitem.usage());
+//	                        						   }
 	                        					   }
 	                        				   }
 	                        			   });
@@ -394,10 +398,10 @@ Ext.define('RODAdmin.controller.studies.StudyTree', {
 	                        	   }
 	                            else {
                        		   
-                        		   lydetails.setTitle('');
-                        		   lyprop.update('');
-                        		   lyusage.store.removeAll();
-                        		   lycontent.setValue('');
+                        		   stdetails.setTitle('');
+                        		   stprop.update('');
+                        		   //stusage.store.removeAll();
+                        		   //stcontent.setValue('');
 	                           }
 	                   }
 });

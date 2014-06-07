@@ -10,7 +10,7 @@ Ext.define('RODAdmin.model.studies.StudyVariable', {
     	name: 'label',
     	type: 'string'
     },{
-    	name: 'id',
+    	name: 'indice',
     	type: 'integer'
     }]
 });

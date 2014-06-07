@@ -148,7 +148,9 @@ public class OtherStatistic {
 	}
 
 	public static String toJsonArray(Collection<OtherStatistic> collection) {
-		return new JSONSerializer().exclude("*.class").exclude("classAuditReader", "auditReader").serialize(collection);
+		return new JSONSerializer().exclude("*.class")
+				.exclude("classAuditReader", "auditReader", "variableId.classAuditReader", "variableId.auditReader")
+				.serialize(collection);
 	}
 
 	/**
@@ -329,7 +331,9 @@ public class OtherStatistic {
 	}
 
 	public String toJson() {
-		return new JSONSerializer().exclude("*.class").exclude("classAuditReader", "auditReader").serialize(this);
+		return new JSONSerializer().exclude("*.class")
+				.exclude("classAuditReader", "auditReader", "variableId.classAuditReader", "variableId.auditReader")
+				.serialize(this);
 	}
 
 	public String toString() {

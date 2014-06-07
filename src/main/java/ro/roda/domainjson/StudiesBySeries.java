@@ -26,13 +26,14 @@ public class StudiesBySeries extends JsonInfo {
 		serializer.exclude("studies.leaf", "studies.universe", "studies.variables", "studies.files", "studies.persons",
 				"studies.orgs", "studies.keywords");
 
-		serializer.include("id", "name", "studiesCount");
+		serializer.include("id", "name", "studiesCount", "geoCoverage", "universe", "description");
 		serializer.include("studies.name", "studies.id", "studies.yearStart", "studies.description",
 				"studies.geographicCoverage", "studies.unitAnalysis");
 
 		// return "{\"data\":[{\"name\":\"RODA\",\"level\":0,\"data\":"
 		// + serializer.serialize(collection) + "}]}";
 
+		serializer.transform(new FieldNameTransformer("geo_coverage"), "geoCoverage");
 		serializer.transform(new FieldNameTransformer("indice"), "id");
 		serializer.transform(new FieldNameTransformer("nrStudies"), "studiesCount");
 		serializer.transform(new FieldNameTransformer("geo_coverage"), "studies.geographicCoverage");
@@ -216,13 +217,14 @@ public class StudiesBySeries extends JsonInfo {
 		serializer.exclude("studies.leaf", "studies.universe", "studies.variables", "studies.files", "studies.persons",
 				"studies.orgs", "studies.keywords");
 
-		serializer.include("id", "name", "studiesCount");
+		serializer.include("id", "name", "studiesCount", "geoCoverage", "universe", "description");
 		serializer.include("studies.name", "studies.id", "studies.yearStart", "studies.description",
 				"studies.geographicCoverage", "studies.unitAnalysis");
 
 		// return "{\"data\":[{\"name\":\"RODA\",\"level\":0,\"data\":"
 		// + serializer.serialize(collection) + "}]}";
 
+		serializer.transform(new FieldNameTransformer("geo_coverage"), "geoCoverage");
 		serializer.transform(new FieldNameTransformer("indice"), "id");
 		serializer.transform(new FieldNameTransformer("nrStudies"), "studiesCount");
 		serializer.transform(new FieldNameTransformer("geo_coverage"), "studies.geographicCoverage");

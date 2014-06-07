@@ -15,5 +15,8 @@ Ext.define('RODAdmin.model.studies.Catalog', {
 	}, {
 		name : 'itemtype',
 		type : 'string'
+	}, {
+		name : 'groupid',
+		type : 'int'
 	}]
 });

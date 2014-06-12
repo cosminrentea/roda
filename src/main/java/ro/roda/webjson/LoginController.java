@@ -1,4 +1,4 @@
-package ro.roda.webjson.user;
+package ro.roda.webjson;
 
 import javax.servlet.http.HttpServletRequest;
 

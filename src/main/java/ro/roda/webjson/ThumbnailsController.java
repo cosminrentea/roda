@@ -1,4 +1,4 @@
-package ro.roda.webjson.admin;
+package ro.roda.webjson;
 
 import java.io.InputStream;
 
@@ -21,7 +21,7 @@ import ro.roda.service.CmsFileService;
 import ro.roda.service.filestore.CmsFileStoreService;
 import ro.roda.service.thumbnails.ThumbnailsService;
 
-@RequestMapping("/admin/thumbnail/alias")
+@RequestMapping("/thumbnail/alias")
 @Controller
 public class ThumbnailsController {
 

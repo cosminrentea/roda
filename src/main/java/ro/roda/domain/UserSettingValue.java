@@ -32,8 +32,6 @@ import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.thoughtworks.selenium.webdriven.commands.GetValue;
-
 import flexjson.JSONDeserializer;
 import flexjson.JSONSerializer;
 

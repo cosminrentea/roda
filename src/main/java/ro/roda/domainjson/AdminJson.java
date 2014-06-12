@@ -81,25 +81,33 @@ public class AdminJson {
 		CmsLayoutGroup layoutGroup = new CmsLayoutGroup();
 		layoutGroup.setName(groupname);
 		layoutGroup.setDescription(description);
+		
+		CmsLayoutGroup parentGroup = CmsLayoutGroup.findCmsLayoutGroup(parentId);
+		
+		
+		try {		
+				if (parentGroup != null) {
+					
+					if (parentGroup.getCmsLayoutGroups() != null && parentGroup.getCmsLayoutGroups().contains(layoutGroup)) {
+						// do nothing
+					} else {
 
-		CmsLayoutGroup parentGroup = null;
-		if (parentId != null) {
-			parentGroup = CmsLayoutGroup.findCmsLayoutGroup(parentId);
-			if (parentGroup != null) {
+						if (parentGroup.getCmsLayoutGroups() == null) {
+							parentGroup.setCmsLayoutGroups(new HashSet<CmsLayoutGroup>());
+							parentGroup.getCmsLayoutGroups().add(layoutGroup);
+						} else {
+							parentGroup.getCmsLayoutGroups().add(layoutGroup);
+						}
 
-				if (parentGroup.getCmsLayoutGroups() == null) {
-					parentGroup.setCmsLayoutGroups(new HashSet<CmsLayoutGroup>());
-				}
-				parentGroup.getCmsLayoutGroups().add(layoutGroup);
+						CmsPage.entityManager().persist(parentGroup);
+
+					}
+					layoutGroup.setParentId(parentGroup);
+				
 			}
-		}
-		try {
+				CmsLayoutGroup.entityManager().persist(layoutGroup);
 
-			if (parentGroup != null) {
-				CmsLayoutGroup.entityManager().persist(parentGroup);
-			}
-			layoutGroup.setParentId(parentGroup);
-			CmsLayoutGroup.entityManager().persist(layoutGroup);
+			
 		} catch (EntityExistsException e) {
 			return new AdminJson(false, "Layout group not created " + e.getMessage());
 		}

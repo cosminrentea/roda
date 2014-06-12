@@ -39,6 +39,7 @@ public class RodaPageServiceImpl implements RodaPageService {
 	private static String DEFAULT_ERROR_PAGE_LANG = "en";
 	private static String ADMIN_URL = "admin/index.html";
 	private static String CMS_FILE_CONTENT_URL = "cmsfilecontent/";
+	private static String defaultUrlWhenNoLanguage = "/en";
 
 	private final Log log = LogFactory.getLog(this.getClass());
 
@@ -68,7 +69,8 @@ public class RodaPageServiceImpl implements RodaPageService {
 
 	public String generateDefaultPageUrl() {
 		CmsPage defaultPage = CmsPage.findCmsPageDefault();
-		return generateFullRelativeUrl(defaultPage);
+		String relativeUrl = generateFullRelativeUrl(defaultPage);
+		return (relativeUrl != null && relativeUrl.length() > 1) ? relativeUrl : defaultUrlWhenNoLanguage;
 	}
 
 	/**

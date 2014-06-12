@@ -56,8 +56,8 @@ public class RodaPageController {
 			try {
 				// external redirect
 				response.sendRedirect(generatedPage[2]);
-			} catch (IOException ioeExternalRedirect) {
-				// TODO log
+			} catch (IOException ioe) {
+				log.trace("External Redirect Exception", ioe);
 			}
 
 		} else if (generatedPage[3] != null) {
@@ -65,9 +65,8 @@ public class RodaPageController {
 			try {
 				// internal redirect
 				response.sendRedirect(request.getContextPath() + requestMapping + generatedPage[3]);
-
-			} catch (Exception internalRedirectException) {
-				// TODO log
+			} catch (Exception e) {
+				log.trace("Internal Redirect Exception", e);
 			}
 		} else {
 			return show(generatedPage, uiModel);
@@ -76,15 +75,8 @@ public class RodaPageController {
 	}
 
 	private String show(String[] generatedPage, Model uiModel) {
-		String pageBody = generatedPage[0];
-		String pageTitle = generatedPage[1];
-
-		// uiModel.addAttribute("rodapage", page);
-		// uiModel.addAttribute("pageUrl", url);
-
-		uiModel.addAttribute("pageBody", pageBody);
-		uiModel.addAttribute("pageTitle", pageTitle);
-
+		uiModel.addAttribute("pageBody", generatedPage[0]);
+		uiModel.addAttribute("pageTitle", generatedPage[1]);
 		return "rodapage/show";
 	}
 }

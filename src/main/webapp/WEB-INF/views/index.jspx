@@ -30,51 +30,5 @@
 		</iframe>
 	</util:panel>	
 	</sec:authorize>
-	
-<!-- 	
-	<div id="usersgrid"></div>
-	
-	<script>
-		dojo.require("dojox.grid.DataGrid");
-		dojo.require("dojox.data.JsonRestStore");
-
-		var usersgrid, usersstore;
-
-		dojo.ready(function() {
-
-			usersgrid = new dojox.grid.DataGrid({
-				store : new dojox.data.JsonRestStore({
-					target : "userses/"
-				}),
-				query : {
-					id : "*"
-				},
-				autoheight : true,
-				autowidth : true,
-				structure : [ {
-					defaultCell : {
-						width : "50px"
-					},
-					cells : [ {
-						name : "Username",
-						field : "username",
-						width : "20%"
-					}, {
-						name : "Active ?",
-						field : "enabled",
-						width : "10%"
-					}, {
-						name : "Password Hash (SHA-256)",
-						field : "password",
-						width : "70%"
-					} ]
-				} ]
-			}, "usersgrid");
-
-			// call startup to render grid
-			usersgrid.startup();
-		});
-	</script>
--->
 
 </div>

@@ -1,12 +1,12 @@
 package ro.roda.domainjson;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.Date;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
@@ -31,10 +31,10 @@ import ro.roda.domain.CmsPageType;
 import ro.roda.domain.CmsSnippet;
 import ro.roda.domain.CmsSnippetGroup;
 import ro.roda.domain.Lang;
+import ro.roda.domain.News;
 import ro.roda.domain.UserGroup;
 import ro.roda.domain.UserMessage;
 import ro.roda.domain.Users;
-import ro.roda.domain.News;
 import flexjson.JSON;
 import flexjson.JSONSerializer;
 
@@ -75,7 +75,7 @@ public class AdminJson {
 
 	public static AdminJson layoutGroupSave(String groupname, Integer parentId, String description) {
 		if (groupname == null) {
-			return new AdminJson(false, "The layout group must gave a name.");
+			return new AdminJson(false, "The layout group must have a name.");
 		}
 
 		CmsLayoutGroup layoutGroup = new CmsLayoutGroup();
@@ -86,15 +86,20 @@ public class AdminJson {
 		if (parentId != null) {
 			parentGroup = CmsLayoutGroup.findCmsLayoutGroup(parentId);
 			if (parentGroup != null) {
-				layoutGroup.setParentId(parentGroup);
+
+				if (parentGroup.getCmsLayoutGroups() == null) {
+					parentGroup.setCmsLayoutGroups(new HashSet<CmsLayoutGroup>());
+				}
 				parentGroup.getCmsLayoutGroups().add(layoutGroup);
 			}
 		}
 		try {
-			CmsLayoutGroup.entityManager().persist(layoutGroup);
+
 			if (parentGroup != null) {
 				CmsLayoutGroup.entityManager().persist(parentGroup);
 			}
+			layoutGroup.setParentId(parentGroup);
+			CmsLayoutGroup.entityManager().persist(layoutGroup);
 		} catch (EntityExistsException e) {
 			return new AdminJson(false, "Layout group not created " + e.getMessage());
 		}
@@ -296,10 +301,9 @@ public class AdminJson {
 			if (parentGroup != null) {
 				if (parentGroup.getCmsLayoutGroups() == null) {
 					parentGroup.setCmsLayoutGroups(new HashSet<CmsLayoutGroup>());
-					parentGroup.getCmsLayoutGroups().add(layoutGroup);
-				} else {
-					parentGroup.getCmsLayoutGroups().add(layoutGroup);
 				}
+				parentGroup.getCmsLayoutGroups().add(layoutGroup);
+
 				CmsLayoutGroup.entityManager().persist(parentGroup);
 			}
 			layoutGroup.setParentId(parentGroup);
@@ -1303,7 +1307,7 @@ public class AdminJson {
 
 		return result;
 	}
-	
+
 	// Methods for Snippets
 	public static AdminJson newsSave(Integer id, Integer langId, String title, String content, Date added) {
 		if (title == null) {
@@ -1327,9 +1331,9 @@ public class AdminJson {
 
 		newsitem.setTitle(title);
 		newsitem.setContent(content);
-		newsitem.setAdded(added);	
+		newsitem.setAdded(added);
 		newsitem.setVisible(true);
-		
+
 		if (langId != null) {
 			Lang newsLang = Lang.findLang(langId);
 			if (newsLang != null) {
@@ -1342,5 +1346,4 @@ public class AdminJson {
 		return new AdminJson(true, "News item saved");
 	}
 
-	
 }

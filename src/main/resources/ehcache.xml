@@ -8,8 +8,6 @@
 		eternal="false" 
 		timeToIdleSeconds="600"
 		overflowToDisk="true" 
-		maxBytesLocalHeap="20M"
-		maxBytesLocalDisk="200M"
 		memoryStoreEvictionPolicy="LRU" 
 	/>
 
@@ -17,8 +15,6 @@
 		eternal="false" 
 		timeToIdleSeconds="3600" 
 		overflowToDisk="true"
-		maxBytesLocalHeap="50M"
-		maxBytesLocalDisk="500M"
 		memoryStoreEvictionPolicy="LRU" 
 	/>
 

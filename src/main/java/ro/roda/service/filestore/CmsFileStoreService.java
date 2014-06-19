@@ -28,4 +28,6 @@ public interface CmsFileStoreService {
 
 	public abstract void folderMove(CmsFolder cmsFolderParent, CmsFolder cmsFolder);
 
+	public abstract void deleteAll();
+
 }

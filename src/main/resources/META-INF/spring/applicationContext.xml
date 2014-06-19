@@ -191,7 +191,8 @@
 		<constructor-arg value="${solr.serverUrl}" />
 	</bean>
 	
-	<!-- JackRabbit -->
+	<!-- JackRabbit is now initialized by Java code (FileStore service) -->
+<!-- 
     <bean id="jackrabbitRepositoryConfig" class="org.apache.jackrabbit.core.config.RepositoryConfig" factory-method="create">
         <constructor-arg index="0" value="${roda.jackrabbit.repository.xml}"/>
         <constructor-arg index="1" value="${roda.jackrabbit.repository}" />
@@ -199,12 +200,13 @@
 	<bean id="jackrabbitRepository" class="org.apache.jackrabbit.core.RepositoryImpl">
         <constructor-arg index="0" ref="jackrabbitRepositoryConfig" />
     </bean>
-    
+-->  
+   
 	<!-- Cosmin: support for file-uploading -->
 	<bean id="multipartResolver"
 		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
 		<!-- one of the properties available; the maximum file size in bytes -->
-		<property name="maxUploadSize" value="${roda.filestore.maxuploadsize}" />
+		<property name="maxUploadSize" value="${filestore.maxuploadsize}" />
 	</bean>
 <!-- 
 	<bean id="multipartFilter"

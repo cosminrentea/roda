@@ -33,7 +33,7 @@ public class ApplicationListenerContextRefreshed implements ApplicationListener<
 	ImporterService importer;
 
 	@Override
-	@Transactional
+	// @Transactional
 	public void onApplicationEvent(ContextRefreshedEvent event) {
 		if (event.getApplicationContext().getParent() == null) {
 			// root context

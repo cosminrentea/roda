@@ -23,12 +23,17 @@ import org.apache.commons.io.input.AutoCloseInputStream;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.jackrabbit.api.JackrabbitRepository;
+import org.apache.jackrabbit.core.RepositoryImpl;
+import org.apache.jackrabbit.core.config.RepositoryConfig;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.request.AbstractUpdateRequest.ACTION;
 import org.apache.solr.client.solrj.request.ContentStreamUpdateRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,7 +41,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import ro.roda.domain.CmsFile;
 import ro.roda.domain.CmsFolder;
-import ro.roda.service.importer.ImporterService;
 
 @Service
 @Transactional
@@ -44,25 +48,51 @@ public class CmsFileStoreServiceImpl implements CmsFileStoreService {
 
 	private final Log log = LogFactory.getLog(this.getClass());
 
-	@Autowired
-	JackrabbitRepository repository;
+	@Value("${filestore.dir}")
+	private String filestoreDir = null;
 
-	@Value("${R.filestore.dir}")
-	private final static String filestoreDir = "/tmp";
+	@Value("${jackrabbit.config}")
+	private String jackrabbitConfigFile = null;
+
+	@Value("${jackrabbit.home}")
+	private String jackrabbitHome = null;
+
+	private final static String jackrabbitUser = "admin";
+
+	private JackrabbitRepository repository;
+
+	@Autowired
+	Environment env;
 
 	@Autowired(required = false)
 	SolrServer solrServer;
 
-	@Autowired
-	ImporterService importer;
-
 	@SuppressWarnings("unused")
 	@PostConstruct
 	private void onStart() {
+
 		try {
 			log.debug("Jackrabbit initializing");
+
+			// @Value fields are correctly initialized
+			// before this @PostConstruct method
+			log.trace(jackrabbitConfigFile);
+			log.trace(jackrabbitHome);
+
+			// create Repository using RespositoryConfig
+			// config file is searched for in Classpath
+			// (to allow relative paths in the property value)
+			RepositoryConfig repositoryConfig = RepositoryConfig.create(new ClassPathResource(jackrabbitConfigFile)
+					.getFile().getCanonicalPath(), jackrabbitHome);
+			repository = RepositoryImpl.create(repositoryConfig);
+
+			// remove everything from the repository only when profile is
+			// devel OR productioninit (initial import for production)
+			if (env.acceptsProfiles("devel", "productioninit")) {
+				log.debug("Deleting everything in the repository");
+				deleteAll();
+			}
 			log.debug("Jackrabbit initialized");
-			// JcrUtils.
 		} catch (Exception e) {
 			log.error("Failed to initialize Jackrabbit", e);
 		}
@@ -74,10 +104,6 @@ public class CmsFileStoreServiceImpl implements CmsFileStoreService {
 	@SuppressWarnings("unused")
 	@PreDestroy
 	private void shutdownJcr() {
-		/*
-		 * log.debug("Jackrabbit closing session"); session.logout();
-		 * log.debug("Jackrabbit closed session");
-		 */
 		log.debug("Jackrabbit shutdown started");
 		repository.shutdown();
 		log.debug("Jackrabbit shutdown completed");
@@ -138,13 +164,33 @@ public class CmsFileStoreServiceImpl implements CmsFileStoreService {
 		}
 	}
 
+	@Override
+	public void deleteAll() {
+		Session session;
+		try {
+			SimpleCredentials adminCred = new SimpleCredentials(jackrabbitUser, new char[0]);
+			session = repository.login(adminCred);
+			try {
+				Node root = session.getRootNode();
+				for (NodeIterator ni = root.getNodes(); ni.hasNext();) {
+					ni.nextNode().remove();
+				}
+				session.save();
+			} finally {
+				session.logout();
+			}
+		} catch (Exception e) {
+			log.error(e);
+		}
+	}
+
 	public Map<String, String> getFileProperties(CmsFile cmsFile) {
 		Map<String, String> result = new HashMap<String, String>();
 		Session session;
 		Property property;
 		PropertyIterator pi;
 		try {
-			SimpleCredentials adminCred = new SimpleCredentials("admin", new char[0]);
+			SimpleCredentials adminCred = new SimpleCredentials(jackrabbitUser, new char[0]);
 			session = repository.login(adminCred);
 			try {
 				Node root = session.getRootNode();
@@ -165,9 +211,6 @@ public class CmsFileStoreServiceImpl implements CmsFileStoreService {
 						result.put(property.getName(), property.getString());
 					}
 				}
-
-				// log.trace(node.getPath());
-				// log.trace(node.getProperty("message").getString());
 			} finally {
 				session.logout();
 			}
@@ -187,7 +230,7 @@ public class CmsFileStoreServiceImpl implements CmsFileStoreService {
 		log.trace("File name = " + multipartFile.getOriginalFilename());
 		log.trace("File mime-type = " + multipartFile.getContentType());
 		try {
-			SimpleCredentials adminCred = new SimpleCredentials("admin", new char[0]);
+			SimpleCredentials adminCred = new SimpleCredentials(jackrabbitUser, new char[0]);
 			session = repository.login(adminCred);
 			try {
 				log.trace("> fileSave > move the file to the Repository");
@@ -239,7 +282,7 @@ public class CmsFileStoreServiceImpl implements CmsFileStoreService {
 	public void folderSave(CmsFolder cmsFolder) {
 		Session session;
 		try {
-			SimpleCredentials adminCred = new SimpleCredentials("admin", new char[0]);
+			SimpleCredentials adminCred = new SimpleCredentials(jackrabbitUser, new char[0]);
 			session = repository.login(adminCred);
 			try {
 				Node root = session.getRootNode();
@@ -261,15 +304,13 @@ public class CmsFileStoreServiceImpl implements CmsFileStoreService {
 		Session session;
 		InputStream is = null;
 		try {
-			SimpleCredentials adminCred = new SimpleCredentials("admin", new char[0]);
+			SimpleCredentials adminCred = new SimpleCredentials(jackrabbitUser, new char[0]);
 			session = repository.login(adminCred);
 			try {
 				Node root = session.getRootNode();
 				Node node = root.getNode(fileFullPath);
 				is = node.getNode("jcr:content").getProperty("jcr:data").getValue().getBinary().getStream();
 				log.trace(node.getPath());
-				// log.trace(node.getProperty("message").getString());
-				//
 			} finally {
 				session.logout();
 			}
@@ -286,21 +327,21 @@ public class CmsFileStoreServiceImpl implements CmsFileStoreService {
 		return fileLoad(getFullPath(cmsFile));
 	}
 
+	/**
+	 * Removes all files and sub-folders inside a folder. Keeps the folder.
+	 */
 	@Override
 	public void folderEmpty(CmsFolder cmsFolder) {
-		// TODO Cosmin
 		Session session;
 		try {
-			SimpleCredentials adminCred = new SimpleCredentials("admin", new char[0]);
+			SimpleCredentials adminCred = new SimpleCredentials(jackrabbitUser, new char[0]);
 			session = repository.login(adminCred);
 			try {
 				Node root = session.getRootNode();
-				NodeIterator ni = root.getNode(getFullPath(cmsFolder)).getNodes();
-				while (ni.hasNext()) {
-					ni = (NodeIterator) ni.next();
-					ni.remove();
+				for (NodeIterator ni = root.getNode(getFullPath(cmsFolder)).getNodes(); ni.hasNext();) {
+					ni.nextNode().remove();
 				}
-				root.getNode(getFullPath(cmsFolder)).remove();
+				// root.getNode(getFullPath(cmsFolder)).remove();
 				session.save();
 			} finally {
 				session.logout();
@@ -310,15 +351,17 @@ public class CmsFileStoreServiceImpl implements CmsFileStoreService {
 		}
 	}
 
+	/**
+	 * Removes a folder including all its children (files and sub-folders).
+	 */
 	@Override
 	public void folderDrop(CmsFolder cmsFolder) {
 		Session session;
 		try {
-			SimpleCredentials adminCred = new SimpleCredentials("admin", new char[0]);
+			SimpleCredentials adminCred = new SimpleCredentials(jackrabbitUser, new char[0]);
 			session = repository.login(adminCred);
 			try {
-				Node root = session.getRootNode();
-				root.getNode(getFullPath(cmsFolder)).remove();
+				session.getNode(getFullPath(cmsFolder)).remove();
 				session.save();
 			} finally {
 				session.logout();
@@ -332,11 +375,10 @@ public class CmsFileStoreServiceImpl implements CmsFileStoreService {
 	public void fileDrop(CmsFile cmsFile) {
 		Session session;
 		try {
-			SimpleCredentials adminCred = new SimpleCredentials("admin", new char[0]);
+			SimpleCredentials adminCred = new SimpleCredentials(jackrabbitUser, new char[0]);
 			session = repository.login(adminCred);
 			try {
-				Node root = session.getRootNode();
-				root.getNode(getFullPath(cmsFile)).remove();
+				session.getNode(getFullPath(cmsFile)).remove();
 				session.save();
 			} finally {
 				session.logout();

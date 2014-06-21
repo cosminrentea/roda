@@ -86,7 +86,7 @@ import ro.roda.service.filestore.CmsFileStoreService;
 import au.com.bytecode.opencsv.CSVReader;
 
 @Service
-@Transactional
+// @Transactional
 public class ImporterServiceImpl implements ImporterService {
 
 	private final Log log = LogFactory.getLog(this.getClass());
@@ -233,6 +233,7 @@ public class ImporterServiceImpl implements ImporterService {
 		}
 	}
 
+	@Transactional
 	public void importCms() throws IOException {
 		importCmsFiles("files");
 		importCmsLayouts("layouts");
@@ -536,6 +537,7 @@ public class ImporterServiceImpl implements ImporterService {
 		return result;
 	}
 
+	@Transactional
 	public void importElsst() throws FileNotFoundException, IOException {
 		List<String[]> csvLines;
 		CSVReader reader = new CSVReader(new FileReader(
@@ -592,6 +594,7 @@ public class ImporterServiceImpl implements ImporterService {
 		importCsvDir(rodaDataCsvExtraDir);
 	}
 
+	@Transactional
 	public void importCsvAfterDdi() throws FileNotFoundException, IOException {
 		// add Studies to Catalogs
 		CSVReader reader = new CSVReader(new FileReader(
@@ -625,6 +628,7 @@ public class ImporterServiceImpl implements ImporterService {
 	 * @throws SQLException
 	 * @throws IOException
 	 */
+	@Transactional
 	public void importCsvDir(String dirname) throws SQLException, IOException {
 		log.trace("Importing CSV from directory: " + dirname);
 		Connection con = null;
@@ -701,6 +705,7 @@ public class ImporterServiceImpl implements ImporterService {
 		log.trace("Finished importing DDI files");
 	}
 
+	@Transactional
 	public void importCodebook(CodeBook cb, MultipartFile multipartFile, boolean nesstarExported, boolean legacyDataRODA) {
 
 		if ("yes".equalsIgnoreCase(ddiPersist)) {

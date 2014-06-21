@@ -43,7 +43,7 @@ Ext.define('RODAdmin.view.cms.files.filedetails.FileProperties', {
 					'<tpl if="data.filetype != \'folder\'">',
 					'<table width:100%><tr>',
 					'<tpl if="data.contenttype == \'image\'">',
-					'<td><img src="/roda/j/admin/thumbnail/alias/{data.alias}/x/150" width="150"></td>',
+					'<td><img src="/roda/j/thumbnail/alias/{data.alias}/x/150" width="150"></td>',
 					'</tpl>',
 					'<td>',
 					'File: {data.filename} - {data.filesize}<br>',

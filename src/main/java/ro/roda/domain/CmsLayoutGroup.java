@@ -235,8 +235,8 @@ public class CmsLayoutGroup {
 	@NotNull
 	private String name;
 
-	@ManyToOne(optional = true)
-	@JoinColumn(name = "parent_id", columnDefinition = "integer", referencedColumnName = "id", insertable = false, updatable = false, nullable = true)
+	@ManyToOne
+	@JoinColumn(name = "parent_id", columnDefinition = "integer", referencedColumnName = "id", nullable = true)
 	private CmsLayoutGroup parentId;
 
 	@PersistenceContext
@@ -357,9 +357,10 @@ public class CmsLayoutGroup {
 	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof CmsLayoutGroup) {
-			return (id != null && id.equals(((CmsLayoutGroup) obj).id))
-					|| ((name != null && name.equalsIgnoreCase(((CmsLayoutGroup) obj).name)) && (parentId != null && parentId
-							.equals(((CmsLayoutGroup) obj).parentId)));
+			return (id != null && id.equals(((CmsLayoutGroup) obj).id));
+					//|| ((name != null && name.equalsIgnoreCase(((CmsLayoutGroup) obj).name)) && (parentId != null && parentId
+						//	.equals(((CmsLayoutGroup) obj).parentId)
+					
 		}
 		return false;
 	}

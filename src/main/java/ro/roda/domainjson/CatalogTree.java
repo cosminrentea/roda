@@ -116,7 +116,7 @@ public class CatalogTree extends JsonInfo {
 
 	private String name;
 
-	private String type;
+	// private String type;
 
 	private Set<JsonInfo> data;
 
@@ -140,13 +140,13 @@ public class CatalogTree extends JsonInfo {
 		this.name = name;
 	}
 
-	public String getType() {
-		return type;
-	}
-
-	public void setType(String type) {
-		this.type = type;
-	}
+	// public String getType() {
+	// return type;
+	// }
+	//
+	// public void setType(String type) {
+	// this.type = type;
+	// }
 
 	public boolean isLeaf() {
 		return leaf;
@@ -182,9 +182,9 @@ public class CatalogTree extends JsonInfo {
 		}
 
 		if (catalog.getSeries() == null) {
-			this.type = JsonInfo.CATALOG_TYPE;
+			setType(JsonInfo.CATALOG_TYPE);
 		} else {
-			this.type = JsonInfo.SERIES_TYPE;
+			setType(JsonInfo.SERIES_TYPE);
 		}
 		this.data = new HashSet<JsonInfo>();
 	}

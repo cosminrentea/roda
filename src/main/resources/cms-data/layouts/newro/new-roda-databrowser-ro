@@ -1,0 +1,35 @@
+[[Snippet: databrowser_header_ro]]       
+<body>
+<table cellpadding="0" cellspacing="0" border="1" width="1020px" align="center" class="big_wrapper">
+  <tbody>
+    <tr>
+	<td>
+	  <div id="large_box">
+	    <table cellpadding="0" cellspacing="0" border="0">
+		<tr>
+		  <td valign="top" align="left" style="vertical-align:top; width:250px;" class="box_logo">
+		    <a href="/roda/page/ro">[[ImgLink: logo_ro]]</a>
+		  </td>
+		  <td valign="top" align="left" style="vertical-align:top; width:770px;" class="box_header"></td>							
+		</tr>
+		<tr>
+		  <td colspan="2" valign="top" align="left" style="vertical-align:top; width:770px;" class="box_content">
+		    <div id="cont_right">
+			[[Code: PageContent]]
+		      <div class="clear"></div>
+		    </div>
+		  </div>
+	</td>							
+		</tr>
+		<tr>
+			<td colspan="2" valign="top" align="left" style="vertical-align:top" class="footer">
+			<br /><br /><br /><br />
+			</td>							
+			</tr>
+		</table>
+    </div>
+</td>
+</tr>
+</tbody>
+</table>
+</body> </html>

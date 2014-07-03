@@ -1,0 +1,106 @@
+<html><head>
+      <title>RODA - [[Code: PageTitle]] </title>
+      <meta http-equiv="Keywords" name="Keywords" content="RODA, DDI" />
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+	  [[Snippet: newstyle-en]]
+
+      <link rel="icon" href="[[FileURL:faviconpng]]" type="image/png" />
+      <link rel="SHORTCUT ICON" href="[[FileURL:faviconico]]" />
+</head>
+
+
+
+<body>
+	<div id="header">
+		<div id="header_cont">
+			<div id="logo"><a href="#">[[ImgLink: logo]]</a></div>
+			<div class="cpl">&nbsp;</div>
+			<div id="meniu">
+				 [[Snippet: homemenu-en]]
+				  <div class="cpl">&nbsp;</div>
+			</div>
+		</div>
+	</div>
+	<div id="wrapper">
+		<div id="icons">
+			<a href="">[[ImgLink: twitter]]</a>
+			<a href="">[[ImgLink: facebook]]</a>
+			<a href="">[[ImgLink: mail]]</a>
+		</div>
+		<div id="content_box">
+			<div class="content">
+				<div class="article">
+					[[Code: PageContent]]
+					<div class="cpl">&nbsp;</div>
+				</div>
+			</div>
+			<div class="sidebar">
+			<div class="article article_news">
+			<h3>Recent News</h3>
+			[[Code: GetNews]]
+			</div>
+			</div>
+		</div>
+		<div class="cpl">&nbsp;</div>
+		<div class="boxuri">
+			<div class="box">
+				[[ImgLink: box1]]
+				<br>
+				<div class="cont_box"><a href="">Data orders</a></div>
+			</div>
+			<div class="box">
+				[[ImgLink: box2]]<br>
+				<div class="cont_box">Data creation</div>
+			</div>
+			<div class="box last">
+				[[ImgLink: box3]]<br>
+				<div class="cont_box">Data depositing</div>
+			</div>
+			<div class="cpl">&nbsp;</div>
+		</div>
+		<div id="middle">
+			<div id="box_links">
+				<ul>
+					<li><a href="">Guide to good practice</a></li>
+					<li><a href="">Depositing advantages</a></li>
+					<li><a href="">RODA Catalogue</a></li>
+				</ul>
+			</div>
+			<div id="box_search">
+				&nbsp;&nbsp;&nbsp;<input type="text"><input value="cauta" type="submit">
+			</div>
+			<div class="cpl">&nbsp;</div>
+		</div>
+	</div>
+	<div id="footer">
+		<div id="footer_cont">
+			<ul class="meniu1">
+				<li><a href="">khskh</a></li>
+			</ul>
+			<div class="contact_footer">
+				<b>RODA<br>CONTACT US</b>
+Adress:<br>
+Romanian Social Data Archive<br>
+1, B-dul Schitu Magureanu, <br>
+et. 5, cam. 15, sector 5, 76625 <br>
+Bucharest, Romania	<br>	
+			</div>
+			<div class="meniu2">
+				For Depositors
+				<ul>
+					<li><a href="">khskh</a></li>
+				</ul>
+			</div>
+			<div class="meniu3">
+				For Data Users
+				<ul>
+					<li><a href="">khskh</a></li>
+				</ul>
+			</div>
+			<div class="cpl">&nbsp;</div>
+		</div>
+	</div>
+
+
+</body></html>

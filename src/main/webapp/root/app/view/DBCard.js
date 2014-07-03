@@ -10,6 +10,10 @@ Ext.define('databrowser.view.DBCard', {
         type: 'card',
         deferredRender: true,
     },
+	
+    initComponent: function() {
+        var me = this;
+        Ext.applyIf(me, {    
     items: [
 	{
 		id: 'initial',
@@ -26,17 +30,26 @@ Ext.define('databrowser.view.DBCard', {
     {
         id: 'detailspanel',
         xtype: 'detailspanel',    
-    },{
+    },
+    {
         id: 'studyview',
         xtype: 'studyview',
-    },{
+    },
+    {
         id: 'seriesview',
         xtype: 'seriesview',
-    }, {
+    }, 
+    {
         id: 'studyseriesview',
         xtype: 'studyseriesview',    	
     }
     
     ],
-});
     
+    
+    
+});
+        me.callParent(arguments);
+    },
+    
+});

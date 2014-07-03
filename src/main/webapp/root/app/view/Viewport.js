@@ -16,4 +16,5 @@
 Ext.define('databrowser.view.Viewport', {
     extend: 'databrowser.view.DataBrowserPanel',
     renderTo: 'dbcontainer',
+    plugins : ['fittoparent'],
 });

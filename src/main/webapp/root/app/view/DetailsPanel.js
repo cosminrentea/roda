@@ -105,6 +105,6 @@ Ext.define('databrowser.view.DetailsPanel', {
                 },
             ],
         });
-//        me.callParent(arguments);
+        me.callParent(arguments);
     },
 });

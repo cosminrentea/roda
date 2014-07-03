@@ -2,10 +2,11 @@
 Ext.Loader.setConfig({
     enabled: true,
     paths: {
-        'Ext.ux': 'ux/'
+        'Ext.ux': 'ux/',
+     	 'Ext.ux.plugins': '/roda/resources/root/ux/plugins'
     }
 });
-
+//Ext.Loader.setPath('Ext.ux.plugins.FitToParent', '.');
 Ext.application({
 
     requires: [
@@ -14,7 +15,7 @@ Ext.application({
         'Ext.util.*',
         'Ext.toolbar.Paging',
         'Ext.ModelManager',
- //       'databrowser.util.ChartTitleMixin',
+        'Ext.ux.plugins.FitToParent',
     ],
     models: [
         'CatalogsTreeModel',
@@ -42,6 +43,7 @@ Ext.application({
         'DataBrowserPanel',
         'CatalogView',
         'DBCard',
+        'Browser',
         'DetailsPanel',
         'StudyView',
         'SeriesView',
@@ -53,15 +55,19 @@ Ext.application({
         'VariableDetails'
     ],
 	controllers : ['VariableView'],
-    autoCreateViewport: true,
+    autoCreateViewport: false,
     name: 'databrowser',
     appFolder:'/roda/root/app',
     init : function() {  	
     	console.log('init');
-	    Ext.Ajax.timeout = 200000; // 200 seconds 
+    	Ext.Ajax.timeout = 200000; // 200 seconds 
 	    Ext.override(Ext.form.Basic, {     timeout: Ext.Ajax.timeout / 1000 });
 	    Ext.override(Ext.data.proxy.Server, {     timeout: Ext.Ajax.timeout });
 	    Ext.override(Ext.data.Connection, {     timeout: Ext.Ajax.timeout });
+	    Ext.create('databrowser.view.DataBrowserPanel',{
+	         renderTo: 'dbcontainer',
+	         plugins : ['fittoparent'],
+	     })
   },
     
     

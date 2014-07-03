@@ -677,6 +677,7 @@ public class ImporterServiceImpl implements ImporterService {
 		}
 	}
 
+	@Transactional
 	public void importDdiFiles() throws IOException, JAXBException, SAXException {
 		log.trace("roda.data.ddi.files = " + rodaDataDdiFiles);
 
@@ -705,7 +706,6 @@ public class ImporterServiceImpl implements ImporterService {
 		log.trace("Finished importing DDI files");
 	}
 
-	@Transactional
 	public void importCodebook(CodeBook cb, MultipartFile multipartFile, boolean nesstarExported, boolean legacyDataRODA) {
 
 		if ("yes".equalsIgnoreCase(ddiPersist)) {

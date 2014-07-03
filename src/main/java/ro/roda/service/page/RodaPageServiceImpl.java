@@ -23,8 +23,6 @@ import ro.roda.domain.CmsSnippet;
 import ro.roda.domain.Lang;
 import ro.roda.domain.News;
 
-
-
 @Service
 @Transactional
 public class RodaPageServiceImpl implements RodaPageService {
@@ -39,15 +37,13 @@ public class RodaPageServiceImpl implements RodaPageService {
 	private static String PAGE_CONTENT_CODE = "[[Code: PageContent]]";
 	private static String PAGE_TREE_BY_URL_CODE = "[[Code: PageTreeByUrl('";
 	private static String PAGE_BREADCRUMBS = "[[Code: PageBreadcrumbs('";
-	private static String GETNEWS_CODE = "[[Code: GetNews";	
-	
+	private static String GETNEWS_CODE = "[[Code: GetNews";
+
 	private static String DEFAULT_ERROR_PAGE_LANG = "en";
 	private static String ADMIN_URL = "admin/index.html";
 	private static String CMS_FILE_CONTENT_URL = "cmsfilecontent/";
 	private static String defaultUrlWhenNoLanguage = "/en";
 
-	
-	
 	private final Log log = LogFactory.getLog(this.getClass());
 
 	@CacheEvict(value = "pages")
@@ -207,10 +203,10 @@ public class RodaPageServiceImpl implements RodaPageService {
 		CmsLayout pageLayout = cmsPage.getCmsLayoutId();
 		String layoutContent = pageLayout.getLayoutContent();
 		layoutContent = replaceGetNews(layoutContent, cmsPage, 3, "getLayout");
+		layoutContent = replaceSnippets(layoutContent);
 		layoutContent = replacePageTitle(layoutContent, cmsPage.getMenuTitle());
 		layoutContent = replacePageLinkByUrl(layoutContent, cmsPage);
 		layoutContent = replacePageBreadcrumbs(layoutContent, cmsPage);
-		layoutContent = replaceSnippets(layoutContent);
 		layoutContent = replacePageTreeByUrl(layoutContent, cmsPage);
 		layoutContent = replacePageUrlLink(layoutContent, cmsPage);
 		layoutContent = replaceFileUrl(layoutContent, url);
@@ -223,11 +219,10 @@ public class RodaPageServiceImpl implements RodaPageService {
 		// This method is to be invoked mainly from the page preview generator.
 
 		String resultLayoutContent = layoutContent;
-
+		resultLayoutContent = replaceSnippets(resultLayoutContent);
 		resultLayoutContent = replacePageTitle(resultLayoutContent, cmsPage.getMenuTitle());
 		resultLayoutContent = replacePageLinkByUrl(resultLayoutContent, cmsPage);
 		resultLayoutContent = replacePageBreadcrumbs(resultLayoutContent, cmsPage);
-		resultLayoutContent = replaceSnippets(resultLayoutContent);
 		resultLayoutContent = replacePageTreeByUrl(resultLayoutContent, cmsPage);
 		resultLayoutContent = replacePageUrlLink(resultLayoutContent, cmsPage);
 
@@ -288,19 +283,17 @@ public class RodaPageServiceImpl implements RodaPageService {
 	private String replaceGetNews(String content, CmsPage cmsPage, Integer newsCount, String fromWhere) {
 		int fromIndex = content.indexOf(GETNEWS_CODE, 0);
 		if (cmsPage != null) {
-			int pageLangId = cmsPage.getCmsPageLangId().iterator().next().getLangId().getId();			
+			int pageLangId = cmsPage.getCmsPageLangId().iterator().next().getLangId().getId();
 			while (fromIndex > -1) {
-				content = StringUtils.replace(content, GETNEWS_CODE + "]]",generateNewsList(newsCount, pageLangId));
+				content = StringUtils.replace(content, GETNEWS_CODE + "]]", generateNewsList(newsCount, pageLangId));
 				fromIndex = content.indexOf(GETNEWS_CODE, fromIndex + GETNEWS_CODE.length());
 			}
 		} else {
 			log.debug("------------------------page is null-");
 		}
-		return content;	
+		return content;
 	}
-	
-	
-	
+
 	private String replacePageBreadcrumbs(String content, CmsPage cmsPage) {
 		int fromIndex = content.indexOf(PAGE_BREADCRUMBS, 0);
 		while (fromIndex > -1) {
@@ -368,7 +361,7 @@ public class RodaPageServiceImpl implements RodaPageService {
 	}
 
 	private String replaceImgLink(String content, String url) {
-		
+
 		int fromIndex = content.indexOf(IMG_LINK_CODE, 0);
 		String result = content;
 		while (fromIndex > -1) {
@@ -576,7 +569,7 @@ public class RodaPageServiceImpl implements RodaPageService {
 
 	private String generateNewsList(Integer num, Integer langId) {
 
-		StringBuilder result = new StringBuilder(); 
+		StringBuilder result = new StringBuilder();
 		List<News> news = News.findNumberedNewspieces(num, langId);
 		if (news != null && news.size() > 0) {
 			result.append("<div class='news'>");
@@ -584,7 +577,7 @@ public class RodaPageServiceImpl implements RodaPageService {
 			while (newsIterator.hasNext()) {
 				News newsitem = (News) newsIterator.next();
 				result.append("<div class='newsitem'>");
-				result.append("<div class='newstitle'>" + newsitem.getTruncatedTitle(100) + "</div>");				
+				result.append("<div class='newstitle'>" + newsitem.getTruncatedTitle(100) + "</div>");
 				result.append("<div class=\"newsdate\">" + newsitem.getAdded().toString() + "</div>");
 				result.append("<div class='newscontent'>" + newsitem.getTruncatedContent(150) + "</div>");
 				result.append("</div>");
@@ -593,7 +586,7 @@ public class RodaPageServiceImpl implements RodaPageService {
 		}
 		return result.toString();
 	}
-	
+
 	private String generatePageTreeMenuRec(CmsPage cmsPage, Integer depth) {
 		// TODO validate depth
 		StringBuilder result = new StringBuilder();

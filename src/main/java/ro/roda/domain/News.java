@@ -74,6 +74,10 @@ public class News {
 		return entityManager().createQuery("SELECT o FROM News o", News.class).getResultList();
 	}
 
+	public static List<News> findNumberedNewspieces(int num, int langId) {
+		return entityManager().createQuery("SELECT o FROM News o where lang_id="+langId+"order by added desc", News.class).setMaxResults(num).getResultList();
+	}
+	
 	public static News findNews(Integer id) {
 		if (id == null)
 			return null;
@@ -276,6 +280,15 @@ public class News {
 		return content;
 	}
 
+	public String getTruncatedContent(int len) {
+		if (content.length() > len) {
+			return content.substring(0,len);
+		} else {
+			return content;			
+		}
+	}
+	
+	
 	public Integer getId() {
 		return this.id;
 	}
@@ -284,6 +297,15 @@ public class News {
 		return title;
 	}
 
+	public String getTruncatedTitle(int len) {
+		if (title.length() > len) {
+			return title.substring(0,len);
+		} else {
+			return title;			
+		}
+	}
+
+	
 	public boolean isVisible() {
 		return visible;
 	}

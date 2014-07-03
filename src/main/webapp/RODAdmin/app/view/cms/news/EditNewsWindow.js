@@ -75,7 +75,7 @@ Ext.define('RODAdmin.view.cms.news.EditNewsWindow', {
                              //    forceSelection : true,
                                  typeAhead: true,
                                  valueField: 'indice',
-                                 tpl: '<tpl for="."><div class="text_{iso639}">{nameSelf}</div></tpl>',
+ //                                tpl: '<tpl for="."><div class="text_{iso639}">{nameSelf}</div></tpl>',
                                  store : 'common.Language'
                              },
 					         {

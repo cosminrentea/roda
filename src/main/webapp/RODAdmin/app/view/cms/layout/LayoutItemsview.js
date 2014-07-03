@@ -108,7 +108,11 @@ Ext.define('RODAdmin.view.cms.layout.LayoutItemsview', {
 //												xtype : 'button',
 //												itemId : 'clearfilterdata'
 //											},
-
+											{
+												text : 'Add root folder',
+												xtype : 'button',
+												itemId : 'addroot'
+											},
 											{
 												text : 'Reload Tree',
 												xtype : 'button',

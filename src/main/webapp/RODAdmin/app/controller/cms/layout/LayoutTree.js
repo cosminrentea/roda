@@ -95,6 +95,16 @@ Ext.define('RODAdmin.controller.cms.layout.LayoutTree', {
 	                        			    */
 	                        			   click : this.onReloadTreeClick
 	                        		   },
+	                        		   "layoutitemsview treepanel#lyfolderview toolbar button#addroot" : {
+	                        			   /**
+	                        			    * @listener layoutitemsview-treepanel-lyfolderview-toolbar-button-reloadtree
+	                        			    *           triggered-by:
+	                        			    *           {@link RODAdmin.view.cms.layout.LayoutItemview LayoutItemsview}
+	                        			    *           treepanel#lyfolderview toolbar button#reloadtree
+	                        			    *           {@link #onReloadTreeClick}
+	                        			    */
+	                        			   click : this.onAddRootClick
+	                        		   },	                        		   
 	                        		   "layoutitemsview treepanel#lyfolderview toolbar button#collapsetree" : {
 	                        			   /**
 	                        			    * @listener layoutitemsview-treepanel-lyfolderview-toolbar-button-collapsetree
@@ -159,8 +169,6 @@ Ext.define('RODAdmin.controller.cms.layout.LayoutTree', {
 	                        			    */	        	
 	                        			   click : this.onNewGroupClick
 	                        		   },
-	                        		   
-
 	                        	   });
 	                           },
 	                           
@@ -181,9 +189,11 @@ Ext.define('RODAdmin.controller.cms.layout.LayoutTree', {
 	                            */
 	                           onNewGroupClick : function(component, event) {
 	                        	   var currentNode = this.getFolderview().getSelectionModel().getLastSelected();
+	                        	   console.log('indice nod curent'+ currentNode.data.indice);
 	                        	   var win = Ext.create('RODAdmin.view.cms.layout.GroupWindow');
 	                        	   win.setTitle('Add a new subgroup to "' + currentNode.data.name + '" (id: ' + currentNode.data.indice + ')');
 	                        	   win.setIconCls('group_add');
+	                        	   
 	                        	   win.down('form').down('fieldset').down('hiddenfield').setValue(currentNode.data.indice);
 	                        	   console.log(currentNode.data);
 	                        	   win.show();
@@ -231,6 +241,19 @@ Ext.define('RODAdmin.controller.cms.layout.LayoutTree', {
 	                        	   }, this);
 	                        	   event.stopEvent();
 	                           },
+	                           /**
+	                            * @method
+	                            */
+	                           onAddRootClick: function(button, e, options) {
+	                        	   win = Ext.WindowMgr.get('lygroupadd');
+	                        	   console.log(win);
+	                        	   if (!win) {
+	                        		   win = Ext.create('RODAdmin.view.cms.layout.GroupWindow');
+	                        	   }
+	                        	   win.setTitle('Add Root Group');
+	                        	   win.show();
+	                           },
+	                           
 	                           /**
 	                            * @method
 	                            */
@@ -342,6 +365,87 @@ Ext.define('RODAdmin.controller.cms.layout.LayoutTree', {
 	                        	   component.up('layoutedit').down('form').down('fieldset').query('displayfield')[0].setValue(record.data.name);
 	                        	   component.up('layoutedit').down('fieldset').query('hiddenfield')[0].setValue(record.data.id);
 	                           },
+	                           
+	                           /**
+	                       	 * @method 
+	                       	 * 
+	                       	 * drop event for page tree
+	                       	 */
+	                           onTreeDrop : function(node,data,overModel,dropPosition) {
+	                           	console.log('id ' + data.records[0].data.indice + ' group ' + overModel.data.indice + ' ' + dropPosition );
+
+	                            if (data.records[0].data.itemtype == 'layoutgroup') {	    
+	                            	console.log('moving layout group');
+	                            	var newparent;
+	                            	var tomove = data.records[0].data.indice;
+	                            	if (dropPosition == 'append') {
+	                            		newparent = overModel.data.indice;
+	                            	} else {
+	                            		newparent = overModel.parentNode.data.indice;
+	                            	}
+                            		console.log(newparent);
+    	                           	Ext.Ajax.request({
+	                       	        url : '/roda/j/admin/layoutgroupmove/',
+	                       	        method : "POST",
+	                       	        params : {
+		                       	            group : tomove,
+		                       	            parent: newparent,
+		                       	        },
+		                       	        success : function(response,request) {
+		                       		           var responseJson = Ext.decode(response.responseText);
+		                       		            if (responseJson.success === true) {
+		                       		                // whatever stuff needs to happen on success
+//		                       		            	RODAdmin.util.Alert.msg('Success!', 'Page '+ pgtitle +' moved.');
+		                       		            } else {
+		                       		            	RODAdmin.util.Alert.msg('Failure!', responseJson.message, true);
+		                       		            }
+		                       	        },
+		                       	        failure : function(response, opts) {
+		                       		        Ext.Msg.alert('Failure', response);
+		                       	        }
+		                       	    });		
+	                            } else {
+	                            	console.log('moving layout');
+	                            }
+	                           	
+//	                           	var pgtitle = data.records[0].data.title;
+//	                           	var pgid = 	data.records[0].data.indice;
+//	                           	var groupid = overModel.data.indice;
+//	                           	var mode = dropPosition;
+//	                           	Ext.Ajax.request({
+//	                       	        url : '/roda/j/admin/cmspagemove/',
+//	                       	        method : "POST",
+//	                       	        params : {
+//	                       	            id : pgid,
+//	                       	            group: groupid,
+//	                       	            mode: mode,
+//	                       	        },
+//	                       	        success : function(response,request) {
+//	                       		           var responseJson = Ext.decode(response.responseText);
+//	                       		            if (responseJson.success === true) {
+//	                       		                // whatever stuff needs to happen on success
+//	                       		            	RODAdmin.util.Alert.msg('Success!', 'Page '+ pgtitle +' moved.');
+////	                       						store.load();
+//	                       		            } else {
+//	                       		            	RODAdmin.util.Alert.msg('Failure!', responseJson.message, true);
+//
+//	                       		            }
+//	                       	        },
+//	                       	        failure : function(response, opts) {
+//	                       		        Ext.Msg.alert('Failure', response);
+//
+//	                       	        }
+//	                       	    });		
+//	                           	this.getFolderview().store.load();
+	                           },
+	                           
+	                           
+	                           
+	                           
+	                           
+	                           
+	                           
+	                           
 	                           /**
 	                            * @method
 	                            */

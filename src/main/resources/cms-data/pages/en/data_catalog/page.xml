@@ -8,13 +8,13 @@
 
 	<div id="container">
 		<div id="content">
-			<div id="dbcontainer"></div>
+			<div id="dbcontainer" style="width:100%;height:600px;"></div>
 		</div>
 	</div>	
 
 
 	]]></content>
-	<cms_layout>roda-databrowser-en</cms_layout>
+	<cms_layout>new-roda-databrowser-en</cms_layout>
 	<pagetype>content</pagetype>
 	<cacheable>3600</cacheable>
 	<searchable>true</searchable>		

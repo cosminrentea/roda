@@ -8,6 +8,7 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
+import javax.persistence.FlushModeType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -177,16 +178,20 @@ public class CmsPageType {
 			}
 		}
 
-		List<CmsPageType> queryResult;
+		CmsPageType queryResult;
 
 		if (name != null) {
 			TypedQuery<CmsPageType> query = entityManager().createQuery(
 					"SELECT o FROM CmsPageType o WHERE lower(o.name) = lower(:name)", CmsPageType.class);
 			query.setParameter("name", name);
 
-			queryResult = query.getResultList();
-			if (queryResult.size() > 0) {
-				return queryResult.get(0);
+			query.setMaxResults(1);
+			query.setFlushMode(FlushModeType.COMMIT);
+
+			try {
+				queryResult = query.getSingleResult();
+				return queryResult;
+			} catch (Exception exception) {
 			}
 		}
 
@@ -194,6 +199,7 @@ public class CmsPageType {
 		object.name = name;
 		object.description = description;
 		object.persist();
+		object.flush();
 
 		return object;
 	}

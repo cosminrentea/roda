@@ -17,31 +17,31 @@ public class ScheduledTask {
 
 	private final Log log = LogFactory.getLog(this.getClass());
 
-	@Scheduled(cron="${roda.scheduler.cron.maintenance}")
+	@Scheduled(cron = "${scheduler.cron.maintenance}")
 	public void maintenance() {
-//		log.trace("maintenance");
+		// log.trace("maintenance");
 	}
 
-	@Scheduled(cron="${roda.scheduler.cron.backup}")
+	@Scheduled(cron = "${scheduler.cron.backup}")
 	public void backup() {
-//		log.trace("backup");
+		// log.trace("backup");
 	}
 
-	@Scheduled(cron="${roda.scheduler.cron.ping-solr}")
+	@Scheduled(cron = "${scheduler.cron.ping-solr}")
 	public void pingSolr() {
-//		log.trace("pingSolr");
-//		su.pingSolr();
+		// log.trace("pingSolr");
+		// su.pingSolr();
 	}
 
-	@Scheduled(cron="${roda.scheduler.cron.vacuum}")
+	@Scheduled(cron = "${scheduler.cron.vacuum}")
 	public void vacuum() {
-//		log.trace("vacuum");
-//		du.executeUpdate("VACUUM;");
+		// log.trace("vacuum");
+		// du.executeUpdate("VACUUM;");
 	}
 
 	public void vacuumAnalyze() {
-//		log.trace("vacuumAnalyze");
-//		du.executeUpdate("VACUUM(ANALYZE);");
+		// log.trace("vacuumAnalyze");
+		// du.executeUpdate("VACUUM(ANALYZE);");
 	}
 
 }

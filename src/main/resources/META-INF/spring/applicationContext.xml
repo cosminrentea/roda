@@ -138,22 +138,22 @@
 	<task:annotation-driven executor="asyncExecutor"
 		mode="aspectj" />
 
-	<task:executor id="asyncExecutor" pool-size="${roda.executor.poolSize}" />
+	<task:executor id="asyncExecutor" pool-size="${executor.poolSize}" />
 	
 	<bean class="ro.roda.util.ScheduledTask" id="rodaScheduledTask" />
 
 <!-- 
 	<task:scheduled-tasks scheduler="rodaScheduler">
 		
-    	<task:scheduled ref="rodaScheduledTask" method="maintenance" cron="${roda.scheduler.cron.maintenance}"/>
+    	<task:scheduled ref="rodaScheduledTask" method="maintenance" cron="${scheduler.cron.maintenance}"/>
 
-    	<task:scheduled ref="rodaScheduledTask" method="backup" cron="${roda.scheduler.cron.backup}"/>
+    	<task:scheduled ref="rodaScheduledTask" method="backup" cron="${scheduler.cron.backup}"/>
 
-    	<task:scheduled ref="rodaScheduledTask" method="vacuum" cron="${roda.scheduler.cron.vacuum}"/>
+    	<task:scheduled ref="rodaScheduledTask" method="vacuum" cron="${scheduler.cron.vacuum}"/>
     	
 	</task:scheduled-tasks>
  -->
-	<task:scheduler id="rodaScheduler" pool-size="${roda.scheduler.poolSize}"/>
+	<task:scheduler id="rodaScheduler" pool-size="${scheduler.poolSize}"/>
 
 	<!-- Caching: EhCache library setup -->
 	<bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">

@@ -26,13 +26,11 @@ public interface ImporterService {
 
 	public abstract void importCsvExtra() throws SQLException, IOException;
 
-	public abstract void importCsvAfterDdi() throws FileNotFoundException, IOException;
-
 	public abstract void importCsvDir(String dirname) throws SQLException, IOException;
 
-	public abstract void importDdiFiles() throws IOException, JAXBException, SAXException;
+	public abstract void importDdiFiles(boolean postImport) throws IOException, JAXBException, SAXException;
 
-	public abstract void importCodebook(CodeBook cb, MultipartFile multipartFile, boolean nesstarExported,
+	public abstract void importDdiFile(CodeBook cb, MultipartFile multipartFile, boolean nesstarExported,
 			boolean legacyDataRODA);
 
 }

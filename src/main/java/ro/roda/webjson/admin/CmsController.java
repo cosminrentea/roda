@@ -1,4 +1,4 @@
-package ro.roda.webjson;
+package ro.roda.webjson.admin;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,7 +32,7 @@ import ro.roda.service.filestore.CmsFileStoreService;
 
 @RequestMapping("/admin")
 @Controller
-public class AdminJsonController {
+public class CmsController {
 
 	@Autowired
 	AdminJsonService adminJsonService;

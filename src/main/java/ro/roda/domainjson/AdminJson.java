@@ -81,33 +81,31 @@ public class AdminJson {
 		CmsLayoutGroup layoutGroup = new CmsLayoutGroup();
 		layoutGroup.setName(groupname);
 		layoutGroup.setDescription(description);
-		
+
 		CmsLayoutGroup parentGroup = CmsLayoutGroup.findCmsLayoutGroup(parentId);
-		
-		
-		try {		
-				if (parentGroup != null) {
-					
-					if (parentGroup.getCmsLayoutGroups() != null && parentGroup.getCmsLayoutGroups().contains(layoutGroup)) {
-						// do nothing
+
+		try {
+			if (parentGroup != null) {
+
+				if (parentGroup.getCmsLayoutGroups() != null && parentGroup.getCmsLayoutGroups().contains(layoutGroup)) {
+					// do nothing
+				} else {
+
+					if (parentGroup.getCmsLayoutGroups() == null) {
+						parentGroup.setCmsLayoutGroups(new HashSet<CmsLayoutGroup>());
+						parentGroup.getCmsLayoutGroups().add(layoutGroup);
 					} else {
-
-						if (parentGroup.getCmsLayoutGroups() == null) {
-							parentGroup.setCmsLayoutGroups(new HashSet<CmsLayoutGroup>());
-							parentGroup.getCmsLayoutGroups().add(layoutGroup);
-						} else {
-							parentGroup.getCmsLayoutGroups().add(layoutGroup);
-						}
-
-						CmsPage.entityManager().persist(parentGroup);
-
+						parentGroup.getCmsLayoutGroups().add(layoutGroup);
 					}
-					layoutGroup.setParentId(parentGroup);
-				
-			}
-				CmsLayoutGroup.entityManager().persist(layoutGroup);
 
-			
+					CmsPage.entityManager().persist(parentGroup);
+
+				}
+				layoutGroup.setParentId(parentGroup);
+
+			}
+			CmsLayoutGroup.entityManager().persist(layoutGroup);
+
 		} catch (EntityExistsException e) {
 			return new AdminJson(false, "Layout group not created " + e.getMessage());
 		}
@@ -595,7 +593,6 @@ public class AdminJson {
 			if (parentFolder != null) {
 				CmsFolder.entityManager().merge(parentFolder);
 			}
-			CmsFolder.entityManager().flush();
 		} catch (EntityExistsException e) {
 			return new AdminJson(false, "Folder not created; " + e.getMessage());
 		}
@@ -1015,7 +1012,7 @@ public class AdminJson {
 	}
 
 	// Cms Page Management Methods
-	public static AdminJson cmsPageSave(Boolean save, Integer cmsPageParentId, String name, String lang,
+	public static AdminJson cmsPageSave(Boolean save, Integer cmsPageParentId, String name, String langName,
 			String menutitle, String synopsis, String target, String url, Boolean defaultPage, String externalredirect,
 			String internalredirect, Integer layoutId, Integer cacheable, Boolean published, Boolean navigable,
 			String pagetype, Integer cmsPageId, String pageContent, AtomicReference<CmsPage> cmsPage) {
@@ -1114,6 +1111,16 @@ public class AdminJson {
 					page.setUrl(processPageUrl(url, page.getName(), page, page.getCmsPageId()));
 				}
 
+				// set the page language
+				if (langName != null) {
+					Lang lang = Lang.findLang(langName);
+					page.setLangId(lang);
+					Set<CmsPage> pages = lang.getCmsPages();
+					pages.add(page);
+					lang.setCmsPages(pages);
+					lang.merge();
+				}
+
 				CmsPage.entityManager().persist(page);
 
 				// set the page content
@@ -1135,33 +1142,6 @@ public class AdminJson {
 					Set<CmsPageContent> pageContents = new HashSet<CmsPageContent>();
 					pageContents.add(cmsPageContent);
 					page.setCmsPageContents(pageContents);
-				}
-
-				// set the page language
-				if (lang != null) {
-					// TODO decide if it is "find" or "check"
-					Lang pageLang = Lang.findLang(lang);
-					if (pageLang != null) {
-
-						Set<CmsPageLang> oldLang = page.getCmsPageLangId();
-
-						if (oldLang != null) {
-							for (CmsPageLang cpl : oldLang) {
-								cpl.remove();
-							}
-						}
-
-						CmsPageLang cmsPageLang = new CmsPageLang();
-
-						cmsPageLang.setLangId(pageLang);
-						cmsPageLang.setCmsPageId(page);
-						cmsPageLang.setId(new CmsPageLangPK(cmsPageLang.getLangId().getId(), page.getId()));
-						cmsPageLang.persist();
-
-						Set<CmsPageLang> cmsPageLangs = new HashSet<CmsPageLang>();
-						cmsPageLangs.add(cmsPageLang);
-						page.setCmsPageLangId(cmsPageLangs);
-					}
 				}
 
 			} catch (EntityExistsException e) {
@@ -1264,12 +1244,6 @@ public class AdminJson {
 				if (cmsPage.getCmsPageContents() != null && cmsPage.getCmsPageContents().size() > 0) {
 					for (CmsPageContent content : cmsPage.getCmsPageContents()) {
 						CmsPageContent.entityManager().remove(content);
-					}
-				}
-
-				if (cmsPage.getCmsPageLangId() != null && cmsPage.getCmsPageLangId().size() > 0) {
-					for (CmsPageLang pageLang : cmsPage.getCmsPageLangId()) {
-						CmsPageLang.entityManager().remove(pageLang);
 					}
 				}
 

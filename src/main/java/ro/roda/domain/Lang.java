@@ -293,6 +293,9 @@ public class Lang {
 	@OneToMany(mappedBy = "langId")
 	private Set<TranslatedTopic> translatedTopics;
 
+	@OneToMany(mappedBy = "langId")
+	private Set<CmsPage> cmsPages;
+
 	@PersistenceContext
 	transient EntityManager entityManager;
 
@@ -347,6 +350,10 @@ public class Lang {
 
 	public Set<TranslatedTopic> getTranslatedTopics() {
 		return translatedTopics;
+	}
+
+	public Set<CmsPage> getCmsPages() {
+		return cmsPages;
 	}
 
 	@Transactional
@@ -411,6 +418,10 @@ public class Lang {
 
 	public void setTranslatedTopics(Set<TranslatedTopic> translatedTopics) {
 		this.translatedTopics = translatedTopics;
+	}
+
+	public void setCmsPages(Set<CmsPage> cmsPages) {
+		this.cmsPages = cmsPages;
 	}
 
 	public String toJson() {

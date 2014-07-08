@@ -131,10 +131,10 @@ public class CmsPageInfo extends JsonInfo implements Comparable<CmsPageInfo> {
 	}
 
 	public CmsPageInfo(CmsPage cmsPage) {
-		this(cmsPage.getId(), cmsPage.getName(), (cmsPage.getCmsPageLangId() != null && cmsPage.getCmsPageLangId()
-				.size() > 0) ? cmsPage.getCmsPageLangId().iterator().next().getLangId().getIso639() : null, cmsPage
-				.getMenuTitle(), cmsPage.getSynopsis(), cmsPage.getTarget(), cmsPage.getUrl(), cmsPage.isDefaultPage(),
-				cmsPage.getExternalRedirect(), cmsPage.getInternalRedirect(),
+		this(cmsPage.getId(), cmsPage.getName(),
+				(cmsPage.getLangId() != null) ? cmsPage.getLangId().getIso639() : null, cmsPage.getMenuTitle(), cmsPage
+						.getSynopsis(), cmsPage.getTarget(), cmsPage.getUrl(), cmsPage.isDefaultPage(), cmsPage
+						.getExternalRedirect(), cmsPage.getInternalRedirect(),
 				(cmsPage.getCmsLayoutId() != null ? cmsPage.getCmsLayoutId().getName() : null), (cmsPage
 						.getCmsLayoutId() != null ? cmsPage.getCmsLayoutId().getId() : null), cmsPage.getCacheable(),
 				cmsPage.isVisible(), cmsPage.getCmsPageTypeId() == null ? null : cmsPage.getCmsPageTypeId().getName(),

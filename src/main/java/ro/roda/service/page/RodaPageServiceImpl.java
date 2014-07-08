@@ -283,13 +283,13 @@ public class RodaPageServiceImpl implements RodaPageService {
 	private String replaceGetNews(String content, CmsPage cmsPage, Integer newsCount, String fromWhere) {
 		int fromIndex = content.indexOf(GETNEWS_CODE, 0);
 		if (cmsPage != null) {
-			int pageLangId = cmsPage.getCmsPageLangId().iterator().next().getLangId().getId();
+			int pageLangId = cmsPage.getLangId().getId();
 			while (fromIndex > -1) {
 				content = StringUtils.replace(content, GETNEWS_CODE + "]]", generateNewsList(newsCount, pageLangId));
 				fromIndex = content.indexOf(GETNEWS_CODE, fromIndex + GETNEWS_CODE.length());
 			}
 		} else {
-			log.debug("------------------------page is null-");
+			log.debug("CmsPage is null");
 		}
 		return content;
 	}

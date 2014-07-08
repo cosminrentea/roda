@@ -212,10 +212,6 @@ public class ImporterServiceImpl implements ImporterService {
 		// change properties to another string
 		// (not "yes")
 
-		if ("yes".equalsIgnoreCase(rodaDataCms)) {
-			importCms();
-		}
-
 		if ("yes".equalsIgnoreCase(rodaDataCsv)) {
 			importCsv();
 			if ("yes".equalsIgnoreCase(rodaDataCsvExtra)) {
@@ -225,6 +221,10 @@ public class ImporterServiceImpl implements ImporterService {
 
 		if ("yes".equalsIgnoreCase(rodaDataElsst)) {
 			importElsst();
+		}
+
+		if ("yes".equalsIgnoreCase(rodaDataCms)) {
+			importCms();
 		}
 
 		if ("yes".equalsIgnoreCase(rodaDataDdi)) {
@@ -259,7 +259,6 @@ public class ImporterServiceImpl implements ImporterService {
 					newFolder.setParentId(cmsFolder);
 					newFolder.persist();
 					cmsFileStoreService.folderSave(newFolder);
-					CmsFolder.entityManager().flush();
 
 					importCmsFilesRec(file, newFolder, path + "/" + file.getName());
 				} else {
@@ -300,7 +299,6 @@ public class ImporterServiceImpl implements ImporterService {
 					AdminJson result = AdminJson.layoutGroupSave(file.getName(),
 							(cmsLayoutGroup != null) ? cmsLayoutGroup.getId() : null,
 							(cmsLayoutGroup != null) ? cmsLayoutGroup.getDescription() : null);
-					CmsLayoutGroup.entityManager().flush();
 
 					CmsLayoutGroup newLayoutGroup = CmsLayoutGroup.findCmsLayoutGroup(result.getId());
 					importCmsLayoutsRec(file, newLayoutGroup);
@@ -331,7 +329,6 @@ public class ImporterServiceImpl implements ImporterService {
 				if (file.isDirectory()) {
 					AdminJson result = AdminJson.snippetGroupSave(file.getName(),
 							(cmsSnippetGroup != null) ? cmsSnippetGroup.getId() : null, null);
-					CmsSnippetGroup.entityManager().flush();
 
 					CmsSnippetGroup newSnippetGroup = CmsSnippetGroup.findCmsSnippetGroup(result.getId());
 					importCmsSnippetsRec(file, newSnippetGroup);
@@ -382,7 +379,7 @@ public class ImporterServiceImpl implements ImporterService {
 
 					p = new CmsPage();
 					CmsPageContent pContent = null;
-					CmsPageLang pLang = null;
+					Lang lang = null;
 
 					NodeList childNodes = document.getDocumentElement().getChildNodes();
 					for (int j = 0; j < childNodes.getLength(); j++) {
@@ -414,10 +411,16 @@ public class ImporterServiceImpl implements ImporterService {
 								// TODO set CmsPageLang - should we use the
 								// check method instead of find?
 								if (content != null) {
-									Lang lang = Lang.findLang(content.toLowerCase());
+									lang = Lang.findLang(content.toLowerCase());
 									if (lang != null) {
-										pLang = new CmsPageLang();
-										pLang.setLangId(lang);
+										p.setLangId(lang);
+										Set<CmsPage> pages = lang.getCmsPages();
+										if (pages == null) {
+											pages = new HashSet<CmsPage>();
+										}
+										pages.add(p);
+										lang.setCmsPages(pages);
+										lang.merge();
 									}
 								}
 								break;
@@ -470,6 +473,18 @@ public class ImporterServiceImpl implements ImporterService {
 
 					p.setUrl(processPageUrl(p.getUrl(), p.getName(), parent));
 
+					if (p.getLangId() == null) {
+						lang = Lang.findLang("en");
+						p.setLangId(lang);
+						Set<CmsPage> pages = lang.getCmsPages();
+						if (pages == null) {
+							pages = new HashSet<CmsPage>();
+						}
+						pages.add(p);
+						lang.setCmsPages(pages);
+						lang.merge();
+					}
+
 					p.persist();
 
 					// set the page content
@@ -481,22 +496,8 @@ public class ImporterServiceImpl implements ImporterService {
 						pageContents.add(pContent);
 						p.setCmsPageContents(pageContents);
 					}
-
-					// set the page language
-					if (pLang != null) {
-						pLang.setCmsPageId(p);
-						pLang.setId(new CmsPageLangPK(pLang.getLangId().getId(), p.getId()));
-						pLang.persist();
-
-						Set<CmsPageLang> pageLangs = new HashSet<CmsPageLang>();
-						pageLangs.add(pLang);
-						p.setCmsPageLangId(pageLangs);
-					}
-
 				}
 			}
-
-			CmsPage.entityManager().flush();
 
 			for (File directory : directories) {
 				importCmsPagesRec(directory, null, p);

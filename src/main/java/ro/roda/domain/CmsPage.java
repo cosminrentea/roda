@@ -360,8 +360,12 @@ public class CmsPage implements Comparable<CmsPage> {
 	@JoinColumn(name = "cms_page_type_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false)
 	private CmsPageType cmsPageTypeId;
 
-	@OneToMany(mappedBy = "cmsPageId")
-	private Set<CmsPageLang> cmsPageLangId;
+	// @OneToMany(mappedBy = "cmsPageId")
+	// private Set<CmsPageLang> cmsPageLangId;
+
+	@ManyToOne
+	@JoinColumn(name = "lang_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false)
+	private Lang langId;
 
 	@OneToMany(mappedBy = "cmsPageId")
 	private Set<CmsPage> cmsPages;
@@ -456,6 +460,10 @@ public class CmsPage implements Comparable<CmsPage> {
 		return cmsPageTypeId;
 	}
 
+	public Lang getLangId() {
+		return langId;
+	}
+
 	public Integer getId() {
 		return this.id;
 	}
@@ -484,9 +492,9 @@ public class CmsPage implements Comparable<CmsPage> {
 		return visible;
 	}
 
-	public Set<CmsPageLang> getCmsPageLangId() {
-		return cmsPageLangId;
-	}
+	// public Set<CmsPageLang> getCmsPageLangId() {
+	// return cmsPageLangId;
+	// }
 
 	public boolean isDefaultPage() {
 		return defaultPage;
@@ -568,6 +576,10 @@ public class CmsPage implements Comparable<CmsPage> {
 		this.cmsPageTypeId = cmsPageTypeId;
 	}
 
+	public void setLangId(Lang langId) {
+		this.langId = langId;
+	}
+
 	public void setId(Integer id) {
 		this.id = id;
 	}
@@ -596,9 +608,9 @@ public class CmsPage implements Comparable<CmsPage> {
 		this.visible = visible;
 	}
 
-	public void setCmsPageLangId(Set<CmsPageLang> cmsPageLangId) {
-		this.cmsPageLangId = cmsPageLangId;
-	}
+	// public void setCmsPageLangId(Set<CmsPageLang> cmsPageLangId) {
+	// this.cmsPageLangId = cmsPageLangId;
+	// }
 
 	public void setDefaultPage(boolean defaultPage) {
 		CmsPage existantDefaultPage = findCmsPageDefault();

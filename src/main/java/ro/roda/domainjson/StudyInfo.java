@@ -222,7 +222,7 @@ public class StudyInfo extends JsonInfo {
 
 				SortedSet<Integer> keys = new TreeSet<Integer>(orderVar.keySet());
 				for (Integer key : keys) {
-					System.out.println("Adding variable " + key);
+					log.trace("Adding variable " + key);
 					variables.add(orderVar.get(key));
 				}
 

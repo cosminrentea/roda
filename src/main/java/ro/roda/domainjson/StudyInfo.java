@@ -81,7 +81,7 @@ public class StudyInfo extends JsonInfo {
 		result = new ArrayList<StudyInfo>();
 		while (it.hasNext()) {
 			Study study = (Study) it.next();
-			result.add(new StudyInfo(study, true, true, true, true, true));
+			result.add(new StudyInfo(study, false, false, false, false, false));
 		}
 		return result;
 	}
@@ -175,7 +175,7 @@ public class StudyInfo extends JsonInfo {
 		// }
 
 		// TODO manage descriptions depending on language
-		// for the beginning, suppose there is only one description
+		// for the beginning, assume there is only one description
 		StudyDescr studyDescr = null;
 		if (study.getStudyDescrs() != null && study.getStudyDescrs().size() > 0) {
 			studyDescr = study.getStudyDescrs().iterator().next();

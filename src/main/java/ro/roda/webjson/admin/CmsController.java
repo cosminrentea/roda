@@ -1,20 +1,15 @@
 package ro.roda.webjson.admin;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.util.Calendar;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,10 +17,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.support.ByteArrayMultipartFileEditor;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import ro.roda.domain.CmsFile;
 import ro.roda.domainjson.AdminJson;
 import ro.roda.service.AdminJsonService;
 import ro.roda.service.filestore.CmsFileStoreService;
@@ -426,26 +417,11 @@ public class CmsController {
 	@RequestMapping(value = "/newssave", method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody
 	public String newsSave(@RequestParam(value = "id", required = false) Integer id,
-						   @RequestParam(value = "langId", required = true) Integer langId, 
-						   @RequestParam(value = "title", required = true) String title,
-						   @RequestParam(value = "content", required = true) String content,
-						   @RequestParam(value = "added", required = true) String added)
-						   {
+			@RequestParam(value = "langId", required = true) Integer langId,
+			@RequestParam(value = "title", required = true) String title,
+			@RequestParam(value = "content", required = true) String content) {
 
-		SimpleDateFormat inputFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
-		Date addate = null;
-
-		try {
-			addate = inputFormat.parse(added);
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-		
-		//Date addate = new Date(Long.parseLong(added) * 1000);
-
-		
-		
-		AdminJson newsSave = adminJsonService.newsSave(id, langId, title, content, addate);
+		AdminJson newsSave = adminJsonService.newsSave(id, langId, title, content, Calendar.getInstance().getTime());
 
 		if (newsSave == null) {
 			return null;
@@ -454,6 +430,4 @@ public class CmsController {
 
 	}
 
-	
-	
 }

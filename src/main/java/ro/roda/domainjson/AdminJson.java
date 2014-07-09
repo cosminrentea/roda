@@ -25,8 +25,6 @@ import ro.roda.domain.CmsLayout;
 import ro.roda.domain.CmsLayoutGroup;
 import ro.roda.domain.CmsPage;
 import ro.roda.domain.CmsPageContent;
-import ro.roda.domain.CmsPageLang;
-import ro.roda.domain.CmsPageLangPK;
 import ro.roda.domain.CmsPageType;
 import ro.roda.domain.CmsSnippet;
 import ro.roda.domain.CmsSnippetGroup;
@@ -1290,7 +1288,7 @@ public class AdminJson {
 		return result;
 	}
 
-	// Methods for Snippets
+	// Methods for News
 	public static AdminJson newsSave(Integer id, Integer langId, String title, String content, Date added) {
 		if (title == null) {
 			return new AdminJson(false, "Title must not be empty.");
@@ -1323,7 +1321,8 @@ public class AdminJson {
 
 			}
 		}
-		News.entityManager().persist(newsitem);
+
+		newsitem.persist();
 
 		return new AdminJson(true, "News item saved");
 	}

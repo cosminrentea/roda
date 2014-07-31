@@ -10,6 +10,7 @@ import java.util.TreeSet;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -45,6 +46,15 @@ public class RodaPageServiceImpl implements RodaPageService {
 	private static String defaultUrlWhenNoLanguage = "/en";
 
 	private final Log log = LogFactory.getLog(this.getClass());
+
+	@Value("${roda.cms.news.count}")
+	private Integer newsCount = 3;
+
+	@Value("${roda.cms.news.maxtitle}")
+	private Integer newsMaxTitle = 100;
+
+	@Value("${roda.cms.news.maxtext}")
+	private Integer newsMaxText = 200;
 
 	@CacheEvict(value = "pages")
 	public void evict(String url) {
@@ -202,7 +212,7 @@ public class RodaPageServiceImpl implements RodaPageService {
 	private String getLayout(CmsPage cmsPage, String url) {
 		CmsLayout pageLayout = cmsPage.getCmsLayoutId();
 		String layoutContent = pageLayout.getLayoutContent();
-		layoutContent = replaceGetNews(layoutContent, cmsPage, 3, "getLayout");
+		layoutContent = replaceGetNews(layoutContent, cmsPage, newsCount, newsMaxTitle, newsMaxText);
 		layoutContent = replaceSnippets(layoutContent);
 		layoutContent = replacePageTitle(layoutContent, cmsPage.getMenuTitle());
 		layoutContent = replacePageLinkByUrl(layoutContent, cmsPage);
@@ -228,7 +238,7 @@ public class RodaPageServiceImpl implements RodaPageService {
 
 		resultLayoutContent = replaceFileUrl(resultLayoutContent, ADMIN_URL);
 		resultLayoutContent = replaceImgLink(resultLayoutContent, ADMIN_URL);
-		resultLayoutContent = replaceGetNews(resultLayoutContent, cmsPage, 3, "getLayout");
+		resultLayoutContent = replaceGetNews(resultLayoutContent, cmsPage, newsCount, newsMaxTitle, newsMaxText);
 		return resultLayoutContent;
 	}
 
@@ -280,12 +290,13 @@ public class RodaPageServiceImpl implements RodaPageService {
 		return result;
 	}
 
-	private String replaceGetNews(String content, CmsPage cmsPage, Integer newsCount, String fromWhere) {
+	private String replaceGetNews(String content, CmsPage cmsPage, Integer count, Integer maxTitle, Integer maxText) {
 		int fromIndex = content.indexOf(GETNEWS_CODE, 0);
 		if (cmsPage != null) {
 			int pageLangId = cmsPage.getLangId().getId();
 			while (fromIndex > -1) {
-				content = StringUtils.replace(content, GETNEWS_CODE + "]]", generateNewsList(newsCount, pageLangId));
+				content = StringUtils.replace(content, GETNEWS_CODE + "]]",
+						generateNewsList(pageLangId, count, maxTitle, maxText));
 				fromIndex = content.indexOf(GETNEWS_CODE, fromIndex + GETNEWS_CODE.length());
 			}
 		} else {
@@ -417,7 +428,7 @@ public class RodaPageServiceImpl implements RodaPageService {
 			pageContent = replacePageUrlLink(pageContent, page);
 			pageContent = replaceFileUrl(pageContent, generateFullRelativeUrl(page));
 			pageContent = replaceImgLink(pageContent, generateFullRelativeUrl(page));
-			pageContent = replaceGetNews(pageContent, page, 3, "replacePageContent");
+			pageContent = replaceGetNews(pageContent, page, newsCount, newsMaxTitle, newsMaxText);
 			result = result.replace(PAGE_CONTENT_CODE, pageContent);
 		}
 		return result;
@@ -439,7 +450,7 @@ public class RodaPageServiceImpl implements RodaPageService {
 
 			resultContent = replaceFileUrl(pageContent, ADMIN_URL);
 			resultContent = replaceImgLink(pageContent, ADMIN_URL);
-			resultContent = replaceGetNews(pageContent, page, 3, "replacePageContent");
+			resultContent = replaceGetNews(pageContent, page, newsCount, newsMaxTitle, newsMaxText);
 			result = result.replace(PAGE_CONTENT_CODE, resultContent);
 		}
 		return result;
@@ -567,19 +578,19 @@ public class RodaPageServiceImpl implements RodaPageService {
 		return result.toString();
 	}
 
-	private String generateNewsList(Integer num, Integer langId) {
+	private String generateNewsList(Integer langId, Integer count, Integer maxTitle, Integer maxText) {
 
 		StringBuilder result = new StringBuilder();
-		List<News> news = News.findNumberedNewspieces(num, langId);
+		List<News> news = News.findNumberedNewspieces(count, langId);
 		if (news != null && news.size() > 0) {
 			result.append("<div class='news'>");
 			Iterator<News> newsIterator = news.iterator();
 			while (newsIterator.hasNext()) {
 				News newsitem = (News) newsIterator.next();
 				result.append("<div class='newsitem'>");
-				result.append("<div class='newstitle'>" + newsitem.getTruncatedTitle(100) + "</div>");
+				result.append("<div class='newstitle'>" + newsitem.getTruncatedTitle(maxTitle) + "</div>");
 				result.append("<div class=\"newsdate\">" + newsitem.getAdded().toString() + "</div>");
-				result.append("<div class='newscontent'>" + newsitem.getTruncatedContent(150) + "</div>");
+				result.append("<div class='newscontent'>" + newsitem.getTruncatedContent(maxText) + "</div>");
 				result.append("</div>");
 			}
 			result.append("</div>");

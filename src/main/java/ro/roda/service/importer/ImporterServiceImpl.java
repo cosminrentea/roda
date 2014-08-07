@@ -657,7 +657,7 @@ public class ImporterServiceImpl implements ImporterService {
 		}
 	}
 
-	@Async
+	// @Async
 	public void importDdiFiles(boolean postImport) throws FileNotFoundException, IOException, JAXBException,
 			SAXException {
 		log.trace("roda.data.ddi.files = " + rodaDataDdiFiles);
@@ -953,6 +953,37 @@ public class ImporterServiceImpl implements ImporterService {
 				variable.setName(varType.getName());
 				if (varType.getLabl().size() > 0) {
 					variable.setLabel(varType.getLabl().get(0).content);
+				}
+				if (varType.getQstn().size() > 0 && varType.getQstn().get(0).getQstnLitType().size() > 0) {
+					Question q = new Question();
+
+					// label = the variable's label (due to RODA's data files)
+					q.setLabel(variable.getLabel());
+
+					q.setStatement(varType.getQstn().get(0).getQstnLitType().get(0).content);
+
+					// update the Variable reference
+					Set<Variable> qVariables = q.getVariables();
+					if (qVariables == null) {
+						qVariables = new HashSet<Variable>();
+					}
+					qVariables.add(variable);
+					q.setVariables(qVariables);
+
+					// set the containing Instance
+					q.setInstanceId(instance);
+					Set<Question> iQuestions = instance.getQuestions();
+					if (iQuestions == null) {
+						iQuestions = new HashSet<Question>();
+					}
+					iQuestions.add(q);
+					instance.setQuestions(iQuestions);
+
+					q.persist();
+					instance.merge();
+
+					// set the Variable's question
+					variable.setQuestionId(q);
 				}
 				// TODO check semantics
 				variable.setVariableType((short) 0);

@@ -63,7 +63,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "qstnLitType")
 @Entity
-@Table(schema = "ddi",name = "LiteralQuestion")
+@Table(schema = "ddi", name = "LiteralQuestion")
 public class QstnLitType {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -100,7 +100,8 @@ public class QstnLitType {
 	@Column(columnDefinition = "text")
 	@XmlJavaTypeAdapter(CollapsedStringAdapter.class)
 	@XmlValue
-	protected String content;
+	public String content;
+
 	@XmlAttribute(name = "ID")
 	@XmlJavaTypeAdapter(CollapsedStringAdapter.class)
 	@XmlID

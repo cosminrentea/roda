@@ -226,7 +226,7 @@ public class Question {
 	private Set<Variable> variables;
 
 	@ManyToOne
-	@JoinColumn(name = "instance_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	@JoinColumn(name = "instance_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false)
 	private Instance instanceId;
 
 	@PersistenceContext

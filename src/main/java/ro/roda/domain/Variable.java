@@ -223,6 +223,10 @@ public class Variable {
 	private Set<Concept> concepts;
 
 	@ManyToOne
+	@JoinColumn(name = "question_id", columnDefinition = "integer", referencedColumnName = "id")
+	private Question questionId;
+
+	@ManyToOne
 	@JoinColumn(name = "file_id", columnDefinition = "integer", referencedColumnName = "id")
 	private File fileId;
 
@@ -331,6 +335,10 @@ public class Variable {
 		return name;
 	}
 
+	public Question getQuestionId() {
+		return questionId;
+	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -421,6 +429,10 @@ public class Variable {
 
 	public void setLabel(String label) {
 		this.label = label;
+	}
+
+	public void setQuestionId(Question questionId) {
+		this.questionId = questionId;
 	}
 
 	public void setOperatorInstructions(String operatorInstructions) {

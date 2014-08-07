@@ -224,6 +224,9 @@ public class Instance {
 	@ManyToMany(mappedBy = "instances")
 	private Set<File> files;
 
+	@OneToMany(mappedBy = "instanceId")
+	private Set<Question> questions;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
@@ -245,6 +248,7 @@ public class Instance {
 	@OneToMany(mappedBy = "instanceId")
 	private Set<InstanceRightTargetGroup> instanceRightTargetGroups;
 
+	// TODO confirm deletion
 	@OneToMany(mappedBy = "instanceId")
 	private Set<InstanceVariable> instanceVariables;
 
@@ -290,6 +294,10 @@ public class Instance {
 
 	public Set<File> getFiles() {
 		return files;
+	}
+
+	public Set<Question> getQuestions() {
+		return questions;
 	}
 
 	public Integer getId() {
@@ -370,6 +378,10 @@ public class Instance {
 
 	public void setFiles(Set<File> files) {
 		this.files = files;
+	}
+
+	public void setQuestions(Set<Question> questions) {
+		this.questions = questions;
 	}
 
 	public void setId(Integer id) {

@@ -69,3 +69,11 @@ public class RBean {
 		}
 	}
 }
+
+/*
+ * aa<-sample(18:90, 1200, replace=TRUE); summary(aa) //pt. numerice
+ * 
+ * bb<-sample(1:5, 1200, replace=TRUE); table(bb) // pt. categoriale
+ * 
+ * cc<-sample(1:2, 1200, replace=TRUE); table(bb,cc) // crosstab
+ */

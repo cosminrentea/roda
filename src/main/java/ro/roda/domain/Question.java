@@ -104,12 +104,12 @@ public class Question {
 		for (Question question : questions) {
 			SolrInputDocument sid = new SolrInputDocument();
 			sid.addField("id", "question_" + question.getId());
-			sid.addField("question.label_s", question.getLabel());
+			sid.addField("question.label_s", question.getName());
 			sid.addField("question.statement_s", question.getStatement());
 			// Add summary field to allow searching documents for objects of
 			// this type
 			sid.addField("question_solrsummary_t",
-					new StringBuilder().append(question.getLabel()).append(" ").append(question.getStatement()));
+					new StringBuilder().append(question.getName()).append(" ").append(question.getStatement()));
 			documents.add(sid);
 		}
 		try {
@@ -164,7 +164,7 @@ public class Question {
 	 * 
 	 * @param id
 	 *            - identificatorul intrebarii.
-	 * @param label
+	 * @param name
 	 *            - eticheta intrebarii.
 	 * @param instanceId
 	 *            - identificatorul instantei.
@@ -172,7 +172,7 @@ public class Question {
 	 *            - textul intrebarii.
 	 * @return
 	 */
-	public static Question checkQuestion(Long id, String label, Long instanceId, String statement) {
+	public static Question checkQuestion(Long id, String name, Long instanceId, String statement) {
 		Question object;
 
 		if (id != null) {
@@ -185,11 +185,11 @@ public class Question {
 
 		List<Question> queryResult;
 
-		if (label != null && instanceId != null) {
+		if (name != null && instanceId != null) {
 			TypedQuery<Question> query = entityManager().createQuery(
 					"SELECT o FROM Question o WHERE lower(o.label) = lower(:label) AND o.instanceId = :instanceId",
 					Question.class);
-			query.setParameter("label", label);
+			query.setParameter("label", name);
 			query.setParameter("instanceId", instanceId);
 
 			queryResult = query.getResultList();
@@ -199,7 +199,7 @@ public class Question {
 		}
 
 		object = new Question();
-		object.label = label;
+		object.name = name;
 		object.statement = statement;
 		object.persist();
 
@@ -218,9 +218,9 @@ public class Question {
 	@Column(name = "id")
 	private Long id;
 
-	@Column(name = "label", columnDefinition = "text")
+	@Column(name = "name", columnDefinition = "text")
 	@NotNull
-	private String label;
+	private String name;
 
 	@OneToMany(mappedBy = "questionId")
 	private Set<Variable> variables;
@@ -257,8 +257,8 @@ public class Question {
 		return this.id;
 	}
 
-	public String getLabel() {
-		return label;
+	public String getName() {
+		return name;
 	}
 
 	public Set<Variable> getVariables() {
@@ -305,8 +305,8 @@ public class Question {
 		this.id = id;
 	}
 
-	public void setLabel(String label) {
-		this.label = label;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public void setVariables(Set<Variable> variables) {
@@ -338,8 +338,8 @@ public class Question {
 
 	@Override
 	public boolean equals(Object obj) {
-		return ((id != null && id.equals(((Question) obj).id)) || (label != null
-				&& label.equalsIgnoreCase(((Question) obj).label) && instanceId == ((Question) obj).instanceId));
+		return ((id != null && id.equals(((Question) obj).id)) || (name != null
+				&& name.equalsIgnoreCase(((Question) obj).name) && instanceId == ((Question) obj).instanceId));
 	}
 
 	public AuditReader getAuditReader() {

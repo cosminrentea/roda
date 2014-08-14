@@ -248,10 +248,6 @@ public class Instance {
 	@OneToMany(mappedBy = "instanceId")
 	private Set<InstanceRightTargetGroup> instanceRightTargetGroups;
 
-	// TODO confirm deletion
-	@OneToMany(mappedBy = "instanceId")
-	private Set<InstanceVariable> instanceVariables;
-
 	@Column(name = "main", columnDefinition = "bool")
 	@NotNull
 	private boolean main;
@@ -322,10 +318,6 @@ public class Instance {
 
 	public Set<InstanceRightTargetGroup> getInstanceRightTargetGroups() {
 		return instanceRightTargetGroups;
-	}
-
-	public Set<InstanceVariable> getInstanceVariables() {
-		return instanceVariables;
 	}
 
 	public Study getStudyId() {
@@ -406,10 +398,6 @@ public class Instance {
 
 	public void setInstanceRightTargetGroups(Set<InstanceRightTargetGroup> instanceRightTargetGroups) {
 		this.instanceRightTargetGroups = instanceRightTargetGroups;
-	}
-
-	public void setInstanceVariables(Set<InstanceVariable> instanceVariables) {
-		this.instanceVariables = instanceVariables;
 	}
 
 	public void setMain(boolean main) {

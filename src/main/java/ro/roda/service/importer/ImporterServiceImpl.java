@@ -46,7 +46,6 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -943,7 +942,7 @@ public class ImporterServiceImpl implements ImporterService {
 		instance.persist();
 
 		// import Variables
-		Set<InstanceVariable> instanceVariableSet = new HashSet<InstanceVariable>();
+		// Set<Variable> variableSet = new HashSet<Variable>();
 		if (dataDscrType != null) {
 			List<VarType> varTypeList = dataDscrType.getVar();
 			int counter = 0;
@@ -954,11 +953,12 @@ public class ImporterServiceImpl implements ImporterService {
 				if (varType.getLabl().size() > 0) {
 					variable.setLabel(varType.getLabl().get(0).content);
 				}
+				Question q = null;
 				if (varType.getQstn().size() > 0 && varType.getQstn().get(0).getQstnLitType().size() > 0) {
-					Question q = new Question();
+					q = new Question();
 
 					// label = the variable's label (due to RODA's data files)
-					q.setLabel(variable.getLabel());
+					q.setName(variable.getName());
 
 					q.setStatement(varType.getQstn().get(0).getQstnLitType().get(0).content);
 
@@ -1012,15 +1012,19 @@ public class ImporterServiceImpl implements ImporterService {
 					}
 				}
 
-				InstanceVariable iv = new InstanceVariable();
-				iv.setId(new InstanceVariablePK(instance.getId(), variable.getId()));
-				iv.setOrderVariableInInstance(counter);
+				Variable v = new Variable();
+				v.setId(variable.getId());
+				// TODO: decide if the order of the variable is at the question
+				// or instance level (there is no more relation between Instance
+				// and Variable)
+				// v.setOrderVariableInInstance(counter);
+				v.setOrder(counter);
 				counter++;
-				iv.persist();
-				instanceVariableSet.add(iv);
+				v.setQuestionId(q);
+				v.persist();
+				// variableSet.add(v);
 			}
 		}
-		instance.setInstanceVariables(instanceVariableSet);
 		instance.merge();
 	}
 }

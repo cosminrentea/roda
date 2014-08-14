@@ -22,6 +22,7 @@ import javax.persistence.PostUpdate;
 import javax.persistence.PreRemove;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.persistence.TypedQuery;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -79,6 +80,20 @@ public class Variable {
 		if (id == null)
 			return null;
 		return entityManager().find(Variable.class, id);
+	}
+
+	public static Variable findVariable(Question question, Integer order) {
+		TypedQuery<Variable> query = entityManager().createQuery(
+				"SELECT o FROM Variable o WHERE questionId = :question AND order = :order", Variable.class);
+		query.setParameter("question", question);
+		query.setParameter("order", order);
+
+		List<Variable> queryResult = query.getResultList();
+		if (queryResult.size() > 0) {
+			return queryResult.get(0);
+		}
+
+		return null;
 	}
 
 	public static List<Variable> findVariableEntries(int firstResult, int maxResults) {
@@ -194,20 +209,25 @@ public class Variable {
 	 *            - fisierul din care provine variabila.
 	 * @return
 	 */
-	public static Variable checkVariable(Long id, String label, Short type, String operatorInstructions, File fileId) {
-		Variable object;
+	public static Variable checkVariable(Long id, String label, Question questionId, Integer order, Short type,
+			String operatorInstructions, File fileId) {
+		Variable object = null;
 
 		if (id != null) {
 			object = findVariable(id);
+		} else {
+			object = findVariable(questionId, order);
+		}
 
-			if (object != null) {
-				return object;
-			}
+		if (object != null) {
+			return object;
 		}
 
 		object = new Variable();
 		object.label = label;
 		object.type = type;
+		object.questionId = questionId;
+		object.order = order;
 		object.operatorInstructions = operatorInstructions;
 		object.fileId = fileId;
 		object.persist();
@@ -242,9 +262,6 @@ public class Variable {
 	// , columnDefinition = "bigserial")
 	private Long id;
 
-	@OneToMany(mappedBy = "variableId")
-	private Set<InstanceVariable> instanceVariables;
-
 	@Column(name = "label", columnDefinition = "text")
 	@NotNull
 	private String label;
@@ -252,6 +269,10 @@ public class Variable {
 	@Column(name = "name", columnDefinition = "text")
 	@NotNull
 	private String name;
+
+	@Column(name = "order", columnDefinition = "int4")
+	@NotNull
+	private Integer order;
 
 	@Column(name = "operator_instructions", columnDefinition = "text")
 	private String operatorInstructions;
@@ -323,16 +344,16 @@ public class Variable {
 		return this.id;
 	}
 
-	public Set<InstanceVariable> getInstanceVariables() {
-		return instanceVariables;
-	}
-
 	public String getLabel() {
 		return label;
 	}
 
 	public String getName() {
 		return name;
+	}
+
+	public Integer getOrder() {
+		return order;
 	}
 
 	public Question getQuestionId() {
@@ -423,12 +444,12 @@ public class Variable {
 		this.id = id;
 	}
 
-	public void setInstanceVariables(Set<InstanceVariable> instanceVariables) {
-		this.instanceVariables = instanceVariables;
-	}
-
 	public void setLabel(String label) {
 		this.label = label;
+	}
+
+	public void setOrder(Integer order) {
+		this.order = order;
 	}
 
 	public void setQuestionId(Question questionId) {

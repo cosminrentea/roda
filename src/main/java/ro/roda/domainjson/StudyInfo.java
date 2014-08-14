@@ -19,10 +19,10 @@ import org.springframework.beans.factory.annotation.Configurable;
 import ro.roda.domain.CatalogStudy;
 import ro.roda.domain.File;
 import ro.roda.domain.Instance;
-import ro.roda.domain.InstanceVariable;
 import ro.roda.domain.Keyword;
 import ro.roda.domain.Org;
 import ro.roda.domain.Person;
+import ro.roda.domain.Question;
 import ro.roda.domain.Series;
 import ro.roda.domain.Study;
 import ro.roda.domain.StudyDescr;
@@ -203,7 +203,6 @@ public class StudyInfo extends JsonInfo {
 
 		// set the variables
 		// variables of a study are those of its 'main' instance
-		// TODO what are the variables of an instance?
 		if (hasVariables) {
 
 			Map<Integer, Variable> orderVar = new TreeMap<Integer, Variable>();
@@ -212,10 +211,15 @@ public class StudyInfo extends JsonInfo {
 			if (study.getInstances() != null && study.getInstances().size() > 0) {
 				// log.trace("Instances: " + study.getInstances().size());
 				for (Instance instance : study.getInstances()) {
-					if (instance.isMain() && instance.getInstanceVariables() != null) {
-						for (InstanceVariable iv : instance.getInstanceVariables()) {
-							// variables.add(iv.getVariableId());
-							orderVar.put(iv.getOrderVariableInInstance(), iv.getVariableId());
+					if (instance.isMain() && instance.getQuestions() != null) {
+						int orderVariableInInstance = 0;
+						for (Question q : instance.getQuestions()) {
+							// TODO: add the order of the question in the
+							// instance (to be validated) and determine the
+							// right position of the variable in the instance
+							for (Variable v : q.getVariables()) {
+								orderVar.put(orderVariableInInstance++, v);
+							}
 						}
 					}
 				}

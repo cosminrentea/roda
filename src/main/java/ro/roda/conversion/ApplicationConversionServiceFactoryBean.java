@@ -151,9 +151,6 @@ public class ApplicationConversionServiceFactoryBean extends FormattingConversio
 	InstanceRightValueService instanceRightValueService;
 
 	@Autowired
-	InstanceVariableService instanceVariableService;
-
-	@Autowired
 	InternetService internetService;
 
 	@Autowired
@@ -1254,30 +1251,6 @@ public class ApplicationConversionServiceFactoryBean extends FormattingConversio
 		return new org.springframework.core.convert.converter.Converter<java.lang.String, ro.roda.domain.InstanceRightValue>() {
 			public ro.roda.domain.InstanceRightValue convert(String id) {
 				return getObject().convert(getObject().convert(id, Integer.class), InstanceRightValue.class);
-			}
-		};
-	}
-
-	public Converter<InstanceVariable, String> getInstanceVariableToStringConverter() {
-		return new org.springframework.core.convert.converter.Converter<ro.roda.domain.InstanceVariable, java.lang.String>() {
-			public String convert(InstanceVariable instanceVariable) {
-				return new StringBuilder().append(instanceVariable.getOrderVariableInInstance()).toString();
-			}
-		};
-	}
-
-	public Converter<InstanceVariablePK, InstanceVariable> getIdToInstanceVariableConverter() {
-		return new org.springframework.core.convert.converter.Converter<ro.roda.domain.InstanceVariablePK, ro.roda.domain.InstanceVariable>() {
-			public ro.roda.domain.InstanceVariable convert(ro.roda.domain.InstanceVariablePK id) {
-				return instanceVariableService.findInstanceVariable(id);
-			}
-		};
-	}
-
-	public Converter<String, InstanceVariable> getStringToInstanceVariableConverter() {
-		return new org.springframework.core.convert.converter.Converter<java.lang.String, ro.roda.domain.InstanceVariable>() {
-			public ro.roda.domain.InstanceVariable convert(String id) {
-				return getObject().convert(getObject().convert(id, InstanceVariablePK.class), InstanceVariable.class);
 			}
 		};
 	}
@@ -2768,14 +2741,6 @@ public class ApplicationConversionServiceFactoryBean extends FormattingConversio
 		};
 	}
 
-	public Converter<InstanceVariablePK, String> getInstanceVariablePKToJsonConverter() {
-		return new org.springframework.core.convert.converter.Converter<ro.roda.domain.InstanceVariablePK, java.lang.String>() {
-			public String convert(InstanceVariablePK instanceVariablePK) {
-				return Base64.encodeBase64URLSafeString(instanceVariablePK.toJson().getBytes());
-			}
-		};
-	}
-
 	public Converter<String, PersonEmailPK> getJsonToPersonEmailPKConverter() {
 		return new org.springframework.core.convert.converter.Converter<java.lang.String, ro.roda.domain.PersonEmailPK>() {
 			public PersonEmailPK convert(String encodedJson) {
@@ -3278,9 +3243,6 @@ public class ApplicationConversionServiceFactoryBean extends FormattingConversio
 		registry.addConverter(getInstanceRightValueToStringConverter());
 		registry.addConverter(getIdToInstanceRightValueConverter());
 		registry.addConverter(getStringToInstanceRightValueConverter());
-		registry.addConverter(getInstanceVariableToStringConverter());
-		registry.addConverter(getIdToInstanceVariableConverter());
-		registry.addConverter(getStringToInstanceVariableConverter());
 		registry.addConverter(getInternetToStringConverter());
 		registry.addConverter(getIdToInternetConverter());
 		registry.addConverter(getStringToInternetConverter());
@@ -3463,7 +3425,6 @@ public class ApplicationConversionServiceFactoryBean extends FormattingConversio
 		registry.addConverter(getOrgAddressPKToJsonConverter());
 		registry.addConverter(getJsonToPersonAddressPKConverter());
 		registry.addConverter(getPersonAddressPKToJsonConverter());
-		registry.addConverter(getInstanceVariablePKToJsonConverter());
 		registry.addConverter(getJsonToPersonEmailPKConverter());
 		registry.addConverter(getPersonEmailPKToJsonConverter());
 		registry.addConverter(getJsonToStudyDescrPKConverter());

@@ -32,7 +32,6 @@ import ro.roda.service.InstanceOrgService;
 import ro.roda.service.InstancePersonService;
 import ro.roda.service.InstanceRightTargetGroupService;
 import ro.roda.service.InstanceService;
-import ro.roda.service.InstanceVariableService;
 import ro.roda.service.StudyService;
 import ro.roda.service.UsersService;
 
@@ -60,9 +59,6 @@ public class InstanceController {
 
 	@Autowired
 	InstanceRightTargetGroupService instanceRightTargetGroupService;
-
-	@Autowired
-	InstanceVariableService instanceVariableService;
 
 	@Autowired
 	StudyService studyService;
@@ -157,7 +153,6 @@ public class InstanceController {
 		uiModel.addAttribute("instancepeople", instancePersonService.findAllInstancepeople());
 		uiModel.addAttribute("instancerighttargetgroups",
 				instanceRightTargetGroupService.findAllInstanceRightTargetGroups());
-		uiModel.addAttribute("instancevariables", instanceVariableService.findAllInstanceVariables());
 		uiModel.addAttribute("studys", studyService.findAllStudys());
 		uiModel.addAttribute("userses", usersService.findAllUserses());
 	}

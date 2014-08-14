@@ -289,6 +289,9 @@ public class Users implements Serializable {
 	@OneToMany(mappedBy = "userId")
 	private Set<PersonLinks> personLinkss;
 
+	@OneToMany(mappedBy = "userId")
+	private Set<StudySaved> studiesSaved;
+
 	@OneToMany(mappedBy = "statusBy")
 	private Set<PersonLinks> personLinkss1;
 
@@ -531,5 +534,13 @@ public class Users implements Serializable {
 
 	public AuditReader getAuditReader() {
 		return AuditReaderFactory.get(entityManager);
+	}
+
+	public Set<StudySaved> getStudiesSaved() {
+		return studiesSaved;
+	}
+
+	public void setStudiesSaved(Set<StudySaved> studiesSaved) {
+		this.studiesSaved = studiesSaved;
 	}
 }

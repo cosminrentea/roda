@@ -170,8 +170,6 @@ public class UserSetting {
 	 *            - numele setarii.
 	 * @param description
 	 *            - descrierea setarii.
-	 * @param userSettingGroupId
-	 *            - grupul de setari din care face parte setarea.
 	 * @param defaultValue
 	 *            - valoarea implicita a setarii.
 	 * @return

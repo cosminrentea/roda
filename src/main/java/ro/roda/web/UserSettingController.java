@@ -23,7 +23,6 @@ import org.springframework.web.util.UriUtils;
 import org.springframework.web.util.WebUtils;
 
 import ro.roda.domain.UserSetting;
-import ro.roda.service.UserSettingGroupService;
 import ro.roda.service.UserSettingService;
 import ro.roda.service.UserSettingValueService;
 
@@ -33,9 +32,6 @@ public class UserSettingController {
 
 	@Autowired
 	UserSettingService userSettingService;
-
-	@Autowired
-	UserSettingGroupService userSettingGroupService;
 
 	@Autowired
 	UserSettingValueService userSettingValueService;
@@ -112,7 +108,6 @@ public class UserSettingController {
 
 	void populateEditForm(Model uiModel, UserSetting userSetting) {
 		uiModel.addAttribute("userSetting", userSetting);
-		uiModel.addAttribute("usersettinggroups", userSettingGroupService.findAllUserSettingGroups());
 		uiModel.addAttribute("usersettingvalues", userSettingValueService.findAllUserSettingValues());
 	}
 

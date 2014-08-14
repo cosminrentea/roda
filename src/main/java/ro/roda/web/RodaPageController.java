@@ -1,6 +1,7 @@
 package ro.roda.web;
 
 import java.io.IOException;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -42,12 +43,10 @@ public class RodaPageController {
 
 		String url = (String) request.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE);
 
-		url = url.substring(requestMapping.length());
-		log.trace("Computing page: " + url);
-
 		// "url" now is the full URL with a trailing slash "/..."
 
-		String[] generatedPage = rodaPageService.generatePage(url);
+		String[] generatedPage = rodaPageService.generatePage(url.substring(requestMapping.length()),
+				request.getParameterMap());
 
 		// if the fields externalredirect and internalredirect are
 		// specified, then externalredirect has greater priority

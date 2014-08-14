@@ -3,6 +3,7 @@ package ro.roda.service.page;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -39,6 +40,7 @@ public class RodaPageServiceImpl implements RodaPageService {
 	private static String PAGE_TREE_BY_URL_CODE = "[[Code: PageTreeByUrl('";
 	private static String PAGE_BREADCRUMBS = "[[Code: PageBreadcrumbs('";
 	private static String GETNEWS_CODE = "[[Code: GetNews";
+	private static String GETNEWSID_CODE = "[[Code: GetNewsId";
 
 	private static String DEFAULT_ERROR_PAGE_LANG = "en";
 	private static String ADMIN_URL = "admin/index.html";
@@ -67,7 +69,7 @@ public class RodaPageServiceImpl implements RodaPageService {
 	}
 
 	@Cacheable(value = "pages")
-	public String[] generatePage(String url) {
+	public String[] generatePage(String url, Map<String, String> parameters) {
 		// if (checkFullRelativeUrl(url)) {
 
 		// the URL fragment is no longer unique, but the full URL is
@@ -77,7 +79,7 @@ public class RodaPageServiceImpl implements RodaPageService {
 
 		CmsPage page = CmsPage.findCmsPageByFullUrl(url);
 
-		return generatePage(page, url);
+		return generatePage(page, url, parameters);
 	}
 
 	public String generateDefaultPageUrl() {
@@ -96,7 +98,11 @@ public class RodaPageServiceImpl implements RodaPageService {
 	 * @param url
 	 * @return
 	 */
-	public String[] generatePage(CmsPage cmsPage, String url) {
+	public String[] generatePage(CmsPage cmsPage, String url, Map<String, String> parameters) {
+
+		log.trace("URL: " + url);
+		log.trace("Number of parameters: " + parameters.size());
+
 		String pageTitle = "";
 		String[] pageContentAndTitle = new String[4];
 		StringBuilder sb = new StringBuilder();
@@ -142,10 +148,6 @@ public class RodaPageServiceImpl implements RodaPageService {
 				pageTitle = errorPages.get(0).getName();
 			}
 
-			// if there is no error page defined, then:
-			// sb.append("<html><div> The page you requested does not exist. (url: "
-			// + url + ")</div></html>");
-			// pageTitle = "Error";
 		}
 		pageContentAndTitle[0] = sb.toString();
 		pageContentAndTitle[1] = pageTitle;
@@ -305,13 +307,28 @@ public class RodaPageServiceImpl implements RodaPageService {
 		return content;
 	}
 
+	private String replaceGetNewsId(String content, CmsPage cmsPage, Map<String, String> parameters) {
+		int fromIndex = content.indexOf(GETNEWSID_CODE, 0);
+		if (cmsPage != null) {
+			int pageLangId = cmsPage.getLangId().getId();
+			while (fromIndex > -1) {
+				content = StringUtils.replace(content, GETNEWSID_CODE + "]]",
+						generateNewsId(pageLangId, Integer.valueOf(parameters.get("id"))));
+				fromIndex = content.indexOf(GETNEWSID_CODE, fromIndex + GETNEWSID_CODE.length());
+			}
+		} else {
+			log.debug("CmsPage is null");
+		}
+		return content;
+	}
+
 	private String replacePageBreadcrumbs(String content, CmsPage cmsPage) {
 		int fromIndex = content.indexOf(PAGE_BREADCRUMBS, 0);
 		while (fromIndex > -1) {
 			String sep = content.substring(fromIndex + PAGE_BREADCRUMBS.length(),
 					content.indexOf("')]]", fromIndex + PAGE_BREADCRUMBS.length()));
 
-			log.debug("Breadcrumbs separator = " + sep);
+			log.trace("Breadcrumbs separator = " + sep);
 
 			content = StringUtils.replace(content, PAGE_BREADCRUMBS + sep + "')]]",
 					generatePageBreadcrumbs(cmsPage, sep));
@@ -595,6 +612,15 @@ public class RodaPageServiceImpl implements RodaPageService {
 			}
 			result.append("</div>");
 		}
+		return result.toString();
+	}
+
+	private String generateNewsId(Integer langId, Integer id) {
+
+		StringBuilder result = new StringBuilder();
+
+		// TODO implement
+
 		return result.toString();
 	}
 

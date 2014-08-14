@@ -307,9 +307,6 @@ public class ApplicationConversionServiceFactoryBean extends FormattingConversio
 	UserSettingService userSettingService;
 
 	@Autowired
-	UserSettingGroupService userSettingGroupService;
-
-	@Autowired
 	UserSettingValueService userSettingValueService;
 
 	@Autowired
@@ -2538,31 +2535,6 @@ public class ApplicationConversionServiceFactoryBean extends FormattingConversio
 		};
 	}
 
-	public Converter<UserSettingGroup, String> getUserSettingGroupToStringConverter() {
-		return new org.springframework.core.convert.converter.Converter<ro.roda.domain.UserSettingGroup, java.lang.String>() {
-			public String convert(UserSettingGroup userSettingGroup) {
-				return new StringBuilder().append(userSettingGroup.getName()).append(' ')
-						.append(userSettingGroup.getDescription()).toString();
-			}
-		};
-	}
-
-	public Converter<Integer, UserSettingGroup> getIdToUserSettingGroupConverter() {
-		return new org.springframework.core.convert.converter.Converter<java.lang.Integer, ro.roda.domain.UserSettingGroup>() {
-			public ro.roda.domain.UserSettingGroup convert(java.lang.Integer id) {
-				return userSettingGroupService.findUserSettingGroup(id);
-			}
-		};
-	}
-
-	public Converter<String, UserSettingGroup> getStringToUserSettingGroupConverter() {
-		return new org.springframework.core.convert.converter.Converter<java.lang.String, ro.roda.domain.UserSettingGroup>() {
-			public ro.roda.domain.UserSettingGroup convert(String id) {
-				return getObject().convert(getObject().convert(id, Integer.class), UserSettingGroup.class);
-			}
-		};
-	}
-
 	public Converter<UserSettingValue, String> getUserSettingValueToStringConverter() {
 		return new org.springframework.core.convert.converter.Converter<ro.roda.domain.UserSettingValue, java.lang.String>() {
 			public String convert(UserSettingValue userSettingValue) {
@@ -3399,9 +3371,6 @@ public class ApplicationConversionServiceFactoryBean extends FormattingConversio
 		registry.addConverter(getUserSettingToStringConverter());
 		registry.addConverter(getIdToUserSettingConverter());
 		registry.addConverter(getStringToUserSettingConverter());
-		registry.addConverter(getUserSettingGroupToStringConverter());
-		registry.addConverter(getIdToUserSettingGroupConverter());
-		registry.addConverter(getStringToUserSettingGroupConverter());
 		registry.addConverter(getUserSettingValueToStringConverter());
 		registry.addConverter(getIdToUserSettingValueConverter());
 		registry.addConverter(getStringToUserSettingValueConverter());

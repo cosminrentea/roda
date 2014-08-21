@@ -74,7 +74,31 @@ import ro.roda.ddi.SubjectType;
 import ro.roda.ddi.SumDscrType;
 import ro.roda.ddi.TopcClasType;
 import ro.roda.ddi.VarType;
-import ro.roda.domain.*;
+import ro.roda.domain.Address;
+import ro.roda.domain.CatalogStudy;
+import ro.roda.domain.CatalogStudyPK;
+import ro.roda.domain.CmsFolder;
+import ro.roda.domain.CmsLayout;
+import ro.roda.domain.CmsLayoutGroup;
+import ro.roda.domain.CmsPage;
+import ro.roda.domain.CmsPageContent;
+import ro.roda.domain.CmsPageType;
+import ro.roda.domain.CmsSnippetGroup;
+import ro.roda.domain.Instance;
+import ro.roda.domain.Keyword;
+import ro.roda.domain.Lang;
+import ro.roda.domain.OtherStatistic;
+import ro.roda.domain.Question;
+import ro.roda.domain.Study;
+import ro.roda.domain.StudyDescr;
+import ro.roda.domain.StudyDescrPK;
+import ro.roda.domain.StudyKeyword;
+import ro.roda.domain.StudyKeywordPK;
+import ro.roda.domain.TimeMeth;
+import ro.roda.domain.Topic;
+import ro.roda.domain.UnitAnalysis;
+import ro.roda.domain.Users;
+import ro.roda.domain.Variable;
 import ro.roda.domainjson.AdminJson;
 import ro.roda.service.CatalogService;
 import ro.roda.service.CityService;
@@ -126,6 +150,8 @@ public class ImporterServiceImpl implements ImporterService {
 
 	private static final String pageXmlFile = "page.xml";
 
+	private static final String cmsFolderDdiImported = "ddi-imported";
+
 	@PersistenceContext
 	transient EntityManager entityManager;
 
@@ -150,6 +176,8 @@ public class ImporterServiceImpl implements ImporterService {
 	@Autowired
 	CmsFileService cmsFileService;
 
+	private Tika tika = new Tika();
+
 	@Value("${roda.data.cms}")
 	private String rodaDataCms;
 
@@ -162,19 +190,20 @@ public class ImporterServiceImpl implements ImporterService {
 	@Value("${roda.data.ddi}")
 	private String rodaDataDdi;
 
+	@Value("${roda.data.ddi.csv}")
+	private String rodaDataDdiCsv;
+
 	@Value("${roda.data.elsst}")
 	private String rodaDataElsst;
-
-	private Tika tika = new Tika();
 
 	@Value("${roda.data.csv-after-ddi}")
 	private String rodaDataCsvAfterDdi;
 
 	@Value("${roda.data.ddi.xsd}")
-	private static String xsdDdi122 = "xsd/ddi122.xsd";
+	private String xsdDdi122;
 
 	@Value("${roda.data.ddi.persist}")
-	private String ddiPersist;
+	private String rodaDataDdiPersist;
 
 	@Value("${roda.data.ddi.files}")
 	private String rodaDataDdiFiles;
@@ -204,6 +233,7 @@ public class ImporterServiceImpl implements ImporterService {
 		log.trace("roda.data.csv = " + rodaDataCsv);
 		log.trace("roda.data.csv-extra = " + rodaDataCsvExtra);
 		log.trace("roda.data.ddi = " + rodaDataDdi);
+		log.trace("roda.data.ddi.csv = " + rodaDataDdiCsv);
 		log.trace("roda.data.csv-after-ddi = " + rodaDataCsvAfterDdi);
 		log.trace("roda.data.cms = " + rodaDataCms);
 
@@ -227,7 +257,7 @@ public class ImporterServiceImpl implements ImporterService {
 		}
 
 		if ("yes".equalsIgnoreCase(rodaDataDdi)) {
-			importDdiFiles("yes".equalsIgnoreCase(rodaDataCsvAfterDdi));
+			importDdiFiles();
 		}
 	}
 
@@ -657,16 +687,21 @@ public class ImporterServiceImpl implements ImporterService {
 	}
 
 	// @Async
-	public void importDdiFiles(boolean postImport) throws FileNotFoundException, IOException, JAXBException,
-			SAXException {
+	public void importDdiFiles() throws FileNotFoundException, IOException, JAXBException, SAXException {
 		log.trace("roda.data.ddi.files = " + rodaDataDdiFiles);
+		log.trace("roda.data.ddi.csv = " + rodaDataDdiCsv);
+		log.trace("roda.data.ddi.csv-after-ddi = " + rodaDataCsvAfterDdi);
+		log.trace("roda.data.ddi.persist = " + rodaDataDdiPersist);
+
+		boolean ddiPersistance = "yes".equalsIgnoreCase(rodaDataDdiPersist);
+		boolean importDdiCsv = "yes".equalsIgnoreCase(rodaDataDdiCsv);
 
 		this.getUnmarshaller();
 
 		PathMatchingResourcePatternResolver pmr = new PathMatchingResourcePatternResolver();
 		Resource[] resources = pmr.getResources("classpath*:" + rodaDataDdiFiles);
 		if (resources.length == 0) {
-			log.info("No DDI files found for importing");
+			log.warn("No DDI files found for importing");
 		}
 
 		ArrayList<File> ddiFiles = new ArrayList<File>();
@@ -678,15 +713,26 @@ public class ImporterServiceImpl implements ImporterService {
 
 		for (File ddiFile : ddiFiles) {
 			log.debug("Importing DDI file: " + ddiFile.getName());
-			MockMultipartFile mockMultipartFile = new MockMultipartFile(ddiFile.getName(), ddiFile.getName(),
+			MockMultipartFile mockMultipartFileDdi = new MockMultipartFile(ddiFile.getName(), ddiFile.getName(),
 					"text/xml", new FileInputStream(ddiFile));
 			CodeBook cb = (CodeBook) unmarshaller.unmarshal(ddiFile);
-			importDdiFile(cb, mockMultipartFile, true, true);
+
+			// add CSV data (if any) to imported DDIs
+			MockMultipartFile mockMultipartFileCsv = null;
+			if (importDdiCsv) {
+				// get CSV file name (RODA naming rules)
+				String csvFilename = ddiFile.getName().split("_")[0].concat(".csv");
+				// TODO @Value for "ddi" folder below
+				Resource csvResource = pmr.getResource("classpath:ddi/" + csvFilename);
+				mockMultipartFileCsv = new MockMultipartFile(csvFilename, csvFilename, "text/csv", new FileInputStream(
+						csvResource.getFile()));
+			}
+			importDdiFile(cb, mockMultipartFileDdi, true, true, ddiPersistance, mockMultipartFileCsv);
 		}
 		log.debug("Finished importing DDI files");
 
-		if (postImport) {
-			// add Studies to Catalogs
+		// add Studies to Catalogs
+		if ("yes".equalsIgnoreCase(rodaDataCsvAfterDdi)) {
 			CSVReader reader = new CSVReader(new FileReader(
 					new ClassPathResource(rodaDataCsvAfterDdiCatalogStudy).getFile()));
 			List<String[]> csvLines;
@@ -712,9 +758,10 @@ public class ImporterServiceImpl implements ImporterService {
 		}
 	}
 
-	public void importDdiFile(CodeBook cb, MultipartFile multipartFile, boolean nesstarExported, boolean legacyDataRODA) {
+	public void importDdiFile(CodeBook cb, MultipartFile multipartFileDdi, boolean nesstarExported,
+			boolean legacyDataRODA, boolean ddiPersistence, MultipartFile multipartFileCsv) {
 
-		if ("yes".equalsIgnoreCase(ddiPersist)) {
+		if (ddiPersistence) {
 			if (this.entityManager == null) {
 				this.entityManager = entityManager();
 			}
@@ -810,7 +857,7 @@ public class ImporterServiceImpl implements ImporterService {
 		s.setRawData(true);
 		s.setRawMetadata(false);
 		s.setInsertionStatus(0);
-		s.setImportedFilename(multipartFile.getName());
+		s.setImportedFilename(multipartFileDdi.getName());
 
 		// TODO replace user = admin ?
 		Users u = Users.findUsers(1);
@@ -911,7 +958,19 @@ public class ImporterServiceImpl implements ImporterService {
 		// Add the imported DDI File to current Study's Files (in File-Store)
 
 		ro.roda.domain.File domainFile = new ro.roda.domain.File();
-		fileService.saveFile(domainFile, multipartFile, false);
+		fileService.saveFile(domainFile, multipartFileDdi, false);
+
+		// Add the imported DDI File (and maybe CSV data) to CMS-File-Store
+		CmsFolder cmsFolder = CmsFolder.checkCmsFolder(null, cmsFolderDdiImported, null,
+				"Folder used to save the imported data: DDI files and associated CSV files");
+		cmsFileStoreService.folderSave(cmsFolder);
+
+		if (multipartFileDdi != null) {
+			cmsFileStoreService.fileSave(multipartFileDdi, cmsFolder);
+		}
+		if (multipartFileCsv != null) {
+			cmsFileStoreService.fileSave(multipartFileCsv, cmsFolder);
+		}
 
 		HashSet<Study> sStudy = new HashSet<Study>();
 		sStudy.add(s);

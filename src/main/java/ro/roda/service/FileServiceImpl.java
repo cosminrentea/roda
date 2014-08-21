@@ -76,8 +76,8 @@ public class FileServiceImpl implements FileService {
 
 					updateSolrFile(f, multipartFile);
 					if (multipartFile.getOriginalFilename().endsWith(".ddi")) {
-						importer.importDdiFile((CodeBook) importer.getUnmarshaller().unmarshal(f), multipartFile,
-								true, true);
+						importer.importDdiFile((CodeBook) importer.getUnmarshaller().unmarshal(f), multipartFile, true,
+								true, false, null);
 					}
 				} else {
 					log.debug("> saveFile > set properties");

@@ -229,6 +229,14 @@ public class Question {
 	@JoinColumn(name = "instance_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false)
 	private Instance instanceId;
 
+	@Column(name = "order_in_instance", columnDefinition = "int")
+	// @NotNull
+	private Integer orderInInstance;
+
+	@ManyToOne
+	@JoinColumn(name = "lang_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	private Lang langId;
+
 	@PersistenceContext
 	transient EntityManager entityManager;
 
@@ -267,6 +275,14 @@ public class Question {
 
 	public Instance getInstanceId() {
 		return instanceId;
+	}
+
+	public Lang getLangId() {
+		return langId;
+	}
+
+	public Integer getOrderInInstance() {
+		return orderInInstance;
 	}
 
 	@Transactional
@@ -315,6 +331,14 @@ public class Question {
 
 	public void setInstanceId(Instance instanceId) {
 		this.instanceId = instanceId;
+	}
+
+	public void setLangId(Lang langId) {
+		this.langId = langId;
+	}
+
+	public void setOrderInInstance(Integer orderInInstance) {
+		this.orderInInstance = orderInInstance;
 	}
 
 	public String toJson() {

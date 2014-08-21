@@ -945,7 +945,8 @@ public class ImporterServiceImpl implements ImporterService {
 		// Set<Variable> variableSet = new HashSet<Variable>();
 		if (dataDscrType != null) {
 			List<VarType> varTypeList = dataDscrType.getVar();
-			int counter = 0;
+
+			int counterQstn = 0;
 			for (VarType varType : varTypeList) {
 				log.trace("Variable = " + varType.getName());
 				Variable variable = new Variable();
@@ -953,14 +954,27 @@ public class ImporterServiceImpl implements ImporterService {
 				if (varType.getLabl().size() > 0) {
 					variable.setLabel(varType.getLabl().get(0).content);
 				}
+
 				Question q = null;
 				if (varType.getQstn().size() > 0 && varType.getQstn().get(0).getQstnLitType().size() > 0) {
-					q = new Question();
 
-					// label = the variable's label (due to RODA's data files)
-					q.setName(variable.getName());
+					// TODO never check if the question has been already
+					// imported? - see if it is ok like that
+					q = Question.checkQuestion(null, variable.getName(), (long) instance.getId(), varType.getQstn()
+							.get(0).getQstnLitType().get(0).content);
+					if (q == null) {
+						q = new Question();
 
-					q.setStatement(varType.getQstn().get(0).getQstnLitType().get(0).content);
+						// label = the variable's label (due to RODA's data
+						// files)
+						q.setName(variable.getName());
+						q.setStatement(varType.getQstn().get(0).getQstnLitType().get(0).content);
+
+						// TODO How to set the order of question in instance?
+						// For now, they are ordered as they enter in the
+						// database
+						q.setOrderInInstance(counterQstn++);
+					}
 
 					// update the Variable reference
 					Set<Variable> qVariables = q.getVariables();
@@ -980,7 +994,6 @@ public class ImporterServiceImpl implements ImporterService {
 					instance.setQuestions(iQuestions);
 
 					q.persist();
-					instance.merge();
 
 					// set the Variable's question
 					variable.setQuestionId(q);
@@ -989,6 +1002,8 @@ public class ImporterServiceImpl implements ImporterService {
 				variable.setVariableType((short) 0);
 				// TODO check semantics
 				variable.setType((short) 0);
+				// TODO Check the order of variable in question
+				variable.setOrderInQuestion(q.getVariables().size() + 1);
 				variable.persist();
 
 				// Add categories names + their frequencies to
@@ -1011,20 +1026,8 @@ public class ImporterServiceImpl implements ImporterService {
 						}
 					}
 				}
-
-				Variable v = new Variable();
-				v.setId(variable.getId());
-				// TODO: decide if the order of the variable is at the question
-				// or instance level (there is no more relation between Instance
-				// and Variable)
-				// v.setOrderVariableInInstance(counter);
-				v.setOrder(counter);
-				counter++;
-				v.setQuestionId(q);
-				v.persist();
-				// variableSet.add(v);
 			}
+			instance.merge();
 		}
-		instance.merge();
 	}
 }

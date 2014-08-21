@@ -227,7 +227,7 @@ public class Variable {
 		object.label = label;
 		object.type = type;
 		object.questionId = questionId;
-		object.order = order;
+		object.orderInQuestion = order;
 		object.operatorInstructions = operatorInstructions;
 		object.fileId = fileId;
 		object.persist();
@@ -270,9 +270,9 @@ public class Variable {
 	@NotNull
 	private String name;
 
-	@Column(name = "order", columnDefinition = "int4")
-	@NotNull
-	private Integer order;
+	@Column(name = "order_in_question", columnDefinition = "int")
+	// @NotNull
+	private Integer orderInQuestion;
 
 	@Column(name = "operator_instructions", columnDefinition = "text")
 	private String operatorInstructions;
@@ -352,8 +352,8 @@ public class Variable {
 		return name;
 	}
 
-	public Integer getOrder() {
-		return order;
+	public Integer getOrderInQuestion() {
+		return orderInQuestion;
 	}
 
 	public Question getQuestionId() {
@@ -448,8 +448,8 @@ public class Variable {
 		this.label = label;
 	}
 
-	public void setOrder(Integer order) {
-		this.order = order;
+	public void setOrderInQuestion(Integer order) {
+		this.orderInQuestion = order;
 	}
 
 	public void setQuestionId(Question questionId) {

@@ -296,6 +296,9 @@ public class Lang {
 	@OneToMany(mappedBy = "langId")
 	private Set<CmsPage> cmsPages;
 
+	@OneToMany(mappedBy = "langId")
+	private Set<Question> questions;
+
 	@PersistenceContext
 	transient EntityManager entityManager;
 
@@ -356,6 +359,10 @@ public class Lang {
 		return cmsPages;
 	}
 
+	public Set<Question> getQuestions() {
+		return questions;
+	}
+
 	@Transactional
 	public Lang merge() {
 		if (this.entityManager == null)
@@ -414,6 +421,10 @@ public class Lang {
 
 	public void setStudyDescrs(Set<StudyDescr> studyDescrs) {
 		this.studyDescrs = studyDescrs;
+	}
+
+	public void setQuestions(Set<Question> questions) {
+		this.questions = questions;
 	}
 
 	public void setTranslatedTopics(Set<TranslatedTopic> translatedTopics) {

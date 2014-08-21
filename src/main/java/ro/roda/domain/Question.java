@@ -172,7 +172,7 @@ public class Question {
 	 *            - textul intrebarii.
 	 * @return
 	 */
-	public static Question checkQuestion(Long id, String name, Long instanceId, String statement) {
+	public static Question checkQuestion(Long id, String name, Integer instanceId, String statement) {
 		Question object;
 
 		if (id != null) {
@@ -187,10 +187,10 @@ public class Question {
 
 		if (name != null && instanceId != null) {
 			TypedQuery<Question> query = entityManager().createQuery(
-					"SELECT o FROM Question o WHERE lower(o.label) = lower(:label) AND o.instanceId = :instanceId",
+					"SELECT o FROM Question o WHERE lower(o.name) = lower(:name) AND o.instanceId = :instanceId",
 					Question.class);
-			query.setParameter("label", name);
-			query.setParameter("instanceId", instanceId);
+			query.setParameter("name", name);
+			query.setParameter("instanceId", Instance.findInstance(instanceId));
 
 			queryResult = query.getResultList();
 			if (queryResult.size() > 0) {
@@ -234,7 +234,7 @@ public class Question {
 	private Integer orderInInstance;
 
 	@ManyToOne
-	@JoinColumn(name = "lang_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	@JoinColumn(name = "lang_id", columnDefinition = "integer", referencedColumnName = "id")
 	private Lang langId;
 
 	@PersistenceContext

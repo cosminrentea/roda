@@ -41,9 +41,10 @@ public class StudyInfo extends JsonInfo {
 
 		serializer.exclude("*.class");
 		serializer.exclude("leaf", "variables.concepts", "variables.fileId", "variables.formEditedNumberVars",
-				"variables.instanceVariables", "variables.operatorInstructions", "variables.otherStatistics",
-				"variables.selectionVariable", "variables.skips", "variables.skips1", "variables.type",
-				"variables.vargroups", "variables.variableType", "variables.auditReader", "variables.classAuditReader");
+				"variables.instanceVariables", "variables.operatorInstructions", "variables.orderInQuestion",
+				"variables.questionId", "variables.otherStatistics", "variables.selectionVariable", "variables.skips",
+				"variables.skips1", "variables.type", "variables.vargroups", "variables.variableType",
+				"variables.auditReader", "variables.classAuditReader");
 		serializer.exclude("files.content", "files.fullPath", "files.id", "files.instances",
 				"files.selectionVariableItems", "files.size", "files.studies1", "files.title", "files.variables",
 				"files.auditReader", "files.classAuditReader");
@@ -385,9 +386,10 @@ public class StudyInfo extends JsonInfo {
 
 		serializer.exclude("*.class");
 		serializer.exclude("leaf", "variables.concepts", "variables.fileId", "variables.formEditedNumberVars",
-				"variables.instanceVariables", "variables.operatorInstructions", "variables.otherStatistics",
-				"variables.selectionVariable", "variables.skips", "variables.skips1", "variables.type",
-				"variables.vargroups", "variables.variableType", "variables.auditReader", "variables.classAuditReader");
+				"variables.instanceVariables", "variables.operatorInstructions", "variables.orderInQuestion",
+				"variables.questionId", "variables.otherStatistics", "variables.selectionVariable", "variables.skips",
+				"variables.skips1", "variables.type", "variables.vargroups", "variables.variableType",
+				"variables.auditReader", "variables.classAuditReader");
 		serializer.exclude("files.content", "files.fullPath", "files.id", "files.instances",
 				"files.selectionVariableItems", "files.size", "files.studies1", "files.title", "files.variables",
 				"files.auditReader", "files.classAuditReader");

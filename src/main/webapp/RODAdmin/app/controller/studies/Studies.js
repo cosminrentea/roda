@@ -123,7 +123,7 @@ Ext.define('RODAdmin.controller.studies.Studies', {
 	    console.log(llp);
 	    console.log(fp);
 		   console.log('edit study smth');
-    	   if (fp.data.itemtype == 'studygroup') {	        
+    	   if (fp.data.itemtype == 'catalog') {	        
     		   console.log('edit catalog');
         	   win = Ext.WindowMgr.get('catalogedit');
         	   console.log(win);
@@ -185,7 +185,7 @@ Ext.define('RODAdmin.controller.studies.Studies', {
 		    if (id === 'yes') {
 			    console.log('we will delete');
 			    var url = '';
-			    if (fp.data.itemtype == 'studygroup') {
+			    if (fp.data.itemtype == 'catalog') {
 				    url = '/roda/j/admin/catalogdrop';
 				    parms = {'groupid' : fp.data.id };
 			    }

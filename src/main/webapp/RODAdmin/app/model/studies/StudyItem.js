@@ -4,7 +4,7 @@
 Ext.define('RODAdmin.model.studies.StudyItem', {
 	extend : 'Ext.data.Model',
 	fields : [ {
-		name : 'id',
+		name : 'indice',
 		type : 'int'
 	}, {
 		name : 'seriesId',

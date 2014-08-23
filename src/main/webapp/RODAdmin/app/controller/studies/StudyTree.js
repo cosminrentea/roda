@@ -44,7 +44,7 @@ Ext.define('RODAdmin.controller.studies.StudyTree', {
 	                           }, 
 //	                           {
 //	                        	   ref : 'stcontent',
-//	                        	   selector : 'studyproperties panel#lyenvelope codemirror#lycontent'
+//	                        	   selector : 'studyproperties panel#stenvelope codemirror#stcontent'
 //	                           },
 	                           {
 	                        	   ref : 'stenvelope',
@@ -239,7 +239,7 @@ Ext.define('RODAdmin.controller.studies.StudyTree', {
 	                           onEditStudyClick : function(component, record, item, index, e) {
                         		   console.log('edit study smth');
 	                        	   var currentNode = this.getFolderview().getSelectionModel().getLastSelected();
-	                        	   if (record.data.itemtype == 'studygroup') {	        
+	                        	   if (record.data.itemtype == 'catalog') {	        
 	                        		   console.log('edit study group');
 		                        	   win = Ext.WindowMgr.get('catalogedit');
 		                        	   console.log(win);
@@ -290,7 +290,7 @@ Ext.define('RODAdmin.controller.studies.StudyTree', {
 	                            */
 	                           onTreeContextMenu : function(component, record, item, index, e) {
 	                        	   e.stopEvent();
-	                        	   if (record.data.itemtype == 'studygroup') {
+	                        	   if (record.data.itemtype == 'catalog') {
 	                        		   if (!this.foldermenu) {
 	                        			   this.groupmenu = Ext.create('widget.catalogcontextmenu');
 	                        		   }
@@ -353,14 +353,14 @@ Ext.define('RODAdmin.controller.studies.StudyTree', {
 	                        	   var record = selected[0];
 	                        	   var stdetails = this.getStdetailspanel();
                         		   //Variables!!!!
-	                        	   //var stusage = this.getLyusagepanel();
+	                        	   //var stusage = this.geStusagepanel();
                         		   var stprop = this.getStudyproperties();
-                        		   //var stcontent = this.getLycontent(); 
+                        		   //var stcontent = this.getStcontent(); 
 	                        	   if (record != null) {	    
 	                        		   var stenvelope = this.getStenvelope();
 	                        		   stdetails.setTitle(record.data.name);
 
-	                        		   if (record.data.itemtype == 'studygroup') {
+	                        		   if (record.data.itemtype == 'catalog') {
 	                        			   //lyusage.collapse(true);
 	                        			   var stgroupstore = Ext.StoreManager.get('studies.Catalog');
 	                        			   //stcontent.setValue('');  

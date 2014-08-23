@@ -7,7 +7,7 @@ Ext.define('RODAdmin.view.studies.StudyItemsview', {
 			 * @config
 			 */
 			alias : 'widget.studyitemsview',
-			id : 'studyitemsview',
+			//id : 'studyitemsview',
 			itemId : 'studyitemsview',
 			activeItem : 1,
 			width : '100%',
@@ -29,7 +29,7 @@ Ext.define('RODAdmin.view.studies.StudyItemsview', {
 						           	{
 						           		text : 'id',
 						           		flex : 1,
-						           		dataIndex : 'id',
+						           		dataIndex : 'indice',
 						           		sortable : true,
 						           		filter : {
 						           			type : 'integer'
@@ -70,15 +70,15 @@ Ext.define('RODAdmin.view.studies.StudyItemsview', {
 					}
 					, {
 						store : 'studies.StudyTree',
-						itemId : 'studyfolderview',
+						itemId : 'stfolderview',
 						xtype : 'treepanel',
-//						useArrows : true,
-//						loadMask:true,
-//						rootVisible : false,
-//						multiSelect : false,
-//						singleExpand : false,
-//						allowDeselect : true,
-//						autoheight : true,
+						useArrows : true,
+						loadMask:true,
+						rootVisible : false,
+						multiSelect : false,
+						singleExpand : false,
+						allowDeselect : true,
+						autoheight : true,
 						dockedItems : [{
 									xtype : 'toolbar',
 									itemid : 'stfolderviewtoolbar',
@@ -86,7 +86,7 @@ Ext.define('RODAdmin.view.studies.StudyItemsview', {
 									items : [{
 												xtype : 'tbfill'
 											},
-											{
+											/*{
 												xtype : 'button',
 												itemId : 'showfilterdata',
 												text : 'All Filter Data',
@@ -95,7 +95,7 @@ Ext.define('RODAdmin.view.studies.StudyItemsview', {
 												text : 'Clear Filter Data',
 												xtype : 'button',
 												itemId : 'clearfilterdata'
-											},
+											},*/
 
 											{
 												text : 'Reload Tree',

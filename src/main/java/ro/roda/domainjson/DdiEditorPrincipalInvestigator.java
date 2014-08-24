@@ -17,9 +17,9 @@ import ro.roda.domain.StudyPerson;
 import flexjson.JSONSerializer;
 
 @Configurable
-public class PrincipalInvestigator extends JsonInfo {
+public class DdiEditorPrincipalInvestigator extends JsonInfo {
 
-	public static String toJsonArray(Collection<PrincipalInvestigator> collection) {
+	public static String toJsonArray(Collection<DdiEditorPrincipalInvestigator> collection) {
 		JSONSerializer serializer = new JSONSerializer();
 
 		serializer.exclude("*.class", "type", "name");
@@ -39,11 +39,11 @@ public class PrincipalInvestigator extends JsonInfo {
 		return "{\"data\":" + serializer.serialize(collection) + "}";
 	}
 
-	public static List<PrincipalInvestigator> findAllPrincipalInvestigators(Study study) {
-		List<PrincipalInvestigator> result = null;
+	public static List<DdiEditorPrincipalInvestigator> findAllPrincipalInvestigators(Study study) {
+		List<DdiEditorPrincipalInvestigator> result = null;
 
 		if (study != null) {
-			result = new ArrayList<PrincipalInvestigator>();
+			result = new ArrayList<DdiEditorPrincipalInvestigator>();
 
 			Iterator<StudyOrg> itOrg = study.getStudyOrgs().iterator();
 			while (itOrg.hasNext()) {
@@ -52,7 +52,7 @@ public class PrincipalInvestigator extends JsonInfo {
 				// investigator - to be discussed; what about "principal"
 				// investigator?
 				if (studyOrg.getAssoctypeId().getAssocName().equalsIgnoreCase("investigator")) {
-					result.add(new PrincipalInvestigator(null, studyOrg.getOrgId()));
+					result.add(new DdiEditorPrincipalInvestigator(null, studyOrg.getOrgId()));
 				}
 			}
 
@@ -62,7 +62,7 @@ public class PrincipalInvestigator extends JsonInfo {
 				// TODO: See above + what about multiple affiliation?
 				if (studyPers.getAssoctypeId().getAsocName().equalsIgnoreCase("investigator")) {
 					Person p = studyPers.getPersonId();
-					result.add(new PrincipalInvestigator(p, (p.getPersonOrgs() != null) ? p.getPersonOrgs().iterator()
+					result.add(new DdiEditorPrincipalInvestigator(p, (p.getPersonOrgs() != null) ? p.getPersonOrgs().iterator()
 							.next().getOrgId() : null));
 				}
 			}
@@ -72,7 +72,7 @@ public class PrincipalInvestigator extends JsonInfo {
 		return result;
 	}
 
-	public static PrincipalInvestigator findPrincipalInvestigator(Integer id, boolean individualInvestigator) {
+	public static DdiEditorPrincipalInvestigator findPrincipalInvestigator(Integer id, boolean individualInvestigator) {
 		if (id == null)
 			return null;
 
@@ -90,7 +90,7 @@ public class PrincipalInvestigator extends JsonInfo {
 			organization = Org.findOrg(id);
 		}
 
-		return new PrincipalInvestigator(person, organization);
+		return new DdiEditorPrincipalInvestigator(person, organization);
 	}
 
 	private final Log log = LogFactory.getLog(this.getClass());
@@ -103,7 +103,7 @@ public class PrincipalInvestigator extends JsonInfo {
 	// investigator, if any
 	Org organization;
 
-	public PrincipalInvestigator(Person individual, Org organization) {
+	public DdiEditorPrincipalInvestigator(Person individual, Org organization) {
 		this.individual = individual;
 		this.organization = organization;
 		if (this.individual == null) {

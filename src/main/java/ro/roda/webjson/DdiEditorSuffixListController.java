@@ -11,15 +11,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import ro.roda.domainjson.StudyInfo;
-import ro.roda.service.StudyInfoService;
+import ro.roda.domainjson.DdiEditorSuffixList;
+import ro.roda.service.DdiEditorSuffixListService;
 
-@RequestMapping("/studyinfoedit")
+@RequestMapping("/ddieditorsuffixlist")
 @Controller
-public class DDIEditorStudyProposalController {
+public class DdiEditorSuffixListController {
 
 	@Autowired
-	StudyInfoService studyInfoService;
+	DdiEditorSuffixListService ddiEditorSuffixListService;
 
 	// @Autowired
 	// CatalogStudyService catalogStudyService;
@@ -35,20 +35,20 @@ public class DDIEditorStudyProposalController {
 	public ResponseEntity<String> listJson() {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");
-		List<StudyInfo> result = studyInfoService.findAllStudyInfos();
-		return new ResponseEntity<String>(StudyInfo.toJsonArray(result), headers, HttpStatus.OK);
+		List<DdiEditorSuffixList> result = ddiEditorSuffixListService.findAllSuffixes();
+		return new ResponseEntity<String>(DdiEditorSuffixList.toJsonArray(result), headers, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/{id}", headers = "Accept=application/json")
 	@ResponseBody
 	public ResponseEntity<String> showJson(@PathVariable("id") Integer id) {
-		StudyInfo studyInfo = studyInfoService.findStudyInfo(id);
+		DdiEditorSuffixList ddiEditorSuffixList = ddiEditorSuffixListService.findSuffix(id);
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");
-		if (studyInfo == null) {
+		if (ddiEditorSuffixList == null) {
 			return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
 		}
-		return new ResponseEntity<String>(studyInfo.toJson(), headers, HttpStatus.OK);
+		return new ResponseEntity<String>(ddiEditorSuffixList.toJson(), headers, HttpStatus.OK);
 	}
 
 }

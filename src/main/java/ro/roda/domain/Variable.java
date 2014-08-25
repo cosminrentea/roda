@@ -511,10 +511,11 @@ public class Variable {
 		return new JSONSerializer()
 				.exclude("*.class")
 				.exclude("operatorInstructions", "selectionVariable", "type", "variableType", "fileId",
-						"classAuditReader", "auditReader", "instanceVariables", "otherStatistics.auditReader",
+						"classAuditReader", "auditReader", "instanceVariables", "orderInQuestion", "otherStatistics.auditReader",
 						"otherStatistics.classAuditReader", "otherStatistics.variableId.classAuditReader",
 						"otherStatistics.variableId.auditReader", "skips", "skips1", "vargroups", "concepts",
-						"formEditedNumberVars", "formEditedTextVars")
+						"formEditedNumberVars", "formEditedTextVars", "questionId.auditReader",
+						"questionId.classAuditReader", "questionId.variables", "questionId.instanceId", "questionId.langId")
 				.include("otherStatistics.id", "otherStatistics.name", "otherStatistics.value",
 						"otherStatistics.variableId.id").rootName("data").serialize(l);
 	}

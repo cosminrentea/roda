@@ -113,7 +113,7 @@ public class StudyList extends JsonInfo implements Comparable<StudyList> {
 
 	public StudyList(Study study) {
 		this(study.getId(), study.getStudyDescrs().iterator().next().getTitle(),
-				study.getCatalogStudies() == null ? null : study.getCatalogStudies().iterator().next().getCatalogId()
+				(study.getCatalogStudies() == null || study.getCatalogStudies().size() == 0)  ? null : study.getCatalogStudies().iterator().next().getCatalogId()
 						.getId(), "study", study.getStudyDescrs().iterator().next().getAbstract1());
 	}
 

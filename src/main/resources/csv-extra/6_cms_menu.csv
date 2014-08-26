@@ -4,6 +4,7 @@
 "menu_audit","menu_audit",,
 "menu_users","menu_users",,
 "menu_cron","menu_cron",,
+"menu_metadata","menu_metadata",,
 "cms_layouts","menu_cms_layout",1,"cmslayouts"
 "cms_snippets","menu_cms_snippet",1,"cmssnippets"
 "cms_files","menu_cms_files",1,"cmsfiles"
@@ -13,3 +14,7 @@
 "audit_main","menu_audit_main",3,"auditmain"
 "users","menu_users",4,"users"
 "cron_actions","cron_actions",5,"cronactions"
+"persons","menu_persons",6,"persons"
+"organisations","menu_organisations",6,"organisations"
+"country","menu_country",6,"country"
+"city","menu_city",6,"city"

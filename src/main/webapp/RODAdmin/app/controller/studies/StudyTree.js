@@ -33,7 +33,7 @@ Ext.define('RODAdmin.controller.studies.StudyTree', {
 	                   refs : [
 	                           {
 	                        	   ref : 'stdetailspanel',
-	                        	   selector : 'studies panel#stdetailscontainer '
+	                        	   selector : 'studies panel#stdetailscontainer'
 	                           }, 
 //	                           {
 //	                        	   ref : 'stusagepanel',
@@ -378,6 +378,8 @@ Ext.define('RODAdmin.controller.studies.StudyTree', {
 	                           onFolderviewSelectionChange : function(component, selected, event) {
 	                        	   console.log('folderviewselectionchange');
 	                        	   console.log(RODAdmin.util.Globals.stare);
+	                        	   var stdpanel = this.getSdetailscontainer();
+	                        	   console.log(stdpanel);
 	                        	   var record = selected[0];
 	                        	   var stdetails = this.getStudydetails();
                         		   //Variables!!!!
@@ -388,7 +390,7 @@ Ext.define('RODAdmin.controller.studies.StudyTree', {
 //	                        		   var stenvelope = this.getStenvelope();
 	                        		   console.log(record.data.itemtype);	
 	                        		   stdetails.setTitle(record.data.name);
-
+	                        		   stdpanel.setLoading(true);
 	                        		   if (record.data.itemtype == 'catalog') {
 	                        			   //lyusage.collapse(true);
 	                        			   var catalogstore = Ext.StoreManager.get('studies.Catalog');
@@ -406,6 +408,7 @@ Ext.define('RODAdmin.controller.studies.StudyTree', {
 	                        						   this.getCatalogdetails().update(stitem.data);
 	                        						   this.getCatalogstudies().bindStore(stitem.studies());
 //	                        						   stprop.update(stitem);
+	                        						   stdpanel.setLoading(false);
 	                        					   }
 	                        				   }
 	                        			   });
@@ -425,7 +428,7 @@ Ext.define('RODAdmin.controller.studies.StudyTree', {
 	                        					        variables.bindStore(stitem.variables());
 	                        					        var keywords = this.getStkeywords();
 	                        					        keywords.bindStore(stitem.keywords());
-
+	                        					        stdpanel.setLoading(false);
 	                        					   }
 	                        				   }
 	                        			   });

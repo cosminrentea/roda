@@ -53,6 +53,10 @@ Ext.define('RODAdmin.controller.studies.StudyList', {
                 ref: 'stkeywords',
                 selector: 'studykeywords'
             },
+            {
+                ref: 'sdetailscontainer',
+                selector: 'studiesmain panel#stdetailscontainer'
+            },
 
     ],
     /**
@@ -182,6 +186,8 @@ Ext.define('RODAdmin.controller.studies.StudyList', {
 	 */
     onIconViewSelectionChange : function(component, selected, event) {
 	    console.log('folderviewselectionchange');
+	    var stdpanel = this.getSdetailscontainer();
+	    stdpanel.setLoading(true);
 	    var record = selected[0];
 	    if (record != null) {
 	    console.log(record);
@@ -200,6 +206,7 @@ Ext.define('RODAdmin.controller.studies.StudyList', {
 			        variables.bindStore(stitem.variables());
 			        var keywords = this.getStkeywords();
 			        keywords.bindStore(stitem.keywords());
+			        stdpanel.setLoading(false);
 		        }
 	        }
 	    });

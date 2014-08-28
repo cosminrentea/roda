@@ -7,14 +7,6 @@ Ext.define('RODAdmin.controller.studies.Studies', {
     views :[
             'RODAdmin.view.studies.Studies',            
             'RODAdmin.view.studies.StudyItemsview',
-//            'RODAdmin.view.studies.AddStudyWindow',
-            'RODAdmin.view.studies.studyadd.sProposal',
-            'RODAdmin.view.studies.studyadd.sDataCollection',
-            'RODAdmin.view.studies.studyadd.sFounding',
-            'RODAdmin.view.studies.studyadd.sDataProd',
-            'RODAdmin.view.studies.studyadd.sQuestions',
-            
-            
             ],
     
     refs : [

@@ -13,7 +13,6 @@ Ext.define('databrowser.model.StudyFileModel', {
                 convert : function(v, r) {
         				var str = r.get('contentType');
         				var tstr = str.trim();
-        				console.log(tstr);
         				var regex = /application\//;
         				return tstr.replace(regex, "");
         			}

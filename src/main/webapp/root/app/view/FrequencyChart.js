@@ -41,7 +41,7 @@ Ext.define('databrowser.view.FrequencyChart', {
 	        	  field: 'value',
 	        	  renderer: Ext.util.Format.numberRenderer('0'),
 	        	  orientation: 'horizontal',
-	        	  color: '#333'
+	        	  color: '#ff750e'
 	          },
 	          xField: 'name',
 	          yField: 'value',

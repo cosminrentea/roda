@@ -6,7 +6,6 @@ Ext.define('RODAdmin.view.cms.files.filedetails.SpecificProperties', {
     alias: 'widget.filespecificproperties',
     itemId: 'filespecificproperties',
     title:'Specific Properties',
-    id: 'filespecificproperties',
 	collapsible: true,
     columns: [
         {

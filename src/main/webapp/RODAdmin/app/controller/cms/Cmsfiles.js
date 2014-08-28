@@ -110,6 +110,7 @@ Ext.define('RODAdmin.controller.cms.Cmsfiles', {
 	 */
     initView : function() {
     	console.log('CMSFiles InitView');	
+    	Ext.History.add('menu-cmsfiles');
     },
     /**
 	 * @method

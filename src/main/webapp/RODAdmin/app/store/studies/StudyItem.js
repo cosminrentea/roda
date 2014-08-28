@@ -6,7 +6,8 @@ Ext.define('RODAdmin.store.studies.StudyItem', {
 
     requires: [
         'RODAdmin.model.studies.StudyItem',
-        'RODAdmin.model.studies.StudyVariable' 
+        'RODAdmin.model.studies.StudyVariable', 
+        'RODAdmin.model.studies.StudyKeywords' 
     ],
 
     model: 'RODAdmin.model.studies.StudyItem',

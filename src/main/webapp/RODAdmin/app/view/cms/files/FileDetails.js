@@ -12,7 +12,6 @@ Ext.define('RODAdmin.view.cms.files.FileDetails', {
                          align:'center',
                          align:'stretch'
                          },            
-			id: 'filedetails',
 			items : [
 			{
 				xtype: 'fileproperties',

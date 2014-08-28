@@ -14,7 +14,6 @@ Ext.define('RODAdmin.view.cms.layout.details.LayoutProperties', {
 	    {
 	        xtype : 'toolbar',
 	        itemid : 'lyproptoolbar',
-	        id : 'lyproptoolbar',
 	        dock : 'top',
 	        items : [
 	                {
@@ -47,7 +46,6 @@ Ext.define('RODAdmin.view.cms.layout.details.LayoutProperties', {
                 xtype : 'panel',
                 itemId : 'lydata',
                 flex : 1,
-                id : 'lydata',
                 tpl : [
                         '<tpl if="data.filetype == \'folder\'">', '<h1> {data.name}', '</tpl>',
                         '<tpl if="data.filetype != \'folder\'">', '<H1>{data.name}</H1>', '<H2>Folder: {data.directory}</H2>',
@@ -59,15 +57,12 @@ Ext.define('RODAdmin.view.cms.layout.details.LayoutProperties', {
                 resizable : true,
                 width : '70%',
                 split : true,
-                id : 'lyenvelope',
-//                title : 'smth',
                 flex : 3,
                 layout : 'fit',
                 xtype : 'panel',
                 items : [
 	                {
 	                    xtype : 'codemirror',
-//	                    id : 'lycontent',
 	                    itemId : 'lycontent',	                    
 	                    mode : 'htmlmixed',
 	                    readOnly : true,

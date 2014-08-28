@@ -2,44 +2,26 @@
  * 
  */
 Ext.define('RODAdmin.view.studies.StudyDetails', {
-			extend : 'Ext.panel.Panel',
+			extend : 'Ext.tab.Panel',
 			alias : 'widget.studydetails',
+		    title : 'select a study',
 //			store: 'cms.layoutdetails',
 			itemId: 'studydetails',
-            layout: {
-                         type:'vbox',
- //                        padding:'5',
-                         align:'center',
-                         align:'stretch'
-                         },            
-			id: 'studydetails',
+			//            layout: {
+//                         type:'vbox',
+//                         align:'center',
+//                         align:'stretch'
+//                         },            
+//			id: 'studydetails',
 			items : [
 			{
 				xtype: 'studyproperties',
-//				height: '80%',
-				flex:3
-//				border : true,
-//	            layout : 'fit',
-//	            html: 'panel 1'
 			},
 			{
 				xtype: 'studyvariables',
-				collapsible: true,
-				//height: '20%',				
-				flex:1
-//				border : true,
-//	            layout : 'fit',
-				}
+			},
+			{
+				xtype: 'studykeywords',
+			}
 			]
-			
-			
-			
-			
-//			tpl : ['<tpl if="data.filetype == \'folder\'">',
-//					'Folder: {data.text} - {data.filesize}',
-//					'</tpl>',
-//					'<tpl if="data.filetype != \'folder\'">',
-//					'File: {data.text} - {data.filesize}',
-//					'</tpl>'
-//			]
 	});

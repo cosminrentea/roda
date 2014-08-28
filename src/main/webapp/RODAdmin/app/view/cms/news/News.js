@@ -37,7 +37,6 @@ Ext.define('RODAdmin.view.cms.news.News', {
 						width : '50%',
 						xtype : 'panel',
 						itemid : 'newsdetailscontainer',
-						id : 'newsdetailscontainer',
 //						title : 'dontinkso',
 						layout : {
 							type : 'fit'

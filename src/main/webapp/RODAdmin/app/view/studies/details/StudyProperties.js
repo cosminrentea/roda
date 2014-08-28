@@ -14,7 +14,6 @@ Ext.define('RODAdmin.view.studies.details.StudyProperties', {
 	    {
 	        xtype : 'toolbar',
 	        itemid : 'stproptoolbar',
-	        id : 'stproptoolbar',
 	        dock : 'top',
 	        items : [
 	                {
@@ -47,11 +46,16 @@ Ext.define('RODAdmin.view.studies.details.StudyProperties', {
                 xtype : 'panel',
                 itemId : 'stdata',
                 flex : 1,
-                id : 'stdata',
                 tpl : [
-                        '<tpl if="data.filetype == \'folder\'">', '<h1> {data.name}', '</tpl>',
-                        '<tpl if="data.filetype != \'folder\'">', '<H1>{data.name}</H1>', '<H2>Folder: {data.directory}</H2>',
-                        '<div style="padding:10px;">', '{data.description}', '</div>', '</tpl>'
+                       	'<div style="padding:10px;">',
+                        '<h1> {name}</h1>',
+                        '<div class="year">Year: {an}</div>',
+                        '<div class="geocov">Geographical coverage: {geo_coverage}</div>',
+                        '<div class="geounit">Geographical unit: {geo_unit}</div>',
+                        '<div class="weighting">Weighting: {weighting}</div>',
+                        '<div class="unit_analysis">Unit analysts: {unit_analysis}</div>',                        
+                        '{description}',
+                        '</div>',
                 ]
             }
 //            , {

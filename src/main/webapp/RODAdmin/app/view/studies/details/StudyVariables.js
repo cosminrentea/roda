@@ -6,13 +6,12 @@ Ext.define('RODAdmin.view.studies.details.StudyVariables', {
     alias: 'widget.studyvariables',
     itemId: 'studyvariables',
     title:'Study Variables',
-//    id: 'layoutusage',
 	collapsible: true,
 	   columns: [
         {
-            text: 'Variable Id',
+            text: 'Id',
             width: 100,
-            dataIndex: 'id'
+            dataIndex: 'indice'
         },
         {
             text: 'Name',

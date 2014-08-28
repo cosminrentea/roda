@@ -12,7 +12,6 @@ Ext.define('RODAdmin.view.cms.snippet.Snippets', {
 			defaults : {
 				split : true
 			},
-
 			items : [{
 						region : 'west',
 						collapsible : true,
@@ -48,8 +47,6 @@ Ext.define('RODAdmin.view.cms.snippet.Snippets', {
 						width : '70%',
 						xtype : 'panel',
 						itemid : 'sndetailscontainer',
-						id : 'sndetailscontainer',
-//						title : 'dontinkso',
 						layout : {
 							type : 'fit'
 							// padding:'5',

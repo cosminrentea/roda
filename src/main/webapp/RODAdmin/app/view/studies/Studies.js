@@ -6,9 +6,7 @@
 Ext.define('RODAdmin.view.studies.Studies', {
     extend : 'Ext.panel.Panel',
     alias : 'widget.studiesmain',
-
     itemId : 'studiesmain',
-    id : 'studiesmain',
     layout : {
         type : 'border',
         padding : 5
@@ -44,6 +42,11 @@ Ext.define('RODAdmin.view.studies.Studies', {
 	                                itemId : 'icon-view',
 	                                iconCls : 'file-icon-view',
 	                                text : 'icon'
+	                            }, {
+	                            	xtype : 'button',
+	                                itemId : 'add-study',
+	                                iconCls : 'file-icon-view',
+	                                text : 'Add Study'
 	                            }
 	                    ]
 	                }
@@ -61,22 +64,37 @@ Ext.define('RODAdmin.view.studies.Studies', {
                 collapsible : false,
                 width : '70%',
                 xtype : 'panel',
-                itemid : 'stdetailscontainer',
-                id : 'stdetailscontainer',
-//                title : 'dontinkso',
+                itemId : 'stdetailscontainer',
                 layout : {
-	                type : 'fit'
+	                type : 'card'
                 // padding:'5',
                 // align:'center',
                 // align:'stretch'
                 },
                 items : [
+                         {
+     						/**
+     						 * @xtypes studydetails RODAdmin.view.studies.StudyDetails
+     						 */
+     	                	xtype : 'panel',
+     	                	html:'Please select an item from the left panel'
+     	                },
+                    {
+						/**
+						 * @xtypes studydetails RODAdmin.view.studies.StudyDetails
+						 */
+	                	xtype : 'catalogdetails',
+	                	itemId: 'catalogdetails'	
+	                },
 	                {
 						/**
 						 * @xtypes studydetails RODAdmin.view.studies.StudyDetails
 						 */
-	                	xtype : 'studydetails'
-	                }
+	                	xtype : 'studydetails',
+	                	itemid : 'studydetails'	
+	                //	xtype : 'panel',
+	                //	title: 'study details'
+	                },
                 ]
             }
     ]

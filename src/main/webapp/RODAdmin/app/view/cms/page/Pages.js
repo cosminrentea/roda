@@ -46,7 +46,6 @@ Ext.define('RODAdmin.view.cms.page.Pages', {
 						width : '50%',
 						xtype : 'panel',
 						itemid : 'pgdetailscontainer',
-						id : 'pgdetailscontainer',
 						title : 'Page details',
 						layout : {
 							type : 'fit'

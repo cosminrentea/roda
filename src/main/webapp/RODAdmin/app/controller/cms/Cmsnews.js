@@ -30,6 +30,7 @@ Ext.define('RODAdmin.controller.cms.Cmsnews', {
      },
      initView : function() {
      	console.log('InitView, baby');	
+     	Ext.History.add('menu-cmsnews');
      	this.getNewslist().store.load();
      }
 });

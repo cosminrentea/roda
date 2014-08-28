@@ -4,7 +4,6 @@
 Ext.define('RODAdmin.view.cms.files.Itemsview', {
 			extend : 'Ext.panel.Panel',
 			alias : 'widget.itemsview',
-			id : 'itemsview',
 			itemId : 'itemsview',
 			activeItem : 1,
 			width : '100%',
@@ -15,7 +14,6 @@ Ext.define('RODAdmin.view.cms.files.Itemsview', {
 			},
 			items : [{
 						xtype : 'grid',
-						id : 'iconview',
 						itemId : 'iconview',
 						itemSelector : 'div.thumb-wrap',
 						store : 'cms.files.File',
@@ -59,7 +57,6 @@ Ext.define('RODAdmin.view.cms.files.Itemsview', {
 						dockedItems : [{
 									xtype : 'toolbar',
 									itemid : 'iconviewtoolbar',
-									id : 'iconviewtoolbar',
 									dock : 'bottom',
 									items : [{
 												xtype : 'tbfill'
@@ -109,12 +106,10 @@ Ext.define('RODAdmin.view.cms.files.Itemsview', {
 											}, {
 												text : 'Collapse Tree',
 												xtype : 'button',
-												id : 'collapsetree',
 												itemId : 'collapsetree'
 											}, {
 												text : 'Expand Tree',
 												xtype : 'button',
-												id : 'expandtree',
 												itemId : 'expandtree'
 											}]
 								}],

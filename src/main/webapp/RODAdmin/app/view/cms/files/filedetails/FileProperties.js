@@ -6,13 +6,11 @@ Ext.define('RODAdmin.view.cms.files.filedetails.FileProperties', {
     alias: 'widget.fileproperties',
     itemId: 'fileproperties',
     title:'File Properties',
-    id: 'fileproperties',
 	collapsible: true,
 			dockedItems : [
 		{
             xtype: 'toolbar',
             itemid: 'fileproptoolbar',
-            id : 'fileproptoolbar',
 			dock : 'bottom',
 			items : [
 			{xtype: 'tbfill'},
@@ -30,7 +28,6 @@ Ext.define('RODAdmin.view.cms.files.filedetails.FileProperties', {
 					},
 					{
 						xtype: 'button',
-						id: 'getfileaudit',
 						itemId: 'getfileaudit',
 						text : 'File History',
 						tooltip : 'Get File History'

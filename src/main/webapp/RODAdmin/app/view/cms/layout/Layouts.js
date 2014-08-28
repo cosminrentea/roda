@@ -8,7 +8,6 @@ Ext.define('RODAdmin.view.cms.layout.Layouts', {
     alias : 'widget.cmslayouts',
 
     itemId : 'cmslayout',
-    id : 'cmslayout',
     layout : {
         type : 'border',
         padding : 5
@@ -62,8 +61,6 @@ Ext.define('RODAdmin.view.cms.layout.Layouts', {
                 width : '70%',
                 xtype : 'panel',
                 itemid : 'lydetailscontainer',
-                id : 'lydetailscontainer',
-//                title : 'dontinkso',
                 layout : {
 	                type : 'fit'
                 // padding:'5',

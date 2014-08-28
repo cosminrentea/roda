@@ -7,7 +7,6 @@ Ext.define('RODAdmin.view.studies.StudyItemsview', {
 			 * @config
 			 */
 			alias : 'widget.studyitemsview',
-			//id : 'studyitemsview',
 			itemId : 'studyitemsview',
 			activeItem : 1,
 			width : '100%',
@@ -18,7 +17,6 @@ Ext.define('RODAdmin.view.studies.StudyItemsview', {
 			},
 			items : [{
 						xtype : 'grid',
-						id : 'sticonview',
 						itemId : 'sticonview',
 						itemSelector : 'div.thumb-wrap',
 						store : 'studies.Study',
@@ -28,7 +26,7 @@ Ext.define('RODAdmin.view.studies.StudyItemsview', {
 						columns : [
 						           	{
 						           		text : 'id',
-						           		flex : 1,
+						           		width : 25,
 						           		dataIndex : 'indice',
 						           		sortable : true,
 						           		filter : {
@@ -46,7 +44,6 @@ Ext.define('RODAdmin.view.studies.StudyItemsview', {
 						dockedItems : [{
 									xtype : 'toolbar',
 									itemid : 'sticonviewtoolbar',
-									id : 'sticonviewtoolbar',
 									dock : 'bottom',
 									items : [{
 												xtype : 'tbfill'

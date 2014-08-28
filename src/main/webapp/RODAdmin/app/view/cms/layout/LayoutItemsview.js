@@ -17,7 +17,6 @@ Ext.define('RODAdmin.view.cms.layout.LayoutItemsview', {
 			},
 			items : [{
 						xtype : 'grid',
-						id : 'lyiconview',
 						itemId : 'lyiconview',
 						itemSelector : 'div.thumb-wrap',
 						store : 'cms.layout.Layout',
@@ -57,7 +56,6 @@ Ext.define('RODAdmin.view.cms.layout.LayoutItemsview', {
 						dockedItems : [{
 									xtype : 'toolbar',
 									itemid : 'lyiconviewtoolbar',
-									id : 'lyiconviewtoolbar',
 									dock : 'bottom',
 									items : [{
 												xtype : 'tbfill'

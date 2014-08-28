@@ -14,7 +14,6 @@ Ext.define('RODAdmin.view.audit.AuditItemsview', {
 			},
 			items : [{
 						xtype : 'grid',
-						id : 'auditrevisions',
 						itemId : 'auditrevisions',
 						itemSelector : 'div.thumb-wrap',
 						store : 'audit.Revisions',
@@ -83,7 +82,6 @@ Ext.define('RODAdmin.view.audit.AuditItemsview', {
 					
 					{
 						xtype : 'grid',
-						id : 'auditobjects',
 						itemId : 'auditobjects',
 						itemSelector : 'div.thumb-wrap',
 						store : 'audit.RevisedObjects',
@@ -139,7 +137,6 @@ Ext.define('RODAdmin.view.audit.AuditItemsview', {
 					
 					{
 						xtype : 'grid',
-						id : 'auditusers',
 						itemId : 'auditusers',
 						itemSelector : 'div.thumb-wrap',
 						store : 'audit.RevisedUsers',
@@ -178,7 +175,6 @@ Ext.define('RODAdmin.view.audit.AuditItemsview', {
 					}, 
 					{
 						xtype : 'grid',
-						id : 'auditdays',
 						itemId : 'auditdays',
 						itemSelector : 'div.thumb-wrap',
 						store : 'audit.RevisedDates',

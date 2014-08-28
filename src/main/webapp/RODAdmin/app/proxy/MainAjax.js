@@ -5,7 +5,8 @@ Ext.define('RODAdmin.proxy.MainAjax', {
     reader: {
         type: 'json',
         messageProperty: 'msg',
-        root: 'children'
+//        root: 'children'
+        root: 'data'        
     },
 
 //    writer: {

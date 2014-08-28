@@ -4,7 +4,6 @@
 Ext.define('RODAdmin.view.cms.news.NewsDetails', {
 	extend : 'Ext.panel.Panel',
 	alias : 'widget.newsdetails',
-//	store: 'cms.layoutdetails',
 	itemId: 'newsdetails',
 	layout: {
 		type:'fit',
@@ -14,7 +13,6 @@ Ext.define('RODAdmin.view.cms.news.NewsDetails', {
 	               {
 	            	   xtype: 'toolbar',
 	            	   itemid: 'newsproptoolbar',
-	            	   id : 'newsproptoolbar',
 	            	   dock : 'bottom',
 	            	   items : [
 	            	            {xtype: 'tbfill'},

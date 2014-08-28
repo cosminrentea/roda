@@ -58,7 +58,6 @@ Ext.define('RODAdmin.view.cron.action.Cronactionsview', {
 						dockedItems : [{
 									xtype : 'toolbar',
 									itemid : 'croniconviewtoolbar',
-									id : 'croniconviewtoolbar',
 									dock : 'bottom',
 									items : [{
 												xtype : 'tbfill'

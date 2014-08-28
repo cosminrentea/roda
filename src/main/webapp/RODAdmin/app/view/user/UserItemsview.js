@@ -13,7 +13,6 @@ Ext.define('RODAdmin.view.user.UserItemsview', {
 			},
 			items : [{
 						xtype : 'grid',
-						id : 'usersgrid',
 						itemId : 'usersgrid',
 						itemSelector : 'div.thumb-wrap',
 						store : 'user.User',

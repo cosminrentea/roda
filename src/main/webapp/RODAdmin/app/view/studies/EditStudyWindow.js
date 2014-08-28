@@ -2,18 +2,14 @@
  * 
  */
 Ext.define('RODAdmin.view.studies.EditStudyWindow', {
-	             
 	extend : 'RODAdmin.view.common.WindowForm',
-	alias : 'widget.studyedit',
-
+	alias : 'widget.studyeditwin',
 	height : '90%',
 	width : '60%',
 //	singleton:true,
 	closeAction: 'destroy',
-	id:'studyedit',
-	
+	itemId:'studyeditwin',
 	requires : ['RODAdmin.util.Util','Ext.ux.form.field.CodeMirror'],
-
 	layout : {
 		type : 'border'
 	},

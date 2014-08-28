@@ -73,6 +73,7 @@ Ext.define('RODAdmin.controller.cms.Cmspages', {
 	 */
     initView : function() {
     	console.log('InitView, baby');	
+    	Ext.History.add('menu-cmspages');    	
   //  	 this.getPagetree().store.load();
     },
 	

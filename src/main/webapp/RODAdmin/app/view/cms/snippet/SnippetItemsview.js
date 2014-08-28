@@ -14,7 +14,6 @@ Ext.define('RODAdmin.view.cms.snippet.SnippetItemsview', {
 			},
 			items : [{
 						xtype : 'grid',
-						id : 'sniconview',
 						itemId : 'sniconview',
 						itemSelector : 'div.thumb-wrap',
 						store : 'cms.snippet.Snippet',
@@ -48,7 +47,6 @@ Ext.define('RODAdmin.view.cms.snippet.SnippetItemsview', {
 						dockedItems : [{
 									xtype : 'toolbar',
 									itemid : 'sniconviewtoolbar',
-									id : 'sniconviewtoolbar',
 									dock : 'bottom',
 									items : [{
 												xtype : 'tbfill'

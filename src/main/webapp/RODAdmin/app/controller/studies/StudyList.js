@@ -15,7 +15,9 @@ Ext.define('RODAdmin.controller.studies.StudyList', {
             'RODAdmin.view.studies.StudyItemsview',
             'RODAdmin.view.studies.StudyDetails',
             'RODAdmin.view.studies.details.StudyProperties',
-            'RODAdmin.view.studies.details.StudyVariables'
+            'RODAdmin.view.studies.details.StudyVariables',
+            'RODAdmin.view.studies.StudyEdit',
+            'RODAdmin.view.studies.details.StudyKeywords'
     ],
     /**
 	 * @cfg
@@ -28,8 +30,8 @@ Ext.define('RODAdmin.controller.studies.StudyList', {
                 ref : 'studyproperties',
                 selector : 'studyproperties panel#stdata'
             }, {
-                ref : 'stdetailspanel',
-                selector : 'studies panel#stdetailscontainer '
+                ref : 'studydetails',
+                selector : 'studydetails'
             }, 
             {
                 ref : 'stenvelope',
@@ -38,7 +40,19 @@ Ext.define('RODAdmin.controller.studies.StudyList', {
             {
                 ref : 'stcontent',
                 selector : 'studyproperties panel#stenvelope codemirror#stcontent'
-            }            
+            },
+            {
+                ref: 'mainPanel',
+                selector: 'mainpanel'
+            },
+            {
+                ref: 'stvariables',
+                selector: 'studyvariables'
+            },
+            {
+                ref: 'stkeywords',
+                selector: 'studykeywords'
+            },
 
     ],
     /**
@@ -97,25 +111,42 @@ Ext.define('RODAdmin.controller.studies.StudyList', {
     onEditStudyClick : function(component, record, item, index, e) {
 	    console.log('onEditStudyClick');
 	    var currentNode = this.getIconview().getSelectionModel().getLastSelected();
-	    win = Ext.WindowMgr.get('studyedit');
-	    console.log(win);
-	    if (!win) {
-	    	win = Ext.create('RODAdmin.view.studies.EditStudyWindow');
-	    }	    
-	    win.setTitle('Edit Study');
-	    var wtree = win.down('treepanel');
-	    var studyitemstore = Ext.create('RODAdmin.store.studies.StudyItem');
-	    studyitemstore.load({
-	        id : currentNode.data.indice, // set the id here
-	        scope : this,
-	        callback : function(records, operation, success) {
-		        if (success) {
-			        var studyitem = studyitemstore.first();
-			        win.down('form').getForm().loadRecord(studyitem);
-		        }
-	        }
-	    });
-	    win.show();
+	    console.log(currentNode.data.indice);
+	    console.log(currentNode.data.name);
+
+	    var mainPanel = this.getMainPanel();
+	    
+	    var newtitle = 	currentNode.data.indice + ' - ' + currentNode.data.name;
+	    console.log(newtitle);
+	    //creem un nou tab cu studiul respectiv editabil
+	    var newTab = mainPanel.items.findBy(
+	        function (tab){ 
+	           console.log(tab.title);	
+	           if (tab.title == newtitle) {
+	        	   console.log('we found it');
+	        	   console.log(tab.title);
+	        	   return tab;
+	           }
+	           //	           return tab.title === newtitle; 
+	        });
+
+	    
+	    
+	    if (!newTab){
+	    	newTab = mainPanel.add({
+               xtype: 'studyedit',
+               closable: true,
+               iconCls: currentNode.get('iconCls'),
+               title: newtitle
+            });
+    	    mainPanel.setActiveTab(newTab);
+	    } else {
+        	console.log('newtab exists, setting active');
+    	    mainPanel.setActiveTab(newTab);
+        }	    
+
+	    
+	    
     },
     /**
 	 * @method
@@ -155,14 +186,8 @@ Ext.define('RODAdmin.controller.studies.StudyList', {
 	    if (record != null) {
 	    console.log(record);
 	    var stprop = this.getStudyproperties();
-	    var stdetails = this.getStdetailspanel();
-	    //variabilele!
-	    //var stcontent = this.getStcontent();
-	    var stenvelope = this.getStenvelope();	    
+	    var stdetails = this.getStudydetails();
 	    stdetails.setTitle(record.data.name);
-
-	    
-	    stenvelope.expand();  
 	    var stitemstore = Ext.StoreManager.get('studies.StudyItem');
 	    stitemstore.load({
 	        id : record.data.indice, // set the id here
@@ -170,11 +195,11 @@ Ext.define('RODAdmin.controller.studies.StudyList', {
 	        callback : function(records, operation, success) {
 		        if (success) {
 			        var stitem = stitemstore.first();
-			    //    stcontent.setValue(stitem.data.content);
-			        stprop.update(stitem);
-//			        if (typeof stitem.usageStore === 'object') {
-//						   lyusage.bindStore(lyitem.usage());
-//					   }
+			        stprop.update(stitem.data);
+			        var variables = this.getStvariables();
+			        variables.bindStore(stitem.variables());
+			        var keywords = this.getStkeywords();
+			        keywords.bindStore(stitem.keywords());
 		        }
 	        }
 	    });

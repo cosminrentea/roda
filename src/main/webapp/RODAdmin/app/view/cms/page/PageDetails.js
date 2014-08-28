@@ -6,13 +6,10 @@ Ext.define('RODAdmin.view.cms.page.PageDetails', {
 			alias : 'widget.pagedetails',
 //			store: 'cms.layoutdetails',
 			itemId: 'pagedetails',
-            
-			id: 'pagedetails',
 		    dockedItems : [
 		           	    {
 		           	        xtype : 'toolbar',
 		           	        itemid : 'pgproptoolbar',
-		           	        id : 'pgproptoolbar',
 		           	        dock : 'bottom',
 		           	        items : [
 		           	                {

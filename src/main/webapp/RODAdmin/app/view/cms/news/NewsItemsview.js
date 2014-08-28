@@ -9,13 +9,8 @@ Ext.define('RODAdmin.view.cms.news.NewsItemsview', {
 			layout:'fit',
 			items : [{
 						xtype : 'grid',
-						id : 'newsiconview',
 						itemId : 'newsiconview',
-//						itemSelector : 'div.thumb-wrap',
 						store : 'cms.news.News',
-//						features : [Ext.create('Ext.ux.grid.FiltersFeature', {
-//									local : true
-//								})],
 						columns : [
 						           {	
 						           text : 'id',
@@ -50,7 +45,6 @@ Ext.define('RODAdmin.view.cms.news.NewsItemsview', {
 						dockedItems : [{
 									xtype : 'toolbar',
 									itemid : 'newsiconviewtoolbar',
-									id : 'newsiconviewtoolbar',
 									dock : 'bottom',
 									items : [{
 												xtype : 'tbfill'

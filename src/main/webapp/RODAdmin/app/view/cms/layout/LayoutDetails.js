@@ -12,7 +12,6 @@ Ext.define('RODAdmin.view.cms.layout.LayoutDetails', {
                          align:'center',
                          align:'stretch'
                          },            
-			id: 'layoutdetails',
 			items : [
 			{
 				xtype: 'layoutproperties',
@@ -31,15 +30,4 @@ Ext.define('RODAdmin.view.cms.layout.LayoutDetails', {
 //	            layout : 'fit',
 				}
 			]
-			
-			
-			
-			
-//			tpl : ['<tpl if="data.filetype == \'folder\'">',
-//					'Folder: {data.text} - {data.filesize}',
-//					'</tpl>',
-//					'<tpl if="data.filetype != \'folder\'">',
-//					'File: {data.text} - {data.filesize}',
-//					'</tpl>'
-//			]
 	});

@@ -5,7 +5,6 @@ Ext.define('RODAdmin.view.cms.files.Files', {
 			extend : 'Ext.panel.Panel',
 			alias : 'widget.cmsfiles',
 			itemId : 'cmsfiles',
-			id : 'cmsfiles',
 			layout : {
 				type : 'border',
 				padding : 5
@@ -53,7 +52,6 @@ Ext.define('RODAdmin.view.cms.files.Files', {
 						width : '50%',
 						xtype : 'panel',
 						itemid : 'fdetailscontainer',
-						id : 'fdetailscontainer',
 //						title : 'dontinkso',
 						layout : {
 							type : 'fit'

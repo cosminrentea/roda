@@ -15,7 +15,6 @@ Ext.define('RODAdmin.view.cms.snippet.details.SnippetProperties', {
 		{
             xtype: 'toolbar',
             itemid: 'snproptoolbar',
-            id : 'snproptoolbar',
 			dock : 'bottom',
 			items : [
 			{xtype: 'tbfill'},
@@ -50,7 +49,6 @@ Ext.define('RODAdmin.view.cms.snippet.details.SnippetProperties', {
 		                xtype : 'panel',
 		                itemId : 'sndata',
 		                flex : 1,
-		                id : 'sndata',
 		                tpl : [
 		                        '<tpl if="data.filetype == \'folder\'">', '<h1> {data.name}', '</tpl>',
 		                        '<tpl if="data.filetype != \'folder\'">', '<H1>{data.name}</H1>', '<H2>{data.directory}</H2>',
@@ -62,8 +60,6 @@ Ext.define('RODAdmin.view.cms.snippet.details.SnippetProperties', {
 		                resizable : true,
 		                width : '70%',
 		                split : true,
-		                id : 'snenvelope',
-//		                title : 'smth',
 		                flex : 3,
 		                layout : 'fit',
 		                xtype : 'panel',

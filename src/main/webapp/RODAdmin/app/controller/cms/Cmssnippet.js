@@ -90,6 +90,7 @@ Ext.define('RODAdmin.controller.cms.Cmssnippet', {
     },
     initView : function() {
     	console.log('InitView, baby');	
+    	Ext.History.add('menu-cmssnippets');    	
     },
     /**
 	 * @method

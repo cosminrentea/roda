@@ -26,7 +26,8 @@ Ext.define('RODAdmin.controller.studies.StudyTree', {
 	                   'RODAdmin.view.studies.StudyContextMenu',
 	                   'RODAdmin.view.studies.CatalogContextMenu',
 	                   'RODAdmin.view.studies.AddStudyToGroupWindow',
-	                   'RODAdmin.view.studies.StudyItemviewContextMenu'
+	                   'RODAdmin.view.studies.StudyItemviewContextMenu',
+	                   'RODAdmin.view.studies.CatalogDetails'	                   
 	                   ],
 
 	                   refs : [
@@ -59,7 +60,34 @@ Ext.define('RODAdmin.controller.studies.StudyTree', {
 	                           }, {
 	                        	   ref : 'folderselect',
 	                        	   selector : 'studyedit treepanel#groupselect'
-	                           }
+	                           }, {
+	                               ref : 'studydetails',
+	                               selector : 'studydetails'
+	                           },
+	                           {
+	                               ref: 'stvariables',
+	                               selector: 'studyvariables'
+	                           },
+	                           {
+	                               ref: 'stkeywords',
+	                               selector: 'studykeywords'
+	                           },
+	                           {
+	                               ref: 'catalogstudies',
+	                               selector: 'catalogdetails grid#catalogstudies'
+	                           },
+	                           {
+	                               ref: 'catalogdetails',
+	                               selector: 'catalogdetails panel#cdetails'
+	                           },
+	                           {
+	                               ref: 'sdetailscontainer',
+	                               selector: 'studiesmain panel#stdetailscontainer'
+	                           },
+
+	                           
+	                           
+	                           
 	                           ],
 
 
@@ -351,46 +379,53 @@ Ext.define('RODAdmin.controller.studies.StudyTree', {
 	                        	   console.log('folderviewselectionchange');
 	                        	   console.log(RODAdmin.util.Globals.stare);
 	                        	   var record = selected[0];
-	                        	   var stdetails = this.getStdetailspanel();
+	                        	   var stdetails = this.getStudydetails();
                         		   //Variables!!!!
 	                        	   //var stusage = this.geStusagepanel();
                         		   var stprop = this.getStudyproperties();
                         		   //var stcontent = this.getStcontent(); 
 	                        	   if (record != null) {	    
-	                        		   var stenvelope = this.getStenvelope();
+//	                        		   var stenvelope = this.getStenvelope();
+	                        		   console.log(record.data.itemtype);	
 	                        		   stdetails.setTitle(record.data.name);
 
 	                        		   if (record.data.itemtype == 'catalog') {
 	                        			   //lyusage.collapse(true);
-	                        			   var stgroupstore = Ext.StoreManager.get('studies.Catalog');
+	                        			   var catalogstore = Ext.StoreManager.get('studies.Catalog');
 	                        			   //stcontent.setValue('');  
-	                        			   stenvelope.collapse();	
-	                        			   stgroupstore.load({
+	                        			   //stenvelope.collapse();	
+	                        			   catalogstore.load({
 	                        				   scope : this,
-	                        				   id : record.data.id, 
+	                        				   id : record.data.indice, 
 	                        				   callback : function(records, operation, success) {
 	                        					   if (success) {
-	                        						   var stitem = stgroupstore.first();
-	                        						   stprop.update(stitem);
+	                        						   console.log(this.getSdetailscontainer());
+	                        						   this.getSdetailscontainer().layout.setActiveItem('catalogdetails');
+	                        						   var stitem = catalogstore.first();
+	                        						   console.log(stitem);
+	                        						   this.getCatalogdetails().update(stitem.data);
+	                        						   this.getCatalogstudies().bindStore(stitem.studies());
+//	                        						   stprop.update(stitem);
 	                        					   }
 	                        				   }
 	                        			   });
 	                        		   }
 	                        		   else {
-	                        			   //stusage.expand();
-	                        			   stenvelope.expand();  
 	                        			   var stitemstore = Ext.StoreManager.get('studies.StudyItem');
 	                        			   stitemstore.load({
-	                        				   id : record.data.id, 
+	                        				   id : record.data.indice, 
 	                        				   scope : this,
 	                        				   callback : function(records, operation, success) {
 	                        					   if (success) {
+	                        						   console.log(this.getSdetailscontainer());
+	                        						   this.getSdetailscontainer().layout.setActiveItem('studydetails');
 	                        						   var stitem = stitemstore.first();
-	                        						   //stcontent.setValue(stitem.data.content);
-	                        						   stprop.update(stitem);
-//	                        						   if (typeof stitem.usageStore === 'object') {
-//	                        							   lyusage.bindStore(lyitem.usage());
-//	                        						   }
+	                        					        stprop.update(stitem.data);
+	                        					        var variables = this.getStvariables();
+	                        					        variables.bindStore(stitem.variables());
+	                        					        var keywords = this.getStkeywords();
+	                        					        keywords.bindStore(stitem.keywords());
+
 	                        					   }
 	                        				   }
 	                        			   });

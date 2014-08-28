@@ -6,7 +6,15 @@ Ext.define('RODAdmin.controller.studies.Studies', {
 
     views :[
             'RODAdmin.view.studies.Studies',            
-            'RODAdmin.view.studies.StudyItemsview'
+            'RODAdmin.view.studies.StudyItemsview',
+//            'RODAdmin.view.studies.AddStudyWindow',
+            'RODAdmin.view.studies.studyadd.sProposal',
+            'RODAdmin.view.studies.studyadd.sDataCollection',
+            'RODAdmin.view.studies.studyadd.sFounding',
+            'RODAdmin.view.studies.studyadd.sDataProd',
+            'RODAdmin.view.studies.studyadd.sQuestions',
+            
+            
             ],
     
     refs : [
@@ -20,7 +28,7 @@ Ext.define('RODAdmin.controller.studies.Studies', {
             }, 
             {
                 ref : "folderview",
-                selector : "studyitemsview treepanel#studyfolderview"
+                selector : "studyitemsview treepanel#stfolderview"
             }, {
                 ref : 'folderselect',
                 selector : 'studyedit treepanel#groupselect'
@@ -33,7 +41,7 @@ Ext.define('RODAdmin.controller.studies.Studies', {
 
     init : function(application) {
 	    this.control({
-	        "studies toolbar button#icon-view" : {
+	        "studiesmain toolbar button#icon-view" : {
 	            /**
 				 * @listener studies-toolbar-button-icon-view-click triggered-by:
 				 *           {@link RODAdmin.view.studies.Studies Studies}
@@ -42,7 +50,7 @@ Ext.define('RODAdmin.controller.studies.Studies', {
 				 */	
 		        click : this.onIconViewClick
 	        },
-	        "studies toolbar button#tree-view" : {
+	        "studiesmain toolbar button#tree-view" : {
 	            /**
 				 * @listener studies-toolbar-button-tree-view-click triggered-by:
 				 *           {@link RODAdmin.view.studies.Studies Studies}
@@ -51,6 +59,16 @@ Ext.define('RODAdmin.controller.studies.Studies', {
 				 */	
 		        click : this.onTreeViewClick
 	        },
+	        "studiesmain toolbar button#add-study" : {
+	            /**
+				 * @listener studies-toolbar-button-tree-view-click triggered-by:
+				 *           {@link RODAdmin.view.studies.Studies Studies}
+				 *           toolbar button#tree-view
+				 *           {@link #onTreeViewClick}
+				 */	
+		        click : this.onAddStudyClick
+	        },
+
 	        "studyproperties toolbar#stproptoolbar button#editstudy" : {
 	            /**
 				 * @listener studyproperties-toolbar-stproptoolbar-button-editstudy-click triggered-by:
@@ -93,24 +111,41 @@ Ext.define('RODAdmin.controller.studies.Studies', {
 	 */
     initView : function() {
     	console.log('InitView');	
-    	 this.getStudygrid().store.load();
-    	 this.getFolderview().store.reload(); 
+    	Ext.History.add('menu-studiesmain');
+   	//	 this.getStudygrid().store.load();
+    //	 this.getFolderview().store.reload(); 
     },
     /**
 	 * @method
 	 */
     onIconViewClick : function(button, e, options) {
 	    console.log('onIconviewClick new controller');
-	    this.getItemsview().study.setActiveItem('sticonview');
+	    console.log(this.getItemsview());
+	    this.getItemsview().layout.setActiveItem('sticonview');
 	    var store = Ext.StoreManager.get('studies.Study');
 	    store.load();
     },
     /**
 	 * @method
 	 */
+    onAddStudyClick : function(button, e, options) {
+	    console.log('onAddStudyClick new controller');
+	    win = Ext.WindowMgr.get('studyadd');
+	    console.log(win);
+	    if (!win) {
+    	 win = Ext.create('RODAdmin.view.studies.CBEditor.AddStudyWindow');
+	    //win = Ext.create('RODAdmin.view.studies.AddStudyWindow');
+	    }
+	    win.setTitle('Add a new Study');
+	    win.show();
+    },
+    
+    /**
+	 * @method
+	 */
     onTreeViewClick : function(button, e, options) {
 	    console.log('onfolderviewClick new controller');
-	    this.getItemsview().study.setActiveItem('stfolderview');
+	    this.getItemsview().layout.setActiveItem('stfolderview');
 	    var store = Ext.StoreManager.get('studies.StudyTree');
 	    store.load();
     },
@@ -123,7 +158,7 @@ Ext.define('RODAdmin.controller.studies.Studies', {
 	    console.log(llp);
 	    console.log(fp);
 		   console.log('edit study smth');
-    	   if (fp.data.itemtype == 'catalog') {	        
+    	   if (fp.data.itemtype == 'studygroup') {	        
     		   console.log('edit catalog');
         	   win = Ext.WindowMgr.get('catalogedit');
         	   console.log(win);
@@ -185,7 +220,7 @@ Ext.define('RODAdmin.controller.studies.Studies', {
 		    if (id === 'yes') {
 			    console.log('we will delete');
 			    var url = '';
-			    if (fp.data.itemtype == 'catalog') {
+			    if (fp.data.itemtype == 'studygroup') {
 				    url = '/roda/j/admin/catalogdrop';
 				    parms = {'groupid' : fp.data.id };
 			    }

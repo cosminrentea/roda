@@ -95,6 +95,7 @@ Ext.define('RODAdmin.controller.cms.Cmslayouts', {
     initView : function() {
     	console.log('InitView, baby');	
     	 this.getLayoutgrid().store.load();
+    	 Ext.History.add('menu-cmslayouts');
  //   	 this.getFolderview().store.reload(); not loading
     },
     /**

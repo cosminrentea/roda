@@ -38,7 +38,6 @@ Ext.define('RODAdmin.controller.Menu', {
             var menuPanel = Ext.ComponentQuery.query('mainmenu')[0];
 
             Ext.each(records, function(root){
-
                 var menu = Ext.create('RODAdmin.view.menu.Item',{
                     title: translations[root.get('text')],
                     iconCls: root.get('iconCls')
@@ -75,7 +74,8 @@ Ext.define('RODAdmin.controller.Menu', {
             return tab.title === record.get('text'); 
         });
 
-        console.log(record.raw.className);
+        console.log(record);
+        console.log(record.get('text')); 
 
         if (!newTab){
             newTab = mainPanel.add({

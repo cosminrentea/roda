@@ -6,7 +6,6 @@ Ext.define('RODAdmin.view.cms.files.filedetails.FileUsage', {
     alias: 'widget.fileusage',
     itemId: 'fileusage',
     title:'File Usage',
-    id: 'fileusage',
 	collapsible: true,
 	   columns: [
         {

@@ -33,6 +33,12 @@ translations = {
 	menu_studies : 'Studii',
 	studies_main : 'Studii',
 	
+	menu_metadata : 'Metadate',
+	persons : 'Persoane',
+	organisations : 'Organizatii',
+	country : 'Tari',
+	city : 'Orase',
+	
 	staticData: 'Static Data',
 	actors: 'Actors',
 	categories: 'Categories',

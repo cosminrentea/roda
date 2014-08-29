@@ -12,6 +12,12 @@
 
 
 getStats <- function(mylist) {
+    
+    # aceasta comanda poate sta aici (caz in care se incarca la fiecare apelare din Java
+    # sau poate fi specificata doar la deschiderea R, in fisierul .Rprofile din /home/user
+    load("miss.Rdata")
+    
+    
     rs <- function(x) {
         paste(rep(" ", x), collapse="")
     }
@@ -52,7 +58,7 @@ getStats <- function(mylist) {
                                     json <- paste(json, rs(16), "{\n",
                                             rs(20), "\"name\": \"", etichete[i], "\",\n",
                                             rs(20), "\"value\": ", frecventa[i], "\n",
-                                        rs(16), ifelse(i == length(valori), "}\n", paste("},\n", rs(16), "{", sep="")), sep="")
+                                        rs(16), ifelse(i == length(valori), "}\n", "},\n"), sep="")
                                 }
                             json <- paste(json, rs(12), "]\n",
                         rs(8), "}\n",
@@ -63,6 +69,15 @@ getStats <- function(mylist) {
     
     
     num1 <- function(mylist) {
+        
+        # se elimina valorile de missing (daca exista)
+        if (length(mylist$meta[[1]]) > 0) {
+            ismiss <- toupper(names(mylist$meta[[1]])) %in% miss
+            if (any(ismiss)) {
+                mylist$vars[[1]] <- mylist$vars[[1]][!mylist$vars[[1]] %in% mylist$meta[[1]][ismiss]]
+            }
+        }
+        
         valori <- summary(mylist$vars[[1]])
         
         json <- paste("{\n",
@@ -92,13 +107,19 @@ getStats <- function(mylist) {
     
     
     checkVar <- function(mylist) {
+        
+        # toata aceasta functie va fi rescrisa daca tipul variabilei este primit de la server
+        # deocamdata, trebuie dedus daca este categoriala sau numerica (sau ambele)
+        
         if (length(mylist$meta[[1]]) > 0) {
             
             # posibil variabila categoriala
             # insa si variabilele numerice pot avea etichete de valori (de missing)
             
             # verific daca numarul de valori unice din date este (cel mult) egal cu numarul de categorii din metadate
-            if (length(unique(mylist$vars[[1]])) <= length(mylist$meta[[1]])) {
+            valunice <- unique(mylist$vars[[1]])
+            
+            if (length(valunice) <= length(mylist$meta[[1]])) {
                 
                 # cu siguranta este o variabila categoriala
                 
@@ -107,8 +128,34 @@ getStats <- function(mylist) {
             }
             else {
                 
-                # numarul de categorii din metadate este mai mic decat numarul unic de valori din date
+                # numarul unic de valori este mai mare decat numarul de categorii din metadate
                 # posibil sa fie o variabila numerica de tip 1...10 cu doar doua etichete (la 1 in stanga si la 10 in dreapta)
+                # sau poate fi o variabila categoriala pentru care a uitat cineva sa eticheteze toate valorile
+                
+                
+                # valorile unice care nu au etichete
+                valfaraet <- valunice[! valunice %in% mylist$meta[[1]]]
+                
+                
+                # 5 si 8 sunt numere arbitrare,
+                # ma gandesc la cea mai mica scala "numerica" cu etichete, de tip 1...7
+                # si la cea mai mare scala "numerica" cu etichete, de tip 1...10
+                
+                if (length(valfaraet) < 5) {
+                    
+                    return("ordinala")
+                    
+                }
+                else if (length(valfaraet) < 8) {
+                    
+                    return("numord")
+                    
+                }
+                else {
+                    
+                    return("numerica")
+                    
+                }
                 
             }
             
@@ -121,14 +168,23 @@ getStats <- function(mylist) {
             return("numerica")
             
         }
+        
     }
+    
     
     
     if (length(mylist$vars) == 1) { # o singura variabila primita de la server
         
-        if (checkVar(mylist) == "categoriala") {
+        vartype <- checkVar(mylist)
+        
+        if (vartype == "categoriala") {
             
             return(ord1(mylist))
+            
+        }
+        else if (vartype == "numord") {
+            
+            # aici se va apela functia pentru variabile categoriale pentru care pot fi calculate si masuri numerice
             
         }
         else {

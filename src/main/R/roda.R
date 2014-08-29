@@ -8,7 +8,13 @@
 # Ex. 2: o singura variabila numerica cu 135 observatii
 
 # mylist <- list(vars=list(v1 = sample(1:100, 135, replace=T)), 
-#               meta=list(v1=c()))
+#                meta=list(v1=c()))
+
+
+# Ex. 3: o singura variabila ordinala pe o scala de raspuns 1...7, care poate fi interpretata si numeric
+
+# mylist <- list(vars = list(v1 = c(97, 99, sample(1:7, 122, replace=T), 99)),
+#                meta = list(v1 = c("Foarte putin"=1, "Foarte mult"=7, "Nu e cazul"=97, "Nu stiu"=98, "Nu raspund"=99)))
 
 
 getStats <- function(mylist) {
@@ -42,10 +48,9 @@ getStats <- function(mylist) {
                                 rs(16), "[\"Nr.\", \"Categorie\", \"Frecventa\"],\n", sep="")
                                 for (i in seq(length(valori))) {
                                     json <- paste(json, rs(16), "[\"", valori[i],
-                                                                "\", \"", etichete[i],
-                                                                "\", \"", frecventa[i], "\"]",
-                                                                ifelse(i == length(valori), "", ","),
-                                                                "\n", sep="")
+                                                  "\", \"", etichete[i],
+                                                  "\", \"", frecventa[i],
+                                                  ifelse(i == length(valori), "\"]\n", "\"],\n"), sep="")
                                 }
                             json <- paste(json, rs(12), "]\n",
                         rs(8), "},{\n",
@@ -56,9 +61,9 @@ getStats <- function(mylist) {
                             rs(12), "\"data\": [\n", sep="")
                                 for (i in seq(length(valori))) {
                                     json <- paste(json, rs(16), "{\n",
-                                            rs(20), "\"name\": \"", etichete[i], "\",\n",
-                                            rs(20), "\"value\": ", frecventa[i], "\n",
-                                        rs(16), ifelse(i == length(valori), "}\n", "},\n"), sep="")
+                                                rs(20), "\"name\": \"", etichete[i], "\",\n",
+                                                rs(20), "\"value\": ", frecventa[i], "\n",
+                                            rs(16), ifelse(i == length(valori), "}\n", "},\n"), sep="")
                                 }
                             json <- paste(json, rs(12), "]\n",
                         rs(8), "}\n",
@@ -78,7 +83,7 @@ getStats <- function(mylist) {
             }
         }
         
-        valori <- summary(mylist$vars[[1]])
+        numerice <- summary(mylist$vars[[1]])
         
         json <- paste("{\n",
                     rs(4), "\"success\": true,\n",
@@ -88,15 +93,122 @@ getStats <- function(mylist) {
                             rs(12), "\"title\": \"Masuri numerice pentru variabila: ", names(mylist$vars)[1], "\",\n",
                             rs(12), "\"headerRow\": 1,\n",
                             rs(12), "\"headerCol\": 1,\n",
-                            rs(12), "\"rows\": ", length(valori) + 1, ",\n",
+                            rs(12), "\"rows\": ", length(numerice) + 1, ",\n",
                             rs(12), "\"cols\": ", 2, ",\n",
                             rs(12), "\"data\": [\n",
                                 rs(16), "[\"\", \"", names(mylist$vars)[1], "\"],\n", sep="")
+                                for (i in seq(length(numerice))) {
+                                    json <- paste(json, rs(16), "[\"", names(numerice)[i],
+                                                  "\", \"", numerice[i],
+                                                  ifelse(i == length(numerice), "\"]\n", "\"],\n"), sep="")
+                                }
+                            json <- paste(json, rs(12), "]\n",
+                        rs(8), "}\n",
+                    rs(4), "]\n",    
+                "}\n", sep="")
+        return(json)
+    }
+    
+    
+    numord1 <- function(mylist) {
+        
+        valori <- etichete <- sort(unique(mylist$vars[[1]]))
+        
+        myvar <- mylist$meta[[1]]
+        
+        if (length(mylist$meta[[1]]) > 0) {
+            
+            # se elimina valorile de missing (daca exista)
+            ismiss <- toupper(names(mylist$meta[[1]])) %in% miss
+            
+            if (any(ismiss)) {
+                
+                myvar <- mylist$vars[[1]][!mylist$vars[[1]] %in% mylist$meta[[1]][ismiss]]
+                
+            }
+            
+            # se inlocuiesc celelalte etichete in afara de missing
+            for (i in seq(length(mylist$meta[[1]]))) {
+                
+                pozitie <- match(mylist$meta[[1]][i], valori)
+                
+                if (!is.na(pozitie)) {
+                    
+                    etichete[pozitie] <- names(mylist$meta[[1]])[i]
+                    
+                }
+                
+            }
+            
+            # se adauga (daca exista) alte etichete pentru valori care nu exista in date
+            diferente <- setdiff(mylist$meta[[1]], valori)
+            
+            if (length(diferente) > 0) {
+                
+                valori <- c(valori, diferente)
+                
+                etichete <- c(etichete, names(mylist$meta[[1]])[mylist$meta[[1]] %in% diferente])
+                
+                etichete <- etichete[order(valori)]
+                
+                valori <- sort(valori)
+                
+            }
+            
+        }
+        
+        numerice <- summary(myvar)
+        
+        print(valori)
+        print(etichete)
+        
+        frecventa <- as.vector(table(factor(mylist$vars[[1]], levels=valori, labels=etichete)))
+        
+        json <- paste("{\n",
+                    rs(4), "\"success\": true,\n",
+                    rs(4), "\"data\": [\n",
+                        rs(8), "{\n",
+                            rs(12), "\"itemtype\": \"table\",\n",
+                            rs(12), "\"title\": \"Masuri numerice pentru variabila: ", names(mylist$vars)[1], "\",\n",
+                            rs(12), "\"headerRow\": 1,\n",
+                            rs(12), "\"headerCol\": 1,\n",
+                            rs(12), "\"rows\": ", length(numerice) + 1, ",\n",
+                            rs(12), "\"cols\": ", 2, ",\n",
+                            rs(12), "\"data\": [\n",
+                                rs(16), "[\"\", \"", names(mylist$vars)[1], "\"],\n", sep="")
+                                for (i in seq(length(numerice))) {
+                                    json <- paste(json, rs(16), "[\"", names(numerice)[i],
+                                                  "\", \"", numerice[i],
+                                                  ifelse(i == length(numerice), "\"]\n", "\"],\n"), sep="")
+                                }
+                            json <- paste(json, rs(12), "]\n",
+                        rs(8), "},{\n",
+                            rs(12), "\"itemtype\": \"table\",\n",
+                            rs(12), "\"title\": \"Tabel de frecvente pentru variabila: ", names(mylist$vars)[1], "\",\n",
+                            rs(12), "\"headerRow\": 1,\n",
+                            rs(12), "\"headerCol\": 1,\n",
+                            rs(12), "\"rows\": ", length(valori) + 1, ",\n",
+                            rs(12), "\"cols\": ", 3, ",\n",
+                            rs(12), "\"data\": [\n",
+                                rs(16), "[\"Nr.\", \"Categorie\", \"Frecventa\"],\n", sep="")
                                 for (i in seq(length(valori))) {
-                                    json <- paste(json, rs(16), "[\"", names(valori)[i],
-                                                                 "\", \"", valori[i], "\"]",
-                                                                 ifelse(i == length(valori), "", ","),
-                                                                "\n", sep="")
+                                    json <- paste(json, rs(16), "[\"", valori[i],
+                                                  "\", \"", etichete[i],
+                                                  "\", \"", frecventa[i],
+                                                  ifelse(i == length(valori), "\"]\n", "\"],\n"), sep="")
+                                }
+                            json <- paste(json, rs(12), "]\n",
+                        rs(8), "},{\n",
+                            rs(12), "\"itemtype\": \"chart\",\n",
+                            rs(12), "\"title\": \"Diagrama bara pentru variabila: ", names(mylist$vars)[1], "\",\n",
+                            rs(12), "\"charttype\": \"bar\",\n",
+                            rs(12), "\"height\": ", 85*length(valori), ",\n",
+                            rs(12), "\"data\": [\n", sep="")
+                                for (i in seq(length(valori))) {
+                                    json <- paste(json, rs(16), "{\n",
+                                                rs(20), "\"name\": \"", etichete[i], "\",\n",
+                                                rs(20), "\"value\": ", frecventa[i], "\n",
+                                            rs(16), ifelse(i == length(valori), "}\n", "},\n"), sep="")
                                 }
                             json <- paste(json, rs(12), "]\n",
                         rs(8), "}\n",
@@ -146,7 +258,7 @@ getStats <- function(mylist) {
                     return("ordinala")
                     
                 }
-                else if (length(valfaraet) < 8) {
+                else if (length(valfaraet) < 9) {
                     
                     return("numord")
                     
@@ -184,12 +296,10 @@ getStats <- function(mylist) {
         }
         else if (vartype == "numord") {
             
-            # aici se va apela functia pentru variabile categoriale pentru care pot fi calculate si masuri numerice
+            return(numord1(mylist))
             
         }
-        else {
-            
-            # variabila numerica
+        else { # vartype == "numerica"
             
             return(num1(mylist))
             

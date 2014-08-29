@@ -16,6 +16,7 @@ getStats <- function(mylist) {
         paste(rep(" ", x), collapse="")
     }
     
+    
     ord1 <- function(mylist) {
         valori <- as.vector(mylist$meta[[1]])
         etichete <- names(mylist$meta[[1]])
@@ -28,8 +29,8 @@ getStats <- function(mylist) {
                             rs(12), "\"itemtype\": \"table\",\n",
                             rs(12), "\"title\": \"Tabel de frecvente pentru variabila: ", names(mylist$vars)[1], "\",\n",
                             rs(12), "\"headerRow\": 1,\n",
-                            rs(12), "\"rows\": ", length(valori) + 1, ",\n",
                             rs(12), "\"headerCol\": 1,\n",
+                            rs(12), "\"rows\": ", length(valori) + 1, ",\n",
                             rs(12), "\"cols\": ", 3, ",\n",
                             rs(12), "\"data\": [\n",
                                 rs(16), "[\"Nr.\", \"Categorie\", \"Frecventa\"],\n", sep="")
@@ -41,14 +42,28 @@ getStats <- function(mylist) {
                                                                 "\n", sep="")
                                 }
                             json <- paste(json, rs(12), "]\n",
+                        rs(8), "},{\n",
+                            rs(12), "\"itemtype\": \"chart\",\n",
+                            rs(12), "\"title\": \"Diagrama bara pentru variabila: ", names(mylist$vars)[1], "\",\n",
+                            rs(12), "\"charttype\": \"bar\",\n",
+                            rs(12), "\"height\": ", 85*length(valori), ",\n",
+                            rs(12), "\"data\": [\n", sep="")
+                                for (i in seq(length(valori))) {
+                                    json <- paste(json, rs(16), "{\n",
+                                            rs(20), "\"name\": \"", etichete[i], "\",\n",
+                                            rs(20), "\"value\": ", frecventa[i], "\n",
+                                        rs(16), ifelse(i == length(valori), "}\n", paste("},\n", rs(16), "{", sep="")), sep="")
+                                }
+                            json <- paste(json, rs(12), "]\n",
                         rs(8), "}\n",
                     rs(4), "]\n",    
                 "}\n", sep="")
         return(json)
     }
     
+    
     num1 <- function(mylist) {
-        result <- summary(mylist$vars[[1]])
+        valori <- summary(mylist$vars[[1]])
         
         json <- paste("{\n",
                     rs(4), "\"success\": true,\n",
@@ -57,17 +72,24 @@ getStats <- function(mylist) {
                             rs(12), "\"itemtype\": \"table\",\n",
                             rs(12), "\"title\": \"Masuri numerice pentru variabila: ", names(mylist$vars)[1], "\",\n",
                             rs(12), "\"headerRow\": 1,\n",
-                            rs(12), "\"rows\": 2,\n",
                             rs(12), "\"headerCol\": 1,\n",
-                            rs(12), "\"cols\": ", 3, ",\n",
+                            rs(12), "\"rows\": ", length(valori) + 1, ",\n",
+                            rs(12), "\"cols\": ", 2, ",\n",
                             rs(12), "\"data\": [\n",
-                                rs(16), "[\"", paste(names(result), collapse= "\", \""), "\"],\n", 
-                                rs(16), "[", paste(as.vector(result), collapse=", "), "]\n",
-                            rs(12), "]\n",
+                                rs(16), "[\"\", \"", names(mylist$vars)[1], "\"],\n", sep="")
+                                for (i in seq(length(valori))) {
+                                    json <- paste(json, rs(16), "[\"", names(valori)[i],
+                                                                 "\", \"", valori[i], "\"]",
+                                                                 ifelse(i == length(valori), "", ","),
+                                                                "\n", sep="")
+                                }
+                            json <- paste(json, rs(12), "]\n",
                         rs(8), "}\n",
                     rs(4), "]\n",    
                 "}\n", sep="")
+        return(json)
     }
+    
     
     checkVar <- function(mylist) {
         if (length(mylist$meta[[1]]) > 0) {

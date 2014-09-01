@@ -104,7 +104,7 @@
 <p align="justify"><font face="Arial, Helvetica, Sans-serif" size="2">Each dataset in the RODA catalog will be presented with its actual access 
 	level, specified by the data owner.</font></p>				
 	]]></content>
-	<cms_layout>roda-main-en</cms_layout>
+	<cms_layout>new-roda-main-en</cms_layout>
 	<pagetype>content</pagetype>
 	<cacheable>3600</cacheable>
 	<searchable>true</searchable>	

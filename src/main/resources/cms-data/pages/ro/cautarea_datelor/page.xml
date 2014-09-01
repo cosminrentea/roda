@@ -5,7 +5,7 @@
 	<synopsis><![CDATA[Cautarea datelor se face in databrowser]]></synopsis>
 	<lang>ro</lang>
 	<content><![CDATA[Cautarea datelor se face in databrowser]]></content>
-	<cms_layout>roda-main-ro</cms_layout>
+	<cms_layout>new-roda-main-ro</cms_layout>
 	<pagetype>content</pagetype>
 	<cacheable>3600</cacheable>
 	<searchable>true</searchable>		

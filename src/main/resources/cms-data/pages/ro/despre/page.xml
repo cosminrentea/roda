@@ -22,7 +22,7 @@
 <p align="justify">
 	<font face="Arial, Helvetica, sans-serif" size="2">Arhiva acorda asistenta in localizarea variabilelor, seturilor de date si documentatiilor, in functie de nevoile particulare ale cercetatorilor, studentilor si profesorilor. Utilizatorii pot consulta <a href="http://roda.ro/public/RO/template.php?url=4">personalul Arhivei</a> in identificarea intereselor de cercetare si in selectarea datelor potrivite pentru proiecte de cercetare specifice.</font></p>
 	]]></content>
-	<cms_layout>roda-main-ro</cms_layout>
+	<cms_layout>new-roda-main-ro</cms_layout>
 	<pagetype>content</pagetype>
 	<cacheable>3600</cacheable>
 	<searchable>true</searchable>		

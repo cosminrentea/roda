@@ -15,7 +15,7 @@
 	<font face="Arial, Helvetica, sans-serif" size="2">O buna documentare poate sa usureze atingerea unor standarde comune si sa mentina calitatea inalta a cercetarii primare si secundare.</font></p>
 	
 	]]></content>
-	<cms_layout>roda-main-ro</cms_layout>
+	<cms_layout>new-roda-main-ro</cms_layout>
 	<pagetype>content</pagetype>
 	<cacheable>3600</cacheable>
 	<searchable>true</searchable>		

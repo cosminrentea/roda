@@ -1,61 +1,91 @@
-<html><head>
-      <title>RODA - [[Code: PageTitle]] </title>
-      <meta http-equiv="Keywords" name="Keywords" content="RODA, DDI" />
+<head>
+      <title>RODA - [[Code: PageTitle]]</title>
+      <meta http-equiv="Keywords" name="Keywords" content="Databrowser, RODA" />
       <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-
-	  [[Snippet: newstyle-en]]
  	  <script src="/roda/resources/root/ext-js/ext-all-debug-w-comments.js"></script>
 	  <link rel="stylesheet" href="/roda/resources/root/ext-js/resources/ext-theme-roda/ext-theme-roda-all.css">
   	  <script type="text/javascript" src="/roda/resources/root/app.js"></script>
-
       <link rel="icon" href="[[FileURL:faviconpng]]" type="image/png" />
+      <style>
+	  [[Snippet: main-css-en]]  
+      </style>
       <link rel="SHORTCUT ICON" href="[[FileURL:faviconico]]" />
+
+
+
+<style>
+html { height: 100%; }
+body {
+    height:100%;
+    min-height: 100%;
+    background: #000000;
+    color: #FFFFFF;
+    position:relative;
+}
+#pgheader {
+    width:100%;
+    height: 72px;
+    top:0px;
+    left:0px;
+    background: #CCCCCC;
+    position:absolute;
+	background: url('[[FileURL:bg_header_slim]]') no-repeat top center;
+}
+
+#pgfooter {
+    height:20px;
+    width:100%;
+    bottom:0px;
+    left:0px;
+    background: #CCCCCC;
+    position:absolute;
+    background: url('[[FileURL:bg_footer_slim]]') no-repeat top center #2c803b;
+}
+#content {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    height:100%;
+    padding-top: 80px;
+    padding-bottom: 25px;
+}
+
+
+#logo_slim{
+	float:left;
+	margin-top:2px;
+}
+
+#header_right{
+	float:right;
+	width: 195px;
+	margin-top:10px;
+}
+
+
+#insideheader {
+	width:80%;
+	margin-left:auto;
+	margin-right: auto;
+}
+
+</style>
+
 </head>
-
-
-
 <body>
-	<div id="header">
-		<div id="header_cont">
-			<div id="logo"><a href="#">[[ImgLink: logo]]</a></div>
-			<div class="cpl">&nbsp;</div>
-			<div id="meniu">
-				 [[Snippet: homemenu-en]]
-				  <div class="cpl">&nbsp;</div>
+		<div id="pgheader">
+			<div id="insideheader">
+			<div id="logo_slim">
+			<a href="/roda/page/en">[[ImgLink: logo_slim]]</a></div>
+			<div id="header_right">
+				<div id="flags">
+					<a href="/roda/page/ro" style="margin-right:5px; margin-left:100px;"><img src="[[FileURL:flag_ro]]"></a>
+					<a href="#"><img src="[[FileURL:flag_uk]]"></a>
+				</div>
+			</div>
 			</div>
 		</div>
-	</div>
-	<div id="wrapper">
-	[[Code: PageContent]]
-	</div>
-	<div id="footer">
-		<div id="footer_cont">
-			<ul class="meniu1">
-				<li><a href="">khskh</a></li>
-			</ul>
-			<div class="contact_footer">
-				<b>RODA<br>CONTACT US</b>
-Adress:<br>
-Romanian Social Data Archive<br>
-1, B-dul Schitu Magureanu, <br>
-et. 5, cam. 15, sector 5, 76625 <br>
-Bucharest, Romania	<br>	
-			</div>
-			<div class="meniu2">
-				For Depositors
-				<ul>
-					<li><a href="">khskh</a></li>
-				</ul>
-			</div>
-			<div class="meniu3">
-				For Data Users
-				<ul>
-					<li><a href="">khskh</a></li>
-				</ul>
-			</div>
-			<div class="cpl">&nbsp;</div>
-		</div>
-	</div>
+		[[Code: PageContent]]
+	<div id="pgfooter"></div>
+</body>
 
-
-</body></html>

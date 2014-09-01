@@ -6,14 +6,12 @@
 	<lang>ro</lang>
 	<content><![CDATA[
 
-	<div id="container">
 		<div id="content">
-			<div id="dbcontainer"></div>
-		</div>
-	</div>	
+			<div id="dbcontainer" style="width:80%; height:100%; padding: 0; margin-left:auto; margin-right:auto;"></div>
+	 	</div>
 	
 	]]></content>
-	<cms_layout>roda-databrowser-ro</cms_layout>
+	<cms_layout>new-roda-databrowser-ro</cms_layout>
 	<pagetype>content</pagetype>
 	<cacheable>3600</cacheable>
 	<searchable>true</searchable>		

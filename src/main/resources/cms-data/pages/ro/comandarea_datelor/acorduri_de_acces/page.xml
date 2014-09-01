@@ -28,7 +28,7 @@
 	Deoarece studentii se schimba anual, acest document trebuie actualizat, semnat si trimis arhivei in luna iulie a fiecarui an.</font></p>
 	
 	]]></content>
-	<cms_layout>roda-main-ro</cms_layout>
+	<cms_layout>new-roda-main-ro</cms_layout>
 	<pagetype>content</pagetype>
 	<cacheable>3600</cacheable>
 	<searchable>true</searchable>	

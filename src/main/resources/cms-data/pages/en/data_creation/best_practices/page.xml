@@ -75,7 +75,7 @@
 	can consult our <a href="Depunere.pdf">Depositing form</a> in order to fill in the
 	relevant information.</font></p>				
 	]]></content>
-	<cms_layout>roda-main-en</cms_layout>
+	<cms_layout>new-roda-main-en</cms_layout>
 	<pagetype>content</pagetype>
 	<cacheable>3600</cacheable>
 	<searchable>true</searchable>	

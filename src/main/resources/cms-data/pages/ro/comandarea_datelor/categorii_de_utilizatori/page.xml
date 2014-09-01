@@ -66,7 +66,7 @@
 	<font face="Arial, Helvetica, Sans-serif" size="2">Trebuie mentionat ca aceasta impartire a drepturilor de folosire a bazelor de date este propunerea RODA. Proprietarii datelor sunt aceia care hotarasc ce destinatie finala au datele, ce categorii de utilizatori au dreptul sa le foloseasca si in ce conditii. Spre exemplu, daca proprietarul datelor decide, unele date pot fi trebute in categoria <font color="#0000FF"><strong><a href="http://roda.ro/public/RO/template.php?url=8">B</a></strong></font> pentru utilizatorii comerciali (adica acestia pot folosi datele numai cu conditia ca proprietarul datelor sa-si dea acordul in prealabil). Pentru fiecare baza de date din catalogul RODA, vor fi prezentate nivelurile de acces specificate de proprietari, pentru fiecare categorie de utilizatori.</font></p>
 	
 	]]></content>
-	<cms_layout>roda-main-ro</cms_layout>
+	<cms_layout>new-roda-main-ro</cms_layout>
 	<pagetype>content</pagetype>
 	<cacheable>3600</cacheable>
 	<searchable>true</searchable>		

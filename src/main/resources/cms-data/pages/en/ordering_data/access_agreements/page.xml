@@ -29,7 +29,7 @@
 	Because there are different students each year, this document has to be updated, signed and
 	sent to the archive yearly, in July.</font></p>
 	]]></content>
-	<cms_layout>roda-main-en</cms_layout>
+	<cms_layout>new-roda-main-en</cms_layout>
 	<pagetype>content</pagetype>
 	<cacheable>3600</cacheable>
 	<searchable>true</searchable>	

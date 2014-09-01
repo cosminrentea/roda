@@ -1,35 +1,91 @@
-[[Snippet: databrowser_header_ro]]       
+<head>
+      <title>RODA - [[Code: PageTitle]]</title>
+      <meta http-equiv="Keywords" name="Keywords" content="Databrowser, RODA" />
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+ 	  <script src="/roda/resources/root/ext-js/ext-all-debug-w-comments.js"></script>
+	  <link rel="stylesheet" href="/roda/resources/root/ext-js/resources/ext-theme-roda/ext-theme-roda-all.css">
+  	  <script type="text/javascript" src="/roda/resources/root/app.js"></script>
+      <link rel="icon" href="[[FileURL:faviconpng]]" type="image/png" />
+      <style>
+	  [[Snippet: main-css-ro]]  
+      </style>
+      <link rel="SHORTCUT ICON" href="[[FileURL:faviconico]]" />
+
+
+
+<style>
+html { height: 100%; }
+body {
+    height:100%;
+    min-height: 100%;
+    background: #000000;
+    color: #FFFFFF;
+    position:relative;
+}
+#pgheader {
+    width:100%;
+    height: 72px;
+    top:0px;
+    left:0px;
+    background: #CCCCCC;
+    position:absolute;
+	background: url('[[FileURL:bg_header_slim]]') no-repeat top center;
+}
+
+#pgfooter {
+    height:20px;
+    width:100%;
+    bottom:0px;
+    left:0px;
+    background: #CCCCCC;
+    position:absolute;
+    background: url('[[FileURL:bg_footer_slim]]') no-repeat top center #2c803b;
+}
+#content {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    height:100%;
+    padding-top: 80px;
+    padding-bottom: 25px;
+}
+
+
+#logo_slim{
+	float:left;
+	margin-top:2px;
+}
+
+#header_right{
+	float:right;
+	width: 195px;
+	margin-top:10px;
+}
+
+
+#insideheader {
+	width:80%;
+	margin-left:auto;
+	margin-right: auto;
+}
+
+</style>
+
+</head>
 <body>
-<table cellpadding="0" cellspacing="0" border="1" width="1020px" align="center" class="big_wrapper">
-  <tbody>
-    <tr>
-	<td>
-	  <div id="large_box">
-	    <table cellpadding="0" cellspacing="0" border="0">
-		<tr>
-		  <td valign="top" align="left" style="vertical-align:top; width:250px;" class="box_logo">
-		    <a href="/roda/page/ro">[[ImgLink: logo_ro]]</a>
-		  </td>
-		  <td valign="top" align="left" style="vertical-align:top; width:770px;" class="box_header"></td>							
-		</tr>
-		<tr>
-		  <td colspan="2" valign="top" align="left" style="vertical-align:top; width:770px;" class="box_content">
-		    <div id="cont_right">
-			[[Code: PageContent]]
-		      <div class="clear"></div>
-		    </div>
-		  </div>
-	</td>							
-		</tr>
-		<tr>
-			<td colspan="2" valign="top" align="left" style="vertical-align:top" class="footer">
-			<br /><br /><br /><br />
-			</td>							
-			</tr>
-		</table>
-    </div>
-</td>
-</tr>
-</tbody>
-</table>
-</body> </html>
+		<div id="pgheader">
+			<div id="insideheader">
+			<div id="logo_slim">
+			<a href="/roda/page/ro">[[ImgLink: logo_slim]]</a></div>
+			<div id="header_right">
+				<div id="flags">
+					<a href="#" style="margin-right:5px; margin-left:100px;"><img src="[[FileURL:flag_ro]]"></a>
+					<a href="/roda/page/ro"><img src="[[FileURL:flag_uk]]"></a>
+				</div>
+			</div>
+			</div>
+		</div>
+		[[Code: PageContent]]
+	<div id="pgfooter"></div>
+</body>
+

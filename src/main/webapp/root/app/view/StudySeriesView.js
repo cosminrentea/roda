@@ -71,33 +71,40 @@ Ext.define('databrowser.view.StudySeriesView', {
                     	),
             },{
                 autoScroll: true,
-                layout:'fit',
+                layout : {
+	                type : 'border',
+                },
                 title: 'Variabile',
-            	id:'svariables',
+            	itemId:'svariables',
                 	items: [{
                             	xtype: 'gridpanel',
-                            	id: 'studyseriesvariables',
+                                region : 'center',
+                                collapsible : true,
+                                split : false,
+                            	//itemId: 'studyseriesvariables',
+                                id: 'studyseriesvariables',
                             	width:'100%',
+                                flex : 1,                            	
                             	autoScroll: true,
                             	remoteSort: false,                 	
-                            	listeners : {
-                            		cellclick : function(gridView,htmlElement,columnIndex,dataRecord,htmlRow, rowIndex, e, eOpts) {
-                            			if (columnIndex == 0) {
-                            				var varwin = Ext.create('databrowser.view.VariableView');
-                            				var previndice;
-                            				var nextindice;
-                            				if (gridView.getRecord(rowIndex-1)) {
-                            					previndice = gridView.getRecord(rowIndex-1).data.indice;
-                            				}
-                            				if (gridView.getRecord(rowIndex+1)) {
-                            					nextindice = gridView.getRecord(rowIndex+1).data.indice;
-                            				}
-                            				varwin.setTitle(dataRecord.data.name + ' - ' + dataRecord.data.label);
-                            				varwin.loaddata(dataRecord.data.indice, previndice, nextindice);
-                            				varwin.show();
-                            			}
-                            		}
-                            	},
+//                            	listeners : {
+//                            		cellclick : function(gridView,htmlElement,columnIndex,dataRecord,htmlRow, rowIndex, e, eOpts) {
+//                            			if (columnIndex == 0) {
+//                            				var varwin = Ext.create('databrowser.view.VariableView');
+//                            				var previndice;
+//                            				var nextindice;
+//                            				if (gridView.getRecord(rowIndex-1)) {
+//                            					previndice = gridView.getRecord(rowIndex-1).data.indice;
+//                            				}
+//                            				if (gridView.getRecord(rowIndex+1)) {
+//                            					nextindice = gridView.getRecord(rowIndex+1).data.indice;
+//                            				}
+//                            				varwin.setTitle(dataRecord.data.name + ' - ' + dataRecord.data.label);
+//                            				varwin.loaddata(dataRecord.data.indice, previndice, nextindice);
+//                            				varwin.show();
+//                            			}
+//                            		}
+//                            	},
                             	columns: [
                                 {
                                     xtype: 'gridcolumn',
@@ -119,7 +126,106 @@ Ext.define('databrowser.view.StudySeriesView', {
                                     flex:1
                                 },
                             ]
+                	},{
+                        xtype : 'tabpanel',
+                        region : 'south',
+                        collapsible : true,
+                        split : true,
+                        flex : 1,
+                        layout : 'fit',
+                        items : [
+                                {
+                                    xtype : 'panel',
+                                    title : 'variable details',
+                                    autoScroll : true,
+                                    layout : 'fit',
+                                    items : [
+                                        {
+                                            xtype : 'freqchart',
+                                            itemId : 'ilfreqchart',
+                                        }
+                                    ]
+                                },
+                                {
+                                    xtype : 'panel',
+                                    autoScroll : true,
+                                    title : 'Analyse',
+                                    items : [
+                                            {
+                                                xtype : 'gridpanel',
+                                                itemId : 'analysisvar',
+                                                width : '100%',
+                                                store : 'MemoryVariableStore',
+                                                flex : 1,
+                                                columns : [
+                                                        {
+                                                            xtype : 'gridcolumn',
+                                                            dataIndex : 'name',
+                                                            hideable : false,
+                                                            text : 'name',
+                                                            width : 100,
+                                                            fixed : true,
+                                                        },
+                                                        {
+                                                            xtype : 'gridcolumn',
+                                                            dataIndex : 'label',
+                                                            hideable : false,
+                                                            text : 'label',
+                                                            flex : 1
+                                                        },
+                                                        {
+                                                            xtype : 'actioncolumn',
+                                                            width : 30,
+                                                            sortable : false,
+                                                            menuDisabled : true,
+                                                            itemId : 'actionpinvresp',
+                                                            items : [
+                                                                {
+                                                                    icon : '/roda/resources/root/img/delete.gif',
+                                                                    tooltip : 'Delete variable',
+                                                                    scope : this,
+                                                                    handler : function(view, rowIndex, colIndex,
+                                                                            item, e, record, row) {
+	                                                                    var mygrid = view.up('grid');
+	                                                                    mygrid.fireEvent('deleteRecord', mygrid,
+	                                                                                     record, rowIndex, row);
+                                                                    }
+                                                                }
+                                                            ]
+                                                        }
+                                                ]
+
+                                            }, {
+                                                xtype : 'button',
+                                                itemId : 'sendToAnalysis',
+                                                text : 'Analyze',
+                                                width : '100%'
+                                            }, {
+                                                xtype : 'panel',
+                                                itemId : 'analResults',
+                                                bodyPadding : 5,
+                                                autoScroll : true,
+                                                layout : {
+                                                    type : 'vbox',
+                                                    align : 'center'
+                                                },
+                                            }
+                                    ]
+                                }
+                        ]
+                		
+                		
+                		
+                		
+                		
                 	}
+                	
+                	
+                	
+                	
+                	
+                	
+                	
                 	]
             },{
                 autoScroll: true,

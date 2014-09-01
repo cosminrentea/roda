@@ -160,7 +160,7 @@ Ext.define('databrowser.view.StudyView', {
                                                                 itemId : 'actionpinvresp',
                                                                 items : [
 	                                                                {
-	                                                                    icon : 'img/delete.gif',
+	                                                                    icon : '/roda/resources/root/img/delete.gif',
 	                                                                    tooltip : 'Delete variable',
 	                                                                    scope : this,
 	                                                                    handler : function(view, rowIndex, colIndex,

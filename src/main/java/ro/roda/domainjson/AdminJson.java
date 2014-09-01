@@ -581,6 +581,9 @@ public class AdminJson {
 			if (parentFolder != null) {
 				folder.setParentId(parentFolder);
 				Set<CmsFolder> children = parentFolder.getCmsFolders();
+				if (children == null) {
+					children = new HashSet<CmsFolder>();
+				}
 				children.add(folder);
 				parentFolder.setCmsFolders(children);
 			}

@@ -42,8 +42,8 @@ import flexjson.JSONSerializer;
 
 @Configurable
 @Entity
-@Table(schema = "public", name = "cms_folder", uniqueConstraints = @UniqueConstraint(columnNames = {
-		"parent_id", "name" }))
+@Table(schema = "public", name = "cms_folder", uniqueConstraints = @UniqueConstraint(columnNames = { "parent_id",
+		"name" }))
 @Audited
 public class CmsFolder {
 
@@ -237,7 +237,7 @@ public class CmsFolder {
 	private String name;
 
 	@ManyToOne
-	@JoinColumn(name = "parent_id", columnDefinition = "integer", referencedColumnName = "id", insertable = true, updatable = true)
+	@JoinColumn(name = "parent_id", columnDefinition = "integer", referencedColumnName = "id", nullable = true, insertable = true, updatable = true)
 	private CmsFolder parentId;
 
 	@PersistenceContext

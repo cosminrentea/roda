@@ -1,8 +1,10 @@
 package ro.roda.service;
 
+import java.nio.charset.Charset;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -47,9 +49,10 @@ public class AdminJsonServiceImpl implements AdminJsonService {
 
 	public AdminJson layoutSave(Integer groupId, String content, String name, String description, Integer layoutId) {
 
-		// invalidate ALL CMS Pages in cache when one of the layouts is changed/added/saved
+		// invalidate ALL CMS Pages in cache when one of the layouts is
+		// changed/added/saved
 		rodaPageService.evictAll();
-		
+
 		return AdminJson.layoutSave(groupId, content, name, description, layoutId);
 	}
 
@@ -79,7 +82,8 @@ public class AdminJsonServiceImpl implements AdminJsonService {
 
 	public AdminJson snippetSave(Integer groupId, String content, String name, Integer snippetId) {
 
-		// invalidate ALL CMS Pages in cache when one of the snippets is changed/added/saved
+		// invalidate ALL CMS Pages in cache when one of the snippets is
+		// changed/added/saved
 		rodaPageService.evictAll();
 
 		return AdminJson.snippetSave(groupId, name, content, snippetId);
@@ -122,6 +126,14 @@ public class AdminJsonServiceImpl implements AdminJsonService {
 	public AdminJson fileSave(Integer folderId, MultipartFile content, Integer fileId, String alias, String url) {
 		AdminJson result = AdminJson.fileSave(folderId, content, fileId, alias, url);
 		fileStore.fileSave(content, CmsFolder.findCmsFolder(folderId));
+		return result;
+	}
+
+	public AdminJson jsonSave(String jsonString, Integer folderId, Integer fileId, String alias, String url) {
+		// TODO do not use "alias" parameter as the JSON filename
+		MockMultipartFile mmf = new MockMultipartFile(alias, jsonString.getBytes(Charset.forName("UTF-8")));
+		AdminJson result = AdminJson.fileSave(folderId, mmf, fileId, alias, url);
+		fileStore.fileSave(mmf, CmsFolder.findCmsFolder(folderId));
 		return result;
 	}
 
@@ -221,6 +233,7 @@ public class AdminJsonServiceImpl implements AdminJsonService {
 	public AdminJson cmsPageDrop(Integer cmsPageId) {
 		return AdminJson.cmsPageDrop(cmsPageId);
 	}
+
 	public AdminJson newsSave(Integer id, Integer langId, String title, String content, Date added) {
 		return AdminJson.newsSave(id, langId, title, content, added);
 	}

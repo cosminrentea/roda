@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -298,6 +299,22 @@ public class CmsController {
 		}
 
 		return fileSave.toJson();
+	}
+
+	@RequestMapping(value = "/cmsjsonsave", method = RequestMethod.POST, produces = "application/json")
+	@ResponseBody
+	public String jsonSave(@RequestBody String jsonString, @RequestParam("folderid") Integer folderId,
+			@RequestParam(value = "alias", required = false) String alias,
+			@RequestParam(value = "id", required = false) Integer fileId,
+			@RequestParam(value = "url", required = false) String url, HttpServletRequest httpServletRequest) {
+		log.trace("> jsonSave controller: " + folderId + " ; " + fileId + " ; " + alias);
+		AdminJson jsonSave = adminJsonService.jsonSave(jsonString, folderId, fileId, alias, url);
+
+		if (jsonSave == null) {
+			return null;
+		}
+
+		return jsonSave.toJson();
 	}
 
 	@RequestMapping(value = "/cmsfilemove", method = RequestMethod.POST, produces = "application/json")

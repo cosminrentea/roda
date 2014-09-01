@@ -50,6 +50,8 @@ public interface AdminJsonService {
 
 	public abstract AdminJson fileSave(Integer folderId, MultipartFile content, Integer fileId, String alias, String url);
 
+	public abstract AdminJson jsonSave(String jsonString, Integer folderId, Integer fileId, String alias, String url);
+
 	public abstract AdminJson fileMove(Integer folderId, Integer fileId);
 
 	public abstract AdminJson folderMove(Integer parentFolderId, Integer folderId);
@@ -86,7 +88,7 @@ public interface AdminJsonService {
 	public abstract AdminJson cmsPageMove(Integer cmsPageParentId, Integer cmsPageId, String mode);
 
 	public abstract AdminJson cmsPageDrop(Integer cmsPageId);
-	
+
 	public abstract AdminJson newsSave(Integer id, Integer langId, String title, String content, Date added);
 
 }

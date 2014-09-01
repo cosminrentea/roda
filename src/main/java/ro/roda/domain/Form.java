@@ -223,7 +223,7 @@ public class Form {
 	private Set<InstanceForm> instanceForms;
 
 	@ManyToOne
-	@JoinColumn(name = "operator_id", columnDefinition = "integer", referencedColumnName = "id")
+	@JoinColumn(name = "operator_id", columnDefinition = "integer", referencedColumnName = "id", nullable = true)
 	private Person operatorId;
 
 	@Column(name = "operator_notes", columnDefinition = "text")

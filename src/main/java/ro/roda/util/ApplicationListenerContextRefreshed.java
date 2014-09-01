@@ -18,9 +18,6 @@ public class ApplicationListenerContextRefreshed implements ApplicationListener<
 	private final Log log = LogFactory.getLog(this.getClass());
 
 	@Autowired
-	RBean rb;
-
-	@Autowired
 	DatabaseUtils du;
 
 	@Autowired

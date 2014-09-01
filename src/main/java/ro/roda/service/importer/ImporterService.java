@@ -1,6 +1,5 @@
 package ro.roda.service.importer;
 
-
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -32,6 +31,7 @@ public interface ImporterService {
 	public abstract void importDdiFiles() throws IOException, JAXBException, SAXException;
 
 	public abstract void importDdiFile(CodeBook cb, MultipartFile multipartFileDdi, boolean nesstarExported,
-			boolean legacyDataRODA, boolean ddiPersistence, MultipartFile multipartFileCsv);
+			boolean legacyDataRODA, boolean ddiPersistence, MultipartFile multipartFileCsv)
+			throws FileNotFoundException, IOException;
 
 }

@@ -166,10 +166,15 @@ Se instaleaza rJava in R, cu urmatoarele comenzi in shell si apoi in shell-ul R
 (se alege in timpul instalarii site-mirror-ul folosit;
 se iese la final din shell-ul R cu Ctrl+D):
 \begin{lstlisting}
-	sudo R CMD javareconf
+	sudo R CMD javareconf -e
+	
+	!!! LD_LIBRARY_PATH has to be set to the same value as JAVA_LD_LIBRARY_PATH , now !!! 
+	export LD_LIBRARY_PATH= ...
+
 	R
 		install.packages('rJava')
 \end{lstlisting}
+
 
 \subsection{DbWrench}
 Se instaleaza DbWrench de pe site-ul producatorului:
@@ -208,22 +213,10 @@ trebuie modificata astfel:
 \subsection{Configurarea plugin-urilor si extensiilor STS}
 
 Porniti STS, eventual din linia de comanda, in folder-ul radacina al instalarii STS
-(de exemplu: 'springsource/sts-3.3.0.RELEASE' ):
+(de exemplu: 'springsource/sts-3.6.0.RELEASE' ):
 \begin{lstlisting}	
 	./STS &
 \end{lstlisting}
-
-Din Dashboard (meniu Help -> Dashboard), click pe tab-ul 'Extensions'
-(pozitionat stanga-jos, in Dashboard), bifati in lista si apoi instalati
-(butonul 'Install', dreapta-jos) urmatoarele extensii:
-\begin{itemize}
-\item
-Cloud Foundry Eclipse Integration
-\item
-Edgewall Trac
-\end{itemize} 
-
-Restartati STS.
 
 Instalati in STS ultima versiune de Subclipse 
 (cu suport pentru Subversion versiunea 1.7),
@@ -251,36 +244,6 @@ folosit:
 'SVNKit (pure Java) SVNKit v1.7....'
 \end{enumerate}
 
-(Optional) Instalati plugin-ul IDE pentru Perl, prin meniu 'Help' -> 
-'Install New Software':
-\begin{itemize}
-\item 
-nume = Perl EPIC
-\item
-URL = \url{http://e-p-i-c.sf.net/updates/testing}
-\end{itemize}
-
-\subsection{Configurare Task Repository [OPTIONAL]}
-In STS, in view-ul 'Task List', butonul 'Add Repository', de tipul 'Trac', 
-iar in pasul urmator:
-\begin{itemize}
-\item 
-Server URL:    \url{http://fisiere.dyndns.org:8888/roda}
-\item
-Debifare optiune 'Anonymous'
-\item
-Completare User si Parola (specifice)
-\item
-Bifare 'Save password'
-\item
-'Validate Settings'
-\item
-'Finish'
-\end{itemize}
-
-La ultimul pas, se adauga un Query legat de acest Task-Repository (de exemplu,
-se completeaza doar un nume - precum 'ALL' - si se apasa 'Finish').
-
 \subsection{STS Preferences}
 In fereastra 'Preferences' a STS:
 \begin{itemize}
@@ -296,6 +259,9 @@ Se completeaza in partea de sus numele profilului: 'RODA' , se apasa 'OK'. Apoi,
 \end{itemize}
 
 \subsection{Preluare proiecte in STS din repository}
+
+%TODO de actualizat info de aici ; tb. sa fie SVN pt. DDI + GITHUB pt. cod
+
 In STS, adaugati un SVN repository 
 (in perspectiva 'SVN Repository Exploring'), 
 folosind URL: \url{svn://fisiere.dyndns.org/roda} .
@@ -421,7 +387,13 @@ server, in lista din view-ul 'Servers'), aplicatia e disponibila la:
 \subsection{Rularea pe un Server Local ad-hoc de tip Tomcat}
 Din shell, in folder-ul radacina al proiectului 'roda', cu comanda:
 \begin{lstlisting}
-	mvn -Dmaven.tomcat.fork=false tomcat:run
+MAVEN_OPTS="-Djava.library.path=/home/cosmin/R/i686-pc-linux-gnu-library/3.0/rJava/jri" 
+mvn -X -e 
+-Dmaven.tomcat.fork=false 
+-Droda.R.java.library.path=/home/cosmin/R/i686-pc-linux-gnu-library/3.0/rJava/jri 
+-Djri.ignore.ule=no 
+-Dspring.profiles.active=devel 
+package tomcat:run
 \end{lstlisting}
 Daca portul local 8080 era liber (portul se poate schimba in 'pom.xml'),
 aplicatia e disponibila la:

@@ -6,6 +6,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -16,7 +18,9 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
@@ -57,6 +61,8 @@ import org.w3c.dom.NodeList;
 import org.w3c.dom.Text;
 import org.xml.sax.SAXException;
 
+import flexjson.JSONSerializer;
+
 import ro.roda.ddi.AuthEntyType;
 import ro.roda.ddi.CatgryType;
 import ro.roda.ddi.CitationType;
@@ -84,6 +90,9 @@ import ro.roda.domain.CmsPage;
 import ro.roda.domain.CmsPageContent;
 import ro.roda.domain.CmsPageType;
 import ro.roda.domain.CmsSnippetGroup;
+import ro.roda.domain.Form;
+import ro.roda.domain.FormEditedNumberVar;
+import ro.roda.domain.FormEditedNumberVarPK;
 import ro.roda.domain.Instance;
 import ro.roda.domain.Keyword;
 import ro.roda.domain.Lang;
@@ -100,6 +109,7 @@ import ro.roda.domain.UnitAnalysis;
 import ro.roda.domain.Users;
 import ro.roda.domain.Variable;
 import ro.roda.domainjson.AdminJson;
+import ro.roda.service.AdminJsonService;
 import ro.roda.service.CatalogService;
 import ro.roda.service.CityService;
 import ro.roda.service.CmsFileService;
@@ -150,7 +160,7 @@ public class ImporterServiceImpl implements ImporterService {
 
 	private static final String pageXmlFile = "page.xml";
 
-	private static final String cmsFolderDdiImported = "ddi-imported";
+	private static final String importedCmsFolderName = "imported";
 
 	@PersistenceContext
 	transient EntityManager entityManager;
@@ -166,6 +176,9 @@ public class ImporterServiceImpl implements ImporterService {
 
 	@Autowired
 	FileService fileService;
+
+	@Autowired
+	AdminJsonService adminJsonService;
 
 	@Autowired
 	CmsFileStoreService cmsFileStoreService;
@@ -724,8 +737,13 @@ public class ImporterServiceImpl implements ImporterService {
 				String csvFilename = ddiFile.getName().split("_")[0].concat(".csv");
 				// TODO @Value for "ddi" folder below
 				Resource csvResource = pmr.getResource("classpath:ddi/" + csvFilename);
-				mockMultipartFileCsv = new MockMultipartFile(csvFilename, csvFilename, "text/csv", new FileInputStream(
-						csvResource.getFile()));
+				FileInputStream fisCsv = null;
+				try {
+					fisCsv = new FileInputStream(csvResource.getFile());
+				} catch (FileNotFoundException e) {
+					log.error("Data CSV file not found", e);
+				}
+				mockMultipartFileCsv = new MockMultipartFile(csvFilename, csvFilename, "text/csv", fisCsv);
 			}
 			importDdiFile(cb, mockMultipartFileDdi, true, true, ddiPersistance, mockMultipartFileCsv);
 		}
@@ -759,7 +777,8 @@ public class ImporterServiceImpl implements ImporterService {
 	}
 
 	public void importDdiFile(CodeBook cb, MultipartFile multipartFileDdi, boolean nesstarExported,
-			boolean legacyDataRODA, boolean ddiPersistence, MultipartFile multipartFileCsv) {
+			boolean legacyDataRODA, boolean ddiPersistence, MultipartFile multipartFileCsv)
+			throws FileNotFoundException, IOException {
 
 		if (ddiPersistence) {
 			if (this.entityManager == null) {
@@ -955,34 +974,6 @@ public class ImporterServiceImpl implements ImporterService {
 			}
 		}
 
-		// Add the imported DDI File to current Study's Files (in File-Store)
-
-		ro.roda.domain.File domainFile = new ro.roda.domain.File();
-		fileService.saveFile(domainFile, multipartFileDdi, false);
-
-		// Add the imported DDI File (and maybe CSV data) to CMS-File-Store
-		CmsFolder cmsFolder = CmsFolder.checkCmsFolder(null, cmsFolderDdiImported, null,
-				"Folder used to save the imported data: DDI files and associated CSV files");
-		cmsFileStoreService.folderSave(cmsFolder);
-
-		if (multipartFileDdi != null) {
-			cmsFileStoreService.fileSave(multipartFileDdi, cmsFolder);
-		}
-		if (multipartFileCsv != null) {
-			cmsFileStoreService.fileSave(multipartFileCsv, cmsFolder);
-		}
-
-		HashSet<Study> sStudy = new HashSet<Study>();
-		sStudy.add(s);
-		domainFile.setStudies1(sStudy);
-		domainFile.setContentType("application/xml");
-
-		HashSet<ro.roda.domain.File> sFile = new HashSet<ro.roda.domain.File>();
-		sFile.add(domainFile);
-		s.setFiles1(sFile);
-
-		domainFile.persist();
-
 		// add Study to an existing Catalog ("root" catalog)
 
 		// TODO don't use directly ID='1' for Catalog
@@ -1058,8 +1049,10 @@ public class ImporterServiceImpl implements ImporterService {
 				}
 				// TODO check semantics
 				variable.setVariableType((short) 0);
-				// TODO check semantics
+				// TODO eliminate "type" from variable
 				variable.setType((short) 0);
+
+				variable.setOrderInQuestion(1);
 
 				// TODO Check the order of variable in question
 				// variable.setOrderInQuestion(q.getVariables().size() + 1);
@@ -1089,5 +1082,103 @@ public class ImporterServiceImpl implements ImporterService {
 			}
 			instance.merge();
 		}
+
+		// Add the imported DDI File to current Study's Files (in File-Store)
+
+		ro.roda.domain.File domainFile = new ro.roda.domain.File();
+		fileService.saveFile(domainFile, multipartFileDdi, false);
+
+		HashSet<Study> sStudy = new HashSet<Study>();
+		sStudy.add(s);
+		domainFile.setStudies1(sStudy);
+		domainFile.setContentType("application/xml");
+
+		HashSet<ro.roda.domain.File> sFile = new HashSet<ro.roda.domain.File>();
+		sFile.add(domainFile);
+		s.setFiles1(sFile);
+
+		domainFile.persist();
+
+		AdminJson ret = adminJsonService.folderSave(importedCmsFolderName, null,
+				"Folder for imported DDI files and related files");
+
+		// create sub-folder for each imported study
+		AdminJson retDdi = adminJsonService.folderSave(s.getId().toString(), ret.getId(), null);
+
+		// save the DDI XML file
+		adminJsonService.fileSave(retDdi.getId(), multipartFileDdi, null, null, null);
+
+		// save the data/CSV file, if any
+		if (multipartFileCsv != null) {
+			adminJsonService.fileSave(retDdi.getId(), multipartFileCsv, null, null, null);
+
+			List<String[]> csvLines;
+			CSVReader reader = new CSVReader(new BufferedReader(new InputStreamReader(
+					multipartFileCsv.getInputStream(), "UTF8")), '\t');
+			csvLines = reader.readAll();
+			reader.close();
+
+			String[] headerLine;
+			List<Variable> variableList = new ArrayList<Variable>();
+			Iterator<String[]> iter = csvLines.iterator();
+			if (iter.hasNext()) {
+				headerLine = iter.next();
+				for (int i = 0; i < headerLine.length; i++) {
+					headerLine[i] = headerLine[i].split("\"")[0];
+
+					for (Question question : instance.getQuestions()) {
+						for (Variable qVar : question.getVariables()) {
+							if (qVar.getName().equalsIgnoreCase(headerLine[i])) {
+								variableList.add(qVar);
+								break;
+							}
+						}
+					}
+				}
+			}
+			for (; iter.hasNext();) {
+				String[] csvLine = iter.next();
+				log.trace("Line items: " + csvLine.length);
+				Form form = new Form();
+				form.persist();
+				for (int i = 0; i < csvLine.length; i++) {
+					try {
+						Integer integerValue = Integer.parseInt(csvLine[i]);
+						FormEditedNumberVar fenv = new FormEditedNumberVar();
+
+						fenv.setFormId(form);
+						Set<FormEditedNumberVar> sfenv = form.getFormEditedNumberVars();
+						if (sfenv == null) {
+							sfenv = new HashSet<FormEditedNumberVar>();
+						}
+						sfenv.add(fenv);
+						form.setFormEditedNumberVars(sfenv);
+
+						fenv.setVariableId(variableList.get(i));
+						sfenv = variableList.get(i).getFormEditedNumberVars();
+						if (sfenv == null) {
+							sfenv = new HashSet<FormEditedNumberVar>();
+						}
+						sfenv.add(fenv);
+						variableList.get(i).setFormEditedNumberVars(sfenv);
+						variableList.get(i).merge();
+
+						fenv.setValue(new BigDecimal(integerValue));
+
+						fenv.setId(new FormEditedNumberVarPK(form.getId(), variableList.get(i).getId()));
+
+						fenv.persist();
+
+					} catch (NumberFormatException e) {
+						// TODO
+					}
+				}
+			}
+
+		}
+
+		// serialization of XML as JSON - if needed
+		// log.trace(new JSONSerializer().deepSerialize(cb));
+
 	}
 }

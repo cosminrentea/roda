@@ -35,8 +35,7 @@ public class JsonIT {
 		// Set up a simple configuration that logs on the console
 		BasicConfigurator.configure();
 
-		InputStream is = SeleniumServerIT.class.getClassLoader()
-				.getResourceAsStream(testProperties);
+		InputStream is = SeleniumServerIT.class.getClassLoader().getResourceAsStream(testProperties);
 		Assert.assertNotNull("Not found: " + testProperties, is);
 
 		Properties props = new Properties();
@@ -71,9 +70,8 @@ public class JsonIT {
 
 		// try to parse the received JSON as a basic Java 'Object'
 		try {
-			Object jsonObject = new JSONDeserializer<Object>().deserialize(
-					new BufferedReader(new InputStreamReader(conn
-							.getInputStream())), Object.class);
+			Object jsonObject = new JSONDeserializer<Object>().deserialize(new BufferedReader(new InputStreamReader(
+					conn.getInputStream())), Object.class);
 
 			Assert.assertNotNull(jsonObject);
 		} catch (Exception e) {
@@ -235,7 +233,7 @@ public class JsonIT {
 
 		// checkJson("/catalogstudys/1");
 
-		checkJson("/catalogtree/1");
+		checkJson("/j/catalogtree/1");
 		checkJson("/citys/1");
 
 		// checkJson("/cmsfiles/1");

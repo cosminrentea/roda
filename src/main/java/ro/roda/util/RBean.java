@@ -45,7 +45,7 @@ public class RBean {
 		}
 
 		// In R, call rnorm(X), which generates X numbers from a standard
-		// normal distribution. The result will be stored in re.
+		// normal distribution.
 		REXP rn = re.eval("rnorm(" + param + ")");
 
 		// The data type REXP provides functions for converting to different
@@ -58,6 +58,36 @@ public class RBean {
 		for (int i = 0; i < rnd.length; i++) {
 			log.trace(rnd[i]);
 		}
+	}
+
+	public REXP eval(String statement) {
+		// Tomcat JVM:
+		// -Djava.library.path=/Users/cosmin/R/x86_64-apple-darwin12.2.1-library/2.15/rJava/jri:/opt/local/lib/R/lib/x86_64
+		// Environment for MacOSX + macports:
+		// R_HOME=/opt/local/lib/R
+
+		// the engine creates R as a new thread
+		// so we should wait until it's ready
+		if (re == null) {
+			log.error("RBean not initialized");
+			return null;
+		}
+		while (!re.waitForR()) {
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				log.error("InterruptedException", e);
+			}
+		}
+
+		boolean obtainedLock = re.getRsync().safeLock();
+		try {
+			return re.eval(statement);
+		} finally {
+			if (obtainedLock)
+				re.getRsync().unlock();
+		}
+
 	}
 
 	/**

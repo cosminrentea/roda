@@ -6,24 +6,44 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>databrowser</title>
-
 <link rel="stylesheet" href="style.css">
 <style>
 
-html {
-width:100%;
-height:100%;
-margin:0;
-padding:0;
+
+html { height: 100%; }
+body {
+    height:100%;
+    min-height: 100%;
+    background: #000000;
+    color: #FFFFFF;
+    position:relative;
+}
+#pgheader {
+    height:50px;
+    width:100%;
+    top:0px;
+    left:0px;
+    background: #CCCCCC;
+    position:absolute;
+}
+#pgfooter {
+    height:20px;
+    width:100%;
+    bottom:0px;
+    left:0px;
+    background: #CCCCCC;
+    position:absolute;
+}
+#content {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    height:100%;
+    padding: 50px 20px;
 }
 
-body {
-width:100%;
-height:100%;
-margin:0;
-padding:0;
-overflow:hidden;
-}
+
+
 
 </style>
 
@@ -41,11 +61,11 @@ overflow:hidden;
 </head>
 <body>
 	
-		<!-- 
-		<div id="header">
+		
+		<div id="pgheader">
 			<div id="htitle">RODA - Arhiva romana de date sociale</div>
 		</div>
-		
+		<!-- 
 		<div id="navigation">
 			<ul>
 				<li><a href="#">RODA</a></li>
@@ -58,8 +78,9 @@ overflow:hidden;
 		<div style="clear: both;"></div>
 		<div id="crumbtrail">Home > DataBrowser</div>
 		-->
-			<div id="dbcontainer"style="width:80%; height:100%;margin-left:auto; margin-right:auto;"></div>
-	 
-	
+		<div id="content">
+			<div id="dbcontainer" style="width:80%; height:100%; padding: 0; margin-left:auto; margin-right:auto;"></div>
+	 	</div>
+	<div id="pgfooter">Footer</div>
 </body>
 </html>

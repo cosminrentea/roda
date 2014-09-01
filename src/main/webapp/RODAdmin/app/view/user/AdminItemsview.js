@@ -10,7 +10,6 @@ Ext.define('RODAdmin.view.user.AdminItemsview', {
 			layout : {
 				type : 'card',
 				deferredRender : true,
-				align : 'stretch'
 			},
 			items : [{
 						xtype : 'grid',
@@ -41,7 +40,7 @@ Ext.define('RODAdmin.view.user.AdminItemsview', {
 								} ],
 						dockedItems : [{
 									xtype : 'toolbar',
-									itemid : 'admintoolbar',
+									itemId : 'admintoolbar',
 									id : 'admintoolbar',
 									dock : 'bottom',
 									items : [{
@@ -70,7 +69,7 @@ Ext.define('RODAdmin.view.user.AdminItemsview', {
 						autoheight : true,
 						dockedItems : [{
 									xtype : 'toolbar',
-									itemid : 'auditobjectstoolbar',
+									itemId : 'auditobjectstoolbar',
 									dock : 'bottom',
 									items : [{
 												xtype : 'tbfill'

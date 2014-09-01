@@ -14,7 +14,7 @@ Ext.define('RODAdmin.view.cms.snippet.details.SnippetProperties', {
 			dockedItems : [
 		{
             xtype: 'toolbar',
-            itemid: 'snproptoolbar',
+            itemId: 'snproptoolbar',
 			dock : 'bottom',
 			items : [
 			{xtype: 'tbfill'},
@@ -60,6 +60,7 @@ Ext.define('RODAdmin.view.cms.snippet.details.SnippetProperties', {
 		                resizable : true,
 		                width : '70%',
 		                split : true,
+		                itemId : 'snenvelope',
 		                flex : 3,
 		                layout : 'fit',
 		                xtype : 'panel',

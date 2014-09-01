@@ -13,7 +13,7 @@ Ext.define('RODAdmin.view.cms.layout.details.LayoutProperties', {
     dockedItems : [
 	    {
 	        xtype : 'toolbar',
-	        itemid : 'lyproptoolbar',
+	        itemId : 'lyproptoolbar',
 	        dock : 'top',
 	        items : [
 	                {
@@ -57,6 +57,7 @@ Ext.define('RODAdmin.view.cms.layout.details.LayoutProperties', {
                 resizable : true,
                 width : '70%',
                 split : true,
+                itemId : 'lyenvelope',
                 flex : 3,
                 layout : 'fit',
                 xtype : 'panel',

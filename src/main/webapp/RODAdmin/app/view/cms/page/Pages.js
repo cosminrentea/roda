@@ -22,7 +22,7 @@ Ext.define('RODAdmin.view.cms.page.Pages', {
 						dockedItems : [{
 									dock : 'top',
 									xtype : 'toolbar',
-									itemid : 'pagestoolbar',
+									itemId : 'pagestoolbar',
 									items : [{
 												xtype : 'tbfill'
 											}, {
@@ -45,7 +45,7 @@ Ext.define('RODAdmin.view.cms.page.Pages', {
 						collapsible : false,
 						width : '50%',
 						xtype : 'panel',
-						itemid : 'pgdetailscontainer',
+						itemId : 'pgdetailscontainer',
 						title : 'Page details',
 						layout : {
 							type : 'fit'

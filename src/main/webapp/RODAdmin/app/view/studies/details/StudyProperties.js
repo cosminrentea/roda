@@ -13,7 +13,7 @@ Ext.define('RODAdmin.view.studies.details.StudyProperties', {
     dockedItems : [
 	    {
 	        xtype : 'toolbar',
-	        itemid : 'stproptoolbar',
+	        itemId : 'stproptoolbar',
 	        dock : 'top',
 	        items : [
 	                {

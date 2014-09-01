@@ -10,7 +10,7 @@ Ext.define('RODAdmin.view.cms.files.filedetails.FileProperties', {
 			dockedItems : [
 		{
             xtype: 'toolbar',
-            itemid: 'fileproptoolbar',
+            itemId: 'fileproptoolbar',
 			dock : 'bottom',
 			items : [
 			{xtype: 'tbfill'},

@@ -23,7 +23,7 @@ Ext.define('RODAdmin.view.audit.Audit', {
 						dockedItems : [{
 									dock : 'top',
 									xtype : 'toolbar',
-									itemid : 'audittoolbar',
+									itemId : 'audittoolbar',
 									items : [{
 												xtype : 'tbfill'
 											}, {
@@ -67,7 +67,7 @@ Ext.define('RODAdmin.view.audit.Audit', {
 						collapsible : true,
 						width : '70%',
 						xtype : 'panel',
-						itemid : 'adetailscontainer',
+						itemId : 'adetailscontainer',
 						id : 'adetailscontainer',
 						title : '',
 						layout : {

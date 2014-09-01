@@ -12,7 +12,7 @@ Ext.define('RODAdmin.view.cms.news.NewsDetails', {
 	dockedItems : [
 	               {
 	            	   xtype: 'toolbar',
-	            	   itemid: 'newsproptoolbar',
+	            	   itemId: 'newsproptoolbar',
 	            	   dock : 'bottom',
 	            	   items : [
 	            	            {xtype: 'tbfill'},

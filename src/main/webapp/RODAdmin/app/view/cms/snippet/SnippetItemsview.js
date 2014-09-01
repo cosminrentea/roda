@@ -46,7 +46,7 @@ Ext.define('RODAdmin.view.cms.snippet.SnippetItemsview', {
 								}],
 						dockedItems : [{
 									xtype : 'toolbar',
-									itemid : 'sniconviewtoolbar',
+									itemId : 'sniconviewtoolbar',
 									dock : 'bottom',
 									items : [{
 												xtype : 'tbfill'
@@ -74,7 +74,7 @@ Ext.define('RODAdmin.view.cms.snippet.SnippetItemsview', {
 						autoheight : true,
 						dockedItems : [{
 									xtype : 'toolbar',
-									itemid : 'snfolderviewtoolbar',
+									itemId : 'snfolderviewtoolbar',
 									dock : 'bottom',
 									items : [{
 												xtype : 'tbfill'

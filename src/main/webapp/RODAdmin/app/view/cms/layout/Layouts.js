@@ -27,7 +27,7 @@ Ext.define('RODAdmin.view.cms.layout.Layouts', {
 	                {
 	                    dock : 'top',
 	                    xtype : 'toolbar',
-	                    itemid : 'layouttoolbar',
+	                    itemId : 'layouttoolbar',
 	                    items : [
 	                            {
 	                            	xtype : 'tbfill'
@@ -60,7 +60,7 @@ Ext.define('RODAdmin.view.cms.layout.Layouts', {
                 collapsible : false,
                 width : '70%',
                 xtype : 'panel',
-                itemid : 'lydetailscontainer',
+                itemId : 'lydetailscontainer',
                 layout : {
 	                type : 'fit'
                 // padding:'5',

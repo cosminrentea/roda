@@ -26,7 +26,7 @@ Ext.define('RODAdmin.view.studies.Studies', {
 	                {
 	                    dock : 'top',
 	                    xtype : 'toolbar',
-	                    itemid : 'studytoolbar',
+	                    itemId : 'studytoolbar',
 	                    items : [
 	                            {
 	                            	xtype : 'tbfill'
@@ -91,7 +91,7 @@ Ext.define('RODAdmin.view.studies.Studies', {
 						 * @xtypes studydetails RODAdmin.view.studies.StudyDetails
 						 */
 	                	xtype : 'studydetails',
-	                	itemid : 'studydetails'	
+	                	itemId : 'studydetails'	
 	                //	xtype : 'panel',
 	                //	title: 'study details'
 	                },

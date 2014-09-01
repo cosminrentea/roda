@@ -56,7 +56,7 @@ Ext.define('RODAdmin.view.cms.files.Itemsview', {
 								}],
 						dockedItems : [{
 									xtype : 'toolbar',
-									itemid : 'iconviewtoolbar',
+									itemId : 'iconviewtoolbar',
 									dock : 'bottom',
 									items : [{
 												xtype : 'tbfill'
@@ -83,7 +83,7 @@ Ext.define('RODAdmin.view.cms.files.Itemsview', {
 						autoheight : true,
 						dockedItems : [{
 									xtype : 'toolbar',
-									itemid : 'folderviewtoolbar',
+									itemId : 'folderviewtoolbar',
 									dock : 'bottom',
 									items : [{
 												xtype : 'tbfill'

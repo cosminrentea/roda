@@ -21,7 +21,7 @@ Ext.define('RODAdmin.view.cms.news.News', {
 						dockedItems : [{
 									dock : 'top',
 									xtype : 'toolbar',
-									itemid : 'newstoolbar',
+									itemId : 'newstoolbar',
 									items : [{
 												xtype : 'tbfill'
 											}, {
@@ -36,7 +36,7 @@ Ext.define('RODAdmin.view.cms.news.News', {
 						collapsible : false,
 						width : '50%',
 						xtype : 'panel',
-						itemid : 'newsdetailscontainer',
+						itemId : 'newsdetailscontainer',
 //						title : 'dontinkso',
 						layout : {
 							type : 'fit'

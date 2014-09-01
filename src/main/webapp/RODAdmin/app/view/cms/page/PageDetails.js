@@ -9,7 +9,7 @@ Ext.define('RODAdmin.view.cms.page.PageDetails', {
 		    dockedItems : [
 		           	    {
 		           	        xtype : 'toolbar',
-		           	        itemid : 'pgproptoolbar',
+		           	        itemId : 'pgproptoolbar',
 		           	        dock : 'bottom',
 		           	        items : [
 		           	                {

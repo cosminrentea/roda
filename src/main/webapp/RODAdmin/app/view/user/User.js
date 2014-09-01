@@ -23,7 +23,7 @@ Ext.define('RODAdmin.view.user.User', {
 						dockedItems : [{
 									dock : 'top',
 									xtype : 'toolbar',
-									itemid : 'userstoolbar',
+									itemId : 'userstoolbar',
 									items : [{
 												xtype : 'tbfill'
 											}, {
@@ -49,7 +49,7 @@ Ext.define('RODAdmin.view.user.User', {
 						collapsible : true,
 						width : '50%',
 						xtype : 'panel',
-						itemid : 'udetailscontainer',
+						itemId : 'udetailscontainer',
 						id : 'udetailscontainer',
 					//	title : 'wtf',
 						layout : {

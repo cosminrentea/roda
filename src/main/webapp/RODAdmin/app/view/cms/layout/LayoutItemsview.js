@@ -55,7 +55,7 @@ Ext.define('RODAdmin.view.cms.layout.LayoutItemsview', {
 								}],
 						dockedItems : [{
 									xtype : 'toolbar',
-									itemid : 'lyiconviewtoolbar',
+									itemId : 'lyiconviewtoolbar',
 									dock : 'bottom',
 									items : [{
 												xtype : 'tbfill'
@@ -89,7 +89,7 @@ Ext.define('RODAdmin.view.cms.layout.LayoutItemsview', {
 						autoheight : true,
 						dockedItems : [{
 									xtype : 'toolbar',
-									itemid : 'lyfolderviewtoolbar',
+									itemId : 'lyfolderviewtoolbar',
 									dock : 'bottom',
 									items : [{
 												xtype : 'tbfill'

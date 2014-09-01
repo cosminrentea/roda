@@ -63,7 +63,7 @@ Ext.define('RODAdmin.view.audit.AuditItemsview', {
 								],
 						dockedItems : [{
 									xtype : 'toolbar',
-									itemid : 'auditiconviewtoolbar',
+									itemId : 'auditiconviewtoolbar',
 									dock : 'bottom',
 									items : [{
 												xtype : 'tbfill'
@@ -116,7 +116,7 @@ Ext.define('RODAdmin.view.audit.AuditItemsview', {
 						],
 						dockedItems : [{
 									xtype : 'toolbar',
-									itemid : 'auditiconviewtoolbar',
+									itemId : 'auditiconviewtoolbar',
 									dock : 'bottom',
 									items : [{
 												xtype : 'tbfill'
@@ -155,7 +155,7 @@ Ext.define('RODAdmin.view.audit.AuditItemsview', {
 								}],
 						dockedItems : [{
 									xtype : 'toolbar',
-									itemid : 'auditiconviewtoolbar',
+									itemId : 'auditiconviewtoolbar',
 									dock : 'bottom',
 									items : [{
 												xtype : 'tbfill'
@@ -193,7 +193,7 @@ Ext.define('RODAdmin.view.audit.AuditItemsview', {
 								} ],
 						dockedItems : [{
 									xtype : 'toolbar',
-									itemid : 'auditiconviewtoolbar',
+									itemId : 'auditiconviewtoolbar',
 									dock : 'bottom',
 									items : [{
 												xtype : 'tbfill'

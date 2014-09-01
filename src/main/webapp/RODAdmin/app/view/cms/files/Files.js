@@ -22,7 +22,7 @@ Ext.define('RODAdmin.view.cms.files.Files', {
 						dockedItems : [{
 									dock : 'top',
 									xtype : 'toolbar',
-									itemid : 'filestoolbar',
+									itemId : 'filestoolbar',
 									items : [{
 												xtype : 'tbfill'
 											}, {
@@ -51,7 +51,7 @@ Ext.define('RODAdmin.view.cms.files.Files', {
 						collapsible : true,
 						width : '50%',
 						xtype : 'panel',
-						itemid : 'fdetailscontainer',
+						itemId : 'fdetailscontainer',
 //						title : 'dontinkso',
 						layout : {
 							type : 'fit'

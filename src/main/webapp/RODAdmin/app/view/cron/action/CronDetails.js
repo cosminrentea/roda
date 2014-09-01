@@ -9,7 +9,7 @@ Ext.define('RODAdmin.view.cron.action.CronDetails', {
 		    dockedItems : [
 		           	    {
 		           	        xtype : 'toolbar',
-		           	        itemid : 'cronproptoolbar',
+		           	        itemId : 'cronproptoolbar',
 		           	        id : 'cronproptoolbar',
 		           	        dock : 'bottom',
 		           	        items : [

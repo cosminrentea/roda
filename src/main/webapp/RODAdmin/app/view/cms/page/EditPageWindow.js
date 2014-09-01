@@ -342,7 +342,7 @@ Ext.define('RODAdmin.view.cms.page.EditPageWindow', {
 			{
 				dock : 'top',
 				xtype : 'toolbar',
-//				itemid : 'audittoolbar',
+//				itemId : 'audittoolbar',
 					items : [{
 							xtype : 'tbfill'
 							},

@@ -27,7 +27,7 @@ Ext.define('RODAdmin.view.cron.action.Actions', {
 				collapsible : false,
 				width : '50%',
 				xtype : 'panel',
-				itemid : 'crondetailscontainer',
+				itemId : 'crondetailscontainer',
 				id : 'crondetailscontainer',
 				title : 'Actions details',
 				layout : {

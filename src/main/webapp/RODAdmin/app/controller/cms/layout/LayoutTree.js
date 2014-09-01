@@ -260,7 +260,7 @@ Ext.define('RODAdmin.controller.cms.layout.LayoutTree', {
 	                           onEditLayoutClick : function(component, record, item, index, e) {
                         		   console.log('edit layout smth');
 	                        	   var currentNode = this.getFolderview().getSelectionModel().getLastSelected();
-	                        	   if (record.data.itemtype == 'layoutgroup') {	        
+	                        	   if (currentNode.data.itemtype == 'layoutgroup') {	        
 	                        		   console.log('edit layout group');
 		                        	   win = Ext.WindowMgr.get('layoutgroupedit');
 		                        	   console.log(win);
@@ -453,6 +453,7 @@ Ext.define('RODAdmin.controller.cms.layout.LayoutTree', {
 	                        	   console.log('folderviewselectionchange');
 	                        	   console.log(RODAdmin.util.Globals.stare);
 	                        	   var record = selected[0];
+	                        	   if (record) {
 	                        	   var lydetails = this.getLydetailspanel();
                         		   var lyusage = this.getLyusagepanel();
                         		   var lyprop = this.getLayoutproperties();
@@ -505,4 +506,5 @@ Ext.define('RODAdmin.controller.cms.layout.LayoutTree', {
                         		   lycontent.setValue('');
 	                           }
 	                   }
+	                           }
 });

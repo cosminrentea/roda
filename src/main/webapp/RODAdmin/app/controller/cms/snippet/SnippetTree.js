@@ -26,7 +26,7 @@ Ext.define('RODAdmin.controller.cms.snippet.SnippetTree', {
             },
             {
                 ref : 'sndetailspanel',
-                selector : 'cmssnippets panel#sndetailscontainer '
+                selector : 'cmssnippets panel#sndetailscontainer'
             }, {
                 ref : 'snusagepanel',
                 selector : 'snippetusage'
@@ -158,7 +158,7 @@ Ext.define('RODAdmin.controller.cms.snippet.SnippetTree', {
     
     onSnFolderviewSelectionChange : function(component, selected, event) {
 	    var record = selected[0];
-	    console.log(record);
+	    if (record) {
 	    var snprop = this.getSnippetproperties();
 	    var sncontent = this.getSncontent();
 	    var snenvelope = this.getSnenvelope();
@@ -203,6 +203,7 @@ Ext.define('RODAdmin.controller.cms.snippet.SnippetTree', {
 			        }
 		        }
 		    });
+	    }
 	    }
     },
     /**

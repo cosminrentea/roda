@@ -13,6 +13,7 @@ Ext.define('RODAdmin.view.cms.page.details.PageCode', {
              {
                  xtype : 'codemirror',
                  mode : 'htmlmixed',
+                 itemId: 'pagecontent',
                  readOnly : true,
                  enableFixedGutter : true,
                  listModes : '',

@@ -21,7 +21,7 @@ Ext.define('RODAdmin.view.cms.snippet.Snippets', {
 						dockedItems : [{
 									dock : 'top',
 									xtype : 'toolbar',
-									itemid : 'snippettoolbar',
+									itemId : 'snippettoolbar',
 									items : [{
 												xtype : 'tbfill'
 											}, {
@@ -46,7 +46,7 @@ Ext.define('RODAdmin.view.cms.snippet.Snippets', {
 						collapsible : false,
 						width : '70%',
 						xtype : 'panel',
-						itemid : 'sndetailscontainer',
+						itemId : 'sndetailscontainer',
 						layout : {
 							type : 'fit'
 							// padding:'5',

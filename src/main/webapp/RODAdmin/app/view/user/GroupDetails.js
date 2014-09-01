@@ -30,7 +30,7 @@ Ext.define('RODAdmin.view.user.GroupDetails', {
 			     			       ],
 						dockedItems : [{
 							xtype : 'toolbar',
-							itemid : 'grouptoolbar',
+							itemId : 'grouptoolbar',
 							id : 'grouptoolbar',
 							dock : 'bottom',
 							items : [{
@@ -73,7 +73,7 @@ Ext.define('RODAdmin.view.user.GroupDetails', {
 							autoheight : true,
 							dockedItems : [{
 										xtype : 'toolbar',
-										itemid : 'ugroupstoolbar',
+										itemId : 'ugroupstoolbar',
 										dock : 'bottom',
 										items : [{
 													xtype : 'tbfill'

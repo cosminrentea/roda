@@ -45,7 +45,7 @@ Ext.define('RODAdmin.view.user.UserItemsview', {
 								],
 						dockedItems : [{
 									xtype : 'toolbar',
-									itemid : 'usertoolbar',
+									itemId : 'usertoolbar',
 									id : 'usertoolbar',
 									dock : 'bottom',
 									items : [{
@@ -80,7 +80,7 @@ Ext.define('RODAdmin.view.user.UserItemsview', {
 						autoheight : true,
 						dockedItems : [{
 									xtype : 'toolbar',
-									itemid : 'ugroupstoolbar',
+									itemId : 'ugroupstoolbar',
 									dock : 'bottom',
 									items : [{
 												xtype : 'tbfill'

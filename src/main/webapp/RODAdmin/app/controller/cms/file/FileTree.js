@@ -193,6 +193,7 @@ Ext.define('RODAdmin.controller.cms.file.FileTree', {
 	onFolderviewSelectionChange : function(component, selected, event) {
 		console.log('folderviewselectionchange');
 		var record = selected[0];
+		if (record) {
 		var fdetails = this.getFdetailspanel();
 		var fileprop = this.getFileproperties();
 		var fileusage = this.getFileusagepanel();
@@ -232,15 +233,14 @@ Ext.define('RODAdmin.controller.cms.file.FileTree', {
 							if (success) {
 								var fileitem = fileitemstore.first();
 								fileprop.update(fileitem);
-								console.log('fileprop');
-								console.log(fileitem);
 								filespecificprop.bindStore(fileitem.filepropertiesStore);
-								fileusage.bindStore(fileitem.fileusageStore);
-
+								if (fileitem.fileusage()) {
+									fileusage.bindStore(fileitem.fileusageStore);
+								}
 							}
 						}
 					});
-
+		}
 		}
 
 	},

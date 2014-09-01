@@ -45,7 +45,7 @@ Ext.define('RODAdmin.view.user.UserDetails', {
 						],
 						dockedItems : [{
 							xtype : 'toolbar',
-							itemid : 'userptoolbar',
+							itemId : 'userptoolbar',
 							id : 'userptoolbar',
 							dock : 'bottom',
 							items : [{
@@ -92,7 +92,7 @@ Ext.define('RODAdmin.view.user.UserDetails', {
 		     			       	],
 								dockedItems : [{
 									xtype : 'toolbar',
-									itemid : 'userprofiletoolbar',
+									itemId : 'userprofiletoolbar',
 									id : 'userprofiletoolbar',
 									dock : 'bottom',
 									items : [{
@@ -123,7 +123,7 @@ Ext.define('RODAdmin.view.user.UserDetails', {
 							autoheight : true,
 							dockedItems : [{
 										xtype : 'toolbar',
-										itemid : 'ugroupstoolbar',
+										itemId : 'ugroupstoolbar',
 										dock : 'bottom',
 										items : [{
 													xtype : 'tbfill'

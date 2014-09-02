@@ -303,12 +303,10 @@ public class CmsController {
 
 	@RequestMapping(value = "/cmsjsonsave", method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody
-	public String jsonSave(@RequestBody String jsonString, @RequestParam("folderid") Integer folderId,
-			@RequestParam(value = "alias", required = false) String alias,
-			@RequestParam(value = "id", required = false) Integer fileId,
-			@RequestParam(value = "url", required = false) String url, HttpServletRequest httpServletRequest) {
-		log.trace("> jsonSave controller: " + folderId + " ; " + fileId + " ; " + alias);
-		AdminJson jsonSave = adminJsonService.jsonSave(jsonString, folderId, fileId, alias, url);
+	public String jsonSave(@RequestBody String jsonString, @RequestParam(value = "name", required = false) String name,
+			@RequestParam(value = "id", required = false) Integer id, HttpServletRequest httpServletRequest) {
+		log.trace("> jsonSave controller: " + id + " ; " + name);
+		AdminJson jsonSave = adminJsonService.jsonSave(jsonString, id, name);
 
 		if (jsonSave == null) {
 			return null;

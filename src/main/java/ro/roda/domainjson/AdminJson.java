@@ -571,22 +571,17 @@ public class AdminJson {
 		if (foldername == null)
 			return new AdminJson(false, "The folder must have a name.");
 
-		CmsFolder folder = new CmsFolder();
-		folder.setName(foldername);
-		folder.setDescription(description);
+		CmsFolder parentFolder = CmsFolder.findCmsFolder(parentId);
+		CmsFolder folder = CmsFolder.checkCmsFolder(null, foldername, parentFolder, description);
 
-		CmsFolder parentFolder = null;
-		if (parentId != null) {
-			parentFolder = CmsFolder.findCmsFolder(parentId);
-			if (parentFolder != null) {
-				folder.setParentId(parentFolder);
-				Set<CmsFolder> children = parentFolder.getCmsFolders();
-				if (children == null) {
-					children = new HashSet<CmsFolder>();
-				}
-				children.add(folder);
-				parentFolder.setCmsFolders(children);
+		if (parentFolder != null) {
+			folder.setParentId(parentFolder);
+			Set<CmsFolder> children = parentFolder.getCmsFolders();
+			if (children == null) {
+				children = new HashSet<CmsFolder>();
 			}
+			children.add(folder);
+			parentFolder.setCmsFolders(children);
 		}
 
 		try {

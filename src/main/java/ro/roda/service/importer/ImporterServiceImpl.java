@@ -160,7 +160,7 @@ public class ImporterServiceImpl implements ImporterService {
 
 	private static final String pageXmlFile = "page.xml";
 
-	private static final String importedCmsFolderName = "imported";
+	private static final String importedCmsFolderName = ".imported";
 
 	@PersistenceContext
 	transient EntityManager entityManager;

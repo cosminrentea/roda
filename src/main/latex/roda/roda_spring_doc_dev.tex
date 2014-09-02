@@ -168,11 +168,14 @@ se iese la final din shell-ul R cu Ctrl+D):
 \begin{lstlisting}
 	sudo R CMD javareconf -e
 	
-	!!! LD_LIBRARY_PATH has to be set to the same value as JAVA_LD_LIBRARY_PATH , now !!! 
+	# LD_LIBRARY_PATH has to be set to the same value 
+	# as JAVA_LD_LIBRARY_PATH 
 	export LD_LIBRARY_PATH= ...
 
-	R
-		install.packages('rJava')
+	R <ENTER>
+	->	install.packages('rJava')
+	SAU in MacOSX	
+	->	install.packages("rJava", type="mac.binary")
 \end{lstlisting}
 
 

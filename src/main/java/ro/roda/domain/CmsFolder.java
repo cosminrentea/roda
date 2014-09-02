@@ -191,13 +191,20 @@ public class CmsFolder {
 
 		List<CmsFolder> queryResult;
 
-		if (name != null && parentId != null) {
-			TypedQuery<CmsFolder> query = entityManager().createQuery(
-					"SELECT o FROM CmsFolder o WHERE lower(o.name) = lower(:name) AND " + "o.parentId = :parentId",
-					CmsFolder.class);
-			query.setParameter("name", name);
-			query.setParameter("parentId", parentId);
-
+		if (name != null) {
+			TypedQuery<CmsFolder> query = null;
+			if (parentId != null) {
+				query = entityManager().createQuery(
+						"SELECT o FROM CmsFolder o WHERE lower(o.name) = lower(:name) AND o.parentId = :parentId",
+						CmsFolder.class);
+				query.setParameter("name", name);
+				query.setParameter("parentId", parentId);
+			} else {
+				query = entityManager().createQuery(
+						"SELECT o FROM CmsFolder o WHERE lower(o.name) = lower(:name) AND o.parentId IS NULL",
+						CmsFolder.class);
+				query.setParameter("name", name);
+			}
 			queryResult = query.getResultList();
 			if (queryResult.size() > 0) {
 				return queryResult.get(0);

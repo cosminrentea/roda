@@ -1,5 +1,9 @@
 package ro.roda.service;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
@@ -7,11 +11,12 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.rosuda.JRI.REXP;
 import org.rosuda.JRI.Rengine;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import ro.roda.domain.Variable;
-import ro.roda.domainjson.StatisticsInfo;
 
 @Service
 @Transactional
@@ -21,21 +26,41 @@ public class StatisticsServiceImpl implements StatisticsService {
 
 	private Rengine re;
 
-	@SuppressWarnings("unused")
+	private String rWorkingDirectory;
+
+	private String rSourceFilename;
+
+	private static final String classpathRodaR = "classpath*:R/roda.R";
+
 	@PostConstruct
 	private void postConstruct() {
 		log.trace(System.getProperties());
-		if ("yes".equalsIgnoreCase(System.getProperty("jri.ignore.ule"))) {
-			re = null;
-		} else {
+		re = null;
+		rWorkingDirectory = null;
+		if (!"yes".equalsIgnoreCase(System.getProperty("jri.ignore.ule"))) {
 			String[] args = new String[1];
 			args[0] = "--vanilla";
 			re = new Rengine(args, false, null);
 			log.trace("JRI Rengine.versionCheck() = " + Rengine.versionCheck());
+
+			// get R's working directory and R source file (as canonical paths)
+			PathMatchingResourcePatternResolver pmr = new PathMatchingResourcePatternResolver();
+			Resource[] resources;
+			try {
+				resources = pmr.getResources(classpathRodaR);
+				if (resources.length == 1) {
+					File rFile = resources[0].getFile();
+					rSourceFilename = rFile.getCanonicalPath();
+					rWorkingDirectory = rFile.getCanonicalFile().getParent();
+				} else {
+					log.error("roda.R : not found or ambiguous");
+				}
+			} catch (IOException e) {
+				log.error("roda.R : not found");
+			}
 		}
 	}
 
-	@SuppressWarnings("unused")
 	@PreDestroy
 	public void preDestroy() {
 		if (re != null) {
@@ -43,7 +68,21 @@ public class StatisticsServiceImpl implements StatisticsService {
 		}
 	}
 
-	public String getStatisticsJson(String operation, Long id1, Long id2) {
+	public String getStatisticsJson(String operation, List<Long> variableIds) {
+
+		if (re != null && rWorkingDirectory != null && rSourceFilename != null) {
+			re.eval("setwd(\"" + rWorkingDirectory + "\")");
+			re.eval("source(\"" + rSourceFilename + "\")");
+			REXP rexp = re
+					.eval("getStats(list(vars = list(v1 = c(97, 99, sample(1:7, 122, replace=T), 99)), meta = list(v1 = c(\"Foarte putin\"=1, \"Foarte mult\"=7, \"Nu e cazul\"=97, \"Nu stiu\"=98, \"Nu raspund\"=99))))");
+			if (rexp != null) {
+				return rexp.asString();
+			}
+		}
+		return "{\"success\": false, \"message\":\"Could not obtain statistics from R\"]}";
+	}
+
+	public String getStatisticsJsonDemo(String operation, Long id1, Long id2) {
 		Variable v1 = Variable.findVariable(id1);
 		Variable v2 = Variable.findVariable(id2);
 		REXP rexp = re.eval("rnorm(" + id1.intValue() + ")");
@@ -71,15 +110,7 @@ public class StatisticsServiceImpl implements StatisticsService {
 		}
 		sbTable.append("\"}");
 
-		rexp = re.eval("library(rjson)");
-		rexp = re.eval("toJSON(table(c(1,3,1,2,4,1,5,2,3), c(2,1,1,2,1,1,1,2,1)))");
-		String tablejson = rexp.asString();
-		StringBuilder sbTableJson = new StringBuilder();
-		sbTableJson.append("{\"itemtype\" : \"paragraph\", \"title\" : \"table as JSON\", \"content\":\"");
-		sbTableJson.append(tablejson);
-		sbTableJson.append("\"}");
-
-		return "{\"success\": true, \"data\":[" + sbRnorm + "," + sbTable + "," + sbTableJson + "]}";
+		return "{\"success\": true, \"data\":[" + sbRnorm + "," + sbTable + "]}";
 
 	}
 }

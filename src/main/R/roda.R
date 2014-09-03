@@ -428,41 +428,133 @@ getStats <- function(mylist) {
         
         numerice <- round(apply(temp, 2, summary), 1)
         
+        tempcor <- cor(temp[, 1], temp[, 2])
+        
+        
         json <- paste("{\n",
-                    rs(4), "\"success\": true,\n",
-                    rs(4), "\"data\": [\n",
-                        rs(8), "{\n",
-                            rs(12), "\"itemtype\": \"table\",\n",
-                            rs(12), "\"title\": \"Masuri numerice pentru variabilele: ", paste(names(mylist$vars), collapse= " si "), "\",\n",
-                            rs(12), "\"headerRow\": 1,\n",
-                            rs(12), "\"headerCol\": 1,\n",
-                            rs(12), "\"rows\": ", nrow(numerice) + 1, ",\n",
-                            rs(12), "\"cols\": ", 3, ",\n",
-                            rs(12), "\"data\": [\n",
-                                rs(16), "[\"\", \"", paste(names(mylist$vars), collapse = "\", \""), "\"],\n", sep="")
-                                for (i in seq(nrow(numerice))) {
-                                    json <- paste(json, rs(16), "[\"", rownames(numerice)[i],
-                                                  "\", \"", paste(numerice[i, ], collapse="\", \""),
-                                                  ifelse(i == length(numerice), "\"]\n", "\"],\n"), sep="")
-                                }
-                            json <- paste(json, rs(12), "]\n",
-                        rs(8), "},{\n",
-                            rs(12), "\"itemtype\": \"chart\",\n",
-                            rs(12), "\"title\": \"Diagrama de imprastiere pentru variabilele: ", paste(names(mylist$vars), collapse= " si "), "\",\n",
-                            rs(12), "\"charttype\": \"scatterplot\",\n",
-                            rs(12), "\"height\": ", 500, ",\n",
-                            rs(12), "\"data\": [\n",
-                                rs(16), "[\"", paste(temp[, 1], collapse="\", \""), "\"],\n",
-                                rs(16), "[\"", paste(temp[, 2], collapse="\", \""), "\"]\n",
-                            rs(12), "]\n",
-                        rs(8), "}\n",
-                    rs(4), "]\n",    
-                "}\n", sep="")
+            rs(4), "\"success\": true,\n",
+            rs(4), "\"data\": [\n",
+                rs(8), "{\n",
+                    rs(12), "\"itemtype\": \"table\",\n",
+                    rs(12), "\"title\": \"Masuri numerice pentru variabilele: ", paste(names(mylist$vars), collapse= " si "), "\",\n",
+                    rs(12), "\"headerRow\": 1,\n",
+                    rs(12), "\"headerCol\": 1,\n",
+                    rs(12), "\"rows\": ", nrow(numerice) + 1, ",\n",
+                    rs(12), "\"cols\": ", 3, ",\n",
+                    rs(12), "\"data\": [\n",
+                        rs(16), "[\"\", \"", paste(names(mylist$vars), collapse = "\", \""), "\"],\n", sep="")
+                        for (i in seq(nrow(numerice))) {
+                            json <- paste(json, rs(16), "[\"", rownames(numerice)[i],
+                                          "\", \"", paste(numerice[i, ], collapse="\", \""),
+                                          ifelse(i == length(numerice), "\"]\n", "\"],\n"), sep="")
+                        }
+                    json <- paste(json, rs(12), "]\n",
+                rs(8), "},{\n",
+                    rs(12), "\"itemtype\": \"table\",\n",
+                    rs(12), "\"title\": \"Corelatia dintre variabilele: ", paste(names(mylist$vars), collapse= " si "), "\",\n",
+                    rs(12), "\"headerRow\": 1,\n",
+                    rs(12), "\"headerCol\": 1,\n",
+                    rs(12), "\"rows\": ", 1, ",\n",
+                    rs(12), "\"cols\": ", 2, ",\n",
+                    rs(12), "\"data\": [\n",
+                        rs(16), "[\"\", \"", names(mylist$vars)[2], "\"],\n",
+                        rs(16), "[\"", names(mylist$vars)[1], "\", \"", round(tempcor, 3), "\"]\n",
+                    rs(12), "]\n",
+                rs(8), "},{\n",
+                    rs(12), "\"itemtype\": \"chart\",\n",
+                    rs(12), "\"title\": \"Diagrama de imprastiere pentru variabilele: ", paste(names(mylist$vars), collapse= " si "), "\",\n",
+                    rs(12), "\"charttype\": \"scatterplot\",\n",
+                    rs(12), "\"height\": ", 500, ",\n",
+                    rs(12), "\"data\": [\n",
+                        rs(16), "[\"", paste(temp[, 1], collapse="\", \""), "\"],\n",
+                        rs(16), "[\"", paste(temp[, 2], collapse="\", \""), "\"]\n",
+                    rs(12), "]\n",
+                rs(8), "}\n",
+            rs(4), "]\n",    
+        "}\n", sep="")
         
         return(json)
         
     }
     
+    
+    
+    numord2 <- function(mylist, tip) {
+        
+        categ <- which(tip == "categoriala")
+        
+        # valori <- etichete <- sort(unique(mylist$vars[[categ]]))
+        
+        valet <- getValEt(categ)
+        valori <- valet[[1]]
+        etichete <- valet[[2]]
+        
+        ismiss <- toupper(etichete) %in% miss
+        
+        
+        if (any(ismiss)) {
+            
+            valmis <- valori[ismiss]
+            
+            mylist$vars[[categ]][mylist$vars[[categ]] %in% valmis] <- NA
+            
+            valori <- valori[!ismiss]
+            etichete <- etichete[!ismiss]
+            
+        }
+        
+        
+        # se inlocuiesc valorile de missing (daca exista) cu NA
+        if (length(mylist$meta[[3 - categ]]) > 0) {
+            ismiss <- toupper(names(mylist$meta[[3 - categ]])) %in% miss
+            if (any(ismiss)) {
+                mylist$vars[[3 - categ]][mylist$vars[[3 - categ]] %in% mylist$meta[[3 - categ]][ismiss]] <- NA
+            }
+        }
+        
+        temp <- cbind(mylist$vars[[categ]], as.numeric(mylist$vars[[3 - categ]]))
+        
+        temp <- temp[apply(temp, 1, function(x) all(!is.na(x))), ]
+        
+        numerice <- round(apply(temp, 2, summary), 1)
+        
+        numerice <- matrix(NA, nrow=6, ncol=length(etichete))
+        
+        tempnum <- NA
+        for (i in seq(length(etichete))) {
+            tempnum <- summary(temp[temp[, 1] == valori[i], 2])
+            numerice[, i] <- tempnum
+        }
+        
+        rownames(numerice) <- names(tempnum)
+        colnames(numerice) <- etichete
+        
+        
+        json <- paste("{\n",
+            rs(4), "\"success\": true,\n",
+            rs(4), "\"data\": [\n",
+                rs(8), "{\n",
+                    rs(12), "\"itemtype\": \"table\",\n",
+                    rs(12), "\"title\": \"Masuri numerice pentru variabilele: ", paste(names(mylist$vars), collapse= " si "), "\",\n",
+                    rs(12), "\"headerRow\": 1,\n",
+                    rs(12), "\"headerCol\": 1,\n",
+                    rs(12), "\"rows\": ", nrow(numerice) + 1, ",\n",
+                    rs(12), "\"cols\": ", 3, ",\n",
+                    rs(12), "\"data\": [\n",
+                        rs(16), "[\"\", \"", paste(etichete, collapse = "\", \""), "\"],\n", sep="")
+                        for (i in seq(nrow(numerice))) {
+                            json <- paste(json, rs(16), "[\"", rownames(numerice)[i],
+                                          "\", \"", paste(numerice[i, ], collapse="\", \""),
+                                          ifelse(i == length(numerice), "\"]\n", "\"],\n"), sep="")
+                        }
+                    json <- paste(json, rs(12), "]\n",
+                rs(8), "}\n",
+            rs(4), "]\n",    
+        "}\n", sep="")
+        
+        return(json)
+        
+    }
     
     
     # verificarea tipurilor de variabile, si apelarea functiei corespunzatoare
@@ -509,7 +601,7 @@ getStats <- function(mylist) {
         }
         else if (all(tip %in% c("categoriala", "numerica"))) {
             
-            return(numord2(mylist))
+            return(numord2(mylist, tip))
             
         }
     

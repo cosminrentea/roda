@@ -70,7 +70,10 @@ public class StatisticsServiceImpl implements StatisticsService {
 
 	public String getStatisticsJson(String operation, List<Long> variableIds) {
 
-		if (re != null && rWorkingDirectory != null && rSourceFilename != null) {
+		if (variableIds != null && re != null && rWorkingDirectory != null && rSourceFilename != null) {
+
+			log.trace("Number of variables: " + variableIds.size());
+
 			re.eval("setwd(\"" + rWorkingDirectory + "\")");
 			re.eval("source(\"" + rSourceFilename + "\")");
 			REXP rexp = re
@@ -82,10 +85,9 @@ public class StatisticsServiceImpl implements StatisticsService {
 		return "{\"success\": false, \"message\":\"Could not obtain statistics from R\"]}";
 	}
 
-	public String getStatisticsJsonDemo(String operation, Long id1, Long id2) {
-		Variable v1 = Variable.findVariable(id1);
-		Variable v2 = Variable.findVariable(id2);
-		REXP rexp = re.eval("rnorm(" + id1.intValue() + ")");
+	public String getStatisticsJsonDemo(Long rnormParam) {
+
+		REXP rexp = re.eval("rnorm(" + rnormParam.intValue() + ")");
 
 		// The data type REXP provides functions for converting
 		// to different data types.

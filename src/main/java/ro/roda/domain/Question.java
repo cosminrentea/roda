@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PostPersist;
 import javax.persistence.PostUpdate;
@@ -104,12 +105,13 @@ public class Question {
 		for (Question question : questions) {
 			SolrInputDocument sid = new SolrInputDocument();
 			sid.addField("id", "question_" + question.getId());
+			sid.addField("question.questiontypeid_t", question.getQuestionTypeId());
 			sid.addField("question.label_s", question.getName());
 			sid.addField("question.statement_s", question.getStatement());
 			// Add summary field to allow searching documents for objects of
 			// this type
-			sid.addField("question_solrsummary_t",
-					new StringBuilder().append(question.getName()).append(" ").append(question.getStatement()));
+			sid.addField("question_solrsummary_t", new StringBuilder().append(question.getQuestionTypeId()).append(" ")
+					.append(question.getName()).append(" ").append(question.getStatement()));
 			documents.add(sid);
 		}
 		try {
@@ -229,6 +231,14 @@ public class Question {
 	@JoinColumn(name = "instance_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false)
 	private Instance instanceId;
 
+	// TODO nullable = false
+	@ManyToOne
+	@JoinColumn(name = "question_type_id", columnDefinition = "integer", referencedColumnName = "id", nullable = true)
+	private QuestionType questionTypeId;
+
+	@OneToOne(mappedBy = "questionTypeNumeric")
+	private QuestionTypeNumeric questionTypeNumeric;
+
 	@Column(name = "order_in_instance", columnDefinition = "int")
 	// @NotNull
 	private Integer orderInInstance;
@@ -285,6 +295,10 @@ public class Question {
 		return orderInInstance;
 	}
 
+	public QuestionType getQuestionTypeId() {
+		return questionTypeId;
+	}
+
 	@Transactional
 	public Question merge() {
 		if (this.entityManager == null)
@@ -339,6 +353,10 @@ public class Question {
 
 	public void setOrderInInstance(Integer orderInInstance) {
 		this.orderInInstance = orderInInstance;
+	}
+
+	public void setQuestionTypeId(QuestionType questionTypeId) {
+		this.questionTypeId = questionTypeId;
 	}
 
 	public String toJson() {

@@ -160,7 +160,7 @@ public class QuestionTypeCategory {
 	private String label;
 
 	@ManyToOne
-	@JoinColumn(name = "question_id", columnDefinition = "bigint", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	@JoinColumn(name = "question_id", columnDefinition = "int8", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
 	private Question questionId;
 
 	@PersistenceContext

@@ -34,7 +34,7 @@ import flexjson.JSONDeserializer;
 import flexjson.JSONSerializer;
 
 @Entity
-@Table(schema = "public", name = "question_type_category")
+@Table(schema = "public", name = "question_type_numeric")
 @Configurable
 @Audited
 public class QuestionTypeNumeric {
@@ -99,7 +99,7 @@ public class QuestionTypeNumeric {
 		for (QuestionTypeNumeric questionTypeNumeric : selectionvariableitems) {
 			SolrInputDocument sid = new SolrInputDocument();
 			sid.addField("id", "questiontypenumeric_" + questionTypeNumeric.getQuestionId());
-			sid.addField("questionTypeNumeric.type_t", questionTypeNumeric.getType());
+			sid.addField("questionTypeNumeric.type_t", questionTypeNumeric.getTypeQstn());
 			sid.addField("questionTypeNumeric.high_t", questionTypeNumeric.getHigh());
 			sid.addField("questionTypeNumeric.low_t", questionTypeNumeric.getLow());
 			// Add summary field to allow searching documents for objects of
@@ -107,7 +107,7 @@ public class QuestionTypeNumeric {
 			sid.addField(
 					"selectionvariableitem_solrsummary_t",
 					new StringBuilder().append(questionTypeNumeric.getQuestionId()).append(" ")
-							.append(questionTypeNumeric.getType()).append(questionTypeNumeric.getHigh())
+							.append(questionTypeNumeric.getTypeQstn()).append(questionTypeNumeric.getHigh())
 							.append(questionTypeNumeric.getLow()));
 			documents.add(sid);
 		}
@@ -154,8 +154,8 @@ public class QuestionTypeNumeric {
 	@JoinColumn(name = "question_id", nullable = false, insertable = false, updatable = false)
 	private Question question;
 
-	@Column(name = "type", columnDefinition = "varchar", length = 200)
-	private String type;
+	@Column(name = "type_qstn", columnDefinition = "varchar", length = 200)
+	private String typeQstn;
 
 	@Column(name = "high", columnDefinition = "int8")
 	private Integer high;
@@ -164,8 +164,8 @@ public class QuestionTypeNumeric {
 	private Integer low;
 
 	@Id
-	@Column(name = "question_id", columnDefinition = "bigint")
-	private Question questionId;
+	@Column(name = "question_id", columnDefinition = "int8")
+	private Long questionId;
 
 	@PersistenceContext
 	transient EntityManager entityManager;
@@ -187,7 +187,7 @@ public class QuestionTypeNumeric {
 		this.entityManager.flush();
 	}
 
-	public Question getQuestionId() {
+	public Long getQuestionId() {
 		return questionId;
 	}
 
@@ -214,7 +214,7 @@ public class QuestionTypeNumeric {
 		if (this.entityManager.contains(this)) {
 			this.entityManager.remove(this);
 		} else {
-			QuestionTypeNumeric attached = QuestionTypeNumeric.findQuestionTypeNumeric(this.questionId.getId());
+			QuestionTypeNumeric attached = QuestionTypeNumeric.findQuestionTypeNumeric(this.questionId);
 			this.entityManager.remove(attached);
 		}
 	}
@@ -223,8 +223,8 @@ public class QuestionTypeNumeric {
 		return question;
 	}
 
-	public String getType() {
-		return type;
+	public String getTypeQstn() {
+		return typeQstn;
 	}
 
 	public Integer getHigh() {
@@ -235,7 +235,7 @@ public class QuestionTypeNumeric {
 		return low;
 	}
 
-	public void setQuestionId(Question questionId) {
+	public void setQuestionId(Long questionId) {
 		this.questionId = questionId;
 	}
 
@@ -243,8 +243,8 @@ public class QuestionTypeNumeric {
 		this.question = question;
 	}
 
-	public void setType(String type) {
-		this.type = type;
+	public void setTypeQstn(String type) {
+		this.typeQstn = type;
 	}
 
 	public void setHigh(Integer high) {

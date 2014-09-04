@@ -34,7 +34,7 @@ import flexjson.JSONDeserializer;
 import flexjson.JSONSerializer;
 
 @Entity
-@Table(schema = "public", name = "question_type_category")
+@Table(schema = "public", name = "question_type_code")
 @Configurable
 @Audited
 public class QuestionTypeCode {
@@ -162,7 +162,7 @@ public class QuestionTypeCode {
 	private Integer value;
 
 	@ManyToOne
-	@JoinColumn(name = "question_id", columnDefinition = "bigint", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	@JoinColumn(name = "question_id", columnDefinition = "int8", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
 	private Question questionId;
 
 	@PersistenceContext

@@ -236,10 +236,10 @@ public class Question {
 	@JoinColumn(name = "question_type_id", columnDefinition = "integer", referencedColumnName = "id", nullable = true)
 	private QuestionType questionTypeId;
 
-	@OneToOne(mappedBy = "questionTypeNumeric")
+	@OneToOne(mappedBy = "question")
 	private QuestionTypeNumeric questionTypeNumeric;
 
-	@Column(name = "order_in_instance", columnDefinition = "int")
+	@Column(name = "order_in_instance", columnDefinition = "int4")
 	// @NotNull
 	private Integer orderInInstance;
 
@@ -357,6 +357,14 @@ public class Question {
 
 	public void setQuestionTypeId(QuestionType questionTypeId) {
 		this.questionTypeId = questionTypeId;
+	}
+
+	public QuestionTypeNumeric getQuestionTypeNumeric() {
+		return questionTypeNumeric;
+	}
+
+	public void setQuestionTypeNumeric(QuestionTypeNumeric questionTypeNumeric) {
+		this.questionTypeNumeric = questionTypeNumeric;
 	}
 
 	public String toJson() {

@@ -242,7 +242,7 @@ public class Org {
 	private Set<OrgPhone> orgPhones;
 
 	@ManyToOne
-	@JoinColumn(name = "org_prefix_id", columnDefinition = "integer", referencedColumnName = "id")
+	@JoinColumn(name = "org_prefix_id", columnDefinition = "integer", referencedColumnName = "id", nullable = true)
 	private OrgPrefix orgPrefixId;
 
 	@OneToMany(mappedBy = "org2Id")
@@ -252,14 +252,13 @@ public class Org {
 	private Set<OrgRelations> orgRelationss1;
 
 	@ManyToOne
-	@JoinColumn(name = "org_sufix_id", columnDefinition = "integer", referencedColumnName = "id")
+	@JoinColumn(name = "org_sufix_id", columnDefinition = "integer", referencedColumnName = "id", nullable = true)
 	private OrgSufix orgSufixId;
 
 	@OneToMany(mappedBy = "orgId")
 	private Set<PersonOrg> personOrgs;
 
 	@Column(name = "short_name", columnDefinition = "varchar", length = 100)
-	@NotNull
 	private String shortName;
 
 	@OneToMany(mappedBy = "orgId")

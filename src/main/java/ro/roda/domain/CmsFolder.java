@@ -47,6 +47,10 @@ import flexjson.JSONSerializer;
 @Audited
 public class CmsFolder {
 
+	public static final String importedCmsFolderName = ".imported";
+
+	public static final String jsonCmsFolderName = ".json";
+
 	public static long countCmsFolders() {
 		return entityManager().createQuery("SELECT COUNT(o) FROM CmsFolder o", Long.class).getSingleResult();
 	}

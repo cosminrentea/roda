@@ -10,4 +10,6 @@ public interface FileListService {
 
 	public abstract FileList findFileList(Integer id);
 
+	public abstract List<FileList> findAllFileListsJson();
+
 }

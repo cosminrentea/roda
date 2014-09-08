@@ -27,8 +27,6 @@ public class AdminJsonServiceImpl implements AdminJsonService {
 	@Autowired
 	RodaPageService rodaPageService;
 
-	private static final String folderNameJson = ".json";
-
 	public AdminJson findLogin(String username, String password) {
 		return AdminJson.findLogin(username, password);
 	}
@@ -134,7 +132,7 @@ public class AdminJsonServiceImpl implements AdminJsonService {
 	public AdminJson jsonSave(String jsonString, Integer fileId, String name) {
 		MockMultipartFile mmf = new MockMultipartFile(name, name, "application/json", jsonString.getBytes(Charset
 				.forName("UTF-8")));
-		CmsFolder folder = CmsFolder.checkCmsFolder(null, folderNameJson, null, null);
+		CmsFolder folder = CmsFolder.checkCmsFolder(null, CmsFolder.jsonCmsFolderName, null, null);
 		AdminJson result = AdminJson.fileSave(folder.getId(), mmf, fileId, name, null);
 		fileStore.folderSave(folder);
 		fileStore.fileSave(mmf, folder);

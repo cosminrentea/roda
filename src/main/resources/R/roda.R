@@ -167,17 +167,15 @@ getStats <- function(mylist) {
                             rs(12), "\"title\": \"Tabel de frecvente pentru variabila: ", names(mylist$vars)[1], "\",\n",
                             rs(12), "\"headerRow\": 1,\n",
                             rs(12), "\"headerCol\": 1,\n",
-                            rs(12), "\"rows\": ", length(valori) + 1, ",\n",
-                            rs(12), "\"cols\": ", 3, ",\n",
+                            rs(12), "\"rows\": ", length(valori) + 2, ",\n",
+                            rs(12), "\"cols\": ", 2, ",\n",
                             rs(12), "\"data\": [\n",
-                                rs(16), "[\"Nr.\", \"Categorie\", \"Frecventa\"],\n", sep="")
+                                rs(16), "[\"Categorie\", \"Frecventa\"],\n", sep="")
                                 for (i in seq(length(valori))) {
-                                    json <- paste(json, rs(16), "[\"", valori[i],
-                                                  "\", \"", etichete[i],
-                                                  "\", \"", frecventa[i],
-                                                  ifelse(i == length(valori), "\"]\n", "\"],\n"), sep="")
+                                    json <- paste(json, rs(16), "[\"", paste(valori[i], etichete[i], sep=". "), "\", \"", frecventa[i], "\"],\n", sep="")
                                 }
-                            json <- paste(json, rs(12), "]\n",
+                                json <- paste(json, rs(16), "[\"\", \"Total\", \"", sum(frecventa), "\"]\n",
+                            rs(12), "]\n",
                         rs(8), "},{\n",
                             rs(12), "\"itemtype\": \"chart\",\n",
                             rs(12), "\"title\": \"Diagrama bara pentru variabila: ", names(mylist$vars)[1], "\",\n",
@@ -286,6 +284,9 @@ getStats <- function(mylist) {
         
         frecventa <- as.vector(table(factor(mylist$vars[[1]], levels=valori, labels=etichete)))
         
+        etichete[!etichete %in% names(mylist$meta[[1]])] <- ""
+        
+        
         json <- paste("{\n",
                     rs(4), "\"success\": true,\n",
                     rs(4), "\"data\": [\n",
@@ -309,17 +310,15 @@ getStats <- function(mylist) {
                             rs(12), "\"title\": \"Tabel de frecvente pentru variabila: ", names(mylist$vars)[1], "\",\n",
                             rs(12), "\"headerRow\": 1,\n",
                             rs(12), "\"headerCol\": 1,\n",
-                            rs(12), "\"rows\": ", length(valori) + 1, ",\n",
-                            rs(12), "\"cols\": ", 3, ",\n",
+                            rs(12), "\"rows\": ", length(valori) + 2, ",\n",
+                            rs(12), "\"cols\": ", 2, ",\n",
                             rs(12), "\"data\": [\n",
-                                rs(16), "[\"Nr.\", \"Categorie\", \"Frecventa\"],\n", sep="")
+                                rs(16), "[\"Categorie\", \"Frecventa\"],\n", sep="")
                                 for (i in seq(length(valori))) {
-                                    json <- paste(json, rs(16), "[\"", valori[i],
-                                                  "\", \"", etichete[i],
-                                                  "\", \"", frecventa[i],
-                                                  ifelse(i == length(valori), "\"]\n", "\"],\n"), sep="")
+                                    json <- paste(json, rs(16), "[\"", paste(valori[i] , etichete[i], sep=". "), "\", \"", frecventa[i], "\"],\n", sep="")
                                 }
-                            json <- paste(json, rs(12), "]\n",
+                                json <- paste(json, rs(16), "[\"Total\", \"", sum(frecventa), "\"]\n",
+                            rs(12), "]\n",
                         rs(8), "},{\n",
                             rs(12), "\"itemtype\": \"chart\",\n",
                             rs(12), "\"title\": \"Diagrama bara pentru variabila: ", names(mylist$vars)[1], "\",\n",
@@ -377,28 +376,39 @@ getStats <- function(mylist) {
                             rs(12), "\"title\": \"Tabel incrucisat pentru variabilele: ", paste(names(mylist$vars), collapse= " si "), "\",\n",
                             rs(12), "\"headerRow\": 1,\n",
                             rs(12), "\"headerCol\": 1,\n",
-                            rs(12), "\"rows\": ", length(valori[[1]]) + 1, ",\n",
-                            rs(12), "\"cols\": ", length(valori[[2]]) + 1, ",\n",
+                            rs(12), "\"rows\": ", length(valori[[1]]) + 2, ",\n",
+                            rs(12), "\"cols\": ", length(valori[[2]]) + 2, ",\n",
                             rs(12), "\"data\": [\n",
-                                rs(16), "[\"", paste(names(mylist$vars), collapse= "\\"),"\", ", paste(paste("\"", paste(valori[[2]], etichete[[2]], sep=". "), "\"", sep=""), collapse = ", "),"],\n", sep="")
+                                rs(16), "[\"", paste(names(mylist$vars), collapse= "\\"),"\", ",
+                                               paste(paste("\"", paste(valori[[2]], etichete[[2]], sep=". "), "\"", sep=""), collapse = ", "),
+                                               ", \"Total\"],\n", sep="")
                                 for (i in seq(length(valori[[1]]))) {
                                     json <- paste(json, rs(16), "[\"", paste(valori[[1]][i], etichete[[1]][i], sep=". "),
                                                   "\", \"", paste(frecventa[i, ], collapse = "\", \""), 
-                                                  ifelse(i == length(valori), "\"]\n", "\"],\n"), sep="")
+                                                  "\", \"", sum(frecventa[i, ]), "\"],\n", sep="")
                                 }
-                            json <- paste(json, rs(12), "]\n",
+                                json <- paste(json, rs(16), "[\"Total\", \"", paste(colSums(frecventa), collapse="\", \""), "\", \"", sum(frecventa), "\"]\n", 
+                            rs(12), "]\n",
                         rs(8), "},{\n",
                             rs(12), "\"itemtype\": \"chart\",\n",
                             rs(12), "\"title\": \"Diagrama bara pentru variabilele: ", paste(names(mylist$vars), collapse= " si "), "\",\n",
-                            rs(12), "\"charttype\": \"bar\",\n",
-                            rs(12), "\"height\": ", 85*length(valori[[1]]), ",\n",
-                            rs(12), "\"data\": [\n",
-                                rs(16), "[\"", paste(names(mylist$vars), collapse= "\\"),"\", ", paste(paste("\"", paste(valori[[2]], etichete[[2]], sep=". "), "\"", sep=""), collapse = ", "),"],\n", sep="")
-                                for (i in seq(length(valori[[1]]))) {
-                                    json <- paste(json, rs(16), "[\"", paste(valori[[1]][i], etichete[[1]][i], sep=". "),
-                                                  "\", \"", paste(frecventa[i, ], collapse = "\", \""), 
-                                                  ifelse(i == length(valori), "\"]\n", "\"],\n"), sep="")
+                            rs(12), "\"charttype\": \"stackedbar\",\n",
+                            rs(12), "\"catfield\": \"name\",\n", sep="")
+                            for (i in seq(length(etichete[[2]]))) {
+                                json <- paste(json, rs(12), "\"datafield", i, "\": \"",
+                                              etichete[[2]][i], "\"", ifelse(i == length(etichete[[2]]), "\n", ",\n"), sep="")
+                            }
+                            json <- paste(json, rs(12), "\"height\": ", 85*length(valori[[1]]), ",\n",
+                            rs(12), "\"data\": [\n", sep="")
+                            for (i in seq(length(etichete[[1]]))) {
+                                json <- paste(json, rs(16), "{\n", rs(20), "\"name\": \"", etichete[[1]][i], "\",\n", sep="")
+                                for (j in seq(length(etichete[[2]]))) {
+                                    json <- paste(json, rs(20), "\"", etichete[[2]][j], "\": ", frecventa[i, j],
+                                                  ifelse(j == length(etichete[[2]]), "\n", ",\n"), sep="")
+                                    
                                 }
+                                json <- paste(json, rs(16), ifelse(i == length(etichete[[1]]), "}\n", "},\n"), sep="")
+                            } 
                             json <- paste(json, rs(12), "]\n",
                         rs(8), "}\n",
                     rs(4), "]\n",    
@@ -446,7 +456,7 @@ getStats <- function(mylist) {
                         for (i in seq(nrow(numerice))) {
                             json <- paste(json, rs(16), "[\"", rownames(numerice)[i],
                                           "\", \"", paste(numerice[i, ], collapse="\", \""),
-                                          ifelse(i == length(numerice), "\"]\n", "\"],\n"), sep="")
+                                          ifelse(i == nrow(numerice), "\"]\n", "\"],\n"), sep="")
                         }
                     json <- paste(json, rs(12), "]\n",
                 rs(8), "},{\n",
@@ -454,7 +464,7 @@ getStats <- function(mylist) {
                     rs(12), "\"title\": \"Corelatia dintre variabilele: ", paste(names(mylist$vars), collapse= " si "), "\",\n",
                     rs(12), "\"headerRow\": 1,\n",
                     rs(12), "\"headerCol\": 1,\n",
-                    rs(12), "\"rows\": ", 1, ",\n",
+                    rs(12), "\"rows\": ", 2, ",\n",
                     rs(12), "\"cols\": ", 2, ",\n",
                     rs(12), "\"data\": [\n",
                         rs(16), "[\"\", \"", names(mylist$vars)[2], "\"],\n",

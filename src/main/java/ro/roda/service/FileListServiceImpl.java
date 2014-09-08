@@ -15,6 +15,10 @@ public class FileListServiceImpl implements FileListService {
 		return FileList.findAllFileLists();
 	}
 
+	public List<FileList> findAllFileListsJson() {
+		return FileList.findAllFileListsJson();
+	}
+
 	public FileList findFileList(Integer id) {
 		return FileList.findFileList(id);
 	}

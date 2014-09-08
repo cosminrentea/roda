@@ -208,6 +208,12 @@ public class QuestionType {
 		return AuditReaderFactory.get(entityManager());
 	}
 
+	public static int QSTN_TYPE_CATEGORY = 1;
+
+	public static int QSTN_TYPE_CODE = 2;
+
+	public static int QSTN_TYPE_NUMERIC = 3;
+
 	@OneToMany(mappedBy = "questionTypeId")
 	private Set<Question> questions;
 

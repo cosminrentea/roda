@@ -62,18 +62,18 @@ public class QuestionTypeCode {
 		return em;
 	}
 
-	public static List<QuestionTypeCode> findAllSelectionQuestions() {
-		return entityManager().createQuery("SELECT o FROM SelectionQuestion o", QuestionTypeCode.class).getResultList();
+	public static List<QuestionTypeCode> findAllQuestionTypeCodes() {
+		return entityManager().createQuery("SELECT o FROM QuestionTypeCode o", QuestionTypeCode.class).getResultList();
 	}
 
-	public static QuestionTypeCode findSelectionQuestion(QuestionTypeCategoryPK id) {
+	public static QuestionTypeCode findQuestionTypeCode(QuestionTypeCodePK id) {
 		if (id == null)
 			return null;
 		return entityManager().find(QuestionTypeCode.class, id);
 	}
 
-	public static List<QuestionTypeCode> findSelectionQuestionEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM SelectionQuestion o", QuestionTypeCode.class)
+	public static List<QuestionTypeCode> findQuestionTypeCodeEntries(int firstResult, int maxResults) {
+		return entityManager().createQuery("SELECT o FROM QuestionTypeCode o", QuestionTypeCode.class)
 				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
 	}
 
@@ -98,7 +98,7 @@ public class QuestionTypeCode {
 		for (QuestionTypeCode selectionQuestion : selectionvariableitems) {
 			SolrInputDocument sid = new SolrInputDocument();
 			sid.addField("id", "selectionquestion_" + selectionQuestion.getId());
-			sid.addField("selectionQuestion.categoryid_t", selectionQuestion.getCategoryId());
+			sid.addField("selectionQuestion.categoryid_t", selectionQuestion.getCodeId());
 			sid.addField("selectionQuestion.questionid_t", selectionQuestion.getQuestionId());
 			sid.addField("selectionQuestion.label_t", selectionQuestion.getLabel());
 			sid.addField("selectionQuestion.id_t", selectionQuestion.getId());
@@ -106,7 +106,7 @@ public class QuestionTypeCode {
 			// this type
 			sid.addField(
 					"selectionvariableitem_solrsummary_t",
-					new StringBuilder().append(selectionQuestion.getCategoryId()).append(" ")
+					new StringBuilder().append(selectionQuestion.getCodeId()).append(" ")
 							.append(selectionQuestion.getQuestionId()).append(" ").append(selectionQuestion.getId()));
 			documents.add(sid);
 		}
@@ -150,10 +150,10 @@ public class QuestionTypeCode {
 	}
 
 	@EmbeddedId
-	private QuestionTypeCategoryPK id;
+	private QuestionTypeCodePK id;
 
-	@Column(name = "category_id", columnDefinition = "bigint", nullable = false, insertable = false, updatable = false)
-	private Long categoryId;
+	@Column(name = "code_id", columnDefinition = "int4", nullable = false, insertable = false, updatable = false)
+	private Integer codeId;
 
 	@Column(name = "label", columnDefinition = "varchar", length = 200)
 	private String label;
@@ -185,7 +185,7 @@ public class QuestionTypeCode {
 		this.entityManager.flush();
 	}
 
-	public QuestionTypeCategoryPK getId() {
+	public QuestionTypeCodePK getId() {
 		return this.id;
 	}
 
@@ -193,8 +193,8 @@ public class QuestionTypeCode {
 		return questionId;
 	}
 
-	public Long getCategoryId() {
-		return categoryId;
+	public Integer getCodeId() {
+		return codeId;
 	}
 
 	public String getLabel() {
@@ -228,17 +228,17 @@ public class QuestionTypeCode {
 		if (this.entityManager.contains(this)) {
 			this.entityManager.remove(this);
 		} else {
-			QuestionTypeCode attached = QuestionTypeCode.findSelectionQuestion(this.id);
+			QuestionTypeCode attached = QuestionTypeCode.findQuestionTypeCode(this.id);
 			this.entityManager.remove(attached);
 		}
 	}
 
-	public void setId(QuestionTypeCategoryPK id) {
+	public void setId(QuestionTypeCodePK id) {
 		this.id = id;
 	}
 
-	public void setCategoryId(Long categoryId) {
-		this.categoryId = categoryId;
+	public void setCodeId(Integer codeId) {
+		this.codeId = codeId;
 	}
 
 	public void setQuestionId(Question questionId) {

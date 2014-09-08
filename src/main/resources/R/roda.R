@@ -41,6 +41,17 @@ getStats <- function(mylist) {
         paste(rep(" ", x), collapse="")
     }
     
+    eroare <- paste("{\n",
+                    rs(4), "\"success\": true,\n",
+                    rs(4), "\"data\": [\n",
+                        rs(8), "{\n",
+                            rs(12), "\"itemtype\": \"paragraph\",\n",
+                            rs(12), "\"title\": \"Eroare\",\n",
+                            rs(12), "\"content\": \"Nu se pot realiza statistici decat cu variabile categoriale si/sau numerice\"\n",
+                        rs(8), "}\n",
+                    rs(4), "]\n",    
+                "}\n", sep="")
+    
     
     checkVar <- function(mylist) {
         
@@ -102,7 +113,16 @@ getStats <- function(mylist) {
             # e o variabila numerica, codul nu ar trebui sa ajunga aici decat foarte rar
             # intotdeauna ar trebui sa existe valori de missing undeva in metadate, chiar si pentru variabile numerice
             
-            return("numerica")
+            if (is.numeric(mylist$vars[[1]])) {
+                
+                return("numerica")
+                
+            }
+            else {
+                
+                return("string")
+                
+            }
             
         }
         
@@ -583,9 +603,14 @@ getStats <- function(mylist) {
             return(numord1(mylist))
             
         }
-        else { # vartype == "numerica"
+        else if (vartype == "numerica") {
             
             return(num1(mylist))
+            
+        }
+        else {
+            
+            return(eroare)
             
         }
     }
@@ -612,6 +637,11 @@ getStats <- function(mylist) {
         else if (all(tip %in% c("categoriala", "numerica"))) {
             
             return(numord2(mylist, tip))
+            
+        }
+        else {
+            
+            return(eroare)
             
         }
     

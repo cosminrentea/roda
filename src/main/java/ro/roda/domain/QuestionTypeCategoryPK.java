@@ -34,13 +34,13 @@ public final class QuestionTypeCategoryPK implements Serializable {
 		return new JSONSerializer().exclude("*.class").exclude("classAuditReader", "auditReader").serialize(collection);
 	}
 
-	@Column(name = "category_id", columnDefinition = "int8", nullable = false)
-	private Long categoryId;
+	@Column(name = "category_id", columnDefinition = "int4", nullable = false)
+	private Integer categoryId;
 
 	@Column(name = "question_id", columnDefinition = "int8", nullable = false)
 	private Long questionId;
 
-	public QuestionTypeCategoryPK(Long questionId, Long categoryId) {
+	public QuestionTypeCategoryPK(Long questionId, Integer categoryId) {
 		super();
 		this.questionId = questionId;
 		this.categoryId = categoryId;
@@ -50,7 +50,7 @@ public final class QuestionTypeCategoryPK implements Serializable {
 		super();
 	}
 
-	public Long getCategoryId() {
+	public Integer getCategoryId() {
 		return categoryId;
 	}
 

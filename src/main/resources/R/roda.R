@@ -34,7 +34,7 @@ getStats <- function(mylist) {
     
     # aceasta comanda poate sta aici (caz in care se incarca la fiecare apelare din Java
     # sau poate fi specificata doar la deschiderea R, in fisierul .Rprofile din /home/user
-    load("miss.Rdata")
+    load("/Users/dusadrian/miss.Rdata")
     
     
     rs <- function(x) {
@@ -396,7 +396,7 @@ getStats <- function(mylist) {
                             rs(12), "\"catfield\": \"name\",\n", sep="")
                             for (i in seq(length(etichete[[2]]))) {
                                 json <- paste(json, rs(12), "\"datafield", i, "\": \"",
-                                              etichete[[2]][i], "\"", ifelse(i == length(etichete[[2]]), "\n", ",\n"), sep="")
+                                              etichete[[2]][i], "\",\n", sep="")
                             }
                             json <- paste(json, rs(12), "\"height\": ", 85*length(valori[[1]]), ",\n",
                             rs(12), "\"data\": [\n", sep="")

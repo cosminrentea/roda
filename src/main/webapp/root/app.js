@@ -53,7 +53,8 @@ Ext.application({
         'SeriesMembersView',
         'VariableView',
         'FrequencyChart',
-        'VariableDetails'
+        'VariableDetails',
+        'StackedBarChart'
     ],
 	controllers : ['VariableView', 'DataBrowser'],
     autoCreateViewport: false,

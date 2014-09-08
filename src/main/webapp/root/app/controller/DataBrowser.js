@@ -169,29 +169,58 @@ Ext.define('databrowser.controller.DataBrowser', {
             	Ext.each(responseJson.data, function(value) {
             		console.log(value); 
             		if (value.itemtype == 'chart') {
-            			
-           		    var nstore = new Ext.data.JsonStore({
-           		    	fields:['name', 'value'],
-            		        data: value.data
-           		    });
-            			
-               		 var panel = Ext.create('Ext.Panel', {
-          		       title: value.title, 
-          		       collapsible: true,
-          		       width: 600,
-          		       height: 600,
-          		       bodyPadding: 5,
-          		       layout: 'fit',
-          		       items: {
-          		    	 xtype: 'freqchart',
-          		    	 store: nstore,
-          		       }
-          		       
-          		       
-               		 });
-
-            		 rpanel.add(panel);            			
-
+            			if (value.charttype == 'stackedbar') {
+            				console.log('stacked bar');	
+            				var catfield = value.catfield;
+            				var datafield1 = value.datafields;
+            				
+            				var nstore = new Ext.data.JsonStore({
+                		    	fields:[value.catfield, value.datafield1, value.datafield2],
+                 		        data: value.data
+                		    });
+            				var height = 500;
+            				if (value.height > 100) {
+            					height = value.height;
+            				}
+            				var panel = Ext.create('Ext.Panel', {
+                		       title: value.title, 
+                		       collapsible: true,
+                		       width: 600,
+                		       height: height,
+                		       bodyPadding: 5,
+                		       layout: 'fit',
+                		       items: {
+                		    	 xtype: 'sbchart',
+                		    	 store: nstore,
+                		    	 catfield : value.catfield,
+                		    	 datafields : [value.datafield1, value.datafield2],
+                		       	}
+                     		 	});
+                     		 rpanel.add(panel);          
+            			} else if (value.charttype == 'bar') {	
+            				console.log('bar');
+            				var nstore = new Ext.data.JsonStore({
+            					fields:['name', 'value'],
+            					data: value.data
+            				});
+            				var height = 500;
+            				if (value.height > 100) {
+            					height = value.height;
+            				}
+            				var panel = Ext.create('Ext.Panel', {
+            					title: value.title, 
+            					collapsible: true,
+            					width: 600,
+            					height: 600,
+            					bodyPadding: 5,
+            					layout: 'fit',
+            					items: {
+            						xtype: 'freqchart',
+            						store: nstore,
+            					}
+            				});
+            				rpanel.add(panel);            			
+            			}
             		} else if   (value.itemtype == 'paragraph') {
                		 	var panel = Ext.create('Ext.Panel', {
                		 		collapsible: true,
@@ -258,29 +287,54 @@ onSTSendToAnalysis : function (button) {
             	Ext.each(responseJson.data, function(value) {
             		console.log(value); 
             		if (value.itemtype == 'chart') {
-            			
-           		    var nstore = new Ext.data.JsonStore({
-           		    	fields:['name', 'value'],
-            		        data: value.data
-           		    });
-            			
-               		 var panel = Ext.create('Ext.Panel', {
-          		       title: value.title, 
-          		       collapsible: true,
-          		       width: 600,
-          		       height: 600,
-          		       bodyPadding: 5,
-          		       layout: 'fit',
-          		       items: {
-          		    	 xtype: 'freqchart',
-          		    	 store: nstore,
-          		       }
-          		       
-          		       
-               		 });
-
-            		 rpanel.add(panel);            			
-
+            			console.log('chart starting------');
+            			if (value.charttype == 'stackedbar') {
+            				console.log('stacked bar');	
+            				var nstore = new Ext.data.JsonStore({
+                		    	fields:['name', 'value1', 'value2'],
+                 		        data: value.data
+                		    });
+            				var height = 500;
+            				if (value.height > 100) {
+            					height = value.height;
+            				}
+            				var panel = Ext.create('Ext.Panel', {
+                		       title: value.title, 
+                		       collapsible: true,
+                		       width: 600,
+                		       height: height,
+                		       bodyPadding: 5,
+                		       layout: 'fit',
+                		       items: {
+                		    	 xtype: 'sbchart',
+                		    	 store: nstore,
+                		       	}
+                     		 	});
+                     		 rpanel.add(panel);          
+            			} else if (value.charttype == 'bar') {	
+            				console.log('bar');
+            				var nstore = new Ext.data.JsonStore({
+            					fields:['name', 'value'],
+            					data: value.data
+            				});
+            				var height = 500;
+            				if (value.height > 100) {
+            					height = value.height;
+            				}
+            				var panel = Ext.create('Ext.Panel', {
+            					title: value.title, 
+            					collapsible: true,
+            					width: 600,
+            					height: 600,
+            					bodyPadding: 5,
+            					layout: 'fit',
+            					items: {
+            						xtype: 'freqchart',
+            						store: nstore,
+            					}
+            				});
+            				rpanel.add(panel);            			
+            			}
             		} else if   (value.itemtype == 'paragraph') {
                		 	var panel = Ext.create('Ext.Panel', {
                		 		collapsible: true,

@@ -41,7 +41,7 @@ public class QuestionInfo extends JsonInfo {
 
 			Iterator<Question> questionsIterator = questions.iterator();
 			while (questionsIterator.hasNext()) {
-				result.add(new QuestionInfo((Question) questionsIterator.next()));
+				result.add(findQuestionInfo(questionsIterator.next().getId()));
 			}
 		}
 
@@ -103,11 +103,6 @@ public class QuestionInfo extends JsonInfo {
 		this.respdomain = respdomain;
 		this.responses = responses;
 		this.missing = missing;
-	}
-
-	public QuestionInfo(Question question) {
-		this(question.getId(), question.getName(), question.getQuestionTypeId().getName(), null, question
-				.getMissingValues());
 	}
 
 	public Long getIndice() {

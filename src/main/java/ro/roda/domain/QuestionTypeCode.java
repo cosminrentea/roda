@@ -39,8 +39,8 @@ import flexjson.JSONSerializer;
 @Audited
 public class QuestionTypeCode {
 
-	public static long countSelectionQuestions() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM SelectionQuestion o", Long.class).getSingleResult();
+	public static long countQuestionTypeCodes() {
+		return entityManager().createQuery("SELECT COUNT(o) FROM QuestionTypeCode o", Long.class).getSingleResult();
 	}
 
 	@Async

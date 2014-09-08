@@ -456,7 +456,7 @@ getStats <- function(mylist) {
                         for (i in seq(nrow(numerice))) {
                             json <- paste(json, rs(16), "[\"", rownames(numerice)[i],
                                           "\", \"", paste(numerice[i, ], collapse="\", \""),
-                                          ifelse(i == length(numerice), "\"]\n", "\"],\n"), sep="")
+                                          ifelse(i == nrow(numerice), "\"]\n", "\"],\n"), sep="")
                         }
                     json <- paste(json, rs(12), "]\n",
                 rs(8), "},{\n",

@@ -239,6 +239,15 @@ public class Question {
 	@OneToOne(mappedBy = "question")
 	private QuestionTypeNumeric questionTypeNumeric;
 
+	@OneToMany(mappedBy = "questionId")
+	private Set<QuestionTypeCode> questionTypeCodes;
+
+	@OneToMany(mappedBy = "questionId")
+	private Set<QuestionTypeCategory> questionTypeCategories;
+
+	@OneToMany(mappedBy = "questionId")
+	private Set<MissingValue> missingValues;
+
 	@Column(name = "order_in_instance", columnDefinition = "int4")
 	// @NotNull
 	private Integer orderInInstance;
@@ -297,6 +306,18 @@ public class Question {
 
 	public QuestionType getQuestionTypeId() {
 		return questionTypeId;
+	}
+
+	public Set<QuestionTypeCode> getQuestionTypeCodes() {
+		return questionTypeCodes;
+	}
+
+	public Set<QuestionTypeCategory> getQuestionTypeCategories() {
+		return questionTypeCategories;
+	}
+
+	public Set<MissingValue> getMissingValues() {
+		return missingValues;
 	}
 
 	@Transactional
@@ -359,12 +380,24 @@ public class Question {
 		this.questionTypeId = questionTypeId;
 	}
 
+	public void setQuestionTypeCodes(Set<QuestionTypeCode> questionTypeCodes) {
+		this.questionTypeCodes = questionTypeCodes;
+	}
+
+	public void setQuestionTypesCategories(Set<QuestionTypeCategory> questionTypesCategories) {
+		this.questionTypeCategories = questionTypesCategories;
+	}
+
 	public QuestionTypeNumeric getQuestionTypeNumeric() {
 		return questionTypeNumeric;
 	}
 
 	public void setQuestionTypeNumeric(QuestionTypeNumeric questionTypeNumeric) {
 		this.questionTypeNumeric = questionTypeNumeric;
+	}
+
+	public void setMissingValues(Set<MissingValue> missingValues) {
+		this.missingValues = missingValues;
 	}
 
 	public String toJson() {

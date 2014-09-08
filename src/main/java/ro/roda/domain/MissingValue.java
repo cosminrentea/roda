@@ -179,10 +179,10 @@ public class MissingValue {
 	private MissingValuePK id;
 
 	@ManyToOne
-	@JoinColumn(name = "question_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+	@JoinColumn(name = "question_id", columnDefinition = "int8", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
 	private Question questionId;
 
-	@Column(name = "value_id", columnDefinition = "integer")
+	@Column(name = "value_id", columnDefinition = "int4", nullable = false, insertable = false, updatable = false)
 	private Integer valueId;
 
 	@PersistenceContext

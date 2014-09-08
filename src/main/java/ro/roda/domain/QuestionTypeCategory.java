@@ -62,19 +62,19 @@ public class QuestionTypeCategory {
 		return em;
 	}
 
-	public static List<QuestionTypeCategory> findAllSelectionQuestions() {
-		return entityManager().createQuery("SELECT o FROM SelectionQuestion o", QuestionTypeCategory.class)
+	public static List<QuestionTypeCategory> findAllQuestionTypeCategories() {
+		return entityManager().createQuery("SELECT o FROM QuestionTypeCategory o", QuestionTypeCategory.class)
 				.getResultList();
 	}
 
-	public static QuestionTypeCategory findSelectionQuestion(QuestionTypeCategoryPK id) {
+	public static QuestionTypeCategory findQuestionTypeCategory(QuestionTypeCategoryPK id) {
 		if (id == null)
 			return null;
 		return entityManager().find(QuestionTypeCategory.class, id);
 	}
 
-	public static List<QuestionTypeCategory> findSelectionQuestionEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM SelectionQuestion o", QuestionTypeCategory.class)
+	public static List<QuestionTypeCategory> findQuestionTypeCategoryEntries(int firstResult, int maxResults) {
+		return entityManager().createQuery("SELECT o FROM QuestionTypeCategory o", QuestionTypeCategory.class)
 				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
 	}
 
@@ -222,7 +222,7 @@ public class QuestionTypeCategory {
 		if (this.entityManager.contains(this)) {
 			this.entityManager.remove(this);
 		} else {
-			QuestionTypeCategory attached = QuestionTypeCategory.findSelectionQuestion(this.id);
+			QuestionTypeCategory attached = QuestionTypeCategory.findQuestionTypeCategory(this.id);
 			this.entityManager.remove(attached);
 		}
 	}

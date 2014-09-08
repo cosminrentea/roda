@@ -22,8 +22,8 @@ public final class MissingValuePK implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	public static Collection<MissingValuePK> fromJsonArrayToStudyDescrPKs(String json) {
-		return new JSONDeserializer<List<MissingValuePK>>().use(null, ArrayList.class).use("values", MissingValuePK.class)
-				.deserialize(json);
+		return new JSONDeserializer<List<MissingValuePK>>().use(null, ArrayList.class)
+				.use("values", MissingValuePK.class).deserialize(json);
 	}
 
 	public static MissingValuePK fromJsonToStudyDescrPK(String json) {
@@ -34,28 +34,28 @@ public final class MissingValuePK implements Serializable {
 		return new JSONSerializer().exclude("*.class").exclude("classAuditReader", "auditReader").serialize(collection);
 	}
 
-	@Column(name = "lang_id", columnDefinition = "int4", nullable = false)
-	private Integer langId;
+	@Column(name = "question_id", columnDefinition = "int8", nullable = false)
+	private Long questionId;
 
-	@Column(name = "study_id", columnDefinition = "int4", nullable = false)
-	private Integer studyId;
+	@Column(name = "value_id", columnDefinition = "int4", nullable = false)
+	private Integer valueId;
 
-	public MissingValuePK(Integer langId, Integer studyId) {
+	public MissingValuePK(Long questionId, Integer valueId) {
 		super();
-		this.langId = langId;
-		this.studyId = studyId;
+		this.questionId = questionId;
+		this.valueId = valueId;
 	}
 
 	private MissingValuePK() {
 		super();
 	}
 
-	public Integer getLangId() {
-		return langId;
+	public Long getQuestionId() {
+		return questionId;
 	}
 
-	public Integer getStudyId() {
-		return studyId;
+	public Integer getValueId() {
+		return valueId;
 	}
 
 	public String toJson() {
@@ -66,7 +66,7 @@ public final class MissingValuePK implements Serializable {
 	public boolean equals(final Object obj) {
 		if (obj instanceof MissingValuePK) {
 			final MissingValuePK other = (MissingValuePK) obj;
-			return new EqualsBuilder().append(langId, other.langId).append(studyId, other.studyId).isEquals();
+			return new EqualsBuilder().append(questionId, other.questionId).append(valueId, other.valueId).isEquals();
 		} else {
 			return false;
 		}
@@ -74,6 +74,6 @@ public final class MissingValuePK implements Serializable {
 
 	@Override
 	public int hashCode() {
-		return new HashCodeBuilder().append(studyId).append(langId).toHashCode();
+		return new HashCodeBuilder().append(valueId).append(questionId).toHashCode();
 	}
 }

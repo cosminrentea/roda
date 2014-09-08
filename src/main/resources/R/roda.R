@@ -34,7 +34,7 @@ getStats <- function(mylist) {
     
     # aceasta comanda poate sta aici (caz in care se incarca la fiecare apelare din Java
     # sau poate fi specificata doar la deschiderea R, in fisierul .Rprofile din /home/user
-    load("/Users/dusadrian/miss.Rdata")
+    load("miss.Rdata")
     
     
     rs <- function(x) {

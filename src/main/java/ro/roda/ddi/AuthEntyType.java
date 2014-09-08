@@ -63,7 +63,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "AuthEntyType")
 @Entity
-@Table(schema = "ddi",name = "AuthoringEntity")
+@Table(schema = "ddi", name = "AuthoringEntity")
 public class AuthEntyType {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -100,7 +100,7 @@ public class AuthEntyType {
 	@Column(columnDefinition = "text")
 	@XmlJavaTypeAdapter(CollapsedStringAdapter.class)
 	@XmlValue
-	protected String content;
+	public String content;
 	@XmlAttribute(name = "ID")
 	@XmlJavaTypeAdapter(CollapsedStringAdapter.class)
 	@XmlID

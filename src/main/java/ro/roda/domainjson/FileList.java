@@ -23,7 +23,7 @@ public class FileList extends JsonInfo {
 	@Autowired
 	CmsFileStoreService cmsFileStoreService;
 
-	private final static String urlDownload = "/cmsfilecontent/";
+	private final static String urlDownload = "cmsfilecontent/";
 
 	public class NameValuePair {
 		public String name;
@@ -47,21 +47,41 @@ public class FileList extends JsonInfo {
 		return "{\"data\":" + serializer.serialize(collection) + "}";
 	}
 
+	public static String toJsonArrayDetailed(Collection<FileList> collection) {
+		JSONSerializer serializer = new JSONSerializer();
+
+		serializer.exclude("*.class", "type");
+		serializer.include("id", "name", "alias", "url", "filesize", "filetype", "filepropertiesset", "folderid",
+				"directory", "leaf");
+
+		serializer.transform(new FieldNameTransformer("indice"), "id");
+
+		return "{\"data\":" + serializer.serialize(collection) + "}";
+	}
+
 	public static List<FileList> findAllFileLists() {
 		List<FileList> result = new ArrayList<FileList>();
-
 		List<CmsFile> files = CmsFile.findAllCmsFiles();
-
 		if (files != null && files.size() > 0) {
-
 			Iterator<CmsFile> filesIterator = files.iterator();
 			while (filesIterator.hasNext()) {
 				CmsFile file = (CmsFile) filesIterator.next();
-
 				result.add(new FileList(file));
 			}
 		}
+		return result;
+	}
 
+	public static List<FileList> findAllFileListsJson() {
+		List<FileList> result = new ArrayList<FileList>();
+		List<CmsFile> files = CmsFile.findAllCmsFilesJson();
+		if (files != null && files.size() > 0) {
+			Iterator<CmsFile> filesIterator = files.iterator();
+			while (filesIterator.hasNext()) {
+				CmsFile file = (CmsFile) filesIterator.next();
+				result.add(new FileList(file));
+			}
+		}
 		return result;
 	}
 

@@ -27,7 +27,7 @@ public class FileListController {
 
 	@RequestMapping(headers = "Accept=application/json")
 	@ResponseBody
-	public ResponseEntity<String> listJson() {
+	public ResponseEntity<String> listFiles() {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");
 		List<FileList> result = fileListService.findAllFileLists();
@@ -36,7 +36,32 @@ public class FileListController {
 
 	@RequestMapping(value = "/{id}", headers = "Accept=application/json")
 	@ResponseBody
-	public ResponseEntity<String> showJson(@PathVariable("id") Integer id) {
+	public ResponseEntity<String> showFileDetails(@PathVariable("id") Integer id) {
+		FileList fileList = fileListService.findFileList(id);
+		// fileList.setFileproperties(cmsFileStoreService.getFileProperties(CmsFile.findCmsFile(id)));
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Type", "application/json; charset=utf-8");
+		if (fileList == null) {
+			return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
+		}
+		// return new ResponseEntity<String>(fileList.toJson(), headers,
+		// HttpStatus.OK);
+		return new ResponseEntity<String>(fileList.toJsonDetailed(), headers, HttpStatus.OK);
+	}
+
+	@RequestMapping(value = "/json", headers = "Accept=application/json")
+	@ResponseBody
+	public ResponseEntity<String> listJson() {
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Type", "application/json; charset=utf-8");
+		List<FileList> result = fileListService.findAllFileListsJson();
+		return new ResponseEntity<String>(FileList.toJsonArrayDetailed(result), headers, HttpStatus.OK);
+	}
+
+	@RequestMapping(value = "/json/{id}", headers = "Accept=application/json")
+	@ResponseBody
+	public ResponseEntity<String> showJsonDetails(@PathVariable("id") Integer id) {
 		FileList fileList = fileListService.findFileList(id);
 		// fileList.setFileproperties(cmsFileStoreService.getFileProperties(CmsFile.findCmsFile(id)));
 

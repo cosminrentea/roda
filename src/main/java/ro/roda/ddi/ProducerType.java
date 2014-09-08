@@ -65,7 +65,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "producerType")
 @Entity
-@Table(schema = "ddi",name = "ProducerType")
+@Table(schema = "ddi", name = "ProducerType")
 public class ProducerType {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -102,7 +102,7 @@ public class ProducerType {
 	@Column(columnDefinition = "text")
 	@XmlJavaTypeAdapter(CollapsedStringAdapter.class)
 	@XmlValue
-	protected String content;
+	public String content;
 	@XmlAttribute(name = "ID")
 	@XmlJavaTypeAdapter(CollapsedStringAdapter.class)
 	@XmlID

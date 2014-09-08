@@ -76,8 +76,15 @@ public class StatisticsServiceImpl implements StatisticsService {
 
 			re.eval("setwd(\"" + rWorkingDirectory + "\")");
 			re.eval("source(\"" + rSourceFilename + "\")");
+
+			// exemplul 3 din roda.R
+			// REXP rexp = re
+			// .eval("getStats(list(vars = list(v1 = c(97, 99, sample(1:7, 122, replace=T), 99)), meta = list(v1 = c(\"Foarte putin\"=1, \"Foarte mult\"=7, \"Nu e cazul\"=97, \"Nu stiu\"=98, \"Nu raspund\"=99))))");
+
+			// exemplul 5 din roda.R
 			REXP rexp = re
-					.eval("getStats(list(vars = list(v1 = c(97, 99, sample(1:7, 122, replace=T), 99)), meta = list(v1 = c(\"Foarte putin\"=1, \"Foarte mult\"=7, \"Nu e cazul\"=97, \"Nu stiu\"=98, \"Nu raspund\"=99))))");
+					.eval("getStats(list(vars = list(v1 = c(97, 99, sample(1:10, 122, replace=T), 99), v2 = c(NA, sample(18:90, 123, replace = TRUE), 999)), meta = list(v1 = c(\"NR/NS\"=99, \"Nu e cazul\"=97), v2 = c(\"Non raspuns\"=999))))");
+
 			if (rexp != null) {
 				return rexp.asString();
 			}

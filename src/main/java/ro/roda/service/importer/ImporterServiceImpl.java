@@ -73,6 +73,7 @@ import ro.roda.ddi.DocDscrType;
 import ro.roda.ddi.KeywordType;
 import ro.roda.ddi.ProdPlacType;
 import ro.roda.ddi.ProdStmtType;
+import ro.roda.ddi.ProducerType;
 import ro.roda.ddi.RspStmtType;
 import ro.roda.ddi.StdyDscrType;
 import ro.roda.ddi.StdyInfoType;
@@ -93,16 +94,21 @@ import ro.roda.domain.CmsSnippetGroup;
 import ro.roda.domain.Form;
 import ro.roda.domain.FormEditedNumberVar;
 import ro.roda.domain.FormEditedNumberVarPK;
+import ro.roda.domain.FormEditedTextVar;
+import ro.roda.domain.FormEditedTextVarPK;
 import ro.roda.domain.Instance;
 import ro.roda.domain.Keyword;
 import ro.roda.domain.Lang;
+import ro.roda.domain.Org;
 import ro.roda.domain.OtherStatistic;
+import ro.roda.domain.Person;
 import ro.roda.domain.Question;
 import ro.roda.domain.Study;
 import ro.roda.domain.StudyDescr;
 import ro.roda.domain.StudyDescrPK;
 import ro.roda.domain.StudyKeyword;
 import ro.roda.domain.StudyKeywordPK;
+import ro.roda.domain.StudyOrg;
 import ro.roda.domain.TimeMeth;
 import ro.roda.domain.Topic;
 import ro.roda.domain.UnitAnalysis;
@@ -159,8 +165,6 @@ public class ImporterServiceImpl implements ImporterService {
 	private static final String jaxbContextPath = "ro.roda.ddi";
 
 	private static final String pageXmlFile = "page.xml";
-
-	private static final String importedCmsFolderName = ".imported";
 
 	@PersistenceContext
 	transient EntityManager entityManager;
@@ -220,6 +224,9 @@ public class ImporterServiceImpl implements ImporterService {
 
 	@Value("${roda.data.ddi.files}")
 	private String rodaDataDdiFiles;
+
+	@Value("${roda.data.ddi.otherstatistic}")
+	private String rodaDataDdiOtherStatistic;
 
 	private Unmarshaller unmarshaller = null;
 
@@ -813,10 +820,25 @@ public class ImporterServiceImpl implements ImporterService {
 			ProdStmtType prodStmtType = citationType.getProdStmt();
 			if (rspStmtType != null) {
 				List<AuthEntyType> authEntyTypeList = rspStmtType.getAuthEnty();
-				// TODO use the list
+				for (AuthEntyType authEntyType : authEntyTypeList) {
+					if (authEntyType.content != null) {
+						Person person = new Person();
+
+						// TODO split name
+						person.setFname(authEntyType.content.trim());
+						person.setLname(authEntyType.content.trim());
+
+						// TODO use affiliation to link Person with an Org
+						// (using abbreviation)
+						person.setMname(authEntyType.getAffiliation());
+
+						person.persist();
+					}
+				}
 			}
 
 			if (prodStmtType != null) {
+				List<ProducerType> producerTypeList = prodStmtType.getProducer();
 				List<ProdPlacType> prodPlacTypeList = prodStmtType.getProdPlac();
 				for (ProdPlacType prodPlacType : prodPlacTypeList) {
 					log.trace("prodPlacType = " + prodPlacType.content);
@@ -829,6 +851,19 @@ public class ImporterServiceImpl implements ImporterService {
 					address.setImported(prodPlacType.content);
 					address.persist();
 				}
+
+				// for (ProducerType producerType : producerTypeList) {
+				// log.trace("producerType = " + producerType.content);
+				// if (producerType.content != null) {
+				// Org org = new Org();
+				// org.setFullName(producerType.content.trim().toUpperCase());
+				// org.setShortName(producerType.getAbbr());
+				//
+				// org.persist();
+				// }
+				//
+				// }
+
 			}
 		}
 
@@ -1061,7 +1096,7 @@ public class ImporterServiceImpl implements ImporterService {
 
 				// Add categories names + their frequencies to
 				// "other_statistics" table
-				if (varType.getCatgry() != null) {
+				if (rodaDataDdiOtherStatistic.equalsIgnoreCase("yes") && (varType.getCatgry() != null)) {
 					for (CatgryType catgryType : varType.getCatgry()) {
 						if (catgryType.getCatStat() != null
 								&& catgryType.getCatStat().size() > 0
@@ -1099,7 +1134,7 @@ public class ImporterServiceImpl implements ImporterService {
 
 		domainFile.persist();
 
-		AdminJson ret = adminJsonService.folderSave(importedCmsFolderName, null,
+		AdminJson ret = adminJsonService.folderSave(CmsFolder.importedCmsFolderName, null,
 				"Folder for imported DDI files and related files");
 
 		// create sub-folder for each imported study
@@ -1142,36 +1177,30 @@ public class ImporterServiceImpl implements ImporterService {
 				Form form = new Form();
 				form.persist();
 				for (int i = 0; i < csvLine.length; i++) {
-					try {
-						Integer integerValue = Integer.parseInt(csvLine[i]);
-						FormEditedNumberVar fenv = new FormEditedNumberVar();
+					FormEditedTextVar fetv = new FormEditedTextVar();
 
-						fenv.setFormId(form);
-						Set<FormEditedNumberVar> sfenv = form.getFormEditedNumberVars();
-						if (sfenv == null) {
-							sfenv = new HashSet<FormEditedNumberVar>();
-						}
-						sfenv.add(fenv);
-						form.setFormEditedNumberVars(sfenv);
-
-						fenv.setVariableId(variableList.get(i));
-						sfenv = variableList.get(i).getFormEditedNumberVars();
-						if (sfenv == null) {
-							sfenv = new HashSet<FormEditedNumberVar>();
-						}
-						sfenv.add(fenv);
-						variableList.get(i).setFormEditedNumberVars(sfenv);
-						variableList.get(i).merge();
-
-						fenv.setValue(new BigDecimal(integerValue));
-
-						fenv.setId(new FormEditedNumberVarPK(form.getId(), variableList.get(i).getId()));
-
-						fenv.persist();
-
-					} catch (NumberFormatException e) {
-						// TODO
+					fetv.setFormId(form);
+					Set<FormEditedTextVar> sfetv = form.getFormEditedTextVars();
+					if (sfetv == null) {
+						sfetv = new HashSet<FormEditedTextVar>();
 					}
+					sfetv.add(fetv);
+					form.setFormEditedTextVars(sfetv);
+
+					fetv.setVariableId(variableList.get(i));
+					sfetv = variableList.get(i).getFormEditedTextVars();
+					if (sfetv == null) {
+						sfetv = new HashSet<FormEditedTextVar>();
+					}
+					sfetv.add(fetv);
+					variableList.get(i).setFormEditedTextVars(sfetv);
+					variableList.get(i).merge();
+
+					fetv.setText(csvLine[i]);
+
+					fetv.setId(new FormEditedTextVarPK(variableList.get(i).getId(), form.getId()));
+
+					fetv.persist();
 				}
 			}
 

@@ -72,6 +72,12 @@ public class CmsFile {
 		return entityManager().createQuery("SELECT o FROM CmsFile o", CmsFile.class).getResultList();
 	}
 
+	public static List<CmsFile> findAllCmsFilesJson() {
+		CmsFolder jsonFolder = CmsFolder.checkCmsFolder(null, CmsFolder.jsonCmsFolderName, null, null);
+		return entityManager().createQuery("SELECT o FROM CmsFile o WHERE cmsFolderId = ?1", CmsFile.class)
+				.setParameter(1, jsonFolder).getResultList();
+	}
+
 	public static CmsFile findCmsFile(Integer id) {
 		if (id == null)
 			return null;
@@ -396,12 +402,13 @@ public class CmsFile {
 		deleteIndex(this);
 	}
 
-	@Override
-	public boolean equals(Object obj) {
-		return (id != null && id.equals(((CmsFile) obj).id))
-				|| ((filename != null && filename.equalsIgnoreCase(((CmsFile) obj).filename)) && (cmsFolderId != null && cmsFolderId
-						.equals(((CmsFile) obj).cmsFolderId)));
-	}
+	// @Override
+	// public boolean equals(Object obj) {
+	// return (id != null && id.equals(((CmsFile) obj).id))
+	// || ((filename != null && filename.equalsIgnoreCase(((CmsFile)
+	// obj).filename)) && (cmsFolderId != null && cmsFolderId
+	// .equals(((CmsFile) obj).cmsFolderId)));
+	// }
 
 	public AuditReader getAuditReader() {
 		return AuditReaderFactory.get(entityManager);

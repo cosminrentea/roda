@@ -20,7 +20,14 @@ Ext.define('databrowser.controller.DataBrowser', {
 	        	ref: 'anPanel',
 	        	selector: 'studyview panel#analResults'
 	        },
-
+	        {
+	        	ref: 'singledetails',
+	        	selector: 'studyview panel#vardetails'
+	        },
+	        {
+	        	ref: 'stsingledetails',
+	        	selector: 'studyseriesview panel#vardetails'
+	        },
 	        
 	        {
 	            ref: 'SrstudyVariables',
@@ -292,8 +299,9 @@ onSTSendToAnalysis : function (button) {
             			console.log('chart starting------');
             			if (value.charttype == 'stackedbar') {
             				console.log('stacked bar');	
+            				
             				var nstore = new Ext.data.JsonStore({
-                		    	fields:['name', 'value1', 'value2'],
+                		    	fields:[value.catfield, value.datafield1, value.datafield2],
                  		        data: value.data
                 		    });
             				var height = 500;
@@ -310,9 +318,11 @@ onSTSendToAnalysis : function (button) {
                 		       items: {
                 		    	 xtype: 'sbchart',
                 		    	 store: nstore,
+                		    	 catfield : value.catfield,
+                		    	 datafields : [value.datafield1, value.datafield2],
                 		       	}
                      		 	});
-                     		 rpanel.add(panel);          
+                     		 rpanel.add(panel);             				
             			} else if (value.charttype == 'bar') {	
             				console.log('bar');
             				var nstore = new Ext.data.JsonStore({
@@ -464,6 +474,7 @@ onSTSendToAnalysis : function (button) {
 		var me = this;
 		Ext.Ajax.request({
 	        url : '../../j/statistics',
+//	        url : 'http://roda.apiary-mock.com/statistics',
 	        method : "GET",
 	        params : {
 	                variable1 : currentNode.data.indice,
@@ -473,8 +484,8 @@ onSTSendToAnalysis : function (button) {
 	        
 	            if (responseJson.success === true) {
 	                // whatever stuff needs to happen on success
-	            	var rpanel = me.getSranPanel();
-	            	rpanle.removeAll();
+	            	var rpanel = me.getSingledetails();
+	            	rpanel.removeAll();
 	            	Ext.each(responseJson.data, function(value) {
 	            		console.log(value); 
 	            		if (value.itemtype == 'chart') {
@@ -482,7 +493,7 @@ onSTSendToAnalysis : function (button) {
 	            			if (value.charttype == 'stackedbar') {
 	            				console.log('stacked bar');	
 	            				var nstore = new Ext.data.JsonStore({
-	                		    	fields:['name', 'value1', 'value2'],
+	                		    	fields:[value.catfield, value.datafield1, value.datafield2],
 	                 		        data: value.data
 	                		    });
 	            				var height = 500;
@@ -499,9 +510,11 @@ onSTSendToAnalysis : function (button) {
 	                		       items: {
 	                		    	 xtype: 'sbchart',
 	                		    	 store: nstore,
+	                		    	 catfield : value.catfield,
+	                		    	 datafields : [value.datafield1, value.datafield2],
 	                		       	}
 	                     		 	});
-	                     		 rpanel.add(panel);          
+	                     		 rpanel.add(panel); 	            				
 	            			} else if (value.charttype == 'bar') {	
 	            				console.log('bar');
 	            				var nstore = new Ext.data.JsonStore({
@@ -613,6 +626,7 @@ onSTSendToAnalysis : function (button) {
 		var me = this;
 		Ext.Ajax.request({
 	        url : '../../j/statistics',
+//	        url : 'http://roda.apiary-mock.com/statistics',
 	        method : "GET",
 	        params : {
 	                variable1 : currentNode.data.indice,
@@ -622,16 +636,17 @@ onSTSendToAnalysis : function (button) {
 	        
 	            if (responseJson.success === true) {
 	                // whatever stuff needs to happen on success
-	            	var rpanel = me.getSranPanel();
-	            	rpanle.removeAll();
+	            	var rpanel = me.getStstsingledetails();
+	            	rpanel.removeAll();
 	            	Ext.each(responseJson.data, function(value) {
 	            		console.log(value); 
 	            		if (value.itemtype == 'chart') {
 	            			console.log('chart starting------');
 	            			if (value.charttype == 'stackedbar') {
-	            				console.log('stacked bar');	
+	            				console.log('stacked bar');
+	            				
 	            				var nstore = new Ext.data.JsonStore({
-	                		    	fields:['name', 'value1', 'value2'],
+	                		    	fields:[value.catfield, value.datafield1, value.datafield2],
 	                 		        data: value.data
 	                		    });
 	            				var height = 500;
@@ -648,9 +663,11 @@ onSTSendToAnalysis : function (button) {
 	                		       items: {
 	                		    	 xtype: 'sbchart',
 	                		    	 store: nstore,
+	                		    	 catfield : value.catfield,
+	                		    	 datafields : [value.datafield1, value.datafield2],
 	                		       	}
 	                     		 	});
-	                     		 rpanel.add(panel);          
+	                     		 rpanel.add(panel); 	            				
 	            			} else if (value.charttype == 'bar') {	
 	            				console.log('bar');
 	            				var nstore = new Ext.data.JsonStore({

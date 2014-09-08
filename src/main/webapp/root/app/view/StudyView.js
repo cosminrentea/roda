@@ -116,14 +116,19 @@ Ext.define('databrowser.view.StudyView', {
                                     {
                                         xtype : 'panel',
                                         title : 'variable details',
+                                        itemId: 'vardetails',
                                         autoScroll : true,
-                                        layout : 'fit',
-                                        items : [
-	                                        {
-	                                            xtype : 'freqchart',
-	                                            id : 'ilfreqchart',
-	                                        }
-                                        ]
+                                        //layout : 'fit',
+                                        layout : {
+                                            type : 'vbox',
+                                            align : 'center'
+                                        },
+//                                        items : [
+//	                                        {
+//	                                            xtype : 'freqchart',
+//	                                            id : 'ilfreqchart',
+//	                                        }
+//                                        ]
                                     },
                                     {
                                         xtype : 'panel',

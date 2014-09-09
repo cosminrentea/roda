@@ -174,13 +174,14 @@ interna\c{t}ional beneficiile sistemului implementat ca urmare a derul\u{a}rii s
 
 %TODO Obiectivul fazei, cf. documentatiei proiectului 
 
-\begin{itemize}
-\item
+Obiectivul fazei il constituie realizarea unor componente esentiale ale software-ului, respectiv:
+modulul de administrare, modulul de acces la date, motorul statistic.
+%\begin{itemize}
+%\item
 
-\item
+%\item
 
-
-\end{itemize}
+%\end{itemize}
 
 \section{Rezultate preconizate pentru atingerea obiectivului fazei}
 
@@ -198,7 +199,6 @@ Motor statistic
 \section{Rezumatul fazei}
 
 \medskip
-
 
 \subsection{Modulul de administrare}
 
@@ -228,8 +228,8 @@ cazul. Acest comportament se obtine prin includerea intregii aplicatii
 intr-un container special, numit viewport.
 
 Viewportul interfetei de administrare are doua zone in care sunt incluse
-componente majore: zona din partea stanga in care este inclus componentul
-\textquotedblleft{}meniu\textquotedblright{} si zona centrala 
+componente majore: zona din partea stanga in care este inclusa componenta
+\textquotedblleft{}meniu\textquotedblright{} si zona centrala.
 
 Atat meniul cat si celelalte elemente ale interfetei de administrare
 sunt prezentate pe larg in anexa A. 
@@ -238,19 +238,20 @@ sunt prezentate pe larg in anexa A.
 
 Meniul permite apelarea diferitelor module si submodule ale aplicatiei.
 In celelalte etape ale dezvoltarii RODA au fost prezentate o serie
-de module (CMS, User management, Jurnalizare, etc.). In aceasta etapa,
-modulele noi sunt: Dashboard, Metadata management si modulul de management
-al studiilor. Toate sunt prezentate in detaliu in anexa A. 
+de module (CMS, User management, Jurnalizare, etc.). 
+In aceasta etapa, modulele noi sunt: 
+Dashboard, Metadata management si modulul de management al studiilor. 
+Motorul statistic este inclus aici, precum si in Data-Browser-ul accesibil public.
+Toate sunt prezentate in detaliu in anexa A. 
 
-
-\paragraph{Zona centrala }
+\paragraph{Zona centrala}
 
 Zona centrala este un container in care se acumuleaza submodulele
 deschise prin apelarea meniului. Fiecare submodul care se incarca
 in zona centrala se incarca intr-un tab searat. Sistemul permite o
 singura instanta a fiecarui submodul, daca acesta se apeleaza pentru
 a doua oara din meniu si este deja deschis, sistemul va instrui zona
-centrala sa comute afisarea pe componentul solicitat. 
+centrala sa comute afisarea pe componenta solicitata. 
 
 \subsubsection{Modulul de management al studiilor}
 
@@ -259,11 +260,11 @@ interfata de administrare RODA si este conceput pentru a permite toate
 operatiile necesare cu studiile care se gasesc in arhiva RODA. Modulul
 are trei componente principale:
 \begin{description}
-\item [{-}] Componentul de vizualizare a studiilor existente 
-\item [{-}] Editorul principal 
+\item [{-}] Componenta de vizualizare a studiilor existente;
+\item [{-}] Editorul principal;
 \item [{-}] Editorul DDI.
 \end{description}
-Componentul de vizualizare permite urmarirea tuturor studiilor si
+Componenta de vizualizare permite urmarirea tuturor studiilor si
 a elementelor acestora. Componentul imparte ecranul in doua suprafete
 distincte, una care contine lista studiilor, prezentata fie ca arbore
 de cataloage, fie ca lista simpla. Respectand aceeasi paradigma vizuala
@@ -271,7 +272,9 @@ pe care o folosim in toata aplicatia RODA, la selectarea unui studiu
 din lista din panoul stang, in panoul din partea dreapta si afiseaza
 detaliile studiului. 
 
-\includegraphics[width=14cm]{img/study-tree-compl}
+\medskip
+\includegraphics[width=\textwidth]{img/study-tree-compl}
+\medskip
 
 Editorul principal permite modificarea proprietatilor studiilor existente.
 Editorul principal este structurat conform standardelor de reprezentare
@@ -297,24 +300,36 @@ si este sters din sistemul de stocare temporar.
 
 \subsection{Modul acces la date}
 
-Modulul de accees la date este componentul care permite accesul utilizatorilor
+Modulul de accees la date este componenta care permite accesul utilizatorilor
 la datele si metadatele studiilor stocate in baza de date. La fel
 ca si modulul de administrare, acesta este o aplicatie WEB bazata
 pe acelasi set de biblioteci, ExtJS. Introdus pentru prima data in
-aplicatia RODA in a doua etapa a programarii, acesta s-a dezvoltat
-odata cu aplicatia si acum permite si interfata cu motorul statistic. 
+aplicatia RODA in a doua etapa, acesta s-a dezvoltat
+odata cu aplicatia, permitand acum si interfatarea cu motorul statistic. 
 
 Modulul este prezentat in detaliu in Anexa A. 
 
 \subsection{Motorul statistic}
 
+Motorul statistic este realizat prin integrarea unei componente care comunica cu o instanta de R ( \url{http://www.r-project.org/} ), 
+disponibila pentru prelucrari statistice.
+Aceasta se bazeaza pe o interfata Java-to-R (implementata via JNI, Java Native Interface), 
+o librarie numita rJava ( \url{http://www.rforge.net/rJava/} ).
 
+In cadrul proiectului Spring a fost dezvoltat un controller si un serviciu ce instantiaza si utilizeaza rJava 
+pentru evaluarea de expresii, comenzi, functii 
+(acestea fiind construite pe baza datelor importate in baza de date, ce corespund fiecarui studiu). 
+Sunt posibile operatii multiple asupra unui set de 1..N variabile ce apartin unui studiu.
+A fost dezvoltat un set de functii parametrizate in limbajul R, ce sunt incarcate si apelate la runtime 
+(parametrii functiilor fiind de exemplu nume de variabile, categorii, etichete, valori de missing, valori propriu-zise ale unei variabile etc.);
+unele dintre aceste functii construiesc raspunsul pe care aplicatia il trimite mai departe catre clientul ExtJS (in format JSON), 
+iar acesta le afiseaza in mod structurat (inclusiv tabele, grafice).
 
 Mai jos este prezentata o imagine a modulului de acces la date, in care se pot vedea (in partea dreapta-jos) 
 si rezultatele obtinute de la motorul statistic pentru analiza unei variabile.
 
+\medskip
 \includegraphics[width=\textwidth]{img/Screenshot-statistics}
-
 
 \clearpage
 
@@ -322,7 +337,8 @@ si rezultatele obtinute de la motorul statistic pentru analiza unei variabile.
 
 %TODO de completat la fiecare faza ???
 Obiectivele pentru aceasta faza au fost indeplinite, fiind implementate modulul de administrare, modulul de acces la date, precum si motorul statistic.
-Implementarile sunt corecte si complete, modelele de lucru cunoscute, iar interfetele permit executia tuturor operatiilor necesare pentru o buna functionare a componentelor software.
+Implementarile sunt corecte si complete, modelele de lucru cunoscute, 
+iar interfetele permit executia tuturor operatiilor necesare pentru o buna functionare a componentelor software.
 
 
 \medskip

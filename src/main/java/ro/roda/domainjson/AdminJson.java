@@ -721,10 +721,10 @@ public class AdminJson {
 		try {
 			CmsFolder.entityManager().persist(file);
 		} catch (EntityExistsException e) {
-			return new AdminJson(false, "File not created " + e.getMessage());
+			return new AdminJson(false, "File not created because it already exists" + e.getMessage());
 		}
 
-		return new AdminJson(true, "CMS File created successfully");
+		return new AdminJson(true, "CMS File created successfully", file.getId());
 	}
 
 	public static AdminJson fileMove(Integer folderId, Integer fileId) {

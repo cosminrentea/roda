@@ -190,6 +190,20 @@ Iar rezultatul se poate vedea in cele ce urmeaza:
 \includegraphics[width=12cm]{img/treecombo}
 
 
+\subsection{CancelSave}
+
+'RODAdmin.view.toolbar.CancelSave' este un component de tip toolbar care contine doua butoane, un buton de Save si un buton de Cancel. Este utilizat in constructia componentului 'RODAdmin.view.common.WindowForm'.
+
+
+\subsubsection{CloseTB}
+
+'RODAdmin.view.toolbar.CloseTB' este un component de tip toolbar care contine doua butoane, un buton de Save si un buton de Cancel. Este utilizat in constructia componentului 'RODAdmin.view.common.InformationWindow'
+
+\subsection{WindowForm}
+
+Windowform este un component generic conceput pentru a putea obtine rapid o fereastra cu butoane de save si respectiv cancel. 'RODAdmin.view.common.WindowForm' este o extensie a 'Ext.window.Window' la care se adauga un toolbar de tipul 'RODAdmin.view.toolbar.CancelSave'
+
+
 \section{Procedura de initializare a aplicatiei}
 
 Initializarea aplicatiei se face in functia “launch” din controllerul principal. Etapele sunt prezentate in figura urmatoare.
@@ -225,13 +239,179 @@ In clasa 'RODAdmin.view.dashboard.Dashboard' sunt inregistrate doua coloane, in 
 
 \subsubsection{Componentele dashboardului}
 
-\textbf{Ultimele studii adaugate} Un component tabelar care afiseaza ultimele studii adaugate in baza de date. 
-\textbf{Trafic} Un grafic al traficului pe pagina www.roda.ro
-\textbf{Studii temporare} Un tabel al studiilor aflate in curs de editare
-\textbf{Browsere} O statistica a browserelor cu care a fost accesat site-ul www.roda.ro. 
+\begin{itemize}
+
+\item \textbf{Ultimele studii adaugate} Un component tabelar care afiseaza ultimele studii adaugate in baza de date. 
+\item \textbf{Trafic} Un grafic al traficului pe pagina www.roda.ro
+\item \textbf{Studii temporare} Un tabel al studiilor aflate in curs de editare
+\item \textbf{Browsere} O statistica a browserelor cu care a fost accesat site-ul www.roda.ro. 
+
+\end{itemize}
+
+\subsubsection{Formatul datelor}
+
+Graficul pentru trafic asteapta de la server un raspuns JSON cu urmatorul format:
+
+\begin{lstlisting}[language=json,firstnumber=1]
+{ 
+    "success": true,
+    "data" : [
+        {
+            "day" : "12-08-2014",
+            "visits" : 112,
+            "visitors" : 96,
+            "views" : 145,
+        },
+        {
+            "day" : "13-08-2014",
+            "visits" : 128,
+            "visitors" : 100,
+            "views" : 168,
+        },
+        {
+            "day" : "14-08-2014",
+            "visits" : 145,
+            "visitors" : 112,
+            "views" : 186,
+        },
+        {
+            "day" : "15-08-2014",
+            "visits" : 110,
+            "visitors" : 99,
+            "views" : 172,
+        },
+        {
+            "day" : "16-08-2014",
+            "visits" : 101,
+            "visitors" : 88,
+            "views" : 136,
+        },
+        {
+            "day" : "17-08-2014",
+            "visits" : 98,
+            "visitors" : 72,
+            "views" : 121,
+        }]
+}
+\end{lstlisting}
 
 
-\section {Modulul de management al metadatelor}
+Panoul pentru ultimele studii introduse asteapta un raspuns JSON cu aceeasi structura ca cea pe care o utilizeaza panoul de vizualizare liniara din modulul de vizualizare a studiilor. 
+
+
+\begin{lstlisting}[language=json,firstnumber=1]
+{"data":
+  [{
+    "description":"Cercetarea este un demers sistematic de analiza..., 
+    "groupid":null,
+    "indice":"2",
+    "itemtype":"study",
+    "name":"Capital social si antreprenoriat in comunitatile rurale din Romania. Sate muntenesti - 1999"
+   },{
+    "description":"Investigatia se inscrie intr-o serie mai larga de cercetari menite sa ....",
+    "groupid":null,
+    "indice":"3",
+    "itemtype":
+    "study",
+    "name":"Sondaj de opinie publica - martie 1998"
+  },{
+    "description":"Obiective: a) Identificarea orientarilor...",
+    "groupid":null,
+    "indice":"5",
+    "itemtype":"study",
+    "name":"Valori fundamentale ale democratiei - 1997"
+  }]
+}
+\end{lstlisting}  
+  
+Panoul pentru statistica browserelor astepata urmatorul raspuns JSON:
+
+
+\begin{lstlisting}[language=json,firstnumber=1]
+{ 
+    "success": true,
+    "data" : [
+        {
+            "name" : "Google Chrome",
+            "value" : 48
+        },
+        {
+            "name" : "Firefox",
+            "value" : 19
+        },
+        {
+            "name" : "Safari",
+            "value" : 17
+        },
+        {
+            "name" : "Internet Explorer",
+            "value" : 12
+        },
+        {
+            "name" : "Opera",
+            "value" : 3
+        },
+        {
+            "name" : "Others",
+            "value" : 1
+        }
+        ]
+}
+\end{lstlisting}  
+  
+Panoul pentru studii temporare asteapta un format JSON putin mai aparte datorita modului de stocare al acestor studii temporare ca fisiere JSON in content repository. 
+
+\begin{lstlisting}[language=json,firstnumber=1]
+{ 
+    "data": [
+        {
+            "alias": "ereret",
+            "directory": ".json/ereret",
+            "filepropertiesset": [
+                {
+                    "name": "jcr:primaryType",
+                    "value": "nt:resource"
+                },
+                {
+                    "name": "jcr:createdBy",
+                    "value": "admin"
+                },
+                {
+                    "name": "jcr:mimeType",
+                    "value": "application/json"
+                },
+                {
+                    "name": "jcr:created",
+                    "value": "2014-09-09T17:39:41.150+03:00"
+                },
+                {
+                    "name": "jcr:lastModifiedBy",
+                    "value": "admin"
+                },
+                {
+                    "name": "jcr:lastModified",
+                    "value": "2014-09-09T17:39:41.151+03:00"
+                },
+                {
+                    "name": "jcr:uuid",
+                    "value": "e3132e65-e0c5-4acb-a9be-e6335dd3351b"
+                }
+            ],
+            "filesize": 960,
+            "filetype": "application/json",
+            "folderid": 62,
+            "iconCls": "file",
+            "indice": "102",
+            "leaf": true,
+            "name": "ereret",
+            "url": "cmsfilecontent/102"
+        }
+    ]
+}  
+\end{lstlisting}   
+
+
+\subsection{Modulul de management al metadatelor}
 
 Modulul de management al metadatelor este conceput si implementat pentru datele suport care nu au nevoie de o interfata complexa pentru intretinere. Asemanator ca implementare cu dashboardul (ecranele se pot muta de pe o coloana pe alta si se pot minimiza in functie de nevoi) modulul de metadate este de asemenea usor extensibil pentru a permite adaugarea de noi componente in functie de necesitati. In imaginea urmatoare se pot vedea deschise modulele pentru modificarea prefixelor si a sufixelor personale precum si cel de orase / localitati.
 
@@ -242,7 +422,23 @@ Celelalte componente (persoane, organizatii, tari) sunt inchise pentru a nu mai 
 \includegraphics[width=16cm]{img/metadata-form}
 
 
-\section {Modulul de management al continutului}
+Arhitectura modulului Metadata este similara cu cea a modulului Dashboard dar este construita cu un set de clase separate. Astfel, clasa principala a acestui modul (cea care se incarca la apelarea elementului corespunzator de meniu) este 'RODAdmin.view.metadata.Metadata' cu aliasul 'metadata', care extinde o clasa numita 'RODAdmin.view.metadata.MetadataPanel'. MetadataPanel este o extensie a clasei 'Ext.panel.Panel' cu o serie de verificari si alte operatiuni pe care clasa le executa inainte de constructia layoutului. Ca si in cazul componentului Dashboard, MetadataPanel va inregistra o zona numita 'RODAdmin.view.metadata.MetadataDropZone' care permite mutarea prin drag-and-drop a componentelor de pe o coloana pe alta.  
+
+Clasa principala ('RODAdmin.view.metadata.Metadata') are doua coloane pe care incarca o serie de componente care servesc la vizualizarea metadatelor. Acestea sunt urmatoarele: 
+
+\begin{itemize}
+\item 'RODAdmin.view.metadata.mcomponents.Sufixes' - un panou de tip grid care prezinta sufixele din baza de date.
+\item 'RODAdmin.view.metadata.mcomponents.Prefixes' - un panou de tip grid care prezinta prefixele din baza de date.
+\item 'RODAdmin.view.metadata.mcomponents.Persons' - un panou de tip grid care prezinta persoanele din baza de date.
+\item 'RODAdmin.view.metadata.mcomponents.Orgs' - un panou de tip grid care prezinta organizatiile din baza de date.
+\item 'RODAdmin.view.metadata.mcomponents.Country' - un panou de tip grid care prezinta tarile din baza de date.
+\item 'RODAdmin.view.metadata.mcomponents.City' - un panou de tip grid care prezinta orasele din baza de date.
+\end{itemize}
+
+Pe langa aceste panouri, care au doar rolul de a afisa datele, modulul Metadata trebuie sa permita si intretinerea lor (adaugare, stergere, modificare). Acestea se realizeaza prin intermediul unui set de controllere (cate unul pentru fiecare component) si de view-uri suplimentare care reprezinta formulare pentru modificarea datelor sau adaugarea de date noi. 
+
+
+\subsection{Modulul de management al continutului}
 
 Acest modul a fost prezentat pe larg intr-un raport anterior. Pentru coerenta, reluam aici elementele sale in mod succint:
 
@@ -254,19 +450,19 @@ Acest modul a fost prezentat pe larg intr-un raport anterior. Pentru coerenta, r
 \textbf{Fisiere} submodulul dedicat fisierelor, conectat direct cu un sistem de repository bazat pe Apache Jackrabbit™ content repository permite vizualizarea, adaugarea, modificarea si stergerea de fisiere (imagini, documente, etc.).
 
 
-\section {Modulul de management al utilizatorilor}
+\subsection{Modulul de management al utilizatorilor}
 
 De asemenea prezentat intr-o alta faza a proiectului, modulul de management al utilizatorilor permite vizualizarea, adaugarea, urmarirea utilizatorilor RODA si a activitatii acestora. 
 
 
-\section {Modulul de management al studiilor}
+\subsection{Modulul de management al studiilor}
 
 Modulul de management al studiilor este cel mai complex modul din interfata de administrare RODA  si este conceput pentru a permite toate operatiile necesare cu studiile care se gasesc in arhiva RODA. Modulul are trei componente principale: 
     - Componentul de vizualizare a studiilor existente
     - Editorul principal
     - Editorul DDI. 
 
-\subsection{Componentul de vizualizare a studiilor existente}
+\subsubsection{Componentul de vizualizare a studiilor existente}
 
 Componentul de vizualizare permite urmarirea tuturor studiilor si a elementelor acestora. Componentul imparte ecranul in doua suprafete distincte, una care contine lista studiilor, prezentata fie ca arbore de cataloage, fie ca lista simpla. Respectand aceeasi paradigma vizuala pe care o folosim in toata aplicatia RODA, la selectarea unui studiu din lista din panoul stang, in panoul din partea dreapta si afiseaza detaliile studiului. 
 
@@ -285,7 +481,7 @@ Panoul de vizualizare a unui studiu este impartit in mai multe tab-uri, in funct
 \textbf{Cuvinte cheie} - Lista cuvintelor cheie asociate studiului respectiv. 
 
 
-\subsection{Editorul principal}
+\subsubsection{Editorul principal}
 
 Editorul principal permite modificarea proprietatilor studiilor existente. Editorul principal este structurat conform standardelor de reprezentare a datelor sociale propuse de DDI (Data Documentation Initiative). Noile versiuni ale formatului DDI (incepand de la versiunea 3.0 in sus) sunt concepute astfel incat sa capteze in mod distinct toate etapele dezvoltarii unui studiu (lifecycle). Ca si interfata de vizualizare, editorul este impartit in mai multe tab-uri, cu diferenta ca aici toate sunt vizibile indiferent de prezenta continutului. 
 
@@ -293,36 +489,87 @@ Editorul principal este diferit de celelalte componente ale interfetei descrise 
 
 Editorul este impartit in 6 componente:
 
-\subsubsection{Study proposal}
+\paragraph{Study proposal}
 
 In panoul study proposal sunt disponibile toate elementele care in mod normal se completeaza in faza de proiectare a studiului. 
 
 \includegraphics[width=16cm]{img/studyedit-proposal}
 
+\paragraph{Study funding}
 
 In panoul “Study Funding” sunt afisate elementele care tin de finantarea studiului respectiv, in masura in care sunt cunoscute:
 
 \includegraphics[width=16cm]{img/studyedit-funding}
 
+\paragraph{Study concepts}
+
 Conceptele permit gruparea intrebarilor in functie de semnificatii mai abstracte. In esenta, la nivelul datelor, conceptele sunt grupuri de intrebari distribuite intr-o structura arborescenta. Panoul de concepte contine informatiile despre conceptele studiului curent, in masura in care acestea sunt disponibile.
 
 \includegraphics[width=16cm]{img/studyedit-concepts}
+
+\paragraph{Study questions}
 
 Panoul de intrebari este panoul in care se pot modifica/introduce intrebarile studiului, impreuna cu traducerile acestora si persoanele sau organizatiile responsabile de alcatuirea chestionarului. 
 
 \includegraphics[width=16cm]{img/studyedit-questions}
 
+\paragraph{Data collection}
+
 Panoul Data Collection contine informatii despre procesul de colectare a datelor, perioadele in care acestea au avut loc, impreuna cu persoanele sau organizatiile responsabile, modul de colectare (interviu fata in fata, telefonic, etc). 
 
 \includegraphics[width=16cm]{img/studyedit-datacollection}
+
+\paragraph{Data Production}
+
 
 Panoul “DataProduction” este cel in care se gasesc informatii depre variabile. 
 
 \includegraphics[width=16cm]{img/studyedit-dataproduction}
 
 
-\subsection{Editorul DDI}
+\subsubsection{Editorul DDI}
 
+
+
+
+\paragraph{Arhitectura}
+
+Toate componentele editorului DDI sunt izolate de cele ale interfetei de administrare pentru a nu intra in coliziune cu componentele similare ale interfetei. Componentul principal, care se apeleaza in momentul lansarii editorului DDI este 'RODAdmin.view.studies.CBEditor.AddStudyWindow', cu aliasul studyadd. Acesta este o extindere a unui component comun, 'RODAdmin.view.common.WindowForm' care a fost prezentat anterior. AddStudyWindow are doua zone, una in care se gasesc butoanele de comanda, care permit trecerea de la un subpanou la altul, si o alta in care se gaseste un component de tip "card" care poate afisa unul dintre urmatoarele clase: 
+
+\begin{itemize}
+\item 'RODAdmin.view.studies.CBEditor.studyadd.sConcepts' - alias: sconcepts
+\item 'RODAdmin.view.studies.CBEditor.studyadd.sFunding' - alias: sfunding
+\item 'RODAdmin.view.studies.CBEditor.studyadd.sProposal' - alias: sproposal
+\item 'RODAdmin.view.studies.CBEditor.studyadd.sQuestions' - alias: squestions
+\item 'RODAdmin.view.studies.CBEditor.studyadd.sDataCollection' - alias:sdatacollection 
+\item 'RODAdmin.view.studies.CBEditor.studyadd.sDataProd' - alias: sdataprod
+\end{itemize}
+
+Fiecare dintre componentele de mai sus reprezinta un formular in care se pot introduce date, conform descrierilor de la sectiunea "Interfata". 
+
+In functie de elementele apelate, anumite componente se introduc in ferestre separate (cele care au o complexitate ridicata). Astfel, pe langa clasele prezentate mai exista urmatoarele: 
+
+\begin{itemize}
+\item 'RODAdmin.view.studies.CBEditor.AddFile' - alias: addfile
+\item 'RODAdmin.view.studies.CBEditor.AddPersonOrg' - alias: addpersonorg
+\item 'RODAdmin.view.studies.CBEditor.AddQuestion' - alias: addquestion
+\item 'RODAdmin.view.studies.CBEditor.AddQuestionTranslation' - alias: addquestiontrans
+\item 'RODAdmin.view.studies.CBEditor.AddVariable' - alias: addvariable
+\end{itemize}
+
+
+Toate elementele vizuale sunt conectate la un singur controller: 'RODAdmin.controller.CBEditor.StudyAdd'. Acesta controleaza toate ferestrele aditionale, inclusiv inregistrarea pe server a datelor temporare. 
+
+Pentru a putea corela informatiile intre diferite panouri (ex: concepte - intrebari) este nevoie de o serie intreaga de store-uri si modele care functioneaza in memorie. 
+
+Asociat editorului DDI exista un panou in care se pot vedea studiile temporare, in curs de a fi finalizate. Acestea sunt stocate in sistemul de content repository si pot fi deschise de cate ori este nevoie pana la finalizarea lor cand pot fi transformate in studii finale in baza de date. 
+
+Acest panou se comporta ca un submodul separat, are propria intrare in meniu si propria clasa principala care se lanseaza din meniu, numita 'RODAdmin.view.studies.StudiesTemp' cu aliasul 'studiestemp'. Panoul contine o lista a studiilor in curs de editare impreuna cu elementele de comanda necesare reincarcarii lor in editorul DDI. 
+
+\includegraphics[width=16cm]{img/temporarystudies}
+
+
+\paragraph{Interfata}
 
 Editorul DDI este un set de formulare asemanatoare cu cele care alcatuiesc componentul de editare a studiului. Editorul DDI insa este complet separat de structura principala a bazei de date si este conceput pentru cazurile in care un operator RODA sau un utilizator extern doreste sa introduca un studiu in baza de date sau sa creeze un fisier in format DDI. Toate componentele editorului DDI sunt separate de cele ale formularelor de editare a studiilor, inclusiv componentele de tip store si model. 
 
@@ -365,3 +612,6 @@ Data Collection contine informatii despre procesul de colectare a datelor, fiind
 Ultimul panou, cel numit “data production” este cel in care trebuiesc introduse variabilele. In standartul DDI o intrebare poate fi reprezentata cu ajutorul mai multor variabile. Fiecare variabila va mosteni tipul de raspuns si lista de codificari specificare la intrebare. 
 
 \includegraphics[width=16cm]{img/ddi-editor-addvariable}
+
+
+

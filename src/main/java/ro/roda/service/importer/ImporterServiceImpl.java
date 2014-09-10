@@ -741,7 +741,7 @@ public class ImporterServiceImpl implements ImporterService {
 			MockMultipartFile mockMultipartFileCsv = null;
 			if (importDdiCsv) {
 				// get CSV file name (RODA naming rules)
-				String csvFilename = ddiFile.getName().split("_")[0].concat(".csv");
+				String csvFilename = ddiFile.getName().split("_")[0].concat("_T.csv");
 				// TODO @Value for "ddi" folder below
 				Resource csvResource = pmr.getResource("classpath:ddi/" + csvFilename);
 				FileInputStream fisCsv = null;
@@ -1144,66 +1144,100 @@ public class ImporterServiceImpl implements ImporterService {
 		adminJsonService.fileSave(retDdi.getId(), multipartFileDdi, null, null, null);
 
 		// save the data/CSV file, if any
+		// if (multipartFileCsv != null) {
+		// adminJsonService.fileSave(retDdi.getId(), multipartFileCsv, null,
+		// null, null);
+		//
+		// List<String[]> csvLines;
+		// CSVReader reader = new CSVReader(new BufferedReader(new
+		// InputStreamReader(
+		// multipartFileCsv.getInputStream(), "UTF8")), '\t');
+		// csvLines = reader.readAll();
+		// reader.close();
+		//
+		// String[] headerLine;
+		// List<Variable> variableList = new ArrayList<Variable>();
+		// Iterator<String[]> iter = csvLines.iterator();
+		// if (iter.hasNext()) {
+		// headerLine = iter.next();
+		// for (int i = 0; i < headerLine.length; i++) {
+		// headerLine[i] = headerLine[i].split("\"")[0];
+		//
+		// for (Question question : instance.getQuestions()) {
+		// for (Variable qVar : question.getVariables()) {
+		// if (qVar.getName().equalsIgnoreCase(headerLine[i])) {
+		// variableList.add(qVar);
+		// break;
+		// }
+		// }
+		// }
+		// }
+		// }
+		// for (; iter.hasNext();) {
+		// String[] csvLine = iter.next();
+		// log.trace("Line items: " + csvLine.length);
+		// Form form = new Form();
+		// form.persist();
+		// for (int i = 0; i < csvLine.length; i++) {
+		// FormEditedTextVar fetv = new FormEditedTextVar();
+		//
+		// fetv.setFormId(form);
+		// Set<FormEditedTextVar> sfetv = form.getFormEditedTextVars();
+		// if (sfetv == null) {
+		// sfetv = new HashSet<FormEditedTextVar>();
+		// }
+		// sfetv.add(fetv);
+		// form.setFormEditedTextVars(sfetv);
+		//
+		// fetv.setVariableId(variableList.get(i));
+		// sfetv = variableList.get(i).getFormEditedTextVars();
+		// if (sfetv == null) {
+		// sfetv = new HashSet<FormEditedTextVar>();
+		// }
+		// sfetv.add(fetv);
+		// variableList.get(i).setFormEditedTextVars(sfetv);
+		// variableList.get(i).merge();
+		//
+		// fetv.setText(csvLine[i]);
+		//
+		// fetv.setId(new FormEditedTextVarPK(variableList.get(i).getId(),
+		// form.getId()));
+		//
+		// fetv.persist();
+		// }
+		// }
+		//
+		// }
+
 		if (multipartFileCsv != null) {
 			adminJsonService.fileSave(retDdi.getId(), multipartFileCsv, null, null, null);
 
 			List<String[]> csvLines;
 			CSVReader reader = new CSVReader(new BufferedReader(new InputStreamReader(
-					multipartFileCsv.getInputStream(), "UTF8")), '\t');
+					multipartFileCsv.getInputStream(), "UTF8")), '|');
 			csvLines = reader.readAll();
 			reader.close();
 
-			String[] headerLine;
-			List<Variable> variableList = new ArrayList<Variable>();
-			Iterator<String[]> iter = csvLines.iterator();
-			if (iter.hasNext()) {
-				headerLine = iter.next();
-				for (int i = 0; i < headerLine.length; i++) {
-					headerLine[i] = headerLine[i].split("\"")[0];
-
+			for (Iterator<String[]> iter = csvLines.iterator(); iter.hasNext();) {
+				String[] csvLine = iter.next();
+				// log.trace("Line items: " + csvLine.length);
+				if (csvLine.length > 1) {
+					StringBuilder varValues = new StringBuilder();
+					varValues.append(csvLine[1]);
+					for (int i = 2; i < csvLine.length; i++) {
+						varValues.append(',').append(csvLine[i]);
+					}
 					for (Question question : instance.getQuestions()) {
-						for (Variable qVar : question.getVariables()) {
-							if (qVar.getName().equalsIgnoreCase(headerLine[i])) {
-								variableList.add(qVar);
+						for (Variable var : question.getVariables()) {
+							if (var.getName().equalsIgnoreCase(csvLine[0])) {
+								var.setValues(varValues.toString());
+								var.merge();
 								break;
 							}
 						}
 					}
 				}
 			}
-			for (; iter.hasNext();) {
-				String[] csvLine = iter.next();
-				log.trace("Line items: " + csvLine.length);
-				Form form = new Form();
-				form.persist();
-				for (int i = 0; i < csvLine.length; i++) {
-					FormEditedTextVar fetv = new FormEditedTextVar();
-
-					fetv.setFormId(form);
-					Set<FormEditedTextVar> sfetv = form.getFormEditedTextVars();
-					if (sfetv == null) {
-						sfetv = new HashSet<FormEditedTextVar>();
-					}
-					sfetv.add(fetv);
-					form.setFormEditedTextVars(sfetv);
-
-					fetv.setVariableId(variableList.get(i));
-					sfetv = variableList.get(i).getFormEditedTextVars();
-					if (sfetv == null) {
-						sfetv = new HashSet<FormEditedTextVar>();
-					}
-					sfetv.add(fetv);
-					variableList.get(i).setFormEditedTextVars(sfetv);
-					variableList.get(i).merge();
-
-					fetv.setText(csvLine[i]);
-
-					fetv.setId(new FormEditedTextVarPK(variableList.get(i).getId(), form.getId()));
-
-					fetv.persist();
-				}
-			}
-
 		}
 
 		// serialization of XML as JSON - if needed

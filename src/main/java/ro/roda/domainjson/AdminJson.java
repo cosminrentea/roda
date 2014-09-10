@@ -960,7 +960,6 @@ public class AdminJson {
 
 	private String message;
 
-	@JSON(include = false)
 	private Integer id;
 
 	public AdminJson(boolean success, String message) {
@@ -999,12 +998,11 @@ public class AdminJson {
 	}
 
 	public String toJson() {
+		return new JSONSerializer().exclude("*.class").exclude("id").serialize(this);
+	}
 
-		JSONSerializer serializer = new JSONSerializer();
-
-		serializer.exclude("*.class");
-
-		return serializer.serialize(this);
+	public String toJsonWithId() {
+		return new JSONSerializer().exclude("*.class").serialize(this);
 	}
 
 	// Cms Page Management Methods

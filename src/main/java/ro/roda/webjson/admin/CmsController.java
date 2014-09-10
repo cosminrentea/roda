@@ -312,7 +312,7 @@ public class CmsController {
 			return null;
 		}
 
-		return jsonSave.toJson();
+		return jsonSave.toJsonWithId();
 	}
 
 	@RequestMapping(value = "/cmsfilemove", method = RequestMethod.POST, produces = "application/json")

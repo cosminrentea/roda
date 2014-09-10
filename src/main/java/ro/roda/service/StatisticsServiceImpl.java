@@ -70,26 +70,61 @@ public class StatisticsServiceImpl implements StatisticsService {
 
 	public String getStatisticsJson(String operation, List<Long> variableIds) {
 
-		if (variableIds != null && re != null && rWorkingDirectory != null && rSourceFilename != null) {
-
-			log.trace("Number of variables: " + variableIds.size());
+		if (variableIds != null && variableIds.size() > 0 && variableIds.size() <= 2 && re != null
+				&& rWorkingDirectory != null && rSourceFilename != null) {
 
 			re.eval("setwd(\"" + rWorkingDirectory + "\")");
 			re.eval("source(\"" + rSourceFilename + "\")");
 
-			// exemplul 3 din roda.R
-			// REXP rexp = re
-			// .eval("getStats(list(vars = list(v1 = c(97, 99, sample(1:7, 122, replace=T), 99)), meta = list(v1 = c(\"Foarte putin\"=1, \"Foarte mult\"=7, \"Nu e cazul\"=97, \"Nu stiu\"=98, \"Nu raspund\"=99))))");
+			log.trace("Number of variables: " + variableIds.size());
 
-			// exemplul 5 din roda.R
-			REXP rexp = re
-					.eval("getStats(list(vars = list(v1 = c(97, 99, sample(1:10, 122, replace=T), 99), v2 = c(NA, sample(18:90, 123, replace = TRUE), 999)), meta = list(v1 = c(\"NR/NS\"=99, \"Nu e cazul\"=97), v2 = c(\"Non raspuns\"=999))))");
+			Variable v1 = null, v2 = null;
+			String evalQuery = null;
+			if (variableIds.size() == 1) {
+				v1 = Variable.findVariable(variableIds.get(0));
+
+				// exemplul 3 din roda.R
+				// REXP rexp = re
+				// .eval("getStats(list(vars = list(v1 = c(97, 99, sample(1:7, 122, replace=T), 99)), meta = list(v1 = c(\"Foarte putin\"=1, \"Foarte mult\"=7, \"Nu e cazul\"=97, \"Nu stiu\"=98, \"Nu raspund\"=99))))");
+
+				// exemplul 5 din roda.R
+				// REXP rexp = re
+				// .eval("getStats(list(vars = list(v1 = c(97, 99, sample(1:10, 122, replace=T), 99), v2 = c(NA, sample(18:90, 123, replace = TRUE), 999)), meta = list(v1 = c(\"NR/NS\"=99, \"Nu e cazul\"=97), v2 = c(\"Non raspuns\"=999))))");
+
+				evalQuery = "getStats(list(vars = list("
+						+ v1.getName()
+						+ " = c("
+						+ v1.getValues()
+						+ ")), meta = list("
+						+ v1.getName()
+						+ " = c(\"Mult mai buna\"=1, \"Mai buna\"=2, \"La fel\"=3, \"Mai proasta\"=4, \"Mult mai proasta\"=5, \"Nu e cazul\"=97, \"Nu stiu\"=98, \"Nu raspund\"=99))))";
+			} else if (variableIds.size() == 2) {
+				v1 = Variable.findVariable(variableIds.get(0));
+				v2 = Variable.findVariable(variableIds.get(1));
+				evalQuery = "getStats(list(vars = list("
+						+ v1.getName()
+						+ " = c("
+						+ v1.getValues()
+						+ "),"
+						+ v2.getName()
+						+ " = c("
+						+ v2.getValues()
+						+ ")), meta = list("
+						+ v1.getName()
+						+ " = c(\"Mult mai buna\"=1, \"Mai buna\"=2, \"La fel\"=3, \"Mai proasta\"=4, \"Mult mai proasta\"=5, \"Nu e cazul\"=97, \"Nu stiu\"=98, \"Nu raspund\"=99),"
+						+ v2.getName()
+						+ " = c(\"Mult mai buna\"=1, \"Mai buna\"=2, \"La fel\"=3, \"Mai proasta\"=4, \"Mult mai proasta\"=5, \"Nu e cazul\"=97, \"Nu stiu\"=98, \"Nu raspund\"=99))))";
+
+			}
+
+			log.trace("Eval query: " + evalQuery);
+			REXP rexp = re.eval(evalQuery);
 
 			if (rexp != null) {
 				return rexp.asString();
 			}
 		}
-		return "{\"success\": false, \"message\":\"Could not obtain statistics from R\"]}";
+		return "{\"success\": false, \"message\":\"ERROR (parameter, query, evaluation or R configuration). Could not obtain statistics from R\"]}";
 	}
 
 	public String getStatisticsJsonDemo(Long rnormParam) {

@@ -270,6 +270,9 @@ public class Variable {
 	@NotNull
 	private String name;
 
+	@Column(name = "values", columnDefinition = "text")
+	private String values;
+
 	@Column(name = "order_in_question", columnDefinition = "int")
 	// @NotNull
 	private Integer orderInQuestion;
@@ -472,6 +475,14 @@ public class Variable {
 		this.skips = skips;
 	}
 
+	public String getValues() {
+		return values;
+	}
+
+	public void setValues(String values) {
+		this.values = values;
+	}
+
 	public void setSkips1(Set<Skip> skips1) {
 		this.skips1 = skips1;
 	}
@@ -511,11 +522,12 @@ public class Variable {
 		return new JSONSerializer()
 				.exclude("*.class")
 				.exclude("operatorInstructions", "selectionVariable", "type", "variableType", "fileId",
-						"classAuditReader", "auditReader", "instanceVariables", "orderInQuestion", "otherStatistics.auditReader",
-						"otherStatistics.classAuditReader", "otherStatistics.variableId.classAuditReader",
-						"otherStatistics.variableId.auditReader", "skips", "skips1", "vargroups", "concepts",
-						"formEditedNumberVars", "formEditedTextVars", "questionId.auditReader",
-						"questionId.classAuditReader", "questionId.variables", "questionId.instanceId", "questionId.langId")
+						"classAuditReader", "auditReader", "instanceVariables", "orderInQuestion",
+						"otherStatistics.auditReader", "otherStatistics.classAuditReader",
+						"otherStatistics.variableId.classAuditReader", "otherStatistics.variableId.auditReader",
+						"skips", "skips1", "vargroups", "concepts", "formEditedNumberVars", "formEditedTextVars",
+						"questionId.auditReader", "questionId.classAuditReader", "questionId.variables",
+						"questionId.instanceId", "questionId.langId")
 				.include("otherStatistics.id", "otherStatistics.name", "otherStatistics.value",
 						"otherStatistics.variableId.id").rootName("data").serialize(l);
 	}

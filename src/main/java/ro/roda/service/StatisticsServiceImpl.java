@@ -76,12 +76,15 @@ public class StatisticsServiceImpl implements StatisticsService {
 			re.eval("setwd(\"" + rWorkingDirectory + "\")");
 			re.eval("source(\"" + rSourceFilename + "\")");
 
-			log.trace("Number of variables: " + variableIds.size());
+			log.trace("Statistics: rWorkingDirectory: " + rWorkingDirectory);
+			log.trace("Statistics: rSourceFilename: " + rSourceFilename);
+			log.trace("Statistics: Number of variables: " + variableIds.size());
 
 			Variable v1 = null, v2 = null;
-			String evalQuery = null;
+			String evalExpr = null;
 			if (variableIds.size() == 1) {
 				v1 = Variable.findVariable(variableIds.get(0));
+				log.trace("v1: " + v1.getId());
 
 				// exemplul 3 din roda.R
 				// REXP rexp = re
@@ -91,7 +94,7 @@ public class StatisticsServiceImpl implements StatisticsService {
 				// REXP rexp = re
 				// .eval("getStats(list(vars = list(v1 = c(97, 99, sample(1:10, 122, replace=T), 99), v2 = c(NA, sample(18:90, 123, replace = TRUE), 999)), meta = list(v1 = c(\"NR/NS\"=99, \"Nu e cazul\"=97), v2 = c(\"Non raspuns\"=999))))");
 
-				evalQuery = "getStats(list(vars = list("
+				evalExpr = "getStats(list(vars = list("
 						+ v1.getName()
 						+ " = c("
 						+ v1.getValues()
@@ -101,7 +104,10 @@ public class StatisticsServiceImpl implements StatisticsService {
 			} else if (variableIds.size() == 2) {
 				v1 = Variable.findVariable(variableIds.get(0));
 				v2 = Variable.findVariable(variableIds.get(1));
-				evalQuery = "getStats(list(vars = list("
+				log.trace("v1: " + v1.getId());
+				log.trace("v2: " + v2.getId());
+
+				evalExpr = "getStats(list(vars = list("
 						+ v1.getName()
 						+ " = c("
 						+ v1.getValues()
@@ -117,14 +123,18 @@ public class StatisticsServiceImpl implements StatisticsService {
 
 			}
 
-			log.trace("Eval query: " + evalQuery);
-			REXP rexp = re.eval(evalQuery);
+			log.trace("Statistics: Eval query / R expression: " + evalExpr);
+			REXP rexp = re.eval(evalExpr);
 
 			if (rexp != null) {
 				return rexp.asString();
+			} else {
+				log.trace("Statistics: an incorrect R expression was generated and evaluated ?");
 			}
+		} else {
+			log.trace("Statistics: incorrect setup or called incorrectly ?");
 		}
-		return "{\"success\": false, \"message\":\"ERROR (parameter, query, evaluation or R configuration). Could not obtain statistics from R\"]}";
+		return "{\"success\": false, \"message\":\"ERROR (caused by R setup, parameters, generated expression, or evaluation). Could not obtain statistics from R\"}";
 	}
 
 	public String getStatisticsJsonDemo(Long rnormParam) {

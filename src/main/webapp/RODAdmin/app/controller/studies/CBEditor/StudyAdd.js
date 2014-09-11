@@ -1926,7 +1926,7 @@ Ext.define('RODAdmin.controller.studies.CBEditor.StudyAdd', {
 		if (this.getStudyaddmain().getMode() == 'add') {
 			console.log('add mode -------------------------------------');
 			Ext.Ajax.request({
-				url: '/roda/j/admin/cmsjsonsave',
+				url: '/roda/j/admin/cmsjsoncreate',
 				waitTitle: 'Connecting',
 				waitMsg: 'Sending data...',                                     
 				params: {
@@ -1942,8 +1942,10 @@ Ext.define('RODAdmin.controller.studies.CBEditor.StudyAdd', {
 					if (resp.success) {
 							console.log ('response success');
                         //	RODAdmin.util.Alert.msg('Success!', response.message);
-                        	this.getStudyadd.setMode('edit');
-                        	this.getStudyadd.setEditID(1);
+                        	this.getStudyaddmain().setMode('edit');
+                        	this.getStudyaddmain().setEditindex(resp.id);
+        					console.log (resp.id);					
+
 					} else {
 						console.log ('error');
 						RODAdmin.util.Util.showErrorMsg(response.message);
@@ -1967,18 +1969,21 @@ Ext.define('RODAdmin.controller.studies.CBEditor.StudyAdd', {
 			});
 		} else if (this.getStudyaddmain().getMode() == 'edit') {
 			console.log('edit mode -------------------------------------');
-			var myid = this.getStudyaddmain().getEditId();
+			var myid = this.getStudyaddmain().getEditindex();
 			Ext.Ajax.request({
-			    url: '/roda/j/admin/cmsjsonsave/'+myid,
+			    url: '/roda/j/admin/cmsjsonsave/',
 			    waitTitle: 'Connecting',
-			    waitMsg: 'Sending data...',                                     
+			    waitMsg: 'Sending data...',  
+			    method: 'POST',  
 			    params: {
-			    	method: 'POST',          
-			        "title" : mytitle,
-			        "data" : allmydata
+			        "name" : mytitle,
+			        "id" : myid,
 			    },
+			    jsonData: allmydata,
 			    scope:this,
-			    success: received,                                    
+			    success : function(response, opts) {
+			    	console.log('success');
+			    },                                
 			    failure: function(){console.log('failure');}
 			});
 			

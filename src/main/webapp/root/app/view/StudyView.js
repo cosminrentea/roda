@@ -107,7 +107,7 @@ Ext.define('databrowser.view.StudyView', {
                         },
                         {
                             xtype : 'tabpanel',
-                            region : 'south',
+                            region : 'east',
                             collapsible : true,
                             split : true,
                             flex : 1,
@@ -115,7 +115,7 @@ Ext.define('databrowser.view.StudyView', {
                             items : [
                                     {
                                         xtype : 'panel',
-                                        title : 'variable details',
+                                        title : 'Variable details',
                                         itemId: 'vardetails',
                                         autoScroll : true,
                                         //layout : 'fit',
@@ -133,7 +133,7 @@ Ext.define('databrowser.view.StudyView', {
                                     {
                                         xtype : 'panel',
                                         autoScroll : true,
-                                        title : 'Analyse',
+                                        title : 'Analyze',
                                         items : [
                                                 {
                                                     xtype : 'gridpanel',

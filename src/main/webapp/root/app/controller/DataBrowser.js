@@ -161,8 +161,8 @@ Ext.define('databrowser.controller.DataBrowser', {
 	var secv = astore.getAt(1).data.indice;
 	var me = this;
 	Ext.Ajax.request({
-        url : 'http://roda.apiary-mock.com/statistics',
-        method : "POST",
+        url : '../../j/statistics',
+        method : "GET",
         params : {
                 variable1 : firstv,
                 variable2 : secv
@@ -280,8 +280,9 @@ onSTSendToAnalysis : function (button) {
 	var secv = astore.getAt(1).data.indice;
 	var me = this;
 	Ext.Ajax.request({
-        url : 'http://roda.apiary-mock.com/statistics',
-        method : "POST",
+//        url : 'http://roda.apiary-mock.com/statistics',
+        url : '../../j/statistics',
+        method : "GET",
         params : {
                 variable1 : firstv,
                 variable2 : secv

@@ -3,7 +3,8 @@ Ext.Loader.setConfig({
     enabled: true,
     paths: {
         'Ext.ux': 'ux/',
-     	 'Ext.ux.plugins': '/roda/resources/root/ux/plugins'
+     	 'Ext.ux.plugins': '/roda/resources/root/ux/plugins',
+     	'databrowser.util' : 'app/util'
     }
 });
 //Ext.Loader.setPath('Ext.ux.plugins.FitToParent', '.');
@@ -54,7 +55,8 @@ Ext.application({
         'VariableView',
         'FrequencyChart',
         'VariableDetails',
-        'StackedBarChart'
+        'StackedBarChart',
+        'Alert'
     ],
 	controllers : ['VariableView', 'DataBrowser'],
     autoCreateViewport: false,

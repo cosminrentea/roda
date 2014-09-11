@@ -1,6 +1,6 @@
 Ext.define('databrowser.controller.DataBrowser', {
 	extend : 'Ext.app.Controller',
-//	views : [ 'VariableView' ],
+	views : [ 'Alert' ],
 	
 	 refs: [
 	        {
@@ -161,8 +161,9 @@ Ext.define('databrowser.controller.DataBrowser', {
 	var secv = astore.getAt(1).data.indice;
 	var me = this;
 	Ext.Ajax.request({
-        url : '../../j/statistics',
-        method : "GET",
+//        url : 'http://roda.apiary-mock.com/statistics',
+		url: '../../j/statistics',
+		method : "GET",
         params : {
                 variable1 : firstv,
                 variable2 : secv
@@ -259,7 +260,7 @@ Ext.define('databrowser.controller.DataBrowser', {
             	
             
             } else {
-                RODAdmin.util.Alert.msg('Failure!', responseJson.message, true);
+            	Ext.Msg.alert('Failure!', responseJson.message);
 
             }
      },
@@ -280,9 +281,8 @@ onSTSendToAnalysis : function (button) {
 	var secv = astore.getAt(1).data.indice;
 	var me = this;
 	Ext.Ajax.request({
-//        url : 'http://roda.apiary-mock.com/statistics',
         url : '../../j/statistics',
-        method : "GET",
+        method : "POST",
         params : {
                 variable1 : firstv,
                 variable2 : secv
@@ -378,7 +378,7 @@ onSTSendToAnalysis : function (button) {
             	
             
             } else {
-                RODAdmin.util.Alert.msg('Failure!', responseJson.message, true);
+            	Ext.Msg.alert('Failure!', responseJson.message);
 
             }
      },
@@ -568,7 +568,7 @@ onSTSendToAnalysis : function (button) {
 	            	
 	            
 	            } else {
-	                RODAdmin.util.Alert.msg('Failure!', responseJson.message, true);
+	            	Ext.Msg.alert('Failure!', responseJson.message);
 
 	            }
 	     },
@@ -721,7 +721,7 @@ onSTSendToAnalysis : function (button) {
 	            	
 	            
 	            } else {
-	                RODAdmin.util.Alert.msg('Failure!', responseJson.message, true);
+	            	Ext.Msg.alert('Failure!', responseJson.message);
 
 	            }
 	     },

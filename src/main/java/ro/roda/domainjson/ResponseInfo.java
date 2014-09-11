@@ -20,14 +20,18 @@ public class ResponseInfo extends JsonInfo {
 
 		String respType = collection.iterator().next().getRespType();
 
-		if (respType.equals("code")) {
-			serializer.include("id", "label", "value");
-		} else if (respType.equals("numeric")) {
-			serializer.include("dataType", "high", "low");
+		if (respType.equals("String")) {
+			serializer.include("freeText");
+		} else if (respType.equals("Numeric")) {
+			serializer.include("dataType", "high", "low", "numberValue", "interpretation");
 			serializer.transform(new FieldNameTransformer("type"), "dataType");
-		} else if (respType.equals("category")) {
-			serializer.include("id", "label");
-			serializer.transform(new FieldNameTransformer("type"), "dataType");
+			serializer.transform(new FieldNameTransformer("value"), "numberValue");
+			serializer.transform(new FieldNameTransformer("category_interpretation"), "interpretation");
+		} else if (respType.equals("Category")) {
+			serializer.include("label", "stringValue", "numericValues", "interpretation");
+			serializer.transform(new FieldNameTransformer("value"), "stringValue");
+			serializer.transform(new FieldNameTransformer("is_numeric"), "numericValues");
+			serializer.transform(new FieldNameTransformer("numeric_interpretation"), "interpretation");
 		}
 
 		// serializer.transform(new FieldNameTransformer("indice"), "id");
@@ -43,16 +47,24 @@ public class ResponseInfo extends JsonInfo {
 
 	private String label;
 
-	private Integer value;
+	private String freeText;
 
-	private Integer high;
+	private Long numberValue;
 
-	private Integer low;
+	private String stringValue;
 
-	public ResponseInfo(Integer id, String label, Integer value) {
+	private Long high;
+
+	private Long low;
+
+	private Boolean interpretation;
+
+	private Boolean numericValues;
+
+	public ResponseInfo(Integer id, String label, Long value) {
 		this.id = id;
 		this.label = label;
-		this.value = value;
+		this.numberValue = value;
 	}
 
 	public ResponseInfo(Integer id, String label) {
@@ -60,7 +72,7 @@ public class ResponseInfo extends JsonInfo {
 		this.label = label;
 	}
 
-	public ResponseInfo(String dataType, Integer low, Integer high) {
+	public ResponseInfo(String dataType, Long low, Long high) {
 		this.dataType = dataType;
 		this.high = high;
 		this.low = low;
@@ -94,16 +106,20 @@ public class ResponseInfo extends JsonInfo {
 		this.label = label;
 	}
 
-	public Integer getValue() {
-		return value;
-	}
-
 	public String getRespType() {
 		return respType;
 	}
 
-	public void setValue(Integer value) {
-		this.value = value;
+	public void setRespType(String respType) {
+		this.respType = respType;
+	}
+
+	public Long getNumberValue() {
+		return numberValue;
+	}
+
+	public void setNumberValue(Long value) {
+		this.numberValue = value;
 	}
 
 	public String getDataType() {
@@ -114,24 +130,52 @@ public class ResponseInfo extends JsonInfo {
 		this.dataType = dataType;
 	}
 
-	public Integer getLow() {
+	public Long getLow() {
 		return low;
 	}
 
-	public void setLow(Integer low) {
+	public void setLow(Long low) {
 		this.low = low;
 	}
 
-	public Integer getHigh() {
+	public Long getHigh() {
 		return high;
 	}
 
-	public void setHigh(Integer high) {
+	public void setHigh(Long high) {
 		this.high = high;
 	}
 
-	public void setRespType(String respType) {
-		this.respType = respType;
+	public Boolean getInterpretation() {
+		return interpretation;
+	}
+
+	public void setInterpretation(Boolean interpretation) {
+		this.interpretation = interpretation;
+	}
+
+	public String getFreeText() {
+		return freeText;
+	}
+
+	public void setFreeText(String freeText) {
+		this.freeText = freeText;
+	}
+
+	public String getStringValue() {
+		return stringValue;
+	}
+
+	public void setStringValue(String stringValue) {
+		this.stringValue = stringValue;
+	}
+
+	public Boolean getNumericValues() {
+		return numericValues;
+	}
+
+	public void setNumericValues(Boolean numericValues) {
+		this.numericValues = numericValues;
 	}
 
 	public String toJson() {
@@ -139,7 +183,7 @@ public class ResponseInfo extends JsonInfo {
 
 		serializer.exclude("*.class", "type", "leaf", "name");
 
-		if (respType.equals("code")) {
+		if (respType.equals("String")) {
 			serializer.include("id", "label", "value");
 		} else if (respType.equals("numeric")) {
 			serializer.include("dataType", "high", "low");

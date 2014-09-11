@@ -34,7 +34,7 @@ import flexjson.JSONDeserializer;
 import flexjson.JSONSerializer;
 
 @Entity
-@Table(schema = "public", name = "question_type_code")
+@Table(schema = "public", name = "question_type_string")
 @Configurable
 @Audited
 public class QuestionTypeString {

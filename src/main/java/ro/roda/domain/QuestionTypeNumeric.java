@@ -154,17 +154,20 @@ public class QuestionTypeNumeric {
 	@JoinColumn(name = "question_id", nullable = false, insertable = false, updatable = false)
 	private Question question;
 
-	@Column(name = "type_qstn", columnDefinition = "varchar", length = 200)
+	@Column(name = "type_qstn", columnDefinition = "varchar", length = 200, nullable = true)
 	private String typeQstn;
 
 	@Column(name = "free_number", columnDefinition = "int8", nullable = true)
-	private Integer freeNumber;
+	private Long freeNumber;
 
 	@Column(name = "high", columnDefinition = "int8", nullable = true)
-	private Integer high;
+	private Long high;
 
 	@Column(name = "low", columnDefinition = "int8", nullable = true)
-	private Integer low;
+	private Long low;
+
+	@Column(name = "data_type", columnDefinition = "varchar", length = 50, nullable = true)
+	private String dataType;
 
 	@Column(name = "category_interpretation", columnDefinition = "bool", nullable = true)
 	private Boolean categoryInterpretation;
@@ -233,16 +236,20 @@ public class QuestionTypeNumeric {
 		return typeQstn;
 	}
 
-	public Integer getHigh() {
+	public Long getHigh() {
 		return high;
 	}
 
-	public Integer getLow() {
+	public Long getLow() {
 		return low;
 	}
 
-	public Integer getFreeNumber() {
+	public Long getFreeNumber() {
 		return freeNumber;
+	}
+
+	public String getDataType() {
+		return dataType;
 	}
 
 	public Boolean getCategoryInterpretation() {
@@ -261,20 +268,24 @@ public class QuestionTypeNumeric {
 		this.typeQstn = type;
 	}
 
-	public void setHigh(Integer high) {
+	public void setHigh(Long high) {
 		this.high = high;
 	}
 
-	public void setLow(Integer low) {
+	public void setLow(Long low) {
 		this.low = low;
 	}
 
-	public void setFreeNumber(Integer freeNumber) {
+	public void setFreeNumber(Long freeNumber) {
 		this.freeNumber = freeNumber;
 	}
 
 	public void setCategoryInterpretation(Boolean categoryInterpretation) {
 		this.categoryInterpretation = categoryInterpretation;
+	}
+
+	public void setDataType(String dataType) {
+		this.dataType = dataType;
 	}
 
 	public String toJson() {

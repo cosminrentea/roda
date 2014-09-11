@@ -1,0 +1,4 @@
+name,description
+"String","accepta raspunsuri de tip free text"
+"Numeric","accepta raspunsuri de tip free number sau apartinand unui interval; pot fi interpretate categorial"
+"Category","accepta raspunsuri specificate prin eticheta, valoare; pot fi interpretate numeric"

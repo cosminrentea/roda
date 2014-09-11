@@ -12,8 +12,8 @@ import org.springframework.beans.factory.annotation.Configurable;
 import ro.roda.domain.MissingValue;
 import ro.roda.domain.Question;
 import ro.roda.domain.QuestionTypeCategory;
-import ro.roda.domain.QuestionTypeString;
 import ro.roda.domain.QuestionTypeNumeric;
+import ro.roda.domain.QuestionTypeString;
 import flexjson.JSONSerializer;
 
 @Configurable
@@ -58,18 +58,18 @@ public class QuestionInfo extends JsonInfo {
 			if (question.getQuestionTypeId() != null) {
 				String respType = question.getQuestionTypeId().getName();
 
-				if (respType.equals("code")) {
+				if (respType.equals("String")) {
 					Set<QuestionTypeString> qstnTypeCodes = question.getQuestionTypeCodes();
 					Iterator<QuestionTypeString> iterator = qstnTypeCodes.iterator();
 
 					while (iterator.hasNext()) {
 						responseInfos.add(new ResponseInfo(iterator.next()));
 					}
-				} else if (respType.equals("numeric")) {
+				} else if (respType.equals("Numeric")) {
 					QuestionTypeNumeric qstnTypeNumeric = question.getQuestionTypeNumeric();
 
 					responseInfos.add(new ResponseInfo(qstnTypeNumeric));
-				} else if (respType.equals("category")) {
+				} else if (respType.equals("Category")) {
 					Set<QuestionTypeCategory> qstnTypeCategories = question.getQuestionTypeCategories();
 					Iterator<QuestionTypeCategory> iterator = qstnTypeCategories.iterator();
 

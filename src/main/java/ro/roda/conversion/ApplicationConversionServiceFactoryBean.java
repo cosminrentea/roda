@@ -2626,9 +2626,9 @@ public class ApplicationConversionServiceFactoryBean extends FormattingConversio
 	public Converter<Variable, String> getVariableToStringConverter() {
 		return new org.springframework.core.convert.converter.Converter<ro.roda.domain.Variable, java.lang.String>() {
 			public String convert(Variable variable) {
-				return new StringBuilder().append(variable.getLabel()).append(' ').append(variable.getType())
-						.append(' ').append(variable.getOperatorInstructions()).append(' ')
-						.append(variable.getVariableType()).toString();
+				return new StringBuilder().append(variable.getLabel()).append(' ')
+						.append(variable.getOperatorInstructions()).append(' ').append(variable.getVariableType())
+						.toString();
 			}
 		};
 	}

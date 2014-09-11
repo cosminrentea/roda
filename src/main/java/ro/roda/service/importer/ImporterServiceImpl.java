@@ -724,35 +724,44 @@ public class ImporterServiceImpl implements ImporterService {
 			log.warn("No DDI files found for importing");
 		}
 
-		ArrayList<File> ddiFiles = new ArrayList<File>();
+		List<File> ddiFiles = new ArrayList<File>();
 		for (Resource ddiResource : resources) {
 			ddiFiles.add(ddiResource.getFile());
 		}
 		// sort files by name -> create predictable IDs for Studies
 		Collections.sort(ddiFiles);
+		for (File ddiFile : ddiFiles) {
+			log.debug(ddiFile.getName());
+		}
 
 		for (File ddiFile : ddiFiles) {
-			log.debug("Importing DDI file: " + ddiFile.getName());
-			MockMultipartFile mockMultipartFileDdi = new MockMultipartFile(ddiFile.getName(), ddiFile.getName(),
-					"text/xml", new FileInputStream(ddiFile));
-			CodeBook cb = (CodeBook) unmarshaller.unmarshal(ddiFile);
+			try {
+				log.debug("Importing DDI file: " + ddiFile.getName());
+				MockMultipartFile mockMultipartFileDdi = new MockMultipartFile(ddiFile.getName(), ddiFile.getName(),
+						"text/xml", new FileInputStream(ddiFile));
+				CodeBook cb = (CodeBook) unmarshaller.unmarshal(ddiFile);
 
-			// add CSV data (if any) to imported DDIs
-			MockMultipartFile mockMultipartFileCsv = null;
-			if (importDdiCsv) {
-				// get CSV file name (RODA naming rules)
-				String csvFilename = ddiFile.getName().split("_")[0].concat("_T.csv");
-				// TODO @Value for "ddi" folder below
-				Resource csvResource = pmr.getResource("classpath:ddi/" + csvFilename);
-				FileInputStream fisCsv = null;
-				try {
-					fisCsv = new FileInputStream(csvResource.getFile());
-				} catch (FileNotFoundException e) {
-					log.error("Data CSV file not found", e);
+				// add CSV data (if any) to imported DDIs
+				MockMultipartFile mockMultipartFileCsv = null;
+				if (importDdiCsv) {
+					// get CSV file name (RODA naming rules)
+					String csvFilename = ddiFile.getName().split("_")[0].concat("_T.csv");
+					// TODO @Value for "ddi" folder below
+					Resource csvResource = pmr.getResource("classpath:ddi/" + csvFilename);
+					FileInputStream fisCsv = null;
+					try {
+						fisCsv = new FileInputStream(csvResource.getFile());
+					} catch (FileNotFoundException e) {
+						log.error("Data CSV file not found", e);
+					}
+					mockMultipartFileCsv = new MockMultipartFile(csvFilename, csvFilename, "text/csv", fisCsv);
 				}
-				mockMultipartFileCsv = new MockMultipartFile(csvFilename, csvFilename, "text/csv", fisCsv);
+				importDdiFile(cb, mockMultipartFileDdi, true, true, ddiPersistance, mockMultipartFileCsv);
+
+			} catch (Exception e) {
+				log.error("Exception when importing DDI: " + ddiFile.getName(), e);
+				throw e;
 			}
-			importDdiFile(cb, mockMultipartFileDdi, true, true, ddiPersistance, mockMultipartFileCsv);
 		}
 		log.debug("Finished importing DDI files");
 
@@ -1040,8 +1049,9 @@ public class ImporterServiceImpl implements ImporterService {
 					variable.setLabel(varType.getLabl().get(0).content);
 				}
 
-				Question q = null;
 				if (varType.getQstn().size() > 0 && varType.getQstn().get(0).getQstnLitType().size() > 0) {
+
+					Question q = null;
 
 					// TODO never check if the question has been already
 					// imported? - see if it is ok like that
@@ -1084,8 +1094,6 @@ public class ImporterServiceImpl implements ImporterService {
 				}
 				// TODO check semantics
 				variable.setVariableType((short) 0);
-				// TODO eliminate "type" from variable
-				variable.setType((short) 0);
 
 				variable.setOrderInQuestion(1);
 
@@ -1227,14 +1235,18 @@ public class ImporterServiceImpl implements ImporterService {
 					for (int i = 2; i < csvLine.length; i++) {
 						varValues.append(',').append(csvLine[i]);
 					}
-					for (Question question : instance.getQuestions()) {
-						for (Variable var : question.getVariables()) {
-							if (var.getName().equalsIgnoreCase(csvLine[0])) {
-								var.setValues(varValues.toString());
-								var.merge();
-								break;
+					if (instance.getQuestions() != null) {
+						for (Question question : instance.getQuestions()) {
+							for (Variable var : question.getVariables()) {
+								if (var.getName().equalsIgnoreCase(csvLine[0])) {
+									var.setValues(varValues.toString());
+									var.merge();
+									break;
+								}
 							}
 						}
+					} else {
+						log.error("instance.getQuestions() is null");
 					}
 				}
 			}

@@ -118,7 +118,7 @@ public class StudyInfo extends JsonInfo {
 
 	private Boolean leaf = true;
 
-	private Set<Variable> variables;
+	private SortedSet<Variable> variables;
 
 	private Set<File> files;
 
@@ -203,37 +203,62 @@ public class StudyInfo extends JsonInfo {
 		}
 
 		// set the variables
-		// variables of a study are those of its 'main' instance
+		// variables of a study are all those of its 'main' instance
+
+		// if (hasVariables) {
+		//
+		// Map<Integer, Variable> orderVar = new TreeMap<Integer, Variable>();
+		// Set<Variable> variables = new LinkedHashSet<Variable>();
+		//
+		// if (study.getInstances() != null) {
+		// // log.trace("Instances: " + study.getInstances().size());
+		// for (Instance instance : study.getInstances()) {
+		// if (instance.isMain() && instance.getQuestions() != null) {
+		// int orderVariableInInstance = 0;
+		// for (Question q : instance.getQuestions()) {
+		// // TODO: add the order of the question in the
+		// // instance (to be validated) and determine the
+		// // right position of the variable in the instance
+		// for (Variable v : q.getVariables()) {
+		// orderVar.put(orderVariableInInstance++, v);
+		// }
+		// }
+		// }
+		// }
+		//
+		// SortedSet<Integer> keys = new TreeSet<Integer>(orderVar.keySet());
+		// for (Integer key : keys) {
+		// log.trace("Adding variable " + key);
+		// variables.add(orderVar.get(key));
+		// }
+		//
+		// // log.trace("Variables: " + variables.size());
+		// }
+		// this.setVariables(variables);
+		// }
+
 		if (hasVariables) {
 
-			Map<Integer, Variable> orderVar = new TreeMap<Integer, Variable>();
-			Set<Variable> variables = new LinkedHashSet<Variable>();
+			// Variables will be added to a sorted set
+			// (Variable implements Comparable,
+			// and the sorting key is only the ID).
+			SortedSet<Variable> vars = new TreeSet<Variable>();
 
-			if (study.getInstances() != null && study.getInstances().size() > 0) {
-				// log.trace("Instances: " + study.getInstances().size());
+			// add and sort by ID all the variables
+			// of the study's 'main' instance
+			if (study.getInstances() != null) {
 				for (Instance instance : study.getInstances()) {
 					if (instance.isMain() && instance.getQuestions() != null) {
-						int orderVariableInInstance = 0;
 						for (Question q : instance.getQuestions()) {
-							// TODO: add the order of the question in the
-							// instance (to be validated) and determine the
-							// right position of the variable in the instance
-							for (Variable v : q.getVariables()) {
-								orderVar.put(orderVariableInInstance++, v);
-							}
+							vars.addAll(q.getVariables());
 						}
 					}
 				}
-
-				SortedSet<Integer> keys = new TreeSet<Integer>(orderVar.keySet());
-				for (Integer key : keys) {
-					log.trace("Adding variable " + key);
-					variables.add(orderVar.get(key));
-				}
-
-				// log.trace("Variables: " + variables.size());
 			}
-			this.setVariables(variables);
+
+			// log.trace("Number of Variables: " + vars.size());
+
+			this.setVariables(vars);
 		}
 
 		// set the persons and organizations
@@ -340,11 +365,11 @@ public class StudyInfo extends JsonInfo {
 		this.files = files;
 	}
 
-	public Set<Variable> getVariables() {
+	public SortedSet<Variable> getVariables() {
 		return variables;
 	}
 
-	public void setVariables(Set<Variable> variables) {
+	public void setVariables(SortedSet<Variable> variables) {
 		this.variables = variables;
 	}
 

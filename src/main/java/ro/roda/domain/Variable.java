@@ -25,6 +25,9 @@ import javax.persistence.Transient;
 import javax.persistence.TypedQuery;
 import javax.validation.constraints.NotNull;
 
+import org.apache.commons.lang3.builder.CompareToBuilder;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.apache.solr.client.solrj.SolrQuery;
@@ -47,7 +50,7 @@ import flexjson.JSONSerializer;
 @Table(schema = "public", name = "variable")
 @Configurable
 @Audited
-public class Variable {
+public class Variable implements Comparable {
 
 	public static long countVariables() {
 		return entityManager().createQuery("SELECT COUNT(o) FROM Variable o", Long.class).getSingleResult();
@@ -125,7 +128,6 @@ public class Variable {
 			sid.addField("variable.selectionvariable_t", variable.getSelectionVariable());
 			sid.addField("variable.fileid_t", variable.getFileId());
 			sid.addField("variable.label_s", variable.getLabel());
-			sid.addField("variable.type_t", variable.getType());
 			sid.addField("variable.operatorinstructions_s", variable.getOperatorInstructions());
 			sid.addField("variable.variabletype_t", variable.getVariableType());
 			// Add summary field to allow searching documents for objects of
@@ -134,8 +136,7 @@ public class Variable {
 					"variable_solrsummary_t",
 					new StringBuilder().append(variable.getSelectionVariable()).append(" ")
 							.append(variable.getFileId()).append(" ").append(variable.getLabel()).append(" ")
-							.append(variable.getType()).append(" ").append(variable.getOperatorInstructions())
-							.append(" ").append(variable.getVariableType()));
+							.append(variable.getOperatorInstructions()).append(" ").append(variable.getVariableType()));
 			documents.add(sid);
 		}
 		try {
@@ -225,7 +226,7 @@ public class Variable {
 
 		object = new Variable();
 		object.label = label;
-		object.type = type;
+		object.variableType = type;
 		object.questionId = questionId;
 		object.orderInQuestion = order;
 		object.operatorInstructions = operatorInstructions;
@@ -295,10 +296,6 @@ public class Variable {
 
 	@OneToMany(mappedBy = "variableId")
 	private Set<Skip> skips1;
-
-	@Column(name = "type", columnDefinition = "int2")
-	@NotNull
-	private Short type;
 
 	@ManyToMany(mappedBy = "variables")
 	private Set<Vargroup> vargroups;
@@ -385,10 +382,6 @@ public class Variable {
 
 	public Set<Skip> getSkips1() {
 		return skips1;
-	}
-
-	public Short getType() {
-		return type;
 	}
 
 	public Set<Vargroup> getVargroups() {
@@ -487,10 +480,6 @@ public class Variable {
 		this.skips1 = skips1;
 	}
 
-	public void setType(Short type) {
-		this.type = type;
-	}
-
 	public void setVargroups(Set<Vargroup> vargroups) {
 		this.vargroups = vargroups;
 	}
@@ -551,10 +540,32 @@ public class Variable {
 
 	@Override
 	public boolean equals(Object obj) {
-		return id != null && id.equals(((Variable) obj).id);
+		if (obj == null) {
+			return false;
+		}
+		if (obj == this) {
+			return true;
+		}
+		if (obj.getClass() != getClass()) {
+			return false;
+		}
+		Variable other = (Variable) obj;
+		return new EqualsBuilder().appendSuper(super.equals(obj)).append(id, other.id).isEquals();
+	}
+
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder(17, 37).append(id).toHashCode();
+	}
+
+	@Override
+	public int compareTo(Object o) {
+		Variable other = (Variable) o;
+		return new CompareToBuilder().append(this.id, other.id).toComparison();
 	}
 
 	public AuditReader getAuditReader() {
 		return AuditReaderFactory.get(entityManager);
 	}
+
 }

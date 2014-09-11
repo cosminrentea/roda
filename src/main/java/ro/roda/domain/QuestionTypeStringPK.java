@@ -46,6 +46,10 @@ public final class QuestionTypeStringPK implements Serializable {
 		this.stringId = stringId;
 	}
 
+	private QuestionTypeStringPK() {
+		super();
+	}
+
 	public Integer getStringId() {
 		return stringId;
 	}

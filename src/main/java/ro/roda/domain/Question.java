@@ -227,8 +227,9 @@ public class Question {
 	@OneToMany(mappedBy = "questionId")
 	private Set<Variable> variables;
 
+	// TODO nullable = false
 	@ManyToOne
-	@JoinColumn(name = "instance_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false)
+	@JoinColumn(name = "instance_id", columnDefinition = "integer", referencedColumnName = "id", nullable = true)
 	private Instance instanceId;
 
 	// TODO nullable = false

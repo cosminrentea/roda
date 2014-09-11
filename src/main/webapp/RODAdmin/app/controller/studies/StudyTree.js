@@ -66,7 +66,7 @@ Ext.define('RODAdmin.controller.studies.StudyTree', {
 	                           },
 	                           {
 	                               ref: 'stvariables',
-	                               selector: 'studyvariables'
+	                               selector: 'studyvariables grid#studyvars'
 	                           },
 	                           {
 	                               ref: 'stkeywords',

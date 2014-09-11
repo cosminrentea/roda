@@ -44,7 +44,8 @@ Ext.application({
             'cms.snippet.SnippetList', 'cms.snippet.SnippetEdit', 'cms.file.FileEdit', 'cms.file.FileTree',
             'cms.file.FileList', 'cms.Cmsfiles', 'cms.Cmspages', 'cms.page.PageTree', 'cron.Dashboard', 'cron.Actions',
             'common.Audit', 'Abstract', 'cron.Actions', 'cron.ActionList', 'cron.ActionEdit', 'audit.AuditMain', 'studies.Studies','studies.StudyList', 'studies.StudyEdit', 'studies.StudyTree',
-            'user.User', 'user.UserList', 'user.GroupList','cms.page.PageEdit', 'cms.Cmsnews', 'cms.news.NewsList', 'cms.news.NewsEdit', 'studies.CBEditor.StudyAdd' 
+            'user.User', 'user.UserList', 'user.GroupList','cms.page.PageEdit', 'cms.Cmsnews', 'cms.news.NewsList', 'cms.news.NewsEdit', 'studies.CBEditor.StudyAdd', 'studies.StudyVariables', 'metadata.Metadata',
+            'metadata.mcomponents.Prefix','metadata.mcomponents.Suffix','metadata.mcomponents.Org','metadata.mcomponents.Person','studies.StudyTemp'  
     ],
 
     splashscreen : {},
@@ -87,7 +88,7 @@ Ext.application({
         // init Ext.util.History on app launch; if there is a hash in the url,
         // our controller will load the appropriate content
 
-        Ext.create('RODAdmin.view.MyViewport');
+        Ext.create('RODAdmin.view.MainViewport');
         RODAdmin.util.SessionMonitor.start();
         
         

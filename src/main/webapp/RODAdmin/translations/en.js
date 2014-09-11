@@ -36,12 +36,14 @@ translations = {
 
 	menu_studies : 'Studies',
 	studies_main : 'Studies Main',
+	studies_temp : 'Temporary Studies',
 	
 	menu_metadata : 'Metadata',
 	persons : 'Persons',
 	organisations : 'Organisations',
 	country : 'Countries',
 	city : 'Cities',
+	mdt : 'Metadata',
 	
 	staticData: 'Static Data',
 	actors: 'Actors',

@@ -9,7 +9,13 @@ Ext.define('RODAdmin.controller.studies.StudyEdit', {
     views : [
 	    "RODAdmin.view.studies.EditStudyWindow",
 	    "RODAdmin.view.studies.AddStudyToGroupWindow",
-	    "RODAdmin.view.studies.GroupWindow"
+	    "RODAdmin.view.studies.GroupWindow",
+	    'RODAdmin.view.studies.StudyEdit.SEConcepts',
+	    'RODAdmin.view.studies.StudyEdit.SEDataCollection',
+	    'RODAdmin.view.studies.StudyEdit.SEDataProd',
+	    'RODAdmin.view.studies.StudyEdit.SEFunding',
+	    'RODAdmin.view.studies.StudyEdit.SEProposal',
+	    'RODAdmin.view.studies.StudyEdit.SEQuestions'
     ],
     /**
 	 * @cfg
@@ -30,7 +36,36 @@ Ext.define('RODAdmin.controller.studies.StudyEdit', {
             }, {
                 ref : 'groupedit',
                 selector : 'catalogedit'
-            }
+            }, {
+            	ref: 'questionsgrid',
+            	selector : 'sesquestions grid#questionsdisplay'	
+            },{
+            	ref: 'questionsgrid',
+            	selector : 'sesquestions grid#questionsdisplay'	
+            },{
+				ref : 'variablegrid',
+				selector : 'sesdataprod grid#variabledisplay'
+			},{
+				ref: 'sesfunding',
+				selector: 'sesfunding',
+			}, {
+				ref: 'sesconcepts',
+				selector: 'sesconcepts'
+			}, {
+				ref: 'sesquestions',
+				selector : 'sesquestions'
+			},{
+				ref: 'sesdatacollection',
+				selector: 'sesdatacollection'
+			}, {
+				ref: 'sesdataprod',
+				selector : 'sesdataprod'
+			}, {
+				ref : 'rdomaincard',
+				selector : 'seaddquestion form#questionform fieldset#qrinformation'
+				// selector: 'addquestion form#questionform'
+			} 
+			
     ],
     /**
 	 * @method
@@ -109,9 +144,334 @@ Ext.define('RODAdmin.controller.studies.StudyEdit', {
 				 */	
 	        	click : this.onGroupSaveClick
 
-	        }
+	        },
+	        "studyedit" : {
+	        	startStydyLoad : this.loadStudy
+	        },
+			'sesproposal button#addpinv' : {
+				/**
+				 * @listener studies-toolbar-button-icon-view-click
+				 *           triggered-by:
+				 *           {@link RODAdmin.view.studies.Studies Studies}
+				 *           toolbar button#icon-view {@link #onIconViewClick}
+				 */
+				click : this.addPrincipalInvestigator
+			},
+			'sesfunding button#addfund' : {
+				/**
+				 * @listener studies-toolbar-button-icon-view-click
+				 *           triggered-by:
+				 *           {@link RODAdmin.view.studies.Studies Studies}
+				 *           toolbar button#icon-view {@link #onIconViewClick}
+				 */
+				click : this.addFundingAgency
+			},
+			'sesconcepts button#conceptresp' : {
+				/**
+				 * @listener studies-toolbar-button-icon-view-click
+				 *           triggered-by:
+				 *           {@link RODAdmin.view.studies.Studies Studies}
+				 *           toolbar button#icon-view {@link #onIconViewClick}
+				 */
+				click : this.addConceptresp
+			},
+			'sesquestions button#addqdesign' : {
+				/**
+				 * @listener studies-toolbar-button-icon-view-click
+				 *           triggered-by:
+				 *           {@link RODAdmin.view.studies.Studies Studies}
+				 *           toolbar button#icon-view {@link #onIconViewClick}
+				 */
+				click : this.addQuestionaireDesign
+			},
+			'sesquestions button#addqtranslationresp' : {
+				/**
+				 * @listener studies-toolbar-button-icon-view-click
+				 *           triggered-by:
+				 *           {@link RODAdmin.view.studies.Studies Studies}
+				 *           toolbar button#icon-view {@link #onIconViewClick}
+				 */
+				click : this.addQtranslation
+			},
+			'sesdatacollection button#addsamplingresp' : {
+				/**
+				 * @listener studies-toolbar-button-icon-view-click
+				 *           triggered-by:
+				 *           {@link RODAdmin.view.studies.Studies Studies}
+				 *           toolbar button#icon-view {@link #onIconViewClick}
+				 */
+				click : this.addSamplingresp
+			},
+			'sesdatacollection button#adddcresp' : {
+				/**
+				 * @listener studies-toolbar-button-icon-view-click
+				 *           triggered-by:
+				 *           {@link RODAdmin.view.studies.Studies Studies}
+				 *           toolbar button#icon-view {@link #onIconViewClick}
+				 */
+				click : this.addDCollectionresp
+			},
+			'sesdataprod button#dpresp' : {
+				/**
+				 * @listener studies-toolbar-button-icon-view-click
+				 *           triggered-by:
+				 *           {@link RODAdmin.view.studies.Studies Studies}
+				 *           toolbar button#icon-view {@link #onIconViewClick}
+				 */
+				click : this.addDCollectionresp
+			},
+			'sesquestions button#addquestion' : {
+				click : this.addEmptyQuestion
+			},
+			'sesquestions grid#questionsdisplay' : {
+				editRecord : this.editQuestion
+			},
+			'seaddquestion form#questionform fieldset#questioninfo combo#qrdomain' : {
+				change : this.changeResponseDomain
+			},
+			
+			
 	    });
     },
+ 
+	changeResponseDomain : function(el, newval, oldval, eOpts) {
+		console.log('new value: ' + newval);
+		console.log('old value: ' + oldval);
+
+		console.log(this.getRdomaincard());
+
+		if (newval == 'Category') {
+			this.getRdomaincard().getLayout().setActiveItem('catresp');
+		} else if (newval == 'String') {
+			this.getRdomaincard().getLayout().setActiveItem('stringresp');
+		} else if (newval == 'Numeric') {
+			this.getRdomaincard().getLayout().setActiveItem('numericresp');
+		}
+	},
+    
+    
+    
+    editQuestion : function(grid, record, rowIndex, row) {
+		console.log('edit shit');
+		console.log(grid);
+		console.log(record);
+		var myrecord = grid.getStore().getAt(rowIndex);
+		// intai incercam manual, apoi vedem daca putem lega cu storeul
+		var win = Ext.WindowMgr.get('seaddquestion');
+		if (!win) {
+			win = Ext.create('RODAdmin.view.studies.StudyEdit.AddQuestion');
+		}
+		win.setTitle('Edit Question' + myrecord.data.text);
+
+		win.setMode('edit');
+		win.setEditId(rowIndex);
+		// sa vedem ce se intampla cu storurile. In principiu trebuie sa il
+		// umplem pe cel pe care trebuie sapl umplem si sa le golim pe
+		// celelalte.
+		// referinte utile
+		var cards = win.down('form#questionform').down('fieldset#qrinformation');
+		var codegrid = cards.down('grid#qcoderesp');
+//		var catgrid = cards.down('grid#qcatresp');
+		var missinggrid = win.down('grid#missing');
+		var numerictype = cards.down('combo#qnrtype');
+		
+		var nlow = cards.down('textfield[name=qnrlow]');
+		var nhigh = cards.down('textfield[name=qnrhigh]');
+		// golim toate storeurile
+		var codestore = codegrid.getStore();
+		codestore.getProxy().clear();
+		codestore.data.clear();
+		codestore.sync();
+//		var catstore = catgrid.getStore();
+//		catstore.getProxy().clear();
+//		catstore.data.clear();
+//		catstore.sync();
+		var missingstore = missinggrid.getStore();
+		missingstore.getProxy().clear();
+		missingstore.data.clear();
+		missingstore.sync();
+		
+		
+		win.down('form#questionform').getForm().loadRecord(myrecord);
+		//of course the fucking tree doesn't work
+		//try manually
+//		var combo = win.down('form#questionform').down('fieldset#qrinformation').down('treecombo[name=concept]');
+//		combo.setValue(myrecord.concept_id);
+		
+//missing
+//		var newMStore = myrecord.missing();
+//		missingstore.loadRecords(newMStore.getRange(0, newMStore.getCount()), {
+//						addRecords : false
+//		});
+		
+		
+		if (myrecord.data.respdomain == 'Code') {
+			console.log('code response domain');
+			var newStore = myrecord.coderesponses();
+			console.log(newStore);
+			codestore.loadRecords(newStore.getRange(0, newStore.getCount()), {
+						addRecords : false
+					});
+		} else if (myrecord.data.respdomain == 'Category') {
+			console.log('category response domain');
+			console.log('code response domain');
+			var newStore = myrecord.catresponses();
+			catstore.loadRecords(newStore.getRange(0, newStore.getCount()), {
+						addRecords : false
+					});
+		} else if (myrecord.data.respdomain == 'Numeric') {
+			console.log('numeric response domain');
+			cards.getLayout().setActiveItem('numericresp');
+			var numericshit = myrecord.numericresponse().getAt(0); // this is
+																	// actually
+																	// one to
+																	// one
+			console.log(numericshit);
+			numerictype.setValue(numericshit.data.type);
+			nlow.setValue(numericshit.data.low);
+			nhigh.setValue(numericshit.data.high);
+		}
+		win.show();
+
+    	
+    },
+    
+	addEmptyQuestion : function(button, e, options) {
+			var win = Ext.WindowMgr.get('addquestion');
+			if (!win) {
+				win = Ext.create('RODAdmin.view.studies.StudyEdit.AddQuestion');
+			}
+
+			// set general language value
+//			var genlang = this.getMainlang().getValue();
+//			var langcombo = win.down('form#questionform').down('fieldset#questioninfo').down('combo[name=lang]');
+//			if (genlang) {
+//				langcombo.setValue(genlang);
+//			}
+			var cards = win.down('form#questionform').down('fieldset#qrinformation');
+			var codegrid = cards.down('grid#qcoderesp');
+			var catgrid = cards.down('grid#qcatresp');
+			var missinggrid = win.down('form#questionform').down('fieldset#missinginfo').down('grid#missing');
+			var numerictype = cards.down('combo#qnrtype');
+			var nlow = cards.down('textfield[name=qnrlow]');
+			var nhigh = cards.down('textfield[name=qnrhigh]');
+			// golim toate storeurile
+			var codestore = codegrid.getStore();
+			codestore.getProxy().clear();
+			codestore.data.clear();
+			codestore.sync();
+//			var catstore = catgrid.getStore();
+//			catstore.getProxy().clear();
+//			catstore.data.clear();
+//			catstore.sync();
+			var missingstore = missinggrid.getStore();
+			missingstore.getProxy().clear();
+			missingstore.data.clear();
+			missingstore.sync();
+			win.setTitle('Add Question');
+			win.show();
+		},
+    
+	addPrincipalInvestigator : function(button, e, options) {
+		var win = Ext.create('RODAdmin.view.studies.StudyEdit.AddPersonOrg');
+		var ourstore = this.getSesproposal().down('fieldset#prinvfs').down('grid#prinvdisplay').getStore();
+		win.setOriginalStore(ourstore);
+		win.setTitle('Add Principal Investigator');
+		win.show();
+	},
+
+	addFundingAgency : function(button, e, options) {
+		var win = Ext.create('RODAdmin.view.studies.StudyEdit.AddPersonOrg');
+		var ourstore = this.getSesfunding().down('fieldset#funding').down('grid#fundvdisplay').getStore();
+		win.setOriginalStore(ourstore);
+		win.setTitle('Add Funding Agency');
+		win.show();
+	},
+  
+	addConceptresp : function(button, e, options) {
+		var win = Ext.create('RODAdmin.view.studies.StudyEdit.AddPersonOrg');
+		var ourstore = this.getSesconcepts().down('fieldset#cnresponsibility').down('grid#cnrespdisplay').getStore();
+		win.setOriginalStore(ourstore);
+		win.setTitle('Add Concepts Responsibility Entity');
+		win.show();
+	},
+	addQuestionaireDesign : function(button, e, options) {
+		var win = Ext.create('RODAdmin.view.studies.StudyEdit.AddPersonOrg');
+		var ourstore = this.getSesquestions().down('fieldset#qdesign').down('grid#qdesigndisplay').getStore();
+		win.setOriginalStore(ourstore);
+		win.setTitle('Add Questionaire design Responsibility Entity');
+		win.show();
+	},    
+	addQtranslation : function(button, e, options) {
+		var win = Ext.create('RODAdmin.view.studies.StudyEdit.AddPersonOrg');
+		var ourstore = this.getSesquestions().down('fieldset#qtransation').down('grid#qtranslationdisplay').getStore();
+		win.setOriginalStore(ourstore);
+		win.setTitle('Add Questionaire design Responsibility Entity');
+		win.show();
+	},	
+	addSamplingresp : function(button, e, options) {
+		var win = Ext.create('RODAdmin.view.studies.StudyEdit.AddPersonOrg');
+		var ourstore = this.getSesdatacollection().down('fieldset#dcfsamplingresp').down('grid#qsamplingrespdisplay').getStore();
+		win.setOriginalStore(ourstore);
+		win.setTitle('Add Sampling Responsibility Entity');
+		win.show();
+	},
+	addDCollectionresp : function(button, e, options) {
+		var win = Ext.create('RODAdmin.view.studies.StudyEdit.AddPersonOrg');
+		var ourstore = this.getSesdatacollection().down('fieldset#dcfdcresp').down('grid#dcrespdisplay').getStore();
+		win.setOriginalStore(ourstore);
+		win.setTitle('Add Sampling Responsibility Entity');
+		win.show();
+	},
+	addDProdresp : function(button, e, options) {
+		var win = Ext.create('RODAdmin.view.studies.StudyEdit.AddPersonOrg');
+		var ourstore = this.getSesdataprod().down('fieldset#dpresponsibility').down('grid#dprespdisplay').getStore();
+		win.setOriginalStore(ourstore);
+		win.setTitle('Add Data Production Responsibility Entity');
+		win.show();
+	},
+
+	
+	
+	
+    loadStudy : function (editor, item) {
+    	console.log('firedevent works');
+    	console.log(editor);
+    	console.log(item);
+    	//sa incarcam studiul
+    	var stitemstore = Ext.StoreManager.get('studies.StudyItem');
+    	var me = this;
+    	editor.setLoading('Loading...');
+    	stitemstore.load({
+ 	        id : item.data.indice, // set the id here
+ 	        scope : this,
+ 	        callback : function(records, operation, success) {
+ 				   if (success) {
+ 					  var stitem = stitemstore.first();
+ 					   me.loadStudyEditPanel(editor, stitem);
+ 					   editor.setLoading(false);
+ 				   }
+ 	        }
+ 	    });    	
+    },
+    
+    loadStudyEditPanel : function(editor, item) {
+    	editor.down('sesproposal textareafield#studytitle').setValue(item.data.name);
+    	editor.down('sesproposal textareafield#stabstract').setValue(item.data.description);
+    	editor.down('sesproposal textareafield#geocoverage').setValue(item.data.geo_coverage);
+    	editor.down('sesproposal textareafield#geounit').setValue(item.data.geo_unit);    	
+    	editor.down('sesproposal textareafield#resinstrument').setValue(item.data.research_instrument);
+    	this.getQuestionsgrid().bindStore(item.variables());
+    	this.getVariablegrid().bindStore(item.variables());
+    	
+    	
+    	//variables now
+    	
+    	
+    	
+    	
+    },
+    
     /**
 	 * @method
 	 * Se ocupa de scrierea unui grup modificat.  

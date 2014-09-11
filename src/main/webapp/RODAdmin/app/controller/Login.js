@@ -7,7 +7,7 @@ Ext.define('RODAdmin.controller.Login', {
     requires: [
         'RODAdmin.util.MD5',
         'RODAdmin.util.Alert',
-        'RODAdmin.view.MyViewport',
+        'RODAdmin.view.MainViewport',
         'RODAdmin.util.Util',
         'RODAdmin.util.SessionMonitor',
         'RODAdmin.view.Login',
@@ -106,7 +106,7 @@ Ext.define('RODAdmin.controller.Login', {
             //Ext.get(login.getEl()).mask("Authenticating... Please wait...", 'loading');
             
             login.close();
-            Ext.create('RODAdmin.view.MyViewport');
+            Ext.create('RODAdmin.view.MainViewport');
             RODAdmin.util.SessionMonitor.start();
 */
 
@@ -125,7 +125,7 @@ Ext.define('RODAdmin.controller.Login', {
 
                     if (result.success) {
                         login.close();
-                        Ext.create('RODAdmin.view.MyViewport');
+                        Ext.create('RODAdmin.view.MainViewport');
                         RODAdmin.util.SessionMonitor.start();
 
                     } else {
@@ -159,7 +159,7 @@ Ext.define('RODAdmin.controller.Login', {
 
                     if (result.success) {
                         login.close();
-                        Ext.create('RODAdmin.view.MyViewport');
+                        Ext.create('RODAdmin.view.MainViewport');
 //                        RODAdmin.util.SessionMonitor.start();
                         Ext.Ajax.request({
                             url: '/roda/j/user/session/set-interval?interval=-1',

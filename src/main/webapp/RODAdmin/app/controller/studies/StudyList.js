@@ -47,7 +47,7 @@ Ext.define('RODAdmin.controller.studies.StudyList', {
             },
             {
                 ref: 'stvariables',
-                selector: 'studyvariables'
+              	 selector: 'studyvariables grid#studyvars'
             },
             {
                 ref: 'stkeywords',
@@ -57,7 +57,18 @@ Ext.define('RODAdmin.controller.studies.StudyList', {
                 ref: 'sdetailscontainer',
                 selector: 'studiesmain panel#stdetailscontainer'
             },
-
+            {
+                ref: 'stkeywords',
+                selector: 'studykeywords'
+            },
+            {
+                ref: 'catalogstudies',
+                selector: 'catalogdetails grid#catalogstudies'
+            },
+            {
+                ref: 'catalogdetails',
+                selector: 'catalogdetails panel#cdetails'
+            },
     ],
     /**
 	 * @method
@@ -142,8 +153,11 @@ Ext.define('RODAdmin.controller.studies.StudyList', {
                closable: true,
                iconCls: currentNode.get('iconCls'),
                title: newtitle
+               
             });
     	    mainPanel.setActiveTab(newTab);
+    	    newTab.setEditId(currentNode.data.indice);
+    	    newTab.fireEvent('startStydyLoad', newTab, currentNode);
 	    } else {
         	console.log('newtab exists, setting active');
     	    mainPanel.setActiveTab(newTab);
@@ -199,15 +213,17 @@ Ext.define('RODAdmin.controller.studies.StudyList', {
 	        id : record.data.indice, // set the id here
 	        scope : this,
 	        callback : function(records, operation, success) {
-		        if (success) {
-			        var stitem = stitemstore.first();
-			        stprop.update(stitem.data);
-			        var variables = this.getStvariables();
-			        variables.bindStore(stitem.variables());
-			        var keywords = this.getStkeywords();
-			        keywords.bindStore(stitem.keywords());
-			        stdpanel.setLoading(false);
-		        }
+				   if (success) {
+					   console.log(this.getSdetailscontainer());
+					   this.getSdetailscontainer().layout.setActiveItem('studydetails');
+					   var stitem = stitemstore.first();
+				        stprop.update(stitem.data);
+				        var variables = this.getStvariables();
+				        variables.bindStore(stitem.variables());
+				        var keywords = this.getStkeywords();
+				        keywords.bindStore(stitem.keywords());
+				        stdpanel.setLoading(false);
+				   }
 	        }
 	    });
 	    }

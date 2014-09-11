@@ -6,7 +6,8 @@ Ext.define('RODAdmin.view.studies.CBEditor.AddQuestion', {
 	alias : 'widget.addquestion',
 	height : '80%',
 	width : '40%',
-	requires : ['RODAdmin.util.Util'],
+	requires : ['RODAdmin.util.Util','Ext.ux.form.field.TreeCombo'],
+	
 	layout : {
 		type : 'fit'
 	},
@@ -71,7 +72,7 @@ Ext.define('RODAdmin.view.studies.CBEditor.AddQuestion', {
 								name : 'respdomain',
 								valueField : 'qrdomain',
 								queryMode : 'local',
-								store : ['Code', 'Category', 'Numeric'],
+								store : ['String', 'Category', 'Numeric'],
 								displayField : 'qrdomain',
 								autoSelect : true,
 								forceSelection : true,
@@ -89,9 +90,23 @@ Ext.define('RODAdmin.view.studies.CBEditor.AddQuestion', {
 								html : 'Please select a response type'
 							}, {
 								xtype : 'panel',
-								itemId : 'coderesp',
-								title : 'Code response',
-								items : [{
+								itemId : 'catresp',
+								title : 'Category response',
+								items : [
+								         {
+												xtype : 'checkbox',
+												name : 'intnum',
+												fieldLabel: 'Interpretabil numeric',
+												anchor : '100%'
+								         }, 
+								         {
+												xtype : 'checkbox',
+												name : 'wvalues',
+												fieldLabel: 'Cu valori',
+												anchor : '100%',
+												checked: true	
+								         }, 
+								         {
 									xtype : 'grid',
 									itemId : 'qcoderesp',
 									store : 'studies.CBEditor.Qcoderesp',
@@ -111,22 +126,26 @@ Ext.define('RODAdmin.view.studies.CBEditor.AddQuestion', {
 												name : 'id',
 												dataIndex : 'id',
 												hidden: true
-											}, {
-												itemId : 'cresplabel',
-												text : 'Label',
-												flex : 1,
+											}, 
+											{
+												itemId : 'crespvalue',
+												text : 'Value',
 												sortable : true,
-												dataIndex : 'label',
+												flex : 1,
+												dataIndex : 'value',
+												enableLocking : true,
 												editor : {
 													xtype : 'textfield',
 													allowBlank : false
 												}
-											}, {
-												itemId : 'crespvalue',
-												text : 'Value',
-												sortable : true,
+											},
+											{
+												itemId : 'cresplabel',
+												text : 'Label',
 												flex : 2,
-												dataIndex : 'value',
+												sortable : true,
+												enableLocking : true,												
+												dataIndex : 'label',
 												editor : {
 													xtype : 'textfield',
 													allowBlank : false
@@ -151,7 +170,7 @@ Ext.define('RODAdmin.view.studies.CBEditor.AddQuestion', {
 												menuDisabled : true,
 												itemId : 'actionqcoderesp',
 												items : [{
-													icon : 'resources/images/icons/fam/delete.gif',
+													icon : '/roda/admin/images/delete.gif',
 													tooltip : 'Delete Plant',
 													scope : this,
 													handler : function(view,
@@ -174,77 +193,9 @@ Ext.define('RODAdmin.view.studies.CBEditor.AddQuestion', {
 								}]
 							}, {
 								xtype : 'panel',
-								itemId : 'categoryresp',
-								title : 'Category response',
-								items : [{
-									xtype : 'grid',
-									itemId : 'qcatresp',
-									store : 'studies.CBEditor.Qcatresp',
-									plugins : [Ext.create(
-											'Ext.grid.plugin.CellEditing', {
-												clicksToEdit : 2
-											})],
-									selModel : {
-										selType : 'cellmodel'
-									},
-									tbar : [{
-												text : 'Add response category',
-												itemId : 'addrespcat'
-											}],
-									columns : [{
-												name : 'id',
-												dataIndex : 'id',
-												hidden: true
-											}, {
-												itemId : 'cresplabel',
-												text : 'Label',
-												sortable : true,
-												flex : 3,
-												dataIndex : 'label',
-												editor : {
-													xtype : 'textfield',
-													allowBlank : false
-												}
-											}, {
-												itemId : 'cresplang',
-												text : 'Original language',
-												sortable : true,
-												dataIndex : 'lang',
-												editor: new Ext.form.field.ComboBox({
-                    									typeAhead: true,
-                    									triggerAction: 'all',
-														valueField : 'id',
-														displayField : 'name',			                    									
-														store: 'studies.CBEditor.Lang'												
-													})
-											}, {
-												xtype : 'actioncolumn',
-												width : 30,
-												sortable : false,
-												menuDisabled : true,
-												itemId : 'actionqcoderesp',
-												items : [{
-													icon : 'resources/images/icons/fam/delete.gif',
-													tooltip : 'Delete Plant',
-													scope : this,
-													handler : function(view,
-															rowIndex, colIndex,
-															item, e, record,
-															row) {
-														console
-																.log('firing event delete');
-														var mygrid = view
-																.up('grid');
-														mygrid.fireEvent(
-																'deleteRecord',
-																mygrid, record,
-																rowIndex, row);
-													}
-												}]
-											}
-
-									]
-								}]
+								itemId : 'stringresp',
+								title : 'String response',
+								html: 'String response has no options'
 							}, {
 								xtype : 'panel',
 								itemId : 'numericresp',
@@ -264,6 +215,11 @@ Ext.define('RODAdmin.view.studies.CBEditor.AddQuestion', {
 									forceSelection : true,
 									anchor : '100%'
 								}, {
+									xtype : 'checkbox',
+									name : 'intcat',
+									fieldLabel: 'Interpretabil categorial',
+									anchor : '100%'
+								},{
 									xtype : 'textfield',
 									name : 'qnrlow',
 									fieldLabel: 'Low',
@@ -321,7 +277,7 @@ Ext.define('RODAdmin.view.studies.CBEditor.AddQuestion', {
 									menuDisabled : true,
 									itemId : 'missingactions',
 									items : [{
-										icon : 'resources/images/icons/fam/delete.gif',
+										icon : '/roda/admin/images/delete.gif',
 										tooltip : 'Delete Missing',
 										scope : this,
 										handler : function(view, rowIndex,

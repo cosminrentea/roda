@@ -41,7 +41,12 @@ Ext.define('RODAdmin.controller.studies.CBEditor.StudyAdd', {
 	/**
 	 * @cfg
 	 */
-	refs : [{
+	refs : [
+	        {
+	        	ref : 'studyaddmain',
+	        	selector : 'studyadd'
+	        },
+	        {
 				ref : 'studyadd',
 				selector : 'studyadd panel#studyaddform'
 			}, 
@@ -392,12 +397,34 @@ Ext.define('RODAdmin.controller.studies.CBEditor.StudyAdd', {
 			}, 
 			'addvariable form#variableform fieldset#varinfo combo#qcombo' : {
 				change : this.changeVariableQuestion
+			},
+			'addquestion checkbox[name=wvalues]' : {
+				change : this.enableWValues
+
 			}
-			
 
 			});
 	},
 
+	enableWValues : function (checkbox, newValue, oldValue, eOpts) {
+		console.log(newValue);
+		if (newValue == true) {
+			console.log ('enabled');
+			//this.getResponsecodegrid().lock('crespvalue');	
+			var col = this.getResponsecodegrid().down('gridcolumn#crespvalue');
+			console.log(col);
+			col.show();
+		} else if (newValue == false) {
+			console.log ('disabled');
+			//this.getResponsecodegrid().unlock('crespvalue');
+			var col = this.getResponsecodegrid().down('gridcolumn#crespvalue');
+			console.log(col);
+			col.hide();
+		}
+		
+
+	},
+	
 	
 	addFile : function(button, e, options) {
 			console.log ('adding file');
@@ -775,20 +802,6 @@ Ext.define('RODAdmin.controller.studies.CBEditor.StudyAdd', {
 			numericlow.setValue(numericshit.data.low);
 			numerichigh.setValue(numericshit.data.high);
 		}
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
 			
 			win.show();	
 	},	
@@ -1410,10 +1423,10 @@ Ext.define('RODAdmin.controller.studies.CBEditor.StudyAdd', {
 
 		console.log(this.getRdomaincard());
 
-		if (newval == 'Code') {
-			this.getRdomaincard().getLayout().setActiveItem('coderesp');
-		} else if (newval == 'Category') {
-			this.getRdomaincard().getLayout().setActiveItem('categoryresp');
+		if (newval == 'Category') {
+			this.getRdomaincard().getLayout().setActiveItem('catresp');
+		} else if (newval == 'String') {
+			this.getRdomaincard().getLayout().setActiveItem('stringresp');
 		} else if (newval == 'Numeric') {
 			this.getRdomaincard().getLayout().setActiveItem('numericresp');
 		}
@@ -1701,10 +1714,10 @@ Ext.define('RODAdmin.controller.studies.CBEditor.StudyAdd', {
 		codestore.getProxy().clear();
 		codestore.data.clear();
 		codestore.sync();
-		var catstore = catgrid.getStore();
-		catstore.getProxy().clear();
-		catstore.data.clear();
-		catstore.sync();
+//		var catstore = catgrid.getStore();
+//		catstore.getProxy().clear();
+//		catstore.data.clear();
+//		catstore.sync();
 		var missingstore = missinggrid.getStore();
 		missingstore.getProxy().clear();
 		missingstore.data.clear();
@@ -1897,12 +1910,80 @@ Ext.define('RODAdmin.controller.studies.CBEditor.StudyAdd', {
 	refreshWindowStore : function() {
 		var allmydata = {};
 		allmydata.studyProposal = this.getSproposalData();
+		
 		allmydata.studyFunding = this.getFundingData();
 		allmydata.studyConcepts = this.getConceptData();
 		allmydata.studyQuestions = this.getQuestionsData();
 		allmydata.dataCollection = this.getDataCollectionData();
 		allmydata.dataProduction = this.getDataProductionData();
 		console.log(allmydata);
+		//ok, try save
+		//sa vedem daca e nou sau nu
+		
+		console.log(this.getStudyaddmain());
+		
+		var mytitle = this.getSproposal().down('textareafield#studytitle').getValue();
+		if (this.getStudyaddmain().getMode() == 'add') {
+			console.log('add mode -------------------------------------');
+			Ext.Ajax.request({
+				url: '/roda/j/admin/cmsjsonsave',
+				waitTitle: 'Connecting',
+				waitMsg: 'Sending data...',                                     
+				params: {
+					"name" : mytitle,
+				},
+				scope:this,
+				jsonData: allmydata,
+				success : function(response, opts) {
+					console.log ('success');
+					console.log (response.responseText);					
+					var resp = Ext.JSON.decode(response.responseText);
+					console.log (resp);
+					if (resp.success) {
+							console.log ('response success');
+                        //	RODAdmin.util.Alert.msg('Success!', response.message);
+                        	this.getStudyadd.setMode('edit');
+                        	this.getStudyadd.setEditID(1);
+					} else {
+						console.log ('error');
+						RODAdmin.util.Util.showErrorMsg(response.message);
+					}
+				},
+				failure : function(response, opts) {
+					console.log ('failure');
+					switch (action.failureType) {
+					case Ext.form.action.Action.CLIENT_INVALID:
+                        	Ext.Msg.alert('Failure', 'Form fields may must be submitted with invalid values');
+                        	break;
+                        	
+					case Ext.form.action.Action.CONNECT_FAILURE:
+                        	Ext.Msg.alert('Failure', 'doesn\'t work');
+                        	break;
+					case Ext.form.action.Action.SERVER.INVALID:
+                        	Ext.Msg.alert('Failure', action.result.msg);
+                        	break;
+					}
+				}
+			});
+		} else if (this.getStudyaddmain().getMode() == 'edit') {
+			console.log('edit mode -------------------------------------');
+			var myid = this.getStudyaddmain().getEditId();
+			Ext.Ajax.request({
+			    url: '/roda/j/admin/cmsjsonsave/'+myid,
+			    waitTitle: 'Connecting',
+			    waitMsg: 'Sending data...',                                     
+			    params: {
+			    	method: 'POST',          
+			        "title" : mytitle,
+			        "data" : allmydata
+			    },
+			    scope:this,
+			    success: received,                                    
+			    failure: function(){console.log('failure');}
+			});
+			
+		}
+		
 	},
 
 	getSproposalData : function() {

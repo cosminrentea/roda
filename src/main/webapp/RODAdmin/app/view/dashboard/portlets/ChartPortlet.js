@@ -1,6 +1,6 @@
 Ext.define('RODAdmin.view.dashboard.portlets.ChartPortlet', {
-
     extend: 'Ext.panel.Panel',
+
     alias: 'widget.chartportlet',
 
     requires: [

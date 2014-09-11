@@ -13,32 +13,57 @@ Ext.define('RODAdmin.view.studies.StudyEdit', {
     defaults : {
 	    split : true
     },
+	config : {
+		editId : 0
+	},
     initComponent: function() {
         var me = this;
         Ext.applyIf(me, {
         	title: 'cool',
         	items : [
             {
-                region : 'west',
+                region : 'east',
                 collapsible : true,
-                width : '30%',
-                split : true,
-                layout : 'fit',
+                width : 200,
+                layout : 'anchor',
                 items : [
-	                {
-						/**
-						 * @xtypes studyitemsview RODAdmin.view.studies.StudyItemsview
-						 */
-	                //	 xtype : 'studyitemsview'
-	                }
+	                	 {
+					        	xtype:'button',
+					        	text: 'Save',
+					        	itemId: 'stsavebutton',
+								enableToggle : false,				        	
+					        	anchor:'100%'
+					        },{
+					        	xtype:'button',
+					        	text: 'Reset',
+					        	itemId: 'stresetbutton',
+								enableToggle : false,
+					        	anchor:'100%'				        	
+					        },
+					        {
+					        	xtype:'button',
+					        	text: 'Cancel',
+					        	itemId: 'stcancelbutton',
+								enableToggle : false,
+					        	anchor:'100%'				        	
+					        }
+	                	
                 ]
             }, {
                 region : 'center',
                 collapsible : false,
                 width : '70%',
-                xtype : 'panel',
+                xtype : 'tabpanel',
+                layout : 'fit',
+                items : [
+            	         {xtype:'sesproposal', itemId:'sesproposal'},
+            	         {xtype:'sesfunding', itemId:'sesfunding'},
+            	         {xtype:'sesconcepts', itemId:'sesconcepts'},
+            	         {xtype:'sesquestions', itemId:'sesquestions'},
+            	         {xtype:'sesdatacollection', itemId:'sesdatacollection'},
+            	         {xtype:'sesdataprod', itemId:'sesdataprod'},				         
+            	         ]                
                 },
-             
                 ]
         });
         me.callParent(arguments);

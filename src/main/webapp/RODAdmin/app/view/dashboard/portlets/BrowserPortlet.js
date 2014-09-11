@@ -1,6 +1,7 @@
 Ext.define('RODAdmin.view.dashboard.portlets.BrowserPortlet', {
 
-    extend: 'Ext.panel.Panel',
+//    extend: 'Ext.panel.Panel',
+  extend : 'RODAdmin.view.dashboard.Portlet',  
     alias: 'widget.browserportlet',
 
     requires: [

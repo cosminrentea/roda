@@ -9,9 +9,10 @@ Ext.define('RODAdmin.view.studies.CBEditor.AddStudyWindow', {
 	layout : {
 		type : 'border'
 	},
-    config: {
-        cnode: {},
-    },
+	config : {
+		mode : 'add',
+		editId : 0
+	},
     initComponent : function() {
 		var me = this;
 		Ext.applyIf(me, {

@@ -46,10 +46,6 @@ public final class QuestionTypeCategoryPK implements Serializable {
 		this.categoryId = categoryId;
 	}
 
-	private QuestionTypeCategoryPK() {
-		super();
-	}
-
 	public Integer getCategoryId() {
 		return categoryId;
 	}

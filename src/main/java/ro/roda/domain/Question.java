@@ -240,7 +240,7 @@ public class Question {
 	private QuestionTypeNumeric questionTypeNumeric;
 
 	@OneToMany(mappedBy = "questionId")
-	private Set<QuestionTypeCode> questionTypeCodes;
+	private Set<QuestionTypeString> questionTypeCodes;
 
 	@OneToMany(mappedBy = "questionId")
 	private Set<QuestionTypeCategory> questionTypeCategories;
@@ -308,7 +308,7 @@ public class Question {
 		return questionTypeId;
 	}
 
-	public Set<QuestionTypeCode> getQuestionTypeCodes() {
+	public Set<QuestionTypeString> getQuestionTypeCodes() {
 		return questionTypeCodes;
 	}
 
@@ -380,7 +380,7 @@ public class Question {
 		this.questionTypeId = questionTypeId;
 	}
 
-	public void setQuestionTypeCodes(Set<QuestionTypeCode> questionTypeCodes) {
+	public void setQuestionTypeCodes(Set<QuestionTypeString> questionTypeCodes) {
 		this.questionTypeCodes = questionTypeCodes;
 	}
 

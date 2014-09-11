@@ -5,8 +5,8 @@ import java.util.Collection;
 import org.springframework.beans.factory.annotation.Configurable;
 
 import ro.roda.domain.QuestionTypeCategory;
-import ro.roda.domain.QuestionTypeCode;
 import ro.roda.domain.QuestionTypeNumeric;
+import ro.roda.domain.QuestionTypeString;
 import ro.roda.transformer.FieldNameTransformer;
 import flexjson.JSONSerializer;
 
@@ -66,8 +66,8 @@ public class ResponseInfo extends JsonInfo {
 		this.low = low;
 	}
 
-	public ResponseInfo(QuestionTypeCode questionTypeCode) {
-		this(questionTypeCode.getId().getCodeId(), questionTypeCode.getLabel(), questionTypeCode.getValue());
+	public ResponseInfo(QuestionTypeString questionTypeString) {
+		this(questionTypeString.getId().getStringId(), questionTypeString.getFreeText());
 	}
 
 	public ResponseInfo(QuestionTypeCategory questionTypeCategory) {

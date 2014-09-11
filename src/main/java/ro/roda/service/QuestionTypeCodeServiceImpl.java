@@ -5,38 +5,38 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import ro.roda.domain.QuestionTypeCode;
-import ro.roda.domain.QuestionTypeCodePK;
+import ro.roda.domain.QuestionTypeString;
+import ro.roda.domain.QuestionTypeStringPK;
 
 @Service
 @Transactional
 public class QuestionTypeCodeServiceImpl implements QuestionTypeCodeService {
 
 	public long countAllQuestionTypeCodes() {
-		return QuestionTypeCode.countQuestionTypeCodes();
+		return QuestionTypeString.countQuestionTypeCodes();
 	}
 
-	public void deleteQuestionTypeCode(QuestionTypeCode questionTypeCode) {
+	public void deleteQuestionTypeCode(QuestionTypeString questionTypeCode) {
 		questionTypeCode.remove();
 	}
 
-	public QuestionTypeCode findQuestionTypeCode(QuestionTypeCodePK id) {
-		return QuestionTypeCode.findQuestionTypeCode(id);
+	public QuestionTypeString findQuestionTypeCode(QuestionTypeStringPK id) {
+		return QuestionTypeString.findQuestionTypeCode(id);
 	}
 
-	public List<QuestionTypeCode> findAllQuestionTypeCodes() {
-		return QuestionTypeCode.findAllQuestionTypeCodes();
+	public List<QuestionTypeString> findAllQuestionTypeCodes() {
+		return QuestionTypeString.findAllQuestionTypeCodes();
 	}
 
-	public List<QuestionTypeCode> findQuestionTypeCodeEntries(int firstResult, int maxResults) {
-		return QuestionTypeCode.findQuestionTypeCodeEntries(firstResult, maxResults);
+	public List<QuestionTypeString> findQuestionTypeCodeEntries(int firstResult, int maxResults) {
+		return QuestionTypeString.findQuestionTypeCodeEntries(firstResult, maxResults);
 	}
 
-	public void saveQuestionTypeCode(QuestionTypeCode questionTypeCode) {
+	public void saveQuestionTypeCode(QuestionTypeString questionTypeCode) {
 		questionTypeCode.persist();
 	}
 
-	public QuestionTypeCode updateQuestionTypeCode(QuestionTypeCode questionTypeCode) {
+	public QuestionTypeString updateQuestionTypeCode(QuestionTypeString questionTypeCode) {
 		return questionTypeCode.merge();
 	}
 }

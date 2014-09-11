@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Configurable;
 import ro.roda.domain.MissingValue;
 import ro.roda.domain.Question;
 import ro.roda.domain.QuestionTypeCategory;
-import ro.roda.domain.QuestionTypeCode;
+import ro.roda.domain.QuestionTypeString;
 import ro.roda.domain.QuestionTypeNumeric;
 import flexjson.JSONSerializer;
 
@@ -59,8 +59,8 @@ public class QuestionInfo extends JsonInfo {
 				String respType = question.getQuestionTypeId().getName();
 
 				if (respType.equals("code")) {
-					Set<QuestionTypeCode> qstnTypeCodes = question.getQuestionTypeCodes();
-					Iterator<QuestionTypeCode> iterator = qstnTypeCodes.iterator();
+					Set<QuestionTypeString> qstnTypeCodes = question.getQuestionTypeCodes();
+					Iterator<QuestionTypeString> iterator = qstnTypeCodes.iterator();
 
 					while (iterator.hasNext()) {
 						responseInfos.add(new ResponseInfo(iterator.next()));

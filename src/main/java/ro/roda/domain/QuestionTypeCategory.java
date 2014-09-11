@@ -156,8 +156,17 @@ public class QuestionTypeCategory {
 	@Column(name = "category_id", columnDefinition = "bigint", nullable = false, insertable = false, updatable = false)
 	private Long categoryId;
 
-	@Column(name = "label", columnDefinition = "varchar", length = 200)
+	@Column(name = "label", columnDefinition = "varchar", length = 200, nullable = true)
 	private String label;
+
+	@Column(name = "value", columnDefinition = "varchar", length = 200)
+	private String value;
+
+	@Column(name = "numeric_value", columnDefinition = "bool")
+	private Boolean numericValue;
+
+	@Column(name = "numeric_interpretation", columnDefinition = "bool")
+	private Boolean numericInterpretation;
 
 	@ManyToOne
 	@JoinColumn(name = "question_id", columnDefinition = "int8", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
@@ -197,6 +206,18 @@ public class QuestionTypeCategory {
 
 	public String getLabel() {
 		return label;
+	}
+
+	public String getValue() {
+		return value;
+	}
+
+	public Boolean getNumericValue() {
+		return numericValue;
+	}
+
+	public Boolean getNumericInterpretation() {
+		return numericInterpretation;
 	}
 
 	@Transactional
@@ -241,6 +262,18 @@ public class QuestionTypeCategory {
 
 	public void setLabel(String label) {
 		this.label = label;
+	}
+
+	public void setValue(String value) {
+		this.value = value;
+	}
+
+	public void setNumericValue(Boolean numericValue) {
+		this.numericValue = numericValue;
+	}
+
+	public void setNumericInterpretation(Boolean numericInterpretation) {
+		this.numericInterpretation = numericInterpretation;
 	}
 
 	public String toJson() {

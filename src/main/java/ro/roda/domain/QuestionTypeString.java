@@ -37,17 +37,17 @@ import flexjson.JSONSerializer;
 @Table(schema = "public", name = "question_type_code")
 @Configurable
 @Audited
-public class QuestionTypeCode {
+public class QuestionTypeString {
 
 	public static long countQuestionTypeCodes() {
-		return entityManager().createQuery("SELECT COUNT(o) FROM QuestionTypeCode o", Long.class).getSingleResult();
+		return entityManager().createQuery("SELECT COUNT(o) FROM QuestionTypeString o", Long.class).getSingleResult();
 	}
 
 	@Async
-	public static void deleteIndex(QuestionTypeCode selectionQuestion) {
+	public static void deleteIndex(QuestionTypeString selectionQuestion) {
 		SolrServer solrServer = solrServer();
 		try {
-			solrServer.deleteById("questiontypecode_" + selectionQuestion.getId());
+			solrServer.deleteById("questiontypestring_" + selectionQuestion.getId());
 			solrServer.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -55,58 +55,59 @@ public class QuestionTypeCode {
 	}
 
 	public static final EntityManager entityManager() {
-		EntityManager em = new QuestionTypeCode().entityManager;
+		EntityManager em = new QuestionTypeString().entityManager;
 		if (em == null)
 			throw new IllegalStateException(
 					"Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
 		return em;
 	}
 
-	public static List<QuestionTypeCode> findAllQuestionTypeCodes() {
-		return entityManager().createQuery("SELECT o FROM QuestionTypeCode o", QuestionTypeCode.class).getResultList();
+	public static List<QuestionTypeString> findAllQuestionTypeCodes() {
+		return entityManager().createQuery("SELECT o FROM QuestionTypeString o", QuestionTypeString.class)
+				.getResultList();
 	}
 
-	public static QuestionTypeCode findQuestionTypeCode(QuestionTypeCodePK id) {
+	public static QuestionTypeString findQuestionTypeCode(QuestionTypeStringPK id) {
 		if (id == null)
 			return null;
-		return entityManager().find(QuestionTypeCode.class, id);
+		return entityManager().find(QuestionTypeString.class, id);
 	}
 
-	public static List<QuestionTypeCode> findQuestionTypeCodeEntries(int firstResult, int maxResults) {
-		return entityManager().createQuery("SELECT o FROM QuestionTypeCode o", QuestionTypeCode.class)
+	public static List<QuestionTypeString> findQuestionTypeCodeEntries(int firstResult, int maxResults) {
+		return entityManager().createQuery("SELECT o FROM QuestionTypeCode o", QuestionTypeString.class)
 				.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
 	}
 
-	public static Collection<QuestionTypeCode> fromJsonArrayToSelectionQuestions(String json) {
-		return new JSONDeserializer<List<QuestionTypeCode>>().use(null, ArrayList.class)
-				.use("values", QuestionTypeCode.class).deserialize(json);
+	public static Collection<QuestionTypeString> fromJsonArrayToSelectionQuestions(String json) {
+		return new JSONDeserializer<List<QuestionTypeString>>().use(null, ArrayList.class)
+				.use("values", QuestionTypeString.class).deserialize(json);
 	}
 
-	public static QuestionTypeCode fromJsonToSelectionQuestion(String json) {
-		return new JSONDeserializer<QuestionTypeCode>().use(null, QuestionTypeCode.class).deserialize(json);
+	public static QuestionTypeString fromJsonToSelectionQuestion(String json) {
+		return new JSONDeserializer<QuestionTypeString>().use(null, QuestionTypeString.class).deserialize(json);
 	}
 
-	public static void indexSelectionQuestion(QuestionTypeCode selectionQuestion) {
-		List<QuestionTypeCode> selectionvariableitems = new ArrayList<QuestionTypeCode>();
+	public static void indexSelectionQuestion(QuestionTypeString selectionQuestion) {
+		List<QuestionTypeString> selectionvariableitems = new ArrayList<QuestionTypeString>();
 		selectionvariableitems.add(selectionQuestion);
 		indexSelectionQuestions(selectionvariableitems);
 	}
 
 	@Async
-	public static void indexSelectionQuestions(Collection<QuestionTypeCode> selectionvariableitems) {
+	public static void indexSelectionQuestions(Collection<QuestionTypeString> selectionvariableitems) {
 		List<SolrInputDocument> documents = new ArrayList<SolrInputDocument>();
-		for (QuestionTypeCode selectionQuestion : selectionvariableitems) {
+		for (QuestionTypeString selectionQuestion : selectionvariableitems) {
 			SolrInputDocument sid = new SolrInputDocument();
 			sid.addField("id", "selectionquestion_" + selectionQuestion.getId());
-			sid.addField("selectionQuestion.categoryid_t", selectionQuestion.getCodeId());
+			sid.addField("selectionQuestion.categoryid_t", selectionQuestion.getStringId());
 			sid.addField("selectionQuestion.questionid_t", selectionQuestion.getQuestionId());
-			sid.addField("selectionQuestion.label_t", selectionQuestion.getLabel());
+			sid.addField("selectionQuestion.label_t", selectionQuestion.getFreeText());
 			sid.addField("selectionQuestion.id_t", selectionQuestion.getId());
 			// Add summary field to allow searching documents for objects of
 			// this type
 			sid.addField(
 					"selectionvariableitem_solrsummary_t",
-					new StringBuilder().append(selectionQuestion.getCodeId()).append(" ")
+					new StringBuilder().append(selectionQuestion.getStringId()).append(" ")
 							.append(selectionQuestion.getQuestionId()).append(" ").append(selectionQuestion.getId()));
 			documents.add(sid);
 		}
@@ -134,14 +135,14 @@ public class QuestionTypeCode {
 	}
 
 	public static SolrServer solrServer() {
-		SolrServer _solrServer = new QuestionTypeCode().solrServer;
+		SolrServer _solrServer = new QuestionTypeString().solrServer;
 		if (_solrServer == null)
 			throw new IllegalStateException(
 					"Solr server has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
 		return _solrServer;
 	}
 
-	public static String toJsonArray(Collection<QuestionTypeCode> collection) {
+	public static String toJsonArray(Collection<QuestionTypeString> collection) {
 		return new JSONSerializer().exclude("*.class").exclude("classAuditReader", "auditReader").serialize(collection);
 	}
 
@@ -150,16 +151,13 @@ public class QuestionTypeCode {
 	}
 
 	@EmbeddedId
-	private QuestionTypeCodePK id;
+	private QuestionTypeStringPK id;
 
-	@Column(name = "code_id", columnDefinition = "int4", nullable = false, insertable = false, updatable = false)
-	private Integer codeId;
+	@Column(name = "string_id", columnDefinition = "int4", nullable = false, insertable = false, updatable = false)
+	private Integer stringId;
 
-	@Column(name = "label", columnDefinition = "varchar", length = 200)
-	private String label;
-
-	@Column(name = "value", columnDefinition = "int8")
-	private Integer value;
+	@Column(name = "free_text", columnDefinition = "varchar", length = 200)
+	private String freeText;
 
 	@ManyToOne
 	@JoinColumn(name = "question_id", columnDefinition = "int8", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
@@ -185,7 +183,7 @@ public class QuestionTypeCode {
 		this.entityManager.flush();
 	}
 
-	public QuestionTypeCodePK getId() {
+	public QuestionTypeStringPK getId() {
 		return this.id;
 	}
 
@@ -193,23 +191,19 @@ public class QuestionTypeCode {
 		return questionId;
 	}
 
-	public Integer getCodeId() {
-		return codeId;
+	public Integer getStringId() {
+		return stringId;
 	}
 
-	public String getLabel() {
-		return label;
-	}
-
-	public Integer getValue() {
-		return value;
+	public String getFreeText() {
+		return freeText;
 	}
 
 	@Transactional
-	public QuestionTypeCode merge() {
+	public QuestionTypeString merge() {
 		if (this.entityManager == null)
 			this.entityManager = entityManager();
-		QuestionTypeCode merged = this.entityManager.merge(this);
+		QuestionTypeString merged = this.entityManager.merge(this);
 		this.entityManager.flush();
 		return merged;
 	}
@@ -228,29 +222,25 @@ public class QuestionTypeCode {
 		if (this.entityManager.contains(this)) {
 			this.entityManager.remove(this);
 		} else {
-			QuestionTypeCode attached = QuestionTypeCode.findQuestionTypeCode(this.id);
+			QuestionTypeString attached = QuestionTypeString.findQuestionTypeCode(this.id);
 			this.entityManager.remove(attached);
 		}
 	}
 
-	public void setId(QuestionTypeCodePK id) {
+	public void setId(QuestionTypeStringPK id) {
 		this.id = id;
 	}
 
-	public void setCodeId(Integer codeId) {
-		this.codeId = codeId;
+	public void setStringId(Integer stringId) {
+		this.stringId = stringId;
 	}
 
 	public void setQuestionId(Question questionId) {
 		this.questionId = questionId;
 	}
 
-	public void setLabel(String label) {
-		this.label = label;
-	}
-
-	public void setValue(Integer value) {
-		this.value = value;
+	public void setFreeText(String freeText) {
+		this.freeText = freeText;
 	}
 
 	public String toJson() {

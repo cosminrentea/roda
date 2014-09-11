@@ -157,11 +157,17 @@ public class QuestionTypeNumeric {
 	@Column(name = "type_qstn", columnDefinition = "varchar", length = 200)
 	private String typeQstn;
 
-	@Column(name = "high", columnDefinition = "int8")
+	@Column(name = "free_number", columnDefinition = "int8", nullable = true)
+	private Integer freeNumber;
+
+	@Column(name = "high", columnDefinition = "int8", nullable = true)
 	private Integer high;
 
-	@Column(name = "low", columnDefinition = "int8")
+	@Column(name = "low", columnDefinition = "int8", nullable = true)
 	private Integer low;
+
+	@Column(name = "category_interpretation", columnDefinition = "bool", nullable = true)
+	private Boolean categoryInterpretation;
 
 	@Id
 	@Column(name = "question_id", columnDefinition = "int8")
@@ -235,6 +241,14 @@ public class QuestionTypeNumeric {
 		return low;
 	}
 
+	public Integer getFreeNumber() {
+		return freeNumber;
+	}
+
+	public Boolean getCategoryInterpretation() {
+		return categoryInterpretation;
+	}
+
 	public void setQuestionId(Long questionId) {
 		this.questionId = questionId;
 	}
@@ -253,6 +267,14 @@ public class QuestionTypeNumeric {
 
 	public void setLow(Integer low) {
 		this.low = low;
+	}
+
+	public void setFreeNumber(Integer freeNumber) {
+		this.freeNumber = freeNumber;
+	}
+
+	public void setCategoryInterpretation(Boolean categoryInterpretation) {
+		this.categoryInterpretation = categoryInterpretation;
 	}
 
 	public String toJson() {

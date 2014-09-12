@@ -50,7 +50,9 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.w3c.dom.CDATASection;
@@ -126,7 +128,6 @@ import ro.roda.service.filestore.CmsFileStoreService;
 import au.com.bytecode.opencsv.CSVReader;
 
 @Service
-@Transactional
 public class ImporterServiceImpl implements ImporterService {
 
 	private final Log log = LogFactory.getLog(this.getClass());
@@ -195,26 +196,8 @@ public class ImporterServiceImpl implements ImporterService {
 
 	private Tika tika = new Tika();
 
-	@Value("${roda.data.cms}")
-	private String rodaDataCms;
-
-	@Value("${roda.data.csv}")
-	private String rodaDataCsv;
-
-	@Value("${roda.data.csv-extra}")
-	private String rodaDataCsvExtra;
-
-	@Value("${roda.data.ddi}")
-	private String rodaDataDdi;
-
 	@Value("${roda.data.ddi.csv}")
 	private String rodaDataDdiCsv;
-
-	@Value("${roda.data.elsst}")
-	private String rodaDataElsst;
-
-	@Value("${roda.data.csv-after-ddi}")
-	private String rodaDataCsvAfterDdi;
 
 	@Value("${roda.data.ddi.xsd}")
 	private String xsdDdi122;
@@ -249,38 +232,8 @@ public class ImporterServiceImpl implements ImporterService {
 		return unmarshaller;
 	}
 
-	public void importAll() throws IOException, SQLException, JAXBException, SAXException {
-		log.trace("roda.data.csv = " + rodaDataCsv);
-		log.trace("roda.data.csv-extra = " + rodaDataCsvExtra);
-		log.trace("roda.data.ddi = " + rodaDataDdi);
-		log.trace("roda.data.ddi.csv = " + rodaDataDdiCsv);
-		log.trace("roda.data.csv-after-ddi = " + rodaDataCsvAfterDdi);
-		log.trace("roda.data.cms = " + rodaDataCms);
-
-		// to skip the initial actions,
-		// change properties to another string
-		// (not "yes")
-
-		if ("yes".equalsIgnoreCase(rodaDataCsv)) {
-			importCsv();
-			if ("yes".equalsIgnoreCase(rodaDataCsvExtra)) {
-				importCsvExtra();
-			}
-		}
-
-		if ("yes".equalsIgnoreCase(rodaDataElsst)) {
-			importElsst();
-		}
-
-		if ("yes".equalsIgnoreCase(rodaDataCms)) {
-			importCms();
-		}
-
-		if ("yes".equalsIgnoreCase(rodaDataDdi)) {
-			importDdiFiles();
-		}
-	}
-
+	// @Async
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public void importCms() throws IOException {
 		importCmsFiles("files");
 		importCmsLayouts("layouts");
@@ -594,11 +547,13 @@ public class ImporterServiceImpl implements ImporterService {
 		return result;
 	}
 
+	// @Async
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public void importElsst() throws FileNotFoundException, IOException {
-		List<String[]> csvLines;
+
 		CSVReader reader = new CSVReader(new FileReader(
 				new ClassPathResource(rodaDataElsstDir + elsstEnTerms).getFile()));
-		csvLines = reader.readAll();
+		List<String[]> csvLines = reader.readAll();
 		reader.close();
 
 		for (String[] csvLine : csvLines) {
@@ -646,6 +601,8 @@ public class ImporterServiceImpl implements ImporterService {
 		importCsvDir(rodaDataCsvDir);
 	}
 
+	// @Async
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public void importCsvExtra() throws SQLException, IOException {
 		importCsvDir(rodaDataCsvExtraDir);
 	}
@@ -657,7 +614,6 @@ public class ImporterServiceImpl implements ImporterService {
 	 * @throws SQLException
 	 * @throws IOException
 	 */
-
 	public void importCsvDir(String dirname) throws SQLException, IOException {
 		log.trace("Importing CSV from directory: " + dirname);
 		Connection con = null;
@@ -706,11 +662,9 @@ public class ImporterServiceImpl implements ImporterService {
 		}
 	}
 
-	// @Async
 	public void importDdiFiles() throws FileNotFoundException, IOException, JAXBException, SAXException {
 		log.trace("roda.data.ddi.files = " + rodaDataDdiFiles);
 		log.trace("roda.data.ddi.csv = " + rodaDataDdiCsv);
-		log.trace("roda.data.ddi.csv-after-ddi = " + rodaDataCsvAfterDdi);
 		log.trace("roda.data.ddi.persist = " + rodaDataDdiPersist);
 
 		boolean ddiPersistance = "yes".equalsIgnoreCase(rodaDataDdiPersist);
@@ -759,39 +713,42 @@ public class ImporterServiceImpl implements ImporterService {
 				importDdiFile(cb, mockMultipartFileDdi, true, true, ddiPersistance, mockMultipartFileCsv);
 
 			} catch (Exception e) {
-				log.error("Exception when importing DDI: " + ddiFile.getName(), e);
+				log.fatal("Exception when importing DDI: " + ddiFile.getName(), e);
 				throw e;
 			}
 		}
 		log.debug("Finished importing DDI files");
-
-		// add Studies to Catalogs
-		if ("yes".equalsIgnoreCase(rodaDataCsvAfterDdi)) {
-			CSVReader reader = new CSVReader(new FileReader(
-					new ClassPathResource(rodaDataCsvAfterDdiCatalogStudy).getFile()));
-			List<String[]> csvLines;
-			csvLines = reader.readAll();
-			reader.close();
-
-			for (String[] csvLine : csvLines) {
-				log.trace("Catalog: " + csvLine[0] + " -- Study Filename: " + csvLine[1]);
-				Study study = Study.findFirstStudyWithFilename(csvLine[1]);
-				if (study == null) {
-					String errorMessage = "Study cannot be added to Catalog because its filename was not found: "
-							+ csvLine[1];
-					log.error(errorMessage);
-					throw new IllegalStateException(errorMessage);
-				}
-				CatalogStudy cs = new CatalogStudy();
-				cs.setId(new CatalogStudyPK(Integer.valueOf(csvLine[0]), study.getId()));
-				cs.persist();
-			}
-			log.debug("DDI files moved to Catalogs");
-
-			// TODO add Studies to Series
-		}
 	}
 
+	// @Async
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
+	public void importDdiIntoCatalogsAndSeries() throws FileNotFoundException, IOException {
+		CSVReader reader = new CSVReader(new FileReader(
+				new ClassPathResource(rodaDataCsvAfterDdiCatalogStudy).getFile()));
+		List<String[]> csvLines = reader.readAll();
+		reader.close();
+
+		for (String[] csvLine : csvLines) {
+			log.trace("Catalog: " + csvLine[0] + " -- Study Filename: " + csvLine[1]);
+			Study study = Study.findFirstStudyWithFilename(csvLine[1]);
+			if (study == null) {
+				String errorMessage = "Study cannot be added to Catalog because its filename was not found: "
+						+ csvLine[1];
+				log.error(errorMessage);
+				throw new IllegalStateException(errorMessage);
+			}
+			CatalogStudy cs = new CatalogStudy();
+			cs.setId(new CatalogStudyPK(Integer.valueOf(csvLine[0]), study.getId()));
+			cs.persist();
+		}
+		log.debug("DDI files moved to Catalogs");
+
+		// TODO add Studies to Series
+
+	}
+
+	// @Async
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public void importDdiFile(CodeBook cb, MultipartFile multipartFileDdi, boolean nesstarExported,
 			boolean legacyDataRODA, boolean ddiPersistence, MultipartFile multipartFileCsv)
 			throws FileNotFoundException, IOException {
@@ -926,6 +883,9 @@ public class ImporterServiceImpl implements ImporterService {
 		Users u = Users.findUsers(1);
 		s.setAddedBy(u);
 		Set<Study> su = u.getStudies();
+		if (su == null) {
+			su = new HashSet<Study>();
+		}
 		su.add(s);
 		u.setStudies(su);
 
@@ -934,6 +894,9 @@ public class ImporterServiceImpl implements ImporterService {
 		TimeMeth tm = TimeMeth.findTimeMeth(1);
 		s.setTimeMethId(tm);
 		Set<Study> tms = tm.getStudies();
+		if (tms == null) {
+			tms = new HashSet<Study>();
+		}
 		tms.add(s);
 		tm.setStudies(tms);
 
@@ -942,6 +905,9 @@ public class ImporterServiceImpl implements ImporterService {
 		UnitAnalysis ua = UnitAnalysis.findUnitAnalysis(1);
 		s.setUnitAnalysisId(ua);
 		Set<Study> uas = ua.getStudies();
+		if (uas == null) {
+			uas = new HashSet<Study>();
+		}
 		uas.add(s);
 		ua.setStudies(uas);
 
@@ -1126,29 +1092,33 @@ public class ImporterServiceImpl implements ImporterService {
 			instance.merge();
 		}
 
-		// Add the imported DDI File to current Study's Files (in File-Store)
+		// Add the imported DDI File to current Study's Files
+		// (in the OLD deprecated File-Store)
 
-		ro.roda.domain.File domainFile = new ro.roda.domain.File();
-		fileService.saveFile(domainFile, multipartFileDdi, false);
+		// ro.roda.domain.File domainFile = new ro.roda.domain.File();
+		// fileService.saveFile(domainFile, multipartFileDdi, false);
+		//
+		// HashSet<Study> sStudy = new HashSet<Study>();
+		// sStudy.add(s);
+		// domainFile.setStudies1(sStudy);
+		// domainFile.setContentType("application/xml");
+		//
+		// HashSet<ro.roda.domain.File> sFile = new
+		// HashSet<ro.roda.domain.File>();
+		// sFile.add(domainFile);
+		// s.setFiles1(sFile);
+		//
+		// domainFile.persist();
 
-		HashSet<Study> sStudy = new HashSet<Study>();
-		sStudy.add(s);
-		domainFile.setStudies1(sStudy);
-		domainFile.setContentType("application/xml");
-
-		HashSet<ro.roda.domain.File> sFile = new HashSet<ro.roda.domain.File>();
-		sFile.add(domainFile);
-		s.setFiles1(sFile);
-
-		domainFile.persist();
-
+		// Add the imported DDI File to current Study's Files
+		// (in CMS-File-Store)
 		AdminJson ret = adminJsonService.folderSave(CmsFolder.importedCmsFolderName, null,
 				"Folder for imported DDI files and related files");
 
-		// create sub-folder for each imported study
+		// 1. create sub-folder for each imported study
 		AdminJson retDdi = adminJsonService.folderSave(s.getId().toString(), ret.getId(), null);
 
-		// save the DDI XML file
+		// 2. save the DDI XML file
 		adminJsonService.fileSave(retDdi.getId(), multipartFileDdi, null, null, null);
 
 		// save the data/CSV file, if any
@@ -1218,6 +1188,8 @@ public class ImporterServiceImpl implements ImporterService {
 		// }
 
 		if (multipartFileCsv != null) {
+
+			// save the DDI CSV file
 			adminJsonService.fileSave(retDdi.getId(), multipartFileCsv, null, null, null);
 
 			List<String[]> csvLines;
@@ -1238,7 +1210,7 @@ public class ImporterServiceImpl implements ImporterService {
 					if (instance.getQuestions() != null) {
 						for (Question question : instance.getQuestions()) {
 							for (Variable var : question.getVariables()) {
-								if (var.getName().equalsIgnoreCase(csvLine[0])) {
+								if (csvLine[0].equalsIgnoreCase(var.getName())) {
 									var.setValues(varValues.toString());
 									var.merge();
 									break;
@@ -1251,6 +1223,8 @@ public class ImporterServiceImpl implements ImporterService {
 				}
 			}
 		}
+
+		s.flush();
 
 		// serialization of XML as JSON - if needed
 		// log.trace(new JSONSerializer().deepSerialize(cb));

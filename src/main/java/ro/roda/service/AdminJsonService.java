@@ -50,7 +50,9 @@ public interface AdminJsonService {
 
 	public abstract AdminJson fileSave(Integer folderId, MultipartFile content, Integer fileId, String alias, String url);
 
-	public abstract AdminJson jsonSave(String jsonString, Integer fileId, String name);
+	public abstract AdminJson jsonCreate(String jsonString, String name);
+
+	public abstract AdminJson jsonSave(String jsonString, Integer cmsFileId, String name);
 
 	public abstract AdminJson fileMove(Integer folderId, Integer fileId);
 

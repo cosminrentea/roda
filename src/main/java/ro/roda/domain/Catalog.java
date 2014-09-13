@@ -439,10 +439,19 @@ public class Catalog {
 
 	@Override
 	public boolean equals(Object obj) {
-		return (id != null && id.equals(((Catalog) obj).id))
-				|| ((parentId != null && parentId.equals(((Catalog) obj).parentId))
-						&& (owner != null && owner.equals(((Catalog) obj).owner)) && (name != null && name
-						.equalsIgnoreCase(((Catalog) obj).name)));
+		if (obj == null) {
+			return false;
+		}
+		if (obj instanceof Catalog) {
+			Catalog cat = (Catalog) obj;
+			return (id != null && id.equals(cat.id))
+					|| ((parentId != null && parentId.equals(cat.parentId))
+							&& (owner != null && owner.equals(cat.owner)) && (name != null && name
+							.equalsIgnoreCase(cat.name)));
+		} else {
+			return false;
+		}
+
 	}
 
 	public AuditReader getAuditReader() {

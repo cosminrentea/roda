@@ -11,7 +11,7 @@ Ext.define('RODAdmin.view.studies.CBEditor.AddStudyWindow', {
 	},
 	config : {
 		mode : 'add',
-		editId : 0
+		editindex : 0
 	},
     initComponent : function() {
 		var me = this;

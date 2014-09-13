@@ -16,8 +16,6 @@ public interface ImporterService {
 
 	public abstract Unmarshaller getUnmarshaller() throws JAXBException, SAXException, IOException;
 
-	public abstract void importAll() throws IOException, SQLException, JAXBException, SAXException;
-
 	public abstract void importCms() throws IOException;
 
 	public abstract void importElsst() throws FileNotFoundException, IOException;
@@ -29,6 +27,8 @@ public interface ImporterService {
 	public abstract void importCsvDir(String dirname) throws SQLException, IOException;
 
 	public abstract void importDdiFiles() throws IOException, JAXBException, SAXException;
+
+	public abstract void importDdiIntoCatalogsAndSeries() throws FileNotFoundException, IOException;
 
 	public abstract void importDdiFile(CodeBook cb, MultipartFile multipartFileDdi, boolean nesstarExported,
 			boolean legacyDataRODA, boolean ddiPersistence, MultipartFile multipartFileCsv)

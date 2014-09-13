@@ -34,7 +34,7 @@ getStats <- function(mylist) {
     
     # aceasta comanda poate sta aici (caz in care se incarca la fiecare apelare din Java
     # sau poate fi specificata doar la deschiderea R, in fisierul .Rprofile din /home/user
-    load("/Users/dusadrian/miss.Rdata")
+    load("miss.Rdata")
     
     
     rs <- function(x) {
@@ -412,7 +412,7 @@ getStats <- function(mylist) {
                             rs(12), "\"rows\": ", length(valori[[1]]) + 2, ",\n",
                             rs(12), "\"cols\": ", length(valori[[2]]) + 2, ",\n",
                             rs(12), "\"data\": [\n",
-                                rs(16), "[\"", paste(names(mylist$vars), collapse= "\\"),"\", ",
+                                rs(16), "[\"", paste(names(mylist$vars), collapse= " / "),"\", ",
                                                paste(paste("\"", paste(valori[[2]], etichete[[2]], sep=". "), "\"", sep=""), collapse = ", "),
                                                ", \"Total\"],\n", sep="")
                                 for (i in seq(length(valori[[1]]))) {

@@ -11,6 +11,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.rosuda.JRI.REXP;
 import org.rosuda.JRI.Rengine;
+import org.springframework.context.SmartLifecycle;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.stereotype.Service;
@@ -20,7 +21,7 @@ import ro.roda.domain.Variable;
 
 @Service
 @Transactional
-public class StatisticsServiceImpl implements StatisticsService {
+public class StatisticsServiceImpl implements StatisticsService, SmartLifecycle {
 
 	private final Log log = LogFactory.getLog(this.getClass());
 
@@ -31,42 +32,6 @@ public class StatisticsServiceImpl implements StatisticsService {
 	private String rSourceFilename;
 
 	private static final String classpathRodaR = "classpath*:R/roda.R";
-
-	@PostConstruct
-	private void postConstruct() {
-		log.trace(System.getProperties());
-		re = null;
-		rWorkingDirectory = null;
-		if (!"yes".equalsIgnoreCase(System.getProperty("jri.ignore.ule"))) {
-			String[] args = new String[1];
-			args[0] = "--vanilla";
-			re = new Rengine(args, false, null);
-			log.trace("JRI Rengine.versionCheck() = " + Rengine.versionCheck());
-
-			// get R's working directory and R source file (as canonical paths)
-			PathMatchingResourcePatternResolver pmr = new PathMatchingResourcePatternResolver();
-			Resource[] resources;
-			try {
-				resources = pmr.getResources(classpathRodaR);
-				if (resources.length == 1) {
-					File rFile = resources[0].getFile();
-					rSourceFilename = rFile.getCanonicalPath();
-					rWorkingDirectory = rFile.getCanonicalFile().getParent();
-				} else {
-					log.error("roda.R : not found or ambiguous");
-				}
-			} catch (IOException e) {
-				log.error("roda.R : not found");
-			}
-		}
-	}
-
-	@PreDestroy
-	public void preDestroy() {
-		if (re != null) {
-			re.end();
-		}
-	}
 
 	public String getStatisticsJson(String operation, List<Long> variableIds) {
 		String errorMessage = null;
@@ -181,6 +146,73 @@ public class StatisticsServiceImpl implements StatisticsService {
 
 		return "{\"success\": true, \"data\":[" + sbRnorm + "," + sbTable + "]}";
 
+	}
+
+	@Override
+	public void start() {
+		log.trace("Lifecycle: start()");
+		log.trace(System.getProperties());
+
+		re = null;
+		rWorkingDirectory = null;
+		rSourceFilename = null;
+
+		if (!"yes".equalsIgnoreCase(System.getProperty("jri.ignore.ule"))) {
+			String[] args = new String[1];
+			args[0] = "--vanilla";
+			re = new Rengine(args, false, null);
+			log.trace("JRI Rengine.versionCheck() = " + Rengine.versionCheck());
+
+			// get R's working directory and R source file (as canonical paths)
+			PathMatchingResourcePatternResolver pmr = new PathMatchingResourcePatternResolver();
+			Resource[] resources;
+			try {
+				resources = pmr.getResources(classpathRodaR);
+				if (resources.length == 1) {
+					File rFile = resources[0].getFile();
+					rSourceFilename = rFile.getCanonicalPath();
+					rWorkingDirectory = rFile.getCanonicalFile().getParent();
+				} else {
+					log.fatal("roda.R : not found or ambiguous");
+				}
+			} catch (IOException e) {
+				log.fatal("roda.R : not found", e);
+			}
+		}
+	}
+
+	@Override
+	public void stop() {
+		log.trace("Lifecycle: stop()");
+		if (re != null) {
+			re.end();
+			re = null;
+		}
+	}
+
+	@Override
+	public boolean isRunning() {
+		return (re != null);
+	}
+
+	@Override
+	public int getPhase() {
+		return Integer.MAX_VALUE;
+	}
+
+	@Override
+	public boolean isAutoStartup() {
+		return true;
+	}
+
+	@Override
+	public void stop(Runnable callback) {
+		log.trace("Lifecycle: stop(callback)");
+
+		stop();
+
+		// Our Stop/Shutdown complete. Regular shutdown will continue.
+		callback.run();
 	}
 }
 

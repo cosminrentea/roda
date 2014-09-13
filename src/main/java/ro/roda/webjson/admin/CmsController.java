@@ -301,10 +301,24 @@ public class CmsController {
 		return fileSave.toJson();
 	}
 
+	@RequestMapping(value = "/cmsjsoncreate", method = RequestMethod.POST, produces = "application/json")
+	@ResponseBody
+	public String jsonCreate(@RequestBody String jsonString, @RequestParam(value = "name") String name,
+			HttpServletRequest httpServletRequest) {
+		log.trace("> jsonCreate controller: " + name);
+		AdminJson jsonSave = adminJsonService.jsonCreate(jsonString, name);
+
+		if (jsonSave == null) {
+			return null;
+		}
+
+		return jsonSave.toJsonWithId();
+	}
+
 	@RequestMapping(value = "/cmsjsonsave", method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody
-	public String jsonSave(@RequestBody String jsonString, @RequestParam(value = "name", required = false) String name,
-			@RequestParam(value = "id", required = false) Integer id, HttpServletRequest httpServletRequest) {
+	public String jsonSave(@RequestBody String jsonString, @RequestParam(value = "id") Integer id,
+			@RequestParam(value = "name", required = false) String name, HttpServletRequest httpServletRequest) {
 		log.trace("> jsonSave controller: " + id + " ; " + name);
 		AdminJson jsonSave = adminJsonService.jsonSave(jsonString, id, name);
 

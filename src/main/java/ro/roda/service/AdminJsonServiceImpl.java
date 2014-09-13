@@ -97,6 +97,43 @@ public class AdminJsonServiceImpl implements AdminJsonService {
 		return AdminJson.snippetGroupMove(parentGroupId, groupId);
 	}
 
+	public AdminJson newsSave(Integer id, Integer langId, String title, String content, Date added) {
+		return AdminJson.newsSave(id, langId, title, content, added);
+	}
+
+	// CMS PAGE
+	public AdminJson cmsPageSave(boolean save, Integer cmsPageParentId, String name, String lang, String menutitle,
+			String synopsis, String target, String url, boolean defaultPage, String externalredirect,
+			String internalredirect, Integer layoutId, Integer cacheable, boolean published, boolean navigable,
+			String pagetype, Integer cmsPageId, String pageContent) {
+		AtomicReference<CmsPage> cmsPageRef = new AtomicReference<CmsPage>();
+		AdminJson adminJson = AdminJson.cmsPageSave(save, cmsPageParentId, name, lang, menutitle, synopsis, target,
+				url, defaultPage, externalredirect, internalredirect, layoutId, cacheable, published, navigable,
+				pagetype, cmsPageId, pageContent, cmsPageRef);
+		CmsPage cmsPage = cmsPageRef.get();
+
+		if (save) {
+			// evict page from cache (because it was just saved/updated)
+			rodaPageService.evict(rodaPageService.generateFullRelativeUrl(cmsPage));
+		} else {
+			// generate preview page
+			adminJson.setMessage(rodaPageService.generatePreviewPage(cmsPage, CmsLayout.findCmsLayout(layoutId)
+					.getLayoutContent(), pageContent,
+					rodaPageService.generateFullRelativeUrl(cmsPage != null ? cmsPage.getCmsPageId() : null)
+							+ (url != null ? "/" + url : "/preview"))[0]);
+		}
+
+		return adminJson;
+	}
+
+	public AdminJson cmsPageMove(Integer cmsPageParentId, Integer cmsPageId, String mode) {
+		return AdminJson.cmsPageMove(cmsPageParentId, cmsPageId, mode);
+	}
+
+	public AdminJson cmsPageDrop(Integer cmsPageId) {
+		return AdminJson.cmsPageDrop(cmsPageId);
+	}
+
 	// CMS FILE
 
 	public AdminJson folderSave(String foldername, Integer parentId, String description) {
@@ -129,13 +166,31 @@ public class AdminJsonServiceImpl implements AdminJsonService {
 		return result;
 	}
 
-	public AdminJson jsonSave(String jsonString, Integer fileId, String name) {
+	@Override
+	public AdminJson jsonCreate(String jsonString, String name) {
+		MockMultipartFile mmf = new MockMultipartFile(name, name, "application/json", jsonString.getBytes(Charset
+				.forName("UTF-8")));
+		// get or create the folder for JSONs
+		CmsFolder folder = CmsFolder.checkCmsFolder(null, CmsFolder.jsonCmsFolderName, null, null);
+		fileStore.folderSave(folder);
+
+		AdminJson result = AdminJson.fileSave(folder.getId(), mmf, null, null, null);
+		fileStore.fileSave(mmf, folder);
+		return result;
+	}
+
+	public AdminJson jsonSave(String jsonString, Integer cmsFileId, String name) {
 		MockMultipartFile mmf = new MockMultipartFile(name, name, "application/json", jsonString.getBytes(Charset
 				.forName("UTF-8")));
 		CmsFolder folder = CmsFolder.checkCmsFolder(null, CmsFolder.jsonCmsFolderName, null, null);
-		AdminJson result = AdminJson.fileSave(folder.getId(), mmf, fileId, name, null);
 		fileStore.folderSave(folder);
+
+		// remove the old version of the JSON
+		fileStore.fileDrop(CmsFile.findCmsFile(cmsFileId));
+
+		AdminJson result = AdminJson.fileSave(folder.getId(), mmf, cmsFileId, null, null);
 		fileStore.fileSave(mmf, folder);
+
 		return result;
 	}
 
@@ -201,43 +256,6 @@ public class AdminJsonServiceImpl implements AdminJsonService {
 	@Override
 	public AdminJson groupMessage(Integer groupId, String subject, String message) {
 		return AdminJson.messageGroup(groupId, subject, message);
-	}
-
-	// CMS PAGE
-	public AdminJson cmsPageSave(boolean save, Integer cmsPageParentId, String name, String lang, String menutitle,
-			String synopsis, String target, String url, boolean defaultPage, String externalredirect,
-			String internalredirect, Integer layoutId, Integer cacheable, boolean published, boolean navigable,
-			String pagetype, Integer cmsPageId, String pageContent) {
-		AtomicReference<CmsPage> cmsPageRef = new AtomicReference<CmsPage>();
-		AdminJson adminJson = AdminJson.cmsPageSave(save, cmsPageParentId, name, lang, menutitle, synopsis, target,
-				url, defaultPage, externalredirect, internalredirect, layoutId, cacheable, published, navigable,
-				pagetype, cmsPageId, pageContent, cmsPageRef);
-		CmsPage cmsPage = cmsPageRef.get();
-
-		if (save) {
-			// evict page from cache (because it was just saved/updated)
-			rodaPageService.evict(rodaPageService.generateFullRelativeUrl(cmsPage));
-		} else {
-			// generate preview page
-			adminJson.setMessage(rodaPageService.generatePreviewPage(cmsPage, CmsLayout.findCmsLayout(layoutId)
-					.getLayoutContent(), pageContent,
-					rodaPageService.generateFullRelativeUrl(cmsPage != null ? cmsPage.getCmsPageId() : null)
-							+ (url != null ? "/" + url : "/preview"))[0]);
-		}
-
-		return adminJson;
-	}
-
-	public AdminJson cmsPageMove(Integer cmsPageParentId, Integer cmsPageId, String mode) {
-		return AdminJson.cmsPageMove(cmsPageParentId, cmsPageId, mode);
-	}
-
-	public AdminJson cmsPageDrop(Integer cmsPageId) {
-		return AdminJson.cmsPageDrop(cmsPageId);
-	}
-
-	public AdminJson newsSave(Integer id, Integer langId, String title, String content, Date added) {
-		return AdminJson.newsSave(id, langId, title, content, added);
 	}
 
 }

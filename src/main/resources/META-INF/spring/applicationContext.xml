@@ -135,24 +135,13 @@
         </property>
 	</bean>
 
-	<task:annotation-driven executor="asyncExecutor"
+	<task:annotation-driven executor="asyncExecutor" scheduler="rodaScheduler" 
 		mode="aspectj" />
 
-	<task:executor id="asyncExecutor" pool-size="${executor.poolSize}" />
+	<task:executor id="asyncExecutor" pool-size="1" />
 	
 	<bean class="ro.roda.util.ScheduledTask" id="rodaScheduledTask" />
 
-<!-- 
-	<task:scheduled-tasks scheduler="rodaScheduler">
-		
-    	<task:scheduled ref="rodaScheduledTask" method="maintenance" cron="${scheduler.cron.maintenance}"/>
-
-    	<task:scheduled ref="rodaScheduledTask" method="backup" cron="${scheduler.cron.backup}"/>
-
-    	<task:scheduled ref="rodaScheduledTask" method="vacuum" cron="${scheduler.cron.vacuum}"/>
-    	
-	</task:scheduled-tasks>
- -->
 	<task:scheduler id="rodaScheduler" pool-size="${scheduler.poolSize}"/>
 
 	<!-- Caching: EhCache library setup -->

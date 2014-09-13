@@ -33,7 +33,6 @@ import ro.roda.domain.News;
 import ro.roda.domain.UserGroup;
 import ro.roda.domain.UserMessage;
 import ro.roda.domain.Users;
-import flexjson.JSON;
 import flexjson.JSONSerializer;
 
 @Configurable
@@ -566,443 +565,43 @@ public class AdminJson {
 		return new AdminJson(true, "CMS Snippet group moved successfully");
 	}
 
-	// Methods for CMS files and folders.
-	public static AdminJson folderSave(String foldername, Integer parentId, String description) {
-		if (foldername == null)
-			return new AdminJson(false, "The folder must have a name.");
-
-		CmsFolder parentFolder = CmsFolder.findCmsFolder(parentId);
-		CmsFolder folder = CmsFolder.checkCmsFolder(null, foldername, parentFolder, description);
-
-		if (parentFolder != null) {
-			folder.setParentId(parentFolder);
-			Set<CmsFolder> children = parentFolder.getCmsFolders();
-			if (children == null) {
-				children = new HashSet<CmsFolder>();
-			}
-			children.add(folder);
-			parentFolder.setCmsFolders(children);
+	// Methods for News
+	public static AdminJson newsSave(Integer id, Integer langId, String title, String content, Date added) {
+		if (title == null) {
+			return new AdminJson(false, "Title must not be empty.");
+		}
+		if (langId == null) {
+			return new AdminJson(false, "Language is required.");
+		}
+		if (content == null) {
+			return new AdminJson(false, "No news without content");
 		}
 
-		try {
-			CmsFolder.entityManager().persist(folder);
-			if (parentFolder != null) {
-				CmsFolder.entityManager().merge(parentFolder);
-			}
-		} catch (EntityExistsException e) {
-			return new AdminJson(false, "Folder not created; " + e.getMessage());
+		News newsitem = null;
+		if (id != null) {
+			newsitem = News.findNews(id);
 		}
 
-		return new AdminJson(true, "Folder created", folder.getId());
-	}
-
-	public static AdminJson folderEmpty(Integer folderId) {
-		CmsFolder folder = CmsFolder.findCmsFolder(folderId);
-		if (folder == null)
-			return new AdminJson(false, "The folder does not exist.");
-
-		Set<CmsFolder> childGroups = folder.getCmsFolders();
-		Iterator<CmsFolder> childGroupsIterator = childGroups.iterator();
-		while (childGroupsIterator.hasNext()) {
-			CmsFolder childGroup = childGroupsIterator.next();
-			childGroup.setParentId(null);
-			CmsFolder.entityManager().persist(childGroup);
+		if (newsitem == null) {
+			newsitem = new News();
 		}
 
-		Set<CmsFile> childFiles = folder.getCmsFiles();
-		Iterator<CmsFile> childFilesIterator = childFiles.iterator();
-		while (childFilesIterator.hasNext()) {
-			CmsFile childFile = childFilesIterator.next();
-			childFile.setCmsFolderId(null);
-			CmsFile.entityManager().persist(childFile);
-		}
+		newsitem.setTitle(title);
+		newsitem.setContent(content);
+		newsitem.setAdded(added);
+		newsitem.setVisible(true);
 
-		folder.setCmsFolders(new HashSet<CmsFolder>());
-		folder.setCmsFiles(new HashSet<CmsFile>());
+		if (langId != null) {
+			Lang newsLang = Lang.findLang(langId);
+			if (newsLang != null) {
+				newsitem.setLangId(newsLang);
 
-		try {
-			CmsFolder.entityManager().persist(folder);
-		} catch (EntityExistsException e) {
-			return new AdminJson(false, "Folder not emptied " + e.getMessage());
-		}
-
-		return new AdminJson(true, "CMS Folder emptied successfully");
-	}
-
-	public static AdminJson folderDrop(Integer folderId) {
-		CmsFolder folder = CmsFolder.findCmsFolder(folderId);
-		if (folder == null)
-			return new AdminJson(false, "The folder does not exist.");
-
-		Set<CmsFolder> childGroups = folder.getCmsFolders();
-		Iterator<CmsFolder> childGroupsIterator = childGroups.iterator();
-		while (childGroupsIterator.hasNext()) {
-			CmsFolder childGroup = childGroupsIterator.next();
-			childGroup.setParentId(null);
-			CmsFolder.entityManager().persist(childGroup);
-		}
-
-		Set<CmsFile> childFiles = folder.getCmsFiles();
-		Iterator<CmsFile> childFilesIterator = childFiles.iterator();
-		while (childFilesIterator.hasNext()) {
-			CmsFile childFile = childFilesIterator.next();
-			childFile.setCmsFolderId(null);
-			CmsFile.entityManager().persist(childFile);
-		}
-
-		try {
-			CmsFolder.entityManager().remove(folder);
-		} catch (EntityExistsException e) {
-			return new AdminJson(false, "Folder not dropped " + e.getMessage());
-		}
-
-		return new AdminJson(true, "CMS Folder dropped successfully");
-	}
-
-	public static AdminJson fileDrop(Integer fileId) {
-		CmsFile file = CmsFile.findCmsFile(fileId);
-		if (file == null)
-			return new AdminJson(false, "The file does not exist.");
-
-		CmsFolder parentGroup = file.getCmsFolderId();
-		if (parentGroup.getCmsFiles() != null && parentGroup.getCmsFiles().contains(file)) {
-			parentGroup.getCmsFiles().remove(file);
-			CmsFolder.entityManager().persist(parentGroup);
-		}
-
-		try {
-			CmsFile.entityManager().remove(file);
-		} catch (EntityExistsException e) {
-			return new AdminJson(false, "CMS File not dropped" + e.getMessage());
-		}
-
-		return new AdminJson(true, "CMS File dropped successfully");
-	}
-
-	public static AdminJson fileSave(Integer folderId, MultipartFile content, Integer fileId, String alias, String url) {
-
-		CmsFile file = null;
-		if (fileId != null) {
-			file = CmsFile.findCmsFile(fileId);
-		}
-
-		if (file == null) {
-			file = new CmsFile();
-		}
-
-		file.setLabel(alias);
-		file.setFilename(content.getOriginalFilename());
-		file.setContentType(content.getContentType());
-		file.setFilesize(content.getSize());
-		file.setLabel(alias);
-		file.setUrl(url);
-
-		// TODO Cosmin: check the use-case: file with the same name is added to
-		// the same folder
-		// should overwrite the existing row in DB, OR throw ERROR
-
-		CmsFolder parentFolder = CmsFolder.findCmsFolder(folderId);
-		if (parentFolder != null) {
-			file.setCmsFolderId(parentFolder);
-			if (parentFolder.getCmsFiles() != null && parentFolder.getCmsFiles().contains(file)) {
-				// do nothing
-			} else {
-				if (parentFolder.getCmsFiles() == null) {
-					parentFolder.setCmsFiles(new HashSet<CmsFile>());
-					parentFolder.getCmsFiles().add(file);
-				} else {
-					parentFolder.getCmsFiles().add(file);
-				}
-				CmsFolder.entityManager().persist(parentFolder);
-			}
-			file.setCmsFolderId(parentFolder);
-		}
-
-		try {
-			CmsFolder.entityManager().persist(file);
-		} catch (EntityExistsException e) {
-			return new AdminJson(false, "File not created because it already exists" + e.getMessage());
-		}
-
-		return new AdminJson(true, "CMS File created successfully", file.getId());
-	}
-
-	public static AdminJson fileMove(Integer folderId, Integer fileId) {
-
-		CmsFile file = null;
-		if (fileId != null) {
-			file = CmsFile.findCmsFile(fileId);
-		}
-
-		if (file == null) {
-			return new AdminJson(false, "CMS File to be moved should exist");
-		}
-
-		CmsFolder folder = CmsFolder.findCmsFolder(folderId);
-
-		if (folderId == null || folder == null) {
-			return new AdminJson(false, "The CMS Folder should exist");
-		}
-
-		if (folderId == (file.getCmsFolderId() == null ? null : file.getCmsFolderId().getId())) {
-			return new AdminJson(false, "The folder of the CMS File doesn't change");
-		}
-
-		try {
-			if (folder != null) {
-				if (folder.getCmsFiles() == null) {
-					folder.setCmsFiles(new HashSet<CmsFile>());
-					folder.getCmsFiles().add(file);
-				} else {
-					folder.getCmsFiles().add(file);
-				}
-				CmsFolder.entityManager().persist(folder);
-			}
-			file.setCmsFolderId(folder);
-
-			CmsFile.entityManager().persist(file);
-		} catch (EntityExistsException e) {
-			return new AdminJson(false, "File not moved " + e.getMessage());
-		}
-
-		return new AdminJson(true, "CMS File moved successfully");
-	}
-
-	public static AdminJson folderMove(Integer parentFolderId, Integer folderId) {
-
-		CmsFolder folder = null;
-		if (folderId != null) {
-			folder = CmsFolder.findCmsFolder(folderId);
-		}
-
-		if (folder == null) {
-			return new AdminJson(false, "CMS Folder to be moved should exist");
-		}
-
-		CmsFolder parentFolder = CmsFolder.findCmsFolder(parentFolderId);
-
-		if (parentFolderId == null || parentFolder == null) {
-			return new AdminJson(false, "The CMS Folder should exist");
-		}
-
-		if (parentFolderId == (folder.getParentId() == null ? null : folder.getParentId().getId())) {
-			return new AdminJson(false, "The parent of the CMS Folder doesn't change");
-		}
-
-		try {
-			if (parentFolder != null) {
-				if (parentFolder.getCmsFolders() == null) {
-					parentFolder.setCmsFolders(new HashSet<CmsFolder>());
-					parentFolder.getCmsFolders().add(folder);
-				} else {
-					parentFolder.getCmsFolders().add(folder);
-				}
-				CmsFolder.entityManager().persist(parentFolder);
-			}
-			folder.setParentId(parentFolder);
-
-			CmsFolder.entityManager().persist(folder);
-		} catch (EntityExistsException e) {
-			return new AdminJson(false, "CMS Folder not moved " + e.getMessage());
-		}
-
-		return new AdminJson(true, "CMS Folder moved successfully");
-	}
-
-	public static AdminJson userSave(Integer id, String username, String password, String passwordCheck, String email,
-			Boolean enabled) {
-		if (username == null) {
-			return new AdminJson(false, "The User must have a name!");
-		}
-		if (password == null || !password.equals(passwordCheck)) {
-			return new AdminJson(false, "The User password is not correct!");
-		}
-		try {
-			Users u = Users.checkUsers(id, username, password, enabled);
-		} catch (Exception e) {
-			return new AdminJson(false, "Exception saving User: " + e.getMessage());
-		}
-		return new AdminJson(true, "User created/saved");
-	}
-
-	public static AdminJson groupSave(Integer id, String name, String description, Boolean enabled) {
-		if (name == null) {
-			return new AdminJson(false, "The User Group must have a name!");
-		}
-		try {
-			UserGroup ug = UserGroup.checkUserGroup(id, name, description, enabled);
-		} catch (Exception e) {
-			return new AdminJson(false, "Exception saving User Group: " + e.getMessage());
-		}
-		return new AdminJson(true, "User Group created/saved");
-	}
-
-	public static AdminJson addUserToGroup(Integer userId, Integer groupId) {
-		Users u = Users.findUsers(userId);
-		UserGroup ug = UserGroup.findUserGroup(groupId);
-		if (u == null) {
-			return new AdminJson(false, "User does not exist");
-		}
-		if (ug == null) {
-			return new AdminJson(false, "User Group does not exist");
-		}
-
-		Authorities a = Authorities.findAuthorities(new AuthoritiesPK(u.getUsername(), ug.getGroupname()));
-		if (a == null) {
-			// add user to group
-			a = new Authorities();
-			a.setUsername(u);
-			a.setAuthority(ug);
-			Authorities.entityManager().persist(a);
-		}
-
-		return new AdminJson(true, "User added to Group");
-	}
-
-	public static AdminJson deleteUserFromGroup(Integer userId, Integer groupId) {
-		Users u = Users.findUsers(userId);
-		UserGroup ug = UserGroup.findUserGroup(groupId);
-		if (u == null) {
-			return new AdminJson(false, "User does not exist");
-		}
-		if (ug == null) {
-			return new AdminJson(false, "User Group does not exist");
-		}
-
-		Authorities a = Authorities.findAuthorities(new AuthoritiesPK(u.getUsername(), ug.getGroupname()));
-		if (a != null) {
-			Authorities.entityManager().remove(a);
-		}
-
-		return new AdminJson(true, "User removed from Group");
-	}
-
-	public static AdminJson enableUser(Integer userId) {
-		Users u = Users.findUsers(userId);
-		if (u == null) {
-			return new AdminJson(false, "User does not exist");
-		}
-		u.setEnabled(true);
-		Users.entityManager().merge(u);
-		return new AdminJson(true, "User enabled");
-	}
-
-	public static AdminJson disableUser(Integer userId) {
-		Users u = Users.findUsers(userId);
-		if (u == null) {
-			return new AdminJson(false, "User does not exist");
-		}
-		u.setEnabled(false);
-		Users.entityManager().merge(u);
-		return new AdminJson(true, "User disabled");
-	}
-
-	public static AdminJson dropUser(Integer userId) {
-		Users u = Users.findUsers(userId);
-		if (u == null) {
-			return new AdminJson(false, "User does not exist");
-		}
-		Users.entityManager().remove(u);
-		return new AdminJson(true, "User deleted");
-	}
-
-	public static AdminJson changePasswordUser(Integer userId, String password, String controlPassword) {
-		if (password == null || password.equals(controlPassword)) {
-			return new AdminJson(false, "Passwords do not match");
-		}
-		Users u = Users.findUsers(userId);
-		if (u == null) {
-			return new AdminJson(false, "User does not exist");
-		}
-		u.setPassword(password);
-		Users.entityManager().merge(u);
-		return new AdminJson(true, "User - changed password");
-	}
-
-	public static AdminJson messageUser(Integer userId, String subject, String message) {
-		Users u = Users.findUsers(userId);
-		if (u == null) {
-			return new AdminJson(false, "User does not exist");
-		}
-
-		UserMessage um = new UserMessage();
-
-		um.setSubject(subject);
-		um.setMessage(message);
-		um.setRead(false);
-		um.setToUserId(u);
-		// TODO is it ok to use here as sender the user with ID=1 (admin) ?
-		um.setFromUserId(Users.findUsers(new Integer(1)));
-
-		Authorities.entityManager().persist(um);
-
-		return new AdminJson(true, "User message sent (from Admin)");
-	}
-
-	public static AdminJson messageGroup(Integer groupId, String subject, String message) {
-		UserGroup ug = UserGroup.findUserGroup(groupId);
-		if (ug == null) {
-			return new AdminJson(false, "User Group does not exist");
-		}
-
-		for (Authorities a : Authorities.findAllAuthoritieses()) {
-			if (ug.equals(a.getAuthority())) {
-				messageUser(a.getUsername().getId(), subject, message);
 			}
 		}
 
-		return new AdminJson(true, "Message sent to all users in group (from Admin");
-	}
+		newsitem.persist();
 
-	private final Log log = LogFactory.getLog(this.getClass());
-
-	private boolean success;
-
-	private String message;
-
-	private Integer id;
-
-	public AdminJson(boolean success, String message) {
-		this.success = success;
-		this.message = message;
-	}
-
-	public AdminJson(boolean success, String message, Integer id) {
-		this.success = success;
-		this.message = message;
-		this.id = id;
-	}
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public boolean isSuccess() {
-		return success;
-	}
-
-	public void setSuccess(boolean success) {
-		this.success = success;
-	}
-
-	public String getMessage() {
-		return message;
-	}
-
-	public void setMessage(String message) {
-		this.message = message;
-	}
-
-	public String toJson() {
-		return new JSONSerializer().exclude("*.class").exclude("id").serialize(this);
-	}
-
-	public String toJsonWithId() {
-		return new JSONSerializer().exclude("*.class").serialize(this);
+		return new AdminJson(true, "News item saved");
 	}
 
 	// Cms Page Management Methods
@@ -1284,43 +883,446 @@ public class AdminJson {
 		return result;
 	}
 
-	// Methods for News
-	public static AdminJson newsSave(Integer id, Integer langId, String title, String content, Date added) {
-		if (title == null) {
-			return new AdminJson(false, "Title must not be empty.");
+	// Methods for CMS files and folders.
+	public static AdminJson folderSave(String foldername, Integer parentId, String description) {
+		if (foldername == null) {
+			return new AdminJson(false, "CMS folder must have a name.");
 		}
-		if (langId == null) {
-			return new AdminJson(false, "Language is required.");
-		}
-		if (content == null) {
-			return new AdminJson(false, "No news without content");
-		}
+		CmsFolder parentFolder = CmsFolder.findCmsFolder(parentId);
+		CmsFolder folder = CmsFolder.checkCmsFolder(null, foldername, parentFolder, description);
 
-		News newsitem = null;
-		if (id != null) {
-			newsitem = News.findNews(id);
-		}
-
-		if (newsitem == null) {
-			newsitem = new News();
+		if (parentFolder != null) {
+			folder.setParentId(parentFolder);
+			Set<CmsFolder> children = parentFolder.getCmsFolders();
+			if (children == null) {
+				children = new HashSet<CmsFolder>();
+			}
+			children.add(folder);
+			parentFolder.setCmsFolders(children);
 		}
 
-		newsitem.setTitle(title);
-		newsitem.setContent(content);
-		newsitem.setAdded(added);
-		newsitem.setVisible(true);
+		try {
+			CmsFolder.entityManager().persist(folder);
+			if (parentFolder != null) {
+				CmsFolder.entityManager().merge(parentFolder);
+			}
+		} catch (EntityExistsException e) {
+			return new AdminJson(false, "CMS Folder not created. Exception: " + e.getMessage());
+		}
 
-		if (langId != null) {
-			Lang newsLang = Lang.findLang(langId);
-			if (newsLang != null) {
-				newsitem.setLangId(newsLang);
+		return new AdminJson(true, "CMS Folder created", folder.getId());
+	}
 
+	public static AdminJson folderEmpty(Integer folderId) {
+		CmsFolder folder = CmsFolder.findCmsFolder(folderId);
+		if (folder == null) {
+			return new AdminJson(false, "CMS folder does not exist.");
+		}
+		Set<CmsFolder> childGroups = folder.getCmsFolders();
+		Iterator<CmsFolder> childGroupsIterator = childGroups.iterator();
+		while (childGroupsIterator.hasNext()) {
+			CmsFolder childGroup = childGroupsIterator.next();
+			childGroup.setParentId(null);
+			CmsFolder.entityManager().persist(childGroup);
+		}
+
+		Set<CmsFile> childFiles = folder.getCmsFiles();
+		Iterator<CmsFile> childFilesIterator = childFiles.iterator();
+		while (childFilesIterator.hasNext()) {
+			CmsFile childFile = childFilesIterator.next();
+			childFile.setCmsFolderId(null);
+			CmsFile.entityManager().persist(childFile);
+		}
+
+		folder.setCmsFolders(new HashSet<CmsFolder>());
+		folder.setCmsFiles(new HashSet<CmsFile>());
+
+		try {
+			CmsFolder.entityManager().persist(folder);
+		} catch (EntityExistsException e) {
+			return new AdminJson(false, "CMS Folder not emptied " + e.getMessage());
+		}
+
+		return new AdminJson(true, "CMS Folder emptied successfully");
+	}
+
+	public static AdminJson folderDrop(Integer folderId) {
+		CmsFolder folder = CmsFolder.findCmsFolder(folderId);
+		if (folder == null)
+			return new AdminJson(false, "CMS Folder does not exist");
+
+		Set<CmsFolder> childGroups = folder.getCmsFolders();
+		Iterator<CmsFolder> childGroupsIterator = childGroups.iterator();
+		while (childGroupsIterator.hasNext()) {
+			CmsFolder childGroup = childGroupsIterator.next();
+			childGroup.setParentId(null);
+			CmsFolder.entityManager().persist(childGroup);
+		}
+
+		Set<CmsFile> childFiles = folder.getCmsFiles();
+		Iterator<CmsFile> childFilesIterator = childFiles.iterator();
+		while (childFilesIterator.hasNext()) {
+			CmsFile childFile = childFilesIterator.next();
+			childFile.setCmsFolderId(null);
+			CmsFile.entityManager().persist(childFile);
+		}
+
+		try {
+			CmsFolder.entityManager().remove(folder);
+		} catch (EntityExistsException e) {
+			return new AdminJson(false, "CMS Folder not dropped " + e.getMessage());
+		}
+
+		return new AdminJson(true, "CMS Folder dropped successfully");
+	}
+
+	public static AdminJson fileDrop(Integer fileId) {
+		CmsFile file = CmsFile.findCmsFile(fileId);
+		if (file == null) {
+			return new AdminJson(false, "CMS File does not exist");
+		}
+		CmsFolder parentGroup = file.getCmsFolderId();
+		if (parentGroup.getCmsFiles() != null && parentGroup.getCmsFiles().contains(file)) {
+			parentGroup.getCmsFiles().remove(file);
+			CmsFolder.entityManager().persist(parentGroup);
+		}
+
+		try {
+			CmsFile.entityManager().remove(file);
+		} catch (EntityExistsException e) {
+			return new AdminJson(false, "CMS File not dropped" + e.getMessage());
+		}
+
+		return new AdminJson(true, "CMS File dropped successfully");
+	}
+
+	public static AdminJson fileSave(Integer folderId, MultipartFile content, Integer fileId, String alias, String url) {
+
+		CmsFile file = null;
+		if (fileId != null) {
+			file = CmsFile.findCmsFile(fileId);
+		}
+
+		if (file == null) {
+			file = new CmsFile();
+		}
+
+		file.setLabel(alias);
+		file.setFilename(content.getOriginalFilename());
+		file.setContentType(content.getContentType());
+		file.setFilesize(content.getSize());
+		file.setLabel(alias);
+		file.setUrl(url);
+
+		// TODO Cosmin: check the use-case: file with the same name is added to
+		// the same folder
+		// should overwrite the existing row in DB, OR throw ERROR
+
+		CmsFolder parentFolder = CmsFolder.findCmsFolder(folderId);
+
+		if (parentFolder == null) {
+			return new AdminJson(false, "CMS File not created because this Folder ID is invalid: " + folderId);
+		}
+
+		file.setCmsFolderId(parentFolder);
+		if (parentFolder.getCmsFiles() != null && parentFolder.getCmsFiles().contains(file)) {
+			// do nothing
+		} else {
+			if (parentFolder.getCmsFiles() == null) {
+				parentFolder.setCmsFiles(new HashSet<CmsFile>());
+				parentFolder.getCmsFiles().add(file);
+			} else {
+				parentFolder.getCmsFiles().add(file);
+			}
+			CmsFolder.entityManager().persist(parentFolder);
+		}
+		file.setCmsFolderId(parentFolder);
+
+		try {
+			CmsFile.entityManager().persist(file);
+		} catch (EntityExistsException e) {
+			return new AdminJson(false, "CMS File not created because it already exists. Exception:" + e.getMessage());
+		}
+
+		return new AdminJson(true, "CMS File created successfully", file.getId());
+	}
+
+	public static AdminJson fileMove(Integer folderId, Integer fileId) {
+
+		CmsFile file = null;
+		if (fileId != null) {
+			file = CmsFile.findCmsFile(fileId);
+		}
+
+		if (file == null) {
+			return new AdminJson(false, "CMS File to be moved should exist");
+		}
+
+		CmsFolder folder = CmsFolder.findCmsFolder(folderId);
+
+		if (folderId == null || folder == null) {
+			return new AdminJson(false, "The CMS Folder should exist");
+		}
+
+		if (folderId == (file.getCmsFolderId() == null ? null : file.getCmsFolderId().getId())) {
+			return new AdminJson(false, "The folder of the CMS File doesn't change");
+		}
+
+		try {
+			if (folder != null) {
+				if (folder.getCmsFiles() == null) {
+					folder.setCmsFiles(new HashSet<CmsFile>());
+					folder.getCmsFiles().add(file);
+				} else {
+					folder.getCmsFiles().add(file);
+				}
+				CmsFolder.entityManager().persist(folder);
+			}
+			file.setCmsFolderId(folder);
+
+			CmsFile.entityManager().persist(file);
+		} catch (EntityExistsException e) {
+			return new AdminJson(false, "File not moved " + e.getMessage());
+		}
+
+		return new AdminJson(true, "CMS File moved successfully");
+	}
+
+	public static AdminJson folderMove(Integer parentFolderId, Integer folderId) {
+
+		CmsFolder folder = null;
+		if (folderId != null) {
+			folder = CmsFolder.findCmsFolder(folderId);
+		}
+
+		if (folder == null) {
+			return new AdminJson(false, "CMS Folder to be moved should exist");
+		}
+
+		CmsFolder parentFolder = CmsFolder.findCmsFolder(parentFolderId);
+
+		if (parentFolderId == null || parentFolder == null) {
+			return new AdminJson(false, "The CMS Folder should exist");
+		}
+
+		if (parentFolderId == (folder.getParentId() == null ? null : folder.getParentId().getId())) {
+			return new AdminJson(false, "The parent of the CMS Folder doesn't change");
+		}
+
+		try {
+			if (parentFolder != null) {
+				if (parentFolder.getCmsFolders() == null) {
+					parentFolder.setCmsFolders(new HashSet<CmsFolder>());
+					parentFolder.getCmsFolders().add(folder);
+				} else {
+					parentFolder.getCmsFolders().add(folder);
+				}
+				CmsFolder.entityManager().persist(parentFolder);
+			}
+			folder.setParentId(parentFolder);
+
+			CmsFolder.entityManager().persist(folder);
+		} catch (EntityExistsException e) {
+			return new AdminJson(false, "CMS Folder not moved " + e.getMessage());
+		}
+
+		return new AdminJson(true, "CMS Folder moved successfully");
+	}
+
+	public static AdminJson userSave(Integer id, String username, String password, String passwordCheck, String email,
+			Boolean enabled) {
+		if (username == null) {
+			return new AdminJson(false, "The User must have a name!");
+		}
+		if (password == null || !password.equals(passwordCheck)) {
+			return new AdminJson(false, "The User password is not correct!");
+		}
+		try {
+			Users u = Users.checkUsers(id, username, password, enabled);
+		} catch (Exception e) {
+			return new AdminJson(false, "Exception saving User: " + e.getMessage());
+		}
+		return new AdminJson(true, "User created/saved");
+	}
+
+	public static AdminJson groupSave(Integer id, String name, String description, Boolean enabled) {
+		if (name == null) {
+			return new AdminJson(false, "The User Group must have a name!");
+		}
+		try {
+			UserGroup ug = UserGroup.checkUserGroup(id, name, description, enabled);
+		} catch (Exception e) {
+			return new AdminJson(false, "Exception saving User Group: " + e.getMessage());
+		}
+		return new AdminJson(true, "User Group created/saved");
+	}
+
+	public static AdminJson addUserToGroup(Integer userId, Integer groupId) {
+		Users u = Users.findUsers(userId);
+		UserGroup ug = UserGroup.findUserGroup(groupId);
+		if (u == null) {
+			return new AdminJson(false, "User does not exist");
+		}
+		if (ug == null) {
+			return new AdminJson(false, "User Group does not exist");
+		}
+
+		Authorities a = Authorities.findAuthorities(new AuthoritiesPK(u.getUsername(), ug.getGroupname()));
+		if (a == null) {
+			// add user to group
+			a = new Authorities();
+			a.setUsername(u);
+			a.setAuthority(ug);
+			Authorities.entityManager().persist(a);
+		}
+
+		return new AdminJson(true, "User added to Group");
+	}
+
+	public static AdminJson deleteUserFromGroup(Integer userId, Integer groupId) {
+		Users u = Users.findUsers(userId);
+		UserGroup ug = UserGroup.findUserGroup(groupId);
+		if (u == null) {
+			return new AdminJson(false, "User does not exist");
+		}
+		if (ug == null) {
+			return new AdminJson(false, "User Group does not exist");
+		}
+
+		Authorities a = Authorities.findAuthorities(new AuthoritiesPK(u.getUsername(), ug.getGroupname()));
+		if (a != null) {
+			Authorities.entityManager().remove(a);
+		}
+
+		return new AdminJson(true, "User removed from Group");
+	}
+
+	public static AdminJson enableUser(Integer userId) {
+		Users u = Users.findUsers(userId);
+		if (u == null) {
+			return new AdminJson(false, "User does not exist");
+		}
+		u.setEnabled(true);
+		Users.entityManager().merge(u);
+		return new AdminJson(true, "User enabled");
+	}
+
+	public static AdminJson disableUser(Integer userId) {
+		Users u = Users.findUsers(userId);
+		if (u == null) {
+			return new AdminJson(false, "User does not exist");
+		}
+		u.setEnabled(false);
+		Users.entityManager().merge(u);
+		return new AdminJson(true, "User disabled");
+	}
+
+	public static AdminJson dropUser(Integer userId) {
+		Users u = Users.findUsers(userId);
+		if (u == null) {
+			return new AdminJson(false, "User does not exist");
+		}
+		Users.entityManager().remove(u);
+		return new AdminJson(true, "User deleted");
+	}
+
+	public static AdminJson changePasswordUser(Integer userId, String password, String controlPassword) {
+		if (password == null || password.equals(controlPassword)) {
+			return new AdminJson(false, "Passwords do not match");
+		}
+		Users u = Users.findUsers(userId);
+		if (u == null) {
+			return new AdminJson(false, "User does not exist");
+		}
+		u.setPassword(password);
+		Users.entityManager().merge(u);
+		return new AdminJson(true, "User - changed password");
+	}
+
+	public static AdminJson messageUser(Integer userId, String subject, String message) {
+		Users u = Users.findUsers(userId);
+		if (u == null) {
+			return new AdminJson(false, "User does not exist");
+		}
+
+		UserMessage um = new UserMessage();
+
+		um.setSubject(subject);
+		um.setMessage(message);
+		um.setRead(false);
+		um.setToUserId(u);
+		// TODO is it ok to use here as sender the user with ID=1 (admin) ?
+		um.setFromUserId(Users.findUsers(new Integer(1)));
+
+		Authorities.entityManager().persist(um);
+
+		return new AdminJson(true, "User message sent (from Admin)");
+	}
+
+	public static AdminJson messageGroup(Integer groupId, String subject, String message) {
+		UserGroup ug = UserGroup.findUserGroup(groupId);
+		if (ug == null) {
+			return new AdminJson(false, "User Group does not exist");
+		}
+
+		for (Authorities a : Authorities.findAllAuthoritieses()) {
+			if (ug.equals(a.getAuthority())) {
+				messageUser(a.getUsername().getId(), subject, message);
 			}
 		}
 
-		newsitem.persist();
+		return new AdminJson(true, "Message sent to all users in group (from Admin");
+	}
 
-		return new AdminJson(true, "News item saved");
+	private final Log log = LogFactory.getLog(this.getClass());
+
+	private boolean success;
+
+	private String message;
+
+	private Integer id;
+
+	public AdminJson(boolean success, String message) {
+		this.success = success;
+		this.message = message;
+	}
+
+	public AdminJson(boolean success, String message, Integer id) {
+		this.success = success;
+		this.message = message;
+		this.id = id;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public boolean isSuccess() {
+		return success;
+	}
+
+	public void setSuccess(boolean success) {
+		this.success = success;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
+
+	public String toJson() {
+		return new JSONSerializer().exclude("*.class").exclude("id").serialize(this);
+	}
+
+	public String toJsonWithId() {
+		return new JSONSerializer().exclude("*.class").serialize(this);
 	}
 
 }

@@ -1013,7 +1013,7 @@ public class ImporterServiceImpl implements ImporterService {
 				log.trace("Variable = " + varType.getName());
 				Variable variable = new Variable();
 				variable.setName(varType.getName());
-				if (varType.getLabl().size() > 0) {
+				if (varType.getLabl() != null && varType.getLabl().size() > 0) {
 					variable.setLabel(varType.getLabl().get(0).content);
 				}
 
@@ -1060,6 +1060,27 @@ public class ImporterServiceImpl implements ImporterService {
 					// set the Variable's question
 					variable.setQuestionId(q);
 				}
+
+				// build a string representing the categories (if any),
+				// which can be passed "as-constructed" to R later
+				StringBuilder sbCategories = new StringBuilder();
+				if (varType.getCatgry() != null && varType.getCatgry().size() > 0) {
+					Iterator<CatgryType> iterCategories = varType.getCatgry().iterator();
+					CatgryType catgryType = iterCategories.next();
+					if (catgryType.getLabl() != null && catgryType.getLabl().size() > 0) {
+						sbCategories.append("\"").append(catgryType.getLabl().get(0).content).append("\"=")
+								.append(catgryType.getCatValu().content);
+					}
+					while (iterCategories.hasNext()) {
+						catgryType = iterCategories.next();
+						if (catgryType.getLabl() != null && catgryType.getLabl().size() > 0) {
+							sbCategories.append(",\"").append(catgryType.getLabl().get(0).content).append("\"=")
+									.append(catgryType.getCatValu().content);
+						}
+					}
+				}
+				variable.setCategories(sbCategories.toString());
+
 				// TODO check semantics
 				variable.setVariableType((short) 0);
 
@@ -1214,7 +1235,7 @@ public class ImporterServiceImpl implements ImporterService {
 							for (Variable var : question.getVariables()) {
 								if (csvLine[0].equalsIgnoreCase(var.getName())) {
 									var.setValues(varValues.toString());
-									var.merge();
+									// var.merge();
 									break;
 								}
 							}
@@ -1227,6 +1248,7 @@ public class ImporterServiceImpl implements ImporterService {
 		}
 
 		s.flush();
+		s.clear();
 
 		// serialization of XML as JSON - if needed
 		// log.trace(new JSONSerializer().deepSerialize(cb));

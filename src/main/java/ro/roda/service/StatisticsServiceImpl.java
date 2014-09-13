@@ -80,9 +80,15 @@ public class StatisticsServiceImpl implements StatisticsService, SmartLifecycle 
 							+ v2.getValues()
 							+ ")), meta = list("
 							+ v1.getName()
-							+ " = c(\"Mult mai buna\"=1, \"Mai buna\"=2, \"La fel\"=3, \"Mai proasta\"=4, \"Mult mai proasta\"=5, \"Nu e cazul\"=97, \"Nu stiu\"=98, \"Nu raspund\"=99),"
+							+ " = c(" +
+							v1.getCategories()							
+//							"\"Mult mai buna\"=1, \"Mai buna\"=2, \"La fel\"=3, \"Mai proasta\"=4, \"Mult mai proasta\"=5, \"Nu e cazul\"=97, \"Nu stiu\"=98, \"Nu raspund\"=99
+							+"),"
 							+ v2.getName()
-							+ " = c(\"Mult mai buna\"=1, \"Mai buna\"=2, \"La fel\"=3, \"Mai proasta\"=4, \"Mult mai proasta\"=5, \"Nu e cazul\"=97, \"Nu stiu\"=98, \"Nu raspund\"=99))))";
+							+ " = c("+
+							v2.getCategories()							
+//							"\"Mult mai buna\"=1, \"Mai buna\"=2, \"La fel\"=3, \"Mai proasta\"=4, \"Mult mai proasta\"=5, \"Nu e cazul\"=97, \"Nu stiu\"=98, \"Nu raspund\"=99" +
+							+ "))))";
 				} else {
 					// exemplul 3 din roda.R
 					// REXP rexp = re
@@ -96,7 +102,10 @@ public class StatisticsServiceImpl implements StatisticsService, SmartLifecycle 
 							+ v1.getValues()
 							+ ")), meta = list("
 							+ v1.getName()
-							+ " = c(\"Mult mai buna\"=1, \"Mai buna\"=2, \"La fel\"=3, \"Mai proasta\"=4, \"Mult mai proasta\"=5, \"Nu e cazul\"=97, \"Nu stiu\"=98, \"Nu raspund\"=99))))";
+							+ " = c("+
+							v1.getCategories()
+//							"\"Mult mai buna\"=1, \"Mai buna\"=2, \"La fel\"=3, \"Mai proasta\"=4, \"Mult mai proasta\"=5, \"Nu e cazul\"=97, \"Nu stiu\"=98, \"Nu raspund\"=99" 
+							+ "))))";
 				}
 
 				log.trace("Statistics: Evaluating R expression: " + evalExpr);

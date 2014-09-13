@@ -274,6 +274,9 @@ public class Variable implements Comparable {
 	@Column(name = "values", columnDefinition = "text")
 	private String values;
 
+	@Column(name = "categories", columnDefinition = "text")
+	private String categories;
+
 	@Column(name = "order_in_question", columnDefinition = "int")
 	// @NotNull
 	private Integer orderInQuestion;
@@ -350,6 +353,14 @@ public class Variable implements Comparable {
 
 	public String getName() {
 		return name;
+	}
+
+	public String getValues() {
+		return values;
+	}
+
+	public String getCategories() {
+		return categories;
 	}
 
 	public Integer getOrderInQuestion() {
@@ -468,10 +479,6 @@ public class Variable implements Comparable {
 		this.skips = skips;
 	}
 
-	public String getValues() {
-		return values;
-	}
-
 	public void setValues(String values) {
 		this.values = values;
 	}
@@ -491,6 +498,10 @@ public class Variable implements Comparable {
 	public Long getCategoriesNumber() {
 		this.categoriesNumber = Long.valueOf(otherStatistics.size());
 		return categoriesNumber;
+	}
+
+	public void setCategories(String categories) {
+		this.categories = categories;
 	}
 
 	public String toJson() {

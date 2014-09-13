@@ -597,6 +597,8 @@ public class ImporterServiceImpl implements ImporterService {
 		Topic.entityManager().flush();
 	}
 
+	// @Async
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public void importCsv() throws SQLException, IOException {
 		importCsvDir(rodaDataCsvDir);
 	}

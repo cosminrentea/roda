@@ -2,6 +2,8 @@ package ro.roda.webjson;
 
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -18,17 +20,10 @@ import ro.roda.service.StudyInfoService;
 @Controller
 public class StudyInfoController {
 
+	private final Log log = LogFactory.getLog(this.getClass());
+
 	@Autowired
 	StudyInfoService studyInfoService;
-
-	// @Autowired
-	// CatalogStudyService catalogStudyService;
-
-	// @Autowired
-	// SeriesService seriesService;
-
-	// @Autowired
-	// UsersService usersService;
 
 	@RequestMapping(headers = "Accept=application/json")
 	@ResponseBody
@@ -42,13 +37,21 @@ public class StudyInfoController {
 	@RequestMapping(value = "/{id}", headers = "Accept=application/json")
 	@ResponseBody
 	public ResponseEntity<String> showJson(@PathVariable("id") Integer id) {
+
+		log.trace("STUDYINFO: Creating StudyInfo object");
+
 		StudyInfo studyInfo = studyInfoService.findStudyInfo(id);
+
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");
 		if (studyInfo == null) {
 			return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
 		}
-		return new ResponseEntity<String>(studyInfo.toJson(), headers, HttpStatus.OK);
+		String studyInfoJson = studyInfo.toJson();
+
+		log.trace("STUDYINFO: Serialized as JSON");
+
+		return new ResponseEntity<String>(studyInfoJson, headers, HttpStatus.OK);
 	}
 
 }

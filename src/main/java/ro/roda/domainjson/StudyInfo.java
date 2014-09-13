@@ -4,12 +4,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
-import java.util.TreeMap;
 import java.util.TreeSet;
 
 import org.apache.commons.logging.Log;
@@ -39,37 +36,56 @@ public class StudyInfo extends JsonInfo {
 	public static String toJsonArray(Collection<StudyInfo> collection) {
 		JSONSerializer serializer = new JSONSerializer();
 
-		serializer.exclude("*.class");
-		serializer.exclude("leaf", "variables.concepts", "variables.fileId", "variables.formEditedNumberVars",
-				"variables.instanceVariables", "variables.operatorInstructions", "variables.orderInQuestion",
-				"variables.questionId", "variables.otherStatistics", "variables.selectionVariable", "variables.skips",
-				"variables.skips1", "variables.type", "variables.vargroups", "variables.variableType",
-				"variables.auditReader", "variables.classAuditReader");
-		serializer.exclude("files.content", "files.fullPath", "files.id", "files.instances",
-				"files.selectionVariableItems", "files.size", "files.studies1", "files.title", "files.variables",
-				"files.auditReader", "files.classAuditReader");
-		serializer.exclude("persons.forms", "persons.instancepeople", "persons.personAddresses",
-				"persons.personEmails", "persons.personInternets", "persons.personLinkss", "persons.personOrgs",
-				"persons.personPhones", "persons.prefixId", "persons.studypeople", "persons.suffixId",
-				"persons.auditReader", "persons.classAuditReader");
-		serializer.exclude("orgs.instanceOrgs", "orgs.orgAddresses", "orgs.orgEmails", "orgs.orgInternets",
-				"orgs.orgPhones", "orgs.orgPrefixId", "orgs.orgRelationss", "orgs.orgRelationss1", "orgs.orgSufixId",
-				"orgs.personOrgs", "orgs.shortName", "orgs.studyOrgs", "orgs.auditReader", "orgs.classAuditReader");
-		serializer.exclude("keywords.studyKeywords", "keywords.auditReader", "keywords.classAuditReader");
+		// serializer.exclude("*.class");
+		// serializer.exclude("leaf", "variables.concepts", "variables.fileId",
+		// "variables.formEditedNumberVars",
+		// "variables.instanceVariables", "variables.operatorInstructions",
+		// "variables.orderInQuestion",
+		// "variables.questionId", "variables.otherStatistics",
+		// "variables.selectionVariable", "variables.skips",
+		// "variables.skips1", "variables.type", "variables.vargroups",
+		// "variables.variableType",
+		// "variables.auditReader", "variables.classAuditReader");
+		// serializer.exclude("files.content", "files.fullPath", "files.id",
+		// "files.instances",
+		// "files.selectionVariableItems", "files.size", "files.studies1",
+		// "files.title", "files.variables",
+		// "files.auditReader", "files.classAuditReader");
+		// serializer.exclude("persons.forms", "persons.instancepeople",
+		// "persons.personAddresses",
+		// "persons.personEmails", "persons.personInternets",
+		// "persons.personLinkss", "persons.personOrgs",
+		// "persons.personPhones", "persons.prefixId", "persons.studypeople",
+		// "persons.suffixId",
+		// "persons.auditReader", "persons.classAuditReader");
+		// serializer.exclude("orgs.instanceOrgs", "orgs.orgAddresses",
+		// "orgs.orgEmails", "orgs.orgInternets",
+		// "orgs.orgPhones", "orgs.orgPrefixId", "orgs.orgRelationss",
+		// "orgs.orgRelationss1", "orgs.orgSufixId",
+		// "orgs.personOrgs", "orgs.shortName", "orgs.studyOrgs",
+		// "orgs.auditReader", "orgs.classAuditReader");
+		// serializer.exclude("keywords.studyKeywords", "keywords.auditReader",
+		// "keywords.classAuditReader");
 
 		serializer.include("id", "name", "an", "description", "universe", "geographicCoverage", "unitAnalysis", "type",
 				"geographicUnit", "researchInstrument", "weighting", "seriesId");
-		serializer.include("variables.id", "variables.name", "variables.label");
+		serializer.include("variables.id", "variables.name", "variables.label", "variables.questionId.id",
+				"variables.questionId.statement");
 		serializer.include("files.name", "files.contentType", "files.url", "files.description");
 		serializer.include("persons.id", "persons.lname", "persons.fname", "persons.mname");
 		serializer.include("orgs.id", "orgs.fullName");
 		serializer.include("keywords.id", "keywords.name");
+
+		// exclude ALL other fields
+		serializer.exclude("*");
+		serializer.exclude("*.*");
 
 		serializer.transform(new FieldNameTransformer("geo_coverage"), "geographicCoverage");
 		serializer.transform(new FieldNameTransformer("unit_analysis"), "unitAnalysis");
 		serializer.transform(new FieldNameTransformer("research_instrument"), "researchInstrument");
 		serializer.transform(new FieldNameTransformer("geo_unit"), "geographicUnit");
 		serializer.transform(new FieldNameTransformer("indice"), "variables.id");
+		serializer.transform(new FieldNameTransformer("question"), "variables.questionId");
 		// serializer.transform(new FieldNameTransformer("series"), "seriesId");
 
 		return "{\"data\":" + serializer.serialize(collection) + "}";
@@ -447,7 +463,8 @@ public class StudyInfo extends JsonInfo {
 		// include ONLY what is needed
 		serializer.include("id", "name", "an", "description", "universe", "geographicCoverage", "unitAnalysis", "type",
 				"geographicUnit", "researchInstrument", "weighting", "seriesId");
-		serializer.include("variables.id", "variables.name", "variables.label");
+		serializer.include("variables.id", "variables.name", "variables.label", "variables.questionId.id",
+				"variables.questionId.statement");
 		serializer.include("files.name", "files.contentType", "files.url", "files.description");
 		serializer.include("persons.id", "persons.lname", "persons.fname", "persons.mname");
 		serializer.include("orgs.id", "orgs.fullName");
@@ -462,6 +479,7 @@ public class StudyInfo extends JsonInfo {
 		serializer.transform(new FieldNameTransformer("research_instrument"), "researchInstrument");
 		serializer.transform(new FieldNameTransformer("geo_unit"), "geographicUnit");
 		serializer.transform(new FieldNameTransformer("indice"), "variables.id");
+		serializer.transform(new FieldNameTransformer("question"), "variables.questionId");
 		// serializer.transform(new FieldNameTransformer("series"), "seriesId");
 
 		return new StringBuilder("{\"data\":").append(serializer.serialize(this)).append("}").toString();

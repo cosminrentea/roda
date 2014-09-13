@@ -14,6 +14,7 @@ import ro.roda.domain.Question;
 import ro.roda.domain.QuestionTypeCategory;
 import ro.roda.domain.QuestionTypeNumeric;
 import ro.roda.domain.QuestionTypeString;
+import ro.roda.transformer.FieldNameTransformer;
 import flexjson.JSONSerializer;
 
 @Configurable
@@ -22,9 +23,35 @@ public class QuestionInfo extends JsonInfo {
 	public static String toJsonArr(Collection<QuestionInfo> collection) {
 		JSONSerializer serializer = new JSONSerializer();
 
-		serializer.exclude("*.class", "leaf", "type");
+		serializer.exclude("*.class", "leaf", "type", "id");
 		serializer.include("indice", "name", "respdomain");
 		serializer.include("responses", "missing");
+
+		String respdom = collection.iterator().next().getRespdomain();
+
+		if (respdom.equals("String")) {
+			serializer.include("freeText", "label");
+
+			serializer.exclude("respType", "dataType", "numberValue", "stringValue", "high", "low", "interpretation",
+					"numericValues");
+
+		} else if (respdom.equals("Numeric")) {
+			serializer.include("dataType", "high", "low", "numberValue", "interpretation");
+
+			serializer.exclude("respType", "label", "freeText", "stringValue");
+
+			serializer.transform(new FieldNameTransformer("type"), "dataType");
+			serializer.transform(new FieldNameTransformer("value"), "numberValue");
+			serializer.transform(new FieldNameTransformer("category_interpretation"), "interpretation");
+		} else if (respdom.equals("Category")) {
+			serializer.include("label", "stringValue", "numericValues", "interpretation");
+
+			serializer.exclude("respType", "dataType", "freeText", "numberValue", "high", "low");
+
+			serializer.transform(new FieldNameTransformer("value"), "stringValue");
+			serializer.transform(new FieldNameTransformer("is_numeric"), "numericValues");
+			serializer.transform(new FieldNameTransformer("numeric_interpretation"), "interpretation");
+		}
 
 		// serializer.transform(new FlatPageTypeTransformer("pagetype"),
 		// "questionUsage.PageTypeId");
@@ -148,9 +175,38 @@ public class QuestionInfo extends JsonInfo {
 	public String toJson() {
 		JSONSerializer serializer = new JSONSerializer();
 
-		serializer.exclude("*.class", "type", "leaf");
+		serializer.exclude("*.class", "type", "leaf", "id");
 		serializer.include("indice", "name", "respdomain");
 		serializer.include("responses", "missing");
+
+		if (respdomain.equals("String")) {
+			serializer.include("responses.freeText", "responses.label");
+
+			serializer.exclude("responses.name", "responses.type", "responses.respType", "responses.dataType",
+					"responses.numberValue", "responses.stringValue", "responses.high", "responses.low",
+					"responses.interpretation", "responses.numericValues");
+
+		} else if (respdomain.equals("Numeric")) {
+			serializer.include("responses.dataType", "responses.high", "responses.low", "responses.numberValue",
+					"responses.interpretation");
+
+			serializer.exclude("responses.name", "responses.type", "responses.respType", "responses.label",
+					"responses.freeText", "responses.stringValue");
+
+			serializer.transform(new FieldNameTransformer("type"), "responses.dataType");
+			serializer.transform(new FieldNameTransformer("value"), "responses.numberValue");
+			serializer.transform(new FieldNameTransformer("category_interpretation"), "responses.interpretation");
+		} else if (respdomain.equals("Category")) {
+			serializer.include("responses.label", "responses.stringValue", "responses.numericValues",
+					"responses.interpretation");
+
+			serializer.exclude("responses.name", "responses.type", "responses.respType", "responses.dataType",
+					"responses.freeText", "responses.numberValue", "responses.high", "responses.low");
+
+			serializer.transform(new FieldNameTransformer("value"), "responses.stringValue");
+			serializer.transform(new FieldNameTransformer("is_numeric"), "responses.numericValues");
+			serializer.transform(new FieldNameTransformer("numeric_interpretation"), "responses.interpretation");
+		}
 
 		return "{\"data\":" + serializer.serialize(this) + "}";
 	}

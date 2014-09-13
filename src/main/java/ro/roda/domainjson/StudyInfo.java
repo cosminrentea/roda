@@ -463,8 +463,10 @@ public class StudyInfo extends JsonInfo {
 		// include ONLY what is needed
 		serializer.include("id", "name", "an", "description", "universe", "geographicCoverage", "unitAnalysis", "type",
 				"geographicUnit", "researchInstrument", "weighting", "seriesId");
-		serializer.include("variables.id", "variables.name", "variables.label", "variables.questionId.id",
-				"variables.questionId.statement");
+		// serializer.include("variables.id", "variables.name",
+		// "variables.label", "variables.questionId.id",
+		// "variables.questionId.statement");
+		serializer.include("variables.id", "variables.name", "variables.label");
 		serializer.include("files.name", "files.contentType", "files.url", "files.description");
 		serializer.include("persons.id", "persons.lname", "persons.fname", "persons.mname");
 		serializer.include("orgs.id", "orgs.fullName");

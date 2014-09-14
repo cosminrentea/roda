@@ -15,7 +15,6 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.support.ByteArrayMultipartFileEditor;
 
 import ro.roda.domain.CmsFile;
@@ -35,22 +34,22 @@ public class CmsFileContentController {
 		binder.registerCustomEditor(byte[].class, new ByteArrayMultipartFileEditor());
 	}
 
-	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/{id}")
 	public String fileContent(@PathVariable("id") Integer id, HttpServletResponse response) {
-		CmsFile cmsFile = CmsFile.findCmsFile(id);
-		InputStream is = cmsFileStoreService.fileLoad(cmsFile);
 		try {
-			if (is != null) {
-				response.setHeader("Content-Disposition", "inline;filename=\"" + cmsFile.getFilename() + "\"");
-				OutputStream out = response.getOutputStream();
-				response.setContentType(cmsFile.getContentType());
-				IOUtils.copy(is, out);
-				out.flush();
+			CmsFile cmsFile = CmsFile.findCmsFile(id);
+			if (cmsFile != null) {
+				InputStream is = cmsFileStoreService.fileLoad(cmsFile);
+				if (is != null) {
+					OutputStream out = response.getOutputStream();
+					response.setHeader("Content-Disposition", "inline;filename=\"" + cmsFile.getFilename() + "\"");
+					response.setContentType(cmsFile.getContentType());
+					IOUtils.copy(is, out);
+					out.flush();
+				}
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("Exception when returning file content", e);
 		}
 		return null;
 	}

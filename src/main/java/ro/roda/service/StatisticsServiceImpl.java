@@ -70,25 +70,9 @@ public class StatisticsServiceImpl implements StatisticsService, SmartLifecycle 
 					log.trace("Statistics: v1: " + v1.getId());
 					log.trace("Statistics: v2: " + v2.getId());
 
-					evalExpr = "getStats(list(vars = list("
-							+ v1.getName()
-							+ " = c("
-							+ v1.getValues()
-							+ "),"
-							+ v2.getName()
-							+ " = c("
-							+ v2.getValues()
-							+ ")), meta = list("
-							+ v1.getName()
-							+ " = c(" +
-							v1.getCategories()							
-//							"\"Mult mai buna\"=1, \"Mai buna\"=2, \"La fel\"=3, \"Mai proasta\"=4, \"Mult mai proasta\"=5, \"Nu e cazul\"=97, \"Nu stiu\"=98, \"Nu raspund\"=99
-							+"),"
-							+ v2.getName()
-							+ " = c("+
-							v2.getCategories()							
-//							"\"Mult mai buna\"=1, \"Mai buna\"=2, \"La fel\"=3, \"Mai proasta\"=4, \"Mult mai proasta\"=5, \"Nu e cazul\"=97, \"Nu stiu\"=98, \"Nu raspund\"=99" +
-							+ "))))";
+					evalExpr = "getStats(list(vars = list(" + v1.getName() + " = c(" + v1.getValues() + "),"
+							+ v2.getName() + " = c(" + v2.getValues() + ")), meta = list(" + v1.getName() + " = c("
+							+ v1.getCategories() + ")," + v2.getName() + " = c(" + v2.getCategories() + "))))";
 				} else {
 					// exemplul 3 din roda.R
 					// REXP rexp = re
@@ -96,16 +80,8 @@ public class StatisticsServiceImpl implements StatisticsService, SmartLifecycle 
 
 					log.trace("Statistics: v1: " + v1.getId());
 
-					evalExpr = "getStats(list(vars = list("
-							+ v1.getName()
-							+ " = c("
-							+ v1.getValues()
-							+ ")), meta = list("
-							+ v1.getName()
-							+ " = c("+
-							v1.getCategories()
-//							"\"Mult mai buna\"=1, \"Mai buna\"=2, \"La fel\"=3, \"Mai proasta\"=4, \"Mult mai proasta\"=5, \"Nu e cazul\"=97, \"Nu stiu\"=98, \"Nu raspund\"=99" 
-							+ "))))";
+					evalExpr = "getStats(list(vars = list(" + v1.getName() + " = c(" + v1.getValues()
+							+ ")), meta = list(" + v1.getName() + " = c(" + v1.getCategories() + "))))";
 				}
 
 				log.trace("Statistics: Evaluating R expression: " + evalExpr);
@@ -220,20 +196,8 @@ public class StatisticsServiceImpl implements StatisticsService, SmartLifecycle 
 
 		stop();
 
-		// Our Stop/Shutdown complete. Regular shutdown will continue.
+		// Our Stop/Shutdown is complete.
+		// Regular shutdown will continue.
 		callback.run();
 	}
 }
-
-/*
- * 1 variabila:
- * 
- * aa<-sample(18:90, 1200, replace=TRUE); summary(aa) //pt. numerice
- * 
- * bb<-sample(1:5, 1200, replace=TRUE); table(bb) // pt. categoriale
- * 
- * 2 variabile:
- * 
- * cc<-sample(1:2, 1200, replace=TRUE); table(bb,cc) // crosstab 2 variabile
- * categoriale
- */

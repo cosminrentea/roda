@@ -257,34 +257,19 @@ public class StudyInfo extends JsonInfo {
 		// this.setVariables(variables);
 		// }
 
-		if (hasVariables) {
+		if (hasVariables && (study.getInstances() != null)) {
 
-			// Variables will be added to a sorted set
-			// (Variable implements Comparable,
-			// and the sorting key is only the ID).
-			// SortedSet<Variable> vars = new TreeSet<Variable>();
-
-			// add and sort by ID all the variables
-			// of the study's 'main' instance
-			if (study.getInstances() != null) {
-				for (Instance instance : study.getInstances()) {
-					if (instance.isMain() && instance.getQuestions() != null) {
-						// for (Question q : instance.getQuestions()) {
-						// vars.addAll(q.getVariables());
-						// }
-
-						TypedQuery<Variable> query = Variable.entityManager().createQuery(
-								"SELECT v FROM Variable v WHERE v.questionId.instanceId = :instanceId", Variable.class);
-						query.setParameter("instanceId", instance);
-
-						this.setVariables(query.getResultList());
-					}
+			// get all the variables of the study's 'main' instance
+			for (Instance instance : study.getInstances()) {
+				if (instance.isMain()) {
+					this.setVariables(Variable
+							.entityManager()
+							.createQuery(
+									"SELECT v FROM Variable v WHERE v.questionId.instanceId = :instanceId ORDER BY v.id",
+									Variable.class).setParameter("instanceId", instance).getResultList());
+					break; // because there is only one 'main' instance
 				}
 			}
-
-			// log.trace("Number of Variables: " + vars.size());
-
-			// this.setVariables(vars);
 		}
 
 		// set the persons and organizations

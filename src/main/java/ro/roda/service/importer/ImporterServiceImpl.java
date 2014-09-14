@@ -1112,7 +1112,7 @@ public class ImporterServiceImpl implements ImporterService {
 					}
 				}
 			}
-			instance.merge();
+			// instance.merge();
 		}
 
 		// Add the imported DDI File to current Study's Files

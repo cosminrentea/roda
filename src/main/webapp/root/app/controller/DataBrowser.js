@@ -65,16 +65,18 @@ Ext.define('databrowser.controller.DataBrowser', {
 			"studyview gridpanel#studyvariables" : {
 				 itemcontextmenu : this.onVariablesGridContextMenu,
 				 cellclick : this.onMenuGetRDetails
-				 
+				// selectionchange: this.onMenuGetRDetails
 			},
 
 			"studyseriesview gridpanel#studyseriesvariables" : {
 				 itemcontextmenu : this.onSTVariablesGridContextMenu,
 				 cellclick : this.onSTMenuGetRDetails
+				 //selectionchange: this.onSTMenuGetRDetails
 				 
 			},
 			'variablecontextmenu menuitem#vardetails' : {
-				 click: this.onMenuGetRDetails	
+				 //click: this.onMenuGetRDetails	
+				 selectionchange: this.onMenuGetRDetails
 			},
 			'variablecontextmenu menuitem#addanal' : {
 				 click: this.onMenuAddAnal	
@@ -331,7 +333,7 @@ onSTSendToAnalysis : function (button) {
 		var panel = Ext.create('Ext.Panel', {
 			title: value.title, 
 			collapsible: true,
-			width: 800,
+			width: 1000,
 			height: height,
 			bodyPadding: 5,
 			layout: 'fit',
@@ -359,7 +361,7 @@ onSTSendToAnalysis : function (button) {
 		var panel = Ext.create('Ext.Panel', {
 			title: value.title, 
 			collapsible: true,
-			width: 600,
+			width: 800,
 			height: height,
 			bodyPadding: 5,
 			layout: 'fit',

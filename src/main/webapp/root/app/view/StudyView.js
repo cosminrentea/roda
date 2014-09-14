@@ -227,7 +227,8 @@ Ext.define('databrowser.view.StudyView', {
                                                     autoScroll : true,
                                                     layout : {
                                                         type : 'vbox',
-                                                        align : 'center'
+                                                        align : 'stretch'
+//                                                        align : 'center'
                                                     },
                                                 }
                                         ]

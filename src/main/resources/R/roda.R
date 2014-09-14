@@ -412,7 +412,7 @@ getStats <- function(mylist) {
                             rs(12), "\"rows\": ", length(valori[[1]]) + 2, ",\n",
                             rs(12), "\"cols\": ", length(valori[[2]]) + 2, ",\n",
                             rs(12), "\"data\": [\n",
-                                rs(16), "[\"", paste(names(mylist$vars), collapse= " / "),"\", ",
+                                rs(16), "[\"", paste(names(mylist$vars), collapse= " | "),"\", ",
                                                paste(paste("\"", paste(valori[[2]], etichete[[2]], sep=". "), "\"", sep=""), collapse = ", "),
                                                ", \"Total\"],\n", sep="")
                                 for (i in seq(length(valori[[1]]))) {
@@ -507,13 +507,21 @@ getStats <- function(mylist) {
                     rs(12), "]\n",
                 rs(8), "},{\n",
                     rs(12), "\"itemtype\": \"chart\",\n",
-                    rs(12), "\"title\": \"Diagrama de imprastiere pentru variabilele: ", paste(names(mylist$vars), collapse= " si "), "\",\n",
-                    rs(12), "\"charttype\": \"scatterplot\",\n",
-                    rs(12), "\"height\": ", 500, ",\n",
-                    rs(12), "\"data\": [\n",
-                        rs(16), "[\"", paste(temp[, 1], collapse="\", \""), "\"],\n",
-                        rs(16), "[\"", paste(temp[, 2], collapse="\", \""), "\"]\n",
-                    rs(12), "]\n",
+                    rs(12), "\"title\": \"Scatterplot\",\n",
+                    rs(12), "\"charttype\": \"scatter\",\n",
+                    rs(12), "\"xfield\": \"xvar\",\n",
+                    rs(12), "\"yfield\": \"yvar\",\n",
+                    rs(12), "\"xaxistitle\": \"", names(mylist$vars)[1], "\",\n",
+                    rs(12), "\"yaxistitle\": \"", names(mylist$vars)[2], "\",\n",
+                    rs(12), "\"height\": ", 170, ",\n",
+                    rs(12), "\"data\": [\n", sep="")
+                        for (i in seq(nrow(temp))) {
+                            json <- paste(json, rs(16), "{\n",
+                                rs(20), "\"xvar\": ", temp[i, 1], ",\n",
+                                rs(20), "\"yvar\": ", temp[i, 2], "\n",
+                                rs(16), ifelse (i == nrow(temp), "}\n", "},\n"), sep="")
+                        }
+                    json <- paste(json, rs(12), "]\n",
                 rs(8), "}\n",
             rs(4), "]\n",    
         "}\n", sep="")

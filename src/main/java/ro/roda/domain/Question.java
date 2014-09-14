@@ -147,7 +147,11 @@ public class Question {
 	}
 
 	public static String toJsonArray(Collection<Question> collection) {
-		return new JSONSerializer().exclude("*.class").exclude("classAuditReader", "auditReader").serialize(collection);
+		return new JSONSerializer()
+				.exclude("*.class")
+				.exclude("classAuditReader", "auditReader", "variables", "variables.*", "variables.classAuditReader",
+						"variables.auditReader", "variables.*.classAuditReader", "variables.*.auditReader")
+				.serialize(collection);
 	}
 
 	/**
@@ -403,7 +407,11 @@ public class Question {
 	}
 
 	public String toJson() {
-		return new JSONSerializer().exclude("*.class").exclude("classAuditReader", "auditReader").serialize(this);
+		return new JSONSerializer()
+				.exclude("*.class")
+				.exclude("classAuditReader", "auditReader", "variables", "variables.*", "variables.classAuditReader",
+						"variables.auditReader", "variables.*.classAuditReader", "variables.*.auditReader")
+				.serialize(this);
 	}
 
 	public String toString() {

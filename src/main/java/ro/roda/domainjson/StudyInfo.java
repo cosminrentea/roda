@@ -6,10 +6,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
-
-import javax.persistence.TypedQuery;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -21,7 +17,6 @@ import ro.roda.domain.Instance;
 import ro.roda.domain.Keyword;
 import ro.roda.domain.Org;
 import ro.roda.domain.Person;
-import ro.roda.domain.Question;
 import ro.roda.domain.Series;
 import ro.roda.domain.Study;
 import ro.roda.domain.StudyDescr;
@@ -30,6 +25,7 @@ import ro.roda.domain.StudyOrg;
 import ro.roda.domain.StudyPerson;
 import ro.roda.domain.Variable;
 import ro.roda.transformer.FieldNameTransformer;
+import ro.roda.transformer.FlatQuestionMinInfoTransformer;
 import flexjson.JSONSerializer;
 
 @Configurable
@@ -82,13 +78,15 @@ public class StudyInfo extends JsonInfo {
 		serializer.exclude("*");
 		serializer.exclude("*.*");
 
+		serializer.transform(new FlatQuestionMinInfoTransformer(""), "variables.questionId");
+
 		serializer.transform(new FieldNameTransformer("geo_coverage"), "geographicCoverage");
 		serializer.transform(new FieldNameTransformer("unit_analysis"), "unitAnalysis");
 		serializer.transform(new FieldNameTransformer("research_instrument"), "researchInstrument");
 		serializer.transform(new FieldNameTransformer("geo_unit"), "geographicUnit");
 		serializer.transform(new FieldNameTransformer("indice"), "variables.id");
-		serializer.transform(new FieldNameTransformer("question"), "variables.questionId");
-		// serializer.transform(new FieldNameTransformer("series"), "seriesId");
+		serializer.transform(new FieldNameTransformer("qstn_id"), "variables.questionIdid");
+		serializer.transform(new FieldNameTransformer("qstn_statement"), "variables.questionIdstatement");
 
 		return "{\"data\":" + serializer.serialize(collection) + "}";
 	}
@@ -456,10 +454,8 @@ public class StudyInfo extends JsonInfo {
 		// include ONLY what is needed
 		serializer.include("id", "name", "an", "description", "universe", "geographicCoverage", "unitAnalysis", "type",
 				"geographicUnit", "researchInstrument", "weighting", "seriesId");
-		// serializer.include("variables.id", "variables.name",
-		// "variables.label", "variables.questionId.id",
-		// "variables.questionId.statement");
-		serializer.include("variables.id", "variables.name", "variables.label");
+		serializer.include("variables.id", "variables.name", "variables.label", "variables.questionId.id",
+				"variables.questionId.statement");
 		serializer.include("files.name", "files.contentType", "files.url", "files.description");
 		serializer.include("persons.id", "persons.lname", "persons.fname", "persons.mname");
 		serializer.include("orgs.id", "orgs.fullName");
@@ -469,13 +465,15 @@ public class StudyInfo extends JsonInfo {
 		serializer.exclude("*");
 		serializer.exclude("*.*");
 
+		serializer.transform(new FlatQuestionMinInfoTransformer("questionId"), "variables.questionId");
+
 		serializer.transform(new FieldNameTransformer("geo_coverage"), "geographicCoverage");
 		serializer.transform(new FieldNameTransformer("unit_analysis"), "unitAnalysis");
 		serializer.transform(new FieldNameTransformer("research_instrument"), "researchInstrument");
 		serializer.transform(new FieldNameTransformer("geo_unit"), "geographicUnit");
 		serializer.transform(new FieldNameTransformer("indice"), "variables.id");
-		serializer.transform(new FieldNameTransformer("question"), "variables.questionId");
-		// serializer.transform(new FieldNameTransformer("series"), "seriesId");
+		serializer.transform(new FieldNameTransformer("qstn_id"), "variables.questionIdid");
+		serializer.transform(new FieldNameTransformer("qstn_statement"), "variables.questionIdstatement");
 
 		return new StringBuilder("{\"data\":").append(serializer.serialize(this)).append("}").toString();
 	}

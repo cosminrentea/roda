@@ -172,15 +172,35 @@ public class Variable implements Comparable {
 	}
 
 	public static String toJsonArray(Collection<Variable> collection) {
+		// return new JSONSerializer()
+		// .exclude("*.class")
+		// .exclude("classAuditReader", "auditReader",
+		// "instanceVariables.auditReader",
+		// "instanceVariables.classAuditReader", "otherStatistics.auditReader",
+		// "otherStatistics.classAuditReader", "selectionVariable.auditReader",
+		// "selectionVariable.classAuditReader", "skips.auditReader",
+		// "skips.classAuditReader",
+		// "skips1.auditReader", "skips1.classAuditReader",
+		// "vargroups.auditReader",
+		// "vargroups.classAuditReader", "concepts", "formEditedNumberVars",
+		// "formEditedTextVars",
+		// "fileId", "questionId").serialize(collection);
+
 		return new JSONSerializer()
 				.exclude("*.class")
-				.exclude("classAuditReader", "auditReader", "instanceVariables.auditReader",
-						"instanceVariables.classAuditReader", "otherStatistics.auditReader",
-						"otherStatistics.classAuditReader", "selectionVariable.auditReader",
-						"selectionVariable.classAuditReader", "skips.auditReader", "skips.classAuditReader",
-						"skips1.auditReader", "skips1.classAuditReader", "vargroups.auditReader",
-						"vargroups.classAuditReader", "concepts", "formEditedNumberVars", "formEditedTextVars",
-						"fileId").serialize(collection);
+				.exclude("operatorInstructions", "selectionVariable", "type", "variableType", "fileId",
+						"classAuditReader", "auditReader", "orderInQuestion", "otherStatistics.auditReader",
+						"otherStatistics.classAuditReader", "otherStatistics.variableId.classAuditReader",
+						"otherStatistics.variableId.auditReader", "skips", "skips1", "vargroups", "concepts",
+						"formEditedNumberVars", "formEditedTextVars", "questionId.auditReader",
+						"questionId.classAuditReader", "questionId.variables", "questionId.variables.*",
+						"questionId.instanceId", "questionId.instanceId.*", "questionId.langId", "questionId.langId.*",
+						"questionId.questionTypeId", "questionId.questionTypeId.*", "questionId.questionTypeNumeric",
+						"questionId.questionTypeNumeric.*", "questionId.questionTypeCodes",
+						"questionId.questionTypeCodes.*", "questionId.questionTypeCategories",
+						"questionId.questionTypeCategories.*", "questionId.missingValues",
+						"questionId.missingValues.*", "questionId.variables.auditReader",
+						"questionId.variables.classAuditReader").serialize(collection);
 	}
 
 	/**
@@ -292,7 +312,8 @@ public class Variable implements Comparable {
 	@JSON(name = "nrfreq")
 	private Long categoriesNumber;
 
-	@OneToOne(mappedBy = "variable", fetch = FetchType.LAZY, optional = false)
+	@OneToOne(mappedBy = "variable", fetch = FetchType.LAZY)
+	// , optional = false)
 	private SelectionVariable selectionVariable;
 
 	@OneToMany(mappedBy = "nextVariableId", fetch = FetchType.LAZY)
@@ -513,8 +534,9 @@ public class Variable implements Comparable {
 						"otherStatistics.classAuditReader", "selectionVariable.auditReader",
 						"selectionVariable.classAuditReader", "skips.auditReader", "skips.classAuditReader",
 						"skips1.auditReader", "skips1.classAuditReader", "vargroups.auditReader",
-						"vargroups.classAuditReader", "concepts", "formEditedNumberVars", "formEditedTextVars",
-						"fileId").serialize(this);
+						"questionId.auditReader", "questionId.classAuditReader", "vargroups.classAuditReader",
+						"concepts", "formEditedNumberVars", "formEditedTextVars", "fileId")
+				.include("questionId.id", "questionId.statement").serialize(this);
 	}
 
 	public String toJsonWithFreq() {
@@ -523,14 +545,21 @@ public class Variable implements Comparable {
 		return new JSONSerializer()
 				.exclude("*.class")
 				.exclude("operatorInstructions", "selectionVariable", "type", "variableType", "fileId",
-						"classAuditReader", "auditReader", "instanceVariables", "orderInQuestion",
-						"otherStatistics.auditReader", "otherStatistics.classAuditReader",
-						"otherStatistics.variableId.classAuditReader", "otherStatistics.variableId.auditReader",
-						"skips", "skips1", "vargroups", "concepts", "formEditedNumberVars", "formEditedTextVars",
-						"questionId.auditReader", "questionId.classAuditReader", "questionId.variables",
-						"questionId.instanceId", "questionId.langId")
+						"classAuditReader", "auditReader", "orderInQuestion", "otherStatistics.auditReader",
+						"otherStatistics.classAuditReader", "otherStatistics.variableId.classAuditReader",
+						"otherStatistics.variableId.auditReader", "skips", "skips1", "vargroups", "concepts",
+						"formEditedNumberVars", "formEditedTextVars", "questionId.auditReader",
+						"questionId.classAuditReader", "questionId.variables", "questionId.variables.*",
+						"questionId.instanceId", "questionId.instanceId.*", "questionId.langId", "questionId.langId.*",
+						"questionId.questionTypeId", "questionId.questionTypeId.*", "questionId.questionTypeNumeric",
+						"questionId.questionTypeNumeric.*", "questionId.questionTypeCodes",
+						"questionId.questionTypeCodes.*", "questionId.questionTypeCategories",
+						"questionId.questionTypeCategories.*", "questionId.missingValues",
+						"questionId.missingValues.*", "questionId.variables.auditReader",
+						"questionId.variables.classAuditReader")
 				.include("otherStatistics.id", "otherStatistics.name", "otherStatistics.value",
-						"otherStatistics.variableId.id").rootName("data").serialize(l);
+						"otherStatistics.variableId.id", "questionId.id", "questionId.statement").rootName("data")
+				.serialize(l);
 	}
 
 	public String toString() {

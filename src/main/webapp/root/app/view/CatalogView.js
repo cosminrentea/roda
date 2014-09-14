@@ -35,12 +35,14 @@ Ext
 
 						// var dgrid = Ext.getCmp('DetailsGridView');
 						// var gridtab = Ext.getCmp('seriesstudies');
+						this.setLoading('Loading....');
 						var cStore = Ext.StoreManager.get('CatalogStore');
 						cStore.load({
 							id: id, //set the id here
 							scope : this,
 
 							callback : function(records, operation, success) {
+								this.setLoading(false);
 								console.log(success);
 								if (success) {
 									var rec = cStore.first();

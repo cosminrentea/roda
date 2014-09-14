@@ -3,7 +3,7 @@ Ext.define('databrowser.view.StudySeriesView', {
     //    extend: 'Ext.grid.Panel',
     alias: 'widget.studyseriesview',
     autoRender: true,
-    id: 'studyseriesview',
+//    id: 'studyseriesview',
     itemId: 'studyseriesview',
     width: '100%',
     header: true,
@@ -13,6 +13,8 @@ Ext.define('databrowser.view.StudySeriesView', {
 
     	//asta e o varianta idioata determinata oarecum de incapacitatea autorilor extjs de a explica cum se fac rahaturile simple    	
     	this.setActiveTab(0);
+    	this.setLoading('Loading....');
+    	console.log('setloading here---------------');
     	var dtab = Ext.getCmp('ssdetails');
     	var variablesgrid = Ext.getCmp('studyseriesvariables');    
     	var filestab = Ext.getCmp('studyseriesdocuments');
@@ -22,6 +24,7 @@ Ext.define('databrowser.view.StudySeriesView', {
     		  id: id, //set the id here
     		  scope:this,
     		  callback: function(records, operation, success){
+   		    	this.setLoading(false);  
     		    if(success){
     		    	var rec = sStore.first();
     		    	dtab.update(records[0].data);
@@ -79,14 +82,22 @@ Ext.define('databrowser.view.StudySeriesView', {
                 	items: [{
                             	xtype: 'gridpanel',
                                 region : 'center',
-                                collapsible : true,
+                                collapsible : false,
                                 split : false,
                             	//itemId: 'studyseriesvariables',
                                 id: 'studyseriesvariables',
                             	width:'100%',
                                 flex : 1,                            	
                             	autoScroll: true,
-                            	remoteSort: false,                 	
+                            	remoteSort: false, 
+                            	 viewConfig: {
+                                     plugins: {
+                                         ptype: 'gridviewdragdrop',
+                                         dragGroup: 'firstGridDDGroup',
+                                         dropGroup: 'secondGridDDGroup'
+                                     },
+                                     copy: true,
+                                 },                            	
 //                            	listeners : {
 //                            		cellclick : function(gridView,htmlElement,columnIndex,dataRecord,htmlRow, rowIndex, e, eOpts) {
 //                            			if (columnIndex == 0) {
@@ -128,6 +139,7 @@ Ext.define('databrowser.view.StudySeriesView', {
                             ]
                 	},{
                         xtype : 'tabpanel',
+                        itemId : 'srvardet',
                         region : 'east',
                         collapsible : true,
                         split : true,
@@ -137,11 +149,11 @@ Ext.define('databrowser.view.StudySeriesView', {
                                 {
                                     xtype : 'panel',
                                     title : 'Variable details',
-                                    itemId: 'vardetails',
+                                    itemId: 'srvardetails',
                                     autoScroll : true,
                                     layout : {
                                         type : 'vbox',
-                                        align : 'center'
+                                        align : 'stretch'
                                     },
 //                                    layout : 'fit',
 //                                    items : [
@@ -155,13 +167,21 @@ Ext.define('databrowser.view.StudySeriesView', {
                                     xtype : 'panel',
                                     autoScroll : true,
                                     title : 'Analyze',
+                                    itemId: 'srvaranalyze',
                                     items : [
                                             {
                                                 xtype : 'gridpanel',
-                                                itemId : 'analysisvar',
+                                                itemId : 'sranalysisvar',
                                                 width : '100%',
-                                                store : 'MemoryVariableStore',
+                                                height: 100,                                                
+                                                store : 'SrMemoryVariableStore',
                                                 flex : 1,
+                                                viewConfig: {
+                                                    plugins: {
+                                                        ptype: 'gridviewdragdrop',
+                                                        dropGroup: 'firstGridDDGroup'
+                                                    } 
+                                                },
                                                 columns : [
                                                         {
                                                             xtype : 'gridcolumn',

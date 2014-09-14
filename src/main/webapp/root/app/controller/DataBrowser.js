@@ -26,7 +26,7 @@ Ext.define('databrowser.controller.DataBrowser', {
 	        },
 	        {
 	        	ref: 'stsingledetails',
-	        	selector: 'studyseriesview panel#vardetails'
+	        	selector: 'studyseriesview panel#srvardetails'
 	        },
 	        
 	        {
@@ -35,7 +35,7 @@ Ext.define('databrowser.controller.DataBrowser', {
 	        },
 	        {
 	            ref: 'SranalysisVar',
-	            selector: 'studyseriesview gridpanel#analysisvar'
+	            selector: 'studyseriesview gridpanel#sranalysisvar'
 	        }, 
 	        {
 	        	ref: 'SrfreqChart',
@@ -45,29 +45,34 @@ Ext.define('databrowser.controller.DataBrowser', {
 	        {
 	        	ref: 'SranPanel',
 	        	selector: 'studyseriesview panel#analResults'
+	        },
+	        {
+	        	ref: 'SrvarPanel',
+	        	selector: 'studyseriesview panel#srvardetails'
+	        },	        
+	        {
+	        	ref: 'vardet',
+	        	selector: 'studyview tabpanel#vardet'	
+	        },
+	        {
+	        	ref: 'servardet',
+	        	selector: 'studyseriesview tabpanel#srvardet'	
 	        }
-	        
-	        
-	        
 	        ],
 	
 	init : function(application) {
 		this.control({
 			"studyview gridpanel#studyvariables" : {
 				 itemcontextmenu : this.onVariablesGridContextMenu,
-//				 cellclick : this.onVarCellClick
 				 cellclick : this.onMenuGetRDetails
 				 
 			},
 
 			"studyseriesview gridpanel#studyseriesvariables" : {
 				 itemcontextmenu : this.onSTVariablesGridContextMenu,
-//				 cellclick : this.onVarCellClick
 				 cellclick : this.onSTMenuGetRDetails
 				 
 			},
-			
-			
 			'variablecontextmenu menuitem#vardetails' : {
 				 click: this.onMenuGetRDetails	
 			},
@@ -75,30 +80,30 @@ Ext.define('databrowser.controller.DataBrowser', {
 				 click: this.onMenuAddAnal	
 			},
 			
-			'stvariablecontextmenu menuitem#vardetails' : {
+			'stvariablecontextmenu menuitem#stvardetails' : {
 				 click: this.onSTMenuGetRDetails	
 			},
-			'stvariablecontextmenu menuitem#addanal' : {
-				 click: this.onSTMenuAddAnal	
+			'stvariablecontextmenu menuitem#staddanal' : {
+				 click: this.onSTMenuAddAnal
 			},
-			
-			
-			
 			"studyview button#sendToAnalysis" :{
 				click: this.onSendToAnalysis
 			},
 			'studyview gridpanel#analysisvar' : {
-				deleteRecord : this.onGridDeleteAction
+				deleteRecord : this.onGridDeleteAction,
 			},
-
+			'studyview gridpanel#analysisvar > gridview' : {
+				beforedrop : this.onStudyVarGridDrop,
+			},
 			"studyseriesview button#sendToAnalysis" :{
 				click: this.onSTSendToAnalysis
 			},
-			'studyseriesview gridpanel#analysisvar' : {
+			'studyseriesview gridpanel#sranalysisvar' : {
 				deleteRecord : this.onGridDeleteAction
 			},
-			
-			
+			'studyseriesview gridpanel#sranalysisvar  > gridview' : {
+				deleteRecord : this.onSerStudyVarGridDrop
+			},
 			
 		});
 
@@ -107,58 +112,55 @@ Ext.define('databrowser.controller.DataBrowser', {
 	onGridDeleteAction : function(grid, record, rowIndex, row) {
 		grid.getStore().removeAt(rowIndex);
 	},
-	
-//	onSendToAnalysis : function (button) {
-//		var astore = this.getAnalysisVar().getStore();
-//		var mycount = 0;
-//		var firstv = astore.getAt(0).data.indice;
-//		var secv = astore.getAt(1).data.indice;
-//		var me = this;
-//		Ext.Ajax.request({
-//            url : 'http://roda.apiary-mock.com/statistics',
-//            method : "POST",
-//            params : {
-//                    variable1 : firstv,
-//                    variable2 : secv
-//            },
-//            success : function(response) {
-//            var responseJson = Ext.decode(response.responseText);
-//                if (responseJson.success === true) {
-//                    // whatever stuff needs to happen on success
-//                	Ext.each(responseJson.data, function(value) {
-//                		 var myhtml = me.generateAnOb(value);
-//                		 var rpanel = me.getAnPanel();
-//                		 var oldhtml = rpanel.html; 
-//                		 console.log(oldhtml);
-//                		 
-//                		 if (oldhtml) {	
-//                			 rpanel.update(oldhtml + myhtml);
-//                		 } else {
-//                			 rpanel.update(myhtml);
-//                		 }
-//                		 rpanel.doLayout();
-//                	});
-//                	
-//                
-//                } else {
-//                    RODAdmin.util.Alert.msg('Failure!', responseJson.message, true);
-//
-//                }
-//         },
-//            failure : function(response, opts) {
-//                    Ext.Msg.alert('Failure', response);
-//
-//            }
-//        });	
-//			
-//	},
-	
 
+	onStudyVarGridDrop : function(node, data, overModel, dropPosition, dropHandlers) {
+		 dropHandlers.wait = true;
+		var currentNode = data.records[0];
+		var mygrid = this.getAnalysisVar();
+		var vStore = this.getAnalysisVar().getStore();
+		var isit = vStore.findExact('name',currentNode.data.name);
+		if (isit > -1) {
+			 Ext.Msg.alert('Eroare', 'Variabila e deja acolo');
+			 dropHandlers.cancelDrop();
+		} else {
+	
+		if (vStore.count() < 2) {
+			 dropHandlers.processDrop();
+		} else {
+			 Ext.Msg.alert('Eroare', 'Numarul maxim de variabile a fost atins');
+			 dropHandlers.cancelDrop();
+		}	
+		}
+	},
+
+	onSerStudyVarGridDrop : function(node, data, overModel, dropPosition, dropHandlers) {
+		 dropHandlers.wait = true;
+		var currentNode = data.records[0];
+		var mygrid = this.getSranalysisVar();
+		var vStore = this.getSranalysisVar().getStore();
+		var isit = vStore.findExact('name',currentNode.data.name);
+		if (isit > -1) {
+			 Ext.Msg.alert('Eroare', 'Variabila e deja acolo');
+			 dropHandlers.cancelDrop();
+		} else {
+	
+		if (vStore.count() < 2) {
+			 dropHandlers.processDrop();
+		} else {
+			 Ext.Msg.alert('Eroare', 'Numarul maxim de variabile a fost atins');
+			 dropHandlers.cancelDrop();
+		}	
+		}
+	},
+
+	
 	onSendToAnalysis : function (button) {
+	console.log('sendtoanalysis');	
 	var astore = this.getAnalysisVar().getStore();
 	var mycount = 0;
 	var firstv = astore.getAt(0).data.indice;
 	var secv = astore.getAt(1).data.indice;
+	this.getAnPanel().setLoading('Loading...');	
 	var me = this;
 	Ext.Ajax.request({
 //        url : 'http://roda.apiary-mock.com/statistics',
@@ -175,90 +177,13 @@ Ext.define('databrowser.controller.DataBrowser', {
                 // whatever stuff needs to happen on success
             	var rpanel = me.getAnPanel();
             	rpanel.removeAll();
-            	Ext.each(responseJson.data, function(value) {
-            		console.log(value); 
-            		if (value.itemtype == 'chart') {
-            			if (value.charttype == 'stackedbar') {
-            				console.log('stacked bar');	
-            				var catfield = value.catfield;
-            				var datafield1 = value.datafields;
-            				
-            				var nstore = new Ext.data.JsonStore({
-                		    	fields:[value.catfield, value.datafield1, value.datafield2],
-                 		        data: value.data
-                		    });
-            				var height = 500;
-            				if (value.height > 100) {
-            					height = value.height + 50;
-            				}
-            				var panel = Ext.create('Ext.Panel', {
-                		       title: value.title, 
-                		       collapsible: true,
-                		       width: 600,
-                		       height: height,
-                		       bodyPadding: 5,
-                		       layout: 'fit',
-                		       items: {
-                		    	 xtype: 'sbchart',
-                		    	 store: nstore,
-                		    	 catfield : value.catfield,
-                		    	 datafields : [value.datafield1, value.datafield2],
-                		       	}
-                     		 	});
-                     		 rpanel.add(panel);          
-            			} else if (value.charttype == 'bar') {	
-            				console.log('bar');
-            				var nstore = new Ext.data.JsonStore({
-            					fields:['name', 'value'],
-            					data: value.data
-            				});
-            				var height = 500;
-            				if (value.height > 100) {
-            					height = value.height + 100;
-            				}
-            				var panel = Ext.create('Ext.Panel', {
-            					title: value.title, 
-            					collapsible: true,
-            					width: 600,
-            					height: height,
-            					bodyPadding: 5,
-            					layout: 'fit',
-            					items: {
-            						xtype: 'freqchart',
-            						store: nstore,
-            					}
-            				});
-            				rpanel.add(panel);            			
-            			}
-            		} else if   (value.itemtype == 'paragraph') {
-               		 	var panel = Ext.create('Ext.Panel', {
-               		 		collapsible: true,
-               		 		title: value.title, 
-               		 		width: 600,
-               		 		bodyPadding: 5,
-               		 		html : value.content
-               		 	});
-            			
-               		 	rpanel.add(panel);
-            		} else {
-            		var myhtml = me.generateAnOb(value);
-            		 //incercam sa facem un nou panou
-            		 var panel = Ext.create('Ext.Panel', {
-            			   collapsible: true,
-            		       title: value.title,
-            		       width: 600,
-            		       bodyPadding: 5,
-            		       html : myhtml
-            		  });
-            		
-            		 rpanel.add(panel);
-            		}
-            		
-            		
-            		 rpanel.doLayout();
-            	});
             	
-            
+            	var newpanels = me.getRResult(responseJson.data);
+            	Ext.each(newpanels, function(value) {
+            		rpanel.add(value);
+            		rpanel.doLayout();
+            	});
+            		rpanel.setLoading(false);
             } else {
             	Ext.Msg.alert('Failure!', responseJson.message);
 
@@ -275,8 +200,10 @@ Ext.define('databrowser.controller.DataBrowser', {
 	
 	
 onSTSendToAnalysis : function (button) {
+	console.log('stsendtoanalysis');
 	var astore = this.getSranalysisVar().getStore();
 	var mycount = 0;
+	this.getSranPanel().setLoading('Loading...');
 	var firstv = astore.getAt(0).data.indice;
 	var secv = astore.getAt(1).data.indice;
 	var me = this;
@@ -291,95 +218,17 @@ onSTSendToAnalysis : function (button) {
         var responseJson = Ext.decode(response.responseText);
         
             if (responseJson.success === true) {
-                // whatever stuff needs to happen on success
             	var rpanel = me.getSranPanel();
-            	rpanle.removeAll();
-            	Ext.each(responseJson.data, function(value) {
-            		console.log(value); 
-            		if (value.itemtype == 'chart') {
-            			console.log('chart starting------');
-            			if (value.charttype == 'stackedbar') {
-            				console.log('stacked bar');	
-            				
-            				var nstore = new Ext.data.JsonStore({
-                		    	fields:[value.catfield, value.datafield1, value.datafield2],
-                 		        data: value.data
-                		    });
-            				var height = 500;
-            				if (value.height > 100) {
-            					height = value.height + 50;
-            				}
-            				var panel = Ext.create('Ext.Panel', {
-                		       title: value.title, 
-                		       collapsible: true,
-                		       width: 600,
-                		       height: height,
-                		       bodyPadding: 5,
-                		       layout: 'fit',
-                		       items: {
-                		    	 xtype: 'sbchart',
-                		    	 store: nstore,
-                		    	 catfield : value.catfield,
-                		    	 datafields : [value.datafield1, value.datafield2],
-                		       	}
-                     		 	});
-                     		 rpanel.add(panel);             				
-            			} else if (value.charttype == 'bar') {	
-            				console.log('bar');
-            				var nstore = new Ext.data.JsonStore({
-            					fields:['name', 'value'],
-            					data: value.data
-            				});
-            				var height = 500;
-            				if (value.height > 100) {
-            					height = value.height + 100;
-            				}
-            				var panel = Ext.create('Ext.Panel', {
-            					title: value.title, 
-            					collapsible: true,
-            					width: 600,
-            					height: height,
-            					bodyPadding: 5,
-            					layout: 'fit',
-            					items: {
-            						xtype: 'freqchart',
-            						store: nstore,
-            					}
-            				});
-            				rpanel.add(panel);            			
-            			}
-            		} else if   (value.itemtype == 'paragraph') {
-               		 	var panel = Ext.create('Ext.Panel', {
-               		 		collapsible: true,
-               		 		title: value.title, 
-               		 		width: 600,
-               		 		bodyPadding: 5,
-               		 		html : value.content
-               		 	});
-            			
-               		 	rpanel.add(panel);
-            		} else {
-            		var myhtml = me.generateAnOb(value);
-            		 //incercam sa facem un nou panou
-            		 var panel = Ext.create('Ext.Panel', {
-            			   collapsible: true,
-            		       title: value.title,
-            		       width: 600,
-            		       bodyPadding: 5,
-            		       html : myhtml
-            		  });
-            		
-            		 rpanel.add(panel);
-            		}
-            		
-            		
-            		 rpanel.doLayout();
-            	});
+            	rpanel.removeAll();
             	
-            
+            	var newpanels = me.getRResult(responseJson.data);
+            	Ext.each(newpanels, function(value) {
+            		rpanel.add(value);
+            		rpanel.doLayout();
+            	});
+            	rpanel.setLoading(false);
             } else {
             	Ext.Msg.alert('Failure!', responseJson.message);
-
             }
      },
         failure : function(response, opts) {
@@ -390,88 +239,11 @@ onSTSendToAnalysis : function (button) {
 		
 },
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	generateAnOb : function (props) {
-		console.log('we are where we are supposed to be');
-		console.log(props);
-		if (props.itemtype == 'table') {
-			//hai sa vedem cum facem tabelul
-			var mytable = '<table>';
-			//console.log(mytable);
-			for (var i in props.data) {
-				mytable += '<tr>';
-				for (var j in props.data[i]) {
-					if (props.headerRow == 1 && i == 0) {
-						mytable += '<th>';
-						mytable += props.data[i][j];
-						mytable += '</th>';
-					} else {
-						if (props.headerCol == 1 && j == 0) {
-							mytable += '<th>';
-							mytable += props.data[i][j];
-							mytable += '</th>';
-						} else {
-							mytable += '<td>';
-							mytable += props.data[i][j];
-							mytable += '</td>';
-						}
-
-					}
-
-				}
-				mytable += '</tr>';
-			}
-			mytable += '</table>';
-			props.renderedtable = mytable;
-			var t = new Ext.Template(
-			     '<div class="tablecontainer">{renderedtable}</div>',
-			     
-			{
-				compiled: true
-			});
-
-			var tfinal =  t.apply(props);
-			return tfinal;
-		} else if (props.itemtype == 'paragraph') {
-			var t = new Ext.Template(
-			        			     '<div class="partitle">{title}</div>',
-			        			     '<div class="parcontent">{content}</div>',
-			        			{
-			        				compiled: true
-			        			});
-			        			return t.apply(props);
-			
-		} else if (props.itemtype == 'chart') {	
-			var t = new Ext.Template(
-			        			     '<div class="charttitle">{title}</div>',                    
-			        			{
-			        				compiled: true
-			        			});
-			        			return t.apply(props);
-			
-		}
-		
-	},
 
 	onMenuGetRDetails : function (component, event) {
+		console.log('onMenuGetRDetails');
 		var currentNode = this.getStudyVariables().getSelectionModel().getLastSelected();
-		console.log(currentNode);
-		var ilfreqchart = this.getFreqChart();
-		console.log(ilfreqchart);
+		this.getSingledetails().setLoading('Loading...');
 		var me = this;
 		Ext.Ajax.request({
 	        url : '../../j/statistics',
@@ -487,86 +259,13 @@ onSTSendToAnalysis : function (button) {
 	                // whatever stuff needs to happen on success
 	            	var rpanel = me.getSingledetails();
 	            	rpanel.removeAll();
-	            	Ext.each(responseJson.data, function(value) {
-	            		console.log(value); 
-	            		if (value.itemtype == 'chart') {
-	            			console.log('chart starting------');
-	            			if (value.charttype == 'stackedbar') {
-	            				console.log('stacked bar');	
-	            				var nstore = new Ext.data.JsonStore({
-	                		    	fields:[value.catfield, value.datafield1, value.datafield2],
-	                 		        data: value.data
-	                		    });
-	            				var height = 500;
-	            				if (value.height > 100) {
-	            					height = value.height + 50;
-	            				}
-	            				var panel = Ext.create('Ext.Panel', {
-	                		       title: value.title, 
-	                		       collapsible: true,
-	                		       width: 600,
-	                		       height: height,
-	                		       bodyPadding: 5,
-	                		       layout: 'fit',
-	                		       items: {
-	                		    	 xtype: 'sbchart',
-	                		    	 store: nstore,
-	                		    	 catfield : value.catfield,
-	                		    	 datafields : [value.datafield1, value.datafield2],
-	                		       	}
-	                     		 	});
-	                     		 rpanel.add(panel); 	            				
-	            			} else if (value.charttype == 'bar') {	
-	            				console.log('bar');
-	            				var nstore = new Ext.data.JsonStore({
-	            					fields:['name', 'value'],
-	            					data: value.data
-	            				});
-	            				var height = 500;
-	            				if (value.height > 100) {
-	            					height = value.height + 100;
-	            				}
-	            				var panel = Ext.create('Ext.Panel', {
-	            					title: value.title, 
-	            					collapsible: true,
-	            					width: 600,
-	            					height: height,
-	            					bodyPadding: 5,
-	            					layout: 'fit',
-	            					items: {
-	            						xtype: 'freqchart',
-	            						store: nstore,
-	            					}
-	            				});
-	            				rpanel.add(panel);            			
-	            			}
-	            		} else if   (value.itemtype == 'paragraph') {
-	               		 	var panel = Ext.create('Ext.Panel', {
-	               		 		collapsible: true,
-	               		 		title: value.title, 
-	               		 		width: 600,
-	               		 		bodyPadding: 5,
-	               		 		html : value.content
-	               		 	});
-	            			
-	               		 	rpanel.add(panel);
-	            		} else {
-	            		var myhtml = me.generateAnOb(value);
-	            		 //incercam sa facem un nou panou
-	            		 var panel = Ext.create('Ext.Panel', {
-	            			   collapsible: true,
-	            		       title: value.title,
-	            		       width: 600,
-	            		       bodyPadding: 5,
-	            		       html : myhtml
-	            		  });
-	            		
-	            		 rpanel.add(panel);
-	            		}
-	            		 rpanel.doLayout();
+	            	var newpanels = me.getRResult(responseJson.data);
+	            	Ext.each(newpanels, function(value) {
+	            		rpanel.add(value);
+	            		rpanel.doLayout();
 	            	});
-	            	
-	            
+	            	rpanel.setLoading(false);
+	            	me.getVardet().layout.setActiveItem('vardetails');
 	            } else {
 	            	Ext.Msg.alert('Failure!', responseJson.message);
 
@@ -578,52 +277,229 @@ onSTSendToAnalysis : function (button) {
 	        }
 	    });	
 	},
-	
-	onMenuGetVdetails : function (component, event) {
-				var currentNode = this.getStudyVariables().getSelectionModel().getLastSelected();
-				console.log(currentNode);
-				var ilfreqchart = this.getFreqChart();
-				console.log(ilfreqchart);
-				var vStore = Ext.StoreManager.get('VariableStore');
-				vStore.load({
-					id : currentNode.data.indice, // set the id here
-					scope : this,
-					callback : function(records, operation, success) {
-						console.log('callback success');
-						if (success) {
-							var rec = vStore.first();
-							console.log(rec);
-							if (rec.get('nrfreq') == 0) {
-								ilfreqchart.getEl().hide();
-							} else {
-								console.log('inelse');
-							ilfreqchart.bindStore(rec.otherStatisticsStore);
-							ilfreqchart.surface.add(
-							{
-							    type: 'text',
-							    text: rec.name + ' ' +rec.label,
-							    font: '12px Arial',
-							    x: 50,
-							    y: 0,
-							    width: 100,
-							    height: 100 
-							});
-							
-							
-							console.log(rec.otherStatisticsStore);
-							}
-						}
-					}
-				});
-	},
 
 	
 	
+	getRResult : function (json) {
+		console.log('getttesult');
+		var me = this;
+		var panelarray = []
+		Ext.each(json, function(value) {
+			if (value.itemtype == 'chart') {
+				if (value.charttype == 'stackedbar') {
+					var panel = me.getChartStackedBar(value);
+					panelarray.push(panel);
+				} else if (value.charttype == 'bar') {					
+					var panel = me.getChartBar(value);
+					panelarray.push(panel);
+				} else if (value.charttype == 'scatter') {					
+					var panel = me.getChartScatter(value);
+					panelarray.push(panel);
+				} else if (value.charttype == 'histogram') {					
+					var panel = me.getChartHistogram(value);
+					panelarray.push(panel);
+				}
+			} else if (value.itemtype == 'paragraph') {
+				var panel = me.getParagraph(value);
+				panelarray.push(panel);
+			} else if (value.itemtype == 'table') {
+				var panel = me.getTable(value);
+				panelarray.push(panel);
+			}
+		});
+		return panelarray;
+	},
+	
+	
+	getChartStackedBar : function (value) {
+		console.log('stackedbar');
+		console.log(value);
+		var ifields =[value.catfield];
+		storefields = ifields.concat(value.datafields);
+		console.log(storefields);
+		console.log(value.datafields);
+		var nstore = new Ext.data.JsonStore({
+			fields : storefields,
+			data: value.data
+		});
+		
+		var height = 500;
+		if (value.height > 100) {
+			height = value.height + 50;
+		}
+
+		var panel = Ext.create('Ext.Panel', {
+			title: value.title, 
+			collapsible: true,
+			width: 800,
+			height: height,
+			bodyPadding: 5,
+			layout: 'fit',
+			items: {
+				xtype: 'sbchart',
+				store: nstore,
+				catfield : value.catfield,
+				datafields : value.datafields,
+			}
+		 });
+		return panel;
+	},
+
+	getChartBar : function (value) {
+		var nstore = new Ext.data.JsonStore({
+			fields:['name', 'value'],
+			data: value.data
+		});
+		var height = 500;
+		if (value.height > 20) {
+			height = value.height + 180;
+		}
+		console.log(value.height);
+		console.log(height);
+		var panel = Ext.create('Ext.Panel', {
+			title: value.title, 
+			collapsible: true,
+			width: 600,
+			height: height,
+			bodyPadding: 5,
+			layout: 'fit',
+			items: {
+				xtype: 'freqchart',
+				store: nstore,
+			}
+		});
+		return panel;
+	},
+
+	getChartScatter : function (value) {
+		console.log('scatter');
+		console.log(value.xaxistitle);
+		console.log(value.yaxistitle);
+		console.log(value.xfield);
+		console.log(value.yfield);
+		
+		
+		var nstore = new Ext.data.JsonStore({
+			fields:[value.xfield, value.yfield],
+			data: value.data
+		});
+		
+		console.log(nstore);
+		
+		var height = 500;
+		if (value.height > 100) {
+			height = value.height + 100;
+		}
+		var panel = Ext.create('Ext.Panel', {
+			title: value.title, 
+			collapsible: true,
+			width: 600,
+			height: height,
+			bodyPadding: 5,
+			layout: 'fit',
+			items: {
+				xtype: 'scatter',
+				store: nstore,
+				xaxistitle : value.xaxistitle,
+				yaxistitle : value.yaxistitle,
+				xfields: value.xfield,
+				yfields: value.yfield,
+			}
+		});
+		return panel;		
+	},
+
+	getChartHistogram : function (value) {
+		console.log(value);
+		console.log(value.data[0]);
+		var nstore = new Ext.data.JsonStore({
+			fields:['breaks', 'counts'],
+			data: value.data[0]
+		});
+		var height = 500;
+		if (value.height > 100) {
+			height = value.height + 100;
+		}
+		var panel = Ext.create('Ext.Panel', {
+			title: value.title, 
+			collapsible: true,
+			width: 600,
+			height: height,
+			bodyPadding: 5,
+			layout: 'fit',
+			items: {
+				xtype: 'histogram',
+				store: nstore,
+			}
+		});
+		return panel;		
+	},
+	
+	getParagraph : function (data) {
+		console.log(data);
+		var panel = Ext.create('Ext.Panel', {
+	 		collapsible: true,
+	 		title: data.title, 
+	 //		width: 600,
+	 		bodyPadding: 5,
+	 		html: data.content
+	 	});
+		return panel;
+	},
+
+	
+	getTable : function (data) {
+		var mytable = '<table class="jsdatatable">';
+		for (var i in data.data) {
+			mytable += '<tr>';
+			for (var j in data.data[i]) {
+				if (data.headerRow == 1 && i == 0) {
+					mytable += '<th>';
+					mytable += data.data[i][j];
+					mytable += '</th>';
+				} else {
+					if (data.headerCol == 1 && j == 0) {
+						mytable += '<th>';
+						mytable += data.data[i][j];
+						mytable += '</th>';
+					} else {
+						mytable += '<td>';
+						mytable += data.data[i][j];
+						mytable += '</td>';
+					}
+
+				}
+
+			}
+			mytable += '</tr>';
+		}
+		mytable += '</table>';
+		data.renderedtable = mytable;
+		var t = new Ext.Template(
+		     '<div class="tablecontainer">{renderedtable}</div>',
+		     
+		{
+			compiled: true
+		});
+
+		var tfinal =  t.apply(data);
+		
+		var panel = Ext.create('Ext.Panel', {
+	 		collapsible: true,
+	 		title: data.title, 
+	 		//width: 600,
+	 		bodyPadding: 5,
+	 		html : tfinal,
+	 	});
+		return panel;
+	},
+	
+	
 	onSTMenuGetRDetails : function (component, event) {
+		console.log('stmenugetrdetails');
 		var currentNode = this.getSrstudyVariables().getSelectionModel().getLastSelected();
+		this.getSrvarPanel().setLoading('Loading...');	
 		console.log(currentNode);
-		var ilfreqchart = this.getFreqChart();
-		console.log(ilfreqchart);
 		var me = this;
 		Ext.Ajax.request({
 	        url : '../../j/statistics',
@@ -636,90 +512,16 @@ onSTSendToAnalysis : function (button) {
 	        var responseJson = Ext.decode(response.responseText);
 	        
 	            if (responseJson.success === true) {
-	                // whatever stuff needs to happen on success
-	            	var rpanel = me.getStstsingledetails();
+	            	var rpanel = me.getStsingledetails();
 	            	rpanel.removeAll();
-	            	Ext.each(responseJson.data, function(value) {
-	            		console.log(value); 
-	            		if (value.itemtype == 'chart') {
-	            			console.log('chart starting------');
-	            			if (value.charttype == 'stackedbar') {
-	            				console.log('stacked bar');
-	            				
-	            				var nstore = new Ext.data.JsonStore({
-	                		    	fields:[value.catfield, value.datafield1, value.datafield2],
-	                 		        data: value.data
-	                		    });
-	            				var height = 500;
-	            				if (value.height > 100) {
-	            					height = value.height + 50;
-	            				}
-	            				var panel = Ext.create('Ext.Panel', {
-	                		       title: value.title, 
-	                		       collapsible: true,
-	                		       width: 600,
-	                		       height: height,
-	                		       bodyPadding: 5,
-	                		       layout: 'fit',
-	                		       items: {
-	                		    	 xtype: 'sbchart',
-	                		    	 store: nstore,
-	                		    	 catfield : value.catfield,
-	                		    	 datafields : [value.datafield1, value.datafield2],
-	                		       	}
-	                     		 	});
-	                     		 rpanel.add(panel); 	            				
-	            			} else if (value.charttype == 'bar') {	
-	            				console.log('bar');
-	            				var nstore = new Ext.data.JsonStore({
-	            					fields:['name', 'value'],
-	            					data: value.data
-	            				});
-	            				var height = 500;
-	            				if (value.height > 100) {
-	            					height = value.height + 100;
-	            				}
-	            				var panel = Ext.create('Ext.Panel', {
-	            					title: value.title, 
-	            					collapsible: true,
-	            					width: 600,
-	            					height: height,
-	            					bodyPadding: 5,
-	            					layout: 'fit',
-	            					items: {
-	            						xtype: 'freqchart',
-	            						store: nstore,
-	            					}
-	            				});
-	            				rpanel.add(panel);            			
-	            			}
-	            		} else if   (value.itemtype == 'paragraph') {
-	               		 	var panel = Ext.create('Ext.Panel', {
-	               		 		collapsible: true,
-	               		 		title: value.title, 
-	               		 		width: 600,
-	               		 		bodyPadding: 5,
-	               		 		html : value.content
-	               		 	});
-	            			
-	               		 	rpanel.add(panel);
-	            		} else {
-	            		var myhtml = me.generateAnOb(value);
-	            		 //incercam sa facem un nou panou
-	            		 var panel = Ext.create('Ext.Panel', {
-	            			   collapsible: true,
-	            		       title: value.title,
-	            		       width: 600,
-	            		       bodyPadding: 5,
-	            		       html : myhtml
-	            		  });
-	            		
-	            		 rpanel.add(panel);
-	            		}
-	            		 rpanel.doLayout();
+
+	            	var newpanels = me.getRResult(responseJson.data);
+	            	Ext.each(newpanels, function(value) {
+	            		rpanel.add(value);
+	            		rpanel.doLayout();
 	            	});
-	            	
-	            
+	            	rpanel.setLoading(false);
+	            	me.getServardet().layout.setActiveItem('srvardetails');
 	            } else {
 	            	Ext.Msg.alert('Failure!', responseJson.message);
 
@@ -734,54 +536,28 @@ onSTSendToAnalysis : function (button) {
 	
 	
 	
-	onSTMenuGetVdetails : function (component, event) {
-		var currentNode = this.getSrstudyVariables().getSelectionModel().getLastSelected();
-		console.log(currentNode);
-		var ilfreqchart = this.getSrfreqChart();
-		var vStore = Ext.StoreManager.get('VariableStore');
-		vStore.load({
-			id : currentNode.data.indice, // set the id here
-			scope : this,
-			callback : function(records, operation, success) {
-				console.log('callback success');
-				if (success) {
-					var rec = vStore.first();
-					console.log(rec);
-					if (rec.get('nrfreq') == 0) {
-						ilfreqchart.getEl().hide();
-					} else {
-						console.log('inelse');
-					ilfreqchart.bindStore(rec.otherStatisticsStore);
-					ilfreqchart.surface.add(
-					{
-					    type: 'text',
-					    text: rec.name + ' ' +rec.label,
-					    font: '12px Arial',
-					    x: 50,
-					    y: 0,
-					    width: 100,
-					    height: 100 
-					});
-					
-					
-					console.log(rec.otherStatisticsStore);
-					}
-				}
-			}
-		});
-},
-	
 	
 onSTMenuAddAnal : function (component, event) {
-	var currentNode = this.getSrstudyVariables().getSelectionModel().getLastSelected();
-	console.log(currentNode);
-
+	console.log('stmenuaddanal');
+	var currentNode = this.getStudyVariables().getSelectionModel().getLastSelected();
 	var mygrid = this.getSranalysisVar();
-	console.log(mygrid);
-	var vStore = this.getSranalysisVar().getStore();
-	vStore.add(currentNode);
-	vStore.commitChanges();
 
+	
+	
+	var vStore = this.getSranalysisVar().getStore();
+	var isit = vStore.findExact('name',currentNode.data.name);
+	console.log(isit);
+	if (isit > -1) {
+		 Ext.Msg.alert('Eroare', 'Variabila e deja acolo');
+	} else {
+		if (vStore.count() < 2) {
+			vStore.add(currentNode);
+			vStore.commitChanges();
+			this.getServardet().layout.setActiveItem('varanalyze');
+		} else {
+			 Ext.Msg.alert('Eroare', 'Numarul maxim de variabile a fost atins');
+		}	
+	}			
 
 },
 	
@@ -789,15 +565,28 @@ onSTMenuAddAnal : function (component, event) {
 	
 	
 	onMenuAddAnal : function (component, event) {
+		console.log('menuaddanal');		
 		var currentNode = this.getStudyVariables().getSelectionModel().getLastSelected();
 		console.log(currentNode);
-
 		var mygrid = this.getAnalysisVar();
 		console.log(mygrid);
 		var vStore = this.getAnalysisVar().getStore();
-		vStore.add(currentNode);
-		vStore.commitChanges();
-
+		//avem store, avem variabila. Sa vedem daca nu e deja acolo
+		var isit = vStore.findExact('name',currentNode.data.name);
+		console.log(isit);
+		if (isit > -1) {
+			 Ext.Msg.alert('Eroare', 'Variabila e deja acolo');
+		} else {
+		//hai sa vedem cate elemente avem in store		
+		if (vStore.count() < 2) {
+			vStore.add(currentNode);
+			vStore.commitChanges();
+			//daca adaugam la store, mutam tabul
+			this.getVardet().layout.setActiveItem('varanalyze');
+		} else {
+			 Ext.Msg.alert('Eroare', 'Numarul maxim de variabile a fost atins');
+		}	
+		}
 
 	},
 	
@@ -805,6 +594,7 @@ onSTMenuAddAnal : function (component, event) {
 	
 	
 	onVariablesGridContextMenu : function(component, record, item, index, e) {
+		console.log('variable menu');
 		 e.stopEvent();
 		 console.log(record.data.type);
 		   if (!this.itemmenu) {
@@ -814,7 +604,8 @@ onSTMenuAddAnal : function (component, event) {
 	},
 	
 	onSTVariablesGridContextMenu : function(component, record, item, index, e) {
-		 e.stopEvent();
+		console.log('stvariable menu');
+		e.stopEvent();
 		 console.log(record.data.type);
 		   if (!this.itemmenu) {
 			   this.itemmenu = Ext.create('databrowser.view.STVariableContextMenu');

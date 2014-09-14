@@ -1,6 +1,7 @@
 Ext.define('databrowser.view.DataBrowserPanel', {
     extend: 'Ext.panel.Panel',
     frame: true,
+    alias: 'widget.dbmainp',
     layout: {
         type: 'border'
     },
@@ -27,6 +28,7 @@ Ext.define('databrowser.view.DataBrowserPanel', {
                 	
                 	 region : 'center',
                      collapsible : false,
+                     itemId : 'dbcardcont',
                      width : '70%',
                      items : [
                               {

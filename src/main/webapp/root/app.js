@@ -39,7 +39,8 @@ Ext.application({
         'YearStore',
         'VariableStore',
         'TopicTreeStore',
-        'MemoryVariableStore'
+        'MemoryVariableStore',
+        'SrMemoryVariableStore'
     ],
     views: [
         'DataBrowserPanel',
@@ -54,11 +55,13 @@ Ext.application({
         'SeriesMembersView',
         'VariableView',
         'FrequencyChart',
+        'Histogram',
         'VariableDetails',
         'StackedBarChart',
-        'Alert'
+        'Alert',
+        'ScatterChart'
     ],
-	controllers : ['VariableView', 'DataBrowser'],
+	controllers : ['VariableView', 'DataBrowser', 'Browser'],
     autoCreateViewport: false,
     name: 'databrowser',
     appFolder:'/roda/root/app',

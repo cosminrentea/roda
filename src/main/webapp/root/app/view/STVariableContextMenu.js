@@ -15,13 +15,13 @@ initComponent: function() {
         items: [
             {
                 xtype: 'menuitem',
-                itemId: 'addanal',
+                itemId: 'staddanal',
                 text: 'Analyze',
                 tooltip: 'Adds current variable to analysts'
             },
             {
                 xtype: 'menuitem',
-                itemId: 'vardetails',
+                itemId: 'stvardetails',
                 text: 'Get details',
                 tooltip: 'Gets variable details'
             },

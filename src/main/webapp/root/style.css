@@ -1,3 +1,25 @@
+.jsdatatable {
+	border-collapse: collapse;  width: 90%; margin: 0 auto 5rem; text-align: center;
+	
+}
+
+.jsdatatable tr {
+	background-color: #c8e262;
+}
+
+
+
+.jsdatatable tr, .jsdatatable td { transition: .4s ease-in; } 
+
+.jsdatatable tr:first-child {background-color: #ff750e; }
+
+.jsdatatable tr:nth-child(even) { background-color: #a6c040; }
+
+.jsdatatable td:empty {background-color: #a6c040; }
+
+
+
+
 #container
 {
 	margin: 0 auto;

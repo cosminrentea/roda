@@ -27,7 +27,8 @@ Ext.define('databrowser.view.StudyView', {
 
 	    // asta e o varianta idioata determinata oarecum de incapacitatea
 		// autorilor extjs de a explica cum se fac rahaturile simple
-	    this.setActiveTab(0);
+    	this.setLoading('Loading....');	    
+    	this.setActiveTab(0);
 	    var dtab = Ext.getCmp('sdetails');
 	    var variablesgrid = Ext.getCmp('studyvariables');
 	    var filestab = Ext.getCmp('studydocuments');
@@ -36,7 +37,8 @@ Ext.define('databrowser.view.StudyView', {
 	        id : id, // set the id here
 	        scope : this,
 	        callback : function(records, operation, success) {
-		        if (success) {
+	        	this.setLoading(false);
+	        	if (success) {
 			        var rec = sStore.first();
 			        console.log(rec.filesStore);
 			        console.log('study store loaded');
@@ -76,13 +78,25 @@ Ext.define('databrowser.view.StudyView', {
                         {
                             xtype : 'grid',
                             region : 'center',
-                            collapsible : true,
+                            collapsible : false,
                             split : false,
                             id : 'studyvariables',
                             width : '100%',
                             flex : 1,
                             autoScroll : true,
                             remoteSort : false,
+
+                            viewConfig: {
+                                plugins: {
+                                    ptype: 'gridviewdragdrop',
+                                    dragGroup: 'firstGridDDGroup',
+                                    dropGroup: 'secondGridDDGroup'
+                                },
+                                copy: true,
+                            },
+                            
+                            
+                            
                             columns : [
                                     {
                                         xtype : 'gridcolumn',
@@ -107,6 +121,7 @@ Ext.define('databrowser.view.StudyView', {
                         },
                         {
                             xtype : 'tabpanel',
+                            itemId : 'vardet',
                             region : 'east',
                             collapsible : true,
                             split : true,
@@ -120,8 +135,8 @@ Ext.define('databrowser.view.StudyView', {
                                         autoScroll : true,
                                         //layout : 'fit',
                                         layout : {
-                                            type : 'vbox',
-                                            align : 'center'
+                                          type : 'vbox',
+                                            align : 'stretch'
                                         },
 //                                        items : [
 //	                                        {
@@ -133,14 +148,35 @@ Ext.define('databrowser.view.StudyView', {
                                     {
                                         xtype : 'panel',
                                         autoScroll : true,
+                                        itemId: 'varanalyze',
                                         title : 'Analyze',
                                         items : [
                                                 {
                                                     xtype : 'gridpanel',
                                                     id : 'analysisvar',
                                                     width : '100%',
+                                                    height: 100,
                                                     store : 'MemoryVariableStore',
                                                     flex : 1,
+                                                    
+                                                    
+                                                    
+                                                    
+                                                    viewConfig: {
+                                                        plugins: {
+                                                            ptype: 'gridviewdragdrop',
+//                                                            dragGroup: 'secondGridDDGroup',
+                                                            dropGroup: 'firstGridDDGroup'
+                                                        },
+//                                                        listeners: {
+//                                                            drop: function(node, data, dropRec, dropPosition) {
+//                                                                var dropOn = dropRec ? ' ' + dropPosition + ' ' + dropRec.get('name') : ' on empty view';
+//                                                                Ext.example.msg("Drag from left to right", 'Dropped ' + data.records[0].get('name') + dropOn);
+//                                                            }
+//                                                        }
+                                                    },                                                    
+                                                    
+                                                    
                                                     columns : [
                                                             {
                                                                 xtype : 'gridcolumn',

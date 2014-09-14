@@ -194,7 +194,7 @@ getStats <- function(mylist) {
                                 for (i in seq(length(valori))) {
                                     json <- paste(json, rs(16), "[\"", paste(valori[i], etichete[i], sep=". "), "\", \"", frecventa[i], "\"],\n", sep="")
                                 }
-                                json <- paste(json, rs(16), "[\"\", \"Total\", \"", sum(frecventa), "\"]\n",
+                                json <- paste(json, rs(16), "[\"Total\", \"", sum(frecventa), "\"]\n",
                             rs(12), "]\n",
                         rs(8), "},{\n",
                             rs(12), "\"itemtype\": \"chart\",\n",

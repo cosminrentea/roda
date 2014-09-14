@@ -1003,9 +1003,13 @@ public class AdminJson {
 			file = CmsFile.findCmsFile(fileId);
 		}
 
+		boolean persistable = false;
 		if (file == null) {
 			file = new CmsFile();
+			persistable = true;
 		}
+
+		String oldFilename = file.getFilename();
 
 		file.setLabel(alias);
 		file.setFilename(content.getOriginalFilename());
@@ -1024,7 +1028,6 @@ public class AdminJson {
 			return new AdminJson(false, "CMS File not created because this Folder ID is invalid: " + folderId);
 		}
 
-		file.setCmsFolderId(parentFolder);
 		if (parentFolder.getCmsFiles() != null && parentFolder.getCmsFiles().contains(file)) {
 			// do nothing
 		} else {
@@ -1038,11 +1041,13 @@ public class AdminJson {
 		}
 		file.setCmsFolderId(parentFolder);
 
-		try {
+		if (persistable) {
 			CmsFile.entityManager().persist(file);
-		} catch (EntityExistsException e) {
-			return new AdminJson(false, "CMS File not created because it already exists. Exception:" + e.getMessage());
+		} else {
+			CmsFile.entityManager().merge(file);
 		}
+		// return new AdminJson(false, "CMS File was not created. Exception: " +
+		// e.getMessage());
 
 		return new AdminJson(true, "CMS File created successfully", file.getId());
 	}

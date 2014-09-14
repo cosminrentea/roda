@@ -117,7 +117,27 @@ public class CmsFileStoreServiceImpl implements CmsFileStoreService {
 		return folderPath + cmsFile.getFilename();
 	}
 
+	private static String getRelPath(CmsFile cmsFile) {
+		String folderPath = getRelPath(cmsFile.getCmsFolderId());
+		if (folderPath != null && !folderPath.endsWith("/")) {
+			folderPath += "/";
+		}
+		return folderPath + cmsFile.getFilename();
+	}
+
 	private static String getFullPath(CmsFolder cmsFolder) {
+		if (cmsFolder == null) {
+			return null;
+		}
+		String fullPath = cmsFolder.getName();
+		while (cmsFolder.getParentId() != null) {
+			cmsFolder = cmsFolder.getParentId();
+			fullPath = cmsFolder.getName() + "/" + fullPath;
+		}
+		return "/" + fullPath;
+	}
+
+	private static String getRelPath(CmsFolder cmsFolder) {
 		if (cmsFolder == null) {
 			return null;
 		}
@@ -194,7 +214,7 @@ public class CmsFileStoreServiceImpl implements CmsFileStoreService {
 			session = repository.login(adminCred);
 			try {
 				Node root = session.getRootNode();
-				Node node = root.getNode(getFullPath(cmsFile));
+				Node node = root.getNode(getRelPath(cmsFile));
 
 				pi = node.getProperties();
 				while (pi.hasNext()) {
@@ -239,7 +259,7 @@ public class CmsFileStoreServiceImpl implements CmsFileStoreService {
 				File f = new File(fullPath);
 				multipartFile.transferTo(f);
 
-				String folderName = getFullPath(cmsFolder);
+				String folderName = getRelPath(cmsFolder);
 
 				Node root = session.getRootNode();
 				Node folderNode = null;
@@ -286,7 +306,9 @@ public class CmsFileStoreServiceImpl implements CmsFileStoreService {
 			session = repository.login(adminCred);
 			try {
 				Node root = session.getRootNode();
-				root.addNode(getFullPath(cmsFolder), "nt:folder");
+				String relPath = getRelPath(cmsFolder);
+				log.trace("relPath: " + relPath);
+				root.addNode(relPath, "nt:folder");
 				session.save();
 			} catch (Exception e) {
 				log.error(e);
@@ -300,7 +322,7 @@ public class CmsFileStoreServiceImpl implements CmsFileStoreService {
 		}
 	}
 
-	private InputStream fileLoad(String fileFullPath) {
+	private InputStream fileLoad(String fileRelPath) {
 		Session session;
 		InputStream is = null;
 		try {
@@ -308,7 +330,7 @@ public class CmsFileStoreServiceImpl implements CmsFileStoreService {
 			session = repository.login(adminCred);
 			try {
 				Node root = session.getRootNode();
-				Node node = root.getNode(fileFullPath);
+				Node node = root.getNode(fileRelPath);
 				is = node.getNode("jcr:content").getProperty("jcr:data").getValue().getBinary().getStream();
 				log.trace(node.getPath());
 			} finally {
@@ -324,7 +346,7 @@ public class CmsFileStoreServiceImpl implements CmsFileStoreService {
 
 	@Override
 	public InputStream fileLoad(CmsFile cmsFile) {
-		return fileLoad(getFullPath(cmsFile));
+		return fileLoad(getRelPath(cmsFile));
 	}
 
 	/**
@@ -338,7 +360,7 @@ public class CmsFileStoreServiceImpl implements CmsFileStoreService {
 			session = repository.login(adminCred);
 			try {
 				Node root = session.getRootNode();
-				for (NodeIterator ni = root.getNode(getFullPath(cmsFolder)).getNodes(); ni.hasNext();) {
+				for (NodeIterator ni = root.getNode(getRelPath(cmsFolder)).getNodes(); ni.hasNext();) {
 					ni.nextNode().remove();
 				}
 				// root.getNode(getFullPath(cmsFolder)).remove();

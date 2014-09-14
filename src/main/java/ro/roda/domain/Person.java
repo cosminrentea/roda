@@ -8,6 +8,7 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -244,7 +245,7 @@ public class Person {
 	@JoinColumn(name = "prefix_id", columnDefinition = "integer", referencedColumnName = "id")
 	private Prefix prefixId;
 
-	@OneToMany(mappedBy = "personId")
+	@OneToMany(mappedBy = "personId", fetch = FetchType.LAZY)
 	private Set<StudyPerson> studypeople;
 
 	@ManyToOne

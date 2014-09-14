@@ -8,6 +8,7 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
+import javax.persistence.FetchType;
 import javax.persistence.FlushModeType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -218,7 +219,7 @@ public class Keyword {
 	@Index(name = "KeywordNameIndex")
 	private String name;
 
-	@OneToMany(mappedBy = "keywordId")
+	@OneToMany(mappedBy = "keywordId", fetch = FetchType.LAZY)
 	private Set<StudyKeyword> studyKeywords;
 
 	@PersistenceContext

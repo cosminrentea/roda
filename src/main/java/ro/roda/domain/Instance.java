@@ -9,6 +9,7 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -224,7 +225,7 @@ public class Instance {
 	@ManyToMany(mappedBy = "instances")
 	private Set<File> files;
 
-	@OneToMany(mappedBy = "instanceId")
+	@OneToMany(mappedBy = "instanceId", fetch = FetchType.LAZY)
 	private Set<Question> questions;
 
 	@Id

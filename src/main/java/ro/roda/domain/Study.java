@@ -331,13 +331,13 @@ public class Study {
 	@OneToMany(mappedBy = "studyId")
 	private Set<StudyDescr> studyDescrs;
 
-	@OneToMany(mappedBy = "studyId")
+	@OneToMany(mappedBy = "studyId", fetch = FetchType.LAZY)
 	private Set<StudyKeyword> studyKeywords;
 
-	@OneToMany(mappedBy = "studyId")
+	@OneToMany(mappedBy = "studyId", fetch = FetchType.LAZY)
 	private Set<StudyOrg> studyOrgs;
 
-	@OneToMany(mappedBy = "studyId")
+	@OneToMany(mappedBy = "studyId", fetch = FetchType.LAZY)
 	private Set<StudyPerson> studypeople;
 
 	@ManyToOne

@@ -8,6 +8,7 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -261,7 +262,7 @@ public class Org {
 	@Column(name = "short_name", columnDefinition = "varchar", length = 100)
 	private String shortName;
 
-	@OneToMany(mappedBy = "orgId")
+	@OneToMany(mappedBy = "orgId", fetch = FetchType.LAZY)
 	private Set<StudyOrg> studyOrgs;
 
 	@PersistenceContext

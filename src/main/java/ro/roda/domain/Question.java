@@ -8,6 +8,7 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -224,7 +225,7 @@ public class Question {
 	@NotNull
 	private String name;
 
-	@OneToMany(mappedBy = "questionId")
+	@OneToMany(mappedBy = "questionId", fetch = FetchType.LAZY)
 	private Set<Variable> variables;
 
 	// TODO nullable = false

@@ -9,6 +9,8 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import javax.persistence.TypedQuery;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -134,7 +136,7 @@ public class StudyInfo extends JsonInfo {
 
 	private Boolean leaf = true;
 
-	private SortedSet<Variable> variables;
+	private List<Variable> variables;
 
 	private Set<File> files;
 
@@ -260,23 +262,29 @@ public class StudyInfo extends JsonInfo {
 			// Variables will be added to a sorted set
 			// (Variable implements Comparable,
 			// and the sorting key is only the ID).
-			SortedSet<Variable> vars = new TreeSet<Variable>();
+			// SortedSet<Variable> vars = new TreeSet<Variable>();
 
 			// add and sort by ID all the variables
 			// of the study's 'main' instance
 			if (study.getInstances() != null) {
 				for (Instance instance : study.getInstances()) {
 					if (instance.isMain() && instance.getQuestions() != null) {
-						for (Question q : instance.getQuestions()) {
-							vars.addAll(q.getVariables());
-						}
+						// for (Question q : instance.getQuestions()) {
+						// vars.addAll(q.getVariables());
+						// }
+
+						TypedQuery<Variable> query = Variable.entityManager().createQuery(
+								"SELECT v FROM Variable v WHERE v.questionId.instanceId = :instanceId", Variable.class);
+						query.setParameter("instanceId", instance);
+
+						this.setVariables(query.getResultList());
 					}
 				}
 			}
 
 			// log.trace("Number of Variables: " + vars.size());
 
-			this.setVariables(vars);
+			// this.setVariables(vars);
 		}
 
 		// set the persons and organizations
@@ -383,11 +391,11 @@ public class StudyInfo extends JsonInfo {
 		this.files = files;
 	}
 
-	public SortedSet<Variable> getVariables() {
+	public List<Variable> getVariables() {
 		return variables;
 	}
 
-	public void setVariables(SortedSet<Variable> variables) {
+	public void setVariables(List<Variable> variables) {
 		this.variables = variables;
 	}
 

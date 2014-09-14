@@ -292,7 +292,7 @@ public class Variable implements Comparable {
 	@JSON(name = "nrfreq")
 	private Long categoriesNumber;
 
-	@OneToOne(mappedBy = "variable")
+	@OneToOne(mappedBy = "variable", fetch = FetchType.LAZY, optional = false)
 	private SelectionVariable selectionVariable;
 
 	@OneToMany(mappedBy = "nextVariableId", fetch = FetchType.LAZY)

@@ -10,6 +10,7 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -257,7 +258,7 @@ public class Study {
 	@DateTimeFormat(style = "MM")
 	private Calendar added;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "added_by", columnDefinition = "integer", referencedColumnName = "id", nullable = false)
 	private Users addedBy;
 
@@ -268,13 +269,13 @@ public class Study {
 	@Column(name = "imported_filename", columnDefinition = "text")
 	private String importedFilename;
 
-	@OneToMany(mappedBy = "studyId")
+	@OneToMany(mappedBy = "studyId", fetch = FetchType.LAZY)
 	private Set<CatalogStudy> catalogStudies;
 
-	@ManyToMany(mappedBy = "studies")
+	@ManyToMany(mappedBy = "studies", fetch = FetchType.LAZY)
 	private Set<CollectionModelType> collectionModelTypes;
 
-	@ManyToMany(mappedBy = "studies")
+	@ManyToMany(mappedBy = "studies", fetch = FetchType.LAZY)
 	private Set<DataSourceType> dataSourceTypes;
 
 	@Column(name = "date_end", columnDefinition = "date")
@@ -297,7 +298,7 @@ public class Study {
 	@NotNull
 	private boolean digitizable;
 
-	@ManyToMany(mappedBy = "studies1")
+	@ManyToMany(mappedBy = "studies1", fetch = FetchType.LAZY)
 	private Set<File> files1;
 
 	@Id
@@ -310,7 +311,7 @@ public class Study {
 	@NotNull
 	private Integer insertionStatus;
 
-	@OneToMany(mappedBy = "studyId")
+	@OneToMany(mappedBy = "studyId", fetch = FetchType.LAZY)
 	private Set<Instance> instances;
 
 	@Column(name = "raw_data", columnDefinition = "bool")
@@ -321,10 +322,10 @@ public class Study {
 	@NotNull
 	private boolean rawMetadata;
 
-	@ManyToMany(mappedBy = "studies")
+	@ManyToMany(mappedBy = "studies", fetch = FetchType.LAZY)
 	private Set<SamplingProcedure> samplingProcedures;
 
-	@ManyToMany(mappedBy = "studies")
+	@ManyToMany(mappedBy = "studies", fetch = FetchType.LAZY)
 	private Set<Source> sources;
 
 	@OneToMany(mappedBy = "studyId")
@@ -343,7 +344,7 @@ public class Study {
 	@JoinColumn(name = "time_meth_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false)
 	private TimeMeth timeMethId;
 
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "study_topic", joinColumns = { @JoinColumn(name = "study_id", nullable = false) }, inverseJoinColumns = { @JoinColumn(name = "topic_id", nullable = false) })
 	private Set<Topic> topics;
 

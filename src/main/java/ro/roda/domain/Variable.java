@@ -8,6 +8,7 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -240,21 +241,21 @@ public class Variable implements Comparable {
 		return AuditReaderFactory.get(entityManager());
 	}
 
-	@ManyToMany(mappedBy = "variables")
+	@ManyToMany(mappedBy = "variables", fetch = FetchType.LAZY)
 	private Set<Concept> concepts;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "question_id", columnDefinition = "integer", referencedColumnName = "id")
 	private Question questionId;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "file_id", columnDefinition = "integer", referencedColumnName = "id")
 	private File fileId;
 
-	@OneToMany(mappedBy = "variableId")
+	@OneToMany(mappedBy = "variableId", fetch = FetchType.LAZY)
 	private Set<FormEditedNumberVar> formEditedNumberVars;
 
-	@OneToMany(mappedBy = "variableId")
+	@OneToMany(mappedBy = "variableId", fetch = FetchType.LAZY)
 	private Set<FormEditedTextVar> formEditedTextVars;
 
 	@Id
@@ -284,7 +285,7 @@ public class Variable implements Comparable {
 	@Column(name = "operator_instructions", columnDefinition = "text")
 	private String operatorInstructions;
 
-	@OneToMany(mappedBy = "variableId")
+	@OneToMany(mappedBy = "variableId", fetch = FetchType.LAZY)
 	private Set<OtherStatistic> otherStatistics;
 
 	@Transient
@@ -294,13 +295,13 @@ public class Variable implements Comparable {
 	@OneToOne(mappedBy = "variable")
 	private SelectionVariable selectionVariable;
 
-	@OneToMany(mappedBy = "nextVariableId")
+	@OneToMany(mappedBy = "nextVariableId", fetch = FetchType.LAZY)
 	private Set<Skip> skips;
 
-	@OneToMany(mappedBy = "variableId")
+	@OneToMany(mappedBy = "variableId", fetch = FetchType.LAZY)
 	private Set<Skip> skips1;
 
-	@ManyToMany(mappedBy = "variables")
+	@ManyToMany(mappedBy = "variables", fetch = FetchType.LAZY)
 	private Set<Vargroup> vargroups;
 
 	@Column(name = "variable_type", columnDefinition = "int2")

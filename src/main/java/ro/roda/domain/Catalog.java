@@ -9,6 +9,7 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -244,10 +245,10 @@ public class Catalog {
 	@DateTimeFormat(style = "MM")
 	private Calendar added;
 
-	@OneToMany(mappedBy = "parentId")
+	@OneToMany(mappedBy = "parentId", fetch = FetchType.LAZY)
 	private Set<Catalog> catalogs;
 
-	@OneToMany(mappedBy = "catalogId")
+	@OneToMany(mappedBy = "catalogId", fetch = FetchType.LAZY)
 	private Set<CatalogStudy> catalogStudies;
 
 	@Column(name = "description", columnDefinition = "text")
@@ -263,11 +264,11 @@ public class Catalog {
 	@NotNull
 	private String name;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "owner", columnDefinition = "integer", referencedColumnName = "id", nullable = false)
 	private Users owner;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "parent_id", columnDefinition = "integer", referencedColumnName = "id", nullable = true, insertable = false, updatable = false)
 	private Catalog parentId;
 

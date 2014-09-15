@@ -9,7 +9,7 @@ Ext.define('RODAdmin.view.studies.CBEditor.studyadd.sProposal', {
     items : [
 	    {
 	        xtype : 'form',
-	        itemId : 'elayoutform',
+	        itemId : 'sproposalform',
 			bodyPadding : 5,
 	        items : [
 	                 {
@@ -76,7 +76,7 @@ Ext.define('RODAdmin.view.studies.CBEditor.studyadd.sProposal', {
 														menuDisabled : true,
 														itemId : 'actionpinvresp',
 														items : [{
-															icon : 'resources/images/icons/fam/delete.gif',
+															icon : 'images/delete.gif',
 															tooltip : 'Delete Plant',
 															scope : this,
 															handler : function(view,	rowIndex,	colIndex,item, e,	record, row) {
@@ -136,7 +136,7 @@ Ext.define('RODAdmin.view.studies.CBEditor.studyadd.sProposal', {
 	                 		    	   xtype : 'textareafield',
 	                 		    	   fieldLabel : 'Study abstract',
 	                 		    	   itemId : 'stabstract',
-	                 		    	   name : 'atabstract',
+	                 		    	   name : 'stabstract',
 	                 		    	   height: 50,
 	                 		    	   anchor:'98%',	                 		    	   
 	                 		    	   value : ''

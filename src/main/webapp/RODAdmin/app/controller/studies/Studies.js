@@ -51,15 +51,6 @@ Ext.define('RODAdmin.controller.studies.Studies', {
 				 */	
 		        click : this.onTreeViewClick
 	        },
-	        "studiesmain toolbar button#add-study" : {
-	            /**
-				 * @listener studies-toolbar-button-tree-view-click triggered-by:
-				 *           {@link RODAdmin.view.studies.Studies Studies}
-				 *           toolbar button#tree-view
-				 *           {@link #onTreeViewClick}
-				 */	
-		        click : this.onAddStudyClick
-	        },
 
 	        "studyproperties toolbar#stproptoolbar button#editstudy" : {
 	            /**

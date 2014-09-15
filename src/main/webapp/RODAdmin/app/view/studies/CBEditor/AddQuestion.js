@@ -170,7 +170,7 @@ Ext.define('RODAdmin.view.studies.CBEditor.AddQuestion', {
 												menuDisabled : true,
 												itemId : 'actionqcoderesp',
 												items : [{
-													icon : '/roda/admin/images/delete.gif',
+													icon : 'images/delete.gif',
 													tooltip : 'Delete Plant',
 													scope : this,
 													handler : function(view,
@@ -277,7 +277,7 @@ Ext.define('RODAdmin.view.studies.CBEditor.AddQuestion', {
 									menuDisabled : true,
 									itemId : 'missingactions',
 									items : [{
-										icon : '/roda/admin/images/delete.gif',
+										icon : 'images/delete.gif',
 										tooltip : 'Delete Missing',
 										scope : this,
 										handler : function(view, rowIndex,

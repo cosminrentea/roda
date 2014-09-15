@@ -66,7 +66,7 @@ Ext.define('RODAdmin.view.studies.CBEditor.studyadd.sDataProd', {
 									menuDisabled : true,
 									itemId : 'actionqcoderesp',
 									items : [{
-										icon : 'resources/images/icons/fam/delete.gif',
+										icon : 'images/delete.gif',
 										tooltip : 'Delete Plant',
 										scope : this,
 										handler : function(view, rowIndex,
@@ -137,7 +137,7 @@ Ext.define('RODAdmin.view.studies.CBEditor.studyadd.sDataProd', {
 									menuDisabled : true,
 									itemId : 'actionvariabledisplay',
 									items : [{
-										icon : 'resources/images/icons/fam/cog_edit.png',
+										icon : 'images/cog_edit.png',
 										tooltip : 'Edit Variable',
 										scope : this,
 										handler : function(view, rowIndex,
@@ -149,7 +149,7 @@ Ext.define('RODAdmin.view.studies.CBEditor.studyadd.sDataProd', {
 													row);
 										}
 									}, {
-										icon : 'resources/images/icons/fam/delete.gif',
+										icon : 'images/delete.gif',
 										tooltip : 'Delete Variable',
 										scope : this,
 										handler : function(view, rowIndex,
@@ -204,7 +204,7 @@ Ext.define('RODAdmin.view.studies.CBEditor.studyadd.sDataProd', {
 									menuDisabled : true,
 									itemId : 'actionvariabledisplay',
 									items : [{
-										icon : 'resources/images/icons/fam/delete.gif',
+										icon : 'images/delete.gif',
 										tooltip : 'Delete file',
 										scope : this,
 										handler : function(view, rowIndex,

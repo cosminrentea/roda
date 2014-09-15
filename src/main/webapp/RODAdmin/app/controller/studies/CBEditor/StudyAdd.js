@@ -136,6 +136,10 @@ Ext.define('RODAdmin.controller.studies.CBEditor.StudyAdd', {
 			{
 				ref: 'mainlang',
 				selector: 'sproposal form#elayoutform fieldset#genprops combo#genlanguage'
+			},
+			{
+				ref: 'tempstudygrid',
+				selector: 'studyitemstempview grid#sticonview'
 			}
 			],
 
@@ -401,9 +405,12 @@ Ext.define('RODAdmin.controller.studies.CBEditor.StudyAdd', {
 			'addquestion checkbox[name=wvalues]' : {
 				change : this.enableWValues
 
-			}
+			},
+			 "studyadd cancelsave button#save" : {
+			        click : this.studySaveClick
 
-			});
+			}
+	    });
 	},
 
 	enableWValues : function (checkbox, newValue, oldValue, eOpts) {
@@ -1133,7 +1140,7 @@ Ext.define('RODAdmin.controller.studies.CBEditor.StudyAdd', {
 	
 	saveQuestion : function(button, e, options) {
 		// validari aici pentru partea generala
-
+			console.log('savequestion');
 			var questiontext = button.up('window').down('form').down('fieldset#questioninfo').down('textareafield[name=text]').getValue();
 			var questionlang = button.up('window').down('form').down('fieldset#questioninfo').down('combo[name=lang]')	.getValue();
 			var questionconcept = button.up('window').down('form').down('fieldset#questioninfo').down('treecombo[name=concept_id]').getValue();
@@ -1248,10 +1255,11 @@ Ext.define('RODAdmin.controller.studies.CBEditor.StudyAdd', {
 		} else {
 
 			// end validari
-
+			console.log('add mode');
 			var ourgrid = this.getQuestionsgrid();
 			var ourstore = ourgrid.getStore();
 			var nextId = this.getStoreNextId(ourstore);
+			console.log(nextId);
 			var question = new RODAdmin.model.studies.CBEditor.StudyQuestion({
 						id : nextId,
 						text : questiontext,
@@ -1279,7 +1287,9 @@ Ext.define('RODAdmin.controller.studies.CBEditor.StudyAdd', {
 					
 			var activertype = button.up('window').down('form')
 					.down('fieldset#qrinformation').getLayout().getActiveItem();
-			if (activertype.itemId == 'coderesp') {
+
+			
+			if (activertype.itemId == 'catresp') {
 
 				// sa vedem cum obtinem datele din store. Intai ne trebuie
 				// store-ul
@@ -1305,28 +1315,6 @@ Ext.define('RODAdmin.controller.studies.CBEditor.StudyAdd', {
 				ourstore.add(question);
 				ourstore.commitChanges();
 				button.up('window').close();
-			} else if (activertype.itemId == 'categoryresp') {
-				console.log('category active');
-				var catstore = button.up('window').down('form')
-						.down('fieldset#qrinformation').down('grid#qcatresp')
-						.getStore();
-				var responsecats = catstore.getRange();
-				console.log(responsecats);
-				Ext.each(responsecats, function(item) {
-					var response = new RODAdmin.model.studies.CBEditor.question.response.Category(
-							{
-								id : item.data.id,
-								label : item.data.label,
-								lang : item.data.lang
-							});
-					question.catresponses().add(response);
-					question.catresponses().commitChanges();
-				});
-				// var ourgrid = this.getQuestionsgrid();
-				// var ourstore = ourgrid.getStore();
-				ourstore.add(question);
-				ourstore.commitChanges();
-				button.up('window').close();
 			} else if (activertype.itemId == 'numericresp') {
 				console.log('numeric active');
 				// asta e cel mai usor
@@ -1347,7 +1335,12 @@ Ext.define('RODAdmin.controller.studies.CBEditor.StudyAdd', {
 				ourstore.add(question);
 				ourstore.commitChanges();
 				button.up('window').close();		
+			} else if (activertype.itemId == 'stringresp') {
+				ourstore.add(question);
+				ourstore.commitChanges();
+				button.up('window').close();		
 			}
+			
 				var tg = this.getTransfsgrid();
 				tg.expand();
 		}
@@ -1907,6 +1900,13 @@ Ext.define('RODAdmin.controller.studies.CBEditor.StudyAdd', {
 
 	},
 
+	studySaveClick  : function(button, e, options) {
+		this.refreshWindowStore();
+		 var win = button.up('studyadd');
+	     win.close();
+	},
+	
+	
 	refreshWindowStore : function() {
 		var allmydata = {};
 		allmydata.studyProposal = this.getSproposalData();
@@ -1944,6 +1944,7 @@ Ext.define('RODAdmin.controller.studies.CBEditor.StudyAdd', {
                         //	RODAdmin.util.Alert.msg('Success!', response.message);
                         	this.getStudyaddmain().setMode('edit');
                         	this.getStudyaddmain().setEditindex(resp.id);
+                        	this.getTempstudygrid().store.load();
         					console.log (resp.id);					
 
 					} else {
@@ -1982,7 +1983,9 @@ Ext.define('RODAdmin.controller.studies.CBEditor.StudyAdd', {
 			    jsonData: allmydata,
 			    scope:this,
 			    success : function(response, opts) {
+                	this.getTempstudygrid().store.load();
 			    	console.log('success');
+
 			    },                                
 			    failure: function(){console.log('failure');}
 			});
@@ -2006,7 +2009,7 @@ Ext.define('RODAdmin.controller.studies.CBEditor.StudyAdd', {
 		}
 		
 		var ourstore = this.getSproposal().down('fieldset#prinvfs').down('grid#prinvdisplay').getStore();
-		sproposaldata.principalinvestigaror = Ext.Array.pluck(ourstore.data.items, 'data');
+		sproposaldata.principalinvestigator = Ext.Array.pluck(ourstore.data.items, 'data');
 		sproposaldata.genlanguage = this.getSproposal().down('combo#genlanguage').getValue();
 		
 		sproposaldata.studytitle = this.getSproposal().down('textareafield#studytitle').getValue();
@@ -2084,7 +2087,7 @@ Ext.define('RODAdmin.controller.studies.CBEditor.StudyAdd', {
 		}
 		
 		var qdesignstore = this.getSquestions().down('fieldset#qdesign').down('grid#qdesigndisplay').getStore();
-		squestiondata.endqdesign = Ext.Array.pluck(qdesignstore.data.items,'data');
+		squestiondata.qdesignresp = Ext.Array.pluck(qdesignstore.data.items,'data');
 		var questionsstore = this.getSquestions().down('fieldset#questions').down('grid#questionsdisplay').getStore();
 		squestiondata.questions = [];
 		questionsstore.each(function(record) {

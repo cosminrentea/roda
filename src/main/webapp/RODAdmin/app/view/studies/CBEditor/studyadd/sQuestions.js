@@ -72,7 +72,7 @@ Ext.define('RODAdmin.view.studies.CBEditor.studyadd.sQuestions', {
 														menuDisabled : true,
 														itemId : 'actionqcoderesp',
 														items : [{
-															icon : 'resources/images/icons/fam/delete.gif',
+															icon : 'images/delete.gif',
 															tooltip : 'Delete Plant',
 															scope : this,
 															handler : function(view,	rowIndex,	colIndex,item, e,	record, row) {
@@ -146,7 +146,7 @@ Ext.define('RODAdmin.view.studies.CBEditor.studyadd.sQuestions', {
 									menuDisabled : true,
 									itemId : 'actionquestionsdisplay',
 									items : [{
-										icon : 'resources/images/icons/fam/cog_edit.png',
+										icon : 'images/cog_edit.png',
 										tooltip : 'Edit Question',
 										scope : this,
 										handler : function(view, rowIndex,
@@ -158,7 +158,7 @@ Ext.define('RODAdmin.view.studies.CBEditor.studyadd.sQuestions', {
 													row);
 										}
 									}, {
-										icon : 'resources/images/icons/fam/delete.gif',
+										icon : 'images/delete.gif',
 										tooltip : 'Delete Question',
 										scope : this,
 										handler : function(view, rowIndex,
@@ -234,7 +234,7 @@ Ext.define('RODAdmin.view.studies.CBEditor.studyadd.sQuestions', {
 														menuDisabled : true,
 														itemId : 'actionqcoderesp',
 														items : [{
-															icon : 'resources/images/icons/fam/delete.gif',
+															icon : 'images/delete.gif',
 															tooltip : 'Delete Plant',
 															scope : this,
 															handler : function(view,	rowIndex,	colIndex,item, e,	record, row) {
@@ -312,7 +312,7 @@ Ext.define('RODAdmin.view.studies.CBEditor.studyadd.sQuestions', {
 									menuDisabled : true,
 									itemId : 'actionquestionsdisplay',
 									items : [{
-										icon : 'resources/images/icons/fam/cog_edit.png',
+										icon : 'images/cog_edit.png',
 										tooltip : 'Edit Question',
 										scope : this,
 										handler : function(view, rowIndex,
@@ -324,7 +324,7 @@ Ext.define('RODAdmin.view.studies.CBEditor.studyadd.sQuestions', {
 													row);
 										}
 									}, {
-										icon : 'resources/images/icons/fam/delete.gif',
+										icon : 'images/delete.gif',
 										tooltip : 'Delete Question',
 										scope : this,
 										handler : function(view, rowIndex,

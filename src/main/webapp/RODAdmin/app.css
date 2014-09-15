@@ -565,3 +565,25 @@
 }
 
 .boldFont .x-grid-cell { font-weight:bold; !important; }
+
+.stpreviewcontainer {
+	border-collapse: collapse;  width: 90%; margin: 3rem auto 1rem; text-align: center;
+	
+}
+
+.stpreviewcontainer tr {
+	background-color: #c8e262;padding-bottom:3px; padding-top: 3px;
+}
+
+
+
+.stpreviewcontainer tr, .stpreviewcontainer td { transition: .4s ease-in; } 
+
+
+.stpreviewcontainer th { background-color: #bed4ef;padding-bottom:3px; padding-top: 3px;}
+
+.stpreviewcontainer tr:nth-child(even) { background-color: #dfe8f6; }
+
+.stpreviewcontainer td:empty {background-color: #a6c040; }
+
+

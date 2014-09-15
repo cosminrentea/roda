@@ -42,11 +42,6 @@ Ext.define('RODAdmin.view.studies.Studies', {
 	                                itemId : 'icon-view',
 	                                iconCls : 'file-icon-view',
 	                                text : 'icon'
-	                            }, {
-	                            	xtype : 'button',
-	                                itemId : 'add-study',
-	                                iconCls : 'file-icon-view',
-	                                text : 'Add Study'
 	                            }
 	                    ]
 	                }

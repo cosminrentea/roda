@@ -73,7 +73,7 @@ Ext.define('RODAdmin.view.studies.CBEditor.studyadd.sDataCollection', {
 														menuDisabled : true,
 														itemId : 'actionqcoderesp',
 														items : [{
-															icon : 'resources/images/icons/fam/delete.gif',
+															icon : 'images/delete.gif',
 															tooltip : 'Delete Plant',
 															scope : this,
 															handler : function(view,	rowIndex,	colIndex,item, e,	record, row) {
@@ -171,7 +171,7 @@ Ext.define('RODAdmin.view.studies.CBEditor.studyadd.sDataCollection', {
 														menuDisabled : true,
 														itemId : 'actionqcoderesp',
 														items : [{
-															icon : 'resources/images/icons/fam/delete.gif',
+															icon : 'images/delete.gif',
 															tooltip : 'Delete Plant',
 															scope : this,
 															handler : function(view,	rowIndex,	colIndex,item, e,	record, row) {

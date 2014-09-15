@@ -85,8 +85,6 @@ public class StudyInfo extends JsonInfo {
 		serializer.transform(new FieldNameTransformer("research_instrument"), "researchInstrument");
 		serializer.transform(new FieldNameTransformer("geo_unit"), "geographicUnit");
 		serializer.transform(new FieldNameTransformer("indice"), "variables.id");
-		serializer.transform(new FieldNameTransformer("qstn_id"), "variables.questionIdid");
-		serializer.transform(new FieldNameTransformer("qstn_statement"), "variables.questionIdstatement");
 
 		return "{\"data\":" + serializer.serialize(collection) + "}";
 	}
@@ -465,15 +463,13 @@ public class StudyInfo extends JsonInfo {
 		serializer.exclude("*");
 		serializer.exclude("*.*");
 
-		serializer.transform(new FlatQuestionMinInfoTransformer("questionId"), "variables.questionId");
+		serializer.transform(new FlatQuestionMinInfoTransformer(""), "variables.questionId");
 
 		serializer.transform(new FieldNameTransformer("geo_coverage"), "geographicCoverage");
 		serializer.transform(new FieldNameTransformer("unit_analysis"), "unitAnalysis");
 		serializer.transform(new FieldNameTransformer("research_instrument"), "researchInstrument");
 		serializer.transform(new FieldNameTransformer("geo_unit"), "geographicUnit");
 		serializer.transform(new FieldNameTransformer("indice"), "variables.id");
-		serializer.transform(new FieldNameTransformer("qstn_id"), "variables.questionIdid");
-		serializer.transform(new FieldNameTransformer("qstn_statement"), "variables.questionIdstatement");
 
 		return new StringBuilder("{\"data\":").append(serializer.serialize(this)).append("}").toString();
 	}

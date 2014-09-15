@@ -18,9 +18,10 @@ public class FlatQuestionMinInfoTransformer extends AbstractTransformer {
 		boolean setContext = false;
 
 		TypeContext typeContext = getContext().peekTypeContext();
-		String propertyName = typeContext != null ? typeContext.getPropertyName() : "";
-		if (prefix.trim().equals(""))
-			prefix = propertyName;
+		// String propertyName = typeContext != null ?
+		// typeContext.getPropertyName() : "";
+		// if (prefix.trim().equals(""))
+		// prefix = propertyName;
 
 		if (typeContext == null || typeContext.getBasicType() != BasicType.OBJECT) {
 			typeContext = getContext().writeOpenObject();
@@ -34,11 +35,11 @@ public class FlatQuestionMinInfoTransformer extends AbstractTransformer {
 		// typeContext.setFirst(false);
 		typeContext.increment();
 
-		getContext().writeName(fieldName("id"));
+		getContext().writeName(fieldName("qstn_id"));
 		getContext().write(question.getId().toString());
 
 		getContext().writeComma();
-		getContext().writeName(fieldName("statement"));
+		getContext().writeName(fieldName("qstn_stmt"));
 		getContext().writeQuoted(question.getStatement());
 
 		if (setContext) {

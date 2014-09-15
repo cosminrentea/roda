@@ -20,11 +20,12 @@ public class AuditRevisionsInfo extends AuditRevisions {
 	public static String toJsonArr(Collection<AuditRevisionsInfo> collection) {
 		JSONSerializer serializer = new JSONSerializer();
 
-		serializer.exclude("*.class", "type", "id", "name");
-		serializer.include("revision", "timestamp", "username", "userid", "nrobjects", "objects");
+		serializer.exclude("*.class", "type", "id", "name", "objects", "objects.*");
+		serializer.include("revision", "timestamp", "username", "userid", "nrobjects");
 
 		// serializer.exclude("objects.id", "objects.type");
-		serializer.include("objects.objname", "objects.nrrows", "objects.rows", "objects.rows.auditfields");
+		// serializer.include("objects.objname", "objects.nrrows",
+		// "objects.rows", "objects.rows.auditfields");
 
 		// serializer.transform(new FieldNameTransformer("indice"), "id");
 		// serializer.transform(new FieldNameTransformer("objname"),
@@ -134,12 +135,13 @@ public class AuditRevisionsInfo extends AuditRevisions {
 	public String toJson() {
 		JSONSerializer serializer = new JSONSerializer();
 
-		serializer.exclude("*.class", "type", "id", "name");
-		serializer.include("revision", "timestamp", "username", "userid", "nrobjects", "objects");
+		serializer.exclude("*.class", "type", "id", "name", "objects", "objects.*");
+		serializer.include("revision", "timestamp", "username", "userid", "nrobjects");
 
 		// serializer.exclude("objects.id", "objects.type");
 		// serializer.include("objects.objname");
-		serializer.include("objects.objname", "objects.nrrows", "objects.rows", "objects.rows.auditfields");
+		// serializer.include("objects.objname", "objects.nrrows",
+		// "objects.rows", "objects.rows.auditfields");
 
 		// serializer.transform(new FieldNameTransformer("indice"), "id");
 		// serializer.transform(new FieldNameTransformer("objname"),

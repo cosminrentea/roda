@@ -30,7 +30,7 @@ Ext.onReady(function(){
             		Ext.ComponentManager.get('lwin').setVisible(false);
                     login.getForm().submit({ 
                         method:'POST', 
-                        
+                        timeout:200000,
                         waitTitle:'Connecting', 
                         waitMsg:'Sending data...',
  

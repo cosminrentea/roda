@@ -135,7 +135,7 @@ Ext.define('RODAdmin.controller.studies.CBEditor.StudyAdd', {
 			},	
 			{
 				ref: 'mainlang',
-				selector: 'sproposal form#elayoutform fieldset#genprops combo#genlanguage'
+				selector: 'sproposal form#sproposalform fieldset#genprops combo#genlanguage'
 			},
 			{
 				ref: 'tempstudygrid',

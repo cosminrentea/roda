@@ -87,7 +87,11 @@ Ext.application({
         var me = this;
         // init Ext.util.History on app launch; if there is a hash in the url,
         // our controller will load the appropriate content
-
+        Ext.Ajax.timeout = 300000; 
+	    Ext.override(Ext.form.Basic, {     timeout: Ext.Ajax.timeout / 1000 });
+	    Ext.override(Ext.data.proxy.Server, {     timeout: Ext.Ajax.timeout });
+	    Ext.override(Ext.data.Connection, {     timeout: Ext.Ajax.timeout });
+        
         Ext.create('RODAdmin.view.MainViewport');
         RODAdmin.util.SessionMonitor.start();
         

@@ -6,7 +6,6 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import java.util.TreeSet;
 
 import org.springframework.beans.factory.annotation.Configurable;
 
@@ -77,31 +76,11 @@ public class AuditRevisionsInfo extends AuditRevisions {
 
 	public AuditRevisionsInfo(RodaRevisionEntity revision) {
 
-		Set<AuditObject> objects = new TreeSet<AuditObject>();
+		int nrObj = revision.getModifiedEntityNames().size();
 
-		String[] auditedClasses = findAuditedClasses("ro.roda.domain");
-
-		for (int i = 0; i < auditedClasses.length; i++) {
-			String auditedClassName = auditedClasses[i];
-
-			try {
-				Class<?> auditedClass = Class.forName(auditedClassName);
-
-				Set<AuditRow> rows = findModifiedEntities(auditedClass, revision);
-
-				if (rows.size() > 0) {
-					objects.add(new AuditObject(auditedClassName, rows.size(), rows));
-				}
-			} catch (Exception e) {
-				// TODO
-				System.out.println("Exception thrown when getting revision info. " + e.getMessage());
-				// e.printStackTrace();
-			}
-
-		}
-
+		// TODO never interested in objects? delete the last parameter
 		onConstructRevisions(revision.getId(), revision.getRevisionDate(), revision.getUsername(),
-				revision.getUserid(), objects.size(), objects);
+				revision.getUserid(), nrObj, null);
 	}
 
 	private void onConstructRevisions(Integer revision, Date timestamp, String username, Integer userid, Integer nrobj,

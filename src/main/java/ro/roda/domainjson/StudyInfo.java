@@ -211,8 +211,6 @@ public class StudyInfo extends JsonInfo {
 			boolean hasKeywords) {
 		this(study);
 
-		log.trace("STUDYINFO: Created basic StudyInfo (no Variables, etc.)");
-
 		// set the files
 		if (hasFiles) {
 			this.setFiles(study.getFiles1());
@@ -414,7 +412,6 @@ public class StudyInfo extends JsonInfo {
 
 	public String toJson() {
 
-		log.trace("STUDYINFO: Starting serialization as JSON");
 		JSONSerializer serializer = new JSONSerializer();
 
 		// serializer.exclude("*.class");

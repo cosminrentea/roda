@@ -4,9 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.rosuda.JRI.REXP;
@@ -168,7 +165,7 @@ public class StatisticsServiceImpl implements StatisticsService, SmartLifecycle 
 
 	@Override
 	public void stop() {
-		log.trace("Lifecycle: stop()");
+		log.trace("stop()");
 		if (re != null) {
 			re.end();
 			re = null;
@@ -182,7 +179,7 @@ public class StatisticsServiceImpl implements StatisticsService, SmartLifecycle 
 
 	@Override
 	public int getPhase() {
-		return Integer.MAX_VALUE;
+		return Integer.MIN_VALUE;
 	}
 
 	@Override
@@ -192,7 +189,7 @@ public class StatisticsServiceImpl implements StatisticsService, SmartLifecycle 
 
 	@Override
 	public void stop(Runnable callback) {
-		log.trace("Lifecycle: stop(callback)");
+		log.trace("stop(callback)");
 
 		stop();
 

@@ -38,8 +38,6 @@ public class StudyInfoController {
 	@ResponseBody
 	public ResponseEntity<String> showJson(@PathVariable("id") Integer id) {
 
-		log.trace("STUDYINFO: Creating StudyInfo object");
-
 		StudyInfo studyInfo = studyInfoService.findStudyInfo(id);
 
 		HttpHeaders headers = new HttpHeaders();
@@ -48,8 +46,6 @@ public class StudyInfoController {
 			return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
 		}
 		String studyInfoJson = studyInfo.toJson();
-
-		log.trace("STUDYINFO: Serialized as JSON");
 
 		return new ResponseEntity<String>(studyInfoJson, headers, HttpStatus.OK);
 	}

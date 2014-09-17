@@ -166,16 +166,20 @@ Se instaleaza rJava in R, cu urmatoarele comenzi in shell si apoi in shell-ul R
 (se alege in timpul instalarii site-mirror-ul folosit;
 se iese la final din shell-ul R cu Ctrl+D):
 \begin{lstlisting}
+
+	# exportare variabile mediu (folosite mai jos)
 	sudo R CMD javareconf -e
 	
-	# LD_LIBRARY_PATH has to be set to the same value 
-	# as JAVA_LD_LIBRARY_PATH 
-	export LD_LIBRARY_PATH= ...
+	# in LD_LIBRARY_PATH se apendeaza 
+	# valoarea din JAVA_LD_LIBRARY_PATH 
+	export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${JAVA_LD_LIBRARY_PATH}"
 
+	# comenzi de instalare pachet, in R
 	R <ENTER>
-	->	install.packages('rJava')
-	SAU in MacOSX	
-	->	install.packages("rJava", type="mac.binary")
+		# in Linux
+		install.packages('rJava')
+		# in MacOSX	
+		install.packages("rJava", type="mac.binary")
 \end{lstlisting}
 
 Ulterior, In STS trebuie setate variabilele:

@@ -7,8 +7,6 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import javax.jcr.LoginException;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
@@ -31,9 +29,9 @@ import org.apache.solr.client.solrj.request.AbstractUpdateRequest.ACTION;
 import org.apache.solr.client.solrj.request.ContentStreamUpdateRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.SmartLifecycle;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,7 +42,7 @@ import ro.roda.domain.CmsFolder;
 
 @Service
 @Transactional
-public class CmsFileStoreServiceImpl implements CmsFileStoreService {
+public class CmsFileStoreServiceImpl implements CmsFileStoreService, SmartLifecycle {
 
 	private final Log log = LogFactory.getLog(this.getClass());
 
@@ -59,55 +57,13 @@ public class CmsFileStoreServiceImpl implements CmsFileStoreService {
 
 	private final static String jackrabbitUser = "admin";
 
-	private JackrabbitRepository repository;
+	private JackrabbitRepository repository = null;
 
 	@Autowired
 	Environment env;
 
 	@Autowired(required = false)
 	SolrServer solrServer;
-
-	@SuppressWarnings("unused")
-	@PostConstruct
-	private void onStart() {
-
-		try {
-			log.debug("Jackrabbit initializing");
-
-			// @Value fields are correctly initialized
-			// before this @PostConstruct method
-			log.trace(jackrabbitConfigFile);
-			log.trace(jackrabbitHome);
-
-			// create Repository using RespositoryConfig
-			// config file is searched for in Classpath
-			// (to allow relative paths in the property value)
-			RepositoryConfig repositoryConfig = RepositoryConfig.create(new ClassPathResource(jackrabbitConfigFile)
-					.getFile().getCanonicalPath(), jackrabbitHome);
-			repository = RepositoryImpl.create(repositoryConfig);
-
-			// remove everything from the repository only when profile is
-			// devel OR productioninit (initial import for production)
-			if (env.acceptsProfiles("devel", "productioninit")) {
-				log.debug("Deleting everything in the repository");
-				deleteAll();
-			}
-			log.debug("Jackrabbit initialized");
-		} catch (Exception e) {
-			log.error("Failed to initialize Jackrabbit", e);
-		}
-	}
-
-	/**
-	 * This method ensures clean shutdown of Jackrabbit on undeploy/shutdown
-	 */
-	@SuppressWarnings("unused")
-	@PreDestroy
-	private void shutdownJcr() {
-		log.debug("Jackrabbit shutdown started");
-		repository.shutdown();
-		log.debug("Jackrabbit shutdown completed");
-	}
 
 	private static String getFullPath(CmsFile cmsFile) {
 		String folderPath = getFullPath(cmsFile.getCmsFolderId());
@@ -255,6 +211,7 @@ public class CmsFileStoreServiceImpl implements CmsFileStoreService {
 			try {
 				log.trace("> fileSave > move the file to the Repository");
 
+				// save in a temporary directory
 				String fullPath = filestoreDir + "/" + multipartFile.getOriginalFilename();
 				File f = new File(fullPath);
 				multipartFile.transferTo(f);
@@ -412,12 +369,77 @@ public class CmsFileStoreServiceImpl implements CmsFileStoreService {
 
 	@Override
 	public void fileMove(CmsFolder cmsFolder, CmsFile cmsFile) {
-		// TODO Cosmin Auto-generated method stub
+		// TODO Cosmin
+		// Auto-generated method stub
 	}
 
 	@Override
 	public void folderMove(CmsFolder cmsFolderParent, CmsFolder cmsFolder) {
-		// TODO Cosmin Auto-generated method stub
+		// TODO Cosmin
+		// Auto-generated method stub
 	}
 
+	@Override
+	public void start() {
+		try {
+			log.trace("start()");
+			log.trace("config file: " + jackrabbitConfigFile);
+			log.trace("home directory: " + jackrabbitHome);
+
+			// create Repository using RespositoryConfig
+			// config file is searched for in Classpath
+			// (to allow relative paths in the property value)
+			RepositoryConfig repositoryConfig = RepositoryConfig.create(new ClassPathResource(jackrabbitConfigFile)
+					.getFile().getCanonicalPath(), jackrabbitHome);
+			repository = RepositoryImpl.create(repositoryConfig);
+
+			// remove everything from the repository only when profile is
+			// devel OR productioninit (initial import for production)
+			if (env.acceptsProfiles("devel", "productioninit")) {
+				log.trace("Deleting everything in the repository");
+				deleteAll();
+			}
+			log.trace("Jackrabbit repository initialized");
+		} catch (Exception e) {
+			log.fatal("Jackrabbit repository initialization exception: ", e);
+			repository = null;
+		}
+	}
+
+	@Override
+	public void stop() {
+		log.trace("stop()");
+		if (repository != null) {
+			log.trace("Jackrabbit repository - shutdown started");
+			repository.shutdown();
+			log.trace("Jackrabbit repository - shutdown completed");
+			repository = null;
+		}
+	}
+
+	@Override
+	public boolean isRunning() {
+		return (repository != null);
+	}
+
+	@Override
+	public int getPhase() {
+		return Integer.MIN_VALUE + 1;
+	}
+
+	@Override
+	public boolean isAutoStartup() {
+		return true;
+	}
+
+	@Override
+	public void stop(Runnable callback) {
+		log.trace("stop(callback)");
+
+		stop();
+
+		// Our Stop/Shutdown is complete.
+		// Regular shutdown will continue.
+		callback.run();
+	}
 }

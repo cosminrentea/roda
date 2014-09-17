@@ -3,12 +3,12 @@ Ext.define('RODAdmin.store.studies.CBEditor.Person', {
  	fields: ['id', 'name'],
 	 data: [{
      	   "id": 1,
-            "name": "Ion Iliescu"
+            "name": "Ion Popescu"
     }, {
         "id": 2,
         "name": "Vasile Ionel"
     }, {
         "id": 3,
-        "name": "Popescu Gopo"
+        "name": "Cornel Dinulescu"
     } ]
 });

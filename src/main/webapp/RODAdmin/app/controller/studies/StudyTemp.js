@@ -151,6 +151,7 @@ Ext.define('RODAdmin.controller.studies.StudyTemp', {
 		    			fagstore.removeAll();
 		    			this.loadPOrg(fagstore,resp.studyFunding.fundingAgency);
 		    			//concepts
+
 		    			if (resp.studyConcepts.startqdesign) {
                     		win.down('form#conceptsform datefield#stconcepts').setValue(new Date(resp.studyConcepts.startqdesign));
                     	}
@@ -161,6 +162,11 @@ Ext.define('RODAdmin.controller.studies.StudyTemp', {
 		    			concstore.removeAll();
 		    			this.loadPOrg(concstore,resp.studyConcepts.cdesignresp);
 
+//		    			var conceptstore = win.down('sconcepts treepanel#conceptsdisplay').store;
+//		    			conceptstore.removeAll();
+		    	//		var rootNode = conceptstore.setRootNode(resp.studyConcepts.concepts);
+		    			
+		    			
 		    			
 		    			//questions
 		    			if (resp.studyQuestions.startqdesign) {
@@ -187,10 +193,6 @@ Ext.define('RODAdmin.controller.studies.StudyTemp', {
                     	if (resp.studyQuestions.endqtranslation) {
                     		win.down('form#questionsform datefield#qtranslationend').setValue(new Date(resp.studyQuestions.endqtranslation));
                     	}
-
-                    	
-                    	
-		    			
 		    			//Data Collection
 		    			
 		    			//Data Production

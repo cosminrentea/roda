@@ -3,12 +3,12 @@ Ext.define('RODAdmin.store.studies.CBEditor.Org', {
  	fields: ['id', 'name'],
 	 data: [{
      	   "id": 1,
-            "name": "IBM"
+            "name": "Universitatea din Bucuresti"
     }, {
         "id": 2,
-        "name": "Microsoft"
+        "name": "Academia Romana"
     }, {
         "id": 3,
-        "name": "HP"
+        "name": "Institutul national de statistica"
     } ]
 });

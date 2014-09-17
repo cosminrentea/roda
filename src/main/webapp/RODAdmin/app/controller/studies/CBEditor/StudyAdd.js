@@ -2066,6 +2066,7 @@ Ext.define('RODAdmin.controller.studies.CBEditor.StudyAdd', {
 		sconceptdata.cdesignresp = Ext.Array.pluck(conceptdesignstore.data.items,'data');
 		var conceptsstore = this.getSconcepts().down('fieldset#concepts').down('treepanel#conceptsdisplay').getStore();
 		sconceptdata.concepts = this.recursiveConcepts(conceptsstore);
+		console.log(conceptsstore.getRootNode());
 		return sconceptdata; 
 	},	
 	

@@ -8,7 +8,8 @@ Ext.define('RODAdmin.store.dashboard.Browser', {
     model: 'RODAdmin.model.dashboard.Browser',
    
     autoLoad: true,
-    proxy: {type: 'main', url: 'http://roda.apiary.io/dashboard/browser'},
+    proxy: {type: 'main', url: 'dashboard/browser'},
+//    proxy: {type: 'main', url: 'http://roda.apiary.io/dashboard/browser'},
     //proxy: {type: 'main', url: 'cmspageinfo/'},
 
 });

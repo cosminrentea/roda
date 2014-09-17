@@ -11,5 +11,6 @@ Ext.define('RODAdmin.store.dashboard.TempStudies', {
     model: 'RODAdmin.model.dashboard.TempStudies',
 
     autoLoad: true,
-    proxy: {type: 'main', url: 'http://roda.apiary.io/dashboard/tempstudies'},    
+    proxy: {type: 'main', url: 'dashboard/tempstudies'},    
+//    proxy: {type: 'main', url: 'http://roda.apiary.io/dashboard/tempstudies'},    
 });

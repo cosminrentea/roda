@@ -152,10 +152,10 @@ Ext.define('RODAdmin.controller.studies.StudyTemp', {
 		    			this.loadPOrg(fagstore,resp.studyFunding.fundingAgency);
 		    			//concepts
 		    			if (resp.studyConcepts.startqdesign) {
-                    		win.down('form#sconcepts datefield#stconcepts').setValue(new Date(resp.studyConcepts.startqdesign));
+                    		win.down('form#conceptsform datefield#stconcepts').setValue(new Date(resp.studyConcepts.startqdesign));
                     	}
                     	if (resp.studyConcepts.endqdesign) {
-                    		win.down('form#sconcepts datefield#endconcepts').setValue(new Date(resp.studyConcepts.endqdesign));
+                    		win.down('form#conceptsform datefield#endconcepts').setValue(new Date(resp.studyConcepts.endqdesign));
                     	}
 		    			var concstore = win.down('sconcepts grid#cnrespdisplay').store;
 		    			concstore.removeAll();

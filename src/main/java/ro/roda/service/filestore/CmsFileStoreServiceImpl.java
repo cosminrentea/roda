@@ -46,9 +46,6 @@ public class CmsFileStoreServiceImpl implements CmsFileStoreService, SmartLifecy
 
 	private final Log log = LogFactory.getLog(this.getClass());
 
-	@Value("${filestore.dir}")
-	private String filestoreDir = null;
-
 	@Value("${jackrabbit.config}")
 	private String jackrabbitConfigFile = null;
 
@@ -65,23 +62,23 @@ public class CmsFileStoreServiceImpl implements CmsFileStoreService, SmartLifecy
 	@Autowired(required = false)
 	SolrServer solrServer;
 
-	private static String getFullPath(CmsFile cmsFile) {
-		String folderPath = getFullPath(cmsFile.getCmsFolderId());
+	private static String getAbsPath(CmsFile cmsFile) {
+		String folderPath = getAbsPath(cmsFile.getCmsFolderId());
 		if (folderPath != null && !folderPath.endsWith("/")) {
 			folderPath += "/";
 		}
 		return folderPath + cmsFile.getFilename();
 	}
 
-	private static String getRelPath(CmsFile cmsFile) {
-		String folderPath = getRelPath(cmsFile.getCmsFolderId());
-		if (folderPath != null && !folderPath.endsWith("/")) {
-			folderPath += "/";
-		}
-		return folderPath + cmsFile.getFilename();
-	}
+	// private static String getRelPath(CmsFile cmsFile) {
+	// String folderPath = getRelPath(cmsFile.getCmsFolderId());
+	// if (folderPath != null && !folderPath.endsWith("/")) {
+	// folderPath += "/";
+	// }
+	// return folderPath + cmsFile.getFilename();
+	// }
 
-	private static String getFullPath(CmsFolder cmsFolder) {
+	private static String getAbsPath(CmsFolder cmsFolder) {
 		if (cmsFolder == null) {
 			return null;
 		}
@@ -160,6 +157,7 @@ public class CmsFileStoreServiceImpl implements CmsFileStoreService, SmartLifecy
 		}
 	}
 
+	@Override
 	public Map<String, String> getFileProperties(CmsFile cmsFile) {
 		Map<String, String> result = new HashMap<String, String>();
 		Session session;
@@ -169,8 +167,7 @@ public class CmsFileStoreServiceImpl implements CmsFileStoreService, SmartLifecy
 			SimpleCredentials adminCred = new SimpleCredentials(jackrabbitUser, new char[0]);
 			session = repository.login(adminCred);
 			try {
-				Node root = session.getRootNode();
-				Node node = root.getNode(getRelPath(cmsFile));
+				Node node = session.getNode(getAbsPath(cmsFile));
 
 				pi = node.getProperties();
 				while (pi.hasNext()) {
@@ -198,64 +195,44 @@ public class CmsFileStoreServiceImpl implements CmsFileStoreService, SmartLifecy
 		return result;
 	}
 
+	@Override
 	public void fileSave(MultipartFile multipartFile, CmsFolder cmsFolder) {
 		if (multipartFile == null || cmsFolder == null) {
 			return;
 		}
-		Session session = null;
-		log.trace("File name = " + multipartFile.getOriginalFilename());
-		log.trace("File mime-type = " + multipartFile.getContentType());
+		log.trace("fileSave(): name = " + multipartFile.getOriginalFilename());
+		log.trace("fileSave(): mime-type = " + multipartFile.getContentType());
 		try {
 			SimpleCredentials adminCred = new SimpleCredentials(jackrabbitUser, new char[0]);
-			session = repository.login(adminCred);
+			Session session = repository.login(adminCred);
 			try {
-				log.trace("> fileSave > move the file to the Repository");
+				Node folderNode = session.getNode(getAbsPath(cmsFolder));
 
-				// save in a temporary directory
-				String fullPath = filestoreDir + "/" + multipartFile.getOriginalFilename();
-				File f = new File(fullPath);
+				// save as a temporary file
+				File f = File.createTempFile("roda", null);
 				multipartFile.transferTo(f);
 
-				String folderName = getRelPath(cmsFolder);
+				Node fileNode = folderNode.addNode(multipartFile.getOriginalFilename(), "nt:file");
+				// create the mandatory child node - jcr:content
+				Node resNode = fileNode.addNode("jcr:content", "nt:resource");
+				resNode.setProperty("jcr:data",
+						session.getValueFactory().createBinary(new AutoCloseInputStream(new FileInputStream(f))));
+				resNode.setProperty("jcr:mimeType", multipartFile.getContentType());
+				session.save();
 
-				Node root = session.getRootNode();
-				Node folderNode = null;
-				try {
-					folderNode = root.getNode(folderName);
-				} catch (PathNotFoundException e) {
-					try {
-						folderNode = root.addNode(folderName, "nt:folder");
-					} catch (Exception e2) {
-						log.error(e2);
-					}
-				}
+				// updateSolrFile(f, multipartFile);
 
-				if (folderNode != null) {
-					Node fileNode = folderNode.addNode(multipartFile.getOriginalFilename(), "nt:file");
-					// create the mandatory child node - jcr:content
-					Node resNode = fileNode.addNode("jcr:content", "nt:resource");
-					resNode.setProperty("jcr:data",
-							session.getValueFactory().createBinary(new AutoCloseInputStream(new FileInputStream(f))));
-					resNode.setProperty("jcr:mimeType", multipartFile.getContentType());
-					session.save();
-
-					// updateSolrFile(f, multipartFile);
-				}
-
-			} catch (IllegalStateException e) {
-				log.error(e);
-			} catch (IOException e) {
+			} catch (Exception e) {
 				log.error(e);
 			} finally {
 				session.logout();
 			}
-		} catch (LoginException e1) {
-			log.error(e1);
-		} catch (RepositoryException e1) {
+		} catch (Exception e1) {
 			log.error(e1);
 		}
 	}
 
+	@Override
 	public void folderSave(CmsFolder cmsFolder) {
 		Session session;
 		try {
@@ -264,7 +241,7 @@ public class CmsFileStoreServiceImpl implements CmsFileStoreService, SmartLifecy
 			try {
 				Node root = session.getRootNode();
 				String relPath = getRelPath(cmsFolder);
-				log.trace("relPath: " + relPath);
+				log.trace("folderSave(): relPath: " + relPath);
 				root.addNode(relPath, "nt:folder");
 				session.save();
 			} catch (Exception e) {
@@ -279,17 +256,16 @@ public class CmsFileStoreServiceImpl implements CmsFileStoreService, SmartLifecy
 		}
 	}
 
-	private InputStream fileLoad(String fileRelPath) {
-		Session session;
+	@Override
+	public InputStream fileLoad(CmsFile cmsFile) {
 		InputStream is = null;
 		try {
 			SimpleCredentials adminCred = new SimpleCredentials(jackrabbitUser, new char[0]);
-			session = repository.login(adminCred);
+			Session session = repository.login(adminCred);
 			try {
-				Node root = session.getRootNode();
-				Node node = root.getNode(fileRelPath);
+				Node node = session.getNode(getAbsPath(cmsFile));
 				is = node.getNode("jcr:content").getProperty("jcr:data").getValue().getBinary().getStream();
-				log.trace(node.getPath());
+				log.trace("fileLoad: " + node.getPath());
 			} finally {
 				session.logout();
 			}
@@ -299,11 +275,7 @@ public class CmsFileStoreServiceImpl implements CmsFileStoreService, SmartLifecy
 			log.error(e);
 		}
 		return is;
-	}
 
-	@Override
-	public InputStream fileLoad(CmsFile cmsFile) {
-		return fileLoad(getRelPath(cmsFile));
 	}
 
 	/**
@@ -311,13 +283,11 @@ public class CmsFileStoreServiceImpl implements CmsFileStoreService, SmartLifecy
 	 */
 	@Override
 	public void folderEmpty(CmsFolder cmsFolder) {
-		Session session;
 		try {
 			SimpleCredentials adminCred = new SimpleCredentials(jackrabbitUser, new char[0]);
-			session = repository.login(adminCred);
+			Session session = repository.login(adminCred);
 			try {
-				Node root = session.getRootNode();
-				for (NodeIterator ni = root.getNode(getRelPath(cmsFolder)).getNodes(); ni.hasNext();) {
+				for (NodeIterator ni = session.getRootNode().getNode(getAbsPath(cmsFolder)).getNodes(); ni.hasNext();) {
 					ni.nextNode().remove();
 				}
 				// root.getNode(getFullPath(cmsFolder)).remove();
@@ -335,12 +305,11 @@ public class CmsFileStoreServiceImpl implements CmsFileStoreService, SmartLifecy
 	 */
 	@Override
 	public void folderDrop(CmsFolder cmsFolder) {
-		Session session;
 		try {
 			SimpleCredentials adminCred = new SimpleCredentials(jackrabbitUser, new char[0]);
-			session = repository.login(adminCred);
+			Session session = repository.login(adminCred);
 			try {
-				session.getNode(getFullPath(cmsFolder)).remove();
+				session.getNode(getAbsPath(cmsFolder)).remove();
 				session.save();
 			} finally {
 				session.logout();
@@ -350,14 +319,16 @@ public class CmsFileStoreServiceImpl implements CmsFileStoreService, SmartLifecy
 		}
 	}
 
+	/**
+	 * Removes a single file.
+	 */
 	@Override
 	public void fileDrop(CmsFile cmsFile) {
-		Session session;
 		try {
 			SimpleCredentials adminCred = new SimpleCredentials(jackrabbitUser, new char[0]);
-			session = repository.login(adminCred);
+			Session session = repository.login(adminCred);
 			try {
-				session.getNode(getFullPath(cmsFile)).remove();
+				session.getNode(getAbsPath(cmsFile)).remove();
 				session.save();
 			} finally {
 				session.logout();
@@ -367,13 +338,24 @@ public class CmsFileStoreServiceImpl implements CmsFileStoreService, SmartLifecy
 		}
 	}
 
-	@Override
+	/**
+	 * Moves a single file to a different folder.
+	 */
 	public void fileMove(CmsFolder cmsFolder, CmsFile cmsFile) {
-		// TODO Cosmin
-		// Auto-generated method stub
+		try {
+			SimpleCredentials adminCred = new SimpleCredentials(jackrabbitUser, new char[0]);
+			Session session = repository.login(adminCred);
+			try {
+				session.move(getAbsPath(cmsFile), getAbsPath(cmsFolder) + "/" + cmsFile.getFilename());
+				session.save();
+			} finally {
+				session.logout();
+			}
+		} catch (Exception e) {
+			log.error(e);
+		}
 	}
 
-	@Override
 	public void folderMove(CmsFolder cmsFolderParent, CmsFolder cmsFolder) {
 		// TODO Cosmin
 		// Auto-generated method stub

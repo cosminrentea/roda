@@ -36,11 +36,6 @@ public class ScheduledTask {
 	@Scheduled(cron = "${scheduler.cron.vacuum}")
 	public void vacuum() {
 		// log.trace("vacuum");
-		// du.executeUpdate("VACUUM;");
-	}
-
-	public void vacuumAnalyze() {
-		// log.trace("vacuumAnalyze");
 		// du.executeUpdate("VACUUM(ANALYZE);");
 	}
 

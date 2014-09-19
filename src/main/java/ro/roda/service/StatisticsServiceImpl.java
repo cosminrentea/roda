@@ -39,7 +39,7 @@ public class StatisticsServiceImpl implements StatisticsService, SmartLifecycle 
 			boolean validVariables = false;
 
 			if (variableIds.size() > 0) {
-				log.trace("Statistics: Number of variables: " + variableIds.size());
+				// log.trace("Number of variables: " + variableIds.size());
 
 				v1 = Variable.findVariable(variableIds.get(0));
 				validVariables = (v1 != null);
@@ -53,9 +53,6 @@ public class StatisticsServiceImpl implements StatisticsService, SmartLifecycle 
 			if (validVariables) {
 				String evalExpr = null;
 
-				log.trace("Statistics: R Working Directory: " + rWorkingDirectory);
-				log.trace("Statistics: R Source Filename: " + rSourceFilename);
-
 				re.eval("setwd(\"" + rWorkingDirectory + "\")");
 				re.eval("source(\"" + rSourceFilename + "\")");
 
@@ -64,8 +61,8 @@ public class StatisticsServiceImpl implements StatisticsService, SmartLifecycle 
 					// REXP rexp = re
 					// .eval("getStats(list(vars = list(v1 = c(97, 99, sample(1:10, 122, replace=T), 99), v2 = c(NA, sample(18:90, 123, replace = TRUE), 999)), meta = list(v1 = c(\"NR/NS\"=99, \"Nu e cazul\"=97), v2 = c(\"Non raspuns\"=999))))");
 
-					log.trace("Statistics: v1: " + v1.getId());
-					log.trace("Statistics: v2: " + v2.getId());
+					// log.trace("v1: " + v1.getId());
+					// log.trace("v2: " + v2.getId());
 
 					evalExpr = "getStats(list(vars = list(" + v1.getName() + " = c(" + v1.getValues() + "),"
 							+ v2.getName() + " = c(" + v2.getValues() + ")), meta = list(" + v1.getName() + " = c("
@@ -75,13 +72,13 @@ public class StatisticsServiceImpl implements StatisticsService, SmartLifecycle 
 					// REXP rexp = re
 					// .eval("getStats(list(vars = list(v1 = c(97, 99, sample(1:7, 122, replace=T), 99)), meta = list(v1 = c(\"Foarte putin\"=1, \"Foarte mult\"=7, \"Nu e cazul\"=97, \"Nu stiu\"=98, \"Nu raspund\"=99))))");
 
-					log.trace("Statistics: v1: " + v1.getId());
+					// log.trace("Statistics: v1: " + v1.getId());
 
 					evalExpr = "getStats(list(vars = list(" + v1.getName() + " = c(" + v1.getValues()
 							+ ")), meta = list(" + v1.getName() + " = c(" + v1.getCategories() + "))))";
 				}
 
-				log.trace("Statistics: Evaluating R expression: " + evalExpr);
+				log.trace("Evaluating R expression: " + evalExpr);
 				REXP rexp = re.eval(evalExpr);
 
 				if (rexp != null) {
@@ -132,7 +129,7 @@ public class StatisticsServiceImpl implements StatisticsService, SmartLifecycle 
 
 	@Override
 	public void start() {
-		log.trace("Lifecycle: start()");
+		log.trace("start()");
 		log.trace(System.getProperties());
 
 		re = null;
@@ -143,7 +140,7 @@ public class StatisticsServiceImpl implements StatisticsService, SmartLifecycle 
 			String[] args = new String[1];
 			args[0] = "--vanilla";
 			re = new Rengine(args, false, null);
-			log.trace("JRI Rengine.versionCheck() = " + Rengine.versionCheck());
+			log.trace("Rengine.versionCheck() = " + Rengine.versionCheck());
 
 			// get R's working directory and R source file (as canonical paths)
 			PathMatchingResourcePatternResolver pmr = new PathMatchingResourcePatternResolver();
@@ -154,8 +151,11 @@ public class StatisticsServiceImpl implements StatisticsService, SmartLifecycle 
 					File rFile = resources[0].getFile();
 					rSourceFilename = rFile.getCanonicalPath();
 					rWorkingDirectory = rFile.getCanonicalFile().getParent();
+
+					log.trace("R Source Filename: " + rSourceFilename);
+					log.trace("R Working Directory: " + rWorkingDirectory);
 				} else {
-					log.fatal("roda.R : not found or ambiguous");
+					log.fatal("roda.R : ambiguous identification");
 				}
 			} catch (IOException e) {
 				log.fatal("roda.R : not found", e);

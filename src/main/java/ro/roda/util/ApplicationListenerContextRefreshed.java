@@ -76,7 +76,10 @@ public class ApplicationListenerContextRefreshed implements ApplicationListener<
 					// CMS data depends on initial set of CSVs
 					// (e.g. Language)
 					if (YES.equalsIgnoreCase(rodaDataCms)) {
-						importer.importCms();
+						importer.importCmsFiles();
+						importer.importCmsLayouts();
+						importer.importCmsPages();
+						importer.importCmsSnippets();
 					}
 
 					// ELSST depends or will depend on initial set of CSVs

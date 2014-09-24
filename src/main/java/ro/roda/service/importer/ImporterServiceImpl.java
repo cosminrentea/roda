@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
@@ -22,6 +23,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -105,6 +107,7 @@ import ro.roda.domain.Org;
 import ro.roda.domain.OtherStatistic;
 import ro.roda.domain.Person;
 import ro.roda.domain.Question;
+import ro.roda.domain.Series;
 import ro.roda.domain.Study;
 import ro.roda.domain.StudyDescr;
 import ro.roda.domain.StudyDescrPK;
@@ -113,6 +116,8 @@ import ro.roda.domain.StudyKeywordPK;
 import ro.roda.domain.StudyOrg;
 import ro.roda.domain.TimeMeth;
 import ro.roda.domain.Topic;
+import ro.roda.domain.TranslatedTopic;
+import ro.roda.domain.TranslatedTopicPK;
 import ro.roda.domain.UnitAnalysis;
 import ro.roda.domain.Users;
 import ro.roda.domain.Variable;
@@ -159,7 +164,7 @@ public class ImporterServiceImpl implements ImporterService {
 	@Value("${roda.data.csv-after-ddi.series_study}")
 	private String rodaDataCsvAfterDdiSeriesStudy;
 
-	private static final String elsstEnTerms = "elsst_en_terms.csv";
+	private static final String elsstEnTerms = "elsst_terms.csv";
 
 	private static final String elsstEnRelationships = "elsst_en_relationships.csv";
 
@@ -199,6 +204,9 @@ public class ImporterServiceImpl implements ImporterService {
 	@Value("${roda.data.ddi.csv}")
 	private String rodaDataDdiCsv;
 
+	@Value("${roda.data.ddi.save_json}")
+	private String rodaDataDdiSaveJson;
+
 	@Value("${roda.data.ddi.xsd}")
 	private String xsdDdi122;
 
@@ -232,16 +240,9 @@ public class ImporterServiceImpl implements ImporterService {
 		return unmarshaller;
 	}
 
-	// @Async
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
-	public void importCms() throws IOException {
-		importCmsFiles("files");
-		importCmsLayouts("layouts");
-		importCmsPages("pages");
-		importCmsSnippets("snippets");
-	}
-
-	public void importCmsFiles(String folderName) throws IOException {
+	public void importCmsFiles() throws IOException {
+		String folderName = "files";
 		Resource cmsRes = new ClassPathResource(rodaDataCmsDir + folderName);
 		File cmsDir = cmsRes.getFile();
 
@@ -251,268 +252,240 @@ public class ImporterServiceImpl implements ImporterService {
 		importCmsFilesRec(cmsDir, cmsFolder, rodaDataCmsDir + folderName);
 	}
 
-	private void importCmsFilesRec(File dir, CmsFolder cmsFolder, String path) {
-		try {
-			File[] files = dir.listFiles();
-			for (File file : files) {
-				if (file.isDirectory()) {
-					CmsFolder newFolder = new CmsFolder();
-					newFolder.setName(file.getName());
-					newFolder.setParentId(cmsFolder);
-					newFolder.persist();
-					cmsFileStoreService.folderSave(newFolder);
+	private void importCmsFilesRec(File dir, CmsFolder cmsFolder, String path) throws FileNotFoundException,
+			IOException {
+		File[] files = dir.listFiles();
+		for (File file : files) {
+			if (file.isDirectory()) {
+				CmsFolder newFolder = new CmsFolder();
+				newFolder.setName(file.getName());
+				newFolder.setParentId(cmsFolder);
+				newFolder.persist();
+				cmsFileStoreService.folderSave(newFolder);
 
-					importCmsFilesRec(file, newFolder, path + "/" + file.getName());
-				} else {
-					MockMultipartFile mockMultipartFile = new MockMultipartFile(file.getName(), file.getName(),
-							tika.detect(file), new FileInputStream(file));
+				importCmsFilesRec(file, newFolder, path + "/" + file.getName());
+			} else {
+				MockMultipartFile mockMultipartFile = new MockMultipartFile(file.getName(), file.getName(),
+						tika.detect(file), new FileInputStream(file));
 
-					// TODO what is the alias of a file? for the moment, it is
-					// its name (without extension)
-					// TODO decide if the URL should be the one above (useful
-					// for ImgLink) of this one:
-					// "file://" + file.getAbsolutePath()
-					AdminJson.fileSave(cmsFolder.getId(), mockMultipartFile, null,
-							file.getName().substring(0, file.getName().lastIndexOf(".")), path + "/" + file.getName());
+				// TODO what is the alias of a file? for the moment, it is
+				// its name (without extension)
+				// TODO decide if the URL should be the one above (useful
+				// for ImgLink) of this one:
+				// "file://" + file.getAbsolutePath()
+				AdminJson.fileSave(cmsFolder.getId(), mockMultipartFile, null,
+						file.getName().substring(0, file.getName().lastIndexOf(".")), path + "/" + file.getName());
 
-					cmsFileStoreService.fileSave(mockMultipartFile, cmsFolder);
-				}
+				cmsFileStoreService.fileSave(mockMultipartFile, cmsFolder);
 			}
-		} catch (IOException e) {
-			log.error(e);
 		}
 	}
 
-	public void importCmsLayouts(String folderName) {
-		try {
-			Resource cmsRes = new ClassPathResource(rodaDataCmsDir + folderName);
-			File cmsDir = cmsRes.getFile();
-			importCmsLayoutsRec(cmsDir, null);
-		} catch (IOException e) {
-			log.error(e);
-		}
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
+	public void importCmsLayouts() throws IOException {
+		Resource cmsRes = new ClassPathResource(rodaDataCmsDir + "layouts");
+		File cmsDir = cmsRes.getFile();
+		importCmsLayoutsRec(cmsDir, null);
 	}
 
-	private void importCmsLayoutsRec(File dir, CmsLayoutGroup cmsLayoutGroup) {
-		try {
-			File[] files = dir.listFiles();
-			for (File file : files) {
-				if (file.isDirectory()) {
-					AdminJson result = AdminJson.layoutGroupSave(file.getName(),
-							(cmsLayoutGroup != null) ? cmsLayoutGroup.getId() : null,
-							(cmsLayoutGroup != null) ? cmsLayoutGroup.getDescription() : null);
+	private void importCmsLayoutsRec(File dir, CmsLayoutGroup cmsLayoutGroup) throws FileNotFoundException, IOException {
+		File[] files = dir.listFiles();
+		for (File file : files) {
+			if (file.isDirectory()) {
+				AdminJson result = AdminJson.layoutGroupSave(file.getName(),
+						(cmsLayoutGroup != null) ? cmsLayoutGroup.getId() : null,
+						(cmsLayoutGroup != null) ? cmsLayoutGroup.getDescription() : null);
 
-					CmsLayoutGroup newLayoutGroup = CmsLayoutGroup.findCmsLayoutGroup(result.getId());
-					importCmsLayoutsRec(file, newLayoutGroup);
-				} else {
-					AdminJson.layoutSave((cmsLayoutGroup != null) ? cmsLayoutGroup.getId() : null,
-							IOUtils.toString(new FileReader(file)), file.getName(), null, null);
-				}
+				CmsLayoutGroup newLayoutGroup = CmsLayoutGroup.findCmsLayoutGroup(result.getId());
+				importCmsLayoutsRec(file, newLayoutGroup);
+			} else {
+				AdminJson.layoutSave((cmsLayoutGroup != null) ? cmsLayoutGroup.getId() : null,
+						IOUtils.toString(new FileReader(file)), file.getName(), null, null);
 			}
-		} catch (IOException e) {
-			log.error(e);
 		}
 	}
 
-	public void importCmsSnippets(String folderName) {
-		try {
-			Resource cmsRes = new ClassPathResource(rodaDataCmsDir + folderName);
-			File cmsDir = cmsRes.getFile();
-			importCmsSnippetsRec(cmsDir, null);
-		} catch (IOException e) {
-			log.error(e);
-		}
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
+	public void importCmsSnippets() throws IOException {
+		Resource cmsRes = new ClassPathResource(rodaDataCmsDir + "snippets");
+		File cmsDir = cmsRes.getFile();
+		importCmsSnippetsRec(cmsDir, null);
 	}
 
-	private void importCmsSnippetsRec(File dir, CmsSnippetGroup cmsSnippetGroup) {
-		try {
-			File[] files = dir.listFiles();
-			for (File file : files) {
-				if (file.isDirectory()) {
-					AdminJson result = AdminJson.snippetGroupSave(file.getName(),
-							(cmsSnippetGroup != null) ? cmsSnippetGroup.getId() : null, null);
+	private void importCmsSnippetsRec(File dir, CmsSnippetGroup cmsSnippetGroup) throws FileNotFoundException,
+			IOException {
+		File[] files = dir.listFiles();
+		for (File file : files) {
+			if (file.isDirectory()) {
+				AdminJson result = AdminJson.snippetGroupSave(file.getName(),
+						(cmsSnippetGroup != null) ? cmsSnippetGroup.getId() : null, null);
 
-					CmsSnippetGroup newSnippetGroup = CmsSnippetGroup.findCmsSnippetGroup(result.getId());
-					importCmsSnippetsRec(file, newSnippetGroup);
-				} else {
-					AdminJson.snippetSave((cmsSnippetGroup != null) ? cmsSnippetGroup.getId() : null, file.getName(),
-							IOUtils.toString(new FileReader(file)), null);
-				}
+				CmsSnippetGroup newSnippetGroup = CmsSnippetGroup.findCmsSnippetGroup(result.getId());
+				importCmsSnippetsRec(file, newSnippetGroup);
+			} else {
+				AdminJson.snippetSave((cmsSnippetGroup != null) ? cmsSnippetGroup.getId() : null, file.getName(),
+						IOUtils.toString(new FileReader(file)), null);
 			}
-		} catch (IOException e) {
-			log.error(e);
 		}
 	}
 
-	public void importCmsPages(String folderName) {
-		try {
-			Resource cmsRes = new ClassPathResource(rodaDataCmsDir + folderName);
-			File cmsDir = cmsRes.getFile();
-			importCmsPagesRec(cmsDir, null, null);
-		} catch (IOException e) {
-			log.error(e);
-		}
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
+	public void importCmsPages() throws IOException, ParserConfigurationException, SAXException {
+		Resource cmsRes = new ClassPathResource(rodaDataCmsDir + "pages");
+		File cmsDir = cmsRes.getFile();
+		importCmsPagesRec(cmsDir, null, null);
 	}
 
-	private void importCmsPagesRec(File dir, CmsPage cmsPage, CmsPage parent) {
-		try {
-			File[] files = dir.listFiles();
-			List<File> directories = new ArrayList<File>();
+	private void importCmsPagesRec(File dir, CmsPage cmsPage, CmsPage parent) throws ParserConfigurationException,
+			SAXException, IOException {
+		File[] files = dir.listFiles();
+		List<File> directories = new ArrayList<File>();
 
-			CmsPage p = null;
-			for (File file : files) {
-				// first, process the page.xml file
-				// secondly, iterate through all subdirectories
+		CmsPage p = null;
+		for (File file : files) {
+			// first, process the page.xml file
+			// secondly, iterate through all subdirectories
 
-				if (file.isDirectory()) {
-					directories.add(file);
-				} else if (file.getName().equalsIgnoreCase(pageXmlFile)) {
-					// we assume there is a "page.xml" file inside every folder
+			if (file.isDirectory()) {
+				directories.add(file);
+			} else if (file.getName().equalsIgnoreCase(pageXmlFile)) {
+				// we assume there is a "page.xml" file inside every folder
 
-					// Get the DOM Builder Factory
-					DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+				// Get the DOM Builder Factory
+				DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 
-					// Get the DOM Builder
-					DocumentBuilder builder = factory.newDocumentBuilder();
+				// Get the DOM Builder
+				DocumentBuilder builder = factory.newDocumentBuilder();
 
-					// Load and Parse the XML document
-					// document contains the complete XML as a Tree.
-					Document document = builder.parse(file);
+				// Load and Parse the XML document
+				// document contains the complete XML as a Tree.
+				Document document = builder.parse(file);
 
-					p = new CmsPage();
-					CmsPageContent pContent = null;
-					Lang lang = null;
+				p = new CmsPage();
+				CmsPageContent pContent = null;
+				Lang lang = null;
 
-					NodeList childNodes = document.getDocumentElement().getChildNodes();
-					for (int j = 0; j < childNodes.getLength(); j++) {
-						Node cNode = childNodes.item(j);
-						if (cNode instanceof Element) {
-							String content = null;
-							if (cNode.getLastChild() instanceof CDATASection) {
-								content = ((CDATASection) cNode.getLastChild()).getData();
-							}
-							if (cNode.getLastChild() instanceof Text) {
-								content = cNode.getLastChild().getTextContent().trim();
-							}
+				NodeList childNodes = document.getDocumentElement().getChildNodes();
+				for (int j = 0; j < childNodes.getLength(); j++) {
+					Node cNode = childNodes.item(j);
+					if (cNode instanceof Element) {
+						String content = null;
+						if (cNode.getLastChild() instanceof CDATASection) {
+							content = ((CDATASection) cNode.getLastChild()).getData();
+						}
+						if (cNode.getLastChild() instanceof Text) {
+							content = cNode.getLastChild().getTextContent().trim();
+						}
 
-							switch (cNode.getNodeName()) {
-							case "title":
-								// TODO check if meaning of "title" = name
-								p.setName(content);
-								break;
-							case "menutitle":
-								p.setMenuTitle(content);
-								break;
-							case "url":
-								p.setUrl(content);
-								break;
-							case "synopsis":
-								p.setSynopsis(content);
-								break;
-							case "lang":
-								// TODO set CmsPageLang - should we use the
-								// check method instead of find?
-								if (content != null) {
-									lang = Lang.findLang(content.toLowerCase());
-									if (lang != null) {
-										p.setLangId(lang);
-										Set<CmsPage> pages = lang.getCmsPages();
-										if (pages == null) {
-											pages = new HashSet<CmsPage>();
-										}
-										pages.add(p);
-										lang.setCmsPages(pages);
-										lang.merge();
+						switch (cNode.getNodeName()) {
+						case "title":
+							// TODO check if meaning of "title" = name
+							p.setName(content);
+							break;
+						case "menutitle":
+							p.setMenuTitle(content);
+							break;
+						case "url":
+							p.setUrl(content);
+							break;
+						case "synopsis":
+							p.setSynopsis(content);
+							break;
+						case "lang":
+							// TODO set CmsPageLang - should we use the
+							// check method instead of find?
+							if (content != null) {
+								lang = Lang.findLang(content.toLowerCase());
+								if (lang != null) {
+									p.setLangId(lang);
+									Set<CmsPage> pages = lang.getCmsPages();
+									if (pages == null) {
+										pages = new HashSet<CmsPage>();
 									}
+									pages.add(p);
+									lang.setCmsPages(pages);
+									lang.merge();
 								}
-								break;
-							case "content":
-								pContent = new CmsPageContent();
-								pContent.setContentText(content);
-								break;
-							case "cacheable":
-								p.setCacheable(Integer.parseInt(content));
-								break;
-							case "default_page":
-								p.setDefaultPage(Boolean.parseBoolean(content));
-								break;
-							case "external_redirect":
-								p.setExternalRedirect(content);
-								break;
-							case "internal_redirect":
-								p.setInternalRedirect(content);
-								break;
-							case "navigable":
-								p.setNavigable(Boolean.parseBoolean(content));
-								break;
-							case "searchable":
-								p.setSearchable(Boolean.parseBoolean(content));
-								break;
-							case "published":
-								p.setPublished(Boolean.parseBoolean(content));
-								break;
-							case "target":
-								p.setTarget(content);
-								break;
-							case "visible":
-								p.setVisible(Boolean.parseBoolean(content));
-								break;
-							case "cms_layout":
-								p.setCmsLayoutId(CmsLayout.findCmsLayout(content));
-								break;
-							case "pagetype":
-								p.setCmsPageTypeId(CmsPageType.checkCmsPageType(null, content, null));
-								break;
-							case "sequence":
-								p.move(Integer.parseInt(content));
-								break;
 							}
+							break;
+						case "content":
+							pContent = new CmsPageContent();
+							pContent.setContentText(content);
+							break;
+						case "cacheable":
+							p.setCacheable(Integer.parseInt(content));
+							break;
+						case "default_page":
+							p.setDefaultPage(Boolean.parseBoolean(content));
+							break;
+						case "external_redirect":
+							p.setExternalRedirect(content);
+							break;
+						case "internal_redirect":
+							p.setInternalRedirect(content);
+							break;
+						case "navigable":
+							p.setNavigable(Boolean.parseBoolean(content));
+							break;
+						case "searchable":
+							p.setSearchable(Boolean.parseBoolean(content));
+							break;
+						case "published":
+							p.setPublished(Boolean.parseBoolean(content));
+							break;
+						case "target":
+							p.setTarget(content);
+							break;
+						case "visible":
+							p.setVisible(Boolean.parseBoolean(content));
+							break;
+						case "cms_layout":
+							p.setCmsLayoutId(CmsLayout.findCmsLayout(content));
+							break;
+						case "pagetype":
+							p.setCmsPageTypeId(CmsPageType.checkCmsPageType(null, content, null));
+							break;
+						case "sequence":
+							p.move(Integer.parseInt(content));
+							break;
 						}
-					}
-
-					// set the parent of the page
-					p.setCmsPageId(parent);
-
-					p.setUrl(processPageUrl(p.getUrl(), p.getName(), parent));
-
-					if (p.getLangId() == null) {
-						lang = Lang.findLang("en");
-						p.setLangId(lang);
-						Set<CmsPage> pages = lang.getCmsPages();
-						if (pages == null) {
-							pages = new HashSet<CmsPage>();
-						}
-						pages.add(p);
-						lang.setCmsPages(pages);
-						lang.merge();
-					}
-
-					p.persist();
-
-					// set the page content
-					if (pContent != null) {
-						pContent.setCmsPageId(p);
-						pContent.persist();
-
-						Set<CmsPageContent> pageContents = new HashSet<CmsPageContent>();
-						pageContents.add(pContent);
-						p.setCmsPageContents(pageContents);
 					}
 				}
-			}
 
-			for (File directory : directories) {
-				importCmsPagesRec(directory, null, p);
-			}
+				// set the parent of the page
+				p.setCmsPageId(parent);
 
-		} catch (IOException e) {
-			log.error(e);
-		} catch (ParserConfigurationException e) {
-			log.error(e);
-		} catch (SAXException e) {
-			log.error(e);
+				p.setUrl(processPageUrl(p.getUrl(), p.getName(), parent));
+
+				if (p.getLangId() == null) {
+					lang = Lang.findLang("en");
+					p.setLangId(lang);
+					Set<CmsPage> pages = lang.getCmsPages();
+					if (pages == null) {
+						pages = new HashSet<CmsPage>();
+					}
+					pages.add(p);
+					lang.setCmsPages(pages);
+					lang.merge();
+				}
+
+				p.persist();
+
+				// set the page content
+				if (pContent != null) {
+					pContent.setCmsPageId(p);
+					pContent.persist();
+
+					Set<CmsPageContent> pageContents = new HashSet<CmsPageContent>();
+					pageContents.add(pContent);
+					p.setCmsPageContents(pageContents);
+				}
+			}
 		}
 
+		for (File directory : directories) {
+			importCmsPagesRec(directory, null, p);
+		}
 	}
 
 	private String processPageUrl(String url, String pageTitle, CmsPage parent) {
@@ -549,18 +522,53 @@ public class ImporterServiceImpl implements ImporterService {
 
 	// @Async
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
-	public void importElsst() throws FileNotFoundException, IOException {
+	public void importElsst() throws Exception {
+		log.trace("Importing ELSST");
 
 		CSVReader reader = new CSVReader(new FileReader(
 				new ClassPathResource(rodaDataElsstDir + elsstEnTerms).getFile()));
 		List<String[]> csvLines = reader.readAll();
 		reader.close();
 
+		// an ad-hoc cache for the Topics
+		Map<String, Topic> topicsMap = new HashMap<String, Topic>();
+
+		// used for RO translations
+		Lang roLang = Lang.findLang("ro");
+		Integer roLangId = roLang.getId();
+
 		for (String[] csvLine : csvLines) {
-			log.trace("ELSST Term: " + csvLine[0]);
+			// log.trace("ELSST Term: " + csvLine[0]);
 			Topic t = new Topic();
 			t.setName(csvLine[0]);
 			t.persist();
+
+			// put Topic in the ad-hoc cache
+			topicsMap.put(csvLine[0], t);
+
+			// optional translation - RO language
+			if (csvLine.length == 2 && csvLine[1] != null) {
+				// log.trace("ELSST Term RO: " + csvLine[1]);
+				TranslatedTopic tt = new TranslatedTopic();
+				tt.setTranslation(csvLine[1]);
+				tt.setId(new TranslatedTopicPK(roLangId, t.getId()));
+				tt.persist();
+
+				Set<TranslatedTopic> ttSet = t.getTranslatedTopics();
+				if (ttSet == null) {
+					ttSet = new HashSet<TranslatedTopic>();
+				}
+				ttSet.add(tt);
+				t.setTranslatedTopics(ttSet);
+
+				ttSet = roLang.getTranslatedTopics();
+				if (ttSet == null) {
+					ttSet = new HashSet<TranslatedTopic>();
+				}
+				ttSet.add(tt);
+				roLang.setTranslatedTopics(ttSet);
+
+			}
 		}
 
 		reader = new CSVReader(new FileReader(new ClassPathResource(rodaDataElsstDir + elsstEnRelationships).getFile()));
@@ -568,38 +576,52 @@ public class ImporterServiceImpl implements ImporterService {
 		reader.close();
 
 		for (String[] csvLine : csvLines) {
-			log.trace("ELSST Relationship: " + csvLine[0] + " " + csvLine[1] + " " + csvLine[2]);
-			Topic src = Topic.checkTopic(null, csvLine[0]);
-			Topic dst = Topic.checkTopic(null, csvLine[2]);
-			// log.trace("ELSST Terms: " + src.getName() + " " +
-			// dst.getName());
+			// log.trace("ELSST Relationship: " + csvLine[0] + " " + csvLine[1]
+			// + " " + csvLine[2]);
 
-			Set<Topic> topicSet = null;
+			if (csvLine.length != 3) {
+				String errorMessage = "ELSST Relationship is not correctly defined CSV: number of items per line";
+				log.error(errorMessage);
+				throw new IllegalStateException(errorMessage);
+			}
+
+			// Topic src = Topic.checkTopic(null, );
+			// Topic dst = Topic.checkTopic(null, csvLine[2]);
+
+			Topic src = topicsMap.get(csvLine[0]);
+			Topic dst = topicsMap.get(csvLine[2]);
+
+			if (src == null || dst == null) {
+				String errorMessage = "ELSST Relationship is not correctly defined in CSV: terms do not exist";
+				log.error(errorMessage);
+				throw new IllegalStateException(errorMessage);
+			}
+
 			if (Integer.parseInt(csvLine[1]) == 5) {
+
+				// add a parent - child relationship
+
 				dst.setParentId(src);
-				topicSet = src.getTopics();
+				Set<Topic> topicSet = src.getTopics();
 				if (topicSet == null) {
 					topicSet = new HashSet<Topic>();
 				}
 				topicSet.add(dst);
 				src.setTopics(topicSet);
-				// dst.merge();
-				// src.merge();
 				dst.merge(false);
 				src.merge(false);
 			}
+
 			if (Integer.parseInt(csvLine[1]) == 8) {
 				// TODO set related terms
 			}
 		}
-
-		// flush all changes
-		Topic.entityManager().flush();
+		log.trace("Finished Importing ELSST");
 	}
 
 	// @Async
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
-	public void importCsv() throws SQLException, IOException {
+	public void importCsv() throws Exception {
 		importCsvDir(rodaDataCsvDir);
 	}
 
@@ -705,17 +727,13 @@ public class ImporterServiceImpl implements ImporterService {
 					// TODO @Value for "ddi" folder below
 					Resource csvResource = pmr.getResource("classpath:ddi/" + csvFilename);
 					FileInputStream fisCsv = null;
-					try {
-						fisCsv = new FileInputStream(csvResource.getFile());
-					} catch (FileNotFoundException e) {
-						log.error("Data CSV file not found", e);
-					}
+					fisCsv = new FileInputStream(csvResource.getFile());
 					mockMultipartFileCsv = new MockMultipartFile(csvFilename, csvFilename, "text/csv", fisCsv);
 				}
 				importDdiFile(cb, mockMultipartFileDdi, true, true, ddiPersistance, mockMultipartFileCsv);
 
 			} catch (Exception e) {
-				log.fatal("Exception when importing DDI: " + ddiFile.getName(), e);
+				log.fatal("Exception thrown when importing DDI: " + ddiFile.getName(), e);
 				throw e;
 			}
 		}
@@ -724,7 +742,7 @@ public class ImporterServiceImpl implements ImporterService {
 
 	// @Async
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
-	public void importDdiIntoCatalogsAndSeries() throws FileNotFoundException, IOException {
+	public void importDdiIntoCatalogsAndSeries() throws Exception {
 		CSVReader reader = new CSVReader(new FileReader(
 				new ClassPathResource(rodaDataCsvAfterDdiCatalogStudy).getFile()));
 		List<String[]> csvLines = reader.readAll();
@@ -745,7 +763,25 @@ public class ImporterServiceImpl implements ImporterService {
 		}
 		log.debug("DDI files moved to Catalogs");
 
-		// TODO add Studies to Series
+		reader = new CSVReader(new FileReader(new ClassPathResource(rodaDataCsvAfterDdiSeriesStudy).getFile()));
+		csvLines = reader.readAll();
+		reader.close();
+
+		for (String[] csvLine : csvLines) {
+			log.trace("Series: " + csvLine[0] + " -- Study Filename: " + csvLine[1]);
+			Study study = Study.findFirstStudyWithFilename(csvLine[1]);
+			if (study == null) {
+				String errorMessage = "Study cannot be added to Series because its filename was not found: "
+						+ csvLine[1];
+				log.error(errorMessage);
+				throw new IllegalStateException(errorMessage);
+			}
+			Series series = null;
+
+			// TODO add Study to Series here !
+
+		}
+		log.debug("DDI files moved to Series");
 
 	}
 
@@ -1248,10 +1284,25 @@ public class ImporterServiceImpl implements ImporterService {
 		}
 
 		s.flush();
-		s.clear();
 
-		// serialization of XML as JSON - if needed
-		// log.trace(new JSONSerializer().deepSerialize(cb));
+		// serialization of DDI XML as JSON - only if requested
+		if ("yes".equalsIgnoreCase(rodaDataDdiSaveJson)) {
+			String ddiJson = new JSONSerializer().exclude("*.class").deepSerialize(cb);
+			File fileJson = File.createTempFile("roda-json", null);
+			FileWriter fw = new FileWriter(fileJson);
+			fw.write(ddiJson);
+			fw.flush();
+			fw.close();
+			FileInputStream fisJson = new FileInputStream(fileJson);
+
+			MockMultipartFile mmfJson = new MockMultipartFile(multipartFileDdi.getName().concat(".json"),
+					multipartFileDdi.getName().concat(".json"), "application/json", fisJson);
+
+			// save the JSON in FileStore, inside the study's folder
+			adminJsonService.fileSave(retDdi.getId(), mmfJson, null, null, null);
+			fisJson.close();
+			// log.trace(new JSONSerializer().deepSerialize(cb));
+		}
 
 	}
 }

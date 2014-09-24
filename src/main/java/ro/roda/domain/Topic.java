@@ -13,6 +13,7 @@ import javax.persistence.FlushModeType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
@@ -30,6 +31,8 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
@@ -47,7 +50,7 @@ import flexjson.JSONSerializer;
 
 @Configurable
 @Entity
-@Table(schema = "public", name = "topic")
+@Table(schema = "public", name = "topic", indexes = @Index(columnList = "name"))
 @Audited
 public class Topic {
 
@@ -175,8 +178,8 @@ public class Topic {
 	public static String toJsonTree() {
 		return new JSONSerializer()
 				.exclude("*.class", "*.studies", "*.series", "*.topics1", "*.translatedTopics", "*.parentId",
-						"*.preferredSynonymTopicId", "*.description", "*.topics").exclude("classAuditReader", "auditReader")
-				.rootName("topics").deepSerialize(findAllTopTopics());
+						"*.preferredSynonymTopicId", "*.description", "*.topics")
+				.exclude("classAuditReader", "auditReader").rootName("topics").deepSerialize(findAllTopTopics());
 	}
 
 	/**
@@ -227,9 +230,6 @@ public class Topic {
 	public static AuditReader getClassAuditReader() {
 		return AuditReaderFactory.get(entityManager());
 	}
-
-	@Transient
-	private Boolean leaf;
 
 	@Column(name = "description", columnDefinition = "text")
 	private String description;

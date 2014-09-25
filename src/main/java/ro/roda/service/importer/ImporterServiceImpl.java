@@ -1069,10 +1069,7 @@ public class ImporterServiceImpl implements ImporterService {
 					q.setName(variable.getName());
 					q.setStatement(varType.getQstn().get(0).getQstnLitType().get(0).content);
 
-					// TODO How to set the order of question in instance?
-					// For now, they are ordered as they enter in the
-					// database
-					q.setOrderInInstance(counterQstn++);
+					q.setOrderInMainInstance(counterQstn++);
 
 					// update the Variable reference
 					Set<Variable> qVariables = q.getVariables();
@@ -1082,8 +1079,13 @@ public class ImporterServiceImpl implements ImporterService {
 					qVariables.add(variable);
 					q.setVariables(qVariables);
 
-					// set the containing Instance
-					q.setInstanceId(instance);
+					// set the containing instance for this question ("main")
+					Set<Instance> instances = new HashSet<Instance>();
+					instances.add(instance);
+					q.setInstances(instances);
+					// q.setInstanceId(instance);
+
+					// add the question to the "main" instance
 					Set<Question> iQuestions = instance.getQuestions();
 					if (iQuestions == null) {
 						iQuestions = new HashSet<Question>();
@@ -1093,7 +1095,7 @@ public class ImporterServiceImpl implements ImporterService {
 
 					q.persist();
 
-					// set the Variable's question
+					// set the question of this variable
 					variable.setQuestionId(q);
 				}
 

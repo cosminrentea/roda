@@ -256,10 +256,16 @@ public class StudyInfo extends JsonInfo {
 			// get all the variables of the study's 'main' instance
 			for (Instance instance : study.getInstances()) {
 				if (instance.isMain()) {
+					// this.setVariables(Variable
+					// .entityManager()
+					// .createQuery(
+					// "SELECT v FROM Variable v WHERE v.questionId.instanceId = :instanceId ORDER BY v.id",
+					// Variable.class).setParameter("instanceId",
+					// instance).getResultList());
 					this.setVariables(Variable
 							.entityManager()
 							.createQuery(
-									"SELECT v FROM Variable v WHERE v.questionId.instanceId = :instanceId ORDER BY v.id",
+									"SELECT v FROM Variable v INNER JOIN v.questionId q INNER JOIN q.instances i WHERE i=:instanceId ORDER BY v.id",
 									Variable.class).setParameter("instanceId", instance).getResultList());
 					break; // because there is only one 'main' instance
 				}

@@ -13,6 +13,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -24,6 +26,8 @@ import javax.persistence.Table;
 import javax.persistence.TypedQuery;
 import javax.validation.constraints.NotNull;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.apache.solr.client.solrj.SolrQuery;
@@ -217,9 +221,6 @@ public class Question {
 		return AuditReaderFactory.get(entityManager());
 	}
 
-	@Column(name = "statement", columnDefinition = "text")
-	private String statement;
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
@@ -229,13 +230,21 @@ public class Question {
 	@NotNull
 	private String name;
 
+	@Column(name = "statement", columnDefinition = "text")
+	private String statement;
+
 	@OneToMany(mappedBy = "questionId", fetch = FetchType.LAZY)
 	private Set<Variable> variables;
 
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "instance_question", joinColumns = { @JoinColumn(name = "question_id", nullable = false) }, inverseJoinColumns = { @JoinColumn(name = "instance_id", nullable = false) })
+	private Set<Instance> instances;
+
 	// TODO nullable = false
-	@ManyToOne
-	@JoinColumn(name = "instance_id", columnDefinition = "integer", referencedColumnName = "id", nullable = true)
-	private Instance instanceId;
+	// @ManyToOne
+	// @JoinColumn(name = "instance_id", columnDefinition = "integer",
+	// referencedColumnName = "id", nullable = true)
+	// private Instance instanceId;
 
 	// TODO nullable = false
 	@ManyToOne
@@ -254,9 +263,9 @@ public class Question {
 	@OneToMany(mappedBy = "questionId")
 	private Set<MissingValue> missingValues;
 
-	@Column(name = "order_in_instance", columnDefinition = "int4")
-	// @NotNull
-	private Integer orderInInstance;
+	@Column(name = "order_in_main_instance", columnDefinition = "int4")
+	@NotNull
+	private Integer orderInMainInstance;
 
 	@ManyToOne
 	@JoinColumn(name = "lang_id", columnDefinition = "integer", referencedColumnName = "id")
@@ -298,16 +307,16 @@ public class Question {
 		return variables;
 	}
 
-	public Instance getInstanceId() {
-		return instanceId;
-	}
+	// public Instance getInstanceId() {
+	// return instanceId;
+	// }
 
 	public Lang getLangId() {
 		return langId;
 	}
 
-	public Integer getOrderInInstance() {
-		return orderInInstance;
+	public Integer getOrderInMainInstance() {
+		return orderInMainInstance;
 	}
 
 	public QuestionType getQuestionTypeId() {
@@ -324,6 +333,10 @@ public class Question {
 
 	public Set<MissingValue> getMissingValues() {
 		return missingValues;
+	}
+
+	public Set<Instance> getInstances() {
+		return instances;
 	}
 
 	@Transactional
@@ -370,16 +383,16 @@ public class Question {
 		this.variables = variables;
 	}
 
-	public void setInstanceId(Instance instanceId) {
-		this.instanceId = instanceId;
-	}
+	// public void setInstanceId(Instance instanceId) {
+	// this.instanceId = instanceId;
+	// }
 
 	public void setLangId(Lang langId) {
 		this.langId = langId;
 	}
 
-	public void setOrderInInstance(Integer orderInInstance) {
-		this.orderInInstance = orderInInstance;
+	public void setOrderInMainInstance(Integer orderInMainInstance) {
+		this.orderInMainInstance = orderInMainInstance;
 	}
 
 	public void setQuestionTypeId(QuestionType questionTypeId) {
@@ -404,6 +417,10 @@ public class Question {
 
 	public void setMissingValues(Set<MissingValue> missingValues) {
 		this.missingValues = missingValues;
+	}
+
+	public void setInstances(Set<Instance> instances) {
+		this.instances = instances;
 	}
 
 	public String toJson() {
@@ -431,8 +448,22 @@ public class Question {
 
 	@Override
 	public boolean equals(Object obj) {
-		return ((id != null && id.equals(((Question) obj).id)) || (name != null
-				&& name.equalsIgnoreCase(((Question) obj).name) && instanceId == ((Question) obj).instanceId));
+		if (obj == null) {
+			return false;
+		}
+		if (obj == this) {
+			return true;
+		}
+		if (obj.getClass() != getClass()) {
+			return false;
+		}
+		Question other = (Question) obj;
+		return new EqualsBuilder().appendSuper(super.equals(obj)).append(id, other.id).isEquals();
+	}
+
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder().append(id).toHashCode();
 	}
 
 	public AuditReader getAuditReader() {

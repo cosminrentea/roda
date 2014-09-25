@@ -209,6 +209,23 @@ public class Instance {
 		return AuditReaderFactory.get(entityManager());
 	}
 
+	// @OneToMany(mappedBy = "instanceId", fetch = FetchType.LAZY)
+	// private Set<Question> questions;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id")
+	// , columnDefinition = "serial")
+	private Integer id;
+
+	@ManyToOne
+	@JoinColumn(name = "study_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false)
+	private Study studyId;
+
+	@Column(name = "main", columnDefinition = "bool")
+	@NotNull
+	private boolean main;
+
 	@Column(name = "added", columnDefinition = "timestamp")
 	@NotNull
 	@Temporal(TemporalType.TIMESTAMP)
@@ -222,17 +239,14 @@ public class Instance {
 	@Column(name = "disseminator_identifier", columnDefinition = "text")
 	private String disseminatorIdentifier;
 
-	@ManyToMany(mappedBy = "instances")
-	private Set<File> files;
-
-	@OneToMany(mappedBy = "instanceId", fetch = FetchType.LAZY)
+	@ManyToMany(mappedBy = "instances", fetch = FetchType.LAZY)
 	private Set<Question> questions;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
-	// , columnDefinition = "serial")
-	private Integer id;
+	// @OneToMany(mappedBy = "instanceId", fetch = FetchType.LAZY)
+	// private Set<Question> questions;
+
+	@ManyToMany(mappedBy = "instances", fetch = FetchType.LAZY)
+	private Set<File> files;
 
 	@OneToMany(mappedBy = "instanceId")
 	private Set<InstanceDescr> instanceDescrs;
@@ -248,14 +262,6 @@ public class Instance {
 
 	@OneToMany(mappedBy = "instanceId")
 	private Set<InstanceRightTargetGroup> instanceRightTargetGroups;
-
-	@Column(name = "main", columnDefinition = "bool")
-	@NotNull
-	private boolean main;
-
-	@ManyToOne
-	@JoinColumn(name = "study_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false)
-	private Study studyId;
 
 	@PersistenceContext
 	transient EntityManager entityManager;

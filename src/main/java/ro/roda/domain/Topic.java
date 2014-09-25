@@ -9,6 +9,7 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
+import javax.persistence.FetchType;
 import javax.persistence.FlushModeType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -253,19 +254,19 @@ public class Topic {
 	@JoinColumn(name = "preferred_synonym_topic_id", columnDefinition = "integer", referencedColumnName = "id", insertable = false, updatable = false)
 	private Topic preferredSynonymTopicId;
 
-	@ManyToMany(mappedBy = "topics")
+	@ManyToMany(mappedBy = "topics", fetch = FetchType.LAZY)
 	private Set<Series> series;
 
-	@ManyToMany(mappedBy = "topics")
+	@ManyToMany(mappedBy = "topics", fetch = FetchType.LAZY)
 	private Set<Study> studies;
 
-	@OneToMany(mappedBy = "parentId")
+	@OneToMany(mappedBy = "parentId", fetch = FetchType.LAZY)
 	private Set<Topic> topics;
 
-	@OneToMany(mappedBy = "preferredSynonymTopicId")
-	private Set<Topic> topics1;
+	@OneToMany(mappedBy = "preferredSynonymTopicId", fetch = FetchType.LAZY)
+	private Set<Topic> synonimTopics;
 
-	@OneToMany(mappedBy = "topicId")
+	@OneToMany(mappedBy = "topicId", fetch = FetchType.LAZY)
 	private Set<TranslatedTopic> translatedTopics;
 
 	@PersistenceContext
@@ -320,8 +321,8 @@ public class Topic {
 		return topics;
 	}
 
-	public Set<Topic> getTopics1() {
-		return topics1;
+	public Set<Topic> getSynonimTopics() {
+		return synonimTopics;
 	}
 
 	public Set<TranslatedTopic> getTranslatedTopics() {
@@ -399,8 +400,8 @@ public class Topic {
 		this.topics = topics;
 	}
 
-	public void setTopics1(Set<Topic> topics1) {
-		this.topics1 = topics1;
+	public void setSynonimTopics(Set<Topic> synonims) {
+		this.synonimTopics = synonims;
 	}
 
 	public void setTranslatedTopics(Set<TranslatedTopic> translatedTopics) {

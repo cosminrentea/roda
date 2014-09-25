@@ -58,29 +58,6 @@ public interface AdminJsonService {
 
 	public abstract AdminJson folderMove(Integer parentFolderId, Integer folderId);
 
-	// USER MANAGEMENT
-
-	public abstract AdminJson userSave(Integer id, String username, String password, String passwordCheck,
-			String email, Boolean enabled);
-
-	public abstract AdminJson groupSave(Integer id, String name, String description, Boolean enabled);
-
-	public abstract AdminJson userAddToGroup(Integer userId, Integer groupId);
-
-	public abstract AdminJson userRemoveFromGroup(Integer userId, Integer groupId);
-
-	public abstract AdminJson userEnable(Integer userId);
-
-	public abstract AdminJson userDisable(Integer userId);
-
-	public abstract AdminJson userDrop(Integer userId);
-
-	public abstract AdminJson userChangePassword(Integer userId, String password, String controlPassword);
-
-	public abstract AdminJson userMessage(Integer userId, String subject, String message);
-
-	public abstract AdminJson groupMessage(Integer groupId, String subject, String message);
-
 	// CMS PAGE
 	public abstract AdminJson cmsPageSave(boolean save, Integer cmsPageParentId, String name, String lang,
 			String menutitle, String synopsis, String target, String url, boolean defaultPage, String externalredirect,

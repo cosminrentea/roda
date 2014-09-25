@@ -10,14 +10,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import ro.roda.domainjson.AdminJson;
-import ro.roda.service.AdminJsonService;
+import ro.roda.service.UserManagementService;
 
 @RequestMapping("/admin")
 @Controller
 public class UserManagementController {
 
 	@Autowired
-	AdminJsonService adminJsonService;
+	UserManagementService umService;
 
 	private final Log log = LogFactory.getLog(this.getClass());
 
@@ -29,7 +29,7 @@ public class UserManagementController {
 			@RequestParam(value = "password") String password, @RequestParam(value = "password2") String passwordCheck,
 			@RequestParam(value = "email", defaultValue = "") String email,
 			@RequestParam(value = "enabled", defaultValue = "true") Boolean enabled) {
-		AdminJson response = adminJsonService.userSave(id, username, password, passwordCheck, email, enabled);
+		AdminJson response = umService.userSave(id, username, password, passwordCheck, email, enabled);
 		if (response == null) {
 			return null;
 		}
@@ -41,7 +41,7 @@ public class UserManagementController {
 	public String groupSave(@RequestParam(value = "id") Integer id, @RequestParam(value = "name") String name,
 			@RequestParam(value = "description", defaultValue = "") String description,
 			@RequestParam(value = "enabled") Boolean enabled) {
-		AdminJson response = adminJsonService.groupSave(id, name, description, enabled);
+		AdminJson response = umService.groupSave(id, name, description, enabled);
 		if (response == null) {
 			return null;
 		}
@@ -52,7 +52,7 @@ public class UserManagementController {
 	@ResponseBody
 	public String userAddToGroup(@RequestParam(value = "userid") Integer userId,
 			@RequestParam(value = "groupid") Integer groupId) {
-		AdminJson response = adminJsonService.userAddToGroup(userId, groupId);
+		AdminJson response = umService.userAddToGroup(userId, groupId);
 		if (response == null) {
 			return null;
 		}
@@ -63,7 +63,7 @@ public class UserManagementController {
 	@ResponseBody
 	public String userRemoveFromGroup(@RequestParam(value = "userid") Integer userId,
 			@RequestParam(value = "groupid") Integer groupId) {
-		AdminJson response = adminJsonService.userRemoveFromGroup(userId, groupId);
+		AdminJson response = umService.userRemoveFromGroup(userId, groupId);
 		if (response == null) {
 			return null;
 		}
@@ -75,7 +75,7 @@ public class UserManagementController {
 	public String userAddToAdmin(@RequestParam(value = "userid") Integer userId,
 			@RequestParam(value = "groupid") Integer groupId) {
 		// TODO make sure admin group has ID 1
-		AdminJson response = adminJsonService.userAddToGroup(userId, 1);
+		AdminJson response = umService.userAddToGroup(userId, 1);
 		if (response == null) {
 			return null;
 		}
@@ -86,7 +86,7 @@ public class UserManagementController {
 	@ResponseBody
 	public String userRemoveFromAdmin(@RequestParam(value = "userid") Integer userId) {
 		// TODO make sure admin group has ID 1
-		AdminJson response = adminJsonService.userRemoveFromGroup(userId, 1);
+		AdminJson response = umService.userRemoveFromGroup(userId, 1);
 		if (response == null) {
 			return null;
 		}
@@ -96,7 +96,7 @@ public class UserManagementController {
 	@RequestMapping(value = "/userenable", method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody
 	public String userEnable(@RequestParam(value = "userid") Integer userId) {
-		AdminJson response = adminJsonService.userEnable(userId);
+		AdminJson response = umService.userEnable(userId);
 		if (response == null) {
 			return null;
 		}
@@ -106,7 +106,7 @@ public class UserManagementController {
 	@RequestMapping(value = "/userdisable", method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody
 	public String userDisable(@RequestParam(value = "userid") Integer userId) {
-		AdminJson response = adminJsonService.userDisable(userId);
+		AdminJson response = umService.userDisable(userId);
 		if (response == null) {
 			return null;
 		}
@@ -116,7 +116,7 @@ public class UserManagementController {
 	@RequestMapping(value = "/userdrop", method = RequestMethod.POST, produces = "application/json")
 	@ResponseBody
 	public String userDrop(@RequestParam(value = "userid") Integer userId) {
-		AdminJson response = adminJsonService.userDrop(userId);
+		AdminJson response = umService.userDrop(userId);
 		if (response == null) {
 			return null;
 		}
@@ -128,7 +128,7 @@ public class UserManagementController {
 	public String userChangePassword(@RequestParam(value = "userid") Integer userId,
 			@RequestParam(value = "password") String password,
 			@RequestParam(value = "controlpassword") String controlPassword) {
-		AdminJson response = adminJsonService.userChangePassword(userId, password, controlPassword);
+		AdminJson response = umService.userChangePassword(userId, password, controlPassword);
 		if (response == null) {
 			return null;
 		}
@@ -139,7 +139,7 @@ public class UserManagementController {
 	@ResponseBody
 	public String userMessage(@RequestParam(value = "userid") Integer userId,
 			@RequestParam(value = "subject") String subject, @RequestParam(value = "message") String message) {
-		AdminJson response = adminJsonService.userMessage(userId, subject, message);
+		AdminJson response = umService.userMessage(userId, subject, message);
 		if (response == null) {
 			return null;
 		}
@@ -150,7 +150,7 @@ public class UserManagementController {
 	@ResponseBody
 	public String groupMessage(@RequestParam(value = "groupid") Integer groupId,
 			@RequestParam(value = "subject") String subject, @RequestParam(value = "message") String message) {
-		AdminJson response = adminJsonService.groupMessage(groupId, subject, message);
+		AdminJson response = umService.groupMessage(groupId, subject, message);
 		if (response == null) {
 			return null;
 		}

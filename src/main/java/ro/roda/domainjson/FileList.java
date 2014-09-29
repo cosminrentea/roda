@@ -37,26 +37,13 @@ public class FileList extends JsonInfo {
 	}
 
 	public static String toJsonArray(Collection<FileList> collection) {
-		JSONSerializer serializer = new JSONSerializer();
-
-		serializer.exclude("*.class", "type");
-		serializer.include("id", "name", "alias", "filesize", "filetype", "folderid", "directory", "leaf");
-
-		serializer.transform(new FieldNameTransformer("indice"), "id");
-
-		return "{\"data\":" + serializer.serialize(collection) + "}";
+		return new JSONSerializer().exclude("*.class", "type", "filepropertiesset", "created", "createdby")
+				.transform(new FieldNameTransformer("indice"), "id").rootName("data").serialize(collection);
 	}
 
 	public static String toJsonArrayDetailed(Collection<FileList> collection) {
-		JSONSerializer serializer = new JSONSerializer();
-
-		serializer.exclude("*.class", "type");
-		serializer.include("id", "name", "alias", "url", "filesize", "filetype", "filepropertiesset", "folderid",
-				"directory", "leaf");
-
-		serializer.transform(new FieldNameTransformer("indice"), "id");
-
-		return "{\"data\":" + serializer.serialize(collection) + "}";
+		return new JSONSerializer().exclude("*.class", "type").transform(new FieldNameTransformer("indice"), "id")
+				.rootName("data").serialize(collection);
 	}
 
 	public static List<FileList> findAllFileLists() {
@@ -119,6 +106,10 @@ public class FileList extends JsonInfo {
 	private Long filesize;
 
 	private String filetype;
+
+	private String created;
+
+	private String createdby;
 
 	private String url;
 
@@ -184,10 +175,17 @@ public class FileList extends JsonInfo {
 	}
 
 	public Set<NameValuePair> getFilepropertiesset() {
-		Map<String, String> fp = cmsFileStoreService.getFileProperties(CmsFile.findCmsFile(id));
+		// CSM File properties
 		filepropertiesset = new HashSet<NameValuePair>();
-		for (Map.Entry<String, String> p : fp.entrySet()) {
-			filepropertiesset.add(new NameValuePair(p.getKey(), p.getValue()));
+		Map<String, String> fp = cmsFileStoreService.getFileProperties(CmsFile.findCmsFile(id));
+		if (fp != null) {
+			for (Map.Entry<String, String> p : fp.entrySet()) {
+				filepropertiesset.add(new NameValuePair(p.getKey(), p.getValue()));
+			}
+
+			// CMS File "special" properties (flat fields)
+			created = fp.get("jcr:created");
+			createdby = fp.get("jcr:createdBy");
 		}
 		return filepropertiesset;
 	}
@@ -198,6 +196,16 @@ public class FileList extends JsonInfo {
 
 	public void setFilesize(Long filesize) {
 		this.filesize = filesize;
+	}
+
+	public String getCreated() {
+		getFilepropertiesset();
+		return created;
+	}
+
+	public String getCreatedby() {
+		getFilepropertiesset();
+		return createdby;
 	}
 
 	public String getUrl() {
@@ -241,27 +249,12 @@ public class FileList extends JsonInfo {
 	}
 
 	public String toJson() {
-		JSONSerializer serializer = new JSONSerializer();
-
-		serializer.exclude("*.class", "type");
-		serializer.include("id", "name", "alias", "filesize", "filetype", "folderid", "directory", "leaf");
-
-		serializer.transform(new FieldNameTransformer("indice"), "id");
-
-		return "{\"data\":" + serializer.serialize(this) + "}";
+		return new JSONSerializer().exclude("*.class", "type").transform(new FieldNameTransformer("indice"), "id")
+				.rootName("data").serialize(this);
 	}
 
 	public String toJsonDetailed() {
-		JSONSerializer serializer = new JSONSerializer();
-
-		serializer.exclude("*.class", "type");
-		serializer.include("id", "name", "alias", "url", "filesize", "filetype", "filepropertiesset", "folderid",
-				"directory", "leaf");
-
-		serializer.transform(new FieldNameTransformer("indice"), "id");
-		// serializer.transform(new IterableTransformer(), "filepropertiesset");
-
-		return "{\"data\":" + serializer.deepSerialize(this) + "}";
+		return new JSONSerializer().exclude("*.class", "type").transform(new FieldNameTransformer("indice"), "id")
+				.rootName("data").deepSerialize(this);
 	}
-
 }

@@ -2,16 +2,25 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:task="http://www.springframework.org/schema/task"
-	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:jpa="http://www.springframework.org/schema/data/jpa" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
 	xmlns:cache="http://www.springframework.org/schema/cache"
-	xsi:schemaLocation="http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd         http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.2.xsd         http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd  http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.2.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache-3.2.xsd">
+	xsi:schemaLocation="http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
+	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+	http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.2.xsd
+	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd
+	http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.2.xsd
+	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd
+	http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache-3.2.xsd
+	http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
 	<!-- This will automatically locate any and all property files you have 
 		within your classpath, provided they fall under the META-INF/spring directory. 
 		The located property files are parsed and their values can then be used within 
 		application context files in the form of ${propertyKey}. -->
-	<context:property-placeholder  location="classpath*:META-INF/spring/roda-${spring.profiles.active}.properties,classpath*:META-INF/spring/local-${spring.profiles.active}.properties" />
-	
+	<context:property-placeholder
+		location="classpath*:META-INF/spring/roda-${spring.profiles.active}.properties,classpath*:META-INF/spring/local-${spring.profiles.active}.properties" />
+
 	<!-- Turn on AspectJ @Configurable support. As a result, any time you instantiate 
 		an object, Spring will attempt to perform dependency injection on that object. 
 		This occurs for instantiation via the "new" keyword, as well as via reflection. 
@@ -23,7 +32,7 @@
 		use this useful feature in a number of areas, such as @PersistenceContext 
 		injection into entities. -->
 	<context:spring-configured />
-	
+
 	<!-- This declaration will cause Spring to locate every @Component, @Repository 
 		and @Service in your application. In practical terms this allows you to write 
 		a POJO and then simply annotate the new POJO as an @Service and Spring will 
@@ -39,20 +48,17 @@
 		etc support. These annotations allow you to use common Spring and Java Enterprise 
 		Edition annotations in your classes without needing to do any special configuration. 
 		The most commonly used annotation is @Autowired, which instructs Spring to 
-		dependency inject an object into your class. -->   
+		dependency inject an object into your class. -->
 	<context:component-scan base-package="ro.roda">
 		<context:exclude-filter expression="org.springframework.stereotype.Controller"
 			type="annotation" />
 	</context:component-scan>
-	
+
 	<cache:annotation-driven />
-    
-    <!-- Cosmin: Generic Logger using AspectJ -->
-    <!-- 
-    <aop:aspectj-autoproxy />
-    <bean class="ro.roda.util.AspectLogger" />
-    -->
-    
+
+	<!-- Cosmin: Generic Logger using AspectJ -->
+	<!-- <aop:aspectj-autoproxy /> <bean class="ro.roda.util.AspectLogger" /> -->
+
 	<!-- Cosmin: add custom properties to the existing system properties -->
 	<bean id="systemProps"
 		class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
@@ -66,14 +72,15 @@
 		</property>
 	</bean>
 
-	<bean id="log4jInitialization" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
-	    <property name="targetClass" value="org.springframework.util.Log4jConfigurer"/>
-	    <property name="targetMethod" value="initLogging"/>
-	    <property name="arguments">
-	        <list>
-	            <value>classpath:log4j-${spring.profiles.active}.properties</value>
-	        </list>
-	    </property>
+	<bean id="log4jInitialization"
+		class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="targetClass" value="org.springframework.util.Log4jConfigurer" />
+		<property name="targetMethod" value="initLogging" />
+		<property name="arguments">
+			<list>
+				<value>classpath:log4j-${spring.profiles.active}.properties</value>
+			</list>
+		</property>
 	</bean>
 
 	<bean class="org.apache.commons.dbcp.BasicDataSource"
@@ -112,98 +119,78 @@
 		id="entityManagerFactory">
 		<property name="persistenceUnitName" value="persistenceUnit" />
 		<property name="dataSource" ref="dataSource" />
-		<property name="packagesToScan" >
-            <list>
-                <value>ro.roda.domain.*</value>
+		<property name="packagesToScan">
+			<list>
+				<value>ro.roda.domain.*</value>
 			</list>
-        </property>		
+		</property>
 		<property name="jpaProperties">
-            <props>
-                <prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
+			<props>
+				<prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
 				<prop key="hibernate.dialect">${hibernate.dialect}</prop>
-                <prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
-                <prop key="hibernate.ejb.naming_strategy">${hibernate.ejb.naming_strategy}</prop>
-                <prop key="hibernate.connection.charSet">${hibernate.connection.charSet}</prop>
-                <prop key="hibernate.format_sql">${hibernate.format_sql}</prop>
-                <prop key="hibernate.cache.use_second_level_cache">${hibernate.cache.use_second_level_cache}</prop>
-                <prop key="hibernate.cache.use_query_cache">${hibernate.cache.use_query_cache}</prop>
-				<prop key="hibernate.hbm2ddl.import_files">import-${spring.profiles.active}.sql</prop>                                     
-                <prop key="org.hibernate.envers.default_schema">${org.hibernate.envers.default_schema}</prop>
-				<prop key="org.hibernate.envers.revision_listener">${org.hibernate.envers.revision_listener}</prop>                
-				<prop key="org.hibernate.envers.revision_on_collection_change">${org.hibernate.envers.revision_on_collection_change}</prop>
-            </props>            
-        </property>
+				<prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
+				<prop key="hibernate.ejb.naming_strategy">${hibernate.ejb.naming_strategy}</prop>
+				<prop key="hibernate.connection.charSet">${hibernate.connection.charSet}</prop>
+				<prop key="hibernate.format_sql">${hibernate.format_sql}</prop>
+				<prop key="hibernate.cache.use_second_level_cache">${hibernate.cache.use_second_level_cache}</prop>
+				<prop key="hibernate.cache.use_query_cache">${hibernate.cache.use_query_cache}</prop>
+				<prop key="hibernate.hbm2ddl.import_files">import-${spring.profiles.active}.sql</prop>
+				<prop key="org.hibernate.envers.default_schema">${org.hibernate.envers.default_schema}</prop>
+				<prop key="org.hibernate.envers.revision_listener">${org.hibernate.envers.revision_listener}</prop>
+				<prop key="org.hibernate.envers.revision_on_collection_change">${org.hibernate.envers.revision_on_collection_change}
+				</prop>
+			</props>
+		</property>
 	</bean>
 
-	<task:annotation-driven executor="asyncExecutor" scheduler="rodaScheduler" 
-		mode="aspectj" />
+	<task:annotation-driven executor="asyncExecutor"
+		scheduler="rodaScheduler" mode="aspectj" />
 
 	<task:executor id="asyncExecutor" pool-size="${executor.poolSize}" />
-	
+
 	<bean class="ro.roda.util.ScheduledTask" id="rodaScheduledTask" />
 
-	<task:scheduler id="rodaScheduler" pool-size="${scheduler.poolSize}"/>
+	<task:scheduler id="rodaScheduler" pool-size="${scheduler.poolSize}" />
 
 	<!-- Caching: EhCache library setup -->
 	<bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
 		<property name="cacheManager" ref="ehcache" />
 	</bean>
 
-	<bean id="ehcache" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+	<bean id="ehcache"
+		class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
 		<property name="configLocation" value="classpath:ehcache.xml" />
-		<property name="shared" value="true"/>
-	</bean>
-	
-	<!-- Cosmin: Basic Object-to-XML Serialization -->
-	<bean id="xstreamMarshaller" class="org.springframework.oxm.xstream.XStreamMarshaller">
+		<property name="shared" value="true" />
 	</bean>
 
-	<!-- Cosmin: R integration (JRI / RJava); 
-		uses the updated system properties - configured also in this file 
-	! -->
-	<!-- 
-	<bean id="rb" class="ro.roda.util.RBean" destroy-method="end"
-		depends-on="systemProps">
-		<constructor-arg index="0">
-			<list>
-				<value>++vanilla</value>
-			</list>
-		</constructor-arg>
-		<constructor-arg index="1" value="false" />
-		<constructor-arg index="2">
-			<null />
-		</constructor-arg>
-	</bean>
-	-->
-	
-	<!-- SolrJ  -->
-	<bean class="org.apache.solr.client.solrj.impl.HttpSolrServer"
-		id="solrServer">
+	<!-- Cosmin: Basic Object-to-XML Serialization -->
+	<bean id="xstreamMarshaller" class="org.springframework.oxm.xstream.XStreamMarshaller" />
+
+	<!-- Cosmin: Spring Data REST -->
+	<jpa:repositories base-package="ro.roda.repository" />
+	<!-- <bean id="spring-data-rest-config" class="org.springframework.data.rest.core.config.RepositoryRestConfiguration" 
+		/> <bean id="spring-data-rest-mvc-config" class="org.springframework.data.rest.webmvc.config.RepositoryRestMvcConfiguration" 
+		/> -->
+
+	<!-- SolrJ -->
+	<bean class="org.apache.solr.client.solrj.impl.HttpSolrServer" id="solrServer">
 		<constructor-arg value="${solr.serverUrl}" />
 	</bean>
-	
+
 	<!-- JackRabbit is now initialized by Java code (FileStore service) -->
-<!-- 
-    <bean id="jackrabbitRepositoryConfig" class="org.apache.jackrabbit.core.config.RepositoryConfig" factory-method="create">
-        <constructor-arg index="0" value="${roda.jackrabbit.repository.xml}"/>
-        <constructor-arg index="1" value="${roda.jackrabbit.repository}" />
-    </bean>
-	<bean id="jackrabbitRepository" class="org.apache.jackrabbit.core.RepositoryImpl">
-        <constructor-arg index="0" ref="jackrabbitRepositoryConfig" />
-    </bean>
--->  
-	   
+	<!-- <bean id="jackrabbitRepositoryConfig" class="org.apache.jackrabbit.core.config.RepositoryConfig" 
+		factory-method="create"> <constructor-arg index="0" value="${roda.jackrabbit.repository.xml}"/> 
+		<constructor-arg index="1" value="${roda.jackrabbit.repository}" /> </bean> 
+		<bean id="jackrabbitRepository" class="org.apache.jackrabbit.core.RepositoryImpl"> 
+		<constructor-arg index="0" ref="jackrabbitRepositoryConfig" /> </bean> -->
+
 	<!-- Cosmin: support for file-uploading -->
 	<bean id="multipartResolver"
 		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
 		<!-- one of the properties available; the maximum file size in bytes -->
 		<property name="maxUploadSize" value="${filestore.maxuploadsize}" />
 	</bean>
-<!-- 
-	<bean id="multipartFilter"
-		class="org.springframework.web.multipart.support.MultipartFilter">
-		<property name="multipartResolverBeanName" value="multipartResolver" />
-	</bean>
--->
+	<!-- <bean id="multipartFilter" class="org.springframework.web.multipart.support.MultipartFilter"> 
+		<property name="multipartResolverBeanName" value="multipartResolver" /> </bean> -->
 
 </beans>

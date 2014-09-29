@@ -5,6 +5,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import ro.roda.domain.Topic;
 
@@ -13,9 +15,10 @@ import ro.roda.domain.Topic;
 public class TopicTreeController {
 
 	@RequestMapping(value = "/tree", headers = "Accept=application/json")
-	public ResponseEntity<String> tree() {
+	@ResponseBody
+	public ResponseEntity<String> tree(@RequestParam(value = "node", required = false) String id) {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json");
-		return new ResponseEntity<String>(Topic.toJsonTree(), headers, HttpStatus.OK);
+		return new ResponseEntity<String>(Topic.toJsonByParent(id), headers, HttpStatus.OK);
 	}
 }

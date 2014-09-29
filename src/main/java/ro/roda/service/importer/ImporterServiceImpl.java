@@ -597,10 +597,9 @@ public class ImporterServiceImpl implements ImporterService {
 				throw new IllegalStateException(errorMessage);
 			}
 
+			// set a parent - child relationship
+			// (relationship type: 5 and 6)
 			if (Integer.parseInt(csvLine[1]) == 5) {
-
-				// add a parent - child relationship
-
 				dst.setParentId(src);
 				Set<Topic> topicSet = src.getTopics();
 				if (topicSet == null) {
@@ -612,8 +611,15 @@ public class ImporterServiceImpl implements ImporterService {
 				src.merge(false);
 			}
 
+			// set a top-term (parent => null)
+			// (relationship type: 7)
+			if (Integer.parseInt(csvLine[1]) == 7) {
+				dst.setParentId(null);
+			}
+
+			// TODO set related terms
+			// (relationship type: 8)
 			if (Integer.parseInt(csvLine[1]) == 8) {
-				// TODO set related terms
 			}
 		}
 		log.trace("Finished Importing ELSST");

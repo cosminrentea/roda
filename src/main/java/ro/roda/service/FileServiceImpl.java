@@ -30,8 +30,8 @@ import ro.roda.service.importer.ImporterService;
 @Transactional
 public class FileServiceImpl implements FileService {
 
-	@Value("${R.filestore.dir}")
-	private final static String filestoreDir = "/tmp";
+	@Value("${filestore.dir}")
+	private final String filestoreDir = "/tmp";
 
 	private final Log log = LogFactory.getLog(this.getClass());
 

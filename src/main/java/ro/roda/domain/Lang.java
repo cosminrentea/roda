@@ -294,6 +294,9 @@ public class Lang {
 	private Set<TranslatedTopic> translatedTopics;
 
 	@OneToMany(mappedBy = "langId")
+	private Set<TranslatedQuestion> translatedQuestions;
+
+	@OneToMany(mappedBy = "langId")
 	private Set<CmsPage> cmsPages;
 
 	@OneToMany(mappedBy = "langId")
@@ -361,6 +364,10 @@ public class Lang {
 
 	public Set<Question> getQuestions() {
 		return questions;
+	}
+
+	public Set<TranslatedQuestion> getTranslatedQuestions() {
+		return translatedQuestions;
 	}
 
 	@Transactional
@@ -433,6 +440,10 @@ public class Lang {
 
 	public void setCmsPages(Set<CmsPage> cmsPages) {
 		this.cmsPages = cmsPages;
+	}
+
+	public void setTranslatedQuestions(Set<TranslatedQuestion> translatedQuestions) {
+		this.translatedQuestions = translatedQuestions;
 	}
 
 	public String toJson() {

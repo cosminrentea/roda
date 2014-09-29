@@ -267,6 +267,9 @@ public class Question {
 	@NotNull
 	private Integer orderInMainInstance;
 
+	@OneToMany(mappedBy = "questionId", fetch = FetchType.LAZY)
+	private Set<TranslatedQuestion> translatedQuestion;
+
 	@ManyToOne
 	@JoinColumn(name = "lang_id", columnDefinition = "integer", referencedColumnName = "id")
 	private Lang langId;
@@ -329,6 +332,10 @@ public class Question {
 
 	public Set<QuestionTypeCategory> getQuestionTypeCategories() {
 		return questionTypeCategories;
+	}
+
+	public Set<TranslatedQuestion> getTranslatedQuestion() {
+		return translatedQuestion;
 	}
 
 	public Set<MissingValue> getMissingValues() {
@@ -413,6 +420,10 @@ public class Question {
 
 	public void setQuestionTypeNumeric(QuestionTypeNumeric questionTypeNumeric) {
 		this.questionTypeNumeric = questionTypeNumeric;
+	}
+
+	public void setTranslatedQuestion(Set<TranslatedQuestion> translatedQuestion) {
+		this.translatedQuestion = translatedQuestion;
 	}
 
 	public void setMissingValues(Set<MissingValue> missingValues) {

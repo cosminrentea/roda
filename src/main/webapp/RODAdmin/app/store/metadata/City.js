@@ -10,6 +10,6 @@ Ext.define('RODAdmin.store.metadata.City', {
 
     model: 'RODAdmin.model.metadata.City',
     autoload: true,   
-    proxy: {type: 'main', url: '/roda/j/ddieditorcitylist'},    
+    proxy: {type: 'main', url: '/roda/ddieditorcitylist'},    
  
 });

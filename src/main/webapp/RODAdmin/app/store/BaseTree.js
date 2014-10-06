@@ -14,11 +14,11 @@ Ext.define('RODAdmin.store.BaseTree', {
 //				console.log('add base url ' + RODAdmin.util.Globals.baseurl);
 //				console.log('final url ' + RODAdmin.util.Globals.baseurl + purl);
 				store.getProxy().url = RODAdmin.util.Globals.baseurl + purl;
-				if (purl.match(/\/roda\/j\/admin/)) {
+				if (purl.match(/\/roda\/adminjson/)) {
 					store.getProxy().url =  purl;
-				} else if (purl.match(/\/roda\/j\/user/)) {
+				} else if (purl.match(/\/roda\/userjson/)) {
 					store.getProxy().url = purl;
-				} else if (purl.match(/\/roda\/j/)) {
+				} else if (purl.match(/\/roda/)) {
 							store.getProxy().url = purl;
 				} else {
 					store.getProxy().url = RODAdmin.util.Globals.baseurl + purl;

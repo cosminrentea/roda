@@ -19,6 +19,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PostPersist;
 import javax.persistence.PostUpdate;
@@ -43,6 +44,7 @@ import org.hibernate.envers.AuditReaderFactory;
 import org.hibernate.envers.Audited;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -51,7 +53,7 @@ import flexjson.JSONSerializer;
 
 @Configurable
 @Entity
-@Table(schema = "public", name = "topic", indexes = @Index(columnList = "name"))
+@Table(schema = "public", name = "topic")
 @Audited
 public class Topic {
 
@@ -116,15 +118,14 @@ public class Topic {
 			sid.addField("id", "topic_" + topic.getId());
 			sid.addField("topic.parentid_t", topic.getParentId());
 			sid.addField("topic.preferredsynonymtopicid_t", topic.getPreferredSynonymTopicId());
-			sid.addField("topic.name_s", topic.getName());
-			sid.addField("topic.description_s", topic.getDescription());
+			// sid.addField("topic.name_s", topic.getName());
+			// sid.addField("topic.description_s", topic.getDescription());
 			// Add summary field to allow searching documents for objects of
 			// this type
 			sid.addField(
 					"topic_solrsummary_t",
 					new StringBuilder().append(topic.getParentId()).append(" ")
-							.append(topic.getPreferredSynonymTopicId()).append(" ").append(topic.getName()).append(" ")
-							.append(topic.getDescription()));
+							.append(topic.getPreferredSynonymTopicId()));
 			documents.add(sid);
 		}
 		try {
@@ -163,6 +164,7 @@ public class Topic {
 	}
 
 	public static List<Topic> findTopicsByParent(String parentId) {
+		String lang = LocaleContextHolder.getLocale().getLanguage();
 		List<Topic> topics;
 		if (parentId == null || "root".equalsIgnoreCase(parentId)) {
 			// parent is null or "root" (as sent by ExtJS) => first-level of
@@ -187,61 +189,16 @@ public class Topic {
 	}
 
 	public static String toJsonByParent(String parentId) {
-		return new JSONSerializer().include("id", "name", "leaf").exclude("*", "*.*").rootName("topics")
-				.serialize(findTopicsByParent(parentId));
-	}
-
-	/**
-	 * Verifica existenta unui obiect de tip <code>Topic</code> (subiect) in
-	 * baza de date; in caz afirmativ il returneaza, altfel, metoda returneaza
-	 * null. Verificarea existentei in baza de date se realizeaza fie dupa
-	 * identificator, fie dupa un criteriu de unicitate.
-	 * 
-	 * <p>
-	 * Criterii de unicitate:
-	 * <ul>
-	 * <li>name
-	 * </ul>
-	 * 
-	 * <p>
-	 * 
-	 * @param id
-	 *            - identificatorul subiectului.
-	 * @param name
-	 *            - numele subiectului.
-	 * @return
-	 */
-	public static Topic checkTopic(Integer id, String name) {
-		Topic object;
-
-		if (id != null) {
-			object = findTopic(id);
-			if (object != null) {
-				return object;
-			}
-		}
-
-		if (name != null) {
-			TypedQuery<Topic> query = entityManager().createQuery(
-					"SELECT o FROM Topic o WHERE lower(o.name) = lower(:name)", Topic.class);
-			query.setParameter("name", name);
-			query.setMaxResults(1);
-			query.setFlushMode(FlushModeType.COMMIT);
-			try {
-				Topic queryResult = query.getSingleResult();
-				return queryResult;
-			} catch (Exception exception) {
-			}
-		}
-		return null;
+		return new JSONSerializer().include("id", "name", "leaf").include("translations.translation")
+				.exclude("*", "*.*").rootName("topics").serialize(findTopicsByParent(parentId));
 	}
 
 	public static AuditReader getClassAuditReader() {
 		return AuditReaderFactory.get(entityManager());
 	}
 
-	@Column(name = "description", columnDefinition = "text")
-	private String description;
+	// @Column(name = "description", columnDefinition = "text")
+	// private String description;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -249,9 +206,10 @@ public class Topic {
 	// , columnDefinition = "serial")
 	private Integer id;
 
-	@Column(name = "name", columnDefinition = "varchar", length = 50, unique = true)
-	@NotNull
-	private String name;
+	// @Column(name = "name", columnDefinition = "varchar", length = 50, unique
+	// = true)
+	// @NotNull
+	// private String name;
 
 	// Original: insertable = false, updatable = false
 	@ManyToOne
@@ -274,8 +232,8 @@ public class Topic {
 	@OneToMany(mappedBy = "preferredSynonymTopicId", fetch = FetchType.LAZY)
 	private Set<Topic> synonimTopics;
 
-	@OneToMany(mappedBy = "topicId", fetch = FetchType.LAZY)
-	private Set<TranslatedTopic> translatedTopics;
+	@OneToMany(mappedBy = "topicId")
+	private Set<TranslatedTopic> translations;
 
 	@PersistenceContext
 	transient EntityManager entityManager;
@@ -297,16 +255,8 @@ public class Topic {
 		this.entityManager.flush();
 	}
 
-	public String getDescription() {
-		return description;
-	}
-
 	public Integer getId() {
 		return this.id;
-	}
-
-	public String getName() {
-		return name;
 	}
 
 	public Topic getParentId() {
@@ -331,10 +281,6 @@ public class Topic {
 
 	public Set<Topic> getSynonimTopics() {
 		return synonimTopics;
-	}
-
-	public Set<TranslatedTopic> getTranslatedTopics() {
-		return translatedTopics;
 	}
 
 	@Transactional
@@ -376,16 +322,8 @@ public class Topic {
 		}
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
 	public void setId(Integer id) {
 		this.id = id;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	public void setParentId(Topic parentId) {
@@ -412,16 +350,13 @@ public class Topic {
 		this.synonimTopics = synonims;
 	}
 
-	public void setTranslatedTopics(Set<TranslatedTopic> translatedTopics) {
-		this.translatedTopics = translatedTopics;
-	}
-
 	public Boolean getLeaf() {
 		return new Boolean(topics == null || topics.size() == 0);
 	}
 
 	public String toJson() {
-		return new JSONSerializer().exclude("*.class").exclude("classAuditReader", "auditReader").serialize(this);
+		return new JSONSerializer().exclude("*.class").exclude("classAuditReader", "auditReader")
+				.include("translations.*").serialize(this);
 	}
 
 	public String toString() {
@@ -443,7 +378,7 @@ public class Topic {
 	public boolean equals(final Object obj) {
 		if (obj instanceof Topic) {
 			final Topic other = (Topic) obj;
-			return new EqualsBuilder().append(name, other.name).isEquals();
+			return new EqualsBuilder().append(id, other.id).isEquals();
 		} else {
 			return false;
 		}
@@ -451,10 +386,18 @@ public class Topic {
 
 	@Override
 	public int hashCode() {
-		return new HashCodeBuilder().append(name).toHashCode();
+		return new HashCodeBuilder().append(id).toHashCode();
 	}
 
 	public AuditReader getAuditReader() {
 		return AuditReaderFactory.get(entityManager);
+	}
+
+	public Set<TranslatedTopic> getTranslations() {
+		return translations;
+	}
+
+	public void setTranslations(Set<TranslatedTopic> translations) {
+		this.translations = translations;
 	}
 }

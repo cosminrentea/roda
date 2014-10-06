@@ -16,6 +16,8 @@
         <util:panel id="_message" title="${message}" openPane="false">
           <c:out value="${exception.localizedMessage}" />
         </util:panel>
+        <%-- Stacktrace is hidden in HTML source, below --%>
+        <!--
         <spring:message var="stacktrace" code="exception_stacktrace" htmlEscape="false" />
         <util:panel id="_exception" title="${stacktrace}" openPane="false">
           <c:forEach items="${exception.stackTrace}" var="trace">
@@ -23,6 +25,7 @@
             <br />
           </c:forEach>
         </util:panel>
+        -->
       </p>
     </c:if>
   </util:panel>

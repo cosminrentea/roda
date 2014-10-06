@@ -1,21 +1,13 @@
 <ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:noNamespaceSchemaLocation="ehcache.xsd" updateCheck="false"
-	monitoring="autodetect" dynamicConfig="true" name="rodaCacheManager">
+	monitoring="autodetect" dynamicConfig="true">
 
 	<diskStore path="java.io.tmpdir" />
 
-	<cache name="pages" 
-		eternal="false" 
-		timeToIdleSeconds="600"
-		overflowToDisk="true" 
-		memoryStoreEvictionPolicy="LRU" 
-	/>
+	<cache name="pages" eternal="false" timeToIdleSeconds="600"
+		overflowToDisk="true" memoryStoreEvictionPolicy="LRU" maxBytesLocalHeap="128M"/>
 
-	<cache name="thumbnails" 
-		eternal="false" 
-		timeToIdleSeconds="3600" 
-		overflowToDisk="true"
-		memoryStoreEvictionPolicy="LRU" 
-	/>
+	<cache name="thumbnails" eternal="false" timeToIdleSeconds="3600"
+		overflowToDisk="true" memoryStoreEvictionPolicy="LRU" maxBytesLocalHeap="128M"/>
 
 </ehcache>

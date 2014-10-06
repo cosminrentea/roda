@@ -533,33 +533,61 @@ public class ImporterServiceImpl implements ImporterService {
 		// an ad-hoc cache for the Topics
 		Map<String, Topic> topicsMap = new HashMap<String, Topic>();
 
-		// used for RO translations
+		// used for translations & original
 		Lang roLang = Lang.findLang("ro");
 		Integer roLangId = roLang.getId();
+		Lang enLang = Lang.findLang("en");
+		Integer enLangId = enLang.getId();
+
+		TranslatedTopic tt;
+		Set<TranslatedTopic> ttSet;
 
 		for (String[] csvLine : csvLines) {
+
 			// log.trace("ELSST Term: " + csvLine[0]);
+
 			Topic t = new Topic();
-			t.setName(csvLine[0]);
+			// t.setName(csvLine[0]);
+
 			t.persist();
 
-			// put Topic in the ad-hoc cache
-			topicsMap.put(csvLine[0], t);
-
-			// optional translation - RO language
-			if (csvLine.length == 2 && csvLine[1] != null) {
-				// log.trace("ELSST Term RO: " + csvLine[1]);
-				TranslatedTopic tt = new TranslatedTopic();
-				tt.setTranslation(csvLine[1]);
-				tt.setId(new TranslatedTopicPK(roLangId, t.getId()));
+			// original - EN language
+			if (csvLine.length >= 1 && csvLine[0] != null) {
+				// log.trace("ELSST Term EN: " + csvLine[0]);
+				tt = new TranslatedTopic();
+				tt.setTranslation(csvLine[0].toUpperCase());
+				tt.setId(new TranslatedTopicPK(enLangId, t.getId()));
 				tt.persist();
 
-				Set<TranslatedTopic> ttSet = t.getTranslatedTopics();
+				ttSet = t.getTranslations();
 				if (ttSet == null) {
 					ttSet = new HashSet<TranslatedTopic>();
 				}
 				ttSet.add(tt);
-				t.setTranslatedTopics(ttSet);
+				t.setTranslations(ttSet);
+
+				ttSet = enLang.getTranslatedTopics();
+				if (ttSet == null) {
+					ttSet = new HashSet<TranslatedTopic>();
+				}
+				ttSet.add(tt);
+				enLang.setTranslatedTopics(ttSet);
+			}
+
+			// optional translation - RO language
+			if (csvLine.length >= 2 && csvLine[1] != null) {
+				// log.trace("ELSST Term RO: " + csvLine[1]);
+				tt = new TranslatedTopic();
+				tt.setTranslation(csvLine[1].toUpperCase());
+				tt.setId(new TranslatedTopicPK(roLangId, t.getId()));
+				tt.persist();
+
+				ttSet = t.getTranslations();
+				if (ttSet == null) {
+					ttSet = new HashSet<TranslatedTopic>();
+				}
+				ttSet.add(tt);
+				t.setTranslations(ttSet);
 
 				ttSet = roLang.getTranslatedTopics();
 				if (ttSet == null) {
@@ -567,8 +595,11 @@ public class ImporterServiceImpl implements ImporterService {
 				}
 				ttSet.add(tt);
 				roLang.setTranslatedTopics(ttSet);
-
 			}
+
+			// put the Topic (EN) in the ad-hoc cache
+			topicsMap.put(csvLine[0], t);
+
 		}
 
 		reader = new CSVReader(new FileReader(new ClassPathResource(rodaDataElsstDir + elsstEnRelationships).getFile()));
@@ -1008,21 +1039,25 @@ public class ImporterServiceImpl implements ImporterService {
 				List<TopcClasType> topcClasTypeList = subjectType.getTopcClas();
 				Set<Topic> tSet = new HashSet<Topic>();
 				for (TopcClasType topcClasType : topcClasTypeList) {
-					log.trace("Topic = " + topcClasType.content);
-					Topic topic = Topic.checkTopic(null, topcClasType.content);
-					if (topic == null) {
-						topic = new Topic();
-						topic.setName(topcClasType.content);
-						topic.setParentId(null);
-						topic.persist();
+					log.trace("Topic of imported study: " + topcClasType.content);
+					Lang roLang = Lang.findLang("ro");
+					Integer roLangId = roLang.getId();
+
+					String[] topicNames = topcClasType.content.split(";,.");
+					for (String topicName : topicNames) {
+						TranslatedTopic translatedTopic = TranslatedTopic.findOrCreateTranslatedTopic(
+								topicName.toUpperCase(), roLangId);
+						Topic topic = translatedTopic.getTopicId();
+
+						// add the associated Study for this Topic
+						tSet.add(topic);
+						Set<Study> sStudy = topic.getStudies();
+						if (sStudy == null) {
+							sStudy = new HashSet<Study>();
+						}
+						sStudy.add(s);
+						topic.setStudies(sStudy);
 					}
-					tSet.add(topic);
-					Set<Study> sStudy = topic.getStudies();
-					if (sStudy == null) {
-						sStudy = new HashSet<Study>();
-					}
-					sStudy.add(s);
-					topic.setStudies(sStudy);
 				}
 				s.setTopics(tSet);
 			}

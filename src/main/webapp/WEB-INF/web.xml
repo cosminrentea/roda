@@ -57,6 +57,7 @@
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
 	
+<!-- 
 	<servlet>
 		<servlet-name>json</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
@@ -70,19 +71,20 @@
 		<servlet-name>json</servlet-name>
 		<url-pattern>/j/*</url-pattern>
 	</servlet-mapping>
+-->
 	
 	<servlet>
-		<servlet-name>rest</servlet-name>
+		<servlet-name>rest-api</servlet-name>
 		<servlet-class>org.springframework.data.rest.webmvc.RepositoryRestDispatcherServlet</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>rest</servlet-name>
+		<servlet-name>rest-api</servlet-name>
 		<url-pattern>/api/*</url-pattern>
 	</servlet-mapping>
 	
 	<servlet>
-		<servlet-name>roda</servlet-name>
+		<servlet-name>webmvc</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 		<init-param>
 			<param-name>contextConfigLocation</param-name>
@@ -91,7 +93,7 @@
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>roda</servlet-name>
+		<servlet-name>webmvc</servlet-name>
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
 	

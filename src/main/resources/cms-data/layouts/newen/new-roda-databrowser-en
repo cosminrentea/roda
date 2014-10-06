@@ -11,8 +11,6 @@
       </style>
       <link rel="SHORTCUT ICON" href="[[FileURL:faviconico]]" />
 
-
-
 <style>
 html { height: 100%; }
 body {
@@ -73,19 +71,20 @@ body {
 
 </head>
 <body>
-		<div id="pgheader">
-			<div id="insideheader">
+	<div id="pgheader">
+		<div id="insideheader">
 			<div id="logo_slim">
-			<a href="/roda/page/en">[[ImgLink: logo_slim]]</a></div>
+				<a href="/roda/page/en">[[ImgLink: logo_slim]]</a>
+			</div>
 			<div id="header_right">
 				<div id="flags">
 					<a href="/roda/page/ro" style="margin-right:5px; margin-left:100px;"><img src="[[FileURL:flag_ro]]"></a>
 					<a href="#"><img src="[[FileURL:flag_uk]]"></a>
 				</div>
 			</div>
-			</div>
 		</div>
-		[[Code: PageContent]]
+	</div>
+	[[Code: PageContent]]
 	<div id="pgfooter"></div>
 </body>
 

@@ -233,6 +233,9 @@ public class Question {
 	@Column(name = "statement", columnDefinition = "text")
 	private String statement;
 
+	@Column(name = "preamble", columnDefinition = "text")
+	private String preamble;
+
 	@OneToMany(mappedBy = "questionId", fetch = FetchType.LAZY)
 	private Set<Variable> variables;
 
@@ -254,13 +257,13 @@ public class Question {
 	@OneToOne(mappedBy = "question")
 	private QuestionTypeNumeric questionTypeNumeric;
 
-	@OneToMany(mappedBy = "questionId")
+	@OneToMany(mappedBy = "questionId", fetch = FetchType.LAZY)
 	private Set<QuestionTypeString> questionTypeCodes;
 
-	@OneToMany(mappedBy = "questionId")
+	@OneToMany(mappedBy = "questionId", fetch = FetchType.LAZY)
 	private Set<QuestionTypeCategory> questionTypeCategories;
 
-	@OneToMany(mappedBy = "questionId")
+	@OneToMany(mappedBy = "questionId", fetch = FetchType.LAZY)
 	private Set<MissingValue> missingValues;
 
 	@Column(name = "order_in_main_instance", columnDefinition = "int4")
@@ -269,6 +272,9 @@ public class Question {
 
 	@OneToMany(mappedBy = "questionId", fetch = FetchType.LAZY)
 	private Set<TranslatedQuestion> translatedQuestion;
+
+	// @OneToOne(mappedBy = "originalQuestionId")
+	// private TranslatedQuestion originalQuestion;
 
 	@ManyToOne
 	@JoinColumn(name = "lang_id", columnDefinition = "integer", referencedColumnName = "id")
@@ -479,5 +485,13 @@ public class Question {
 
 	public AuditReader getAuditReader() {
 		return AuditReaderFactory.get(entityManager);
+	}
+
+	public String getPreamble() {
+		return preamble;
+	}
+
+	public void setPreamble(String preamble) {
+		this.preamble = preamble;
 	}
 }

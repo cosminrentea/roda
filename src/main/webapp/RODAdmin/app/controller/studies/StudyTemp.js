@@ -100,7 +100,7 @@ Ext.define('RODAdmin.controller.studies.StudyTemp', {
     	var myid = srec.data.indice;
     	
 		Ext.Ajax.request({
-			url: '/roda/cmsfilecontent/'+myid,
+			url: '/roda/j/cmsfilecontent/'+myid,
 			waitTitle: 'Connecting',
 			waitMsg: 'Sending data...',                                     
 			method : 'GET',
@@ -245,7 +245,7 @@ Ext.define('RODAdmin.controller.studies.StudyTemp', {
 	    	
 	    	
 			Ext.Ajax.request({
-				url: '/roda/cmsfilecontent/'+myid,
+				url: '/roda/j/cmsfilecontent/'+myid,
 				waitTitle: 'Connecting',
 				waitMsg: 'Sending data...',                                     
 				method : 'GET',

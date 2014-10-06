@@ -8,6 +8,8 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -16,6 +18,7 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.servlet.mvc.multiaction.NoSuchRequestHandlingMethodException;
 
 import ro.roda.domain.CmsFile;
 import ro.roda.domain.CmsLayout;
@@ -25,27 +28,13 @@ import ro.roda.domain.CmsSnippet;
 import ro.roda.domain.Lang;
 import ro.roda.domain.News;
 
+import static ro.roda.service.page.RodaPageConstants.*;
+
 @Service
 @Transactional
 public class RodaPageServiceImpl implements RodaPageService {
 
-	private static String RODA_PAGE_URL = "/roda/page";
-	private static String PAGE_TITLE_CODE = "[[Code: PageTitle]]";
-	private static String PAGE_LINK_BY_URL_CODE = "[[Code: PageLinkbyUrl('";
-	private static String PAGE_URL_LINK_CODE = "[[PageURLLink:";
-	private static String FILE_URL_LINK_CODE = "[[FileURL:";
-	private static String IMG_LINK_CODE = "[[ImgLink: ";
-	private static String SNIPPET_CODE = "[[Snippet: ";
-	private static String PAGE_CONTENT_CODE = "[[Code: PageContent]]";
-	private static String PAGE_TREE_BY_URL_CODE = "[[Code: PageTreeByUrl('";
-	private static String PAGE_BREADCRUMBS = "[[Code: PageBreadcrumbs('";
-	private static String GETNEWS_CODE = "[[Code: GetNews";
-	private static String GETNEWSID_CODE = "[[Code: GetNewsId";
-
-	private static String DEFAULT_ERROR_PAGE_LANG = "en";
-	private static String ADMIN_URL = "admin/index.html";
-	private static String CMS_FILE_CONTENT_URL = "cmsfilecontent/";
-	private static String defaultUrlWhenNoLanguage = "/en";
+	private String RODA_PAGE_BASE_URL;
 
 	private final Log log = LogFactory.getLog(this.getClass());
 
@@ -68,26 +57,6 @@ public class RodaPageServiceImpl implements RodaPageService {
 
 	}
 
-	@Cacheable(value = "pages")
-	public String[] generatePage(String url, Map<String, String> parameters) {
-		// if (checkFullRelativeUrl(url)) {
-
-		// the URL fragment is no longer unique, but the full URL is
-		// TODO remove the commented code below if definitive
-		// String dbUrl = url.substring((url.lastIndexOf("/") + 1));
-		// CmsPage page = CmsPage.findCmsPage(dbUrl);
-
-		CmsPage page = CmsPage.findCmsPageByFullUrl(url);
-
-		return generatePage(page, url, parameters);
-	}
-
-	public String generateDefaultPageUrl() {
-		CmsPage defaultPage = CmsPage.findCmsPageDefault();
-		String relativeUrl = generateFullRelativeUrl(defaultPage);
-		return (relativeUrl != null && relativeUrl.length() > 1) ? relativeUrl : defaultUrlWhenNoLanguage;
-	}
-
 	/**
 	 * Returns an array of 4 Strings, as follows: if the page is redirected, the
 	 * array will contain [null, null, redirectExternalUrl, null] or [null,
@@ -97,28 +66,40 @@ public class RodaPageServiceImpl implements RodaPageService {
 	 * @param cmsPage
 	 * @param url
 	 * @return
+	 * @throws NoSuchRequestHandlingMethodException
 	 */
-	public String[] generatePage(CmsPage cmsPage, String url, Map<String, String> parameters) {
 
-		log.trace("URL: " + url);
-		log.trace("Number of parameters: " + parameters.size());
+	@Cacheable(value = "pages", key = "#cmsPageUrl")
+	public String[] generatePage(String cmsPageUrl, HttpServletRequest request)
+			throws NoSuchRequestHandlingMethodException {
 
+		log.trace("cmsPageUrl = " + cmsPageUrl);
+
+		// set this field - will be used later when expanding codes etc.
+		// normally the value shoud be: /roda/page, or /roda
+		RODA_PAGE_BASE_URL = request.getContextPath() + PAGE_MAPPING;
+
+		// log.trace("RODA_PAGE_URL = " + RODA_PAGE_BASE_URL);
+
+		// Request Parameters can be obtained here: request.getParameterMap()
+
+		CmsPage cmsPage = CmsPage.findCmsPageByFullUrl(cmsPageUrl);
+		String[] response = new String[4];
 		String pageTitle = "";
-		String[] pageContentAndTitle = new String[4];
 		StringBuilder sb = new StringBuilder();
 
 		if (cmsPage != null) {
 
 			if (cmsPage.getExternalRedirect() != null && !cmsPage.getExternalRedirect().trim().equals("")) {
-				pageContentAndTitle[2] = cmsPage.getExternalRedirect();
-				return pageContentAndTitle;
+				response[2] = cmsPage.getExternalRedirect();
+				return response;
 			}
 			if (cmsPage.getInternalRedirect() != null && !cmsPage.getInternalRedirect().trim().equals("")) {
-				pageContentAndTitle[3] = cmsPage.getInternalRedirect();
-				return pageContentAndTitle;
+				response[3] = cmsPage.getInternalRedirect();
+				return response;
 			}
 
-			String pageContent = replacePageContent(getLayout(cmsPage, url), cmsPage);
+			String pageContent = replacePageContent(getLayout(cmsPage, cmsPageUrl), cmsPage);
 
 			// pageContent = StringUtils.replace(pageContent, "\\", "\\\\");
 			// pageContent = StringUtils.replace(pageContent, "\"", "\\\"");
@@ -126,33 +107,40 @@ public class RodaPageServiceImpl implements RodaPageService {
 			sb.append(pageContent);
 			pageTitle = cmsPage.getName();
 		} else {
-			String requestLang = null;
+			throw new NoSuchRequestHandlingMethodException(request);
 
-			// the first fragment of the url might be the requested language
-			if (url.indexOf("/", 1) > 0) {
-				requestLang = url.substring(1, url.indexOf("/", 1));
-			}
+			// below: the old way of handling an "ERROR PAGE" (page not found)
 
-			Lang lang = Lang.findLang(requestLang);
-			if (lang == null) {
-				lang = Lang.findLang(DEFAULT_ERROR_PAGE_LANG);
-			}
-
-			List<CmsPage> errorPages = CmsPage.findCmsPageByLangAndType(lang,
-					CmsPageType.checkCmsPageType(null, "error404", null));
-
-			if (errorPages != null && errorPages.size() > 0) {
-				String pageContent = replacePageContent(getLayout(errorPages.get(0), url), errorPages.get(0));
-
-				sb.append(pageContent);
-				pageTitle = errorPages.get(0).getName();
-			}
+			// String requestLang = null;
+			//
+			// // the first fragment of the url might be the requested language
+			// if (cmsPageUrl.indexOf("/", 1) > 0) {
+			// requestLang = cmsPageUrl.substring(1, cmsPageUrl.indexOf("/",
+			// 1));
+			// }
+			//
+			// Lang lang = Lang.findLang(requestLang);
+			// if (lang == null) {
+			// lang = Lang.findLang(DEFAULT_ERROR_PAGE_LANGUAGE);
+			// }
+			//
+			// List<CmsPage> errorPages = CmsPage.findCmsPageByLangAndType(lang,
+			// CmsPageType.checkCmsPageType(null, "error404", null));
+			//
+			// if (errorPages != null && errorPages.size() > 0) {
+			// String pageContent =
+			// replacePageContent(getLayout(errorPages.get(0), cmsPageUrl),
+			// errorPages.get(0));
+			//
+			// sb.append(pageContent);
+			// pageTitle = errorPages.get(0).getName();
+			// }
 
 		}
-		pageContentAndTitle[0] = sb.toString();
-		pageContentAndTitle[1] = pageTitle;
+		response[0] = sb.toString();
+		response[1] = pageTitle;
 
-		return pageContentAndTitle;
+		return response;
 	}
 
 	public String[] generatePreviewPage(CmsPage cmsPage, String layoutContent, String pageContent, String url) {
@@ -175,7 +163,7 @@ public class RodaPageServiceImpl implements RodaPageService {
 
 			Lang lang = Lang.findLang(requestLang);
 			if (lang == null) {
-				lang = Lang.findLang(DEFAULT_ERROR_PAGE_LANG);
+				lang = Lang.findLang(DEFAULT_ERROR_PAGE_LANGUAGE);
 			}
 
 			List<CmsPage> errorPages = CmsPage.findCmsPageByLangAndType(lang,
@@ -193,6 +181,12 @@ public class RodaPageServiceImpl implements RodaPageService {
 		pageContentAndTitle[1] = pageTitle;
 
 		return pageContentAndTitle;
+	}
+
+	public String generateDefaultPageUrl() {
+		CmsPage defaultPage = CmsPage.findCmsPageDefault();
+		String relativeUrl = generateFullRelativeUrl(defaultPage);
+		return (relativeUrl != null && relativeUrl.length() > 1) ? relativeUrl : DEFAULT_LANGUAGE_URL;
 	}
 
 	public String generateFullRelativeUrl(CmsPage cmsPage) {
@@ -255,7 +249,7 @@ public class RodaPageServiceImpl implements RodaPageService {
 			String url = result.substring(fromIndex + PAGE_LINK_BY_URL_CODE.length(),
 					result.indexOf("')]]", fromIndex + PAGE_LINK_BY_URL_CODE.length()));
 
-			result = StringUtils.replace(result, PAGE_LINK_BY_URL_CODE + url + "')]]", RODA_PAGE_URL
+			result = StringUtils.replace(result, PAGE_LINK_BY_URL_CODE + url + "')]]", RODA_PAGE_BASE_URL
 					+ generateFullRelativeUrl(url, cmsPage));
 			fromIndex = result.indexOf(PAGE_LINK_BY_URL_CODE, fromIndex + PAGE_LINK_BY_URL_CODE.length());
 		}
@@ -323,17 +317,17 @@ public class RodaPageServiceImpl implements RodaPageService {
 	}
 
 	private String replacePageBreadcrumbs(String content, CmsPage cmsPage) {
-		int fromIndex = content.indexOf(PAGE_BREADCRUMBS, 0);
+		int fromIndex = content.indexOf(PAGE_BREADCRUMBS_CODE, 0);
 		while (fromIndex > -1) {
-			String sep = content.substring(fromIndex + PAGE_BREADCRUMBS.length(),
-					content.indexOf("')]]", fromIndex + PAGE_BREADCRUMBS.length()));
+			String sep = content.substring(fromIndex + PAGE_BREADCRUMBS_CODE.length(),
+					content.indexOf("')]]", fromIndex + PAGE_BREADCRUMBS_CODE.length()));
 
 			log.trace("Breadcrumbs separator = " + sep);
 
-			content = StringUtils.replace(content, PAGE_BREADCRUMBS + sep + "')]]",
+			content = StringUtils.replace(content, PAGE_BREADCRUMBS_CODE + sep + "')]]",
 					generatePageBreadcrumbs(cmsPage, sep));
 
-			fromIndex = content.indexOf(PAGE_BREADCRUMBS, fromIndex + PAGE_BREADCRUMBS.length());
+			fromIndex = content.indexOf(PAGE_BREADCRUMBS_CODE, fromIndex + PAGE_BREADCRUMBS_CODE.length());
 		}
 
 		return content;
@@ -355,7 +349,7 @@ public class RodaPageServiceImpl implements RodaPageService {
 
 			CmsPage page = findRelativePage(url, cmsPage);
 
-			result = result.substring(0, fromIndex) + "<a href=\"" + RODA_PAGE_URL + generateFullRelativeUrl(page)
+			result = result.substring(0, fromIndex) + "<a href=\"" + RODA_PAGE_BASE_URL + generateFullRelativeUrl(page)
 					+ "\">" + (page != null ? page.getName() : url) + "</a>"
 					+ result.substring(result.indexOf("]]", fromIndex + PAGE_URL_LINK_CODE.length()) + "]]".length());
 
@@ -375,7 +369,7 @@ public class RodaPageServiceImpl implements RodaPageService {
 
 			StringBuilder relativePath = new StringBuilder();
 			if (url != null) {
-				for (int i = 0; i < StringUtils.countMatches(url, "/"); i++) {
+				for (int i = 0; i < StringUtils.countMatches(url, "/") - OFFSET_RELATIVE_URL; i++) {
 					relativePath.append("../");
 				}
 			}
@@ -397,12 +391,12 @@ public class RodaPageServiceImpl implements RodaPageService {
 					result.indexOf("]]", fromIndex + IMG_LINK_CODE.length()));
 			CmsFile cmsFile = CmsFile.findCmsFile(alias);
 
-			System.out.println("The URL in replaceImgLink is " + url);
+			log.trace("The URL in replaceImgLink is: " + url);
 
 			StringBuilder relativePath = new StringBuilder();
 
 			if (url != null) {
-				for (int i = 0; i < StringUtils.countMatches(url, "/"); i++) {
+				for (int i = 0; i < StringUtils.countMatches(url, "/") - OFFSET_RELATIVE_URL; i++) {
 					relativePath.append("../");
 				}
 			}
@@ -500,8 +494,8 @@ public class RodaPageServiceImpl implements RodaPageService {
 
 	private CmsPage findRelativePage(String url, CmsPage cmsPage) {
 
-		// returns the closest page with the given url
-		// fragment
+		// returns the closest page
+		// with the given url fragment
 
 		CmsPage resultPage = null;
 
@@ -562,9 +556,8 @@ public class RodaPageServiceImpl implements RodaPageService {
 		// the hierarchy of parents - as links
 		cmsPage = cmsPage.getCmsPageId();
 		while (cmsPage != null) {
-			result = result.insert(0,
-					"<a href=\"" + RODA_PAGE_URL + generateFullRelativeUrl(cmsPage) + "\">" + cmsPage.getMenuTitle()
-							+ "</a>" + separator);
+			result = result.insert(0, "<a href=\"" + RODA_PAGE_BASE_URL + generateFullRelativeUrl(cmsPage) + "\">"
+					+ cmsPage.getMenuTitle() + "</a>" + separator);
 			cmsPage = cmsPage.getCmsPageId();
 		}
 		// log.trace("Breadcrumbs = " + result);

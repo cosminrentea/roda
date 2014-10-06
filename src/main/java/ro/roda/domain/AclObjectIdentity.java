@@ -38,6 +38,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import flexjson.JSON;
 import flexjson.JSONDeserializer;
 import flexjson.JSONSerializer;
 
@@ -314,6 +315,7 @@ public class AclObjectIdentity {
 	}
 
 	@JsonIgnore
+	@JSON(include = false)
 	public AuditReader getAuditReader() {
 		return AuditReaderFactory.get(entityManager);
 	}

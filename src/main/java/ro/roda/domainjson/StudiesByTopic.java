@@ -77,8 +77,10 @@ public class StudiesByTopic extends JsonInfo {
 						studiesByTopicSet.add(new StudyInfo(topicStudiesIterator.next()));
 					}
 
-					result.add(new StudiesByTopic(topic.getId(), topic.getName(), studiesByTopicSet.size(),
-							studiesByTopicSet));
+					// TODO uncomment & refactor !!!
+					// result.add(new StudiesByTopic(topic.getId(),
+					// topic.getName(), studiesByTopicSet.size(),
+					// studiesByTopicSet));
 				}
 
 			}
@@ -119,7 +121,10 @@ public class StudiesByTopic extends JsonInfo {
 			topics.addAll(subtopics);
 		}
 
-		return new StudiesByTopic(targetTopic.getId(), targetTopic.getName(), topicSubstudies.size(), topicSubstudies);
+		// TODO uncomment & refactor !!!
+		// return new StudiesByTopic(targetTopic.getId(), targetTopic.getName(),
+		// topicSubstudies.size(), topicSubstudies);
+		return null;
 	}
 
 	public static StudiesByTopic findDirectStudiesByTopic(Integer id) {
@@ -140,7 +145,9 @@ public class StudiesByTopic extends JsonInfo {
 					studiesByTopicSet.add(new StudyInfo(topicStudiesIterator.next()));
 				}
 
-				result = new StudiesByTopic(topic.getId(), topic.getName(), studiesByTopicSet.size(), studiesByTopicSet);
+				// TODO uncomment & refactor !!!
+				// result = new StudiesByTopic(topic.getId(), topic.getName(),
+				// studiesByTopicSet.size(), studiesByTopicSet);
 			}
 		}
 		return result;

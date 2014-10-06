@@ -65,11 +65,11 @@
 		<license.licenseName>gpl_v3</license.licenseName>
 
 		<!-- dependencies versions -->
-		<spring.version>3.2.6.RELEASE</spring.version> <!-- original: 3.2.6.RELEASE -->
-		<spring-security.version>3.2.5.RELEASE</spring-security.version> <!-- original: 3.2.0.RELEASE -->
-		<spring-js-resources.version>2.4.0.RELEASE</spring-js-resources.version> <!-- original: 2.2.1.RELEASE -->
-		<spring-data-jpa.version>1.6.0.RELEASE</spring-data-jpa.version>
-		<spring-data-rest-webmvc.version>2.1.1.RELEASE</spring-data-rest-webmvc.version>
+		<spring.version>4.1.1.RELEASE</spring.version> <!-- original: 3.2.6.RELEASE -->
+		<spring-security.version>3.2.5.RELEASE</spring-security.version> <!-- original: 3.2.5.RELEASE -->
+		<spring-js-resources.version>2.4.1.RELEASE</spring-js-resources.version>
+		<spring-data-jpa.version>1.7.0.RELEASE</spring-data-jpa.version> <!-- original 1.6.0.RELEASE -->
+		<spring-data-rest-webmvc.version>2.2.0.RELEASE</spring-data-rest-webmvc.version> <!-- 2.1.1.RELEASE -->
 		<aspectj.version>1.7.2</aspectj.version> <!-- original: 1.7.0 -->
 		<slf4j.version>1.7.7</slf4j.version>
 		<log4j.version>1.2.17</log4j.version>
@@ -77,16 +77,17 @@
 		<jsp-api.version>2.1</jsp-api.version>
 		<jstl-api.version>1.2</jstl-api.version>
 		<el-api.version>2.2</el-api.version>
-		<httpcomponents.version>4.3.4</httpcomponents.version> <!-- original: 4.3 -->
-		<hibernate.version>4.3.6.Final</hibernate.version> <!-- original: 4.1.8.Final -->
-		<hibernate-validator.version>5.1.2.Final</hibernate-validator.version> <!-- original: 4.3.1.Final -->
-		<javax-validation.version>1.1.0.Final</javax-validation.version> <!-- original version: 1.0.0.GA -->
-		<umlgraph.version>5.6</umlgraph.version> <!-- original: 5.6 -->
-		<flexjson.version>3.2</flexjson.version> <!-- original: 3.0 -->
-		<solr-solrj.version>4.10.0</solr-solrj.version> <!-- original: 4.3.1 -->
-		<ehcache.version>2.8.4</ehcache.version> <!-- original: 2.8.1 -->
+		<httpcomponents.version>4.3.4</httpcomponents.version>
+		<hibernate.version>4.3.6.Final</hibernate.version>
+		<hibernate-validator.version>5.1.2.Final</hibernate-validator.version>
+		<javax-validation.version>1.1.0.Final</javax-validation.version>
+		<umlgraph.version>5.6</umlgraph.version>
+		<flexjson.version>3.2</flexjson.version>
+		<solr-solrj.version>4.10.1</solr-solrj.version>
+		<ehcache.version>2.8.4</ehcache.version>
+		<ehcache-core.version>2.6.9</ehcache-core.version>
 		<tiles-jsp.version>3.0.4</tiles-jsp.version> <!-- original: 2.2.2 -->
-		<selenium.version>2.43.1</selenium.version> <!-- original: 2.33.0 -->
+		<selenium.version>2.43.1</selenium.version>
 		<jstl-impl.version>1.2</jstl-impl.version>
 		<JRI.version>0.9-6</JRI.version>
 		<c3p0.version>0.9.1.1</c3p0.version>
@@ -95,11 +96,10 @@
 		<opencsv.version>2.3</opencsv.version>
 		<postgresql.version>9.1-901-1.jdbc4</postgresql.version>
 		<jcr.version>2.0</jcr.version>
-		<jackrabbit.version>2.9.0</jackrabbit.version> <!-- original: 2.7.5 -->
+		<jackrabbit.version>2.9.0</jackrabbit.version>
 		<imgscalr-lib.version>4.2</imgscalr-lib.version>
 		<cglib-nodep.version>2.2.2</cglib-nodep.version>
-		<joda-time.version>2.4</joda-time.version>
-		<pf4j.version>0.8.0</pf4j.version>
+		<joda-time.version>2.5</joda-time.version>
 		<commons-io.version>2.4</commons-io.version>
 		<commons-lang3.version>3.3.2</commons-lang3.version>
 		<commons-collections.version>3.2.1</commons-collections.version>
@@ -173,12 +173,18 @@
 		</pluginRepository>
 	</pluginRepositories>
 	<dependencies>
+		<dependency>
+			<groupId>postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>${postgresql.version}</version>
+		</dependency>
 		<!-- EhCache Caching -->
+		<!-- <dependency> <groupId>net.sf.ehcache</groupId> <artifactId>ehcache</artifactId> 
+			<version>${ehcache.version}</version> <type>pom</type> </dependency> -->
 		<dependency>
 			<groupId>net.sf.ehcache</groupId>
-			<artifactId>ehcache</artifactId>
-			<version>${ehcache.version}</version>
-			<type>pom</type>
+			<artifactId>ehcache-core</artifactId>
+			<version>${ehcache-core.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>c3p0</groupId>
@@ -207,8 +213,21 @@
 			<scope>test</scope>
 			<version>${selenium.version}</version>
 		</dependency>
-
-		<!-- General dependencies for standard applications -->
+		<dependency>
+			<groupId>com.thoughtworks.xstream</groupId>
+			<artifactId>xstream</artifactId>
+			<version>${xstream.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>net.sf.opencsv</groupId>
+			<artifactId>opencsv</artifactId>
+			<version>${opencsv.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>net.sf.flexjson</groupId>
+			<artifactId>flexjson</artifactId>
+			<version>${flexjson.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
@@ -252,26 +271,33 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>net.sf.flexjson</groupId>
-			<artifactId>flexjson</artifactId>
-			<version>${flexjson.version}</version>
+			<groupId>javax.servlet.jsp</groupId>
+			<artifactId>jsp-api</artifactId>
+			<version>${jsp-api.version}</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-lang3</artifactId>
-			<version>${commons-lang3.version}</version>
-		</dependency>
-		<!-- Cosmin: org.apache.httpcomponents are required by SOLRJ -->
-		<dependency>
-			<groupId>org.apache.httpcomponents</groupId>
-			<artifactId>httpclient</artifactId>
-			<version>${httpcomponents.version}</version>
+			<groupId>javax.servlet.jsp.jstl</groupId>
+			<artifactId>jstl-api</artifactId>
+			<version>${jstl-api.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.apache.httpcomponents</groupId>
-			<artifactId>httpmime</artifactId>
-			<version>${httpcomponents.version}</version>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
+			<version>${javax-validation.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>javax.cache</groupId>
+			<artifactId>cache-api</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.el</groupId>
+			<artifactId>el-api</artifactId>
+			<version>${el-api.version}</version>
+			<scope>provided</scope>
+		</dependency>
+
 		<!-- ROO dependencies -->
 		<!-- <dependency> <groupId>org.springframework.roo</groupId> <artifactId>org.springframework.roo.annotations</artifactId> 
 			<version>${roo.version}</version> <scope>provided</scope> </dependency> -->
@@ -313,104 +339,6 @@
 			<artifactId>spring-aspects</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
-
-		<!-- Cosmin -->
-		<!-- Spring Data Rest framework -->
-		<dependency>
-			<groupId>org.springframework.data</groupId>
-			<artifactId>spring-data-jpa</artifactId>
-			<version>${spring-data-jpa.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.data</groupId>
-			<artifactId>spring-data-rest-webmvc</artifactId>
-			<version>${spring-data-rest-webmvc.version}</version>
-		</dependency>
-
-		<!-- Cosmin -->
-		<!-- Object-to-XML Mapping (OXM) abstraction and integration with JAXB, 
-			JiBX, Castor, XStream, and XML Beans. (depends on spring-core, spring-beans, 
-			spring-context) Define this if you need OXM (org.springframework.oxm.*) -->
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-oxm</artifactId>
-			<version>${spring.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.thoughtworks.xstream</groupId>
-			<artifactId>xstream</artifactId>
-			<version>${xstream.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>net.sf.opencsv</groupId>
-			<artifactId>opencsv</artifactId>
-			<version>${opencsv.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>postgresql</groupId>
-			<artifactId>postgresql</artifactId>
-			<version>${postgresql.version}</version>
-		</dependency>
-		<!--dependency> <groupId>org.hibernate</groupId> <artifactId>hibernate-core</artifactId> 
-			<version>${hibernate.version}</version> </dependency> -->
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-entitymanager</artifactId>
-			<version>${hibernate.version}</version>
-			<exclusions>
-				<!-- <exclusion> <groupId>cglib</groupId> <artifactId>cglib</artifactId> 
-					</exclusion> -->
-				<!-- <exclusion> <groupId>dom4j</groupId> <artifactId>dom4j</artifactId> 
-					</exclusion> -->
-			</exclusions>
-		</dependency>
-
-		<!-- Hibernate caching using EhCache -->
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-ehcache</artifactId>
-			<version>${hibernate.version}</version>
-		</dependency>
-		<!-- Cosmin: auditing -->
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-envers</artifactId>
-			<version>${hibernate.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>commons-collections</groupId>
-			<artifactId>commons-collections</artifactId>
-			<version>${commons-collections.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-validator</artifactId>
-			<version>${hibernate-validator.version}</version>
-			<exclusions>
-				<exclusion>
-					<groupId>javax.xml.bind</groupId>
-					<artifactId>jaxb-api</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>com.sun.xml.bind</groupId>
-					<artifactId>jaxb-impl</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>javax.validation</groupId>
-			<artifactId>validation-api</artifactId>
-			<version>${javax-validation.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>cglib</groupId>
-			<artifactId>cglib-nodep</artifactId>
-			<version>${cglib-nodep.version}</version>
-		</dependency>
-		<!-- <dependency> <groupId>javax.transaction</groupId> <artifactId>jta</artifactId> 
-			<version>1.1</version> </dependency> -->
-		<!-- dependency> <groupId>javax.persistence</groupId> <artifactId>persistence-api</artifactId> 
-			<version>1.0.2</version> </dependency -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-jdbc</artifactId>
@@ -430,6 +358,119 @@
 			<groupId>org.springframework.webflow</groupId>
 			<artifactId>spring-js-resources</artifactId>
 			<version>${spring-js-resources.version}</version>
+		</dependency>
+
+		<!-- Cosmin: Spring Data Rest framework -->
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-jpa</artifactId>
+			<version>${spring-data-jpa.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-rest-webmvc</artifactId>
+			<version>${spring-data-rest-webmvc.version}</version>
+		</dependency>
+
+		<!-- Cosmin: Object-to-XML Mapping (OXM) abstraction and integration with 
+			JAXB, JiBX, Castor, XStream, and XML Beans. (depends on spring-core, spring-beans, 
+			spring-context) Define this if you need OXM (org.springframework.oxm.*) -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-oxm</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+
+		<!-- Spring Security -->
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-core</artifactId>
+			<version>${spring-security.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-config</artifactId>
+			<version>${spring-security.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-web</artifactId>
+			<version>${spring-security.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-acl</artifactId>
+			<version>${spring-security.version}</version>
+		</dependency>
+
+		<!-- <dependency> <groupId>org.hibernate</groupId> <artifactId>hibernate-core</artifactId> 
+			<version>${hibernate.version}</version> </dependency> -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<version>${hibernate.version}</version>
+			<exclusions>
+				<!-- <exclusion> <groupId>cglib</groupId> <artifactId>cglib</artifactId> 
+					</exclusion> -->
+				<!-- <exclusion> <groupId>dom4j</groupId> <artifactId>dom4j</artifactId> 
+					</exclusion> -->
+			</exclusions>
+		</dependency>
+
+		<!-- Hibernate caching using EhCache -->
+		<!-- <dependency> <groupId>org.hibernate</groupId> <artifactId>hibernate-ehcache</artifactId> 
+			<version>${hibernate.version}</version> </dependency> -->
+
+		<!-- Hibernate Auditing (Envers) -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-envers</artifactId>
+			<version>${hibernate.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>${hibernate-validator.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>javax.xml.bind</groupId>
+					<artifactId>jaxb-api</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.sun.xml.bind</groupId>
+					<artifactId>jaxb-impl</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>cglib</groupId>
+			<artifactId>cglib-nodep</artifactId>
+			<version>${cglib-nodep.version}</version>
+		</dependency>
+
+		<!-- <dependency> <groupId>javax.transaction</groupId> <artifactId>jta</artifactId> 
+			<version>1.1</version> </dependency> -->
+		<!-- dependency> <groupId>javax.persistence</groupId> <artifactId>persistence-api</artifactId> 
+			<version>1.0.2</version> </dependency -->
+
+		<dependency>
+			<groupId>commons-collections</groupId>
+			<artifactId>commons-collections</artifactId>
+			<version>${commons-collections.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-pool</groupId>
@@ -468,79 +509,49 @@
 			<version>${commons-io.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>commons-fileupload</groupId>
-			<artifactId>commons-fileupload</artifactId>
-			<version>${commons-fileupload.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>javax.servlet.jsp.jstl</groupId>
-			<artifactId>jstl-api</artifactId>
-			<version>${jstl-api.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.glassfish.web</groupId>
-			<artifactId>jstl-impl</artifactId>
-			<version>${jstl-impl.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>javax.el</groupId>
-			<artifactId>el-api</artifactId>
-			<version>${el-api.version}</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>joda-time</groupId>
-			<artifactId>joda-time</artifactId>
-			<version>${joda-time.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>javax.servlet.jsp</groupId>
-			<artifactId>jsp-api</artifactId>
-			<version>${jsp-api.version}</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
 			<groupId>commons-codec</groupId>
 			<artifactId>commons-codec</artifactId>
 			<version>${commons-codec.version}</version>
 		</dependency>
 		<dependency>
+			<groupId>commons-fileupload</groupId>
+			<artifactId>commons-fileupload</artifactId>
+			<version>${commons-fileupload.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>${commons-lang3.version}</version>
+		</dependency><!-- Cosmin: org.apache.httpcomponents are required by SOLRJ -->
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>${httpcomponents.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpmime</artifactId>
+			<version>${httpcomponents.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.glassfish.web</groupId>
+			<artifactId>jstl-impl</artifactId>
+			<version>${jstl-impl.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time</artifactId>
+			<version>${joda-time.version}</version>
+		</dependency>
+
+		<dependency>
 			<groupId>org.apache.tiles</groupId>
 			<artifactId>tiles-jsp</artifactId>
 			<version>${tiles-jsp.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-core</artifactId>
-			<version>${spring-security.version}</version>
-			<exclusions>
-				<exclusion>
-					<groupId>commons-logging</groupId>
-					<artifactId>commons-logging</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-config</artifactId>
-			<version>${spring-security.version}</version>
-			<exclusions>
-				<exclusion>
-					<groupId>commons-logging</groupId>
-					<artifactId>commons-logging</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-web</artifactId>
-			<version>${spring-security.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-taglibs</artifactId>
-			<version>${spring-security.version}</version>
-		</dependency>
+
 		<!-- SolrJ - client library for Solr -->
 		<dependency>
 			<groupId>org.apache.solr</groupId>

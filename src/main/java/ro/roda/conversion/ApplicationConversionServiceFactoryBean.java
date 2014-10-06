@@ -2388,8 +2388,7 @@ public class ApplicationConversionServiceFactoryBean extends FormattingConversio
 	public Converter<Topic, String> getTopicToStringConverter() {
 		return new org.springframework.core.convert.converter.Converter<ro.roda.domain.Topic, java.lang.String>() {
 			public String convert(Topic topic) {
-				return new StringBuilder().append(topic.getName()).append(' ').append(topic.getDescription())
-						.toString();
+				return new StringBuilder().append(topic.getId()).toString();
 			}
 		};
 	}

@@ -156,9 +156,12 @@ public class TranslatedQuestion {
 	@JoinColumn(name = "question_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
 	private Question questionId;
 
-	@Column(name = "translation", columnDefinition = "text")
+	@Column(name = "translated_statement", columnDefinition = "text")
 	@NotNull
-	private String translation;
+	public String translatedStatement;
+
+	@Column(name = "translated_preamble", columnDefinition = "text")
+	public String translatedPreamble;
 
 	@PersistenceContext
 	transient EntityManager entityManager;
@@ -190,10 +193,6 @@ public class TranslatedQuestion {
 
 	public Question getQuestionId() {
 		return questionId;
-	}
-
-	public String getTranslation() {
-		return translation;
 	}
 
 	@Transactional
@@ -234,10 +233,6 @@ public class TranslatedQuestion {
 
 	public void setQuestionId(Question questionId) {
 		this.questionId = questionId;
-	}
-
-	public void setTranslation(String translation) {
-		this.translation = translation;
 	}
 
 	public String toJson() {

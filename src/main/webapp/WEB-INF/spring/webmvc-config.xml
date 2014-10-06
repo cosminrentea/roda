@@ -7,7 +7,7 @@
 
 	<!-- The controllers are autodetected POJOs labeled with the @Controller 
 		annotation. -->
-	<context:component-scan base-package="ro.roda.web"
+	<context:component-scan base-package="ro.roda.webjson"
 		use-default-filters="false">
 		<context:include-filter expression="org.springframework.stereotype.Controller"
 			type="annotation" />
@@ -17,14 +17,21 @@
 		Also registers default Formatters and Validators for use across all @Controllers -->
 	<mvc:annotation-driven conversion-service="applicationConversionService" />
 
-	<!-- Handles HTTP GET requests for /admin/** by efficiently serving 
-		up static resources (RODA Admin ExtJS app)-->
-	<mvc:resources location="/RODAdmin/" mapping="/admin/**" />
-		
+	<!-- Handles HTTP GET requests for /admin/** by efficiently serving up static 
+		resources (RODA Admin ExtJS app) -->
+	<!-- Cosmin: to handle /admin/** URLs in a static/resource manner, this 
+		MappingHandler should come before the classic catch-all controller (which 
+		is used for rendering CMS pages), so: order=-1 -->
+	<mvc:resources location="/RODAdmin/" mapping="/admin/**"
+		order="-1" />
+
+	<mvc:resources location="/root/" mapping="/root/**"
+		order="-1" />
+
 	<!-- Handles HTTP GET requests for /resources/** by efficiently serving 
 		up static resources -->
 	<mvc:resources location="/, classpath:/META-INF/web-resources/"
-		mapping="/resources/**" />
+		mapping="/resources/**" order="-1" />
 
 	<!-- Allows for mapping the DispatcherServlet to "/" by forwarding static 
 		resource requests to the container's default Servlet -->
@@ -39,13 +46,13 @@
 
 	<!-- Selects a static view for rendering without the need for an explicit 
 		controller -->
-
-	<mvc:view-controller path="/" view-name="index" />
-	<mvc:view-controller path="/index-extjs" view-name="index-extjs"/>
-	<mvc:view-controller path="/login" />
-	<mvc:view-controller path="/uncaughtException" />
-	<mvc:view-controller path="/resourceNotFound" />
-	<mvc:view-controller path="/dataAccessFailure" />
+	<!-- Cosmin: disabled all the view-controller mappings below: -->
+	
+	<!-- <mvc:view-controller path="/uncaughtException" /> -->
+	<!-- <mvc:view-controller path="/resourceNotFound" /> -->
+	<!-- <mvc:view-controller path="/dataAccessFailure" /> -->
+	<!-- <mvc:view-controller path="/login" /> -->
+	<!-- <mvc:view-controller path="/" view-name="index" /> -->
 
 	<!-- Resolves localized messages*.properties and application.properties 
 		files in the application to allow for internationalization. The messages*.properties 
@@ -72,9 +79,11 @@
 		id="themeResolver" p:cookieName="theme" p:defaultThemeName="standard" />
 
 	<!-- This bean resolves specific types of exceptions to corresponding logical 
-		- view names for error views. The default behaviour of DispatcherServlet 
-		- is to propagate all exceptions to the servlet container: this will happen 
-		- here with all other types of exceptions. -->
+		view names for error views. The default behaviour of DispatcherServlet is 
+		to propagate all exceptions to the servlet container: this will happen here 
+		with all other types of exceptions. -->
+	<!-- Cosmin: disabled this SimpleMappingExceptionResolver -->
+	<!--
 	<bean
 		class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver"
 		p:defaultErrorView="uncaughtException">
@@ -87,13 +96,14 @@
 			</props>
 		</property>
 	</bean>
- 
+	-->
+	 
 	<bean class="org.springframework.web.servlet.view.tiles3.TilesViewResolver"
 		id="tilesViewResolver">
 		<property name="viewClass"
 			value="org.springframework.web.servlet.view.tiles3.TilesView" />
 	</bean>
-	
+
 	<bean class="org.springframework.web.servlet.view.tiles3.TilesConfigurer"
 		id="tilesConfigurer">
 		<property name="definitions">
@@ -104,8 +114,8 @@
 			</list>
 		</property>
 	</bean>
-	
+
 	<bean class="ro.roda.conversion.ApplicationConversionServiceFactoryBean"
 		id="applicationConversionService" />
-		
+
 </beans>

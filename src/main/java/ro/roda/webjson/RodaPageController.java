@@ -1,4 +1,6 @@
-package ro.roda.web;
+package ro.roda.webjson;
+
+import static ro.roda.service.page.RodaPageConstants.PAGE_MAPPING;
 
 import java.io.IOException;
 import java.util.Map;
@@ -14,24 +16,25 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.HandlerMapping;
 
+import ro.roda.service.page.RodaPageConstants;
 import ro.roda.service.page.RodaPageService;
 
-@RequestMapping("/page")
+//@RequestMapping(RodaPageConstants.PAGE_MAPPING)
+@RequestMapping("/")
 @Controller
 public class RodaPageController {
 
 	private final Log log = LogFactory.getLog(this.getClass());
-
-	private final static String requestMapping = "/page";
 
 	@Autowired
 	RodaPageService rodaPageService;
 
 	@RequestMapping(produces = "text/html")
 	public void showDefaultPage(HttpServletRequest request, HttpServletResponse response, Model uiModel) {
-		log.trace("Computing default page");
+		log.trace("showDefaultPage");
 		try {
-			response.sendRedirect(request.getContextPath() + requestMapping + rodaPageService.generateDefaultPageUrl());
+			response.sendRedirect(request.getContextPath() + RodaPageConstants.PAGE_MAPPING
+					+ rodaPageService.generateDefaultPageUrl());
 		} catch (IOException ioe) {
 			log.error("Default page exception : ", ioe);
 		}
@@ -39,34 +42,28 @@ public class RodaPageController {
 	}
 
 	@RequestMapping(value = "/**", produces = "text/html")
-	public String show(HttpServletRequest request, HttpServletResponse response, Model uiModel) {
+	public String show(HttpServletRequest request, HttpServletResponse response, Model uiModel) throws Exception {
 
 		String url = (String) request.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE);
+		// get the part containing the URL of the CMS Page
+		String cmsPageUrl = url.substring(PAGE_MAPPING.length());
 
-		// "url" now is the full URL with a trailing slash "/..."
+		log.trace("url: " + url);
+		log.trace("cmsPageUrl: " + cmsPageUrl);
 
-		String[] generatedPage = rodaPageService.generatePage(url.substring(requestMapping.length()),
-				request.getParameterMap());
+		// cmsPageUrl is used also as a key for the cache
+		// holding the Rendered Pages !
+		// request is used for paths and exception-throwing !
+		String[] generatedPage = rodaPageService.generatePage(cmsPageUrl, request);
 
 		// if the fields externalredirect and internalredirect are
 		// specified, then externalredirect has greater priority
 		if (generatedPage[2] != null) {
 			// the page should be redirected externally
-			try {
-				// external redirect
-				response.sendRedirect(generatedPage[2]);
-			} catch (IOException ioe) {
-				log.trace("External Redirect Exception", ioe);
-			}
-
+			response.sendRedirect(generatedPage[2]);
 		} else if (generatedPage[3] != null) {
 			// the page should be redirected internally
-			try {
-				// internal redirect
-				response.sendRedirect(request.getContextPath() + requestMapping + generatedPage[3]);
-			} catch (Exception e) {
-				log.trace("Internal Redirect Exception", e);
-			}
+			response.sendRedirect(request.getContextPath() + RodaPageConstants.PAGE_MAPPING + generatedPage[3]);
 		} else {
 			return show(generatedPage, uiModel);
 		}
@@ -76,6 +73,6 @@ public class RodaPageController {
 	private String show(String[] generatedPage, Model uiModel) {
 		uiModel.addAttribute("pageBody", generatedPage[0]);
 		uiModel.addAttribute("pageTitle", generatedPage[1]);
-		return "rodapage/show";
+		return "rodapagerender";
 	}
 }

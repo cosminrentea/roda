@@ -23,6 +23,7 @@ import ro.roda.domain.StudyDescr;
 import ro.roda.domain.StudyKeyword;
 import ro.roda.domain.StudyOrg;
 import ro.roda.domain.StudyPerson;
+import ro.roda.domain.Topic;
 import ro.roda.domain.Variable;
 import ro.roda.transformer.FieldNameTransformer;
 import ro.roda.transformer.FlatQuestionMinInfoTransformer;
@@ -86,7 +87,7 @@ public class StudyInfo extends JsonInfo {
 		serializer.transform(new FieldNameTransformer("geo_unit"), "geographicUnit");
 		serializer.transform(new FieldNameTransformer("indice"), "variables.id");
 
-		return "{\"data\":" + serializer.serialize(collection) + "}";
+		return serializer.rootName("data").serialize(collection);
 	}
 
 	public static List<StudyInfo> findAllStudyInfos() {
@@ -96,18 +97,16 @@ public class StudyInfo extends JsonInfo {
 		result = new ArrayList<StudyInfo>();
 		while (it.hasNext()) {
 			Study study = (Study) it.next();
-			result.add(new StudyInfo(study, false, false, false, false, false));
+			result.add(new StudyInfo(study, false, false, false, false, false, false));
 		}
 		return result;
 	}
 
 	public static StudyInfo findStudyInfo(Integer id) {
-		if (id == null)
+		if (id == null) {
 			return null;
-		Study study = Study.findStudy(id);
-		StudyInfo studyInfo = new StudyInfo(study, true, true, true, true, true);
-
-		return studyInfo;
+		}
+		return new StudyInfo(Study.findStudy(id), true, true, true, true, true, true);
 	}
 
 	private final Log log = LogFactory.getLog(this.getClass());
@@ -141,6 +140,8 @@ public class StudyInfo extends JsonInfo {
 	private Set<Org> orgs;
 
 	private Set<Keyword> keywords;
+
+	private Set<Topic> topics;
 
 	private Integer seriesId;
 
@@ -208,13 +209,8 @@ public class StudyInfo extends JsonInfo {
 	}
 
 	public StudyInfo(Study study, boolean hasVariables, boolean hasFiles, boolean hasPersons, boolean hasOrgs,
-			boolean hasKeywords) {
+			boolean hasKeywords, boolean hasTopics) {
 		this(study);
-
-		// set the files
-		if (hasFiles) {
-			this.setFiles(study.getFiles1());
-		}
 
 		// set the variables
 		// variables of a study are all those of its 'main' instance
@@ -272,6 +268,11 @@ public class StudyInfo extends JsonInfo {
 			}
 		}
 
+		// set the files
+		if (hasFiles) {
+			this.setFiles(study.getFiles1());
+		}
+
 		// set the persons and organizations
 		if (hasPersons) {
 			this.persons = new HashSet<Person>();
@@ -306,6 +307,9 @@ public class StudyInfo extends JsonInfo {
 			}
 		}
 
+		if (hasTopics) {
+			this.setTopics(study.getTopics());
+		}
 	}
 
 	public Integer getAn() {
@@ -408,6 +412,14 @@ public class StudyInfo extends JsonInfo {
 		this.keywords = keywords;
 	}
 
+	public Set<Topic> getTopics() {
+		return topics;
+	}
+
+	public void setTopics(Set<Topic> topics) {
+		this.topics = topics;
+	}
+
 	public Integer getSeriesId() {
 		return seriesId;
 	}
@@ -461,6 +473,7 @@ public class StudyInfo extends JsonInfo {
 		serializer.include("persons.id", "persons.lname", "persons.fname", "persons.mname");
 		serializer.include("orgs.id", "orgs.fullName");
 		serializer.include("keywords.id", "keywords.name");
+		serializer.include("topics.id", "topics.name");
 
 		// exclude ALL other fields
 		serializer.exclude("*");
@@ -474,6 +487,6 @@ public class StudyInfo extends JsonInfo {
 		serializer.transform(new FieldNameTransformer("geo_unit"), "geographicUnit");
 		serializer.transform(new FieldNameTransformer("indice"), "variables.id");
 
-		return new StringBuilder("{\"data\":").append(serializer.serialize(this)).append("}").toString();
+		return serializer.rootName("data").serialize(this);
 	}
 }

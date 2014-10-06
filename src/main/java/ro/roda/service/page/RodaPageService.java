@@ -1,14 +1,12 @@
 package ro.roda.service.page;
 
-import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
 
 import ro.roda.domain.CmsPage;
 
 public interface RodaPageService {
 
-	public abstract String[] generatePage(String url, Map<String, String> parameters);
-
-	public abstract String[] generatePage(CmsPage cmsPage, String url, Map<String, String> parameters);
+	public abstract String[] generatePage(String cmsPageUrl, HttpServletRequest request) throws Exception;
 
 	public abstract String[] generatePreviewPage(CmsPage cmsPage, String layoutContent, String pageContent, String url);
 

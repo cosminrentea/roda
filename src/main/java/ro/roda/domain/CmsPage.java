@@ -121,22 +121,13 @@ public class CmsPage implements Comparable<CmsPage> {
 	}
 
 	public static List<CmsPage> findCmsPageByLangAndType(Lang lang, CmsPageType pageType) {
-		if (lang == null || pageType == null)
+		if (lang == null || pageType == null) {
 			return null;
-
-		String pageByLangAndTypeQuery = "";
-		TypedQuery<CmsPage> query;
-
-		pageByLangAndTypeQuery = "SELECT o FROM CmsPage o INNER JOIN o.cmsPageLangId l WHERE l.langId = ?1 and o.cmsPageTypeId = ?2";
-
-		query = entityManager().createQuery(pageByLangAndTypeQuery, CmsPage.class).setParameter(1, lang)
-				.setParameter(2, pageType);
-
-		if (query != null && query.getResultList().size() > 0) {
-			return query.getResultList();
 		}
 
-		return null;
+		return entityManager()
+				.createQuery("SELECT o FROM CmsPage o INNER JOIN o.langId l WHERE l.id = ?1 and o.cmsPageTypeId = ?2",
+						CmsPage.class).setParameter(1, lang).setParameter(2, pageType).getResultList();
 	}
 
 	public static CmsPage findCmsPageDefault() {
@@ -360,9 +351,6 @@ public class CmsPage implements Comparable<CmsPage> {
 	@JoinColumn(name = "cms_page_type_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false)
 	private CmsPageType cmsPageTypeId;
 
-	// @OneToMany(mappedBy = "cmsPageId")
-	// private Set<CmsPageLang> cmsPageLangId;
-
 	@ManyToOne
 	@JoinColumn(name = "lang_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false)
 	private Lang langId;
@@ -492,10 +480,6 @@ public class CmsPage implements Comparable<CmsPage> {
 		return visible;
 	}
 
-	// public Set<CmsPageLang> getCmsPageLangId() {
-	// return cmsPageLangId;
-	// }
-
 	public boolean isDefaultPage() {
 		return defaultPage;
 	}
@@ -607,10 +591,6 @@ public class CmsPage implements Comparable<CmsPage> {
 	public void setVisible(boolean visible) {
 		this.visible = visible;
 	}
-
-	// public void setCmsPageLangId(Set<CmsPageLang> cmsPageLangId) {
-	// this.cmsPageLangId = cmsPageLangId;
-	// }
 
 	public void setDefaultPage(boolean defaultPage) {
 		CmsPage existantDefaultPage = findCmsPageDefault();

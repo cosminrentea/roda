@@ -2,9 +2,9 @@
 <!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN" "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
 <tiles-definitions>
 
-	<definition extends="default" name="index">
-		<put-attribute name="body" value="/WEB-INF/views/index.jspx" />
-	</definition>
+	<definition extends="rodapage" name="rodapagerender">
+        <put-attribute name="body" value="/WEB-INF/views/rodapagerender.jsp"/>
+    </definition>
 
 	<definition extends="public" name="dataAccessFailure">
 		<put-attribute name="body"
@@ -21,7 +21,17 @@
 			value="/WEB-INF/views/uncaughtException.jspx" />
 	</definition>
 
+    <definition extends="default" name="mappings">
+        <put-attribute name="body" value="/WEB-INF/views/mappings.jspx"/>
+    </definition>
+
+	<!-- Cosmin: index and login are not actually used -->
 	<definition extends="public" name="login">
 		<put-attribute name="body" value="/WEB-INF/views/login.jspx" />
 	</definition>
+
+	<definition extends="default" name="index">
+		<put-attribute name="body" value="/WEB-INF/views/index.jspx" />
+	</definition>
+
 </tiles-definitions>

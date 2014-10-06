@@ -8,6 +8,7 @@ import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
+import javax.persistence.FlushModeType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.PersistenceContext;
@@ -15,6 +16,7 @@ import javax.persistence.PostPersist;
 import javax.persistence.PostUpdate;
 import javax.persistence.PreRemove;
 import javax.persistence.Table;
+import javax.persistence.TypedQuery;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -144,6 +146,44 @@ public class TranslatedTopic {
 		return AuditReaderFactory.get(entityManager());
 	}
 
+	/**
+	 * Verifica existenta unui obiect de tip <code>TranslatedTopic</code> in
+	 * baza de date. In caz afirmativ il returneaza, altfel il creeaza si apoi
+	 * il returneaza.
+	 */
+	public static TranslatedTopic findOrCreateTranslatedTopic(String name, Integer langId) {
+		TranslatedTopic translatedTopic = null;
+
+		if (name != null) {
+			try {
+				TypedQuery<TranslatedTopic> query = entityManager().createQuery(
+						"SELECT tt FROM TranslatedTopic tt WHERE tt.translation = :name AND tt.langId.id = :langId",
+						TranslatedTopic.class);
+				query.setParameter("name", name);
+				query.setParameter("langId", langId);
+				query.setMaxResults(1);
+				query.setFlushMode(FlushModeType.COMMIT);
+				translatedTopic = query.getSingleResult();
+			} catch (Exception exception) {
+			}
+		}
+
+		if (translatedTopic == null) {
+			Topic topic = new Topic();
+			topic.setParentId(null);
+			topic.persist();
+
+			translatedTopic = new TranslatedTopic();
+			translatedTopic.setId(new TranslatedTopicPK(langId, topic.getId()));
+			translatedTopic.setLangId(Lang.findLang(langId));
+			translatedTopic.setTopicId(topic);
+			translatedTopic.setTranslation(name);
+			translatedTopic.persist();
+		}
+
+		return translatedTopic;
+	}
+
 	@EmbeddedId
 	private TranslatedTopicPK id;
 
@@ -155,7 +195,7 @@ public class TranslatedTopic {
 	@JoinColumn(name = "topic_id", columnDefinition = "integer", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
 	private Topic topicId;
 
-	@Column(name = "translation", columnDefinition = "text")
+	@Column(name = "translation", columnDefinition = "varchar", length = 50)
 	@NotNull
 	private String translation;
 
@@ -240,8 +280,7 @@ public class TranslatedTopic {
 	}
 
 	public String toJson() {
-		return new JSONSerializer().exclude("*.class").exclude("classAuditReader", "auditReader")
-				.exclude("classAuditReader", "auditReader").serialize(this);
+		return new JSONSerializer().exclude("*.class").exclude("classAuditReader", "auditReader").serialize(this);
 	}
 
 	public String toString() {

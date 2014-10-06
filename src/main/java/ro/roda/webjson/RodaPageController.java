@@ -19,8 +19,8 @@ import org.springframework.web.servlet.HandlerMapping;
 import ro.roda.service.page.RodaPageConstants;
 import ro.roda.service.page.RodaPageService;
 
-//@RequestMapping(RodaPageConstants.PAGE_MAPPING)
-@RequestMapping("/")
+@RequestMapping(RodaPageConstants.PAGE_MAPPING)
+// @RequestMapping({ "ro", "en" })
 @Controller
 public class RodaPageController {
 
@@ -30,15 +30,11 @@ public class RodaPageController {
 	RodaPageService rodaPageService;
 
 	@RequestMapping(produces = "text/html")
-	public void showDefaultPage(HttpServletRequest request, HttpServletResponse response, Model uiModel) {
+	public void showDefaultPage(HttpServletRequest request, HttpServletResponse response, Model uiModel)
+			throws Exception {
 		log.trace("showDefaultPage");
-		try {
-			response.sendRedirect(request.getContextPath() + RodaPageConstants.PAGE_MAPPING
-					+ rodaPageService.generateDefaultPageUrl());
-		} catch (IOException ioe) {
-			log.error("Default page exception : ", ioe);
-		}
-
+		response.sendRedirect(request.getContextPath() + RodaPageConstants.PAGE_MAPPING
+				+ rodaPageService.generateDefaultPageUrl());
 	}
 
 	@RequestMapping(value = "/**", produces = "text/html")
@@ -46,7 +42,7 @@ public class RodaPageController {
 
 		String url = (String) request.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE);
 		// get the part containing the URL of the CMS Page
-		String cmsPageUrl = url.substring(PAGE_MAPPING.length());
+		String cmsPageUrl = url.substring(RodaPageConstants.PAGE_MAPPING_LENGTH);
 
 		log.trace("url: " + url);
 		log.trace("cmsPageUrl: " + cmsPageUrl);

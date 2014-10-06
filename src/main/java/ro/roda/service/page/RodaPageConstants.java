@@ -3,7 +3,8 @@ package ro.roda.service.page;
 public class RodaPageConstants {
 
 	// values like: "" OR "/p" OR "/page"
-	public final static String PAGE_MAPPING = "";
+	public final static String PAGE_MAPPING = "/";
+	public final static int PAGE_MAPPING_LENGTH = ((PAGE_MAPPING.length() > 1) ? PAGE_MAPPING.length() : 0);
 
 	// this depends on the URL mapping of "RodaPageController":
 	// /roda => /roda/j/cmsfilecontent

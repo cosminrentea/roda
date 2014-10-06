@@ -76,11 +76,11 @@ body {
 		<div id="pgheader">
 			<div id="insideheader">
 			<div id="logo_slim">
-			<a href="/roda/page/ro">[[ImgLink: logo_slim]]</a></div>
+			<a href="/roda/ro">[[ImgLink: logo_slim]]</a></div>
 			<div id="header_right">
 				<div id="flags">
 					<a href="#" style="margin-right:5px; margin-left:100px;"><img src="[[FileURL:flag_ro]]"></a>
-					<a href="/roda/page/ro"><img src="[[FileURL:flag_uk]]"></a>
+					<a href="/roda/ro"><img src="[[FileURL:flag_uk]]"></a>
 				</div>
 			</div>
 			</div>

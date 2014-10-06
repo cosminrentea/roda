@@ -22,7 +22,7 @@ import ro.roda.domainjson.AdminJson;
 import ro.roda.service.page.RodaPageService;
 import ro.roda.service.thumbnails.ThumbnailsService;
 
-@RequestMapping("/admin/cache")
+@RequestMapping("/adminjson/cache")
 @Controller
 public class CacheController {
 
@@ -32,7 +32,7 @@ public class CacheController {
 	@Autowired
 	ThumbnailsService thumbnailsService;
 
-	private final static String evictPageMapping = "/admin/cache/evict-page";
+	private final static String evictPageMapping = "/adminjson/cache/evict-page";
 
 	private final Log log = LogFactory.getLog(this.getClass());
 

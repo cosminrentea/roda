@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import ro.roda.domainjson.QuestionInfo;
 import ro.roda.service.QuestionInfoService;
 
-@RequestMapping("/admin/questioninfo")
+@RequestMapping("/adminjson/questioninfo")
 @Controller
 public class QuestionInfoController {
 

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import ro.roda.domainjson.UserMessages;
 import ro.roda.service.UserManagementService;
 
-@RequestMapping("/admin/usermessages")
+@RequestMapping("/adminjson/usermessages")
 @Controller
 public class UserMessagesController {
 

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import ro.roda.domainjson.LayoutList;
 import ro.roda.service.LayoutListService;
 
-@RequestMapping("/admin/cmslayoutlist")
+@RequestMapping("/adminjson/cmslayoutlist")
 @Controller
 public class LayoutListController {
 

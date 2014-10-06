@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import ro.roda.domainjson.AuditRevisionsDate;
 import ro.roda.service.AuditRevisionsService;
 
-@RequestMapping("/admin/revised-dates")
+@RequestMapping("/adminjson/revised-dates")
 @Controller
 public class AuditRevisionsDatesController {
 

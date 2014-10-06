@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import ro.roda.domainjson.AuditSimplifiedRevisionsByUsername;
 import ro.roda.service.AuditRevisionsService;
 
-@RequestMapping("/admin/simple-revisions-by-user")
+@RequestMapping("/adminjson/simple-revisions-by-user")
 @Controller
 public class AuditSimplifiedRevisionsByUsernameController {
 

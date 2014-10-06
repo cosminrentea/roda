@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import ro.roda.domainjson.LanguageList;
 import ro.roda.service.LanguageListService;
 
-@RequestMapping("/user/languagelist")
+@RequestMapping("/userjson/languagelist")
 @Controller
 public class LanguageListController {
 

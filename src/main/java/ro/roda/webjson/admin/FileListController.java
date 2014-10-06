@@ -15,7 +15,7 @@ import ro.roda.domainjson.FileList;
 import ro.roda.service.FileListService;
 import ro.roda.service.filestore.CmsFileStoreService;
 
-@RequestMapping("/admin/cmsfilelist")
+@RequestMapping("/adminjson/cmsfilelist")
 @Controller
 public class FileListController {
 

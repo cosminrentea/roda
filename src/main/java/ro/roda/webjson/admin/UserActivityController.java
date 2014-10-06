@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import ro.roda.domainjson.UserActivities;
 import ro.roda.service.UserManagementService;
 
-@RequestMapping("/admin/useractivity")
+@RequestMapping("/adminjson/useractivity")
 @Controller
 public class UserActivityController {
 

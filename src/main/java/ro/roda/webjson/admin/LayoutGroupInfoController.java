@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import ro.roda.domainjson.LayoutGroupInfo;
 import ro.roda.service.LayoutGroupInfoService;
 
-@RequestMapping("/admin/cmslayoutgroupinfo")
+@RequestMapping("/adminjson/cmslayoutgroupinfo")
 @Controller
 public class LayoutGroupInfoController {
 

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import ro.roda.domainjson.AuditRevisionsUser;
 import ro.roda.service.AuditRevisionsService;
 
-@RequestMapping("/admin/revised-users")
+@RequestMapping("/adminjson/revised-users")
 @Controller
 public class AuditRevisionsUsersController {
 

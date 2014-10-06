@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import ro.roda.domainjson.UsersByGroup;
 import ro.roda.service.UserManagementService;
 
-@RequestMapping("/admin/usersbygroup")
+@RequestMapping("/adminjson/usersbygroup")
 @Controller
 public class UsersByGroupController {
 

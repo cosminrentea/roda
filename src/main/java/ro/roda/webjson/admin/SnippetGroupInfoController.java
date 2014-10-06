@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import ro.roda.domainjson.SnippetGroupInfo;
 import ro.roda.service.SnippetGroupInfoService;
 
-@RequestMapping("/admin/cmssnippetgroupinfo")
+@RequestMapping("/adminjson/cmssnippetgroupinfo")
 @Controller
 public class SnippetGroupInfoController {
 

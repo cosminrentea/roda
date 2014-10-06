@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import ro.roda.domainjson.AuditRevisions;
 import ro.roda.service.AuditRevisionsService;
 
-@RequestMapping("/admin/revisions")
+@RequestMapping("/adminjson/revisions")
 @Controller
 public class AuditRevisionsController {
 

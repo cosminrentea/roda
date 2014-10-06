@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-@RequestMapping("/user/session")
+@RequestMapping("/userjson/session")
 @Controller
 public class UserSessionController {
 

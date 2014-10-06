@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import ro.roda.domainjson.CmsPageTree;
 import ro.roda.service.CmsPageTreeService;
 
-@RequestMapping("/admin/cmspagestree")
+@RequestMapping("/adminjson/cmspagestree")
 @Controller
 public class CmsPageTreeController {
 

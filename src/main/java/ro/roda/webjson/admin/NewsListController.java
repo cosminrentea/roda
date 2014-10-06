@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import ro.roda.domainjson.NewsList;
 import ro.roda.service.NewsListService;
 
-@RequestMapping("/admin/cmsnewslist")
+@RequestMapping("/adminjson/cmsnewslist")
 @Controller
 public class NewsListController {
 

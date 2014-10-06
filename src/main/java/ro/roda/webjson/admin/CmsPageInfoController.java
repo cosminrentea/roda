@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import ro.roda.domainjson.CmsPageInfo;
 import ro.roda.service.CmsPageInfoService;
 
-@RequestMapping("/admin/cmspageinfo")
+@RequestMapping("/adminjson/cmspageinfo")
 @Controller
 public class CmsPageInfoController {
 

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import ro.roda.domainjson.FolderInfo;
 import ro.roda.service.FolderInfoService;
 
-@RequestMapping("/admin/cmsfolderinfo")
+@RequestMapping("/adminjson/cmsfolderinfo")
 @Controller
 public class FolderInfoController {
 

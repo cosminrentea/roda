@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import ro.roda.domainjson.FolderTree;
 import ro.roda.service.FolderTreeService;
 
-@RequestMapping("/admin/cmsfoldertree")
+@RequestMapping("/adminjson/cmsfoldertree")
 @Controller
 public class FolderTreeController {
 

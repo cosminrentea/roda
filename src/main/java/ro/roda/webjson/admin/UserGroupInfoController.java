@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import ro.roda.domainjson.UserGroupInfo;
 import ro.roda.service.UserManagementService;
 
-@RequestMapping("/admin/groupinfo")
+@RequestMapping("/adminjson/groupinfo")
 @Controller
 public class UserGroupInfoController {
 

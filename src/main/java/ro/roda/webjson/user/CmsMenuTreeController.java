@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import ro.roda.domainjson.CmsMenuTree;
 import ro.roda.service.CmsMenuTreeService;
 
-@RequestMapping("/user/menu")
+@RequestMapping("/userjson/menu")
 @Controller
 public class CmsMenuTreeController {
 

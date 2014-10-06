@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import ro.roda.domainjson.SnippetGroupTree;
 import ro.roda.service.SnippetGroupTreeService;
 
-@RequestMapping("/admin/cmssnippetgrouptree")
+@RequestMapping("/adminjson/cmssnippetgrouptree")
 @Controller
 public class SnippetGroupTreeController {
 

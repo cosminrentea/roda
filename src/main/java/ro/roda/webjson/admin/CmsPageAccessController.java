@@ -17,7 +17,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import ro.roda.domainjson.CmsPageAccess;
 import ro.roda.service.CmsPageInfoService;
 
-@RequestMapping("/admin/pageaccess")
+@RequestMapping("/adminjson/pageaccess")
 @Controller
 public class CmsPageAccessController {
 

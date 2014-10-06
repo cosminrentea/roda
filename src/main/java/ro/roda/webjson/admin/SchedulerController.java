@@ -15,7 +15,7 @@ import ro.roda.domain.SchedExecution;
 import ro.roda.domain.SchedTask;
 import ro.roda.service.SchedulerService;
 
-@RequestMapping("/admin/scheduler")
+@RequestMapping("/adminjson/scheduler")
 @Controller
 public class SchedulerController {
 

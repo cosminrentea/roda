@@ -24,7 +24,7 @@ import ro.roda.domain.Users;
 import ro.roda.service.UserSettingValueService;
 import ro.roda.service.UsersService;
 
-@RequestMapping("/user/settings")
+@RequestMapping("/userjson/settings")
 @Controller
 public class UserSettingsController {
 

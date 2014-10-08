@@ -4,12 +4,16 @@
       <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
  	  <script src="/roda/resources/root/ext-js/ext-all-debug-w-comments.js"></script>
 	  <link rel="stylesheet" href="/roda/resources/root/ext-js/resources/ext-theme-roda/ext-theme-roda-all.css">
+	  <script src="/roda/resources/root/translations/en.js"></script>
   	  <script type="text/javascript" src="/roda/resources/root/app.js"></script>
+	  <link rel="stylesheet" href="/roda/resources/root/style.css">  	  
       <link rel="icon" href="[[FileURL:faviconpng]]" type="image/png" />
       <style>
 	  [[Snippet: main-css-en]]  
       </style>
       <link rel="SHORTCUT ICON" href="[[FileURL:faviconico]]" />
+
+
 
 <style>
 html { height: 100%; }
@@ -71,20 +75,19 @@ body {
 
 </head>
 <body>
-	<div id="pgheader">
-		<div id="insideheader">
+		<div id="pgheader">
+			<div id="insideheader">
 			<div id="logo_slim">
-				<a href="/roda/en">[[ImgLink: logo_slim]]</a>
-			</div>
+			<a href="/roda/page/en">[[ImgLink: logo_slim]]</a></div>
 			<div id="header_right">
 				<div id="flags">
-					<a href="/roda/ro" style="margin-right:5px; margin-left:100px;"><img src="[[FileURL:flag_ro]]"></a>
+					<a href="/roda/page/ro" style="margin-right:5px; margin-left:100px;"><img src="[[FileURL:flag_ro]]"></a>
 					<a href="#"><img src="[[FileURL:flag_uk]]"></a>
 				</div>
 			</div>
+			</div>
 		</div>
-	</div>
-	[[Code: PageContent]]
+		[[Code: PageContent]]
 	<div id="pgfooter"></div>
 </body>
 

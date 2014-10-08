@@ -1,17 +1,16 @@
-Ext
-		.define(
-				'databrowser.view.CatalogView',
+Ext.define('databrowser.view.CatalogView',
 				{
 					extend : 'Ext.grid.Panel',
 					alias : 'widget.catalogview',
 					autoRender : true,
-					// id: 'DetailsGridPanel',
-					// itemId: 'DetailsGridPanel',
-					width : '100%',
+//					width : '100%',
 					header : true,
 					hideHeaders : true,
-					title : 'Catalog view',
+					title : translations.catalogview,
 					catalogid : 0,
+					config : {
+						currentview : 'simple',
+					},
 					loadStudy : function(id) {
 						var catalogtitle = this.title;
 						var catalogindice = this.catalogid;
@@ -35,7 +34,7 @@ Ext
 
 						// var dgrid = Ext.getCmp('DetailsGridView');
 						// var gridtab = Ext.getCmp('seriesstudies');
-						this.setLoading('Loading....');
+						this.setLoading(translations.loading);
 						var cStore = Ext.StoreManager.get('CatalogStore');
 						cStore.load({
 							id: id, //set the id here
@@ -111,7 +110,7 @@ Ext
 																	items : [
 																			{
 																				xtype : 'button',
-																				id : 'SButton',
+																				itemId : 'SButton',
 																				enableToggle : true,
 																				icon : 'img/simple.png',
 																				toggleGroup : 'SMCButtonGroup',
@@ -124,7 +123,7 @@ Ext
 																			},
 																			{
 																				xtype : 'button',
-																				id : 'MButton',
+																				itemId : 'MButton',
 																				enableToggle : true,
 																				icon : 'img/mediu.png',
 																				toggleGroup : 'SMCButtonGroup',
@@ -137,7 +136,7 @@ Ext
 																			},
 																			{
 																				xtype : 'button',
-																				id : 'CButton',
+																				itemId : 'CButton',
 																				enableToggle : true,
 																				icon : 'img/complex.png',
 																				toggleGroup : 'SMCButtonGroup',
@@ -154,7 +153,7 @@ Ext
 														xtype : 'pagingtoolbar',
 														dock : 'bottom',
 														id : 'PagingToolbar',
-														width : 400,
+														//width : 800,
 														afterPageText : 'din {0}',
 														beforePageText : 'Pagina',
 														displayInfo : true,
@@ -193,16 +192,11 @@ Ext
 												ftype : 'rowbody',
 												getAdditionalData : function(
 														data, idx, record, orig) {
-													var headerCt = this.view.headerCt, colspan = headerCt
-															.getColumnCount();
+													var headerCt = this.view.headerCt, colspan = headerCt.getColumnCount();
 													var body;
-
-													var sButton = Ext
-															.getCmp('SButton'), mButton = Ext
-															.getCmp('MButton'), cButton = Ext
-															.getCmp('CButton');
-													if (cButton.pressed
-															|| mButton.pressed) {
+													var catview = Ext.ComponentQuery.query('catalogview');
+													var cview = catview[0].getCurrentview();
+													if (cview == 'medium'|| cview == 'complex') {
 														body = ''
 																+ '<div style="margin: 0px 0px 0px 0px; width: 100%">'
 																+ '<table style="table-layout: fixed; width: 100%">'
@@ -240,15 +234,12 @@ Ext
 																+ '<td colspan="3" valign="top">'
 																+ '<div style="word-wrap: break-word">'
 																+ '<p style="font-size: 10px">'
-																+ '<b>Archive date:</b> '
+																+ '<b>' + translations.archivedate + ':</b> '
 																+ record
 																		.get("an")
 																+ '<br/>'
-																+ '<b>Metadata access:</b> Open<br/>'
-																+ '<b>Data access:</b> Open<br/>'
-																+ '<a href="">'
-																+ '<b>Adauga la catalog</b>'
-																+ '</a>'
+																+ '<b>' + translations.metadataaccess + ':</b> Open<br/>'
+																+ '<b>' + translations.dataaccess+ ':</b> Open<br/>'
 																+ '</p>'
 																+ '</div>'
 																+ '</td>'
@@ -263,12 +254,12 @@ Ext
 																+ '</div>'
 																+ '</td>'
 																+ '</tr>'
-																+ (mButton.pressed ? ''
+																+ (cview != 'complex' ? ''
 																		: ('<tr>'
 																				+ '<td colspan="2" valign="top">'
 																				+ '<div style="word-wrap: break-word">'
 																				+ '<p style="font-size: 10px">'
-																				+ '<b>Countries:</b> '
+																				+ '<b>' + translations.countries + ':</b> '
 																				+ record
 																						.get("countries")
 																				+ '</p>'
@@ -277,7 +268,7 @@ Ext
 																				+ '<td colspan="2" valign="top">'
 																				+ '<div style="word-wrap: break-word">'
 																				+ '<p style="font-size: 10px">'
-																				+ '<b>Geographic coverage: </b>'
+																				+ '<b>'+translations.stdgeocover+': </b>'
 																				+ record
 																						.get("geo_coverage")
 																				+ '</p>'
@@ -286,7 +277,7 @@ Ext
 																				+ '<td colspan="2" valign="top">'
 																				+ '<div style="word-wrap: break-word">'
 																				+ '<p style="font-size: 10px">'
-																				+ '<b>Unitatea de analiza: </b>'
+																				+ '<b>' + translations.stdunitanalysis+ ': </b>'
 																				+ record
 																						.get("unit_analysis")
 																				+ '</p>'
@@ -295,7 +286,7 @@ Ext
 																				+ '<td colspan="3" valign="top">'
 																				+ '<div style="word-wrap: break-word">'
 																				+ '<p style="font-size: 10px">'
-																				+ '<b>Univers:</b> '
+																				+ '<b>'+ translations.stduniverse+':</b> '
 																				+ record
 																						.get("universe")
 																				+ '</p>'
@@ -305,6 +296,7 @@ Ext
 																+ '</div>'
 																+ '<hr style="width: 100%; border: 2px groove">';
 													} else {
+														console.log('else--------');
 														body = ''
 																+ '<div margin: 0px 0px 0px 0px style="width: 100%">'
 																+ '<table style="table-layout: fixed; width: 100%">'
@@ -345,26 +337,12 @@ Ext
 											} ],
 											columns : [ {
 												xtype : 'gridcolumn',
-												width : 465,
+												flex: 2,
+												// width : 465,
 												text : 'DetailGridColumn'
 											} ]
 										});
-
 						me.callParent(arguments);
-					},
-
-					onSButtonClick : function(button, e, eOpts) {
-						this.getView().refresh();
-
-					},
-
-					onMButtonClick : function(button, e, eOpts) {
-						this.getView().refresh();
-
-					},
-
-					onCButtonClick : function(button, e, eOpts) {
-						this.getView().refresh();
 					},
 
 					onNumberOfRecordsBlur : function(component, e, eOpts) {

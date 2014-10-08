@@ -11,11 +11,11 @@ Ext.define('databrowser.controller.DataBrowser', {
 	            ref: 'analysisVar',
 	            selector: 'studyview gridpanel#analysisvar'
 	        }, 
-	        {
-	        	ref: 'freqChart',
-	        	selector: 'studyview freqchart#ilfreqchart'
-	        	
-	        },
+//	        {
+//	        	ref: 'freqChart',
+//	        	selector: 'studyview freqchart#ilfreqchart'
+//	        	
+//	        },
 	        {
 	        	ref: 'anPanel',
 	        	selector: 'studyview panel#analResults'
@@ -37,11 +37,11 @@ Ext.define('databrowser.controller.DataBrowser', {
 	            ref: 'SranalysisVar',
 	            selector: 'studyseriesview gridpanel#sranalysisvar'
 	        }, 
-	        {
-	        	ref: 'SrfreqChart',
-	        	selector: 'studyseriesview freqchart#ilfreqchart'
-	        	
-	        },
+//	        {
+//	        	ref: 'SrfreqChart',
+//	        	selector: 'studyseriesview freqchart#ilfreqchart'
+//	        	
+//	        },
 	        {
 	        	ref: 'SranPanel',
 	        	selector: 'studyseriesview panel#analResults'
@@ -166,11 +166,12 @@ Ext.define('databrowser.controller.DataBrowser', {
 	var me = this;
 	Ext.Ajax.request({
 //        url : 'http://roda.apiary-mock.com/statistics',
-		url: '../../j/statistics',
+		url: '../../statistics',
 		method : "GET",
         params : {
                 variable1 : firstv,
-                variable2 : secv
+                variable2 : secv,
+                lang : translations.language
         },
         success : function(response) {
         var responseJson = Ext.decode(response.responseText);
@@ -210,11 +211,12 @@ onSTSendToAnalysis : function (button) {
 	var secv = astore.getAt(1).data.indice;
 	var me = this;
 	Ext.Ajax.request({
-        url : '../../j/statistics',
+        url : '../../statistics',
         method : "POST",
         params : {
                 variable1 : firstv,
-                variable2 : secv
+                variable2 : secv,
+                lang : translations.language                
         },
         success : function(response) {
         var responseJson = Ext.decode(response.responseText);
@@ -248,11 +250,12 @@ onSTSendToAnalysis : function (button) {
 		this.getSingledetails().setLoading('Loading...');
 		var me = this;
 		Ext.Ajax.request({
-	        url : '../../j/statistics',
+	        url : '../../statistics',
 //	        url : 'http://roda.apiary-mock.com/statistics',
 	        method : "GET",
 	        params : {
 	                variable1 : currentNode.data.indice,
+	                lang : translations.language
 	        },
 	        success : function(response) {
 	        var responseJson = Ext.decode(response.responseText);
@@ -504,11 +507,12 @@ onSTSendToAnalysis : function (button) {
 		console.log(currentNode);
 		var me = this;
 		Ext.Ajax.request({
-	        url : '../../j/statistics',
+	        url : '../../statistics',
 //	        url : 'http://roda.apiary-mock.com/statistics',
 	        method : "GET",
 	        params : {
 	                variable1 : currentNode.data.indice,
+	                lang : translations.language
 	        },
 	        success : function(response) {
 	        var responseJson = Ext.decode(response.responseText);

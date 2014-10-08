@@ -7,7 +7,7 @@ Ext.Loader.setConfig({
      	'databrowser.util' : 'app/util'
     }
 });
-//Ext.Loader.setPath('Ext.ux.plugins.FitToParent', '.');
+
 Ext.application({
 
     requires: [
@@ -45,6 +45,7 @@ Ext.application({
     views: [
         'DataBrowserPanel',
         'CatalogView',
+        'YearView',
         'DBCard',
         'Browser',
         'DetailsPanel',
@@ -61,7 +62,7 @@ Ext.application({
         'Alert',
         'ScatterChart'
     ],
-	controllers : ['VariableView', 'DataBrowser', 'Browser'],
+	controllers : ['VariableView', 'DataBrowser', 'Browser', 'CatalogView', 'YearView'],
     autoCreateViewport: false,
     name: 'databrowser',
     appFolder:'/roda/root/app',

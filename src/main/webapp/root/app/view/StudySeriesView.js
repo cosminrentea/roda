@@ -13,8 +13,7 @@ Ext.define('databrowser.view.StudySeriesView', {
 
     	//asta e o varianta idioata determinata oarecum de incapacitatea autorilor extjs de a explica cum se fac rahaturile simple    	
     	this.setActiveTab(0);
-    	this.setLoading('Loading....');
-    	console.log('setloading here---------------');
+    	this.setLoading(translations.loading);
     	var dtab = Ext.getCmp('ssdetails');
     	var variablesgrid = Ext.getCmp('studyseriesvariables');    
     	var filestab = Ext.getCmp('studyseriesdocuments');
@@ -50,12 +49,12 @@ Ext.define('databrowser.view.StudySeriesView', {
     		  }
     		});
     },
-    title: 'Study View',
+    title: translations.seriesview,
     items: [
             {
                 autoScroll: true,
                 layout:'fit',
-                title: 'Detalii',
+                title: translations.stdetails,
             	id:'ssdetails',
                 tpl: new Ext.XTemplate(
                 		'<div style="padding:10px;">',
@@ -77,7 +76,7 @@ Ext.define('databrowser.view.StudySeriesView', {
                 layout : {
 	                type : 'border',
                 },
-                title: 'Variabile',
+                title: translations.stvariables,
             	itemId:'svariables',
                 	items: [{
                             	xtype: 'gridpanel',
@@ -121,7 +120,7 @@ Ext.define('databrowser.view.StudySeriesView', {
                                     xtype: 'gridcolumn',
                                     dataIndex: 'name',
                                     hideable: false,
-                                    text: 'name',
+                                    text: translations.stvgname,
                                     width:100,
                                     fixed: true,
                                     renderer: function(value, metaData, record, rowIndex, colIndex, store) {
@@ -133,7 +132,7 @@ Ext.define('databrowser.view.StudySeriesView', {
                                     xtype: 'gridcolumn',
                                     dataIndex: 'label',
                                     hideable: false,
-                                    text: 'label',
+                                    text: translations.stvglabel,
                                     flex:1
                                 },
                             ]
@@ -148,7 +147,7 @@ Ext.define('databrowser.view.StudySeriesView', {
                         items : [
                                 {
                                     xtype : 'panel',
-                                    title : 'Variable details',
+                                    title : translations.stvariabledetails,
                                     itemId: 'srvardetails',
                                     autoScroll : true,
                                     layout : {
@@ -166,7 +165,7 @@ Ext.define('databrowser.view.StudySeriesView', {
                                 {
                                     xtype : 'panel',
                                     autoScroll : true,
-                                    title : 'Analyze',
+                                    title : translations.stanalyze,
                                     itemId: 'srvaranalyze',
                                     items : [
                                             {
@@ -187,7 +186,7 @@ Ext.define('databrowser.view.StudySeriesView', {
                                                             xtype : 'gridcolumn',
                                                             dataIndex : 'name',
                                                             hideable : false,
-                                                            text : 'name',
+                                                            text : translations.stanname,
                                                             width : 100,
                                                             fixed : true,
                                                         },
@@ -195,7 +194,7 @@ Ext.define('databrowser.view.StudySeriesView', {
                                                             xtype : 'gridcolumn',
                                                             dataIndex : 'label',
                                                             hideable : false,
-                                                            text : 'label',
+                                                            text : translations.stanlabel,
                                                             flex : 1
                                                         },
                                                         {
@@ -207,7 +206,7 @@ Ext.define('databrowser.view.StudySeriesView', {
                                                             items : [
                                                                 {
                                                                     icon : '/roda/resources/root/img/delete.gif',
-                                                                    tooltip : 'Delete variable',
+                                                                    tooltip : translations.standelvar,
                                                                     scope : this,
                                                                     handler : function(view, rowIndex, colIndex,
                                                                             item, e, record, row) {
@@ -223,7 +222,7 @@ Ext.define('databrowser.view.StudySeriesView', {
                                             }, {
                                                 xtype : 'button',
                                                 itemId : 'sendToAnalysis',
-                                                text : 'Analyze',
+                                                text : translations.stansend,
                                                 width : '100%'
                                             }, {
                                                 xtype : 'panel',
@@ -271,7 +270,7 @@ Ext.define('databrowser.view.StudySeriesView', {
                   		  '<div class="studyfiledl">',
                     	'<H2 class="file-{filetype}">{filename}</H2>',		
                     	'<p>{filedescription}</p>',
-                    	'<a href="{fileurl}">Descarca fisierul</a>',
+                    	'<a href="{fileurl}">' + translations.dwnlfile + '</a>',
                     	'</div>',
                     	'</tpl>',
                     	'</div>'	
@@ -281,24 +280,24 @@ Ext.define('databrowser.view.StudySeriesView', {
             }, {
                 autoScroll: true,
                 layout:'accordion',
-                title: 'Series',
+                title: translations.serseries,
                 icon: 'img/series.png',
             	id:'sseries',
             	items : [
             	         { 
-            	        	  title: 'Series details',
+            	        	  title: translations.serdetails,
             	        	  id: 'studyseriesdetails',
             	              autoScroll: true,
             	              layout:'fit', 
             	               tpl: new Ext.XTemplate(
             	                		'<div style="padding:10px;">',
-            	                    	'<H2>Name: {name}</H2>',		
-            	                    	'<H3>Author: {author}</H3>',
+            	                    	'<H2>' + translations.serdetname + ': {name}</H2>',		
+            	                    	'<H3>' + translations.serdetauthor + ': {author}</H3>',
             	                    	'<p>{description}</p>',
             	                    	'</div>'
             	                    	),
             	         }, {
-            	         	 title: 'Other studies',
+            	         	 title: translations.serotherst,
             	         	xtype: 'seriesmembersview', 	
             	         	 id: 'studyseriesstudies',
             	         }

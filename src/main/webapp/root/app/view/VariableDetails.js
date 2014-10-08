@@ -9,12 +9,12 @@ Ext.define('databrowser.view.VariableDetails', {
     header: false,
     layout: 'fit',
     border: 1,
-    items : [
-	         {
-        xtype: 'freqchart',
-        id: 'freqchart'
-	
-	         }],
+//    items : [
+//	         {
+//        xtype: 'freqchart',
+//        id: 'freqchart'
+//	
+//	         }],
 	
 	
 });

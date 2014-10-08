@@ -6,7 +6,10 @@ Ext.define('databrowser.view.YearView', {
     width: '100%',
     header: true,
     hideHeaders: true,
-    title: 'Year view',
+    title: translations.yearview,
+	config : {
+		currentview : 'simple',
+	},
     loadStudy: function(id) {
     	var year = this.title;
     	var stitle = this.getView().store.findRecord('indice', id).data.name;
@@ -128,22 +131,22 @@ Ext.define('databrowser.view.YearView', {
                     dock: 'bottom',
                     id: 'YearPagingToolbar',
                     width: '100%',
-                    afterPageText: 'din {0}',
-                    beforePageText: 'Pagina',
+                    afterPageText: translations.of + ' {0}',
+                    beforePageText: translations.beforePageText,
                     displayInfo: true,
-                    displayMsg: 'Afisare {0} - {1} din {2}',
-                    emptyMsg: 'Nu exista date',
-                    firstText: 'Prima pag.',
-                    lastText: 'Ultima',
-                    nextText: 'Prima',
-                    prevText: 'Anterior',
-                    refreshText: 'Actualizare',
+                    displayMsg: translations.displayitems  + ' {0} - {1} ' + translations.of + ' {2}',
+                    emptyMsg: translations.noitems,
+                    firstText: translations.pagefirstText,
+                    lastText: translations.pagelastText,
+                    nextText: translations.pagenextText,
+                    prevText: translations.pageprevText,
+                    refreshText: translations.pagerefreshText,
                     items: [
                         {
                             xtype: 'textfield',
                             id: 'YearNumberOfRecords',
                             width: 89,
-                            fieldLabel: 'Inregistrari',
+                            fieldLabel: translations.nrrecords,
                             labelPad: 0,
                             labelWidth: 60,
                             value: 20,
@@ -170,26 +173,12 @@ Ext.define('databrowser.view.YearView', {
                         var headerCt = this.view.headerCt,
                             colspan = headerCt.getColumnCount(); 
                             var body;
-
-                        var sButton = Ext.getCmp('YSButton'),
-                            mButton = Ext.getCmp('YMButton'),
-                            cButton = Ext.getCmp('YCButton');
-                        if (cButton.pressed || mButton.pressed)
-                        {    
-                            body = '' +
-                            '<div style="margin: 0px 0px 0px 0px; width: 100%">' +
-                            '<table style="table-layout: fixed; width: 100%">' +
-                            '<colgroup>' +
-                            '<col style="width: 11%" />' +
-                            '<col style="width: 11%" />' +
-                            '<col style="width: 11%" />' +
-                            '<col style="width: 11%" />' +
-                            '<col style="width: 11%" />' +
-                            '<col style="width: 11%" />' +
-                            '<col style="width: 11%" />' +
-                            '<col style="width: 11%" />' +
-                            '<col style="width: 12%" />' +    
-                            '</colgroup>' +
+                        var catview = Ext.ComponentQuery.query('yearview');
+						var yview = catview[0].getCurrentview();
+						if (yview == 'medium'|| yview == 'complex') {  
+                           
+							var bodystart = '' +
+                            '<div style="margin: 0px 0px 0px 0px; width: 100%"><table style="table-layout: fixed; width: 100%">' +
                             '<tr>' +
                             '<td colspan="6" valign="top">' +
                             '<div style="word-wrap: break-word">' +
@@ -206,12 +195,9 @@ Ext.define('databrowser.view.YearView', {
                             '<td colspan="3" valign="top">' +
                             '<div style="word-wrap: break-word">' +
                             '<p style="font-size: 10px">' +
-                            '<b>Archive date:</b> ' + record.get("an") + '<br/>' +
-                            '<b>Metadata access:</b> Open<br/>' +
-                            '<b>Data access:</b> Open<br/>' +
-                            '<a href="">' +
-                            '<b>Adauga la catalog</b>' +
-                            '</a>' +
+                            '<b>' + translations.archivedate + ':</b> ' + record.get("an") + '<br/>' +
+                            '<b>' + translations.metadataaccess + ':</b> Open<br/>' +
+                            '<b>' + translations.dataaccess+ ':</b> Open<br/>' +
                             '</p>' +
                             '</div>'+
                             '</td>'+
@@ -224,40 +210,48 @@ Ext.define('databrowser.view.YearView', {
                             '</p>' +
                             '</div>' +
                             '</td>' +
-                            '</tr>' +
-                            (mButton.pressed ? '' : ('<tr>' +
-                            '<td colspan="2" valign="top">' +
+                            '</tr>';
+                            
+                            				
+                  			var complexinsert = '<tr>' + 
+                          '<td colspan="2" valign="top">' +
                             '<div style="word-wrap: break-word">' +
                             '<p style="font-size: 10px">' +
-                            '<b>Countries:</b> ' + record.get("countries") +
+                            '<b>' + translations.countries + ':</b> ' + record.get("countries") +
                             '</p>' +
                             '</div>' +
                             '</td>' +
                             '<td colspan="2" valign="top">' +
                             '<div style="word-wrap: break-word">' +
                             '<p style="font-size: 10px">' +
-                            '<b>Geographic coverage: </b>' + record.get("geo_coverage") +
+                            '<b>'+translations.stdgeocover+': </b>' + record.get("geo_coverage") +
                             '</p>' +
                             '</div>' +
                             '</td>' +
                             '<td colspan="2" valign="top">' +
                             '<div style="word-wrap: break-word">' +
                             '<p style="font-size: 10px">' +
-                            '<b>Unitatea de analiza: </b>' + record.get("unit_analysis") +
+                            '<b>' + translations.stdunitanalysis+ ': </b>' + record.get("unit_analysis") +
                             '</p>' +
                             '</div>' +
                             '</td>' +
                             '<td colspan="3" valign="top">' +
                             '<div style="word-wrap: break-word">' +
                             '<p style="font-size: 10px">' +
-                            '<b>Univers:</b> ' + record.get("universe") + 
+                            '<b>'+ translations.stduniverse+':</b> ' + record.get("universe") + 
                             '</p>' +
                             '</div>' +
                             '</td>' +
-                            '</tr>')) +
-                            '</table>' +
+                            '</tr>';
+                  			
+                            var bodyend = '</table>' +
                             '</div>' +
                             '<hr style="width: 100%; border: 2px groove">';
+                            if (yview == 'complex') {
+                            	body = bodystart + complexinsert + bodyend;
+                            } else {
+                                body = bodystart + bodyend;
+                            }
                         }
                         else
                         {
@@ -295,27 +289,12 @@ Ext.define('databrowser.view.YearView', {
                 {
                     xtype: 'gridcolumn',
                     width: '100%',
-                    text: 'DetailGridColumn'
+                    text: translations.detailgridcolumn,
                 }
             ]
         });
 
         me.callParent(arguments);
-    },
-
-    onYSButtonClick: function(button, e, eOpts) {
-        this.getView().refresh();
-
-    },
-
-    onYMButtonClick: function(button, e, eOpts) {
-        this.getView().refresh();
-
-
-    },
-
-    onYCButtonClick: function(button, e, eOpts) {
-        this.getView().refresh();
     },
 
     onNumberOfRecordsBlur: function(component, e, eOpts) {

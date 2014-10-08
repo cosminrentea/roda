@@ -17,7 +17,7 @@ Ext
 											xtype : 'gridcolumn',
 											dataIndex : 'an',
 											hideable : false,
-											text : 'an',
+											text : translations.sermviewan,
 											width : 50,
 											fixed : true
 										},
@@ -25,14 +25,14 @@ Ext
 											xtype : 'gridcolumn',
 											dataIndex : 'name',
 											hideable : false,
-											text : 'name',
+											text : translations.sermviewname,
 											flex : 1
 										},
 										{
 											xtype : 'gridcolumn',
 											hideable : false,
-											text : 'Act',
-											width : 50,
+											text : translations.sermviewact,
+											width : 100,
 											fixed : true,
 											renderer : function(value, meta,
 													record, row, col) {
@@ -40,7 +40,7 @@ Ext
 												console.log(record);
 												return '<a href=javascript:Ext.getCmp(\'seriesview\').loadStudy('
 														+ record.data.indice
-														+ ');>View</a>';
+														+ ');>'+ translations.view +'</a>';
 
 											},
 										} ],
@@ -48,8 +48,8 @@ Ext
 								 pageSize: 5,
 								 store: this.store,
 								 displayInfo: true,
-								 displayMsg: 'Displaying items {0} - {1} of {2}',
-								 emptyMsg: "No items"
+								 displayMsg: translations.displayitems + ' {0} - {1} '+ translations.of  +' {2}',
+								 emptyMsg: translations.noitems
 								 }),
  				        });			
 								me.callParent(arguments);

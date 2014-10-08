@@ -14,9 +14,11 @@ Ext.define('databrowser.store.StudyStore', {
             storeId: 'StudyStore',
             proxy: {
                 type: 'rest',
-                url: '../../j/studyinfo',  
+                extraParams : {
+                	lang : translations.language
+                },
+                url: '../../studyinfo',  
                 appendId: true,
-//                url: 'data/study.json',
                 reader: {
                     type: 'json',
                     root: 'data'

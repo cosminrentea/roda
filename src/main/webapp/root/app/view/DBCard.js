@@ -17,7 +17,7 @@ Ext.define('databrowser.view.DBCard', {
     items: [
 	{
 		id: 'initial',
-		html: 'Selectati un element din arborele din dreapta',
+		html: translations.selectelement,
 	},     
     {
         id: 'catalogview',

@@ -50,29 +50,29 @@ Ext.define('databrowser.view.StudyView', {
 	        }
 	    });
     },
-    title : 'Study View',
+    title : translations.studyview,
     items : [
             {
                 autoScroll : true,
                 layout : 'fit',
-                title : 'Detalii',
+                title : translations.stdetails,
                 id : 'sdetails',
                 tpl : new Ext.XTemplate('<div style="padding:10px;">', '<H2>{name}</H2>', '<H3>{author}</H3>',
                                         '<p>{description}</p>',
                                         '<table width="100%" border="0" cellspacing="2" class="sdetailstbl"',
-                                        '<tr><th>Univers:</th><td> {universe}</td></tr>',
-                                        '<tr><th>Acoperire geografica:</th><td> {geo_coverage}</td></tr>',
-                                        '<tr><th>Unitate geografica:</th><td> {geo_unit}</td></tr>',
-                                        '<tr><th>Tipul cercetarii:</th><td> {research_instrument}</td></tr>',
-                                        '<tr><th>Unitate de analiza:</th><td> {unit_analysis}</td></tr>',
-                                        '<tr><th>Ponderare:</th><td> {weighting}</td></tr>', '</table>', '</div>'),
+                                        '<tr><th>'+ translations.stduniverse +'</th><td> {universe}</td></tr>',
+                                        '<tr><th>'+ translations.stdgeocover +'</th><td> {geo_coverage}</td></tr>',
+                                        '<tr><th>'+ translations.stdgeounit +':</th><td> {geo_unit}</td></tr>',
+                                        '<tr><th>'+ translations.stdrestype +':</th><td> {research_instrument}</td></tr>',
+                                        '<tr><th>'+ translations.stdunitanalysis +':</th><td> {unit_analysis}</td></tr>',
+                                        '<tr><th>'+ translations.stdweighting +':</th><td> {weighting}</td></tr>', '</table>', '</div>'),
             },
             {
                 autoScroll : true,
                 layout : {
 	                type : 'border',
                 },
-                title : 'Variabiles',
+                title : translations.stvariables,
                 itemId : 'svariables',
                 items : [
                         {
@@ -102,7 +102,7 @@ Ext.define('databrowser.view.StudyView', {
                                         xtype : 'gridcolumn',
                                         dataIndex : 'name',
                                         hideable : false,
-                                        text : 'name',
+                                        text : translations.stvgname,
                                         width : 100,
                                         fixed : true,
                                         renderer : function(value, metaData, record, rowIndex, colIndex, store) {
@@ -113,7 +113,7 @@ Ext.define('databrowser.view.StudyView', {
                                         xtype : 'gridcolumn',
                                         dataIndex : 'label',
                                         hideable : false,
-                                        text : 'label',
+                                        text : translations.stvglabel,
                                         flex : 1
                                     },
 
@@ -130,7 +130,7 @@ Ext.define('databrowser.view.StudyView', {
                             items : [
                                     {
                                         xtype : 'panel',
-                                        title : 'Variable details',
+                                        title : translations.stvariabledetails,
                                         itemId: 'vardetails',
                                         autoScroll : true,
                                         //layout : 'fit',
@@ -138,18 +138,12 @@ Ext.define('databrowser.view.StudyView', {
                                           type : 'vbox',
                                             align : 'stretch'
                                         },
-//                                        items : [
-//	                                        {
-//	                                            xtype : 'freqchart',
-//	                                            id : 'ilfreqchart',
-//	                                        }
-//                                        ]
                                     },
                                     {
                                         xtype : 'panel',
                                         autoScroll : true,
                                         itemId: 'varanalyze',
-                                        title : 'Analyze',
+                                        title : translations.stanalyze,
                                         items : [
                                                 {
                                                     xtype : 'gridpanel',
@@ -182,7 +176,7 @@ Ext.define('databrowser.view.StudyView', {
                                                                 xtype : 'gridcolumn',
                                                                 dataIndex : 'name',
                                                                 hideable : false,
-                                                                text : 'name',
+                                                                text : translations.stanname,
                                                                 width : 100,
                                                                 fixed : true,
                                                             },
@@ -190,7 +184,7 @@ Ext.define('databrowser.view.StudyView', {
                                                                 xtype : 'gridcolumn',
                                                                 dataIndex : 'label',
                                                                 hideable : false,
-                                                                text : 'label',
+                                                                text : translations.stanlabel,
                                                                 flex : 1
                                                             },
                                                             {
@@ -202,7 +196,7 @@ Ext.define('databrowser.view.StudyView', {
                                                                 items : [
 	                                                                {
 	                                                                    icon : '/roda/resources/root/img/delete.gif',
-	                                                                    tooltip : 'Delete variable',
+	                                                                    tooltip : translations.standelvar,
 	                                                                    scope : this,
 	                                                                    handler : function(view, rowIndex, colIndex,
 	                                                                            item, e, record, row) {
@@ -218,7 +212,7 @@ Ext.define('databrowser.view.StudyView', {
                                                 }, {
                                                     xtype : 'button',
                                                     itemId : 'sendToAnalysis',
-                                                    text : 'Analyze',
+                                                    text : translations.stansend,
                                                     width : '100%'
                                                 }, {
                                                     xtype : 'panel',
@@ -244,13 +238,13 @@ Ext.define('databrowser.view.StudyView', {
             {
                 autoScroll : true,
                 layout : 'fit',
-                title : 'Date',
+                title : translations.stdate,
                 id : 'sdata'
             },
             {
                 autoScroll : true,
                 layout : 'fit',
-                title : 'Documente',
+                title : translations.stdocuments,
                 id : 'sfiles',
                 items : [
 	                {
@@ -259,7 +253,7 @@ Ext.define('databrowser.view.StudyView', {
 	                    tpl : new Ext.XTemplate('<div class="studyfiles">', '<tpl for=".">',
 	                                            '<div class="studyfiledl">', '<H2>{filename}</H2>',
 	                                            '<p>{filedescription}</p>',
-	                                            '<a  class="file-{filetype}" href="{fileurl}">Descarca fisierul</a>',
+	                                            '<a  class="file-{filetype}" href="{fileurl}">' + translations.dwnlfile + '</a>',
 	                                            '</div>', '</tpl>', '</div>'),
 	                }
                 ]

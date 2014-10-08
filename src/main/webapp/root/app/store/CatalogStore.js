@@ -13,17 +13,12 @@ Ext.define('databrowser.store.CatalogStore', {
             autoLoad: true,
             model: 'databrowser.model.CatalogsModel',
             storeId: 'CatalogStore',
-//            proxy: {
-//                type: 'ajax',
-//                url: 'data/catalogs.json',
-//                reader: {
-//                    type: 'json',
-//                    root: 'data'
-//                }
-//            }
         proxy: {
             type: 'rest',
-            url: '../../j/studiesbycatalog',  
+            url: '../../studiesbycatalog',
+            extraParams : {
+            	lang : translations.language
+            },
             appendId: true,
             reader: {
                 type: 'json',

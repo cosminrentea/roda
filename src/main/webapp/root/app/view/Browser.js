@@ -22,7 +22,7 @@ Ext.define('databrowser.view.Browser', {
 	        	        	id: 'CatalogsPanel',
 	        	        	autoScroll: true,
 	        	        	layout:'fit',
-	        	        	title: 'Cataloage',
+	        	        	title: translations.catalogs,
 	        	        	tabConfig: {
 	        	        		xtype: 'tab',
 	        	        		id: 'CatalogsTabConfig'
@@ -52,7 +52,7 @@ Ext.define('databrowser.view.Browser', {
 	        	        	id: 'YearsPanel',
 	        	        	autoScroll: true,
 	        	        	layout:'fit',                            
-	        	        	title: 'Ani',
+	        	        	title: translations.years,
 	        	        	tabConfig: {
 	        	        		xtype: 'tab',
 	        	        		id: 'YearsTabConfig'
@@ -83,7 +83,7 @@ Ext.define('databrowser.view.Browser', {
 	        	        	id: 'TopicPanel',
 	        	        	autoScroll: true,
 	        	        	layout:'fit',                            
-	        	        	title: 'ELSST',
+	        	        	title: translations.topics,
 	        	        	tabConfig: {
 	        	        		xtype: 'tab',
 	        	        		id: 'TopicTabConfig'

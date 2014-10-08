@@ -10,5 +10,5 @@ Ext.define('RODAdmin.store.studies.TempStudy', {
 
     model: 'RODAdmin.model.studies.TempStudy',
     autoload: true,    
-    proxy: {type: 'main', url: '/roda/j/admin/cmsfilelist/json'},
+    proxy: {type: 'main', url: '/roda/adminjson/cmsfilelist/json'},
 });

@@ -10,6 +10,6 @@ Ext.define('RODAdmin.store.metadata.Persons', {
 
     model: 'RODAdmin.model.metadata.Persons',
     autoload: true,   
-    proxy: {type: 'main', url: '/roda/j/ddieditorpersonlist'},    
+    proxy: {type: 'main', url: '/roda/ddieditorpersonlist'},    
  
 });

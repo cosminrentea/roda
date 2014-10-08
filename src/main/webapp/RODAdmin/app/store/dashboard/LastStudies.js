@@ -11,5 +11,5 @@ Ext.define('RODAdmin.store.dashboard.LastStudies', {
     model: 'RODAdmin.model.dashboard.LastStudies',
 
     autoLoad: true,
-    proxy: {type: 'main', url: '/roda/j/studyinfo'},    
+    proxy: {type: 'main', url: '/roda/studyinfo'},    
 });

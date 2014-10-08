@@ -10,6 +10,6 @@ Ext.define('RODAdmin.store.metadata.Sufixes', {
 
     model: 'RODAdmin.model.metadata.Sufixes',
     autoload: true,   
-    proxy: {type: 'main', url: '/roda/j/ddieditorsuffixlist'},    
+    proxy: {type: 'main', url: '/roda/ddieditorsuffixlist'},    
  
 });

@@ -30,20 +30,18 @@
 		<intercept-url pattern="/admin/app.css" access="permitAll" />
 		<intercept-url pattern="/admin/ext/**" access="permitAll" />
 		
+		<!-- Cosmin: the "admin" application should be accesible not only to "admin" user, but to all logged users -->		
 		<intercept-url pattern="/admin/index.html" access="isAuthenticated()" />
         <intercept-url pattern="/admin/**" access="isAuthenticated()"/>
         
-		<!-- secure the Admin JSON controllers  -->
-         <intercept-url pattern="/j/admin/**" access="hasRole('ROLE_ADMIN')"/>
+		<!-- secure the Admin's JSON controllers  -->
+         <intercept-url pattern="/adminjson/**" access="hasRole('ROLE_ADMIN')"/>
+
+		<!-- secure the User's JSON controllers -->
+        <intercept-url pattern="/userjson/**" access="isAuthenticated()" />
 
 		<!-- secure the REST API controllers  -->
         <intercept-url pattern="/api/**" access="isAuthenticated()"/>
-
-		<!-- secure the User's HTML controllers -->
-        <intercept-url pattern="/user/**" access="isAuthenticated()" />
-
-		<!-- secure the User's JSON controllers -->
-        <intercept-url pattern="/j/user/**" access="isAuthenticated()" />
 
 		<intercept-url pattern="/**" access="permitAll" />
 

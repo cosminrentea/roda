@@ -19,8 +19,9 @@ import org.springframework.web.servlet.HandlerMapping;
 import ro.roda.service.page.RodaPageConstants;
 import ro.roda.service.page.RodaPageService;
 
-@RequestMapping(RodaPageConstants.PAGE_MAPPING)
-// @RequestMapping({ "ro", "en" })
+@RequestMapping("/")
+// @RequestMapping(RodaPageConstants.PAGE_MAPPING)
+// @RequestMapping({ "/ro", "/en" })
 @Controller
 public class RodaPageController {
 
@@ -33,22 +34,21 @@ public class RodaPageController {
 	public void showDefaultPage(HttpServletRequest request, HttpServletResponse response, Model uiModel)
 			throws Exception {
 		log.trace("showDefaultPage");
+
+		// if mapping is on root: "/"
 		response.sendRedirect(request.getContextPath() + RodaPageConstants.PAGE_MAPPING
 				+ rodaPageService.generateDefaultPageUrl());
+
 	}
 
 	@RequestMapping(value = "/**", produces = "text/html")
-	public String show(HttpServletRequest request, HttpServletResponse response, Model uiModel) throws Exception {
+	public String showPage(HttpServletRequest request, HttpServletResponse response, Model uiModel) throws Exception {
 
 		String url = (String) request.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE);
 		// get the part containing the URL of the CMS Page
 		String cmsPageUrl = url.substring(RodaPageConstants.PAGE_MAPPING_LENGTH);
 
-		log.trace("url: " + url);
-		log.trace("cmsPageUrl: " + cmsPageUrl);
-
-		// cmsPageUrl is used also as a key for the cache
-		// holding the Rendered Pages !
+		// cmsPageUrl is used as a key for the cache of the Rendered Pages !
 		// request is used for paths and exception-throwing !
 		String[] generatedPage = rodaPageService.generatePage(cmsPageUrl, request);
 
@@ -61,12 +61,12 @@ public class RodaPageController {
 			// the page should be redirected internally
 			response.sendRedirect(request.getContextPath() + RodaPageConstants.PAGE_MAPPING + generatedPage[3]);
 		} else {
-			return show(generatedPage, uiModel);
+			return showGeneratedPage(generatedPage, uiModel);
 		}
 		return null;
 	}
 
-	private String show(String[] generatedPage, Model uiModel) {
+	private String showGeneratedPage(String[] generatedPage, Model uiModel) {
 		uiModel.addAttribute("pageBody", generatedPage[0]);
 		uiModel.addAttribute("pageTitle", generatedPage[1]);
 		return "rodapagerender";

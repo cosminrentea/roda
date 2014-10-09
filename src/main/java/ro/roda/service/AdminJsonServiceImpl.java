@@ -86,7 +86,7 @@ public class AdminJsonServiceImpl implements AdminJsonService {
 		// changed/added/saved
 		rodaPageService.evictAll();
 
-		return AdminJson.snippetSave(groupId, name, content, snippetId);
+		return AdminJson.snippetSave(groupId, content, name, snippetId);
 	}
 
 	public AdminJson snippetMove(Integer groupId, Integer snippetId) {

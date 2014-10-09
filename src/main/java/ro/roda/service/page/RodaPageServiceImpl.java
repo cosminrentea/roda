@@ -70,8 +70,7 @@ public class RodaPageServiceImpl implements RodaPageService {
 	 */
 
 	@Cacheable(value = "pages", key = "#cmsPageUrl")
-	public String[] generatePage(String cmsPageUrl, HttpServletRequest request)
-			throws NoSuchRequestHandlingMethodException {
+	public String[] generatePage(String cmsPageUrl, HttpServletRequest request) throws Exception {
 
 		log.trace("cmsPageUrl = " + cmsPageUrl);
 

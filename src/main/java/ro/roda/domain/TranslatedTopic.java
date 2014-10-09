@@ -187,7 +187,7 @@ public class TranslatedTopic {
 
 	public static List<TranslatedTopic> findTranslatedTopicsByParent(String parentId) {
 		List<TranslatedTopic> topics;
-		if (parentId == null || "root".equalsIgnoreCase(parentId)) {
+		if (parentId == null || "0".equalsIgnoreCase(parentId)) {
 			// parent is null or "root" (as sent by ExtJS) => first-level of
 			// topics
 			topics = entityManager()
@@ -196,7 +196,7 @@ public class TranslatedTopic {
 							TranslatedTopic.class)
 					.setParameter("language", LocaleContextHolder.getLocale().getLanguage()).getResultList();
 		} else {
-			// we assume parentId is a number
+			// we assume parentId is a regular number
 			topics = entityManager()
 					.createQuery(
 							"SELECT tt FROM TranslatedTopic tt WHERE tt.topicId.parentId = :parentId AND tt.langId.iso639 = :language",

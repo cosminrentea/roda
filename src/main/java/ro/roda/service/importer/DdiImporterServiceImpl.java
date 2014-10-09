@@ -256,10 +256,6 @@ public class DdiImporterServiceImpl implements DdiImporterService {
 			cm.copyIn(copyQuery, br);
 		}
 
-		// update the FileStore to be synchronized with the DB
-		for (CmsFolder cmsFolder : cmsFolderService.findAllCmsFolders()) {
-			cmsFileStoreService.folderSave(cmsFolder);
-		}
 	}
 
 	public void importDdiFiles() throws FileNotFoundException, IOException, JAXBException, SAXException {

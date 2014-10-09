@@ -112,6 +112,12 @@ public class ImporterServiceImpl implements ImporterService {
 
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public void importCmsFiles() throws IOException {
+
+		// update the FileStore to be synchronized with the DB
+		for (CmsFolder cmsFolder : cmsFolderService.findAllCmsFolders()) {
+			cmsFileStoreService.folderSave(cmsFolder);
+		}
+
 		String folderName = "files";
 		Resource cmsRes = new ClassPathResource(rodaDataCmsDir + folderName);
 		File cmsDir = cmsRes.getFile();

@@ -185,9 +185,6 @@ public class ImporterServiceImpl implements ImporterService {
 	CityService cityService;
 
 	@Autowired
-	FileService fileService;
-
-	@Autowired
 	AdminJsonService adminJsonService;
 
 	@Autowired
@@ -246,7 +243,7 @@ public class ImporterServiceImpl implements ImporterService {
 		Resource cmsRes = new ClassPathResource(rodaDataCmsDir + folderName);
 		File cmsDir = cmsRes.getFile();
 
-		AdminJson result = AdminJson.folderSave(folderName, null, "CMS Files");
+		AdminJson result = adminJsonService.folderSave(folderName, null, "CMS Files");
 		CmsFolder cmsFolder = CmsFolder.findCmsFolder(result.getId());
 		cmsFileStoreService.folderSave(cmsFolder);
 		importCmsFilesRec(cmsDir, cmsFolder, rodaDataCmsDir + folderName);
@@ -273,7 +270,7 @@ public class ImporterServiceImpl implements ImporterService {
 				// TODO decide if the URL should be the one above (useful
 				// for ImgLink) of this one:
 				// "file://" + file.getAbsolutePath()
-				AdminJson.fileSave(cmsFolder.getId(), mockMultipartFile, null,
+				adminJsonService.fileSave(cmsFolder.getId(), mockMultipartFile, null,
 						file.getName().substring(0, file.getName().lastIndexOf(".")), path + "/" + file.getName());
 
 				cmsFileStoreService.fileSave(mockMultipartFile, cmsFolder);
@@ -292,14 +289,14 @@ public class ImporterServiceImpl implements ImporterService {
 		File[] files = dir.listFiles();
 		for (File file : files) {
 			if (file.isDirectory()) {
-				AdminJson result = AdminJson.layoutGroupSave(file.getName(),
+				AdminJson result = adminJsonService.layoutGroupSave(file.getName(),
 						(cmsLayoutGroup != null) ? cmsLayoutGroup.getId() : null,
 						(cmsLayoutGroup != null) ? cmsLayoutGroup.getDescription() : null);
 
 				CmsLayoutGroup newLayoutGroup = CmsLayoutGroup.findCmsLayoutGroup(result.getId());
 				importCmsLayoutsRec(file, newLayoutGroup);
 			} else {
-				AdminJson.layoutSave((cmsLayoutGroup != null) ? cmsLayoutGroup.getId() : null,
+				adminJsonService.layoutSave((cmsLayoutGroup != null) ? cmsLayoutGroup.getId() : null,
 						IOUtils.toString(new FileReader(file)), file.getName(), null, null);
 			}
 		}
@@ -317,14 +314,14 @@ public class ImporterServiceImpl implements ImporterService {
 		File[] files = dir.listFiles();
 		for (File file : files) {
 			if (file.isDirectory()) {
-				AdminJson result = AdminJson.snippetGroupSave(file.getName(),
+				AdminJson result = adminJsonService.snippetGroupSave(file.getName(),
 						(cmsSnippetGroup != null) ? cmsSnippetGroup.getId() : null, null);
 
 				CmsSnippetGroup newSnippetGroup = CmsSnippetGroup.findCmsSnippetGroup(result.getId());
 				importCmsSnippetsRec(file, newSnippetGroup);
 			} else {
-				AdminJson.snippetSave((cmsSnippetGroup != null) ? cmsSnippetGroup.getId() : null, file.getName(),
-						IOUtils.toString(new FileReader(file)), null);
+				adminJsonService.snippetSave((cmsSnippetGroup != null) ? cmsSnippetGroup.getId() : null,
+						file.getName(), IOUtils.toString(new FileReader(file)), null);
 			}
 		}
 	}
@@ -616,16 +613,20 @@ public class ImporterServiceImpl implements ImporterService {
 				throw new IllegalStateException(errorMessage);
 			}
 
-			// Topic src = Topic.checkTopic(null, );
-			// Topic dst = Topic.checkTopic(null, csvLine[2]);
-
 			Topic src = topicsMap.get(csvLine[0]);
 			Topic dst = topicsMap.get(csvLine[2]);
 
 			if (src == null || dst == null) {
 				String errorMessage = "ELSST Relationship is not correctly defined in CSV: terms do not exist";
 				log.error(errorMessage);
-				throw new IllegalStateException(errorMessage);
+
+				// TODO uncomment this exception-throwing
+				// only when ELSST Terms & Relationships are
+				// stable and correlated !!!
+				// throw new IllegalStateException(errorMessage);
+
+				// temporary ignore this type of errors
+				continue;
 			}
 
 			// set a parent - child relationship

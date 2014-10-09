@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import ro.roda.domain.Topic;
+import ro.roda.domain.TranslatedTopic;
 
 @RequestMapping("/topics")
 @Controller
@@ -19,6 +19,6 @@ public class TopicTreeController {
 	public ResponseEntity<String> tree(@RequestParam(value = "node", required = false) String id) {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json");
-		return new ResponseEntity<String>(Topic.toJsonByParent(id), headers, HttpStatus.OK);
+		return new ResponseEntity<String>(TranslatedTopic.toJsonByParent(id), headers, HttpStatus.OK);
 	}
 }

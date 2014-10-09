@@ -89,7 +89,7 @@ public class ResponseInfo extends JsonInfo {
 	}
 
 	public ResponseInfo(QuestionTypeString questionTypeString) {
-		this(questionTypeString.getId().getStringId(), questionTypeString.getFreeText());
+		this(questionTypeString.getId().getStringId(), "");
 	}
 
 	public ResponseInfo(QuestionTypeCategory questionTypeCategory) {

@@ -24,9 +24,6 @@ import org.springframework.web.util.WebUtils;
 
 import ro.roda.domain.Org;
 import ro.roda.service.InstanceOrgService;
-import ro.roda.service.OrgAddressService;
-import ro.roda.service.OrgEmailService;
-import ro.roda.service.OrgInternetService;
 import ro.roda.service.OrgPhoneService;
 import ro.roda.service.OrgPrefixService;
 import ro.roda.service.OrgRelationsService;
@@ -121,15 +118,6 @@ public class OrgController {
 	InstanceOrgService instanceOrgService;
 
 	@Autowired
-	OrgAddressService orgAddressService;
-
-	@Autowired
-	OrgEmailService orgEmailService;
-
-	@Autowired
-	OrgInternetService orgInternetService;
-
-	@Autowired
 	OrgPhoneService orgPhoneService;
 
 	@Autowired
@@ -220,9 +208,6 @@ public class OrgController {
 	void populateEditForm(Model uiModel, Org org) {
 		uiModel.addAttribute("org", org);
 		uiModel.addAttribute("instanceorgs", instanceOrgService.findAllInstanceOrgs());
-		uiModel.addAttribute("orgaddresses", orgAddressService.findAllOrgAddresses());
-		uiModel.addAttribute("orgemails", orgEmailService.findAllOrgEmails());
-		uiModel.addAttribute("orginternets", orgInternetService.findAllOrgInternets());
 		uiModel.addAttribute("orgphones", orgPhoneService.findAllOrgPhones());
 		uiModel.addAttribute("orgprefixes", orgPrefixService.findAllOrgPrefixes());
 		uiModel.addAttribute("orgrelationses", orgRelationsService.findAllOrgRelationses());

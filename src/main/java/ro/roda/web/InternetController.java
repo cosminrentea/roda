@@ -24,7 +24,6 @@ import org.springframework.web.util.WebUtils;
 
 import ro.roda.domain.Internet;
 import ro.roda.service.InternetService;
-import ro.roda.service.OrgInternetService;
 import ro.roda.service.PersonInternetService;
 
 @RequestMapping("/internets")
@@ -33,9 +32,6 @@ public class InternetController {
 
 	@Autowired
 	InternetService internetService;
-
-	@Autowired
-	OrgInternetService orgInternetService;
 
 	@Autowired
 	PersonInternetService personInternetService;
@@ -112,7 +108,6 @@ public class InternetController {
 
 	void populateEditForm(Model uiModel, Internet internet) {
 		uiModel.addAttribute("internet", internet);
-		uiModel.addAttribute("orginternets", orgInternetService.findAllOrgInternets());
 		uiModel.addAttribute("personinternets", personInternetService.findAllPersonInternets());
 	}
 

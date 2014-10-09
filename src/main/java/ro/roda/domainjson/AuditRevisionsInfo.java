@@ -6,10 +6,12 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.springframework.beans.factory.annotation.Configurable;
 
 import ro.roda.audit.RodaRevisionEntity;
+import ro.roda.transformer.FieldNameTransformer;
 import flexjson.JSONSerializer;
 import flexjson.transformer.DateTransformer;
 
@@ -22,13 +24,11 @@ public class AuditRevisionsInfo extends AuditRevisions {
 		serializer.exclude("*.class", "type", "id", "name", "objects", "objects.*");
 		serializer.include("revision", "timestamp", "username", "userid", "nrobjects");
 
-		// serializer.exclude("objects.id", "objects.type");
-		// serializer.include("objects.objname", "objects.nrrows",
-		// "objects.rows", "objects.rows.auditfields");
+		serializer.exclude("objects.id", "objects.type");
+		serializer.include("objects.objname", "objects.nrrows", "objects.rows", "objects.rows.auditfields");
 
-		// serializer.transform(new FieldNameTransformer("indice"), "id");
-		// serializer.transform(new FieldNameTransformer("objname"),
-		// "objects.name");
+		serializer.transform(new FieldNameTransformer("indice"), "id");
+		serializer.transform(new FieldNameTransformer("objname"), "objects.name");
 		serializer.transform(DATE_TRANSFORMER, Date.class);
 
 		return "{\"data\":" + serializer.serialize(collection) + "}";
@@ -44,7 +44,7 @@ public class AuditRevisionsInfo extends AuditRevisions {
 			Iterator<RodaRevisionEntity> revisionsIterator = revisions.iterator();
 			while (revisionsIterator.hasNext()) {
 				RodaRevisionEntity revision = (RodaRevisionEntity) revisionsIterator.next();
-				result.add(new AuditRevisionsInfo(revision));
+				result.add(new AuditRevisionsInfo(revision, true));
 			}
 		}
 
@@ -75,12 +75,46 @@ public class AuditRevisionsInfo extends AuditRevisions {
 	}
 
 	public AuditRevisionsInfo(RodaRevisionEntity revision) {
+		this(revision, false);
+	}
 
-		int nrObj = revision.getModifiedEntityNames().size();
+	public AuditRevisionsInfo(RodaRevisionEntity revision, boolean forAll) {
 
-		// TODO never interested in objects? delete the last parameter
+		int nrObj;
+		Set<AuditObject> objects = null;
+
+		if (forAll) {
+			nrObj = revision.getModifiedEntityNames().size();
+		} else {
+			objects = new TreeSet<AuditObject>();
+
+			String[] auditedClasses = findAuditedClasses("ro.roda.domain");
+
+			for (int i = 0; i < auditedClasses.length; i++) {
+				String auditedClassName = auditedClasses[i];
+
+				try {
+					Class<?> auditedClass = Class.forName(auditedClassName);
+
+					Set<AuditRow> rows = findModifiedEntities(auditedClass, revision);
+
+					if (rows.size() > 0) {
+						objects.add(new AuditObject(auditedClassName, rows.size(), rows));
+					}
+				} catch (Exception e) {
+					// TODO
+					System.out.println("Exception thrown when getting revision info. " + e.getMessage());
+					// e.printStackTrace();
+				}
+
+			}
+			nrObj = objects.size();
+			onConstructRevisions(revision.getId(), revision.getRevisionDate(), revision.getUsername(),
+					revision.getUserid(), nrObj, objects);
+		}
+
 		onConstructRevisions(revision.getId(), revision.getRevisionDate(), revision.getUsername(),
-				revision.getUserid(), nrObj, null);
+				revision.getUserid(), objects.size(), objects);
 	}
 
 	private void onConstructRevisions(Integer revision, Date timestamp, String username, Integer userid, Integer nrobj,
@@ -117,14 +151,12 @@ public class AuditRevisionsInfo extends AuditRevisions {
 		serializer.exclude("*.class", "type", "id", "name", "objects", "objects.*");
 		serializer.include("revision", "timestamp", "username", "userid", "nrobjects");
 
-		// serializer.exclude("objects.id", "objects.type");
-		// serializer.include("objects.objname");
-		// serializer.include("objects.objname", "objects.nrrows",
-		// "objects.rows", "objects.rows.auditfields");
+		serializer.exclude("objects.id", "objects.type");
+		serializer.include("objects.objname");
+		serializer.include("objects.objname", "objects.nrrows", "objects.rows", "objects.rows.auditfields");
 
-		// serializer.transform(new FieldNameTransformer("indice"), "id");
-		// serializer.transform(new FieldNameTransformer("objname"),
-		// "objects.name");
+		serializer.transform(new FieldNameTransformer("indice"), "id");
+		serializer.transform(new FieldNameTransformer("objname"), "objects.name");
 		serializer.transform(DATE_TRANSFORMER, Date.class);
 
 		return "{\"data\":" + serializer.serialize(this) + "}";

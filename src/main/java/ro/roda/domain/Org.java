@@ -13,6 +13,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.PersistenceContext;
@@ -230,14 +232,13 @@ public class Org {
 	@OneToMany(mappedBy = "orgId")
 	private Set<InstanceOrg> instanceOrgs;
 
-	@OneToMany(mappedBy = "orgId")
-	private Set<OrgAddress> orgAddresses;
+	@ManyToMany
+	@JoinTable(name = "email_org", joinColumns = { @JoinColumn(name = "org_id", nullable = false) }, inverseJoinColumns = { @JoinColumn(name = "email_id", nullable = false) })
+	private Set<Email> emails;
 
-	@OneToMany(mappedBy = "orgId")
-	private Set<OrgEmail> orgEmails;
-
-	@OneToMany(mappedBy = "orgId")
-	private Set<OrgInternet> orgInternets;
+	@ManyToMany
+	@JoinTable(name = "internet_org", joinColumns = { @JoinColumn(name = "org_id", nullable = false) }, inverseJoinColumns = { @JoinColumn(name = "internet_id", nullable = false) })
+	private Set<Internet> internets;
 
 	@OneToMany(mappedBy = "orgId")
 	private Set<OrgPhone> orgPhones;
@@ -265,6 +266,16 @@ public class Org {
 	@OneToMany(mappedBy = "orgId", fetch = FetchType.LAZY)
 	private Set<StudyOrg> studyOrgs;
 
+	@Column(name = "address_line1", columnDefinition = "varchar", length = 200)
+	private String addressLine1;
+
+	@Column(name = "address_line2", columnDefinition = "varchar", length = 200)
+	private String addressLine2;
+
+	@ManyToOne
+	@JoinColumn(name = "org_city", columnDefinition = "integer", referencedColumnName = "id", nullable = true)
+	private City city;
+
 	@PersistenceContext
 	transient EntityManager entityManager;
 
@@ -285,6 +296,14 @@ public class Org {
 		this.entityManager.flush();
 	}
 
+	public City getCity() {
+		return city;
+	}
+
+	public Set<Email> getEmails() {
+		return emails;
+	}
+
 	public String getFullName() {
 		return fullName;
 	}
@@ -293,20 +312,12 @@ public class Org {
 		return this.id;
 	}
 
+	public Set<Internet> getInternets() {
+		return internets;
+	}
+
 	public Set<InstanceOrg> getInstanceOrgs() {
 		return instanceOrgs;
-	}
-
-	public Set<OrgAddress> getOrgAddresses() {
-		return orgAddresses;
-	}
-
-	public Set<OrgEmail> getOrgEmails() {
-		return orgEmails;
-	}
-
-	public Set<OrgInternet> getOrgInternets() {
-		return orgInternets;
 	}
 
 	public Set<OrgPhone> getOrgPhones() {
@@ -369,6 +380,14 @@ public class Org {
 		}
 	}
 
+	public void setCity(City city) {
+		this.city = city;
+	}
+
+	public void setEmails(Set<Email> emails) {
+		this.emails = emails;
+	}
+
 	public void setFullName(String fullName) {
 		this.fullName = fullName;
 	}
@@ -377,20 +396,12 @@ public class Org {
 		this.id = id;
 	}
 
+	public void setInternets(Set<Internet> internets) {
+		this.internets = internets;
+	}
+
 	public void setInstanceOrgs(Set<InstanceOrg> instanceOrgs) {
 		this.instanceOrgs = instanceOrgs;
-	}
-
-	public void setOrgAddresses(Set<OrgAddress> orgAddresses) {
-		this.orgAddresses = orgAddresses;
-	}
-
-	public void setOrgEmails(Set<OrgEmail> orgEmails) {
-		this.orgEmails = orgEmails;
-	}
-
-	public void setOrgInternets(Set<OrgInternet> orgInternets) {
-		this.orgInternets = orgInternets;
 	}
 
 	public void setOrgPhones(Set<OrgPhone> orgPhones) {

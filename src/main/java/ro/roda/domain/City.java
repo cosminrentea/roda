@@ -282,6 +282,9 @@ public class City {
 	@JoinTable(name = "region_city", joinColumns = { @JoinColumn(name = "city_id", nullable = false) }, inverseJoinColumns = { @JoinColumn(name = "region_id", nullable = false) })
 	private Set<Region> regions;
 
+	@OneToMany(mappedBy = "city")
+	Set<Org> orgs;
+
 	@PersistenceContext
 	transient EntityManager entityManager;
 
@@ -336,6 +339,10 @@ public class City {
 
 	public String getName() {
 		return name;
+	}
+
+	public Set<Org> getOrgs() {
+		return orgs;
 	}
 
 	public String getPrefix() {
@@ -408,6 +415,10 @@ public class City {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public void setOrgs(Set<Org> orgs) {
+		this.orgs = orgs;
 	}
 
 	public void setPrefix(String prefix) {

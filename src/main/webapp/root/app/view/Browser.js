@@ -94,7 +94,7 @@ Ext.define('databrowser.view.Browser', {
 	        	        	        	height: 389,
 	        	        	        	id: 'TopicTreePanel',
 	        	        	        	store: 'TopicTreeStore',
-	        	        	        	displayField: 'name',
+	        	        	        	displayField: 'translation',
 	        	        	        	viewConfig: {
 	        	        	        		id: 'TopicTreeView',
 	        	        	        		autoScroll: true,

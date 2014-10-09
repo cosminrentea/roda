@@ -15,7 +15,7 @@ Ext.define('databrowser.store.YearStore', {
 		        storeId : 'YearStore',
 		        proxy : {
 		            type : 'rest',
-		            url : '../../studiesbyyear',
+		            url : '../studiesbyyear',
 		            appendId : true,
 		            extraParams : {
 			            lang : translations.language

@@ -8,6 +8,7 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
+import ro.roda.service.importer.DdiImporterService;
 import ro.roda.service.importer.ImporterService;
 
 @Component
@@ -47,6 +48,9 @@ public class ApplicationListenerContextRefreshed implements ApplicationListener<
 	@Autowired
 	ImporterService importer;
 
+	@Autowired
+	DdiImporterService ddiImporter;
+
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent event) {
 		if (event.getApplicationContext().getParent() == null) {
@@ -71,7 +75,7 @@ public class ApplicationListenerContextRefreshed implements ApplicationListener<
 				// (not "yes")
 
 				if (YES.equalsIgnoreCase(rodaDataCsv)) {
-					importer.importCsv();
+					ddiImporter.importCsv();
 
 					// CMS data depends on initial set of CSVs
 					// (e.g. Language)
@@ -100,13 +104,13 @@ public class ApplicationListenerContextRefreshed implements ApplicationListener<
 					// and this CSV-EXTRA phase imports first
 					// the necessary CSV for CATALOGS !!!
 					if (YES.equalsIgnoreCase(rodaDataCsvExtra)) {
-						importer.importCsvExtra();
+						ddiImporter.importCsvExtra();
 					}
 
 					if (YES.equalsIgnoreCase(rodaDataDdi)) {
-						importer.importDdiFiles();
+						ddiImporter.importDdiFiles();
 						if (YES.equalsIgnoreCase(rodaDataCsvAfterDdi)) {
-							importer.importDdiIntoCatalogsAndSeries();
+							ddiImporter.importDdiIntoCatalogsAndSeries();
 						}
 					}
 

@@ -101,7 +101,6 @@ public class QuestionTypeString {
 			sid.addField("id", "selectionquestion_" + selectionQuestion.getId());
 			sid.addField("selectionQuestion.categoryid_t", selectionQuestion.getStringId());
 			sid.addField("selectionQuestion.questionid_t", selectionQuestion.getQuestionId());
-			sid.addField("selectionQuestion.label_t", selectionQuestion.getFreeText());
 			sid.addField("selectionQuestion.id_t", selectionQuestion.getId());
 			// Add summary field to allow searching documents for objects of
 			// this type
@@ -156,9 +155,6 @@ public class QuestionTypeString {
 	@Column(name = "string_id", columnDefinition = "int4", nullable = false, insertable = false, updatable = false)
 	private Integer stringId;
 
-	@Column(name = "free_text", columnDefinition = "varchar", length = 200)
-	private String freeText;
-
 	@ManyToOne
 	@JoinColumn(name = "question_id", columnDefinition = "int8", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
 	private Question questionId;
@@ -193,10 +189,6 @@ public class QuestionTypeString {
 
 	public Integer getStringId() {
 		return stringId;
-	}
-
-	public String getFreeText() {
-		return freeText;
 	}
 
 	@Transactional
@@ -237,10 +229,6 @@ public class QuestionTypeString {
 
 	public void setQuestionId(Question questionId) {
 		this.questionId = questionId;
-	}
-
-	public void setFreeText(String freeText) {
-		this.freeText = freeText;
 	}
 
 	public String toJson() {

@@ -169,15 +169,6 @@ public class ApplicationConversionServiceFactoryBean extends FormattingConversio
 	OrgService orgService;
 
 	@Autowired
-	OrgAddressService orgAddressService;
-
-	@Autowired
-	OrgEmailService orgEmailService;
-
-	@Autowired
-	OrgInternetService orgInternetService;
-
-	@Autowired
 	OrgPhoneService orgPhoneService;
 
 	@Autowired
@@ -1399,79 +1390,6 @@ public class ApplicationConversionServiceFactoryBean extends FormattingConversio
 		};
 	}
 
-	public Converter<OrgAddress, String> getOrgAddressToStringConverter() {
-		return new org.springframework.core.convert.converter.Converter<ro.roda.domain.OrgAddress, java.lang.String>() {
-			public String convert(OrgAddress orgAddress) {
-				return new StringBuilder().append(orgAddress.getDateStart()).append(' ')
-						.append(orgAddress.getDateEnd()).toString();
-			}
-		};
-	}
-
-	public Converter<OrgAddressPK, OrgAddress> getIdToOrgAddressConverter() {
-		return new org.springframework.core.convert.converter.Converter<ro.roda.domain.OrgAddressPK, ro.roda.domain.OrgAddress>() {
-			public ro.roda.domain.OrgAddress convert(ro.roda.domain.OrgAddressPK id) {
-				return orgAddressService.findOrgAddress(id);
-			}
-		};
-	}
-
-	public Converter<String, OrgAddress> getStringToOrgAddressConverter() {
-		return new org.springframework.core.convert.converter.Converter<java.lang.String, ro.roda.domain.OrgAddress>() {
-			public ro.roda.domain.OrgAddress convert(String id) {
-				return getObject().convert(getObject().convert(id, OrgAddressPK.class), OrgAddress.class);
-			}
-		};
-	}
-
-	public Converter<OrgEmail, String> getOrgEmailToStringConverter() {
-		return new org.springframework.core.convert.converter.Converter<ro.roda.domain.OrgEmail, java.lang.String>() {
-			public String convert(OrgEmail orgEmail) {
-				return "(no displayable fields)";
-			}
-		};
-	}
-
-	public Converter<OrgEmailPK, OrgEmail> getIdToOrgEmailConverter() {
-		return new org.springframework.core.convert.converter.Converter<ro.roda.domain.OrgEmailPK, ro.roda.domain.OrgEmail>() {
-			public ro.roda.domain.OrgEmail convert(ro.roda.domain.OrgEmailPK id) {
-				return orgEmailService.findOrgEmail(id);
-			}
-		};
-	}
-
-	public Converter<String, OrgEmail> getStringToOrgEmailConverter() {
-		return new org.springframework.core.convert.converter.Converter<java.lang.String, ro.roda.domain.OrgEmail>() {
-			public ro.roda.domain.OrgEmail convert(String id) {
-				return getObject().convert(getObject().convert(id, OrgEmailPK.class), OrgEmail.class);
-			}
-		};
-	}
-
-	public Converter<OrgInternet, String> getOrgInternetToStringConverter() {
-		return new org.springframework.core.convert.converter.Converter<ro.roda.domain.OrgInternet, java.lang.String>() {
-			public String convert(OrgInternet orgInternet) {
-				return "(no displayable fields)";
-			}
-		};
-	}
-
-	public Converter<OrgInternetPK, OrgInternet> getIdToOrgInternetConverter() {
-		return new org.springframework.core.convert.converter.Converter<ro.roda.domain.OrgInternetPK, ro.roda.domain.OrgInternet>() {
-			public ro.roda.domain.OrgInternet convert(ro.roda.domain.OrgInternetPK id) {
-				return orgInternetService.findOrgInternet(id);
-			}
-		};
-	}
-
-	public Converter<String, OrgInternet> getStringToOrgInternetConverter() {
-		return new org.springframework.core.convert.converter.Converter<java.lang.String, ro.roda.domain.OrgInternet>() {
-			public ro.roda.domain.OrgInternet convert(String id) {
-				return getObject().convert(getObject().convert(id, OrgInternetPK.class), OrgInternet.class);
-			}
-		};
-	}
-
 	public Converter<OrgPhone, String> getOrgPhoneToStringConverter() {
 		return new org.springframework.core.convert.converter.Converter<ro.roda.domain.OrgPhone, java.lang.String>() {
 			public String convert(OrgPhone orgPhone) {
@@ -2648,22 +2566,6 @@ public class ApplicationConversionServiceFactoryBean extends FormattingConversio
 		};
 	}
 
-	public Converter<String, OrgInternetPK> getJsonToOrgInternetPKConverter() {
-		return new org.springframework.core.convert.converter.Converter<java.lang.String, ro.roda.domain.OrgInternetPK>() {
-			public OrgInternetPK convert(String encodedJson) {
-				return OrgInternetPK.fromJsonToOrgInternetPK(new String(Base64.decodeBase64(encodedJson)));
-			}
-		};
-	}
-
-	public Converter<OrgInternetPK, String> getOrgInternetPKToJsonConverter() {
-		return new org.springframework.core.convert.converter.Converter<ro.roda.domain.OrgInternetPK, java.lang.String>() {
-			public String convert(OrgInternetPK orgInternetPK) {
-				return Base64.encodeBase64URLSafeString(orgInternetPK.toJson().getBytes());
-			}
-		};
-	}
-
 	public Converter<String, CatalogStudyPK> getJsonToCatalogStudyPKConverter() {
 		return new org.springframework.core.convert.converter.Converter<java.lang.String, ro.roda.domain.CatalogStudyPK>() {
 			public CatalogStudyPK convert(String encodedJson) {
@@ -2676,22 +2578,6 @@ public class ApplicationConversionServiceFactoryBean extends FormattingConversio
 		return new org.springframework.core.convert.converter.Converter<ro.roda.domain.CatalogStudyPK, java.lang.String>() {
 			public String convert(CatalogStudyPK catalogStudyPK) {
 				return Base64.encodeBase64URLSafeString(catalogStudyPK.toJson().getBytes());
-			}
-		};
-	}
-
-	public Converter<String, OrgAddressPK> getJsonToOrgAddressPKConverter() {
-		return new org.springframework.core.convert.converter.Converter<java.lang.String, ro.roda.domain.OrgAddressPK>() {
-			public OrgAddressPK convert(String encodedJson) {
-				return OrgAddressPK.fromJsonToOrgAddressPK(new String(Base64.decodeBase64(encodedJson)));
-			}
-		};
-	}
-
-	public Converter<OrgAddressPK, String> getOrgAddressPKToJsonConverter() {
-		return new org.springframework.core.convert.converter.Converter<ro.roda.domain.OrgAddressPK, java.lang.String>() {
-			public String convert(OrgAddressPK orgAddressPK) {
-				return Base64.encodeBase64URLSafeString(orgAddressPK.toJson().getBytes());
 			}
 		};
 	}
@@ -3034,22 +2920,6 @@ public class ApplicationConversionServiceFactoryBean extends FormattingConversio
 		};
 	}
 
-	public Converter<String, OrgEmailPK> getJsonToOrgEmailPKConverter() {
-		return new org.springframework.core.convert.converter.Converter<java.lang.String, ro.roda.domain.OrgEmailPK>() {
-			public OrgEmailPK convert(String encodedJson) {
-				return OrgEmailPK.fromJsonToOrgEmailPK(new String(Base64.decodeBase64(encodedJson)));
-			}
-		};
-	}
-
-	public Converter<OrgEmailPK, String> getOrgEmailPKToJsonConverter() {
-		return new org.springframework.core.convert.converter.Converter<ro.roda.domain.OrgEmailPK, java.lang.String>() {
-			public String convert(OrgEmailPK orgEmailPK) {
-				return Base64.encodeBase64URLSafeString(orgEmailPK.toJson().getBytes());
-			}
-		};
-	}
-
 	public Converter<String, SeriesDescrPK> getJsonToSeriesDescrPKConverter() {
 		return new org.springframework.core.convert.converter.Converter<java.lang.String, ro.roda.domain.SeriesDescrPK>() {
 			public SeriesDescrPK convert(String encodedJson) {
@@ -3232,15 +3102,6 @@ public class ApplicationConversionServiceFactoryBean extends FormattingConversio
 		registry.addConverter(getOrgToStringConverter());
 		registry.addConverter(getIdToOrgConverter());
 		registry.addConverter(getStringToOrgConverter());
-		registry.addConverter(getOrgAddressToStringConverter());
-		registry.addConverter(getIdToOrgAddressConverter());
-		registry.addConverter(getStringToOrgAddressConverter());
-		registry.addConverter(getOrgEmailToStringConverter());
-		registry.addConverter(getIdToOrgEmailConverter());
-		registry.addConverter(getStringToOrgEmailConverter());
-		registry.addConverter(getOrgInternetToStringConverter());
-		registry.addConverter(getIdToOrgInternetConverter());
-		registry.addConverter(getStringToOrgInternetConverter());
 		registry.addConverter(getOrgPhoneToStringConverter());
 		registry.addConverter(getIdToOrgPhoneConverter());
 		registry.addConverter(getStringToOrgPhoneConverter());
@@ -3385,12 +3246,8 @@ public class ApplicationConversionServiceFactoryBean extends FormattingConversio
 		registry.addConverter(getVariableToStringConverter());
 		registry.addConverter(getIdToVariableConverter());
 		registry.addConverter(getStringToVariableConverter());
-		registry.addConverter(getJsonToOrgInternetPKConverter());
-		registry.addConverter(getOrgInternetPKToJsonConverter());
 		registry.addConverter(getJsonToCatalogStudyPKConverter());
 		registry.addConverter(getCatalogStudyPKToJsonConverter());
-		registry.addConverter(getJsonToOrgAddressPKConverter());
-		registry.addConverter(getOrgAddressPKToJsonConverter());
 		registry.addConverter(getJsonToPersonAddressPKConverter());
 		registry.addConverter(getPersonAddressPKToJsonConverter());
 		registry.addConverter(getJsonToPersonEmailPKConverter());
@@ -3433,8 +3290,6 @@ public class ApplicationConversionServiceFactoryBean extends FormattingConversio
 		registry.addConverter(getUserSettingValuePKToJsonConverter());
 		registry.addConverter(getJsonToTranslatedTopicPKConverter());
 		registry.addConverter(getTranslatedTopicPKToJsonConverter());
-		registry.addConverter(getJsonToOrgEmailPKConverter());
-		registry.addConverter(getOrgEmailPKToJsonConverter());
 		registry.addConverter(getJsonToSeriesDescrPKConverter());
 		registry.addConverter(getSeriesDescrPKToJsonConverter());
 		registry.addConverter(getJsonToStudyKeywordPKConverter());

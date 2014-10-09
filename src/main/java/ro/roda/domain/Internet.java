@@ -11,6 +11,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PostPersist;
@@ -217,8 +218,8 @@ public class Internet {
 	@Column(name = "internet_type", columnDefinition = "varchar", length = 50)
 	private String internetType;
 
-	@OneToMany(mappedBy = "internetId")
-	private Set<OrgInternet> orgInternets;
+	@ManyToMany(mappedBy = "internets")
+	private Set<Org> orgs;
 
 	@OneToMany(mappedBy = "internetId")
 	private Set<PersonInternet> personInternets;
@@ -255,8 +256,8 @@ public class Internet {
 		return internetType;
 	}
 
-	public Set<OrgInternet> getOrgInternets() {
-		return orgInternets;
+	public Set<Org> getOrgs() {
+		return orgs;
 	}
 
 	public Set<PersonInternet> getPersonInternets() {
@@ -303,8 +304,8 @@ public class Internet {
 		this.internetType = internetType;
 	}
 
-	public void setOrgInternets(Set<OrgInternet> orgInternets) {
-		this.orgInternets = orgInternets;
+	public void setOrgs(Set<Org> orgs) {
+		this.orgs = orgs;
 	}
 
 	public void setPersonInternets(Set<PersonInternet> personInternets) {

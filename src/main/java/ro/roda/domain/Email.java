@@ -11,6 +11,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PostPersist;
@@ -211,8 +212,8 @@ public class Email {
 	// , columnDefinition = "serial")
 	private Integer id;
 
-	@OneToMany(mappedBy = "emailId")
-	private Set<OrgEmail> orgEmails;
+	@ManyToMany(mappedBy = "emails")
+	private Set<Org> orgs;
 
 	@OneToMany(mappedBy = "emailId")
 	private Set<PersonEmail> personEmails;
@@ -245,8 +246,8 @@ public class Email {
 		return this.id;
 	}
 
-	public Set<OrgEmail> getOrgEmails() {
-		return orgEmails;
+	public Set<Org> getOrgs() {
+		return orgs;
 	}
 
 	public Set<PersonEmail> getPersonEmails() {
@@ -287,10 +288,6 @@ public class Email {
 
 	public void setId(Integer id) {
 		this.id = id;
-	}
-
-	public void setOrgEmails(Set<OrgEmail> orgEmails) {
-		this.orgEmails = orgEmails;
 	}
 
 	public void setPersonEmails(Set<PersonEmail> personEmails) {

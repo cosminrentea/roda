@@ -97,8 +97,7 @@ public class AuditRow implements Comparable<AuditRow> {
 
 		serializer.exclude("*.class");
 		serializer.include("id", "modtype", "nrfields", "auditfields");
-		// serializer.include("auditfields.auditfield",
-		// "auditfields.auditvalue"));
+		serializer.include("auditfields.auditfield", "auditfields.auditvalue");
 
 		serializer.transform(new FieldNameTransformer("indice"), "id");
 

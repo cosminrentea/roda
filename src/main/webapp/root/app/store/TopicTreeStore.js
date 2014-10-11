@@ -15,17 +15,19 @@ Ext.define('databrowser.store.TopicTreeStore', {
             root: {
                 name: 'ELSST',
                 expandable: true,
+                indice : null,
                 children: {
                     
                 }
             },
+            defaultRootId: null,
             proxy: {
                 type: 'ajax',
                 extraParams : {
                 	lang : translations.language
                 },
                 timeout:200000,
-                url: '../../topics/tree',
+                url: '../topics/tree',
                 reader: {
                     type: 'json',
                     root: 'topics'

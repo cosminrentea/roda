@@ -17,7 +17,7 @@ Ext.define('databrowser.store.StudyStore', {
                 extraParams : {
                 	lang : translations.language
                 },
-                url: '../../studyinfo',  
+                url: '../studyinfo',  
                 appendId: true,
                 reader: {
                     type: 'json',

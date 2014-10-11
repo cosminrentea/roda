@@ -26,7 +26,7 @@ Ext.define('databrowser.store.YearTreeStore', {
 		            extraParams : {
 			            lang : translations.language
 		            },
-		            url : '../../yearstree',
+		            url : '../yearstree',
 		            reader : {
 		                type : 'json',
 		                root : 'data'

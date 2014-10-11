@@ -8,8 +8,10 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
+import ro.roda.service.importer.CsvImporterService;
 import ro.roda.service.importer.DdiImporterService;
-import ro.roda.service.importer.ImporterService;
+import ro.roda.service.importer.ElsstImporterService;
+import ro.roda.service.importer.CmsImporterService;
 
 @Component
 public class ApplicationListenerContextRefreshed implements ApplicationListener<ContextRefreshedEvent> {
@@ -46,10 +48,16 @@ public class ApplicationListenerContextRefreshed implements ApplicationListener<
 	SolrUtils su;
 
 	@Autowired
-	ImporterService importer;
+	CmsImporterService importer;
 
 	@Autowired
 	DdiImporterService ddiImporter;
+
+	@Autowired
+	CsvImporterService csvImporter;
+
+	@Autowired
+	ElsstImporterService elsstImporter;
 
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent event) {
@@ -75,7 +83,7 @@ public class ApplicationListenerContextRefreshed implements ApplicationListener<
 				// (not "yes")
 
 				if (YES.equalsIgnoreCase(rodaDataCsv)) {
-					ddiImporter.importCsv();
+					csvImporter.importCsv();
 
 					// CMS data depends on initial set of CSVs
 					// (e.g. Language)
@@ -89,7 +97,7 @@ public class ApplicationListenerContextRefreshed implements ApplicationListener<
 					// ELSST depends or will depend on initial set of CSVs
 					// (e.g. Language)
 					if (YES.equalsIgnoreCase(rodaDataElsst)) {
-						importer.importElsst();
+						elsstImporter.importElsst();
 					}
 
 					// This phase (EXTRA-CSV) should be put last to ensure that
@@ -104,7 +112,7 @@ public class ApplicationListenerContextRefreshed implements ApplicationListener<
 					// and this CSV-EXTRA phase imports first
 					// the necessary CSV for CATALOGS !!!
 					if (YES.equalsIgnoreCase(rodaDataCsvExtra)) {
-						ddiImporter.importCsvExtra();
+						csvImporter.importCsvExtra();
 					}
 
 					if (YES.equalsIgnoreCase(rodaDataDdi)) {

@@ -154,8 +154,6 @@ public class DdiImporterServiceImpl implements DdiImporterService {
 	@Autowired
 	CmsFileService cmsFileService;
 
-	private Tika tika = new Tika();
-
 	@Value("${roda.data.ddi.csv}")
 	private String rodaDataDdiCsv;
 
@@ -203,18 +201,15 @@ public class DdiImporterServiceImpl implements DdiImporterService {
 
 	// @Async
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
-	public void importCsvExtra() throws SQLException, IOException {
+	public void importCsvExtra() throws Exception {
 		importCsvDir(rodaDataCsvExtraDir);
 	}
 
 	/**
 	 * Populates the database using data imported from a directory with CSV
-	 * files (which are ordered by name).
-	 * 
-	 * @throws SQLException
-	 * @throws IOException
+	 * files (which are sorted by filename).
 	 */
-	public void importCsvDir(String dirname) throws SQLException, IOException {
+	public void importCsvDir(String dirname) throws Exception {
 		log.trace("Importing CSV from directory: " + dirname);
 		Connection con = null;
 		Properties conProps = new Properties();
@@ -251,11 +246,46 @@ public class DdiImporterServiceImpl implements DdiImporterService {
 
 			// bulk COPY the remaining lines (CSV data)
 			String copyQuery = "COPY " + tableName + "(" + tableFields + ") FROM stdin DELIMITERS ',' CSV";
-			log.trace(copyQuery);
+			log.trace("Query:" + copyQuery);
 
 			cm.copyIn(copyQuery, br);
 		}
+		con.close();
+	}
 
+	/**
+	 * Populates a database table using data imported from a CSV file.
+	 */
+	public void importCsvFile(String filename) throws Exception {
+
+		// get CSV file
+		Resource csvRes = new ClassPathResource(filename);
+		File f = csvRes.getFile();
+		log.trace("Importing CSV file: " + f.getAbsolutePath());
+
+		BufferedReader br = new BufferedReader(new FileReader(f));
+
+		// read the first line, containing the enumeration of fields
+		String tableFields = br.readLine();
+
+		// obtain the table name from the file name (excluding ".CSV" ending)
+		String tableName = f.getName().substring(0, f.getName().length() - 4);
+
+		// bulk COPY the remaining lines (CSV data)
+		String copyQuery = "COPY " + tableName + "(" + tableFields + ") FROM stdin DELIMITERS ',' CSV";
+		log.trace("Query: " + copyQuery);
+
+		// get connection + copymanager
+		Connection con = null;
+		Properties conProps = new Properties();
+		conProps.put("user", this.dbUsername);
+		conProps.put("password", this.dbPassword);
+		con = DriverManager.getConnection(this.dbUrl, conProps);
+
+		// execute query to copy/import all CSV data
+		((BaseConnection) con).getCopyAPI().copyIn(copyQuery, br);
+
+		con.close();
 	}
 
 	public void importDdiFiles() throws FileNotFoundException, IOException, JAXBException, SAXException {

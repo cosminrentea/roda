@@ -1,8 +1,6 @@
 package ro.roda.service.importer;
 
-public interface ImporterService {
-
-	public abstract void importElsst() throws Exception;
+public interface CmsImporterService {
 
 	public abstract void importCmsFiles() throws Exception;
 

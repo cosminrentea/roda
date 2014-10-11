@@ -10,12 +10,6 @@ public interface DdiImporterService {
 
 	public abstract Unmarshaller getUnmarshaller() throws Exception;
 
-	public abstract void importCsv() throws Exception;
-
-	public abstract void importCsvExtra() throws Exception;
-
-	public abstract void importCsvDir(String dirname) throws Exception;
-
 	public abstract void importDdiFiles() throws Exception;
 
 	public abstract void importDdiIntoCatalogsAndSeries() throws Exception;

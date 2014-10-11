@@ -25,7 +25,7 @@ import org.xml.sax.SAXException;
 import ro.roda.ddi.CodeBook;
 import ro.roda.domain.File;
 import ro.roda.service.importer.DdiImporterService;
-import ro.roda.service.importer.ImporterService;
+import ro.roda.service.importer.CmsImporterService;
 
 @Service
 @Transactional

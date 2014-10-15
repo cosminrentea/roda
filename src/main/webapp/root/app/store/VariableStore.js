@@ -15,7 +15,7 @@ Ext.define('databrowser.store.VariableStore', {
             storeId: 'VariableStore',
             proxy: {
                 type: 'rest',
-                url: '../../variables',  
+                url: '../variables',  
                 extraParams : {
                 	lang : translations.language
                 },

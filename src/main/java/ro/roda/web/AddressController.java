@@ -26,7 +26,6 @@ import ro.roda.domain.Address;
 import ro.roda.domain.City;
 import ro.roda.service.AddressService;
 import ro.roda.service.CityService;
-import ro.roda.service.OrgAddressService;
 import ro.roda.service.PersonAddressService;
 
 @RequestMapping("/addresses")
@@ -38,9 +37,6 @@ public class AddressController {
 
 	@Autowired
 	CityService cityService;
-
-	@Autowired
-	OrgAddressService orgAddressService;
 
 	@Autowired
 	PersonAddressService personAddressService;
@@ -118,7 +114,6 @@ public class AddressController {
 	void populateEditForm(Model uiModel, Address address) {
 		uiModel.addAttribute("address", address);
 		uiModel.addAttribute("citys", cityService.findAllCitys());
-		uiModel.addAttribute("orgaddresses", orgAddressService.findAllOrgAddresses());
 		uiModel.addAttribute("personaddresses", personAddressService.findAllPersonAddresses());
 	}
 

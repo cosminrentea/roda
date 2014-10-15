@@ -15,7 +15,7 @@ Ext.define('databrowser.store.SeriesStore', {
 		        storeId : 'SeriesStore',
 		        proxy : {
 		            type : 'rest',
-		            url : '../../studiesbyseries',
+		            url : '../studiesbyseries',
 		            appendId : true,
 		            extraParams : {
 			            lang : translations.language

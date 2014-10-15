@@ -15,7 +15,7 @@ Ext.define('databrowser.store.CatalogStore', {
             storeId: 'CatalogStore',
         proxy: {
             type: 'rest',
-            url: '../../studiesbycatalog',
+            url: '../studiesbycatalog',
             extraParams : {
             	lang : translations.language
             },

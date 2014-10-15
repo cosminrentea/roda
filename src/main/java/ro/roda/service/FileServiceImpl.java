@@ -24,7 +24,8 @@ import org.xml.sax.SAXException;
 
 import ro.roda.ddi.CodeBook;
 import ro.roda.domain.File;
-import ro.roda.service.importer.ImporterService;
+import ro.roda.service.importer.DdiImporterService;
+import ro.roda.service.importer.CmsImporterService;
 
 @Service
 @Transactional
@@ -39,7 +40,7 @@ public class FileServiceImpl implements FileService {
 	SolrServer solrServer;
 
 	@Autowired
-	ImporterService importer;
+	DdiImporterService ddiImporter;
 
 	public long countAllFiles() {
 		return File.countFiles();
@@ -76,8 +77,8 @@ public class FileServiceImpl implements FileService {
 
 					updateSolrFile(f, multipartFile);
 					if (multipartFile.getOriginalFilename().endsWith(".ddi")) {
-						importer.importDdiFile((CodeBook) importer.getUnmarshaller().unmarshal(f), multipartFile, true,
-								true, false, null);
+						ddiImporter.importDdiFile((CodeBook) ddiImporter.getUnmarshaller().unmarshal(f), multipartFile,
+								true, true, false, null);
 					}
 				} else {
 					log.debug("> saveFile > set properties");

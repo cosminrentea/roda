@@ -282,9 +282,6 @@ public class Address {
 	private Integer id;
 
 	@OneToMany(mappedBy = "addressId")
-	private Set<OrgAddress> orgAddresses;
-
-	@OneToMany(mappedBy = "addressId")
 	private Set<PersonAddress> personAddresses;
 
 	@Column(name = "postal_code", columnDefinition = "varchar", length = 30)
@@ -338,10 +335,6 @@ public class Address {
 
 	public Integer getId() {
 		return this.id;
-	}
-
-	public Set<OrgAddress> getOrgAddresses() {
-		return orgAddresses;
 	}
 
 	public Set<PersonAddress> getPersonAddresses() {
@@ -402,10 +395,6 @@ public class Address {
 
 	public void setId(Integer id) {
 		this.id = id;
-	}
-
-	public void setOrgAddresses(Set<OrgAddress> orgAddresses) {
-		this.orgAddresses = orgAddresses;
 	}
 
 	public void setPersonAddresses(Set<PersonAddress> personAddresses) {

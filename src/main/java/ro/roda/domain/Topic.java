@@ -163,36 +163,6 @@ public class Topic {
 		return new JSONSerializer().exclude("*.class", "classAuditReader", "auditReader").serialize(collection);
 	}
 
-	public static List<Topic> findTopicsByParent(String parentId) {
-		String lang = LocaleContextHolder.getLocale().getLanguage();
-		List<Topic> topics;
-		if (parentId == null || "root".equalsIgnoreCase(parentId)) {
-			// parent is null or "root" (as sent by ExtJS) => first-level of
-			// topics
-			topics = Topic.entityManager().createQuery("SELECT o FROM Topic o WHERE o.parentId IS NULL", Topic.class)
-					.getResultList();
-		} else {
-			// we assume parentId is a number
-			topics = Topic.entityManager()
-					.createQuery("SELECT o FROM Topic o WHERE o.parentId = :parentId", Topic.class)
-					.setParameter("parentId", findTopic(Integer.valueOf(parentId))).getResultList();
-		}
-		// if (topics != null && topics.size() > 0) {
-		// Iterator<Topic> topicIterator = topics.iterator();
-		// while (topicIterator.hasNext()) {
-		// Topic topic = (Topic) topicIterator.next();
-		// result.add(findTopic(topic.getId()));
-		// }
-		// }
-
-		return topics;
-	}
-
-	public static String toJsonByParent(String parentId) {
-		return new JSONSerializer().include("id", "name", "leaf").include("translations.translation")
-				.exclude("*", "*.*").rootName("topics").serialize(findTopicsByParent(parentId));
-	}
-
 	public static AuditReader getClassAuditReader() {
 		return AuditReaderFactory.get(entityManager());
 	}
@@ -226,7 +196,7 @@ public class Topic {
 	@ManyToMany(mappedBy = "topics", fetch = FetchType.LAZY)
 	private Set<Study> studies;
 
-	@OneToMany(mappedBy = "parentId", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "parentId")
 	private Set<Topic> topics;
 
 	@OneToMany(mappedBy = "preferredSynonymTopicId", fetch = FetchType.LAZY)
@@ -281,6 +251,10 @@ public class Topic {
 
 	public Set<Topic> getSynonimTopics() {
 		return synonimTopics;
+	}
+
+	public Boolean getLeaf() {
+		return new Boolean(topics == null || topics.size() == 0);
 	}
 
 	@Transactional
@@ -350,10 +324,6 @@ public class Topic {
 		this.synonimTopics = synonims;
 	}
 
-	public Boolean getLeaf() {
-		return new Boolean(topics == null || topics.size() == 0);
-	}
-
 	public String toJson() {
 		return new JSONSerializer().exclude("*.class").exclude("classAuditReader", "auditReader")
 				.include("translations.*").serialize(this);
@@ -366,12 +336,14 @@ public class Topic {
 	@PostUpdate
 	@PostPersist
 	private void postPersistOrUpdate() {
-		indexTopic(this);
+		// TODO re-enable later
+		// indexTopic(this);
 	}
 
 	@PreRemove
 	private void preRemove() {
-		deleteIndex(this);
+		// TODO re-enable later
+		// deleteIndex(this);
 	}
 
 	@Override

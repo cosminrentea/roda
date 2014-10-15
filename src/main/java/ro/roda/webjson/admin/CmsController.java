@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -22,7 +23,7 @@ import ro.roda.domainjson.AdminJson;
 import ro.roda.service.AdminJsonService;
 import ro.roda.service.filestore.CmsFileStoreService;
 
-@RequestMapping("/admin")
+@RequestMapping("/adminjson")
 @Controller
 public class CmsController {
 

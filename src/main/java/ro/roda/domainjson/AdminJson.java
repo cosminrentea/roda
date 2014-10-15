@@ -445,7 +445,7 @@ public class AdminJson {
 		return new AdminJson(true, "CMS Snippet dropped successfully");
 	}
 
-	public static AdminJson snippetSave(Integer groupId, String name, String content, Integer snippetId) {
+	public static AdminJson snippetSave(Integer groupId, String content, String name, Integer snippetId) {
 
 		CmsSnippet snippet = null;
 		if (snippetId != null) {

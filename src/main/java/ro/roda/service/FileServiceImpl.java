@@ -1,12 +1,8 @@
 package ro.roda.service;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.List;
 
-import javax.xml.bind.JAXBException;
-
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.solr.client.solrj.SolrServer;
@@ -15,17 +11,14 @@ import org.apache.solr.client.solrj.request.AbstractUpdateRequest.ACTION;
 import org.apache.solr.client.solrj.request.ContentStreamUpdateRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-import org.xml.sax.SAXException;
 
 import ro.roda.ddi.CodeBook;
 import ro.roda.domain.File;
 import ro.roda.service.importer.DdiImporterService;
-import ro.roda.service.importer.CmsImporterService;
 
 @Service
 @Transactional

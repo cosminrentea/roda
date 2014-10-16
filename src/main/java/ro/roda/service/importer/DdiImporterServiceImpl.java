@@ -8,21 +8,16 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Properties;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -36,15 +31,13 @@ import javax.xml.validation.SchemaFactory;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.tika.Tika;
-import org.postgresql.copy.CopyManager;
-import org.postgresql.core.BaseConnection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -103,35 +96,20 @@ import au.com.bytecode.opencsv.CSVReader;
 import flexjson.JSONSerializer;
 
 @Service
+@Transactional(propagation = Propagation.REQUIRES_NEW)
 public class DdiImporterServiceImpl implements DdiImporterService {
 
 	private final Log log = LogFactory.getLog(this.getClass());
 
-	@Value("${database.username}")
-	private String dbUsername;
-
-	@Value("${database.password}")
-	private String dbPassword;
-
-	@Value("${database.url}")
-	private String dbUrl;
-
-	@Value("${roda.data.csv.dir}")
-	private String rodaDataCsvDir;
-
-	@Value("${roda.data.csv-extra.dir}")
-	private String rodaDataCsvExtraDir;
-
-	@Value("${roda.data.csv-after-ddi.catalog_study}")
-	private String rodaDataCsvAfterDdiCatalogStudy;
-
-	@Value("${roda.data.csv-after-ddi.series_study}")
-	private String rodaDataCsvAfterDdiSeriesStudy;
-
 	private static final String jaxbContextPath = "ro.roda.ddi";
+	private static final String ddiFoldername = "ddi";
+	private static final String profilesFoldername = "ddi-import-profiles";
 
 	@PersistenceContext
 	transient EntityManager entityManager;
+
+	@Autowired
+	CsvImporterService csvImporterService;
 
 	@Autowired
 	CatalogService catalogService;
@@ -154,6 +132,9 @@ public class DdiImporterServiceImpl implements DdiImporterService {
 	@Autowired
 	CmsFileService cmsFileService;
 
+	@Value("${roda.data.ddi.profile}")
+	private String rodaDataDdiProfile;
+
 	@Value("${roda.data.ddi.csv}")
 	private String rodaDataDdiCsv;
 
@@ -165,9 +146,6 @@ public class DdiImporterServiceImpl implements DdiImporterService {
 
 	@Value("${roda.data.ddi.persist}")
 	private String rodaDataDdiPersist;
-
-	@Value("${roda.data.ddi.files}")
-	private String rodaDataDdiFiles;
 
 	@Value("${roda.data.ddi.otherstatistic}")
 	private String rodaDataDdiOtherStatistic;
@@ -193,130 +171,50 @@ public class DdiImporterServiceImpl implements DdiImporterService {
 		return unmarshaller;
 	}
 
-	// @Async
-	@Transactional(propagation = Propagation.REQUIRES_NEW)
-	public void importCsv() throws Exception {
-		importCsvDir(rodaDataCsvDir);
-	}
+	@Async(value = "asyncSerialExecutor")
+	public void importDdiFiles() throws Exception {
 
-	// @Async
-	@Transactional(propagation = Propagation.REQUIRES_NEW)
-	public void importCsvExtra() throws Exception {
-		importCsvDir(rodaDataCsvExtraDir);
-	}
+		// import catalogs
+		csvImporterService.importCsvFile(profilesFoldername + "/" + rodaDataDdiProfile + "/catalog.csv");
 
-	/**
-	 * Populates the database using data imported from a directory with CSV
-	 * files (which are sorted by filename).
-	 */
-	public void importCsvDir(String dirname) throws Exception {
-		log.trace("Importing CSV from directory: " + dirname);
-		Connection con = null;
-		Properties conProps = new Properties();
-		conProps.put("user", this.dbUsername);
-		conProps.put("password", this.dbPassword);
-		con = DriverManager.getConnection(this.dbUrl, conProps);
+		// import series
+		csvImporterService.importCsvFile(profilesFoldername + "/" + rodaDataDdiProfile + "/series.csv");
 
-		Resource csvRes = new ClassPathResource(dirname);
-		File csvDir = csvRes.getFile();
-		File[] csvFiles = csvDir.listFiles();
+		// read: catalog-study relationships + all referenced DDI filenames
+		CSVReader reader = new CSVReader(new FileReader(new ClassPathResource(profilesFoldername + "/"
+				+ rodaDataDdiProfile + "/catalog_study.csv").getFile()));
+		List<String[]> csvLines = reader.readAll();
+		reader.close();
 
-		// sort file list by file name, ascending
-		Arrays.sort(csvFiles, new Comparator<File>() {
-			public int compare(File f1, File f2) {
-				return f1.getName().compareTo(f2.getName());
-			}
-		});
+		// keep the DDI files in the same order each time
+		// so the IDs generated when importing are reproducible across runs
+		Set<String> ddiFilenames = new TreeSet<String>();
 
-		CopyManager cm = ((BaseConnection) con).getCopyAPI();
-		for (File f : csvFiles) {
-			log.trace("File: " + f.getAbsolutePath());
-
-			// Postgresql requires a Reader for the COPY commands
-			BufferedReader br = new BufferedReader(new FileReader(f));
-
-			// read the first line, containing the enumeration of fields
-			String tableFields = br.readLine();
-
-			// obtain the table name from the file name
-			String tableName = f.getName().substring(2, f.getName().length() - 4);
-
-			// TODO de facut importul sa mearga cu UTF8 -
-			// SET CLIENT ENCODING UTF8 ...
-
-			// bulk COPY the remaining lines (CSV data)
-			String copyQuery = "COPY " + tableName + "(" + tableFields + ") FROM stdin DELIMITERS ',' CSV";
-			log.trace("Query:" + copyQuery);
-
-			cm.copyIn(copyQuery, br);
+		for (String[] csvLine : csvLines) {
+			log.trace("Catalog: " + csvLine[0] + " -- Study Filename: " + csvLine[1]);
+			ddiFilenames.add(csvLine[1]);
 		}
-		con.close();
-	}
+		log.debug("DDI files listed");
 
-	/**
-	 * Populates a database table using data imported from a CSV file.
-	 */
-	public void importCsvFile(String filename) throws Exception {
-
-		// get CSV file
-		Resource csvRes = new ClassPathResource(filename);
-		File f = csvRes.getFile();
-		log.trace("Importing CSV file: " + f.getAbsolutePath());
-
-		BufferedReader br = new BufferedReader(new FileReader(f));
-
-		// read the first line, containing the enumeration of fields
-		String tableFields = br.readLine();
-
-		// obtain the table name from the file name (excluding ".CSV" ending)
-		String tableName = f.getName().substring(0, f.getName().length() - 4);
-
-		// bulk COPY the remaining lines (CSV data)
-		String copyQuery = "COPY " + tableName + "(" + tableFields + ") FROM stdin DELIMITERS ',' CSV";
-		log.trace("Query: " + copyQuery);
-
-		// get connection + copymanager
-		Connection con = null;
-		Properties conProps = new Properties();
-		conProps.put("user", this.dbUsername);
-		conProps.put("password", this.dbPassword);
-		con = DriverManager.getConnection(this.dbUrl, conProps);
-
-		// execute query to copy/import all CSV data
-		((BaseConnection) con).getCopyAPI().copyIn(copyQuery, br);
-
-		con.close();
-	}
-
-	public void importDdiFiles() throws FileNotFoundException, IOException, JAXBException, SAXException {
-		log.trace("roda.data.ddi.files = " + rodaDataDdiFiles);
-		log.trace("roda.data.ddi.csv = " + rodaDataDdiCsv);
 		log.trace("roda.data.ddi.persist = " + rodaDataDdiPersist);
-
+		log.trace("roda.data.ddi.csv = " + rodaDataDdiCsv);
 		boolean ddiPersistance = "yes".equalsIgnoreCase(rodaDataDdiPersist);
 		boolean importDdiCsv = "yes".equalsIgnoreCase(rodaDataDdiCsv);
 
 		this.getUnmarshaller();
 
 		PathMatchingResourcePatternResolver pmr = new PathMatchingResourcePatternResolver();
-		Resource[] resources = pmr.getResources("classpath*:" + rodaDataDdiFiles);
-		if (resources.length == 0) {
-			log.warn("No DDI files found for importing");
-		}
-
-		List<File> ddiFiles = new ArrayList<File>();
-		for (Resource ddiResource : resources) {
-			ddiFiles.add(ddiResource.getFile());
-		}
-		// sort files by name -> create predictable IDs for Studies
-		Collections.sort(ddiFiles);
-		for (File ddiFile : ddiFiles) {
-			log.debug(ddiFile.getName());
-		}
-
-		for (File ddiFile : ddiFiles) {
+		for (String ddiFilename : ddiFilenames) {
 			try {
-				log.debug("Importing DDI file: " + ddiFile.getName());
+				log.trace("Trying to import DDI file: " + ddiFilename);
+
+				Resource resource = pmr.getResource("classpath:" + ddiFoldername + "/" + ddiFilename);
+				if (resource == null) {
+					log.warn("DDI file not found!");
+					continue;
+				}
+
+				File ddiFile = resource.getFile();
 				MockMultipartFile mockMultipartFileDdi = new MockMultipartFile(ddiFile.getName(), ddiFile.getName(),
 						"text/xml", new FileInputStream(ddiFile));
 				CodeBook cb = (CodeBook) unmarshaller.unmarshal(ddiFile);
@@ -335,20 +233,11 @@ public class DdiImporterServiceImpl implements DdiImporterService {
 				importDdiFile(cb, mockMultipartFileDdi, true, true, ddiPersistance, mockMultipartFileCsv);
 
 			} catch (Exception e) {
-				log.fatal("Exception thrown when importing DDI: " + ddiFile.getName(), e);
+				log.fatal("Exception thrown when importing this DDI file: " + ddiFilename, e);
 				throw e;
 			}
 		}
-		log.debug("Finished importing DDI files");
-	}
-
-	// @Async
-	@Transactional(propagation = Propagation.REQUIRES_NEW)
-	public void importDdiIntoCatalogsAndSeries() throws Exception {
-		CSVReader reader = new CSVReader(new FileReader(
-				new ClassPathResource(rodaDataCsvAfterDdiCatalogStudy).getFile()));
-		List<String[]> csvLines = reader.readAll();
-		reader.close();
+		log.debug("DDI files were imported");
 
 		for (String[] csvLine : csvLines) {
 			log.trace("Catalog: " + csvLine[0] + " -- Study Filename: " + csvLine[1]);
@@ -363,32 +252,9 @@ public class DdiImporterServiceImpl implements DdiImporterService {
 			cs.setId(new CatalogStudyPK(Integer.valueOf(csvLine[0]), study.getId()));
 			cs.persist();
 		}
-		log.debug("DDI files moved to Catalogs");
-
-		reader = new CSVReader(new FileReader(new ClassPathResource(rodaDataCsvAfterDdiSeriesStudy).getFile()));
-		csvLines = reader.readAll();
-		reader.close();
-
-		for (String[] csvLine : csvLines) {
-			log.trace("Series: " + csvLine[0] + " -- Study Filename: " + csvLine[1]);
-			Study study = Study.findFirstStudyWithFilename(csvLine[1]);
-			if (study == null) {
-				String errorMessage = "Study cannot be added to Series because its filename was not found: "
-						+ csvLine[1];
-				log.error(errorMessage);
-				throw new IllegalStateException(errorMessage);
-			}
-			Series series = null;
-
-			// TODO add Study to Series here !
-
-		}
-		log.debug("DDI files moved to Series");
-
+		log.debug("DDI files put into Catalogs and Series");
 	}
 
-	// @Async
-	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public void importDdiFile(CodeBook cb, MultipartFile multipartFileDdi, boolean nesstarExported,
 			boolean legacyDataRODA, boolean ddiPersistence, MultipartFile multipartFileCsv)
 			throws FileNotFoundException, IOException {
@@ -885,7 +751,7 @@ public class DdiImporterServiceImpl implements DdiImporterService {
 							}
 						}
 					} else {
-						log.error("instance.getQuestions() is null");
+						log.error("instance.getQuestions() == null");
 					}
 				}
 			}
@@ -896,7 +762,7 @@ public class DdiImporterServiceImpl implements DdiImporterService {
 		// serialization of DDI XML as JSON - only if requested
 		if ("yes".equalsIgnoreCase(rodaDataDdiSaveJson)) {
 			String ddiJson = new JSONSerializer().exclude("*.class").deepSerialize(cb);
-			File fileJson = File.createTempFile("roda-json", null);
+			File fileJson = File.createTempFile("roda-json-", null);
 			FileWriter fw = new FileWriter(fileJson);
 			fw.write(ddiJson);
 			fw.flush();

@@ -100,6 +100,9 @@
 	<session-config>
 		<session-timeout>10</session-timeout>
 	</session-config>
+	
+	<!-- Cosmin: disabled these error pages; app. is using now @ControllerAdvice error-handling  -->
+	<!--
 	<error-page>
 		<exception-type>java.lang.Exception</exception-type>
 		<location>/uncaughtException</location>
@@ -108,4 +111,5 @@
 		<error-code>404</error-code>
 		<location>/resourceNotFound</location>
 	</error-page>
+	-->
 </web-app>

@@ -18,7 +18,7 @@ public class TopicTreeController {
 	@ResponseBody
 	public ResponseEntity<String> tree(@RequestParam(value = "node", required = false) String id) {
 		HttpHeaders headers = new HttpHeaders();
-		headers.add("Content-Type", "application/json");
+		headers.add("Content-Type", "application/json; charset=utf-8");
 		return new ResponseEntity<String>(TranslatedTopic.toJsonByParent(id), headers, HttpStatus.OK);
 	}
 }

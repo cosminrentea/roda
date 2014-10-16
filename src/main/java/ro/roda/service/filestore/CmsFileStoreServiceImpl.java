@@ -209,7 +209,7 @@ public class CmsFileStoreServiceImpl implements CmsFileStoreService, SmartLifecy
 				Node folderNode = session.getNode(getAbsPath(cmsFolder));
 
 				// save as a temporary file
-				File f = File.createTempFile("roda", null);
+				File f = File.createTempFile("roda-", null);
 				multipartFile.transferTo(f);
 
 				Node fileNode = folderNode.addNode(multipartFile.getOriginalFilename(), "nt:file");

@@ -10,11 +10,13 @@ import java.util.Set;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.context.i18n.LocaleContextHolder;
 
 import ro.roda.domain.CatalogStudy;
 import ro.roda.domain.File;
 import ro.roda.domain.Instance;
 import ro.roda.domain.Keyword;
+import ro.roda.domain.Lang;
 import ro.roda.domain.Org;
 import ro.roda.domain.Person;
 import ro.roda.domain.Series;
@@ -24,6 +26,8 @@ import ro.roda.domain.StudyKeyword;
 import ro.roda.domain.StudyOrg;
 import ro.roda.domain.StudyPerson;
 import ro.roda.domain.Topic;
+import ro.roda.domain.TranslatedTopic;
+import ro.roda.domain.TranslatedTopicPK;
 import ro.roda.domain.Variable;
 import ro.roda.transformer.FieldNameTransformer;
 import ro.roda.transformer.FlatQuestionMinInfoTransformer;
@@ -141,7 +145,7 @@ public class StudyInfo extends JsonInfo {
 
 	private Set<Keyword> keywords;
 
-	private Set<Topic> topics;
+	private Set<TranslatedTopic> translatedTopics;
 
 	private Integer seriesId;
 
@@ -308,7 +312,14 @@ public class StudyInfo extends JsonInfo {
 		}
 
 		if (hasTopics) {
-			this.setTopics(study.getTopics());
+			this.translatedTopics = new HashSet<TranslatedTopic>();
+			Set<Topic> topicSet = study.getTopics();
+			Integer currentLanguageId = Lang.findLang(LocaleContextHolder.getLocale().getLanguage()).getId();
+			for (Topic topic : topicSet) {
+				TranslatedTopic tt = TranslatedTopic.findTranslatedTopic(new TranslatedTopicPK(currentLanguageId, topic
+						.getId()));
+				this.translatedTopics.add(tt);
+			}
 		}
 	}
 
@@ -412,12 +423,12 @@ public class StudyInfo extends JsonInfo {
 		this.keywords = keywords;
 	}
 
-	public Set<Topic> getTopics() {
-		return topics;
+	public Set<TranslatedTopic> getTranslatedTopics() {
+		return translatedTopics;
 	}
 
-	public void setTopics(Set<Topic> topics) {
-		this.topics = topics;
+	public void setTranslatedTopics(Set<TranslatedTopic> tt) {
+		this.translatedTopics = tt;
 	}
 
 	public Integer getSeriesId() {
@@ -473,7 +484,7 @@ public class StudyInfo extends JsonInfo {
 		serializer.include("persons.id", "persons.lname", "persons.fname", "persons.mname");
 		serializer.include("orgs.id", "orgs.fullName");
 		serializer.include("keywords.id", "keywords.name");
-		serializer.include("topics.id", "topics.name");
+		serializer.include("translatedTopics.translation");
 
 		// exclude ALL other fields
 		serializer.exclude("*");

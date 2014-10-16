@@ -190,7 +190,7 @@ public class Topic {
 	@JoinColumn(name = "preferred_synonym_topic_id", columnDefinition = "integer", referencedColumnName = "id")
 	private Topic preferredSynonymTopicId;
 
-	@ManyToMany(mappedBy = "topics", fetch = FetchType.LAZY)
+	@ManyToMany(mappedBy = "topics")
 	private Set<Series> series;
 
 	@ManyToMany(mappedBy = "topics", fetch = FetchType.LAZY)

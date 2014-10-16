@@ -113,9 +113,8 @@ public class StudyKeyword {
 			sid.addField(
 					"studykeyword_solrsummary_t",
 					new StringBuilder().append(studyKeyword.getKeywordId()).append(" ")
-							.append(studyKeyword.getStudyId()).append(" ").append(studyKeyword.getAddedBy())
-							.append(" ").append(studyKeyword.getAdded().getTime()).append(" ")
-							.append(studyKeyword.getId()));
+							.append(studyKeyword.getStudyId()).append(" ").append(studyKeyword.getAdded().getTime())
+							.append(" ").append(studyKeyword.getId()));
 			documents.add(sid);
 		}
 		try {

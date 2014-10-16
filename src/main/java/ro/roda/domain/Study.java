@@ -631,10 +631,11 @@ public class Study {
 		return new JSONSerializer().exclude("*.class").exclude("classAuditReader", "auditReader").serialize(this);
 	}
 
-	public String toString() {
-		return new ReflectionToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE).setExcludeFieldNames(
-				"timeMethType").toString();
-	}
+	// public String toString() {
+	// return new ReflectionToStringBuilder(this,
+	// ToStringStyle.SHORT_PREFIX_STYLE).setExcludeFieldNames(
+	// "timeMethType").toString();
+	// }
 
 	@PostUpdate
 	@PostPersist

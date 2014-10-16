@@ -3,7 +3,6 @@ package ro.roda.service;
 import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
-import org.xml.sax.SAXException;
 
 import ro.roda.domain.File;
 

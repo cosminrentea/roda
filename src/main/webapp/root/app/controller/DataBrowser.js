@@ -166,7 +166,7 @@ Ext.define('databrowser.controller.DataBrowser', {
 	var me = this;
 	Ext.Ajax.request({
 //        url : 'http://roda.apiary-mock.com/statistics',
-		url: '../../statistics',
+		url: '../statistics',
 		method : "GET",
         params : {
                 variable1 : firstv,
@@ -211,7 +211,7 @@ onSTSendToAnalysis : function (button) {
 	var secv = astore.getAt(1).data.indice;
 	var me = this;
 	Ext.Ajax.request({
-        url : '../../statistics',
+        url : '../statistics',
         method : "POST",
         params : {
                 variable1 : firstv,
@@ -250,7 +250,7 @@ onSTSendToAnalysis : function (button) {
 		this.getSingledetails().setLoading('Loading...');
 		var me = this;
 		Ext.Ajax.request({
-	        url : '../../statistics',
+	        url : '../statistics',
 //	        url : 'http://roda.apiary-mock.com/statistics',
 	        method : "GET",
 	        params : {
@@ -507,7 +507,7 @@ onSTSendToAnalysis : function (button) {
 		console.log(currentNode);
 		var me = this;
 		Ext.Ajax.request({
-	        url : '../../statistics',
+	        url : '../statistics',
 //	        url : 'http://roda.apiary-mock.com/statistics',
 	        method : "GET",
 	        params : {

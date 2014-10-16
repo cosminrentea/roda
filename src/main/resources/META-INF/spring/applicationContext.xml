@@ -143,10 +143,10 @@
 		</property>
 	</bean>
 
-	<task:annotation-driven executor="asyncExecutor"
+	<task:annotation-driven executor="asyncSerialExecutor"
 		scheduler="rodaScheduler" mode="aspectj" />
 
-	<task:executor id="asyncExecutor" pool-size="${executor.poolSize}" />
+	<task:executor id="asyncSerialExecutor" pool-size="${executor.poolSize}" />
 
 	<bean class="ro.roda.util.ScheduledTask" id="rodaScheduledTask" />
 

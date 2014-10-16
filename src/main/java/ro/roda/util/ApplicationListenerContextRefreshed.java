@@ -94,34 +94,27 @@ public class ApplicationListenerContextRefreshed implements ApplicationListener<
 						importer.importCmsSnippets();
 					}
 
-					// ELSST depends or will depend on initial set of CSVs
+					// ELSST depends on the initial set of CSVs
 					// (e.g. Language)
 					if (YES.equalsIgnoreCase(rodaDataElsst)) {
 						elsstImporter.importElsst();
 					}
 
-					// This phase (EXTRA-CSV) should be put last to ensure that
-					// the data
-					// imported here is really optional, and no other phases are
-					// depending on it.
-					// Otherwise, the CSVs should be placed in the first set of
-					// CSVs, not here.
+					if (YES.equalsIgnoreCase(rodaDataDdi)) {
+						ddiImporter.importDdiFiles();
+						// if (YES.equalsIgnoreCase(rodaDataCsvAfterDdi)) {
+						// ddiImporter.importDdiIntoCatalogsAndSeries();
+						// }
+					}
 
-					// Now, the last phase has to be
-					// "DDI-INTO-CATALOGS-AND-SERIES"
-					// and this CSV-EXTRA phase imports first
-					// the necessary CSV for CATALOGS !!!
+					// This phase (EXTRA-CSV) should be put last to ensure that
+					// the data imported here is really optional,
+					// and no other phases are depending on it.
+					// Otherwise, any such CSVs should be placed
+					// in the initial set of CSVs, not here in the optional set.
 					if (YES.equalsIgnoreCase(rodaDataCsvExtra)) {
 						csvImporter.importCsvExtra();
 					}
-
-					if (YES.equalsIgnoreCase(rodaDataDdi)) {
-						ddiImporter.importDdiFiles();
-						if (YES.equalsIgnoreCase(rodaDataCsvAfterDdi)) {
-							ddiImporter.importDdiIntoCatalogsAndSeries();
-						}
-					}
-
 				}
 
 			} catch (Exception e) {

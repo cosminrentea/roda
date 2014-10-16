@@ -419,9 +419,10 @@ public class Instance {
 		return new JSONSerializer().exclude("*.class").exclude("classAuditReader", "auditReader").serialize(this);
 	}
 
-	public String toString() {
-		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
-	}
+	// public String toString() {
+	// return ReflectionToStringBuilder.toString(this,
+	// ToStringStyle.SHORT_PREFIX_STYLE);
+	// }
 
 	@PostUpdate
 	@PostPersist

@@ -1,6 +1,7 @@
 package ro.roda.service.importer;
 
-import java.io.FileReader;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -69,8 +70,9 @@ public class ElsstImporterServiceImpl implements ElsstImporterService {
 	public void importElsst() throws Exception {
 		log.trace("Importing ELSST");
 
-		CSVReader reader = new CSVReader(new FileReader(
-				new ClassPathResource(rodaDataElsstDir + elsstEnTerms).getFile()));
+		CSVReader reader = new CSVReader(new BufferedReader(new InputStreamReader(new ClassPathResource(
+				rodaDataElsstDir + elsstEnTerms).getInputStream(), "UTF8")));
+
 		List<String[]> csvLines = reader.readAll();
 		reader.close();
 
@@ -146,7 +148,9 @@ public class ElsstImporterServiceImpl implements ElsstImporterService {
 
 		}
 
-		reader = new CSVReader(new FileReader(new ClassPathResource(rodaDataElsstDir + elsstEnRelationships).getFile()));
+		reader = new CSVReader(new BufferedReader(new InputStreamReader(new ClassPathResource(rodaDataElsstDir
+				+ elsstEnRelationships).getInputStream(), "UTF8")));
+
 		csvLines = reader.readAll();
 		reader.close();
 

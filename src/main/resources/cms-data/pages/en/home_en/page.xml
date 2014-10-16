@@ -16,7 +16,7 @@
 <p align="justify">
 	<font face="Arial, Helvetica, sans-serif" size="2">This consortium also contains, as associated institutions: Institute of Sociology &quot;Dimitrie Gusti&quot;, <a href="http://asis.ubbcluj.ro/" target="_blank">Faculty of Sociology and Social Work</a> from the <a href="http://www.ubbcluj.ro/ubb-en/index.html">University Babes-Bolyiai</a>, <a href="http://www.uoradea.ro/topic/77/The$Faculty$of$Social$Humanistic$Science.html">Faculty of Social Humanistic Science</a> from the <a href="http://www.uoradea.ro">University of Oradea</a>, <a href="http://www.curs.ro/" target="_blank">CURS - Centre of Urban and Regional Sociology</a> and <a href="http://www.mmt.ro/" target="_blank">MMT - Metro Media Transilvania</a>.</font></p>
 	]]></content>
-	<cms_layout>new-roda-main-en</cms_layout>
+	<cms_layout>new-roda-home-en</cms_layout>
 	<pagetype>content</pagetype>
 	<cacheable>3600</cacheable>
 	<searchable>true</searchable>		

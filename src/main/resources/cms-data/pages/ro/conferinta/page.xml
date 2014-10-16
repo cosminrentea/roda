@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pagedata>
+	<title>Conferinta</title>
+	<menutitle>Conferinta</menutitle>
+	<synopsis></synopsis>
+	<lang>ro</lang>
+	<content><![CDATA[
+<p>În perioada 2012 - 2014 a fost implementat proiectul "Sistem informatic integrat pentru identificarea, arhivarea si diseminarea bazelor de date si a indicatorilor din cercetările sociale", care a presupus modernizarea sistemului informatic al RODA la standarde internationale, pentru a deveni compatibili si interoperabili cu reteaua europeană de arhive de date sociale CESSDA - Council of European Social Science Data Archives.</p>
+<p>Acest proiect a beneficiat de finantare din partea Ministerului Educatiei Nationale, prin intermediul Planului Sectorial, contract nr. 5S/2012 în valoare de 2.500.000 lei.</p>
+<p>În data de 28 noiembrie 2014 va fi organizată conferinta de final a proiectului, la care sunt invitati membri ai comunitătii academice, experti în cercetarea socială, factori de decizie în elaborarea politicilor, reprezentanti din agentii guvernamentale si organizatii non-guvernamentale. </p>
+
+<p>
+
+<a href="[[FileURL:Invitatie]]">Invitatia</a>
+
+</p>
+
+	]]></content>
+	<cms_layout>new-roda-main-ro</cms_layout>
+	<pagetype>content</pagetype>
+	<cacheable>3600</cacheable>
+	<searchable>true</searchable>		
+	<default_page>0</default_page>
+	<external_redirect></external_redirect>
+	<internal_redirect></internal_redirect>
+	<navigable>true</navigable>
+	<published>true</published>
+	<target></target>
+	<visible>true</visible>
+	<sequence>8</sequence>
+</pagedata>

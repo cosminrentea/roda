@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <pagedata>
-	<title>RO</title>
-	<menutitle>RO</menutitle>
+	<title>Ro</title>
+	<menutitle>Acasa</menutitle>
 	<synopsis>
 	</synopsis>
 	<lang>ro</lang>
 	<content><![CDATA[]]></content>
-	<cms_layout>new-roda-main-ro</cms_layout>
+	<cms_layout>new-roda-home-ro</cms_layout>
 	<pagetype>content</pagetype>
 	<cacheable>3600</cacheable>
 	<searchable>false</searchable>		

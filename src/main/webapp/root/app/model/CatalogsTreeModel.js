@@ -1,12 +1,18 @@
 Ext.define('databrowser.model.CatalogsTreeModel', {
 	extend : 'Ext.data.Model',
-
+	idProperty: 'id',
 	fields : [ {
 		name : 'name',
 		type : 'string'
 	}, {
 		name : 'indice',
 		type : 'integer'
+	},
+	{name : 'id',
+		type: 'string',
+		convert: function (v, r) {
+			return r.get('type') + '-' + r.get('indice');
+		}
 	},
 
 	{

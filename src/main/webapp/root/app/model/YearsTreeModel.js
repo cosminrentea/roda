@@ -1,7 +1,8 @@
 
 Ext.define('databrowser.model.YearsTreeModel', {
     extend: 'Ext.data.Model',
-
+//	idProperty: 'year',
+	idProperty: 'id',
 
 fields : [ {
 	name : 'name',
@@ -13,6 +14,18 @@ fields : [ {
 	name : 'indice',
 	type : 'integer'
 },
+
+{name : 'id',
+	type: 'string',
+	convert: function (v, r) {
+		if (r.get('year')) {
+			return r.get('type') + '-' +r.get('year');
+		} else {
+			return r.get('type') + '-' +  r.get('indice');
+		}
+	}
+},
+
 {
 	name : 'children'
 }, 

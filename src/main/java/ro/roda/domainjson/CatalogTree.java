@@ -45,8 +45,10 @@ public class CatalogTree extends JsonInfo {
 
 		serializer.transform(new FieldNameTransformer("indice"), "id");
 
-		return "{\"data\":[{\"name\":\"RODA\",\"type\":\"" + JsonInfo.MAIN_TYPE + "\",\"data\":"
-				+ serializer.serialize(collection) + "}]}";
+//		return "{\"data\":[{\"name\":\"RODA\",\"type\":\"" + JsonInfo.MAIN_TYPE + "\",\"data\":"
+//				+ serializer.serialize(collection) + "}]}";
+		return serializer.serialize(collection);
+
 	}
 
 	public static List<CatalogTree> findAllCatalogTree() {

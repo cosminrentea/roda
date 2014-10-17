@@ -771,7 +771,7 @@
 				<artifactId>tomcat6-maven-plugin</artifactId>
 				<version>2.2</version>
 				<configuration>
-					<url>http://www1.roda.ro:8080/manager</url>
+					<url>http://www2.roda.ro:8080/manager</url>
 					<server>IntegrationTomcatServer</server>
 					<path>/roda</path>
 				</configuration>

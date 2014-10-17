@@ -70,7 +70,7 @@
 		<spring-js-resources.version>2.4.1.RELEASE</spring-js-resources.version>
 		<spring-data-jpa.version>1.7.0.RELEASE</spring-data-jpa.version> <!-- original 1.6.0.RELEASE -->
 		<spring-data-rest-webmvc.version>2.2.0.RELEASE</spring-data-rest-webmvc.version> <!-- 2.1.1.RELEASE -->
-		<aspectj.version>1.7.2</aspectj.version> <!-- original: 1.7.0 -->
+		<aspectj.version>1.7.4</aspectj.version> <!-- verified: 1.7.2 -->
 		<slf4j.version>1.7.7</slf4j.version>
 		<log4j.version>1.2.17</log4j.version>
 		<servlet-api.version>2.5</servlet-api.version>
@@ -86,7 +86,7 @@
 		<solr-solrj.version>4.10.1</solr-solrj.version>
 		<ehcache.version>2.8.4</ehcache.version>
 		<ehcache-core.version>2.6.9</ehcache-core.version>
-		<tiles-jsp.version>3.0.4</tiles-jsp.version> <!-- original: 2.2.2 -->
+		<tiles-jsp.version>3.0.5</tiles-jsp.version> <!-- original: 2.2.2 -->
 		<selenium.version>2.43.1</selenium.version>
 		<jstl-impl.version>1.2</jstl-impl.version>
 		<JRI.version>0.9-6</JRI.version>
@@ -771,8 +771,8 @@
 				<artifactId>tomcat6-maven-plugin</artifactId>
 				<version>2.2</version>
 				<configuration>
-					<url>http://wwwdev.roda.ro:8080/manager</url>
-					<server>RodaTomcatServer</server>
+					<url>http://www1.roda.ro:8080/manager</url>
+					<server>IntegrationTomcatServer</server>
 					<path>/roda</path>
 				</configuration>
 			</plugin>

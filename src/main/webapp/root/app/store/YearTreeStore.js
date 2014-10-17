@@ -26,7 +26,7 @@ Ext.define('databrowser.store.YearTreeStore', {
 	       },    
 	    proxy: {
 	    	type: 'ajax',
-            url : '../../yearstree',
+            url : '../yearstree',
 	    	timeout: 200000,
 	    	extraParams : {
 	    		lang : translations.language

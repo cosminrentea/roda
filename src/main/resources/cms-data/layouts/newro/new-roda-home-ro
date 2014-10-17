@@ -1,0 +1,126 @@
+<html>
+<head>
+
+  	  <style>
+  	  [[Snippet: newstyle-ro]]
+  	  </style>
+      <title>RODA - [[Code: PageTitle]] </title>
+      <meta http-equiv="Keywords" name="Keywords" content="RODA, DDI" />
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+      <link rel="icon" href="[[FileURL:faviconpng]]" type="image/png" />
+      <link rel="SHORTCUT ICON" href="[[FileURL:faviconico]]" />
+	  <script type="text/javascript" src="[[FileURL:jquery-1.11.1.min]]"></script>
+  		<script type="text/javascript">
+	$(document).ready(function(){
+		if ($(document).height() < $(window).height()) {
+		    $('#footer_wrapper').attr('style', 'position: fixed!important; bottom: 0px;');
+		}
+	})
+	</script>
+</head>
+<body>
+	<div id="header_wrapper">
+		<div id="header">
+			<div id="logo"><a href="/roda/ro">[[ImgLink: logo]]</a></div>
+			<div id="header_right">
+				<div id="flags">
+					<a href="#" style="margin-right:5px; margin-left:100px;"><img src="[[FileURL:flag_ro]]"></a>
+					<a href="/roda/en"><img src="[[FileURL:flag_uk]]"></a>
+				</div>
+				<div id="search">
+					<input value="Termen cautare" type="text">
+					<input value="Cauta" type="submit">
+				</div>
+			</div>
+			<div class="cpl">&nbsp;</div>
+		</div>
+	</div>
+
+	<table id="wrapper">
+		<tbody><tr>
+			<td id="sidebar" align="left" valign="top" width="270">
+				<div class="sidebar_box">
+				 [[Snippet: menu-ro]]
+				</div>
+
+			</td>
+		
+			<td id="content_wrapper" align="left" valign="top" width="670">
+				<div id="content">
+					<img class="fright" src="[[FileURL:h0]]">
+					[[Code: PageContent]]
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2" style="padding-top:15px;">
+				<div class="boxuri">
+					<div class="box">
+						<a href="[[Code: PageLinkbyUrl('comandarea-datelor')]]"><img src="[[FileURL:h1]]"><br>
+						<div class="cont_box"><a href="[[Code: PageLinkbyUrl('comandarea-datelor')]]">Comandarea datelor</a></div>
+					</div>
+					<div class="box">
+						<a href="[[Code: PageLinkbyUrl('crearea-datelor')]]"><img src="[[FileURL:h2]]"><br>
+						<div class="cont_box"><a href="[[Code: PageLinkbyUrl('crearea-datelor')]]">Crearea datelor</a></div>
+					</div>
+					<div class="box last">
+						<a href="[[Code: PageLinkbyUrl('depunerea-datelor')]]"><img src="[[FileURL:h3]]"><br>
+						<div class="cont_box"><a href="[[Code: PageLinkbyUrl('depunerea-datelor')]]">Depunerea datelor</a></div>
+					</div>
+					<div class="cpl">&nbsp;</div>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<div id="middle">
+					<div id="box_links">
+						<ul>
+							<li><a href="[[Code: PageLinkbyUrl('/ro/crearea-datelor/ghid-de-buna-practica')]]">Ghid de buna practica</a></li>
+							<li><a href="[[Code: PageLinkbyUrl('/ro/depunerea-datelor/avantajele-depunerii')]]">Avantajele depunerii</a></li>
+							<li><a href="[[Code: PageLinkbyUrl('catalogul-de-date')]]">Catalogul RODA</a></li>
+						</ul>
+					</div>
+					<div id="box_search">
+						&nbsp;&nbsp;&nbsp;<input type="text"><input type="submit" value="cauta">
+					</div>
+					<div class="cpl">&nbsp;</div>
+				</div>
+				<div class="cpl">&nbsp;</div>
+			</td>
+		</tr>
+
+
+	</tbody></table>
+
+	
+	<div id="footer_wrapper">
+		<div id="footer">
+		<table>
+			<tr>
+				<td width="150" valign="top" align="left">
+					<ul>
+					</ul>
+				</td>
+				<td width="150" valign="top" align="left">
+					<ul>
+					</ul>
+				</td>
+				<td width="350" valign="top" align="left">
+				
+				</td>
+				<td width="150" valign="top" align="left">
+					<ul>
+					</ul>
+				</td>
+				<td width="150" valign="top" align="left">
+					<ul>
+					</ul>
+				</td>				
+			</tr>
+		</table>
+		</div>
+	</div>
+</body></html>
+
+

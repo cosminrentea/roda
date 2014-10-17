@@ -29,7 +29,8 @@ public class YearsTree extends JsonInfo {
 		serializer.include("data.name", "data.id", "data.yearStart", "data.type", "data.leaf");
 		serializer.transform(new FieldNameTransformer("indice"), "data.id");
 
-		return "{\"data\":[{\"name\":\"RODA\",\"type\":\"M\",\"data\":" + serializer.serialize(collection) + "}]}";
+//		return "{\"data\":[{\"name\":\"RODA\",\"type\":\"M\",\"data\":" + serializer.serialize(collection) + "}]}";
+		return serializer.serialize(collection);
 	}
 
 	public static List<YearsTree> findAllYearsTree() {

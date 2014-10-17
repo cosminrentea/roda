@@ -1,7 +1,7 @@
 Ext.define('databrowser.view.Browser', {
 	extend: 'Ext.panel.Panel',
 	alias: 'widget.browser',
-	id: 'browser',
+//	id: 'browser',
 	itemId: 'browser',
 	activeItem: 0,
 	width: '100%',
@@ -13,101 +13,48 @@ Ext.define('databrowser.view.Browser', {
 	        {
 	        	xtype: 'tabpanel',
 	        	region:'west',
+	        	itemId: 'TreesPanel',
 	        	width: '30%',
 	        	resizable:true,
 	        	activeTab: 0,
 	        	items: [
 	        	        {
-	        	        	xtype: 'panel',
-	        	        	id: 'CatalogsPanel',
+	        	        	xtype: 'treepanel',
 	        	        	autoScroll: true,
+	        	        	itemId: 'CatalogsTreePanel',
 	        	        	layout:'fit',
+	        	        	store: 'CatalogTreeStore',
+	        	        	displayField: 'text',
 	        	        	title: translations.catalogs,
-	        	        	tabConfig: {
-	        	        		xtype: 'tab',
-	        	        		id: 'CatalogsTabConfig'
+	        	        	viewConfig: {
+	        	        		rootVisible: false
 	        	        	},
-	        	        	items: [
-	        	        	        {
-	        	        	        	xtype: 'treepanel',
-	        	        	        	itemId: 'CatalogsTreePanel',
-	        	        	        	store: 'CatalogTreeStore',
-	        	        	        	displayField: 'text',
-	        	        	        	viewConfig: {
-	        	        	        		id: 'CatalogsTreeView',
-	        	        	        		autoScroll: true,
-	        	        	        		rootVisible: false
-	        	        	        	},
-//	        	        	        	listeners: {
-//	        	        	        		select: {
-//	        	        	        			fn: me.onCatalogsTreePanelSelect,
-//	        	        	        			scope: me
-//	        	        	        		}
-//	        	        	        	}
-	        	        	        }
-	        	        	        ]
 	        	        },
 	        	        {
-	        	        	xtype: 'panel',
-	        	        	id: 'YearsPanel',
+	        	        	xtype: 'treepanel',
+	        	        	itemId: 'YearsTreePanel',
 	        	        	autoScroll: true,
+	        	        	store: 'YearTreeStore',
 	        	        	layout:'fit',                            
 	        	        	title: translations.years,
-	        	        	tabConfig: {
-	        	        		xtype: 'tab',
-	        	        		id: 'YearsTabConfig'
+	        	        	displayField: 'name',
+	        	        	viewConfig: {
+	        	        		rootVisible: false
 	        	        	},
-	        	        	items: [
-	        	        	        {
-	        	        	        	xtype: 'treepanel',
-	        	        	        	height: 389,
-	        	        	        	itemId: 'YearsTreePanel',
-	        	        	        	store: 'YearTreeStore',
-	        	        	        	displayField: 'name',
-	        	        	        	viewConfig: {
-	        	        	        		id: 'YearsTreeView',
-	        	        	        		autoScroll: true,
-	        	        	        		rootVisible: false
-	        	        	        	},
-//	        	        	        	listeners: {
-//	        	        	        		select: {
-//	        	        	        			fn: me.onYearsTreePanelSelect,
-//	        	        	        			scope: me
-//	        	        	        		}
-//	        	        	        	}
-	        	        	        }
-	        	        	        ]
+
 	        	        }
 	        	        ,{
-	        	        	xtype: 'panel',
-	        	        	id: 'TopicPanel',
+	        	        	xtype: 'treepanel',
+	        	        	id: 'TopicTreePanel',
 	        	        	autoScroll: true,
+	        	        	store: 'TopicTreeStore',
 	        	        	layout:'fit',                            
 	        	        	title: translations.topics,
-	        	        	tabConfig: {
-	        	        		xtype: 'tab',
-	        	        		id: 'TopicTabConfig'
+	        	        	displayField: 'translation',
+	        	        	viewConfig: {
+	        	        		rootVisible: true
 	        	        	},
-	        	        	items: [
-	        	        	        {
-	        	        	        	xtype: 'treepanel',
-	        	        	        	height: 389,
-	        	        	        	id: 'TopicTreePanel',
-	        	        	        	store: 'TopicTreeStore',
-	        	        	        	displayField: 'translation',
-	        	        	        	viewConfig: {
-	        	        	        		id: 'TopicTreeView',
-	        	        	        		autoScroll: true,
-	        	        	        		rootVisible: false
-	        	        	        	},
-	        	        	        	listeners: {
-	        	        	        		select: {
-	        	        	        			fn: me.onTopicTreePanelSelect,
-	        	        	        			scope: me
-	        	        	        		}
-	        	        	        	}
-	        	        	        }
-	        	        	        ]
+
 	        	        }
 	        	        ]
 	        }

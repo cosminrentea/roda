@@ -62,12 +62,12 @@ Ext.application({
         'Alert',
         'ScatterChart'
     ],
-	controllers : ['VariableView', 'DataBrowser', 'Browser', 'CatalogView', 'YearView'],
+	controllers : ['VariableView', 'DataBrowser', 'Browser', 'CatalogView', 'YearView', 'History'],
     autoCreateViewport: false,
     name: 'databrowser',
     appFolder:'/roda/root/app',
     init : function() {  	
-    	console.log('init');
+//    	console.log('init');
     	Ext.Ajax.timeout = 200000; // 200 seconds 
 	    Ext.override(Ext.form.Basic, {     timeout: Ext.Ajax.timeout / 1000 });
 	    Ext.override(Ext.data.proxy.Server, {     timeout: Ext.Ajax.timeout });
@@ -76,9 +76,40 @@ Ext.application({
 	         renderTo: 'dbcontainer',
 	         plugins : ['fittoparent'],
 	     })
-  },
+    },
     
-    
+    launch : function() {
+    	console.log('launch application');    	
+	    Ext.tip.QuickTipManager.init();
+	    
+	    var me = this;
+      // init Ext.util.History on app launch; if there is a hash in the url,
+//      // our controller will load the appropriate content
+//      Ext.Ajax.timeout = 300000; 
+//	    Ext.override(Ext.form.Basic, {     timeout: Ext.Ajax.timeout / 1000 });
+//	    Ext.override(Ext.data.proxy.Server, {     timeout: Ext.Ajax.timeout });
+//	    Ext.override(Ext.data.Connection, {     timeout: Ext.Ajax.timeout });
+      
+      
+      
+      Ext.util.History.init(function(){
+      	console.log('history init firing event');
+      	var hash = document.location.hash;
+         // me.getMainController().fireEvent( 'tokenchange', hash.replace( '#', '' ) );
+//            me.getHistoryController().fireEvent( 'tokenchange', hash.replace( '#', '' ) );
+          	me.getHistoryController().fireEvent( 'tokenchangeinit', hash.replace( '#', '' ) );
+            
+      	
+      })
+      // add change handler for Ext.util.History; when a change in the token
+      // occurs, this will fire our controller's event to load the appropriate content
+
+      Ext.util.History.on( 'change', function( token ){
+      	console.log('history change firing event');
+         me.getHistoryController().fireEvent( 'tokenchange', token );
+      });
+
+  }    
     
     
     

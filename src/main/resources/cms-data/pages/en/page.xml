@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <pagedata>
 	<title>En</title>
-	<menutitle>EN</menutitle>
+	<menutitle>Home</menutitle>
 	<url>en</url>
 	<synopsis></synopsis>
 	<lang>en</lang>
 	<content></content>
-	<cms_layout>new-roda-main-en</cms_layout>
+	<cms_layout>new-roda-home-en</cms_layout>
 	<pagetype>content</pagetype>
 	<cacheable>3600</cacheable>
 	<searchable>false</searchable>		

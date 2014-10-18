@@ -168,7 +168,8 @@ public class ElsstImporterServiceImpl implements ElsstImporterService {
 			Topic dst = topicsMap.get(csvLine[2]);
 
 			if (src == null || dst == null) {
-				String errorMessage = "ELSST Relationship is not correctly defined in CSV: terms do not exist";
+				String errorMessage = "ELSST Relationship is not correctly defined in CSV - some Terms do not exist;"
+						+ csvLine[0] + ";" + csvLine[2];
 				log.error(errorMessage);
 
 				// TODO uncomment this exception-throwing

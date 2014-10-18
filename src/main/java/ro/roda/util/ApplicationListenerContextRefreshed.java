@@ -35,9 +35,6 @@ public class ApplicationListenerContextRefreshed implements ApplicationListener<
 	@Value("${roda.data.ddi}")
 	private String rodaDataDdi;
 
-	@Value("${roda.data.csv-after-ddi}")
-	private String rodaDataCsvAfterDdi;
-
 	@Autowired
 	DatabaseUtils du;
 
@@ -75,7 +72,6 @@ public class ApplicationListenerContextRefreshed implements ApplicationListener<
 				log.trace("roda.data.csv = " + rodaDataCsv);
 				log.trace("roda.data.csv-extra = " + rodaDataCsvExtra);
 				log.trace("roda.data.ddi = " + rodaDataDdi);
-				log.trace("roda.data.csv-after-ddi = " + rodaDataCsvAfterDdi);
 				log.trace("roda.data.cms = " + rodaDataCms);
 
 				// to skip the initial actions,

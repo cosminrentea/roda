@@ -57,13 +57,20 @@ sudo zypper in openjdk-6-jdk postgresql pgadmin3 perl htmldoc doxygen graphviz f
 \item[CentOS, deployment pe Server (nu pentru development):]
 Se ruleaza urmatoarele comenzi, din shell:
 \begin{lstlisting}[breaklines=true]
-yum install java-1.7.0-openjdk-devel git
+# pentru Maven
+wget http://repos.fedorapeople.org/repos/dchen/apache-maven/epel-apache-maven.repo -O /etc/yum.repos.d/epel-apache-maven.repo
+
+# pentru R
+rpm -Uvh http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
+
+yum install java-1.7.0-openjdk-devel apache-maven 
+yum install postgresql postgresql-server 
+yum install git R R-java 
+yum install tomcat6 tomcat6-webapps tomcat6-admin-webapps tomcat6-native
 \end{lstlisting}
 
-Pentru instalarea Postgresql:
+Pentru configurarea Postgresql:
 \begin{lstlisting}[breaklines=true]
-yum install postgresql 
-
 service postgresql initdb
 
 chkconfig postgresql on
@@ -81,37 +88,32 @@ Se (re)starteaza Postgresql:
 service postgresql restart
 \end{lstlisting}
 
-Pentru instalarea Maven:
+Pentru configurarea Tomcat 6:
 \begin{lstlisting}[breaklines=true]
-wget http://repos.fedorapeople.org/repos/dchen/apache-maven/epel-apache-maven.repo -O /etc/yum.repos.d/epel-apache-maven.repo
-
-yum install apache-maven
-\end{lstlisting}
-
-Pentru instalarea R:
-\begin{lstlisting}[breaklines=true]
-rpm -Uvh http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
-
-yum install R
-\end{lstlisting}
-
-Pentru instalarea Tomcat 6:
-\begin{lstlisting}[breaklines=true]
-yum install tomcat6 tomcat6-webapps tomcat6-admin-webapps
-
 chkconfig tomcat6 on
 
 service tomcat6 restart
 \end{lstlisting}
 
-Pentru instalarea Solr (4.7.1):
+Pentru instalarea Solr:
 \begin{lstlisting}[breaklines=true]
-wget http://mirrors.hostingromania.ro/apache.org/lucene/solr/4.7.1/solr-4.7.1.tgz
-
-tar -xzf solr-4.7.1.tgz
 
 ??? TODO NEXT
 \end{lstlisting}
+
+Pot fi deschise portul 8080 (Tomcat) si portul 80, astfel:
+\begin{lstlisting}[breaklines=true]
+iptables -I INPUT 2 -p tcp -m state --state NEW -m tcp --dport 8080 -j ACCEPT
+
+iptables -I INPUT 3 -p tcp -m state --state NEW -m tcp --dport 80 -j ACCEPT
+\end{lstlisting}
+
+Poate fi forwardat portul 80 la portul 8080, astfel:
+\begin{lstlisting}[breaklines=true]
+iptables -t nat -A PREROUTING -i em1 -p tcp -m tcp --dport 80 -j DNAT --to-destination :8080
+\end{lstlisting}
+
+
 
 \end{description}
 

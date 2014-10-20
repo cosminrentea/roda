@@ -171,7 +171,7 @@ public class DdiImporterServiceImpl implements DdiImporterService {
 		return unmarshaller;
 	}
 
-	@Async(value = "asyncSerialExecutor")
+	// @Async(value = "asyncSerialExecutor")
 	public void importDdiFiles() throws Exception {
 
 		// import catalogs
@@ -223,7 +223,7 @@ public class DdiImporterServiceImpl implements DdiImporterService {
 				MockMultipartFile mockMultipartFileCsv = null;
 				if (importDdiCsv) {
 					// get CSV file name (RODA naming rules)
-					String csvFilename = ddiFile.getName().split("_")[0].concat("_T.csv");
+					String csvFilename = ddiFile.getName().split("\\.")[0].split("_")[0].concat("_T.csv");
 					// TODO @Value for "ddi" folder below
 					Resource csvResource = pmr.getResource("classpath:ddi/" + csvFilename);
 					FileInputStream fisCsv = null;
@@ -761,7 +761,7 @@ public class DdiImporterServiceImpl implements DdiImporterService {
 
 		// serialization of DDI XML as JSON - only if requested
 		if ("yes".equalsIgnoreCase(rodaDataDdiSaveJson)) {
-			String ddiJson = new JSONSerializer().exclude("*.class").deepSerialize(cb);
+			String ddiJson = new JSONSerializer().exclude("*.class").prettyPrint(true).deepSerialize(cb);
 			File fileJson = File.createTempFile("roda-json-", null);
 			FileWriter fw = new FileWriter(fileJson);
 			fw.write(ddiJson);

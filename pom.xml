@@ -773,7 +773,7 @@
 				<configuration>
 					<url>http://www2.roda.ro:8080/manager</url>
 					<server>IntegrationTomcatServer</server>
-					<path>/roda</path>
+					<path>/</path>
 				</configuration>
 			</plugin>
 			<plugin>

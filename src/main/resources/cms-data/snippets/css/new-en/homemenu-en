@@ -1,23 +1,23 @@
 <ul id="navmenu">
-	<li><a href="/roda/page/en/home">RODA</a>
+	<li><a href="/en/home">RODA</a>
 	  <ul>
-	    <li><a href="/roda/page/en/roda-overview/roda-objectives">RODA objectives</a></li>
+	    <li><a href="/en/roda-overview/roda-objectives">RODA objectives</a></li>
 	  </ul>
 	</li>
-	<li><a href="/roda/page/en/ordering-data">Getting data</a>
+	<li><a href="/en/ordering-data">Getting data</a>
 	  <ul>
-	    <li><a href="/roda/page/en/ordering-data/user-categories">User Categories</a></li>
-	    <li><a href="/roda/page/en/ordering-data/access-levels">Access Levels</a></li>
-	    <li><a href="/roda/page/en/ordering-data/access-agreements">Access agreements</a></li>
-	    <li><a href="/roda/page/en/ordering-data/costs">Costs</a></li>
+	    <li><a href="/en/ordering-data/user-categories">User Categories</a></li>
+	    <li><a href="/en/ordering-data/access-levels">Access Levels</a></li>
+	    <li><a href="/en/ordering-data/access-agreements">Access agreements</a></li>
+	    <li><a href="/en/ordering-data/costs">Costs</a></li>
 	  </ul>
 	</li>
 
-	<li class="more"><a href="/roda/page/en/data-depositing">Data depositing</a>
+	<li class="more"><a href="/en/data-depositing">Data depositing</a>
 	  <ul>
-	    <li><a href="/roda/page/en/data-depositing/avantages">Avantages</a></li>
-	    <li><a href="/roda/page/en/data-depositing/how-to-submit-data">How to submit data</a></li>
+	    <li><a href="/en/data-depositing/avantages">Avantages</a></li>
+	    <li><a href="/en/data-depositing/how-to-submit-data">How to submit data</a></li>
 	  </ul>
 	</li>
-	<li><a href="/roda/page/en/data-catalog">Data catalog</a></li>
+	<li><a href="/en/data-catalog">Data catalog</a></li>
 </ul>			

@@ -10,7 +10,7 @@ Ext.define('RODAdmin.store.Menu', {
 
     model: 'RODAdmin.model.menu.Root',
 //    proxy: {type: 'main', url: 'http://roda.apiary.io/admin/menu',reader:{root:'items'}},
-    proxy: {type: 'main', url: '/roda/userjson/menu',reader:{root:'items'}},
+    proxy: {type: 'main', url: '/userjson/menu',reader:{root:'items'}},
     
 
 });

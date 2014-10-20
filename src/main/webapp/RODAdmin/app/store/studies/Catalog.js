@@ -11,5 +11,5 @@ Ext.define('RODAdmin.store.studies.Catalog', {
     model: 'RODAdmin.model.studies.Catalog',
     
     autoload: true,
-    proxy: {type: 'main', url: '/roda/studiesbycatalog'},    
+    proxy: {type: 'main', url: 'studiesbycatalog'},    
 });

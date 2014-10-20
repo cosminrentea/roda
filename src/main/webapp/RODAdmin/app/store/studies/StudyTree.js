@@ -9,7 +9,7 @@ Ext.define('RODAdmin.store.studies.StudyTree', {
     ],
     autoLoad: false,
     model: 'RODAdmin.model.studies.Study',
-    proxy: {type: 'mainajax', url: '/roda/studiestree'},    
+    proxy: {type: 'mainajax', url: 'studiestree'},    
 
    folderSort: true,    
 

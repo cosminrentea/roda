@@ -10,6 +10,6 @@ Ext.define('RODAdmin.store.metadata.Prefixes', {
 
     model: 'RODAdmin.model.metadata.Prefixes',
     autoload: true,   
-    proxy: {type: 'main', url: '/roda/ddieditorprefixlist'},    
+    proxy: {type: 'main', url: '/ddieditorprefixlist'},    
  
 });

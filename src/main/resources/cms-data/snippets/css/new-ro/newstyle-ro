@@ -257,12 +257,12 @@ h1, h2, h3, h4, h5, h6{
 #footer{
 	width:940px;
 	margin:0px auto;
-	background: url('[[FileURL:logo_footer]]') top center no-repeat;
+/*	background: url('[[FileURL:logo_footer]]') top center no-repeat; */
 	min-height: 150px;
 }
 
 #footer ul{
-	width:150px;
+	width:200px;
 	margin:0px;
 	padding:0px;
 	list-style-type: none; 

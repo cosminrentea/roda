@@ -58,22 +58,25 @@
 		<div id="footer">
 		<table>
 			<tr>
-				<td width="150" valign="top" align="left">
+				<td width="50" valign="top" align="left">
 					<ul>
 					</ul>
 				</td>
-				<td width="150" valign="top" align="left">
+				<td width="250" valign="top" align="left">
 					<ul>
+					<li><a href="http://www.unibuc.ro" target="_blank">Universitatea din Bucuresti</a></li>
+					<li><a href="http://www.societateasociologilor.ro/" target="_blank">Societatea Sociologilor din Romania</a></li>
 					</ul>
 				</td>
-				<td width="350" valign="top" align="left">
-				
+				<td width="250" valign="top" align="left"><div style="width:250"></div>
 				</td>
-				<td width="150" valign="top" align="left">
+				<td width="250" valign="top" align="left">
 					<ul>
+					<li><a href="http://www.edu.ro/index.php/base/frontpage" target="_blank">Ministerul Educatiei Nationale</a></li>
+					<li>Observatorul Social din Romania</li>
 					</ul>
 				</td>
-				<td width="150" valign="top" align="left">
+				<td width="50" valign="top" align="left">
 					<ul>
 					</ul>
 				</td>				

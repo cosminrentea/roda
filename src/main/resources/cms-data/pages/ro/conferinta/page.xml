@@ -1,19 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <pagedata>
-	<title>Conferinta</title>
-	<menutitle>Conferinta</menutitle>
+	<title>conferinta</title>
+	<menutitle>RODA Stakeholder Conference</menutitle>
 	<synopsis></synopsis>
 	<lang>ro</lang>
 	<content><![CDATA[
-<p>În perioada 2012 - 2014 a fost implementat proiectul "Sistem informatic integrat pentru identificarea, arhivarea si diseminarea bazelor de date si a indicatorilor din cercetările sociale", care a presupus modernizarea sistemului informatic al RODA la standarde internationale, pentru a deveni compatibili si interoperabili cu reteaua europeană de arhive de date sociale CESSDA - Council of European Social Science Data Archives.</p>
-<p>Acest proiect a beneficiat de finantare din partea Ministerului Educatiei Nationale, prin intermediul Planului Sectorial, contract nr. 5S/2012 în valoare de 2.500.000 lei.</p>
-<p>În data de 28 noiembrie 2014 va fi organizată conferinta de final a proiectului, la care sunt invitati membri ai comunitătii academice, experti în cercetarea socială, factori de decizie în elaborarea politicilor, reprezentanti din agentii guvernamentale si organizatii non-guvernamentale. </p>
+
+ 
+<div style="float:right;">
+<img style="float:right;" src="[[FileURL:men]]" height="50">
+<img style="float:right;" src="[[FileURL:ssr]]" height="50">
+<img style="float:right;" src="[[FileURL:osr]]" height="50">
+</div>
+<div style="clear:both">
+
+<p>Arhiva Română de Date Sociale organizează evenimentul RODA Stakeholder Conference, care va avea loc în data de 28 noiembrie 2014, găzduit de Facultatea de Sociologie și Asistență Socială a Universității din București. </p>
+
+<p>În cadrul acestui eveniment vor fi prezentate rezultatele proiectului „Sistem informatic integrat pentru identificarea, arhivarea și diseminarea bazelor de date și a indicatorilor din cercetările sociale" desfășurat în perioada 2012-2014. Unul dintre rolurile proiectului a fost să modernizeze sistemul informatic al RODA în vederea asigurării compatibilității cu rețeaua europeană de arhive de date sociale CESSDA – Council of European Social Science Data Archives. Proiectul a beneficiat de finanțare din partea Ministerului Educației Naționale, prin intermediul Planului Sectorial, contract nr.  5S/2012, în valoare de 2.500.000 lei.</p>
+
+<p>Echipa de proiect va prezenta noul sistem informatic dezvoltat și felul în care acesta poate fi folosit pentru arhivarea bazelor de date sociale la nivel național și pentru diseminarea acestora la nivel național și internațional. Noul sistem informatic răspunde nevoilor unor categorii diverse de parți interesate. Evenimentul este de asemenea o buna oportunitate pentru inițierea unei discuții pe marginea oportunităților de cercetare din comunitatea științelor sociale, în contextul colaborărilor internaționale facilitate de noul program cadru Orizonturi 2020, recent lansat de Comisia Europeană. Astfel, sunt vizate interesele comunității academice, experților din științele sociale, factorilor de decizie politică, reprezentanților agențiilor guvernamentale și non-guvernamentale.</p>
+
+<H2>Locul desfasurarii</H2>
 
 <p>
 
-<a href="[[FileURL:Invitatie]]">Invitatia</a>
+Facultatea de Sociologie și Asistență Socială<br>
+Universitatea din București<br>
+Amfiteatrul 103<br>
+Șos. Panduri nr. 90-92<br>
+050663 București<br>
 
+Persoana de contact: Adrian Dușa<br>
+dusa.adrian@unibuc.ro<br>
+<p>
+
+<p>
+<iframe src="https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d2849.0728912399913!2d26.061449999999997!3d44.431667!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sro!2sro!4v1413996176348" width="600" height="450" frameborder="0" style="border:0"></iframe>
 </p>
+
 
 	]]></content>
 	<cms_layout>new-roda-main-ro</cms_layout>

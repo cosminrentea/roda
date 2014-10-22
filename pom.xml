@@ -61,7 +61,8 @@
 	</prerequisites>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<java.version>1.7</java.version>
+		<java.version>7</java.version>
+		<aspectj-java.version>1.7</aspectj-java.version>
 		<license.licenseName>gpl_v3</license.licenseName>
 
 		<!-- dependencies versions -->
@@ -636,9 +637,9 @@
 							<artifactId>spring-aspects</artifactId>
 						</aspectLibrary>
 					</aspectLibraries>
-					<complianceLevel>${java.version}</complianceLevel>
-					<source>${java.version}</source>
-					<target>${java.version}</target>
+					<complianceLevel>${aspectj-java.version}</complianceLevel>
+					<source>${aspectj-java.version}</source>
+					<target>${aspectj-java.version}</target>
 				</configuration>
 			</plugin>
 			<plugin>

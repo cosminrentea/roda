@@ -46,13 +46,11 @@ public class CsvImporterServiceImpl implements CsvImporterService {
 	@PersistenceContext
 	transient EntityManager entityManager;
 
-	// @Async
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public void importCsv() throws Exception {
 		importCsvDir(rodaDataCsvDir);
 	}
 
-	// @Async
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public void importCsvExtra() throws Exception {
 		importCsvDir(rodaDataCsvExtraDir);

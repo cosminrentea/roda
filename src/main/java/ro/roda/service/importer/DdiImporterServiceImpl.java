@@ -467,14 +467,16 @@ public class DdiImporterServiceImpl implements DdiImporterService {
 				}
 
 				// Topics / ELSST
+				Lang roLang = Lang.findLang("ro");
+				Integer roLangId = roLang.getId();
 				List<TopcClasType> topcClasTypeList = subjectType.getTopcClas();
 				Set<Topic> tSet = new HashSet<Topic>();
 				for (TopcClasType topcClasType : topcClasTypeList) {
+					if (topcClasType.content == null)
+						continue;
 					log.trace("Topic of imported study: " + topcClasType.content);
-					Lang roLang = Lang.findLang("ro");
-					Integer roLangId = roLang.getId();
 
-					String[] topicNames = topcClasType.content.split(";,.");
+					String[] topicNames = topcClasType.content.split(";|,|\\.");
 					for (String topicName : topicNames) {
 						TranslatedTopic translatedTopic = TranslatedTopic.findOrCreateTranslatedTopic(
 								topicName.toUpperCase(), roLangId);
@@ -757,7 +759,7 @@ public class DdiImporterServiceImpl implements DdiImporterService {
 			}
 		}
 
-		s.flush();
+		// s.flush();
 
 		// serialization of DDI XML as JSON - only if requested
 		if ("yes".equalsIgnoreCase(rodaDataDdiSaveJson)) {
@@ -768,14 +770,12 @@ public class DdiImporterServiceImpl implements DdiImporterService {
 			fw.flush();
 			fw.close();
 			FileInputStream fisJson = new FileInputStream(fileJson);
-
 			MockMultipartFile mmfJson = new MockMultipartFile(multipartFileDdi.getName().concat(".json"),
 					multipartFileDdi.getName().concat(".json"), "application/json", fisJson);
 
 			// save the JSON in FileStore, inside the study's folder
 			adminJsonService.fileSave(retDdi.getId(), mmfJson, null, null, null);
 			fisJson.close();
-			// log.trace(new JSONSerializer().deepSerialize(cb));
 		}
 
 	}
